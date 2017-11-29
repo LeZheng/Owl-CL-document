@@ -61,12 +61,12 @@
 * 初始化路径名变量.
 * 初始化 “FFI”.
 * 初始化模块.
-* 运行 CUSTOM:*INIT-HOOKS*指定的所有函数.
+* 运行 CUSTOM:\*INIT-HOOKS*指定的所有函数.
 * 打印 “hi”, 除非被 -q所抑制.
 * 加载 RC file, 除非被 -norc所抑制.
 * 处理命令行选项: 文件加载 或 汇编,生成评价（form evaluation）,脚本的执行以及 read-eval-print loop.
 * 展开 STACK, 在 UNWIND-PROTECT里清理表。
-* 运行 CUSTOM:*FINI-HOOKS*里的所有函数
+* 运行 CUSTOM:\*FINI-HOOKS*里的所有函数
 * 在标准流里调用 FRESH-LINE .
 * 打印 “bye”， 除非被-q抑制.
 * 如果被 -w所请求，等待按键按下.
