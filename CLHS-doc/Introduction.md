@@ -1,6 +1,16 @@
-# 引言
+ # 1. 引言
 
-## 1.1 面向人群, 目的, 和历史
+> * 1.1 [面向人群, 目的, 和历史](#ScopePurposeAndHistory)
+> * 1.2 [文档的组织结构](#OrganizationOfTheDocument)
+> * 1.3 [参考的出版物](#ReferencedPublications)
+> * 1.4 [Definitions](#Definitions)
+> * 1.5 [Conformance](#Conformance)
+> * 1.6 [Language Extensions](#LanguageExtensions)
+> * 1.7 [Language Subsets](#LanguageSubsets)
+> * 1.8 [Deprecated Language Features](#DeprecatedLanguageFeatures)
+> * 1.9 [Symbols in the COMMON-LISP Package](#SymbolsInTheCOMMON-LISPPackage)
+
+## 1.1 <span id = "ScopePurposeAndHistory">面向人群, 目的, 和历史</span>
 > 这个文档之前的说明被设计于促进Common Lisp程序在各种数据处理系统之间的移植性. 这是一份面向CL实现者和博学的程序设计者的语言说明书. 它既不是教程也不是一个CL具体实现的导引.
 
 ### 1.1.2 历史
@@ -34,7 +44,7 @@
 >>
 >>在1986年 X3J13 组织了一个技术小组去起草 ANSI Common Lisp 标准. 由于 Common Lisp的接纳, 这个小组的目标与最初的设计者不同. 这些目标包括更严格的移植性标准化,一个面向对象编程系统,一个状态系统,循环机制,以及一种处理大型字符集的方式.为了促成这个目标，一个新的语言说明(这个文档)被开发出来.
 
-## 1.2 文档的组织结构
+## 1.2 <span id = "OrganizationOfTheDocument">文档的组织结构</span>
 
 > 这是一份参考文档, 不是一份教程文档. 为了尽可能方便, 这个报告的顺序是原始话题在前, 构建于它们之上的在后; 然而, 线性的阅读性并不是值得优先考虑的.
 >
@@ -57,3 +67,55 @@
 >关于数据类型的内容, 见章节 4 (Types and Classes). 不是所有的类型和类都被定义在这个章节; 很多定义在它们主题对应的章节--比如, 数值类型定义在了章节 12 (Numbers). 关于标准化类型的完整列表, 见 Figure 4-2.
 >
 >关于常用目的控制和数据流, 见章节 5 (Data and Control Flow) 或章节 6 (Iteration).
+
+ ## 1.3 <span id = "ReferencedPublications">参考的出版物</span>
+
+* The Anatomy of Lisp, John Allen, McGraw-Hill, Inc., 1978.
+
+* The Art of Computer Programming, Volume 3, Donald E. Knuth, Addison-Wesley Company (Reading, MA), 1973.
+
+* The Art of the Metaobject Protocol, Kiczales et al., MIT Press (Cambridge, MA), 1991.
+
+* ``Common Lisp Object System Specification,'' D. Bobrow, L. DiMichiel, R.P. Gabriel, S. Keene, G. Kiczales, D. Moon, SIGPLAN Notices V23, September, 1988.
+
+* Common Lisp: The Language, Guy L. Steele Jr., Digital Press (Burlington, MA), 1984.
+
+* Common Lisp: The Language, Second Edition, Guy L. Steele Jr., Digital Press (Bedford, MA), 1990.
+
+* Exceptional Situations in Lisp, Kent M. Pitman, Proceedings of the First European Conference on the Practical Application of LISP (EUROPAL '90), Churchill College, Cambridge, England, March 27-29, 1990.
+
+* Flavors: A Non-Hierarchical Approach to Object-Oriented Programming, Howard I. Cannon, 1982.
+
+* IEEE Standard for Binary Floating-Point Arithmetic, ANSI/IEEE Std 754-1985, Institute of Electrical and Electronics Engineers, Inc. (New York), 1985.
+
+* IEEE Standard for the Scheme Programming Language, IEEE Std 1178-1990, Institute of Electrical and Electronic Engineers, Inc. (New York), 1991.
+
+* Interlisp Reference Manual, Third Revision, Teitelman, Warren, et al, Xerox Palo Alto Research Center (Palo Alto, CA), 1978.
+
+* ISO 6937/2, Information processing---Coded character sets for text communication---Part 2: Latin alphabetic and non-alphabetic graphic characters, ISO, 1983.
+
+* Lisp 1.5 Programmer's Manual, John McCarthy, MIT Press (Cambridge, MA), August, 1962.
+
+* Lisp Machine Manual, D.L. Weinreb and D.A. Moon, Artificial Intelligence Laboratory, MIT (Cambridge, MA), July, 1981.
+
+* Maclisp Reference Manual, Revision 0, David A. Moon, Project MAC (Laboratory for Computer Science), MIT (Cambridge, MA), March, 1974.
+
+* ``NIL---A Perspective,'' JonL White, Macsyma User's Conference, 1979.
+
+* Performance and Evaluation of Lisp Programs, Richard P. Gabriel, MIT Press (Cambridge, MA), 1985.
+
+* ``Principal Values and Branch Cuts in Complex APL,'' Paul Penfield Jr., APL 81 Conference Proceedings, ACM SIGAPL (San Francisco, September 1981), 248-256. Proceedings published as APL Quote Quad 12, 1 (September 1981).
+
+* The Revised Maclisp Manual, Kent M. Pitman, Technical Report 295, Laboratory for Computer Science, MIT (Cambridge, MA), May 1983.
+
+* ``Revised^3 Report on the Algorithmic Language Scheme,'' Jonathan Rees and William Clinger (editors), SIGPLAN Notices V21, #12, December, 1986.
+
+* ``S-1 Common Lisp Implementation,'' R.A. Brooks, R.P. Gabriel, and G.L. Steele, Conference Record of the 1982 ACM Symposium on Lisp and Functional Programming, 108-113, 1982.
+
+* Smalltalk-80: The Language and its Implementation, A. Goldberg and D. Robson, Addison-Wesley Company, 1983.
+
+* ``Standard LISP Report,'' J.B. Marti, A.C. Hearn, M.L. Griss, and C. Griss, SIGPLAN Notices V14, #10, October, 1979.
+
+* Webster's Third New International Dictionary the English Language, Unabridged, Merriam Webster (Springfield, MA), 1986.
+
+* XP: A Common Lisp Pretty Printing System, R.C. Waters, Memo 1102a, Artificial Intelligence Laboratory, MIT (Cambridge, MA), September 1989. 
