@@ -3,7 +3,7 @@
 > * 1.1 [面向人群, 目的, 和历史](#ScopePurposeAndHistory)
 > * 1.2 [文档的组织结构](#OrganizationOfTheDocument)
 > * 1.3 [参考的出版物](#ReferencedPublications)
-> * 1.4 [Definitions](#Definitions)
+> * 1.4 [定义](#Definitions)
 > * 1.5 [Conformance](#Conformance)
 > * 1.6 [Language Extensions](#LanguageExtensions)
 > * 1.7 [Language Subsets](#LanguageSubsets)
@@ -119,3 +119,59 @@
 * Webster's Third New International Dictionary the English Language, Unabridged, Merriam Webster (Springfield, MA), 1986.
 
 * XP: A Common Lisp Pretty Printing System, R.C. Waters, Memo 1102a, Artificial Intelligence Laboratory, MIT (Cambridge, MA), September 1989. 
+
+
+## 1.4 <span id = "Definitions">定义</span>
+这个章节中包含了这个手册里的符号约定和术语定义.
+
+> * 1.1 [符号约定](#NotationalConventions)
+> * 1.2 [错误术语](#ErrorTerminology)
+> * 1.3 [本标准未正式规定的部分](#SectionsNotFormallyPartOfThisStandard)
+> * 1.4 [解释的字典条目](#InterpretingDictionaryEntries)
+
+### 1.4.1 <span id = "NotationalConventions">符号约定</span>
+下面的符号约定适用于整个文档.
+
+> * 1.4.1.1 [字体的线索](#FontKey)
+> * 1.4.1.2 [修改BNF语法](#ModifiedBNFSyntax)
+> * 1.4.1.3 [特殊符号](#SpecialSymbols)
+> * 1.4.1.4 [多个符号表示的对象](#ObjectsWithMultipleNotations)
+> * 1.4.1.5 [指示符](#Designators)
+> * 1.4.1.6 [无意义的字](#NonsenseWords)
+
+#### 1.4.1.1 <span id = "FontKey">字体的线索</span>
+
+这个文档中使用的字体表达的含义.
+
+<u>*name*</u>
+
+    表示定义在词汇表中的正常的术语. 如果这个字体被使用,那么这个词汇表定义优先于正常的英语使用.
+
+    有时候这个词汇表术语会有下标, 就像 ``whitespace[2].'' 这样的定义选择多个词汇表定义的其中一个,这里是第二个. 这个下标标记法在术语词汇表里通常被使用于那种上下文不足以消除歧义的定义.
+
+<u>*name*</u>
+
+    表示当前文本的正式用语介绍. 这个一直对应一个词汇表条目,并且通常等价于使用 ``name,'' 但是这使得这个使用更加明显,可以在一些情况避免读者查阅词汇表.
+
+**name**
+
+    表示一个在COMMON-LISP包里的符号. 关于这种符号更多内容, 见章节 1.4.1.4.1 (符号案例).
+
+name
+
+    表示一个程序员可能用Common Lisp写的简单的名字或代码片段.
+
+    这个字体也被用于某些标准化的不属于COMMON-LISP包里的名字, 比如关键字[1], 包名, 还有循环关键字.
+
+*name*
+
+    表示一个参数或者值的名字.
+
+    有些情况下也使用标记 ``<<name>>'' (换句话说, 同样的字体, 但是带有 ``尖括号'' 包装) 来为包在里面的字提供更好的目视间距. 这些 ``尖括号'' 是伪变量用的, 并且事实上从来不会出现在程序的输入输出中. 
+
+#### 1.4.1.2 <span id = "ModifiedBNFSyntax">修改BNF语法</span>
+这个说明书使用了一个扩展BNF范式来描述 Common Lisp 宏形式和特殊形式的语法. 这个章节讨论BNF范式的语法.
+
+> * 1.4.1.2.1 [修改后BNF语法的拼接](#SplicingInModifiedBNFSyntax)
+> * 1.4.1.2.2 [修改后BNF语法的间接](#IndirectionInModifiedBNFSyntax)
+> * 1.4.1.2.3 [修改后BNF语法中间接定义的额外使用](#AdditionalUsesForIndirectDef)
