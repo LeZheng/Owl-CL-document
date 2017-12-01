@@ -1,4 +1,4 @@
- # 1. 引言
+# 1. 引言
 
 > * 1.1 [面向人群, 目的, 和历史](#ScopePurposeAndHistory)
 > * 1.2 [文档的组织结构](#OrganizationOfTheDocument)
@@ -11,9 +11,11 @@
 > * 1.9 [Symbols in the COMMON-LISP Package](#SymbolsInTheCOMMON-LISPPackage)
 
 ## 1.1 <span id = "ScopePurposeAndHistory">面向人群, 目的, 和历史</span>
+
 > 这个文档之前的说明被设计于促进Common Lisp程序在各种数据处理系统之间的移植性. 这是一份面向CL实现者和博学的程序设计者的语言说明书. 它既不是教程也不是一个CL具体实现的导引.
 
 ### 1.1.2 历史
+
 >> Lisp是一个有悠久历史的语言家族. 早期的Lisp中的关键思想是 John McCarthy 在 1956 Dartmouth 人工智能夏季研究项目中开发出来的. McCarthy的动机是去开发一个用于人工智能工作的代数列表处理语言. 早期Lisp方言的实现着手于 IBM 704,  IBM 7090, Digital Equipment Corporation (DEC) PDP-1,  DEC PDP-6, 以及 PDP-10. 在1960 到 1965主要的Lisp方言是 Lisp 1.5. 直到20世纪70年代早期出现了两个得益于早先努力占主导地位的Lisp方言: MacLisp 和 Interlisp. 关于早期Lisp方言的更多信息, 见 The Anatomy of Lisp 或者 Lisp 1.5 Programmer's Manual.
 >>
 >>MacLisp 对 Lisp 1.5 特殊变量和错误处理进行改进. MacLisp 也引入了可以带有可变数量参数的函数, 宏, 数组, 非本地动态退出, 快速计算, 第一个好的 Lisp 编译器, 还有突出的运行速度. 直到20世纪70年代末, MacLisp 被用于超过 50 个网站. 关于更多的 Maclisp 信息, 见 Maclisp Reference Manual, Revision 0 或 The Revised Maclisp Manual.
@@ -68,7 +70,7 @@
 >
 >关于常用目的控制和数据流, 见章节 5 (Data and Control Flow) 或章节 6 (Iteration).
 
- ## 1.3 <span id = "ReferencedPublications">参考的出版物</span>
+## 1.3 <span id = "ReferencedPublications">参考的出版物</span>
 
 * The Anatomy of Lisp, John Allen, McGraw-Hill, Inc., 1978.
 
@@ -122,6 +124,7 @@
 
 
 ## 1.4 <span id = "Definitions">定义</span>
+
 这个章节中包含了这个手册里的符号约定和术语定义.
 
 > * 1.1 [符号约定](#NotationalConventions)
@@ -130,6 +133,7 @@
 > * 1.4 [解释的字典条目](#InterpretingDictionaryEntries)
 
 ### 1.4.1 <span id = "NotationalConventions">符号约定</span>
+
 下面的符号约定适用于整个文档.
 
 > * 1.4.1.1 [字体的线索](#FontKey)
@@ -175,3 +179,129 @@ name
 > * 1.4.1.2.1 [修改后BNF语法的拼接](#SplicingInModifiedBNFSyntax)
 > * 1.4.1.2.2 [修改后BNF语法的间接](#IndirectionInModifiedBNFSyntax)
 > * 1.4.1.2.3 [修改后BNF语法中间接定义的额外使用](#AdditionalUsesForIndirectDef)
+
+##### 1.4.1.2.1 <span id = "SplicingInModifiedBNFSyntax">修改后BNF语法的拼接</span>
+
+使用的主要扩展是以下这样的:
+
+```
+[[O]]
+```
+
+无论何时当一个多元素列表被拼接到一个更大的结构并且元素可以以任何顺序出现的情况下, 就会出现这个形式的表达式. 这个符号 O 表示要被拼接的多个句法元素的语法描述; 这个描述必须以这种形式
+
+```
+O1 | ... | Ol
+```
+
+其中每一个 Oi 可以是S表达式或者S\*表达式或者{S}1的形式 . 这个表达式 [[O]] 意味着这样形式的列表
+
+```
+(Oi1...Oij) 1<=j
+```
+
+被拼接到一个闭合的表达式中, 这样的情况下如果 n /=m 并且 1<=n,m<=j, 就存在 Oin/=Oim 和 Oin = Oim = Qk, 其中 1<=k <=n, Ok 是形式 Qk*. 此外, 对于每一个在结构 {Qk}1 中的 Oin,  这个元素需要出现在拼接后列表的某处.
+
+比如说, 这个表达式
+
+```
+(x [[A | B* | C]] y)
+```
+
+意味着最多一个A, 任意数量的B, 以及最多一个C可以以任何形式出现. 它是以下任意形式的描述:
+
+```Lisp
+(x y)
+(x B A C y)
+(x A B B B B B C y)
+(x C B A B B B y)
+```
+
+但不是下面这些:
+
+```Lisp
+(x B B A A C C y)
+(x C B C y)
+```
+
+在第一种情况下, 不管A还是C都出现的太频繁, 而第二个例子中C出现得太频繁.
+
+标记法 [[O1 | O2 | ...]]+ 添加额外的限制, 表示至少有一个选项必须被使用. 比如说:
+
+```
+(x [[A | B* | C]]+ y)
+```
+
+意味着至少一个A, 任意数量的B, 并且至少一个C以任意顺序出现, 但是在任何情况下至少它们之中的一个选项要满足. 它是以下这些的描述:
+
+```Lisp
+(x B y)
+(x B A C y)
+(x A B B B B B C y)
+(x C B A B B B y)
+```
+
+但是不是以下这些:
+
+```Lisp
+(x y)
+(x B B A A C C y)
+(x C B C y)
+```
+
+在第一个例子中, 没有任何条件满足; 在第二个例子中, A 和 C 都出现得太频繁; 还有在第三个示例中C出现得太频繁.
+
+并且, 这个表达式:
+
+```BNF
+(x [[{A}1 | {B}1 | C]] y)
+```
+
+可以全部表示为这些并且没有其他可能 :
+
+```Lisp
+(x A B C y)
+(x A C B y)
+(x A B y)
+(x B A C y)
+(x B C A y)
+(x B A y)
+(x C A B y)
+(x C B A y)
+```
+
+##### 1.4.1.2.2 <span id = "IndirectionInModifiedBNFSyntax">修改后BNF语法的间接</span>
+
+引入一个间接的扩展是为了使这种语法可读性更高:
+
+```BNF
+O
+```
+
+如果 O 不是一个终止符, 它的定义的右边部分会完整地替换表达式 O. 比如, 下面的这个 BNF 表达式等价于上面那个例子:
+
+```BNF
+(x [[O]] y)
+
+O::= A | B* | C
+```
+
+#### 1.4.1.2.3 <span id = "AdditionalUsesForIndirectDef">修改后BNF语法中间接定义的额外使用</span>
+
+在一些情况下In some cases, 一个BNF辅助定义可能不会出现在这个BNF表达式里, 但是在其他地方是有用的. 比如说, 细想下面的定义:[>_<]待校验
+
+```BNF
+case keyform {normal-clause}* [otherwise-clause] => result*
+
+ccase keyplace {normal-clause}* => result*
+
+ecase keyform {normal-clause}* => result*
+
+normal-clause::= (keys form*)
+
+otherwise-clause::= ({otherwise | t} form*)
+
+clause::= normal-clause | otherwise-clause
+```
+
+这里的术语 \``clause'' 似乎是 \``dead'' 因为它没有被使用于上面的BNF表达式里. 然而, 这个BNF的目的并不只是引导解析, 但是也定义有用的术语为了跟在后面的描述性文本的参考. 像这个样子, 术语 \``clause'' 可能出现在后面跟着的文本中, 作为 \``normal-clause or otherwise-clause.'' 的速记.[>_<]待校验
