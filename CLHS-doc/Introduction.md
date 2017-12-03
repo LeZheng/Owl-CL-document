@@ -141,7 +141,7 @@
 > * 1.4.1.3 [特殊符号](#SpecialSymbols)
 > * 1.4.1.4 [多个符号表示的对象](#ObjectsWithMultipleNotations)
 > * 1.4.1.5 [指示符](#Designators)
-> * 1.4.1.6 [无意义的字](#NonsenseWords)
+> * 1.4.1.6 [无意义的单词](#NonsenseWords)
 
 #### 1.4.1.1 <span id = "FontKey">字体的线索</span>
 
@@ -286,7 +286,7 @@ O
 O::= A | B* | C
 ```
 
-#### 1.4.1.2.3 <span id = "AdditionalUsesForIndirectDef">修改后BNF语法中间接定义的额外使用</span>
+##### 1.4.1.2.3 <span id = "AdditionalUsesForIndirectDef">修改后BNF语法中间接定义的额外使用</span>
 
 在一些情况下In some cases, 一个BNF辅助定义可能不会出现在这个BNF表达式里, 但是在其他地方是有用的. 比如说, 细想下面的定义:[>_<]待校验
 
@@ -305,3 +305,195 @@ clause::= normal-clause | otherwise-clause
 ```
 
 这里的术语 \``clause'' 似乎是 \``dead'' 因为它没有被使用于上面的BNF表达式里. 然而, 这个BNF的目的并不只是引导解析, 但是也定义有用的术语为了跟在后面的描述性文本的参考. 像这个样子, 术语 \``clause'' 可能出现在后面跟着的文本中, 作为 \``normal-clause or otherwise-clause.'' 的速记.[>_<]待校验
+
+
+#### 1.4.1.3 <span id = "SpecialSymbols">特殊符号</span>
+
+这里描述的特殊符号在这个文档中为了概念上的便利, 既不是Common Lisp语言也不是它的运行环境的一部分.
+
+=>
+
+    这个表示求值. 比如说:
+
+     (+ 4 5) =>  9 
+
+    这个意味着对表达式 (+ 4 5) 求值的结果是 9.
+
+    如果一个表达式形式返回多个值, 这些值可能通过空格,换行或者逗号区分. 比如说:
+
+     (truncate 7 5)
+    =>  1 2
+     (truncate 7 5) 
+    =>  1
+       2
+     (truncate 7 5)
+    =>  1, 2
+
+    上面三个表达式的每一个都是等价的, 表示那个 (truncate 7 5) 返回两个值: 1 和 2.
+
+    一些一致性实现事实上在显示返回值之前打印箭头 (或者一些其他的指示方式) , 有一些则没有.
+
+OR=>
+
+    记号 ``OR=> '' 被用于表示几个可能值的其中一个. 比如
+
+     (char-name #\a)
+    =>  NIL
+    OR=>  "LOWERCASE-a"
+    OR=>  "Small-A"
+    OR=>  "LA01"
+
+    表示 nil, "LOWERCASE-a", "Small-A", "LA01" 都是 (char-name #\a) 可能的结果---每一个都有相等的可能性. 除非明确指定, 它不应被认为可能值的集合已经是完整的了. 正常情况下, 上面的例子等价于
+
+     (char-name #\a) =>  implementation-dependent
+
+    但是它的意图是提供额外的信息去说明这些结果中可能会根据实现而不同.[>_<]待验证
+
+NOT=>
+
+    标记 ``NOT=> '' 用于表示不可能的结果. 这个可能被用于, 比如, 为了强调一种情况, 一些可预见的误解可能引导读者错误地相信这个结果是可能出现的. 比如,
+
+    (function-lambda-expression 
+        (funcall #'(lambda (x) #'(lambda () x)) nil))
+    =>  NIL, true, NIL
+    OR=>  (LAMBDA () X), true, NIL
+    NOT=>  NIL, false, NIL
+    NOT=>  (LAMBDA () X), false, NIL
+
+==
+
+    这个表示代码等价. 比如说:
+
+    (gcd x (gcd y z)) ==  (gcd (gcd x y) z)
+
+    这个意味着对于任意的 x, y, z, 求值表达式 (gcd x (gcd y z)) 的结果和副作用与求值 (gcd (gcd x y) z) 的是一样的.
+
+\>>
+
+    Common Lisp 指定了输入和输出为非交互的流模型. 这个指定了交互式的输入输出流如何映射到实现中定义的非交互的模型.
+
+    比如, 一致性的实现中承诺去区分交互式输入如何中止的问题. 比如, 当最后的定界符被输入到非交互的流中，, read函数中止. 在一些CL的实现中, 一个交互式的对read的调用在最后的定界符一输入就返回, 甚至那个定界符不是换行. 在其他实现中, 总是需要换行. 在其他实现中, 可能会有一个命令去 ``activates'' 一个满的输入缓冲区, 而这个命令本身在程序输入流中不可见.
+
+    这个文档的例子中, 标记 ``>> '' 先于交互式输入输出前. 这种方案下, ``this notation'' 表示用户输入.
+
+    比如, 下面的标记
+
+    (+ 1 (print (+ (sqrt (read)) (sqrt (read)))))
+    >>  9 16 
+    >>  7
+    =>  8
+
+    显示一个要被求值的表达式 ``(+ 1 (print (+ (sqrt (read)) (sqrt (read)))))'' 的交互, ``9 16 '' 交互的输入, ``7'' 是交互的输出, 然后 ``8'' 是求值后的返回值.
+
+    这个标记的使用是为了掩盖各个实现之间, 交互式输入输出的微小区别.
+
+    有时, 非交互的流模型调用是通过换行. 换行字符如何交互式输入是用户接口的实现定义的细节, 但是在那个例子中, 可能会被使用的不是 ``<Newline>'' 就是 ``<NEWLINE>''.
+
+     (progn (format t "~&Who? ") (read-line))
+    >>  Who? Fred, Mary, and Sally<NEWLINE>
+    =>  "Fred, Mary, and Sally", false
+
+#### 1.4.1.4 <span id = "ObjectsWithMultipleNotations">多个符号表示的对象</span>
+
+Common Lisp中的一些对象不止一种表示的方法. 这种情况下, 选择使用哪一种是随意的, 但是表示一个 \``point of view'' 或 \``sense of intent.'' 的惯例是存在的
+
+> * 1.4.1.4.1 [符号大小写](#CaseInSymbols)
+> * 1.4.1.4.2 [数字](#Numbers)
+> * 1.4.1.4.3 [点](#DotCharacterUse)
+> * 1.4.1.4.4 [NIL](#NIL)
+
+##### 1.4.1.4.1 <span id = "CaseInSymbols">符号大小写</span>
+
+虽然绑定一个符号的过程中大小写是很重要的, Lisp的读取器默认在绑定前会尝试去规范符号; 见章节 23.1.2 (Effect of Readtable Case on the Lisp Reader). 既然如此, 符号的大小写默认是不重要的. 这个文档自始自终, 除了明确指定外, 符号的大小写是不重要的; 也就是说, HELLO, Hello, hElLo, 还有 hello 都是表示 "HELLO" 符号的等价方法.
+
+反斜线符号和竖线符号被用于明确引用大小写还有其他解析相关的字符方面. 即便如此, 标记法 |hello| 和 \h\e\l\l\o 是表示 "hello" 符号的等价方式, 并且明显不同于符号 "HELLO".
+
+符号对应的Common Lisp定义的名字已经大写化了, 即便它们的名字通常以小写的方式出现在文档里. 
+
+##### 1.4.1.4.2 <span id = "Numbers">数字</span>
+
+虽然 Common Lisp 为程序提供了很多方式去操纵有理数的输入和输出基数, 但是这个文档中的所有数字是十进制表示的除非明确指定外. 
+
+##### 1.4.1.4.3 <span id = "DotCharacterUse">点字符的使用</span>
+
+圆点字符在表达式中自己出现就像
+
+(item1 item2 . tail)
+
+表示那个 tail 对应一个列表结尾的list对象. 比如,
+
+(A B C . (D E F))
+
+符号上等价于:
+
+(A B C D E F)
+
+虽然圆点是符号的一个合法字符, 但是没有标准化的符号包含了圆点字符, 所以这个文档中句子末尾的圆点总是解释为以一个句号而不是符号名的一部分. 比如, 这个文档中, 就像这样 ``This sample sentence refers to the symbol car.'' 的一个句子引用了一个名字为 "CAR" 的符号(带有三个字母), 不表示4个字母的 "CAR." 
+
+##### 1.4.1.4.4 <span id = "NIL">NIL</span>
+
+nil 有很多意思. 它是COMMON-LISP 包中名字为 "NIL" 的符号, 也是布尔值 (而且是普遍的布尔) false, 它是空列表, 并且它是空类型的名字 (所有类型的子类).
+
+在 Common Lisp 中, nil可以表示为 NIL 或者 (). 按照惯例, 这个表示法的选择提供了线索去判断它扮演的角色.
+
+| 是否求值? | 表示法 | 通常表示的作用 |
+|----------|-------|-------------|
+|Yes       |nil    |作为 boolean. |
+|Yes       |'nil   |作为符号.      |
+|Yes       |'()    |表示空列表     |
+|No        |nil    |作为符号或布尔值.|
+|No        |()     |作为符号.       |
+
+Figure 1-1. NIL表示法
+
+仅在这个文档中, nil 有时也用false表示来强调它作为布尔值的角色.
+
+比如:
+
+```Lisp
+(print ())                          ;avoided
+(defun three nil 3)                 ;avoided 
+'(nil nil)                          ;list of two symbols
+'(() ())                            ;list of empty lists
+(defun three () 3)                  ;Emphasize empty parameter list.
+(append '() '()) =>  ()              ;Emphasize use of empty lists
+(not nil) =>  true                   ;Emphasize use as Boolean false
+(get 'nil 'color)                   ;Emphasize use as a symbol
+```
+
+一个函数在一些情况下被说成 \``be false'' 或者 \``be true''. 因为看作布尔值时没有函数对象等同于 nil 并且所有函数对象都表示true, 所以去说一个函数是false是无意义的, 去说它是true是无聊的. 这些只是表示函数 \``returns false'' 或着 \``returns true,'' 的传统方式. 
+
+#### 1.4.1.5 Designators 
+<!-- TODO 待校验 -->
+designator 是一个表示另一个对象的对象.
+
+一个操作符的参数被描述为 designator 的地方, 这个操作符的描述以假定这个参数的值是指定的对象的方式编写; 这就表示, 这个参数是已指定的类型. (这个对象的具体类型由一个 \``<\<type>> designator'' 或者 \``designator for a <\<type>>'' 指定, 可以在结尾的词汇表中找到 \``<\<type>> designator.'')
+
+比如, \``nil'' 和 \``the value of *standard-output*'' 作为流 designators 是操作上难以区分的 . 类似的, 作为string designators 符号 foo 和字符串 "FOO" 也是难以区分的.
+
+除了另外的提示, 在这个指定的对象被多次使用的情况下, 这个对象是只求值一次还是被使用时每次都求值, 取决于具体的实现.
+
+比如, mapcar 接受一个函数指定作为参数, 并且它的描述中写的就像它只是个函数. 事实上这个函数designator 是被马上求值还是在表达式形式的内部在每次被需要的时候求值是跟具体实现相关的. 大部分情况下, 程序不能发现其中的区别, 但是也有一些不正常的情况 (尤其是那些包含自身重定义或者相互重定义的函数) 确实符合并且发现这个区别. 下面的程序就是一个conforming program, 但是可能有或者没有确定的值, 取决于它的正确性是否依赖一个或其他的结果:
+
+```Lisp
+ (defun add-some (x) 
+   (defun add-some (x) (+ x 2))
+   (+ x 1)) =>  ADD-SOME
+ (mapcar 'add-some '(1 2 3 4))
+=>  (2 3 4 5)
+OR=>  (2 4 5 6)
+```
+
+在一些罕见的情况下, 这里可能有个需要在字典中去提及这个最初的designator对象为一个参数. 因为对一个参数取名会提及表示的对象, 短语 ``the <\<parameter-name>> designator'' 可以被用于提及来自于<\<parameter-name>> 被计算的值的 designator. 
+
+#### 1.4.1.6 <span id = "NonsenseWords">无意义的单词</span>
+
+当需要一个没有前置关联语义的单词 (比如, 在一个示例中), 在Lisp社区中通常使用 \``foo,'' \``bar,'' \``baz,'' and \``quux.'' 的其中一种. 比如
+
+```Lisp
+ (defun foo (x) (+ x 1))
+```
+
+名字 foo 的使用表示 ``请用你喜欢的名字替换这里.'' 的方式.
+
+这些无意义的单词有如此的使用率, 社区的新人开始去思考这里是否有他们忽略的已绑定的语义---当然这里是没有的. 
