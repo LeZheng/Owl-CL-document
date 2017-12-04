@@ -10,15 +10,15 @@
 > * 31.3. [退出 CLISP](#QuittingCLISP)
 > * 31.4. [CLISP 国际化](#Internationalization)
 >> * 31.4.1. [语言](#Language)
-> * 31.5. [Encodings](#Encodings)
->> * 31.5.1. [Introduction](#EncodingIntroduction)
->> * 31.5.2. [Character Sets](#CharacterSets)
->> * 31.5.3. [Line Terminators](#LineTerminators)
->> * 31.5.4. [Function EXT:MAKE-ENCODING](#FunMakeEncoding)
->> * 31.5.5. [Function EXT:ENCODING-CHARSET](#FunEncodingCharset)
->> * 31.5.6. [Default encodings](#DefaultEncodings)
->>> * 31.5.6.1. [Default line terminator](#DefaultLineTerminator)
->> * 31.5.7. [Converting between strings and byte vectors](#CovertStrToByte)
+> * 31.5. [编码](#Encodings)
+>> * 31.5.1. [介绍](#EncodingIntroduction)
+>> * 31.5.2. [字符集](#CharacterSets)
+>> * 31.5.3. [行终止](#LineTerminators)
+>> * 31.5.4. [函数 EXT:MAKE-ENCODING](#FunMakeEncoding)
+>> * 31.5.5. [函数 EXT:ENCODING-CHARSET](#FunEncodingCharset)
+>> * 31.5.6. [默认的 encodings](#DefaultEncodings)
+>>> * 31.5.6.1. [默认的行终止符](#DefaultLineTerminator)
+>> * 31.5.7. [字符串和字节向量的转换](#CovertStrToByte)
 > * 31.6. [Generic streams](#GenericStreams)
 > * 31.7. [Weak Objects](#WeakObjects)
 >> * 31.7.1. [Weak Pointers](#WeakPointers)
@@ -224,4 +224,168 @@ CLISP 与用户交流的语言为以下之一：
 
 这个只对字符串有用. 对于任意语言依赖的Lisp对象, 你可以通过这个宏 I18N:DEFINTERNATIONAL: ``(I18N:DEFINTERNATIONAL symbol &OPTIONAL (default-language T))`` 来定义，通过 I18N:DEFLOCALIZED: ``(I18N:DEFLOCALIZED symbol language value-form)`` 这个宏来添加语言依赖的值(对于每种语言都是这样一种形式. 没有被赋值的语言会被当作 default-language 对待). 可以通过调用 I18N:LOCALIZED: ``(I18N:LOCALIZED symbol &OPTIONAL language)``  访问本地化的值。
 
+## 31.5. <span id = "Encodings">编码</span>
 
+### 31.5.1. <span id = "EncodingIntroduction">介绍</span>
+
+一种编码描述了以 STREAM-ELEMENT-TYPE CHARACTER 形式的 STREAMc 传输的字母与原始字节的对应关系.
+
+一个 EXT:ENCODING 是一个由以下几个方面组成的对象:
+
+character set（字符集）
+
+    这个指出了可以表示并通过 I/O 管道的字符的集合，以及转换为原始字节的方式, 例如,   CHARACTER 序列 和 STRINGs 结构中的 (UNSIGNED-BYTE 8)  以及 (VECTOR (UNSIGNED-BYTE 8)) 字符和字节 STREAMs 之间的映射. 在这个条件下, 比方说, CHARSET:UTF-8 和 CHARSET:UCS-4 被认为时不同的, 虽然它们可以表示相同的字符集.
+line terminator mode（行结束模式）
+
+    这个指明了表示新起一行的方式.
+
+EXT:ENCODINGs 同样也是 TYPEs. 它们指定了可以在这个字符集下可以编码的字符的集合. 这个情况下, 将字母转换成原始字节的方式会被忽略, 而且行结束模式也会被忽略. TYPEP 和 SUBTYPEP 可以对 encodings 使用:
+
+```Lisp
+(SUBTYPEP CHARSET:UTF-8 CHARSET:UTF-16)
+⇒ T ;
+⇒ T
+(SUBTYPEP CHARSET:UTF-16 CHARSET:UTF-8)
+⇒ T ;
+⇒ T
+(SUBTYPEP CHARSET:ASCII CHARSET:ISO-8859-1)
+⇒ T ;
+⇒ T
+(SUBTYPEP CHARSET:ISO-8859-1 CHARSET:ASCII)
+⇒ NIL ;
+⇒ T
+```
+
+“1:1” encodings. 在字符和字节序列之间定义的一个双向映射称之为Encodings . CHARSET:ISO-8859-1 就是 encoding 的一个例子: 任何字节序列对应的一些字符序列，反之亦然. 然而 ASCII, 不是一个 “1:1” encoding: 没有字符对应字节区间 [128;255]. CHARSET:UTF-8 也不是一个 “1:1” encoding : 一些字节序列没有对应任何的字符序列.
+
+### 31.5.2. <span id = "CharacterSets">字符集</span>
+
+平台依赖的:只有在没用编译时(compile-time) 标志 UNICODE构建的 CLISP
+
+    只有一种字符集被接受的: 平台的本地 (8-bit) 字符集合. 见 Chapter 13, Characters .
+
+平台依赖的:只有在用编译时(compile-time) 标志 UNICODE构建的 CLISP 
+
+    以下字符集是被支持的, 这些常量的值被定义在 “CHARSET” 包里:
+
+    包 “CHARSET” 中的符号
+
+    具体字符集见：http://www.clisp.org/impnotes/encoding.html
+
+平台依赖: 只有在 GNU 系统 包括了 GNU libc 2.2 或者更高，还有其他的系统 (UNIX and Win32)  GNU libiconv C library 已经被安装了的。
+
+        库函数 iconv 提供的字符集合可以被当作是 encodings. 为了构造这样的 encodings, 调用 EXT:MAKE-ENCODING 把字符集的名字（string）设置给 :CHARSET 参数.
+
+        当一个 EXT:ENCODING 在 内置的( built-in )和 iconv都可用时,使用内置的( built-in ), 因为这个更高效且更多平台可用.
+
+        这些 encodings 不要赋值给全局变量, 因为没有在 iconv 的支持下方便的方法去获取所有的字符集的集合.
+
+        在一些标准的 UNIX 系统 (例如, GNU systems, GNU/Linux 和 GNU/Hurd) 以及在拥有 GNU libiconv 的系统上你可以通过调用 iconv -l 来获取这个列表
+
+        我们只使用 GNU libc 2.2 或者 GNU libiconv 的原因是其他 iconv 实现会出现各种异常以及我们不想再去处理那些bug导致的随机的clisp崩溃. 如果你的系统提供一个可以通过 GNU libiconv's 测试套件的 iconv 实现 , 请报告给 clisp-list ,未来的 CLISP 版本会使用你系统上的那个 iconv.
+
+### 31.5.3. <span id = "LineTerminators">行终止</span>
+
+行终止模式可以是下面三个关键字中的一个:
+
+:UNIX
+
+    新起一行用 ASCII LF 字符 (U000A) 表示.
+
+:MAC
+
+    新起一行用 ASCII CR 字符 (U000D)表示.
+
+:DOS
+
+    新起一行用 ASCII CR 后面跟 ASCII LF.
+
+Windows 的程序通常使用 :DOS 行终止符, 有时它们也接受 :UNIX 行终止符 或者 :MAC 行终止符.
+
+ HTTP 协议也需要 :DOS 行终止符.
+
+行终止符只有在输出的时候是有重大意义的 (写到一个 file/pipe/socket STREAM). 输入的时候, 所有这三种行终止符都是被识别的. 见 Section 13.10, “Treatment of Newline during Input and Output ”.
+
+### 31.5.4. <span id = "FunMakeEncoding">函数 EXT:MAKE-ENCODING</span>
+
+    函数 (EXT:MAKE-ENCODING &KEY :CHARSET :LINE-TERMINATOR :INPUT-ERROR-ACTION :OUTPUT-ERROR-ACTION) 返回一个 EXT:ENCODING. 这个 :CHARSET 参数可能是encoding, 一个字符串, 或者 :DEFAULT. 这个 line terminator 参数可能的值是关键字 :UNIX, :MAC, :DOS.
+
+    这个 :INPUT-ERROR-ACTION 参数指明在转换字节到字符时遇到非法字节序列做什么. 它的值可能是 :ERROR, :IGNORE 或者是一个字符会被用到的. 这个 UNICODE 字符 #\uFFFD 通常表示在输入序列中有个异常.
+
+    这个 :OUTPUT-ERROR-ACTION 参数指明在转换字符到字节时遇到非法字节序列做什么. 它的值可能是 :ERROR, :IGNORE, 或者是一个字节. 如果这个UNICODE 字符 #\uFFFD 在这个字符集中是可编码的，就可以在这里使用.
+
+### 31.5.5. <span id = "FunEncodingCharset">函数 EXT:ENCODING-CHARSET</span>
+
+平台依赖: 仅限在用编译时( compile-time )标志 UNICODE构建的 CLISP
+
+这个函数 (EXT:ENCODING-CHARSET encoding) 返回 encoding的字符集,一个 SYMBOL 或者一个 STRING.
+注意
+
+    警告
+    (STRING (EXT:ENCODING-CHARSET encoding)) 不一定是一个合法的 MIME 名字.
+
+### 31.5.6. <span id = "DefaultEncodings">默认的 encodings</span>
+
+除了每个 file/pipe/socket STREAM 包含了一个 encoding, 以下 SYMBOL-MACRO 的地方包含了全局的 EXT:ENCODINGs:
+
+SYMBOL-MACRO CUSTOM:*DEFAULT-FILE-ENCODING*.当没有指定这个 :EXTERNAL-FORMAT 参数时，这个 SYMBOL-MACRO place CUSTOM:*DEFAULT-FILE-ENCODING* 就是那个被用于 file/pipe/socket STREAM 的 encoding.
+
+平台依赖: 仅限在用编译时( compile-time )使用标志 UNICODE 构建的 CLISP
+
+    以下为符号宏的place.
+
+    CUSTOM:*PATHNAME-ENCODING*
+
+        是被用于转换文件系统的文件名(被操作系统表示为字节序列) 为 lisp的路径名成分 (STRINGs). 如果这个在你的系统上对于有些文件名是冲突的, 文件系统访问 (e.g., DIRECTORY) 可能 SIGNAL ERRORs, 因此如果这不是一个 encoding 推荐使用警告. 有时候这个encoding被调用可能一点也不明显. E.g., on Win32:
+
+        当 CUSTOM:*PATHNAME-ENCODING* 是 CHARSET:UTF-16 ，因为 #\ARMENIAN_SMALL_LETTER_RA 相当于4 字节 #(255 254 124 5) 然而这个 124 对于 Win32 文件名不是合法的，因为这个表示 ASCII 的| .
+
+        这个合法路径名字节集合会在配置的时候被 GNU autoconf 测试 src/m4/filecharset.m4 决定. 前 127 字节稳定, 但是在 Win32 128-256 字节疯狂地变化, 取决于操作系统版本和文件系统.
+
+        这个行终止符在 CUSTOM:*PATHNAME-ENCODING* 是被忽略的.
+    CUSTOM:*TERMINAL-ENCODING*
+        是和终端交互的 encoding , in particular by *TERMINAL-IO*.
+    CUSTOM:*MISC-ENCODING*
+        是访问环境变量、命令行参数等等的 encoding. 它的行终止符被忽略.
+    CUSTOM:*FOREIGN-ENCODING*
+        是用于通过 “FFI” 传递的字符串(仅限部分平台) 的 encoding. 如果是一个 “1:1” encoding, i.e. 一个每个字符被表示为一个字节的 encoding, 它也被用于在 “FFI” 传输字节.
+
+这个默认的 encoding 对象根据 -Edomain encoding 来初始化。
+
+**提醒**
+
+    对于SYMBOL-MACROs你不得不用 EXT:LETF/EXT:LETF* ; LET/LET* 会不起作用!
+
+#### 31.5.6.1. <span id = "DefaultLineTerminator">默认的行终止符</span>
+
+在 EXT:ENCODINGs 方面的行终止符通过以下逻辑确定: 自从 CLISP 识别所有输入的可能的行终止符 (see Section 13.10, “Treatment of Newline during Input and Output ”), 问题在于哪个 line terminator 是其他大部分程序期望的?
+
+平台依赖: 仅限 UNIX 平台.
+
+    如果一个非零 O_BINARY cpp 常量被定义, 我们认为系统区别二进制文件和文本文件, 然后, 因为 encodings只跟文本文件有关,因此我们使用 :DOS; 否则默认的就是 :UNIX.
+
+平台依赖: 仅限 Win32 平台.
+
+    因为大部分 Win32 程序期望 CRLF, 所以推荐的行终止符是 :DOS.
+
+这个归结为以下 src/encoding.d 代码:
+
+```
+#if defined(WIN32) || (defined(UNIX) && (O_BINARY != 0))
+```
+
+Cygwin上的默认行终止符
+
+    以上的测试在 Cygwin 上也是通过的, 所以默认的行终止符 :DOS. 如果你希望, 你可以在你的 RC file 里改变它.
+
+### 31.5.7. <span id = "CovertStrToByte">字符串和字节向量的转换</span>
+
+Encodings 也能用于根据encoding直接转换字符串和它们对应的字节序列.
+
+(EXT:CONVERT-STRING-FROM-BYTES vector encoding &KEY :START :END)
+
+    根据给的 encoding 转换 vector (a (VECTOR (UNSIGNED-BYTE 8))) 从 start 到 end 的子序列为一个 STRING,然后返回结果字符串.
+
+(EXT:CONVERT-STRING-TO-BYTES string encoding &KEY :START :END)
+
+    根据给的 encoding 转换 string 从 start 到 end 子序列为 (VECTOR (UNSIGNED-BYTE 8)), 然后返回一个结果字节向量.
