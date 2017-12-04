@@ -127,10 +127,10 @@
 
 这个章节中包含了这个手册里的符号约定和术语定义.
 
-> * 1.1 [符号约定](#NotationalConventions)
-> * 1.2 [错误术语](#ErrorTerminology)
-> * 1.3 [本标准未正式规定的部分](#SectionsNotFormallyPartOfThisStandard)
-> * 1.4 [解释的字典条目](#InterpretingDictionaryEntries)
+> * 1.4.1 [符号约定](#NotationalConventions)
+> * 1.4.2 [错误术语](#ErrorTerminology)
+> * 1.4.3 [本标准未正式规定的部分](#SectionsNotFormallyPartOfThisStandard)
+> * 1.4.4 [解释的字典条目](#InterpretingDictionaryEntries)
 
 ### 1.4.1 <span id = "NotationalConventions">符号约定</span>
 
@@ -497,3 +497,86 @@ OR=>  (2 4 5 6)
 名字 foo 的使用表示 ``请用你喜欢的名字替换这里.'' 的方式.
 
 这些无意义的单词有如此的使用率, 社区的新人开始去思考这里是否有他们忽略的已绑定的语义---当然这里是没有的. 
+
+
+### 1.4.2 <span id = "ErrorTerminology">错误术语</span>
+
+错误可能或应该或必然出现的情况在这个标准中已经描述了. 用于描述这种情况的词规定为需要有确切的含义. 以下列表是这些词的词汇表.
+
+Safe code
+
+    这个代码在设置为最高(3)时会被安全性最优化处理. 安全性是代码的一个词法属性. 短语 ``the function F should signal an error'' 意味着如果F如果在代码被最高级安全性优化的情况下被调用, 会发出一个错误. 是F还是调用的代码来发出这个错误是有具体实现决定的.
+
+Unsafe code
+
+    这个代码是被最低级安全级别处理的.
+
+    不安全代码可能会做错误检测. 具体实现允许一直把所有代码当作安全代码.
+
+An error is signaled
+
+    这个意味着在安全的和不安全的代码中都会发出一个错误. 合格的代码可能依赖安全和非安全代码中都会发出错误这一事实. 不管是安全的还是非安全的代码, 每一个具体实现需要去检测这个错误. 比如, ``an error is signaled if unexport is given a symbol not accessible in the current package.''
+
+    如果没有指定明确的错误类型, 默认是 error.
+
+An error should be signaled
+
+    这个意味着一个错误在安全的代码中发出, 并且一个错误可能在不安全的代码中发出. 合格的代码可能依赖错误会在安全代码中发出这一事实. 每一个实现至少需要在安全的代码中去检测这个错误. 当这个错误没有发出, the ``consequences are undefined'' (见下方). 比如, ``+ should signal an error of type type-error if any argument is not of type number.''
+
+<!-- TODO 待验证-->
+Should be prepared to signal an error 
+
+    这个类似于 ``should be signaled'', 除了这个不需要在这个操作上采取额外工作去发现错误的情况 except that it does not imply that `extra effort' has to be taken on the part of an operator to discover an erroneous situation 如果这个操作符正常的动作可以在懒检测下被成功运行if the normal action of that operator can be performed successfully with only `lazy' checking. 一个实现总是允许去发出一个错误, 但是即使在安全代码里, 只需要发出这个错误, 如果没有发出可能导致不正确的结果. 在不安全代码中, the consequences are undefined.
+
+    比如, 定义 ``find should be prepared to signal an error of type type-error if its second argument is not a proper list'' 不表示一定会发出一个错误 . 这个表达式形式
+
+    (find 'a '(a b . c))
+
+    必须在安全的代码中发出一个 type-error 类型的错误, 或者返回 A. 在不安全的代码中, the consequences are undefined. 相比之下,
+
+    (find 'd '(a b . c))
+
+    必须在安全代码中发出一个 type-error 类型的错误. 在不安全的代码中, the consequences are undefined. 同样的
+
+    (find 'd '#1=(a b . #1#))
+
+    在安全代码中可能返回 nil (作为一个具体实现定义的扩展), 可能从来不返回, 或者发出一个 type-error 类型的错误. 安全的代码中, the consequences are undefined.
+
+    通常, 这个 ``should be prepared to signal'' 术语被用于类型检测的情况, 其中存在效率考虑, 使检测错误变得不切实际 , 改正操作符的行为不是实质性的.
+<!--TODO 待校验-->
+
+The consequences are unspecified
+
+    这个意味着结果是不可预测但是无害的. 具体实现允许指定这种情况的结果. 没有conforming code 可能依赖这种情况的结果或影响, 并且所有的 conforming code 需要把这种情况的结果和影响认为是不可预测的但是无害的. 比如, ``if the second argument to shared-initialize specifies a name that does not correspond to any slots accessible in the object, the results are unspecified.''
+
+The consequences are undefined
+
+    这个意味着结果是不可预测的. 结果可能是无害的或者致命的. 没有 conforming code 可能依赖这个结果或影响. Conforming code 必须把这个结果当作不可预测的. 在 ``must,'' ``must not,'' 或者 ``may not'' 词语被使用的地方, 如果没有看到规定的需求或者没有明确指定特定的结果, 就会有 ``the consequences are undefined''.
+
+    比如: ``Once a name has been declared by defconstant to be constant, any further assignment or binding of that variable has undefined consequences.''
+
+An error might be signaled
+
+    这个意味着存在未定的结果; 然而, 如果一个错误被发出, 它是后面指定的类型. 比如, ``open might signal an error of type file-error.''
+
+The return values are unspecified
+
+    这个意味着一个表达式形式的返回值数量和性质没有指定. 然而, 副作用和控制转移的发生与否是指定好的.
+
+    一个程序可以是指定好的即便它使用了没有指定返回值的函数. 比如, 即便函数 F 的返回值没有指定, 就像 (length (list (F))) 表达式也是指定好的因为它不依赖任何F返回值的特定方面.
+
+Implementations may be extended to cover this situation
+
+    这个意味着这种情况存在未定义的结果; 然而, 一个合格的具体实现可以用一种更加具体的方式去对待这种情况. 比如, 一个具体实现可能发出一个错误, 或者应该发出一个错误, 或者甚至出现一个定义好的无错行为.
+
+    没有 conforming code 可能依赖这个情况的结果; 所有 conforming code 必须把这种情况的结果当作是未定义的. 具体实现需要用文档记录如何对待这种情况.
+
+    比如, ``implementations may be extended to define other type specifiers to have a corresponding class.''
+
+Implementations are free to extend the syntax
+
+    这意味着在这种情况下, 实现允许去定义被描述的表达式语法的清楚的扩展. 没有 conforming code 可能依赖这个扩展. 具体实现需要去用文档记录每一个这样的扩展. 所有 conforming code 需要去把这个语法当作是无意义的. 标准可能禁止一些扩展而允许其他的. 比如, ``no implementation is free to extend the syntax of defclass.''
+
+A warning might be issued
+
+    这意味着在适当条件下 (比如, 编译的时候), 具体实现是鼓励发出一个警告的. 然而, 一个合格的实现不需要发出一个警告. 
