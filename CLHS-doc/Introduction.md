@@ -34,7 +34,7 @@
 >>
 >>PSL 和 Franz Lisp---是Unix机器上的类MacLisp方言---是第一个在多种硬件平台广泛可用的Lisp方言的例子.
 >>
->>其中一个最重要的Lisp发展是在20世纪70年代后半期: Scheme. Scheme, 是Gerald J. Sussman 和 Guy L. Steele Jr. 设计, 是一个简洁的Lisp方言，从20世纪60年代以来这里的设计带给Lisp很多编程语言语义上的理念. Sussman是20世纪60年代末到70年代很多Lisp技术其他进展背后最初的变革者之一.Scheme主要的贡献是词法作用域, 词法闭包, first-class continuations, 还有简单的语法 (没有区分值 cell 和 函数 cell). 这些贡献中很多对Common Lisp的设计产生了很大影响. 关于Scheme的更多信息, 见 IEEE Standard for the Scheme Programming Language 或者 ``Revised^3 Report on the Algorithmic Language Scheme.'' [>_<]:待核对
+>>其中一个最重要的Lisp发展是在20世纪70年代后半期: Scheme. Scheme, 是Gerald J. Sussman 和 Guy L. Steele Jr. 设计, 是一个简洁的Lisp方言，从20世纪60年代以来这里的设计带给Lisp很多编程语言语义上的理念. Sussman是20世纪60年代末到70年代很多Lisp技术其他进展背后最初的变革者之一.Scheme主要的贡献是词法作用域, 词法闭包, first-class continuations, 还有简单的语法 (没有区分值 cell 和 函数 cell). 这些贡献中很多对Common Lisp的设计产生了很大影响. 关于Scheme的更多信息, 见 IEEE Standard for the Scheme Programming Language 或者 ``Revised^3 Report on the Algorithmic Language Scheme.'' <!-- TODO 待核对 -->
 >>
 >>在20世纪70年代末期,面向对象编程概念对Lisp产生了很大影响. 在 MIT, 来自于 Smalltalk 的思想径直进入很多广泛使用的编程系统中. Flavors, 一个带有多继承的面向对象系统, 为了Lisp machine社区在 MIT 被 Howard Cannon 和 其他人开发出来. At Xerox,  Smalltalk 的经验和 Knowledge Representation Language (KRL) 引导了 Lisp Object Oriented Programming System (LOOPS) 还有后来的 Common LOOPS的发展. 关于跟多 Smalltalk 的信息, 见 Smalltalk-80: The Language and its Implementation. 关于Flavors更多信息, 见 Flavors: A Non-Hierarchical Approach to Object-Oriented Programming.
 >>
@@ -78,7 +78,7 @@
 
 * The Art of the Metaobject Protocol, Kiczales et al., MIT Press (Cambridge, MA), 1991.
 
-* ``Common Lisp Object System Specification,'' D. Bobrow, L. DiMichiel, R.P. Gabriel, S. Keene, G. Kiczales, D. Moon, SIGPLAN Notices V23, September, 1988.
+* \``Common Lisp Object System Specification,'' D. Bobrow, L. DiMichiel, R.P. Gabriel, S. Keene, G. Kiczales, D. Moon, SIGPLAN Notices V23, September, 1988.
 
 * Common Lisp: The Language, Guy L. Steele Jr., Digital Press (Burlington, MA), 1984.
 
@@ -120,7 +120,7 @@
 
 * Webster's Third New International Dictionary the English Language, Unabridged, Merriam Webster (Springfield, MA), 1986.
 
-* XP: A Common Lisp Pretty Printing System, R.C. Waters, Memo 1102a, Artificial Intelligence Laboratory, MIT (Cambridge, MA), September 1989. 
+* XP: A Common Lisp Pretty Printing System, R.C. Waters, Memo 1102a, Artificial Intelligence Laboratory, MIT (Cambridge, MA), September 1989.
 
 
 ## 1.4 <span id = "Definitions">定义</span>
@@ -171,7 +171,7 @@ name
 
     表示一个参数或者值的名字.
 
-    有些情况下也使用标记 ``<<name>>'' (换句话说, 同样的字体, 但是带有 ``尖括号'' 包装) 来为包在里面的字提供更好的目视间距. 这些 ``尖括号'' 是伪变量用的, 并且事实上从来不会出现在程序的输入输出中. 
+    有些情况下也使用标记 ``<<name>>'' (换句话说, 同样的字体, 但是带有 ``尖括号'' 包装) 来为包在里面的字提供更好的目视间距. 这些 ``尖括号'' 是伪变量用的, 并且事实上从来不会出现在程序的输入输出中.
 
 #### 1.4.1.2 <span id = "ModifiedBNFSyntax">修改BNF语法</span>
 这个说明书使用了一个扩展BNF范式来描述 Common Lisp 宏形式和特殊形式的语法. 这个章节讨论BNF范式的语法.
@@ -315,7 +315,7 @@ clause::= normal-clause | otherwise-clause
 
     这个表示求值. 比如说:
 
-     (+ 4 5) =>  9 
+     (+ 4 5) =>  9
 
     这个意味着对表达式 (+ 4 5) 求值的结果是 9.
 
@@ -323,7 +323,7 @@ clause::= normal-clause | otherwise-clause
 
      (truncate 7 5)
     =>  1 2
-     (truncate 7 5) 
+     (truncate 7 5)
     =>  1
        2
      (truncate 7 5)
@@ -353,7 +353,7 @@ NOT=>
 
     标记 ``NOT=> '' 用于表示不可能的结果. 这个可能被用于, 比如, 为了强调一种情况, 一些可预见的误解可能引导读者错误地相信这个结果是可能出现的. 比如,
 
-    (function-lambda-expression 
+    (function-lambda-expression
         (funcall #'(lambda (x) #'(lambda () x)) nil))
     =>  NIL, true, NIL
     OR=>  (LAMBDA () X), true, NIL
@@ -379,7 +379,7 @@ NOT=>
     比如, 下面的标记
 
     (+ 1 (print (+ (sqrt (read)) (sqrt (read)))))
-    >>  9 16 
+    >>  9 16
     >>  7
     =>  8
 
@@ -408,11 +408,11 @@ Common Lisp中的一些对象不止一种表示的方法. 这种情况下, 选�
 
 反斜线符号和竖线符号被用于明确引用大小写还有其他解析相关的字符方面. 即便如此, 标记法 |hello| 和 \h\e\l\l\o 是表示 "hello" 符号的等价方式, 并且明显不同于符号 "HELLO".
 
-符号对应的Common Lisp定义的名字已经大写化了, 即便它们的名字通常以小写的方式出现在文档里. 
+符号对应的Common Lisp定义的名字已经大写化了, 即便它们的名字通常以小写的方式出现在文档里.
 
 ##### 1.4.1.4.2 <span id = "Numbers">数字</span>
 
-虽然 Common Lisp 为程序提供了很多方式去操纵有理数的输入和输出基数, 但是这个文档中的所有数字是十进制表示的除非明确指定外. 
+虽然 Common Lisp 为程序提供了很多方式去操纵有理数的输入和输出基数, 但是这个文档中的所有数字是十进制表示的除非明确指定外.
 
 ##### 1.4.1.4.3 <span id = "DotCharacterUse">点字符的使用</span>
 
@@ -428,7 +428,7 @@ Common Lisp中的一些对象不止一种表示的方法. 这种情况下, 选�
 
 (A B C D E F)
 
-虽然圆点是符号的一个合法字符, 但是没有标准化的符号包含了圆点字符, 所以这个文档中句子末尾的圆点总是解释为以一个句号而不是符号名的一部分. 比如, 这个文档中, 就像这样 ``This sample sentence refers to the symbol car.'' 的一个句子引用了一个名字为 "CAR" 的符号(带有三个字母), 不表示4个字母的 "CAR." 
+虽然圆点是符号的一个合法字符, 但是没有标准化的符号包含了圆点字符, 所以这个文档中句子末尾的圆点总是解释为以一个句号而不是符号名的一部分. 比如, 这个文档中, 就像这样 ``This sample sentence refers to the symbol car.'' 的一个句子引用了一个名字为 "CAR" 的符号(带有三个字母), 不表示4个字母的 "CAR."
 
 ##### 1.4.1.4.4 <span id = "NIL">NIL</span>
 
@@ -452,7 +452,7 @@ Figure 1-1. NIL表示法
 
 ```Lisp
 (print ())                          ;avoided
-(defun three nil 3)                 ;avoided 
+(defun three nil 3)                 ;avoided
 '(nil nil)                          ;list of two symbols
 '(() ())                            ;list of empty lists
 (defun three () 3)                  ;Emphasize empty parameter list.
@@ -461,9 +461,9 @@ Figure 1-1. NIL表示法
 (get 'nil 'color)                   ;Emphasize use as a symbol
 ```
 
-一个函数在一些情况下被说成 \``be false'' 或者 \``be true''. 因为看作布尔值时没有函数对象等同于 nil 并且所有函数对象都表示true, 所以去说一个函数是false是无意义的, 去说它是true是无聊的. 这些只是表示函数 \``returns false'' 或着 \``returns true,'' 的传统方式. 
+一个函数在一些情况下被说成 \``be false'' 或者 \``be true''. 因为看作布尔值时没有函数对象等同于 nil 并且所有函数对象都表示true, 所以去说一个函数是false是无意义的, 去说它是true是无聊的. 这些只是表示函数 \``returns false'' 或着 \``returns true,'' 的传统方式.
 
-#### 1.4.1.5 Designators 
+#### 1.4.1.5 Designators
 <!-- TODO 待校验 -->
 designator 是一个表示另一个对象的对象.
 
@@ -476,7 +476,7 @@ designator 是一个表示另一个对象的对象.
 比如, mapcar 接受一个函数指定作为参数, 并且它的描述中写的就像它只是个函数. 事实上这个函数designator 是被马上求值还是在表达式形式的内部在每次被需要的时候求值是跟具体实现相关的. 大部分情况下, 程序不能发现其中的区别, 但是也有一些不正常的情况 (尤其是那些包含自身重定义或者相互重定义的函数) 确实符合并且发现这个区别. 下面的程序就是一个conforming program, 但是可能有或者没有确定的值, 取决于它的正确性是否依赖一个或其他的结果:
 
 ```Lisp
- (defun add-some (x) 
+ (defun add-some (x)
    (defun add-some (x) (+ x 2))
    (+ x 1)) =>  ADD-SOME
  (mapcar 'add-some '(1 2 3 4))
@@ -484,7 +484,7 @@ designator 是一个表示另一个对象的对象.
 OR=>  (2 4 5 6)
 ```
 
-在一些罕见的情况下, 这里可能有个需要在字典中去提及这个最初的designator对象为一个参数. 因为对一个参数取名会提及表示的对象, 短语 ``the <\<parameter-name>> designator'' 可以被用于提及来自于<\<parameter-name>> 被计算的值的 designator. 
+在一些罕见的情况下, 这里可能有个需要在字典中去提及这个最初的designator对象为一个参数. 因为对一个参数取名会提及表示的对象, 短语 ``the <\<parameter-name>> designator'' 可以被用于提及来自于<\<parameter-name>> 被计算的值的 designator.
 
 #### 1.4.1.6 <span id = "NonsenseWords">无意义的单词</span>
 
@@ -496,7 +496,7 @@ OR=>  (2 4 5 6)
 
 名字 foo 的使用表示 ``请用你喜欢的名字替换这里.'' 的方式.
 
-这些无意义的单词有如此的使用率, 社区的新人开始去思考这里是否有他们忽略的已绑定的语义---当然这里是没有的. 
+这些无意义的单词有如此的使用率, 社区的新人开始去思考这里是否有他们忽略的已绑定的语义---当然这里是没有的.
 
 
 ### 1.4.2 <span id = "ErrorTerminology">错误术语</span>
@@ -524,7 +524,7 @@ An error should be signaled
     这个意味着一个错误在安全的代码中发出, 并且一个错误可能在不安全的代码中发出. 合格的代码可能依赖错误会在安全代码中发出这一事实. 每一个实现至少需要在安全的代码中去检测这个错误. 当这个错误没有发出, the ``consequences are undefined'' (见下方). 比如, ``+ should signal an error of type type-error if any argument is not of type number.''
 
 <!-- TODO 待验证-->
-Should be prepared to signal an error 
+Should be prepared to signal an error
 
     这个类似于 ``should be signaled'', 除了这个不需要在这个操作上采取额外工作去发现错误的情况 except that it does not imply that `extra effort' has to be taken on the part of an operator to discover an erroneous situation 如果这个操作符正常的动作可以在懒检测下被成功运行if the normal action of that operator can be performed successfully with only `lazy' checking. 一个实现总是允许去发出一个错误, 但是即使在安全代码里, 只需要发出这个错误, 如果没有发出可能导致不正确的结果. 在不安全代码中, the consequences are undefined.
 
@@ -579,4 +579,346 @@ Implementations are free to extend the syntax
 
 A warning might be issued
 
-    这意味着在适当条件下 (比如, 编译的时候), 具体实现是鼓励发出一个警告的. 然而, 一个合格的实现不需要发出一个警告. 
+    这意味着在适当条件下 (比如, 编译的时候), 具体实现是鼓励发出一个警告的. 然而, 一个合格的实现不需要发出一个警告.
+
+
+### 1.4.3 <span id = "SectionsNotFormallyPartOfThisStandard">本标准未正式规定的部分</span>
+
+这个标准的前页和书后的附属资料, 就像 \``Table of Contents,'' \``Index,'' \``Figures,'' \``Credits,'' 和 \``Appendix'' 没有正规地考虑过, 所以我们保留更新这些部分所需要的灵活性, 以便于即使在最后一刻也不需要担心修改文档的这些部分需要正式的投票. 这些条目很短并且很有用, 然而, 不推荐在这个文档的删减版本里把它们删除.
+
+在概念性的章节里, 提供的名字以单词 \``Note'' 或 \``Notes'' 或 \``Example'' 或 \``Examples'' 开头的部分只用于说明目的, 并且不被认为是标准的一部分.
+
+已经试着把这些章节放在父章节的末尾, 这样它们就可以被移除而不需要修改相邻章节的序号来减少文档的大小.
+
+同样的, 字典条目中的这个 \``Examples'' 和 \``Notes'' 章节也不被认为是标准的一部分, 如有必要可以移除.
+
+不过, 这些示例对剩下的部分提供了重要的说明和一致性检查, 并且这样的删减是不推荐的除非完全无法避免.
+
+### 1.4.4 <span id = "InterpretingDictionaryEntries">解释的字典条目</span>
+
+The dictionary entry for each defined name is partitioned into sections. Except as explicitly indicated otherwise below, each section is introduced by a label identifying that section. The omission of a section implies that the section is either not applicable, or would provide no interesting information.
+
+This section defines the significance of each potential section in a dictionary entry.
+
+> * 1.4.4.1 ``Affected By'' 字典条目部分(#AffectedBySDE)
+> * 1.4.4.2 ``Arguments'' 字典条目部分(#ArgumentsSDE)
+> * 1.4.4.3 ``Arguments and Values'' 字典条目部分(#ArgumentsAndValuesSDE)
+> * 1.4.4.4 ``Binding Types Affected'' 字典条目部分(#BindingTypesAffectedSDE)
+> * 1.4.4.5 ``Class Precedence List'' 字典条目部分(#ClassPrecedenceListSDE)
+> * 1.4.4.6 类型标识符的字典条目(#DictionaryEntriesForTS)
+> * 1.4.4.7 ``Constant Value'' 字典条目部分(#ConstantValue)
+> * 1.4.4.8 ``Description'' 字典条目部分(#DescriptionSDE)
+> * 1.4.4.9 ``Examples'' 字典条目部分(#ExamplesSDE)
+> * 1.4.4.10 ``Exceptional Situations'' 字典条目部分(#ExceptionalSituationsSED)
+> * 1.4.4.11 ``Initial Value'' 字典条目部分(#InitialValueSDE)
+> * 1.4.4.12 ``Argument Precedence Order'' 字典条目部分(#ArgumentPrecedenceOrderSDE)
+> * 1.4.4.13 ``Method Signature'' 字典条目部分(#MethodSignatureSDE)
+> * 1.4.4.14 ``Name'' 字典条目部分(#NameSDE)
+> * 1.4.4.15 ``Notes'' 字典条目部分(#NotesSDE)
+> * 1.4.4.16 ``Pronunciation'' 字典条目部分(#PronunciationSDE)
+> * 1.4.4.17 ``See Also'' 字典条目部分(#SeeAlsoSDE)
+> * 1.4.4.18 ``Side Effects'' 字典条目部分(#SideEffectsSDE)
+> * 1.4.4.19 ``Supertypes'' 字典条目部分(#SupertypesSDE)
+> * 1.4.4.20 ``Syntax'' 字典条目部分(#SyntaxSDE)
+> * 1.4.4.21 ``Valid Context'' 字典条目部分(#ValidContextSDE)
+> * 1.4.4.22 ``Value Type'' 字典条目部分(#ValueTypeSDE)
+
+#### 1.4.4.1 <span id = "AffectedBySDE">``Affected By'' 字典条目部分</span>
+
+For an operator, anything that can affect the side effects of or values returned by the operator.
+
+For a variable, anything that can affect the value of the variable including functions that bind or assign it. 
+
+#### 1.4.4.2 <span id = "ArgumentsSDE">``Arguments'' 字典条目部分</span>
+
+This information describes the syntax information of entries such as those for declarations and special expressions which are never evaluated as forms, and so do not return values. 
+
+#### 1.4.4.3 <span id = "ArgumentsAndValuesSDE">``Arguments and Values'' 字典条目部分</span>
+
+An English language description of what arguments the operator accepts and what values it returns, including information about defaults for parameters corresponding to omittable arguments (such as optional parameters and keyword parameters). For special operators and macros, their arguments are not evaluated unless it is explicitly stated in their descriptions that they are evaluated.
+
+Except as explicitly specified otherwise, the consequences are undefined if these type restrictions are violated. 
+
+#### 1.4.4.4 <span id = "BindingTypesAffectedSDE">``Binding Types Affected'' 字典条目部分</span>
+
+This information alerts the reader to the kinds of bindings that might potentially be affected by a declaration. Whether in fact any particular such binding is actually affected is dependent on additional factors as well. See the ``Description'' section of the declaration in question for details. 
+
+
+#### 1.4.4.5 <span id = "ClassPrecedenceListSDE">``Class Precedence List'' 字典条目部分</span>
+
+This appears in the dictionary entry for a class, and contains an ordered list of the classes defined by Common Lisp that must be in the class precedence list of this class.
+
+It is permissible for other (implementation-defined) classes to appear in the implementation's class precedence list for the class.
+
+It is permissible for either standard-object or structure-object to appear in the implementation's class precedence list; for details, see Section 4.2.2 (Type Relationships).
+
+Except as explicitly indicated otherwise somewhere in this specification, no additional standardized classes may appear in the implementation's class precedence list.
+
+By definition of the relationship between classes and types, the classes listed in this section are also supertypes of the type denoted by the class. 
+
+#### 1.4.4.6 <span id = "DictionaryEntriesForTS">Dictionary Entries for Type Specifiers</span>
+
+The atomic type specifiers are those defined names listed in Figure 4-2. Such dictionary entries are of kind ``Class,'' ``Condition Type,'' ``System Class,'' or ``Type.'' A description of how to interpret a symbol naming one of these types or classes as an atomic type specifier is found in the ``Description'' section of such dictionary entries.
+
+The compound type specifiers are those defined names listed in Figure 4-3. Such dictionary entries are of kind ``Class,'' ``System Class,'' ``Type,'' or ``Type Specifier.'' A description of how to interpret as a compound type specifier a list whose car is such a symbol is found in the ``Compound Type Specifier Kind,'' ``Compound Type Specifier Syntax,'' ``Compound Type Specifier Arguments,'' and ``Compound Type Specifier Description'' sections of such dictionary entries.
+
+> * 1.4.4.6.1 ``Compound Type Specifier Kind'' 字典条目部分(#CTSKindSDE)
+> * 1.4.4.6.2 ``Compound Type Specifier Syntax'' 字典条目部分(#CTSSyntaxSDE)
+> * 1.4.4.6.3 ``Compound Type Specifier Arguments'' 字典条目部分(#CTSArgumentsSDE)
+> * 1.4.4.6.4 ``Compound Type Specifier Description'' 字典条目部分(#CTSDescriptionSDE)
+
+##### 1.4.4.6.1 <span id = "CTSKindSDE">``Compound Type Specifier Kind'' 字典条目部分</span>
+
+An ``abbreviating'' type specifier is one that describes a subtype for which it is in principle possible to enumerate the elements, but for which in practice it is impractical to do so.
+
+A ``specializing'' type specifier is one that describes a subtype by restricting the type of one or more components of the type, such as element type or complex part type.
+
+A ``predicating'' type specifier is one that describes a subtype containing only those objects that satisfy a given predicate.
+
+A ``combining'' type specifier is one that describes a subtype in a compositional way, using combining operations (such as ``and,'' ``or,'' and ``not'') on other types. 
+
+##### 1.4.4.6.2 <span id = "CTSSyntaxSDE">``Compound Type Specifier Syntax'' 字典条目部分</span>
+
+This information about a type describes the syntax of a compound type specifier for that type.
+
+Whether or not the type is acceptable as an atomic type specifier is not represented here; see Section 1.4.4.6 (Dictionary Entries for Type Specifiers). 
+
+##### 1.4.4.6.3 <span id = "CTSArgumentsSDE">``Compound Type Specifier Arguments'' 字典条目部分</span>
+
+This information describes type information for the structures defined in the ``Compound Type Specifier Syntax'' section. 
+
+##### 1.4.4.6.4 <span id = "CTSDescriptionSDE">``Compound Type Specifier Description'' 字典条目部分</span>
+
+This information describes the meaning of the structures defined in the ``Compound Type Specifier Syntax'' section. 
+
+#### 1.4.4.7 <span id = "ConstantValue">``Constant Value'' 字典条目部分</span>
+
+This information describes the unchanging type and value of a constant variable. 
+
+#### 1.4.4.8 <span id = "DescriptionSDE">``Description'' 字典条目部分</span>
+
+A summary of the operator and all intended aspects of the operator, but does not necessarily include all the fields referenced below it (``Side Effects,'' ``Exceptional Situations,'' etc.) 
+
+#### 1.4.4.9 <span id = "ExamplesSDE">``Examples'' 字典条目部分</span>
+
+Examples of use of the operator. These examples are not considered part of the standard; see Section 1.4.3 (Sections Not Formally Part Of This Standard). 
+
+#### 1.4.4.10 <span id = "ExceptionalSituationsSED">``Exceptional Situations'' 字典条目部分</span>
+
+Three kinds of information may appear here:
+
+    Situations that are detected by the function and formally signaled.
+    Situations that are handled by the function.
+    Situations that may be detected by the function.
+
+This field does not include conditions that could be signaled by functions passed to and called by this operator as arguments or through dynamic variables, nor by executing subforms of this operator if it is a macro or special operator. 
+
+#### 1.4.4.11 <span id = "InitialValueSDE">``Initial Value'' 字典条目部分</span>
+
+This information describes the initial value of a dynamic variable. Since this variable might change, see type restrictions in the ``Value Type'' section. 
+
+#### 1.4.4.12 <span id = "ArgumentPrecedenceOrderSDE">``Argument Precedence Order'' 字典条目部分</span>
+
+This information describes the argument precedence order. If it is omitted, the argument precedence order is the default (left to right). 
+
+#### 1.4.4.13 <span id = "MethodSignatureSDE">``Method Signature'' 字典条目部分</span>
+
+The description of a generic function includes descriptions of the methods that are defined on that generic function by the standard. A method signature is used to describe the parameters and parameter specializers for each method. Methods defined for the generic function must be of the form described by the method signature.
+
+F (x class) (y t) &optional z &key k
+
+This signature indicates that this method on the generic function F has two required parameters: x, which must be a generalized instance of the class class; and y, which can be any object (i.e., a generalized instance of the class t). In addition, there is an optional parameter z and a keyword parameter k. This signature also indicates that this method on F is a primary method and has no qualifiers.
+
+For each parameter, the argument supplied must be in the intersection of the type specified in the description of the corresponding generic function and the type given in the signature of some method (including not only those methods defined in this specification, but also implementation-defined or user-defined methods in situations where the definition of such methods is permitted). 
+
+#### 1.4.4.14 <span id = "NameSDE">``Name'' 字典条目部分</span>
+
+This section introduces the dictionary entry. It is not explicitly labeled. It appears preceded and followed by a horizontal bar.
+
+In large print at left, the defined name appears; if more than one defined name is to be described by the entry, all such names are shown separated by commas.
+
+In somewhat smaller italic print at right is an indication of what kind of dictionary entry this is. Possible values are:
+
+Accessor
+
+    This is an accessor function.
+
+Class
+
+    This is a class.
+
+Condition Type
+
+    This is a subtype of type condition.
+
+Constant Variable
+
+    This is a constant variable.
+
+Declaration
+
+    This is a declaration identifier.
+
+Function
+
+    This is a function.
+
+Local Function
+
+    This is a function that is defined only lexically within the scope of some other macro form.
+
+Local Macro
+
+    This is a macro that is defined only lexically within the scope of some other macro form.
+
+Macro
+
+    This is a macro.
+
+Restart
+
+    This is a restart.
+
+Special Operator
+
+    This is a special operator.
+
+Standard Generic Function
+
+    This is a standard generic function.
+
+Symbol
+
+    This is a symbol that is specially recognized in some particular situation, such as the syntax of a macro.
+
+System Class
+
+    This is like class, but it identifies a class that is potentially a built-in class. (No class is actually required to be a built-in class.)
+
+Type
+
+    This is an atomic type specifier, and depending on information for each particular entry, may subject to form other type specifiers.
+
+Type Specifier
+
+    This is a defined name that is not an atomic type specifier, but that can be used in constructing valid type specifiers.
+
+Variable
+
+    This is a dynamic variable. 
+
+
+#### 1.4.4.15 <span id = "NotesSDE">The ``Notes'' 字典条目部分</span>
+
+Information not found elsewhere in this description which pertains to this operator. Among other things, this might include cross reference information, code equivalences, stylistic hints, implementation hints, typical uses. This information is not considered part of the standard; any conforming implementation or conforming program is permitted to ignore the presence of this information. 
+
+#### 1.4.4.16 <span id = "PronunciationSDE">``Pronunciation'' 字典条目部分</span>
+
+This offers a suggested pronunciation for defined names so that people not in verbal communication with the original designers can figure out how to pronounce words that are not in normal English usage. This information is advisory only, and is not considered part of the standard. For brevity, it is only provided for entries with names that are specific to Common Lisp and would not be found in Webster's Third New International Dictionary the English Language, Unabridged. 
+
+#### 1.4.4.17 <span id = "SeeAlsoSDE">``See Also'' 字典条目部分</span>
+
+List of references to other parts of this standard that offer information relevant to this operator. This list is not part of the standard. 
+
+#### 1.4.4.18 <span id = "SideEffectsSDE">The ``Side Effects'' 字典条目部分</span>
+
+Anything that is changed as a result of the evaluation of the form containing this operator. 
+
+#### 1.4.4.19 <span id = "SupertypesSDE">The ``Supertypes'' 字典条目部分</span>
+
+This appears in the dictionary entry for a type, and contains a list of the standardized types that must be supertypes of this type.
+
+In implementations where there is a corresponding class, the order of the classes in the class precedence list is consistent with the order presented in this section. 
+
+#### 1.4.4.20 <span id = "SyntaxSDE">``Syntax'' 字典条目部分</span>
+
+This section describes how to use the defined name in code. The ``Syntax'' description for a generic function describes the lambda list of the generic function itself, while the ``Method Signatures'' describe the lambda lists of the defined methods. The ``Syntax'' description for an ordinary function, a macro, or a special operator describes its parameters.
+
+For example, an operator description might say:
+
+F x y &optional z &key k
+
+This description indicates that the function F has two required parameters, x and y. In addition, there is an optional parameter z and a keyword parameter k.
+
+For macros and special operators, syntax is given in modified BNF notation; see Section 1.4.1.2 (Modified BNF Syntax). For functions a lambda list is given. In both cases, however, the outermost parentheses are omitted, and default value information is omitted.
+
+> * 1.4.4.20.1 Special ``Syntax'' Notations for Overloaded Operators(#SpecialSyntaxNotations)
+> * 1.4.4.20.2 Naming Conventions for Rest Parameters(#NamingConventions)
+> * 1.4.4.20.3 Requiring Non-Null Rest Parameters in the ``Syntax'' Section(#RequiringNonNullRestParameters)
+> * 1.4.4.20.4 Return values in the ``Syntax'' Section(#ReturnValuesInSyntaxSection)
+
+##### 1.4.4.20.1 <span id = "SpecialSyntaxNotations">Special ``Syntax'' Notations for Overloaded Operators</span>
+
+If two descriptions exist for the same operation but with different numbers of arguments, then the extra arguments are to be treated as optional. For example, this pair of lines:
+
+file-position stream => position
+
+file-position stream position-spec => success-p
+
+is operationally equivalent to this line:
+
+file-position stream &optional position-spec => result
+
+and differs only in that it provides on opportunity to introduce different names for parameter and values for each case. The separated (multi-line) notation is used when an operator is overloaded in such a way that the parameters are used in different ways depending on how many arguments are supplied (e.g., for the function /) or the return values are different in the two cases (e.g., for the function file-position). 
+
+##### 1.4.4.20.2 <span id = "NamingConventions">Naming Conventions for Rest Parameters</span>
+
+Within this specification, if the name of a rest parameter is chosen to be a plural noun, use of that name in parameter font refers to the list to which the rest parameter is bound. Use of the singular form of that name in parameter font refers to an element of that list.
+
+For example, given a syntax description such as:
+
+F &rest arguments
+
+it is appropriate to refer either to the rest parameter named arguments by name, or to one of its elements by speaking of ``an argument,'' ``some argument,'' ``each argument'' etc. 
+
+##### 1.4.4.20.3 <span id = "RequiringNonNullRestParameters">Requiring Non-Null Rest Parameters in the ``Syntax'' Section</span>
+
+In some cases it is useful to refer to all arguments equally as a single aggregation using a rest parameter while at the same time requiring at least one argument. A variety of imperative and declarative means are available in code for expressing such a restriction, however they generally do not manifest themselves in a lambda list. For descriptive purposes within this specification,
+
+F &rest arguments+
+
+means the same as
+
+F &rest arguments
+
+but introduces the additional requirement that there be at least one argument. 
+
+##### 1.4.4.20.4 <span id = "ReturnValuesInSyntaxSection">Return values in the ``Syntax'' Section</span>
+
+An evaluation arrow ``=> '' precedes a list of values to be returned. For example:
+
+F a b c => x
+
+indicates that F is an operator that has three required parameters (i.e., a, b, and c) and that returns one value (i.e., x). If more than one value is returned by an operator, the names of the values are separated by commas, as in:
+
+F a b c => x, y, z
+
+> * 1.4.4.20.4.1 No Arguments or Values in the ``Syntax'' Section
+> * 1.4.4.20.4.2 Unconditional Transfer of Control in the ``Syntax'' Section
+
+###### 1.4.4.20.4.1 No Arguments or Values in the ``Syntax'' Section
+
+If no arguments are permitted, or no values are returned, a special notation is used to make this more visually apparent. For example,
+
+F <no arguments> => <no values>
+
+indicates that F is an operator that accepts no arguments and returns no values. 
+
+###### 1.4.4.20.4.2 Unconditional Transfer of Control in the ``Syntax'' Section
+
+Some operators perform an unconditional transfer of control, and so never have any return values. Such operators are notated using a notation such as the following:
+
+F a b c =>| 
+
+
+#### 1.4.4.21 <span id = "ValidContextSDE">``Valid Context'' 字典条目部分</span>
+
+This information is used by dictionary entries such as ``Declarations'' in order to restrict the context in which the declaration may appear.
+
+A given ``Declaration'' might appear in a declaration (i.e., a declare expression), a proclamation (i.e., a declaim or proclaim form), or both. 
+
+#### 1.4.4.22 <span id = "ValueTypeSDE">``Value Type'' 字典条目部分</span>
+
+This information describes any type restrictions on a dynamic variable.
+
+Except as explicitly specified otherwise, the consequences are undefined if this type restriction is violated. 
