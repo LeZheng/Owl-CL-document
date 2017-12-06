@@ -596,9 +596,9 @@ A warning might be issued
 
 ### 1.4.4 <span id = "InterpretingDictionaryEntries">解释的字典条目</span>
 
-The dictionary entry for each defined name is partitioned into sections. Except as explicitly indicated otherwise below, each section is introduced by a label identifying that section. The omission of a section implies that the section is either not applicable, or would provide no interesting information.
+这个字典条目对于每个定义的名字都是按章节来分割的. 除非明确表示, 每个章节由确定这个章节的标签引入. 章节的删减表示这个章节是不可应用的或者没有提供什么有意思的信息.
 
-This section defines the significance of each potential section in a dictionary entry.
+这个章节定义了每个可能出现在字典章节的条目的意义.
 
 > * 1.4.4.1 ``Affected By'' 字典条目部分(#AffectedBySDE)
 > * 1.4.4.2 ``Arguments'' 字典条目部分(#ArgumentsSDE)
@@ -625,40 +625,40 @@ This section defines the significance of each potential section in a dictionary 
 
 #### 1.4.4.1 <span id = "AffectedBySDE">``Affected By'' 字典条目部分</span>
 
-For an operator, anything that can affect the side effects of or values returned by the operator.
+对于一个操作符, 它可以影响副作用或者返回值.
 
-For a variable, anything that can affect the value of the variable including functions that bind or assign it. 
+对于一个变量, 对它绑定或赋值都可能影响这个变量的值包括函数. 
 
 #### 1.4.4.2 <span id = "ArgumentsSDE">``Arguments'' 字典条目部分</span>
 
-This information describes the syntax information of entries such as those for declarations and special expressions which are never evaluated as forms, and so do not return values. 
+这个信息描述那些不作为表达式形式求值也没有返回值的声明还有特殊表达式条目的语法信息的条目. 
 
 #### 1.4.4.3 <span id = "ArgumentsAndValuesSDE">``Arguments and Values'' 字典条目部分</span>
 
-An English language description of what arguments the operator accepts and what values it returns, including information about defaults for parameters corresponding to omittable arguments (such as optional parameters and keyword parameters). For special operators and macros, their arguments are not evaluated unless it is explicitly stated in their descriptions that they are evaluated.
+这是对操作符接收参数还有返回值的英语描述, 包括遗漏的默认参数的信息 (就像optional参数和关键字参数). 对于特殊操作符和宏, 它们的参数不会被求值除非在它们的描述中就明确指定它们被求值.
 
-Except as explicitly specified otherwise, the consequences are undefined if these type restrictions are violated. 
+除了明确指定以外, 如果这些类型约束被违反了, 那么结果将是未定义的. 
 
 #### 1.4.4.4 <span id = "BindingTypesAffectedSDE">``Binding Types Affected'' 字典条目部分</span>
 
-This information alerts the reader to the kinds of bindings that might potentially be affected by a declaration. Whether in fact any particular such binding is actually affected is dependent on additional factors as well. See the ``Description'' section of the declaration in question for details. 
+这个信息警告读者这个类型的绑定可能被一个声明所影响. 事实上任何这样的绑定是否被影响取决于额外因素. 详情见 ``Description'' 章节中问题的声明. 
 
 
 #### 1.4.4.5 <span id = "ClassPrecedenceListSDE">``Class Precedence List'' 字典条目部分</span>
 
-This appears in the dictionary entry for a class, and contains an ordered list of the classes defined by Common Lisp that must be in the class precedence list of this class.
+这个出现在类的字典条目, and contains an ordered list of the classes defined by Common Lisp that must be in the class precedence list of this class.
 
-It is permissible for other (implementation-defined) classes to appear in the implementation's class precedence list for the class.
+其他依赖于具体实现的类出现在实现的类的优先级列表中是允许的.
 
-It is permissible for either standard-object or structure-object to appear in the implementation's class precedence list; for details, see Section 4.2.2 (Type Relationships).
+标准对象或者结构对象出现在类的优先级列表中也是允许的; 详情见章节 4.2.2 (Type Relationships).
 
-Except as explicitly indicated otherwise somewhere in this specification, no additional standardized classes may appear in the implementation's class precedence list.
+除非在这个说明书里明确说明, 没有标准的类出现在具体实现的类的优先级列表中.
 
-By definition of the relationship between classes and types, the classes listed in this section are also supertypes of the type denoted by the class. 
+根据类和类型之间的关系定义, 这节列出来的类也是对应类的子类. 
 
 #### 1.4.4.6 <span id = "DictionaryEntriesForTS">Dictionary Entries for Type Specifiers</span>
 
-The atomic type specifiers are those defined names listed in Figure 4-2. Such dictionary entries are of kind ``Class,'' ``Condition Type,'' ``System Class,'' or ``Type.'' A description of how to interpret a symbol naming one of these types or classes as an atomic type specifier is found in the ``Description'' section of such dictionary entries.
+The atomic type specifiers are those defined names listed in Figure 4-2. Such dictionary entries are of kind \``Class,'' \``Condition Type,'' \``System Class,'' or \``Type.'' A description of how to interpret a symbol naming one of these types or classes as an atomic type specifier is found in the \``Description'' section of such dictionary entries.
 
 The compound type specifiers are those defined names listed in Figure 4-3. Such dictionary entries are of kind ``Class,'' ``System Class,'' ``Type,'' or ``Type Specifier.'' A description of how to interpret as a compound type specifier a list whose car is such a symbol is found in the ``Compound Type Specifier Kind,'' ``Compound Type Specifier Syntax,'' ``Compound Type Specifier Arguments,'' and ``Compound Type Specifier Description'' sections of such dictionary entries.
 
