@@ -646,7 +646,7 @@ A warning might be issued
 
 #### 1.4.4.5 <span id = "ClassPrecedenceListSDE">``Class Precedence List'' 字典条目部分</span>
 
-这个出现在类的字典条目, and contains an ordered list of the classes defined by Common Lisp that must be in the class precedence list of this class.
+这个出现在类的字典条目, 并且包含一个Common Lisp定义的类的列表<!-- TODO 这个列表是什么 -->, 必须存在这个类的优先级列表中.
 
 其他依赖于具体实现的类出现在实现的类的优先级列表中是允许的.
 
@@ -658,9 +658,9 @@ A warning might be issued
 
 #### 1.4.4.6 <span id = "DictionaryEntriesForTS">Dictionary Entries for Type Specifiers</span>
 
-The atomic type specifiers are those defined names listed in Figure 4-2. Such dictionary entries are of kind \``Class,'' \``Condition Type,'' \``System Class,'' or \``Type.'' A description of how to interpret a symbol naming one of these types or classes as an atomic type specifier is found in the \``Description'' section of such dictionary entries.
+这个原子类型说明符是那些 Figure 4-2 列出的定义的名字. 这个字典条目是 \``Class,'' \``Condition Type,'' \``System Class,'' 或者 \``Type'' 类型的. 一个如何去把这些类型或类解释为原子类型说明符的描述在每个字典条目的 \``Description'' 章节.
 
-The compound type specifiers are those defined names listed in Figure 4-3. Such dictionary entries are of kind ``Class,'' ``System Class,'' ``Type,'' or ``Type Specifier.'' A description of how to interpret as a compound type specifier a list whose car is such a symbol is found in the ``Compound Type Specifier Kind,'' ``Compound Type Specifier Syntax,'' ``Compound Type Specifier Arguments,'' and ``Compound Type Specifier Description'' sections of such dictionary entries.
+复合类型说明符是那些 Figure 4-3 列出的名字. 这样的字典条目是 \``Class,'' \``System Class,'' \``Type,'' 或 \``Type Specifier'' 类型的. 如何去解释复合类型列表的描述是看它的car部分是 \``Compound Type Specifier Kind,'' \``Compound Type Specifier Syntax,'' \``Compound Type Specifier Arguments,'' 还有 \``Compound Type Specifier Description'' 中哪个字典条目章节中的符号.
 
 > * 1.4.4.6.1 ``Compound Type Specifier Kind'' 字典条目部分(#CTSKindSDE)
 > * 1.4.4.6.2 ``Compound Type Specifier Syntax'' 字典条目部分(#CTSSyntaxSDE)
@@ -669,57 +669,58 @@ The compound type specifiers are those defined names listed in Figure 4-3. Such 
 
 ##### 1.4.4.6.1 <span id = "CTSKindSDE">``Compound Type Specifier Kind'' 字典条目部分</span>
 
-An ``abbreviating'' type specifier is one that describes a subtype for which it is in principle possible to enumerate the elements, but for which in practice it is impractical to do so.
+一个 \``abbreviating'' 类型说明符描述了原则上可以枚举出来但是实践上没有可操作性的一个图表.
 
-A ``specializing'' type specifier is one that describes a subtype by restricting the type of one or more components of the type, such as element type or complex part type.
+一个 \``specializing'' 类型说明符描述了约束了类型中一个或多个子类型的图表, 就像元素类型或者复数部分类型.
 
-A ``predicating'' type specifier is one that describes a subtype containing only those objects that satisfy a given predicate.
+一个 ``predicating'' 类型说明符描述了一个只包含满足给定断言的那些对象的图表.
 
-A ``combining'' type specifier is one that describes a subtype in a compositional way, using combining operations (such as ``and,'' ``or,'' and ``not'') on other types. 
+一个 \``combining'' 类型说明符描述一种以组合的方式的图表, 通过在其他类型上使用组合操作符 (就像 \``and,'' \``or,'' 和 \``not'') . 
 
 ##### 1.4.4.6.2 <span id = "CTSSyntaxSDE">``Compound Type Specifier Syntax'' 字典条目部分</span>
 
-This information about a type describes the syntax of a compound type specifier for that type.
+这类信息描述了复合类型说明符的语法.
 
-Whether or not the type is acceptable as an atomic type specifier is not represented here; see Section 1.4.4.6 (Dictionary Entries for Type Specifiers). 
+这个类型是否可以作为原子类型说明符在这里没有说明; 见章节 1.4.4.6 (Dictionary Entries for Type Specifiers). 
 
 ##### 1.4.4.6.3 <span id = "CTSArgumentsSDE">``Compound Type Specifier Arguments'' 字典条目部分</span>
 
-This information describes type information for the structures defined in the ``Compound Type Specifier Syntax'' section. 
+这个描述了定义在 ``Compound Type Specifier Syntax'' 章节的结构的类型信息. 
 
 ##### 1.4.4.6.4 <span id = "CTSDescriptionSDE">``Compound Type Specifier Description'' 字典条目部分</span>
 
-This information describes the meaning of the structures defined in the ``Compound Type Specifier Syntax'' section. 
+这个描述了定义在 ``Compound Type Specifier Syntax'' 章节的结构的意义. 
 
 #### 1.4.4.7 <span id = "ConstantValue">``Constant Value'' 字典条目部分</span>
 
-This information describes the unchanging type and value of a constant variable. 
+这个描述了一个常变量的不变的类型和值. 
 
 #### 1.4.4.8 <span id = "DescriptionSDE">``Description'' 字典条目部分</span>
 
-A summary of the operator and all intended aspects of the operator, but does not necessarily include all the fields referenced below it (``Side Effects,'' ``Exceptional Situations,'' etc.) 
+这个操作符还有它的所有预期方面的一个总结, 但是没有必要包含在它后面引用的所有域(\``Side Effects,'' \``Exceptional Situations,'' 等等.) 
 
 #### 1.4.4.9 <span id = "ExamplesSDE">``Examples'' 字典条目部分</span>
 
-Examples of use of the operator. These examples are not considered part of the standard; see Section 1.4.3 (Sections Not Formally Part Of This Standard). 
+这个操作符的使用示例. 这些示例不被认为是这个标准的一部分; 见章节 1.4.3 (Sections Not Formally Part Of This Standard). 
 
 #### 1.4.4.10 <span id = "ExceptionalSituationsSED">``Exceptional Situations'' 字典条目部分</span>
 
-Three kinds of information may appear here:
+三种类型的信息可以出现在这里:
 
-    Situations that are detected by the function and formally signaled.
-    Situations that are handled by the function.
-    Situations that may be detected by the function.
+    被这个函数检测到且发出来的情况.
+    这个函数处理的情况.
+    可能被这个函数检测到的情况.
 
-This field does not include conditions that could be signaled by functions passed to and called by this operator as arguments or through dynamic variables, nor by executing subforms of this operator if it is a macro or special operator. 
+<!-- TODO 解析不了，待请教 -->
+This field does not include conditions that could be signaled by functions passed to and called by this operator as arguments or through dynamic variables, 如果是宏或特殊操作符, 也不包括这个操作符的执行子形式nor by executing subforms of this operator if it is a macro or special operator. 
 
 #### 1.4.4.11 <span id = "InitialValueSDE">``Initial Value'' 字典条目部分</span>
 
-This information describes the initial value of a dynamic variable. Since this variable might change, see type restrictions in the ``Value Type'' section. 
+这个信息描述了一个动态变量的初始值. 因为这个变量可能会改变, 见 ``Value Type'' 章节的类型限制. 
 
 #### 1.4.4.12 <span id = "ArgumentPrecedenceOrderSDE">``Argument Precedence Order'' 字典条目部分</span>
 
-This information describes the argument precedence order. If it is omitted, the argument precedence order is the default (left to right). 
+这个信息描述了参数优先级顺序. 如果它被省略, 参数的优先级顺序就是默认的 (从左到右). 
 
 #### 1.4.4.13 <span id = "MethodSignatureSDE">``Method Signature'' 字典条目部分</span>
 
