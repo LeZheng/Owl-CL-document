@@ -724,89 +724,89 @@ This field does not include conditions that could be signaled by functions passe
 
 #### 1.4.4.13 <span id = "MethodSignatureSDE">``Method Signature'' 字典条目部分</span>
 
-The description of a generic function includes descriptions of the methods that are defined on that generic function by the standard. A method signature is used to describe the parameters and parameter specializers for each method. Methods defined for the generic function must be of the form described by the method signature.
+这个广义函数的描述包括了这个标准广义函数定义的方法描述. 一个方法签名被用于描述每一个方法的参数和 parameter specializers. 广义函数定义的方法必须是方法签名所描述表达式形式.
 
 F (x class) (y t) &optional z &key k
 
-This signature indicates that this method on the generic function F has two required parameters: x, which must be a generalized instance of the class class; and y, which can be any object (i.e., a generalized instance of the class t). In addition, there is an optional parameter z and a keyword parameter k. This signature also indicates that this method on F is a primary method and has no qualifiers.
+这个签名表示这个广义函数F的方法有两个需要的参数: 必须是类class的实例的x; 还有可以是任何对象的 y (换句话说, 可以类 t 的泛化实例). 另外, 这里有一个可选的参数z 和一个关键字参数k. 这个签名也表示这个方法F是一个主方法并且没有修饰. <!-- TODO 修饰？？ -->
 
-For each parameter, the argument supplied must be in the intersection of the type specified in the description of the corresponding generic function and the type given in the signature of some method (including not only those methods defined in this specification, but also implementation-defined or user-defined methods in situations where the definition of such methods is permitted). 
+对于每个参数, 提供的实参必须是对应的广义函数描述的类型和方法签名里的类型的交集 (不仅仅是这个说明书里定义的方法, 也包括在允许定义方法的地方具体实现定义的或者用户定义的). 
 
 #### 1.4.4.14 <span id = "NameSDE">``Name'' 字典条目部分</span>
 
-This section introduces the dictionary entry. It is not explicitly labeled. It appears preceded and followed by a horizontal bar.
+这个章节介绍字典条目. 它不是明确标记的. 它出现在前面并且后面跟一个水平栏.
 
-In large print at left, the defined name appears; if more than one defined name is to be described by the entry, all such names are shown separated by commas.
+在左边打印的是定义的名字; 如果这个条目不只一个定义的名字, 所有这样的名字都会显示出来, 通过逗号分割.
 
-In somewhat smaller italic print at right is an indication of what kind of dictionary entry this is. Possible values are:
+在右边打印的小的斜体的是这个字典条目是什么种类的介绍. 可能的值是:
 
 Accessor
 
-    This is an accessor function.
+    这个是访问器函数.
 
 Class
 
-    This is a class.
+    这是一个类.
 
 Condition Type
 
-    This is a subtype of type condition.
+    这个是类型condition的表.
 
 Constant Variable
 
-    This is a constant variable.
+    这是一个常变量.
 
 Declaration
 
-    This is a declaration identifier.
+    这是一个定义标识符.
 
 Function
 
-    This is a function.
+    这是一个函数.
 
 Local Function
 
-    This is a function that is defined only lexically within the scope of some other macro form.
+    这是一个定义在宏形式里的词法作用域里的函数.
 
 Local Macro
 
-    This is a macro that is defined only lexically within the scope of some other macro form.
+    这是定义在一些宏形式的词法作用域里的宏.
 
 Macro
 
-    This is a macro.
+    这是一个宏.
 
 Restart
 
-    This is a restart.
+    这是一个重启.
 
 Special Operator
 
-    This is a special operator.
+    这是一个特殊操作符.
 
 Standard Generic Function
 
-    This is a standard generic function.
+    这是一个标准的广义函数.
 
 Symbol
 
-    This is a symbol that is specially recognized in some particular situation, such as the syntax of a macro.
+    这是一个在特定场合被识别的符号, 就像宏的语法中.
 
 System Class
 
-    This is like class, but it identifies a class that is potentially a built-in class. (No class is actually required to be a built-in class.)
+    这是一个类, 但是它表示内置的类. (事实上没有类需要去成为内置类.)
 
 Type
 
-    This is an atomic type specifier, and depending on information for each particular entry, may subject to form other type specifiers.
+    这是一个原子类型分类符, 并且依赖于每一个特定条目的信息, 可能去组成其他类型分类符.
 
 Type Specifier
 
-    This is a defined name that is not an atomic type specifier, but that can be used in constructing valid type specifiers.
+    这是一个定义的不是原子类型分类符的名字, 但是可以被用于构建合法类型分类符.
 
 Variable
 
-    This is a dynamic variable. 
+    这是一个动态变量. 
 
 
 #### 1.4.4.15 <span id = "NotesSDE">The ``Notes'' 字典条目部分</span>
