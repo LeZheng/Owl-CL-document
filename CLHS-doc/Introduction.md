@@ -42,7 +42,7 @@
 >>
 >>在1980 Symbolics 和 LMI 发展了 Lisp Machine Lisp; stock-hardware 实现小组发展了 NIL, Franz Lisp, 还有 PSL; Xerox 发展了 Interlisp; 还有 CMU 的 SPICE 项目发展了称之为 SpiceLisp的类MacLisp方言.
 >>
->>在1981年四月, 在一个 DARPA赞助的会议后分裂的Lisp社区, Symbolics, SPICE 项目, NIL 项目, 还有 S-1 Lisp 项目一起加入来定义 Common Lisp. 开始由 White 和 Gabriel 带领, 这个基层民众的尝试背后的驱动力由 Fahlman, Daniel Weinreb, David Moon, Steele, 和 Gabriel 提供. Common Lisp 被设计为一个家族语言的描述. 对于Common Lisp主要的影响是 Lisp Machine Lisp, MacLisp, NIL, S-1 Lisp, Spice Lisp, 还有 Scheme. Common Lisp: 这个语言是那个设计的描述. 部分地方它的语义是有意指定的因为那里感觉严格规范会限制Common Lisp的研究和使用.[>_<]:待核对
+>>在1981年四月, 在一个 DARPA赞助的会议后分裂的Lisp社区, Symbolics, SPICE 项目, NIL 项目, 还有 S-1 Lisp 项目一起加入来定义 Common Lisp. 开始由 White 和 Gabriel 带领, 这个基层民众的尝试背后的驱动力由 Fahlman, Daniel Weinreb, David Moon, Steele, 和 Gabriel 提供. Common Lisp 被设计为一个家族语言的描述. 对于Common Lisp主要的影响是 Lisp Machine Lisp, MacLisp, NIL, S-1 Lisp, Spice Lisp, 还有 Scheme. Common Lisp: 这个语言是那个设计的描述. 部分地方它的语义是有意指定的因为那里感觉严格规范会限制Common Lisp的研究和使用.<!-- TODO 待核对 -->
 >>
 >>在1986年 X3J13 组织了一个技术小组去起草 ANSI Common Lisp 标准. 由于 Common Lisp的接纳, 这个小组的目标与最初的设计者不同. 这些目标包括更严格的移植性标准化,一个面向对象编程系统,一个状态系统,循环机制,以及一种处理大型字符集的方式.为了促成这个目标，一个新的语言说明(这个文档)被开发出来.
 
@@ -52,7 +52,7 @@
 >
 > 这个文档根据话题来拆分章节. 任何给定章节可能包含概念性内容或字典条目, 或者都有.
 >
-> 一个章节的字典部分把主题相关的已定义的名字分组后放得接近一些. 很多这样的分组是可能的，并且应该没有从分组中推断出的深层意义. 为了看到以字母顺序排列分组的定义的名字, 可以查阅索引. 关于定义名字的完整列表, 见章节 1.9 (Symbols in the COMMON-LISP Package).[>_<]:待核对
+> 一个章节的字典部分把主题相关的已定义的名字分组后放得接近一些. 很多这样的分组是可能的，并且应该没有从分组中推断出的深层意义. 为了看到以字母顺序排列分组的定义的名字, 可以查阅索引. 关于定义名字的完整列表, 见章节 1.9 (Symbols in the COMMON-LISP Package).<!-- TODO 待核对 -->
 >
 > 为了补偿这份文档的无序部分, 提供一份词汇表; 见章节 26 (Glossary). 这个词汇表通过快速访问术语的定义来提供连通性,并且一些情况下提供示例或者和另外概念的交叉引用.
 >
@@ -304,7 +304,7 @@ otherwise-clause::= ({otherwise | t} form*)
 clause::= normal-clause | otherwise-clause
 ```
 
-这里的术语 \``clause'' 似乎是 \``dead'' 因为它没有被使用于上面的BNF表达式里. 然而, 这个BNF的目的并不只是引导解析, 但是也定义有用的术语为了跟在后面的描述性文本的参考. 像这个样子, 术语 \``clause'' 可能出现在后面跟着的文本中, 作为 \``normal-clause or otherwise-clause.'' 的速记.[>_<]待校验
+这里的术语 \``clause'' 似乎是 \``dead'' 因为它没有被使用于上面的BNF表达式里. 然而, 这个BNF的目的并不只是引导解析, 但是也定义有用的术语为了跟在后面的描述性文本的参考. 像这个样子, 术语 \``clause'' 可能出现在后面跟着的文本中, 作为 \``normal-clause or otherwise-clause.'' 的速记.<!-- TODO 待校验 -->
 
 
 #### 1.4.1.3 <span id = "SpecialSymbols">特殊符号</span>
@@ -347,7 +347,7 @@ OR=>
 
      (char-name #\a) =>  implementation-dependent
 
-    但是它的意图是提供额外的信息去说明这些结果中可能会根据实现而不同.[>_<]待验证
+    但是它的意图是提供额外的信息去说明这些结果中可能会根据实现而不同.<!-- TODO 待验证 -->
 
 NOT=>
 
@@ -469,7 +469,7 @@ designator 是一个表示另一个对象的对象.
 
 一个操作符的参数被描述为 designator 的地方, 这个操作符的描述以假定这个参数的值是指定的对象的方式编写; 这就表示, 这个参数是已指定的类型. (这个对象的具体类型由一个 \``<\<type>> designator'' 或者 \``designator for a <\<type>>'' 指定, 可以在结尾的词汇表中找到 \``<\<type>> designator.'')
 
-比如, \``nil'' 和 \``the value of *standard-output*'' 作为流 designators 是操作上难以区分的 . 类似的, 作为string designators 符号 foo 和字符串 "FOO" 也是难以区分的.
+比如, \``nil'' 和 ``the value of *standard-output*'' 作为流 designators 是操作上难以区分的 . 类似的, 作为string designators 符号 foo 和字符串 "FOO" 也是难以区分的.
 
 除了另外的提示, 在这个指定的对象被多次使用的情况下, 这个对象是只求值一次还是被使用时每次都求值, 取决于具体的实现.
 
@@ -627,21 +627,21 @@ A warning might be issued
 
 对于一个操作符, 它可以影响副作用或者返回值.
 
-对于一个变量, 对它绑定或赋值都可能影响这个变量的值包括函数. 
+对于一个变量, 对它绑定或赋值都可能影响这个变量的值包括函数.
 
 #### 1.4.4.2 <span id = "ArgumentsSDE">``Arguments'' 字典条目部分</span>
 
-这个信息描述那些不作为表达式形式求值也没有返回值的声明还有特殊表达式条目的语法信息的条目. 
+这个信息描述那些不作为表达式形式求值也没有返回值的声明还有特殊表达式条目的语法信息的条目.
 
 #### 1.4.4.3 <span id = "ArgumentsAndValuesSDE">``Arguments and Values'' 字典条目部分</span>
 
 这是对操作符接收参数还有返回值的英语描述, 包括遗漏的默认参数的信息 (就像optional参数和关键字参数). 对于特殊操作符和宏, 它们的参数不会被求值除非在它们的描述中就明确指定它们被求值.
 
-除了明确指定以外, 如果这些类型约束被违反了, 那么结果将是未定义的. 
+除了明确指定以外, 如果这些类型约束被违反了, 那么结果将是未定义的.
 
 #### 1.4.4.4 <span id = "BindingTypesAffectedSDE">``Binding Types Affected'' 字典条目部分</span>
 
-这个信息警告读者这个类型的绑定可能被一个声明所影响. 事实上任何这样的绑定是否被影响取决于额外因素. 详情见 ``Description'' 章节中问题的声明. 
+这个信息警告读者这个类型的绑定可能被一个声明所影响. 事实上任何这样的绑定是否被影响取决于额外因素. 详情见 ``Description'' 章节中问题的声明.
 
 
 #### 1.4.4.5 <span id = "ClassPrecedenceListSDE">``Class Precedence List'' 字典条目部分</span>
@@ -654,7 +654,7 @@ A warning might be issued
 
 除非在这个说明书里明确说明, 没有标准的类出现在具体实现的类的优先级列表中.
 
-根据类和类型之间的关系定义, 这节列出来的类也是对应类的子类. 
+根据类和类型之间的关系定义, 这节列出来的类也是对应类的子类.
 
 #### 1.4.4.6 <span id = "DictionaryEntriesForTS">Dictionary Entries for Type Specifiers</span>
 
@@ -675,33 +675,33 @@ A warning might be issued
 
 一个 ``predicating'' 类型说明符描述了一个只包含满足给定断言的那些对象的图表.
 
-一个 \``combining'' 类型说明符描述一种以组合的方式的图表, 通过在其他类型上使用组合操作符 (就像 \``and,'' \``or,'' 和 \``not'') . 
+一个 \``combining'' 类型说明符描述一种以组合的方式的图表, 通过在其他类型上使用组合操作符 (就像 \``and,'' \``or,'' 和 \``not'') .
 
 ##### 1.4.4.6.2 <span id = "CTSSyntaxSDE">``Compound Type Specifier Syntax'' 字典条目部分</span>
 
 这类信息描述了复合类型说明符的语法.
 
-这个类型是否可以作为原子类型说明符在这里没有说明; 见章节 1.4.4.6 (Dictionary Entries for Type Specifiers). 
+这个类型是否可以作为原子类型说明符在这里没有说明; 见章节 1.4.4.6 (Dictionary Entries for Type Specifiers).
 
 ##### 1.4.4.6.3 <span id = "CTSArgumentsSDE">``Compound Type Specifier Arguments'' 字典条目部分</span>
 
-这个描述了定义在 ``Compound Type Specifier Syntax'' 章节的结构的类型信息. 
+这个描述了定义在 ``Compound Type Specifier Syntax'' 章节的结构的类型信息.
 
 ##### 1.4.4.6.4 <span id = "CTSDescriptionSDE">``Compound Type Specifier Description'' 字典条目部分</span>
 
-这个描述了定义在 ``Compound Type Specifier Syntax'' 章节的结构的意义. 
+这个描述了定义在 ``Compound Type Specifier Syntax'' 章节的结构的意义.
 
 #### 1.4.4.7 <span id = "ConstantValue">``Constant Value'' 字典条目部分</span>
 
-这个描述了一个常变量的不变的类型和值. 
+这个描述了一个常变量的不变的类型和值.
 
 #### 1.4.4.8 <span id = "DescriptionSDE">``Description'' 字典条目部分</span>
 
-这个操作符还有它的所有预期方面的一个总结, 但是没有必要包含在它后面引用的所有域(\``Side Effects,'' \``Exceptional Situations,'' 等等.) 
+这个操作符还有它的所有预期方面的一个总结, 但是没有必要包含在它后面引用的所有域(\``Side Effects,'' \``Exceptional Situations,'' 等等.)
 
 #### 1.4.4.9 <span id = "ExamplesSDE">``Examples'' 字典条目部分</span>
 
-这个操作符的使用示例. 这些示例不被认为是这个标准的一部分; 见章节 1.4.3 (Sections Not Formally Part Of This Standard). 
+这个操作符的使用示例. 这些示例不被认为是这个标准的一部分; 见章节 1.4.3 (Sections Not Formally Part Of This Standard).
 
 #### 1.4.4.10 <span id = "ExceptionalSituationsSED">``Exceptional Situations'' 字典条目部分</span>
 
@@ -712,15 +712,15 @@ A warning might be issued
     可能被这个函数检测到的情况.
 
 <!-- TODO 解析不了，待请教 -->
-This field does not include conditions that could be signaled by functions passed to and called by this operator as arguments or through dynamic variables, 如果是宏或特殊操作符, 也不包括这个操作符的执行子形式nor by executing subforms of this operator if it is a macro or special operator. 
+This field does not include conditions that could be signaled by functions passed to and called by this operator as arguments or through dynamic variables, 如果是宏或特殊操作符, 也不包括这个操作符的执行子形式nor by executing subforms of this operator if it is a macro or special operator.
 
 #### 1.4.4.11 <span id = "InitialValueSDE">``Initial Value'' 字典条目部分</span>
 
-这个信息描述了一个动态变量的初始值. 因为这个变量可能会改变, 见 ``Value Type'' 章节的类型限制. 
+这个信息描述了一个动态变量的初始值. 因为这个变量可能会改变, 见 ``Value Type'' 章节的类型限制.
 
 #### 1.4.4.12 <span id = "ArgumentPrecedenceOrderSDE">``Argument Precedence Order'' 字典条目部分</span>
 
-这个信息描述了参数优先级顺序. 如果它被省略, 参数的优先级顺序就是默认的 (从左到右). 
+这个信息描述了参数优先级顺序. 如果它被省略, 参数的优先级顺序就是默认的 (从左到右).
 
 #### 1.4.4.13 <span id = "MethodSignatureSDE">``Method Signature'' 字典条目部分</span>
 
@@ -730,7 +730,7 @@ F (x class) (y t) &optional z &key k
 
 这个签名表示这个广义函数F的方法有两个需要的参数: 必须是类class的实例的x; 还有可以是任何对象的 y (换句话说, 可以类 t 的泛化实例). 另外, 这里有一个可选的参数z 和一个关键字参数k. 这个签名也表示这个方法F是一个主方法并且没有修饰. <!-- TODO 修饰？？ -->
 
-对于每个参数, 提供的实参必须是对应的广义函数描述的类型和方法签名里的类型的交集 (不仅仅是这个说明书里定义的方法, 也包括在允许定义方法的地方具体实现定义的或者用户定义的). 
+对于每个参数, 提供的实参必须是对应的广义函数描述的类型和方法签名里的类型的交集 (不仅仅是这个说明书里定义的方法, 也包括在允许定义方法的地方具体实现定义的或者用户定义的).
 
 #### 1.4.4.14 <span id = "NameSDE">``Name'' 字典条目部分</span>
 
@@ -806,42 +806,42 @@ Type Specifier
 
 Variable
 
-    这是一个动态变量. 
+    这是一个动态变量.
 
 
 #### 1.4.4.15 <span id = "NotesSDE">The ``Notes'' 字典条目部分</span>
 
-Information not found elsewhere in this description which pertains to this operator. Among other things, this might include cross reference information, code equivalences, stylistic hints, implementation hints, typical uses. This information is not considered part of the standard; any conforming implementation or conforming program is permitted to ignore the presence of this information. 
+在其他地方没有的关于这个操作符的信息. 在其他东西中, 这个可能包含了跨引用信息, 代码等价, 文体暗示, 实现暗示, 典型使用. 这个信息不被认为是这标准的一部分; 任何确定的实现和程序允许忽略这个信息.
 
 #### 1.4.4.16 <span id = "PronunciationSDE">``Pronunciation'' 字典条目部分</span>
 
-This offers a suggested pronunciation for defined names so that people not in verbal communication with the original designers can figure out how to pronounce words that are not in normal English usage. This information is advisory only, and is not considered part of the standard. For brevity, it is only provided for entries with names that are specific to Common Lisp and would not be found in Webster's Third New International Dictionary the English Language, Unabridged. 
+这个为定义的名字提供了一个建议的发音方式, 这样人们没有在和最初的设计者们一起交流的情况下也能弄明白这个没有出现在正常英语中的单词如何发音. 这个信息是劝告性的, 不被认为是这个标准的一部分. 为了简洁性, 它只提供给特定Common Lisp名字的条目并且不会出现在未删减的 Webster's Third New International Dictionary the English Language.
 
 #### 1.4.4.17 <span id = "SeeAlsoSDE">``See Also'' 字典条目部分</span>
 
-List of references to other parts of this standard that offer information relevant to this operator. This list is not part of the standard. 
+这个标准中提供有关这个操作符信息的引用列表. 这个列表不是这个标准的一部分.
 
 #### 1.4.4.18 <span id = "SideEffectsSDE">The ``Side Effects'' 字典条目部分</span>
 
-Anything that is changed as a result of the evaluation of the form containing this operator. 
+包含这个操作符的表达式形式求值时作为结果的任何东西的改变.
 
 #### 1.4.4.19 <span id = "SupertypesSDE">The ``Supertypes'' 字典条目部分</span>
 
-This appears in the dictionary entry for a type, and contains a list of the standardized types that must be supertypes of this type.
+这个出现在一个类型的字典条目中, 包含了这个类型的标准化基类的列表.
 
-In implementations where there is a corresponding class, the order of the classes in the class precedence list is consistent with the order presented in this section. 
+在具体实现中对应一个类的地方, 在类的优先级列表中的类顺序和在这个章节中出现的顺序是一致的.
 
 #### 1.4.4.20 <span id = "SyntaxSDE">``Syntax'' 字典条目部分</span>
 
-This section describes how to use the defined name in code. The ``Syntax'' description for a generic function describes the lambda list of the generic function itself, while the ``Method Signatures'' describe the lambda lists of the defined methods. The ``Syntax'' description for an ordinary function, a macro, or a special operator describes its parameters.
+这个章节描述了如何在代码中使用定义的名字. 关于广义函数的 \``Syntax'' 部分描述了广义函数自身的lambda列表, 而 \``Method Signatures'' 描述了定义的方法的lambda列表. 关于一般函数, 宏, 或者一个特殊操作符 \``Syntax'' 描述了他们的参数.
 
-For example, an operator description might say:
+比如, 一个操作符描述可能是:
 
 F x y &optional z &key k
 
-This description indicates that the function F has two required parameters, x and y. In addition, there is an optional parameter z and a keyword parameter k.
+这个描述表示函数F有两个必须的参数, x 和 y. 另外, 这里还有个可选的参数 z 和一个关键字参数 k.
 
-For macros and special operators, syntax is given in modified BNF notation; see Section 1.4.1.2 (Modified BNF Syntax). For functions a lambda list is given. In both cases, however, the outermost parentheses are omitted, and default value information is omitted.
+关于宏和特殊操作符, 语法已经通过修改的 BNF 标注给了; 见章节 1.4.1.2 (Modified BNF Syntax). 关于函数给定一个lambda列表. 然而在两种情况下, 最外层的括号和默认值信息省略了.
 
 > * 1.4.4.20.1 Special ``Syntax'' Notations for Overloaded Operators(#SpecialSyntaxNotations)
 > * 1.4.4.20.2 Naming Conventions for Rest Parameters(#NamingConventions)
@@ -850,27 +850,27 @@ For macros and special operators, syntax is given in modified BNF notation; see 
 
 ##### 1.4.4.20.1 <span id = "SpecialSyntaxNotations">Special ``Syntax'' Notations for Overloaded Operators</span>
 
-If two descriptions exist for the same operation but with different numbers of arguments, then the extra arguments are to be treated as optional. For example, this pair of lines:
+如果同一个操作符带有不同数量的参数有两个描述, 那么额外的参数就被认为是可选的. 比如, 这两行:
 
 file-position stream => position
 
 file-position stream position-spec => success-p
 
-is operationally equivalent to this line:
+操作上等价于:
 
 file-position stream &optional position-spec => result
 
-and differs only in that it provides on opportunity to introduce different names for parameter and values for each case. The separated (multi-line) notation is used when an operator is overloaded in such a way that the parameters are used in different ways depending on how many arguments are supplied (e.g., for the function /) or the return values are different in the two cases (e.g., for the function file-position). 
+并且不同点仅在于为每一个情况提供不同的参数和值的名字来介绍. 这个分开的 (多行) 表示法被用于当操作符以这种方式被重载, 并且参数根据提供的参数数量被用于不同的方式 (比如, 函数 /) 或者两种情况下返回值不同 (比如, 函数 file-position).
 
 ##### 1.4.4.20.2 <span id = "NamingConventions">Naming Conventions for Rest Parameters</span>
 
-Within this specification, if the name of a rest parameter is chosen to be a plural noun, use of that name in parameter font refers to the list to which the rest parameter is bound. Use of the singular form of that name in parameter font refers to an element of that list.
+在这个规格书中, 如果剩余参数的名字选择为复数名词, 这个名字表示剩余参数绑定的列表. 使用前面指定的名字的单数形式表示这个列表中的一个元素.
 
-For example, given a syntax description such as:
+比如, 给定一个像这样的语法描述:
 
 F &rest arguments
 
-it is appropriate to refer either to the rest parameter named arguments by name, or to one of its elements by speaking of ``an argument,'' ``some argument,'' ``each argument'' etc. 
+可以通过名字 arguments 引用这些剩余参数, 或者通过 \``an argument,'' \``some argument,'' \``each argument'' 等等来引用其中一个.
 
 ##### 1.4.4.20.3 <span id = "RequiringNonNullRestParameters">Requiring Non-Null Rest Parameters in the ``Syntax'' Section</span>
 
@@ -882,7 +882,7 @@ means the same as
 
 F &rest arguments
 
-but introduces the additional requirement that there be at least one argument. 
+but introduces the additional requirement that there be at least one argument.
 
 ##### 1.4.4.20.4 <span id = "ReturnValuesInSyntaxSection">Return values in the ``Syntax'' Section</span>
 
@@ -899,27 +899,27 @@ F a b c => x, y, z
 
 ###### 1.4.4.20.4.1 No Arguments or Values in the ``Syntax'' Section
 
-If no arguments are permitted, or no values are returned, a special notation is used to make this more visually apparent. For example,
+如果没有参数也没有返回值, 一个特别的标记被用于使这个更显而易见. 比如,
 
 F <no arguments> => <no values>
 
-indicates that F is an operator that accepts no arguments and returns no values. 
+表示这个 F 操作符不接受参数和返回值.
 
 ###### 1.4.4.20.4.2 Unconditional Transfer of Control in the ``Syntax'' Section
 
-Some operators perform an unconditional transfer of control, and so never have any return values. Such operators are notated using a notation such as the following:
+一些操作符会有控制无条件转移的动作, 并且没有任何返回值. 这样的操作符通过以下方式表示:
 
-F a b c =>| 
+F a b c =>|
 
 
 #### 1.4.4.21 <span id = "ValidContextSDE">``Valid Context'' 字典条目部分</span>
 
-This information is used by dictionary entries such as ``Declarations'' in order to restrict the context in which the declaration may appear.
+这个信息被用于例如 ``Declarations'' 字典条目, 用于约束这个声明可能出现的上下文.
 
-A given ``Declaration'' might appear in a declaration (i.e., a declare expression), a proclamation (i.e., a declaim or proclaim form), or both. 
+一个给定的 ``Declaration'' 可能出现在一个声明 (换句话说, 一个声明表达式), 一个宣告 (换句话说, a declaim or proclaim form), 或者都有.
 
 #### 1.4.4.22 <span id = "ValueTypeSDE">``Value Type'' 字典条目部分</span>
 
-This information describes any type restrictions on a dynamic variable.
+这个信息描述了一个动态变量的任何类型约束条件.
 
-Except as explicitly specified otherwise, the consequences are undefined if this type restriction is violated. 
+除非明确指定外, 违反这个类型约束时结果是不可预测的.
