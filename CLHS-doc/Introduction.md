@@ -843,12 +843,12 @@ F x y &optional z &key k
 
 关于宏和特殊操作符, 语法已经通过修改的 BNF 标注给了; 见章节 1.4.1.2 (Modified BNF Syntax). 关于函数给定一个lambda列表. 然而在两种情况下, 最外层的括号和默认值信息省略了.
 
-> * 1.4.4.20.1 Special ``Syntax'' Notations for Overloaded Operators(#SpecialSyntaxNotations)
-> * 1.4.4.20.2 Naming Conventions for Rest Parameters(#NamingConventions)
-> * 1.4.4.20.3 Requiring Non-Null Rest Parameters in the ``Syntax'' Section(#RequiringNonNullRestParameters)
-> * 1.4.4.20.4 Return values in the ``Syntax'' Section(#ReturnValuesInSyntaxSection)
+> * 1.4.4.20.1 重载操作符特殊的 ``Syntax'' 表示法(#SpecialSyntaxNotations)
+> * 1.4.4.20.2 剩余参数的命名转化(#NamingConventions)
+> * 1.4.4.20.3 在 ``Syntax'' 部分需要非空剩余参数(#RequiringNonNullRestParameters)
+> * 1.4.4.20.4 在 ``Syntax'' 部分的返回值(#ReturnValuesInSyntaxSection)
 
-##### 1.4.4.20.1 <span id = "SpecialSyntaxNotations">Special ``Syntax'' Notations for Overloaded Operators</span>
+##### 1.4.4.20.1 <span id = "SpecialSyntaxNotations">重载操作符特殊的 ``Syntax'' 表示法</span>
 
 如果同一个操作符带有不同数量的参数有两个描述, 那么额外的参数就被认为是可选的. 比如, 这两行:
 
@@ -862,7 +862,7 @@ file-position stream &optional position-spec => result
 
 并且不同点仅在于为每一个情况提供不同的参数和值的名字来介绍. 这个分开的 (多行) 表示法被用于当操作符以这种方式被重载, 并且参数根据提供的参数数量被用于不同的方式 (比如, 函数 /) 或者两种情况下返回值不同 (比如, 函数 file-position).
 
-##### 1.4.4.20.2 <span id = "NamingConventions">Naming Conventions for Rest Parameters</span>
+##### 1.4.4.20.2 <span id = "NamingConventions">剩余参数的命名转化</span>
 
 在这个规格书中, 如果剩余参数的名字选择为复数名词, 这个名字表示剩余参数绑定的列表. 使用前面指定的名字的单数形式表示这个列表中的一个元素.
 
@@ -872,32 +872,32 @@ F &rest arguments
 
 可以通过名字 arguments 引用这些剩余参数, 或者通过 \``an argument,'' \``some argument,'' \``each argument'' 等等来引用其中一个.
 
-##### 1.4.4.20.3 <span id = "RequiringNonNullRestParameters">Requiring Non-Null Rest Parameters in the ``Syntax'' Section</span>
+##### 1.4.4.20.3 <span id = "RequiringNonNullRestParameters">在 ``Syntax'' 部分需要非空剩余参数</span>
 
-In some cases it is useful to refer to all arguments equally as a single aggregation using a rest parameter while at the same time requiring at least one argument. A variety of imperative and declarative means are available in code for expressing such a restriction, however they generally do not manifest themselves in a lambda list. For descriptive purposes within this specification,
+在一些情况下同时需要一个以上的参数以剩余参数作为单个聚集体引用所有参数是很有用的. 多种必要的宣称意味着在代码中表示这种约束是可以的, 然而它们通常不在lambda列表中显示自己. 在这个文档中为了表述目的,
 
 F &rest arguments+
 
-means the same as
+意味着和下面的相等
 
 F &rest arguments
 
-but introduces the additional requirement that there be at least one argument.
+但是表示另外的意思: 这里至少需要一个参数.
 
-##### 1.4.4.20.4 <span id = "ReturnValuesInSyntaxSection">Return values in the ``Syntax'' Section</span>
+##### 1.4.4.20.4 <span id = "ReturnValuesInSyntaxSection">在 ``Syntax'' 部分的返回值</span>
 
-An evaluation arrow ``=> '' precedes a list of values to be returned. For example:
+一个求值箭头 ``=> '' 表示前面的表达式返回的值. 比如:
 
 F a b c => x
 
-indicates that F is an operator that has three required parameters (i.e., a, b, and c) and that returns one value (i.e., x). If more than one value is returned by an operator, the names of the values are separated by commas, as in:
+表示这个 F 是一个操作符, 它需要三个参数 (换句话说, a, b, 还有 c) 以及返回一个值 (就是 x). 如果不止一个值被这个操作符返回, 这些值的名字会用逗号区分, 就像:
 
 F a b c => x, y, z
 
-> * 1.4.4.20.4.1 No Arguments or Values in the ``Syntax'' Section
-> * 1.4.4.20.4.2 Unconditional Transfer of Control in the ``Syntax'' Section
+> * 1.4.4.20.4.1 在 ``Syntax'' 部分没有参数和返回值
+> * 1.4.4.20.4.2 在 ``Syntax'' 部分控制无条件转移
 
-###### 1.4.4.20.4.1 No Arguments or Values in the ``Syntax'' Section
+###### 1.4.4.20.4.1 在 ``Syntax'' 部分没有参数和返回值
 
 如果没有参数也没有返回值, 一个特别的标记被用于使这个更显而易见. 比如,
 
@@ -905,7 +905,7 @@ F <no arguments> => <no values>
 
 表示这个 F 操作符不接受参数和返回值.
 
-###### 1.4.4.20.4.2 Unconditional Transfer of Control in the ``Syntax'' Section
+###### 1.4.4.20.4.2 在 ``Syntax'' 部分控制无条件转移
 
 一些操作符会有控制无条件转移的动作, 并且没有任何返回值. 这样的操作符通过以下方式表示:
 
