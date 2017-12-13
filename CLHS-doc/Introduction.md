@@ -5,8 +5,8 @@
 > * 1.3 [参考的出版物](#ReferencedPublications)
 > * 1.4 [定义](#Definitions)
 > * 1.5 [Conformance](#Conformance)
-> * 1.6 [Language Extensions](#LanguageExtensions)
-> * 1.7 [Language Subsets](#LanguageSubsets)
+> * 1.6 [语言扩展](#LanguageExtensions)
+> * 1.7 [语言的子集](#LanguageSubsets)
 > * 1.8 [Deprecated Language Features](#DeprecatedLanguageFeatures)
 > * 1.9 [Symbols in the COMMON-LISP Package](#SymbolsInTheCOMMON-LISPPackage)
 
@@ -1026,3 +1026,39 @@ F a b c =>|
 #### 1.5.2.2 <span id = "CharsetForPortCode">可移植代码的字符集</span>
 
 可移植代码只用标准字符集编写. 
+
+## 1.6 <span id = "LanguageExtensions">语言扩展</span>
+
+一个语言扩展是指标准中定义的名字对应的实现定义的有别于标准中所描述的行为, 或者标准指定一个情况的文档记录结果为 undefined, unspecified, 或者 extendable by the implementation. 比如, 如果这个标准说 ``the results are unspecified,'' , 那么一个扩展会指定这个结果.
+
+如果一个程序的正确行为依赖一个扩展的结果, 只有带有同样实现的扩展会正确执行这段程序. 注意这样的程序可能是不符合规范的. 如果这个标准中说 ``an implementation may be extended'', 那么用了这个扩展的程序是一个符合规范的但是不可移植的程序.
+
+假如一个扩展没有修改符合规范代码的行为并且没有被这个标准明确禁止, 那么一个实现可以有这个扩展.
+
+术语 ``extension'' 仅适用于启动时可用的扩展. 一个具体实现可以自由地允许或禁止重定义扩展.
+
+下面的列表包括了一个实现的关于某些类型的扩展的具体指引.
+
+额外的返回值
+
+    一个实现必须返回这个标准指定的准确数量的返回值, 除非标准明确声明外.
+
+未经允许的信息
+
+    除了这个标准里指定的外, 或者由于函数检测到信号的条件, 函数不会产生输出.
+
+    未经允许的输出, 就像垃圾收集提醒和自动加载的预兆, 不应该直接到标准中定义的流变量里, 但是可以使用同义的流 *terminal-io* 间接到终端 I/O 中.
+
+    来自函数比如 load 和 compile 的进度报告被认为是请求过得, 并且不会被这个禁止覆盖.
+
+宏和特殊表达式的实现
+
+    这个标准中定义的宏和特殊操作符不能是函数. 
+
+## 1.7 <span id = "LanguageSubsets">语言的子集</span>
+
+这个标准中描述的语言没有子集, 尽管并没有禁止子集.
+
+对于一个被认为是子集的语言, 这个语言下合法的程序一定有等价的语义并且可以被任何符合规范的全语言实现直接运行 (没有语言外的预处理, 并且没有专门的兼容性包).
+
+一个遵守这个要求的语言应该被描述为一个a ``subset of Common Lisp as specified by ANSI <\<standard number>>.''
