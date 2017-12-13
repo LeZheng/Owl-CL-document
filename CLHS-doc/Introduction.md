@@ -922,3 +922,107 @@ F a b c =>|
 
 这个信息描述了一个动态变量的任何类型约束条件.
 除非明确指定外, 违反这个类型约束时结果是不可预测的.
+
+
+## 1.5 Conformance
+
+这个标准提出了一个合格实现需要去实现的语法和语义 (以及它的附加文档). 另外, it imposes requirements on conforming programs. <!-- TODO -->
+
+> * 1.5.1 合格的实现(#ComformingImpl)
+> * 1.5.2 合格的程序(#ComformingProg)
+
+ 
+### 1.5.1 <span id = "ComformingImpl">合格的实现</span>
+
+一个合格的实现应该遵守这个章节中所述的要求.
+
+> * 1.5.1.1 需要的语言特性(#RequiredLanguageFeatures)
+> * 1.5.1.2 依赖具体实现的特性文档(#DocImplDepFeatures)
+> * 1.5.1.3 扩展文档(#DocExtensions)
+> * 1.5.1.4 异常情况的处理(#TreatmentExceptionalSituations)
+> * 1.5.1.5 一致性声明(#ConformanceStatement)
+
+#### 1.5.1.1 <span id = "RequiredLanguageFeatures">需要的语言特性</span>
+
+一个合格的实现需要去接受这个标准中指定的所有语言特性 (包括弃用的特性) 以及它们的意义.
+
+符合规范的实现不需要在代码中包含替代或额外的语言元素, 以完成该标准中指定的一个语言特性. 
+
+#### 1.5.1.2 <span id = "DocImplDepFeatures">依赖具体实现的特性文档</span>
+
+一个符合规范的实现应该附加一个文档, 里面提供这个说明书中所说的所有依赖具体实现的定义.
+
+另外, 一个符合标准的实现鼓励 (但是不是必须) 去文档化这个标准中标注的依赖实现的条目, 尽管一些情况下这个文档可能简单地把这些条目标注为 ``undefined.'' 
+
+#### 1.5.1.3 <span id = "DocExtensions">扩展文档</span>
+
+一个符合规范的实现应该附带一个文档分开叙述那些这个标准中没有但是实现中有的特性, 但是加到这个语言标准中不应导致任何的歧义和矛盾. 这样的扩展应该被描述为 ``extensions to Common Lisp as specified by ANSI <\<standard number>>.'' 
+
+#### 1.5.1.4 <span id = "TreatmentExceptionalSituations">异常情况的处理</span>
+
+一个符合规范的实现应该和这个说明书一样处理异常情况.
+
+##### 1.5.1.4.1 异常情况下明显冲突的解决
+
+如果在这个说明书中针对同样的情况出现不止一种互相冲突的段落, 那么以最确切的方式描述这个情况的段落优先 (提供最约束的错误检测是没必要的) .
+
+###### 1.5.1.4.1.1 异常情况中的明显冲突解决示例
+
+假设函数foo是操作数字的函数集合S的一个成员. 假设一个段落阐述如果任何一个S中的函数被给予一个17的参数就会发出一个错误. 假设一个明显的冲突段落阐述如果参数为17则结果是未定义的. 然后第二个段落(更加针对foo的那个)会占主要地位, 因为这个情况的上下文描述最详细的, 即便对于参数17集合S中的其他函数需要去发出一个错误这个函数foo也不需要. 
+
+#### 1.5.1.5 <span id = "ConformanceStatement">一致性声明</span>
+
+一个符合规范的实现应该提供一个一致性声明作为使用这个实现的结果, 或者在附带的文档中加入这个声明. 如果这个具体实现符合这个标准的所有方面, 这个一致性说明应该为
+
+``<\<Implementation>> conforms with the requirements of ANSI <\<standard number>>''
+
+如果这个实现符合这个标准中的一部分并非全部, 这个说明应该为
+
+``<\<Implementation>> conforms with the requirements of ANSI <\<standard number>> with the following exceptions: <\<reference to or complete list of the requirements of the standard with which the implementation does not conform>>.'' 
+
+### 1.5.2 <span id = "ComformingProg">合格的程序ssss</span>
+
+符合这个规范的代码应该坚持下面几条:
+
+    合格的代码应该只使用定义在这个标准中的语言语法和语义特性或者这个标准中扩展机制指定的.
+
+    合格的代码可能使用依赖实现的特征和值, 但是不应该依赖于任何这些特征和值的特别解释而不是那些在代码的执行中发现的.
+
+    合格的代码不应依赖未定义或者未指定情况的结果.
+
+    合格的代码不使用这个标准禁止的任何结构.
+
+    合格的代码不依赖于一个具体实现的扩展.
+
+> * 1.5.2.1 具体实现定义的语言特征的使用(#UseImplDefLangFeature)
+> * 1.5.2.2 可移植代码的字符集(#CharsetForPortCode)
+
+
+#### 1.5.2.1 <span id = "UseImplDefLangFeature">具体实现定义的语言特征的使用</span>
+
+注意合格的代码可能依赖一个特别的实现定义的特征或值. 也注意同一份合格的代码被符合规范的不同实现处理时, 结果并不总是一样的. 结果可能一样, 或者它们可能不同.
+
+合格的代码可能可以运行于所有符合规范的实现中, 但是可能有实现定义的行为导致这个代码不可移植. 比如, 下面就是一个符合规范的表达式形式的例子, 但是在不同实现会返回不同的值:
+
+```BNF
+(evenp most-positive-fixnum) =>  implementation-dependent
+(random) =>  implementation-dependent
+(> lambda-parameters-limit 93) =>  implementation-dependent
+(char-name #\A) =>  implementation-dependent
+```
+
+##### 1.5.2.1.1 使用读取时条件
+
+使用 #+ 和 #- 不会使程序变得不规范. 如果没有特征使得程序不规范, 那么一个使用了 #+ 和 #- 的程序就是规范的. 当然, 合格的程序不一定是实际工作的程序. 下面的程序是符合规范的:
+
+```Lisp
+(defun foo ()
+  #+ACME (acme:initialize-something)
+  (print 'hello-there))
+```
+
+然而, 这个程序可能不会工作, 取决于特征 ACME 是否存在, 意味着名为 acme:initialize-something 的函数是否存在于这个环境中. 事实上, 在符合规范的程序里使用 #+ 或 #- 意味着增加一个变量 \*features* 作为这个程序的输入参数. 就像其他进入程序的数据一样, 程序员有责任去确保这个程序不做基于这个基本输入数据的无根据的假设. 
+
+#### 1.5.2.2 <span id = "CharsetForPortCode">可移植代码的字符集</span>
+
+可移植代码只用标准字符集编写. 
