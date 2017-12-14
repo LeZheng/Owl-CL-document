@@ -4,7 +4,7 @@
 > * 1.2 [文档的组织结构](#OrganizationOfTheDocument)
 > * 1.3 [参考的出版物](#ReferencedPublications)
 > * 1.4 [定义](#Definitions)
-> * 1.5 [Conformance](#Conformance)
+> * 1.5 [一致性](#Conformance)
 > * 1.6 [语言扩展](#LanguageExtensions)
 > * 1.7 [语言的子集](#LanguageSubsets)
 > * 1.8 [弃用的语言特性](#DeprecatedLanguageFeatures)
@@ -34,7 +34,7 @@
 >>
 >>PSL 和 Franz Lisp---是Unix机器上的类MacLisp方言---是第一个在多种硬件平台广泛可用的Lisp方言的例子.
 >>
->>其中一个最重要的Lisp发展是在20世纪70年代后半期: Scheme. Scheme, 是Gerald J. Sussman 和 Guy L. Steele Jr. 设计, 是一个简洁的Lisp方言，从20世纪60年代以来这里的设计带给Lisp很多编程语言语义上的理念. Sussman是20世纪60年代末到70年代很多Lisp技术其他进展背后最初的变革者之一.Scheme主要的贡献是词法作用域, 词法闭包, first-class continuations, 还有简单的语法 (没有区分值 cell 和 函数 cell). 这些贡献中很多对Common Lisp的设计产生了很大影响. 关于Scheme的更多信息, 见 IEEE Standard for the Scheme Programming Language 或者 ``Revised^3 Report on the Algorithmic Language Scheme.'' <!-- TODO 待核对 -->
+>>其中一个最重要的Lisp发展是在20世纪70年代后半期: Scheme. Scheme, 是Gerald J. Sussman 和 Guy L. Steele Jr. 设计, 是一个简洁的Lisp方言，从20世纪60年代以来这里的设计带给Lisp很多编程语言语义上的理念. Sussman是20世纪60年代末到70年代很多Lisp技术其他进展背后最初的变革者之一.Scheme主要的贡献是词法作用域, 词法闭包, 第一级过程和继续, 还有简单的语法 (没有区分值 cell 和 函数 cell). 这些贡献中很多对Common Lisp的设计产生了很大影响. 关于Scheme的更多信息, 见 IEEE Standard for the Scheme Programming Language 或者 ``Revised^3 Report on the Algorithmic Language Scheme.''
 >>
 >>在20世纪70年代末期,面向对象编程概念对Lisp产生了很大影响. 在 MIT, 来自于 Smalltalk 的思想径直进入很多广泛使用的编程系统中. Flavors, 一个带有多继承的面向对象系统, 为了Lisp machine社区在 MIT 被 Howard Cannon 和 其他人开发出来. At Xerox,  Smalltalk 的经验和 Knowledge Representation Language (KRL) 引导了 Lisp Object Oriented Programming System (LOOPS) 还有后来的 Common LOOPS的发展. 关于跟多 Smalltalk 的信息, 见 Smalltalk-80: The Language and its Implementation. 关于Flavors更多信息, 见 Flavors: A Non-Hierarchical Approach to Object-Oriented Programming.
 >>
@@ -42,7 +42,7 @@
 >>
 >>在1980 Symbolics 和 LMI 发展了 Lisp Machine Lisp; stock-hardware 实现小组发展了 NIL, Franz Lisp, 还有 PSL; Xerox 发展了 Interlisp; 还有 CMU 的 SPICE 项目发展了称之为 SpiceLisp的类MacLisp方言.
 >>
->>在1981年四月, 在一个 DARPA赞助的会议后分裂的Lisp社区, Symbolics, SPICE 项目, NIL 项目, 还有 S-1 Lisp 项目一起加入来定义 Common Lisp. 开始由 White 和 Gabriel 带领, 这个基层民众的尝试背后的驱动力由 Fahlman, Daniel Weinreb, David Moon, Steele, 和 Gabriel 提供. Common Lisp 被设计为一个家族语言的描述. 对于Common Lisp主要的影响是 Lisp Machine Lisp, MacLisp, NIL, S-1 Lisp, Spice Lisp, 还有 Scheme. Common Lisp: 这个语言是那个设计的描述. 部分地方它的语义是有意指定的因为那里感觉严格规范会限制Common Lisp的研究和使用.<!-- TODO 待核对 -->
+>>在1981年四月, 在一个DARPA赞助的会议后, 分裂的Lisp社区, Symbolics, SPICE 项目, NIL 项目, 还有 S-1 Lisp 项目一起加入来定义 Common Lisp. 开始由 White 和 Gabriel 带领, 这个基层民众的尝试背后的驱动力由 Fahlman, Daniel Weinreb, David Moon, Steele, 和 Gabriel 提供. Common Lisp 被设计为一个家族语言的描述. 对于Common Lisp主要的影响是 Lisp Machine Lisp, MacLisp, NIL, S-1 Lisp, Spice Lisp, 还有 Scheme. Common Lisp: 这个语言是那个设计的描述. 部分地方它的语义是有意未指定的因为那里感觉严格规范会限制Common Lisp的研究和使用.
 >>
 >>在1986年 X3J13 组织了一个技术小组去起草 ANSI Common Lisp 标准. 由于 Common Lisp的接纳, 这个小组的目标与最初的设计者不同. 这些目标包括更严格的移植性标准化,一个面向对象编程系统,一个状态系统,循环机制,以及一种处理大型字符集的方式.为了促成这个目标，一个新的语言说明(这个文档)被开发出来.
 
@@ -52,7 +52,7 @@
 >
 > 这个文档根据话题来拆分章节. 任何给定章节可能包含概念性内容或字典条目, 或者都有.
 >
-> 一个章节的字典部分把主题相关的已定义的名字分组后放得接近一些. 很多这样的分组是可能的，并且应该没有从分组中推断出的深层意义. 为了看到以字母顺序排列分组的定义的名字, 可以查阅索引. 关于定义名字的完整列表, 见章节 1.9 (Symbols in the COMMON-LISP Package).<!-- TODO 待核对 -->
+> 一个章节的字典部分把主题相关的已定义的名字分组后放得接近一些. 很多这样的分组是可能的，并且应该没有从分组中推断出的深层意义. 为了看到以字母顺序排列分组的定义的名字, 可以查阅索引. 关于定义名字的完整列表, 见章节 1.9 (Symbols in the COMMON-LISP Package).
 >
 > 为了补偿这份文档的无序部分, 提供一份词汇表; 见章节 26 (Glossary). 这个词汇表通过快速访问术语的定义来提供连通性,并且一些情况下提供示例或者和另外概念的交叉引用.
 >
@@ -140,7 +140,7 @@
 > * 1.4.1.2 [修改BNF语法](#ModifiedBNFSyntax)
 > * 1.4.1.3 [特殊符号](#SpecialSymbols)
 > * 1.4.1.4 [多个符号表示的对象](#ObjectsWithMultipleNotations)
-> * 1.4.1.5 [指示符](#Designators)
+> * 1.4.1.5 [标志符](#Designators)
 > * 1.4.1.6 [无意义的单词](#NonsenseWords)
 
 #### 1.4.1.1 <span id = "FontKey">字体的线索</span>
@@ -288,7 +288,7 @@ O::= A | B* | C
 
 ##### 1.4.1.2.3 <span id = "AdditionalUsesForIndirectDef">修改后BNF语法中间接定义的额外使用</span>
 
-在一些情况下In some cases, 一个BNF辅助定义可能不会出现在这个BNF表达式里, 但是在其他地方是有用的. 比如说, 细想下面的定义:[>_<]待校验
+在一些情况下, 一个BNF辅助定义可能不会出现在这个BNF表达式里, 但是在其他地方是有用的. 比如说, 思考下面的定义:
 
 ```BNF
 case keyform {normal-clause}* [otherwise-clause] => result*
@@ -304,7 +304,7 @@ otherwise-clause::= ({otherwise | t} form*)
 clause::= normal-clause | otherwise-clause
 ```
 
-这里的术语 \``clause'' 似乎是 \``dead'' 因为它没有被使用于上面的BNF表达式里. 然而, 这个BNF的目的并不只是引导解析, 但是也定义有用的术语为了跟在后面的描述性文本的参考. 像这个样子, 术语 \``clause'' 可能出现在后面跟着的文本中, 作为 \``normal-clause or otherwise-clause.'' 的速记.<!-- TODO 待校验 -->
+这里的术语 \``clause'' 似乎是 \``dead'' 因为它没有被使用于上面的BNF表达式里. 然而, 这个BNF的目的并不只是引导解析, 但是也定义有用的术语为了给在后面的描述性文本作参考. 像这个样子, 术语 \``clause'' 可能出现在后面跟着的文本中, 作为 \``normal-clause or otherwise-clause.'' 的速记法.
 
 
 #### 1.4.1.3 <span id = "SpecialSymbols">特殊符号</span>
@@ -347,7 +347,7 @@ OR=>
 
      (char-name #\a) =>  implementation-dependent
 
-    但是它的意图是提供额外的信息去说明这些结果中可能会根据实现而不同.<!-- TODO 待验证 -->
+    但是它的意图是提供额外的信息去说明这些结果中可能会根据实现而不同.
 
 NOT=>
 
@@ -463,17 +463,17 @@ Figure 1-1. NIL表示法
 
 一个函数在一些情况下被说成 \``be false'' 或者 \``be true''. 因为看作布尔值时没有函数对象等同于 nil 并且所有函数对象都表示true, 所以去说一个函数是false是无意义的, 去说它是true是无聊的. 这些只是表示函数 \``returns false'' 或着 \``returns true,'' 的传统方式.
 
-#### 1.4.1.5 Designators
+#### 1.4.1.5 <span id = "Designators">标志符</span>
 <!-- TODO 待校验 -->
 designator 是一个表示另一个对象的对象.
 
-一个操作符的参数被描述为 designator 的地方, 这个操作符的描述以假定这个参数的值是指定的对象的方式编写; 这就表示, 这个参数是已指定的类型. (这个对象的具体类型由一个 \``<\<type>> designator'' 或者 \``designator for a <\<type>>'' 指定, 可以在结尾的词汇表中找到 \``<\<type>> designator.'')
+一个操作符的参数被描述为标志符的地方, 这个操作符的描述以假定这个参数的值是指定的对象的方式编写; 这就表示, 这个参数是已指定的类型. (这个对象的具体类型由一个 \``<\<type>> designator'' 或者 \``designator for a <\<type>>'' 指定, 可以在结尾的词汇表中找到 \``<\<type>> designator.'')
 
-比如, \``nil'' 和 ``the value of *standard-output*'' 作为流 designators 是操作上难以区分的 . 类似的, 作为string designators 符号 foo 和字符串 "FOO" 也是难以区分的.
+比如, \``nil'' 和 ``the value of \*standard-output*'' 作为流 designators 是操作上难以区分的 . 类似的, 作为标志符, 符号 foo 和字符串 "FOO" 也是难以区分的.
 
 除了另外的提示, 在这个指定的对象被多次使用的情况下, 这个对象是只求值一次还是被使用时每次都求值, 取决于具体的实现.
 
-比如, mapcar 接受一个函数指定作为参数, 并且它的描述中写的就像它只是个函数. 事实上这个函数designator 是被马上求值还是在表达式形式的内部在每次被需要的时候求值是跟具体实现相关的. 大部分情况下, 程序不能发现其中的区别, 但是也有一些不正常的情况 (尤其是那些包含自身重定义或者相互重定义的函数) 确实符合并且发现这个区别. 下面的程序就是一个conforming program, 但是可能有或者没有确定的值, 取决于它的正确性是否依赖一个或其他的结果:
+比如, mapcar 接受一个函数指定作为参数, 并且它的描述中写的就像它只是个函数. 事实上这个函数标志符是被马上求值还是在表达式形式的内部在每次被需要的时候求值是跟具体实现相关的. 大部分情况下, 程序不能发现其中的区别, 但是也有一些不正常的情况 (尤其是那些包含自身重定义或者相互重定义的函数) 确实符合并且发现这个区别. 下面的程序就是一个合格的程序, 但是可能有或者没有确定的值, 取决于它的正确性是否依赖一个或其他的结果:
 
 ```Lisp
  (defun add-some (x)
@@ -484,7 +484,7 @@ designator 是一个表示另一个对象的对象.
 OR=>  (2 4 5 6)
 ```
 
-在一些罕见的情况下, 这里可能有个需要在字典中去提及这个最初的designator对象为一个参数. 因为对一个参数取名会提及表示的对象, 短语 ``the <\<parameter-name>> designator'' 可以被用于提及来自于<\<parameter-name>> 被计算的值的 designator.
+在一些罕见的情况下, 这里可能有个需要在字典中去提及这个最初的designator对象为一个参数. 因为对一个参数取名会提及表示的对象, 短语 ``the <\<parameter-name>> designator'' 可以被用于提及来自于<\<parameter-name>> 被计算的值的标志符.
 
 #### 1.4.1.6 <span id = "NonsenseWords">无意义的单词</span>
 
@@ -646,7 +646,7 @@ A warning might be issued
 
 #### 1.4.4.5 <span id = "ClassPrecedenceListSDE">``Class Precedence List'' 字典条目部分</span>
 
-这个出现在类的字典条目, 并且包含一个Common Lisp定义的类的列表<!-- TODO 这个列表是什么 -->, 必须存在这个类的优先级列表中.
+这个出现在类的字典条目, 并且包含一个必须存在这个类的优先级列表中的Common Lisp定义的类的列表.
 
 其他依赖于具体实现的类出现在实现的类的优先级列表中是允许的.
 
@@ -711,8 +711,8 @@ A warning might be issued
     这个函数处理的情况.
     可能被这个函数检测到的情况.
 
-<!-- TODO 解析不了，待请教 -->
-This field does not include conditions that could be signaled by functions passed to and called by this operator as arguments or through dynamic variables, 如果是宏或特殊操作符, 也不包括这个操作符的执行子形式nor by executing subforms of this operator if it is a macro or special operator.
+<!-- TODO 有疑问 -->
+该字段不包含可以通过传递给函数的函数来表示的条件，该操作符作为参数或通过动态变量进行调用，如果它是宏或特殊操作符, 也不包括该操作符的子形式.
 
 #### 1.4.4.11 <span id = "InitialValueSDE">``Initial Value'' 字典条目部分</span>
 
@@ -728,7 +728,7 @@ This field does not include conditions that could be signaled by functions passe
 
 F (x class) (y t) &optional z &key k
 
-这个签名表示这个广义函数F的方法有两个需要的参数: 必须是类class的实例的x; 还有可以是任何对象的 y (换句话说, 可以类 t 的泛化实例). 另外, 这里有一个可选的参数z 和一个关键字参数k. 这个签名也表示这个方法F是一个主方法并且没有修饰. <!-- TODO 修饰？？ -->
+这个签名表示这个广义函数F的方法有两个需要的参数: 必须是类class的实例的x; 还有可以是任何对象的 y (换句话说, 可以类 t 的泛化实例). 另外, 这里有一个可选的参数z 和一个关键字参数k. 这个签名也表示这个方法F是一个主方法并且没有限定符.
 
 对于每个参数, 提供的实参必须是对应的广义函数描述的类型和方法签名里的类型的交集 (不仅仅是这个说明书里定义的方法, 也包括在允许定义方法的地方具体实现定义的或者用户定义的).
 
@@ -901,7 +901,7 @@ F a b c => x, y, z
 
 如果没有参数也没有返回值, 一个特别的标记被用于使这个更显而易见. 比如,
 
-F <no arguments> => <no values>
+F \<no arguments> => \<no values>
 
 表示这个 F 操作符不接受参数和返回值.
 
@@ -924,9 +924,9 @@ F a b c =>|
 除非明确指定外, 违反这个类型约束时结果是不可预测的.
 
 
-## 1.5 Conformance
+## 1.5 <span id = "Conformance">一致性</span>
 
-这个标准提出了一个合格实现需要去实现的语法和语义 (以及它的附加文档). 另外, it imposes requirements on conforming programs. <!-- TODO -->
+这个标准提出了一个合格实现需要去实现的语法和语义 (以及它的附加文档). 另外, 它对符合规范的程序加了一些要求.
 
 > * 1.5.1 合格的实现(#ComformingImpl)
 > * 1.5.2 合格的程序(#ComformingProg)
@@ -980,7 +980,7 @@ F a b c =>|
 
 ``<\<Implementation>> conforms with the requirements of ANSI <\<standard number>> with the following exceptions: <\<reference to or complete list of the requirements of the standard with which the implementation does not conform>>.'' 
 
-### 1.5.2 <span id = "ComformingProg">合格的程序ssss</span>
+### 1.5.2 <span id = "ComformingProg">合格的程序</span>
 
 符合这个规范的代码应该坚持下面几条:
 
