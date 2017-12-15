@@ -598,28 +598,28 @@ A warning might be issued
 
 这个章节定义了每个可能出现在字典章节的条目的意义.
 
-> * 1.4.4.1 ``Affected By'' 字典条目部分(#AffectedBySDE)
-> * 1.4.4.2 ``Arguments'' 字典条目部分(#ArgumentsSDE)
-> * 1.4.4.3 ``Arguments and Values'' 字典条目部分(#ArgumentsAndValuesSDE)
-> * 1.4.4.4 ``Binding Types Affected'' 字典条目部分(#BindingTypesAffectedSDE)
-> * 1.4.4.5 ``Class Precedence List'' 字典条目部分(#ClassPrecedenceListSDE)
-> * 1.4.4.6 类型标识符的字典条目(#DictionaryEntriesForTS)
-> * 1.4.4.7 ``Constant Value'' 字典条目部分(#ConstantValue)
-> * 1.4.4.8 ``Description'' 字典条目部分(#DescriptionSDE)
-> * 1.4.4.9 ``Examples'' 字典条目部分(#ExamplesSDE)
-> * 1.4.4.10 ``Exceptional Situations'' 字典条目部分(#ExceptionalSituationsSED)
-> * 1.4.4.11 ``Initial Value'' 字典条目部分(#InitialValueSDE)
-> * 1.4.4.12 ``Argument Precedence Order'' 字典条目部分(#ArgumentPrecedenceOrderSDE)
-> * 1.4.4.13 ``Method Signature'' 字典条目部分(#MethodSignatureSDE)
-> * 1.4.4.14 ``Name'' 字典条目部分(#NameSDE)
-> * 1.4.4.15 ``Notes'' 字典条目部分(#NotesSDE)
-> * 1.4.4.16 ``Pronunciation'' 字典条目部分(#PronunciationSDE)
-> * 1.4.4.17 ``See Also'' 字典条目部分(#SeeAlsoSDE)
-> * 1.4.4.18 ``Side Effects'' 字典条目部分(#SideEffectsSDE)
-> * 1.4.4.19 ``Supertypes'' 字典条目部分(#SupertypesSDE)
-> * 1.4.4.20 ``Syntax'' 字典条目部分(#SyntaxSDE)
-> * 1.4.4.21 ``Valid Context'' 字典条目部分(#ValidContextSDE)
-> * 1.4.4.22 ``Value Type'' 字典条目部分(#ValueTypeSDE)
+> * 1.4.4.1 [``Affected By'' 字典条目部分](#AffectedBySDE)
+> * 1.4.4.2 [``Arguments'' 字典条目部分](#ArgumentsSDE)
+> * 1.4.4.3 [``Arguments and Values'' 字典条目部分](#ArgumentsAndValuesSDE)
+> * 1.4.4.4 [``Binding Types Affected'' 字典条目部分](#BindingTypesAffectedSDE)
+> * 1.4.4.5 [``Class Precedence List'' 字典条目部分](#ClassPrecedenceListSDE)
+> * 1.4.4.6 [类型标识符的字典条目](#DictionaryEntriesForTS)
+> * 1.4.4.7 [``Constant Value'' 字典条目部分](#ConstantValue)
+> * 1.4.4.8 [``Description'' 字典条目部分](#DescriptionSDE)
+> * 1.4.4.9 [``Examples'' 字典条目部分](#ExamplesSDE)
+> * 1.4.4.10 [``Exceptional Situations'' 字典条目部分](#ExceptionalSituationsSED)
+> * 1.4.4.11 [``Initial Value'' 字典条目部分](#InitialValueSDE)
+> * 1.4.4.12 [``Argument Precedence Order'' 字典条目部分](#ArgumentPrecedenceOrderSDE)
+> * 1.4.4.13 [``Method Signature'' 字典条目部分](#MethodSignatureSDE)
+> * 1.4.4.14 [``Name'' 字典条目部分](#NameSDE)
+> * 1.4.4.15 [``Notes'' 字典条目部分](#NotesSDE)
+> * 1.4.4.16 [``Pronunciation'' 字典条目部分](#PronunciationSDE)
+> * 1.4.4.17 [``See Also'' 字典条目部分](#SeeAlsoSDE)
+> * 1.4.4.18 [``Side Effects'' 字典条目部分](#SideEffectsSDE)
+> * 1.4.4.19 [``Supertypes'' 字典条目部分](#SupertypesSDE)
+> * 1.4.4.20 [``Syntax'' 字典条目部分](#SyntaxSDE)
+> * 1.4.4.21 [``Valid Context'' 字典条目部分](#ValidContextSDE)
+> * 1.4.4.22 [``Value Type'' 字典条目部分](#ValueTypeSDE)
 
 #### 1.4.4.1 <span id = "AffectedBySDE">``Affected By'' 字典条目部分</span>
 
@@ -660,10 +660,10 @@ A warning might be issued
 
 复合类型说明符是那些 Figure 4-3 列出的名字. 这样的字典条目是 \``Class,'' \``System Class,'' \``Type,'' 或 \``Type Specifier'' 类型的. 如何去解释复合类型列表的描述是看它的car部分是 \``Compound Type Specifier Kind,'' \``Compound Type Specifier Syntax,'' \``Compound Type Specifier Arguments,'' 还有 \``Compound Type Specifier Description'' 中哪个字典条目章节中的符号.
 
-> * 1.4.4.6.1 ``Compound Type Specifier Kind'' 字典条目部分(#CTSKindSDE)
-> * 1.4.4.6.2 ``Compound Type Specifier Syntax'' 字典条目部分(#CTSSyntaxSDE)
-> * 1.4.4.6.3 ``Compound Type Specifier Arguments'' 字典条目部分(#CTSArgumentsSDE)
-> * 1.4.4.6.4 ``Compound Type Specifier Description'' 字典条目部分(#CTSDescriptionSDE)
+> * 1.4.4.6.1 [``Compound Type Specifier Kind'' 字典条目部分](#CTSKindSDE)
+> * 1.4.4.6.2 [``Compound Type Specifier Syntax'' 字典条目部分](#CTSSyntaxSDE)
+> * 1.4.4.6.3 [``Compound Type Specifier Arguments'' 字典条目部分](#CTSArgumentsSDE)
+> * 1.4.4.6.4 [``Compound Type Specifier Description'' 字典条目部分](#CTSDescriptionSDE)
 
 ##### 1.4.4.6.1 <span id = "CTSKindSDE">``Compound Type Specifier Kind'' 字典条目部分</span>
 
@@ -841,10 +841,10 @@ F x y &optional z &key k
 
 关于宏和特殊操作符, 语法已经通过修改的 BNF 标注给了; 见章节 1.4.1.2 (Modified BNF Syntax). 关于函数给定一个lambda列表. 然而在两种情况下, 最外层的括号和默认值信息省略了.
 
-> * 1.4.4.20.1 重载操作符特殊的 ``Syntax'' 表示法(#SpecialSyntaxNotations)
-> * 1.4.4.20.2 剩余参数的命名转化(#NamingConventions)
-> * 1.4.4.20.3 在 ``Syntax'' 部分需要非空剩余参数(#RequiringNonNullRestParameters)
-> * 1.4.4.20.4 在 ``Syntax'' 部分的返回值(#ReturnValuesInSyntaxSection)
+> * 1.4.4.20.1 [重载操作符特殊的 ``Syntax'' 表示法](#SpecialSyntaxNotations)
+> * 1.4.4.20.2 [剩余参数的命名转化](#NamingConventions)
+> * 1.4.4.20.3 [在 ``Syntax'' 部分需要非空剩余参数](#RequiringNonNullRestParameters)
+> * 1.4.4.20.4 [在 ``Syntax'' 部分的返回值](#ReturnValuesInSyntaxSection)
 
 ##### 1.4.4.20.1 <span id = "SpecialSyntaxNotations">重载操作符特殊的 ``Syntax'' 表示法</span>
 
@@ -926,19 +926,19 @@ F a b c =>|
 
 这个标准提出了一个合格实现需要去实现的语法和语义 (以及它的附加文档). 另外, 它对符合规范的程序加了一些要求.
 
-> * 1.5.1 合格的实现(#ComformingImpl)
-> * 1.5.2 合格的程序(#ComformingProg)
+> * 1.5.1 [合格的实现](#ComformingImpl)
+> * 1.5.2 [合格的程序](#ComformingProg)
 
  
 ### 1.5.1 <span id = "ComformingImpl">合格的实现</span>
 
 一个合格的实现应该遵守这个章节中所述的要求.
 
-> * 1.5.1.1 需要的语言特性(#RequiredLanguageFeatures)
-> * 1.5.1.2 依赖具体实现的特性文档(#DocImplDepFeatures)
-> * 1.5.1.3 扩展文档(#DocExtensions)
-> * 1.5.1.4 异常情况的处理(#TreatmentExceptionalSituations)
-> * 1.5.1.5 一致性声明(#ConformanceStatement)
+> * 1.5.1.1 [需要的语言特性](#RequiredLanguageFeatures)
+> * 1.5.1.2 [依赖具体实现的特性文档](#DocImplDepFeatures)
+> * 1.5.1.3 [扩展文档](#DocExtensions)
+> * 1.5.1.4 [异常情况的处理](#TreatmentExceptionalSituations)
+> * 1.5.1.5 [一致性声明](#ConformanceStatement)
 
 #### 1.5.1.1 <span id = "RequiredLanguageFeatures">需要的语言特性</span>
 
@@ -992,8 +992,8 @@ F a b c =>|
 
     合格的代码不依赖于一个具体实现的扩展.
 
-> * 1.5.2.1 具体实现定义的语言特征的使用(#UseImplDefLangFeature)
-> * 1.5.2.2 可移植代码的字符集(#CharsetForPortCode)
+> * 1.5.2.1 [具体实现定义的语言特征的使用](#UseImplDefLangFeature)
+> * 1.5.2.2 [可移植代码的字符集](#CharsetForPortCode)
 
 
 #### 1.5.2.1 <span id = "UseImplDefLangFeature">具体实现定义的语言特征的使用</span>
@@ -1068,10 +1068,10 @@ F a b c =>|
 
 符合规范的程序可以使用废弃的语言特性; 然而, 避免使用它们是良好的编程风格. 在编译的时候允许编译器对这些特性的使用产生警告, 但是在程序执行的时候不应该有警告. 
 
-> * 1.8.1 废弃的函数(#DeprecatedFunctions)
-> * 1.8.2 废弃的参数约定(#DeprecatedArgumentConventions)
-> * 1.8.3 废弃的变量(#DeprecatedVariables)
-> * 1.8.4 废弃的读取语法(#DeprecatedReaderSyntax)
+> * 1.8.1 [废弃的函数](#DeprecatedFunctions)
+> * 1.8.2 [废弃的参数约定](#DeprecatedArgumentConventions)
+> * 1.8.3 [废弃的变量](#DeprecatedVariables)
+> * 1.8.4 [废弃的读取语法](#DeprecatedReaderSyntax)
 
 ### 1.8.1 <span id = "DeprecatedFunctions">废弃的函数</span>
 
