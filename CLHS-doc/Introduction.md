@@ -523,10 +523,9 @@ An error should be signaled
 
     这个意味着一个错误在安全的代码中发出, 并且一个错误可能在不安全的代码中发出. 合格的代码可能依赖错误会在安全代码中发出这一事实. 每一个实现至少需要在安全的代码中去检测这个错误. 当这个错误没有发出, the ``consequences are undefined'' (见下方). 比如, ``+ should signal an error of type type-error if any argument is not of type number.''
 
-<!-- TODO 待验证-->
 Should be prepared to signal an error
 
-    这个类似于 ``should be signaled'', 除了这个不需要在这个操作上采取额外工作去发现错误的情况 except that it does not imply that `extra effort' has to be taken on the part of an operator to discover an erroneous situation 如果这个操作符正常的动作可以在懒检测下被成功运行if the normal action of that operator can be performed successfully with only `lazy' checking. 一个实现总是允许去发出一个错误, 但是即使在安全代码里, 只需要发出这个错误, 如果没有发出可能导致不正确的结果. 在不安全代码中, the consequences are undefined.
+    这个类似于 ``should be signaled'', 但它并不意味着如果操作符的正常操作只能通过惰性检查成功地执行，那么就必须在操作符的部分上采取额外动作来发现错误的情况. 一个实现总是允许去发出一个错误, 但是即使在安全代码里, 只需要发出这个错误, 如果没有发出可能导致不正确的结果. 在不安全代码中, 结果是未定义的.
 
     比如, 定义 ``find should be prepared to signal an error of type type-error if its second argument is not a proper list'' 不表示一定会发出一个错误 . 这个表达式形式
 
@@ -540,10 +539,9 @@ Should be prepared to signal an error
 
     (find 'd '#1=(a b . #1#))
 
-    在安全代码中可能返回 nil (作为一个具体实现定义的扩展), 可能从来不返回, 或者发出一个 type-error 类型的错误. 安全的代码中, the consequences are undefined.
+    在安全代码中可能返回 nil (作为一个具体实现定义的扩展), 可能从来不返回, 或者发出一个 type-error 类型的错误. 安全的代码中, 结果是未定义的.
 
     通常, 这个 ``should be prepared to signal'' 术语被用于类型检测的情况, 其中存在效率考虑, 使检测错误变得不切实际 , 改正操作符的行为不是实质性的.
-<!--TODO 待校验-->
 
 The consequences are unspecified
 
