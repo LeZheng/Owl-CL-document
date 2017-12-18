@@ -1,34 +1,7 @@
-Chapter 32. Platform Specific Extensions
+# 章节 32. 平台相关的扩展
 
-Table of Contents
-
-32.1. Random Screen Access
-32.2. External Modules
-
-    32.2.1. Overview
-    32.2.2. Module initialization
-    32.2.3. Module finalization
-    32.2.4. Function EXT:MODULE-INFO
-    32.2.5. Function SYS::DYNLOAD-MODULES
-    32.2.6. Example
-    32.2.7. Module tools
-
-        32.2.7.1. Modprep
-        32.2.7.2. clisp.h
-        32.2.7.3. Exporting
-
-    32.2.8. Trade-offs: “FFI” vs. C modules
-    32.2.9. Modules included in the source distribution
-
-        32.2.9.1. Base Modules
-        32.2.9.2. Database, Directory et al
-        32.2.9.3. Mathematics, Data Mining et al
-        32.2.9.4. Matching, File Processing et al
-        32.2.9.5. Communication, Networking
-        32.2.9.6. Graphics
-        32.2.9.7. Bindings
-        32.2.9.8. Toys and Games
-
+> * 32.1 [随机屏幕访问](#RandomScreenAccess)
+> * 32.2 [扩展模块](#ExternalModules)
 32.3. The Foreign Function Call Facility
 
     32.3.1. Introduction
@@ -82,54 +55,100 @@ Table of Contents
 
 32.8. Operating System Environment
 
-32.1. 随机屏幕访问
+## 32.1. <span id = "RandomScreenAccess">随机屏幕访问</span>
 
-原文见：https://clisp.sourceforge.io/impnotes/screen.html﻿
-平台依赖: 仅限 UNIX, Win32.﻿
+平台依赖: 仅限 UNIX, Win32.
 
-(SCREEN:MAKE-WINDOW)
+``(SCREEN:MAKE-WINDOW)``
+    
     返回一个 WINDOW-STREAM. 只要这个流被打开, 这个终端就一直在 cbreak/noecho 模式. *TERMINAL-IO* 在这段时间里不应该被用于输入输出. (应该使用 EXT:WITH-KEYBOARD 和 EXT:*KEYBOARD-INPUT* .)
-(SCREEN:WITH-WINDOW . body)
+
+``(SCREEN:WITH-WINDOW . body)``
+
     绑定 SCREEN:*WINDOW* 给一个 WINDOW-STREAM 然后执行 body. 当离开body时，这个流保证会被关闭. 在执行期间, *TERMINAL-IO* 不应该被使用, 同上.
-(SCREEN:WINDOW-SIZE window-stream)
+
+``(SCREEN:WINDOW-SIZE window-stream)``
+
     返回这个窗口的size, 以两个值返回: height (= ymax+1) 和 width (= xmax+1).
-(SCREEN:WINDOW-CURSOR-POSITION window-stream)
+
+``(SCREEN:WINDOW-CURSOR-POSITION window-stream)``
+
     返回这个窗口中的光标位置, 以两个值返回: line (≥0, ≤ymax, 0 意味着顶层), column (≥0, ≤xmax, 0 意味着左边缘).
-(SCREEN:SET-WINDOW-CURSOR-POSITION window-stream line column)
+
+``(SCREEN:SET-WINDOW-CURSOR-POSITION window-stream line column)``
+
     设置窗口中的光标位置.
-(SCREEN:CLEAR-WINDOW window-stream)
+
+``(SCREEN:CLEAR-WINDOW window-stream)``
+
     清理窗口内容，把光标放在左上角.
-(SCREEN:CLEAR-WINDOW-TO-EOT window-stream)
+
+``(SCREEN:CLEAR-WINDOW-TO-EOT window-stream)``
+
     清理窗口中从光标位置至窗口结束内容.
-(SCREEN:CLEAR-WINDOW-TO-EOL window-stream)
+
+``(SCREEN:CLEAR-WINDOW-TO-EOL window-stream)``
+
     清理窗口中从光标位置到行结束.
-(SCREEN:DELETE-WINDOW-LINE window-stream)
+
+``(SCREEN:DELETE-WINDOW-LINE window-stream)``
+
     移除光标行, 把以后的行上移，清除最后行.
-(SCREEN:INSERT-WINDOW-LINE window-stream)
+
+``(SCREEN:INSERT-WINDOW-LINE window-stream)``
+
     在光标行插入一行, 以后的行下移一位.
-(SCREEN:HIGHLIGHT-ON window-stream)
+
+``(SCREEN:HIGHLIGHT-ON window-stream)``
+
     打开输出高亮.
-(SCREEN:HIGHLIGHT-OFF window-stream)
+
+``(SCREEN:HIGHLIGHT-OFF window-stream)``
+
     关闭输出高亮.
-(SCREEN:WINDOW-CURSOR-ON window-stream)
+
+``(SCREEN:WINDOW-CURSOR-ON window-stream)``
+
     使光标可见, 大部分实现里是一个光标块.
-(SCREEN:WINDOW-CURSOR-OFF window-stream)
+
+``(SCREEN:WINDOW-CURSOR-OFF window-stream)``
+
     使光标不可见, 在实现中可能可用.
 
-﻿32.2. 扩展模块（External Modules）
+## 32.2. <span id = "ExternalModules">扩展模块</span>
 
-原文见：https://clisp.sourceforge.io/impnotes/modules.html
+> * 32.2.1 [概述](#Overview)
+> * 32.2.2 [Module initialization](#ModuleInitialization)
+> * 32.2.3 [Module finalization](#ModuleFinalization)
+> * 32.2.4 [Function EXT:MODULE-INFO](#FunModuleInfo)
+> * 32.2.5 [Function SYS::DYNLOAD-MODULES](#FunDynloadModule)
+> * 32.2.6 [Example](#ExternalModulesExample)
+> * 32.2.7 [Module tools](#ModuleTools)
+
+> * 32.2.7.1 [Modprep](#Modprep)
+> * 32.2.7.2 [clisp.h](#CLISPH)
+> * 32.2.7.3 [Exporting](#Exporting)
+
+> * 32.2.8 [Trade-offs: “FFI” vs. C modules](#FFIVSCModule)
+> * 32.2.9 [Modules included in the source distribution](#ModulesIncludeSrcDist)
+
+> * 32.2.9.1 [Base Modules](#Base Modules)
+> * 32.2.9.2 [Database, Directory et al](#DatabaseDir)
+> * 32.2.9.3 [Mathematics, Data Mining et al](#MathDateMin)
+> * 32.2.9.4 [Matching, File Processing et al](#MatchFileProc)
+> * 32.2.9.5 [Communication, Networking](#CommunicationNet)
+> * 32.2.9.6 [Graphics](#Graphics)
+> * 32.2.9.7 [Bindings](#Bindings)
+> * 32.2.9.8 [Toys and Games](#ToyAndGame)
+
 平台依赖:仅限 UNIX, Win32.
- 
 
-32.1. Create a module set with GNU libc bindings
+**Win32 上的模块**
 
-Win32 上的模块
+    当使用 Cygwin 或者 MinGW 时，本章节所述的所有东西都可以不经变换工作在 Win32, 除了一样 - 你需要去替换 lisp.run  的扩展名 run 为 Win32 可执行文件的扩展名 exe.
+    出于历史原因, 所有示例都假定 UNIX 并为 CLISP runtime使用 run 文件类型 (“extension”) . 这个并不意味着它不能工作在 Win32 上.
 
-当使用 Cygwin 或者 MinGW 时，本章节所述的所有东西都可以不经变换工作在 Win32, 除了一样 - 你需要去替换 lisp.run  的扩展名 run 为 Win32 可执行文件的扩展名 exe.
-
-出于历史原因, 所有示例都假定 UNIX 并为 CLISP runtime使用 run 文件类型 (“extension”) . 这个并不意味着它不能工作在 Win32 上.
-32.2.1. 概述
+### 32.2.1 <span id = "Overview">概述</span>
 
 外部模块（External modules） 是一种为 CLISP 添加扩展的机制 (比方说用 C 写的 ) . 通过使用外部模块扩展 CLISP 需要去创建一个 module set 并且 通过使用 clisp-link 去创建一个包含扩展的新的 linking set 来加到一个已存在的 linking set .
 模块集（Module Set）
@@ -139,8 +158,11 @@ Win32 上的模块
 更形式地说, 模块集是包含了以下部分的目录:
 
 link.sh
-        一些 /bin/sh 命令, 准备链接用的目录, 并且设置一些环境变量, 见 the section called “Module set variables”
-定义这个模块功能的所有其他文件
+
+        一些 /bin/sh 命令, 准备链接用的目录, 并且设置一些环境变量, 见 the section called "Module set variables"
+
+**定义这个模块功能的所有其他文件**
+
         被 link.sh 所需要的
 
 在 link.sh 中这个模块集目录被 $modulename/ 这个变量所引用.
@@ -148,85 +170,91 @@ link.sh
 一个模块的名字必须用这些字符定义： A-Z, a-z, _, 0-9.
 
 模块名字 “clisp” 是预留的.
-链接集（Linking Set）
+
+**链接集（Linking Set）**
 
 一个链接集（ linking set ）是一个文件集合 (runtime, memory image &c) ，它执行两个主要任务:
 
-    运行 CLISP: 去运行一个被包含在链接集目录的 CLISP , 调用
+    1.运行 CLISP: 去运行一个被包含在链接集目录的 CLISP , 调用
     $ directory/lisp.run -M directory/lispinit.mem
-
     或者
-
     $ clisp -K directory
-
     (这个是比较推荐的, 因为这种方式也传递 -B 给 runtime).
-    添加一个模块集 module set 去创建一个新的包含这个模块功能的链接集 linking set.
+
+    2.添加一个模块集 module set 去创建一个新的包含这个模块功能的链接集 linking set.
 
 这个 CLISP 构建目录包含了三个链接集在目录 boot, base, 以及 full, 另外一个 CLISP 安装版通常包含两个链接集: base, 以及 full
 
 更加形式地说, 一个链接集 linking set 是一个至少包含以下文件的目录:
 
 lisp.run
+
         一个可执行的 runtime
+
 lispinit.mem
+
         是一个 memory image
+
 modules.h
+
         这个 linking set包含的模块列表
+
 modules.o
+
         这个 linking set 中的模块编译链表
+
 makevars
 
         一些 /bin/sh 命令, 配置的变量
 
-    CC
-    	C编译器
+    CC          C编译器
+    CPPFLAGS    预处理和编译时C编译器的标识
+    CFLAGS      编译和链接时C编译器的标识
+    CLFLAGS     链接时C编译器的标识
+    LIBS        链接时用的库 (包括当前链接集目录中的, 或者是系统范围的)
+    X_LIBS      额外要用的的 X Window System 库
+    RANLIB      ranlib 命令
+    FILES       链接时需要的文件列表
 
-    CPPFLAGS
-    	预处理和编译时C编译器的标识
-
-    CFLAGS
-    	编译和链接时C编译器的标识
-
-    CLFLAGS
-    	链接时C编译器的标识
-
-    LIBS
-    	链接时用的库 (包括当前链接集目录中的, 或者是系统范围的)
-
-    X_LIBS
-    	额外要用的的 X Window System 库
-
-    RANLIB
-    	ranlib 命令
-
-    FILES
-    	链接时需要的文件列表
 所有这些文件
+        
         列在 makevars
 
-模块集和链接集上的操作
+**模块集和链接集上的操作**
 
 通过使用 clisp-link 来创建, 添加和安装模块集.
 
 见 Section 32.2.6, “Example”.
-模块集中的变量
+
+**模块集中的变量**
 
 以下这些变量应该被定义在 link.sh.
 
 NEW_FILES
+    
     属于这个模块集的空格分割的对象文件列表，并且属于每一个链接这个模块集的链接集 .
+
 NEW_LIBS
+
     这个空格分割的对象文件、库还有需要在链接一个属于新的 linking set 的 lisp.run 时给C编译器的C编译器开关列表.
+
 NEW_MODULES
+
     属于这个模块集的模块名字列表，以空格分割. 通常, 每一个这个模块集中的  #P".c" 文件定义了一个它自己的模块. 这个模块名字通常来源于模块名.
+
 TO_LOAD
+    
     在构建一个属于新的链接集的 lispinit.mem 之前，需要加载的Lisp文件的列表，用空格分割.
+
 TO_PRELOAD (optional)
 
     在构建这个属于一个新的 linking set 的 lispinit.mem 之前，这个变量里列出的Lisp文件的列表会被加载进一个中间 lispinit.mem 文件. 这个变量通常被用于创建 (或者解锁) 当一个新的 #P".c" 文件初始化时需要用到的  Lisp 包 . E.g., 这个 FFI:DEF-CALL-IN 函数必须归属于一个已定义的包; 见 Example 32.7, “Calling Lisp from C”. 你可以在 modules/syscalls/preload.lisp 和 modules/syscalls/link.sh.in 找到一个现成的例子。
     警告
 
+**警告**
+
     如果你想解锁一个包, 你也必须在这里从 CUSTOM:*SYSTEM-PACKAGE-LIST* 里  DELETE 它 (见 Section 31.2, “Saving an Image”)  然后在其中一个 TO_LOAD 文件中再把它加到 CUSTOM:*SYSTEM-PACKAGE-LIST* 中. 见, e.g., modules/i18n/preload.lisp 和 modules/i18n/link.sh.in.
+<!-- TODO 2017.12.18 -->
 
 32.2.2. 模块初始化
 
