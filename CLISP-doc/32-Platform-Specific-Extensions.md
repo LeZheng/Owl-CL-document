@@ -118,28 +118,14 @@
 ## 32.2. <span id = "ExternalModules">扩展模块</span>
 
 > * 32.2.1 [概述](#Overview)
-> * 32.2.2 [Module initialization](#ModuleInitialization)
-> * 32.2.3 [Module finalization](#ModuleFinalization)
-> * 32.2.4 [Function EXT:MODULE-INFO](#FunModuleInfo)
-> * 32.2.5 [Function SYS::DYNLOAD-MODULES](#FunDynloadModule)
-> * 32.2.6 [Example](#ExternalModulesExample)
-> * 32.2.7 [Module tools](#ModuleTools)
-
-> * 32.2.7.1 [Modprep](#Modprep)
-> * 32.2.7.2 [clisp.h](#CLISPH)
-> * 32.2.7.3 [Exporting](#Exporting)
-
-> * 32.2.8 [Trade-offs: “FFI” vs. C modules](#FFIVSCModule)
-> * 32.2.9 [Modules included in the source distribution](#ModulesIncludeSrcDist)
-
-> * 32.2.9.1 [Base Modules](#Base Modules)
-> * 32.2.9.2 [Database, Directory et al](#DatabaseDir)
-> * 32.2.9.3 [Mathematics, Data Mining et al](#MathDateMin)
-> * 32.2.9.4 [Matching, File Processing et al](#MatchFileProc)
-> * 32.2.9.5 [Communication, Networking](#CommunicationNet)
-> * 32.2.9.6 [Graphics](#Graphics)
-> * 32.2.9.7 [Bindings](#Bindings)
-> * 32.2.9.8 [Toys and Games](#ToyAndGame)
+> * 32.2.2 [模块初始化](#ModuleInitialization)
+> * 32.2.3 [模块释放](#ModuleFinalization)
+> * 32.2.4 [函数 EXT:MODULE-INFO](#FunModuleInfo)
+> * 32.2.5 [函数 SYS::DYNLOAD-MODULES](#FunDynloadModule)
+> * 32.2.6 [示例](#ExternalModulesExample)
+> * 32.2.7 [模块工具](#ModuleTools)
+> * 32.2.8 [平衡比较: “FFI” vs. C modules](#FFIVSCModule)
+> * 32.2.9 [包含在源码发行版中的模块](#ModulesIncludeSrcDist)
 
 平台依赖:仅限 UNIX, Win32.
 
@@ -253,16 +239,15 @@ TO_PRELOAD (optional)
 
 **警告**
 
-    如果你想解锁一个包, 你也必须在这里从 CUSTOM:*SYSTEM-PACKAGE-LIST* 里  DELETE 它 (见 Section 31.2, “Saving an Image”)  然后在其中一个 TO_LOAD 文件中再把它加到 CUSTOM:*SYSTEM-PACKAGE-LIST* 中. 见, e.g., modules/i18n/preload.lisp 和 modules/i18n/link.sh.in.
-<!-- TODO 2017.12.18 -->
+    如果你想解锁一个包, 你也必须在这里从 CUSTOM:*SYSTEM-PACKAGE-LIST* 里  DELETE 它 (见 Section 31.2, “Saving an Image”)  然后在其中一个 TO_LOAD 文件中再把它加到 CUSTOM:*SYSTEM-PACKAGE-LIST* 中. 见, 比如, modules/i18n/preload.lisp 和 modules/i18n/link.sh.in.
 
-32.2.2. 模块初始化
+### 32.2.2 <span id = "ModuleInitialization">模块初始化</span>
 
 每一个模块都有2个初始化函数:
 
 void module__name__init_function_1 (struct module_t* module)
 
-    在 CLISP 在加载一个 memory image 时发现在执行文件 (lisp.run) 中有一个模块在这个镜像保存时没有出现，就会去调用一次这个函数 . 它可以被用于创建Lisp对象, e.g. 函数或关键字，另外也被modprep 用于这个目的.
+    在 CLISP 在加载一个 memory image 时发现在执行文件 (lisp.run) 中有一个模块在这个镜像保存时没有出现，就会去调用一次这个函数 . 它可以被用于创建Lisp对象, 比如函数或关键字，另外也被modprep 用于这个目的.
 
     你不需要自己定义这个函数; modprep 和 “FFI” 会帮你做这事.
 
@@ -273,9 +258,10 @@ void module__name__init_function_1 (struct module_t* module)
     警告
 
     如果你使用 modprep 并且定义了你自己的 “init-once” 函数, 它必须调用 module__name__init_function_1__modprep 函数!
+
 void module__name__init_function_2 (struct module_t* module)
 
-    每一次 CLISP 启动都会调用. 它可以被用于给外部地址绑定名字, 因为在每次 CLISP 被调用这个地址都可能会不同, 而且确实被 “FFI” (e.g., by FFI:DEF-CALL-OUT) 用于这个目的. 它也可以用于给这个模块对接的库设置参数, e.g., pcre 模块设置 pcre_malloc 和 pcre_free.
+    每一次 CLISP 启动都会调用. 它可以被用于给外部地址绑定名字, 因为在每次 CLISP 被调用这个地址都可能会不同, 而且确实被 “FFI” (比如, 通过 FFI:DEF-CALL-OUT) 用于这个目的. 它也可以用于给这个模块对接的库设置参数, e.g., pcre 模块设置 pcre_malloc 和 pcre_free.
 
     你不需要自己去定义这个函数; modprep 和 “FFI” 帮你做这事.
 
@@ -284,25 +270,28 @@ void module__name__init_function_2 (struct module_t* module)
 name 是这个模块的模块名 module name.
 
 见 Section 31.1, “Customizing CLISP Process Initialization and Termination”.
-32.2.3. 模块释放
+
+### 32.2.3 <span id = "ModuleFinalization">模块释放</span>
 
 每一个模块都有一个析构函数
 
 void module__name__fini_function (struct module_t* module)
 
     在退出 CLISP 之前被调用.
-
     你不需要自己去定义这个函数; modprep 和 “FFI” 帮你做这事.
 
 name 是这个模块的模块名 module name.
 
 见 Section 31.1, “Customizing CLISP Process Initialization and Termination”.
-32.2.4. 函数 EXT:MODULE-INFO
+
+### 32.2.4. <span id = "FunModuleInfo">函数 EXT:MODULE-INFO</span>
 
 函数 (EXT:MODULE-INFO &OPTIONAL name verbose) 允许去查询一个模块在当前运行的镜像中是否可用. 当调用时没有传参,它会返回所有模块的名字, 以 “clisp” 作为第一个. 当 name 被指定而且是一个模块, 3个值会被返回 - name, subr-count, object-count. 当 verbose 不是NIL, 用C写的整个模块函数名列表(Subrs) 以及另外返回在C中可用的Lisp对象列表，总计5个值.
 
 当 name 是 :FFI,返回用 :LIBRARY 打开的动态库列表. 当 verbose 不是 NIL, 返回DLL 名字和所有外部对象的关联列表.
-32.2.5. 函数 SYS::DYNLOAD-MODULES
+
+### 32.2.5 <span id = "FunDynloadModule">函数 SYS::DYNLOAD-MODULES</span>
+
 平台依赖: 仅限在构建时没有配置标志 --without-dynamic-modules 的 CLISP .
 注意
 
@@ -311,8 +300,9 @@ name 是这个模块的模块名 module name.
 
 你可能从来不会去显式地调用函数 (这就是为什么在 “SYSTEM” 里而不是 “EXT”). 你应该通过以下来安装你的模块
 
+```SHELL
 $ clisp-link install name
-
+```
 通过 (REQUIRE name). 来加载。
 
 (SYS::DYNLOAD-MODULES filename ({name}+)) 函数加载共享对象或者库文件其中包含了一些扩展  CLISP 模块.
@@ -320,19 +310,21 @@ $ clisp-link install name
 
 这个方式不能被用于访问任意的动态库. 如果要达到这个目的, 应该传递 :LIBRARY 参数给 FFI:DEF-CALL-OUT 和FFI:DEF-C-VAR
 
- 
-
 这个 CLISP 的扩展模块是共享对象 (动态库)，其中包含了 module__name__subr_tab 变量. 这个为注册操作在lisp级别的结构的扩展函数提供机制.
 
 为了 dlopen 这模块, 你应该给模块的编译选项添加 -fPIC . 大致就像
+
+```SHELL
 $ cc -shared -o name.so name.o
+```
 
 可能需要生成一个共享对象文件.
-32.2.6. 示例
 
-32.1. 创建一个带有GNU libc 绑定的模块集（ Create a module set with GNU libc bindings ）
+### 32.2.6 <span id = "ExternalModulesExample">示例</span>
 
-示例 32.1. 用 GNU libc 绑定创建一个 module set
+32.1 创建一个带有GNU libc 绑定的模块集（ Create a module set with GNU libc bindings ）
+
+示例 32.1 用 GNU libc 绑定创建一个 module set
 
 为了在 GNU/Linux 操作系统下链接 “FFI” 绑定,需要以下几个步骤. (Step 1 和 step 2 不需要在这里执行.)
 
@@ -349,18 +341,24 @@ $ cc -shared -o name.so name.o
 
         为
         TO_LOAD='/pathname/bindings/linux.fas' 
+
     $ clisp -c /pathname/bindings/linux.lisp
     $ clisp-link add linux base base+linux
     $ base+linux/lisp.run -M base+linux/lispinit.mem -x '(linux:stat "/tmp")' 
 
-
-32.2.7. 模块工具
+### 32.2.7 <span id = "ModuleTools">模块工具</span>
 
 这里有一些工具来帮助编写模块.
-32.2.7.1. Modprep
+
+> * 32.2.7.1 [Modprep](#Modprep)
+> * 32.2.7.2 [clisp.h](#CLISPH)
+> * 32.2.7.3 [导出](#Exporting)
+
+#### 32.2.7.1 <span id = "Modprep">Modprep</span>
 
 如果你的模块是用 C 写的, 你可以在clisp发行版中用 modprep 预处理你的代码，用 DEFUN 宏来定义你的lisp函数:
 
+```
 DEFUN(MY-PACKAGE:MY-FUNCTION-NAME, arg1 arg2 &KEY FOO BAR) {
   if (!boundp(STACK_0)) STACK_0 = fixnum(0); /* BAR */
   if (!boundp(STACK_1)) STACK_1 = fixnum(1); /* FOO */
@@ -369,6 +367,7 @@ DEFUN(MY-PACKAGE:MY-FUNCTION-NAME, arg1 arg2 &KEY FOO BAR) {
   pushSTACK(``MY-PACKAGE::MY-FUNCTION-NAME``); /* double `` means FUNCTION */
   VALUES1(listof(7)); /* cons up a new list and clean up the STACK */
 }
+```
 
 然后 (MY-PACKAGE:MY-FUNCTION-NAME 'A 12 :FOO T) 会返回 (A 12 T 0 MY-PACKAGE::SOME-SYMBOL #(:THIS :IS :A :VECTOR) #<ADD-ON-SYSTEM-FUNCTION MY-PACKAGE:MY-FUNCTION-NAME>) (假定你从 “MY-PACKAGE” ﻿导出 MY-FUNCTION-NAME).
 
@@ -377,9 +376,13 @@ DEFUN(MY-PACKAGE:MY-FUNCTION-NAME, arg1 arg2 &KEY FOO BAR) {
 另一些有用的宏是:
 
 DEFVAR
+
     创建一个GC可见的私有对象。
+
 DEFFLAGSET
+
     定义一个 C 函数，它会从 STACK 上移除几个标志参数然后返回组合的标志值.
+    
 DEFCHECKER
     定义一个从cpp常量到lisp符号和函数的映射，这个映射检查参数是否合适。
 
@@ -387,7 +390,8 @@ DEFCHECKER
 警告
 
 如果你操纵lisp对象, 你需要去注意 GC-safety.
-32.2.7.2. clisp.h
+
+#### 32.2.7.2 <span id = "CLISPH">clisp.h</span>
 
 如果你的模块是用 C 写的, 你可能会要去 #include "clisp.h" 去访问 CLISP 对象. 你当然需要去读 "clisp.h" 以及一些已包含模块的代码, 但是这里有一些重要的建议，你需要牢记在心:
 
@@ -401,10 +405,11 @@ DEFCHECKER
     如果这个系统调用会阻塞 (e.g., read) 你就应该改用 begin_blocking_system_call() 和 end_blocking_system_call() . 当你在这个系统调用时，这种方式会允许其他线程运行. 这也就意味着，当这个系统调用时，有可能发生垃圾回收, 所以, 对于这个调用所有的对象类型的对象都是无效的. 也见 Section 35.5, “The burden of garbage-collection upon the rest of CLISP” 和 Section 35.7, “Garbage Collection and Multithreading”.
 
  
-32.2.7.3. Exporting
+#### 32.2.7.3 <span id = "Exporting">导出</span>
 
 如果你的模块用 “FFI” 对接一个 C 库, 你可能需要去使你的模块包 :CASE-SENSITIVE 然后在clisp发行版用 exporting.lisp 来创建 “FFI” 结构还有导出defun和defmacro等定义的符号. 以 modules/netica/, modules/matlab/ 还有 modules/bindings/ 为例.
-32.2.8. 平衡比较: “FFI” vs. C modules
+
+### 32.2.8 <span id = "FFIVSCModule">平衡比较: “FFI” vs. C modules</span>
 
 当决定了如何去写一个模块: 不管是 “FFI” 还是 C 配合 modprep, 都需要去考虑以下几个问题:
 
@@ -416,135 +421,198 @@ DEFCHECKER
       (:ARGUMENTS (s ffi:short)) (:RETURN-TYPE ffi:short) (:LANGUAGE :stdc))
 
     然后注意到 RAWSOCK:HTONS 差不多快了3倍 (这个确实比较了 “FFI” 和正常的lisp函数调用的开销 ， 因为 htons 在计算上很平常). 只有在你多次调用一个简单的函数时，这个差异会比较大, 在这种情况下把循环多次调用放到 C 里面是比较合理的.
+
 可移植性: C 获胜
 
-        “FFI” 不像CLISP 那样广泛的移植.所以可能面临在一个平台上 CLISP 运行但是 “FFI” 不可用的情况.
-        在 C 里面实现轻便性更容易些： 查看modules/rawsock/rawsock.c 中的  htonl 等等可替换的函数.
-        考虑 C 结构在不同平台上有不同的布局, 以及在一些平台上函数需要64位的参数，而在另一些平台上需要32位的参数; 当 C 为你处理这些时， “FFI” 代码仍然需要去面对这些差异.
+    “FFI” 不像CLISP 那样广泛的移植.所以可能面临在一个平台上 CLISP 运行但是 “FFI” 不可用的情况.
+    在 C 里面实现轻便性更容易些： 查看modules/rawsock/rawsock.c 中的  htonl 等等可替换的函数.
+    考虑 C 结构在不同平台上有不同的布局, 以及在一些平台上函数需要64位的参数，而在另一些平台上需要32位的参数; 当 C 为你处理这些时， “FFI” 代码仍然需要去面对这些差异.
 
 代码大小: “FFI” 获胜
+
     使用 “FFI” 你可以敲打更少的字符, 而且,如果你使用了 :LIBRARY 参数给 FFI:DEF-CALL-OUT 和 FFI:DEF-C-VAR, 你在调试你的代码时不需要离开 CLISP 会话. 这个在快速原型构建的时候有巨大的优越性.
+
 UI: C 获胜
+
     去构建一个新颖的像Lisp的 UI (通过使用 &OPTIONAL 和 &KEY参数等等), 当你在C中直接做这个时，你会需要去为你的 FFI:FOREIGN-FUNCTIONs 写一个lisp 包装.  “多态” 同理: 接受不同类型的参数 (就像 e.g., POSIX:RESOLVE-HOST-IPADDR 所做的) 会需要为 FFI:FOREIGN-FUNCTION 提供个外部的Lisp包装.
+
 学习曲线: 不明
 
     如果你对 C 特别熟悉, 你可能会发现 CLISP C 模块工具 (e.g., modprep) 非常容易使用.
-
     CLISP “FFI”, 从另一方面说是高层次的, 因此, 如果你对高级语言更熟悉,你可能发现 “FFI” 结构比 C 代码更熟悉.
+
 安全性: 不明
+
     当导致了一个段错误:如果你的 FFI:DEF-CALL-OUT 结构没有描述这个 C 函数的遵守参数和返回值的原型 (包括 ALLOCATION), 你可能要去学习这个困难的方式. 如果这个模块是用 C 写的, 所有对自己不利的部分是公开的 (虽然对于大部分 C 用户是众所周知的). 然而, 用 C 时，也需要去关注 GC-safety.
 
 注意
 
-选择的粒度是每一个函数: 同一个模块可以同时在 modprep 和 “FFI”  方式使用使用.
+    选择的粒度是每一个函数: 同一个模块可以同时在 modprep 和 “FFI”  方式使用使用.
+
 注意
 
-在一个模块中同时有 foo.lisp 和 foo.c 文件是一个好主意, 因为如果你之前添加一个 “FFI” 结构, COMPILE-FILE 会在后面重写它.
-32.2.9. 包含在源码发行版中的模块
- 
+    在一个模块中同时有 foo.lisp 和 foo.c 文件是一个好主意, 因为如果你之前添加一个 “FFI” 结构, COMPILE-FILE 会在后面重写它.
 
- CLISP 的源代码发行版中自带一些模块(在构建一个二进制发行版中并不是必须的).
 
-为了使用这些模块, 阅读 unix/INSTALL 然后在在一个 build-dir 目录构建 CLISP , e.g.,
-﻿$ ./configure --with-module=pcre --with-module=clx/new-clx --cbc build-dir
+### 32.2.9<span id = "ModulesIncludeSrcDist">包含在源码发行版中的模块</span>
+
+CLISP 的源代码发行版中自带一些模块(在构建一个二进制发行版中并不是必须的).
+
+为了使用这些模块, 阅读 unix/INSTALL 然后在在一个 build-dir 目录构建 CLISP , 比如,
+
+```SHELL
+$ ./configure --with-module=pcre --with-module=clx/new-clx --cbc build-dir
+```
 
 然后用这个运行
 
-.﻿/build-dir/clisp -K full﻿
+```SHELL
+./build-dir/clisp -K full
+```
 
-这会构建一个 base ﻿﻿﻿链接集﻿﻿﻿包含了 i18n, regexp 和 syscalls (可能还有 readline); 以及一个 full ﻿﻿链接集﻿﻿在base 的3或4个模块基础上包含了模块 clx/new-clx 和 pcre .
+这会构建一个 base 链接集包含了 i18n, regexp 和 syscalls (可能还有 readline); 以及一个 full 链接集在base 的3或4个模块基础上包含了模块 clx/new-clx 和 pcre .
 
 根据模块的主题，我们在这里把它们列举出来. 各自的文档见 Chapter 33, Extensions Implemented as Modules .
-32.2.9.1. Base 模块
+
+> * 32.2.9.1 [Base 模块](#BaseModules)
+> * 32.2.9.2 [数据库, 目录等等](#DatabaseDir)
+> * 32.2.9.3 [数学, 数据采集等等](#MathDateMin)
+> * 32.2.9.4 [匹配, 文件处理等等](#MatchFileProc)
+> * 32.2.9.5 [通信, 网络](#CommunicationNet)
+> * 32.2.9.6 [图形](#Graphics)
+> * 32.2.9.7 [绑定](#Bindings)
+> * 32.2.9.8 [玩具和游戏](#ToyAndGame)
+
+#### 32.2.9.1 <span id = "BaseModules">Base 模块</span>
 
 不管是 base 还是 full 的 linking sets，默认的构建过程包含了以下的模块:
 
 i18n
+
     用户程序的国际化.
+
 regexp
+
     一个 POSIX 正则表达式匹配, 编译, 执行.
+
 syscalls
+
     以平台依赖的方式进行系统调用.
+
 readline (仅限 GNU readline 和 “FFI” 可用时可用)
+
     用这个模块一些先进的和历史的特征被导出。
 
 这个 full 链接集的构成取决于平台和提供方的配置.
-32.2.9.2. 数据库, 目录等等
+
+#### 32.2.9.2 <span id = "DatabaseDir">数据库, 目录等等</span>
 
 gdbm
+
     Masayuki Onjo的 GNU DataBase Manager 接口 .
+
 berkeley-db
+
     Berkeley DB 接口.
+
 dirkey
+
     目录访问 (LDAP, Win32 registry etc).
+
 postgresql
+
     从 CLISP 访问 PostgreSQL .
+
 oracle
+
     John Hinsdale 的从 CLISP 访问 Oracle RDBMS.
 
-32.2.9.3. 数学, 数据采集等等
+#### 32.2.9.3 <span id = "MathDateMin">数学, 数据采集等等</span>
 
 libsvm
+
     在 CLISP 里用 LibSVM 构建 Support Vector Machine 模型.
+
 pari
+
     PARI 计算机代数系统的接口
+
 matlab
+
     通过 MATLAB 做矩阵运算.
+
 netica
+
     用 Netica C API 来使用贝叶斯网络和影响图.
 
-32.2.9.4. 匹配, 文件处理等等
+#### 32.2.9.4 <span id = "MatchFileProc">匹配, 文件处理等等</span>
 
 pcre
+
     这是 Perl Compatible Regular Expressions 匹配, 编译, 执行.
+
 wildcard
+
     Shell (/bin/sh) 通配符 (路径名匹配).
+
 zlib
+
     通过 ZLIB 压缩序列.
 
-32.2.9.5. 通信, 网络
+#### 32.2.9.5 <span id = "CommunicationNet">通信, 网络</span>
 
 rawsock
+
     原始套接字的访问.
+
 dbus
+
     D-Bus 的接口
+
 fastcgi
+
     从 CLISP 访问 FastCGI.
 
-32.2.9.6. 图形
+#### 32.2.9.6 <span id = "Graphics">图形</span>
 
 CLX
 
     从 CLISP 调用 Xlib 函数. 提供两种实现:
-
-    clx/mit-clx, from MIT ftp://ftp.x.org/R5contrib/CLX.R5.02.tar.Z
+        clx/mit-clx, from MIT ftp://ftp.x.org/R5contrib/CLX.R5.02.tar.Z
             这个是标准实现
-    clx/new-clx, by Gilbert Baumann
-
+        clx/new-clx, by Gilbert Baumann
             更快而且有额外特性, 但是还没有完成. 请先尝试下，如果 clx/new-clx 对于你无法使用，请使用  clx/mit-clx . clx/new-clx 携带了很多例子, 请通过以下方式使用
 
-        $ clisp -K full -i modules/clx/new-clx/demos/clx-demos.lisp -x '(clx-demos:run-all-demos)'﻿
+        $ clisp -K full -i modules/clx/new-clx/demos/clx-demos.lisp -x '(clx-demos:run-all-demos)'
 
         并参照说明.
 
     这个功能文档在 http://www.stud.uni-karlsruhe.de/~unk6/clxman/, 在 CLISP 源代码发行版中的 modules/clx/clx-manual.tar.gz 也是可用的。
+
 gtk2
+
      James Bailey写的使用 GTK+ 和 Glade 来创建GUI.
 
-32.2.9.7. 绑定
+#### 32.2.9.7 <span id = "Bindings">绑定</span>
 
 从 CLISP 调用操作系统函数.支持以下平台:
 
 bindings/glibc
+
     Linux/GNU libc
+
 bindings/win32
+
     Win32
 
-32.2.9.8.玩具和游戏
+#### 32.2.9.8 <span id = "ToyAndGame">玩具和游戏</span>
 
 queens
+
     在 n×n 的棋盘上计算 n-queens 的解决方案数量 (供用户探索 CLISP 模块系统 一个娱乐例子).
+
 modules/clx/new-clx/demos/sokoban.lisp
+
     一个自带 clx/new-clx 的例子.
 
 32.3. 外部函数调用机制（The Foreign Function Call Facility）
