@@ -697,7 +697,7 @@ modules/clx/new-clx/demos/sokoban.lisp
 
     也见 Section 32.3.7, “Foreign functions”.
 
-``﻿(FFI:OPEN-FOREIGN-LIBRARY name &KEY :REQUIRE)``
+``(FFI:OPEN-FOREIGN-LIBRARY name &KEY :REQUIRE)``
 
     打开 (加载) 一个外部共享库.一些共享库依赖其他共享库的话，这个依赖可以通过 :REQUIRE 参数指定.除非这个库已经被依赖,这个只会在不创建外部对象仅测试这个库是否存在时被需要. 当你用包含  :LIBRARY 参数的 FFI:DEF-C-VAR 或FFI:DEF-CALL-OUT 创建一个 FFI:FOREIGN-VARIABLE 或者一个 FFI:FOREIGN-FUNCTION , 这个 name 库会被自动打开.比如, libgsl.so 依赖 libgslcblas.so:
 
@@ -807,7 +807,7 @@ $ ./foo
 ``(FFI:SIZEOF c-type)``
 ``(FFI:SIZEOF c-place)``
 
-    第一个结构返回那个 C 类型 c-type 的字节计算的大小和对齐方式. ;;;???
+    第一个结构返回那个 C 类型 c-type 的字节计算的大小和对齐方式.
 
     第二个结构返回那个 C 类型 c-place 的字节计算的大小和对齐方式.
     
@@ -829,15 +829,15 @@ $ ./foo
 
     FFI:FOREIGN-ADDRESS 同时时类型名字和一个选择器/构造器函数. 它是对应 FFI:C-POINTER 额外类型声明的Lisp对象类型, 比如一个使用 (:RETURN-TYPE FFI:C-POINTER) 的外部调用函数产生一个 FFI:FOREIGN-ADDRESS 类型的Lisp对象.
 
-    这个函数提取任何 FFI:FOREIGN-VARIABLE 或 FFI:FOREIGN-FUNCTION 对象中的 FFI:FOREIGN-ADDRESS 类型的对象. 如果 foreign-entity 已经是一个 FFI:FOREIGN-ADDRESS, 它就返回传入的参数. 如果是一个 FFI:FOREIGN-POINTER (比如一个基本外部库的地址), 它就囊括在一个 FFI:FOREIGN-ADDRESS 对象里, 更合适地和 FFI:C-POINTER 额外类型声明一起使用. 它不是由 NUMBERs构成, FFI:UNSIGNED-FOREIGN-ADDRESS 必须被用于那个目的. ;;;???
+    这个函数提取任何 FFI:FOREIGN-VARIABLE 或 FFI:FOREIGN-FUNCTION 对象中的 FFI:FOREIGN-ADDRESS 类型的对象. 如果 foreign-entity 已经是一个 FFI:FOREIGN-ADDRESS, 它就返回foreign-entity. 如果是一个 FFI:FOREIGN-POINTER (比如一个基本外部库的地址), 它将被封装到一个 FFI:FOREIGN-ADDRESS 对象里, 更合适地和 FFI:C-POINTER 额外类型声明一起使用. 它不会用 NUMBER 来构成地址, FFI:UNSIGNED-FOREIGN-ADDRESS 必须被用于那个目的. ;;;???
     
 ``(FFI:FOREIGN-VARIABLE foreign-entity c-type-internal &KEY name)``
 
-    这个构造器从给定的 FFI:FOREIGN-ADDRESS 或 FFI:FOREIGN-VARIABLE 以及内置的C类型 (就像从 FFI:PARSE-C-TYPE 获取到的) 描述来创建一个新的 FFI:FOREIGN-VARIABLE . name, 是一个 STRING, 因为它出现在 FFI:FOREIGN-VARIABLE 对象打印的地方，所以在记录文档和交互调试的时候是很有用的, 就像 #<FFI:FOREIGN-VARIABLE "foo" #x0ADD4E55>. 事实上, 这个类似于 FFI:CAST (or rather (FFI:OFFSET ... 0 ...) for places), 除非它和 FFI:FOREIGN-ADDRESS 对象一起使用并且允许缓存内置的 C 类型.;;;???
+    这个构造器从给定的 FFI:FOREIGN-ADDRESS 或 FFI:FOREIGN-VARIABLE 以及内置的C类型 (就像从 FFI:PARSE-C-TYPE 获取到的) 描述来创建一个新的 FFI:FOREIGN-VARIABLE . name, 是一个 STRING, 因为它出现在 FFI:FOREIGN-VARIABLE 对象打印的地方，所以在记录文档和交互调试的时候是很有用的, 就像 #<FFI:FOREIGN-VARIABLE "foo" #x0ADD4E55>. 事实上, 这个类似于 FFI:CAST (或者对于place相当于 (FFI:OFFSET ... 0 ...)), 除非它和 FFI:FOREIGN-ADDRESS 对象一起使用并且允许缓存内置的 C 类型.;;;???
     
 ``(FFI:FOREIGN-FUNCTION foreign-entity c-type-internal &KEY name)``
 
-    这个构造器从给定的 FFI:FOREIGN-ADDRESS 或 FFI:FOREIGN-FUNCTION 以及内置的C类型描述来创建一个新的 FFI:FOREIGN-FUNCTION 对象 (就像从 (FFI:PARSE-C-TYPE '(FFI:C-FUNCTION ...)) 获得, 在这种情况下指定 :LANGUAGE 是很重要的因为这个表达式很可能在运行时被求值, 在编译单元之外). 这个 name, 是一个 STRING, 因为它出现在 FFI:FOREIGN-FUNCTION 对象的打印中，所以在记录文档和交互调试的时候是很有用的, 比如, #<FFI:FOREIGN-FUNCTION "foo" #x0052B060>. 当可用时，这个在给定的 FFI:FOREIGN-FUNCTION 对象中继承下来.;;;???
+    这个构造器从给定的 FFI:FOREIGN-ADDRESS 或 FFI:FOREIGN-FUNCTION 以及内置的C类型描述来创建一个新的 FFI:FOREIGN-FUNCTION 对象 (就像从 (FFI:PARSE-C-TYPE '(FFI:C-FUNCTION ...)) 获得, 在这种情况下指定 :LANGUAGE 是很重要的因为这个表达式很可能在运行时被求值, 在编译单元之外). 这个 name, 是一个 STRING, 因为它出现在 FFI:FOREIGN-FUNCTION 对象的打印中，所以在记录文档和交互调试的时候是很有用的, 比如, #<FFI:FOREIGN-FUNCTION "foo" #x0052B060>. 当可用时，这个在给定的 FFI:FOREIGN-FUNCTION 对象中继承下来.
 
     见 Section 32.3.7, “Foreign functions”. 
     
@@ -1060,7 +1060,7 @@ simple-c-type
 
     这个类型等价于 C 中的 c-type (*)[]: 一个指向给定的 c-type 的零终结的数组的指针.
 
-这里 FFI:C-STRING, (FFI:C-ARRAY CHARACTER dim1), (FFI:C-ARRAY-MAX CHARACTER maxdimension), (FFI:C-ARRAY-PTR CHARACTER) 的转换被 CUSTOM:*FOREIGN-ENCODING* 所控制并且给定的规格是字节. 这里 CHARACTER 的转换, 还有 (FFI:C-PTR CHARACTER), 或者 (FFI:C-PTR-NULL CHARACTER), 还有多种规格的数组 (FFI:C-ARRAY CHARACTER (dim1 ... dimn)), 如果后者是 “1:1” encoding,都是 CUSTOM:*FOREIGN-ENCODING* 所管理控制, 否则就是 ASCII 编码. ;;;???
+这里 FFI:C-STRING, (FFI:C-ARRAY CHARACTER dim1), (FFI:C-ARRAY-MAX CHARACTER maxdimension), (FFI:C-ARRAY-PTR CHARACTER) 的转换被 CUSTOM:\*FOREIGN-ENCODING* 所控制并且给定的规格是字节. 这里 CHARACTER 的转换, 还有 (FFI:C-PTR CHARACTER), 或者 (FFI:C-PTR-NULL CHARACTER), 还有多种规格的数组 (FFI:C-ARRAY CHARACTER (dim1 ... dimn)), 如果后者是 “1:1” encoding,都是 CUSTOM:\*FOREIGN-ENCODING* 所管理控制, 否则就是 ASCII 编码.
 
 **注意**
 
@@ -1582,7 +1582,7 @@ size_t length;
 ⇒ "abazonk"
 ```
 
-现在我们有个不同的问题: 如果 gethostname 失败了, 然后分配给 name 的缓冲区会充满垃圾, 但是在我们检查 success 这个状态之前它会转为string. 如果 CUSTOM:*FOREIGN-ENCODING* 是 CHARSET:ISO-8859-1, 这没有问题因为没有实际的转变发生, 但是用 CHARSET:UTF-8 可能导致一个 ERROR . 一种安全合适的方法是传递一个自己栈上分配的缓冲区给外部函数, 然后只在这个函数成功时转换缓冲区为string:
+现在我们有个不同的问题: 如果 gethostname 失败了, 然后分配给 name 的缓冲区会充满垃圾, 但是在我们检查 success 这个状态之前它会转为string. 如果 CUSTOM:\*FOREIGN-ENCODING* 是 CHARSET:ISO-8859-1, 这没有问题因为没有实际的转变发生, 但是用 CHARSET:UTF-8 可能导致一个 ERROR . 一种安全合适的方法是传递一个自己栈上分配的缓冲区给外部函数, 然后只在这个函数成功时转换缓冲区为string:
 
 ```LISP
 (FFI:DEF-CALL-OUT gethostname
@@ -1859,7 +1859,7 @@ Sockets 被用于单主机或者计算机网络间多主机的进程间通信. �
 
     这个 :BACKLOG 参数定义了等待连接队列最大长度 (见 listen) 默认是1.
 
-    这个 :INTERFACE 参数指明了socket server监听的接口, 它是一个 STRING, 被解释为接口绑定的 IP 地址, 或者是一个socket, 创建对应的连接. ;;;???
+    这个 :INTERFACE 参数指明了socket server监听的接口, 它是一个 STRING, 被解释为接口绑定的 IP 地址, 或者是一个socket, 创建对应的连接.
 
     默认是 (为了向后兼容) 绑定所有本地接口, 但是如果你只要本地的连接，出于安全考虑应该绑定本地回环接口 "127.0.0.1" .
 
@@ -1935,13 +1935,13 @@ Sockets 被用于单主机或者计算机网络间多主机的进程间通信. �
     (SOCKET:SOCKET-STREAM . direction)
             返回指定方向的状态
     以上所述的非空列表
-            返回一个值的列表，它是参数列表的每一个值 (按 MAPCAR 方式) ;;;???
+            返回一个列表, 其中的值是参数列表的每一个值 (按 MAPCAR 方式)
 
     如果你想避免构建新的列表, 你可以使 socket-stream-or-list 的元素为 (socket-stream direction . x) 或 (socket-server . x). 然后 SOCKET:SOCKET-STATUS 会破坏性地修改它的参数并用状态替换 x 或 NIL 然后返回被修改的列表. 你可以再次传递这个被修改的列表给 SOCKET:SOCKET-STATUS .
 
     这个可选的参数指定了超时时间. NIL 意味着一直等待, 0 表示 poll.
 
-    返回的第二个值是非 NIL 状态的对象的数量, i.e., “actionable” 对象. SOCKET:SOCKET-STATUS 由于超时或者这个数字是正的而返回, i.e., 如果 timeout 是 NIL 并且 SOCKET:SOCKET-STATUS 确实返回了, 然后第二个值是一个正数 (这个就是 NIL 不被认为是空 LIST 的原因, 但是是一个非法的参数). ;;;???
+    返回的第二个值是非 NIL 状态的对象的数量, i.e., “actionable” 对象. SOCKET:SOCKET-STATUS 由于超时或者这个数字是正的而返回, i.e., 如果 timeout 是 NIL 并且 SOCKET:SOCKET-STATUS 确实返回了, 然后第二个值是一个正数 (这个就是 NIL 不被认为是空 LIST 的原因, 但是是一个非法的参数).
 
     注意这个 SOCKET:SOCKET-STATUS 可能导致一个 STREAM-ERROR. 如果 SOCKET:SOCKET-STREAM 收到一个 RST 包就会发生, 见 tests/econnreset.lisp.
 
@@ -2017,7 +2017,7 @@ Sockets 被用于单主机或者计算机网络间多主机的进程间通信. �
 
 CLISP 使用操作系统线程去实现多线程调度. 支持两种风格: POSIX 和 Win32. 都是抢占式的.
 
-所有符号都导出自 “THREADS” 包, 它有两个别名： “MT” (针对多线程) 和 “MP” (针对多进程). 当这个功能可用时, *FEATURES* 包含了符号 :MT.
+所有符号都导出自 “THREADS” 包, 它有两个别名： “MT” (针对多线程) 和 “MP” (针对多进程). 当这个功能可用时, \*FEATURES* 包含了符号 :MT.
 
 见 Section 35.7, “Garbage Collection and Multithreading”.
 
@@ -2086,20 +2086,20 @@ CLOS 不是线程安全的. DEFCLASS, DEFGENERIC, DEFMETHOD, DEFSTRUCT 修改 CL
 
 没有东西会被自动锁定 (自动加锁会对线程本地的 HASH-TABLE 和 SEQUENCE ﻿实施不合理的惩罚), 所以用户在线程间共享 HASH-TABLEs, SEQUENCEs 还有其他用户定义的可变对象时必须锁定.
 
-这个方法和通常的 Common Lisp 是一致的: ;;;???
+这个方法和常见的 Common Lisp 是一致的: 
  	
 
-当代码在object-traversing操作时破坏性地修改了这个对象时，可能会影响正在进行的traversal操作，结果不可预料
+    当代码在object-traversing操作时破坏性地修改了这个对象时，可能会影响正在进行的traversal操作，结果不可预料
 	 
- 	--[sec_3-6]
+ 	    --[sec_3-6]
 
-如果一个对象O1被用于一个哈希表H的一个key，然后在H的等效性检验被修改了, 这时如果O1在后面H的操作上被用于一个key，结果是无法预料的
+    如果一个对象O1被用于一个哈希表H的一个key，然后在H的等效性检验被修改了, 这时如果O1在后面H的操作上被用于一个key，结果是无法预料的
 
- 	--[sec_18-1-2]
+ 	    --[sec_18-1-2]
 
 ##### 32.5.2.5.1 RANDOM 和 RANDOM-STATE
 
-RANDOM 没有锁定就修改了一个 RANDOM-STATE ， 这也就意味着你不能随意地在线程间共享这写对象. 然而, *RANDOM-STATE* 在每个线程绑定 (见 MT:MAKE-THREAD 和 MT:*DEFAULT-SPECIAL-BINDINGS*), 换句话说., 每一个线程都有它自己的值，所以 RANDOM 都是线程安全的.
+RANDOM 没有锁定就修改了一个 RANDOM-STATE ， 这也就意味着你不能随意地在线程间共享这写对象. 然而, \*RANDOM-STATE* 在每个线程绑定 (见 MT:MAKE-THREAD 和 MT:\*DEFAULT-SPECIAL-BINDINGS*), 换句话说., 每一个线程都有它自己的值，所以 RANDOM 都是线程安全的.
 
 #### 32.5.2.6 <span id = "ExamplesThreadUnsafe">线程不安全代码示例</span>
 
@@ -2304,7 +2304,7 @@ MT:THREAD
 ``(SETF (MT:SYMBOL-VALUE-THREAD symbol thread) value)``
 ``(MT:SYMBOL-VALUE-THREAD symbol thread)``
 
-    访问或者设置 Per-Thread Variable 值. 当 thread 是 T, 就使用 MT:CURRENT-THREAD; 如果它是 NIL, 使用 Global Variable 绑定. 返回两个值: 一个 symbol 绑定和一个指示:如果没有在 thread 中绑定就是 NIL ,绑定了就是 T , 并且 如果这个 Per-Thread Variable 绑定通过 MAKUNBOUND 移除了就 SYMBOL MAKUNBOUND . ;;;???
+    访问或者设置 Per-Thread Variable 值. 当 thread 是 T, 就使用 MT:CURRENT-THREAD; 如果它是 NIL, 使用 Global Variable 绑定. 返回两个值: 一个 symbol 绑定和一个指示:如果没有在 thread 中绑定就是 NIL ,绑定了就是 T , 并且 如果这个 Per-Thread Variable 绑定通过 MAKUNBOUND 移除了就把 SYMBOL 也 MAKUNBOUND . 
     
 ``MT:*DEFAULT-SPECIAL-BINDINGS*``
 
@@ -2400,14 +2400,15 @@ OS 需要. CLISP 可以在以下情况下用作脚本解释器:
     (yet-another-lisp-form)
     EOF
 
-这个方法的问题是每个结构的返回值都会被打印到 *STANDARD-OUTPUT*. 另外一个问题是没有用户输入可用.
+这个方法的问题是每个结构的返回值都会被打印到 \*STANDARD-OUTPUT*. 另外一个问题是没有用户输入可用.
 
 ### 32.6.3 <span id = "DesktopEnvironments">桌面环境</span>
 
 平台依赖:仅限 Win32, Gnome, KDE, Mac OS X 桌面平台.
-标记
 
-虽然我们使用win32特有的标记，但是这个功能在其他桌面上也可以正常工作. ;;;???
+**符号**
+
+    虽然我们使用win32特有的符号，但是这个功能在其他桌面上也可以正常工作.
 
 这里有两种不同的方式使 CLISP 在桌面平台下可执行.
 
