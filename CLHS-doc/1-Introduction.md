@@ -22,11 +22,11 @@
 >>
 >>Interlisp 提出了很多关于Lisp编程环境和方法论的看法。其中一个影响了Common Lisp的想法就是Warren Teitelman实现的循环结构，这个启发了后面Lisp Machines和MacLisp，以及现在的Common Lisp的loop宏. 关于更多 Interlisp 的信息, 见 Interlisp Reference Manual.
 >>
->>虽然第一个Lisp实现是在 IBM 704 和 IBM 7090 上, 后来的工作聚焦于 DEC PDP-6 以及后来的 PDP-10 计算机, 再后来从20世纪60年代中期到70年代的大部分时间成为Lisp和人工智能工作的骨干是像 Massachusetts Institute of Technology (MIT), Stanford University, 还有 Carnegie Mellon University (CMU) 这样的地方. 这个 PDP-10 计算机和它的前辈 PDP-6 计算机被设计为特别适合于Lisp因为它们有36位的字以及18位的地址. 这个结构允许一个 cons 序对存储在一个字里; 单个指令可以解出 car 和 cdr 部分. 这个 PDP-6 和 PDP-10 拥有快速强大的栈指令可以快速的进行函数调用. 但是到1973年 PDP-10 的局限也是明显的: 它支持很少数量的研究者使用Lisp, 并且这个小的 18 位 地址空间 (2^18 = 262,144 字) 限制了单个程序大小. 对于地址空间问题的一个答复是 Lisp Machine, 一种特殊目的计算机被设计用于运行Lisp程序. 另外一种答复就是使用带有更大地址空间的通用目的计算机, 就像 DEC VAX 还有S-1 Mark IIA. 关于 S-1 Common Lisp 的更多信息, 见 ``S-1 Common Lisp Implementation.''
+>>虽然第一个Lisp实现是在 IBM 704 和 IBM 7090 上, 后来的工作聚焦于 DEC PDP-6 以及后来的 PDP-10 计算机, 再后来从20世纪60年代中期到70年代的大部分时间成为Lisp和人工智能工作的骨干是像 Massachusetts Institute of Technology (MIT), Stanford University, 还有 Carnegie Mellon University (CMU) 这样的地方. 这个 PDP-10 计算机和它的前辈 PDP-6 计算机被设计为特别适合于Lisp因为它们有36位的字以及18位的地址. 这个结构允许一个 cons 序对存储在一个字里; 单个指令可以解出 car 和 cdr 部分. 这个 PDP-6 和 PDP-10 拥有快速强大的栈指令可以快速的进行函数调用. 但是到1973年 PDP-10 的局限也是明显的: 它支持很少数量的研究者使用Lisp, 并且这个小的 18 位地址空间 (2^18 = 262,144 字) 限制了单个程序大小. 对于地址空间问题的一个解决方案是 Lisp Machine, 一种特殊目的计算机被设计用于运行Lisp程序. 另外一种答复就是使用带有更大地址空间的通用目的计算机, 就像 DEC VAX 还有S-1 Mark IIA. 关于 S-1 Common Lisp 的更多信息, 见 ``S-1 Common Lisp Implementation.''
 >>
 >>这个 Lisp machine 概念发展于20世纪60年代末期. 在20世纪70年代早期, 和Daniel Bobrow一起工作的Peter Deutsch在个人迷你计算机Alto上实现了一个Lisp, 使用微代码来解释字节码实现语言. 在那以后不久,在 MIT 的Richard Greenblatt 开始着手一个不同的硬件和指令集的设计. 虽然作为Lisp machine 来说 Alto 并不是完全的成功, 但是在 Xerox 开发的D-series机器上一个 Interlisp 的方言Interlisp-D变得可用. 在早期的MIT Lisp Machines上一个称为Lisp Machine Lisp 的向上兼容的 MacLisp 延伸变得可用. 到了1981年，来自于 Xerox, Lisp Machines (LMI), 和 Symbolics 的商用Lisp Machine 出现在市场上. 关于 Lisp Machine Lisp 的更多信息, 见 Lisp Machine Manual.
 >>
->>在20世纪70年代末期, Lisp Machine Lisp 开始朝向一个更完整的语言发展. 久经考验的lambda列表, setf, 多值, 以及像Common Lisp中的结构是 Lisp Machine 组的编程风格试验的结果. Jonl White 还有其他人将这些特点移植到 MacLisp. 大约 1980, Scott Fahlman 和在 CMU 的其他人开始致力于一个运行在Scientific Personal Integrated Computing Environment (SPICE) 工作站的Lisp. 这个工程的其中一个目标就是去设计一个比 Lisp Machine Lisp 更简单的方言.
+>>在20世纪70年代末期, Lisp Machine Lisp 开始朝向一个更完整的语言发展. 久经考验的lambda列表, setf, 多值, 以及像 Common Lisp 中的结构是 Lisp Machine 组的编程风格试验的结果. Jonl White 还有其他人将这些特点移植到 MacLisp. 大约 1980, Scott Fahlman 和在 CMU 的其他人开始致力于一个运行在 Scientific Personal Integrated Computing Environment (SPICE) 工作站的Lisp. 这个工程的其中一个目标就是去设计一个比 Lisp Machine Lisp 更简单的方言.
 >>
 >>这个在 MIT 的 Macsyma 小组在20世纪70年代末期开始了一个项目，称为 New Implementation of Lisp (NIL) for the VAX, 由 White 领导. 这个 NIL 工程的其中一个定期目标是在保留和MacLisp的兼容性的同时去修复一些Lisp的历史遗留问题. 同时, 一个 Stanford University 的研究小组以及 Richard P. Gabriel 领导的劳伦斯利物莫国家实验室开始了运行于 S-1 Mark IIA 超级计算机之上的Lisp. S-1 Lisp的设计, 它具有不完全的功能, 是为Lisp实现适配先进的编译器技术的测试点. 最终这个 S-1 和 NIL 小组合作. 关于 NIL 工程的更多信息, 见 ``NIL---A Perspective.''
 >>
@@ -42,7 +42,7 @@
 >>
 >>在1980 Symbolics 和 LMI 发展了 Lisp Machine Lisp; stock-hardware 实现小组发展了 NIL, Franz Lisp, 还有 PSL; Xerox 发展了 Interlisp; 还有 CMU 的 SPICE 项目发展了称之为 SpiceLisp的类MacLisp方言.
 >>
->>在1981年四月, 在一个DARPA赞助的会议后, 分裂的Lisp社区, Symbolics, SPICE 项目, NIL 项目, 还有 S-1 Lisp 项目一起加入来定义 Common Lisp. 开始由 White 和 Gabriel 带领, 这个基层民众的尝试背后的驱动力由 Fahlman, Daniel Weinreb, David Moon, Steele, 和 Gabriel 提供. Common Lisp 被设计为一个家族语言的描述. 对于Common Lisp主要的影响是 Lisp Machine Lisp, MacLisp, NIL, S-1 Lisp, Spice Lisp, 还有 Scheme. Common Lisp: 这个语言是那个设计的描述. 部分地方它的语义是有意未指定的因为那里感觉严格规范会限制Common Lisp的研究和使用.
+>>在1981年四月, 在一个DARPA赞助的会议后, 分裂的Lisp社区, Symbolics, SPICE 项目, NIL 项目, 还有 S-1 Lisp 项目一起加入来定义 Common Lisp. 开始由 White 和 Gabriel 带领, 这个基层民众的尝试背后的驱动力由 Fahlman, Daniel Weinreb, David Moon, Steele, 和 Gabriel 提供. Common Lisp 被设计为一个家族语言的描述. 对于 Common Lisp 主要的影响是 Lisp Machine Lisp, MacLisp, NIL, S-1 Lisp, Spice Lisp, 还有 Scheme. Common Lisp: 这个语言是那个设计的描述. 部分地方它的语义是有意未指定的因为那里感觉严格规范会限制 Common Lisp 的研究和使用.
 >>
 >>在1986年 X3J13 组织了一个技术小组去起草 ANSI Common Lisp 标准. 由于 Common Lisp的接纳, 这个小组的目标与最初的设计者不同. 这些目标包括更严格的移植性标准化,一个面向对象编程系统,一个状态系统,循环机制,以及一种处理大型字符集的方式.为了促成这个目标，一个新的语言说明(这个文档)被开发出来.
 
@@ -52,7 +52,7 @@
 >
 > 这个文档根据话题来拆分章节. 任何给定章节可能包含概念性内容或字典条目, 或者都有.
 >
-> 一个章节的字典部分把主题相关的已定义的名字分组后放得接近一些. 很多这样的分组是可能的，并且应该没有从分组中推断出的深层意义. 为了看到以字母顺序排列分组的定义的名字, 可以查阅索引. 关于定义名字的完整列表, 见章节 1.9 (Symbols in the COMMON-LISP Package).
+> 一个章节的字典部分把主题相关的已定义的名字分组后放得接近一些. 很多这样的分组可能并且应该没有从分组中推断出的深层意义, 都是表面意思. 为了看到以字母顺序排列分组的定义的名字, 可以查阅索引. 关于定义名字的完整列表, 见章节 1.9 (Symbols in the COMMON-LISP Package).
 >
 > 为了补偿这份文档的无序部分, 提供一份词汇表; 见章节 26 (Glossary). 这个词汇表通过快速访问术语的定义来提供连通性,并且一些情况下提供示例或者和另外概念的交叉引用.
 >
@@ -143,7 +143,7 @@
 > * 1.4.1.5 [标志符](#Designators)
 > * 1.4.1.6 [无意义的单词](#NonsenseWords)
 
-#### 1.4.1.1 <span id = "FontKey">字体的线索</span>
+#### 1.4.1.1 <span id = "FontKey">字体的线索</span>(注意：这个字体在翻译中未体现出来)
 
 这个文档中使用的字体表达的含义.
 
@@ -174,6 +174,7 @@ name
     有些情况下也使用标记 ``<<name>>'' (换句话说, 同样的字体, 但是带有 ``尖括号'' 包装) 来为包在里面的字提供更好的目视间距. 这些 ``尖括号'' 是伪变量用的, 并且事实上从来不会出现在程序的输入输出中.
 
 #### 1.4.1.2 <span id = "ModifiedBNFSyntax">修改BNF语法</span>
+
 这个说明书使用了一个扩展BNF范式来描述 Common Lisp 宏形式和特殊形式的语法. 这个章节讨论BNF范式的语法.
 
 > * 1.4.1.2.1 [修改后BNF语法的拼接](#SplicingInModifiedBNFSyntax)
@@ -271,7 +272,7 @@ O1 | ... | Ol
 ```
 
 ##### 1.4.1.2.2 <span id = "IndirectionInModifiedBNFSyntax">修改后BNF语法的间接</span>
-
+<!-- TODO 间接 => 间接求值 ？ -->
 引入一个间接的扩展是为了使这种语法可读性更高:
 
 ```BNF
@@ -304,7 +305,7 @@ otherwise-clause::= ({otherwise | t} form*)
 clause::= normal-clause | otherwise-clause
 ```
 
-这里的术语 \``clause'' 似乎是 \``dead'' 因为它没有被使用于上面的BNF表达式里. 然而, 这个BNF的目的并不只是引导解析, 但是也定义有用的术语为了给在后面的描述性文本作参考. 像这个样子, 术语 \``clause'' 可能出现在后面跟着的文本中, 作为 \``normal-clause or otherwise-clause.'' 的速记法.
+这里的术语 \``clause'' 似乎是 \``dead'' 因为它没有被使用于上面的BNF表达式里. 然而, 这个BNF的目的并不只是引导解析, 但是也定义有用的术语为了给在后面的描述性文本作参考. 像这个样子, 术语 \``clause'' 可能出现在后面跟着的文本中, 作为 \``normal-clause 或者 otherwise-clause.'' 的速记法.
 
 
 #### 1.4.1.3 <span id = "SpecialSymbols">特殊符号</span>
@@ -372,9 +373,9 @@ NOT=>
 
     Common Lisp 指定了输入和输出为非交互的流模型. 这个指定了交互式的输入输出流如何映射到实现中定义的非交互的模型.
 
-    比如, 一致性的实现中承诺去区分交互式输入如何中止的问题. 比如, 当最后的定界符被输入到非交互的流中，, read函数中止. 在一些CL的实现中, 一个交互式的对read的调用在最后的定界符一输入就返回, 甚至那个定界符不是换行. 在其他实现中, 总是需要换行. 在其他实现中, 可能会有一个命令去 ``activates'' 一个满的输入缓冲区, 而这个命令本身在程序输入流中不可见.
+    比如, 符合规范的实现中承诺去区分交互式输入如何中止的问题. 比如, 当最后的定界符被输入到非交互的流中，, read函数中止. 在一些CL的实现中, 一个交互式的对read的调用在最后的定界符一输入就返回, 甚至那个定界符不是换行. 在其他实现中, 总是需要换行. 在其他实现中, 可能会有一个命令去 ``activates'' 一个满的输入缓冲区, 而这个命令本身在程序输入流中不可见.
 
-    这个文档的例子中, 标记 ``>> '' 先于交互式输入输出前. 这种方案下, ``this notation'' 表示用户输入.
+    这个文档的例子中, 标记 ``>> '' 先于交互式输入输出前. 这种方案下, 这个标记表示用户输入.
 
     比如, 下面的标记
 
@@ -396,7 +397,7 @@ NOT=>
 #### 1.4.1.4 <span id = "ObjectsWithMultipleNotations">多个符号表示的对象</span>
 
 Common Lisp中的一些对象不止一种表示的方法. 这种情况下, 选择使用哪一种是随意的, 但是表示一个 \``point of view'' 或 \``sense of intent.'' 的惯例是存在的
-
+<!-- TODO point of view 还有 sense of intent-->
 > * 1.4.1.4.1 [符号大小写](#CaseInSymbols)
 > * 1.4.1.4.2 [数字](#Numbers)
 > * 1.4.1.4.3 [点](#DotCharacterUse)
@@ -465,7 +466,7 @@ Figure 1-1. NIL表示法
 
 #### 1.4.1.5 <span id = "Designators">标志符</span>
 <!-- TODO 待校验 -->
-designator 是一个表示另一个对象的对象.
+标志符(designator) 是一个表示另一个对象的对象.
 
 一个操作符的参数被描述为标志符的地方, 这个操作符的描述以假定这个参数的值是指定的对象的方式编写; 这就表示, 这个参数是已指定的类型. (这个对象的具体类型由一个 \``<\<type>> designator'' 或者 \``designator for a <\<type>>'' 指定, 可以在结尾的词汇表中找到 \``<\<type>> designator.'')
 
@@ -484,7 +485,7 @@ designator 是一个表示另一个对象的对象.
 OR=>  (2 4 5 6)
 ```
 
-在一些罕见的情况下, 这里可能有个需要在字典中去提及这个最初的designator对象为一个参数. 因为对一个参数取名会提及表示的对象, 短语 ``the <\<parameter-name>> designator'' 可以被用于提及来自于<\<parameter-name>> 被计算的值的标志符.
+在一些罕见的情况下, 这里可能有个需要在字典中去提及这个最初的标志符对象为一个参数. 因为对一个参数取名会提及表示的对象, 短语 ``the <\<parameter-name>> designator'' 可以被用于提及来自于<\<parameter-name>> 被计算的值的标志符.
 
 #### 1.4.1.6 <span id = "NonsenseWords">无意义的单词</span>
 
@@ -498,7 +499,7 @@ OR=>  (2 4 5 6)
 
 这些无意义的单词有如此的使用率, 社区的新人开始去思考这里是否有他们忽略的已绑定的语义---当然这里是没有的.
 
-
+<!-- TODO 2017.12.21-->
 ### 1.4.2 <span id = "ErrorTerminology">错误术语</span>
 
 错误可能或应该或必然出现的情况在这个标准中已经描述了. 用于描述这种情况的词规定为需要有确切的含义. 以下列表是这些词的词汇表.
