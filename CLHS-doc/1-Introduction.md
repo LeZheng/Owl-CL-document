@@ -4,7 +4,7 @@
 > * 1.2 [文档的组织结构](#OrganizationOfTheDocument)
 > * 1.3 [参考的出版物](#ReferencedPublications)
 > * 1.4 [定义](#Definitions)
-> * 1.5 [一致性](#Conformance)
+> * 1.5 [规范性](#Conformance)
 > * 1.6 [语言扩展](#LanguageExtensions)
 > * 1.7 [语言的子集](#LanguageSubsets)
 > * 1.8 [弃用的语言特性](#DeprecatedLanguageFeatures)
@@ -58,7 +58,7 @@
 >
 >关于这个文档中符号约定的内容, 见章节 1.4 (Definitions).
 >
->关于一致性的内容, 见章节 1.5 (Conformance).
+>关于规范性的内容, 见章节 1.5 (Conformance).
 >
 >关于扩展和子集的内容, 见章节 1.6 (Language Extensions) 和 Section 1.7 (Language Subsets).
 >
@@ -332,7 +332,7 @@ clause::= normal-clause | otherwise-clause
 
     上面三个表达式的每一个都是等价的, 表示那个 (truncate 7 5) 返回两个值: 1 和 2.
 
-    一些一致性实现事实上在显示返回值之前打印箭头 (或者一些其他的指示方式) , 有一些则没有.
+    一些规范性实现事实上在显示返回值之前打印箭头 (或者一些其他的指示方式) , 有一些则没有.
 
 OR=>
 
@@ -499,7 +499,6 @@ OR=>  (2 4 5 6)
 
 这些无意义的单词有如此的使用率, 社区的新人开始去思考这里是否有他们忽略的已绑定的语义---当然这里是没有的.
 
-<!-- TODO 2017.12.21-->
 ### 1.4.2 <span id = "ErrorTerminology">错误术语</span>
 
 错误可能或应该或必然出现的情况在这个标准中已经描述了. 用于描述这种情况的词规定为需要有确切的含义. 以下列表是这些词的词汇表.
@@ -591,9 +590,10 @@ A warning might be issued
 
 同样的, 字典条目中的这个 \``Examples'' 和 \``Notes'' 章节也不被认为是标准的一部分, 如有必要可以移除.
 
-不过, 这些示例对剩下的部分提供了重要的说明和一致性检查, 并且这样的删减是不推荐的除非完全无法避免.
+不过, 这些示例对剩下的部分提供了重要的说明和规范性检查, 并且这样的删减是不推荐的除非完全无法避免.
 
 ### 1.4.4 <span id = "InterpretingDictionaryEntries">解释的字典条目</span>
+<TODO 这几个条目的具体意思在后面阅读的时候再来调整，使语言表述更流畅>
 
 这个字典条目对于每个定义的名字都是按章节来分割的. 除非明确表示, 每个章节由确定这个章节的标签引入. 章节的删减表示这个章节是不可应用的或者没有提供什么有意思的信息.
 
@@ -923,7 +923,7 @@ F a b c =>|
 除非明确指定外, 违反这个类型约束时结果是不可预测的.
 
 
-## 1.5 <span id = "Conformance">一致性</span>
+## 1.5 <span id = "Conformance">规范性</span>
 
 这个标准提出了一个合格实现需要去实现的语法和语义 (以及它的附加文档). 另外, 它对符合规范的程序加了一些要求.
 
@@ -939,7 +939,7 @@ F a b c =>|
 > * 1.5.1.2 [依赖具体实现的特性文档](#DocImplDepFeatures)
 > * 1.5.1.3 [扩展文档](#DocExtensions)
 > * 1.5.1.4 [异常情况的处理](#TreatmentExceptionalSituations)
-> * 1.5.1.5 [一致性声明](#ConformanceStatement)
+> * 1.5.1.5 [规范性声明](#ConformanceStatement)
 
 #### 1.5.1.1 <span id = "RequiredLanguageFeatures">需要的语言特性</span>
 
@@ -969,9 +969,9 @@ F a b c =>|
 
 假设函数foo是操作数字的函数集合S的一个成员. 假设一个段落阐述如果任何一个S中的函数被给予一个17的参数就会发出一个错误. 假设一个明显的冲突段落阐述如果参数为17则结果是未定义的. 然后第二个段落(更加针对foo的那个)会占主要地位, 因为这个情况的上下文描述最详细的, 即便对于参数17集合S中的其他函数需要去发出一个错误这个函数foo也不需要. 
 
-#### 1.5.1.5 <span id = "ConformanceStatement">一致性声明</span>
+#### 1.5.1.5 <span id = "ConformanceStatement">规范性声明</span>
 
-一个符合规范的实现应该提供一个一致性声明作为使用这个实现的结果, 或者在附带的文档中加入这个声明. 如果这个具体实现符合这个标准的所有方面, 这个一致性说明应该为
+一个符合规范的实现应该提供一个规范性声明作为使用这个实现的结果, 或者在附带的文档中加入这个声明. 如果这个具体实现符合这个标准的所有方面, 这个规范性说明应该为
 
 ``<\<Implementation>> conforms with the requirements of ANSI <\<standard number>>''
 
