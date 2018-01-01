@@ -1,67 +1,67 @@
-# 2. Syntax
+# 2. 语法
 
-> * 2.1 [Character Syntax](#CharacterSyntax)
+> * 2.1 [字符语法](#CharacterSyntax)
 > * 2.2 [Reader Algorithm](#ReaderAlgorithm)
 > * 2.3 [Interpretation of Tokens](#InterpretationOfTokens)
 > * 2.4 [Standard Macro Characters](#StandardMacroCharacters)
 
-## 2.1 <span id = "CharacterSyntax">Character Syntax</span>
+## 2.1 <span id = "CharacterSyntax">字符语法</span>
 
-The Lisp reader takes characters from a stream, interprets them as a printed representation of an object, constructs that object, and returns it.
+Lisp 读取器从一个流中读取字符, 然后将其解释为一个对象的打印表示, 构建这个对象并且返回它.
 
-The syntax described by this chapter is called the standard syntax. Operations are provided by Common Lisp so that various aspects of the syntax information represented by a readtable can be modified under program control; see Section 23 (Reader). Except as explicitly stated otherwise, the syntax used throughout this document is standard syntax.
+这个章节描述的语法称之为标准语法. Common Lisp提供了对应操作, 因此可以在程序的控制下修改读取表所表示的语法信息的各个方面; 见章节 23 (Reader). 除了明确说明的以外, 这个文档中使用的就是标准语法.
 
-> * 2.1.1 [Readtables](#Readtables)
-> * 2.1.2 [Variables that affect the Lisp Reader](#VariablesAffectReader)
-> * 2.1.3 [Standard Characters](#StandardCharacters)
+> * 2.1.1 [读取表](#Readtables)
+> * 2.1.2 [影响Lisp读取器的变量](#VariablesAffectReader)
+> * 2.1.3 [标准字符](#StandardCharacters)
 > * 2.1.4 [Character Syntax Types](#CharacterSyntaxTypes)
 
-### 2.1.1 <span id = "Readtables">Readtables</span>
+### 2.1.1 <span id = "Readtables">读取表</span>
 
-Syntax information for use by the Lisp reader is embodied in an object called a readtable. Among other things, the readtable contains the association between characters and syntax types.
+Lisp读取器使用的语法信息包含在一个称之为读取表(readtable)的对象中. 此外，readtable还包含字符和语法类型之间的关联.
 
-The next figure lists some defined names that are applicable to readtables.
+下一块列出了一些适用于读取表的定义的名字.
 
-*readtable*                    readtable-case                
+\*readtable*                   readtable-case                
 copy-readtable                 readtablep                    
 get-dispatch-macro-character   set-dispatch-macro-character  
 get-macro-character            set-macro-character           
 make-dispatch-macro-character  set-syntax-from-char          
 
-Figure 2-1. Readtable defined names
+Figure 2-1. 读取表定义的名字
 
-> * 2.1.1.1 [The Current Readtable](#CurrentReadtable)
-> * 2.1.1.2 [The Standard Readtable](#StandardReadtable)
-> * 2.1.1.3 [The Initial Readtable](#InitialReadtable)
+> * 2.1.1.1 [当前的读取表](#CurrentReadtable)
+> * 2.1.1.2 [标准读取表](#StandardReadtable)
+> * 2.1.1.3 [最初的读取表](#InitialReadtable)
 
-#### 2.1.1.1 <span id = "CurrentReadtable">The Current Readtable</span>
+#### 2.1.1.1 <span id = "CurrentReadtable">当前的读取表</span>
 
-Several readtables describing different syntaxes can exist, but at any given time only one, called the current readtable, affects the way in which expressions[2] are parsed into objects by the Lisp reader. The current readtable in a given dynamic environment is the value of *readtable* in that environment. To make a different readtable become the current readtable, *readtable* can be assigned or bound. 
+可以存在一些描述不同语法的读取表，但是在任何给定的时间内都只存在一个, 称之为当前读取表, 影响着Lisp读取器把表达式解析为对象的方式. 当前的读取表在一个给定的动态环境中是这个环境中的 \*readtable* 的值. 为了使一个不同的读取表成为当前的读取表, \*readtable* 可以被赋值或绑定. 
 
-#### 2.1.1.2 <span id = "StandardReadtable">The Standard Readtable</span>
+#### 2.1.1.2 <span id = "StandardReadtable">标准读取表</span>
 
-The standard readtable conforms to standard syntax. The consequences are undefined if an attempt is made to modify the standard readtable. To achieve the effect of altering or extending standard syntax, a copy of the standard readtable can be created; see the function copy-readtable.
+这个标准读取表符合标准语法. 如果尝试去修改标准的读取表, 结果是不可预料的. 为了实现修改或者扩展语法的效果, 可以去创建一个标准读取表的副本; 见函数 copy-readtable.
 
-The readtable case of the standard readtable is :upcase. 
+:upcase就是标准读取表的案例. 
 
-#### 2.1.1.3 <span id = "InitialReadtable">The Initial Readtable</span>
+#### 2.1.1.3 <span id = "InitialReadtable">最初的读取表</span>
 
-The initial readtable is the readtable that is the current readtable at the time when the Lisp image starts. At that time, it conforms to standard syntax. The initial readtable is distinct from the standard readtable. It is permissible for a conforming program to modify the initial readtable. 
+最初的读取表是这个Lisp镜像开始时的当前读取表. 在那个时候, 它符合标准语法. 最初的读取表不同于标准读取表. 一个符合规范的程序去修改最初的读取表是允许的. 
 
-### 2.1.2 <span id = "VariablesAffectReader">Variables that affect the Lisp Reader</span>
+### 2.1.2 <span id = "VariablesAffectReader">影响Lisp读取器的变量</span>
 
-The Lisp reader is influenced not only by the current readtable, but also by various dynamic variables. The next figure lists the variables that influence the behavior of the Lisp reader.
+Lisp读取器不止受当前读取表所影响, 也被很多动态变量所影响. 下面这段就列出了这些影响Lisp读取器行为的变量.
 
-*package*    *read-default-float-format*  *readtable*  
-*read-base*  *read-suppress*                           
+\*package*    \*read-default-float-format*  \*readtable*  
+\*read-base*  \*read-suppress*                           
 
-Figure 2-2. Variables that influence the Lisp reader. 
+Figure 2-2. 影响Lisp读取器的变量. 
 
-### 2.1.3 <span id = "StandardCharacters">Standard Characters</span>
+### 2.1.3 <span id = "StandardCharacters">标准字符</span>
 
-All implementations must support a character repertoire called standard-char; characters that are members of that repertoire are called standard characters.
+所有实现必须支持的一个字符集合称之为标准字符集合; 这个字符集合中的成员称之为标准字符.
 
-The standard-char repertoire consists of the non-graphic character newline, the graphic character space, and the following additional ninety-four graphic characters or their equivalents:
+这个标准字符集合由非图形化的字符newline, 图形化字符space, 还有以下94个图形化字符或者它们的等价物构成:
 
 Graphic ID  Glyph  Description  Graphic ID  Glyph  Description  
 LA01        a      small a      LN01        n      small n      
@@ -91,7 +91,7 @@ LL02        L      capital L    LY02        Y      capital Y
 LM01        m      small m      LZ01        z      small z      
 LM02        M      capital M    LZ02        Z      capital Z    
 
-Figure 2-3. Standard Character Subrepertoire (Part 1 of 3: Latin Characters)
+Figure 2-3. 标准字符子表 (Part 1 of 3: 拉丁字母)
 
 Graphic ID  Glyph  Description  Graphic ID  Glyph  Description  
 ND01        1      digit 1      ND06        6      digit 6      
@@ -100,7 +100,7 @@ ND03        3      digit 3      ND08        8      digit 8
 ND04        4      digit 4      ND09        9      digit 9      
 ND05        5      digit 5      ND10        0      digit 0      
 
-Figure 2-4. Standard Character Subrepertoire (Part 2 of 3: Numeric Characters)
+Figure 2-4. 标准字符子表 (Part 2 of 3: 数字字符)
 
 Graphic ID  Glyph  Description                              
 SP02        !      exclamation mark                         
@@ -136,9 +136,9 @@ SD13        `      grave accent, or backquote
 SD15        ^      circumflex accent                        
 SD19        ~      tilde                                    
 
-Figure 2-5. Standard Character Subrepertoire (Part 3 of 3: Special Characters)
+Figure 2-5. 标准字符子表 (Part 3 of 3: 特殊字符)
 
-The graphic IDs are not used within Common Lisp, but are provided for cross reference purposes with ISO 6937/2. Note that the first letter of the graphic ID categorizes the character as follows: L---Latin, N---Numeric, S---Special. 
+这个图形化ID (graphic ID) 在Common Lisp中不可用, 但是提供了和ISO 6937/2交叉引用的目的. 注意图形化ID的第一个字母把字符分成以下几类: L---Latin, N---Numeric, S---Special. <!-- TODO 待校验 -->
 
 ### 2.1.4 <span id = "CharacterSyntaxTypes">Character Syntax Types</span>
 
