@@ -1,28 +1,22 @@
- 2. Syntax
+# 2. Syntax
 
-2.1 Character Syntax
+> * 2.1 [Character Syntax](#CharacterSyntax)
+> * 2.2 [Reader Algorithm](#ReaderAlgorithm)
+> * 2.3 [Interpretation of Tokens](#InterpretationOfTokens)
+> * 2.4 [Standard Macro Characters](#StandardMacroCharacters)
 
-2.2 Reader Algorithm
-
-2.3 Interpretation of Tokens
-
-2.4 Standard Macro Characters
-
- 2.1 Character Syntax
+## 2.1 <span id = "CharacterSyntax">Character Syntax</span>
 
 The Lisp reader takes characters from a stream, interprets them as a printed representation of an object, constructs that object, and returns it.
 
 The syntax described by this chapter is called the standard syntax. Operations are provided by Common Lisp so that various aspects of the syntax information represented by a readtable can be modified under program control; see Section 23 (Reader). Except as explicitly stated otherwise, the syntax used throughout this document is standard syntax.
 
-2.1.1 Readtables
+> * 2.1.1 [Readtables](#Readtables)
+> * 2.1.2 [Variables that affect the Lisp Reader](#VariablesAffectReader)
+> * 2.1.3 [Standard Characters](#StandardCharacters)
+> * 2.1.4 [Character Syntax Types](#CharacterSyntaxTypes)
 
-2.1.2 Variables that affect the Lisp Reader
-
-2.1.3 Standard Characters
-
-2.1.4 Character Syntax Types
-
- 2.1.1 Readtables
+### 2.1.1 <span id = "Readtables">Readtables</span>
 
 Syntax information for use by the Lisp reader is embodied in an object called a readtable. Among other things, the readtable contains the association between characters and syntax types.
 
@@ -36,27 +30,25 @@ make-dispatch-macro-character  set-syntax-from-char
 
 Figure 2-1. Readtable defined names
 
-2.1.1.1 The Current Readtable
+> * 2.1.1.1 [The Current Readtable](#CurrentReadtable)
+> * 2.1.1.2 [The Standard Readtable](#StandardReadtable)
+> * 2.1.1.3 [The Initial Readtable](#InitialReadtable)
 
-2.1.1.2 The Standard Readtable
-
-2.1.1.3 The Initial Readtable
-
- 2.1.1.1 The Current Readtable
+#### 2.1.1.1 <span id = "CurrentReadtable">The Current Readtable</span>
 
 Several readtables describing different syntaxes can exist, but at any given time only one, called the current readtable, affects the way in which expressions[2] are parsed into objects by the Lisp reader. The current readtable in a given dynamic environment is the value of *readtable* in that environment. To make a different readtable become the current readtable, *readtable* can be assigned or bound. 
 
- 2.1.1.2 The Standard Readtable
+#### 2.1.1.2 <span id = "StandardReadtable">The Standard Readtable</span>
 
 The standard readtable conforms to standard syntax. The consequences are undefined if an attempt is made to modify the standard readtable. To achieve the effect of altering or extending standard syntax, a copy of the standard readtable can be created; see the function copy-readtable.
 
 The readtable case of the standard readtable is :upcase. 
 
- 2.1.1.3 The Initial Readtable
+#### 2.1.1.3 <span id = "InitialReadtable">The Initial Readtable</span>
 
 The initial readtable is the readtable that is the current readtable at the time when the Lisp image starts. At that time, it conforms to standard syntax. The initial readtable is distinct from the standard readtable. It is permissible for a conforming program to modify the initial readtable. 
 
- 2.1.2 Variables that affect the Lisp Reader
+### 2.1.2 <span id = "VariablesAffectReader">Variables that affect the Lisp Reader</span>
 
 The Lisp reader is influenced not only by the current readtable, but also by various dynamic variables. The next figure lists the variables that influence the behavior of the Lisp reader.
 
@@ -65,7 +57,7 @@ The Lisp reader is influenced not only by the current readtable, but also by var
 
 Figure 2-2. Variables that influence the Lisp reader. 
 
- 2.1.3 Standard Characters
+### 2.1.3 <span id = "StandardCharacters">Standard Characters</span>
 
 All implementations must support a character repertoire called standard-char; characters that are members of that repertoire are called standard characters.
 
@@ -148,7 +140,7 @@ Figure 2-5. Standard Character Subrepertoire (Part 3 of 3: Special Characters)
 
 The graphic IDs are not used within Common Lisp, but are provided for cross reference purposes with ISO 6937/2. Note that the first letter of the graphic ID categorizes the character as follows: L---Latin, N---Numeric, S---Special. 
 
- 2.1.4 Character Syntax Types
+### 2.1.4 <span id = "CharacterSyntaxTypes">Character Syntax Types</span>
 
 The Lisp reader constructs an object from the input text by interpreting each character according to its syntax type. The Lisp reader cannot accept as input everything that the Lisp printer produces, and the Lisp reader has features that are not used by the Lisp printer. The Lisp reader can be used as a lexical analyzer for a more general user-written parser.
 
@@ -193,27 +185,21 @@ The characters marked with an asterisk (*) are initially constituents, but they 
 
 Whitespace[2] characters serve as separators but are otherwise ignored. Constituent and escape characters are accumulated to make a token, which is then interpreted as a number or symbol. Macro characters trigger the invocation of functions (possibly user-supplied) that can perform arbitrary parsing actions. Macro characters are divided into two kinds, terminating and non-terminating, depending on whether or not they terminate a token. The following are descriptions of each kind of syntax type.
 
-2.1.4.1 Constituent Characters
+> * 2.1.4.1 [Constituent Characters](#ConstituentCharacters)
+> * 2.1.4.2 [Constituent Traits](#ConstituentTraits)
+> * 2.1.4.3 [Invalid Characters](#InvalidCharacters)
+> * 2.1.4.4 [Macro Characters](#MacroCharacters)
+> * 2.1.4.5 [Multiple Escape Characters](#MultipleEscapeCharacters)
+> * 2.1.4.6 [Single Escape Character](#SingleEscapeCharacter)
+> * 2.1.4.7 [Whitespace Characters](#WhitespaceCharacters)
 
-2.1.4.3 Invalid Characters
-
-2.1.4.4 Macro Characters
-
-2.1.4.5 Multiple Escape Characters
-
-2.1.4.6 Single Escape Character
-
-2.1.4.7 Whitespace Characters
-
- 2.1.4.1 Constituent Characters
+#### 2.1.4.1 <span id = "ConstituentCharacters">Constituent Characters</spans>
 
 Constituent characters are used in tokens. A token is a representation of a number or a symbol. Examples of constituent characters are letters and digits.
 
 Letters in symbol names are sometimes converted to letters in the opposite case when the name is read; see Section 23.1.2 (Effect of Readtable Case on the Lisp Reader). Case conversion can be suppressed by the use of single escape or multiple escape characters.
 
-2.1.4.2 Constituent Traits
-
- 2.1.4.2 Constituent Traits
+#### 2.1.4.2 <span id = "ConstituentTraits">Constituent Traits</span>
 
 Every character has one or more constituent traits that define how the character is to be interpreted by the Lisp reader when the character is a constituent character. These constituent traits are alphabetic[2], digit, package marker, plus sign, minus sign, dot, decimal point, ratio marker, exponent marker, and invalid. Figure 2-8 shows the constituent traits of the standard characters and of certain semi-standard characters; no mechanism is provided for changing the constituent trait of a character. Any character with the alphadigit constituent trait in that figure is a digit if the current input base is greater than that character's digit value, otherwise the character is alphabetic[2]. Any character quoted by a single escape is treated as an alphabetic[2] constituent, regardless of its normal syntax.
 
@@ -263,11 +249,11 @@ Figure 2-8. Constituent Traits of Standard Characters and Semi-Standard Characte
 
 The interpretations in this table apply only to characters whose syntax type is constituent. Entries marked with an asterisk (*) are normally shadowed[2] because the indicated characters are of syntax type whitespace[2], macro character, single escape, or multiple escape; these constituent traits apply to them only if their syntax types are changed to constituent. 
 
- 2.1.4.3 Invalid Characters
+#### 2.1.4.3 <span id = "InvalidCharacters">Invalid Characters</span>
 
 Characters with the constituent trait invalid cannot ever appear in a token except under the control of a single escape character. If an invalid character is encountered while an object is being read, an error of type reader-error is signaled. If an invalid character is preceded by a single escape character, it is treated as an alphabetic[2] constituent instead. 
 
- 2.1.4.4 Macro Characters
+#### 2.1.4.4 <span id = "MacroCharacters">Macro Characters</span>
 
 When the Lisp reader encounters a macro character on an input stream, special parsing of subsequent characters on the input stream is performed.
 
@@ -281,15 +267,13 @@ If a character is a dispatching macro character C1, its reader macro function is
 
 For information about the macro characters that are available in standard syntax, see Section 2.4 (Standard Macro Characters). 
 
- 2.1.4.5 Multiple Escape Characters
+#### 2.1.4.5 <span id = "MultipleEscapeCharacters">Multiple Escape Characters</span>
 
 A pair of multiple escape characters is used to indicate that an enclosed sequence of characters, including possible macro characters and whitespace[2] characters, are to be treated as alphabetic[2] characters with case preserved. Any single escape and multiple escape characters that are to appear in the sequence must be preceded by a single escape character.
 
 Vertical-bar is a multiple escape character in standard syntax.
 
-2.1.4.5.1 Examples of Multiple Escape Characters
-
- 2.1.4.5.1 Examples of Multiple Escape Characters
+##### 2.1.4.5.1 Examples of Multiple Escape Characters
 
  ;; The following examples assume the readtable case of *readtable* 
  ;; and *print-case* are both :upcase.
@@ -298,15 +282,13 @@ Vertical-bar is a multiple escape character in standard syntax.
  (eq 'abc 'a|B|c) =>  true
  (eq 'abc '|abc|) =>  false
 
- 2.1.4.6 Single Escape Character
+#### 2.1.4.6 <span id = "SingleEscapeCharacter">Single Escape Character</span>
 
 A single escape is used to indicate that the next character is to be treated as an alphabetic[2] character with its case preserved, no matter what the character is or which constituent traits it has.
 
 Backslash is a single escape character in standard syntax.
 
-2.1.4.6.1 Examples of Single Escape Characters
-
- 2.1.4.6.1 Examples of Single Escape Characters
+##### 2.1.4.6.1 Examples of Single Escape Characters
 
  ;; The following examples assume the readtable case of *readtable* 
  ;; and *print-case* are both :upcase.
@@ -315,15 +297,13 @@ Backslash is a single escape character in standard syntax.
  (eq 'abc '\ABC) =>  true
  (eq 'abc '\abc) =>  false
 
- 2.1.4.7 Whitespace Characters
+#### 2.1.4.7 <span id = "WhitespaceCharacters">Whitespace Characters</span>
 
 Whitespace[2] characters are used to separate tokens.
 
 Space and newline are whitespace[2] characters in standard syntax.
 
-2.1.4.7.1 Examples of Whitespace Characters
-
- 2.1.4.7.1 Examples of Whitespace Characters
+##### 2.1.4.7.1 Examples of Whitespace Characters
 
  (length '(this-that)) =>  1
  (length '(this - that)) =>  3
@@ -332,7 +312,7 @@ Space and newline are whitespace[2] characters in standard syntax.
  (+ 34) =>  34
  (+ 3 4) =>  7
 
- 2.2 Reader Algorithm
+## 2.2 <span id = "ReaderAlgorithm">Reader Algorithm</span>
 
 This section describes the algorithm used by the Lisp reader to parse objects from an input character stream, including how the Lisp reader processes macro characters.
 
@@ -390,21 +370,16 @@ The algorithm performed by the Lisp reader is as follows:
 
 10. An entire token has been accumulated. The object represented by the token is returned as the result of the read operation, or an error of type reader-error is signaled if the token is not of valid syntax. 
 
- 2.3 Interpretation of Tokens
+## 2.3 <span id = "InterpretationOfTokens">Interpretation of Tokens</span>
 
-2.3.1 Numbers as Tokens
+> * 2.3.1 [Numbers as Tokens](#NumbersAsTokens)
+> * 2.3.2 [Constructing Numbers from Tokens](#ConstructingNumbersFromTokens)
+> * 2.3.3 [The Consing Dot](#TheConsingDot)
+> * 2.3.4 [Symbols as Tokens](#SymbolsAsTokens)
+> * 2.3.5 [Valid Patterns for Tokens](#ValidPatternsForTokens)
+> * 2.3.6 [Package System Consistency Rules](#PackageSystemConsistencyRules)
 
-2.3.2 Constructing Numbers from Tokens
-
-2.3.3 The Consing Dot
-
-2.3.4 Symbols as Tokens
-
-2.3.5 Valid Patterns for Tokens
-
-2.3.6 Package System Consistency Rules
-
- 2.3.1 Numbers as Tokens
+### 2.3.1 <span id = "NumbersAsTokens">Numbers as Tokens</span>
 
 When a token is read, it is interpreted as a number or symbol. The token is interpreted as a number if it satisfies the syntax for numbers specified in the next figure.
 
@@ -444,9 +419,7 @@ digit---a digit in the current input radix.
 
 Figure 2-9. Syntax for Numeric Tokens
 
-2.3.1.1 Potential Numbers as Tokens
-
- 2.3.1.1 Potential Numbers as Tokens
+#### 2.3.1.1 Potential Numbers as Tokens
 
 To allow implementors and future Common Lisp standards to extend the syntax of numbers, a syntax for potential numbers is defined that is more general than the syntax for numbers. A token is a potential number if it satisfies all of the following requirements:
 
@@ -462,11 +435,7 @@ If a potential number has number syntax, a number of the appropriate type is con
 
 If there is an ambiguity as to whether a letter should be treated as a digit or as a number marker, the letter is treated as a digit.
 
-2.3.1.1.1 Escape Characters and Potential Numbers
-
-2.3.1.1.2 Examples of Potential Numbers
-
- 2.3.1.1.1 Escape Characters and Potential Numbers
+##### 2.3.1.1.1 Escape Characters and Potential Numbers
 
 A potential number cannot contain any escape characters. An escape character robs the following character of all syntactic qualities, forcing it to be strictly alphabetic[2] and therefore unsuitable for use in a potential number. For example, all of the following representations are interpreted as symbols, not numbers:
 
@@ -474,7 +443,7 @@ A potential number cannot contain any escape characters. An escape character rob
 
 In each case, removing the escape character (or characters) would cause the token to be a potential number. 
 
- 2.3.1.1.2 Examples of Potential Numbers
+##### 2.3.1.1.2 Examples of Potential Numbers
 
 As examples, the tokens in the next figure are potential numbers, but they are not actually numbers, and so are reserved tokens; a conforming implementation is permitted, but not required, to define their meaning.
 
@@ -497,7 +466,7 @@ bad-face  25-dec-83  a/b  fad_cafe  f^
 
 Figure 2-12. Examples of symbols or potential numbers 
 
- 2.3.2 Constructing Numbers from Tokens
+### 2.3.2 <span id = "ConstructingNumbersFromTokens">Constructing Numbers from Tokens</span>
 
 A real is constructed directly from a corresponding numeric token; see Figure 2-9.
 
@@ -507,25 +476,19 @@ The reader macros #B, #O, #X, and #R may also be useful in controlling the input
 
 This section summarizes the full syntax for numbers.
 
-2.3.2.1 Syntax of a Rational
+> * 2.3.2.1 [Syntax of a Rational](#SyntaxRational)
+> * 2.3.2.2 [Syntax of a Float](#SyntaxFloat)
+> * 2.3.2.3 [Syntax of a Complex](#SyntaxComplex)
 
-2.3.2.2 Syntax of a Float
+#### 2.3.2.1 <span id = "SyntaxRational">Syntax of a Rational</span>
 
-2.3.2.3 Syntax of a Complex
-
- 2.3.2.1 Syntax of a Rational
-
-2.3.2.1.1 Syntax of an Integer
-
-2.3.2.1.2 Syntax of a Ratio
-
- 2.3.2.1.1 Syntax of an Integer
+##### 2.3.2.1.1 Syntax of an Integer
 
 Integers can be written as a sequence of digits, optionally preceded by a sign and optionally followed by a decimal point; see Figure 2-9. When a decimal point is used, the digits are taken to be in radix 10; when no decimal point is used, the digits are taken to be in radix given by the current input base.
 
 For information on how integers are printed, see Section 22.1.3.1.1 (Printing Integers). 
 
- 2.3.2.1.2 Syntax of a Ratio
+##### 2.3.2.1.2 Syntax of a Ratio
 
 Ratios can be written as an optional sign followed by two non-empty sequences of digits separated by a slash; see Figure 2-9. The second sequence may not consist entirely of zeros. Examples of ratios are in the next figure.
 
@@ -543,7 +506,7 @@ Figure 2-13. Examples of Ratios
 
 For information on how ratios are printed, see Section 22.1.3.1.2 (Printing Ratios). 
 
- 2.3.2.2 Syntax of a Float
+#### 2.3.2.2 <span id = "SyntaxFloat">Syntax of a Float</span>
 
 Floats can be written in either decimal fraction or computerized scientific notation: an optional sign, then a non-empty sequence of digits with an embedded decimal point, then an optional decimal exponent specification. If there is no exponent specifier, then the decimal point is required, and there must be digits after it. The exponent specifier consists of an exponent marker, an optional sign, and a non-empty sequence of digits. If no exponent specifier is present, or if the exponent marker e (or E) is used, then the format specified by *read-default-float-format* is used. See Figure 2-9.
 
@@ -576,17 +539,17 @@ Figure 2-14. Examples of Floating-point numbers
 
 For information on how floats are printed, see Section 22.1.3.1.3 (Printing Floats). 
 
- 2.3.2.3 Syntax of a Complex
+#### 2.3.2.3 <span id = "SyntaxComplex">Syntax of a Complex</span>
 
 A complex has a Cartesian structure, with a real part and an imaginary part each of which is a real. The parts of a complex are not necessarily floats but both parts must be of the same type: either both are rationals, or both are of the same float subtype. When constructing a complex, if the specified parts are not the same type, the parts are converted to be the same type internally (i.e., the rational part is converted to a float). An object of type (complex rational) is converted internally and represented thereafter as a rational if its imaginary part is an integer whose value is 0.
 
 For further information, see Section 2.4.8.11 (Sharpsign C) and Section 22.1.3.1.4 (Printing Complexes). 
 
- 2.3.3 The Consing Dot
+### 2.3.3 <span id = "TheConsingDot">The Consing Dot</span>
 
 If a token consists solely of dots (with no escape characters), then an error of type reader-error is signaled, except in one circumstance: if the token is a single dot and appears in a situation where dotted pair notation permits a dot, then it is accepted as part of such syntax and no error is signaled. See Section 2.4.1 (Left-Parenthesis). 
 
- 2.3.4 Symbols as Tokens
+### 2.3.4 <span id = "SymbolsAsTokens">Symbols as Tokens</span>
 
 Any token that is not a potential number, does not contain a package marker, and does not consist entirely of dots will always be interpreted as a symbol. Any token that is a potential number but does not fit the number syntax is a reserved token and has an implementation-dependent interpretation. In all other cases, the token is construed to be the name of a symbol.
 
@@ -634,7 +597,7 @@ In the process of parsing a symbol, it is implementation-dependent which impleme
 
 When parsing the syntax for a symbol, the Lisp reader looks up the name of that symbol in the current package. This lookup may involve looking in other packages whose external symbols are inherited by the current package. If the name is found, the corresponding symbol is returned. If the name is not found (that is, there is no symbol of that name accessible in the current package), a new symbol is created and is placed in the current package as an internal symbol. The current package becomes the owner (home package) of the symbol, and the symbol becomes interned in the current package. If the name is later read again while this same package is current, the same symbol will be found and returned. 
 
- 2.3.5 Valid Patterns for Tokens
+### 2.3.5 <span id = "ValidPatternsForTokens">Valid Patterns for Tokens</span>
 
 The valid patterns for tokens are summarized in the next figure.
 
@@ -676,7 +639,7 @@ A summary of rules concerning package markers follows. In each case, examples ar
 
 For example, assuming the readtable case of the current readtable is :upcase, editor:buffer refers to the external symbol named BUFFER present in the package named editor, regardless of whether there is a symbol named BUFFER in the current package. If there is no package named editor, or if no symbol named BUFFER is present in editor, or if BUFFER is not exported by editor, the reader signals a correctable error. If editor::buffer is seen, the effect is exactly the same as reading buffer with the EDITOR package being the current package. 
 
- 2.3.6 Package System Consistency Rules
+### 2.3.6 <span id = "PackageSystemConsistencyRules">Package System Consistency Rules</span>
 
 The following rules apply to the package system as long as the value of *package* is not changed:
 
@@ -698,31 +661,23 @@ These rules are true regardless of any implicit interning. As long as the curren
 
 An inconsistency only applies if one of the restrictions is violated between two of the named symbols. shadow, unexport, unintern, and shadowing-import can only affect the consistency of symbols with the same names (under string=) as the ones supplied as arguments. 
 
- 2.4 Standard Macro Characters
+## 2.4 <span id = "StandardMacroCharacters">Standard Macro Characters</span>
 
 If the reader encounters a macro character, then its associated reader macro function is invoked and may produce an object to be returned. This function may read the characters following the macro character in the stream in any syntax and return the object represented by that syntax.
 
 Any character can be made to be a macro character. The macro characters defined initially in a conforming implementation include the following:
 
-2.4.1 Left-Parenthesis
-
-2.4.2 Right-Parenthesis
-
-2.4.3 Single-Quote
-
-2.4.4 Semicolon
-
-2.4.5 Double-Quote
-
-2.4.6 Backquote
-
-2.4.7 Comma
-
-2.4.8 Sharpsign
-
-2.4.9 Re-Reading Abbreviated Expressions
-
- 2.4.1 Left-Parenthesis
+> * 2.4.1 [Left-Parenthesis](#LeftParenthesis)
+> * 2.4.2 [Right-Parenthesis](#RightParenthesis)
+> * 2.4.3 [Single-Quote](#SingleQuote)
+> * 2.4.4 [Semicolon](#Semicolon)
+> * 2.4.5 [Double-Quote](#DoubleQuote)
+> * 2.4.6 [Backquote](#Backquote)
+> * 2.4.7 [Comma](#Comma)
+> * 2.4.8 [Sharpsign](#Sharpsign)
+> * 2.4.9 [Re-Reading Abbreviated Expressions](#ReReadingAbbreviatedExpressions)
+ 
+### 2.4.1 <span id = "LeftParenthesis">Left-Parenthesis</span>
 
 The left-parenthesis initiates reading of a list. read is called recursively to read successive objects until a right parenthesis is found in the input stream. A list of the objects read is returned. Thus
 
@@ -750,71 +705,61 @@ It is permissible for the object following the dot to be a list:
 
 For information on how the Lisp printer prints lists and conses, see Section 22.1.3.5 (Printing Lists and Conses). 
 
- 2.4.2 Right-Parenthesis
+### 2.4.2 <span id = "RightParenthesis">Right-Parenthesis</span>
 
 The right-parenthesis is invalid except when used in conjunction with the left parenthesis character. For more information, see Section 2.2 (Reader Algorithm). 
 
- 2.4.3 Single-Quote
+### 2.4.3 <span id = "SingleQuote">Single-Quote</span>
 
 Syntax: '<<exp>>
 
 A single-quote introduces an expression to be ``quoted.'' Single-quote followed by an expression exp is treated by the Lisp reader as an abbreviation for and is parsed identically to the expression (quote exp). See the special operator quote.
 
-2.4.3.1 Examples of Single-Quote
-
- 2.4.3.1 Examples of Single-Quote
+#### 2.4.3.1 Examples of Single-Quote
 
  'foo =>  FOO
  ''foo =>  (QUOTE FOO)
  (car ''foo) =>  QUOTE
 
- 2.4.4 Semicolon
+### 2.4.4 <span id = "Semicolon">Semicolon</span>
 
 Syntax: ;<<text>>
 
 A semicolon introduces characters that are to be ignored, such as comments. The semicolon and all characters up to and including the next newline or end of file are ignored.
 
-2.4.4.1 Examples of Semicolon
-
-2.4.4.2 Notes about Style for Semicolon
-
- 2.4.4.1 Examples of Semicolon
+#### 2.4.4.1 Examples of Semicolon
 
  (+ 3 ; three
     4)
 =>  7    
 
- 2.4.4.2 Notes about Style for Semicolon
+#### 2.4.4.2 Notes about Style for Semicolon
 
 Some text editors make assumptions about desired indentation based on the number of semicolons that begin a comment. The following style conventions are common, although not by any means universal.
 
-2.4.4.2.1 Use of Single Semicolon
+> * 2.4.4.2.1 [Use of Single Semicolon](#UseOfSingleSemicolon)
+> * 2.4.4.2.2 [Use of Double Semicolon](#UseOfDoubleSemicolon)
+> * 2.4.4.2.3 [Use of Triple Semicolon](#UseOfTripleSemicolon)
+> * 2.4.4.2.4 [Use of Quadruple Semicolon](#UseOfQuadrupleSemicolon)
+> * 2.4.4.2.5 [Examples of Style for Semicolon](#ExamplesOfStyleForSemicolon)
 
-2.4.4.2.2 Use of Double Semicolon
-
-2.4.4.2.3 Use of Triple Semicolon
-
-2.4.4.2.4 Use of Quadruple Semicolon
-
-2.4.4.2.5 Examples of Style for Semicolon
-
- 2.4.4.2.1 Use of Single Semicolon
+##### 2.4.4.2.1 <span id = "UseOfSingleSemicolon">Use of Single Semicolon</span>
 
 Comments that begin with a single semicolon are all aligned to the same column at the right (sometimes called the ``comment column''). The text of such a comment generally applies only to the line on which it appears. Occasionally two or three contain a single sentence together; this is sometimes indicated by indenting all but the first with an additional space (after the semicolon). 
 
- 2.4.4.2.2 Use of Double Semicolon
+##### 2.4.4.2.2 <span id = "UseOfDoubleSemicolon">Use of Double Semicolon</span>
 
 Comments that begin with a double semicolon are all aligned to the same level of indentation as a form would be at that same position in the code. The text of such a comment usually describes the state of the program at the point where the comment occurs, the code which follows the comment, or both. 
 
- 2.4.4.2.3 Use of Triple Semicolon
+##### 2.4.4.2.3 <span id = "UseOfTripleSemicolon">Use of Triple Semicolon</span>
 
 Comments that begin with a triple semicolon are all aligned to the left margin. Usually they are used prior to a definition or set of definitions, rather than within a definition. 
 
- 2.4.4.2.4 Use of Quadruple Semicolon
+##### 2.4.4.2.4 <span id = "UseOfQuadrupleSemicolon">Use of Quadruple Semicolon</span>
 
 Comments that begin with a quadruple semicolon are all aligned to the left margin, and generally contain only a short piece of text that serve as a title for the code which follows, and might be used in the header or footer of a program that prepares code for presentation as a hardcopy document. 
 
- 2.4.4.2.5 Examples of Style for Semicolon
+##### 2.4.4.2.5 <span id = "ExamplesOfStyleForSemicolon">Examples of Style for Semicolon</span>
 
 ;;;; Math Utilities
 
@@ -835,7 +780,7 @@ Comments that begin with a quadruple semicolon are all aligned to the left margi
         (t (+ (fib (- n 1))     ;The traditional formula
               (fib (- n 2)))))) ; is fib[n-1]+fib[n-2].
 
- 2.4.5 Double-Quote
+### 2.4.5 <span id = "DoubleQuote">Double-Quote</span>
 
 Syntax: "<<text>>"
 
@@ -854,7 +799,7 @@ Note that to place a single escape character or a double-quote into a string, su
 
 For information on how the Lisp printer prints strings, see Section 22.1.3.4 (Printing Strings). 
 
- 2.4.6 Backquote
+### 2.4.6 <span id = "Backquote">Backquote</span>
 
 The backquote introduces a template of a data structure to be built. For example, writing
 
@@ -926,9 +871,7 @@ but it could also be legitimately interpreted to mean any of the following:
  (append (list (cons a '(b))) (list c) d)
  (list* (cons a '(b)) c (copy-list d))
 
-2.4.6.1 Notes about Backquote
-
- 2.4.6.1 Notes about Backquote
+#### 2.4.6.1 Notes about Backquote
 
 Since the exact manner in which the Lisp reader will parse an expression involving the backquote reader macro is not specified, an implementation is free to choose any representation that preserves the semantics described.
 
@@ -936,11 +879,11 @@ Often an implementation will choose a representation that facilitates pretty pri
 
 Implementors who have no particular reason to make one choice or another might wish to refer to IEEE Standard for the Scheme Programming Language, which identifies a popular choice of representation for such expressions that might provide useful to be useful compatibility for some user communities. There is no requirement, however, that any conforming implementation use this particular representation. This information is provided merely for cross-reference purposes. 
 
- 2.4.7 Comma
+### 2.4.7 <span id = "Comma">Comma</span>
 
 The comma is part of the backquote syntax; see Section 2.4.6 (Backquote). Comma is invalid if used other than inside the body of a backquote expression as described above. 
 
- 2.4.8 Sharpsign
+### 2.4.8 <span id = "Sharpsign">Sharpsign</span>
 
 Sharpsign is a non-terminating dispatching macro character. It reads an optional sequence of digits and then one more character, and uses that character to select a function to run as a reader macro function.
 
@@ -991,51 +934,30 @@ The combinations marked by an asterisk (*) are explicitly reserved to the user. 
 
 Note also that digits do not appear in the preceding table. This is because the notations #0, #1, ..., #9 are reserved for another purpose which occupies the same syntactic space. When a digit follows a sharpsign, it is not treated as a dispatch character. Instead, an unsigned integer argument is accumulated and passed as an argument to the reader macro for the character that follows the digits. For example, #2A((1 2) (3 4)) is a use of #A with an argument of 2.
 
-2.4.8.1 Sharpsign Backslash
+> * 2.4.8.1 [Sharpsign Backslash](#SharpsignBackslash)
+> * 2.4.8.2 [Sharpsign Single-Quote](#SharpsignSingleQuote)
+> * 2.4.8.3 [Sharpsign Left-Parenthesis](#SharpsignLeftParenthesis)
+> * 2.4.8.4 [Sharpsign Asterisk](#SharpsignAsterisk)
+> * 2.4.8.5 [Sharpsign Colon](#SharpsignColon)
+> * 2.4.8.6 [Sharpsign Dot](#SharpsignDot)
+> * 2.4.8.7 [Sharpsign B](#SharpsignB)
+> * 2.4.8.8 [Sharpsign O](#SharpsignO)
+> * 2.4.8.9 [Sharpsign X](#SharpsignX)
+> * 2.4.8.10 [Sharpsign R](#SharpsignR)
+> * 2.4.8.11 [Sharpsign C](#SharpsignC)
+> * 2.4.8.12 [Sharpsign A](#SharpsignA)
+> * 2.4.8.13 [Sharpsign S](#SharpsignS)
+> * 2.4.8.14 [Sharpsign P](#SharpsignP)
+> * 2.4.8.15 [Sharpsign Equal-Sign](#SharpsignEqualSign)
+> * 2.4.8.16 [Sharpsign Sharpsign](#SharpsignSharpsign)
+> * 2.4.8.17 [Sharpsign Plus](#SharpsignPlus)
+> * 2.4.8.18 [Sharpsign Minus](#SharpsignMinus)
+> * 2.4.8.19 [Sharpsign Vertical-Bar](#SharpsignVerticalBar)
+> * 2.4.8.20 [Sharpsign Less-Than-Sign](#SharpsignLessThanSign)
+> * 2.4.8.21 [Sharpsign Whitespace](#SharpsignWhitespace)
+> * 2.4.8.22 [Sharpsign Right-Parenthesis](#SharpsignRightParenthesis)
 
-2.4.8.2 Sharpsign Single-Quote
-
-2.4.8.3 Sharpsign Left-Parenthesis
-
-2.4.8.4 Sharpsign Asterisk
-
-2.4.8.5 Sharpsign Colon
-
-2.4.8.6 Sharpsign Dot
-
-2.4.8.7 Sharpsign B
-
-2.4.8.8 Sharpsign O
-
-2.4.8.9 Sharpsign X
-
-2.4.8.10 Sharpsign R
-
-2.4.8.11 Sharpsign C
-
-2.4.8.12 Sharpsign A
-
-2.4.8.13 Sharpsign S
-
-2.4.8.14 Sharpsign P
-
-2.4.8.15 Sharpsign Equal-Sign
-
-2.4.8.16 Sharpsign Sharpsign
-
-2.4.8.17 Sharpsign Plus
-
-2.4.8.18 Sharpsign Minus
-
-2.4.8.19 Sharpsign Vertical-Bar
-
-2.4.8.20 Sharpsign Less-Than-Sign
-
-2.4.8.21 Sharpsign Whitespace
-
-2.4.8.22 Sharpsign Right-Parenthesis
-
- 2.4.8.1 Sharpsign Backslash
+#### 2.4.8.1 <span id = "SharpsignBackslash">Sharpsign Backslash</span>
 
 Syntax: #\<<x>>
 
@@ -1047,13 +969,13 @@ When the token x is more than one character long, the x must have the syntax of 
 
 For information about how the Lisp printer prints character objects, see Section 22.1.3.2 (Printing Characters). 
 
- 2.4.8.2 Sharpsign Single-Quote
+#### 2.4.8.2 <span id = "SharpsignSingleQuote">Sharpsign Single-Quote</span>
 
 Any expression preceded by #' (sharpsign followed by single-quote), as in #'expression, is treated by the Lisp reader as an abbreviation for and parsed identically to the expression (function expression). See function. For example,
 
 (apply #'+ l) ==  (apply (function +) l)
 
- 2.4.8.3 Sharpsign Left-Parenthesis
+#### 2.4.8.3 <span id = "SharpsignLeftParenthesis">Sharpsign Left-Parenthesis</span>
 
 #( and ) are used to notate a simple vector.
 
@@ -1075,7 +997,7 @@ The notation #() denotes an empty vector, as does #0().
 
 For information on how the Lisp printer prints vectors, see Section 22.1.3.4 (Printing Strings), Section 22.1.3.6 (Printing Bit Vectors), or Section 22.1.3.7 (Printing Other Vectors). 
 
- 2.4.8.4 Sharpsign Asterisk
+#### 2.4.8.4 <span id = "SharpsignAsterisk">Sharpsign Asterisk</span>
 
 Syntax: #*<<bits>>
 
@@ -1091,9 +1013,7 @@ Regardless of whether the optional numeric argument n is provided, the token tha
 
 For information on how the Lisp printer prints bit vectors, see Section 22.1.3.6 (Printing Bit Vectors).
 
-2.4.8.4.1 Examples of Sharpsign Asterisk
-
- 2.4.8.4.1 Examples of Sharpsign Asterisk
+##### 2.4.8.4.1 Examples of Sharpsign Asterisk
 
 For example,
 
@@ -1108,7 +1028,7 @@ For example:
 
  #*         ;An empty bit-vector
 
- 2.4.8.5 Sharpsign Colon
+#### 2.4.8.5 <span id = "SharpsignColon">Sharpsign Colon</span>
 
 Syntax: #:<<symbol-name>>
 
@@ -1116,7 +1036,7 @@ Syntax: #:<<symbol-name>>
 
 For information on how the Lisp reader prints uninterned symbols, see Section 22.1.3.3 (Printing Symbols). 
 
- 2.4.8.6 Sharpsign Dot
+#### 2.4.8.6 <span id = "SharpsignDot">Sharpsign Dot</span>
 
 #.foo is read as the object resulting from the evaluation of the object represented by foo. The evaluation is done during the read process, when the #. notation is encountered. The #. syntax therefore performs a read-time evaluation of foo.
 
@@ -1124,7 +1044,7 @@ The normal effect of #. is inhibited when the value of *read-eval* is false. In 
 
 For an object that does not have a convenient printed representation, a form that computes the object can be given using the #. notation. 
 
- 2.4.8.7 Sharpsign B
+#### 2.4.8.7 <span id = "SharpsignB">Sharpsign B</span>
 
 #Brational reads rational in binary (radix 2). For example,
 
@@ -1133,7 +1053,7 @@ For an object that does not have a convenient printed representation, a form tha
 
 The consequences are undefined if the token immediately following the #B does not have the syntax of a binary (i.e., radix 2) rational. 
 
- 2.4.8.8 Sharpsign O
+#### 2.4.8.8 <span id = "SharpsignO">Sharpsign O</span>
 
 #Orational reads rational in octal (radix 8). For example,
 
@@ -1143,7 +1063,7 @@ The consequences are undefined if the token immediately following the #B does no
 
 The consequences are undefined if the token immediately following the #O does not have the syntax of an octal (i.e., radix 8) rational. 
 
- 2.4.8.9 Sharpsign X
+#### 2.4.8.9 <span id = "SharpsignX">Sharpsign X</span>
 
 #Xrational reads rational in hexadecimal (radix 16). The digits above 9 are the letters A through F (the lowercase letters a through f are also acceptable). For example,
 
@@ -1152,7 +1072,7 @@ The consequences are undefined if the token immediately following the #O does no
 
 The consequences are undefined if the token immediately following the #X does not have the syntax of a hexadecimal (i.e., radix 16) rational. 
 
- 2.4.8.10 Sharpsign R
+#### 2.4.8.10 <span id = "SharpsignR">Sharpsign R</span>
 
 #nR
 
@@ -1177,7 +1097,7 @@ Figure 2-20. Radix Indicator Example
 
 The consequences are undefined if the token immediately following the #nR does not have the syntax of a rational in radix n. 
 
- 2.4.8.11 Sharpsign C
+#### 2.4.8.11 <span id = "SharpsignC">Sharpsign C</span>
 
 #C reads a following object, which must be a list of length two whose elements are both reals. These reals denote, respectively, the real and imaginary parts of a complex number. If the two parts as notated are not of the same data type, then they are converted according to the rules of floating-point contagion described in Section 12.1.1.2 (Contagion in Numeric Operations).
 
@@ -1194,7 +1114,7 @@ Figure 2-21. Complex Number Example
 
 For further information, see Section 22.1.3.1.4 (Printing Complexes) and Section 2.3.2.3 (Syntax of a Complex). 
 
- 2.4.8.12 Sharpsign A
+#### 2.4.8.12 <span id = "SharpsignA">Sharpsign A</span>
 
 #nA
 
@@ -1219,7 +1139,7 @@ If some dimension of the array whose representation is being parsed is found to 
 
 For information on how the Lisp printer prints arrays, see Section 22.1.3.4 (Printing Strings), Section 22.1.3.6 (Printing Bit Vectors), Section 22.1.3.7 (Printing Other Vectors), or Section 22.1.3.8 (Printing Other Arrays). 
 
- 2.4.8.13 Sharpsign S
+#### 2.4.8.13 <span id = "SharpsignS">Sharpsign S</span>
 
 #s(name slot1 value1 slot2 value2 ...) denotes a structure. This is valid only if name is the name of a structure type already defined by defstruct and if the structure type has a standard constructor function. Let cm stand for the name of this constructor function; then this syntax is equivalent to
 
@@ -1235,7 +1155,7 @@ Whatever object the constructor function returns is returned by the #S syntax.
 
 For information on how the Lisp printer prints structures, see Section 22.1.3.12 (Printing Structures). 
 
- 2.4.8.14 Sharpsign P
+#### 2.4.8.14 <span id = "SharpsignP">Sharpsign P</span>
 
 #P reads a following object, which must be a string.
 
@@ -1243,13 +1163,13 @@ For information on how the Lisp printer prints structures, see Section 22.1.3.12
 
 For information on how the Lisp printer prints pathnames, see Section 22.1.3.11 (Printing Pathnames). 
 
- 2.4.8.15 Sharpsign Equal-Sign
+#### 2.4.8.15 <span id = "SharpsignEqualSign">Sharpsign Equal-Sign</span>
 
 #n=
 
 #n=object reads as whatever object has object as its printed representation. However, that object is labeled by n, a required unsigned decimal integer, for possible reference by the syntax #n#. The scope of the label is the expression being read by the outermost call to read; within this expression, the same label may not appear twice. 
 
- 2.4.8.16 Sharpsign Sharpsign
+#### 2.4.8.16 <span id = "SharpsignSharpsign">Sharpsign Sharpsign</span>
 
 #n#
 
@@ -1269,7 +1189,7 @@ Without this notation, but with *print-length* set to 10 and *print-circle* set 
 
 A reference #n# may only occur after a label #n=; forward references are not permitted. The reference may not appear as the labeled object itself (that is, #n=#n#) may not be written because the object labeled by #n= is not well defined in this case. 
 
- 2.4.8.17 Sharpsign Plus
+#### 2.4.8.17 <span id = "SharpsignPlus">Sharpsign Plus</span>
 
 #+ provides a read-time conditionalization facility; the syntax is #+test expression. If the feature expression test succeeds, then this textual notation represents an object whose printed representation is expression. If the feature expression test fails, then this textual notation is treated as whitespace[2]; that is, it is as if the ``#+ test expression'' did not appear and only a space appeared in its place.
 
@@ -1279,7 +1199,7 @@ For a detailed description of success and failure in feature expressions, see Se
 
 For examples, see Section 24.1.2.1.1 (Examples of Feature Expressions). 
 
- 2.4.8.18 Sharpsign Minus
+#### 2.4.8.18 <span id = "SharpsignMinus">Sharpsign Minus</span>
 
 #- is like #+ except that it skips the expression if the test succeeds; that is,
 
@@ -1287,15 +1207,11 @@ For examples, see Section 24.1.2.1.1 (Examples of Feature Expressions).
 
 For examples, see Section 24.1.2.1.1 (Examples of Feature Expressions). 
 
- 2.4.8.19 Sharpsign Vertical-Bar
+#### 2.4.8.19 <span id = "SharpsignVerticalBar">Sharpsign Vertical-Bar</span>
 
 #|...|# is treated as a comment by the reader. It must be balanced with respect to other occurrences of #| and |#, but otherwise may contain any characters whatsoever.
 
-2.4.8.19.1 Examples of Sharpsign Vertical-Bar
-
-2.4.8.19.2 Notes about Style for Sharpsign Vertical-Bar
-
- 2.4.8.19.1 Examples of Sharpsign Vertical-Bar
+##### 2.4.8.19.1 Examples of Sharpsign Vertical-Bar
 
 The following are some examples that exploit the #|...|# notation:
 
@@ -1355,7 +1271,7 @@ The following are some examples that exploit the #|...|# notation:
  (fboundp 'mention-fun-fact-3b) =>  NIL
 
 
- 2.4.8.19.2 Notes about Style for Sharpsign Vertical-Bar
+##### 2.4.8.19.2 Notes about Style for Sharpsign Vertical-Bar
 
 Some text editors that purport to understand Lisp syntax treat any |...| as balanced pairs that cannot nest (as if they were just balanced pairs of the multiple escapes used in notating certain symbols). To compensate for this deficiency, some programmers use the notation #||...#||...||#...||# instead of #|...#|...|#...|#. Note that this alternate usage is not a different reader macro; it merely exploits the fact that the additional vertical-bars occur within the comment in a way that tricks certain text editor into better supporting nested comments. As such, one might sometimes see code like:
 
@@ -1365,21 +1281,21 @@ Such code is equivalent to:
 
  #| (+ #| 3 |# 4 5) |#
 
- 2.4.8.20 Sharpsign Less-Than-Sign
+#### 2.4.8.20 <span id = "SharpsignLessThanSign">Sharpsign Less-Than-Sign</span>
 
 #< is not valid reader syntax. The Lisp reader will signal an error of type reader-error on encountering #<. This syntax is typically used in the printed representation of objects that cannot be read back in. 
 
- 2.4.8.21 Sharpsign Whitespace
+#### 2.4.8.21 <span id = "SharpsignWhitespace">Sharpsign Whitespace</span>
 
 # followed immediately by whitespace[1] is not valid reader syntax. The Lisp reader will signal an error of type reader-error if it encounters the reader macro notation #<Newline> or #<Space>. 
 
- 2.4.8.22 Sharpsign Right-Parenthesis
+#### 2.4.8.22 <span id = "SharpsignRightParenthesis">Sharpsign Right-Parenthesis</span>
 
 This is not valid reader syntax.
 
 The Lisp reader will signal an error of type reader-error upon encountering #). 
 
- 2.4.9 Re-Reading Abbreviated Expressions
+### 2.4.9 <span id = "ReReadingAbbreviatedExpressions">Re-Reading Abbreviated Expressions</span>
 
 Note that the Lisp reader will generally signal an error of type reader-error when reading an expression[2] that has been abbreviated because of length or level limits (see *print-level*, *print-length*, and *print-lines*) due to restrictions on ``..'', ``...'', ``#'' followed by whitespace[1], and ``#)''. 
 
