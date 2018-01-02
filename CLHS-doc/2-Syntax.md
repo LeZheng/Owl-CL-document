@@ -14,7 +14,7 @@ Lisp 读取器从一个流中读取字符, 然后将其解释为一个对象的�
 > * 2.1.1 [读取表](#Readtables)
 > * 2.1.2 [影响Lisp读取器的变量](#VariablesAffectReader)
 > * 2.1.3 [标准字符](#StandardCharacters)
-> * 2.1.4 [Character Syntax Types](#CharacterSyntaxTypes)
+> * 2.1.4 [字符语法类型](#CharacterSyntaxTypes)
 
 ### 2.1.1 <span id = "Readtables">读取表</span>
 
@@ -63,127 +63,127 @@ Figure 2-2. 影响Lisp读取器的变量.
 
 这个标准字符集合由非图形化的字符newline, 图形化字符space, 还有以下94个图形化字符或者它们的等价物构成:
 
-Graphic ID  Glyph  Description  Graphic ID  Glyph  Description  
-LA01        a      small a      LN01        n      small n      
-LA02        A      capital A    LN02        N      capital N    
-LB01        b      small b      LO01        o      small o      
-LB02        B      capital B    LO02        O      capital O    
-LC01        c      small c      LP01        p      small p      
-LC02        C      capital C    LP02        P      capital P    
-LD01        d      small d      LQ01        q      small q      
-LD02        D      capital D    LQ02        Q      capital Q    
-LE01        e      small e      LR01        r      small r      
-LE02        E      capital E    LR02        R      capital R    
-LF01        f      small f      LS01        s      small s      
-LF02        F      capital F    LS02        S      capital S    
-LG01        g      small g      LT01        t      small t      
-LG02        G      capital G    LT02        T      capital T    
-LH01        h      small h      LU01        u      small u      
-LH02        H      capital H    LU02        U      capital U    
-LI01        i      small i      LV01        v      small v      
-LI02        I      capital I    LV02        V      capital V    
-LJ01        j      small j      LW01        w      small w      
-LJ02        J      capital J    LW02        W      capital W    
-LK01        k      small k      LX01        x      small x      
-LK02        K      capital K    LX02        X      capital X    
-LL01        l      small l      LY01        y      small y      
-LL02        L      capital L    LY02        Y      capital Y    
-LM01        m      small m      LZ01        z      small z      
-LM02        M      capital M    LZ02        Z      capital Z    
+    Graphic ID  Glyph  Description  Graphic ID  Glyph  Description  
+    LA01        a      small a      LN01        n      small n      
+    LA02        A      capital A    LN02        N      capital N    
+    LB01        b      small b      LO01        o      small o      
+    LB02        B      capital B    LO02        O      capital O    
+    LC01        c      small c      LP01        p      small p      
+    LC02        C      capital C    LP02        P      capital P    
+    LD01        d      small d      LQ01        q      small q      
+    LD02        D      capital D    LQ02        Q      capital Q    
+    LE01        e      small e      LR01        r      small r      
+    LE02        E      capital E    LR02        R      capital R    
+    LF01        f      small f      LS01        s      small s      
+    LF02        F      capital F    LS02        S      capital S    
+    LG01        g      small g      LT01        t      small t      
+    LG02        G      capital G    LT02        T      capital T    
+    LH01        h      small h      LU01        u      small u      
+    LH02        H      capital H    LU02        U      capital U    
+    LI01        i      small i      LV01        v      small v      
+    LI02        I      capital I    LV02        V      capital V    
+    LJ01        j      small j      LW01        w      small w      
+    LJ02        J      capital J    LW02        W      capital W    
+    LK01        k      small k      LX01        x      small x      
+    LK02        K      capital K    LX02        X      capital X    
+    LL01        l      small l      LY01        y      small y      
+    LL02        L      capital L    LY02        Y      capital Y    
+    LM01        m      small m      LZ01        z      small z      
+    LM02        M      capital M    LZ02        Z      capital Z    
 
 Figure 2-3. 标准字符子表 (Part 1 of 3: 拉丁字母)
 
-Graphic ID  Glyph  Description  Graphic ID  Glyph  Description  
-ND01        1      digit 1      ND06        6      digit 6      
-ND02        2      digit 2      ND07        7      digit 7      
-ND03        3      digit 3      ND08        8      digit 8      
-ND04        4      digit 4      ND09        9      digit 9      
-ND05        5      digit 5      ND10        0      digit 0      
+    Graphic ID  Glyph  Description  Graphic ID  Glyph  Description  
+    ND01        1      digit 1      ND06        6      digit 6      
+    ND02        2      digit 2      ND07        7      digit 7      
+    ND03        3      digit 3      ND08        8      digit 8      
+    ND04        4      digit 4      ND09        9      digit 9      
+    ND05        5      digit 5      ND10        0      digit 0      
 
 Figure 2-4. 标准字符子表 (Part 2 of 3: 数字字符)
 
-Graphic ID  Glyph  Description                              
-SP02        !      exclamation mark                         
-SC03        $      dollar sign                              
-SP04        "      quotation mark, or double quote          
-SP05        '      apostrophe, or [single] quote            
-SP06        (      left parenthesis, or open parenthesis    
-SP07        )      right parenthesis, or close parenthesis  
-SP08        ,      comma                                    
-SP09        _      low line, or underscore                  
-SP10        -      hyphen, or minus [sign]                  
-SP11        .      full stop, period, or dot                
-SP12        /      solidus, or slash                        
-SP13        :      colon                                    
-SP14        ;      semicolon                                
-SP15        ?      question mark                            
-SA01        +      plus [sign]                              
-SA03        <      less-than [sign]                         
-SA04        =      equals [sign]                            
-SA05        >      greater-than [sign]                      
-SM01        #      number sign, or sharp[sign]              
-SM02        %      percent [sign]                           
-SM03        &      ampersand                                
-SM04        *      asterisk, or star                        
-SM05        @      commercial at, or at-sign                
-SM06        [      left [square] bracket                    
-SM07        \      reverse solidus, or backslash            
-SM08        ]      right [square] bracket                   
-SM11        {      left curly bracket, or left brace        
-SM13        |      vertical bar                             
-SM14        }      right curly bracket, or right brace      
-SD13        `      grave accent, or backquote               
-SD15        ^      circumflex accent                        
-SD19        ~      tilde                                    
+    Graphic ID  Glyph  Description                              
+    SP02        !      exclamation mark                         
+    SC03        $      dollar sign                              
+    SP04        "      quotation mark, or double quote          
+    SP05        '      apostrophe, or [single] quote            
+    SP06        (      left parenthesis, or open parenthesis    
+    SP07        )      right parenthesis, or close parenthesis  
+    SP08        ,      comma                                    
+    SP09        _      low line, or underscore                  
+    SP10        -      hyphen, or minus [sign]                  
+    SP11        .      full stop, period, or dot                
+    SP12        /      solidus, or slash                        
+    SP13        :      colon                                    
+    SP14        ;      semicolon                                
+    SP15        ?      question mark                            
+    SA01        +      plus [sign]                              
+    SA03        <      less-than [sign]                         
+    SA04        =      equals [sign]                            
+    SA05        >      greater-than [sign]                      
+    SM01        #      number sign, or sharp[sign]              
+    SM02        %      percent [sign]                           
+    SM03        &      ampersand                                
+    SM04        *      asterisk, or star                        
+    SM05        @      commercial at, or at-sign                
+    SM06        [      left [square] bracket                    
+    SM07        \      reverse solidus, or backslash            
+    SM08        ]      right [square] bracket                   
+    SM11        {      left curly bracket, or left brace        
+    SM13        |      vertical bar                             
+    SM14        }      right curly bracket, or right brace      
+    SD13        `      grave accent, or backquote               
+    SD15        ^      circumflex accent                        
+    SD19        ~      tilde                                    
 
 Figure 2-5. 标准字符子表 (Part 3 of 3: 特殊字符)
 
 这个图形化ID (graphic ID) 在Common Lisp中不可用, 但是提供了和ISO 6937/2交叉引用的目的. 注意图形化ID的第一个字母把字符分成以下几类: L---Latin, N---Numeric, S---Special. <!-- TODO 待校验 -->
 
-### 2.1.4 <span id = "CharacterSyntaxTypes">Character Syntax Types</span>
+### 2.1.4 <span id = "CharacterSyntaxTypes">字符语法类型</span>
 
-The Lisp reader constructs an object from the input text by interpreting each character according to its syntax type. The Lisp reader cannot accept as input everything that the Lisp printer produces, and the Lisp reader has features that are not used by the Lisp printer. The Lisp reader can be used as a lexical analyzer for a more general user-written parser.
+Lisp读取器通过根据语法类型解释输入文本的每一个字符来构建一个对象. Lisp读取器不能接受Lisp打印器所生成的所有内容, 并且Lisp读取器包含了不能被Lisp打印器所使用的特性. Lisp读取器可以用作更通用的用户编写的解析器的词法分析器.
 
-When the Lisp reader is invoked, it reads a single character from the input stream and dispatches according to the syntax type of that character. Every character that can appear in the input stream is of one of the syntax types shown in Figure 2-6.
+当Lisp读取器被调用, 它从输入流中读取单个字符并且根据这个字符的语法类型分派它. 每个出现在输入流中的字符都是Figure 2-6中出现的语法类型中的一个.
 
 constituent  macro character  single escape  
 invalid      multiple escape  whitespace[2]  
 
-Figure 2-6. Possible Character Syntax Types
+Figure 2-6. 可能的字符语法类型
 
-The syntax type of a character in a readtable determines how that character is interpreted by the Lisp reader while that readtable is the current readtable. At any given time, every character has exactly one syntax type.
+一个字符在读取表中的语法类型决定了当这个读取表是当前读取表时Lisp读取器如何解释这个字符. 在任何给定的时间, 每个字符都有一个确定的语法类型.
 
-Figure 2-7 lists the syntax type of each character in standard syntax.
+Figure 2-7 列出了每个字符在标准语法中的语法类型.
 
-character  syntax type                 character  syntax type             
-Backspace  constituent                 0--9       constituent             
-Tab        whitespace[2]               :          constituent             
-Newline    whitespace[2]               ;          terminating macro char  
-Linefeed   whitespace[2]               <          constituent             
-Page       whitespace[2]               =          constituent             
-Return     whitespace[2]               >          constituent             
-Space      whitespace[2]               ?          constituent*            
-!          constituent*                @          constituent             
-"          terminating macro char      A--Z       constituent             
-#          non-terminating macro char  [          constituent*            
-$          constituent                 \          single escape           
-%          constituent                 ]          constituent*            
-&          constituent                 ^          constituent             
-'          terminating macro char      _          constituent             
-(          terminating macro char      `          terminating macro char  
-)          terminating macro char      a--z       constituent             
-*          constituent                 {          constituent*            
-+          constituent                 |          multiple escape         
-,          terminating macro char      }          constituent*            
--          constituent                 ~          constituent             
-.          constituent                 Rubout     constituent             
-/          constituent                 
+    character  syntax type                 character  syntax type             
+    Backspace  constituent                 0--9       constituent             
+    Tab        whitespace[2]               :          constituent             
+    Newline    whitespace[2]               ;          terminating macro char  
+    Linefeed   whitespace[2]               <          constituent             
+    Page       whitespace[2]               =          constituent             
+    Return     whitespace[2]               >          constituent             
+    Space      whitespace[2]               ?          constituent*            
+    !          constituent*                @          constituent             
+    "          terminating macro char      A--Z       constituent             
+    \#          non-terminating macro char  [          constituent*            
+    $          constituent                 \          single escape           
+    %          constituent                 ]          constituent*            
+    &          constituent                 ^          constituent             
+    '          terminating macro char      _          constituent             
+    (          terminating macro char      `          terminating macro char  
+    )          terminating macro char      a--z       constituent             
+    \*          constituent                 {          constituent*            
+    \+          constituent                 |          multiple escape         
+    ,          terminating macro char      }          constituent*            
+    \-          constituent                 ~          constituent             
+    .          constituent                 Rubout     constituent             
+    /          constituent                 
 
-Figure 2-7. Character Syntax Types in Standard Syntax
+Figure 2-7. 标准语法中的字符语法类型
 
-The characters marked with an asterisk (*) are initially constituents, but they are not used in any standard Common Lisp notations. These characters are explicitly reserved to the programmer. ~ is not used in Common Lisp, and reserved to implementors. $ and % are alphabetic[2] characters, but are not used in the names of any standard Common Lisp defined names.
+用星号(*)标记的字符是最初的构成成分, 但是它们不被用于任何标准的Common Lisp标记中. 这些字符被显式地保留给程序员. ~ 不被用于 Common Lisp, 保留给实现者. $ 和 % 是字母字符, 但是不被用于任何标准Common Lisp定义的名字.
 
-Whitespace[2] characters serve as separators but are otherwise ignored. Constituent and escape characters are accumulated to make a token, which is then interpreted as a number or symbol. Macro characters trigger the invocation of functions (possibly user-supplied) that can perform arbitrary parsing actions. Macro characters are divided into two kinds, terminating and non-terminating, depending on whether or not they terminate a token. The following are descriptions of each kind of syntax type.
+空格字符充当分隔符的作用但是被忽略. 组成和转义字符被累计起来，以使其成为一个被解释为一个数字或一个符号的token. 宏字符触发对函数的调用(可能是用户提供的)，可以执行任意的解析操作. 宏字符被分为2种, 终止和非终止的, 取决于它们是否会终结一个token. 以下是每一种语法类型的描述.
 
 > * 2.1.4.1 [Constituent Characters](#ConstituentCharacters)
 > * 2.1.4.2 [Constituent Traits](#ConstituentTraits)
