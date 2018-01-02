@@ -183,15 +183,15 @@ Figure 2-7. 标准语法中的字符语法类型
 
 用星号(*)标记的字符是最初的构成成分, 但是它们不被用于任何标准的Common Lisp标记中. 这些字符被显式地保留给程序员. ~ 不被用于 Common Lisp, 保留给实现者. $ 和 % 是字母字符, 但是不被用于任何标准Common Lisp定义的名字.
 
-空格字符充当分隔符的作用但是被忽略. 组成和转义字符被累计起来，以使其成为一个被解释为一个数字或一个符号的token. 宏字符触发对函数的调用(可能是用户提供的)，可以执行任意的解析操作. 宏字符被分为2种, 终止和非终止的, 取决于它们是否会终结一个token. 以下是每一种语法类型的描述.
+空白字符充当分隔符的作用但是被忽略. 组成和转义字符被累计起来，以使其成为一个被解释为一个数字或一个符号的token. 宏字符触发对函数的调用(可能是用户提供的)，可以执行任意的解析操作. 宏字符被分为2种, 终止和非终止的, 取决于它们是否会终结一个token. 以下是每一种语法类型的描述.
 
 > * 2.1.4.1 [组成成分字符](#ConstituentCharacters)
 > * 2.1.4.2 [组成成分特性](#ConstituentTraits)
 > * 2.1.4.3 [非法字符](#InvalidCharacters)
-> * 2.1.4.4 [Macro Characters](#MacroCharacters)
-> * 2.1.4.5 [Multiple Escape Characters](#MultipleEscapeCharacters)
-> * 2.1.4.6 [Single Escape Character](#SingleEscapeCharacter)
-> * 2.1.4.7 [Whitespace Characters](#WhitespaceCharacters)
+> * 2.1.4.4 [宏字符](#MacroCharacters)
+> * 2.1.4.5 [多重转义字符](#MultipleEscapeCharacters)
+> * 2.1.4.6 [单转义字符](#SingleEscapeCharacter)
+> * 2.1.4.7 [空白字符](#WhitespaceCharacters)
 
 #### 2.1.4.1 <span id = "ConstituentCharacters">组成成分字符</spans>
 
@@ -244,70 +244,76 @@ Figure 2-7. 标准语法中的字符语法类型
                                                                                     
 Figure 2-8. 标准字符和不完全标准字符的构成成分特性
 
-这个表中的解释方式只应用于语法类型为constituent的字符. 标记了星号 (*) 的条目正常是被屏蔽的因为这些字符是 whitespace[2], macro character, single escape, 或者 multiple escape 语法类型; 如果它们的语法类型改变为组成成分(constituent)这些组成特性才适用于它们. 
+这个表中的解释方式只应用于语法类型为constituent的字符. 标记了星号 (*) 的条目正常是被屏蔽的因为这些字符是 空格(whitespace), 宏字符(macro character), 单转义(single escape), 或者 多重转义(multiple escape) 语法类型; 如果它们的语法类型改变为组成成分(constituent)这些组成特性才适用于它们. 
 
 #### 2.1.4.3 <span id = "InvalidCharacters">非法字符</span>
 
-具有组成成分无效(invalid)的字符不能出现在token里, 除非在一个转义字符的控制下. 当读取时遇到一个非法的字符, 会发出一个 reader-error 类型的错误. 如果一个非法字符前有一个转义符, 它会被当作 alphabetic[2] constituent. 
+具有组成成分无效(invalid)的字符不能出现在token里, 除非在单转义字符的控制下. 当读取时遇到一个非法的字符, 会发出一个 reader-error 类型的错误. 如果一个非法字符前有一个转义符, 它会被当作 alphabetic[2] constituent. 
 
-#### 2.1.4.4 <span id = "MacroCharacters">Macro Characters</span>
+#### 2.1.4.4 <span id = "MacroCharacters">宏字符</span>
 
-When the Lisp reader encounters a macro character on an input stream, special parsing of subsequent characters on the input stream is performed.
+当Lisp读取器从输入流中读入一个宏字符, 将对输入流中的后续字符进行特殊解析.
 
-A macro character has an associated function called a reader macro function that implements its specialized parsing behavior. An association of this kind can be established or modified under control of a conforming program by using the functions set-macro-character and set-dispatch-macro-character.
+一个宏字符有一个关联的函数称之为读取器宏函数实现了它专门的解析行为. 一个这样的关联可以在一个规范的程序中通过使用函数 set-macro-character 和 set-dispatch-macro-character 被确定和修改.
 
-Upon encountering a macro character, the Lisp reader calls its reader macro function, which parses one specially formatted object from the input stream. The function either returns the parsed object, or else it returns no values to indicate that the characters scanned by the function are being ignored (e.g., in the case of a comment). Examples of macro characters are backquote, single-quote, left-parenthesis, and right-parenthesis.
+遇到一个宏字符时, 这个Lisp读取器会调用它的读取器宏函数, 由它从输入流中解析一个经过特殊格式化的对象. 这个函数也返回解析后的对象, 或者它不返回表示函数扫描的字符被忽略了 (比如, 在注释的情况下). 宏字符的示例是反引号(backquote), 单引号(single-quote), 左小括号(left-parenthesis), 还有右小括号(right-parenthesis).
 
-A macro character is either terminating or non-terminating. The difference between terminating and non-terminating macro characters lies in what happens when such characters occur in the middle of a token. If a non-terminating macro character occurs in the middle of a token, the function associated with the non-terminating macro character is not called, and the non-terminating macro character does not terminate the token's name; it becomes part of the name as if the macro character were really a constituent character. A terminating macro character terminates any token, and its associated reader macro function is called no matter where the character appears. The only non-terminating macro character in standard syntax is sharpsign.
+宏字符要么是终止，要么是非终止. 终止和非终止宏字符的区别在于当这些字符出现在token中间时，会发生什么. 如果一个非终止的宏字符出现在token中, 这个非终止宏字符关联的函数不会被调用, 并且这个非终止的宏字符不终结这个token的名字; 它就像是一个真的组成成分字符(constituent character) 一样成为这个名字的一部分. 一个终止宏字符会终结任何token, 并且它关联的读取宏函数会被调用, 无论这个字符出现在哪里. 在标准语法中唯一个非终结宏字符是sharpsign.<!--TODO sharpsign是什么 -->
 
-If a character is a dispatching macro character C1, its reader macro function is a function supplied by the implementation. This function reads decimal digit characters until a non-digit C2 is read. If any digits were read, they are converted into a corresponding integer infix parameter P; otherwise, the infix parameter P is nil. The terminating non-digit C2 is a character (sometimes called a ``sub-character'' to emphasize its subordinate role in the dispatching) that is looked up in the dispatch table associated with the dispatching macro character C1. The reader macro function associated with the sub-character C2 is invoked with three arguments: the stream, the sub-character C2, and the infix parameter P. For more information about dispatch characters, see the function set-dispatch-macro-character.
+如果一个字符是一个调度宏字符 C1, 它的读取器宏函数是具体实现提供的函数. 这个函数读取十进制数字字符直到读取到一个非数字的C2. 如果读取到任何数字, 它们转化为一个对应的整数中缀的参数数 P; 否则, 这个中缀参数 P 就是 nil. 这个终止的非数字 C2 是一个与调度宏字符 C1 相关联的调度表中查找到的字符 (有时被称为"子字符"，以强调其在调度中的从属角色) . 与子字符 C2 关联的这个读取器宏函数调用需要三个参数: 流, 子字符 C2, 还有中缀参数 P. 关于调度字符的更多信息, 见函数 set-dispatch-macro-character.
 
-For information about the macro characters that are available in standard syntax, see Section 2.4 (Standard Macro Characters). 
+关于标准语法中可用的宏字符的信息, 见章节 2.4 (Standard Macro Characters). 
 
-#### 2.1.4.5 <span id = "MultipleEscapeCharacters">Multiple Escape Characters</span>
+#### 2.1.4.5 <span id = "MultipleEscapeCharacters">多重转义字符</span>
 
-一对多转义字符用于指明一个可能包含宏字符和空格字符的闭合字符序列当作保持大小写的字母字符. 在序列中出现的任何单个转义字符和多个转义字符都必须有一个转义字符.
+一对多重转义字符用于指明一个可能包含宏字符和空白字符的闭合字符序列当作保持大小写的字母字符. 在序列中出现的任何单转义字符和多重转义字符都必须有一个转义字符.
 
-Vertical-bar is a multiple escape character in standard syntax.
+垂直条(Vertical-bar)是标准语法中的一个多重转义字符.
 
-##### 2.1.4.5.1 Examples of Multiple Escape Characters
+##### 2.1.4.5.1 多重转义字符的示例
 
+```LISP
  ;; The following examples assume the readtable case of *readtable* 
  ;; and *print-case* are both :upcase.
  (eq 'abc 'ABC) =>  true
  (eq 'abc '|ABC|) =>  true
  (eq 'abc 'a|B|c) =>  true
  (eq 'abc '|abc|) =>  false
+```
 
-#### 2.1.4.6 <span id = "SingleEscapeCharacter">Single Escape Character</span>
+#### 2.1.4.6 <span id = "SingleEscapeCharacter">单转义字符</span>
 
-A single escape is used to indicate that the next character is to be treated as an alphabetic[2] character with its case preserved, no matter what the character is or which constituent traits it has.
+一个单转义字符被用于表明下一个字符被当作字母字符处理, 保留大小写, 无论它是什么字符或者它由什么组成成分特性.
 
-Backslash is a single escape character in standard syntax.
+反斜杠(backslash) 是标准语法中一个单转义字符.
 
-##### 2.1.4.6.1 Examples of Single Escape Characters
+##### 2.1.4.6.1 单转义字符示例
 
+```LISP
  ;; The following examples assume the readtable case of *readtable* 
  ;; and *print-case* are both :upcase.
  (eq 'abc '\A\B\C) =>  true
  (eq 'abc 'a\Bc) =>  true
  (eq 'abc '\ABC) =>  true
  (eq 'abc '\abc) =>  false
+```
 
-#### 2.1.4.7 <span id = "WhitespaceCharacters">Whitespace Characters</span>
+#### 2.1.4.7 <span id = "WhitespaceCharacters">空白字符</span>
 
-Whitespace[2] characters are used to separate tokens.
+空白字符被用于分割token.
 
-Space and newline are whitespace[2] characters in standard syntax.
+空格(Space) 和 新行(newline) 是标准语法中的空白字符.
 
-##### 2.1.4.7.1 Examples of Whitespace Characters
+##### 2.1.4.7.1 空白字符的示例
 
+```LISP
  (length '(this-that)) =>  1
  (length '(this - that)) =>  3
  (length '(a
            b)) =>  2
  (+ 34) =>  34
  (+ 3 4) =>  7
+```
 
 ## 2.2 <span id = "ReaderAlgorithm">Reader Algorithm</span>
 
