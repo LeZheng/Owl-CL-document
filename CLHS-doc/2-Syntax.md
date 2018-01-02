@@ -185,73 +185,70 @@ Figure 2-7. 标准语法中的字符语法类型
 
 空格字符充当分隔符的作用但是被忽略. 组成和转义字符被累计起来，以使其成为一个被解释为一个数字或一个符号的token. 宏字符触发对函数的调用(可能是用户提供的)，可以执行任意的解析操作. 宏字符被分为2种, 终止和非终止的, 取决于它们是否会终结一个token. 以下是每一种语法类型的描述.
 
-> * 2.1.4.1 [Constituent Characters](#ConstituentCharacters)
-> * 2.1.4.2 [Constituent Traits](#ConstituentTraits)
-> * 2.1.4.3 [Invalid Characters](#InvalidCharacters)
+> * 2.1.4.1 [组成成分字符](#ConstituentCharacters)
+> * 2.1.4.2 [组成成分特性](#ConstituentTraits)
+> * 2.1.4.3 [非法字符](#InvalidCharacters)
 > * 2.1.4.4 [Macro Characters](#MacroCharacters)
 > * 2.1.4.5 [Multiple Escape Characters](#MultipleEscapeCharacters)
 > * 2.1.4.6 [Single Escape Character](#SingleEscapeCharacter)
 > * 2.1.4.7 [Whitespace Characters](#WhitespaceCharacters)
 
-#### 2.1.4.1 <span id = "ConstituentCharacters">Constituent Characters</spans>
+#### 2.1.4.1 <span id = "ConstituentCharacters">组成成分字符</spans>
 
-Constituent characters are used in tokens. A token is a representation of a number or a symbol. Examples of constituent characters are letters and digits.
+组成成分字符被用于token中. 一个token表示为一个数字或符号. 字母和数字就是组成成分字符的示例.
 
-Letters in symbol names are sometimes converted to letters in the opposite case when the name is read; see Section 23.1.2 (Effect of Readtable Case on the Lisp Reader). Case conversion can be suppressed by the use of single escape or multiple escape characters.
+当符号名被读取时, 其中的字母有时会被转换成大小写相反的字母; 见章节 23.1.2 (Effect of Readtable Case on the Lisp Reader). 大小写转换可以通过使用单个或多个转义符抑制.
 
-#### 2.1.4.2 <span id = "ConstituentTraits">Constituent Traits</span>
+#### 2.1.4.2 <span id = "ConstituentTraits">组成成分特性</span>
 
-Every character has one or more constituent traits that define how the character is to be interpreted by the Lisp reader when the character is a constituent character. These constituent traits are alphabetic[2], digit, package marker, plus sign, minus sign, dot, decimal point, ratio marker, exponent marker, and invalid. Figure 2-8 shows the constituent traits of the standard characters and of certain semi-standard characters; no mechanism is provided for changing the constituent trait of a character. Any character with the alphadigit constituent trait in that figure is a digit if the current input base is greater than that character's digit value, otherwise the character is alphabetic[2]. Any character quoted by a single escape is treated as an alphabetic[2] constituent, regardless of its normal syntax.
-
+每个字符都有一个或多个构成特性定义了当这个字符是组成成分字符时如何被Lisp读取器解释. 这些构成特性是 alphabetic[2], digit, package marker, plus sign, minus sign, dot, decimal point, ratio marker, exponent marker, 还有 invalid. Figure 2-8 展示了标准的和不完全标准字符的构成特性; 不提供改变字符的构成特征的机制. 如果当前输入基数大于该字符的数字值, 那么任何具有数字(alphadigit)组成特征的字符都是一个数字, 否则字符是字母的(alphabetic). 任何字符被单个转义符引用, 不管它正常的语法, 都被当作 alphabetic[2] 组成成分.
                                                                                     
-constituent  traits          constituent  traits                                    
-character                    character    
-----------
+    constituent  traits          constituent  traits                                    
+    character                    character    
+    ----------
                                                                                     
-Backspace    invalid         {            alphabetic[2]                             
-Tab          invalid*        }            alphabetic[2]                             
-Newline      invalid*        +            alphabetic[2], plus sign                  
-Linefeed     invalid*        -            alphabetic[2], minus sign                 
-Page         invalid*        .            alphabetic[2], dot, decimal point         
-Return       invalid*        /            alphabetic[2], ratio marker               
-Space        invalid*        A, a         alphadigit                                
-!            alphabetic[2]   B, b         alphadigit                                
-"            alphabetic[2]*  C, c         alphadigit                                
-#            alphabetic[2]*  D, d         alphadigit, double-float exponent marker  
-$            alphabetic[2]   E, e         alphadigit, float exponent marker         
-%            alphabetic[2]   F, f         alphadigit, single-float exponent marker  
-&            alphabetic[2]   G, g         alphadigit                                
-'            alphabetic[2]*  H, h         alphadigit                                
-(            alphabetic[2]*  I, i         alphadigit                                
-)            alphabetic[2]*  J, j         alphadigit                                
-*            alphabetic[2]   K, k         alphadigit                                
-,            alphabetic[2]*  L, l         alphadigit, long-float exponent marker    
-0-9          alphadigit      M, m         alphadigit                                
-:            package marker  N, n         alphadigit                                
-;            alphabetic[2]*  O, o         alphadigit                                
-<            alphabetic[2]   P, p         alphadigit                                
-=            alphabetic[2]   Q, q         alphadigit                                
->            alphabetic[2]   R, r         alphadigit                                
-?            alphabetic[2]   S, s         alphadigit, short-float exponent marker   
-@            alphabetic[2]   T, t         alphadigit                                
-[            alphabetic[2]   U, u         alphadigit                                
-\            alphabetic[2]*  V, v         alphadigit                                
-]            alphabetic[2]   W, w         alphadigit                                
-^            alphabetic[2]   X, x         alphadigit                                
-_            alphabetic[2]   Y, y         alphadigit                                
-`            alphabetic[2]*  Z, z         alphadigit                                
-|            alphabetic[2]*  Rubout       invalid                                   
-~            alphabetic[2]   
+    Backspace    invalid         {            alphabetic[2]                             
+    Tab          invalid*        }            alphabetic[2]                             
+    Newline      invalid*        +            alphabetic[2], plus sign                  
+    Linefeed     invalid*        -            alphabetic[2], minus sign                 
+    Page         invalid*        .            alphabetic[2], dot, decimal point         
+    Return       invalid*        /            alphabetic[2], ratio marker               
+    Space        invalid*        A, a         alphadigit                                
+    !            alphabetic[2]   B, b         alphadigit                                
+    "            alphabetic[2]*  C, c         alphadigit                                
+    #            alphabetic[2]*  D, d         alphadigit, double-float exponent marker  
+    $            alphabetic[2]   E, e         alphadigit, float exponent marker         
+    %            alphabetic[2]   F, f         alphadigit, single-float exponent marker  
+    &            alphabetic[2]   G, g         alphadigit                                
+    '            alphabetic[2]*  H, h         alphadigit                                
+    (            alphabetic[2]*  I, i         alphadigit                                
+    )            alphabetic[2]*  J, j         alphadigit                                
+    *            alphabetic[2]   K, k         alphadigit                                
+    ,            alphabetic[2]*  L, l         alphadigit, long-float exponent marker    
+    0-9          alphadigit      M, m         alphadigit                                
+    :            package marker  N, n         alphadigit                                
+    ;            alphabetic[2]*  O, o         alphadigit                                
+    <            alphabetic[2]   P, p         alphadigit                                
+    =            alphabetic[2]   Q, q         alphadigit                                
+    >            alphabetic[2]   R, r         alphadigit                                
+    ?            alphabetic[2]   S, s         alphadigit, short-float exponent marker   
+    @            alphabetic[2]   T, t         alphadigit                                
+    [            alphabetic[2]   U, u         alphadigit                                
+    \            alphabetic[2]*  V, v         alphadigit                                
+    ]            alphabetic[2]   W, w         alphadigit                                
+    ^            alphabetic[2]   X, x         alphadigit                                
+    _            alphabetic[2]   Y, y         alphadigit                                
+    `            alphabetic[2]*  Z, z         alphadigit                                
+    |            alphabetic[2]*  Rubout       invalid                                   
+    ~            alphabetic[2]   
                                                                                     
-                             
+Figure 2-8. 标准字符和不完全标准字符的构成成分特性
 
-Figure 2-8. Constituent Traits of Standard Characters and Semi-Standard Characters
+这个表中的解释方式只应用于语法类型为constituent的字符. 标记了星号 (*) 的条目正常是被屏蔽的因为这些字符是 whitespace[2], macro character, single escape, 或者 multiple escape 语法类型; 如果它们的语法类型改变为组成成分(constituent)这些组成特性才适用于它们. 
 
-The interpretations in this table apply only to characters whose syntax type is constituent. Entries marked with an asterisk (*) are normally shadowed[2] because the indicated characters are of syntax type whitespace[2], macro character, single escape, or multiple escape; these constituent traits apply to them only if their syntax types are changed to constituent. 
+#### 2.1.4.3 <span id = "InvalidCharacters">非法字符</span>
 
-#### 2.1.4.3 <span id = "InvalidCharacters">Invalid Characters</span>
-
-Characters with the constituent trait invalid cannot ever appear in a token except under the control of a single escape character. If an invalid character is encountered while an object is being read, an error of type reader-error is signaled. If an invalid character is preceded by a single escape character, it is treated as an alphabetic[2] constituent instead. 
+具有组成成分无效(invalid)的字符不能出现在token里, 除非在一个转义字符的控制下. 当读取时遇到一个非法的字符, 会发出一个 reader-error 类型的错误. 如果一个非法字符前有一个转义符, 它会被当作 alphabetic[2] constituent. 
 
 #### 2.1.4.4 <span id = "MacroCharacters">Macro Characters</span>
 
@@ -269,7 +266,7 @@ For information about the macro characters that are available in standard syntax
 
 #### 2.1.4.5 <span id = "MultipleEscapeCharacters">Multiple Escape Characters</span>
 
-A pair of multiple escape characters is used to indicate that an enclosed sequence of characters, including possible macro characters and whitespace[2] characters, are to be treated as alphabetic[2] characters with case preserved. Any single escape and multiple escape characters that are to appear in the sequence must be preceded by a single escape character.
+一对多转义字符用于指明一个可能包含宏字符和空格字符的闭合字符序列当作保持大小写的字母字符. 在序列中出现的任何单个转义字符和多个转义字符都必须有一个转义字符.
 
 Vertical-bar is a multiple escape character in standard syntax.
 
