@@ -1,7 +1,7 @@
 # 2. 语法
 
 > * 2.1 [字符语法](#CharacterSyntax)
-> * 2.2 [Reader Algorithm](#ReaderAlgorithm)
+> * 2.2 [读取器算法](#ReaderAlgorithm)
 > * 2.3 [Interpretation of Tokens](#InterpretationOfTokens)
 > * 2.4 [Standard Macro Characters](#StandardMacroCharacters)
 
@@ -315,63 +315,63 @@ Figure 2-8. 标准字符和不完全标准字符的构成成分特性
  (+ 3 4) =>  7
 ```
 
-## 2.2 <span id = "ReaderAlgorithm">Reader Algorithm</span>
+## 2.2 <span id = "ReaderAlgorithm">读取器算法</span>
 
-This section describes the algorithm used by the Lisp reader to parse objects from an input character stream, including how the Lisp reader processes macro characters.
+这个章节描述了Lisp读取器用来解析输入字符流中对象的算法规则, 包括Lisp读取器如何处理宏字符.
 
-When dealing with tokens, the reader's basic function is to distinguish representations of symbols from those of numbers. When a token is accumulated, it is assumed to represent a number if it satisfies the syntax for numbers listed in Figure 2-9. If it does not represent a number, it is then assumed to be a potential number if it satisfies the rules governing the syntax for a potential number. If a valid token is neither a representation of a number nor a potential number, it represents a symbol.
+当处理token时, 读取器的基本功能是区分符号和数字的表示. 当累积到一个token时, 如果它满足 Figure 2-9 中列出的数字语法就被假定为数字. 如果它不是表示一个数字, 但它满足潜在数字的语法规则就会被当作潜在数字. 如果一个有效token既不是数字表示也不是一个潜在数字, 它表示一个符号.
 
-The algorithm performed by the Lisp reader is as follows:
+Lisp读取器使用的算法规则如下:
 
-1. If at end of file, end-of-file processing is performed as specified in read. Otherwise, one character, x, is read from the input stream, and dispatched according to the syntax type of x to one of steps 2 to 7.
+1. 如果到了文件末尾, end-of-file 处理将按照读取时指定方法执行. 否则, 将从输入流中读取到一个字符, x, 并且根据它的语法类型去执行步骤2到7中的一个.
 
-2. If x is an invalid character, an error of type reader-error is signaled.
+2. 如果 x 是一个无效字符, 发出一个 reader-error 类型的错误. 
 
-3. If x is a whitespace[2] character, then it is discarded and step 1 is re-entered.
+3. 如果 x 是一个空白字符, 它会被丢弃并且会再次进入步骤1.
 
-4. If x is a terminating or non-terminating macro character then its associated reader macro function is called with two arguments, the input stream and x.
+4. 如果 x 是一个终止或非终止的宏字符, 那么它的关联的读取器宏函数会被调用, 并且传入2个参数, 输入流 和 x.
 
-    The reader macro function may read characters from the input stream; if it does, it will see those characters following the macro character. The Lisp reader may be invoked recursively from the reader macro function.
+    这个读取器宏函数可能从输入流中读取字符; 如果它这么做了, 会看到跟在那个宏字符后的字符. Lisp读取器可能会被这个读取器宏函数递归调用.
 
-    The reader macro function must not have any side effects other than on the input stream; because of backtracking and restarting of the read operation, front ends to the Lisp reader (e.g., ``editors'' and ``rubout handlers'') may cause the reader macro function to be called repeatedly during the reading of a single expression in which x only appears once.
+    除了对这个输入流以外, 这个读取器宏函数必须没有任何副作用; 由于对这个读取操作的跟踪和重启, Lisp读取器的前端 (比如, \``editors'' 和 ``rubout handlers'') 可能导致在x只出现一个的单个表达式的读取期间这个读取器宏函数被重复调用.
 
-    The reader macro function may return zero values or one value. If one value is returned, then that value is returned as the result of the read operation; the algorithm is done. If zero values are returned, then step 1 is re-entered.
+    这个读取器宏函数可能返回0个值或者一个值. 如果一个值被返回, 这个返回的值就是这个读取操作的结果; 这个读取算法规则结束. 如果没有值返回, 然后会再次进入步骤1.
 
-5. If x is a single escape character then the next character, y, is read, or an error of type end-of-file is signaled if at the end of file. y is treated as if it is a constituent whose only constituent trait is alphabetic[2]. y is used to begin a token, and step 8 is entered.
+5. 如果 x 是单转义字符, 那么下一个字符 y 会被读取或者在文件末尾时发出一个 end-of-file 类型的错误. y 被当作一个组成成分(constituent), 它的唯一的组成成分特性是字母的(alphabetic). y 被用于开始一个token, 并且进入步骤8.
 
-6. If x is a multiple escape character then a token (initially containing no characters) is begun and step 9 is entered.
+6. 如果x是一个多重转义字符, 那么一个token(最初不包含字符)就会开始并且进入步骤9.
 
-7. If x is a constituent character, then it begins a token. After the token is read in, it will be interpreted either as a Lisp object or as being of invalid syntax. If the token represents an object, that object is returned as the result of the read operation. If the token is of invalid syntax, an error is signaled. If x is a character with case, it might be replaced with the corresponding character of the opposite case, depending on the readtable case of the current readtable, as outlined in Section 23.1.2 (Effect of Readtable Case on the Lisp Reader). X is used to begin a token, and step 8 is entered.
+7. 如果 x 是一个组成成分字符(constituent character), 它会开始一个token. 在这个token被读取后, 它会被解释为一个Lisp对象或者一个无效的语法. 如果这个token表示一个对象, 就会返回这个对象作为这个读取操作的结果. 如果这个token是一个无效的字符, 就会发出一个错误. 如果x是一个小写的字符，它可能会被替换为相反情况的对应字符, 取决于当前读取表的情况, 就像章节 23.1.2 (Effect of Readtable Case on the Lisp Reader)阐述的一样. X 被用于开始一个token, 并且进入步骤8.
 
-8. At this point a token is being accumulated, and an even number of multiple escape characters have been encountered. If at end of file, step 10 is entered. Otherwise, a character, y, is read, and one of the following actions is performed according to its syntax type:
+8. 此时已经累积到一个token, 并且遇到多个多重转义字符. 如果到了文件的末尾, 就进入步骤10. 否则, 一个字符, y, 被读入, 并且根据它的语法类型以下操作会被执行:
 
-    * If y is a constituent or non-terminating macro character:
+    * 如果 y 是一个组成成分(constituent) 或者一个非终止宏字符:
 
-        -- If y is a character with case, it might be replaced with the corresponding character of the opposite case, depending on the readtable case of the current readtable, as outlined in Section 23.1.2 (Effect of Readtable Case on the Lisp Reader).
-        -- Y is appended to the token being built.
-        -- Step 8 is repeated.
+        -- 如果 y 是一个小写的字符，它可能会被替换为相反情况的对应字符, 取决于当前读取表的情况, 就像章节 23.1.2 (Effect of Readtable Case on the Lisp Reader)阐述的一样.
+        -- Y 被追加到构建的对应token中.
+        -- 重复步骤8.
 
-    * If y is a single escape character, then the next character, z, is read, or an error of type end-of-file is signaled if at end of file. Z is treated as if it is a constituent whose only constituent trait is alphabetic[2]. Z is appended to the token being built, and step 8 is repeated.
+    * 如果 y 是一个单转义字符, 那么下一个字符 z 会被读取或者在文件末尾时发出一个 end-of-file 类型的错误. z 被当作一个组成成分(constituent), 它的唯一的组成成分特性是字母的(alphabetic). Z 会被追加到构建的token中, 并且重复步骤8.
 
-    * If y is a multiple escape character, then step 9 is entered.
+    * 如果 y 是一个多重转义字符, 就会进入步骤9.
 
-    * If y is an invalid character, an error of type reader-error is signaled.
+    * 如果 y 是一个非法的字符, 一个 reader-error 类型的错误就会被发出.
 
-    * If y is a terminating macro character, then it terminates the token. First the character y is unread (see unread-char), and then step 10 is entered.
+    * 如果 y 是一个终止宏字符, 它会终止这个token. 首先这个字符 y 会被撤销读取, 然后进入步骤10.
 
-    * If y is a whitespace[2] character, then it terminates the token. First the character y is unread if appropriate (see read-preserving-whitespace), and then step 10 is entered.
+    * 如果 y 是一个空白字符, 它会终止这个token. 首先如果合适的话这个字符 y 会被撤销读取(见 read-preserving-whitespace), 然后进入步骤10.
 
-9. At this point a token is being accumulated, and an odd number of multiple escape characters have been encountered. If at end of file, an error of type end-of-file is signaled. Otherwise, a character, y, is read, and one of the following actions is performed according to its syntax type:
+9. 此时，将会累积一个token，并且会遇到奇数个多重转义字符. 如果到了文件的末尾就会发出一个 end-of-file 类型的错误. 否则, 一个字符, y, 会被读取, 根据它的类型下面的其中一个动作会被执行:
 
-    * If y is a constituent, macro, or whitespace[2] character, y is treated as a constituent whose only constituent trait is alphabetic[2]. Y is appended to the token being built, and step 9 is repeated.
+    * 如果 y 是一个组成成分(constituent), 宏, 或者空格字符, y 被认为是一个组成成分(constituent), 并且它唯一的组成特性是字母(alphabetic). Y 被追加到构建的token中, 然后重复步骤9.
 
-    * If y is a single escape character, then the next character, z, is read, or an error of type end-of-file is signaled if at end of file. Z is treated as a constituent whose only constituent trait is alphabetic[2]. Z is appended to the token being built, and step 9 is repeated.
+    * 如果 y 是一个单转义字符, 那么下一个字符 z 会被读取或者在文件末尾时发出一个 end-of-file 类型的错误. z 被当作一个组成成分(constituent), 它的唯一的组成成分特性是字母的(alphabetic). Z 会被追加到构建的token中, 并且重复步骤9.
 
-    * If y is a multiple escape character, then step 8 is entered.
+    * 如果 y 是一个多重转义字符, 那么进入步骤8.
 
-    * If y is an invalid character, an error of type reader-error is signaled.
+    * 如果 y 是个非法字符, 会发出一个类型为 reader-error 的错误.
 
-10. An entire token has been accumulated. The object represented by the token is returned as the result of the read operation, or an error of type reader-error is signaled if the token is not of valid syntax. 
+10. 已经遇到一个完整的token. 这个token表示的对象作为这个读取操作的结果返回, 如果这个token是无效的就发出一个 reader-error 类型的错误. 
 
 ## 2.3 <span id = "InterpretationOfTokens">Interpretation of Tokens</span>
 
