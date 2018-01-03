@@ -2,7 +2,7 @@
 
 > * 2.1 [字符语法](#CharacterSyntax)
 > * 2.2 [读取器算法](#ReaderAlgorithm)
-> * 2.3 [Interpretation of Tokens](#InterpretationOfTokens)
+> * 2.3 [token的解释](#InterpretationOfTokens)
 > * 2.4 [Standard Macro Characters](#StandardMacroCharacters)
 
 ## 2.1 <span id = "CharacterSyntax">字符语法</span>
@@ -258,7 +258,7 @@ Figure 2-8. 标准字符和不完全标准字符的构成成分特性
 
 遇到一个宏字符时, 这个Lisp读取器会调用它的读取器宏函数, 由它从输入流中解析一个经过特殊格式化的对象. 这个函数也返回解析后的对象, 或者它不返回表示函数扫描的字符被忽略了 (比如, 在注释的情况下). 宏字符的示例是反引号(backquote), 单引号(single-quote), 左小括号(left-parenthesis), 还有右小括号(right-parenthesis).
 
-宏字符要么是终止，要么是非终止. 终止和非终止宏字符的区别在于当这些字符出现在token中间时，会发生什么. 如果一个非终止的宏字符出现在token中, 这个非终止宏字符关联的函数不会被调用, 并且这个非终止的宏字符不终结这个token的名字; 它就像是一个真的组成成分字符(constituent character) 一样成为这个名字的一部分. 一个终止宏字符会终结任何token, 并且它关联的读取宏函数会被调用, 无论这个字符出现在哪里. 在标准语法中唯一个非终结宏字符是sharpsign.<!--TODO sharpsign是什么 -->
+宏字符要么是终止，要么是非终止. 终止和非终止宏字符的区别在于当这些字符出现在token中间时，会发生什么. 如果一个非终止的宏字符出现在token中, 这个非终止宏字符关联的函数不会被调用, 并且这个非终止的宏字符不终结这个token的名字; 它就像是一个真的组成成分字符(constituent character) 一样成为这个名字的一部分. 一个终止宏字符会终结任何token, 并且它关联的读取宏函数会被调用, 无论这个字符出现在哪里. 在标准语法中唯一个非终结宏字符是#号(sharpsign).
 
 如果一个字符是一个调度宏字符 C1, 它的读取器宏函数是具体实现提供的函数. 这个函数读取十进制数字字符直到读取到一个非数字的C2. 如果读取到任何数字, 它们转化为一个对应的整数中缀的参数数 P; 否则, 这个中缀参数 P 就是 nil. 这个终止的非数字 C2 是一个与调度宏字符 C1 相关联的调度表中查找到的字符 (有时被称为"子字符"，以强调其在调度中的从属角色) . 与子字符 C2 关联的这个读取器宏函数调用需要三个参数: 流, 子字符 C2, 还有中缀参数 P. 关于调度字符的更多信息, 见函数 set-dispatch-macro-character.
 
@@ -373,19 +373,20 @@ Lisp读取器使用的算法规则如下:
 
 10. 已经遇到一个完整的token. 这个token表示的对象作为这个读取操作的结果返回, 如果这个token是无效的就发出一个 reader-error 类型的错误. 
 
-## 2.3 <span id = "InterpretationOfTokens">Interpretation of Tokens</span>
+## 2.3 <span id = "InterpretationOfTokens">token的解释</span>
 
-> * 2.3.1 [Numbers as Tokens](#NumbersAsTokens)
+> * 2.3.1 [数字token](#NumbersAsTokens)
 > * 2.3.2 [Constructing Numbers from Tokens](#ConstructingNumbersFromTokens)
 > * 2.3.3 [The Consing Dot](#TheConsingDot)
 > * 2.3.4 [Symbols as Tokens](#SymbolsAsTokens)
 > * 2.3.5 [Valid Patterns for Tokens](#ValidPatternsForTokens)
 > * 2.3.6 [Package System Consistency Rules](#PackageSystemConsistencyRules)
 
-### 2.3.1 <span id = "NumbersAsTokens">Numbers as Tokens</span>
+### 2.3.1 <span id = "NumbersAsTokens">数字token</span>
 
-When a token is read, it is interpreted as a number or symbol. The token is interpreted as a number if it satisfies the syntax for numbers specified in the next figure.
+当一个token被读取, 它被解释为一个数字或符号. 如果这个token满足下面这段指定的数字语法, 它就被解释为数字.
 
+```
 numeric-token  ::=  integer |
 				   ratio   |
 				   float       
@@ -411,16 +412,17 @@ float          ::=  [sign]
 				   exponent    
 exponent       ::=  exponent-marker
 				   [sign]
-				   {digit}+    
+				   {digit}+ 
+```   
                                        
-sign---a sign.                         
-slash---a slash                        
-decimal-point---a dot.                        
-exponent-marker---an exponent marker.                        
-decimal-digit---a digit in radix 10.                        
-digit---a digit in the current input radix.                        
+sign--- 一个正负号.                         
+slash--- 一个斜杠                       
+decimal-point--- 一个点.                        
+exponent-marker--- 一个阶码标记符.                        
+decimal-digit--- 一个基数10的数.                        
+digit--- 一位当前输入基数的数.                        
 
-Figure 2-9. Syntax for Numeric Tokens
+Figure 2-9. 数字token的语法
 
 #### 2.3.1.1 Potential Numbers as Tokens
 
