@@ -376,7 +376,7 @@ Lisp读取器使用的算法规则如下:
 ## 2.3 <span id = "InterpretationOfTokens">token的解释</span>
 
 > * 2.3.1 [数字token](#NumbersAsTokens)
-> * 2.3.2 [Constructing Numbers from Tokens](#ConstructingNumbersFromTokens)
+> * 2.3.2 [从token构建数字](#ConstructingNumbersFromTokens)
 > * 2.3.3 [The Consing Dot](#TheConsingDot)
 > * 2.3.4 [Symbols as Tokens](#SymbolsAsTokens)
 > * 2.3.5 [Valid Patterns for Tokens](#ValidPatternsForTokens)
@@ -424,78 +424,78 @@ digit--- 一位当前输入基数的数.
 
 Figure 2-9. 数字token的语法
 
-#### 2.3.1.1 Potential Numbers as Tokens
+#### 2.3.1.1 潜在的数字token
 
-To allow implementors and future Common Lisp standards to extend the syntax of numbers, a syntax for potential numbers is defined that is more general than the syntax for numbers. A token is a potential number if it satisfies all of the following requirements:
+为了允许实现者和未来 Common Lisp 标准去扩展数字的语法, 定义了一个比数字语法更通用的潜在数字语法. 如果一个token满足下面的所有需求它就是一个潜在数字:
 
-1. The token consists entirely of digits, signs, ratio markers, decimal points (.), extension characters (^ or _), and number markers. A number marker is a letter. Whether a letter may be treated as a number marker depends on context, but no letter that is adjacent to another letter may ever be treated as a number marker. Exponent markers are number markers.
+1. 这个token完全由数字, 正负号, 比标记, 小数点 (.), 扩展字符 (^ or _), 还有数字标记构成. 一个数字标记是一个字. 一个字目是否会被当作数字标记取决于上下文, 但是与其他字母相邻的字母不能被视为数字标记. 指数标记也是数字标记Exponent markers are number markers.
 
-2. The token contains at least one digit. Letters may be considered to be digits, depending on the current input base, but only in tokens containing no decimal points.
+2. 这个token包含了至少一个数字. 根据当前的输入基数，字母可能被认为是数字，但只在没有小数点的token中.
 
-3. The token begins with a digit, sign, decimal point, or extension character, but not a package marker. The syntax involving a leading package marker followed by a potential number is not well-defined. The consequences of the use of notation such as :1, :1/2, and :2^3 in a position where an expression appropriate for read is expected are unspecified.
+3. 这个token以一个整数, 正负号, 小数点或扩展字符开始, 但是没有包标记. 潜在数字遵循的包含一个开始的包标记的语法还没有定义完善. 在一个阅读表达式的地方使用例如:1, :1/2, 还有 :2^3 的结果是未知的..
 
-4. The token does not end with a sign.
+4. 这个token不能以一个正负号结尾.
 
-If a potential number has number syntax, a number of the appropriate type is constructed and returned, if the number is representable in an implementation. A number will not be representable in an implementation if it is outside the boundaries set by the implementation-dependent constants for numbers. For example, specifying too large or too small an exponent for a float may make the number impossible to represent in the implementation. A ratio with denominator zero (such as -35/000) is not represented in any implementation. When a token with the syntax of a number cannot be converted to an internal number, an error of type reader-error is signaled. An error must not be signaled for specifying too many significant digits for a float; a truncated or rounded value should be produced.
+如果一个潜在数字有数字语法, 这个数字在一个实现中是可被表示的, 会创建一个合适类型的数字并且返回. 如果一个数字超出了由具体实现相关的常量所设定的界限它在实现中是不能被表示的. 比如, 为浮点数指定太大或太小的指数可能会使该实现中的数字无法表示. 一个带有分母为0的比数 (比如 -35/000) 在任何实现中都是不能表示的. 当一个带有数字语法的token不能被转化为一个内置的数字, 会发出一个reader-error类型的错误. 为一个浮点数指定太多有效数字也肯定会发出一个错误; 应该生成一个截断的或者四舍五入的值.
 
-If there is an ambiguity as to whether a letter should be treated as a digit or as a number marker, the letter is treated as a digit.
+如果出现字母是否应该被当作数字或数字标记的歧义, 那么字母就被当作数字来对待.
 
-##### 2.3.1.1.1 Escape Characters and Potential Numbers
+##### 2.3.1.1.1 转义字符和潜在数字
 
-A potential number cannot contain any escape characters. An escape character robs the following character of all syntactic qualities, forcing it to be strictly alphabetic[2] and therefore unsuitable for use in a potential number. For example, all of the following representations are interpreted as symbols, not numbers:
+一个潜在数字不能包含任何转义字符. 一个转义字符剥夺了后面字符的所有句法特性，迫使其严格转成字母，因此不适合在潜在的数字中使用. 比如, 以下表示会被解释成符号, 而不是数字:
 
- \256   25\64   1.0\E6   |100|   3\.14159   |3/4|   3\/4   5||
+     \256   25\64   1.0\E6   |100|   3\.14159   |3/4|   3\/4   5||
 
-In each case, removing the escape character (or characters) would cause the token to be a potential number. 
+在每一个示例中, 移除转义字符会导致token被转成潜在数字. 
 
-##### 2.3.1.1.2 Examples of Potential Numbers
+##### 2.3.1.1.2 潜在数字示例
 
-As examples, the tokens in the next figure are potential numbers, but they are not actually numbers, and so are reserved tokens; a conforming implementation is permitted, but not required, to define their meaning.
+作为示例, 下面这一块的token是潜在数字, 但是它们实际上不是数字, 所以是保留的token; 一个合格的实现允许但不是必须去定义它们的意义.
 
-1b5000                       777777q                1.7J  -3/4+6.7J  12/25/83  
-27^19                        3^4/5                  6//7  3.1.2.6    ^-43^     
-3.141_592_653_589_793_238_4  -3.7+2.6i-6.17j+19.6k  
+    1b5000                       777777q                1.7J  -3/4+6.7J  12/25/83  
+    27^19                        3^4/5                  6//7  3.1.2.6    ^-43^     
+    3.141_592_653_589_793_238_4  -3.7+2.6i-6.17j+19.6k  
 
-Figure 2-10. Examples of reserved tokens
+Figure 2-10. 保留token的示例
 
-The tokens in the next figure are not potential numbers; they are always treated as symbols:
+下面这段里的token不是潜在数字; 它们总是被当作符号:
 
-/     /5     +  1+  1-   
-foo+  ab.cd  _  ^   ^/-  
+    /     /5     +  1+  1-   
+    foo+  ab.cd  _  ^   ^/-  
 
-Figure 2-11. Examples of symbols
+Figure 2-11. 符号的示例
 
-The tokens in the next figure are potential numbers if the current input base is 16, but they are always treated as symbols if the current input base is 10.
+如果当前的输入奇数是16, 那么下面这段里的token就是潜在数字, 如果当前输入基数是10, 那么它们总是被当作符号.
 
-bad-face  25-dec-83  a/b  fad_cafe  f^  
+    bad-face  25-dec-83  a/b  fad_cafe  f^  
 
-Figure 2-12. Examples of symbols or potential numbers 
+Figure 2-12. 符号或潜在数字的示例
 
-### 2.3.2 <span id = "ConstructingNumbersFromTokens">Constructing Numbers from Tokens</span>
+### 2.3.2 <span id = "ConstructingNumbersFromTokens">从token构建数字</span>
 
-A real is constructed directly from a corresponding numeric token; see Figure 2-9.
+一个实数是由对应数字token直接构造的; 见 Figure 2-9.
 
-A complex is notated as a #C (or #c) followed by a list of two reals; see Section 2.4.8.11 (Sharpsign C).
+一个复数表示为一个 #C (或 #c) 跟着两个实数的列表; 见章节 2.4.8.11 (Sharpsign C).
 
-The reader macros #B, #O, #X, and #R may also be useful in controlling the input radix in which rationals are parsed; see Section 2.4.8.7 (Sharpsign B), Section 2.4.8.8 (Sharpsign O), Section 2.4.8.9 (Sharpsign X), and Section 2.4.8.10 (Sharpsign R).
+读取器宏 #B, #O, #X, 和 #R 对于控制解析的有理数的输入基数可能也是有用的; 见章节 2.4.8.7 (Sharpsign B), 章节 2.4.8.8 (Sharpsign O), 章节 2.4.8.9 (Sharpsign X), 还有章节 2.4.8.10 (Sharpsign R).
 
-This section summarizes the full syntax for numbers.
+本节概述了数字的完整语法.
 
-> * 2.3.2.1 [Syntax of a Rational](#SyntaxRational)
+> * 2.3.2.1 [有理数语法](#SyntaxRational)
 > * 2.3.2.2 [Syntax of a Float](#SyntaxFloat)
 > * 2.3.2.3 [Syntax of a Complex](#SyntaxComplex)
 
-#### 2.3.2.1 <span id = "SyntaxRational">Syntax of a Rational</span>
+#### 2.3.2.1 <span id = "SyntaxRational">有理数语法</span>
 
-##### 2.3.2.1.1 Syntax of an Integer
+##### 2.3.2.1.1 一个整数的语法
 
-Integers can be written as a sequence of digits, optionally preceded by a sign and optionally followed by a decimal point; see Figure 2-9. When a decimal point is used, the digits are taken to be in radix 10; when no decimal point is used, the digits are taken to be in radix given by the current input base.
+整数可以写成数字序列, 前面可以有一个符号, 然后还可以有一个小数点; 见 Figure 2-9. 当使用了一个小数点, 这个数字的基数为 10; 当没有使用小数点, 这个数字的基数就是当前的输入基数.
 
-For information on how integers are printed, see Section 22.1.3.1.1 (Printing Integers). 
+关于如何打印整数的信息, 见章节 22.1.3.1.1 (Printing Integers). 
 
 ##### 2.3.2.1.2 Syntax of a Ratio
 
-Ratios can be written as an optional sign followed by two non-empty sequences of digits separated by a slash; see Figure 2-9. The second sequence may not consist entirely of zeros. Examples of ratios are in the next figure.
+比率可以写成两个非空的数字序列, 由斜杠分隔, 前面可以有一个可选的正负号; 见 Figure 2-9. 第二个序列可能不是完全由0组成的. 下一段是比率的示例.
 
 2/3                 ;This is in canonical form                  
 4/6                 ;A non-canonical form for 2/3               
@@ -507,9 +507,9 @@ Ratios can be written as an optional sign followed by two non-empty sequences of
 #Xbc/ad             ;Hexadecimal notation for 188/173           
 #xFADED/FACADE      ;Hexadecimal notation for 1027565/16435934  
 
-Figure 2-13. Examples of Ratios
+Figure 2-13. 比率的示例
 
-For information on how ratios are printed, see Section 22.1.3.1.2 (Printing Ratios). 
+关于如何打印比率的信息, 见章节 22.1.3.1.2 (Printing Ratios). 
 
 #### 2.3.2.2 <span id = "SyntaxFloat">Syntax of a Float</span>
 
