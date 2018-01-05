@@ -377,8 +377,8 @@ Lisp读取器使用的算法规则如下:
 
 > * 2.3.1 [数字token](#NumbersAsTokens)
 > * 2.3.2 [从token构建数字](#ConstructingNumbersFromTokens)
-> * 2.3.3 [The Consing Dot](#TheConsingDot)
-> * 2.3.4 [Symbols as Tokens](#SymbolsAsTokens)
+> * 2.3.3 [点对](#TheConsingDot)
+> * 2.3.4 [符号token](#SymbolsAsTokens)
 > * 2.3.5 [Valid Patterns for Tokens](#ValidPatternsForTokens)
 > * 2.3.6 [Package System Consistency Rules](#PackageSystemConsistencyRules)
 
@@ -482,8 +482,8 @@ Figure 2-12. 符号或潜在数字的示例
 本节概述了数字的完整语法.
 
 > * 2.3.2.1 [有理数语法](#SyntaxRational)
-> * 2.3.2.2 [Syntax of a Float](#SyntaxFloat)
-> * 2.3.2.3 [Syntax of a Complex](#SyntaxComplex)
+> * 2.3.2.2 [浮点数的语法](#SyntaxFloat)
+> * 2.3.2.3 [复数的语法](#SyntaxComplex)
 
 #### 2.3.2.1 <span id = "SyntaxRational">有理数语法</span>
 
@@ -511,15 +511,15 @@ Figure 2-13. 比率的示例
 
 关于如何打印比率的信息, 见章节 22.1.3.1.2 (Printing Ratios). 
 
-#### 2.3.2.2 <span id = "SyntaxFloat">Syntax of a Float</span>
+#### 2.3.2.2 <span id = "SyntaxFloat">浮点数的语法</span>
 
-Floats can be written in either decimal fraction or computerized scientific notation: an optional sign, then a non-empty sequence of digits with an embedded decimal point, then an optional decimal exponent specification. If there is no exponent specifier, then the decimal point is required, and there must be digits after it. The exponent specifier consists of an exponent marker, an optional sign, and a non-empty sequence of digits. If no exponent specifier is present, or if the exponent marker e (or E) is used, then the format specified by *read-default-float-format* is used. See Figure 2-9.
+浮点数可以用小数或计算机科学符号来表示: 一个可选的正负号, 然后是一个带有内嵌小数点的非空序列, 然后是一个可选的十进制指数说明符. 如果没有指数说明符, 那么就需要一个小数点, 并且在它后面要有个数字. 这个指数说明符由一个指数标记, 一个可选的正负号, 还有一个非空的数字序列. 如果没有指数说明符, 或者指数说明符用的是 e (或 E), 使用 \*read-default-float-format* 指定的格式. 见 Figure 2-9.
 
-An implementation may provide one or more kinds of float that collectively make up the type float. The letters s, f, d, and l (or their respective uppercase equivalents) explicitly specify the use of the types short-float, single-float, double-float, and long-float, respectively.
+一个具体实现可能提供一种或多种浮点数来共同构建浮点类型. 字母 s, f, d, 和 l (或者它们的大写等价体) 分别明确指定 short-float, single-float, double-float, 和 long-float 类型.
 
-The internal format used for an external representation depends only on the exponent marker, and not on the number of decimal digits in the external representation.
+用于扩展表示的内部格式仅依赖于指数标记, 而不依赖于扩展表示的小数位数.
 
-The next figure contains examples of notations for floats:
+下面这块包含了浮点数的标记示例:
 
 0.0       ;Floating-point zero in default format                          
 0E0       ;As input, this is also floating-point zero in default format.  
@@ -540,25 +540,25 @@ The next figure contains examples of notations for floats:
 6.02E+23  ;Avogadro's number, in default format                           
 602E+21   ;Also Avogadro's number, in default format                      
 
-Figure 2-14. Examples of Floating-point numbers
+Figure 2-14. 浮点数示例
 
-For information on how floats are printed, see Section 22.1.3.1.3 (Printing Floats). 
+关于浮点数如何打印的信息, 见章节 22.1.3.1.3 (Printing Floats). 
 
-#### 2.3.2.3 <span id = "SyntaxComplex">Syntax of a Complex</span>
+#### 2.3.2.3 <span id = "SyntaxComplex">复数的语法</span>
 
-A complex has a Cartesian structure, with a real part and an imaginary part each of which is a real. The parts of a complex are not necessarily floats but both parts must be of the same type: either both are rationals, or both are of the same float subtype. When constructing a complex, if the specified parts are not the same type, the parts are converted to be the same type internally (i.e., the rational part is converted to a float). An object of type (complex rational) is converted internally and represented thereafter as a rational if its imaginary part is an integer whose value is 0.
+一个复数有一个笛卡尔结构, 带有一个实数部分和一个虚数部分, 其中每一个部分都是实数表示. 复数的各个部分没有必要一定是浮点数但是每个部分必须是一样的类型: 都是有理数, 或者都是浮点数的子类型. 当构建一个复数时, 如果指定的部分不是相同的类型, 这些部分会被转换为相同的内部类型 (换句化说, 有理数部分被转化为一个浮点数). 一个(complex rational)类型的对象在内部被转换, 并且在它的虚部是一个值为0的整数时表示为一个有理数.<!-- TODO complex rational 是什么类型 -->
 
-For further information, see Section 2.4.8.11 (Sharpsign C) and Section 22.1.3.1.4 (Printing Complexes). 
+关于进一步的信息, 见章节 2.4.8.11 (Sharpsign C) 还有章节 22.1.3.1.4 (Printing Complexes). 
 
-### 2.3.3 <span id = "TheConsingDot">The Consing Dot</span>
+### 2.3.3 <span id = "TheConsingDot">点对</span>
 
-If a token consists solely of dots (with no escape characters), then an error of type reader-error is signaled, except in one circumstance: if the token is a single dot and appears in a situation where dotted pair notation permits a dot, then it is accepted as part of such syntax and no error is signaled. See Section 2.4.1 (Left-Parenthesis). 
+如果一个token仅由点组成 (没有转义字符), 会发出一个 reader-error 类型的错误, 除了在一种情况下: 如果token是一个单点, 并且出现在点对点符号允许一个点这样的情况中, 那么它就被作为这种语法的一部分接受了, 并且没有发出错误信号. 见章节 2.4.1 (Left-Parenthesis). 
 
-### 2.3.4 <span id = "SymbolsAsTokens">Symbols as Tokens</span>
+### 2.3.4 <span id = "SymbolsAsTokens">符号token</span>
 
-Any token that is not a potential number, does not contain a package marker, and does not consist entirely of dots will always be interpreted as a symbol. Any token that is a potential number but does not fit the number syntax is a reserved token and has an implementation-dependent interpretation. In all other cases, the token is construed to be the name of a symbol.
+任何不是潜在数字, 不包含包标记符, 也不是完全由点构成的token总是被解释为一个符号. 任何是一个潜在数字但是不符合数字语法的token作为保留token并且有着实现相关的解释. 在所有其他情况下，token被解释为一个符号的名称.
 
-Examples of the printed representation of symbols are in the next figure. For presentational simplicity, these examples assume that the readtable case of the current readtable is :upcase.
+下一段中有符号的打印表示. 为了表示的简单性, 这些示例假定当前的读取表是 :upcase.
 
 FROBBOZ         The symbol whose name is FROBBOZ.                
 frobboz         Another way to notate the same symbol.           
@@ -577,7 +577,7 @@ file.rel.43     This symbol has periods in its name.
 3.14159265\S0   A different symbol, whose name is 3.14159265S0.  
 3.14159265s0    A possible short float approximation to <PI>.    
 
-Figure 2-15. Examples of the printed representation of symbols (Part 1 of 2)
+Figure 2-15. 符号的打印表示示例 (Part 1 of 2)
 
 APL\\360            The symbol whose name is APL\360.       
 apl\\360            Also the symbol whose name is APL\360.  
@@ -596,11 +596,11 @@ apl\\360            Also the symbol whose name is APL\360.
                     Parentheses and two spaces in it.       
 |(b^2) - 4*a*c|     The name is (b^2) - 4*a*c.              
 
-Figure 2-16. Examples of the printed representation of symbols (Part 2 of 2)
+Figure 2-16. 符号的打印表示示例 (Part 2 of 2)
 
-In the process of parsing a symbol, it is implementation-dependent which implementation-defined attributes are removed from the characters forming a token that represents a symbol.
+在解析一个符号的过程中, 它是依赖于实现的, 由实现定义的属性从字符中删除, 形成一个表示符号的token.
 
-When parsing the syntax for a symbol, the Lisp reader looks up the name of that symbol in the current package. This lookup may involve looking in other packages whose external symbols are inherited by the current package. If the name is found, the corresponding symbol is returned. If the name is not found (that is, there is no symbol of that name accessible in the current package), a new symbol is created and is placed in the current package as an internal symbol. The current package becomes the owner (home package) of the symbol, and the symbol becomes interned in the current package. If the name is later read again while this same package is current, the same symbol will be found and returned. 
+在解析这个符号的语法时, Lisp读取器会在当前包中查阅这个符号的名字. 这个查找可能牵涉到查找其他的包, 这些包的外部符号是由当前的包继承的. 如果找到这个名字, 返回对应的符号. 如果没有找到这个名字 (这就表示当前包中没有这个名字的符号), 会创建一个新的符号并作为内部符号放到这个包中. 当前包成为这个符号的拥有者 (home package), 并且这个符号成为当前包中内置的. 如果这个名字后面被读取到时当前包是同一个, 这个相同的符号会被找到并返回. 
 
 ### 2.3.5 <span id = "ValidPatternsForTokens">Valid Patterns for Tokens</span>
 
