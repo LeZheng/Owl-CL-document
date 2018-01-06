@@ -3,7 +3,7 @@
 > * 2.1 [字符语法](#CharacterSyntax)
 > * 2.2 [读取器算法](#ReaderAlgorithm)
 > * 2.3 [token的解释](#InterpretationOfTokens)
-> * 2.4 [Standard Macro Characters](#StandardMacroCharacters)
+> * 2.4 [标准宏字符](#StandardMacroCharacters)
 
 ## 2.1 <span id = "CharacterSyntax">字符语法</span>
 
@@ -379,8 +379,8 @@ Lisp读取器使用的算法规则如下:
 > * 2.3.2 [从token构建数字](#ConstructingNumbersFromTokens)
 > * 2.3.3 [点对](#TheConsingDot)
 > * 2.3.4 [符号token](#SymbolsAsTokens)
-> * 2.3.5 [Valid Patterns for Tokens](#ValidPatternsForTokens)
-> * 2.3.6 [Package System Consistency Rules](#PackageSystemConsistencyRules)
+> * 2.3.5 [token的合法模式](#ValidPatternsForTokens)
+> * 2.3.6 [包系统一致性规则](#PackageSystemConsistencyRules)
 
 ### 2.3.1 <span id = "NumbersAsTokens">数字token</span>
 
@@ -602,9 +602,9 @@ Figure 2-16. 符号的打印表示示例 (Part 2 of 2)
 
 在解析这个符号的语法时, Lisp读取器会在当前包中查阅这个符号的名字. 这个查找可能牵涉到查找其他的包, 这些包的外部符号是由当前的包继承的. 如果找到这个名字, 返回对应的符号. 如果没有找到这个名字 (这就表示当前包中没有这个名字的符号), 会创建一个新的符号并作为内部符号放到这个包中. 当前包成为这个符号的拥有者 (home package), 并且这个符号成为当前包中内置的. 如果这个名字后面被读取到时当前包是同一个, 这个相同的符号会被找到并返回. 
 
-### 2.3.5 <span id = "ValidPatternsForTokens">Valid Patterns for Tokens</span>
+### 2.3.5 <span id = "ValidPatternsForTokens">token的合法模式</span>
 
-The valid patterns for tokens are summarized in the next figure.
+token的合法模式总结在下面这段.
 
 nnnnn              a number                                           
 xxxxx              a symbol in the current package                    
@@ -618,61 +618,61 @@ ppppp::nnnnn       undefined
 aaaaa:             undefined                                          
 aaaaa:aaaaa:aaaaa  undefined                                          
 
-Figure 2-17. Valid patterns for tokens
+Figure 2-17. token的合法模式
 
-Note that nnnnn has number syntax, neither xxxxx nor ppppp has number syntax, and aaaaa has any syntax.
+注意, nnnnn有数字语法, xxxxx和ppppp都有数字语法, aaaaa有任何语法.
 
-A summary of rules concerning package markers follows. In each case, examples are offered to illustrate the case; for presentational simplicity, the examples assume that the readtable case of the current readtable is :upcase.
+后面有关于包标记的规则总结. 在每一个情况后面, 都会提供一个例子阐明这个情况; 为了表达的简单性, 示例假定当前的读取表是 :upcase.
 
-1. If there is a single package marker, and it occurs at the beginning of the token, then the token is interpreted as a symbol in the KEYWORD package. It also sets the symbol-value of the newly-created symbol to that same symbol so that the symbol will self-evaluate.
+1. 如果这里有一个单个的包标记, 并且它出想在这个token的开始, 那么这个token被解释为包KEYWORD中的符号. 它还将新创建的符号的符号值设置为相同的符号, 以使符号可以自求值.
 
-    For example, :bar, when read, interns BAR as an external symbol in the KEYWORD package.
+    比如, :bar, 读取的时候, 把 BAR 作为 KEYWORD 包的扩展符号.
 
-2. If there is a single package marker not at the beginning or end of the token, then it divides the token into two parts. The first part specifies a package; the second part is the name of an external symbol available in that package.
+2. 如果这里有一个包标记, 但不是在token的开头, 这个token会被拆成2个部分. 第一个部分指定一个包; 第二个部分就成为这个包中的扩展符号的名字.
 
-    For example, foo:bar, when read, looks up BAR among the external symbols of the package named FOO.
+    比如, foo:bar, 读取的时候, 在名为 FOO 的包中查找 外部符号 BAR.
 
-3. If there are two adjacent package markers not at the beginning or end of the token, then they divide the token into two parts. The first part specifies a package; the second part is the name of a symbol within that package (possibly an internal symbol).
+3. 如果这里由两个相邻的包标记, 并且不是在token的开始, 那么它们会被分为两个部分. 第一部分指定一个包; 第二个部分就成为这个包中的扩展符号的名字 (可能是一个内部的符号).
 
-    For example, foo::bar, when read, interns BAR in the package named FOO.
+    比如, foo::bar, 读取的时候, 把 BAR 放到名为 FOO 的包中.
 
-4. If the token contains no package markers, and does not have potential number syntax, then the entire token is the name of the symbol. The symbol is looked up in the current package.
+4. 如果这个token没有包含包标记, 并且没有潜在的数字语法, 那么这个整个token就是这个符号的名字. 从当前包中查找这个符号.
 
-    For example, bar, when read, interns BAR in the current package.
+    比如, bar, 读取的时候, 把 BAR 放到当前包中.
 
-5. The consequences are unspecified if any other pattern of package markers in a token is used. All other uses of package markers within names of symbols are not defined by this standard but are reserved for implementation-dependent use.
+5. 如果其他包标记的模式被使用那么结果是不确定的. 所有其他使用在符号名中的包标记没有被这个标准所定义但是保留给具体实现.
 
-For example, assuming the readtable case of the current readtable is :upcase, editor:buffer refers to the external symbol named BUFFER present in the package named editor, regardless of whether there is a symbol named BUFFER in the current package. If there is no package named editor, or if no symbol named BUFFER is present in editor, or if BUFFER is not exported by editor, the reader signals a correctable error. If editor::buffer is seen, the effect is exactly the same as reading buffer with the EDITOR package being the current package. 
+比如, 假定当前的读取表的大小写情况是 :upcase, editor:buffer 引用包名为 editor 中的名为 BUFFER 的符号, 不管当前包中是否有一个名为 BUFFER 的符号. 如果没有名为 editor 的包, 或者包 editor 中没有名为 BUFFER 的符号, 或者 BUFFER 没有被 editor 包导出, 读取器就会发出一个可矫正的错误. 如果见到 editor::buffer, 其效果与使用 EDITOR 包作为当前包的读取缓冲区完全相同. 
 
-### 2.3.6 <span id = "PackageSystemConsistencyRules">Package System Consistency Rules</span>
+### 2.3.6 <span id = "PackageSystemConsistencyRules">包系统一致性规则</span>
 
-The following rules apply to the package system as long as the value of *package* is not changed:
+只要 \*package* 的值没有变化那么以下规则就适用于包系统:
 
 Read-read consistency
 
-    Reading the same symbol name always results in the same symbol.
+    读取相同的符号名称总是会产生相同的符号.
 
 Print-read consistency
 
-    An interned symbol always prints as a sequence of characters that, when read back in, yields the same symbol.
+    一个被扣押的符号总是打印为一个字符序列, 当读取回来时也是相同的符号.
 
-    For information about how the Lisp printer treats symbols, see Section 22.1.3.3 (Printing Symbols).
+    关于Lisp打印器如何对待符号, 见章节 22.1.3.3 (Printing Symbols).
 
 Print-print consistency
 
-    If two interned symbols are not the same, then their printed representations will be different sequences of characters.
+    如果两个不同的被扣押的符号, 那么它们的打印表示会是不同的字符序列.
 
-These rules are true regardless of any implicit interning. As long as the current package is not changed, results are reproducible regardless of the order of loading files or the exact history of what symbols were typed in when. If the value of *package* is changed and then changed back to the previous value, consistency is maintained. The rules can be violated by changing the value of *package*, forcing a change to symbols or to packages or to both by continuing from an error, or calling one of the following functions: unintern, unexport, shadow, shadowing-import, or unuse-package.
+不管任何隐式扣押, 这些规则都是对的. 只要当前包没有改变, 不管加载文件的顺序或在什么时候输入符号的确切历史, 结果都是可复写的. 如果 \*package* 的值被改变了并且改变回一个之前的值, 还是会保持一致性. 可以通过修改 \*package* 的值, 通过从一个错误中 continue 强制改变符号或者包或者都修改, 或者调用以下函数中的一个来违反这个规则: unintern, unexport, shadow, shadowing-import, 或者 unuse-package.
 
-An inconsistency only applies if one of the restrictions is violated between two of the named symbols. shadow, unexport, unintern, and shadowing-import can only affect the consistency of symbols with the same names (under string=) as the ones supplied as arguments. 
+只有当两个被命名的符号之间的限制被违反时, 不一致性才适用. shadow, unexport, unintern, 还有 shadowing-import 只影响作为参数传递的名字相同(用 string= 判断)的符号. 
 
-## 2.4 <span id = "StandardMacroCharacters">Standard Macro Characters</span>
+## 2.4 <span id = "StandardMacroCharacters">标准宏字符</span>
 
-If the reader encounters a macro character, then its associated reader macro function is invoked and may produce an object to be returned. This function may read the characters following the macro character in the stream in any syntax and return the object represented by that syntax.
+如果读取器遇到一个宏字符, 那么它的关联读取器宏函数会被调用并且可能产生一个返回的对象. 这个函数可能读取流中宏字符后面任何语法的字符并且返回这个语法对应的对象.
 
-Any character can be made to be a macro character. The macro characters defined initially in a conforming implementation include the following:
+任何字符都可以作为宏字符. 一个合格的实现定义的宏字符包括以下这些:
 
-> * 2.4.1 [Left-Parenthesis](#LeftParenthesis)
+> * 2.4.1 [左括号](#LeftParenthesis)
 > * 2.4.2 [Right-Parenthesis](#RightParenthesis)
 > * 2.4.3 [Single-Quote](#SingleQuote)
 > * 2.4.4 [Semicolon](#Semicolon)
@@ -682,33 +682,43 @@ Any character can be made to be a macro character. The macro characters defined 
 > * 2.4.8 [Sharpsign](#Sharpsign)
 > * 2.4.9 [Re-Reading Abbreviated Expressions](#ReReadingAbbreviatedExpressions)
  
-### 2.4.1 <span id = "LeftParenthesis">Left-Parenthesis</span>
+### 2.4.1 <span id = "LeftParenthesis">左括号</span>
 
-The left-parenthesis initiates reading of a list. read is called recursively to read successive objects until a right parenthesis is found in the input stream. A list of the objects read is returned. Thus
+左括号开始一个列表的读取. read 会被递归调用去读取连续的对象直到在流中找到一个右括号. 返回一个读取的对象列表. 因此
 
+```LISP
  (a b c)
+```
 
-is read as a list of three objects (the symbols a, b, and c). The right parenthesis need not immediately follow the printed representation of the last object; whitespace[2] characters and comments may precede it.
+被读取为一个三个对象的列表 (符号 a, b, 还有 c). 右括号不需要紧跟着最后一个对象的打印形式后面; 空格字符和注释可能在它之前.
 
-If no objects precede the right parenthesis, it reads as a list of zero objects (the empty list).
+如果在右括号前没有对象, 它就读取一个0对象的列表 (一个空列表).
 
-If a token that is just a dot not immediately preceded by an escape character is read after some object then exactly one more object must follow the dot, possibly preceded or followed by whitespace[2] or a comment, followed by the right parenthesis:
+如果一个token只是一个点，而不是在一个转义字符之前就被读取，那么在某个对象之后再读取一个对象，那么就会有另一个对象紧跟这个点，然后可能是在空白字符或注释后面，后面跟着右括号:
 
+```LISP
  (a b c . d)
+```
 
-This means that the cdr of the last cons in the list is not nil, but rather the object whose representation followed the dot. The above example might have been the result of evaluating
+这就意味着这个list最后一个cons的cdr部分不是nil, 而是点之后表示的对象. 上面的例子可能是下面表达式的结果
 
+```LISP
  (cons 'a (cons 'b (cons 'c 'd)))
+```
 
-Similarly,
+类似的,
 
+```LISP
  (cons 'this-one 'that-one) =>  (this-one . that-one)
+```
 
-It is permissible for the object following the dot to be a list:
+跟在点后面的对象也允许是一个列表:
 
+```LISP
  (a b c d . (e f . (g))) ==  (a b c d e f g)
+```
 
-For information on how the Lisp printer prints lists and conses, see Section 22.1.3.5 (Printing Lists and Conses). 
+关于Lisp打印器如何打印列表和cons的信息, 见章节 22.1.3.5 (Printing Lists and Conses). 
 
 ### 2.4.2 <span id = "RightParenthesis">Right-Parenthesis</span>
 
