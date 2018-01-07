@@ -673,9 +673,9 @@ Print-print consistency
 任何字符都可以作为宏字符. 一个合格的实现定义的宏字符包括以下这些:
 
 > * 2.4.1 [左括号](#LeftParenthesis)
-> * 2.4.2 [Right-Parenthesis](#RightParenthesis)
-> * 2.4.3 [Single-Quote](#SingleQuote)
-> * 2.4.4 [Semicolon](#Semicolon)
+> * 2.4.2 [右括号](#RightParenthesis)
+> * 2.4.3 [单引号](#SingleQuote)
+> * 2.4.4 [分号](#Semicolon)
 > * 2.4.5 [Double-Quote](#DoubleQuote)
 > * 2.4.6 [Backquote](#Backquote)
 > * 2.4.7 [Comma](#Comma)
@@ -720,62 +720,67 @@ Print-print consistency
 
 关于Lisp打印器如何打印列表和cons的信息, 见章节 22.1.3.5 (Printing Lists and Conses). 
 
-### 2.4.2 <span id = "RightParenthesis">Right-Parenthesis</span>
+### 2.4.2 <span id = "RightParenthesis">右括号</span>
 
-The right-parenthesis is invalid except when used in conjunction with the left parenthesis character. For more information, see Section 2.2 (Reader Algorithm). 
+除了和一个左括号字符结合, 右括号是非法. 关于更多的信息, 见章节 2.2 (Reader Algorithm). 
 
-### 2.4.3 <span id = "SingleQuote">Single-Quote</span>
+### 2.4.3 <span id = "SingleQuote">单引号</span>
 
-Syntax: '<<exp>>
+语法: '<\<exp>>
 
-A single-quote introduces an expression to be ``quoted.'' Single-quote followed by an expression exp is treated by the Lisp reader as an abbreviation for and is parsed identically to the expression (quote exp). See the special operator quote.
+一个单引号表示一个表达式被 ``quoted''. 单引号后面跟着一个表达式 exp 会被Lisp读取器当作一个缩写并且并被解析为同等表达式的缩写 (quote exp). 见特殊操作符 quote.
 
-#### 2.4.3.1 Examples of Single-Quote
+#### 2.4.3.1 单引号的示例
 
+```LISP
  'foo =>  FOO
  ''foo =>  (QUOTE FOO)
  (car ''foo) =>  QUOTE
+```
 
-### 2.4.4 <span id = "Semicolon">Semicolon</span>
+### 2.4.4 <span id = "Semicolon">分号</span>
 
-Syntax: ;<<text>>
+语法: ;<<text>>
 
-A semicolon introduces characters that are to be ignored, such as comments. The semicolon and all characters up to and including the next newline or end of file are ignored.
+一个分号表示字符需要被忽略, 就像注释. 分号和所有的字符, 包括下一个换行符或文件的结尾都被忽略了.
 
-#### 2.4.4.1 Examples of Semicolon
+#### 2.4.4.1 分号的示例
 
+```LISP
  (+ 3 ; three
     4)
-=>  7    
+=>  7  
+```  
 
-#### 2.4.4.2 Notes about Style for Semicolon
+#### 2.4.4.2 关于分号样式的注释
 
-Some text editors make assumptions about desired indentation based on the number of semicolons that begin a comment. The following style conventions are common, although not by any means universal.
+一些文本编辑器根据开始注释的分号数量来对期望的缩进做出假设. 下面的样式惯例是较通用的，尽管不是普遍的.
 
-> * 2.4.4.2.1 [Use of Single Semicolon](#UseOfSingleSemicolon)
-> * 2.4.4.2.2 [Use of Double Semicolon](#UseOfDoubleSemicolon)
-> * 2.4.4.2.3 [Use of Triple Semicolon](#UseOfTripleSemicolon)
-> * 2.4.4.2.4 [Use of Quadruple Semicolon](#UseOfQuadrupleSemicolon)
-> * 2.4.4.2.5 [Examples of Style for Semicolon](#ExamplesOfStyleForSemicolon)
+> * 2.4.4.2.1 [单分号的使用](#UseOfSingleSemicolon)
+> * 2.4.4.2.2 [两个分号的使用](#UseOfDoubleSemicolon)
+> * 2.4.4.2.3 [三个分号的使用](#UseOfTripleSemicolon)
+> * 2.4.4.2.4 [四个分号的使用](#UseOfQuadrupleSemicolon)
+> * 2.4.4.2.5 [分号风格的示例](#ExamplesOfStyleForSemicolon)
 
-##### 2.4.4.2.1 <span id = "UseOfSingleSemicolon">Use of Single Semicolon</span>
+##### 2.4.4.2.1 <span id = "UseOfSingleSemicolon">单分号的使用</span>
 
-Comments that begin with a single semicolon are all aligned to the same column at the right (sometimes called the ``comment column''). The text of such a comment generally applies only to the line on which it appears. Occasionally two or three contain a single sentence together; this is sometimes indicated by indenting all but the first with an additional space (after the semicolon). 
+以一个分号开始的注释都对齐到右边的同一列上 (有时也被称为 ``comment column''). 这样一个注释的文本通常值应用于它出现的行. 偶尔会有两个或三个一起包含单个句子的; 这有时被用来表示除了第一个带了额外的空格 (在分号后) 其他都是缩进. 
 
-##### 2.4.4.2.2 <span id = "UseOfDoubleSemicolon">Use of Double Semicolon</span>
+##### 2.4.4.2.2 <span id = "UseOfDoubleSemicolon">两个分号的使用</span>
 
-Comments that begin with a double semicolon are all aligned to the same level of indentation as a form would be at that same position in the code. The text of such a comment usually describes the state of the program at the point where the comment occurs, the code which follows the comment, or both. 
+以双分号开头的注释都对齐到相同的缩进水平，就像表单在代码中处于相同的位置. 这样的注释的文本通常用来描述注释出现点的程序的状态, 或者这个注释后的代码, 或者都描述了. 
 
-##### 2.4.4.2.3 <span id = "UseOfTripleSemicolon">Use of Triple Semicolon</span>
+##### 2.4.4.2.3 <span id = "UseOfTripleSemicolon">三个分号的使用</span>
 
-Comments that begin with a triple semicolon are all aligned to the left margin. Usually they are used prior to a definition or set of definitions, rather than within a definition. 
+以三个分号开头的注释都对齐到左边框. 通常它们是在定义或定义集之前使用的, 而不是定义在定义中. 
 
-##### 2.4.4.2.4 <span id = "UseOfQuadrupleSemicolon">Use of Quadruple Semicolon</span>
+##### 2.4.4.2.4 <span id = "UseOfQuadrupleSemicolon">四个分号的使用</span>
 
-Comments that begin with a quadruple semicolon are all aligned to the left margin, and generally contain only a short piece of text that serve as a title for the code which follows, and might be used in the header or footer of a program that prepares code for presentation as a hardcopy document. 
+以四个个分号开头的注释都对齐到左边框, 并且通常包含一小段文本作为后面跟着的代码的标题, 并且可能被用于这个程序的页眉或页脚, 作为代码的一个硬拷贝文档. 
 
-##### 2.4.4.2.5 <span id = "ExamplesOfStyleForSemicolon">Examples of Style for Semicolon</span>
+##### 2.4.4.2.5 <span id = "ExamplesOfStyleForSemicolon">分号风格的示例</span>
 
+```LISP
 ;;;; Math Utilities
 
 ;;; FIB computes the the Fibonacci function in the traditional
@@ -794,6 +799,7 @@ Comments that begin with a quadruple semicolon are all aligned to the left margi
         ;; Nothing more to do but recurse.
         (t (+ (fib (- n 1))     ;The traditional formula
               (fib (- n 2)))))) ; is fib[n-1]+fib[n-2].
+```
 
 ### 2.4.5 <span id = "DoubleQuote">Double-Quote</span>
 
