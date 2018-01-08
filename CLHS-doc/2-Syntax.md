@@ -676,8 +676,8 @@ Print-print consistency
 > * 2.4.2 [右括号](#RightParenthesis)
 > * 2.4.3 [单引号](#SingleQuote)
 > * 2.4.4 [分号](#Semicolon)
-> * 2.4.5 [Double-Quote](#DoubleQuote)
-> * 2.4.6 [Backquote](#Backquote)
+> * 2.4.5 [双引号](#DoubleQuote)
+> * 2.4.6 [反引号](#Backquote)
 > * 2.4.7 [Comma](#Comma)
 > * 2.4.8 [Sharpsign](#Sharpsign)
 > * 2.4.9 [Re-Reading Abbreviated Expressions](#ReReadingAbbreviatedExpressions)
@@ -801,96 +801,108 @@ Print-print consistency
               (fib (- n 2)))))) ; is fib[n-1]+fib[n-2].
 ```
 
-### 2.4.5 <span id = "DoubleQuote">Double-Quote</span>
+### 2.4.5 <span id = "DoubleQuote">双引号</span>
 
-Syntax: "<<text>>"
+语法: "<<text>>"
 
-The double-quote is used to begin and end a string. When a double-quote is encountered, characters are read from the input stream and accumulated until another double-quote is encountered. If a single escape character is seen, the single escape character is discarded, the next character is accumulated, and accumulation continues. The accumulated characters up to but not including the matching double-quote are made into a simple string and returned. It is implementation-dependent which attributes of the accumulated characters are removed in this process.
+双引号被用于开始或结束一个字符串. 当遇到一个双引号, 从输入流中读取到的字符会累积直到遇到另一个双引号. 如果见到一个单转义字符, 这个单转义字符会被丢弃, 累积下一个字符并继续. 直到匹配的双引号为止的字符会被转成一个简单字符串并返回. 累积字符的哪些属性会在这个操作中被移除是取决于具体实现的.
 
-Examples of the use of the double-quote character are in the next figure.
+下一段中有双引号字符的示例.
 
 "Foo"                      ;A string with three characters in it  
 ""                         ;An empty string                       
 "\"APL\\360?\" he cried."  ;A string with twenty characters       
 "|x| = |-x|"               ;A ten-character string                
 
-Figure 2-18. Examples of the use of double-quote
+Figure 2-18. 双引号字符的示例
 
-Note that to place a single escape character or a double-quote into a string, such a character must be preceded by a single escape character. Note, too, that a multiple escape character need not be quoted by a single escape character within a string.
+注意, 要将单个转义字符或双引号放入字符串中, 这样的字符必须先有一个转义字符. 还要注意, 多重转义字符不需要被字符串中的单转义字符引用.
 
-For information on how the Lisp printer prints strings, see Section 22.1.3.4 (Printing Strings). 
+关于Lisp打印器如何打印字符串的信息, 见章节 22.1.3.4 (Printing Strings). 
 
-### 2.4.6 <span id = "Backquote">Backquote</span>
+### 2.4.6 <span id = "Backquote">反引号</span>
 
-The backquote introduces a template of a data structure to be built. For example, writing
+反引号表示一个要创建的数据结构的模板. 比如, 写下
 
- `(cond ((numberp ,x) ,@y) (t (print ,x) ,@y))
+```LISP
+`(cond ((numberp ,x) ,@y) (t (print ,x) ,@y))
+```
 
-is roughly equivalent to writing
+粗略等价于写下
 
- (list 'cond 
-       (cons (list 'numberp x) y) 
-       (list* 't (list 'print x) y))
+```LISP
+(list 'cond 
+    (cons (list 'numberp x) y) 
+    (list* 't (list 'print x) y))
+```
 
-Where a comma occurs in the template, the expression following the comma is to be evaluated to produce an object to be inserted at that point. Assume b has the value 3, for example, then evaluating the form denoted by `(a b ,b ,(+ b 1) b) produces the result (a b 3 4 b).
+这个模板中出现逗号的地方, 这个逗号后面的表达式会被求值并产生一个对象插入到这个地方. 假定 b 的值是3, 比如求值 `(a b ,b ,(+ b 1) b) 表示的结构会产生结果 (a b 3 4 b).
 
-If a comma is immediately followed by an at-sign, then the form following the at-sign is evaluated to produce a list of objects. These objects are then ``spliced'' into place in the template. For example, if x has the value (a b c), then
+如果一个逗号紧跟着 @, 这个 @ 符号后面的表达式形式会被求值并产生一个对象列表. 这些对象会被拼接进这个模板. 比如, 如果 x 的值为 (a b c), 那么
 
- `(x ,x ,@x foo ,(cadr x) bar ,(cdr x) baz ,@(cdr x))
+```LISP
+`(x ,x ,@x foo ,(cadr x) bar ,(cdr x) baz ,@(cdr x))
 =>  (x (a b c) a b c foo b bar (b c) baz b c)
+```
 
-The backquote syntax can be summarized formally as follows.
+这个反引号语法可以被总结为如下.
 
-* `basic is the same as 'basic, that is, (quote basic), for any expression basic that is not a list or a general vector.
+* \`basic 等同于 'basic, 也就表示, (quote basic), 对于上面任何表达式 basic 都不是一个列表或序列.
 
-* `,form is the same as form, for any form, provided that the representation of form does not begin with at-sign or dot. (A similar caveat holds for all occurrences of a form after a comma.)
+* `,form 等同于 form, 对于任何 form, 提供没有以 @ 或者 点 开始的 form 的表示. (对于一个逗号后面的所有出现的情况, 也有类似的警告.)
 
-* `,@form has undefined consequences.
+* `,@form 有着不可预计的结果.
 
-* `(x1 x2 x3 ... xn . atom) may be interpreted to mean
+* `(x1 x2 x3 ... xn . atom) 可能被解释成
 
      (append [ x1] [ x2] [ x3] ... [ xn] (quote atom))
 
-    where the brackets are used to indicate a transformation of an xj as follows:
+    其中方括号被用于表示如下的一个 xj 的转化:
 
-    -- [form] is interpreted as (list `form), which contains a backquoted form that must then be further interpreted.
+    -- [form] 被解释为 (list `form), 包含一个反引号的 form 必须继续被解释.
 
-    -- [,form] is interpreted as (list form).
+    -- [,form] 被解释为 (list form).
 
-    -- [,@form] is interpreted as form.
+    -- [,@form] 被解释为 form.
 
-* `(x1 x2 x3 ... xn) may be interpreted to mean the same as the backquoted form `(x1 x2 x3 ... xn . nil), thereby reducing it to the previous case.
+* \`(x1 x2 x3 ... xn) 可能被解释为相同的反引号表达式 \`(x1 x2 x3 ... xn . nil), 因此将其减少到前一种情况.
 
-* `(x1 x2 x3 ... xn . ,form) may be interpreted to mean
+* `(x1 x2 x3 ... xn . ,form) 可能被解释为
 
      (append [ x1] [ x2] [ x3] ... [ xn] form)
 
-    where the brackets indicate a transformation of an xj as described above.
+    其中的方括号表示如上所述的 xj 的转换.
 
-* `(x1 x2 x3 ... xn . ,@form) has undefined consequences.
+* \`(x1 x2 x3 ... xn . ,@form) 有着不可预计的结果.
 
-* `#(x1 x2 x3 ... xn) may be interpreted to mean (apply #'vector `(x1 x2 x3 ... xn)).
+* \`#(x1 x2 x3 ... xn) 可能被解释为 (apply #'vector `(x1 x2 x3 ... xn)).
 
-Anywhere ``,@'' may be used, the syntax ``,.'' may be used instead to indicate that it is permissible to operate destructively on the list structure produced by the form following the ``,.'' (in effect, to use nconc instead of append).
+任何可能使用 \``,@'' 的地方, 可能使用 \``,.'' 来表示允许在 \``,.'' 后面的表达式形式的列表结构中对列表结构进行破坏性的操作 (实际上, 去使用 nconc 而不是 append).
 
-If the backquote syntax is nested, the innermost backquoted form should be expanded first. This means that if several commas occur in a row, the leftmost one belongs to the innermost backquote.
+如果反引号语法是嵌套的，那么最内层的反引号表达式形式应该首先展开. 这个也意味着如果有多个逗号出现在一行中, 最左边的一个是属于最里面的反引号.<!-- 最后那句不懂 -->
 
-An implementation is free to interpret a backquoted form F1 as any form F2 that, when evaluated, will produce a result that is the same under equal as the result implied by the above definition, provided that the side-effect behavior of the substitute form F2 is also consistent with the description given above. The constructed copy of the template might or might not share list structure with the template itself. As an example, the above definition implies that
+一个具体实现可以自由地解释一个反引号表达式形式 F1 为任何表达式形式 F2, 在求值后, 会产生一个适用于上面定义的结果, 提供的副作用行为替代形式F2也符合上述描述. 模板的构造拷贝可能和模板自身共享列表的结构. 就像例子中, 上面的定义意味着
 
- `((,a b) ,c ,@d)
+```LISP
+`((,a b) ,c ,@d)
+```
 
-will be interpreted as if it were
+会被解释为就像
 
- (append (list (append (list a) (list 'b) 'nil)) (list c) d 'nil)
+```LISP
+(append (list (append (list a) (list 'b) 'nil)) (list c) d 'nil)
+```
 
-but it could also be legitimately interpreted to mean any of the following:
+但是它也可能被合理地解释为以下任何一种:
 
- (append (list (append (list a) (list 'b))) (list c) d)
- (append (list (append (list a) '(b))) (list c) d)
- (list* (cons a '(b)) c d)
- (list* (cons a (list 'b)) c d)
- (append (list (cons a '(b))) (list c) d)
- (list* (cons a '(b)) c (copy-list d))
+```LISP
+(append (list (append (list a) (list 'b))) (list c) d)
+(append (list (append (list a) '(b))) (list c) d)
+(list* (cons a '(b)) c d)
+(list* (cons a (list 'b)) c d)
+(append (list (cons a '(b))) (list c) d)
+(list* (cons a '(b)) c (copy-list d))
+```
 
 #### 2.4.6.1 Notes about Backquote
 
