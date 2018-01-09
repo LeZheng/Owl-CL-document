@@ -971,12 +971,12 @@ Figure 2-19. 标准 # 调度宏字符语法
 > * 2.4.8.2 [井号单引号(#')](#SharpsignSingleQuote)
 > * 2.4.8.3 [井号左括号(#()](#SharpsignLeftParenthesis)
 > * 2.4.8.4 [井号星号(#*)](#SharpsignAsterisk)
-> * 2.4.8.5 [Sharpsign Colon](#SharpsignColon)
-> * 2.4.8.6 [Sharpsign Dot](#SharpsignDot)
-> * 2.4.8.7 [Sharpsign B](#SharpsignB)
-> * 2.4.8.8 [Sharpsign O](#SharpsignO)
-> * 2.4.8.9 [Sharpsign X](#SharpsignX)
-> * 2.4.8.10 [Sharpsign R](#SharpsignR)
+> * 2.4.8.5 [井号冒号(#:)](#SharpsignColon)
+> * 2.4.8.6 [井号点(#.)](#SharpsignDot)
+> * 2.4.8.7 [井号B(#B)](#SharpsignB)
+> * 2.4.8.8 [井号O(#O)](#SharpsignO)
+> * 2.4.8.9 [井号X(#X)](#SharpsignX)
+> * 2.4.8.10 [井号R(#R)](#SharpsignR)
 > * 2.4.8.11 [Sharpsign C](#SharpsignC)
 > * 2.4.8.12 [Sharpsign A](#SharpsignA)
 > * 2.4.8.13 [Sharpsign S](#SharpsignS)
@@ -1071,60 +1071,67 @@ Figure 2-19. 标准 # 调度宏字符语法
  #*         ;An empty bit-vector
 ```
 
-#### 2.4.8.5 <span id = "SharpsignColon">Sharpsign Colon</span>
+#### 2.4.8.5 <span id = "SharpsignColon">井号冒号(#:)</span>
 
-Syntax: #:<<symbol-name>>
+语法: #:<\<symbol-name>>
 
-#: introduces an uninterned symbol whose name is symbol-name. Every time this syntax is encountered, a distinct uninterned symbol is created. The symbol-name must have the syntax of a symbol with no package prefix.
+#: 引入一个名字为 symbol-name 的未拘留的符号. 每次遇到这个语法, 会创建一个不同的未拘留的符号. 这个 symbol-name 必须有符号的语法并且没有包标记符.
 
-For information on how the Lisp reader prints uninterned symbols, see Section 22.1.3.3 (Printing Symbols). 
+关于Lisp读取器如何打印未拘留的符号, 见章节 22.1.3.3 (Printing Symbols). 
 
-#### 2.4.8.6 <span id = "SharpsignDot">Sharpsign Dot</span>
+#### 2.4.8.6 <span id = "SharpsignDot">井号点(#.)</span>
 
-#.foo is read as the object resulting from the evaluation of the object represented by foo. The evaluation is done during the read process, when the #. notation is encountered. The #. syntax therefore performs a read-time evaluation of foo.
+#.foo 被读取为 foo 表示的对象求值的结果. 当读取到 #. 标记, 求值会在读取过程中完成. 因此这个 #. 语法执行了一个 foo 的读取时求值.
 
-The normal effect of #. is inhibited when the value of *read-eval* is false. In that situation, an error of type reader-error is signaled.
+当 \*read-eval* 是 false 时, 这个 #. 正常的影响会被抑制. 在这个情况下, 会发出一个 reader-error 类型的错误.
 
-For an object that does not have a convenient printed representation, a form that computes the object can be given using the #. notation. 
+对于一个没有适当的打印表示的对象, 计算对象的表达式形式可以使用符号 #. 表示. 
 
-#### 2.4.8.7 <span id = "SharpsignB">Sharpsign B</span>
+#### 2.4.8.7 <span id = "SharpsignB">井号B(#B)</span>
 
-#Brational reads rational in binary (radix 2). For example,
+#Brational 读取二进制有理数. 比如,
 
- #B1101 ==  13 ;11012
- #b101/11 ==  5/3
+```LISP
+#B1101 ==  13 ;11012
+#b101/11 ==  5/3
+```
 
-The consequences are undefined if the token immediately following the #B does not have the syntax of a binary (i.e., radix 2) rational. 
+如果紧跟这个 #B 的 token没有二进制的语法, 那么结果是未定义的. 
 
-#### 2.4.8.8 <span id = "SharpsignO">Sharpsign O</span>
+#### 2.4.8.8 <span id = "SharpsignO">井号O(#O)</span>
 
-#Orational reads rational in octal (radix 8). For example,
+#Orational 读取八进制有理数. 比如,
 
- #o37/15 ==  31/13
- #o777 ==  511
- #o105 ==  69 ;1058
+```LISP
+#o37/15 ==  31/13
+#o777 ==  511
+#o105 ==  69 ;1058
+```
 
-The consequences are undefined if the token immediately following the #O does not have the syntax of an octal (i.e., radix 8) rational. 
+如果紧跟在 #O 后的token没有八进制有理数的语法, 结果是未定义的. 
 
-#### 2.4.8.9 <span id = "SharpsignX">Sharpsign X</span>
+#### 2.4.8.9 <span id = "SharpsignX">井号X(#X)</span>
 
-#Xrational reads rational in hexadecimal (radix 16). The digits above 9 are the letters A through F (the lowercase letters a through f are also acceptable). For example,
+#Xrational 读取十六进制有理数. 在 9 之上的数字是字母 A 到 F (小写字母 a 到 f 也是可接受的). 比如,
 
- #xF00 ==  3840             
- #x105 ==  261 ;10516
+```LISP
+#xF00 ==  3840             
+#x105 ==  261 ;10516
+```
 
-The consequences are undefined if the token immediately following the #X does not have the syntax of a hexadecimal (i.e., radix 16) rational. 
+如果紧跟着 #X 的token没有十六进制有理数的语法, 那么结果是未定义的. 
 
-#### 2.4.8.10 <span id = "SharpsignR">Sharpsign R</span>
+#### 2.4.8.10 <span id = "SharpsignR">井号R(#R)</span>
 
 #nR
 
 #radixRrational reads rational in radix radix. radix must consist of only digits that are interpreted as an integer in decimal radix; its value must be between 2 and 36 (inclusive). Only valid digits for the specified radix may be used.
 
-For example, #3r102 is another way of writing 11 (decimal), and #11R32 is another way of writing 35 (decimal). For radices larger than 10, letters of the alphabet are used in order for the digits after 9. No alternate # notation exists for the decimal radix since a decimal point suffices.
+比如, #3r102 是另一种写 11(十进制) 的方式, 并且 #11R32 是写 35(十进制) 的另一种方式. 对于进制数大于 10, 字母表中的字母按顺序被用于 9 之后的进制. 对于十进制数没有替代的 # 表示法.
 
-The next figure contains examples of the use of #B, #O, #X, and #R.
+下一段包括了 #B, #O, #X, 和 #R 的使用.
 
+```LISP
 #2r11010101  ;Another way of writing 213 decimal  
 #b11010101   ;Ditto                               
 #b+11010101  ;Ditto                               
@@ -1135,10 +1142,11 @@ The next figure contains examples of the use of #B, #O, #X, and #R.
 #3r-21010    ;Same thing in base 3                
 #25R-7H      ;Same thing in base 25               
 #xACCEDED    ;181202413, in hexadecimal radix     
+```
 
-Figure 2-20. Radix Indicator Example
+Figure 2-20. 进制指示器的例子
 
-The consequences are undefined if the token immediately following the #nR does not have the syntax of a rational in radix n. 
+如果跟在 #nR 后的token不满足 n 进制有理数的语法, 结果是未定义的. 
 
 #### 2.4.8.11 <span id = "SharpsignC">Sharpsign C</span>
 
