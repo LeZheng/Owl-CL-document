@@ -1125,7 +1125,7 @@ Figure 2-19. 标准 # 调度宏字符语法
 
 #nR
 
-#radixRrational reads rational in radix radix. radix must consist of only digits that are interpreted as an integer in decimal radix; its value must be between 2 and 36 (inclusive). Only valid digits for the specified radix may be used.
+#radixRrational 根据指定的进制来读取有理数. 进制必须是十进制有理数的整数; 它的值必须在 2 和 36 (包括)之间. 只有指定的进制中合法的数字可以被使用.
 
 比如, #3r102 是另一种写 11(十进制) 的方式, 并且 #11R32 是写 35(十进制) 的另一种方式. 对于进制数大于 10, 字母表中的字母按顺序被用于 9 之后的进制. 对于十进制数没有替代的 # 表示法.
 
