@@ -678,8 +678,8 @@ Print-print consistency
 > * 2.4.4 [分号](#Semicolon)
 > * 2.4.5 [双引号](#DoubleQuote)
 > * 2.4.6 [反引号](#Backquote)
-> * 2.4.7 [Comma](#Comma)
-> * 2.4.8 [Sharpsign](#Sharpsign)
+> * 2.4.7 [逗号](#Comma)
+> * 2.4.8 [井号](#Sharpsign)
 > * 2.4.9 [Re-Reading Abbreviated Expressions](#ReReadingAbbreviatedExpressions)
  
 ### 2.4.1 <span id = "LeftParenthesis">左括号</span>
@@ -904,73 +904,73 @@ Figure 2-18. 双引号字符的示例
 (list* (cons a '(b)) c (copy-list d))
 ```
 
-#### 2.4.6.1 Notes about Backquote
+#### 2.4.6.1 关于反引号的注意事项
 
-Since the exact manner in which the Lisp reader will parse an expression involving the backquote reader macro is not specified, an implementation is free to choose any representation that preserves the semantics described.
+因为Lisp读取器解析一个包含反引号读取宏的表达式的确切方式没有指定, 一个具体实现可以自由地选择任何保留描述的语法的表示形式.
 
-Often an implementation will choose a representation that facilitates pretty printing of the expression, so that (pprint `(a ,b)) will display `(a ,b) and not, for example, (list 'a b). However, this is not a requirement.
+通常, 实现会选择一种便于打印表达式的表示形式, 这样 (pprint \`(a ,b)) 会显示 \`(a ,b) 而不是比如 (list 'a b). 然而, 这不是必须的.
 
-Implementors who have no particular reason to make one choice or another might wish to refer to IEEE Standard for the Scheme Programming Language, which identifies a popular choice of representation for such expressions that might provide useful to be useful compatibility for some user communities. There is no requirement, however, that any conforming implementation use this particular representation. This information is provided merely for cross-reference purposes. 
+没有特定理由做出选择的实现者可能希望引用IEEE标准来实现Scheme编程语言, Scheme确定了一种流行的表示方式, 它可以为一些用户社区提供有用的兼容性. 没有任何要求, 然而, 任何符合规范的实现都使用这个特定的表示. 此信息仅用于交叉引用目的. <!-- cross-reference 什么意思 -->
 
-### 2.4.7 <span id = "Comma">Comma</span>
+### 2.4.7 <span id = "Comma">逗号</span>
 
-The comma is part of the backquote syntax; see Section 2.4.6 (Backquote). Comma is invalid if used other than inside the body of a backquote expression as described above. 
+逗号是反引号语法的一部分; 见章节 2.4.6 (Backquote). 如果逗号被用于非上面所述的反引号表达式语法中是非法的. 
 
-### 2.4.8 <span id = "Sharpsign">Sharpsign</span>
+### 2.4.8 <span id = "Sharpsign">井号</span>
 
-Sharpsign is a non-terminating dispatching macro character. It reads an optional sequence of digits and then one more character, and uses that character to select a function to run as a reader macro function.
+井号是一个非终止调度宏字符. 它读取一个可选的数字序列和至少一个字符, 然后使用这个字符去选择一个函数作为读取器宏函数来运行.
 
-The standard syntax includes constructs introduced by the # character. The syntax of these constructs is as follows: a character that identifies the type of construct is followed by arguments in some form. If the character is a letter, its case is not important; #O and #o are considered to be equivalent, for example.
+标准语法包括由 # 字符引入的结构. 这些结构的语法如下: 标识结构类型的字符后面跟着一些表达式形式的参数. 如果这个字符是一个字母, 它的大小写是不重要的;比如 #O 和 #o 被认为是等价的.
 
-Certain # constructs allow an unsigned decimal number to appear between the # and the character.
+某些 # 构造允许在 # 和字符之间出现一个无符号的十进制数.
 
-The reader macros associated with the dispatching macro character # are described later in this section and summarized in the next figure.
+和调度宏字符 # 关联的读取器宏在这个章节的后面部分有描述, 并且总结在下面这段.
 
-dispatch char  purpose                  dispatch char  purpose                
-Backspace      signals error            {              undefined*             
-Tab            signals error            }              undefined*             
-Newline        signals error            +              read-time conditional  
-Linefeed       signals error            -              read-time conditional  
-Page           signals error            .              read-time evaluation   
-Return         signals error            /              undefined              
-Space          signals error            A, a           array                  
-!              undefined*               B, b           binary rational        
-"              undefined                C, c           complex number         
-#              reference to = label     D, d           undefined              
-$              undefined                E, e           undefined              
-%              undefined                F, f           undefined              
-&              undefined                G, g           undefined              
-'              function abbreviation    H, h           undefined              
-(              simple vector            I, i           undefined              
-)              signals error            J, j           undefined              
-*              bit vector               K, k           undefined              
-,              undefined                L, l           undefined              
-:              uninterned symbol        M, m           undefined              
-;              undefined                N, n           undefined              
-<              signals error            O, o           octal rational         
-=              labels following object  P, p           pathname               
->              undefined                Q, q           undefined              
-?              undefined*               R, r           radix-n rational       
-@              undefined                S, s           structure              
-[              undefined*               T, t           undefined              
-\              character object         U, u           undefined              
-]              undefined*               V, v           undefined              
-^              undefined                W, w           undefined              
-_              undefined                X, x           hexadecimal rational   
-`              undefined                Y, y           undefined              
-|              balanced comment         Z, z           undefined              
-~              undefined                Rubout         undefined              
+    dispatch char  purpose                  dispatch char  purpose                
+    Backspace      signals error            {              undefined*             
+    Tab            signals error            }              undefined*             
+    Newline        signals error            +              read-time conditional  
+    Linefeed       signals error            -              read-time conditional  
+    Page           signals error            .              read-time evaluation   
+    Return         signals error            /              undefined              
+    Space          signals error            A, a           array                  
+    !              undefined*               B, b           binary rational        
+    "              undefined                C, c           complex number         
+    #              reference to = label     D, d           undefined              
+    $              undefined                E, e           undefined              
+    %              undefined                F, f           undefined              
+    &              undefined                G, g           undefined              
+    '              function abbreviation    H, h           undefined              
+    (              simple vector            I, i           undefined              
+    )              signals error            J, j           undefined              
+    *              bit vector               K, k           undefined              
+    ,              undefined                L, l           undefined              
+    :              uninterned symbol        M, m           undefined              
+    ;              undefined                N, n           undefined              
+    <              signals error            O, o           octal rational         
+    =              labels following object  P, p           pathname               
+    >              undefined                Q, q           undefined              
+    ?              undefined*               R, r           radix-n rational       
+    @              undefined                S, s           structure              
+    [              undefined*               T, t           undefined              
+    \              character object         U, u           undefined              
+    ]              undefined*               V, v           undefined              
+    ^              undefined                W, w           undefined              
+    _              undefined                X, x           hexadecimal rational   
+    `              undefined                Y, y           undefined              
+    |              balanced comment         Z, z           undefined              
+    ~              undefined                Rubout         undefined              
 
-Figure 2-19. Standard #Dispatching Macro Character Syntax
+Figure 2-19. 标准 # 调度宏字符语法
 
-The combinations marked by an asterisk (*) are explicitly reserved to the user. No conforming implementation defines them.
+由星号(\*)标记的组合被显式地保留给用户. 没有符合规范的实现定义它们.
 
-Note also that digits do not appear in the preceding table. This is because the notations #0, #1, ..., #9 are reserved for another purpose which occupies the same syntactic space. When a digit follows a sharpsign, it is not treated as a dispatch character. Instead, an unsigned integer argument is accumulated and passed as an argument to the reader macro for the character that follows the digits. For example, #2A((1 2) (3 4)) is a use of #A with an argument of 2.
+注意数字也没有出现在之前的表中. 这是因为标记 #0, #1, ..., #9 保留给另一个占相同句法空间的目的. 当一个数字跟着一个井号, 它不会被认为是调度字符. 取而代之的是, 一个无符号整型的参数被累计起来, 并作为参数传递给数字后面字符的读取器宏. 比如, #2A((1 2) (3 4)) 就是一个参数为 2 的 #A 的使用.
 
-> * 2.4.8.1 [Sharpsign Backslash](#SharpsignBackslash)
-> * 2.4.8.2 [Sharpsign Single-Quote](#SharpsignSingleQuote)
-> * 2.4.8.3 [Sharpsign Left-Parenthesis](#SharpsignLeftParenthesis)
-> * 2.4.8.4 [Sharpsign Asterisk](#SharpsignAsterisk)
+> * 2.4.8.1 [井号反斜线(#\\)](#SharpsignBackslash)
+> * 2.4.8.2 [井号单引号(#')](#SharpsignSingleQuote)
+> * 2.4.8.3 [井号左括号(#()](#SharpsignLeftParenthesis)
+> * 2.4.8.4 [井号星号(#*)](#SharpsignAsterisk)
 > * 2.4.8.5 [Sharpsign Colon](#SharpsignColon)
 > * 2.4.8.6 [Sharpsign Dot](#SharpsignDot)
 > * 2.4.8.7 [Sharpsign B](#SharpsignB)
@@ -990,76 +990,86 @@ Note also that digits do not appear in the preceding table. This is because the 
 > * 2.4.8.21 [Sharpsign Whitespace](#SharpsignWhitespace)
 > * 2.4.8.22 [Sharpsign Right-Parenthesis](#SharpsignRightParenthesis)
 
-#### 2.4.8.1 <span id = "SharpsignBackslash">Sharpsign Backslash</span>
+#### 2.4.8.1 <span id = "SharpsignBackslash">井号反斜线(#\\)</span>
 
-Syntax: #\<<x>>
+语法: #\\<\<x>>
 
-When the token x is a single character long, this parses as the literal character char. Uppercase and lowercase letters are distinguished after #\; #\A and #\a denote different character objects. Any single character works after #\, even those that are normally special to read, such as left-parenthesis and right-parenthesis.
+当一个 token x 是单个字符长时, 这个会被解析为字面字符 char. 在 #\ 后面大小写字母是区分开来的; #\A 和 #\a 表示不同的字符对象. 任何在 #\ 后面的单个字符都会正常工作, 甚至那些读取时非常特殊的, 例如左括号和右括号.
 
-In the single character case, the x must be followed by a non-constituent character. After #\ is read, the reader backs up over the slash and then reads a token, treating the initial slash as a single escape character (whether it really is or not in the current readtable).
+在单字符情况下, x 后面必须跟着一个非构成字符. 在 #\ 被读取之后, 读取器退到斜线前然后开始读取一个token, 把最初的斜线作为单转义字符 (不管它是否真的在当前的读取表里).
 
-When the token x is more than one character long, the x must have the syntax of a symbol with no embedded package markers. In this case, the sharpsign backslash notation parses as the character whose name is (string-upcase x); see Section 13.1.7 (Character Names).
+当这个 token 不止一个字符长度时, 这个 x 必须有着符号的语法, 并且其中没有包标记符. 在这种情况下, 这个井号反斜线标记被解析为名为 (string-upcase x) 的字符; 见章节 13.1.7 (Character Names).
 
-For information about how the Lisp printer prints character objects, see Section 22.1.3.2 (Printing Characters). 
+关于Lisp打印器如何打印字符对象的信息, 见章节 22.1.3.2 (Printing Characters). 
 
-#### 2.4.8.2 <span id = "SharpsignSingleQuote">Sharpsign Single-Quote</span>
+#### 2.4.8.2 <span id = "SharpsignSingleQuote">井号单引号(#')</span>
 
-Any expression preceded by #' (sharpsign followed by single-quote), as in #'expression, is treated by the Lisp reader as an abbreviation for and parsed identically to the expression (function expression). See function. For example,
+任何前面有 #' (井号后面是单引号) 的表达式, 就像 #'expression, 被Lisp读取器当作是一个缩写并且解释为表达式 (function expression). 见 function. 比如,
 
+```LISP
 (apply #'+ l) ==  (apply (function +) l)
+```
 
-#### 2.4.8.3 <span id = "SharpsignLeftParenthesis">Sharpsign Left-Parenthesis</span>
+#### 2.4.8.3 <span id = "SharpsignLeftParenthesis">井号左括号(#()</span>
 
-#( and ) are used to notate a simple vector.
+\#( and ) 被用于表示一个简单序列.
 
-If an unsigned decimal integer appears between the # and (, it specifies explicitly the length of the vector. The consequences are undefined if the number of objects specified before the closing ) exceeds the unsigned decimal integer. If the number of objects supplied before the closing ) is less than the unsigned decimal integer but greater than zero, the last object is used to fill all remaining elements of the vector. The consequences are undefined if the unsigned decimal integer is non-zero and number of objects supplied before the closing ) is zero. For example,
+如果一个无符号十进制整数出现在 # 和 ( 中间, 它明确指明这个序列的长度. 如果在结束的 ) 之前的对象数超过那个无符号十进制整数, 结果是无法预料的. 在结束的 ) 之前提供的对象数量如果小于那个无符号十进制整数大于0那么最后一个对象被用于填充这个序列的剩余部分. 如果这个无符号十进制整数是非空的但是在结束的 ) 之前提供的对象数是0那么结果是未定义的. 比如,
 
- #(a b c c c c)
- #6(a b c c c c)
- #6(a b c)
- #6(a b c c)
+```LISP
+#(a b c c c c)
+#6(a b c c c c)
+#6(a b c)
+#6(a b c c)
+```
 
-all mean the same thing: a vector of length 6 with elements a, b, and four occurrences of c. Other examples follow:
+都意味着同样的东西: 一个长度为6的序列, 其中有a, b, 和4个 c 作为其中的元素. 其他例子如下:
 
- #(a b c)               ;A vector of length 3
- #(2 3 5 7 11 13 17 19 23 29 31 37 41 43 47)
-                        ;A vector containing the primes below 50
- #()                    ;An empty vector
+```LISP
+#(a b c)               ;A vector of length 3
+#(2 3 5 7 11 13 17 19 23 29 31 37 41 43 47)
+                    ;A vector containing the primes below 50
+#()                    ;An empty vector
+```
 
-The notation #() denotes an empty vector, as does #0().
+标记 #() 表示一个空序列, 就像 #0().
 
-For information on how the Lisp printer prints vectors, see Section 22.1.3.4 (Printing Strings), Section 22.1.3.6 (Printing Bit Vectors), or Section 22.1.3.7 (Printing Other Vectors). 
+关于Lisp打印器如何打印序列的信息, 见章节 22.1.3.4 (Printing Strings), 章节 22.1.3.6 (Printing Bit Vectors), 或章节 22.1.3.7 (Printing Other Vectors). 
 
-#### 2.4.8.4 <span id = "SharpsignAsterisk">Sharpsign Asterisk</span>
+#### 2.4.8.4 <span id = "SharpsignAsterisk">井号星号(#*)</span>
 
-Syntax: #*<<bits>>
+语法: #*<\<bits>>
 
-A simple bit vector is constructed containing the indicated bits (0's and 1's), where the leftmost bit has index zero and the subsequent bits have increasing indices.
+一个简单的包含指定的位 (0's 和 1's) 的位序列会被构建, 其中最左边的位索引为 0 并且后面的位有增长的索引.
 
-Syntax: #<<n>>*<<bits>>
+语法: #<\<n>>*<\<bits>>
 
-With an argument n, the vector to be created is of length n. If the number of bits is less than n but greater than zero, the last bit is used to fill all remaining bits of the bit vector.
+带有一个参数 n, 这个要创建的序列的长度是 n. 如果位数少于 n 但是大于 0, 那么最后一位会被用于填充这个位序列的剩余部分.
 
-The notations #* and #0* each denote an empty bit vector.
+标记 #* 和 #0* 每个都表示一个空的位序列.
 
-Regardless of whether the optional numeric argument n is provided, the token that follows the asterisk is delimited by a normal token delimiter. However, (unless the value of *read-suppress* is true) an error of type reader-error is signaled if that token is not composed entirely of 0's and 1's, or if n was supplied and the token is composed of more than n bits, or if n is greater than one, but no bits were specified. Neither a single escape nor a multiple escape is permitted in this token.
+不管是否提供那个可选的参数 n,星号后面的token会被正常的token分隔符来分割. 然而, (除非 \*read-suppress* 的值是 true) 如果这个token不是完全由 0 和 1 组成, 或者如果提供了 n 但是位数却大于 n 位, 或者 n 大于等于 1, 但是没有提供元素, 都会发出一个 reader-error 类型的错误. 单转义字符和多重转义字符都不允许出现在这个token里.
 
-For information on how the Lisp printer prints bit vectors, see Section 22.1.3.6 (Printing Bit Vectors).
+关于Lisp打印器如何打印位字符的信息, 见章节 22.1.3.6 (Printing Bit Vectors).
 
-##### 2.4.8.4.1 Examples of Sharpsign Asterisk
+##### 2.4.8.4.1 井号星号的示例
 
-For example,
+比如,
 
-  #*101111
- #6*101111
- #6*101
- #6*1011
+```LISP
+#*101111
+#6*101111
+#6*101
+#6*1011
+```
 
-all mean the same thing: a vector of length 6 with elements 1, 0, 1, 1, 1, and 1.
+都意味着相同的东西: 一个长度6的序列, 带有元素 1, 0, 1, 1, 1, 和 1.
 
-For example:
+比如:
 
+```LISP
  #*         ;An empty bit-vector
+```
 
 #### 2.4.8.5 <span id = "SharpsignColon">Sharpsign Colon</span>
 
