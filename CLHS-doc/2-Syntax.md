@@ -138,7 +138,7 @@ Figure 2-4. 标准字符子表 (Part 2 of 3: 数字字符)
 
 Figure 2-5. 标准字符子表 (Part 3 of 3: 特殊字符)
 
-这个图形化ID (graphic ID) 在Common Lisp中不可用, 但是提供了和ISO 6937/2交叉引用的目的. 注意图形化ID的第一个字母把字符分成以下几类: L---Latin, N---Numeric, S---Special. <!-- TODO 待校验 -->
+这个图形化ID (graphic ID) 在Common Lisp中不可用, 但是为了和ISO 6937/2交叉引用的目的而提供. 注意图形化ID的第一个字母把字符分成以下几类: L---Latin, N---Numeric, S---Special.
 
 ### 2.1.4 <span id = "CharacterSyntaxTypes">字符语法类型</span>
 
@@ -546,7 +546,7 @@ Figure 2-14. 浮点数示例
 
 #### 2.3.2.3 <span id = "SyntaxComplex">复数的语法</span>
 
-一个复数有一个笛卡尔结构, 带有一个实数部分和一个虚数部分, 其中每一个部分都是实数表示. 复数的各个部分没有必要一定是浮点数但是每个部分必须是一样的类型: 都是有理数, 或者都是浮点数的子类型. 当构建一个复数时, 如果指定的部分不是相同的类型, 这些部分会被转换为相同的内部类型 (换句化说, 有理数部分被转化为一个浮点数). 一个(complex rational)类型的对象在内部被转换, 并且在它的虚部是一个值为0的整数时表示为一个有理数.<!-- TODO complex rational 是什么类型 -->
+一个复数有一个笛卡尔结构, 带有一个实数部分和一个虚数部分, 其中每一个部分都是实数表示. 复数的各个部分没有必要一定是浮点数但是每个部分必须是一样的类型: 都是有理数, 或者都是浮点数的子类型. 当构建一个复数时, 如果指定的部分不是相同的类型, 这些部分会被转换为相同的内部类型 (换句化说, 有理数部分被转化为一个浮点数). 一个复数类型的对象在内部被转换, 并且在它的虚部是一个值为0的整数时表示为一个有理数.
 
 关于进一步的信息, 见章节 2.4.8.11 (Sharpsign C) 还有章节 22.1.3.1.4 (Printing Complexes). 
 
@@ -879,7 +879,7 @@ Figure 2-18. 双引号字符的示例
 
 任何可能使用 \``,@'' 的地方, 可能使用 \``,.'' 来表示允许在 \``,.'' 后面的表达式形式的列表结构中对列表结构进行破坏性的操作 (实际上, 去使用 nconc 而不是 append).
 
-如果反引号语法是嵌套的，那么最内层的反引号表达式形式应该首先展开. 这个也意味着如果有多个逗号出现在一行中, 最左边的一个是属于最里面的反引号.<!-- 最后那句不懂 -->
+如果反引号语法是嵌套的，那么最内层的反引号表达式形式应该首先展开. 这个也意味着如果有多个逗号出现在一行中, 最左边的一个是属于最里面的反引号.
 
 一个具体实现可以自由地解释一个反引号表达式形式 F1 为任何表达式形式 F2, 在求值后, 会产生一个适用于上面定义的结果, 提供的副作用行为替代形式F2也符合上述描述. 模板的构造拷贝可能和模板自身共享列表的结构. 就像例子中, 上面的定义意味着
 
@@ -910,7 +910,7 @@ Figure 2-18. 双引号字符的示例
 
 通常, 实现会选择一种便于打印表达式的表示形式, 这样 (pprint \`(a ,b)) 会显示 \`(a ,b) 而不是比如 (list 'a b). 然而, 这不是必须的.
 
-没有特定理由做出选择的实现者可能希望引用IEEE标准来实现Scheme编程语言, Scheme确定了一种流行的表示方式, 它可以为一些用户社区提供有用的兼容性. 没有任何要求, 然而, 任何符合规范的实现都使用这个特定的表示. 此信息仅用于交叉引用目的. <!-- cross-reference 什么意思 -->
+没有特定理由做出选择的实现者可能希望引用IEEE标准来实现Scheme编程语言, Scheme确定了一种流行的表示方式, 它可以为一些用户社区提供有用的兼容性. 没有任何要求, 然而, 任何符合规范的实现都使用这个特定的表示. 此信息仅用于交叉引用目的.
 
 ### 2.4.7 <span id = "Comma">逗号</span>
 
@@ -977,18 +977,18 @@ Figure 2-19. 标准 # 调度宏字符语法
 > * 2.4.8.8 [井号O(#O)](#SharpsignO)
 > * 2.4.8.9 [井号X(#X)](#SharpsignX)
 > * 2.4.8.10 [井号R(#R)](#SharpsignR)
-> * 2.4.8.11 [Sharpsign C](#SharpsignC)
-> * 2.4.8.12 [Sharpsign A](#SharpsignA)
-> * 2.4.8.13 [Sharpsign S](#SharpsignS)
-> * 2.4.8.14 [Sharpsign P](#SharpsignP)
-> * 2.4.8.15 [Sharpsign Equal-Sign](#SharpsignEqualSign)
-> * 2.4.8.16 [Sharpsign Sharpsign](#SharpsignSharpsign)
-> * 2.4.8.17 [Sharpsign Plus](#SharpsignPlus)
-> * 2.4.8.18 [Sharpsign Minus](#SharpsignMinus)
-> * 2.4.8.19 [Sharpsign Vertical-Bar](#SharpsignVerticalBar)
-> * 2.4.8.20 [Sharpsign Less-Than-Sign](#SharpsignLessThanSign)
-> * 2.4.8.21 [Sharpsign Whitespace](#SharpsignWhitespace)
-> * 2.4.8.22 [Sharpsign Right-Parenthesis](#SharpsignRightParenthesis)
+> * 2.4.8.11 [井号C(#C)](#SharpsignC)
+> * 2.4.8.12 [井号A(#A)](#SharpsignA)
+> * 2.4.8.13 [井号S(#S)](#SharpsignS)
+> * 2.4.8.14 [井号P(#P)](#SharpsignP)
+> * 2.4.8.15 [井号等号(#=)](#SharpsignEqualSign)
+> * 2.4.8.16 [井号井号(##)](#SharpsignSharpsign)
+> * 2.4.8.17 [井号加号(#+)](#SharpsignPlus)
+> * 2.4.8.18 [井号减号(#-)](#SharpsignMinus)
+> * 2.4.8.19 [井号竖线(#|)](#SharpsignVerticalBar)
+> * 2.4.8.20 [井号小于号(#<)](#SharpsignLessThanSign)
+> * 2.4.8.21 [井号空格(# )](#SharpsignWhitespace)
+> * 2.4.8.22 [井号右括号(#))](#SharpsignRightParenthesis)
 
 #### 2.4.8.1 <span id = "SharpsignBackslash">井号反斜线(#\\)</span>
 
@@ -1148,124 +1148,145 @@ Figure 2-20. 进制指示器的例子
 
 如果跟在 #nR 后的token不满足 n 进制有理数的语法, 结果是未定义的. 
 
-#### 2.4.8.11 <span id = "SharpsignC">Sharpsign C</span>
+#### 2.4.8.11 <span id = "SharpsignC">井号C(#C)</span>
 
-#C reads a following object, which must be a list of length two whose elements are both reals. These reals denote, respectively, the real and imaginary parts of a complex number. If the two parts as notated are not of the same data type, then they are converted according to the rules of floating-point contagion described in Section 12.1.1.2 (Contagion in Numeric Operations).
+#C 读取一个跟在后面的对象, 这个对象必须是一个长度为 2 且其中的元素都是实数的列表. 这两个实数分别表示一个复数的实部和虚部. 如果这两部分不是相同的数据类型, 那么它们会根据章节 12.1.1.2 (Contagion in Numeric Operations) 描述的浮点数转换的规则被转换.
 
-#C(real imag) is equivalent to #.(complex (quote real) (quote imag)), except that #C is not affected by *read-eval*. See the function complex.
+#C(real imag) 等价于 #.(complex (quote real) (quote imag)), 除了这个 #C 不会被 \*read-eval* 影响. See the function complex.
 
-The next figure contains examples of the use of #C.
+下一段中包含了 #C 的使用示例.
 
+```LISP
 #C(3.0s1 2.0s-1)  ;A complex with small float parts.                
 #C(5 -3)          ;A ``Gaussian integer''                           
 #C(5/3 7.0)       ;Will be converted internally to #C(1.66666 7.0)  
 #C(0 1)           ;The imaginary unit; that is, i.                  
+```
 
-Figure 2-21. Complex Number Example
+Figure 2-21. 复数示例
 
-For further information, see Section 22.1.3.1.4 (Printing Complexes) and Section 2.3.2.3 (Syntax of a Complex). 
+关于更多信息, 见章节 22.1.3.1.4 (Printing Complexes) 和章节 2.3.2.3 (Syntax of a Complex). 
 
-#### 2.4.8.12 <span id = "SharpsignA">Sharpsign A</span>
+#### 2.4.8.12 <span id = "SharpsignA">井号A(#A)</span>
 
 #nA
 
-#nAobject constructs an n-dimensional array, using object as the value of the :initial-contents argument to make-array.
+#nAobject 构建一个n维数组, 使用 object 作为 :initial-contents 参数的值调用 make-array.
 
-For example, #2A((0 1 5) (foo 2 (hot dog))) represents a 2-by-3 matrix:
+比如, #2A((0 1 5) (foo 2 (hot dog))) 表示一个 2-by-3 矩阵:
 
- 0       1       5
- foo     2       (hot dog)
+```
+0       1       5
+foo     2       (hot dog)
+```
 
-In contrast, #1A((0 1 5) (foo 2 (hot dog))) represents a vector of length 2 whose elements are lists:
+相对的, #1A((0 1 5) (foo 2 (hot dog))) 表示一个长度 2 的序列, 其中的元素是列表:
 
- (0 1 5) (foo 2 (hot dog))
+```LISP
+(0 1 5) (foo 2 (hot dog))
+```
 
-#0A((0 1 5) (foo 2 (hot dog))) represents a zero-dimensional array whose sole element is a list:
+#0A((0 1 5) (foo 2 (hot dog))) 表示一个0维数组, 其中其中仅有的元素是一个列表:
 
- ((0 1 5) (foo 2 (hot dog)))
+```LISP
+((0 1 5) (foo 2 (hot dog)))
+```
 
-#0A foo represents a zero-dimensional array whose sole element is the symbol foo. The notation #1A foo is not valid because foo is not a sequence.
+#0A foo 表示一个0维数组, 其中仅有的元素是 foo. 这个 #1A foo 标记是非法的因为 foo 不是一个序列.
 
-If some dimension of the array whose representation is being parsed is found to be 0, all dimensions to the right (i.e., the higher numbered dimensions) are also considered to be 0.
+如果一些数组的维度表示被解析为0, 所有的维度 (也就是说, 更高的维度) 也被认为是 0.
 
-For information on how the Lisp printer prints arrays, see Section 22.1.3.4 (Printing Strings), Section 22.1.3.6 (Printing Bit Vectors), Section 22.1.3.7 (Printing Other Vectors), or Section 22.1.3.8 (Printing Other Arrays). 
+关于Lisp打印器如何打印数组的信息, 见章节 22.1.3.4 (Printing Strings), Section 22.1.3.6 (Printing Bit Vectors), Section 22.1.3.7 (Printing Other Vectors), 或者 Section 22.1.3.8 (Printing Other Arrays). 
 
-#### 2.4.8.13 <span id = "SharpsignS">Sharpsign S</span>
+#### 2.4.8.13 <span id = "SharpsignS">井号S(#S)</span>
 
-#s(name slot1 value1 slot2 value2 ...) denotes a structure. This is valid only if name is the name of a structure type already defined by defstruct and if the structure type has a standard constructor function. Let cm stand for the name of this constructor function; then this syntax is equivalent to
+#s(name slot1 value1 slot2 value2 ...) 表示一个结构. 如果 name 是一个 defstruct 已经定义的结构的名字 并且如果这个结构的类型有标准构造函数, 这也是有效的. 让 cm 成为这个构造器函数的 name; 那么这个语法等价于
 
- #.(cm keyword1 'value1 keyword2 'value2 ...)
+```LISP
+#.(cm keyword1 'value1 keyword2 'value2 ...)
+```
 
-where each keywordj is the result of computing
+这里每一个 keywordj 都是计算下面表达式的结果
 
- (intern (string slotj) (find-package 'keyword))
+```LISP
+(intern (string slotj) (find-package 'keyword))
+```
 
-The net effect is that the constructor function is called with the specified slots having the specified values. (This coercion feature is deprecated; in the future, keyword names will be taken in the package they are read in, so symbols that are actually in the KEYWORD package should be used if that is what is desired.)
+其净效果是构造器函数被调用, 其中指定的槽具有指定的值. (这个强制特性被弃用; 在未来, keyword 的名字将会在他们被读入的包中被取出, 因此如果这是需要的, 那么实际上在 KEYWORD 包中的符号应该被使用.)
 
-Whatever object the constructor function returns is returned by the #S syntax.
+无论构造器函数返回的是什么对象都会通过 #S 语法.
 
-For information on how the Lisp printer prints structures, see Section 22.1.3.12 (Printing Structures). 
+关于Lisp打印器如何打印结构信息, 见章节 22.1.3.12 (Printing Structures). 
 
-#### 2.4.8.14 <span id = "SharpsignP">Sharpsign P</span>
+#### 2.4.8.14 <span id = "SharpsignP">井号P(#P)</span>
 
-#P reads a following object, which must be a string.
+#P 读取后面的对象, 它必须是一个字符串.
 
-#P<<expression>> is equivalent to #.(parse-namestring '<<expression>>), except that #P is not affected by *read-eval*.
+#P<\<expression>> 等价于 #.(parse-namestring '<\<expression>>), 除了 #P 不受 \*read-eval* 影响.
 
-For information on how the Lisp printer prints pathnames, see Section 22.1.3.11 (Printing Pathnames). 
+关于Lisp打印器如何打印一个路径名的信息, 见章节 22.1.3.11 (Printing Pathnames). 
 
-#### 2.4.8.15 <span id = "SharpsignEqualSign">Sharpsign Equal-Sign</span>
+#### 2.4.8.15 <span id = "SharpsignEqualSign">井号等号(#=)</span>
 
 #n=
 
-#n=object reads as whatever object has object as its printed representation. However, that object is labeled by n, a required unsigned decimal integer, for possible reference by the syntax #n#. The scope of the label is the expression being read by the outermost call to read; within this expression, the same label may not appear twice. 
+#n=object 读取这个对象无论它是否是他的打印表示. 但是, 该对象是由n所标记的, 这是一个必需的无符号小数, 可以通过语法 #n# 进行引用. 这个标记的作用域是被读取的最外面调用的表达式; 这个表达式里, 相同的标记可能不会出像第二次. 
 
-#### 2.4.8.16 <span id = "SharpsignSharpsign">Sharpsign Sharpsign</span>
+#### 2.4.8.16 <span id = "SharpsignSharpsign">井号井号(##)</span>
 
 #n#
 
-#n#, where n is a required unsigned decimal integer, provides a reference to some object labeled by #n=; that is, #n# represents a pointer to the same (eq) object labeled by #n=. For example, a structure created in the variable y by this code:
+#n#, 其中的 n 是一个必须的无符号整数, 提供一个对 #n= 标记的对象的引用; 这就是说, #n# 表示一个指向 #n= 标记的对象相同 (eq) 对象的指针. 比如, 变量 y 的结构会被这个代码创建出来:
 
- (setq x (list 'p 'q))
- (setq y (list (list 'a 'b) x 'foo x))
- (rplacd (last y) (cdr y))
+```LISP
+(setq x (list 'p 'q))
+(setq y (list (list 'a 'b) x 'foo x))
+(rplacd (last y) (cdr y))
+```
 
-could be represented in this way:
+可以通过以下方式表示:
 
- ((a b) . #1=(#2=(p q) foo #2# . #1#))
+```LISP
+((a b) . #1=(#2=(p q) foo #2# . #1#))
+```
 
-Without this notation, but with *print-length* set to 10 and *print-circle* set to nil, the structure would print in this way:
+在这种表示下,如果 \*print-length* 设置为 10 并且 \*print-circle* 设置为 nil, 结构会被以下面方式打印:
 
- ((a b) (p q) foo (p q) (p q) foo (p q) (p q) foo (p q) ...)
+```LISP
+((a b) (p q) foo (p q) (p q) foo (p q) (p q) foo (p q) ...)
+```
 
-A reference #n# may only occur after a label #n=; forward references are not permitted. The reference may not appear as the labeled object itself (that is, #n=#n#) may not be written because the object labeled by #n= is not well defined in this case. 
+一个 #n# 引用可能只出现在一个 #n= 标记后; 超前的引用是不允许的. 这个引用可能不会出现在这个对象自身的标记中 (就是说, #n=#n#) 因为这个 #n= 标记的对象在这个情况下还没有被定义好. 
 
-#### 2.4.8.17 <span id = "SharpsignPlus">Sharpsign Plus</span>
+#### 2.4.8.17 <span id = "SharpsignPlus">井号加号(#+)</span>
 
-#+ provides a read-time conditionalization facility; the syntax is #+test expression. If the feature expression test succeeds, then this textual notation represents an object whose printed representation is expression. If the feature expression test fails, then this textual notation is treated as whitespace[2]; that is, it is as if the ``#+ test expression'' did not appear and only a space appeared in its place.
+#+ 提供一个读取时条件化机制; 语法是 #+test expression. 如果这个特性 expression 测试成功, 那么这个文本标记表述一个打印表示是一个表达式的对象. 如果这个特性 expression 测试失败, 那么这个文本的标记就当作空白字符对待; 这就是说, 就好象 ``#+ test expression'' 不会出现并且只有一个空格出现在它的位置.
 
-For a detailed description of success and failure in feature expressions, see Section 24.1.2.1 (Feature Expressions).
+关于这个特性表达式测试的成功与否的详细描述, 见章节 24.1.2.1 (Feature Expressions).
 
-#+ operates by first reading the feature expression and then skipping over the form if the feature expression fails. While reading the test, the current package is the KEYWORD package. Skipping over the form is accomplished by binding *read-suppress* to true and then calling read.
+#+ 通过第一次读取这个特性表达式时操作并且如果测性表达式测试失败就会跳回这个表达式. 读取这个 test 时, 当前包是 KEYWORD 包. 跳过这个表达式形式是通过将 \*read-suppress* 绑定到 true 然后调用 read 来完成的.
 
-For examples, see Section 24.1.2.1.1 (Examples of Feature Expressions). 
+关于示例, 见章节 24.1.2.1.1 (Examples of Feature Expressions). 
 
-#### 2.4.8.18 <span id = "SharpsignMinus">Sharpsign Minus</span>
+#### 2.4.8.18 <span id = "SharpsignMinus">井号减号(#-)</span>
 
-#- is like #+ except that it skips the expression if the test succeeds; that is,
+#- 就像 #+ 除了它会在那个测试正确是跳过这个表达式; 也就是说,
 
+```LISP
 #-test expression ==  #+(not test) expression
+```
 
-For examples, see Section 24.1.2.1.1 (Examples of Feature Expressions). 
+关于示例, 见章节 24.1.2.1.1 (Examples of Feature Expressions). 
 
-#### 2.4.8.19 <span id = "SharpsignVerticalBar">Sharpsign Vertical-Bar</span>
+#### 2.4.8.19 <span id = "SharpsignVerticalBar">井号竖线(#|)</span>
 
-#|...|# is treated as a comment by the reader. It must be balanced with respect to other occurrences of #| and |#, but otherwise may contain any characters whatsoever.
+#|...|# 被读取器当作是一个注释. 它必须与 #| 和 |# 的出现保持平衡, 但是除此之外, 它可能包含任何字符.
 
-##### 2.4.8.19.1 Examples of Sharpsign Vertical-Bar
+##### 2.4.8.19.1 竖线的示例
 
 The following are some examples that exploit the #|...|# notation:
 
+```LISP
 ;;; In this example, some debugging code is commented out with #|...|#
 ;;; Note that this kind of comment can occur in the middle of a line
 ;;; (because a delimiter marks where the end of the comment occurs)
@@ -1320,35 +1341,39 @@ The following are some examples that exploit the #|...|# notation:
    (format t "Don't use |# unmatched or you'll get in trouble!"))
  |#
  (fboundp 'mention-fun-fact-3b) =>  NIL
+```
 
+##### 2.4.8.19.2 井号竖线风格的注意事项
 
-##### 2.4.8.19.2 Notes about Style for Sharpsign Vertical-Bar
+一些声称理解 Lisp 语法的文本编辑器把任何 |...| 作为不能嵌套的对称对 (就像它们只是对使用在标注符号的多重转义字符对做了对称). 为了弥补这一缺陷, 一些程序员使用 #||...#||...||#...||# 而不是 #|...#|...|#...|#. 注意这个替代方式并不是一个不同的读取器宏; 它只是利用了额外的垂直条在注释中出现的事实, 这一方法可以让特定的文本编辑器以更好地支持嵌套的注释. 像这样, 一个可能的代码:
 
-Some text editors that purport to understand Lisp syntax treat any |...| as balanced pairs that cannot nest (as if they were just balanced pairs of the multiple escapes used in notating certain symbols). To compensate for this deficiency, some programmers use the notation #||...#||...||#...||# instead of #|...#|...|#...|#. Note that this alternate usage is not a different reader macro; it merely exploits the fact that the additional vertical-bars occur within the comment in a way that tricks certain text editor into better supporting nested comments. As such, one might sometimes see code like:
+```LISP
+#|| (+ #|| 3 ||# 4 5) ||# 
+```
 
- #|| (+ #|| 3 ||# 4 5) ||# 
+这样的代码等价于:
 
-Such code is equivalent to:
+```LISP
+#| (+ #| 3 |# 4 5) |#
+```
 
- #| (+ #| 3 |# 4 5) |#
+#### 2.4.8.20 <span id = "SharpsignLessThanSign">井号小于号(#<)</span>
 
-#### 2.4.8.20 <span id = "SharpsignLessThanSign">Sharpsign Less-Than-Sign</span>
+#< 不是一个合法的读取器语法. Lisp读取器在遇到 #< 时会发出一个 reader-error 类型的错误. 这个语法通常被用于不能被读回的对象的打印表示. 
 
-#< is not valid reader syntax. The Lisp reader will signal an error of type reader-error on encountering #<. This syntax is typically used in the printed representation of objects that cannot be read back in. 
+#### 2.4.8.21 <span id = "SharpsignWhitespace">井号空格(# )</span>
 
-#### 2.4.8.21 <span id = "SharpsignWhitespace">Sharpsign Whitespace</span>
+\# 后面紧跟空格键不是一个合法的读取器宏. 如果Lisp读取器遇到 #<Newline> 或 #<Space> 会发出一个 reader-error 类型的错误. 
 
-# followed immediately by whitespace[1] is not valid reader syntax. The Lisp reader will signal an error of type reader-error if it encounters the reader macro notation #<Newline> or #<Space>. 
+#### 2.4.8.22 <span id = "SharpsignRightParenthesis">井号右括号(#))</span>
 
-#### 2.4.8.22 <span id = "SharpsignRightParenthesis">Sharpsign Right-Parenthesis</span>
+这不是一个合法的读取器语法.
 
-This is not valid reader syntax.
-
-The Lisp reader will signal an error of type reader-error upon encountering #). 
+如果Lisp读取器遇到一个 #) 会发出一个 reader-error 类型的错误. 
 
 ### 2.4.9 <span id = "ReReadingAbbreviatedExpressions">Re-Reading Abbreviated Expressions</span>
 
-Note that the Lisp reader will generally signal an error of type reader-error when reading an expression[2] that has been abbreviated because of length or level limits (see *print-level*, *print-length*, and *print-lines*) due to restrictions on ``..'', ``...'', ``#'' followed by whitespace[1], and ``#)''. 
+注意, 当读取一个由于 \``..'', \``...'', \``#'' 后面跟着空格和 \``#)'' 长度或级别 (见 \*print-level\*, \*print-length\*, 和 \*print-lines\*) 限制而被简化的表达式时，Lisp读取器通常会发出一个 reader-error 类型的错误. 
 
 
 
