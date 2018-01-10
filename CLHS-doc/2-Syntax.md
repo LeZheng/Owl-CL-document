@@ -1085,13 +1085,13 @@ Figure 2-19. 标准 # 调度宏字符语法
 
 语法: #:<\<symbol-name>>
 
-#: 引入一个名字为 symbol-name 的未拘留的符号. 每次遇到这个语法, 会创建一个不同的未拘留的符号. 这个 symbol-name 必须有符号的语法并且没有包标记符.
+\#: 引入一个名字为 symbol-name 的未拘留的符号. 每次遇到这个语法, 会创建一个不同的未拘留的符号. 这个 symbol-name 必须有符号的语法并且没有包标记符.
 
 关于Lisp读取器如何打印未拘留的符号, 见章节 22.1.3.3 (Printing Symbols). 
 
 #### 2.4.8.6 <span id = "SharpsignDot">井号点(#.)</span>
 
-#.foo 被读取为 foo 表示的对象求值的结果. 当读取到 #. 标记, 求值会在读取过程中完成. 因此这个 #. 语法执行了一个 foo 的读取时求值.
+\#.foo 被读取为 foo 表示的对象求值的结果. 当读取到 #. 标记, 求值会在读取过程中完成. 因此这个 #. 语法执行了一个 foo 的读取时求值.
 
 当 \*read-eval* 是 false 时, 这个 #. 正常的影响会被抑制. 在这个情况下, 会发出一个 reader-error 类型的错误.
 
@@ -1099,7 +1099,7 @@ Figure 2-19. 标准 # 调度宏字符语法
 
 #### 2.4.8.7 <span id = "SharpsignB">井号B(#B)</span>
 
-#Brational 读取二进制有理数. 比如,
+\#Brational 读取二进制有理数. 比如,
 
 ```LISP
 #B1101 ==  13 ;11012
@@ -1110,7 +1110,7 @@ Figure 2-19. 标准 # 调度宏字符语法
 
 #### 2.4.8.8 <span id = "SharpsignO">井号O(#O)</span>
 
-#Orational 读取八进制有理数. 比如,
+\#Orational 读取八进制有理数. 比如,
 
 ```LISP
 #o37/15 ==  31/13
@@ -1122,7 +1122,7 @@ Figure 2-19. 标准 # 调度宏字符语法
 
 #### 2.4.8.9 <span id = "SharpsignX">井号X(#X)</span>
 
-#Xrational 读取十六进制有理数. 在 9 之上的数字是字母 A 到 F (小写字母 a 到 f 也是可接受的). 比如,
+\#Xrational 读取十六进制有理数. 在 9 之上的数字是字母 A 到 F (小写字母 a 到 f 也是可接受的). 比如,
 
 ```LISP
 #xF00 ==  3840             
@@ -1133,9 +1133,9 @@ Figure 2-19. 标准 # 调度宏字符语法
 
 #### 2.4.8.10 <span id = "SharpsignR">井号R(#R)</span>
 
-#nR
+\#nR
 
-#radixRrational 根据指定的进制来读取有理数. 进制必须是十进制有理数的整数; 它的值必须在 2 和 36 (包括)之间. 只有指定的进制中合法的数字可以被使用.
+\#radixRrational 根据指定的进制来读取有理数. 进制必须是十进制有理数的整数; 它的值必须在 2 和 36 (包括)之间. 只有指定的进制中合法的数字可以被使用.
 
 比如, #3r102 是另一种写 11(十进制) 的方式, 并且 #11R32 是写 35(十进制) 的另一种方式. 对于进制数大于 10, 字母表中的字母按顺序被用于 9 之后的进制. 对于十进制数没有替代的 # 表示法.
 
@@ -1160,9 +1160,9 @@ Figure 2-20. 进制指示器的例子
 
 #### 2.4.8.11 <span id = "SharpsignC">井号C(#C)</span>
 
-#C 读取一个跟在后面的对象, 这个对象必须是一个长度为 2 且其中的元素都是实数的列表. 这两个实数分别表示一个复数的实部和虚部. 如果这两部分不是相同的数据类型, 那么它们会根据章节 12.1.1.2 (Contagion in Numeric Operations) 描述的浮点数转换的规则被转换.
+\#C 读取一个跟在后面的对象, 这个对象必须是一个长度为 2 且其中的元素都是实数的列表. 这两个实数分别表示一个复数的实部和虚部. 如果这两部分不是相同的数据类型, 那么它们会根据章节 12.1.1.2 (Contagion in Numeric Operations) 描述的浮点数转换的规则被转换.
 
-#C(real imag) 等价于 #.(complex (quote real) (quote imag)), 除了这个 #C 不会被 \*read-eval* 影响. See the function complex.
+\#C(real imag) 等价于 #.(complex (quote real) (quote imag)), 除了这个 #C 不会被 \*read-eval* 影响. See the function complex.
 
 下一段中包含了 #C 的使用示例.
 
@@ -1179,9 +1179,9 @@ Figure 2-21. 复数示例
 
 #### 2.4.8.12 <span id = "SharpsignA">井号A(#A)</span>
 
-#nA
+\#nA
 
-#nAobject 构建一个n维数组, 使用 object 作为 :initial-contents 参数的值调用 make-array.
+\#nAobject 构建一个n维数组, 使用 object 作为 :initial-contents 参数的值调用 make-array.
 
 比如, #2A((0 1 5) (foo 2 (hot dog))) 表示一个 2-by-3 矩阵:
 
@@ -1196,13 +1196,13 @@ foo     2       (hot dog)
 (0 1 5) (foo 2 (hot dog))
 ```
 
-#0A((0 1 5) (foo 2 (hot dog))) 表示一个0维数组, 其中其中仅有的元素是一个列表:
+\#0A((0 1 5) (foo 2 (hot dog))) 表示一个0维数组, 其中其中仅有的元素是一个列表:
 
 ```LISP
 ((0 1 5) (foo 2 (hot dog)))
 ```
 
-#0A foo 表示一个0维数组, 其中仅有的元素是 foo. 这个 #1A foo 标记是非法的因为 foo 不是一个序列.
+\#0A foo 表示一个0维数组, 其中仅有的元素是 foo. 这个 #1A foo 标记是非法的因为 foo 不是一个序列.
 
 如果一些数组的维度表示被解析为0, 所有的维度 (也就是说, 更高的维度) 也被认为是 0.
 
@@ -1210,7 +1210,7 @@ foo     2       (hot dog)
 
 #### 2.4.8.13 <span id = "SharpsignS">井号S(#S)</span>
 
-#s(name slot1 value1 slot2 value2 ...) 表示一个结构. 如果 name 是一个 defstruct 已经定义的结构的名字 并且如果这个结构的类型有标准构造函数, 这也是有效的. 让 cm 成为这个构造器函数的 name; 那么这个语法等价于
+\#s(name slot1 value1 slot2 value2 ...) 表示一个结构. 如果 name 是一个 defstruct 已经定义的结构的名字 并且如果这个结构的类型有标准构造函数, 这也是有效的. 让 cm 成为这个构造器函数的 name; 那么这个语法等价于
 
 ```LISP
 #.(cm keyword1 'value1 keyword2 'value2 ...)
@@ -1230,23 +1230,23 @@ foo     2       (hot dog)
 
 #### 2.4.8.14 <span id = "SharpsignP">井号P(#P)</span>
 
-#P 读取后面的对象, 它必须是一个字符串.
+\#P 读取后面的对象, 它必须是一个字符串.
 
-#P<\<expression>> 等价于 #.(parse-namestring '<\<expression>>), 除了 #P 不受 \*read-eval* 影响.
+\#P<\<expression>> 等价于 #.(parse-namestring '<\<expression>>), 除了 #P 不受 \*read-eval* 影响.
 
 关于Lisp打印器如何打印一个路径名的信息, 见章节 22.1.3.11 (Printing Pathnames). 
 
 #### 2.4.8.15 <span id = "SharpsignEqualSign">井号等号(#=)</span>
 
-#n=
+\#n=
 
-#n=object 读取这个对象无论它是否是他的打印表示. 但是, 该对象是由n所标记的, 这是一个必需的无符号小数, 可以通过语法 #n# 进行引用. 这个标记的作用域是被读取的最外面调用的表达式; 这个表达式里, 相同的标记可能不会出像第二次. 
+\#n=object 读取这个对象无论它是否是他的打印表示. 但是, 该对象是由n所标记的, 这是一个必需的无符号小数, 可以通过语法 #n# 进行引用. 这个标记的作用域是被读取的最外面调用的表达式; 这个表达式里, 相同的标记可能不会出像第二次. 
 
 #### 2.4.8.16 <span id = "SharpsignSharpsign">井号井号(##)</span>
 
-#n#
+\#n#
 
-#n#, 其中的 n 是一个必须的无符号整数, 提供一个对 #n= 标记的对象的引用; 这就是说, #n# 表示一个指向 #n= 标记的对象相同 (eq) 对象的指针. 比如, 变量 y 的结构会被这个代码创建出来:
+\#n#, 其中的 n 是一个必须的无符号整数, 提供一个对 #n= 标记的对象的引用; 这就是说, #n# 表示一个指向 #n= 标记的对象相同 (eq) 对象的指针. 比如, 变量 y 的结构会被这个代码创建出来:
 
 ```LISP
 (setq x (list 'p 'q))
@@ -1270,7 +1270,7 @@ foo     2       (hot dog)
 
 #### 2.4.8.17 <span id = "SharpsignPlus">井号加号(#+)</span>
 
-#+ 提供一个读取时条件化机制; 语法是 #+test expression. 如果这个特性 expression 测试成功, 那么这个文本标记表述一个打印表示是一个表达式的对象. 如果这个特性 expression 测试失败, 那么这个文本的标记就当作空白字符对待; 这就是说, 就好象 ``#+ test expression'' 不会出现并且只有一个空格出现在它的位置.
+\#+ 提供一个读取时条件化机制; 语法是 #+test expression. 如果这个特性 expression 测试成功, 那么这个文本标记表述一个打印表示是一个表达式的对象. 如果这个特性 expression 测试失败, 那么这个文本的标记就当作空白字符对待; 这就是说, 就好象 ``#+ test expression'' 不会出现并且只有一个空格出现在它的位置.
 
 关于这个特性表达式测试的成功与否的详细描述, 见章节 24.1.2.1 (Feature Expressions).
 
@@ -1280,7 +1280,7 @@ foo     2       (hot dog)
 
 #### 2.4.8.18 <span id = "SharpsignMinus">井号减号(#-)</span>
 
-#- 就像 #+ 除了它会在那个测试正确是跳过这个表达式; 也就是说,
+\#- 就像 #+ 除了它会在那个测试正确是跳过这个表达式; 也就是说,
 
 ```LISP
 #-test expression ==  #+(not test) expression
@@ -1290,7 +1290,7 @@ foo     2       (hot dog)
 
 #### 2.4.8.19 <span id = "SharpsignVerticalBar">井号竖线(#|)</span>
 
-#|...|# 被读取器当作是一个注释. 它必须与 #| 和 |# 的出现保持平衡, 但是除此之外, 它可能包含任何字符.
+\#|...|# 被读取器当作是一个注释. 它必须与 #| 和 |# 的出现保持平衡, 但是除此之外, 它可能包含任何字符.
 
 ##### 2.4.8.19.1 竖线的示例
 
@@ -1369,7 +1369,7 @@ The following are some examples that exploit the #|...|# notation:
 
 #### 2.4.8.20 <span id = "SharpsignLessThanSign">井号小于号(#<)</span>
 
-#< 不是一个合法的读取器语法. Lisp读取器在遇到 #< 时会发出一个 reader-error 类型的错误. 这个语法通常被用于不能被读回的对象的打印表示. 
+\#< 不是一个合法的读取器语法. Lisp读取器在遇到 #< 时会发出一个 reader-error 类型的错误. 这个语法通常被用于不能被读回的对象的打印表示. 
 
 #### 2.4.8.21 <span id = "SharpsignWhitespace">井号空格(# )</span>
 
