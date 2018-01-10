@@ -22,11 +22,11 @@ Lisp读取器使用的语法信息包含在一个称之为读取表(readtable)�
 
 下一块列出了一些适用于读取表的定义的名字.
 
-\*readtable*                   readtable-case                
-copy-readtable                 readtablep                    
-get-dispatch-macro-character   set-dispatch-macro-character  
-get-macro-character            set-macro-character           
-make-dispatch-macro-character  set-syntax-from-char          
+    \*readtable*                   readtable-case                
+    copy-readtable                 readtablep                    
+    get-dispatch-macro-character   set-dispatch-macro-character  
+    get-macro-character            set-macro-character           
+    make-dispatch-macro-character  set-syntax-from-char          
 
 Figure 2-1. 读取表定义的名字
 
@@ -52,8 +52,8 @@ Figure 2-1. 读取表定义的名字
 
 Lisp读取器不止受当前读取表所影响, 也被很多动态变量所影响. 下面这段就列出了这些影响Lisp读取器行为的变量.
 
-\*package*    \*read-default-float-format*  \*readtable*  
-\*read-base*  \*read-suppress*                           
+    *package*    *read-default-float-format*  *readtable*  
+    *read-base*  *read-suppress*                           
 
 Figure 2-2. 影响Lisp读取器的变量. 
 
@@ -146,8 +146,8 @@ Lisp读取器通过根据语法类型解释输入文本的每一个字符来构�
 
 当Lisp读取器被调用, 它从输入流中读取单个字符并且根据这个字符的语法类型分派它. 每个出现在输入流中的字符都是Figure 2-6中出现的语法类型中的一个.
 
-constituent  macro character  single escape  
-invalid      multiple escape  whitespace[2]  
+    constituent  macro character  single escape  
+    invalid      multiple escape  whitespace[2]  
 
 Figure 2-6. 可能的字符语法类型
 
@@ -493,10 +493,11 @@ Figure 2-12. 符号或潜在数字的示例
 
 关于如何打印整数的信息, 见章节 22.1.3.1.1 (Printing Integers). 
 
-##### 2.3.2.1.2 Syntax of a Ratio
+##### 2.3.2.1.2 比数的语法
 
 比率可以写成两个非空的数字序列, 由斜杠分隔, 前面可以有一个可选的正负号; 见 Figure 2-9. 第二个序列可能不是完全由0组成的. 下一段是比率的示例.
 
+```LISP
 2/3                 ;This is in canonical form                  
 4/6                 ;A non-canonical form for 2/3               
 -17/23              ;A ratio preceded by a sign                 
@@ -506,6 +507,7 @@ Figure 2-12. 符号或潜在数字的示例
 #3r120/21           ;Ternary notation for 15/7                  
 #Xbc/ad             ;Hexadecimal notation for 188/173           
 #xFADED/FACADE      ;Hexadecimal notation for 1027565/16435934  
+```
 
 Figure 2-13. 比率的示例
 
@@ -521,6 +523,7 @@ Figure 2-13. 比率的示例
 
 下面这块包含了浮点数的标记示例:
 
+```LISP
 0.0       ;Floating-point zero in default format                          
 0E0       ;As input, this is also floating-point zero in default format.  
           ;As output, this would appear as 0.0.                           
@@ -539,6 +542,7 @@ Figure 2-13. 比率的示例
           ; (or as 0.0 if short-float was the default format).            
 6.02E+23  ;Avogadro's number, in default format                           
 602E+21   ;Also Avogadro's number, in default format                      
+```
 
 Figure 2-14. 浮点数示例
 
@@ -560,6 +564,7 @@ Figure 2-14. 浮点数示例
 
 下一段中有符号的打印表示. 为了表示的简单性, 这些示例假定当前的读取表是 :upcase.
 
+```LISP
 FROBBOZ         The symbol whose name is FROBBOZ.                
 frobboz         Another way to notate the same symbol.           
 fRObBoz         Yet another way to notate it.                    
@@ -576,9 +581,11 @@ file.rel.43     This symbol has periods in its name.
 3.14159265\s0   The symbol whose name is 3.14159265s0.           
 3.14159265\S0   A different symbol, whose name is 3.14159265S0.  
 3.14159265s0    A possible short float approximation to <PI>.    
+```
 
 Figure 2-15. 符号的打印表示示例 (Part 1 of 2)
 
+```LISP
 APL\\360            The symbol whose name is APL\360.       
 apl\\360            Also the symbol whose name is APL\360.  
 \(b^2\)\-\4*a*c     The name is (B^2) - 4*A*C.              
@@ -595,6 +602,7 @@ apl\\360            Also the symbol whose name is APL\360.
 |(B^2) - 4*A*C|     The name is (B^2) - 4*A*C.              
                     Parentheses and two spaces in it.       
 |(b^2) - 4*a*c|     The name is (b^2) - 4*a*c.              
+```
 
 Figure 2-16. 符号的打印表示示例 (Part 2 of 2)
 
@@ -606,17 +614,17 @@ Figure 2-16. 符号的打印表示示例 (Part 2 of 2)
 
 token的合法模式总结在下面这段.
 
-nnnnn              a number                                           
-xxxxx              a symbol in the current package                    
-:xxxxx             a symbol in the the KEYWORD package                
-ppppp:xxxxx        an external symbol in the ppppp package            
-ppppp::xxxxx       a (possibly internal) symbol in the ppppp package  
-:nnnnn             undefined                                          
-ppppp:nnnnn        undefined                                          
-ppppp::nnnnn       undefined                                          
-::aaaaa            undefined                                          
-aaaaa:             undefined                                          
-aaaaa:aaaaa:aaaaa  undefined                                          
+    nnnnn              a number                                           
+    xxxxx              a symbol in the current package                    
+    :xxxxx             a symbol in the the KEYWORD package                
+    ppppp:xxxxx        an external symbol in the ppppp package            
+    ppppp::xxxxx       a (possibly internal) symbol in the ppppp package  
+    :nnnnn             undefined                                          
+    ppppp:nnnnn        undefined                                          
+    ppppp::nnnnn       undefined                                          
+    ::aaaaa            undefined                                          
+    aaaaa:             undefined                                          
+    aaaaa:aaaaa:aaaaa  undefined                                          
 
 Figure 2-17. token的合法模式
 
@@ -680,7 +688,7 @@ Print-print consistency
 > * 2.4.6 [反引号](#Backquote)
 > * 2.4.7 [逗号](#Comma)
 > * 2.4.8 [井号](#Sharpsign)
-> * 2.4.9 [Re-Reading Abbreviated Expressions](#ReReadingAbbreviatedExpressions)
+> * 2.4.9 [重复读取缩写的表达式](#ReReadingAbbreviatedExpressions)
  
 ### 2.4.1 <span id = "LeftParenthesis">左括号</span>
 
@@ -809,10 +817,12 @@ Print-print consistency
 
 下一段中有双引号字符的示例.
 
+```LISP
 "Foo"                      ;A string with three characters in it  
 ""                         ;An empty string                       
 "\"APL\\360?\" he cried."  ;A string with twenty characters       
 "|x| = |-x|"               ;A ten-character string                
+```
 
 Figure 2-18. 双引号字符的示例
 
@@ -1371,7 +1381,7 @@ The following are some examples that exploit the #|...|# notation:
 
 如果Lisp读取器遇到一个 #) 会发出一个 reader-error 类型的错误. 
 
-### 2.4.9 <span id = "ReReadingAbbreviatedExpressions">Re-Reading Abbreviated Expressions</span>
+### 2.4.9 <span id = "ReReadingAbbreviatedExpressions">重复读取缩写的表达式</span>
 
 注意, 当读取一个由于 \``..'', \``...'', \``#'' 后面跟着空格和 \``#)'' 长度或级别 (见 \*print-level\*, \*print-length\*, 和 \*print-lines\*) 限制而被简化的表达式时，Lisp读取器通常会发出一个 reader-error 类型的错误. 
 
