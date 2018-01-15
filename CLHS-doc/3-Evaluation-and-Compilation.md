@@ -1,159 +1,134 @@
- 3. Evaluation and Compilation
+# 3. 编译和求值
 
-3.1 Evaluation
+> * 3.1 [求值](#Evaluation)
+> * 3.2 [Compilation](#Compilation)
+> * 3.3 [Declarations](#Declarations)
+> * 3.4 [Lambda Lists](#LambdaLists)
+> * 3.5 [Error Checking in Function Calls](#ErrorChecking)
+> * 3.6 [Traversal Rules and Side Effects](#TraversalRulesSideEffects)
+> * 3.7 [Destructive Operations](#DestructiveOperations)
+> * 3.8 [The Evaluation and Compilation Dictionary](#EvaluationCompilationDictionary)
 
-3.2 Compilation
+## 3.1 <span id = "Evaluation">求值</span>
 
-3.3 Declarations
+代码的执行可以通过多种方式来完成, 从对一个程序的直接解释到一个编译器生成的编译代码的调用都可以.
 
-3.4 Lambda Lists
+求值是一个程序在Common Lisp中执行的过程. 求值机制通过 Lisp read-eval-print 循环的效果来隐式表现, 并且通过函数 eval, compile, compile-file 和 load 的存在显式表现出来. 这些设备中的任何一个都可以共享相同的执行策略, 或者每个都可能使用不同的执行策略.
 
-3.5 Error Checking in Function Calls
+符合规范的程序被 eval 和 被 compile-file 处理后的行为可能不同; 见章节 3.2.2.3 (Semantic Constraints).
 
-3.6 Traversal Rules and Side Effects
+可以通过一个模型来理解求值, 在这个模型中, 解释器递归地遍历一个执行计算过程中的每一个步骤的表达式形式. 这个描述了 Common Lisp 程序语义的模型, 被描述在章节 3.1.2 (The Evaluation Model).
 
-3.7 Destructive Operations
+> * 3.1.1 [环境的介绍](#IntroductionEnvironments)
+> * 3.1.2 [求值模型](#TheEvaluationModel)
+> * 3.1.3 [Lambda Expressions](#LambdaExpressions)
+> * 3.1.4 [Closures and Lexical Binding](#ClosuresLexicalBinding)
+> * 3.1.5 [Shadowing](#Shadowing)
+> * 3.1.6 [Extent](#Extent)
+> * 3.1.7 [Return Values](#ReturnValues)
 
-3.8 The Evaluation and Compilation Dictionary
+### 3.1.1 <span id = "IntroductionEnvironments">环境的介绍</span>
 
- 3.1 Evaluation
+一个绑定是一个名字和它表示的东西的关联. 绑定由一个词法作用域或动态作用域中的特定的特殊操作符确定.
 
-Execution of code can be accomplished by a variety of means ranging from direct interpretation of a form representing a program to invocation of compiled code produced by a compiler.
+一个环境是一个绑定的集合和求值过程中使用的其他信息 (比如, 用来关联名字和意义的信息).
 
-Evaluation is the process by which a program is executed in Common Lisp. The mechanism of evaluation is manifested both implicitly through the effect of the Lisp read-eval-print loop, and explicitly through the presence of the functions eval, compile, compile-file, and load. Any of these facilities might share the same execution strategy, or each might use a different one.
+一个环境中的绑定被用命名空间来划分. 单个的名字在每一个环境中可以同时有超过一个关联的绑定, 每一个命名空间只能有一个关联绑定.
 
-The behavior of a conforming program processed by eval and by compile-file might differ; see Section 3.2.2.3 (Semantic Constraints).
+> * 3.1.1.1 [全局的环境](#TheGlobalEnvironment)
+> * 3.1.1.2 [动态环境](#DynamicEnvironments)
+> * 3.1.1.3 [词法环境](#LexicalEnvironments)
+> * 3.1.1.4 [环境对象](#EnvironmentObjects)
 
-Evaluation can be understood in terms of a model in which an interpreter recursively traverses a form performing each step of the computation as it goes. This model, which describes the semantics of Common Lisp programs, is described in Section 3.1.2 (The Evaluation Model).
+#### 3.1.1.1 <span id = "">全局的环境</span>
 
-3.1.1 Introduction to Environments
+全局环境是包含不定作用域和不确定范围的绑定的环境的一部分. 全局环境包括以下部分:
 
-3.1.2 The Evaluation Model
+  动态变量和常量的绑定.
+  函数, 宏, 特殊操作符的绑定.
+  编译器宏绑定.
+  类型和类名绑定.
+  声明相关的信息. 
 
-3.1.3 Lambda Expressions
+#### 3.1.1.2 <span id = "DynamicEnvironments">动态环境</span>
 
-3.1.4 Closures and Lexical Binding
+求值的动态环境是包含绑定的环境的一部分, 该环境的持续时间受限于这个建立绑定的表达式形式执行过程中绑定建立和解除的点. 一个动态环境包括以下内容:
 
-3.1.5 Shadowing
+  动态变量的绑定.
+  活跃的捕捉标签的信息.
+  unwind-protect 确定的退出点.
+  活跃的处理者和重启器的信息.
 
-3.1.6 Extent
+在程序执行过程中任何给定的时间点, 动态环境都被指定为"the current dynamic environment", 或者有时只是"the dynamic environment".
 
-3.1.7 Return Values
+在给定的命名空间中, 如果在动态环境中有一个与其名称相关联的绑定, 那么名称就被绑定到动态环境中, 否则, 在全局环境中有一个与它的名称相关联的绑定. 
 
- 3.1.1 Introduction to Environments
+#### 3.1.1.3 <span id = "LexicalEnvironments">词法环境</span>
 
-A binding is an association between a name and that which the name denotes. Bindings are established in a lexical environment or a dynamic environment by particular special operators.
+在一个程序中, 一些位置的求值的词法环境是包含这个位置的表达式形式的词法作用域信息的环境的一部分. 一个词法环境包含以下内容:
 
-An environment is a set of bindings and other information used during evaluation (e.g., to associate meanings with names).
+  词法变量和符号宏的绑定.
+  函数和宏的绑定. (这是关于本地禁用的编译器宏的信息.)
+  block块标记的绑定.
+  go标记的绑定.
+  声明的信息.
 
-Bindings in an environment are partitioned into namespaces. A single name can simultaneously have more than one associated binding per environment, but can have only one associated binding per namespace.
+在被语义处理的程序中，任何给定位置的词汇环境都被称为"the current lexical environment"，或者有时只是"the lexical environment".
 
-3.1.1.1 The Global Environment
+在给定的命名空间中, 如果在词法环境中有一个与其名称相关联的绑定, 那么名称就被绑定到词法环境中, 否则, 在全局环境中有一个与它的名称相关联的绑定.
 
-3.1.1.2 Dynamic Environments
+##### 3.1.1.3.1 空的词法环境
 
-3.1.1.3 Lexical Environments
+空的词法环境等价于全局环境.
 
-3.1.1.4 Environment Objects
+虽然通常一个环境对象的表示是取决于具体实现的, 但是 nil 可以被用于任何情况表示空的词法环境的环境对象. 
 
- 3.1.1.1 The Global Environment
+#### 3.1.1.4 <span id = "EnvironmentObjects">环境对象</span>
 
-The global environment is that part of an environment that contains bindings with both indefinite scope and indefinite extent. The global environment contains, among other things, the following:
+一些操作符使用一个称为环境对象的对象, 该对象表示在给定的词法环境中对表达式形式执行语义分析所需的词法绑定集合. 环境对象中的绑定集合可能是实际执行求值所需的绑定的子集; 比如, 在相应的词法环境中，与变量名和函数名相关联的值可能无法在环境对象中使用.
 
-    bindings of dynamic variables and constant variables.
-    bindings of functions, macros, and special operators.
-    bindings of compiler macros.
-    bindings of type and class names
-    information about proclamations. 
+一个环境对象的类型和性质是取决于具体实现的. 给宏函数的环境参数的值就是环境对象的示例.
 
- 3.1.1.2 Dynamic Environments
+当 nil 对象被用于一个环境对象时, 表示空的词法环境; 见章节 3.1.1.3.1 (The Null Lexical Environment). 
 
-A dynamic environment for evaluation is that part of an environment that contains bindings whose duration is bounded by points of establishment and disestablishment within the execution of the form that established the binding. A dynamic environment contains, among other things, the following:
+### 3.1.2 <span id = "TheEvaluationModel">求值模型</span>
 
-    bindings for dynamic variables.
-    information about active catch tags.
-    information about exit points established by unwind-protect.
-    information about active handlers and restarts.
+Common Lisp 系统对词法, 动态和全局环境的表达式形式进行求值. 下面章节描述的 Common Lisp 求值模型的组件.
 
-The dynamic environment that is active at any given point in the execution of a program is referred to by definite reference as ``the current dynamic environment,'' or sometimes as just ``the dynamic environment.''
+#### 3.1.2.1 表达式求值
 
-Within a given namespace, a name is said to be bound in a dynamic environment if there is a binding associated with its name in the dynamic environment or, if not, there is a binding associated with its name in the global environment. 
+表达式形式分为三个类别: 符号, conses和自求值对象. 下面的章节介绍这些类别.
 
- 3.1.1.3 Lexical Environments
+> * 3.1.2.1.1 [符号表达式](#SymbolsForms)
+> * 3.1.2.1.2 [Cons表达式](#ConsesForms)
+> * 3.1.2.1.3 [自求值对象](#SelfEvaluatingObjects)
 
-A lexical environment for evaluation at some position in a program is that part of the environment that contains information having lexical scope within the forms containing that position. A lexical environment contains, among other things, the following:
+##### 3.1.2.1.1 <span id = "SymbolsForms">符号表达式</span>
 
-    bindings of lexical variables and symbol macros.
-    bindings of functions and macros. (Implicit in this is information about those compiler macros that are locally disabled.)
-    bindings of block tags.
-    bindings of go tags.
-    information about declarations.
+如果一个表达式形式是一个符号, 那么它要么是一个符号宏, 要么是一个变量.
 
-The lexical environment that is active at any given position in a program being semantically processed is referred to by definite reference as ``the current lexical environment,'' or sometimes as just ``the lexical environment.''
+如果在当前的词法环境中有一个符号作为符号宏的符号, 那么这个符号就会命名一个符号宏(见 define-symbol-macro 和 symbol-macrolet). 如果这个符号是一个符号宏, 得到它的展开函数. 展开函数是一个带有两个参数的函数, 通过调用宏展开函数来调用它, 并把它作为宏展开钩子的第一个参数, 这个符号作为第二个参数, 并且一个环境对象(对应当前词法环境)作为第三个参数. 然后, 这个宏展开钩子函数调用展开函数, 把这个表达式作为第一个参数并且把环境作为它的第二个参数. 传递给宏展开钩子函数的展开函数的值是一个表达式形式. 这个结果表达式形式会替换到原来符号的位置.
 
-Within a given namespace, a name is said to be bound in a lexical environment if there is a binding associated with its name in the lexical environment or, if not, there is a binding associated with its name in the global environment.
+如果一个表达式形式是一个不是符号宏的符号, 那么它就是一个变量的名字, 并且返回这个变量的值. 这里有三种变量: 词法变量, 动态变量, 还有常变量. 一个变量可以存储一个对象. 在一个变量上的主要操作是 read 和  write 它的值.
 
-3.1.1.3.1 The Null Lexical Environment
+如果引用到一个未绑定的变量, 会发出一个 unbound-variable 类型的错误.
 
- 3.1.1.3.1 The Null Lexical Environment
+非常变量可以通过 setq 或者 let 来绑定赋值. 下面这段列出了可以赋值, 绑定, 和定义变量的名字.
 
-The null lexical environment is equivalent to the global environment.
+  boundp        let                  progv         
+  defconstant   let*                 psetq         
+  defparameter  makunbound           set           
+  defvar        multiple-value-bind  setq          
+  lambda        multiple-value-setq  symbol-value  
 
-Although in general the representation of an environment object is implementation-dependent, nil can be used in any situation where an environment object is called for in order to denote the null lexical environment. 
+Figure 3-1. 可应用于变量的一些定义的名字
 
- 3.1.1.4 Environment Objects
+下面是对每种变量的描述.
 
-Some operators make use of an object, called an environment object, that represents the set of lexical bindings needed to perform semantic analysis on a form in a given lexical environment. The set of bindings in an environment object may be a subset of the bindings that would be needed to actually perform an evaluation; for example, values associated with variable names and function names in the corresponding lexical environment might not be available in an environment object.
-
-The type and nature of an environment object is implementation-dependent. The values of environment parameters to macro functions are examples of environment objects.
-
-The object nil when used as an environment object denotes the null lexical environment; see Section 3.1.1.3.1 (The Null Lexical Environment). 
-
- 3.1.2 The Evaluation Model
-
-A Common Lisp system evaluates forms with respect to lexical, dynamic, and global environments. The following sections describe the components of the Common Lisp evaluation model.
-
-3.1.2.1 Form Evaluation
-
- 3.1.2.1 Form Evaluation
-
-Forms fall into three categories: symbols, conses, and self-evaluating objects. The following sections explain these categories.
-
-3.1.2.1.1 Symbols as Forms
-
-3.1.2.1.2 Conses as Forms
-
-3.1.2.1.3 Self-Evaluating Objects
-
- 3.1.2.1.1 Symbols as Forms
-
-If a form is a symbol, then it is either a symbol macro or a variable.
-
-The symbol names a symbol macro if there is a binding of the symbol as a symbol macro in the current lexical environment (see define-symbol-macro and symbol-macrolet). If the symbol is a symbol macro, its expansion function is obtained. The expansion function is a function of two arguments, and is invoked by calling the macroexpand hook with the expansion function as its first argument, the symbol as its second argument, and an environment object (corresponding to the current lexical environment) as its third argument. The macroexpand hook, in turn, calls the expansion function with the form as its first argument and the environment as its second argument. The value of the expansion function, which is passed through by the macroexpand hook, is a form. This resulting form is processed in place of the original symbol.
-
-If a form is a symbol that is not a symbol macro, then it is the name of a variable, and the value of that variable is returned. There are three kinds of variables: lexical variables, dynamic variables, and constant variables. A variable can store one object. The main operations on a variable are to read[1] and to write[1] its value.
-
-An error of type unbound-variable should be signaled if an unbound variable is referenced.
-
-Non-constant variables can be assigned by using setq or bound[3] by using let. The next figure lists some defined names that are applicable to assigning, binding, and defining variables.
-
-boundp        let                  progv         
-defconstant   let*                 psetq         
-defparameter  makunbound           set           
-defvar        multiple-value-bind  setq          
-lambda        multiple-value-setq  symbol-value  
-
-Figure 3-1. Some Defined Names Applicable to Variables
-
-The following is a description of each kind of variable.
-
-3.1.2.1.1.1 Lexical Variables
-
-3.1.2.1.1.2 Dynamic Variables
-
-3.1.2.1.1.3 Constant Variables
-
-3.1.2.1.1.4 Symbols Naming Both Lexical and Dynamic Variables
+> * 3.1.2.1.1.1 [Lexical Variables](#LexicalVariables)
+> * 3.1.2.1.1.2 [Dynamic Variables](#DynamicVariables)
+> * 3.1.2.1.1.3 [Constant Variables](#ConstantVariables)
+> * 3.1.2.1.1.4 [Symbols Naming Both Lexical and Dynamic Variables](#SymbolsNamingLDVariables)
 
  3.1.2.1.1.1 Lexical Variables
 
