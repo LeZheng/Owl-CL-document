@@ -125,51 +125,52 @@ Figure 3-1. 可应用于变量的一些定义的名字
 
 下面是对每种变量的描述.
 
-> * 3.1.2.1.1.1 [Lexical Variables](#LexicalVariables)
-> * 3.1.2.1.1.2 [Dynamic Variables](#DynamicVariables)
-> * 3.1.2.1.1.3 [Constant Variables](#ConstantVariables)
-> * 3.1.2.1.1.4 [Symbols Naming Both Lexical and Dynamic Variables](#SymbolsNamingLDVariables)
+> * 3.1.2.1.1.1 [词法变量](#LexicalVariables)
+> * 3.1.2.1.1.2 [动态变量](#DynamicVariables)
+> * 3.1.2.1.1.3 [常变量](#ConstantVariables)
+> * 3.1.2.1.1.4 [同时命名词法和动态变量的符号](#SymbolsNamingLDVariables)
 
- 3.1.2.1.1.1 Lexical Variables
+###### 3.1.2.1.1.1 <span id = "LexicalVariables">词法变量</span>
 
-A lexical variable is a variable that can be referenced only within the lexical scope of the form that establishes that variable; lexical variables have lexical scope. Each time a form creates a lexical binding of a variable, a fresh binding is established.
+词法变量是一个变量，它只能在建立该变量的表达式形式的词法作用域内引用; 词法变量有词法作用域. 每次一个表达式形式创建一个变量的词法绑定, 就确定一个新的绑定.
 
-Within the scope of a binding for a lexical variable name, uses of that name as a variable are considered to be references to that binding except where the variable is shadowed[2] by a form that establishes a fresh binding for that variable name, or by a form that locally declares the name special.
+在一个词法绑定的变量名的作用域里, 把这个名字作为变量使用被认为是对这个绑定的引用除非这个变量被一个确定该变量新的绑定的表达式形式所遮蔽, 或者被一个表达式形式将该名字声明为 special.
 
-A lexical variable always has a value. There is no operator that introduces a binding for a lexical variable without giving it an initial value, nor is there any operator that can make a lexical variable be unbound.
+一个词法变量总是有一个值. 这里没有引入一个词法变量的绑定而没有给初始值的操作, 也没有任何操作符可以使一个词法变量解绑.
 
-Bindings of lexical variables are found in the lexical environment. 
+词法变量的绑定可以在词法环境中找到. 
 
- 3.1.2.1.1.2 Dynamic Variables
+###### 3.1.2.1.1.2 <span id = "DynamicVariables">动态变量</span>
 
-A variable is a dynamic variable if one of the following conditions hold:
+如果一个变量满足下面条件的其中之一, 那么这个变量就是一个动态变量:
 
-    It is locally declared or globally proclaimed special.
+  它被局部或全局声明为 special.
 
-    It occurs textually within a form that creates a dynamic binding for a variable of the same name, and the binding is not shadowed[2] by a form that creates a lexical binding of the same variable name.
+  它以文本形式出现在一个表达式中, 为同名变量创建一个动态绑定, 并且这个绑定没有被一个对相同变量名创建词法绑定的表达式所遮蔽.
 
-A dynamic variable can be referenced at any time in any program; there is no textual limitation on references to dynamic variables. At any given time, all dynamic variables with a given name refer to exactly one binding, either in the dynamic environment or in the global environment.
+一个动态变量可以在这个程序的任何时间被引用; 对动态变量的引用没有文本限制. 在任何给定时间, 具有给定名称的所有动态变量都是在动态环境中或全局环境中确切地引用一个绑定.
 
-The value part of the binding for a dynamic variable might be empty; in this case, the dynamic variable is said to have no value, or to be unbound. A dynamic variable can be made unbound by using makunbound.
+一个动态变量绑定的值部分可能是空的; 在这个情况下, 这个动态变量被说成没有值或者没被绑定. 一个动态变量可以通过使用 makunbound 来解除绑定.
 
-The effect of binding a dynamic variable is to create a new binding to which all references to that dynamic variable in any program refer for the duration of the evaluation of the form that creates the dynamic binding.
+绑定一个动态变量的效果是创建一个新的绑定, 在创建这个动态绑定的表达式形式求值的持续时间中, 任何程序中所有引用该动态变量都是指新创建的绑定.
 
-A dynamic variable can be referenced outside the dynamic extent of a form that binds it. Such a variable is sometimes called a ``global variable'' but is still in all respects just a dynamic variable whose binding happens to exist in the global environment rather than in some dynamic environment.
+动态变量可以在绑定它的表达式的动态范围之外引用. 这种变量有时被称为"全局变量"("global variable"), 但它仍然在所有方面都只是一个动态变量, 它的绑定恰好存在于全局环境中, 而不是在某些动态环境中.
 
-A dynamic variable is unbound unless and until explicitly assigned a value, except for those variables whose initial value is defined in this specification or by an implementation. 
+动态变量除非明确赋值，除了在该规范或具体实现中定义了初始值的变量，否则就是未绑定的. 
 
- 3.1.2.1.1.3 Constant Variables
+###### 3.1.2.1.1.3 <span id = "ConstantVariables">常变量</span>
 
-Certain variables, called constant variables, are reserved as ``named constants.'' The consequences are undefined if an attempt is made to assign a value to, or create a binding for a constant variable, except that a `compatible' redefinition of a constant variable using defconstant is permitted; see the macro defconstant.
+某些变量, 称为常量变量, 被保留为"命名常量"("named constants"). 如果尝试去给它赋值, 或者给一个常变量创建一个绑定, 结果是未定义的, 除了使用兼容的 defconstant 去重定义一个常变量是允许的; 见宏 defconstant.
 
-Keywords, symbols defined by Common Lisp or the implementation as constant (such as nil, t, and pi), and symbols declared as constant using defconstant are constant variables. 
+关键字, Common Lisp或者具体实现定义的符号作为常量 (就像 nil, t, 和 pi), 并且符号通过 defconstant 定义的符号也作为常变量. 
 
- 3.1.2.1.1.4 Symbols Naming Both Lexical and Dynamic Variables
+###### 3.1.2.1.1.4 <span id = "SymbolsNamingLDVariables">同时命名词法和动态变量的符号</span>
 
-The same symbol can name both a lexical variable and a dynamic variable, but never in the same lexical environment.
+同一个符号可以命名一个词法变量和动态变量, 但是从来不出现在相同的词法环境下.
 
-In the following example, the symbol x is used, at different times, as the name of a lexical variable and as the name of a dynamic variable.
+下面的例子中, 符号 x 被使用, 在不同的时间, 作为词法变量的名字和动态变量的名字.
 
+```LISP
  (let ((x 1))            ;Binds a special variable X
    (declare (special x))
    (let ((x 2))          ;Binds a lexical variable X
@@ -177,64 +178,61 @@ In the following example, the symbol x is used, at different times, as the name 
         (locally (declare (special x))
                  x))))   ;Reads a special variable X
 =>  3
+```
 
+##### 3.1.2.1.2 <span id = "ConsesForms">Cons表达式</span>
 
- 3.1.2.1.2 Conses as Forms
+一个 cons 被用于作为一个表达式形式时, 称这个表达式为复合表达式形式.
 
-A cons that is used as a form is called a compound form.
+如果这个复合表达式的 car 是一个符号, 这个符号是一个操作符的名字, 那么这个表达式形式是一个特殊表达式, 一个宏表达式, 还是一个函数表达式, 取决于这个操作符在当前词法作用域的函数绑定. 如果这个操作符不是一个特殊操作符也不是一个宏的名字, 它被假定为一个函数名字 (甚至在这里没有定义这样的函数的情况下).
 
-If the car of that compound form is a symbol, that symbol is the name of an operator, and the form is either a special form, a macro form, or a function form, depending on the function binding of the operator in the current lexical environment. If the operator is neither a special operator nor a macro name, it is assumed to be a function name (even if there is no definition for such a function).
+如果这个复合表达式形式的 car 部分不是一个符号, 那么这个 car 必须是一个 lambda 表达式, 在这个情况下这个表达式就是一个lambda表达式形式.
 
-If the car of the compound form is not a symbol, then that car must be a lambda expression, in which case the compound form is a lambda form.
+一个复合表达式如何被处理取决于它被归类为特殊表达式, 宏表达式, 函数表达式, 还是一个lambda表达式.
 
-How a compound form is processed depends on whether it is classified as a special form, a macro form, a function form, or a lambda form.
+> * 3.1.2.1.2.1 [特殊表达式](#SpecialForms)
+> * 3.1.2.1.2.2 [宏表达式](#MacroForms)
+> * 3.1.2.1.2.3 [Function Forms](#FunctionForms)
+> * 3.1.2.1.2.4 [Lambda Forms](#LambdaForms)
 
-3.1.2.1.2.1 Special Forms
+###### 3.1.2.1.2.1 <span id = "SpecialForms">特殊表达式</span>
 
-3.1.2.1.2.2 Macro Forms
+一个特殊表达式是一个带有特殊语法或者特殊求值规则或者两者都有的表达式形式, 可能控制求值环境, 控制流, 或者都控制. 一个特殊操作符可以访问当前的词法环境和当前的动态环境. 每个特殊操作符都定义了它的子表达式被当成的种类---哪些是表达式形式, 哪些是特殊表达式, 等等.
 
-3.1.2.1.2.3 Function Forms
+一些特殊操作符创建新的词法或动态环境, 以便在对特殊表达式形式的子表达式进行求值时使用. 比如, block 会创建一个新的词法环境, 该环境与block表达式形式的求值时的作用相同, 它添加了block名称的绑定到block的退出点.
 
-3.1.2.1.2.4 Lambda Forms
+特殊操作符的名字的集合被固定于Common Lisp中; 没有给用户提供定义特殊操作符的方法. 下面这段列出了所有被定义为特殊操作符的Common Lisp符号.
 
- 3.1.2.1.2.1 Special Forms
+  block      let*                  return-from      
+  catch      load-time-value       setq             
+  eval-when  locally               symbol-macrolet  
+  flet       macrolet              tagbody          
+  function   multiple-value-call   the              
+  go         multiple-value-prog1  throw            
+  if         progn                 unwind-protect   
+  labels     progv                                  
+  let        quote                                  
 
-A special form is a form with special syntax, special evaluation rules, or both, possibly manipulating the evaluation environment, control flow, or both. A special operator has access to the current lexical environment and the current dynamic environment. Each special operator defines the manner in which its subexpressions are treated---which are forms, which are special syntax, etc.
+Figure 3-2. Common Lisp 特殊操作符
 
-Some special operators create new lexical or dynamic environments for use during the evaluation of subforms of the special form. For example, block creates a new lexical environment that is the same as the one in force at the point of evaluation of the block form with the addition of a binding of the block name to an exit point from the block.
+###### 3.1.2.1.2.2 <span id = "宏表达式">Macro Forms</span>
 
-The set of special operator names is fixed in Common Lisp; no way is provided for the user to define a special operator. The next figure lists all of the Common Lisp symbols that have definitions as special operators.
+如果这个操作符命名了一个宏, 它的关联宏函数会被应用于整个表达式形式并且将结果替换原来的表达式.
 
-block      let*                  return-from      
-catch      load-time-value       setq             
-eval-when  locally               symbol-macrolet  
-flet       macrolet              tagbody          
-function   multiple-value-call   the              
-go         multiple-value-prog1  throw            
-if         progn                 unwind-protect   
-labels     progv                                  
-let        quote                                  
+具体来说, a symbol names a macro in a given lexical environment if macro-function is true of the symbol and that environment. 这个宏函数返回的函数是一个2个参数的函数, 称之为展开函数. 这个展开函数通过调用宏展开钩子函数而调用, 作为它的第一个参数, 这个完整的宏表达式作为它的第二个参数, 并且一个环境对象(对应当前词法环境)作为第三个参数. 这个宏展开钩子函数反过来调用这个展开函数, 将这个表达式形式作为第一个参数并将环境对象作为第二个参数. 这个传递给宏展开钩子函数的展开函数的值是一个表达式形式. 返回的表达式形式在原来的表达式的位置被求值.
 
-Figure 3-2. Common Lisp Special Operators 
+如果这个宏函数破坏性地修改它的表达式参数的任何部分, 那么结果是无法预料的.
 
- 3.1.2.1.2.2 Macro Forms
+一个宏的名字不是一个函数描述符, 并且不能被用于函数例如apply, funcall, 或者 map 的参数.
 
-If the operator names a macro, its associated macro function is applied to the entire form and the result of that application is used in place of the original form.
+一个具体实现可以自由地将Common Lisp特殊操作符实现为一个宏. 一个实现也能自由地将任何宏操作符实现为一个特殊操作符, 但是只能在一个定义上等价的宏被提供的情况下.
 
-Specifically, a symbol names a macro in a given lexical environment if macro-function is true of the symbol and that environment. The function returned by macro-function is a function of two arguments, called the expansion function. The expansion function is invoked by calling the macroexpand hook with the expansion function as its first argument, the entire macro form as its second argument, and an environment object (corresponding to the current lexical environment) as its third argument. The macroexpand hook, in turn, calls the expansion function with the form as its first argument and the environment as its second argument. The value of the expansion function, which is passed through by the macroexpand hook, is a form. The returned form is evaluated in place of the original form.
+下面这段列出了一些可应用于宏的已定义名字.
 
-The consequences are undefined if a macro function destructively modifies any part of its form argument.
+  *macroexpand-hook*  macro-function  macroexpand-1  
+  defmacro            macroexpand     macrolet       
 
-A macro name is not a function designator, and cannot be used as the function argument to functions such as apply, funcall, or map.
-
-An implementation is free to implement a Common Lisp special operator as a macro. An implementation is free to implement any macro operator as a special operator, but only if an equivalent definition of the macro is also provided.
-
-The next figure lists some defined names that are applicable to macros.
-
-*macroexpand-hook*  macro-function  macroexpand-1  
-defmacro            macroexpand     macrolet       
-
-Figure 3-3. Defined names applicable to macros 
+Figure 3-3. 应用于宏的定义的名字
 
  3.1.2.1.2.3 Function Forms
 
