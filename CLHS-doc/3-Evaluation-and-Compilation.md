@@ -171,12 +171,12 @@ Figure 3-1. 可应用于变量的一些定义的名字
 下面的例子中, 符号 x 被使用, 在不同的时间, 作为词法变量的名字和动态变量的名字.
 
 ```LISP
- (let ((x 1))            ;Binds a special variable X
-   (declare (special x))
-   (let ((x 2))          ;Binds a lexical variable X
-     (+ x                ;Reads a lexical variable X
-        (locally (declare (special x))
-                 x))))   ;Reads a special variable X
+(let ((x 1))            ;Binds a special variable X
+  (declare (special x))
+  (let ((x 2))          ;Binds a lexical variable X
+    (+ x                ;Reads a lexical variable X
+      (locally (declare (special x))
+                x))))   ;Reads a special variable X
 =>  3
 ```
 
@@ -192,8 +192,8 @@ Figure 3-1. 可应用于变量的一些定义的名字
 
 > * 3.1.2.1.2.1 [特殊表达式](#SpecialForms)
 > * 3.1.2.1.2.2 [宏表达式](#MacroForms)
-> * 3.1.2.1.2.3 [Function Forms](#FunctionForms)
-> * 3.1.2.1.2.4 [Lambda Forms](#LambdaForms)
+> * 3.1.2.1.2.3 [函数表达式](#FunctionForms)
+> * 3.1.2.1.2.4 [Lambda表达式](#LambdaForms)
 
 ###### 3.1.2.1.2.1 <span id = "SpecialForms">特殊表达式</span>
 
@@ -234,66 +234,68 @@ Figure 3-2. Common Lisp 特殊操作符
 
 Figure 3-3. 应用于宏的定义的名字
 
- 3.1.2.1.2.3 Function Forms
+###### 3.1.2.1.2.3 <span id = "FunctionForms">函数表达式</span>
 
-If the operator is a symbol naming a function, the form represents a function form, and the cdr of the list contains the forms which when evaluated will supply the arguments passed to the function.
+如果这个操作符是一个函数名的符号, 这个表达式就表示一个函数表达式形式, 并且这个列表的 cdr 部分包含了求值后作为参数传递给函数的的表达式.
 
-When a function name is not defined, an error of type undefined-function should be signaled at run time; see Section 3.2.2.3 (Semantic Constraints).
+当一个函数名字没有定义的时候, 应该会在运行时发出一个 undefined-function 的错误; 见章节 3.2.2.3 (Semantic Constraints).
 
-A function form is evaluated as follows:
+一个函数表达式会像下面所述的被求值:
 
-The subforms in the cdr of the original form are evaluated in left-to-right order in the current lexical and dynamic environments. The primary value of each such evaluation becomes an argument to the named function; any additional values returned by the subforms are discarded.
+原始表达式的 cdr 的子表达式按照从左到右的顺序在词法和动态环境中被求值. 每次求值的主要的值作为参数传递给命名的函数; 任何子表达式返回的额外的值会被丢弃.
 
-The functional value of the operator is retrieved from the lexical environment, and that function is invoked with the indicated arguments.
+从词法环境中检索操作符的函数值, 并使用指定的参数调用该函数.
 
-Although the order of evaluation of the argument subforms themselves is strictly left-to-right, it is not specified whether the definition of the operator in a function form is looked up before the evaluation of the argument subforms, after the evaluation of the argument subforms, or between the evaluation of any two argument subforms if there is more than one such argument subform. For example, the following might return 23 or 24.
+虽然参数子表达式的求值顺序是严格的从左到右, 但是如果有多个参数子表达式, 没有指定一个函数表达式中查询操作符的定义是在参数子表达式之前, 之后, 又或者是任意两个参数子表达式之间. 比如, 下面可能返回 23 或者 24.
 
- (defun foo (x) (+ x 3))
- (defun bar () (setf (symbol-function 'foo) #'(lambda (x) (+ x 4))))
- (foo (progn (bar) 20))
+```LISP
+(defun foo (x) (+ x 3))
+(defun bar () (setf (symbol-function 'foo) #'(lambda (x) (+ x 4))))
+(foo (progn (bar) 20))
+```
 
-A binding for a function name can be established in one of several ways. A binding for a function name in the global environment can be established by defun, setf of fdefinition, setf of symbol-function, ensure-generic-function, defmethod (implicitly, due to ensure-generic-function), or defgeneric. A binding for a function name in the lexical environment can be established by flet or labels.
+一个函数名字的绑定可以通过几种方式的一种来确定. 一个全局环境中的函数名可以通过defun ,fdefinition 的 setf, symbol-function 的 setf, ensure-generic-function, defmethod (隐式的, 由于ensure-generic-function), 或者 defgeneric 来确定. 一个词法环境中的函数名可以通过 flet 或者 labels 来确定.
 
-The next figure lists some defined names that are applicable to functions.
+下一段中列出了可应用于函数的一些定义的名字.
 
-apply                 fdefinition  mapcan               
-call-arguments-limit  flet         mapcar               
-complement            fmakunbound  mapcon               
-constantly            funcall      mapl                 
-defgeneric            function     maplist              
-defmethod             functionp    multiple-value-call  
-defun                 labels       reduce               
-fboundp               map          symbol-function      
+  apply                 fdefinition  mapcan               
+  call-arguments-limit  flet         mapcar               
+  complement            fmakunbound  mapcon               
+  constantly            funcall      mapl                 
+  defgeneric            function     maplist              
+  defmethod             functionp    multiple-value-call  
+  defun                 labels       reduce               
+  fboundp               map          symbol-function      
 
-Figure 3-4. Some function-related defined names 
+Figure 3-4. 一些已定义的函数相关的名字 
 
- 3.1.2.1.2.4 Lambda Forms
+###### 3.1.2.1.2.4 <span id = "LambdaForms">Lambda表达式</span>
 
-A lambda form is similar to a function form, except that the function name is replaced by a lambda expression.
+一个lambda表达式类似于函数表达式, 除了函数名被一个lambda表达式替换.
 
-A lambda form is equivalent to using funcall of a lexical closure of the lambda expression on the given arguments. (In practice, some compilers are more likely to produce inline code for a lambda form than for an arbitrary named function that has been declared inline; however, such a difference is not semantic.)
+一个lambda表达式等价于使用一个lambda表达式词法闭包的给定参数的 funcall 调用. (在实践中, 一些编译器很可能生成lambda表达式的内联代码, 而不是一个已声明为内联的任意命名函数; 然而, 这样的区别不是语义上的.)
 
-For further information, see Section 3.1.3 (Lambda Expressions). 
+关于更多信息, 见章节 3.1.3 (Lambda Expressions). 
 
- 3.1.2.1.3 Self-Evaluating Objects
+##### 3.1.2.1.3 <span id = "SelfEvaluatingObjects">自求值对象</span>
 
-A form that is neither a symbol nor a cons is defined to be a self-evaluating object. Evaluating such an object yields the same object as a result.
+一个表达式形式既不是一个符号也不是一个cons, 就被定义为一个自求值对象. 对这样的对象进行求值, 会产生结果相同的对象.
 
-Certain specific symbols and conses might also happen to be ``self-evaluating'' but only as a special case of a more general set of rules for the evaluation of symbols and conses; such objects are not considered to be self-evaluating objects.
+某些特定的符号和集合也可能是"自求值"但只是作为一个更普遍的规则的特殊案例用来求值符号和集合; 这样的对象不被认为是自求值对象.
 
-The consequences are undefined if literal objects (including self-evaluating objects) are destructively modified.
+如果字面上的对象(包括自求值对象)被破坏性的修改, 结果是无法定义的.
 
-3.1.2.1.3.1 Examples of Self-Evaluating Objects
+3.1.2.1.3.1 自求值对象的示例
 
- 3.1.2.1.3.1 Examples of Self-Evaluating Objects
+数字, 路径名, 还有数组都是自求值对象的示例.
 
-Numbers, pathnames, and arrays are examples of self-evaluating objects.
-
- 3 =>  3
- #c(2/3 5/8) =>  #C(2/3 5/8)
- #p"S:[BILL]OTHELLO.TXT" =>  #P"S:[BILL]OTHELLO.TXT"
- #(a b c) =>  #(A B C)
- "fred smith" =>  "fred smith"
+```LISP
+3 =>  3
+#c(2/3 5/8) =>  #C(2/3 5/8)
+#p"S:[BILL]OTHELLO.TXT" =>  #P"S:[BILL]OTHELLO.TXT"
+#(a b c) =>  #(A B C)
+"fred smith" =>  "fred smith"
+```
 
  3.1.3 Lambda Expressions
 
