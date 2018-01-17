@@ -21,8 +21,8 @@
 
 > * 3.1.1 [环境的介绍](#IntroductionEnvironments)
 > * 3.1.2 [求值模型](#TheEvaluationModel)
-> * 3.1.3 [Lambda Expressions](#LambdaExpressions)
-> * 3.1.4 [Closures and Lexical Binding](#ClosuresLexicalBinding)
+> * 3.1.3 [Lambda表达式](#LambdaExpressions)
+> * 3.1.4 [闭包和词法绑定](#ClosuresLexicalBinding)
 > * 3.1.5 [Shadowing](#Shadowing)
 > * 3.1.6 [Extent](#Extent)
 > * 3.1.7 [Return Values](#ReturnValues)
@@ -297,77 +297,89 @@ Figure 3-4. 一些已定义的函数相关的名字
 "fred smith" =>  "fred smith"
 ```
 
- 3.1.3 Lambda Expressions
+### 3.1.3 <span id = "LambdaExpressions">Lambda表达式</span>
 
-In a lambda expression, the body is evaluated in a lexical environment that is formed by adding the binding of each parameter in the lambda list with the corresponding value from the arguments to the current lexical environment.
+在lambda表达式中, 通过在lambda列表中添加每个参数的绑定, 以及从参数到当前词法环境的相应值，将 body 在该词法环境中进行求值.
 
-For further discussion of how bindings are established based on the lambda list, see Section 3.4 (Lambda Lists).
+有关如何基于lambda列表建立绑定的进一步讨论, 见章节 3.4 (Lambda Lists).
 
-The body of a lambda expression is an implicit progn; the values it returns are returned by the lambda expression. 
+一个lambda表达式的body是一个隐式的progn; 它返回的值会被这个lambda表达式返回. 
 
- 3.1.4 Closures and Lexical Binding
+### 3.1.4 <span id = "ClosuresLexicalBinding">闭包和词法绑定</span>
 
-A lexical closure is a function that can refer to and alter the values of lexical bindings established by binding forms that textually include the function definition.
+一个词法闭包是一个可以引用和更改由包含函数定义的绑定表达式形式所确定的词法绑定的值的函数.
 
-Consider this code, where x is not declared special:
+细想这段 x 没有声明为 special 的代码:
 
- (defun two-funs (x)
-   (list (function (lambda () x))
-         (function (lambda (y) (setq x y)))))
- (setq funs (two-funs 6))
- (funcall (car funs)) =>  6
- (funcall (cadr funs) 43) =>  43
- (funcall (car funs)) =>  43
+```LISP
+(defun two-funs (x)
+  (list (function (lambda () x))
+        (function (lambda (y) (setq x y)))))
+(setq funs (two-funs 6))
+(funcall (car funs)) =>  6
+(funcall (cadr funs) 43) =>  43
+(funcall (car funs)) =>  43
+```
 
-The function special form coerces a lambda expression into a closure in which the lexical environment in effect when the special form is evaluated is captured along with the lambda expression.
+函数的特殊表达式形式将lambda表达式强制转换为闭包, 在这个闭包中, 当对特殊表达式形式进行求值时, 词法环境与lambda表达式一起被捕获.
 
-The function two-funs returns a list of two functions, each of which refers to the binding of the variable x created on entry to the function two-funs when it was called. This variable has the value 6 initially, but setq can alter this binding. The lexical closure created for the first lambda expression does not ``snapshot'' the value 6 for x when the closure is created; rather it captures the binding of x. The second function can be used to alter the value in the same (captured) binding (to 43, in the example), and this altered variable binding then affects the value returned by the first function.
+这个 two-funs 函数返回两个函数的列表, 它们中的每一个都引用了函数 two-funs 被调用时创建的变量 x 的绑定. 这个变量有初始值 6, 但是 setq 可以修改这个绑定. 为第一个lambda表达式创建的词法闭包在创建闭包时不会"快照" x 的值 6;而是抓住了 x 的绑定. 第二个函数可以被用于修改同样的(捕获的)绑定(在示例中改为 43), 并且这个修改后的变量绑定之后影响了第一个函数的返回值.
 
-In situations where a closure of a lambda expression over the same set of bindings may be produced more than once, the various resulting closures may or may not be identical, at the discretion of the implementation. That is, two functions that are behaviorally indistinguishable might or might not be identical. Two functions that are behaviorally distinguishable are distinct. For example:
+在同一组绑定中, 一个lambda表达式的闭包可能不止一次地产生, 产生的多个闭包可能是相同的也可能是不同的, 由具体实现来决定. 也就是说, 两种行为无法区分的函数可能或不完全相同. 行为上可区分的两个函数是截然不同的. 示例:
 
- (let ((x 5) (funs '()))
-   (dotimes (j 10)                          
-     (push #'(lambda (z)                        
-               (if (null z) (setq x 0) (+ x z)))
-           funs))
-   funs)
-
-The result of the above form is a list of ten closures. Each requires only the binding of x. It is the same binding in each case, but the ten closure objects might or might not be identical. On the other hand, the result of the form
-
- (let ((funs '()))     
-   (dotimes (j 10)
-     (let ((x 5))
-       (push (function (lambda (z)
-                        (if (null z) (setq x 0) (+ x z))))
-             funs)))
+```LISP
+(let ((x 5) (funs '()))
+  (dotimes (j 10)                          
+    (push #'(lambda (z)                        
+              (if (null z) (setq x 0) (+ x z)))
+          funs))
   funs)
+```
 
-is also a list of ten closures. However, in this case no two of the closure objects can be identical because each closure is closed over a distinct binding of x, and these bindings can be behaviorally distinguished because of the use of setq.
+上面表达式形式的列表是一个十个闭包的列表. 每一个都只需要 x 的绑定. 每个情况下都是相同的绑定, 但是这十个闭包对象可能是相同也可能不同. 另一方面, 下面表达式的结果
 
-The result of the form
-
- (let ((funs '()))
-   (dotimes (j 10)
-     (let ((x 5))
-       (push (function (lambda (z) (+ x z)))
+```LISP
+(let ((funs '()))     
+  (dotimes (j 10)
+    (let ((x 5))
+      (push (function (lambda (z)
+                      (if (null z) (setq x 0) (+ x z))))
             funs)))
-   funs)
+funs)
+```
 
-is a list of ten closure objects that might or might not be identical. A different binding of x is involved for each closure, but the bindings cannot be distinguished because their values are the same and immutable (there being no occurrence of setq on x). A compiler could internally transform the form to
+也是十个闭包的列表. 然而, 在这个情况下没有两个闭包对象是相同的因为每一个闭包都隐藏了一个不同的 x 的绑定, 并且由于 setq 的使用这些绑定可以从行为上区分.
 
- (let ((funs '()))
-   (dotimes (j 10)
-     (push (function (lambda (z) (+ 5 z)))
-           funs))
+下面这个表达式的结果
+
+```LISP
+(let ((funs '()))
+  (dotimes (j 10)
+    (let ((x 5))
+      (push (function (lambda (z) (+ x z)))
+          funs)))
   funs)
+```
 
-where the closures may be identical.
+是一个可能相同也可能不同的十个闭包对象的列表. 每一个闭包都有一个不同的 x 的绑定, 但是这个绑定是不能区分的, 因为它们的值是相同的且不可变 (这里没有在 x 上进行 setq操作). 一个编译器可以在内部把这个表达式形式转换成下面这种
 
-It is possible that a closure does not close over any variable bindings. In the code fragment
+```LISP
+(let ((funs '()))
+  (dotimes (j 10)
+    (push (function (lambda (z) (+ 5 z)))
+          funs))
+funs)
+```
 
- (mapcar (function (lambda (x) (+ x 2))) y)
+其中的闭包可能是一样的.
 
-the function (lambda (x) (+ x 2)) contains no references to any outside object. In this case, the same closure might be returned for all evaluations of the function form. 
+一个闭包没有包含任何变量绑定也是可能的. 在这个代码片段中
+
+```LISP
+(mapcar (function (lambda (x) (+ x 2))) y)
+```
+
+函数 (lambda (x) (+ x 2)) 没有包含任何外部对象的引用. 在这个情况下, 对于所有的函数表达式可能返回相同的闭包. 
 
  3.1.5 Shadowing
 
