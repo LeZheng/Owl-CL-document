@@ -23,7 +23,7 @@
 > * 3.1.2 [求值模型](#TheEvaluationModel)
 > * 3.1.3 [Lambda表达式](#LambdaExpressions)
 > * 3.1.4 [闭包和词法绑定](#ClosuresLexicalBinding)
-> * 3.1.5 [Shadowing](#Shadowing)
+> * 3.1.5 [遮蔽](#Shadowing)
 > * 3.1.6 [Extent](#Extent)
 > * 3.1.7 [Return Values](#ReturnValues)
 
@@ -381,43 +381,47 @@ funs)
 
 函数 (lambda (x) (+ x 2)) 没有包含任何外部对象的引用. 在这个情况下, 对于所有的函数表达式可能返回相同的闭包. 
 
- 3.1.5 Shadowing
+### 3.1.5 <span id = "Shadowing">遮蔽</span>
 
-If two forms that establish lexical bindings with the same name N are textually nested, then references to N within the inner form refer to the binding established by the inner form; the inner binding for N shadows the outer binding for N. Outside the inner form but inside the outer one, references to N refer to the binding established by the outer form. For example:
+如果用相同的名字 N 确定词法绑定的两个表达式形式是文本上嵌套的, 那么内部表达式对 N 的引用会引用到内部表达式确定的绑定; 这个内部 N 绑定会遮蔽外部的 N 绑定. 内部表达式外面但是外部表达式的里面对 N d的引用会引用到外部表达式确定的绑定上. 比如:
 
  (defun test (x z)
    (let ((z (* x 2)))
      (print z))
    z)
 
-The binding of the variable z by let shadows the parameter binding for the function test. The reference to the variable z in the print form refers to the let binding. The reference to z at the end of the function test refers to the parameter named z.
+通过 let 创建的这个变量 z 的绑定遮蔽了函数 test 的参数绑定. 在 print 表达式中对变量 z 的引用会引用 let 绑定的. 在函数 test 的最后对 z 的引用会引用到 z 命名的参数上.
 
-Constructs that are lexically scoped act as if new names were generated for each object on each execution. Therefore, dynamic shadowing cannot occur. For example:
+词法作用域作用的构造就像在每次执行时为每个对象生成新的名称一样. 因此, 动态遮蔽不会发生. 比如:
 
- (defun contorted-example (f g x)
-   (if (= x 0)
-       (funcall f)
-       (block here
-          (+ 5 (contorted-example g
-                                  #'(lambda () (return-from here 4))
-                                  (- x 1))))))
+```LISP
+(defun contorted-example (f g x)
+  (if (= x 0)
+      (funcall f)
+      (block here
+        (+ 5 (contorted-example g
+                                #'(lambda () (return-from here 4))
+                                (- x 1))))))
+```
 
-Consider the call (contorted-example nil nil 2). This produces 4. During the course of execution, there are three calls to contorted-example, interleaved with two blocks:
+细想 (contorted-example nil nil 2) 这个调用. 这个产生 4. 在执行过程中, 这个有三个对 contorted-example 的调用, 通过 2 个 block 交叉存取:
 
- (contorted-example nil nil 2)
-   (block here1 ...)
-     (contorted-example nil #'(lambda () (return-from here1 4)) 1)
-       (block here2 ...)
-         (contorted-example #'(lambda () (return-from here1 4))
-                            #'(lambda () (return-from here2 4))
-                            0)
-             (funcall f)
-                    where f =>  #'(lambda () (return-from here1 4))
-                 (return-from here1 4)
+```LISP
+(contorted-example nil nil 2)
+  (block here1 ...)
+    (contorted-example nil #'(lambda () (return-from here1 4)) 1)
+      (block here2 ...)
+        (contorted-example #'(lambda () (return-from here1 4))
+                          #'(lambda () (return-from here2 4))
+                          0)
+            (funcall f)
+                  where f =>  #'(lambda () (return-from here1 4))
+                (return-from here1 4)
+```
 
-At the time the funcall is executed there are two block exit points outstanding, each apparently named here. The return-from form executed as a result of the funcall operation refers to the outer outstanding exit point (here1), not the inner one (here2). It refers to that exit point textually visible at the point of execution of function (here abbreviated by the #' syntax) that resulted in creation of the function object actually invoked by funcall.
+在执行 funcall 的时候, 有两个明显的退出点, 每个显然都在这里. 这个 return-from 表达式被作为 funcall 操作的结果执行时引用引用外面的退出点(here1), 不是内部的那个(here2). 它引用那个退出点在函数的执行中原文可见 (这里通过 #' 语法缩写了) 导致了函数对象是 funcall 调用创建的. <!-- TODO 需要重新校对-->
 
-If, in this example, one were to change the (funcall f) to (funcall g), then the value of the call (contorted-example nil nil 2) would be 9. The value would change because funcall would cause the execution of (return-from here2 4), thereby causing a return from the inner exit point (here2). When that occurs, the value 4 is returned from the middle invocation of contorted-example, 5 is added to that to get 9, and that value is returned from the outer block and the outermost call to contorted-example. The point is that the choice of exit point returned from has nothing to do with its being innermost or outermost; rather, it depends on the lexical environment that is packaged up with a lambda expression when function is executed. 
+如果在这个例子中, 一个人打算把 (funcall f) 改为 (funcall g), 那么调用 (contorted-example nil nil 2) 的值会是 9. 这个值会改变是因为 funcall 会导致 (return-from here2 4) 的执行, 从而导致一个从内部的退出点(here2)返回. 当这个发生时, 值 4 会被中间的 contorted-example 调用返回, 5 被加到它上面成了 9, 并且这个值会被外部的 contorted-example 调用返回. 重点是, 退出点的选择与它的最内部或最外层无关; 而是, 它取决于在执行函数时使用lambda表达式打包的词法环境. 
 
  3.1.6 Extent
 Contorted-example works only because the function named by f is invoked during the extent of the exit point. Once the flow of execution has left the block, the exit point is disestablished. For example:
