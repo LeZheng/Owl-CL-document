@@ -24,8 +24,8 @@
 > * 3.1.3 [Lambda表达式](#LambdaExpressions)
 > * 3.1.4 [闭包和词法绑定](#ClosuresLexicalBinding)
 > * 3.1.5 [遮蔽](#Shadowing)
-> * 3.1.6 [Extent](#Extent)
-> * 3.1.7 [Return Values](#ReturnValues)
+> * 3.1.6 [范围](#Extent)
+> * 3.1.7 [返回值](#ReturnValues)
 
 ### 3.1.1 <span id = "IntroductionEnvironments">环境的介绍</span>
 
@@ -423,50 +423,57 @@ funs)
 
 如果在这个例子中, 一个人打算把 (funcall f) 改为 (funcall g), 那么调用 (contorted-example nil nil 2) 的值会是 9. 这个值会改变是因为 funcall 会导致 (return-from here2 4) 的执行, 从而导致一个从内部的退出点(here2)返回. 当这个发生时, 值 4 会被中间的 contorted-example 调用返回, 5 被加到它上面成了 9, 并且这个值会被外部的 contorted-example 调用返回. 重点是, 退出点的选择与它的最内部或最外层无关; 而是, 它取决于在执行函数时使用lambda表达式打包的词法环境. 
 
- 3.1.6 Extent
-Contorted-example works only because the function named by f is invoked during the extent of the exit point. Once the flow of execution has left the block, the exit point is disestablished. For example:
+### 3.1.6 <span id = "Extent">范围</span>
 
- (defun invalid-example ()
-   (let ((y (block here #'(lambda (z) (return-from here z)))))
-     (if (numberp y) y (funcall y 5))))
+Contorted-example 可以工作仅因为在退出点的范围内调用了由f指定的函数. 一旦这个执行的控制流离开了这个 block, 这个退出点就会被废除. 比如:
 
-One might expect the call (invalid-example) to produce 5 by the following incorrect reasoning: let binds y to the value of block; this value is a function resulting from the lambda expression. Because y is not a number, it is invoked on the value 5. The return-from should then return this value from the exit point named here, thereby exiting from the block again and giving y the value 5 which, being a number, is then returned as the value of the call to invalid-example.
+```LISP
+(defun invalid-example ()
+  (let ((y (block here #'(lambda (z) (return-from here z)))))
+    (if (numberp y) y (funcall y 5))))
+```
 
-The argument fails only because exit points have dynamic extent. The argument is correct up to the execution of return-from. The execution of return-from should signal an error of type control-error, however, not because it cannot refer to the exit point, but because it does correctly refer to an exit point and that exit point has been disestablished.
+您可能期望调用 (invalid-example) 通过以下不正确的推理生成5: let 绑定 y 给 block 的值; 这个值是一个从lambda表达式得到的函数. 因为 y 不是一个数字, 它被在值 5 上被调用. 这个 return-from 应该从 here 命名的退出点返回这个值, 从而再一次退出 block 并且把值 5 给 y, 这时 y 是number, 然后把这个值作为调用 invalid-example 的结果返回.
 
-A reference by name to a dynamic exit point binding such as a catch tag refers to the most recently established binding of that name that has not been disestablished. For example:
+这个论证失败仅因为退出点有动态范围. 这个论证直到 return-from 的执行还是正确的. 这个 return-from 的执行应该会发出一个 control-error 类型的错误, 然而, 不是因为它引用到那个退出点而发出, 但是因为它确实引用到一个退出点并且那个退出点已经被废弃.
 
- (defun fun1 (x)
-   (catch 'trap (+ 3 (fun2 x))))
- (defun fun2 (y)
-   (catch 'trap (* 5 (fun3 y))))
- (defun fun3 (z)
-   (throw 'trap z))
+对动态退出点绑定的引用, 如catch标记, 指的是最近已建立的该名称的绑定, 该绑定没有被认为是废弃的. 比如:
 
-Consider the call (fun1 7). The result is 10. At the time the throw is executed, there are two outstanding catchers with the name trap: one established within procedure fun1, and the other within procedure fun2. The latter is the more recent, and so the value 7 is returned from catch in fun2. Viewed from within fun3, the catch in fun2 shadows the one in fun1. Had fun2 been defined as
+```LISP
+(defun fun1 (x)
+  (catch 'trap (+ 3 (fun2 x))))
+(defun fun2 (y)
+  (catch 'trap (* 5 (fun3 y))))
+(defun fun3 (z)
+  (throw 'trap z))
+```
 
- (defun fun2 (y)
-   (catch 'snare (* 5 (fun3 y))))
+细想这个调用 (fun1 7). 结果是 10. 在那个 throw 被执行的时候, 这里有两个外部的 catch 带有名字 trap: 一个在程序 fun1 中确定, 并且另外一个在程序 fun2 中确定, 所以这个值 7 是从 fun2 的catch中被返回. 从 fun3 中来看, 在 fun2 中的那个 catch 遮蔽了在 fun1 中的那个. fun2 被定义为
 
-then the two exit points would have different names, and therefore the one in fun1 would not be shadowed. The result would then have been 7. 
+```LISP
+(defun fun2 (y)
+  (catch 'snare (* 5 (fun3 y))))
+```
 
- 3.1.7 Return Values
+那么两个退出点会有不同的名字, 因此 fun1 的那个不会被遮蔽. 这个结果会是 7. 
 
-Ordinarily the result of calling a function is a single object. Sometimes, however, it is convenient for a function to compute several objects and return them.
+### 3.1.7 <span id = "ReturnValues">返回值</span>
 
-In order to receive other than exactly one value from a form, one of several special forms or macros must be used to request those values. If a form produces multiple values which were not requested in this way, then the first value is given to the caller and all others are discarded; if the form produces zero values, then the caller receives nil as a value.
+通常调用函数的结果是一个单个的对象. 有时候, 然而, 对于一个函数来说, 计算几个对象并返回它们是很方便的.
 
-The next figure lists some operators for receiving multiple values[2]. These operators can be used to specify one or more forms to evaluate and where to put the values returned by those forms.
+为了从一个表达式形式接受一个以上的返回值, 几个特殊表达式中的一个必须被用于请求那些值. 如果一个表达式形式产生了多个值但是没有被这个方式请求, 那么第一个返回值会被给到调用者并且其他的会被丢弃; 如果这个表达式形式提供 0 个值, 那么调用者会收到一个 nil 作为值. <!-- TODO request 怎么翻译-->
 
-multiple-value-bind  multiple-value-prog1  return-from  
-multiple-value-call  multiple-value-setq   throw        
-multiple-value-list  return                             
+下面这段列出了接收多个值的操作符. 这些操作符可以被用于指明去求值的一个或多个表达式形式并且接收这些表达式返回的多个值.
 
-Figure 3-5. Some operators applicable to receiving multiple values
+  multiple-value-bind  multiple-value-prog1  return-from  
+  multiple-value-call  multiple-value-setq   throw        
+  multiple-value-list  return                             
 
-The function values can produce multiple values[2]. (values) returns zero values; (values form) returns the primary value returned by form; (values form1 form2) returns two values, the primary value of form1 and the primary value of form2; and so on.
+Figure 3-5. 一些可应用于接收多值的操作符
 
-See multiple-values-limit and values-list. 
+函数 values 可以被用于产生多值. (values) 返回 0 个值; (values form) 返回 form 返回的主要的值; (values form1 form2) 返回两个值, 都是 form1 和 form2 的主要的值; 诸如此类.
+
+见 multiple-values-limit 和 values-list. 
 
  3.2 Compilation
 
