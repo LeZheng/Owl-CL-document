@@ -1,7 +1,7 @@
 # 3. 编译和求值
 
 > * 3.1 [求值](#Evaluation)
-> * 3.2 [Compilation](#Compilation)
+> * 3.2 [编译](#Compilation)
 > * 3.3 [Declarations](#Declarations)
 > * 3.4 [Lambda Lists](#LambdaLists)
 > * 3.5 [Error Checking in Function Calls](#ErrorChecking)
@@ -229,7 +229,7 @@ Figure 3-2. Common Lisp 特殊操作符
 
 下面这段列出了一些可应用于宏的已定义名字.
 
-  *macroexpand-hook*  macro-function  macroexpand-1  
+  \*macroexpand-hook*  macro-function  macroexpand-1  
   defmacro            macroexpand     macrolet       
 
 Figure 3-3. 应用于宏的定义的名字
@@ -475,57 +475,54 @@ Figure 3-5. 一些可应用于接收多值的操作符
 
 见 multiple-values-limit 和 values-list. 
 
- 3.2 Compilation
+## 3.2 <span id = "Compilation">编译</span>
 
-3.2.1 Compiler Terminology
-
-3.2.2 Compilation Semantics
-
-3.2.3 File Compilation
-
-3.2.4 Literal Objects in Compiled Files
+> * 3.2.1 [Compiler Terminology](#CompilerTerminology)
+> * 3.2.2 [Compilation Semantics](#CompilationSemantics)
+> * 3.2.3 [File Compilation](#FileCompilation)
+> * 3.2.4 [Literal Objects in Compiled Files](#LiteralObjectsInCompiledFiles)
 
  3.2.1 Compiler Terminology
 
-The following terminology is used in this section.
+以下术语被用于这个章节.
 
-The compiler is a utility that translates code into an implementation-dependent form that might be represented or executed efficiently. The term compiler refers to both of the functions compile and compile-file.
+编译器是一个将代码转换为一个平台相关的可以被有效的表示和执行的表达式形式的工具. 术语编译器 (compiler) 指的是 compile 和 compile-file 的两个函数.
 
-The term compiled code refers to objects representing compiled programs, such as objects constructed by compile or by load when loading a compiled file.
+术语编译后的代码(compiled code)指的是表示编译后程序的对象, 就像被 compile 或者加载一个编译后文件时 load 构造的对象.
 
-The term implicit compilation refers to compilation performed during evaluation.
+术语隐式编译(implicit compilation)指的是在求值的时候编译.
 
-The term literal object refers to a quoted object or a self-evaluating object or an object that is a substructure of such an object. A constant variable is not itself a literal object.
+术语字面化对象(literal object) 指的是一个引用的对象或者一个自求值对象或者一个对象是另一个的底层构造. 一个常变量自身不是一个字面化对象.
 
-The term coalesce is defined as follows. Suppose A and B are two literal constants in the source code, and that A' and B' are the corresponding objects in the compiled code. If A' and B' are eql but A and B are not eql, then it is said that A and B have been coalesced by the compiler.
+术语合并(coalesce) 按如下定义. 假定 A 和 B 是源代码中的两个字面化常量, 并且 A' 和 B' 是对应编译后代码中的对象. 如果 A' 和 B' 是 eql 但是 A 和 B 不是 eql, 那么就说 A 和 B 被编译器所合并.
 
-The term minimal compilation refers to actions the compiler must take at compile time. These actions are specified in Section 3.2.2 (Compilation Semantics).
+术语最小编译(minimal compilation)指的是编译器必须在编译期执行的动作. 这些动作声明在章节 3.2.2 (Compilation Semantics).
 
-The verb process refers to performing minimal compilation, determining the time of evaluation for a form, and possibly evaluating that form (if required).
+动词过程(verb process)指的是执行最小编译, 确定一个表达式形式的求值时间，并可能求值该表达式(如果需要的话).
 
-The term further compilation refers to implementation-dependent compilation beyond minimal compilation. That is, processing does not imply complete compilation. Block compilation and generation of machine-specific instructions are examples of further compilation. Further compilation is permitted to take place at run time.
+术语进一步编译(further compilation)指的是具体实现相关依赖的编译, 而不仅仅是最小编译. 这就意味着, 处理并不意味着完整编译. 块编译和机器特定指令的生成是进一步编译的示例. 进一步编译允许发生在运行时.
 
-Four different environments relevant to compilation are distinguished: the startup environment, the compilation environment, the evaluation environment, and the run-time environment.
+与编译相关的4个不同的环境: 启动环境(the startup environment), 编译环境(the compilation environment), 求值环境(the evaluation environment), 还有运行时环境(the run-time environment).
 
-The startup environment is the environment of the Lisp image from which the compiler was invoked.
+启动环境是编译被调用的 Lisp 镜像的环境.
 
-The compilation environment is maintained by the compiler and is used to hold definitions and declarations to be used internally by the compiler. Only those parts of a definition needed for correct compilation are saved. The compilation environment is used as the environment argument to macro expanders called by the compiler. It is unspecified whether a definition available in the compilation environment can be used in an evaluation initiated in the startup environment or evaluation environment.
+编译环境由编译器维护, 并用于保存编译器内部使用的定义和声明. 只有正确编译所需的定义部分才会被保存. 编译环境用作编译器调用的宏展开函数的环境参数. 在编译环境中可用的定义是否可以用于启动环境或求值环境中所启动的求值中, 这是未知的.
 
-The evaluation environment is a run-time environment in which macro expanders and code specified by eval-when to be evaluated are evaluated. All evaluations initiated by the compiler take place in the evaluation environment.
+求值环境是一个运行时环境, 在这个环境中, 要求值的 eval-when 指定的求值的宏展开和代码会被求值. 由编译器发起的所有求值都在求值环境中进行.
 
-The run-time environment is the environment in which the program being compiled will be executed.
+运行时环境是将被编译的程序被执行的环境.<!-- TODO 是将被编译还是已被编译-->
 
-The compilation environment inherits from the evaluation environment, and the compilation environment and evaluation environment might be identical. The evaluation environment inherits from the startup environment, and the startup environment and evaluation environment might be identical.
+编译环境从求值环境继承而来, 并且编译环境和求值环境可能是相同的. 这个求值环境从启动环境中继承而来, 并且这个启动环境和求值环境可能是一样的.
 
-The term compile time refers to the duration of time that the compiler is processing source code. At compile time, only the compilation environment and the evaluation environment are available.
+术语编译时(compile time) 指的是编译器处理源代码的那段时间. 在编译时, 只有编译环境和求值环境可用.
 
-The term compile-time definition refers to a definition in the compilation environment. For example, when compiling a file, the definition of a function might be retained in the compilation environment if it is declared inline. This definition might not be available in the evaluation environment.
+术语编译期定义(compile-time definition)指的是编译环境中的定义. 比如, 编译一个文件时, 一个函数如果声明为内联的, 那么它的定义可能被保留在编译环境中. 这个定义可能在求值环境中不可用.
 
-The term run time refers to the duration of time that the loader is loading compiled code or compiled code is being executed. At run time, only the run-time environment is available.
+术语运行时(run time) 指的是加载器加载编译后的代码和编译后的代码被执行的那段时间. 在运行时, 只有运行时环境可用.
 
-The term run-time definition refers to a definition in the run-time environment.
+术语运行时定义(run-time definition)指的是运行时环境中的定义.
 
-The term run-time compiler refers to the function compile or implicit compilation, for which the compilation and run-time environments are maintained in the same Lisp image. Note that when the run-time compiler is used, the run-time environment and startup environment are the same. 
+术语运行时编译器(run-time compiler) 指的是 compile 函数或者隐式编译, 对于那些编译环境和运行时环境是在同一个Lisp镜像中. 注意当运行时编译器被使用时, 运行时环境和启动环境是一样的. <!-- TODO 需核对-->
 
  3.2.2 Compilation Semantics
 
