@@ -478,7 +478,7 @@ Figure 3-5. 一些可应用于接收多值的操作符
 ## 3.2 <span id = "Compilation">编译</span>
 
 > * 3.2.1 [Compiler Terminology](#CompilerTerminology)
-> * 3.2.2 [Compilation Semantics](#CompilationSemantics)
+> * 3.2.2 [编译语义](#CompilationSemantics)
 > * 3.2.3 [File Compilation](#FileCompilation)
 > * 3.2.4 [Literal Objects in Compiled Files](#LiteralObjectsInCompiledFiles)
 
@@ -524,43 +524,35 @@ Figure 3-5. 一些可应用于接收多值的操作符
 
 术语运行时编译器(run-time compiler) 指的是 compile 函数或者隐式编译, 对于那些编译环境和运行时环境是在同一个Lisp镜像中. 注意当运行时编译器被使用时, 运行时环境和启动环境是一样的. <!-- TODO 需核对-->
 
- 3.2.2 Compilation Semantics
+### 3.2.2 <span id = "CompilationSemantics">编译语义</span>
 
-Conceptually, compilation is a process that traverses code, performs certain kinds of syntactic and semantic analyses using information (such as proclamations and macro definitions) present in the compilation environment, and produces equivalent, possibly more efficient code.
+从概念上讲, 编译是一个遍历代码的过程, 它使用在编译环境中提供的信息(如声明和宏定义)执行特定的语法和语义分析，并生成等价的、可能更有效的代码.
 
-3.2.2.1 Compiler Macros
+> * 3.2.2.1 [编译器宏](#CompilerMacros)
+> * 3.2.2.2 [Minimal Compilation](#MinimalCompilation)
+> * 3.2.2.3 [Semantic Constraints](#SemanticConstraints)
 
-3.2.2.2 Minimal Compilation
+#### 3.2.2.1 <span id = "CompilerMacros">编译器宏</span>
 
-3.2.2.3 Semantic Constraints
+编译器宏可以定义一个名称, 它也可以命名一个函数或宏. 这也就是说, 一个函数名可能同时命名函数和编译器宏.
 
- 3.2.2.1 Compiler Macros
+如果 compiler-macro-function 在出现在词法环境中的一个函数名是 true, 这个函数命名一个编译器宏A function name names a compiler macro if compiler-macro-function is true of the function name in the lexical environment in which it appears. 为这个函数名字创建一个词法绑定不止创建一个本地函数或宏定义, 并且也遮蔽了这个名字的编译器宏.
 
-A compiler macro can be defined for a name that also names a function or macro. That is, it is possible for a function name to name both a function and a compiler macro.
+这个 compiler-macro-function 返回的函数是一个两个参数的函数, 称为展开函数(expansion function). 为了展开一个编译器宏, 这个展开函数被宏展开钩子函数所调用, 这个展开函数作为第一个函数, 这个完整的编译器宏表达式作为第二个参数, 并且当前的编译环境(或者是当前词法环境, 如果表达式在 compile-file 后被其他处理过) 作为第三个参数. 然后, 宏展开钩子函数将展开函数称为第一个参数而环境则是第二个参数. 扩展函数的返回值, 由宏展开钩子函数传递, 可能是相同的表达式, 或者是另一种表达式, 在执行展开的代码中, 可以替换到原始表达式形式的位置上.
 
-A function name names a compiler macro if compiler-macro-function is true of the function name in the lexical environment in which it appears. Creating a lexical binding for the function name not only creates a new local function or macro definition, but also shadows[2] the compiler macro.
+  \*macroexpand-hook*  compiler-macro-function  define-compiler-macro  
 
-The function returned by compiler-macro-function is a function of two arguments, called the expansion function. To expand a compiler macro, the expansion function is invoked by calling the macroexpand hook with the expansion function as its first argument, the entire compiler macro form as its second argument, and the current compilation environment (or with the current lexical environment, if the form is being processed by something other than compile-file) as its third argument. The macroexpand hook, in turn, calls the expansion function with the form as its first argument and the environment as its second argument. The return value from the expansion function, which is passed through by the macroexpand hook, might either be the same form, or else a form that can, at the discretion of the code doing the expansion, be used in place of the original form.
+Figure 3-6. 应用于编译器宏的定义的名字
 
-*macroexpand-hook*  compiler-macro-function  define-compiler-macro  
+##### 3.2.2.1.1 编译器宏的目的
 
-Figure 3-6. Defined names applicable to compiler macros
+这个编译器宏机制的目的是允许选择性的源代码转换为编译器的优化建议. 当一种复合表达式被处理(如由编译器), 如果操作符命名了一个编译器宏, 那么这个编译器宏函数可能在这个表达式上被调用, 而结果的展开则递归地处理, 按照其通常的解释为函数形式或宏形式进行处理.
 
-3.2.2.1.1 Purpose of Compiler Macros
+一个编译器宏函数, 就像一个宏函数, 是一个两个参数的函数: 整个调用的表达式和环境对象. 不像一个普通的宏函数, 一个编译器宏函数可以通过返回与原始表单相同的值来提供扩展. 如果编译器宏破坏性地修改的它的表达式部分的参数, 那么结果是未定义的.
 
-3.2.2.1.2 Naming of Compiler Macros
+传递给编译器宏函数的表达式可以是一个 car 部分是一个函数名的列表或者一个 car 部分是 funcall 并且 cadr 部分是一个列表 (或函数名); 注意, 这会影响编译器宏函数对表单参数的破坏. define-compiler-macro 会为两种可能的格式正确地执行对参数的破坏. <!-- TODO 需校对-->
 
-3.2.2.1.3 When Compiler Macros Are Used
-
- 3.2.2.1.1 Purpose of Compiler Macros
-
-The purpose of the compiler macro facility is to permit selective source code transformations as optimization advice to the compiler. When a compound form is being processed (as by the compiler), if the operator names a compiler macro then the compiler macro function may be invoked on the form, and the resulting expansion recursively processed in preference to performing the usual processing on the original form according to its normal interpretation as a function form or macro form.
-
-A compiler macro function, like a macro function, is a function of two arguments: the entire call form and the environment. Unlike an ordinary macro function, a compiler macro function can decline to provide an expansion merely by returning a value that is the same as the original form. The consequences are undefined if a compiler macro function destructively modifies any part of its form argument.
-
-The form passed to the compiler macro function can either be a list whose car is the function name, or a list whose car is funcall and whose cadr is a list (function name); note that this affects destructuring of the form argument by the compiler macro function. define-compiler-macro arranges for destructuring of arguments to be performed correctly for both possible formats.
-
-When compile-file chooses to expand a top level form that is a compiler macro form, the expansion is also treated as a top level form for the purposes of eval-when processing; see Section 3.2.3.1 (Processing of Top Level Forms). 
+当 compile-file 选择展开顶级表达式作为编译器宏表达式时, 展开后的也被当作顶级表达式来处理, 以便在 eval-when 的处理; 见章节 3.2.3.1 (Processing of Top Level Forms). 
 
  3.2.2.1.2 Naming of Compiler Macros
 
