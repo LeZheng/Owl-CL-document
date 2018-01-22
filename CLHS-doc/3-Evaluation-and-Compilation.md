@@ -554,39 +554,37 @@ Figure 3-6. 应用于编译器宏的定义的名字
 
 当 compile-file 选择展开顶级表达式作为编译器宏表达式时, 展开后的也被当作顶级表达式来处理, 以便在 eval-when 的处理; 见章节 3.2.3.1 (Processing of Top Level Forms). 
 
- 3.2.2.1.2 Naming of Compiler Macros
+##### 3.2.2.1.2 编译器宏的命名
 
-Compiler macros may be defined for function names that name macros as well as functions.
+编译器宏可能定义Compiler macros may be defined for function names that name macros as well as functions.
 
-Compiler macro definitions are strictly global. There is no provision for defining local compiler macros in the way that macrolet defines local macros. Lexical bindings of a function name shadow any compiler macro definition associated with the name as well as its global function or macro definition.
+编译器宏定义是严格的全局定义. 在 macrolet 定义本地宏的方式中, 没有定义本地编译器宏的规定. 一个函数名字的词法绑定会遮蔽任何和这个名字关联的编译器宏, 还有和这个名字关联的全局的函数和宏定义.
 
-Note that the presence of a compiler macro definition does not affect the values returned by functions that access function definitions (e.g., fboundp) or macro definitions (e.g., macroexpand). Compiler macros are global, and the function compiler-macro-function is sufficient to resolve their interaction with other lexical and global definitions. 
+注意，编译器宏定义的存在不会影响访问函数定义(比如, fboundp)或宏定义(比如, macroexpand)的函数返回的值. 编译器宏是全局的, 并且函数 compiler-macro-function 足以解决它们与其他词法和全局定义之间的交互作用. 
 
-3.2.2.1.3 When Compiler Macros Are Used
+##### 3.2.2.1.3 编译器宏被使用的时候
 
-The presence of a compiler macro definition for a function or macro indicates that it is desirable for the compiler to use the expansion of the compiler macro instead of the original function form or macro form. However, no language processor (compiler, evaluator, or other code walker) is ever required to actually invoke compiler macro functions, or to make use of the resulting expansion if it does invoke a compiler macro function.
+一个函数或宏的编译器宏定义的存在表明, 编译器应该使用编译器宏的展开, 而不是原来的函数表达式或宏表达式. 然而, 任何语言处理器(编译器, 求值器, 或者其他的 code walker)都不需要实际调用编译器宏函数, 或者如果它调用了编译器宏函数, 就可以使用结果展开.
 
-When the compiler encounters a form during processing that represents a call to a compiler macro name (that is not declared notinline), the compiler might expand the compiler macro, and might use the expansion in place of the original form.
+当编译器在处理过程中遇到一个对编译器宏名称的调用(这不是声明的非内联)时, 编译器可能会展开编译器宏, 并可能使用展开的表达式代替原来的表达式.
 
-When eval encounters a form during processing that represents a call to a compiler macro name (that is not declared notinline), eval might expand the compiler macro, and might use the expansion in place of the original form.
+当 eval 在处理过程中遇到一个对编译器宏名称的调用(不是声明为非内联的)的调用时, eval 可能会展开编译器宏, 并可能使用展开的表达式代替原来的表达式.
 
-There are two situations in which a compiler macro definition must not be applied by any language processor:
+这里有编译器宏定义一定不能被任何语言处理器所使用的两种情况:
 
-    The global function name binding associated with the compiler macro is shadowed by a lexical binding of the function name.
+  与编译器宏关联的全局函数名绑定被函数名的词法绑定所遮蔽.
 
-    The function name has been declared or proclaimed notinline and the call form appears within the scope of the declaration.
+  函数名已被声明或声明为非内联, 而调用表达式出现在声明的范围内.
 
-It is unspecified whether compiler macros are expanded or used in any other situations.
+在其他情况下, 编译器宏是否被展开或使用是未知的.
 
-3.2.2.1.3.1 Notes about the Implementation of Compiler Macros
+###### 3.2.2.1.3.1 关于编译器宏实现的注意事项
 
- 3.2.2.1.3.1 Notes about the Implementation of Compiler Macros
+虽然从技术上讲, 这在技术上是允许的, 但是对于 eval 在与编译器相同的情况下处理编译器宏, 这在解释具体实现中并不一定是个好主意.
 
-Although it is technically permissible, as described above, for eval to treat compiler macros in the same situations as compiler might, this is not necessarily a good idea in interpreted implementations.
+编译器宏的存在目的是为了用编译时速度换取运行时速度. 编写编译器宏的程序员倾向于假设编译器宏比正常函数和宏花费更多的时间来生成代码, 因此正常的函数和宏在运行时是特别适合的. 由于 eval 在解释具体实现中可能多次执行相同形式的语义分析, 因此在每次这样的求值中选择调用编译器宏可能会很低效.
 
-Compiler macros exist for the purpose of trading compile-time speed for run-time speed. Programmers who write compiler macros tend to assume that the compiler macros can take more time than normal functions and macros in order to produce code which is especially optimal for use at run time. Since eval in an interpreted implementation might perform semantic analysis of the same form multiple times, it might be inefficient in general for the implementation to choose to call compiler macros on every such evaluation.
-
-Nevertheless, the decision about what to do in these situations is left to each implementation. 
+然而, 关于在这些情况下应该做什么的决定留给每个具体实现. 
 
  3.2.2.2 Minimal Compilation
 
