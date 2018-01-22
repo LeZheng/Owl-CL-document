@@ -529,8 +529,8 @@ Figure 3-5. 一些可应用于接收多值的操作符
 从概念上讲, 编译是一个遍历代码的过程, 它使用在编译环境中提供的信息(如声明和宏定义)执行特定的语法和语义分析，并生成等价的、可能更有效的代码.
 
 > * 3.2.2.1 [编译器宏](#CompilerMacros)
-> * 3.2.2.2 [Minimal Compilation](#MinimalCompilation)
-> * 3.2.2.3 [Semantic Constraints](#SemanticConstraints)
+> * 3.2.2.2 [最小化编译](#MinimalCompilation)
+> * 3.2.2.3 [语义约束](#SemanticConstraints)
 
 #### 3.2.2.1 <span id = "CompilerMacros">编译器宏</span>
 
@@ -586,51 +586,51 @@ Figure 3-6. 应用于编译器宏的定义的名字
 
 然而, 关于在这些情况下应该做什么的决定留给每个具体实现. 
 
- 3.2.2.2 Minimal Compilation
+#### 3.2.2.2 <span id = "MinimalCompilation">最小化编译</span>
 
-Minimal compilation is defined as follows:
+最小化编译根据如下定义:
 
-    All compiler macro calls appearing in the source code being compiled are expanded, if at all, at compile time; they will not be expanded at run time.
+  在编译时, 正在编译的源代码中出现的所有编译器宏调用都被展开了; 它们不会在运行时展开.
 
-    All macro and symbol macro calls appearing in the source code being compiled are expanded at compile time in such a way that they will not be expanded again at run time. macrolet and symbol-macrolet are effectively replaced by forms corresponding to their bodies in which calls to macros are replaced by their expansions.
+  正在编译的源代码中出现的所有宏和符号宏调用都在编译时进行了展开, 这样它们就不会在运行时再次被展开. macrolet 和 symbol-macrolet 实际上被替换为与它们的主体相对应的表达式，在这些表达式中，对宏的调用被它们的展开表达式所取代.
 
-    The first argument in a load-time-value form in source code processed by compile is evaluated at compile time; in source code processed by compile-file, the compiler arranges for it to be evaluated at load time. In either case, the result of the evaluation is remembered and used later as the value of the load-time-value form at execution time. 
+  在 compile 处理的源代码中一个 load-time-value 表达式的第一个参数在编译时被求值; 在 compile-file 处理的源代码中, 编译器安排它在加载时被求值. 不论发生何种情况, 这个求值的结果会被记住并且在执行时被用于后面 load-time-value 表达式的值. 
 
- 3.2.2.3 Semantic Constraints
+#### 3.2.2.3 <span id = "SemanticConstraints">语义约束</span>
 
-All conforming programs must obey the following constraints, which are designed to minimize the observable differences between compiled and interpreted programs:
+所有符合规范的程序必须符合以下约束, 这些被设计用于最小化编译和解释程序的可观测差异:
 
-    Definitions of any referenced macros must be present in the compilation environment. Any form that is a list beginning with a symbol that does not name a special operator or a macro defined in the compilation environment is treated by the compiler as a function call.
+  任何引用的宏的定义必须在编译环境中出现. 任何在编译环境中不是以特殊操作符或宏定义的符号开始的表达式, 编译器将其作为函数调用来处理.
 
-    Special proclamations for dynamic variables must be made in the compilation environment. Any binding for which there is no special declaration or proclamation in the compilation environment is treated by the compiler as a lexical binding.
+  必须在编译环境中对动态变量进行特殊的声明. 编译环境中没有特殊声明或声明的任何绑定都被编译器视为词法绑定.
 
-    The definition of a function that is defined and declared inline in the compilation environment must be the same at run time.
+  在编译环境中定义和声明为内联的函数的定义在运行时必须是相同的.
 
-    Within a function named F, the compiler may (but is not required to) assume that an apparent recursive call to a function named F refers to the same definition of F, unless that function has been declared notinline. The consequences of redefining such a recursively defined function F while it is executing are undefined.
+  在一个名为 F 的函数中, 这个编译器可能 (但不是必须) 假定一个对名为 F 的函数明显的递归调用指向 F 的相同的定义, 除非这个函数已经被声明为非内联的. 在执行时, 重定义这样一个递归函数 F 的结果是没有定义的.<!-- TODO 待校对 -->
 
-    A call within a file to a named function that is defined in the same file refers to that function, unless that function has been declared notinline. The consequences are unspecified if functions are redefined individually at run time or multiply defined in the same file.
+  一个文件内的一个调用函数, 这个函数在同一个文件中定义, 除非该函数被声明为非内联的, 否则指的就是该函数. 如果函数在运行时被单独定义或者在一个文件里多次定义, 那么结果是未知的.
 
-    The argument syntax and number of return values for all functions whose ftype is declared at compile time must remain the same at run time.
+  所有在编译时声明 ftype 的函数的参数语法和返回值数量必须在运行时保持不变.
 
-    Constant variables defined in the compilation environment must have a similar value at run time. A reference to a constant variable in source code is equivalent to a reference to a literal object that is the value of the constant variable.
+  在编译环境中定义的常量变量在运行时必须具有相似的值. 源代码中一个常量变量的引用等价于对一个常量变量值的对象的引用.
 
-    Type definitions made with deftype or defstruct in the compilation environment must retain the same definition at run time. Classes defined by defclass in the compilation environment must be defined at run time to have the same superclasses and same metaclass.
+  用 deftype 或者 defstruct 在编译环境中定义的类型必须和运行时保持相同的定义. 被 defclass 在编译环境中定义的类必须和运行时定义的有相同的超类和元类.
 
-    This implies that subtype/supertype relationships of type specifiers must not change between compile time and run time.
+  这个也就意味着 subtype/supertype 类型声明的关系必须在编译时和运行时保持不变.
 
-    Type declarations present in the compilation environment must accurately describe the corresponding values at run time; otherwise, the consequences are undefined. It is permissible for an unknown type to appear in a declaration at compile time, though a warning might be signaled in such a case.
+  在编译环境中出现的类型声明必须在运行时准确地描述对应的值; 否则, 结果就是未定义的. 在编译时, 一个未知类型出现在声明中是允许的, 但是在这种情况下可能会发出警告.
 
-    Except in the situations explicitly listed above, a function defined in the evaluation environment is permitted to have a different definition or a different signature at run time, and the run-time definition prevails.
+  除了上面明确列出的情况外, 在求值环境中定义的函数可以在运行时具有不同的定义或不同的签名, 并且运行时定义生效.
 
-Conforming programs should not be written using any additional assumptions about consistency between the run-time environment and the startup, evaluation, and compilation environments.
+不应该使用任何关于运行时环境与启动、评估和编译环境之间一致性的附加假设来编写符合标准的程序.
 
-Except where noted, when a compile-time and a run-time definition are different, one of the following occurs at run time:
+除非另行注明, 当一个编译期定义和运行时不同, 会在运行出现以下情况的一种:
 
-    an error of type error is signaled
-    the compile-time definition prevails
-    the run-time definition prevails
+  an error of type error is signaled
+  the compile-time definition prevails
+  the run-time definition prevails
 
-If the compiler processes a function form whose operator is not defined at compile time, no error is signaled at compile time. 
+如果编译器处理的是在编译时没有定义操作符的函数表达式, 那么编译时就不会发出错误. 
 
  3.2.3 File Compilation
 
