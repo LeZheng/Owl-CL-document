@@ -44,20 +44,20 @@
 
 全局环境是包含不定作用域和不确定范围的绑定的环境的一部分. 全局环境包括以下部分:
 
-  动态变量和常量的绑定.
-  函数, 宏, 特殊操作符的绑定.
-  编译器宏绑定.
-  类型和类名绑定.
-  声明相关的信息. 
+    动态变量和常量的绑定.
+    函数, 宏, 特殊操作符的绑定.
+    编译器宏绑定.
+    类型和类名绑定.
+    声明相关的信息. 
 
 #### 3.1.1.2 <span id = "DynamicEnvironments">动态环境</span>
 
 求值的动态环境是包含绑定的环境的一部分, 该环境的持续时间受限于这个建立绑定的表达式形式执行过程中绑定建立和解除的点. 一个动态环境包括以下内容:
 
-  动态变量的绑定.
-  活跃的捕捉标签的信息.
-  unwind-protect 确定的退出点.
-  活跃的处理者和重启器的信息.
+    动态变量的绑定.
+    活跃的捕捉标签的信息.
+    unwind-protect 确定的退出点.
+    活跃的处理者和重启器的信息.
 
 在程序执行过程中任何给定的时间点, 动态环境都被指定为"the current dynamic environment", 或者有时只是"the dynamic environment".
 
@@ -67,11 +67,11 @@
 
 在一个程序中, 一些位置的求值的词法环境是包含这个位置的表达式形式的词法作用域信息的环境的一部分. 一个词法环境包含以下内容:
 
-  词法变量和符号宏的绑定.
-  函数和宏的绑定. (这是关于本地禁用的编译器宏的信息.)
-  block块标记的绑定.
-  go标记的绑定.
-  声明的信息.
+    词法变量和符号宏的绑定.
+    函数和宏的绑定. (这是关于本地禁用的编译器宏的信息.)
+    block块标记的绑定.
+    go标记的绑定.
+    声明的信息.
 
 在被语义处理的程序中，任何给定位置的词汇环境都被称为"the current lexical environment"，或者有时只是"the lexical environment".
 
@@ -115,11 +115,11 @@ Common Lisp 系统对词法, 动态和全局环境的表达式形式进行求值
 
 非常变量可以通过 setq 或者 let 来绑定赋值. 下面这段列出了可以赋值, 绑定, 和定义变量的名字.
 
-  boundp        let                  progv         
-  defconstant   let*                 psetq         
-  defparameter  makunbound           set           
-  defvar        multiple-value-bind  setq          
-  lambda        multiple-value-setq  symbol-value  
+    boundp        let                  progv         
+    defconstant   let*                 psetq         
+    defparameter  makunbound           set           
+    defvar        multiple-value-bind  setq          
+    lambda        multiple-value-setq  symbol-value  
 
 Figure 3-1. 可应用于变量的一些定义的名字
 
@@ -144,9 +144,9 @@ Figure 3-1. 可应用于变量的一些定义的名字
 
 如果一个变量满足下面条件的其中之一, 那么这个变量就是一个动态变量:
 
-  它被局部或全局声明为 special.
+    它被局部或全局声明为 special.
 
-  它以文本形式出现在一个表达式中, 为同名变量创建一个动态绑定, 并且这个绑定没有被一个对相同变量名创建词法绑定的表达式所遮蔽.
+    它以文本形式出现在一个表达式中, 为同名变量创建一个动态绑定, 并且这个绑定没有被一个对相同变量名创建词法绑定的表达式所遮蔽.
 
 一个动态变量可以在这个程序的任何时间被引用; 对动态变量的引用没有文本限制. 在任何给定时间, 具有给定名称的所有动态变量都是在动态环境中或全局环境中确切地引用一个绑定.
 
@@ -203,15 +203,15 @@ Figure 3-1. 可应用于变量的一些定义的名字
 
 特殊操作符的名字的集合被固定于Common Lisp中; 没有给用户提供定义特殊操作符的方法. 下面这段列出了所有被定义为特殊操作符的Common Lisp符号.
 
-  block      let*                  return-from      
-  catch      load-time-value       setq             
-  eval-when  locally               symbol-macrolet  
-  flet       macrolet              tagbody          
-  function   multiple-value-call   the              
-  go         multiple-value-prog1  throw            
-  if         progn                 unwind-protect   
-  labels     progv                                  
-  let        quote                                  
+    block      let*                  return-from      
+    catch      load-time-value       setq             
+    eval-when  locally               symbol-macrolet  
+    flet       macrolet              tagbody          
+    function   multiple-value-call   the              
+    go         multiple-value-prog1  throw            
+    if         progn                 unwind-protect   
+    labels     progv                                  
+    let        quote                                  
 
 Figure 3-2. Common Lisp 特殊操作符
 
@@ -229,8 +229,8 @@ Figure 3-2. Common Lisp 特殊操作符
 
 下面这段列出了一些可应用于宏的已定义名字.
 
-  \*macroexpand-hook*  macro-function  macroexpand-1  
-  defmacro            macroexpand     macrolet       
+    *macroexpand-hook*  macro-function  macroexpand-1  
+    defmacro            macroexpand     macrolet       
 
 Figure 3-3. 应用于宏的定义的名字
 
@@ -258,14 +258,14 @@ Figure 3-3. 应用于宏的定义的名字
 
 下一段中列出了可应用于函数的一些定义的名字.
 
-  apply                 fdefinition  mapcan               
-  call-arguments-limit  flet         mapcar               
-  complement            fmakunbound  mapcon               
-  constantly            funcall      mapl                 
-  defgeneric            function     maplist              
-  defmethod             functionp    multiple-value-call  
-  defun                 labels       reduce               
-  fboundp               map          symbol-function      
+    apply                 fdefinition  mapcan               
+    call-arguments-limit  flet         mapcar               
+    complement            fmakunbound  mapcon               
+    constantly            funcall      mapl                 
+    defgeneric            function     maplist              
+    defmethod             functionp    multiple-value-call  
+    defun                 labels       reduce               
+    fboundp               map          symbol-function      
 
 Figure 3-4. 一些已定义的函数相关的名字 
 
@@ -465,9 +465,9 @@ Contorted-example 可以工作仅因为在退出点的范围内调用了由f指�
 
 下面这段列出了接收多个值的操作符. 这些操作符可以被用于指明去求值的一个或多个表达式形式并且接收这些表达式返回的多个值.
 
-  multiple-value-bind  multiple-value-prog1  return-from  
-  multiple-value-call  multiple-value-setq   throw        
-  multiple-value-list  return                             
+    multiple-value-bind  multiple-value-prog1  return-from  
+    multiple-value-call  multiple-value-setq   throw        
+    multiple-value-list  return                             
 
 Figure 3-5. 一些可应用于接收多值的操作符
 
@@ -479,7 +479,7 @@ Figure 3-5. 一些可应用于接收多值的操作符
 
 > * 3.2.1 [Compiler Terminology](#CompilerTerminology)
 > * 3.2.2 [编译语义](#CompilationSemantics)
-> * 3.2.3 [File Compilation](#FileCompilation)
+> * 3.2.3 [文件编译](#FileCompilation)
 > * 3.2.4 [Literal Objects in Compiled Files](#LiteralObjectsInCompiledFiles)
 
  3.2.1 Compiler Terminology
@@ -540,7 +540,7 @@ Figure 3-5. 一些可应用于接收多值的操作符
 
 这个 compiler-macro-function 返回的函数是一个两个参数的函数, 称为展开函数(expansion function). 为了展开一个编译器宏, 这个展开函数被宏展开钩子函数所调用, 这个展开函数作为第一个函数, 这个完整的编译器宏表达式作为第二个参数, 并且当前的编译环境(或者是当前词法环境, 如果表达式在 compile-file 后被其他处理过) 作为第三个参数. 然后, 宏展开钩子函数将展开函数称为第一个参数而环境则是第二个参数. 扩展函数的返回值, 由宏展开钩子函数传递, 可能是相同的表达式, 或者是另一种表达式, 在执行展开的代码中, 可以替换到原始表达式形式的位置上.
 
-  \*macroexpand-hook*  compiler-macro-function  define-compiler-macro  
+    *macroexpand-hook*  compiler-macro-function  define-compiler-macro  
 
 Figure 3-6. 应用于编译器宏的定义的名字
 
@@ -572,9 +572,9 @@ Figure 3-6. 应用于编译器宏的定义的名字
 
 这里有编译器宏定义一定不能被任何语言处理器所使用的两种情况:
 
-  与编译器宏关联的全局函数名绑定被函数名的词法绑定所遮蔽.
+    与编译器宏关联的全局函数名绑定被函数名的词法绑定所遮蔽.
 
-  函数名已被声明或声明为非内联, 而调用表达式出现在声明的范围内.
+    函数名已被声明或声明为非内联, 而调用表达式出现在声明的范围内.
 
 在其他情况下, 编译器宏是否被展开或使用是未知的.
 
@@ -590,150 +590,142 @@ Figure 3-6. 应用于编译器宏的定义的名字
 
 最小化编译根据如下定义:
 
-  在编译时, 正在编译的源代码中出现的所有编译器宏调用都被展开了; 它们不会在运行时展开.
+    在编译时, 正在编译的源代码中出现的所有编译器宏调用都被展开了; 它们不会在运行时展开.
 
-  正在编译的源代码中出现的所有宏和符号宏调用都在编译时进行了展开, 这样它们就不会在运行时再次被展开. macrolet 和 symbol-macrolet 实际上被替换为与它们的主体相对应的表达式，在这些表达式中，对宏的调用被它们的展开表达式所取代.
+    正在编译的源代码中出现的所有宏和符号宏调用都在编译时进行了展开, 这样它们就不会在运行时再次被展开. macrolet 和 symbol-macrolet 实际上被替换为与它们的主体相对应的表达式，在这些表达式中，对宏的调用被它们的展开表达式所取代.
 
-  在 compile 处理的源代码中一个 load-time-value 表达式的第一个参数在编译时被求值; 在 compile-file 处理的源代码中, 编译器安排它在加载时被求值. 不论发生何种情况, 这个求值的结果会被记住并且在执行时被用于后面 load-time-value 表达式的值. 
+    在 compile 处理的源代码中一个 load-time-value 表达式的第一个参数在编译时被求值; 在 compile-file 处理的源代码中, 编译器安排它在加载时被求值. 不论发生何种情况, 这个求值的结果会被记住并且在执行时被用于后面 load-time-value 表达式的值. 
 
 #### 3.2.2.3 <span id = "SemanticConstraints">语义约束</span>
 
 所有符合规范的程序必须符合以下约束, 这些被设计用于最小化编译和解释程序的可观测差异:
 
-  任何引用的宏的定义必须在编译环境中出现. 任何在编译环境中不是以特殊操作符或宏定义的符号开始的表达式, 编译器将其作为函数调用来处理.
+    任何引用的宏的定义必须在编译环境中出现. 任何在编译环境中不是以特殊操作符或宏定义的符号开始的表达式, 编译器将其作为函数调用来处理.
 
-  必须在编译环境中对动态变量进行特殊的声明. 编译环境中没有特殊声明或声明的任何绑定都被编译器视为词法绑定.
+    必须在编译环境中对动态变量进行特殊的声明. 编译环境中没有特殊声明或声明的任何绑定都被编译器视为词法绑定.
 
-  在编译环境中定义和声明为内联的函数的定义在运行时必须是相同的.
+    在编译环境中定义和声明为内联的函数的定义在运行时必须是相同的.
 
-  在一个名为 F 的函数中, 这个编译器可能 (但不是必须) 假定一个对名为 F 的函数明显的递归调用指向 F 的相同的定义, 除非这个函数已经被声明为非内联的. 在执行时, 重定义这样一个递归函数 F 的结果是没有定义的.<!-- TODO 待校对 -->
+    在一个名为 F 的函数中, 这个编译器可能 (但不是必须) 假定一个对名为 F 的函数明显的递归调用指向 F 的相同的定义, 除非这个函数已经被声明为非内联的. 在执行时, 重定义这样一个递归函数 F 的结果是没有定义的.<!-- TODO 待校对 -->
 
-  一个文件内的一个调用函数, 这个函数在同一个文件中定义, 除非该函数被声明为非内联的, 否则指的就是该函数. 如果函数在运行时被单独定义或者在一个文件里多次定义, 那么结果是未知的.
+    一个文件内的一个调用函数, 这个函数在同一个文件中定义, 除非该函数被声明为非内联的, 否则指的就是该函数. 如果函数在运行时被单独定义或者在一个文件里多次定义, 那么结果是未知的.
 
-  所有在编译时声明 ftype 的函数的参数语法和返回值数量必须在运行时保持不变.
+    所有在编译时声明 ftype 的函数的参数语法和返回值数量必须在运行时保持不变.
 
-  在编译环境中定义的常量变量在运行时必须具有相似的值. 源代码中一个常量变量的引用等价于对一个常量变量值的对象的引用.
+    在编译环境中定义的常量变量在运行时必须具有相似的值. 源代码中一个常量变量的引用等价于对一个常量变量值的对象的引用.
 
-  用 deftype 或者 defstruct 在编译环境中定义的类型必须和运行时保持相同的定义. 被 defclass 在编译环境中定义的类必须和运行时定义的有相同的超类和元类.
+    用 deftype 或者 defstruct 在编译环境中定义的类型必须和运行时保持相同的定义. 被 defclass 在编译环境中定义的类必须和运行时定义的有相同的超类和元类.
 
-  这个也就意味着 subtype/supertype 类型声明的关系必须在编译时和运行时保持不变.
+    这个也就意味着 subtype/supertype 类型声明的关系必须在编译时和运行时保持不变.
 
-  在编译环境中出现的类型声明必须在运行时准确地描述对应的值; 否则, 结果就是未定义的. 在编译时, 一个未知类型出现在声明中是允许的, 但是在这种情况下可能会发出警告.
+    在编译环境中出现的类型声明必须在运行时准确地描述对应的值; 否则, 结果就是未定义的. 在编译时, 一个未知类型出现在声明中是允许的, 但是在这种情况下可能会发出警告.
 
-  除了上面明确列出的情况外, 在求值环境中定义的函数可以在运行时具有不同的定义或不同的签名, 并且运行时定义生效.
+    除了上面明确列出的情况外, 在求值环境中定义的函数可以在运行时具有不同的定义或不同的签名, 并且运行时定义生效.
 
 不应该使用任何关于运行时环境与启动、评估和编译环境之间一致性的附加假设来编写符合标准的程序.
 
 除非另行注明, 当一个编译期定义和运行时不同, 会在运行出现以下情况的一种:
 
-  an error of type error is signaled
-  the compile-time definition prevails
-  the run-time definition prevails
+    an error of type error is signaled
+    the compile-time definition prevails
+    the run-time definition prevails
 
 如果编译器处理的是在编译时没有定义操作符的函数表达式, 那么编译时就不会发出错误. 
 
- 3.2.3 File Compilation
+### 3.2.3 <span id = "FileCompilation">文件编译</span>
 
-The function compile-file performs compilation of forms in a file following the rules specified in Section 3.2.2 (Compilation Semantics), and produces an output file that can be loaded by using load.
+函数 compile-file 对一个文件中的表达式根据章节 3.2.2 (Compilation Semantics) 中的规则执行编译, 并且产生一个通过 load 被载入的输出考虑文件.
 
-Normally, the top level forms appearing in a file compiled with compile-file are evaluated only when the resulting compiled file is loaded, and not when the file is compiled. However, it is typically the case that some forms in the file need to be evaluated at compile time so the remainder of the file can be read and compiled correctly.
+通常情况下, 在 compile-file 编译的文件中出现的顶级表达式只在加载编译后文件时才进行求值, 而不是在编译文件时才进行评估. 但是, 通常情况下, 文件中的某些表达式需要在编译时进行求值，以便能够正确地读取和编译文件的其余部分.
 
-The eval-when special form can be used to control whether a top level form is evaluated at compile time, load time, or both. It is possible to specify any of three situations with eval-when, denoted by the symbols :compile-toplevel, :load-toplevel, and :execute. For top level eval-when forms, :compile-toplevel specifies that the compiler must evaluate the body at compile time, and :load-toplevel specifies that the compiler must arrange to evaluate the body at load time. For non-top level eval-when forms, :execute specifies that the body must be executed in the run-time environment.
+这个 eval-when 特殊表达式可以被用于控制一个顶级表达式形式是否在编译时, 加载时, 或者都求值. 用 eval-when 指定这三种情况的任何几个都是可以的, 通过符号 :compile-toplevel, :load-toplevel, 还有 :execute 来指明. 对于顶层的 eval-when 表达式, :compile-toplevel 表示编译器必须在编译时求值这个主体部分, 并且 :load-toplevel 表示这个编译器必须安排在加载时求值这个主体. 关于非顶级的 eval-when 表达式, :execute 表示这个主体必须在运行时环境被求值.
 
-The behavior of this form can be more precisely understood in terms of a model of how compile-file processes forms in a file to be compiled. There are two processing modes, called ``not-compile-time'' and ``compile-time-too''.
+这种表达式的行为可以更精确地理解为 compile-file 如何处理一个文件要被编译的表达式的模型. 这个有两种处理模型, 称之为 "not-compile-time" 还有 "compile-time-too".
 
-Successive forms are read from the file by compile-file and processed in not-compile-time mode; in this mode, compile-file arranges for forms to be evaluated only at load time and not at compile time. When compile-file is in compile-time-too mode, forms are evaluated both at compile time and load time.
+文件中的连续表达式被 compile-file 读取并且在 not-compile-time 模式下被处理; 在这个模式下, compile-file 安排表达式只在加载时被求值而不是在编译时. 当 compile-file 在 compile-time-too 模式下, 表达式在加载和编译时都求值.
 
-3.2.3.1 Processing of Top Level Forms
+#### 3.2.3.1 顶层表达式的处理
 
- 3.2.3.1 Processing of Top Level Forms
+在文件编译器中对顶级表达式的处理定义如下:
 
-Processing of top level forms in the file compiler is defined as follows:
+    如果这个表达式是一个编译器宏表达式 (没有被一个非内联声明所禁用), 具体实现可能或可能不选择计算该表达式的编译器宏展开, 并且执行了展开, 可能也可能不会选择在相同的处理模式(compile-time-too 或 not-compile-time)下将结果作为顶级表达式进行处理. 如果它拒绝获取或使用展开, 它必须处理原始的表达式.
 
-    If the form is a compiler macro form (not disabled by a notinline declaration), the implementation might or might not choose to compute the compiler macro expansion of the form and, having performed the expansion, might or might not choose to process the result as a top level form in the same processing mode (compile-time-too or not-compile-time). If it declines to obtain or use the expansion, it must process the original form.
+    如果这个表达式是一个宏表达式, 它的宏展开会被作为顶层表达式在相同的处理模式下(compile-time-too 或 not-compile-time)计算并处理.
 
-    If the form is a macro form, its macro expansion is computed and processed as a top level form in the same processing mode (compile-time-too or not-compile-time).
+    如果表达式是一个 progn 表达式, 它的主体表达式中的每一个子表达式会被依次当作顶层表达式在相同的处理模式下处理.
 
-    If the form is a progn form, each of its body forms is sequentially processed as a top level form in the same processing mode.
+    如果这个表达式是一个 locally, macrolet, 或者 symbol-macrolet, compile-file 建立适当的绑定并将主体表达式作为顶级表单处理, 并在相同的处理模式下执行这些绑定. (注意, 这意味着顶层表达式处理的词法环境不一定是空词法环境.)
 
-    If the form is a locally, macrolet, or symbol-macrolet, compile-file establishes the appropriate bindings and processes the body forms as top level forms with those bindings in effect in the same processing mode. (Note that this implies that the lexical environment in which top level forms are processed is not necessarily the null lexical environment.)
+    如果表达式是一个 eval-when 表达式, 它会根据下面这段被处理.
 
-    If the form is an eval-when form, it is handled according to the next figure.
+CT | LT | E | Mode | Action | New Mode
+- | :-: | -: | - | - | -
+Yes | Yes | --- | --- |  Process |  compile-time-too 
+No |  Yes | Yes | CTT |  Process |  compile-time-too  
+No  | Yes | Yes | NCT |  Process |  not-compile-time  
+No  | Yes | No |  --- |  Process |  not-compile-time  
+Yes | No |  --- | --- |  Evaluate | ---               
+No |  No |  Yes | CTT |  Evaluate | ---               
+No |  No |  Yes | NCT |  Discard |  ---               
+No |  No |  No |  --- |  Discard |  ---               
 
-    plus .5 fil
+Figure 3-7. EVAL-WHEN 处理
 
-                                                     
-    CT   LT   E    Mode  Action    New Mode          
-    ----------
-                                                     
-    Yes  Yes  ---  ---   Process   compile-time-too  
-    No   Yes  Yes  CTT   Process   compile-time-too  
-    No   Yes  Yes  NCT   Process   not-compile-time  
-    No   Yes  No   ---   Process   not-compile-time  
-    Yes  No   ---  ---   Evaluate  ---               
-    No   No   Yes  CTT   Evaluate  ---               
-    No   No   Yes  NCT   Discard   ---               
-    No   No   No   ---   Discard   ---               
-                                                     
-              
+    列 CT 表示 :compile-toplevel 是否被指定. 列 LT 表示 :load-toplevel 是否被指定. 列 E 表示 :execute 是否被指定. 列 Mode 表示处理模式; 一个代字号 (---) 表示处理模式是不相关的.
 
-    Figure 3-7. EVAL-WHEN processing
+    这个 Action 列指明三种动作中的一种:
 
-    Column CT indicates whether :compile-toplevel is specified. Column LT indicates whether :load-toplevel is specified. Column E indicates whether :execute is specified. Column Mode indicates the processing mode; a dash (---) indicates that the processing mode is not relevant.
+    Process: 在指定模式下把主体作为顶层表达式处理.
 
-    The Action column specifies one of three actions:
+    Evaluate: 在编译器的动态执行上下文中对主体进行求值, 使用求值环境作为全局环境和 eval-when 出现的词法环境.
 
-    Process: process the body as top level forms in the specified mode.
+    Discard: 忽略这个表达式.
 
-    Evaluate: evaluate the body in the dynamic execution context of the compiler, using the evaluation environment as the global environment and the lexical environment in which the eval-when appears.
+    这个 New Mode 列表示新的处理模式. 一个代字符 (---) 表示编译器保留当前模式.
 
-    Discard: ignore the form.
+    否则, 这个表达式就是一个顶层表达式而不是特殊情况下的一个表达式. 在 compile-time-too 模式下, 这个编译器首先在求值环境中对表达式进行求值, 然后对其进行最低限度的编译. 在 not-compile-time 模式下, 表达式只是简单地编译了. 所有子表达式被当作非顶层(non-top-level) 表达式.
 
-    The New Mode column indicates the new processing mode. A dash (---) indicates the compiler remains in its current mode.
+    注意, 顶层表达式是按照在文件中显示的顺序处理的, 并且编译器读取的每个顶层表达式都在读取下一个之前进行处理. 然而, 只要 Common Lisp 的语义被保留, 就不指定非顶层子表达式(包括宏展开的)的处理顺序还有进一步编译的顺序.
 
-    Otherwise, the form is a top level form that is not one of the special cases. In compile-time-too mode, the compiler first evaluates the form in the evaluation environment and then minimally compiles it. In not-compile-time mode, the form is simply minimally compiled. All subforms are treated as non-top-level forms.
+eval-when 表达式导致的编译期求值仅限顶层. 对于非顶层表达式 :compile-toplevel 和 :load-toplevel 情况声明都会被忽略. 对于非顶层表达式, 一个 eval-when 指定为 :execute 的情况被当作一个隐式的 progn 包括 eval-when 表达式的主体部分; 否则, 在主体中的表达式就被忽略.
 
-    Note that top level forms are processed in the order in which they textually appear in the file and that each top level form read by the compiler is processed before the next is read. However, the order of processing (including macro expansion) of subforms that are not top level forms and the order of further compilation is unspecified as long as Common Lisp semantics are preserved.
+3.2.3.1.1 定义宏的处理
 
-eval-when forms cause compile-time evaluation only at top level. Both :compile-toplevel and :load-toplevel situation specifications are ignored for non-top-level forms. For non-top-level forms, an eval-when specifying the :execute situation is treated as an implicit progn including the forms in the body of the eval-when form; otherwise, the forms in the body are ignored.
+出现在一个文件中的定义宏 (就像 defmacro 或者 defvar) 会被 compile-file 处理, 正常情况下会有编译期副作用, 影响同一个文件中后面的表达式的编译. 解释这些副作用是如何发生的一个很方便的模型是, 定义宏被展开为一个或多个 eval-when 表达式, 然后这个调用会导致发生在一个 (eval-when (:compile-toplevel) ...) 表达式的主体部分的编译器副作用.
 
-3.2.3.1.1 Processing of Defining Macros
+编译期的副作用可能会导致对定义的信息的存储方式不同于定义宏以"正常"方式处理 (要么是解释, 要么是加载已编译的文件).
 
-3.2.3.1.2 Constraints on Macros and Compiler Macros
+特别地, 编译时定义宏所存储的信息可能或可能无法用于解释器 (不管是编译时或是编译后), 或者是后续的编译器的调用. 比如, 下面这段代码是不可移植的因为它假定对于解释器可用时编译器也存储了 foo 宏定义:
 
- 3.2.3.1.1 Processing of Defining Macros
+```LISP
+(defmacro foo (x) `(car ,x))
+(eval-when (:execute :compile-toplevel :load-toplevel)
+  (print (foo '(a b c))))
+```
 
-Defining macros (such as defmacro or defvar) appearing within a file being processed by compile-file normally have compile-time side effects which affect how subsequent forms in the same file are compiled. A convenient model for explaining how these side effects happen is that the defining macro expands into one or more eval-when forms, and that the calls which cause the compile-time side effects to happen appear in the body of an (eval-when (:compile-toplevel) ...) form.
+一种完成相同工作的可移植的方式是把宏定义包含在 eval-when 表达式里, 就像:
 
-The compile-time side effects may cause information about the definition to be stored differently than if the defining macro had been processed in the `normal' way (either interpretively or by loading the compiled file).
+```LISP
+(eval-when (:execute :compile-toplevel :load-toplevel)
+  (defmacro foo (x) `(car ,x))
+  (print (foo '(a b c))))
+```
 
-In particular, the information stored by the defining macros at compile time might or might not be available to the interpreter (either during or after compilation), or during subsequent calls to the compiler. For example, the following code is nonportable because it assumes that the compiler stores the macro definition of foo where it is available to the interpreter:
+下面这段列出了使得定义可以在编译时和运行时环境都可用的宏. 没有指定在编译环境中可用的定义是否在求值环境中可用, 也没有指定它们在后续编译单元中是否可用, 或者在编译器的后续调用中是否可用. 与 eval-when 一样, 这些编译期副作用只发生在定义宏出现在顶层时.
 
- (defmacro foo (x) `(car ,x))
- (eval-when (:execute :compile-toplevel :load-toplevel)
-   (print (foo '(a b c))))
+    declaim                define-modify-macro   defsetf    
+    defclass               define-setf-expander  defstruct  
+    defconstant            defmacro              deftype    
+    define-compiler-macro  defpackage            defvar     
+    define-condition       defparameter                     
 
-A portable way to do the same thing would be to include the macro definition inside the eval-when form, as in:
+Figure 3-8. 影响编译环境的定义宏
 
- (eval-when (:execute :compile-toplevel :load-toplevel)
-   (defmacro foo (x) `(car ,x))
-   (print (foo '(a b c))))
+##### 3.2.3.1.2 对宏和编译器宏的限制
 
-The next figure lists macros that make definitions available both in the compilation and run-time environments. It is not specified whether definitions made available in the compilation environment are available in the evaluation environment, nor is it specified whether they are available in subsequent compilation units or subsequent invocations of the compiler. As with eval-when, these compile-time side effects happen only when the defining macros appear at top level.
+除了在显式声明之外, 在 Common Lisp 标准中定义的宏都不会产生展开式, 这个展开式可能导致宏表达式的任何子表达式都被当作顶层表达式来处理. 如果一个具体实现还提供了一个 Common Lisp 宏的特殊操作符定义, 那么这个特殊操作符定义必须在这方面是语义上等价的.
 
-declaim                define-modify-macro   defsetf    
-defclass               define-setf-expander  defstruct  
-defconstant            defmacro              deftype    
-define-compiler-macro  defpackage            defvar     
-define-condition       defparameter                     
-
-Figure 3-8. Defining Macros That Affect the Compile-Time Environment 
-
- 3.2.3.1.2 Constraints on Macros and Compiler Macros
-
-Except where explicitly stated otherwise, no macro defined in the Common Lisp standard produces an expansion that could cause any of the subforms of the macro form to be treated as top level forms. If an implementation also provides a special operator definition of a Common Lisp macro, the special operator definition must be semantically equivalent in this respect.
-
-Compiler macro expansions must also have the same top level evaluation semantics as the form which they replace. This is of concern both to conforming implementations and to conforming programs. 
+编译器宏展开还必须具有与它们所取代的表达式相同的顶层求值语义. 这是对符合规范的实现和符合规范的程序的都需要关注的. 
 
  3.2.4 Literal Objects in Compiled Files
 
