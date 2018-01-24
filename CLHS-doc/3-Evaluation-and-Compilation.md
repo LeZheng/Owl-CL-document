@@ -480,7 +480,7 @@ Figure 3-5. 一些可应用于接收多值的操作符
 > * 3.2.1 [Compiler Terminology](#CompilerTerminology)
 > * 3.2.2 [编译语义](#CompilationSemantics)
 > * 3.2.3 [文件编译](#FileCompilation)
-> * 3.2.4 [Literal Objects in Compiled Files](#LiteralObjectsInCompiledFiles)
+> * 3.2.4 [编译后文件中的字面对象](#LiteralObjectsInCompiledFiles)
 
  3.2.1 Compiler Terminology
 
@@ -727,115 +727,106 @@ Figure 3-8. 影响编译环境的定义宏
 
 编译器宏展开还必须具有与它们所取代的表达式相同的顶层求值语义. 这是对符合规范的实现和符合规范的程序的都需要关注的. 
 
- 3.2.4 Literal Objects in Compiled Files
+### 3.2.4 <span id = "LiteralObjectsInCompiledFiles">编译后文件中的字面对象</span>
 
-The functions eval and compile are required to ensure that literal objects referenced within the resulting interpreted or compiled code objects are the same as the corresponding objects in the source code. compile-file, on the other hand, must produce a compiled file that, when loaded with load, constructs the objects defined by the source code and produces references to them.
+函数 eval 和 compile 需要去确保字面对象引用的解释和编译结果的对象和对应源代码中的是一样的. 从另一方面说, compile-file 必须产生一个编译后的文件, 它被 load 加载时, 构建源代码中定义的对象并且产生指向它们的引用.
 
-In the case of compile-file, objects constructed by load of the compiled file cannot be spoken of as being the same as the objects constructed at compile time, because the compiled file may be loaded into a different Lisp image than the one in which it was compiled. This section defines the concept of similarity which relates objects in the evaluation environment to the corresponding objects in the run-time environment.
+在 compile-file 的情况下, 编译后的文件所构建的对象不能被认为与编译时构造的对象相同, 因为编译后的文件可能被加载到不同的 Lisp 镜像中，而不是它编译时的镜像. 这个部分定义了相似的概念, 它将求值环境中的对象与运行时环境中的相应对象关联起来.
 
-The constraints on literal objects described in this section apply only to compile-file; eval and compile do not copy or coalesce constants.
+在这个章节中描述的字面对象约束只能应用于 compile-file; eval 和 compile 不会拷贝或合并常量.
 
-3.2.4.1 Externalizable Objects
+> * 3.2.4.1 [可外部化的对象](#ExternalizableObjects)
+> * 3.2.4.2 [字面化对象的相似性](#SimilarityLiteralObjects)
+> * 3.2.4.3 [Extensions to Similarity Rules](#ExtensionsSimilarityRules)
+> * 3.2.4.4 [Additional Constraints on Externalizable Objects](#ACEO)
 
-3.2.4.2 Similarity of Literal Objects
+#### 3.2.4.1 <span id = "ExternalizableObjects">可外部化的对象</span>
 
-3.2.5 Exceptional Situations in the Compiler
+事实上文件编译器在编译后的文件中额外表示字面对象并且在文件被加载时重构这些对象和适合的等价对象, 这也就需要去约束文件编译器处理的代码中的可以被用作字面化对象的对象特性.
 
- 3.2.4.1 Externalizable Objects
+可以在一个将要被文件编译器处理的代码中作为一个文本对象使用的对象被称为可外部化对象.
 
-The fact that the file compiler represents literal objects externally in a compiled file and must later reconstruct suitable equivalents of those objects when that file is loaded imposes a need for constraints on the nature of the objects that can be used as literal objects in code to be processed by the file compiler.
+如果两个对象满足概念上等价断言(下面定义的), 我们就定义这两个对象是相似的, 不依赖于 Lisp 镜像所以两个在不同 Lisp 镜像中的对象可以在这个断言下理解为等价的. 更进一步, 通过检查这个概念性断言的定义, 程序员可以通过文件编译来预测对象的哪些方面是可靠的.
 
-An object that can be used as a literal object in code to be processed by the file compiler is called an externalizable object.
+文件编译器必须与加载器合作, 以确保在每个情况下，一个可外部化的对象作为一个字面化对象处理，加载器将构造一个类似的对象.
 
-We define that two objects are similar if they satisfy a two-place conceptual equivalence predicate (defined below), which is independent of the Lisp image so that the two objects in different Lisp images can be understood to be equivalent under this predicate. Further, by inspecting the definition of this conceptual predicate, the programmer can anticipate what aspects of an object are reliably preserved by file compilation.
+新概念术语"similar"为了可外部化对象的对象集合而定义, 如此以致于编译后的文件被加载时, 一个和文件编译器操作时存在的原始对象相似的对象会被构建. 
 
-The file compiler must cooperate with the loader in order to assure that in each case where an externalizable object is processed as a literal object, the loader will construct a similar object.
+#### 3.2.4.2 <span id = "SimilarityLiteralObjects">字面化对象的相似性</span>
 
-The set of objects that are externalizable objects are those for which the new conceptual term ``similar'' is defined, such that when a compiled file is loaded, an object can be constructed which can be shown to be similar to the original object which existed at the time the file compiler was operating. 
+##### 3.2.4.2.1 聚合对象的相似性
 
- 3.2.4.2 Similarity of Literal Objects
+在已定义相似性以外类型中, 一些被当作是聚合对象Of the types over which similarity is defined, some are treated as aggregate objects. 对于这些类型, 相似性是递归定义的. 我们说这些类型的对象有着确定的基本特性并且为了满足相似性关系, 两个对象的对应特性的值也必须是相似的. <!-- TODO 待校对 -->
 
-3.2.4.2.1 Similarity of Aggregate Objects
+##### 3.2.4.2.2 相似性的定义
 
-3.2.4.2.2 Definition of Similarity
-
-3.2.4.3 Extensions to Similarity Rules
-
-3.2.4.4 Additional Constraints on Externalizable Objects
-
- 3.2.4.2.1 Similarity of Aggregate Objects
-
-Of the types over which similarity is defined, some are treated as aggregate objects. For these types, similarity is defined recursively. We say that an object of these types has certain ``basic qualities'' and to satisfy the similarity relationship, the values of the corresponding qualities of the two objects must also be similar. 
-
- 3.2.4.2.2 Definition of Similarity
-
-Two objects S (in source code) and C (in compiled code) are defined to be similar if and only if they are both of one of the types listed here (or defined by the implementation) and they both satisfy all additional requirements of similarity indicated for that type.
+两个对象 S (在源代码中) 和 C (在编译后的代码中) 仅当它们同时都是这里列出的类型(或者具体实现定义的)中的一个并且它们都满足该定义指明的所有额外需求就被定义为相似的.
 
 number
 
-    Two numbers S and C are similar if they are of the same type and represent the same mathematical value.
+    两个数字 S and C 如果它们是相同的类型并且表示相同的数学上的值, 那么它们就是相似的.
 
 character
 
-    Two simple characters S and C are similar if they have similar code attributes.
+    如果两个简单字符 S 和 C 有相似的代码属性, 那么它们就是相似的.
 
-    Implementations providing additional, implementation-defined attributes must define whether and how non-simple characters can be regarded as similar.
+    具体实现提供的额外的依赖于实现的属性必须定义非简单字符是否可以被当作相似的并且如何被当作相似的.
 
 symbol
 
-    Two apparently uninterned symbols S and C are similar if their names are similar.
+    如果两个显而易见的非内部符号它们的名字是相似的, 那么它们就是相似的.
 
-    Two interned symbols S and C are similar if their names are similar, and if either S is accessible in the current package at compile time and C is accessible in the current package at load time, or C is accessible in the package that is similar to the home package of S.
+    如果两个内部符号 S 和 C 名字是相似的并且编译时 S 可以在当前包访问而加载时 C 可以在当前包访问, 或者 C 在 S home包的相似包中可访问, 那么它们就是相似的.<!-- TODO home package ?? -->
 
-    (Note that similarity of symbols is dependent on neither the current readtable nor how the function read would parse the characters in the name of the symbol.)
+    (注意, 符号的相似性不依赖于当前的读取表, 也不依赖函数 read 如何来解析符号名称中的字符.)
 
 package
 
-    Two packages S and C are similar if their names are similar.
+    如果两个包 S 和 C 的名字是相似的, 那么它们就是相似的.
 
-    Note that although a package object is an externalizable object, the programmer is responsible for ensuring that the corresponding package is already in existence when code referencing it as a literal object is loaded. The loader finds the corresponding package object as if by calling find-package with that name as an argument. An error is signaled by the loader if no package exists at load time.
+    注意, 虽然一个包对象是一个可外部化的对象, 但是当将代码引用为一个字面化对象时, 程序员有责任确保相应的包已经存在. 加载器通过调用带有该名称的 find-package 来查找相应的包对象. 如果加载时包不存在, 则加载器会发出一个错误.
 
 random-state
 
-    Two random states S and C are similar if S would always produce the same sequence of pseudo-random numbers as a copy[5] of C when given as the random-state argument to the function random, assuming equivalent limit arguments in each case.
+    如果两个随机状态 S 和 C 中假定每种情况下 limit 参数等价, 当一个 C 的拷贝作为 random-state 参数给函数 random 时 S 一直产生相同的伪随机数序列, 那么它们就是等价的.
 
-    (Note that since C has been processed by the file compiler, it cannot be used directly as an argument to random because random would perform a side effect.)
+    (注意, 因为 C 已经被文件处理器处理过了, 它不能被直接用于 random 的参数因为 random 会有副作用.)
 
 cons
 
-    Two conses, S and C, are similar if the car[2] of S is similar to the car[2] of C, and the cdr[2] of S is similar to the cdr[2] of C.
+    两个cons S 和 C 如果它们的 car 和 cdr 部分分别都是相似的, 那么它们就是相似的.
 
 array
 
-    Two one-dimensional arrays, S and C, are similar if the length of S is similar to the length of C, the actual array element type of S is similar to the actual array element type of C, and each active element of S is similar to the corresponding element of C.
+    如果两个一维的数组 S 和 C 的长度以及实际中数组元素的类型还有每一个可用的元素对应也是相似的, 那么它们就是相似的.
 
-    Two arrays of rank other than one, S and C, are similar if the rank of S is similar to the rank of C, each dimension[1] of S is similar to the corresponding dimension[1] of C, the actual array element type of S is similar to the actual array element type of C, and each element of S is similar to the corresponding element of C.
+    两个一维以外的数组 S 和 C 如果它们的维度是相似的, 每一个对应的维度也是相似的, 每一个对应实际数组元素的类型也是相似的, 并且每一个对应的元素也是相似的, 那么它们就是相似的.
 
-    In addition, if S is a simple array, then C must also be a simple array. If S is a displaced array, has a fill pointer, or is actually adjustable, C is permitted to lack any or all of these qualities.
+    另外, 如果 S 是一个简单数组, 那么 C 也必须是一个简单数组. 如果 S 是一个带有一个填充指针或者实际的 adjustable 内容的偏移数组, 那么 C 被允许缺乏任何或所有这些特性.
 
 hash-table
 
-    Two hash tables S and C are similar if they meet the following three requirements:
+    如果两个哈希表 S 和 C 满足下面三条需求, 那么它们就是相似的:
 
-        They both have the same test (e.g., they are both eql hash tables).
+        它们都有相同的 test 部分(不如, 它们都是 eql 哈希表).
 
-        There is a unique one-to-one correspondence between the keys of the two hash tables, such that the corresponding keys are similar.
+        两个哈希表的键之间存在唯一的一对一匹配, 这样对应的键就是相似的.
 
-        For all keys, the values associated with two corresponding keys are similar.
+        对于所有的键, 与两个表中对应键关联的值是相似的.
 
-    If there is more than one possible one-to-one correspondence between the keys of S and C, the consequences are unspecified. A conforming program cannot use a table such as S as an externalizable constant.
+    如果在 S 和 C 中的键不止一个一对一匹配, 结果是无法定义的. 一个符合规范的程序不能使用像 S 的表作为可外部化常量.
 
 pathname
 
-    Two pathnames S and C are similar if all corresponding pathname components are similar.
+    如果两个路径名 S 和 C 对应的路径名成分是相似的, 那么它们就是相似的.
 
 function
 
-    Functions are not externalizable objects.
+    函数不是可外部化对象.
 
 structure-object and standard-object
 
-    A general-purpose concept of similarity does not exist for structures and standard objects. However, a conforming program is permitted to define a make-load-form method for any class K defined by that program that is a subclass of either structure-object or standard-object. The effect of such a method is to define that an object S of type K in source code is similar to an object C of type K in compiled code if C was constructed from code produced by calling make-load-form on S. 
+    对于结构体和标准对象不存在相似性的通用概念. 然而, 一个符合规范的程序允许去为这个程序所定义的 structure-object 或 standard-object 的子类 K 定义一个 make-load-form 方法. 这样一个方法的影响就是定义当源代码中类型 K 的对象 S 和 编译后的代码中类型 K 的对象中 C 是通过对 S 调用 make-load-form 构造出来的时, S 和 C 就是相似的. 
 
  3.2.4.3 Extensions to Similarity Rules
 
