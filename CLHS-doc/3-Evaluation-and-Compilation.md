@@ -481,6 +481,7 @@ Figure 3-5. 一些可应用于接收多值的操作符
 > * 3.2.2 [编译语义](#CompilationSemantics)
 > * 3.2.3 [文件编译](#FileCompilation)
 > * 3.2.4 [编译后文件中的字面对象](#LiteralObjectsInCompiledFiles)
+> * 3.2.5 [编译器中的异常情况](#ExceptionalSituationsCompiler)
 
  3.2.1 Compiler Terminology
 
@@ -868,21 +869,21 @@ symbol: 为了保证编译后的文件能够正确加载, 用户必须确保这�
 
     如果其中任何一个条件都不成立, 那么加载器查找受影响的符号的包就不确定了. 具体实现允许去发出一个错误或者定义这个行为. 
 
- 3.2.5 Exceptional Situations in the Compiler
+### 3.2.5 <span id = "ExceptionalSituationsCompiler">编译器中的异常情况</span>
 
-compile and compile-file are permitted to signal errors and warnings, including errors due to compile-time processing of (eval-when (:compile-toplevel) ...) forms, macro expansion, and conditions signaled by the compiler itself.
+compile 和 compile-file 允许去发出错误和警告, 包括由于处理编译期的 (eval-when (:compile-toplevel) ...) 表达式, 宏展开, 还有 conditions 时编译器自身发出的警告.
 
-Conditions of type error might be signaled by the compiler in situations where the compilation cannot proceed without intervention.
+在不进行干预编译就不能处理的情况下, 类型错误的状况可能由编译器发出.
 
-In addition to situations for which the standard specifies that conditions of type warning must or might be signaled, warnings might be signaled in situations where the compiler can determine that the consequences are undefined or that a run-time error will be signaled. Examples of this situation are as follows: violating type declarations, altering or assigning the value of a constant defined with defconstant, calling built-in Lisp functions with a wrong number of arguments or malformed keyword argument lists, and using unrecognized declaration specifiers.
+除了这个标准指定的必须或者可能发出警告类型状况的情况外, 在编译器可以确定结果未定义或者一个运行时错误会发出情况下也可能发出警告. 以下是这种情况的示例: 违反类型声明, 对 defconstant 定义的常量的值赋值或修改, 用错误数量的参数或者残缺的关键字列表调用内置的 Lisp 函数, 还有不可识别的声明标识.
 
-The compiler is permitted to issue warnings about matters of programming style as conditions of type style-warning. Examples of this situation are as follows: redefining a function using a different argument list, calling a function with a wrong number of arguments, not declaring ignore of a local variable that is not referenced, and referencing a variable declared ignore.
+编译器允许去提出一个关于编程风格问题, 作为 style-warning 类型的状况警告. 以下是这个情况的示例: 使用不同的参数列表重定义一个函数, 用错误数量的参数调用一个函数, 没有对一个没有引用到的本地变量声明 ignore, 还有引用一个声明为 ignore 的变量.
 
-Both compile and compile-file are permitted (but not required) to establish a handler for conditions of type error. For example, they might signal a warning, and restart compilation from some implementation-dependent point in order to let the compilation proceed without manual intervention.
+compile 和 compile-file 都允许(但不是必须)去为一个类型错误状况确定一个处理者. 比如, 它们可能会发出一个警告, 并且从一些依赖于具体实现的点重启来让编译在没有手动干预的情况下进行下去.
 
-Both compile and compile-file return three values, the second two indicating whether the source code being compiled contained errors and whether style warnings were issued.
+compile 和 compile-file 都返回 3 个值, 前两个表示被编译的源代码中是否有错误还有是否提出风格警告.
 
-Some warnings might be deferred until the end of compilation. See with-compilation-unit. 
+一些警告可能会被推迟到编译结束的时候. 见 with-compilation-unit. 
 
  3.3 Declarations
 
