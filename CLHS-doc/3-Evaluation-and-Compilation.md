@@ -737,7 +737,7 @@ Figure 3-8. 影响编译环境的定义宏
 
 > * 3.2.4.1 [可外部化的对象](#ExternalizableObjects)
 > * 3.2.4.2 [字面化对象的相似性](#SimilarityLiteralObjects)
-> * 3.2.4.3 [Extensions to Similarity Rules](#ExtensionsSimilarityRules)
+> * 3.2.4.3 [相似性规则的扩展](#ExtensionsSimilarityRules)
 > * 3.2.4.4 [Additional Constraints on Externalizable Objects](#ACEO)
 
 #### 3.2.4.1 <span id = "ExternalizableObjects">可外部化的对象</span>
@@ -828,45 +828,45 @@ structure-object and standard-object
 
     对于结构体和标准对象不存在相似性的通用概念. 然而, 一个符合规范的程序允许去为这个程序所定义的 structure-object 或 standard-object 的子类 K 定义一个 make-load-form 方法. 这样一个方法的影响就是定义当源代码中类型 K 的对象 S 和 编译后的代码中类型 K 的对象中 C 是通过对 S 调用 make-load-form 构造出来的时, S 和 C 就是相似的. 
 
- 3.2.4.3 Extensions to Similarity Rules
+#### 3.2.4.3 <span id = "ExtensionsSimilarityRules">相似性规则的扩展</span>
 
-Some objects, such as streams, readtables, and methods are not externalizable objects under the definition of similarity given above. That is, such objects may not portably appear as literal objects in code to be processed by the file compiler.
+一些对象, 就像流, 读取表还有方法在上面给定的相似性定义下不是可外部化的对象. 这就是说, 这些对象可能不能作为文件编译器处理的代码中的可移植文字对象出现.
 
-An implementation is permitted to extend the rules of similarity, so that other kinds of objects are externalizable objects for that implementation.
+一个具体实现允许去扩展相似性规则, 这样其他种类的对象对于这个具体实现也是可外部化对象.
 
-If for some kind of object, similarity is neither defined by this specification nor by the implementation, then the file compiler must signal an error upon encountering such an object as a literal constant. 
+如果对于一些类型的对象, 相似性没有被这个说明文档和具体实现所定义, 那么文件编译器在遇到这样一个对象作为字面化对象时会发出一个错误. 
 
- 3.2.4.4 Additional Constraints on Externalizable Objects
+#### 3.2.4.4 <span id = "ACEO">外部化对象的附加约束</span>
 
-If two literal objects appearing in the source code for a single file processed with the file compiler are the identical, the corresponding objects in the compiled code must also be the identical. With the exception of symbols and packages, any two literal objects in code being processed by the file compiler may be coalesced if and only if they are similar; if they are either both symbols or both packages, they may only be coalesced if and only if they are identical.
+如果在文件编译器处理的单个文件中出现的两个字面化对象是相同的, 那么编译后的代码中相应的对象也必须是相同的. 除了符号和包, 文件编译器处理的代码中的任何两个相似的文本对象都可以合并; 如果它们是两个符号或者两个包, 它们可能只有在它们是相同的前提下才会合并.
 
-Objects containing circular references can be externalizable objects. The file compiler is required to preserve eqlness of substructures within a file. Preserving eqlness means that subobjects that are the same in the source code must be the same in the corresponding compiled code.
+包含循环引用的对象可以是可外部化对象. 文件编译器需要在一个文件中保存子结构的 eqlness. 保留 eqlness 意味着在源代码中相同的子对象在相应的编译代码中必须是相同的.
 
-In addition, the following are constraints on the handling of literal objects by the file compiler:
+另外, 下面是文件编译器对字面化对象处理的约束:
 
-array: If an array in the source code is a simple array, then the corresponding array in the compiled code will also be a simple array. If an array in the source code is displaced, has a fill pointer, or is actually adjustable, the corresponding array in the compiled code might lack any or all of these qualities. If an array in the source code has a fill pointer, then the corresponding array in the compiled code might be only the size implied by the fill pointer.
+array: 如果一个在源代码中的数组是一个简单数组, 那么在编译后代码中的对应数组也是一个简单数组. 如果一个数组在源代码中是一个填充数组, 带有一个填充指针或者一个实际的 adjustable 值, 那么编译后代码中的对应数组可能缺少任何或者所有这些特性. 如果一个源代码中的数组有一个填充指针, 那么编译后的代码中对应的数组可能只是填充指针所暗示的大小.
 
-packages: The loader is required to find the corresponding package object as if by calling find-package with the package name as an argument. An error of type package-error is signaled if no package of that name exists at load time.
+packages: 加载器需要去找到对应包对象, 就像通过调用以包名为参数的 find-package 一样. 如果加载的时候这个名字对应的包不存在, 那么就会发出一个 package-error 类型的错误.
 
-random-state: A constant random state object cannot be used as the state argument to the function random because random modifies this data structure.
+random-state: 一个不变的 random 状态对象不能作为函数 random 的状态的参数应为这个函数会修改这个数据结构.
 
-structure, standard-object: Objects of type structure-object and standard-object may appear in compiled constants if there is an appropriate make-load-form method defined for that type.
+structure, standard-object: 如果存在类型适合的 make-load-form 方法那么 structure-object 和 standard-object 类型的对象也可能出现在编译后的常量中.
 
-    The file compiler calls make-load-form on any object that is referenced as a literal object if the object is a generalized instance of standard-object, structure-object, condition, or any of a (possibly empty) implementation-dependent set of other classes. The file compiler only calls make-load-form once for any given object within a single file.
+    如果被引用为文字对象的对象是 standard-object, structure-object, condition, 或者任何依赖于实现的类 (可能是 empty) ,那么文件编译器就会在这个对象上调用 make-load-form 对于单个文件中任何给定的对象文件编译器只会调用一次 make-load-form 方法.
 
-symbol: In order to guarantee that compiled files can be loaded correctly, users must ensure that the packages referenced in those files are defined consistently at compile time and load time. Conforming programs must satisfy the following requirements:
+symbol: 为了保证编译后的文件能够正确加载, 用户必须确保这些文件中引用的包在编译时和加载时一致地定义. 符合规范的程序必须满足以下要求:
 
-        The current package when a top level form in the file is processed by compile-file must be the same as the current package when the code corresponding to that top level form in the compiled file is executed by load. In particular:
+        被 compile-file 处理的文件中的顶层表达式所在的当前包必须和编译后文件中对应顶层表达式被 load 执行时所在当前包相同. 特别地:
 
-        a. Any top level form in a file that alters the current package must change it to a package of the same name both at compile time and at load time.
+        a. 任何修改当前包的文件中的顶层表达式都必须在编译时和加载时将其更改为同一名称的包.
 
-        b. If the first non-atomic top level form in the file is not an in-package form, then the current package at the time load is called must be a package with the same name as the package that was the current package at the time compile-file was called.
+        b. 如果文件中的第一个非原子级顶层表达式不是一个 in-package 的表达式, 那么调用 load 时的当前包的名称必须是与 compile-file 被调用时当前包的名字相同.
 
-        For all symbols appearing lexically within a top level form that were accessible in the package that was the current package during processing of that top level form at compile time, but whose home package was another package, at load time there must be a symbol with the same name that is accessible in both the load-time current package and in the package with the same name as the compile-time home package.
+        在一个顶层表达式在编译期被处理期间, 对于词法上出现在这个顶层表达式并且可以通过当前包来访问而 home 包是另一个包的所有符号, 在加载时当前包和编译时 home 包也必须存在一个可以访问的, 相同名字的符号. <!-- TODO 待校对-->
 
-        For all symbols represented in the compiled file that were external symbols in their home package at compile time, there must be a symbol with the same name that is an external symbol in the package with the same name at load time.
+        对于所有出现在编译后的文件中, 编译时在 home 包里是外部符号的符号, 在加载时这个包里也必须存在名字相同的外部符号. <!-- TODO 待校对-->
 
-    If any of these conditions do not hold, the package in which the loader looks for the affected symbols is unspecified. Implementations are permitted to signal an error or to define this behavior. 
+    如果其中任何一个条件都不成立, 那么加载器查找受影响的符号的包就不确定了. 具体实现允许去发出一个错误或者定义这个行为. 
 
  3.2.5 Exceptional Situations in the Compiler
 
