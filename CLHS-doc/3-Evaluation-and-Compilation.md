@@ -3,7 +3,7 @@
 > * 3.1 [求值](#Evaluation)
 > * 3.2 [编译](#Compilation)
 > * 3.3 [声明](#Declarations)
-> * 3.4 [Lambda Lists](#LambdaLists)
+> * 3.4 [Lambda列表](#LambdaLists)
 > * 3.5 [Error Checking in Function Calls](#ErrorChecking)
 > * 3.6 [Traversal Rules and Side Effects](#TraversalRulesSideEffects)
 > * 3.7 [Destructive Operations](#DestructiveOperations)
@@ -898,7 +898,7 @@ compile 和 compile-file 都返回 3 个值, 前两个表示被编译的源代�
 > * 3.3.1 [最低的声明处理需求](#MDPR)
 > * 3.3.2 [声明指定](#DeclarationSpecifiers)
 > * 3.3.3 [声明标识](#DeclarationIdentifiers)
-> * 3.3.4 [Declaration Scope](#DeclarationScope)
+> * 3.3.4 [声明的作用域](#DeclarationScope)
 
 ### 3.3.1 <span id = "MDPR">最低的声明处理需求</span>
 
@@ -934,7 +934,7 @@ Figure 3-9. Common Lisp 声明标识
 
 类型说明符可以用作声明标识符. (type-specifier var\*) 可以当作 (type type-specifier var\*) 的简写. 
 
-### 3.3.4 <span id = "">Declaration Scope</span>
+### 3.3.4 <span id = "DeclarationScope">声明的作用域</span>
 
 声明可以被分成两种类型: 一些适用于变量或函数的绑定; 一些则不适用于绑定.
 
@@ -1012,65 +1012,55 @@ Figure 3-9. Common Lisp 声明标识
 
 在这个例子, 第四行的第一个 x 引用是只第三行建立的 x 的词法绑定. 然而, 出现在第四行的第二个 x 位于第五行的自由声明的作用域内 (因为这个是 dotimes 的 结果表达式(result-form)) 并且因此引用 x 的动态绑定. 
 
- 3.4 Lambda Lists
+## 3.4 <span id = "LambdaLists">Lambda列表</span>
 
-A lambda list is a list that specifies a set of parameters (sometimes called lambda variables) and a protocol for receiving values for those parameters.
+一个lambda列表是一个指明了参数集合(有时也称为lambda变量)和一个用于接收和这些参数有关的值的规程.
 
-There are several kinds of lambda lists.
+这里有几种lambda列表的类型.
 
-Context                                      Kind of Lambda List                              
-defun form                                   ordinary lambda list                             
-defmacro form                                macro lambda list                                
-lambda expression                            ordinary lambda list                             
-flet local function definition               ordinary lambda list                             
-labels local function definition             ordinary lambda list                             
-handler-case clause specification            ordinary lambda list                             
-restart-case clause specification            ordinary lambda list                             
-macrolet local macro definition              macro lambda list                                
-define-method-combination                    ordinary lambda list                             
-define-method-combination :arguments option  define-method-combination arguments lambda list  
-defstruct :constructor option                boa lambda list                                  
-defgeneric form                              generic function lambda list                     
-defgeneric method clause                     specialized lambda list                          
-defmethod form                               specialized lambda list                          
-defsetf form                                 defsetf lambda list                              
-define-setf-expander form                    macro lambda list                                
-deftype form                                 deftype lambda list                              
-destructuring-bind form                      destructuring lambda list                        
-define-compiler-macro form                   macro lambda list                                
-define-modify-macro form                     define-modify-macro lambda list                  
+    Context                                      Kind of Lambda List                              
+    defun form                                   ordinary lambda list                             
+    defmacro form                                macro lambda list                                
+    lambda expression                            ordinary lambda list                             
+    flet local function definition               ordinary lambda list                             
+    labels local function definition             ordinary lambda list                             
+    handler-case clause specification            ordinary lambda list                             
+    restart-case clause specification            ordinary lambda list                             
+    macrolet local macro definition              macro lambda list                                
+    define-method-combination                    ordinary lambda list                             
+    define-method-combination :arguments option  define-method-combination arguments lambda list  
+    defstruct :constructor option                boa lambda list                                  
+    defgeneric form                              generic function lambda list                     
+    defgeneric method clause                     specialized lambda list                          
+    defmethod form                               specialized lambda list                          
+    defsetf form                                 defsetf lambda list                              
+    define-setf-expander form                    macro lambda list                                
+    deftype form                                 deftype lambda list                              
+    destructuring-bind form                      destructuring lambda list                        
+    define-compiler-macro form                   macro lambda list                                
+    define-modify-macro form                     define-modify-macro lambda list                  
 
-Figure 3-10. What Kind of Lambda Lists to Use
+Figure 3-10. 要使用的lambda列表的种类
 
-The next figure lists some defined names that are applicable to lambda lists.
+下面这段列出了可应用于lambda列表的定义的名字.
 
-lambda-list-keywords  lambda-parameters-limit    
+    lambda-list-keywords  lambda-parameters-limit    
 
-Figure 3-11. Defined names applicable to lambda lists
+Figure 3-11. 可应用于lambda列表的定义的名字
 
-3.4.1 Ordinary Lambda Lists
+> * 3.4.1 [Ordinary Lambda Lists](#OrdinaryLambdaLists)
+> * 3.4.2 [Generic Function Lambda Lists](#GenericFunctionLambdaLists)
+> * 3.4.3 [Specialized Lambda Lists](#SpecializedLambdaLists)
+> * 3.4.4 [Macro Lambda Lists](#MacroLambdaLists)
+> * 3.4.5 [Destructuring Lambda Lists](#DestructuringLambdaLists)
+> * 3.4.6 [Boa Lambda Lists](#BoaLambdaLists)
+> * 3.4.7 [Defsetf Lambda Lists](#DefsetfLambdaLists)
+> * 3.4.8 [Deftype Lambda Lists](#DeftypeLambdaLists)
+> * 3.4.9 [Define-modify-macro Lambda Lists](#DefineMMLambdaLists)
+> * 3.4.10 [Define-method-combination Arguments Lambda Lists](#DefineMCArgumentsLambdaLists)
+> * 3.4.11 [Syntactic Interaction of Documentation Strings and Declarations](#SIDSD)
 
-3.4.2 Generic Function Lambda Lists
-
-3.4.3 Specialized Lambda Lists
-
-3.4.4 Macro Lambda Lists
-
-3.4.5 Destructuring Lambda Lists
-
-3.4.6 Boa Lambda Lists
-
-3.4.7 Defsetf Lambda Lists
-
-3.4.8 Deftype Lambda Lists
-
-3.4.9 Define-modify-macro Lambda Lists
-
-3.4.10 Define-method-combination Arguments Lambda Lists
-
-3.4.11 Syntactic Interaction of Documentation Strings and Declarations
-
- 3.4.1 Ordinary Lambda Lists
+### 3.4.1 <span id = "">Ordinary Lambda Lists</span>
 
 An ordinary lambda list is used to describe how a set of arguments is received by an ordinary function. The defined names in the next figure are those which use ordinary lambda lists:
 
@@ -1105,33 +1095,28 @@ A keyword-name can be any symbol, but by convention is normally a keyword[1]; al
 
 An ordinary lambda list has five parts, any or all of which may be empty. For information about the treatment of argument mismatches, see Section 3.5 (Error Checking in Function Calls).
 
-3.4.1.1 Specifiers for the required parameters
+> * 3.4.1.1 [Specifiers for the required parameters](#SpecifiersRequiredParameters)
+> * 3.4.1.2 [Specifiers for optional parameters](#SpecifiersOptionalParameters)
+> * 3.4.1.3 [A specifier for a rest parameter](#SpecifierRestParameter)
+> * 3.4.1.4 [Specifiers for keyword parameters](#SpecifiersKeywordParameters)
+> * 3.4.1.5 [Specifiers for &aux variables](#SpecifiersAuxVariables)
+> * 3.4.1.6 [Examples of Ordinary Lambda Lists](#ExamplesOrdinaryLambdaLists)
 
-3.4.1.2 Specifiers for optional parameters
-
-3.4.1.3 A specifier for a rest parameter
-
-3.4.1.4 Specifiers for keyword parameters
-
-3.4.1.5 Specifiers for &aux variables
-
-3.4.1.6 Examples of Ordinary Lambda Lists
-
- 3.4.1.1 Specifiers for the required parameters
+#### 3.4.1.1 <span id = "">Specifiers for the required parameters</span>
 
 These are all the parameter specifiers up to the first lambda list keyword; if there are no lambda list keywords, then all the specifiers are for required parameters. Each required parameter is specified by a parameter variable var. var is bound as a lexical variable unless it is declared special.
 
 If there are n required parameters (n may be zero), there must be at least n passed arguments, and the required parameters are bound to the first n passed arguments; see Section 3.5 (Error Checking in Function Calls). The other parameters are then processed using any remaining arguments. 
 
- 3.4.1.2 Specifiers for optional parameters
+#### 3.4.1.2 <span id = "">Specifiers for optional parameters</span>
 
 If &optional is present, the optional parameter specifiers are those following &optional up to the next lambda list keyword or the end of the list. If optional parameters are specified, then each one is processed as follows. If any unprocessed arguments remain, then the parameter variable var is bound to the next remaining argument, just as for a required parameter. If no arguments remain, however, then init-form is evaluated, and the parameter variable is bound to the resulting value (or to nil if no init-form appears in the parameter specifier). If another variable name supplied-p-parameter appears in the specifier, it is bound to true if an argument had been available, and to false if no argument remained (and therefore init-form had to be evaluated). Supplied-p-parameter is bound not to an argument but to a value indicating whether or not an argument had been supplied for the corresponding var. 
 
- 3.4.1.3 A specifier for a rest parameter
+#### 3.4.1.3 <span id = "">A specifier for a rest parameter</span>
 
 &rest, if present, must be followed by a single rest parameter specifier, which in turn must be followed by another lambda list keyword or the end of the lambda list. After all optional parameter specifiers have been processed, then there may or may not be a rest parameter. If there is a rest parameter, it is bound to a list of all as-yet-unprocessed arguments. If no unprocessed arguments remain, the rest parameter is bound to the empty list. If there is no rest parameter and there are no keyword parameters, then an error should be signaled if any unprocessed arguments remain; see Section 3.5 (Error Checking in Function Calls). The value of a rest parameter is permitted, but not required, to share structure with the last argument to apply. 
 
- 3.4.1.4 Specifiers for keyword parameters
+#### 3.4.1.4 <span id = "">Specifiers for keyword parameters</span>
 
 If &key is present, all specifiers up to the next lambda list keyword or the end of the list are keyword parameter specifiers. When keyword parameters are processed, the same arguments are processed that would be made into a list for a rest parameter. It is permitted to specify both &rest and &key. In this case the remaining arguments are used for both purposes; that is, all remaining arguments are made into a list for the rest parameter, and are also processed for the &key parameters. If &key is specified, there must remain an even number of arguments; see Section 3.5.1.6 (Odd Number of Keyword Arguments). These arguments are considered as pairs, the first argument in each pair being interpreted as a name and the second as the corresponding value. The first object of each pair must be a symbol; see Section 3.5.1.5 (Invalid Keyword Arguments). The keyword parameter specifiers may optionally be followed by the lambda list keyword &allow-other-keys.
 
@@ -1153,9 +1138,7 @@ Note that if &key is present, a keyword argument of :allow-other-keys is always 
 
 Furthermore, if the receiving argument list specifies a regular argument which would be flagged by :allow-other-keys, then :allow-other-keys has both its special-cased meaning (identifying whether additional keywords are permitted) and its normal meaning (data flow into the function in question).
 
-3.4.1.4.1 Suppressing Keyword Argument Checking
-
- 3.4.1.4.1 Suppressing Keyword Argument Checking
+##### 3.4.1.4.1 Suppressing Keyword Argument Checking
 
 If &allow-other-keys was specified in the lambda list of a function, keyword[2] argument checking is suppressed in calls to that function.
 
@@ -1163,9 +1146,7 @@ If the :allow-other-keys argument is true in a call to a function, keyword[2] ar
 
 The :allow-other-keys argument is permissible in all situations involving keyword[2] arguments, even when its associated value is false.
 
-3.4.1.4.1.1 Examples of Suppressing Keyword Argument Checking
-
- 3.4.1.4.1.1 Examples of Suppressing Keyword Argument Checking
+###### 3.4.1.4.1.1 Examples of Suppressing Keyword Argument Checking
 
 ;;; The caller can supply :ALLOW-OTHER-KEYS T to suppress checking.
  ((lambda (&key x) x) :x 1 :y 2 :allow-other-keys t) =>  1
@@ -1185,7 +1166,7 @@ The :allow-other-keys argument is permissible in all situations involving keywor
   :x 1 :y 2 :allow-other-keys nil :allow-other-keys t)
 
 
- 3.4.1.5 Specifiers for &aux variables
+#### 3.4.1.5 <span id = "">Specifiers for &aux variables</span>
 
 These are not really parameters. If the lambda list keyword &aux is present, all specifiers after it are auxiliary variable specifiers. After all parameter specifiers have been processed, the auxiliary variable specifiers (those following &aux) are processed from left to right. For each one, init-form is evaluated and var is bound to that value (or to nil if no init-form was specified). &aux variable processing is analogous to let* processing.
 
@@ -1193,7 +1174,7 @@ These are not really parameters. If the lambda list keyword &aux is present, all
     ==  (lambda (x y) (let* ((a (car x)) (b 2) c) (list x y a b c)))
 
 
- 3.4.1.6 Examples of Ordinary Lambda Lists
+#### 3.4.1.6 <span id = "">Examples of Ordinary Lambda Lists</span>
 
 Here are some examples involving optional parameters and rest parameters:
 
@@ -1256,7 +1237,7 @@ As an example of the use of &allow-other-keys and :allow-other-keys, consider a 
 
 This function takes a string and dimensioning information and returns an array of the specified dimensions, each of whose elements is the specified string. However, :start and :end named arguments may be used to specify that a substring of the given string should be used. In addition, the presence of &allow-other-keys in the lambda list indicates that the caller may supply additional named arguments; the rest parameter provides access to them. These additional named arguments are passed to make-array. The function make-array normally does not allow the named arguments :start and :end to be used, and an error should be signaled if such named arguments are supplied to make-array. However, the presence in the call to make-array of the named argument :allow-other-keys with a true value causes any extraneous named arguments, including :start and :end, to be acceptable and ignored. 
 
- 3.4.2 Generic Function Lambda Lists
+### 3.4.2 <span id = "">Generic Function Lambda Lists</span>
 
 A generic function lambda list is used to describe the overall shape of the argument list to be accepted by a generic function. Individual method signatures might contribute additional keyword parameters to the lambda list of the effective method.
 
@@ -1290,7 +1271,7 @@ Use of &aux
 
     The use of &aux is not allowed. 
 
- 3.4.3 Specialized Lambda Lists
+### 3.4.3 <span id = "">Specialized Lambda Lists</span>
 
 A specialized lambda list is used to specialize a method for a particular signature and to describe how arguments matching that signature are received by the method. The defined names in the next figure use specialized lambda lists in some way; see the dictionary entry for each for information about how.
 
@@ -1313,7 +1294,7 @@ lambda-list::= ({var | (var [specializer])}*
                 [&key {var | ({var | (keyword-name var)} [init-form [supplied-p-parameter]])}* [&allow-other-keys]] 
                 [&aux {var | (var [init-form])}*]) 
 
- 3.4.4 Macro Lambda Lists
+### 3.4.4 <span id = "">Macro Lambda Lists</span>
 
 A macro lambda list is used in describing macros defined by the operators in the next figure.
 
@@ -1368,9 +1349,7 @@ A destructuring lambda list (whether at top level or embedded) can be dotted, en
 
 It is permissible for a macro form (or a subexpression of a macro form) to be a dotted list only when (... &rest var) or (... . var) is used to match it. It is the responsibility of the macro to recognize and deal with such situations.
 
-3.4.4.1 Destructuring by Lambda Lists
-
- 3.4.4.1 Destructuring by Lambda Lists
+#### 3.4.4.1 Destructuring by Lambda Lists
 
 Anywhere in a macro lambda list where a parameter name can appear, and where ordinary lambda list syntax (as described in Section 3.4.1 (Ordinary Lambda Lists)) does not otherwise allow a list, a destructuring lambda list can appear in place of the parameter name. When this is done, then the argument that would match the parameter is treated as a (possibly dotted) list, to be used as an argument list for satisfying the parameters in the embedded lambda list. This is known as destructuring.
 
@@ -1378,17 +1357,11 @@ Destructuring is the process of decomposing a compound object into its component
 
 A destructuring operation requires an object to be decomposed, a pattern that specifies what components are to be extracted, and the names of the variables whose values are to be the components.
 
-3.4.4.1.1 Data-directed Destructuring by Lambda Lists
-
-3.4.4.1.2 Lambda-list-directed Destructuring by Lambda Lists
-
- 3.4.4.1.1 Data-directed Destructuring by Lambda Lists
+##### 3.4.4.1.1 Data-directed Destructuring by Lambda Lists
 
 In data-directed destructuring, the pattern is a sample object of the type to be decomposed. Wherever a component is to be extracted, a symbol appears in the pattern; this symbol is the name of the variable whose value will be that component.
 
-3.4.4.1.1.1 Examples of Data-directed Destructuring by Lambda Lists
-
- 3.4.4.1.1.1 Examples of Data-directed Destructuring by Lambda Lists
+###### 3.4.4.1.1.1 Examples of Data-directed Destructuring by Lambda Lists
 
 An example pattern is
 
@@ -1400,7 +1373,7 @@ which destructures a list of three elements. The variable a is assigned to the f
 
 The important features of data-directed destructuring are its syntactic simplicity and the ability to extend it to lambda-list-directed destructuring. 
 
- 3.4.4.1.2 Lambda-list-directed Destructuring by Lambda Lists
+##### 3.4.4.1.2 Lambda-list-directed Destructuring by Lambda Lists
 
 An extension of data-directed destructuring of trees is lambda-list-directed destructuring. This derives from the analogy between the three-element destructuring pattern
 
@@ -1446,7 +1419,7 @@ The detailed behavior of each lambda list keyword in a lambda-list-directed dest
 
     Stands by itself. 
 
- 3.4.5 Destructuring Lambda Lists
+### 3.4.5 <span id = "">Destructuring Lambda Lists</span>
 
 A destructuring lambda list is used by destructuring-bind.
 
@@ -1472,7 +1445,7 @@ wholevar::= [&whole var]
 lambda-list::= (wholevar reqvars optvars restvar keyvars auxvars) | 
                (wholevar reqvars optvars . var) 
 
- 3.4.6 Boa Lambda Lists
+### 3.4.6 <span id = "">Boa Lambda Lists</span>
 
 A boa lambda list is a lambda list that is syntactically like an ordinary lambda list, but that is processed in ``by order of argument'' style.
 
@@ -1521,7 +1494,7 @@ Additional arguments that do not correspond to slot names but are merely present
 
 the c-token argument is used merely to supply a value used in the initialization of the c slot. The supplied-p parameters associated with optional parameters and keyword parameters might also be used this way. 
 
- 3.4.7 Defsetf Lambda Lists
+### 3.4.7 <span id = "">Defsetf Lambda Lists</span>
 
 A defsetf lambda list is used by defsetf.
 
@@ -1542,7 +1515,7 @@ Figure 3-19. Lambda List Keywords used by Defsetf Lambda Lists
 
 A defsetf lambda list differs from an ordinary lambda list only in that it does not permit the use of &aux, and that it permits use of &environment, which introduces an environment parameter. 
 
- 3.4.8 Deftype Lambda Lists
+### 3.4.8 <span id = "">Deftype Lambda Lists</span>
 
 A deftype lambda list is used by deftype.
 
@@ -1550,7 +1523,7 @@ A deftype lambda list has the same syntax as a macro lambda list, and can theref
 
 A deftype lambda list differs from a macro lambda list only in that if no init-form is supplied for an optional parameter or keyword parameter in the lambda-list, the default value for that parameter is the symbol * (rather than nil). 
 
- 3.4.9 Define-modify-macro Lambda Lists
+### 3.4.9 <span id = "">Define-modify-macro Lambda Lists</span>
 
 A define-modify-macro lambda list is used by define-modify-macro.
 
@@ -1562,7 +1535,7 @@ Figure 3-20. Lambda List Keywords used by Define-modify-macro Lambda Lists
 
 Define-modify-macro lambda lists are similar to ordinary lambda lists, but do not support keyword arguments. define-modify-macro has no need match keyword arguments, and a rest parameter is sufficient. Aux variables are also not supported, since define-modify-macro has no body forms which could refer to such bindings. See the macro define-modify-macro. 
 
- 3.4.10 Define-method-combination Arguments Lambda Lists
+### 3.4.10 <span id = "">Define-method-combination Arguments Lambda Lists</span>
 
 A define-method-combination arguments lambda list is used by the :arguments option to define-method-combination.
 
@@ -1575,7 +1548,7 @@ Figure 3-21. Lambda List Keywords used by Define-method-combination arguments La
 
 Define-method-combination arguments lambda lists are similar to ordinary lambda lists, but also permit the use of &whole. 
 
- 3.4.11 Syntactic Interaction of Documentation Strings and Declarations
+### 3.4.11 <span id = "">Syntactic Interaction of Documentation Strings and Declarations</span>
 
 In a number of situations, a documentation string can appear amidst a series of declare expressions prior to a series of forms.
 
