@@ -2,7 +2,7 @@
 
 > * 3.1 [求值](#Evaluation)
 > * 3.2 [编译](#Compilation)
-> * 3.3 [Declarations](#Declarations)
+> * 3.3 [声明](#Declarations)
 > * 3.4 [Lambda Lists](#LambdaLists)
 > * 3.5 [Error Checking in Function Calls](#ErrorChecking)
 > * 3.6 [Traversal Rules and Side Effects](#TraversalRulesSideEffects)
@@ -885,128 +885,132 @@ compile 和 compile-file 都返回 3 个值, 前两个表示被编译的源代�
 
 一些警告可能会被推迟到编译结束的时候. 见 with-compilation-unit. 
 
- 3.3 Declarations
+## 3.3 <span id = "Declarations">声明</span>
 
-Declarations provide a way of specifying information for use by program processors, such as the evaluator or the compiler.
+声明(Declarations)提供了一种指定例如求值器或者编译器这样的程序处理器使用的信息的方式.
 
-Local declarations can be embedded in executable code using declare. Global declarations, or proclamations, are established by proclaim or declaim.
+局部声明可以通过 declare 嵌入到可执行的代码中. 全局声明, 或者 proclamations, 可以通过 proclaim 或者 declaim 来确定.
 
-The the special form provides a shorthand notation for making a local declaration about the type of the value of a given form.
+这个 the 特殊表达式提供了一种简写标记来创建一个关于给定表达式的值的类型的局部声明.
 
-The consequences are undefined if a program violates a declaration or a proclamation.
+如果一个程序违反了声明和公告, 结果是没有定义的.
 
-3.3.1 Minimal Declaration Processing Requirements
+> * 3.3.1 [最低的声明处理需求](#MDPR)
+> * 3.3.2 [声明指定](#DeclarationSpecifiers)
+> * 3.3.3 [声明标识](#DeclarationIdentifiers)
+> * 3.3.4 [Declaration Scope](#DeclarationScope)
 
-3.3.2 Declaration Specifiers
+### 3.3.1 <span id = "MDPR">最低的声明处理需求</span>
 
-3.3.3 Declaration Identifiers
+通常, 一个具体实现可以自由地忽视除了 declaration, notinline, safety 还有 special 以外的声明指定.
 
-3.3.4 Declaration Scope
+一个 declaration 声明必须抑制关于不识别这个种类的声明的警告. 如果一个实现没有产生关于不识别声明的警告, 它可能安全地忽视了这个声明.
 
- 3.3.1 Minimal Declaration Processing Requirements
+一个 notinline 声明必须被任何支持内联函数或者编译器宏的实现所识别进而废弃那些机制. 一个不使用内联函数或者编译器宏的实现可能会安全地忽略这个声明.
 
-In general, an implementation is free to ignore declaration specifiers except for the declaration, notinline, safety, and special declaration specifiers.
+一个 safety 声明必须被识别, 它会提高当前的安全等级. 一个始终对代码进行处理的实现, 就像 safety 高一样, 可能安全地忽略这个声明.
 
-A declaration declaration must suppress warnings about unrecognized declarations of the kind that it declares. If an implementation does not produce warnings about unrecognized declarations, it may safely ignore this declaration.
+一个 special 声明必须被所有实现所处理declaration must be processed by all implementations. 
 
-A notinline declaration must be recognized by any implementation that supports inline functions or compiler macros in order to disable those facilities. An implementation that does not use inline functions or compiler macros may safely ignore this declaration.
+### 3.3.2 <span id = "DeclarationSpecifiers">声明指定</span>
 
-A safety declaration that increases the current safety level must always be recognized. An implementation that always processes code as if safety were high may safely ignore this declaration.
+一个声明指定是一个可以出现在层定的 declare 表达式或者一个 declaim 表达式或者作为参数给 proclaim. 它是一个的列表, 其中 car 部分为声明标识, cdr 部分为根据这个声明标识所指定的规则解释出来的数据.
+<!-- TODO declaration specifier ??--> 
 
-A special declaration must be processed by all implementations. 
+### 3.3.3 <span id = "DeclarationIdentifiers">声明标识</span>
 
- 3.3.2 Declaration Specifiers
+下面这段展示了这个标准定义的所有的声明标识.
 
-A declaration specifier is an expression that can appear at top level of a declare expression or a declaim form, or as the argument to proclaim. It is a list whose car is a declaration identifier, and whose cdr is data interpreted according to rules specific to the declaration identifier. 
+    declaration     ignore     special  
+    dynamic-extent  inline     type     
+    ftype           notinline           
+    ignorable       optimize            
 
- 3.3.3 Declaration Identifiers
+Figure 3-9. Common Lisp 声明标识
 
-The next figure shows a list of all declaration identifiers defined by this standard.
+一个具体实现可以自由地去支持其他(依赖实现)声明标识. 如果一个声明标识没有在上面定义, 也没有被具体实现所定义, 不是一个类型名字, 也没有在 declaration proclamation 中声明, 可能会发出一个警告.<!-- TODO declaration proclamation ?? -->
 
-declaration     ignore     special  
-dynamic-extent  inline     type     
-ftype           notinline           
-ignorable       optimize            
+#### 3.3.3.1 类型声明的简写标记
 
-Figure 3-9. Common Lisp Declaration Identifiers
+类型说明符可以用作声明标识符. (type-specifier var\*) 可以当作 (type type-specifier var\*) 的简写. 
 
-An implementation is free to support other (implementation-defined) declaration identifiers as well. A warning might be issued if a declaration identifier is not among those defined above, is not defined by the implementation, is not a type name, and has not been declared in a declaration proclamation.
+### 3.3.4 <span id = "">Declaration Scope</span>
 
-3.3.3.1 Shorthand notation for Type Declarations
+声明可以被分成两种类型: 一些适用于变量或函数的绑定; 一些则不适用于绑定.
 
- 3.3.3.1 Shorthand notation for Type Declarations
+一个出现在绑定表达式的头部并且适用于这个表达式创建的变量或函数的绑定的声明称之为绑定声明; 这个绑定会影响这个声明作用域内的绑定和任何绑定的引用.
 
-A type specifier can be used as a declaration identifier. (type-specifier var*) is taken as shorthand for (type type-specifier var*). 
+不绑定声明的声明称为自由声明(free declarations).
 
- 3.3.4 Declaration Scope
+在表达式 F1 中, 一个自由声明, 它适用于由某些表达式 F2 所建立的一个名字 N 的绑定, 其中F1是一个子表达式, 它只影响 N 在F1中的引用; 它不适用于其他在 F1 以外的绑定, 也不影响 F2 中建立的 N 绑定的行为.
 
-Declarations can be divided into two kinds: those that apply to the bindings of variables or functions; and those that do not apply to bindings.
+不适用于绑定的声明只能以自由绑定出现.
 
-A declaration that appears at the head of a binding form and applies to a variable or function binding made by that form is called a bound declaration; such a declaration affects both the binding and any references within the scope of the declaration.
+一个绑定声明的作用域和它对应的绑定的词法作用域相同; 对于特殊变量, 这意味着绑定的作用域是一个词法绑定 this means the scope that the binding would have had had it been a lexical binding.<!-- TODO 待校对 -->
 
-Declarations that are not bound declarations are called free declarations.
+除非明确声明, 自由声明的作用域只包括它出现在头部的表达式的主体的子表达式, 不包括其他的子表达式. 自由声明的作用域不包括包含声明的表达式所建立的绑定的初始化表达式.
 
-A free declaration in a form F1 that applies to a binding for a name N established by some form F2 of which F1 is a subform affects only references to N within F1; it does not to apply to other references to N outside of F1, nor does it affect the manner in which the binding of N by F2 is established.
-
-Declarations that do not apply to bindings can only appear as free declarations.
-
-The scope of a bound declaration is the same as the lexical scope of the binding to which it applies; for special variables, this means the scope that the binding would have had had it been a lexical binding.
-
-Unless explicitly stated otherwise, the scope of a free declaration includes only the body subforms of the form at whose head it appears, and no other subforms. The scope of free declarations specifically does not include initialization forms for bindings established by the form containing the declarations.
-
-Some iteration forms include step, end-test, or result subforms that are also included in the scope of declarations that appear in the iteration form. Specifically, the iteration forms and subforms involved are:
+一些循环表达式包含 step, end-test, 或者 result 子表达式, 这些子表达式也包含在循环表达式中出现的声明作用域内. 具体地说, 调用的循环表达式和子表达式是:
 
     do, do*: step-forms, end-test-form, and result-forms.
     dolist, dotimes: result-form
     do-all-symbols, do-external-symbols, do-symbols: result-form
 
-3.3.4.1 Examples of Declaration Scope
+#### 3.3.4.1 声明作用域的示例
 
- 3.3.4.1 Examples of Declaration Scope
+下面是一个示例, 说明了绑定声明的作用域.
 
-Here is an example illustrating the scope of bound declarations.
-
- (let ((x 1))                ;[1] 1st occurrence of x
-   (declare (special x))     ;[2] 2nd occurrence of x
-   (let ((x 2))              ;[3] 3rd occurrence of x
-     (let ((old-x x)         ;[4] 4th occurrence of x
-           (x 3))            ;[5] 5th occurrence of x
-       (declare (special x)) ;[6] 6th occurrence of x
-       (list old-x x))))     ;[7] 7th occurrence of x
+```LISP
+(let ((x 1))                ;[1] 1st occurrence of x
+  (declare (special x))     ;[2] 2nd occurrence of x
+  (let ((x 2))              ;[3] 3rd occurrence of x
+    (let ((old-x x)         ;[4] 4th occurrence of x
+          (x 3))            ;[5] 5th occurrence of x
+      (declare (special x)) ;[6] 6th occurrence of x
+      (list old-x x))))     ;[7] 7th occurrence of x
 =>  (2 3)
+```
 
-The first occurrence of x establishes a dynamic binding of x because of the special declaration for x in the second line. The third occurrence of x establishes a lexical binding of x (because there is no special declaration in the corresponding let form). The fourth occurrence of x x is a reference to the lexical binding of x established in the third line. The fifth occurrence of x establishes a dynamic binding of x for the body of the let form that begins on that line because of the special declaration for x in the sixth line. The reference to x in the fourth line is not affected by the special declaration in the sixth line because that reference is not within the ``would-be lexical scope'' of the variable x in the fifth line. The reference to x in the seventh line is a reference to the dynamic binding of x established in the fifth line.
+由于 x 的 special 声明在第二行, 第一个出现的 x 确定一个 x 的动态绑定. 第三个出现的 x 确定是一个 x 的词法绑定 (因为在对应的 let 表达式里没有 special 声明). 第四个出现的 x 是一个指向第三行确定的 x 的词法绑定的引用. 第五个出现的 x 为 let 表达式的 body 部分建立一个 x 的动态绑定因为这个 x 的特殊声明在第六行. 第四行的 x 引用没有被第六行的 special 声明影响因为这个引用不是在第五行变量 x 的词法作用域内. 第七行 x 的引用是第五行建立的 x 的动态绑定的引用.
 
-Here is another example, to illustrate the scope of a free declaration. In the following:
+这里是另一个示例, 用来介绍自由声明的作用域. 如下:
 
- (lambda (&optional (x (foo 1))) ;[1]
-   (declare (notinline foo))     ;[2]
-   (foo x))                      ;[3]
+```LISP
+(lambda (&optional (x (foo 1))) ;[1]
+  (declare (notinline foo))     ;[2]
+  (foo x))                      ;[3]
+```
 
-the call to foo in the first line might be compiled inline even though the call to foo in the third line must not be. This is because the notinline declaration for foo in the second line applies only to the body on the third line. In order to suppress inlining for both calls, one might write:
+第一行对 foo 的调用可能会被编译为内联即便第三行对 foo 的调用一定不会的情况下. 这是因为第二行对 foo 的 notinline 声明只适用于第三行的主体部分. 为了抑制每次调用的内联, 一种方式是这么写:
 
- (locally (declare (notinline foo)) ;[1]
-   (lambda (&optional (x (foo 1)))  ;[2]
-     (foo x)))                      ;[3]
+```LISP
+(locally (declare (notinline foo)) ;[1]
+  (lambda (&optional (x (foo 1)))  ;[2]
+    (foo x)))                      ;[3]
+```
 
-or, alternatively:
+或者, 换种方式:
 
- (lambda (&optional                               ;[1]
-            (x (locally (declare (notinline foo)) ;[2]
-                 (foo 1))))                       ;[3]
-   (declare (notinline foo))                      ;[4]
-   (foo x))                                       ;[5]
+```LISP
+(lambda (&optional                               ;[1]
+          (x (locally (declare (notinline foo)) ;[2]
+                (foo 1))))                       ;[3]
+  (declare (notinline foo))                      ;[4]
+  (foo x))                                       ;[5]
+```
 
-Finally, here is an example that shows the scope of declarations in an iteration form.
+最后, 这里有一个循环表达式声明的作用域的示例.
 
- (let ((x  1))                     ;[1]
-   (declare (special x))           ;[2]
-     (let ((x 2))                  ;[3]
-       (dotimes (i x x)            ;[4]
-         (declare (special x)))))  ;[5]
+```LISP
+(let ((x  1))                     ;[1]
+  (declare (special x))           ;[2]
+    (let ((x 2))                  ;[3]
+      (dotimes (i x x)            ;[4]
+        (declare (special x)))))  ;[5]
 =>  1
+```
 
-In this example, the first reference to x on the fourth line is to the lexical binding of x established on the third line. However, the second occurrence of x on the fourth line lies within the scope of the free declaration on the fifth line (because this is the result-form of the dotimes) and therefore refers to the dynamic binding of x. 
+在这个例子, 第四行的第一个 x 引用是只第三行建立的 x 的词法绑定. 然而, 出现在第四行的第二个 x 位于第五行的自由声明的作用域内 (因为这个是 dotimes 的 结果表达式(result-form)) 并且因此引用 x 的动态绑定. 
 
  3.4 Lambda Lists
 
