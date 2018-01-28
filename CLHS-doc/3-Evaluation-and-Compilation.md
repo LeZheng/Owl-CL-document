@@ -1048,7 +1048,7 @@ Figure 3-10. 要使用的lambda列表的种类
 
 Figure 3-11. 可应用于lambda列表的定义的名字
 
-> * 3.4.1 [Ordinary Lambda Lists](#OrdinaryLambdaLists)
+> * 3.4.1 [普通lambda列表](#OrdinaryLambdaLists)
 > * 3.4.2 [Generic Function Lambda Lists](#GenericFunctionLambdaLists)
 > * 3.4.3 [Specialized Lambda Lists](#SpecializedLambdaLists)
 > * 3.4.4 [Macro Lambda Lists](#MacroLambdaLists)
@@ -1060,26 +1060,26 @@ Figure 3-11. 可应用于lambda列表的定义的名字
 > * 3.4.10 [Define-method-combination Arguments Lambda Lists](#DefineMCArgumentsLambdaLists)
 > * 3.4.11 [Syntactic Interaction of Documentation Strings and Declarations](#SIDSD)
 
-### 3.4.1 <span id = "">Ordinary Lambda Lists</span>
+### 3.4.1 <span id = "OrdinaryLambdaLists">普通lambda列表</span>
 
-An ordinary lambda list is used to describe how a set of arguments is received by an ordinary function. The defined names in the next figure are those which use ordinary lambda lists:
+一个普通lambda列表被用于描述一个参数集合如何被普通函数所接收. 下面定义的名字使用普通lambda列表:
 
-define-method-combination  handler-case  restart-case  
-defun                      labels                      
-flet                       lambda                      
+    define-method-combination  handler-case  restart-case  
+    defun                      labels                      
+    flet                       lambda                      
 
-Figure 3-12. Standardized Operators that use Ordinary Lambda Lists
+Figure 3-12. 使用普通lambda的标准操作
 
-An ordinary lambda list can contain the lambda list keywords shown in the next figure.
+一个普通lambda列表可以包含下面这段展示的lambda列表关键字.
 
-&allow-other-keys  &key       &rest  
-&aux               &optional         
+    &allow-other-keys  &key       &rest  
+    &aux               &optional         
 
-Figure 3-13. Lambda List Keywords used by Ordinary Lambda Lists
+Figure 3-13. 普通lambda列表使用的lambda列表
 
-Each element of a lambda list is either a parameter specifier or a lambda list keyword. Implementations are free to provide additional lambda list keywords. For a list of all lambda list keywords used by the implementation, see lambda-list-keywords.
+lambda列表中的每一个元素是一个参数说明符或者一个lambda列表关键字. 具体实现可以自由地提供额外的lambda列表关键字. 对于一个实现中使用的lambda列表关键字, 见 lambda-list-keywords.
 
-The syntax for ordinary lambda lists is as follows:
+普通lambda列表的语法如下:
 
 lambda-list::= (var* 
                 [&optional {var | (var [init-form [supplied-p-parameter]])}*] 
@@ -1087,155 +1087,169 @@ lambda-list::= (var*
                 [&key {var | ({var | (keyword-name var)} [init-form [supplied-p-parameter]])}* [&allow-other-keys]] 
                 [&aux {var | (var [init-form])}*]) 
 
-A var or supplied-p-parameter must be a symbol that is not the name of a constant variable.
+一个 var 或 supplied-p-parameter 必须是一个不是常变量的名字的符号.
 
-An init-form can be any form. Whenever any init-form is evaluated for any parameter specifier, that form may refer to any parameter variable to the left of the specifier in which the init-form appears, including any supplied-p-parameter variables, and may rely on the fact that no other parameter variable has yet been bound (including its own parameter variable).
+一个 init-form 可以是任何表达式形式. 无论何时对于任何参数说明符任何的 init-form 的求值, 那个表达式形式可能引用任何这个说明符左边的参数变量, 包括任何 supplied-p-parameter 变量, 并且依赖没有其他参数变量已经被绑定的事实(包括它自己的参数变量) .<!-- TODO 待校验 -->
 
-A keyword-name can be any symbol, but by convention is normally a keyword[1]; all standardized functions follow that convention.
+一个 keyword-name 可以使任何符号, 但是按照惯例是一个正常的关键字; 所有标准化的实现遵守这个惯例.
 
-An ordinary lambda list has five parts, any or all of which may be empty. For information about the treatment of argument mismatches, see Section 3.5 (Error Checking in Function Calls).
+一个普通的lambda列表有5个部分, 其中的任何部分或者全部可以是空的. 关于不匹配参数处理的信息, 见章节 3.5 (Error Checking in Function Calls).
 
-> * 3.4.1.1 [Specifiers for the required parameters](#SpecifiersRequiredParameters)
-> * 3.4.1.2 [Specifiers for optional parameters](#SpecifiersOptionalParameters)
-> * 3.4.1.3 [A specifier for a rest parameter](#SpecifierRestParameter)
-> * 3.4.1.4 [Specifiers for keyword parameters](#SpecifiersKeywordParameters)
-> * 3.4.1.5 [Specifiers for &aux variables](#SpecifiersAuxVariables)
-> * 3.4.1.6 [Examples of Ordinary Lambda Lists](#ExamplesOrdinaryLambdaLists)
+> * 3.4.1.1 [必要参数指定符](#SpecifiersRequiredParameters)
+> * 3.4.1.2 [可选参数指定符](#SpecifiersOptionalParameters)
+> * 3.4.1.3 [剩余参数指定符](#SpecifierRestParameter)
+> * 3.4.1.4 [关键字参数指定符](#SpecifiersKeywordParameters)
+> * 3.4.1.5 [&aux变量的指定符](#SpecifiersAuxVariables)
+> * 3.4.1.6 [普通lambda列表的示例](#ExamplesOrdinaryLambdaLists)
 
-#### 3.4.1.1 <span id = "">Specifiers for the required parameters</span>
+#### 3.4.1.1 <span id = "SpecifiersRequiredParameters">必要参数指定符</span>
 
-These are all the parameter specifiers up to the first lambda list keyword; if there are no lambda list keywords, then all the specifiers are for required parameters. Each required parameter is specified by a parameter variable var. var is bound as a lexical variable unless it is declared special.
+这些指的是直到第一个lambda列表关键字为止的参数指定符; 如果这里没有lambda列表关键字, 那么所有指定符都是必要参数. 每一个必要参数被参数变量 var 指定. var 绑定给一个词法变量除非它被声明为 special.
 
-If there are n required parameters (n may be zero), there must be at least n passed arguments, and the required parameters are bound to the first n passed arguments; see Section 3.5 (Error Checking in Function Calls). The other parameters are then processed using any remaining arguments. 
+如果这里有 n 个必要参数 (n 可能是 0), 这里至少必须传递 n 个参数, 并且必要参数绑定给前 n 个传递的参数; 见章节 3.5 (Error Checking in Function Calls). 其他参数保留给后面的剩余参数.
 
-#### 3.4.1.2 <span id = "">Specifiers for optional parameters</span>
+#### 3.4.1.2 <span id = "SpecifiersOptionalParameters">可选参数指定符</span>
 
-If &optional is present, the optional parameter specifiers are those following &optional up to the next lambda list keyword or the end of the list. If optional parameters are specified, then each one is processed as follows. If any unprocessed arguments remain, then the parameter variable var is bound to the next remaining argument, just as for a required parameter. If no arguments remain, however, then init-form is evaluated, and the parameter variable is bound to the resulting value (or to nil if no init-form appears in the parameter specifier). If another variable name supplied-p-parameter appears in the specifier, it is bound to true if an argument had been available, and to false if no argument remained (and therefore init-form had to be evaluated). Supplied-p-parameter is bound not to an argument but to a value indicating whether or not an argument had been supplied for the corresponding var. 
+如果出现 &optional, 可选参数指定符就是那些跟在 &optional 后面直到下一个lambda列表关键字或者直到列表结束的指定符. 如果指定了可选参数, 然后每一个都被处理如下. 如果存在未处理的参数, 则参数变量 var 将绑定到后面的剩余参数, 就像必要参数一样. 如果没有参数剩下, 不管怎样, 那么 init-form 被求值, 并且参数变量被绑定给结果值(如果没有 init-form 出现在参数指定符就是 nil). 如果另一个变量名 supplied-p-parameter 出现在这个指定符, 如果有一个参数可用它会被绑定为 true, 如果没有参数剩余它会被绑定为 false (并且因此 init-form 需要被求值<!-- TODO 待校验 -->). Supplied-p-parameter 不是绑定一个参数而是一个值, 它表示是否为相应的 var 提供了一个对应的参数. 
 
-#### 3.4.1.3 <span id = "">A specifier for a rest parameter</span>
+#### 3.4.1.3 <span id = "SpecifierRestParameter">剩余参数指定符</span>
 
-&rest, if present, must be followed by a single rest parameter specifier, which in turn must be followed by another lambda list keyword or the end of the lambda list. After all optional parameter specifiers have been processed, then there may or may not be a rest parameter. If there is a rest parameter, it is bound to a list of all as-yet-unprocessed arguments. If no unprocessed arguments remain, the rest parameter is bound to the empty list. If there is no rest parameter and there are no keyword parameters, then an error should be signaled if any unprocessed arguments remain; see Section 3.5 (Error Checking in Function Calls). The value of a rest parameter is permitted, but not required, to share structure with the last argument to apply. 
+&rest, 如果出现, 后面必须跟着单个的剩余参数指定符, 反过来后面必须跟着另一个lambda列表关键字或者到lambda列表的末尾<!-- TODO 待校验 -->. 在所有可选参数被处理后, 这里可能是一个剩余参数. 如果这里是一个剩余参数, 它给绑定给一个所有 as-yet-unprocessed 参数的列表. 如果没有未处理参数剩下, 这个剩余参数绑定给空列表. 如果这里没有剩余参数和关键字参数并且有任何未处理参数剩余, 会发出一个错误; 见章节 3.5 (Error Checking in Function Calls). 剩余参数的值是允许的, 但不是必需的, 以便与 apply 最后一个参数共享结构. 
 
-#### 3.4.1.4 <span id = "">Specifiers for keyword parameters</span>
+#### 3.4.1.4 <span id = "SpecifiersKeywordParameters">关键字参数指定符</span>
 
-If &key is present, all specifiers up to the next lambda list keyword or the end of the list are keyword parameter specifiers. When keyword parameters are processed, the same arguments are processed that would be made into a list for a rest parameter. It is permitted to specify both &rest and &key. In this case the remaining arguments are used for both purposes; that is, all remaining arguments are made into a list for the rest parameter, and are also processed for the &key parameters. If &key is specified, there must remain an even number of arguments; see Section 3.5.1.6 (Odd Number of Keyword Arguments). These arguments are considered as pairs, the first argument in each pair being interpreted as a name and the second as the corresponding value. The first object of each pair must be a symbol; see Section 3.5.1.5 (Invalid Keyword Arguments). The keyword parameter specifiers may optionally be followed by the lambda list keyword &allow-other-keys.
+如果出现 &key , 所有直到下一个lambda列表或者列表末尾的指定符都是关键字参数指定符. 当关键字参数被处理, 相同被处理的参数会被做成一个列表作为剩余参数. 同时指定 &rest 和 &key 是允许的. 在这个情况下剩下的参数被同时用于这两种目的; 这就是说, 所有剩下的参数被做成lambda列表作为剩余参数, 也被当作关键字参数处理. 如果指定了 &key, 必须有偶数个参数; 见章节 3.5.1.6 (Odd Number of Keyword Arguments). 这些参数被当作对, 每一对中的第一个参数被解释为一个名字而第二个作为对应的值. 每个对中的第一个对象必须是一个符号; 见章节 3.5.1.5 (Invalid Keyword Arguments). 这个关键字参数指定符可能可选地跟着lambda列表关键字 &allow-other-keys.
 
-In each keyword parameter specifier must be a name var for the parameter variable. If the var appears alone or in a (var init-form) combination, the keyword name used when matching arguments to parameters is a symbol in the KEYWORD package whose name is the same (under string=) as var's. If the notation ((keyword-name var) init-form) is used, then the keyword name used to match arguments to parameters is keyword-name, which may be a symbol in any package. (Of course, if it is not a symbol in the KEYWORD package, it does not necessarily self-evaluate, so care must be taken when calling the function to make sure that normal evaluation still yields the keyword name.) Thus
+在每一个关键字参数指定符中必须是一个名字 var 给参数变量. 如果这个 var 单独出现或者在一个 (var init-form) 组合中, 当匹配参数时参数是一个 KEYWORD 包中名字和 var 相同的符号时这个关键字名字会被使用. 如果这个 ((keyword-name var) init-form) 表示法被使用, 那么这个用于匹配参数的关键字名字是 keyword-name, 它可能是任何包中的符号(当然, 如果它不是 KEYWORD 包中的符号, 它没有必要自求值, 所以当调用这个函数时必须额外关心来确保正常的求值一直跳过这个关键字名字). 因此
 
- (defun foo (&key radix (type 'integer)) ...)
+```LISP
+(defun foo (&key radix (type 'integer)) ...)
+```
 
-means exactly the same as
+与下面这个意义相同
 
- (defun foo (&key ((:radix radix)) ((:type type) 'integer)) ...)
+```LISP
+(defun foo (&key ((:radix radix)) ((:type type) 'integer)) ...)
+```
 
-The keyword parameter specifiers are, like all parameter specifiers, effectively processed from left to right. For each keyword parameter specifier, if there is an argument pair whose name matches that specifier's name (that is, the names are eq), then the parameter variable for that specifier is bound to the second item (the value) of that argument pair. If more than one such argument pair matches, the leftmost argument pair is used. If no such argument pair exists, then the init-form for that specifier is evaluated and the parameter variable is bound to that value (or to nil if no init-form was specified). supplied-p-parameter is treated as for &optional parameters: it is bound to true if there was a matching argument pair, and to false otherwise.
+关键字参数指定符和所有参数指定符一样, 实际上从左到右进行处理. 对于每一个关键字参数指定符, 如果这里有一个名字匹配这个指定符的名字的参数对 (这就是说, 名字是 eq 的), 那么这个指定符对应的参数变量绑定给这个参数对的第二项(值部分). 如果不止一个这样的参数对匹配, 会使用最左边的参数对. 如果不存在这样的参数对, 那么这个指定符的对应 init-form 被求值并且这个参数变量绑定给那个值 (如果没有指定 init-form , 那就是 nil). supplied-p-parameter 和 &optional 参数一样的处理方式: 如果这里有匹配的参数对它被绑定为 true, 否则就是 false.
 
-Unless keyword argument checking is suppressed, an argument pair must a name matched by a parameter specifier; see Section 3.5.1.4 (Unrecognized Keyword Arguments).
+除非关键字参数检测被抑制, 一个参数对必须和一个参数指定符名字匹配; 见章节 3.5.1.4 (Unrecognized Keyword Arguments).
 
-If keyword argument checking is suppressed, then it is permitted for an argument pair to match no parameter specifier, and the argument pair is ignored, but such an argument pair is accessible through the rest parameter if one was supplied. The purpose of these mechanisms is to allow sharing of argument lists among several lambda expressions and to allow either the caller or the called lambda expression to specify that such sharing may be taking place.
+如果关键字参数检测被抑制, 那么一个参数对没有匹配的参数指定符是允许的, 并且这个参数对会被忽略, 但是如果提供了剩余参数, 这样的一个参数是可以通过剩余参数访问的. 这些机制的目的是去允许在多个lambda表达式之间共享参数列表并且允许调用者和被调用的lambda表达式去指定这样的共享是可能发生的.
 
-Note that if &key is present, a keyword argument of :allow-other-keys is always permitted---regardless of whether the associated value is true or false. However, if the value is false, other non-matching keywords are not tolerated (unless &allow-other-keys was used).
+注意如果 &key 出现了, 一个 :allow-other-keys 关键字参数总是是允许的---不管关联的值是 true 或者 false. 然而, 如果这个值是 false, 其他不匹配的关键字是不接受的 (除非使用了 &allow-other-keys).
 
-Furthermore, if the receiving argument list specifies a regular argument which would be flagged by :allow-other-keys, then :allow-other-keys has both its special-cased meaning (identifying whether additional keywords are permitted) and its normal meaning (data flow into the function in question).
+此外, 如果接收的参数列表指定了一个普通的会被 :allow-other-keys 标记的参数, 那么 :allow-other-keys 同时有它的 special-cased 意义(确定是否允许附加的关键字)和它的正常意义(data flow into the function in question).
 
-##### 3.4.1.4.1 Suppressing Keyword Argument Checking
+##### 3.4.1.4.1 抑制参数检测
 
-If &allow-other-keys was specified in the lambda list of a function, keyword[2] argument checking is suppressed in calls to that function.
+如果一个函数的lambda列表中指定了 &allow-other-keys, 对这个函数的调用中关键字参数检测会被抑制.
 
-If the :allow-other-keys argument is true in a call to a function, keyword[2] argument checking is suppressed in that call.
+如果在一个函数的调用中 :allow-other-keys 参数是 true, 在这个调用中关键字参数检测是被抑制的.
 
-The :allow-other-keys argument is permissible in all situations involving keyword[2] arguments, even when its associated value is false.
+这个 :allow-other-keys 在所有涉及关键字参数的地方都是允许的, 甚至当它关联的值是 false.<!-- TODO 待校验 -->
 
-###### 3.4.1.4.1.1 Examples of Suppressing Keyword Argument Checking
+###### 3.4.1.4.1.1 抑制关键字参数检测的例子
 
+```LISP
 ;;; The caller can supply :ALLOW-OTHER-KEYS T to suppress checking.
- ((lambda (&key x) x) :x 1 :y 2 :allow-other-keys t) =>  1
+((lambda (&key x) x) :x 1 :y 2 :allow-other-keys t) =>  1
 ;;; The callee can use &ALLOW-OTHER-KEYS to suppress checking.
- ((lambda (&key x &allow-other-keys) x) :x 1 :y 2) =>  1
+((lambda (&key x &allow-other-keys) x) :x 1 :y 2) =>  1
 ;;; :ALLOW-OTHER-KEYS NIL is always permitted.
- ((lambda (&key) t) :allow-other-keys nil) =>  T
+((lambda (&key) t) :allow-other-keys nil) =>  T
 ;;; As with other keyword arguments, only the left-most pair
 ;;; named :ALLOW-OTHER-KEYS has any effect.
- ((lambda (&key x) x) 
-  :x 1 :y 2 :allow-other-keys t :allow-other-keys nil)
+((lambda (&key x) x) 
+:x 1 :y 2 :allow-other-keys t :allow-other-keys nil)
 =>  1
 ;;; Only the left-most pair named :ALLOW-OTHER-KEYS has any effect,
 ;;; so in safe code this signals a PROGRAM-ERROR (and might enter the
 ;;; debugger).  In unsafe code, the consequences are undefined.
- ((lambda (&key x) x)                   ;This call is not valid
-  :x 1 :y 2 :allow-other-keys nil :allow-other-keys t)
+((lambda (&key x) x)                   ;This call is not valid
+:x 1 :y 2 :allow-other-keys nil :allow-other-keys t)
+```
 
+#### 3.4.1.5 <span id = "SpecifiersAuxVariables">&aux变量的指定符</span>
 
-#### 3.4.1.5 <span id = "">Specifiers for &aux variables</span>
+这些不是真的参数. 如果这个lambda列表出现 &aux, 所有在它后面的指定符都是辅助变量指定符. 在所有参数指定符被处理后, 辅助变量指定符(那些在 &aux 后面的)从左到右被处理. 对于其中的每一个, init-form 被求值并且 var 被绑定给那个值 (如果没有 init-form 就是 nil). &aux 变量处理类似于 let* 处理.
 
-These are not really parameters. If the lambda list keyword &aux is present, all specifiers after it are auxiliary variable specifiers. After all parameter specifiers have been processed, the auxiliary variable specifiers (those following &aux) are processed from left to right. For each one, init-form is evaluated and var is bound to that value (or to nil if no init-form was specified). &aux variable processing is analogous to let* processing.
+```LISP
+(lambda (x y &aux (a (car x)) (b 2) c) (list x y a b c))
+  ==  (lambda (x y) (let* ((a (car x)) (b 2) c) (list x y a b c)))
+```
 
- (lambda (x y &aux (a (car x)) (b 2) c) (list x y a b c))
-    ==  (lambda (x y) (let* ((a (car x)) (b 2) c) (list x y a b c)))
+#### 3.4.1.6 <span id = "ExamplesOrdinaryLambdaLists">普通lambda列表的示例</span>
 
+这里是可选参数和剩余参数的例子:
 
-#### 3.4.1.6 <span id = "">Examples of Ordinary Lambda Lists</span>
-
-Here are some examples involving optional parameters and rest parameters:
-
- ((lambda (a b) (+ a (* b 3))) 4 5) =>  19
- ((lambda (a &optional (b 2)) (+ a (* b 3))) 4 5) =>  19
- ((lambda (a &optional (b 2)) (+ a (* b 3))) 4) =>  10
- ((lambda (&optional (a 2 b) (c 3 d) &rest x) (list a b c d x)))
+```LISP
+((lambda (a b) (+ a (* b 3))) 4 5) =>  19
+((lambda (a &optional (b 2)) (+ a (* b 3))) 4 5) =>  19
+((lambda (a &optional (b 2)) (+ a (* b 3))) 4) =>  10
+((lambda (&optional (a 2 b) (c 3 d) &rest x) (list a b c d x)))
 =>  (2 NIL 3 NIL NIL)
- ((lambda (&optional (a 2 b) (c 3 d) &rest x) (list a b c d x)) 6)
+((lambda (&optional (a 2 b) (c 3 d) &rest x) (list a b c d x)) 6)
 =>  (6 T 3 NIL NIL)
- ((lambda (&optional (a 2 b) (c 3 d) &rest x) (list a b c d x)) 6 3)
+((lambda (&optional (a 2 b) (c 3 d) &rest x) (list a b c d x)) 6 3)
 =>  (6 T 3 T NIL)
- ((lambda (&optional (a 2 b) (c 3 d) &rest x) (list a b c d x)) 6 3 8)
+((lambda (&optional (a 2 b) (c 3 d) &rest x) (list a b c d x)) 6 3 8)
 =>  (6 T 3 T (8))
- ((lambda (&optional (a 2 b) (c 3 d) &rest x) (list a b c d x))
-  6 3 8 9 10 11)
+((lambda (&optional (a 2 b) (c 3 d) &rest x) (list a b c d x))
+6 3 8 9 10 11)
 =>  (6 t 3 t (8 9 10 11))
+```
 
-Here are some examples involving keyword parameters:
+这里是关键字参数的例子:
 
- ((lambda (a b &key c d) (list a b c d)) 1 2) =>  (1 2 NIL NIL)
- ((lambda (a b &key c d) (list a b c d)) 1 2 :c 6) =>  (1 2 6 NIL)
- ((lambda (a b &key c d) (list a b c d)) 1 2 :d 8) =>  (1 2 NIL 8)
- ((lambda (a b &key c d) (list a b c d)) 1 2 :c 6 :d 8) =>  (1 2 6 8)
- ((lambda (a b &key c d) (list a b c d)) 1 2 :d 8 :c 6) =>  (1 2 6 8)
- ((lambda (a b &key c d) (list a b c d)) :a 1 :d 8 :c 6) =>  (:a 1 6 8)
- ((lambda (a b &key c d) (list a b c d)) :a :b :c :d) =>  (:a :b :d NIL)
- ((lambda (a b &key ((:sea c)) d) (list a b c d)) 1 2 :sea 6) =>  (1 2 6 NIL)
- ((lambda (a b &key ((c c)) d) (list a b c d)) 1 2 'c 6) =>  (1 2 6 NIL)
+```LISP
+((lambda (a b &key c d) (list a b c d)) 1 2) =>  (1 2 NIL NIL)
+((lambda (a b &key c d) (list a b c d)) 1 2 :c 6) =>  (1 2 6 NIL)
+((lambda (a b &key c d) (list a b c d)) 1 2 :d 8) =>  (1 2 NIL 8)
+((lambda (a b &key c d) (list a b c d)) 1 2 :c 6 :d 8) =>  (1 2 6 8)
+((lambda (a b &key c d) (list a b c d)) 1 2 :d 8 :c 6) =>  (1 2 6 8)
+((lambda (a b &key c d) (list a b c d)) :a 1 :d 8 :c 6) =>  (:a 1 6 8)
+((lambda (a b &key c d) (list a b c d)) :a :b :c :d) =>  (:a :b :d NIL)
+((lambda (a b &key ((:sea c)) d) (list a b c d)) 1 2 :sea 6) =>  (1 2 6 NIL)
+((lambda (a b &key ((c c)) d) (list a b c d)) 1 2 'c 6) =>  (1 2 6 NIL)
+```
 
-Here are some examples involving optional parameters, rest parameters, and keyword parameters together:
+这里是同时启用可选参数和剩余参数还有关键字参数的示例:
 
- ((lambda (a &optional (b 3) &rest x &key c (d a))
-    (list a b c d x)) 1)   
+```LISP
+((lambda (a &optional (b 3) &rest x &key c (d a))
+  (list a b c d x)) 1)   
 =>  (1 3 NIL 1 ()) 
- ((lambda (a &optional (b 3) &rest x &key c (d a))
-    (list a b c d x)) 1 2)
+((lambda (a &optional (b 3) &rest x &key c (d a))
+  (list a b c d x)) 1 2)
 =>  (1 2 NIL 1 ())
- ((lambda (a &optional (b 3) &rest x &key c (d a))
-    (list a b c d x)) :c 7)
+((lambda (a &optional (b 3) &rest x &key c (d a))
+  (list a b c d x)) :c 7)
 =>  (:c 7 NIL :c ())
- ((lambda (a &optional (b 3) &rest x &key c (d a))
-    (list a b c d x)) 1 6 :c 7)
+((lambda (a &optional (b 3) &rest x &key c (d a))
+  (list a b c d x)) 1 6 :c 7)
 =>  (1 6 7 1 (:c 7))
- ((lambda (a &optional (b 3) &rest x &key c (d a))
-    (list a b c d x)) 1 6 :d 8)
+((lambda (a &optional (b 3) &rest x &key c (d a))
+  (list a b c d x)) 1 6 :d 8)
 =>  (1 6 NIL 8 (:d 8))
- ((lambda (a &optional (b 3) &rest x &key c (d a))
-    (list a b c d x)) 1 6 :d 8 :c 9 :d 10)
+((lambda (a &optional (b 3) &rest x &key c (d a))
+  (list a b c d x)) 1 6 :d 8 :c 9 :d 10)
 =>  (1 6 9 8 (:d 8 :c 9 :d 10))
+```
 
-As an example of the use of &allow-other-keys and :allow-other-keys, consider a function that takes two named arguments of its own and also accepts additional named arguments to be passed to make-array:
+作为 &allow-other-keys 和 :allow-other-keys 使用的示例, 细想一个函数, 它接受两个命名的参数, 并接受附加的命名参数, 以将其传递给 make-array:
 
- (defun array-of-strings (str dims &rest named-pairs
-                          &key (start 0) end &allow-other-keys)
-   (apply #'make-array dims
-          :initial-element (subseq str start end)
-          :allow-other-keys t
-          named-pairs))
+```LISP
+(defun array-of-strings (str dims &rest named-pairs
+                        &key (start 0) end &allow-other-keys)
+  (apply #'make-array dims
+        :initial-element (subseq str start end)
+        :allow-other-keys t
+        named-pairs))
+```
 
-This function takes a string and dimensioning information and returns an array of the specified dimensions, each of whose elements is the specified string. However, :start and :end named arguments may be used to specify that a substring of the given string should be used. In addition, the presence of &allow-other-keys in the lambda list indicates that the caller may supply additional named arguments; the rest parameter provides access to them. These additional named arguments are passed to make-array. The function make-array normally does not allow the named arguments :start and :end to be used, and an error should be signaled if such named arguments are supplied to make-array. However, the presence in the call to make-array of the named argument :allow-other-keys with a true value causes any extraneous named arguments, including :start and :end, to be acceptable and ignored. 
+这个函数需要一个字符串和一个维度信息并且返回一个指定维度的数组, 它的每一个指定的元素是指定的字符串. 然而, :start 和 :end 命名的参数可能被用于指定应该使用的给定字符串中的子字符串. 另外, 在这个lambda列表中出现的 &allow-other-keys 表示调用者可能提供额外的命名参数; 这个剩余参数提供对它们的访问. 这些额外的命名的参数被传递给 make-array. 这个 make-array 函数正常不允许命名参数 :start 和 :end 被使用, 并且如果这样命名的参数提供给 make-array 会发出一个错误. 然而, 对 make-array 的调用中参数 :allow-other-keys 带有一个 true 值导致任何额外的命名参数, 包括 :start 和 :end, 是可接受的并且忽略掉. 
 
 ### 3.4.2 <span id = "">Generic Function Lambda Lists</span>
 
