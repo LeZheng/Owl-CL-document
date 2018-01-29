@@ -1049,9 +1049,9 @@ Figure 3-10. 要使用的lambda列表的种类
 Figure 3-11. 可应用于lambda列表的定义的名字
 
 > * 3.4.1 [普通lambda列表](#OrdinaryLambdaLists)
-> * 3.4.2 [Generic Function Lambda Lists](#GenericFunctionLambdaLists)
-> * 3.4.3 [Specialized Lambda Lists](#SpecializedLambdaLists)
-> * 3.4.4 [Macro Lambda Lists](#MacroLambdaLists)
+> * 3.4.2 [广义函数lambda列表](#GenericFunctionLambdaLists)
+> * 3.4.3 [特定的lambda列表](#SpecializedLambdaLists)
+> * 3.4.4 [宏lambda列表](#MacroLambdaLists)
 > * 3.4.5 [Destructuring Lambda Lists](#DestructuringLambdaLists)
 > * 3.4.6 [Boa Lambda Lists](#BoaLambdaLists)
 > * 3.4.7 [Defsetf Lambda Lists](#DefsetfLambdaLists)
@@ -1081,11 +1081,11 @@ lambda列表中的每一个元素是一个参数说明符或者一个lambda列�
 
 普通lambda列表的语法如下:
 
-lambda-list::= (var* 
-                [&optional {var | (var [init-form [supplied-p-parameter]])}*] 
-                [&rest var] 
-                [&key {var | ({var | (keyword-name var)} [init-form [supplied-p-parameter]])}* [&allow-other-keys]] 
-                [&aux {var | (var [init-form])}*]) 
+    lambda-list::= (var* 
+                    [&optional {var | (var [init-form [supplied-p-parameter]])}*] 
+                    [&rest var] 
+                    [&key {var | ({var | (keyword-name var)} [init-form [supplied-p-parameter]])}* [&allow-other-keys]] 
+                    [&aux {var | (var [init-form])}*]) 
 
 一个 var 或 supplied-p-parameter 必须是一个不是常变量的名字的符号.
 
@@ -1251,183 +1251,191 @@ lambda-list::= (var*
 
 这个函数需要一个字符串和一个维度信息并且返回一个指定维度的数组, 它的每一个指定的元素是指定的字符串. 然而, :start 和 :end 命名的参数可能被用于指定应该使用的给定字符串中的子字符串. 另外, 在这个lambda列表中出现的 &allow-other-keys 表示调用者可能提供额外的命名参数; 这个剩余参数提供对它们的访问. 这些额外的命名的参数被传递给 make-array. 这个 make-array 函数正常不允许命名参数 :start 和 :end 被使用, 并且如果这样命名的参数提供给 make-array 会发出一个错误. 然而, 对 make-array 的调用中参数 :allow-other-keys 带有一个 true 值导致任何额外的命名参数, 包括 :start 和 :end, 是可接受的并且忽略掉. 
 
-### 3.4.2 <span id = "">Generic Function Lambda Lists</span>
+### 3.4.2 <span id = "GenericFunctionLambdaLists">广义函数lambda列表</span>
 
-A generic function lambda list is used to describe the overall shape of the argument list to be accepted by a generic function. Individual method signatures might contribute additional keyword parameters to the lambda list of the effective method.
+一个广义函数lambda列表被用于描述被一个广义函数接受的参数列表的整体形状. 个别方法签名可能为有效方法的lambda列表提供额外的关键字参数.
 
-A generic function lambda list is used by defgeneric.
+一个广义函数lambda列表被 defgeneric 所使用.
 
-A generic function lambda list has the following syntax:
+一个广义函数lambda列表有着以下语法:
 
-lambda-list::= (var* 
-                [&optional {var | (var)}*] 
-                [&rest var] 
-                [&key {var | ({var | (keyword-name var)})}* [&allow-other-keys]]) 
+    lambda-list::= (var* 
+                    [&optional {var | (var)}*] 
+                    [&rest var] 
+                    [&key {var | ({var | (keyword-name var)})}* [&allow-other-keys]]) 
 
-A generic function lambda list can contain the lambda list keywords shown in the next figure.
+一个广义函数lambda列表可以包含下面这段中的lambda列表关键字.
 
-&allow-other-keys  &optional    
-&key               &rest        
+    &allow-other-keys  &optional    
+    &key               &rest        
 
-Figure 3-14. Lambda List Keywords used by Generic Function Lambda Lists
+Figure 3-14. 广义函数lambda列表使用的lambda列表关键字
 
-A generic function lambda list differs from an ordinary lambda list in the following ways:
+一个广义函数lambda列表在以下方面有别于普通lambda列表:
 
-Required arguments
+必要参数
 
-    Zero or more required parameters must be specified.
+    0个或更多必要参数必须被指定.
 
-Optional and keyword arguments
+可选和个关键字参数
 
-    Optional parameters and keyword parameters may not have default initial value forms nor use supplied-p parameters.
+    可选参数和关键字参数可能没有默认的初始值和使用 supplied-p 参数.
 
-Use of &aux
+&aux 的使用
 
-    The use of &aux is not allowed. 
+    &aux 的使用是不允许的. 
 
-### 3.4.3 <span id = "">Specialized Lambda Lists</span>
+### 3.4.3 <span id = "SpecializedLambdaLists">特定的lambda列表</span>
 
-A specialized lambda list is used to specialize a method for a particular signature and to describe how arguments matching that signature are received by the method. The defined names in the next figure use specialized lambda lists in some way; see the dictionary entry for each for information about how.
+一个特定的lambda列表被用于为一个特定的签名特化一个方法并且去描述匹配这个签名的参数如何被方法接收. 下一段中定义的名字以某种方式使用特定的lambda列表; 关于其中的每一个怎样处理的信息见字典条目.
 
-defmethod  defgeneric    
+    defmethod  defgeneric    
 
-Figure 3-15. Standardized Operators that use Specialized Lambda Lists
+Figure 3-15. 使用特定的lambda列表的标准化操作符
 
-A specialized lambda list can contain the lambda list keywords shown in the next figure.
+一个特定的lambda列表可以包含下面这段中展示的lambda列表关键字.
 
-&allow-other-keys  &key       &rest  
-&aux               &optional         
+    &allow-other-keys  &key       &rest  
+    &aux               &optional         
 
-Figure 3-16. Lambda List Keywords used by Specialized Lambda Lists
+Figure 3-16. 特定lambda列表使用的lambda列表关键字
 
-A specialized lambda list is syntactically the same as an ordinary lambda list except that each required parameter may optionally be associated with a class or object for which that parameter is specialized.
+一个特定的lambda列表是语法上等价于一个普通的lambda列表除了每一个必要参数可能可选地和一个类或者一个对象关联, 该参数是特定的.
 
-lambda-list::= ({var | (var [specializer])}* 
-                [&optional {var | (var [init-form [supplied-p-parameter]])}*] 
-                [&rest var] 
-                [&key {var | ({var | (keyword-name var)} [init-form [supplied-p-parameter]])}* [&allow-other-keys]] 
-                [&aux {var | (var [init-form])}*]) 
+    lambda-list::= ({var | (var [specializer])}* 
+                    [&optional {var | (var [init-form [supplied-p-parameter]])}*] 
+                    [&rest var] 
+                    [&key {var | ({var | (keyword-name var)} [init-form [supplied-p-parameter]])}* [&allow-other-keys]] 
+                    [&aux {var | (var [init-form])}*]) 
 
-### 3.4.4 <span id = "">Macro Lambda Lists</span>
+### 3.4.4 <span id = "MacroLambdaLists">宏lambda列表</span>
 
-A macro lambda list is used in describing macros defined by the operators in the next figure.
+一个宏lambda列表被用于描述下面这段中的操作符定义的宏A macro lambda list is used in describing macros defined by the operators in the next figure.
 
-define-compiler-macro  defmacro  macrolet  
-define-setf-expander                       
+    define-compiler-macro  defmacro  macrolet  
+    define-setf-expander                       
 
-Figure 3-17. Operators that use Macro Lambda Lists
+Figure 3-17. 使用宏lambda列表的操作符
 
-With the additional restriction that an environment parameter may appear only once (at any of the positions indicated), a macro lambda list has the following syntax:
+对于一个环境参数可能只出现一次(在描述的任何位置)的附加限制, 一个宏lambda列表有以下语法:
 
-reqvars::= var* 
+    reqvars::= var* 
 
-optvars::= [&optional {var | (var [init-form [supplied-p-parameter]])}*] 
+    optvars::= [&optional {var | (var [init-form [supplied-p-parameter]])}*] 
 
-restvar::= [{&rest | &body} var] 
+    restvar::= [{&rest | &body} var] 
 
-keyvars::= [&key {var | ({var | (keyword-name var)} [init-form [supplied-p-parameter]])}* 
-            [&allow-other-keys]] 
+    keyvars::= [&key {var | ({var | (keyword-name var)} [init-form [supplied-p-parameter]])}* 
+                [&allow-other-keys]] 
 
-auxvars::= [&aux {var | (var [init-form])}*] 
+    auxvars::= [&aux {var | (var [init-form])}*] 
 
-envvar::= [&environment var] 
+    envvar::= [&environment var] 
 
-wholevar::= [&whole var] 
+    wholevar::= [&whole var] 
 
-lambda-list::= (wholevar envvar  reqvars envvar  optvars envvar 
-                restvar envvar  keyvars envvar  auxvars envvar) | 
-               (wholevar envvar  reqvars envvar  optvars envvar .  var) 
+    lambda-list::= (wholevar envvar  reqvars envvar  optvars envvar 
+                    restvar envvar  keyvars envvar  auxvars envvar) | 
+                  (wholevar envvar  reqvars envvar  optvars envvar .  var) 
 
-pattern::= (wholevar reqvars optvars restvar keyvars auxvars) | 
-           (wholevar reqvars optvars . var) 
+    pattern::= (wholevar reqvars optvars restvar keyvars auxvars) | 
+              (wholevar reqvars optvars . var) 
 
-A macro lambda list can contain the lambda list keywords shown in the next figure.
+一个宏lambda列表可以包含下面这段展示的lambda列表关键字.
 
-&allow-other-keys  &environment  &rest   
-&aux               &key          &whole  
-&body              &optional             
+    &allow-other-keys  &environment  &rest   
+    &aux               &key          &whole  
+    &body              &optional             
 
-Figure 3-18. Lambda List Keywords used by Macro Lambda Lists
+Figure 3-18. 宏lambda列表使用的lambda列表参数
 
-Optional parameters (introduced by &optional) and keyword parameters (introduced by &key) can be supplied in a macro lambda list, just as in an ordinary lambda list. Both may contain default initialization forms and supplied-p parameters.
+可选参数 (introduced by &optional) 和关键字参数 (introduced by &key) 可以在一个宏lambda列表中被提供, 就像在普通lambda列表中一样. 每一个都可能包含默认初始化表达式和 supplied-p 参数.
 
-&body is identical in function to &rest, but it can be used to inform certain output-formatting and editing functions that the remainder of the form is treated as a body, and should be indented accordingly. Only one of &body or &rest can be used at any particular level; see Section 3.4.4.1 (Destructuring by Lambda Lists). &body can appear at any level of a macro lambda list; for details, see Section 3.4.4.1 (Destructuring by Lambda Lists).
+&body 在函数中和 &rest 一样, 但是它可以被用于通知确定的输出格式化和编辑函数这个表达式的剩余部分被当作一个主体(body), 并且应该相应地缩进. 在任何特定的级别 &body 或者 &rest 只有一个可以被使用; 见章节 3.4.4.1 (Destructuring by Lambda Lists). &body 可以出现在一个宏lambda表达式的任何级别; 关于详细情况, 见章节 3.4.4.1 (Destructuring by Lambda Lists).
 
-&whole is followed by a single variable that is bound to the entire macro-call form; this is the value that the macro function receives as its first argument. If &whole and a following variable appear, they must appear first in lambda-list, before any other parameter or lambda list keyword. &whole can appear at any level of a macro lambda list. At inner levels, the &whole variable is bound to the corresponding part of the argument, as with &rest, but unlike &rest, other arguments are also allowed. The use of &whole does not affect the pattern of arguments specified.
+&whole 跟着一个绑定给整个 macro-call 表达式的单个变量; 这是这个宏函数收到的第一个参数的值. 如果出现 &whole 和一个跟在后面的变量, 它们必须出现在lambda列表的最前面, 在任何其他参数或者lambda列表关键字之前. &whole 可以出现在一个宏lambda列表的任何级别. 在内部级别, 这个 &whole 变量绑定给参数的对应部分, 正如 &rest, 但是不像 &rest, 其他参数也是允许的. 这个 &whole 的使用不影响参数指定的模式.
 
-&environment is followed by a single variable that is bound to an environment representing the lexical environment in which the macro call is to be interpreted. This environment should be used with macro-function, get-setf-expansion, compiler-macro-function, and macroexpand (for example) in computing the expansion of the macro, to ensure that any lexical bindings or definitions established in the compilation environment are taken into account. &environment can only appear at the top level of a macro lambda list, and can only appear once, but can appear anywhere in that list; the &environment parameter is bound along with &whole before any other variables in the lambda list, regardless of where &environment appears in the lambda list. The object that is bound to the environment parameter has dynamic extent.
+&environment 后面跟着一个绑定给表示当前词法环境的环境, 这个环境是这个宏调用被解释时所处的环境. 这个环境应该和 macro-function, get-setf-expansion, compiler-macro-function, 还有 macroexpand (for example) 在计算宏展开式一起使用, 来确保这个编译环境中确定的任何词法绑定或定义被考虑进去. &environment 只能出现在宏lambda列表的顶层, 并且只能出现一次, 但是可以出现在这个列表的任何地方; 这个 &environment 和 &whole 被在这个lambda列表的任何其他变量之前被绑定, 不管 &environment 出现在这个lambda列表的什么地方. 绑定到环境参数的对象具有动态范围.
 
-Destructuring allows a macro lambda list to express the structure of a macro call syntax. If no lambda list keywords appear, then the macro lambda list is a tree containing parameter names at the leaves. The pattern and the macro form must have compatible tree structure; that is, their tree structure must be equivalent, or it must differ only in that some leaves of the pattern match non-atomic objects of the macro form. For information about error detection in this situation, see Section 3.5.1.7 (Destructuring Mismatch).
+解构允许一个宏lambda列表去表达宏调用语法结构. 如果没有出现lambda列表关键字, 那么这个宏lambda列表是在叶子中包含参数名称的树. 模式和宏表达式必须具有兼容的树结构; 这就是说, 它们的树结构必须是等价的, 或者它只能在模式的某些叶节点与宏形式的非原子对象匹配时有所不同. 关于这种情况下的错误检测的信息, 见章节 3.5.1.7 (Destructuring Mismatch).
 
-A destructuring lambda list (whether at top level or embedded) can be dotted, ending in a parameter name. This situation is treated exactly as if the parameter name that ends the list had appeared preceded by &rest.
+一个解构的lambda列表(不管在顶层还是嵌入的)可以被点标记, 以一个参数名结束. 这种情况的处理方式与结束列表的参数名称在 &rest 前面出现的情况完全相同.
 
-It is permissible for a macro form (or a subexpression of a macro form) to be a dotted list only when (... &rest var) or (... . var) is used to match it. It is the responsibility of the macro to recognize and deal with such situations.
+对于一个宏表达式(或者是一个宏表达式的子表达式)是一个标有点的列表是允许的, 只有在和 (... &rest var) 或 (... . var) 匹配时. 宏需要去识别和处理这种情况.
 
-#### 3.4.4.1 Destructuring by Lambda Lists
+#### 3.4.4.1 lambda列表的解构
+<!-- TODO 整块待校验 -->
+在一个宏lambda列表中任何参数名字可以出现的地方, 还有普通lambda列表语法中(在章节 3.4.1 (Ordinary Lambda Lists) 描述的)不允许一个列表的地方, 一个解构的lambda列表可以出现在参数名字的地方. 当这个完成后, 与参数匹配的参数被当作一个(可能是点标记的)列表, 作为一个参数列表, 用于满足内嵌的lambda列表中的参数. 这就被认为是解构.
 
-Anywhere in a macro lambda list where a parameter name can appear, and where ordinary lambda list syntax (as described in Section 3.4.1 (Ordinary Lambda Lists)) does not otherwise allow a list, a destructuring lambda list can appear in place of the parameter name. When this is done, then the argument that would match the parameter is treated as a (possibly dotted) list, to be used as an argument list for satisfying the parameters in the embedded lambda list. This is known as destructuring.
+解构是将一个复合对象分解为它的组件部分的过程, 使用一种缩写的声明式语法, 而不是用原始的组件访问函数. 每一个组件部分绑定给一个变量.
 
-Destructuring is the process of decomposing a compound object into its component parts, using an abbreviated, declarative syntax, rather than writing it out by hand using the primitive component-accessing functions. Each component part is bound to a variable.
+一个解构操作需要一个将要解构的对象, 一个指定要提取哪些组件的模式, 以及那些值为组件的变量的名称.
 
-A destructuring operation requires an object to be decomposed, a pattern that specifies what components are to be extracted, and the names of the variables whose values are to be the components.
+##### 3.4.4.1.1 lambda列表的数据导向解构
 
-##### 3.4.4.1.1 Data-directed Destructuring by Lambda Lists
+在数据导向的解构中, 模式是一个要被分解的类型的对象. 无论在哪里提取组件, 在模式中对应地方都会出现一个符号; 这个符号是变量的名称它的值是那个组件.
 
-In data-directed destructuring, the pattern is a sample object of the type to be decomposed. Wherever a component is to be extracted, a symbol appears in the pattern; this symbol is the name of the variable whose value will be that component.
+###### 3.4.4.1.1.1 lambda列表的数据导向解构示例
 
-###### 3.4.4.1.1.1 Examples of Data-directed Destructuring by Lambda Lists
+一个示例模式是
 
-An example pattern is
-
+```LISP
 (a b c)
+```
 
-which destructures a list of three elements. The variable a is assigned to the first element, b to the second, etc. A more complex example is
+它解构了一个三个元素的列表. 这个变量 a 被赋值第一个元素, b 给赋值第二个, 等等. 一个更加复杂的例子是
 
+```LISP
 ((first . rest) . more)
+```
 
-The important features of data-directed destructuring are its syntactic simplicity and the ability to extend it to lambda-list-directed destructuring. 
+简单的语法和扩展到lambda列表导向的能力是数据导向解构的重要特性. 
 
-##### 3.4.4.1.2 Lambda-list-directed Destructuring by Lambda Lists
+##### 3.4.4.1.2 lambda列表的lambda列表导向结构
 
-An extension of data-directed destructuring of trees is lambda-list-directed destructuring. This derives from the analogy between the three-element destructuring pattern
+树的数据导向结构的一个延伸是lambda列表导向的解构. 这是从三元素的解构模式的类比中得出的
 
+```LISP
 (first second third)
+```
 
-and the three-argument lambda list
+并且这个三个参数的lambda列表
 
+```LISP
 (first second third)
+```
 
-Lambda-list-directed destructuring is identical to data-directed destructuring if no lambda list keywords appear in the pattern. Any list in the pattern (whether a sub-list or the whole pattern itself) that contains a lambda list keyword is interpreted specially. Elements of the list to the left of the first lambda list keyword are treated as destructuring patterns, as usual, but the remaining elements of the list are treated like a function's lambda list except that where a variable would normally be required, an arbitrary destructuring pattern is allowed. Note that in case of ambiguity, lambda list syntax is preferred over destructuring syntax. Thus, after &optional a list of elements is a list of a destructuring pattern and a default value form.
+如果没有lambda列表关键字出现在模式中那么lambda列表导向的解构和数据导向的结构是相同的. 任何在这个模式中的列表(不管是一个子列表或是整个模式本身)包含lambda列表关键字就会被特别地解释. 这个列表中第一个lambda列表关键字左边的元素被当作解构模式处理, 像平常一样, 但是列表中剩下的元素被当作函数lambda列表一样处理, 除了在通常需要一个变量的情况下, 可以使用任意的解构模式. 注意, 在不确定的情况下，lambda列表语法优于解构语法. 因此, 在 &optional 之后，一个元素列表是一个解构模式和一个默认值表达式的列表.
 
-The detailed behavior of each lambda list keyword in a lambda-list-directed destructuring pattern is as follows:
+每个lambda列表关键字在lambda列表导向的解构模式中的具体行为如下:
 
 &optional
 
-    Each following element is a variable or a list of a destructuring pattern, a default value form, and a supplied-p variable. The default value and the supplied-p variable can be omitted. If the list being destructured ends early, so that it does not have an element to match against this destructuring (sub)-pattern, the default form is evaluated and destructured instead. The supplied-p variable receives the value nil if the default form is used, t otherwise.
+    每一个后面的元素是一个变量或者一个解构模式, 一个默认值的表达式和一个 supplied-p 变量的列表. 这个默认值和 supplied-p 可以被省略. 如果这个被解构列表提前结束, , 所以它没有一个元素来匹配这个解构模式或子模式, 而是这个默认表达式会求值并解构. 如果这个默认表达式被使用了 supplied-p 变量会收到值 nil, 否则就是 t.
 
 &rest, &body
 
-    The next element is a destructuring pattern that matches the rest of the list. &body is identical to &rest but declares that what is being matched is a list of forms that constitutes the body of form. This next element must be the last unless a lambda list keyword follows it.
+    下一个元素是一个匹配这个列表剩余部分的解构模式. &body 和 &rest 一样但是声明所匹配的是构成表达式主体的表达式列表. 这下一个元素必须是最后一个除非后面跟着一个lambda列表关键字.
 
 &aux
 
-    The remaining elements are not destructuring patterns at all, but are auxiliary variable bindings.
+    其余的元素根本不是解构模式, 而是辅助变量绑定.
 
 &whole
 
-    The next element is a destructuring pattern that matches the entire form in a macro, or the entire subexpression at inner levels.
+    下一个元素是一个匹配一个宏里的整个表达式的解构模式, 或者内部层级的整个子表达式.
 
 &key
 
-    Each following element is one of
+    后面跟着的元素是以下其中之一
 
-    a variable,
+    一个变量,
 
-    or a list of a variable, an optional initialization form, and an optional supplied-p variable.
+    或者一个变量, 一个可选的初始化表达式, 和一个可选的 supplied-p 变量的列表.
 
-    or a list of a list of a keyword and a destructuring pattern, an optional initialization form, and an optional supplied-p variable.
+    或者一个关键字列表和一个解构模式, 一个可选初始化表达式, 和一个可选 supplied-p 变量的列表.
 
-    The rest of the list being destructured is taken to be alternating keywords and values and is taken apart appropriately.
+    被解构的列表的其余部分被认为是交替的关键字和值并且被适当地分开了.
 
 &allow-other-keys
 
