@@ -1052,8 +1052,8 @@ Figure 3-11. 可应用于lambda列表的定义的名字
 > * 3.4.2 [广义函数lambda列表](#GenericFunctionLambdaLists)
 > * 3.4.3 [特定的lambda列表](#SpecializedLambdaLists)
 > * 3.4.4 [宏lambda列表](#MacroLambdaLists)
-> * 3.4.5 [Destructuring Lambda Lists](#DestructuringLambdaLists)
-> * 3.4.6 [Boa Lambda Lists](#BoaLambdaLists)
+> * 3.4.5 [解构lambda列表](#DestructuringLambdaLists)
+> * 3.4.6 [Boa Lambda列表](#BoaLambdaLists)
 > * 3.4.7 [Defsetf Lambda Lists](#DefsetfLambdaLists)
 > * 3.4.8 [Deftype Lambda Lists](#DeftypeLambdaLists)
 > * 3.4.9 [Define-modify-macro Lambda Lists](#DefineMMLambdaLists)
@@ -1441,80 +1441,90 @@ Figure 3-18. 宏lambda列表使用的lambda列表参数
 
     Stands by itself. 
 
-### 3.4.5 <span id = "">Destructuring Lambda Lists</span>
+### 3.4.5 <span id = "DestructuringLambdaLists">解构lambda列表</span>
 
-A destructuring lambda list is used by destructuring-bind.
+一个解构lambda列表可以被 destructuring-bind 使用.
 
-Destructuring lambda lists are closely related to macro lambda lists; see Section 3.4.4 (Macro Lambda Lists). A destructuring lambda list can contain all of the lambda list keywords listed for macro lambda lists except for &environment, and supports destructuring in the same way. Inner lambda lists nested within a macro lambda list have the syntax of destructuring lambda lists.
+解构lambda列表与宏lambda列表密切相关; 见章节 3.4.4 (Macro Lambda Lists). 除了 &environment 之外, 一个解构lambda列表可以包含所有其他用于宏lambda列表的lambda列表关键字, 并且支持相同方式下的解构. 在宏lambda列表中嵌套的内部lambda列表具有解构lambda列表的语法.
 
-A destructuring lambda list has the following syntax:
+一个解构lambda列表具有以下语法:
 
-reqvars::= var* 
+    reqvars::= var* 
 
-optvars::= [&optional {var | (var [init-form [supplied-p-parameter]])}*] 
+    optvars::= [&optional {var | (var [init-form [supplied-p-parameter]])}*] 
 
-restvar::= [{&rest | &body} var] 
+    restvar::= [{&rest | &body} var] 
 
-keyvars::= [&key {var | ({var | (keyword-name var)} [init-form [supplied-p-parameter]])}* 
-            [&allow-other-keys]] 
+    keyvars::= [&key {var | ({var | (keyword-name var)} [init-form [supplied-p-parameter]])}* 
+                [&allow-other-keys]] 
 
-auxvars::= [&aux {var | (var [init-form])}*] 
+    auxvars::= [&aux {var | (var [init-form])}*] 
 
-envvar::= [&environment var] 
+    envvar::= [&environment var] 
 
-wholevar::= [&whole var] 
+    wholevar::= [&whole var] 
 
-lambda-list::= (wholevar reqvars optvars restvar keyvars auxvars) | 
-               (wholevar reqvars optvars . var) 
+    lambda-list::= (wholevar reqvars optvars restvar keyvars auxvars) | 
+                  (wholevar reqvars optvars . var) 
 
-### 3.4.6 <span id = "">Boa Lambda Lists</span>
+### 3.4.6 <span id = "BoaLambdaLists">Boa Lambda列表</span>
 
-A boa lambda list is a lambda list that is syntactically like an ordinary lambda list, but that is processed in ``by order of argument'' style.
+一个 boa lambda 列表是一个语法上像普通lambda列表的lambda列表, 但是这个是按照参数的顺序风格处理.
 
-A boa lambda list is used only in a defstruct form, when explicitly specifying the lambda list of a constructor function (sometimes called a ``boa constructor'').
+一个 boa lambda 列表只被 defstruct 表达式使用, 当明确指定构造器函数的lambda列表时 (有时称之为 `"boa constructor").
 
-The &optional, &rest, &aux, &key, and &allow-other-keys lambda list keywords are recognized in a boa lambda list. The way these lambda list keywords differ from their use in an ordinary lambda list follows.
+这个 &optional, &rest, &aux, &key, 还有 &allow-other-keys lambda列表关键字在boa lambda表达式中是被识别的. 这些lambda列表关键字有别于在普通lambda列表中的使用方式.
 
-Consider this example, which describes how destruct processes its :constructor option.
+细想这个示例, 它描述了解构如何处理它的 :constructor.
 
- (:constructor create-foo
-         (a &optional b (c 'sea) &rest d &aux e (f 'eff)))
+```LISP
+(:constructor create-foo
+        (a &optional b (c 'sea) &rest d &aux e (f 'eff)))
+```
 
-This defines create-foo to be a constructor of one or more arguments. The first argument is used to initialize the a slot. The second argument is used to initialize the b slot. If there isn't any second argument, then the default value given in the body of the defstruct (if given) is used instead. The third argument is used to initialize the c slot. If there isn't any third argument, then the symbol sea is used instead. Any arguments following the third argument are collected into a list and used to initialize the d slot. If there are three or fewer arguments, then nil is placed in the d slot. The e slot is not initialized; its initial value is implementation-defined. Finally, the f slot is initialized to contain the symbol eff. &key and &allow-other-keys arguments default in a manner similar to that of &optional arguments: if no default is supplied in the lambda list then the default value given in the body of the defstruct (if given) is used instead. For example:
+这个定义了 create-foo 去做为一个或更多参数的构造器. 第一个参数被用于初始化 a 槽. 第二个参数备用于初始化 b 槽. 如果这里没有第二个参数, 那么 defstruct 主体中给定的默认值(如果给了的话)被使用. 第三个参数被用于初始化 c 槽. 如果这里没有任何第三个参数, 那么符号 sea 就会被使用. 任何跟在第三个参数后面的参数被收集到一个列表中然后被用于初始化 d 槽. 如果这里有三个或更少的参数, 那么 d 槽的内容就是 nil. e 槽没有被初始化; 它的初始化值是实现定义的. 最后, f 槽被初始化去包含符号 eff. &key 和 &allow-other-keys 参数默认类似于 &optional 参数: 如果在这个lambda列表中没有提供默认值, 那么使用 defstruct 主体中给定的默认值(如果给了的话). 举例说:
 
- (defstruct (foo (:constructor CREATE-FOO (a &optional b (c 'sea)
-                                             &key (d 2)
-                                             &aux e (f 'eff))))
-   (a 1) (b 2) (c 3) (d 4) (e 5) (f 6))
- 
- (create-foo 10) =>  #S(FOO A 10 B 2 C SEA D 2 E implemention-dependent F EFF)
- (create-foo 10 'bee 'see :d 'dee) 
+```LISP
+(defstruct (foo (:constructor CREATE-FOO (a &optional b (c 'sea)
+                                            &key (d 2)
+                                            &aux e (f 'eff))))
+  (a 1) (b 2) (c 3) (d 4) (e 5) (f 6))
+
+(create-foo 10) =>  #S(FOO A 10 B 2 C SEA D 2 E implemention-dependent F EFF)
+(create-foo 10 'bee 'see :d 'dee) 
 =>  #S(FOO A 10 B BEE C SEE D DEE E implemention-dependent F EFF)
+```
 
-If keyword arguments of the form ((key var) [default [svar]]) are specified, the slot name is matched with var (not key).
+如果这个表达式的关键字参数 ((key var) [default [svar]]) 被指定了, 这个槽的名字和 var 匹配(不是 key).
 
-The actions taken in the b and e cases were carefully chosen to allow the user to specify all possible behaviors. The &aux variables can be used to completely override the default initializations given in the body.
+在 b 和 e 情况下采取的行动被仔细选择, 以允许用户指定所有可能的行为. 这个 &aux 变量被用于完全重写主体中给定的默认的初值.
 
-If no default value is supplied for an aux variable variable, the consequences are undefined if an attempt is later made to read the corresponding slot's value before a value is explicitly assigned. If such a slot has a :type option specified, this suppressed initialization does not imply a type mismatch situation; the declared type is only required to apply when the slot is finally assigned.
+如果没有给一个 aux 变量提供默认值, 在槽被明确赋值前尝试去读取对应槽的值那么结果是为定义的. 如果这样一个槽指定了一个 :type 选项, 这种被抑制的初始化并不意味着类型不匹配的情况; 声明的类型只有在槽最终赋值时才需要应用.
 
-With this definition, the following can be written:
+在这个定义下, 下面的可以被写成:
 
- (create-foo 1 2)
+```LISP
+(create-foo 1 2)
+```
 
-instead of
+而不是
 
- (make-foo :a 1 :b 2)
+```LISP
+(make-foo :a 1 :b 2)
+```
 
-and create-foo provides defaulting different from that of make-foo.
+并且 create-foo 提供了和 make-foo 不同的 defaulting. <!--TODO defaulting ?? -->
 
-Additional arguments that do not correspond to slot names but are merely present to supply values used in subsequent initialization computations are allowed. For example, in the definition
+附加的参数不对应于槽名, 但只提供在随后的初始化计算中使用的值. 比如, 在这个定义中
 
- (defstruct (frob (:constructor create-frob
-                  (a &key (b 3 have-b) (c-token 'c) 
-                          (c (list c-token (if have-b 7 2))))))
-         a b c)
+```LISP
+(defstruct (frob (:constructor create-frob
+                (a &key (b 3 have-b) (c-token 'c) 
+                        (c (list c-token (if have-b 7 2))))))
+        a b c)
+```
 
-the c-token argument is used merely to supply a value used in the initialization of the c slot. The supplied-p parameters associated with optional parameters and keyword parameters might also be used this way. 
+这个 c-token 参数只是给 c 槽的初始化提供一个值. 这个与可选参数和关键字参数相关的 supplied-p 参数也可以使用这种方式. 
 
 ### 3.4.7 <span id = "">Defsetf Lambda Lists</span>
 
