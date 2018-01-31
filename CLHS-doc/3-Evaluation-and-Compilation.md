@@ -1054,11 +1054,11 @@ Figure 3-11. 可应用于lambda列表的定义的名字
 > * 3.4.4 [宏lambda列表](#MacroLambdaLists)
 > * 3.4.5 [解构lambda列表](#DestructuringLambdaLists)
 > * 3.4.6 [Boa Lambda列表](#BoaLambdaLists)
-> * 3.4.7 [Defsetf Lambda Lists](#DefsetfLambdaLists)
-> * 3.4.8 [Deftype Lambda Lists](#DeftypeLambdaLists)
-> * 3.4.9 [Define-modify-macro Lambda Lists](#DefineMMLambdaLists)
-> * 3.4.10 [Define-method-combination Arguments Lambda Lists](#DefineMCArgumentsLambdaLists)
-> * 3.4.11 [Syntactic Interaction of Documentation Strings and Declarations](#SIDSD)
+> * 3.4.7 [Defsetf Lambda列表](#DefsetfLambdaLists)
+> * 3.4.8 [Deftype Lambda列表](#DeftypeLambdaLists)
+> * 3.4.9 [Define-modify-macro Lambda列表](#DefineMMLambdaLists)
+> * 3.4.10 [Define-method-combination 参数Lambda列表](#DefineMCArgumentsLambdaLists)
+> * 3.4.11 [文档字符串和声明的语法交互](#SIDSD)
 
 ### 3.4.1 <span id = "OrdinaryLambdaLists">普通lambda列表</span>
 
@@ -1526,65 +1526,67 @@ Figure 3-18. 宏lambda列表使用的lambda列表参数
 
 这个 c-token 参数只是给 c 槽的初始化提供一个值. 这个与可选参数和关键字参数相关的 supplied-p 参数也可以使用这种方式. 
 
-### 3.4.7 <span id = "">Defsetf Lambda Lists</span>
+### 3.4.7 <span id = "DefsetfLambdaLists">Defsetf Lambda列表</span>
 
-A defsetf lambda list is used by defsetf.
+一个 defsetf lambda列表被 defsetf 所使用.
 
-A defsetf lambda list has the following syntax:
+一个 defsetf lambda列表遵循以下语法:
 
+```LISP
 lambda-list::= (var* 
                 [&optional {var | (var [init-form [supplied-p-parameter]])}*] 
                 [&rest var] 
                 [&key {var | ({var | (keyword-name var)} [init-form [supplied-p-parameter]])}* [&allow-other-keys]] 
                 [&environment var] 
+```
 
-A defsetf lambda list can contain the lambda list keywords shown in the next figure.
+一个 defsetf lambda列表可以包含下面这段展示的lambda列表关键字.
 
-&allow-other-keys  &key       &rest  
-&environment       &optional         
+    &allow-other-keys  &key       &rest  
+    &environment       &optional         
 
-Figure 3-19. Lambda List Keywords used by Defsetf Lambda Lists
+Figure 3-19. Defsetf Lambda列表使用的lambda列表关键字
 
-A defsetf lambda list differs from an ordinary lambda list only in that it does not permit the use of &aux, and that it permits use of &environment, which introduces an environment parameter. 
+一个 defsetf lambda列表和普通lambda列表的区别仅在于它不允许使用 &aux, 并且它允许使用表示环境参数的 &environment. 
 
-### 3.4.8 <span id = "">Deftype Lambda Lists</span>
+### 3.4.8 <span id = "DeftypeLambdaLists">Deftype Lambda列表</span>
 
-A deftype lambda list is used by deftype.
+一个 deftype lambda列表被 deftype 所使用.
 
-A deftype lambda list has the same syntax as a macro lambda list, and can therefore contain the lambda list keywords as a macro lambda list.
+一个 deftype lambda列表有着像宏lambda列表相同的语法, 并且可以包含和宏lambda列表相同的lambda列表关键字.
 
-A deftype lambda list differs from a macro lambda list only in that if no init-form is supplied for an optional parameter or keyword parameter in the lambda-list, the default value for that parameter is the symbol * (rather than nil). 
+一个 deftype lambda列表和宏lambda列表的区别仅在于如果没有给一个可选参数或关键字参数提供 init-from, 那么这个参数的默认值就是符号 * (而不是 nil). 
 
-### 3.4.9 <span id = "">Define-modify-macro Lambda Lists</span>
+### 3.4.9 <span id = "DefineMMLambdaLists">Define-modify-macro Lambda列表</span>
 
-A define-modify-macro lambda list is used by define-modify-macro.
+一个 define-modify-macro lambda列表被 define-modify-macro 使用.
 
-A define-modify-macro lambda list can contain the lambda list keywords shown in the next figure.
+一个 define-modify-macro lambda列表可以包含下面这段展示的lambda列表关键字.
 
-&optional  &rest  
+    &optional  &rest  
 
-Figure 3-20. Lambda List Keywords used by Define-modify-macro Lambda Lists
+Figure 3-20. Define-modify-macro Lambda列表使用的lambda列表关键字
 
-Define-modify-macro lambda lists are similar to ordinary lambda lists, but do not support keyword arguments. define-modify-macro has no need match keyword arguments, and a rest parameter is sufficient. Aux variables are also not supported, since define-modify-macro has no body forms which could refer to such bindings. See the macro define-modify-macro. 
+Define-modify-macro lambda列表类似于普通lambda列表, 但是不支持关键字参数. define-modify-macro 不需要去匹配关键字, 并且一个剩余参数就足够了. Aux 变量也不支持, 因为 define-modify-macro 没有主体表达式来引用这些绑定. 见宏 define-modify-macro. 
 
-### 3.4.10 <span id = "">Define-method-combination Arguments Lambda Lists</span>
+### 3.4.10 <span id = "DefineMCArgumentsLambdaLists">Define-method-combination 参数Lambda列表</span>
 
-A define-method-combination arguments lambda list is used by the :arguments option to define-method-combination.
+一个 define-method-combination 参数lambda列表被 define-method-combination 的 :arguments 选项所使用.
 
-A define-method-combination arguments lambda list can contain the lambda list keywords shown in the next figure.
+一个 define-method-combination 参数lambda列表可以包含下面这段中展示的lambda列表关键字.
 
-&allow-other-keys  &key       &rest   
-&aux               &optional  &whole  
+    &allow-other-keys  &key       &rest   
+    &aux               &optional  &whole  
 
-Figure 3-21. Lambda List Keywords used by Define-method-combination arguments Lambda Lists
+Figure 3-21. Define-method-combination 参数Lambda列表使用的lambda列表关键字
 
-Define-method-combination arguments lambda lists are similar to ordinary lambda lists, but also permit the use of &whole. 
+Define-method-combination 参数lambda列表类似于普通lambda列表, 但是也允许使用 &whole. 
 
-### 3.4.11 <span id = "">Syntactic Interaction of Documentation Strings and Declarations</span>
+### 3.4.11 <span id = "SIDSD">文档字符串和声明的语法交互</span>
 
-In a number of situations, a documentation string can appear amidst a series of declare expressions prior to a series of forms.
+在许多情况下, 文档字符串可以在一系列表达式形式之前出现在一系列声明表达式中.
 
-In that case, if a string S appears where a documentation string is permissible and is not followed by either a declare expression or a form then S is taken to be a form; otherwise, S is taken as a documentation string. The consequences are unspecified if more than one such documentation string is present. 
+在这个情况下, 如果字符串 S 出现在允许文档字符串被允许的地方而后面没有声明表达式或表达式形式那么 S 就被认为是一种表达式; 否则, S 被当作一个文档字符串. 如果出现不止一个文档字符串那么结果是未定义的. 
 
  3.5 Error Checking in Function Calls
 
