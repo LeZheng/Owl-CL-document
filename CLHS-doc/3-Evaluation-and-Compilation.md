@@ -4,7 +4,7 @@
 > * 3.2 [编译](#Compilation)
 > * 3.3 [声明](#Declarations)
 > * 3.4 [Lambda列表](#LambdaLists)
-> * 3.5 [Error Checking in Function Calls](#ErrorChecking)
+> * 3.5 [函数调用中的错误检测](#ErrorChecking)
 > * 3.6 [Traversal Rules and Side Effects](#TraversalRulesSideEffects)
 > * 3.7 [Destructive Operations](#DestructiveOperations)
 > * 3.8 [The Evaluation and Compilation Dictionary](#EvaluationCompilationDictionary)
@@ -1588,61 +1588,52 @@ Define-method-combination 参数lambda列表类似于普通lambda列表, 但是�
 
 在这个情况下, 如果字符串 S 出现在允许文档字符串被允许的地方而后面没有声明表达式或表达式形式那么 S 就被认为是一种表达式; 否则, S 被当作一个文档字符串. 如果出现不止一个文档字符串那么结果是未定义的. 
 
- 3.5 Error Checking in Function Calls
+## 3.5 <span id = "ErrorChecking">函数调用中的错误检测</span>
 
-3.5.1 Argument Mismatch Detection
+### 3.5.1 参数匹配检测
 
- 3.5.1 Argument Mismatch Detection
+> * 3.5.1.1 [安全和非安全调用](#SafeUnsafeCalls)
+> * 3.5.1.2 [Too Few Arguments](#TooFewArguments)
+> * 3.5.1.3 [Too Many Arguments](#TooManyArguments)
+> * 3.5.1.4 [Unrecognized Keyword Arguments](#UnrecognizedKeywordArguments)
+> * 3.5.1.5 [Invalid Keyword Arguments](#InvalidKeywordArguments)
+> * 3.5.1.6 [Odd Number of Keyword Arguments](#OddNumberKeywordArguments)
+> * 3.5.1.7 [Destructuring Mismatch](#DestructuringMismatch)
+> * 3.5.1.8 [Errors When Calling a Next Method](#ErrorsWhenCallingNextMethod)
 
-3.5.1.1 Safe and Unsafe Calls
+#### 3.5.1.1 <span id = "SafeUnsafeCalls">安全和非安全调用</span>
 
-3.5.1.2 Too Few Arguments
+如果下面中的每一个都是安全代码或者系统代码那么这个调用就是安全的调用 (除了由程序员代码的宏展开所导致的系统代码之外):
 
-3.5.1.3 Too Many Arguments
+* 这个调用.
+* 被调用函数的定义.
+* 函数求值的点
 
-3.5.1.4 Unrecognized Keyword Arguments
+以下特殊情况需要一些细化:
 
-3.5.1.5 Invalid Keyword Arguments
+* 如果被调用的函数是一个广义函数, 如果下面列出的所有部分都是安全的代码或者系统代码那么它就被认为是安全的:
 
-3.5.1.6 Odd Number of Keyword Arguments
+    -- 它的定义 (如果它被明确定义).</br>
+    -- 所有适用方法的方法定义.</br>
+    -- 它的方法组合的定义.
 
-3.5.1.7 Destructuring Mismatch
+* 对于表达式 (coerce x 'function), 其中 x 是一个 lambda 表达式, 当强制执行时, 全局环境中优化质量安全的值也适用于产生的函数.
 
-3.5.1.8 Errors When Calling a Next Method
+* 对于一个函数 ensure-generic-function 的调用, 在作为 :environment 参数传递的环境对象中优化质量安全的值也适用于产生的广义函数.
 
- 3.5.1.1 Safe and Unsafe Calls
+* 对于一个对lambda表达式作为参数的 compile 的调用, 在 compile 被调用时全局环境中优化质量安全的值适用于编译出来的函数.
 
-A call is a safe call if each of the following is either safe code or system code (other than system code that results from macro expansion of programmer code):
+* 对于一个单个参数的 compile 调用, 如果函数的原始定义是安全的, 那么作为结果编译后的函数也必须是安全的.
 
-* the call.
-* the definition of the function being called.
-* the point of functional evaluation
+* 一个被 call-next-method 调用的方法如果下面的每一个都被认为是安全代码或者系统代码那么这个方法就被认为是安全的:
 
-The following special cases require some elaboration:
+    -- 这个广义函数的定义 (如果它被明确定义).
+    -- 所有适用方法的方法定义.
+    -- 方法组合的定义.
+    -- 方法定义表达式主体部分的入口点, 即确定 call-next-method 绑定的地方.
+    -- 名字 call-next-method 功能求值的点.
 
-* If the function being called is a generic function, it is considered safe if all of the following are safe code or system code:
-
-    -- its definition (if it was defined explicitly).
-    -- the method definitions for all applicable methods.
-    -- the definition of its method combination.
-
-* For the form (coerce x 'function), where x is a lambda expression, the value of the optimize quality safety in the global environment at the time the coerce is executed applies to the resulting function.
-
-* For a call to the function ensure-generic-function, the value of the optimize quality safety in the environment object passed as the :environment argument applies to the resulting generic function.
-
-* For a call to compile with a lambda expression as the argument, the value of the optimize quality safety in the global environment at the time compile is called applies to the resulting compiled function.
-
-* For a call to compile with only one argument, if the original definition of the function was safe, then the resulting compiled function must also be safe.
-
-* A call to a method by call-next-method must be considered safe if each of the following is safe code or system code:
-
-    -- the definition of the generic function (if it was defined explicitly).
-    -- the method definitions for all applicable methods.
-    -- the definition of the method combination.
-    -- the point of entry into the body of the method defining form, where the binding of call-next-method is established.
-    -- the point of functional evaluation of the name call-next-method.
-
-An unsafe call is a call that is not a safe call.
+一个不安全调用就是一个不是安全调用的调用.
 
 The informal intent is that the programmer can rely on a call to be safe, even when system code is involved, if all reasonable steps have been taken to ensure that the call is safe. For example, if a programmer calls mapcar from safe code and supplies a function that was compiled as safe, the implementation is required to ensure that mapcar makes a safe call as well.
 
