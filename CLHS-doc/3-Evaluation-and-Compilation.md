@@ -1593,13 +1593,13 @@ Define-method-combination 参数lambda列表类似于普通lambda列表, 但是�
 ### 3.5.1 参数匹配检测
 
 > * 3.5.1.1 [安全和非安全调用](#SafeUnsafeCalls)
-> * 3.5.1.2 [Too Few Arguments](#TooFewArguments)
-> * 3.5.1.3 [Too Many Arguments](#TooManyArguments)
-> * 3.5.1.4 [Unrecognized Keyword Arguments](#UnrecognizedKeywordArguments)
-> * 3.5.1.5 [Invalid Keyword Arguments](#InvalidKeywordArguments)
-> * 3.5.1.6 [Odd Number of Keyword Arguments](#OddNumberKeywordArguments)
-> * 3.5.1.7 [Destructuring Mismatch](#DestructuringMismatch)
-> * 3.5.1.8 [Errors When Calling a Next Method](#ErrorsWhenCallingNextMethod)
+> * 3.5.1.2 [参数太少(Too Few Arguments)](#TooFewArguments)
+> * 3.5.1.3 [参数太多(Too Many Arguments)](#TooManyArguments)
+> * 3.5.1.4 [不识别的关键字参数(Unrecognized Keyword Arguments)](#UnrecognizedKeywordArguments)
+> * 3.5.1.5 [非法的关键字参数(Invalid Keyword Arguments)](#InvalidKeywordArguments)
+> * 3.5.1.6 [奇数数量的关键字参数(Odd Number of Keyword Arguments)](#OddNumberKeywordArguments)
+> * 3.5.1.7 [解构不匹配(Destructuring Mismatch)](#DestructuringMismatch)
+> * 3.5.1.8 [调用下一个方法时的错误(Errors When Calling a Next Method)](#ErrorsWhenCallingNextMethod)
 
 #### 3.5.1.1 <span id = "SafeUnsafeCalls">安全和非安全调用</span>
 
@@ -1635,57 +1635,55 @@ Define-method-combination 参数lambda列表类似于普通lambda列表, 但是�
 
 一个不安全调用就是一个不是安全调用的调用.
 
-The informal intent is that the programmer can rely on a call to be safe, even when system code is involved, if all reasonable steps have been taken to ensure that the call is safe. For example, if a programmer calls mapcar from safe code and supplies a function that was compiled as safe, the implementation is required to ensure that mapcar makes a safe call as well.
+非正式的意图是, 即使在涉及到系统代码的情况下, 程序员也可以依靠调用来保证安全, 如果已经采取了所有合理的步骤来确保调用是安全的The informal intent is that the programmer can rely on a call to be safe, even when system code is involved, if all reasonable steps have been taken to ensure that the call is safe. 比如, 如果一个程序员从安全的代码中调用 mapcar 并且提供了一个被编译为安全的函数, 那么这个具体实现也需要去确保这个 mapcar 是一个安全的调用. <!-- TODO 待校对 -->
 
-3.5.1.1.1 Error Detection Time in Safe Calls
+3.5.1.1.1 安全调用的错误检测时间
 
- 3.5.1.1.1 Error Detection Time in Safe Calls
+如果在安全调用中发出一个错误, 这个准确的发出点是依赖于实现的. 尤其, 它可能在编译时或运行时发出, 如果在运行时发出, 它可能在执行这个调用时, 或之前, 或之后发出. 然而它总是在这个被调用函数的主体执行之前. 
 
-If an error is signaled in a safe call, the exact point of the signal is implementation-dependent. In particular, it might be signaled at compile time or at run time, and if signaled at run time, it might be prior to, during, or after executing the call. However, it is always prior to the execution of the body of the function being called. 
+#### 3.5.1.2 <span id = "TooFewArguments">参数太少(Too Few Arguments)</span>
 
- 3.5.1.2 Too Few Arguments
+对一个函数提供的参数太少是不允许的. 太少的参数意味着参数少于这个函数需要到参数数量.
 
-It is not permitted to supply too few arguments to a function. Too few arguments means fewer arguments than the number of required parameters for the function.
+如果这个情况发生在一个安全调用中, 一定会发出一个 program-error 类型的错误; 如果发生在一个不安全的调用中结果是不可预料的. 
 
-If this situation occurs in a safe call, an error of type program-error must be signaled; and in an unsafe call the situation has undefined consequences. 
+#### 3.5.1.3 <span id = "TooManyArguments">参数太多(Too Many Arguments)</span>
 
- 3.5.1.3 Too Many Arguments
+对一个函数提供的参数太多是不允许的. 太多的参数意味着更多的参数, 而不仅仅是所需参数的数量加上可选参数的数量; 然而, 如果函数使用 &rest 或者 &key, 它不可能接受太多参数.
 
-It is not permitted to supply too many arguments to a function. Too many arguments means more arguments than the number of required parameters plus the number of optional parameters; however, if the function uses &rest or &key, it is not possible for it to receive too many arguments.
+如果情况发生在安全的调用里, 一定会发出一个 program-error 类型的错误; 如果发生在一个不安全的调用中结果是不可预料的. 
 
-If this situation occurs in a safe call, an error of type program-error must be signaled; and in an unsafe call the situation has undefined consequences. 
+#### 3.5.1.4 <span id = "UnrecognizedKeywordArguments">不识别的关键字参数(Unrecognized Keyword Arguments)</span>
 
- 3.5.1.4 Unrecognized Keyword Arguments
+向一个函数提供一个不被识别的关键字参数是不允许的, 除非就像章节 3.4.1.4.1 (Suppressing Keyword Argument Checking) 描述的那样关键字参数检测被抑制.
 
-It is not permitted to supply a keyword argument to a function using a name that is not recognized by that function unless keyword argument checking is suppressed as described in Section 3.4.1.4.1 (Suppressing Keyword Argument Checking).
+如果情况发生在安全的调用里, 一定会发出一个 program-error 类型的错误; 如果发生在一个不安全的调用中结果是不可预料的. 
 
-If this situation occurs in a safe call, an error of type program-error must be signaled; and in an unsafe call the situation has undefined consequences. 
+#### 3.5.1.5 <span id = "InvalidKeywordArguments">非法的关键字参数(Invalid Keyword Arguments)</span>
 
- 3.5.1.5 Invalid Keyword Arguments
+通过使用一个不是符号的名字给函数传递关键字参数是不允许的.
 
-It is not permitted to supply a keyword argument to a function using a name that is not a symbol.
+如果情况发生在安全的调用里, 一定会发出一个 program-error 类型的错误, 除非就像章节 3.4.1.4.1 (Suppressing Keyword Argument Checking) 描述的那样关键字参数检测被抑制; 如果发生在一个不安全的调用中结果是不可预料的. 
 
-If this situation occurs in a safe call, an error of type program-error must be signaled unless keyword argument checking is suppressed as described in Section 3.4.1.4.1 (Suppressing Keyword Argument Checking); and in an unsafe call the situation has undefined consequences. 
+#### 3.5.1.6 <span id = "OddNumberKeywordArguments">奇数数量的关键字参数(Odd Number of Keyword Arguments)</span>
 
- 3.5.1.6 Odd Number of Keyword Arguments
+奇数数量的关键字一定不能提供给关键字参数.
 
-An odd number of arguments must not be supplied for the keyword parameters.
+如果情况发生在安全的调用里, 一定会发出一个 program-error 类型的错误, 除非就像章节 3.4.1.4.1 (Suppressing Keyword Argument Checking) 描述的那样关键字参数检测被抑制; 如果发生在一个不安全的调用中结果是不可预料的. 
 
-If this situation occurs in a safe call, an error of type program-error must be signaled unless keyword argument checking is suppressed as described in Section 3.4.1.4.1 (Suppressing Keyword Argument Checking); and in an unsafe call the situation has undefined consequences. 
+#### 3.5.1.7 <span id = "DestructuringMismatch">解构不匹配(Destructuring Mismatch)</span>
 
- 3.5.1.7 Destructuring Mismatch
+当一个结构lambda列表和一个表达式匹配时, 这个解构模式和表达式必须有像章节 3.4.4 (Macro Lambda Lists) 描述的兼容的树结构.
 
-When matching a destructuring lambda list against a form, the pattern and the form must have compatible tree structure, as described in Section 3.4.4 (Macro Lambda Lists).
+否则, 如果情况发生在安全的调用里, 一定会发出一个 program-error 类型的错误; 如果发生在一个不安全的调用中结果是不可预料的. 
 
-Otherwise, in a safe call, an error of type program-error must be signaled; and in an unsafe call the situation has undefined consequences. 
+#### 3.5.1.8 <span id = "ErrorsWhenCallingNextMethod">调用下一个方法时的错误(Errors When Calling a Next Method)</span>
 
- 3.5.1.8 Errors When Calling a Next Method
+如果 call-next-method 调用时带了参数, 用于 call-next-method 的变更后的参数集合的可适用方法集必须与这个广义函数的原始参数的可适用方法集相同, 否则应该会发出一个错误.
 
-If call-next-method is called with arguments, the ordered set of applicable methods for the changed set of arguments for call-next-method must be the same as the ordered set of applicable methods for the original arguments to the generic function, or else an error should be signaled.
+对新参数的一组方法和适用于原始参数的方法集合之间的比较, 其中相同指示符的方法次序是不敏感的. <!-- TODO 待校验 -->
 
-The comparison between the set of methods applicable to the new arguments and the set applicable to the original arguments is insensitive to order differences among methods with the same specializers.
-
-If call-next-method is called with arguments that specify a different ordered set of applicable methods and there is no next method available, the test for different methods and the associated error signaling (when present) takes precedence over calling no-next-method. 
+如果 call-next-method 的参数指定了不同的可适用方法的不同排序集, 并且没有可用的下一个方法, 那么对不同方法的测试和相关错误信号的发出(存在的话)的将优先于调用 no-next-method. . 
 
  3.6 Traversal Rules and Side Effects
 
