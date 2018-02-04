@@ -5,7 +5,7 @@
 > * 3.3 [声明](#Declarations)
 > * 3.4 [Lambda列表](#LambdaLists)
 > * 3.5 [函数调用中的错误检测](#ErrorChecking)
-> * 3.6 [Traversal Rules and Side Effects](#TraversalRulesSideEffects)
+> * 3.6 [遍历规则和副作用](#TraversalRulesSideEffects)
 > * 3.7 [Destructive Operations](#DestructiveOperations)
 > * 3.8 [The Evaluation and Compilation Dictionary](#EvaluationCompilationDictionary)
 
@@ -1685,25 +1685,25 @@ Define-method-combination 参数lambda列表类似于普通lambda列表, 但是�
 
 如果 call-next-method 的参数指定了不同的可适用方法的不同排序集, 并且没有可用的下一个方法, 那么对不同方法的测试和相关错误信号的发出(存在的话)的将优先于调用 no-next-method. . 
 
- 3.6 Traversal Rules and Side Effects
+## 3.6 <span id = "TraversalRulesSideEffects">遍历规则和副作用</span>
 
-The consequences are undefined when code executed during an object-traversing operation destructively modifies the object in a way that might affect the ongoing traversal operation. In particular, the following rules apply.
+当在一个对象遍历操作中执行的代码以一种可能影响正在进行的遍历操作的方式修改对象时, 其后果是未定义的. 尤其, 适用于以下规则.
 
-List traversal
+列表遍历(List traversal)
 
-    For list traversal operations, the cdr chain of the list is not allowed to be destructively modified.
+    对于列表遍历操作, 列表中的 cdr 链是不允许被破坏性修改的.
 
-Array traversal
+数组遍历(Array traversal)
 
-    For array traversal operations, the array is not allowed to be adjusted and its fill pointer, if any, is not allowed to be changed.
+    对于数组遍历操作, 不允许对数组进行调整, 并且填充指针不允许被修改.
 
-Hash-table traversal
+哈希表遍历(Hash-table traversal)
 
-    For hash table traversal operations, new elements may not be added or deleted except that the element corresponding to the current hash key may be changed or removed.
+    对于哈希表遍历操作, 新元素可能不会被添加或删除, 除非与当前散列键对应的元素可以被更改或删除.
 
-Package traversal
+包遍历(Package traversal)
 
-    For package traversal operations (e.g., do-symbols), new symbols may not be interned in or uninterned from the package being traversed or any package that it uses except that the current symbol may be uninterned from the package being traversed. 
+    对于包遍历操作 (比如, do-symbols), 新的符号不能从被遍历的包或者它使用的任何包中被 intern 或者 uninterned, 除非当前的符号可以从被遍历的包中被 unintern. <!-- TODO 待校验 intern --> 
 
  3.7 Destructive Operations
 
