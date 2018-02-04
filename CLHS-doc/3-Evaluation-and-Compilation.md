@@ -7,7 +7,7 @@
 > * 3.5 [函数调用中的错误检测](#ErrorChecking)
 > * 3.6 [遍历规则和副作用](#TraversalRulesSideEffects)
 > * 3.7 [破坏性操作](#DestructiveOperations)
-> * 3.8 [The Evaluation and Compilation Dictionary](#EvaluationCompilationDictionary)
+> * 3.8 [求值和编译的字典条目](#EvaluationCompilationDictionary)
 
 ## 3.1 <span id = "Evaluation">求值</span>
 
@@ -40,7 +40,7 @@
 > * 3.1.1.3 [词法环境](#LexicalEnvironments)
 > * 3.1.1.4 [环境对象](#EnvironmentObjects)
 
-#### 3.1.1.1 <span id = "">全局的环境</span>
+#### 3.1.1.1 <span id = "TheGlobalEnvironment">全局的环境</span>
 
 全局环境是包含不定作用域和不确定范围的绑定的环境的一部分. 全局环境包括以下部分:
 
@@ -1786,67 +1786,39 @@ OR=>  (3 4 5 6 2 7 8 9 10 1)
 OR=>  (1 2 4 3)
 ```
 
- 3.8 The Evaluation and Compilation Dictionary
+## 3.8 <span id = "EvaluationCompilationDictionary">求值和编译的字典条目</span>
 
-Symbol LAMBDA
+ * [Symbol LAMBDA](#SymbolLAMBDA)
+ * [Macro LAMBDA](#MacroLAMBDA)
+ * [Function COMPILE](#FunctionCOMPILE)
+ * [Function EVAL](#FunctionEVAL)
+ * [Special Operator EVAL-WHEN](#SpecialOperatorEVALWHEN)
+ * [Special Operator LOAD-TIME-VALUE](#SpecialOperatorLOADTIMEVALUE)
+ * [Special Operator QUOTE](#SpecialOperatorQUOTE)
+ * [Accessor COMPILER-MACRO-FUNCTION](#AccessorCOMPILERMACROFUNCTION)
+ * [Macro DEFINE-COMPILER-MACRO](#MacroDEFINECOMPILERMACRO)
+ * [Macro DEFMACRO](#MacroDEFMACRO)
+ * [Accessor MACRO-FUNCTION](#AccessorMACROFUNCTION)
+ * [Function MACROEXPAND, MACROEXPAND-1](#FunctionMACROEXPANDMACROEXPAND1)
+ * [Macro DEFINE-SYMBOL-MACRO](#MacroDEFINESYMBOLMACRO)
+ * [Special Operator SYMBOL-MACROLET](#SpecialOperatorSYMBOLMACROLET)
+ * [Variable *MACROEXPAND-HOOK*](#VariableMACROEXPANDHOOK)
+ * [Function PROCLAIM](#FunctionPROCLAIM)
+ * [Macro DECLAIM](#MacroDECLAIM)
+ * [Symbol DECLARE](#SymbolDECLARE)
+ * [Declaration IGNORE, IGNORABLE](#DeclarationIGNOREIGNORABLE)
+ * [Declaration DYNAMIC-EXTENT](#DeclarationDYNAMICEXTENT)
+ * [Declaration TYPE](#DeclarationTYPE)
+ * [Declaration INLINE, NOTINLINE](#DeclarationINLINENOTINLINE)
+ * [Declaration FTYPE](#DeclarationFTYPE)
+ * [Declaration DECLARATION](#DeclarationDECLARATION)
+ * [Declaration OPTIMIZE](#DeclarationOPTIMIZE)
+ * [Declaration SPECIAL](#DeclarationSPECIAL)
+ * [Special Operator LOCALLY](#SpecialOperatorLOCALLY)
+ * [Special Operator THE](#SpecialOperatorTHE)
+ * [Function SPECIAL-OPERATOR-P](#FunctionSPECIALOPERATORP)
+ * [Function CONSTANTP](#FunctionCONSTANTP)
 
-Macro LAMBDA
-
-Function COMPILE
-
-Function EVAL
-
-Special Operator EVAL-WHEN
-
-Special Operator LOAD-TIME-VALUE
-
-Special Operator QUOTE
-
-Accessor COMPILER-MACRO-FUNCTION
-
-Macro DEFINE-COMPILER-MACRO
-
-Macro DEFMACRO
-
-Accessor MACRO-FUNCTION
-
-Function MACROEXPAND, MACROEXPAND-1
-
-Macro DEFINE-SYMBOL-MACRO
-
-Special Operator SYMBOL-MACROLET
-
-Variable *MACROEXPAND-HOOK*
-
-Function PROCLAIM
-
-Macro DECLAIM
-
-Symbol DECLARE
-
-Declaration IGNORE, IGNORABLE
-
-Declaration DYNAMIC-EXTENT
-
-Declaration TYPE
-
-Declaration INLINE, NOTINLINE
-
-Declaration FTYPE
-
-Declaration DECLARATION
-
-Declaration OPTIMIZE
-
-Declaration SPECIAL
-
-Special Operator LOCALLY
-
-Special Operator THE
-
-Function SPECIAL-OPERATOR-P
-
-Function CONSTANTP
 
 Symbol LAMBDA
 
