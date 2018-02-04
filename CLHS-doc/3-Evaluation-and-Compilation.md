@@ -6,7 +6,7 @@
 > * 3.4 [Lambda列表](#LambdaLists)
 > * 3.5 [函数调用中的错误检测](#ErrorChecking)
 > * 3.6 [遍历规则和副作用](#TraversalRulesSideEffects)
-> * 3.7 [Destructive Operations](#DestructiveOperations)
+> * 3.7 [破坏性操作](#DestructiveOperations)
 > * 3.8 [The Evaluation and Compilation Dictionary](#EvaluationCompilationDictionary)
 
 ## 3.1 <span id = "Evaluation">求值</span>
@@ -1705,90 +1705,86 @@ Define-method-combination 参数lambda列表类似于普通lambda列表, 但是�
 
     对于包遍历操作 (比如, do-symbols), 新的符号不能从被遍历的包或者它使用的任何包中被 intern 或者 uninterned, 除非当前的符号可以从被遍历的包中被 unintern. <!-- TODO 待校验 intern --> 
 
- 3.7 Destructive Operations
+## 3.7 <span id = "DestructiveOperations">破坏性操作</span>
 
-3.7.1 Modification of Literal Objects
+### 3.7.1 字面化对象的修改
 
-3.7.2 Transfer of Control during a Destructive Operation
-
- 3.7.1 Modification of Literal Objects
-
-The consequences are undefined if literal objects are destructively modified. For this purpose, the following operations are considered destructive:
+如果字面化对象被破坏性地修改那么结果是不可预料的. 出于这个目的, 以下操作被认为是破坏性的:
 
 random-state
 
-    Using it as an argument to the function random.
+    使用它作为函数 random 的一个参数.
 
 cons
 
-    Changing the car[1] or cdr[1] of the cons, or performing a destructive operation on an object which is either the car[2] or the cdr[2] of the cons.
+    修改 cons 的 car 或者 cdr 部分, 或者对一个 cons 的 car 或者 cdr 部分对象执行破坏性操作.
 
 array
 
-    Storing a new value into some element of the array, or performing a destructive operation on an object that is already such an element.
+    将一个新值存储到数组的某个元素中, 或者对已经是该元素的对象执行破坏性操作.
 
-    Changing the fill pointer, dimensions, or displacement of the array (regardless of whether the array is actually adjustable).
+    改变数组的填充指针, 维度或位移 (不管这个数组实际上是否为 adjustable).
 
-    Performing a destructive operation on another array that is displaced to the array or that otherwise shares its contents with the array.
+    对一个数组执行破坏性操作, 这个数组的内容被转移到另一个数组或者和另一个数组共享内容.
 
 hash-table
 
-    Performing a destructive operation on any key.
+    对任何 key 做破坏性操作.
 
-    Storing a new value[4] for any key, or performing a destructive operation on any object that is such a value.
+    为任何 key 存储一个新的 value, 或者对这样的 value 对象执行破坏性操作.
 
-    Adding or removing entries from the hash table.
+    从这个hash表中添加或删除元素.
 
 structure-object
 
-    Storing a new value into any slot, or performing a destructive operation on an object that is the value of some slot.
+    存储一个新的值到任何槽中, 或者对一些槽的值对象执行破坏性的操作.
 
 standard-object
 
-    Storing a new value into any slot, or performing a destructive operation on an object that is the value of some slot.
+    存储一个新的值到任何槽中, 或者对一些槽的值对象执行破坏性的操作.
 
-    Changing the class of the object (e.g., using the function change-class).
+    改变这个对象的类 (比如, 使用函数 change-class).
 
 readtable
 
-    Altering the readtable case.
+    更改 readtable 用例.
 
-    Altering the syntax type of any character in this readtable.
+    修改这个 readtable 中的任何字符的语法类型.
 
-    Altering the reader macro function associated with any character in the readtable, or altering the reader macro functions associated with characters defined as dispatching macro characters in the readtable.
+    修改与 readtable 中任何字符相关的读取器宏函数, 或修改与在 readtable 中指定的字符相关的字符读取器宏函数.
 
 stream
 
-    Performing I/O operations on the stream, or closing the stream.
+    对 stream 执行 I/O 操作, 或者关闭这个 stream.
 
 All other standardized types
 
-    [This category includes, for example, character, condition, function, method-combination, method, number, package, pathname, restart, and symbol.]
+    [这个范畴包括, 比如, character, condition, function, method-combination, method, number, package, pathname, restart, 还有 symbol.]
 
-    There are no standardized destructive operations defined on objects of these types. 
+    在这些类型的对象上没有标准化的破坏性操作. 
 
- 3.7.2 Transfer of Control during a Destructive Operation
+### 3.7.2 破坏性操作期间的控制转移
 
-Should a transfer of control out of a destructive operation occur (e.g., due to an error) the state of the object being modified is implementation-dependent.
+如果将控制从破坏性的操作中转移出来(比如, 由于一个错误)就会发生被修改的对象的状态是实现依赖的.
 
-3.7.2.1 Examples of Transfer of Control during a Destructive Operation
+#### 3.7.2.1 破坏性操作期间的控制转移的示例
 
- 3.7.2.1 Examples of Transfer of Control during a Destructive Operation
+下面的示例演示了许多方法中的一部分, 在这些方法下修改的实现依赖的本质得以展现.
 
-The following examples illustrate some of the many ways in which the implementation-dependent nature of the modification can manifest itself.
-
- (let ((a (list 2 1 4 3 7 6 'five)))
-   (ignore-errors (sort a #'<))
-   a)
+```LISP
+(let ((a (list 2 1 4 3 7 6 'five)))
+  (ignore-errors (sort a #'<))
+  a)
 =>  (1 2 3 4 6 7 FIVE)
 OR=>  (2 1 4 3 7 6 FIVE)
 OR=>  (2)
 
- (prog foo ((a (list 1 2 3 4 5 6 7 8 9 10)))
-   (sort a #'(lambda (x y) (if (zerop (random 5)) (return-from foo a) (> x y)))))
+(prog foo ((a (list 1 2 3 4 5 6 7 8 9 10)))
+  (sort a #'(lambda (x y) (if (zerop (random 5)) (return-from foo a) (> x y)))))
 =>  (1 2 3 4 5 6 7 8 9 10)
 OR=>  (3 4 5 6 2 7 8 9 10 1)
 OR=>  (1 2 4 3)
+```
 
  3.8 The Evaluation and Compilation Dictionary
 
