@@ -1857,11 +1857,11 @@ function, documentation, Section 3.1.3 (Lambda Expressions), Section 3.1.2.1.2.4
 (funcall #'(lambda lambda-list . body) . arguments)
 ```
 
-Macro LAMBDA
+### <span id = "MacroLAMBDA">Macro LAMBDA</span>
 
 语法(Syntax):
 
-lambda lambda-list [[declaration* | documentation]] form* => function
+    lambda lambda-list [[declaration* | documentation]] form* => function
 
 参数和值(Arguments and Values):
 
@@ -1907,97 +1907,96 @@ lambda lambda-list [[declaration* | documentation]] form* => function
   `#',form)
 ```
 
-Function COMPILE
+### <span id = "FunctionCOMPILE">Function COMPILE</span>
 
 语法(Syntax):
 
-compile name &optional definition => function, warnings-p, failure-p
+    compile name &optional definition => function, warnings-p, failure-p
 
 参数和值(Arguments and Values):
 
-name---a function name, or nil.
-
-definition---a lambda expression or a function. The default is the function definition of name if it names a function, or the macro function of name if it names a macro. The consequences are undefined if no definition is supplied when the name is nil.
-
-function---the function-name, or a compiled function.
-
-warnings-p---a generalized boolean.
-
-failure-p---a generalized boolean.
+    name---一个函数名字, 或者 nil.
+    definition---一个lambda表达式或者一个函数. 如果 name 命名一个函数那么默认就是这个名字的函数定义, 或者如果 name 命名一个宏那么默认就是这个名字的宏函数. 当 name 是 nil 时没有提供这个参数那么结果是不可预料的.
+    function---这个 function-name, 或者一个编译后的函数.
+    warnings-p---一个普通的 boolean 值.
+    failure-p---一个普通的 boolean 值.
 
 描述(Description):
 
-Compiles an interpreted function.
+    编译一个解释的函数.
 
-compile produces a compiled function from definition. If the definition is a lambda expression, it is coerced to a function. If the definition is already a compiled function, compile either produces that function itself (i.e., is an identity operation) or an equivalent function.
+    compile 从(definition)定义中产生一个编译后的函数. 如果定义(definition)是一个lambda表达式, 它被强制为一个函数. 如果这个定义(definition)已经是一个编译后的函数, compile 会产出那个函数自身(换句话说, 是一个 identity 操作)或者一个等价的函数.
 
-If the name is nil, the resulting compiled function is returned directly as the primary value. If a non-nil name is given, then the resulting compiled function replaces the existing function definition of name and the name is returned as the primary value; if name is a symbol that names a macro, its macro function is updated and the name is returned as the primary value.
+    如果这个名字(name)是 nil, 编译后的函数直接作为主要返回值返回. 如果给定一个非 nil 的名字(name), 那么编译后的函数替换这个名字对应的已存在的函数定义并且这个名字作为主要值返回; 如果名字(name)是一个命名了宏的符号, 它的宏函数会被更新并且名字(name)作为主要返回值返回.
 
-Literal objects appearing in code processed by the compile function are neither copied nor coalesced. The code resulting from the execution of compile references objects that are eql to the corresponding objects in the source code.
+    在 compile 函数处理的代码中出现的字面化对象既不是复制的也不是合并的. 从 compile 的执行中返回的代码引用和源代码中对应对象 eql 的对象.
 
-compile is permitted, but not required, to establish a handler for conditions of type error. For example, the handler might issue a warning and restart compilation from some implementation-dependent point in order to let the compilation proceed without manual intervention.
+    compile 允许但不是必须去确定 error 类型状况的处理者. 比如, 处理者可能会发出警告, 并从一些与实现相关的点重新启动编译, 以便在无需人工干预的情况下进行编译.
 
-The secondary value, warnings-p, is false if no conditions of type error or warning were detected by the compiler, and true otherwise.
+    第二个返回值, warnings-p, 如果编译器没有检测到 error 或者 warning 类型的状况那么就是 false, 否则就是 true.
 
-The tertiary value, failure-p, is false if no conditions of type error or warning (other than style-warning) were detected by the compiler, and true otherwise.
+    第三个返回值, failure-p, 如果编译器没有检测到 error 或者 warning(除了 style-warning) 类型的状况那么就是 false, 否则就是 true.
 
 示例(Examples):
 
- (defun foo () "bar") =>  FOO
- (compiled-function-p #'foo) =>  implementation-dependent
- (compile 'foo) =>  FOO 
- (compiled-function-p #'foo) =>  true
- (setf (symbol-function 'foo)
-       (compile nil '(lambda () "replaced"))) =>  #<Compiled-Function>
- (foo) =>  "replaced"
+```LISP
+(defun foo () "bar") =>  FOO
+(compiled-function-p #'foo) =>  implementation-dependent
+(compile 'foo) =>  FOO 
+(compiled-function-p #'foo) =>  true
+(setf (symbol-function 'foo)
+      (compile nil '(lambda () "replaced"))) =>  #<Compiled-Function>
+(foo) =>  "replaced"
+```
 
 受此影响(Affected By):
 
-*error-output*, *macroexpand-hook*.
+    *error-output*, *macroexpand-hook*.
 
-The presence of macro definitions and proclamations.
+    宏定义和 proclamations 的存在.
 
 异常情况(Exceptional Situations):
 
-The consequences are undefined if the lexical environment surrounding the function to be compiled contains any bindings other than those for macros, symbol macros, or declarations.
+    如果要编译的函数的词汇环境包含除宏、符号宏或声明之外的任何绑定, 则其结果是未定义的.
 
-For information about errors detected during the compilation process, see Section 3.2.5 (Exceptional Situations in the Compiler).
+    关于在编译过程中的错误检测信息, 见章节 3.2.5 (Exceptional Situations in the Compiler).
 
 也见(See Also):
 
-compile-file
+    compile-file
 
 注意(Notes): None. 
 
-Function EVAL
+### <span id = "">Function EVAL</span>
 
 语法(Syntax):
 
-eval form => result*
+    eval form => result*
 
 参数和值(Arguments and Values):
 
-form---a form.
-
-results---the values yielded by the evaluation of form.
+    form---a form.
+    results---the values yielded by the evaluation of form.
 
 描述(Description):
 
-Evaluates form in the current dynamic environment and the null lexical environment.
+    Evaluates form in the current dynamic environment and the null lexical environment.
 
-eval is a user interface to the evaluator.
+    eval is a user interface to the evaluator.
 
-The evaluator expands macro calls as if through the use of macroexpand-1.
+    The evaluator expands macro calls as if through the use of macroexpand-1.
 
-Constants appearing in code processed by eval are not copied nor coalesced. The code resulting from the execution of eval references objects that are eql to the corresponding objects in the source code.
+    Constants appearing in code processed by eval are not copied nor coalesced. The code resulting from the execution of eval references objects that are eql to the corresponding objects in the source code.
 
 示例(Examples):
 
- (setq form '(1+ a) a 999) =>  999
- (eval form) =>  1000
- (eval 'form) =>  (1+ A)
- (let ((a '(this would break if eval used local value))) (eval form))
+```LISP
+(setq form '(1+ a) a 999) =>  999
+(eval form) =>  1000
+(eval 'form) =>  (1+ A)
+(let ((a '(this would break if eval used local value))) (eval form))
 =>  1000
+```
 
 受此影响(Affected By): None.
 
@@ -2005,55 +2004,55 @@ Constants appearing in code processed by eval are not copied nor coalesced. The 
 
 也见(See Also):
 
-macroexpand-1, Section 3.1.2 (The Evaluation Model)
+    macroexpand-1, Section 3.1.2 (The Evaluation Model)
 
 注意(Notes):
 
-To obtain the current dynamic value of a symbol, use of symbol-value is equivalent (and usually preferable) to use of eval.
+    To obtain the current dynamic value of a symbol, use of symbol-value is equivalent (and usually preferable) to use of eval.
 
-Note that an eval form involves two levels of evaluation for its argument. First, form is evaluated by the normal argument evaluation mechanism as would occur with any call. The object that results from this normal argument evaluation becomes the value of the form parameter, and is then evaluated as part of the eval form. For example:
+    Note that an eval form involves two levels of evaluation for its argument. First, form is evaluated by the normal argument evaluation mechanism as would occur with any call. The object that results from this normal argument evaluation becomes the value of the form parameter, and is then evaluated as part of the eval form. For example:
 
- (eval (list 'cdr (car '((quote (a . b)) c)))) =>  b
+    (eval (list 'cdr (car '((quote (a . b)) c)))) =>  b
 
-The argument form (list 'cdr (car '((quote (a . b)) c))) is evaluated in the usual way to produce the argument (cdr (quote (a . b))); eval then evaluates its argument, (cdr (quote (a . b))), to produce b. Since a single evaluation already occurs for any argument form in any function form, eval is sometimes said to perform ``an extra level of evaluation.'' 
+    The argument form (list 'cdr (car '((quote (a . b)) c))) is evaluated in the usual way to produce the argument (cdr (quote (a . b))); eval then evaluates its argument, (cdr (quote (a . b))), to produce b. Since a single evaluation already occurs for any argument form in any function form, eval is sometimes said to perform ``an extra level of evaluation.'' 
 
-Special Operator EVAL-WHEN
+### <span id = "">Special Operator EVAL-WHEN</span>
 
 语法(Syntax):
 
-eval-when (situation*) form* => result*
+    eval-when (situation*) form* => result*
 
 参数和值(Arguments and Values):
 
-situation---One of the symbols :compile-toplevel, :load-toplevel, :execute, compile, load, or eval.
-
-The use of eval, compile, and load is deprecated.
-
-forms---an implicit progn.
-
-results---the values of the forms if they are executed, or nil if they are not.
+    situation---One of the symbols :compile-toplevel, :load-toplevel, :execute, compile, load, or eval.
+    The use of eval, compile, and load is deprecated.
+    forms---an implicit progn.
+    results---the values of the forms if they are executed, or nil if they are not.
 
 描述(Description):
 
-The body of an eval-when form is processed as an implicit progn, but only in the situations listed.
+    The body of an eval-when form is processed as an implicit progn, but only in the situations listed.
 
-The use of the situations :compile-toplevel (or compile) and :load-toplevel (or load) controls whether and when evaluation occurs when eval-when appears as a top level form in code processed by compile-file. See Section 3.2.3 (File Compilation).
+    The use of the situations :compile-toplevel (or compile) and :load-toplevel (or load) controls whether and when evaluation occurs when eval-when appears as a top level form in code processed by compile-file. See Section 3.2.3 (File Compilation).
 
-The use of the situation :execute (or eval) controls whether evaluation occurs for other eval-when forms; that is, those that are not top level forms, or those in code processed by eval or compile. If the :execute situation is specified in such a form, then the body forms are processed as an implicit progn; otherwise, the eval-when form returns nil.
+    The use of the situation :execute (or eval) controls whether evaluation occurs for other eval-when forms; that is, those that are not top level forms, or those in code processed by eval or compile. If the :execute situation is specified in such a form, then the body forms are processed as an implicit progn; otherwise, the eval-when form returns nil.
 
-eval-when normally appears as a top level form, but it is meaningful for it to appear as a non-top-level form. However, the compile-time side effects described in Section 3.2 (Compilation) only take place when eval-when appears as a top level form.
+    eval-when normally appears as a top level form, but it is meaningful for it to appear as a non-top-level form. However, the compile-time side effects described in Section 3.2 (Compilation) only take place when eval-when appears as a top level form.
 
 示例(Examples):
 
 One example of the use of eval-when is that for the compiler to be able to read a file properly when it uses user-defined reader macros, it is necessary to write
 
+```LISP
  (eval-when (:compile-toplevel :load-toplevel :execute)
    (set-macro-character #\$ #'(lambda (stream char)
                                 (declare (ignore char))
                                 (list 'dollar (read stream))))) =>  T
+```
 
 This causes the call to set-macro-character to be executed in the compiler's execution environment, thereby modifying its reader syntax table.
 
+```LISP
 ;;;     The EVAL-WHEN in this case is not at toplevel, so only the :EXECUTE
 ;;;     keyword is considered. At compile time, this has no effect.
 ;;;     At load time (if the LET is at toplevel), or at execution time
@@ -2098,6 +2097,7 @@ This causes the call to set-macro-character to be executed in the compiler's exe
  (eval-when (:execute :load-toplevel)
    (eval-when (:compile-toplevel)
      (print 'foo6)))
+```
 
 受此影响(Affected By): None.
 
@@ -2105,7 +2105,7 @@ This causes the call to set-macro-character to be executed in the compiler's exe
 
 也见(See Also):
 
-compile-file, Section 3.2 (Compilation)
+    compile-file, Section 3.2 (Compilation)
 
 注意(Notes):
 
@@ -2154,38 +2154,37 @@ The following effects are logical consequences of the definition of eval-when:
 
     when the definition of bar is not a top level form. 
 
-Special Operator LOAD-TIME-VALUE
+### <span id = "">Special Operator LOAD-TIME-VALUE</span>
 
 语法(Syntax):
 
-load-time-value form &optional read-only-p => object
+    load-time-value form &optional read-only-p => object
 
 参数和值(Arguments and Values):
 
-form---a form; evaluated as described below.
-
-read-only-p---a boolean; not evaluated.
-
-object---the primary value resulting from evaluating form.
+    form---a form; evaluated as described below.
+    read-only-p---a boolean; not evaluated.
+    object---the primary value resulting from evaluating form.
 
 描述(Description):
 
-load-time-value provides a mechanism for delaying evaluation of form until the expression is in the run-time environment; see Section 3.2 (Compilation).
+    load-time-value provides a mechanism for delaying evaluation of form until the expression is in the run-time environment; see Section 3.2 (Compilation).
 
-Read-only-p designates whether the result can be considered a constant object. If t, the result is a read-only quantity that can, if appropriate to the implementation, be copied into read-only space and/or coalesced with similar constant objects from other programs. If nil (the default), the result must be neither copied nor coalesced; it must be considered to be potentially modifiable data.
+    Read-only-p designates whether the result can be considered a constant object. If t, the result is a read-only quantity that can, if appropriate to the implementation, be copied into read-only space and/or coalesced with similar constant objects from other programs. If nil (the default), the result must be neither copied nor coalesced; it must be considered to be potentially modifiable data.
 
-If a load-time-value expression is processed by compile-file, the compiler performs its normal semantic processing (such as macro expansion and translation into machine code) on form, but arranges for the execution of form to occur at load time in a null lexical environment, with the result of this evaluation then being treated as a literal object at run time. It is guaranteed that the evaluation of form will take place only once when the file is loaded, but the order of evaluation with respect to the evaluation of top level forms in the file is implementation-dependent.
+    If a load-time-value expression is processed by compile-file, the compiler performs its normal semantic processing (such as macro expansion and translation into machine code) on form, but arranges for the execution of form to occur at load time in a null lexical environment, with the result of this evaluation then being treated as a literal object at run time. It is guaranteed that the evaluation of form will take place only once when the file is loaded, but the order of evaluation with respect to the evaluation of top level forms in the file is implementation-dependent.
 
-If a load-time-value expression appears within a function compiled with compile, the form is evaluated at compile time in a null lexical environment. The result of this compile-time evaluation is treated as a literal object in the compiled code.
+    If a load-time-value expression appears within a function compiled with compile, the form is evaluated at compile time in a null lexical environment. The result of this compile-time evaluation is treated as a literal object in the compiled code.
 
-If a load-time-value expression is processed by eval, form is evaluated in a null lexical environment, and one value is returned. Implementations that implicitly compile (or partially compile) expressions processed by eval might evaluate form only once, at the time this compilation is performed.
+    If a load-time-value expression is processed by eval, form is evaluated in a null lexical environment, and one value is returned. Implementations that implicitly compile (or partially compile) expressions processed by eval might evaluate form only once, at the time this compilation is performed.
 
-If the same list (load-time-value form) is evaluated or compiled more than once, it is implementation-dependent whether form is evaluated only once or is evaluated more than once. This can happen both when an expression being evaluated or compiled shares substructure, and when the same form is processed by eval or compile multiple times. Since a load-time-value expression can be referenced in more than one place and can be evaluated multiple times by eval, it is implementation-dependent whether each execution returns a fresh object or returns the same object as some other execution. Users must use caution when destructively modifying the resulting object.
+    If the same list (load-time-value form) is evaluated or compiled more than once, it is implementation-dependent whether form is evaluated only once or is evaluated more than once. This can happen both when an expression being evaluated or compiled shares substructure, and when the same form is processed by eval or compile multiple times. Since a load-time-value expression can be referenced in more than one place and can be evaluated multiple times by eval, it is implementation-dependent whether each execution returns a fresh object or returns the same object as some other execution. Users must use caution when destructively modifying the resulting object.
 
-If two lists (load-time-value form) that are the same under equal but are not identical are evaluated or compiled, their values always come from distinct evaluations of form. Their values may not be coalesced unless read-only-p is t.
+    If two lists (load-time-value form) that are the same under equal but are not identical are evaluated or compiled, their values always come from distinct evaluations of form. Their values may not be coalesced unless read-only-p is t.
 
 示例(Examples):
 
+```LISP
 ;;; The function INCR1 always returns the same value, even in different images.
 ;;; The function INCR2 always returns the same value in a given image, 
 ;;; but the value it returns might vary from image to image.
@@ -2222,6 +2221,7 @@ If two lists (load-time-value form) that are the same under equal but are not id
 (defun baz-ref (n)
   (let ((v (load-time-value (load-time-value (vector 1 2 3) t) nil)))
     (values (svref v n) v)))
+```
 
 受此影响(Affected By): None.
 
@@ -2229,49 +2229,51 @@ If two lists (load-time-value form) that are the same under equal but are not id
 
 也见(See Also):
 
-compile-file, compile, eval, Section 3.2.2.2 (Minimal Compilation), Section 3.2 (Compilation)
+    compile-file, compile, eval, Section 3.2.2.2 (Minimal Compilation), Section 3.2 (Compilation)
 
 注意(Notes):
 
-load-time-value must appear outside of quoted structure in a ``for evaluation'' position. In situations which would appear to call for use of load-time-value within a quoted structure, the backquote reader macro is probably called for; see Section 2.4.6 (Backquote).
+    load-time-value must appear outside of quoted structure in a ``for evaluation'' position. In situations which would appear to call for use of load-time-value within a quoted structure, the backquote reader macro is probably called for; see Section 2.4.6 (Backquote).
 
-Specifying nil for read-only-p is not a way to force an object to become modifiable if it has already been made read-only. It is only a way to say that, for an object that is modifiable, this operation is not intended to make that object read-only. 
+    Specifying nil for read-only-p is not a way to force an object to become modifiable if it has already been made read-only. It is only a way to say that, for an object that is modifiable, this operation is not intended to make that object read-only. 
 
-Special Operator QUOTE
+### <span id = "">Special Operator QUOTE</span>
 
 语法(Syntax):
 
-quote object => object
+    quote object => object
 
 参数和值(Arguments and Values):
 
-object---an object; not evaluated.
+    object---an object; not evaluated.
 
 描述(Description):
 
-The quote special operator just returns object.
+    The quote special operator just returns object.
 
-The consequences are undefined if literal objects (including quoted objects) are destructively modified.
+    The consequences are undefined if literal objects (including quoted objects) are destructively modified.
 
 示例(Examples):
 
- (setq a 1) =>  1
- (quote (setq a 3)) =>  (SETQ A 3)
- a =>  1
- 'a =>  A
- ''a =>  (QUOTE A) 
- '''a =>  (QUOTE (QUOTE A))
- (setq a 43) =>  43
- (list a (cons a 3)) =>  (43 (43 . 3))
- (list (quote a) (quote (cons a 3))) =>  (A (CONS A 3)) 
- 1 =>  1
- '1 =>  1
- "foo" =>  "foo"
- '"foo" =>  "foo"
- (car '(a b)) =>  A
- '(car '(a b)) =>  (CAR (QUOTE (A B)))
- #(car '(a b)) =>  #(CAR (QUOTE (A B)))
- '#(car '(a b)) =>  #(CAR (QUOTE (A B)))
+```LISP
+(setq a 1) =>  1
+(quote (setq a 3)) =>  (SETQ A 3)
+a =>  1
+'a =>  A
+''a =>  (QUOTE A) 
+'''a =>  (QUOTE (QUOTE A))
+(setq a 43) =>  43
+(list a (cons a 3)) =>  (43 (43 . 3))
+(list (quote a) (quote (cons a 3))) =>  (A (CONS A 3)) 
+1 =>  1
+'1 =>  1
+"foo" =>  "foo"
+'"foo" =>  "foo"
+(car '(a b)) =>  A
+'(car '(a b)) =>  (CAR (QUOTE (A B)))
+#(car '(a b)) =>  #(CAR (QUOTE (A B)))
+'#(car '(a b)) =>  #(CAR (QUOTE (A B)))
+```
 
 受此影响(Affected By): None.
 
@@ -2279,35 +2281,33 @@ The consequences are undefined if literal objects (including quoted objects) are
 
 也见(See Also):
 
-Section 3.1 (Evaluation), Section 2.4.3 (Single-Quote), Section 3.2.1 (Compiler Terminology)
+    Section 3.1 (Evaluation), Section 2.4.3 (Single-Quote), Section 3.2.1 (Compiler Terminology)
 
 注意(Notes):
 
-The textual notation 'object is equivalent to (quote object); see Section 3.2.1 (Compiler Terminology).
+    The textual notation 'object is equivalent to (quote object); see Section 3.2.1 (Compiler Terminology).
 
-Some objects, called self-evaluating objects, do not require quotation by quote. However, symbols and lists are used to represent parts of programs, and so would not be useable as constant data in a program without quote. Since quote suppresses the evaluation of these objects, they become data rather than program. 
+    Some objects, called self-evaluating objects, do not require quotation by quote. However, symbols and lists are used to represent parts of programs, and so would not be useable as constant data in a program without quote. Since quote suppresses the evaluation of these objects, they become data rather than program. 
 
-Accessor COMPILER-MACRO-FUNCTION
+### <span id = "">Accessor COMPILER-MACRO-FUNCTION</span>
 
 语法(Syntax):
 
-compiler-macro-function name &optional environment => function
+    compiler-macro-function name &optional environment => function
 
-(setf (compiler-macro-function name &optional environment) new-function)
+    (setf (compiler-macro-function name &optional environment) new-function)
 
 参数和值(Arguments and Values):
 
-name---a function name.
-
-environment---an environment object.
-
-function, new-function---a compiler macro function, or nil.
+    name---a function name.
+    environment---an environment object.
+    function, new-function---a compiler macro function, or nil.
 
 描述(Description):
 
-Accesses the compiler macro function named name, if any, in the environment.
+    Accesses the compiler macro function named name, if any, in the environment.
 
-A value of nil denotes the absence of a compiler macro function named name.
+    A value of nil denotes the absence of a compiler macro function named name.
 
 示例(Examples): None.
 
@@ -2315,33 +2315,29 @@ A value of nil denotes the absence of a compiler macro function named name.
 
 异常情况(Exceptional Situations):
 
-The consequences are undefined if environment is non-nil in a use of setf of compiler-macro-function.
+    The consequences are undefined if environment is non-nil in a use of setf of compiler-macro-function.
 
 也见(See Also):
 
-define-compiler-macro, Section 3.2.2.1 (Compiler Macros)
+    define-compiler-macro, Section 3.2.2.1 (Compiler Macros)
 
 注意(Notes): None. 
 
-Macro DEFINE-COMPILER-MACRO
+### <span id = "">Macro DEFINE-COMPILER-MACRO</span>
 
 语法(Syntax):
 
-define-compiler-macro name lambda-list [[declaration* | documentation]] form*
+    define-compiler-macro name lambda-list [[declaration* | documentation]] form*
 
-=> name
+    => name
 
 参数和值(Arguments and Values):
 
-name---a function name.
-
-lambda-list---a macro lambda list.
-
-declaration---a declare expression; not evaluated.
-
-documentation---a string; not evaluated.
-
-form---a form.
+    name---a function name.
+    lambda-list---a macro lambda list.
+    declaration---a declare expression; not evaluated.
+    documentation---a string; not evaluated.
+    form---a form.
 
 描述(Description):
 
@@ -2359,90 +2355,91 @@ This is the normal mechanism for defining a compiler macro function. Its manner 
 
 示例(Examples):
 
- (defun square (x) (expt x 2)) =>  SQUARE
- (define-compiler-macro square (&whole form arg)
-   (if (atom arg)
-       `(expt ,arg 2)
-       (case (car arg)
-         (square (if (= (length arg) 2)
-                     `(expt ,(nth 1 arg) 4)
-                     form))
-         (expt   (if (= (length arg) 3)
-                     (if (numberp (nth 2 arg))
-                         `(expt ,(nth 1 arg) ,(* 2 (nth 2 arg)))
-                         `(expt ,(nth 1 arg) (* 2 ,(nth 2 arg))))
-                     form))
-         (otherwise `(expt ,arg 2))))) =>  SQUARE
- (square (square 3)) =>  81
- (macroexpand '(square x)) =>  (SQUARE X), false
- (funcall (compiler-macro-function 'square) '(square x) nil)
+```LISP
+(defun square (x) (expt x 2)) =>  SQUARE
+(define-compiler-macro square (&whole form arg)
+  (if (atom arg)
+      `(expt ,arg 2)
+      (case (car arg)
+        (square (if (= (length arg) 2)
+                    `(expt ,(nth 1 arg) 4)
+                    form))
+        (expt   (if (= (length arg) 3)
+                    (if (numberp (nth 2 arg))
+                        `(expt ,(nth 1 arg) ,(* 2 (nth 2 arg)))
+                        `(expt ,(nth 1 arg) (* 2 ,(nth 2 arg))))
+                    form))
+        (otherwise `(expt ,arg 2))))) =>  SQUARE
+(square (square 3)) =>  81
+(macroexpand '(square x)) =>  (SQUARE X), false
+(funcall (compiler-macro-function 'square) '(square x) nil)
 =>  (EXPT X 2)
- (funcall (compiler-macro-function 'square) '(square (square x)) nil)
+(funcall (compiler-macro-function 'square) '(square (square x)) nil)
 =>  (EXPT X 4)
- (funcall (compiler-macro-function 'square) '(funcall #'square x) nil)
+(funcall (compiler-macro-function 'square) '(funcall #'square x) nil)
 =>  (EXPT X 2)
 
- (defun distance-positional (x1 y1 x2 y2)
-   (sqrt (+ (expt (- x2 x1) 2) (expt (- y2 y1) 2))))
+(defun distance-positional (x1 y1 x2 y2)
+  (sqrt (+ (expt (- x2 x1) 2) (expt (- y2 y1) 2))))
 =>  DISTANCE-POSITIONAL
- (defun distance (&key (x1 0) (y1 0) (x2 x1) (y2 y1))
-   (distance-positional x1 y1 x2 y2))
+(defun distance (&key (x1 0) (y1 0) (x2 x1) (y2 y1))
+  (distance-positional x1 y1 x2 y2))
 =>  DISTANCE
- (define-compiler-macro distance (&whole form
-                                  &rest key-value-pairs
-                                  &key (x1 0  x1-p)
-                                       (y1 0  y1-p)
-                                       (x2 x1 x2-p)
-                                       (y2 y1 y2-p)
-                                  &allow-other-keys
-                                  &environment env)
-   (flet ((key (n) (nth (* n 2) key-value-pairs))
-          (arg (n) (nth (1+ (* n 2)) key-value-pairs))
-          (simplep (x)
-            (let ((expanded-x (macroexpand x env)))
-              (or (constantp expanded-x env)
-                  (symbolp expanded-x)))))
-     (let ((n (/ (length key-value-pairs) 2)))
-       (multiple-value-bind (x1s y1s x2s y2s others)
-           (loop for (key) on key-value-pairs by #'cddr
-                 count (eq key ':x1) into x1s
-                 count (eq key ':y1) into y1s
-                 count (eq key ':x2) into x2s
-                 count (eq key ':y1) into y2s
-                 count (not (member key '(:x1 :x2 :y1 :y2)))
-                   into others
-                 finally (return (values x1s y1s x2s y2s others)))
-         (cond ((and (= n 4)
-                     (eq (key 0) :x1)
-                     (eq (key 1) :y1)
-                     (eq (key 2) :x2)
-                     (eq (key 3) :y2))
-                `(distance-positional ,x1 ,y1 ,x2 ,y2))
-               ((and (if x1-p (and (= x1s 1) (simplep x1)) t)
-                     (if y1-p (and (= y1s 1) (simplep y1)) t)
-                     (if x2-p (and (= x2s 1) (simplep x2)) t)
-                     (if y2-p (and (= y2s 1) (simplep y2)) t)
-                     (zerop others))
-                `(distance-positional ,x1 ,y1 ,x2 ,y2))
-               ((and (< x1s 2) (< y1s 2) (< x2s 2) (< y2s 2)
-                     (zerop others))
-                (let ((temps (loop repeat n collect (gensym))))
-                  `(let ,(loop for i below n
-                               collect (list (nth i temps) (arg i)))
-                     (distance
-                       ,@(loop for i below n
-                               append (list (key i) (nth i temps)))))))
-               (t form))))))
+(define-compiler-macro distance (&whole form
+                                &rest key-value-pairs
+                                &key (x1 0  x1-p)
+                                      (y1 0  y1-p)
+                                      (x2 x1 x2-p)
+                                      (y2 y1 y2-p)
+                                &allow-other-keys
+                                &environment env)
+  (flet ((key (n) (nth (* n 2) key-value-pairs))
+        (arg (n) (nth (1+ (* n 2)) key-value-pairs))
+        (simplep (x)
+          (let ((expanded-x (macroexpand x env)))
+            (or (constantp expanded-x env)
+                (symbolp expanded-x)))))
+    (let ((n (/ (length key-value-pairs) 2)))
+      (multiple-value-bind (x1s y1s x2s y2s others)
+          (loop for (key) on key-value-pairs by #'cddr
+                count (eq key ':x1) into x1s
+                count (eq key ':y1) into y1s
+                count (eq key ':x2) into x2s
+                count (eq key ':y1) into y2s
+                count (not (member key '(:x1 :x2 :y1 :y2)))
+                  into others
+                finally (return (values x1s y1s x2s y2s others)))
+        (cond ((and (= n 4)
+                    (eq (key 0) :x1)
+                    (eq (key 1) :y1)
+                    (eq (key 2) :x2)
+                    (eq (key 3) :y2))
+              `(distance-positional ,x1 ,y1 ,x2 ,y2))
+              ((and (if x1-p (and (= x1s 1) (simplep x1)) t)
+                    (if y1-p (and (= y1s 1) (simplep y1)) t)
+                    (if x2-p (and (= x2s 1) (simplep x2)) t)
+                    (if y2-p (and (= y2s 1) (simplep y2)) t)
+                    (zerop others))
+              `(distance-positional ,x1 ,y1 ,x2 ,y2))
+              ((and (< x1s 2) (< y1s 2) (< x2s 2) (< y2s 2)
+                    (zerop others))
+              (let ((temps (loop repeat n collect (gensym))))
+                `(let ,(loop for i below n
+                              collect (list (nth i temps) (arg i)))
+                    (distance
+                      ,@(loop for i below n
+                              append (list (key i) (nth i temps)))))))
+              (t form))))))
 =>  DISTANCE
- (dolist (form
-           '((distance :x1 (setq x 7) :x2 (decf x) :y1 (decf x) :y2 (decf x))
-             (distance :x1 (setq x 7) :y1 (decf x) :x2 (decf x) :y2 (decf x))
-             (distance :x1 (setq x 7) :y1 (incf x))
-             (distance :x1 (setq x 7) :y1 (incf x) :x1 (incf x))
-             (distance :x1 a1 :y1 b1 :x2 a2 :y2 b2)
-             (distance :x1 a1 :x2 a2 :y1 b1 :y2 b2)
-             (distance :x1 a1 :y1 b1 :z1 c1 :x2 a2 :y2 b2 :z2 c2)))
-   (print (funcall (compiler-macro-function 'distance) form nil)))
+(dolist (form
+          '((distance :x1 (setq x 7) :x2 (decf x) :y1 (decf x) :y2 (decf x))
+            (distance :x1 (setq x 7) :y1 (decf x) :x2 (decf x) :y2 (decf x))
+            (distance :x1 (setq x 7) :y1 (incf x))
+            (distance :x1 (setq x 7) :y1 (incf x) :x1 (incf x))
+            (distance :x1 a1 :y1 b1 :x2 a2 :y2 b2)
+            (distance :x1 a1 :x2 a2 :y1 b1 :y2 b2)
+            (distance :x1 a1 :y1 b1 :z1 c1 :x2 a2 :y2 b2 :z2 c2)))
+  (print (funcall (compiler-macro-function 'distance) form nil)))
 >>  (LET ((#:G6558 (SETQ X 7))
 >>        (#:G6559 (DECF X))
 >>        (#:G6560 (DECF X))
@@ -2457,6 +2454,7 @@ This is the normal mechanism for defining a compiler macro function. Its manner 
 >>  (DISTANCE-POSITIONAL A1 B1 A2 B2) 
 >>  (DISTANCE :X1 A1 :Y1 B1 :Z1 C1 :X2 A2 :Y2 B2 :Z2 C2) 
 =>  NIL
+```
 
 受此影响(Affected By): None.
 
@@ -2464,119 +2462,130 @@ This is the normal mechanism for defining a compiler macro function. Its manner 
 
 也见(See Also):
 
-compiler-macro-function, defmacro, documentation, Section 3.4.11 (Syntactic Interaction of Documentation Strings and Declarations)
+    compiler-macro-function, defmacro, documentation, Section 3.4.11 (Syntactic Interaction of Documentation Strings and Declarations)
 
 注意(Notes):
 
-The consequences of writing a compiler macro definition for a function in the COMMON-LISP package are undefined; it is quite possible that in some implementations such an attempt would override an equivalent or equally important definition. In general, it is recommended that a programmer only write compiler macro definitions for functions he or she personally maintains--writing a compiler macro definition for a function maintained elsewhere is normally considered a violation of traditional rules of modularity and data abstraction. 
+    The consequences of writing a compiler macro definition for a function in the COMMON-LISP package are undefined; it is quite possible that in some implementations such an attempt would override an equivalent or equally important definition. In general, it is recommended that a programmer only write compiler macro definitions for functions he or she personally maintains--writing a compiler macro definition for a function maintained elsewhere is normally considered a violation of traditional rules of modularity and data abstraction. 
 
-Macro DEFMACRO
+### <span id = "">Macro DEFMACRO</span>
 
 语法(Syntax):
 
-defmacro name lambda-list [[declaration* | documentation]] form*
+    defmacro name lambda-list [[declaration* | documentation]] form*
 
-=> name
+    => name
 
 参数和值(Arguments and Values):
 
-name---a symbol. lambda-list---a macro lambda list.
-
-declaration---a declare expression; not evaluated.
-
-documentation---a string; not evaluated.
-
-form---a form.
+    name---a symbol. lambda-list---a macro lambda list.
+    declaration---a declare expression; not evaluated.
+    documentation---a string; not evaluated.
+    form---a form.
 
 描述(Description):
 
-Defines name as a macro by associating a macro function with that name in the global environment. The macro function is defined in the same lexical environment in which the defmacro form appears.
+    Defines name as a macro by associating a macro function with that name in the global environment. The macro function is defined in the same lexical environment in which the defmacro form appears.
 
-The parameter variables in lambda-list are bound to destructured portions of the macro call.
+    The parameter variables in lambda-list are bound to destructured portions of the macro call.
 
-The expansion function accepts two arguments, a form and an environment. The expansion function returns a form. The body of the expansion function is specified by forms. Forms are executed in order. The value of the last form executed is returned as the expansion of the macro. The body forms of the expansion function (but not the lambda-list) are implicitly enclosed in a block whose name is name.
+    The expansion function accepts two arguments, a form and an environment. The expansion function returns a form. The body of the expansion function is specified by forms. Forms are executed in order. The value of the last form executed is returned as the expansion of the macro. The body forms of the expansion function (but not the lambda-list) are implicitly enclosed in a block whose name is name.
 
-The lambda-list conforms to the requirements described in Section 3.4.4 (Macro Lambda Lists).
+    The lambda-list conforms to the requirements described in Section 3.4.4 (Macro Lambda Lists).
 
-Documentation is attached as a documentation string to name (as kind function) and to the macro function.
+    Documentation is attached as a documentation string to name (as kind function) and to the macro function.
 
-defmacro can be used to redefine a macro or to replace a function definition with a macro definition.
+    defmacro can be used to redefine a macro or to replace a function definition with a macro definition.
 
-Recursive expansion of the form returned must terminate, including the expansion of other macros which are subforms of other forms returned.
+    Recursive expansion of the form returned must terminate, including the expansion of other macros which are subforms of other forms returned.
 
-The consequences are undefined if the result of fully macroexpanding a form contains any circular list structure except in literal objects.
+    The consequences are undefined if the result of fully macroexpanding a form contains any circular list structure except in literal objects.
 
-If a defmacro form appears as a top level form, the compiler must store the macro definition at compile time, so that occurrences of the macro later on in the file can be expanded correctly. Users must ensure that the body of the macro can be evaluated at compile time if it is referenced within the file being compiled.
+    If a defmacro form appears as a top level form, the compiler must store the macro definition at compile time, so that occurrences of the macro later on in the file can be expanded correctly. Users must ensure that the body of the macro can be evaluated at compile time if it is referenced within the file being compiled.
 
 示例(Examples):
 
- (defmacro mac1 (a b) "Mac1 multiplies and adds" 
-            `(+ ,a (* ,b 3))) =>  MAC1 
- (mac1 4 5) =>  19 
- (documentation 'mac1 'function) =>  "Mac1 multiplies and adds" 
- (defmacro mac2 (&optional (a 2 b) (c 3 d) &rest x) `'(,a ,b ,c ,d ,x)) =>  MAC2 
- (mac2 6) =>  (6 T 3 NIL NIL) 
- (mac2 6 3 8) =>  (6 T 3 T (8)) 
- (defmacro mac3 (&whole r a &optional (b 3) &rest x &key c (d a))
-    `'(,r ,a ,b ,c ,d ,x)) =>  MAC3 
- (mac3 1 6 :d 8 :c 9 :d 10) =>  ((MAC3 1 6 :D 8 :C 9 :D 10) 1 6 9 8 (:D 8 :C 9 :D 10)) 
+```LISP
+(defmacro mac1 (a b) "Mac1 multiplies and adds" 
+          `(+ ,a (* ,b 3))) =>  MAC1 
+(mac1 4 5) =>  19 
+(documentation 'mac1 'function) =>  "Mac1 multiplies and adds" 
+(defmacro mac2 (&optional (a 2 b) (c 3 d) &rest x) `'(,a ,b ,c ,d ,x)) =>  MAC2 
+(mac2 6) =>  (6 T 3 NIL NIL) 
+(mac2 6 3 8) =>  (6 T 3 T (8)) 
+(defmacro mac3 (&whole r a &optional (b 3) &rest x &key c (d a))
+  `'(,r ,a ,b ,c ,d ,x)) =>  MAC3 
+(mac3 1 6 :d 8 :c 9 :d 10) =>  ((MAC3 1 6 :D 8 :C 9 :D 10) 1 6 9 8 (:D 8 :C 9 :D 10)) 
+```
 
 The stipulation that an embedded destructuring lambda list is permitted only where ordinary lambda list syntax would permit a parameter name but not a list is made to prevent ambiguity. For example, the following is not valid:
 
- (defmacro loser (x &optional (a b &rest c) &rest z)
-   ...)
+```LISP
+(defmacro loser (x &optional (a b &rest c) &rest z)
+  ...)
+```
 
 because ordinary lambda list syntax does permit a list following &optional; the list (a b &rest c) would be interpreted as describing an optional parameter named a whose default value is that of the form b, with a supplied-p parameter named &rest (not valid), and an extraneous symbol c in the list (also not valid). An almost correct way to express this is
 
- (defmacro loser (x &optional ((a b &rest c)) &rest z)
-   ...)
+```LISP
+(defmacro loser (x &optional ((a b &rest c)) &rest z)
+  ...)
+```
 
 The extra set of parentheses removes the ambiguity. However, the definition is now incorrect because a macro call such as (loser (car pool)) would not provide any argument form for the lambda list (a b &rest c), and so the default value against which to match the lambda list would be nil because no explicit default value was specified. The consequences of this are unspecified since the empty list, nil, does not have forms to satisfy the parameters a and b. The fully correct definition would be either
 
- (defmacro loser (x &optional ((a b &rest c) '(nil nil)) &rest z)
-   ...)
+```LISP
+(defmacro loser (x &optional ((a b &rest c) '(nil nil)) &rest z)
+  ...)
+```
 
 or
 
- (defmacro loser (x &optional ((&optional a b &rest c)) &rest z)
-   ...)
+```LISP
+(defmacro loser (x &optional ((&optional a b &rest c)) &rest z)
+  ...)
+```
 
 These differ slightly: the first requires that if the macro call specifies a explicitly then it must also specify b explicitly, whereas the second does not have this requirement. For example,
 
- (loser (car pool) ((+ x 1)))
+```LISP
+(loser (car pool) ((+ x 1)))
+```
 
 would be a valid call for the second definition but not for the first.
 
- (defmacro dm1a (&whole x) `',x)
- (macroexpand '(dm1a))  =>  (QUOTE (DM1A))
- (macroexpand '(dm1a a)) is an error.
- 
- (defmacro dm1b (&whole x a &optional b) `'(,x ,a ,b))
- (macroexpand '(dm1b))  is an error.
- (macroexpand '(dm1b q))  =>  (QUOTE ((DM1B Q) Q NIL))
- (macroexpand '(dm1b q r)) =>  (QUOTE ((DM1B Q R) Q R))
- (macroexpand '(dm1b q r s)) is an error.
+```LISP
+(defmacro dm1a (&whole x) `',x)
+(macroexpand '(dm1a))  =>  (QUOTE (DM1A))
+(macroexpand '(dm1a a)) is an error.
 
- (defmacro dm2a (&whole form a b) `'(form ,form a ,a b ,b))
- (macroexpand '(dm2a x y)) =>  (QUOTE (FORM (DM2A X Y) A X B Y))
- (dm2a x y) =>  (FORM (DM2A X Y) A X B Y)
+(defmacro dm1b (&whole x a &optional b) `'(,x ,a ,b))
+(macroexpand '(dm1b))  is an error.
+(macroexpand '(dm1b q))  =>  (QUOTE ((DM1B Q) Q NIL))
+(macroexpand '(dm1b q r)) =>  (QUOTE ((DM1B Q R) Q R))
+(macroexpand '(dm1b q r s)) is an error.
 
- (defmacro dm2b (&whole form a (&whole b (c . d) &optional (e 5)) 
-                 &body f &environment env)
-   ``(,',form ,,a ,',b ,',(macroexpand c env) ,',d ,',e ,',f))
- ;Note that because backquote is involved, implementations may differ
- ;slightly in the nature (though not the functionality) of the expansion.
- (macroexpand '(dm2b x1 (((incf x2) x3 x4)) x5 x6))
- =>  (LIST* '(DM2B X1 (((INCF X2) X3 X4))
-                   X5 X6)
-            X1
-            '((((INCF X2) X3 X4)) (SETQ X2 (+ X2 1)) (X3 X4) 5 (X5 X6))),
-     T
- (let ((x1 5))
-   (macrolet ((segundo (x) `(cadr ,x)))
-     (dm2b x1 (((segundo x2) x3 x4)) x5 x6)))
- =>  ((DM2B X1 (((SEGUNDO X2) X3 X4)) X5 X6)
-      5 (((SEGUNDO X2) X3 X4)) (CADR X2) (X3 X4) 5 (X5 X6))
+(defmacro dm2a (&whole form a b) `'(form ,form a ,a b ,b))
+(macroexpand '(dm2a x y)) =>  (QUOTE (FORM (DM2A X Y) A X B Y))
+(dm2a x y) =>  (FORM (DM2A X Y) A X B Y)
+
+(defmacro dm2b (&whole form a (&whole b (c . d) &optional (e 5)) 
+                &body f &environment env)
+  ``(,',form ,,a ,',b ,',(macroexpand c env) ,',d ,',e ,',f))
+;Note that because backquote is involved, implementations may differ
+;slightly in the nature (though not the functionality) of the expansion.
+(macroexpand '(dm2b x1 (((incf x2) x3 x4)) x5 x6))
+=>  (LIST* '(DM2B X1 (((INCF X2) X3 X4))
+                  X5 X6)
+          X1
+          '((((INCF X2) X3 X4)) (SETQ X2 (+ X2 1)) (X3 X4) 5 (X5 X6))),
+    T
+(let ((x1 5))
+  (macrolet ((segundo (x) `(cadr ,x)))
+    (dm2b x1 (((segundo x2) x3 x4)) x5 x6)))
+=>  ((DM2B X1 (((SEGUNDO X2) X3 X4)) X5 X6)
+    5 (((SEGUNDO X2) X3 X4)) (CADR X2) (X3 X4) 5 (X5 X6))
+```
 
 受此影响(Affected By): None.
 
@@ -2584,210 +2593,210 @@ would be a valid call for the second definition but not for the first.
 
 也见(See Also):
 
-define-compiler-macro, destructuring-bind, documentation, macroexpand, *macroexpand-hook*, macrolet, macro-function, Section 3.1 (Evaluation), Section 3.2 (Compilation), Section 3.4.11 (Syntactic Interaction of Documentation Strings and Declarations)
+    define-compiler-macro, destructuring-bind, documentation, macroexpand, *macroexpand-hook*, macrolet, macro-function, Section 3.1 (Evaluation), Section 3.2 (Compilation), Section 3.4.11 (Syntactic Interaction of Documentation Strings and Declarations)
 
 注意(Notes): None. 
 
-Accessor MACRO-FUNCTION
+### <span id = "">Accessor MACRO-FUNCTION</span>
 
 语法(Syntax):
 
-macro-function symbol &optional environment => function
+    macro-function symbol &optional environment => function
 
-(setf (macro-function symbol &optional environment) new-function)
+    (setf (macro-function symbol &optional environment) new-function)
 
 参数和值(Arguments and Values):
 
-symbol---a symbol.
-
-environment---an environment object.
-
-function---a macro function or nil.
-
-new-function---a macro function.
+    symbol---a symbol.
+    environment---an environment object.
+    function---a macro function or nil.
+    new-function---a macro function.
 
 描述(Description):
 
-Determines whether symbol has a function definition as a macro in the specified environment.
+    Determines whether symbol has a function definition as a macro in the specified environment.
 
-If so, the macro expansion function, a function of two arguments, is returned. If symbol has no function definition in the lexical environment environment, or its definition is not a macro, macro-function returns nil.
+    If so, the macro expansion function, a function of two arguments, is returned. If symbol has no function definition in the lexical environment environment, or its definition is not a macro, macro-function returns nil.
 
-It is possible for both macro-function and special-operator-p to return true of symbol. The macro definition must be available for use by programs that understand only the standard Common Lisp special forms.
+    It is possible for both macro-function and special-operator-p to return true of symbol. The macro definition must be available for use by programs that understand only the standard Common Lisp special forms.
 
 示例(Examples):
 
- (defmacro macfun (x) '(macro-function 'macfun)) =>  MACFUN 
- (not (macro-function 'macfun)) =>  false 
+```LISP
+(defmacro macfun (x) '(macro-function 'macfun)) =>  MACFUN 
+(not (macro-function 'macfun)) =>  false 
 
- (macrolet ((foo (&environment env)
-               (if (macro-function 'bar env)
-                  ''yes
-                  ''no)))
-    (list (foo)
-          (macrolet ((bar () :beep))
-             (foo))))
- 
+(macrolet ((foo (&environment env)
+              (if (macro-function 'bar env)
+                ''yes
+                ''no)))
+  (list (foo)
+        (macrolet ((bar () :beep))
+            (foo))))
+
 =>  (NO YES)
+```
 
 受此影响(Affected By):
 
-(setf macro-function), defmacro, and macrolet.
+    (setf macro-function), defmacro, and macrolet.
 
 异常情况(Exceptional Situations):
 
-The consequences are undefined if environment is non-nil in a use of setf of macro-function.
+    The consequences are undefined if environment is non-nil in a use of setf of macro-function.
 
 也见(See Also):
 
-defmacro, Section 3.1 (Evaluation)
+    defmacro, Section 3.1 (Evaluation)
 
 注意(Notes):
 
 setf can be used with macro-function to install a macro as a symbol's global function definition:
 
- (setf (macro-function symbol) fn)
+```LISP
+(setf (macro-function symbol) fn)
+```
 
 The value installed must be a function that accepts two arguments, the entire macro call and an environment, and computes the expansion for that call. Performing this operation causes symbol to have only that macro definition as its global function definition; any previous definition, whether as a macro or as a function, is lost. 
 
-Function MACROEXPAND, MACROEXPAND-1
+### <span id = "">Function MACROEXPAND, MACROEXPAND-1</span>
 
 语法(Syntax):
 
-macroexpand form &optional env => expansion, expanded-p
+    macroexpand form &optional env => expansion, expanded-p
 
-macroexpand-1 form &optional env => expansion, expanded-p
+    macroexpand-1 form &optional env => expansion, expanded-p
 
 参数和值(Arguments and Values):
 
-form---a form.
-
-env---an environment object. The default is nil.
-
-expansion---a form.
-
-expanded-p---a generalized boolean.
+    form---a form.
+    env---an environment object. The default is nil.
+    expansion---a form.
+    expanded-p---a generalized boolean.
 
 描述(Description):
 
-macroexpand and macroexpand-1 expand macros.
+    macroexpand and macroexpand-1 expand macros.
 
-If form is a macro form, then macroexpand-1 expands the macro form call once.
+    If form is a macro form, then macroexpand-1 expands the macro form call once.
 
-macroexpand repeatedly expands form until it is no longer a macro form. In effect, macroexpand calls macroexpand-1 repeatedly until the secondary value it returns is nil.
+    macroexpand repeatedly expands form until it is no longer a macro form. In effect, macroexpand calls macroexpand-1 repeatedly until the secondary value it returns is nil.
 
-If form is a macro form, then the expansion is a macro expansion and expanded-p is true. Otherwise, the expansion is the given form and expanded-p is false.
+    If form is a macro form, then the expansion is a macro expansion and expanded-p is true. Otherwise, the expansion is the given form and expanded-p is false.
 
-Macro expansion is carried out as follows. Once macroexpand-1 has determined that the form is a macro form, it obtains an appropriate expansion function for the macro or symbol macro. The value of *macroexpand-hook* is coerced to a function and then called as a function of three arguments: the expansion function, the form, and the env. The value returned from this call is taken to be the expansion of the form.
+    Macro expansion is carried out as follows. Once macroexpand-1 has determined that the form is a macro form, it obtains an appropriate expansion function for the macro or symbol macro. The value of *macroexpand-hook* is coerced to a function and then called as a function of three arguments: the expansion function, the form, and the env. The value returned from this call is taken to be the expansion of the form.
 
-In addition to macro definitions in the global environment, any local macro definitions established within env by macrolet or symbol-macrolet are considered. If only form is supplied as an argument, then the environment is effectively null, and only global macro definitions as established by defmacro are considered. Macro definitions are shadowed by local function definitions.
+    In addition to macro definitions in the global environment, any local macro definitions established within env by macrolet or symbol-macrolet are considered. If only form is supplied as an argument, then the environment is effectively null, and only global macro definitions as established by defmacro are considered. Macro definitions are shadowed by local function definitions.
 
 示例(Examples):
 
- (defmacro alpha (x y) `(beta ,x ,y)) =>  ALPHA
- (defmacro beta (x y) `(gamma ,x ,y)) =>  BETA
- (defmacro delta (x y) `(gamma ,x ,y)) =>  EPSILON
- (defmacro expand (form &environment env)
-   (multiple-value-bind (expansion expanded-p)
-       (macroexpand form env)
-     `(values ',expansion ',expanded-p))) =>  EXPAND
- (defmacro expand-1 (form &environment env)
-   (multiple-value-bind (expansion expanded-p)
-       (macroexpand-1 form env)
-     `(values ',expansion ',expanded-p))) =>  EXPAND-1
+```LISP
+(defmacro alpha (x y) `(beta ,x ,y)) =>  ALPHA
+(defmacro beta (x y) `(gamma ,x ,y)) =>  BETA
+(defmacro delta (x y) `(gamma ,x ,y)) =>  EPSILON
+(defmacro expand (form &environment env)
+  (multiple-value-bind (expansion expanded-p)
+      (macroexpand form env)
+    `(values ',expansion ',expanded-p))) =>  EXPAND
+(defmacro expand-1 (form &environment env)
+  (multiple-value-bind (expansion expanded-p)
+      (macroexpand-1 form env)
+    `(values ',expansion ',expanded-p))) =>  EXPAND-1
 
 ;; Simple examples involving just the global environment
- (macroexpand-1 '(alpha a b)) =>  (BETA A B), true
- (expand-1 (alpha a b)) =>  (BETA A B), true
- (macroexpand '(alpha a b)) =>  (GAMMA A B), true
- (expand (alpha a b)) =>  (GAMMA A B), true
- (macroexpand-1 'not-a-macro) =>  NOT-A-MACRO, false
- (expand-1 not-a-macro) =>  NOT-A-MACRO, false
- (macroexpand '(not-a-macro a b)) =>  (NOT-A-MACRO A B), false
- (expand (not-a-macro a b)) =>  (NOT-A-MACRO A B), false
+(macroexpand-1 '(alpha a b)) =>  (BETA A B), true
+(expand-1 (alpha a b)) =>  (BETA A B), true
+(macroexpand '(alpha a b)) =>  (GAMMA A B), true
+(expand (alpha a b)) =>  (GAMMA A B), true
+(macroexpand-1 'not-a-macro) =>  NOT-A-MACRO, false
+(expand-1 not-a-macro) =>  NOT-A-MACRO, false
+(macroexpand '(not-a-macro a b)) =>  (NOT-A-MACRO A B), false
+(expand (not-a-macro a b)) =>  (NOT-A-MACRO A B), false
 
 ;; Examples involving lexical environments
- (macrolet ((alpha (x y) `(delta ,x ,y)))
-   (macroexpand-1 '(alpha a b))) =>  (BETA A B), true
- (macrolet ((alpha (x y) `(delta ,x ,y)))
-   (expand-1 (alpha a b))) =>  (DELTA A B), true
- (macrolet ((alpha (x y) `(delta ,x ,y)))
-   (macroexpand '(alpha a b))) =>  (GAMMA A B), true
- (macrolet ((alpha (x y) `(delta ,x ,y)))
-   (expand (alpha a b))) =>  (GAMMA A B), true
- (macrolet ((beta (x y) `(epsilon ,x ,y)))
-   (expand (alpha a b))) =>  (EPSILON A B), true
- (let ((x (list 1 2 3)))
-   (symbol-macrolet ((a (first x)))
-     (expand a))) =>  (FIRST X), true
- (let ((x (list 1 2 3)))
-   (symbol-macrolet ((a (first x)))
-     (macroexpand 'a))) =>  A, false
- (symbol-macrolet ((b (alpha x y)))
-   (expand-1 b)) =>  (ALPHA X Y), true
- (symbol-macrolet ((b (alpha x y)))
-   (expand b)) =>  (GAMMA X Y), true
- (symbol-macrolet ((b (alpha x y))
-                   (a b))
-   (expand-1 a)) =>  B, true
- (symbol-macrolet ((b (alpha x y))
-                   (a b))
-   (expand a)) =>  (GAMMA X Y), true
+(macrolet ((alpha (x y) `(delta ,x ,y)))
+  (macroexpand-1 '(alpha a b))) =>  (BETA A B), true
+(macrolet ((alpha (x y) `(delta ,x ,y)))
+  (expand-1 (alpha a b))) =>  (DELTA A B), true
+(macrolet ((alpha (x y) `(delta ,x ,y)))
+  (macroexpand '(alpha a b))) =>  (GAMMA A B), true
+(macrolet ((alpha (x y) `(delta ,x ,y)))
+  (expand (alpha a b))) =>  (GAMMA A B), true
+(macrolet ((beta (x y) `(epsilon ,x ,y)))
+  (expand (alpha a b))) =>  (EPSILON A B), true
+(let ((x (list 1 2 3)))
+  (symbol-macrolet ((a (first x)))
+    (expand a))) =>  (FIRST X), true
+(let ((x (list 1 2 3)))
+  (symbol-macrolet ((a (first x)))
+    (macroexpand 'a))) =>  A, false
+(symbol-macrolet ((b (alpha x y)))
+  (expand-1 b)) =>  (ALPHA X Y), true
+(symbol-macrolet ((b (alpha x y)))
+  (expand b)) =>  (GAMMA X Y), true
+(symbol-macrolet ((b (alpha x y))
+                  (a b))
+  (expand-1 a)) =>  B, true
+(symbol-macrolet ((b (alpha x y))
+                  (a b))
+  (expand a)) =>  (GAMMA X Y), true
 
 ;; Examples of shadowing behavior
- (flet ((beta (x y) (+ x y)))
-   (expand (alpha a b))) =>  (BETA A B), true
- (macrolet ((alpha (x y) `(delta ,x ,y)))
-   (flet ((alpha (x y) (+ x y)))
-     (expand (alpha a b)))) =>  (ALPHA A B), false
- (let ((x (list 1 2 3)))
-   (symbol-macrolet ((a (first x)))
-     (let ((a x))
-       (expand a)))) =>  A, false
+(flet ((beta (x y) (+ x y)))
+  (expand (alpha a b))) =>  (BETA A B), true
+(macrolet ((alpha (x y) `(delta ,x ,y)))
+  (flet ((alpha (x y) (+ x y)))
+    (expand (alpha a b)))) =>  (ALPHA A B), false
+(let ((x (list 1 2 3)))
+  (symbol-macrolet ((a (first x)))
+    (let ((a x))
+      (expand a)))) =>  A, false
+```
 
 受此影响(Affected By):
 
-defmacro, setf of macro-function, macrolet, symbol-macrolet
+    defmacro, setf of macro-function, macrolet, symbol-macrolet
 
 异常情况(Exceptional Situations): None.
 
 也见(See Also):
 
-*macroexpand-hook*, defmacro, setf of macro-function, macrolet, symbol-macrolet, Section 3.1 (Evaluation)
+    *macroexpand-hook*, defmacro, setf of macro-function, macrolet, symbol-macrolet, Section 3.1 (Evaluation)
 
 注意(Notes):
 
-Neither macroexpand nor macroexpand-1 makes any explicit attempt to expand macro forms that are either subforms of the form or subforms of the expansion. Such expansion might occur implicitly, however, due to the semantics or implementation of the macro function. 
+    Neither macroexpand nor macroexpand-1 makes any explicit attempt to expand macro forms that are either subforms of the form or subforms of the expansion. Such expansion might occur implicitly, however, due to the semantics or implementation of the macro function. 
 
-Macro DEFINE-SYMBOL-MACRO
+### <span id = "">Macro DEFINE-SYMBOL-MACRO</span>
 
 语法(Syntax):
 
-define-symbol-macro symbol expansion
+    define-symbol-macro symbol expansion
 
-=> symbol
+    => symbol
 
 参数和值(Arguments and Values):
 
-symbol---a symbol.
-
-expansion---a form.
+    symbol---a symbol.
+    expansion---a form.
 
 描述(Description):
 
-Provides a mechanism for globally affecting the macro expansion of the indicated symbol.
+    Provides a mechanism for globally affecting the macro expansion of the indicated symbol.
 
-Globally establishes an expansion function for the symbol macro named by symbol. The only guaranteed property of an expansion function for a symbol macro is that when it is applied to the form and the environment it returns the correct expansion. (In particular, it is implementation-dependent whether the expansion is conceptually stored in the expansion function, the environment, or both.)
+    Globally establishes an expansion function for the symbol macro named by symbol. The only guaranteed property of an expansion function for a symbol macro is that when it is applied to the form and the environment it returns the correct expansion. (In particular, it is implementation-dependent whether the expansion is conceptually stored in the expansion function, the environment, or both.)
 
-Each global reference to symbol (i.e., not shadowed[2] by a binding for a variable or symbol macro named by the same symbol) is expanded by the normal macro expansion process; see Section 3.1.2.1.1 (Symbols as Forms). The expansion of a symbol macro is subject to further macro expansion in the same lexical environment as the symbol macro reference, exactly analogous to normal macros.
+    Each global reference to symbol (i.e., not shadowed[2] by a binding for a variable or symbol macro named by the same symbol) is expanded by the normal macro expansion process; see Section 3.1.2.1.1 (Symbols as Forms). The expansion of a symbol macro is subject to further macro expansion in the same lexical environment as the symbol macro reference, exactly analogous to normal macros.
 
-The consequences are unspecified if a special declaration is made for symbol while in the scope of this definition (i.e., when it is not shadowed[2] by a binding for a variable or symbol macro named by the same symbol).
+    The consequences are unspecified if a special declaration is made for symbol while in the scope of this definition (i.e., when it is not shadowed[2] by a binding for a variable or symbol macro named by the same symbol).
 
-Any use of setq to set the value of the symbol while in the scope of this definition is treated as if it were a setf. psetq of symbol is treated as if it were a psetf, and multiple-value-setq is treated as if it were a setf of values.
+    Any use of setq to set the value of the symbol while in the scope of this definition is treated as if it were a setf. psetq of symbol is treated as if it were a psetf, and multiple-value-setq is treated as if it were a setf of values.
 
-A binding for a symbol macro can be shadowed[2] by let or symbol-macrolet.
+    A binding for a symbol macro can be shadowed[2] by let or symbol-macrolet.
 
 示例(Examples):
 
+```LISP
 (defvar *things* (list 'alpha 'beta 'gamma)) =>  *THINGS*
 
 (define-symbol-macro thing1 (first *things*)) =>  THING1
@@ -2802,102 +2811,102 @@ thing3 =>  THREE
 *things* =>  (ONE TWO THREE)
 
 (list thing2 (let ((thing2 2)) thing2)) =>  (TWO 2)
+```
 
 受此影响(Affected By): None.
 
 异常情况(Exceptional Situations):
 
-If symbol is already defined as a global variable, an error of type program-error is signaled.
+    If symbol is already defined as a global variable, an error of type program-error is signaled.
 
 也见(See Also):
 
-symbol-macrolet, macroexpand
+    symbol-macrolet, macroexpand
 
 注意(Notes): None. 
 
-Special Operator SYMBOL-MACROLET
+### <span id = "">Special Operator SYMBOL-MACROLET</span>
 
 语法(Syntax):
 
-symbol-macrolet ((symbol expansion)*) declaration* form*
+    symbol-macrolet ((symbol expansion)*) declaration* form*
 
-=> result*
+    => result*
 
 参数和值(Arguments and Values):
 
-symbol---a symbol.
-
-expansion---a form.
-
-declaration---a declare expression; not evaluated.
-
-forms---an implicit progn.
-
-results---the values returned by the forms.
+    symbol---a symbol.
+    expansion---a form.
+    declaration---a declare expression; not evaluated.
+    forms---an implicit progn.
+    results---the values returned by the forms.
 
 描述(Description):
 
-symbol-macrolet provides a mechanism for affecting the macro expansion environment for symbols.
+    symbol-macrolet provides a mechanism for affecting the macro expansion environment for symbols.
 
-symbol-macrolet lexically establishes expansion functions for each of the symbol macros named by symbols. The only guaranteed property of an expansion function for a symbol macro is that when it is applied to the form and the environment it returns the correct expansion. (In particular, it is implementation-dependent whether the expansion is conceptually stored in the expansion function, the environment, or both.)
+    symbol-macrolet lexically establishes expansion functions for each of the symbol macros named by symbols. The only guaranteed property of an expansion function for a symbol macro is that when it is applied to the form and the environment it returns the correct expansion. (In particular, it is implementation-dependent whether the expansion is conceptually stored in the expansion function, the environment, or both.)
 
-Each reference to symbol as a variable within the lexical scope of symbol-macrolet is expanded by the normal macro expansion process; see Section 3.1.2.1.1 (Symbols as Forms). The expansion of a symbol macro is subject to further macro expansion in the same lexical environment as the symbol macro invocation, exactly analogous to normal macros.
+    Each reference to symbol as a variable within the lexical scope of symbol-macrolet is expanded by the normal macro expansion process; see Section 3.1.2.1.1 (Symbols as Forms). The expansion of a symbol macro is subject to further macro expansion in the same lexical environment as the symbol macro invocation, exactly analogous to normal macros.
 
-Exactly the same declarations are allowed as for let with one exception: symbol-macrolet signals an error if a special declaration names one of the symbols being defined by symbol-macrolet.
+    Exactly the same declarations are allowed as for let with one exception: symbol-macrolet signals an error if a special declaration names one of the symbols being defined by symbol-macrolet.
 
-When the forms of the symbol-macrolet form are expanded, any use of setq to set the value of one of the specified variables is treated as if it were a setf. psetq of a symbol defined as a symbol macro is treated as if it were a psetf, and multiple-value-setq is treated as if it were a setf of values.
+    When the forms of the symbol-macrolet form are expanded, any use of setq to set the value of one of the specified variables is treated as if it were a setf. psetq of a symbol defined as a symbol macro is treated as if it were a psetf, and multiple-value-setq is treated as if it were a setf of values.
 
-The use of symbol-macrolet can be shadowed by let. In other words, symbol-macrolet only substitutes for occurrences of symbol that would be in the scope of a lexical binding of symbol surrounding the forms.
+    The use of symbol-macrolet can be shadowed by let. In other words, symbol-macrolet only substitutes for occurrences of symbol that would be in the scope of a lexical binding of symbol surrounding the forms.
 
 示例(Examples):
 
+```LISP
 ;;; The following is equivalent to
 ;;;   (list 'foo (let ((x 'bar)) x)),
 ;;; not
 ;;;   (list 'foo (let (('foo 'bar)) 'foo))
- (symbol-macrolet ((x 'foo))
-   (list x (let ((x 'bar)) x))) 
+(symbol-macrolet ((x 'foo))
+  (list x (let ((x 'bar)) x))) 
 =>  (foo bar)
 NOT=>  (foo foo) 
- 
- (symbol-macrolet ((x '(foo x)))
-   (list x))
+
+(symbol-macrolet ((x '(foo x)))
+  (list x))
 =>  ((FOO X))
+```
 
 受此影响(Affected By): None.
 
 异常情况(Exceptional Situations):
 
-If an attempt is made to bind a symbol that is defined as a global variable, an error of type program-error is signaled.
+    If an attempt is made to bind a symbol that is defined as a global variable, an error of type program-error is signaled.
 
-If declaration contains a special declaration that names one of the symbols being bound by symbol-macrolet, an error of type program-error is signaled.
+    If declaration contains a special declaration that names one of the symbols being bound by symbol-macrolet, an error of type program-error is signaled.
 
 也见(See Also):
 
-with-slots, macroexpand
+    with-slots, macroexpand
 
 注意(Notes):
 
-The special form symbol-macrolet is the basic mechanism that is used to implement with-slots.
+    The special form symbol-macrolet is the basic mechanism that is used to implement with-slots.
 
-If a symbol-macrolet form is a top level form, the forms are also processed as top level forms. See Section 3.2.3 (File Compilation). 
+    If a symbol-macrolet form is a top level form, the forms are also processed as top level forms. See Section 3.2.3 (File Compilation). 
 
-Variable *MACROEXPAND-HOOK*
+### <span id = "">Variable *MACROEXPAND-HOOK*</span>
 
-Value Type:
+值类型(Value Type):
 
-a designator for a function of three arguments: a macro function, a macro form, and an environment object.
+    a designator for a function of three arguments: a macro function, a macro form, and an environment object.
 
-Initial Value:
+初始值(Initial Value):
 
-a designator for a function that is equivalent to the function funcall, but that might have additional implementation-dependent side-effects.
+    a designator for a function that is equivalent to the function funcall, but that might have additional implementation-dependent side-effects.
 
 描述(Description):
 
-Used as the expansion interface hook by macroexpand-1 to control the macro expansion process. When a macro form is to be expanded, this function is called with three arguments: the macro function, the macro form, and the environment in which the macro form is to be expanded. The environment object has dynamic extent; the consequences are undefined if the environment object is referred to outside the dynamic extent of the macro expansion function.
+    Used as the expansion interface hook by macroexpand-1 to control the macro expansion process. When a macro form is to be expanded, this function is called with three arguments: the macro function, the macro form, and the environment in which the macro form is to be expanded. The environment object has dynamic extent; the consequences are undefined if the environment object is referred to outside the dynamic extent of the macro expansion function.
 
 示例(Examples):
 
+```LISP
  (defun hook (expander form env)
     (format t "Now expanding: ~S~%" form)
     (funcall expander form env)) =>  HOOK 
@@ -2906,58 +2915,61 @@ Used as the expansion interface hook by macroexpand-1 to control the macro expan
  (let ((*macroexpand-hook* #'hook)) (macroexpand '(machook 1 2)))
 >>  Now expanding (MACHOOK 1 2) 
 =>  (/ (+ 1 2) 2), true
+```
 
 受此影响(Affected By): None.
 
 也见(See Also):
 
-macroexpand, macroexpand-1, funcall, Section 3.1 (Evaluation)
+    macroexpand, macroexpand-1, funcall, Section 3.1 (Evaluation)
 
 注意(Notes):
 
-The net effect of the chosen initial value is to just invoke the macro function, giving it the macro form and environment as its two arguments.
+    The net effect of the chosen initial value is to just invoke the macro function, giving it the macro form and environment as its two arguments.
 
-Users or user programs can assign this variable to customize or trace the macro expansion mechanism. Note, however, that this variable is a global resource, potentially shared by multiple programs; as such, if any two programs depend for their correctness on the setting of this variable, those programs may not be able to run in the same Lisp image. For this reason, it is frequently best to confine its uses to debugging situations.
+    Users or user programs can assign this variable to customize or trace the macro expansion mechanism. Note, however, that this variable is a global resource, potentially shared by multiple programs; as such, if any two programs depend for their correctness on the setting of this variable, those programs may not be able to run in the same Lisp image. For this reason, it is frequently best to confine its uses to debugging situations.
 
-Users who put their own function into *macroexpand-hook* should consider saving the previous value of the hook, and calling that value from their own. 
+    Users who put their own function into *macroexpand-hook* should consider saving the previous value of the hook, and calling that value from their own. 
 
-Function PROCLAIM
+### <span id = "">Function PROCLAIM</span>
 
 语法(Syntax):
 
-proclaim declaration-specifier => implementation-dependent
+    proclaim declaration-specifier => implementation-dependent
 
 参数和值(Arguments and Values):
 
-declaration-specifier---a declaration specifier.
+    declaration-specifier---a declaration specifier.
 
 描述(Description):
 
-Establishes the declaration specified by declaration-specifier in the global environment.
+    Establishes the declaration specified by declaration-specifier in the global environment.
 
-Such a declaration, sometimes called a global declaration or a proclamation, is always in force unless locally shadowed.
+    Such a declaration, sometimes called a global declaration or a proclamation, is always in force unless locally shadowed.
 
-Names of variables and functions within declaration-specifier refer to dynamic variables and global function definitions, respectively.
+    Names of variables and functions within declaration-specifier refer to dynamic variables and global function definitions, respectively.
 
-The next figure shows a list of declaration identifiers that can be used with proclaim.
+    The next figure shows a list of declaration identifiers that can be used with proclaim.
 
-declaration  inline     optimize  type  
-ftype        notinline  special         
+    declaration  inline     optimize  type  
+    ftype        notinline  special         
 
-Figure 3-22. Global Declaration Specifiers
+    Figure 3-22. Global Declaration Specifiers
 
-An implementation is free to support other (implementation-defined) declaration identifiers as well.
+    An implementation is free to support other (implementation-defined) declaration identifiers as well.
 
 示例(Examples):
 
- (defun declare-variable-types-globally (type vars)
-   (proclaim `(type ,type ,@vars))
-   type)
+```LISP
+(defun declare-variable-types-globally (type vars)
+  (proclaim `(type ,type ,@vars))
+  type)
 
- ;; Once this form is executed, the dynamic variable *TOLERANCE*
- ;; must always contain a float.
- (declare-variable-types-globally 'float '(*tolerance*))
+;; Once this form is executed, the dynamic variable *TOLERANCE*
+;; must always contain a float.
+(declare-variable-types-globally 'float '(*tolerance*))
 =>  FLOAT
+```
 
 受此影响(Affected By): None.
 
@@ -2965,38 +2977,42 @@ An implementation is free to support other (implementation-defined) declaration 
 
 也见(See Also):
 
-declaim, declare, Section 3.2 (Compilation)
+    declaim, declare, Section 3.2 (Compilation)
 
 注意(Notes):
 
-Although the execution of a proclaim form has effects that might affect compilation, the compiler does not make any attempt to recognize and specially process proclaim forms. A proclamation such as the following, even if a top level form, does not have any effect until it is executed:
+    Although the execution of a proclaim form has effects that might affect compilation, the compiler does not make any attempt to recognize and specially process proclaim forms. A proclamation such as the following, even if a top level form, does not have any effect until it is executed:
 
+```LISP
 (proclaim '(special *x*))
+```
 
-If compile time side effects are desired, eval-when may be useful. For example:
+    If compile time side effects are desired, eval-when may be useful. For example:
 
- (eval-when (:execute :compile-toplevel :load-toplevel)
-   (proclaim '(special *x*)))
+```LISP
+(eval-when (:execute :compile-toplevel :load-toplevel)
+  (proclaim '(special *x*)))
+```
 
-In most such cases, however, it is preferrable to use declaim for this purpose.
+    In most such cases, however, it is preferrable to use declaim for this purpose.
 
-Since proclaim forms are ordinary function forms, macro forms can expand into them. 
+    Since proclaim forms are ordinary function forms, macro forms can expand into them. 
 
-Macro DECLAIM
+### <span id = "">Macro DECLAIM</span>
 
 语法(Syntax):
 
-declaim declaration-specifier* => implementation-dependent
+    declaim declaration-specifier* => implementation-dependent
 
 参数和值(Arguments and Values):
 
-declaration-specifier---a declaration specifier; not evaluated.
+    declaration-specifier---a declaration specifier; not evaluated.
 
 描述(Description):
 
 Establishes the declarations specified by the declaration-specifiers.
 
-If a use of this macro appears as a top level form in a file being processed by the file compiler, the proclamations are also made at compile-time. As with other defining macros, it is unspecified whether or not the compile-time side-effects of a declaim persist after the file has been compiled.
+    If a use of this macro appears as a top level form in a file being processed by the file compiler, the proclamations are also made at compile-time. As with other defining macros, it is unspecified whether or not the compile-time side-effects of a declaim persist after the file has been compiled.
 
 示例(Examples):
 
@@ -3008,221 +3024,232 @@ If a use of this macro appears as a top level form in a file being processed by 
 
 也见(See Also):
 
-declare, proclaim
+    declare, proclaim
 
 注意(Notes): None. 
 
-Symbol DECLARE
+### <span id = "">Symbol DECLARE</span>
 
 语法(Syntax):
 
-declare declaration-specifier*
+    declare declaration-specifier*
 
-Arguments:
+参数(Arguments):
 
-declaration-specifier---a declaration specifier; not evaluated.
+    declaration-specifier---a declaration specifier; not evaluated.
 
 描述(Description):
 
-A declare expression, sometimes called a declaration, can occur only at the beginning of the bodies of certain forms; that is, it may be preceded only by other declare expressions, or by a documentation string if the context permits.
+    A declare expression, sometimes called a declaration, can occur only at the beginning of the bodies of certain forms; that is, it may be preceded only by other declare expressions, or by a documentation string if the context permits.
 
-A declare expression can occur in a lambda expression or in any of the forms listed in the next figure.
+    A declare expression can occur in a lambda expression or in any of the forms listed in the next figure.
 
-defgeneric                 do-external-symbols   prog                      
-define-compiler-macro      do-symbols            prog*                     
-define-method-combination  dolist                restart-case              
-define-setf-expander       dotimes               symbol-macrolet           
-defmacro                   flet                  with-accessors            
-defmethod                  handler-case          with-hash-table-iterator  
-defsetf                    labels                with-input-from-string    
-deftype                    let                   with-open-file            
-defun                      let*                  with-open-stream          
-destructuring-bind         locally               with-output-to-string     
-do                         macrolet              with-package-iterator     
-do*                        multiple-value-bind   with-slots                
-do-all-symbols             pprint-logical-block                            
+    defgeneric                 do-external-symbols   prog                      
+    define-compiler-macro      do-symbols            prog*                     
+    define-method-combination  dolist                restart-case              
+    define-setf-expander       dotimes               symbol-macrolet           
+    defmacro                   flet                  with-accessors            
+    defmethod                  handler-case          with-hash-table-iterator  
+    defsetf                    labels                with-input-from-string    
+    deftype                    let                   with-open-file            
+    defun                      let*                  with-open-stream          
+    destructuring-bind         locally               with-output-to-string     
+    do                         macrolet              with-package-iterator     
+    do*                        multiple-value-bind   with-slots                
+    do-all-symbols             pprint-logical-block                            
 
-Figure 3-23. Standardized Forms In Which Declarations Can Occur
+    Figure 3-23. Standardized Forms In Which Declarations Can Occur
 
-A declare expression can only occur where specified by the syntax of these forms. The consequences of attempting to evaluate a declare expression are undefined. In situations where such expressions can appear, explicit checks are made for their presence and they are never actually evaluated; it is for this reason that they are called ``declare expressions'' rather than ``declare forms.''
+    A declare expression can only occur where specified by the syntax of these forms. The consequences of attempting to evaluate a declare expression are undefined. In situations where such expressions can appear, explicit checks are made for their presence and they are never actually evaluated; it is for this reason that they are called ``declare expressions'' rather than ``declare forms.''
 
-Macro forms cannot expand into declarations; declare expressions must appear as actual subexpressions of the form to which they refer.
+    Macro forms cannot expand into declarations; declare expressions must appear as actual subexpressions of the form to which they refer.
 
-The next figure shows a list of declaration identifiers that can be used with declare.
+    The next figure shows a list of declaration identifiers that can be used with declare.
 
-dynamic-extent  ignore     optimize  
-ftype           inline     special   
-ignorable       notinline  type      
+    dynamic-extent  ignore     optimize  
+    ftype           inline     special   
+    ignorable       notinline  type      
 
-Figure 3-24. Local Declaration Specifiers
+    Figure 3-24. Local Declaration Specifiers
 
-An implementation is free to support other (implementation-defined) declaration identifiers as well.
+    An implementation is free to support other (implementation-defined) declaration identifiers as well.
 
 示例(Examples):
 
- (defun nonsense (k x z)
-   (foo z x)                     ;First call to foo
-   (let ((j (foo k x))           ;Second call to foo
-         (x (* k k)))
-     (declare (inline foo) (special x z))
-     (foo x j z)))               ;Third call to foo
+```LISP
+(defun nonsense (k x z)
+  (foo z x)                     ;First call to foo
+  (let ((j (foo k x))           ;Second call to foo
+        (x (* k k)))
+    (declare (inline foo) (special x z))
+    (foo x j z)))               ;Third call to foo
+```
 
-In this example, the inline declaration applies only to the third call to foo, but not to the first or second ones. The special declaration of x causes let to make a dynamic binding for x, and causes the reference to x in the body of let to be a dynamic reference. The reference to x in the second call to foo is a local reference to the second parameter of nonsense. The reference to x in the first call to foo is a local reference, not a special one. The special declaration of z causes the reference to z in the third call to foo to be a dynamic reference; it does not refer to the parameter to nonsense named z, because that parameter binding has not been declared to be special. (The special declaration of z does not appear in the body of defun, but in an inner form, and therefore does not affect the binding of the parameter.)
+    In this example, the inline declaration applies only to the third call to foo, but not to the first or second ones. The special declaration of x causes let to make a dynamic binding for x, and causes the reference to x in the body of let to be a dynamic reference. The reference to x in the second call to foo is a local reference to the second parameter of nonsense. The reference to x in the first call to foo is a local reference, not a special one. The special declaration of z causes the reference to z in the third call to foo to be a dynamic reference; it does not refer to the parameter to nonsense named z, because that parameter binding has not been declared to be special. (The special declaration of z does not appear in the body of defun, but in an inner form, and therefore does not affect the binding of the parameter.)
 
 受此影响(Affected By): None.
 
 异常情况(Exceptional Situations):
 
-The consequences of trying to use a declare expression as a form to be evaluated are undefined.
+    The consequences of trying to use a declare expression as a form to be evaluated are undefined.
 
 也见(See Also):
 
-proclaim, Section 4.2.3 (Type Specifiers), declaration, dynamic-extent, ftype, ignorable, ignore, inline, notinline, optimize, type
+    proclaim, Section 4.2.3 (Type Specifiers), declaration, dynamic-extent, ftype, ignorable, ignore, inline, notinline, optimize, type
 
 注意(Notes): None. 
 
-Declaration IGNORE, IGNORABLE
+### <span id = "">Declaration IGNORE, IGNORABLE</span>
 
 语法(Syntax):
 
-(ignore {var | (function fn)}*)
+    (ignore {var | (function fn)}*)
 
-(ignorable {var | (function fn)}*)
+    (ignorable {var | (function fn)}*)
 
-Arguments:
+参数(Arguments):
 
-var---a variable name.
+    var---a variable name.
 
-fn---a function name.
+    fn---a function name.
 
-Valid Context:
+合法上下文(Valid Context):
 
-declaration
+    declaration
 
-Binding Types Affected:
+绑定类型的影响(Binding Types Affected):
 
-variable, function
+    variable, function
 
 描述(Description):
 
-The ignore and ignorable declarations refer to for-value references to variable bindings for the vars and to function bindings for the fns.
+    The ignore and ignorable declarations refer to for-value references to variable bindings for the vars and to function bindings for the fns.
 
-An ignore declaration specifies that for-value references to the indicated bindings will not occur within the scope of the declaration. Within the scope of such a declaration, it is desirable for a compiler to issue a warning about the presence of either a for-value reference to any var or fn, or a special declaration for any var.
+    An ignore declaration specifies that for-value references to the indicated bindings will not occur within the scope of the declaration. Within the scope of such a declaration, it is desirable for a compiler to issue a warning about the presence of either a for-value reference to any var or fn, or a special declaration for any var.
 
-An ignorable declaration specifies that for-value references to the indicated bindings might or might not occur within the scope of the declaration. Within the scope of such a declaration, it is not desirable for a compiler to issue a warning about the presence or absence of either a for-value reference to any var or fn, or a special declaration for any var.
+    An ignorable declaration specifies that for-value references to the indicated bindings might or might not occur within the scope of the declaration. Within the scope of such a declaration, it is not desirable for a compiler to issue a warning about the presence or absence of either a for-value reference to any var or fn, or a special declaration for any var.
 
-When not within the scope of a ignore or ignorable declaration, it is desirable for a compiler to issue a warning about any var for which there is neither a for-value reference nor a special declaration, or about any fn for which there is no for-value reference.
+    When not within the scope of a ignore or ignorable declaration, it is desirable for a compiler to issue a warning about any var for which there is neither a for-value reference nor a special declaration, or about any fn for which there is no for-value reference.
 
-Any warning about a ``used'' or ``unused'' binding must be of type style-warning, and may not affect program semantics.
+    Any warning about a ``used'' or ``unused'' binding must be of type style-warning, and may not affect program semantics.
 
-The stream variables established by with-open-file, with-open-stream, with-input-from-string, and with-output-to-string, and all iteration variables are, by definition, always ``used''. Using (declare (ignore v)), for such a variable v has unspecified consequences.
+    The stream variables established by with-open-file, with-open-stream, with-input-from-string, and with-output-to-string, and all iteration variables are, by definition, always ``used''. Using (declare (ignore v)), for such a variable v has unspecified consequences.
 
 也见(See Also):
 
-declare 
+    declare 
 
-Declaration DYNAMIC-EXTENT
+### <span id = "">Declaration DYNAMIC-EXTENT</span>
 
 语法(Syntax):
 
-(dynamic-extent [[var* | (function fn)*]])
+    (dynamic-extent [[var* | (function fn)*]])
 
-Arguments:
+参数(Arguments):
 
-var---a variable name.
+    var---a variable name.
+    fn---a function name.
 
-fn---a function name.
+合法上下文(Valid Context):
 
-Valid Context:
+    declaration
 
-declaration
+绑定类型的影响(Binding Types Affected):
 
-Binding Types Affected:
-
-variable, function
+    variable, function
 
 描述(Description):
 
-In some containing form, F, this declaration asserts for each vari (which need not be bound by F), and for each value vij that vari takes on, and for each object xijk that is an otherwise inaccessible part of vij at any time when vij becomes the value of vari, that just after the execution of F terminates, xijk is either inaccessible (if F established a binding for vari) or still an otherwise inaccessible part of the current value of vari (if F did not establish a binding for vari). The same relation holds for each fni, except that the bindings are in the function namespace.
+    In some containing form, F, this declaration asserts for each vari (which need not be bound by F), and for each value vij that vari takes on, and for each object xijk that is an otherwise inaccessible part of vij at any time when vij becomes the value of vari, that just after the execution of F terminates, xijk is either inaccessible (if F established a binding for vari) or still an otherwise inaccessible part of the current value of vari (if F did not establish a binding for vari). The same relation holds for each fni, except that the bindings are in the function namespace.
 
-The compiler is permitted to use this information in any way that is appropriate to the implementation and that does not conflict with the semantics of Common Lisp.
+    The compiler is permitted to use this information in any way that is appropriate to the implementation and that does not conflict with the semantics of Common Lisp.
 
-dynamic-extent declarations can be free declarations or bound declarations.
+    dynamic-extent declarations can be free declarations or bound declarations.
 
-The vars and fns named in a dynamic-extent declaration must not refer to symbol macro or macro bindings.
+    The vars and fns named in a dynamic-extent declaration must not refer to symbol macro or macro bindings.
 
 示例(Examples):
 
-Since stack allocation of the initial value entails knowing at the object's creation time that the object can be stack-allocated, it is not generally useful to make a dynamic-extent declaration for variables which have no lexically apparent initial value. For example, it is probably useful to write:
+    Since stack allocation of the initial value entails knowing at the object's creation time that the object can be stack-allocated, it is not generally useful to make a dynamic-extent declaration for variables which have no lexically apparent initial value. For example, it is probably useful to write:
 
- (defun f ()
-   (let ((x (list 1 2 3)))
-     (declare (dynamic-extent x))
-         ...))
+```LISP
+(defun f ()
+  (let ((x (list 1 2 3)))
+    (declare (dynamic-extent x))
+        ...))
+```
 
-This would permit those compilers that wish to do so to stack allocate the list held by the local variable x. It is permissible, but in practice probably not as useful, to write:
+    This would permit those compilers that wish to do so to stack allocate the list held by the local variable x. It is permissible, but in practice probably not as useful, to write:
 
- (defun g (x) (declare (dynamic-extent x)) ...)
- (defun f () (g (list 1 2 3)))
+```LISP
+(defun g (x) (declare (dynamic-extent x)) ...)
+(defun f () (g (list 1 2 3)))
+```
 
-Most compilers would probably not stack allocate the argument to g in f because it would be a modularity violation for the compiler to assume facts about g from within f. Only an implementation that was willing to be responsible for recompiling f if the definition of g changed incompatibly could legitimately stack allocate the list argument to g in f.
+    Most compilers would probably not stack allocate the argument to g in f because it would be a modularity violation for the compiler to assume facts about g from within f. Only an implementation that was willing to be responsible for recompiling f if the definition of g changed incompatibly could legitimately stack allocate the list argument to g in f.
 
-Here is another example:
+    Here is another example:
 
- (declaim (inline g))
- (defun g (x) (declare (dynamic-extent x)) ...)
- (defun f () (g (list 1 2 3)))
- 
- (defun f ()
-   (flet ((g (x) (declare (dynamic-extent x)) ...))
-     (g (list 1 2 3))))
- 
+```LISP
+(declaim (inline g))
+(defun g (x) (declare (dynamic-extent x)) ...)
+(defun f () (g (list 1 2 3)))
 
-In the previous example, some compilers might determine that optimization was possible and others might not.
+(defun f ()
+  (flet ((g (x) (declare (dynamic-extent x)) ...))
+    (g (list 1 2 3))))
+```
 
-A variant of this is the so-called ``stack allocated rest list'' that can be achieved (in implementations supporting the optimization) by:
+    In the previous example, some compilers might determine that optimization was possible and others might not.
 
- (defun f (&rest x)
-   (declare (dynamic-extent x))
-   ...)
+    A variant of this is the so-called ``stack allocated rest list'' that can be achieved (in implementations supporting the optimization) by:
 
-Note that although the initial value of x is not explicit, the f function is responsible for assembling the list x from the passed arguments, so the f function can be optimized by the compiler to construct a stack-allocated list instead of a heap-allocated list in implementations that support such.
+```LISP
+(defun f (&rest x)
+  (declare (dynamic-extent x))
+  ...)
+```
 
-In the following example,
+    Note that although the initial value of x is not explicit, the f function is responsible for assembling the list x from the passed arguments, so the f function can be optimized by the compiler to construct a stack-allocated list instead of a heap-allocated list in implementations that support such.
 
- (let ((x (list 'a1 'b1 'c1))
-       (y (cons 'a2 (cons 'b2 (cons 'c2 nil)))))
-   (declare (dynamic-extent x y))
-   ...)
+    In the following example,
 
-The otherwise inaccessible parts of x are three conses, and the otherwise inaccessible parts of y are three other conses. None of the symbols a1, b1, c1, a2, b2, c2, or nil is an otherwise inaccessible part of x or y because each is interned and hence accessible by the package (or packages) in which it is interned. However, if a freshly allocated uninterned symbol had been used, it would have been an otherwise inaccessible part of the list which contained it.
+```LISP
+(let ((x (list 'a1 'b1 'c1))
+      (y (cons 'a2 (cons 'b2 (cons 'c2 nil)))))
+  (declare (dynamic-extent x y))
+  ...)
+```
 
+    The otherwise inaccessible parts of x are three conses, and the otherwise inaccessible parts of y are three other conses. None of the symbols a1, b1, c1, a2, b2, c2, or nil is an otherwise inaccessible part of x or y because each is interned and hence accessible by the package (or packages) in which it is interned. However, if a freshly allocated uninterned symbol had been used, it would have been an otherwise inaccessible part of the list which contained it.
+
+```LISP
 ;; In this example, the implementation is permitted to stack allocate
 ;; the list that is bound to X.
- (let ((x (list 1 2 3)))
-   (declare (dynamic-extent x))
-   (print x)
-   :done)
+(let ((x (list 1 2 3)))
+  (declare (dynamic-extent x))
+  (print x)
+  :done)
 >>  (1 2 3)
 =>  :DONE
- 
+
 ;; In this example, the list to be bound to L can be stack-allocated.
- (defun zap (x y z)
-   (do ((l (list x y z) (cdr l)))
-       ((null l))
-     (declare (dynamic-extent l))
-     (prin1 (car l)))) =>  ZAP
- (zap 1 2 3)
+(defun zap (x y z)
+  (do ((l (list x y z) (cdr l)))
+      ((null l))
+    (declare (dynamic-extent l))
+    (prin1 (car l)))) =>  ZAP
+(zap 1 2 3)
 >>  123
 =>  NIL
 
 ;; Some implementations might open-code LIST-ALL-PACKAGES in a way
 ;; that permits using stack allocation of the list to be bound to L.
- (do ((l (list-all-packages) (cdr l)))
-     ((null l))
-   (declare (dynamic-extent l))
-   (let ((name (package-name (car l))))
-     (when (string-search "COMMON-LISP" name) (print name))))
+(do ((l (list-all-packages) (cdr l)))
+    ((null l))
+  (declare (dynamic-extent l))
+  (let ((name (package-name (car l))))
+    (when (string-search "COMMON-LISP" name) (print name))))
 >>  "COMMON-LISP"
 >>  "COMMON-LISP-USER"
 =>  NIL
@@ -3231,25 +3258,27 @@ The otherwise inaccessible parts of x are three conses, and the otherwise inacce
 ;; rest lists.  A declaration such as the following should be a cue
 ;; to such implementations that stack-allocation of the rest list
 ;; would be desirable.
- (defun add (&rest x)
-   (declare (dynamic-extent x))
-   (apply #'+ x)) =>  ADD
- (add 1 2 3) =>  6
+(defun add (&rest x)
+  (declare (dynamic-extent x))
+  (apply #'+ x)) =>  ADD
+(add 1 2 3) =>  6
 
- (defun zap (n m)
-   ;; Computes (RANDOM (+ M 1)) at relative speed of roughly O(N).
-   ;; It may be slow, but with a good compiler at least it
-   ;; doesn't waste much heap storage.  :-}
-   (let ((a (make-array n)))
-     (declare (dynamic-extent a))
-     (dotimes (i n) 
-       (declare (dynamic-extent i))
-       (setf (aref a i) (random (+ i 1))))
-     (aref a m))) =>  ZAP
- (< (zap 5 3) 3) =>  true
+(defun zap (n m)
+  ;; Computes (RANDOM (+ M 1)) at relative speed of roughly O(N).
+  ;; It may be slow, but with a good compiler at least it
+  ;; doesn't waste much heap storage.  :-}
+  (let ((a (make-array n)))
+    (declare (dynamic-extent a))
+    (dotimes (i n) 
+      (declare (dynamic-extent i))
+      (setf (aref a i) (random (+ i 1))))
+    (aref a m))) =>  ZAP
+(< (zap 5 3) 3) =>  true
+```
 
-The following are in error, since the value of x is used outside of its extent:
+    The following are in error, since the value of x is used outside of its extent:
 
+```LISP
  (length (list (let ((x (list 1 2 3)))  ; Invalid
                 (declare (dynamic-extent x))
                 x)))
@@ -3258,395 +3287,417 @@ The following are in error, since the value of x is used outside of its extent:
           (declare (dynamic-extent x))
           x)
         nil)
+```
 
 也见(See Also):
 
-declare
+    declare
 
 注意(Notes):
 
-The most common optimization is to stack allocate the initial value of the objects named by the vars.
+    The most common optimization is to stack allocate the initial value of the objects named by the vars.
 
-It is permissible for an implementation to simply ignore this declaration. 
+    It is permissible for an implementation to simply ignore this declaration. 
 
-Declaration TYPE
+### <span id = "">Declaration TYPE</span>
 
 语法(Syntax):
 
-(type typespec var*)
+    (type typespec var*)
 
-(typespec var*)
+    (typespec var*)
 
-Arguments:
+参数(Arguments):
 
-typespec---a type specifier.
+    typespec---a type specifier.
 
-var---a variable name.
+    var---a variable name.
 
-Valid Context:
+合法上下文(Valid Context):
 
-declaration or proclamation
+    declaration or proclamation
 
-Binding Types Affected:
+绑定类型的影响(Binding Types Affected):
 
-variable
+    variable
 
 描述(Description):
 
-Affects only variable bindings and specifies that the vars take on values only of the specified typespec. In particular, values assigned to the variables by setq, as well as the initial values of the vars must be of the specified typespec. type declarations never apply to function bindings (see ftype).
+    Affects only variable bindings and specifies that the vars take on values only of the specified typespec. In particular, values assigned to the variables by setq, as well as the initial values of the vars must be of the specified typespec. type declarations never apply to function bindings (see ftype).
 
-A type declaration of a symbol defined by symbol-macrolet is equivalent to wrapping a the expression around the expansion of that symbol, although the symbol's macro expansion is not actually affected.
+    A type declaration of a symbol defined by symbol-macrolet is equivalent to wrapping a the expression around the expansion of that symbol, although the symbol's macro expansion is not actually affected.
 
-The meaning of a type declaration is equivalent to changing each reference to a variable (var) within the scope of the declaration to (the typespec var), changing each expression assigned to the variable (new-value) within the scope of the declaration to (the typespec new-value), and executing (the typespec var) at the moment the scope of the declaration is entered.
+    The meaning of a type declaration is equivalent to changing each reference to a variable (var) within the scope of the declaration to (the typespec var), changing each expression assigned to the variable (new-value) within the scope of the declaration to (the typespec new-value), and executing (the typespec var) at the moment the scope of the declaration is entered.
 
-A type declaration is valid in all declarations. The interpretation of a type declaration is as follows:
+    A type declaration is valid in all declarations. The interpretation of a type declaration is as follows:
 
-1. During the execution of any reference to the declared variable within the scope of the declaration, the consequences are undefined if the value of the declared variable is not of the declared type.
+    1. During the execution of any reference to the declared variable within the scope of the declaration, the consequences are undefined if the value of the declared variable is not of the declared type.
 
-2. During the execution of any setq of the declared variable within the scope of the declaration, the consequences are undefined if the newly assigned value of the declared variable is not of the declared type.
+    2. During the execution of any setq of the declared variable within the scope of the declaration, the consequences are undefined if the newly assigned value of the declared variable is not of the declared type.
 
-3. At the moment the scope of the declaration is entered, the consequences are undefined if the value of the declared variable is not of the declared type.
+    3. At the moment the scope of the declaration is entered, the consequences are undefined if the value of the declared variable is not of the declared type.
 
-A type declaration affects only variable references within its scope.
 
-If nested type declarations refer to the same variable, then the value of the variable must be a member of the intersection of the declared types.
+    A type declaration affects only variable references within its scope.
 
-If there is a local type declaration for a dynamic variable, and there is also a global type proclamation for that same variable, then the value of the variable within the scope of the local declaration must be a member of the intersection of the two declared types.
+    If nested type declarations refer to the same variable, then the value of the variable must be a member of the intersection of the declared types.
 
-type declarations can be free declarations or bound declarations.
+    If there is a local type declaration for a dynamic variable, and there is also a global type proclamation for that same variable, then the value of the variable within the scope of the local declaration must be a member of the intersection of the two declared types.
 
-A symbol cannot be both the name of a type and the name of a declaration. Defining a symbol as the name of a class, structure, condition, or type, when the symbol has been declared as a declaration name, or vice versa, signals an error.
+    type declarations can be free declarations or bound declarations.
 
-Within the lexical scope of an array type declaration, all references to array elements are assumed to satisfy the expressed array element type (as opposed to the upgraded array element type). A compiler can treat the code within the scope of the array type declaration as if each access of an array element were surrounded by an appropriate the form.
+    A symbol cannot be both the name of a type and the name of a declaration. Defining a symbol as the name of a class, structure, condition, or type, when the symbol has been declared as a declaration name, or vice versa, signals an error.
+
+    Within the lexical scope of an array type declaration, all references to array elements are assumed to satisfy the expressed array element type (as opposed to the upgraded array element type). A compiler can treat the code within the scope of the array type declaration as if each access of an array element were surrounded by an appropriate the form.
 
 示例(Examples):
 
- (defun f (x y)
-   (declare (type fixnum x y))
-   (let ((z (+ x y)))
-     (declare (type fixnum z))
-     z)) =>  F
- (f 1 2) =>  3
- ;; The previous definition of F is equivalent to
- (defun f (x y)
-   ;; This declaration is a shorthand form of the TYPE declaration
-   (declare (fixnum x y))
-   ;; To declare the type of a return value, it's not necessary to
-   ;; create a named variable.  A THE special form can be used instead.
-   (the fixnum (+ x y))) =>  F
- (f 1 2) =>  3
+```LISP
+(defun f (x y)
+  (declare (type fixnum x y))
+  (let ((z (+ x y)))
+    (declare (type fixnum z))
+    z)) =>  F
+(f 1 2) =>  3
+;; The previous definition of F is equivalent to
+(defun f (x y)
+  ;; This declaration is a shorthand form of the TYPE declaration
+  (declare (fixnum x y))
+  ;; To declare the type of a return value, it's not necessary to
+  ;; create a named variable.  A THE special form can be used instead.
+  (the fixnum (+ x y))) =>  F
+(f 1 2) =>  3
 
- (defvar *one-array* (make-array 10 :element-type '(signed-byte 5)))
- (defvar *another-array* (make-array 10 :element-type '(signed-byte 8)))
-  
- (defun frob (an-array)
-   (declare (type (array (signed-byte 5) 1) an-array))
-   (setf (aref an-array 1) 31)
-   (setf (aref an-array 2) 127)
-   (setf (aref an-array 3) (* 2 (aref an-array 3)))
-   (let ((foo 0))
-     (declare (type (signed-byte 5) foo))
-     (setf foo (aref an-array 0))))
-  
- (frob *one-array*)
- (frob *another-array*)
+(defvar *one-array* (make-array 10 :element-type '(signed-byte 5)))
+(defvar *another-array* (make-array 10 :element-type '(signed-byte 8)))
 
-The above definition of frob is equivalent to:
+(defun frob (an-array)
+  (declare (type (array (signed-byte 5) 1) an-array))
+  (setf (aref an-array 1) 31)
+  (setf (aref an-array 2) 127)
+  (setf (aref an-array 3) (* 2 (aref an-array 3)))
+  (let ((foo 0))
+    (declare (type (signed-byte 5) foo))
+    (setf foo (aref an-array 0))))
 
- (defun frob (an-array)
-   (setf (the (signed-byte 5) (aref an-array 1)) 31)
-   (setf (the (signed-byte 5) (aref an-array 2)) 127)
-   (setf (the (signed-byte 5) (aref an-array 3))
-         (* 2 (the (signed-byte 5) (aref an-array 3))))
-   (let ((foo 0))
-     (declare (type (signed-byte 5) foo))
-     (setf foo (the (signed-byte 5) (aref an-array 0)))))
+(frob *one-array*)
+(frob *another-array*)
+```
 
-Given an implementation in which fixnums are 29 bits but fixnum arrays are upgraded to signed 32-bit arrays, the following could be compiled with all fixnum arithmetic:
+    The above definition of frob is equivalent to:
 
+```LISP
+(defun frob (an-array)
+  (setf (the (signed-byte 5) (aref an-array 1)) 31)
+  (setf (the (signed-byte 5) (aref an-array 2)) 127)
+  (setf (the (signed-byte 5) (aref an-array 3))
+        (* 2 (the (signed-byte 5) (aref an-array 3))))
+  (let ((foo 0))
+    (declare (type (signed-byte 5) foo))
+    (setf foo (the (signed-byte 5) (aref an-array 0)))))
+```
+
+    Given an implementation in which fixnums are 29 bits but fixnum arrays are upgraded to signed 32-bit arrays, the following could be compiled with all fixnum arithmetic:
+
+```LISP
  (defun bump-counters (counters)
    (declare (type (array fixnum *) bump-counters))
    (dotimes (i (length counters))
      (incf (aref counters i))))
+```
 
 也见(See Also):
 
-declare, declaim, proclaim
+    declare, declaim, proclaim
 
 注意(Notes):
 
-(typespec var*) is an abbreviation for (type typespec var*).
+    (typespec var*) is an abbreviation for (type typespec var*).
 
-A type declaration for the arguments to a function does not necessarily imply anything about the type of the result. The following function is not permitted to be compiled using implementation-dependent fixnum-only arithmetic:
+    A type declaration for the arguments to a function does not necessarily imply anything about the type of the result. The following function is not permitted to be compiled using implementation-dependent fixnum-only arithmetic:
 
- (defun f (x y) (declare (fixnum x y)) (+ x y))
+```LISP
+(defun f (x y) (declare (fixnum x y)) (+ x y))
+```
 
-To see why, consider (f most-positive-fixnum 1). Common Lisp defines that F must return a bignum here, rather than signal an error or produce a mathematically incorrect result. If you have special knowledge such ``fixnum overflow'' cases will not come up, you can declare the result value to be in the fixnum range, enabling some compilers to use more efficient arithmetic:
+    To see why, consider (f most-positive-fixnum 1). Common Lisp defines that F must return a bignum here, rather than signal an error or produce a mathematically incorrect result. If you have special knowledge such ``fixnum overflow'' cases will not come up, you can declare the result value to be in the fixnum range, enabling some compilers to use more efficient arithmetic:
 
- (defun f (x y)
-   (declare (fixnum x y))
-   (the fixnum (+ x y)))
+```LISP
+(defun f (x y)
+  (declare (fixnum x y))
+  (the fixnum (+ x y)))
+```
 
-Note, however, that in the three-argument case, because of the possibility of an implicit intermediate value growing too large, the following will not cause implementation-dependent fixnum-only arithmetic to be used:
+    Note, however, that in the three-argument case, because of the possibility of an implicit intermediate value growing too large, the following will not cause implementation-dependent fixnum-only arithmetic to be used:
 
- (defun f (x y)
-   (declare (fixnum x y z))
-   (the fixnum (+ x y z)))
+```LISP
+(defun f (x y)
+  (declare (fixnum x y z))
+  (the fixnum (+ x y z)))
+```
 
-To see why, consider (f most-positive-fixnum 1 -1). Although the arguments and the result are all fixnums, an intermediate value is not a fixnum. If it is important that implementation-dependent fixnum-only arithmetic be selected in implementations that provide it, consider writing something like this instead:
+    To see why, consider (f most-positive-fixnum 1 -1). Although the arguments and the result are all fixnums, an intermediate value is not a fixnum. If it is important that implementation-dependent fixnum-only arithmetic be selected in implementations that provide it, consider writing something like this instead:
 
- (defun f (x y)
-   (declare (fixnum x y z))
-   (the fixnum (+ (the fixnum (+ x y)) z)))
+```LISP
+(defun f (x y)
+  (declare (fixnum x y z))
+  (the fixnum (+ (the fixnum (+ x y)) z)))
+```
 
-
-Declaration INLINE, NOTINLINE
+### <span id = "">Declaration INLINE, NOTINLINE</span>
 
 语法(Syntax):
 
-(inline function-name*)
+    (inline function-name*)
 
-(notinline function-name*)
+    (notinline function-name*)
 
-Arguments:
+参数(Arguments):
 
-function-name---a function name.
+    function-name---a function name.
 
-Valid Context:
+合法上下文(Valid Context):
 
-declaration or proclamation
+    declaration or proclamation
 
-Binding Types Affected:
+绑定类型的影响(Binding Types Affected):
 
-function
+    function
 
 描述(Description):
 
-inline specifies that it is desirable for the compiler to produce inline calls to the functions named by function-names; that is, the code for a specified function-name should be integrated into the calling routine, appearing ``in line'' in place of a procedure call. A compiler is free to ignore this declaration. inline declarations never apply to variable bindings.
+    inline specifies that it is desirable for the compiler to produce inline calls to the functions named by function-names; that is, the code for a specified function-name should be integrated into the calling routine, appearing ``in line'' in place of a procedure call. A compiler is free to ignore this declaration. inline declarations never apply to variable bindings.
 
-If one of the functions mentioned has a lexically apparent local definition (as made by flet or labels), then the declaration applies to that local definition and not to the global function definition.
+    If one of the functions mentioned has a lexically apparent local definition (as made by flet or labels), then the declaration applies to that local definition and not to the global function definition.
 
-While no conforming implementation is required to perform inline expansion of user-defined functions, those implementations that do attempt to recognize the following paradigm:
+    While no conforming implementation is required to perform inline expansion of user-defined functions, those implementations that do attempt to recognize the following paradigm:
 
-To define a function f that is not inline by default but for which (declare (inline f)) will make f be locally inlined, the proper definition sequence is:
+    To define a function f that is not inline by default but for which (declare (inline f)) will make f be locally inlined, the proper definition sequence is:
 
- (declaim (inline f))
- (defun f ...)
- (declaim (notinline f))
+    (declaim (inline f))
+    (defun f ...)
+    (declaim (notinline f))
 
-The inline proclamation preceding the defun form ensures that the compiler has the opportunity save the information necessary for inline expansion, and the notinline proclamation following the defun form prevents f from being expanded inline everywhere.
+    The inline proclamation preceding the defun form ensures that the compiler has the opportunity save the information necessary for inline expansion, and the notinline proclamation following the defun form prevents f from being expanded inline everywhere.
 
-notinline specifies that it is undesirable to compile the functions named by function-names in-line. A compiler is not free to ignore this declaration; calls to the specified functions must be implemented as out-of-line subroutine calls.
+    notinline specifies that it is undesirable to compile the functions named by function-names in-line. A compiler is not free to ignore this declaration; calls to the specified functions must be implemented as out-of-line subroutine calls.
 
-If one of the functions mentioned has a lexically apparent local definition (as made by flet or labels), then the declaration applies to that local definition and not to the global function definition.
+    If one of the functions mentioned has a lexically apparent local definition (as made by flet or labels), then the declaration applies to that local definition and not to the global function definition.
 
-In the presence of a compiler macro definition for function-name, a notinline declaration prevents that compiler macro from being used. An inline declaration may be used to encourage use of compiler macro definitions. inline and notinline declarations otherwise have no effect when the lexically visible definition of function-name is a macro definition.
+    In the presence of a compiler macro definition for function-name, a notinline declaration prevents that compiler macro from being used. An inline declaration may be used to encourage use of compiler macro definitions. inline and notinline declarations otherwise have no effect when the lexically visible definition of function-name is a macro definition.
 
-inline and notinline declarations can be free declarations or bound declarations. inline and notinline declarations of functions that appear before the body of a flet or labels form that defines that function are bound declarations. Such declarations in other contexts are free declarations.
+    inline and notinline declarations can be free declarations or bound declarations. inline and notinline declarations of functions that appear before the body of a flet or labels form that defines that function are bound declarations. Such declarations in other contexts are free declarations.
 
 示例(Examples):
 
- ;; The globally defined function DISPATCH should be open-coded,
- ;; if the implementation supports inlining, unless a NOTINLINE 
- ;; declaration overrides this effect.
- (declaim (inline dispatch))
- (defun dispatch (x) (funcall (get (car x) 'dispatch) x))
- ;; Here is an example where inlining would be encouraged.
- (defun top-level-1 () (dispatch (read-command)))
- ;; Here is an example where inlining would be prohibited.
- (defun top-level-2 ()
-   (declare (notinline dispatch))
-   (dispatch (read-command)))
- ;; Here is an example where inlining would be prohibited.
- (declaim (notinline dispatch))
- (defun top-level-3 () (dispatch (read-command)))
- ;; Here is an example where inlining would be encouraged.
- (defun top-level-4 () 
-   (declare (inline dispatch))
-   (dispatch (read-command)))
+```LISP
+;; The globally defined function DISPATCH should be open-coded,
+;; if the implementation supports inlining, unless a NOTINLINE 
+;; declaration overrides this effect.
+(declaim (inline dispatch))
+(defun dispatch (x) (funcall (get (car x) 'dispatch) x))
+;; Here is an example where inlining would be encouraged.
+(defun top-level-1 () (dispatch (read-command)))
+;; Here is an example where inlining would be prohibited.
+(defun top-level-2 ()
+  (declare (notinline dispatch))
+  (dispatch (read-command)))
+;; Here is an example where inlining would be prohibited.
+(declaim (notinline dispatch))
+(defun top-level-3 () (dispatch (read-command)))
+;; Here is an example where inlining would be encouraged.
+(defun top-level-4 () 
+  (declare (inline dispatch))
+  (dispatch (read-command)))
+```
 
 也见(See Also):
 
-declare, declaim, proclaim 
+    declare, declaim, proclaim 
 
-Declaration FTYPE
+### <span id = "">Declaration FTYPE</span>
 
 语法(Syntax):
 
-(ftype type function-name*)
+    (ftype type function-name*)
 
-Arguments:
+参数(Arguments):
 
-function-name---a function name.
+    function-name---a function name.
 
-type---a type specifier.
+    type---a type specifier.
 
-Valid Context:
+合法上下文(Valid Context):
 
-declaration or proclamation
+    declaration or proclamation
 
-Binding Types Affected:
+绑定类型的影响(Binding Types Affected):
 
-function
+    function
 
 描述(Description):
 
-Specifies that the functions named by function-names are of the functional type type. For example:
+    Specifies that the functions named by function-names are of the functional type type. For example:
 
- (declare (ftype (function (integer list) t) ith)
-          (ftype (function (number) float) sine cosine))
+    (declare (ftype (function (integer list) t) ith)
+              (ftype (function (number) float) sine cosine))
 
-If one of the functions mentioned has a lexically apparent local definition (as made by flet or labels), then the declaration applies to that local definition and not to the global function definition. ftype declarations never apply to variable bindings (see type).
+    If one of the functions mentioned has a lexically apparent local definition (as made by flet or labels), then the declaration applies to that local definition and not to the global function definition. ftype declarations never apply to variable bindings (see type).
 
-The lexically apparent bindings of function-names must not be macro definitions. (This is because ftype declares the functional definition of each function name to be of a particular subtype of function, and macros do not denote functions.)
+    The lexically apparent bindings of function-names must not be macro definitions. (This is because ftype declares the functional definition of each function name to be of a particular subtype of function, and macros do not denote functions.)
 
-ftype declarations can be free declarations or bound declarations. ftype declarations of functions that appear before the body of a flet or labels form that defines that function are bound declarations. Such declarations in other contexts are free declarations.
+    ftype declarations can be free declarations or bound declarations. ftype declarations of functions that appear before the body of a flet or labels form that defines that function are bound declarations. Such declarations in other contexts are free declarations.
 
 也见(See Also):
 
-declare, declaim, proclaim 
+    declare, declaim, proclaim 
 
-Declaration DECLARATION
+### <span id = "">Declaration DECLARATION</span>
 
 语法(Syntax):
 
-(declaration name*)
+    (declaration name*)
 
-Arguments:
+参数(Arguments):
 
-name---a symbol.
+    name---a symbol.
 
-Binding Types Affected: None.
+绑定类型的影响(Binding Types Affected): None.
 
-Valid Context:
+合法上下文(Valid Context):
 
-proclamation only
+    proclamation only
 
 描述(Description):
 
-Advises the compiler that each name is a valid but potentially non-standard declaration name. The purpose of this is to tell one compiler not to issue warnings for declarations meant for another compiler or other program processor.
+    Advises the compiler that each name is a valid but potentially non-standard declaration name. The purpose of this is to tell one compiler not to issue warnings for declarations meant for another compiler or other program processor.
 
 示例(Examples):
 
+```LISP
  (declaim (declaration author target-language target-machine))
  (declaim (target-language ada))
  (declaim (target-machine IBM-650))
  (defun strangep (x)
    (declare (author "Harry Tweeker"))
    (member x '(strange weird odd peculiar)))
+```
 
 也见(See Also):
 
-declaim, proclaim 
+    declaim, proclaim 
 
-Declaration OPTIMIZE
+### <span id = "">Declaration OPTIMIZE</span>
 
 语法(Syntax):
 
-(optimize {quality | (quality value)}*)
+    (optimize {quality | (quality value)}*)
 
-Arguments:
+参数(Arguments):
 
-quality---an optimize quality.
+    quality---an optimize quality.
 
-value---one of the integers 0, 1, 2, or 3.
+    value---one of the integers 0, 1, 2, or 3.
 
-Valid Context:
+合法上下文(Valid Context):
 
-declaration or proclamation
+    declaration or proclamation
 
-Binding Types Affected: None.
+绑定类型的影响(Binding Types Affected): None.
 
 描述(Description):
 
-Advises the compiler that each quality should be given attention according to the specified corresponding value. Each quality must be a symbol naming an optimize quality; the names and meanings of the standard optimize qualities are shown in the next figure.
+    Advises the compiler that each quality should be given attention according to the specified corresponding value. Each quality must be a symbol naming an optimize quality; the names and meanings of the standard optimize qualities are shown in the next figure.
 
-Name               Meaning                            
-compilation-speed  speed of the compilation process   
-debug              ease of debugging                  
-safety             run-time error checking            
-space              both code size and run-time space  
-speed              speed of the object code           
+    Name               Meaning                            
+    compilation-speed  speed of the compilation process   
+    debug              ease of debugging                  
+    safety             run-time error checking            
+    space              both code size and run-time space  
+    speed              speed of the object code           
 
-Figure 3-25. Optimize qualities
+    Figure 3-25. Optimize qualities
 
-There may be other, implementation-defined optimize qualities.
+    There may be other, implementation-defined optimize qualities.
 
-A value 0 means that the corresponding quality is totally unimportant, and 3 that the quality is extremely important; 1 and 2 are intermediate values, with 1 the neutral value. (quality 3) can be abbreviated to quality.
+    A value 0 means that the corresponding quality is totally unimportant, and 3 that the quality is extremely important; 1 and 2 are intermediate values, with 1 the neutral value. (quality 3) can be abbreviated to quality.
 
-Note that code which has the optimization (safety 3), or just safety, is called safe code.
+    Note that code which has the optimization (safety 3), or just safety, is called safe code.
 
-The consequences are unspecified if a quality appears more than once with different values.
+    The consequences are unspecified if a quality appears more than once with different values.
 
 示例(Examples):
 
- (defun often-used-subroutine (x y)
-   (declare (optimize (safety 2)))
-   (error-check x y)
-   (hairy-setup x)
-   (do ((i 0 (+ i 1))
-        (z x (cdr z)))
-       ((null z))
-     ;; This inner loop really needs to burn.
-     (declare (optimize speed))
-     (declare (fixnum i))
-     ))
+```LISP
+(defun often-used-subroutine (x y)
+  (declare (optimize (safety 2)))
+  (error-check x y)
+  (hairy-setup x)
+  (do ((i 0 (+ i 1))
+      (z x (cdr z)))
+      ((null z))
+    ;; This inner loop really needs to burn.
+    (declare (optimize speed))
+    (declare (fixnum i))
+    ))
+```
 
 也见(See Also):
 
-declare, declaim, proclaim, Section 3.3.4 (Declaration Scope)
+    declare, declaim, proclaim, Section 3.3.4 (Declaration Scope)
 
 注意(Notes):
 
-An optimize declaration never applies to either a variable or a function binding. An optimize declaration can only be a free declaration. For more information, see Section 3.3.4 (Declaration Scope). 
+    An optimize declaration never applies to either a variable or a function binding. An optimize declaration can only be a free declaration. For more information, see Section 3.3.4 (Declaration Scope). 
 
-Declaration SPECIAL
+### <span id = "">Declaration SPECIAL</span>
 
 语法(Syntax):
 
-(special var*)
+    (special var*)
 
-Arguments:
+参数(Arguments):
 
-var---a symbol.
+    var---a symbol.
 
-Valid Context:
+合法上下文(Valid Context):
 
-declaration or proclamation
+    declaration or proclamation
 
-Binding Types Affected:
+绑定类型的影响(Binding Types Affected):
 
-variable
+    variable
 
 描述(Description):
 
-Specifies that all of the vars named are dynamic. This specifier affects variable bindings and affects references. All variable bindings affected are made to be dynamic bindings, and affected variable references refer to the current dynamic binding. For example:
+    Specifies that all of the vars named are dynamic. This specifier affects variable bindings and affects references. All variable bindings affected are made to be dynamic bindings, and affected variable references refer to the current dynamic binding. For example:
 
- (defun hack (thing *mod*)    ;The binding of the parameter
-   (declare (special *mod*))  ; *mod* is visible to hack1,
-   (hack1 (car thing)))       ; but not that of thing.
- (defun hack1 (arg)
-   (declare (special *mod*))  ;Declare references to *mod*
-                              ;within hack1 to be special.
-   (if (atom arg) *mod*
-       (cons (hack1 (car arg)) (hack1 (cdr arg)))))
+    (defun hack (thing *mod*)    ;The binding of the parameter
+      (declare (special *mod*))  ; *mod* is visible to hack1,
+      (hack1 (car thing)))       ; but not that of thing.
+    (defun hack1 (arg)
+      (declare (special *mod*))  ;Declare references to *mod*
+                                  ;within hack1 to be special.
+      (if (atom arg) *mod*
+          (cons (hack1 (car arg)) (hack1 (cdr arg)))))
 
-A special declaration does not affect inner bindings of a var; the inner bindings implicitly shadow a special declaration and must be explicitly re-declared to be special. special declarations never apply to function bindings.
+    A special declaration does not affect inner bindings of a var; the inner bindings implicitly shadow a special declaration and must be explicitly re-declared to be special. special declarations never apply to function bindings.
 
-special declarations can be either bound declarations, affecting both a binding and references, or free declarations, affecting only references, depending on whether the declaration is attached to a variable binding.
+    special declarations can be either bound declarations, affecting both a binding and references, or free declarations, affecting only references, depending on whether the declaration is attached to a variable binding.
 
-When used in a proclamation, a special declaration specifier applies to all bindings as well as to all references of the mentioned variables. For example, after
+    When used in a proclamation, a special declaration specifier applies to all bindings as well as to all references of the mentioned variables. For example, after
 
- (declaim (special x))
+    (declaim (special x))
 
-then in a function definition such as
+    then in a function definition such as
 
- (defun example (x) ...)
+    (defun example (x) ...)
 
-the parameter x is bound as a dynamic variable rather than as a lexical variable.
+    the parameter x is bound as a dynamic variable rather than as a lexical variable.
 
 示例(Examples):
 
+```LISP
 (defun declare-eg (y)                 ;this y is special
  (declare (special y))
  (let ((y t))                         ;this y is lexical
@@ -3699,63 +3750,66 @@ The reference to *foo* in the first line of this example is not special even tho
    (let ((y 3) (x (* x 2)))
      (print (+ y (locally (declare (special y)) y)))
      (let ((y 4)) (declare (special y)) (foo x)))) =>  EXAMPLE
+```
 
-In the contorted code above, the outermost and innermost bindings of y are dynamic, but the middle binding is lexical. The two arguments to + are different, one being the value, which is 3, of the lexical variable y, and the other being the value of the dynamic variable named y (a binding of which happens, coincidentally, to lexically surround it at an outer level). All the bindings of x and references to x are dynamic, however, because of the proclamation that x is always special.
+    In the contorted code above, the outermost and innermost bindings of y are dynamic, but the middle binding is lexical. The two arguments to + are different, one being the value, which is 3, of the lexical variable y, and the other being the value of the dynamic variable named y (a binding of which happens, coincidentally, to lexically surround it at an outer level). All the bindings of x and references to x are dynamic, however, because of the proclamation that x is always special.
 
 也见(See Also):
 
-defparameter, defvar 
+    defparameter, defvar 
 
-Special Operator LOCALLY
+### <span id = "">Special Operator LOCALLY</span>
 
 语法(Syntax):
 
-locally declaration* form* => result*
+    locally declaration* form* => result*
 
 参数和值(Arguments and Values):
 
-Declaration---a declare expression; not evaluated.
+    Declaration---a declare expression; not evaluated.
 
-forms---an implicit progn.
+    forms---an implicit progn.
 
-results---the values of the forms.
+    results---the values of the forms.
 
 描述(Description):
 
-Sequentially evaluates a body of forms in a lexical environment where the given declarations have effect.
+    Sequentially evaluates a body of forms in a lexical environment where the given declarations have effect.
 
 示例(Examples):
 
- (defun sample-function (y)  ;this y is regarded as special
-   (declare (special y))                                
-   (let ((y t))              ;this y is regarded as lexical
-     (list y
-           (locally (declare (special y))
-             ;; this next y is regarded as special
-             y))))
+```LISP
+(defun sample-function (y)  ;this y is regarded as special
+  (declare (special y))                                
+  (let ((y t))              ;this y is regarded as lexical
+    (list y
+          (locally (declare (special y))
+            ;; this next y is regarded as special
+            y))))
 =>  SAMPLE-FUNCTION
- (sample-function nil) =>  (T NIL) 
- (setq x '(1 2 3) y '(4 . 5)) =>  (4 . 5)
+(sample-function nil) =>  (T NIL) 
+(setq x '(1 2 3) y '(4 . 5)) =>  (4 . 5)
 
 ;;; The following declarations are not notably useful in specific.
 ;;; They just offer a sample of valid declaration syntax using LOCALLY.
- (locally (declare (inline floor) (notinline car cdr))
-          (declare (optimize space))
-    (floor (car x) (cdr y))) =>  0, 1
+(locally (declare (inline floor) (notinline car cdr))
+        (declare (optimize space))
+  (floor (car x) (cdr y))) =>  0, 1
 
 ;;; This example shows a definition of a function that has a particular set
 ;;; of OPTIMIZE settings made locally to that definition.
- (locally (declare (optimize (safety 3) (space 3) (speed 0)))
-   (defun frob (w x y &optional (z (foo x y)))
-     (mumble x y z w)))
+(locally (declare (optimize (safety 3) (space 3) (speed 0)))
+  (defun frob (w x y &optional (z (foo x y)))
+    (mumble x y z w)))
 =>  FROB
 
 ;;; This is like the previous example, except that the optimize settings
 ;;; remain in effect for subsequent definitions in the same compilation unit.
- (declaim (optimize (safety 3) (space 3) (speed 0)))
- (defun frob (w x y &optional (z (foo x y)))
-   (mumble x y z w))
+(declaim (optimize (safety 3) (space 3) (speed 0)))
+(defun frob (w x y &optional (z (foo x y)))
+  (mumble x y z w))
 =>  FROB
+```
 
 副作用(Side Effects): None.
 
@@ -3765,96 +3819,102 @@ Sequentially evaluates a body of forms in a lexical environment where the given 
 
 也见(See Also):
 
-declare
+    declare
 
 注意(Notes):
 
-The special declaration may be used with locally to affect references to, rather than bindings of, variables.
+    The special declaration may be used with locally to affect references to, rather than bindings of, variables.
 
-If a locally form is a top level form, the body forms are also processed as top level forms. See Section 3.2.3 (File Compilation). 
+    If a locally form is a top level form, the body forms are also processed as top level forms. See Section 3.2.3 (File Compilation). 
 
-Special Operator THE
+### <span id = "">Special Operator THE</span>
 
 语法(Syntax):
 
-the value-type form => result*
+    the value-type form => result*
 
 参数和值(Arguments and Values):
 
-value-type---a type specifier; not evaluated.
+    value-type---a type specifier; not evaluated.
 
-form---a form; evaluated.
+    form---a form; evaluated.
 
-results---the values resulting from the evaluation of form. These values must conform to the type supplied by value-type; see below.
+    results---the values resulting from the evaluation of form. These values must conform to the type supplied by value-type; see below.
 
 描述(Description):
 
-the specifies that the values[1a] returned by form are of the types specified by value-type. The consequences are undefined if any result is not of the declared type.
+    the specifies that the values[1a] returned by form are of the types specified by value-type. The consequences are undefined if any result is not of the declared type.
 
-It is permissible for form to yield a different number of values than are specified by value-type, provided that the values for which types are declared are indeed of those types. Missing values are treated as nil for the purposes of checking their types.
+    It is permissible for form to yield a different number of values than are specified by value-type, provided that the values for which types are declared are indeed of those types. Missing values are treated as nil for the purposes of checking their types.
 
-Regardless of number of values declared by value-type, the number of values returned by the the special form is the same as the number of values returned by form.
+    Regardless of number of values declared by value-type, the number of values returned by the the special form is the same as the number of values returned by form.
 
 示例(Examples):
 
- (the symbol (car (list (gensym)))) =>  #:G9876
- (the fixnum (+ 5 7)) =>  12
- (the (values) (truncate 3.2 2)) =>  1, 1.2
- (the integer (truncate 3.2 2)) =>  1, 1.2
- (the (values integer) (truncate 3.2 2)) =>  1, 1.2
- (the (values integer float) (truncate 3.2 2))   =>  1, 1.2
- (the (values integer float symbol) (truncate 3.2 2)) =>  1, 1.2
- (the (values integer float symbol t null list) 
-      (truncate 3.2 2)) =>  1, 1.2
- (let ((i 100))
-    (declare (fixnum i))
-    (the fixnum (1+ i))) =>  101
- (let* ((x (list 'a 'b 'c))
-        (y 5))
-    (setf (the fixnum (car x)) y)
-    x) =>  (5 B C)
+```LISP
+(the symbol (car (list (gensym)))) =>  #:G9876
+(the fixnum (+ 5 7)) =>  12
+(the (values) (truncate 3.2 2)) =>  1, 1.2
+(the integer (truncate 3.2 2)) =>  1, 1.2
+(the (values integer) (truncate 3.2 2)) =>  1, 1.2
+(the (values integer float) (truncate 3.2 2))   =>  1, 1.2
+(the (values integer float symbol) (truncate 3.2 2)) =>  1, 1.2
+(the (values integer float symbol t null list) 
+    (truncate 3.2 2)) =>  1, 1.2
+(let ((i 100))
+  (declare (fixnum i))
+  (the fixnum (1+ i))) =>  101
+(let* ((x (list 'a 'b 'c))
+      (y 5))
+  (setf (the fixnum (car x)) y)
+  x) =>  (5 B C)
+```
 
 受此影响(Affected By): None.
 
 异常情况(Exceptional Situations):
 
-The consequences are undefined if the values yielded by the form are not of the type specified by value-type.
+    The consequences are undefined if the values yielded by the form are not of the type specified by value-type.
 
 也见(See Also):
 
-values
+    values
 
 注意(Notes):
 
-The values type specifier can be used to indicate the types of multiple values:
+    The values type specifier can be used to indicate the types of multiple values:
 
+```LISP
  (the (values integer integer) (floor x y))
  (the (values string t)
       (gethash the-key the-string-table))
+```
 
-setf can be used with the type declarations. In this case the declaration is transferred to the form that specifies the new value. The resulting setf form is then analyzed. 
+    setf can be used with the type declarations. In this case the declaration is transferred to the form that specifies the new value. The resulting setf form is then analyzed. 
 
-Function SPECIAL-OPERATOR-P
+### <span id = "">Function SPECIAL-OPERATOR-P</span>
 
 语法(Syntax):
 
-special-operator-p symbol => generalized-boolean
+    special-operator-p symbol => generalized-boolean
 
 参数和值(Arguments and Values):
 
-symbol---a symbol.
+    symbol---a symbol.
 
-generalized-boolean---a generalized boolean.
+    generalized-boolean---a generalized boolean.
 
 描述(Description):
 
-Returns true if symbol is a special operator; otherwise, returns false.
+    Returns true if symbol is a special operator; otherwise, returns false.
 
 示例(Examples):
 
+```LISP
  (special-operator-p 'if) =>  true
  (special-operator-p 'car) =>  false
  (special-operator-p 'one) =>  false
+```
 
 副作用(Side Effects): None.
 
@@ -3862,27 +3922,27 @@ Returns true if symbol is a special operator; otherwise, returns false.
 
 异常情况(Exceptional Situations):
 
-Should signal type-error if its argument is not a symbol.
+    Should signal type-error if its argument is not a symbol.
 
 也见(See Also): None.
 
 注意(Notes):
 
-Historically, this function was called special-form-p. The name was finally declared a misnomer and changed, since it returned true for special operators, not special forms. 
+    Historically, this function was called special-form-p. The name was finally declared a misnomer and changed, since it returned true for special operators, not special forms. 
 
-Function CONSTANTP
+### <span id = "">Function CONSTANTP</span>
 
 语法(Syntax):
 
-constantp form &optional environment => generalized-boolean
+    constantp form &optional environment => generalized-boolean
 
 参数和值(Arguments and Values):
 
-form---a form.
+    form---a form.
 
-environment---an environment object. The default is nil.
+    environment---an environment object. The default is nil.
 
-generalized-boolean---a generalized boolean.
+    generalized-boolean---a generalized boolean.
 
 描述(Description):
 
@@ -3902,34 +3962,36 @@ If an implementation chooses to make use of the environment information, such ac
 
 示例(Examples):
 
- (constantp 1) =>  true
- (constantp 'temp) =>  false
- (constantp ''temp)) =>  true
- (defconstant this-is-a-constant 'never-changing) =>  THIS-IS-A-CONSTANT 
- (constantp 'this-is-a-constant) =>  true
- (constantp "temp") =>  true
- (setq a 6) =>  6 
- (constantp a) =>  true
- (constantp '(sin pi)) =>  implementation-dependent
- (constantp '(car '(x))) =>  implementation-dependent
- (constantp '(eql x x)) =>  implementation-dependent
- (constantp '(typep x 'nil)) =>  implementation-dependent
- (constantp '(typep x 't)) =>  implementation-dependent
- (constantp '(values this-is-a-constant)) =>  implementation-dependent
- (constantp '(values 'x 'y)) =>  implementation-dependent
- (constantp '(let ((a '(a b c))) (+ (length a) 6))) =>  implementation-dependent
+```LISP
+(constantp 1) =>  true
+(constantp 'temp) =>  false
+(constantp ''temp)) =>  true
+(defconstant this-is-a-constant 'never-changing) =>  THIS-IS-A-CONSTANT 
+(constantp 'this-is-a-constant) =>  true
+(constantp "temp") =>  true
+(setq a 6) =>  6 
+(constantp a) =>  true
+(constantp '(sin pi)) =>  implementation-dependent
+(constantp '(car '(x))) =>  implementation-dependent
+(constantp '(eql x x)) =>  implementation-dependent
+(constantp '(typep x 'nil)) =>  implementation-dependent
+(constantp '(typep x 't)) =>  implementation-dependent
+(constantp '(values this-is-a-constant)) =>  implementation-dependent
+(constantp '(values 'x 'y)) =>  implementation-dependent
+(constantp '(let ((a '(a b c))) (+ (length a) 6))) =>  implementation-dependent
+```
 
 副作用(Side Effects): None.
 
 受此影响(Affected By):
 
-The state of the global environment (e.g., which symbols have been declared to be the names of constant variables).
+    The state of the global environment (e.g., which symbols have been declared to be the names of constant variables).
 
 异常情况(Exceptional Situations): None.
 
 也见(See Also):
 
-defconstant
+    defconstant
 
 注意(Notes): None. 
 
