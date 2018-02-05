@@ -1975,18 +1975,18 @@ function, documentation, Section 3.1.3 (Lambda Expressions), Section 3.1.2.1.2.4
 
 参数和值(Arguments and Values):
 
-    form---a form.
-    results---the values yielded by the evaluation of form.
+    form---一个表达式形式.
+    results---表达式形式求值产生的值.
 
 描述(Description):
 
-    Evaluates form in the current dynamic environment and the null lexical environment.
+    在当前动态作用域和 null 词法作用域下求值表达式.
 
-    eval is a user interface to the evaluator.
+    eval 是一个求值器的用户接口.
 
-    The evaluator expands macro calls as if through the use of macroexpand-1.
+    这个求值器展开宏调用就像通过使用 macroexpand-1 一样.
 
-    Constants appearing in code processed by eval are not copied nor coalesced. The code resulting from the execution of eval references objects that are eql to the corresponding objects in the source code.
+    出现在被 eval 处理的代码中的常量既不会被复制也不会被合并. 从 eval 返回的结果代码引用的对象和源代码中对应的对象是 eql 的.
 
 示例(Examples):
 
@@ -2008,13 +2008,13 @@ function, documentation, Section 3.1.3 (Lambda Expressions), Section 3.1.2.1.2.4
 
 注意(Notes):
 
-    To obtain the current dynamic value of a symbol, use of symbol-value is equivalent (and usually preferable) to use of eval.
+    为了获得一个符号的当前动态值, 使用 symbol-value 等价于(而且通常更可取的)使用 eval.
 
-    Note that an eval form involves two levels of evaluation for its argument. First, form is evaluated by the normal argument evaluation mechanism as would occur with any call. The object that results from this normal argument evaluation becomes the value of the form parameter, and is then evaluated as part of the eval form. For example:
+    注意, eval表达式需要对其参数进行两个级别的求值. 第一, 表达式是通过常规的参数求值机制来求值的, 就像任何调用一样. 从这个普通的参数求值得出的对象成为表达式参数的值, 然后作为 eval 表达式的一部分进行求值. 比如:
 
     (eval (list 'cdr (car '((quote (a . b)) c)))) =>  b
 
-    The argument form (list 'cdr (car '((quote (a . b)) c))) is evaluated in the usual way to produce the argument (cdr (quote (a . b))); eval then evaluates its argument, (cdr (quote (a . b))), to produce b. Since a single evaluation already occurs for any argument form in any function form, eval is sometimes said to perform ``an extra level of evaluation.'' 
+    这个参数表达式 (list 'cdr (car '((quote (a . b)) c))) 以正常方式求值产生参数 (cdr (quote (a . b))); 然后 eval 求值它的参数, (cdr (quote (a . b))), 产生 b. 因为一个单次求值已经发生在任何函数表达式的任何参数表达式中, 所以 eval 有时被称为执行"一个额外级别的求值".
 
 ### <span id = "">Special Operator EVAL-WHEN</span>
 
