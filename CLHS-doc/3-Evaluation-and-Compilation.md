@@ -1967,7 +1967,7 @@ function, documentation, Section 3.1.3 (Lambda Expressions), Section 3.1.2.1.2.4
 
 注意(Notes): None. 
 
-### <span id = "">Function EVAL</span>
+### <span id = "FunctionEVAL">Function EVAL</span>
 
 语法(Syntax):
 
@@ -2016,7 +2016,7 @@ function, documentation, Section 3.1.3 (Lambda Expressions), Section 3.1.2.1.2.4
 
     这个参数表达式 (list 'cdr (car '((quote (a . b)) c))) 以正常方式求值产生参数 (cdr (quote (a . b))); 然后 eval 求值它的参数, (cdr (quote (a . b))), 产生 b. 因为一个单次求值已经发生在任何函数表达式的任何参数表达式中, 所以 eval 有时被称为执行"一个额外级别的求值".
 
-### <span id = "">Special Operator EVAL-WHEN</span>
+### <span id = "SpecialOperatorEVALWHEN">Special Operator EVAL-WHEN</span>
 
 语法(Syntax):
 
@@ -2024,24 +2024,23 @@ function, documentation, Section 3.1.3 (Lambda Expressions), Section 3.1.2.1.2.4
 
 参数和值(Arguments and Values):
 
-    situation---One of the symbols :compile-toplevel, :load-toplevel, :execute, compile, load, or eval.
-    The use of eval, compile, and load is deprecated.
-    forms---an implicit progn.
-    results---the values of the forms if they are executed, or nil if they are not.
+    situation---这些符号中的一个 :compile-toplevel, :load-toplevel, :execute, compile, load, 或 eval. 这里 eval, compile, 和 load 被废弃了.
+    forms---一个隐式的 progn.
+    results---如果表达式被执行, 这个就是它们的值, 如果没有就是 nil.
 
 描述(Description):
 
-    The body of an eval-when form is processed as an implicit progn, but only in the situations listed.
+    一个 eval-when 表达式形式的主体被当作一个隐式的 progn 处理, 但是只有在列出的情况(situations)下.
 
-    The use of the situations :compile-toplevel (or compile) and :load-toplevel (or load) controls whether and when evaluation occurs when eval-when appears as a top level form in code processed by compile-file. See Section 3.2.3 (File Compilation).
+    这里情况 :compile-toplevel (或 compile) 还有 :load-toplevel (或 load) 的使用控制着当 eval-when 作为顶层表达式出现在被 compile-file 处理的代码中时是否会被求值.
 
-    The use of the situation :execute (or eval) controls whether evaluation occurs for other eval-when forms; that is, those that are not top level forms, or those in code processed by eval or compile. If the :execute situation is specified in such a form, then the body forms are processed as an implicit progn; otherwise, the eval-when form returns nil.
+    这里情况 :execute (或者 eval) 的使用控制着其他 eval-when 表达式是否被求值; 这指的是, 那些不是顶层表达式的, 或者那些在被 eval 或 compile 处理的代码中. 如果这个 :execute 情况(situation) 在这样一个表达式中被指定, 那么其中的主体表达式作为一个隐式的 progn 处理; 否则, 这个 eval-when 表达式形式返回 nil.
 
-    eval-when normally appears as a top level form, but it is meaningful for it to appear as a non-top-level form. However, the compile-time side effects described in Section 3.2 (Compilation) only take place when eval-when appears as a top level form.
+    eval-when 正常出现在顶层表达式, 但是对于它出现在非顶层表达式也是有意义的. 然而, 这个描述在章节 3.2 (Compilation) 的编译时副作用只发生在当 eval-when 出现在顶层表达式的时候.
 
 示例(Examples):
 
-One example of the use of eval-when is that for the compiler to be able to read a file properly when it uses user-defined reader macros, it is necessary to write
+使用 eval-when 的一个示例是, 当编译器使用用户定义的读取器宏时, 可以正确地读取文件, 它有必要写成
 
 ```LISP
  (eval-when (:compile-toplevel :load-toplevel :execute)
@@ -2050,7 +2049,7 @@ One example of the use of eval-when is that for the compiler to be able to read 
                                 (list 'dollar (read stream))))) =>  T
 ```
 
-This causes the call to set-macro-character to be executed in the compiler's execution environment, thereby modifying its reader syntax table.
+这个导致对 set-macro-character 的调用在编译器的执行环境中被执行, 从而修改它的读取器语法表.
 
 ```LISP
 ;;;     The EVAL-WHEN in this case is not at toplevel, so only the :EXECUTE
@@ -2109,37 +2108,37 @@ This causes the call to set-macro-character to be executed in the compiler's exe
 
 注意(Notes):
 
-The following effects are logical consequences of the definition of eval-when:
+以下的影响是对 eval-when 的定义的逻辑结果:
 
-* Execution of a single eval-when expression executes the body code at most once.
+* 一个单个的 eval-when 的执行对主体代码的执行不超过一次.
 
-* Macros intended for use in top level forms should be written so that side-effects are done by the forms in the macro expansion. The macro-expander itself should not do the side-effects.
+* 用于在顶层表达式中使用的宏应该被编写, 以便在宏展开中使用各种表达式形式的副作用. 这个 macro-expander 自身不应该产生副作用.
 
-    For example:
+    比如:
 
-    Wrong:
+    错误的:
 
      (defmacro foo ()
        (really-foo)
        `(really-foo))
 
-    Right:
+    正确的:
 
      (defmacro foo ()
        `(eval-when (:compile-toplevel :execute :load-toplevel) (really-foo)))
 
-    Adherence to this convention means that such macros behave intuitively when appearing as non-top-level forms.
+    遵守这个约定意味着这些宏在出现在非顶层表达式时表现得很直观.
 
-* Placing a variable binding around an eval-when reliably captures the binding because the compile-time-too mode cannot occur (i.e., introducing a variable binding means that the eval-when is not a top level form). For example,
+* 在一个 eval-when 周围替换一个变量的绑定确实会捕获这个绑定因为 compile-time-too 模式不会发生 (换句话说, 引入一个变量绑定意味着 eval-when 不是一个顶级表达式). 比如, <!-- TODO 这块待校对-->
 
      (let ((x 3))
        (eval-when (:execute :load-toplevel :compile-toplevel) (print x)))
 
-    prints 3 at execution (i.e., load) time, and does not print anything at compile time. This is important so that expansions of defun and defmacro can be done in terms of eval-when and can correctly capture the lexical environment.
+    在执行的时候(换句话说, load)打印 3, 并且在编译时不会打印任何东西. 这很重要, 因此 defun 和 defmacro 的扩展可以用 eval-when 来完成并且可以正确地捕获词汇环境.
 
      (defun bar (x) (defun foo () (+ x 3)))
 
-    might expand into
+    可能被展开成
 
      (defun bar (x) 
        (progn (eval-when (:compile-toplevel) 
@@ -2147,12 +2146,12 @@ The following effects are logical consequences of the definition of eval-when:
               (eval-when (:execute :load-toplevel)
                 (setf (symbol-function 'foo) #'(lambda () (+ x 3))))))
 
-    which would be treated by the above rules the same as
+    它会被上面的规则当成和下面的这个相同
 
      (defun bar (x) 
        (setf (symbol-function 'foo) #'(lambda () (+ x 3))))
 
-    when the definition of bar is not a top level form. 
+    当这个 bar 的定义不是一个顶层表达式时. 
 
 ### <span id = "">Special Operator LOAD-TIME-VALUE</span>
 
