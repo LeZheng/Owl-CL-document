@@ -2153,7 +2153,7 @@ function, documentation, Section 3.1.3 (Lambda Expressions), Section 3.1.2.1.2.4
 
     当这个 bar 的定义不是一个顶层表达式时. 
 
-### <span id = "">Special Operator LOAD-TIME-VALUE</span>
+### <span id = "SpecialOperatorLOADTIMEVALUE">Special Operator LOAD-TIME-VALUE</span>
 
 语法(Syntax):
 
@@ -2161,25 +2161,25 @@ function, documentation, Section 3.1.3 (Lambda Expressions), Section 3.1.2.1.2.4
 
 参数和值(Arguments and Values):
 
-    form---a form; evaluated as described below.
-    read-only-p---a boolean; not evaluated.
-    object---the primary value resulting from evaluating form.
+    form---一个表达式形式; 按照以下描述的被求值.
+    read-only-p---一个boolean类型; 没有求值的.
+    object---从这个求值表达式返回的主要的值.
 
 描述(Description):
 
-    load-time-value provides a mechanism for delaying evaluation of form until the expression is in the run-time environment; see Section 3.2 (Compilation).
+    load-time-value 为表达式直到表达式在运行时环境中才求值提供一个延时求值的机制; 见章节 3.2 (Compilation).
 
-    Read-only-p designates whether the result can be considered a constant object. If t, the result is a read-only quantity that can, if appropriate to the implementation, be copied into read-only space and/or coalesced with similar constant objects from other programs. If nil (the default), the result must be neither copied nor coalesced; it must be considered to be potentially modifiable data.
+    Read-only-p 指定这个结果是否可以被当作常量对象. 如果是 t, 结果就是一个 read-only 的量 that can, 如果适用于实现, 它可以被拷贝到只读空间 并且/或 和来自其他程序的相似的常量对象惊醒合并. 如果是 nil (默认的), 结果必须既不被复制, 也不能被合并; 它必须被认为是可能修改的数据.
 
-    If a load-time-value expression is processed by compile-file, the compiler performs its normal semantic processing (such as macro expansion and translation into machine code) on form, but arranges for the execution of form to occur at load time in a null lexical environment, with the result of this evaluation then being treated as a literal object at run time. It is guaranteed that the evaluation of form will take place only once when the file is loaded, but the order of evaluation with respect to the evaluation of top level forms in the file is implementation-dependent.
+    如果一个 load-time-value 表达式被 compile-file 处理, 这个编译器在这个表达式上执行它正常的语义处理 (就像宏展开并转为机器码), 但是为这个表达式的执行安排在了加载时在一个 null 的词法环境中, 这个求值的结果被当作是一个运行时的字面化对象. 确保表达式的求值只有在文件加载时才会发生, 但是对文件中顶级表达式的求值的求值顺序是由依赖实现的.
 
-    If a load-time-value expression appears within a function compiled with compile, the form is evaluated at compile time in a null lexical environment. The result of this compile-time evaluation is treated as a literal object in the compiled code.
+    如果一个 load-time-value 表达式出现在被 compile 编译的函数中, 这个表达式在编译时的一个 null 词法环境中被求值. 这个编译时求值的结果被当作是编译后代码中的字面化对象.
 
-    If a load-time-value expression is processed by eval, form is evaluated in a null lexical environment, and one value is returned. Implementations that implicitly compile (or partially compile) expressions processed by eval might evaluate form only once, at the time this compilation is performed.
+    如果一个 load-time-value 表达式被 eval 处理, 表达式在一个 null 词法环境中被求值, 并且返回一个值. 由 eval 处理的隐式编译(或部分编译)表达式的实现可能只在编译完成时才计算一次.
 
-    If the same list (load-time-value form) is evaluated or compiled more than once, it is implementation-dependent whether form is evaluated only once or is evaluated more than once. This can happen both when an expression being evaluated or compiled shares substructure, and when the same form is processed by eval or compile multiple times. Since a load-time-value expression can be referenced in more than one place and can be evaluated multiple times by eval, it is implementation-dependent whether each execution returns a fresh object or returns the same object as some other execution. Users must use caution when destructively modifying the resulting object.
+    如果相同的列表 (load-time-value form) 被求值或编译超过一次, 这个表达式被求值一次或者超过一次是依赖于具体实现的. 当一个表达式被求值或编译了共享子结构时, 当相同的表达式形式被 eval 或 compile 多次处理时, 就会发生这种情况. 由于一个 load-time-value 表达式可以不止一个地方被引用并且可以被 eval 超过一次求值, 每一次执行返回新的对象还是返回和其他执行一样的对像是依赖于具体实现的. 当对结果对象进行破坏性修改时, 用户必须谨慎使用.
 
-    If two lists (load-time-value form) that are the same under equal but are not identical are evaluated or compiled, their values always come from distinct evaluations of form. Their values may not be coalesced unless read-only-p is t.
+    如果两个列表 (load-time-value form) 在 equal 下是相同的但是在求值后和编译后是不同的, 它们的值总是来自于对表达式形式的不同的求值. 它们的值可能不会被合并除非 read-only-p 是 t.
 
 示例(Examples):
 
@@ -2232,9 +2232,9 @@ function, documentation, Section 3.1.3 (Lambda Expressions), Section 3.1.2.1.2.4
 
 注意(Notes):
 
-    load-time-value must appear outside of quoted structure in a ``for evaluation'' position. In situations which would appear to call for use of load-time-value within a quoted structure, the backquote reader macro is probably called for; see Section 2.4.6 (Backquote).
+    load-time-value 必须出现在一个"for evaluation"位置, 以及被引用的结构外面. 果在一个引用结构中调用 load-time-value 的情况下，backquote 读取器宏可能会被调用; 见章节 2.4.6 (Backquote).
 
-    Specifying nil for read-only-p is not a way to force an object to become modifiable if it has already been made read-only. It is only a way to say that, for an object that is modifiable, this operation is not intended to make that object read-only. 
+    为 read-only-p 指定为 nil 不是一个强制对象为可修改的方法, 如果它已经被当作只读的. 这只是一种说法, 对于一个可修改的对象, 这个操作不是为了使对象只读. 
 
 ### <span id = "">Special Operator QUOTE</span>
 
