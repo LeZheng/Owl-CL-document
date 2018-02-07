@@ -2236,7 +2236,7 @@ function, documentation, Section 3.1.3 (Lambda Expressions), Section 3.1.2.1.2.4
 
     为 read-only-p 指定为 nil 不是一个强制对象为可修改的方法, 如果它已经被当作只读的. 这只是一种说法, 对于一个可修改的对象, 这个操作不是为了使对象只读. 
 
-### <span id = "">Special Operator QUOTE</span>
+### <span id = "SpecialOperatorQUOTE">Special Operator QUOTE</span>
 
 语法(Syntax):
 
@@ -2244,13 +2244,13 @@ function, documentation, Section 3.1.3 (Lambda Expressions), Section 3.1.2.1.2.4
 
 参数和值(Arguments and Values):
 
-    object---an object; not evaluated.
+    object---一个对象; 没有求值.
 
 描述(Description):
 
-    The quote special operator just returns object.
+    这个 quote 特殊操作符只是返回 object.
 
-    The consequences are undefined if literal objects (including quoted objects) are destructively modified.
+    如果字面化对象(包括 quoted 的转引对象)被破坏性修改那么结果是未定义的.
 
 示例(Examples):
 
@@ -2284,9 +2284,9 @@ a =>  1
 
 注意(Notes):
 
-    The textual notation 'object is equivalent to (quote object); see Section 3.2.1 (Compiler Terminology).
+    这个 'object 文本表示法和 (quote object) 是等价的; 见章节 3.2.1 (Compiler Terminology).
 
-    Some objects, called self-evaluating objects, do not require quotation by quote. However, symbols and lists are used to represent parts of programs, and so would not be useable as constant data in a program without quote. Since quote suppresses the evaluation of these objects, they become data rather than program. 
+    一些称之为自求值对象的对象不需要被 quote 引用. 然而, 符号和列表用来表示程序的一部分, 因此不能作为一个程序中的常量数据而不用 quote. 由于引用抑制了这些对象的求值, 它们变成了数据而不是程序. 
 
 ### <span id = "">Accessor COMPILER-MACRO-FUNCTION</span>
 
