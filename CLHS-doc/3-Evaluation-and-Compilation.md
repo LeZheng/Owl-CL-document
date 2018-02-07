@@ -2288,7 +2288,7 @@ a =>  1
 
     一些称之为自求值对象的对象不需要被 quote 引用. 然而, 符号和列表用来表示程序的一部分, 因此不能作为一个程序中的常量数据而不用 quote. 由于引用抑制了这些对象的求值, 它们变成了数据而不是程序. 
 
-### <span id = "">Accessor COMPILER-MACRO-FUNCTION</span>
+### <span id = "AccessorCOMPILERMACROFUNCTION">Accessor COMPILER-MACRO-FUNCTION</span>
 
 语法(Syntax):
 
@@ -2322,7 +2322,7 @@ a =>  1
 
 注意(Notes): None. 
 
-### <span id = "">Macro DEFINE-COMPILER-MACRO</span>
+### <span id = "MacroDEFINECOMPILERMACRO">Macro DEFINE-COMPILER-MACRO</span>
 
 语法(Syntax):
 
@@ -2332,25 +2332,25 @@ a =>  1
 
 参数和值(Arguments and Values):
 
-    name---a function name.
-    lambda-list---a macro lambda list.
-    declaration---a declare expression; not evaluated.
-    documentation---a string; not evaluated.
-    form---a form.
+    name---一个函数名字.
+    lambda-list---一个宏lambda列表.
+    declaration---一个声明表达式; 没有求值.
+    documentation---一个字符串; 没有求值.
+    form---一个表达式形式.
 
 描述(Description):
 
-This is the normal mechanism for defining a compiler macro function. Its manner of definition is the same as for defmacro; the only differences are:
+这是一个正常的机制去定义编译器宏函数. 它的方式和 defmacro 一样; 仅有的区别是:
 
-* The name can be a function name naming any function or macro.
+* 这个 name 可以使一个命名了任何函数或宏的函数名字.
 
-* The expander function is installed as a compiler macro function for the name, rather than as a macro function.
+* 展开函数被安装为一个编译器宏函数, 而不是一个宏函数.
 
-* The &whole argument is bound to the form argument that is passed to the compiler macro function. The remaining lambda-list parameters are specified as if this form contained the function name in the car and the actual arguments in the cdr, but if the car of the actual form is the symbol funcall, then the destructuring of the arguments is actually performed using its cddr instead.
+* 这个 &whole 参数绑定到传递给编译器宏函数的 form 参数. 其余的 lambda-list 参数被指定为该表达式包含 car 中的函数名和 cdr 中的实际参数, 但是如果实际表达式形式的 car 部分是一个符号 funcall, 那么参数的解构实际上通过使用它的 cddr 来执行.<!--TODO 待校对 -->
 
-* Documentation is attached as a documentation string to name (as kind compiler-macro) and to the compiler macro function.
+* Documentation 被关联到 name(就像 compiler-macro) 和编译器宏函数作为一个文档字符串.
 
-* Unlike an ordinary macro, a compiler macro can decline to provide an expansion merely by returning a form that is the same as the original (which can be obtained by using &whole).
+* 不像一个普通的宏, 编译器宏可以拒绝通过返回与原始状态相同(那个可以通过使用 &whole 获取到的)的表达式来提供展开式.
 
 示例(Examples):
 
@@ -2465,7 +2465,7 @@ This is the normal mechanism for defining a compiler macro function. Its manner 
 
 注意(Notes):
 
-    The consequences of writing a compiler macro definition for a function in the COMMON-LISP package are undefined; it is quite possible that in some implementations such an attempt would override an equivalent or equally important definition. In general, it is recommended that a programmer only write compiler macro definitions for functions he or she personally maintains--writing a compiler macro definition for a function maintained elsewhere is normally considered a violation of traditional rules of modularity and data abstraction. 
+    为一个 COMMON-LISP 包中的函数写一个编译器宏定义结果是无法预料的; 很有可能在某些实现中, 这样的尝试会覆盖相同或同等重要的定义. 一般来说, 建议程序员只编写自己维护的函数的编译器宏定义--为其他地方维护的函数编写一个编译器宏定义通常被认为违背了模块化和数据抽象的传统规则. 
 
 ### <span id = "">Macro DEFMACRO</span>
 
