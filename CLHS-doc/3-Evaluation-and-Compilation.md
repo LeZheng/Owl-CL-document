@@ -2298,15 +2298,15 @@ a =>  1
 
 参数和值(Arguments and Values):
 
-    name---a function name.
-    environment---an environment object.
-    function, new-function---a compiler macro function, or nil.
+    name---一个函数名字.
+    environment---一个环境对象.
+    function, new-function---一个编译器宏函数, 或者 nil.
 
 描述(Description):
 
-    Accesses the compiler macro function named name, if any, in the environment.
+    在环境(environment)中访问 name 命名的编译器宏函数, 如果有的话.
 
-    A value of nil denotes the absence of a compiler macro function named name.
+    一个 nil 值表示 name 命名的编译器宏函数的缺失.
 
 示例(Examples): None.
 
@@ -2314,7 +2314,7 @@ a =>  1
 
 异常情况(Exceptional Situations):
 
-    The consequences are undefined if environment is non-nil in a use of setf of compiler-macro-function.
+    在 compiler-macro-function 的 setf 使用中如果 environment 不是 nil 那么结果是不可预料的.
 
 也见(See Also):
 
