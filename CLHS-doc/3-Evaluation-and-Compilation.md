@@ -2597,7 +2597,7 @@ a =>  1
 
 注意(Notes): None. 
 
-### <span id = "">Accessor MACRO-FUNCTION</span>
+### <span id = "AccessorMACROFUNCTION">Accessor MACRO-FUNCTION</span>
 
 语法(Syntax):
 
@@ -2607,18 +2607,18 @@ a =>  1
 
 参数和值(Arguments and Values):
 
-    symbol---a symbol.
-    environment---an environment object.
-    function---a macro function or nil.
-    new-function---a macro function.
+    symbol---一个符号.
+    environment---一个环境对象.
+    function---一个宏参数或者 nil.
+    new-function---一个宏函数.
 
 描述(Description):
 
-    Determines whether symbol has a function definition as a macro in the specified environment.
+    确定 symbol 在指定的环境中是否有一个函数定义作为一个宏.
 
-    If so, the macro expansion function, a function of two arguments, is returned. If symbol has no function definition in the lexical environment environment, or its definition is not a macro, macro-function returns nil.
+    如果是这样, 则返回宏展开函数, 即两个参数的函数. 如果 symbol 在这个词法环境中没有函数定义, 或者它的定义不是一个宏, macro-function 返回 nil.
 
-    It is possible for both macro-function and special-operator-p to return true of symbol. The macro definition must be available for use by programs that understand only the standard Common Lisp special forms.
+    对于 symbol, macro-function 和 special-operator-p 都返回 true 是有可能的. 宏定义必须可用于那些只理解标准的 Common Lisp 特殊表达式的程序.
 
 示例(Examples):
 
@@ -2651,13 +2651,13 @@ a =>  1
 
 注意(Notes):
 
-setf can be used with macro-function to install a macro as a symbol's global function definition:
+setf 可以和 macro-function 一起使用来设置一个宏作为 symbol 的全局函数定义:
 
 ```LISP
 (setf (macro-function symbol) fn)
 ```
 
-The value installed must be a function that accepts two arguments, the entire macro call and an environment, and computes the expansion for that call. Performing this operation causes symbol to have only that macro definition as its global function definition; any previous definition, whether as a macro or as a function, is lost. 
+设置的值必须是一个函数, 该函数接受两个参数, 整个宏调用和一个环境, 并计算该调用的展开. 执行这个操作会导致符号只有这个宏定义作为全局函数定义; 任何之前的定义, 不管是宏还是函数, 都会丢失. 
 
 ### <span id = "">Function MACROEXPAND, MACROEXPAND-1</span>
 
