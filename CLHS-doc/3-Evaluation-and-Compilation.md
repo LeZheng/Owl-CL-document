@@ -2467,7 +2467,7 @@ a =>  1
 
     为一个 COMMON-LISP 包中的函数写一个编译器宏定义结果是无法预料的; 很有可能在某些实现中, 这样的尝试会覆盖相同或同等重要的定义. 一般来说, 建议程序员只编写自己维护的函数的编译器宏定义--为其他地方维护的函数编写一个编译器宏定义通常被认为违背了模块化和数据抽象的传统规则. 
 
-### <span id = "">Macro DEFMACRO</span>
+### <span id = "MacroDEFMACRO">Macro DEFMACRO</span>
 
 语法(Syntax):
 
@@ -2477,30 +2477,31 @@ a =>  1
 
 参数和值(Arguments and Values):
 
-    name---a symbol. lambda-list---a macro lambda list.
-    declaration---a declare expression; not evaluated.
-    documentation---a string; not evaluated.
-    form---a form.
+    name---一个符号. 
+    lambda-list---一个宏 lambda 列表.
+    declaration---一个声明表达式; 不求值.
+    documentation---字符串; 不求值.
+    form---一个表达式形式.
 
 描述(Description):
 
-    Defines name as a macro by associating a macro function with that name in the global environment. The macro function is defined in the same lexical environment in which the defmacro form appears.
+    通过把一个宏函数关联到全局环境中的这个 name 来把 name 定义为一个宏. 这个宏函数被定义在 defmacro 表达式形式出现的相同的词法环境中.
 
-    The parameter variables in lambda-list are bound to destructured portions of the macro call.
+    在 lambda-list 列表里的参数变量被绑定到这个宏调用的解构的部分里.
 
-    The expansion function accepts two arguments, a form and an environment. The expansion function returns a form. The body of the expansion function is specified by forms. Forms are executed in order. The value of the last form executed is returned as the expansion of the macro. The body forms of the expansion function (but not the lambda-list) are implicitly enclosed in a block whose name is name.
+    这个展开函数接受两个参数, 一个表达式形式和一个环境. 这个展开函数返回一个表达式形式. 这个展开函数的主体是由表达式形式指定的. 表达式按顺序被执行. 最后一个表达式执行的值作为这个宏的展开返回. 这个展开函数的主体表达式 (但是不是 lambda-list) 被隐式地附在一个名字为 name 的块上.
 
-    The lambda-list conforms to the requirements described in Section 3.4.4 (Macro Lambda Lists).
+    这个 lambda-list 符合 3.4.4 章节(Macro Lambda Lists)所描述的需求.
 
-    Documentation is attached as a documentation string to name (as kind function) and to the macro function.
+    Documentation 作为文档字符串被关联到 name 和这个宏函数. <!--TODO (as kind function) ??-->
 
-    defmacro can be used to redefine a macro or to replace a function definition with a macro definition.
+    defmacro 可以被用于重定义一个宏或者用一个宏定义替换一个函数定义.
 
-    Recursive expansion of the form returned must terminate, including the expansion of other macros which are subforms of other forms returned.
+    返回的表达式的递归展开必须终止, 其中包括其他表达式的子表达式的展开.
 
-    The consequences are undefined if the result of fully macroexpanding a form contains any circular list structure except in literal objects.
+    如果完全宏展开表达式的结果包含任何圆形列表结构, 除了字面化对象之外, 结果是不可预料的.
 
-    If a defmacro form appears as a top level form, the compiler must store the macro definition at compile time, so that occurrences of the macro later on in the file can be expanded correctly. Users must ensure that the body of the macro can be evaluated at compile time if it is referenced within the file being compiled.
+    如果一个 defmacro 表达式形式作为顶层表达式出现, 编译器一定会在编译时把宏定义存储起来, 这样在这个文件中出现的这个宏就可以被正确地展开. 如果这个宏在这个文件被编译时引用到, 用户必须确保这个宏的主体可以在编译时被求值.
 
 示例(Examples):
 
@@ -2517,41 +2518,41 @@ a =>  1
 (mac3 1 6 :d 8 :c 9 :d 10) =>  ((MAC3 1 6 :D 8 :C 9 :D 10) 1 6 9 8 (:D 8 :C 9 :D 10)) 
 ```
 
-The stipulation that an embedded destructuring lambda list is permitted only where ordinary lambda list syntax would permit a parameter name but not a list is made to prevent ambiguity. For example, the following is not valid:
+只有在普通的lambda列表语法允许参数名而不是列表的情况下, 才允许使用嵌入的解构lambda列表来防止歧义. 比如, 下面的是非法的:
 
 ```LISP
 (defmacro loser (x &optional (a b &rest c) &rest z)
   ...)
 ```
 
-because ordinary lambda list syntax does permit a list following &optional; the list (a b &rest c) would be interpreted as describing an optional parameter named a whose default value is that of the form b, with a supplied-p parameter named &rest (not valid), and an extraneous symbol c in the list (also not valid). An almost correct way to express this is
+因为普通 lambda 列表语法不允许一个列表跟着 &optional ; 列表 (a b &rest c) 会被解释为描述一个名字为 a 的可选参数, 它的默认值是表达式 b, 带有一个 supplied-p 参数命名为 &rest (不合法), 还有一个无关的符号 c (也是不合法的). 一种几乎正确的方式来表达是
 
 ```LISP
 (defmacro loser (x &optional ((a b &rest c)) &rest z)
   ...)
 ```
 
-The extra set of parentheses removes the ambiguity. However, the definition is now incorrect because a macro call such as (loser (car pool)) would not provide any argument form for the lambda list (a b &rest c), and so the default value against which to match the lambda list would be nil because no explicit default value was specified. The consequences of this are unspecified since the empty list, nil, does not have forms to satisfy the parameters a and b. The fully correct definition would be either
+额外的括号消除了歧义. 然而, 这个定义现在是不正确的因为一个像 (loser (car pool)) 这样的宏调用不会提供任何参数表达式给lambda列表(a b &rest c), 因此，与 lambda 列表相匹配的默认值是 nil 因为没有指定明确的默认值. 这个结果的结果是不可预料的, 因为空的列表, nil, 没有表达式来满足参数 a 和 b. 完全正确的定义应该是
 
 ```LISP
 (defmacro loser (x &optional ((a b &rest c) '(nil nil)) &rest z)
   ...)
 ```
 
-or
+或者
 
 ```LISP
 (defmacro loser (x &optional ((&optional a b &rest c)) &rest z)
   ...)
 ```
 
-These differ slightly: the first requires that if the macro call specifies a explicitly then it must also specify b explicitly, whereas the second does not have this requirement. For example,
+这些略有不同: 第一个要求如果宏调用显式指定了 a, 那么它也必须显式地指定 b, 而第二个则没有这个要求. 比如,
 
 ```LISP
 (loser (car pool) ((+ x 1)))
 ```
 
-would be a valid call for the second definition but not for the first.
+对于第二个定义是个合法的调用但是对于第一个则不是.
 
 ```LISP
 (defmacro dm1a (&whole x) `',x)
