@@ -2659,7 +2659,7 @@ setf 可以和 macro-function 一起使用来设置一个宏作为 symbol 的全
 
 设置的值必须是一个函数, 该函数接受两个参数, 整个宏调用和一个环境, 并计算该调用的展开. 执行这个操作会导致符号只有这个宏定义作为全局函数定义; 任何之前的定义, 不管是宏还是函数, 都会丢失. 
 
-### <span id = "">Function MACROEXPAND, MACROEXPAND-1</span>
+### <span id = "FunctionMACROEXPANDMACROEXPAND1">Function MACROEXPAND, MACROEXPAND-1</span>
 
 语法(Syntax):
 
@@ -2669,24 +2669,24 @@ setf 可以和 macro-function 一起使用来设置一个宏作为 symbol 的全
 
 参数和值(Arguments and Values):
 
-    form---a form.
-    env---an environment object. The default is nil.
-    expansion---a form.
-    expanded-p---a generalized boolean.
+    form---一个表达式形式.
+    env---一个环境对象. 默认是 nil.
+    expansion---一个表达式形式.
+    expanded-p---一个普通的 boolean.
 
 描述(Description):
 
-    macroexpand and macroexpand-1 expand macros.
+    macroexpand 和 macroexpand-1 展开宏.
 
-    If form is a macro form, then macroexpand-1 expands the macro form call once.
+    如果 form 是一个宏表达式形式, 那么 macroexpand-1 只展开宏表达式调用一次.
 
-    macroexpand repeatedly expands form until it is no longer a macro form. In effect, macroexpand calls macroexpand-1 repeatedly until the secondary value it returns is nil.
+    macroexpand 重复地展开 form 直到它不再是一个宏表达式形式. 事实上, macroexpand 重复调用 macroexpand-1 直到第二个值返回的是 nil.
 
-    If form is a macro form, then the expansion is a macro expansion and expanded-p is true. Otherwise, the expansion is the given form and expanded-p is false.
+    如果 form 是一个宏表达式, 那么展开就是一个宏展开并且 expanded-p 是 true. 否则, 这个展开就是给定的表达式形式并且 expanded-p 是 false.
 
-    Macro expansion is carried out as follows. Once macroexpand-1 has determined that the form is a macro form, it obtains an appropriate expansion function for the macro or symbol macro. The value of *macroexpand-hook* is coerced to a function and then called as a function of three arguments: the expansion function, the form, and the env. The value returned from this call is taken to be the expansion of the form.
+    宏展开是按照以下方式进行的. 一旦 macroexpand-1 确定表达式是一个宏表达式形式, 它就会获得一个用于宏或符号宏的适当展开函数. 这个 *macroexpand-hook* 的值强制为一个函数并且作为一个三个参数的函数调用: 展开函数, 这个 form, 还有这个 env. 从这个调用返回的值被认为是这个表达式的展开.
 
-    In addition to macro definitions in the global environment, any local macro definitions established within env by macrolet or symbol-macrolet are considered. If only form is supplied as an argument, then the environment is effectively null, and only global macro definitions as established by defmacro are considered. Macro definitions are shadowed by local function definitions.
+    除了全局环境中的宏定义之外, 在 env 中建立的任何本地宏定义都被认为是由 macrolet 或 symbol-macrolet 所建立的. 如果只提供了 form 作为一个参数, 那么环境实际上就是 null, 只有通过 defmacro 建立的全局宏定义才会被考虑. 宏定义被局部函数定义所遮蔽.
 
 示例(Examples):
 
@@ -2765,7 +2765,7 @@ setf 可以和 macro-function 一起使用来设置一个宏作为 symbol 的全
 
 注意(Notes):
 
-    Neither macroexpand nor macroexpand-1 makes any explicit attempt to expand macro forms that are either subforms of the form or subforms of the expansion. Such expansion might occur implicitly, however, due to the semantics or implementation of the macro function. 
+    无论是 macroexpand 还是 macroexpand-1 都没有明确的尝试去展开宏表达式, 这些要么是表达式形式的子形式，要么是展开式的子形式. 然而, 由于宏函数的语义或实现, 这样的展开可能隐式发生. 
 
 ### <span id = "">Macro DEFINE-SYMBOL-MACRO</span>
 
