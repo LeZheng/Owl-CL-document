@@ -2767,7 +2767,7 @@ setf 可以和 macro-function 一起使用来设置一个宏作为 symbol 的全
 
     无论是 macroexpand 还是 macroexpand-1 都没有明确的尝试去展开宏表达式, 这些要么是表达式形式的子形式，要么是展开式的子形式. 然而, 由于宏函数的语义或实现, 这样的展开可能隐式发生. 
 
-### <span id = "">Macro DEFINE-SYMBOL-MACRO</span>
+### <span id = "MacroDEFINESYMBOLMACRO">Macro DEFINE-SYMBOL-MACRO</span>
 
 语法(Syntax):
 
@@ -2777,22 +2777,22 @@ setf 可以和 macro-function 一起使用来设置一个宏作为 symbol 的全
 
 参数和值(Arguments and Values):
 
-    symbol---a symbol.
-    expansion---a form.
+    symbol---一个符号.
+    expansion---一个表达式形式.
 
 描述(Description):
 
-    Provides a mechanism for globally affecting the macro expansion of the indicated symbol.
+    为全局影响指示符号的宏展开提供了一种机制.
 
-    Globally establishes an expansion function for the symbol macro named by symbol. The only guaranteed property of an expansion function for a symbol macro is that when it is applied to the form and the environment it returns the correct expansion. (In particular, it is implementation-dependent whether the expansion is conceptually stored in the expansion function, the environment, or both.)
+    为 symbol 命名的符号宏全局地确定一个展开函数. 对于符号宏来说, 展开函数的唯一确保属性是当它被应用到表达式形式和环境时它会返回正确的展开式. (具体来说，这个展开式是在概念上存储在展开函数, 环境, 还是两者中, 这是依赖于实现的.)
 
-    Each global reference to symbol (i.e., not shadowed[2] by a binding for a variable or symbol macro named by the same symbol) is expanded by the normal macro expansion process; see Section 3.1.2.1.1 (Symbols as Forms). The expansion of a symbol macro is subject to further macro expansion in the same lexical environment as the symbol macro reference, exactly analogous to normal macros.
+    每个对 symbol 的全局引用(换句话说, 不被由同一个符号所命名的变量或符号宏的绑定所遮蔽)都是通过常规的宏展开过程来展开的; 见章节 3.1.2.1.1 (Symbols as Forms). 符号宏的展开受支配于符号宏引用相同的词汇环境中进行的进一步的宏展开, 与普通宏类似. <!-- TODO is subject to ?? -->
 
-    The consequences are unspecified if a special declaration is made for symbol while in the scope of this definition (i.e., when it is not shadowed[2] by a binding for a variable or symbol macro named by the same symbol).
+    如果在这个定义的范围内为 symbol 做一个 special 声明, 后果是未知的 (换句话说, 当它没有被绑定到一个由相同符号命名的变量或符号宏的绑定所遮蔽时).
 
-    Any use of setq to set the value of the symbol while in the scope of this definition is treated as if it were a setf. psetq of symbol is treated as if it were a psetf, and multiple-value-setq is treated as if it were a setf of values.
+    任何在这个定义的作用域中使用 setq 来设置 symbol 的值都被当作 setf. symbol 的 psetq 被当作是 psetf, 并且 multiple-value-setq 被当作是多个值的 setf.
 
-    A binding for a symbol macro can be shadowed[2] by let or symbol-macrolet.
+    一个符号宏的绑定可以被 let 或 symbol-macrolet 所遮蔽.
 
 示例(Examples):
 
@@ -2817,7 +2817,7 @@ thing3 =>  THREE
 
 异常情况(Exceptional Situations):
 
-    If symbol is already defined as a global variable, an error of type program-error is signaled.
+    如果 symbol 已经被定义为一个全局的变量, 会发出一个 program-error 类型的错误.
 
 也见(See Also):
 
