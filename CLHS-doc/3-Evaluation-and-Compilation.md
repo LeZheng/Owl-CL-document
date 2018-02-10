@@ -2825,7 +2825,7 @@ thing3 =>  THREE
 
 注意(Notes): None. 
 
-### <span id = "">Special Operator SYMBOL-MACROLET</span>
+### <span id = "SpecialOperatorSYMBOLMACROLET">Special Operator SYMBOL-MACROLET</span>
 
 语法(Syntax):
 
@@ -2835,25 +2835,25 @@ thing3 =>  THREE
 
 参数和值(Arguments and Values):
 
-    symbol---a symbol.
-    expansion---a form.
-    declaration---a declare expression; not evaluated.
-    forms---an implicit progn.
-    results---the values returned by the forms.
+    symbol---一个符号.
+    expansion---一个表达式形式.
+    declaration---一个声明表达式; 不求值.
+    forms---一个隐式的 progn.
+    results---forms 返回的值.
 
 描述(Description):
 
-    symbol-macrolet provides a mechanism for affecting the macro expansion environment for symbols.
+    symbol-macrolet 为影响符号的宏展开环境提供一种机制.
 
-    symbol-macrolet lexically establishes expansion functions for each of the symbol macros named by symbols. The only guaranteed property of an expansion function for a symbol macro is that when it is applied to the form and the environment it returns the correct expansion. (In particular, it is implementation-dependent whether the expansion is conceptually stored in the expansion function, the environment, or both.)
+    symbol-macrolet 为每一个 symbol 命名的符号宏词法上确定展开函数. 对于符号宏来说, 展开函数的唯一保证属性是当它被应用到表达式和环境时它会返回正确的展开式. (具体来说, 它在概念上是存储在展开函数, 环境, 还是两者中, 这是依赖于实现的.)
 
-    Each reference to symbol as a variable within the lexical scope of symbol-macrolet is expanded by the normal macro expansion process; see Section 3.1.2.1.1 (Symbols as Forms). The expansion of a symbol macro is subject to further macro expansion in the same lexical environment as the symbol macro invocation, exactly analogous to normal macros.
+    在 symbol-macrolet 词法作用域内, 变量作为 symbol 的每个引用都被常规的宏展开过程所展开; 见章节 3.1.2.1.1 (Symbols as Forms). 符号宏的展开受支配于符号宏引用相同的词汇环境中进行的进一步的宏展开, 与普通宏类似. <!-- TODO is subject to ?? -->
 
-    Exactly the same declarations are allowed as for let with one exception: symbol-macrolet signals an error if a special declaration names one of the symbols being defined by symbol-macrolet.
+    对于 let 完全相同的声明是允许的，除了一个例外: 如果一个 special 声明命名了 symbol-macrolet 已经定义的一个符号名字, symbol-macrolet 会发出一个错误.<!-- TODO let ?? -->
 
-    When the forms of the symbol-macrolet form are expanded, any use of setq to set the value of one of the specified variables is treated as if it were a setf. psetq of a symbol defined as a symbol macro is treated as if it were a psetf, and multiple-value-setq is treated as if it were a setf of values.
+    当 symbol-macrolet 形式中的表达式被展开, 任何使用 setq 来设置已指定变量中一个值被当作是 setf 一样. 一个符号定义的符号的 psetq 被当作它是一个 psetf, 并且 multiple-value-setq 被当作是多个值的 setf.
 
-    The use of symbol-macrolet can be shadowed by let. In other words, symbol-macrolet only substitutes for occurrences of symbol that would be in the scope of a lexical binding of symbol surrounding the forms.
+    这个 symbol-macrolet 的使用可以被 let 遮蔽. 换句话说, symbol-macrolet 只是替代了 forms 周围的 symbol 的词法绑定作用域中的 symbol.
 
 示例(Examples):
 
@@ -2876,9 +2876,9 @@ NOT=>  (foo foo)
 
 异常情况(Exceptional Situations):
 
-    If an attempt is made to bind a symbol that is defined as a global variable, an error of type program-error is signaled.
+    如果试图绑定一个被定义为全局变量的符号, 会发出一个 program-error 类型的错误.
 
-    If declaration contains a special declaration that names one of the symbols being bound by symbol-macrolet, an error of type program-error is signaled.
+    如果声明中包含一个对 symbol-macrolet 绑定符号的 special 声明, 那么会发出一个 program-error 类型的错误.
 
 也见(See Also):
 
@@ -2886,9 +2886,9 @@ NOT=>  (foo foo)
 
 注意(Notes):
 
-    The special form symbol-macrolet is the basic mechanism that is used to implement with-slots.
+    这个特殊的表达式形式 symbol-macrolet 是用于实现 with-slots 的基础机制.
 
-    If a symbol-macrolet form is a top level form, the forms are also processed as top level forms. See Section 3.2.3 (File Compilation). 
+    如果一个 symbol-macrolet 形式是一个顶层表达式形式, 这个表达式形式也被当作顶层表达式处理. 见章节 3.2.3 (File Compilation). 
 
 ### <span id = "">Variable *MACROEXPAND-HOOK*</span>
 
