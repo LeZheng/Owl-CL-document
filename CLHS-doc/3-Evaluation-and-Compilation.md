@@ -2894,15 +2894,15 @@ NOT=>  (foo foo)
 
 值类型(Value Type):
 
-    a designator for a function of three arguments: a macro function, a macro form, and an environment object.
+    一个三个参数的函数的标志符: 一个宏函数, 一个宏表达式形式, 和一个环境对象.
 
 初始值(Initial Value):
 
-    a designator for a function that is equivalent to the function funcall, but that might have additional implementation-dependent side-effects.
+    一个等价于函数 funcall 的函数的标志符, 但是可能有额外的依赖于实现的副作用.
 
 描述(Description):
 
-    Used as the expansion interface hook by macroexpand-1 to control the macro expansion process. When a macro form is to be expanded, this function is called with three arguments: the macro function, the macro form, and the environment in which the macro form is to be expanded. The environment object has dynamic extent; the consequences are undefined if the environment object is referred to outside the dynamic extent of the macro expansion function.
+    被用作 macroexpand-1 的展开接口钩子来控制宏展开过程. 当一个宏表达式要被展开时, 这个函数会被调用, 并传递三个参数: 这个宏函数, 宏的表达式形式, 这个要被展开的宏形式所在的环境对象. 这个环境对象具有动态范围; 如果环境对象在宏展开函数的动态范围之外被引用, 则其后果是未定义的.
 
 示例(Examples):
 
@@ -2925,11 +2925,11 @@ NOT=>  (foo foo)
 
 注意(Notes):
 
-    The net effect of the chosen initial value is to just invoke the macro function, giving it the macro form and environment as its two arguments.
+    选择的初始值的净效果是仅调用宏函数, 将宏形式和环境作为它的两个参数.
 
-    Users or user programs can assign this variable to customize or trace the macro expansion mechanism. Note, however, that this variable is a global resource, potentially shared by multiple programs; as such, if any two programs depend for their correctness on the setting of this variable, those programs may not be able to run in the same Lisp image. For this reason, it is frequently best to confine its uses to debugging situations.
+    用户或用户程序可以指定这个变量来定制或跟踪宏展开机制. 注意, 但是, 这个变量是一个全局资源, 可能由多个程序共享; 因此, 如果两个程序在这个变量的设置上依赖于它们的正确性, 那么这些程序可能无法在相同的Lisp镜像中运行. 由于这个原因, 通常最好将其用途限制在调试情况下.
 
-    Users who put their own function into *macroexpand-hook* should consider saving the previous value of the hook, and calling that value from their own. 
+    把函数设置到 *macroexpand-hook* 的用户应该考虑把这个钩子的之前的值保存起来, and calling that value from their own. <!-- TODO 待校对 -->
 
 ### <span id = "">Function PROCLAIM</span>
 
