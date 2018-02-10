@@ -2890,7 +2890,7 @@ NOT=>  (foo foo)
 
     如果一个 symbol-macrolet 形式是一个顶层表达式形式, 这个表达式形式也被当作顶层表达式处理. 见章节 3.2.3 (File Compilation). 
 
-### <span id = "">Variable *MACROEXPAND-HOOK*</span>
+### <span id = "VariableMACROEXPANDHOOK">Variable *MACROEXPAND-HOOK*</span>
 
 值类型(Value Type):
 
@@ -2931,7 +2931,7 @@ NOT=>  (foo foo)
 
     把函数设置到 *macroexpand-hook* 的用户应该考虑把这个钩子的之前的值保存起来, and calling that value from their own. <!-- TODO 待校对 -->
 
-### <span id = "">Function PROCLAIM</span>
+### <span id = "FunctionPROCLAIM">Function PROCLAIM</span>
 
 语法(Syntax):
 
@@ -2939,24 +2939,24 @@ NOT=>  (foo foo)
 
 参数和值(Arguments and Values):
 
-    declaration-specifier---a declaration specifier.
+    declaration-specifier---一个声明说明符.
 
 描述(Description):
 
-    Establishes the declaration specified by declaration-specifier in the global environment.
+    在全局环境中建立 declaration-specifier 指定的声明.
 
-    Such a declaration, sometimes called a global declaration or a proclamation, is always in force unless locally shadowed.
+    这样一个声明, 有时也称之为全局声明或公告(proclamation), 除非局部被遮蔽, 否则永远是有效的.
 
-    Names of variables and functions within declaration-specifier refer to dynamic variables and global function definitions, respectively.
+    在 declaration-specifier 中，变量和函数的名称分别引用动态变量和全局函数定义.
 
-    The next figure shows a list of declaration identifiers that can be used with proclaim.
+    下一个图显示了可用于 proclaim 的声明标识符列表.
 
     declaration  inline     optimize  type  
     ftype        notinline  special         
 
-    Figure 3-22. Global Declaration Specifiers
+    Figure 3-22. 全局声明标识符
 
-    An implementation is free to support other (implementation-defined) declaration identifiers as well.
+    一个具体实现也可以自由地支持其他(依赖于实现的)声明标识符.
 
 示例(Examples):
 
@@ -2981,22 +2981,22 @@ NOT=>  (foo foo)
 
 注意(Notes):
 
-    Although the execution of a proclaim form has effects that might affect compilation, the compiler does not make any attempt to recognize and specially process proclaim forms. A proclamation such as the following, even if a top level form, does not have any effect until it is executed:
+    虽然 proclaim 的执行有着可能影响编译的效果, 编译器不会尝试识别和特别地处理 proclaim 形式. 像下面这样的公告(proclamation), 即便是一个顶层表达式, 直到它被执行完也不会有任何效果:
 
 ```LISP
 (proclaim '(special *x*))
 ```
 
-    If compile time side effects are desired, eval-when may be useful. For example:
+    如果编译时的副作用是需要的, eval-when 可能会有用. 比如:
 
 ```LISP
 (eval-when (:execute :compile-toplevel :load-toplevel)
   (proclaim '(special *x*)))
 ```
 
-    In most such cases, however, it is preferrable to use declaim for this purpose.
+    然而, 在大多数这样的情况下, 使用 declaim 来实现这一目的是比较容易的.
 
-    Since proclaim forms are ordinary function forms, macro forms can expand into them. 
+    因为 proclaim 表达式是普通的函数形式，所以宏表达式可以展开到它们. 
 
 ### <span id = "">Macro DECLAIM</span>
 
