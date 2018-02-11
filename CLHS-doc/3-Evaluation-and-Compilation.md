@@ -3139,7 +3139,7 @@ NOT=>  (foo foo)
 
     declare 
 
-### <span id = "">Declaration DYNAMIC-EXTENT</span>
+### <span id = "DeclarationDYNAMICEXTENT">Declaration DYNAMIC-EXTENT</span>
 
 语法(Syntax):
 
@@ -3147,8 +3147,8 @@ NOT=>  (foo foo)
 
 参数(Arguments):
 
-    var---a variable name.
-    fn---a function name.
+    var---一个变量名字.
+    fn---一个函数名字.
 
 合法上下文(Valid Context):
 
@@ -3160,17 +3160,17 @@ NOT=>  (foo foo)
 
 描述(Description):
 
-    In some containing form, F, this declaration asserts for each vari (which need not be bound by F), and for each value vij that vari takes on, and for each object xijk that is an otherwise inaccessible part of vij at any time when vij becomes the value of vari, that just after the execution of F terminates, xijk is either inaccessible (if F established a binding for vari) or still an otherwise inaccessible part of the current value of vari (if F did not establish a binding for vari). The same relation holds for each fni, except that the bindings are in the function namespace.
+    在一些包含的表达式中, F, 这个声明为每一个 vari 断言 (不需要被 F 绑定), 并且为 vari 呈现的每一个值断言, 还有当 vij 为 vari 的值的任何时候为 vij 的 otherwise inaccessible part 的 对象 xijk 断言, 这只是在 F 的执行终止后, xijk 要么是不可访问的(如果 F 为 vari 确定一个绑定), 要么是 vari 的当前值的一个 otherwise inaccessible part (如果 F 没有为 vari 确定一个绑定). 每个 fni 都有相同的关系, 除了这些在函数命名空间中的绑定. <!-- TODO 待校验 otherwise inaccessible part ？？ -->
 
-    The compiler is permitted to use this information in any way that is appropriate to the implementation and that does not conflict with the semantics of Common Lisp.
+    编译器被允许以任何适合于实现的方式使用该信息, 这与 Common Lisp 的语义不冲突.
 
-    dynamic-extent declarations can be free declarations or bound declarations.
+    dynamic-extent 声明可以是自由声明或绑定声明.
 
-    The vars and fns named in a dynamic-extent declaration must not refer to symbol macro or macro bindings.
+    在 dynamic-extent 声明中命名的这个 vars 和 fns 一定不能引用符号宏或宏绑定.
 
 示例(Examples):
 
-    Since stack allocation of the initial value entails knowing at the object's creation time that the object can be stack-allocated, it is not generally useful to make a dynamic-extent declaration for variables which have no lexically apparent initial value. For example, it is probably useful to write:
+    由于初始值的栈上分配需要在对象的创建时知道对象可以是栈上分配的, 对于没有词法上显而易见的初始值的变量, 对变量进行 dynamic-extent 声明通常是不太有用的. 比如, 这可能是很有用的:
 
 ```LISP
 (defun f ()
@@ -3179,16 +3179,16 @@ NOT=>  (foo foo)
         ...))
 ```
 
-    This would permit those compilers that wish to do so to stack allocate the list held by the local variable x. It is permissible, but in practice probably not as useful, to write:
+    这将允许那些希望这样做的编译器来栈上分配由本地变量 x 所持有的列表. 这是允许的, 但在实践中可能没有那么有用, 写成:
 
 ```LISP
 (defun g (x) (declare (dynamic-extent x)) ...)
 (defun f () (g (list 1 2 3)))
 ```
 
-    Most compilers would probably not stack allocate the argument to g in f because it would be a modularity violation for the compiler to assume facts about g from within f. Only an implementation that was willing to be responsible for recompiling f if the definition of g changed incompatibly could legitimately stack allocate the list argument to g in f.
+    大部分编译器不会在 f 中去栈上分配给 g 的参数因为对于编译器来说, 从 f 中假设关于 g 的事实是违背模块化的. 只有当 g 的定义做了不兼容的修改而一个实现可以重编译 f 时可以合理地在 f 中栈上分配这个列表参数给 g.
 
-    Here is another example:
+    这里有另一个例子:
 
 ```LISP
 (declaim (inline g))
@@ -3200,9 +3200,9 @@ NOT=>  (foo foo)
     (g (list 1 2 3))))
 ```
 
-    In the previous example, some compilers might determine that optimization was possible and others might not.
+    在上面的例子里, 一些编译器可能会确定优化是可以的, 而另一些可能不会.
 
-    A variant of this is the so-called ``stack allocated rest list'' that can be achieved (in implementations supporting the optimization) by:
+    这个的一个变体是 "栈上分配剩余列表"(stack allocated rest list) 可以通过下面来实现 (支持优化的实现中):
 
 ```LISP
 (defun f (&rest x)
@@ -3210,9 +3210,9 @@ NOT=>  (foo foo)
   ...)
 ```
 
-    Note that although the initial value of x is not explicit, the f function is responsible for assembling the list x from the passed arguments, so the f function can be optimized by the compiler to construct a stack-allocated list instead of a heap-allocated list in implementations that support such.
+    注意, 虽然 x 的初始值不是显式的, 但是 f 函数负责将列表 x 从传递的参数中组合起来, 因此可以通过编译器对 f 函数进行优化, 以构建一个栈上分配的列表, 而不是在支持这样的实现中使用堆分配的列表.
 
-    In the following example,
+    在下面的示例中,
 
 ```LISP
 (let ((x (list 'a1 'b1 'c1))
@@ -3221,7 +3221,7 @@ NOT=>  (foo foo)
   ...)
 ```
 
-    The otherwise inaccessible parts of x are three conses, and the otherwise inaccessible parts of y are three other conses. None of the symbols a1, b1, c1, a2, b2, c2, or nil is an otherwise inaccessible part of x or y because each is interned and hence accessible by the package (or packages) in which it is interned. However, if a freshly allocated uninterned symbol had been used, it would have been an otherwise inaccessible part of the list which contained it.
+    这个 x 的 otherwise inaccessible parts 是三个 cons, 而 y 的 otherwise inaccessible parts 是另外三个 cons. 所有 a1, b1, c1, a2, b2, c2, 或者 nil 这些符号中没有是 x 或 y 的 otherwise inaccessible part, 因为每一个都被 intern 因此在它被 intern 的包(或者多个包)中是可访问的. 然而, 如果使用了一个新分配的未 intern 的符号, 那么它将是包含它的列表的 otherwise inaccessible part. <!-- TODO 待校验 intern -->
 
 ```LISP
 ;; In this example, the implementation is permitted to stack allocate
@@ -3276,7 +3276,7 @@ NOT=>  (foo foo)
 (< (zap 5 3) 3) =>  true
 ```
 
-    The following are in error, since the value of x is used outside of its extent:
+    下面的是错误的, 因为 x 的值在它的范围外被使用:
 
 ```LISP
  (length (list (let ((x (list 1 2 3)))  ; Invalid
@@ -3295,9 +3295,9 @@ NOT=>  (foo foo)
 
 注意(Notes):
 
-    The most common optimization is to stack allocate the initial value of the objects named by the vars.
+    最常见的优化是对由 vars 命名的对象的初始值进行栈上分配.
 
-    It is permissible for an implementation to simply ignore this declaration. 
+    一个实现允许完全可以忽略这个声明. 
 
 ### <span id = "">Declaration TYPE</span>
 
