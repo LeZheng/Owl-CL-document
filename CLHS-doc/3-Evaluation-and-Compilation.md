@@ -2998,7 +2998,7 @@ NOT=>  (foo foo)
 
     因为 proclaim 表达式是普通的函数形式，所以宏表达式可以展开到它们. 
 
-### <span id = "">Macro DECLAIM</span>
+### <span id = "MacroDECLAIM">Macro DECLAIM</span>
 
 语法(Syntax):
 
@@ -3006,13 +3006,13 @@ NOT=>  (foo foo)
 
 参数和值(Arguments and Values):
 
-    declaration-specifier---a declaration specifier; not evaluated.
+    declaration-specifier---一个声明说明符; 不求值的.
 
 描述(Description):
 
-Establishes the declarations specified by the declaration-specifiers.
+确定一个被 declaration-specifiers 指定的声明.
 
-    If a use of this macro appears as a top level form in a file being processed by the file compiler, the proclamations are also made at compile-time. As with other defining macros, it is unspecified whether or not the compile-time side-effects of a declaim persist after the file has been compiled.
+    如果在文件编译器处理的文件中使用该宏作为顶层表达式, 公告(proclamations)也在编译时进行. 与其他定义宏一样, 在编译完文件后, 编译时的副作用是否存在仍然是未知的.
 
 示例(Examples):
 
@@ -3028,7 +3028,7 @@ Establishes the declarations specified by the declaration-specifiers.
 
 注意(Notes): None. 
 
-### <span id = "">Symbol DECLARE</span>
+### <span id = "SymbolDECLARE">Symbol DECLARE</span>
 
 语法(Syntax):
 
@@ -3036,13 +3036,13 @@ Establishes the declarations specified by the declaration-specifiers.
 
 参数(Arguments):
 
-    declaration-specifier---a declaration specifier; not evaluated.
+    declaration-specifier---一个声明说明符; 不求值的.
 
 描述(Description):
 
-    A declare expression, sometimes called a declaration, can occur only at the beginning of the bodies of certain forms; that is, it may be preceded only by other declare expressions, or by a documentation string if the context permits.
+    一个 declare 表达式, 有时也称之为一个声明(declaration), 只能出现在合适的表达式形式的主体部分; 那也就是说, 它可能只在其他声明表达式之前出现, 或者如果上下文允许前面还有文档字符串.
 
-    A declare expression can occur in a lambda expression or in any of the forms listed in the next figure.
+    一个 declare 表达式可以出现在一个lambda表达式中或者下面这段列出的任何表达式中.
 
     defgeneric                 do-external-symbols   prog                      
     define-compiler-macro      do-symbols            prog*                     
@@ -3058,21 +3058,21 @@ Establishes the declarations specified by the declaration-specifiers.
     do*                        multiple-value-bind   with-slots                
     do-all-symbols             pprint-logical-block                            
 
-    Figure 3-23. Standardized Forms In Which Declarations Can Occur
+    Figure 3-23. 声明可以出现的标准表达式
 
-    A declare expression can only occur where specified by the syntax of these forms. The consequences of attempting to evaluate a declare expression are undefined. In situations where such expressions can appear, explicit checks are made for their presence and they are never actually evaluated; it is for this reason that they are called ``declare expressions'' rather than ``declare forms.''
+    一个 declare 表达式只能出现在这些表达式形式的语法所指定的位置. 尝试去求值一个 declare 表达式的后果是未定义的. 在这种表达式出现的情况下, 为它们的存在而进行显式检查, 并且它们从来没有真正被求值过; 正是因为这个原因它们被称之为 "declare expressions" 而不是 "declare forms".
 
-    Macro forms cannot expand into declarations; declare expressions must appear as actual subexpressions of the form to which they refer.
+    Macro 表达式形式不能被展开成声明; declare 表达式必须作为它们所引用的表达式的实际的子表达式形式出现.
 
-    The next figure shows a list of declaration identifiers that can be used with declare.
+    下一段展示了可以被用于 declare 的声明标识符的列表.
 
     dynamic-extent  ignore     optimize  
     ftype           inline     special   
     ignorable       notinline  type      
 
-    Figure 3-24. Local Declaration Specifiers
+    Figure 3-24. 局部声明标识符
 
-    An implementation is free to support other (implementation-defined) declaration identifiers as well.
+    一个具体实现也可以自由地支持其他声明标识符(依赖于实现的).
 
 示例(Examples):
 
@@ -3085,13 +3085,13 @@ Establishes the declarations specified by the declaration-specifiers.
     (foo x j z)))               ;Third call to foo
 ```
 
-    In this example, the inline declaration applies only to the third call to foo, but not to the first or second ones. The special declaration of x causes let to make a dynamic binding for x, and causes the reference to x in the body of let to be a dynamic reference. The reference to x in the second call to foo is a local reference to the second parameter of nonsense. The reference to x in the first call to foo is a local reference, not a special one. The special declaration of z causes the reference to z in the third call to foo to be a dynamic reference; it does not refer to the parameter to nonsense named z, because that parameter binding has not been declared to be special. (The special declaration of z does not appear in the body of defun, but in an inner form, and therefore does not affect the binding of the parameter.)
+    在这个例子里, 这个 inline 声明只应用于第三个 foo 调用, 不是第一个和第二个.这个 x 的 special 声明导致 let 为 x 创建了一个动态绑定, 并且导致 let 主体中对 x 的引用是一个动态引用. 在对 foo 的第二个调用中的 x 的引用是一个对 nonsense 第二个参数的局部引用. 在第一个 foo 调用中对 x 的引用也是一个局部引用, 不是一个 special 的. 这个 z 的 special 声明导致第三个 foo 调用中的 z 引用是一个动态引用; 它不引用 nonsense 中名为 z 的参数, 因为这个参数绑定没有被声明为 special. (这个 z 的 special 声明不是出现在 defun 的主体部分, 而是在一个内部的表达式形式中, 因此不影响参数的绑定.)
 
 受此影响(Affected By): None.
 
 异常情况(Exceptional Situations):
 
-    The consequences of trying to use a declare expression as a form to be evaluated are undefined.
+    试着把 declare 表达式当作一个表达式形式来求值后果是不可预料的.
 
 也见(See Also):
 
