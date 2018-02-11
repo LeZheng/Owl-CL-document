@@ -3099,7 +3099,7 @@ NOT=>  (foo foo)
 
 注意(Notes): None. 
 
-### <span id = "">Declaration IGNORE, IGNORABLE</span>
+### <span id = "DeclarationIGNOREIGNORABLE">Declaration IGNORE, IGNORABLE</span>
 
 语法(Syntax):
 
@@ -3109,9 +3109,9 @@ NOT=>  (foo foo)
 
 参数(Arguments):
 
-    var---a variable name.
+    var---一个变量名字.
 
-    fn---a function name.
+    fn---一个函数名字.
 
 合法上下文(Valid Context):
 
@@ -3123,17 +3123,17 @@ NOT=>  (foo foo)
 
 描述(Description):
 
-    The ignore and ignorable declarations refer to for-value references to variable bindings for the vars and to function bindings for the fns.
+    这个 ignore 和 ignorable 声明指向多个 var 的变量绑定还有多个 fns 的函数绑定的值引用.
 
-    An ignore declaration specifies that for-value references to the indicated bindings will not occur within the scope of the declaration. Within the scope of such a declaration, it is desirable for a compiler to issue a warning about the presence of either a for-value reference to any var or fn, or a special declaration for any var.
+    一个 ignore 声明说明指定绑定的值引用不会发生在声明作用域里. 在这样一个声明作用域里, 编译器针对任何 var 或 fn 的值引用, 或者一个 var 的 special 声明去发出一个警告是合适的.
 
-    An ignorable declaration specifies that for-value references to the indicated bindings might or might not occur within the scope of the declaration. Within the scope of such a declaration, it is not desirable for a compiler to issue a warning about the presence or absence of either a for-value reference to any var or fn, or a special declaration for any var.
+    一个 ignorable 声明表示指定绑定的值引用可能或可能不会出现在声明的作用域里. 在这样的作用域里, 编译器针对任何 var 或 fn 的值引用, 或者一个 var 的 special 声明去发出一个警告是不合适的.
 
-    When not within the scope of a ignore or ignorable declaration, it is desirable for a compiler to issue a warning about any var for which there is neither a for-value reference nor a special declaration, or about any fn for which there is no for-value reference.
+    当不在一个 ignore 或 ignorable 声明的作用域时, 编译器针对没有任何 var 或 fn 的值引用, 也没有一个 var 的 special 声明的情况发出一个警告是合适的.
 
-    Any warning about a ``used'' or ``unused'' binding must be of type style-warning, and may not affect program semantics.
+    任何关于一个 "used" 或者 "unused" 绑定必须是 style-warning 类型的, 并且不影响程序的语义.
 
-    The stream variables established by with-open-file, with-open-stream, with-input-from-string, and with-output-to-string, and all iteration variables are, by definition, always ``used''. Using (declare (ignore v)), for such a variable v has unspecified consequences.
+    由 with-open-file, with-open-stream, with-input-from-string, 和 with-output-to-string 确定的流变量, 还有所有循环变量, 根据定义总是是 "used". 使用 (declare (ignore v)), 对于这样一个变量 v 有未指明的结果.
 
 也见(See Also):
 
