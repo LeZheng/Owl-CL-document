@@ -3299,7 +3299,7 @@ NOT=>  (foo foo)
 
     一个实现允许完全可以忽略这个声明. 
 
-### <span id = "">Declaration TYPE</span>
+### <span id = "DeclarationTYPE">Declaration TYPE</span>
 
 语法(Syntax):
 
@@ -3309,13 +3309,13 @@ NOT=>  (foo foo)
 
 参数(Arguments):
 
-    typespec---a type specifier.
+    typespec---一个类型说明.
 
-    var---a variable name.
+    var---一个变量名字.
 
 合法上下文(Valid Context):
 
-    declaration or proclamation
+    declaration 或者 proclamation
 
 绑定类型的影响(Binding Types Affected):
 
@@ -3323,32 +3323,29 @@ NOT=>  (foo foo)
 
 描述(Description):
 
-    Affects only variable bindings and specifies that the vars take on values only of the specified typespec. In particular, values assigned to the variables by setq, as well as the initial values of the vars must be of the specified typespec. type declarations never apply to function bindings (see ftype).
+    只影响变量绑定, 并指定 vars 只接受指定的 typespec 的值. 具体来说, 由 setq 分配给变量的值, 以及 vars 的初始值必须是指定的 typespec. 类型声明从来不应用于函数绑定 (见 ftype).
 
-    A type declaration of a symbol defined by symbol-macrolet is equivalent to wrapping a the expression around the expansion of that symbol, although the symbol's macro expansion is not actually affected.
+    一个被 symbol-macrolet 定义的类型声明等价于在该符号的展开周围封装这样一个表达式, 尽管这个符号的宏展开实际上并没有受到影响.
 
-    The meaning of a type declaration is equivalent to changing each reference to a variable (var) within the scope of the declaration to (the typespec var), changing each expression assigned to the variable (new-value) within the scope of the declaration to (the typespec new-value), and executing (the typespec var) at the moment the scope of the declaration is entered.
+    类型声明的意义等价于修改声明作用域里的每一个变量 (var) 的引用为 (the typespec var), 修改声明作用域里的每一个赋值给变量 (new-value) 的表达式为 (the typespec new-value), 并且在进入声明作用域的时候执行 (the typespec var).
 
-    A type declaration is valid in all declarations. The interpretation of a type declaration is as follows:
+    在所有声明中一个类型声明是合法的. 对类型声明的解释如下:
 
-    1. During the execution of any reference to the declared variable within the scope of the declaration, the consequences are undefined if the value of the declared variable is not of the declared type.
+    1. 在对声明范围内的声明变量的任何引用执行期间, 如果声明的变量的值不是声明的类型, 后果是未定义的.
+    2. 在声明的范围内执行声明变量的任何 setq 时, 如果声明的变量的新的赋值不属于声明的类型, 那么后果将是未定义的.
+    3. 当进入声明的范围时, 如果声明的变量的值不是已声明的类型, 那么后果将是未定义的.
 
-    2. During the execution of any setq of the declared variable within the scope of the declaration, the consequences are undefined if the newly assigned value of the declared variable is not of the declared type.
+    一个类型声明只影响它的作用域内的变量引用.
 
-    3. At the moment the scope of the declaration is entered, the consequences are undefined if the value of the declared variable is not of the declared type.
+    如果嵌套类型声明引用相同的变量, 那么该变量的值必须是声明类型的交集的成员.
 
+    如果对于一个动态变量这里有一个局部类型声明, 并且对于相同的变量这里也有一个全局的类型公告, 那么在局部声明的作用域中的那个变量的值必须是两种类型声明的交集.
 
-    A type declaration affects only variable references within its scope.
+    类型声明可以是自由声明或绑定声明.
 
-    If nested type declarations refer to the same variable, then the value of the variable must be a member of the intersection of the declared types.
+    符号既不能是类型的名称, 也不能是声明的名称. 在定义一个符号为 class, structure, condition, 或 type 名字时, 如果这个符号已经被声明为一个声明的名字, 或反过来, 都会发出一个错误.
 
-    If there is a local type declaration for a dynamic variable, and there is also a global type proclamation for that same variable, then the value of the variable within the scope of the local declaration must be a member of the intersection of the two declared types.
-
-    type declarations can be free declarations or bound declarations.
-
-    A symbol cannot be both the name of a type and the name of a declaration. Defining a symbol as the name of a class, structure, condition, or type, when the symbol has been declared as a declaration name, or vice versa, signals an error.
-
-    Within the lexical scope of an array type declaration, all references to array elements are assumed to satisfy the expressed array element type (as opposed to the upgraded array element type). A compiler can treat the code within the scope of the array type declaration as if each access of an array element were surrounded by an appropriate the form.
+    在一个数组类型声明的词法作用域中, 所有对数组元素的引用都被假定为满足表达的数组元素类型 (与升级的数组元素类型相反). 编译器可以在数组类型声明的范围内处理代码, 就好像数组元素的每个访问都被合适的这个表达式形式包围一样.
 
 示例(Examples):
 
@@ -3384,7 +3381,7 @@ NOT=>  (foo foo)
 (frob *another-array*)
 ```
 
-    The above definition of frob is equivalent to:
+    上面的 frob 定义等价于:
 
 ```LISP
 (defun frob (an-array)
@@ -3397,7 +3394,7 @@ NOT=>  (foo foo)
     (setf foo (the (signed-byte 5) (aref an-array 0)))))
 ```
 
-    Given an implementation in which fixnums are 29 bits but fixnum arrays are upgraded to signed 32-bit arrays, the following could be compiled with all fixnum arithmetic:
+    给定一个实现,其中 fixnums 是29位，但是 fixnum 数组被升级到有符号的32位数组, 下面可以用所有的 fixnum 算法来编译:
 
 ```LISP
  (defun bump-counters (counters)
@@ -3412,15 +3409,15 @@ NOT=>  (foo foo)
 
 注意(Notes):
 
-    (typespec var*) is an abbreviation for (type typespec var*).
+    (typespec var*) 是 (type typespec var*) 的一个缩写.
 
-    A type declaration for the arguments to a function does not necessarily imply anything about the type of the result. The following function is not permitted to be compiled using implementation-dependent fixnum-only arithmetic:
+    对于一个函数的参数的类型声明并不一定意味着结果的类型. 下面的函数不允许使用依赖于实现的 fixnum-only 算法来编译:<!--TODO fixnum-only ??-->
 
 ```LISP
 (defun f (x y) (declare (fixnum x y)) (+ x y))
 ```
 
-    To see why, consider (f most-positive-fixnum 1). Common Lisp defines that F must return a bignum here, rather than signal an error or produce a mathematically incorrect result. If you have special knowledge such ``fixnum overflow'' cases will not come up, you can declare the result value to be in the fixnum range, enabling some compilers to use more efficient arithmetic:
+    为说明原因, 细想 (f most-positive-fixnum 1). Common Lisp 定义这个 F 必须返回一个 bignum, 而不是发出一个错误或产生一个数学上不正确的结果. 如果你有特殊的知识, 那么 "fixnum overflow" 情况就不会出现, 您可以在 fixnum 范围内声明结果值, 使一些编译器可以使用更有效的算法:
 
 ```LISP
 (defun f (x y)
@@ -3428,7 +3425,7 @@ NOT=>  (foo foo)
   (the fixnum (+ x y)))
 ```
 
-    Note, however, that in the three-argument case, because of the possibility of an implicit intermediate value growing too large, the following will not cause implementation-dependent fixnum-only arithmetic to be used:
+    但是, 请注意, 在三个参数的情况下, 由于隐式中间值增长的可能性太大, 下面的内容不会导致使用依赖于实现的 fixnum-only 算法: <!--TODO fixnum-only ??-->
 
 ```LISP
 (defun f (x y)
@@ -3436,7 +3433,7 @@ NOT=>  (foo foo)
   (the fixnum (+ x y z)))
 ```
 
-    To see why, consider (f most-positive-fixnum 1 -1). Although the arguments and the result are all fixnums, an intermediate value is not a fixnum. If it is important that implementation-dependent fixnum-only arithmetic be selected in implementations that provide it, consider writing something like this instead:
+    为说明原因, 细想 (f most-positive-fixnum 1 -1). 尽管参数和结果都是 fixnums，但中间值不是 fixnum. 如果在提供它的实现中选择依赖于实现的 fixnum-only 算法是很重要的, 那么考虑编写这样的代码:<!--TODO fixnum-only ??-->
 
 ```LISP
 (defun f (x y)
