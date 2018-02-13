@@ -549,9 +549,9 @@ Figure 3-6. 应用于编译器宏的定义的名字
 
 这个编译器宏机制的目的是允许选择性的源代码转换为编译器的优化建议. 当一种复合表达式被处理(如由编译器), 如果操作符命名了一个编译器宏, 那么这个编译器宏函数可能在这个表达式上被调用, 而结果的展开则递归地处理, 按照其通常的解释为函数形式或宏形式进行处理.
 
-一个编译器宏函数, 就像一个宏函数, 是一个两个参数的函数: 整个调用的表达式和环境对象. 不像一个普通的宏函数, 一个编译器宏函数可以通过返回与原始表单相同的值来提供扩展. 如果编译器宏破坏性地修改的它的表达式部分的参数, 那么结果是未定义的.
+一个编译器宏函数, 就像一个宏函数, 是一个两个参数的函数: 整个调用的表达式和环境对象. 不像一个普通的宏函数, 一个编译器宏函数可以通过返回与原始表达式形式相同的值来提供扩展. 如果编译器宏破坏性地修改的它的表达式部分的参数, 那么结果是未定义的.
 
-传递给编译器宏函数的表达式可以是一个 car 部分是一个函数名的列表或者一个 car 部分是 funcall 并且 cadr 部分是一个列表 (或函数名); 注意, 这会影响编译器宏函数对表单参数的破坏. define-compiler-macro 会为两种可能的格式正确地执行对参数的破坏. <!-- TODO 需校对-->
+传递给编译器宏函数的表达式可以是一个 car 部分是一个函数名的列表或者一个 car 部分是 funcall 并且 cadr 部分是一个列表 (或函数名); 注意, 这会影响编译器宏函数对表达式形式参数的破坏. define-compiler-macro 会为两种可能的格式正确地执行对参数的破坏. <!-- TODO 需校对-->
 
 当 compile-file 选择展开顶级表达式作为编译器宏表达式时, 展开后的也被当作顶级表达式来处理, 以便在 eval-when 的处理; 见章节 3.2.3.1 (Processing of Top Level Forms). 
 
@@ -655,7 +655,7 @@ Figure 3-6. 应用于编译器宏的定义的名字
 
     如果表达式是一个 progn 表达式, 它的主体表达式中的每一个子表达式会被依次当作顶层表达式在相同的处理模式下处理.
 
-    如果这个表达式是一个 locally, macrolet, 或者 symbol-macrolet, compile-file 建立适当的绑定并将主体表达式作为顶级表单处理, 并在相同的处理模式下执行这些绑定. (注意, 这意味着顶层表达式处理的词法环境不一定是空词法环境.)
+    如果这个表达式是一个 locally, macrolet, 或者 symbol-macrolet, compile-file 建立适当的绑定并将主体表达式作为顶级表达式形式处理, 并在相同的处理模式下执行这些绑定. (注意, 这意味着顶层表达式处理的词法环境不一定是空词法环境.)
 
     如果表达式是一个 eval-when 表达式, 它会根据下面这段被处理.
 
@@ -3441,7 +3441,7 @@ NOT=>  (foo foo)
   (the fixnum (+ (the fixnum (+ x y)) z)))
 ```
 
-### <span id = "">Declaration INLINE, NOTINLINE</span>
+### <span id = "DeclarationINLINENOTINLINE">Declaration INLINE, NOTINLINE</span>
 
 语法(Syntax):
 
@@ -3451,11 +3451,11 @@ NOT=>  (foo foo)
 
 参数(Arguments):
 
-    function-name---a function name.
+    function-name---一个函数名字.
 
 合法上下文(Valid Context):
 
-    declaration or proclamation
+    declaration 或 proclamation
 
 绑定类型的影响(Binding Types Affected):
 
@@ -3463,27 +3463,29 @@ NOT=>  (foo foo)
 
 描述(Description):
 
-    inline specifies that it is desirable for the compiler to produce inline calls to the functions named by function-names; that is, the code for a specified function-name should be integrated into the calling routine, appearing ``in line'' in place of a procedure call. A compiler is free to ignore this declaration. inline declarations never apply to variable bindings.
+    inline 指定对于编译器需要去为 function-name 命名的函数产生内联调用; 这就是说, 指定的函数名的代码应该集成到调用例程中, 内联出现并替换程序调用. 一个编译器可以自由地忽略这个声明. inline 声明从不应用于变量.
 
-    If one of the functions mentioned has a lexically apparent local definition (as made by flet or labels), then the declaration applies to that local definition and not to the global function definition.
+    如果其中一个函数有一个词法上明显的局部定义 (像是被 flet 或 labels), 那么这个声明应用于这个局部定义而不是那个全局函数定义.
 
-    While no conforming implementation is required to perform inline expansion of user-defined functions, those implementations that do attempt to recognize the following paradigm:
+    虽然没有符合规范的实现需要执行用户定义函数的内联展开, 那些实现试图识别以下范例:
 
-    To define a function f that is not inline by default but for which (declare (inline f)) will make f be locally inlined, the proper definition sequence is:
+    去定义一个函数 f 默认不是内联但是对于 (declare (inline f)) 会使 f 是局部内联的, 合适的定义是:
 
+```LISP
     (declaim (inline f))
     (defun f ...)
     (declaim (notinline f))
+```
 
-    The inline proclamation preceding the defun form ensures that the compiler has the opportunity save the information necessary for inline expansion, and the notinline proclamation following the defun form prevents f from being expanded inline everywhere.
+    在 defun 表达式前面的这个 inline 的公告确保编译器有机会保存内联展开所必需的信息, 并且跟在 defun 后面的这个 notinline 公告防止 f 在任何地方被内联展开.
 
-    notinline specifies that it is undesirable to compile the functions named by function-names in-line. A compiler is not free to ignore this declaration; calls to the specified functions must be implemented as out-of-line subroutine calls.
+    notinline 指明这个被 function-name 命名的函数不需要被内联编译. 一个编译器可以自由地忽略这个声明; 这个指定的函数的调用必须被实现为非内联调用.
 
-    If one of the functions mentioned has a lexically apparent local definition (as made by flet or labels), then the declaration applies to that local definition and not to the global function definition.
+    如果其中一个函数有一个词法上明显的局部定义 (像是被 flet 或 labels), 那么这个声明应用于局部定义而不是全局的函数定义.
 
-    In the presence of a compiler macro definition for function-name, a notinline declaration prevents that compiler macro from being used. An inline declaration may be used to encourage use of compiler macro definitions. inline and notinline declarations otherwise have no effect when the lexically visible definition of function-name is a macro definition.
+    在对 function-name 进行编译器宏定义的情况下, notinline 声明阻止了编译器宏的使用. 可以使用 inline 声明来鼓励使用编译器宏定义. inline 和 notinline 声明在 function-name 在词法可见的定义是一个宏定义时是没有效果的.
 
-    inline and notinline declarations can be free declarations or bound declarations. inline and notinline declarations of functions that appear before the body of a flet or labels form that defines that function are bound declarations. Such declarations in other contexts are free declarations.
+    inline 和 notinline 声明可以是自由声明或绑定声明. 出现在一个 flet 或 labels 表达式形式的主体前的 inline 和 notinline 函数声明是绑定声明. 这样的声明在其他上下文中是自由声明.
 
 示例(Examples):
 
@@ -3512,7 +3514,7 @@ NOT=>  (foo foo)
 
     declare, declaim, proclaim 
 
-### <span id = "">Declaration FTYPE</span>
+### <span id = "DeclarationFTYPE">Declaration FTYPE</span>
 
 语法(Syntax):
 
@@ -3520,13 +3522,13 @@ NOT=>  (foo foo)
 
 参数(Arguments):
 
-    function-name---a function name.
+    function-name---一个函数名字.
 
-    type---a type specifier.
+    type---一个类型说明符.
 
 合法上下文(Valid Context):
 
-    declaration or proclamation
+    declaration 或 proclamation
 
 绑定类型的影响(Binding Types Affected):
 
@@ -3534,22 +3536,24 @@ NOT=>  (foo foo)
 
 描述(Description):
 
-    Specifies that the functions named by function-names are of the functional type type. For example:
+    指定被 function-names 命名的函数是 type 函数类型. 比如:
 
+```LISP
     (declare (ftype (function (integer list) t) ith)
               (ftype (function (number) float) sine cosine))
+```
 
-    If one of the functions mentioned has a lexically apparent local definition (as made by flet or labels), then the declaration applies to that local definition and not to the global function definition. ftype declarations never apply to variable bindings (see type).
+    如果其中一个函数有一个词法上明显的局部定义 (像是被 flet 或 labels), 那么这个声明应用于局部定义并且不是全局函数定义. ftype 声明从不应用于变量绑定 (见 type).
 
-    The lexically apparent bindings of function-names must not be macro definitions. (This is because ftype declares the functional definition of each function name to be of a particular subtype of function, and macros do not denote functions.)
+    这个 function-names 的词法上明显的绑定不能是宏定义. (这是因为 ftype 声明每个函数名的函数定义是一个特定的函数子类型, 而宏不表示函数.)
 
-    ftype declarations can be free declarations or bound declarations. ftype declarations of functions that appear before the body of a flet or labels form that defines that function are bound declarations. Such declarations in other contexts are free declarations.
+    ftype 声明可以是自由声明或绑定声明. 出现在一个 flet 或 labels 表达式形式的主体前的 ftype 函数声明是绑定声明. 这样的声明在其他上下文中是自由声明.
 
 也见(See Also):
 
     declare, declaim, proclaim 
 
-### <span id = "">Declaration DECLARATION</span>
+### <span id = "DeclarationDECLARATION">Declaration DECLARATION</span>
 
 语法(Syntax):
 
@@ -3557,17 +3561,17 @@ NOT=>  (foo foo)
 
 参数(Arguments):
 
-    name---a symbol.
+    name---一个符号.
 
 绑定类型的影响(Binding Types Affected): None.
 
 合法上下文(Valid Context):
 
-    proclamation only
+    仅限proclamation
 
 描述(Description):
 
-    Advises the compiler that each name is a valid but potentially non-standard declaration name. The purpose of this is to tell one compiler not to issue warnings for declarations meant for another compiler or other program processor.
+    建议编译器, 每个名称都是有效的, 但可能是非标准的声明名. 这样做的目的是告诉一个编译器不要发出针对用于另一个编译器或其他程序处理器的声明的警告.
 
 示例(Examples):
 
@@ -3584,7 +3588,7 @@ NOT=>  (foo foo)
 
     declaim, proclaim 
 
-### <span id = "">Declaration OPTIMIZE</span>
+### <span id = "DeclarationOPTIMIZE">Declaration OPTIMIZE</span>
 
 语法(Syntax):
 
@@ -3592,19 +3596,19 @@ NOT=>  (foo foo)
 
 参数(Arguments):
 
-    quality---an optimize quality.
+    quality---一个优化质量.
 
-    value---one of the integers 0, 1, 2, or 3.
+    value--- 0, 1, 2, 或 3 这些整数的其中之一.
 
 合法上下文(Valid Context):
 
-    declaration or proclamation
+    declaration 或 proclamation
 
 绑定类型的影响(Binding Types Affected): None.
 
 描述(Description):
 
-    Advises the compiler that each quality should be given attention according to the specified corresponding value. Each quality must be a symbol naming an optimize quality; the names and meanings of the standard optimize qualities are shown in the next figure.
+    建议编译器应该根据指定的相应值给予每个质量的关注. 每一种质量都必须是一种名为优化质量的符号; 标准优化质量的名称和含义在下一段中展示.
 
     Name               Meaning                            
     compilation-speed  speed of the compilation process   
@@ -3613,15 +3617,15 @@ NOT=>  (foo foo)
     space              both code size and run-time space  
     speed              speed of the object code           
 
-    Figure 3-25. Optimize qualities
+    Figure 3-25. 优化质量
 
-    There may be other, implementation-defined optimize qualities.
+    这里可能有其他的, 具体实现定义的优化质量.
 
-    A value 0 means that the corresponding quality is totally unimportant, and 3 that the quality is extremely important; 1 and 2 are intermediate values, with 1 the neutral value. (quality 3) can be abbreviated to quality.
+    一个 0 值意味着对应的质量是完全不重要的, 而这个 3 表示极其重要的; 1 和 2 是中间的值, 这里 1 是中立的值. (quality 3) 可以缩写成 quality.
 
-    Note that code which has the optimization (safety 3), or just safety, is called safe code.
+    注意有着优化 (safety 3), 或者只是 safety 的代码, 成为安全代码 (safe code).
 
-    The consequences are unspecified if a quality appears more than once with different values.
+    如果 quality 以超过一种不同的值出现那么后果是不可预料的.
 
 示例(Examples):
 
@@ -3645,9 +3649,9 @@ NOT=>  (foo foo)
 
 注意(Notes):
 
-    An optimize declaration never applies to either a variable or a function binding. An optimize declaration can only be a free declaration. For more information, see Section 3.3.4 (Declaration Scope). 
+    一个优化声明从不适用于一个变量或一个函数绑定. 一个优化声明只能是自由声明. 关于更多信息, 见章节 3.3.4 (Declaration Scope). 
 
-### <span id = "">Declaration SPECIAL</span>
+### <span id = "DeclarationSPECIAL">Declaration SPECIAL</span>
 
 语法(Syntax):
 
@@ -3655,11 +3659,11 @@ NOT=>  (foo foo)
 
 参数(Arguments):
 
-    var---a symbol.
+    var---一个符号.
 
 合法上下文(Valid Context):
 
-    declaration or proclamation
+    declaration 或 proclamation
 
 绑定类型的影响(Binding Types Affected):
 
@@ -3667,8 +3671,9 @@ NOT=>  (foo foo)
 
 描述(Description):
 
-    Specifies that all of the vars named are dynamic. This specifier affects variable bindings and affects references. All variable bindings affected are made to be dynamic bindings, and affected variable references refer to the current dynamic binding. For example:
+    指定所有 var 命名的变量是动态的. 这个声明符影响变量绑定和引用. 所有受影响的变量绑定都成为动态绑定, 并且受影响的变量引用指向当前的动态绑定. 比如:
 
+```LISP
     (defun hack (thing *mod*)    ;The binding of the parameter
       (declare (special *mod*))  ; *mod* is visible to hack1,
       (hack1 (car thing)))       ; but not that of thing.
@@ -3677,20 +3682,21 @@ NOT=>  (foo foo)
                                   ;within hack1 to be special.
       (if (atom arg) *mod*
           (cons (hack1 (car arg)) (hack1 (cdr arg)))))
+```
 
-    A special declaration does not affect inner bindings of a var; the inner bindings implicitly shadow a special declaration and must be explicitly re-declared to be special. special declarations never apply to function bindings.
+    一个 special 声明不影响一个 var 的内部绑定; 内部绑定隐式地遮蔽一个 special 声明, 并且必须显式地重新声明为 special 声明. special 声明从不应用于函数绑定.
 
-    special declarations can be either bound declarations, affecting both a binding and references, or free declarations, affecting only references, depending on whether the declaration is attached to a variable binding.
+    special 声明可以是绑定声明, 影响绑定和引用, 或自由声明, 指影响引用, 取决于声明是否关联到一个变量绑定.
 
-    When used in a proclamation, a special declaration specifier applies to all bindings as well as to all references of the mentioned variables. For example, after
+    当使用一个公告, 一个 special 声明符应用于所有的绑定以及所有提到的变量的引用. 比如, 在
 
     (declaim (special x))
 
-    then in a function definition such as
+    后面有一个这样的函数定义
 
     (defun example (x) ...)
 
-    the parameter x is bound as a dynamic variable rather than as a lexical variable.
+    这个参数 x 被绑定为一个动态变量而不是一个词法变量.
 
 示例(Examples):
 
@@ -3730,9 +3736,11 @@ NOT=>  (foo foo)
  (defun few (x &optional (y *foo*))
    (declare (special *foo*))
    ...)
+```
 
-The reference to *foo* in the first line of this example is not special even though there is a special declaration in the second line.
+这个例子第一行对 *foo* 的引用不是 special 即便在第二行有一个 special 声明.
 
+```LISP
  (declaim (special prosp)) =>  implementation-dependent
  (setq prosp 1 reg 1) =>  1
  (let ((prosp 2) (reg 2))         ;the binding of prosp is special
@@ -3749,13 +3757,13 @@ The reference to *foo* in the first line of this example is not special even tho
      (let ((y 4)) (declare (special y)) (foo x)))) =>  EXAMPLE
 ```
 
-    In the contorted code above, the outermost and innermost bindings of y are dynamic, but the middle binding is lexical. The two arguments to + are different, one being the value, which is 3, of the lexical variable y, and the other being the value of the dynamic variable named y (a binding of which happens, coincidentally, to lexically surround it at an outer level). All the bindings of x and references to x are dynamic, however, because of the proclamation that x is always special.
+    在上面的扭曲代码中, y 的最外层和最内层的绑定是动态的, 但是中间绑定是词法. 给 + 的两个参数是不一样的, 一个是一个值, 3, 是词法变量 y 的, 并且另一个是动态变量 y 的值 (a binding of which happens, coincidentally, to lexically surround it at an outer level). 然而, 所有 x 的绑定和 x 的引用都是动态的, 由于这个公告 x 总是是 special.<!-- TODO 待校对 -->
 
 也见(See Also):
 
     defparameter, defvar 
 
-### <span id = "">Special Operator LOCALLY</span>
+### <span id = "SpecialOperatorLOCALLY">Special Operator LOCALLY</span>
 
 语法(Syntax):
 
@@ -3763,15 +3771,15 @@ The reference to *foo* in the first line of this example is not special even tho
 
 参数和值(Arguments and Values):
 
-    Declaration---a declare expression; not evaluated.
+    Declaration---一个声明表达式; 不求值.
 
-    forms---an implicit progn.
+    forms---一个隐式的 progn.
 
-    results---the values of the forms.
+    results---这个表达式形式的值.
 
 描述(Description):
 
-    Sequentially evaluates a body of forms in a lexical environment where the given declarations have effect.
+    在一个词法环境中, 在给定的声明具有效果的情况下, 对表达式中的主体进行求值.
 
 示例(Examples):
 
@@ -3820,11 +3828,11 @@ The reference to *foo* in the first line of this example is not special even tho
 
 注意(Notes):
 
-    The special declaration may be used with locally to affect references to, rather than bindings of, variables.
+    locally 可以和 special 声明一起使用来影响引用, 而不是对变量的绑定.
 
-    If a locally form is a top level form, the body forms are also processed as top level forms. See Section 3.2.3 (File Compilation). 
+    如果一个 locally 表达式是一个顶层表达式, 这个 body 表达式形式也被当作顶层表达式处理. 见章节 3.2.3 (File Compilation). 
 
-### <span id = "">Special Operator THE</span>
+### <span id = "SpecialOperatorTHE">Special Operator THE</span>
 
 语法(Syntax):
 
@@ -3832,19 +3840,19 @@ The reference to *foo* in the first line of this example is not special even tho
 
 参数和值(Arguments and Values):
 
-    value-type---a type specifier; not evaluated.
+    value-type---一个类型说明符; 不求值.
 
-    form---a form; evaluated.
+    form---一个表达式形式; 求值的.
 
-    results---the values resulting from the evaluation of form. These values must conform to the type supplied by value-type; see below.
+    results---从表达式形式的求值得出的值. 这些值必须符合 value-type 所提供的类型; 见下文.
 
 描述(Description):
 
-    the specifies that the values[1a] returned by form are of the types specified by value-type. The consequences are undefined if any result is not of the declared type.
+    the 指定 form 返回的值是 value-type 表示的类型. 如果没有声明类型的结果, 后果是没有定义的.
 
-    It is permissible for form to yield a different number of values than are specified by value-type, provided that the values for which types are declared are indeed of those types. Missing values are treated as nil for the purposes of checking their types.
+    如果声明类型的值确实是这些类型的值, 那么 form 可以产生不同于 value-type 指定的数量的值, 这是允许的. 出于检查它们的类型的目的, 缺少的值被当作 nil.
 
-    Regardless of number of values declared by value-type, the number of values returned by the the special form is the same as the number of values returned by form.
+    不考虑 value-type 声明的值的数量, 这个特殊表达式返回到值的数量和 form 返回的值的数量一样.
 
 示例(Examples):
 
@@ -3871,7 +3879,7 @@ The reference to *foo* in the first line of this example is not special even tho
 
 异常情况(Exceptional Situations):
 
-    The consequences are undefined if the values yielded by the form are not of the type specified by value-type.
+    如果表达式产生的值不是由 value-type 指定的类型，那么后果是没有定义的.
 
 也见(See Also):
 
@@ -3879,7 +3887,7 @@ The reference to *foo* in the first line of this example is not special even tho
 
 注意(Notes):
 
-    The values type specifier can be used to indicate the types of multiple values:
+    值类型说明符可以用来表示多个值的类型:
 
 ```LISP
  (the (values integer integer) (floor x y))
@@ -3887,9 +3895,9 @@ The reference to *foo* in the first line of this example is not special even tho
       (gethash the-key the-string-table))
 ```
 
-    setf can be used with the type declarations. In this case the declaration is transferred to the form that specifies the new value. The resulting setf form is then analyzed. 
+    setf 可以和 the 类型声明一起使用. 在这种情况下，这个声明被转换为指定新值的表达式形式. 然后分析产生的 setf 表达式. 
 
-### <span id = "">Function SPECIAL-OPERATOR-P</span>
+### <span id = "FunctionSPECIALOPERATORP">Function SPECIAL-OPERATOR-P</span>
 
 语法(Syntax):
 
@@ -3897,13 +3905,13 @@ The reference to *foo* in the first line of this example is not special even tho
 
 参数和值(Arguments and Values):
 
-    symbol---a symbol.
+    symbol---一个符号.
 
-    generalized-boolean---a generalized boolean.
+    generalized-boolean---一个普通的 boolean.
 
 描述(Description):
 
-    Returns true if symbol is a special operator; otherwise, returns false.
+    如果 symbol 是一个特殊操作符就返回 true; 否则, 返回 false.
 
 示例(Examples):
 
@@ -3919,15 +3927,15 @@ The reference to *foo* in the first line of this example is not special even tho
 
 异常情况(Exceptional Situations):
 
-    Should signal type-error if its argument is not a symbol.
+    如果它的参数不是一个符号应该发出一个 type-error 错误.
 
 也见(See Also): None.
 
 注意(Notes):
 
-    Historically, this function was called special-form-p. The name was finally declared a misnomer and changed, since it returned true for special operators, not special forms. 
+    从历史观点上说, 这个函数被称为 special-form-p. 这个名字最终被声明为用词不当并且修改, 因为它是对特殊操作符返回 true, 而不是特殊表达式. 
 
-### <span id = "">Function CONSTANTP</span>
+### <span id = "FunctionCONSTANTP">Function CONSTANTP</span>
 
 语法(Syntax):
 
@@ -3935,27 +3943,28 @@ The reference to *foo* in the first line of this example is not special even tho
 
 参数和值(Arguments and Values):
 
-    form---a form.
+    form---一个表达式形式.
 
-    environment---an environment object. The default is nil.
+    environment---一个环境对象. 默认是 nil.
 
-    generalized-boolean---a generalized boolean.
+    generalized-boolean---一个普通的 boolean.
 
 描述(Description):
 
-Returns true if form can be determined by the implementation to be a constant form in the indicated environment; otherwise, it returns false indicating either that the form is not a constant form or that it cannot be determined whether or not form is a constant form.
+如果 form 可以被实现确定为在指定的环境(environment)中的一个常量形式，则返回true; 否则, 它返回 false 表示表达式不是一个常量形式或者它不能确定是否表达式形式是一个常量形式.
 
-The following kinds of forms are considered constant forms:
+下面这些种类的表达式形式被当作常量形式:
 
-* Self-evaluating objects (such as numbers, characters, and the various kinds of arrays) are always considered constant forms and must be recognized as such by constantp.
+* 自求值对象 (像数字, 字符, 以及各种类型的数组) 总是被当作常量形式并且一定被 constantp 识别.
 
-* Constant variables, such as keywords, symbols defined by Common Lisp as constant (such as nil, t, and pi), and symbols declared as constant by the user in the indicated environment using defconstant are always considered constant forms and must be recognized as such by constantp.
+* 常变量, 像关键字还有 Common Lisp 定义作为常量的符号 (像 nil, t, 还有 pi), 还有在指定的环境中, 使用 defconstant 的用户声明为常量的符号总是被认为是常量形式, 因此必须被 constantp 所识别.
 
-* quote forms are always considered constant forms and must be recognized as such by constantp.
+* quote 表达式总是被当作常量并且一定被 constantp 所识别.
 
-* An implementation is permitted, but not required, to detect additional constant forms. If it does, it is also permitted, but not required, to make use of information in the environment. Examples of constant forms for which constantp might or might not return true are: (sqrt pi), (+ 3 2), (length '(a b c)), and (let ((x 7)) (zerop x)).
+* 一个实现允许, 但不是必须去检测额外的常量表达式形式. 如果确实如此, 那么使用环境(environment)中信息也是允许的, 但不是必需的. 对于常量形式 constantp 可能或可能不会返回 true 的例子是: (sqrt pi), (+ 3 2), (length '(a b c)), 还有 (let ((x 7)) (zerop x)).
 
-If an implementation chooses to make use of the environment information, such actions as expanding macros or performing function inlining are permitted to be used, but not required; however, expanding compiler macros is not permitted.
+
+如果一个实现选择使用环境(environment)信息, 可以使用诸如展开宏或执行函数内联之类的操作，但不是必须; 然而, 展开编译器宏是不允许的.
 
 示例(Examples):
 
@@ -3982,7 +3991,7 @@ If an implementation chooses to make use of the environment information, such ac
 
 受此影响(Affected By):
 
-    The state of the global environment (e.g., which symbols have been declared to be the names of constant variables).
+    全局环境的状态 (比如, 这些被声明为常数变量的名字的符号).
 
 异常情况(Exceptional Situations): None.
 
