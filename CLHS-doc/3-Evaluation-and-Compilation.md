@@ -1090,7 +1090,7 @@ lambda列表中的每一个元素是一个参数说明符或者一个lambda列�
 
 一个 var 或 supplied-p-parameter 必须是一个不是常变量的名字的符号.
 
-一个 init-form 可以是任何表达式形式. 无论何时对于任何参数说明符任何的 init-form 的求值, 那个表达式形式可能引用任何这个说明符左边的参数变量, 包括任何 supplied-p-parameter 变量, 并且依赖没有其他参数变量已经被绑定的事实(包括它自己的参数变量) .<!-- TODO 待校验 -->
+一个 init-form 可以是任何表达式形式. 无论何时对于任何参数说明符任何的 init-form 的求值, 那个表达式形式可能引用任何这个说明符左边的参数变量, 包括任何 supplied-p-parameter 变量, 并且可能依赖没有其他参数变量已经被绑定的事实(包括它自己的参数变量) .
 
 一个 keyword-name 可以使任何符号, 但是按照惯例是一个正常的关键字; 所有标准化的实现遵守这个惯例.
 
@@ -1111,11 +1111,11 @@ lambda列表中的每一个元素是一个参数说明符或者一个lambda列�
 
 #### 3.4.1.2 <span id = "SpecifiersOptionalParameters">可选参数指定符</span>
 
-如果出现 &optional, 可选参数指定符就是那些跟在 &optional 后面直到下一个lambda列表关键字或者直到列表结束的指定符. 如果指定了可选参数, 然后每一个都被处理如下. 如果存在未处理的参数, 则参数变量 var 将绑定到后面的剩余参数, 就像必要参数一样. 如果没有参数剩下, 不管怎样, 那么 init-form 被求值, 并且参数变量被绑定给结果值(如果没有 init-form 出现在参数指定符就是 nil). 如果另一个变量名 supplied-p-parameter 出现在这个指定符, 如果有一个参数可用它会被绑定为 true, 如果没有参数剩余它会被绑定为 false (并且因此 init-form 需要被求值<!-- TODO 待校验 -->). Supplied-p-parameter 不是绑定一个参数而是一个值, 它表示是否为相应的 var 提供了一个对应的参数. 
+如果出现 &optional, 可选参数指定符就是那些跟在 &optional 后面直到下一个lambda列表关键字或者直到列表结束的指定符. 如果指定了可选参数, 然后每一个都被处理如下. 如果存在未处理的参数, 则参数变量 var 将绑定到后面的剩余参数, 就像必要参数一样. 如果没有参数剩下, 不管怎样, 那么 init-form 被求值, 并且参数变量被绑定给结果值(如果没有 init-form 出现在参数指定符就是 nil). 如果另一个变量名 supplied-p-parameter 出现在这个指定符, 如果有一个参数可用它会被绑定为 true, 如果没有参数剩余它会被绑定为 false (因此 init-form 需要被求值). Supplied-p-parameter 不是绑定一个参数而是一个值, 它表示是否为相应的 var 提供了一个对应的参数. 
 
 #### 3.4.1.3 <span id = "SpecifierRestParameter">剩余参数指定符</span>
 
-&rest, 如果出现, 后面必须跟着单个的剩余参数指定符, 反过来后面必须跟着另一个lambda列表关键字或者到lambda列表的末尾<!-- TODO 待校验 -->. 在所有可选参数被处理后, 这里可能是一个剩余参数. 如果这里是一个剩余参数, 它给绑定给一个所有 as-yet-unprocessed 参数的列表. 如果没有未处理参数剩下, 这个剩余参数绑定给空列表. 如果这里没有剩余参数和关键字参数并且有任何未处理参数剩余, 会发出一个错误; 见章节 3.5 (Error Checking in Function Calls). 剩余参数的值是允许的, 但不是必需的, 以便与 apply 最后一个参数共享结构. 
+&rest, 如果出现, 后面必须跟着单个的剩余参数指定符, 后面依次必须跟着另一个lambda列表关键字或者到lambda列表的末尾. 在所有可选参数被处理后, 这里可能是一个剩余参数. 如果这里是一个剩余参数, 它给绑定给一个所有 as-yet-unprocessed 参数的列表. 如果没有未处理参数剩下, 这个剩余参数绑定给空列表. 如果这里没有剩余参数和关键字参数并且有任何未处理参数剩余, 会发出一个错误; 见章节 3.5 (Error Checking in Function Calls). 剩余参数的值是允许的, 但不是必需的, 以便与 apply 最后一个参数共享结构. 
 
 #### 3.4.1.4 <span id = "SpecifiersKeywordParameters">关键字参数指定符</span>
 
@@ -1149,7 +1149,7 @@ lambda列表中的每一个元素是一个参数说明符或者一个lambda列�
 
 如果在一个函数的调用中 :allow-other-keys 参数是 true, 在这个调用中关键字参数检测是被抑制的.
 
-这个 :allow-other-keys 在所有涉及关键字参数的地方都是允许的, 甚至当它关联的值是 false.<!-- TODO 待校验 -->
+这个 :allow-other-keys 在所有涉及关键字参数的地方都是允许的, 甚至当它关联的值是 false 时.
 
 ###### 3.4.1.4.1.1 抑制关键字参数检测的例子
 
@@ -1311,7 +1311,7 @@ Figure 3-16. 特定lambda列表使用的lambda列表关键字
 
 ### 3.4.4 <span id = "MacroLambdaLists">宏lambda列表</span>
 
-一个宏lambda列表被用于描述下面这段中的操作符定义的宏A macro lambda list is used in describing macros defined by the operators in the next figure.
+一个宏lambda列表被用于描述下面这段中的操作符定义的宏.
 
     define-compiler-macro  defmacro  macrolet  
     define-setf-expander                       
@@ -1365,8 +1365,8 @@ Figure 3-18. 宏lambda列表使用的lambda列表参数
 对于一个宏表达式(或者是一个宏表达式的子表达式)是一个标有点的列表是允许的, 只有在和 (... &rest var) 或 (... . var) 匹配时. 宏需要去识别和处理这种情况.
 
 #### 3.4.4.1 lambda列表的解构
-<!-- TODO 整块待校验 -->
-在一个宏lambda列表中任何参数名字可以出现的地方, 还有普通lambda列表语法中(在章节 3.4.1 (Ordinary Lambda Lists) 描述的)不允许一个列表的地方, 一个解构的lambda列表可以出现在参数名字的地方. 当这个完成后, 与参数匹配的参数被当作一个(可能是点标记的)列表, 作为一个参数列表, 用于满足内嵌的lambda列表中的参数. 这就被认为是解构.
+<!-- TODO pattern ?? -->
+在一个宏lambda列表中任何参数名字可以出现的地方, 还有普通lambda列表语法中(在章节 3.4.1 (Ordinary Lambda Lists) 描述的)不允许一个列表的地方, 一个解构lambda列表可以出现在参数名字的地方. 当这个完成后, 与参数匹配的参数被当作一个(可能是点标记的)列表, 作为一个参数列表, 用于满足内嵌的lambda列表中的参数. 这就被认为是解构(destructuring).
 
 解构是将一个复合对象分解为它的组件部分的过程, 使用一种缩写的声明式语法, 而不是用原始的组件访问函数. 每一个组件部分绑定给一个变量.
 
@@ -1374,7 +1374,7 @@ Figure 3-18. 宏lambda列表使用的lambda列表参数
 
 ##### 3.4.4.1.1 lambda列表的数据导向解构
 
-在数据导向的解构中, 模式是一个要被分解的类型的对象. 无论在哪里提取组件, 在模式中对应地方都会出现一个符号; 这个符号是变量的名称它的值是那个组件.
+在数据导向的解构中, 模式是一个要被分解的类型的对象. 无论在哪里提取组件, 在模式中对应地方都会出现一个符号; 这个符号是变量的名称, 它的值是那个组件.
 
 ###### 3.4.4.1.1.1 lambda列表的数据导向解构示例
 
@@ -1392,9 +1392,9 @@ Figure 3-18. 宏lambda列表使用的lambda列表参数
 
 简单的语法和扩展到lambda列表导向的能力是数据导向解构的重要特性. 
 
-##### 3.4.4.1.2 lambda列表的lambda列表导向结构
+##### 3.4.4.1.2 lambda列表的lambda列表导向解构
 
-树的数据导向结构的一个延伸是lambda列表导向的解构. 这是从三元素的解构模式的类比中得出的
+树的数据导向解构的一个延伸是lambda列表导向的解构. 这是从三元素的解构模式的类比中得出的
 
 ```LISP
 (first second third)
@@ -1514,7 +1514,7 @@ Figure 3-18. 宏lambda列表使用的lambda列表参数
 (make-foo :a 1 :b 2)
 ```
 
-并且 create-foo 提供了和 make-foo 不同的 defaulting. <!--TODO defaulting ?? -->
+并且 create-foo 提供了和 make-foo 不同的默认设置.
 
 附加的参数不对应于槽名, 但只提供在随后的初始化计算中使用的值. 比如, 在这个定义中
 
