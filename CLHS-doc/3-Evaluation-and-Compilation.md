@@ -891,20 +891,20 @@ compile 和 compile-file 都返回 3 个值, 前两个表示被编译的源代�
 
 声明(Declarations)提供了一种指定例如求值器或者编译器这样的程序处理器使用的信息的方式.
 
-局部声明可以通过 declare 嵌入到可执行的代码中. 全局声明, 或者 proclamations, 可以通过 proclaim 或者 declaim 来确定.
+局部声明可以通过 declare 嵌入到可执行的代码中. 全局声明, 或者公告(proclamation), 可以通过 proclaim 或者 declaim 来建立.
 
 这个 the 特殊表达式提供了一种简写标记来创建一个关于给定表达式的值的类型的局部声明.
 
 如果一个程序违反了声明和公告, 结果是没有定义的.
 
 > * 3.3.1 [最低的声明处理需求](#MDPR)
-> * 3.3.2 [声明指定](#DeclarationSpecifiers)
-> * 3.3.3 [声明标识](#DeclarationIdentifiers)
+> * 3.3.2 [声明指定符](#DeclarationSpecifiers)
+> * 3.3.3 [声明标识符](#DeclarationIdentifiers)
 > * 3.3.4 [声明的作用域](#DeclarationScope)
 
 ### 3.3.1 <span id = "MDPR">最低的声明处理需求</span>
 
-通常, 一个具体实现可以自由地忽视除了 declaration, notinline, safety 还有 special 以外的声明指定.
+通常, 一个具体实现可以自由地忽视除了 declaration, notinline, safety 还有 special 以外的声明指定符.
 
 一个 declaration 声明必须抑制关于不识别这个种类的声明的警告. 如果一个实现没有产生关于不识别声明的警告, 它可能安全地忽视了这个声明.
 
@@ -912,25 +912,24 @@ compile 和 compile-file 都返回 3 个值, 前两个表示被编译的源代�
 
 一个 safety 声明必须被识别, 它会提高当前的安全等级. 一个始终对代码进行处理的实现, 就像 safety 高一样, 可能安全地忽略这个声明.
 
-一个 special 声明必须被所有实现所处理declaration must be processed by all implementations. 
+一个 special 声明必须被所有实现所处理. 
 
-### 3.3.2 <span id = "DeclarationSpecifiers">声明指定</span>
+### 3.3.2 <span id = "DeclarationSpecifiers">声明指定符</span>
 
-一个声明指定是一个可以出现在层定的 declare 表达式或者一个 declaim 表达式或者作为参数给 proclaim. 它是一个的列表, 其中 car 部分为声明标识, cdr 部分为根据这个声明标识所指定的规则解释出来的数据.
-<!-- TODO declaration specifier ??--> 
+一个声明指定符是一个可以出现在层定的 declare 表达式或者一个 declaim 表达式或者作为参数给 proclaim. 它是一个的列表, 其中 car 部分为声明标识符, cdr 部分为根据这个声明标识符所指定的规则解释出来的数据.
 
-### 3.3.3 <span id = "DeclarationIdentifiers">声明标识</span>
+### 3.3.3 <span id = "DeclarationIdentifiers">声明标识符</span>
 
-下面这段展示了这个标准定义的所有的声明标识.
+下面这段展示了这个标准定义的所有的声明标识符.
 
     declaration     ignore     special  
     dynamic-extent  inline     type     
     ftype           notinline           
     ignorable       optimize            
 
-Figure 3-9. Common Lisp 声明标识
+Figure 3-9. Common Lisp 声明标识符
 
-一个具体实现可以自由地去支持其他(依赖实现)声明标识. 如果一个声明标识没有在上面定义, 也没有被具体实现所定义, 不是一个类型名字, 也没有在 declaration proclamation 中声明, 可能会发出一个警告.<!-- TODO declaration proclamation ?? -->
+一个具体实现可以自由地去支持其他(依赖实现)声明标识符. 如果一个声明标识符没有在上面定义, 也没有被具体实现所定义, 不是一个类型名字, 也没有在 declaration 全局公告中声明, 可能会发出一个警告.
 
 #### 3.3.3.1 类型声明的简写标记
 
@@ -944,11 +943,11 @@ Figure 3-9. Common Lisp 声明标识
 
 不绑定声明的声明称为自由声明(free declarations).
 
-在表达式 F1 中, 一个自由声明, 它适用于由某些表达式 F2 所建立的一个名字 N 的绑定, 其中F1是一个子表达式, 它只影响 N 在F1中的引用; 它不适用于其他在 F1 以外的绑定, 也不影响 F2 中建立的 N 绑定的行为.
+在表达式 F1 中, 一个自由声明, 它适用于由某些表达式 F2 所建立的一个名字 N 的绑定, 其中 F1 是一个子表达式, 它只影响 N 在F1中的引用; 它不适用于其他在 F1 以外的绑定, 也不影响 F2 中建立的 N 绑定的行为.
 
 不适用于绑定的声明只能以自由绑定出现.
 
-一个绑定声明的作用域和它对应的绑定的词法作用域相同; 对于特殊变量, 这意味着绑定的作用域是一个词法绑定 this means the scope that the binding would have had had it been a lexical binding.<!-- TODO 待校对 -->
+一个绑定声明的作用域和它对应的绑定的词法作用域相同; 对于特殊变量, 这意味拥有这个绑定的作用域所拥有的是一个词法绑定.<!-- TODO 待校对 -->
 
 除非明确声明, 自由声明的作用域只包括它出现在头部的表达式的主体的子表达式, 不包括其他的子表达式. 自由声明的作用域不包括包含声明的表达式所建立的绑定的初始化表达式.
 
