@@ -1636,7 +1636,7 @@ Define-method-combination 参数lambda列表类似于普通lambda列表, 但是�
 
 一个不安全调用就是一个不是安全调用的调用.
 
-非正式的意图是, 即使在涉及到系统代码的情况下, 程序员也可以依靠调用来保证安全, 如果已经采取了所有合理的步骤来确保调用是安全的The informal intent is that the programmer can rely on a call to be safe, even when system code is involved, if all reasonable steps have been taken to ensure that the call is safe. 比如, 如果一个程序员从安全的代码中调用 mapcar 并且提供了一个被编译为安全的函数, 那么这个具体实现也需要去确保这个 mapcar 是一个安全的调用. <!-- TODO 待校对 -->
+非正式的意图是, 如果已经采取了所有合理的步骤来确保调用是安全的, 即使在涉及到系统代码的情况下, 程序员也可以依靠调用来保证安全. 比如, 如果一个程序员从安全的代码中调用 mapcar 并且提供了一个被编译为安全的函数, 那么这个具体实现也需要去确保这个 mapcar 是一个安全的调用. <!-- TODO 待校对 -->
 
 3.5.1.1.1 安全调用的错误检测时间
 
@@ -1682,7 +1682,7 @@ Define-method-combination 参数lambda列表类似于普通lambda列表, 但是�
 
 如果 call-next-method 调用时带了参数, 用于 call-next-method 的变更后的参数集合的可适用方法集必须与这个广义函数的原始参数的可适用方法集相同, 否则应该会发出一个错误.
 
-对新参数的一组方法和适用于原始参数的方法集合之间的比较, 其中相同指示符的方法次序是不敏感的. <!-- TODO 待校验 -->
+对新参数的一组方法和适用于原始参数的方法集合之间的比较, 其中相同指示符的方法次序是不敏感的.
 
 如果 call-next-method 的参数指定了不同的可适用方法的不同排序集, 并且没有可用的下一个方法, 那么对不同方法的测试和相关错误信号的发出(存在的话)的将优先于调用 no-next-method. . 
 
@@ -1704,7 +1704,7 @@ Define-method-combination 参数lambda列表类似于普通lambda列表, 但是�
 
 包遍历(Package traversal)
 
-    对于包遍历操作 (比如, do-symbols), 新的符号不能从被遍历的包或者它使用的任何包中被 intern 或者 uninterned, 除非当前的符号可以从被遍历的包中被 unintern. <!-- TODO 待校验 intern --> 
+    对于包遍历操作 (比如, do-symbols), 新的符号不能从被遍历的包或者它使用的任何包中被捕捉或者 解除捕捉, 除非当前的符号可以从被遍历的包中被解除捕捉. <!-- TODO 待校验 intern --> 
 
 ## 3.7 <span id = "DestructiveOperations">破坏性操作</span>
 
