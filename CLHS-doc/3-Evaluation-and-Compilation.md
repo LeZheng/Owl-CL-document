@@ -421,7 +421,7 @@ z)
                 (return-from here1 4)
 ```
 
-在执行 funcall 的时候, 有两个明显的 block 退出点, 每个显然都命名为 here. 这个 return-from 表达式被作为 funcall 操作的结果执行时引用外面的退出点(here1), 不是内部的那个(here2). 它指的是在函数(这里通过 #' 语法缩写了)执行时出现的退出点，它导致了由 funcall 实际调用的函数对象的创建. <!-- TODO 需要重新校对-->
+在执行 funcall 的时候, 有两个明显的 block 退出点, 每个显然都命名为 here. 这个 return-from 表达式被作为 funcall 操作的结果执行时引用外面的退出点(here1), 不是内部的那个(here2). 它指的是在函数(这里通过 #' 语法缩写了)执行时出现的退出点，它导致了由 funcall 实际调用的函数对象的创建.
 
 如果在这个例子中, 一个人打算把 (funcall f) 改为 (funcall g), 那么调用 (contorted-example nil nil 2) 的值会是 9. 这个值会改变是因为 funcall 会导致 (return-from here2 4) 的执行, 从而导致一个从内部的退出点(here2)返回. 当这个发生时, 值 4 会被中间的 contorted-example 调用返回, 5 被加到它上面成了 9, 并且这个值会被外部的 contorted-example 调用返回. 重点是, 退出点的选择与它的最内部或最外层无关; 而是, 它取决于在执行函数时使用lambda表达式打包的词法环境. 
 
@@ -947,7 +947,7 @@ Figure 3-9. Common Lisp 声明标识符
 
 不适用于绑定的声明只能以自由绑定出现.
 
-一个绑定声明的作用域和它对应的绑定的词法作用域相同; 对于特殊变量, 这意味拥有这个绑定的作用域所拥有的是一个词法绑定.<!-- TODO 待校对 -->
+一个绑定声明的作用域和它对应的绑定的词法作用域相同; 对于特殊变量, 这意味拥有这个绑定的作用域所拥有的是一个词法绑定.
 
 除非明确声明, 自由声明的作用域只包括它出现在头部的表达式的主体的子表达式, 不包括其他的子表达式. 自由声明的作用域不包括包含声明的表达式所建立的绑定的初始化表达式.
 
@@ -1370,15 +1370,15 @@ Figure 3-18. 宏lambda列表使用的lambda列表参数
 
 解构是将一个复合对象分解为它的组件部分的过程, 使用一种缩写的声明式语法, 而不是用原始的组件访问函数. 每一个组件部分绑定给一个变量.
 
-一个解构操作需要一个将要解构的对象, 一个指定要提取哪些组件的模式, 以及那些值为组件的变量的名称.
+一个解构操作需要一个将要解构的对象, 一个指定要提取哪些组件的匹配模式, 以及那些值为组件的变量的名称.
 
 ##### 3.4.4.1.1 lambda列表的数据导向解构
 
-在数据导向的解构中, 模式是一个要被分解的类型的对象. 无论在哪里提取组件, 在模式中对应地方都会出现一个符号; 这个符号是变量的名称, 它的值是那个组件.
+在数据导向的解构中, 匹配模式是一个要被分解的类型的对象. 无论在哪里提取组件, 在匹配模式中对应地方都会出现一个符号; 这个符号是变量的名称, 它的值是那个组件.
 
 ###### 3.4.4.1.1.1 lambda列表的数据导向解构示例
 
-一个示例模式是
+一个示例匹配模式是
 
 ```LISP
 (a b c)
@@ -1406,25 +1406,25 @@ Figure 3-18. 宏lambda列表使用的lambda列表参数
 (first second third)
 ```
 
-如果没有lambda列表关键字出现在模式中那么lambda列表导向的解构和数据导向的结构是相同的. 任何在这个模式中的列表(不管是一个子列表或是整个模式本身)包含lambda列表关键字就会被特别地解释. 这个列表中第一个lambda列表关键字左边的元素被当作解构模式处理, 像平常一样, 但是列表中剩下的元素被当作函数lambda列表一样处理, 除了在通常需要一个变量的情况下, 可以使用任意的解构模式. 注意, 在不确定的情况下，lambda列表语法优于解构语法. 因此, 在 &optional 之后，一个元素列表是一个解构模式和一个默认值表达式的列表.
+如果没有lambda列表关键字出现在匹配模式中那么lambda列表导向的解构和数据导向的结构是相同的. 任何在这个匹配模式中的列表(不管是一个子列表或是整个匹配模式本身)包含lambda列表关键字就会被特别地解释. 这个列表中第一个lambda列表关键字左边的元素被当作解构匹配模式处理, 像平常一样, 但是列表中剩下的元素被当作函数lambda列表一样处理, 除了在通常需要一个变量的情况下, 可以使用任意的解构匹配模式. 注意, 在不确定的情况下，lambda列表语法优于解构语法. 因此, 在 &optional 之后，一个元素列表是一个解构匹配模式和一个默认值表达式的列表.
 
-每个lambda列表关键字在lambda列表导向的解构模式中的具体行为如下:
+每个lambda列表关键字在lambda列表导向的解构匹配模式中的具体行为如下:
 
 &optional
 
-    每一个后面的元素是一个变量或者一个解构模式, 一个默认值的表达式和一个 supplied-p 变量的列表. 这个默认值和 supplied-p 可以被省略. 如果这个被解构列表提前结束, , 所以它没有一个元素来匹配这个解构模式或子模式, 而是这个默认表达式会求值并解构. 如果这个默认表达式被使用了 supplied-p 变量会收到值 nil, 否则就是 t.
+    每一个后面的元素是一个变量或者一个解构匹配模式, 一个默认值的表达式和一个 supplied-p 变量的列表. 这个默认值和 supplied-p 可以被省略. 如果这个被解构列表提前结束, , 所以它没有一个元素来匹配这个解构匹配模式或子模式, 而是这个默认表达式会求值并解构. 如果这个默认表达式被使用了 supplied-p 变量会收到值 nil, 否则就是 t.
 
 &rest, &body
 
-    下一个元素是一个匹配这个列表剩余部分的解构模式. &body 和 &rest 一样但是声明所匹配的是构成表达式主体的表达式列表. 这下一个元素必须是最后一个除非后面跟着一个lambda列表关键字.
+    下一个元素是一个匹配这个列表剩余部分的解构匹配模式. &body 和 &rest 一样但是声明所匹配的是构成表达式主体的表达式列表. 这下一个元素必须是最后一个除非后面跟着一个lambda列表关键字.
 
 &aux
 
-    其余的元素根本不是解构模式, 而是辅助变量绑定.
+    其余的元素根本不是解构匹配模式, 而是辅助变量绑定.
 
 &whole
 
-    下一个元素是一个匹配一个宏里的整个表达式的解构模式, 或者内部层级的整个子表达式.
+    下一个元素是一个匹配一个宏里的整个表达式的解构匹配模式, 或者内部层级的整个子表达式.
 
 &key
 
@@ -1434,7 +1434,7 @@ Figure 3-18. 宏lambda列表使用的lambda列表参数
 
     或者一个变量, 一个可选的初始化表达式, 和一个可选的 supplied-p 变量的列表.
 
-    或者一个关键字列表和一个解构模式, 一个可选初始化表达式, 和一个可选 supplied-p 变量的列表.
+    或者一个关键字列表和一个解构匹配模式, 一个可选初始化表达式, 和一个可选 supplied-p 变量的列表.
 
     被解构的列表的其余部分被认为是交替的关键字和值并且被适当地分开了.
 
@@ -1636,7 +1636,7 @@ Define-method-combination 参数lambda列表类似于普通lambda列表, 但是�
 
 一个不安全调用就是一个不是安全调用的调用.
 
-非正式的意图是, 如果已经采取了所有合理的步骤来确保调用是安全的, 即使在涉及到系统代码的情况下, 程序员也可以依靠调用来保证安全. 比如, 如果一个程序员从安全的代码中调用 mapcar 并且提供了一个被编译为安全的函数, 那么这个具体实现也需要去确保这个 mapcar 是一个安全的调用. <!-- TODO 待校对 -->
+非正式的意图是, 如果已经采取了所有合理的步骤来确保调用是安全的, 即使在涉及到系统代码的情况下, 程序员也可以依赖于一个安全的调用. 比如, 如果一个程序员从安全的代码中调用 mapcar 并且提供了一个被编译为安全的函数, 那么这个具体实现也需要去确保这个 mapcar 是一个安全的调用.
 
 3.5.1.1.1 安全调用的错误检测时间
 
@@ -1674,7 +1674,7 @@ Define-method-combination 参数lambda列表类似于普通lambda列表, 但是�
 
 #### 3.5.1.7 <span id = "DestructuringMismatch">解构不匹配(Destructuring Mismatch)</span>
 
-当一个结构lambda列表和一个表达式匹配时, 这个解构模式和表达式必须有像章节 3.4.4 (Macro Lambda Lists) 描述的兼容的树结构.
+当一个结构lambda列表和一个表达式匹配时, 这个解构匹配模式和表达式必须有像章节 3.4.4 (Macro Lambda Lists) 描述的兼容的树结构.
 
 否则, 如果情况发生在安全的调用里, 一定会发出一个 program-error 类型的错误; 如果发生在一个不安全的调用中结果是不可预料的. 
 
@@ -1704,7 +1704,7 @@ Define-method-combination 参数lambda列表类似于普通lambda列表, 但是�
 
 包遍历(Package traversal)
 
-    对于包遍历操作 (比如, do-symbols), 新的符号不能从被遍历的包或者它使用的任何包中被捕捉或者 解除捕捉, 除非当前的符号可以从被遍历的包中被解除捕捉. <!-- TODO 待校验 intern --> 
+    对于包遍历操作 (比如, do-symbols), 新的符号不能从被遍历的包或者它使用的任何包中被捕捉或者 解除捕捉, 除非当前的符号可以从被遍历的包中被解除捕捉.
 
 ## 3.7 <span id = "DestructiveOperations">破坏性操作</span>
 
@@ -1954,7 +1954,7 @@ function, documentation, Section 3.1.3 (Lambda Expressions), Section 3.1.2.1.2.4
 
     *error-output*, *macroexpand-hook*.
 
-    宏定义和 proclamations 的存在.
+    宏定义和公告(proclamation)的存在.
 
 异常情况(Exceptional Situations):
 
@@ -2130,7 +2130,7 @@ function, documentation, Section 3.1.3 (Lambda Expressions), Section 3.1.2.1.2.4
 
     遵守这个约定意味着这些宏在出现在非顶层表达式时表现得很直观.
 
-* 在一个 eval-when 周围替换一个变量的绑定确实会捕获这个绑定因为 compile-time-too 模式不会发生 (换句话说, 引入一个变量绑定意味着 eval-when 不是一个顶级表达式). 比如, <!-- TODO 这块待校对-->
+* 在一个 eval-when 周围放置一个变量的绑定确实会捕获这个绑定因为 compile-time-too 模式不会发生 (换句话说, 引入一个变量绑定意味着 eval-when 不是一个顶级表达式). 比如,
 
      (let ((x 3))
        (eval-when (:execute :load-toplevel :compile-toplevel) (print x)))
@@ -2347,7 +2347,7 @@ a =>  1
 
 * 展开函数被安装为一个编译器宏函数, 而不是一个宏函数.
 
-* 这个 &whole 参数绑定到传递给编译器宏函数的 form 参数. 其余的 lambda-list 参数被指定为该表达式包含 car 中的函数名和 cdr 中的实际参数, 但是如果实际表达式形式的 car 部分是一个符号 funcall, 那么参数的解构实际上通过使用它的 cddr 来执行.<!--TODO 待校对 -->
+* 这个 &whole 参数绑定到传递给编译器宏函数的 form 参数. 其余被指定的 lambda-list 参数就好像一个表达式, 该表达式包含 car 中的函数名和 cdr 中的实际参数, 但是如果实际表达式形式的 car 部分是一个符号 funcall, 那么参数的解构实际上通过使用它的 cddr 来执行.
 
 * Documentation 被关联到 name(就像 compiler-macro) 和编译器宏函数作为一个文档字符串.
 
@@ -2494,7 +2494,7 @@ a =>  1
 
     这个 lambda-list 符合 3.4.4 章节(Macro Lambda Lists)所描述的需求.
 
-    Documentation 作为文档字符串被关联到 name 和这个宏函数. <!--TODO (as kind function) ??-->
+    Documentation 作为文档字符串被关联到 name(像 function 一样) 和这个宏函数.
 
     defmacro 可以被用于重定义一个宏或者用一个宏定义替换一个函数定义.
 
@@ -2644,7 +2644,7 @@ a =>  1
 
 异常情况(Exceptional Situations):
 
-    The consequences are undefined if environment is non-nil in a use of setf of macro-function.
+    在一个 macro-function 的 setf 的使用中如果 environment 不是 nil 那么结果是不可预料的.
 
 也见(See Also):
 
@@ -2787,7 +2787,7 @@ setf 可以和 macro-function 一起使用来设置一个宏作为 symbol 的全
 
     为 symbol 命名的符号宏全局地确定一个展开函数. 对于符号宏来说, 展开函数的唯一确保属性是当它被应用到表达式形式和环境时它会返回正确的展开式. (具体来说，这个展开式是在概念上存储在展开函数, 环境, 还是两者中, 这是依赖于实现的.)
 
-    每个对 symbol 的全局引用(换句话说, 不被由同一个符号所命名的变量或符号宏的绑定所遮蔽)都是通过常规的宏展开过程来展开的; 见章节 3.1.2.1.1 (Symbols as Forms). 符号宏的展开受支配于符号宏引用相同的词汇环境中进行的进一步的宏展开, 与普通宏类似. <!-- TODO is subject to ?? -->
+    每个对 symbol 的全局引用(换句话说, 不被由同一个符号所命名的变量或符号宏的绑定所遮蔽)都是通过常规的宏展开过程来展开的; 见章节 3.1.2.1.1 (Symbols as Forms). 符号宏的展开受限于符号宏引用相同的词汇环境中进行的进一步的宏展开, 与普通宏类似.
 
     如果在这个定义的范围内为 symbol 做一个 special 声明, 后果是未知的 (换句话说, 当它没有被绑定到一个由相同符号命名的变量或符号宏的绑定所遮蔽时).
 
@@ -2848,9 +2848,9 @@ thing3 =>  THREE
 
     symbol-macrolet 为每一个 symbol 命名的符号宏词法上确定展开函数. 对于符号宏来说, 展开函数的唯一保证属性是当它被应用到表达式和环境时它会返回正确的展开式. (具体来说, 它在概念上是存储在展开函数, 环境, 还是两者中, 这是依赖于实现的.)
 
-    在 symbol-macrolet 词法作用域内, 变量作为 symbol 的每个引用都被常规的宏展开过程所展开; 见章节 3.1.2.1.1 (Symbols as Forms). 符号宏的展开受支配于符号宏引用相同的词汇环境中进行的进一步的宏展开, 与普通宏类似. <!-- TODO is subject to ?? -->
+    在 symbol-macrolet 词法作用域内, 变量作为 symbol 的每个引用都被常规的宏展开过程所展开; 见章节 3.1.2.1.1 (Symbols as Forms). 符号宏的展开受限于于符号宏引用相同的词汇环境中进行的进一步的宏展开, 与普通宏类似.
 
-    对于 let 完全相同的声明是允许的，除了一个例外: 如果一个 special 声明命名了 symbol-macrolet 已经定义的一个符号名字, symbol-macrolet 会发出一个错误.<!-- TODO let ?? -->
+    对于 let 完全相同的声明是允许的, 除了一个例外: 如果一个 special 声明命名了 symbol-macrolet 已经定义的一个符号名字, symbol-macrolet 会发出一个错误.
 
     当 symbol-macrolet 形式中的表达式被展开, 任何使用 setq 来设置已指定变量中一个值被当作是 setf 一样. 一个符号定义的符号的 psetq 被当作它是一个 psetf, 并且 multiple-value-setq 被当作是多个值的 setf.
 
@@ -2930,7 +2930,7 @@ NOT=>  (foo foo)
 
     用户或用户程序可以指定这个变量来定制或跟踪宏展开机制. 注意, 但是, 这个变量是一个全局资源, 可能由多个程序共享; 因此, 如果两个程序在这个变量的设置上依赖于它们的正确性, 那么这些程序可能无法在相同的Lisp镜像中运行. 由于这个原因, 通常最好将其用途限制在调试情况下.
 
-    把函数设置到 *macroexpand-hook* 的用户应该考虑把这个钩子的之前的值保存起来, and calling that value from their own. <!-- TODO 待校对 -->
+    把函数设置到 *macroexpand-hook* 的用户应该考虑把这个钩子的之前的值保存起来, 并且从他们自己的函数里调用这个值.
 
 ### <span id = "FunctionPROCLAIM">Function PROCLAIM</span>
 
@@ -3161,7 +3161,7 @@ NOT=>  (foo foo)
 
 描述(Description):
 
-    在一些包含的表达式中, F, 这个声明为每一个 vari 断言 (不需要被 F 绑定), 并且为 vari 呈现的每一个值断言, 还有当 vij 为 vari 的值的任何时候为 vij 的 otherwise inaccessible part 的 对象 xijk 断言, 这只是在 F 的执行终止后, xijk 要么是不可访问的(如果 F 为 vari 确定一个绑定), 要么是 vari 的当前值的一个 otherwise inaccessible part (如果 F 没有为 vari 确定一个绑定). 每个 fni 都有相同的关系, 除了这些在函数命名空间中的绑定. <!-- TODO 待校验 otherwise inaccessible part ？？ -->
+    在一些包含的表达式中, F, 这个声明为每一个 vari 断言 (不需要被 F 绑定), 并且为 vari 呈现的每一个值断言, 还有当 vij 为 vari 的值的任何时候为 vij 的另外不可访问部分(otherwise inaccessible part)的 对象 xijk 断言, 这只是在 F 的执行终止后, xijk 要么是不可访问的(如果 F 为 vari 确定一个绑定), 要么是 vari 的当前值的一个另外不可访问部分(otherwise inaccessible part) (如果 F 没有为 vari 确定一个绑定). 每个 fni 都有相同的关系, 除了这些在函数命名空间中的绑定. 
 
     编译器被允许以任何适合于实现的方式使用该信息, 这与 Common Lisp 的语义不冲突.
 
@@ -3222,7 +3222,7 @@ NOT=>  (foo foo)
   ...)
 ```
 
-    这个 x 的 otherwise inaccessible parts 是三个 cons, 而 y 的 otherwise inaccessible parts 是另外三个 cons. 所有 a1, b1, c1, a2, b2, c2, 或者 nil 这些符号中没有是 x 或 y 的 otherwise inaccessible part, 因为每一个都被 intern 因此在它被 intern 的包(或者多个包)中是可访问的. 然而, 如果使用了一个新分配的未 intern 的符号, 那么它将是包含它的列表的 otherwise inaccessible part. <!-- TODO 待校验 intern -->
+    这个 x 的另外不可访问部分是三个 cons, 而 y 的另外不可访问部分是另外三个 cons. 所有 a1, b1, c1, a2, b2, c2, 或者 nil 这些符号中没有是 x 或 y 的另外不可访问部分, 因为每一个都被捕捉因此在它被捕捉的包(或者多个包)中是可访问的. 然而, 如果使用了一个新分配的未捕捉的符号, 那么它将是包含它的列表的另外不可访问部分.
 
 ```LISP
 ;; In this example, the implementation is permitted to stack allocate
@@ -3412,7 +3412,7 @@ NOT=>  (foo foo)
 
     (typespec var*) 是 (type typespec var*) 的一个缩写.
 
-    对于一个函数的参数的类型声明并不一定意味着结果的类型. 下面的函数不允许使用依赖于实现的 fixnum-only 算法来编译:<!--TODO fixnum-only ??-->
+    对于一个函数的参数的类型声明并不一定意味着结果的类型. 下面的函数不允许使用依赖于实现的 fixnum-only 算法来编译:
 
 ```LISP
 (defun f (x y) (declare (fixnum x y)) (+ x y))
@@ -3426,7 +3426,7 @@ NOT=>  (foo foo)
   (the fixnum (+ x y)))
 ```
 
-    但是, 请注意, 在三个参数的情况下, 由于隐式中间值增长的可能性太大, 下面的内容不会导致使用依赖于实现的 fixnum-only 算法: <!--TODO fixnum-only ??-->
+    但是, 请注意, 在三个参数的情况下, 由于隐式中间值增长的可能性太大, 下面的内容不会导致使用依赖于实现的 fixnum-only 算法:
 
 ```LISP
 (defun f (x y)
@@ -3434,7 +3434,7 @@ NOT=>  (foo foo)
   (the fixnum (+ x y z)))
 ```
 
-    为说明原因, 细想 (f most-positive-fixnum 1 -1). 尽管参数和结果都是 fixnums，但中间值不是 fixnum. 如果在提供它的实现中选择依赖于实现的 fixnum-only 算法是很重要的, 那么考虑编写这样的代码:<!--TODO fixnum-only ??-->
+    为说明原因, 细想 (f most-positive-fixnum 1 -1). 尽管参数和结果都是 fixnums，但中间值不是 fixnum. 如果在提供它的实现中选择依赖于实现的 fixnum-only 算法是很重要的, 那么考虑编写这样的代码:
 
 ```LISP
 (defun f (x y)
@@ -3758,7 +3758,7 @@ NOT=>  (foo foo)
      (let ((y 4)) (declare (special y)) (foo x)))) =>  EXAMPLE
 ```
 
-    在上面的扭曲代码中, y 的最外层和最内层的绑定是动态的, 但是中间绑定是词法. 给 + 的两个参数是不一样的, 一个是一个值, 3, 是词法变量 y 的, 并且另一个是动态变量 y 的值 (a binding of which happens, coincidentally, to lexically surround it at an outer level). 然而, 所有 x 的绑定和 x 的引用都是动态的, 由于这个公告 x 总是是 special.<!-- TODO 待校对 -->
+    在上面的扭曲代码中, y 的最外层和最内层的绑定是动态的, 但是中间绑定是词法. 给 + 的两个参数是不一样的, 一个是一个值, 3, 是词法变量 y 的, 并且另一个是动态变量 y 的值 (巧合的是, 一个绑定在词法上围绕在它外层). 然而, 由于这个公告 x 总是是 special, 所有 x 的绑定和 x 的引用都是动态的.
 
 也见(See Also):
 
