@@ -1,14 +1,11 @@
- 4. Types and Classes
+# 4. Types and Classes
 
-4.1 Introduction
+> * 4.1 [Introduction](#Introduction)
+> * 4.2 [Types](#Types)
+> * 4.3 [Classes](#Classes)
+> * 4.4 [The Types and Classes Dictionary](#TheTypesClassesDictionary)
 
-4.2 Types
-
-4.3 Classes
-
-4.4 The Types and Classes Dictionary
-
- 4.1 Introduction
+## 4.1 <span id="Introduction">Introduction</span>
 
 A type is a (possibly infinite) set of objects. An object can belong to more than one type. Types are never explicitly represented as objects by Common Lisp. Instead, they are referred to indirectly by the use of type specifiers, which are objects that denote types.
 
@@ -26,22 +23,18 @@ It is possible to write functions that have behavior specialized to the class of
 
 The class of the class of an object is called its metaclass. For more information about metaclasses, see Section 7.4 (Meta-Objects). 
 
- 4.2 Types
+## 4.2 <span id="Types">Types</span>
 
-4.2.1 Data Type Definition
+> * 4.2.1 [Data Type Definition](#DataTypeDefinition)
+> * 4.2.2 [Type Relationships](#TypeRelationships)
+> * 4.2.3 [Type Specifiers](#TypeSpecifiers)
 
-4.2.2 Type Relationships
-
-4.2.3 Type Specifiers
-
- 4.2.1 Data Type Definition
+### 4.2.1 <span id="DataTypeDefinition">Data Type Definition</span>
 
 Information about type usage is located in the sections specified in Figure 4-1. Figure 4-7 lists some classes that are particularly relevant to the object system. Figure 9-1 lists the defined condition types.
 
 Section                                      Data Type                          
 ----------
-
-
                                                                       
 Section 4.3 (Classes)                        Object System types                
 Section 7.5 (Slots)                          Object System types                
@@ -55,7 +48,7 @@ Section 3.2 (Compilation)                    All types---compilation issues
 
 Figure 4-1. Cross-References to Data Type Information 
 
- 4.2.2 Type Relationships
+### 4.2.2 <span id="TypeRelationships">Type Relationships</span>
 
 * The types cons, symbol, array, number, character, hash-table, function, readtable, package, pathname, stream, random-state, condition, restart, and any single other type created by defstruct, define-condition, or defclass are pairwise disjoint, except for type relations explicitly established by specifying superclasses in defclass or define-condition or the :include option of destruct.
 
@@ -67,7 +60,7 @@ Figure 4-1. Cross-References to Data Type Information
 
     At the discretion of the implementation, either standard-object or structure-object might appear in any class precedence list for a system class that does not already specify either standard-object or structure-object. If it does, it must precede the class t and follow all other standardized classes. 
 
- 4.2.3 Type Specifiers
+### 4.2.3 <span id="TypeSpecifiers">Type Specifiers</span>
 
 Type specifiers can be symbols, classes, or lists. Figure 4-2 lists symbols that are standardized atomic type specifiers, and Figure 4-3 lists standardized compound type specifier names. For syntax information, see the dictionary entry for the corresponding type specifier. It is possible to define new type specifiers using defclass, define-condition, defstruct, or deftype.
 
@@ -202,7 +195,7 @@ floating-point-underflow          signed-byte         warning
 
 Figure 4-6. Standardized Type Specifier Names 
 
- 4.3 Classes
+## 4.3 <span id="Classes">Classes</span>
 
 While the object system is general enough to describe all standardized classes (including, for example, number, hash-table, and symbol), the next figure contains a list of classes that are especially relevant to understanding the object system.
 
@@ -213,21 +206,15 @@ method            standard-method
 
 Figure 4-7. Object System Classes
 
-4.3.1 Introduction to Classes
+> * 4.3.1 [Introduction to Classes](#IntroductionToClasses)
+> * 4.3.2 [Defining Classes](#DefiningClasses)
+> * 4.3.3 [Creating Instances of Classes](#CreatingInstancesClasses)
+> * 4.3.4 [Inheritance](#Inheritance)
+> * 4.3.5 [Determining the Class Precedence List](#DeterminingClassPrecedenceList)
+> * 4.3.6 [Redefining Classes](#RedefiningClasses)
+> * 4.3.7 [Integrating Types and Classes](#IntegratingTypesClasses)
 
-4.3.1.1 Standard Metaclasses
-
-4.3.2 Defining Classes
-
-4.3.3 Creating Instances of Classes
-
-4.3.4 Inheritance
-
-4.3.5 Determining the Class Precedence List
-
-4.3.6 Redefining Classes
-
- 4.3.1 Introduction to Classes
+### 4.3.1 <span id="IntroductionToClasses">Introduction to Classes</span>
 
 A class is an object that determines the structure and behavior of a set of other objects, which are called its instances.
 
@@ -251,7 +238,7 @@ Classes are represented by objects that are themselves instances of classes. The
 
 Except where otherwise specified, all classes mentioned in this standard are instances of the class standard-class, all generic functions are instances of the class standard-generic-function, and all methods are instances of the class standard-method. 
 
- 4.3.1.1 Standard Metaclasses
+#### 4.3.1.1 Standard Metaclasses
 
 The object system provides a number of predefined metaclasses. These include the classes standard-class, built-in-class, and structure-class:
 
@@ -261,7 +248,7 @@ The object system provides a number of predefined metaclasses. These include the
 
 * All classes defined by means of defstruct are instances of the class structure-class. 
 
- 4.3.2 Defining Classes
+### 4.3.2 <span id="DefiningClasses">Defining Classes</span>
 
 The macro defclass is used to define a new named class.
 
@@ -291,19 +278,15 @@ The slot options and class options of the defclass form provide mechanisms for t
 
 * Indicating the documentation string for the slot. 
 
- 4.3.3 Creating Instances of Classes
+### 4.3.3 <span id="CreatingInstancesClasses">Creating Instances of Classes</span>
 
 The generic function make-instance creates and returns a new instance of a class. The object system provides several mechanisms for specifying how a new instance is to be initialized. For example, it is possible to specify the initial values for slots in newly created instances either by giving arguments to make-instance or by providing default initial values. Further initialization activities can be performed by methods written for generic functions that are part of the initialization protocol. The complete initialization protocol is described in Section 7.1 (Object Creation and Initialization). 
 
- 4.3.4 Inheritance
+### 4.3.4 <span id="Inheritance">Inheritance</span>
 
 A class can inherit methods, slots, and some defclass options from its superclasses. Other sections describe the inheritance of methods, the inheritance of slots and slot options, and the inheritance of class options.
 
-4.3.4.1 Examples of Inheritance
-
-4.3.4.2 Inheritance of Class Options
-
- 4.3.4.1 Examples of Inheritance
+#### 4.3.4.1 Examples of Inheritance
 
  (defclass C1 () 
      ((S1 :initform 5.4 :type number) 
@@ -318,13 +301,13 @@ Instances of the class C1 have a local slot named S1, whose default initial valu
 
 There is a local slot named S1 in instances of C2. The default initial value of S1 is 5. The value of S1 should always be of type (and integer number). There are also local slots named S2 and S3 in instances of C2. The class C2 has a method for C2-S3 for reading the value of slot S3; there is also a method for (setf C2-S3) that writes the value of S3. 
 
- 4.3.4.2 Inheritance of Class Options
+#### 4.3.4.2 Inheritance of Class Options
 
 The :default-initargs class option is inherited. The set of defaulted initialization arguments for a class is the union of the sets of initialization arguments supplied in the :default-initargs class options of the class and its superclasses. When more than one default initial value form is supplied for a given initialization argument, the default initial value form that is used is the one supplied by the class that is most specific according to the class precedence list.
 
 If a given :default-initargs class option specifies an initialization argument of the same name more than once, an error of type program-error is signaled. 
 
- 4.3.5 Determining the Class Precedence List
+### 4.3.5 <span id="DeterminingClassPrecedenceList">Determining the Class Precedence List</span>
 
 The defclass form for a class provides a total ordering on that class and its direct superclasses. This ordering is called the local precedence order. It is an ordered list of the class and its direct superclasses. The class precedence list for a class C is a total ordering on C and its superclasses that is consistent with the local precedence orders for each of C and its superclasses.
 
@@ -346,11 +329,7 @@ To compute the class precedence list for C, topologically sort the elements of S
 
 If R is inconsistent, an error is signaled.
 
-4.3.5.1 Topological Sorting
-
-4.3.5.2 Examples of Class Precedence List Determination
-
- 4.3.5.1 Topological Sorting
+#### 4.3.5.1 Topological Sorting
 
 Topological sorting proceeds by finding a class C in SC such that no other class precedes that element according to the elements in R. The class C is placed first in the result. Remove C from SC, and remove all pairs of the form (C,D), D<ELEMENT-OF>SC, from R. Repeat the process, adding classes with no predecessors to the end of the result. Stop when no element can be found that has no predecessor.
 
@@ -362,7 +341,7 @@ In more precise terms, let {N1,...,Nm}, m>=2, be the classes from SC with no pre
 
 The effect of this rule for selecting from a set of classes with no predecessors is that the classes in a simple superclass chain are adjacent in the class precedence list and that classes in each relatively separated subgraph are adjacent in the class precedence list. For example, let T1 and T2 be subgraphs whose only element in common is the class J. Suppose that no superclass of J appears in either T1 or T2, and that J is in the superclass chain of every class in both T1 and T2. Let C1 be the bottom of T1; and let C2 be the bottom of T2. Suppose C is a class whose direct superclasses are C1 and C2 in that order, then the class precedence list for C starts with C and is followed by all classes in T1 except J. All the classes of T2 are next. The class J and its superclasses appear last. 
 
- 4.3.5.2 Examples of Class Precedence List Determination
+#### 4.3.5.2 Examples of Class Precedence List Determination
 
 This example determines a class precedence list for the class pie. The following classes are defined:
 
@@ -418,7 +397,7 @@ The class precedence list for pastry is (pastry cinnamon apple standard-object t
 
 It is not a problem for apple to precede cinnamon in the ordering of the superclasses of pie but not in the ordering for pastry. However, it is not possible to build a new class that has both pie and pastry as superclasses. 
 
- 4.3.6 Redefining Classes
+### 4.3.6 <span id="RedefiningClasses">Redefining Classes</span>
 
 A class that is a direct instance of standard-class can be redefined if the new class is also a direct instance of standard-class. Redefining a class modifies the existing class object to reflect the new class definition; it does not create a new class object for the class. Any method object created by a :reader, :writer, or :accessor option specified by the old defclass form is removed from the corresponding generic function. Methods specified by the new defclass form are added.
 
@@ -434,15 +413,11 @@ If a class is redefined in such a way that the set of local slots accessible in 
 
 The first step modifies the structure of the instance by adding new local slots and discarding local slots that are not defined in the new version of the class. The second step initializes the newly-added local slots and performs any other user-defined actions. These two steps are further specified in the next two sections.
 
-4.3.6.1 Modifying the Structure of Instances
+> * 4.3.6.1 [Modifying the Structure of Instances](#ModifyingStructureInstances)
+> * 4.3.6.2 [Initializing Newly Added Local Slots](#InitializingSlots)
+> * 4.3.6.3 [Customizing Class Redefinition](#CustomizingClassRedefinition)
 
-4.3.6.2 Initializing Newly Added Local Slots
-
-4.3.6.3 Customizing Class Redefinition
-
-4.3.7 Integrating Types and Classes
-
- 4.3.6.1 Modifying the Structure of Instances
+#### 4.3.6.1 <span id="ModifyingStructureInstances">Modifying the Structure of Instances</span>
 
 The first step modifies the structure of instances of the redefined class to conform to its new class definition. Local slots specified by the new class definition that are not specified as either local or shared by the old class are added, and slots not specified as either local or shared by the new class definition that are specified as local by the old class are discarded. The names of these added and discarded slots are passed as arguments to update-instance-for-redefined-class as described in the next section.
 
@@ -450,7 +425,7 @@ The values of local slots specified by both the new and old classes are retained
 
 The value of a slot that is specified as shared in the old class and as local in the new class is retained. If such a shared slot was unbound, the local slot is unbound. 
 
- 4.3.6.2 Initializing Newly Added Local Slots
+#### 4.3.6.2 <span id="InitializingSlots">Initializing Newly Added Local Slots</span>
 
 The second step initializes the newly added local slots and performs any other user-defined actions. This step is implemented by the generic function update-instance-for-redefined-class, which is called after completion of the first step of modifying the structure of the instance.
 
@@ -460,13 +435,13 @@ The generic function update-instance-for-redefined-class also takes any number o
 
 There is a system-supplied primary method for update-instance-for-redefined-class whose parameter specializer for its instance argument is the class standard-object. First this method checks the validity of initialization arguments and signals an error if an initialization argument is supplied that is not declared as valid. (For more information, see Section 7.1.2 (Declaring the Validity of Initialization Arguments).) Then it calls the generic function shared-initialize with the following arguments: the instance, the list of names of the newly added slots, and the initialization arguments it received. 
 
- 4.3.6.3 Customizing Class Redefinition
+#### 4.3.6.3 <span id="CustomizingClassRedefinition">Customizing Class Redefinition</span>
 
 Methods for update-instance-for-redefined-class may be defined to specify actions to be taken when an instance is updated. If only after methods for update-instance-for-redefined-class are defined, they will be run after the system-supplied primary method for initialization and therefore will not interfere with the default behavior of update-instance-for-redefined-class. Because no initialization arguments are passed to update-instance-for-redefined-class when it is called by the system, the initialization forms for slots that are filled by before methods for update-instance-for-redefined-class will not be evaluated by shared-initialize.
 
 Methods for shared-initialize may be defined to customize class redefinition. For more information, see Section 7.1.5 (Shared-Initialize). 
 
- 4.3.7 Integrating Types and Classes
+### 4.3.7 <span id="IntegratingTypesClasses">Integrating Types and Classes</span>
 
 The object system maps the space of classes into the space of types. Every class that has a proper name has a corresponding type with the same name.
 
@@ -526,71 +501,41 @@ The class precedence list information specified in the entries for each of these
 
 Individual implementations may be extended to define other type specifiers to have a corresponding class. Individual implementations may be extended to add other subclass relationships and to add other elements to the class precedence lists as long as they do not violate the type relationships and disjointness requirements specified by this standard. A standard class defined with no direct superclasses is guaranteed to be disjoint from all of the classes in the table, except for the class named t. 
 
- 4.4 The Types and Classes Dictionary
+## 4.4 <span id="TheTypesClassesDictionary">The Types and Classes Dictionary</span>
 
-Type NIL
+> * [Type NIL](#TypeNIL)
+> * [Type BOOLEAN](#TypeBOOLEAN)
+> * [System Class FUNCTION](#SystemClassFUNCTION)
+> * [Type COMPILED-FUNCTION](#TypeCOMPILEDFUNCTION)
+> * [System Class GENERIC-FUNCTION](#SystemClassGENERICFUNCTION)
+> * [System Class STANDARD-GENERIC-FUNCTION](#SystemClassSTANDARDGENERICFUNCTION)
+> * [System Class CLASS](#SystemClassCLASS)
+> * [System Class BUILT-IN-CLASS](#SystemClassBUILTINCLASS)
+> * [System Class STRUCTURE-CLASS](#SystemClassSTRUCTURECLASS)
+> * [System Class STANDARD-CLASS](#SystemClassSTANDARDCLASS)
+> * [System Class METHOD](#SystemClassMETHOD)
+> * [System Class STANDARD-METHOD](#SystemClassSTANDARDMETHOD)
+> * [Class STRUCTURE-OBJECT](#ClassSTRUCTUREOBJECT)
+> * [Class STANDARD-OBJECT](#ClassSTANDARDOBJECT)
+> * [System Class METHOD-COMBINATION](#SystemClassMETHODCOMBINATION)
+> * [System Class T](#SystemClassT)
+> * [Type Specifier SATISFIES](#TypeSpecifierSATISFIES)
+> * [Type Specifier MEMBER](#TypeSpecifierMEMBER)
+> * [Type Specifier NOT](#TypeSpecifierNOT)
+> * [Type Specifier AND](#TypeSpecifierAND)
+> * [Type Specifier OR](#TypeSpecifierOR)
+> * [Type Specifier VALUES](#TypeSpecifierVALUES)
+> * [Type Specifier EQL](#TypeSpecifierEQL)
+> * [Function COERCE](#FunctionCOERCE)
+> * [Macro DEFTYPE](#MacroDEFTYPE)
+> * [Function SUBTYPEP](#FunctionSUBTYPEP)
+> * [Function TYPE-OF](#FunctionTYPEOF)
+> * [Function TYPEP](#FunctionTYPEP)
+> * [Condition Type TYPE-ERROR](#ConditionTypeTYPEERROR)
+> * [Function TYPE-ERROR-DATUM, TYPE-ERROR-EXPECTED-TYPE](#FunctionTEDTEET)
+> * [Condition Type SIMPLE-TYPE-ERROR](#ConditionTypeSIMPLETYPEERROR)
 
-Type BOOLEAN
-
-System Class FUNCTION
-
-Type COMPILED-FUNCTION
-
-System Class GENERIC-FUNCTION
-
-System Class STANDARD-GENERIC-FUNCTION
-
-System Class CLASS
-
-System Class BUILT-IN-CLASS
-
-System Class STRUCTURE-CLASS
-
-System Class STANDARD-CLASS
-
-System Class METHOD
-
-System Class STANDARD-METHOD
-
-Class STRUCTURE-OBJECT
-
-Class STANDARD-OBJECT
-
-System Class METHOD-COMBINATION
-
-System Class T
-
-Type Specifier SATISFIES
-
-Type Specifier MEMBER
-
-Type Specifier NOT
-
-Type Specifier AND
-
-Type Specifier OR
-
-Type Specifier VALUES
-
-Type Specifier EQL
-
-Function COERCE
-
-Macro DEFTYPE
-
-Function SUBTYPEP
-
-Function TYPE-OF
-
-Function TYPEP
-
-Condition Type TYPE-ERROR
-
-Function TYPE-ERROR-DATUM, TYPE-ERROR-EXPECTED-TYPE
-
-Condition Type SIMPLE-TYPE-ERROR
-
-Type NIL
+### <span id="TypeNIL">Type NIL</span>
 
 Supertypes:
 
@@ -604,7 +549,7 @@ Notes:
 
 The type containing the object nil is the type null, not the type nil. 
 
-Type BOOLEAN
+### <span id="TypeBOOLEAN">Type BOOLEAN</span>
 
 Supertypes:
 
@@ -622,7 +567,7 @@ Notes:
 
 Conditional operations, such as if, permit the use of generalized booleans, not just booleans; any non-nil value, not just t, counts as true for a generalized boolean. However, as a matter of convention, the symbol t is considered the canonical value to use even for a generalized boolean when no better choice presents itself. 
 
-System Class FUNCTION
+### <span id="SystemClassFUNCTION">System Class FUNCTION</span>
 
 Class Precedence List:
 
@@ -699,7 +644,7 @@ As with variable type declarations, nested declarations imply intersections of t
 
 * If two (or more) type declarations are in effect for a variable, and they are both function declarations, the declarations combine similarly. 
 
-Type COMPILED-FUNCTION
+### <span id="TypeCOMPILEDFUNCTION">Type COMPILED-FUNCTION</span>
 
 Supertypes:
 
@@ -711,7 +656,7 @@ Any function may be considered by an implementation to be a a compiled function 
 
 Functions whose definitions appear lexically within a file that has been compiled with compile-file and then loaded with load are of type compiled-function. Functions produced by the compile function are of type compiled-function. Other functions might also be of type compiled-function. 
 
-System Class GENERIC-FUNCTION
+### <span id="SystemClassGENERICFUNCTION">System Class GENERIC-FUNCTION</span>
 
 Class Precedence List:
 
@@ -723,7 +668,7 @@ A generic function is a function whose behavior depends on the classes or identi
 
 A generic function can be used in the same ways that an ordinary function can be used; specifically, a generic function can be used as an argument to funcall and apply, and can be given a global or a local name. 
 
-System Class STANDARD-GENERIC-FUNCTION
+### <span id="SystemClassSTANDARDGENERICFUNCTION">System Class STANDARD-GENERIC-FUNCTION</span>
 
 Class Precedence List:
 
@@ -733,7 +678,7 @@ Description:
 
 The class standard-generic-function is the default class of generic functions established by defmethod, ensure-generic-function, defgeneric, and defclass forms. 
 
-System Class CLASS
+### <span id="SystemClassCLASS">System Class CLASS</span>
 
 Class Precedence List:
 
@@ -743,7 +688,7 @@ Description:
 
 The type class represents objects that determine the structure and behavior of their instances. Associated with an object of type class is information describing its place in the directed acyclic graph of classes, its slots, and its options. 
 
-System Class BUILT-IN-CLASS
+### <span id="SystemClassBUILTINCLASS">System Class BUILT-IN-CLASS</span>
 
 Class Precedence List:
 
@@ -753,7 +698,7 @@ Description:
 
 A built-in class is a class whose instances have restricted capabilities or special representations. Attempting to use defclass to define subclasses of a built-in class signals an error of type error. Calling make-instance to create an instance of a built-in class signals an error of type error. Calling slot-value on an instance of a built-in class signals an error of type error. Redefining a built-in class or using change-class to change the class of an instance to or from a built-in class signals an error of type error. However, built-in classes can be used as parameter specializers in methods. 
 
-System Class STRUCTURE-CLASS
+### <span id="SystemClassSTRUCTURECLASS">System Class STRUCTURE-CLASS</span>
 
 Class Precedence List:
 
@@ -763,7 +708,7 @@ Description:
 
 All classes defined by means of defstruct are instances of the class structure-class. 
 
-System Class STANDARD-CLASS
+### <span id="SystemClassSTANDARDCLASS">System Class STANDARD-CLASS</span>
 
 Class Precedence List:
 
@@ -773,7 +718,7 @@ Description:
 
 The class standard-class is the default class of classes defined by defclass. 
 
-System Class METHOD
+### <span id="SystemClassMETHOD">System Class METHOD</span>
 
 Class Precedence List:
 
@@ -791,7 +736,7 @@ See Also:
 
 Section 7.6 (Generic Functions and Methods) 
 
-System Class STANDARD-METHOD
+### <span id="SystemClassSTANDARDMETHOD">System Class STANDARD-METHOD</span>
 
 Class Precedence List:
 
@@ -801,7 +746,7 @@ Description:
 
 The class standard-method is the default class of methods defined by the defmethod and defgeneric forms. 
 
-Class STRUCTURE-OBJECT
+### <span id="ClassSTRUCTUREOBJECT">Class STRUCTURE-OBJECT</span>
 
 Class Precedence List:
 
@@ -815,7 +760,7 @@ See Also:
 
 defstruct, Section 2.4.8.13 (Sharpsign S), Section 22.1.3.12 (Printing Structures) 
 
-Class STANDARD-OBJECT
+### <span id="ClassSTANDARDOBJECT">Class STANDARD-OBJECT</span>
 
 Class Precedence List:
 
@@ -825,7 +770,7 @@ Description:
 
 The class standard-object is an instance of standard-class and is a superclass of every class that is an instance of standard-class except itself. 
 
-System Class METHOD-COMBINATION
+### <span id="SystemClassMETHODCOMBINATION">System Class METHOD-COMBINATION</span>
 
 Class Precedence List:
 
@@ -835,7 +780,7 @@ Description:
 
 Every method combination object is an indirect instance of the class method-combination. A method combination object represents the information about the method combination being used by a generic function. A method combination object contains information about both the type of method combination and the arguments being used with that type. 
 
-System Class T
+### <span id="SystemClassT">System Class T</span>
 
 Class Precedence List:
 
@@ -845,7 +790,7 @@ Description:
 
 The set of all objects. The type t is a supertype of every type, including itself. Every object is of type t. 
 
-Type Specifier SATISFIES
+### <span id="TypeSpecifierSATISFIES">Type Specifier SATISFIES</span>
 
 Compound Type Specifier Kind:
 
@@ -867,7 +812,7 @@ The argument is required. The symbol * can be the argument, but it denotes itsel
 
 The symbol satisfies is not valid as a type specifier. 
 
-Type Specifier MEMBER
+### <span id="TypeSpecifierMEMBER">Type Specifier MEMBER</span>
 
 Compound Type Specifier Kind:
 
@@ -891,7 +836,7 @@ See Also:
 
 the type eql 
 
-Type Specifier NOT
+### <span id="TypeSpecifierNOT">Type Specifier NOT</span>
 
 Compound Type Specifier Kind:
 
@@ -913,7 +858,7 @@ The argument is required, and cannot be *.
 
 The symbol not is not valid as a type specifier. 
 
-Type Specifier AND
+### <span id="TypeSpecifierAND">Type Specifier AND</span>
 
 Compound Type Specifier Kind:
 
@@ -935,7 +880,7 @@ This denotes the set of all objects of the type determined by the intersection o
 
 The type specifiers (and) and t are equivalent. The symbol and is not valid as a type specifier, and, specifically, it is not an abbreviation for (and). 
 
-Type Specifier OR
+### <span id="TypeSpecifierOR">Type Specifier OR</span>
 
 Compound Type Specifier Kind:
 
@@ -957,7 +902,7 @@ This denotes the set of all objects of the type determined by the union of the t
 
 The type specifiers (or) and nil are equivalent. The symbol or is not valid as a type specifier; and, specifically, it is not an abbreviation for (or). 
 
-Type Specifier VALUES
+### <span id="TypeSpecifierVALUES">Type Specifier VALUES</span>
 
 Compound Type Specifier Kind:
 
@@ -981,7 +926,7 @@ The symbol * may not be among the value-types.
 
 The symbol values is not valid as a type specifier; and, specifically, it is not an abbreviation for (values). 
 
-Type Specifier EQL
+### <span id="TypeSpecifierEQL">Type Specifier EQL</span>
 
 Compound Type Specifier Kind:
 
@@ -1001,7 +946,7 @@ Represents the type of all x for which (eql object x) is true.
 
 The argument object is required. The object can be *, but if so it denotes itself (the symbol *) and does not represent an unspecified value. The symbol eql is not valid as an atomic type specifier. 
 
-Function COERCE
+### <span id="FunctionCOERCE">Function COERCE</span>
 
 Syntax:
 
@@ -1095,7 +1040,7 @@ Coercions from floats to rationals and from ratios to integers are not provided 
 
  (coerce x 't) ==  (identity x) ==  x
 
-Macro DEFTYPE
+### <span id="MacroDEFTYPE">Macro DEFTYPE</span>
 
 Syntax:
 
@@ -1156,7 +1101,7 @@ declare, defmacro, documentation, Section 4.2.3 (Type Specifiers), Section 3.4.1
 
 Notes: None. 
 
-Function SUBTYPEP
+### <span id="FunctionSUBTYPEP">Function SUBTYPEP</span>
 
 Syntax:
 
@@ -1275,7 +1220,7 @@ Notes:
 
 The small differences between the subtypep specification for the array and complex types are necessary because there is no creation function for complexes which allows the specification of the resultant part type independently of the actual types of the parts. Thus in the case of the type complex, the actual type of the parts is referred to, although a number can be a member of more than one type. For example, 17 is of type (mod 18) as well as type (mod 256) and type integer; and 2.3f5 is of type single-float as well as type float. 
 
-Function TYPE-OF
+### <span id="FunctionTYPEOF">Function TYPE-OF</span>
 
 Syntax:
 
@@ -1347,7 +1292,7 @@ Notes:
 
 Implementors are encouraged to arrange for type-of to return a portable value. 
 
-Function TYPEP
+### <span id="FunctionTYPEP">Function TYPEP</span>
 
 Syntax:
 
@@ -1421,7 +1366,7 @@ Notes:
 
 Implementations are encouraged to recognize and optimize the case of (typep x (the class y)), since it does not involve any need for expansion of deftype information at runtime. 
 
-Condition Type TYPE-ERROR
+### <span id="ConditionTypeTYPEERROR">Condition Type TYPE-ERROR</span>
 
 Class Precedence List:
 
@@ -1435,7 +1380,7 @@ See Also:
 
 type-error-datum, type-error-expected-type 
 
-Function TYPE-ERROR-DATUM, TYPE-ERROR-EXPECTED-TYPE
+### <span id="FunctionTEDTEET">Function TYPE-ERROR-DATUM, TYPE-ERROR-EXPECTED-TYPE</span>
 
 Syntax:
 
@@ -1487,7 +1432,7 @@ type-error, Section 9 (Conditions)
 
 Notes: None. 
 
-Condition Type SIMPLE-TYPE-ERROR
+### <span id="ConditionTypeSIMPLETYPEERROR">Condition Type SIMPLE-TYPE-ERROR</span>
 
 Class Precedence List:
 
