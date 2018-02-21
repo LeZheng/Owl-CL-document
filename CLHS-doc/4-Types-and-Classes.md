@@ -1,27 +1,27 @@
 # 4. Types and Classes
 
-> * 4.1 [Introduction](#Introduction)
+> * 4.1 [引言](#Introduction)
 > * 4.2 [Types](#Types)
 > * 4.3 [Classes](#Classes)
 > * 4.4 [The Types and Classes Dictionary](#TheTypesClassesDictionary)
 
-## 4.1 <span id="Introduction">Introduction</span>
+## 4.1 <span id="Introduction">引言</span>
 
-A type is a (possibly infinite) set of objects. An object can belong to more than one type. Types are never explicitly represented as objects by Common Lisp. Instead, they are referred to indirectly by the use of type specifiers, which are objects that denote types.
+一个类型(type)是一个(可能是无数)对象的集合. 一个对象可以属于超过一个类型. 类型从不显式地被 Common Lisp 表示为对象. 相反, 它们是通过使用类型指定符(type specifier)间接引用的, 类型指定符是表示类型的对象.
 
-New types can be defined using deftype, defstruct, defclass, and define-condition.
+新的类型可以使用 deftype, defstruct, defclass, 和 define-condition 来定义.
 
-The function typep, a set membership test, is used to determine whether a given object is of a given type. The function subtypep, a subset test, is used to determine whether a given type is a subtype of another given type. The function type-of returns a particular type to which a given object belongs, even though that object must belong to one or more other types as well. (For example, every object is of type t, but type-of always returns a type specifier for a type more specific than t.)
+函数 typep 作为一个集合从属关系测试, 被用于确定一个给定的对象(object) 是否为给定的类型(type). 函数 subtypep 作为一个子集测试, 被用于确定一个给定的类型是否为另一个给定类型的子类型(subtype). 函数 type-of 返回一个给定对象所属的具体类型, 即便这个对象也属于一个或多个其他类型. (比如, 每一个对象都是类型 t, 但是 type-of 总是返回一个比 t 更具体的类型的类型指定符.)
 
-Objects, not variables, have types. Normally, any variable can have any object as its value. It is possible to declare that a variable takes on only values of a given type by making an explicit type declaration. Types are arranged in a directed acyclic graph, except for the presence of equivalences.
+对象, 而不是变量, 拥有类型. 通常, 任何变量可以有任何对象作为它的值. 可以声明一个变量只能获取通过显式类型声明指定的类型的值. 类型被安排在一个有方向的非循环图中, 除了存在相等的情况.
 
-Declarations can be made about types using declare, proclaim, declaim, or the. For more information about declarations, see Section 3.3 (Declarations).
+可以通过 declare, proclaim, declaim, 或 the 来对类型做出声明. 关于声明的更多信息, 见章节 3.3 (Declarations).
 
-Among the fundamental objects of the object system are classes. A class determines the structure and behavior of a set of other objects, which are called its instances. Every object is a direct instance of a class. The class of an object determines the set of operations that can be performed on the object. For more information, see Section 4.3 (Classes).
+对象系统的基本对象是类(class). 一个类确定其他称之为它的实例的对象集的结构和行为. 每一个对象都是一个类的直接实例. 一个对象的类确定可以在这个对象上进行的操作的集合. 关于更多信息, 见章节 4.3 (Classes).
 
-It is possible to write functions that have behavior specialized to the class of the objects which are their arguments. For more information, see Section 7.6 (Generic Functions and Methods).
+可以写出具有特定于函数参数对象的类的行为的函数. 关于更多信息, 见章节 7.6 (Generic Functions and Methods).
 
-The class of the class of an object is called its metaclass. For more information about metaclasses, see Section 7.4 (Meta-Objects). 
+一个对象的类的类称为它的元类(metaclass). 关于元类的更多信息, 见章节 7.4 (Meta-Objects). 
 
 ## 4.2 <span id="Types">Types</span>
 
