@@ -1,7 +1,7 @@
 # 4. Types and Classes
 
 > * 4.1 [引言](#Introduction)
-> * 4.2 [Types](#Types)
+> * 4.2 [类型](#Types)
 > * 4.3 [Classes](#Classes)
 > * 4.4 [The Types and Classes Dictionary](#TheTypesClassesDictionary)
 
@@ -23,177 +23,182 @@
 
 一个对象的类的类称为它的元类(metaclass). 关于元类的更多信息, 见章节 7.4 (Meta-Objects). 
 
-## 4.2 <span id="Types">Types</span>
+## 4.2 <span id="Types">类型</span>
 
-> * 4.2.1 [Data Type Definition](#DataTypeDefinition)
-> * 4.2.2 [Type Relationships](#TypeRelationships)
-> * 4.2.3 [Type Specifiers](#TypeSpecifiers)
+> * 4.2.1 [数据类型定义](#DataTypeDefinition)
+> * 4.2.2 [类型关系](#TypeRelationships)
+> * 4.2.3 [类型指定符](#TypeSpecifiers)
 
-### 4.2.1 <span id="DataTypeDefinition">Data Type Definition</span>
+### 4.2.1 <span id="DataTypeDefinition">数据类型定义</span>
 
-Information about type usage is located in the sections specified in Figure 4-1. Figure 4-7 lists some classes that are particularly relevant to the object system. Figure 9-1 lists the defined condition types.
+类型使用的信息所在章节在  Figure 4-1 中指定. Figure 4-7 列出了和对象系统相关的类. Figure 9-1 列出了已定义的状况类型.
 
-Section                                      Data Type                          
-----------
-                                                                      
-Section 4.3 (Classes)                        Object System types                
-Section 7.5 (Slots)                          Object System types                
-Section 7 (Objects)                          Object System types                
-Section 7.6 (Generic Functions and Methods)  Object System types                
-Section 9.1 (Condition System Concepts)      Condition System types             
-Section 4 (Types and Classes)                Miscellaneous types                
-Section 2 (Syntax)                           All types---read and print syntax  
-Section 22.1 (The Lisp Printer)              All types---print syntax           
-Section 3.2 (Compilation)                    All types---compilation issues     
+章节                                        | 数据类型                          
+-------------------------------------------|------------------------              
+Section 4.3 (Classes)                      | Object System types                
+Section 7.5 (Slots)                        | Object System types                
+Section 7 (Objects)                        | Object System types                
+Section 7.6 (Generic Functions and Methods)| Object System types                
+Section 9.1 (Condition System Concepts)    | Condition System types             
+Section 4 (Types and Classes)              | Miscellaneous types                
+Section 2 (Syntax)                         | All types---read and print syntax  
+Section 22.1 (The Lisp Printer)            | All types---print syntax           
+Section 3.2 (Compilation)                  | All types---compilation issues     
 
-Figure 4-1. Cross-References to Data Type Information 
+Figure 4-1. 数据类型信息的 Cross-References 
 
-### 4.2.2 <span id="TypeRelationships">Type Relationships</span>
+### 4.2.2 <span id="TypeRelationships">类型关系</span>
 
-* The types cons, symbol, array, number, character, hash-table, function, readtable, package, pathname, stream, random-state, condition, restart, and any single other type created by defstruct, define-condition, or defclass are pairwise disjoint, except for type relations explicitly established by specifying superclasses in defclass or define-condition or the :include option of destruct.
+* 类型 cons, symbol, array, number, character, hash-table, function, readtable, package, pathname, stream, random-state, condition, restart, 还有任何由 defstruct, define-condition, 或 defclass 创建的单个类型是互斥的, 除了在 defclass 或者  define-condition 或者 destruct 的 :include 选项指定超类来明确建立类型关系的以外.
 
-* Any two types created by defstruct are disjoint unless one is a supertype of the other by virtue of the defstruct :include option.
+* 任何由 defstruct 创建的两个类型是互斥的, 除非由于 defstruct 的 :include 选项, 一个是另一个的超类.
 
-* Any two distinct classes created by defclass or define-condition are disjoint unless they have a common subclass or one class is a subclass of the other.
+* 任何两个由 defclass 或 define-condition 创建的有区别的类是互斥的, 除非它们有一个共同的子类或者一个类是另一个的超类.
 
-* An implementation may be extended to add other subtype relationships between the specified types, as long as they do not violate the type relationships and disjointness requirements specified here. An implementation may define additional types that are subtypes or supertypes of any specified types, as long as each additional type is a subtype of type t and a supertype of type nil and the disjointness requirements are not violated.
+* 可以扩展一个实现来添加指定类型之间的其他子类型关系, 只要它们不违反这里指定的类型关系和类互斥性的需求. 一个实现可能为任何指定的类型定义额外的子类或超类, 只要不违反互斥性的要求并且每一个额外的类是类型 t 的子类也是类型 nil 的超类.
 
-    At the discretion of the implementation, either standard-object or structure-object might appear in any class precedence list for a system class that does not already specify either standard-object or structure-object. If it does, it must precede the class t and follow all other standardized classes. 
+    任凭具体实现自行处理, 无论是 standard-object 还是 structure-object, 都可能出现在一个系统类的优先级列表中, 而该系统类既没有指定 standard-object, 也没有指定 structure-object. 如果确实如此, 它必须在类 t 之前并且后面跟着所有标准化的类.<!-- TODO class precedence list ??--> 
 
-### 4.2.3 <span id="TypeSpecifiers">Type Specifiers</span>
+### 4.2.3 <span id="TypeSpecifiers">类型指定符</span>
 
-Type specifiers can be symbols, classes, or lists. Figure 4-2 lists symbols that are standardized atomic type specifiers, and Figure 4-3 lists standardized compound type specifier names. For syntax information, see the dictionary entry for the corresponding type specifier. It is possible to define new type specifiers using defclass, define-condition, defstruct, or deftype.
+类型指定符(Type specifier)可以是符号, 类或列表. Figure 4-2 列出了标准原子类型指定符的列表, 并且 Figure 4-3 列出了标准化复合类型指定符的名字. 关于语法信息, 见对应类型指定符的字典条目. 可以通过 defclass, define-condition, defstruct, 或 deftype 来定义新的类型指定符.
 
-arithmetic-error                  function            simple-condition           
-array                             generic-function    simple-error               
-atom                              hash-table          simple-string              
-base-char                         integer             simple-type-error          
-base-string                       keyword             simple-vector              
-bignum                            list                simple-warning             
-bit                               logical-pathname    single-float               
-bit-vector                        long-float          standard-char              
-broadcast-stream                  method              standard-class             
-built-in-class                    method-combination  standard-generic-function  
-cell-error                        nil                 standard-method            
-character                         null                standard-object            
-class                             number              storage-condition          
-compiled-function                 package             stream                     
-complex                           package-error       stream-error               
-concatenated-stream               parse-error         string                     
-condition                         pathname            string-stream              
-cons                              print-not-readable  structure-class            
-control-error                     program-error       structure-object           
-division-by-zero                  random-state        style-warning              
-double-float                      ratio               symbol                     
-echo-stream                       rational            synonym-stream             
-end-of-file                       reader-error        t                          
-error                             readtable           two-way-stream             
-extended-char                     real                type-error                 
-file-error                        restart             unbound-slot               
-file-stream                       sequence            unbound-variable           
-fixnum                            serious-condition   undefined-function         
-float                             short-float         unsigned-byte              
-floating-point-inexact            signed-byte         vector                     
-floating-point-invalid-operation  simple-array        warning                    
-floating-point-overflow           simple-base-string                             
-floating-point-underflow          simple-bit-vector                              
+    arithmetic-error                  function            simple-condition        
+    array                             generic-function    simple-error            
+    atom                              hash-table          simple-string           
+    base-char                         integer             simple-type-error       
+    base-string                       keyword             simple-vector           
+    bignum                            list                simple-warning          
+    bit                               logical-pathname    single-float            
+    bit-vector                        long-float          standard-char           
+    broadcast-stream                  method              standard-class          
+    built-in-class                    method-combination  standard-generic-function
+    cell-error                        nil                 standard-method         
+    character                         null                standard-object         
+    class                             number              storage-condition       
+    compiled-function                 package             stream                  
+    complex                           package-error       stream-error            
+    concatenated-stream               parse-error         string                  
+    condition                         pathname            string-stream           
+    cons                              print-not-readable  structure-class         
+    control-error                     program-error       structure-object        
+    division-by-zero                  random-state        style-warning           
+    double-float                      ratio               symbol                  
+    echo-stream                       rational            synonym-stream          
+    end-of-file                       reader-error        t                       
+    error                             readtable           two-way-stream          
+    extended-char                     real                type-error              
+    file-error                        restart             unbound-slot            
+    file-stream                       sequence            unbound-variable        
+    fixnum                            serious-condition   undefined-function      
+    float                             short-float         unsigned-byte           
+    floating-point-inexact            signed-byte         vector                  
+    floating-point-invalid-operation  simple-array        warning                 
+    floating-point-overflow           simple-base-string                          
+    floating-point-underflow          simple-bit-vector                              
 
-Figure 4-2. Standardized Atomic Type Specifiers
+Figure 4-2. 标准化原子类型指定符
 
-If a type specifier is a list, the car of the list is a symbol, and the rest of the list is subsidiary type information. Such a type specifier is called a compound type specifier. Except as explicitly stated otherwise, the subsidiary items can be unspecified. The unspecified subsidiary items are indicated by writing *. For example, to completely specify a vector, the type of the elements and the length of the vector must be present.
+如果一个类型指定符是一个列表, 这个列表的 car 部分是一个符号, 并且这个列表的剩余部分辅助类型信息. 这样一个类型指定符称为复合类型指定符(compound type specifier). 除明确声明外, 辅助项可以是未指明的. 这个未指明的辅助项写作 * 来表示. 比如, 为了完全地指定一个向量序列(vector), 元素的类型和这个序列的长度都必须被指定.
 
- (vector double-float 100)
+```LISP
+(vector double-float 100)
+```
 
-The following leaves the length unspecified:
+下面这个留着长度未指定:
 
- (vector double-float *)
+```LISP
+(vector double-float *)
+```
 
-The following leaves the element type unspecified:
+下面这个留着元素类型未指定:
 
- (vector * 100)                                      
+```LISP
+(vector * 100)
+```
 
-Suppose that two type specifiers are the same except that the first has a * where the second has a more explicit specification. Then the second denotes a subtype of the type denoted by the first.
+假设这两种类型指定符是相同的除了第一个有一个 * 而第二个有一个更明确的指定. 那么第二个表示的是第一个表示的子类型.
 
-If a list has one or more unspecified items at the end, those items can be dropped. If dropping all occurrences of * results in a singleton list, then the parentheses can be dropped as well (the list can be replaced by the symbol in its car). For example, (vector double-float *) can be abbreviated to (vector double-float), and (vector * *) can be abbreviated to (vector) and then to vector.
+如果一个列表的末尾有一个或超过一个未指定项, 这些项可以被丢弃. 如果丢弃所有出现的 * 导致一个单元素的列表, 那么圆括号也可以被丢弃 (这个列表可以被它的 car 的符号所替代). 比如, (vector double-float *) 可以被简写为 (vector double-float), 并且 (vector * *) 可以被简写为 (vector) 然后是 vector.
 
-and           long-float    simple-base-string  
-array         member        simple-bit-vector   
-base-string   mod           simple-string       
-bit-vector    not           simple-vector       
-complex       or            single-float        
-cons          rational      string              
-double-float  real          unsigned-byte       
-eql           satisfies     values              
-float         short-float   vector              
-function      signed-byte                       
-integer       simple-array                      
+    and           long-float    simple-base-string  
+    array         member        simple-bit-vector   
+    base-string   mod           simple-string       
+    bit-vector    not           simple-vector       
+    complex       or            single-float        
+    cons          rational      string              
+    double-float  real          unsigned-byte       
+    eql           satisfies     values              
+    float         short-float   vector              
+    function      signed-byte                       
+    integer       simple-array                      
 
-Figure 4-3. Standardized Compound Type Specifier Names
+Figure 4-3. 标准化的复合类型指定符的名字
 
-The next figure show the defined names that can be used as compound type specifier names but that cannot be used as atomic type specifiers.
+下面这段展示了可以被用于复合类型指定符名字但是不能被用于原子类型指定符名字的已定义名字.
 
-and     mod  satisfies  
-eql     not  values     
-member  or              
+    and     mod  satisfies  
+    eql     not  values     
+    member  or              
 
-Figure 4-4. Standardized Compound-Only Type Specifier Names
+Figure 4-4. 标准化的仅限复合类型指定符的名字
 
-New type specifiers can come into existence in two ways.
+新的类型指定符可以以两种方式存在.
 
-* Defining a structure by using defstruct without using the :type specifier or defining a class by using defclass or define-condition automatically causes the name of the structure or class to be a new type specifier symbol.
-* deftype can be used to define derived type specifiers, which act as `abbreviations' for other type specifiers.
+* 通过使用 defstruct 不带 :type 指定来定义一个结构或者使用 defclass 来定义一个类或者define-condition 自动导致结构或类的名字成为一个新的类型指定符的符号.
+* 可以使用 deftype 来定义派生类型指定符, 它表示的像其他类型指定符的缩写一样.
 
-A class object can be used as a type specifier. When used this way, it denotes the set of all members of that class.
+一个类对象可以被用于一个类型指定符. 当使用这种方式的时候, 它表示这个类的所有成员的集合.
 
-The next figure shows some defined names relating to types and declarations.
+下面这段展示了一些类型和声明相关的定义的名字.
 
-coerce            defstruct  subtypep  
-declaim           deftype    the       
-declare           ftype      type      
-defclass          locally    type-of   
-define-condition  proclaim   typep     
+    coerce            defstruct  subtypep  
+    declaim           deftype    the       
+    declare           ftype      type      
+    defclass          locally    type-of   
+    define-condition  proclaim   typep     
 
-Figure 4-5. Defined names relating to types and declarations.
+Figure 4-5. 类型和声明相关的定义的名字.
 
-The next figure shows all defined names that are type specifier names, whether for atomic type specifiers or compound type specifiers; this list is the union of the lists in Figure 4-2 and Figure 4-3.
+下面这段展示了所有定义的类型指定符的名字, 不管是原子类型指定符或者复合类型指定符; 这个列表是 Figure 4-2 和 Figure 4-3 列表的结合.
 
-and                               function            simple-array               
-arithmetic-error                  generic-function    simple-base-string         
-array                             hash-table          simple-bit-vector          
-atom                              integer             simple-condition           
-base-char                         keyword             simple-error               
-base-string                       list                simple-string              
-bignum                            logical-pathname    simple-type-error          
-bit                               long-float          simple-vector              
-bit-vector                        member              simple-warning             
-broadcast-stream                  method              single-float               
-built-in-class                    method-combination  standard-char              
-cell-error                        mod                 standard-class             
-character                         nil                 standard-generic-function  
-class                             not                 standard-method            
-compiled-function                 null                standard-object            
-complex                           number              storage-condition          
-concatenated-stream               or                  stream                     
-condition                         package             stream-error               
-cons                              package-error       string                     
-control-error                     parse-error         string-stream              
-division-by-zero                  pathname            structure-class            
-double-float                      print-not-readable  structure-object           
-echo-stream                       program-error       style-warning              
-end-of-file                       random-state        symbol                     
-eql                               ratio               synonym-stream             
-error                             rational            t                          
-extended-char                     reader-error        two-way-stream             
-file-error                        readtable           type-error                 
-file-stream                       real                unbound-slot               
-fixnum                            restart             unbound-variable           
-float                             satisfies           undefined-function         
-floating-point-inexact            sequence            unsigned-byte              
-floating-point-invalid-operation  serious-condition   values                     
-floating-point-overflow           short-float         vector                     
-floating-point-underflow          signed-byte         warning                    
+    and                               function            simple-array            
+    arithmetic-error                  generic-function    simple-base-string      
+    array                             hash-table          simple-bit-vector       
+    atom                              integer             simple-condition        
+    base-char                         keyword             simple-error            
+    base-string                       list                simple-string           
+    bignum                            logical-pathname    simple-type-error       
+    bit                               long-float          simple-vector           
+    bit-vector                        member              simple-warning          
+    broadcast-stream                  method              single-float            
+    built-in-class                    method-combination  standard-char           
+    cell-error                        mod                 standard-class          
+    character                         nil                 standard-generic-function  
+    class                             not                 standard-method         
+    compiled-function                 null                standard-object         
+    complex                           number              storage-condition       
+    concatenated-stream               or                  stream                  
+    condition                         package             stream-error            
+    cons                              package-error       string                  
+    control-error                     parse-error         string-stream           
+    division-by-zero                  pathname            structure-class         
+    double-float                      print-not-readable  structure-object        
+    echo-stream                       program-error       style-warning           
+    end-of-file                       random-state        symbol                  
+    eql                               ratio               synonym-stream          
+    error                             rational            t                       
+    extended-char                     reader-error        two-way-stream          
+    file-error                        readtable           type-error              
+    file-stream                       real                unbound-slot            
+    fixnum                            restart             unbound-variable        
+    float                             satisfies           undefined-function      
+    floating-point-inexact            sequence            unsigned-byte           
+    floating-point-invalid-operation  serious-condition   values                  
+    floating-point-overflow           short-float         vector                  
+    floating-point-underflow          signed-byte         warning                    
 
-Figure 4-6. Standardized Type Specifier Names 
+Figure 4-6. 标准化类型指定符的名字
 
 ## 4.3 <span id="Classes">Classes</span>
 
