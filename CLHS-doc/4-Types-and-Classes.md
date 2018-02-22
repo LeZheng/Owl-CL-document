@@ -212,8 +212,8 @@ Figure 4-6. 标准化类型指定符的名字
 Figure 4-7. 对象系统类
 
 > * 4.3.1 [类的介绍](#IntroductionToClasses)
-> * 4.3.2 [Defining Classes](#DefiningClasses)
-> * 4.3.3 [Creating Instances of Classes](#CreatingInstancesClasses)
+> * 4.3.2 [定义类](#DefiningClasses)
+> * 4.3.3 [创建类的实例](#CreatingInstancesClasses)
 > * 4.3.4 [Inheritance](#Inheritance)
 > * 4.3.5 [Determining the Class Precedence List](#DeterminingClassPrecedenceList)
 > * 4.3.6 [Redefining Classes](#RedefiningClasses)
@@ -253,39 +253,39 @@ Figure 4-7. 对象系统类
 
 * 所有通过 defstruct 定义的类都是类 structure-class 的实例. 
 
-### 4.3.2 <span id="DefiningClasses">Defining Classes</span>
+### 4.3.2 <span id="DefiningClasses">定义类</span>
 
-The macro defclass is used to define a new named class.
+宏 defclass 被用于定义一个新命名的类is used to define a new named class.
 
-The definition of a class includes:
+一个类的定义包括:
 
-* The name of the new class. For newly-defined classes this name is a proper name.
+* 这个新类的名字. 对于新定义的类这个名字是一个 proper 名字.
 
-* The list of the direct superclasses of the new class.
+* 这个新定义的类的直接超类.
 
-* A set of slot specifiers. Each slot specifier includes the name of the slot and zero or more slot options. A slot option pertains only to a single slot. If a class definition contains two slot specifiers with the same name, an error is signaled.
+* 一个槽指定符的集合. 每一个槽指定符包括槽的名字和 0 或更多的槽选项. 一个槽选项只适用于单个槽. 如果一个类定义包含两个相同名字的槽指定符, 会发出一个错误.
 
-* A set of class options. Each class option pertains to the class as a whole.
+* 一个类选项的集合. 每个类选项都属于整个类.
 
-The slot options and class options of the defclass form provide mechanisms for the following:
+defclass 表达式形式的槽选项和类选项机制被用于:
 
-* Supplying a default initial value form for a given slot.
+* 为给定的槽提供默认的初始值表达式形式.
 
-* Requesting that methods for generic functions be automatically generated for reading or writing slots.
+* 请求自动生成广义函数的方法，用于读取或写入槽.
 
-* Controlling whether a given slot is shared by all instances of the class or whether each instance of the class has its own slot.
+* 控制一个给定的槽是否共享于类的所有实例或者这个类的每个实例是否有它自己的槽.
 
-* Supplying a set of initialization arguments and initialization argument defaults to be used in instance creation.
+* 提供初始化参数和初始化参数默认值, 用于实例的创建.
 
-* Indicating that the metaclass is to be other than the default. The :metaclass option is reserved for future use; an implementation can be extended to make use of the :metaclass option.
+* 指定元类而不是默认的. 这个 :metaclass 选项保留给未来使用; 一个实现可以扩展去使用 :metaclass 选项.
 
-* Indicating the expected type for the value stored in the slot.
+* 指定存储在槽中的期望的类型.
 
-* Indicating the documentation string for the slot. 
+* 指定槽的文档字符串. 
 
-### 4.3.3 <span id="CreatingInstancesClasses">Creating Instances of Classes</span>
+### 4.3.3 <span id="CreatingInstancesClasses">创建类的实例</span>
 
-The generic function make-instance creates and returns a new instance of a class. The object system provides several mechanisms for specifying how a new instance is to be initialized. For example, it is possible to specify the initial values for slots in newly created instances either by giving arguments to make-instance or by providing default initial values. Further initialization activities can be performed by methods written for generic functions that are part of the initialization protocol. The complete initialization protocol is described in Section 7.1 (Object Creation and Initialization). 
+广义函数 make-instance 创建并返回一个类的一个新的实例. 这个对象系统提供多种机制用于指明一个对象如何被初始化. 比如, 在新创建的对象中通过给 make-instance 提供参数或提供默认的初始化值来指定槽的初始化值是可能的. 进一步的初始化活动可以通过为广义函数编写的方法执行, 这些函数是初始化协议的一部分. 完全的初始化协议在章节 7.1 (Object Creation and Initialization) 中描述. 
 
 ### 4.3.4 <span id="Inheritance">Inheritance</span>
 
