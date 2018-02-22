@@ -202,16 +202,16 @@ Figure 4-6. 标准化类型指定符的名字
 
 ## 4.3 <span id="Classes">Classes</span>
 
-While the object system is general enough to describe all standardized classes (including, for example, number, hash-table, and symbol), the next figure contains a list of classes that are especially relevant to understanding the object system.
+尽管对象系统足够通用来描述所有的标准化类 (包括, 例如, number, hash-table, 和 symbol), 下面这段包含了与理解对象系统相关的类的列表.
 
-built-in-class    method-combination         standard-object   
-class             standard-class             structure-class   
-generic-function  standard-generic-function  structure-object  
-method            standard-method                              
+    built-in-class    method-combination         standard-object   
+    class             standard-class             structure-class   
+    generic-function  standard-generic-function  structure-object  
+    method            standard-method                              
 
-Figure 4-7. Object System Classes
+Figure 4-7. 对象系统类
 
-> * 4.3.1 [Introduction to Classes](#IntroductionToClasses)
+> * 4.3.1 [类的介绍](#IntroductionToClasses)
 > * 4.3.2 [Defining Classes](#DefiningClasses)
 > * 4.3.3 [Creating Instances of Classes](#CreatingInstancesClasses)
 > * 4.3.4 [Inheritance](#Inheritance)
@@ -219,39 +219,39 @@ Figure 4-7. Object System Classes
 > * 4.3.6 [Redefining Classes](#RedefiningClasses)
 > * 4.3.7 [Integrating Types and Classes](#IntegratingTypesClasses)
 
-### 4.3.1 <span id="IntroductionToClasses">Introduction to Classes</span>
+### 4.3.1 <span id="IntroductionToClasses">类的介绍</span>
 
-A class is an object that determines the structure and behavior of a set of other objects, which are called its instances.
+一个类(class) 是一个对象, 它确定其他称之为实例的对象集合的结构和行为.
 
-A class can inherit structure and behavior from other classes. A class whose definition refers to other classes for the purpose of inheriting from them is said to be a subclass of each of those classes. The classes that are designated for purposes of inheritance are said to be superclasses of the inheriting class.
+一个类可以从其他类中继承结构和行为. 一个类出于继承其他类的目的而在定义中引用其他类就称这个类是其他类的子类. 为了继承而指定的类称为继承类的超类.
 
-A class can have a name. The function class-name takes a class object and returns its name. The name of an anonymous class is nil. A symbol can name a class. The function find-class takes a symbol and returns the class that the symbol names. A class has a proper name if the name is a symbol and if the name of the class names that class. That is, a class C has the proper name S if S= (class-name C) and C= (find-class S). Notice that it is possible for (find-class S1) = (find-class S2) and S1/=S2. If C= (find-class S), we say that C is the class named S.
+一个类可以有一个名字(name). 函数 class-name 接受一个类对象并且返回它的名字. 一个匿名类的名字是 nil. 一个符号可以命名一个类. 函数 find-class 接受一个符号并且返回这个符号命名的类. 如果名字是一个符号并且如果这个类的名字命名这个类那么这个类有一个 proper 名字. 这就是说, 如果 S= (class-name C) 并且 C= (find-class S) 那么一个类 C 有一个 proper 名字. 注意, (find-class S1) = (find-class S2) 并且 S1/=S2 是可能的. 如果 C= (find-class S), 我们就说 C 是名为 S 的类. <!-- TODO proper ？？ -->
 
-A class C1 is a direct superclass of a class C2 if C2 explicitly designates C1 as a superclass in its definition. In this case C2 is a direct subclass of C1. A class Cn is a superclass of a class C1 if there exists a series of classes C2,...,Cn-1 such that Ci+1 is a direct superclass of Ci for 1 <=i<n. In this case, C1 is a subclass of Cn. A class is considered neither a superclass nor a subclass of itself. That is, if C1 is a superclass of C2, then C1 /=C2. The set of classes consisting of some given class C along with all of its superclasses is called ``C and its superclasses.''
+如果一个类 C2 在它的定义中明确指定 C1 作为超类那么类 C1 就是类 C2 的一个直接超类. 在这个情况下 C2 是 C1 的一个直接子类. 如果 1 <= i < n 并且存在一系列的类 C2,...,Cn-1 而 Ci+1 是 Ci 的直接超类那么类 Cn 是类 C1 的一个超类. 一个类不能被当作是它自身的超类或子类. 这也就是说, 如果 C1 是 C2 的一个超类, 那么 C1 /=C2. 由某个给定的类 C 及其所有超类组成的类集合被称为"C及其超类".
 
-Each class has a class precedence list, which is a total ordering on the set of the given class and its superclasses. The total ordering is expressed as a list ordered from most specific to least specific. The class precedence list is used in several ways. In general, more specific classes can shadow[1] features that would otherwise be inherited from less specific classes. The method selection and combination process uses the class precedence list to order methods from most specific to least specific.
+每一个类由一个类优先级列表(class precedence list), 它是给定类及其超类的集合的总排序. 这个总排序被表示为一个从最具体到最不具体的列表. 这个类优先级列表被用于多种用途. 一般来说, 更具体的类可以遮蔽从不具体的类中继承而来的特性. 方法(method)选择和组合过程使用类优先列表来从最具体到最不具体的顺序排列方法.
 
-When a class is defined, the order in which its direct superclasses are mentioned in the defining form is important. Each class has a local precedence order, which is a list consisting of the class followed by its direct superclasses in the order mentioned in the defining form.
+当一个类被定义时, 定义表达式形式中提及到的直接超类的顺序是很重要的. 每一个类有一个局部优先级顺序, 这是一个由该类和跟在后面的直接超类组成的列表, 按照定义表达式形式中所提到的顺序.
 
-A class precedence list is always consistent with the local precedence order of each class in the list. The classes in each local precedence order appear within the class precedence list in the same order. If the local precedence orders are inconsistent with each other, no class precedence list can be constructed, and an error is signaled. The class precedence list and its computation is discussed in Section 4.3.5 (Determining the Class Precedence List).
+类优先级列表总是与列表中的每个类的局部优先级顺序一致. 每个局部优先级顺序中的类都以相同的顺序出现在类优先级列表中. 如果局部优先级顺序和其他每一个是不一致的, 就不能构建类优先级列表, 并且发出一个错误. 类优先级列表和它的运算在章节 4.3.5 (Determining the Class Precedence List).
 
-classes are organized into a directed acyclic graph. There are two distinguished classes, named t and standard-object. The class named t has no superclasses. It is a superclass of every class except itself. The class named standard-object is an instance of the class standard-class and is a superclass of every class that is an instance of the class standard-class except itself.
+类被组织成一个有向的无环图. 这里有两个显著的类, 名字为 t 和 standard-object. 类 t 没有超类. 它是除了它自身以外所有类的超类. 类 standard-object 是类 standard-class 的一个实例并且是每一个除了它自身以外类 standard-class 实例的超类.
 
-There is a mapping from the object system class space into the type space. Many of the standard types specified in this document have a corresponding class that has the same name as the type. Some types do not have a corresponding class. The integration of the type and class systems is discussed in Section 4.3.7 (Integrating Types and Classes).
+这里由一个从对象系统类空间到类型空间的映射. 很多在这个文档中指定的标准类型都有一个对应的有这类型名字相同的类. 一些类型没有对应的类. 类型和类系统的集成在章节 4.3.7 (Integrating Types and Classes) 中讨论.
 
-Classes are represented by objects that are themselves instances of classes. The class of the class of an object is termed the metaclass of that object. When no misinterpretation is possible, the term metaclass is used to refer to a class that has instances that are themselves classes. The metaclass determines the form of inheritance used by the classes that are its instances and the representation of the instances of those classes. The object system provides a default metaclass, standard-class, that is appropriate for most programs.
+类由自身也是类的实例的对象来表示. 对象类的类被称为该对象的元类(metaclass). 当不可能出现错误解释时, 元类这个术语被用来引用一个类, 该类具有自身类的实例. 元类确定作为它实例的类的继承形式, 和那些类实例的表示形式. 这个对象系统提供一个默认的元类, standard-class, 适用于大部分程序.
 
-Except where otherwise specified, all classes mentioned in this standard are instances of the class standard-class, all generic functions are instances of the class standard-generic-function, and all methods are instances of the class standard-method. 
+除另有指定外, 在这个标准中提及的所有类都是类 standard-class 的实例, 所有广义函数都是类 standard-generic-function 的实例, 并且所有方法都是类 standard-method 的实例. 
 
-#### 4.3.1.1 Standard Metaclasses
+#### 4.3.1.1 标准的元类
 
-The object system provides a number of predefined metaclasses. These include the classes standard-class, built-in-class, and structure-class:
+对象系统提供了许多预定义的元类. 这些包括类 standard-class, built-in-class, 还有 structure-class:
 
-* The class standard-class is the default class of classes defined by defclass.
+* 类 standard-class 是 defclass 定义的类的默认类.
 
-* The class built-in-class is the class whose instances are classes that have special implementations with restricted capabilities. Any class that corresponds to a standard type might be an instance of built-in-class. The predefined type specifiers that are required to have corresponding classes are listed in Figure 4-8. It is implementation-dependent whether each of these classes is implemented as a built-in class.
+* 类 built-in-class 是实例具有限制能力的特殊实现的类的类. 任何相当于标准类型的类可能是 built-in-class 的一个实例. 预定义的类型指定符需要有对应的类在 Figure 4-8 中被列出. 这些类中的每一个是否被实现为一个内置的类是依赖于具体实现的.
 
-* All classes defined by means of defstruct are instances of the class structure-class. 
+* 所有通过 defstruct 定义的类都是类 structure-class 的实例. 
 
 ### 4.3.2 <span id="DefiningClasses">Defining Classes</span>
 
