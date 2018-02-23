@@ -214,7 +214,7 @@ Figure 4-7. 对象系统类
 > * 4.3.1 [类的介绍](#IntroductionToClasses)
 > * 4.3.2 [定义类](#DefiningClasses)
 > * 4.3.3 [创建类的实例](#CreatingInstancesClasses)
-> * 4.3.4 [Inheritance](#Inheritance)
+> * 4.3.4 [继承](#Inheritance)
 > * 4.3.5 [Determining the Class Precedence List](#DeterminingClassPrecedenceList)
 > * 4.3.6 [Redefining Classes](#RedefiningClasses)
 > * 4.3.7 [Integrating Types and Classes](#IntegratingTypesClasses)
@@ -287,30 +287,32 @@ defclass 表达式形式的槽选项和类选项机制被用于:
 
 广义函数 make-instance 创建并返回一个类的一个新的实例. 这个对象系统提供多种机制用于指明一个对象如何被初始化. 比如, 在新创建的对象中通过给 make-instance 提供参数或提供默认的初始化值来指定槽的初始化值是可能的. 进一步的初始化活动可以通过为广义函数编写的方法执行, 这些函数是初始化协议的一部分. 完全的初始化协议在章节 7.1 (Object Creation and Initialization) 中描述. 
 
-### 4.3.4 <span id="Inheritance">Inheritance</span>
+### 4.3.4 <span id="Inheritance">继承</span>
 
-A class can inherit methods, slots, and some defclass options from its superclasses. Other sections describe the inheritance of methods, the inheritance of slots and slot options, and the inheritance of class options.
+一个类可以从它的超类中继承方法, 槽, 还有一些 defclass 选项. 其他部分描述了方法的继承, 槽和槽选项的继承以及类选项的继承.
 
-#### 4.3.4.1 Examples of Inheritance
+#### 4.3.4.1 继承的示例
 
- (defclass C1 () 
-     ((S1 :initform 5.4 :type number) 
-      (S2 :allocation :class)))
- 
- (defclass C2 (C1) 
-     ((S1 :initform 5 :type integer)
-      (S2 :allocation :instance)
-      (S3 :accessor C2-S3)))
+```LISP
+(defclass C1 () 
+    ((S1 :initform 5.4 :type number) 
+    (S2 :allocation :class)))
 
-Instances of the class C1 have a local slot named S1, whose default initial value is 5.4 and whose value should always be a number. The class C1 also has a shared slot named S2.
+(defclass C2 (C1) 
+    ((S1 :initform 5 :type integer)
+    (S2 :allocation :instance)
+    (S3 :accessor C2-S3)))
+```
 
-There is a local slot named S1 in instances of C2. The default initial value of S1 is 5. The value of S1 should always be of type (and integer number). There are also local slots named S2 and S3 in instances of C2. The class C2 has a method for C2-S3 for reading the value of slot S3; there is also a method for (setf C2-S3) that writes the value of S3. 
+类 C1 的实例有一个局部槽命名为 S1, 它的默认初始值是 5.4 并且它的值应该始终为一个数字. 类 C1 也有一个共享的槽名为 S2.
 
-#### 4.3.4.2 Inheritance of Class Options
+在 S2 的实例中有一个局部槽名为 S1. S1 的默认初始值为 5. S1 的值应该总是为类型 (and integer number). 在 S2 的实例中也有名为 S2 和 S3 的局部槽. 类 C2 有一个 C2-S3 方法来读取槽 S3 的值; 也有一个 (setf C2-S3) 方法来写入 S3 的值. 
 
-The :default-initargs class option is inherited. The set of defaulted initialization arguments for a class is the union of the sets of initialization arguments supplied in the :default-initargs class options of the class and its superclasses. When more than one default initial value form is supplied for a given initialization argument, the default initial value form that is used is the one supplied by the class that is most specific according to the class precedence list.
+#### 4.3.4.2 类选项的继承
 
-If a given :default-initargs class option specifies an initialization argument of the same name more than once, an error of type program-error is signaled. 
+这个 :default-initargs 类选项被继承. 一个类的默认初始化参数集合是这个类和它的超类的 :default-initargs 类选项中提供的初始化参数的并集. 当给一个给定的初始化参数提供了不止一个默认初始化值表达式时, 使用的默认初始值表达式形式是由类优先级列表中最具体的类提供的.
+
+如果一个给定的 :default-initargs 类选项不止一次指定相同名字的初始化参数, 会发出一个类型 program-error 的错误. 
 
 ### 4.3.5 <span id="DeterminingClassPrecedenceList">Determining the Class Precedence List</span>
 
