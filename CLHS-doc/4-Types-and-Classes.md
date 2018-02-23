@@ -315,7 +315,7 @@ defclass 表达式形式的槽选项和类选项机制被用于:
 如果一个给定的 :default-initargs 类选项不止一次指定相同名字的初始化参数, 会发出一个类型 program-error 的错误. 
 
 ### 4.3.5 <span id="DeterminingClassPrecedenceList">确定类的优先级列表</span>
-<!--TODO 需要重新校对-->
+<!--TODO 需要重新校对 predecessor ordering ？？-->
 一个类的 defclass 表达式形式提供这个类和它的直接超类的完整的列表. 这个列表称之为局部优先级列表(local precedence order). 它是一个这个类和它的直接超类的有序列表. 这个类 C 的类优先级列表是一个由每一个 C 和它的超类的局部优先级列表构成的完整的列表.
 
 一个类在它的直接超类前面, 并且一个直接超类先于那些在 defclass 表达式中的超类列表中在它右边的其他直接超类. 对于每一个类 C, 定义
@@ -334,17 +334,17 @@ R=Uc<ELEMENT-OF>SCRc
 
 如果 R 不是一致的, 会发出一个错误.
 
-#### 4.3.5.1 Topological Sorting
+#### 4.3.5.1 拓扑排序
+<!--TODO 有问题-->
+拓扑排序是根据 R 中的元素通过在 SC 中找到一个 C 类来进行的, 这样就不会有其他元素先于这个元素. 这个类 C 被放在结果的最前面. 从 SC 中移除 C, 并且从 R 中移除所有表达式 (C,D) 对, D<ELEMENT-OF>SC. 重复这个过程, 在结果的末尾添加没有任何 predecessors 的类. 当找不到没有 predecessor 的元素时停止.
 
-Topological sorting proceeds by finding a class C in SC such that no other class precedes that element according to the elements in R. The class C is placed first in the result. Remove C from SC, and remove all pairs of the form (C,D), D<ELEMENT-OF>SC, from R. Repeat the process, adding classes with no predecessors to the end of the result. Stop when no element can be found that has no predecessor.
+如果 SC 不是空并且这个过程已经停止, 那么集合 R 是不一致的. 如果在有限集合中的每个类都前置另一个类，那么 R 就包含一个循环. 这就是说, 这里有一个 Ci 先于 Ci+1 的链 C1,...,Cn , 1 <= i < n, 并且 Cn 先于 C1.
 
-If SC is not empty and the process has stopped, the set R is inconsistent. If every class in the finite set of classes is preceded by another, then R contains a loop. That is, there is a chain of classes C1,...,Cn such that Ci precedes Ci+1, 1<=i<n, and Cn precedes C1.
+有时候这里有多个来自 SC 没有 predecessors 的类. 在这个情况下选择迄今为止在类优先级列表中最右边的那个直接子类. (如果这里没有这样一个候选的类, R 不产生一个部分列表---这个 Rc, c<ELEMENT-OF>SC, 是不一致的.)
 
-Sometimes there are several classes from SC with no predecessors. In this case select the one that has a direct subclass rightmost in the class precedence list computed so far. (If there is no such candidate class, R does not generate a partial ordering---the Rc, c<ELEMENT-OF>SC, are inconsistent.)
+用更精确的术语, 让 {N1,...,Nm}, m>=2, 成为来自于 SC 的没有 predecessors 的类. 让 (C1...Cn), n>=1, 成为目前为止已构建的类优先级列表. C1 是最具体的类, 并且 Cn 最不具体的. 让 1 <= j <= n 成为最大一个数这样这里存在 i 其中 1 <= i <= m 并且 Ni 是 Cj 的一个直接子类; Ni 被放到下一个.
 
-In more precise terms, let {N1,...,Nm}, m>=2, be the classes from SC with no predecessors. Let (C1...Cn), n>=1, be the class precedence list constructed so far. C1 is the most specific class, and Cn is the least specific. Let 1<=j<=n be the largest number such that there exists an i where 1<=i<=m and Ni is a direct superclass of Cj; Ni is placed next.
-
-The effect of this rule for selecting from a set of classes with no predecessors is that the classes in a simple superclass chain are adjacent in the class precedence list and that classes in each relatively separated subgraph are adjacent in the class precedence list. For example, let T1 and T2 be subgraphs whose only element in common is the class J. Suppose that no superclass of J appears in either T1 or T2, and that J is in the superclass chain of every class in both T1 and T2. Let C1 be the bottom of T1; and let C2 be the bottom of T2. Suppose C is a class whose direct superclasses are C1 and C2 in that order, then the class precedence list for C starts with C and is followed by all classes in T1 except J. All the classes of T2 are next. The class J and its superclasses appear last. 
+这条规则的作用是, 在没有 predecessor 的一组类中选择一个简单的超类链中的类在类优先级列表中是相邻的, 并且每个相对独立的子图中的类在类优先列表中都是相邻的 The effect of this rule for selecting from a set of classes with no predecessors is that the classes in a simple superclass chain are adjacent in the class precedence list and that classes in each relatively separated subgraph are adjacent in the class precedence list <!-- TODO 待校验 -->. 例如, 让 T1 和 T2 成为子图, 其唯一公共的元素是类 J. 假设没有 J 的超类出现在 T1 或 T2 中, 并且这个 J 存在于 T1 和 T2 的每个类的超类链中. 让 C1 是 T1 底部; 并且让 C2 是 T2 的底部. 假设这个顺序下 C 的直接超类是 C1 和 C2, 那么 C 的类优先级列表以 C 开始后面更这 T1 的所有类除了 J. 后面是 T2 的所有类. 类 J 和它的超类出现在最后. 
 
 #### 4.3.5.2 Examples of Class Precedence List Determination
 
