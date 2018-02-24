@@ -346,61 +346,66 @@ R=Uc<ELEMENT-OF>SCRc
 
 这条规则的作用是, 在没有 predecessor 的一组类中选择一个简单的超类链中的类在类优先级列表中是相邻的, 并且每个相对独立的子图中的类在类优先列表中都是相邻的 The effect of this rule for selecting from a set of classes with no predecessors is that the classes in a simple superclass chain are adjacent in the class precedence list and that classes in each relatively separated subgraph are adjacent in the class precedence list <!-- TODO 待校验 -->. 例如, 让 T1 和 T2 成为子图, 其唯一公共的元素是类 J. 假设没有 J 的超类出现在 T1 或 T2 中, 并且这个 J 存在于 T1 和 T2 的每个类的超类链中. 让 C1 是 T1 底部; 并且让 C2 是 T2 的底部. 假设这个顺序下 C 的直接超类是 C1 和 C2, 那么 C 的类优先级列表以 C 开始后面更这 T1 的所有类除了 J. 后面是 T2 的所有类. 类 J 和它的超类出现在最后. 
 
-#### 4.3.5.2 Examples of Class Precedence List Determination
+#### 4.3.5.2 确定类优先级列表的示例
 
-This example determines a class precedence list for the class pie. The following classes are defined:
+这个实例确定一个类 pie 的类优先级列表. 定义下面这些类:
 
- (defclass pie (apple cinnamon) ())
- 
- (defclass apple (fruit) ())
- 
- (defclass cinnamon (spice) ())
- 
- (defclass fruit (food) ())
+```LISP
+(defclass pie (apple cinnamon) ())
 
- (defclass spice (food) ())
+(defclass apple (fruit) ())
 
- (defclass food () ())
+(defclass cinnamon (spice) ())
 
-The set Spie = {pie, apple, cinnamon, fruit, spice, food, standard-object, t}. The set R = {(pie, apple), (apple, cinnamon), (apple, fruit), (cinnamon, spice),
+(defclass fruit (food) ())
+
+(defclass spice (food) ())
+
+(defclass food () ())
+```
+
+集合 Spie = {pie, apple, cinnamon, fruit, spice, food, standard-object, t}. 集合 R = {(pie, apple), (apple, cinnamon), (apple, fruit), (cinnamon, spice),
 (fruit, food), (spice, food), (food, standard-object), (standard-object, t)}.
 
-The class pie is not preceded by anything, so it comes first; the result so far is (pie). Remove pie from S and pairs mentioning pie from R to get S = {apple, cinnamon, fruit, spice, food, standard-object, t} and R = {(apple, cinnamon), (apple, fruit), (cinnamon, spice),
+类 pie 的前面什么都没有, 所以它是第一个; 目前为止结果是 (pie). 从 S 中移除 pie 并且从 R 中移除提及到 pie 的对得到 S = {apple, cinnamon, fruit, spice, food, standard-object, t} 还有 R = {(apple, cinnamon), (apple, fruit), (cinnamon, spice),
 (fruit, food), (spice, food), (food, standard-object), (standard-object, t)}.
 
-The class apple is not preceded by anything, so it is next; the result is (pie apple). Removing apple and the relevant pairs results in S = {cinnamon, fruit, spice, food, standard-object, t} and R = {(cinnamon, spice), (fruit, food), (spice, food), (food, standard-object),
+类 apple 前面没有任何东西, 所以它是下一个; 结果是 (pie apple). 移除 apple 和相关的对得到 S = {cinnamon, fruit, spice, food, standard-object, t} 并且 R = {(cinnamon, spice), (fruit, food), (spice, food), (food, standard-object),
 (standard-object, t)}.
 
-The classes cinnamon and fruit are not preceded by anything, so the one with a direct subclass rightmost in the class precedence list computed so far goes next. The class apple is a direct subclass of fruit, and the class pie is a direct subclass of cinnamon. Because apple appears to the right of pie in the class precedence list, fruit goes next, and the result so far is (pie apple fruit). S = {cinnamon, spice, food, standard-object, t}; R = {(cinnamon, spice), (spice, food),
-(food, standard-object), (standard-object, t)}.
+类 cinnamon 和 fruit 前面什么都没有, 所以目前为止拥有在类优先级列表中最右边的直接子类的那一个是下一个. 类 apple 是 fruit 的直接子类, 而类 pie 是一个 cinnamon 的直接子类. 因为类优先级列表中 apple 出现 pie 的右边, fruit 是下一个, 目前的结果是 (pie apple fruit). S = {cinnamon, spice, food, standard-object, t}; R = {(cinnamon, spice), (spice, food),(food, standard-object), (standard-object, t)}.
 
-The class cinnamon is next, giving the result so far as (pie apple fruit cinnamon). At this point S = {spice, food, standard-object, t}; R = {(spice, food), (food, standard-object), (standard-object, t)}.
+类 cinnamon 是下一个, 目前结果为 (pie apple fruit cinnamon). 这时 S = {spice, food, standard-object, t}; R = {(spice, food), (food, standard-object), (standard-object, t)}.
 
-The classes spice, food, standard-object, and t are added in that order, and the class precedence list is (pie apple fruit cinnamon spice food standard-object t).
+类 spice, food, standard-object, 还有 t 按这个顺序添加, 然后类优先级列表为 (pie apple fruit cinnamon spice food standard-object t).
 
-It is possible to write a set of class definitions that cannot be ordered. For example:
+编写一组不能被排序的类定义是可能的. 比如:
 
- (defclass new-class (fruit apple) ())
- 
- (defclass apple (fruit) ())
+```LISP
+(defclass new-class (fruit apple) ())
 
-The class fruit must precede apple because the local ordering of superclasses must be preserved. The class apple must precede fruit because a class always precedes its own superclasses. When this situation occurs, an error is signaled, as happens here when the system tries to compute the class precedence list of new-class.
+(defclass apple (fruit) ())
+```
 
-The following might appear to be a conflicting set of definitions:
+类 fruit 必须先于 apple 因为必须保留超类的局部顺序. 类 apple 必须先于 fruit 因为一个类必须先于它的超类. 当这个情况发生时, 会发出一个错误, 当系统尝试去计算 new-class 的类优先级列表时会发生在这里.
 
- (defclass pie (apple cinnamon) ())
- 
- (defclass pastry (cinnamon apple) ())
- 
- (defclass apple () ())
- 
- (defclass cinnamon () ())
+以下可能是一组相互冲突的定义:
 
-The class precedence list for pie is (pie apple cinnamon standard-object t).
+```LISP
+(defclass pie (apple cinnamon) ())
 
-The class precedence list for pastry is (pastry cinnamon apple standard-object t).
+(defclass pastry (cinnamon apple) ())
 
-It is not a problem for apple to precede cinnamon in the ordering of the superclasses of pie but not in the ordering for pastry. However, it is not possible to build a new class that has both pie and pastry as superclasses. 
+(defclass apple () ())
+
+(defclass cinnamon () ())
+```
+
+这个 pie 的类优先级列表是 (pie apple cinnamon standard-object t).
+
+这个 pastry 的类优先级列表是 (pastry cinnamon apple standard-object t).
+
+在 pie 的超类的顺序中 apple 先于 cinnamon 不是问题, 但是在 pastry 中则有问题. 然而, 去构建一个同时有 pie 和 pastry 作为超类的新的类是不可能的. 
 
 ### 4.3.6 <span id="RedefiningClasses">Redefining Classes</span>
 
