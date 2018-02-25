@@ -216,7 +216,7 @@ Figure 4-7. 对象系统类
 > * 4.3.3 [创建类的实例](#CreatingInstancesClasses)
 > * 4.3.4 [继承](#Inheritance)
 > * 4.3.5 [确定类的优先级列表](#DeterminingClassPrecedenceList)
-> * 4.3.6 [Redefining Classes](#RedefiningClasses)
+> * 4.3.6 [重定义类](#RedefiningClasses)
 > * 4.3.7 [Integrating Types and Classes](#IntegratingTypesClasses)
 
 ### 4.3.1 <span id="IntroductionToClasses">类的介绍</span>
@@ -407,49 +407,49 @@ R=Uc<ELEMENT-OF>SCRc
 
 在 pie 的超类的顺序中 apple 先于 cinnamon 不是问题, 但是在 pastry 中则有问题. 然而, 去构建一个同时有 pie 和 pastry 作为超类的新的类是不可能的. 
 
-### 4.3.6 <span id="RedefiningClasses">Redefining Classes</span>
+### 4.3.6 <span id="RedefiningClasses">重定义类</span>
 
-A class that is a direct instance of standard-class can be redefined if the new class is also a direct instance of standard-class. Redefining a class modifies the existing class object to reflect the new class definition; it does not create a new class object for the class. Any method object created by a :reader, :writer, or :accessor option specified by the old defclass form is removed from the corresponding generic function. Methods specified by the new defclass form are added.
+作为一个 standard-class 的直接实例的类可以被重定义, 但是重定义的类也需要是 standard-class 类的实例. 重定义一个类会修改已存在的类对象来反映这个新的类的定义; 它不会为这个类创建一个新的类对象. 任何由旧的 defclass 表达式的 :reader, :writer, 或 :accessor 选项创建的方法对象会从对应广义函数中被移除. 新的 defclass 表达式指定的方法会被添加进去.
 
-When the class C is redefined, changes are propagated to its instances and to instances of any of its subclasses. Updating such an instance occurs at an implementation-dependent time, but no later than the next time a slot of that instance is read or written. Updating an instance does not change its identity as defined by the function eq. The updating process may change the slots of that particular instance, but it does not create a new instance. Whether updating an instance consumes storage is implementation-dependent.
+当这个类 C 被重定义了, 修改会传递到它的实例以及它的子类的实例. 更新这样一个实例发生的时间依赖于具体实现, 但是不会晚于下一次这个实例的槽被读取或写入. 更新一个实例不会改变函数 eq 定义的它的恒等条件. 更新的过程可能改变这个特别实例的槽, 但是不会创建一个新实例. 更新一个实例是否消耗存储是依赖于具体实现的.
 
-Note that redefining a class may cause slots to be added or deleted. If a class is redefined in a way that changes the set of local slots accessible in instances, the instances are updated. It is implementation-dependent whether instances are updated if a class is redefined in a way that does not change the set of local slots accessible in instances.
+注意, 重定义一个类可能倒是槽被添加或删除. 如果一个类被重新定义, 它改变了实例中可访问的局部槽的集合, 那么实例就会被更新. 如果一个类被重新定义, 它没有改变了实例中可访问的局部槽的集合, 实例是否被更新是依赖于具体实现的.
 
-The value of a slot that is specified as shared both in the old class and in the new class is retained. If such a shared slot was unbound in the old class, it is unbound in the new class. Slots that were local in the old class and that are shared in the new class are initialized. Newly added shared slots are initialized.
+在旧的类和新的类中都指定为共享的槽的值会被保留. 如果这样一个共享槽在旧的类中没绑定, 它在新的类里也是没有绑定的. 在旧的类中是局部的而在新的类中是共享的槽会被初始化. 新添加的共享槽会被初始化.
 
-Each newly added shared slot is set to the result of evaluating the captured initialization form for the slot that was specified in the defclass form for the new class. If there was no initialization form, the slot is unbound.
+每一个新添加的共享槽会被设置为新类的 defclass 表达式中指定的这个槽的初始化表达式的求值结果. 如果这里没有初始化表达式, 这个槽就是未绑定的.
 
-If a class is redefined in such a way that the set of local slots accessible in an instance of the class is changed, a two-step process of updating the instances of the class takes place. The process may be explicitly started by invoking the generic function make-instances-obsolete. This two-step process can happen in other circumstances in some implementations. For example, in some implementations this two-step process is triggered if the order of slots in storage is changed.
+如果一个类被重新定义, 其中类实例中可访问的本地槽的集合被改变, 那么更新这个类的实例的两步式步骤就会发生. 这个过程可能通过调用广义函数 make-instances-obsolete 来明确开始. 这个两步式的过程可以发生在一些实现的其他情况中. 例如, 在一些实现中如果槽在存储中的顺序被改变, 这个两步式过程也会被触发.
 
-The first step modifies the structure of the instance by adding new local slots and discarding local slots that are not defined in the new version of the class. The second step initializes the newly-added local slots and performs any other user-defined actions. These two steps are further specified in the next two sections.
+第一步通过添加新的局部槽和丢弃这个新的类中没定义的局部槽来修改这个实例的结构. 第二部来初始化新添加的槽并且执行任何其他的用户定义的动作. 这两个步骤在下面两个章节中会进一步说明.
 
-> * 4.3.6.1 [Modifying the Structure of Instances](#ModifyingStructureInstances)
-> * 4.3.6.2 [Initializing Newly Added Local Slots](#InitializingSlots)
-> * 4.3.6.3 [Customizing Class Redefinition](#CustomizingClassRedefinition)
+> * 4.3.6.1 [修改实例的结构](#ModifyingStructureInstances)
+> * 4.3.6.2 [初始化新添加的局部槽](#InitializingSlots)
+> * 4.3.6.3 [定制化类重定义](#CustomizingClassRedefinition)
 
-#### 4.3.6.1 <span id="ModifyingStructureInstances">Modifying the Structure of Instances</span>
+#### 4.3.6.1 <span id="ModifyingStructureInstances">修改实例的结构</span>
 
-The first step modifies the structure of instances of the redefined class to conform to its new class definition. Local slots specified by the new class definition that are not specified as either local or shared by the old class are added, and slots not specified as either local or shared by the new class definition that are specified as local by the old class are discarded. The names of these added and discarded slots are passed as arguments to update-instance-for-redefined-class as described in the next section.
+第一步修改重定义类的实例的结构来使之符合新的类定义. 在新的类定义中增加的局部槽而在旧的类定义中既没有指定为局部的也不是共享的槽会被添加, 并且在新的类定义中既不是局部也不是共享的而在旧的类定义中指定为局部的槽会被丢弃. 这些新添加和丢弃的槽的名字作为参数传递给下一章节所描述的 update-instance-for-redefined-class.
 
-The values of local slots specified by both the new and old classes are retained. If such a local slot was unbound, it remains unbound.
+旧的和新的类中都指定的局部槽的值会被保留. 如果这样一个局部槽是未绑定的, 它就保留为未绑定的.
 
-The value of a slot that is specified as shared in the old class and as local in the new class is retained. If such a shared slot was unbound, the local slot is unbound. 
+在旧的类中是共享的而在新的类中指定为局部的槽的值会保留. 如果这样一个共享槽是为绑定的, 这个后来的局部槽也是为绑定的. 
 
-#### 4.3.6.2 <span id="InitializingSlots">Initializing Newly Added Local Slots</span>
+#### 4.3.6.2 <span id="InitializingSlots">初始化新添加的局部槽</span>
 
-The second step initializes the newly added local slots and performs any other user-defined actions. This step is implemented by the generic function update-instance-for-redefined-class, which is called after completion of the first step of modifying the structure of the instance.
+第二步初始化新添加的局部槽并且执行任何其他用户定义的动作. 这个步骤被广义函数 update-instance-for-redefined-class 实现, 这个函数在第一个修改实例结构的步骤完成后被调用.
 
-The generic function update-instance-for-redefined-class takes four required arguments: the instance being updated after it has undergone the first step, a list of the names of local slots that were added, a list of the names of local slots that were discarded, and a property list containing the slot names and values of slots that were discarded and had values. Included among the discarded slots are slots that were local in the old class and that are shared in the new class.
+广义函数 update-instance-for-redefined-class 需要 4 个必要参数: 在经历过第一个步骤之后要被更新的实例, 添加的局部槽的名称列表, 丢弃的局部槽的名称列表, 还有一个包含丢弃的槽的名字和槽的值的属性列表. 被丢弃的槽中包括旧类中是局部的而新类中是共享的槽.
 
-The generic function update-instance-for-redefined-class also takes any number of initialization arguments. When it is called by the system to update an instance whose class has been redefined, no initialization arguments are provided.
+广义函数 update-instance-for-redefined-class 也接受任意数量的初始化参数. 当它被系统调用来更新类被重定义的实例时, 不会提供初始化参数.
 
-There is a system-supplied primary method for update-instance-for-redefined-class whose parameter specializer for its instance argument is the class standard-object. First this method checks the validity of initialization arguments and signals an error if an initialization argument is supplied that is not declared as valid. (For more information, see Section 7.1.2 (Declaring the Validity of Initialization Arguments).) Then it calls the generic function shared-initialize with the following arguments: the instance, the list of names of the newly added slots, and the initialization arguments it received. 
+这里有一个系统提供的关于 update-instance-for-redefined-class 主方法, 它的实例参数的指定符是一个  standard-object 类. 首先这个方法检测初始化参数的正确性, 如果一个提供的参数没有被合法声明就会发出一个错误. (关于更多信息, 见章节 7.1.2 (Declaring the Validity of Initialization Arguments).) 然后它调用广义函数 shared-initialize 并传入以下参数: 这个实例, 新添加槽的名称列表, 还有它收到的初始化参数. 
 
-#### 4.3.6.3 <span id="CustomizingClassRedefinition">Customizing Class Redefinition</span>
+#### 4.3.6.3 <span id="CustomizingClassRedefinition">定制化类重定义</span>
 
-Methods for update-instance-for-redefined-class may be defined to specify actions to be taken when an instance is updated. If only after methods for update-instance-for-redefined-class are defined, they will be run after the system-supplied primary method for initialization and therefore will not interfere with the default behavior of update-instance-for-redefined-class. Because no initialization arguments are passed to update-instance-for-redefined-class when it is called by the system, the initialization forms for slots that are filled by before methods for update-instance-for-redefined-class will not be evaluated by shared-initialize.
+关于 update-instance-for-redefined-class 的方法可能被定义用来指定当一个实例被更新时采取的动作. 如果定义了 update-instance-for-redefined-class 的方法, 那么它们将在 system-supplied 的初始化主方法之后运行, 因此不会影响 update-instance-for-redefined-class 的默认行为. 被系统调用时由于没有传递初始化参数给 update-instance-for-redefined-class, 在 update-instance-for-redefined-class 方法之前添加的槽的初始化表达式形式不会被 shared-initialize 求值.
 
-Methods for shared-initialize may be defined to customize class redefinition. For more information, see Section 7.1.5 (Shared-Initialize). 
+关于 shared-initialize 的方法可能被定义用来定制类的重定义行为. 关于更多信息, 见章节 7.1.5 (Shared-Initialize). 
 
 ### 4.3.7 <span id="IntegratingTypesClasses">Integrating Types and Classes</span>
 
