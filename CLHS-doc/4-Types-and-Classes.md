@@ -217,7 +217,7 @@ Figure 4-7. 对象系统类
 > * 4.3.4 [继承](#Inheritance)
 > * 4.3.5 [确定类的优先级列表](#DeterminingClassPrecedenceList)
 > * 4.3.6 [重定义类](#RedefiningClasses)
-> * 4.3.7 [Integrating Types and Classes](#IntegratingTypesClasses)
+> * 4.3.7 [整合类和类型](#IntegratingTypesClasses)
 
 ### 4.3.1 <span id="IntroductionToClasses">类的介绍</span>
 
@@ -451,65 +451,65 @@ R=Uc<ELEMENT-OF>SCRc
 
 关于 shared-initialize 的方法可能被定义用来定制类的重定义行为. 关于更多信息, 见章节 7.1.5 (Shared-Initialize). 
 
-### 4.3.7 <span id="IntegratingTypesClasses">Integrating Types and Classes</span>
+### 4.3.7 <span id="IntegratingTypesClasses">整合类和类型</span>
 
-The object system maps the space of classes into the space of types. Every class that has a proper name has a corresponding type with the same name.
+对象系统映射类的空间到类型的空间. 每个有着 proper 的名字的类都有一个对应相同名字的类型.
 
-The proper name of every class is a valid type specifier. In addition, every class object is a valid type specifier. Thus the expression (typep object class) evaluates to true if the class of object is class itself or a subclass of class. The evaluation of the expression (subtypep class1 class2) returns the values true and true if class1 is a subclass of class2 or if they are the same class; otherwise it returns the values false and true. If I is an instance of some class C named S and C is an instance of standard-class, the evaluation of the expression (type-of I) returns S if S is the proper name of C; otherwise, it returns C.
+每个类的 proper 名字是一个合法的类型指定符. 另外, 每个类对象是一个合法的类型指定符. 所以表达式 (typep object class) 在 object 的类是 class 本身或者 class 的子类情况下返回 true. 如果 class1 是 class2 的一个子类或者它们是相同的类, 表达式 (subtypep class1 class2) 的求值返回多值 true 和 true; 否则它返回多值 false 和 true. 如果 I 是某个名为 S 的类 C 的实例并且 C 是 standard-class 的实例, 那么如果 S 是 C 的 proper 的名字表达式 (type-of I) 的求值返回 S; 否则, 它返回 C.
 
-Because the names of classes and class objects are type specifiers, they may be used in the special form the and in type declarations.
+由于类的名字和类对象是类型指定符, 它们可能被用于特殊表达式形式 the 还有类型声明.
 
-Many but not all of the predefined type specifiers have a corresponding class with the same proper name as the type. These type specifiers are listed in Figure 4-8. For example, the type array has a corresponding class named array. No type specifier that is a list, such as (vector double-float 100), has a corresponding class. The operator deftype does not create any classes.
+很多但不是全部预定义的类型指定符都有和类型有着相同 proper 名字的类. 这些类型指定符列在 Figure 4-8. 比如, 类型 array 有一个对应的类名为 array. 没有类型指定符是一个列表, 比如 (vector double-float 100), 有着一个对应的类. 操作符 deftype 不会创建任何类.
 
-Each class that corresponds to a predefined type specifier can be implemented in one of three ways, at the discretion of each implementation. It can be a standard class, a structure class, or a system class.
+对应于预定义类型说明符的每个类可以通过以下三种方式实现, 由每个具体实现决定. 它可以是一个 standard class, 一个 structure class, 或者一个 system class.
 
-A built-in class is one whose generalized instances have restricted capabilities or special representations. Attempting to use defclass to define subclasses of a built-in-class signals an error. Calling make-instance to create a generalized instance of a built-in class signals an error. Calling slot-value on a generalized instance of a built-in class signals an error. Redefining a built-in class or using change-class to change the class of an object to or from a built-in class signals an error. However, built-in classes can be used as parameter specializers in methods.
+一个内置的类是一个泛化实例具有限制功能和特殊表示的类. 尝试使用 defclass 去定义 built-in-class 的子类会发出一个错误. 对一个内置类的泛化实例调用 slot-value 会发出一个错误. 重定义一个内置的类或使用 change-class 去改变一个内置类对象的类或把一个对象的类改为内置类都会发出一个错误. 然而, 内置的类可以被用作方法的参数指定符.
 
-It is possible to determine whether a class is a built-in class by checking the metaclass. A standard class is an instance of the class standard-class, a built-in class is an instance of the class built-in-class, and a structure class is an instance of the class structure-class.
+可以通过检测元类来确定一个类是否为内置类. 一个标准类是类 standard-class 的实例, 一个内置类是 built-in-class 的实例, 并且一个结构类是 structure-class 的实例.
 
-Each structure type created by defstruct without using the :type option has a corresponding class. This class is a generalized instance of the class structure-class. The :include option of defstruct creates a direct subclass of the class that corresponds to the included structure type.
+每一个用 defstruct 创建的没有使用 :type 选项的结构类型都由一个对应的类. 这个类是一个类 structure-class 的泛化实例. 这个 defstruct 的 :include 选项会创建一个对应被包含的结构类型的类的直接子类.
 
-It is implementation-dependent whether slots are involved in the operation of functions defined in this specification on instances of classes defined in this specification, except when slots are explicitly defined by this specification.
+槽是否被牵涉到在这个规范定义的类的实例上的这个规范定义的函数操作中是依赖于具体实现的, 除非这个槽被这个规范明确定义.
 
-If in a particular implementation a class defined in this specification has slots that are not defined by this specfication, the names of these slots must not be external symbols of packages defined in this specification nor otherwise accessible in the CL-USER package.
+如果在一个特定的具体实现中的这个规范定义的类拥有的槽没有在这个规范中定义, 这些槽的名称不能是该规范中定义的包的外部符号, 也不能在 CL-USER 包中访问.
 
-The purpose of specifying that many of the standard type specifiers have a corresponding class is to enable users to write methods that discriminate on these types. Method selection requires that a class precedence list can be determined for each class.
+指定许多标准类型指定符有相应的类, 目的是使用户能够编写对这些类型进行区别对待的方法. 方法选择要求为每个类确定一个类优先级列表.
 
-The hierarchical relationships among the type specifiers are mirrored by relationships among the classes corresponding to those types.
+类型指定符之间的层次关系通过与这些类型对应的类之间的关系来反映.
 
-Figure 4-8 lists the set of classes that correspond to predefined type specifiers.
+Figure 4-8 列出了预定义类型指定符对应的类的集合.
 
-arithmetic-error                  generic-function    simple-error               
-array                             hash-table          simple-type-error          
-bit-vector                        integer             simple-warning             
-broadcast-stream                  list                standard-class             
-built-in-class                    logical-pathname    standard-generic-function  
-cell-error                        method              standard-method            
-character                         method-combination  standard-object            
-class                             null                storage-condition          
-complex                           number              stream                     
-concatenated-stream               package             stream-error               
-condition                         package-error       string                     
-cons                              parse-error         string-stream              
-control-error                     pathname            structure-class            
-division-by-zero                  print-not-readable  structure-object           
-echo-stream                       program-error       style-warning              
-end-of-file                       random-state        symbol                     
-error                             ratio               synonym-stream             
-file-error                        rational            t                          
-file-stream                       reader-error        two-way-stream             
-float                             readtable           type-error                 
-floating-point-inexact            real                unbound-slot               
-floating-point-invalid-operation  restart             unbound-variable           
-floating-point-overflow           sequence            undefined-function         
-floating-point-underflow          serious-condition   vector                     
-function                          simple-condition    warning                    
+    arithmetic-error                  generic-function    simple-error          
+    array                             hash-table          simple-type-error       
+    bit-vector                        integer             simple-warning          
+    broadcast-stream                  list                standard-class          
+    built-in-class                    logical-pathname    standard-generic-function  
+    cell-error                        method              standard-method         
+    character                         method-combination  standard-object         
+    class                             null                storage-condition       
+    complex                           number              stream                  
+    concatenated-stream               package             stream-error            
+    condition                         package-error       string                  
+    cons                              parse-error         string-stream           
+    control-error                     pathname            structure-class         
+    division-by-zero                  print-not-readable  structure-object        
+    echo-stream                       program-error       style-warning           
+    end-of-file                       random-state        symbol                  
+    error                             ratio               synonym-stream          
+    file-error                        rational            t                       
+    file-stream                       reader-error        two-way-stream          
+    float                             readtable           type-error              
+    floating-point-inexact            real                unbound-slot            
+    floating-point-invalid-operation  restart             unbound-variable        
+    floating-point-overflow           sequence            undefined-function      
+    floating-point-underflow          serious-condition   vector                  
+    function                          simple-condition    warning                 
 
-Figure 4-8. Classes that correspond to pre-defined type specifiers
+Figure 4-8. 对应预定义类型指定符的类
 
-The class precedence list information specified in the entries for each of these classes are those that are required by the object system.
+在这些类的条目中指定的类优先级列表信息是对象系统所需要的.
 
-Individual implementations may be extended to define other type specifiers to have a corresponding class. Individual implementations may be extended to add other subclass relationships and to add other elements to the class precedence lists as long as they do not violate the type relationships and disjointness requirements specified by this standard. A standard class defined with no direct superclasses is guaranteed to be disjoint from all of the classes in the table, except for the class named t. 
+可以扩展单独的具体实现来定义其他类型指定符来拥有相应的类. 单个具体实现可以扩展去添加其他子类关系, 并将其他元素添加到类优先级列表中, 只要它们不违反该标准所指定的类型关系和互斥性需求. 一个已定义的没有指定直接超类的标准类保证和这个表中的所有类都是互斥的, 除了名为 t 的类. 
 
 ## 4.4 <span id="TheTypesClassesDictionary">The Types and Classes Dictionary</span>
 
