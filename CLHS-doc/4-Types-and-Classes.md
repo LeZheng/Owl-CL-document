@@ -516,7 +516,7 @@ Figure 4-8. 对应预定义类型指定符的类
 > * [类型 NIL](#TypeNIL)
 > * [类型 BOOLEAN](#TypeBOOLEAN)
 > * [系统类 FUNCTION](#SystemClassFUNCTION)
-> * [Type COMPILED-FUNCTION](#TypeCOMPILEDFUNCTION)
+> * [类型 COMPILED-FUNCTION](#TypeCOMPILEDFUNCTION)
 > * [系统类 GENERIC-FUNCTION](#SystemClassGENERICFUNCTION)
 > * [系统类 STANDARD-GENERIC-FUNCTION](#SystemClassSTANDARDGENERICFUNCTION)
 > * [系统类 CLASS](#SystemClassCLASS)
@@ -525,25 +525,25 @@ Figure 4-8. 对应预定义类型指定符的类
 > * [系统类 STANDARD-CLASS](#SystemClassSTANDARDCLASS)
 > * [系统类 METHOD](#SystemClassMETHOD)
 > * [系统类 STANDARD-METHOD](#SystemClassSTANDARDMETHOD)
-> * [Class STRUCTURE-OBJECT](#ClassSTRUCTUREOBJECT)
-> * [Class STANDARD-OBJECT](#ClassSTANDARDOBJECT)
+> * [类 STRUCTURE-OBJECT](#ClassSTRUCTUREOBJECT)
+> * [类 STANDARD-OBJECT](#ClassSTANDARDOBJECT)
 > * [系统类 METHOD-COMBINATION](#SystemClassMETHODCOMBINATION)
 > * [系统类 T](#SystemClassT)
-> * [Type Specifier SATISFIES](#TypeSpecifierSATISFIES)
-> * [Type Specifier MEMBER](#TypeSpecifierMEMBER)
-> * [Type Specifier NOT](#TypeSpecifierNOT)
-> * [Type Specifier AND](#TypeSpecifierAND)
-> * [Type Specifier OR](#TypeSpecifierOR)
-> * [Type Specifier VALUES](#TypeSpecifierVALUES)
-> * [Type Specifier EQL](#TypeSpecifierEQL)
-> * [Function COERCE](#FunctionCOERCE)
-> * [Macro DEFTYPE](#MacroDEFTYPE)
-> * [Function SUBTYPEP](#FunctionSUBTYPEP)
-> * [Function TYPE-OF](#FunctionTYPEOF)
-> * [Function TYPEP](#FunctionTYPEP)
-> * [Condition Type TYPE-ERROR](#ConditionTypeTYPEERROR)
-> * [Function TYPE-ERROR-DATUM, TYPE-ERROR-EXPECTED-TYPE](#FunctionTEDTEET)
-> * [Condition Type SIMPLE-TYPE-ERROR](#ConditionTypeSIMPLETYPEERROR)
+> * [类型指定符 SATISFIES](#TypeSpecifierSATISFIES)
+> * [类型指定符 MEMBER](#TypeSpecifierMEMBER)
+> * [类型指定符 NOT](#TypeSpecifierNOT)
+> * [类型指定符 AND](#TypeSpecifierAND)
+> * [类型指定符 OR](#TypeSpecifierOR)
+> * [类型指定符 VALUES](#TypeSpecifierVALUES)
+> * [类型指定符 EQL](#TypeSpecifierEQL)
+> * [函数 COERCE](#FunctionCOERCE)
+> * [宏 DEFTYPE](#MacroDEFTYPE)
+> * [函数 SUBTYPEP](#FunctionSUBTYPEP)
+> * [函数 TYPE-OF](#FunctionTYPEOF)
+> * [函数 TYPEP](#FunctionTYPEP)
+> * [状况类型 TYPE-ERROR](#ConditionTypeTYPEERROR)
+> * [函数 TYPE-ERROR-DATUM, TYPE-ERROR-EXPECTED-TYPE](#FunctionTEDTEET)
+> * [状况类型 SIMPLE-TYPE-ERROR](#ConditionTypeSIMPLETYPEERROR)
 
 ### <span id="TypeNIL">类型 NIL</span>
 
@@ -667,175 +667,175 @@ Figure 4-8. 对应预定义类型指定符的类
 
         * 如果一个变量的两个 (or more) 类型声明生效, 并且它们都是函数声明, 这些声明也会类似地组合. 
 
-### <span id="TypeCOMPILEDFUNCTION">Type COMPILED-FUNCTION</span>
+### <span id="TypeCOMPILEDFUNCTION">类型 COMPILED-FUNCTION</span>
 
-Supertypes:
+* 超类型(Supertypes):
 
-compiled-function, function, t
+        compiled-function, function, t
 
-描述(Description):
+* 描述(Description):
 
-Any function may be considered by an implementation to be a a compiled function if it contains no references to macros that must be expanded at run time, and it contains no unresolved references to load time values. See Section 3.2.2 (Compilation Semantics).
+        如果一个函数不包含在运行时必须展开的宏的引用, 并且它也不包含加载时值的未解析的引用, 那么任何函数都可以被认为是一个编译后的函数(compiled function). 见章节 3.2.2 (Compilation Semantics).
 
-Functions whose definitions appear lexically within a file that has been compiled with compile-file and then loaded with load are of type compiled-function. Functions produced by the compile function are of type compiled-function. Other functions might also be of type compiled-function. 
+        一个函数的定义词法上出现在一个文件中, 这个文件已经被 compile-file 编译并且被 load 加载后这个函数的类型就是 compiled-function. compile 函数产生的函数也是 compiled-function 类型的. 其他函数也可能是 compiled-function 类型. 
 
 ### <span id="SystemClassGENERICFUNCTION">系统类 GENERIC-FUNCTION</span>
 
-类优先级列表(Class Precedence List):
+* 类优先级列表(Class Precedence List):
 
-generic-function, function, t
+        generic-function, function, t
 
-描述(Description):
+* 描述(Description):
 
-A generic function is a function whose behavior depends on the classes or identities of the arguments supplied to it. A generic function object contains a set of methods, a lambda list, a method combination type, and other information. The methods define the class-specific behavior and operations of the generic function; a method is said to specialize a generic function. When invoked, a generic function executes a subset of its methods based on the classes or identities of its arguments.
+        一个广义函数是一个行为取决于提供给它的参数的标识或类. 一个广义函数对象包含一个方法的集合, 一个 lambda 列表, 一个方法组合类型, 还有其他信息. 方法定义了广义函数的类特定的行为和操作; 一个方法也被称为特化一个广义函数. 当被调用时, 一个广义函数基于它的参数的类和标识去执行它的方法的一个子集.
 
-A generic function can be used in the same ways that an ordinary function can be used; specifically, a generic function can be used as an argument to funcall and apply, and can be given a global or a local name. 
+        一个广义函数可以和普通函数相同的方式被使用; specifically, 一个广义函数可以被用作 funcall 和 apply 的参数, 并且可以被赋予一个全局或局部的名字. 
 
 ### <span id="SystemClassSTANDARDGENERICFUNCTION">系统类 STANDARD-GENERIC-FUNCTION</span>
 
-类优先级列表(Class Precedence List):
+* 类优先级列表(Class Precedence List):
 
-standard-generic-function, generic-function, function, t
+        standard-generic-function, generic-function, function, t
 
-描述(Description):
+* 描述(Description):
 
-The class standard-generic-function is the default class of generic functions established by defmethod, ensure-generic-function, defgeneric, and defclass forms. 
+        类 standard-generic-function 是 defmethod, ensure-generic-function, defgeneric, 和 defclass 表达式建立的默认广义函数的类. 
 
 ### <span id="SystemClassCLASS">系统类 CLASS</span>
 
-类优先级列表(Class Precedence List):
+* 类优先级列表(Class Precedence List):
 
-class, standard-object, t
+        class, standard-object, t
 
-描述(Description):
+* 描述(Description):
 
-The type class represents objects that determine the structure and behavior of their instances. Associated with an object of type class is information describing its place in the directed acyclic graph of classes, its slots, and its options. 
+        类型 class 表示确定它们实例的结构的行为的对象. 与 class 类型的对象相关联的信息是描述其在类的非循环图形中的位置、它的槽还有它的选项的信息. 
 
 ### <span id="SystemClassBUILTINCLASS">系统类 BUILT-IN-CLASS</span>
 
-类优先级列表(Class Precedence List):
+* 类优先级列表(Class Precedence List):
 
-built-in-class, class, standard-object, t
+        built-in-class, class, standard-object, t
 
-描述(Description):
+* 描述(Description):
 
-A built-in class is a class whose instances have restricted capabilities or special representations. Attempting to use defclass to define subclasses of a built-in class signals an error of type error. Calling make-instance to create an instance of a built-in class signals an error of type error. Calling slot-value on an instance of a built-in class signals an error of type error. Redefining a built-in class or using change-class to change the class of an instance to or from a built-in class signals an error of type error. However, built-in classes can be used as parameter specializers in methods. 
+        一个内置类是一个其实例具有限制功能和特殊表示的类. 尝试用 defclass 去定义一个内置类的子类会发出一个 error 类型的错误. 调用 make-instance 去创建一个内置类的实例会发出一个 error 类型的错误. 在一个内置类的实例上调用会发出一个 error 类型的错误. 重定义一个内置类或使用 change-class 去改变一个实例的类为内置类或改变一个内置类为其他类会发出一个 error 的错误. 然而, 内置类可以被用作方法的参数指定符. 
 
 ### <span id="SystemClassSTRUCTURECLASS">系统类 STRUCTURE-CLASS</span>
 
-类优先级列表(Class Precedence List):
+* 类优先级列表(Class Precedence List):
 
-structure-class, class, standard-object, t
+        structure-class, class, standard-object, t
 
-描述(Description):
+* 描述(Description):
 
-All classes defined by means of defstruct are instances of the class structure-class. 
+        所有通过 defstruct 定义的类的都是类 structure-class 的实例. 
 
 ### <span id="SystemClassSTANDARDCLASS">系统类 STANDARD-CLASS</span>
 
-类优先级列表(Class Precedence List):
+* 类优先级列表(Class Precedence List):
 
-standard-class, class, standard-object, t
+    standard-class, class, standard-object, t
 
-描述(Description):
+* 描述(Description):
 
-The class standard-class is the default class of classes defined by defclass. 
+    类 standard-class 是 defclass 定义出来的默认类. 
 
 ### <span id="SystemClassMETHOD">系统类 METHOD</span>
 
-类优先级列表(Class Precedence List):
+* 类优先级列表(Class Precedence List):
 
-method, t
+        method, t
 
-描述(Description):
+* 描述(Description):
 
-A method is an object that represents a modular part of the behavior of a generic function.
+        一个方法是表示一个广义函数的行为的模组化部分的对象.
 
-A method contains code to implement the method's behavior, a sequence of parameter specializers that specify when the given method is applicable, and a sequence of qualifiers that is used by the method combination facility to distinguish among methods. Each required parameter of each method has an associated parameter specializer, and the method will be invoked only on arguments that satisfy its parameter specializers.
+        一个方法包含了实现这个方法行为的代码, 一个指定什么时候这个给定方法可以被应用的参数指定符序列, 还有一个被用于方法组合机制来辨别方法的限定符序列. 每一个方法的每一个必要参数都有一个关联的参数指定符, 并且只有在参数满足方法的参数指定符时, 该方法才会被调用.
 
-The method combination facility controls the selection of methods, the order in which they are run, and the values that are returned by the generic function. The object system offers a default method combination type and provides a facility for declaring new types of method combination.
+        方法组合机制控制方法的选择, 它们执行的顺序, 还有广义函数返回的值. 对象系统提供一个默认方法组合类型并且提供一个机制来声明新的方法组合类型.
 
-See Also:
+* 也见(See Also):
 
-Section 7.6 (Generic Functions and Methods) 
+        章节 7.6 (Generic Functions and Methods) 
 
 ### <span id="SystemClassSTANDARDMETHOD">系统类 STANDARD-METHOD</span>
 
-类优先级列表(Class Precedence List):
+* 类优先级列表(Class Precedence List):
 
-standard-method, method, standard-object, t
+        standard-method, method, standard-object, t
 
-描述(Description):
+* 描述(Description):
 
-The class standard-method is the default class of methods defined by the defmethod and defgeneric forms. 
+        这个类 standard-method 是 defmethod 和 defgeneric 表达式定义的方法的默认类. 
 
-### <span id="ClassSTRUCTUREOBJECT">Class STRUCTURE-OBJECT</span>
+### <span id="ClassSTRUCTUREOBJECT">类 STRUCTURE-OBJECT</span>
 
-类优先级列表(Class Precedence List):
+* 类优先级列表(Class Precedence List):
 
-structure-object, t
+        structure-object, t
 
-描述(Description):
+* 描述(Description):
 
-The class structure-object is an instance of structure-class and is a superclass of every class that is an instance of structure-class except itself, and is a superclass of every class that is defined by defstruct.
+        类 structure-object 是 structure-class 的一个实例并且是 structure-class 实例的每一个类的超类除了它自身, 并且是 defstruct 定义的每一个类的超类.
 
-See Also:
+* 也见(See Also):
 
-defstruct, Section 2.4.8.13 (Sharpsign S), Section 22.1.3.12 (Printing Structures) 
+        defstruct, Section 2.4.8.13 (Sharpsign S), Section 22.1.3.12 (Printing Structures) 
 
-### <span id="ClassSTANDARDOBJECT">Class STANDARD-OBJECT</span>
+### <span id="ClassSTANDARDOBJECT">类 STANDARD-OBJECT</span>
 
-类优先级列表(Class Precedence List):
+* 类优先级列表(Class Precedence List):
 
-standard-object, t
+        standard-object, t
 
-描述(Description):
+* 描述(Description):
 
-The class standard-object is an instance of standard-class and is a superclass of every class that is an instance of standard-class except itself. 
+        类 standard-object 是 standard-class 的一个实例并且是 standard-class 的实例的每个类的超类除了它自身. 
 
 ### <span id="SystemClassMETHODCOMBINATION">系统类 METHOD-COMBINATION</span>
 
-类优先级列表(Class Precedence List):
+* 类优先级列表(Class Precedence List):
 
-method-combination, t
+        method-combination, t
 
-描述(Description):
+* 描述(Description):
 
-Every method combination object is an indirect instance of the class method-combination. A method combination object represents the information about the method combination being used by a generic function. A method combination object contains information about both the type of method combination and the arguments being used with that type. 
+        每一个方法组合对象是类 method-combination 的间接实例. 一个方法组合对象表示这个方法组合被一个广义函数所使用的信息. 一个方法组合对象包含了方法组合的类型还有这个类型要使用的参数信息. 
 
 ### <span id="SystemClassT">系统类 T</span>
 
-类优先级列表(Class Precedence List):
+* 类优先级列表(Class Precedence List):
 
-t
+        t
 
-描述(Description):
+* 描述(Description):
 
-The set of all objects. The type t is a supertype of every type, including itself. Every object is of type t. 
+        所有对象的集合. 类型 t 每个类型的超类型, 包括它自身. 每个对象都是类型 t. 
 
-### <span id="TypeSpecifierSATISFIES">Type Specifier SATISFIES</span>
+### <span id="TypeSpecifierSATISFIES">类型指定符 SATISFIES</span>
 
-复合类型指定符种类(Compound Type Specifier Kind):
+* 复合类型指定符种类(Compound Type Specifier Kind):
 
-Predicating.
+        Predicating.
 
-复合类型指定符语法(Compound Type Specifier Syntax):
+* 复合类型指定符语法(Compound Type Specifier Syntax):
 
-satisfies predicate-name
+        satisfies predicate-name
 
-复合类型指定符的参数(Compound Type Specifier Arguments):
+* 复合类型指定符的参数(Compound Type Specifier Arguments):
 
-predicate-name---a symbol.
+        predicate-name---一个符号.
 
-复合类型指定符的描述(Compound Type Specifier Description):
+* 复合类型指定符的描述(Compound Type Specifier Description):
 
-This denotes the set of all objects that satisfy the predicate predicate-name, which must be a symbol whose global function definition is a one-argument predicate. A name is required for predicate-name; lambda expressions are not allowed. For example, the type specifier (and integer (satisfies evenp)) denotes the set of all even integers. The form (typep x '(satisfies p)) is equivalent to (if (p x) t nil).
+        这个表示满足断言 predicate-name 的所有对象的集合, 这个断言必须是单个参数断言的全局函数定义的符号. predicate-name 需要一个名字;不允许 lambda 表达式. 比如, 类型指定符 (and integer (satisfies evenp)) 表示偶数整型的集合. 表达式 (typep x '(satisfies p)) 等价于 (if (p x) t nil).
 
-The argument is required. The symbol * can be the argument, but it denotes itself (the symbol *), and does not represent an unspecified value.
+        这个参数是必要的. 符号 * 可以是参数, 但是它表示它自身 (the symbol *), 不表示一个未指定的类型.
 
-The symbol satisfies is not valid as a type specifier. 
+        符号 satisfies 作为类型指定符是不合法的. 
 
-### <span id="TypeSpecifierMEMBER">Type Specifier MEMBER</span>
+### <span id="TypeSpecifierMEMBER">类型指定符 MEMBER</span>
 
 复合类型指定符种类(Compound Type Specifier Kind):
 
@@ -855,11 +855,11 @@ This denotes the set containing the named objects. An object is of this type if 
 
 The type specifiers (member) and nil are equivalent. * can be among the objects, but if so it denotes itself (the symbol *) and does not represent an unspecified value. The symbol member is not valid as a type specifier; and, specifically, it is not an abbreviation for either (member) or (member *).
 
-See Also:
+* 也见(See Also):
 
 the type eql 
 
-### <span id="TypeSpecifierNOT">Type Specifier NOT</span>
+### <span id="TypeSpecifierNOT">类型指定符 NOT</span>
 
 复合类型指定符种类(Compound Type Specifier Kind):
 
@@ -881,7 +881,7 @@ The argument is required, and cannot be *.
 
 The symbol not is not valid as a type specifier. 
 
-### <span id="TypeSpecifierAND">Type Specifier AND</span>
+### <span id="TypeSpecifierAND">类型指定符 AND</span>
 
 复合类型指定符种类(Compound Type Specifier Kind):
 
@@ -903,7 +903,7 @@ This denotes the set of all objects of the type determined by the intersection o
 
 The type specifiers (and) and t are equivalent. The symbol and is not valid as a type specifier, and, specifically, it is not an abbreviation for (and). 
 
-### <span id="TypeSpecifierOR">Type Specifier OR</span>
+### <span id="TypeSpecifierOR">类型指定符 OR</span>
 
 复合类型指定符种类(Compound Type Specifier Kind):
 
@@ -925,7 +925,7 @@ This denotes the set of all objects of the type determined by the union of the t
 
 The type specifiers (or) and nil are equivalent. The symbol or is not valid as a type specifier; and, specifically, it is not an abbreviation for (or). 
 
-### <span id="TypeSpecifierVALUES">Type Specifier VALUES</span>
+### <span id="TypeSpecifierVALUES">类型指定符 VALUES</span>
 
 复合类型指定符种类(Compound Type Specifier Kind):
 
@@ -949,7 +949,7 @@ The symbol * may not be among the value-types.
 
 The symbol values is not valid as a type specifier; and, specifically, it is not an abbreviation for (values). 
 
-### <span id="TypeSpecifierEQL">Type Specifier EQL</span>
+### <span id="TypeSpecifierEQL">类型指定符 EQL</span>
 
 复合类型指定符种类(Compound Type Specifier Kind):
 
@@ -1053,7 +1053,7 @@ An error of type error is signaled if the result-type is function but object is 
 
 An error of type type-error should be signaled if result-type specifies the number of elements and object is of a different length.
 
-See Also:
+* 也见(See Also):
 
 rational, floor, char-code, char-int
 
@@ -1118,7 +1118,7 @@ Affected By: None.
 
 Exceptional Situations: None.
 
-See Also:
+* 也见(See Also):
 
 declare, defmacro, documentation, Section 4.2.3 (Type Specifiers), Section 3.4.11 (Syntactic Interaction of Documentation Strings and Declarations)
 
@@ -1235,7 +1235,7 @@ Affected By: None.
 
 Exceptional Situations: None.
 
-See Also:
+* 也见(See Also):
 
 Section 4.2 (Types)
 
@@ -1307,7 +1307,7 @@ Affected By: None.
 
 Exceptional Situations: None.
 
-See Also:
+* 也见(See Also):
 
 array-element-type, class-of, defstruct, typecase, typep, Section 4.2 (Types)
 
@@ -1381,7 +1381,7 @@ An error of type error is signaled if type-specifier is values, or a type specif
 
 The consequences are undefined if the type-specifier is not a type specifier.
 
-See Also:
+* 也见(See Also):
 
 type-of, upgraded-array-element-type, upgraded-complex-part-type, Section 4.2.3 (Type Specifiers)
 
@@ -1399,7 +1399,7 @@ type-error, error, serious-condition, condition, t
 
 The type type-error represents a situation in which an object is not of the expected type. The ``offending datum'' and ``expected type'' are initialized by the initialization arguments named :datum and :expected-type to make-condition, and are accessed by the functions type-error-datum and type-error-expected-type.
 
-See Also:
+* 也见(See Also):
 
 type-error-datum, type-error-expected-type 
 
@@ -1449,7 +1449,7 @@ Affected By: None.
 
 Exceptional Situations: None.
 
-See Also:
+* 也见(See Also):
 
 type-error, Section 9 (Conditions)
 
@@ -1465,7 +1465,7 @@ simple-type-error, simple-condition, type-error, error, serious-condition, condi
 
 Conditions of type simple-type-error are like conditions of type type-error, except that they provide an alternate mechanism for specifying how the condition is to be reported; see the type simple-condition.
 
-See Also:
+* 也见(See Also):
 
 simple-condition, simple-condition-format-control, simple-condition-format-arguments, type-error-datum, type-error-expected-type 
 
