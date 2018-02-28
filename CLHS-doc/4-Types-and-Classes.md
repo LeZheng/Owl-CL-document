@@ -837,239 +837,243 @@ Figure 4-8. 对应预定义类型指定符的类
 
 ### <span id="TypeSpecifierMEMBER">类型指定符 MEMBER</span>
 
-复合类型指定符种类(Compound Type Specifier Kind):
+* 复合类型指定符种类(Compound Type Specifier Kind):
 
-Combining.
+        Combining.
 
-复合类型指定符语法(Compound Type Specifier Syntax):
+* 复合类型指定符语法(Compound Type Specifier Syntax):
 
-member object*
+        member object*
 
-复合类型指定符的参数(Compound Type Specifier Arguments):
+* 复合类型指定符的参数(Compound Type Specifier Arguments):
 
-object---an object.
+        object---一个对象.
 
-复合类型指定符的描述(Compound Type Specifier Description):
+* 复合类型指定符的描述(Compound Type Specifier Description):
 
-This denotes the set containing the named objects. An object is of this type if and only if it is eql to one of the specified objects.
+        这表示这个集合包含 objects 命名的对象. 一个对象只有在它 eql 指定对象中的其中一个时才是这个类型.
 
-The type specifiers (member) and nil are equivalent. * can be among the objects, but if so it denotes itself (the symbol *) and does not represent an unspecified value. The symbol member is not valid as a type specifier; and, specifically, it is not an abbreviation for either (member) or (member *).
+        类型指定符 (member) 和 nil 是等价的. * 可以在 objects 之中, 但是如果这样的话它表示它自身 (符号 *) 并且不表示一个未指定的值. 符号 member 作为类型指定符是非法的; 并且, 特别指出, 它既不是 (member) 的缩写也不是 (member *) 的缩写.
 
 * 也见(See Also):
 
-the type eql 
+        类型 eql 
 
 ### <span id="TypeSpecifierNOT">类型指定符 NOT</span>
 
-复合类型指定符种类(Compound Type Specifier Kind):
+* 复合类型指定符种类(Compound Type Specifier Kind):
 
-Combining.
+        Combining.
 
-复合类型指定符语法(Compound Type Specifier Syntax):
+* 复合类型指定符语法(Compound Type Specifier Syntax):
 
-not typespec
+        not typespec
 
-复合类型指定符的参数(Compound Type Specifier Arguments):
+* 复合类型指定符的参数(Compound Type Specifier Arguments):
 
-typespec---a type specifier.
+        typespec---一个类型指定符.
 
-复合类型指定符的描述(Compound Type Specifier Description):
+* 复合类型指定符的描述(Compound Type Specifier Description):
 
-This denotes the set of all objects that are not of the type typespec.
+        这表示所有对象的集合都不是类型 typespec.
 
-The argument is required, and cannot be *.
+        这个参数是必要的, 并且不能是 *.
 
-The symbol not is not valid as a type specifier. 
+        符号 not 作为类型指定符是非法的. 
 
 ### <span id="TypeSpecifierAND">类型指定符 AND</span>
 
-复合类型指定符种类(Compound Type Specifier Kind):
+* 复合类型指定符种类(Compound Type Specifier Kind):
 
-Combining.
+        Combining.
 
-复合类型指定符语法(Compound Type Specifier Syntax):
+* 复合类型指定符语法(Compound Type Specifier Syntax):
 
-and typespec*
+        and typespec*
 
-复合类型指定符的参数(Compound Type Specifier Arguments):
+* 复合类型指定符的参数(Compound Type Specifier Arguments):
 
-typespec---a type specifier.
+        typespec---一个类型指定符.
 
-复合类型指定符的描述(Compound Type Specifier Description):
+* 复合类型指定符的描述(Compound Type Specifier Description):
 
-This denotes the set of all objects of the type determined by the intersection of the typespecs.
+        这表示所有对象的集合都是 typespecs 的交集所确定的类型.
 
-* is not permitted as an argument.
+        * 不允许作为参数.
 
-The type specifiers (and) and t are equivalent. The symbol and is not valid as a type specifier, and, specifically, it is not an abbreviation for (and). 
+        类型指定符 (and) 和 t 是等价的. 符号 and 作为一个类型指定符是不合法的, 并且, 特别指出, 它不是 (and) 的一个缩写. 
 
 ### <span id="TypeSpecifierOR">类型指定符 OR</span>
 
-复合类型指定符种类(Compound Type Specifier Kind):
+* 复合类型指定符种类(Compound Type Specifier Kind):
 
-Combining.
+        Combining.
 
-复合类型指定符语法(Compound Type Specifier Syntax):
+* 复合类型指定符语法(Compound Type Specifier Syntax):
 
-or typespec*
+        or typespec*
 
-复合类型指定符的参数(Compound Type Specifier Arguments):
+* 复合类型指定符的参数(Compound Type Specifier Arguments):
 
-typespec---a type specifier.
+        typespec---一个类型指定符.
 
-复合类型指定符的描述(Compound Type Specifier Description):
+* 复合类型指定符的描述(Compound Type Specifier Description):
 
-This denotes the set of all objects of the type determined by the union of the typespecs. For example, the type list by definition is the same as (or null cons). Also, the value returned by position is an object of type (or null (integer 0 *)); i.e., either nil or a non-negative integer.
+        这表示所有对象集合都是 typespecs 的并集确定的类型. 比如, 类型 list 定义等价于 (or null cons). Also, 通过 position 返回的值是类型 (or null (integer 0 *)) 的一个对象; 换句化说, 可以是 nil 或者一个非负整数.
 
-* is not permitted as an argument.
+        * 不允许作为一个参数.
 
-The type specifiers (or) and nil are equivalent. The symbol or is not valid as a type specifier; and, specifically, it is not an abbreviation for (or). 
+        类型指定符 (or) 和 nil 是等价的. 符号 or 作为类型指定符是非法的; 并且, 特别指出, 这个不是 (or) 的缩写. 
 
 ### <span id="TypeSpecifierVALUES">类型指定符 VALUES</span>
 
-复合类型指定符种类(Compound Type Specifier Kind):
+* 复合类型指定符种类(Compound Type Specifier Kind):
 
-Specializing.
+        Specializing.
 
-复合类型指定符语法(Compound Type Specifier Syntax):
+* 复合类型指定符语法(Compound Type Specifier Syntax):
 
-values value-typespec
+        values value-typespec
 
-value-typespec::= typespec* [&optional typespec*] [&rest typespec] [&allow-other-keys] 
+        value-typespec::= typespec* [&optional typespec*] [&rest typespec] [&allow-other-keys] 
 
-复合类型指定符的参数(Compound Type Specifier Arguments):
+* 复合类型指定符的参数(Compound Type Specifier Arguments):
 
-typespec---a type specifier.
+        typespec---一个类型指定符.
 
-复合类型指定符的描述(Compound Type Specifier Description):
+* 复合类型指定符的描述(Compound Type Specifier Description):
 
-This type specifier can be used only as the value-type in a function type specifier or a the special form. It is used to specify individual types when multiple values are involved. The &optional and &rest markers can appear in the value-type list; they indicate the parameter list of a function that, when given to multiple-value-call along with the values, would correctly receive those values.
+        这个类型指定符只能被用作一个 function 类型指定符或一个 the 特殊表达式的 value-type 部分. 当涉及到多值时它被用于指定每个值单独的类型. 这个 &optional 和 &rest 标记可以出现在 value-type 列表中; 它们指定和值一起传递给 multiple-value-call 的一个函数的参数列表会正确地接收到那些值.
 
-The symbol * may not be among the value-types.
+        符号 * 不能在 value-types 之中.
 
-The symbol values is not valid as a type specifier; and, specifically, it is not an abbreviation for (values). 
+        符号 values 作为类型指定符是不合法的; 并且, 特别指出, 它不是 (values) 的缩写. 
 
 ### <span id="TypeSpecifierEQL">类型指定符 EQL</span>
 
-复合类型指定符种类(Compound Type Specifier Kind):
+* 复合类型指定符种类(Compound Type Specifier Kind):
 
-Combining.
+        Combining.
 
-复合类型指定符语法(Compound Type Specifier Syntax):
+* 复合类型指定符语法(Compound Type Specifier Syntax):
 
-eql object
+        eql object
 
-复合类型指定符的参数(Compound Type Specifier Arguments):
+* 复合类型指定符的参数(Compound Type Specifier Arguments):
 
-object---an object.
+        object---一个对象.
 
-复合类型指定符的描述(Compound Type Specifier Description):
+* 复合类型指定符的描述(Compound Type Specifier Description):
 
-Represents the type of all x for which (eql object x) is true.
+        表示对于 (eql object x) 为 true 的所有 x 的类型.
 
-The argument object is required. The object can be *, but if so it denotes itself (the symbol *) and does not represent an unspecified value. The symbol eql is not valid as an atomic type specifier. 
+        参数 object 是必要的. 这个 object 可以是 *, 但是如果是这样它表示它自身(符号 *) 并且不表示一个未指定的值. 符号 eql 作为一个原子类型指示符是不合法的. 
 
-### <span id="FunctionCOERCE">Function COERCE</span>
+### <span id="FunctionCOERCE">函数 COERCE</span>
 
-Syntax:
+* 语法(Syntax):
 
-coerce object result-type => result
+        coerce object result-type => result
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
-object---an object.
+        object---一个对象.
+        result-type---一个类型指定符.
+        result---一个类型 result-type 的对象, 除了在章节 12.1.5.3 (Rule of Canonical Representation for Complex Rationals) 所描述的情况外.
 
-result-type---a type specifier.
+* 描述(Description):
 
-result---an object, of type result-type except in situations described in Section 12.1.5.3 (Rule of Canonical Representation for Complex Rationals).
+        强制 object 为类型 result-type.
 
-描述(Description):
+        如果 object 已经是类型 result-type, 返回 object 自身, 一般不管是否会有可能强制一些其他类型的对象为 result-type.
 
-Coerces the object to type result-type.
+        否则, 这个 object 根据以下规则强制为类型 result-type:
 
-If object is already of type result-type, the object itself is returned, regardless of whether it would have been possible in general to coerce an object of some other type to result-type.
+    * sequence
 
-Otherwise, the object is coerced to type result-type according to the following rules:
+            如果这个 result-type 是 list 的一个可识别的子类型, 并且这个 object 是一个 sequence, 那么这个 result 是一个和 object 有者相同元素的 list.
 
-sequence
+            如果 result-type 是 vector 的一个可识别子类型, 并且这个对象是一个 sequence, 那么这个 result 一个和 object 有着相同元素的 vector. 如果 result-type 是一个特化的类型, 那么 result 会有一个实际数组元素类型, 它是对特化类型的元素类型进行升级的结果. 如果没有指定元素类型, 那么这个元素类型默认是 t. 如果具体实现不能确定元素类型, 会发出一个错误.
 
-    If the result-type is a recognizable subtype of list, and the object is a sequence, then the result is a list that has the same elements as object.
+    * character
 
-    If the result-type is a recognizable subtype of vector, and the object is a sequence, then the result is a vector that has the same elements as object. If result-type is a specialized type, the result has an actual array element type that is the result of upgrading the element type part of that specialized type. If no element type is specified, the element type defaults to t. If the implementation cannot determine the element type, an error is signaled.
+            如果这个 result-type 是 character 并且这个 object 是一个字符标识符, 那么这个 result 是它表示的 character.
 
-character
+    * complex
 
-    If the result-type is character and the object is a character designator, the result is the character it denotes.
+            如果这个 result-type 是 complex 并且这个 object 是一个 real, 那么这个 result 是通过构造一个实部是 object 并且虚部是将一个整数0强制转为 object 类型的结果(使用 coerce)的complex 获取到的. (然而, 如果实部是一个有理数, 那么结果一个被表示为一个有理数而不是一个复数; 见章节 12.1.5.3 (Rule of Canonical Representation for Complex Rationals). 所以, 比如, (coerce 3 'complex) 允许的, 但是会返回 3, 它不是一个 complex.)
 
-complex
+    * float
 
-    If the result-type is complex and the object is a real, then the result is obtained by constructing a complex whose real part is the object and whose imaginary part is the result of coercing an integer zero to the type of the object (using coerce). (If the real part is a rational, however, then the result must be represented as a rational rather than a complex; see Section 12.1.5.3 (Rule of Canonical Representation for Complex Rationals). So, for example, (coerce 3 'complex) is permissible, but will return 3, which is not a complex.)
+            如果 result-type 是 float, short-float, single-float, double-float, long-float 中的任何一个, 并且这个 object 是一个 real, 那么 result 是一个 result-type 类型的浮点数, 无论这个浮点表示法允许的是多大的具象精度, 它都和 object 的符号和大小是相等的. (如果这个 result-type 是 float 并且 object 还不是一个 float, 那么这个 result 是一个 single-float.)
 
-float
+    * function
 
-    If the result-type is any of float, short-float, single-float, double-float, long-float, and the object is a real, then the result is a float of type result-type which is equal in sign and magnitude to the object to whatever degree of representational precision is permitted by that float representation. (If the result-type is float and object is not already a float, then the result is a single float.)
+            如果 result-type 是 function, 并且 object 是任何 fbound 的函数名字但是既不是全局定义的宏名字也不是特殊操作符, 那么这个 result 是 object 的函数值.
 
-function
+            如果 result-type 是 function, 并且 object 是一个 lambda 表达式, 那么这个 result 是 object 在 null 词法环境的一个闭包.
 
-    If the result-type is function, and object is any function name that is fbound but that is globally defined neither as a macro name nor as a special operator, then the result is the functional value of object.
+    * t
 
-    If the result-type is function, and object is a lambda expression, then the result is a closure of object in the null lexical environment.
+            任何 object 可以被强制转为 t 类型的对象. 这个情况下, 这个 object 被简单地返回.
 
-t
+* 示例(Examples):
 
-    Any object can be coerced to an object of type t. In this case, the object is simply returned.
+    ```LISP
+    (coerce '(a b c) 'vector) =>  #(A B C)
+    (coerce 'a 'character) =>  #\A
+    (coerce 4.56 'complex) =>  #C(4.56 0.0)
+    (coerce 4.5s0 'complex) =>  #C(4.5s0 0.0s0)
+    (coerce 7/2 'complex) =>  7/2
+    (coerce 0 'short-float) =>  0.0s0
+    (coerce 3.5L0 'float) =>  3.5L0
+    (coerce 7/2 'float) =>  3.5
+    (coerce (cons 1 2) t) =>  (1 . 2)
+    ```
 
-Examples:
+    * All the following forms should signal an error:
 
- (coerce '(a b c) 'vector) =>  #(A B C)
- (coerce 'a 'character) =>  #\A
- (coerce 4.56 'complex) =>  #C(4.56 0.0)
- (coerce 4.5s0 'complex) =>  #C(4.5s0 0.0s0)
- (coerce 7/2 'complex) =>  7/2
- (coerce 0 'short-float) =>  0.0s0
- (coerce 3.5L0 'float) =>  3.5L0
- (coerce 7/2 'float) =>  3.5
- (coerce (cons 1 2) t) =>  (1 . 2)
+        ```LISP
+        (coerce '(a b c) '(vector * 4))
+        (coerce #(a b c) '(vector * 4))
+        (coerce '(a b c) '(vector * 2))
+        (coerce #(a b c) '(vector * 2))
+        (coerce "foo" '(string 2))
+        (coerce #(#\a #\b #\c) '(string 2))
+        (coerce '(0 1) '(simple-bit-vector 3))
+        ```
 
-All the following forms should signal an error:
+* 受此影响(Affected By): None.
 
- (coerce '(a b c) '(vector * 4))
- (coerce #(a b c) '(vector * 4))
- (coerce '(a b c) '(vector * 2))
- (coerce #(a b c) '(vector * 2))
- (coerce "foo" '(string 2))
- (coerce #(#\a #\b #\c) '(string 2))
- (coerce '(0 1) '(simple-bit-vector 3))
+* 异常情况(Exceptional Situations):
 
-Affected By: None.
+        如果一个强制转换是不可以的, 会发出一个 type-error 类型的错误.
 
-Exceptional Situations:
+        (coerce x 'nil) 总是发出一个 type-error 类型的错误.
 
-If a coercion is not possible, an error of type type-error is signaled.
+        如果 result-type 是一个 function 但是 object 是一个没有 fbound 的符号或者这个符号命名一个宏或特殊操作符, 那么就会发出一个 error 类型的错误.
 
-(coerce x 'nil) always signals an error of type type-error.
-
-An error of type error is signaled if the result-type is function but object is a symbol that is not fbound or if the symbol names a macro or a special operator.
-
-An error of type type-error should be signaled if result-type specifies the number of elements and object is of a different length.
+        如果 result-type 指定的元素数量和 object 是不同长度的, 那么 type-error 类型的错误应该被发出.
 
 * 也见(See Also):
 
-rational, floor, char-code, char-int
+        rational, floor, char-code, char-int
 
-Notes:
+* 注意(Notes):
 
-Coercions from floats to rationals and from ratios to integers are not provided because of rounding problems.
+        由于舍入问题, 没有提供从浮点数到有理数和从比率到整数的强制转换.
 
- (coerce x 't) ==  (identity x) ==  x
+    ```LISP
+    (coerce x 't) ==  (identity x) ==  x
+    ```
 
 ### <span id="MacroDEFTYPE">Macro DEFTYPE</span>
 
-Syntax:
+语法(Syntax):
 
 deftype name lambda-list [[declaration* | documentation]] form* => name
 
-Arguments and Values:
+参数和值(Arguments and Values):
 
 name---a symbol.
 
@@ -1103,7 +1107,7 @@ Documentation is attached to name as a documentation string of kind type.
 
 If a deftype form appears as a top level form, the compiler must ensure that the name is recognized in subsequent type declarations. The programmer must ensure that the body of a deftype form can be evaluated at compile time if the name is referenced in subsequent type declarations. If the expansion of a type specifier is not defined fully at compile time (perhaps because it expands into an unknown type specifier or a satisfies of a named function that isn't defined in the compile-time environment), an implementation may ignore any references to this type in declarations and/or signal a warning.
 
-Examples:
+示例(Examples):
 
  (defun equidimensional (a)
    (or (< (array-rank a) 2)
@@ -1114,23 +1118,23 @@ Examples:
 
 Side Effects: None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
 * 也见(See Also):
 
 declare, defmacro, documentation, Section 4.2.3 (Type Specifiers), Section 3.4.11 (Syntactic Interaction of Documentation Strings and Declarations)
 
-Notes: None. 
+* 注意(Notes): None. 
 
-### <span id="FunctionSUBTYPEP">Function SUBTYPEP</span>
+### <span id="FunctionSUBTYPEP">函数 SUBTYPEP</span>
 
-Syntax:
+语法(Syntax):
 
 subtypep type-1 type-2 &optional environment => subtype-p, valid-p
 
-Arguments and Values:
+参数和值(Arguments and Values):
 
 type-1---a type specifier.
 
@@ -1198,7 +1202,7 @@ must return true in all implementations, but
 
 returns true only in implementations that do not have a specialized array representation for single floats distinct from that for other floats.
 
-Examples:
+示例(Examples):
 
  (subtypep 'compiled-function 'function) =>  true, true
  (subtypep 'null 'list) =>  true, true
@@ -1231,25 +1235,25 @@ If (array <aet-x>) and (array <aet-y>) are different names for exactly the same 
 
 Side Effects: None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
 * 也见(See Also):
 
 Section 4.2 (Types)
 
-Notes:
+* 注意(Notes):
 
 The small differences between the subtypep specification for the array and complex types are necessary because there is no creation function for complexes which allows the specification of the resultant part type independently of the actual types of the parts. Thus in the case of the type complex, the actual type of the parts is referred to, although a number can be a member of more than one type. For example, 17 is of type (mod 18) as well as type (mod 256) and type integer; and 2.3f5 is of type single-float as well as type float. 
 
-### <span id="FunctionTYPEOF">Function TYPE-OF</span>
+### <span id="FunctionTYPEOF">函数 TYPE-OF</span>
 
-Syntax:
+语法(Syntax):
 
 type-of object => typespec
 
-Arguments and Values:
+参数和值(Arguments and Values):
 
 object---an object.
 
@@ -1275,7 +1279,7 @@ Returns a type specifier, typespec, for a type that has the object as an element
 
 5. For each of the types short-float, single-float, double-float, or long-float of which the object is an element, the typespec is a recognizable subtype of that type.
 
-Examples:
+示例(Examples):
 
  (type-of 'a) =>  SYMBOL          
  (type-of '(1 . 2))
@@ -1303,25 +1307,25 @@ OR=>  FIXNUM
 =>  VECTOR
 OR=>  (VECTOR T 5)
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
 * 也见(See Also):
 
 array-element-type, class-of, defstruct, typecase, typep, Section 4.2 (Types)
 
-Notes:
+* 注意(Notes):
 
 Implementors are encouraged to arrange for type-of to return a portable value. 
 
-### <span id="FunctionTYPEP">Function TYPEP</span>
+### <span id="FunctionTYPEP">函数 TYPEP</span>
 
-Syntax:
+语法(Syntax):
 
 typep object type-specifier &optional environment => generalized-boolean
 
-Arguments and Values:
+参数和值(Arguments and Values):
 
 object---an object.
 
@@ -1346,7 +1350,7 @@ A type-specifier of the form (satisfies fn) is handled by applying the function 
 
 See the function upgraded-complex-part-type.
 
-Examples:
+示例(Examples):
 
  (typep 12 'integer) =>  true
  (typep (1+ most-positive-fixnum) 'fixnum) =>  false
@@ -1373,9 +1377,9 @@ denote the same type. Notice that
  (typep (make-array 0 :element-type 'Ax) '(array Ay)) =>  true
  (typep (make-array 0 :element-type 'Ay) '(array Ax)) =>  true
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 An error of type error is signaled if type-specifier is values, or a type specifier list whose first element is either function or values.
 
@@ -1385,7 +1389,7 @@ The consequences are undefined if the type-specifier is not a type specifier.
 
 type-of, upgraded-array-element-type, upgraded-complex-part-type, Section 4.2.3 (Type Specifiers)
 
-Notes:
+* 注意(Notes):
 
 Implementations are encouraged to recognize and optimize the case of (typep x (the class y)), since it does not involve any need for expansion of deftype information at runtime. 
 
@@ -1403,15 +1407,15 @@ The type type-error represents a situation in which an object is not of the expe
 
 type-error-datum, type-error-expected-type 
 
-### <span id="FunctionTEDTEET">Function TYPE-ERROR-DATUM, TYPE-ERROR-EXPECTED-TYPE</span>
+### <span id="FunctionTEDTEET">函数 TYPE-ERROR-DATUM, TYPE-ERROR-EXPECTED-TYPE</span>
 
-Syntax:
+语法(Syntax):
 
 type-error-datum condition => datum
 
 type-error-expected-type condition => expected-type
 
-Arguments and Values:
+参数和值(Arguments and Values):
 
 condition---a condition of type type-error.
 
@@ -1425,7 +1429,7 @@ type-error-datum returns the offending datum in the situation represented by the
 
 type-error-expected-type returns the expected type of the offending datum in the situation represented by the condition.
 
-Examples:
+示例(Examples):
 
  (defun fix-digits (condition)
    (check-type condition type-error)
@@ -1445,15 +1449,15 @@ Examples:
 
 Side Effects: None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
 * 也见(See Also):
 
 type-error, Section 9 (Conditions)
 
-Notes: None. 
+* 注意(Notes): None. 
 
 ### <span id="ConditionTypeSIMPLETYPEERROR">Condition Type SIMPLE-TYPE-ERROR</span>
 
