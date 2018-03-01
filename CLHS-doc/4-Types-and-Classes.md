@@ -1127,109 +1127,113 @@ Figure 4-8. 对应预定义类型指定符的类
 * 注意(Notes): None. 
 
 ### <span id="FunctionSUBTYPEP">函数 SUBTYPEP</span>
+<!--TODO 语义不明-->
+* 语法(Syntax):
 
-语法(Syntax):
+        subtypep type-1 type-2 &optional environment => subtype-p, valid-p
 
-subtypep type-1 type-2 &optional environment => subtype-p, valid-p
+* 参数和值(Arguments and Values):
 
-参数和值(Arguments and Values):
+        type-1---一个类型指定符.
+        type-2---一个类型指定符.
+        environment---一个环境对象. 默认是 nil, 表示 null 的词法环境和当前的全局环境.
+        subtype-p---一个广义的 boolean.
+        valid-p---一个广义的 boolean.
 
-type-1---a type specifier.
+* 描述(Description):
 
-type-2---a type specifier.
+        如果 type-1 是 type-2 的一个可识别的子类型, 第一个值就是 true. 否则, 第一个值就是 false, 表示 type-1 不是 type-2 的子类, 或者 type-1 是 type-2 的子类但是不是一个可识别的子类型.
 
-environment---an environment object. The default is nil, denoting the null lexical environment and the current global environment.
+        返回的第二个值表示第一个值的确定性. 如果这个值是 true, 那么第一个值就是子类型关系的精确表示. (当第一个值是 true 时第二个值总是为 true.)
 
-subtype-p---a generalized boolean.
+        下面这段总结了返回值的可能的组合.
 
-valid-p---a generalized boolean.
+                Value 1  Value 2  Meaning                                               
+                true     true     type-1 确定是 type-2 的子类.             
+                false    true     type-1 确定不是 type-2 的子类.         
+                false    false    subtypep 不能确定关系,所以 type-1 可能或可能不是 type-2 的子类.  
 
-描述(Description):
+                Figure 4-9. subtypep 结果的可能性
 
-If type-1 is a recognizable subtype of type-2, the first value is true. Otherwise, the first value is false, indicating that either type-1 is not a subtype of type-2, or else type-1 is a subtype of type-2 but is not a recognizable subtype.
+        subtypep 只有当至少一个参数涉及到后面其中一个类型指定符时才允许返回 false 和 false 的多值: and, eql, function 的列表表达式, member, not, or, satisfies, or values. (A type specifier `involves' such a symbol if, after being type expanded, it contains that symbol in a position that would call for its meaning as a type specifier to be used.) 一个可能的推论是, 如果 type-1 和 type-2 都不涉及这些类型指定符, 那么 subtypep 不得不去准确确定关系. 具体来说, 如果参数是 equal 的并且不涉及任何这些类型指定符时返回 true 和 true 的多值.<!-- TODO 未翻译完 -->
 
-A second value is also returned indicating the `certainty' of the first value. If this value is true, then the first value is an accurate indication of the subtype relationship. (The second value is always true when the first value is true.)
+        当 type-1 和 type-2 只涉及 Figure 4-2 中的名字, 或者 defstruct, define-condition, 或 defclass 定义的类型的名字, 或者只展开到那些名字的衍生类型时, subtypep 第二个返回值一定不是 nil. 当列在 Figure 4-2 的类型指定符还有 defclass 和 defstruct 名称在一些情况下被实现为衍生类型时, subtypep 把它们当作原始类型.<!-- TODO primitive ??-->
 
-The next figure summarizes the possible combinations of values that might result.
+        subtypep 所反映的类型之间的关系是特定于具体实现的. 比如, 如果一个实现只支持浮点数的单个类型, 在那个实现中 (subtypep 'float 'long-float) 返回 true 和 true 多值(因为两个类型是一样的).
 
-Value 1  Value 2  Meaning                                               
-true     true     type-1 is definitely a subtype of type-2.             
-false    true     type-1 is definitely not a subtype of type-2.         
-false    false    subtypep could not determine the relationship,        
-                  so type-1 might or might not be a subtype of type-2.  
+        对于所有除了 * 以外的 T1 和 T2, 当且仅当 (array T1) 和 (array T2) 指向相同特化表示的数组时, 它们是总是指向相同集合的两种不同的类型指定符, 换句话说, 如果 (upgraded-array-element-type 'T1) 和 (upgraded-array-element-type 'T2) 返回两个指向相同对象集合的不同类型指定符. 这是 `(array type-specifier) 和 `(array ,(upgraded-array-element-type 'type-specifier)) 指向相同特化数组表示的另一种说法. 对于所有除了 * 以外的 T1 和 T2, 当且仅当 (array T1) 和 (array T2) 指向不同有区别特化表示的数组时, 它们的交集是个空集合.
 
-Figure 4-9. Result possibilities for subtypep
+        因此,
 
-subtypep is permitted to return the values false and false only when at least one argument involves one of these type specifiers: and, eql, the list form of function, member, not, or, satisfies, or values. (A type specifier `involves' such a symbol if, after being type expanded, it contains that symbol in a position that would call for its meaning as a type specifier to be used.) One consequence of this is that if neither type-1 nor type-2 involves any of these type specifiers, then subtypep is obliged to determine the relationship accurately. In particular, subtypep returns the values true and true if the arguments are equal and do not involve any of these type specifiers.
+    ```LISP
+    (subtypep '(array T1) '(array T2)) =>  true
+    ```
 
-subtypep never returns a second value of nil when both type-1 and type-2 involve only the names in Figure 4-2, or names of types defined by defstruct, define-condition, or defclass, or derived types that expand into only those names. While type specifiers listed in Figure 4-2 and names of defclass and defstruct can in some cases be implemented as derived types, subtypep regards them as primitive.
+        当且仅当 (upgraded-array-element-type 'T1) 和 (upgraded-array-element-type 'T2) 返回两个指向相同对象的集合的不同类型指定符的时候.
 
-The relationships between types reflected by subtypep are those specific to the particular implementation. For example, if an implementation supports only a single type of floating-point numbers, in that implementation (subtypep 'float 'long-float) returns the values true and true (since the two types are identical).
+        对于所有除了 * 以外的类型指定符 T1 和 T2,
 
-For all T1 and T2 other than *, (array T1) and (array T2) are two different type specifiers that always refer to the same sets of things if and only if they refer to arrays of exactly the same specialized representation, i.e., if (upgraded-array-element-type 'T1) and (upgraded-array-element-type 'T2) return two different type specifiers that always refer to the same sets of objects. This is another way of saying that `(array type-specifier) and `(array ,(upgraded-array-element-type 'type-specifier)) refer to the same set of specialized array representations. For all T1 and T2 other than *, the intersection of (array T1) and (array T2) is the empty set if and only if they refer to arrays of different, distinct specialized representations.
+    ```LISP
+    (subtypep '(complex T1) '(complex T2)) =>  true, true
+    ```
 
-Therefore,
+        如果:
 
- (subtypep '(array T1) '(array T2)) =>  true
+        1. T1 是 T2 的子类型, 或者
+        2. (upgraded-complex-part-type 'T1) 和 (upgraded-complex-part-type 'T2) 返回指向相同对象集合的不同类型指定符; 这个情况下, (complex T1) 和 (complex T2) 都指向相同的特化表示.
 
-if and only if
+        否则值就是 false 和 true.
 
- (upgraded-array-element-type 'T1)  and
- (upgraded-array-element-type 'T2)  
+        表达式
 
-return two different type specifiers that always refer to the same sets of objects.
+    ```LISP
+    (subtypep '(complex single-float) '(complex float))
+    ```
 
-For all type-specifiers T1 and T2 other than *,
+        在所有实现一定返回 true, 但是
 
- (subtypep '(complex T1) '(complex T2)) =>  true, true
+    ```LISP
+    (subtypep '(array single-float) '(array float))
+    ```
 
-if:
+        只有在没有为单浮点和其他浮点数作区分的特化数组表示的具体实现中返回 true.
 
-1. T1 is a subtype of T2, or
-2. (upgraded-complex-part-type 'T1) and (upgraded-complex-part-type 'T2) return two different type specifiers that always refer to the same sets of objects; in this case, (complex T1) and (complex T2) both refer to the same speRecursive expansion of the type specifier returned as the expansion must terminate, including the expansion of type specifiers which are nested within the expansioncialized representation.
+* 示例(Examples):
 
-The values are false and true otherwise.
+    ```LISP
+    (subtypep 'compiled-function 'function) =>  true, true
+    (subtypep 'null 'list) =>  true, true
+    (subtypep 'null 'symbol) =>  true, true
+    (subtypep 'integer 'string) =>  false, true
+    (subtypep '(satisfies dummy) nil) =>  false, implementation-dependent
+    (subtypep '(integer 1 3) '(integer 1 4)) =>  true, true
+    (subtypep '(integer (0) (0)) 'nil) =>  true, true
+    (subtypep 'nil '(integer (0) (0))) =>  true, true
+    (subtypep '(integer (0) (0)) '(member)) =>  true, true ;or false, false
+    (subtypep '(member) 'nil) =>  true, true ;or false, false
+    (subtypep 'nil '(member)) =>  true, true ;or false, false
+    ```
 
-The form
+        让 <aet-x> 和 <aet-y> 是两个有区别的类型指定符, 在一个给定实现中不总是指向相同对象的集合, 但是 make-array 对于它们, 会返回一个相同数组类型的对象.
 
- (subtypep '(complex single-float) '(complex float))
+        因此, 在每种情况下,
 
-must return true in all implementations, but
+    ```LISP
+    (subtypep (array-element-type (make-array 0 :element-type '<aet-x>))
+        (array-element-type (make-array 0 :element-type '<aet-y>)))
+    =>  true, true
 
- (subtypep '(array single-float) '(array float))
+    (subtypep (array-element-type (make-array 0 :element-type '<aet-y>))
+        (array-element-type (make-array 0 :element-type '<aet-x>)))
+    =>  true, true
+    ```
 
-returns true only in implementations that do not have a specialized array representation for single floats distinct from that for other floats.
+        如果 (array <aet-x>) 和 (array <aet-y>) 是同一组对象的不同名称, 这些名字应该指向相同的一组对象. 这意味着下面的测试也是正确的:
 
-示例(Examples):
-
- (subtypep 'compiled-function 'function) =>  true, true
- (subtypep 'null 'list) =>  true, true
- (subtypep 'null 'symbol) =>  true, true
- (subtypep 'integer 'string) =>  false, true
- (subtypep '(satisfies dummy) nil) =>  false, implementation-dependent
- (subtypep '(integer 1 3) '(integer 1 4)) =>  true, true
- (subtypep '(integer (0) (0)) 'nil) =>  true, true
- (subtypep 'nil '(integer (0) (0))) =>  true, true
- (subtypep '(integer (0) (0)) '(member)) =>  true, true ;or false, false
- (subtypep '(member) 'nil) =>  true, true ;or false, false
- (subtypep 'nil '(member)) =>  true, true ;or false, false
-
-Let <aet-x> and <aet-y> be two distinct type specifiers that do not always refer to the same sets of objects in a given implementation, but for which make-array, will return an object of the same array type.
-
-Thus, in each case,
-
-  (subtypep (array-element-type (make-array 0 :element-type '<aet-x>))
-            (array-element-type (make-array 0 :element-type '<aet-y>)))
-=>  true, true
- 
-  (subtypep (array-element-type (make-array 0 :element-type '<aet-y>))
-            (array-element-type (make-array 0 :element-type '<aet-x>)))
-=>  true, true
-
-If (array <aet-x>) and (array <aet-y>) are different names for exactly the same set of objects, these names should always refer to the same sets of objects. That implies that the following set of tests are also true:
-
- (subtypep '(array <aet-x>) '(array <aet-y>)) =>  true, true
- (subtypep '(array <aet-y>) '(array <aet-x>)) =>  true, true
+    ```LISP
+    (subtypep '(array <aet-x>) '(array <aet-y>)) =>  true, true
+    (subtypep '(array <aet-y>) '(array <aet-x>)) =>  true, true
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -1239,11 +1243,11 @@ If (array <aet-x>) and (array <aet-y>) are different names for exactly the same 
 
 * 也见(See Also):
 
-Section 4.2 (Types)
+        Section 4.2 (Types)
 
 * 注意(Notes):
 
-The small differences between the subtypep specification for the array and complex types are necessary because there is no creation function for complexes which allows the specification of the resultant part type independently of the actual types of the parts. Thus in the case of the type complex, the actual type of the parts is referred to, although a number can be a member of more than one type. For example, 17 is of type (mod 18) as well as type (mod 256) and type integer; and 2.3f5 is of type single-float as well as type float. 
+        对于 array 和 complex 类型, subtypep 规范中细微的差异是有必要的, 因为这里没有 complex 的创建函数允许产生的各个部分类型独立于这些部分的实际类型. 因此，在 complex 类型的情况下, 虽然一个数字可以是多个类型, 但引用的是它的实际类型. 比如, 17 是类型 (mod 18) 也是类型 (mod 256) 并且也是 integer 类型; 还有 2.3f5 是类型 single-float 也是类型 float. 
 
 ### <span id="FunctionTYPEOF">函数 TYPE-OF</span>
 
