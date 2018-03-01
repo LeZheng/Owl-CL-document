@@ -1067,56 +1067,54 @@ Figure 4-8. 对应预定义类型指定符的类
     (coerce x 't) ==  (identity x) ==  x
     ```
 
-### <span id="MacroDEFTYPE">Macro DEFTYPE</span>
+### <span id="MacroDEFTYPE">宏 DEFTYPE</span>
+<!--TODO 语义不明-->
+* 语法(Syntax):
 
-语法(Syntax):
+        deftype name lambda-list [[declaration* | documentation]] form* => name
 
-deftype name lambda-list [[declaration* | documentation]] form* => name
+* 参数和值(Arguments and Values):
 
-参数和值(Arguments and Values):
+        name---一个符号.
+        lambda-list---一个 deftype lambda 列表.
+        declaration---一个 declare 表达式; 不求值.
+        documentation---一个字符串; 不求值.
+        form---一个表达式形式.
 
-name---a symbol.
+* 描述(Description):
 
-lambda-list---a deftype lambda list.
+        deftype 定义一个名为 name 的派生类型指示符.
 
-declaration---a declare expression; not evaluated.
+        新的类型说明符的意义在于一个函数, 它将类型指定符扩展为另一个类型指定符, 如果它包含对另一个派生类型说明符的引用, 它本身就会被扩展 The meaning of the new type specifier is given in terms of a function which expands the type specifier into another type specifier, which itself will be expanded if it contains references to another derived type specifier.
 
-documentation---a string; not evaluated.
+        新定义的类型说明符可以作为  (name arg1 arg2 ...) 表达式的一个列表来引用. 参数的数量必须和 lambda-list 一样. 如果新的类型指定符不接受参数, 或者它的所有参数是可选的, 这个类型指定符可以被用作原子类型指定符.
 
-form---a form.
+        给这个类型指定符的参数表达式, arg1 ... argn, 是不求值的. 相反, 这些字面化对象变成了相应的参数被绑定的对象.
 
-描述(Description):
+        这个 deftype 表达式主体部分(不是 lambda-list) 隐含在一个名为 name 的块中, 并且作为一个隐式 progn 被求值, 返回一个新的类型指定符.
 
-deftype defines a derived type specifier named name.
+        这个主体部分的词法环境是 deftype 表达式形式被求值是的当前那个, 由 lambda-list 中的变量来扩展.
 
-The meaning of the new type specifier is given in terms of a function which expands the type specifier into another type specifier, which itself will be expanded if it contains references to another derived type specifier.
+        当展开必须终止时返回类型指定符的递归展开, 包括在展开中嵌套的类型指定符的展开.
 
-The newly defined type specifier may be referenced as a list of the form (name arg1 arg2 ...). The number of arguments must be appropriate to the lambda-list. If the new type specifier takes no arguments, or if all of its arguments are optional, the type specifier may be used as an atomic type specifier.
+        如果完全展开类型指定符的结果包含任何环状结构, 那么其结果是未定义的, 除非是在 member 和 eql 类型指定的对象中.
 
-The argument expressions to the type specifier, arg1 ... argn, are not evaluated. Instead, these literal objects become the objects to which corresponding parameters become bound.
+        这个 documentation 作为 type 种类的文档字符串关联到 name.
 
-The body of the deftype form (but not the lambda-list) is implicitly enclosed in a block named name, and is evaluated as an implicit progn, returning a new type specifier.
+        如果一个 deftype 表达式作为顶层表达式出现, 编译器必须确保 name 在后续类型声明中被识别. 如果这个 name 在后续类型声明中被引用, 那么程序员必须确保这个 deftype 表达式的主体部分可以在编译时被求值. 如果一个类型指定符的展开没有在编译时被完全定义 (或许是因为它展开为一个未知类型指定符或者一个命名函数的 satisfies 没有在这个编译时环境中定义), 一个具体实现可能忽略任何声明中这个类型的引用 并且/或者 发出一个警告.
 
-The lexical environment of the body is the one which was current at the time the deftype form was evaluated, augmented by the variables in the lambda-list.
+* 示例(Examples):
 
-Recursive expansion of the type specifier returned as the expansion must terminate, including the expansion of type specifiers which are nested within the expansion.
+        ```LISP
+        (defun equidimensional (a)
+          (or (< (array-rank a) 2)
+              (apply #'= (array-dimensions a)))) =>  EQUIDIMENSIONAL
+        (deftype square-matrix (&optional type size)
+          `(and (array ,type (,size ,size))
+                (satisfies equidimensional))) =>  SQUARE-MATRIX
+        ```
 
-The consequences are undefined if the result of fully expanding a type specifier contains any circular structure, except within the objects referred to by member and eql type specifiers.
-
-Documentation is attached to name as a documentation string of kind type.
-
-If a deftype form appears as a top level form, the compiler must ensure that the name is recognized in subsequent type declarations. The programmer must ensure that the body of a deftype form can be evaluated at compile time if the name is referenced in subsequent type declarations. If the expansion of a type specifier is not defined fully at compile time (perhaps because it expands into an unknown type specifier or a satisfies of a named function that isn't defined in the compile-time environment), an implementation may ignore any references to this type in declarations and/or signal a warning.
-
-示例(Examples):
-
- (defun equidimensional (a)
-   (or (< (array-rank a) 2)
-       (apply #'= (array-dimensions a)))) =>  EQUIDIMENSIONAL
- (deftype square-matrix (&optional type size)
-   `(and (array ,type (,size ,size))
-         (satisfies equidimensional))) =>  SQUARE-MATRIX
-
-Side Effects: None.
+* 副作用(Side Effects): None.
 
 * 受此影响(Affected By): None.
 
@@ -1124,7 +1122,7 @@ Side Effects: None.
 
 * 也见(See Also):
 
-declare, defmacro, documentation, Section 4.2.3 (Type Specifiers), Section 3.4.11 (Syntactic Interaction of Documentation Strings and Declarations)
+        declare, defmacro, documentation, Section 4.2.3 (Type Specifiers), Section 3.4.11 (Syntactic Interaction of Documentation Strings and Declarations)
 
 * 注意(Notes): None. 
 
@@ -1188,7 +1186,7 @@ For all type-specifiers T1 and T2 other than *,
 if:
 
 1. T1 is a subtype of T2, or
-2. (upgraded-complex-part-type 'T1) and (upgraded-complex-part-type 'T2) return two different type specifiers that always refer to the same sets of objects; in this case, (complex T1) and (complex T2) both refer to the same specialized representation.
+2. (upgraded-complex-part-type 'T1) and (upgraded-complex-part-type 'T2) return two different type specifiers that always refer to the same sets of objects; in this case, (complex T1) and (complex T2) both refer to the same speRecursive expansion of the type specifier returned as the expansion must terminate, including the expansion of type specifiers which are nested within the expansioncialized representation.
 
 The values are false and true otherwise.
 
@@ -1233,7 +1231,7 @@ If (array <aet-x>) and (array <aet-y>) are different names for exactly the same 
  (subtypep '(array <aet-x>) '(array <aet-y>)) =>  true, true
  (subtypep '(array <aet-y>) '(array <aet-x>)) =>  true, true
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
 * 受此影响(Affected By): None.
 
@@ -1447,7 +1445,7 @@ type-error-expected-type returns the expected type of the offending datum in the
  (foo 'seven)
 =>  10
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
 * 受此影响(Affected By): None.
 
