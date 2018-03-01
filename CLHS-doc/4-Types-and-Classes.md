@@ -1251,63 +1251,66 @@ Figure 4-8. 对应预定义类型指定符的类
 
 ### <span id="FunctionTYPEOF">函数 TYPE-OF</span>
 
-语法(Syntax):
+* 语法(Syntax):
 
-type-of object => typespec
+        type-of object => typespec
 
-参数和值(Arguments and Values):
+* 参数和值(Arguments and Values):
 
-object---an object.
+        object---一个对象.
+        typespec---一个类型指定符.
 
-typespec---a type specifier.
+* 描述(Description):
 
-描述(Description):
+    返回一个类型指定符, typespec, 用于将 object 作为元素的类型. 这个 typespec 满足以下条件:<!-- TODO element 元素 ？？-->
 
-Returns a type specifier, typespec, for a type that has the object as an element. The typespec satisfies the following:
+    1. 对于任何内置类型的元素的对象:
 
-1. For any object that is an element of some built-in type:
+        a. 返回的类型是一个内置类型的可识别的子类型.
 
-    a. the type returned is a recognizable subtype of that built-in type.
+        b. 返回的类型没有涉及 and, eql, member, not, or, satisfies, 或 values.
 
-    b. the type returned does not involve and, eql, member, not, or, satisfies, or values.
+    2. 对于所有对象, (typep object (type-of object)) 返回 true. 其中隐含的是类型指定符不适用于typep, 比如 function 类型指定符的列表表达式是从来不会被 type-of 返回的.
 
-2. For all objects, (typep object (type-of object)) returns true. Implicit in this is that type specifiers which are not valid for use with typep, such as the list form of the function type specifier, are never returned by type-of.
+    3. type-of 返回的类型总是为 class-of 返回的类的可识别子类型. 这也就是说,
 
-3. The type returned by type-of is always a recognizable subtype of the class returned by class-of. That is,
+        ```LISP
+        (subtypep (type-of object) (class-of object)) =>  true, true
+        ```
 
-     (subtypep (type-of object) (class-of object)) =>  true, true
+    4. 对于元类 structure-class 或 standard-class 的对象, 还有 conditions, type-of 返回那个 class-of  返回的类的特有的名字, 如果有的话, 否则返回类本省. 具体来说, 对于 defstruct 不带 :type 选项定义的结构体的构造器函数创建的对象, type-of 返回结构体的名字; 对于 make-condition 创建的对象, 这个 typespec 状况类型的名字.
 
-4. For objects of metaclass structure-class or standard-class, and for conditions, type-of returns the proper name of the class returned by class-of if it has a proper name, and otherwise returns the class itself. In particular, for objects created by the constructor function of a structure defined with defstruct without a :type option, type-of returns the structure name; and for objects created by make-condition, the typespec is the name of the condition type.
+    5. 对于类型 short-float, single-float, double-float, 或 long-float 中的每一个, 如果 object 是其中一个的元素, 这个 typespec 是那个类型的可识别子类型.
 
-5. For each of the types short-float, single-float, double-float, or long-float of which the object is an element, the typespec is a recognizable subtype of that type.
+* 示例(Examples):
 
-示例(Examples):
-
- (type-of 'a) =>  SYMBOL          
- (type-of '(1 . 2))
-=>  CONS
-OR=>  (CONS FIXNUM FIXNUM)
- (type-of #c(0 1))
-=>  COMPLEX
-OR=>  (COMPLEX INTEGER)
- (defstruct temp-struct x y z) =>  TEMP-STRUCT
- (type-of (make-temp-struct)) =>  TEMP-STRUCT
- (type-of "abc")
-=>  STRING
-OR=>  (STRING 3)
- (subtypep (type-of "abc") 'string) =>  true, true
- (type-of (expt 2 40))
-=>  BIGNUM
-OR=>  INTEGER
-OR=>  (INTEGER 1099511627776 1099511627776)
-OR=>  SYSTEM::TWO-WORD-BIGNUM
-OR=>  FIXNUM
- (subtypep (type-of 112312) 'integer) =>  true, true
- (defvar *foo* (make-array 5 :element-type t)) =>  *FOO*
- (class-name (class-of *foo*)) =>  VECTOR
- (type-of *foo*)
-=>  VECTOR
-OR=>  (VECTOR T 5)
+    ```LISP
+    (type-of 'a) =>  SYMBOL      
+    (type-of '(1 . 2))
+    =>  CONS
+    OR=>  (CONS FIXNUM FIXNUM)
+    (type-of #c(0 1))
+    =>  COMPLEX
+    OR=>  (COMPLEX INTEGER)
+    (defstruct temp-struct x y z) =>  TEMP-STRUCT
+    (type-of (make-temp-struct)) =>  TEMP-STRUCT
+    (type-of "abc")
+    =>  STRING
+    OR=>  (STRING 3)
+    (subtypep (type-of "abc") 'string) =>  true, true
+    (type-of (expt 2 40))
+    =>  BIGNUM
+    OR=>  INTEGER
+    OR=>  (INTEGER 1099511627776 1099511627776)
+    OR=>  SYSTEM::TWO-WORD-BIGNUM
+    OR=>  FIXNUM
+    (subtypep (type-of 112312) 'integer) =>  true, true
+    (defvar *foo* (make-array 5 :element-type t)) =>  *FOO*
+    (class-name (class-of *foo*)) =>  VECTOR
+    (type-of *foo*)
+    =>  VECTOR
+    OR=>  (VECTOR T 5)
+    ```
 
 * 受此影响(Affected By): None.
 
@@ -1315,11 +1318,11 @@ OR=>  (VECTOR T 5)
 
 * 也见(See Also):
 
-array-element-type, class-of, defstruct, typecase, typep, Section 4.2 (Types)
+        array-element-type, class-of, defstruct, typecase, typep, Section 4.2 (Types)
 
 * 注意(Notes):
 
-Implementors are encouraged to arrange for type-of to return a portable value. 
+        鼓励实现者去安排 type-of 返回一个可移植的值. 
 
 ### <span id="FunctionTYPEP">函数 TYPEP</span>
 
