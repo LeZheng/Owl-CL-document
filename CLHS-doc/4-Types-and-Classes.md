@@ -57,7 +57,7 @@ Figure 4-1. 数据类型信息的 Cross-References
 
 * 可以扩展一个实现来添加指定类型之间的其他子类型关系, 只要它们不违反这里指定的类型关系和类互斥性的需求. 一个实现可能为任何指定的类型定义额外的子类或超类, 只要不违反互斥性的要求并且每一个额外的类是类型 t 的子类也是类型 nil 的超类.
 
-    任凭具体实现自行处理, 无论是 standard-object 还是 structure-object, 都可能出现在一个系统类的优先级列表中, 而该系统类既没有指定 standard-object, 也没有指定 structure-object. 如果确实如此, 它必须在类 t 之前并且后面跟着所有标准化的类.<!-- TODO class precedence list ??--> 
+    任凭具体实现自行处理, 无论是 standard-object 还是 structure-object, 都可能出现在一个系统类的优先级列表中, 而该系统类既没有指定 standard-object, 也没有指定 structure-object. 如果确实如此, 它必须在类 t 之前并且后面跟着所有标准化的类.
 
 ### 4.2.3 <span id="TypeSpecifiers">类型指定符</span>
 
@@ -225,7 +225,7 @@ Figure 4-7. 对象系统类
 
 一个类可以从其他类中继承结构和行为. 一个类出于继承其他类的目的而在定义中引用其他类就称这个类是其他类的子类. 为了继承而指定的类称为继承类的超类.
 
-一个类可以有一个名字(name). 函数 class-name 接受一个类对象并且返回它的名字. 一个匿名类的名字是 nil. 一个符号可以命名一个类. 函数 find-class 接受一个符号并且返回这个符号命名的类. 如果名字是一个符号并且如果这个类的名字命名这个类那么这个类有一个 proper 名字. 这就是说, 如果 S= (class-name C) 并且 C= (find-class S) 那么一个类 C 有一个 proper 名字. 注意, (find-class S1) = (find-class S2) 并且 S1/=S2 是可能的. 如果 C= (find-class S), 我们就说 C 是名为 S 的类. <!-- TODO proper ？？ -->
+一个类可以有一个名字(name). 函数 class-name 接受一个类对象并且返回它的名字. 一个匿名类的名字是 nil. 一个符号可以命名一个类. 函数 find-class 接受一个符号并且返回这个符号命名的类. 如果名字是一个符号并且如果这个类的名字命名这个类那么这个类有一个特有的名字. 这就是说, 如果 S= (class-name C) 并且 C= (find-class S) 那么一个类 C 有一个特有的名字. 注意, (find-class S1) = (find-class S2) 并且 S1/=S2 是可能的. 如果 C= (find-class S), 我们就说 C 是名为 S 的类.
 
 如果一个类 C2 在它的定义中明确指定 C1 作为超类那么类 C1 就是类 C2 的一个直接超类. 在这个情况下 C2 是 C1 的一个直接子类. 如果 1 <= i < n 并且存在一系列的类 C2,...,Cn-1 而 Ci+1 是 Ci 的直接超类那么类 Cn 是类 C1 的一个超类. 一个类不能被当作是它自身的超类或子类. 这也就是说, 如果 C1 是 C2 的一个超类, 那么 C1 /=C2. 由某个给定的类 C 及其所有超类组成的类集合被称为"C及其超类".
 
@@ -259,7 +259,7 @@ Figure 4-7. 对象系统类
 
 一个类的定义包括:
 
-* 这个新类的名字. 对于新定义的类这个名字是一个 proper 名字.
+* 这个新类的名字. 对于新定义的类这个名字是一个特有的名字.
 
 * 这个新定义的类的直接超类.
 
@@ -315,7 +315,7 @@ defclass 表达式形式的槽选项和类选项机制被用于:
 如果一个给定的 :default-initargs 类选项不止一次指定相同名字的初始化参数, 会发出一个类型 program-error 的错误. 
 
 ### 4.3.5 <span id="DeterminingClassPrecedenceList">确定类的优先级列表</span>
-<!--TODO 需要重新校对 predecessor ordering ？？-->
+
 一个类的 defclass 表达式形式提供这个类和它的直接超类的完整的列表. 这个列表称之为局部优先级列表(local precedence order). 它是一个这个类和它的直接超类的有序列表. 这个类 C 的类优先级列表是一个由每一个 C 和它的超类的局部优先级列表构成的完整的列表.
 
 一个类在它的直接超类前面, 并且一个直接超类先于那些在 defclass 表达式中的超类列表中在它右边的其他直接超类. 对于每一个类 C, 定义
@@ -344,7 +344,7 @@ R=Uc<ELEMENT-OF>SCRc
 
 用更精确的术语, 让 {N1,...,Nm}, m>=2, 成为来自于 SC 的没有 predecessors 的类. 让 (C1...Cn), n>=1, 成为目前为止已构建的类优先级列表. C1 是最具体的类, 并且 Cn 最不具体的. 让 1 <= j <= n 成为最大一个数这样这里存在 i 其中 1 <= i <= m 并且 Ni 是 Cj 的一个直接子类; Ni 被放到下一个.
 
-这条规则的作用是, 在没有 predecessor 的一组类中选择一个简单的超类链中的类在类优先级列表中是相邻的, 并且每个相对独立的子图中的类在类优先列表中都是相邻的 The effect of this rule for selecting from a set of classes with no predecessors is that the classes in a simple superclass chain are adjacent in the class precedence list and that classes in each relatively separated subgraph are adjacent in the class precedence list <!-- TODO 待校验 -->. 例如, 让 T1 和 T2 成为子图, 其唯一公共的元素是类 J. 假设没有 J 的超类出现在 T1 或 T2 中, 并且这个 J 存在于 T1 和 T2 的每个类的超类链中. 让 C1 是 T1 底部; 并且让 C2 是 T2 的底部. 假设这个顺序下 C 的直接超类是 C1 和 C2, 那么 C 的类优先级列表以 C 开始后面更这 T1 的所有类除了 J. 后面是 T2 的所有类. 类 J 和它的超类出现在最后. 
+这条规则的作用是, 在没有 predecessor 的一组类中选择一个简单的超类链中的类在类优先级列表中是相邻的, 并且每个相对独立的子图中的类在类优先列表中都是相邻的. 例如, 让 T1 和 T2 成为子图, 其唯一公共的元素是类 J. 假设没有 J 的超类出现在 T1 或 T2 中, 并且这个 J 存在于 T1 和 T2 的每个类的超类链中. 让 C1 是 T1 底部; 并且让 C2 是 T2 的底部. 假设这个顺序下 C 的直接超类是 C1 和 C2, 那么 C 的类优先级列表以 C 开始后面更这 T1 的所有类除了 J. 后面是 T2 的所有类. 类 J 和它的超类出现在最后. 
 
 #### 4.3.5.2 确定类优先级列表的示例
 
@@ -453,13 +453,13 @@ R=Uc<ELEMENT-OF>SCRc
 
 ### 4.3.7 <span id="IntegratingTypesClasses">整合类和类型</span>
 
-对象系统映射类的空间到类型的空间. 每个有着 proper 的名字的类都有一个对应相同名字的类型.
+对象系统映射类的空间到类型的空间. 每个有着特有的的名字的类都有一个对应相同名字的类型.
 
-每个类的 proper 名字是一个合法的类型指定符. 另外, 每个类对象是一个合法的类型指定符. 所以表达式 (typep object class) 在 object 的类是 class 本身或者 class 的子类情况下返回 true. 如果 class1 是 class2 的一个子类或者它们是相同的类, 表达式 (subtypep class1 class2) 的求值返回多值 true 和 true; 否则它返回多值 false 和 true. 如果 I 是某个名为 S 的类 C 的实例并且 C 是 standard-class 的实例, 那么如果 S 是 C 的 proper 的名字表达式 (type-of I) 的求值返回 S; 否则, 它返回 C.
+每个类的特有的名字是一个合法的类型指定符. 另外, 每个类对象是一个合法的类型指定符. 所以表达式 (typep object class) 在 object 的类是 class 本身或者 class 的子类情况下返回 true. 如果 class1 是 class2 的一个子类或者它们是相同的类, 表达式 (subtypep class1 class2) 的求值返回多值 true 和 true; 否则它返回多值 false 和 true. 如果 I 是某个名为 S 的类 C 的实例并且 C 是 standard-class 的实例, 那么如果 S 是 C 的特有的的名字表达式 (type-of I) 的求值返回 S; 否则, 它返回 C.
 
 由于类的名字和类对象是类型指定符, 它们可能被用于特殊表达式形式 the 还有类型声明.
 
-很多但不是全部预定义的类型指定符都有和类型有着相同 proper 名字的类. 这些类型指定符列在 Figure 4-8. 比如, 类型 array 有一个对应的类名为 array. 没有类型指定符是一个列表, 比如 (vector double-float 100), 有着一个对应的类. 操作符 deftype 不会创建任何类.
+很多但不是全部预定义的类型指定符都有和类型有着相同特有的名字的类. 这些类型指定符列在 Figure 4-8. 比如, 类型 array 有一个对应的类名为 array. 没有类型指定符是一个列表, 比如 (vector double-float 100), 有着一个对应的类. 操作符 deftype 不会创建任何类.
 
 对应于预定义类型说明符的每个类可以通过以下三种方式实现, 由每个具体实现决定. 它可以是一个 standard class, 一个 structure class, 或者一个 system class.
 
@@ -1085,9 +1085,9 @@ Figure 4-8. 对应预定义类型指定符的类
 
         deftype 定义一个名为 name 的派生类型指示符.
 
-        新的类型说明符的意义在于一个函数, 它将类型指定符扩展为另一个类型指定符, 如果它包含对另一个派生类型说明符的引用, 它本身就会被扩展 The meaning of the new type specifier is given in terms of a function which expands the type specifier into another type specifier, which itself will be expanded if it contains references to another derived type specifier.
+        新的类型指定符的意义在于一个函数, 它将类型指定符展开为另一个类型指定符, 如果它自身包含对另一个派生类型指定符的引用, 它本身就会被展开.
 
-        新定义的类型说明符可以作为  (name arg1 arg2 ...) 表达式的一个列表来引用. 参数的数量必须和 lambda-list 一样. 如果新的类型指定符不接受参数, 或者它的所有参数是可选的, 这个类型指定符可以被用作原子类型指定符.
+        新定义的类型指定符可以作为  (name arg1 arg2 ...) 表达式的一个列表来引用. 参数的数量必须和 lambda-list 一样. 如果新的类型指定符不接受参数, 或者它的所有参数是可选的, 这个类型指定符可以被用作原子类型指定符.
 
         给这个类型指定符的参数表达式, arg1 ... argn, 是不求值的. 相反, 这些字面化对象变成了相应的参数被绑定的对象.
 
@@ -1155,9 +1155,9 @@ Figure 4-8. 对应预定义类型指定符的类
 
                 Figure 4-9. subtypep 结果的可能性
 
-        subtypep 只有当至少一个参数涉及到后面其中一个类型指定符时才允许返回 false 和 false 的多值: and, eql, function 的列表表达式, member, not, or, satisfies, or values. (A type specifier `involves' such a symbol if, after being type expanded, it contains that symbol in a position that would call for its meaning as a type specifier to be used.) 一个可能的推论是, 如果 type-1 和 type-2 都不涉及这些类型指定符, 那么 subtypep 不得不去准确确定关系. 具体来说, 如果参数是 equal 的并且不涉及任何这些类型指定符时返回 true 和 true 的多值.<!-- TODO 未翻译完 -->
+        subtypep 只有当至少一个参数涉及到后面其中一个类型指定符时才允许返回 false 和 false 的多值: and, eql, function 的列表表达式, member, not, or, satisfies, or values. (一个类型指定符'包含'这样一个符号, 在类型被展开后, 它在一个位置中包含那个符号, 它可以将它的含义作为一种类型指定符来使用it contains that symbol in a position that would call for its meaning as a type specifier to be used.) 一个可能的推论是, 如果 type-1 和 type-2 都不涉及这些类型指定符, 那么 subtypep 不得不去准确确定关系. 具体来说, 如果参数是 equal 的并且不涉及任何这些类型指定符时返回 true 和 true 的多值.
 
-        当 type-1 和 type-2 只涉及 Figure 4-2 中的名字, 或者 defstruct, define-condition, 或 defclass 定义的类型的名字, 或者只展开到那些名字的衍生类型时, subtypep 第二个返回值一定不是 nil. 当列在 Figure 4-2 的类型指定符还有 defclass 和 defstruct 名称在一些情况下被实现为衍生类型时, subtypep 把它们当作原始类型.<!-- TODO primitive ??-->
+        当 type-1 和 type-2 只涉及 Figure 4-2 中的名字, 或者 defstruct, define-condition, 或 defclass 定义的类型的名字, 或者只展开到那些名字的衍生类型时, subtypep 第二个返回值一定不是 nil. 当列在 Figure 4-2 的类型指定符还有 defclass 和 defstruct 名称在一些情况下被实现为衍生类型时, subtypep 把它们当作原语(primitive).
 
         subtypep 所反映的类型之间的关系是特定于具体实现的. 比如, 如果一个实现只支持浮点数的单个类型, 在那个实现中 (subtypep 'float 'long-float) 返回 true 和 true 多值(因为两个类型是一样的).
 
@@ -1262,7 +1262,7 @@ Figure 4-8. 对应预定义类型指定符的类
 
 * 描述(Description):
 
-    返回一个类型指定符, typespec, 用于将 object 作为元素的类型. 这个 typespec 满足以下条件:<!-- TODO element 元素 ？？-->
+    返回一个类型指定符, typespec, 用于将 object 作为元素的类型. 这个 typespec 满足以下条件:
 
     1. 对于任何内置类型的元素的对象:
 
