@@ -1326,131 +1326,138 @@ Figure 4-8. 对应预定义类型指定符的类
 
 ### <span id="FunctionTYPEP">函数 TYPEP</span>
 
-语法(Syntax):
+* 语法(Syntax):
 
-typep object type-specifier &optional environment => generalized-boolean
+        typep object type-specifier &optional environment => generalized-boolean
 
-参数和值(Arguments and Values):
+* 参数和值(Arguments and Values):
 
-object---an object.
+        object---一个对象.
+        type-specifier---任何除了 values 以外的类型指定符, 或者一个第一个元素为 function 或 values 的类型指定符列表.
+        environment---一个环境对象. 默认是 nil, 表示 null 的词法环境和当前的全局环境.
+        generalized-boolean---一个广义的 boolean.
 
-type-specifier---any type specifier except values, or a type specifier list whose first element is either function or values.
+* 描述(Description):
 
-environment---an environment object. The default is nil, denoting the null lexical environment and the and current global environment.
+        如果 object 是类型指定符指定的类型就返回 true;否则, 返回 false.
 
-generalized-boolean---a generalized boolean.
+        表达式 (satisfies fn) 作为 type-specifier 的话, 就通过应用函数 fn 给 object 来处理.
 
-描述(Description):
+        (typep object '(array type-specifier)), 其中 type-specifier 不是 *, 当且仅当 object 是一个提供的 type-specifier 作为 make-array 的 :element-type 参数所构建出来的数组时返回 true. (array *) 指向所有数组不管其元素类型, 而 (array type-specifier) 只指向那些可以通过把 type-specifier 作为 make-array 的 :element-type 参数所构建出来的数组. 一个类似的解释可以应用于 (simple-array type-specifier) 和 (vector type-specifier). 见章节 15.1.2.1 (Array Upgrading).
 
-Returns true if object is of the type specified by type-specifier; otherwise, returns false.
+        (typep object '(complex type-specifier)) 对于所有可以通过给 type-specifier 类型的数字到函数 complex 来获取到的复数返回 true, 附加其他相同特化表示的复数. 任何这样的复数的实部和虚部必须满足:
 
-A type-specifier of the form (satisfies fn) is handled by applying the function fn to object.
+    ```LISP
+    (typep realpart 'type-specifier)
+    (typep imagpart 'type-specifier)
+    ```
 
-(typep object '(array type-specifier)), where type-specifier is not *, returns true if and only if object is an array that could be the result of supplying type-specifier as the :element-type argument to make-array. (array *) refers to all arrays regardless of element type, while (array type-specifier) refers only to those arrays that can result from giving type-specifier as the :element-type argument to make-array. A similar interpretation applies to (simple-array type-specifier) and (vector type-specifier). See Section 15.1.2.1 (Array Upgrading).
+        见函数 upgraded-complex-part-type.
 
-(typep object '(complex type-specifier)) returns true for all complex numbers that can result from giving numbers of type type-specifier to the function complex, plus all other complex numbers of the same specialized representation. Both the real and the imaginary parts of any such complex number must satisfy:
+* 示例(Examples):
 
- (typep realpart 'type-specifier)
- (typep imagpart 'type-specifier)
+    ```LISP
+    (typep 12 'integer) =>  true
+    (typep (1+ most-positive-fixnum) 'fixnum) =>  false
+    (typep nil t) =>  true
+    (typep nil nil) =>  false
+    (typep 1 '(mod 2)) =>  true
+    (typep #c(1 1) '(complex (eql 1))) =>  true
+    ;; To understand this next example, you might need to refer to
+    ;; Section 12.1.5.3 (Rule of Canonical Representation for Complex Rationals).
+    (typep #c(0 0) '(complex (eql 0))) =>  false
+    ```
 
-See the function upgraded-complex-part-type.
+        让 Ax 和 Ay 为表示不同类型的类型指定符, 但是对于它们
 
-示例(Examples):
+    ```LISP
+    (upgraded-array-element-type 'Ax)
+    ```
 
- (typep 12 'integer) =>  true
- (typep (1+ most-positive-fixnum) 'fixnum) =>  false
- (typep nil t) =>  true
- (typep nil nil) =>  false
- (typep 1 '(mod 2)) =>  true
- (typep #c(1 1) '(complex (eql 1))) =>  true
-;; To understand this next example, you might need to refer to
-;; Section 12.1.5.3 (Rule of Canonical Representation for Complex Rationals).
- (typep #c(0 0) '(complex (eql 0))) =>  false
+        和
 
-Let Ax and Ay be two type specifiers that denote different types, but for which
+    ```LISP
+    (upgraded-array-element-type 'Ay)
+    ```
 
- (upgraded-array-element-type 'Ax)
+        表示相同的类型. 注意
 
-and
-
- (upgraded-array-element-type 'Ay)
-
-denote the same type. Notice that
-
- (typep (make-array 0 :element-type 'Ax) '(array Ax)) =>  true
- (typep (make-array 0 :element-type 'Ay) '(array Ay)) =>  true
- (typep (make-array 0 :element-type 'Ax) '(array Ay)) =>  true
- (typep (make-array 0 :element-type 'Ay) '(array Ax)) =>  true
+    ```LISP
+    (typep (make-array 0 :element-type 'Ax) '(array Ax)) =>  true
+    (typep (make-array 0 :element-type 'Ay) '(array Ay)) =>  true
+    (typep (make-array 0 :element-type 'Ax) '(array Ay)) =>  true
+    (typep (make-array 0 :element-type 'Ay) '(array Ax)) =>  true
+    ```
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-An error of type error is signaled if type-specifier is values, or a type specifier list whose first element is either function or values.
+        如果 type-specifier 是 values, 或者第一个元素是 function 或 values 的类型指定符列表, 那么就会发出一个 error 类型的错误.
 
-The consequences are undefined if the type-specifier is not a type specifier.
+        如果 type-specifier 不是一个类型指定符, 那么结果是未定义的.
 
 * 也见(See Also):
 
-type-of, upgraded-array-element-type, upgraded-complex-part-type, Section 4.2.3 (Type Specifiers)
+        type-of, upgraded-array-element-type, upgraded-complex-part-type, Section 4.2.3 (Type Specifiers)
 
 * 注意(Notes):
 
-Implementations are encouraged to recognize and optimize the case of (typep x (the class y)), since it does not involve any need for expansion of deftype information at runtime. 
+        鼓励实现者去识别和优化 (typep x (the class y)) 的情况, 因为它不需要在运行时展开 deftype 信息. 
 
-### <span id="ConditionTypeTYPEERROR">Condition Type TYPE-ERROR</span>
+### <span id="ConditionTypeTYPEERROR">状况类型 TYPE-ERROR</span>
 
-类优先级列表(Class Precedence List):
+* 类优先级列表(Class Precedence List):
 
-type-error, error, serious-condition, condition, t
+        type-error, error, serious-condition, condition, t
 
-描述(Description):
+* 描述(Description):
 
-The type type-error represents a situation in which an object is not of the expected type. The ``offending datum'' and ``expected type'' are initialized by the initialization arguments named :datum and :expected-type to make-condition, and are accessed by the functions type-error-datum and type-error-expected-type.
+        类型 type-error 表示一个对象不是期望类型的情况. 这个违反基准(offending datum)和期望类型(expected type)被 make-condition 的名为 :datum 和 :expected-type 的参数所初始化, 并且被函数 type-error-datum 和 type-error-expected-type 所访问.
 
 * 也见(See Also):
 
-type-error-datum, type-error-expected-type 
+        type-error-datum, type-error-expected-type 
 
 ### <span id="FunctionTEDTEET">函数 TYPE-ERROR-DATUM, TYPE-ERROR-EXPECTED-TYPE</span>
 
-语法(Syntax):
+* 语法(Syntax):
 
-type-error-datum condition => datum
+        type-error-datum condition => datum
 
-type-error-expected-type condition => expected-type
+        type-error-expected-type condition => expected-type
 
-参数和值(Arguments and Values):
+* 参数和值(Arguments and Values):
 
-condition---a condition of type type-error.
+        condition---一个 type-error 类型的状况.
+        datum---一个对象.
+        expected-type---一个类型指定符.
 
-datum---an object.
+* 描述(Description):
 
-expected-type---a type specifier.
+        type-error-datum 返回 condition 表示的状况的违反基准.
 
-描述(Description):
+        type-error-expected-type 返回 condition 表示的违反基准的期望类型.
 
-type-error-datum returns the offending datum in the situation represented by the condition.
+* 示例(Examples):
 
-type-error-expected-type returns the expected type of the offending datum in the situation represented by the condition.
+    ```LISP
+    (defun fix-digits (condition)
+      (check-type condition type-error)
+      (let* ((digits '(zero one two three four
+              five six seven eight nine))
+             (val (position (type-error-datum condition) digits)))
+        (if (and val (subtypep 'fixnum (type-error-expected-type condition)))
+          (store-value 7))))
 
-示例(Examples):
+    (defun foo (x)
+      (handler-bind ((type-error #'fix-digits))
+        (check-type x number)
+        (+ x 3)))
 
- (defun fix-digits (condition)
-   (check-type condition type-error)
-   (let* ((digits '(zero one two three four
-                   five six seven eight nine))
-         (val (position (type-error-datum condition) digits)))
-     (if (and val (subtypep 'fixnum (type-error-expected-type condition)))
-         (store-value 7))))
- 
- (defun foo (x)
-   (handler-bind ((type-error #'fix-digits))
-     (check-type x number)
-     (+ x 3)))
- 
- (foo 'seven)
-=>  10
+    (foo 'seven)
+    =>  10
+    ```LISP
 
 * 副作用(Side Effects): None.
 
@@ -1460,21 +1467,21 @@ type-error-expected-type returns the expected type of the offending datum in the
 
 * 也见(See Also):
 
-type-error, Section 9 (Conditions)
+        type-error, Section 9 (Conditions)
 
 * 注意(Notes): None. 
 
-### <span id="ConditionTypeSIMPLETYPEERROR">Condition Type SIMPLE-TYPE-ERROR</span>
+### <span id="ConditionTypeSIMPLETYPEERROR">状况类型 SIMPLE-TYPE-ERROR</span>
 
-类优先级列表(Class Precedence List):
+* 类优先级列表(Class Precedence List):
 
-simple-type-error, simple-condition, type-error, error, serious-condition, condition, t
+        simple-type-error, simple-condition, type-error, error, serious-condition, condition, t
 
-描述(Description):
+* 描述(Description):
 
-Conditions of type simple-type-error are like conditions of type type-error, except that they provide an alternate mechanism for specifying how the condition is to be reported; see the type simple-condition.
+        类型 simple-type-error 的状况类似类型 type-error 的状况, 除了它们提供了另一种机制来指定如何报告状况; 见类型 simple-condition.
 
 * 也见(See Also):
 
-simple-condition, simple-condition-format-control, simple-condition-format-arguments, type-error-datum, type-error-expected-type 
+        simple-condition, simple-condition-format-control, simple-condition-format-arguments, type-error-datum, type-error-expected-type 
 
