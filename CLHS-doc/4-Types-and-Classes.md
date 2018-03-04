@@ -1,4 +1,4 @@
-# 4. Types and Classes
+# 4. 类型和类
 
 > * 4.1 [引言](#Introduction)
 > * 4.2 [类型](#Types)
