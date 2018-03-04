@@ -53,9 +53,9 @@ TYPE-OF 结果
  
 ## 4.3 背弃 [ANSI CL standard]
 
-DEFCLASS 支持可选的 :METACLASS STRUCTURE-CLASS. 这个选项在使用  DEFCLASS 而不是  DEFSTRUCT 来定义一个 DEFSTRUCT 定义出来的结构类型的子类是很有效的.
+DEFCLASS 支持选项 :METACLASS STRUCTURE-CLASS. 这个选项在使用  DEFCLASS 而不是  DEFSTRUCT 来定义一个 DEFSTRUCT 定义出来的结构类型的子类是很有效的.
 
-当 CALL-NEXT-METHOD 被调用时带了参数, 在解释代码时，可应用的方法必须和最初的参数一致，这是被clisp强制要求的.;;;???
+当 CALL-NEXT-METHOD 被调用时带了参数, 在解释代码时, 可应用的方法必须和最初的参数一致这个规则, 这是被 clisp 这个实现强制要求的.
 
 CLOS:GENERIC-FLET 和 CLOS:GENERIC-LABELS 被实现为宏, 而不是特殊操作符 (就像在 [sec_3-1-2-1-2-2] 中允许的). 它们没有被导入包 “COMMON-LISP-USER” 和 “COMMON-LISP” 因为 [ANSI CL standard] 问题 GENERIC-FLET-POORLY-DESIGNED:DELETE.
 
@@ -95,4 +95,4 @@ DEFCLASS 支持 :METACLASS 选项. 可能的值是 STANDARD-CLASS (默认的), S
 
 平常的改变, 比如说, 那些重复加载同样的代码不需要去更新实例情况. 就是那些不改变实例中本地访问的槽的修改, 比如说, 对槽选项 :INITFORM, :DOCUMENTATION 的改变, 还有对类选项 :DEFAULT-INITARGS, :DOCUMENTATION 的改变.
 
-不是在类被重定义或者  MAKE-INSTANCES-OBSOLETE 被调用时候，而是实例被第一次访问时会更新. 自从实例被最后一次访问后，类被重复定义好多次, UPDATE-INSTANCE-FOR-REDEFINED-CLASS 只调用一次.
+不是在类被重定义或者  MAKE-INSTANCES-OBSOLETE 被调用时候, 而是实例被第一次访问时会更新. 自从实例被最后一次访问后, 类被重复定义好多次, UPDATE-INSTANCE-FOR-REDEFINED-CLASS 只调用一次.
