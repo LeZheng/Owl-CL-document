@@ -296,10 +296,10 @@ Figure 3-4. 一些已定义的函数相关的名字
 #(a b c) =>  #(A B C)
 "fred smith" =>  "fred smith"
 ```
-<!--TODO 核对到此-->
+
 ### 3.1.3 <span id = "LambdaExpressions">Lambda表达式</span>
 
-在lambda表达式中, 通过在lambda列表中添加每个参数的绑定, 以及从参数到当前词法环境的相应值, 将 body 在该词法环境中进行求值.
+在lambda表达式中, 主体部分在一个词法环境中求值, 这个词法环境是通过在lambda列表中给每个参数的绑定添加当前词法环境下参数的对应值来构成.
 
 有关如何基于lambda列表建立绑定的进一步讨论, 见章节 3.4 (Lambda Lists).
 
@@ -307,7 +307,7 @@ Figure 3-4. 一些已定义的函数相关的名字
 
 ### 3.1.4 <span id = "ClosuresLexicalBinding">闭包和词法绑定</span>
 
-一个词法闭包(lexical closure)是一个可以引用和更改由包含函数定义的绑定表达式形式所确定的词法绑定的值的函数.
+一个词法闭包(lexical closure)是一个函数, 它可以引用和更改由包含函数定义的绑定表达式形式所确定的词法绑定的值.
 
 细想这段 x 没有声明为 special 的代码:
 
@@ -321,7 +321,7 @@ Figure 3-4. 一些已定义的函数相关的名字
 (funcall (car funs)) =>  43
 ```
 
-函数的特殊表达式形式将lambda表达式强制转换为闭包, 在这个闭包中, 当对特殊表达式形式进行求值时, 词法环境与lambda表达式一起被捕获.
+function 的特殊表达式形式将lambda表达式强制转换为闭包, 在这个闭包中, 当对特殊表达式形式进行求值时, 词法环境与lambda表达式一起被捕获.
 
 这个 two-funs 函数返回两个函数的列表, 它们中的每一个都引用了函数 two-funs 被调用时创建的变量 x 的绑定. 这个变量有初始值 6, 但是 setq 可以修改这个绑定. 为第一个lambda表达式创建的词法闭包在创建闭包时不会"快照" x 的值 6;而是抓住了 x 的绑定. 第二个函数可以被用于修改同样的(捕获的)绑定(在示例中改为 43), 并且这个修改后的变量绑定之后影响了第一个函数的返回值.
 
@@ -421,12 +421,12 @@ z)
                 (return-from here1 4)
 ```
 
-在执行 funcall 的时候, 有两个明显的 block 退出点, 每个显然都命名为 here. 这个 return-from 表达式被作为 funcall 操作的结果执行时引用外面的退出点(here1), 不是内部的那个(here2). 它指的是在函数(这里通过 #' 语法缩写了)执行时出现的退出点，它导致了由 funcall 实际调用的函数对象的创建.
+在执行 funcall 的时候, 有两个明显的 block 退出点, 每个显然都命名为 here. 这个 return-from 表达式被作为 funcall 操作的结果执行时引用外面的退出点(here1), 不是内部的那个(here2). 它指的是在 function(这里通过 #' 语法缩写了)执行时出现的退出点，它导致了由 funcall 实际调用的函数对象的创建.
 
 如果在这个例子中, 一个人打算把 (funcall f) 改为 (funcall g), 那么调用 (contorted-example nil nil 2) 的值会是 9. 这个值会改变是因为 funcall 会导致 (return-from here2 4) 的执行, 从而导致一个从内部的退出点(here2)返回. 当这个发生时, 值 4 会被中间的 contorted-example 调用返回, 5 被加到它上面成了 9, 并且这个值会被外部的 contorted-example 调用返回. 重点是, 退出点的选择与它的最内部或最外层无关; 而是, 它取决于在执行函数时使用lambda表达式打包的词法环境. 
 
 ### 3.1.6 <span id = "Extent">范围</span>
-
+<!-- TODO 校对到此-->
 Contorted-example 可以工作仅因为在退出点的范围内调用了由 f 命名的函数. 一旦这个执行的控制流离开了这个 block, 这个退出点就会被废除. 比如:
 
 ```LISP
