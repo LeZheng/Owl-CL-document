@@ -934,16 +934,16 @@ Figure 3-9. Common Lisp 声明标识符
 #### 3.3.3.1 类型声明的简写标记
 
 类型说明符可以用作声明标识符. (type-specifier var\*) 可以当作 (type type-specifier var\*) 的简写. 
-<!-- TODO 核对到此-->
+
 ### 3.3.4 <span id = "DeclarationScope">声明的作用域</span>
 
 声明可以被分成两种类型: 一些适用于变量或函数的绑定; 一些则不适用于绑定.
 
-一个出现在绑定表达式的头部并且适用于这个表达式创建的变量或函数的绑定的声明称之为绑定声明; 这个绑定会影响这个声明作用域内的绑定和任何绑定的引用.
+一个出现在绑定表达式的头部并且适用于这个表达式创建的变量或函数的绑定的声明称之为绑定声明; 这个声明会影响这个声明作用域内的该绑定和任何该绑定的引用.
 
-不绑定声明的声明称为自由声明(free declarations).
+不是绑定声明的声明称为自由声明(free declarations).
 
-在表达式 F1 中, 一个自由声明, 它适用于由某些表达式 F2 所建立的一个名字 N 的绑定, 其中 F1 是一个子表达式, 它只影响 N 在F1中的引用; 它不适用于其他在 F1 以外的绑定, 也不影响 F2 中建立的 N 绑定的行为.
+在表达式 F1 中, 一个自由声明, 它适用于由某些表达式 F2 所建立的一个名字 N 的绑定, 其中 F1 是 F2 的一个子表达式, 它只影响 N 在F1中的引用; 它不适用于其他在 F1 以外的绑定, 也不影响 F2 中建立的 N 绑定的行为.
 
 不适用于绑定的声明只能以自由绑定出现.
 
@@ -951,7 +951,7 @@ Figure 3-9. Common Lisp 声明标识符
 
 除非明确声明, 自由声明的作用域只包括它出现在头部的表达式的主体的子表达式, 不包括其他的子表达式. 自由声明的作用域不包括包含声明的表达式所建立的绑定的初始化表达式.
 
-一些循环表达式包含 step, end-test, 或者 result 子表达式, 这些子表达式也包含在循环表达式中出现的声明作用域内. 具体地说, 调用的循环表达式和子表达式是:
+一些循环表达式包含 step, end-test, 或者 result 子表达式, 这些子表达式也包含在循环表达式中出现的声明作用域内. 具体地说, 涉及的循环表达式和子表达式是:
 
     do, do*: step-forms, end-test-form, and result-forms.
     dolist, dotimes: result-form
@@ -1011,7 +1011,7 @@ Figure 3-9. Common Lisp 声明标识符
 =>  1
 ```
 
-在这个例子, 第四行的第一个 x 引用是只第三行建立的 x 的词法绑定. 然而, 出现在第四行的第二个 x 位于第五行的自由声明的作用域内 (因为这个是 dotimes 的 结果表达式(result-form)) 并且因此引用 x 的动态绑定. 
+在这个例子, 第四行的第一个 x 引用是指第三行建立的 x 的词法绑定. 然而, 出现在第四行的第二个 x 位于第五行的自由声明的作用域内 (因为这个是 dotimes 的 结果表达式(result-form)) 并且因此引用 x 的动态绑定. 
 
 ## 3.4 <span id = "LambdaLists">Lambda列表</span>
 
@@ -1019,27 +1019,28 @@ Figure 3-9. Common Lisp 声明标识符
 
 这里有几种lambda列表的类型.
 
-    Context                                      Kind of Lambda List                              
-    defun form                                   ordinary lambda list                             
-    defmacro form                                macro lambda list                                
-    lambda expression                            ordinary lambda list                             
-    flet local function definition               ordinary lambda list                             
-    labels local function definition             ordinary lambda list                             
-    handler-case clause specification            ordinary lambda list                             
-    restart-case clause specification            ordinary lambda list                             
-    macrolet local macro definition              macro lambda list                                
-    define-method-combination                    ordinary lambda list                             
-    define-method-combination :arguments option  define-method-combination arguments lambda list  
-    defstruct :constructor option                boa lambda list                                  
-    defgeneric form                              generic function lambda list                     
-    defgeneric method clause                     specialized lambda list                          
-    defmethod form                               specialized lambda list                          
-    defsetf form                                 defsetf lambda list                              
-    define-setf-expander form                    macro lambda list                                
-    deftype form                                 deftype lambda list                              
-    destructuring-bind form                      destructuring lambda list                        
-    define-compiler-macro form                   macro lambda list                                
-    define-modify-macro form                     define-modify-macro lambda list                  
+|    上下文               |                       lambda 列表的种类   |
+|   -   | - |
+|defun form                                   |ordinary lambda list                             |
+|defmacro form                                |macro lambda list                                |
+|lambda expression                            |ordinary lambda list                             |
+|flet local function definition               |ordinary lambda list                             |
+|labels local function definition             |ordinary lambda list                             |
+|handler-case clause specification            |ordinary lambda list                             |
+|restart-case clause specification            |ordinary lambda list                             |
+|macrolet local macro definition              |macro lambda list                                |
+|define-method-combination                    |ordinary lambda list                             |
+|define-method-combination :arguments option  |define-method-combination arguments lambda list  |
+|defstruct :constructor option                |boa lambda list                                  |
+|defgeneric form                              |generic function lambda list                     |
+|defgeneric method clause                     |specialized lambda list                          |
+|defmethod form                               |specialized lambda list                          |
+|defsetf form                                 |defsetf lambda list                              |
+|define-setf-expander form                    |macro lambda list                                |
+|deftype form                                 |deftype lambda list                              |
+|destructuring-bind form                      |destructuring lambda list                        |
+|define-compiler-macro form                   |macro lambda list                                |
+|define-modify-macro form                     |define-modify-macro lambda list                  |
 
 Figure 3-10. 要使用的lambda列表的种类
 
@@ -1092,7 +1093,7 @@ lambda列表中的每一个元素是一个参数说明符或者一个lambda列�
 
 一个 init-form 可以是任何表达式形式. 无论何时对于任何参数说明符任何的 init-form 的求值, 那个表达式形式可能引用任何这个说明符左边的参数变量, 包括任何 supplied-p-parameter 变量, 并且可能依赖没有其他参数变量已经被绑定的事实(包括它自己的参数变量) .
 
-一个 keyword-name 可以使任何符号, 但是按照惯例是一个正常的关键字; 所有标准化的实现遵守这个惯例.
+一个 keyword-name 可以是任何符号, 但是按照惯例是一个正常的关键字; 所有标准化的实现遵守这个惯例.
 
 一个普通的lambda列表有5个部分, 其中的任何部分或者全部可以是空的. 关于不匹配参数处理的信息, 见章节 3.5 (Error Checking in Function Calls).
 
@@ -1111,12 +1112,12 @@ lambda列表中的每一个元素是一个参数说明符或者一个lambda列�
 
 #### 3.4.1.2 <span id = "SpecifiersOptionalParameters">可选参数指定符</span>
 
-如果出现 &optional, 可选参数指定符就是那些跟在 &optional 后面直到下一个lambda列表关键字或者直到列表结束的指定符. 如果指定了可选参数, 然后每一个都被处理如下. 如果存在未处理的参数, 则参数变量 var 将绑定到后面的剩余参数, 就像必要参数一样. 如果没有参数剩下, 不管怎样, 那么 init-form 被求值, 并且参数变量被绑定给结果值(如果没有 init-form 出现在参数指定符就是 nil). 如果另一个变量名 supplied-p-parameter 出现在这个指定符, 如果有一个参数可用它会被绑定为 true, 如果没有参数剩余它会被绑定为 false (因此 init-form 需要被求值). Supplied-p-parameter 不是绑定一个参数而是一个值, 它表示是否为相应的 var 提供了一个对应的参数. 
+如果出现 &optional, 可选参数指定符就是那些跟在 &optional 后面直到下一个lambda列表关键字或者直到列表结束的那些指定符. 如果指定了可选参数, 然后每一个都按如下处理. 如果存在未处理的参数, 则参数变量 var 将绑定到后面的剩余参数, 就像必要参数一样. 如果没有参数剩下, 不管怎样, 那么 init-form 被求值, 并且参数变量被绑定给结果值(如果没有 init-form 出现在参数指定符就是 nil). 如果另一个变量名 supplied-p-parameter 出现在这个指定符中, 如果有一个参数可用它会被绑定为 true, 如果没有参数剩余它会被绑定为 false (因此 init-form 需要被求值). Supplied-p-parameter 不是绑定一个参数而是一个值, 它表示是否为相应的 var 提供了一个对应的参数. 
 
 #### 3.4.1.3 <span id = "SpecifierRestParameter">剩余参数指定符</span>
 
 &rest, 如果出现, 后面必须跟着单个的剩余参数指定符, 后面依次必须跟着另一个lambda列表关键字或者到lambda列表的末尾. 在所有可选参数被处理后, 这里可能是一个剩余参数. 如果这里是一个剩余参数, 它给绑定给一个所有 as-yet-unprocessed 参数的列表. 如果没有未处理参数剩下, 这个剩余参数绑定给空列表. 如果这里没有剩余参数和关键字参数并且有任何未处理参数剩余, 会发出一个错误; 见章节 3.5 (Error Checking in Function Calls). 剩余参数的值是允许的, 但不是必需的, 以便与 apply 最后一个参数共享结构. 
-
+<!-- TODO 核对到此 -->
 #### 3.4.1.4 <span id = "SpecifiersKeywordParameters">关键字参数指定符</span>
 
 如果出现 &key , 所有直到下一个lambda列表或者列表末尾的指定符都是关键字参数指定符. 当关键字参数被处理, 相同被处理的参数会被做成一个列表作为剩余参数. 同时指定 &rest 和 &key 是允许的. 在这个情况下剩下的参数被同时用于这两种目的; 这就是说, 所有剩下的参数被做成lambda列表作为剩余参数, 也被当作关键字参数处理. 如果指定了 &key, 必须有偶数个参数; 见章节 3.5.1.6 (Odd Number of Keyword Arguments). 这些参数被当作对, 每一对中的第一个参数被解释为一个名字而第二个作为对应的值. 每个对中的第一个对象必须是一个符号; 见章节 3.5.1.5 (Invalid Keyword Arguments). 这个关键字参数指定符可能可选地跟着lambda列表关键字 &allow-other-keys.
