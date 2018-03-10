@@ -1052,7 +1052,7 @@ Figure 3-11. 可应用于lambda列表的定义的名字
 
 > * 3.4.1 [普通lambda列表](#OrdinaryLambdaLists)
 > * 3.4.2 [广义函数lambda列表](#GenericFunctionLambdaLists)
-> * 3.4.3 [特定的lambda列表](#SpecializedLambdaLists)
+> * 3.4.3 [特化的lambda列表](#SpecializedLambdaLists)
 > * 3.4.4 [宏lambda列表](#MacroLambdaLists)
 > * 3.4.5 [解构lambda列表](#DestructuringLambdaLists)
 > * 3.4.6 [Boa Lambda列表](#BoaLambdaLists)
@@ -1117,12 +1117,12 @@ lambda列表中的每一个元素是一个参数说明符或者一个lambda列�
 #### 3.4.1.3 <span id = "SpecifierRestParameter">剩余参数指定符</span>
 
 &rest, 如果出现, 后面必须跟着单个的剩余参数指定符, 后面依次必须跟着另一个lambda列表关键字或者到lambda列表的末尾. 在所有可选参数被处理后, 这里可能是一个剩余参数. 如果这里是一个剩余参数, 它给绑定给一个所有 as-yet-unprocessed 参数的列表. 如果没有未处理参数剩下, 这个剩余参数绑定给空列表. 如果这里没有剩余参数和关键字参数并且有任何未处理参数剩余, 会发出一个错误; 见章节 3.5 (Error Checking in Function Calls). 剩余参数的值是允许的, 但不是必需的, 以便与 apply 最后一个参数共享结构. 
-<!-- TODO 核对到此 -->
+
 #### 3.4.1.4 <span id = "SpecifiersKeywordParameters">关键字参数指定符</span>
 
-如果出现 &key , 所有直到下一个lambda列表或者列表末尾的指定符都是关键字参数指定符. 当关键字参数被处理, 相同被处理的参数会被做成一个列表作为剩余参数. 同时指定 &rest 和 &key 是允许的. 在这个情况下剩下的参数被同时用于这两种目的; 这就是说, 所有剩下的参数被做成lambda列表作为剩余参数, 也被当作关键字参数处理. 如果指定了 &key, 必须有偶数个参数; 见章节 3.5.1.6 (Odd Number of Keyword Arguments). 这些参数被当作对, 每一对中的第一个参数被解释为一个名字而第二个作为对应的值. 每个对中的第一个对象必须是一个符号; 见章节 3.5.1.5 (Invalid Keyword Arguments). 这个关键字参数指定符可能可选地跟着lambda列表关键字 &allow-other-keys.
+如果出现 &key , 所有直到下一个lambda列表关键字或者列表末尾的指定符都是关键字参数指定符. 当关键字参数被处理, 同样被处理的参数会被做成一个列表作为剩余参数. 同时指定 &rest 和 &key 是允许的. 在这个情况下剩下的参数被同时用于这两种目的; 这就是说, 所有剩下的参数被做成lambda列表作为剩余参数, 也被当作关键字参数处理. 如果指定了 &key, 必须有偶数个参数; 见章节 3.5.1.6 (Odd Number of Keyword Arguments). 这些参数被当作对, 每一对中的第一个参数被解释为一个名字而第二个作为对应的值. 每个对中的第一个对象必须是一个符号; 见章节 3.5.1.5 (Invalid Keyword Arguments). 这个关键字参数指定符可能可选地跟着lambda列表关键字 &allow-other-keys.
 
-在每一个关键字参数指定符中必须是一个名字 var 给参数变量. 如果这个 var 单独出现或者在一个 (var init-form) 组合中, 当匹配参数时参数是一个 KEYWORD 包中名字和 var 相同的符号时这个关键字名字会被使用. 如果这个 ((keyword-name var) init-form) 表示法被使用, 那么这个用于匹配参数的关键字名字是 keyword-name, 它可能是任何包中的符号(当然, 如果它不是 KEYWORD 包中的符号, 它没有必要自求值, 所以当调用这个函数时必须额外关心来确保正常的求值一直跳过这个关键字名字). 因此
+在每一个关键字参数指定符中必须是一个名字 var 作为参数变量. 如果这个 var 单独出现或者在一个 (var init-form) 组合中, 当匹配参数时参数是一个 KEYWORD 包中名字和 var 相同的符号时, 这个关键字名字会被使用. 如果这个 ((keyword-name var) init-form) 表示法被使用, 那么这个用于匹配参数的关键字名字是 keyword-name, 它可能是任何包中的符号(当然, 如果它不是 KEYWORD 包中的符号, 它没有必要自求值, 所以当调用这个函数时必须额外关心来确保正常的求值一直跳过这个关键字名字). 因此
 
 ```LISP
 (defun foo (&key radix (type 'integer)) ...)
@@ -1142,7 +1142,7 @@ lambda列表中的每一个元素是一个参数说明符或者一个lambda列�
 
 注意如果 &key 出现了, 一个 :allow-other-keys 关键字参数总是是允许的---不管关联的值是 true 或者 false. 然而, 如果这个值是 false, 其他不匹配的关键字是不接受的 (除非使用了 &allow-other-keys).
 
-此外, 如果接收的参数列表指定了一个普通的会被 :allow-other-keys 标记的参数, 那么 :allow-other-keys 同时有它的 special-cased 意义(确定是否允许附加的关键字)和它的正常意义(data flow into the function in question).
+此外, 如果接收的参数列表指定了一个普通的会被 :allow-other-keys 标记的参数, 那么 :allow-other-keys 同时有它的 special-cased 意义(确定是否允许附加的关键字)和它的正常意义(数据流入到提及的函数中).
 
 ##### 3.4.1.4.1 抑制参数检测
 
@@ -1281,35 +1281,35 @@ Figure 3-14. 广义函数lambda列表使用的lambda列表关键字
 
 可选和个关键字参数
 
-    可选参数和关键字参数可能没有默认的初始值和使用 supplied-p 参数.
+    可选参数和关键字参数可能没有默认的初始值表达式也没有使用 supplied-p 参数.
 
 &aux 的使用
 
     &aux 的使用是不允许的. 
 
-### 3.4.3 <span id = "SpecializedLambdaLists">特定的lambda列表</span>
+### 3.4.3 <span id = "SpecializedLambdaLists">特化的lambda列表</span>
 
-一个特定的lambda列表被用于为一个特定的签名特化一个方法并且去描述匹配这个签名的参数如何被方法接收. 下一段中定义的名字以某种方式使用特定的lambda列表; 关于其中的每一个怎样处理的信息见字典条目.
+一个特化的lambda列表被用于为一个特定的签名特化一个方法并且去描述匹配这个签名的参数如何被方法接收. 下一段中定义的名字以某种方式使用特化的lambda列表; 关于其中的每一个怎样处理的信息见字典条目.
 
     defmethod  defgeneric    
 
-Figure 3-15. 使用特定的lambda列表的标准化操作符
+Figure 3-15. 使用特化的lambda列表的标准化操作符
 
-一个特定的lambda列表可以包含下面这段中展示的lambda列表关键字.
+一个特化的lambda列表可以包含下面这段中展示的lambda列表关键字.
 
     &allow-other-keys  &key       &rest  
     &aux               &optional         
 
 Figure 3-16. 特定lambda列表使用的lambda列表关键字
 
-一个特定的lambda列表是语法上等价于一个普通的lambda列表除了每一个必要参数可能可选地和一个类或者一个对象关联, 该参数是特定的.
+一个特化的lambda列表是语法上等价于一个普通的lambda列表除了每一个必要参数可能可选地和一个类或者一个对象关联, 该参数是特定的.
 
     lambda-list::= ({var | (var [specializer])}* 
                     [&optional {var | (var [init-form [supplied-p-parameter]])}*] 
                     [&rest var] 
                     [&key {var | ({var | (keyword-name var)} [init-form [supplied-p-parameter]])}* [&allow-other-keys]] 
                     [&aux {var | (var [init-form])}*]) 
-
+<!-- TODO 核对到此-->
 ### 3.4.4 <span id = "MacroLambdaLists">宏lambda列表</span>
 
 一个宏lambda列表被用于描述下面这段中的操作符定义的宏.
