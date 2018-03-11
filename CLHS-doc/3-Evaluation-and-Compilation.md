@@ -1589,7 +1589,7 @@ Define-method-combination 参数lambda列表类似于普通lambda列表, 但是�
 在许多情况下, 文档字符串可以在一系列表达式形式之前出现在一系列声明表达式中.
 
 在这个情况下, 如果字符串 S 出现在允许文档字符串被允许的地方而后面没有声明表达式或表达式形式那么 S 就被认为是一种表达式; 否则, S 被当作一个文档字符串. 如果出现不止一个文档字符串那么结果是未定义的. 
-<!-- TODO 核对到此-->
+
 ## 3.5 <span id = "ErrorChecking">函数调用中的错误检测</span>
 
 ### 3.5.1 参数匹配检测
@@ -1619,11 +1619,11 @@ Define-method-combination 参数lambda列表类似于普通lambda列表, 但是�
         -- 所有适用方法的方法定义.
         -- 它的方法组合的定义.
 
-* 对于表达式 (coerce x 'function), 其中 x 是一个 lambda 表达式, 当强制执行时, 全局环境中优化质量安全的值也适用于产生的函数.
+* 对于表达式 (coerce x 'function), 其中 x 是一个 lambda 表达式, 当 coerce 执行时, 全局环境中优化质量 safety 的值也适用于产生的函数.
 
-* 对于一个函数 ensure-generic-function 的调用, 在作为 :environment 参数传递的环境对象中优化质量安全的值也适用于产生的广义函数.
+* 对于一个函数 ensure-generic-function 的调用, 在作为 :environment 参数传递的环境对象中优化质量 safety 的值也适用于产生的广义函数.
 
-* 对于一个对lambda表达式作为参数的 compile 的调用, 在 compile 被调用时全局环境中优化质量安全的值适用于编译出来的函数.
+* 对于一个对lambda表达式作为参数的 compile 的调用, 在 compile 被调用时全局环境中优化质量 safety 的值适用于编译出来的函数.
 
 * 对于一个单个参数的 compile 调用, 如果函数的原始定义是安全的, 那么作为结果编译后的函数也必须是安全的.
 
@@ -1633,7 +1633,7 @@ Define-method-combination 参数lambda列表类似于普通lambda列表, 但是�
     -- 所有适用方法的方法定义.
     -- 方法组合的定义.
     -- 方法定义表达式主体部分的入口点, 即确定 call-next-method 绑定的地方.
-    -- 名字 call-next-method 功能求值的点.
+    -- 名字 call-next-method 函数求值的点.
 
 一个不安全调用就是一个不是安全调用的调用.
 
@@ -1641,7 +1641,7 @@ Define-method-combination 参数lambda列表类似于普通lambda列表, 但是�
 
 3.5.1.1.1 安全调用的错误检测时间
 
-如果在安全调用中发出一个错误, 这个准确的发出点是依赖于实现的. 尤其, 它可能在编译时或运行时发出, 如果在运行时发出, 它可能在执行这个调用时, 或之前, 或之后发出. 然而它总是在这个被调用函数的主体执行之前. 
+如果在安全调用中发出一个错误, 这个准确的发出点是依赖于实现的. 具体来说, 它可能在编译时或运行时发出, 如果在运行时发出, 它可能在执行这个调用时, 或之前, 或之后发出. 然而它总是在这个被调用函数的主体执行之前. 
 
 #### 3.5.1.2 <span id = "TooFewArguments">参数太少(Too Few Arguments)</span>
 
@@ -1685,7 +1685,7 @@ Define-method-combination 参数lambda列表类似于普通lambda列表, 但是�
 
 对新参数的一组方法和适用于原始参数的方法集合之间的比较, 其中相同指示符的方法次序是不敏感的.
 
-如果 call-next-method 的参数指定了不同的可适用方法的不同排序集, 并且没有可用的下一个方法, 那么对不同方法的测试和相关错误信号的发出(存在的话)的将优先于调用 no-next-method. . 
+如果 call-next-method 的参数指定了不同的可适用方法的不同排序集, 并且没有可用的下一个方法, 那么对不同方法的测试和相关错误信号的发出(存在的话)的将优先于调用 no-next-method. 
 
 ## 3.6 <span id = "TraversalRulesSideEffects">遍历规则和副作用</span>
 
@@ -1725,7 +1725,7 @@ array
 
     将一个新值存储到数组的某个元素中, 或者对已经是该元素的对象执行破坏性操作.
 
-    改变数组的填充指针, 维度或位移 (不管这个数组实际上是否为 adjustable).
+    改变数组的填充指针, 维度或位移 (不管这个数组实际上是否为可调整的).
 
     对一个数组执行破坏性操作, 这个数组的内容被转移到另一个数组或者和另一个数组共享内容.
 
@@ -1759,7 +1759,7 @@ stream
 
     对 stream 执行 I/O 操作, 或者关闭这个 stream.
 
-All other standardized types
+所有其他标准化类型
 
     [这个范畴包括, 比如, character, condition, function, method-combination, method, number, package, pathname, restart, 还有 symbol.]
 
