@@ -1309,7 +1309,7 @@ Figure 3-16. 特定lambda列表使用的lambda列表关键字
                     [&rest var] 
                     [&key {var | ({var | (keyword-name var)} [init-form [supplied-p-parameter]])}* [&allow-other-keys]] 
                     [&aux {var | (var [init-form])}*]) 
-<!-- TODO 核对到此-->
+
 ### 3.4.4 <span id = "MacroLambdaLists">宏lambda列表</span>
 
 一个宏lambda列表被用于描述下面这段中的操作符定义的宏.
@@ -1351,23 +1351,23 @@ Figure 3-17. 使用宏lambda列表的操作符
 
 Figure 3-18. 宏lambda列表使用的lambda列表参数
 
-可选参数 (introduced by &optional) 和关键字参数 (introduced by &key) 可以在一个宏lambda列表中被提供, 就像在普通lambda列表中一样. 每一个都可能包含默认初始化表达式和 supplied-p 参数.
+可选参数 (通过 &optional 引入) 和关键字参数 (通过 &key 引入) 可以在一个宏lambda列表中被提供, 就像在普通lambda列表中一样. 每一个都可能包含默认初始化表达式和 supplied-p 参数.
 
 &body 在函数中和 &rest 一样, 但是它可以被用于通知确定的输出格式化和编辑函数这个表达式的剩余部分被当作一个主体(body), 并且应该相应地缩进. 在任何特定的级别 &body 或者 &rest 只有一个可以被使用; 见章节 3.4.4.1 (Destructuring by Lambda Lists). &body 可以出现在一个宏lambda表达式的任何级别; 关于详细情况, 见章节 3.4.4.1 (Destructuring by Lambda Lists).
 
 &whole 跟着一个绑定给整个 macro-call 表达式的单个变量; 这是这个宏函数收到的第一个参数的值. 如果出现 &whole 和一个跟在后面的变量, 它们必须出现在lambda列表的最前面, 在任何其他参数或者lambda列表关键字之前. &whole 可以出现在一个宏lambda列表的任何级别. 在内部级别, 这个 &whole 变量绑定给参数的对应部分, 正如 &rest, 但是不像 &rest, 其他参数也是允许的. 这个 &whole 的使用不影响参数指定的模式.
 
-&environment 后面跟着一个绑定给表示当前词法环境的环境, 这个环境是这个宏调用被解释时所处的环境. 这个环境应该和 macro-function, get-setf-expansion, compiler-macro-function, 还有 macroexpand (for example) 在计算宏展开式一起使用, 来确保这个编译环境中确定的任何词法绑定或定义被考虑进去. &environment 只能出现在宏lambda列表的顶层, 并且只能出现一次, 但是可以出现在这个列表的任何地方; 这个 &environment 和 &whole 被在这个lambda列表的任何其他变量之前被绑定, 不管 &environment 出现在这个lambda列表的什么地方. 绑定到环境参数的对象具有动态范围.
+&environment 后面跟着一个绑定给表示当前词法环境的环境, 这个环境是这个宏调用被解释时所处的环境. 这个环境应该和 macro-function, get-setf-expansion, compiler-macro-function, 还有 macroexpand (比如) 在计算宏展开式一起使用, 来确保这个编译环境中确定的任何词法绑定或定义被考虑进去. &environment 只能出现在宏lambda列表的顶层, 并且只能出现一次, 但是可以出现在这个列表的任何地方; 这个 &environment 和 &whole 被在这个lambda列表的任何其他变量之前被绑定, 不管 &environment 出现在这个lambda列表的什么地方. 绑定到环境参数的对象具有动态范围.
 
-解构允许一个宏lambda列表去表达宏调用语法结构. 如果没有出现lambda列表关键字, 那么这个宏lambda列表是在叶子中包含参数名称的树. 模式和宏表达式必须具有兼容的树结构; 这就是说, 它们的树结构必须是等价的, 或者它只能在模式的某些叶节点与宏形式的非原子对象匹配时有所不同. 关于这种情况下的错误检测的信息, 见章节 3.5.1.7 (Destructuring Mismatch).
+解构允许一个宏lambda列表去表达宏调用语法结构. 如果没有出现lambda列表关键字, 那么这个宏lambda列表是在叶子中包含参数名称的树. 匹配模式和宏表达式必须具有兼容的树结构; 这就是说, 它们的树结构必须是等价的, 或者它只能在匹配模式的某些叶节点与宏形式的非原子对象匹配时有所不同. 关于这种情况下的错误检测的信息, 见章节 3.5.1.7 (Destructuring Mismatch).
 
-一个解构的lambda列表(不管在顶层还是嵌入的)可以被点标记, 以一个参数名结束. 这种情况的处理方式与结束列表的参数名称在 &rest 前面出现的情况完全相同.
+一个解构的lambda列表(不管在顶层还是嵌入的)可以是点对的(dotted), 以一个参数名结束. 这种情况的处理方式与结束列表的参数名称在 &rest 前面出现的情况完全相同.
 
-对于一个宏表达式(或者是一个宏表达式的子表达式)是一个标有点的列表是允许的, 只有在和 (... &rest var) 或 (... . var) 匹配时. 宏需要去识别和处理这种情况.
+对于一个宏表达式(或者是一个宏表达式的子表达式)是一个点对列表是允许的, 只有在和 (... &rest var) 或 (... . var) 匹配时. 宏需要去识别和处理这种情况.
 
 #### 3.4.4.1 lambda列表的解构
-<!-- TODO pattern ?? -->
-在一个宏lambda列表中任何参数名字可以出现的地方, 还有普通lambda列表语法中(在章节 3.4.1 (Ordinary Lambda Lists) 描述的)不允许一个列表的地方, 一个解构lambda列表可以出现在参数名字的地方. 当这个完成后, 与参数匹配的参数被当作一个(可能是点标记的)列表, 作为一个参数列表, 用于满足内嵌的lambda列表中的参数. 这就被认为是解构(destructuring).
+
+在一个宏lambda列表中任何参数名字可以出现的地方, 还有普通lambda列表语法中(在章节 3.4.1 (Ordinary Lambda Lists) 描述的)不允许一个列表的地方, 一个解构lambda列表可以出现在参数名字的地方. 在这样做时, 与参数匹配的参数被当作一个(可能是点对的)列表, 作为一个参数列表, 用于满足内嵌的lambda列表中的参数. 这就被认为是解构(destructuring).
 
 解构是将一个复合对象分解为它的组件部分的过程, 使用一种缩写的声明式语法, 而不是用原始的组件访问函数. 每一个组件部分绑定给一个变量.
 
@@ -1413,7 +1413,7 @@ Figure 3-18. 宏lambda列表使用的lambda列表参数
 
 &optional
 
-    每一个后面的元素是一个变量或者一个解构匹配模式, 一个默认值的表达式和一个 supplied-p 变量的列表. 这个默认值和 supplied-p 可以被省略. 如果这个被解构列表提前结束, , 所以它没有一个元素来匹配这个解构匹配模式或子模式, 而是这个默认表达式会求值并解构. 如果这个默认表达式被使用了 supplied-p 变量会收到值 nil, 否则就是 t.
+    每一个后面的元素是一个变量或者一个解构匹配模式, 一个默认值的表达式和一个 supplied-p 变量的列表. 这个默认值和 supplied-p 可以被省略. 如果这个被解构列表提前结束, 而它没有一个元素来匹配这个解构匹配模式或子模式, 那么这个默认表达式会求值并解构. 如果这个默认表达式被使用了 supplied-p 变量会收到值 nil, 否则就是 t.
 
 &rest, &body
 
@@ -1441,7 +1441,7 @@ Figure 3-18. 宏lambda列表使用的lambda列表参数
 
 &allow-other-keys
 
-    Stands by itself. 
+    根据它自身理解. 
 
 ### 3.4.5 <span id = "DestructuringLambdaLists">解构lambda列表</span>
 
@@ -1473,7 +1473,7 @@ Figure 3-18. 宏lambda列表使用的lambda列表参数
 
 一个 boa lambda 列表是一个语法上像普通lambda列表的lambda列表, 但是这个是按照参数的顺序风格处理.
 
-一个 boa lambda 列表只被 defstruct 表达式使用, 当明确指定构造器函数的lambda列表时 (有时称之为 `"boa constructor").
+一个 boa lambda 列表只被 defstruct 表达式使用, 当明确指定构造器函数的lambda列表时 (有时称之为 "boa constructor").
 
 这个 &optional, &rest, &aux, &key, 还有 &allow-other-keys lambda列表关键字在boa lambda表达式中是被识别的. 这些lambda列表关键字有别于在普通lambda列表中的使用方式.
 
@@ -1484,7 +1484,7 @@ Figure 3-18. 宏lambda列表使用的lambda列表参数
         (a &optional b (c 'sea) &rest d &aux e (f 'eff)))
 ```
 
-这个定义了 create-foo 去做为一个或更多参数的构造器. 第一个参数被用于初始化 a 槽. 第二个参数备用于初始化 b 槽. 如果这里没有第二个参数, 那么 defstruct 主体中给定的默认值(如果给了的话)被使用. 第三个参数被用于初始化 c 槽. 如果这里没有任何第三个参数, 那么符号 sea 就会被使用. 任何跟在第三个参数后面的参数被收集到一个列表中然后被用于初始化 d 槽. 如果这里有三个或更少的参数, 那么 d 槽的内容就是 nil. e 槽没有被初始化; 它的初始化值是实现定义的. 最后, f 槽被初始化去包含符号 eff. &key 和 &allow-other-keys 参数默认类似于 &optional 参数: 如果在这个lambda列表中没有提供默认值, 那么使用 defstruct 主体中给定的默认值(如果给了的话). 举例说:
+这个定义了 create-foo 去做为一个或更多参数的构造器. 第一个参数被用于初始化 a 槽. 第二个参数用于初始化 b 槽. 如果这里没有第二个参数, 那么 defstruct 主体中给定的默认值(如果给了的话)被使用. 第三个参数被用于初始化 c 槽. 如果这里没有任何第三个参数, 那么符号 sea 就会被使用. 任何跟在第三个参数后面的参数被收集到一个列表中然后被用于初始化 d 槽. 如果这里有三个或更少的参数, 那么 d 槽的内容就是 nil. e 槽没有被初始化; 它的初始化值是实现定义的. 最后, f 槽被初始化去包含符号 eff. &key 和 &allow-other-keys 参数默认类似于 &optional 参数: 如果在这个lambda列表中没有提供默认值, 那么使用 defstruct 主体中给定的默认值(如果给了的话). 举例说:
 
 ```LISP
 (defstruct (foo (:constructor CREATE-FOO (a &optional b (c 'sea)
@@ -1589,7 +1589,7 @@ Define-method-combination 参数lambda列表类似于普通lambda列表, 但是�
 在许多情况下, 文档字符串可以在一系列表达式形式之前出现在一系列声明表达式中.
 
 在这个情况下, 如果字符串 S 出现在允许文档字符串被允许的地方而后面没有声明表达式或表达式形式那么 S 就被认为是一种表达式; 否则, S 被当作一个文档字符串. 如果出现不止一个文档字符串那么结果是未定义的. 
-
+<!-- TODO 核对到此-->
 ## 3.5 <span id = "ErrorChecking">函数调用中的错误检测</span>
 
 ### 3.5.1 参数匹配检测
@@ -1615,9 +1615,9 @@ Define-method-combination 参数lambda列表类似于普通lambda列表, 但是�
 
 * 如果被调用的函数是一个广义函数, 如果下面列出的所有部分都是安全的代码或者系统代码那么它就被认为是安全的:
 
-    -- 它的定义 (如果它被明确定义).</br>
-    -- 所有适用方法的方法定义.</br>
-    -- 它的方法组合的定义.
+        -- 它的定义 (如果它被明确定义).
+        -- 所有适用方法的方法定义.
+        -- 它的方法组合的定义.
 
 * 对于表达式 (coerce x 'function), 其中 x 是一个 lambda 表达式, 当强制执行时, 全局环境中优化质量安全的值也适用于产生的函数.
 
