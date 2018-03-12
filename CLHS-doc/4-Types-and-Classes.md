@@ -7,7 +7,7 @@
 
 ## 4.1 <span id="Introduction">引言</span>
 
-一个类型(type)是一个(可能是无数)对象的集合. 一个对象可以属于超过一个类型. 类型从不显式地被 Common Lisp 表示为对象. 相反, 它们是通过使用类型指定符(type specifier)间接引用的, 类型指定符是表示类型的对象.
+一个类型(type)是对象的一个(可能是无数)集合. 一个对象可以属于超过一个类型. 类型从不显式地被 Common Lisp 表示为对象. 相反, 它们是通过使用类型指定符(type specifier)间接引用的, 类型指定符是表示类型的对象.
 
 新的类型可以使用 deftype, defstruct, defclass, 和 define-condition 来定义.
 
@@ -58,7 +58,7 @@ Figure 4-1. 数据类型信息的 Cross-References
 * 可以扩展一个实现来添加指定类型之间的其他子类型关系, 只要它们不违反这里指定的类型关系和类互斥性的需求. 一个实现可能为任何指定的类型定义额外的子类或超类, 只要不违反互斥性的要求并且每一个额外的类是类型 t 的子类也是类型 nil 的超类.
 
     任凭具体实现自行处理, 无论是 standard-object 还是 structure-object, 都可能出现在一个系统类的优先级列表中, 而该系统类既没有指定 standard-object, 也没有指定 structure-object. 如果确实如此, 它必须在类 t 之前并且后面跟着所有标准化的类.
-
+<!-- TODO 上面一段？？-->
 ### 4.2.3 <span id="TypeSpecifiers">类型指定符</span>
 
 类型指定符(Type specifier)可以是符号, 类或列表. Figure 4-2 列出了标准原子类型指定符的列表, 并且 Figure 4-3 列出了标准化复合类型指定符的名字. 关于语法信息, 见对应类型指定符的字典条目. 可以通过 defclass, define-condition, defstruct, 或 deftype 来定义新的类型指定符.
@@ -199,7 +199,7 @@ Figure 4-5. 类型和声明相关的定义的名字.
     floating-point-underflow          signed-byte         warning                    
 
 Figure 4-6. 标准化类型指定符的名字
-
+<!-- TODO 核对到此 -->
 ## 4.3 <span id="Classes">类</span>
 
 尽管对象系统足够通用来描述所有的标准化类 (包括, 例如, number, hash-table, 和 symbol), 下面这段包含了与理解对象系统相关的类的列表.
