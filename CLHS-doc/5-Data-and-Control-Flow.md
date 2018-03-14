@@ -1,96 +1,98 @@
- 5. Data and Control Flow
+# 5. 数据和控制流
+<!-- TODO place  Generalized Reference ?? -->
+> * 5.1 [Generalized Reference](#GeneralizedReference)
+> * 5.2 [Transfer of Control to an Exit Point](#TCEP)
+> * 5.3 [The Data and Control Flow Dictionary](#DCFDictionary)
 
-5.1 Generalized Reference
+## 5.1 <span id="GeneralizedReference">Generalized Reference</span>
 
-5.2 Transfer of Control to an Exit Point
+> * 5.1.1 [Places 和 Generalized Reference 的概述](#OverviewPlacesGeneralizedReference)
+> * 5.1.2 [Kinds of Places](#KindsOfPlaces)
+> * 5.1.3 [Treatment of Other Macros Based on SETF](#TreatmentMacrosSETF)
 
-5.3 The Data and Control Flow Dictionary
+### 5.1.1 <span id="OverviewPlacesGeneralizedReference">Places 和 Generalized Reference 的概述</span>
 
- 5.1 Generalized Reference
+一个 generalized reference 是一个表达式形式的使用, 有时也称作一个 place , 就好像它是一个可以被读写的变量. 一个 place 的值就是这个 place 表达式求值后的对象. 一个 place 的值可以通过使用 setf 来改变. 绑定一个 place 的概念没有在 Common Lisp 中定义, 但是一个实现允许通过定义它的概念来扩展这个语言.
 
-5.1.1 Overview of Places and Generalized Reference
+下面这段包含了 setf 使用的示例. 注意, 求值第二列的表达式形式返回的值没有必要和求值第三列中的表达式形式获取到的值一样. 总之, setf 表达式形式准确的宏展开是不保证的, 甚至是依赖于具体实现的; 可以保证的是, 展开后是一个针对特定实现的更新表达式形式, 对子表达式的从左到右求值是保留的, 而求值 setf 的最终结果是存储的值或多值.
 
-5.1.2 Kinds of Places
+|Access function |  Update Function |  Update using setf              |
+| -              | -                | -                               |
+|x               |  (setq x datum)  |  (setf x datum)                 |
+|(car x)         |  (rplaca x datum)|  (setf (car x) datum)           |
+|(symbol-value x)|  (set x datum)   |  (setf (symbol-value x) datum)  |
 
-5.1.3 Treatment of Other Macros Based on SETF
+Figure 5-1. setf 的实例
 
- 5.1.1 Overview of Places and Generalized Reference
+下面这段展示了关于 places 和 generalized reference 的操作符.
 
-A generalized reference is the use of a form, sometimes called a place, as if it were a variable that could be read and written. The value of a place is the object to which the place form evaluates. The value of a place can be changed by using setf. The concept of binding a place is not defined in Common Lisp, but an implementation is permitted to extend the language by defining this concept.
+    assert                defsetf             push     
+    ccase                 get-setf-expansion  remf     
+    ctypecase             getf                rotatef  
+    decf                  incf                setf     
+    define-modify-macro   pop                 shiftf   
+    define-setf-expander  psetf                        
 
-The next figure contains examples of the use of setf. Note that the values returned by evaluating the forms in column two are not necessarily the same as those obtained by evaluating the forms in column three. In general, the exact macro expansion of a setf form is not guaranteed and can even be implementation-dependent; all that is guaranteed is that the expansion is an update form that works for that particular implementation, that the left-to-right evaluation of subforms is preserved, and that the ultimate result of evaluating setf is the value or values being stored.
+Figure 5-2. places 和 generalized reference 相关的操作符.
 
-Access function   Update Function   Update using setf              
-x                 (setq x datum)    (setf x datum)                 
-(car x)           (rplaca x datum)  (setf (car x) datum)           
-(symbol-value x)  (set x datum)     (setf (symbol-value x) datum)  
+上面的操作符中一些操作 places, 一些操作 setf 的展开. 一个 setf 展开可以来自于任何 place. 可以通过使用 defsetf 和 define-setf-expander 来定义新的 setf 展开.
 
-Figure 5-1. Examples of setf
+> * 5.1.1.1 [对 Place 的字表达式求值](#EvaluationSubformsPlaces)
+> * 5.1.1.2 [Setf Expansions](#SetfExpansions)
 
-The next figure shows operators relating to places and generalized reference.
+#### 5.1.1.1 <span id="EvaluationSubformsPlaces">对 Place 的字表达式求值</span>
 
-assert                defsetf             push     
-ccase                 get-setf-expansion  remf     
-ctypecase             getf                rotatef  
-decf                  incf                setf     
-define-modify-macro   pop                 shiftf   
-define-setf-expander  psetf                        
+以下规则应用于 place 的字表达式的求值:
 
-Figure 5-2. Operators relating to places and generalized reference.
+1. 一个 place 中的字表达式的求值顺序由 get-setf-expansion 返回的第二个值指定的顺序所决定. 对于所有这个标准定义的 place (比如, getf, ldb, ...), 求值的顺序是从左到右的. 当一个 place 从一个宏展开中得到, 这个规则将在宏展开后应用, 以找到合适的 place.
 
-Some of the operators above manipulate places and some manipulate setf expanders. A setf expansion can be derived from any place. New setf expanders can be defined by using defsetf and define-setf-expander.
+    Places defined 通过使用 defmacro 或 define-setf-expander 定义的 place 使用这些定义所定义的求值顺序. 比如, 思考下面这个:
 
-5.1.1.1 Evaluation of Subforms to Places
+    ```LISP
+    (defmacro wrong-order (x y) `(getf ,y ,x))
+    ```
 
-5.1.1.2 Setf Expansions
+    下面这个表达式形式先求值 place2 然后再是 place1 因为这个是它们在宏展开中的求值顺序:
 
- 5.1.1.1 Evaluation of Subforms to Places
+    ```LISP
+    (push value (wrong-order place1 place2))
+    ```
 
-The following rules apply to the evaluation of subforms in a place:
+2. 对于操纵 places (push, pushnew, remf, incf, decf, shiftf, rotatef, psetf, setf, pop, 还有那些 define-modify-macro 定义的宏) 的宏, 宏调用的子表达式按从左到右的顺序求值一次, 其中这些 place 的子表达式按照 (1) 中指定的顺序求值.
 
-1. The evaluation ordering of subforms within a place is determined by the order specified by the second value returned by get-setf-expansion. For all places defined by this specification (e.g., getf, ldb, ...), this order of evaluation is left-to-right. When a place is derived from a macro expansion, this rule is applied after the macro is expanded to find the appropriate place.
+    push, pushnew, remf, incf, decf, shiftf, rotatef, psetf, pop 在修改任意 place 之前求值所有子表达式. setf (当 setf 有超过两个参数的情况下) 在序列的每一对中执行它的操作. 比如, 在下面这个表达式中
 
-    Places defined by using defmacro or define-setf-expander use the evaluation order defined by those definitions. For example, consider the following:
+    ```LISP
+    (setf place1 value1 place2 value2 ...)
+    ```
 
-     (defmacro wrong-order (x y) `(getf ,y ,x))
+    子表达式 place1 和 value1 被求值, place1 指定的位置被修改去包含 value1 返回的值, 然后 setf 表达式的剩余部分按照类似的方式处理.
 
-    This following form evaluates place2 first and then place1 because that is the order they are evaluated in the macro expansion:
+3. 对于 check-type, ctypecase, 和 ccase, place 的子表达式像 (1) 中那样被求值一次, 但是如果 check-type 中类型检测失败了或者 ctypecase 和 ccase 中没有 case 被处理可能会再次求值.
 
-     (push value (wrong-order place1 place2))
+4. 对于 assert, 这个 generalized references 求值顺序没有被指定.
 
-2. For the macros that manipulate places (push, pushnew, remf, incf, decf, shiftf, rotatef, psetf, setf, pop, and those defined by define-modify-macro) the subforms of the macro call are evaluated exactly once in left-to-right order, with the subforms of the places evaluated in the order specified in (1).
+规则 2, 3 和 4 覆盖所有操作 place 的标准化宏.
 
-    push, pushnew, remf, incf, decf, shiftf, rotatef, psetf, pop evaluate all subforms before modifying any of the place locations. setf (in the case when setf has more than two arguments) performs its operation on each pair in sequence. For example, in
+##### 5.1.1.1.1 对 Places 的子表达式求值的示例
 
-     (setf place1 value1 place2 value2 ...)
-
-    the subforms of place1 and value1 are evaluated, the location specified by place1 is modified to contain the value returned by value1, and then the rest of the setf form is processed in a like manner.
-
-3. For check-type, ctypecase, and ccase, subforms of the place are evaluated once as in (1), but might be evaluated again if the type check fails in the case of check-type or none of the cases hold in ctypecase and ccase.
-
-4. For assert, the order of evaluation of the generalized references is not specified.
-
-Rules 2, 3 and 4 cover all standardized macros that manipulate places.
-
-5.1.1.1.1 Examples of Evaluation of Subforms to Places
-
- 5.1.1.1.1 Examples of Evaluation of Subforms to Places
-
- (let ((ref2 (list '())))
-   (push (progn (princ "1") 'ref-1)
-         (car (progn (princ "2") ref2)))) 
+```LISP
+(let ((ref2 (list '())))
+  (push (progn (princ "1") 'ref-1)
+        (car (progn (princ "2") ref2)))) 
 >>  12
 =>  (REF1)
 
- (let (x)
-    (push (setq x (list 'a))
-          (car (setq x (list 'b))))
-     x)
+(let (x)
+  (push (setq x (list 'a))
+        (car (setq x (list 'b))))
+    x)
 =>  (((A) . B))
+```
 
-push first evaluates (setq x (list 'a)) => (a), then evaluates (setq x (list 'b)) => (b), then modifies the car of this latest value to be ((a) . b). 
+push 先求值 (setq x (list 'a)) => (a), 然后求值 (setq x (list 'b)) => (b), 再修改最后的值的 car 部分为 ((a) . b). 
 
- 5.1.1.2 Setf Expansions
+#### 5.1.1.2 <span id="">Setf Expansions</span>
 
 Sometimes it is possible to avoid evaluating subforms of a place multiple times or in the wrong order. A setf expansion for a given access form can be expressed as an ordered collection of five objects:
 
@@ -120,9 +122,7 @@ It is possible to do more than one setf in parallel via psetf, shiftf, and rotat
 
 For each standardized accessor function F, unless it is explicitly documented otherwise, it is implementation-dependent whether the ability to use an F form as a setf place is implemented by a setf expander or a setf function. Also, it follows from this that it is implementation-dependent whether the name (setf F) is fbound.
 
-5.1.1.2.1 Examples of Setf Expansions
-
- 5.1.1.2.1 Examples of Setf Expansions
+##### 5.1.1.2.1 Examples of Setf Expansions
 
 Examples of the contents of the constituents of setf expansions follow.
 
@@ -168,33 +168,25 @@ In some cases, if a subform of a place is itself a place, it is necessary to exp
 
 Figure 5-6. Sample Setf Expansion of a LDB Form 
 
- 5.1.2 Kinds of Places
+### 5.1.2 <span id="KindsOfPlaces">Kinds of Places</span>
 
 Several kinds of places are defined by Common Lisp; this section enumerates them. This set can be extended by implementations and by programmer code.
 
-5.1.2.1 Variable Names as Places
+> * 5.1.2.1 [Variable Names as Places](#VariableNamesPlaces)
+> * 5.1.2.2 [Function Call Forms as Places](#FunctionCallFormsPlaces)
+> * 5.1.2.3 [VALUES Forms as Places](#VALUESFormsPlaces)
+> * 5.1.2.4 [THE Forms as Places](#THEFormsPlaces)
+> * 5.1.2.5 [APPLY Forms as Places](#APPLYFormsPlaces)
+> * 5.1.2.6 [Setf Expansions and Places](#SetfExpansionsPlaces)
+> * 5.1.2.7 [Macro Forms as Places](#MacroFormsPlaces)
+> * 5.1.2.8 [Symbol Macros as Places](#SymbolMacrosPlaces)
+> * 5.1.2.9 [Other Compound Forms as Places](#OtherCompoundFormsPlaces)
 
-5.1.2.2 Function Call Forms as Places
-
-5.1.2.3 VALUES Forms as Places
-
-5.1.2.4 THE Forms as Places
-
-5.1.2.5 APPLY Forms as Places
-
-5.1.2.6 Setf Expansions and Places
-
-5.1.2.7 Macro Forms as Places
-
-5.1.2.8 Symbol Macros as Places
-
-5.1.2.9 Other Compound Forms as Places
-
- 5.1.2.1 Variable Names as Places
+#### 5.1.2.1 <span id="VariableNamesPlaces">Variable Names as Places</span>
 
 The name of a lexical variable or dynamic variable can be used as a place. 
 
- 5.1.2.2 Function Call Forms as Places
+#### 5.1.2.2 <span id="FunctionCallFormsPlaces">Function Call Forms as Places</span>
 
 A function form can be used as a place if it falls into one of the following categories:
 
@@ -303,7 +295,7 @@ A function form can be used as a place if it falls into one of the following cat
         ;;; after the value computation.
 
 
- 5.1.2.3 VALUES Forms as Places
+#### 5.1.2.3 <span id="VALUESFormsPlaces">VALUES Forms as Places</span>
 
 A values form can be used as a place, provided that each of its subforms is also a place form.
 
@@ -320,7 +312,7 @@ does the following:
 
 The storing form in the setf expansion of values returns as multiple values[2] the values of the store variables in step 2. That is, the number of values returned is the same as the number of place forms. This may be more or fewer values than are produced by the values-form. 
 
- 5.1.2.4 THE Forms as Places
+#### 5.1.2.4 <span id="THEFormsPlaces">THE Forms as Places</span>
 
 A the form can be used as a place, in which case the declaration is transferred to the newvalue form, and the resulting setf is analyzed. For example,
 
@@ -331,7 +323,7 @@ is processed as if it were
  (setf (cadr x) (the integer (+ y 3)))
 
 
- 5.1.2.5 APPLY Forms as Places
+#### 5.1.2.5 <span id="APPLYFormsPlaces">APPLY Forms as Places</span>
 
 The following situations involving setf of apply must be supported:
 
@@ -348,19 +340,19 @@ If a user-defined function is used in this context, the following equivalence is
  (setf (apply #'name arg*) val)
  ==  (apply #'(setf name) val arg*)
 
- 5.1.2.6 Setf Expansions and Places
+#### 5.1.2.6 <span id="SetfExpansionsPlaces">Setf Expansions and Places</span>
 
 Any compound form for which the operator has a setf expander defined can be used as a place. The operator must refer to the global function definition, rather than a locally defined function or macro. 
 
- 5.1.2.7 Macro Forms as Places
+#### 5.1.2.7 <span id="MacroFormsPlaces">Macro Forms as Places</span>
 
 A macro form can be used as a place, in which case Common Lisp expands the macro form as if by macroexpand-1 and then uses the macro expansion in place of the original place. Such macro expansion is attempted only after exhausting all other possibilities other than expanding into a call to a function named (setf reader). 
 
- 5.1.2.8 Symbol Macros as Places
+#### 5.1.2.8 <span id="SymbolMacrosPlaces">Symbol Macros as Places</span>
 
 A reference to a symbol that has been established as a symbol macro can be used as a place. In this case, setf expands the reference and then analyzes the resulting form. 
 
- 5.1.2.9 Other Compound Forms as Places
+#### 5.1.2.9 <span id="OtherCompoundFormsPlaces">Other Compound Forms as Places</span>
 
 For any other compound form for which the operator is a symbol f, the setf form expands into a call to the function named (setf f). The first argument in the newly constructed function form is newvalue and the remaining arguments are the remaining elements of place. This expansion occurs regardless of whether f or (setf f) is defined as a function locally, globally, or not at all. For example,
 
@@ -376,7 +368,7 @@ expands into a form with the same effect and value as
 
 A function named (setf f) must return its first argument as its only value in order to preserve the semantics of setf. 
 
- 5.1.3 Treatment of Other Macros Based on SETF
+### 5.1.3 <span id="TreatmentMacrosSETF">Treatment of Other Macros Based on SETF</span>
 
 For each of the ``read-modify-write'' operators in the next figure, and for any additional macros defined by the programmer using define-modify-macro, an exception is made to the normal rule of left-to-right evaluation of arguments. Evaluation of argument forms occurs in left-to-right order, with the exception that for the place argument, the actual read of the ``old value'' from that place happens after all of the argument form evaluations, and just before a ``new value'' is computed and written back into the place.
 
@@ -398,7 +390,7 @@ incf  push  remf
 
 Figure 5-9. Read-Modify-Write Macros 
 
- 5.2 Transfer of Control to an Exit Point
+## 5.2 <span id="TCEP">Transfer of Control to an Exit Point</span>
 
 When a transfer of control is initiated by go, return-from, or throw the following events occur in order to accomplish the transfer of control. Note that for go, the exit point is the form within the tagbody that is being executed at the time the go is performed; for return-from, the exit point is the corresponding block form; and for throw, the exit point is the corresponding catch form.
 
@@ -416,144 +408,76 @@ Events 2 and 3 are actually performed interleaved, in the order corresponding to
 
 Event 4 occurs at the end of the transfer of control. 
 
- 5.3 The Data and Control Flow Dictionary
+## 5.3 <span id="DCFDictionary">The Data and Control Flow Dictionary</span>
 
 Function APPLY
-
 Macro DEFUN
-
 Accessor FDEFINITION
-
 Function FBOUNDP
-
 Function FMAKUNBOUND
-
 Special Operator FLET, LABELS, MACROLET
-
 Function FUNCALL
-
 Special Operator FUNCTION
-
 Function FUNCTION-LAMBDA-EXPRESSION
-
 Function FUNCTIONP
-
 Function COMPILED-FUNCTION-P
-
 Constant Variable CALL-ARGUMENTS-LIMIT
-
 Constant Variable LAMBDA-LIST-KEYWORDS
-
 Constant Variable LAMBDA-PARAMETERS-LIMIT
-
 Macro DEFCONSTANT
-
 Macro DEFPARAMETER, DEFVAR
-
 Macro DESTRUCTURING-BIND
-
 Special Operator LET, LET*
-
 Special Operator PROGV
-
 Special Form SETQ
-
 Macro PSETQ
-
 Special Operator BLOCK
-
 Special Operator CATCH
-
 Special Operator GO
-
 Special Operator RETURN-FROM
-
 Macro RETURN
-
 Special Operator TAGBODY
-
 Special Operator THROW
-
 Special Operator UNWIND-PROTECT
-
 Constant Variable NIL
-
 Function NOT
-
 Constant Variable T
-
 Function EQ
-
 Function EQL
-
 Function EQUAL
-
 Function EQUALP
-
 Function IDENTITY
-
 Function COMPLEMENT
-
 Function CONSTANTLY
-
 Function EVERY, SOME, NOTEVERY, NOTANY
-
 Macro AND
-
 Macro COND
-
 Special Operator IF
-
 Macro OR
-
 Macro WHEN, UNLESS
-
 Macro CASE, CCASE, ECASE
-
 Macro TYPECASE, CTYPECASE, ETYPECASE
-
 Macro MULTIPLE-VALUE-BIND
-
 Special Operator MULTIPLE-VALUE-CALL
-
 Macro MULTIPLE-VALUE-LIST
-
 Special Operator MULTIPLE-VALUE-PROG1
-
 Macro MULTIPLE-VALUE-SETQ
-
 Accessor VALUES
-
 Function VALUES-LIST
-
 Constant Variable MULTIPLE-VALUES-LIMIT
-
 Macro NTH-VALUE
-
 Macro PROG, PROG*
-
 Macro PROG1, PROG2
-
 Special Operator PROGN
-
 Macro DEFINE-MODIFY-MACRO
-
 Macro DEFSETF
-
 Macro DEFINE-SETF-EXPANDER
-
 Function GET-SETF-EXPANSION
-
 Macro SETF, PSETF
-
 Macro SHIFTF
-
 Macro ROTATEF
-
 Condition Type CONTROL-ERROR
-
 Condition Type PROGRAM-ERROR
-
 Condition Type UNDEFINED-FUNCTION
 
 
