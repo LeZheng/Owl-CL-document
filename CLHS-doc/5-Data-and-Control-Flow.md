@@ -7,7 +7,7 @@
 ## 5.1 <span id="GeneralizedReference">Generalized Reference</span>
 
 > * 5.1.1 [Places 和 Generalized Reference 的概述](#OverviewPlacesGeneralizedReference)
-> * 5.1.2 [Kinds of Places](#KindsOfPlaces)
+> * 5.1.2 [Places 的种类](#KindsOfPlaces)
 > * 5.1.3 [Treatment of Other Macros Based on SETF](#TreatmentMacrosSETF)
 
 ### 5.1.1 <span id="OverviewPlacesGeneralizedReference">Places 和 Generalized Reference 的概述</span>
@@ -26,19 +26,19 @@ Figure 5-1. setf 的实例
 
 下面这段展示了关于 places 和 generalized reference 的操作符.
 
-    assert                defsetf             push     
-    ccase                 get-setf-expansion  remf     
-    ctypecase             getf                rotatef  
-    decf                  incf                setf     
-    define-modify-macro   pop                 shiftf   
-    define-setf-expander  psetf                        
+    assert                defsetf             push
+    ccase                 get-setf-expansion  remf
+    ctypecase             getf                rotatef
+    decf                  incf                setf
+    define-modify-macro   pop                 shiftf
+    define-setf-expander  psetf
 
 Figure 5-2. places 和 generalized reference 相关的操作符.
 
 上面的操作符中一些操作 places, 一些操作 setf 的展开. 一个 setf 展开可以来自于任何 place. 可以通过使用 defsetf 和 define-setf-expander 来定义新的 setf 展开.
 
 > * 5.1.1.1 [对 Place 的字表达式求值](#EvaluationSubformsPlaces)
-> * 5.1.1.2 [Setf Expansions](#SetfExpansions)
+> * 5.1.1.2 [Setf 展开](#SetfExpansions)
 
 #### 5.1.1.1 <span id="EvaluationSubformsPlaces">对 Place 的字表达式求值</span>
 
@@ -79,7 +79,7 @@ Figure 5-2. places 和 generalized reference 相关的操作符.
 ```LISP
 (let ((ref2 (list '())))
   (push (progn (princ "1") 'ref-1)
-        (car (progn (princ "2") ref2)))) 
+        (car (progn (princ "2") ref2))))
 >>  12
 =>  (REF1)
 
@@ -90,89 +90,97 @@ Figure 5-2. places 和 generalized reference 相关的操作符.
 =>  (((A) . B))
 ```
 
-push 先求值 (setq x (list 'a)) => (a), 然后求值 (setq x (list 'b)) => (b), 再修改最后的值的 car 部分为 ((a) . b). 
+push 先求值 (setq x (list 'a)) => (a), 然后求值 (setq x (list 'b)) => (b), 再修改最后的值的 car 部分为 ((a) . b).
 
-#### 5.1.1.2 <span id="">Setf Expansions</span>
+#### 5.1.1.2 <span id="SetfExpansions">Setf 展开</span>
 
-Sometimes it is possible to avoid evaluating subforms of a place multiple times or in the wrong order. A setf expansion for a given access form can be expressed as an ordered collection of five objects:
+有时避免多次求值一个 place 的子表达式或以错误的顺序求值是可能的. 对于一个给定的表达式形式, 一个 setf 展开可以被表达为一个五个对象的有序集合:
 
-List of temporary variables
+临时对象的列表
 
-    a list of symbols naming temporary variables to be bound sequentially, as if by let*, to values resulting from value forms.
+    一个命名临时变量的符号列表, 这些符号被顺序绑定到由值表达式形式返回的值, 就像是被 let*.
 
-List of value forms
+值表达式形式列表
 
-    a list of forms (typically, subforms of the place) which when evaluated yield the values to which the corresponding temporary variables should be bound.
+    当求值时, 会产生相应的临时变量应该被绑定的值的表达式列表 (典型地, place 的子表达式).
 
-List of store variables
+存储变量的列表
 
-    a list of symbols naming temporary store variables which are to hold the new values that will be assigned to the place.
+    一个用来命名临时存储变量的符号列表, 用来保存将被分配给 place 的新值.
 
-Storing form
+存储表达式形式
 
-    a form which can reference both the temporary and the store variables, and which changes the value of the place and guarantees to return as its values the values of the store variables, which are the correct values for setf to return.
+    一种可以同时引用临时变量和存储变量的表达式形式, 它会改变 place 的值, 并保证返回值, 因为它的值是存储变量的值, 这是 setf 返回的正确值.<!-- TODO 待校验 -->
 
-Accessing form
+访问表达式形式
 
-    a form which can reference the temporary variables, and which returns the value of the place.
+    一个可以引用临时变量并且返回这个 place 的值的表达式形式.
 
-The value returned by the accessing form is affected by execution of the storing form, but either of these forms might be evaluated any number of times.
+访问表达式返回的值受到存储表达式的执行的影响, 但是这些表达式中的任何一种都可能被多次求值.
 
-It is possible to do more than one setf in parallel via psetf, shiftf, and rotatef. Because of this, the setf expander must produce new temporary and store variable names every time. For examples of how to do this, see gensym.
+可以通过 psetf, shiftf 和 rotatef 并行执行多个 setf. 由于这个, setf 展开式必须每次产生新的临时和存储变量. 关于如果去做这个的例子, 见 gensym.
 
-For each standardized accessor function F, unless it is explicitly documented otherwise, it is implementation-dependent whether the ability to use an F form as a setf place is implemented by a setf expander or a setf function. Also, it follows from this that it is implementation-dependent whether the name (setf F) is fbound.
+对于每一个标准化的访问器函数 F, 除非它被显式地记载, 否则使用一个 F 表达式形式作为一个 setf place 的能力被实现为通过一个 setf 展开式还是一个 setf 函数, 这是依赖于具体实现的. 同样, 名字 (setf F) 是否被 fbound 是依赖于具体实现的.
 
-##### 5.1.1.2.1 Examples of Setf Expansions
+##### 5.1.1.2.1 Setf 展开式的示例
 
-Examples of the contents of the constituents of setf expansions follow.
+下面是 setf 展开式成分内容的示例.
 
-For a variable x:
+对于一个变量 x:
 
-()              ;list of temporary variables  
-()              ;list of value forms          
-(g0001)         ;list of store variables      
-(setq x g0001)  ;storing form                 
-x               ;accessing form               
+```LISP
+()              ;list of temporary variables
+()              ;list of value forms
+(g0001)         ;list of store variables
+(setq x g0001)  ;storing form
+x               ;accessing form
+```
 
-Figure 5-3. Sample Setf Expansion of a Variable
+Figure 5-3. 一个变量的简单 Setf 展开式
 
-For (car exp):
+对于 (car exp):
 
-(g0002)                             ;list of temporary variables  
-(exp)                               ;list of value forms          
-(g0003)                             ;list of store variables      
-(progn (rplaca g0002 g0003) g0003)  ;storing form                 
-(car g0002)                         ;accessing form               
+```LISP
+(g0002)                             ;list of temporary variables
+(exp)                               ;list of value forms
+(g0003)                             ;list of store variables
+(progn (rplaca g0002 g0003) g0003)  ;storing form
+(car g0002)                         ;accessing form
+```
 
-Figure 5-4. Sample Setf Expansion of a CAR Form
+Figure 5-4. CAR 表达式形式的简单 setf 展开式
 
-For (subseq seq s e):
+对于 (subseq seq s e):
 
-(g0004 g0005 g0006)         ;list of temporary variables  
-(seq s e)                   ;list of value forms          
-(g0007)                     ;list of store variables      
-(progn (replace g0004 g0007 :start1 g0005 :end1 g0006) g0007)                              
-                            ;storing form                 
-(subseq g0004 g0005 g0006)  ; accessing form              
+```LISP
+(g0004 g0005 g0006)         ;list of temporary variables
+(seq s e)                   ;list of value forms
+(g0007)                     ;list of store variables
+(progn (replace g0004 g0007 :start1 g0005 :end1 g0006) g0007)
+                            ;storing form
+(subseq g0004 g0005 g0006)  ; accessing form
+```
 
-Figure 5-5. Sample Setf Expansion of a SUBSEQ Form
+Figure 5-5. SUBSEQ 表达式形式的简单 setf 展开式
 
-In some cases, if a subform of a place is itself a place, it is necessary to expand the subform in order to compute some of the values in the expansion of the outer place. For (ldb bs (car exp)):
+在一些情况下, 如果一个 place 的一个子表达式自身也是一个 place, 为了计算外面的 place 展开式的一些值, 展开子表达式是必要的. 对于 (ldb bs (car exp)):
 
-(g0001 g0002)            ;list of temporary variables  
-(bs exp)                 ;list of value forms          
-(g0003)                  ;list of store variables      
-(progn (rplaca g0002 (dpb g0003 g0001 (car g0002))) g0003)                              
-                         ;storing form                 
-(ldb g0001 (car g0002))  ; accessing form              
+```LISP
+(g0001 g0002)            ;list of temporary variables
+(bs exp)                 ;list of value forms
+(g0003)                  ;list of store variables
+(progn (rplaca g0002 (dpb g0003 g0001 (car g0002))) g0003)
+                         ;storing form
+(ldb g0001 (car g0002))  ; accessing form
+```
 
-Figure 5-6. Sample Setf Expansion of a LDB Form 
+Figure 5-6. LDB 表达式形式的简单 setf 展开式
 
-### 5.1.2 <span id="KindsOfPlaces">Kinds of Places</span>
+### 5.1.2 <span id="KindsOfPlaces">Places 的种类</span>
 
-Several kinds of places are defined by Common Lisp; this section enumerates them. This set can be extended by implementations and by programmer code.
+Common Lisp 定义了多个 place 的种类; 这个章节会列举它们. 这个集合可以被具体实现和程序员的代码所扩展.
 
-> * 5.1.2.1 [Variable Names as Places](#VariableNamesPlaces)
+> * 5.1.2.1 [变量名作为 Places](#VariableNamesPlaces)
 > * 5.1.2.2 [Function Call Forms as Places](#FunctionCallFormsPlaces)
 > * 5.1.2.3 [VALUES Forms as Places](#VALUESFormsPlaces)
 > * 5.1.2.4 [THE Forms as Places](#THEFormsPlaces)
@@ -182,9 +190,9 @@ Several kinds of places are defined by Common Lisp; this section enumerates them
 > * 5.1.2.8 [Symbol Macros as Places](#SymbolMacrosPlaces)
 > * 5.1.2.9 [Other Compound Forms as Places](#OtherCompoundFormsPlaces)
 
-#### 5.1.2.1 <span id="VariableNamesPlaces">Variable Names as Places</span>
+#### 5.1.2.1 <span id="VariableNamesPlaces">变量名作为 Places</span>
 
-The name of a lexical variable or dynamic variable can be used as a place. 
+一个词法变量或动态变量的名字可以被用作一个 place.
 
 #### 5.1.2.2 <span id="FunctionCallFormsPlaces">Function Call Forms as Places</span>
 
@@ -192,28 +200,28 @@ A function form can be used as a place if it falls into one of the following cat
 
 * A function call form whose first element is the name of any one of the functions in the next figure.
 
-    aref    cdadr                    get                            
-    bit     cdar                     gethash                        
-    caaaar  cddaar                   logical-pathname-translations  
-    caaadr  cddadr                   macro-function                 
-    caaar   cddar                    ninth                          
-    caadar  cdddar                   nth                            
-    caaddr  cddddr                   readtable-case                 
-    caadr   cdddr                    rest                           
-    caar    cddr                     row-major-aref                 
-    cadaar  cdr                      sbit                           
-    cadadr  char                     schar                          
-    cadar   class-name               second                         
-    caddar  compiler-macro-function  seventh                        
-    cadddr  documentation            sixth                          
-    caddr   eighth                   slot-value                     
-    cadr    elt                      subseq                         
-    car     fdefinition              svref                          
-    cdaaar  fifth                    symbol-function                
-    cdaadr  fill-pointer             symbol-plist                   
-    cdaar   find-class               symbol-value                   
-    cdadar  first                    tenth                          
-    cdaddr  fourth                   third                          
+    aref    cdadr                    get
+    bit     cdar                     gethash
+    caaaar  cddaar                   logical-pathname-translations
+    caaadr  cddadr                   macro-function
+    caaar   cddar                    ninth
+    caadar  cdddar                   nth
+    caaddr  cddddr                   readtable-case
+    caadr   cdddr                    rest
+    caar    cddr                     row-major-aref
+    cadaar  cdr                      sbit
+    cadadr  char                     schar
+    cadar   class-name               second
+    caddar  compiler-macro-function  seventh
+    cadddr  documentation            sixth
+    caddr   eighth                   slot-value
+    cadr    elt                      subseq
+    car     fdefinition              svref
+    cdaaar  fifth                    symbol-function
+    cdaadr  fill-pointer             symbol-plist
+    cdaar   find-class               symbol-value
+    cdadar  first                    tenth
+    cdaddr  fourth                   third
 
     Figure 5-7. Functions that setf can be used with---1
 
@@ -223,10 +231,10 @@ A function form can be used as a place if it falls into one of the following cat
 
 * A function call form whose first element is the name of any one of the functions in the next figure, provided that the supplied argument to that function is in turn a place form; in this case the new place has stored back into it the result of applying the supplied ``update'' function.
 
-    Function name  Argument that is a place  Update function used      
-    ldb            second                    dpb                       
-    mask-field     second                    deposit-field             
-    getf           first                     implementation-dependent  
+    Function name  Argument that is a place  Update function used
+    ldb            second                    dpb
+    mask-field     second                    deposit-field
+    getf           first                     implementation-dependent
 
     Figure 5-8. Functions that setf can be used with---2 During the setf expansion of these forms, it is necessary to call get-setf-expansion in order to figure out how the inner, nested generalized variable must be treated.
 
@@ -251,11 +259,11 @@ A function form can be used as a place if it falls into one of the following cat
         If the evaluation of value-form in step 3 alters what is found in place-form, such as setting different bits of integer, then the change of the bits denoted by byte-spec is to that altered integer, because step 4 is done after the value-form evaluation. Nevertheless, the evaluations required for binding the temporary variables are done in steps 1 and 2, and thus the expected left-to-right evaluation order is seen. For example:
 
          (setq integer #x69) =>  #x69
-         (rotatef (ldb (byte 4 4) integer) 
+         (rotatef (ldb (byte 4 4) integer)
                   (ldb (byte 4 0) integer))
          integer =>  #x96
-        ;;; This example is trying to swap two independent bit fields 
-        ;;; in an integer.  Note that the generalized variable of 
+        ;;; This example is trying to swap two independent bit fields
+        ;;; in an integer.  Note that the generalized variable of
         ;;; interest here is just the (possibly local) program variable
         ;;; integer.
 
@@ -284,14 +292,14 @@ A function form can be used as a place if it falls into one of the following cat
         For example:
 
          (setq s (setq r (list (list 'a 1 'b 2 'c 3)))) =>  ((a 1 b 2 c 3))
-         (setf (getf (car r) 'b) 
+         (setf (getf (car r) 'b)
                (progn (setq r nil) 6)) =>  6
          r =>  NIL
          s =>  ((A 1 B 6 C 3))
-        ;;; Note that the (setq r nil) does not affect the actions of 
-        ;;; the SETF because the value of R had already been saved in 
+        ;;; Note that the (setq r nil) does not affect the actions of
+        ;;; the SETF because the value of R had already been saved in
         ;;; a temporary variable as part of the step 1. Only the CAR
-        ;;; of this value will be retrieved, and subsequently modified 
+        ;;; of this value will be retrieved, and subsequently modified
         ;;; after the value computation.
 
 
@@ -310,7 +318,7 @@ does the following:
 3. If the setf expansion for any place involves more than one store variable, then the additional store variables are bound to nil.
 4. The storing forms for each place are evaluated in left-to-right order.
 
-The storing form in the setf expansion of values returns as multiple values[2] the values of the store variables in step 2. That is, the number of values returned is the same as the number of place forms. This may be more or fewer values than are produced by the values-form. 
+The storing form in the setf expansion of values returns as multiple values[2] the values of the store variables in step 2. That is, the number of values returned is the same as the number of place forms. This may be more or fewer values than are produced by the values-form.
 
 #### 5.1.2.4 <span id="THEFormsPlaces">THE Forms as Places</span>
 
@@ -342,15 +350,15 @@ If a user-defined function is used in this context, the following equivalence is
 
 #### 5.1.2.6 <span id="SetfExpansionsPlaces">Setf Expansions and Places</span>
 
-Any compound form for which the operator has a setf expander defined can be used as a place. The operator must refer to the global function definition, rather than a locally defined function or macro. 
+Any compound form for which the operator has a setf expander defined can be used as a place. The operator must refer to the global function definition, rather than a locally defined function or macro.
 
 #### 5.1.2.7 <span id="MacroFormsPlaces">Macro Forms as Places</span>
 
-A macro form can be used as a place, in which case Common Lisp expands the macro form as if by macroexpand-1 and then uses the macro expansion in place of the original place. Such macro expansion is attempted only after exhausting all other possibilities other than expanding into a call to a function named (setf reader). 
+A macro form can be used as a place, in which case Common Lisp expands the macro form as if by macroexpand-1 and then uses the macro expansion in place of the original place. Such macro expansion is attempted only after exhausting all other possibilities other than expanding into a call to a function named (setf reader).
 
 #### 5.1.2.8 <span id="SymbolMacrosPlaces">Symbol Macros as Places</span>
 
-A reference to a symbol that has been established as a symbol macro can be used as a place. In this case, setf expands the reference and then analyzes the resulting form. 
+A reference to a symbol that has been established as a symbol macro can be used as a place. In this case, setf expands the reference and then analyzes the resulting form.
 
 #### 5.1.2.9 <span id="OtherCompoundFormsPlaces">Other Compound Forms as Places</span>
 
@@ -366,7 +374,7 @@ expands into a form with the same effect and value as
        (#:temp-0 new-value))
    (funcall (function (setf f)) #:temp-0 #:temp-1 #:temp-2...))
 
-A function named (setf f) must return its first argument as its only value in order to preserve the semantics of setf. 
+A function named (setf f) must return its first argument as its only value in order to preserve the semantics of setf.
 
 ### 5.1.3 <span id="TreatmentMacrosSETF">Treatment of Other Macros Based on SETF</span>
 
@@ -385,10 +393,10 @@ The evaluation of each such form proceeds like this:
 5. Compute the new value.
 6. Store the new value into place.
 
-decf  pop   pushnew  
-incf  push  remf     
+decf  pop   pushnew
+incf  push  remf
 
-Figure 5-9. Read-Modify-Write Macros 
+Figure 5-9. Read-Modify-Write Macros
 
 ## 5.2 <span id="TCEP">Transfer of Control to an Exit Point</span>
 
@@ -406,7 +414,7 @@ The extent of an exit being ``abandoned'' because it is being passed over ends a
 
 Events 2 and 3 are actually performed interleaved, in the order corresponding to the reverse order in which they were established. The effect of this is that the cleanup clauses of an unwind-protect see the same dynamic bindings of variables and catch tags as were visible when the unwind-protect was entered.
 
-Event 4 occurs at the end of the transfer of control. 
+Event 4 occurs at the end of the transfer of control.
 
 ## 5.3 <span id="DCFDictionary">The Data and Control Flow Dictionary</span>
 
@@ -536,7 +544,7 @@ See Also:
 
 funcall, fdefinition, function, Section 3.1 (Evaluation), Section 5.1.2.5 (APPLY Forms as Places)
 
-Notes: None. 
+Notes: None.
 
 
 Macro DEFUN
@@ -585,11 +593,11 @@ Examples:
 
  (defun recur (x)
   (when (> x 0)
-    (recur (1- x)))) =>  RECUR 
+    (recur (1- x)))) =>  RECUR
  (defun ex (a b &optional c (d 66) &rest keys &key test (start 0))
-    (list a b c d keys test start)) =>  EX 
+    (list a b c d keys test start)) =>  EX
  (ex 1 2) =>  (1 2 NIL 66 NIL NIL 0)
- (ex 1 2 3 4 :test 'equal :start 50) 
+ (ex 1 2 3 4 :test 'equal :start 50)
 =>  (1 2 3 4 (:TEST EQUAL :START 50) EQUAL 50)
  (ex :test 1 :start 2) =>  (:TEST 1 :START 2 NIL NIL 0)
 
@@ -602,7 +610,7 @@ Examples:
  (discriminant 1 2/3 -2) =>  76/9
 
  ;; This function assumes its callers have not checked the types of the
- ;; arguments, and performs explicit type checks before making any assumptions. 
+ ;; arguments, and performs explicit type checks before making any assumptions.
  (defun careful-discriminant (a b c)
    "Compute the discriminant for a quadratic equation."
    (check-type a number)
@@ -624,7 +632,7 @@ Notes:
 
 return-from can be used to return prematurely from a function defined by defun.
 
-Additional side effects might take place when additional information (typically debugging information) about the function definition is recorded. 
+Additional side effects might take place when additional information (typically debugging information) about the function definition is recorded.
 
 
 Accessor FDEFINITION
@@ -667,7 +675,7 @@ Notes:
 
 fdefinition cannot access the value of a lexical function name produced by flet or labels; it can access only the global function value.
 
-setf can be used with fdefinition to replace a global function definition when the function-name's function definition does not represent a special form. setf of fdefinition requires a function as the new value. It is an error to set the fdefinition of a function-name to a symbol, a list, or the value returned by fdefinition on the name of a macro or special form. 
+setf can be used with fdefinition to replace a global function definition when the function-name's function definition does not represent a special form. setf of fdefinition requires a function as the new value. It is an error to set the fdefinition of a function-name to a symbol, a list, or the value returned by fdefinition on the name of a macro or special form.
 
 
 Function FBOUNDP
@@ -731,7 +739,7 @@ fboundp is sometimes used to ``guard'' an access to the function cell, as in:
 
 (if (fboundp x) (symbol-function x))
 
-Defining a setf expander F does not cause the setf function (setf F) to become defined. 
+Defining a setf expander F does not cause the setf function (setf F) to become defined.
 
 
 Function FMAKUNBOUND
@@ -775,7 +783,7 @@ See Also:
 
 fboundp, makunbound
 
-Notes: None. 
+Notes: None.
 
 Special Operator FLET, LABELS, MACROLET
 
@@ -855,7 +863,7 @@ Examples:
      (+ x
         (fudge x)
         (fudge (+ x 1)))))
- == 
+ ==
  (defun foo (x flag)
    (+ x
       (if flag (* x x) x)
@@ -867,24 +875,24 @@ after macro expansion. The occurrences of x and flag legitimately refer to the p
     (flet ((flet1 (n) (+ 2 (flet1 n))))
       (flet1 2))) =>  6
 
- (defun dummy-function () 'top-level) =>  DUMMY-FUNCTION 
- (funcall #'dummy-function) =>  TOP-LEVEL 
- (flet ((dummy-function () 'shadow)) 
-      (funcall #'dummy-function)) =>  SHADOW 
+ (defun dummy-function () 'top-level) =>  DUMMY-FUNCTION
+ (funcall #'dummy-function) =>  TOP-LEVEL
+ (flet ((dummy-function () 'shadow))
+      (funcall #'dummy-function)) =>  SHADOW
  (eq (funcall #'dummy-function) (funcall 'dummy-function))
-=>  true 
+=>  true
  (flet ((dummy-function () 'shadow))
    (eq (funcall #'dummy-function)
        (funcall 'dummy-function)))
-=>  false 
+=>  false
 
  (defun recursive-times (k n)
-   (labels ((temp (n) 
+   (labels ((temp (n)
               (if (zerop n) 0 (+ k (temp (1- n))))))
      (temp n))) =>  RECURSIVE-TIMES
  (recursive-times 2 3) =>  6
 
- (defmacro mlets (x &environment env) 
+ (defmacro mlets (x &environment env)
     (let ((form `(babbit ,x)))
       (macroexpand form env))) =>  MLETS
  (macrolet ((babbit (z) `(+ ,z ,z))) (mlets 5)) =>  10
@@ -894,8 +902,8 @@ after macro expansion. The occurrences of x and flag legitimately refer to the p
    (safesqrt (apply #'+ (map 'list #'safesqrt '(1 2 3 4 5 6)))))
 =>  3.291173
 
- (defun integer-power (n k)     
-   (declare (integer n))         
+ (defun integer-power (n k)
+   (declare (integer n))
    (declare (type (integer 0 *) k))
    (labels ((expt0 (x k a)
               (declare (integer x a) (type (integer 0 *) k))
@@ -933,7 +941,7 @@ Notes:
 
 It is not possible to define recursive functions with flet. labels can be used to define mutually recursive functions.
 
-If a macrolet form is a top level form, the body forms are also processed as top level forms. See Section 3.2.3 (File Compilation). 
+If a macrolet form is a top level form, the body forms are also processed as top level forms. See Section 3.2.3 (File Compilation).
 
 
 Function FUNCALL
@@ -983,7 +991,7 @@ Notes:
  ==  (apply function arg1 arg2 ... nil)
  ==  (apply function (list arg1 arg2 ...))
 
-The difference between funcall and an ordinary function call is that in the former case the function is obtained by ordinary evaluation of a form, and in the latter case it is obtained by the special interpretation of the function position that normally occurs. 
+The difference between funcall and an ordinary function call is that in the former case the function is obtained by ordinary evaluation of a form, and in the latter case it is obtained by the special interpretation of the function position that normally occurs.
 
 
 Special Operator FUNCTION
@@ -1031,7 +1039,7 @@ defun, fdefinition, flet, labels, symbol-function, Section 3.1.2.1.1 (Symbols as
 
 Notes:
 
-The notation #'name may be used as an abbreviation for (function name). 
+The notation #'name may be used as an abbreviation for (function name).
 
 
 Function FUNCTION-LAMBDA-EXPRESSION
@@ -1078,14 +1086,14 @@ OR=>  (LAMBDA (X) X), false, NIL
 OR=>  NIL, true, NIL
 OR=>  (LAMBDA (X) X), true, NIL
 OR=>  (LAMBDA (X) X), false, NIL
- 
- (function-lambda-expression 
+
+ (function-lambda-expression
     (funcall #'(lambda (x) #'(lambda () x)) nil))
 =>  NIL, true, NIL
 OR=>  (LAMBDA () X), true, NIL
 NOT=>  NIL, false, NIL
 NOT=>  (LAMBDA () X), false, NIL
-  
+
  (flet ((foo (x) x))
    (setf (symbol-function 'bar) #'foo)
    (function-lambda-expression #'bar))
@@ -1094,7 +1102,7 @@ OR=>  NIL, true, NIL
 OR=>  (LAMBDA (X) (BLOCK FOO X)), true, NIL
 OR=>  (LAMBDA (X) (BLOCK FOO X)), false, FOO
 OR=>  (SI::BLOCK-LAMBDA FOO (X) X), false, FOO
- 
+
  (defun foo ()
    (flet ((bar (x) x))
      #'bar))
@@ -1115,7 +1123,7 @@ See Also: None.
 
 Notes:
 
-Although implementations are free to return ``nil, true, nil'' in all cases, they are encouraged to return a lambda expression as the primary value in the case where the argument was created by a call to compile or eval (as opposed to being created by loading a compiled file). 
+Although implementations are free to return ``nil, true, nil'' in all cases, they are encouraged to return a lambda expression as the primary value in the case where the argument was created by a call to compile or eval (as opposed to being created by loading a compiled file).
 
 
 Function FUNCTIONP
@@ -1223,7 +1231,7 @@ See Also:
 
 lambda-parameters-limit, multiple-values-limit
 
-Notes: None. 
+Notes: None.
 
 
 Constant Variable LAMBDA-LIST-KEYWORDS
@@ -1242,7 +1250,7 @@ See Also:
 
 defun, flet, defmacro, macrolet, Section 3.1.2 (The Evaluation Model)
 
-Notes: None. 
+Notes: None.
 
 
 Constant Variable LAMBDA-PARAMETERS-LIMIT
@@ -1263,7 +1271,7 @@ call-arguments-limit
 
 Notes:
 
-Implementors are encouraged to make the value of lambda-parameters-limit as large as possible. 
+Implementors are encouraged to make the value of lambda-parameters-limit as large as possible.
 
 
 Macro DEFCONSTANT
@@ -1316,7 +1324,7 @@ See Also:
 
 declaim, defparameter, defvar, documentation, proclaim, Section 3.1.2.1.1.3 (Constant Variables), Section 3.2 (Compilation)
 
-Notes: None. 
+Notes: None.
 
 
 Macro DEFPARAMETER, DEFVAR
@@ -1415,7 +1423,7 @@ The intent of the permission for additional side effects is to allow implementat
 
 defparameter and defvar might be defined as follows:
 
- (defmacro defparameter (name initial-value 
+ (defmacro defparameter (name initial-value
                          &optional (documentation nil documentation-p))
    `(progn (declaim (special ,name))
            (setf (symbol-value ',name) ,initial-value)
@@ -1477,7 +1485,7 @@ See Also:
 
 macrolet, defmacro
 
-Notes: None. 
+Notes: None.
 
 
 Special Operator LET, LET*
@@ -1549,9 +1557,9 @@ Examples:
  (setq a 'top) =>  TOP
  (defun dummy-function () a) =>  DUMMY-FUNCTION
  (let ((a 'inside) (b a))
-    (format nil "~S ~S ~S" a b (dummy-function))) =>  "INSIDE TOP TOP" 
+    (format nil "~S ~S ~S" a b (dummy-function))) =>  "INSIDE TOP TOP"
  (let* ((a 'inside) (b a))
-    (format nil "~S ~S ~S" a b (dummy-function))) =>  "INSIDE INSIDE TOP" 
+    (format nil "~S ~S ~S" a b (dummy-function))) =>  "INSIDE INSIDE TOP"
  (let ((a 'inside) (b a))
     (declare (special a))
     (format nil "~S ~S ~S" a b (dummy-function))) =>  "INSIDE TOP INSIDE"
@@ -1573,7 +1581,7 @@ See Also:
 
 progv
 
-Notes: None. 
+Notes: None.
 
 
 Special Operator PROGV
@@ -1606,8 +1614,8 @@ Examples:
 
 Assuming *x* is not globally special,
 
- (let ((*x* 3)) 
-    (progv '(*x*) '(4) 
+ (let ((*x* 3))
+    (progv '(*x*) '(4)
       (list *x* (symbol-value '*x*)))) =>  (3 4)
 
 Affected By: None.
@@ -1620,7 +1628,7 @@ let, Section 3.1 (Evaluation)
 
 Notes:
 
-Among other things, progv is useful when writing interpreters for languages embedded in Lisp; it provides a handle on the mechanism for binding dynamic variables. 
+Among other things, progv is useful when writing interpreters for languages embedded in Lisp; it provides a handle on the mechanism for binding dynamic variables.
 
 
 Special Form SETQ
@@ -1629,7 +1637,7 @@ Syntax:
 
 setq {pair}* => result
 
-pair::= var form 
+pair::= var form
 
 Pronunciation:
 
@@ -1684,7 +1692,7 @@ See Also:
 
 psetq, set, setf
 
-Notes: None. 
+Notes: None.
 
 
 Macro PSETQ
@@ -1693,7 +1701,7 @@ Syntax:
 
 psetq {pair}* => nil
 
-pair::= var form 
+pair::= var form
 
 Pronunciation:
 
@@ -1716,7 +1724,7 @@ If any var refers to a binding made by symbol-macrolet, then that var is treated
 Examples:
 
  ;; A simple use of PSETQ to establish values for variables.
- ;; As a matter of style, many programmers would prefer SETQ 
+ ;; As a matter of style, many programmers would prefer SETQ
  ;; in a simple situation like this where parallel assignment
  ;; is not needed, but the two have equivalent effect.
  (psetq a 1 b 2 c 3) =>  NIL
@@ -1756,7 +1764,7 @@ See Also:
 
 psetf, setq
 
-Notes: None. 
+Notes: None.
 
 
 Special Operator BLOCK
@@ -1787,7 +1795,7 @@ Examples:
 
  (block empty) =>  NIL
  (block whocares (values 1 2) (values 3 4)) =>  3, 4
- (let ((x 1)) 
+ (let ((x 1))
    (block stop (setq x 2) (return-from stop) (setq x 3))
    x) =>  2
  (block early (return-from early (values 1 2)) (values 3 4)) =>  1, 2
@@ -1868,7 +1876,7 @@ Notes:
 
 It is customary for symbols to be used as tags, but any object is permitted. However, numbers should not be used because the comparison is done using eq.
 
-catch differs from block in that catch tags have dynamic scope while block names have lexical scope. 
+catch differs from block in that catch tags have dynamic scope while block names have lexical scope.
 
 Special Operator GO
 
@@ -1893,11 +1901,11 @@ Examples:
    (go lp)
    (incf val 3)
    lp (incf val 4)) =>  NIL
- val =>  6 
+ val =>  6
 
 The following is in error because there is a normal exit of the tagbody before the go is executed.
 
- (let ((a nil)) 
+ (let ((a nil))
    (tagbody t (setq a #'(lambda () (go t))))
    (funcall a))
 
@@ -1914,7 +1922,7 @@ See Also:
 
 tagbody
 
-Notes: None. 
+Notes: None.
 
 
 Special Operator RETURN-FROM
@@ -1954,7 +1962,7 @@ Examples:
    (flet ((exit (n) (return-from out n)))
      (block out (exit 1)))
    2) =>  1
- (block nil   
+ (block nil
    (unwind-protect (return-from nil 1)
      (return-from nil 2)))
 =>  2
@@ -1996,7 +2004,7 @@ See Also:
 
 block, return, Section 3.1 (Evaluation)
 
-Notes: None. 
+Notes: None.
 
 
 Macro RETURN
@@ -2035,7 +2043,7 @@ Notes:
  (return) ==  (return-from nil)
  (return form) ==  (return-from nil form)
 
-The implicit blocks established by macros such as do are often named nil, so that return can be used to exit from such forms. 
+The implicit blocks established by macros such as do are often named nil, so that return can be used to exit from such forms.
 
 
 Special Operator TAGBODY
@@ -2081,7 +2089,7 @@ Examples:
 =>  15
  (defun f1 (flag)
    (let ((n 1))
-     (tagbody 
+     (tagbody
        (setq n (f2 flag #'(lambda () (go out))))
       out
        (prin1 n))))
@@ -2108,11 +2116,11 @@ Notes:
 
 The macros in the next figure have implicit tagbodies.
 
-do              do-external-symbols  dotimes  
-do*             do-symbols           prog     
-do-all-symbols  dolist               prog*    
+do              do-external-symbols  dotimes
+do*             do-symbols           prog
+do-all-symbols  dolist               prog*
 
-Figure 5-10. Macros that have implicit tagbodies. 
+Figure 5-10. Macros that have implicit tagbodies.
 
 
 Special Operator THROW
@@ -2142,7 +2150,7 @@ Examples:
     (loop (incf j 3) (incf i)
           (if (= i 3) (throw 'result (values i j))))) =>  3, 9
 
- (catch nil 
+ (catch nil
    (unwind-protect (throw nil 1)
      (throw nil 2))) =>  2
 
@@ -2176,7 +2184,7 @@ block, catch, return-from, unwind-protect, Section 3.1 (Evaluation)
 
 Notes:
 
-catch and throw are normally used when the exit point must have dynamic scope (e.g., the throw is not lexically enclosed by the catch), while block and return are used when lexical scope is sufficient. 
+catch and throw are normally used when the exit point must have dynamic scope (e.g., the throw is not lexically enclosed by the catch), while block and return are used when lexical scope is sufficient.
 
 
 Special Operator UNWIND-PROTECT
@@ -2223,7 +2231,7 @@ When go is executed, the call to print is executed first, and then the transfer 
  state =>  2
  (catch 'abort (dummy-function 'trash)) =>  NOT-A-NUMBER
  state =>  RUNNING
- (catch 'abort (unwind-protect (dummy-function 'trash) 
+ (catch 'abort (unwind-protect (dummy-function 'trash)
                   (setq state 'aborted))) =>  NOT-A-NUMBER
  state =>  ABORTED
 
@@ -2243,30 +2251,30 @@ If an exit occurs before completion of incf, the decf form is executed anyway, r
      (setq *access-count* old-count)))
 
 ;;; The following returns 2.
- (block nil   
+ (block nil
    (unwind-protect (return 1)
      (return 2)))
- 
+
 ;;; The following has undefined consequences.
- (block a    
+ (block a
    (block b
      (unwind-protect (return-from a 1)
        (return-from b 2))))
- 
+
 ;;; The following returns 2.
- (catch nil 
+ (catch nil
    (unwind-protect (throw nil 1)
      (throw nil 2)))
- 
-;;; The following has undefined consequences because the catch of B is 
-;;; passed over by the first THROW, hence portable programs must assume 
+
+;;; The following has undefined consequences because the catch of B is
+;;; passed over by the first THROW, hence portable programs must assume
 ;;; its dynamic extent is terminated.  The binding of the catch tag is not
 ;;; yet disestablished and therefore it is the target of the second throw.
  (catch 'a
    (catch 'b
      (unwind-protect (throw 'a 1)
        (throw 'b 2))))
- 
+
 ;;; The following prints "The inner catch returns :SECOND-THROW"
 ;;; and then returns :OUTER-CATCH.
  (catch 'foo
@@ -2275,17 +2283,17 @@ If an exit occurs before completion of incf, the decf form is executed anyway, r
                      (unwind-protect (throw 'foo :first-throw)
                          (throw 'foo :second-throw))))
          :outer-catch)
- 
- 
-;;; The following returns 10. The inner CATCH of A is passed over, but 
+
+
+;;; The following returns 10. The inner CATCH of A is passed over, but
 ;;; because that CATCH is disestablished before the THROW to A is executed,
 ;;; it isn't seen.
  (catch 'a
    (catch 'b
      (unwind-protect (1+ (catch 'a (throw 'b 1)))
        (throw 'a 10))))
- 
- 
+
+
 ;;; The following has undefined consequences because the extent of
 ;;; the (CATCH 'BAR ...) exit ends when the (THROW 'FOO ...)
 ;;; commences.
@@ -2294,8 +2302,8 @@ If an exit occurs before completion of incf, the decf form is executed anyway, r
        (unwind-protect (throw 'foo 3)
          (throw 'bar 4)
          (print 'xxx))))
- 
- 
+
+
 ;;; The following returns 4; XXX is not printed.
 ;;; The (THROW 'FOO ...) has no effect on the scope of the BAR
 ;;; catch tag or the extent of the (CATCH 'BAR ...) exit.
@@ -2304,14 +2312,14 @@ If an exit occurs before completion of incf, the decf form is executed anyway, r
        (unwind-protect (throw 'foo 3)
          (throw 'bar 4)
          (print 'xxx))))
- 
- 
+
+
 ;;; The following prints 5.
  (block nil
    (let ((x 5))
      (declare (special x))
      (unwind-protect (return)
-       (print x))))          
+       (print x))))
 
 Affected By: None.
 
@@ -2321,7 +2329,7 @@ See Also:
 
 catch, go, handler-case, restart-case, return, return-from, throw, Section 3.1 (Evaluation)
 
-Notes: None. 
+Notes: None.
 
 
 Constant Variable NIL
@@ -2336,13 +2344,13 @@ nil represents both boolean (and generalized boolean) false and the empty list.
 
 Examples:
 
- nil =>  NIL 
+ nil =>  NIL
 
 See Also:
 
 t
 
-Notes: None. 
+Notes: None.
 
 
 Function NOT
@@ -2382,7 +2390,7 @@ null
 
 Notes:
 
-not is intended to be used to invert the `truth value' of a boolean (or generalized boolean) whereas null is intended to be used to test for the empty list. Operationally, not and null compute the same result; which to use is a matter of style. 
+not is intended to be used to invert the `truth value' of a boolean (or generalized boolean) whereas null is intended to be used to test for the empty list. Operationally, not and null compute the same result; which to use is a matter of style.
 
 
 Constant Variable T
@@ -2399,7 +2407,7 @@ The symbol t is also sometimes used for other purposes as well. For example, as 
 
 Examples:
 
- t =>  T 
+ t =>  T
  (eq t 't) =>  true
  (find-class 't) =>  #<CLASS T 610703333>
  (case 'a (a 1) (t 2)) =>  1
@@ -2412,7 +2420,7 @@ See Also:
 
 nil
 
-Notes: None. 
+Notes: None.
 
 
 Function EQ
@@ -2487,11 +2495,11 @@ An implementation is permitted to make ``copies'' of characters and numbers at a
 
 Most Common Lisp operators use eql rather than eq to compare objects, or else they default to eql and only use eq if specifically requested to do so. However, the following operators are defined to use eq rather than eql in a way that cannot be overridden by the code which employs them:
 
-catch           getf     throw  
-get             remf            
-get-properties  remprop  
+catch           getf     throw
+get             remf
+get-properties  remprop
 
-Figure 5-11. Operators that always prefer EQ over EQL 
+Figure 5-11. Operators that always prefer EQ over EQL
 
 
 Function EQL
@@ -2561,7 +2569,7 @@ eql is the same as eq, except that if the arguments are characters or numbers of
 
 eql may not be true of two floats even when they represent the same value. = is used to compare mathematical values.
 
-Two complex numbers are considered to be eql if their real parts are eql and their imaginary parts are eql. For example, (eql #C(4 5) #C(4 5)) is true and (eql #C(4 5) #C(4.0 5.0)) is false. Note that while (eql #C(5.0 0.0) 5.0) is false, (eql #C(5 0) 5) is true. In the case of (eql #C(5.0 0.0) 5.0) the two arguments are of different types, and so cannot satisfy eql. In the case of (eql #C(5 0) 5), #C(5 0) is not a complex number, but is automatically reduced to the integer 5. 
+Two complex numbers are considered to be eql if their real parts are eql and their imaginary parts are eql. For example, (eql #C(4 5) #C(4 5)) is true and (eql #C(4 5) #C(4.0 5.0)) is false. Note that while (eql #C(5.0 0.0) 5.0) is false, (eql #C(5 0) 5) is true. In the case of (eql #C(5.0 0.0) 5.0) the two arguments are of different types, and so cannot satisfy eql. In the case of (eql #C(5 0) 5), #C(5 0) is not a complex number, but is automatically reduced to the integer 5.
 
 
 Function EQUAL
@@ -2604,17 +2612,17 @@ Other (Structures, hash-tables, instances, ...)
 
 equal does not descend any objects other than the ones explicitly specified above. The next figure summarizes the information given in the previous list. In addition, the figure specifies the priority of the behavior of equal, with upper entries taking priority over lower ones.
 
-Type          Behavior                     
-number        uses eql                     
-character     uses eql                     
-cons          descends                     
-bit vector    descends                     
-string        descends                     
-pathname      ``functionally equivalent''  
-structure     uses eq                      
-Other array   uses eq                      
-hash table    uses eq                      
-Other object  uses eq                      
+Type          Behavior
+number        uses eql
+character     uses eql
+cons          descends
+bit vector    descends
+string        descends
+pathname      ``functionally equivalent''
+structure     uses eq
+Other array   uses eq
+hash table    uses eq
+Other object  uses eq
 
 Figure 5-12. Summary and priorities of behavior of equal
 
@@ -2655,7 +2663,7 @@ Notes:
 
 Object equality is not a concept for which there is a uniquely determined correct algorithm. The appropriateness of an equality predicate can be judged only in the context of the needs of some particular program. Although these functions take any type of argument and their names sound very generic, equal and equalp are not appropriate for every application.
 
-A rough rule of thumb is that two objects are equal if and only if their printed representations are the same. 
+A rough rule of thumb is that two objects are equal if and only if their printed representations are the same.
 
 
 Function EQUALP
@@ -2702,17 +2710,17 @@ Hash Tables
 
 equalp does not descend any objects other than the ones explicitly specified above. The next figure summarizes the information given in the previous list. In addition, the figure specifies the priority of the behavior of equalp, with upper entries taking priority over lower ones.
 
-Type          Behavior                      
-number        uses =                        
-character     uses char-equal               
-cons          descends                      
-bit vector    descends                      
-string        descends                      
-pathname      same as equal                 
-structure     descends, as described above  
-Other array   descends                      
-hash table    descends, as described above  
-Other object  uses eq                       
+Type          Behavior
+number        uses =
+character     uses char-equal
+cons          descends
+bit vector    descends
+string        descends
+pathname      same as equal
+structure     descends, as described above
+Other array   descends
+hash table    descends, as described above
+Other object  uses eq
 
 Figure 5-13. Summary and priorities of behavior of equalp
 
@@ -2734,7 +2742,7 @@ Examples:
  (equalp "FOO" "foo") =>  true
 
  (setq array1 (make-array 6 :element-type 'integer
-                            :initial-contents '(1 1 1 3 5 7))) 
+                            :initial-contents '(1 1 1 3 5 7)))
 =>  #(1 1 1 3 5 7)
  (setq array2 (make-array 8 :element-type 'integer
                             :initial-contents '(1 1 1 3 5 7 2 6)
@@ -2742,7 +2750,7 @@ Examples:
 =>  #(1 1 1 3 5 7)
  (equalp array1 array2) =>  true
  (setq vector1 (vector 1 1 1 3 5 7)) =>  #(1 1 1 3 5 7)
- (equalp array1 vector1) =>  true 
+ (equalp array1 vector1) =>  true
 
 Side Effects: None.
 
@@ -2756,7 +2764,7 @@ eq, eql, equal, =, string=, string-equal, char=, char-equal
 
 Notes:
 
-Object equality is not a concept for which there is a uniquely determined correct algorithm. The appropriateness of an equality predicate can be judged only in the context of the needs of some particular program. Although these functions take any type of argument and their names sound very generic, equal and equalp are not appropriate for every application. 
+Object equality is not a concept for which there is a uniquely determined correct algorithm. The appropriateness of an equality predicate can be judged only in the context of the needs of some particular program. Although these functions take any type of argument and their names sound very generic, equal and equalp are not appropriate for every application.
 
 
 Function IDENTITY
@@ -2840,10 +2848,10 @@ In Common Lisp, functions with names like ``xxx-if-not'' are related to function
 
 For example,
 
- (find-if-not #'zerop '(0 0 3)) == 
+ (find-if-not #'zerop '(0 0 3)) ==
  (find-if (complement #'zerop) '(0 0 3)) =>  3
 
-Note that since the ``xxx-if-not'' functions and the :test-not arguments have been deprecated, uses of ``xxx-if'' functions or :test arguments with complement are preferred. 
+Note that since the ``xxx-if-not'' functions and the :test-not arguments have been deprecated, uses of ``xxx-if'' functions or :test arguments with complement are preferred.
 
 
 Function CONSTANTLY
@@ -2928,7 +2936,7 @@ Examples:
  (every #'characterp "abc") =>  true
  (some #'= '(1 2 3 4 5) '(5 4 3 2 1)) =>  true
  (notevery #'< '(1 2 3 4) '(5 6 7 8) '(9 10 11 12)) =>  false
- (notany #'> '(1 2 3 4) '(5 6 7 8) '(9 10 11 12)) =>  true 
+ (notany #'> '(1 2 3 4) '(5 6 7 8) '(9 10 11 12)) =>  true
 
 Affected By: None.
 
@@ -2977,13 +2985,13 @@ Examples:
 
 The above expression prints Foo! if element n of a-simple-vector is the symbol foo, provided also that n is indeed a valid index for a-simple-vector. Because and guarantees left-to-right testing of its parts, elt is not called if n is out of range.
 
- (setq temp1 1 temp2 1 temp3 1) =>  1 
- (and (incf temp1) (incf temp2) (incf temp3)) =>  2 
+ (setq temp1 1 temp2 1 temp3 1) =>  1
+ (and (incf temp1) (incf temp2) (incf temp3)) =>  2
  (and (eql 2 temp1) (eql 2 temp2) (eql 2 temp3)) =>  true
- (decf temp3) =>  1 
- (and (decf temp1) (decf temp2) (eq temp3 'nil) (decf temp3)) =>  NIL 
+ (decf temp3) =>  1
+ (and (decf temp1) (decf temp2) (eq temp3 'nil) (decf temp3)) =>  NIL
  (and (eql temp1 temp2) (eql temp2 temp3)) =>  true
- (and) =>  T 
+ (and) =>  T
 
 Affected By: None.
 
@@ -3005,7 +3013,7 @@ Syntax:
 
 cond {clause}* => result*
 
-clause::= (test-form form*) 
+clause::= (test-form form*)
 
 Arguments and Values:
 
@@ -3051,7 +3059,7 @@ See Also:
 
 if, case.
 
-Notes: None. 
+Notes: None.
 
 
 Special Operator IF
@@ -3079,7 +3087,7 @@ First test-form is evaluated. If the result is true, then then-form is selected;
 Examples:
 
  (if t 1) =>  1
- (if nil 1 2) =>  2 
+ (if nil 1 2) =>  2
  (defun test ()
    (dolist (truth-value '(t nil 1 (a b c)))
      (if truth-value (print 'true) (print 'false))
@@ -3125,7 +3133,7 @@ If the evaluation of any form other than the last returns a primary value that i
 
 Examples:
 
- (or) =>  NIL 
+ (or) =>  NIL
  (setq temp0 nil temp1 10 temp2 20 temp3 30) =>  30
  (or temp0 temp1 (setq temp2 37)) =>  10
  temp2 =>  20
@@ -3148,7 +3156,7 @@ See Also:
 
 and, some, unless
 
-Notes: None. 
+Notes: None.
 
 
 Macro WHEN, UNLESS
@@ -3196,9 +3204,9 @@ Examples:
          (when (oddp x) (incf x) (list x))
          (unless (oddp x) (incf x) (list x))
          (unless (oddp x) (incf x) (list x))
-         (if (oddp x) (incf x) (list x)) 
-         (if (oddp x) (incf x) (list x)) 
-         (if (not (oddp x)) (incf x) (list x)) 
+         (if (oddp x) (incf x) (list x))
+         (if (oddp x) (incf x) (list x))
+         (if (not (oddp x)) (incf x) (list x))
          (if (not (oddp x)) (incf x) (list x))))
 =>  ((4) NIL (5) NIL 6 (6) 7 (7))
 
@@ -3233,11 +3241,11 @@ ccase keyplace {normal-clause}* => result*
 
 ecase keyform {normal-clause}* => result*
 
-normal-clause::= (keys form*) 
+normal-clause::= (keys form*)
 
-otherwise-clause::= ({otherwise | t} form*) 
+otherwise-clause::= ({otherwise | t} form*)
 
-clause::= normal-clause | otherwise-clause 
+clause::= normal-clause | otherwise-clause
 
 Arguments and Values:
 
@@ -3293,8 +3301,8 @@ Examples:
                ((nil) 'nilslot)
                ((:four #\v) 'clause4)
                ((t) 'tslot)
-               (otherwise 'others)))) 
->>  CLAUSE1 CLAUSE1 CLAUSE2 CLAUSE4 CLAUSE4 NILSLOT TSLOT OTHERS 
+               (otherwise 'others))))
+>>  CLAUSE1 CLAUSE1 CLAUSE2 CLAUSE4 CLAUSE4 NILSLOT TSLOT OTHERS
 =>  NIL
  (defun add-em (x) (apply #'+ (mapcar #'decode x)))
 =>  ADD-EM
@@ -3335,11 +3343,11 @@ Notes:
 
 (case test-key
   {((key*) form*)}*)
-== 
+==
 (let ((#1=#:g0001 test-key))
   (cond {((member #1# '(key*)) form*)}*))
 
-The specific error message used by ecase and ccase can vary between implementations. In situations where control of the specific wording of the error message is important, it is better to use case with an otherwise-clause that explicitly signals an error with an appropriate message. 
+The specific error message used by ecase and ccase can vary between implementations. In situations where control of the specific wording of the error message is important, it is better to use case with an otherwise-clause that explicitly signals an error with an appropriate message.
 
 
 Macro TYPECASE, CTYPECASE, ETYPECASE
@@ -3352,11 +3360,11 @@ ctypecase keyplace {normal-clause}* => result*
 
 etypecase keyform {normal-clause}* => result*
 
-normal-clause::= (type form*) 
+normal-clause::= (type form*)
 
-otherwise-clause::= ({otherwise | t} form*) 
+otherwise-clause::= ({otherwise | t} form*)
 
-clause::= normal-clause | otherwise-clause 
+clause::= normal-clause | otherwise-clause
 
 Arguments and Values:
 
@@ -3408,7 +3416,7 @@ In all three cases, is permissible for more than one clause to specify a matchin
 
 Examples:
 
-;;; (Note that the parts of this example which use TYPE-OF 
+;;; (Note that the parts of this example which use TYPE-OF
 ;;;  are implementation-dependent.)
  (defun what-is-it (x)
    (format t "~&~S is ~A.~%"
@@ -3463,11 +3471,11 @@ Notes:
 
 (typecase test-key
   {(type form*)}*)
-== 
+==
 (let ((#1=#:g0001 test-key))
   (cond {((typep #1# 'type) form*)}*))
 
-The specific error message used by etypecase and ctypecase can vary between implementations. In situations where control of the specific wording of the error message is important, it is better to use typecase with an otherwise-clause that explicitly signals an error with an appropriate message. 
+The specific error message used by etypecase and ctypecase can vary between implementations. In situations where control of the specific wording of the error message is important, it is better to use typecase with an otherwise-clause that explicitly signals an error with an appropriate message.
 
 
 Macro MULTIPLE-VALUE-BIND
@@ -3502,7 +3510,7 @@ The scopes of the name binding and declarations do not include the values-form.
 
 Examples:
 
- (multiple-value-bind (f r) 
+ (multiple-value-bind (f r)
      (floor 130 11)
    (list f r)) =>  (11 9)
 
@@ -3562,7 +3570,7 @@ See Also:
 
 multiple-value-list, multiple-value-bind
 
-Notes: None. 
+Notes: None.
 
 
 Macro MULTIPLE-VALUE-LIST
@@ -3638,7 +3646,7 @@ See Also:
 
 prog1
 
-Notes: None. 
+Notes: None.
 
 
 Macro MULTIPLE-VALUE-SETQ
@@ -3694,7 +3702,7 @@ See Also:
 
 setq, symbol-macrolet
 
-Notes: None. 
+Notes: None.
 
 
 Accessor VALUES
@@ -3754,7 +3762,7 @@ values-list, multiple-value-bind, multiple-values-limit, Section 3.1 (Evaluation
 
 Notes:
 
-Since values is a function, not a macro or special form, it receives as arguments only the primary values of its argument forms. 
+Since values is a function, not a macro or special form, it receives as arguments only the primary values of its argument forms.
 
 
 Function VALUES-LIST
@@ -3794,7 +3802,7 @@ Notes:
 
  (values-list list) ==  (apply #'values list)
 
-(equal x (multiple-value-list (values-list x))) returns true for all lists x. 
+(equal x (multiple-value-list (values-list x))) returns true for all lists x.
 
 
 Constant Variable MULTIPLE-VALUES-LIMIT
@@ -3815,7 +3823,7 @@ lambda-parameters-limit, call-arguments-limit
 
 Notes:
 
-Implementors are encouraged to make this limit as large as possible. 
+Implementors are encouraged to make this limit as large as possible.
 
 
 Macro NTH-VALUE
@@ -3943,7 +3951,7 @@ returns the car of the value of z.
         (cerror "Will self-pair extraneous items"
                 "Mismatch - gleep!  ~S" y)
         (setq z y)
-        (go rejoin))) =>  KING-OF-CONFUSION 
+        (go rejoin))) =>  KING-OF-CONFUSION
 
 This can be accomplished more perspicuously as follows:
 
@@ -3957,7 +3965,7 @@ This can be accomplished more perspicuously as follows:
      (when (null z)
        (cerror "Will self-pair extraneous items"
               "Mismatch - gleep!  ~S" y)
-       (setq z y)))) =>  PRINCE-OF-CLARITY 
+       (setq z y)))) =>  PRINCE-OF-CLARITY
 
 Affected By: None.
 
@@ -4010,12 +4018,12 @@ Examples:
 =>  1
  (prog1 temp (setq temp nil)) =>  2
  temp =>  NIL
- (prog1 (values 1 2 3) 4) =>  1 
+ (prog1 (values 1 2 3) 4) =>  1
  (setq temp (list 'a 'b 'c))
  (prog1 (car temp) (setf (car temp) 'alpha)) =>  A
  temp =>  (ALPHA B C)
  (flet ((swap-symbol-values (x y)
-          (setf (symbol-value x) 
+          (setf (symbol-value x)
                 (prog1 (symbol-value y)
                        (setf (symbol-value y) (symbol-value x))))))
    (let ((*foo* 1) (*bar* 2))
@@ -4087,7 +4095,7 @@ prog1, prog2, Section 3.1 (Evaluation)
 
 Notes:
 
-Many places in Common Lisp involve syntax that uses implicit progns. That is, part of their syntax allows many forms to be written that are to be evaluated sequentially, discarding the results of all forms but the last and returning the results of the last form. Such places include, but are not limited to, the following: the body of a lambda expression; the bodies of various control and conditional forms (e.g., case, catch, progn, and when). 
+Many places in Common Lisp involve syntax that uses implicit progns. That is, part of their syntax allows many forms to be written that are to be evaluated sequentially, discarding the results of all forms but the last and returning the results of the last form. Such places include, but are not limited to, the following: the body of a lambda expression; the bodies of various control and conditional forms (e.g., case, catch, progn, and when).
 
 
 Macro DEFINE-MODIFY-MACRO
@@ -4131,7 +4139,7 @@ If a define-modify-macro form appears as a top level form, the compiler must sto
 
 Examples:
 
- (define-modify-macro appendf (&rest args) 
+ (define-modify-macro appendf (&rest args)
     append "Append onto list") =>  APPENDF
  (setq x '(a b c) y x) =>  (A B C)
  (appendf x '(d e f) '(1 2 3)) =>  (A B C D E F 1 2 3)
@@ -4152,7 +4160,7 @@ See Also:
 
 defsetf, define-setf-expander, documentation, Section 3.4.11 (Syntactic Interaction of Documentation Strings and Declarations)
 
-Notes: None. 
+Notes: None.
 
 
 Macro DEFSETF
@@ -4254,7 +4262,7 @@ An example of the use of the long form of defsetf:
 =>  (#:t0 #:t1),
    (a b),
    (#:store),
-   ((lambda (&key ((x #:x)) ((y #:y))) 
+   ((lambda (&key ((x #:x)) ((y #:y)))
       (set-xy #:store 'x #:x 'y #:y))
     #:t0 #:t1),
    (xy #:t0 #:t1)
@@ -4280,7 +4288,7 @@ Notes:
 
 forms must include provision for returning the correct value (the value or values of store-variable). This is handled by forms rather than by defsetf because in many cases this value can be returned at no extra cost, by calling a function that simultaneously stores into the place and returns the correct value.
 
-A setf of a call on access-fn also evaluates all of access-fn's arguments; it cannot treat any of them specially. This means that defsetf cannot be used to describe how to store into a generalized reference to a byte, such as (ldb field reference). define-setf-expander is used to handle situations that do not fit the restrictions imposed by defsetf and gives the user additional control. 
+A setf of a call on access-fn also evaluates all of access-fn's arguments; it cannot treat any of them specially. This means that defsetf cannot be used to describe how to store into a generalized reference to a byte, such as (ldb field reference). define-setf-expander is used to handle situations that do not fit the restrictions imposed by defsetf and gives the user additional control.
 
 
 Macro DEFINE-SETF-EXPANDER
@@ -4372,7 +4380,7 @@ setf, defsetf, documentation, get-setf-expansion, Section 3.4.11 (Syntactic Inte
 
 Notes:
 
-define-setf-expander differs from the long form of defsetf in that while the body is being executed the variables in lambda-list are bound to parts of the place form, not to temporary variables that will be bound to the values of such parts. In addition, define-setf-expander does not have defsetf's restriction that access-fn must be a function or a function-like macro; an arbitrary defmacro destructuring pattern is permitted in lambda-list. 
+define-setf-expander differs from the long form of defsetf in that while the body is being executed the variables in lambda-list are bound to parts of the place form, not to temporary variables that will be bound to the values of such parts. In addition, define-setf-expander does not have defsetf's restriction that access-fn must be a function or a function-like macro; an arbitrary defmacro destructuring pattern is permitted in lambda-list.
 
 
 Function GET-SETF-EXPANSION
@@ -4400,9 +4408,9 @@ If environment is not supplied or nil, the environment is the null lexical envir
 Examples:
 
  (get-setf-expansion 'x)
-=>  NIL, NIL, (#:G0001), (SETQ X #:G0001), X 
+=>  NIL, NIL, (#:G0001), (SETQ X #:G0001), X
 
-;;; This macro is like POP 
+;;; This macro is like POP
 
  (defmacro xpop (place &environment env)
    (multiple-value-bind (dummies vals new setter getter)
@@ -4412,13 +4420,13 @@ Examples:
          (prog1 (car ,(car new))
                 (setq ,(car new) (cdr ,(car new)))
                 ,setter))))
- 
- (defsetf frob (x) (value) 
+
+ (defsetf frob (x) (value)
      `(setf (car ,x) ,value)) =>  FROB
 ;;; The following is an error; an error might be signaled at macro expansion time
  (flet ((frob (x) (cdr x)))  ;Invalid
    (xpop (frob z)))
- 
+
 
 Affected By: None.
 
@@ -4430,7 +4438,7 @@ defsetf, define-setf-expander, setf
 
 Notes:
 
-Any compound form is a valid place, since any compound form whose operator f has no setf expander are expanded into a call to (setf f). 
+Any compound form is a valid place, since any compound form whose operator f has no setf expander are expanded into a call to (setf f).
 
 
 Macro SETF, PSETF
@@ -4441,7 +4449,7 @@ setf {pair}* => result*
 
 psetf {pair}* => nil
 
-pair::= place newvalue 
+pair::= place newvalue
 
 Arguments and Values:
 
@@ -4477,14 +4485,14 @@ For detailed treatment of the expansion of setf and psetf, see Section 5.1.2 (Ki
 
 Examples:
 
- (setq x (cons 'a 'b) y (list 1 2 3)) =>  (1 2 3) 
- (setf (car x) 'x (cadr y) (car x) (cdr x) y) =>  (1 X 3) 
- x =>  (X 1 X 3) 
- y =>  (1 X 3) 
- (setq x (cons 'a 'b) y (list 1 2 3)) =>  (1 2 3) 
- (psetf (car x) 'x (cadr y) (car x) (cdr x) y) =>  NIL 
- x =>  (X 1 A 3) 
- y =>  (1 A 3) 
+ (setq x (cons 'a 'b) y (list 1 2 3)) =>  (1 2 3)
+ (setf (car x) 'x (cadr y) (car x) (cdr x) y) =>  (1 X 3)
+ x =>  (X 1 X 3)
+ y =>  (1 X 3)
+ (setq x (cons 'a 'b) y (list 1 2 3)) =>  (1 2 3)
+ (psetf (car x) 'x (cadr y) (car x) (cdr x) y) =>  NIL
+ x =>  (X 1 A 3)
+ y =>  (1 A 3)
 
 Affected By:
 
@@ -4496,7 +4504,7 @@ See Also:
 
 define-setf-expander, defsetf, macroexpand-1, rotatef, shiftf, Section 5.1 (Generalized Reference)
 
-Notes: None. 
+Notes: None.
 
 
 Macro SHIFTF
@@ -4620,7 +4628,7 @@ The effect of (rotatef place1 place2 ... placen) is roughly equivalent to
         ...
         placen place1)
 
-except that the latter would evaluate any subforms of each place twice, whereas rotatef evaluates them once. 
+except that the latter would evaluate any subforms of each place twice, whereas rotatef evaluates them once.
 
 
 Condition Type CONTROL-ERROR
@@ -4631,7 +4639,7 @@ control-error, error, serious-condition, condition, t
 
 Description:
 
-The type control-error consists of error conditions that result from invalid dynamic transfers of control in a program. The errors that result from giving throw a tag that is not active or from giving go or return-from a tag that is no longer dynamically available are of type control-error. 
+The type control-error consists of error conditions that result from invalid dynamic transfers of control in a program. The errors that result from giving throw a tag that is not active or from giving go or return-from a tag that is no longer dynamically available are of type control-error.
 
 
 Condition Type PROGRAM-ERROR
@@ -4642,7 +4650,7 @@ program-error, error, serious-condition, condition, t
 
 Description:
 
-The type program-error consists of error conditions related to incorrect program syntax. The errors that result from naming a go tag or a block tag that is not lexically apparent are of type program-error. 
+The type program-error consists of error conditions related to incorrect program syntax. The errors that result from naming a go tag or a block tag that is not lexically apparent are of type program-error.
 
 
 Condition Type UNDEFINED-FUNCTION
@@ -4659,6 +4667,4 @@ The name of the cell (see cell-error) is the function name which was funbound.
 
 See Also:
 
-cell-error-name 
-
-
+cell-error-name
