@@ -181,7 +181,7 @@ Figure 5-6. LDB 表达式形式的简单 setf 展开式
 Common Lisp 定义了多个 place 的种类; 这个章节会列举它们. 这个集合可以被具体实现和程序员的代码所扩展.
 
 > * 5.1.2.1 [变量名作为 Places](#VariableNamesPlaces)
-> * 5.1.2.2 [Function Call Forms as Places](#FunctionCallFormsPlaces)
+> * 5.1.2.2 [函数调用表达式作为 Places](#FunctionCallFormsPlaces)
 > * 5.1.2.3 [VALUES Forms as Places](#VALUESFormsPlaces)
 > * 5.1.2.4 [THE Forms as Places](#THEFormsPlaces)
 > * 5.1.2.5 [APPLY Forms as Places](#APPLYFormsPlaces)
@@ -194,11 +194,11 @@ Common Lisp 定义了多个 place 的种类; 这个章节会列举它们. 这个
 
 一个词法变量或动态变量的名字可以被用作一个 place.
 
-#### 5.1.2.2 <span id="FunctionCallFormsPlaces">Function Call Forms as Places</span>
+#### 5.1.2.2 <span id="FunctionCallFormsPlaces">函数调用表达式作为 Places</span>
 
-A function form can be used as a place if it falls into one of the following categories:
+如果一个函数表达式属于下列类别之一, 它被用作 place:
 
-* A function call form whose first element is the name of any one of the functions in the next figure.
+* 第一个元素是下面这段中任何一个函数名的函数调用表达式形式.
 
     aref    cdadr                    get
     bit     cdar                     gethash
@@ -223,85 +223,94 @@ A function form can be used as a place if it falls into one of the following cat
     cdadar  first                    tenth
     cdaddr  fourth                   third
 
-    Figure 5-7. Functions that setf can be used with---1
+    Figure 5-7. 可以和 setf 一起使用的函数---1
 
-    In the case of subseq, the replacement value must be a sequence whose elements might be contained by the sequence argument to subseq, but does not have to be a sequence of the same type as the sequence of which the subsequence is specified. If the length of the replacement value does not equal the length of the subsequence to be replaced, then the shorter length determines the number of elements to be stored, as for replace.
+    subseq 的情况, 替换的值必须是一个序列, 其元素可能被 subseq 的序列参数所包含, 但它不一定是与指定子序列的类型相同的序列. 如果替换的值的长度和要被替换的子序列长度不一样, 那么更短的那个长度决定要被存储的元素的数量, 如 replace.
 
-* A function call form whose first element is the name of a selector function constructed by defstruct. The function name must refer to the global function definition, rather than a locally defined function.
+* 第一个元素是 defstruct 构造的选择器函数的名字的一个函数调用表达式形式. 这个函数名字必须引用全局函数定义, 而不是一个局部定义的函数.
 
-* A function call form whose first element is the name of any one of the functions in the next figure, provided that the supplied argument to that function is in turn a place form; in this case the new place has stored back into it the result of applying the supplied ``update'' function.
+* 第一个元素是下面这段中任何一个函数名的函数调用表达式形式, 只要给那个函数的提供的参数依次为一个 place 表达式; 在本例中, 新 place 存储回了调用提供的"update"函数的结果中.
 
-    Function name  Argument that is a place  Update function used
+    函数名          是 place 的参数            使用的 update 函数
     ldb            second                    dpb
     mask-field     second                    deposit-field
     getf           first                     implementation-dependent
 
-    Figure 5-8. Functions that setf can be used with---2 During the setf expansion of these forms, it is necessary to call get-setf-expansion in order to figure out how the inner, nested generalized variable must be treated.
+    Figure 5-8. 可以和 setf 一起使用的函数---2 
+    
+    在这些表达式的 setf 展开期间, 需要调用 get-setf-expansion, 以了解内部的, 嵌套的广义变量必须如何处理.
 
-    The information from get-setf-expansion is used as follows.
+    来自 get-setf-expansion 的信息用于以下内容.
 
-    ldb
+    * ldb
 
-        In a form such as:
+        在像这样的表达式中:
 
+        ```LISP
         (setf (ldb byte-spec place-form) value-form)
+        ```
+        
+        place-form 涉及的 place 必须总是可读写的; 注意这个更新是对 place-form 指定的广义变量, 不是任何 integer 类型的对象.
 
-        the place referred to by the place-form must always be both read and written; note that the update is to the generalized variable specified by place-form, not to any object of type integer.
+        因此, setf 应该生成代码来执行以下操作:
 
-        Thus this setf should generate code to do the following:
+        1. 求值 byte-spec (并且把它绑定到一个临时变量).
+        2. 为 place-form 绑定临时变量.
+        3. 求值 value-form (并绑定它的值或多值到存储变量中).
+        4. 执行从 place-form 中读取.
+        5. 用第4步中获取的整数的给定位来写 place-form, 替换为步骤3中的值.
 
-        1. Evaluate byte-spec (and bind it into a temporary variable).
-        2. Bind the temporary variables for place-form.
-        3. Evaluate value-form (and bind its value or values into the store variable).
-        4. Do the read from place-form.
-        5. Do the write into place-form with the given bits of the integer fetched in step 4 replaced with the value from step 3.
+        如果步骤3中的 value-form 求值修改了 place-form 的内容, 就像设置 integer 的不同的位, 那么 byte-spec 表示的改变的位是修改后的 integer, 因为步骤4在 value-form 求值后被执行. 不过, 绑定临时变量所需的求值在步骤1和步骤2中完成, 因此可以看到预期的从左到右的求值顺序. 比如:
 
-        If the evaluation of value-form in step 3 alters what is found in place-form, such as setting different bits of integer, then the change of the bits denoted by byte-spec is to that altered integer, because step 4 is done after the value-form evaluation. Nevertheless, the evaluations required for binding the temporary variables are done in steps 1 and 2, and thus the expected left-to-right evaluation order is seen. For example:
-
-         (setq integer #x69) =>  #x69
-         (rotatef (ldb (byte 4 4) integer)
-                  (ldb (byte 4 0) integer))
-         integer =>  #x96
+        ```LISP
+        (setq integer #x69) =>  #x69
+        (rotatef (ldb (byte 4 4) integer)
+                (ldb (byte 4 0) integer))
+        integer =>  #x96
         ;;; This example is trying to swap two independent bit fields
         ;;; in an integer.  Note that the generalized variable of
         ;;; interest here is just the (possibly local) program variable
         ;;; integer.
+        ```
 
-    mask-field
+    * mask-field
 
-        This case is the same as ldb in all essential aspects.
+        这个情况和 ldb 在所有重要情况下都是一样的.
 
-    getf
+    * getf
 
-        In a form such as:
+        在像这样的表达式中:
 
+        ```LISP
         (setf (getf place-form ind-form) value-form)
+        ```
+        
+        place-form 涉及的 place 必须总是可读写的; 注意这个更新是对 place-form 指定的广义变量, 而不一定是特定列表中讨论中的属性列表. <!--TODO in question ??-->
 
-        the place referred to by place-form must always be both read and written; note that the update is to the generalized variable specified by place-form, not necessarily to the particular list that is the property list in question.
+        因此, setf 应该生成代码来执行以下操作:
 
-        Thus this setf should generate code to do the following:
+        1. 为 place-form 绑定临时变量.
+        2. 求值 ind-form (并且把它绑定到临时变量).
+        3. 求值 value-form (并且绑定它的值或多值到存储变量中).
+        4. 执行从 place-form 中读取.
+        5. 用通过组合步骤2, 3 和 4 中的值获取的可能是新的属性列表写到 place-form 中. (注意这个措辞 "可能的新属性列表(possibly-new property list)" 可能意味着之前的属性列表以某种方式破坏性的再次使用, 或者可能意味着它的部分或完全的复制. 因为不管是复制还是破坏性地再使用都可以发生, 对于可能的新属性列表的结果值的处理必须进行处理, 就好像它是一个不同的副本, 需要将其存储回广义变量中.)
 
-        1. Bind the temporary variables for place-form.
-        2. Evaluate ind-form (and bind it into a temporary variable).
-        3. Evaluate value-form (and bind its value or values into the store variable).
-        4. Do the read from place-form.
-        5. Do the write into place-form with a possibly-new property list obtained by combining the values from steps 2, 3, and 4. (Note that the phrase ``possibly-new property list'' can mean that the former property list is somehow destructively re-used, or it can mean partial or full copying of it. Since either copying or destructive re-use can occur, the treatment of the resultant value for the possibly-new property list must proceed as if it were a different copy needing to be stored back into the generalized variable.)
+        如果步骤3中的 value-form 求值修改了 place-form 中的内容, 就像在列表设置一个不同的已命名属性, 那么 ind-form 表示的属性的修改是那个修改后的列表, 因为步骤 4 在 value-form 求值后执行. 不过, 绑定临时变量所需的求值在步骤1和步骤2中完成, 因此可以看到预期的从左到右的求值顺序.
 
-        If the evaluation of value-form in step 3 alters what is found in place-form, such as setting a different named property in the list, then the change of the property denoted by ind-form is to that altered list, because step 4 is done after the value-form evaluation. Nevertheless, the evaluations required for binding the temporary variables are done in steps 1 and 2, and thus the expected left-to-right evaluation order is seen.
+        比如:
 
-        For example:
-
-         (setq s (setq r (list (list 'a 1 'b 2 'c 3)))) =>  ((a 1 b 2 c 3))
-         (setf (getf (car r) 'b)
-               (progn (setq r nil) 6)) =>  6
-         r =>  NIL
-         s =>  ((A 1 B 6 C 3))
+        ```LISP
+        (setq s (setq r (list (list 'a 1 'b 2 'c 3)))) =>  ((a 1 b 2 c 3))
+        (setf (getf (car r) 'b)
+              (progn (setq r nil) 6)) =>  6
+        r =>  NIL
+        s =>  ((A 1 B 6 C 3))
         ;;; Note that the (setq r nil) does not affect the actions of
         ;;; the SETF because the value of R had already been saved in
         ;;; a temporary variable as part of the step 1. Only the CAR
         ;;; of this value will be retrieved, and subsequently modified
         ;;; after the value computation.
-
+        ```
 
 #### 5.1.2.3 <span id="VALUESFormsPlaces">VALUES Forms as Places</span>
 
