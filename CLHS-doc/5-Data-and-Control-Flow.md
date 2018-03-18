@@ -1,8 +1,8 @@
 # 5. 数据和控制流
 <!-- TODO place  Generalized Reference ?? -->
 > * 5.1 [Generalized Reference](#GeneralizedReference)
-> * 5.2 [Transfer of Control to an Exit Point](#TCEP)
-> * 5.3 [The Data and Control Flow Dictionary](#DCFDictionary)
+> * 5.2 [退出点的控制转移](#TCEP)
+> * 5.3 [数据和控制流字典](#DCFDictionary)
 
 ## 5.1 <span id="GeneralizedReference">Generalized Reference</span>
 
@@ -420,7 +420,7 @@ values 的 setf 展开中的存储形式作为多个值返回第2步中存储变
 
     Figure 5-9. 读-修改-写(read-modify-write) 宏
 
-## 5.2 <span id="TCEP">Transfer of Control to an Exit Point</span>
+## 5.2 <span id="TCEP">退出点的控制转移</span>
 
 当控制转移由 go, return-from, 或 throw 发起时, 为了完成控制权的转移, 发生以下事件. 注意, 对于 go, 退出点是 go 执行时要被执行的 tagbody 里的表达式形式; 对于 return-from, 退出点是对应的 block 表达式形式; 对于 throw, 退出点是对应的 catch 表达式形式.
 
@@ -438,81 +438,81 @@ values 的 setf 展开中的存储形式作为多个值返回第2步中存储变
 
 事件 4 发生在控制转移结束的时候.
 
-## 5.3 <span id="DCFDictionary">The Data and Control Flow Dictionary</span>
+## 5.3 <span id="DCFDictionary">数据和控制流字典</span>
 
-Function APPLY
-Macro DEFUN
-Accessor FDEFINITION
-Function FBOUNDP
-Function FMAKUNBOUND
-Special Operator FLET, LABELS, MACROLET
-Function FUNCALL
-Special Operator FUNCTION
-Function FUNCTION-LAMBDA-EXPRESSION
-Function FUNCTIONP
-Function COMPILED-FUNCTION-P
-Constant Variable CALL-ARGUMENTS-LIMIT
-Constant Variable LAMBDA-LIST-KEYWORDS
-Constant Variable LAMBDA-PARAMETERS-LIMIT
-Macro DEFCONSTANT
-Macro DEFPARAMETER, DEFVAR
-Macro DESTRUCTURING-BIND
-Special Operator LET, LET*
-Special Operator PROGV
-Special Form SETQ
-Macro PSETQ
-Special Operator BLOCK
-Special Operator CATCH
-Special Operator GO
-Special Operator RETURN-FROM
-Macro RETURN
-Special Operator TAGBODY
-Special Operator THROW
-Special Operator UNWIND-PROTECT
-Constant Variable NIL
-Function NOT
-Constant Variable T
-Function EQ
-Function EQL
-Function EQUAL
-Function EQUALP
-Function IDENTITY
-Function COMPLEMENT
-Function CONSTANTLY
-Function EVERY, SOME, NOTEVERY, NOTANY
-Macro AND
-Macro COND
-Special Operator IF
-Macro OR
-Macro WHEN, UNLESS
-Macro CASE, CCASE, ECASE
-Macro TYPECASE, CTYPECASE, ETYPECASE
-Macro MULTIPLE-VALUE-BIND
-Special Operator MULTIPLE-VALUE-CALL
-Macro MULTIPLE-VALUE-LIST
-Special Operator MULTIPLE-VALUE-PROG1
-Macro MULTIPLE-VALUE-SETQ
-Accessor VALUES
-Function VALUES-LIST
-Constant Variable MULTIPLE-VALUES-LIMIT
-Macro NTH-VALUE
-Macro PROG, PROG*
-Macro PROG1, PROG2
-Special Operator PROGN
-Macro DEFINE-MODIFY-MACRO
-Macro DEFSETF
-Macro DEFINE-SETF-EXPANDER
-Function GET-SETF-EXPANSION
-Macro SETF, PSETF
-Macro SHIFTF
-Macro ROTATEF
-Condition Type CONTROL-ERROR
-Condition Type PROGRAM-ERROR
-Condition Type UNDEFINED-FUNCTION
+> * [函数 APPLY](#)
+> * [宏 DEFUN](#)
+> * [访问器 FDEFINITION](#)
+> * [函数 FBOUNDP](#)
+> * [函数 FMAKUNBOUND](#)
+> * [特殊操作符 FLET, LABELS, MACROLET](#)
+> * [函数 FUNCALL](#)
+> * [特殊操作符 FUNCTION](#)
+> * [函数 FUNCTION-LAMBDA-EXPRESSION](#)
+> * [函数 FUNCTIONP](#)
+> * [函数 COMPILED-FUNCTION-P](#)
+> * [常量 CALL-ARGUMENTS-LIMIT](#)
+> * [常量 LAMBDA-LIST-KEYWORDS](#)
+> * [常量 LAMBDA-PARAMETERS-LIMIT](#)
+> * [宏 DEFCONSTANT](#)
+> * [宏 DEFPARAMETER, DEFVAR](#)
+> * [宏 DESTRUCTURING-BIND](#)
+> * [特殊操作符 LET, LET*](#)
+> * [特殊操作符 PROGV](#)
+> * [特殊表达式 SETQ](#)
+> * [宏 PSETQ](#)
+> * [特殊操作符 BLOCK](#)
+> * [特殊操作符 CATCH](#)
+> * [特殊操作符 GO](#)
+> * [特殊操作符 RETURN-FROM](#)
+> * [宏 RETURN](#)
+> * [特殊操作符 TAGBODY](#)
+> * [特殊操作符 THROW](#)
+> * [特殊操作符 UNWIND-PROTECT](#)
+> * [常量 NIL](#)
+> * [函数 NOT](#)
+> * [常量 T](#)
+> * [函数 EQ](#)
+> * [函数 EQL](#)
+> * [函数 EQUAL](#)
+> * [函数 EQUALP](#)
+> * [函数 IDENTITY](#)
+> * [函数 COMPLEMENT](#)
+> * [函数 CONSTANTLY](#)
+> * [函数 EVERY, SOME, NOTEVERY, NOTANY](#)
+> * [宏 AND](#)
+> * [宏 COND](#)
+> * [特殊操作符 IF](#)
+> * [宏 OR](#)
+> * [宏 WHEN, UNLESS](#)
+> * [宏 CASE, CCASE, ECASE](#)
+> * [宏 TYPECASE, CTYPECASE, ETYPECASE](#)
+> * [宏 MULTIPLE-VALUE-BIND](#)
+> * [特殊操作符 MULTIPLE-VALUE-CALL](#)
+> * [宏 MULTIPLE-VALUE-LIST](#)
+> * [特殊操作符 MULTIPLE-VALUE-PROG1](#)
+> * [宏 MULTIPLE-VALUE-SETQ](#)
+> * [访问器 VALUES](#)
+> * [函数 VALUES-LIST](#)
+> * [常量 MULTIPLE-VALUES-LIMIT](#)
+> * [宏 NTH-VALUE](#)
+> * [宏 PROG, PROG*](#)
+> * [宏 PROG1, PROG2](#)
+> * [特殊操作符 PROGN](#)
+> * [宏 DEFINE-MODIFY-MACRO](#)
+> * [宏 DEFSETF](#)
+> * [宏 DEFINE-SETF-EXPANDER](#)
+> * [函数 GET-SETF-EXPANSION](#)
+> * [宏 SETF, PSETF](#)
+> * [宏 SHIFTF](#)
+> * [宏 ROTATEF](#)
+> * [状况类型 CONTROL-ERROR](#)
+> * [状况类型 PROGRAM-ERROR](#)
+> * [状况类型 UNDEFINED-FUNCTION](#)
 
 
 
-Function APPLY
+### <span id="">函数 APPLY</span>
 
 Syntax:
 
@@ -569,7 +569,7 @@ funcall, fdefinition, function, Section 3.1 (Evaluation), Section 5.1.2.5 (APPLY
 Notes: None.
 
 
-Macro DEFUN
+### <span id="">宏 DEFUN</span>
 
 Syntax:
 
@@ -657,7 +657,7 @@ return-from can be used to return prematurely from a function defined by defun.
 Additional side effects might take place when additional information (typically debugging information) about the function definition is recorded.
 
 
-Accessor FDEFINITION
+### <span id="">访问器 FDEFINITION</span>
 
 Syntax:
 
@@ -700,7 +700,7 @@ fdefinition cannot access the value of a lexical function name produced by flet 
 setf can be used with fdefinition to replace a global function definition when the function-name's function definition does not represent a special form. setf of fdefinition requires a function as the new value. It is an error to set the fdefinition of a function-name to a symbol, a list, or the value returned by fdefinition on the name of a macro or special form.
 
 
-Function FBOUNDP
+### <span id="">函数 FBOUNDP</span>
 
 Syntax:
 
@@ -764,7 +764,7 @@ fboundp is sometimes used to ``guard'' an access to the function cell, as in:
 Defining a setf expander F does not cause the setf function (setf F) to become defined.
 
 
-Function FMAKUNBOUND
+### <span id="">函数 FMAKUNBOUND</span>
 
 Syntax:
 
@@ -807,7 +807,7 @@ fboundp, makunbound
 
 Notes: None.
 
-Special Operator FLET, LABELS, MACROLET
+### <span id="">特殊操作符 FLET, LABELS, MACROLET</span>
 
 Syntax:
 
@@ -966,7 +966,7 @@ It is not possible to define recursive functions with flet. labels can be used t
 If a macrolet form is a top level form, the body forms are also processed as top level forms. See Section 3.2.3 (File Compilation).
 
 
-Function FUNCALL
+### <span id="">函数 FUNCALL</span>
 
 Syntax:
 
@@ -1016,7 +1016,7 @@ Notes:
 The difference between funcall and an ordinary function call is that in the former case the function is obtained by ordinary evaluation of a form, and in the latter case it is obtained by the special interpretation of the function position that normally occurs.
 
 
-Special Operator FUNCTION
+### <span id="">特殊操作符 FUNCTION</span>
 
 Syntax:
 
@@ -1064,7 +1064,7 @@ Notes:
 The notation #'name may be used as an abbreviation for (function name).
 
 
-Function FUNCTION-LAMBDA-EXPRESSION
+### <span id="">函数 FUNCTION-LAMBDA-EXPRESSION</span>
 
 Syntax:
 
@@ -1148,7 +1148,7 @@ Notes:
 Although implementations are free to return ``nil, true, nil'' in all cases, they are encouraged to return a lambda expression as the primary value in the case where the argument was created by a call to compile or eval (as opposed to being created by loading a compiled file).
 
 
-Function FUNCTIONP
+### <span id="">函数 FUNCTIONP</span>
 
 Syntax:
 
@@ -1189,7 +1189,7 @@ Notes:
  (functionp object) ==  (typep object 'function)
 
 
-Function COMPILED-FUNCTION-P
+### <span id="">函数 COMPILED-FUNCTION-P</span>
 
 Syntax:
 
@@ -1237,7 +1237,7 @@ Notes:
  (compiled-function-p object) ==  (typep object 'compiled-function)
 
 
-Constant Variable CALL-ARGUMENTS-LIMIT
+### <span id="">常量 CALL-ARGUMENTS-LIMIT</span>
 
 Constant Value:
 
@@ -1256,7 +1256,7 @@ lambda-parameters-limit, multiple-values-limit
 Notes: None.
 
 
-Constant Variable LAMBDA-LIST-KEYWORDS
+### <span id="">常量 LAMBDA-LIST-KEYWORDS</span>
 
 Constant Value:
 
@@ -1275,7 +1275,7 @@ defun, flet, defmacro, macrolet, Section 3.1.2 (The Evaluation Model)
 Notes: None.
 
 
-Constant Variable LAMBDA-PARAMETERS-LIMIT
+### <span id="">常量 LAMBDA-PARAMETERS-LIMIT</span>
 
 Constant Value:
 
@@ -1296,7 +1296,7 @@ Notes:
 Implementors are encouraged to make the value of lambda-parameters-limit as large as possible.
 
 
-Macro DEFCONSTANT
+### <span id="">宏 DEFCONSTANT</span>
 
 Syntax:
 
@@ -1349,7 +1349,7 @@ declaim, defparameter, defvar, documentation, proclaim, Section 3.1.2.1.1.3 (Con
 Notes: None.
 
 
-Macro DEFPARAMETER, DEFVAR
+### <span id="">宏 DEFPARAMETER, DEFVAR</span>
 
 Syntax:
 
@@ -1464,7 +1464,7 @@ defparameter and defvar might be defined as follows:
            ',name))
 
 
-Macro DESTRUCTURING-BIND
+### <span id="">宏 DESTRUCTURING-BIND</span>
 
 Syntax:
 
@@ -1510,7 +1510,7 @@ macrolet, defmacro
 Notes: None.
 
 
-Special Operator LET, LET*
+### <span id="">特殊操作符 LET, LET*</span>
 
 Syntax:
 
@@ -1606,7 +1606,7 @@ progv
 Notes: None.
 
 
-Special Operator PROGV
+### <span id="">特殊操作符 PROGV</span>
 
 Syntax:
 
@@ -1653,7 +1653,7 @@ Notes:
 Among other things, progv is useful when writing interpreters for languages embedded in Lisp; it provides a handle on the mechanism for binding dynamic variables.
 
 
-Special Form SETQ
+### <span id="">特殊表达式 SETQ</span>
 
 Syntax:
 
@@ -1717,7 +1717,7 @@ psetq, set, setf
 Notes: None.
 
 
-Macro PSETQ
+### <span id="">宏 PSETQ</span>
 
 Syntax:
 
@@ -1789,7 +1789,7 @@ psetf, setq
 Notes: None.
 
 
-Special Operator BLOCK
+### <span id="">特殊操作符 BLOCK</span>
 
 Syntax:
 
@@ -1839,7 +1839,7 @@ return, return-from, Section 3.1 (Evaluation)
 
 Notes:
 
-Special Operator CATCH
+### <span id="">特殊操作符 CATCH</span>
 
 Syntax:
 
@@ -1900,7 +1900,7 @@ It is customary for symbols to be used as tags, but any object is permitted. How
 
 catch differs from block in that catch tags have dynamic scope while block names have lexical scope.
 
-Special Operator GO
+### <span id="">特殊操作符 GO</span>
 
 Syntax:
 
@@ -1947,7 +1947,7 @@ tagbody
 Notes: None.
 
 
-Special Operator RETURN-FROM
+### <span id="">特殊操作符 RETURN-FROM</span>
 
 Syntax:
 
@@ -2029,7 +2029,7 @@ block, return, Section 3.1 (Evaluation)
 Notes: None.
 
 
-Macro RETURN
+### <span id="">宏 RETURN</span>
 
 Syntax:
 
@@ -2068,7 +2068,7 @@ Notes:
 The implicit blocks established by macros such as do are often named nil, so that return can be used to exit from such forms.
 
 
-Special Operator TAGBODY
+### <span id="">特殊操作符 TAGBODY</span>
 
 Syntax:
 
@@ -2145,7 +2145,7 @@ do-all-symbols  dolist               prog*
 Figure 5-10. Macros that have implicit tagbodies.
 
 
-Special Operator THROW
+### <span id="">特殊操作符 THROW</span>
 
 Syntax:
 
@@ -2209,7 +2209,7 @@ Notes:
 catch and throw are normally used when the exit point must have dynamic scope (e.g., the throw is not lexically enclosed by the catch), while block and return are used when lexical scope is sufficient.
 
 
-Special Operator UNWIND-PROTECT
+### <span id="">特殊操作符 UNWIND-PROTECT</span>
 
 Syntax:
 
@@ -2354,7 +2354,7 @@ catch, go, handler-case, restart-case, return, return-from, throw, Section 3.1 (
 Notes: None.
 
 
-Constant Variable NIL
+### <span id="">常量 NIL</span>
 
 Constant Value:
 
@@ -2375,7 +2375,7 @@ t
 Notes: None.
 
 
-Function NOT
+### <span id="">函数 NOT</span>
 
 Syntax:
 
@@ -2415,7 +2415,7 @@ Notes:
 not is intended to be used to invert the `truth value' of a boolean (or generalized boolean) whereas null is intended to be used to test for the empty list. Operationally, not and null compute the same result; which to use is a matter of style.
 
 
-Constant Variable T
+### <span id="">常量 T</span>
 
 Constant Value:
 
@@ -2445,7 +2445,7 @@ nil
 Notes: None.
 
 
-Function EQ
+### <span id="">函数 EQ</span>
 
 Syntax:
 
@@ -2524,7 +2524,7 @@ get-properties  remprop
 Figure 5-11. Operators that always prefer EQ over EQL
 
 
-Function EQL
+### <span id="">函数 EQL</span>
 
 Syntax:
 
@@ -2594,7 +2594,7 @@ eql may not be true of two floats even when they represent the same value. = is 
 Two complex numbers are considered to be eql if their real parts are eql and their imaginary parts are eql. For example, (eql #C(4 5) #C(4 5)) is true and (eql #C(4 5) #C(4.0 5.0)) is false. Note that while (eql #C(5.0 0.0) 5.0) is false, (eql #C(5 0) 5) is true. In the case of (eql #C(5.0 0.0) 5.0) the two arguments are of different types, and so cannot satisfy eql. In the case of (eql #C(5 0) 5), #C(5 0) is not a complex number, but is automatically reduced to the integer 5.
 
 
-Function EQUAL
+### <span id="">函数 EQUAL</span>
 
 Syntax:
 
@@ -2688,7 +2688,7 @@ Object equality is not a concept for which there is a uniquely determined correc
 A rough rule of thumb is that two objects are equal if and only if their printed representations are the same.
 
 
-Function EQUALP
+### <span id="">函数 EQUALP</span>
 
 Syntax:
 
@@ -2789,7 +2789,7 @@ Notes:
 Object equality is not a concept for which there is a uniquely determined correct algorithm. The appropriateness of an equality predicate can be judged only in the context of the needs of some particular program. Although these functions take any type of argument and their names sound very generic, equal and equalp are not appropriate for every application.
 
 
-Function IDENTITY
+### <span id="">函数 IDENTITY</span>
 
 Syntax:
 
@@ -2827,7 +2827,7 @@ identity could be defined by
 (defun identity (x) x)
 
 
-Function COMPLEMENT
+### <span id="">函数 COMPLEMENT</span>
 
 Syntax:
 
@@ -2876,7 +2876,7 @@ For example,
 Note that since the ``xxx-if-not'' functions and the :test-not arguments have been deprecated, uses of ``xxx-if'' functions or :test arguments with complement are preferred.
 
 
-Function CONSTANTLY
+### <span id="">函数 CONSTANTLY</span>
 
 Syntax:
 
@@ -2917,7 +2917,7 @@ constantly could be defined by:
    #'(lambda (&rest arguments) object))
 
 
-Function EVERY, SOME, NOTEVERY, NOTANY
+### <span id="">函数 EVERY, SOME, NOTEVERY, NOTANY</span>
 
 Syntax:
 
@@ -2978,7 +2978,7 @@ Notes:
  (notevery predicate sequence*) ==  (not (every predicate sequence*))
 
 
-Macro AND
+### <span id="">宏 AND</span>
 
 Syntax:
 
@@ -3029,7 +3029,7 @@ Notes:
  (and form1 form2 ...) ==  (when form1 (and form2 ...))
 
 
-Macro COND
+### <span id="">宏 COND</span>
 
 Syntax:
 
@@ -3084,7 +3084,7 @@ if, case.
 Notes: None.
 
 
-Special Operator IF
+### <span id="">特殊操作符 IF</span>
 
 Syntax:
 
@@ -3135,7 +3135,7 @@ Notes:
  ==  (cond (test-form then-form) (t else-form))
 
 
-Macro OR
+### <span id="">宏 OR</span>
 
 Syntax:
 
@@ -3181,7 +3181,7 @@ and, some, unless
 Notes: None.
 
 
-Macro WHEN, UNLESS
+### <span id="">宏 WHEN, UNLESS</span>
 
 Syntax:
 
@@ -3253,7 +3253,7 @@ Notes:
  (unless test {form}+) ==  (when (not test) {form}+)
 
 
-Macro CASE, CCASE, ECASE
+### <span id="">宏 CASE, CCASE, ECASE</span>
 
 Syntax:
 
@@ -3372,7 +3372,7 @@ Notes:
 The specific error message used by ecase and ccase can vary between implementations. In situations where control of the specific wording of the error message is important, it is better to use case with an otherwise-clause that explicitly signals an error with an appropriate message.
 
 
-Macro TYPECASE, CTYPECASE, ETYPECASE
+### <span id="">宏 TYPECASE, CTYPECASE, ETYPECASE</span>
 
 Syntax:
 
@@ -3500,7 +3500,7 @@ Notes:
 The specific error message used by etypecase and ctypecase can vary between implementations. In situations where control of the specific wording of the error message is important, it is better to use typecase with an otherwise-clause that explicitly signals an error with an appropriate message.
 
 
-Macro MULTIPLE-VALUE-BIND
+### <span id="">宏 MULTIPLE-VALUE-BIND</span>
 
 Syntax:
 
@@ -3553,7 +3553,7 @@ Notes:
                          values-form)
 
 
-Special Operator MULTIPLE-VALUE-CALL
+### <span id="">特殊操作符 MULTIPLE-VALUE-CALL</span>
 
 Syntax:
 
@@ -3595,7 +3595,7 @@ multiple-value-list, multiple-value-bind
 Notes: None.
 
 
-Macro MULTIPLE-VALUE-LIST
+### <span id="">宏 MULTIPLE-VALUE-LIST</span>
 
 Syntax:
 
@@ -3632,7 +3632,7 @@ multiple-value-list and values-list are inverses of each other.
  (multiple-value-list form) ==  (multiple-value-call #'list form)
 
 
-Special Operator MULTIPLE-VALUE-PROG1
+### <span id="">特殊操作符 MULTIPLE-VALUE-PROG1</span>
 
 Syntax:
 
@@ -3671,7 +3671,7 @@ prog1
 Notes: None.
 
 
-Macro MULTIPLE-VALUE-SETQ
+### <span id="">宏 MULTIPLE-VALUE-SETQ</span>
 
 Syntax:
 
@@ -3727,7 +3727,7 @@ setq, symbol-macrolet
 Notes: None.
 
 
-Accessor VALUES
+### <span id="">访问器 VALUES</span>
 
 Syntax:
 
@@ -3787,7 +3787,7 @@ Notes:
 Since values is a function, not a macro or special form, it receives as arguments only the primary values of its argument forms.
 
 
-Function VALUES-LIST
+### <span id="">函数 VALUES-LIST</span>
 
 Syntax:
 
@@ -3827,7 +3827,7 @@ Notes:
 (equal x (multiple-value-list (values-list x))) returns true for all lists x.
 
 
-Constant Variable MULTIPLE-VALUES-LIMIT
+### <span id="">常量 MULTIPLE-VALUES-LIMIT</span>
 
 Constant Value:
 
@@ -3848,7 +3848,7 @@ Notes:
 Implementors are encouraged to make this limit as large as possible.
 
 
-Macro NTH-VALUE
+### <span id="">宏 NTH-VALUE</span>
 
 Syntax:
 
@@ -3895,7 +3895,7 @@ Operationally, the following relationship is true, although nth-value might be m
  (nth-value n form) ==  (nth n (multiple-value-list form))
 
 
-Macro PROG, PROG*
+### <span id="">宏 PROG, PROG*</span>
 
 Syntax:
 
@@ -4005,7 +4005,7 @@ prog can be explained in terms of block, let, and tagbody as follows:
     ==  (block nil (let variable-list declaration (tagbody . body)))
 
 
-Macro PROG1, PROG2
+### <span id="">宏 PROG1, PROG2</span>
 
 Syntax:
 
@@ -4076,7 +4076,7 @@ prog1 and prog2 are typically used to evaluate one or more forms with side effec
  (prog2 form1 form*) ==  (let () form1 (prog1 form*))
 
 
-Special Operator PROGN
+### <span id="">特殊操作符 PROGN</span>
 
 Syntax:
 
@@ -4120,7 +4120,7 @@ Notes:
 Many places in Common Lisp involve syntax that uses implicit progns. That is, part of their syntax allows many forms to be written that are to be evaluated sequentially, discarding the results of all forms but the last and returning the results of the last form. Such places include, but are not limited to, the following: the body of a lambda expression; the bodies of various control and conditional forms (e.g., case, catch, progn, and when).
 
 
-Macro DEFINE-MODIFY-MACRO
+### <span id="">宏 DEFINE-MODIFY-MACRO</span>
 
 Syntax:
 
@@ -4185,7 +4185,7 @@ defsetf, define-setf-expander, documentation, Section 3.4.11 (Syntactic Interact
 Notes: None.
 
 
-Macro DEFSETF
+### <span id="">宏 DEFSETF</span>
 
 Syntax:
 
@@ -4313,7 +4313,7 @@ forms must include provision for returning the correct value (the value or value
 A setf of a call on access-fn also evaluates all of access-fn's arguments; it cannot treat any of them specially. This means that defsetf cannot be used to describe how to store into a generalized reference to a byte, such as (ldb field reference). define-setf-expander is used to handle situations that do not fit the restrictions imposed by defsetf and gives the user additional control.
 
 
-Macro DEFINE-SETF-EXPANDER
+### <span id="">宏 DEFINE-SETF-EXPANDER</span>
 
 Syntax:
 
@@ -4405,7 +4405,7 @@ Notes:
 define-setf-expander differs from the long form of defsetf in that while the body is being executed the variables in lambda-list are bound to parts of the place form, not to temporary variables that will be bound to the values of such parts. In addition, define-setf-expander does not have defsetf's restriction that access-fn must be a function or a function-like macro; an arbitrary defmacro destructuring pattern is permitted in lambda-list.
 
 
-Function GET-SETF-EXPANSION
+### <span id="">函数 GET-SETF-EXPANSION</span>
 
 Syntax:
 
@@ -4463,7 +4463,7 @@ Notes:
 Any compound form is a valid place, since any compound form whose operator f has no setf expander are expanded into a call to (setf f).
 
 
-Macro SETF, PSETF
+### <span id="">宏 SETF, PSETF</span>
 
 Syntax:
 
@@ -4529,7 +4529,7 @@ define-setf-expander, defsetf, macroexpand-1, rotatef, shiftf, Section 5.1 (Gene
 Notes: None.
 
 
-Macro SHIFTF
+### <span id="">宏 SHIFTF</span>
 
 Syntax:
 
@@ -4604,7 +4604,7 @@ except that the latter would evaluate any subforms of each place twice, whereas 
  x =>  (A B Z D)
 
 
-Macro ROTATEF
+### <span id="">宏 ROTATEF</span>
 
 Syntax:
 
@@ -4653,7 +4653,7 @@ The effect of (rotatef place1 place2 ... placen) is roughly equivalent to
 except that the latter would evaluate any subforms of each place twice, whereas rotatef evaluates them once.
 
 
-Condition Type CONTROL-ERROR
+### <span id="">状况类型 CONTROL-ERROR</span>
 
 Class Precedence List:
 
@@ -4664,7 +4664,7 @@ Description:
 The type control-error consists of error conditions that result from invalid dynamic transfers of control in a program. The errors that result from giving throw a tag that is not active or from giving go or return-from a tag that is no longer dynamically available are of type control-error.
 
 
-Condition Type PROGRAM-ERROR
+### <span id="">状况类型 PROGRAM-ERROR</span>
 
 Class Precedence List:
 
@@ -4675,7 +4675,7 @@ Description:
 The type program-error consists of error conditions related to incorrect program syntax. The errors that result from naming a go tag or a block tag that is not lexically apparent are of type program-error.
 
 
-Condition Type UNDEFINED-FUNCTION
+### <span id="">状况类型 UNDEFINED-FUNCTION</span>
 
 Class Precedence List:
 
