@@ -422,21 +422,21 @@ values 的 setf 展开中的存储形式作为多个值返回第2步中存储变
 
 ## 5.2 <span id="TCEP">Transfer of Control to an Exit Point</span>
 
-When a transfer of control is initiated by go, return-from, or throw the following events occur in order to accomplish the transfer of control. Note that for go, the exit point is the form within the tagbody that is being executed at the time the go is performed; for return-from, the exit point is the corresponding block form; and for throw, the exit point is the corresponding catch form.
+当控制转移由 go, return-from, 或 throw 发起时, 为了完成控制权的转移, 发生以下事件. 注意, 对于 go, 退出点是 go 执行时要被执行的 tagbody 里的表达式形式; 对于 return-from, 退出点是对应的 block 表达式形式; 对于 throw, 退出点是对应的 catch 表达式形式.
 
-1. Intervening exit points are ``abandoned'' (i.e., their extent ends and it is no longer valid to attempt to transfer control through them).
+1. 中间的退出点被"抛弃"了 (换句话说, 它们的范围结束了, 试图通过它们来转移控制已经不再有效了).
 
-2. The cleanup clauses of any intervening unwind-protect clauses are evaluated.
+2. 对任何中间 unwind-protect 子句的清理子句进行了求值.
 
-3. Intervening dynamic bindings of special variables, catch tags, condition handlers, and restarts are undone.
+3. 其中 special 变量, 捕捉标签, 状况处理者, 还有重启器的动态绑定被消除.
 
-4. The extent of the exit point being invoked ends, and control is passed to the target.
+4. 被调用的退出点的范围结束, 控制被传递给目标.
 
-The extent of an exit being ``abandoned'' because it is being passed over ends as soon as the transfer of control is initiated. That is, event 1 occurs at the beginning of the initiation of the transfer of control. The consequences are undefined if an attempt is made to transfer control to an exit point whose dynamic extent has ended.
+退出的范围被"抛弃", 因为一旦控制转移, 它就会被传递到结束 The extent of an exit being "abandoned" because it is being passed over ends as soon as the transfer of control is initiated. 这也就是说, 事件 1 发生在控制转移的开始. 如果尝试去转移控制到一个动态范围已经结束的退出点, 那么结果是未定义的.
 
-Events 2 and 3 are actually performed interleaved, in the order corresponding to the reverse order in which they were established. The effect of this is that the cleanup clauses of an unwind-protect see the same dynamic bindings of variables and catch tags as were visible when the unwind-protect was entered.
+事件 2 和 3 实际上是交替进行的, 顺序与它们建立的逆序相对应. 这样做的效果是一个 unwind-protect 的清理子句看到进入 unwind-protect 时变量和捕捉标签(catch tags)的相同童待绑定.
 
-Event 4 occurs at the end of the transfer of control.
+事件 4 发生在控制转移结束的时候.
 
 ## 5.3 <span id="DCFDictionary">The Data and Control Flow Dictionary</span>
 
