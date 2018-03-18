@@ -8,7 +8,7 @@
 
 > * 5.1.1 [Places 和 Generalized Reference 的概述](#OverviewPlacesGeneralizedReference)
 > * 5.1.2 [Places 的种类](#KindsOfPlaces)
-> * 5.1.3 [Treatment of Other Macros Based on SETF](#TreatmentMacrosSETF)
+> * 5.1.3 [基于 SETF 的其他宏的处理](#TreatmentMacrosSETF)
 
 ### 5.1.1 <span id="OverviewPlacesGeneralizedReference">Places 和 Generalized Reference 的概述</span>
 
@@ -396,27 +396,29 @@ values 的 setf 展开中的存储形式作为多个值返回第2步中存储变
 
 一个名为 (setf f) 的函数必须返回它的第一个参数作为它唯一的值, 以便保留 setf 的语义.
 
-### 5.1.3 <span id="TreatmentMacrosSETF">Treatment of Other Macros Based on SETF</span>
+### 5.1.3 <span id="TreatmentMacrosSETF">基于 SETF 的其他宏的处理</span>
 
-For each of the ``read-modify-write'' operators in the next figure, and for any additional macros defined by the programmer using define-modify-macro, an exception is made to the normal rule of left-to-right evaluation of arguments. Evaluation of argument forms occurs in left-to-right order, with the exception that for the place argument, the actual read of the ``old value'' from that place happens after all of the argument form evaluations, and just before a ``new value'' is computed and written back into the place.
+对于下一段中的每个 "读-修改-写(read-modify-write)" 操作符, 还有对于任何程序员使用 define-modify-macro 定义的额外的宏, 一个异常是由对参数的左至右求值的正常规则所造成的. 对参数表达式形式的求值以从左到右的顺序发生, 而对于 place 参数来说, 从那个 place 的"旧值"的实际读取发生在所有的参数表达式形式求值之后, 并且在一个"新值"被计算并重新写入到该 place 之前.
 
-Specifically, each of these operators can be viewed as involving a form with the following general syntax:
+具体地说, 每个操作符都可以被看作是包含以下通用语法的表达式形式:
 
- (operator preceding-form* place following-form*)
+```LISP
+(operator preceding-form* place following-form*)
+```
 
-The evaluation of each such form proceeds like this:
+对每个这样的表达式形式的求值都是这样的:
 
-1. Evaluate each of the preceding-forms, in left-to-right order.
-2. Evaluate the subforms of the place, in the order specified by the second value of the setf expansion for that place.
-3. Evaluate each of the following-forms, in left-to-right order.
-4. Read the old value from place.
-5. Compute the new value.
-6. Store the new value into place.
+1. 按从左到右的顺序求值每一个 preceding-forms.
+2. 求值 place 的子表达式, 按照这个 place 的 setf 展开式的第二个值指定的顺序.
+3. 按从左到右的顺序求值每一个 following-forms.
+4. 从 place 中读取旧的值.
+5. 计算新的值.
+6. 存储新的值到 place.
 
-decf  pop   pushnew
-incf  push  remf
+    decf  pop   pushnew
+    incf  push  remf
 
-Figure 5-9. Read-Modify-Write Macros
+    Figure 5-9. 读-修改-写(read-modify-write) 宏
 
 ## 5.2 <span id="TCEP">Transfer of Control to an Exit Point</span>
 
