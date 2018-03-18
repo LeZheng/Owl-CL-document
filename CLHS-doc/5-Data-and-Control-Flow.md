@@ -182,13 +182,13 @@ Common Lisp 定义了多个 place 的种类; 这个章节会列举它们. 这个
 
 > * 5.1.2.1 [变量名作为 Places](#VariableNamesPlaces)
 > * 5.1.2.2 [函数调用表达式作为 Places](#FunctionCallFormsPlaces)
-> * 5.1.2.3 [VALUES Forms as Places](#VALUESFormsPlaces)
-> * 5.1.2.4 [THE Forms as Places](#THEFormsPlaces)
-> * 5.1.2.5 [APPLY Forms as Places](#APPLYFormsPlaces)
-> * 5.1.2.6 [Setf Expansions and Places](#SetfExpansionsPlaces)
-> * 5.1.2.7 [Macro Forms as Places](#MacroFormsPlaces)
-> * 5.1.2.8 [Symbol Macros as Places](#SymbolMacrosPlaces)
-> * 5.1.2.9 [Other Compound Forms as Places](#OtherCompoundFormsPlaces)
+> * 5.1.2.3 [VALUES 表达式形式作为 Places](#VALUESFormsPlaces)
+> * 5.1.2.4 [THE 表达式形式作为 Places](#THEFormsPlaces)
+> * 5.1.2.5 [APPLY 表达式形式作为 Places](#APPLYFormsPlaces)
+> * 5.1.2.6 [Setf展开和Places](#SetfExpansionsPlaces)
+> * 5.1.2.7 [Macro 表达式形式作为 Places](#MacroFormsPlaces)
+> * 5.1.2.8 [符号宏作为 Places](#SymbolMacrosPlaces)
+> * 5.1.2.9 [其他复合表达式形式作为 Places](#OtherCompoundFormsPlaces)
 
 #### 5.1.2.1 <span id="VariableNamesPlaces">变量名作为 Places</span>
 
@@ -312,78 +312,89 @@ Common Lisp 定义了多个 place 的种类; 这个章节会列举它们. 这个
         ;;; after the value computation.
         ```
 
-#### 5.1.2.3 <span id="VALUESFormsPlaces">VALUES Forms as Places</span>
+#### 5.1.2.3 <span id="VALUESFormsPlaces">VALUES 表达式形式作为 Places</span>
 
-A values form can be used as a place, provided that each of its subforms is also a place form.
+一个 values 表达式形式可以被用作一个 place, 只要它的每一个子表达式也是一个 place 表达式形式.
 
-A form such as
+一个像这样的表达式形式
 
+```LISP
 (setf (values place-1 ...place-n) values-form)
+```
 
-does the following:
+执行了以下动作:
 
-1. The subforms of each nested place are evaluated in left-to-right order.
-2. The values-form is evaluated, and the first store variable from each place is bound to its return values as if by multiple-value-bind.
-3. If the setf expansion for any place involves more than one store variable, then the additional store variables are bound to nil.
-4. The storing forms for each place are evaluated in left-to-right order.
+1. 每一个嵌套 place 的子表达式都按照从左到右的顺序求值.
+2. 这个 values-form 被求值, 并且每一个 place 的 第一个存储变量被绑定给它的返回值就像是通过 multiple-value-bind 的一样.
+3. 如果这个 setf 展开式对于任何 place 涉及超过一个存储变量, 那么额外的存储变量会绑定为 nil.
+4. 每个 place 的存储表达式形式都按照从左到右的顺序计算.
 
-The storing form in the setf expansion of values returns as multiple values[2] the values of the store variables in step 2. That is, the number of values returned is the same as the number of place forms. This may be more or fewer values than are produced by the values-form.
+values 的 setf 展开中的存储形式作为多个值返回第2步中存储变量的值. 这也就是说, 返回的值的数量和 place 表达式数量一样. 这个可能比 values-form 产生的值更多或更少.
 
-#### 5.1.2.4 <span id="THEFormsPlaces">THE Forms as Places</span>
+#### 5.1.2.4 <span id="THEFormsPlaces">THE 表达式形式作为 Places</span>
 
-A the form can be used as a place, in which case the declaration is transferred to the newvalue form, and the resulting setf is analyzed. For example,
+一个 the 表达式形式可以被用作一个 place, 在这个情况下这个声明被转到那个新值表达式形式中, 然后对结果的 setf 进行分析. 比如,
 
- (setf (the integer (cadr x)) (+ y 3))
+```LISP
+(setf (the integer (cadr x)) (+ y 3))
+```
 
-is processed as if it were
+被处理就好像它是这样的
 
- (setf (cadr x) (the integer (+ y 3)))
+```LISP
+(setf (cadr x) (the integer (+ y 3)))
+```
 
+#### 5.1.2.5 <span id="APPLYFormsPlaces">APPLY 表达式形式作为 Places</span>
 
-#### 5.1.2.5 <span id="APPLYFormsPlaces">APPLY Forms as Places</span>
-
-The following situations involving setf of apply must be supported:
+以下 apply 的 setf 情况必须被支持:
 
 * (setf (apply #'aref array subscript* more-subscripts) new-element)
 * (setf (apply #'bit array subscript* more-subscripts) new-element)
 * (setf (apply #'sbit array subscript* more-subscripts) new-element)
 
-In all three cases, the element of array designated by the concatenation of subscripts and more-subscripts (i.e., the same element which would be read by the call to apply if it were not part of a setf form) is changed to have the value given by new-element. For these usages, the function name (aref, bit, or sbit) must refer to the global function definition, rather than a locally defined function.
+在所有这三种情况中, 由 subscripts 和 more-subscripts 连接所指定的 array 的数组元素 (换句话说, 同样的元素, 如果不是 setf 表达式的一部分, 它将通过调用 apply 来读取) 被改变为 new-element 给定的值. 对于这些用法, 函数名 (aref, bit, or sbit) 必须引用全局函数定义, 而不是局部函数定义.
 
-No other standardized function is required to be supported, but an implementation may define such support. An implementation may also define support for implementation-defined operators.
+没有其他标准化的函数需要被支持, 但是一个具体实现可以定义这样的支持. 一个具体实现可能也可以为具体实现所定义的操作符定义支持.
 
-If a user-defined function is used in this context, the following equivalence is true, except that care is taken to preserve proper left-to-right evaluation of argument subforms:
+如果一个用户定义的函数被用于这个上下文, 那么以下等价是成立的, 除了要注意保留对参数子表达式的正确的从左到右的求值:
 
- (setf (apply #'name arg*) val)
- ==  (apply #'(setf name) val arg*)
+```LISP
+(setf (apply #'name arg*) val)
+==  (apply #'(setf name) val arg*)
+```
 
-#### 5.1.2.6 <span id="SetfExpansionsPlaces">Setf Expansions and Places</span>
+#### 5.1.2.6 <span id="SetfExpansionsPlaces">Setf展开和Places</span>
 
-Any compound form for which the operator has a setf expander defined can be used as a place. The operator must refer to the global function definition, rather than a locally defined function or macro.
+任何有着 setf 展开器定义的操作符的复合表达式形式可以被用作一个 place. 这个操作符必须引用一个全局函数定义, 而不是一个局部定义的函数或宏.
 
-#### 5.1.2.7 <span id="MacroFormsPlaces">Macro Forms as Places</span>
+#### 5.1.2.7 <span id="MacroFormsPlaces">Macro 表达式形式作为 Places</span>
 
-A macro form can be used as a place, in which case Common Lisp expands the macro form as if by macroexpand-1 and then uses the macro expansion in place of the original place. Such macro expansion is attempted only after exhausting all other possibilities other than expanding into a call to a function named (setf reader).
+一个宏表达式形式可以被用作 place, 在这个情况下 Common Lisp 展开那个宏表达式形式就像是通过  macroexpand-1 然后用这个宏展开式替换原始的 place. 这样的宏展开只在耗尽所有其他可能性之后才尝试, 而不是展开到调用一个名为 (setf reader) 的函数.
 
-#### 5.1.2.8 <span id="SymbolMacrosPlaces">Symbol Macros as Places</span>
+#### 5.1.2.8 <span id="SymbolMacrosPlaces">符号宏作为 Places</span>
 
-A reference to a symbol that has been established as a symbol macro can be used as a place. In this case, setf expands the reference and then analyzes the resulting form.
+对一个已经确定是符号宏引用的符号可以被用作一个 place. 在这个情况下, setf 展开这个引用并且分析结果表达式.
 
-#### 5.1.2.9 <span id="OtherCompoundFormsPlaces">Other Compound Forms as Places</span>
+#### 5.1.2.9 <span id="OtherCompoundFormsPlaces">其他复合表达式形式作为 Places</span>
 
-For any other compound form for which the operator is a symbol f, the setf form expands into a call to the function named (setf f). The first argument in the newly constructed function form is newvalue and the remaining arguments are the remaining elements of place. This expansion occurs regardless of whether f or (setf f) is defined as a function locally, globally, or not at all. For example,
+对于其他任何复合表达式形式, 其中操作符为符号 f, 这个 setf 表达式形式展开为一个对名为 (setf f) 的函数调用. 这个新构建的函数的第一个参数是 newvalue 并且剩下的参数是 place 的剩余元素. 不管 f 或者 (setf f) 是局部函数还是全局函数或者都不是, 这个展开都会发生. 比如,
 
+```LISP
 (setf (f arg1 arg2 ...) new-value)
+```
 
-expands into a form with the same effect and value as
+展开为一个和下面这个有着相同效果和值的表达式形式
 
- (let ((#:temp-1 arg1)          ;force correct order of evaluation
-       (#:temp-2 arg2)
-       ...
-       (#:temp-0 new-value))
-   (funcall (function (setf f)) #:temp-0 #:temp-1 #:temp-2...))
+```LISP
+(let ((#:temp-1 arg1)          ;force correct order of evaluation
+      (#:temp-2 arg2)
+      ...
+      (#:temp-0 new-value))
+  (funcall (function (setf f)) #:temp-0 #:temp-1 #:temp-2...))
+```
 
-A function named (setf f) must return its first argument as its only value in order to preserve the semantics of setf.
+一个名为 (setf f) 的函数必须返回它的第一个参数作为它唯一的值, 以便保留 setf 的语义.
 
 ### 5.1.3 <span id="TreatmentMacrosSETF">Treatment of Other Macros Based on SETF</span>
 
