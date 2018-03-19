@@ -573,74 +573,71 @@ values 的 setf 展开中的存储形式作为多个值返回第2步中存储变
 
 * 语法(Syntax):
 
-defun function-name lambda-list [[declaration* | documentation]] form*
+        defun function-name lambda-list [[declaration* | documentation]] form*
 
-=> function-name
+        => function-name
 
 * 参数和值(Arguments and Values):
 
-function-name---a function name.
-
-lambda-list---an ordinary lambda list.
-
-declaration---a declare expression; not evaluated.
-
-documentation---a string; not evaluated.
-
-forms---an implicit progn.
-
-block-name---the function block name of the function-name.
+        function-name---一个函数名.
+        lambda-list---一个普通 lambda 列表.
+        declaration---一个 declare 表达式; 不求值.
+        documentation---一个字符串; 不求值.
+        forms---一个隐式的 progn.
+        block-name---这个 function-name 的函数块名字.
 
 * 描述(Description):
 
-Defines a new function named function-name in the global environment. The body of the function defined by defun consists of forms; they are executed as an implicit progn when the function is called. defun can be used to define a new function, to install a corrected version of an incorrect definition, to redefine an already-defined function, or to redefine a macro as a function.
+        在全局环境中定义一个名为 function-name 的函数. 由 defun 定义的函数的 body 部分由 表达式形式组成; 当函数被调用时它们会作为一个隐式的 progn 被执行. defun 可以被用于定义一个新的函数, 去安装一个错误定义的修正版本, 去重定义一个已经定义的函数, 或者把一个宏重定义为函数.
 
-defun implicitly puts a block named block-name around the body forms (but not the forms in the lambda-list) of the function defined.
+        defun 隐式地把一个名为 block-name 的 block 放在定义的函数的 body 表达式周围 (但是不是 lambda-list 中的表达式形式).
 
-Documentation is attached as a documentation string to name (as kind function) and to the function object.
+        documentation 作为一个文档字符串附加到 name(作为函数) 和函数对象.
 
-Evaluating defun causes function-name to be a global name for the function specified by the lambda expression
+        求值 defun 导致 function-name 成为 defun 被执行的词法环境中的 lambda 表达式
 
- (lambda lambda-list
-   [[declaration* | documentation]]
-   (block block-name form*))
+        (lambda lambda-list
+          [[declaration* | documentation]]
+          (block block-name form*))
 
-processed in the lexical environment in which defun was executed.
+        所表示函数的全局名字的函数.
 
-(None of the arguments are evaluated at macro expansion time.)
+        (参数中没有在宏展开时被求值的.)
 
-defun is not required to perform any compile-time side effects. In particular, defun does not make the function definition available at compile time. An implementation may choose to store information about the function for the purposes of compile-time error-checking (such as checking the number of arguments on calls), or to enable the function to be expanded inline.
+        defun 不需要去产生任何编译时副作用. 具体来说, defun 不会使函数定义在编译时可用. 一个实现可能选择去存储关于这个函数的信息用于编译时错误检测的目的 (比如检测一个调用的参数数量), 或者去使函数被内联展开.
 
 * 示例(Examples):
 
- (defun recur (x)
-  (when (> x 0)
-    (recur (1- x)))) =>  RECUR
- (defun ex (a b &optional c (d 66) &rest keys &key test (start 0))
-    (list a b c d keys test start)) =>  EX
- (ex 1 2) =>  (1 2 NIL 66 NIL NIL 0)
- (ex 1 2 3 4 :test 'equal :start 50)
-=>  (1 2 3 4 (:TEST EQUAL :START 50) EQUAL 50)
- (ex :test 1 :start 2) =>  (:TEST 1 :START 2 NIL NIL 0)
+    ```LISP
+    (defun recur (x)
+      (when (> x 0)
+        (recur (1- x)))) =>  RECUR
+    (defun ex (a b &optional c (d 66) &rest keys &key test (start 0))
+        (list a b c d keys test start)) =>  EX
+    (ex 1 2) =>  (1 2 NIL 66 NIL NIL 0)
+    (ex 1 2 3 4 :test 'equal :start 50)
+    =>  (1 2 3 4 (:TEST EQUAL :START 50) EQUAL 50)
+    (ex :test 1 :start 2) =>  (:TEST 1 :START 2 NIL NIL 0)
 
- ;; This function assumes its callers have checked the types of the
- ;; arguments, and authorizes the compiler to build in that assumption.
- (defun discriminant (a b c)
-   (declare (number a b c))
-   "Compute the discriminant for a quadratic equation."
-   (- (* b b) (* 4 a c))) =>  DISCRIMINANT
- (discriminant 1 2/3 -2) =>  76/9
+    ;; This function assumes its callers have checked the types of the
+    ;; arguments, and authorizes the compiler to build in that assumption.
+    (defun discriminant (a b c)
+      (declare (number a b c))
+      "Compute the discriminant for a quadratic equation."
+      (- (* b b) (* 4 a c))) =>  DISCRIMINANT
+    (discriminant 1 2/3 -2) =>  76/9
 
- ;; This function assumes its callers have not checked the types of the
- ;; arguments, and performs explicit type checks before making any assumptions.
- (defun careful-discriminant (a b c)
-   "Compute the discriminant for a quadratic equation."
-   (check-type a number)
-   (check-type b number)
-   (check-type c number)
-   (locally (declare (number a b c))
-     (- (* b b) (* 4 a c)))) =>  CAREFUL-DISCRIMINANT
- (careful-discriminant 1 2/3 -2) =>  76/9
+    ;; This function assumes its callers have not checked the types of the
+    ;; arguments, and performs explicit type checks before making any assumptions.
+    (defun careful-discriminant (a b c)
+      "Compute the discriminant for a quadratic equation."
+      (check-type a number)
+      (check-type b number)
+      (check-type c number)
+      (locally (declare (number a b c))
+        (- (* b b) (* 4 a c)))) =>  CAREFUL-DISCRIMINANT
+    (careful-discriminant 1 2/3 -2) =>  76/9
+    ```
 
 * 受此影响(Affected By): None.
 
@@ -648,13 +645,13 @@ defun is not required to perform any compile-time side effects. In particular, d
 
 * 也见(See Also):
 
-flet, labels, block, return-from, declare, documentation, Section 3.1 (Evaluation), Section 3.4.1 (Ordinary Lambda Lists), Section 3.4.11 (Syntactic Interaction of Documentation Strings and Declarations)
+        flet, labels, block, return-from, declare, documentation, Section 3.1 (Evaluation), Section 3.4.1 (Ordinary Lambda Lists), Section 3.4.11 (Syntactic Interaction of Documentation Strings and Declarations)
 
 * 注意(Notes):
 
-return-from can be used to return prematurely from a function defined by defun.
+        return-from 可以用于从 defun 定义的函数中提前返回.
 
-Additional side effects might take place when additional information (typically debugging information) about the function definition is recorded.
+        当关于这个函数的额外信息(通常是调试信息)被记录时, 可能发生额外的副作用.
 
 
 ### <span id="">访问器 FDEFINITION</span>
