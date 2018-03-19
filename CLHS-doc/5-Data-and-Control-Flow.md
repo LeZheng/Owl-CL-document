@@ -658,107 +658,110 @@ values 的 setf 展开中的存储形式作为多个值返回第2步中存储变
 
 * 语法(Syntax):
 
-fdefinition function-name => definition
+        fdefinition function-name => definition
 
-(setf (fdefinition function-name) new-definition)
+        (setf (fdefinition function-name) new-definition)
 
 * 参数和值(Arguments and Values):
 
-function-name---a function name. In the non-setf case, the name must be fbound in the global environment.
+        function-name---一个函数名. 在不是 setf 情况下, 这个名字在全局环境中必须被 fbound.
 
-definition---Current global function definition named by function-name.
+        definition---function-name 命名的当前全局函数定义.
 
-new-definition---a function.
+        new-definition---一个函数.
 
 * 描述(Description):
 
-fdefinition accesses the current global function definition named by function-name. The definition may be a function or may be an object representing a special form or macro. The value returned by fdefinition when fboundp returns true but the function-name denotes a macro or special form is not well-defined, but fdefinition does not signal an error.
+fdefinition 访问 function-name 命名的当前全局函数定义. 这个定义可能是一个函数或表示一个特殊表达式或宏的对象. 当 fboundp 返回 true 但是这个 function-name 表示一个宏或者特殊表达式时, fdefinition 返回的值是没有定义好的, 但是 fdefinition 不发出一个错误.
 
 * 示例(Examples): None.
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-Should signal an error of type type-error if function-name is not a function name.
+        如果 function-name 不是一个函数名字, 那么应该发出一个 type-error 类型的错误.
 
-An error of type undefined-function is signaled in the non-setf case if function-name is not fbound.
+        在不是 setf 的情况下如果 function-name 没有被 fbound, 那么就会发出 undefined-function 类型的错误.
 
 * 也见(See Also):
 
-fboundp, fmakunbound, macro-function, special-operator-p, symbol-function
+        fboundp, fmakunbound, macro-function, special-operator-p, symbol-function
 
 * 注意(Notes):
 
-fdefinition cannot access the value of a lexical function name produced by flet or labels; it can access only the global function value.
+        fdefinition 不能访问由 flet 或 labels 产生的词法函数名的值; 它只能访问全局函数的值.
 
-setf can be used with fdefinition to replace a global function definition when the function-name's function definition does not represent a special form. setf of fdefinition requires a function as the new value. It is an error to set the fdefinition of a function-name to a symbol, a list, or the value returned by fdefinition on the name of a macro or special form.
+        当一个函数名对应的函数定义不表示一个特殊表达式时, setf 可以和 fdefinition 一起使用去替换全局函数定义. fdefinition 的 setf 需要一个函数作为新的值. 把 function-name 的 fdefinition 设置为一个符号, 一个列表, 或者在一个宏或特殊表达式上调用 fdefinition 返回的值是错误的.
 
 
 ### <span id="">函数 FBOUNDP</span>
 
 * 语法(Syntax):
 
-fboundp name => generalized-boolean
+        fboundp name => generalized-boolean
 
-Pronunciation:
+* 发音(Pronunciation):
 
-[,ef'bandpee]
+        [,ef'bandpee]
 
 * 参数和值(Arguments and Values):
 
-name---a function name.
-
-generalized-boolean---a generalized boolean.
+        name---一个函数名字.
+        generalized-boolean---一个广义的 boolean.
 
 * 描述(Description):
 
-Returns true if name is fbound; otherwise, returns false.
+        如果 name 被 fbound 就返回 true; 否则, 返回 false.
 
 * 示例(Examples):
 
- (fboundp 'car) =>  true
- (fboundp 'nth-value) =>  false
- (fboundp 'with-open-file) =>  true
- (fboundp 'unwind-protect) =>  true
- (defun my-function (x) x) =>  MY-FUNCTION
- (fboundp 'my-function) =>  true
- (let ((saved-definition (symbol-function 'my-function)))
-   (unwind-protect (progn (fmakunbound 'my-function)
-                          (fboundp 'my-function))
-     (setf (symbol-function 'my-function) saved-definition)))
-=>  false
- (fboundp 'my-function) =>  true
- (defmacro my-macro (x) `',x) =>  MY-MACRO
- (fboundp 'my-macro) =>  true
- (fmakunbound 'my-function) =>  MY-FUNCTION
- (fboundp 'my-function) =>  false
- (flet ((my-function (x) x))
-   (fboundp 'my-function)) =>  false
+    ```LISP
+    (fboundp 'car) =>  true
+    (fboundp 'nth-value) =>  false
+    (fboundp 'with-open-file) =>  true
+    (fboundp 'unwind-protect) =>  true
+    (defun my-function (x) x) =>  MY-FUNCTION
+    (fboundp 'my-function) =>  true
+    (let ((saved-definition (symbol-function 'my-function)))
+      (unwind-protect (progn (fmakunbound 'my-function)
+                            (fboundp 'my-function))
+        (setf (symbol-function 'my-function) saved-definition)))
+    =>  false
+    (fboundp 'my-function) =>  true
+    (defmacro my-macro (x) `',x) =>  MY-MACRO
+    (fboundp 'my-macro) =>  true
+    (fmakunbound 'my-function) =>  MY-FUNCTION
+    (fboundp 'my-function) =>  false
+    (flet ((my-function (x) x))
+      (fboundp 'my-function)) =>  false
+    ```
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-Should signal an error of type type-error if name is not a function name.
+        如果 name 不是一个函数名字, 应该会发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-symbol-function, fmakunbound, fdefinition
+        symbol-function, fmakunbound, fdefinition
 
 * 注意(Notes):
 
-It is permissible to call symbol-function on any symbol that is fbound.
+允许在任何被 fbound 的符号上调用 symbol-function.
 
-fboundp is sometimes used to ``guard'' an access to the function cell, as in:
+fboundp 有时候被用于 "保护" 对函数 cell 的访问, 就像:
 
+```LISP
 (if (fboundp x) (symbol-function x))
+```
 
-Defining a setf expander F does not cause the setf function (setf F) to become defined.
+定义一个 setf 展开器 F 不会导致 setf 函数 (setf F) 被定义.
 
 
 ### <span id="">函数 FMAKUNBOUND</span>
@@ -767,7 +770,7 @@ Defining a setf expander F does not cause the setf function (setf F) to become d
 
 fmakunbound name => name
 
-Pronunciation:
+* 发音(Pronunciation):
 
 [,ef'makuhn,band] or [,ef'maykuhn,band]
 
@@ -788,7 +791,7 @@ Removes the function or macro definition, if any, of name in the global environm
     (add-some 1)) =>  38
  (fboundp 'add-some) =>  false
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
 * 受此影响(Affected By): None.
 
@@ -1046,7 +1049,7 @@ The result of (adder 3) is a function that adds 3 to its argument:
 
 This works because function creates a closure of the lambda expression that is able to refer to the value 3 of the variable x even after control has returned from the function adder.
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
 * 受此影响(Affected By): None.
 
@@ -1132,7 +1135,7 @@ OR=>  (LAMBDA (X) (BLOCK BAR X)), true, NIL
 OR=>  (LAMBDA (X) (BLOCK BAR X)), true, (:INTERNAL FOO 0 BAR)
 OR=>  (LAMBDA (X) (BLOCK BAR X)), false, "BAR in FOO"
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
 * 受此影响(Affected By): None.
 
@@ -1173,7 +1176,7 @@ Returns true if object is of type function; otherwise, returns false.
  (functionp '(lambda (x) (* x x))) =>  false
  (functionp #'(lambda (x) (* x x))) =>  true
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
 * 受此影响(Affected By): None.
 
@@ -1219,7 +1222,7 @@ OR=>  true
 OR=>  true
  (compiled-function-p '(lambda (x) x)) =>  false
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
 * 受此影响(Affected By): None.
 
@@ -1418,7 +1421,7 @@ On the other hand, there is potential value to using defvar in this situation. F
 
 The choice of whether to use defparameter or defvar has visible consequences to programs, but is nevertheless often made for subjective reasons.
 
-Side Effects:
+* 副作用(Side Effects):
 
 If a defvar or defparameter form appears as a top level form, the compiler must recognize that the name has been proclaimed special. However, it must neither evaluate the initial-value form nor assign the dynamic variable named name at compile time.
 
@@ -1658,7 +1661,7 @@ setq {pair}* => result
 
 pair::= var form
 
-Pronunciation:
+* 发音(Pronunciation):
 
 ['set,kyoo]
 
@@ -1699,7 +1702,7 @@ If any var refers to a binding made by symbol-macrolet, then that var is treated
      (list x y z)))
 =>  ((21 22 30) 21 22)
 
-Side Effects:
+* 副作用(Side Effects):
 
 The primary value of each form is assigned to the corresponding var.
 
@@ -1722,7 +1725,7 @@ psetq {pair}* => nil
 
 pair::= var form
 
-Pronunciation:
+* 发音(Pronunciation):
 
 psetq: [;pee'set,kyoo]
 
@@ -1771,7 +1774,7 @@ If any var refers to a binding made by symbol-macrolet, then that var is treated
    (values a b))
 =>  2, 1
 
-Side Effects:
+* 副作用(Side Effects):
 
 The values of forms are assigned to vars.
 
@@ -2397,7 +2400,7 @@ Returns t if x is false; otherwise, returns nil.
  (not 3.7) =>  NIL
  (not 'apple) =>  NIL
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
 * 受此影响(Affected By): None.
 
@@ -2496,7 +2499,7 @@ OR=>  false
 =>  true
 OR=>  false
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
 * 受此影响(Affected By): None.
 
@@ -2572,7 +2575,7 @@ OR=>  false
 
 Normally (eql 1.0s0 1.0d0) is false, under the assumption that 1.0s0 and 1.0d0 are of distinct data types. However, implementations that do not provide four distinct floating-point formats are permitted to ``collapse'' the four formats into some smaller number of them; in such an implementation (eql 1.0s0 1.0d0) might be true.
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
 * 受此影响(Affected By): None.
 
@@ -2668,7 +2671,7 @@ equal may fail to terminate if x or y is circular.
  (equal "This-string" "This-string") =>  true
  (equal "This-string" "this-string") =>  false
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
 * 受此影响(Affected By): None.
 
@@ -2771,7 +2774,7 @@ Figure 5-13. Summary and priorities of behavior of equalp
  (setq vector1 (vector 1 1 1 3 5 7)) =>  #(1 1 1 3 5 7)
  (equalp array1 vector1) =>  true
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
 * 受此影响(Affected By): None.
 
@@ -2805,7 +2808,7 @@ Returns its argument object.
  (identity 101) =>  101
  (mapcan #'identity (list (list 1 2 3) '(4 5 6))) =>  (1 2 3 4 5 6)
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
 * 受此影响(Affected By): None.
 
@@ -2847,7 +2850,7 @@ Returns a function that takes the same arguments as function, and has the same s
  (funcall (complement #'member) 'a '(a b c)) =>  false
  (funcall (complement #'member) 'd '(a b c)) =>  true
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
 * 受此影响(Affected By): None.
 
@@ -3068,7 +3071,7 @@ Once one test-form has yielded true, no additional test-forms are evaluated. If 
  (setq a 5) =>  5
  (select-options) =>  1, 2
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
 * 受此影响(Affected By): None.
 
@@ -3165,7 +3168,7 @@ If the evaluation of any form other than the last returns a primary value that i
  (or temp0 (values temp1 temp2)) =>  11, 20
  (or (values temp0 temp1) (values temp2 temp3)) =>  20, 30
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
 * 受此影响(Affected By): None.
 
@@ -3229,7 +3232,7 @@ In an unless form, if the test-form yields false, the forms are evaluated in ord
          (if (not (oddp x)) (incf x) (list x))))
 =>  ((4) NIL (5) NIL 6 (6) 7 (7))
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
 * 受此影响(Affected By): None.
 
@@ -3342,7 +3345,7 @@ ecase
 >>  Value to evaluate and use for X: 'IV
 =>  5
 
-Side Effects:
+* 副作用(Side Effects):
 
 The debugger might be entered. If the store-value restart is invoked, the value of keyplace might be changed.
 
@@ -3612,7 +3615,7 @@ multiple-value-list evaluates form and creates a list of the multiple values[2] 
 
  (multiple-value-list (floor -3 4)) =>  (-1 1)
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
 * 受此影响(Affected By): None.
 
@@ -3655,7 +3658,7 @@ multiple-value-prog1 evaluates first-form and saves all the values produced by t
     (setq temp nil)
     (values-list temp)) =>  1, 2, 3
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
 * 受此影响(Affected By): None.
 
@@ -3711,7 +3714,7 @@ in order that the rules for order of evaluation and side-effects be consistent w
  a =>  4
  b =>  5
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
 * 受此影响(Affected By): None.
 
@@ -3875,7 +3878,7 @@ Evaluates n and then form, returning as its only value the nth value yielded by 
    (values a b (= a b)))
 =>  3332987528, 3332987528, true
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
 * 受此影响(Affected By): None.
 
@@ -4055,7 +4058,7 @@ prog2 evaluates first-form, then second-form, and then forms, yielding as its on
  temp =>  4
  (prog2 1 (values 2 3 4) 5) =>  2
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
 * 受此影响(Affected By): None.
 
@@ -4167,7 +4170,7 @@ If a define-modify-macro form appears as a top level form, the compiler must sto
  (define-modify-macro new-incf (&optional (delta 1)) +)
  (define-modify-macro unionf (other-set &rest keywords) union)
 
-Side Effects:
+* 副作用(Side Effects):
 
 A macro definition is assigned to name.
 
