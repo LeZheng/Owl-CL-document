@@ -514,70 +514,70 @@ values 的 setf 展开中的存储形式作为多个值返回第2步中存储变
 
 ### <span id="">函数 APPLY</span>
 
-Syntax:
+* 语法(Syntax):
 
-apply function &rest args+ => result*
+        apply function &rest args+ => result*
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
-function---a function designator.
+        function---一个函数指定符.
+        args---一个可扩展的参数列表指示符.
+        results---function 的返回值.
 
-args---a spreadable argument list designator.
+* 描述(Description):
 
-results---the values returned by function.
+        将 args 应用给 function.
 
-Description:
+        当这个 function 通过 &rest 接受到它的参数时, 对于一个实现, 允许 (但不是必须) 去绑定剩余参数到一个和 apply 的最后一个参数共享结构的对象. 因为一个函数既不能检测它是否通过 apply 调用, 也不能检测到 apply 的最后一个参数是否是一个常量, 符合规范的程序必须既不能依赖于rest列表的列表结构, 也不能修改这个列表结构.
 
-Applies the function to the args.
+        在某些情况下, setf可以用于 apply; 见章节 5.1.2.5 (APPLY Forms as Places).
 
-When the function receives its arguments via &rest, it is permissible (but not required) for the implementation to bind the rest parameter to an object that shares structure with the last argument to apply. Because a function can neither detect whether it was called via apply nor whether (if so) the last argument to apply was a constant, conforming programs must neither rely on the list structure of a rest list to be freshly consed, nor modify that list structure.
+* 示例(Examples):
 
-setf can be used with apply in certain circumstances; see Section 5.1.2.5 (APPLY Forms as Places).
+    ```LISP
+    (setq f '+) =>  +
+    (apply f '(1 2)) =>  3
+    (setq f #'-) =>  #<FUNCTION ->
+    (apply f '(1 2)) =>  -1
+    (apply #'max 3 5 '(2 7 3)) =>  7
+    (apply 'cons '((+ 2 3) 4)) =>  ((+ 2 3) . 4)
+    (apply #'+ '()) =>  0
 
-Examples:
+    (defparameter *some-list* '(a b c))
+    (defun strange-test (&rest x) (eq x *some-list*))
+    (apply #'strange-test *some-list*) =>  implementation-dependent
 
- (setq f '+) =>  +
- (apply f '(1 2)) =>  3
- (setq f #'-) =>  #<FUNCTION ->
- (apply f '(1 2)) =>  -1
- (apply #'max 3 5 '(2 7 3)) =>  7
- (apply 'cons '((+ 2 3) 4)) =>  ((+ 2 3) . 4)
- (apply #'+ '()) =>  0
+    (defun bad-boy (&rest x) (rplacd x 'y))
+    (bad-boy 'a 'b 'c) has undefined consequences.
+    (apply #'bad-boy *some-list*) has undefined consequences.
 
- (defparameter *some-list* '(a b c))
- (defun strange-test (&rest x) (eq x *some-list*))
- (apply #'strange-test *some-list*) =>  implementation-dependent
+    (defun foo (size &rest keys &key double &allow-other-keys)
+      (let ((v (apply #'make-array size :allow-other-keys t keys)))
+        (if double (concatenate (type-of v) v v) v)))
+    (foo 4 :initial-contents '(a b c d) :double t)
+        =>  #(A B C D A B C D)
+    ```
 
- (defun bad-boy (&rest x) (rplacd x 'y))
- (bad-boy 'a 'b 'c) has undefined consequences.
- (apply #'bad-boy *some-list*) has undefined consequences.
+* 受此影响(Affected By): None.
 
- (defun foo (size &rest keys &key double &allow-other-keys)
-   (let ((v (apply #'make-array size :allow-other-keys t keys)))
-     (if double (concatenate (type-of v) v v) v)))
- (foo 4 :initial-contents '(a b c d) :double t)
-    =>  #(A B C D A B C D)
+* 异常情况(Exceptional Situations): None.
 
-Affected By: None.
+* 也见(See Also):
 
-Exceptional Situations: None.
+        funcall, fdefinition, function, Section 3.1 (Evaluation), Section 5.1.2.5 (APPLY Forms as Places)
 
-See Also:
-
-funcall, fdefinition, function, Section 3.1 (Evaluation), Section 5.1.2.5 (APPLY Forms as Places)
-
-Notes: None.
+* 注意(Notes): None.
 
 
 ### <span id="">宏 DEFUN</span>
 
-Syntax:
+* 语法(Syntax):
 
 defun function-name lambda-list [[declaration* | documentation]] form*
 
 => function-name
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 function-name---a function name.
 
@@ -591,7 +591,7 @@ forms---an implicit progn.
 
 block-name---the function block name of the function-name.
 
-Description:
+* 描述(Description):
 
 Defines a new function named function-name in the global environment. The body of the function defined by defun consists of forms; they are executed as an implicit progn when the function is called. defun can be used to define a new function, to install a corrected version of an incorrect definition, to redefine an already-defined function, or to redefine a macro as a function.
 
@@ -611,7 +611,7 @@ processed in the lexical environment in which defun was executed.
 
 defun is not required to perform any compile-time side effects. In particular, defun does not make the function definition available at compile time. An implementation may choose to store information about the function for the purposes of compile-time error-checking (such as checking the number of arguments on calls), or to enable the function to be expanded inline.
 
-Examples:
+* 示例(Examples):
 
  (defun recur (x)
   (when (> x 0)
@@ -642,15 +642,15 @@ Examples:
      (- (* b b) (* 4 a c)))) =>  CAREFUL-DISCRIMINANT
  (careful-discriminant 1 2/3 -2) =>  76/9
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 flet, labels, block, return-from, declare, documentation, Section 3.1 (Evaluation), Section 3.4.1 (Ordinary Lambda Lists), Section 3.4.11 (Syntactic Interaction of Documentation Strings and Declarations)
 
-Notes:
+* 注意(Notes):
 
 return-from can be used to return prematurely from a function defined by defun.
 
@@ -659,13 +659,13 @@ Additional side effects might take place when additional information (typically 
 
 ### <span id="">访问器 FDEFINITION</span>
 
-Syntax:
+* 语法(Syntax):
 
 fdefinition function-name => definition
 
 (setf (fdefinition function-name) new-definition)
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 function-name---a function name. In the non-setf case, the name must be fbound in the global environment.
 
@@ -673,27 +673,27 @@ definition---Current global function definition named by function-name.
 
 new-definition---a function.
 
-Description:
+* 描述(Description):
 
 fdefinition accesses the current global function definition named by function-name. The definition may be a function or may be an object representing a special form or macro. The value returned by fdefinition when fboundp returns true but the function-name denotes a macro or special form is not well-defined, but fdefinition does not signal an error.
 
-Examples: None.
+* 示例(Examples): None.
 
 Side Effects: None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should signal an error of type type-error if function-name is not a function name.
 
 An error of type undefined-function is signaled in the non-setf case if function-name is not fbound.
 
-See Also:
+* 也见(See Also):
 
 fboundp, fmakunbound, macro-function, special-operator-p, symbol-function
 
-Notes:
+* 注意(Notes):
 
 fdefinition cannot access the value of a lexical function name produced by flet or labels; it can access only the global function value.
 
@@ -702,7 +702,7 @@ setf can be used with fdefinition to replace a global function definition when t
 
 ### <span id="">函数 FBOUNDP</span>
 
-Syntax:
+* 语法(Syntax):
 
 fboundp name => generalized-boolean
 
@@ -710,17 +710,17 @@ Pronunciation:
 
 [,ef'bandpee]
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 name---a function name.
 
 generalized-boolean---a generalized boolean.
 
-Description:
+* 描述(Description):
 
 Returns true if name is fbound; otherwise, returns false.
 
-Examples:
+* 示例(Examples):
 
  (fboundp 'car) =>  true
  (fboundp 'nth-value) =>  false
@@ -743,17 +743,17 @@ Examples:
 
 Side Effects: None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should signal an error of type type-error if name is not a function name.
 
-See Also:
+* 也见(See Also):
 
 symbol-function, fmakunbound, fdefinition
 
-Notes:
+* 注意(Notes):
 
 It is permissible to call symbol-function on any symbol that is fbound.
 
@@ -766,7 +766,7 @@ Defining a setf expander F does not cause the setf function (setf F) to become d
 
 ### <span id="">函数 FMAKUNBOUND</span>
 
-Syntax:
+* 语法(Syntax):
 
 fmakunbound name => name
 
@@ -774,15 +774,15 @@ Pronunciation:
 
 [,ef'makuhn,band] or [,ef'maykuhn,band]
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 name---a function name.
 
-Description:
+* 描述(Description):
 
 Removes the function or macro definition, if any, of name in the global environment.
 
-Examples:
+* 示例(Examples):
 
 (defun add-some (x) (+ x 19)) =>  ADD-SOME
  (fboundp 'add-some) =>  true
@@ -793,23 +793,23 @@ Examples:
 
 Side Effects: None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should signal an error of type type-error if name is not a function name.
 
 The consequences are undefined if name is a special operator.
 
-See Also:
+* 也见(See Also):
 
 fboundp, makunbound
 
-Notes: None.
+* 注意(Notes): None.
 
 ### <span id="">特殊操作符 FLET, LABELS, MACROLET</span>
 
-Syntax:
+* 语法(Syntax):
 
 flet ((function-name lambda-list [[local-declaration* | local-documentation]] local-form*)*) declaration* form*
 
@@ -823,7 +823,7 @@ macrolet ((name lambda-list [[local-declaration* | local-documentation]] local-f
 
 => result*
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 function-name---a function name.
 
@@ -841,7 +841,7 @@ local-forms, forms---an implicit progn.
 
 results---the values of the forms.
 
-Description:
+* 描述(Description):
 
 flet, labels, and macrolet define local functions and macros, and execute forms using the local definitions. Forms are executed in order of occurrence.
 
@@ -873,7 +873,7 @@ macrolet
 
     Any local-documentation is attached to the corresponding local macro function as a documentation string.
 
-Examples:
+* 示例(Examples):
 
  (defun foo (x flag)
    (macrolet ((fudge (z)
@@ -951,15 +951,15 @@ after macro expansion. The occurrences of x and flag legitimately refer to the p
           '((1) (2) (3) (4 2) (5) (6 3 2)))
 =>  ((1) (2) (3) (4 2) (5) (6 3 2) (A APPLE APRICOT) (B BANANA) (C CHERRY))
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 declare, defmacro, defun, documentation, let, Section 3.1 (Evaluation), Section 3.4.11 (Syntactic Interaction of Documentation Strings and Declarations)
 
-Notes:
+* 注意(Notes):
 
 It is not possible to define recursive functions with flet. labels can be used to define mutually recursive functions.
 
@@ -968,11 +968,11 @@ If a macrolet form is a top level form, the body forms are also processed as top
 
 ### <span id="">函数 FUNCALL</span>
 
-Syntax:
+* 语法(Syntax):
 
 funcall function &rest args => result*
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 function---a function designator.
 
@@ -980,11 +980,11 @@ args---arguments to the function.
 
 results---the values returned by the function.
 
-Description:
+* 描述(Description):
 
 funcall applies function to args. If function is a symbol, it is coerced to a function as if by finding its functional value in the global environment.
 
-Examples:
+* 示例(Examples):
 
  (funcall #'+ 1 2 3) =>  6
  (funcall 'car '(1 2 3)) =>  1
@@ -997,17 +997,17 @@ Examples:
               (funcall cons 1 2))))
 =>  (KONS (1 . 2) 3)
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 An error of type undefined-function should be signaled if function is a symbol that does not have a global definition as a function or that has a global definition as a macro or a special operator.
 
-See Also:
+* 也见(See Also):
 
 apply, function, Section 3.1 (Evaluation)
 
-Notes:
+* 注意(Notes):
 
  (funcall function arg1 arg2 ...)
  ==  (apply function arg1 arg2 ... nil)
@@ -1018,17 +1018,17 @@ The difference between funcall and an ordinary function call is that in the form
 
 ### <span id="">特殊操作符 FUNCTION</span>
 
-Syntax:
+* 语法(Syntax):
 
 function name => function
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 name---a function name or lambda expression.
 
 function---a function object.
 
-Description:
+* 描述(Description):
 
 The value of function is the functional value of name in the current lexical environment.
 
@@ -1038,7 +1038,7 @@ If name is a lambda expression, then a lexical closure is returned. In situation
 
 It is an error to use function on a function name that does not denote a function in the lexical environment in which the function form appears. Specifically, it is an error to use function on a symbol that denotes a macro or special form. An implementation may choose not to signal this error for performance reasons, but implementations are forbidden from defining the failure to signal an error as a useful behavior.
 
-Examples:
+* 示例(Examples):
 
  (defun adder (x) (function (lambda (y) (+ x y))))
 
@@ -1051,28 +1051,28 @@ This works because function creates a closure of the lambda expression that is a
 
 Side Effects: None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 defun, fdefinition, flet, labels, symbol-function, Section 3.1.2.1.1 (Symbols as Forms), Section 2.4.8.2 (Sharpsign Single-Quote), Section 22.1.3.13 (Printing Other Objects)
 
-Notes:
+* 注意(Notes):
 
 The notation #'name may be used as an abbreviation for (function name).
 
 
 ### <span id="">函数 FUNCTION-LAMBDA-EXPRESSION</span>
 
-Syntax:
+* 语法(Syntax):
 
 function-lambda-expression function
 
 => lambda-expression, closure-p, name
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 function---a function.
 
@@ -1082,7 +1082,7 @@ closure-p---a generalized boolean.
 
 name---an object.
 
-Description:
+* 描述(Description):
 
 Returns information about function as follows:
 
@@ -1092,7 +1092,7 @@ The secondary value, closure-p, is nil if function's definition was enclosed in 
 
 The tertiary value, name, is the ``name'' of function. The name is intended for debugging only and is not necessarily one that would be valid for use as a name in defun or function, for example. By convention, nil is used to mean that function has no name. Any implementation may legitimately return nil as the name of any function.
 
-Examples:
+* 示例(Examples):
 
 The following examples illustrate some possible return values, but are not intended to be exhaustive:
 
@@ -1137,34 +1137,34 @@ OR=>  (LAMBDA (X) (BLOCK BAR X)), false, "BAR in FOO"
 
 Side Effects: None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also: None.
+* 也见(See Also): None.
 
-Notes:
+* 注意(Notes):
 
 Although implementations are free to return ``nil, true, nil'' in all cases, they are encouraged to return a lambda expression as the primary value in the case where the argument was created by a call to compile or eval (as opposed to being created by loading a compiled file).
 
 
 ### <span id="">函数 FUNCTIONP</span>
 
-Syntax:
+* 语法(Syntax):
 
 functionp object => generalized-boolean
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 object---an object.
 
 generalized-boolean---a generalized boolean.
 
-Description:
+* 描述(Description):
 
 Returns true if object is of type function; otherwise, returns false.
 
-Examples:
+* 示例(Examples):
 
  (functionp 'append) =>  false
  (functionp #'append) =>  true
@@ -1178,34 +1178,34 @@ Examples:
 
 Side Effects: None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also: None.
+* 也见(See Also): None.
 
-Notes:
+* 注意(Notes):
 
  (functionp object) ==  (typep object 'function)
 
 
 ### <span id="">函数 COMPILED-FUNCTION-P</span>
 
-Syntax:
+* 语法(Syntax):
 
 compiled-function-p object => generalized-boolean
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 object---an object.
 
 generalized-boolean---a generalized boolean.
 
-Description:
+* 描述(Description):
 
 Returns true if object is of type compiled-function; otherwise, returns false.
 
-Examples:
+* 示例(Examples):
 
  (defun f (x) x) =>  F
  (compiled-function-p #'f)
@@ -1224,15 +1224,15 @@ OR=>  true
 
 Side Effects: None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 compile, compile-file, compiled-function
 
-Notes:
+* 注意(Notes):
 
  (compiled-function-p object) ==  (typep object 'compiled-function)
 
@@ -1243,17 +1243,17 @@ Constant Value:
 
 An integer not smaller than 50 and at least as great as the value of lambda-parameters-limit, the exact magnitude of which is implementation-dependent.
 
-Description:
+* 描述(Description):
 
 The upper exclusive bound on the number of arguments that may be passed to a function.
 
-Examples: None.
+* 示例(Examples): None.
 
-See Also:
+* 也见(See Also):
 
 lambda-parameters-limit, multiple-values-limit
 
-Notes: None.
+* 注意(Notes): None.
 
 
 ### <span id="">常量 LAMBDA-LIST-KEYWORDS</span>
@@ -1262,17 +1262,17 @@ Constant Value:
 
 a list, the elements of which are implementation-dependent, but which must contain at least the symbols &allow-other-keys, &aux, &body, &environment, &key, &optional, &rest, and &whole.
 
-Description:
+* 描述(Description):
 
 A list of all the lambda list keywords used in the implementation, including the additional ones used only by macro definition forms.
 
-Examples: None.
+* 示例(Examples): None.
 
-See Also:
+* 也见(See Also):
 
 defun, flet, defmacro, macrolet, Section 3.1.2 (The Evaluation Model)
 
-Notes: None.
+* 注意(Notes): None.
 
 
 ### <span id="">常量 LAMBDA-PARAMETERS-LIMIT</span>
@@ -1281,28 +1281,28 @@ Constant Value:
 
 implementation-dependent, but not smaller than 50.
 
-Description:
+* 描述(Description):
 
 A positive integer that is the upper exclusive bound on the number of parameter names that can appear in a single lambda list.
 
-Examples: None.
+* 示例(Examples): None.
 
-See Also:
+* 也见(See Also):
 
 call-arguments-limit
 
-Notes:
+* 注意(Notes):
 
 Implementors are encouraged to make the value of lambda-parameters-limit as large as possible.
 
 
 ### <span id="">宏 DEFCONSTANT</span>
 
-Syntax:
+* 语法(Syntax):
 
 defconstant name initial-value [documentation] => name
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 name---a symbol; not evaluated.
 
@@ -1310,7 +1310,7 @@ initial-value---a form; evaluated.
 
 documentation---a string; not evaluated.
 
-Description:
+* 描述(Description):
 
 defconstant causes the global variable named by name to be given a value that is the result of evaluating initial-value.
 
@@ -1331,33 +1331,33 @@ The side effects of the execution of defconstant must be equivalent to at least 
 
 If a defconstant form appears as a top level form, the compiler must recognize that name names a constant variable. An implementation may choose to evaluate the value-form at compile time, load time, or both. Therefore, users must ensure that the initial-value can be evaluated at compile time (regardless of whether or not references to name appear in the file) and that it always evaluates to the same value.
 
-Examples:
+* 示例(Examples):
 
  (defconstant this-is-a-constant 'never-changing "for a test") =>  THIS-IS-A-CONSTANT
 this-is-a-constant =>  NEVER-CHANGING
  (documentation 'this-is-a-constant 'variable) =>  "for a test"
  (constantp 'this-is-a-constant) =>  true
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 declaim, defparameter, defvar, documentation, proclaim, Section 3.1.2.1.1.3 (Constant Variables), Section 3.2 (Compilation)
 
-Notes: None.
+* 注意(Notes): None.
 
 
 ### <span id="">宏 DEFPARAMETER, DEFVAR</span>
 
-Syntax:
+* 语法(Syntax):
 
 defparameter name initial-value [documentation] => name
 
 defvar name [initial-value [documentation]] => name
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 name---a symbol; not evaluated.
 
@@ -1365,7 +1365,7 @@ initial-value---a form; for defparameter, it is always evaluated, but for defvar
 
 documentation---a string; not evaluated.
 
-Description:
+* 描述(Description):
 
 defparameter and defvar establish name as a dynamic variable.
 
@@ -1377,7 +1377,7 @@ If documentation is supplied, it is attached to name as a documentation string o
 
 defparameter and defvar normally appear as a top level form, but it is meaningful for them to appear as non-top-level forms. However, the compile-time side effects described below only take place when they appear as top level forms.
 
-Examples:
+* 示例(Examples):
 
  (defparameter *p* 1) =>  *P*
  *p* =>  1
@@ -1427,17 +1427,17 @@ If a defvar or defparameter form appears as a top level form, the compiler must 
 
 There may be additional (implementation-defined) compile-time or run-time side effects, as long as such effects do not interfere with the correct operation of conforming programs.
 
-Affected By:
+* 受此影响(Affected By):
 
 defvar is affected by whether name is already bound.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 declaim, defconstant, documentation, Section 3.2 (Compilation)
 
-Notes:
+* 注意(Notes):
 
 It is customary to name dynamic variables with an asterisk at the beginning and end of the name. e.g., *foo* is a good name for a dynamic variable, but not for a lexical variable; foo is a good name for a lexical variable, but not for a dynamic variable. This naming convention is observed for all defined names in Common Lisp; however, neither conforming programs nor conforming implementations are obliged to adhere to this convention.
 
@@ -1466,13 +1466,13 @@ defparameter and defvar might be defined as follows:
 
 ### <span id="">宏 DESTRUCTURING-BIND</span>
 
-Syntax:
+* 语法(Syntax):
 
 destructuring-bind lambda-list expression declaration* form*
 
 => result*
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 lambda-list---a destructuring lambda list.
 
@@ -1484,41 +1484,41 @@ forms---an implicit progn.
 
 results---the values returned by the forms.
 
-Description:
+* 描述(Description):
 
 destructuring-bind binds the variables specified in lambda-list to the corresponding values in the tree structure resulting from the evaluation of expression; then destructuring-bind evaluates forms.
 
 The lambda-list supports destructuring as described in Section 3.4.5 (Destructuring Lambda Lists).
 
-Examples:
+* 示例(Examples):
 
  (defun iota (n) (loop for i from 1 to n collect i))       ;helper
  (destructuring-bind ((a &optional (b 'bee)) one two three)
      `((alpha) ,@(iota 3))
    (list a b three two one)) =>  (ALPHA BEE 3 2 1)
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 If the result of evaluating the expression does not match the destructuring pattern, an error of type error should be signaled.
 
-See Also:
+* 也见(See Also):
 
 macrolet, defmacro
 
-Notes: None.
+* 注意(Notes): None.
 
 
 ### <span id="">特殊操作符 LET, LET*</span>
 
-Syntax:
+* 语法(Syntax):
 
 let ({var | (var [init-form])}*) declaration* form* => result*
 
 let* ({var | (var [init-form])}*) declaration* form* => result*
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 var---a symbol.
 
@@ -1530,7 +1530,7 @@ form---a form.
 
 results---the values returned by the forms.
 
-Description:
+* 描述(Description):
 
 let and let* create new variable bindings and execute a series of forms that use these bindings. let performs the bindings in parallel and let* does them sequentially.
 
@@ -1574,7 +1574,7 @@ For both let and let*, if there is not an init-form associated with a var, var i
 
 The special form let has the property that the scope of the name binding does not include any initial value form. For let*, a variable's scope also includes the remaining initial value forms for subsequent variable bindings.
 
-Examples:
+* 示例(Examples):
 
  (setq a 'top) =>  TOP
  (defun dummy-function () a) =>  DUMMY-FUNCTION
@@ -1595,24 +1595,24 @@ The code
 
 is incorrect; although x is indeed set before it is used, and is set to a value of the declared type integer, nevertheless x initially takes on the value nil in violation of the type declaration.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 progv
 
-Notes: None.
+* 注意(Notes): None.
 
 
 ### <span id="">特殊操作符 PROGV</span>
 
-Syntax:
+* 语法(Syntax):
 
 progv symbols values form* => result*
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 symbols---a list of symbols; evaluated.
 
@@ -1622,13 +1622,13 @@ forms---an implicit progn.
 
 results---the values returned by the forms.
 
-Description:
+* 描述(Description):
 
 progv creates new dynamic variable bindings and executes each form using those bindings. Each form is evaluated in order.
 
 progv allows binding one or more dynamic variables whose names may be determined at run time. Each form is evaluated in order with the dynamic variables whose names are in symbols bound to corresponding values. If too few values are supplied, the remaining symbols are bound and then made to have no value. If too many values are supplied, the excess values are ignored. The bindings of the dynamic variables are undone on exit from progv.
 
-Examples:
+* 示例(Examples):
 
  (setq *x* 1) =>  1
  (progv '(*x*) '(2) *x*) =>  2
@@ -1640,22 +1640,22 @@ Assuming *x* is not globally special,
     (progv '(*x*) '(4)
       (list *x* (symbol-value '*x*)))) =>  (3 4)
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 let, Section 3.1 (Evaluation)
 
-Notes:
+* 注意(Notes):
 
 Among other things, progv is useful when writing interpreters for languages embedded in Lisp; it provides a handle on the mechanism for binding dynamic variables.
 
 
 ### <span id="">特殊表达式 SETQ</span>
 
-Syntax:
+* 语法(Syntax):
 
 setq {pair}* => result
 
@@ -1665,7 +1665,7 @@ Pronunciation:
 
 ['set,kyoo]
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 var---a symbol naming a variable other than a constant variable.
 
@@ -1673,7 +1673,7 @@ form---a form.
 
 result---the primary value of the last form, or nil if no pairs were supplied.
 
-Description:
+* 描述(Description):
 
 Assigns values to variables.
 
@@ -1681,7 +1681,7 @@ Assigns values to variables.
 
 If any var refers to a binding made by symbol-macrolet, then that var is treated as if setf (not setq) had been used.
 
-Examples:
+* 示例(Examples):
 
  ;; A simple use of SETQ to establish values for variables.
  (setq a 1 b 2 c 3) =>  3
@@ -1706,20 +1706,20 @@ Side Effects:
 
 The primary value of each form is assigned to the corresponding var.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 psetq, set, setf
 
-Notes: None.
+* 注意(Notes): None.
 
 
 ### <span id="">宏 PSETQ</span>
 
-Syntax:
+* 语法(Syntax):
 
 psetq {pair}* => nil
 
@@ -1729,13 +1729,13 @@ Pronunciation:
 
 psetq: [;pee'set,kyoo]
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 var---a symbol naming a variable other than a constant variable.
 
 form---a form.
 
-Description:
+* 描述(Description):
 
 Assigns values to variables.
 
@@ -1743,7 +1743,7 @@ This is just like setq, except that the assignments happen ``in parallel.'' That
 
 If any var refers to a binding made by symbol-macrolet, then that var is treated as if psetf (not psetq) had been used.
 
-Examples:
+* 示例(Examples):
 
  ;; A simple use of PSETQ to establish values for variables.
  ;; As a matter of style, many programmers would prefer SETQ
@@ -1778,24 +1778,24 @@ Side Effects:
 
 The values of forms are assigned to vars.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 psetf, setq
 
-Notes: None.
+* 注意(Notes): None.
 
 
 ### <span id="">特殊操作符 BLOCK</span>
 
-Syntax:
+* 语法(Syntax):
 
 block name form* => result*
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 name---a symbol.
 
@@ -1803,7 +1803,7 @@ form---a form.
 
 results---the values of the forms if a normal return occurs, or else, if an explicit return occurs, the values that were transferred.
 
-Description:
+* 描述(Description):
 
 block establishes a block named name and then evaluates forms as an implicit progn.
 
@@ -1813,7 +1813,7 @@ The block named name has lexical scope and dynamic extent.
 
 Once established, a block may only be exited once, whether by normal return or explicit return.
 
-Examples:
+* 示例(Examples):
 
  (block empty) =>  NIL
  (block whocares (values 1 2) (values 3 4)) =>  3, 4
@@ -1829,23 +1829,23 @@ Examples:
      (block b (b1) (print 'unreachable))
      2)) =>  1
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 return, return-from, Section 3.1 (Evaluation)
 
-Notes:
+* 注意(Notes):
 
 ### <span id="">特殊操作符 CATCH</span>
 
-Syntax:
+* 语法(Syntax):
 
 catch tag form* => result*
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 tag---a catch tag; evaluated.
 
@@ -1853,7 +1853,7 @@ forms---an implicit progn.
 
 results---if the forms exit normally, the values returned by the forms; if a throw occurs to the tag, the values that are thrown.
 
-Description:
+* 描述(Description):
 
 catch is used as the destination of a non-local control transfer by throw. Tags are used to find the catch to which a throw is transferring control. (catch 'foo form) catches a (throw 'foo form) but not a (throw 'bar form).
 
@@ -1871,7 +1871,7 @@ If during the execution of one of the forms, a throw is executed whose tag is eq
 
 The mechanism for catch and throw works even if throw is not within the lexical scope of catch. throw must occur within the dynamic extent of the evaluation of the body of a catch with a corresponding tag.
 
-Examples:
+* 示例(Examples):
 
  (catch 'dummy-tag 1 2 (throw 'dummy-tag 3) 4) =>  3
  (catch 'dummy-tag 1 2 3 4) =>  4
@@ -1884,17 +1884,17 @@ Examples:
      (catch 'c (c1) (print 'unreachable))
      2)) =>  2
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 An error of type control-error is signaled if throw is done when there is no suitable catch tag.
 
-See Also:
+* 也见(See Also):
 
 throw, Section 3.1 (Evaluation)
 
-Notes:
+* 注意(Notes):
 
 It is customary for symbols to be used as tags, but any object is permitted. However, numbers should not be used because the comparison is done using eq.
 
@@ -1902,21 +1902,21 @@ catch differs from block in that catch tags have dynamic scope while block names
 
 ### <span id="">特殊操作符 GO</span>
 
-Syntax:
+* 语法(Syntax):
 
 go tag =>|
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 tag---a go tag.
 
-Description:
+* 描述(Description):
 
 go transfers control to the point in the body of an enclosing tagbody form labeled by a tag eql to tag. If there is no such tag in the body, the bodies of lexically containing tagbody forms (if any) are examined as well. If several tags are eql to tag, control is transferred to whichever matching tag is contained in the innermost tagbody form that contains the go. The consequences are undefined if there is no matching tag lexically visible to the point of the go.
 
 The transfer of control initiated by go is performed as described in Section 5.2 (Transfer of Control to an Exit Point).
 
-Examples:
+* 示例(Examples):
 
  (tagbody
    (setq val 2)
@@ -1936,30 +1936,30 @@ The following is in error because the tagbody is passed over before the go form 
  (funcall (block nil
             (tagbody a (return #'(lambda () (go a))))))
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 tagbody
 
-Notes: None.
+* 注意(Notes): None.
 
 
 ### <span id="">特殊操作符 RETURN-FROM</span>
 
-Syntax:
+* 语法(Syntax):
 
 return-from name [result] =>|
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 name---a block tag; not evaluated.
 
 result---a form; evaluated. The default is nil.
 
-Description:
+* 描述(Description):
 
 Returns control and multiple values[2] from a lexically enclosing block.
 
@@ -1967,7 +1967,7 @@ A block form named name must lexically enclose the occurrence of return-from; an
 
 The transfer of control initiated by return-from is performed as described in Section 5.2 (Transfer of Control to an Exit Point).
 
-Examples:
+* 示例(Examples):
 
  (block alpha (return-from alpha) 1) =>  NIL
  (block alpha (return-from alpha 1) 2) =>  1
@@ -2018,32 +2018,32 @@ The following has undefined consequences because the block form exits normally b
 
  (funcall (block nil #'(lambda () (return-from nil)))) is an error.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 block, return, Section 3.1 (Evaluation)
 
-Notes: None.
+* 注意(Notes): None.
 
 
 ### <span id="">宏 RETURN</span>
 
-Syntax:
+* 语法(Syntax):
 
 return [result] =>|
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 result---a form; evaluated. The default is nil.
 
-Description:
+* 描述(Description):
 
 Returns, as if by return-from, from the block named nil.
 
-Examples:
+* 示例(Examples):
 
  (block nil (return) 1) =>  NIL
  (block nil (return 1) 2) =>  1
@@ -2052,15 +2052,15 @@ Examples:
  (block alpha (block nil (return 1)) 2) =>  2
  (block nil (block nil (return 1) 2)) =>  1
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
 Conditions: None.
 
-See Also:
+* 也见(See Also):
 
 block, return-from, Section 3.1 (Evaluation)
 
-Notes:
+* 注意(Notes):
 
  (return) ==  (return-from nil)
  (return form) ==  (return-from nil form)
@@ -2070,17 +2070,17 @@ The implicit blocks established by macros such as do are often named nil, so tha
 
 ### <span id="">特殊操作符 TAGBODY</span>
 
-Syntax:
+* 语法(Syntax):
 
 tagbody {tag | statement}* => nil
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 tag---a go tag; not evaluated.
 
 statement---a compound form; evaluated as described below.
 
-Description:
+* 描述(Description):
 
 Executes zero or more statements in a lexical environment that provides for control transfers to labels indicated by the tags.
 
@@ -2090,7 +2090,7 @@ A tag established by tagbody has lexical scope and has dynamic extent. Once tagb
 
 The determination of which elements of the body are tags and which are statements is made prior to any macro expansion of that element. If a statement is a macro form and its macro expansion is an atom, that atom is treated as a statement, not a tag.
 
-Examples:
+* 示例(Examples):
 
  (let (val)
     (tagbody
@@ -2126,15 +2126,15 @@ Examples:
 >>  1
 =>  NIL
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 go
 
-Notes:
+* 注意(Notes):
 
 The macros in the next figure have implicit tagbodies.
 
@@ -2147,17 +2147,17 @@ Figure 5-10. Macros that have implicit tagbodies.
 
 ### <span id="">特殊操作符 THROW</span>
 
-Syntax:
+* 语法(Syntax):
 
 throw tag result-form =>|
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 tag---a catch tag; evaluated.
 
 result-form---a form; evaluated as described below.
 
-Description:
+* 描述(Description):
 
 throw causes a non-local control transfer to a catch whose tag is eq to tag.
 
@@ -2165,7 +2165,7 @@ Tag is evaluated first to produce an object called the throw tag; then result-fo
 
 The transfer of control initiated by throw is performed as described in Section 5.2 (Transfer of Control to an Exit Point).
 
-Examples:
+* 示例(Examples):
 
  (catch 'result
     (setq i 0 j 0)
@@ -2194,28 +2194,28 @@ The following prints ``The inner catch returns :SECOND-THROW'' and then returns 
 >>  The inner catch returns :SECOND-THROW
 =>  :OUTER-CATCH
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 If there is no outstanding catch tag that matches the throw tag, no unwinding of the stack is performed, and an error of type control-error is signaled. When the error is signaled, the dynamic environment is that which was in force at the point of the throw.
 
-See Also:
+* 也见(See Also):
 
 block, catch, return-from, unwind-protect, Section 3.1 (Evaluation)
 
-Notes:
+* 注意(Notes):
 
 catch and throw are normally used when the exit point must have dynamic scope (e.g., the throw is not lexically enclosed by the catch), while block and return are used when lexical scope is sufficient.
 
 
 ### <span id="">特殊操作符 UNWIND-PROTECT</span>
 
-Syntax:
+* 语法(Syntax):
 
 unwind-protect protected-form cleanup-form* => result*
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 protected-form---a form.
 
@@ -2223,7 +2223,7 @@ cleanup-form---a form.
 
 results---the values of the protected-form.
 
-Description:
+* 描述(Description):
 
 unwind-protect evaluates protected-form and guarantees that cleanup-forms are executed before unwind-protect exits, whether it terminates normally or is aborted by a control transfer of some kind. unwind-protect is intended to be used to make sure that certain side effects take place after the evaluation of protected-form.
 
@@ -2233,7 +2233,7 @@ unwind-protect protects against all attempts to exit from protected-form, includ
 
 Undoing of handler and restart bindings during an exit happens in parallel with the undoing of the bindings of dynamic variables and catch tags, in the reverse order in which they were established. The effect of this is that cleanup-form sees the same handler and restart bindings, as well as dynamic variable bindings and catch tags, as were visible when the unwind-protect was entered.
 
-Examples:
+* 示例(Examples):
 
  (tagbody
    (let ((x 3))
@@ -2343,15 +2343,15 @@ If an exit occurs before completion of incf, the decf form is executed anyway, r
      (unwind-protect (return)
        (print x))))
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 catch, go, handler-case, restart-case, return, return-from, throw, Section 3.1 (Evaluation)
 
-Notes: None.
+* 注意(Notes): None.
 
 
 ### <span id="">常量 NIL</span>
@@ -2360,38 +2360,38 @@ Constant Value:
 
 nil.
 
-Description:
+* 描述(Description):
 
 nil represents both boolean (and generalized boolean) false and the empty list.
 
-Examples:
+* 示例(Examples):
 
  nil =>  NIL
 
-See Also:
+* 也见(See Also):
 
 t
 
-Notes: None.
+* 注意(Notes): None.
 
 
 ### <span id="">函数 NOT</span>
 
-Syntax:
+* 语法(Syntax):
 
 not x => boolean
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 x---a generalized boolean (i.e., any object).
 
 boolean---a boolean.
 
-Description:
+* 描述(Description):
 
 Returns t if x is false; otherwise, returns nil.
 
-Examples:
+* 示例(Examples):
 
  (not nil) =>  T
  (not '()) =>  T
@@ -2402,15 +2402,15 @@ Examples:
 
 Side Effects: None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 null
 
-Notes:
+* 注意(Notes):
 
 not is intended to be used to invert the `truth value' of a boolean (or generalized boolean) whereas null is intended to be used to test for the empty list. Operationally, not and null compute the same result; which to use is a matter of style.
 
@@ -2421,13 +2421,13 @@ Constant Value:
 
 t.
 
-Description:
+* 描述(Description):
 
 The boolean representing true, and the canonical generalized boolean representing true. Although any object other than nil is considered true, t is generally used when there is no special reason to prefer one such object over another.
 
 The symbol t is also sometimes used for other purposes as well. For example, as the name of a class, as a designator (e.g., a stream designator) or as a special symbol for some syntactic reason (e.g., in case and typecase to label the otherwise-clause).
 
-Examples:
+* 示例(Examples):
 
  t =>  T
  (eq t 't) =>  true
@@ -2438,20 +2438,20 @@ Examples:
 >>  HELLO
 =>  HELLO
 
-See Also:
+* 也见(See Also):
 
 nil
 
-Notes: None.
+* 注意(Notes): None.
 
 
 ### <span id="">函数 EQ</span>
 
-Syntax:
+* 语法(Syntax):
 
 eq x y => generalized-boolean
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 x---an object.
 
@@ -2459,11 +2459,11 @@ y---an object.
 
 generalized-boolean---a generalized boolean.
 
-Description:
+* 描述(Description):
 
 Returns true if its arguments are the same, identical object; otherwise, returns false.
 
-Examples:
+* 示例(Examples):
 
  (eq 'a 'b) =>  false
  (eq 'a 'a) =>  true
@@ -2501,15 +2501,15 @@ OR=>  false
 
 Side Effects: None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 eql, equal, equalp, =, Section 3.2 (Compilation)
 
-Notes:
+* 注意(Notes):
 
 Objects that appear the same when printed are not necessarily eq to each other. Symbols that print the same usually are eq to each other because of the use of the intern function. However, numbers with the same value need not be eq, and two similar lists are usually not identical.
 
@@ -2526,11 +2526,11 @@ Figure 5-11. Operators that always prefer EQ over EQL
 
 ### <span id="">函数 EQL</span>
 
-Syntax:
+* 语法(Syntax):
 
 eql x y => generalized-boolean
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 x---an object.
 
@@ -2538,7 +2538,7 @@ y---an object.
 
 generalized-boolean---a generalized boolean.
 
-Description:
+* 描述(Description):
 
 The value of eql is true of two objects, x and y, in the folowing cases:
 
@@ -2550,7 +2550,7 @@ Otherwise the value of eql is false.
 
 If an implementation supports positive and negative zeros as distinct values, then (eql 0.0 -0.0) returns false. Otherwise, when the syntax -0.0 is read it is interpreted as the value 0.0, and so (eql 0.0 -0.0) returns true.
 
-Examples:
+* 示例(Examples):
 
  (eql 'a 'b) =>  false
  (eql 'a 'a) =>  true
@@ -2577,15 +2577,15 @@ Normally (eql 1.0s0 1.0d0) is false, under the assumption that 1.0s0 and 1.0d0 a
 
 Side Effects: None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 eq, equal, equalp, =, char=
 
-Notes:
+* 注意(Notes):
 
 eql is the same as eq, except that if the arguments are characters or numbers of the same type then their values are compared. Thus eql tells whether two objects are conceptually the same, whereas eq tells whether two objects are implementationally identical. It is for this reason that eql, not eq, is the default comparison predicate for operators that take sequences as arguments.
 
@@ -2596,11 +2596,11 @@ Two complex numbers are considered to be eql if their real parts are eql and the
 
 ### <span id="">函数 EQUAL</span>
 
-Syntax:
+* 语法(Syntax):
 
 equal x y => generalized-boolean
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 x---an object.
 
@@ -2608,7 +2608,7 @@ y---an object.
 
 generalized-boolean---a generalized boolean.
 
-Description:
+* 描述(Description):
 
 Returns true if x and y are structurally similar (isomorphic) objects. Objects are treated as follows by equal.
 
@@ -2652,7 +2652,7 @@ Any two objects that are eql are also equal.
 
 equal may fail to terminate if x or y is circular.
 
-Examples:
+* 示例(Examples):
 
  (equal 'a 'b) =>  false
  (equal 'a 'a) =>  true
@@ -2673,15 +2673,15 @@ Examples:
 
 Side Effects: None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 eq, eql, equalp, =, string=, string-equal, char=, char-equal, tree-equal
 
-Notes:
+* 注意(Notes):
 
 Object equality is not a concept for which there is a uniquely determined correct algorithm. The appropriateness of an equality predicate can be judged only in the context of the needs of some particular program. Although these functions take any type of argument and their names sound very generic, equal and equalp are not appropriate for every application.
 
@@ -2690,11 +2690,11 @@ A rough rule of thumb is that two objects are equal if and only if their printed
 
 ### <span id="">函数 EQUALP</span>
 
-Syntax:
+* 语法(Syntax):
 
 equalp x y => generalized-boolean
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 x---an object.
 
@@ -2702,7 +2702,7 @@ y---an object.
 
 generalized-boolean---a generalized boolean.
 
-Description:
+* 描述(Description):
 
 Returns true if x and y are equal, or if they have components that are of the same type as each other and if those components are equalp; specifically, equalp returns true in the following cases:
 
@@ -2746,7 +2746,7 @@ Other object  uses eq
 
 Figure 5-13. Summary and priorities of behavior of equalp
 
-Examples:
+* 示例(Examples):
 
  (equalp 'a 'b) =>  false
  (equalp 'a 'a) =>  true
@@ -2776,47 +2776,47 @@ Examples:
 
 Side Effects: None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 eq, eql, equal, =, string=, string-equal, char=, char-equal
 
-Notes:
+* 注意(Notes):
 
 Object equality is not a concept for which there is a uniquely determined correct algorithm. The appropriateness of an equality predicate can be judged only in the context of the needs of some particular program. Although these functions take any type of argument and their names sound very generic, equal and equalp are not appropriate for every application.
 
 
 ### <span id="">函数 IDENTITY</span>
 
-Syntax:
+* 语法(Syntax):
 
 identity object => object
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 object---an object.
 
-Description:
+* 描述(Description):
 
 Returns its argument object.
 
-Examples:
+* 示例(Examples):
 
  (identity 101) =>  101
  (mapcan #'identity (list (list 1 2 3) '(4 5 6))) =>  (1 2 3 4 5 6)
 
 Side Effects: None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also: None.
+* 也见(See Also): None.
 
-Notes:
+* 注意(Notes):
 
 identity is intended for use with functions that require a function as an argument.
 
@@ -2829,21 +2829,21 @@ identity could be defined by
 
 ### <span id="">函数 COMPLEMENT</span>
 
-Syntax:
+* 语法(Syntax):
 
 complement function => complement-function
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 function---a function.
 
 complement-function---a function.
 
-Description:
+* 描述(Description):
 
 Returns a function that takes the same arguments as function, and has the same side-effect behavior as function, but returns only a single value: a generalized boolean with the opposite truth value of that which would be returned as the primary value of function. That is, when the function would have returned true as its primary value the complement-function returns false, and when the function would have returned false as its primary value the complement-function returns true.
 
-Examples:
+* 示例(Examples):
 
  (funcall (complement #'zerop) 1) =>  true
  (funcall (complement #'characterp) #\A) =>  false
@@ -2852,15 +2852,15 @@ Examples:
 
 Side Effects: None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 not
 
-Notes:
+* 注意(Notes):
 
  (complement x) ==  #'(lambda (&rest arguments) (not (apply x arguments)))
 
@@ -2878,21 +2878,21 @@ Note that since the ``xxx-if-not'' functions and the :test-not arguments have be
 
 ### <span id="">函数 CONSTANTLY</span>
 
-Syntax:
+* 语法(Syntax):
 
 constantly value => function
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 value---an object.
 
 function---a function.
 
-Description:
+* 描述(Description):
 
 constantly returns a function that accepts any number of arguments, that has no side-effects, and that always returns value.
 
-Examples:
+* 示例(Examples):
 
  (mapcar (constantly 3) '(a b c d)) =>  (3 3 3 3)
  (defmacro with-vars (vars &body forms)
@@ -2901,15 +2901,15 @@ Examples:
  (macroexpand '(with-vars (a b) (setq a 3 b (* a a)) (list a b)))
 =>  ((LAMBDA (A B) (SETQ A 3 B (* A A)) (LIST A B)) NIL NIL), true
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 identity
 
-Notes:
+* 注意(Notes):
 
 constantly could be defined by:
 
@@ -2919,7 +2919,7 @@ constantly could be defined by:
 
 ### <span id="">函数 EVERY, SOME, NOTEVERY, NOTANY</span>
 
-Syntax:
+* 语法(Syntax):
 
 every predicate &rest sequences+ => generalized-boolean
 
@@ -2929,7 +2929,7 @@ notevery predicate &rest sequences+ => generalized-boolean
 
 notany predicate &rest sequences+ => generalized-boolean
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 predicate---a designator for a function of as many arguments as there are sequences.
 
@@ -2939,7 +2939,7 @@ result---an object.
 
 generalized-boolean---a generalized boolean.
 
-Description:
+* 描述(Description):
 
 every, some, notevery, and notany test elements of sequences for satisfaction of a given predicate. The first argument to predicate is an element of the first sequence; each succeeding argument is an element of a succeeding sequence.
 
@@ -2953,26 +2953,26 @@ notany returns false as soon as any invocation of predicate returns true. If the
 
 notevery returns true as soon as any invocation of predicate returns false. If the end of a sequence is reached, notevery returns false. Thus, notevery returns true if and only if it is not the case that every invocation of predicate returns true.
 
-Examples:
+* 示例(Examples):
 
  (every #'characterp "abc") =>  true
  (some #'= '(1 2 3 4 5) '(5 4 3 2 1)) =>  true
  (notevery #'< '(1 2 3 4) '(5 6 7 8) '(9 10 11 12)) =>  false
  (notany #'> '(1 2 3 4) '(5 6 7 8) '(9 10 11 12)) =>  true
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should signal type-error if its first argument is neither a symbol nor a function or if any subsequent argument is not a proper sequence.
 
 Other exceptional situations are possible, depending on the nature of the predicate.
 
-See Also:
+* 也见(See Also):
 
 and, or, Section 3.6 (Traversal Rules and Side Effects)
 
-Notes:
+* 注意(Notes):
 
  (notany predicate sequence*) ==  (not (some predicate sequence*))
  (notevery predicate sequence*) ==  (not (every predicate sequence*))
@@ -2980,17 +2980,17 @@ Notes:
 
 ### <span id="">宏 AND</span>
 
-Syntax:
+* 语法(Syntax):
 
 and form* => result*
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 form---a form.
 
 results---the values resulting from the evaluation of the last form, or the symbols nil or t.
 
-Description:
+* 描述(Description):
 
 The macro and evaluates each form one at a time from left to right. As soon as any form evaluates to nil, and returns nil without evaluating the remaining forms. If all forms but the last evaluate to true values, and returns the results produced by evaluating the last form.
 
@@ -2998,7 +2998,7 @@ If no forms are supplied, (and) returns t.
 
 and passes back multiple values from the last subform but not from subforms other than the last.
 
-Examples:
+* 示例(Examples):
 
  (if (and (>= n 0)
           (< n (length a-simple-vector))
@@ -3015,15 +3015,15 @@ The above expression prints Foo! if element n of a-simple-vector is the symbol f
  (and (eql temp1 temp2) (eql temp2 temp3)) =>  true
  (and) =>  T
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 cond, every, if, or, when
 
-Notes:
+* 注意(Notes):
 
  (and form) ==  (let () form)
  (and form1 form2 ...) ==  (when form1 (and form2 ...))
@@ -3031,13 +3031,13 @@ Notes:
 
 ### <span id="">宏 COND</span>
 
-Syntax:
+* 语法(Syntax):
 
 cond {clause}* => result*
 
 clause::= (test-form form*)
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 test-form---a form.
 
@@ -3045,7 +3045,7 @@ forms---an implicit progn.
 
 results---the values of the forms in the first clause whose test-form yields true, or the primary value of the test-form if there are no forms in that clause, or else nil if no test-form yields true.
 
-Description:
+* 描述(Description):
 
 cond allows the execution of forms to be dependent on test-form.
 
@@ -3055,7 +3055,7 @@ If there are no forms in that clause, the primary value of the test-form is retu
 
 Once one test-form has yielded true, no additional test-forms are evaluated. If no test-form yields true, nil is returned.
 
-Examples:
+* 示例(Examples):
 
  (defun select-options ()
    (cond ((= a 1) (setq a 2))
@@ -3073,24 +3073,24 @@ Examples:
 
 Side Effects: None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 if, case.
 
-Notes: None.
+* 注意(Notes): None.
 
 
 ### <span id="">特殊操作符 IF</span>
 
-Syntax:
+* 语法(Syntax):
 
 if test-form then-form [else-form] => result*
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 Test-form---a form.
 
@@ -3100,13 +3100,13 @@ Else-form---a form. The default is nil.
 
 results---if the test-form yielded true, the values returned by the then-form; otherwise, the values returned by the else-form.
 
-Description:
+* 描述(Description):
 
 if allows the execution of a form to be dependent on a single test-form.
 
 First test-form is evaluated. If the result is true, then then-form is selected; otherwise else-form is selected. Whichever form is selected is then evaluated.
 
-Examples:
+* 示例(Examples):
 
  (if t 1) =>  1
  (if nil 1 2) =>  2
@@ -3121,15 +3121,15 @@ Examples:
 >>  TRUE (A B C)
 =>  NIL
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 cond, unless, when
 
-Notes:
+* 注意(Notes):
 
  (if test-form then-form else-form)
  ==  (cond (test-form then-form) (t else-form))
@@ -3137,23 +3137,23 @@ Notes:
 
 ### <span id="">宏 OR</span>
 
-Syntax:
+* 语法(Syntax):
 
 or form* => results*
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 form---a form.
 
 results---the values or primary value (see below) resulting from the evaluation of the last form executed or nil.
 
-Description:
+* 描述(Description):
 
 or evaluates each form, one at a time, from left to right. The evaluation of all forms terminates when a form evaluates to true (i.e., something other than nil).
 
 If the evaluation of any form other than the last returns a primary value that is true, or immediately returns that value (but no additional values) without evaluating the remaining forms. If every form but the last returns false as its primary value, or returns all values returned by the last form. If no forms are supplied, or returns nil.
 
-Examples:
+* 示例(Examples):
 
  (or) =>  NIL
  (setq temp0 nil temp1 10 temp2 20 temp3 30) =>  30
@@ -3170,26 +3170,26 @@ Examples:
 
 Side Effects: None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 and, some, unless
 
-Notes: None.
+* 注意(Notes): None.
 
 
 ### <span id="">宏 WHEN, UNLESS</span>
 
-Syntax:
+* 语法(Syntax):
 
 when test-form form* => result*
 
 unless test-form form* => result*
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 test-form---a form.
 
@@ -3197,7 +3197,7 @@ forms---an implicit progn.
 
 results---the values of the forms in a when form if the test-form yields true or in an unless form if the test-form yields false; otherwise nil.
 
-Description:
+* 描述(Description):
 
 when and unless allow the execution of forms to be dependent on a single test-form.
 
@@ -3205,7 +3205,7 @@ In a when form, if the test-form yields true, the forms are evaluated in order f
 
 In an unless form, if the test-form yields false, the forms are evaluated in order from left to right and the values returned by the forms are returned from the unless form. Otherwise, if the test-form yields false, the forms are not evaluated, and the unless form returns nil.
 
-Examples:
+* 示例(Examples):
 
  (when t 'hello) =>  HELLO
  (unless t 'hello) =>  NIL
@@ -3234,15 +3234,15 @@ Examples:
 
 Side Effects: None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 and, cond, if, or
 
-Notes:
+* 注意(Notes):
 
  (when test {form}+) ==  (and test (progn {form}+))
  (when test {form}+) ==  (cond (test {form}+))
@@ -3255,7 +3255,7 @@ Notes:
 
 ### <span id="">宏 CASE, CCASE, ECASE</span>
 
-Syntax:
+* 语法(Syntax):
 
 case keyform {normal-clause}* [otherwise-clause] => result*
 
@@ -3269,7 +3269,7 @@ otherwise-clause::= ({otherwise | t} form*)
 
 clause::= normal-clause | otherwise-clause
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 keyform---a form; evaluated to produce a test-key.
 
@@ -3283,7 +3283,7 @@ forms---an implicit progn.
 
 results---the values returned by the forms in the matching clause.
 
-Description:
+* 描述(Description):
 
 These macros allow the conditional execution of a body of forms in a clause that is selected by matching the test-key on the basis of its identity.
 
@@ -3313,7 +3313,7 @@ ecase
 
     Note that in contrast with ccase, the caller of ecase may rely on the fact that ecase does not return if a normal-clause does not match.
 
-Examples:
+* 示例(Examples):
 
  (dolist (k '(1 2 3 :four #\v () t 'other))
     (format t "~S "
@@ -3349,19 +3349,19 @@ Side Effects:
 
 The debugger might be entered. If the store-value restart is invoked, the value of keyplace might be changed.
 
-Affected By:
+* 受此影响(Affected By):
 
 ccase and ecase, since they might signal an error, are potentially affected by existing handlers and *debug-io*.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 ccase and ecase signal an error of type type-error if no normal-clause matches.
 
-See Also:
+* 也见(See Also):
 
 cond, typecase, setf, Section 5.1 (Generalized Reference)
 
-Notes:
+* 注意(Notes):
 
 (case test-key
   {((key*) form*)}*)
@@ -3374,7 +3374,7 @@ The specific error message used by ecase and ccase can vary between implementati
 
 ### <span id="">宏 TYPECASE, CTYPECASE, ETYPECASE</span>
 
-Syntax:
+* 语法(Syntax):
 
 typecase keyform {normal-clause}* [otherwise-clause] => result*
 
@@ -3388,7 +3388,7 @@ otherwise-clause::= ({otherwise | t} form*)
 
 clause::= normal-clause | otherwise-clause
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 keyform---a form; evaluated to produce a test-key.
 
@@ -3402,7 +3402,7 @@ forms---an implicit progn.
 
 results---the values returned by the forms in the matching clause.
 
-Description:
+* 描述(Description):
 
 These macros allow the conditional execution of a body of forms in a clause that is selected by matching the test-key on the basis of its type.
 
@@ -3436,7 +3436,7 @@ etypecase
 
 In all three cases, is permissible for more than one clause to specify a matching type, particularly if one is a subtype of another; the earliest applicable clause is chosen.
 
-Examples:
+* 示例(Examples):
 
 ;;; (Note that the parts of this example which use TYPE-OF
 ;;;  are implementation-dependent.)
@@ -3475,21 +3475,21 @@ Examples:
 =>  48
  x =>  12
 
-Affected By:
+* 受此影响(Affected By):
 
 ctypecase and etypecase, since they might signal an error, are potentially affected by existing handlers and *debug-io*.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 ctypecase and etypecase signal an error of type type-error if no normal-clause matches.
 
 The compiler may choose to issue a warning of type style-warning if a clause will never be selected because it is completely shadowed by earlier clauses.
 
-See Also:
+* 也见(See Also):
 
 case, cond, setf, Section 5.1 (Generalized Reference)
 
-Notes:
+* 注意(Notes):
 
 (typecase test-key
   {(type form*)}*)
@@ -3502,13 +3502,13 @@ The specific error message used by etypecase and ctypecase can vary between impl
 
 ### <span id="">宏 MULTIPLE-VALUE-BIND</span>
 
-Syntax:
+* 语法(Syntax):
 
 multiple-value-bind (var*) values-form declaration* form*
 
 => result*
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 var---a symbol naming a variable; not evaluated.
 
@@ -3520,7 +3520,7 @@ forms---an implicit progn.
 
 results---the values returned by the forms.
 
-Description:
+* 描述(Description):
 
 Creates new variable bindings for the vars and executes a series of forms that use these bindings.
 
@@ -3530,21 +3530,21 @@ Values-form is evaluated, and each of the vars is bound to the respective value 
 
 The scopes of the name binding and declarations do not include the values-form.
 
-Examples:
+* 示例(Examples):
 
  (multiple-value-bind (f r)
      (floor 130 11)
    (list f r)) =>  (11 9)
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 let, multiple-value-call
 
-Notes:
+* 注意(Notes):
 
  (multiple-value-bind (var*) values-form form*)
  ==  (multiple-value-call #'(lambda (&optional var* &rest #1=#:ignore)
@@ -3555,11 +3555,11 @@ Notes:
 
 ### <span id="">特殊操作符 MULTIPLE-VALUE-CALL</span>
 
-Syntax:
+* 语法(Syntax):
 
 multiple-value-call function-form form* => result*
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 function-form---a form; evaluated to produce function.
 
@@ -3569,13 +3569,13 @@ form---a form.
 
 results---the values returned by the function.
 
-Description:
+* 描述(Description):
 
 Applies function to a list of the objects collected from groups of multiple values[2].
 
 multiple-value-call first evaluates the function-form to obtain function, and then evaluates each form. All the values of each form are gathered together (not just one value from each) and given as arguments to the function.
 
-Examples:
+* 示例(Examples):
 
  (multiple-value-call #'list 1 '/ (values 2 3) '/ (values) '/ (floor 2.5))
 =>  (1 / 2 3 / / 2 0.5)
@@ -3584,48 +3584,48 @@ Examples:
  (multiple-value-call #'+ (floor 5 3) (floor 19 4)) ==  (+ 1 2 4 3)
 =>  10
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 multiple-value-list, multiple-value-bind
 
-Notes: None.
+* 注意(Notes): None.
 
 
 ### <span id="">宏 MULTIPLE-VALUE-LIST</span>
 
-Syntax:
+* 语法(Syntax):
 
 multiple-value-list form => list
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 form---a form; evaluated as described below.
 
 list---a list of the values returned by form.
 
-Description:
+* 描述(Description):
 
 multiple-value-list evaluates form and creates a list of the multiple values[2] it returns.
 
-Examples:
+* 示例(Examples):
 
  (multiple-value-list (floor -3 4)) =>  (-1 1)
 
 Side Effects: None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 values-list, multiple-value-call
 
-Notes:
+* 注意(Notes):
 
 multiple-value-list and values-list are inverses of each other.
 
@@ -3634,11 +3634,11 @@ multiple-value-list and values-list are inverses of each other.
 
 ### <span id="">特殊操作符 MULTIPLE-VALUE-PROG1</span>
 
-Syntax:
+* 语法(Syntax):
 
 multiple-value-prog1 first-form form* => first-form-results
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 first-form---a form; evaluated as described below.
 
@@ -3646,11 +3646,11 @@ form---a form; evaluated as described below.
 
 first-form-results---the values resulting from the evaluation of first-form.
 
-Description:
+* 描述(Description):
 
 multiple-value-prog1 evaluates first-form and saves all the values produced by that form. It then evaluates each form from left to right, discarding their values.
 
-Examples:
+* 示例(Examples):
 
  (setq temp '(1 2 3)) =>  (1 2 3)
  (multiple-value-prog1
@@ -3660,24 +3660,24 @@ Examples:
 
 Side Effects: None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 prog1
 
-Notes: None.
+* 注意(Notes): None.
 
 
 ### <span id="">宏 MULTIPLE-VALUE-SETQ</span>
 
-Syntax:
+* 语法(Syntax):
 
 multiple-value-setq vars form => result
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 vars---a list of symbols that are either variable names or names of symbol macros.
 
@@ -3685,7 +3685,7 @@ form---a form.
 
 result---The primary value returned by the form.
 
-Description:
+* 描述(Description):
 
 multiple-value-setq assigns values to vars.
 
@@ -3701,7 +3701,7 @@ is defined to always behave in the same way as
 
 in order that the rules for order of evaluation and side-effects be consistent with those used by setf. See Section 5.1.2.3 (VALUES Forms as Places).
 
-Examples:
+* 示例(Examples):
 
  (multiple-value-setq (quotient remainder) (truncate 3.2 2)) =>  1
  quotient =>  1
@@ -3716,26 +3716,26 @@ Examples:
 
 Side Effects: None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 setq, symbol-macrolet
 
-Notes: None.
+* 注意(Notes): None.
 
 
 ### <span id="">访问器 VALUES</span>
 
-Syntax:
+* 语法(Syntax):
 
 values &rest object => object*
 
 (setf (values &rest place) new-values)
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 object---an object.
 
@@ -3743,13 +3743,13 @@ place---a place.
 
 new-value---an object.
 
-Description:
+* 描述(Description):
 
 values returns the objects as multiple values[2].
 
 setf of values is used to store the multiple values[2] new-values into the places. See Section 5.1.2.3 (VALUES Forms as Places).
 
-Examples:
+* 示例(Examples):
 
  (values) =>  <no values>
  (values 1) =>  1
@@ -3774,53 +3774,53 @@ returns two values because floor returns two values. It may be that the second v
 
 This works because values returns exactly one value for each of args; as for any function call, if any of args produces more than one value, all but the first are discarded.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 values-list, multiple-value-bind, multiple-values-limit, Section 3.1 (Evaluation)
 
-Notes:
+* 注意(Notes):
 
 Since values is a function, not a macro or special form, it receives as arguments only the primary values of its argument forms.
 
 
 ### <span id="">函数 VALUES-LIST</span>
 
-Syntax:
+* 语法(Syntax):
 
 values-list list => element*
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 list---a list.
 
 elements---the elements of the list.
 
-Description:
+* 描述(Description):
 
 Returns the elements of the list as multiple values[2].
 
-Examples:
+* 示例(Examples):
 
  (values-list nil) =>  <no values>
  (values-list '(1)) =>  1
  (values-list '(1 2)) =>  1, 2
  (values-list '(1 2 3)) =>  1, 2, 3
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should signal type-error if its argument is not a proper list.
 
-See Also:
+* 也见(See Also):
 
 multiple-value-bind, multiple-value-list, multiple-values-limit, values
 
-Notes:
+* 注意(Notes):
 
  (values-list list) ==  (apply #'values list)
 
@@ -3833,28 +3833,28 @@ Constant Value:
 
 An integer not smaller than 20, the exact magnitude of which is implementation-dependent.
 
-Description:
+* 描述(Description):
 
 The upper exclusive bound on the number of values that may be returned from a function, bound or assigned by multiple-value-bind or multiple-value-setq, or passed as a first argument to nth-value. (If these individual limits might differ, the minimum value is used.)
 
-Examples: None.
+* 示例(Examples): None.
 
-See Also:
+* 也见(See Also):
 
 lambda-parameters-limit, call-arguments-limit
 
-Notes:
+* 注意(Notes):
 
 Implementors are encouraged to make this limit as large as possible.
 
 
 ### <span id="">宏 NTH-VALUE</span>
 
-Syntax:
+* 语法(Syntax):
 
 nth-value n form => object
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 n---a non-negative integer; evaluated.
 
@@ -3862,11 +3862,11 @@ form---a form; evaluated as described below.
 
 object---an object.
 
-Description:
+* 描述(Description):
 
 Evaluates n and then form, returning as its only value the nth value yielded by form, or nil if n is greater than or equal to the number of values returned by form. (The first returned value is numbered 0.)
 
-Examples:
+* 示例(Examples):
 
  (nth-value 0 (values 'a 'b)) =>  A
  (nth-value 1 (values 'a 'b)) =>  B
@@ -3880,15 +3880,15 @@ Examples:
 
 Side Effects: None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 multiple-value-list, nth
 
-Notes:
+* 注意(Notes):
 
 Operationally, the following relationship is true, although nth-value might be more efficient in some implementations because, for example, some consing might be avoided.
 
@@ -3897,7 +3897,7 @@ Operationally, the following relationship is true, although nth-value might be m
 
 ### <span id="">宏 PROG, PROG*</span>
 
-Syntax:
+* 语法(Syntax):
 
 prog ({var | (var [init-form])}*) declaration* {tag | statement}*
 
@@ -3907,7 +3907,7 @@ prog* ({var | (var [init-form])}*) declaration* {tag | statement}*
 
 => result*
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 var---variable name.
 
@@ -3921,7 +3921,7 @@ statement---a compound form; evaluated as described below.
 
 results---nil if a normal return occurs, or else, if an explicit return occurs, the values that were transferred.
 
-Description:
+* 描述(Description):
 
 Three distinct operations are performed by prog and prog*: they bind local variables, they permit use of the return statement, and they permit use of the go statement. A typical prog looks like this:
 
@@ -3945,7 +3945,7 @@ prog implicitly establishes a block named nil around the entire prog form, so th
 
 The difference between prog* and prog is that in prog* the binding and initialization of the vars is done sequentially, so that the init-form for each one can use the values of previous ones.
 
-Examples:
+* 示例(Examples):
 
 (prog* ((y z) (x (car y)))
        (return x))
@@ -3989,15 +3989,15 @@ This can be accomplished more perspicuously as follows:
               "Mismatch - gleep!  ~S" y)
        (setq z y)))) =>  PRINCE-OF-CLARITY
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 block, let, tagbody, go, return, Section 3.1 (Evaluation)
 
-Notes:
+* 注意(Notes):
 
 prog can be explained in terms of block, let, and tagbody as follows:
 
@@ -4007,13 +4007,13 @@ prog can be explained in terms of block, let, and tagbody as follows:
 
 ### <span id="">宏 PROG1, PROG2</span>
 
-Syntax:
+* 语法(Syntax):
 
 prog1 first-form form* => result-1
 
 prog2 first-form second-form form* => result-2
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 first-form---a form; evaluated as described below.
 
@@ -4025,13 +4025,13 @@ result-1---the primary value resulting from the evaluation of first-form.
 
 result-2---the primary value resulting from the evaluation of second-form.
 
-Description:
+* 描述(Description):
 
 prog1 evaluates first-form and then forms, yielding as its only value the primary value yielded by first-form.
 
 prog2 evaluates first-form, then second-form, and then forms, yielding as its only value the primary value yielded by first-form.
 
-Examples:
+* 示例(Examples):
 
  (setq temp 1) =>  1
  (prog1 temp (print temp) (incf temp) (print temp))
@@ -4060,15 +4060,15 @@ Examples:
 
 Side Effects: None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 multiple-value-prog1, progn
 
-Notes:
+* 注意(Notes):
 
 prog1 and prog2 are typically used to evaluate one or more forms with side effects and return a value that must be computed before some or all of the side effects happen.
 
@@ -4078,17 +4078,17 @@ prog1 and prog2 are typically used to evaluate one or more forms with side effec
 
 ### <span id="">特殊操作符 PROGN</span>
 
-Syntax:
+* 语法(Syntax):
 
 progn form* => result*
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 forms---an implicit progn.
 
 results---the values of the forms.
 
-Description:
+* 描述(Description):
 
 progn evaluates forms, in the order in which they are given.
 
@@ -4096,7 +4096,7 @@ The values of each form but the last are discarded.
 
 If progn appears as a top level form, then all forms within that progn are considered by the compiler to be top level forms.
 
-Examples:
+* 示例(Examples):
 
  (progn) =>  NIL
  (progn 1 2 3) =>  3
@@ -4107,26 +4107,26 @@ Examples:
       (progn (setq a t) 'there)) =>  HERE
  a =>  NIL
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 prog1, prog2, Section 3.1 (Evaluation)
 
-Notes:
+* 注意(Notes):
 
 Many places in Common Lisp involve syntax that uses implicit progns. That is, part of their syntax allows many forms to be written that are to be evaluated sequentially, discarding the results of all forms but the last and returning the results of the last form. Such places include, but are not limited to, the following: the body of a lambda expression; the bodies of various control and conditional forms (e.g., case, catch, progn, and when).
 
 
 ### <span id="">宏 DEFINE-MODIFY-MACRO</span>
 
-Syntax:
+* 语法(Syntax):
 
 define-modify-macro name lambda-list function [documentation] => name
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 name---a symbol.
 
@@ -4136,7 +4136,7 @@ function---a symbol.
 
 documentation---a string; not evaluated.
 
-Description:
+* 描述(Description):
 
 define-modify-macro defines a macro named name to read and write a place.
 
@@ -4159,7 +4159,7 @@ Documentation is attached as a documentation string to name (as kind function) a
 
 If a define-modify-macro form appears as a top level form, the compiler must store the macro definition at compile time, so that occurrences of the macro later on in the file can be expanded correctly.
 
-Examples:
+* 示例(Examples):
 
  (define-modify-macro appendf (&rest args)
     append "Append onto list") =>  APPENDF
@@ -4174,20 +4174,20 @@ Side Effects:
 
 A macro definition is assigned to name.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 defsetf, define-setf-expander, documentation, Section 3.4.11 (Syntactic Interaction of Documentation Strings and Declarations)
 
-Notes: None.
+* 注意(Notes): None.
 
 
 ### <span id="">宏 DEFSETF</span>
 
-Syntax:
+* 语法(Syntax):
 
 The ``short form'':
 
@@ -4201,7 +4201,7 @@ defsetf access-fn lambda-list (store-variable*) [[declaration* | documentation]]
 
 => access-fn
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 access-fn---a symbol which names a function or a macro.
 
@@ -4217,7 +4217,7 @@ documentation---a string; not evaluated.
 
 form---a form.
 
-Description:
+* 描述(Description):
 
 defsetf defines how to setf a place of the form (access-fn ...) for relatively simple cases. (See define-setf-expander for more general access to this facility.) It must be the case that the function or macro named by access-fn evaluates all of its arguments.
 
@@ -4237,7 +4237,7 @@ Documentation is attached to access-fn as a documentation string of kind setf.
 
 If a defsetf form appears as a top level form, the compiler must make the setf expander available so that it may be used to expand calls to setf later on in the file. Users must ensure that the forms, if any, can be evaluated at compile time if the access-fn is used in a place later in the same file. The compiler must make these setf expanders available to compile-time calls to get-setf-expansion when its environment argument is a value received as the environment parameter of a macro.
 
-Examples:
+* 示例(Examples):
 
 The effect of
 
@@ -4298,15 +4298,15 @@ An example of the use of the long form of defsetf:
  (xy 'y 0 'x 1) =>  1
  (xy 'x 1 'y 2) =>  3
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 documentation, setf, define-setf-expander, get-setf-expansion, Section 5.1 (Generalized Reference), Section 3.4.11 (Syntactic Interaction of Documentation Strings and Declarations)
 
-Notes:
+* 注意(Notes):
 
 forms must include provision for returning the correct value (the value or values of store-variable). This is handled by forms rather than by defsetf because in many cases this value can be returned at no extra cost, by calling a function that simultaneously stores into the place and returns the correct value.
 
@@ -4315,13 +4315,13 @@ A setf of a call on access-fn also evaluates all of access-fn's arguments; it ca
 
 ### <span id="">宏 DEFINE-SETF-EXPANDER</span>
 
-Syntax:
+* 语法(Syntax):
 
 define-setf-expander access-fn lambda-list [[declaration* | documentation]] form*
 
 => access-fn
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 access-fn---a symbol that names a function or macro.
 
@@ -4333,7 +4333,7 @@ documentation---a string; not evaluated.
 
 forms---an implicit progn.
 
-Description:
+* 描述(Description):
 
 define-setf-expander specifies the means by which setf updates a place that is referenced by access-fn.
 
@@ -4349,7 +4349,7 @@ The evaluation of forms must result in the five values described in Section 5.1.
 
 If a define-setf-expander form appears as a top level form, the compiler must make the setf expander available so that it may be used to expand calls to setf later on in the file. Programmers must ensure that the forms can be evaluated at compile time if the access-fn is used in a place later in the same file. The compiler must make these setf expanders available to compile-time calls to get-setf-expansion when its environment argument is a value received as the environment parameter of a macro.
 
-Examples:
+* 示例(Examples):
 
  (defun lastguy (x) (car (last x))) =>  LASTGUY
  (define-setf-expander lastguy (x &environment env)
@@ -4392,28 +4392,28 @@ Examples:
                `(ldb ,btemp ,access-form) ;Accessing form.
               ))))
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 setf, defsetf, documentation, get-setf-expansion, Section 3.4.11 (Syntactic Interaction of Documentation Strings and Declarations)
 
-Notes:
+* 注意(Notes):
 
 define-setf-expander differs from the long form of defsetf in that while the body is being executed the variables in lambda-list are bound to parts of the place form, not to temporary variables that will be bound to the values of such parts. In addition, define-setf-expander does not have defsetf's restriction that access-fn must be a function or a function-like macro; an arbitrary defmacro destructuring pattern is permitted in lambda-list.
 
 
 ### <span id="">函数 GET-SETF-EXPANSION</span>
 
-Syntax:
+* 语法(Syntax):
 
 get-setf-expansion place &optional environment
 
 => vars, vals, store-vars, writer-form, reader-form
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 place---a place.
 
@@ -4421,13 +4421,13 @@ environment---an environment object.
 
 vars, vals, store-vars, writer-form, reader-form---a setf expansion.
 
-Description:
+* 描述(Description):
 
 Determines five values constituting the setf expansion for place in environment; see Section 5.1.1.2 (Setf Expansions).
 
 If environment is not supplied or nil, the environment is the null lexical environment.
 
-Examples:
+* 示例(Examples):
 
  (get-setf-expansion 'x)
 =>  NIL, NIL, (#:G0001), (SETQ X #:G0001), X
@@ -4450,22 +4450,22 @@ Examples:
    (xpop (frob z)))
 
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 defsetf, define-setf-expander, setf
 
-Notes:
+* 注意(Notes):
 
 Any compound form is a valid place, since any compound form whose operator f has no setf expander are expanded into a call to (setf f).
 
 
 ### <span id="">宏 SETF, PSETF</span>
 
-Syntax:
+* 语法(Syntax):
 
 setf {pair}* => result*
 
@@ -4473,7 +4473,7 @@ psetf {pair}* => nil
 
 pair::= place newvalue
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 place---a place.
 
@@ -4481,7 +4481,7 @@ newvalue---a form.
 
 results---the multiple values[2] returned by the storing form for the last place, or nil if there are no pairs.
 
-Description:
+* 描述(Description):
 
 setf changes the value of place to be newvalue.
 
@@ -4505,7 +4505,7 @@ For psetf, if more than one pair is supplied then the assignments of new values 
 
 For detailed treatment of the expansion of setf and psetf, see Section 5.1.2 (Kinds of Places).
 
-Examples:
+* 示例(Examples):
 
  (setq x (cons 'a 'b) y (list 1 2 3)) =>  (1 2 3)
  (setf (car x) 'x (cadr y) (car x) (cdr x) y) =>  (1 X 3)
@@ -4516,26 +4516,26 @@ Examples:
  x =>  (X 1 A 3)
  y =>  (1 A 3)
 
-Affected By:
+* 受此影响(Affected By):
 
 define-setf-expander, defsetf, *macroexpand-hook*
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 define-setf-expander, defsetf, macroexpand-1, rotatef, shiftf, Section 5.1 (Generalized Reference)
 
-Notes: None.
+* 注意(Notes): None.
 
 
 ### <span id="">宏 SHIFTF</span>
 
-Syntax:
+* 语法(Syntax):
 
 shiftf place+ newvalue => old-value-1
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 place---a place.
 
@@ -4543,7 +4543,7 @@ newvalue---a form; evaluated.
 
 old-value-1---an object (the old value of the first place).
 
-Description:
+* 描述(Description):
 
 shiftf modifies the values of each place by storing newvalue into the last place, and shifting the values of the second through the last place into the remaining places.
 
@@ -4553,7 +4553,7 @@ In the form (shiftf place1 place2 ... placen newvalue), the values in place1 thr
 
 For information about the evaluation of subforms of places, see Section 5.1.1.1 (Evaluation of Subforms to Places).
 
-Examples:
+* 示例(Examples):
 
  (setq x (list 1 2 3) y 'trash) =>  TRASH
  (shiftf y x (cdr x) '(hi there)) =>  TRASH
@@ -4570,17 +4570,17 @@ Examples:
  (shiftf (nth (setq n (+ n 1)) x) 'z) =>  B
  x =>  (A Z C D)
 
-Affected By:
+* 受此影响(Affected By):
 
 define-setf-expander, defsetf, *macroexpand-hook*
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 setf, rotatef, Section 5.1 (Generalized Reference)
 
-Notes:
+* 注意(Notes):
 
 The effect of (shiftf place1 place2 ... placen newvalue) is roughly equivalent to
 
@@ -4606,15 +4606,15 @@ except that the latter would evaluate any subforms of each place twice, whereas 
 
 ### <span id="">宏 ROTATEF</span>
 
-Syntax:
+* 语法(Syntax):
 
 rotatef place* => nil
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 place---a place.
 
-Description:
+* 描述(Description):
 
 rotatef modifies the values of each place by rotating values from one place into another.
 
@@ -4624,7 +4624,7 @@ In the form (rotatef place1 place2 ... placen), the values in place1 through pla
 
 For information about the evaluation of subforms of places, see Section 5.1.1.1 (Evaluation of Subforms to Places).
 
-Examples:
+* 示例(Examples):
 
  (let ((n 0)
         (x (list 'a 'b 'c 'd 'e 'f 'g)))
@@ -4633,15 +4633,15 @@ Examples:
              (nth (incf n) x))
     x) =>  (A C D B E F G)
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 define-setf-expander, defsetf, setf, shiftf, *macroexpand-hook*, Section 5.1 (Generalized Reference)
 
-Notes:
+* 注意(Notes):
 
 The effect of (rotatef place1 place2 ... placen) is roughly equivalent to
 
@@ -4659,7 +4659,7 @@ Class Precedence List:
 
 control-error, error, serious-condition, condition, t
 
-Description:
+* 描述(Description):
 
 The type control-error consists of error conditions that result from invalid dynamic transfers of control in a program. The errors that result from giving throw a tag that is not active or from giving go or return-from a tag that is no longer dynamically available are of type control-error.
 
@@ -4670,7 +4670,7 @@ Class Precedence List:
 
 program-error, error, serious-condition, condition, t
 
-Description:
+* 描述(Description):
 
 The type program-error consists of error conditions related to incorrect program syntax. The errors that result from naming a go tag or a block tag that is not lexically apparent are of type program-error.
 
@@ -4681,12 +4681,12 @@ Class Precedence List:
 
 undefined-function, cell-error, error, serious-condition, condition, t
 
-Description:
+* 描述(Description):
 
 The type undefined-function consists of error conditions that represent attempts to read the definition of an undefined function.
 
 The name of the cell (see cell-error) is the function name which was funbound.
 
-See Also:
+* 也见(See Also):
 
 cell-error-name
