@@ -768,28 +768,30 @@ fboundp 有时候被用于 "保护" 对函数 cell 的访问, 就像:
 
 * 语法(Syntax):
 
-fmakunbound name => name
+        fmakunbound name => name
 
 * 发音(Pronunciation):
 
-[,ef'makuhn,band] or [,ef'maykuhn,band]
+        [,ef'makuhn,band] 或 [,ef'maykuhn,band]
 
 * 参数和值(Arguments and Values):
 
-name---a function name.
+        name---一个函数名字.
 
 * 描述(Description):
 
-Removes the function or macro definition, if any, of name in the global environment.
+        在全局环境中删除函数或宏定义, 如果有的话.
 
 * 示例(Examples):
 
-(defun add-some (x) (+ x 19)) =>  ADD-SOME
- (fboundp 'add-some) =>  true
- (flet ((add-some (x) (+ x 37)))
-    (fmakunbound 'add-some)
-    (add-some 1)) =>  38
- (fboundp 'add-some) =>  false
+    ```LISP
+    (defun add-some (x) (+ x 19)) =>  ADD-SOME
+    (fboundp 'add-some) =>  true
+    (flet ((add-some (x) (+ x 37)))
+        (fmakunbound 'add-some)
+        (add-some 1)) =>  38
+    (fboundp 'add-some) =>  false
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -797,13 +799,13 @@ Removes the function or macro definition, if any, of name in the global environm
 
 * 异常情况(Exceptional Situations):
 
-Should signal an error of type type-error if name is not a function name.
+        如果 name 不是一个函数名字, 应该发出一个 type-error 类型的错误.
 
-The consequences are undefined if name is a special operator.
+        如果 name 是一个特殊操作符那么结果是未定义的.
 
 * 也见(See Also):
 
-fboundp, makunbound
+        fboundp, makunbound
 
 * 注意(Notes): None.
 
@@ -811,145 +813,142 @@ fboundp, makunbound
 
 * 语法(Syntax):
 
-flet ((function-name lambda-list [[local-declaration* | local-documentation]] local-form*)*) declaration* form*
+        flet ((function-name lambda-list [[local-declaration* | local-documentation]] local-form*)*) declaration* form*
 
-=> result*
+        => result*
 
-labels ((function-name lambda-list [[local-declaration* | local-documentation]] local-form*)*) declaration* form*
+        labels ((function-name lambda-list [[local-declaration* | local-documentation]] local-form*)*) declaration* form*
 
-=> result*
+        => result*
 
-macrolet ((name lambda-list [[local-declaration* | local-documentation]] local-form*)*) declaration* form*
+        macrolet ((name lambda-list [[local-declaration* | local-documentation]] local-form*)*) declaration* form*
 
-=> result*
+        => result*
 
 * 参数和值(Arguments and Values):
 
-function-name---a function name.
-
-name---a symbol.
-
-lambda-list---a lambda list; for flet and labels, it is an ordinary lambda list; for macrolet, it is a macro lambda list.
-
-local-declaration---a declare expression; not evaluated.
-
-declaration---a declare expression; not evaluated.
-
-local-documentation---a string; not evaluated.
-
-local-forms, forms---an implicit progn.
-
-results---the values of the forms.
+        function-name---一个函数名字.
+        name---一个符号.
+        lambda-list---一个 lambda 列表; 对于 flet 和 labels, 它是一个普通 lambda 列表; 对于 macrolet, 它是一个宏 lambda 列表.
+        local-declaration---一个 declare 表达式; 不求值.
+        declaration---一个 declare 表达式; 不求值.
+        local-documentation---一个字符串; 不求值.
+        local-forms, forms---一个隐式的 progn.
+        results---forms 的值.
 
 * 描述(Description):
 
-flet, labels, and macrolet define local functions and macros, and execute forms using the local definitions. Forms are executed in order of occurrence.
+        flet, labels, 和 macrolet 定义局部函数和宏, 并且使用局部定义执行 forms. Forms 以出现的顺序被执行.
 
-The body forms (but not the lambda list) of each function created by flet and labels and each macro created by macrolet are enclosed in an implicit block whose name is the function block name of the function-name or name, as appropriate.
+        每一个被 flet 和 labels 创建的函数和每一个被 macrolet 创建的宏的主体表达式 (但是不是 lambda 列表) 被封闭在一个隐式的 block 中, 它的名字为 function-name 或 name 的函数块名字.
 
-The scope of the declarations between the list of local function/macro definitions and the body forms in flet and labels does not include the bodies of the locally defined functions, except that for labels, any inline, notinline, or ftype declarations that refer to the locally defined functions do apply to the local function bodies. That is, their scope is the same as the function name that they affect. The scope of these declarations does not include the bodies of the macro expander functions defined by macrolet.
+        在局部函数/宏定义和 flet 或 labels 之间的声明的作用域不包括局部定义的函数的主体, 除了对于 labels , 任何引用局部定义函数的 inline, notinline, 或 ftype 声明可以应用于局部定义函数的主体. 这就是说, 它们的作用于和它们影响的函数名一样. 这个声明的作用于不包括 macrolet 定义的这个宏展开函数的主体.
 
-flet
+        flet
 
-    flet defines locally named functions and executes a series of forms with these definition bindings. Any number of such local functions can be defined.
+            flet 定义局部命名函数并且用这些定义绑定执行一连串的表达式形式. 可以定义任意数量的局部函数.
 
-    The scope of the name binding encompasses only the body. Within the body of flet, function-names matching those defined by flet refer to the locally defined functions rather than to the global function definitions of the same name. Also, within the scope of flet, global setf expander definitions of the function-name defined by flet do not apply. Note that this applies to (defsetf f ...), not (defmethod (setf f) ...).
+            名称绑定的作用域仅包含主体(body)部分. 在 flet 的主体中, 与 flet 定义的 function-names 对应的是局部定义的函数, 而不是同名的全局函数定义. 此外, 在 flet 的作用域内, 由 flet 定义的函数名的全局 setf 展开器定义不适用. 注意这个适用于 (defsetf f ...), 不是 (defmethod (setf f) ...).
 
-    The names of functions defined by flet are in the lexical environment; they retain their local definitions only within the body of flet. The function definition bindings are visible only in the body of flet, not the definitions themselves. Within the function definitions, local function names that match those being defined refer to functions or macros defined outside the flet. flet can locally shadow a global function name, and the new definition can refer to the global definition.
+            flet 定义的函数的名字是在词法环境中的; 它们仅在 flet 的主体中保持他们的局部定义. 这个函数定义绑定仅在 flet 的主体 (body) 中可见, 在定义自身中不可见. 在这个函数定义中, 匹配那些要被定义的局部函数名字引用的是那些在 flet 外面定义的局部函数或宏. flet 可以在局部遮蔽一个全局的名字, 并且这个新的定义可以引用全局定义.
 
-    Any local-documentation is attached to the corresponding local function (if one is actually created) as a documentation string.
+            任何局部文档都作为一个文档字符串被附加到相应的局部函数中(如果实际创建的话).
 
-labels
+        labels
 
-    labels is equivalent to flet except that the scope of the defined function names for labels encompasses the function definitions themselves as well as the body.
+            labels 等价于 flet 除了 labels 定义的函数名的范围包含函数定义本身以及主体.
 
-macrolet
+        macrolet
 
-    macrolet establishes local macro definitions, using the same format used by defmacro.
+            macrolet 建立一个局部宏定义, 使用和 defmacro 相同的格式.
 
-    Within the body of macrolet, global setf expander definitions of the names defined by the macrolet do not apply; rather, setf expands the macro form and recursively process the resulting form.
+            在 macrolet 的主体中, macrolet 定义的名字对应的全局 setf 展开器定义是不适用的; 相反, setf 展开宏表达式并递归地处理生成的表达式.
 
-    The macro-expansion functions defined by macrolet are defined in the lexical environment in which the macrolet form appears. Declarations and macrolet and symbol-macrolet definitions affect the local macro definitions in a macrolet, but the consequences are undefined if the local macro definitions reference any local variable or function bindings that are visible in that lexical environment.
+            macrolet 定义的宏展开函数是定义在 macrolet 表达式出现的词法作用域中的. 声明和  macrolet 和 symbol-macrolet 定义影响一个 macrolet 中的局部宏定义, 但是, 如果局部宏定义引用在该词法环境中可见的任何局部变量或函数绑定, 那么后果是没有定义的.
 
-    Any local-documentation is attached to the corresponding local macro function as a documentation string.
+            任何局部文档都作为一个文档字符串被附加到相应的局部宏函数中.
 
 * 示例(Examples):
 
- (defun foo (x flag)
-   (macrolet ((fudge (z)
-                 ;The parameters x and flag are not accessible
-                 ; at this point; a reference to flag would be to
-                 ; the global variable of that name.
-                 ` (if flag (* ,z ,z) ,z)))
-    ;The parameters x and flag are accessible here.
-     (+ x
-        (fudge x)
-        (fudge (+ x 1)))))
- ==
- (defun foo (x flag)
-   (+ x
-      (if flag (* x x) x)
-      (if flag (* (+ x 1) (+ x 1)) (+ x 1))))
+    ```LISP
+    (defun foo (x flag)
+      (macrolet ((fudge (z)
+                    ;The parameters x and flag are not accessible
+                    ; at this point; a reference to flag would be to
+                    ; the global variable of that name.
+                    ` (if flag (* ,z ,z) ,z)))
+      ;The parameters x and flag are accessible here.
+        (+ x
+          (fudge x)
+          (fudge (+ x 1)))))
+    ==
+    (defun foo (x flag)
+      (+ x
+        (if flag (* x x) x)
+        (if flag (* (+ x 1) (+ x 1)) (+ x 1))))
+    ```
 
-after macro expansion. The occurrences of x and flag legitimately refer to the parameters of the function foo because those parameters are visible at the site of the macro call which produced the expansion.
+    在宏展开之后. x 和 flag 的出现合理地引用了函数 foo 的参数, 因为这些参数在这个产生展开式的宏调用的位置是可见的.
 
- (flet ((flet1 (n) (+ n n)))
-    (flet ((flet1 (n) (+ 2 (flet1 n))))
-      (flet1 2))) =>  6
+    ```LISP
+    (flet ((flet1 (n) (+ n n)))
+        (flet ((flet1 (n) (+ 2 (flet1 n))))
+          (flet1 2))) =>  6
 
- (defun dummy-function () 'top-level) =>  DUMMY-FUNCTION
- (funcall #'dummy-function) =>  TOP-LEVEL
- (flet ((dummy-function () 'shadow))
-      (funcall #'dummy-function)) =>  SHADOW
- (eq (funcall #'dummy-function) (funcall 'dummy-function))
-=>  true
- (flet ((dummy-function () 'shadow))
-   (eq (funcall #'dummy-function)
-       (funcall 'dummy-function)))
-=>  false
+    (defun dummy-function () 'top-level) =>  DUMMY-FUNCTION
+    (funcall #'dummy-function) =>  TOP-LEVEL
+    (flet ((dummy-function () 'shadow))
+          (funcall #'dummy-function)) =>  SHADOW
+    (eq (funcall #'dummy-function) (funcall 'dummy-function))
+    =>  true
+    (flet ((dummy-function () 'shadow))
+      (eq (funcall #'dummy-function)
+          (funcall 'dummy-function)))
+    =>  false
 
- (defun recursive-times (k n)
-   (labels ((temp (n)
-              (if (zerop n) 0 (+ k (temp (1- n))))))
-     (temp n))) =>  RECURSIVE-TIMES
- (recursive-times 2 3) =>  6
+    (defun recursive-times (k n)
+      (labels ((temp (n)
+                  (if (zerop n) 0 (+ k (temp (1- n))))))
+        (temp n))) =>  RECURSIVE-TIMES
+    (recursive-times 2 3) =>  6
 
- (defmacro mlets (x &environment env)
-    (let ((form `(babbit ,x)))
-      (macroexpand form env))) =>  MLETS
- (macrolet ((babbit (z) `(+ ,z ,z))) (mlets 5)) =>  10
+    (defmacro mlets (x &environment env)
+        (let ((form `(babbit ,x)))
+          (macroexpand form env))) =>  MLETS
+    (macrolet ((babbit (z) `(+ ,z ,z))) (mlets 5)) =>  10
 
- (flet ((safesqrt (x) (sqrt (abs x))))
-  ;; The safesqrt function is used in two places.
-   (safesqrt (apply #'+ (map 'list #'safesqrt '(1 2 3 4 5 6)))))
-=>  3.291173
+    (flet ((safesqrt (x) (sqrt (abs x))))
+      ;; The safesqrt function is used in two places.
+      (safesqrt (apply #'+ (map 'list #'safesqrt '(1 2 3 4 5 6)))))
+    =>  3.291173
 
- (defun integer-power (n k)
-   (declare (integer n))
-   (declare (type (integer 0 *) k))
-   (labels ((expt0 (x k a)
-              (declare (integer x a) (type (integer 0 *) k))
-              (cond ((zerop k) a)
-                    ((evenp k) (expt1 (* x x) (floor k 2) a))
-                    (t (expt0 (* x x) (floor k 2) (* x a)))))
-            (expt1 (x k a)
-              (declare (integer x a) (type (integer 0 *) k))
-              (cond ((evenp k) (expt1 (* x x) (floor k 2) a))
-                    (t (expt0 (* x x) (floor k 2) (* x a))))))
-    (expt0 n k 1))) =>  INTEGER-POWER
+    (defun integer-power (n k)
+      (declare (integer n))
+      (declare (type (integer 0 *) k))
+      (labels ((expt0 (x k a)
+                  (declare (integer x a) (type (integer 0 *) k))
+                  (cond ((zerop k) a)
+                        ((evenp k) (expt1 (* x x) (floor k 2) a))
+                        (t (expt0 (* x x) (floor k 2) (* x a)))))
+                (expt1 (x k a)
+                  (declare (integer x a) (type (integer 0 *) k))
+                  (cond ((evenp k) (expt1 (* x x) (floor k 2) a))
+                        (t (expt0 (* x x) (floor k 2) (* x a))))))
+        (expt0 n k 1))) =>  INTEGER-POWER
 
- (defun example (y l)
-   (flet ((attach (x)
-            (setq l (append l (list x)))))
-     (declare (inline attach))
-     (dolist (x y)
-       (unless (null (cdr x))
-         (attach x)))
-     l))
+    (defun example (y l)
+      (flet ((attach (x)
+                (setq l (append l (list x)))))
+        (declare (inline attach))
+        (dolist (x y)
+          (unless (null (cdr x))
+            (attach x)))
+        l))
 
- (example '((a apple apricot) (b banana) (c cherry) (d) (e))
-          '((1) (2) (3) (4 2) (5) (6 3 2)))
-=>  ((1) (2) (3) (4 2) (5) (6 3 2) (A APPLE APRICOT) (B BANANA) (C CHERRY))
+    (example '((a apple apricot) (b banana) (c cherry) (d) (e))
+              '((1) (2) (3) (4 2) (5) (6 3 2)))
+    =>  ((1) (2) (3) (4 2) (5) (6 3 2) (A APPLE APRICOT) (B BANANA) (C CHERRY))
+    ```
 
 * 受此影响(Affected By): None.
 
@@ -957,13 +956,13 @@ after macro expansion. The occurrences of x and flag legitimately refer to the p
 
 * 也见(See Also):
 
-declare, defmacro, defun, documentation, let, Section 3.1 (Evaluation), Section 3.4.11 (Syntactic Interaction of Documentation Strings and Declarations)
+        declare, defmacro, defun, documentation, let, Section 3.1 (Evaluation), Section 3.4.11 (Syntactic Interaction of Documentation Strings and Declarations)
 
 * 注意(Notes):
 
-It is not possible to define recursive functions with flet. labels can be used to define mutually recursive functions.
+        用 flet 去定义递归的函数是可以的. labels 可以被用于定义相互递归函数.
 
-If a macrolet form is a top level form, the body forms are also processed as top level forms. See Section 3.2.3 (File Compilation).
+        如果一个 macrolet 表达式形式是一个顶层表达式, 主体 forms 也被当作顶层表达式处理. 见章节 3.2.3 (File Compilation).
 
 
 ### <span id="">函数 FUNCALL</span>
