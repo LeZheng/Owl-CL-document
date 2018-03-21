@@ -1072,72 +1072,70 @@ fboundp 有时候被用于 "保护" 对函数 cell 的访问, 就像:
 
 * 语法(Syntax):
 
-function-lambda-expression function
-
-=> lambda-expression, closure-p, name
+        function-lambda-expression function
+        => lambda-expression, closure-p, name
 
 * 参数和值(Arguments and Values):
 
-function---a function.
-
-lambda-expression---a lambda expression or nil.
-
-closure-p---a generalized boolean.
-
-name---an object.
+        function---一个函数.
+        lambda-expression---一个 lambda 表达式或 nil.
+        closure-p---一个广义的 boolean.
+        name---一个对象.
 
 * 描述(Description):
 
-Returns information about function as follows:
+        返回关于函数的信息:
 
-The primary value, lambda-expression, is function's defining lambda expression, or nil if the information is not available. The lambda expression may have been pre-processed in some ways, but it should remain a suitable argument to compile or function. Any implementation may legitimately return nil as the lambda-expression of any function.
+        这个主要的值, lambda-expression, 是函数的定义 lambda 表达式, 如果这个信息不可用就是 nil. 这个 lambda 表达式可能已经在某些方面进行了预处理，但它仍然应该是 compile 或function 的一个合适的参数. 任何具体实现可能会合理地返回 nil 作为 任何 function 的 lambda-expression.
 
-The secondary value, closure-p, is nil if function's definition was enclosed in the null lexical environment or something non-nil if function's definition might have been enclosed in some non-null lexical environment. Any implementation may legitimately return true as the closure-p of any function.
+        第二个值, closure-p, 如果函数的定义是 null 词法作用域中的闭包那么就是 nil, 如果是非 null 词法作用域那么就不是 nil. 任何具体实现可能合理地返回 true 作为任何 function 的 closure-p.
 
-The tertiary value, name, is the ``name'' of function. The name is intended for debugging only and is not necessarily one that would be valid for use as a name in defun or function, for example. By convention, nil is used to mean that function has no name. Any implementation may legitimately return nil as the name of any function.
+        第三个值, name, 是 function 的 "名字(name)". 该名称仅用于调试, 并不一定是在 defun 或 function 中用作名称, 例如. 按照惯例, nil 被用于表示这个 function 没有名字. 任何具体实现可能合理地返回 nil 作为任何 function 的名字.
 
 * 示例(Examples):
 
-The following examples illustrate some possible return values, but are not intended to be exhaustive:
+        下面的例子说明了一些可能的返回值, 但是并不是详尽的:
 
- (function-lambda-expression #'(lambda (x) x))
-=>  NIL, false, NIL
-OR=>  NIL, true, NIL
-OR=>  (LAMBDA (X) X), true, NIL
-OR=>  (LAMBDA (X) X), false, NIL
+        ```LISP
+        (function-lambda-expression #'(lambda (x) x))
+        =>  NIL, false, NIL
+        OR=>  NIL, true, NIL
+        OR=>  (LAMBDA (X) X), true, NIL
+        OR=>  (LAMBDA (X) X), false, NIL
 
- (function-lambda-expression
-    (funcall #'(lambda () #'(lambda (x) x))))
-=>  NIL, false, NIL
-OR=>  NIL, true, NIL
-OR=>  (LAMBDA (X) X), true, NIL
-OR=>  (LAMBDA (X) X), false, NIL
+        (function-lambda-expression
+            (funcall #'(lambda () #'(lambda (x) x))))
+        =>  NIL, false, NIL
+        OR=>  NIL, true, NIL
+        OR=>  (LAMBDA (X) X), true, NIL
+        OR=>  (LAMBDA (X) X), false, NIL
 
- (function-lambda-expression
-    (funcall #'(lambda (x) #'(lambda () x)) nil))
-=>  NIL, true, NIL
-OR=>  (LAMBDA () X), true, NIL
-NOT=>  NIL, false, NIL
-NOT=>  (LAMBDA () X), false, NIL
+        (function-lambda-expression
+            (funcall #'(lambda (x) #'(lambda () x)) nil))
+        =>  NIL, true, NIL
+        OR=>  (LAMBDA () X), true, NIL
+        NOT=>  NIL, false, NIL
+        NOT=>  (LAMBDA () X), false, NIL
 
- (flet ((foo (x) x))
-   (setf (symbol-function 'bar) #'foo)
-   (function-lambda-expression #'bar))
-=>  NIL, false, NIL
-OR=>  NIL, true, NIL
-OR=>  (LAMBDA (X) (BLOCK FOO X)), true, NIL
-OR=>  (LAMBDA (X) (BLOCK FOO X)), false, FOO
-OR=>  (SI::BLOCK-LAMBDA FOO (X) X), false, FOO
+        (flet ((foo (x) x))
+          (setf (symbol-function 'bar) #'foo)
+          (function-lambda-expression #'bar))
+        =>  NIL, false, NIL
+        OR=>  NIL, true, NIL
+        OR=>  (LAMBDA (X) (BLOCK FOO X)), true, NIL
+        OR=>  (LAMBDA (X) (BLOCK FOO X)), false, FOO
+        OR=>  (SI::BLOCK-LAMBDA FOO (X) X), false, FOO
 
- (defun foo ()
-   (flet ((bar (x) x))
-     #'bar))
- (function-lambda-expression (foo))
-=>  NIL, false, NIL
-OR=>  NIL, true, NIL
-OR=>  (LAMBDA (X) (BLOCK BAR X)), true, NIL
-OR=>  (LAMBDA (X) (BLOCK BAR X)), true, (:INTERNAL FOO 0 BAR)
-OR=>  (LAMBDA (X) (BLOCK BAR X)), false, "BAR in FOO"
+        (defun foo ()
+          (flet ((bar (x) x))
+            #'bar))
+        (function-lambda-expression (foo))
+        =>  NIL, false, NIL
+        OR=>  NIL, true, NIL
+        OR=>  (LAMBDA (X) (BLOCK BAR X)), true, NIL
+        OR=>  (LAMBDA (X) (BLOCK BAR X)), true, (:INTERNAL FOO 0 BAR)
+        OR=>  (LAMBDA (X) (BLOCK BAR X)), false, "BAR in FOO"
+        ```
 
 * 副作用(Side Effects): None.
 
@@ -1149,36 +1147,37 @@ OR=>  (LAMBDA (X) (BLOCK BAR X)), false, "BAR in FOO"
 
 * 注意(Notes):
 
-Although implementations are free to return ``nil, true, nil'' in all cases, they are encouraged to return a lambda expression as the primary value in the case where the argument was created by a call to compile or eval (as opposed to being created by loading a compiled file).
+        虽然具体实现可以在所有情况下返回 "nil, true, nil", 但是还是鼓励在参数是对 compile 或 eval 的调用所创建的情况下返回一个 lambda 表达式作为主要的值 (与通过加载已编译的文件而创建的相反).
 
 
 ### <span id="">函数 FUNCTIONP</span>
 
 * 语法(Syntax):
 
-functionp object => generalized-boolean
+        functionp object => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-object---an object.
-
-generalized-boolean---a generalized boolean.
+        object---一个对象.
+        generalized-boolean---一个广义的 boolean.
 
 * 描述(Description):
 
-Returns true if object is of type function; otherwise, returns false.
+        如果 object 是 function 类型返回 true; 否则, 返回 false.
 
 * 示例(Examples):
 
- (functionp 'append) =>  false
- (functionp #'append) =>  true
- (functionp (symbol-function 'append)) =>  true
- (flet ((f () 1)) (functionp #'f)) =>  true
- (functionp (compile nil '(lambda () 259))) =>  true
- (functionp nil) =>  false
- (functionp 12) =>  false
- (functionp '(lambda (x) (* x x))) =>  false
- (functionp #'(lambda (x) (* x x))) =>  true
+    ```LISP
+    (functionp 'append) =>  false
+    (functionp #'append) =>  true
+    (functionp (symbol-function 'append)) =>  true
+    (flet ((f () 1)) (functionp #'f)) =>  true
+    (functionp (compile nil '(lambda () 259))) =>  true
+    (functionp nil) =>  false
+    (functionp 12) =>  false
+    (functionp '(lambda (x) (* x x))) =>  false
+    (functionp #'(lambda (x) (* x x))) =>  true
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -1190,41 +1189,42 @@ Returns true if object is of type function; otherwise, returns false.
 
 * 注意(Notes):
 
- (functionp object) ==  (typep object 'function)
+        (functionp object) ==  (typep object 'function)
 
 
 ### <span id="">函数 COMPILED-FUNCTION-P</span>
 
 * 语法(Syntax):
 
-compiled-function-p object => generalized-boolean
+        compiled-function-p object => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-object---an object.
-
-generalized-boolean---a generalized boolean.
+        object---一个对象.
+        generalized-boolean---一个广义的 boolean.
 
 * 描述(Description):
 
-Returns true if object is of type compiled-function; otherwise, returns false.
+        如果对象是 compiled-function 类型的对象就返回 true; 否则, 返回 false.
 
 * 示例(Examples):
 
- (defun f (x) x) =>  F
- (compiled-function-p #'f)
-=>  false
-OR=>  true
- (compiled-function-p 'f) =>  false
- (compile 'f) =>  F
- (compiled-function-p #'f) =>  true
- (compiled-function-p 'f) =>  false
- (compiled-function-p (compile nil '(lambda (x) x)))
-=>  true
- (compiled-function-p #'(lambda (x) x))
-=>  false
-OR=>  true
- (compiled-function-p '(lambda (x) x)) =>  false
+    ```LISP
+    (defun f (x) x) =>  F
+    (compiled-function-p #'f)
+    =>  false
+    OR=>  true
+    (compiled-function-p 'f) =>  false
+    (compile 'f) =>  F
+    (compiled-function-p #'f) =>  true
+    (compiled-function-p 'f) =>  false
+    (compiled-function-p (compile nil '(lambda (x) x)))
+    =>  true
+    (compiled-function-p #'(lambda (x) x))
+    =>  false
+    OR=>  true
+    (compiled-function-p '(lambda (x) x)) =>  false
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -1234,11 +1234,11 @@ OR=>  true
 
 * 也见(See Also):
 
-compile, compile-file, compiled-function
+        compile, compile-file, compiled-function
 
 * 注意(Notes):
 
- (compiled-function-p object) ==  (typep object 'compiled-function)
+        (compiled-function-p object) ==  (typep object 'compiled-function)
 
 
 ### <span id="">常量 CALL-ARGUMENTS-LIMIT</span>
