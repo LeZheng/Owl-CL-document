@@ -969,84 +969,89 @@ fboundp 有时候被用于 "保护" 对函数 cell 的访问, 就像:
 
 * 语法(Syntax):
 
-funcall function &rest args => result*
+        funcall function &rest args => result*
 
 * 参数和值(Arguments and Values):
 
-function---a function designator.
-
-args---arguments to the function.
-
-results---the values returned by the function.
+        function---一个函数指定符.
+        args---给这个 function 的参数.
+        results---这个 function 返回的值.
 
 * 描述(Description):
 
-funcall applies function to args. If function is a symbol, it is coerced to a function as if by finding its functional value in the global environment.
+        funcall 对 args 应用 function. 如果 function 是一个符号, 它会被强制转为一个函数就好像在全局环境中找它的函数函数性值.
 
 * 示例(Examples):
 
- (funcall #'+ 1 2 3) =>  6
- (funcall 'car '(1 2 3)) =>  1
- (funcall 'position 1 '(1 2 3 2 1) :start 1) =>  4
- (cons 1 2) =>  (1 . 2)
- (flet ((cons (x y) `(kons ,x ,y)))
-   (let ((cons (symbol-function '+)))
-     (funcall #'cons
-              (funcall 'cons 1 2)
-              (funcall cons 1 2))))
-=>  (KONS (1 . 2) 3)
+    ```LISP
+    (funcall #'+ 1 2 3) =>  6
+    (funcall 'car '(1 2 3)) =>  1
+    (funcall 'position 1 '(1 2 3 2 1) :start 1) =>  4
+    (cons 1 2) =>  (1 . 2)
+    (flet ((cons (x y) `(kons ,x ,y)))
+      (let ((cons (symbol-function '+)))
+        (funcall #'cons
+                (funcall 'cons 1 2)
+                (funcall cons 1 2))))
+    =>  (KONS (1 . 2) 3)
+    ```LISP
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-An error of type undefined-function should be signaled if function is a symbol that does not have a global definition as a function or that has a global definition as a macro or a special operator.
+        如果 function 是一个没有作为函数的全局定义或者全局定义是宏或特殊操作符的符号, 应该会发出一个 undefined-function 类型的错误.
 
 * 也见(See Also):
 
-apply, function, Section 3.1 (Evaluation)
+        apply, function, Section 3.1 (Evaluation)
 
 * 注意(Notes):
 
- (funcall function arg1 arg2 ...)
- ==  (apply function arg1 arg2 ... nil)
- ==  (apply function (list arg1 arg2 ...))
+    ```LISP
+    (funcall function arg1 arg2 ...)
+    ==  (apply function arg1 arg2 ... nil)
+    ==  (apply function (list arg1 arg2 ...))
+    ```
 
-The difference between funcall and an ordinary function call is that in the former case the function is obtained by ordinary evaluation of a form, and in the latter case it is obtained by the special interpretation of the function position that normally occurs.
+        funcall 和一个普通函数调用的区别在于, 在前一种情况下, 函数是通过对一种表达式形式的普通求值得到的, 在后者的情况下, 它是由正常发生的函数位置的特殊解释得到的.
 
 
 ### <span id="">特殊操作符 FUNCTION</span>
 
 * 语法(Syntax):
 
-function name => function
+        function name => function
 
 * 参数和值(Arguments and Values):
 
-name---a function name or lambda expression.
-
-function---a function object.
+        name---一个函数名字或者一个 lambda 表达式.
+        function---一个函数对象.
 
 * 描述(Description):
 
-The value of function is the functional value of name in the current lexical environment.
+        function 的值是当前词汇环境中 name 的函数值.
 
-If name is a function name, the functional definition of that name is that established by the innermost lexically enclosing flet, labels, or macrolet form, if there is one. Otherwise the global functional definition of the function name is returned.
+        如果 name 是一个函数名, 这个名称的函数定义是由最内部的词法闭包的 flet, labels, 或macrolet 表达式形式建立的, 如果有的话. 否则会返回这个函数名的全局函数定义会被返回.
 
-If name is a lambda expression, then a lexical closure is returned. In situations where a closure over the same set of bindings might be produced more than once, the various resulting closures might or might not be eq.
+        如果 name 是一个 lambda 表达式, 那么返回一个词法闭包. 如果在同一组绑定上的闭包可能产生不止一次的情况, 那么各种结果的闭包可能也可能不是 eq 的.
 
-It is an error to use function on a function name that does not denote a function in the lexical environment in which the function form appears. Specifically, it is an error to use function on a symbol that denotes a macro or special form. An implementation may choose not to signal this error for performance reasons, but implementations are forbidden from defining the failure to signal an error as a useful behavior.
+        在一个 function 表达式形式出现的词法环境中在一个不表示函数的函数名上用 function 是错误的. 具体来说, 在一个表示宏或者特殊表达式的符号上使用 function 是错误的. 一个具体实现可能出于性能原因不去发出这个错误, 但是具体实现禁止去定义这个发送错误的失败为一个有用的行为. <!-- TODO the failure to signal an error ?? -->
 
 * 示例(Examples):
 
- (defun adder (x) (function (lambda (y) (+ x y))))
+    ```LISP
+    (defun adder (x) (function (lambda (y) (+ x y))))
+    ```
 
-The result of (adder 3) is a function that adds 3 to its argument:
+        这个 (adder 3) 的结果是一个把 3 加给参数的函数:
 
- (setq add3 (adder 3))
- (funcall add3 5) =>  8
+    ```LISP
+    (setq add3 (adder 3))
+    (funcall add3 5) =>  8
+    ```
 
-This works because function creates a closure of the lambda expression that is able to refer to the value 3 of the variable x even after control has returned from the function adder.
+        这个可以正常工作是因为 function 创建了一个 lambda 表达式的闭包, 这个闭包引用了变量 x 的值 3, 即便控制流已经中函数 adder 中返回了.
 
 * 副作用(Side Effects): None.
 
@@ -1056,11 +1061,11 @@ This works because function creates a closure of the lambda expression that is a
 
 * 也见(See Also):
 
-defun, fdefinition, flet, labels, symbol-function, Section 3.1.2.1.1 (Symbols as Forms), Section 2.4.8.2 (Sharpsign Single-Quote), Section 22.1.3.13 (Printing Other Objects)
+        defun, fdefinition, flet, labels, symbol-function, Section 3.1.2.1.1 (Symbols as Forms), Section 2.4.8.2 (Sharpsign Single-Quote), Section 22.1.3.13 (Printing Other Objects)
 
 * 注意(Notes):
 
-The notation #'name may be used as an abbreviation for (function name).
+        标记 #'name 可能被用于 (function name) 的缩写.
 
 
 ### <span id="">函数 FUNCTION-LAMBDA-EXPRESSION</span>
