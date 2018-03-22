@@ -1243,104 +1243,105 @@ fboundp 有时候被用于 "保护" 对函数 cell 的访问, 就像:
 
 ### <span id="">常量 CALL-ARGUMENTS-LIMIT</span>
 
-Constant Value:
+* 常量值(Constant Value):
 
-An integer not smaller than 50 and at least as great as the value of lambda-parameters-limit, the exact magnitude of which is implementation-dependent.
+        一个不小于 50 的整数, 至少和 lambda-parameters-limit 的值一样大, 它的精确大小是与具体实现相关的.
 
 * 描述(Description):
 
-The upper exclusive bound on the number of arguments that may be passed to a function.
+        传递给函数的参数数量的上限.
 
 * 示例(Examples): None.
 
 * 也见(See Also):
 
-lambda-parameters-limit, multiple-values-limit
+        lambda-parameters-limit, multiple-values-limit
 
 * 注意(Notes): None.
 
 
 ### <span id="">常量 LAMBDA-LIST-KEYWORDS</span>
 
-Constant Value:
+* 常量值(Constant Value):
 
-a list, the elements of which are implementation-dependent, but which must contain at least the symbols &allow-other-keys, &aux, &body, &environment, &key, &optional, &rest, and &whole.
+        一个列表, 其中的元素是依赖于具体实现的, 但是其中至少需要包含 符号 &allow-other-keys, &aux, &body, &environment, &key, &optional, &rest, 和 &whole.
 
 * 描述(Description):
 
-A list of all the lambda list keywords used in the implementation, including the additional ones used only by macro definition forms.
+        在具体实现中使用的所有 lambda 列表关键字的列表, 包括仅由宏定义表达式使用的其他关键词.
 
 * 示例(Examples): None.
 
 * 也见(See Also):
 
-defun, flet, defmacro, macrolet, Section 3.1.2 (The Evaluation Model)
+        defun, flet, defmacro, macrolet, Section 3.1.2 (The Evaluation Model)
 
 * 注意(Notes): None.
 
-
 ### <span id="">常量 LAMBDA-PARAMETERS-LIMIT</span>
 
-Constant Value:
+* 常量值(Constant Value):
 
-implementation-dependent, but not smaller than 50.
+        依赖于具体实现, 但是不小于 50.
 
 * 描述(Description):
 
-A positive integer that is the upper exclusive bound on the number of parameter names that can appear in a single lambda list.
+        可以出现在单个 lambda 列表中的参数名字数量的上限.
 
 * 示例(Examples): None.
 
 * 也见(See Also):
 
-call-arguments-limit
+        call-arguments-limit
 
 * 注意(Notes):
 
-Implementors are encouraged to make the value of lambda-parameters-limit as large as possible.
-
+        鼓励实现者去使 lambda-parameters-limit 这个参数的值尽可能的大.
 
 ### <span id="">宏 DEFCONSTANT</span>
 
 * 语法(Syntax):
 
-defconstant name initial-value [documentation] => name
+        defconstant name initial-value [documentation] => name
 
 * 参数和值(Arguments and Values):
 
-name---a symbol; not evaluated.
-
-initial-value---a form; evaluated.
-
-documentation---a string; not evaluated.
+        name---一个符号; 不求值.
+        initial-value---一个表达式形式; 求值.
+        documentation---一个字符串; 不求值.
 
 * 描述(Description):
 
-defconstant causes the global variable named by name to be given a value that is the result of evaluating initial-value.
+        defconstant 导致 name 命名的全局变量赋予 initial-value 求值结果的值.
 
-A constant defined by defconstant can be redefined with defconstant. However, the consequences are undefined if an attempt is made to assign a value to the symbol using another operator, or to assign it to a different value using a subsequent defconstant.
+        一个 defconstant 定义的常量可以被 defconstant 重定义. 然而, 如果尝试去使用其他操作符去给这个符号赋值或者使用后面的 defconstant 将其赋给不同的值, 那么结果是未定义的.<!-- TODO ?? -->
 
-If documentation is supplied, it is attached to name as a documentation string of kind variable.
+        如果提供了 documentation, 它会作为一个 variable 种类的文档字符串关联到 name 上.
 
-defconstant normally appears as a top level form, but it is meaningful for it to appear as a non-top-level form. However, the compile-time side effects described below only take place when defconstant appears as a top level form.
+        defconstant 通常以顶层表达式出现, 但它作为非顶层表达式出现也是有意义的. 然而, 下面描述的编译时副作用只发生在 defconstant 以顶层表达式出现的情况.
 
-The consequences are undefined if there are any bindings of the variable named by name at the time defconstant is executed or if the value is not eql to the value of initial-value.
+        如果在 defconstant 被执行时存在任何 name 命名变量的绑定或者其中的值和 initial-value 不是 eql 的, 那么结果是不可预料的.
 
-The consequences are undefined when constant symbols are rebound as either lexical or dynamic variables. In other words, a reference to a symbol declared with defconstant always refers to its global value.
+        当常量符号作为词法或动态变量重绑定时, 其结果是不确定的. 换句话说, 一个指向 defconstant 声明的符号的引用总是指向它的全局的值.
 
-The side effects of the execution of defconstant must be equivalent to at least the side effects of the execution of the following code:
+        执行 defconstant 的副作用必须与以下代码执行的副作用相等:
 
- (setf (symbol-value 'name) initial-value)
- (setf (documentation 'name 'variable) 'documentation)
 
-If a defconstant form appears as a top level form, the compiler must recognize that name names a constant variable. An implementation may choose to evaluate the value-form at compile time, load time, or both. Therefore, users must ensure that the initial-value can be evaluated at compile time (regardless of whether or not references to name appear in the file) and that it always evaluates to the same value.
+    ```LISP
+    (setf (symbol-value 'name) initial-value)
+    (setf (documentation 'name 'variable) 'documentation)
+    ```
+
+        如果 defconstant 作为顶层表达式形式出现, 编译器必须识别出 name 是一个常量变量. 一个具体实现可能选择在编译时或加载时或都去求值 value-form. 因此, 用户必须确保 initial-value 可以在编译时被求值 (不管是否在文件中出现了引用 name) 并且总是求值为同一个值.
 
 * 示例(Examples):
 
- (defconstant this-is-a-constant 'never-changing "for a test") =>  THIS-IS-A-CONSTANT
-this-is-a-constant =>  NEVER-CHANGING
- (documentation 'this-is-a-constant 'variable) =>  "for a test"
- (constantp 'this-is-a-constant) =>  true
+    ```LISP
+    (defconstant this-is-a-constant 'never-changing "for a test") =>  THIS-IS-A-CONSTANT
+    this-is-a-constant =>  NEVER-CHANGING
+    (documentation 'this-is-a-constant 'variable) =>  "for a test"
+    (constantp 'this-is-a-constant) =>  true
+    ```
 
 * 受此影响(Affected By): None.
 
@@ -1348,7 +1349,7 @@ this-is-a-constant =>  NEVER-CHANGING
 
 * 也见(See Also):
 
-declaim, defparameter, defvar, documentation, proclaim, Section 3.1.2.1.1.3 (Constant Variables), Section 3.2 (Compilation)
+        declaim, defparameter, defvar, documentation, proclaim, Section 3.1.2.1.1.3 (Constant Variables), Section 3.2 (Compilation)
 
 * 注意(Notes): None.
 
@@ -2360,7 +2361,7 @@ catch, go, handler-case, restart-case, return, return-from, throw, Section 3.1 (
 
 ### <span id="">常量 NIL</span>
 
-Constant Value:
+* 常量值(Constant Value):
 
 nil.
 
@@ -2421,7 +2422,7 @@ not is intended to be used to invert the `truth value' of a boolean (or generali
 
 ### <span id="">常量 T</span>
 
-Constant Value:
+* 常量值(Constant Value):
 
 t.
 
@@ -3833,7 +3834,7 @@ multiple-value-bind, multiple-value-list, multiple-values-limit, values
 
 ### <span id="">常量 MULTIPLE-VALUES-LIMIT</span>
 
-Constant Value:
+* 常量值(Constant Value):
 
 An integer not smaller than 20, the exact magnitude of which is implementation-dependent.
 
