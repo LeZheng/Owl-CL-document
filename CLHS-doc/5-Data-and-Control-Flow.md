@@ -1358,116 +1358,120 @@ fboundp 有时候被用于 "保护" 对函数 cell 的访问, 就像:
 
 * 语法(Syntax):
 
-defparameter name initial-value [documentation] => name
-
-defvar name [initial-value [documentation]] => name
+        defparameter name initial-value [documentation] => name
+        defvar name [initial-value [documentation]] => name
 
 * 参数和值(Arguments and Values):
 
-name---a symbol; not evaluated.
-
-initial-value---a form; for defparameter, it is always evaluated, but for defvar it is evaluated only if name is not already bound.
-
-documentation---a string; not evaluated.
+        name---一个符号; 不求值.
+        initial-value---一个表达式形式; 对于 defparameter, 它总是被求值, 但是对于 defvar 只有在 name 还没有被绑定的情况下求值.
+        documentation---一个字符串; 不求值.
 
 * 描述(Description):
 
-defparameter and defvar establish name as a dynamic variable.
+        defparameter 和 defvar 确立 name 为一个动态变量.
 
-defparameter unconditionally assigns the initial-value to the dynamic variable named name. defvar, by contrast, assigns initial-value (if supplied) to the dynamic variable named name only if name is not already bound.
+        defparameter 无条件地赋 initial-value 给 name 命名的动态变量. defvar, 相比之下, 只有在 name 还没有被绑定时赋 initial-value (如果提供的话) 给 name 命名的动态变量.
 
-If no initial-value is supplied, defvar leaves the value cell of the dynamic variable named name undisturbed; if name was previously bound, its old value persists, and if it was previously unbound, it remains unbound.
+        如果没有提供 initial-value, defvar 离开名为 name 的动态变量的值单元; 如果 name 以前绑定过的话, 它的旧值就会一直存在, 如果它之前没有绑定, 那么它仍然是未绑定的.
 
-If documentation is supplied, it is attached to name as a documentation string of kind variable.
+        如果提供了 documentation, 它会作为变量类型的文档字符串关联给 name.
 
-defparameter and defvar normally appear as a top level form, but it is meaningful for them to appear as non-top-level forms. However, the compile-time side effects described below only take place when they appear as top level forms.
+        defparameter 和 defvar 通常作为顶层表达式形式出现, 但是当它们作为非顶层表达式出现时也是有意义的. 然而, 下面描述的编译时副作用仅发生在它们作为顶层表达式的时候.
 
 * 示例(Examples):
 
- (defparameter *p* 1) =>  *P*
- *p* =>  1
- (constantp '*p*) =>  false
- (setq *p* 2) =>  2
- (defparameter *p* 3) =>  *P*
- *p* =>  3
+    ```LISP
+    (defparameter *p* 1) =>  *P*
+    *p* =>  1
+    (constantp '*p*) =>  false
+    (setq *p* 2) =>  2
+    (defparameter *p* 3) =>  *P*
+    *p* =>  3
 
- (defvar *v* 1) =>  *V*
- *v* =>  1
- (constantp '*v*) =>  false
- (setq *v* 2) =>  2
- (defvar *v* 3) =>  *V*
- *v* =>  2
+    (defvar *v* 1) =>  *V*
+    *v* =>  1
+    (constantp '*v*) =>  false
+    (setq *v* 2) =>  2
+    (defvar *v* 3) =>  *V*
+    *v* =>  2
 
- (defun foo ()
-   (let ((*p* 'p) (*v* 'v))
-     (bar))) =>  FOO
- (defun bar () (list *p* *v*)) =>  BAR
- (foo) =>  (P V)
+    (defun foo ()
+    (let ((*p* 'p) (*v* 'v))
+    (bar))) =>  FOO
+    (defun bar () (list *p* *v*)) =>  BAR
+    (foo) =>  (P V)
+    ```
 
-The principal operational distinction between defparameter and defvar is that defparameter makes an unconditional assignment to name, while defvar makes a conditional one. In practice, this means that defparameter is useful in situations where loading or reloading the definition would want to pick up a new value of the variable, while defvar is used in situations where the old value would want to be retained if the file were loaded or reloaded. For example, one might create a file which contained:
+        defparameter 和 defvar 之间的主要操作区别是, defparameter 做出了一个无条件的赋值, 而 defvar 则是一个有条件的赋值. 在实践中, 这就意味着在加载或重新加载定义想要获得变量的新值时 defparameter 是很有用的, 而当文件被加载或重新加载时想要保持旧值时 defvar 是比较有用的. 比如, 可以创建一个文件, 其中包含:
 
- (defvar *the-interesting-numbers* '())
- (defmacro define-interesting-number (name n)
-   `(progn (defvar ,name ,n)
-           (pushnew ,name *the-interesting-numbers*)
-           ',name))
- (define-interesting-number *my-height* 168) ;cm
- (define-interesting-number *my-weight* 13)  ;stones
+    ```LISP
+    (defvar *the-interesting-numbers* '())
+    (defmacro define-interesting-number (name n)
+    `(progn (defvar ,name ,n)
+            (pushnew ,name *the-interesting-numbers*)
+            ',name))
+    (define-interesting-number *my-height* 168) ;cm
+    (define-interesting-number *my-weight* 13)  ;stones
+    ```
 
-Here the initial value, (), for the variable *the-interesting-numbers* is just a seed that we are never likely to want to reset to something else once something has been grown from it. As such, we have used defvar to avoid having the *interesting-numbers* information reset if the file is loaded a second time. It is true that the two calls to define-interesting-number here would be reprocessed, but if there were additional calls in another file, they would not be and that information would be lost. On the other hand, consider the following code:
+        这里的初始值, (), 对于变量 *the-interesting-numbers* 只是一个种子, 一旦从中生长出什么时我们不会想去重置它. 像这样, 我们使用 defvar 来避免文件第二次加载时 *the-interesting-numbers* 信息被重置. 确实, 这里的两个对 define-interesting-number 调用会被重新处理, 但是如果在另一个文件中由其他调用, 它们不会被重新处理并且信息会丢失. 另一方面, 思考下面代码:
 
- (defparameter *default-beep-count* 3)
- (defun beep (&optional (n *default-beep-count*))
-   (dotimes (i n) (si:%beep 1000. 100000.) (sleep 0.1)))
+    ```LISP
+    (defparameter *default-beep-count* 3)
+    (defun beep (&optional (n *default-beep-count*))
+    (dotimes (i n) (si:%beep 1000. 100000.) (sleep 0.1)))
+    ```
+    
+        这里我们可以简单地想象编辑代码去改变 *default-beep-count* 的初始值, 然后重新载入文件去取出新的值. 为了使值更新更简单, 我们使用 defparameter.
 
-Here we could easily imagine editing the code to change the initial value of *default-beep-count*, and then reloading the file to pick up the new value. In order to make value updating easy, we have used defparameter.
+        另一方面, 在这种情况下使用 defvar 是有潜在价值的. 比如, 假设某人为 *default-beep-count* 预先定义了一个替代值, 或者已经加载这个文件然后手动修改这个值. 在这两种情况下, 如果我们已经使用 defvar 而不是 defparameter, 那些用户设置不会因加载(或重新加载) 而被重写.
 
-On the other hand, there is potential value to using defvar in this situation. For example, suppose that someone had predefined an alternate value for *default-beep-count*, or had loaded the file and then manually changed the value. In both cases, if we had used defvar instead of defparameter, those user preferences would not be overridden by (re)loading the file.
-
-The choice of whether to use defparameter or defvar has visible consequences to programs, but is nevertheless often made for subjective reasons.
+        使用 defparameter 还是 defvar 的选择对程序有明显的影响, 但通常是出于主观原因.
 
 * 副作用(Side Effects):
 
-If a defvar or defparameter form appears as a top level form, the compiler must recognize that the name has been proclaimed special. However, it must neither evaluate the initial-value form nor assign the dynamic variable named name at compile time.
+        如果一个 defvar 或 defparameter 表达式形式作为顶层表达式出现, 编译器必须识别这个已经被全局声明为 special 的 name. 然而, 它既不能求值初始表达式, 也不能在编译时分配名为 name 的动态变量.
 
-There may be additional (implementation-defined) compile-time or run-time side effects, as long as such effects do not interfere with the correct operation of conforming programs.
+        这里可能由额外的编译期或运行期副作用 (依赖于具体实现), 只要这些副作用不影响符合规范的程序的正常操作.
 
 * 受此影响(Affected By):
 
-defvar is affected by whether name is already bound.
+        defvar 受 name 是否已经被绑定的影响.
 
 * 异常情况(Exceptional Situations): None.
 
 * 也见(See Also):
 
-declaim, defconstant, documentation, Section 3.2 (Compilation)
+        declaim, defconstant, documentation, Section 3.2 (Compilation)
 
 * 注意(Notes):
 
-It is customary to name dynamic variables with an asterisk at the beginning and end of the name. e.g., *foo* is a good name for a dynamic variable, but not for a lexical variable; foo is a good name for a lexical variable, but not for a dynamic variable. This naming convention is observed for all defined names in Common Lisp; however, neither conforming programs nor conforming implementations are obliged to adhere to this convention.
+        通常, 在名称的开头和结尾用星号来命名动态变量. 比如, *foo* 对于一个动态变量是一个好名字, 但是对于一个词法变量则不是好名字; foo 对于词法变量是一个好名字, 但是对于动态变量不是一个好名字. 这种命名约定适用于 Common Lisp 中所有已定义的名称; 然而, 符合规范的程序和符合规范的具体实现都不是必须去遵守这个约定.
 
-The intent of the permission for additional side effects is to allow implementations to do normal ``bookkeeping'' that accompanies definitions. For example, the macro expansion of a defvar or defparameter form might include code that arranges to record the name of the source file in which the definition occurs.
+        允许额外的副作用的目的是让具体实现伴随着定义做正常的"记录". 比如, 一个 defvar or defparameter 的宏展开可能包含安排记录这个定义发生的源文件名的代码.
 
-defparameter and defvar might be defined as follows:
+        defparameter 和 defvar 可能定义如下:
 
- (defmacro defparameter (name initial-value
-                         &optional (documentation nil documentation-p))
-   `(progn (declaim (special ,name))
-           (setf (symbol-value ',name) ,initial-value)
-           ,(when documentation-p
-              `(setf (documentation ',name 'variable) ',documentation))
-           ',name))
- (defmacro defvar (name &optional
-                        (initial-value nil initial-value-p)
-                        (documentation nil documentation-p))
-   `(progn (declaim (special ,name))
-           ,(when initial-value-p
-              `(unless (boundp ',name)
-                 (setf (symbol-value ',name) ,initial-value)))
-           ,(when documentation-p
-              `(setf (documentation ',name 'variable) ',documentation))
-           ',name))
-
+   ```LISP
+    (defmacro defparameter (name initial-value
+                            &optional (documentation nil documentation-p))
+      `(progn (declaim (special ,name))
+              (setf (symbol-value ',name) ,initial-value)
+              ,(when documentation-p
+                 `(setf (documentation ',name 'variable) ',documentation))
+              ',name))
+    (defmacro defvar (name &optional
+                           (initial-value nil initial-value-p)
+                           (documentation nil documentation-p))
+      `(progn (declaim (special ,name))
+              ,(when initial-value-p
+                 `(unless (boundp ',name)
+                    (setf (symbol-value ',name) ,initial-value)))
+              ,(when documentation-p
+                 `(setf (documentation ',name 'variable) ',documentation))
+              ',name))
+   ```
 
 ### <span id="">宏 DESTRUCTURING-BIND</span>
 
