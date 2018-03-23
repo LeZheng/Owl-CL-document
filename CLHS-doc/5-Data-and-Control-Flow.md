@@ -1477,44 +1477,40 @@ fboundp 有时候被用于 "保护" 对函数 cell 的访问, 就像:
 
 * 语法(Syntax):
 
-destructuring-bind lambda-list expression declaration* form*
-
-=> result*
+        destructuring-bind lambda-list expression declaration* form*
+        => result*
 
 * 参数和值(Arguments and Values):
 
-lambda-list---a destructuring lambda list.
-
-expression---a form.
-
-declaration---a declare expression; not evaluated.
-
-forms---an implicit progn.
-
-results---the values returned by the forms.
+        lambda-list---一个解构 lambda 列表.
+        expression---一个表达式形式.
+        declaration---一个 declare 表达式; 不求值.
+        forms---一个隐式的 progn.
+        results---forms 返回的结果.
 
 * 描述(Description):
 
-destructuring-bind binds the variables specified in lambda-list to the corresponding values in the tree structure resulting from the evaluation of expression; then destructuring-bind evaluates forms.
+        destructuring-bind 绑定 lambda-list 中指定的变量到 expression 求值结果的树结构的对应值中; 然后 destructuring-bind 求值forms.
 
-The lambda-list supports destructuring as described in Section 3.4.5 (Destructuring Lambda Lists).
+        支持解构的 lambda-list 在章节 3.4.5 (Destructuring Lambda Lists) 中有描述.
 
 * 示例(Examples):
 
- (defun iota (n) (loop for i from 1 to n collect i))       ;helper
- (destructuring-bind ((a &optional (b 'bee)) one two three)
-     `((alpha) ,@(iota 3))
-   (list a b three two one)) =>  (ALPHA BEE 3 2 1)
-
+    ```LISP
+    (defun iota (n) (loop for i from 1 to n collect i))       ;helper
+    (destructuring-bind ((a &optional (b 'bee)) one two three)
+        `((alpha) ,@(iota 3))
+      (list a b three two one)) =>  (ALPHA BEE 3 2 1)
+    ```
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-If the result of evaluating the expression does not match the destructuring pattern, an error of type error should be signaled.
+        如果求值 expression 的结果不匹配这个解构模式, 应该会发出一个 error 类型的错误.
 
 * 也见(See Also):
 
-macrolet, defmacro
+        macrolet, defmacro
 
 * 注意(Notes): None.
 
