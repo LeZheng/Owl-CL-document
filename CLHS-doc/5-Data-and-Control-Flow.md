@@ -1519,86 +1519,89 @@ fboundp 有时候被用于 "保护" 对函数 cell 的访问, 就像:
 
 * 语法(Syntax):
 
-let ({var | (var [init-form])}*) declaration* form* => result*
-
-let* ({var | (var [init-form])}*) declaration* form* => result*
+        let ({var | (var [init-form])}*) declaration* form* => result*
+        let* ({var | (var [init-form])}*) declaration* form* => result*
 
 * 参数和值(Arguments and Values):
 
-var---a symbol.
-
-init-form---a form.
-
-declaration---a declare expression; not evaluated.
-
-form---a form.
-
-results---the values returned by the forms.
+        var---一个符号.
+        init-form---一个表达式形式.
+        declaration---一个 declare 表达式; 不求值.
+        form---一个表达式形式.
+        results---forms 返回的结果.
 
 * 描述(Description):
 
-let and let* create new variable bindings and execute a series of forms that use these bindings. let performs the bindings in parallel and let* does them sequentially.
+        let 和 let* 创建新的变量绑定并且使用这些绑定执行一系列的表达式形式. let 并行地执行这些绑定而 let* 顺序地执行.
 
-The form
+        表达式形式
 
- (let ((var1 init-form-1)
-       (var2 init-form-2)
-       ...
-       (varm init-form-m))
-   declaration1
-   declaration2
-   ...
-   declarationp
-   form1
-   form2
-   ...
-   formn)
+    ```LISP
+    (let ((var1 init-form-1)
+          (var2 init-form-2)
+          ...
+          (varm init-form-m))
+      declaration1
+      declaration2
+      ...
+      declarationp
+      form1
+      form2
+      ...
+      formn)
+    ```
 
-first evaluates the expressions init-form-1, init-form-2, and so on, in that order, saving the resulting values. Then all of the variables varj are bound to the corresponding values; each binding is lexical unless there is a special declaration to the contrary. The expressions formk are then evaluated in order; the values of all but the last are discarded (that is, the body of a let is an implicit progn).
+        首先求值表达式 init-form-1, init-form-2, 等等, 按照这个顺序, 保存结果值. 然后所有变量 varj 绑定为对应的值; 每一个绑定都是词法的除非有一个 special 声明. 表达式 formk 依次被求值; 除了最后一个, 所有的值都被丢弃 (这也就是说, 一个 let 的主体是一个隐式的 progn).
 
-let* is similar to let, but the bindings of variables are performed sequentially rather than in parallel. The expression for the init-form of a var can refer to vars previously bound in the let*.
+        let* 类似于 let, 但是变量的绑定被顺序执行而非并行执行. 一个 var 的 init-form 表达式可以引用前面 let* 绑定的 vars.
 
-The form
+        表达式形式
 
- (let* ((var1 init-form-1)
-        (var2 init-form-2)
-        ...
-        (varm init-form-m))
-   declaration1
-   declaration2
-   ...
-   declarationp
-   form1
-   form2
-   ...
-   formn)
+    ```LISP
+    (let* ((var1 init-form-1)
+           (var2 init-form-2)
+           ...
+           (varm init-form-m))
+      declaration1
+      declaration2
+      ...
+      declarationp
+      form1
+      form2
+      ...
+      formn)
+    ```
 
-first evaluates the expression init-form-1, then binds the variable var1 to that value; then it evaluates init-form-2 and binds var2, and so on. The expressions formj are then evaluated in order; the values of all but the last are discarded (that is, the body of let* is an implicit progn).
+        首先求值 init-form-1, 然后绑定变量 var1 为那个值; 然后求值 init-form-2 并绑定 var2, 等等. 然后表达式 formj 按顺序求值; 除了最后一个, 所有的值都被丢弃 (这也就是说, 一个 let* 的主体是一个隐式的 progn).
 
-For both let and let*, if there is not an init-form associated with a var, var is initialized to nil.
+        对于 let 和 let*, 如果这里没有一个 init-form 关联 var, var 被初始化为 nil.
 
-The special form let has the property that the scope of the name binding does not include any initial value form. For let*, a variable's scope also includes the remaining initial value forms for subsequent variable bindings.
+        特殊表达式 let 有一个属性, 名称绑定的范围不包括任何初始话值表达式. 对于 let*, 一个变量的作用域包括了剩下的后面变量绑定的初始化值表达式.
 
 * 示例(Examples):
 
- (setq a 'top) =>  TOP
- (defun dummy-function () a) =>  DUMMY-FUNCTION
- (let ((a 'inside) (b a))
-    (format nil "~S ~S ~S" a b (dummy-function))) =>  "INSIDE TOP TOP"
- (let* ((a 'inside) (b a))
-    (format nil "~S ~S ~S" a b (dummy-function))) =>  "INSIDE INSIDE TOP"
- (let ((a 'inside) (b a))
-    (declare (special a))
-    (format nil "~S ~S ~S" a b (dummy-function))) =>  "INSIDE TOP INSIDE"
+    ```LISP
+    (setq a 'top) =>  TOP
+    (defun dummy-function () a) =>  DUMMY-FUNCTION
+    (let ((a 'inside) (b a))
+       (format nil "~S ~S ~S" a b (dummy-function))) =>  "INSIDE TOP TOP"
+    (let* ((a 'inside) (b a))
+       (format nil "~S ~S ~S" a b (dummy-function))) =>  "INSIDE INSIDE TOP"
+    (let ((a 'inside) (b a))
+       (declare (special a))
+       (format nil "~S ~S ~S" a b (dummy-function))) =>  "INSIDE TOP INSIDE"
+    ```
 
-The code
+        代码
 
- (let (x)
-   (declare (integer x))
-   (setq x (gcd y z))
-   ...)
+    ```LISP
+    (let (x)
+      (declare (integer x))
+      (setq x (gcd y z))
+      ...)
+    ```
 
-is incorrect; although x is indeed set before it is used, and is set to a value of the declared type integer, nevertheless x initially takes on the value nil in violation of the type declaration.
+        是错误的; 虽然 x 事实上在它被使用前设置, 并且设置为一个声明类型整型的值, 然而, x 一开始在值为 nil 时违反了类型声明.
 
 * 受此影响(Affected By): None.
 
@@ -1606,7 +1609,7 @@ is incorrect; although x is indeed set before it is used, and is set to a value 
 
 * 也见(See Also):
 
-progv
+        progv
 
 * 注意(Notes): None.
 
@@ -1615,35 +1618,36 @@ progv
 
 * 语法(Syntax):
 
-progv symbols values form* => result*
+        progv symbols values form* => result*
 
 * 参数和值(Arguments and Values):
 
-symbols---a list of symbols; evaluated.
-
-values---a list of objects; evaluated.
-
-forms---an implicit progn.
-
-results---the values returned by the forms.
+        symbols---一个符号列表; 求值.
+        values---一个对象列表; 求值.
+        forms---一个隐式的 progn.
+        results---forms 返回的值.
 
 * 描述(Description):
 
-progv creates new dynamic variable bindings and executes each form using those bindings. Each form is evaluated in order.
+        progv 创建新的动态变量绑定并且使用这些绑定执行每个 form. 每个 form 按顺序求值.
 
-progv allows binding one or more dynamic variables whose names may be determined at run time. Each form is evaluated in order with the dynamic variables whose names are in symbols bound to corresponding values. If too few values are supplied, the remaining symbols are bound and then made to have no value. If too many values are supplied, the excess values are ignored. The bindings of the dynamic variables are undone on exit from progv.
+        progv 允许去绑定一个或多个动态变量, 这些变量的名字可能在运行时确定定. 每一种 form 都是根据动态变量来进行求值的, 这些变量的名称都与相应的值绑定在一起. 如果提供的值太少, 剩余的符号就会被绑定, 然后提出 have no value. 如果提供了太多的值, 多余的值会被忽略. 这些动态变量的绑定在 progv 退出时被取消了.
 
 * 示例(Examples):
 
- (setq *x* 1) =>  1
- (progv '(*x*) '(2) *x*) =>  2
- *x* =>  1
+    ```LISP
+    (setq *x* 1) =>  1
+    (progv '(*x*) '(2) *x*) =>  2
+    *x* =>  1
+    ```
 
-Assuming *x* is not globally special,
+        假设 *x* 不是全局特殊的,
 
- (let ((*x* 3))
-    (progv '(*x*) '(4)
-      (list *x* (symbol-value '*x*)))) =>  (3 4)
+    ```LISP
+    (let ((*x* 3))
+       (progv '(*x*) '(4)
+          (list *x* (symbol-value '*x*)))) =>  (3 4)
+    ```
 
 * 受此影响(Affected By): None.
 
@@ -1651,11 +1655,11 @@ Assuming *x* is not globally special,
 
 * 也见(See Also):
 
-let, Section 3.1 (Evaluation)
+        let, Section 3.1 (Evaluation)
 
 * 注意(Notes):
 
-Among other things, progv is useful when writing interpreters for languages embedded in Lisp; it provides a handle on the mechanism for binding dynamic variables.
+        除了别的之外, 为 Lisp 中的嵌入式语言写解释器时 progv 是很有用的; 它为绑定动态变量的机制提供了一个途径.
 
 
 ### <span id="">特殊表达式 SETQ</span>
