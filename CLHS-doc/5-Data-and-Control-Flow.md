@@ -1803,41 +1803,41 @@ fboundp 有时候被用于 "保护" 对函数 cell 的访问, 就像:
 
 * 语法(Syntax):
 
-block name form* => result*
+        block name form* => result*
 
 * 参数和值(Arguments and Values):
 
-name---a symbol.
-
-form---a form.
-
-results---the values of the forms if a normal return occurs, or else, if an explicit return occurs, the values that were transferred.
+        name---一个符号.
+        form---一个表达式形式.
+        results---如果正常返回就是 forms 的值, 否则, 如果显式地返回, 就返回传递的值.
 
 * 描述(Description):
 
-block establishes a block named name and then evaluates forms as an implicit progn.
+        block 建立一个名为 name 的语句块然后就好像一个隐式 progn 来求值多个 form.
 
-The special operators block and return-from work together to provide a structured, lexical, non-local exit facility. At any point lexically contained within forms, return-from can be used with the given name to return control and values from the block form, except when an intervening block with the same name has been established, in which case the outer block is shadowed by the inner one.
+        特殊操作符 block 和 return-from 一起使用来提供一个结构化的, 词法的, 非局部的退出机制. 在 forms 中词法包含的任何点, return-from 可以和给定的 name 一起使用来从 blook 表达式形式中返回控制和值, 除了当内部有一个相同名字的块被建立时, 在这种情况下较外部的块会被更内部的块所遮蔽.
 
-The block named name has lexical scope and dynamic extent.
+        名为 name 的块有词法作用于和动态范围.
 
-Once established, a block may only be exited once, whether by normal return or explicit return.
+        一旦建立, 一个块可能只退出一次, 不管是正常退出还是显式退出.
 
 * 示例(Examples):
 
- (block empty) =>  NIL
- (block whocares (values 1 2) (values 3 4)) =>  3, 4
- (let ((x 1))
-   (block stop (setq x 2) (return-from stop) (setq x 3))
-   x) =>  2
- (block early (return-from early (values 1 2)) (values 3 4)) =>  1, 2
- (block outer (block inner (return-from outer 1)) 2) =>  1
- (block twin (block twin (return-from twin 1)) 2) =>  2
- ;; Contrast behavior of this example with corresponding example of CATCH.
- (block b
-   (flet ((b1 () (return-from b 1)))
-     (block b (b1) (print 'unreachable))
-     2)) =>  1
+    ```LISP
+    (block empty) =>  NIL
+    (block whocares (values 1 2) (values 3 4)) =>  3, 4
+    (let ((x 1))
+      (block stop (setq x 2) (return-from stop) (setq x 3))
+      x) =>  2
+    (block early (return-from early (values 1 2)) (values 3 4)) =>  1, 2
+    (block outer (block inner (return-from outer 1)) 2) =>  1
+    (block twin (block twin (return-from twin 1)) 2) =>  2
+    ;; Contrast behavior of this example with corresponding example of CATCH.
+    (block b
+      (flet ((b1 () (return-from b 1)))
+        (block b (b1) (print 'unreachable))
+        2)) =>  1
+    ```
 
 * 受此影响(Affected By): None.
 
@@ -1845,7 +1845,7 @@ Once established, a block may only be exited once, whether by normal return or e
 
 * 也见(See Also):
 
-return, return-from, Section 3.1 (Evaluation)
+        return, return-from, Section 3.1 (Evaluation)
 
 * 注意(Notes):
 
