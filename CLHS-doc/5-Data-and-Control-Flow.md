@@ -1730,62 +1730,63 @@ fboundp 有时候被用于 "保护" 对函数 cell 的访问, 就像:
 
 * 语法(Syntax):
 
-psetq {pair}* => nil
+        psetq {pair}* => nil
 
-pair::= var form
+        pair::= var form
 
 * 发音(Pronunciation):
 
-psetq: [;pee'set,kyoo]
+        psetq: [;pee'set,kyoo]
 
 * 参数和值(Arguments and Values):
 
-var---a symbol naming a variable other than a constant variable.
-
-form---a form.
+        var---一个符号, 表示一个变量, 而不是一个常量.
+        form---一个表达式形式.
 
 * 描述(Description):
 
-Assigns values to variables.
+        赋值给变量.
 
-This is just like setq, except that the assignments happen ``in parallel.'' That is, first all of the forms are evaluated, and only then are the variables set to the resulting values. In this way, the assignment to one variable does not affect the value computation of another in the way that would occur with setq's sequential assignment.
+        这个就像是 setq, 除了赋值是并行发生的之外. 这也就是说, 首先所有的表达式形式都被求值, 只有这样, 变量才会被设置成对应结果值. 通过这种方式, 对一个变量的赋值不会影响另一个变量的值计算, 这与 setq 的顺序赋值不同.
 
-If any var refers to a binding made by symbol-macrolet, then that var is treated as if psetf (not psetq) had been used.
+        如果任何 var 引用了 symbol-macrolet 创建的绑定, 那么这个 var 被认为就好像是被 psetf (不是 psetq).
 
 * 示例(Examples):
 
- ;; A simple use of PSETQ to establish values for variables.
- ;; As a matter of style, many programmers would prefer SETQ
- ;; in a simple situation like this where parallel assignment
- ;; is not needed, but the two have equivalent effect.
- (psetq a 1 b 2 c 3) =>  NIL
- a =>  1
- b =>  2
- c =>  3
+    ```LISP
+    ;; A simple use of PSETQ to establish values for variables.
+    ;; As a matter of style, many programmers would prefer SETQ
+    ;; in a simple situation like this where parallel assignment
+    ;; is not needed, but the two have equivalent effect.
+    (psetq a 1 b 2 c 3) =>  NIL
+    a =>  1
+    b =>  2
+    c =>  3
 
- ;; Use of PSETQ to update values by parallel assignment.
- ;; The effect here is very different than if SETQ had been used.
- (psetq a (1+ b) b (1+ a) c (+ a b)) =>  NIL
- a =>  3
- b =>  2
- c =>  3
+    ;; Use of PSETQ to update values by parallel assignment.
+    ;; The effect here is very different than if SETQ had been used.
+    (psetq a (1+ b) b (1+ a) c (+ a b)) =>  NIL
+    a =>  3
+    b =>  2
+    c =>  3
 
- ;; Use of PSETQ on a symbol macro.
- (let ((x (list 10 20 30)))
-   (symbol-macrolet ((y (car x)) (z (cadr x)))
-     (psetq y (1+ z) z (1+ y))
-     (list x y z)))
-=>  ((21 11 30) 21 11)
-
- ;; Use of parallel assignment to swap values of A and B.
- (let ((a 1) (b 2))
-   (psetq a b  b a)
-   (values a b))
-=>  2, 1
+    ;; Use of PSETQ on a symbol macro.
+    (let ((x (list 10 20 30)))
+       (symbol-macrolet ((y (car x)) (z (cadr x)))
+        (psetq y (1+ z) z (1+ y))
+        (list x y z)))
+    =>  ((21 11 30) 21 11)
+ 
+    ;; Use of parallel assignment to swap values of A and B.
+    (let ((a 1) (b 2))
+      (psetq a b  b a)
+      (values a b))
+    =>  2, 1
+    ```
 
 * 副作用(Side Effects):
 
-The values of forms are assigned to vars.
+        forms 的值会赋给 vars.
 
 * 受此影响(Affected By): None.
 
@@ -1793,7 +1794,7 @@ The values of forms are assigned to vars.
 
 * 也见(See Also):
 
-psetf, setq
+        psetf, setq
 
 * 注意(Notes): None.
 
