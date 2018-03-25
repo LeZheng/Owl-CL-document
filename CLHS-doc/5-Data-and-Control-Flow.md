@@ -1666,54 +1666,54 @@ fboundp 有时候被用于 "保护" 对函数 cell 的访问, 就像:
 
 * 语法(Syntax):
 
-setq {pair}* => result
+        setq {pair}* => result
 
-pair::= var form
+        pair::= var form
 
 * 发音(Pronunciation):
 
-['set,kyoo]
+        ['set,kyoo]
 
 * 参数和值(Arguments and Values):
 
-var---a symbol naming a variable other than a constant variable.
-
-form---a form.
-
-result---the primary value of the last form, or nil if no pairs were supplied.
+        var---一个符号, 表示一个变量, 而不是一个常量.
+        form---一个表达式形式.
+        result---最后一个表达式形式返回的主要的值, 如果没有提供 pair 就返回 nil.
 
 * 描述(Description):
 
-Assigns values to variables.
+        赋值给变量.
 
-(setq var1 form1 var2 form2 ...) is the simple variable assignment statement of Lisp. First form1 is evaluated and the result is stored in the variable var1, then form2 is evaluated and the result stored in var2, and so forth. setq may be used for assignment of both lexical and dynamic variables.
+        (setq var1 form1 var2 form2 ...) 是 Lisp 的简单变量赋值语句. 首先 form1 被求值并且结果被存储在变量 var1 中, 然后 form2 被求值并且结果存在 var2 中, 等等. setq 可能被用于词法变量或动态变量的赋值.
 
-If any var refers to a binding made by symbol-macrolet, then that var is treated as if setf (not setq) had been used.
+        如果任何 var 引用了 symbol-macrolet 产生的一个绑定, 那么这个 var 被认为就好像是被 setf (不是 setq).
 
 * 示例(Examples):
 
- ;; A simple use of SETQ to establish values for variables.
- (setq a 1 b 2 c 3) =>  3
- a =>  1
- b =>  2
- c =>  3
+    ```LISP
+    ;; A simple use of SETQ to establish values for variables.
+    (setq a 1 b 2 c 3) =>  3
+    a =>  1
+    b =>  2
+    c =>  3
 
- ;; Use of SETQ to update values by sequential assignment.
- (setq a (1+ b) b (1+ a) c (+ a b)) =>  7
- a =>  3
- b =>  4
- c =>  7
+    ;; Use of SETQ to update values by sequential assignment.
+    (setq a (1+ b) b (1+ a) c (+ a b)) =>  7
+    a =>  3
+    b =>  4
+    c =>  7
 
- ;; This illustrates the use of SETQ on a symbol macro.
- (let ((x (list 10 20 30)))
-   (symbol-macrolet ((y (car x)) (z (cadr x)))
-     (setq y (1+ z) z (1+ y))
-     (list x y z)))
-=>  ((21 22 30) 21 22)
+    ;; This illustrates the use of SETQ on a symbol macro.
+    (let ((x (list 10 20 30)))
+      (symbol-macrolet ((y (car x)) (z (cadr x)))
+        (setq y (1+ z) z (1+ y))
+        (list x y z)))
+    =>  ((21 22 30) 21 22)
+    ```
 
 * 副作用(Side Effects):
 
-The primary value of each form is assigned to the corresponding var.
+        每一个 form 的主要的值都被赋给对应的 var.
 
 * 受此影响(Affected By): None.
 
@@ -1721,7 +1721,7 @@ The primary value of each form is assigned to the corresponding var.
 
 * 也见(See Also):
 
-psetq, set, setf
+        psetq, set, setf
 
 * 注意(Notes): None.
 
