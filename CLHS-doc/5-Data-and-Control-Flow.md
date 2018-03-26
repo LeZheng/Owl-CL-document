@@ -1924,7 +1924,7 @@ throw, Section 3.1 (Evaluation)
 
         go 将控制转移到一个闭合的由和 tag eql 的标签所标记的 tagbody 表达式的主体上. 如果在这个主体内没有这样一个 tag, tagbody 的词法包含的主体 (如果有的话) 也会被检查. 如果有好几个标签和 tag 是 eql 的, 控制会被转移到包含这个 go 的最内部匹配 tag 的 tagbody 表达式上. 如果在这个 go 的点上没有词法可见的匹配的 tag 那么结果是未定义的.
 
-        由 go 发起的控制转移是按照章节5.2(Transfer of Control to an Exit Point)所描述的进行的.
+        由 go 发起的控制转移是按照章节 5.2 (Transfer of Control to an Exit Point)所描述的进行的.
 
 * 示例(Examples):
 
@@ -1967,72 +1967,77 @@ throw, Section 3.1 (Evaluation)
 
 * 语法(Syntax):
 
-return-from name [result] =>|
+        return-from name [result] =>|
 
 * 参数和值(Arguments and Values):
 
-name---a block tag; not evaluated.
-
-result---a form; evaluated. The default is nil.
+        name---一个 block 标签; 不求值.
+        result---一个表达式形式; 求值. 默认是 nil.
 
 * 描述(Description):
 
-Returns control and multiple values[2] from a lexically enclosing block.
+        从一个词法上闭合的 block 中返回控制和多值.
 
-A block form named name must lexically enclose the occurrence of return-from; any values yielded by the evaluation of result are immediately returned from the innermost such lexically enclosing block.
+        一个名为 name 的 block 表达式形式必须词法上包含 return-from 的发生; 结果求值所产生的任何值都将立即从最内层的词法闭合 block 中返回.
 
-The transfer of control initiated by return-from is performed as described in Section 5.2 (Transfer of Control to an Exit Point).
+        由 return-from 发起的控制转移是按照章节 5.2 (Transfer of Control to an Exit Point) 所所描述的进行的.
 
 * 示例(Examples):
 
- (block alpha (return-from alpha) 1) =>  NIL
- (block alpha (return-from alpha 1) 2) =>  1
- (block alpha (return-from alpha (values 1 2)) 3) =>  1, 2
- (let ((a 0))
-    (dotimes (i 10) (incf a) (when (oddp i) (return)))
-    a) =>  2
- (defun temp (x)
-    (if x (return-from temp 'dummy))
-    44) =>  TEMP
- (temp nil) =>  44
- (temp t) =>  DUMMY
- (block out
-   (flet ((exit (n) (return-from out n)))
-     (block out (exit 1)))
-   2) =>  1
- (block nil
-   (unwind-protect (return-from nil 1)
-     (return-from nil 2)))
-=>  2
- (dolist (flag '(nil t))
-   (block nil
-     (let ((x 5))
-       (declare (special x))
-       (unwind-protect (return-from nil)
-         (print x))))
-   (print 'here))
->>  5
->>  HERE
->>  5
->>  HERE
-=>  NIL
- (dolist (flag '(nil t))
-   (block nil
-     (let ((x 5))
-       (declare (special x))
-       (unwind-protect
-           (if flag (return-from nil))
-         (print x))))
-   (print 'here))
->>  5
->>  HERE
->>  5
->>  HERE
-=>  NIL
+    ```LISP
+    (block alpha (return-from alpha) 1) =>  NIL
+    (block alpha (return-from alpha 1) 2) =>  1
+    (block alpha (return-from alpha (values 1 2)) 3) =>  1, 2
+    (let ((a 0))
+       (dotimes (i 10) (incf a) (when (oddp i) (return)))
+       a) =>  2
+    (defun temp (x)
+       (if x (return-from temp 'dummy))
+       44) =>  TEMP
+    (temp nil) =>  44
+    (temp t) =>  DUMMY
+    (block out
+      (flet ((exit (n) (return-from out n)))
+        (block out (exit 1)))
+      2) =>  1
+    (block nil
+      (unwind-protect (return-from nil 1)
+        (return-from nil 2)))
+    =>  2
+    (dolist (flag '(nil t))
+      (block nil
+        (let ((x 5))
+          (declare (special x))
+          (unwind-protect (return-from nil)
+            (print x))))
+      (print 'here))
+    >>  5
+    >>  HERE
+    >>  5
+    >>  HERE
+    =>  NIL
+    (dolist (flag '(nil t))
+      (block nil
+        (let ((x 5))
+          (declare (special x))
+          (unwind-protect
+              (if flag (return-from nil))
+            (print x))))
+      (print 'here))
+    >>  5
+    >>  HERE
+    >>  5
+    >>  HERE
+    =>  NIL
+    ```
 
-The following has undefined consequences because the block form exits normally before the return-from form is attempted.
+        下面这个结果也是未定义的因为在 return-from 被尝试之前这个 block 表达式就正常退出了.
 
- (funcall (block nil #'(lambda () (return-from nil)))) is an error.
+    ```LISP
+    (funcall (block nil #'(lambda () (return-from nil)))) 
+    ```
+
+        是一个错误.
 
 * 受此影响(Affected By): None.
 
@@ -2040,7 +2045,7 @@ The following has undefined consequences because the block form exits normally b
 
 * 也见(See Also):
 
-block, return, Section 3.1 (Evaluation)
+        block, return, Section 3.1 (Evaluation)
 
 * 注意(Notes): None.
 
@@ -2049,39 +2054,43 @@ block, return, Section 3.1 (Evaluation)
 
 * 语法(Syntax):
 
-return [result] =>|
+        return [result] =>|
 
 * 参数和值(Arguments and Values):
 
-result---a form; evaluated. The default is nil.
+        result---一个表达式形式; 求值. 默认是 nil.
 
 * 描述(Description):
 
-Returns, as if by return-from, from the block named nil.
+        从一个名为 nil 的 block 中返回, 就像是通过 return-from 的一样.
 
 * 示例(Examples):
 
- (block nil (return) 1) =>  NIL
- (block nil (return 1) 2) =>  1
- (block nil (return (values 1 2)) 3) =>  1, 2
- (block nil (block alpha (return 1) 2)) =>  1
- (block alpha (block nil (return 1)) 2) =>  2
- (block nil (block nil (return 1) 2)) =>  1
+    ```LISP
+    (block nil (return) 1) =>  NIL
+    (block nil (return 1) 2) =>  1
+    (block nil (return (values 1 2)) 3) =>  1, 2
+    (block nil (block alpha (return 1) 2)) =>  1
+    (block alpha (block nil (return 1)) 2) =>  2
+    (block nil (block nil (return 1) 2)) =>  1
+    ```
 
 * 受此影响(Affected By): None.
 
-Conditions: None.
+* 条件(Conditions): None.
 
 * 也见(See Also):
 
-block, return-from, Section 3.1 (Evaluation)
+        block, return-from, Section 3.1 (Evaluation)
 
 * 注意(Notes):
 
- (return) ==  (return-from nil)
- (return form) ==  (return-from nil form)
+    ```LISP
+    (return) ==  (return-from nil)
+    (return form) ==  (return-from nil form)
+    ```
 
-The implicit blocks established by macros such as do are often named nil, so that return can be used to exit from such forms.
+        这个被类似于 do 的宏建立的隐式的块经常名为 nil, 因此 return 可以被用于从这样的块中返回.
 
 
 ### <span id="">特殊操作符 TAGBODY</span>
