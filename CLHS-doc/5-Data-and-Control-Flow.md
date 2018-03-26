@@ -1853,52 +1853,52 @@ fboundp 有时候被用于 "保护" 对函数 cell 的访问, 就像:
 
 * 语法(Syntax):
 
-catch tag form* => result*
+        catch tag form* => result*
 
 * 参数和值(Arguments and Values):
 
-tag---a catch tag; evaluated.
-
-forms---an implicit progn.
-
-results---if the forms exit normally, the values returned by the forms; if a throw occurs to the tag, the values that are thrown.
+        tag---一个捕捉标签; 求值的.
+        forms---一个隐式的 progn.
+        results---如果 forms 正常退出, 就是 forms 返回的值; 如果发生一个对 tag 的抛出, 值就会被抛出来.
 
 * 描述(Description):
 
-catch is used as the destination of a non-local control transfer by throw. Tags are used to find the catch to which a throw is transferring control. (catch 'foo form) catches a (throw 'foo form) but not a (throw 'bar form).
+        catch 被用作 throw 的非局部控制转移的终点. Tags 用于查找 throw 控制转移的 catch. (catch 'foo form) 捕捉一个 (throw 'foo form) 而不是 (throw 'bar form).
 
-The order of execution of catch follows:
+        catch 执行顺序如下:
 
-1. Tag is evaluated. It serves as the name of the catch.
+        1. Tag 被求值. 它是 catch 的名称.
 
-2. Forms are then evaluated as an implicit progn, and the results of the last form are returned unless a throw occurs.
+        2. 然后 forms 作为隐式 progn 来求值, 除非一个 throw 发生, 否则返回最后一个表达式形式的结果.
 
-3. If a throw occurs during the execution of one of the forms, control is transferred to the catch form whose tag is eq to the tag argument of the throw and which is the most recently established catch with that tag. No further evaluation of forms occurs.
+        3. 如果在执行 forms 的其中一个时发生一个 throw, 控制被转移到一个 catch 表达式形式, 这个 catch 表达式形式的 tag 和 throw 的 tag 参数是 eq 的并且它是这个 tag 最近建立的 catch. 不再对表达式形式进行进一步的求值.
 
-4. The tag established by catch is disestablished just before the results are returned.
+        4. catch 建立的这个 tag 在结果返回前就会被消除.
 
-If during the execution of one of the forms, a throw is executed whose tag is eq to the catch tag, then the values specified by the throw are returned as the result of the dynamically most recently established catch form with that tag.
+        如果在执行 forms 的其中一个的时候, 一个 throw 被执行而它的 tag 和 catch 的 tag 是 eq 的, 那么 throw 指定的值作为动态最新建立的这个 tag 的 catch 表达式的结果返回.
 
-The mechanism for catch and throw works even if throw is not within the lexical scope of catch. throw must occur within the dynamic extent of the evaluation of the body of a catch with a corresponding tag.
+        即便 throw 不在 catch 的词法作用域里, catch 和 throw 机制还是会起作用. throw 必须发生在对应 tag 的 catch 的主体求值的动态范围内.
 
 * 示例(Examples):
 
- (catch 'dummy-tag 1 2 (throw 'dummy-tag 3) 4) =>  3
- (catch 'dummy-tag 1 2 3 4) =>  4
- (defun throw-back (tag) (throw tag t)) =>  THROW-BACK
- (catch 'dummy-tag (throw-back 'dummy-tag) 2) =>  T
+    ```LISP
+    (catch 'dummy-tag 1 2 (throw 'dummy-tag 3) 4) =>  3
+    (catch 'dummy-tag 1 2 3 4) =>  4
+    (defun throw-back (tag) (throw tag t)) =>  THROW-BACK
+    (catch 'dummy-tag (throw-back 'dummy-tag) 2) =>  T
 
- ;; Contrast behavior of this example with corresponding example of BLOCK.
- (catch 'c
-   (flet ((c1 () (throw 'c 1)))
-     (catch 'c (c1) (print 'unreachable))
-     2)) =>  2
+    ;; Contrast behavior of this example with corresponding example of BLOCK.
+    (catch 'c
+      (flet ((c1 () (throw 'c 1)))
+        (catch 'c (c1) (print 'unreachable))
+        2)) =>  2
+    ```
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-An error of type control-error is signaled if throw is done when there is no suitable catch tag.
+        如果在没有合适的 catch tag 时 throw 被执行, 会发出一个 control-error 类型的错误.
 
 * 也见(See Also):
 
@@ -1906,9 +1906,9 @@ throw, Section 3.1 (Evaluation)
 
 * 注意(Notes):
 
-It is customary for symbols to be used as tags, but any object is permitted. However, numbers should not be used because the comparison is done using eq.
+        符号被用作 tags 是惯例, 但是任何对象也是允许的. 然而, 数字不应该被使用因为比较是使用 eq 来做的.
 
-catch differs from block in that catch tags have dynamic scope while block names have lexical scope.
+        catch 和 block 的区别在于 catch 标签有着动态作用域而 block 名字有词法作用域.
 
 ### <span id="">特殊操作符 GO</span>
 
