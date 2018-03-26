@@ -2175,64 +2175,69 @@ throw, Section 3.1 (Evaluation)
 
 * 语法(Syntax):
 
-throw tag result-form =>|
+        throw tag result-form =>|
 
 * 参数和值(Arguments and Values):
 
-tag---a catch tag; evaluated.
-
-result-form---a form; evaluated as described below.
+        tag---一个捕捉标签; 求值.
+        result-form---一个表达式形式; 按以下方式求值.
 
 * 描述(Description):
 
-throw causes a non-local control transfer to a catch whose tag is eq to tag.
+        throw 导致一个局部控制转移, 转移到一个标签和 tag eq 的 catch 中.
 
-Tag is evaluated first to produce an object called the throw tag; then result-form is evaluated, and its results are saved. If the result-form produces multiple values, then all the values are saved. The most recent outstanding catch whose tag is eq to the throw tag is exited; the saved results are returned as the value or values of catch.
+        Tag 首先被求值来产生一个称之为 throw 标签的对象; 然后 result-form 被求值, 并且它的结果被保存下来. 如果这个 result-form 产生多个值, 那么所有的值会被保存. 最新的未完成的其中 tag 和 throw 的 tag 是 eq 的 catch 会退出; 保存的结果会作为 catch 的值或多值被返回.
 
-The transfer of control initiated by throw is performed as described in Section 5.2 (Transfer of Control to an Exit Point).
+        throw 发起的控制转移会像章节 5.2 (Transfer of Control to an Exit Point) 中描述的那样被执行.
 
 * 示例(Examples):
 
- (catch 'result
-    (setq i 0 j 0)
-    (loop (incf j 3) (incf i)
-          (if (= i 3) (throw 'result (values i j))))) =>  3, 9
+    ```LISP
+    (catch 'result
+       (setq i 0 j 0)
+       (loop (incf j 3) (incf i)
+             (if (= i 3) (throw 'result (values i j))))) =>  3, 9
 
- (catch nil
-   (unwind-protect (throw nil 1)
-     (throw nil 2))) =>  2
+    (catch nil
+      (unwind-protect (throw nil 1)
+        (throw nil 2))) =>  2
+    ```
 
-The consequences of the following are undefined because the catch of b is passed over by the first throw, hence portable programs must assume that its dynamic extent is terminated. The binding of the catch tag is not yet disestablished and therefore it is the target of the second throw.
+        下面这个的结果是未定义的因为 b 的 catch 被第一个 throw 跳过了, 因此, 可移植程序必须假定其动态范围是终止的. 捕获标签的绑定还没有被消除, 因此它是第二个 throw 的目标.
 
- (catch 'a
-   (catch 'b
-     (unwind-protect (throw 'a 1)
-       (throw 'b 2))))
+    ```LISP
+    (catch 'a
+      (catch 'b
+        (unwind-protect (throw 'a 1)
+          (throw 'b 2))))
+    ```
 
-The following prints ``The inner catch returns :SECOND-THROW'' and then returns :outer-catch.
+        下面的打印 "The inner catch returns :SECOND-THROW" 然后返回 :outer-catch.
 
- (catch 'foo
-         (format t "The inner catch returns ~s.~%"
-                 (catch 'foo
-                     (unwind-protect (throw 'foo :first-throw)
-                         (throw 'foo :second-throw))))
-         :outer-catch)
->>  The inner catch returns :SECOND-THROW
-=>  :OUTER-CATCH
+    ```LISP
+    (catch 'foo
+            (format t "The inner catch returns ~s.~%"
+                    (catch 'foo
+                        (unwind-protect (throw 'foo :first-throw)
+                            (throw 'foo :second-throw))))
+            :outer-catch)
+    >>  The inner catch returns :SECOND-THROW
+    =>  :OUTER-CATCH
+    ```
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-If there is no outstanding catch tag that matches the throw tag, no unwinding of the stack is performed, and an error of type control-error is signaled. When the error is signaled, the dynamic environment is that which was in force at the point of the throw.
+        如果这里没有未完成的捕捉标签和抛出的匹配, 没有执行栈的解除(unwinding), 那么会发出一个 control-error 类型的错误. 当这个错误被发出时, 动态环境是在 throw 的作用下产生的the dynamic environment is that which was in force at the point of the throw.<!-- TODO 待校验 -->
 
 * 也见(See Also):
 
-block, catch, return-from, unwind-protect, Section 3.1 (Evaluation)
+        block, catch, return-from, unwind-protect, Section 3.1 (Evaluation)
 
 * 注意(Notes):
 
-catch and throw are normally used when the exit point must have dynamic scope (e.g., the throw is not lexically enclosed by the catch), while block and return are used when lexical scope is sufficient.
+        通常当退出点必须有动态作用域时 catch 和 throw 被使用 (比如, 这个 throw 不是被 catch 词法围绕的), 而 block 和 return 被用于词法作用域能满足的情况.
 
 
 ### <span id="">特殊操作符 UNWIND-PROTECT</span>
