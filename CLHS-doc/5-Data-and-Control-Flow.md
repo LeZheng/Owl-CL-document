@@ -1914,45 +1914,51 @@ throw, Section 3.1 (Evaluation)
 
 * 语法(Syntax):
 
-go tag =>|
+        go tag =>|
 
 * 参数和值(Arguments and Values):
 
-tag---a go tag.
+        tag---一个 go 标签.
 
 * 描述(Description):
 
-go transfers control to the point in the body of an enclosing tagbody form labeled by a tag eql to tag. If there is no such tag in the body, the bodies of lexically containing tagbody forms (if any) are examined as well. If several tags are eql to tag, control is transferred to whichever matching tag is contained in the innermost tagbody form that contains the go. The consequences are undefined if there is no matching tag lexically visible to the point of the go.
+        go 将控制转移到一个闭合的由和 tag eql 的标签所标记的 tagbody 表达式的主体上. 如果在这个主体内没有这样一个 tag, tagbody 的词法包含的主体 (如果有的话) 也会被检查. 如果有好几个标签和 tag 是 eql 的, 控制会被转移到包含这个 go 的最内部匹配 tag 的 tagbody 表达式上. 如果在这个 go 的点上没有词法可见的匹配的 tag 那么结果是未定义的.
 
-The transfer of control initiated by go is performed as described in Section 5.2 (Transfer of Control to an Exit Point).
+        由 go 发起的控制转移是按照章节5.2(Transfer of Control to an Exit Point)所描述的进行的.
 
 * 示例(Examples):
 
- (tagbody
-   (setq val 2)
-   (go lp)
-   (incf val 3)
-   lp (incf val 4)) =>  NIL
- val =>  6
+    ```LISP
+    (tagbody
+      (setq val 2)
+      (go lp)
+      (incf val 3)
+      lp (incf val 4)) =>  NIL
+    val =>  6
+    ```
 
-The following is in error because there is a normal exit of the tagbody before the go is executed.
+下面这个是错误的因为在 go 被执行前这里有一个 tagbody 正常的退出.
 
- (let ((a nil))
-   (tagbody t (setq a #'(lambda () (go t))))
-   (funcall a))
+    ```LISP
+    (let ((a nil))
+      (tagbody t (setq a #'(lambda () (go t))))
+      (funcall a))
+    ```
 
-The following is in error because the tagbody is passed over before the go form is executed.
+下面这个是错误的因为在 go 表达式被执行前这个 tagbody 被跳过了.
 
- (funcall (block nil
-            (tagbody a (return #'(lambda () (go a))))))
-
+    ```LISP
+    (funcall (block nil
+               (tagbody a (return #'(lambda () (go a))))))
+    ```
+    
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations): None.
 
 * 也见(See Also):
 
-tagbody
+        tagbody
 
 * 注意(Notes): None.
 
