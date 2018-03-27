@@ -2414,27 +2414,29 @@ throw, Section 3.1 (Evaluation)
 
 * 语法(Syntax):
 
-not x => boolean
+        not x => boolean
 
 * 参数和值(Arguments and Values):
 
-x---a generalized boolean (i.e., any object).
+        x---一个广义的 boolean (换句话说, 任何对象).
 
-boolean---a boolean.
+        boolean---一个 boolean.
 
 * 描述(Description):
 
-Returns t if x is false; otherwise, returns nil.
+        如果 x 是 false 就返回 t; 否则, 返回 nil.
 
 * 示例(Examples):
 
- (not nil) =>  T
- (not '()) =>  T
- (not (integerp 'sss)) =>  T
- (not (integerp 1)) =>  NIL
- (not 3.7) =>  NIL
- (not 'apple) =>  NIL
-
+    ```LISP
+    (not nil) =>  T
+    (not '()) =>  T
+    (not (integerp 'sss)) =>  T
+    (not (integerp 1)) =>  NIL
+    (not 3.7) =>  NIL
+    (not 'apple) =>  NIL
+    ```
+    
 * 副作用(Side Effects): None.
 
 * 受此影响(Affected By): None.
@@ -2443,11 +2445,11 @@ Returns t if x is false; otherwise, returns nil.
 
 * 也见(See Also):
 
-null
+        null
 
 * 注意(Notes):
 
-not is intended to be used to invert the `truth value' of a boolean (or generalized boolean) whereas null is intended to be used to test for the empty list. Operationally, not and null compute the same result; which to use is a matter of style.
+        not 的目的是用来反转 boolean 的"真值(truth value)" (或者是广义的 boolean) 然而 null 用于测试空列表. 操作上, not 和 null 的计算结果是一样的; 使用哪个是一个风格问题.
 
 
 ### <span id="">常量 T</span>
@@ -2486,55 +2488,54 @@ not is intended to be used to invert the `truth value' of a boolean (or generali
 
 * 语法(Syntax):
 
-eq x y => generalized-boolean
+        eq x y => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-x---an object.
-
-y---an object.
-
-generalized-boolean---a generalized boolean.
+        x---一个对象.
+        y---一个对象.
+        generalized-boolean---一个广义的 boolean.
 
 * 描述(Description):
 
-Returns true if its arguments are the same, identical object; otherwise, returns false.
+        如果它的参数是一样的, 完全相同的对象就返回 true; 否则, 返回 false.
 
 * 示例(Examples):
-
- (eq 'a 'b) =>  false
- (eq 'a 'a) =>  true
- (eq 3 3)
-=>  true
-OR=>  false
- (eq 3 3.0) =>  false
- (eq 3.0 3.0)
-=>  true
-OR=>  false
- (eq #c(3 -4) #c(3 -4))
-=>  true
-OR=>  false
- (eq #c(3 -4.0) #c(3 -4)) =>  false
- (eq (cons 'a 'b) (cons 'a 'c)) =>  false
- (eq (cons 'a 'b) (cons 'a 'b)) =>  false
- (eq '(a . b) '(a . b))
-=>  true
-OR=>  false
- (progn (setq x (cons 'a 'b)) (eq x x)) =>  true
- (progn (setq x '(a . b)) (eq x x)) =>  true
- (eq #\A #\A)
-=>  true
-OR=>  false
- (let ((x "Foo")) (eq x x)) =>  true
- (eq "Foo" "Foo")
-=>  true
-OR=>  false
- (eq "Foo" (copy-seq "Foo")) =>  false
- (eq "FOO" "foo") =>  false
- (eq "string-seq" (copy-seq "string-seq")) =>  false
- (let ((x 5)) (eq x x))
-=>  true
-OR=>  false
+    ```LISP
+    (eq 'a 'b) =>  false
+    (eq 'a 'a) =>  true
+    (eq 3 3)
+    =>  true
+    OR=>  false
+    (eq 3 3.0) =>  false
+    (eq 3.0 3.0)
+    =>  true
+    OR=>  false
+    (eq #c(3 -4) #c(3 -4))
+    =>  true
+    OR=>  false
+    (eq #c(3 -4.0) #c(3 -4)) =>  false
+    (eq (cons 'a 'b) (cons 'a 'c)) =>  false
+    (eq (cons 'a 'b) (cons 'a 'b)) =>  false
+    (eq '(a . b) '(a . b))
+    =>  true
+    OR=>  false
+    (progn (setq x (cons 'a 'b)) (eq x x)) =>  true
+    (progn (setq x '(a . b)) (eq x x)) =>  true
+    (eq #\A #\A)
+    =>  true
+    OR=>  false
+    (let ((x "Foo")) (eq x x)) =>  true
+    (eq "Foo" "Foo")
+    =>  true
+    OR=>  false
+    (eq "Foo" (copy-seq "Foo")) =>  false
+    (eq "FOO" "foo") =>  false
+    (eq "string-seq" (copy-seq "string-seq")) =>  false
+    (let ((x 5)) (eq x x))
+    =>  true
+    OR=>  false
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -2544,73 +2545,73 @@ OR=>  false
 
 * 也见(See Also):
 
-eql, equal, equalp, =, Section 3.2 (Compilation)
+        eql, equal, equalp, =, Section 3.2 (Compilation)
 
 * 注意(Notes):
 
-Objects that appear the same when printed are not necessarily eq to each other. Symbols that print the same usually are eq to each other because of the use of the intern function. However, numbers with the same value need not be eq, and two similar lists are usually not identical.
+        在打印时出现相同的对象不一定是相互之间 EQ 的. 由于 intern 函数的使用, 在打印时相同的符号通常相互之间是 EQ 的. 然而, 值相同的数字不需要是 EQ 的, 并且两个相似的列表通常也不是一样的.
 
-An implementation is permitted to make ``copies'' of characters and numbers at any time. The effect is that Common Lisp makes no guarantee that eq is true even when both its arguments are ``the same thing'' if that thing is a character or number.
+        一个具体实现允许在任何时间去 "拷贝" 字符和数字. 其结果是, 如果参数是字符或数字, 即使它们是"相同的", Common Lisp 无法保证 eq 是 true 的.
 
-Most Common Lisp operators use eql rather than eq to compare objects, or else they default to eql and only use eq if specifically requested to do so. However, the following operators are defined to use eq rather than eql in a way that cannot be overridden by the code which employs them:
+        大部分 Common Lisp 操作符使用 eql 而不是 eq 来比较对象, 或者它们会默认用 EQL, 只在特定要求下使用 EQ. 然而, 下面的操作符被定义为使用 EQ 而不是 EQL , 它不能被使用它们的代码所覆盖:
 
-catch           getf     throw
-get             remf
-get-properties  remprop
+        catch           getf     throw
+        get             remf
+        get-properties  remprop
 
-Figure 5-11. Operators that always prefer EQ over EQL
+        Figure 5-11. 总是使用 EQ 而不是 EQL 的操作符
 
 
 ### <span id="">函数 EQL</span>
 
 * 语法(Syntax):
 
-eql x y => generalized-boolean
+        eql x y => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-x---an object.
-
-y---an object.
-
-generalized-boolean---a generalized boolean.
+        x---一个对象.
+        y---一个对象.
+        generalized-boolean---一个广义的 boolean.
 
 * 描述(Description):
 
-The value of eql is true of two objects, x and y, in the folowing cases:
+        两个对象, x 和 y, 在下面情况下 eql 的值是 true:
 
-1. If x and y are eq.
-2. If x and y are both numbers of the same type and the same value.
-3. If they are both characters that represent the same character.
+        1. 如果 x 和 y 是 eq 的.
+        2. 如果 x 和 y 都是相同类型的数字并且值相同.
+        3. 如果它们都是表示相同字符的字符.
 
-Otherwise the value of eql is false.
+        否则 eql 的值就是 false.
 
-If an implementation supports positive and negative zeros as distinct values, then (eql 0.0 -0.0) returns false. Otherwise, when the syntax -0.0 is read it is interpreted as the value 0.0, and so (eql 0.0 -0.0) returns true.
+        如果一个具体实现支持正负零是不同的值, 那么 (eql 0.0 -0.0) 返回 false. 否则, 当语法 -0.0 被读取时会被解释为值 0.0, 所以 (eql 0.0 -0.0) 返回 true.
 
 * 示例(Examples):
 
- (eql 'a 'b) =>  false
- (eql 'a 'a) =>  true
- (eql 3 3) =>  true
- (eql 3 3.0) =>  false
- (eql 3.0 3.0) =>  true
- (eql #c(3 -4) #c(3 -4)) =>  true
- (eql #c(3 -4.0) #c(3 -4)) =>  false
- (eql (cons 'a 'b) (cons 'a 'c)) =>  false
- (eql (cons 'a 'b) (cons 'a 'b)) =>  false
- (eql '(a . b) '(a . b))
-=>  true
-OR=>  false
- (progn (setq x (cons 'a 'b)) (eql x x)) =>  true
- (progn (setq x '(a . b)) (eql x x)) =>  true
- (eql #\A #\A) =>  true
- (eql "Foo" "Foo")
-=>  true
-OR=>  false
- (eql "Foo" (copy-seq "Foo")) =>  false
- (eql "FOO" "foo") =>  false
-
-Normally (eql 1.0s0 1.0d0) is false, under the assumption that 1.0s0 and 1.0d0 are of distinct data types. However, implementations that do not provide four distinct floating-point formats are permitted to ``collapse'' the four formats into some smaller number of them; in such an implementation (eql 1.0s0 1.0d0) might be true.
+    ```LISP
+    (eql 'a 'b) =>  false
+    (eql 'a 'a) =>  true
+    (eql 3 3) =>  true
+    (eql 3 3.0) =>  false
+    (eql 3.0 3.0) =>  true
+    (eql #c(3 -4) #c(3 -4)) =>  true
+    (eql #c(3 -4.0) #c(3 -4)) =>  false
+    (eql (cons 'a 'b) (cons 'a 'c)) =>  false
+    (eql (cons 'a 'b) (cons 'a 'b)) =>  false
+    (eql '(a . b) '(a . b))
+    =>  true
+    OR=>  false
+    (progn (setq x (cons 'a 'b)) (eql x x)) =>  true
+    (progn (setq x '(a . b)) (eql x x)) =>  true
+    (eql #\A #\A) =>  true
+    (eql "Foo" "Foo")
+    =>  true
+    OR=>  false
+    (eql "Foo" (copy-seq "Foo")) =>  false
+    (eql "FOO" "foo") =>  false
+    ```
+    
+        通常 (eql 1.0s0 1.0d0) 是 false, 在 1.0s0 和 1.0d0 是不同的数据类型的设定下. 然而, 不提供4种不同的 floating-point 格式的具体实现允许将这四种格式"折叠"成更小的数字格式.
 
 * 副作用(Side Effects): None.
 
@@ -2620,15 +2621,15 @@ Normally (eql 1.0s0 1.0d0) is false, under the assumption that 1.0s0 and 1.0d0 a
 
 * 也见(See Also):
 
-eq, equal, equalp, =, char=
+        eq, equal, equalp, =, char=
 
 * 注意(Notes):
 
-eql is the same as eq, except that if the arguments are characters or numbers of the same type then their values are compared. Thus eql tells whether two objects are conceptually the same, whereas eq tells whether two objects are implementationally identical. It is for this reason that eql, not eq, is the default comparison predicate for operators that take sequences as arguments.
+        eql 和 eq 是一样的, 除了当参数是字符或相同类型的数字时它们的值会被比较. 因此 eql 讲述两个对象是否在概念上相等, 而 eq 讲述两个对象是否在实现上相等. 这也就是 eql, 而不是eq, 作为参数的运算符的默认比较谓词的原因.
 
-eql may not be true of two floats even when they represent the same value. = is used to compare mathematical values.
+        eql 对于两个表示相同值的浮点数可能不是 true. = 被用于比较算数值.
 
-Two complex numbers are considered to be eql if their real parts are eql and their imaginary parts are eql. For example, (eql #C(4 5) #C(4 5)) is true and (eql #C(4 5) #C(4.0 5.0)) is false. Note that while (eql #C(5.0 0.0) 5.0) is false, (eql #C(5 0) 5) is true. In the case of (eql #C(5.0 0.0) 5.0) the two arguments are of different types, and so cannot satisfy eql. In the case of (eql #C(5 0) 5), #C(5 0) is not a complex number, but is automatically reduced to the integer 5.
+        两个复数如果它们的实部和虚部都是 eql 的就认为它们是 eql 的. 比如, (eql #C(4 5) #C(4 5)) 是 true 而 (eql #C(4 5) #C(4.0 5.0)) 是 false. 注意 (eql #C(5.0 0.0) 5.0) 是 false, 而 (eql #C(5 0) 5) 是 true. 在 (eql #C(5.0 0.0) 5.0) 情况下两个参数是不同类型, 因此不能满足 eql. 在 (eql #C(5 0) 5) 情况下, #C(5 0) 不是一个复数, 但是被自动简化为 integer 5.
 
 
 ### <span id="">函数 EQUAL</span>
