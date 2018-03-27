@@ -2636,79 +2636,79 @@ throw, Section 3.1 (Evaluation)
 
 * 语法(Syntax):
 
-equal x y => generalized-boolean
+        equal x y => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-x---an object.
-
-y---an object.
-
-generalized-boolean---a generalized boolean.
+        x---一个对象.
+        y---一个对象.
+        generalized-boolean---一个广义的 boolean.
 
 * 描述(Description):
 
-Returns true if x and y are structurally similar (isomorphic) objects. Objects are treated as follows by equal.
+        如果 x 和 y 是结构上类似(同构)的对象, 则返回true. 对象按照以下类别被 equal 处理.
 
-Symbols, Numbers, and Characters
+        Symbols, Numbers, 和 Characters
 
-    equal is true of two objects if they are symbols that are eq, if they are numbers that are eql, or if they are characters that are eql.
+            两个对象如果它们是相互 eq 的符号, 或者是相互 eql 的数字, 或者相互 eql 的字符, 那么 equal 就是 true.
 
-Conses
+        Conses
 
-    For conses, equal is defined recursively as the two cars being equal and the two cdrs being equal.
+            对于 cons, equal 按照递归定义, 如果两个 car 是 equal 的并且两个 cdr 也是 equal 的那么就是 equal 的.
 
-Arrays
+        Arrays
 
-    Two arrays are equal only if they are eq, with one exception: strings and bit vectors are compared element-by-element (using eql). If either x or y has a fill pointer, the fill pointer limits the number of elements examined by equal. Uppercase and lowercase letters in strings are considered by equal to be different.
+            两个数组只有当它们是 eq 的情况下才会 equal, 除了一个例外: string 和 bit vector 被一个一个元素比较 (使用 eql). 如果 x 或 y 有一个填充指针, 这个填充指针限制检查被 equal 检查元素的数量. string 中的大写字母和小写字母被 equal 认为是不同的.
 
-Pathnames
+        Pathnames
 
-    Two pathnames are equal if and only if all the corresponding components (host, device, and so on) are equivalent. Whether or not uppercase and lowercase letters are considered equivalent in strings appearing in components is implementation-dependent. pathnames that are equal should be functionally equivalent.
+            两个 pathname 当且仅当所有对应的部分 (host, device, 等等) 相等的时候才是 equal 的. 大写和小写字母在组件的字符串中是否被认为是等价的是依赖于具体实现的. equal 的多个 pathname 应该在功能上是等同的.
 
-Other (Structures, hash-tables, instances, ...)
+        Other (Structures, hash-tables, instances, ...)
 
-    Two other objects are equal only if they are eq.
+            只有当两个其他对象是 eq 的情况下才会 equal.
 
-equal does not descend any objects other than the ones explicitly specified above. The next figure summarizes the information given in the previous list. In addition, the figure specifies the priority of the behavior of equal, with upper entries taking priority over lower ones.
+        equal does not descend any objects other than the ones explicitly specified above. 下面这段总结了前面的列表中的信息. 另外, 这段中指明了 equal 行为的优先级, 上面的条目优先于下面的条目.
 
-Type          Behavior
-number        uses eql
-character     uses eql
-cons          descends
-bit vector    descends
-string        descends
-pathname      ``functionally equivalent''
-structure     uses eq
-Other array   uses eq
-hash table    uses eq
-Other object  uses eq
+        类型           行为
+        number        uses eql
+        character     uses eql
+        cons          descends
+        bit vector    descends
+        string        descends
+        pathname      ``functionally equivalent''
+        structure     uses eq
+        Other array   uses eq
+        hash table    uses eq
+        Other object  uses eq
 
-Figure 5-12. Summary and priorities of behavior of equal
+        Figure 5-12. equal行为的概要和优先级
 
-Any two objects that are eql are also equal.
+        任何两个 eql 的对象也是 equal 的.
 
-equal may fail to terminate if x or y is circular.
+        如果 x 和 y 是环状的 equal 可能不会终止.
 
 * 示例(Examples):
 
- (equal 'a 'b) =>  false
- (equal 'a 'a) =>  true
- (equal 3 3) =>  true
- (equal 3 3.0) =>  false
- (equal 3.0 3.0) =>  true
- (equal #c(3 -4) #c(3 -4)) =>  true
- (equal #c(3 -4.0) #c(3 -4)) =>  false
- (equal (cons 'a 'b) (cons 'a 'c)) =>  false
- (equal (cons 'a 'b) (cons 'a 'b)) =>  true
- (equal #\A #\A) =>  true
- (equal #\A #\a) =>  false
- (equal "Foo" "Foo") =>  true
- (equal "Foo" (copy-seq "Foo")) =>  true
- (equal "FOO" "foo") =>  false
- (equal "This-string" "This-string") =>  true
- (equal "This-string" "this-string") =>  false
-
+    ```LISP
+    (equal 'a 'b) =>  false
+    (equal 'a 'a) =>  true
+    (equal 3 3) =>  true
+    (equal 3 3.0) =>  false
+    (equal 3.0 3.0) =>  true
+    (equal #c(3 -4) #c(3 -4)) =>  true
+    (equal #c(3 -4.0) #c(3 -4)) =>  false
+    (equal (cons 'a 'b) (cons 'a 'c)) =>  false
+    (equal (cons 'a 'b) (cons 'a 'b)) =>  true
+    (equal #\A #\A) =>  true
+    (equal #\A #\a) =>  false
+    (equal "Foo" "Foo") =>  true
+    (equal "Foo" (copy-seq "Foo")) =>  true
+    (equal "FOO" "foo") =>  false
+    (equal "This-string" "This-string") =>  true
+    (equal "This-string" "this-string") =>  false
+    ```
+    
 * 副作用(Side Effects): None.
 
 * 受此影响(Affected By): None.
@@ -2717,101 +2717,101 @@ equal may fail to terminate if x or y is circular.
 
 * 也见(See Also):
 
-eq, eql, equalp, =, string=, string-equal, char=, char-equal, tree-equal
+        eq, eql, equalp, =, string=, string-equal, char=, char-equal, tree-equal
 
 * 注意(Notes):
 
-Object equality is not a concept for which there is a uniquely determined correct algorithm. The appropriateness of an equality predicate can be judged only in the context of the needs of some particular program. Although these functions take any type of argument and their names sound very generic, equal and equalp are not appropriate for every application.
+        对象相等并不是一个概念, 它有唯一确定的正确算法. 等价谓词的适当性只能在某些特定程序的需求上下文中进行判断. 虽然这些函数接受任何类型的参数并且它们的名字听起来很通用, 但是 equal 和 equalp 不适用于每一个应用.
 
-A rough rule of thumb is that two objects are equal if and only if their printed representations are the same.
+        一个粗略的经验法则是两个对象当且仅当它们的打印表示是相同的那么就是 equal 的.
 
 
 ### <span id="">函数 EQUALP</span>
 
 * 语法(Syntax):
 
-equalp x y => generalized-boolean
+        equalp x y => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-x---an object.
-
-y---an object.
-
-generalized-boolean---a generalized boolean.
+        x---一个对象.
+        y---一个对象.
+        generalized-boolean---一个广义的 boolean.
 
 * 描述(Description):
 
-Returns true if x and y are equal, or if they have components that are of the same type as each other and if those components are equalp; specifically, equalp returns true in the following cases:
+        如果 x 和 y 是 equal 的就返回 true, 或者如果它们有着相同类型的组件并且那些组建也是 equalp 的就返回 true; 特别指出, equalp 在以下情况返回 true:
 
-Characters
+        Characters
 
-    If two characters are char-equal.
+            如果两个字符是 char-equal 的.
 
-Numbers
+        Numbers
 
-    If two numbers are the same under =.
+            如果两个数字在 = 下是一样的.
 
-Conses
+        Conses
 
-    If the two cars in the conses are equalp and the two cdrs in the conses are equalp.
+            如果这两个 cons 中的 car 是 equalp 的并且 cdr 也是 equalp 的.
 
-Arrays
+        Arrays
 
-    If two arrays have the same number of dimensions, the dimensions match, and the corresponding active elements are equalp. The types for which the arrays are specialized need not match; for example, a string and a general array that happens to contain the same characters are equalp. Because equalp performs element-by-element comparisons of strings and ignores the case of characters, case distinctions are ignored when equalp compares strings.
+            如果两个数组有着相同的维度, 维度是匹配的, 并且对应可用的元素是 equalp 的. 数组指定的类型不需要匹配; 比如, 一个 string 和 一个包含相同字符的普通的数组是 equalp 的. 由于 equalp 执行字符串挨个元素的比较并且忽略字符的大小写, 当使用 equalp 比较字符串时大小写区分是被忽略的.
 
-Structures
+        Structures
 
-    If two structures S1 and S2 have the same class and the value of each slot in S1 is the same under equalp as the value of the corresponding slot in S2.
+            如果两个结构 S1 和 S2 有着相同的类并且 S1 中每一个槽的值和 S2 中对应槽的值是 equalp 的.
 
-Hash Tables
+        Hash Tables
 
-    equalp descends hash-tables by first comparing the count of entries and the :test function; if those are the same, it compares the keys of the tables using the :test function and then the values of the matching keys using equalp recursively.
+            equalp 首先通过判断元素的数量和这个 :test 函数来 descend hash-tables; 如果这些是一样的, 它用 :test 函数来比较这个哈希表的 key 然后匹配的 key 对应的 value 也递归地使用 equalp.<!-- TODO descend -->
 
-equalp does not descend any objects other than the ones explicitly specified above. The next figure summarizes the information given in the previous list. In addition, the figure specifies the priority of the behavior of equalp, with upper entries taking priority over lower ones.
+        equalp 除了上述明确指定外不会去 descend 任何对象. 下一段中总结了上面列表中给定的信息. 另外, 这段中指明了 equalp 行为的优先级, 上面的条目优先于下面的条目.
 
-Type          Behavior
-number        uses =
-character     uses char-equal
-cons          descends
-bit vector    descends
-string        descends
-pathname      same as equal
-structure     descends, as described above
-Other array   descends
-hash table    descends, as described above
-Other object  uses eq
+        类型           行为
+        number        uses =
+        character     uses char-equal
+        cons          descends
+        bit vector    descends
+        string        descends
+        pathname      same as equal
+        structure     descends, as described above
+        Other array   descends
+        hash table    descends, as described above
+        Other object  uses eq
 
-Figure 5-13. Summary and priorities of behavior of equalp
+        Figure 5-13. equalp行为的优先级和总结
 
 * 示例(Examples):
 
- (equalp 'a 'b) =>  false
- (equalp 'a 'a) =>  true
- (equalp 3 3) =>  true
- (equalp 3 3.0) =>  true
- (equalp 3.0 3.0) =>  true
- (equalp #c(3 -4) #c(3 -4)) =>  true
- (equalp #c(3 -4.0) #c(3 -4)) =>  true
- (equalp (cons 'a 'b) (cons 'a 'c)) =>  false
- (equalp (cons 'a 'b) (cons 'a 'b)) =>  true
- (equalp #\A #\A) =>  true
- (equalp #\A #\a) =>  true
- (equalp "Foo" "Foo") =>  true
- (equalp "Foo" (copy-seq "Foo")) =>  true
- (equalp "FOO" "foo") =>  true
-
- (setq array1 (make-array 6 :element-type 'integer
-                            :initial-contents '(1 1 1 3 5 7)))
-=>  #(1 1 1 3 5 7)
- (setq array2 (make-array 8 :element-type 'integer
-                            :initial-contents '(1 1 1 3 5 7 2 6)
-                            :fill-pointer 6))
-=>  #(1 1 1 3 5 7)
- (equalp array1 array2) =>  true
- (setq vector1 (vector 1 1 1 3 5 7)) =>  #(1 1 1 3 5 7)
- (equalp array1 vector1) =>  true
-
+    ```LISP
+    (equalp 'a 'b) =>  false
+    (equalp 'a 'a) =>  true
+    (equalp 3 3) =>  true
+    (equalp 3 3.0) =>  true
+    (equalp 3.0 3.0) =>  true
+    (equalp #c(3 -4) #c(3 -4)) =>  true
+    (equalp #c(3 -4.0) #c(3 -4)) =>  true
+    (equalp (cons 'a 'b) (cons 'a 'c)) =>  false
+    (equalp (cons 'a 'b) (cons 'a 'b)) =>  true
+    (equalp #\A #\A) =>  true
+    (equalp #\A #\a) =>  true
+    (equalp "Foo" "Foo") =>  true
+    (equalp "Foo" (copy-seq "Foo")) =>  true
+    (equalp "FOO" "foo") =>  true
+  
+    (setq array1 (make-array 6 :element-type 'integer
+                               :initial-contents '(1 1 1 3 5 7)))
+    =>  #(1 1 1 3 5 7)
+    (setq array2 (make-array 8 :element-type 'integer
+                               :initial-contents '(1 1 1 3 5 7 2 6)
+                               :fill-pointer 6))
+    =>  #(1 1 1 3 5 7)
+    (equalp array1 array2) =>  true
+    (setq vector1 (vector 1 1 1 3 5 7)) =>  #(1 1 1 3 5 7)
+    (equalp array1 vector1) =>  true
+    ```
+    
 * 副作用(Side Effects): None.
 
 * 受此影响(Affected By): None.
@@ -2820,11 +2820,11 @@ Figure 5-13. Summary and priorities of behavior of equalp
 
 * 也见(See Also):
 
-eq, eql, equal, =, string=, string-equal, char=, char-equal
+        eq, eql, equal, =, string=, string-equal, char=, char-equal
 
 * 注意(Notes):
 
-Object equality is not a concept for which there is a uniquely determined correct algorithm. The appropriateness of an equality predicate can be judged only in the context of the needs of some particular program. Although these functions take any type of argument and their names sound very generic, equal and equalp are not appropriate for every application.
+        对象相等并不是一个概念, 它有唯一确定的正确算法. 等价谓词的适当性只能在某些特定程序的需求上下文中进行判断. 虽然这些函数接受任何类型的参数并且它们的名字听起来很通用, 但是 equal 和 equalp 不适用于每一个应用.
 
 
 ### <span id="">函数 IDENTITY</span>
