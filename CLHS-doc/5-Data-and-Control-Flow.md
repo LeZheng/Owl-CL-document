@@ -2244,143 +2244,145 @@ throw, Section 3.1 (Evaluation)
 
 * 语法(Syntax):
 
-unwind-protect protected-form cleanup-form* => result*
+        unwind-protect protected-form cleanup-form* => result*
 
 * 参数和值(Arguments and Values):
 
-protected-form---a form.
-
-cleanup-form---a form.
-
-results---the values of the protected-form.
+        protected-form---一个表达式形式.
+        cleanup-form---一个表达式形式.
+        results---这个 protected-form 的值.
 
 * 描述(Description):
 
-unwind-protect evaluates protected-form and guarantees that cleanup-forms are executed before unwind-protect exits, whether it terminates normally or is aborted by a control transfer of some kind. unwind-protect is intended to be used to make sure that certain side effects take place after the evaluation of protected-form.
+        unwind-protect 求值 protected-form 并且保证这个 cleanup-form 在 unwind-protect 退出前被执行, 不管它正常终止或被某种控制转移所跳过. unwind-protect 的目的是确保求值 protected-form 之后会发生某些副作用.
 
-If a non-local exit occurs during execution of cleanup-forms, no special action is taken. The cleanup-forms of unwind-protect are not protected by that unwind-protect.
+        如果在执行 cleanup-form 的时候发生一个非局部(non-local)退出, 不会采取特殊动作. 这个 unwind-protect 的 cleanup-forms 不受 unwind-protect 保护.
 
-unwind-protect protects against all attempts to exit from protected-form, including go, handler-case, ignore-errors, restart-case, return-from, throw, and with-simple-restart.
+        unwind-protect 防止所有企图退出 protected-form 的尝试, 包括 go, handler-case, ignore-errors, restart-case, return-from, throw, 还有 with-simple-restart.
 
-Undoing of handler and restart bindings during an exit happens in parallel with the undoing of the bindings of dynamic variables and catch tags, in the reverse order in which they were established. The effect of this is that cleanup-form sees the same handler and restart bindings, as well as dynamic variable bindings and catch tags, as were visible when the unwind-protect was entered.
+        在退出时取消 handler 和 restart 绑定, 与取消动态变量和 catch 标签绑定是并行的, 和它们建立的顺序是相反的. 这样做的效果是 cleanup-form 看到相同的 handler 和 restart 绑定, 以及动态变量绑定和 catch 标签, 和进入 unwind-protect 时见到的一样.
 
 * 示例(Examples):
 
- (tagbody
-   (let ((x 3))
-     (unwind-protect
-       (if (numberp x) (go out))
-       (print x)))
-  out
-   ...)
+    ```LISP
+    (tagbody
+      (let ((x 3))
+        (unwind-protect
+          (if (numberp x) (go out))
+          (print x)))
+     out
+      ...)
+    ```
 
-When go is executed, the call to print is executed first, and then the transfer of control to the tag out is completed.
+        当 go 被执行时, 对 print 的调用首先被执行, 然后控制转移到标签 out.
 
- (defun dummy-function (x)
-    (setq state 'running)
-    (unless (numberp x) (throw 'abort 'not-a-number))
-    (setq state (1+ x))) =>  DUMMY-FUNCTION
- (catch 'abort (dummy-function 1)) =>  2
- state =>  2
- (catch 'abort (dummy-function 'trash)) =>  NOT-A-NUMBER
- state =>  RUNNING
- (catch 'abort (unwind-protect (dummy-function 'trash)
-                  (setq state 'aborted))) =>  NOT-A-NUMBER
- state =>  ABORTED
+    ```LISP
+    (defun dummy-function (x)
+       (setq state 'running)
+       (unless (numberp x) (throw 'abort 'not-a-number))
+       (setq state (1+ x))) =>  DUMMY-FUNCTION
+    (catch 'abort (dummy-function 1)) =>  2
+    state =>  2
+    (catch 'abort (dummy-function 'trash)) =>  NOT-A-NUMBER
+    state =>  RUNNING
+    (catch 'abort (unwind-protect (dummy-function 'trash)
+                     (setq state 'aborted))) =>  NOT-A-NUMBER
+    state =>  ABORTED
+    ```
 
-The following code is not correct:
+        下面的代码是不对的:
 
- (unwind-protect
-   (progn (incf *access-count*)
-          (perform-access))
-   (decf *access-count*))
+    ```LISP
+    (unwind-protect
+      (progn (incf *access-count*)
+             (perform-access))
+      (decf *access-count*))
+    ```
+    
+        如果在 incf 完成之前发生了一个退出, 这个 decf 表达式形式无论如何都会被执行, 导致 *access-count* 的一个不正确的值. 正确的代码如下:
 
-If an exit occurs before completion of incf, the decf form is executed anyway, resulting in an incorrect value for *access-count*. The correct way to code this is as follows:
+    ```LISP
+    (let ((old-count *access-count*))
+      (unwind-protect
+        (progn (incf *access-count*)
+               (perform-access))
+        (setq *access-count* old-count)))
 
- (let ((old-count *access-count*))
-   (unwind-protect
-     (progn (incf *access-count*)
-            (perform-access))
-     (setq *access-count* old-count)))
+    ;;; The following returns 2.
+    (block nil
+      (unwind-protect (return 1)
+        (return 2)))
 
-;;; The following returns 2.
- (block nil
-   (unwind-protect (return 1)
-     (return 2)))
+    ;;; The following has undefined consequences.
+    (block a
+      (block b
+        (unwind-protect (return-from a 1)
+          (return-from b 2))))
 
-;;; The following has undefined consequences.
- (block a
-   (block b
-     (unwind-protect (return-from a 1)
-       (return-from b 2))))
+    ;;; The following returns 2.
+    (catch nil
+      (unwind-protect (throw nil 1)
+        (throw nil 2)))
 
-;;; The following returns 2.
- (catch nil
-   (unwind-protect (throw nil 1)
-     (throw nil 2)))
+    ;;; The following has undefined consequences because the catch of B is
+    ;;; passed over by the first THROW, hence portable programs must assume
+    ;;; its dynamic extent is terminated.  The binding of the catch tag is not
+    ;;; yet disestablished and therefore it is the target of the second throw.
+    (catch 'a
+      (catch 'b
+        (unwind-protect (throw 'a 1)
+          (throw 'b 2))))
 
-;;; The following has undefined consequences because the catch of B is
-;;; passed over by the first THROW, hence portable programs must assume
-;;; its dynamic extent is terminated.  The binding of the catch tag is not
-;;; yet disestablished and therefore it is the target of the second throw.
- (catch 'a
-   (catch 'b
-     (unwind-protect (throw 'a 1)
-       (throw 'b 2))))
+    ;;; The following prints "The inner catch returns :SECOND-THROW"
+    ;;; and then returns :OUTER-CATCH.
+    (catch 'foo
+            (format t "The inner catch returns ~s.~%"
+                    (catch 'foo
+                        (unwind-protect (throw 'foo :first-throw)
+                            (throw 'foo :second-throw))))
+            :outer-catch)
 
-;;; The following prints "The inner catch returns :SECOND-THROW"
-;;; and then returns :OUTER-CATCH.
- (catch 'foo
-         (format t "The inner catch returns ~s.~%"
-                 (catch 'foo
-                     (unwind-protect (throw 'foo :first-throw)
-                         (throw 'foo :second-throw))))
-         :outer-catch)
+    ;;; The following returns 10. The inner CATCH of A is passed over, but
+    ;;; because that CATCH is disestablished before the THROW to A is executed,
+    ;;; it isn't seen.
+    (catch 'a
+      (catch 'b
+        (unwind-protect (1+ (catch 'a (throw 'b 1)))
+          (throw 'a 10))))
 
+    ;;; The following has undefined consequences because the extent of
+    ;;; the (CATCH 'BAR ...) exit ends when the (THROW 'FOO ...)
+    ;;; commences.
+    (catch 'foo
+      (catch 'bar
+          (unwind-protect (throw 'foo 3)
+            (throw 'bar 4)
+            (print 'xxx))))
 
-;;; The following returns 10. The inner CATCH of A is passed over, but
-;;; because that CATCH is disestablished before the THROW to A is executed,
-;;; it isn't seen.
- (catch 'a
-   (catch 'b
-     (unwind-protect (1+ (catch 'a (throw 'b 1)))
-       (throw 'a 10))))
+    ;;; The following returns 4; XXX is not printed.
+    ;;; The (THROW 'FOO ...) has no effect on the scope of the BAR
+    ;;; catch tag or the extent of the (CATCH 'BAR ...) exit.
+    (catch 'bar
+      (catch 'foo
+          (unwind-protect (throw 'foo 3)
+            (throw 'bar 4)
+            (print 'xxx))))
 
-
-;;; The following has undefined consequences because the extent of
-;;; the (CATCH 'BAR ...) exit ends when the (THROW 'FOO ...)
-;;; commences.
- (catch 'foo
-   (catch 'bar
-       (unwind-protect (throw 'foo 3)
-         (throw 'bar 4)
-         (print 'xxx))))
-
-
-;;; The following returns 4; XXX is not printed.
-;;; The (THROW 'FOO ...) has no effect on the scope of the BAR
-;;; catch tag or the extent of the (CATCH 'BAR ...) exit.
- (catch 'bar
-   (catch 'foo
-       (unwind-protect (throw 'foo 3)
-         (throw 'bar 4)
-         (print 'xxx))))
-
-
-;;; The following prints 5.
- (block nil
-   (let ((x 5))
-     (declare (special x))
-     (unwind-protect (return)
-       (print x))))
-
+    ;;; The following prints 5.
+    (block nil
+      (let ((x 5))
+        (declare (special x))
+        (unwind-protect (return)
+          (print x))))
+    ```
+    
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations): None.
 
 * 也见(See Also):
 
-catch, go, handler-case, restart-case, return, return-from, throw, Section 3.1 (Evaluation)
+        catch, go, handler-case, restart-case, return, return-from, throw, Section 3.1 (Evaluation)
 
 * 注意(Notes): None.
 
