@@ -2391,19 +2391,21 @@ throw, Section 3.1 (Evaluation)
 
 * 常量值(Constant Value):
 
-nil.
+        nil.
 
 * 描述(Description):
 
-nil represents both boolean (and generalized boolean) false and the empty list.
+        nil 表示 boolean (还有广义的 boolean) false 还有空列表.
 
 * 示例(Examples):
 
- nil =>  NIL
+    ```LISP
+    nil =>  NIL
+    ```
 
 * 也见(See Also):
 
-t
+        t
 
 * 注意(Notes): None.
 
@@ -2452,28 +2454,30 @@ not is intended to be used to invert the `truth value' of a boolean (or generali
 
 * 常量值(Constant Value):
 
-t.
+        t.
 
 * 描述(Description):
 
-The boolean representing true, and the canonical generalized boolean representing true. Although any object other than nil is considered true, t is generally used when there is no special reason to prefer one such object over another.
+        这个 boolean 表示 true, 并且这个标准的广义 boolean 表示 true. 虽然任何不是 nil 的对象都被当成 true, t 在没有特殊原因的情况下被广泛使用.
 
-The symbol t is also sometimes used for other purposes as well. For example, as the name of a class, as a designator (e.g., a stream designator) or as a special symbol for some syntactic reason (e.g., in case and typecase to label the otherwise-clause).
+        符号 t 有时也被用作其他目的. 比如, 作为一个类的名字, 作为一个标志符 (比如, 一个 stream 标志符) 或者由于某些语法原因作为一个特殊符号 (比如, 在 case 和 typecase 中去表示 otherwise-clause).
 
 * 示例(Examples):
 
- t =>  T
- (eq t 't) =>  true
- (find-class 't) =>  #<CLASS T 610703333>
- (case 'a (a 1) (t 2)) =>  1
- (case 'b (a 1) (t 2)) =>  2
- (prin1 'hello t)
->>  HELLO
-=>  HELLO
-
+    ```LISP
+    t =>  T
+    (eq t 't) =>  true
+    (find-class 't) =>  #<CLASS T 610703333>
+    (case 'a (a 1) (t 2)) =>  1
+    (case 'b (a 1) (t 2)) =>  2
+    (prin1 'hello t)
+    >>  HELLO
+    =>  HELLO
+    ```
+    
 * 也见(See Also):
 
-nil
+        nil
 
 * 注意(Notes): None.
 
