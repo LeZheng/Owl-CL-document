@@ -2831,21 +2831,23 @@ throw, Section 3.1 (Evaluation)
 
 * 语法(Syntax):
 
-identity object => object
+        identity object => object
 
 * 参数和值(Arguments and Values):
 
-object---an object.
+        object---一个对象.
 
 * 描述(Description):
 
-Returns its argument object.
+        返回它的参数对象.
 
 * 示例(Examples):
 
- (identity 101) =>  101
- (mapcan #'identity (list (list 1 2 3) '(4 5 6))) =>  (1 2 3 4 5 6)
-
+    ```LISP
+    (identity 101) =>  101
+    (mapcan #'identity (list (list 1 2 3) '(4 5 6))) =>  (1 2 3 4 5 6)
+    ```
+ 
 * 副作用(Side Effects): None.
 
 * 受此影响(Affected By): None.
@@ -2856,38 +2858,39 @@ Returns its argument object.
 
 * 注意(Notes):
 
-identity is intended for use with functions that require a function as an argument.
+        identity 被用于需要一个函数作为参数的函数.
 
-(eql x (identity x)) returns true for all possible values of x, but (eq x (identity x)) might return false when x is a number or character.
+        (eql x (identity x)) 对于所有 x 的可能的值返回 true, 但是 (eq x (identity x)) 当 x 是一个数字或者字符时可能返回 false.
 
-identity could be defined by
+        identity 可以通过以下定义
 
-(defun identity (x) x)
+        (defun identity (x) x)
 
 
 ### <span id="">函数 COMPLEMENT</span>
 
 * 语法(Syntax):
 
-complement function => complement-function
+        complement function => complement-function
 
 * 参数和值(Arguments and Values):
 
-function---a function.
-
-complement-function---a function.
+        function---一个函数.
+        complement-function---一个函数.
 
 * 描述(Description):
 
-Returns a function that takes the same arguments as function, and has the same side-effect behavior as function, but returns only a single value: a generalized boolean with the opposite truth value of that which would be returned as the primary value of function. That is, when the function would have returned true as its primary value the complement-function returns false, and when the function would have returned false as its primary value the complement-function returns true.
+        返回一个和 function 接受相同参数并且和 function 有着相同副作用的函数, 但是只返回单个值: 一个广义的 boolean , 表示 function 返回的主要的值的相反值. 这也就是说, 当这个 function 会返回 true 作为主要的值时 complement-function 返回 false, 而当这个 function 返回 false 作为主要的值时, complement-function 返回 true.
 
 * 示例(Examples):
 
- (funcall (complement #'zerop) 1) =>  true
- (funcall (complement #'characterp) #\A) =>  false
- (funcall (complement #'member) 'a '(a b c)) =>  false
- (funcall (complement #'member) 'd '(a b c)) =>  true
-
+    ```LISP
+    (funcall (complement #'zerop) 1) =>  true
+    (funcall (complement #'characterp) #\A) =>  false
+    (funcall (complement #'member) 'a '(a b c)) =>  false
+    (funcall (complement #'member) 'd '(a b c)) =>  true
+    ```
+    
 * 副作用(Side Effects): None.
 
 * 受此影响(Affected By): None.
@@ -2896,48 +2899,49 @@ Returns a function that takes the same arguments as function, and has the same s
 
 * 也见(See Also):
 
-not
+        not
 
 * 注意(Notes):
 
- (complement x) ==  #'(lambda (&rest arguments) (not (apply x arguments)))
+        (complement x) ==  #'(lambda (&rest arguments) (not (apply x arguments)))
 
-In Common Lisp, functions with names like ``xxx-if-not'' are related to functions with names like ``xxx-if'' in that
+        在 Common Lisp 中, 有着像名字 ``xxx-if-not'' 的函数和有着类似 ``xxx-if'' 名字的函数有关
 
-(xxx-if-not f . arguments) ==  (xxx-if (complement f) . arguments)
+        (xxx-if-not f . arguments) ==  (xxx-if (complement f) . arguments)
 
-For example,
+        比如,
 
- (find-if-not #'zerop '(0 0 3)) ==
- (find-if (complement #'zerop) '(0 0 3)) =>  3
+        (find-if-not #'zerop '(0 0 3)) ==
+        (find-if (complement #'zerop) '(0 0 3)) =>  3
 
-Note that since the ``xxx-if-not'' functions and the :test-not arguments have been deprecated, uses of ``xxx-if'' functions or :test arguments with complement are preferred.
+        注意由于 "xxx-if-not" 函数和 :test-not 参数已经被废弃, 首选和 complement 一起使用 "xxx-if" 函数或  :test 参数.
 
 
 ### <span id="">函数 CONSTANTLY</span>
 
 * 语法(Syntax):
 
-constantly value => function
+        constantly value => function
 
 * 参数和值(Arguments and Values):
 
-value---an object.
+        value---一个对象.
 
-function---a function.
+        function---一个函数.
 
 * 描述(Description):
 
-constantly returns a function that accepts any number of arguments, that has no side-effects, and that always returns value.
+        constantly 返回一个接受任何数量的参数的函数, 没有副作用, 并且总是返回 value.
 
 * 示例(Examples):
 
- (mapcar (constantly 3) '(a b c d)) =>  (3 3 3 3)
- (defmacro with-vars (vars &body forms)
-   `((lambda ,vars ,@forms) ,@(mapcar (constantly nil) vars)))
-=>  WITH-VARS
- (macroexpand '(with-vars (a b) (setq a 3 b (* a a)) (list a b)))
-=>  ((LAMBDA (A B) (SETQ A 3 B (* A A)) (LIST A B)) NIL NIL), true
+    ```LISP
+    (mapcar (constantly 3) '(a b c d)) =>  (3 3 3 3)
+    (defmacro with-vars (vars &body forms)
+      `((lambda ,vars ,@forms) ,@(mapcar (constantly nil) vars)))
+    =>  WITH-VARS
+    (macroexpand '(with-vars (a b) (setq a 3 b (* a a)) (list a b)))
+    =>  ((LAMBDA (A B) (SETQ A 3 B (* A A)) (LIST A B)) NIL NIL), true
 
 * 受此影响(Affected By): None.
 
@@ -2945,14 +2949,16 @@ constantly returns a function that accepts any number of arguments, that has no 
 
 * 也见(See Also):
 
-identity
+        identity
 
 * 注意(Notes):
 
-constantly could be defined by:
+        constantly 可以通过以下方式来定义:
 
- (defun constantly (object)
-   #'(lambda (&rest arguments) object))
+    ```LISP
+    (defun constantly (object)
+      #'(lambda (&rest arguments) object))
+    ```
 
 
 ### <span id="">函数 EVERY, SOME, NOTEVERY, NOTANY</span>
