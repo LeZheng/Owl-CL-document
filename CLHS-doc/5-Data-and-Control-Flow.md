@@ -2965,156 +2965,155 @@ throw, Section 3.1 (Evaluation)
 
 * 语法(Syntax):
 
-every predicate &rest sequences+ => generalized-boolean
-
-some predicate &rest sequences+ => result
-
-notevery predicate &rest sequences+ => generalized-boolean
-
-notany predicate &rest sequences+ => generalized-boolean
+        every predicate &rest sequences+ => generalized-boolean
+        some predicate &rest sequences+ => result
+        notevery predicate &rest sequences+ => generalized-boolean
+        notany predicate &rest sequences+ => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-predicate---a designator for a function of as many arguments as there are sequences.
-
-sequence---a sequence.
-
-result---an object.
-
-generalized-boolean---a generalized boolean.
+        predicate---一个参数数量多达 sequences 数量的函数指定符.
+        sequence---一个序列.
+        result---一个对象.
+        generalized-boolean---一个广义的 boolean.
 
 * 描述(Description):
 
-every, some, notevery, and notany test elements of sequences for satisfaction of a given predicate. The first argument to predicate is an element of the first sequence; each succeeding argument is an element of a succeeding sequence.
+        every, some, notevery, 还有 notany 测试 sequences 的元素是否满足给定的 predicate. 给 predicate 的第一个参数是第一个序列的元素; 每一个后续的参数都是后续序列的元素.
 
-Predicate is first applied to the elements with index 0 in each of the sequences, and possibly then to the elements with index 1, and so on, until a termination criterion is met or the end of the shortest of the sequences is reached.
+        Predicate 首先应用到每一个序列的索引为 0 的元素, 然后可能是索引为 1 的, 诸如此类, 直到遇到一个终止准则或者到达最短序列的末尾.
 
-every returns false as soon as any invocation of predicate returns false. If the end of a sequence is reached, every returns true. Thus, every returns true if and only if every invocation of predicate returns true.
+        当任何 predicate 返回 false 的时候 every 返回 false. 如果到达一个 sequence 的末尾, every 返回 true. 因此, every 当且仅当所有 predicate 返回 true 的时候返回 true.
 
-some returns the first non-nil value which is returned by an invocation of predicate. If the end of a sequence is reached without any invocation of the predicate returning true, some returns false. Thus, some returns true if and only if some invocation of predicate returns true.
+        some 返回 predicate 调用返回的第一个非 nil 的值. 如果到达一个 sequence 的末尾还没有任何 predicate 的调用返回 true, some 返回 false. 因此, some 当且仅当一些 predicate 调用返回 true 的时候返回 true.
 
-notany returns false as soon as any invocation of predicate returns true. If the end of a sequence is reached, notany returns true. Thus, notany returns true if and only if it is not the case that any invocation of predicate returns true.
+        当任何 predicate 调用返回 true 时 notany 返回 false. 如果到达一个 sequence 的末尾, notany 返回 true. 因此, notany 当且仅当不是任何的 predicate 调用都返回 true 的时候返回 true.
 
-notevery returns true as soon as any invocation of predicate returns false. If the end of a sequence is reached, notevery returns false. Thus, notevery returns true if and only if it is not the case that every invocation of predicate returns true.
+        当任何 predicate 调用返回 false 时 notevery 返回 true. 如果到达一个 sequence 的末尾, notevery 返回 false. 因此, notevery 当且仅当不是每一个 predicate 都返回 true 时返回 true.
 
 * 示例(Examples):
 
- (every #'characterp "abc") =>  true
- (some #'= '(1 2 3 4 5) '(5 4 3 2 1)) =>  true
- (notevery #'< '(1 2 3 4) '(5 6 7 8) '(9 10 11 12)) =>  false
- (notany #'> '(1 2 3 4) '(5 6 7 8) '(9 10 11 12)) =>  true
+    ```LISP
+    (every #'characterp "abc") =>  true
+    (some #'= '(1 2 3 4 5) '(5 4 3 2 1)) =>  true
+    (notevery #'< '(1 2 3 4) '(5 6 7 8) '(9 10 11 12)) =>  false
+    (notany #'> '(1 2 3 4) '(5 6 7 8) '(9 10 11 12)) =>  true
+    ```
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-Should signal type-error if its first argument is neither a symbol nor a function or if any subsequent argument is not a proper sequence.
+        如果它的第一个参数既不是符号也不是一个函数或者如果任何后续的参数都不是一个适当的序列, 那么应该发出一个 type-error 类型的错误.
 
-Other exceptional situations are possible, depending on the nature of the predicate.
+        其他异常情况也是有可能的, 取决于 predicate 的性质.
 
 * 也见(See Also):
 
-and, or, Section 3.6 (Traversal Rules and Side Effects)
+        and, or, Section 3.6 (Traversal Rules and Side Effects)
 
 * 注意(Notes):
 
- (notany predicate sequence*) ==  (not (some predicate sequence*))
- (notevery predicate sequence*) ==  (not (every predicate sequence*))
+        (notany predicate sequence*) ==  (not (some predicate sequence*))
+        (notevery predicate sequence*) ==  (not (every predicate sequence*))
 
 
 ### <span id="">宏 AND</span>
 
 * 语法(Syntax):
 
-and form* => result*
+        and form* => result*
 
 * 参数和值(Arguments and Values):
 
-form---a form.
+        form---一个表达式形式.
 
-results---the values resulting from the evaluation of the last form, or the symbols nil or t.
+        results---最后一个表达式形式求值的结果值, 或者符号 nil 或 t.
 
 * 描述(Description):
 
-The macro and evaluates each form one at a time from left to right. As soon as any form evaluates to nil, and returns nil without evaluating the remaining forms. If all forms but the last evaluate to true values, and returns the results produced by evaluating the last form.
+        宏 and 对每一个表达式形式从左到右的顺序求值. 当任何表达式形式求值为 nil 时, 在不求值剩余表达式形式的情况下返回 nil. 如果除了最后一个以外的所有表达式形式都被求值为 true, 那么就返回最后一个表达式形式求值产生的结果.
 
-If no forms are supplied, (and) returns t.
+        如果没有提供 form, (and) 就返回 t.
 
-and passes back multiple values from the last subform but not from subforms other than the last.
+        and 传递回最后一个子表达式的多值, 但是不会传其他的子表达式.
 
 * 示例(Examples):
 
- (if (and (>= n 0)
-          (< n (length a-simple-vector))
-          (eq (elt a-simple-vector n) 'foo))
-     (princ "Foo!"))
+    ```LISP
+    (if (and (>= n 0)
+             (< n (length a-simple-vector))
+             (eq (elt a-simple-vector n) 'foo))
+        (princ "Foo!"))
+    ```
+    
+        假如 n 事实上是 a-simple-vector 的一个合法的索引, 如果 a-simple-vector 中的 n 元素是符号 foo, 上面表达式就打印 Foo!. 由于 and 保证从左到右测试它的子表达式, 如果 n 超出范围那么 elt 不会被调用.
 
-The above expression prints Foo! if element n of a-simple-vector is the symbol foo, provided also that n is indeed a valid index for a-simple-vector. Because and guarantees left-to-right testing of its parts, elt is not called if n is out of range.
-
- (setq temp1 1 temp2 1 temp3 1) =>  1
- (and (incf temp1) (incf temp2) (incf temp3)) =>  2
- (and (eql 2 temp1) (eql 2 temp2) (eql 2 temp3)) =>  true
- (decf temp3) =>  1
- (and (decf temp1) (decf temp2) (eq temp3 'nil) (decf temp3)) =>  NIL
- (and (eql temp1 temp2) (eql temp2 temp3)) =>  true
- (and) =>  T
-
+    ```LISP
+    (setq temp1 1 temp2 1 temp3 1) =>  1
+    (and (incf temp1) (incf temp2) (incf temp3)) =>  2
+    (and (eql 2 temp1) (eql 2 temp2) (eql 2 temp3)) =>  true
+    (decf temp3) =>  1
+    (and (decf temp1) (decf temp2) (eq temp3 'nil) (decf temp3)) =>  NIL
+    (and (eql temp1 temp2) (eql temp2 temp3)) =>  true
+    (and) =>  T
+    ```
+    
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations): None.
 
 * 也见(See Also):
 
-cond, every, if, or, when
+        cond, every, if, or, when
 
 * 注意(Notes):
 
- (and form) ==  (let () form)
- (and form1 form2 ...) ==  (when form1 (and form2 ...))
-
+        (and form) ==  (let () form)
+        (and form1 form2 ...) ==  (when form1 (and form2 ...))
 
 ### <span id="">宏 COND</span>
 
 * 语法(Syntax):
 
-cond {clause}* => result*
+        cond {clause}* => result*
 
-clause::= (test-form form*)
+        clause::= (test-form form*)
 
 * 参数和值(Arguments and Values):
 
-test-form---a form.
-
-forms---an implicit progn.
-
-results---the values of the forms in the first clause whose test-form yields true, or the primary value of the test-form if there are no forms in that clause, or else nil if no test-form yields true.
+        test-form---一个表达式形式.
+        forms---一个隐式的 progn.
+        results---第一个产生 true 的 test-form 的 clause 的结果, 如果在这样的 clause 中没有 form 就是 test-form 的主要的值, 如果没有 test-form 产生 true 就返回 nil.
 
 * 描述(Description):
 
-cond allows the execution of forms to be dependent on test-form.
+        cond 允许 form 的执行依赖于 test-form.
 
-Test-forms are evaluated one at a time in the order in which they are given in the argument list until a test-form is found that evaluates to true.
+        Test-form 按它们出现在参数列表中的顺序一次求值一个直到有一个 test-form 求值为 true.
 
-If there are no forms in that clause, the primary value of the test-form is returned by the cond form. Otherwise, the forms associated with this test-form are evaluated in order, left to right, as an implicit progn, and the values returned by the last form are returned by the cond form.
+        如果在这样一个 clause 中没有 form, 那么 test-form 的主要的值被 cond 表达式返回. 否则, 和这个 test-form 关联的 from 按顺序求值, 从左到右, 像一个隐式的 progn, 并且最后一个 form 返回的值被 cond 表达式形式返回.
 
-Once one test-form has yielded true, no additional test-forms are evaluated. If no test-form yields true, nil is returned.
+        一旦一个 test-form 已经产生 true, 不会有其他的 test-forms 被求值. 如果没有 test-form 产生 true, 返回 nil.
 
 * 示例(Examples):
 
- (defun select-options ()
-   (cond ((= a 1) (setq a 2))
-         ((= a 2) (setq a 3))
-         ((and (= a 3) (floor a 2)))
-         (t (floor a 3)))) =>  SELECT-OPTIONS
- (setq a 1) =>  1
- (select-options) =>  2
- a =>  2
- (select-options) =>  3
- a =>  3
- (select-options) =>  1
- (setq a 5) =>  5
- (select-options) =>  1, 2
-
+    ```LISP
+    (defun select-options ()
+      (cond ((= a 1) (setq a 2))
+            ((= a 2) (setq a 3))
+            ((and (= a 3) (floor a 2)))
+            (t (floor a 3)))) =>  SELECT-OPTIONS
+    (setq a 1) =>  1
+    (select-options) =>  2
+    a =>  2
+    (select-options) =>  3
+    a =>  3
+    (select-options) =>  1
+    (setq a 5) =>  5
+    (select-options) =>  1, 2
+    ```
+    
 * 副作用(Side Effects): None.
 
 * 受此影响(Affected By): None.
@@ -3123,7 +3122,7 @@ Once one test-form has yielded true, no additional test-forms are evaluated. If 
 
 * 也见(See Also):
 
-if, case.
+        if, case.
 
 * 注意(Notes): None.
 
@@ -3132,86 +3131,87 @@ if, case.
 
 * 语法(Syntax):
 
-if test-form then-form [else-form] => result*
+        if test-form then-form [else-form] => result*
 
 * 参数和值(Arguments and Values):
 
-Test-form---a form.
-
-Then-form---a form.
-
-Else-form---a form. The default is nil.
-
-results---if the test-form yielded true, the values returned by the then-form; otherwise, the values returned by the else-form.
+        Test-form---一个表达式形式.
+        Then-form---一个表达式形式.
+        Else-form---一个表达式形式. 默认是 nil.
+        results---如果这个 test-form 产生 true, 就是 then-form 返回的值; 否则, 就是 else-form 返回的值.
 
 * 描述(Description):
 
-if allows the execution of a form to be dependent on a single test-form.
+        if 允许一个 form 求值取决于 test-form.
 
-First test-form is evaluated. If the result is true, then then-form is selected; otherwise else-form is selected. Whichever form is selected is then evaluated.
+        首先 test-form 被求值. 如果结果是 true, 那么 then-form 被选择; 否则 else-form 被选择. 不管哪个 form 被选择, 都会在接下来被求值.
 
 * 示例(Examples):
 
- (if t 1) =>  1
- (if nil 1 2) =>  2
- (defun test ()
-   (dolist (truth-value '(t nil 1 (a b c)))
-     (if truth-value (print 'true) (print 'false))
-     (prin1 truth-value))) =>  TEST
- (test)
->>  TRUE T
->>  FALSE NIL
->>  TRUE 1
->>  TRUE (A B C)
-=>  NIL
-
+    ```LISP
+    (if t 1) =>  1
+    (if nil 1 2) =>  2
+    (defun test ()
+      (dolist (truth-value '(t nil 1 (a b c)))
+        (if truth-value (print 'true) (print 'false))
+        (prin1 truth-value))) =>  TEST
+    (test)
+    >>  TRUE T
+    >>  FALSE NIL
+    >>  TRUE 1
+    >>  TRUE (A B C)
+    =>  NIL
+    ```
+    
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations): None.
 
 * 也见(See Also):
 
-cond, unless, when
+        cond, unless, when
 
 * 注意(Notes):
 
- (if test-form then-form else-form)
- ==  (cond (test-form then-form) (t else-form))
+        (if test-form then-form else-form)
+        ==  (cond (test-form then-form) (t else-form))
 
 
 ### <span id="">宏 OR</span>
 
 * 语法(Syntax):
 
-or form* => results*
+        or form* => results*
 
 * 参数和值(Arguments and Values):
 
-form---a form.
+        form---一个表达式形式.
 
-results---the values or primary value (see below) resulting from the evaluation of the last form executed or nil.
+        results---求值最后一个表达式的多值或主要的值 (见下方) 或者是 nil.
 
 * 描述(Description):
 
-or evaluates each form, one at a time, from left to right. The evaluation of all forms terminates when a form evaluates to true (i.e., something other than nil).
+        or 求值每个表达式, 一次一个, 从左到右. 当一个表达式求值为 true 则所有表达式的求值结束 (换句话说, 某个不是 nil 的).
 
-If the evaluation of any form other than the last returns a primary value that is true, or immediately returns that value (but no additional values) without evaluating the remaining forms. If every form but the last returns false as its primary value, or returns all values returned by the last form. If no forms are supplied, or returns nil.
+        如果除了最后一个 form 以外的任何 form 的求值返回 true, or 在不求值剩下 form 的情况下返回这个值 (但是没有其他值). 如果除了最后一个 form 以外每个 from 都返回 false 作为主要的值, or 返回最后一个 form 的所有值. 如果没有提供 form, or 返回 nil.
 
 * 示例(Examples):
 
- (or) =>  NIL
- (setq temp0 nil temp1 10 temp2 20 temp3 30) =>  30
- (or temp0 temp1 (setq temp2 37)) =>  10
- temp2 =>  20
- (or (incf temp1) (incf temp2) (incf temp3)) =>  11
- temp1 =>  11
- temp2 =>  20
- temp3 =>  30
- (or (values) temp1) =>  11
- (or (values temp1 temp2) temp3) =>  11
- (or temp0 (values temp1 temp2)) =>  11, 20
- (or (values temp0 temp1) (values temp2 temp3)) =>  20, 30
-
+    LISP
+    (or) =>  NIL
+    (setq temp0 nil temp1 10 temp2 20 temp3 30) =>  30
+    (or temp0 temp1 (setq temp2 37)) =>  10
+    temp2 =>  20
+    (or (incf temp1) (incf temp2) (incf temp3)) =>  11
+    temp1 =>  11
+    temp2 =>  20
+    temp3 =>  30
+    (or (values) temp1) =>  11
+    (or (values temp1 temp2) temp3) =>  11
+    (or temp0 (values temp1 temp2)) =>  11, 20
+    (or (values temp0 temp1) (values temp2 temp3)) =>  20, 30
+    ```
+    
 * 副作用(Side Effects): None.
 
 * 受此影响(Affected By): None.
@@ -3220,7 +3220,7 @@ If the evaluation of any form other than the last returns a primary value that i
 
 * 也见(See Also):
 
-and, some, unless
+        and, some, unless
 
 * 注意(Notes): None.
 
@@ -3229,53 +3229,54 @@ and, some, unless
 
 * 语法(Syntax):
 
-when test-form form* => result*
-
-unless test-form form* => result*
+        when test-form form* => result*
+        unless test-form form* => result*
 
 * 参数和值(Arguments and Values):
 
-test-form---a form.
+        test-form---一个表达式形式.
 
-forms---an implicit progn.
+        forms---一个隐式的 progn.
 
-results---the values of the forms in a when form if the test-form yields true or in an unless form if the test-form yields false; otherwise nil.
+        results---如果 when 表达式中的 test-form 产生 true 那么就是 when 表达式形式中 form 的值, 如果 unless 表达式中的 test-form 产生 false 那么就是 unless 表达式中 form 的值; 否则就是 nil.
 
 * 描述(Description):
 
-when and unless allow the execution of forms to be dependent on a single test-form.
+        when 和 unless 允许求值的 forms 取决于单个的 test-form.
 
-In a when form, if the test-form yields true, the forms are evaluated in order from left to right and the values returned by the forms are returned from the when form. Otherwise, if the test-form yields false, the forms are not evaluated, and the when form returns nil.
+        在一个 when 表达式中, 如果这个 test-form 产生 true, 这个 forms 按从左到右的顺序求值并从 when 表达式中返回 forms 返回的值. 否则, 如果 test-form 产生 false, 这个 forms 不会被求值, 然后这个 when 表达式返回 nil.
 
-In an unless form, if the test-form yields false, the forms are evaluated in order from left to right and the values returned by the forms are returned from the unless form. Otherwise, if the test-form yields false, the forms are not evaluated, and the unless form returns nil.
+        在一个 unless 表达式中, 如果这个 test-form 产生 false, 这个 forms 按从左到右的顺序求值并从 unless 表达式中返回 forms 返回的值. 否则, 如果这个 test-form 产生 false, 这个 forms 不会被求值, 并且这个 unless 表达式返回 nil.
 
 * 示例(Examples):
 
- (when t 'hello) =>  HELLO
- (unless t 'hello) =>  NIL
- (when nil 'hello) =>  NIL
- (unless nil 'hello) =>  HELLO
- (when t) =>  NIL
- (unless nil) =>  NIL
- (when t (prin1 1) (prin1 2) (prin1 3))
->>  123
-=>  3
- (unless t (prin1 1) (prin1 2) (prin1 3)) =>  NIL
- (when nil (prin1 1) (prin1 2) (prin1 3)) =>  NIL
- (unless nil (prin1 1) (prin1 2) (prin1 3))
->>  123
-=>  3
- (let ((x 3))
-   (list (when (oddp x) (incf x) (list x))
-         (when (oddp x) (incf x) (list x))
-         (unless (oddp x) (incf x) (list x))
-         (unless (oddp x) (incf x) (list x))
-         (if (oddp x) (incf x) (list x))
-         (if (oddp x) (incf x) (list x))
-         (if (not (oddp x)) (incf x) (list x))
-         (if (not (oddp x)) (incf x) (list x))))
-=>  ((4) NIL (5) NIL 6 (6) 7 (7))
-
+    ```LISP
+    (when t 'hello) =>  HELLO
+    (unless t 'hello) =>  NIL
+    (when nil 'hello) =>  NIL
+    (unless nil 'hello) =>  HELLO
+    (when t) =>  NIL
+    (unless nil) =>  NIL
+    (when t (prin1 1) (prin1 2) (prin1 3))
+    >>  123
+    =>  3
+    (unless t (prin1 1) (prin1 2) (prin1 3)) =>  NIL
+    (when nil (prin1 1) (prin1 2) (prin1 3)) =>  NIL
+    (unless nil (prin1 1) (prin1 2) (prin1 3))
+    >>  123
+    =>  3
+    (let ((x 3))
+      (list (when (oddp x) (incf x) (list x))
+            (when (oddp x) (incf x) (list x))
+            (unless (oddp x) (incf x) (list x))
+            (unless (oddp x) (incf x) (list x))
+            (if (oddp x) (incf x) (list x))
+            (if (oddp x) (incf x) (list x))
+            (if (not (oddp x)) (incf x) (list x))
+            (if (not (oddp x)) (incf x) (list x))))
+    =>  ((4) NIL (5) NIL 6 (6) 7 (7))
+    ```
+    
 * 副作用(Side Effects): None.
 
 * 受此影响(Affected By): None.
@@ -3284,18 +3285,19 @@ In an unless form, if the test-form yields false, the forms are evaluated in ord
 
 * 也见(See Also):
 
-and, cond, if, or
+        and, cond, if, or
 
 * 注意(Notes):
 
- (when test {form}+) ==  (and test (progn {form}+))
- (when test {form}+) ==  (cond (test {form}+))
- (when test {form}+) ==  (if test (progn {form}+) nil)
- (when test {form}+) ==  (unless (not test) {form}+)
- (unless test {form}+) ==  (cond ((not test) {form}+))
- (unless test {form}+) ==  (if test nil (progn {form}+))
- (unless test {form}+) ==  (when (not test) {form}+)
-
+    ```LISP
+    (when test {form}+) ==  (and test (progn {form}+))
+    (when test {form}+) ==  (cond (test {form}+))
+    (when test {form}+) ==  (if test (progn {form}+) nil)
+    (when test {form}+) ==  (unless (not test) {form}+)
+    (unless test {form}+) ==  (cond ((not test) {form}+))
+    (unless test {form}+) ==  (if test nil (progn {form}+))
+    (unless test {form}+) ==  (when (not test) {form}+)
+    ```
 
 ### <span id="">宏 CASE, CCASE, ECASE</span>
 
