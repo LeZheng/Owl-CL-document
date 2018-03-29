@@ -3539,37 +3539,34 @@ throw, Section 3.1 (Evaluation)
 
 * 语法(Syntax):
 
-multiple-value-bind (var*) values-form declaration* form*
-
-=> result*
+        multiple-value-bind (var*) values-form declaration* form*
+        => result*
 
 * 参数和值(Arguments and Values):
 
-var---a symbol naming a variable; not evaluated.
-
-values-form---a form; evaluated.
-
-declaration---a declare expression; not evaluated.
-
-forms---an implicit progn.
-
-results---the values returned by the forms.
+        var---一个命名一个变量的符号; 不求值.
+        values-form---一个表达式形式; 求值.
+        declaration---一个 declare 表达式; 不求值.
+        forms---一个隐式的 progn.
+        results---这个 forms 返回的值.
 
 * 描述(Description):
 
-Creates new variable bindings for the vars and executes a series of forms that use these bindings.
+        为 vars 创建新的变量绑定并且使用这些绑定执行一系列 forms.
 
-The variable bindings created are lexical unless special declarations are specified.
+        这个变量绑定是词法的, 除非指定了 special 声明.
 
-Values-form is evaluated, and each of the vars is bound to the respective value returned by that form. If there are more vars than values returned, extra values of nil are given to the remaining vars. If there are more values than vars, the excess values are discarded. The vars are bound to the values over the execution of the forms, which make up an implicit progn. The consequences are unspecified if a type declaration is specified for a var, but the value to which that var is bound is not consistent with the type declaration.
+        Values-form 被求值, 并且 vars 每一个都会绑定给那个表达式形式返回的单独的值. 如果这里的 vars 数量超过返回的值的数量, 额外的 nil 值被赋予剩余的 vars. 如果值的数量超过 vars, 多出来的值会被丢弃. vars 在 forms 执行时被绑定到这些值, 这些 forms 组成了隐式的 progn. 如果一个 var 被指定了类型声明, 但是绑定到这个 var 的值不符合这个类型声明, 那么结果是不确定的.
 
-The scopes of the name binding and declarations do not include the values-form.
+        这个名称绑定和声明的作用域不包括 values-form.
 
 * 示例(Examples):
-
- (multiple-value-bind (f r)
-     (floor 130 11)
-   (list f r)) =>  (11 9)
+    
+    ```LISP
+    (multiple-value-bind (f r)
+        (floor 130 11)
+      (list f r)) =>  (11 9)
+    ```
 
 * 受此影响(Affected By): None.
 
@@ -3577,55 +3574,54 @@ The scopes of the name binding and declarations do not include the values-form.
 
 * 也见(See Also):
 
-let, multiple-value-call
+        let, multiple-value-call
 
 * 注意(Notes):
 
- (multiple-value-bind (var*) values-form form*)
- ==  (multiple-value-call #'(lambda (&optional var* &rest #1=#:ignore)
-                             (declare (ignore #1#))
-                             form*)
-                         values-form)
+        (multiple-value-bind (var*) values-form form*)
+        ==  (multiple-value-call #'(lambda (&optional var* &rest #1=#:ignore)
+                                    (declare (ignore #1#))
+                                    form*)
+                                values-form)
 
 
 ### <span id="">特殊操作符 MULTIPLE-VALUE-CALL</span>
 
 * 语法(Syntax):
 
-multiple-value-call function-form form* => result*
+        multiple-value-call function-form form* => result*
 
 * 参数和值(Arguments and Values):
 
-function-form---a form; evaluated to produce function.
-
-function---a function designator resulting from the evaluation of function-form.
-
-form---a form.
-
-results---the values returned by the function.
+        function-form---一个表达式形式; 求值后产生 function.
+        function---通过求值 function-form 得到的一个函数标志符.
+        form---一个表达式形式.
+        results---function 返回的值.
 
 * 描述(Description):
 
-Applies function to a list of the objects collected from groups of multiple values[2].
+        应用 function 一个对象列表上, 这些对象从多值的组中收集而来.
 
-multiple-value-call first evaluates the function-form to obtain function, and then evaluates each form. All the values of each form are gathered together (not just one value from each) and given as arguments to the function.
+        multiple-value-call 首先求值 function-form 来获取 function, 然后求值每一个 form. 每个 form 的所有的值都被一起收集 (不只是每个 form 的一个值) 然后作为参数传递给 function.
 
 * 示例(Examples):
 
- (multiple-value-call #'list 1 '/ (values 2 3) '/ (values) '/ (floor 2.5))
-=>  (1 / 2 3 / / 2 0.5)
- (+ (floor 5 3) (floor 19 4)) ==  (+ 1 4)
-=>  5
- (multiple-value-call #'+ (floor 5 3) (floor 19 4)) ==  (+ 1 2 4 3)
-=>  10
-
+    ```LISP
+    (multiple-value-call #'list 1 '/ (values 2 3) '/ (values) '/ (floor 2.5))
+    =>  (1 / 2 3 / / 2 0.5)
+    (+ (floor 5 3) (floor 19 4)) ==  (+ 1 4)
+    =>  5
+    (multiple-value-call #'+ (floor 5 3) (floor 19 4)) ==  (+ 1 2 4 3)
+    =>  10
+    ```
+    
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations): None.
 
 * 也见(See Also):
 
-multiple-value-list, multiple-value-bind
+        multiple-value-list, multiple-value-bind
 
 * 注意(Notes): None.
 
@@ -3634,21 +3630,22 @@ multiple-value-list, multiple-value-bind
 
 * 语法(Syntax):
 
-multiple-value-list form => list
+        multiple-value-list form => list
 
 * 参数和值(Arguments and Values):
 
-form---a form; evaluated as described below.
-
-list---a list of the values returned by form.
+        form---一个表达式形式; 求值为以下所述.
+        list---form 返回的一个值的列表.
 
 * 描述(Description):
 
-multiple-value-list evaluates form and creates a list of the multiple values[2] it returns.
+        multiple-value-list 求值 form 并且创建一个它返回的多值的列表.
 
 * 示例(Examples):
-
- (multiple-value-list (floor -3 4)) =>  (-1 1)
+    
+    ```LISP
+    (multiple-value-list (floor -3 4)) =>  (-1 1)
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -3658,40 +3655,40 @@ multiple-value-list evaluates form and creates a list of the multiple values[2] 
 
 * 也见(See Also):
 
-values-list, multiple-value-call
+        values-list, multiple-value-call
 
 * 注意(Notes):
 
-multiple-value-list and values-list are inverses of each other.
+        multiple-value-list 和 values-list 是互逆的.
 
- (multiple-value-list form) ==  (multiple-value-call #'list form)
+        (multiple-value-list form) ==  (multiple-value-call #'list form)
 
 
 ### <span id="">特殊操作符 MULTIPLE-VALUE-PROG1</span>
 
 * 语法(Syntax):
 
-multiple-value-prog1 first-form form* => first-form-results
+        multiple-value-prog1 first-form form* => first-form-results
 
 * 参数和值(Arguments and Values):
 
-first-form---a form; evaluated as described below.
-
-form---a form; evaluated as described below.
-
-first-form-results---the values resulting from the evaluation of first-form.
+        first-form---一个表达式形式; 求值如下所述.
+        form---一个表达式形式; 求值如下所述.
+        first-form-results---求值 first-form 得到的值.
 
 * 描述(Description):
 
-multiple-value-prog1 evaluates first-form and saves all the values produced by that form. It then evaluates each form from left to right, discarding their values.
+        multiple-value-prog1 求值 first-form 然后把这个表达式形式产生的所有值保存起来. 然后它从左到右求值每个表达式形式, 丢弃它们的值.
 
 * 示例(Examples):
 
- (setq temp '(1 2 3)) =>  (1 2 3)
- (multiple-value-prog1
-    (values-list temp)
-    (setq temp nil)
-    (values-list temp)) =>  1, 2, 3
+    ```LISP
+    (setq temp '(1 2 3)) =>  (1 2 3)
+    (multiple-value-prog1
+       (values-list temp)
+       (setq temp nil)
+       (values-list temp)) =>  1, 2, 3
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -3701,7 +3698,7 @@ multiple-value-prog1 evaluates first-form and saves all the values produced by t
 
 * 也见(See Also):
 
-prog1
+        prog1
 
 * 注意(Notes): None.
 
@@ -3710,44 +3707,44 @@ prog1
 
 * 语法(Syntax):
 
-multiple-value-setq vars form => result
+        multiple-value-setq vars form => result
 
 * 参数和值(Arguments and Values):
 
-vars---a list of symbols that are either variable names or names of symbol macros.
-
-form---a form.
-
-result---The primary value returned by the form.
+        vars---a list of symbols that are either variable names or names of symbol macros.
+        form---一个表达式形式.
+        result---这个 form 返回的值.
 
 * 描述(Description):
 
-multiple-value-setq assigns values to vars.
+        multiple-value-setq 赋值给 vars.
 
-The form is evaluated, and each var is assigned to the corresponding value returned by that form. If there are more vars than values returned, nil is assigned to the extra vars. If there are more values than vars, the extra values are discarded.
+        这个 form 被求值, 然后每个 var 被赋予 那个 form 返回的对应的值. 如果这里 vars 的数量超过返回值的数量, nil 会被赋予多余的 vars. 如果返回值的数量多于 vars 的, 多余的值会被丢弃.
 
-If any var is the name of a symbol macro, then it is assigned as if by setf. Specifically,
+        如果任何 var 是一个符号宏的名字, 然后它就会被赋值就像是通过 setf 的一样. 具体的说,
 
- (multiple-value-setq (symbol1 ... symboln) value-producing-form)
+        (multiple-value-setq (symbol1 ... symboln) value-producing-form)
 
-is defined to always behave in the same way as
+        被定义为像下面方式一样运作
 
- (values (setf (values symbol1 ... symboln) value-producing-form))
+        (values (setf (values symbol1 ... symboln) value-producing-form))
 
-in order that the rules for order of evaluation and side-effects be consistent with those used by setf. See Section 5.1.2.3 (VALUES Forms as Places).
+        为了使求值顺序和副作用的规则与 setf 使用的规则一致. 见章节 5.1.2.3 (VALUES Forms as Places).
 
 * 示例(Examples):
 
- (multiple-value-setq (quotient remainder) (truncate 3.2 2)) =>  1
- quotient =>  1
- remainder =>  1.2
- (multiple-value-setq (a b c) (values 1 2)) =>  1
- a =>  1
- b =>  2
- c =>  NIL
- (multiple-value-setq (a b) (values 4 5 6)) =>  4
- a =>  4
- b =>  5
+    ```LISP
+    (multiple-value-setq (quotient remainder) (truncate 3.2 2)) =>  1
+    quotient =>  1
+    remainder =>  1.2
+    (multiple-value-setq (a b c) (values 1 2)) =>  1
+    a =>  1
+    b =>  2
+    c =>  NIL
+    (multiple-value-setq (a b) (values 4 5 6)) =>  4
+    a =>  4
+    b =>  5
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -3757,7 +3754,7 @@ in order that the rules for order of evaluation and side-effects be consistent w
 
 * 也见(See Also):
 
-setq, symbol-macrolet
+        setq, symbol-macrolet
 
 * 注意(Notes): None.
 
