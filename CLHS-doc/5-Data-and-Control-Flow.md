@@ -3303,247 +3303,236 @@ throw, Section 3.1 (Evaluation)
 
 * 语法(Syntax):
 
-case keyform {normal-clause}* [otherwise-clause] => result*
-
-ccase keyplace {normal-clause}* => result*
-
-ecase keyform {normal-clause}* => result*
-
-normal-clause::= (keys form*)
-
-otherwise-clause::= ({otherwise | t} form*)
-
-clause::= normal-clause | otherwise-clause
+        case keyform {normal-clause}* [otherwise-clause] => result*
+        ccase keyplace {normal-clause}* => result*
+        ecase keyform {normal-clause}* => result*
+        normal-clause::= (keys form*)
+        otherwise-clause::= ({otherwise | t} form*)
+        clause::= normal-clause | otherwise-clause
 
 * 参数和值(Arguments and Values):
 
-keyform---a form; evaluated to produce a test-key.
+        keyform---一个表达式形式; 求值后产生一个 test-key.
 
-keyplace---a form; evaluated initially to produce a test-key. Possibly also used later as a place if no keys match.
+        keyplace---一个表达式形式; 求值后产生一个 test-key. 如果没有 key 匹配那么可能被用作一个 place.
 
-test-key---an object produced by evaluating keyform or keyplace.
+        test-key---通过求值 keyform 或 keyplace 产生的一个对象.
 
-keys---a designator for a list of objects. In the case of case, the symbols t and otherwise may not be used as the keys designator. To refer to these symbols by themselves as keys, the designators (t) and (otherwise), respectively, must be used instead.
+        keys---一个对象列表的标识符. 在 case 的情况下, 符号 t 和 otherwise 可能不被用作 keys 标识符. 为了将这些符号自身作为 key 来引用, 标识符 (t) 和 (otherwise), 必须分别被使用.
 
-forms---an implicit progn.
+        forms---一个隐式的 progn.
 
-results---the values returned by the forms in the matching clause.
+        results---匹配的 clause 的 form 返回的值.
 
 * 描述(Description):
 
-These macros allow the conditional execution of a body of forms in a clause that is selected by matching the test-key on the basis of its identity.
+        这些宏允许一个 clause 中的 form 被条件执行, 这个通过在它的标识上匹配 test-key 来选择.
 
-The keyform or keyplace is evaluated to produce the test-key.
+        这个 keyform 或者 keyplace 被求值用于产生 test-key.
 
-Each of the normal-clauses is then considered in turn. If the test-key is the same as any key for that clause, the forms in that clause are evaluated as an implicit progn, and the values it returns are returned as the value of the case, ccase, or ecase form.
+        每一个 normal-clause 依次被考虑. 如果 test-key 和这个 clause 中的任何 key 是相同的, 这个 clause 中的多个 form 会作为一个隐式的 progn 来求值, 然后它返回的值会被 case, ccase, 或 ecase 表达式形式作为结果返回.
 
-These macros differ only in their behavior when no normal-clause matches; specifically:
+        这些宏只在没有匹配到 normal-clause 时, 会有不同的行为; 具体来说:
 
-case
+        case
 
-    If no normal-clause matches, and there is an otherwise-clause, then that otherwise-clause automatically matches; the forms in that clause are evaluated as an implicit progn, and the values it returns are returned as the value of the case.
+            如果没有匹配到 normal-clause, 并且这里有一个 otherwise-clause, 那么这个 otherwise-clause 自动匹配; 这个 clause 中的 form 会作为一个隐式的 progn 被求值, 并且它返回的值作为 case 的结果被返回.
 
-    If there is no otherwise-clause, case returns nil.
+            如果没有 otherwise-clause, case 返回 nil.
 
-ccase
+        ccase
 
-    If no normal-clause matches, a correctable error of type type-error is signaled. The offending datum is the test-key and the expected type is type equivalent to (member key1 key2 ...). The store-value restart can be used to correct the error.
+            如果没有 normal-clause 匹配, 一个 type-error 类型的可校正的错误会被发出. 这个基准是 test-key 并且期望的类型是类型等价于 (member key1 key2 ...). 这个 store-value 重启动可以被用于校正这个错误.
 
-    If the store-value restart is invoked, its argument becomes the new test-key, and is stored in keyplace as if by (setf keyplace test-key). Then ccase starts over, considering each clause anew.
+            如果这个 store-value 重启动被调用, 它的参数会是新的 test-key, 并且被存储在 keyplace 就像是通过 (setf keyplace test-key). 然后 ccase 重新开始, 再思考每一个 clause.
 
-    The subforms of keyplace might be evaluated again if none of the cases holds.
+            如果没有情况支持, 这个 keyplace 的子表达式可能被再次求值.
 
-ecase
+        ecase
 
-    If no normal-clause matches, a non-correctable error of type type-error is signaled. The offending datum is the test-key and the expected type is type equivalent to (member key1 key2 ...).
+            如果没有 normal-clause 匹配, 一个 type-error 类型的不可校正的错误会被发出. 基准是 test-key 和期望的类型是类型等价于 (member key1 key2 ...).
 
-    Note that in contrast with ccase, the caller of ecase may rely on the fact that ecase does not return if a normal-clause does not match.
+            注意, 与 ccase 相比, 对 ecase 的调用可能依赖于没有 normal-clause 匹配的情况下 ecase 不返回的事实.
 
 * 示例(Examples):
 
- (dolist (k '(1 2 3 :four #\v () t 'other))
-    (format t "~S "
-       (case k ((1 2) 'clause1)
-               (3 'clause2)
-               (nil 'no-keys-so-never-seen)
-               ((nil) 'nilslot)
-               ((:four #\v) 'clause4)
-               ((t) 'tslot)
-               (otherwise 'others))))
->>  CLAUSE1 CLAUSE1 CLAUSE2 CLAUSE4 CLAUSE4 NILSLOT TSLOT OTHERS
-=>  NIL
- (defun add-em (x) (apply #'+ (mapcar #'decode x)))
-=>  ADD-EM
- (defun decode (x)
-   (ccase x
-     ((i uno) 1)
-     ((ii dos) 2)
-     ((iii tres) 3)
-     ((iv cuatro) 4)))
-=>  DECODE
- (add-em '(uno iii)) =>  4
- (add-em '(uno iiii))
->>  Error: The value of X, IIII, is not I, UNO, II, DOS, III,
->>         TRES, IV, or CUATRO.
->>   1: Supply a value to use instead.
->>   2: Return to Lisp Toplevel.
->>  Debug> :CONTINUE 1
->>  Value to evaluate and use for X: 'IV
-=>  5
+    ```LISP
+    (dolist (k '(1 2 3 :four #\v () t 'other))
+       (format t "~S "
+          (case k ((1 2) 'clause1)
+                  (3 'clause2)
+                  (nil 'no-keys-so-never-seen)
+                  ((nil) 'nilslot)
+                  ((:four #\v) 'clause4)
+                  ((t) 'tslot)
+                  (otherwise 'others))))
+    >>  CLAUSE1 CLAUSE1 CLAUSE2 CLAUSE4 CLAUSE4 NILSLOT TSLOT OTHERS
+    =>  NIL
+    (defun add-em (x) (apply #'+ (mapcar #'decode x)))
+    =>  ADD-EM
+    (defun decode (x)
+      (ccase x
+        ((i uno) 1)
+        ((ii dos) 2)
+        ((iii tres) 3)
+        ((iv cuatro) 4)))
+    =>  DECODE
+    (add-em '(uno iii)) =>  4
+    (add-em '(uno iiii))
+    >>  Error: The value of X, IIII, is not I, UNO, II, DOS, III,
+    >>         TRES, IV, or CUATRO.
+    >>   1: Supply a value to use instead.
+    >>   2: Return to Lisp Toplevel.
+    >>  Debug> :CONTINUE 1
+    >>  Value to evaluate and use for X: 'IV
+    =>  5
+    ```
 
 * 副作用(Side Effects):
 
-The debugger might be entered. If the store-value restart is invoked, the value of keyplace might be changed.
+        可能进入调试器(debugger). 如果调用了 store-value 重启动, 这个 keyplace 的值可能被改变.
 
 * 受此影响(Affected By):
 
-ccase and ecase, since they might signal an error, are potentially affected by existing handlers and *debug-io*.
+        ccase 和 ecase, 因为它们可能发出一个错误, 所以被存在的处理者(handler) 和 *debug-io* 潜在地影响.
 
 * 异常情况(Exceptional Situations):
 
-ccase and ecase signal an error of type type-error if no normal-clause matches.
+        如果没有匹配到 normal-clause 那么 ccase 和 ecase 发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-cond, typecase, setf, Section 5.1 (Generalized Reference)
+        cond, typecase, setf, Section 5.1 (Generalized Reference)
 
 * 注意(Notes):
 
-(case test-key
-  {((key*) form*)}*)
-==
-(let ((#1=#:g0001 test-key))
-  (cond {((member #1# '(key*)) form*)}*))
+        (case test-key
+          {((key*) form*)}*)
+        ==
+        (let ((#1=#:g0001 test-key))
+          (cond {((member #1# '(key*)) form*)}*))
 
-The specific error message used by ecase and ccase can vary between implementations. In situations where control of the specific wording of the error message is important, it is better to use case with an otherwise-clause that explicitly signals an error with an appropriate message.
+        ecase 和 ccase 所使用的特定错误信息在不同的具体实现之间可以是不同的. 在控制错误消息的特定措辞很重要的情况下, 最好使用 case 与 otherwise-clause 来显式地用适当的消息发出错误消息.
 
 
 ### <span id="">宏 TYPECASE, CTYPECASE, ETYPECASE</span>
 
 * 语法(Syntax):
 
-typecase keyform {normal-clause}* [otherwise-clause] => result*
-
-ctypecase keyplace {normal-clause}* => result*
-
-etypecase keyform {normal-clause}* => result*
-
-normal-clause::= (type form*)
-
-otherwise-clause::= ({otherwise | t} form*)
-
-clause::= normal-clause | otherwise-clause
+        typecase keyform {normal-clause}* [otherwise-clause] => result*
+        ctypecase keyplace {normal-clause}* => result*
+        etypecase keyform {normal-clause}* => result*
+        normal-clause::= (type form*)
+        otherwise-clause::= ({otherwise | t} form*)
+        clause::= normal-clause | otherwise-clause
 
 * 参数和值(Arguments and Values):
 
-keyform---a form; evaluated to produce a test-key.
-
-keyplace---a form; evaluated initially to produce a test-key. Possibly also used later as a place if no types match.
-
-test-key---an object produced by evaluating keyform or keyplace.
-
-type---a type specifier.
-
-forms---an implicit progn.
-
-results---the values returned by the forms in the matching clause.
+        keyform---一个表达式形式; 求值后产生一个 test-key.
+        keyplace---一个表达式形式; 求值后产生一个 test-key. 如果没有类型匹配的时候可能被用作一个 place.
+        test-key---求值 keyform 或 keyplace 产生的对象.
+        type---一个类型指定符.
+        forms---一个隐式的 progn.
+        results---匹配的 clause 中的 form 返回的值.
 
 * 描述(Description):
 
-These macros allow the conditional execution of a body of forms in a clause that is selected by matching the test-key on the basis of its type.
+        这些宏允许有条件地执行一个 clause 中的 form 的主体, 这个被选中的 clause 是通过在 test-key 上匹配它的类型来选择的.
 
-The keyform or keyplace is evaluated to produce the test-key.
+        这里的 keyform 或 keyplace 求值后产生 test-key.
 
-Each of the normal-clauses is then considered in turn. If the test-key is of the type given by the clauses's type, the forms in that clause are evaluated as an implicit progn, and the values it returns are returned as the value of the typecase, ctypecase, or etypecase form.
+        每一个 normal-clauses 都会被依次考虑. 如果 test-key 是 clauses 给定的类型, 这个 clause 中的 form 作为一个隐式的 progn 被执行, 并且它返回的值作为 typecase, ctypecase, or etypecase 表达式的值被返回.
 
-These macros differ only in their behavior when no normal-clause matches; specifically:
+        这些宏的行为只有在没有匹配的 normal-clause 情况下有所区别; 具体来说:
 
-typecase
+        typecase
 
-    If no normal-clause matches, and there is an otherwise-clause, then that otherwise-clause automatically matches; the forms in that clause are evaluated as an implicit progn, and the values it returns are returned as the value of the typecase.
+            如果没有 normal-clause 匹配, 并且这里有一个 otherwise-clause, 那么这个 otherwise-clause 自动匹配; 这个 clause 中的 form 作为一个隐式的 progn 被执行, 并且它返回的值作为 typecase 表达式的值被返回.
 
-    If there is no otherwise-clause, typecase returns nil.
+            如果这里没有 otherwise-clause, typecase 返回 nil.
 
-ctypecase
+        ctypecase
 
-    If no normal-clause matches, a correctable error of type type-error is signaled. The offending datum is the test-key and the expected type is type equivalent to (or type1 type2 ...). The store-value restart can be used to correct the error.
+            如果没有 normal-clause 匹配, 一个 type-error 类型的可校正的错误会被发出. 基准是 test-key 和期望的类型是和 (or type1 type2 ...) 类型等价的. 这个 store-value 重启动可以被用于校正这个错误.
 
-    If the store-value restart is invoked, its argument becomes the new test-key, and is stored in keyplace as if by (setf keyplace test-key). Then ctypecase starts over, considering each clause anew.
+            如果调用了 store-value 重启动, 它的参数会是新的, 然后被存储在 keyplace 就好像是通过 (setf keyplace test-key). 然后 ctypecase 重新启动, 再次考虑每一个 clause.
 
-    If the store-value restart is invoked interactively, the user is prompted for a new test-key to use.
+            如果这个 store-value 重启动被交互式地调用了, 用户被提示去使用新的 test-key.
 
-    The subforms of keyplace might be evaluated again if none of the cases holds.
+            如果没有情况支持, 这个 keyplace 的子表达式可能被再次求值.
 
-etypecase
+        etypecase
 
-    If no normal-clause matches, a non-correctable error of type type-error is signaled. The offending datum is the test-key and the expected type is type equivalent to (or type1 type2 ...).
+            如果没有匹配的 normal-clause, 一个不可校正的 type-error 类型的错误会被发出. 基准是 test-key 和期望的类型是和 (or type1 type2 ...) 类型等价的.
 
-    Note that in contrast with ctypecase, the caller of etypecase may rely on the fact that etypecase does not return if a normal-clause does not match.
+            注意, 相比于 ctypecase, 对 etypecase 的调用可能依赖于如果没有匹配的 normal-clause 时 etypecase 不返回的事实.
 
-In all three cases, is permissible for more than one clause to specify a matching type, particularly if one is a subtype of another; the earliest applicable clause is chosen.
+        在所有这三种情况下, 允许超过一个 clause 去指定匹配类型, 特别是在一个已经是另一个的子类型的时候; 最早可应用的 clause 会被选择.
 
 * 示例(Examples):
 
-;;; (Note that the parts of this example which use TYPE-OF
-;;;  are implementation-dependent.)
- (defun what-is-it (x)
-   (format t "~&~S is ~A.~%"
-           x (typecase x
-               (float "a float")
-               (null "a symbol, boolean false, or the empty list")
-               (list "a list")
-               (t (format nil "a(n) ~(~A~)" (type-of x))))))
-=>  WHAT-IS-IT
- (map 'nil #'what-is-it '(nil (a b) 7.0 7 box))
->>  NIL is a symbol, boolean false, or the empty list.
->>  (A B) is a list.
->>  7.0 is a float.
->>  7 is a(n) integer.
->>  BOX is a(n) symbol.
-=>  NIL
- (setq x 1/3)
-=>  1/3
- (ctypecase x
-     (integer (* x 4))
-     (symbol  (symbol-value x)))
->>  Error: The value of X, 1/3, is neither an integer nor a symbol.
->>  To continue, type :CONTINUE followed by an option number:
->>   1: Specify a value to use instead.
->>   2: Return to Lisp Toplevel.
->>  Debug> :CONTINUE 1
->>  Use value: 3.7
->>  Error: The value of X, 3.7, is neither an integer nor a symbol.
->>  To continue, type :CONTINUE followed by an option number:
->>   1: Specify a value to use instead.
->>   2: Return to Lisp Toplevel.
->>  Debug> :CONTINUE 1
->>  Use value: 12
-=>  48
- x =>  12
+    ```LISP
+    ;;; (Note that the parts of this example which use TYPE-OF
+    ;;;  are implementation-dependent.)
+    (defun what-is-it (x)
+      (format t "~&~S is ~A.~%"
+              x (typecase x
+                  (float "a float")
+                  (null "a symbol, boolean false, or the empty list")
+                  (list "a list")
+                  (t (format nil "a(n) ~(~A~)" (type-of x))))))
+    =>  WHAT-IS-IT
+    (map 'nil #'what-is-it '(nil (a b) 7.0 7 box))
+    >>  NIL is a symbol, boolean false, or the empty list.
+    >>  (A B) is a list.
+    >>  7.0 is a float.
+    >>  7 is a(n) integer.
+    >>  BOX is a(n) symbol.
+    =>  NIL
+    (setq x 1/3)
+    =>  1/3
+    (ctypecase x
+        (integer (* x 4))
+        (symbol  (symbol-value x)))
+    >>  Error: The value of X, 1/3, is neither an integer nor a symbol.
+    >>  To continue, type :CONTINUE followed by an option number:
+    >>   1: Specify a value to use instead.
+    >>   2: Return to Lisp Toplevel.
+    >>  Debug> :CONTINUE 1
+    >>  Use value: 3.7
+    >>  Error: The value of X, 3.7, is neither an integer nor a symbol.
+    >>  To continue, type :CONTINUE followed by an option number:
+    >>   1: Specify a value to use instead.
+    >>   2: Return to Lisp Toplevel.
+    >>  Debug> :CONTINUE 1
+    >>  Use value: 12
+    =>  48
+    x =>  12
+    ```
 
 * 受此影响(Affected By):
 
-ctypecase and etypecase, since they might signal an error, are potentially affected by existing handlers and *debug-io*.
+        ctypecase 和 etypecase, 因为它们可能发出一个错误, 所以被存在的处理者(handler) 和 *debug-io* 潜在地影响.
 
 * 异常情况(Exceptional Situations):
 
-ctypecase and etypecase signal an error of type type-error if no normal-clause matches.
+        如果没有normal-clause 匹配那么 ctypecase 和 etypecase 发出一个 type-error 类型的错误.
 
-The compiler may choose to issue a warning of type style-warning if a clause will never be selected because it is completely shadowed by earlier clauses.
+        如果一个 clause 被更早的 clause 所遮蔽导致不会被选择到, 编译器可能会选择去发出一个 style-warning 类型的警告.
 
 * 也见(See Also):
 
-case, cond, setf, Section 5.1 (Generalized Reference)
+        case, cond, setf, Section 5.1 (Generalized Reference)
 
 * 注意(Notes):
 
-(typecase test-key
-  {(type form*)}*)
-==
-(let ((#1=#:g0001 test-key))
-  (cond {((typep #1# 'type) form*)}*))
+        (typecase test-key
+          {(type form*)}*)
+        ==
+        (let ((#1=#:g0001 test-key))
+          (cond {((typep #1# 'type) form*)}*))
 
-The specific error message used by etypecase and ctypecase can vary between implementations. In situations where control of the specific wording of the error message is important, it is better to use typecase with an otherwise-clause that explicitly signals an error with an appropriate message.
+        etypecase 和 ctypecase 所使用的特定错误信息在不同的具体实现之间可以是不同的. 在控制错误消息的特定措辞很重要的情况下, 最好使用 typecase 与 otherwise-clause 来显式地用适当的消息发出错误消息.
 
 
 ### <span id="">宏 MULTIPLE-VALUE-BIND</span>
