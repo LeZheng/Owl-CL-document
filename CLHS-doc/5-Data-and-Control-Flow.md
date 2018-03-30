@@ -3763,48 +3763,51 @@ throw, Section 3.1 (Evaluation)
 
 * 语法(Syntax):
 
-values &rest object => object*
-
-(setf (values &rest place) new-values)
+        values &rest object => object*
+        (setf (values &rest place) new-values)
 
 * 参数和值(Arguments and Values):
 
-object---an object.
-
-place---a place.
-
-new-value---an object.
+        object---一个对象
+        place---一个 place.
+        new-value---一个对象.
 
 * 描述(Description):
 
-values returns the objects as multiple values[2].
+        values 以多值的形式返回对象.
 
-setf of values is used to store the multiple values[2] new-values into the places. See Section 5.1.2.3 (VALUES Forms as Places).
+        values 的 setf 被用于存储多值 new-values 到 places. 见章节 5.1.2.3 (VALUES Forms as Places).
 
 * 示例(Examples):
 
- (values) =>  <no values>
- (values 1) =>  1
- (values 1 2) =>  1, 2
- (values 1 2 3) =>  1, 2, 3
- (values (values 1 2 3) 4 5) =>  1, 4, 5
- (defun polar (x y)
-   (values (sqrt (+ (* x x) (* y y))) (atan y x))) =>  POLAR
- (multiple-value-bind (r theta) (polar 3.0 4.0)
-   (vector r theta))
-=>  #(5.0 0.927295)
+    ```LISP
+    (values) =>  <no values>
+    (values 1) =>  1
+    (values 1 2) =>  1, 2
+    (values 1 2 3) =>  1, 2, 3
+    (values (values 1 2 3) 4 5) =>  1, 4, 5
+    (defun polar (x y)
+      (values (sqrt (+ (* x x) (* y y))) (atan y x))) =>  POLAR
+    (multiple-value-bind (r theta) (polar 3.0 4.0)
+      (vector r theta))
+    =>  #(5.0 0.927295)
+    ```
 
-Sometimes it is desirable to indicate explicitly that a function returns exactly one value. For example, the function
+        有时我们需要明确指出函数只返回一个值. 比如, 函数
+    
+    ```LISP
+    (defun foo (x y)
+      (floor (+ x y) y)) =>  FOO
+    ```
+    
+        由于 floor 返回两个值因此它也返回两个值. 第二个值可能是没有意义的, 或者出于效率考虑, 我们不希望计算第二个值. values 是表示只返回一个值的标准惯用语:
 
- (defun foo (x y)
-   (floor (+ x y) y)) =>  FOO
+    ```LISP
+    (defun foo (x y)
+      (values (floor (+ x y) y))) =>  FOO
+    ```
 
-returns two values because floor returns two values. It may be that the second value makes no sense, or that for efficiency reasons it is desired not to compute the second value. values is the standard idiom for indicating that only one value is to be returned:
-
- (defun foo (x y)
-   (values (floor (+ x y) y))) =>  FOO
-
-This works because values returns exactly one value for each of args; as for any function call, if any of args produces more than one value, all but the first are discarded.
+        这个正常工作是因为 values 返回每个参数的一个值; 至于任何函数调用, 如果任何参数产生一个值, 除了第一个其他都被丢弃.
 
 * 受此影响(Affected By): None.
 
@@ -3812,104 +3815,105 @@ This works because values returns exactly one value for each of args; as for any
 
 * 也见(See Also):
 
-values-list, multiple-value-bind, multiple-values-limit, Section 3.1 (Evaluation)
+        values-list, multiple-value-bind, multiple-values-limit, Section 3.1 (Evaluation)
 
 * 注意(Notes):
 
-Since values is a function, not a macro or special form, it receives as arguments only the primary values of its argument forms.
+        由于 values 是一个 函数, 不是一个宏或者特殊表达式形式, 它值接收它的参数表达式形式的主要的值作为参数.
 
 
 ### <span id="">函数 VALUES-LIST</span>
 
 * 语法(Syntax):
 
-values-list list => element*
+        values-list list => element*
 
 * 参数和值(Arguments and Values):
 
-list---a list.
-
-elements---the elements of the list.
+        list---一个列表.
+        elements---列表的元素.
 
 * 描述(Description):
 
-Returns the elements of the list as multiple values[2].
+        以多值的形式返回 list 的元素.
 
 * 示例(Examples):
 
- (values-list nil) =>  <no values>
- (values-list '(1)) =>  1
- (values-list '(1 2)) =>  1, 2
- (values-list '(1 2 3)) =>  1, 2, 3
-
+    ```LISP
+    (values-list nil) =>  <no values>
+    (values-list '(1)) =>  1
+    (values-list '(1 2)) =>  1, 2
+    (values-list '(1 2 3)) =>  1, 2, 3
+    ```
+    
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-Should signal type-error if its argument is not a proper list.
+        如果参数不是一个适当的列表, 应该会发出一个错误.
 
 * 也见(See Also):
 
-multiple-value-bind, multiple-value-list, multiple-values-limit, values
+        multiple-value-bind, multiple-value-list, multiple-values-limit, values
 
 * 注意(Notes):
 
- (values-list list) ==  (apply #'values list)
+        (values-list list) ==  (apply #'values list)
 
-(equal x (multiple-value-list (values-list x))) returns true for all lists x.
+        (equal x (multiple-value-list (values-list x))) 对于所有的列表 x 返回 true.
 
 
 ### <span id="">常量 MULTIPLE-VALUES-LIMIT</span>
 
 * 常量值(Constant Value):
 
-An integer not smaller than 20, the exact magnitude of which is implementation-dependent.
+        一个不小于 20 的整数, 准确的大小依赖于具体实现.
 
 * 描述(Description):
 
-The upper exclusive bound on the number of values that may be returned from a function, bound or assigned by multiple-value-bind or multiple-value-setq, or passed as a first argument to nth-value. (If these individual limits might differ, the minimum value is used.)
+        函数返回, multiple-value-bind 绑定, multiple-value-setq 赋值还有作为传递给 nth-value 的第一个参数的多值数量的上限. (如果这些单独的限制不同, 则使用最小值.)
 
 * 示例(Examples): None.
 
 * 也见(See Also):
 
-lambda-parameters-limit, call-arguments-limit
+        lambda-parameters-limit, call-arguments-limit
 
 * 注意(Notes):
 
-Implementors are encouraged to make this limit as large as possible.
+        鼓励实现者去使这个限制尽可能的大.
 
 
 ### <span id="">宏 NTH-VALUE</span>
 
 * 语法(Syntax):
 
-nth-value n form => object
+        nth-value n form => object
 
 * 参数和值(Arguments and Values):
 
-n---a non-negative integer; evaluated.
-
-form---a form; evaluated as described below.
-
-object---an object.
+        n---一个非负整数; 求值的.
+        form---一个表达式形式; 求值如下所述.
+        object---一个对象.
 
 * 描述(Description):
 
-Evaluates n and then form, returning as its only value the nth value yielded by form, or nil if n is greater than or equal to the number of values returned by form. (The first returned value is numbered 0.)
+        求值 n 和 form, 作为唯一的值返回 form 产生的值中第 n 个值, 如果 n 大于等于 form 返回的值的数量那么就是 nil. (返回的第一个值编号为 0.)
 
 * 示例(Examples):
-
- (nth-value 0 (values 'a 'b)) =>  A
- (nth-value 1 (values 'a 'b)) =>  B
- (nth-value 2 (values 'a 'b)) =>  NIL
- (let* ((x 83927472397238947423879243432432432)
-        (y 32423489732)
-        (a (nth-value 1 (floor x y)))
-        (b (mod x y)))
-   (values a b (= a b)))
-=>  3332987528, 3332987528, true
-
+    
+    ```LISP
+    (nth-value 0 (values 'a 'b)) =>  A
+    (nth-value 1 (values 'a 'b)) =>  B
+    (nth-value 2 (values 'a 'b)) =>  NIL
+    (let* ((x 83927472397238947423879243432432432)
+           (y 32423489732)
+           (a (nth-value 1 (floor x y)))
+           (b (mod x y)))
+      (values a b (= a b)))
+    =>  3332987528, 3332987528, true
+    ```
+    
 * 副作用(Side Effects): None.
 
 * 受此影响(Affected By): None.
@@ -3918,108 +3922,107 @@ Evaluates n and then form, returning as its only value the nth value yielded by 
 
 * 也见(See Also):
 
-multiple-value-list, nth
+        multiple-value-list, nth
 
 * 注意(Notes):
 
-Operationally, the following relationship is true, although nth-value might be more efficient in some implementations because, for example, some consing might be avoided.
+        操作上, 下面的关系是 true 的, 虽然 nth-value 在某些实现中可能由于某些因素而更高效, 比如, 一些 cons 可被避免.
 
- (nth-value n form) ==  (nth n (multiple-value-list form))
+        (nth-value n form) ==  (nth n (multiple-value-list form))
 
 
 ### <span id="">宏 PROG, PROG*</span>
 
 * 语法(Syntax):
 
-prog ({var | (var [init-form])}*) declaration* {tag | statement}*
+        prog ({var | (var [init-form])}*) declaration* {tag | statement}*
+        => result*
 
-=> result*
-
-prog* ({var | (var [init-form])}*) declaration* {tag | statement}*
-
-=> result*
+        prog* ({var | (var [init-form])}*) declaration* {tag | statement}*
+        => result*
 
 * 参数和值(Arguments and Values):
 
-var---variable name.
-
-init-form---a form.
-
-declaration---a declare expression; not evaluated.
-
-tag---a go tag; not evaluated.
-
-statement---a compound form; evaluated as described below.
-
-results---nil if a normal return occurs, or else, if an explicit return occurs, the values that were transferred.
+        var---变量名字.
+        init-form---一个表达式形式.
+        declaration---一个 declare 表达式形式; 不求值.
+        tag---一个 go 标签; 不求值.
+        statement---一个复合表达式形式; 求值如下所述.
+        results---如果正常返回就是 nil, 否则, 如果一个显式的返回发生, 就是指定的值.
 
 * 描述(Description):
 
-Three distinct operations are performed by prog and prog*: they bind local variables, they permit use of the return statement, and they permit use of the go statement. A typical prog looks like this:
+        三个不同的操作由 prog 和 prog* 执行: 它们绑定局部变量, 它们允许使用 return 语句, 并且它们允许使用 go 语句. 一个典型的 prog 看上去像这样:
 
- (prog (var1 var2 (var3 init-form-3) var4 (var5 init-form-5))
-       declaration*
-       statement1
-  tag1
-       statement2
-       statement3
-       statement4
-  tag2
-       statement5
-       ...
-       )
+        (prog (var1 var2 (var3 init-form-3) var4 (var5 init-form-5))
+              declaration*
+              statement1
+         tag1
+              statement2
+              statement3
+              statement4
+         tag2
+              statement5
+              ...
+              )
 
-For prog, init-forms are evaluated first, in the order in which they are supplied. The vars are then bound to the corresponding values in parallel. If no init-form is supplied for a given var, that var is bound to nil.
+        对于 prog, init-forms 首先被求值, 按照它们给定的顺序. 这些 vars 并行地绑定给对应的 值. 如果没有为一个给定的 var 提供 init-form, 那个 var 绑定为 nil.
 
-The body of prog is executed as if it were a tagbody form; the go statement can be used to transfer control to a tag. Tags label statements.
+        这个 prog 的主体部分被执行就好像它是在一个 tagbody 表达式形式里一样; 这个 go 语句 可以被用于转移控制到一个 tag. 这些 tag 标注 statement.
 
-prog implicitly establishes a block named nil around the entire prog form, so that return can be used at any time to exit from the prog form.
+        prog 在整个 prog 表达式周围隐式建立一个名为 nil 的 block, 这样 return 可以被用于任何执行想要退出 prog 表达式的时候.
 
-The difference between prog* and prog is that in prog* the binding and initialization of the vars is done sequentially, so that the init-form for each one can use the values of previous ones.
+        prog* 和 prog 之间的不同在于 prog* 顺序执行 vars 的绑定和初始化, 因此每一个的 init-form 都可以使用前一个的值.
 
 * 示例(Examples):
+    
+    ```LISP
+    (prog* ((y z) (x (car y)))
+          (return x))
+    ```
+    
+    返回 z 的 car 部分.
 
-(prog* ((y z) (x (car y)))
-       (return x))
+    ```LISP
+    (setq a 1) =>  1
+    (prog ((a 2) (b a)) (return (if (= a b) '= '/=))) =>  /=
+    (prog* ((a 2) (b a)) (return (if (= a b) '= '/=))) =>  =
+    (prog () 'no-return-value) =>  NIL
 
-returns the car of the value of z.
+    (defun king-of-confusion (w)
+      "Take a cons of two lists and make a list of conses.
+       Think of this function as being like a zipper."
+      (prog (x y z)          ;Initialize x, y, z to NIL
+           (setq y (car w) z (cdr w))
+       loop
+           (cond ((null y) (return x))
+                 ((null z) (go err)))
+       rejoin
+           (setq x (cons (cons (car y) (car z)) x))
+           (setq y (cdr y) z (cdr z))
+           (go loop)
+       err
+           (cerror "Will self-pair extraneous items"
+                   "Mismatch - gleep!  ~S" y)
+           (setq z y)
+           (go rejoin))) =>  KING-OF-CONFUSION
+    ```
+    
+        这可以更详细地完成, 如下所示:
 
- (setq a 1) =>  1
- (prog ((a 2) (b a)) (return (if (= a b) '= '/=))) =>  /=
- (prog* ((a 2) (b a)) (return (if (= a b) '= '/=))) =>  =
- (prog () 'no-return-value) =>  NIL
-
- (defun king-of-confusion (w)
-   "Take a cons of two lists and make a list of conses.
-    Think of this function as being like a zipper."
-   (prog (x y z)          ;Initialize x, y, z to NIL
-        (setq y (car w) z (cdr w))
-    loop
-        (cond ((null y) (return x))
-              ((null z) (go err)))
-    rejoin
-        (setq x (cons (cons (car y) (car z)) x))
-        (setq y (cdr y) z (cdr z))
-        (go loop)
-    err
-        (cerror "Will self-pair extraneous items"
-                "Mismatch - gleep!  ~S" y)
-        (setq z y)
-        (go rejoin))) =>  KING-OF-CONFUSION
-
-This can be accomplished more perspicuously as follows:
-
- (defun prince-of-clarity (w)
-   "Take a cons of two lists and make a list of conses.
-    Think of this function as being like a zipper."
-   (do ((y (car w) (cdr y))
-        (z (cdr w) (cdr z))
-        (x '() (cons (cons (car y) (car z)) x)))
-       ((null y) x)
-     (when (null z)
-       (cerror "Will self-pair extraneous items"
-              "Mismatch - gleep!  ~S" y)
-       (setq z y)))) =>  PRINCE-OF-CLARITY
+    ```LISP
+    (defun prince-of-clarity (w)
+      "Take a cons of two lists and make a list of conses.
+       Think of this function as being like a zipper."
+      (do ((y (car w) (cdr y))
+           (z (cdr w) (cdr z))
+           (x '() (cons (cons (car y) (car z)) x)))
+          ((null y) x)
+        (when (null z)
+          (cerror "Will self-pair extraneous items"
+                 "Mismatch - gleep!  ~S" y)
+          (setq z y)))) =>  PRINCE-OF-CLARITY
+    ```
 
 * 受此影响(Affected By): None.
 
@@ -4027,68 +4030,68 @@ This can be accomplished more perspicuously as follows:
 
 * 也见(See Also):
 
-block, let, tagbody, go, return, Section 3.1 (Evaluation)
+        block, let, tagbody, go, return, Section 3.1 (Evaluation)
 
 * 注意(Notes):
 
-prog can be explained in terms of block, let, and tagbody as follows:
+        prog 可以被解释为 block, let, 和 tagbody, 如下所述:
 
- (prog variable-list declaration . body)
-    ==  (block nil (let variable-list declaration (tagbody . body)))
+        (prog variable-list declaration . body)
+           ==  (block nil (let variable-list declaration (tagbody . body)))
 
 
 ### <span id="">宏 PROG1, PROG2</span>
 
 * 语法(Syntax):
 
-prog1 first-form form* => result-1
-
-prog2 first-form second-form form* => result-2
+        prog1 first-form form* => result-1
+        prog2 first-form second-form form* => result-2
 
 * 参数和值(Arguments and Values):
 
-first-form---a form; evaluated as described below.
+        first-form---一个表达式形式; 求值如下所述.
 
-second-form---a form; evaluated as described below.
+        second-form---一个表达式形式; 求值如下所述.
 
-forms---an implicit progn; evaluated as described below.
+        forms---一个隐式的 progn; 求值如下所述.
 
-result-1---the primary value resulting from the evaluation of first-form.
+        result-1---求值 first-form 返回的主要的值.
 
-result-2---the primary value resulting from the evaluation of second-form.
+        result-2---求值 second-form 返回的主要的值.
 
 * 描述(Description):
 
-prog1 evaluates first-form and then forms, yielding as its only value the primary value yielded by first-form.
+        prog1 求值 first-form 以及其他 forms, first-form 产生的主要的值作为唯一的返回值.
 
-prog2 evaluates first-form, then second-form, and then forms, yielding as its only value the primary value yielded by first-form.
+        prog2 求值 first-form, 然后 second-form, 以及其他 forms, second-form 产生的主要的值作为唯一的返回值.
 
 * 示例(Examples):
-
- (setq temp 1) =>  1
- (prog1 temp (print temp) (incf temp) (print temp))
->>  1
->>  2
-=>  1
- (prog1 temp (setq temp nil)) =>  2
- temp =>  NIL
- (prog1 (values 1 2 3) 4) =>  1
- (setq temp (list 'a 'b 'c))
- (prog1 (car temp) (setf (car temp) 'alpha)) =>  A
- temp =>  (ALPHA B C)
- (flet ((swap-symbol-values (x y)
-          (setf (symbol-value x)
-                (prog1 (symbol-value y)
-                       (setf (symbol-value y) (symbol-value x))))))
-   (let ((*foo* 1) (*bar* 2))
-     (declare (special *foo* *bar*))
-     (swap-symbol-values '*foo* '*bar*)
-     (values *foo* *bar*)))
-=>  2, 1
- (setq temp 1) =>  1
- (prog2 (incf temp) (incf temp) (incf temp)) =>  3
- temp =>  4
- (prog2 1 (values 2 3 4) 5) =>  2
+    ```LISP
+    (setq temp 1) =>  1
+    (prog1 temp (print temp) (incf temp) (print temp))
+    >>  1
+    >>  2
+    =>  1
+    (prog1 temp (setq temp nil)) =>  2
+    temp =>  NIL
+    (prog1 (values 1 2 3) 4) =>  1
+    (setq temp (list 'a 'b 'c))
+    (prog1 (car temp) (setf (car temp) 'alpha)) =>  A
+    temp =>  (ALPHA B C)
+    (flet ((swap-symbol-values (x y)
+             (setf (symbol-value x)
+                   (prog1 (symbol-value y)
+                          (setf (symbol-value y) (symbol-value x))))))
+      (let ((*foo* 1) (*bar* 2))
+        (declare (special *foo* *bar*))
+        (swap-symbol-values '*foo* '*bar*)
+        (values *foo* *bar*)))
+    =>  2, 1
+    (setq temp 1) =>  1
+    (prog2 (incf temp) (incf temp) (incf temp)) =>  3
+    temp =>  4
+    (prog2 1 (values 2 3 4) 5) =>  2
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -4098,58 +4101,59 @@ prog2 evaluates first-form, then second-form, and then forms, yielding as its on
 
 * 也见(See Also):
 
-multiple-value-prog1, progn
+        multiple-value-prog1, progn
 
 * 注意(Notes):
 
-prog1 and prog2 are typically used to evaluate one or more forms with side effects and return a value that must be computed before some or all of the side effects happen.
+        prog1 和 prog2 通常被用于一个或多个带有副作用的表达式形式并且返回一个在一些或所有副作用发生之前计算的值.
 
- (prog1 form*) ==  (values (multiple-value-prog1 form*))
- (prog2 form1 form*) ==  (let () form1 (prog1 form*))
+        (prog1 form*) ==  (values (multiple-value-prog1 form*))
+        (prog2 form1 form*) ==  (let () form1 (prog1 form*))
 
 
 ### <span id="">特殊操作符 PROGN</span>
 
 * 语法(Syntax):
 
-progn form* => result*
+        progn form* => result*
 
 * 参数和值(Arguments and Values):
 
-forms---an implicit progn.
-
-results---the values of the forms.
+        forms---一个隐式的 progn.
+        results---这个 forms 的值.
 
 * 描述(Description):
 
-progn evaluates forms, in the order in which they are given.
+        progn 求值 forms, 按它们被给定的顺序.
 
-The values of each form but the last are discarded.
+        除了最后一个以外的所有 form 的值都会被丢弃.
 
-If progn appears as a top level form, then all forms within that progn are considered by the compiler to be top level forms.
+        如果 progn 作为顶层表达式出现, 那么出现在这个 progn 中的所有 form 都会被当作顶层表达式处理.
 
 * 示例(Examples):
-
- (progn) =>  NIL
- (progn 1 2 3) =>  3
- (progn (values 1 2 3)) =>  1, 2, 3
- (setq a 1) =>  1
- (if a
-      (progn (setq a nil) 'here)
-      (progn (setq a t) 'there)) =>  HERE
- a =>  NIL
-
+    
+    ```LISP
+    (progn) =>  NIL
+    (progn 1 2 3) =>  3
+    (progn (values 1 2 3)) =>  1, 2, 3
+    (setq a 1) =>  1
+    (if a
+         (progn (setq a nil) 'here)
+         (progn (setq a t) 'there)) =>  HERE
+    a =>  NIL
+    ```
+    
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations): None.
 
 * 也见(See Also):
 
-prog1, prog2, Section 3.1 (Evaluation)
+        prog1, prog2, Section 3.1 (Evaluation)
 
 * 注意(Notes):
 
-Many places in Common Lisp involve syntax that uses implicit progns. That is, part of their syntax allows many forms to be written that are to be evaluated sequentially, discarding the results of all forms but the last and returning the results of the last form. Such places include, but are not limited to, the following: the body of a lambda expression; the bodies of various control and conditional forms (e.g., case, catch, progn, and when).
+        很多 Common Lisp 中的 place 涉及使用隐式 progn 的语法. 这也就是说, 其语法的一部分允许被写入的许多表达式形式按顺序进行求值, 丢弃除了最后一个以外的表达式形式的值并且返回最后一个表达式形式的结果. 这些 place 包括, 但不限于以下几点: 一个 lambda 表达式的主体部分; 多种控制和条件表达式形式的主体部分 (比如, case, catch, progn, 和 when).
 
 
 ### <span id="">宏 DEFINE-MODIFY-MACRO</span>
