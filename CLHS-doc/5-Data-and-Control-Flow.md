@@ -4160,55 +4160,56 @@ throw, Section 3.1 (Evaluation)
 
 * 语法(Syntax):
 
-define-modify-macro name lambda-list function [documentation] => name
+        define-modify-macro name lambda-list function [documentation] => name
 
 * 参数和值(Arguments and Values):
 
-name---a symbol.
-
-lambda-list---a define-modify-macro lambda list
-
-function---a symbol.
-
-documentation---a string; not evaluated.
+        name---一个符号.
+        lambda-list---一个 define-modify-macro lambda 列表
+        function---一个符号.
+        documentation---一个字符串; 不求值.
 
 * 描述(Description):
 
-define-modify-macro defines a macro named name to read and write a place.
+        define-modify-macro 定义一个名为 name 的宏去读取和写入一个 place.
 
-The arguments to the new macro are a place, followed by the arguments that are supplied in lambda-list. Macros defined with define-modify-macro correctly pass the environment parameter to get-setf-expansion.
+        给新的宏的参数是一个 place, 后面跟着 lambda-list 中提供的参数. define-modify-macro 定义的宏正确地传递环境参数给 get-setf-expansion.
 
-When the macro is invoked, function is applied to the old contents of the place and the lambda-list arguments to obtain the new value, and the place is updated to contain the result.
+        当这个宏被调用, function 被应用到这个 place 的旧的内容和 lambda-list 的参数上来获取新的值, 然后这个 place 被更新为包含这个结果.
 
-Except for the issue of avoiding multiple evaluation (see below), the expansion of a define-modify-macro is equivalent to the following:
+        除了避免多重求值的问题 (见下方), 一个 define-modify-macro 的展开等价于下面这个:
 
- (defmacro name (reference . lambda-list)
-   documentation
-   `(setf ,reference
-          (function ,reference ,arg1 ,arg2 ...)))
+    ```LISP
+    (defmacro name (reference . lambda-list)
+      documentation
+      `(setf ,reference
+              (function ,reference ,arg1 ,arg2 ...)))
+    ```
 
-where arg1, arg2, ..., are the parameters appearing in lambda-list; appropriate provision is made for a rest parameter.
+        其中 arg1, arg2, ..., 是出现在 lambda-list 中的参数; 为剩余参数制定适当的规定.
 
-The subforms of the macro calls defined by define-modify-macro are evaluated as specified in Section 5.1.1.1 (Evaluation of Subforms to Places).
+        通过 define-modify-macro 定义的宏调用的子表达式形式如章节 5.1.1.1 (Evaluation of Subforms to Places) 中描述的求值.
 
-Documentation is attached as a documentation string to name (as kind function) and to the macro function.
+        Documentation 作为一个文档字符串关联给 name (作为 function) 和这个宏函数.
 
-If a define-modify-macro form appears as a top level form, the compiler must store the macro definition at compile time, so that occurrences of the macro later on in the file can be expanded correctly.
+        如果一个 define-modify-macro 表达式形式作为顶层表达式出现, 编译器必须在编译时存储宏定义, 所以出现在这个文件中后面的宏可以被正确地展开.
 
 * 示例(Examples):
 
- (define-modify-macro appendf (&rest args)
-    append "Append onto list") =>  APPENDF
- (setq x '(a b c) y x) =>  (A B C)
- (appendf x '(d e f) '(1 2 3)) =>  (A B C D E F 1 2 3)
- x =>  (A B C D E F 1 2 3)
- y =>  (A B C)
- (define-modify-macro new-incf (&optional (delta 1)) +)
- (define-modify-macro unionf (other-set &rest keywords) union)
+    ```LISP
+    (define-modify-macro appendf (&rest args)
+        append "Append onto list") =>  APPENDF
+    (setq x '(a b c) y x) =>  (A B C)
+    (appendf x '(d e f) '(1 2 3)) =>  (A B C D E F 1 2 3)
+    x =>  (A B C D E F 1 2 3)
+    y =>  (A B C)
+    (define-modify-macro new-incf (&optional (delta 1)) +)
+    (define-modify-macro unionf (other-set &rest keywords) union)
+    ```
 
 * 副作用(Side Effects):
 
-A macro definition is assigned to name.
+        一个宏定义被赋值给 name.
 
 * 受此影响(Affected By): None.
 
@@ -4216,123 +4217,124 @@ A macro definition is assigned to name.
 
 * 也见(See Also):
 
-defsetf, define-setf-expander, documentation, Section 3.4.11 (Syntactic Interaction of Documentation Strings and Declarations)
+        defsetf, define-setf-expander, documentation, Section 3.4.11 (Syntactic Interaction of Documentation Strings and Declarations)
 
 * 注意(Notes): None.
 
 
 ### <span id="">宏 DEFSETF</span>
-
+<!-- TODO 待校验 -->
 * 语法(Syntax):
 
-The ``short form'':
+        "短表达式形式(short form)":
 
-defsetf access-fn update-fn [documentation]
+        defsetf access-fn update-fn [documentation]
 
-=> access-fn
+        => access-fn
 
-The ``long form'':
+        "长表达式形式(long form)":
 
-defsetf access-fn lambda-list (store-variable*) [[declaration* | documentation]] form*
+        defsetf access-fn lambda-list (store-variable*) [[declaration* | documentation]] form*
 
-=> access-fn
+        => access-fn
 
 * 参数和值(Arguments and Values):
 
-access-fn---a symbol which names a function or a macro.
-
-update-fn---a symbol naming a function or macro.
-
-lambda-list---a defsetf lambda list.
-
-store-variable---a symbol (a variable name).
-
-declaration---a declare expression; not evaluated.
-
-documentation---a string; not evaluated.
-
-form---a form.
+        access-fn---一个命名一个函数或一个宏的符号.
+        update-fn---一个命名一个函数或一个宏的符号.
+        lambda-list---一个 defsetf lambda 列表.
+        store-variable---一个符号 (一个变量名).
+        declaration---一个 declare 表达式; 不求值.
+        documentation---一个字符串; 不求值.
+        form---一个表达式形式.
 
 * 描述(Description):
 
-defsetf defines how to setf a place of the form (access-fn ...) for relatively simple cases. (See define-setf-expander for more general access to this facility.) It must be the case that the function or macro named by access-fn evaluates all of its arguments.
+        对于相对简单的情况 defsetf 定义了如何去 setf 一个 place (access-fn ...). (参阅 define-setf-expander 以获得更多对这个机制的使用.) 必须是由 access-fn 命名的函数或宏计算了其所有参数的情况.
 
-defsetf may take one of two forms, called the ``short form'' and the ``long form,'' which are distinguished by the type of the second argument.
+        defsetf 可能接受两个表达式形式的其中之一, 称之为 "短表达式形式(short form)" 和  "长表达式形式(long form)", 它们是由第二个参数的类型区分的.
 
-When the short form is used, update-fn must name a function (or macro) that takes one more argument than access-fn takes. When setf is given a place that is a call on access-fn, it expands into a call on update-fn that is given all the arguments to access-fn and also, as its last argument, the new value (which must be returned by update-fn as its value).
+        当使用短表达式形式时, update-fn 必须命名一个函数 (或者宏), 它比 access-fn 多接收一个参数. 当 setf 被给予一个 access-fn 的调用的 place, 它展开为一个 update-fn 的调用 that is given all the arguments to access-fn and also, as its last argument, the new value (它必须是 update-fn 返回的值).
 
-The long form defsetf resembles defmacro. The lambda-list describes the arguments of access-fn. The store-variables describe the value or values to be stored into the place. The body must compute the expansion of a setf of a call on access-fn. The expansion function is defined in the same lexical environment in which the defsetf form appears.
+        这个长表达式形式的 defsetf 类似于 defmacro. 其中 lambda-list 描述了 access-fn 的参数. 这个 store-variables 描述了存储到这个 place 的值或多值. 这个 body 必须计算一个 access-fn 上调用的 setf 的展开. 这个展开函数定义在 defsetf 表达式出现的同一个词法作用域内.
 
-During the evaluation of the forms, the variables in the lambda-list and the store-variables are bound to names of temporary variables, generated as if by gensym or gentemp, that will be bound by the expansion of setf to the values of those subforms. This binding permits the forms to be written without regard for order-of-evaluation issues. defsetf arranges for the temporary variables to be optimized out of the final result in cases where that is possible.
+        在 forms 的求值期间, 在 lambda-list 和 store-variables 中的变量绑定给临时变量的名字, 就像是通过 gensym 或 gentemp 生成, 这会通过这些子表达式形式的值的 setf 展开式来绑定. 这个绑定允许在不考虑求值顺序问题的情况下写入表达式形式. 在可能的情况下, defsetf会安排临时变量, 以优化最终结果.
 
-The body code in defsetf is implicitly enclosed in a block whose name is access-fn
+        这个 defsetf 中的主体代码隐式地闭合在一个名为 access-fn 的 block 内.
 
-defsetf ensures that subforms of the place are evaluated exactly once.
+        defsetf 确保这个 place 的子表达式形式只被求值一次.
 
-Documentation is attached to access-fn as a documentation string of kind setf.
+        Documentation 作为 setf 种类的文档字符串关联到 access-fn.
 
-If a defsetf form appears as a top level form, the compiler must make the setf expander available so that it may be used to expand calls to setf later on in the file. Users must ensure that the forms, if any, can be evaluated at compile time if the access-fn is used in a place later in the same file. The compiler must make these setf expanders available to compile-time calls to get-setf-expansion when its environment argument is a value received as the environment parameter of a macro.
+        如果一个 defsetf 表达式形式作为顶层表达式出现, 编译器必须使这个 setf 展开可用, 因此它可以被用于展开这个文件中后面的 setf 调用. 如果在同一文件中后面使用 access-fn，那么用户必须确保在编译时能够对表达式形式进行求值. 编译器必须使这些 setf 展开在编译期对 get-setf-expansion 调用时可用, 其中它的 environment 参数是一个作为一个宏的环境参数接收到的值.
 
 * 示例(Examples):
 
-The effect of
+        下面这个表达式
 
- (defsetf symbol-value set)
+    ```LISP
+    (defsetf symbol-value set)
+    ```
+    
+        的影响是构建到 Common Lisp 系统中. 这个导致表达式形式 (setf (symbol-value foo) fu) 展开为 (set foo fu).
 
-is built into the Common Lisp system. This causes the form (setf (symbol-value foo) fu) to expand into (set foo fu).
+        注意
+    ```LISP
+    (defsetf car rplaca)
+    ```
 
-Note that
+        会是不正确的因为 rplaca 不会返回它的最后一个参数.
 
- (defsetf car rplaca)
+    ```LISP
+    (defun middleguy (x) (nth (truncate (1- (list-length x)) 2) x)) =>  MIDDLEGUY
+    (defun set-middleguy (x v)
+        (unless (null x)
+          (rplaca (nthcdr (truncate (1- (list-length x)) 2) x) v))
+        v) =>  SET-MIDDLEGUY
+    (defsetf middleguy set-middleguy) =>  MIDDLEGUY
+    (setq a (list 'a 'b 'c 'd)
+          b (list 'x)
+          c (list 1 2 3 (list 4 5 6) 7 8 9)) =>  (1 2 3 (4 5 6) 7 8 9)
+    (setf (middleguy a) 3) =>  3
+    (setf (middleguy b) 7) =>  7
+    (setf (middleguy (middleguy c)) 'middleguy-symbol) =>  MIDDLEGUY-SYMBOL
+    a =>  (A 3 C D)
+    b =>  (7)
+    c =>  (1 2 3 (4 MIDDLEGUY-SYMBOL 6) 7 8 9)
+    ```
 
-would be incorrect because rplaca does not return its last argument.
+    一个使用 defsetf 的长表达式的例子是:
 
- (defun middleguy (x) (nth (truncate (1- (list-length x)) 2) x)) =>  MIDDLEGUY
- (defun set-middleguy (x v)
-    (unless (null x)
-      (rplaca (nthcdr (truncate (1- (list-length x)) 2) x) v))
-    v) =>  SET-MIDDLEGUY
- (defsetf middleguy set-middleguy) =>  MIDDLEGUY
- (setq a (list 'a 'b 'c 'd)
-       b (list 'x)
-       c (list 1 2 3 (list 4 5 6) 7 8 9)) =>  (1 2 3 (4 5 6) 7 8 9)
- (setf (middleguy a) 3) =>  3
- (setf (middleguy b) 7) =>  7
- (setf (middleguy (middleguy c)) 'middleguy-symbol) =>  MIDDLEGUY-SYMBOL
- a =>  (A 3 C D)
- b =>  (7)
- c =>  (1 2 3 (4 MIDDLEGUY-SYMBOL 6) 7 8 9)
+    ```LISP
+    (defsetf subseq (sequence start &optional end) (new-sequence)
+      `(progn (replace ,sequence ,new-sequence
+                        :start1 ,start :end1 ,end)
+              ,new-sequence)) =>  SUBSEQ
 
-An example of the use of the long form of defsetf:
-
- (defsetf subseq (sequence start &optional end) (new-sequence)
-   `(progn (replace ,sequence ,new-sequence
-                    :start1 ,start :end1 ,end)
-           ,new-sequence)) =>  SUBSEQ
-
- (defvar *xy* (make-array '(10 10)))
- (defun xy (&key ((x x) 0) ((y y) 0)) (aref *xy* x y)) =>  XY
- (defun set-xy (new-value &key ((x x) 0) ((y y) 0))
-   (setf (aref *xy* x y) new-value)) =>  SET-XY
- (defsetf xy (&key ((x x) 0) ((y y) 0)) (store)
-   `(set-xy ,store 'x ,x 'y ,y)) =>  XY
- (get-setf-expansion '(xy a b))
-=>  (#:t0 #:t1),
-   (a b),
-   (#:store),
-   ((lambda (&key ((x #:x)) ((y #:y)))
-      (set-xy #:store 'x #:x 'y #:y))
-    #:t0 #:t1),
-   (xy #:t0 #:t1)
- (xy 'x 1) =>  NIL
- (setf (xy 'x 1) 1) =>  1
- (xy 'x 1) =>  1
- (let ((a 'x) (b 'y))
-   (setf (xy a 1 b 2) 3)
-   (setf (xy b 5 a 9) 14))
-=>  14
- (xy 'y 0 'x 1) =>  1
- (xy 'x 1 'y 2) =>  3
+    (defvar *xy* (make-array '(10 10)))
+    (defun xy (&key ((x x) 0) ((y y) 0)) (aref *xy* x y)) =>  XY
+    (defun set-xy (new-value &key ((x x) 0) ((y y) 0))
+      (setf (aref *xy* x y) new-value)) =>  SET-XY
+    (defsetf xy (&key ((x x) 0) ((y y) 0)) (store)
+      `(set-xy ,store 'x ,x 'y ,y)) =>  XY
+    (get-setf-expansion '(xy a b))
+    =>  (#:t0 #:t1),
+      (a b),
+      (#:store),
+      ((lambda (&key ((x #:x)) ((y #:y)))
+          (set-xy #:store 'x #:x 'y #:y))
+        #:t0 #:t1),
+      (xy #:t0 #:t1)
+    (xy 'x 1) =>  NIL
+    (setf (xy 'x 1) 1) =>  1
+    (xy 'x 1) =>  1
+    (let ((a 'x) (b 'y))
+      (setf (xy a 1 b 2) 3)
+      (setf (xy b 5 a 9) 14))
+    =>  14
+    (xy 'y 0 'x 1) =>  1
+    (xy 'x 1 'y 2) =>  3
+    ```
 
 * 受此影响(Affected By): None.
 
@@ -4340,13 +4342,13 @@ An example of the use of the long form of defsetf:
 
 * 也见(See Also):
 
-documentation, setf, define-setf-expander, get-setf-expansion, Section 5.1 (Generalized Reference), Section 3.4.11 (Syntactic Interaction of Documentation Strings and Declarations)
+        documentation, setf, define-setf-expander, get-setf-expansion, Section 5.1 (Generalized Reference), Section 3.4.11 (Syntactic Interaction of Documentation Strings and Declarations)
 
 * 注意(Notes):
 
-forms must include provision for returning the correct value (the value or values of store-variable). This is handled by forms rather than by defsetf because in many cases this value can be returned at no extra cost, by calling a function that simultaneously stores into the place and returns the correct value.
+        forms 必须包含返回正确值的规定 (这个 store-variable 的值或多值). 这个被 forms 处理而不是 defsetf 因为在很多情况下这个值不需要额外成本就可以被返回, 通过调用一个同时存储到 place 并返回正确值的函数.
 
-A setf of a call on access-fn also evaluates all of access-fn's arguments; it cannot treat any of them specially. This means that defsetf cannot be used to describe how to store into a generalized reference to a byte, such as (ldb field reference). define-setf-expander is used to handle situations that do not fit the restrictions imposed by defsetf and gives the user additional control.
+        一个在 access-fn 调用的 setf 也求值所有 access-fn 的参数; 它不能特别地对待任何一个. 这就意味着 defsetf 不能被用于描述如何存储到一个字节的 generalized reference, 就像 (ldb field reference). define-setf-expander 用于处理不符合 defsetf 施加的限制的情况, 并为用户提供额外的控制.
 
 
 ### <span id="">宏 DEFINE-SETF-EXPANDER</span>
