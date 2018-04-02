@@ -4500,64 +4500,64 @@ throw, Section 3.1 (Evaluation)
 
 * 语法(Syntax):
 
-setf {pair}* => result*
-
-psetf {pair}* => nil
-
-pair::= place newvalue
+        setf {pair}* => result*
+        psetf {pair}* => nil
+        pair::= place newvalue
 
 * 参数和值(Arguments and Values):
 
-place---a place.
+        place---一个 place.
 
-newvalue---a form.
+        newvalue---一个表达式形式.
 
-results---the multiple values[2] returned by the storing form for the last place, or nil if there are no pairs.
+        results---最后一个 place 的存储表达式形式返回的多值, 如果没有对的话就是 nil.
 
 * 描述(Description):
 
-setf changes the value of place to be newvalue.
+        setf 改变 place 的值为 newvalue.
 
-(setf place newvalue) expands into an update form that stores the result of evaluating newvalue into the location referred to by place. Some place forms involve uses of accessors that take optional arguments. Whether those optional arguments are permitted by setf, or what their use is, is up to the setf expander function and is not under the control of setf. The documentation for any function that accepts &optional, &rest, or ..... key arguments and that claims to be usable with setf must specify how those arguments are treated.
+        (setf place newvalue) 展开为一个更新表达式形式, 它存储 newvalue 求值的结果到 place 引用的位置. 有些 place 表达式形式涉及使用可选参数的存取器(accessor). 这些可选参数是否被 setf 允许, 或者它们的用途是什么, 取决于 setf 展开函数, 不在 setf 的控制之下. 对于任何函数的文档都接受 &optional, &rest, 或 ..... key 参数并且与 setf 一起使用的声明必须指定这些参数是如何处理的.
 
-If more than one pair is supplied, the pairs are processed sequentially; that is,
+        如果提供了超过一个对, 这些对会按照顺序处理; 这也就是说,
 
- (setf place-1 newvalue-1
-       place-2 newvalue-2
-       ...
-       place-N newvalue-N)
+        (setf place-1 newvalue-1
+              place-2 newvalue-2
+              ...
+              place-N newvalue-N)
 
-is precisely equivalent to
+        恰好等价于
 
- (progn (setf place-1 newvalue-1)
-        (setf place-2 newvalue-2)
-        ...
-        (setf place-N newvalue-N))
+        (progn (setf place-1 newvalue-1)
+                (setf place-2 newvalue-2)
+                ...
+                (setf place-N newvalue-N))
 
-For psetf, if more than one pair is supplied then the assignments of new values to places are done in parallel. More precisely, all subforms (in both the place and newvalue forms) that are to be evaluated are evaluated from left to right; after all evaluations have been performed, all of the assignments are performed in an unpredictable order.
+        对于 psetf, 如果提供了不止一个对, 那么赋新的值到 place 的操作被并行执行. 更准确地说, 要求值的所有子表达式形式(不管是 place 还是 newvalue 表达式形式)都是从左到右进行求值的; 在所有求值被执行后, 所有的赋值都以不可预计的顺序执行.
 
-For detailed treatment of the expansion of setf and psetf, see Section 5.1.2 (Kinds of Places).
+        关于详细的对待 setf 和 psetf 的展开式的信息, 见章节 5.1.2 (Kinds of Places).
 
 * 示例(Examples):
 
- (setq x (cons 'a 'b) y (list 1 2 3)) =>  (1 2 3)
- (setf (car x) 'x (cadr y) (car x) (cdr x) y) =>  (1 X 3)
- x =>  (X 1 X 3)
- y =>  (1 X 3)
- (setq x (cons 'a 'b) y (list 1 2 3)) =>  (1 2 3)
- (psetf (car x) 'x (cadr y) (car x) (cdr x) y) =>  NIL
- x =>  (X 1 A 3)
- y =>  (1 A 3)
+    ```LISP
+    (setq x (cons 'a 'b) y (list 1 2 3)) =>  (1 2 3)
+    (setf (car x) 'x (cadr y) (car x) (cdr x) y) =>  (1 X 3)
+    x =>  (X 1 X 3)
+    y =>  (1 X 3)
+    (setq x (cons 'a 'b) y (list 1 2 3)) =>  (1 2 3)
+    (psetf (car x) 'x (cadr y) (car x) (cdr x) y) =>  NIL
+    x =>  (X 1 A 3)
+    y =>  (1 A 3)
+    ```
 
 * 受此影响(Affected By):
 
-define-setf-expander, defsetf, *macroexpand-hook*
+        define-setf-expander, defsetf, *macroexpand-hook*
 
 * 异常情况(Exceptional Situations): None.
 
 * 也见(See Also):
 
-define-setf-expander, defsetf, macroexpand-1, rotatef, shiftf, Section 5.1 (Generalized Reference)
+        define-setf-expander, defsetf, macroexpand-1, rotatef, shiftf, Section 5.1 (Generalized Reference)
 
 * 注意(Notes): None.
 
