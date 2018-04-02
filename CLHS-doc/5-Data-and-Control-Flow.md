@@ -4355,80 +4355,77 @@ throw, Section 3.1 (Evaluation)
 
 * 语法(Syntax):
 
-define-setf-expander access-fn lambda-list [[declaration* | documentation]] form*
-
-=> access-fn
+        define-setf-expander access-fn lambda-list [[declaration* | documentation]] form*
+        => access-fn
 
 * 参数和值(Arguments and Values):
 
-access-fn---a symbol that names a function or macro.
-
-lambda-list -- macro lambda list.
-
-declaration---a declare expression; not evaluated.
-
-documentation---a string; not evaluated.
-
-forms---an implicit progn.
+        access-fn---一个命名一个宏或函数的符号.
+        lambda-list -- 宏 lambda 列表.
+        declaration---一个 declare 表达式; 不求值.
+        documentation---一个字符串; 不求值.
+        forms---一个隐式的 progn.
 
 * 描述(Description):
 
-define-setf-expander specifies the means by which setf updates a place that is referenced by access-fn.
+        define-setf-expander 指定了 setf 更新一个被 access-fn 引用的 place 的方法.
 
-When setf is given a place that is specified in terms of access-fn and a new value for the place, it is expanded into a form that performs the appropriate update.
+        当 setf 被赋予一个以 access-fn 指定的位置和这个位置的新值时, 它被展开为一个执行适当更新的表达式形式.
 
-The lambda-list supports destructuring. See Section 3.4.4 (Macro Lambda Lists).
+        这个 lambda-list 支持解构. 见章节 3.4.4 (Macro Lambda Lists).
 
-Documentation is attached to access-fn as a documentation string of kind setf.
+        Documentation 作为一个 setf 类型的文档字符串关联给 access-fn.
 
-Forms constitute the body of the setf expander definition and must compute the setf expansion for a call on setf that references the place by means of the given access-fn. The setf expander function is defined in the same lexical environment in which the define-setf-expander form appears. While forms are being executed, the variables in lambda-list are bound to parts of the place form. The body forms (but not the lambda-list) in a define-setf-expander form are implicitly enclosed in a block whose name is access-fn.
+        Forms 组成了 setf 展开定义的主体, 并且必须计算 setf 展开, 以便调用setf, 它通过给定的 access-fn 来引用该 place. 这个 setf 展开函数被定义在 define-setf-expander 出现的同一个词法环境里. 当 forms 要被执行时, lambda-list 中的变量被绑定给 place 表达式形式部分. 一个 define-setf-expander 表达式形式的主体表达式形式 (不是 lambda-list) 隐式地闭合在一个名为 access-fn 的 block 中.<!-- TODO 待校验 -->
 
-The evaluation of forms must result in the five values described in Section 5.1.1.2 (Setf Expansions).
+        表达式形式的求值必须产生章节 5.1.1.2 (Setf Expansions) 中描述的5个值.
 
-If a define-setf-expander form appears as a top level form, the compiler must make the setf expander available so that it may be used to expand calls to setf later on in the file. Programmers must ensure that the forms can be evaluated at compile time if the access-fn is used in a place later in the same file. The compiler must make these setf expanders available to compile-time calls to get-setf-expansion when its environment argument is a value received as the environment parameter of a macro.
+        如果一个 define-setf-expander 表达式形式作为顶层表达式出现, 编译器必须使这个 setf 展开可用, 这样它就可以被用于展开这个文件中后面的 setf 调用. 如果这个 access-fn 被用于同一个文件后面的一个 place, 程序员必须确保这个 forms 可以在编译期被求值. 编译器必须使这些 setf 展开在编译期对 get-setf-expansion 调用时可用, 其中它的 environment 参数是一个作为一个宏的环境参数接收到的值.
 
 * 示例(Examples):
 
- (defun lastguy (x) (car (last x))) =>  LASTGUY
- (define-setf-expander lastguy (x &environment env)
-   "Set the last element in a list to the given value."
-   (multiple-value-bind (dummies vals newval setter getter)
-       (get-setf-expansion x env)
-     (let ((store (gensym)))
-       (values dummies
-               vals
-               `(,store)
-               `(progn (rplaca (last ,getter) ,store) ,store)
-               `(lastguy ,getter))))) =>  LASTGUY
- (setq a (list 'a 'b 'c 'd)
-       b (list 'x)
-       c (list 1 2 3 (list 4 5 6))) =>  (1 2 3 (4 5 6))
- (setf (lastguy a) 3) =>  3
- (setf (lastguy b) 7) =>  7
- (setf (lastguy (lastguy c)) 'lastguy-symbol) =>  LASTGUY-SYMBOL
- a =>  (A B C 3)
- b =>  (7)
- c =>  (1 2 3 (4 5 LASTGUY-SYMBOL))
+    ```LISP
+    (defun lastguy (x) (car (last x))) =>  LASTGUY
+    (define-setf-expander lastguy (x &environment env)
+      "Set the last element in a list to the given value."
+      (multiple-value-bind (dummies vals newval setter getter)
+          (get-setf-expansion x env)
+        (let ((store (gensym)))
+          (values dummies
+                  vals
+                  `(,store)
+                  `(progn (rplaca (last ,getter) ,store) ,store)
+                  `(lastguy ,getter))))) =>  LASTGUY
+    (setq a (list 'a 'b 'c 'd)
+          b (list 'x)
+          c (list 1 2 3 (list 4 5 6))) =>  (1 2 3 (4 5 6))
+    (setf (lastguy a) 3) =>  3
+    (setf (lastguy b) 7) =>  7
+    (setf (lastguy (lastguy c)) 'lastguy-symbol) =>  LASTGUY-SYMBOL
+    a =>  (A B C 3)
+    b =>  (7)
+    c =>  (1 2 3 (4 5 LASTGUY-SYMBOL))
 
-;;; Setf expander for the form (LDB bytespec int).
-;;; Recall that the int form must itself be suitable for SETF.
- (define-setf-expander ldb (bytespec int &environment env)
-   (multiple-value-bind (temps vals stores
-                          store-form access-form)
-       (get-setf-expansion int env);Get setf expansion for int.
-     (let ((btemp (gensym))     ;Temp var for byte specifier.
-           (store (gensym))     ;Temp var for byte to store.
-           (stemp (first stores))) ;Temp var for int to store.
-       (if (cdr stores) (error "Can't expand this."))
-;;; Return the setf expansion for LDB as five values.
-       (values (cons btemp temps)       ;Temporary variables.
-               (cons bytespec vals)     ;Value forms.
-               (list store)             ;Store variables.
-               `(let ((,stemp (dpb ,store ,btemp ,access-form)))
-                  ,store-form
-                  ,store)               ;Storing form.
-               `(ldb ,btemp ,access-form) ;Accessing form.
-              ))))
+    ;;; Setf expander for the form (LDB bytespec int).
+    ;;; Recall that the int form must itself be suitable for SETF.
+    (define-setf-expander ldb (bytespec int &environment env)
+      (multiple-value-bind (temps vals stores
+                              store-form access-form)
+          (get-setf-expansion int env);Get setf expansion for int.
+        (let ((btemp (gensym))     ;Temp var for byte specifier.
+              (store (gensym))     ;Temp var for byte to store.
+              (stemp (first stores))) ;Temp var for int to store.
+          (if (cdr stores) (error "Can't expand this."))
+    ;;; Return the setf expansion for LDB as five values.
+          (values (cons btemp temps)       ;Temporary variables.
+                  (cons bytespec vals)     ;Value forms.
+                  (list store)             ;Store variables.
+                  `(let ((,stemp (dpb ,store ,btemp ,access-form)))
+                      ,store-form
+                      ,store)               ;Storing form.
+                  `(ldb ,btemp ,access-form) ;Accessing form.
+                  ))))
+    ```
 
 * 受此影响(Affected By): None.
 
@@ -4436,57 +4433,55 @@ If a define-setf-expander form appears as a top level form, the compiler must ma
 
 * 也见(See Also):
 
-setf, defsetf, documentation, get-setf-expansion, Section 3.4.11 (Syntactic Interaction of Documentation Strings and Declarations)
+        setf, defsetf, documentation, get-setf-expansion, Section 3.4.11 (Syntactic Interaction of Documentation Strings and Declarations)
 
 * 注意(Notes):
 
-define-setf-expander differs from the long form of defsetf in that while the body is being executed the variables in lambda-list are bound to parts of the place form, not to temporary variables that will be bound to the values of such parts. In addition, define-setf-expander does not have defsetf's restriction that access-fn must be a function or a function-like macro; an arbitrary defmacro destructuring pattern is permitted in lambda-list.
+        define-setf-expander 与长表达式形式的 defsetf 不同, 因为在执行主体的过程中, lambda-list 中的变量被绑定到 place 表达式形式的一部分, 而不是绑定到这些部分的值的临时变量. 另外, define-setf-expander 没有 defsetf 限制access-fn 必须是一个函数或类函数宏; 一个任意 defmacro 解构模式允许出现在 lambda-list 中.
 
 
 ### <span id="">函数 GET-SETF-EXPANSION</span>
 
 * 语法(Syntax):
 
-get-setf-expansion place &optional environment
-
-=> vars, vals, store-vars, writer-form, reader-form
+        get-setf-expansion place &optional environment
+        => vars, vals, store-vars, writer-form, reader-form
 
 * 参数和值(Arguments and Values):
 
-place---a place.
-
-environment---an environment object.
-
-vars, vals, store-vars, writer-form, reader-form---a setf expansion.
+        place---一个 place.
+        environment---一个环境对象.
+        vars, vals, store-vars, writer-form, reader-form---一个 setf 展开.
 
 * 描述(Description):
 
-Determines five values constituting the setf expansion for place in environment; see Section 5.1.1.2 (Setf Expansions).
+        确定在 environment 中的 place 的 setf 展开的5个值; 见章节 5.1.1.2 (Setf Expansions).
 
-If environment is not supplied or nil, the environment is the null lexical environment.
+        如果 environment 没有提供或者是 nil, 环境就是 null 词法环境.
 
 * 示例(Examples):
 
- (get-setf-expansion 'x)
-=>  NIL, NIL, (#:G0001), (SETQ X #:G0001), X
+    ```LISP
+    (get-setf-expansion 'x)
+    =>  NIL, NIL, (#:G0001), (SETQ X #:G0001), X
 
-;;; This macro is like POP
+    ;;; This macro is like POP
 
- (defmacro xpop (place &environment env)
-   (multiple-value-bind (dummies vals new setter getter)
-                        (get-setf-expansion place env)
-      `(let* (,@(mapcar #'list dummies vals) (,(car new) ,getter))
-         (if (cdr new) (error "Can't expand this."))
-         (prog1 (car ,(car new))
-                (setq ,(car new) (cdr ,(car new)))
-                ,setter))))
+    (defmacro xpop (place &environment env)
+      (multiple-value-bind (dummies vals new setter getter)
+                            (get-setf-expansion place env)
+          `(let* (,@(mapcar #'list dummies vals) (,(car new) ,getter))
+            (if (cdr new) (error "Can't expand this."))
+            (prog1 (car ,(car new))
+                    (setq ,(car new) (cdr ,(car new)))
+                    ,setter))))
 
- (defsetf frob (x) (value)
-     `(setf (car ,x) ,value)) =>  FROB
-;;; The following is an error; an error might be signaled at macro expansion time
- (flet ((frob (x) (cdr x)))  ;Invalid
-   (xpop (frob z)))
-
+    (defsetf frob (x) (value)
+        `(setf (car ,x) ,value)) =>  FROB
+    ;;; The following is an error; an error might be signaled at macro expansion time
+    (flet ((frob (x) (cdr x)))  ;Invalid
+      (xpop (frob z)))
+    ```
 
 * 受此影响(Affected By): None.
 
@@ -4494,11 +4489,11 @@ If environment is not supplied or nil, the environment is the null lexical envir
 
 * 也见(See Also):
 
-defsetf, define-setf-expander, setf
+    defsetf, define-setf-expander, setf
 
 * 注意(Notes):
 
-Any compound form is a valid place, since any compound form whose operator f has no setf expander are expanded into a call to (setf f).
+        任何复合表达式形式都是一个合法的 place, 因为对于任何操作符为 f 没有 setf 展开的复合表达式形式都被展开为一个 (setf f) 的调用.
 
 
 ### <span id="">宏 SETF, PSETF</span>
