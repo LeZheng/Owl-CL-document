@@ -4689,38 +4689,38 @@ throw, Section 3.1 (Evaluation)
 
 ### <span id="">状况类型 CONTROL-ERROR</span>
 
-Class Precedence List:
+* 类优先级列表(Class Precedence List):
 
-control-error, error, serious-condition, condition, t
+        control-error, error, serious-condition, condition, t
 
 * 描述(Description):
 
-The type control-error consists of error conditions that result from invalid dynamic transfers of control in a program. The errors that result from giving throw a tag that is not active or from giving go or return-from a tag that is no longer dynamically available are of type control-error.
+        类型 control-error 由错误条件组成, 这些错误条件是由程序中无效的动态转移引起的. throw 一个不活跃的 tag 或 go 或者 return-from 一个不再是动态可用的 tag 导致的错误是 control-error 错误.
 
 
 ### <span id="">状况类型 PROGRAM-ERROR</span>
 
-Class Precedence List:
+* 类优先级列表(Class Precedence List):
 
-program-error, error, serious-condition, condition, t
+        program-error, error, serious-condition, condition, t
 
 * 描述(Description):
 
-The type program-error consists of error conditions related to incorrect program syntax. The errors that result from naming a go tag or a block tag that is not lexically apparent are of type program-error.
+        类型 program-error 由不正确的程序语法相关的错误条件组成. 显然不是词法地命名一个 go 标签或 block 标签导致的错误是类型 program-error.
 
 
 ### <span id="">状况类型 UNDEFINED-FUNCTION</span>
 
-Class Precedence List:
+* 类优先级列表(Class Precedence List):
 
-undefined-function, cell-error, error, serious-condition, condition, t
+        undefined-function, cell-error, error, serious-condition, condition, t
 
 * 描述(Description):
 
-The type undefined-function consists of error conditions that represent attempts to read the definition of an undefined function.
+        类型 undefined-function 由表示尝试读取未定义函数的定义的错误条件组成.
 
-The name of the cell (see cell-error) is the function name which was funbound.
+        这个 cell (见 cell-error) 的名字是一个 funbound 的函数名.
 
 * 也见(See Also):
 
-cell-error-name
+        cell-error-name
