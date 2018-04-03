@@ -4566,105 +4566,107 @@ throw, Section 3.1 (Evaluation)
 
 * 语法(Syntax):
 
-shiftf place+ newvalue => old-value-1
+        shiftf place+ newvalue => old-value-1
 
 * 参数和值(Arguments and Values):
 
-place---a place.
-
-newvalue---a form; evaluated.
-
-old-value-1---an object (the old value of the first place).
+        place---一个 place.
+        newvalue---一个表达式形式; 求值.
+        old-value-1---一个对象 (第一个 place 的旧值).
 
 * 描述(Description):
 
-shiftf modifies the values of each place by storing newvalue into the last place, and shifting the values of the second through the last place into the remaining places.
+        shiftf 通过存储 newvalue 到最后一个 place 来修改每一个 place 的值, 并将第二个的值从最后一个 place 到其余 place.
 
-If newvalue produces more values than there are store variables, the extra values are ignored. If newvalue produces fewer values than there are store variables, the missing values are set to nil.
+        如果 newvalue 产生了超过这里的存储变量数量的值, 多余的值会被忽略. 如果 newvalue 产生的值少于存储变量的数量, 缺少的值会被设置为 nil.
 
-In the form (shiftf place1 place2 ... placen newvalue), the values in place1 through placen are read and saved, and newvalue is evaluated, for a total of n+1 values in all. Values 2 through n+1 are then stored into place1 through placen, respectively. It is as if all the places form a shift register; the newvalue is shifted in from the right, all values shift over to the left one place, and the value shifted out of place1 is returned.
+        在表达式形式 (shiftf place1 place2 ... placen newvalue) 中, 从 place1 到 placen 的值被读取和保存, 并且 newvalue 被求值, 总共 n+1 个值. 值 2 到 n+1 被分别存储到 place1 到 placen. 就好像所有的 place 都形成了一个移位寄存器; newvalue 从右边移过来, 所有的值都转移到左边的位置, 然后返回的值从 place1 中移出.
 
-For information about the evaluation of subforms of places, see Section 5.1.1.1 (Evaluation of Subforms to Places).
+        关于 place 求值的更多信息, 见章节 5.1.1.1 (Evaluation of Subforms to Places).
 
 * 示例(Examples):
 
- (setq x (list 1 2 3) y 'trash) =>  TRASH
- (shiftf y x (cdr x) '(hi there)) =>  TRASH
- x =>  (2 3)
- y =>  (1 HI THERE)
+    ```LISP
+    (setq x (list 1 2 3) y 'trash) =>  TRASH
+    (shiftf y x (cdr x) '(hi there)) =>  TRASH
+    x =>  (2 3)
+    y =>  (1 HI THERE)
 
- (setq x (list 'a 'b 'c)) =>  (A B C)
- (shiftf (cadr x) 'z) =>  B
- x =>  (A Z C)
- (shiftf (cadr x) (cddr x) 'q) =>  Z
- x =>  (A (C) . Q)
- (setq n 0) =>  0
- (setq x (list 'a 'b 'c 'd)) =>  (A B C D)
- (shiftf (nth (setq n (+ n 1)) x) 'z) =>  B
- x =>  (A Z C D)
+    (setq x (list 'a 'b 'c)) =>  (A B C)
+    (shiftf (cadr x) 'z) =>  B
+    x =>  (A Z C)
+    (shiftf (cadr x) (cddr x) 'q) =>  Z
+    x =>  (A (C) . Q)
+    (setq n 0) =>  0
+    (setq x (list 'a 'b 'c 'd)) =>  (A B C D)
+    (shiftf (nth (setq n (+ n 1)) x) 'z) =>  B
+    x =>  (A Z C D)
+    ```
 
 * 受此影响(Affected By):
 
-define-setf-expander, defsetf, *macroexpand-hook*
+        define-setf-expander, defsetf, *macroexpand-hook*
 
 * 异常情况(Exceptional Situations): None.
 
 * 也见(See Also):
 
-setf, rotatef, Section 5.1 (Generalized Reference)
+        setf, rotatef, Section 5.1 (Generalized Reference)
 
 * 注意(Notes):
 
-The effect of (shiftf place1 place2 ... placen newvalue) is roughly equivalent to
+        这个 (shiftf place1 place2 ... placen newvalue) 的影响差不多等价于
 
- (let ((var1 place1)
-       (var2 place2)
-       ...
-       (varn placen)
-       (var0 newvalue))
-   (setf place1 var2)
-   (setf place2 var3)
-   ...
-   (setf placen var0)
-   var1)
+        (let ((var1 place1)
+              (var2 place2)
+              ...
+              (varn placen)
+              (var0 newvalue))
+          (setf place1 var2)
+          (setf place2 var3)
+          ...
+          (setf placen var0)
+          var1)
 
-except that the latter would evaluate any subforms of each place twice, whereas shiftf evaluates them once. For example,
+        除了后者会对每个 place 的任何子表达式进行两次求值, 而 shiftf 计算一次. 比如,
 
- (setq n 0) =>  0
- (setq x (list 'a 'b 'c 'd)) =>  (A B C D)
- (prog1 (nth (setq n (+ n 1)) x)
-        (setf (nth (setq n (+ n 1)) x) 'z)) =>  B
- x =>  (A B Z D)
+        (setq n 0) =>  0
+        (setq x (list 'a 'b 'c 'd)) =>  (A B C D)
+        (prog1 (nth (setq n (+ n 1)) x)
+                (setf (nth (setq n (+ n 1)) x) 'z)) =>  B
+        x =>  (A B Z D)
 
 
 ### <span id="">宏 ROTATEF</span>
 
 * 语法(Syntax):
 
-rotatef place* => nil
+        rotatef place* => nil
 
 * 参数和值(Arguments and Values):
 
-place---a place.
+        place---一个 place.
 
 * 描述(Description):
 
-rotatef modifies the values of each place by rotating values from one place into another.
+        rotatef 通过将值从一个 place 旋转到另一个 place 来修改每个 place 的值.
 
-If a place produces more values than there are store variables, the extra values are ignored. If a place produces fewer values than there are store variables, the missing values are set to nil.
+        如果 newvalue 产生了超过这里的存储变量数量的值, 多余的值会被忽略. 如果 newvalue 产生的值少于存储变量的数量, 缺少的值会被设置为 nil.
 
-In the form (rotatef place1 place2 ... placen), the values in place1 through placen are read and written. Values 2 through n and value 1 are then stored into place1 through placen. It is as if all the places form an end-around shift register that is rotated one place to the left, with the value of place1 being shifted around the end to placen.
+        在表达式形式 (rotatef place1 place2 ... placen) 中, 从 place1 到 placen 的值被读取和写入. 值 2 到 n 和值 1 接下来被存储到 place1 到 placen. 就好像所有的 place 都形成了一个末端的移位寄存器, 它将一个 place 旋转到左边, 而 place1 的值被移动到placen.
 
-For information about the evaluation of subforms of places, see Section 5.1.1.1 (Evaluation of Subforms to Places).
+        关于 place 求值的更多信息, 见章节 5.1.1.1 (Evaluation of Subforms to Places).
 
 * 示例(Examples):
 
- (let ((n 0)
-        (x (list 'a 'b 'c 'd 'e 'f 'g)))
-    (rotatef (nth (incf n) x)
-             (nth (incf n) x)
-             (nth (incf n) x))
-    x) =>  (A C D B E F G)
+    ```LISP
+    (let ((n 0)
+            (x (list 'a 'b 'c 'd 'e 'f 'g)))
+        (rotatef (nth (incf n) x)
+                (nth (incf n) x)
+                (nth (incf n) x))
+        x) =>  (A C D B E F G)
+    ```
 
 * 受此影响(Affected By): None.
 
@@ -4672,19 +4674,18 @@ For information about the evaluation of subforms of places, see Section 5.1.1.1 
 
 * 也见(See Also):
 
-define-setf-expander, defsetf, setf, shiftf, *macroexpand-hook*, Section 5.1 (Generalized Reference)
+        define-setf-expander, defsetf, setf, shiftf, *macroexpand-hook*, Section 5.1 (Generalized Reference)
 
 * 注意(Notes):
 
-The effect of (rotatef place1 place2 ... placen) is roughly equivalent to
+        这个 (rotatef place1 place2 ... placen) 的影响粗略等价于
 
- (psetf place1 place2
-        place2 place3
-        ...
-        placen place1)
+        (psetf place1 place2
+                place2 place3
+                ...
+                placen place1)
 
-except that the latter would evaluate any subforms of each place twice, whereas rotatef evaluates them once.
-
+        除了后者会对每个 place 的任何子表达式进行两次求值, 而 rotatef 求值.
 
 ### <span id="">状况类型 CONTROL-ERROR</span>
 
