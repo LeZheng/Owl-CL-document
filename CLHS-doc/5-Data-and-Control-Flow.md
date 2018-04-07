@@ -1,18 +1,18 @@
 # 5. 数据和控制流
 <!-- TODO place  Generalized Reference ?? -->
-> * 5.1 [Generalized Reference](#GeneralizedReference)
+> * 5.1 [广义引用](#GeneralizedReference)
 > * 5.2 [退出点的控制转移](#TCEP)
 > * 5.3 [数据和控制流字典](#DCFDictionary)
 
-## 5.1 <span id="GeneralizedReference">Generalized Reference</span>
+## 5.1 <span id="GeneralizedReference">广义引用</span>
 
-> * 5.1.1 [Places 和 Generalized Reference 的概述](#OverviewPlacesGeneralizedReference)
+> * 5.1.1 [Places 和广义引用的概述](#OverviewPlacesGeneralizedReference)
 > * 5.1.2 [Places 的种类](#KindsOfPlaces)
 > * 5.1.3 [基于 SETF 的其他宏的处理](#TreatmentMacrosSETF)
 
-### 5.1.1 <span id="OverviewPlacesGeneralizedReference">Places 和 Generalized Reference 的概述</span>
+### 5.1.1 <span id="OverviewPlacesGeneralizedReference">Places 和广义引用的概述</span>
 
-一个 generalized reference 是一个表达式形式的使用, 有时也称作一个 place , 就好像它是一个可以被读写的变量. 一个 place 的值就是这个 place 表达式求值后的对象. 一个 place 的值可以通过使用 setf 来改变. 绑定一个 place 的概念没有在 Common Lisp 中定义, 但是一个实现允许通过定义它的概念来扩展这个语言.
+一个广义引用(generalized reference)是一个表达式形式的使用, 有时也称作一个 place , 就好像它是一个可以被读写的变量. 一个 place 的值就是这个 place 表达式求值后的对象. 一个 place 的值可以通过使用 setf 来改变. 绑定一个 place 的概念没有在 Common Lisp 中定义, 但是一个实现允许通过定义它的概念来扩展这个语言.
 
 下面这段包含了 setf 使用的示例. 注意, 求值第二列的表达式形式返回的值没有必要和求值第三列中的表达式形式获取到的值一样. 总之, setf 表达式形式准确的宏展开是不保证的, 甚至是依赖于具体实现的; 可以保证的是, 展开后是一个针对特定实现的更新表达式形式, 对子表达式的从左到右求值是保留的, 而求值 setf 的最终结果是存储的值或多值.
 
@@ -110,7 +110,7 @@ push 先求值 (setq x (list 'a)) => (a), 然后求值 (setq x (list 'b)) => (b)
 
 存储表达式形式
 
-    一种可以同时引用临时变量和存储变量的表达式形式, 它会改变 place 的值, 并保证返回值, 因为它的值是存储变量的值, 这是 setf 返回的正确值.<!-- TODO 待校验 -->
+    一种可以同时引用临时变量和存储变量的表达式形式, 它会改变 place 的值, 并保证返回存储变量的值作为它的值, 这是 setf 返回的正确值.
 
 访问表达式形式
 
@@ -200,30 +200,30 @@ Common Lisp 定义了多个 place 的种类; 这个章节会列举它们. 这个
 
 * 第一个元素是下面这段中任何一个函数名的函数调用表达式形式.
 
-    aref    cdadr                    get
-    bit     cdar                     gethash
-    caaaar  cddaar                   logical-pathname-translations
-    caaadr  cddadr                   macro-function
-    caaar   cddar                    ninth
-    caadar  cdddar                   nth
-    caaddr  cddddr                   readtable-case
-    caadr   cdddr                    rest
-    caar    cddr                     row-major-aref
-    cadaar  cdr                      sbit
-    cadadr  char                     schar
-    cadar   class-name               second
-    caddar  compiler-macro-function  seventh
-    cadddr  documentation            sixth
-    caddr   eighth                   slot-value
-    cadr    elt                      subseq
-    car     fdefinition              svref
-    cdaaar  fifth                    symbol-function
-    cdaadr  fill-pointer             symbol-plist
-    cdaar   find-class               symbol-value
-    cdadar  first                    tenth
-    cdaddr  fourth                   third
+        aref    cdadr                    get
+        bit     cdar                     gethash
+        caaaar  cddaar                   logical-pathname-translations
+        caaadr  cddadr                   macro-function
+        caaar   cddar                    ninth
+        caadar  cdddar                   nth
+        caaddr  cddddr                   readtable-case
+        caadr   cdddr                    rest
+        caar    cddr                     row-major-aref
+        cadaar  cdr                      sbit
+        cadadr  char                     schar
+        cadar   class-name               second
+        caddar  compiler-macro-function  seventh
+        cadddr  documentation            sixth
+        caddr   eighth                   slot-value
+        cadr    elt                      subseq
+        car     fdefinition              svref
+        cdaaar  fifth                    symbol-function
+        cdaadr  fill-pointer             symbol-plist
+        cdaar   find-class               symbol-value
+        cdadar  first                    tenth
+        cdaddr  fourth                   third
 
-    Figure 5-7. 可以和 setf 一起使用的函数---1
+        Figure 5-7. 可以和 setf 一起使用的函数---1
 
     subseq 的情况, 替换的值必须是一个序列, 其元素可能被 subseq 的序列参数所包含, 但它不一定是与指定子序列的类型相同的序列. 如果替换的值的长度和要被替换的子序列长度不一样, 那么更短的那个长度决定要被存储的元素的数量, 如 replace.
 
@@ -231,10 +231,11 @@ Common Lisp 定义了多个 place 的种类; 这个章节会列举它们. 这个
 
 * 第一个元素是下面这段中任何一个函数名的函数调用表达式形式, 只要给那个函数的提供的参数依次为一个 place 表达式; 在本例中, 新 place 存储回了调用提供的"update"函数的结果中.
 
-    函数名          是 place 的参数            使用的 update 函数
-    ldb            second                    dpb
-    mask-field     second                    deposit-field
-    getf           first                     implementation-dependent
+    |函数名      |    是 place 的参数       |     使用的 update 函数 |
+    | --        | --                      | --                   |
+    |ldb        |   second                |     dpb              |
+    |mask-field |   second                |     deposit-field    |
+    |getf       |   first                 |     implementation-dependent |
 
     Figure 5-8. 可以和 setf 一起使用的函数---2 
     
@@ -250,7 +251,7 @@ Common Lisp 定义了多个 place 的种类; 这个章节会列举它们. 这个
         (setf (ldb byte-spec place-form) value-form)
         ```
         
-        place-form 涉及的 place 必须总是可读写的; 注意这个更新是对 place-form 指定的广义变量, 不是任何 integer 类型的对象.
+        place-form 引用的 place 必须总是可读写的; 注意这个更新是对 place-form 指定的广义变量, 不是任何 integer 类型的对象.
 
         因此, setf 应该生成代码来执行以下操作:
 
@@ -285,7 +286,7 @@ Common Lisp 定义了多个 place 的种类; 这个章节会列举它们. 这个
         (setf (getf place-form ind-form) value-form)
         ```
         
-        place-form 涉及的 place 必须总是可读写的; 注意这个更新是对 place-form 指定的广义变量, 而不一定是特定列表中讨论中的属性列表. <!--TODO in question ??-->
+        place-form 引用的 place 必须总是可读写的; 注意这个更新是对 place-form 指定的广义变量, 而不一定是讨论中的特定属性列表.
 
         因此, setf 应该生成代码来执行以下操作:
 
@@ -326,7 +327,7 @@ Common Lisp 定义了多个 place 的种类; 这个章节会列举它们. 这个
 
 1. 每一个嵌套 place 的子表达式都按照从左到右的顺序求值.
 2. 这个 values-form 被求值, 并且每一个 place 的 第一个存储变量被绑定给它的返回值就像是通过 multiple-value-bind 的一样.
-3. 如果这个 setf 展开式对于任何 place 涉及超过一个存储变量, 那么额外的存储变量会绑定为 nil.
+3. 如果这个 setf 展开式对于任何 place 引用超过一个存储变量, 那么额外的存储变量会绑定为 nil.
 4. 每个 place 的存储表达式形式都按照从左到右的顺序计算.
 
 values 的 setf 展开中的存储形式作为多个值返回第2步中存储变量的值. 这也就是说, 返回的值的数量和 place 表达式数量一样. 这个可能比 values-form 产生的值更多或更少.
@@ -415,21 +416,18 @@ values 的 setf 展开中的存储形式作为多个值返回第2步中存储变
 5. 计算新的值.
 6. 存储新的值到 place.
 
-    decf  pop   pushnew
-    incf  push  remf
+        decf  pop   pushnew
+        incf  push  remf
 
-    Figure 5-9. 读-修改-写(read-modify-write) 宏
+        Figure 5-9. 读-修改-写(read-modify-write) 宏
 
 ## 5.2 <span id="TCEP">退出点的控制转移</span>
 
 当控制转移由 go, return-from, 或 throw 发起时, 为了完成控制权的转移, 发生以下事件. 注意, 对于 go, 退出点是 go 执行时要被执行的 tagbody 里的表达式形式; 对于 return-from, 退出点是对应的 block 表达式形式; 对于 throw, 退出点是对应的 catch 表达式形式.
 
 1. 中间的退出点被"抛弃"了 (换句话说, 它们的范围结束了, 试图通过它们来转移控制已经不再有效了).
-
 2. 对任何中间 unwind-protect 子句的清理子句进行了求值.
-
 3. 其中 special 变量, 捕捉标签, 状况处理者, 还有重启器的动态绑定被消除.
-
 4. 被调用的退出点的范围结束, 控制被传递给目标.
 
 退出的范围被"抛弃", 因为一旦控制转移, 它就会被传递到结束 The extent of an exit being "abandoned" because it is being passed over ends as soon as the transfer of control is initiated. 这也就是说, 事件 1 发生在控制转移的开始. 如果尝试去转移控制到一个动态范围已经结束的退出点, 那么结果是未定义的.
@@ -440,79 +438,79 @@ values 的 setf 展开中的存储形式作为多个值返回第2步中存储变
 
 ## 5.3 <span id="DCFDictionary">数据和控制流字典</span>
 
-> * [函数 APPLY](#)
-> * [宏 DEFUN](#)
-> * [访问器 FDEFINITION](#)
-> * [函数 FBOUNDP](#)
-> * [函数 FMAKUNBOUND](#)
-> * [特殊操作符 FLET, LABELS, MACROLET](#)
-> * [函数 FUNCALL](#)
-> * [特殊操作符 FUNCTION](#)
-> * [函数 FUNCTION-LAMBDA-EXPRESSION](#)
-> * [函数 FUNCTIONP](#)
-> * [函数 COMPILED-FUNCTION-P](#)
-> * [常量 CALL-ARGUMENTS-LIMIT](#)
-> * [常量 LAMBDA-LIST-KEYWORDS](#)
-> * [常量 LAMBDA-PARAMETERS-LIMIT](#)
-> * [宏 DEFCONSTANT](#)
-> * [宏 DEFPARAMETER, DEFVAR](#)
-> * [宏 DESTRUCTURING-BIND](#)
-> * [特殊操作符 LET, LET*](#)
-> * [特殊操作符 PROGV](#)
-> * [特殊表达式 SETQ](#)
-> * [宏 PSETQ](#)
-> * [特殊操作符 BLOCK](#)
-> * [特殊操作符 CATCH](#)
-> * [特殊操作符 GO](#)
-> * [特殊操作符 RETURN-FROM](#)
-> * [宏 RETURN](#)
-> * [特殊操作符 TAGBODY](#)
-> * [特殊操作符 THROW](#)
-> * [特殊操作符 UNWIND-PROTECT](#)
-> * [常量 NIL](#)
-> * [函数 NOT](#)
-> * [常量 T](#)
-> * [函数 EQ](#)
-> * [函数 EQL](#)
-> * [函数 EQUAL](#)
-> * [函数 EQUALP](#)
-> * [函数 IDENTITY](#)
-> * [函数 COMPLEMENT](#)
-> * [函数 CONSTANTLY](#)
-> * [函数 EVERY, SOME, NOTEVERY, NOTANY](#)
-> * [宏 AND](#)
-> * [宏 COND](#)
-> * [特殊操作符 IF](#)
-> * [宏 OR](#)
-> * [宏 WHEN, UNLESS](#)
-> * [宏 CASE, CCASE, ECASE](#)
-> * [宏 TYPECASE, CTYPECASE, ETYPECASE](#)
-> * [宏 MULTIPLE-VALUE-BIND](#)
-> * [特殊操作符 MULTIPLE-VALUE-CALL](#)
-> * [宏 MULTIPLE-VALUE-LIST](#)
-> * [特殊操作符 MULTIPLE-VALUE-PROG1](#)
-> * [宏 MULTIPLE-VALUE-SETQ](#)
-> * [访问器 VALUES](#)
-> * [函数 VALUES-LIST](#)
-> * [常量 MULTIPLE-VALUES-LIMIT](#)
-> * [宏 NTH-VALUE](#)
-> * [宏 PROG, PROG*](#)
-> * [宏 PROG1, PROG2](#)
-> * [特殊操作符 PROGN](#)
-> * [宏 DEFINE-MODIFY-MACRO](#)
-> * [宏 DEFSETF](#)
-> * [宏 DEFINE-SETF-EXPANDER](#)
-> * [函数 GET-SETF-EXPANSION](#)
-> * [宏 SETF, PSETF](#)
-> * [宏 SHIFTF](#)
-> * [宏 ROTATEF](#)
-> * [状况类型 CONTROL-ERROR](#)
-> * [状况类型 PROGRAM-ERROR](#)
-> * [状况类型 UNDEFINED-FUNCTION](#)
+> * [函数 APPLY](#FAPPLY)
+> * [宏 DEFUN](#MDEFUN)
+> * [访问器 FDEFINITION](#AFDEFINITION)
+> * [函数 FBOUNDP](#FFBOUNDP)
+> * [函数 FMAKUNBOUND](#FFMAKUNBOUND)
+> * [特殊操作符 FLET, LABELS, MACROLET](#SOFLETLABELSMACROLET)
+> * [函数 FUNCALL](#FFUNCALL)
+> * [特殊操作符 FUNCTION](#SOFUNCTION)
+> * [函数 FUNCTION-LAMBDA-EXPRESSION](#FFUNCTION-LAMBDA-EXPRESSION)
+> * [函数 FUNCTIONP](#FFUNCTIONP)
+> * [函数 COMPILED-FUNCTION-P](#FCOMPILED-FUNCTION-P)
+> * [常量 CALL-ARGUMENTS-LIMIT](#CCALL-ARGUMENTS-LIMIT)
+> * [常量 LAMBDA-LIST-KEYWORDS](#CLAMBDA-LIST-KEYWORDS)
+> * [常量 LAMBDA-PARAMETERS-LIMIT](#CLAMBDA-PARAMETERS-LIMIT)
+> * [宏 DEFCONSTANT](#MDEFCONSTANT)
+> * [宏 DEFPARAMETER, DEFVAR](#MDEFPARAMETERDEFVAR)
+> * [宏 DESTRUCTURING-BIND](#MDESTRUCTURING-BIND)
+> * [特殊操作符 LET, LET*](#SOLETLET*)
+> * [特殊操作符 PROGV](#SOPROGV)
+> * [特殊表达式 SETQ](#SOSETQ)
+> * [宏 PSETQ](#MPSETQ)
+> * [特殊操作符 BLOCK](#SOBLOCK)
+> * [特殊操作符 CATCH](#SOCATCH)
+> * [特殊操作符 GO](#SOGO)
+> * [特殊操作符 RETURN-FROM](#SORETURN-FROM)
+> * [宏 RETURN](#MRETURN)
+> * [特殊操作符 TAGBODY](#SOTAGBODY)
+> * [特殊操作符 THROW](#SOTHROW)
+> * [特殊操作符 UNWIND-PROTECT](#SOUNWIND-PROTECT)
+> * [常量 NIL](#CNIL)
+> * [函数 NOT](#FNOT)
+> * [常量 T](#CT)
+> * [函数 EQ](#FEQ)
+> * [函数 EQL](#FEQL)
+> * [函数 EQUAL](#FEQUAL)
+> * [函数 EQUALP](#FEQUALP)
+> * [函数 IDENTITY](#FIDENTITY)
+> * [函数 COMPLEMENT](#F)
+> * [函数 CONSTANTLY](#COMPLEMENT)
+> * [函数 EVERY, SOME, NOTEVERY, NOTANY](#FEVERYSOMENOTEVERYNOTANY)
+> * [宏 AND](#MAND)
+> * [宏 COND](#MCOND)
+> * [特殊操作符 IF](#SOIF)
+> * [宏 OR](#MOR)
+> * [宏 WHEN, UNLESS](#MWHENUNLESS)
+> * [宏 CASE, CCASE, ECASE](#MCASECCASEECASE)
+> * [宏 TYPECASE, CTYPECASE, ETYPECASE](#MTYPECASECTYPECASEETYPECASE)
+> * [宏 MULTIPLE-VALUE-BIND](#MMULTIPLE-VALUE-BIND)
+> * [特殊操作符 MULTIPLE-VALUE-CALL](#SOMULTIPLE-VALUE-CALL)
+> * [宏 MULTIPLE-VALUE-LIST](#MMULTIPLE-VALUE-LIST)
+> * [特殊操作符 MULTIPLE-VALUE-PROG1](#SOMULTIPLE-VALUE-PROG1)
+> * [宏 MULTIPLE-VALUE-SETQ](#MMULTIPLE-VALUE-SETQ)
+> * [访问器 VALUES](#AVALUES)
+> * [函数 VALUES-LIST](#FVALUES-LIST)
+> * [常量 MULTIPLE-VALUES-LIMIT](#CMULTIPLE-VALUES-LIMIT)
+> * [宏 NTH-VALUE](#MNTH-VALUE)
+> * [宏 PROG, PROG*](#MPROGPROG*)
+> * [宏 PROG1, PROG2](#MPROG1PROG2)
+> * [特殊操作符 PROGN](#SOPROGN)
+> * [宏 DEFINE-MODIFY-MACRO](#MDEFINE-MODIFY-MACRO)
+> * [宏 DEFSETF](#MDEFSETF)
+> * [宏 DEFINE-SETF-EXPANDER](#MDEFINE-SETF-EXPANDER)
+> * [函数 GET-SETF-EXPANSION](#FGET-SETF-EXPANSION)
+> * [宏 SETF, PSETF](#MSETFPSETF)
+> * [宏 SHIFTF](#MSHIFTF)
+> * [宏 ROTATEF](#MROTATEF)
+> * [状况类型 CONTROL-ERROR](#CTCONTROL-ERROR)
+> * [状况类型 PROGRAM-ERROR](#CTPROGRAM-ERROR)
+> * [状况类型 UNDEFINED-FUNCTION](#CTUNDEFINED-FUNCTION)
 
 
 
-### <span id="">函数 APPLY</span>
+### <span id="FAPPLY">函数 APPLY</span>
 
 * 语法(Syntax):
 
@@ -569,12 +567,11 @@ values 的 setf 展开中的存储形式作为多个值返回第2步中存储变
 * 注意(Notes): None.
 
 
-### <span id="">宏 DEFUN</span>
+### <span id="MDEFUN">宏 DEFUN</span>
 
 * 语法(Syntax):
 
         defun function-name lambda-list [[declaration* | documentation]] form*
-
         => function-name
 
 * 参数和值(Arguments and Values):
@@ -654,7 +651,7 @@ values 的 setf 展开中的存储形式作为多个值返回第2步中存储变
         当关于这个函数的额外信息(通常是调试信息)被记录时, 可能发生额外的副作用.
 
 
-### <span id="">访问器 FDEFINITION</span>
+### <span id="AFDEFINITION">访问器 FDEFINITION</span>
 
 * 语法(Syntax):
 
@@ -665,14 +662,12 @@ values 的 setf 展开中的存储形式作为多个值返回第2步中存储变
 * 参数和值(Arguments and Values):
 
         function-name---一个函数名. 在不是 setf 情况下, 这个名字在全局环境中必须被 fbound.
-
         definition---function-name 命名的当前全局函数定义.
-
         new-definition---一个函数.
 
 * 描述(Description):
 
-fdefinition 访问 function-name 命名的当前全局函数定义. 这个定义可能是一个函数或表示一个特殊表达式或宏的对象. 当 fboundp 返回 true 但是这个 function-name 表示一个宏或者特殊表达式时, fdefinition 返回的值是没有定义好的, 但是 fdefinition 不发出一个错误.
+        fdefinition 访问 function-name 命名的当前全局函数定义. 这个定义可能是一个函数或表示一个特殊表达式或宏的对象. 当 fboundp 返回 true 但是这个 function-name 表示一个宏或者特殊表达式时, fdefinition 返回的值是没有定义好的, 但是 fdefinition 不发出一个错误.
 
 * 示例(Examples): None.
 
@@ -697,7 +692,7 @@ fdefinition 访问 function-name 命名的当前全局函数定义. 这个定义
         当一个函数名对应的函数定义不表示一个特殊表达式时, setf 可以和 fdefinition 一起使用去替换全局函数定义. fdefinition 的 setf 需要一个函数作为新的值. 把 function-name 的 fdefinition 设置为一个符号, 一个列表, 或者在一个宏或特殊表达式上调用 fdefinition 返回的值是错误的.
 
 
-### <span id="">函数 FBOUNDP</span>
+### <span id="FFBOUNDP">函数 FBOUNDP</span>
 
 * 语法(Syntax):
 
@@ -753,18 +748,18 @@ fdefinition 访问 function-name 命名的当前全局函数定义. 这个定义
 
 * 注意(Notes):
 
-允许在任何被 fbound 的符号上调用 symbol-function.
+        允许在任何被 fbound 的符号上调用 symbol-function.
 
-fboundp 有时候被用于 "保护" 对函数 cell 的访问, 就像:
+        fboundp 有时候被用于 "保护" 对函数 cell 的访问, 就像:
 
-```LISP
-(if (fboundp x) (symbol-function x))
-```
+    ```LISP
+    (if (fboundp x) (symbol-function x))
+    ```
 
-定义一个 setf 展开器 F 不会导致 setf 函数 (setf F) 被定义.
+        定义一个 setf 展开器 F 不会导致 setf 函数 (setf F) 被定义.
 
 
-### <span id="">函数 FMAKUNBOUND</span>
+### <span id="FFMAKUNBOUND">函数 FMAKUNBOUND</span>
 
 * 语法(Syntax):
 
@@ -809,20 +804,17 @@ fboundp 有时候被用于 "保护" 对函数 cell 的访问, 就像:
 
 * 注意(Notes): None.
 
-### <span id="">特殊操作符 FLET, LABELS, MACROLET</span>
+### <span id="SOFLETLABELSMACROLET">特殊操作符 FLET, LABELS, MACROLET</span>
 
 * 语法(Syntax):
 
         flet ((function-name lambda-list [[local-declaration* | local-documentation]] local-form*)*) declaration* form*
-
         => result*
 
         labels ((function-name lambda-list [[local-declaration* | local-documentation]] local-form*)*) declaration* form*
-
         => result*
 
         macrolet ((name lambda-list [[local-declaration* | local-documentation]] local-form*)*) declaration* form*
-
         => result*
 
 * 参数和值(Arguments and Values):
@@ -844,7 +836,7 @@ fboundp 有时候被用于 "保护" 对函数 cell 的访问, 就像:
 
         在局部函数/宏定义和 flet 或 labels 之间的声明的作用域不包括局部定义的函数的主体, 除了对于 labels , 任何引用局部定义函数的 inline, notinline, 或 ftype 声明可以应用于局部定义函数的主体. 这就是说, 它们的作用于和它们影响的函数名一样. 这个声明的作用于不包括 macrolet 定义的这个宏展开函数的主体.
 
-        flet
+    * flet
 
             flet 定义局部命名函数并且用这些定义绑定执行一连串的表达式形式. 可以定义任意数量的局部函数.
 
@@ -854,11 +846,11 @@ fboundp 有时候被用于 "保护" 对函数 cell 的访问, 就像:
 
             任何局部文档都作为一个文档字符串被附加到相应的局部函数中(如果实际创建的话).
 
-        labels
+    * labels
 
             labels 等价于 flet 除了 labels 定义的函数名的范围包含函数定义本身以及主体.
 
-        macrolet
+    * macrolet
 
             macrolet 建立一个局部宏定义, 使用和 defmacro 相同的格式.
 
@@ -965,7 +957,7 @@ fboundp 有时候被用于 "保护" 对函数 cell 的访问, 就像:
         如果一个 macrolet 表达式形式是一个顶层表达式, 主体 forms 也被当作顶层表达式处理. 见章节 3.2.3 (File Compilation).
 
 
-### <span id="">函数 FUNCALL</span>
+### <span id="FFUNCALL">函数 FUNCALL</span>
 
 * 语法(Syntax):
 
@@ -1017,7 +1009,7 @@ fboundp 有时候被用于 "保护" 对函数 cell 的访问, 就像:
         funcall 和一个普通函数调用的区别在于, 在前一种情况下, 函数是通过对一种表达式形式的普通求值得到的, 在后者的情况下, 它是由正常发生的函数位置的特殊解释得到的.
 
 
-### <span id="">特殊操作符 FUNCTION</span>
+### <span id="SOFUNCTION">特殊操作符 FUNCTION</span>
 
 * 语法(Syntax):
 
@@ -1036,7 +1028,7 @@ fboundp 有时候被用于 "保护" 对函数 cell 的访问, 就像:
 
         如果 name 是一个 lambda 表达式, 那么返回一个词法闭包. 如果在同一组绑定上的闭包可能产生不止一次的情况, 那么各种结果的闭包可能也可能不是 eq 的.
 
-        在一个 function 表达式形式出现的词法环境中在一个不表示函数的函数名上用 function 是错误的. 具体来说, 在一个表示宏或者特殊表达式的符号上使用 function 是错误的. 一个具体实现可能出于性能原因不去发出这个错误, 但是具体实现禁止去定义这个发送错误的失败为一个有用的行为. <!-- TODO the failure to signal an error ?? -->
+        在一个 function 表达式形式出现的词法环境中在一个不表示函数的函数名上用 function 是错误的. 具体来说, 在一个表示宏或者特殊表达式的符号上使用 function 是错误的. 一个具体实现可能出于性能原因不去发出这个错误, 但是具体实现禁止去定义这个发送错误的失败为一个有用的行为. 
 
 * 示例(Examples):
 
@@ -1068,7 +1060,7 @@ fboundp 有时候被用于 "保护" 对函数 cell 的访问, 就像:
         标记 #'name 可能被用于 (function name) 的缩写.
 
 
-### <span id="">函数 FUNCTION-LAMBDA-EXPRESSION</span>
+### <span id="FFUNCTION-LAMBDA-EXPRESSION">函数 FUNCTION-LAMBDA-EXPRESSION</span>
 
 * 语法(Syntax):
 
@@ -1096,46 +1088,46 @@ fboundp 有时候被用于 "保护" 对函数 cell 的访问, 就像:
 
         下面的例子说明了一些可能的返回值, 但是并不是详尽的:
 
-        ```LISP
-        (function-lambda-expression #'(lambda (x) x))
-        =>  NIL, false, NIL
-        OR=>  NIL, true, NIL
-        OR=>  (LAMBDA (X) X), true, NIL
-        OR=>  (LAMBDA (X) X), false, NIL
+    ```LISP
+    (function-lambda-expression #'(lambda (x) x))
+    =>  NIL, false, NIL
+    OR=>  NIL, true, NIL
+    OR=>  (LAMBDA (X) X), true, NIL
+    OR=>  (LAMBDA (X) X), false, NIL
 
-        (function-lambda-expression
-            (funcall #'(lambda () #'(lambda (x) x))))
-        =>  NIL, false, NIL
-        OR=>  NIL, true, NIL
-        OR=>  (LAMBDA (X) X), true, NIL
-        OR=>  (LAMBDA (X) X), false, NIL
+    (function-lambda-expression
+        (funcall #'(lambda () #'(lambda (x) x))))
+    =>  NIL, false, NIL
+    OR=>  NIL, true, NIL
+    OR=>  (LAMBDA (X) X), true, NIL
+    OR=>  (LAMBDA (X) X), false, NIL
 
-        (function-lambda-expression
-            (funcall #'(lambda (x) #'(lambda () x)) nil))
-        =>  NIL, true, NIL
-        OR=>  (LAMBDA () X), true, NIL
-        NOT=>  NIL, false, NIL
-        NOT=>  (LAMBDA () X), false, NIL
+    (function-lambda-expression
+        (funcall #'(lambda (x) #'(lambda () x)) nil))
+    =>  NIL, true, NIL
+    OR=>  (LAMBDA () X), true, NIL
+    NOT=>  NIL, false, NIL
+    NOT=>  (LAMBDA () X), false, NIL
 
-        (flet ((foo (x) x))
-          (setf (symbol-function 'bar) #'foo)
-          (function-lambda-expression #'bar))
-        =>  NIL, false, NIL
-        OR=>  NIL, true, NIL
-        OR=>  (LAMBDA (X) (BLOCK FOO X)), true, NIL
-        OR=>  (LAMBDA (X) (BLOCK FOO X)), false, FOO
-        OR=>  (SI::BLOCK-LAMBDA FOO (X) X), false, FOO
+    (flet ((foo (x) x))
+      (setf (symbol-function 'bar) #'foo)
+      (function-lambda-expression #'bar))
+    =>  NIL, false, NIL
+    OR=>  NIL, true, NIL
+    OR=>  (LAMBDA (X) (BLOCK FOO X)), true, NIL
+    OR=>  (LAMBDA (X) (BLOCK FOO X)), false, FOO
+    OR=>  (SI::BLOCK-LAMBDA FOO (X) X), false, FOO
 
-        (defun foo ()
-          (flet ((bar (x) x))
-            #'bar))
-        (function-lambda-expression (foo))
-        =>  NIL, false, NIL
-        OR=>  NIL, true, NIL
-        OR=>  (LAMBDA (X) (BLOCK BAR X)), true, NIL
-        OR=>  (LAMBDA (X) (BLOCK BAR X)), true, (:INTERNAL FOO 0 BAR)
-        OR=>  (LAMBDA (X) (BLOCK BAR X)), false, "BAR in FOO"
-        ```
+    (defun foo ()
+      (flet ((bar (x) x))
+        #'bar))
+    (function-lambda-expression (foo))
+    =>  NIL, false, NIL
+    OR=>  NIL, true, NIL
+    OR=>  (LAMBDA (X) (BLOCK BAR X)), true, NIL
+    OR=>  (LAMBDA (X) (BLOCK BAR X)), true, (:INTERNAL FOO 0 BAR)
+    OR=>  (LAMBDA (X) (BLOCK BAR X)), false, "BAR in FOO"
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -1150,7 +1142,7 @@ fboundp 有时候被用于 "保护" 对函数 cell 的访问, 就像:
         虽然具体实现可以在所有情况下返回 "nil, true, nil", 但是还是鼓励在参数是对 compile 或 eval 的调用所创建的情况下返回一个 lambda 表达式作为主要的值 (与通过加载已编译的文件而创建的相反).
 
 
-### <span id="">函数 FUNCTIONP</span>
+### <span id="FFUNCTIONP">函数 FUNCTIONP</span>
 
 * 语法(Syntax):
 
@@ -1192,7 +1184,7 @@ fboundp 有时候被用于 "保护" 对函数 cell 的访问, 就像:
         (functionp object) ==  (typep object 'function)
 
 
-### <span id="">函数 COMPILED-FUNCTION-P</span>
+### <span id="FCOMPILED-FUNCTION-P">函数 COMPILED-FUNCTION-P</span>
 
 * 语法(Syntax):
 
@@ -1241,7 +1233,7 @@ fboundp 有时候被用于 "保护" 对函数 cell 的访问, 就像:
         (compiled-function-p object) ==  (typep object 'compiled-function)
 
 
-### <span id="">常量 CALL-ARGUMENTS-LIMIT</span>
+### <span id="CCALL-ARGUMENTS-LIMIT">常量 CALL-ARGUMENTS-LIMIT</span>
 
 * 常量值(Constant Value):
 
@@ -1260,7 +1252,7 @@ fboundp 有时候被用于 "保护" 对函数 cell 的访问, 就像:
 * 注意(Notes): None.
 
 
-### <span id="">常量 LAMBDA-LIST-KEYWORDS</span>
+### <span id="CLAMBDA-LIST-KEYWORDS">常量 LAMBDA-LIST-KEYWORDS</span>
 
 * 常量值(Constant Value):
 
@@ -1278,7 +1270,7 @@ fboundp 有时候被用于 "保护" 对函数 cell 的访问, 就像:
 
 * 注意(Notes): None.
 
-### <span id="">常量 LAMBDA-PARAMETERS-LIMIT</span>
+### <span id="CLAMBDA-PARAMETERS-LIMIT">常量 LAMBDA-PARAMETERS-LIMIT</span>
 
 * 常量值(Constant Value):
 
@@ -1298,7 +1290,7 @@ fboundp 有时候被用于 "保护" 对函数 cell 的访问, 就像:
 
         鼓励实现者去使 lambda-parameters-limit 这个参数的值尽可能的大.
 
-### <span id="">宏 DEFCONSTANT</span>
+### <span id="MDEFCONSTANT">宏 DEFCONSTANT</span>
 
 * 语法(Syntax):
 
@@ -1314,7 +1306,7 @@ fboundp 有时候被用于 "保护" 对函数 cell 的访问, 就像:
 
         defconstant 导致 name 命名的全局变量赋予 initial-value 求值结果的值.
 
-        一个 defconstant 定义的常量可以被 defconstant 重定义. 然而, 如果尝试去使用其他操作符去给这个符号赋值或者使用后面的 defconstant 将其赋给不同的值, 那么结果是未定义的.<!-- TODO ?? -->
+        一个 defconstant 定义的常量可以被 defconstant 重定义. 然而, 如果尝试去使用其他操作符去给这个符号赋值或者使用后面的 defconstant 将其赋给不同的值, 那么结果是未定义的.
 
         如果提供了 documentation, 它会作为一个 variable 种类的文档字符串关联到 name 上.
 
@@ -1354,7 +1346,7 @@ fboundp 有时候被用于 "保护" 对函数 cell 的访问, 就像:
 * 注意(Notes): None.
 
 
-### <span id="">宏 DEFPARAMETER, DEFVAR</span>
+### <span id="MDEFPARAMETERDEFVAR">宏 DEFPARAMETER, DEFVAR</span>
 
 * 语法(Syntax):
 
@@ -1473,7 +1465,7 @@ fboundp 有时候被用于 "保护" 对函数 cell 的访问, 就像:
               ',name))
    ```
 
-### <span id="">宏 DESTRUCTURING-BIND</span>
+### <span id="MDESTRUCTURING-BIND">宏 DESTRUCTURING-BIND</span>
 
 * 语法(Syntax):
 
@@ -1515,7 +1507,7 @@ fboundp 有时候被用于 "保护" 对函数 cell 的访问, 就像:
 * 注意(Notes): None.
 
 
-### <span id="">特殊操作符 LET, LET*</span>
+### <span id="SOLETLET*">特殊操作符 LET, LET*</span>
 
 * 语法(Syntax):
 
@@ -1614,7 +1606,7 @@ fboundp 有时候被用于 "保护" 对函数 cell 的访问, 就像:
 * 注意(Notes): None.
 
 
-### <span id="">特殊操作符 PROGV</span>
+### <span id="SOPROGV">特殊操作符 PROGV</span>
 
 * 语法(Syntax):
 
@@ -1662,7 +1654,7 @@ fboundp 有时候被用于 "保护" 对函数 cell 的访问, 就像:
         除了别的之外, 为 Lisp 中的嵌入式语言写解释器时 progv 是很有用的; 它为绑定动态变量的机制提供了一个途径.
 
 
-### <span id="">特殊表达式 SETQ</span>
+### <span id="SOSETQ">特殊表达式 SETQ</span>
 
 * 语法(Syntax):
 
@@ -1726,7 +1718,7 @@ fboundp 有时候被用于 "保护" 对函数 cell 的访问, 就像:
 * 注意(Notes): None.
 
 
-### <span id="">宏 PSETQ</span>
+### <span id="MPSETQ">宏 PSETQ</span>
 
 * 语法(Syntax):
 
@@ -1799,7 +1791,7 @@ fboundp 有时候被用于 "保护" 对函数 cell 的访问, 就像:
 * 注意(Notes): None.
 
 
-### <span id="">特殊操作符 BLOCK</span>
+### <span id="SOBLOCK">特殊操作符 BLOCK</span>
 
 * 语法(Syntax):
 
@@ -1849,7 +1841,7 @@ fboundp 有时候被用于 "保护" 对函数 cell 的访问, 就像:
 
 * 注意(Notes):
 
-### <span id="">特殊操作符 CATCH</span>
+### <span id="SOCATCH">特殊操作符 CATCH</span>
 
 * 语法(Syntax):
 
@@ -1910,7 +1902,7 @@ throw, Section 3.1 (Evaluation)
 
         catch 和 block 的区别在于 catch 标签有着动态作用域而 block 名字有词法作用域.
 
-### <span id="">特殊操作符 GO</span>
+### <span id="SOGO">特殊操作符 GO</span>
 
 * 语法(Syntax):
 
@@ -1937,7 +1929,7 @@ throw, Section 3.1 (Evaluation)
     val =>  6
     ```
 
-下面这个是错误的因为在 go 被执行前这里有一个 tagbody 正常的退出.
+        下面这个是错误的因为在 go 被执行前这里有一个 tagbody 正常的退出.
 
     ```LISP
     (let ((a nil))
@@ -1945,7 +1937,7 @@ throw, Section 3.1 (Evaluation)
       (funcall a))
     ```
 
-下面这个是错误的因为在 go 表达式被执行前这个 tagbody 被跳过了.
+        下面这个是错误的因为在 go 表达式被执行前这个 tagbody 被跳过了.
 
     ```LISP
     (funcall (block nil
@@ -1963,7 +1955,7 @@ throw, Section 3.1 (Evaluation)
 * 注意(Notes): None.
 
 
-### <span id="">特殊操作符 RETURN-FROM</span>
+### <span id="SORETURN-FROM">特殊操作符 RETURN-FROM</span>
 
 * 语法(Syntax):
 
@@ -2050,7 +2042,7 @@ throw, Section 3.1 (Evaluation)
 * 注意(Notes): None.
 
 
-### <span id="">宏 RETURN</span>
+### <span id="MRETURN">宏 RETURN</span>
 
 * 语法(Syntax):
 
@@ -2093,7 +2085,7 @@ throw, Section 3.1 (Evaluation)
         这个被类似于 do 的宏建立的隐式的块经常名为 nil, 因此 return 可以被用于从这样的块中返回.
 
 
-### <span id="">特殊操作符 TAGBODY</span>
+### <span id="SOTAGBODY">特殊操作符 TAGBODY</span>
 
 * 语法(Syntax):
 
@@ -2171,7 +2163,7 @@ throw, Section 3.1 (Evaluation)
         Figure 5-10. 有着隐式的 tagbody 的宏.
 
 
-### <span id="">特殊操作符 THROW</span>
+### <span id="SOTHROW">特殊操作符 THROW</span>
 
 * 语法(Syntax):
 
@@ -2229,7 +2221,7 @@ throw, Section 3.1 (Evaluation)
 
 * 异常情况(Exceptional Situations):
 
-        如果这里没有未完成的捕捉标签和抛出的匹配, 没有执行栈的解除(unwinding), 那么会发出一个 control-error 类型的错误. 当这个错误被发出时, 动态环境是在 throw 的作用下产生的the dynamic environment is that which was in force at the point of the throw.<!-- TODO 待校验 -->
+        如果这里没有未完成的捕捉标签匹配抛出标签, 没有执行栈的解除(unwinding), 那么会发出一个 control-error 类型的错误. 当这个错误被发出时, 动态环境是在 throw 点处的动态环境.
 
 * 也见(See Also):
 
@@ -2240,7 +2232,7 @@ throw, Section 3.1 (Evaluation)
         通常当退出点必须有动态作用域时 catch 和 throw 被使用 (比如, 这个 throw 不是被 catch 词法围绕的), 而 block 和 return 被用于词法作用域能满足的情况.
 
 
-### <span id="">特殊操作符 UNWIND-PROTECT</span>
+### <span id="SOUNWIND-PROTECT">特殊操作符 UNWIND-PROTECT</span>
 
 * 语法(Syntax):
 
@@ -2387,7 +2379,7 @@ throw, Section 3.1 (Evaluation)
 * 注意(Notes): None.
 
 
-### <span id="">常量 NIL</span>
+### <span id="CNIL">常量 NIL</span>
 
 * 常量值(Constant Value):
 
@@ -2410,7 +2402,7 @@ throw, Section 3.1 (Evaluation)
 * 注意(Notes): None.
 
 
-### <span id="">函数 NOT</span>
+### <span id="FNOT">函数 NOT</span>
 
 * 语法(Syntax):
 
@@ -2452,7 +2444,7 @@ throw, Section 3.1 (Evaluation)
         not 的目的是用来反转 boolean 的"真值(truth value)" (或者是广义的 boolean) 然而 null 用于测试空列表. 操作上, not 和 null 的计算结果是一样的; 使用哪个是一个风格问题.
 
 
-### <span id="">常量 T</span>
+### <span id="CT">常量 T</span>
 
 * 常量值(Constant Value):
 
@@ -2484,7 +2476,7 @@ throw, Section 3.1 (Evaluation)
 * 注意(Notes): None.
 
 
-### <span id="">函数 EQ</span>
+### <span id="FEQ">函数 EQ</span>
 
 * 语法(Syntax):
 
@@ -2562,7 +2554,7 @@ throw, Section 3.1 (Evaluation)
         Figure 5-11. 总是使用 EQ 而不是 EQL 的操作符
 
 
-### <span id="">函数 EQL</span>
+### <span id="FEQL">函数 EQL</span>
 
 * 语法(Syntax):
 
@@ -2632,7 +2624,7 @@ throw, Section 3.1 (Evaluation)
         两个复数如果它们的实部和虚部都是 eql 的就认为它们是 eql 的. 比如, (eql #C(4 5) #C(4 5)) 是 true 而 (eql #C(4 5) #C(4.0 5.0)) 是 false. 注意 (eql #C(5.0 0.0) 5.0) 是 false, 而 (eql #C(5 0) 5) 是 true. 在 (eql #C(5.0 0.0) 5.0) 情况下两个参数是不同类型, 因此不能满足 eql. 在 (eql #C(5 0) 5) 情况下, #C(5 0) 不是一个复数, 但是被自动简化为 integer 5.
 
 
-### <span id="">函数 EQUAL</span>
+### <span id="FEQUAL">函数 EQUAL</span>
 
 * 语法(Syntax):
 
@@ -2646,43 +2638,44 @@ throw, Section 3.1 (Evaluation)
 
 * 描述(Description):
 
-        如果 x 和 y 是结构上类似(同构)的对象, 则返回true. 对象按照以下类别被 equal 处理.
+    如果 x 和 y 是结构上类似(同构)的对象, 则返回true. 对象按照以下类别被 equal 处理.
 
-        Symbols, Numbers, 和 Characters
+    * Symbols, Numbers, 和 Characters
 
             两个对象如果它们是相互 eq 的符号, 或者是相互 eql 的数字, 或者相互 eql 的字符, 那么 equal 就是 true.
 
-        Conses
+    * Conses
 
             对于 cons, equal 按照递归定义, 如果两个 car 是 equal 的并且两个 cdr 也是 equal 的那么就是 equal 的.
 
-        Arrays
+    * Arrays
 
             两个数组只有当它们是 eq 的情况下才会 equal, 除了一个例外: string 和 bit vector 被一个一个元素比较 (使用 eql). 如果 x 或 y 有一个填充指针, 这个填充指针限制检查被 equal 检查元素的数量. string 中的大写字母和小写字母被 equal 认为是不同的.
 
-        Pathnames
+    * Pathnames
 
             两个 pathname 当且仅当所有对应的部分 (host, device, 等等) 相等的时候才是 equal 的. 大写和小写字母在组件的字符串中是否被认为是等价的是依赖于具体实现的. equal 的多个 pathname 应该在功能上是等同的.
 
-        Other (Structures, hash-tables, instances, ...)
+    * Other (Structures, hash-tables, instances, ...)
 
             只有当两个其他对象是 eq 的情况下才会 equal.
 
-        equal does not descend any objects other than the ones explicitly specified above. 下面这段总结了前面的列表中的信息. 另外, 这段中指明了 equal 行为的优先级, 上面的条目优先于下面的条目.
+    equal does not descend any objects other than the ones explicitly specified above. 下面这段总结了前面的列表中的信息. 另外, 这段中指明了 equal 行为的优先级, 上面的条目优先于下面的条目.
 
-        类型           行为
-        number        uses eql
-        character     uses eql
-        cons          descends
-        bit vector    descends
-        string        descends
-        pathname      ``functionally equivalent''
-        structure     uses eq
-        Other array   uses eq
-        hash table    uses eq
-        Other object  uses eq
+    |类型       |    行为    |
+    |--        | --         |
+    |number    |    uses eql|
+    |character |    uses eql|
+    |cons      |    descends|
+    |bit vector|    descends|
+    |string    |    descends|
+    |pathname  |    ``functionally equivalent''|
+    |structure |    uses eq|
+    |Other array|   uses eq|
+    |hash table |   uses eq|
+    |Other object|  uses eq|
 
-        Figure 5-12. equal行为的概要和优先级
+    Figure 5-12. equal行为的概要和优先级
 
         任何两个 eql 的对象也是 equal 的.
 
@@ -2726,7 +2719,7 @@ throw, Section 3.1 (Evaluation)
         一个粗略的经验法则是两个对象当且仅当它们的打印表示是相同的那么就是 equal 的.
 
 
-### <span id="">函数 EQUALP</span>
+### <span id="FEQUALP">函数 EQUALP</span>
 
 * 语法(Syntax):
 
@@ -2740,47 +2733,48 @@ throw, Section 3.1 (Evaluation)
 
 * 描述(Description):
 
-        如果 x 和 y 是 equal 的就返回 true, 或者如果它们有着相同类型的组件并且那些组建也是 equalp 的就返回 true; 特别指出, equalp 在以下情况返回 true:
+    如果 x 和 y 是 equal 的就返回 true, 或者如果它们有着相同类型的组件并且那些组建也是 equalp 的就返回 true; 特别指出, equalp 在以下情况返回 true:
 
-        Characters
+    * Characters
 
             如果两个字符是 char-equal 的.
 
-        Numbers
+    * Numbers
 
             如果两个数字在 = 下是一样的.
 
-        Conses
+    * Conses
 
             如果这两个 cons 中的 car 是 equalp 的并且 cdr 也是 equalp 的.
 
-        Arrays
+    * Arrays
 
             如果两个数组有着相同的维度, 维度是匹配的, 并且对应可用的元素是 equalp 的. 数组指定的类型不需要匹配; 比如, 一个 string 和 一个包含相同字符的普通的数组是 equalp 的. 由于 equalp 执行字符串挨个元素的比较并且忽略字符的大小写, 当使用 equalp 比较字符串时大小写区分是被忽略的.
 
-        Structures
+    * Structures
 
             如果两个结构 S1 和 S2 有着相同的类并且 S1 中每一个槽的值和 S2 中对应槽的值是 equalp 的.
 
-        Hash Tables
+    * Hash Tables
 
-            equalp 首先通过判断元素的数量和这个 :test 函数来 descend hash-tables; 如果这些是一样的, 它用 :test 函数来比较这个哈希表的 key 然后匹配的 key 对应的 value 也递归地使用 equalp.<!-- TODO descend -->
+            equalp 首先通过判断元素的数量和这个 :test 函数来递减(descend) hash-tables; 如果这些是一样的, 它用 :test 函数来比较这个哈希表的 key 然后匹配的 key 对应的 value 也递归地使用 equalp.
 
-        equalp 除了上述明确指定外不会去 descend 任何对象. 下一段中总结了上面列表中给定的信息. 另外, 这段中指明了 equalp 行为的优先级, 上面的条目优先于下面的条目.
+    equalp 除了上述明确指定外不会去递减(descend)任何对象. 下一段中总结了上面列表中给定的信息. 另外, 这段中指明了 equalp 行为的优先级, 上面的条目优先于下面的条目.
 
-        类型           行为
-        number        uses =
-        character     uses char-equal
-        cons          descends
-        bit vector    descends
-        string        descends
-        pathname      same as equal
-        structure     descends, as described above
-        Other array   descends
-        hash table    descends, as described above
-        Other object  uses eq
+    |类型       |    行为 |
+    | -- | -- |
+    |number     |   uses =|
+    |character  |   uses char-equal|
+    |cons       |   descends|
+    |bit vector |   descends|
+    |string     |   descends|
+    |pathname   |   same as equal|
+    |structure  |   descends, as described above|
+    |Other array|   descends|
+    |hash table |   descends, as described above|
+    |Other object|  uses eq|
 
-        Figure 5-13. equalp行为的优先级和总结
+    Figure 5-13. equalp行为的优先级和总结
 
 * 示例(Examples):
 
@@ -2827,7 +2821,7 @@ throw, Section 3.1 (Evaluation)
         对象相等并不是一个概念, 它有唯一确定的正确算法. 等价谓词的适当性只能在某些特定程序的需求上下文中进行判断. 虽然这些函数接受任何类型的参数并且它们的名字听起来很通用, 但是 equal 和 equalp 不适用于每一个应用.
 
 
-### <span id="">函数 IDENTITY</span>
+### <span id="FIDENTITY">函数 IDENTITY</span>
 
 * 语法(Syntax):
 
@@ -2867,7 +2861,7 @@ throw, Section 3.1 (Evaluation)
         (defun identity (x) x)
 
 
-### <span id="">函数 COMPLEMENT</span>
+### <span id="FCOMPLEMENT">函数 COMPLEMENT</span>
 
 * 语法(Syntax):
 
@@ -2917,7 +2911,7 @@ throw, Section 3.1 (Evaluation)
         注意由于 "xxx-if-not" 函数和 :test-not 参数已经被废弃, 首选和 complement 一起使用 "xxx-if" 函数或  :test 参数.
 
 
-### <span id="">函数 CONSTANTLY</span>
+### <span id="FCONSTANTLY">函数 CONSTANTLY</span>
 
 * 语法(Syntax):
 
@@ -2926,7 +2920,6 @@ throw, Section 3.1 (Evaluation)
 * 参数和值(Arguments and Values):
 
         value---一个对象.
-
         function---一个函数.
 
 * 描述(Description):
@@ -2961,7 +2954,7 @@ throw, Section 3.1 (Evaluation)
     ```
 
 
-### <span id="">函数 EVERY, SOME, NOTEVERY, NOTANY</span>
+### <span id="FEVERYSOMENOTEVERYNOTANY">函数 EVERY, SOME, NOTEVERY, NOTANY</span>
 
 * 语法(Syntax):
 
@@ -3018,7 +3011,7 @@ throw, Section 3.1 (Evaluation)
         (notevery predicate sequence*) ==  (not (every predicate sequence*))
 
 
-### <span id="">宏 AND</span>
+### <span id="MAND">宏 AND</span>
 
 * 语法(Syntax):
 
@@ -3027,7 +3020,6 @@ throw, Section 3.1 (Evaluation)
 * 参数和值(Arguments and Values):
 
         form---一个表达式形式.
-
         results---最后一个表达式形式求值的结果值, 或者符号 nil 或 t.
 
 * 描述(Description):
@@ -3072,7 +3064,7 @@ throw, Section 3.1 (Evaluation)
         (and form) ==  (let () form)
         (and form1 form2 ...) ==  (when form1 (and form2 ...))
 
-### <span id="">宏 COND</span>
+### <span id="MCOND">宏 COND</span>
 
 * 语法(Syntax):
 
@@ -3127,7 +3119,7 @@ throw, Section 3.1 (Evaluation)
 * 注意(Notes): None.
 
 
-### <span id="">特殊操作符 IF</span>
+### <span id="SOIF">特殊操作符 IF</span>
 
 * 语法(Syntax):
 
@@ -3177,7 +3169,7 @@ throw, Section 3.1 (Evaluation)
         ==  (cond (test-form then-form) (t else-form))
 
 
-### <span id="">宏 OR</span>
+### <span id="MOR">宏 OR</span>
 
 * 语法(Syntax):
 
@@ -3197,7 +3189,7 @@ throw, Section 3.1 (Evaluation)
 
 * 示例(Examples):
 
-    LISP
+    ```LISP
     (or) =>  NIL
     (setq temp0 nil temp1 10 temp2 20 temp3 30) =>  30
     (or temp0 temp1 (setq temp2 37)) =>  10
@@ -3225,7 +3217,7 @@ throw, Section 3.1 (Evaluation)
 * 注意(Notes): None.
 
 
-### <span id="">宏 WHEN, UNLESS</span>
+### <span id="MWHENUNLESS">宏 WHEN, UNLESS</span>
 
 * 语法(Syntax):
 
@@ -3235,9 +3227,7 @@ throw, Section 3.1 (Evaluation)
 * 参数和值(Arguments and Values):
 
         test-form---一个表达式形式.
-
         forms---一个隐式的 progn.
-
         results---如果 when 表达式中的 test-form 产生 true 那么就是 when 表达式形式中 form 的值, 如果 unless 表达式中的 test-form 产生 false 那么就是 unless 表达式中 form 的值; 否则就是 nil.
 
 * 描述(Description):
@@ -3299,7 +3289,7 @@ throw, Section 3.1 (Evaluation)
     (unless test {form}+) ==  (when (not test) {form}+)
     ```
 
-### <span id="">宏 CASE, CCASE, ECASE</span>
+### <span id="MCASECCASEECASE">宏 CASE, CCASE, ECASE</span>
 
 * 语法(Syntax):
 
@@ -3313,15 +3303,10 @@ throw, Section 3.1 (Evaluation)
 * 参数和值(Arguments and Values):
 
         keyform---一个表达式形式; 求值后产生一个 test-key.
-
         keyplace---一个表达式形式; 求值后产生一个 test-key. 如果没有 key 匹配那么可能被用作一个 place.
-
         test-key---通过求值 keyform 或 keyplace 产生的一个对象.
-
         keys---一个对象列表的标识符. 在 case 的情况下, 符号 t 和 otherwise 可能不被用作 keys 标识符. 为了将这些符号自身作为 key 来引用, 标识符 (t) 和 (otherwise), 必须分别被使用.
-
         forms---一个隐式的 progn.
-
         results---匹配的 clause 的 form 返回的值.
 
 * 描述(Description):
@@ -3334,13 +3319,13 @@ throw, Section 3.1 (Evaluation)
 
         这些宏只在没有匹配到 normal-clause 时, 会有不同的行为; 具体来说:
 
-        case
+    * case
 
             如果没有匹配到 normal-clause, 并且这里有一个 otherwise-clause, 那么这个 otherwise-clause 自动匹配; 这个 clause 中的 form 会作为一个隐式的 progn 被求值, 并且它返回的值作为 case 的结果被返回.
 
             如果没有 otherwise-clause, case 返回 nil.
 
-        ccase
+    * ccase
 
             如果没有 normal-clause 匹配, 一个 type-error 类型的可校正的错误会被发出. 这个基准是 test-key 并且期望的类型是类型等价于 (member key1 key2 ...). 这个 store-value 重启动可以被用于校正这个错误.
 
@@ -3348,7 +3333,7 @@ throw, Section 3.1 (Evaluation)
 
             如果没有情况支持, 这个 keyplace 的子表达式可能被再次求值.
 
-        ecase
+    * ecase
 
             如果没有 normal-clause 匹配, 一个 type-error 类型的不可校正的错误会被发出. 基准是 test-key 和期望的类型是类型等价于 (member key1 key2 ...).
 
@@ -3415,7 +3400,7 @@ throw, Section 3.1 (Evaluation)
         ecase 和 ccase 所使用的特定错误信息在不同的具体实现之间可以是不同的. 在控制错误消息的特定措辞很重要的情况下, 最好使用 case 与 otherwise-clause 来显式地用适当的消息发出错误消息.
 
 
-### <span id="">宏 TYPECASE, CTYPECASE, ETYPECASE</span>
+### <span id="MTYPECASECTYPECASEETYPECASE">宏 TYPECASE, CTYPECASE, ETYPECASE</span>
 
 * 语法(Syntax):
 
@@ -3445,13 +3430,13 @@ throw, Section 3.1 (Evaluation)
 
         这些宏的行为只有在没有匹配的 normal-clause 情况下有所区别; 具体来说:
 
-        typecase
+    * typecase
 
             如果没有 normal-clause 匹配, 并且这里有一个 otherwise-clause, 那么这个 otherwise-clause 自动匹配; 这个 clause 中的 form 作为一个隐式的 progn 被执行, 并且它返回的值作为 typecase 表达式的值被返回.
 
             如果这里没有 otherwise-clause, typecase 返回 nil.
 
-        ctypecase
+    * ctypecase
 
             如果没有 normal-clause 匹配, 一个 type-error 类型的可校正的错误会被发出. 基准是 test-key 和期望的类型是和 (or type1 type2 ...) 类型等价的. 这个 store-value 重启动可以被用于校正这个错误.
 
@@ -3461,13 +3446,13 @@ throw, Section 3.1 (Evaluation)
 
             如果没有情况支持, 这个 keyplace 的子表达式可能被再次求值.
 
-        etypecase
+    * etypecase
 
             如果没有匹配的 normal-clause, 一个不可校正的 type-error 类型的错误会被发出. 基准是 test-key 和期望的类型是和 (or type1 type2 ...) 类型等价的.
 
             注意, 相比于 ctypecase, 对 etypecase 的调用可能依赖于如果没有匹配的 normal-clause 时 etypecase 不返回的事实.
 
-        在所有这三种情况下, 允许超过一个 clause 去指定匹配类型, 特别是在一个已经是另一个的子类型的时候; 最早可应用的 clause 会被选择.
+    在所有这三种情况下, 允许超过一个 clause 去指定匹配类型, 特别是在一个已经是另一个的子类型的时候; 最早可应用的 clause 会被选择.
 
 * 示例(Examples):
 
@@ -3535,7 +3520,7 @@ throw, Section 3.1 (Evaluation)
         etypecase 和 ctypecase 所使用的特定错误信息在不同的具体实现之间可以是不同的. 在控制错误消息的特定措辞很重要的情况下, 最好使用 typecase 与 otherwise-clause 来显式地用适当的消息发出错误消息.
 
 
-### <span id="">宏 MULTIPLE-VALUE-BIND</span>
+### <span id="MMULTIPLE-VALUE-BIND">宏 MULTIPLE-VALUE-BIND</span>
 
 * 语法(Syntax):
 
@@ -3585,7 +3570,7 @@ throw, Section 3.1 (Evaluation)
                                 values-form)
 
 
-### <span id="">特殊操作符 MULTIPLE-VALUE-CALL</span>
+### <span id="SOMULTIPLE-VALUE-CALL">特殊操作符 MULTIPLE-VALUE-CALL</span>
 
 * 语法(Syntax):
 
@@ -3626,7 +3611,7 @@ throw, Section 3.1 (Evaluation)
 * 注意(Notes): None.
 
 
-### <span id="">宏 MULTIPLE-VALUE-LIST</span>
+### <span id="MMULTIPLE-VALUE-LIST">宏 MULTIPLE-VALUE-LIST</span>
 
 * 语法(Syntax):
 
@@ -3664,7 +3649,7 @@ throw, Section 3.1 (Evaluation)
         (multiple-value-list form) ==  (multiple-value-call #'list form)
 
 
-### <span id="">特殊操作符 MULTIPLE-VALUE-PROG1</span>
+### <span id="SOMULTIPLE-VALUE-PROG1">特殊操作符 MULTIPLE-VALUE-PROG1</span>
 
 * 语法(Syntax):
 
@@ -3703,7 +3688,7 @@ throw, Section 3.1 (Evaluation)
 * 注意(Notes): None.
 
 
-### <span id="">宏 MULTIPLE-VALUE-SETQ</span>
+### <span id="MMULTIPLE-VALUE-SETQ">宏 MULTIPLE-VALUE-SETQ</span>
 
 * 语法(Syntax):
 
@@ -3759,7 +3744,7 @@ throw, Section 3.1 (Evaluation)
 * 注意(Notes): None.
 
 
-### <span id="">访问器 VALUES</span>
+### <span id="AVALUES">访问器 VALUES</span>
 
 * 语法(Syntax):
 
@@ -3822,7 +3807,7 @@ throw, Section 3.1 (Evaluation)
         由于 values 是一个 函数, 不是一个宏或者特殊表达式形式, 它值接收它的参数表达式形式的主要的值作为参数.
 
 
-### <span id="">函数 VALUES-LIST</span>
+### <span id="FVALUES-LIST">函数 VALUES-LIST</span>
 
 * 语法(Syntax):
 
@@ -3863,7 +3848,7 @@ throw, Section 3.1 (Evaluation)
         (equal x (multiple-value-list (values-list x))) 对于所有的列表 x 返回 true.
 
 
-### <span id="">常量 MULTIPLE-VALUES-LIMIT</span>
+### <span id="CMULTIPLE-VALUES-LIMIT">常量 MULTIPLE-VALUES-LIMIT</span>
 
 * 常量值(Constant Value):
 
@@ -3884,7 +3869,7 @@ throw, Section 3.1 (Evaluation)
         鼓励实现者去使这个限制尽可能的大.
 
 
-### <span id="">宏 NTH-VALUE</span>
+### <span id="MNTH-VALUE">宏 NTH-VALUE</span>
 
 * 语法(Syntax):
 
@@ -3931,7 +3916,7 @@ throw, Section 3.1 (Evaluation)
         (nth-value n form) ==  (nth n (multiple-value-list form))
 
 
-### <span id="">宏 PROG, PROG*</span>
+### <span id="MPROGPROG*">宏 PROG, PROG*</span>
 
 * 语法(Syntax):
 
@@ -3981,7 +3966,7 @@ throw, Section 3.1 (Evaluation)
           (return x))
     ```
     
-    返回 z 的 car 部分.
+        返回 z 的 car 部分.
 
     ```LISP
     (setq a 1) =>  1
@@ -4040,7 +4025,7 @@ throw, Section 3.1 (Evaluation)
            ==  (block nil (let variable-list declaration (tagbody . body)))
 
 
-### <span id="">宏 PROG1, PROG2</span>
+### <span id="MPROG1PROG2">宏 PROG1, PROG2</span>
 
 * 语法(Syntax):
 
@@ -4050,13 +4035,9 @@ throw, Section 3.1 (Evaluation)
 * 参数和值(Arguments and Values):
 
         first-form---一个表达式形式; 求值如下所述.
-
         second-form---一个表达式形式; 求值如下所述.
-
         forms---一个隐式的 progn; 求值如下所述.
-
         result-1---求值 first-form 返回的主要的值.
-
         result-2---求值 second-form 返回的主要的值.
 
 * 描述(Description):
@@ -4066,6 +4047,7 @@ throw, Section 3.1 (Evaluation)
         prog2 求值 first-form, 然后 second-form, 以及其他 forms, second-form 产生的主要的值作为唯一的返回值.
 
 * 示例(Examples):
+
     ```LISP
     (setq temp 1) =>  1
     (prog1 temp (print temp) (incf temp) (print temp))
@@ -4111,7 +4093,7 @@ throw, Section 3.1 (Evaluation)
         (prog2 form1 form*) ==  (let () form1 (prog1 form*))
 
 
-### <span id="">特殊操作符 PROGN</span>
+### <span id="SOPROGN">特殊操作符 PROGN</span>
 
 * 语法(Syntax):
 
@@ -4156,7 +4138,7 @@ throw, Section 3.1 (Evaluation)
         很多 Common Lisp 中的 place 涉及使用隐式 progn 的语法. 这也就是说, 其语法的一部分允许被写入的许多表达式形式按顺序进行求值, 丢弃除了最后一个以外的表达式形式的值并且返回最后一个表达式形式的结果. 这些 place 包括, 但不限于以下几点: 一个 lambda 表达式的主体部分; 多种控制和条件表达式形式的主体部分 (比如, case, catch, progn, 和 when).
 
 
-### <span id="">宏 DEFINE-MODIFY-MACRO</span>
+### <span id="MDEFINE-MODIFY-MACRO">宏 DEFINE-MODIFY-MACRO</span>
 
 * 语法(Syntax):
 
@@ -4222,20 +4204,18 @@ throw, Section 3.1 (Evaluation)
 * 注意(Notes): None.
 
 
-### <span id="">宏 DEFSETF</span>
+### <span id="MDEFSETF">宏 DEFSETF</span>
 <!-- TODO 待校验 -->
 * 语法(Syntax):
 
         "短表达式形式(short form)":
 
         defsetf access-fn update-fn [documentation]
-
         => access-fn
 
         "长表达式形式(long form)":
 
         defsetf access-fn lambda-list (store-variable*) [[declaration* | documentation]] form*
-
         => access-fn
 
 * 参数和值(Arguments and Values):
@@ -4254,7 +4234,7 @@ throw, Section 3.1 (Evaluation)
 
         defsetf 可能接受两个表达式形式的其中之一, 称之为 "短表达式形式(short form)" 和  "长表达式形式(long form)", 它们是由第二个参数的类型区分的.
 
-        当使用短表达式形式时, update-fn 必须命名一个函数 (或者宏), 它比 access-fn 多接收一个参数. 当 setf 被给予一个 access-fn 的调用的 place, 它展开为一个 update-fn 的调用 that is given all the arguments to access-fn and also, as its last argument, the new value (它必须是 update-fn 返回的值).
+        当使用短表达式形式时, update-fn 必须命名一个函数 (或者宏), 它比 access-fn 多接收一个参数. 当 setf 被给予一个 access-fn 的调用的 place, 它展开为一个 update-fn 的调用并且给定所有给 access-fn 的参数, 还有作为它的最后一个参数, 那个新的值(它必须是 update-fn 返回的值).
 
         这个长表达式形式的 defsetf 类似于 defmacro. 其中 lambda-list 描述了 access-fn 的参数. 这个 store-variables 描述了存储到这个 place 的值或多值. 这个 body 必须计算一个 access-fn 上调用的 setf 的展开. 这个展开函数定义在 defsetf 表达式出现的同一个词法作用域内.
 
@@ -4303,7 +4283,7 @@ throw, Section 3.1 (Evaluation)
     c =>  (1 2 3 (4 MIDDLEGUY-SYMBOL 6) 7 8 9)
     ```
 
-    一个使用 defsetf 的长表达式的例子是:
+        一个使用 defsetf 的长表达式的例子是:
 
     ```LISP
     (defsetf subseq (sequence start &optional end) (new-sequence)
@@ -4351,7 +4331,7 @@ throw, Section 3.1 (Evaluation)
         一个在 access-fn 调用的 setf 也求值所有 access-fn 的参数; 它不能特别地对待任何一个. 这就意味着 defsetf 不能被用于描述如何存储到一个字节的 generalized reference, 就像 (ldb field reference). define-setf-expander 用于处理不符合 defsetf 施加的限制的情况, 并为用户提供额外的控制.
 
 
-### <span id="">宏 DEFINE-SETF-EXPANDER</span>
+### <span id="MDEFINE-SETF-EXPANDER">宏 DEFINE-SETF-EXPANDER</span>
 
 * 语法(Syntax):
 
@@ -4376,7 +4356,7 @@ throw, Section 3.1 (Evaluation)
 
         Documentation 作为一个 setf 类型的文档字符串关联给 access-fn.
 
-        Forms 组成了 setf 展开定义的主体, 并且必须计算 setf 展开, 以便调用setf, 它通过给定的 access-fn 来引用该 place. 这个 setf 展开函数被定义在 define-setf-expander 出现的同一个词法环境里. 当 forms 要被执行时, lambda-list 中的变量被绑定给 place 表达式形式部分. 一个 define-setf-expander 表达式形式的主体表达式形式 (不是 lambda-list) 隐式地闭合在一个名为 access-fn 的 block 中.<!-- TODO 待校验 -->
+        Forms 组成了 setf 展开定义的主体, 并且必须计算 setf 展开, 以便调用setf, 它通过给定的 access-fn 来引用该 place. 这个 setf 展开函数被定义在 define-setf-expander 出现的同一个词法环境里. 当 forms 要被执行时, lambda-list 中的变量被绑定给 place 表达式形式部分. 一个 define-setf-expander 表达式形式的主体表达式形式 (不是 lambda-list) 隐式地闭合在一个名为 access-fn 的 block 中.
 
         表达式形式的求值必须产生章节 5.1.1.2 (Setf Expansions) 中描述的5个值.
 
@@ -4440,7 +4420,7 @@ throw, Section 3.1 (Evaluation)
         define-setf-expander 与长表达式形式的 defsetf 不同, 因为在执行主体的过程中, lambda-list 中的变量被绑定到 place 表达式形式的一部分, 而不是绑定到这些部分的值的临时变量. 另外, define-setf-expander 没有 defsetf 限制access-fn 必须是一个函数或类函数宏; 一个任意 defmacro 解构模式允许出现在 lambda-list 中.
 
 
-### <span id="">函数 GET-SETF-EXPANSION</span>
+### <span id="FGET-SETF-EXPANSION">函数 GET-SETF-EXPANSION</span>
 
 * 语法(Syntax):
 
@@ -4496,7 +4476,7 @@ throw, Section 3.1 (Evaluation)
         任何复合表达式形式都是一个合法的 place, 因为对于任何操作符为 f 没有 setf 展开的复合表达式形式都被展开为一个 (setf f) 的调用.
 
 
-### <span id="">宏 SETF, PSETF</span>
+### <span id="MSETFPSETF">宏 SETF, PSETF</span>
 
 * 语法(Syntax):
 
@@ -4507,9 +4487,7 @@ throw, Section 3.1 (Evaluation)
 * 参数和值(Arguments and Values):
 
         place---一个 place.
-
         newvalue---一个表达式形式.
-
         results---最后一个 place 的存储表达式形式返回的多值, 如果没有对的话就是 nil.
 
 * 描述(Description):
@@ -4562,7 +4540,7 @@ throw, Section 3.1 (Evaluation)
 * 注意(Notes): None.
 
 
-### <span id="">宏 SHIFTF</span>
+### <span id="MSHIFTF">宏 SHIFTF</span>
 
 * 语法(Syntax):
 
@@ -4637,7 +4615,7 @@ throw, Section 3.1 (Evaluation)
         x =>  (A B Z D)
 
 
-### <span id="">宏 ROTATEF</span>
+### <span id="MROTATEF">宏 ROTATEF</span>
 
 * 语法(Syntax):
 
@@ -4687,7 +4665,7 @@ throw, Section 3.1 (Evaluation)
 
         除了后者会对每个 place 的任何子表达式进行两次求值, 而 rotatef 求值.
 
-### <span id="">状况类型 CONTROL-ERROR</span>
+### <span id="CTCONTROL-ERROR">状况类型 CONTROL-ERROR</span>
 
 * 类优先级列表(Class Precedence List):
 
@@ -4698,7 +4676,7 @@ throw, Section 3.1 (Evaluation)
         类型 control-error 由错误条件组成, 这些错误条件是由程序中无效的动态转移引起的. throw 一个不活跃的 tag 或 go 或者 return-from 一个不再是动态可用的 tag 导致的错误是 control-error 错误.
 
 
-### <span id="">状况类型 PROGRAM-ERROR</span>
+### <span id="CTPROGRAM-ERROR">状况类型 PROGRAM-ERROR</span>
 
 * 类优先级列表(Class Precedence List):
 
@@ -4709,7 +4687,7 @@ throw, Section 3.1 (Evaluation)
         类型 program-error 由不正确的程序语法相关的错误条件组成. 显然不是词法地命名一个 go 标签或 block 标签导致的错误是类型 program-error.
 
 
-### <span id="">状况类型 UNDEFINED-FUNCTION</span>
+### <span id="CTUNDEFINED-FUNCTION">状况类型 UNDEFINED-FUNCTION</span>
 
 * 类优先级列表(Class Precedence List):
 
