@@ -1,73 +1,50 @@
- 6. Iteration
+# 6. 循环
 
-6.1 The LOOP Facility
+> * 6.1 [LOOP 机制](#TheLOOPFacility)
+> * 6.2 [循环字典](#TheIterationDictionary)
 
-6.2 The Iteration Dictionary
+## 6.1 <span id="TheLOOPFacility">LOOP 机制</span>
 
- 6.1 The LOOP Facility
+> * 6.1.1 [Loop 机制概述](#OverviewLoopFacility)
+> * 6.1.2 [Variable Initialization and Stepping Clauses](#VarInitAndStepClauses)
+> * 6.1.3 [Value Accumulation Clauses](#ValueAccumulationClauses)
+> * 6.1.4 [Termination Test Clauses](#TerminationTestClauses)
+> * 6.1.5 [Unconditional Execution Clauses](#UnconditionalExecutionClauses)
+> * 6.1.6 [Conditional Execution Clauses](#ConditionalExecutionClauses)
+> * 6.1.7 [Miscellaneous Clauses](#MiscellaneousClauses)
+> * 6.1.8 [Examples of Miscellaneous Loop Features](#ExamplesMLF)
+> * 6.1.9 [Notes about Loop](#NotesAboutLoop)
 
-6.1.1 Overview of the Loop Facility
+### 6.1.1 <span id="OverviewLoopFacility">Loop 机制概述</span>
 
-6.1.2 Variable Initialization and Stepping Clauses
+    这个 loop 宏执行循环.
 
-6.1.3 Value Accumulation Clauses
+> * 6.1.1.1 [简单 vs 扩展 Loop](#SimpleExtendedLoop)
+> * 6.1.1.2 [Loop 关键字](#LoopKeywords)
+> * 6.1.1.3 [解析 Loop 子句](#ParsingLoopClauses)
+> * 6.1.1.4 [展开 Loop 表达式形式](#ExpandingLoopForms)
+> * 6.1.1.5 [Loop 子句的总结](#SummaryLoopClauses)
+> * 6.1.1.6 [执行顺序](#OrderExecution)
+> * 6.1.1.7 [解构](#Destructuring)
+> * 6.1.1.8 [副作用的限制](#RestrictionsSideEffects)
 
-6.1.4 Termination Test Clauses
+#### 6.1.1.1 <span id="">Simple vs Extended Loop</span>
 
-6.1.5 Unconditional Execution Clauses
+    loop 表达式形式可以被分为两类: 简单 loop 表达式和扩展 loop 表达式.
 
-6.1.6 Conditional Execution Clauses
+##### 6.1.1.1.1 简单 Loop
 
-6.1.7 Miscellaneous Clauses
+    一个简单 loop 表达式形式是指主体(body)只包含复合表达式形式的 loop 表达式. 每个表达式形式都按从左到右的次序依次求值. 当最后一个表达式形式被求值后, 第一个表达式被再一次求值, 以此类推, 在一个不终止的循环中. 一个简单 loop 表达式形式建立一个名为 nil 的隐式的 block. 这个简单 loop 的执行可以通过对这个隐式的 block 做显式的控制转移 (使用 return 或 return-from) 或者对这个 block 外部的退出点做控制转移来终止 (比如, 使用 throw, go, 或 return-from). 
 
-6.1.8 Examples of Miscellaneous Loop Features
+##### 6.1.1.1.2 扩展 Loop
 
-6.1.9 Notes about Loop
+    一个扩展 loop 表达式形式是指主体(body)中包含原子表达式的一个 loop 表达式形式. 当这个 loop 宏处理这样一个表达式形式时, 它调用一个通常称为"Loop 工具"的工具.
 
- 6.1.1 Overview of the Loop Facility
+    这个 Loop 工具提供了对循环模式中常用的机制的标准化访问, 循环模式是由 loop 关键字引入的.
 
-The loop macro performs iteration.
+    扩展 loop 表达式形式的主体(body)被分为 loop 子句, 每一个都由循环 loop 关键字和表达式形式组成. 
 
-6.1.1.1 Simple vs Extended Loop
-
-6.1.1.2 Loop Keywords
-
-6.1.1.3 Parsing Loop Clauses
-
-6.1.1.4 Expanding Loop Forms
-
-6.1.1.5 Summary of Loop Clauses
-
-6.1.1.6 Order of Execution
-
-6.1.1.7 Destructuring
-
-6.1.1.8 Restrictions on Side-Effects
-
-
- 6.1.1.1 Simple vs Extended Loop
-
-loop forms are partitioned into two categories: simple loop forms and extended loop forms.
-
-6.1.1.1.1 Simple Loop
-
-6.1.1.1.2 Extended Loop
-
- 6.1.1.1.1 Simple Loop
-
-A simple loop form is one that has a body containing only compound forms. Each form is evaluated in turn from left to right. When the last form has been evaluated, then the first form is evaluated again, and so on, in a never-ending cycle. A simple loop form establishes an implicit block named nil. The execution of a simple loop can be terminated by explicitly transfering control to the implicit block (using return or return-from) or to some exit point outside of the block (e.g., using throw, go, or return-from). 
-
-
- 6.1.1.1.2 Extended Loop
-
-An extended loop form is one that has a body containing atomic expressions. When the loop macro processes such a form, it invokes a facility that is commonly called ``the Loop Facility.''
-
-The Loop Facility provides standardized access to mechanisms commonly used in iterations through Loop schemas, which are introduced by loop keywords.
-
-The body of an extended loop form is divided into loop clauses, each which is in turn made up of loop keywords and forms. 
-
-
- 6.1.1.2 Loop Keywords
+#### 6.1.1.2 <span id="">Loop Keywords</span>
 
 Loop keywords are not true keywords[1]; they are special symbols, recognized by name rather than object identity, that are meaningful only to the loop facility. A loop keyword is a symbol but is recognized by its name (not its identity), regardless of the packages in which it is accessible.
 
@@ -76,7 +53,7 @@ In general, loop keywords are not external symbols of the COMMON-LISP package, e
 If no loop keywords are supplied in a loop form, the Loop Facility executes the loop body repeatedly; see Section 6.1.1.1.1 (Simple Loop). 
 
 
- 6.1.1.3 Parsing Loop Clauses
+#### 6.1.1.3 Parsing Loop Clauses</span>
 
 The syntactic parts of an extended loop form are called clauses; the rules for parsing are determined by that clause's keyword. The following example shows a loop form with six clauses:
 
@@ -95,7 +72,7 @@ Loop clauses can contain auxiliary keywords, which are sometimes called preposit
 For detailed information about loop syntax, see the macro loop. 
 
 
- 6.1.1.4 Expanding Loop Forms
+#### 6.1.1.4 <span id="">Expanding Loop Forms</span>
 
 A loop macro form expands into a form containing one or more binding forms (that establish bindings of loop variables) and a block and a tagbody (that express a looping control structure). The variables established in loop are bound as if by let or lambda.
 
@@ -120,24 +97,19 @@ Some clauses from the source form contribute code only to the loop prologue; the
 Expansion of the loop macro produces an implicit block named nil unless named is supplied. Thus, return-from (and sometimes return) can be used to return values from loop or to exit loop. 
 
 
- 6.1.1.5 Summary of Loop Clauses
+#### 6.1.1.5 <span id="">Summary of Loop Clauses</span>
 
 Loop clauses fall into one of the following categories:
 
-6.1.1.5.1 Summary of Variable Initialization and Stepping Clauses
-
-6.1.1.5.2 Summary of Value Accumulation Clauses
-
-6.1.1.5.3 Summary of Termination Test Clauses
-
-6.1.1.5.4 Summary of Unconditional Execution Clauses
-
-6.1.1.5.5 Summary of Conditional Execution Clauses
-
-6.1.1.5.6 Summary of Miscellaneous Clauses
+> * 6.1.1.5.1 [Summary of Variable Initialization and Stepping Clauses](#)
+> * 6.1.1.5.2 [Summary of Value Accumulation Clauses](#)
+> * 6.1.1.5.3 [Summary of Termination Test Clauses](#)
+> * 6.1.1.5.4 [Summary of Unconditional Execution Clauses](#)
+> * 6.1.1.5.5 [Summary of Conditional Execution Clauses](#)
+> * 6.1.1.5.6 [Summary of Miscellaneous Clauses](#)
 
 
- 6.1.1.5.1 Summary of Variable Initialization and Stepping Clauses
+##### 6.1.1.5.1 <span id="">Summary of Variable Initialization and Stepping Clauses</span>
 
 The for and as constructs provide iteration control clauses that establish a variable to be initialized. for and as clauses can be combined with the loop keyword and to get parallel initialization and stepping[1]. Otherwise, the initialization and stepping[1] are sequential.
 
@@ -146,7 +118,7 @@ The with construct is similar to a single let clause. with clauses can be combin
 For more information, see Section 6.1.2 (Variable Initialization and Stepping Clauses). 
 
 
- 6.1.1.5.2 Summary of Value Accumulation Clauses
+##### 6.1.1.5.2 <span id="">Summary of Value Accumulation Clauses</span>
 
 The collect (or collecting) construct takes one form in its clause and adds the value of that form to the end of a list of values. By default, the list of values is returned when the loop finishes.
 
@@ -165,7 +137,7 @@ The maximize (or maximizing) construct takes one form in its clause and determin
 For more information, see Section 6.1.3 (Value Accumulation Clauses). 
 
 
- 6.1.1.5.3 Summary of Termination Test Clauses
+##### 6.1.1.5.3 <span id="">Summary of Termination Test Clauses</span>
 
 The for and as constructs provide a termination test that is determined by the iteration control clause.
 
@@ -186,7 +158,7 @@ If multiple termination test clauses are specified, the loop form terminates if 
 For more information, see Section 6.1.4 (Termination Test Clauses). 
 
 
- 6.1.1.5.4 Summary of Unconditional Execution Clauses
+##### 6.1.1.5.4 <span id="">Summary of Unconditional Execution Clauses</span>
 
 The do (or doing) construct evaluates all forms in its clause.
 
@@ -195,7 +167,7 @@ The return construct takes one form. Any values returned by the form are immedia
 For more information, see Section 6.1.5 (Unconditional Execution Clauses). 
 
 
- 6.1.1.5.5 Summary of Conditional Execution Clauses
+##### 6.1.1.5.5 <span id="">Summary of Conditional Execution Clauses</span>
 
 The if and when constructs take one form as a test and a clause that is executed when the test yields true. The clause can be a value accumulation, unconditional, or another conditional clause; it can also be any combination of such clauses connected by the loop and keyword.
 
@@ -208,7 +180,7 @@ The loop end construct provides an optional component to mark the end of a condi
 For more information, see Section 6.1.6 (Conditional Execution Clauses). 
 
 
- 6.1.1.5.6 Summary of Miscellaneous Clauses
+##### 6.1.1.5.6 <span id="">Summary of Miscellaneous Clauses</span>
 
 The loop named construct gives a name for the block of the loop.
 
@@ -219,7 +191,7 @@ The loop finally construct causes its forms to be evaluated in the loop epilogue
 For more information, see Section 6.1.7 (Miscellaneous Clauses). 
 
 
- 6.1.1.6 Order of Execution
+#### 6.1.1.6 <span id="">Order of Execution</span>
 
 With the exceptions listed below, clauses are executed in the loop body in the order in which they appear in the source. Execution is repeated until a clause terminates the loop or until a return, go, or throw form is encountered which transfers control to a point outside of the loop. The following actions are exceptions to the linear order of execution:
 
@@ -240,7 +212,7 @@ With the exceptions listed below, clauses are executed in the loop body in the o
     -- perform termination tests, generally just before the execution of the loop body. 
 
 
- 6.1.1.7 Destructuring
+#### 6.1.1.7 <span id="">Destructuring</span>
 
 The d-type-spec argument is used for destructuring. If the d-type-spec argument consists solely of the type fixnum, float, t, or nil, the of-type keyword is optional. The of-type construct is optional in these cases to provide backwards compatibility; thus, the following two expressions are the same:
 
@@ -315,17 +287,16 @@ Note that dotted lists can specify destructuring.
 An error of type program-error is signaled (at macro expansion time) if the same variable is bound twice in any variable-binding clause of a single loop expression. Such variables include local variables, iteration control variables, and variables found by destructuring. 
 
 
- 6.1.1.8 Restrictions on Side-Effects
+#### 6.1.1.8 <span id="">Restrictions on Side-Effects</span>
 
 See Section 3.6 (Traversal Rules and Side Effects). 
 
- 6.1.2 Variable Initialization and Stepping Clauses
+### 6.1.2 <span id="VarInitAndStepClauses">Variable Initialization and Stepping Clauses</span>
 
-6.1.2.1 Iteration Control
+> * 6.1.2.1 [Iteration Control](#IterationControl)
+> * 6.1.2.2 [Local Variable Initializations](#LocalVarInit)
 
-6.1.2.2 Local Variable Initializations
-
- 6.1.2.1 Iteration Control
+#### 6.1.2.1 <span id="">Iteration Control</span>
 
 Iteration control clauses allow direction of loop iteration. The loop keywords for and as designate iteration control clauses. Iteration control clauses differ with respect to the specification of termination tests and to the initialization and stepping[1] of loop variables. Iteration clauses by themselves do not cause the Loop Facility to return values, but they can be used in conjunction with value-accumulation clauses to return values.
 
@@ -341,22 +312,16 @@ The for and as clauses iterate by using one or more local loop variables that ar
 
 The for and as keywords are synonyms; they can be used interchangeably. There are seven syntactic formats for these constructs. In each syntactic format, the type of var can be supplied by the optional type-spec argument. If var is a destructuring list, the type supplied by the type-spec argument must appropriately match the elements of the list. By convention, for introduces new iterations and as introduces iterations that depend on a previous iteration specification.
 
-6.1.2.1.1 The for-as-arithmetic subclause
-
-6.1.2.1.2 The for-as-in-list subclause
-
-6.1.2.1.3 The for-as-on-list subclause
-
-6.1.2.1.4 The for-as-equals-then subclause
-
-6.1.2.1.5 The for-as-across subclause
-
-6.1.2.1.6 The for-as-hash subclause
-
-6.1.2.1.7 The for-as-package subclause
+> * 6.1.2.1.1 [The for-as-arithmetic subclause](#)
+> * 6.1.2.1.2 [The for-as-in-list subclause](#)
+> * 6.1.2.1.3 [The for-as-on-list subclause](#)
+> * 6.1.2.1.4 [The for-as-equals-then subclause](#)
+> * 6.1.2.1.5 [The for-as-across subclause](#)
+> * 6.1.2.1.6 [The for-as-hash subclause](#)
+> * 6.1.2.1.7 [The for-as-package subclause](#)
 
 
- 6.1.2.1.1 The for-as-arithmetic subclause
+##### 6.1.2.1.1 <span id="">The for-as-arithmetic subclause</span>
 
 In the for-as-arithmetic subclause, the for or as construct iterates from the value supplied by form1 to the value supplied by form2 in increments or decrements denoted by form3. Each expression is evaluated only once and must evaluate to a number. The variable var is bound to the value of form1 in the first iteration and is stepped[1] by the value of form3 in each succeeding iteration, or by 1 if form3 is not provided. The following loop keywords serve as valid prepositions within this syntax. At least one of the prepositions must be used; and at most one from each line may be used in a single subclause.
 
@@ -401,10 +366,7 @@ by
 
 In an iteration control clause, the for or as construct causes termination when the supplied limit is reached. That is, iteration continues until the value var is stepped to the exclusive or inclusive limit supplied by form2. The range is exclusive if form3 increases or decreases var to the value of form2 without reaching that value; the loop keywords below and above provide exclusive limits. An inclusive limit allows var to attain the value of form2; to, downto, and upto provide inclusive limits.
 
-6.1.2.1.1.1 Examples of for-as-arithmetic subclause
-
-
- 6.1.2.1.1.1 Examples of for-as-arithmetic subclause
+###### 6.1.2.1.1.1 Examples of for-as-arithmetic subclause
 
 ;; Print some numbers.
  (loop for i from 1 to 3
@@ -431,13 +393,11 @@ In an iteration control clause, the for or as construct causes termination when 
 >>  2
 
 
- 6.1.2.1.2 The for-as-in-list subclause
+##### 6.1.2.1.2 <span id="">The for-as-in-list subclause</span>
 
 In the for-as-in-list subclause, the for or as construct iterates over the contents of a list. It checks for the end of the list as if by using endp. The variable var is bound to the successive elements of the list in form1 before each iteration. At the end of each iteration, the function step-fun is applied to the list; the default value for step-fun is cdr. The loop keywords in and by serve as valid prepositions in this syntax. The for or as construct causes termination when the end of the list is reached.
 
-6.1.2.1.2.1 Examples of for-as-in-list subclause
-
- 6.1.2.1.2.1 Examples of for-as-in-list subclause
+###### 6.1.2.1.2.1 Examples of for-as-in-list subclause
 
 ;; Print every item in a list.
  (loop for item in '(1 2 3) do (print item))
@@ -460,14 +420,11 @@ In the for-as-in-list subclause, the for or as construct iterates over the conte
 =>  4
 
 
- 6.1.2.1.3 The for-as-on-list subclause
+##### 6.1.2.1.3 <span id="">The for-as-on-list subclause</span>
 
 In the for-as-on-list subclause, the for or as construct iterates over a list. It checks for the end of the list as if by using atom. The variable var is bound to the successive tails of the list in form1. At the end of each iteration, the function step-fun is applied to the list; the default value for step-fun is cdr. The loop keywords on and by serve as valid prepositions in this syntax. The for or as construct causes termination when the end of the list is reached.
 
-6.1.2.1.3.1 Examples of for-as-on-list subclause
-
-
- 6.1.2.1.3.1 Examples of for-as-on-list subclause
+###### 6.1.2.1.3.1 Examples of for-as-on-list subclause
 
 ;; Collect successive tails of a list.
  (loop for sublist on '(a b c d)
@@ -483,14 +440,11 @@ In the for-as-on-list subclause, the for or as construct iterates over a list. I
 =>  NIL
  
 
- 6.1.2.1.4 The for-as-equals-then subclause
+##### 6.1.2.1.4 <span id="">The for-as-equals-then subclause</span>
 
 In the for-as-equals-then subclause the for or as construct initializes the variable var by setting it to the result of evaluating form1 on the first iteration, then setting it to the result of evaluating form2 on the second and subsequent iterations. If form2 is omitted, the construct uses form1 on the second and subsequent iterations. The loop keywords = and then serve as valid prepositions in this syntax. This construct does not provide any termination tests.
 
-6.1.2.1.4.1 Examples of for-as-equals-then subclause
-
-
- 6.1.2.1.4.1 Examples of for-as-equals-then subclause
+###### 6.1.2.1.4.1 Examples of for-as-equals-then subclause
 
 ;; Collect some numbers.
  (loop for item = 1 then (+ item 10)
@@ -499,20 +453,17 @@ In the for-as-equals-then subclause the for or as construct initializes the vari
 =>  (1 11 21 31 41)
 
 
- 6.1.2.1.5 The for-as-across subclause
+##### 6.1.2.1.5 <span id="">The for-as-across subclause</span>
 
 In the for-as-across subclause the for or as construct binds the variable var to the value of each element in the array vector. The loop keyword across marks the array vector; across is used as a preposition in this syntax. Iteration stops when there are no more elements in the supplied array that can be referenced. Some implementations might recognize a the special form in the vector form to produce more efficient code.
 
-6.1.2.1.5.1 Examples of for-as-across subclause
-
-
- 6.1.2.1.5.1 Examples of for-as-across subclause
+###### 6.1.2.1.5.1 Examples of for-as-across subclause
 
  (loop for char across (the simple-string (find-message channel))
        do (write-char char stream))
 
 
- 6.1.2.1.6 The for-as-hash subclause
+##### 6.1.2.1.6 <span id="">The for-as-hash subclause</span>
 
 In the for-as-hash subclause the for or as construct iterates over the elements, keys, and values of a hash-table. In this syntax, a compound preposition is used to designate access to a hash table. The variable var takes on the value of each hash key or hash value in the supplied hash-table. The following loop keywords serve as valid prepositions within this syntax:
 
@@ -549,7 +500,7 @@ is a compound preposition.
 Iteration stops when there are no more hash keys or hash values to be referenced in the supplied hash-table. 
 
 
- 6.1.2.1.7 The for-as-package subclause
+##### 6.1.2.1.7 <span id="">The for-as-package subclause</span>
 
 In the for-as-package subclause the for or as construct iterates over the symbols in a package. In this syntax, a compound preposition is used to designate access to a package. The variable var takes on the value of each symbol in the supplied package. The following loop keywords serve as valid prepositions within this syntax:
 
@@ -585,10 +536,7 @@ is a compound preposition.
 
 Iteration stops when there are no more symbols to be referenced in the supplied package.
 
-6.1.2.1.7.1 Examples of for-as-package subclause
-
-
- 6.1.2.1.7.1 Examples of for-as-package subclause
+###### 6.1.2.1.7.1 Examples of for-as-package subclause
 
  (let ((*package* (make-package "TEST-PACKAGE-1")))
    ;; For effect, intern some symbols
@@ -603,7 +551,7 @@ Iteration stops when there are no more symbols to be referenced in the supplied 
 =>  NIL
 
 
- 6.1.2.2 Local Variable Initializations
+#### 6.1.2.2 <span id="">Local Variable Initializations</span>
 
 When a loop form is executed, the local variables are bound and are initialized to some value. These local variables exist until loop iteration terminates, at which point they cease to exist. Implicit variables are also established by iteration control clauses and the into preposition of accumulation clauses.
 
@@ -647,10 +595,7 @@ The execution of the above loop is equivalent to the execution of the following 
                     (go next-loop)
                     end-loop))))
 
-6.1.2.2.1 Examples of WITH clause
-
-
- 6.1.2.2.1 Examples of WITH clause
+##### 6.1.2.2.1 Examples of WITH clause
 
 ;; These bindings occur in sequence.
  (loop with a = 1 
@@ -681,7 +626,7 @@ The execution of the above loop is equivalent to the execution of the following 
 =>  "0.0 0.0 0.0"
 
 
- 6.1.3 Value Accumulation Clauses
+### 6.1.3 <span id="ValueAccumulationClauses">Value Accumulation Clauses</span>
 
 The constructs collect, collecting, append, appending, nconc, nconcing, count, counting, maximize, maximizing, minimize, minimizing, sum, and summing, allow values to be accumulated in a loop.
 
@@ -723,18 +668,13 @@ Certain kinds of accumulation clauses can be combined in a loop if their destina
 
 Any two clauses that do not accumulate the same type of object can coexist in a loop only if each clause accumulates its values into a different variable.
 
-6.1.3.1 Examples of COLLECT clause
+> * 6.1.3.1 [Examples of COLLECT clause](#)
+> * 6.1.3.2 [Examples of APPEND and NCONC clauses](#)
+> * 6.1.3.3 [Examples of COUNT clause](#)
+> * 6.1.3.4 [Examples of MAXIMIZE and MINIMIZE clauses](#)
+> * 6.1.3.5 [Examples of SUM clause](#)
 
-6.1.3.2 Examples of APPEND and NCONC clauses
-
-6.1.3.3 Examples of COUNT clause
-
-6.1.3.4 Examples of MAXIMIZE and MINIMIZE clauses
-
-6.1.3.5 Examples of SUM clause
-
-
- 6.1.3.1 Examples of COLLECT clause
+#### 6.1.3.1 <span id="">Examples of COLLECT clause</span>
 
 ;; Collect all the symbols in a list.
  (loop for i in '(bird 3 4 turtle (1 . 4) horse cat)
@@ -754,7 +694,7 @@ Any two clauses that do not accumulate the same type of object can coexist in a 
 =>  NIL
 
 
- 6.1.3.2 Examples of APPEND and NCONC clauses
+#### 6.1.3.2 <span id="">Examples of APPEND and NCONC clauses</span>
 
 ;; Use APPEND to concatenate some sublists.
   (loop for x in '((a) (b) ((c)))
@@ -769,14 +709,14 @@ Any two clauses that do not accumulate the same type of object can coexist in a 
 =>  (A (C))
 
 
- 6.1.3.3 Examples of COUNT clause
+#### 6.1.3.3 <span id="">Examples of COUNT clause</span>
 
  (loop for i in '(a b nil c nil d e)
        count i)
 =>  5
 
 
- 6.1.3.4 Examples of MAXIMIZE and MINIMIZE clauses
+#### 6.1.3.4 <span id="">Examples of MAXIMIZE and MINIMIZE clauses</span>
 
  (loop for i in '(2 1 5 3 4)
        maximize i)
@@ -800,7 +740,7 @@ Any two clauses that do not accumulate the same type of object can coexist in a 
 =>  1
 
 
- 6.1.3.5 Examples of SUM clause
+#### 6.1.3.5 <span id="">Examples of SUM clause</span>
 
  (loop for i of-type fixnum in '(1 2 3 4 5)
        sum i)
@@ -812,7 +752,7 @@ Any two clauses that do not accumulate the same type of object can coexist in a 
 =>  22.4
 
 
- 6.1.4 Termination Test Clauses
+### 6.1.4 <span id="">Termination Test Clauses</span>
 
 The repeat construct causes iteration to terminate after a specified number of times. The loop body executes n times, where n is the value of the expression form. The form argument is evaluated one time in the loop prologue. If the expression evaluates to 0 or to a negative number, the loop body is not evaluated.
 
@@ -846,14 +786,11 @@ There are two differences between the never and until constructs:
 
 In most cases it is not necessary to use loop-finish because other loop control clauses terminate the loop. The macro loop-finish is used to provide a normal exit from a nested conditional inside a loop. Since loop-finish transfers control to the loop epilogue, using loop-finish within a finally expression can cause infinite looping.
 
-6.1.4.1 Examples of REPEAT clause
+> * 6.1.4.1 [Examples of REPEAT clause](#)
+> * 6.1.4.2 [Examples of ALWAYS, NEVER, and THEREIS clauses](#)
+> * 6.1.4.3 [Examples of WHILE and UNTIL clauses](#)
 
-6.1.4.2 Examples of ALWAYS, NEVER, and THEREIS clauses
-
-6.1.4.3 Examples of WHILE and UNTIL clauses
-
-
- 6.1.4.1 Examples of REPEAT clause
+#### 6.1.4.1 <span id="">Examples of REPEAT clause</span>
 
  (loop repeat 3
        do (format t "~&What I say three times is true.~%"))
@@ -866,7 +803,7 @@ In most cases it is not necessary to use loop-finish because other loop control 
 =>  NIL
 
 
- 6.1.4.2 Examples of ALWAYS, NEVER, and THEREIS clauses
+#### 6.1.4.2 <span id="">Examples of ALWAYS, NEVER, and THEREIS clauses</span>
 
 ;; Make sure I is always less than 11 (two ways).
 ;; The FOR construct terminates these loops.
@@ -920,7 +857,7 @@ In most cases it is not necessary to use loop-finish because other loop control 
                                           (expt z n))))))
 
 
- 6.1.4.3 Examples of WHILE and UNTIL clauses
+#### 6.1.4.3 <span id="">Examples of WHILE and UNTIL clauses</span>
 
  (loop while (hungry-p) do (eat))
  
@@ -942,16 +879,13 @@ In most cases it is not necessary to use loop-finish because other loop control 
 =>  (3 5)
 
 
- 6.1.5 Unconditional Execution Clauses
+### 6.1.5 <span id="">Unconditional Execution Clauses</span>
 
 The do and doing constructs evaluate the supplied forms wherever they occur in the expanded form of loop. The form argument can be any compound form. Each form is evaluated in every iteration. Because every loop clause must begin with a loop keyword, the keyword do is used when no control action other than execution is required.
 
 The return construct takes one form. Any values returned by the form are immediately returned by the loop form. It is equivalent to the clause do (return-from block-name value), where block-name is the name specified in a named clause, or nil if there is no named clause.
 
-6.1.5.1 Examples of unconditional execution
-
-
- 6.1.5.1 Examples of unconditional execution
+#### 6.1.5.1 Examples of unconditional execution
 
 ;; Print numbers and their squares.
 ;; The DO construct applies to multiple forms.
@@ -967,7 +901,7 @@ The return construct takes one form. Any values returned by the form are immedia
 =>  NIL
 
 
- 6.1.6 Conditional Execution Clauses
+### 6.1.6 <span id="">Conditional Execution Clauses</span>
 
 The if, when, and unless constructs establish conditional control in a loop. If the test passes, the succeeding loop clause is executed. If the test does not pass, the succeeding clause is skipped, and program control moves to the clause that follows the loop keyword else. If the test does not pass and no else clause is supplied, control is transferred to the clause or construct following the entire conditional clause.
 
@@ -983,10 +917,7 @@ The loop keyword it can be used to refer to the result of the test expression in
 
 The optional loop keyword end marks the end of the clause. If this keyword is not supplied, the next loop keyword marks the end. The construct end can be used to distinguish the scoping of compound clauses.
 
-6.1.6.1 Examples of WHEN clause
-
-
- 6.1.6.1 Examples of WHEN clause
+#### 6.1.6.1 Examples of WHEN clause
 
 ;; Signal an exceptional condition.
  (loop for item in '(1 2 3 a 4 5)
@@ -1029,23 +960,19 @@ Error: non-numeric value: A
 =>  5, (6 7 8 9 10)
 
 
- 6.1.7 Miscellaneous Clauses
+### 6.1.7 <span id="">Miscellaneous Clauses</span>
 
-6.1.7.1 Control Transfer Clauses
+> * 6.1.7.1 [Control Transfer Clauses](#)
+> * 6.1.7.2 [Initial and Final Execution](#)
 
-6.1.7.2 Initial and Final Execution
 
-
- 6.1.7.1 Control Transfer Clauses
+#### 6.1.7.1 <span id="">Control Transfer Clauses</span>
 
 The named construct establishes a name for an implicit block surrounding the entire loop so that the return-from special operator can be used to return values from or to exit loop. Only one name per loop form can be assigned. If used, the named construct must be the first clause in the loop expression.
 
 The return construct takes one form. Any values returned by the form are immediately returned by the loop form. This construct is similar to the return-from special operator and the return macro. The return construct does not execute any finally clause that the loop form is given.
 
-6.1.7.1.1 Examples of NAMED clause
-
-
- 6.1.7.1.1 Examples of NAMED clause
+##### 6.1.7.1.1 <span id="">Examples of NAMED clause</span>
 
 ;; Just name and return.
  (loop named max
@@ -1056,7 +983,7 @@ The return construct takes one form. Any values returned by the form are immedia
 =>  DONE
 
 
- 6.1.7.2 Initial and Final Execution
+#### 6.1.7.2 <span id="">Initial and Final Execution</span>
 
 The initially and finally constructs evaluate forms that occur before and after the loop body.
 
@@ -1067,7 +994,7 @@ The finally construct causes the supplied compound-forms to be evaluated in the 
 Clauses such as return, always, never, and thereis can bypass the finally clause. return (or return-from, if the named option was supplied) can be used after finally to return values from a loop. Such an explicit return inside the finally clause takes precedence over returning the accumulation from clauses supplied by such keywords as collect, nconc, append, sum, count, maximize, and minimize; the accumulation values for these preempted clauses are not returned by loop if return or return-from is used. 
 
 
- 6.1.8 Examples of Miscellaneous Loop Features
+### 6.1.8 <span id="">Examples of Miscellaneous Loop Features</span>
 
  (let ((i 0))                     ; no loop keywords are used
     (loop (incf i) (if (= i 3) (return i)))) =>  3
@@ -1091,10 +1018,7 @@ In this example, x and y are stepped in parallel:
        collect (list x y))
 =>  ((1 NIL) (2 1) (3 2) (4 3) (5 4) (6 5) (7 6) (8 7) (9 8) (10 9))
 
-6.1.8.1 Examples of clause grouping
-
-
- 6.1.8.1 Examples of clause grouping
+#### 6.1.8.1 Examples of clause grouping
 
 ;; Group conditional clauses.
  (loop for i in '(1 324 2345 323 2 4 235 252)
@@ -1166,7 +1090,7 @@ In this example, x and y are stepped in parallel:
 =>  NIL
 
 
- 6.1.9 Notes about Loop
+### 6.1.9 <span id="">Notes about Loop</span>
 
 Types can be supplied for loop variables. It is not necessary to supply a type for any variable, but supplying the type can ensure that the variable has a correctly typed initial value, and it can also enable compiler optimizations (depending on the implementation).
 
@@ -1183,20 +1107,16 @@ Use caution when using a variable named IT (in any package) in connection with l
 There is no standardized mechanism for users to add extensions to loop. 
 
 
- 6.2 The Iteration Dictionary
+## 6.2 <span id="">The Iteration Dictionary</span>
 
-Macro DO, DO*
-
-Macro DOTIMES
-
-Macro DOLIST
-
-Macro LOOP
-
-Local Macro LOOP-FINISH
+> * [Macro DO, DO*](#)
+> * [Macro DOTIMES](#)
+> * [Macro DOLIST](#)
+> * [Macro LOOP](#)
+> * [Local Macro LOOP-FINISH](#)
 
 
-Macro DO, DO*
+### <span id="">Macro DO, DO*</span>
 
 Syntax:
 
@@ -1344,7 +1264,7 @@ A do form may be explained in terms of the more primitive forms block, return, l
 do* is similar, except that let* and setq replace the let and psetq, respectively. 
 
 
-Macro DOTIMES
+### <span id="">Macro DOTIMES</span>
 
 Syntax:
 
@@ -1433,7 +1353,7 @@ Notes:
 go may be used within the body of dotimes to transfer control to a statement labeled by a tag. 
 
 
-Macro DOLIST
+### <span id="">Macro DOLIST</span>
 
 Syntax:
 
@@ -1499,7 +1419,7 @@ Notes:
 go may be used within the body of dolist to transfer control to a statement labeled by a tag. 
 
 
-Macro LOOP
+### <span id="">Macro LOOP</span>
 
 Syntax:
 
