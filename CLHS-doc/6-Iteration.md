@@ -28,48 +28,50 @@
 > * 6.1.1.7 [解构](#Destructuring)
 > * 6.1.1.8 [副作用的限制](#RestrictionsSideEffects)
 
-#### 6.1.1.1 <span id="">Simple vs Extended Loop</span>
+#### 6.1.1.1 <span id="">简单 vs 扩展 Loop</span>
 
-    loop 表达式形式可以被分为两类: 简单 loop 表达式和扩展 loop 表达式.
+loop 表达式形式可以被分为两类: 简单 loop 表达式和扩展 loop 表达式.
 
 ##### 6.1.1.1.1 简单 Loop
 
-    一个简单 loop 表达式形式是指主体(body)只包含复合表达式形式的 loop 表达式. 每个表达式形式都按从左到右的次序依次求值. 当最后一个表达式形式被求值后, 第一个表达式被再一次求值, 以此类推, 在一个不终止的循环中. 一个简单 loop 表达式形式建立一个名为 nil 的隐式的 block. 这个简单 loop 的执行可以通过对这个隐式的 block 做显式的控制转移 (使用 return 或 return-from) 或者对这个 block 外部的退出点做控制转移来终止 (比如, 使用 throw, go, 或 return-from). 
+一个简单 loop 表达式形式是指主体(body)只包含复合表达式形式的 loop 表达式. 每个表达式形式都按从左到右的次序依次求值. 当最后一个表达式形式被求值后, 第一个表达式被再一次求值, 以此类推, 在一个不终止的循环中. 一个简单 loop 表达式形式建立一个名为 nil 的隐式的 block. 这个简单 loop 的执行可以通过对这个隐式的 block 做显式的控制转移 (使用 return 或 return-from) 或者对这个 block 外部的退出点做控制转移来终止 (比如, 使用 throw, go, 或 return-from). 
 
 ##### 6.1.1.1.2 扩展 Loop
 
-    一个扩展 loop 表达式形式是指主体(body)中包含原子表达式的一个 loop 表达式形式. 当这个 loop 宏处理这样一个表达式形式时, 它调用一个通常称为"Loop 工具"的工具.
+一个扩展 loop 表达式形式是指主体(body)中包含原子表达式的一个 loop 表达式形式. 当这个 loop 宏处理这样一个表达式形式时, 它调用一个通常称为"Loop 工具"的工具.
 
-    这个 Loop 工具提供了对循环模式中常用的机制的标准化访问, 循环模式是由 loop 关键字引入的.
+这个 Loop 工具提供了对循环模式中常用的机制的标准化访问, 循环模式是由 loop 关键字引入的.
 
-    扩展 loop 表达式形式的主体(body)被分为 loop 子句, 每一个都由循环 loop 关键字和表达式形式组成. 
+扩展 loop 表达式形式的主体(body)被分为 loop 子句, 每一个都由循环 loop 关键字和表达式形式组成. 
 
-#### 6.1.1.2 <span id="">Loop Keywords</span>
+#### 6.1.1.2 <span id="LoopKeywords">Loop 关键字</span>
 
-Loop keywords are not true keywords[1]; they are special symbols, recognized by name rather than object identity, that are meaningful only to the loop facility. A loop keyword is a symbol but is recognized by its name (not its identity), regardless of the packages in which it is accessible.
+Loop 关键字不是真的关键字; 它们是特殊的符号, 通过名字而不是对象标识来识别, 并只有在 loop 工具中有意义. 一个 loop 关键字是一个通过它的名字识别的(不是它的标识)符号, 不管它在哪个包中访问.
 
-In general, loop keywords are not external symbols of the COMMON-LISP package, except in the coincidental situation that a symbol with the same name as a loop keyword was needed for some other purpose in Common Lisp. For example, there is a symbol in the COMMON-LISP package whose name is "UNLESS" but not one whose name is "UNTIL".
+通常, loop 关键字不是 COMMON-LISP 包中的外部符号, 除非在 Common Lisp 中需要使用与 loop 关键字相同名称的符号来实现其他目的. 比如, 在 COMMON-LISP 包中有一个符号名为 "UNLESS" 但是没有名为 "UNTIL" 的符号.
 
-If no loop keywords are supplied in a loop form, the Loop Facility executes the loop body repeatedly; see Section 6.1.1.1.1 (Simple Loop). 
+如果在一个 loop 表达式中没有提供 loop 关键字, 这个 Loop 工具就会重复地执行主体(body); 见章节 6.1.1.1.1 (Simple Loop). 
 
 
-#### 6.1.1.3 Parsing Loop Clauses</span>
+#### 6.1.1.3 <span id="ParsingLoopClauses">解析 Loop 子句</span>
 
-The syntactic parts of an extended loop form are called clauses; the rules for parsing are determined by that clause's keyword. The following example shows a loop form with six clauses:
+扩展 loop 表达式形式的语法部分称之为子句(clauses); 解析的规则由子句的关键字决定. 下面这个例子展示了有着6个子句的 loop 表达式形式:
 
- (loop for i from 1 to (compute-top-value)       ; first clause
-       while (not (unacceptable i))              ; second clause
-       collect (square i)                        ; third clause
-       do (format t "Working on ~D now" i)       ; fourth clause
-       when (evenp i)                            ; fifth clause
-         do (format t "~D is a non-odd number" i)
-       finally (format t "About to exit!"))      ; sixth clause
+```LISP
+(loop for i from 1 to (compute-top-value)       ; first clause
+      while (not (unacceptable i))              ; second clause
+      collect (square i)                        ; third clause
+      do (format t "Working on ~D now" i)       ; fourth clause
+      when (evenp i)                            ; fifth clause
+        do (format t "~D is a non-odd number" i)
+      finally (format t "About to exit!"))      ; sixth clause
+```
 
-Each loop keyword introduces either a compound loop clause or a simple loop clause that can consist of a loop keyword followed by a single form. The number of forms in a clause is determined by the loop keyword that begins the clause and by the auxiliary keywords in the clause. The keywords do, doing, initially, and finally are the only loop keywords that can take any number of forms and group them as an implicit progn.
+每个 loop 关键字都引入了一个复合 loop 子句或一个简单的 loop 子句, 它可以由一个 loop 关键字组成, 然后是一个单个的表单. 一个子句中表达式形式的数量由开始这个子句的 loop 关键字和这个子句中的辅助关键字决定. 关键字 do, doing, initially, 和 finally 是仅有的可以接受任何数量的表达式形式并以一个隐式的 progn 组织起来的 loop 关键字.
 
-Loop clauses can contain auxiliary keywords, which are sometimes called prepositions. For example, the first clause in the code above includes the prepositions from and to, which mark the value from which stepping begins and the value at which stepping ends.
+Loop 子句可以包含辅助关键字, 这个关键字有时候称之为介词. 比如, 代码中的第一个子句包含了介词 from 和 to, 它们标记出了开始和结束的值.
 
-For detailed information about loop syntax, see the macro loop. 
+关于 loop 语法的详细信息, 见宏 loop. 
 
 
 #### 6.1.1.4 <span id="">Expanding Loop Forms</span>
