@@ -23,7 +23,7 @@
 > * 6.1.1.2 [Loop 关键字](#LoopKeywords)
 > * 6.1.1.3 [解析 Loop 子句](#ParsingLoopClauses)
 > * 6.1.1.4 [展开 Loop 表达式形式](#ExpandingLoopForms)
-> * 6.1.1.5 [Loop 子句的总结](#SummaryLoopClauses)
+> * 6.1.1.5 [Loop 子句综述](#SummaryLoopClauses)
 > * 6.1.1.6 [执行顺序](#OrderExecution)
 > * 6.1.1.7 [解构](#Destructuring)
 > * 6.1.1.8 [副作用的限制](#RestrictionsSideEffects)
@@ -74,123 +74,122 @@ Loop 子句可以包含辅助关键字, 这个关键字有时候称之为介词.
 关于 loop 语法的详细信息, 见宏 loop. 
 
 
-#### 6.1.1.4 <span id="">Expanding Loop Forms</span>
+#### 6.1.1.4 <span id="ExpandingLoopForms">展开 Loop 表达式形式</span>
 
-A loop macro form expands into a form containing one or more binding forms (that establish bindings of loop variables) and a block and a tagbody (that express a looping control structure). The variables established in loop are bound as if by let or lambda.
+一个 loop 宏表达式展开为一个包含一个或多个绑定表达式(这个建立 loop 变量的绑定)和一个 block 和一个 tagbody(这个表示循环控制结构) 的表达式形式. 在 loop 中建立的变量绑定就像是通过 let 或者 lambda 一样.
 
-Implementations can interleave the setting of initial values with the bindings. However, the assignment of the initial values is always calculated in the order specified by the user. A variable is thus sometimes bound to a meaningless value of the correct type, and then later in the prologue it is set to the true initial value by using setq. One implication of this interleaving is that it is implementation-dependent whether the lexical environment in which the initial value forms (variously called the form1, form2, form3, step-fun, vector, hash-table, and package) in any for-as-subclause, except for-as-equals-then, are evaluated includes only the loop variables preceding that form or includes more or all of the loop variables; the form1 and form2 in a for-as-equals-then form includes the lexical environment of all the loop variables.
+实现可以将初始值的设置和绑定交错在一起. 然而, 初始值的赋值总是按照用户指定的顺序被计算. 因此, 变量有时会被绑定到正确类型的无意义值, 然后在开始时使用 setq 将其设置为真正的初始值. 这个交错的一个含义是, 它是依赖于具体实现的, 无论在哪个词法环境中, 初始值表达式形式(被称为 form1, form2, form3, step-fun, vector, hash-table, 和 package)在任何 for-as-subclause, 除了 for-as-equals-then 之外, 该词法环境都只包含在该表达式形式之前的循环变量, 或者包含更多或全部的循环变量; 在一个 for-as-equals-then 表达式形式的 form1 和 form2 包括所有循环变量的词法环境.
 
-After the form is expanded, it consists of three basic parts in the tagbody: the loop prologue, the loop body, and the loop epilogue.
+在这个表达式形式展开后, 它由 tagbody 中的三个基本部分组成: 循环序言(the loop prologue), 循环体(the loop body), 还有循环结尾(the loop epilogue).
 
-Loop prologue
+循环序言(the loop prologue)
 
-    The loop prologue contains forms that are executed before iteration begins, such as any automatic variable initializations prescribed by the variable clauses, along with any initially clauses in the order they appear in the source.
+    循环序言包含在迭代开始之前执行的表达式形式符, 例如变量子句中给定的任何自动变量初始化, 以及它们出现在源代码中的任何初始化子句.
 
-Loop body
+循环体(the loop body)
 
-    The loop body contains those forms that are executed during iteration, including application-specific calculations, termination tests, and variable stepping[1].
+    循环体包含了在迭代期间执行的表达式形式, 包括应用特定的计算, 终止测试, 还有变量步进.
 
-Loop epilogue
+循环结尾(the loop epilogue)
 
-    The loop epilogue contains forms that are executed after iteration terminates, such as finally clauses, if any, along with any implicit return value from an accumulation clause or an termination-test clause.
+    循环结尾包含循环终止后执行的表达式形式, 比如 finally 子句, 如果存在, 还有任何来自于 accumulation 子句的隐式的返回值或者一个 termination-test 子句.
 
-Some clauses from the source form contribute code only to the loop prologue; these clauses must come before other clauses that are in the main body of the loop form. Others contribute code only to the loop epilogue. All other clauses contribute to the final translated form in the same order given in the original source form of the loop.
+一些来自于源表达式形式的子句只对循环序言贡献代码; 这个子句必须在 loop 表达式主体中的其他子句之前. 其他子句只对循环结尾贡献代码. 所有其他的子句都以和原始的循环源形式中给出的相同的顺序对最终的转换表达式形式做出贡献.<!-- TODO contribute 贡献 ？？-->
 
-Expansion of the loop macro produces an implicit block named nil unless named is supplied. Thus, return-from (and sometimes return) can be used to return values from loop or to exit loop. 
-
-
-#### 6.1.1.5 <span id="">Summary of Loop Clauses</span>
-
-Loop clauses fall into one of the following categories:
-
-> * 6.1.1.5.1 [Summary of Variable Initialization and Stepping Clauses](#)
-> * 6.1.1.5.2 [Summary of Value Accumulation Clauses](#)
-> * 6.1.1.5.3 [Summary of Termination Test Clauses](#)
-> * 6.1.1.5.4 [Summary of Unconditional Execution Clauses](#)
-> * 6.1.1.5.5 [Summary of Conditional Execution Clauses](#)
-> * 6.1.1.5.6 [Summary of Miscellaneous Clauses](#)
+除非提供了名字, 否则 loop 表达式形式的展开产生一个隐式的名为 nil 的 block. 因此, return-from (有时为 return) 可以被用于从 loop 中返回值或退出 loop. 
 
 
-##### 6.1.1.5.1 <span id="">Summary of Variable Initialization and Stepping Clauses</span>
+#### 6.1.1.5 <span id="SummaryLoopClauses">Loop 子句综述</span>
 
-The for and as constructs provide iteration control clauses that establish a variable to be initialized. for and as clauses can be combined with the loop keyword and to get parallel initialization and stepping[1]. Otherwise, the initialization and stepping[1] are sequential.
+Loop 子句属于以下类别之一:
 
-The with construct is similar to a single let clause. with clauses can be combined using the loop keyword and to get parallel initialization.
-
-For more information, see Section 6.1.2 (Variable Initialization and Stepping Clauses). 
-
-
-##### 6.1.1.5.2 <span id="">Summary of Value Accumulation Clauses</span>
-
-The collect (or collecting) construct takes one form in its clause and adds the value of that form to the end of a list of values. By default, the list of values is returned when the loop finishes.
-
-The append (or appending) construct takes one form in its clause and appends the value of that form to the end of a list of values. By default, the list of values is returned when the loop finishes.
-
-The nconc (or nconcing) construct is similar to the append construct, but its list values are concatenated as if by the function nconc. By default, the list of values is returned when the loop finishes.
-
-The sum (or summing) construct takes one form in its clause that must evaluate to a number and accumulates the sum of all these numbers. By default, the cumulative sum is returned when the loop finishes.
-
-The count (or counting) construct takes one form in its clause and counts the number of times that the form evaluates to true. By default, the count is returned when the loop finishes.
-
-The minimize (or minimizing) construct takes one form in its clause and determines the minimum value obtained by evaluating that form. By default, the minimum value is returned when the loop finishes.
-
-The maximize (or maximizing) construct takes one form in its clause and determines the maximum value obtained by evaluating that form. By default, the maximum value is returned when the loop finishes.
-
-For more information, see Section 6.1.3 (Value Accumulation Clauses). 
+> * 6.1.1.5.1 [变量初始化和步进子句综述](#SummaryVarInitStepClauses)
+> * 6.1.1.5.2 [值累积子句综述](#SummaryValueAccumulationClauses)
+> * 6.1.1.5.3 [终止测试子句综述](#SummaryTerminationTestClauses)
+> * 6.1.1.5.4 [无条件执行子句综述](#SummaryUncondExecClauses)
+> * 6.1.1.5.5 [条件执行子句综述](#SummaryCondExecClauses)
+> * 6.1.1.5.6 [其他子句综述](#SummaryMiscellaneousClauses)
 
 
-##### 6.1.1.5.3 <span id="">Summary of Termination Test Clauses</span>
+##### 6.1.1.5.1 <span id="SummaryVarInitStepClauses">变量初始化和步进子句综述</span>
 
-The for and as constructs provide a termination test that is determined by the iteration control clause.
+这个 for 和 as 构造提供一个循环控制子句, 它建立一个要被初始话的变量. for 和 as 子句可以和 loop 关键字 and 组合使用来并行初始化和步进. 否则, 这个初始化和步进就是顺序执行的.
 
-The repeat construct causes termination after a specified number of iterations. (It uses an internal variable to keep track of the number of iterations.)
+这个 with 构造类似于单个的 let 子句. with 子句可以和 loop 关键字 and 组合使用来并行地初始化 .
 
-The while construct takes one form, a test, and terminates the iteration if the test evaluates to false. A while clause is equivalent to the expression (if (not test) (loop-finish)).
-
-The until construct is the inverse of while; it terminates the iteration if the test evaluates to any non-nil value. An until clause is equivalent to the expression (if test (loop-finish)).
-
-The always construct takes one form and terminates the loop if the form ever evaluates to false; in this case, the loop form returns nil. Otherwise, it provides a default return value of t.
-
-The never construct takes one form and terminates the loop if the form ever evaluates to true; in this case, the loop form returns nil. Otherwise, it provides a default return value of t.
-
-The thereis construct takes one form and terminates the loop if the form ever evaluates to a non-nil object; in this case, the loop form returns that object. Otherwise, it provides a default return value of nil.
-
-If multiple termination test clauses are specified, the loop form terminates if any are satisfied.
-
-For more information, see Section 6.1.4 (Termination Test Clauses). 
+关于更多信息, 见章节 6.1.2 (Variable Initialization and Stepping Clauses). 
 
 
-##### 6.1.1.5.4 <span id="">Summary of Unconditional Execution Clauses</span>
+##### 6.1.1.5.2 <span id="SummaryValueAccumulationClauses">值累积子句综述</span>
 
-The do (or doing) construct evaluates all forms in its clause.
+这个 collect (或 collecting) 构造在它的子句中接受一个表达式形式并且添加这个表达式形式的值到一个值列表的末尾. 默认情况下, 当这个 loop 结束时这个值列表被返回.
 
-The return construct takes one form. Any values returned by the form are immediately returned by the loop form. It is equivalent to the clause do (return-from block-name value), where block-name is the name specified in a named clause, or nil if there is no named clause.
+这个 append (或 appending) 构造在它的子句中接受一个表达式形式并追加这个表达式形式的值到一个值列表的末尾. 默认情况下, 当这个 loop 结束时这个值列表被返回.
 
-For more information, see Section 6.1.5 (Unconditional Execution Clauses). 
+这个 nconc (或 nconcing) 构造类似于 append 构造, 但是它的列表值是被串联起来的就像是通过函数 nconc. 默认情况下, 当这个 loop 结束时这个值列表被返回.
 
+这个 sum (或 summing) 构造在它的子句中接受一个求值为数字的表达式形式, 它累积所有这些数字的和 . 默认情况下, 当这个 loop 结束时这个累积的总和被返回.
 
-##### 6.1.1.5.5 <span id="">Summary of Conditional Execution Clauses</span>
+这个 count (或 counting) 构造在它的子句中接受一个表达式形式并且计算这个表达式形式被求值为 true 的次数. 默认情况下, 当这个 loop 结束时这个计数被返回.
 
-The if and when constructs take one form as a test and a clause that is executed when the test yields true. The clause can be a value accumulation, unconditional, or another conditional clause; it can also be any combination of such clauses connected by the loop and keyword.
+这个 minimize (或 minimizing) 构造在它的子句中接受一个表达式形式并且通过求值这个表达式形式来决定获取到的最小值. 默认情况下, 当这个 loop 结束时这个最小值被返回.
 
-The loop unless construct is similar to the loop when construct except that it complements the test result.
+这个 maximize (或 maximizing) 构造在它的子句中接受一个表达式形式并且通过求值这个表达式形式来决定获取到的最大值. 默认情况下, 当这个 loop 结束时这个最大值被返回.
 
-The loop else construct provides an optional component of if, when, and unless clauses that is executed when an if or when test yields false or when an unless test yields true. The component is one of the clauses described under if.
-
-The loop end construct provides an optional component to mark the end of a conditional clause.
-
-For more information, see Section 6.1.6 (Conditional Execution Clauses). 
+关于更多信息, 见章节 6.1.3 (Value Accumulation Clauses). 
 
 
-##### 6.1.1.5.6 <span id="">Summary of Miscellaneous Clauses</span>
+##### 6.1.1.5.3 <span id="SummaryTerminationTestClauses">终止测试子句综述</span>
 
-The loop named construct gives a name for the block of the loop.
+这个 for 和 as 构造提供一个由这个迭代控制子句决定的终止测试.
 
-The loop initially construct causes its forms to be evaluated in the loop prologue, which precedes all loop code except for initial settings supplied by the constructs with, for, or as.
+这个 repeat 构造导致在指定次数的循环后终止. (它使用一个内部变量来跟踪迭代次数.)
 
-The loop finally construct causes its forms to be evaluated in the loop epilogue after normal iteration terminates.
+这个 while 构造接受一个表达式形式, 一个检验, 如果这个检验表达式形式求值为 false 就终止这个循环. 一个 while 子句等价于表达式 (if (not test) (loop-finish)).
 
-For more information, see Section 6.1.7 (Miscellaneous Clauses). 
+这个 until 构造是 while 的倒转; 如果这个检验表达式形式求值为任何非 nil 的值就终止这个循环. 一个 until 子句等价于表达式 (if test (loop-finish)).
+
+这个 always 构造接受一个表达式形式, 当这个表达式曾经求值为 false 的时候就终止这个 loop; 在这个情况下, 这个 loop 表达式形式返回 nil. 否则, 它提供一个 t 作为默认的返回值.
+
+这个 never 构造接受一个表达式形式, 如果这个表达式形式曾经求值为 true 的时候就终止这个 loop; 在这个情况下, 这个 loop 表达式形式返回 nil. 否则, 它提供一个 t 作为默认的返回值.
+
+这个 thereis 构造接受一个表达式形式, 如果这个表达式形式曾经求值为一个非 nil 的对象就终止这个 loop; 在这个情况下, 这个 loop 表达式形式返回那个对象. 否则, 它提供一个 nil 作为默认的返回值.
+
+如果指定了多个终止测试子句, 那个任何一个满足的情况下这个 loop 表达式形式就终止.
+
+关于更多信息, 见章节 6.1.4 (Termination Test Clauses). 
+
+
+##### 6.1.1.5.4 <span id="SummaryUncondExecClauses">无条件执行子句综述</span>
+
+这个 do (或 doing) 构造求值它的子句中的所有表达式形式.
+
+这个 return 构造接受一个表达式形式. 这个表达式形式返回的任何值都及时地作为 loop 表达式形式的值返回. 它等价于子句 do (return-from block-name value), 其中 block-name 是在 named 子句中指定的名字, 如果没有 named 子句那么就是 nil.
+
+关于更多信息, 见章节 6.1.5 (Unconditional Execution Clauses). 
+
+
+##### 6.1.1.5.5 <span id="SummaryCondExecClauses">条件执行子句综述</span>
+
+这个 if 和 when 构造接受一个表达式形式作为检验还有一个在这个检验表达式产生 true 的时候执行的子句. 这个子句可以是一个值累积子句, 无条件执行子句, 或者另一个条件执行子句; 它也可以是通过 loop 关键字 and 连接的任何子句组合.
+
+这个 loop unless 构造类似于 loop when 构造, 除了它互补那个检验结果.
+
+这个 loop else 构造提供一个可选的 if, when, 和 unless 子句组件, 当一个 if 或 when 检验产生 false 或者当一个 unless 检验产生 true 的时候被执行. 这个组建是 if 下面描述的子句之一.<!-- TODO component 组件 ？？-->
+
+这个 loop end 构造提供一个可选的组件用于标记一个条件子句的结束..<!-- TODO component 组件 ？？-->
+
+关于更多信息, 见章节 6.1.6 (Conditional Execution Clauses). 
+
+##### 6.1.1.5.6 <span id="SummaryMiscellaneousClauses">其他子句综述</span>
+
+这个 loop named 构造为这个 loop 块提供一个名字.
+
+这个 loop initially 构造导致它的表达式形式在循环序言中被求值, 也就是在除了 with, for, or as 构造提供的初始设置之外的所有 loop 代码之前被求值.
+
+这个 loop finally 构造导致它的表达式形式在循环结尾中被求值, 也就是在正常循环终止后.
+
+关于更多信息, 见章节 6.1.7 (Miscellaneous Clauses). 
 
 
 #### 6.1.1.6 <span id="">Order of Execution</span>
