@@ -6,7 +6,7 @@
 ## 6.1 <span id="TheLOOPFacility">LOOP 机制</span>
 
 > * 6.1.1 [Loop 机制概述](#OverviewLoopFacility)
-> * 6.1.2 [Variable Initialization and Stepping Clauses](#VarInitAndStepClauses)
+> * 6.1.2 [变量初始化和步进](#VarInitAndStepClauses)
 > * 6.1.3 [Value Accumulation Clauses](#ValueAccumulationClauses)
 > * 6.1.4 [Termination Test Clauses](#TerminationTestClauses)
 > * 6.1.5 [Unconditional Execution Clauses](#UnconditionalExecutionClauses)
@@ -304,26 +304,26 @@ Loop 子句属于以下类别之一:
 
 见章节 3.6 (Traversal Rules and Side Effects). 
 
-### 6.1.2 <span id="VarInitAndStepClauses">Variable Initialization and Stepping Clauses</span>
+### 6.1.2 <span id="VarInitAndStepClauses">变量初始化和步进</span>
 
-> * 6.1.2.1 [Iteration Control](#IterationControl)
-> * 6.1.2.2 [Local Variable Initializations](#LocalVarInit)
+> * 6.1.2.1 [迭代控制](#IterationControl)
+> * 6.1.2.2 [局部变量初始化](#LocalVarInit)
 
-#### 6.1.2.1 <span id="">Iteration Control</span>
+#### 6.1.2.1 <span id="IterationControl">迭代控制</span>
 
-Iteration control clauses allow direction of loop iteration. The loop keywords for and as designate iteration control clauses. Iteration control clauses differ with respect to the specification of termination tests and to the initialization and stepping[1] of loop variables. Iteration clauses by themselves do not cause the Loop Facility to return values, but they can be used in conjunction with value-accumulation clauses to return values.
+迭代控制子句允许有 loop 迭代的方向. 这个 loop 关键字 for 和 as 指定迭代控制子句. 迭代控制子句的区别在于终止检验的说明和 loop 变量的初始化和步进. 迭代控制子句自身不会导致这个 loop 工具返回值, 但是它们可以和 value-accumulation 子句协同使用来返回值.
 
-All variables are initialized in the loop prologue. A variable binding has lexical scope unless it is proclaimed special; thus, by default, the variable can be accessed only by forms that lie textually within the loop. Stepping assignments are made in the loop body before any other forms are evaluated in the body.
+所有变量都在循环序言中被初始化. 一个变量绑定有着词法作用域除非它被声明为 special; 因此, 默认情况下, 这个变量只能被文本形式出现在 loop 中的表达式形式访问. 在任何 loop 主体内其他表达式形式进行求值之前, 在 loop 主体中进行步进任务.
 
-The variable argument in iteration control clauses can be a destructuring list. A destructuring list is a tree whose non-nil atoms are variable names. See Section 6.1.1.7 (Destructuring).
+迭代控制子句中的变量参数可以是一个解构列表. 一个解构列表是一个非 nil 原子是变量名的树. 见章节 6.1.1.7 (Destructuring).
 
-The iteration control clauses for, as, and repeat must precede any other loop clauses, except initially, with, and named, since they establish variable bindings. When iteration control clauses are used in a loop, the corresponding termination tests in the loop body are evaluated before any other loop body code is executed.
+迭代控制子句 for, as, 和 repeat 必须在其他 loop 子句之前, 除了 initially, with, 和 named, 因为它们建立变量绑定. 当迭代控制子句被用于一个 loop 中时, 这个 loop 主体中的对应终止检验在任何其他 loop 主体代码被执行前求值.
 
-If multiple iteration clauses are used to control iteration, variable initialization and stepping[1] occur sequentially by default. The and construct can be used to connect two or more iteration clauses when sequential binding and stepping[1] are not necessary. The iteration behavior of clauses joined by and is analogous to the behavior of the macro do with respect to do*.
+如果多个迭代子句被用于控制迭代, 变量初始化和步进默认是顺序发生的. 当没有必要进行顺序绑定和步进时, 这个 and 构造可以被用于连接两个或更多迭代子句. and 加入的子句的迭代行为类似于宏 do 相对于 do* 的行为.
 
-The for and as clauses iterate by using one or more local loop variables that are initialized to some value and that can be modified or stepped[1] after each iteration. For these clauses, iteration terminates when a local variable reaches some supplied value or when some other loop clause terminates iteration. At each iteration, variables can be stepped[1] by an increment or a decrement or can be assigned a new value by the evaluation of a form). Destructuring can be used to assign values to variables during iteration.
+这个 for 和 as 子句通过使用一个或多个初始化为某个值并且可以被修改或每次循环后步进的局部变量来迭代. 对于这些子句, 当一个局部变量达到某个被提供的值时或者当某个其他 loop 子句终止迭代时迭代会停止. 在每次迭代中, 变量可以通过一个递增或递减或求值一个表达式形式来赋新值进而步进. 在迭代期间可以利用解构来给变量赋值.
 
-The for and as keywords are synonyms; they can be used interchangeably. There are seven syntactic formats for these constructs. In each syntactic format, the type of var can be supplied by the optional type-spec argument. If var is a destructuring list, the type supplied by the type-spec argument must appropriately match the elements of the list. By convention, for introduces new iterations and as introduces iterations that depend on a previous iteration specification.
+这个 for 和 as 关键字是是同义词; 它们可以被交换使用. 对于这些构造, 有七种语法格式. 在每一个语法格式中, var 的类型可以通过这个可选的 type-spec 参数来提供. 如果 var 是一个解构列表 list, 通过 type-spec 参数提供的类型必须适当地匹配列表中的元素. 按照惯例, for 引入新的迭代而 as 引入的迭代取决于前面迭代说明.
 
 > * 6.1.2.1.1 [The for-as-arithmetic subclause](#)
 > * 6.1.2.1.2 [The for-as-in-list subclause](#)
