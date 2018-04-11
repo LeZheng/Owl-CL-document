@@ -192,31 +192,32 @@ Loop 子句属于以下类别之一:
 关于更多信息, 见章节 6.1.7 (Miscellaneous Clauses). 
 
 
-#### 6.1.1.6 <span id="">Order of Execution</span>
+#### 6.1.1.6 <span id="OrderExecution">执行顺序</span>
 
-With the exceptions listed below, clauses are executed in the loop body in the order in which they appear in the source. Execution is repeated until a clause terminates the loop or until a return, go, or throw form is encountered which transfers control to a point outside of the loop. The following actions are exceptions to the linear order of execution:
+除了下面列出的异常情况, 子句在循环体中以它们出现在源码中的顺序执行. 重复执行知道一个子句终止了这个 loop 或者直到遇到一个 return, go, 或 throw 表达式形式转移控制到 loop 外的一个点. 下面的操作是执行的线性顺序的例外:
 
-* All variables are initialized first, regardless of where the establishing clauses appear in the source. The order of initialization follows the order of these clauses.
+* 所有变量首先被初始化, 不管建立的子句出现在源码中的什么位置. 初始化顺序遵循这些子句的顺序.
 
-* The code for any initially clauses is collected into one progn in the order in which the clauses appear in the source. The collected code is executed once in the loop prologue after any implicit variable initializations.
+* 对于任何 initially 子句的代码以它们出现在源码中的顺序被集中到一个 progn 中. 这个集中后的代码只在任何隐式变量初始化之后在循环序言中执行一次.
 
-* The code for any finally clauses is collected into one progn in the order in which the clauses appear in the source. The collected code is executed once in the loop epilogue before any implicit values from the accumulation clauses are returned. Explicit returns anywhere in the source, however, will exit the loop without executing the epilogue code.
+* 对于任何 finally 子句的代码以它们出现在源码中的顺序被集中到一个 progn 中. 这个集中后的代码只在任何隐式的来自累积子句的值被返回之前循环结尾被执行一次. 但是, 在源码中的任何地方显式的返回会在没有执行结尾代码的情况下退出这个 loop.
 
-* A with clause introduces a variable binding and an optional initial value. The initial values are calculated in the order in which the with clauses occur.
+* 一个 with 子句引入一个变量绑定和一个可选的初始值. 这个初始值会按照 with 子句出现的顺序被计算.
 
-* Iteration control clauses implicitly perform the following actions:
+* 循环控制子句隐式执行下面这些动作:
 
-    -- initialize variables;
+    -- 初始化变量;
 
-    -- step variables, generally between each execution of the loop body;
+    -- 步进变量, 通常在每个循环体执行之间;
 
-    -- perform termination tests, generally just before the execution of the loop body. 
+    -- 执行终止检验, 通常只是在循环体执行之前. 
 
 
-#### 6.1.1.7 <span id="">Destructuring</span>
+#### 6.1.1.7 <span id="Destructuring">解构</span>
 
-The d-type-spec argument is used for destructuring. If the d-type-spec argument consists solely of the type fixnum, float, t, or nil, the of-type keyword is optional. The of-type construct is optional in these cases to provide backwards compatibility; thus, the following two expressions are the same:
+这个 d-type-spec 参数被用于解构. 如果这个 d-type-spec 参数仅仅由类型 fixnum, float, t, 或 nil 构成, 那么这个 of-type 关键字是可选的. 在这些情况下, of-type 构造是可选的, 以提供向后兼容性; 因此, 下面两个表达式是一样的:
 
+```LISP
 ;;; This expression uses the old syntax for type specifiers.
  (loop for i fixnum upfrom 3 ...)
  
@@ -226,71 +227,82 @@ The d-type-spec argument is used for destructuring. If the d-type-spec argument 
 ;; Declare X and Y to be of type VECTOR and FIXNUM respectively.
  (loop for (x y) of-type (vector fixnum) 
        in l do ...)
+```
 
-A type specifier for a destructuring pattern is a tree of type specifiers with the same shape as the tree of variable names, with the following exceptions:
+用于解构匹配模式的类型说明符是一种类型说明符的树, 其形状与变量名的树的形状相同, 具有以下例外:
 
-* When aligning the trees, an atom in the tree of type specifiers that matches a cons in the variable tree declares the same type for each variable in the subtree rooted at the cons.
+* 当对齐这个树的时候, 在变量树中匹配 cons 的类型指定数中的 atom 为该 cons 中的子树中的每一个变量声明相同的类型.
 
-* A cons in the tree of type specifiers that matches an atom in the tree of variable names is a compound type specifer.
+* 在变量名树中匹配 atom 的类型指定树中的 cons 是一种复合类型的说明符.
 
-Destructuring allows binding of a set of variables to a corresponding set of values anywhere that a value can normally be bound to a single variable. During loop expansion, each variable in the variable list is matched with the values in the values list. If there are more variables in the variable list than there are values in the values list, the remaining variables are given a value of nil. If there are more values than variables listed, the extra values are discarded.
+结构允许将一组变量绑定为相应的一组值, 而值通常可以绑定到单个变量. 在 loop 展开期间, 在变量列表中的每个变量和值列表中的值匹配. 如果变量列表中的变量数超过值列表中的值的数量, 剩余的变量会被赋予 nil 值. 如果值的数量超过列出的变量数, 多余的值会被丢弃.
 
-To assign values from a list to the variables a, b, and c, the for clause could be used to bind the variable numlist to the car of the supplied form, and then another for clause could be used to bind the variables a, b, and c sequentially.
+为了将一个列表中的值赋给变量 a, b, 还有 c, 这个 for 子句可以被用于绑定变量 numlist 到这个提供的表达式形式的 car 部分, 而另一个 for 子句可以被用于顺序绑定变量 a, b, 和 c.
 
+```LISP
 ;; Collect values by using FOR constructs.
- (loop for numlist in '((1 2 4.0) (5 6 8.3) (8 9 10.4))
-       for a of-type integer = (first numlist)
-       and b of-type integer = (second numlist)
-       and c of-type float = (third numlist)
-       collect (list c b a))
+(loop for numlist in '((1 2 4.0) (5 6 8.3) (8 9 10.4))
+      for a of-type integer = (first numlist)
+      and b of-type integer = (second numlist)
+      and c of-type float = (third numlist)
+      collect (list c b a))
 =>  ((4.0 2 1) (8.3 6 5) (10.4 9 8))
+```
 
-Destructuring makes this process easier by allowing the variables to be bound in each loop iteration. Types can be declared by using a list of type-spec arguments. If all the types are the same, a shorthand destructuring syntax can be used, as the second example illustrates.
+通过允许变量在每个 loop 迭代中被绑定, 解构使这个过程变得更容易. 类型可以通过使用一个 type-spec 参数的列表来声明. 如果所有的类型都是相同的, 可以使用一个简写解构语法, 就像第二个例子说明的.
 
+```LISP
 ;; Destructuring simplifies the process.
- (loop for (a b c) of-type (integer integer float) in
-       '((1 2 4.0) (5 6 8.3) (8 9 10.4))
-       collect (list c b a))
+(loop for (a b c) of-type (integer integer float) in
+      '((1 2 4.0) (5 6 8.3) (8 9 10.4))
+      collect (list c b a))
 =>  ((4.0 2 1) (8.3 6 5) (10.4 9 8))
- 
+
 
 ;; If all the types are the same, this way is even simpler.
- (loop for (a b c) of-type float in
-       '((1.0 2.0 4.0) (5.0 6.0 8.3) (8.0 9.0 10.4))
-       collect (list c b a))
+(loop for (a b c) of-type float in
+      '((1.0 2.0 4.0) (5.0 6.0 8.3) (8.0 9.0 10.4))
+      collect (list c b a))
 =>  ((4.0 2.0 1.0) (8.3 6.0 5.0) (10.4 9.0 8.0))
+```
 
-If destructuring is used to declare or initialize a number of groups of variables into types, the loop keyword and can be used to simplify the process further.
+如果解构被用来声明或初始化多个变量组到类型, 可以使用 loop 关键字 and 来进一步简化这个过程.
 
+```LISP
 ;; Initialize and declare variables in parallel by using the AND construct.
- (loop with (a b) of-type float = '(1.0 2.0)
-       and (c d) of-type integer = '(3 4)
-       and (e f)
-       return (list a b c d e f))
+(loop with (a b) of-type float = '(1.0 2.0)
+      and (c d) of-type integer = '(3 4)
+      and (e f)
+      return (list a b c d e f))
 =>  (1.0 2.0 3 4 NIL NIL)
+```
 
-If nil is used in a destructuring list, no variable is provided for its place.
+如果在一个解构列表中使用 nil, 不会为它的 place 提供一个变量.
 
- (loop for (a nil b) = '(1 2 3)
-       do (return (list a b)))
+```LISP
+(loop for (a nil b) = '(1 2 3)
+      do (return (list a b)))
 =>  (1 3)
+```
 
-Note that dotted lists can specify destructuring.
+注意这个点对列表可以指定解构.
 
- (loop for (x . y) = '(1 . 2)
-       do (return y))
+```LISP
+(loop for (x . y) = '(1 . 2)
+      do (return y))
 =>  2
- (loop for ((a . b) (c . d)) of-type ((float . float) (integer . integer)) in
-       '(((1.2 . 2.4) (3 . 4)) ((3.4 . 4.6) (5 . 6)))
-       collect (list a b c d))
+(loop for ((a . b) (c . d)) of-type ((float . float) (integer . integer)) in
+      '(((1.2 . 2.4) (3 . 4)) ((3.4 . 4.6) (5 . 6)))
+      collect (list a b c d))
 =>  ((1.2 2.4 3 4) (3.4 4.6 5 6))
+```
 
-An error of type program-error is signaled (at macro expansion time) if the same variable is bound twice in any variable-binding clause of a single loop expression. Such variables include local variables, iteration control variables, and variables found by destructuring. 
+如果同一个变量在单个 loop 表达式的任何可变绑定子句中被绑定两次, 会发出一个 program-error 类型的错误(在宏展开的时候). 这些变量包括局部变量, 迭代控制变量和通过解构找到的变量. 
 
 
-#### 6.1.1.8 <span id="">Restrictions on Side-Effects</span>
+#### 6.1.1.8 <span id="RestrictionsSideEffects">副作用的限制</span>
 
-See Section 3.6 (Traversal Rules and Side Effects). 
+见章节 3.6 (Traversal Rules and Side Effects). 
 
 ### 6.1.2 <span id="VarInitAndStepClauses">Variable Initialization and Stepping Clauses</span>
 
