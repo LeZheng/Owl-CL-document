@@ -325,62 +325,65 @@ Loop 子句属于以下类别之一:
 
 这个 for 和 as 关键字是是同义词; 它们可以被交换使用. 对于这些构造, 有七种语法格式. 在每一个语法格式中, var 的类型可以通过这个可选的 type-spec 参数来提供. 如果 var 是一个解构列表 list, 通过 type-spec 参数提供的类型必须适当地匹配列表中的元素. 按照惯例, for 引入新的迭代而 as 引入的迭代取决于前面迭代说明.
 
-> * 6.1.2.1.1 [The for-as-arithmetic subclause](#)
-> * 6.1.2.1.2 [The for-as-in-list subclause](#)
-> * 6.1.2.1.3 [The for-as-on-list subclause](#)
-> * 6.1.2.1.4 [The for-as-equals-then subclause](#)
-> * 6.1.2.1.5 [The for-as-across subclause](#)
-> * 6.1.2.1.6 [The for-as-hash subclause](#)
-> * 6.1.2.1.7 [The for-as-package subclause](#)
+> * 6.1.2.1.1 [for-as-arithmetic 分子句](#FAARSubclause)
+> * 6.1.2.1.2 [for-as-in-list 分子句](#FAILSubclause)
+> * 6.1.2.1.3 [for-as-on-list 分子句](#FAOLSubclause)
+> * 6.1.2.1.4 [for-as-equals-then 分子句](#FAETSubclause)
+> * 6.1.2.1.5 [for-as-across 分子句](#FAACSubclause)
+> * 6.1.2.1.6 [for-as-hash 分子句](#FAHSubclause)
+> * 6.1.2.1.7 [for-as-package 分子句](#FAPSubclause)
 
 
-##### 6.1.2.1.1 <span id="">The for-as-arithmetic subclause</span>
+##### 6.1.2.1.1 <span id="FAARSubclause">for-as-arithmetic 分子句</span>
 
-In the for-as-arithmetic subclause, the for or as construct iterates from the value supplied by form1 to the value supplied by form2 in increments or decrements denoted by form3. Each expression is evaluated only once and must evaluate to a number. The variable var is bound to the value of form1 in the first iteration and is stepped[1] by the value of form3 in each succeeding iteration, or by 1 if form3 is not provided. The following loop keywords serve as valid prepositions within this syntax. At least one of the prepositions must be used; and at most one from each line may be used in a single subclause.
+在 for-as-arithmetic 分子句中, 这个 for 或者 as 构造从 form1 提供的值以 form3 表示的递增或递减迭代到 form2 提供的值. 每个表达式只被求值一次并且必须被求值为一个数字. 变量 var 在第一次迭代中被绑定为 form1 的值并且在随后的每次迭代中步进 form3 的值, 如果 form3 没有提供的话就是步进 1. 下面的 loop 关键字被当作是这个语法中合法的介词. 必须使用至少一个介词; 在单个分子句中每一行最多使用一个.
 
-from | downfrom | upfrom
+    from | downfrom | upfrom
 
-to | downto | upto | below | above
+    to | downto | upto | below | above
 
-by
+    by
 
-The prepositional phrases in each subclause may appear in any order. For example, either ``from x by y'' or ``by y from x'' is permitted. However, because left-to-right order of evaluation is preserved, the effects will be different in the case of side effects. Consider:
+每个子句中的介词短语可能以任何顺序出现. 比如, 不管是 "from x by y" 或是 "by y from x" 都是允许的. 然而, 因为保留从左到右的求值顺序, 在副作用上的效果可能会是不同的. 细想:
 
+```LISP
 (let ((x 1)) (loop for i from x by (incf x) to 10 collect i))
 =>  (1 3 5 7 9)
 (let ((x 1)) (loop for i by (incf x) from x to 10 collect i))
 =>  (2 4 6 8 10)
+```
 
-The descriptions of the prepositions follow:
+以下是介词的描述:
 
-from
+* from
 
-    The loop keyword from specifies the value from which stepping[1] begins, as supplied by form1. Stepping[1] is incremental by default. If decremental stepping[1] is desired, the preposition downto or above must be used with form2. For incremental stepping[1], the default from value is 0.
+        loop 关键字 from 指定步进开始的值, 由 form1 提供. 步进默认是递增的. 如果需要递减的步进, 介词 downto 或 above 必须和 form2 一起使用. 对于递增步进, 默认的 from 值是 0.
 
-downfrom, upfrom
+* downfrom, upfrom
 
-    The loop keyword downfrom indicates that the variable var is decreased in decrements supplied by form3; the loop keyword upfrom indicates that var is increased in increments supplied by form3.
+        loop 关键字 downfrom 表示变量 var 通过 from3 提供的递减方式递减; 这个 loop 关键字 upfrom 表示 var 通过 form3 提供的递增方式递增.
 
-to
+* to
 
-    The loop keyword to marks the end value for stepping[1] supplied in form2. Stepping[1] is incremental by default. If decremental stepping[1] is desired, the preposition downfrom must be used with form1, or else the preposition downto or above should be used instead of to with form2.
+        loop 关键字 to 标记 form2 提供的步进的结束值. 步进默认是递增的. 如果需要递减的步进, 介词 downfrom 必须和 form1 一起使用, 或者和 form2 一起使用介词 downto 或 above.
 
-downto, upto
+* downto, upto
 
-    The loop keyword downto specifies decremental stepping; the loop keyword upto specifies incremental stepping. In both cases, the amount of change on each step is specified by form3, and the loop terminates when the variable var passes the value of form2. Since there is no default for form1 in decremental stepping[1], a form1 value must be supplied (using from or downfrom) when downto is supplied.
+        loop 关键字 downto 指定递减步进; 这个 loop 关键字 upto 指定递增步进. 在这两种情况下, 每一步改变的数额由 form3 指定, 当变量 var 超过 form2 的值时这个 loop 循环终止. 因为这里没有为递减步进的 form1 提供默认值, 所以当 downto 被提供时也必须提供 form1 的值(使用 from 或 downfrom).
 
-below, above
+* below, above
 
-    The loop keywords below and above are analogous to upto and downto respectively. These keywords stop iteration just before the value of the variable var reaches the value supplied by form2; the end value of form2 is not included. Since there is no default for form1 in decremental stepping[1], a form1 value must be supplied (using from or downfrom) when above is supplied.
+        loop 关键字 below 和 above 分别与 upto 和 downto 类似. 这些关键字仅仅在变量 var 的值达到 form2 提供的值前停止迭代; 这个 form2 的结束值不会被包含进去. 因为这里没有为递减步进的 form1 提供默认值, 当 above 被提供时也必须提供 form1 的值(使用 from 或 downfrom).
 
-by
+* by
 
-    The loop keyword by marks the increment or decrement supplied by form3. The value of form3 can be any positive number. The default value is 1.
+        loop 关键字 by 标记 form3 提供的递增或递减值. 这个 form3 的值可以是任何正数. 默认值是 1.
 
-In an iteration control clause, the for or as construct causes termination when the supplied limit is reached. That is, iteration continues until the value var is stepped to the exclusive or inclusive limit supplied by form2. The range is exclusive if form3 increases or decreases var to the value of form2 without reaching that value; the loop keywords below and above provide exclusive limits. An inclusive limit allows var to attain the value of form2; to, downto, and upto provide inclusive limits.
+在一个迭代控制子句中, 当提供的限制到达时这个 for 或 as 构造导致终止. 这也就是说, 迭代一直持续到值 var 被逐步执行到 form2 提供的排外或包含的限制. 如果 form3 递增或递减变量到 form2 的值而没有到达那个值那么这个范围就是排外的; loop 关键字 below 和 above 提供排外的限制. 一个包含的限制允许 var 达到 form2 的值; to, downto, 和 upto 提供包含的限制.
 
-###### 6.1.2.1.1.1 Examples of for-as-arithmetic subclause
+###### 6.1.2.1.1.1 for-as-arithmetic 分子句的示例
 
+```LISP
 ;; Print some numbers.
  (loop for i from 1 to 3
        do (print i))
@@ -404,14 +407,16 @@ In an iteration control clause, the for or as construct causes termination when 
 >>  0
 >>  1
 >>  2
+```
 
 
-##### 6.1.2.1.2 <span id="">The for-as-in-list subclause</span>
+##### 6.1.2.1.2 <span id="FAILSubclause">for-as-in-list 分子句</span>
 
-In the for-as-in-list subclause, the for or as construct iterates over the contents of a list. It checks for the end of the list as if by using endp. The variable var is bound to the successive elements of the list in form1 before each iteration. At the end of each iteration, the function step-fun is applied to the list; the default value for step-fun is cdr. The loop keywords in and by serve as valid prepositions in this syntax. The for or as construct causes termination when the end of the list is reached.
+在这个 for-as-in-list 分子句中, 这个 for 或 as 构造遍历一个列表的内容. 它检查列表的末尾, 就像使用 endp 一样. 在每次迭代前变量 var 被绑定为 form1 中列表的连续元素. 在每次迭代结束后, 函数 step-fun 被应用到这个列表; step-fun 的默认值是 cdr. loop 关键字 in 和 by 在这个语法中是合法的介词. 当到达这个列表的末尾时, 这个 for 或 as 构造就终止.
 
-###### 6.1.2.1.2.1 Examples of for-as-in-list subclause
+###### 6.1.2.1.2.1 for-as-in-list 分子句的示例
 
+```LISP
 ;; Print every item in a list.
  (loop for item in '(1 2 3) do (print item))
 >>  1
@@ -431,14 +436,15 @@ In the for-as-in-list subclause, the for or as construct iterates over the conte
  (loop for (item . x) of-type (t . fixnum) in '((A . 1) (B . 2) (C . 3))
        unless (eq item 'B) sum x)
 =>  4
+```
 
+##### 6.1.2.1.3 <span id="FAOLSubclause">for-as-on-list 分子句</span>
 
-##### 6.1.2.1.3 <span id="">The for-as-on-list subclause</span>
+在这个 for-as-on-list 分子句中, for 或 as 构造遍历一个列表. 它检查列表的末尾, 就像使用 atom 一样. 变量 var 被绑定为 form1 中的列表的连续尾部. 在每次迭代后, 函数 step-fun 被应用到这个列表; 这个 step-fun 的默认值是 cdr. loop 关键字 on 和 by 在这个语法中被当作合法的介词. 当到达这个列表的末尾时, 这个 for 或 as 构造就终止.
 
-In the for-as-on-list subclause, the for or as construct iterates over a list. It checks for the end of the list as if by using atom. The variable var is bound to the successive tails of the list in form1. At the end of each iteration, the function step-fun is applied to the list; the default value for step-fun is cdr. The loop keywords on and by serve as valid prepositions in this syntax. The for or as construct causes termination when the end of the list is reached.
+###### 6.1.2.1.3.1 for-as-on-list 分子句的示例
 
-###### 6.1.2.1.3.1 Examples of for-as-on-list subclause
-
+```LISP
 ;; Collect successive tails of a list.
  (loop for sublist on '(a b c d)
        collect sublist)
@@ -451,30 +457,32 @@ In the for-as-on-list subclause, the for or as construct iterates over a list. I
 >>  2 
 >>  3 
 =>  NIL
- 
+```
 
-##### 6.1.2.1.4 <span id="">The for-as-equals-then subclause</span>
+##### 6.1.2.1.4 <span id="FAETSubclause">for-as-equals-then 分子句</span>
 
-In the for-as-equals-then subclause the for or as construct initializes the variable var by setting it to the result of evaluating form1 on the first iteration, then setting it to the result of evaluating form2 on the second and subsequent iterations. If form2 is omitted, the construct uses form1 on the second and subsequent iterations. The loop keywords = and then serve as valid prepositions in this syntax. This construct does not provide any termination tests.
+在这个 for-as-equals-then 分子句中, 这个 for 或者 as 构造通过设置第一次迭代时 form1 的求值结果到变量 var 来初始化它, 然后在第二次及后续的迭代中将它设置为 form2 的求值结果. 如果省略了 form2, 这个构造在第二次及后续的迭代中就使用 form1. loop 关键字 = 和 then 在这个语法中被当作合法介词. 这个构造不会提供任何的终止检验.
 
-###### 6.1.2.1.4.1 Examples of for-as-equals-then subclause
+###### 6.1.2.1.4.1 for-as-equals-then 分子句的示例
 
+```LISP
 ;; Collect some numbers.
- (loop for item = 1 then (+ item 10)
-       for iteration from 1 to 5
-       collect item)
+(loop for item = 1 then (+ item 10)
+      for iteration from 1 to 5
+      collect item)
 =>  (1 11 21 31 41)
+```
 
+##### 6.1.2.1.5 <span id="FAACSubclause">for-as-across 分子句</span>
 
-##### 6.1.2.1.5 <span id="">The for-as-across subclause</span>
+在这个 for-as-across 分子句中, 这个 for 或 as 构造绑定变量 var 到这个数组 vector 的每一个元素的值. loop 关键字 across 标记这个数组 vector; across 在这个语法中被用作一个介词. 当提供的数组中没有更多数据可以被引用时迭代停止. 某些具体实现可能识别一个 vector 表达式形式中的 the 特殊表达式形式来产生更高效的代码.
 
-In the for-as-across subclause the for or as construct binds the variable var to the value of each element in the array vector. The loop keyword across marks the array vector; across is used as a preposition in this syntax. Iteration stops when there are no more elements in the supplied array that can be referenced. Some implementations might recognize a the special form in the vector form to produce more efficient code.
+###### 6.1.2.1.5.1 for-as-across 分子句的示例
 
-###### 6.1.2.1.5.1 Examples of for-as-across subclause
-
- (loop for char across (the simple-string (find-message channel))
-       do (write-char char stream))
-
+```LISP
+(loop for char across (the simple-string (find-message channel))
+      do (write-char char stream))
+```
 
 ##### 6.1.2.1.6 <span id="">The for-as-hash subclause</span>
 
