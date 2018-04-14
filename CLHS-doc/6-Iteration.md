@@ -484,41 +484,41 @@ Loop 子句属于以下类别之一:
       do (write-char char stream))
 ```
 
-##### 6.1.2.1.6 <span id="">The for-as-hash subclause</span>
+##### 6.1.2.1.6 <span id="FAHSubclause">for-as-hash 分子句</span>
 
-In the for-as-hash subclause the for or as construct iterates over the elements, keys, and values of a hash-table. In this syntax, a compound preposition is used to designate access to a hash table. The variable var takes on the value of each hash key or hash value in the supplied hash-table. The following loop keywords serve as valid prepositions within this syntax:
+在这个 for-as-hash 分子句中, 这个 for 或 as 构造遍历一个 hash-table 的元素, 键, 还有值. 在这个语法中, 一个复合介词用于指定对哈希表的访问. 变量 var 呈现为提供的 hash-table 中的每一个哈希键或者哈希值. 在这个语法中以下 loop 关键字被当作合法介词:
 
-being
+* being
 
-    The keyword being introduces either the Loop schema hash-key or hash-value.
+        关键字 being 引入了这个 Loop 模式 hash-key 或 hash-value.
 
-each, the
+* each, the
 
-    The loop keyword each follows the loop keyword being when hash-key or hash-value is used. The loop keyword the is used with hash-keys and hash-values only for ease of reading. This agreement isn't required.
+        当 hash-key 或 hash-value 被使用时, loop 关键字 each 跟在 loop 关键字 being 后面. loop 关键字 the 和 hash-keys 还有 hash-values 一起使用仅便于阅读. 这个协议不是必须的.
 
-hash-key, hash-keys
+* hash-key, hash-keys
 
-    These loop keywords access each key entry of the hash table. If the name hash-value is supplied in a using construct with one of these Loop schemas, the iteration can optionally access the keyed value. The order in which the keys are accessed is undefined; empty slots in the hash table are ignored.
+        这些 loop 关键字访问哈希表的每个值条目. 如果 using 构造中提供名字 hash-value 和这些 Loop 模式中的一个, 这个迭代可以选择性的访问这些键表示的值. 这些键访问的顺序是没有定义的; 哈希表中空的槽会被忽略.
 
-hash-value, hash-values
+* hash-value, hash-values
 
-    These loop keywords access each value entry of a hash table. If the name hash-key is supplied in a using construct with one of these Loop schemas, the iteration can optionally access the key that corresponds to the value. The order in which the keys are accessed is undefined; empty slots in the hash table are ignored.
+        这些 loop 关键字访问哈希表的每个值条目. 如果 using 构造中提供名字 hash-key 和这些 Loop 模式中的一个, 这个迭代可以选择性的访问这些值对应的键. 这些键访问的顺序是没有定义的; 哈希表中空的槽会被忽略.
 
-using
+* using
 
-    The loop keyword using introduces the optional key or the keyed value to be accessed. It allows access to the hash key if iteration is over the hash values, and the hash value if iteration is over the hash keys.
+        loop 关键字 using 引入用于访问的可选的键或键表示的值. 如果迭代到了哈希值, 那么它允许访问哈希键, 如果迭代到了哈希键, 则可以访问哈希值.
 
-in, of
+* in, of
 
-    These loop prepositions introduce hash-table.
+        这些 loop 介词引入 hash-table.
 
-In effect
+实际上
 
-being {each | the} {hash-value | hash-values | hash-key | hash-keys} {in | of}
+    being {each | the} {hash-value | hash-values | hash-key | hash-keys} {in | of}
 
-is a compound preposition.
+是一个复合介词.
 
-Iteration stops when there are no more hash keys or hash values to be referenced in the supplied hash-table. 
+当提供的 hash-table 中没有更多的哈希键或哈希值要被引用时, 迭代停止. 
 
 
 ##### 6.1.2.1.7 <span id="">The for-as-package subclause</span>
