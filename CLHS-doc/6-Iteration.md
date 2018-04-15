@@ -573,80 +573,89 @@ Loop 子句属于以下类别之一:
 =>  NIL
 ```
 
-#### 6.1.2.2 <span id="">Local Variable Initializations</span>
+#### 6.1.2.2 <span id="LocalVarInit">局部变量初始化</span>
 
-When a loop form is executed, the local variables are bound and are initialized to some value. These local variables exist until loop iteration terminates, at which point they cease to exist. Implicit variables are also established by iteration control clauses and the into preposition of accumulation clauses.
+当执行一个 loop 表达式形式时, 局部变量会被绑定并且初始化到某个值. 这些局部变量直到 loop 迭代结束都会存在, 在迭代结束时它们会消失. 隐式的变量也通过迭代控制子句和累积子句的 into 介词来建立.
 
-The with construct initializes variables that are local to a loop. The variables are initialized one time only. If the optional type-spec argument is supplied for the variable var, but there is no related expression to be evaluated, var is initialized to an appropriate default value for its type. For example, for the types t, number, and float, the default values are nil, 0, and 0.0 respectively. The consequences are undefined if a type-spec argument is supplied for var if the related expression returns a value that is not of the supplied type. By default, the with construct initializes variables sequentially; that is, one variable is assigned a value before the next expression is evaluated. However, by using the loop keyword and to join several with clauses, initializations can be forced to occur in parallel; that is, all of the supplied forms are evaluated, and the results are bound to the respective variables simultaneously.
+with 构造初始化的变量也是一个 loop 的局部变量. 这个变量只被初始化一次. 如果为这个变量 var 提供了可选的 type-spec 参数, 而这里没有相关的表达式来求值, var 被初始化为对于它的类型的一个合适的默认值. 比如, 对于类型 t, number, 和 float, 默认值分别就是 nil, 0, 和 0.0. 如果为 var 提供了一个 type-spec 参数而相关表达式返回的值不是那个提供的类型, 那么结果是未定义的. 默认情况下, with 构造顺序初始化变量; 这也就是说, 一个变量在下一个表达式被求值之间被赋值. 然而, 通过使用 loop 关键字 and 连接几个 with 子句, 初始化可以强制并行发生; 这也就是说, 提供的所有表达式形式都被求值, 并且结果被同时绑定给对应变量.
 
-Sequential binding is used when it is desireable for the initialization of some variables to depend on the values of previously bound variables. For example, suppose the variables a, b, and c are to be bound in sequence:
+当某些变量的初始化依赖于前面绑定变量的值时, 就使用顺序绑定. 比如, 假设变量 a, b, 和 c 被依次绑定:
 
- (loop with a = 1 
-       with b = (+ a 2) 
-       with c = (+ b 3)
-       return (list a b c))
+```LISP
+(loop with a = 1 
+      with b = (+ a 2) 
+      with c = (+ b 3)
+      return (list a b c))
 =>  (1 3 6)
+```
 
-The execution of the above loop is equivalent to the execution of the following code:
+上面的 loop 的执行等价于下面代码的执行:
 
- (block nil
-   (let* ((a 1)
-          (b (+ a 2))
-          (c (+ b 3)))
-     (tagbody
-         (next-loop (return (list a b c))
-                    (go next-loop)
-                    end-loop))))
+```LISP
+(block nil
+  (let* ((a 1)
+        (b (+ a 2))
+        (c (+ b 3)))
+    (tagbody
+        (next-loop (return (list a b c))
+                  (go next-loop)
+                  end-loop))))
+```
 
-If the values of previously bound variables are not needed for the initialization of other local variables, an and clause can be used to specify that the bindings are to occur in parallel:
+如果初始化其他变量不需要前面绑定变量的值, 一个 and 子句可以被用于指定这些绑定并行地发生:
 
- (loop with a = 1 
-       and b = 2 
-       and c = 3
-       return (list a b c))
+```LISP
+(loop with a = 1 
+      and b = 2 
+      and c = 3
+      return (list a b c))
 =>  (1 2 3)
+```
 
-The execution of the above loop is equivalent to the execution of the following code:
+上面的 loop 的执行等价于下面代码的执行:
 
- (block nil
-   (let ((a 1)
-         (b 2)
-         (c 3))
-     (tagbody
-         (next-loop (return (list a b c))
-                    (go next-loop)
-                    end-loop))))
+```LISP
+(block nil
+  (let ((a 1)
+        (b 2)
+        (c 3))
+    (tagbody
+        (next-loop (return (list a b c))
+                  (go next-loop)
+                  end-loop))))
+```
 
-##### 6.1.2.2.1 Examples of WITH clause
+##### 6.1.2.2.1 WITH 子句的示例
 
+```LISP
 ;; These bindings occur in sequence.
- (loop with a = 1 
-       with b = (+ a 2) 
-       with c = (+ b 3)
-       return (list a b c))
+(loop with a = 1 
+      with b = (+ a 2) 
+      with c = (+ b 3)
+      return (list a b c))
 =>  (1 3 6)
- 
+
 ;; These bindings occur in parallel.
- (setq a 5 b 10)
+(setq a 5 b 10)
 =>  10
- (loop with a = 1
-       and b = (+ a 2)
-       and c = (+ b 3)
-       return (list a b c))
+(loop with a = 1
+      and b = (+ a 2)
+      and c = (+ b 3)
+      return (list a b c))
 =>  (1 7 13)
- 
+
 ;; This example shows a shorthand way to declare local variables 
 ;; that are of different types.
- (loop with (a b c) of-type (float integer float)
-       return (format nil "~A ~A ~A" a b c))
+(loop with (a b c) of-type (float integer float)
+      return (format nil "~A ~A ~A" a b c))
 =>  "0.0 0 0.0"
- 
+
 ;; This example shows a shorthand way to declare local variables 
 ;; that are the same type.
- (loop with (a b c) of-type float 
-       return (format nil "~A ~A ~A" a b c))
+(loop with (a b c) of-type float 
+      return (format nil "~A ~A ~A" a b c))
 =>  "0.0 0.0 0.0"
-
+```
 
 ### 6.1.3 <span id="ValueAccumulationClauses">Value Accumulation Clauses</span>
 
