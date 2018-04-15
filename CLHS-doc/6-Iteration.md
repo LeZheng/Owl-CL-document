@@ -521,56 +521,57 @@ Loop 子句属于以下类别之一:
 当提供的 hash-table 中没有更多的哈希键或哈希值要被引用时, 迭代停止. 
 
 
-##### 6.1.2.1.7 <span id="">The for-as-package subclause</span>
+##### 6.1.2.1.7 <span id="FAPSubclause">for-as-package 分子句</span>
+<!-- TODO external schema ??-->
+在这个 for-as-package 分子句中 for 或 as 构造遍历一个包中的符号. 在这个语法中, 使用一个复合的介词来指定对一个包的访问. 变量 var 接收这个提供的包中每一个符号的值. 在这个语法中下面的 loop 关键字被当作合法的介词:
 
-In the for-as-package subclause the for or as construct iterates over the symbols in a package. In this syntax, a compound preposition is used to designate access to a package. The variable var takes on the value of each symbol in the supplied package. The following loop keywords serve as valid prepositions within this syntax:
+* being
 
-being
+        关键字 being 引入 Loop 模式 symbol, present-symbol, 或 external-symbol.
 
-    The keyword being introduces either the Loop schema symbol, present-symbol, or external-symbol.
+* each, the
 
-each, the
+        当使用 symbol, present-symbol, 或 external-symbol 时 loop 关键字 each 跟在 loop 关键字 being 后面. loop 关键字 the 和 symbols, present-symbols, 还有 external-symbols 一起使用仅方便于阅读. 这个参数不是必须的.
 
-    The loop keyword each follows the loop keyword being when symbol, present-symbol, or external-symbol is used. The loop keyword the is used with symbols, present-symbols, and external-symbols only for ease of reading. This agreement isn't required.
+* present-symbol, present-symbols
 
-present-symbol, present-symbols
+        这些 Loop 模式遍历出现在一个包中的符号. 要被迭代的包以提供给 find-package 的包参数相同的方式被提供. 如果没有提供用于迭代的包, 就使用当前包. 如果提供一个不存在的包, 会发出一个 package-error 类型的错误.
 
-    These Loop schemas iterate over the symbols that are present in a package. The package to be iterated over is supplied in the same way that package arguments to find-package are supplied. If the package for the iteration is not supplied, the current package is used. If a package that does not exist is supplied, an error of type package-error is signaled.
+* symbol, symbols
 
-symbol, symbols
+        这些 Loop 模式遍历一个给定包中可访问的符号. 要被迭代的包以提供给 find-package 的包参数相同的方式被提供. 如果没有提供用于迭代的包, 就使用当前包. 如果提供一个不存在的包, 会发出一个 package-error 类型的错误.
 
-    These Loop schemas iterate over symbols that are accessible in a given package. The package to be iterated over is supplied in the same way that package arguments to find-package are supplied. If the package for the iteration is not supplied, the current package is used. If a package that does not exist is supplied, an error of type package-error is signaled.
+* external-symbol, external-symbols
 
-external-symbol, external-symbols
+        这些 Loop 模式迭代一个包中的扩展的符号. 要被迭代的包以提供给 find-package 的包参数相同的方式被提供. 如果没有提供用于迭代的包, 就使用当前包. 如果提供一个不存在的包, 会发出一个 package-error 类型的错误.
 
-    These Loop schemas iterate over the external symbols of a package. The package to be iterated over is supplied in the same way that package arguments to find-package are supplied. If the package for the iteration is not supplied, the current package is used. If a package that does not exist is supplied, an error of type package-error is signaled.
+* in, of
 
-in, of
+        这些 loop 介词引入 package.
 
-    These loop prepositions introduce package.
+实际上
 
-In effect
+    being {each | the} {symbol | symbols | present-symbol | present-symbols | external-symbol | external-symbols} {in | of}
 
-being {each | the} {symbol | symbols | present-symbol | present-symbols | external-symbol | external-symbols} {in | of}
+是一个复合介词.
 
-is a compound preposition.
+当提供的包中没有更多符号要被引用时迭代停止.
 
-Iteration stops when there are no more symbols to be referenced in the supplied package.
+###### 6.1.2.1.7.1 for-as-package 分子句
 
-###### 6.1.2.1.7.1 Examples of for-as-package subclause
-
- (let ((*package* (make-package "TEST-PACKAGE-1")))
-   ;; For effect, intern some symbols
-   (read-from-string "(THIS IS A TEST)")
-   (export (intern "THIS"))
-   (loop for x being each present-symbol of *package*
-          do (print x)))
+```LISP
+(let ((*package* (make-package "TEST-PACKAGE-1")))
+  ;; For effect, intern some symbols
+  (read-from-string "(THIS IS A TEST)")
+  (export (intern "THIS"))
+  (loop for x being each present-symbol of *package*
+        do (print x)))
 >>  A 
 >>  TEST 
 >>  THIS
 >>  IS 
 =>  NIL
-
+```
 
 #### 6.1.2.2 <span id="">Local Variable Initializations</span>
 
