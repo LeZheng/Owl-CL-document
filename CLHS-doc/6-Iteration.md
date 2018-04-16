@@ -7,7 +7,7 @@
 
 > * 6.1.1 [Loop 机制概述](#OverviewLoopFacility)
 > * 6.1.2 [变量初始化和步进](#VarInitAndStepClauses)
-> * 6.1.3 [Value Accumulation Clauses](#ValueAccumulationClauses)
+> * 6.1.3 [值累积子句](#ValueAccumulationClauses)
 > * 6.1.4 [Termination Test Clauses](#TerminationTestClauses)
 > * 6.1.5 [Unconditional Execution Clauses](#UnconditionalExecutionClauses)
 > * 6.1.6 [Conditional Execution Clauses](#ConditionalExecutionClauses)
@@ -657,31 +657,31 @@ with 构造初始化的变量也是一个 loop 的局部变量. 这个变量只�
 =>  "0.0 0.0 0.0"
 ```
 
-### 6.1.3 <span id="ValueAccumulationClauses">Value Accumulation Clauses</span>
+### 6.1.3 <span id="ValueAccumulationClauses">值累积子句</span>
 
-The constructs collect, collecting, append, appending, nconc, nconcing, count, counting, maximize, maximizing, minimize, minimizing, sum, and summing, allow values to be accumulated in a loop.
+构造 collect, collecting, append, appending, nconc, nconcing, count, counting, maximize, maximizing, minimize, minimizing, sum, 和 summing, 允许在一个 loop 中累积值.
 
-The constructs collect, collecting, append, appending, nconc, and nconcing, designate clauses that accumulate values in lists and return them. The constructs count, counting, maximize, maximizing, minimize, minimizing, sum, and summing designate clauses that accumulate and return numerical values.
+构造 collect, collecting, append, appending, nconc, 还有 nconcing, 指定累积值到列表中并返回它们的子句. 构造 count, counting, maximize, maximizing, minimize, minimizing, sum, 和 summing 指定累积并返回数值的值的子句.
 
-During each iteration, the constructs collect and collecting collect the value of the supplied form into a list. When iteration terminates, the list is returned. The argument var is set to the list of collected values; if var is supplied, the loop does not return the final list automatically. If var is not supplied, it is equivalent to supplying an internal name for var and returning its value in a finally clause. The var argument is bound as if by the construct with. No mechanism is provided for declaring the type of var; it must be of type list.
+在每一次迭代期间, 构造 collect 和 collecting 收集提供表达式形式的值到一个列表中. 迭代停止时, 返回这个列表. 参数 var 被设置为收集的值的列表; 如果 var 提供了, 这个 loop 不会自动返回最后的列表. 如果 var 没有被提供, 等价于为 var 提供一个内部的名字并且在一个 finally 子句中返回它的值. 这个 var 参数被绑定就像是通过 with 构造一样. 没有为声明 var 的类型提供机制; 它必须是类型 list.
 
-The constructs append, appending, nconc, and nconcing are similar to collect except that the values of the supplied form must be lists.
+除了提供的表达式形式的值一定被列出之外, 构造 append, appending, nconc, 和 nconcing 类似于 collect.
 
-* The append keyword causes its list values to be concatenated into a single list, as if they were arguments to the function append.
+* append 关键字导致它的列表值被连接到一个单个列表中, 就好像它们是给函数 append 的参数一样.
 
-* The nconc keyword causes its list values to be concatenated into a single list, as if they were arguments to the function nconc.
+* nconc 关键字导致它的列表值被连接到一个单个列表中, 就好像它们是给函数 nconc 的参数一样.
 
-The argument var is set to the list of concatenated values; if var is supplied, loop does not return the final list automatically. The var argument is bound as if by the construct with. A type cannot be supplied for var; it must be of type list. The construct nconc destructively modifies its argument lists.
+参数 var 被设置为连接后值的列表; 如果提供了 var, loop 不会自动返回最终的列表. var 参数被绑定就像是通过 with 构造一样. 不能为 var 提供一个类型; 它必须是 list 类型. 构造 nconc 破坏性地修改它的参数列表.
 
-The count construct counts the number of times that the supplied form returns true. The argument var accumulates the number of occurrences; if var is supplied, loop does not return the final count automatically. The var argument is bound as if by the construct with to a zero of the appropriate type. Subsequent values (including any necessary coercions) are computed as if by the function 1+. If into var is used, a type can be supplied for var with the type-spec argument; the consequences are unspecified if a nonnumeric type is supplied. If there is no into variable, the optional type-spec argument applies to the internal variable that is keeping the count. The default type is implementation-dependent; but it must be a supertype of type fixnum.
+count 构造计算提供的表达式返回 true 的次数. 参数 var 累计发生的次数; 如果提供了 var, loop 不会自动返回最终的计数. var 参数被绑定就像是通过 with 构造到一个 0 的适当的类型. 计算后面的值 (包括任何必要的强制转换) 就像是通过函数 1+. 如果使用了 into var, 可以用 type-spec 参数为 var 提供一个类型; 如果提供了一个不是数字的类型, 那么结果是不可预料的. 如果这里没有 into 变量, 可选的 type-spec 参数应用给保留这个计数的内部变量. 默认类型是依赖于具体实现的; 但是它一定是 fixnum 的子类型.
 
-The maximize and minimize constructs compare the value of the supplied form obtained during the first iteration with values obtained in successive iterations. The maximum (for maximize) or minimum (for minimize) value encountered is determined (as if by the function max for maximize and as if by the function min for minimize) and returned. If the maximize or minimize clause is never executed, the accumulated value is unspecified. The argument var accumulates the maximum or minimum value; if var is supplied, loop does not return the maximum or minimum automatically. The var argument is bound as if by the construct with. If into var is used, a type can be supplied for var with the type-spec argument; the consequences are unspecified if a nonnumeric type is supplied. If there is no into variable, the optional type-spec argument applies to the internal variable that is keeping the maximum or minimum value. The default type is implementation-dependent; but it must be a supertype of type real.
+maximize 和 minimize 构造比较第一次迭代提供的表达式的值和依次迭代获取到的值. 确定遇到的最大 (对于 maximize) 或最小 (对于 minimize) 值 (对于 maximize 就像是通过函数 max, 对于 minimize 就像是通过函数 min) 并且返回. 如果这个 maximize 或 minimize 子句从来没有执行, 累计的值是未指定的. 参数 var 累计这个最大或最小值; 如果提供了 var, loop 不会自动返回这个最大值或最小值. 绑定 var 参数就像是通过 with 构造一样. 如果使用了 into var, 可以使用 type-spec 参数为 var 指定一个类型; 如果指定了非数字的类型, 那么结果是未定义的. 如果这也里没有 into 变量, 可选的 type-spec 参数应用给保留这个最大或最小值的内部变量. 默认类型是依赖于具体实现的; 但是它一定是 real 的子类型.
 
-The sum construct forms a cumulative sum of the successive primary values of the supplied form at each iteration. The argument var is used to accumulate the sum; if var is supplied, loop does not return the final sum automatically. The var argument is bound as if by the construct with to a zero of the appropriate type. Subsequent values (including any necessary coercions) are computed as if by the function +. If into var is used, a type can be supplied for var with the type-spec argument; the consequences are unspecified if a nonnumeric type is supplied. If there is no into variable, the optional type-spec argument applies to the internal variable that is keeping the sum. The default type is implementation-dependent; but it must be a supertype of type number.
+sum 构造在每次迭代中形成了所提供 form 的连续主值的累积总和. 参数 var 被用于累计这个总和; 如果提供了 var, loop 不会自动返回最终的总和. 绑定 var 参数就像是通过 with 构造到一个 0 的适当类型. 计算后续的值 (包括任何必要的强制转换) 就像是通过函数 +. 如果使用了 into var, 可以使用 type-spec 参数为 var 指定一个类型; 如果指定了非数字的类型, 那么结果是未定义的. 如果这也里没有 into 变量, 可选的 type-spec 参数应用给保留这个总和的内部变量. 默认类型是依赖于具体实现的; 但是它一定是 number 的子类型.
 
-If into is used, the construct does not provide a default return value; however, the variable is available for use in any finally clause.
+如果使用了 into, 这个构造不会提供默认的返回值; 然而, 在任何 finally 子句中这个变量都是可用的.
 
-Certain kinds of accumulation clauses can be combined in a loop if their destination is the same (the result of loop or an into var) because they are considered to accumulate conceptually compatible quantities. In particular, any elements of following sets of accumulation clauses can be mixed with other elements of the same set for the same destination in a loop form:
+如果在一个 loop 中的累积子句它们的目标是相同的(loop 的结果或者一个 into var), 那么适当种类的累积子句可以被结合, 因为它们被认为累积概念上兼容的数量. 尤其是, 在一个 loop 表达式形式中, 下列集合子句的任何元素都可以与同一目标的其他元素混合在一起:
 
 * collect, append, nconc
 
@@ -689,99 +689,106 @@ Certain kinds of accumulation clauses can be combined in a loop if their destina
 
 * maximize, minimize
 
+```LISP
 ;; Collect every name and the kids in one list by using 
 ;; COLLECT and APPEND.
- (loop for name in '(fred sue alice joe june)
-       for kids in '((bob ken) () () (kris sunshine) ())
-       collect name
-       append kids)
+(loop for name in '(fred sue alice joe june)
+      for kids in '((bob ken) () () (kris sunshine) ())
+      collect name
+      append kids)
 =>  (FRED BOB KEN SUE ALICE JOE KRIS SUNSHINE JUNE)
+```
 
-Any two clauses that do not accumulate the same type of object can coexist in a loop only if each clause accumulates its values into a different variable.
+在一个 loop 中当且仅当每个子句累积它们的值到不同变量时, 任何两个不累积相同类型对象的子句可以共存.
 
-> * 6.1.3.1 [Examples of COLLECT clause](#)
-> * 6.1.3.2 [Examples of APPEND and NCONC clauses](#)
-> * 6.1.3.3 [Examples of COUNT clause](#)
-> * 6.1.3.4 [Examples of MAXIMIZE and MINIMIZE clauses](#)
-> * 6.1.3.5 [Examples of SUM clause](#)
+> * 6.1.3.1 [COLLECT 子句的示例](#ExamplesCOLLECTClause)
+> * 6.1.3.2 [APPEND 和 NCONC 子句的示例](#ExamplesAPPENDNCONCClauses)
+> * 6.1.3.3 [COUNT 子句的示例](#ExamplesCOUNTClause)
+> * 6.1.3.4 [MAXIMIZE 和 MINIMIZE 子句的示例](#ExamplesMAXIMIZEMINIMIZEClauses)
+> * 6.1.3.5 [SUM 子句的示例](#ExamplesSUMClause)
 
-#### 6.1.3.1 <span id="">Examples of COLLECT clause</span>
+#### 6.1.3.1 <span id="ExamplesCOLLECTClause">COLLECT 子句的示例</span>
 
+```LISP
 ;; Collect all the symbols in a list.
- (loop for i in '(bird 3 4 turtle (1 . 4) horse cat)
-       when (symbolp i) collect i)
+(loop for i in '(bird 3 4 turtle (1 . 4) horse cat)
+      when (symbolp i) collect i)
 =>  (BIRD TURTLE HORSE CAT)
- 
+
 ;; Collect and return odd numbers.
- (loop for i from 1 to 10
-       if (oddp i) collect i)
+(loop for i from 1 to 10
+      if (oddp i) collect i)
 =>  (1 3 5 7 9)
- 
+
 ;; Collect items into local variable, but don't return them.
- (loop for i in '(a b c d) by #'cddr
-       collect i into my-list
-       finally (print my-list))
+(loop for i in '(a b c d) by #'cddr
+      collect i into my-list
+      finally (print my-list))
 >>  (A C) 
 =>  NIL
+```
 
+#### 6.1.3.2 <span id="ExamplesAPPENDNCONCClauses">APPEND 和 NCONC 子句的示例</span>
 
-#### 6.1.3.2 <span id="">Examples of APPEND and NCONC clauses</span>
-
+```LISP
 ;; Use APPEND to concatenate some sublists.
-  (loop for x in '((a) (b) ((c)))
-        append x)
+(loop for x in '((a) (b) ((c)))
+      append x)
 =>  (A B (C))
- 
+
 ;; NCONC some sublists together.  Note that only lists made by the
 ;; call to LIST are modified.
-  (loop for i upfrom 0 
-        as x in '(a b (c))
-        nconc (if (evenp i) (list x) nil))
+(loop for i upfrom 0 
+      as x in '(a b (c))
+      nconc (if (evenp i) (list x) nil))
 =>  (A (C))
+```
 
+#### 6.1.3.3 <span id="ExamplesCOUNTClause">COUNT 子句的示例</span>
 
-#### 6.1.3.3 <span id="">Examples of COUNT clause</span>
-
- (loop for i in '(a b nil c nil d e)
-       count i)
+```LISP
+(loop for i in '(a b nil c nil d e)
+      count i)
 =>  5
+```
 
+#### 6.1.3.4 <span id="ExamplesMAXIMIZEMINIMIZEClauses">MAXIMIZE 和 MINIMIZE 子句的示例</span>
 
-#### 6.1.3.4 <span id="">Examples of MAXIMIZE and MINIMIZE clauses</span>
-
- (loop for i in '(2 1 5 3 4)
-       maximize i)
+```LISP
+(loop for i in '(2 1 5 3 4)
+      maximize i)
 =>  5
- (loop for i in '(2 1 5 3 4)
-       minimize i)
+(loop for i in '(2 1 5 3 4)
+      minimize i)
 =>  1
- 
+
 ;; In this example, FIXNUM applies to the internal variable that holds
 ;; the maximum value.
- (setq series '(1.2 4.3 5.7))
+(setq series '(1.2 4.3 5.7))
 =>  (1.2 4.3 5.7)
- (loop for v in series 
-       maximize (round v) of-type fixnum)
+(loop for v in series 
+      maximize (round v) of-type fixnum)
 =>  6
- 
+
 ;; In this example, FIXNUM applies to the variable RESULT.
- (loop for v of-type float in series
-       minimize (round v) into result of-type fixnum
-       finally (return result))
+(loop for v of-type float in series
+      minimize (round v) into result of-type fixnum
+      finally (return result))
 =>  1
+```
 
+#### 6.1.3.5 <span id="SUM 子句的示例">SUM 子句的示例</span>
 
-#### 6.1.3.5 <span id="">Examples of SUM clause</span>
-
- (loop for i of-type fixnum in '(1 2 3 4 5)
-       sum i)
+```LISP
+(loop for i of-type fixnum in '(1 2 3 4 5)
+      sum i)
 =>  15
- (setq series '(1.2 4.3 5.7))
+(setq series '(1.2 4.3 5.7))
 =>  (1.2 4.3 5.7)
- (loop for v in series 
-       sum (* 2.0 v))
+(loop for v in series 
+      sum (* 2.0 v))
 =>  22.4
-
+```
 
 ### 6.1.4 <span id="">Termination Test Clauses</span>
 
