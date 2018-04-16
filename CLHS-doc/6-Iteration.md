@@ -8,7 +8,7 @@
 > * 6.1.1 [Loop 机制概述](#OverviewLoopFacility)
 > * 6.1.2 [变量初始化和步进](#VarInitAndStepClauses)
 > * 6.1.3 [值累积子句](#ValueAccumulationClauses)
-> * 6.1.4 [Termination Test Clauses](#TerminationTestClauses)
+> * 6.1.4 [终止测试子句](#TerminationTestClauses)
 > * 6.1.5 [Unconditional Execution Clauses](#UnconditionalExecutionClauses)
 > * 6.1.6 [Conditional Execution Clauses](#ConditionalExecutionClauses)
 > * 6.1.7 [Miscellaneous Clauses](#MiscellaneousClauses)
@@ -790,132 +790,135 @@ sum 构造在每次迭代中形成了所提供 form 的连续主值的累积总�
 =>  22.4
 ```
 
-### 6.1.4 <span id="">Termination Test Clauses</span>
+### 6.1.4 <span id="TerminationTestClauses">终止测试子句</span>
 
-The repeat construct causes iteration to terminate after a specified number of times. The loop body executes n times, where n is the value of the expression form. The form argument is evaluated one time in the loop prologue. If the expression evaluates to 0 or to a negative number, the loop body is not evaluated.
+repeat 构造导致迭代在指定的次数后终止. 这个 loop 主体执行了 n 次, 其中 n 表达式 form 的值. 这个 form 参数只在循环序言中求值一次. 如果这个表达式求值为 0 或者是一个负数, 这个 loop 主体不会被求值.
 
-The constructs always, never, thereis, while, until, and the macro loop-finish allow conditional termination of iteration within a loop.
+构造 always, never, thereis, while, until, 和宏 loop-finish 允许一个 loop 中迭代的条件终止.
 
-The constructs always, never, and thereis provide specific values to be returned when a loop terminates. Using always, never, or thereis in a loop with value accumulation clauses that are not into causes an error of type program-error to be signaled (at macro expansion time). Since always, never, and thereis use the return-from special operator to terminate iteration, any finally clause that is supplied is not evaluated when exit occurs due to any of these constructs. In all other respects these constructs behave like the while and until constructs.
+构造 always, never, 和 thereis 提供特定的值, 在一个 loop 终止时把它返回. 在一个 loop 中和不是 into 子句的值累积子句一起使用 always, never, 或 thereis, 会发出一个 program-error 类型的错误 (在宏展开期间). 由于 always, never, 和 thereis 使用 return-from 特殊操作符来终止迭代, 当由于这些构造中的任何一个导致退出时, 提供的任何 finally 子句不会被求值.
 
-The always construct takes one form and terminates the loop if the form ever evaluates to nil; in this case, it returns nil. Otherwise, it provides a default return value of t. If the value of the supplied form is never nil, some other construct can terminate the iteration.
+always 构造接收一个表达式形式并且如果这个表达式曾求值为 nil 就终止这个 loop; 在这个情况下, 它返回 nil. 否则, 它提供一个默认返回值 t. 如果提供的表达式形式的从来不返回 nil, 某个其他构造可以终止这个迭代.
 
-The never construct terminates iteration the first time that the value of the supplied form is non-nil; the loop returns nil. If the value of the supplied form is always nil, some other construct can terminate the iteration. Unless some other clause contributes a return value, the default value returned is t.
+never 构造在提供的表达式形式的值第一次不是 nil 的时候终止迭代; 这个 loop 返回 nil. 如果这个提供的表达式形式一直返回 nil, 某个其他构造可以终止这个迭代. 除非某个其他子句提供一个返回值, 否则默认返回值就是 t.
 
-The thereis construct terminates iteration the first time that the value of the supplied form is non-nil; the loop returns the value of the supplied form. If the value of the supplied form is always nil, some other construct can terminate the iteration. Unless some other clause contributes a return value, the default value returned is nil.
+thereis 构造在提供的表达式形式的值第一次不是 nil 时终止迭代; 这个 loop 返回提供的表达式形式的值. 如果这个提供的表达式形式的值总是为 nil, 某个其他构造可以终止这个迭代. 除非某个其他子句提供一个返回值, 否则默认返回值就是 t.
 
-There are two differences between the thereis and until constructs:
+在 thereis 和 until 构造中有两个区别:
 
-* The until construct does not return a value or nil based on the value of the supplied form.
+* until 构造不会基于提供的表达式形式的值返回一个值或者 nil.
 
-* The until construct executes any finally clause. Since thereis uses the return-from special operator to terminate iteration, any finally clause that is supplied is not evaluated when exit occurs due to thereis.
+* until 构造执行任何 finally 子句. 由于 thereis 使用 return-from 特殊操作符来终止迭代, 当 thereis 导致退出时, 任何提供的 finally 子句不会被求值.
 
-The while construct allows iteration to continue until the supplied form evaluates to false. The supplied form is reevaluated at the location of the while clause.
+while 构造允许迭代直到提供的表达式形式求值为 false 之前继续下去. 提供的表达式形式在 while 子句的位置重复求值.
 
-The until construct is equivalent to while (not form).... If the value of the supplied form is non-nil, iteration terminates.
+until 构造等价于 while (not form).... 如果提供表达式的值不是 nil, 迭代终止.
 
-Termination-test control constructs can be used anywhere within the loop body. The termination tests are used in the order in which they appear. If an until or while clause causes termination, any clauses that precede it in the source are still evaluated. If the until and while constructs cause termination, control is passed to the loop epilogue, where any finally clauses will be executed.
+终止测试控制构造可以被用于 loop 主体的任何位置. 终止测试以它们出现的顺序被使用. 如果一个 until 或 while 子句导致终止, 任何在源代码中先于它的子句都被求值. 如果 until 和 while 构造导致了终止, 控制会传递到 loop 结尾, 其中任何 finally 子句会被执行.
 
-There are two differences between the never and until constructs:
+在 never 和 until 构造中有两个差别:
 
-* The until construct does not return t or nil based on the value of the supplied form.
+* until 构造不会返回基于提供表达式形式的值的 t 或 nil.
 
-* The until construct does not bypass any finally clauses. Since never uses the return-from special operator to terminate iteration, any finally clause that is supplied is not evaluated when exit occurs due to never.
+* until 构造不会忽视任何 finally 子句. 由于 never 使用 return-from 特殊操作符来终止迭代, 任何提供的 finally 子句在 never 导致退出时不会被求值.
 
-In most cases it is not necessary to use loop-finish because other loop control clauses terminate the loop. The macro loop-finish is used to provide a normal exit from a nested conditional inside a loop. Since loop-finish transfers control to the loop epilogue, using loop-finish within a finally expression can cause infinite looping.
+在大部分情况下没有必要去使用 loop-finish 因为其他 loop 控制子句会终止这个 loop. 宏 loop-finish 被用于提供一个从 loop 中的嵌套条件句中正常的退出. 由于 loop-finish 转移控制到 loop 结尾, 在一个 finally 表达式中使用 loop-finish 会导致无穷的循环.
 
-> * 6.1.4.1 [Examples of REPEAT clause](#)
-> * 6.1.4.2 [Examples of ALWAYS, NEVER, and THEREIS clauses](#)
-> * 6.1.4.3 [Examples of WHILE and UNTIL clauses](#)
+> * 6.1.4.1 [REPEAT 子句的示例](#ExamplesREPEATClause)
+> * 6.1.4.2 [ALWAYS, NEVER, 和 THEREIS 子句的示例](#ExamplesANTClauses)
+> * 6.1.4.3 [WHILE 和 UNTIL 子句的示例](#ExamplesWHILEUNTILClauses)
 
-#### 6.1.4.1 <span id="">Examples of REPEAT clause</span>
+#### 6.1.4.1 <span id="ExamplesREPEATClause">REPEAT 子句的示例</span>
 
- (loop repeat 3
-       do (format t "~&What I say three times is true.~%"))
+```LISP
+(loop repeat 3
+      do (format t "~&What I say three times is true.~%"))
 >>  What I say three times is true.
 >>  What I say three times is true.
 >>  What I say three times is true.
 =>  NIL
- (loop repeat -15
-   do (format t "What you see is what you expect~%"))
+(loop repeat -15
+  do (format t "What you see is what you expect~%"))
 =>  NIL
+```
 
+#### 6.1.4.2 <span id="ExamplesANTClauses">ALWAYS, NEVER, 和 THEREIS 子句的示例</span>
 
-#### 6.1.4.2 <span id="">Examples of ALWAYS, NEVER, and THEREIS clauses</span>
-
+```LISP
 ;; Make sure I is always less than 11 (two ways).
 ;; The FOR construct terminates these loops.
- (loop for i from 0 to 10
-       always (< i 11))
+(loop for i from 0 to 10
+      always (< i 11))
 =>  T
- (loop for i from 0 to 10
-       never (> i 11))
+(loop for i from 0 to 10
+      never (> i 11))
 =>  T
- 
+
 ;; If I exceeds 10 return I; otherwise, return NIL.
 ;; The THEREIS construct terminates this loop.
- (loop for i from 0
-       thereis (when (> i 10) i) )
+(loop for i from 0
+      thereis (when (> i 10) i) )
 =>  11
 
 ;;; The FINALLY clause is not evaluated in these examples.
- (loop for i from 0 to 10
-       always (< i 9)
-       finally (print "you won't see this"))
+(loop for i from 0 to 10
+      always (< i 9)
+      finally (print "you won't see this"))
 =>  NIL
- (loop never t
-       finally (print "you won't see this"))
+(loop never t
+      finally (print "you won't see this"))
 =>  NIL
- (loop thereis "Here is my value"
-       finally (print "you won't see this"))
+(loop thereis "Here is my value"
+      finally (print "you won't see this"))
 =>  "Here is my value"
- 
+
 ;; The FOR construct terminates this loop, so the FINALLY clause 
 ;; is evaluated.
- (loop for i from 1 to 10
-       thereis (> i 11)
-       finally (prin1 'got-here))
+(loop for i from 1 to 10
+      thereis (> i 11)
+      finally (prin1 'got-here))
 >>  GOT-HERE
 =>  NIL
- 
+
 ;; If this code could be used to find a counterexample to Fermat's
 ;; last theorem, it would still not return the value of the
 ;; counterexample because all of the THEREIS clauses in this example
 ;; only return T.  But if Fermat is right, that won't matter
 ;; because this won't terminate.
- 
- (loop for z upfrom 2
-       thereis
-         (loop for n upfrom 3 below (log z 2)
-               thereis
-                 (loop for x below z
-                       thereis
-                         (loop for y below z
-                               thereis (= (+ (expt x n) (expt y n))
-                                          (expt z n))))))
 
+(loop for z upfrom 2
+      thereis
+        (loop for n upfrom 3 below (log z 2)
+              thereis
+                (loop for x below z
+                      thereis
+                        (loop for y below z
+                              thereis (= (+ (expt x n) (expt y n))
+                                        (expt z n))))))
+```
 
-#### 6.1.4.3 <span id="">Examples of WHILE and UNTIL clauses</span>
+#### 6.1.4.3 <span id="ExamplesWHILEUNTILClauses">WHILE 和 UNTIL 子句的示例</span>
 
- (loop while (hungry-p) do (eat))
- 
+```LISP
+(loop while (hungry-p) do (eat))
+
 ;; UNTIL NOT is equivalent to WHILE.
- (loop until (not (hungry-p)) do (eat))
- 
+(loop until (not (hungry-p)) do (eat))
+
 ;; Collect the length and the items of STACK.
- (let ((stack '(a b c d e f)))
-   (loop for item = (length stack) then (pop stack)
-         collect item
-         while stack))
+(let ((stack '(a b c d e f)))
+  (loop for item = (length stack) then (pop stack)
+        collect item
+        while stack))
 =>  (6 A B C D E F)
- 
+
 ;; Use WHILE to terminate a loop that otherwise wouldn't terminate.
 ;; Note that WHILE occurs after the WHEN.
- (loop for i fixnum from 3
-       when (oddp i) collect i
-       while (< i 5))
+(loop for i fixnum from 3
+      when (oddp i) collect i
+      while (< i 5))
 =>  (3 5)
-
+```
 
 ### 6.1.5 <span id="">Unconditional Execution Clauses</span>
 
