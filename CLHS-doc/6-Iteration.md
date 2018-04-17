@@ -9,8 +9,8 @@
 > * 6.1.2 [变量初始化和步进](#VarInitAndStepClauses)
 > * 6.1.3 [值累积子句](#ValueAccumulationClauses)
 > * 6.1.4 [终止测试子句](#TerminationTestClauses)
-> * 6.1.5 [Unconditional Execution Clauses](#UnconditionalExecutionClauses)
-> * 6.1.6 [Conditional Execution Clauses](#ConditionalExecutionClauses)
+> * 6.1.5 [无条件执行子句](#UnconditionalExecutionClauses)
+> * 6.1.6 [条件执行子句](#ConditionalExecutionClauses)
 > * 6.1.7 [Miscellaneous Clauses](#MiscellaneousClauses)
 > * 6.1.8 [Examples of Miscellaneous Loop Features](#ExamplesMLF)
 > * 6.1.9 [Notes about Loop](#NotesAboutLoop)
@@ -920,19 +920,20 @@ until 构造等价于 while (not form).... 如果提供表达式的值不是 nil
 =>  (3 5)
 ```
 
-### 6.1.5 <span id="">Unconditional Execution Clauses</span>
+### 6.1.5 <span id="UnconditionalExecutionClauses">无条件执行子句</span>
 
-The do and doing constructs evaluate the supplied forms wherever they occur in the expanded form of loop. The form argument can be any compound form. Each form is evaluated in every iteration. Because every loop clause must begin with a loop keyword, the keyword do is used when no control action other than execution is required.
+do 和 doing 构造无论出现在 loop 的展开形式的什么地方都求值提供的 forms. 这个 form 参数可以是任何复合表达式形式. 每个 form 在每次迭代都被求值. 因为每个 loop 子句必须以一个 loop 关键字开始, 关键字 do 是在没有控制动作只需要执行的情况下使用的.
 
-The return construct takes one form. Any values returned by the form are immediately returned by the loop form. It is equivalent to the clause do (return-from block-name value), where block-name is the name specified in a named clause, or nil if there is no named clause.
+return 构造接收一个表达式形式. 这个表达式形式返回的任何值都会被这个 loop 表达式形式及时返回. 它等价于子句 do (return-from block-name value), 其中 block-name 是 named 子句中指定的名字, 如果这里没有 named 子句那么就是 nil.
 
-#### 6.1.5.1 Examples of unconditional execution
+#### 6.1.5.1 无条件执行的示例
 
+```LISP
 ;; Print numbers and their squares.
 ;; The DO construct applies to multiple forms.
- (loop for i from 1 to 3
-       do (print i)
-          (print (* i i)))
+(loop for i from 1 to 3
+      do (print i)
+        (print (* i i)))
 >>  1 
 >>  1 
 >>  2 
@@ -940,66 +941,67 @@ The return construct takes one form. Any values returned by the form are immedia
 >>  3 
 >>  9 
 =>  NIL
+```
 
+### 6.1.6 <span id="ConditionalExecutionClauses">条件执行子句</span>
 
-### 6.1.6 <span id="">Conditional Execution Clauses</span>
+if, when, 和 unless 构造在一个 loop 中建立条件控制. 如果通过了检验测试, 后面的 loop 子句会被执行. 如果没有通过检验测试, 后面的子句会被跳过, 并且程序控制会转移到 loop 关键字 else 后面的子句. 如果没有通过检验测试并且没有提供 else 子句, 控制会转移到整个条件子句后面的子句或构造.
 
-The if, when, and unless constructs establish conditional control in a loop. If the test passes, the succeeding loop clause is executed. If the test does not pass, the succeeding clause is skipped, and program control moves to the clause that follows the loop keyword else. If the test does not pass and no else clause is supplied, control is transferred to the clause or construct following the entire conditional clause.
+如果条件子句是嵌套的, 每个 else 和前面最近的没有关联 else 或 end 的条件子句组成一对.
 
-If conditional clauses are nested, each else is paired with the closest preceding conditional clause that has no associated else or end.
+在 if 和 when 子句中, 它们是同义的, 如果 form 的值是 true 那么检验测试通过.
 
-In the if and when clauses, which are synonymous, the test passes if the value of form is true.
+在 unless 子句中, 如果 form 的值是 false 那么检验测试通过.
 
-In the unless clause, the test passes if the value of form is false.
+检验表达式后面的子句可以通过使用 loop 关键字 and 产生一个由复合子句组成的条件块来分组.
 
-Clauses that follow the test expression can be grouped by using the loop keyword and to produce a conditional block consisting of a compound clause.
+loop 关键字 it 可以用于引用一个子句中检验表达式的结果. 使用这个 loop 关键字 it 代替一个 return 子句或一个条件执行子句中的累积子句中的表达式形式. 如果多个子句用 and 连接, 这个 it 构造必须在这个块的第一个子句中.
 
-The loop keyword it can be used to refer to the result of the test expression in a clause. Use the loop keyword it in place of the form in a return clause or an accumulation clause that is inside a conditional execution clause. If multiple clauses are connected with and, the it construct must be in the first clause in the block.
+可选的 loop 关键字 end 标记这个子句的结束. 如果没有提供这个关键字, 下一个 loop 关键字标记着结束. 这个构造 end 可以被用于区分复合子句的作用域.
 
-The optional loop keyword end marks the end of the clause. If this keyword is not supplied, the next loop keyword marks the end. The construct end can be used to distinguish the scoping of compound clauses.
+#### 6.1.6.1 WHEN 子句的示例
 
-#### 6.1.6.1 Examples of WHEN clause
-
+```LISP
 ;; Signal an exceptional condition.
- (loop for item in '(1 2 3 a 4 5)
-       when (not (numberp item))
-        return (cerror "enter new value" "non-numeric value: ~s" item))
+(loop for item in '(1 2 3 a 4 5)
+      when (not (numberp item))
+      return (cerror "enter new value" "non-numeric value: ~s" item))
 Error: non-numeric value: A
- 
+
 ;; The previous example is equivalent to the following one.
- (loop for item in '(1 2 3 a 4 5)
-       when (not (numberp item))
-        do (return 
-            (cerror "Enter new value" "non-numeric value: ~s" item)))
+(loop for item in '(1 2 3 a 4 5)
+      when (not (numberp item))
+      do (return 
+          (cerror "Enter new value" "non-numeric value: ~s" item)))
 Error: non-numeric value: A
 
 ;; This example parses a simple printed string representation from 
 ;; BUFFER (which is itself a string) and returns the index of the
 ;; closing double-quote character.
- (let ((buffer "\"a\" \"b\""))
-   (loop initially (unless (char= (char buffer 0) #\")
-                     (loop-finish))
-         for i of-type fixnum from 1 below (length (the string buffer))
-         when (char= (char buffer i) #\")
-          return i))
+(let ((buffer "\"a\" \"b\""))
+  (loop initially (unless (char= (char buffer 0) #\")
+                    (loop-finish))
+        for i of-type fixnum from 1 below (length (the string buffer))
+        when (char= (char buffer i) #\")
+        return i))
 =>  2
- 
+
 ;; The collected value is returned.
- (loop for i from 1 to 10
-       when (> i 5)
-         collect i
-       finally (prin1 'got-here))
+(loop for i from 1 to 10
+      when (> i 5)
+        collect i
+      finally (prin1 'got-here))
 >>  GOT-HERE
 =>  (6 7 8 9 10) 
 
 ;; Return both the count of collected numbers and the numbers.
- (loop for i from 1 to 10
-       when (> i 5)
-         collect i into number-list
-         and count i into number-count
-       finally (return (values number-count number-list)))
+(loop for i from 1 to 10
+      when (> i 5)
+        collect i into number-list
+        and count i into number-count
+      finally (return (values number-count number-list)))
 =>  5, (6 7 8 9 10)
-
+```
 
 ### 6.1.7 <span id="">Miscellaneous Clauses</span>
 
