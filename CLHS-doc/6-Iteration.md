@@ -11,9 +11,9 @@
 > * 6.1.4 [终止测试子句](#TerminationTestClauses)
 > * 6.1.5 [无条件执行子句](#UnconditionalExecutionClauses)
 > * 6.1.6 [条件执行子句](#ConditionalExecutionClauses)
-> * 6.1.7 [Miscellaneous Clauses](#MiscellaneousClauses)
-> * 6.1.8 [Examples of Miscellaneous Loop Features](#ExamplesMLF)
-> * 6.1.9 [Notes about Loop](#NotesAboutLoop)
+> * 6.1.7 [其他子句](#MiscellaneousClauses)
+> * 6.1.8 [其他 Loop 特性的示例](#ExamplesMLF)
+> * 6.1.9 [Loop 的注意事项](#NotesAboutLoop)
 
 ### 6.1.1 <span id="OverviewLoopFacility">Loop 机制概述</span>
 
@@ -1003,76 +1003,83 @@ Error: non-numeric value: A
 =>  5, (6 7 8 9 10)
 ```
 
-### 6.1.7 <span id="">Miscellaneous Clauses</span>
+### 6.1.7 <span id="MiscellaneousClauses">其他子句</span>
 
-> * 6.1.7.1 [Control Transfer Clauses](#)
-> * 6.1.7.2 [Initial and Final Execution](#)
+> * 6.1.7.1 [控制转移子句](#ControlTransferClauses)
+> * 6.1.7.2 [初始化和最后执行](#InitialFinalExecution)
 
 
-#### 6.1.7.1 <span id="">Control Transfer Clauses</span>
+#### 6.1.7.1 <span id="ControlTransferClauses">控制转移子句</span>
 
-The named construct establishes a name for an implicit block surrounding the entire loop so that the return-from special operator can be used to return values from or to exit loop. Only one name per loop form can be assigned. If used, the named construct must be the first clause in the loop expression.
+named 构造为包含整个 loop 的隐式 block 确定一个名字, 这样 return-from 特殊操作符可以被用于从退出的 loop 返回值或者返回值去退出 loop.<!--TODO 待校验--> 一个 loop 表达式形式只能被赋予一个名字. 如果使用了, 这个 named 构造必须是这个 loop 表达式中的第一个子句.
 
-The return construct takes one form. Any values returned by the form are immediately returned by the loop form. This construct is similar to the return-from special operator and the return macro. The return construct does not execute any finally clause that the loop form is given.
+return 构造接收一个 form 表达式形式. 这个 form 返回的任何值都被这个 loop 表达式形式立即返回. 这个构造类似于 return-from 特殊操作符和 return 宏. return 构造不会执行这个 loop 表达式西形式给定的任何 finally 子句.
 
-##### 6.1.7.1.1 <span id="">Examples of NAMED clause</span>
+##### 6.1.7.1.1 NAMED 子句的示例
 
+```LISP
 ;; Just name and return.
- (loop named max
-       for i from 1 to 10
-       do (print i)
-       do (return-from max 'done))
+(loop named max
+      for i from 1 to 10
+      do (print i)
+      do (return-from max 'done))
 >>  1 
 =>  DONE
+```
 
+#### 6.1.7.2 <span id="InitialFinalExecution">初始化和最后执行</span>
 
-#### 6.1.7.2 <span id="">Initial and Final Execution</span>
+initially 和 finally 构造在这个 loop 主体之前和之后求值表达式形式.
 
-The initially and finally constructs evaluate forms that occur before and after the loop body.
+initially 构造导致提供的复合表达式形式 compound-forms 在迭代序言中被求值, 它在除了构造 with, for, 或 as 提供的初始化设置以外的所有 loop 代码之前. 任何 initially 子句的代码都是按照子句出现在这个 loop 中的顺序执行的.
 
-The initially construct causes the supplied compound-forms to be evaluated in the loop prologue, which precedes all loop code except for initial settings supplied by constructs with, for, or as. The code for any initially clauses is executed in the order in which the clauses appeared in the loop.
+finally 构造导致提供的复合表达式形式 compound-forms 在正常迭代终止的迭代结尾中被求值. 任何 finally 子句的代码都是按照子句出现在这个 loop 中的顺序执行的. 收集起来的代码只在任何累积子句返回隐式的值之前在迭代结尾执行一次. 但是一个从 loop 主体中隐式的控制转移 (比如, 通过 return, go, 或 throw) 会在没有执行结尾代码的情况下退出 loop.
 
-The finally construct causes the supplied compound-forms to be evaluated in the loop epilogue after normal iteration terminates. The code for any finally clauses is executed in the order in which the clauses appeared in the loop. The collected code is executed once in the loop epilogue before any implicit values are returned from the accumulation clauses. An explicit transfer of control (e.g., by return, go, or throw) from the loop body, however, will exit the loop without executing the epilogue code.
+像 return, always, never, 和 thereis 这样的子句可以绕开 finally 子句. return (或者 return-from, 如果提供了 named 选项的话) 可以被用于在 finally 之后从一个 loop 返回值. 这样一个 finally 子句中显式的返回优先于从通过诸如关键字 collect, nconc, append, sum, count, maximize, 和 minimize 提供的子句中返回累积值; 如果使用了 return 或 return-from, 这些子句累积的值不会被 loop 返回. 
 
-Clauses such as return, always, never, and thereis can bypass the finally clause. return (or return-from, if the named option was supplied) can be used after finally to return values from a loop. Such an explicit return inside the finally clause takes precedence over returning the accumulation from clauses supplied by such keywords as collect, nconc, append, sum, count, maximize, and minimize; the accumulation values for these preempted clauses are not returned by loop if return or return-from is used. 
+### 6.1.8 <span id="ExamplesMLF">其他 Loop 特性的示例</span>
 
+```LISP
+(let ((i 0))                     ; no loop keywords are used
+  (loop (incf i) (if (= i 3) (return i)))) =>  3
+(let ((i 0)(j 0))
+  (tagbody
+    (loop (incf j 3) (incf i) (if (= i 3) (go exit)))
+    exit)
+  j) =>  9
+```
 
-### 6.1.8 <span id="">Examples of Miscellaneous Loop Features</span>
+在下面的例子中, 变量 x 在 y 被步进之前步进; 因此, y 的值反映了 x 的更新值:
 
- (let ((i 0))                     ; no loop keywords are used
-    (loop (incf i) (if (= i 3) (return i)))) =>  3
- (let ((i 0)(j 0))
-    (tagbody
-      (loop (incf j 3) (incf i) (if (= i 3) (go exit)))
-      exit)
-    j) =>  9
-
-In the following example, the variable x is stepped before y is stepped; thus, the value of y reflects the updated value of x:
-
- (loop for x from 1 to 10 
-       for y = nil then x 
-       collect (list x y))
+```LISP
+(loop for x from 1 to 10 
+      for y = nil then x 
+      collect (list x y))
 =>  ((1 NIL) (2 2) (3 3) (4 4) (5 5) (6 6) (7 7) (8 8) (9 9) (10 10))
+```
 
-In this example, x and y are stepped in parallel:
+在这个示例中, x 和 y 并行步进:
 
- (loop for x from 1 to 10 
-       and y = nil then x 
-       collect (list x y))
+```LISP
+(loop for x from 1 to 10 
+      and y = nil then x 
+      collect (list x y))
 =>  ((1 NIL) (2 1) (3 2) (4 3) (5 4) (6 5) (7 6) (8 7) (9 8) (10 9))
+```
 
-#### 6.1.8.1 Examples of clause grouping
+#### 6.1.8.1 子句分组示例
 
+```LISP
 ;; Group conditional clauses.
- (loop for i in '(1 324 2345 323 2 4 235 252)
-       when (oddp i)
-         do (print i)
-         and collect i into odd-numbers
-         and do (terpri)
-       else                              ; I is even.
-         collect i into even-numbers
-       finally
-         (return (values odd-numbers even-numbers)))
+(loop for i in '(1 324 2345 323 2 4 235 252)
+      when (oddp i)
+        do (print i)
+        and collect i into odd-numbers
+        and do (terpri)
+      else                              ; I is even.
+        collect i into even-numbers
+      finally
+        (return (values odd-numbers even-numbers)))
 >>  1 
 >>  
 >>  2345 
@@ -1083,72 +1090,71 @@ In this example, x and y are stepped in parallel:
 =>  (1 2345 323 235), (324 2 4 252)
 
 ;; Collect numbers larger than 3.
- (loop for i in '(1 2 3 4 5 6)
-       when (and (> i 3) i)
-       collect it)                      ; IT refers to (and (> i 3) i).
+(loop for i in '(1 2 3 4 5 6)
+      when (and (> i 3) i)
+      collect it)                      ; IT refers to (and (> i 3) i).
 =>  (4 5 6)
- 
+
 ;; Find a number in a list.
- (loop for i in '(1 2 3 4 5 6)
-       when (and (> i 3) i)
-       return it)
+(loop for i in '(1 2 3 4 5 6)
+      when (and (> i 3) i)
+      return it)
 =>  4
-     
+    
 ;; The above example is similar to the following one.
- (loop for i in '(1 2 3 4 5 6)
-       thereis (and (> i 3) i))
+(loop for i in '(1 2 3 4 5 6)
+      thereis (and (> i 3) i))
 =>  4
 
 
 ;; Nest conditional clauses.
- (let ((list '(0 3.0 apple 4 5 9.8 orange banana)))
-   (loop for i in list
-         when (numberp i)
-           when (floatp i)
-             collect i into float-numbers
-           else                                  ; Not (floatp i)
-             collect i into other-numbers
-         else                                    ; Not (numberp i)
-           when (symbolp i) 
-             collect i into symbol-list
-           else                                  ; Not (symbolp i)
-             do (error "found a funny value in list ~S, value ~S~%" list i)
-         finally (return (values float-numbers other-numbers symbol-list))))
+(let ((list '(0 3.0 apple 4 5 9.8 orange banana)))
+  (loop for i in list
+        when (numberp i)
+          when (floatp i)
+            collect i into float-numbers
+          else                                  ; Not (floatp i)
+            collect i into other-numbers
+        else                                    ; Not (numberp i)
+          when (symbolp i) 
+            collect i into symbol-list
+          else                                  ; Not (symbolp i)
+            do (error "found a funny value in list ~S, value ~S~%" list i)
+        finally (return (values float-numbers other-numbers symbol-list))))
 =>  (3.0 9.8), (0 4 5), (APPLE ORANGE BANANA)
 
 ;; Without the END preposition, the last AND would apply to the
 ;; inner IF rather than the outer one.
- (loop for x from 0 to 3 
-       do (print x)
-       if (zerop (mod x 2))
-         do (princ " a")
-          and if (zerop (floor x 2))
-                do (princ " b")
-                end
-          and do (princ " c"))
+(loop for x from 0 to 3 
+      do (print x)
+      if (zerop (mod x 2))
+        do (princ " a")
+        and if (zerop (floor x 2))
+              do (princ " b")
+              end
+        and do (princ " c"))
 >>  0  a b c
 >>  1 
 >>  2  a c
 >>  3 
 =>  NIL
+```
 
+### 6.1.9 <span id="NotesAboutLoop">Loop 的注意事项</span>
 
-### 6.1.9 <span id="">Notes about Loop</span>
+可以为 loop 变量提供类型. 没有必要为任何变量提供一个类型, 但是提供类型可以确保这个变量有正确类型的初始值, 并且这样也可以启用编译器优化 (取决于具体实现).
 
-Types can be supplied for loop variables. It is not necessary to supply a type for any variable, but supplying the type can ensure that the variable has a correctly typed initial value, and it can also enable compiler optimizations (depending on the implementation).
+子句 repeat n ... 粗略等价于下面这个子句
 
-The clause repeat n ... is roughly equivalent to a clause such as
+    (loop for internal-variable downfrom (- n 1) to 0 ...)
 
- (loop for internal-variable downfrom (- n 1) to 0 ...)
+但是在某些实现中, repeat 构造可能更高效.
 
-but in some implementations, the repeat construct might be more efficient.
+在 loop 子句的可执行部分中和整个 loop 表达式形式周围, 可以使用 let 来绑定变量.
 
-Within the executable parts of the loop clauses and around the entire loop form, variables can be bound by using let.
+在与 loop 有关时使用名为 IT (在任何包中) 的变量时要谨慎, 因为它是一个 loop 关键字, 可以在某些上下文中替换表达式形式.
 
-Use caution when using a variable named IT (in any package) in connection with loop, since it is a loop keyword that can be used in place of a form in certain contexts.
-
-There is no standardized mechanism for users to add extensions to loop. 
-
+这里没有让用户给 loop 添加扩展的标准化机制. 
 
 ## 6.2 <span id="">The Iteration Dictionary</span>
 
