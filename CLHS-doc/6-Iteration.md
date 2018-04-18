@@ -1,7 +1,7 @@
 # 6. 循环
 
 > * 6.1 [LOOP 机制](#TheLOOPFacility)
-> * 6.2 [循环字典](#TheIterationDictionary)
+> * 6.2 [迭代字典](#TheIterationDictionary)
 
 ## 6.1 <span id="TheLOOPFacility">LOOP 机制</span>
 
@@ -1156,321 +1156,310 @@ finally 构造导致提供的复合表达式形式 compound-forms 在正常迭�
 
 这里没有让用户给 loop 添加扩展的标准化机制. 
 
-## 6.2 <span id="">The Iteration Dictionary</span>
+## 6.2 <span id="TheIterationDictionary">迭代字典</span>
 
-> * [Macro DO, DO*](#)
-> * [Macro DOTIMES](#)
-> * [Macro DOLIST](#)
-> * [Macro LOOP](#)
-> * [Local Macro LOOP-FINISH](#)
+> * [宏 DO, DO*](#MacroDODO)
+> * [宏 DOTIMES](#MacroDOTIMES)
+> * [宏 DOLIST](#MacroDOLIST)
+> * [宏 LOOP](#MacroLOOP)
+> * [局部宏 LOOP-FINISH](#LocalMacroLOOPFINISH)
 
 
-### <span id="">Macro DO, DO*</span>
+### <span id="MacroDODO">宏 DO, DO*</span>
 
-Syntax:
+* 语法(Syntax):
 
-do ({var | (var [init-form [step-form]])}*) (end-test-form result-form*) declaration* {tag | statement}*
+        do ({var | (var [init-form [step-form]])}*) (end-test-form result-form*) declaration* {tag | statement}*
+        => result*
 
-=> result*
+        do* ({var | (var [init-form [step-form]])}*) (end-test-form result-form*) declaration* {tag | statement}*
+        => result*
 
-do* ({var | (var [init-form [step-form]])}*) (end-test-form result-form*) declaration* {tag | statement}*
+* 参数和值(Arguments and Values):
 
-=> result*
+        var---一个符号.
+        init-form---一个表达式形式.
+        step-form---一个表达式形式.
+        end-test-form---一个表达式形式.
+        result-forms---一个隐式的 progn.
+        declaration---一个 declare 表达式; 不求值.
+        tag---一个 go 标签; 不求值.
+        statement---一个复合表达式形式; 按以下所述求值.
+        results---如果执行了一个 return 或 return-from 表达式形式, 值从这个表达式形式传出来; 否则, 值通过 result-forms 返回.
 
-Arguments and Values:
+* 描述(Description):
 
-var---a symbol.
+        当测试条件保持时满足时, do 在一组语句上迭代. do 接受任意数量大迭代变量 vars, 它们在迭代中并行绑定和步进. 可以通过使用一个 init-form 来为每个迭代变量提供一个初始值. Step-forms 可以被用于指定这个循环中后续的迭代如果更新变量 vars. Step-forms 可能被用于可以被用于产生后续的值或累积结果. 如果 end-test-form 条件在一个主体的执行前满足, 这个迭代终止. Tags 标记语句.
 
-init-form---a form.
+        do* 和 do 一样除了变量 vars 的绑定和步进是顺序执行而不是并行执行.
 
-step-form---a form.
+        在第一次迭代前, 所有 init-forms 被求值, 如果提供了 init-form, 每一个 var 被绑定到它的对应 init-form 的值. 这是一个绑定, 不是一个赋值; 当这个循环终止时, 这些变量的旧值会被恢复. 对于 do, 所有的 init-forms 在任何一个 var 绑定前被求值. init-forms 可以引用 do 开始执行之前的可见的这些 vars 的绑定. 对于 do*, 第一个 init-form 被求值, 然后第一个 var 被绑定到那个值, 然后第二个 init-form 被求值, 接着第二个 var 被绑定, 以此类推; 通常, 如果 j < k, 那么第 k 个 init-form 可以引用第 j 个 var 的绑定, 否则引用的是第 j 个 var 的旧绑定.
 
-end-test-form---a form.
+        在每个迭代开始前, 处理这些变量后, 这个 end-test-form 被求值. 如果结果是 false, 执行 do (或 do*) 表达式形式的主体. 如果结果是 true, 这个 result-forms 按照一个隐式的 progn 的顺序被求值, 然后 do 或 do* 返回.
 
-result-forms---an implicit progn.
+        在除了第一次以外的每个迭代开始时, vars 按照如下更新. 所有的 step-forms, 如果提供了就从左到右求值, 并且结果值被赋给对应变量 vars. 任何没有关联的变量 var 不会被赋值. 对于 do, 所有 step-forms 在任何 var 更新前被求值; 给 vars 的赋值并行执行, 就像是通过 psetq. 因为所有的 step-forms 在任何变量被修改前求值, 所以一个 step-form 求值时可以访问所有这些 vars 的旧值, 即便其他的 step-forms 在它之前. 对于 do*, 第一个 step-form 被求值, 然后这个值赋给第一个 var, 然后第二个 step-form 被求值, 接着值赋给第二个 var, 以此类推; 这个给变量的赋值是顺序执行, 就像是通过 setq. 不管是对于 do 还是 do*, 在变量 vars 被更新后, end-test-form 按照如上所述被求值, 然后这个迭代继续.
 
-declaration---a declare expression; not evaluated.
+        剩余的 do (或 do*) 表达式形式部分构成一个隐式的 tagbody. Tags 可能出现在一个 do 循环的主体中, 供出现在主体中的 go 语句使用 (但是这样的 go 语句可能不会出现在变量说明符,  end-test-form, 或 result-forms 中). 当到达 do 主体的结尾时, 开始下一个迭代周期 (以 step-forms 的求值开始).
 
-tag---a go tag; not evaluated.
+        一个隐式的名为 nil 的 block 包在整个 do (或 do*) 表达式形式周围. 一个 return 语句可以被用于在任何点立即去退出这个循环.
 
-statement---a compound form; evaluated as described below.
+        Init-form 是和 var 关联的初始值. 如果 init-form 省略了, 那么这个 var 的值就是 nil. 如果为 var 提供了一个声明, init-form 必须与这个声明一致.
 
-results---if a return or return-from form is executed, the values passed from that form; otherwise, the values returned by the result-forms.
+        声明可以出现在 do (或 do*) 主体的开始位置. 它们适用于 do (or do*) 主体中的代码, 这个 do (or do*) vars 的绑定, step-forms, end-test-form, 还有 result-forms.
 
-Description:
+* 示例(Examples):
 
-do iterates over a group of statements while a test condition holds. do accepts an arbitrary number of iteration vars which are bound within the iteration and stepped in parallel. An initial value may be supplied for each iteration variable by use of an init-form. Step-forms may be used to specify how the vars should be updated on succeeding iterations through the loop. Step-forms may be used both to generate successive values or to accumulate results. If the end-test-form condition is met prior to an execution of the body, the iteration terminates. Tags label statements.
+    ```LISP
+    (do ((temp-one 1 (1+ temp-one))
+          (temp-two 0 (1- temp-two)))
+        ((> (- temp-one temp-two) 5) temp-one)) =>  4
 
-do* is exactly like do except that the bindings and steppings of the vars are performed sequentially rather than in parallel.
+    (do ((temp-one 1 (1+ temp-one))
+          (temp-two 0 (1+ temp-one)))     
+        ((= 3 temp-two) temp-one)) =>  3
 
-Before the first iteration, all the init-forms are evaluated, and each var is bound to the value of its respective init-form, if supplied. This is a binding, not an assignment; when the loop terminates, the old values of those variables will be restored. For do, all of the init-forms are evaluated before any var is bound. The init-forms can refer to the bindings of the vars visible before beginning execution of do. For do*, the first init-form is evaluated, then the first var is bound to that value, then the second init-form is evaluated, then the second var is bound, and so on; in general, the kth init-form can refer to the new binding of the jth var if j < k, and otherwise to the old binding of the jth var.
+    (do* ((temp-one 1 (1+ temp-one))
+          (temp-two 0 (1+ temp-one)))
+          ((= 3 temp-two) temp-one)) =>  2                     
 
-At the beginning of each iteration, after processing the variables, the end-test-form is evaluated. If the result is false, execution proceeds with the body of the do (or do*) form. If the result is true, the result-forms are evaluated in order as an implicit progn, and then do or do* returns.
+    (do ((j 0 (+ j 1)))
+        (nil)                       ;Do forever.
+      (format t "~%Input ~D:" j)
+      (let ((item (read)))
+        (if (null item) (return)   ;Process items until NIL seen.
+            (format t "~&Output ~D: ~S" j item))))
+    >>  Input 0: banana
+    >>  Output 0: BANANA
+    >>  Input 1: (57 boxes)
+    >>  Output 1: (57 BOXES)
+    >>  Input 2: NIL
+    =>  NIL
 
-At the beginning of each iteration other than the first, vars are updated as follows. All the step-forms, if supplied, are evaluated, from left to right, and the resulting values are assigned to the respective vars. Any var that has no associated step-form is not assigned to. For do, all the step-forms are evaluated before any var is updated; the assignment of values to vars is done in parallel, as if by psetq. Because all of the step-forms are evaluated before any of the vars are altered, a step-form when evaluated always has access to the old values of all the vars, even if other step-forms precede it. For do*, the first step-form is evaluated, then the value is assigned to the first var, then the second step-form is evaluated, then the value is assigned to the second var, and so on; the assignment of values to variables is done sequentially, as if by setq. For either do or do*, after the vars have been updated, the end-test-form is evaluated as described above, and the iteration continues.
+    (setq a-vector (vector 1 nil 3 nil))
+    (do ((i 0 (+ i 1))     ;Sets every null element of a-vector to zero.
+        (n (array-dimension a-vector 0)))
+        ((= i n))
+      (when (null (aref a-vector i))
+        (setf (aref a-vector i) 0))) =>  NIL
+    a-vector =>  #(1 0 3 0)
 
-The remainder of the do (or do*) form constitutes an implicit tagbody. Tags may appear within the body of a do loop for use by go statements appearing in the body (but such go statements may not appear in the variable specifiers, the end-test-form, or the result-forms). When the end of a do body is reached, the next iteration cycle (beginning with the evaluation of step-forms) occurs.
+    (do ((x e (cdr x))
+        (oldx x x))
+        ((null x))
+      body)
+    ```
 
-An implicit block named nil surrounds the entire do (or do*) form. A return statement may be used at any point to exit the loop immediately.
+        是一个给索引变量并行赋值的示例. 在第一个迭代时, oldx 的值是 x 在 do 输入之前的值. 在后续的迭代中, oldx 包含了 x 在上一次迭代中的值.
 
-Init-form is an initial value for the var with which it is associated. If init-form is omitted, the initial value of var is nil. If a declaration is supplied for a var, init-form must be consistent with the declaration.
+    ```LISP
+    (do ((x foo (cdr x))
+          (y bar (cdr y))
+          (z '() (cons (f (car x) (car y)) z)))
+        ((or (null x) (null y))
+          (nreverse z)))
+    ```
 
-Declarations can appear at the beginning of a do (or do*) body. They apply to code in the do (or do*) body, to the bindings of the do (or do*) vars, to the step-forms, to the end-test-form, and to the result-forms.
+        和 (mapcar #'f foo bar) 做了一样的事. z 的步进计算就是变量是并行步进的一个例子. 并且, 这个循环的主体是空的.
 
-Examples:
+    ```LISP
+    (defun list-reverse (list)
+            (do ((x list (cdr x))
+                (y '() (cons (car x) y)))
+                ((endp x) y)))
+    ```
 
- (do ((temp-one 1 (1+ temp-one))
-       (temp-two 0 (1- temp-two)))
-      ((> (- temp-one temp-two) 5) temp-one)) =>  4
+        作为一个嵌套迭代的示例, 细想一个 cons 列表的数据结构. 每个 cons 的 car 是一个符号列表, 而每个 cons 的 cdr 是等长度的包含对应值的列表. 这样一个数据结构类似于关联列表, 但是被划分为 "frames"; 整体结构类似于 rib-cage. 这样一个数据结构的一个查找函数可能是:
 
- (do ((temp-one 1 (1+ temp-one))
-       (temp-two 0 (1+ temp-one)))     
-      ((= 3 temp-two) temp-one)) =>  3
+    ```LISP
+    (defun ribcage-lookup (sym ribcage)           
+            (do ((r ribcage (cdr r)))
+                ((null r) nil)
+              (do ((s (caar r) (cdr s))
+                  (v (cdar r) (cdr v))) 
+                  ((null s))
+                (when (eq (car s) sym)
+                  (return-from ribcage-lookup (car v)))))) =>  RIBCAGE-LOOKUP
+    ```
+
+* 受此影响(Affected By): None.
+
+* 异常情况(Exceptional Situations): None.
+
+* 也见(See Also):
+
+        其他迭代函数 (dolist, dotimes, 和 loop) 和更原始的功能 (tagbody, go, block, return, let, 和 setq)
+
+* 注意(Notes):
+
+        如果 end-test-form 是 nil, 这个测试条件从来不会成功. 这为 "do forever" 提供了一个惯用语法: 这个 do 或 do* 的主体被重复执行. 这个无限循环可以通过使用 return, return-from, go 到一个外部层级, 或 throw 来终止.
 
- (do* ((temp-one 1 (1+ temp-one))
-        (temp-two 0 (1+ temp-one)))
-       ((= 3 temp-two) temp-one)) =>  2                     
+        一个 do 表达式形式可能被解释为如下更原始的表达式形式 block, return, let, loop, tagbody, 和 psetq:
 
- (do ((j 0 (+ j 1)))
-     (nil)                       ;Do forever.
-   (format t "~%Input ~D:" j)
-   (let ((item (read)))
-     (if (null item) (return)   ;Process items until NIL seen.
-         (format t "~&Output ~D: ~S" j item))))
->>  Input 0: banana
->>  Output 0: BANANA
->>  Input 1: (57 boxes)
->>  Output 1: (57 BOXES)
->>  Input 2: NIL
-=>  NIL
+    ```LISP
+    (block nil        
+      (let ((var1 init1)
+            (var2 init2)
+            ...
+            (varn initn))
+        declarations
+        (loop (when end-test (return (progn . result)))
+              (tagbody . tagbody)
+              (psetq var1 step1
+                      var2 step2
+                      ...
+                      varn stepn))))
+    ```
 
- (setq a-vector (vector 1 nil 3 nil))
- (do ((i 0 (+ i 1))     ;Sets every null element of a-vector to zero.
-      (n (array-dimension a-vector 0)))
-     ((= i n))
-   (when (null (aref a-vector i))
-     (setf (aref a-vector i) 0))) =>  NIL
-a-vector =>  #(1 0 3 0)
+        do* 是类似的, 除了 let* 和 setq 分别替换 let 和 psetq. 
 
- (do ((x e (cdr x))
-      (oldx x x))
-     ((null x))
-   body)
+### <span id="MacroDOTIMES">宏 DOTIMES</span>
 
-is an example of parallel assignment to index variables. On the first iteration, the value of oldx is whatever value x had before the do was entered. On succeeding iterations, oldx contains the value that x had on the previous iteration.
+* 语法(Syntax):
 
- (do ((x foo (cdr x))
-      (y bar (cdr y))
-      (z '() (cons (f (car x) (car y)) z)))
-     ((or (null x) (null y))
-      (nreverse z)))
+        dotimes (var count-form [result-form]) declaration* {tag | statement}*
+        => result*
 
-does the same thing as (mapcar #'f foo bar). The step computation for z is an example of the fact that variables are stepped in parallel. Also, the body of the loop is empty.
+* 参数和值(Arguments and Values):
 
- (defun list-reverse (list)
-        (do ((x list (cdr x))
-             (y '() (cons (car x) y)))
-            ((endp x) y)))
+        var---一个符号.
+        count-form---一个表达式形式.
+        result-form---一个表达式形式.
+        declaration---一个 declare 表达式; 不求值.
+        tag---一个 go 标签; 不求值.
+        statement---一个复合表达式形式; 按如下所述求值.
+        results---如果执行了一个 return 或 return-from 表达式形式, 值从这个表达式形式传出来; 否则, 值通过 result-form 返回, 如果没有 result-form 就是 nil.
 
-As an example of nested iterations, consider a data structure that is a list of conses. The car of each cons is a list of symbols, and the cdr of each cons is a list of equal length containing corresponding values. Such a data structure is similar to an association list, but is divided into ``frames''; the overall structure resembles a rib-cage. A lookup function on such a data structure might be:
+* 描述(Description):
 
- (defun ribcage-lookup (sym ribcage)           
-        (do ((r ribcage (cdr r)))
-            ((null r) nil)
-          (do ((s (caar r) (cdr s))
-               (v (cdar r) (cdr v))) 
-              ((null s))
-            (when (eq (car s) sym)
-              (return-from ribcage-lookup (car v)))))) =>  RIBCAGE-LOOKUP
+        dotimes 遍历一系列整数.
 
-Affected By: None.
+        dotimes 求值 count-form, 它应该产生一个 integer. 如果 count-form 是 zero 或者负的, 这个主体不会被执行. dotimes 对于每一个从 0 到 count-form 的值但是不包括那个值的整数执行一次主体, 以这些 tag 和 statement 出现的顺序执行, 其中 var 绑定到每一个 integer. 然后 result-form 被求值. 在 result-form 被处理时, var 被绑定为主体执行的次数. Tags 标记 statements.
 
-Exceptional Situations: None.
+        隐式的名为 nil 的 block 包在 dotimes 周围. return 可以被用于在没有执行进一步迭代的情况下立即终止循环, 返回 0 个或多个值.
 
-See Also:
+        这个循环的主体是一个隐式的 tagbody; 它可能包含被当作 go 语句目标的 tags. 声明可能出现在 loop 的主体之前.
 
-other iteration functions (dolist, dotimes, and loop) and more primitive functionality (tagbody, go, block, return, let, and setq)
+        var 绑定的作用域不包括 count-form, 但是包括 result-form.
 
-Notes:
+        dotimes 是否在每次迭代为 var 建立一个新的绑定或者是否在开始的时候为 var 建立一次绑定而后续的迭代对它赋值, 这时依赖于具体实现的.
 
-If end-test-form is nil, the test will never succeed. This provides an idiom for ``do forever'': the body of the do or do* is executed repeatedly. The infinite loop can be terminated by the use of return, return-from, go to an outer level, or throw.
+* 示例(Examples):
 
-A do form may be explained in terms of the more primitive forms block, return, let, loop, tagbody, and psetq as follows:
+    ```LISP
+    (dotimes (temp-one 10 temp-one)) =>  10
+    (setq temp-two 0) =>  0
+    (dotimes (temp-one 10 t) (incf temp-two)) =>  T
+    temp-two =>  10
+    ```
 
- (block nil        
-   (let ((var1 init1)
-         (var2 init2)
-         ...
-         (varn initn))
-     declarations
-     (loop (when end-test (return (progn . result)))
-           (tagbody . tagbody)
-           (psetq var1 step1
-                  var2 step2
-                  ...
-                  varn stepn))))
+        这是使用 dotimes 来处理字符串的示例:
 
-do* is similar, except that let* and setq replace the let and psetq, respectively. 
+    ```LISP
+    ;;; True if the specified subsequence of the string is a
+    ;;; palindrome (reads the same forwards and backwards).
+    (defun palindromep (string &optional
+                              (start 0)
+                              (end (length string)))
+      (dotimes (k (floor (- end start) 2) t)
+        (unless (char-equal (char string (+ start k))
+                            (char string (- end k 1)))
+          (return nil))))
+    (palindromep "Able was I ere I saw Elba") =>  T
+    (palindromep "A man, a plan, a canal--Panama!") =>  NIL
+    (remove-if-not #'alpha-char-p          ;Remove punctuation.
+                  "A man, a plan, a canal--Panama!")
+    =>  "AmanaplanacanalPanama"
+    (palindromep
+      (remove-if-not #'alpha-char-p
+                    "A man, a plan, a canal--Panama!")) =>  T
+    (palindromep
+      (remove-if-not
+      #'alpha-char-p
+      "Unremarkable was I ere I saw Elba Kramer, nu?")) =>  T
+    (palindromep
+      (remove-if-not
+      #'alpha-char-p
+      "A man, a plan, a cat, a ham, a yak,
+                      a yam, a hat, a canal--Panama!")) =>  T
+    ```
 
+* 副作用(Side Effects): None.
 
-### <span id="">Macro DOTIMES</span>
+* 受此影响(Affected By): None.
 
-Syntax:
+* 异常情况(Exceptional Situations): None.
 
-dotimes (var count-form [result-form]) declaration* {tag | statement}*
+* 也见(See Also):
 
-=> result*
+        do, dolist, tagbody
 
-Arguments and Values:
+* 注意(Notes):
 
-var---a symbol.
-
-count-form---a form.
-
-result-form---a form.
-
-declaration---a declare expression; not evaluated.
-
-tag---a go tag; not evaluated.
-
-statement---a compound form; evaluated as described below.
-
-results---if a return or return-from form is executed, the values passed from that form; otherwise, the values returned by the result-form or nil if there is no result-form.
-
-Description:
-
-dotimes iterates over a series of integers.
-
-dotimes evaluates count-form, which should produce an integer. If count-form is zero or negative, the body is not executed. dotimes then executes the body once for each integer from 0 up to but not including the value of count-form, in the order in which the tags and statements occur, with var bound to each integer. Then result-form is evaluated. At the time result-form is processed, var is bound to the number of times the body was executed. Tags label statements.
-
-An implicit block named nil surrounds dotimes. return may be used to terminate the loop immediately without performing any further iterations, returning zero or more values.
-
-The body of the loop is an implicit tagbody; it may contain tags to serve as the targets of go statements. Declarations may appear before the body of the loop.
-
-The scope of the binding of var does not include the count-form, but the result-form is included.
-
-It is implementation-dependent whether dotimes establishes a new binding of var on each iteration or whether it establishes a binding for var once at the beginning and then assigns it on any subsequent iterations.
-
-Examples:
-
- (dotimes (temp-one 10 temp-one)) =>  10
- (setq temp-two 0) =>  0
- (dotimes (temp-one 10 t) (incf temp-two)) =>  T
- temp-two =>  10
-
-Here is an example of the use of dotimes in processing strings:
-
-;;; True if the specified subsequence of the string is a
-;;; palindrome (reads the same forwards and backwards).
- (defun palindromep (string &optional
-                           (start 0)
-                           (end (length string)))
-   (dotimes (k (floor (- end start) 2) t)
-    (unless (char-equal (char string (+ start k))
-                        (char string (- end k 1)))
-      (return nil))))
- (palindromep "Able was I ere I saw Elba") =>  T
- (palindromep "A man, a plan, a canal--Panama!") =>  NIL
- (remove-if-not #'alpha-char-p          ;Remove punctuation.
-               "A man, a plan, a canal--Panama!")
-=>  "AmanaplanacanalPanama"
- (palindromep
-  (remove-if-not #'alpha-char-p
-                "A man, a plan, a canal--Panama!")) =>  T
- (palindromep
-  (remove-if-not
-   #'alpha-char-p
-   "Unremarkable was I ere I saw Elba Kramer, nu?")) =>  T
- (palindromep
-  (remove-if-not
-   #'alpha-char-p
-   "A man, a plan, a cat, a ham, a yak,
-                  a yam, a hat, a canal--Panama!")) =>  T
-
-Side Effects: None.
-
-Affected By: None.
-
-Exceptional Situations: None.
-
-See Also:
-
-do, dolist, tagbody
-
-Notes:
-
-go may be used within the body of dotimes to transfer control to a statement labeled by a tag. 
-
+        在 dotimes 的主体中 go 可能被用于转移控制到一个 tag 标记的语句上. 
 
 ### <span id="">Macro DOLIST</span>
 
-Syntax:
+* 语法(Syntax):
 
-dolist (var list-form [result-form]) declaration* {tag | statement}*
+        dolist (var list-form [result-form]) declaration* {tag | statement}*
+        => result*
 
-=> result*
+* 参数和值(Arguments and Values):
 
-Arguments and Values:
+        var---一个符号.
+        list-form---一个表达式形式.
+        result-form---一个表达式形式.
+        declaration---一个 declare 表达式; 不求值.
+        tag---一个 go 标签; 不求值.
+        statement---一个复合表达式形式; 按如下所述求值.
+        results---如果执行了一个 return 或 return-from 表达式形式, 值从这个表达式形式传出来; 否则, 值通过 result-form 返回, 如果没有 result-form 就是 nil.
 
-var---a symbol.
+* 描述(Description):
 
-list-form---a form.
+        dolist 遍历一个列表的元素. dolist 的主体类似于一个 tagbody. 它由一系列的 tag 和 statement 组成.
 
-result-form---a form.
+        dolist 求值 list-form, 它应该产生一个列表. 对于列表中的每个元素执行一次主体, 以那些 tag 和 statement 出现的顺序求值, 其中 var 绑定为这个元素. 然后 result-form 被求值. 那些 tag 标记 statement.
 
-declaration---a declare expression; not evaluated.
+        在 result-form 被处理时, var 绑定为 nil.
 
-tag---a go tag; not evaluated.
+        一个名为 nil 的隐式的 block 包在 dolist 周围. return 可以被用于在没有执行进一步迭代的情况下立即终止循环, 返回 0 个或多个值.
 
-statement---a compound form; evaluated as described below.
+        这个 var 绑定的作用于不包括 list-form, 但是包括 result-form.
 
-results---if a return or return-from form is executed, the values passed from that form; otherwise, the values returned by the result-form or nil if there is no result-form.
+        dolist 是否在每次迭代为 var 建立一个新的绑定或者是否在开始的时候为 var 建立一次绑定而后续的迭代对它赋值, 这时依赖于具体实现的.
 
-Description:
+* 示例(Examples):
 
-dolist iterates over the elements of a list. The body of dolist is like a tagbody. It consists of a series of tags and statements.
+    ```LISP
+    (setq temp-two '()) =>  NIL
+    (dolist (temp-one '(1 2 3 4) temp-two) (push temp-one temp-two)) =>  (4 3 2 1)
 
-dolist evaluates list-form, which should produce a list. It then executes the body once for each element in the list, in the order in which the tags and statements occur, with var bound to the element. Then result-form is evaluated. tags label statements.
+    (setq temp-two 0) =>  0
+    (dolist (temp-one '(1 2 3 4)) (incf temp-two)) =>  NIL
+    temp-two =>  4
 
-At the time result-form is processed, var is bound to nil.
+    (dolist (x '(a b c d)) (prin1 x) (princ " ")) 
+    >>  A B C D 
+    =>  NIL
+    ```
 
-An implicit block named nil surrounds dolist. return may be used to terminate the loop immediately without performing any further iterations, returning zero or more values.
+* 副作用(Side Effects): None.
 
-The scope of the binding of var does not include the list-form, but the result-form is included.
+* 受此影响(Affected By): None.
 
-It is implementation-dependent whether dolist establishes a new binding of var on each iteration or whether it establishes a binding for var once at the beginning and then assigns it on any subsequent iterations.
+* 异常情况(Exceptional Situations): None.
 
-Examples:
+* 也见(See Also):
 
- (setq temp-two '()) =>  NIL
- (dolist (temp-one '(1 2 3 4) temp-two) (push temp-one temp-two)) =>  (4 3 2 1)
+        do, dotimes, tagbody, Section 3.6 (Traversal Rules and Side Effects)
 
- (setq temp-two 0) =>  0
- (dolist (temp-one '(1 2 3 4)) (incf temp-two)) =>  NIL
- temp-two =>  4
+* 注意(Notes):
 
- (dolist (x '(a b c d)) (prin1 x) (princ " ")) 
->>  A B C D 
-=>  NIL
-
-Side Effects: None.
-
-Affected By: None.
-
-Exceptional Situations: None.
-
-See Also:
-
-do, dotimes, tagbody, Section 3.6 (Traversal Rules and Side Effects)
-
-Notes:
-
-go may be used within the body of dolist to transfer control to a statement labeled by a tag. 
-
+        在 dolist 的主体中 go 可能被用于转移控制到一个 tag 标记的语句上. 
 
 ### <span id="">Macro LOOP</span>
 
-Syntax:
+* 语法(Syntax):
 
 The ``simple'' loop form:
 
@@ -1562,7 +1551,7 @@ other-var::= d-var-spec
 
 d-var-spec::= simple-var | nil | (d-var-spec . d-var-spec) 
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 compound-form---a compound form.
 
@@ -1584,11 +1573,11 @@ type-specifier---a type specifier. This might be either an atomic type specifier
 
 result---an object.
 
-Description:
+* 描述(Description):
 
 For details, see Section 6.1 (The LOOP Facility).
 
-Examples:
+* 示例(Examples):
 
 ;; An example of the simple form of LOOP.
  (defun sqrt-advisor ()
@@ -1626,15 +1615,15 @@ Examples:
          collect n)
 =>  (1 3 5 7 9)
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 do, dolist, dotimes, return, go, throw, Section 6.1.1.7 (Destructuring)
 
-Notes:
+* 注意(Notes):
 
 Except that loop-finish cannot be used within a simple loop form, a simple loop form is related to an extended loop form in the following way:
 
@@ -1643,15 +1632,15 @@ Except that loop-finish cannot be used within a simple loop form, a simple loop 
 
 Local Macro LOOP-FINISH
 
-Syntax:
+* 语法(Syntax):
 
 loop-finish <no arguments> =>|
 
-Description:
+* 描述(Description):
 
 The loop-finish macro can be used lexically within an extended loop form to terminate that form ``normally.'' That is, it transfers control to the loop epilogue of the lexically innermost extended loop form. This permits execution of any finally clause (for effect) and the return of any accumulated result.
 
-Examples:
+* 示例(Examples):
 
 ;; Terminate the loop, but return the accumulated count.
  (loop for i in '(1 2 3 stop-here 4 5 6)
@@ -1697,16 +1686,16 @@ Side Effects:
 
 Transfers control.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Whether or not loop-finish is fbound in the global environment is implementation-dependent; however, the restrictions on redefinition and shadowing of loop-finish are the same as for symbols in the COMMON-LISP package which are fbound in the global environment. The consequences of attempting to use loop-finish outside of loop are undefined.
 
-See Also:
+* 也见(See Also):
 
 loop, Section 6.1 (The LOOP Facility)
 
-Notes:
+* 注意(Notes):
 
 
