@@ -94,7 +94,7 @@ Loop 子句可以包含辅助关键字, 这个关键字有时候称之为介词.
 
     循环结尾包含循环终止后执行的表达式形式, 比如 finally 子句, 如果存在, 还有任何来自于 accumulation 子句的隐式的返回值或者一个 termination-test 子句.
 
-一些来自于源表达式形式的子句只对循环序言贡献代码; 这个子句必须在 loop 表达式主体中的其他子句之前. 其他子句只对循环结尾贡献代码. 所有其他的子句都以和原始的循环源形式中给出的相同的顺序对最终的转换表达式形式做出贡献.<!-- TODO contribute 贡献 ？？-->
+一些来自于源表达式形式的子句只对循环序言贡献代码; 这个子句必须在 loop 表达式主体中的其他子句之前. 其他子句只对循环结尾贡献代码. 所有其他的子句都以和原始的循环源形式中给出的相同的顺序对最终的转换表达式形式做出贡献.
 
 除非提供了名字, 否则 loop 表达式形式的展开产生一个隐式的名为 nil 的 block. 因此, return-from (有时为 return) 可以被用于从 loop 中返回值或退出 loop. 
 
@@ -175,9 +175,9 @@ Loop 子句属于以下类别之一:
 
 这个 loop unless 构造类似于 loop when 构造, 除了它互补那个检验结果.
 
-这个 loop else 构造提供一个可选的 if, when, 和 unless 子句组件, 当一个 if 或 when 检验产生 false 或者当一个 unless 检验产生 true 的时候被执行. 这个组建是 if 下面描述的子句之一.<!-- TODO component 组件 ？？-->
+这个 loop else 构造提供一个可选的 if, when, 和 unless 子句要素, 当一个 if 或 when 检验产生 false 或者当一个 unless 检验产生 true 的时候被执行. 这个要素是 if 下面描述的子句之一.
 
-这个 loop end 构造提供一个可选的组件用于标记一个条件子句的结束..<!-- TODO component 组件 ？？-->
+这个 loop end 构造提供一个可选的要素用于标记一个条件子句的结束.
 
 关于更多信息, 见章节 6.1.6 (Conditional Execution Clauses). 
 
@@ -522,7 +522,7 @@ Loop 子句属于以下类别之一:
 
 
 ##### 6.1.2.1.7 <span id="FAPSubclause">for-as-package 分子句</span>
-<!-- TODO external schema ??-->
+<!-- TODO schema ??-->
 在这个 for-as-package 分子句中 for 或 as 构造遍历一个包中的符号. 在这个语法中, 使用一个复合的介词来指定对一个包的访问. 变量 var 接收这个提供的包中每一个符号的值. 在这个语法中下面的 loop 关键字被当作合法的介词:
 
 * being
@@ -543,7 +543,7 @@ Loop 子句属于以下类别之一:
 
 * external-symbol, external-symbols
 
-        这些 Loop 模式迭代一个包中的扩展的符号. 要被迭代的包以提供给 find-package 的包参数相同的方式被提供. 如果没有提供用于迭代的包, 就使用当前包. 如果提供一个不存在的包, 会发出一个 package-error 类型的错误.
+        这些 Loop 模式迭代一个包中的外部符号. 要被迭代的包以提供给 find-package 的包参数相同的方式被提供. 如果没有提供用于迭代的包, 就使用当前包. 如果提供一个不存在的包, 会发出一个 package-error 类型的错误.
 
 * in, of
 
@@ -1011,7 +1011,7 @@ Error: non-numeric value: A
 
 #### 6.1.7.1 <span id="ControlTransferClauses">控制转移子句</span>
 
-named 构造为包含整个 loop 的隐式 block 确定一个名字, 这样 return-from 特殊操作符可以被用于从退出的 loop 返回值或者返回值去退出 loop.<!--TODO 待校验--> 一个 loop 表达式形式只能被赋予一个名字. 如果使用了, 这个 named 构造必须是这个 loop 表达式中的第一个子句.
+named 构造为包含整个 loop 的隐式 block 确定一个名字, 这样 return-from 特殊操作符可以被用于从 loop 返回值或者退出 loop. 一个 loop 表达式形式只能被赋予一个名字. 如果使用了, 这个 named 构造必须是这个 loop 表达式中的第一个子句.
 
 return 构造接收一个 form 表达式形式. 这个 form 返回的任何值都被这个 loop 表达式形式立即返回. 这个构造类似于 return-from 特殊操作符和 return 宏. return 构造不会执行这个 loop 表达式西形式给定的任何 finally 子句.
 
@@ -1031,9 +1031,9 @@ return 构造接收一个 form 表达式形式. 这个 form 返回的任何值�
 
 initially 和 finally 构造在这个 loop 主体之前和之后求值表达式形式.
 
-initially 构造导致提供的复合表达式形式 compound-forms 在迭代序言中被求值, 它在除了构造 with, for, 或 as 提供的初始化设置以外的所有 loop 代码之前. 任何 initially 子句的代码都是按照子句出现在这个 loop 中的顺序执行的.
+initially 构造导致提供的复合表达式形式 compound-forms 在循环序言中被求值, 它在除了构造 with, for, 或 as 提供的初始化设置以外的所有 loop 代码之前. 任何 initially 子句的代码都是按照子句出现在这个 loop 中的顺序执行的.
 
-finally 构造导致提供的复合表达式形式 compound-forms 在正常迭代终止的迭代结尾中被求值. 任何 finally 子句的代码都是按照子句出现在这个 loop 中的顺序执行的. 收集起来的代码只在任何累积子句返回隐式的值之前在迭代结尾执行一次. 但是一个从 loop 主体中隐式的控制转移 (比如, 通过 return, go, 或 throw) 会在没有执行结尾代码的情况下退出 loop.
+finally 构造导致提供的复合表达式形式 compound-forms 在正常迭代终止的循环结尾中被求值. 任何 finally 子句的代码都是按照子句出现在这个 loop 中的顺序执行的. 收集起来的代码只在任何累积子句返回隐式的值之前在循环结尾执行一次. 但是一个从 loop 主体中隐式的控制转移 (比如, 通过 return, go, 或 throw) 会在没有执行结尾代码的情况下退出 loop.
 
 像 return, always, never, 和 thereis 这样的子句可以绕开 finally 子句. return (或者 return-from, 如果提供了 named 选项的话) 可以被用于在 finally 之后从一个 loop 返回值. 这样一个 finally 子句中显式的返回优先于从通过诸如关键字 collect, nconc, append, sum, count, maximize, 和 minimize 提供的子句中返回累积值; 如果使用了 return 或 return-from, 这些子句累积的值不会被 loop 返回. 
 
@@ -1561,7 +1561,7 @@ finally 构造导致提供的复合表达式形式 compound-forms 在正常迭�
         vector---一个求值为一个向量的表达式形式.
         hash-table---一个求值为一个哈希表的表达式形式.
         package---一个求值为一个包指定符的表达式形式.
-        type-specifier---一个类型指定符. 这个可能是原子类型指定符也可能是复合类型指定符, 它引入了一些额外的复杂性<!--TODO complication ??-->, 以便在解构过程中进行适当的解析 ; 关于更多信息, 见章节 6.1.1.7 (Destructuring).
+        type-specifier---一个类型指定符. 这个可能是原子类型指定符也可能是复合类型指定符, 它引入了一些额外的复杂性, 以便在解构过程中进行适当的解析 ; 关于更多信息, 见章节 6.1.1.7 (Destructuring).
         result---一个对象.
 
 * 描述(Description):
@@ -1631,7 +1631,7 @@ finally 构造导致提供的复合表达式形式 compound-forms 在正常迭�
 
 * 描述(Description):
 
-        这个 loop-finish 宏可以被词法地使用于一个扩展 loop 表达式形式中来"正常"地终止这个表达式形式. 这也就是说, 它转移控制到词法上最内部的扩展 loop 表达式形式的迭代结尾. 这允许执行任何 finally 子句 (为了得到效果) 和返回任何累积结果.
+        这个 loop-finish 宏可以被词法地使用于一个扩展 loop 表达式形式中来"正常"地终止这个表达式形式. 这也就是说, 它转移控制到词法上最内部的扩展 loop 表达式形式的循环结尾. 这允许执行任何 finally 子句 (为了得到效果) 和返回任何累积结果.
 
 * 示例(Examples):
 
