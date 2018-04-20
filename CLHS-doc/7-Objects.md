@@ -1,51 +1,38 @@
- 7. Objects
+# 7. Objects
 
-7.1 Object Creation and Initialization
+> * 7.1 [对象创建和初始化](#ObjectCreationInit)
+> * 7.2 [Changing the Class of an Instance](#ChangeClassInstance)
+> * 7.3 [Reinitializing an Instance](#ReinitInstance)
+> * 7.4 [Meta-Objects](#MetaObjects)
+> * 7.5 [Slots](#Slots)
+> * 7.6 [Generic Functions and Methods](#GenericFunctionsMethods)
+> * 7.7 [The Objects Dictionary](#TheObjectsDictionary)
 
-7.2 Changing the Class of an Instance
+## 7.1 <span id="ObjectCreationInit">对象创建和初始化</span>
 
-7.3 Reinitializing an Instance
+广义函数 make-instance 创建并且返回一个类的实例. 第一个参数是一个类或者一个类的实例, 而剩余参数组成初始化参数列表.
 
-7.4 Meta-Objects
+一个新的实例的初始化由多个独立不同的步骤组成, 包括以下这些: 将显式提供的初始化参数与未提供的初始化参数的缺省值相结合, 检查初始化参数的有效性, 为实例分配存储, 用值来填充槽(slot), 并且执行用户提供的方法来执行额外的初始化. make-instance 的每个步骤都是通过一个广义函数实现的, 以提供一种定制该步骤的机制. 另外, make-instance 自身也是一个广义函数并且因此也可以被定制.
 
-7.5 Slots
+这个对象系统为每个步骤指定了系统提供的主要方法并且因此为整个初始化过程指定了一个定义明确的标准行为. 这个标准行为提供了四个简单的机制用于控制初始化:
 
-7.6 Generic Functions and Methods
+* 声明一个符号作为一个槽的初始化参数. 一个初始化参数是通过给 defclass 使用 :initarg 槽选项来声明的. 这个为在一个 make-instance 调用中给一个槽提供一个值提供了一个机制This provides a mechanism for supplying a value for a slot in a call to make-instance.
 
-7.7 The Objects Dictionary
+* 为一个初始化参数提供一个默认值表达式形式. 初始化参数的默认值表达式形式通过给 defclass 使用 :default-initargs 类选项来定义的. 如果没有给 make-instance 明确提供一个初始化参数作为参数, 那么默认值表达式形式就会在定义它的 defclass 表达式形式的词法环境中被求值, 并且结果值被用作这个初始化参数的值.
 
- 7.1 Object Creation and Initialization
+* 为一个槽提供一个默认的初始值表达式形式. 一个槽的默认初始值表达式形式通过给 defclass 提供 :initform 槽选项来定义的. 如果没有给 make-instance 提供和那个槽关联的初始化参数或者通过 :default-initargs<!-- TODO 待校验 -->, 那么这个默认初始值表达式形式就会在定义它的 defclass 表达式形式的词法环境中被求值, 并且这个结果被存储到这个槽中. 当创建一个实例时, 更新一个实例来符合重定义的类时, 或者更新一个实例来符合不同类的定义时, 一个局部槽的这个 :initform 表达式形式可能被使用. 当定义或者重定义这个类时, 一个共享槽的这个 :initform 表达式形式会被使用.
 
-The generic function make-instance creates and returns a new instance of a class. The first argument is a class or the name of a class, and the remaining arguments form an initialization argument list.
+* 为 initialize-instance 和 shared-initialize 定义方法. 上面描述的槽填充行为是由一个系统提供的 initialize-instance 主方法来实现的, 它调用 shared-initialize. 广义函数 shared-initialize 分这四种情况实现了初始化部分<!-- TODO 待校验 -->: 创建一个实例的时候, 重新初始化一个实例的时候, 更新一个实例来符合重定义的类时, 还有更新一个实例来符合一个不同的类的定义时. shared-initialize 的系统提供的主方法直接实现上述槽填充行为, 而 initialize-instance 简单地调用 shared-initialize.
 
-The initialization of a new instance consists of several distinct steps, including the following: combining the explicitly supplied initialization arguments with default values for the unsupplied initialization arguments, checking the validity of the initialization arguments, allocating storage for the instance, filling slots with values, and executing user-supplied methods that perform additional initialization. Each step of make-instance is implemented by a generic function to provide a mechanism for customizing that step. In addition, make-instance is itself a generic function and thus also can be customized.
+> * 7.1.1 [Initialization Arguments](#)
+> * 7.1.2 [Declaring the Validity of Initialization Arguments](#)
+> * 7.1.3 [Defaulting of Initialization Arguments](#)
+> * 7.1.4 [Rules for Initialization Arguments](#)
+> * 7.1.5 [Shared-Initialize](#)
+> * 7.1.6 [Initialize-Instance](#)
+> * 7.1.7 [Definitions of Make-Instance and Initialize-Instance](#)
 
-The object system specifies system-supplied primary methods for each step and thus specifies a well-defined standard behavior for the entire initialization process. The standard behavior provides four simple mechanisms for controlling initialization:
-
-* Declaring a symbol to be an initialization argument for a slot. An initialization argument is declared by using the :initarg slot option to defclass. This provides a mechanism for supplying a value for a slot in a call to make-instance.
-
-* Supplying a default value form for an initialization argument. Default value forms for initialization arguments are defined by using the :default-initargs class option to defclass. If an initialization argument is not explicitly provided as an argument to make-instance, the default value form is evaluated in the lexical environment of the defclass form that defined it, and the resulting value is used as the value of the initialization argument.
-
-* Supplying a default initial value form for a slot. A default initial value form for a slot is defined by using the :initform slot option to defclass. If no initialization argument associated with that slot is given as an argument to make-instance or is defaulted by :default-initargs, this default initial value form is evaluated in the lexical environment of the defclass form that defined it, and the resulting value is stored in the slot. The :initform form for a local slot may be used when creating an instance, when updating an instance to conform to a redefined class, or when updating an instance to conform to the definition of a different class. The :initform form for a shared slot may be used when defining or re-defining the class.
-
-* Defining methods for initialize-instance and shared-initialize. The slot-filling behavior described above is implemented by a system-supplied primary method for initialize-instance which invokes shared-initialize. The generic function shared-initialize implements the parts of initialization shared by these four situations: when making an instance, when re-initializing an instance, when updating an instance to conform to a redefined class, and when updating an instance to conform to the definition of a different class. The system-supplied primary method for shared-initialize directly implements the slot-filling behavior described above, and initialize-instance simply invokes shared-initialize.
-
-7.1.1 Initialization Arguments
-
-7.1.2 Declaring the Validity of Initialization Arguments
-
-7.1.3 Defaulting of Initialization Arguments
-
-7.1.4 Rules for Initialization Arguments
-
-7.1.5 Shared-Initialize
-
-7.1.6 Initialize-Instance
-
-7.1.7 Definitions of Make-Instance and Initialize-Instance
-
-
- 7.1.1 Initialization Arguments
+### 7.1.1 <span id="">Initialization Arguments</span>
 
 An initialization argument controls object creation and initialization. It is often convenient to use keyword symbols to name initialization arguments, but the name of an initialization argument can be any symbol, including nil. An initialization argument can be used in two ways: to fill a slot with a value or to provide an argument for an initialization method. A single initialization argument can be used for both purposes.
 
@@ -60,7 +47,7 @@ Initialization arguments are used in four situations: when making an instance, w
 Because initialization arguments are used to control the creation and initialization of an instance of some particular class, we say that an initialization argument is ``an initialization argument for'' that class. 
 
 
- 7.1.2 Declaring the Validity of Initialization Arguments
+### 7.1.2 <span id="">Declaring the Validity of Initialization Arguments</span>
 
 Initialization arguments are checked for validity in each of the four situations that use them. An initialization argument may be valid in one situation and not another. For example, the system-supplied primary method for make-instance defined for the class standard-class checks the validity of its initialization arguments and signals an error if an initialization argument is supplied that is not declared as valid in that situation.
 
@@ -81,7 +68,7 @@ There are two means for declaring initialization arguments valid.
 The set of valid initialization arguments for a class is the set of valid initialization arguments that either fill slots or supply arguments to methods, along with the predefined initialization argument :allow-other-keys. The default value for :allow-other-keys is nil. Validity checking of initialization arguments is disabled if the value of the initialization argument :allow-other-keys is true. 
 
 
- 7.1.3 Defaulting of Initialization Arguments
+### 7.1.3 <span id="">Defaulting of Initialization Arguments</span>
 
 A default value form can be supplied for an initialization argument by using the :default-initargs class option. If an initialization argument is declared valid by some particular class, its default value form might be specified by a different class. In this case :default-initargs is used to supply a default value for an inherited initialization argument.
 
@@ -96,7 +83,7 @@ There is a distinction between the purposes of the :default-initargs and the :in
 The order of evaluation of default value forms for initialization arguments and the order of evaluation of :initform forms are undefined. If the order of evaluation is important, initialize-instance or shared-initialize methods should be used instead. 
 
 
- 7.1.4 Rules for Initialization Arguments
+### 7.1.4 <span id="">Rules for Initialization Arguments<\span>
 
 The :initarg slot option may be specified more than once for a given slot.
 
@@ -132,7 +119,7 @@ Form                          Initialization Argument List  Contents of Slot X
 (make-instance 'r 'a 1 'a 2)  (a 1 a 2 b 2)                 1                   
 
 
- 7.1.5 Shared-Initialize
+### 7.1.5 <span id="">Shared-Initialize</span>
 
 The generic function shared-initialize is used to fill the slots of an instance using initialization arguments and :initform forms when an instance is created, when an instance is re-initialized, when an instance is updated to conform to a redefined class, and when an instance is updated to conform to a different class. It uses standard method combination. It takes the following arguments: the instance to be initialized, a specification of a set of names of slots accessible in that instance, and any number of initialization arguments. The arguments after the first two must form an initialization argument list.
 
@@ -153,7 +140,7 @@ There is a system-supplied primary method for shared-initialize whose first para
 The generic function shared-initialize is called by the system-supplied primary methods for reinitialize-instance, update-instance-for-different-class, update-instance-for-redefined-class, and initialize-instance. Thus, methods can be written for shared-initialize to specify actions that should be taken in all of these contexts. 
 
 
- 7.1.6 Initialize-Instance
+### 7.1.6 <span id="">Initialize-Instance</span>
 
 The generic function initialize-instance is called by make-instance to initialize a newly created instance. It uses standard method combination. Methods for initialize-instance can be defined in order to perform any initialization that cannot be achieved simply by supplying initial values for slots.
 
@@ -174,7 +161,7 @@ Methods for initialize-instance can be defined to specify actions to be taken wh
 The object system provides two functions that are useful in the bodies of initialize-instance methods. The function slot-boundp returns a generic boolean value that indicates whether a specified slot has a value; this provides a mechanism for writing after methods for initialize-instance that initialize slots only if they have not already been initialized. The function slot-makunbound causes the slot to have no value. 
 
 
- 7.1.7 Definitions of Make-Instance and Initialize-Instance
+### 7.1.7 <span id="">Definitions of Make-Instance and Initialize-Instance</span>
 
 The generic function make-instance behaves as if it were defined as follows, except that certain optimizations are permitted:
 
@@ -201,7 +188,7 @@ Customizing at the Programmer Interface level includes using the :initform, :ini
 Implementations are permitted to make certain optimizations to initialize-instance and shared-initialize. The description of shared-initialize in Chapter 7 mentions the possible optimizations. 
 
 
- 7.2 Changing the Class of an Instance
+## 7.2 <span id="">Changing the Class of an Instance</span>
 
 The function change-class can be used to change the class of an instance from its current class, Cfrom, to a different class, Cto; it changes the structure of the instance to conform to the definition of the class Cto.
 
@@ -209,14 +196,7 @@ Note that changing the class of an instance may cause slots to be added or delet
 
 When change-class is invoked on an instance, a two-step updating process takes place. The first step modifies the structure of the instance by adding new local slots and discarding local slots that are not specified in the new version of the instance. The second step initializes the newly added local slots and performs any other user-defined actions. These two steps are further described in the two following sections.
 
-7.2.1 Modifying the Structure of the Instance
-
-7.2.2 Initializing Newly Added Local Slots
-
-7.2.3 Customizing the Change of Class of an Instance
-
-
- 7.2.1 Modifying the Structure of the Instance
+### 7.2.1 Modifying the Structure of the Instance
 
 In order to make the instance conform to the class Cto, local slots specified by the class Cto that are not specified by the class Cfrom are added, and local slots not specified by the class Cto that are specified by the class Cfrom are discarded.
 
@@ -227,7 +207,7 @@ The values of slots specified as shared in the class Cfrom and as local in the c
 This first step of the update does not affect the values of any shared slots. 
 
 
- 7.2.2 Initializing Newly Added Local Slots
+### 7.2.2 Initializing Newly Added Local Slots
 
 The second step of the update initializes the newly added slots and performs any other user-defined actions. This step is implemented by the generic function update-instance-for-different-class. The generic function update-instance-for-different-class is invoked by change-class after the first step of the update has been completed.
 
@@ -236,14 +216,14 @@ The generic function update-instance-for-different-class is invoked on arguments
 There is a system-supplied primary method for update-instance-for-different-class that has two parameter specializers, each of which is the class standard-object. First this method checks the validity of initialization arguments and signals an error if an initialization argument is supplied that is not declared as valid. (For more information, see Section 7.1.2 (Declaring the Validity of Initialization Arguments).) Then it calls the generic function shared-initialize with the following arguments: the new instance, a list of names of the newly added slots, and the initialization arguments it received. 
 
 
- 7.2.3 Customizing the Change of Class of an Instance
+### 7.2.3 Customizing the Change of Class of an Instance
 
 Methods for update-instance-for-different-class may be defined to specify actions to be taken when an instance is updated. If only after methods for update-instance-for-different-class are defined, they will be run after the system-supplied primary method for initialization and will not interfere with the default behavior of update-instance-for-different-class.
 
 Methods for shared-initialize may be defined to customize class redefinition. For more information, see Section 7.1.5 (Shared-Initialize). 
 
 
- 7.3 Reinitializing an Instance
+## 7.3 <span id="">Reinitializing an Instance</span>
 
 The generic function reinitialize-instance may be used to change the values of slots according to initialization arguments.
 
@@ -253,24 +233,18 @@ The generic function reinitialize-instance may be called directly. It takes one 
 
 There is a system-supplied primary method for reinitialize-instance whose parameter specializer is the class standard-object. First this method checks the validity of initialization arguments and signals an error if an initialization argument is supplied that is not declared as valid. (For more information, see Section 7.1.2 (Declaring the Validity of Initialization Arguments).) Then it calls the generic function shared-initialize with the following arguments: the instance, nil, and the initialization arguments it received.
 
-7.3.1 Customizing Reinitialization
-
-
- 7.3.1 Customizing Reinitialization
+### 7.3.1 Customizing Reinitialization
 
 Methods for reinitialize-instance may be defined to specify actions to be taken when an instance is updated. If only after methods for reinitialize-instance are defined, they will be run after the system-supplied primary method for initialization and therefore will not interfere with the default behavior of reinitialize-instance.
 
 Methods for shared-initialize may be defined to customize class redefinition. For more information, see Section 7.1.5 (Shared-Initialize). 
 
 
- 7.4 Meta-Objects
+## 7.4 <span id="">Meta-Objects</span>
 
 The implementation of the object system manipulates classes, methods, and generic functions. The object system contains a set of generic functions defined by methods on classes; the behavior of those generic functions defines the behavior of the object system. The instances of the classes on which those methods are defined are called meta-objects.
 
-7.4.1 Standard Meta-objects
-
-
- 7.4.1 Standard Meta-objects
+### 7.4.1 Standard Meta-objects
 
 The object system supplies a set of meta-objects, called standard meta-objects. These include the class standard-object and instances of the classes standard-method, standard-generic-function, and method-combination.
 
@@ -283,16 +257,14 @@ The object system supplies a set of meta-objects, called standard meta-objects. 
 * Every method combination object is an instance of a subclass of class method-combination. 
 
 
- 7.5 Slots
+## 7.5 <span id="">Slots</span>
 
-7.5.1 Introduction to Slots
-
-7.5.2 Accessing Slots
-
-7.5.3 Inheritance of Slots and Slot Options
+> * 7.5.1 [Introduction to Slots](#)
+> * 7.5.2 [Accessing Slots](#)
+> * 7.5.3 [Inheritance of Slots and Slot Options](#)
 
 
- 7.5.1 Introduction to Slots
+### 7.5.1 <span id="">Introduction to Slots</span>
 
 An object of metaclass standard-class has zero or more named slots. The slots of an object are determined by the class of the object. Each slot can hold one value. The name of a slot is a symbol that is syntactically valid for use as a variable name.
 
@@ -309,7 +281,7 @@ The :allocation slot option to defclass controls the kind of slot that is define
 A slot is said to be accessible in an instance of a class if the slot is defined by the class of the instance or is inherited from a superclass of that class. At most one slot of a given name can be accessible in an instance. A shared slot defined by a class is accessible in all instances of that class. A detailed explanation of the inheritance of slots is given in Section 7.5.3 (Inheritance of Slots and Slot Options). 
 
 
- 7.5.2 Accessing Slots
+### 7.5.2 <span id="">Accessing Slots</span>
 
 Slots can be accessed in two ways: by use of the primitive function slot-value and by use of generic functions generated by the defclass form.
 
@@ -328,7 +300,7 @@ The macro with-slots can be used to establish a lexical environment in which spe
 The macro with-accessors can be used to establish a lexical environment in which specified slots are lexically available through their accessors as if they were variables. The macro with-accessors invokes the appropriate accessors to access the specified slots. 
 
 
- 7.5.3 Inheritance of Slots and Slot Options
+### 7.5.3 <span id="">Inheritance of Slots and Slot Options</span>
 
 The set of the names of all slots accessible in an instance of a class C is the union of the sets of names of slots defined by C and its superclasses. The structure of an instance is the set of names of local slots in that instance.
 
@@ -357,24 +329,18 @@ The :reader, :writer, and :accessor slot options create methods rather than defi
 Methods that access slots use only the name of the slot and the type of the slot's value. Suppose a superclass provides a method that expects to access a shared slot of a given name, and a subclass defines a local slot with the same name. If the method provided by the superclass is used on an instance of the subclass, the method accesses the local slot. 
 
 
- 7.6 Generic Functions and Methods
+## 7.6 <span id="">Generic Functions and Methods</span>
 
-7.6.1 Introduction to Generic Functions
-
-7.6.2 Introduction to Methods
-
-7.6.3 Agreement on Parameter Specializers and Qualifiers
-
-7.6.4 Congruent Lambda-lists for all Methods of a Generic Function
-
-7.6.5 Keyword Arguments in Generic Functions and Methods
-
-7.6.6 Method Selection and Combination
-
-7.6.7 Inheritance of Methods
+> * 7.6.1 [Introduction to Generic Functions](#)
+> * 7.6.2 [Introduction to Methods](#)
+> * 7.6.3 [Agreement on Parameter Specializers and Qualifiers](#)
+> * 7.6.4 [Congruent Lambda-lists for all Methods of a Generic Function](#)
+> * 7.6.5 [Keyword Arguments in Generic Functions and Methods](#)
+> * 7.6.6 [Method Selection and Combination](#)
+> * 7.6.7 [Inheritance of Methods](#)
 
 
- 7.6.1 Introduction to Generic Functions
+### 7.6.1 <span id="">Introduction to Generic Functions</span>
 
 A generic function is a function whose behavior depends on the classes or identities of the arguments supplied to it. A generic function object is associated with a set of methods, a lambda list, a method combination[2], and other information.
 
@@ -404,7 +370,7 @@ define-condition  defstruct
 Figure 7-1. Standardized Method-Defining Operators Note that of the standardized method-defining operators only defgeneric can specify generic function options. defgeneric and any implementation-defined operators that can specify generic function options are also referred to as ``operators that specify generic function options.'' 
 
 
- 7.6.2 Introduction to Methods
+### 7.6.2 <span id="">Introduction to Methods</span>
 
 Methods define the class-specific or identity-specific behavior and operations of a generic function.
 
@@ -453,7 +419,7 @@ Methods can have qualifiers, which give the method combination procedure a way t
 In this specification, the terms ``primary method'' and ``auxiliary method'' are used to partition methods within a method combination type according to their intended use. In standard method combination, primary methods are unqualified methods and auxiliary methods are methods with a single qualifier that is one of :around, :before, or :after. Methods with these qualifiers are called around methods, before methods, and after methods, respectively. When a method combination type is defined using the short form of define-method-combination, primary methods are methods qualified with the name of the type of method combination, and auxiliary methods have the qualifier :around. Thus the terms ``primary method'' and ``auxiliary method'' have only a relative definition within a given method combination type. 
 
 
- 7.6.3 Agreement on Parameter Specializers and Qualifiers
+### 7.6.3 <span id="">Agreement on Parameter Specializers and Qualifiers</span>
 
 Two methods are said to agree with each other on parameter specializers and qualifiers if the following conditions hold:
 
@@ -464,7 +430,7 @@ Two methods are said to agree with each other on parameter specializers and qual
 3. The two lists of qualifiers are the same under equal. 
 
 
- 7.6.4 Congruent Lambda-lists for all Methods of a Generic Function
+### 7.6.4 <span id="">Congruent Lambda-lists for all Methods of a Generic Function</span>
 
 These rules define the congruence of a set of lambda lists, including the lambda list of each method for a given generic function and the lambda list specified for the generic function itself, if given.
 
@@ -483,16 +449,13 @@ These rules define the congruence of a set of lambda lists, including the lambda
     If a method-defining operator that cannot specify generic function options creates a generic function, and if the lambda list for the method mentions keyword arguments, the lambda list of the generic function will mention &key (but no keyword arguments). 
 
 
- 7.6.5 Keyword Arguments in Generic Functions and Methods
+### 7.6.5 <span id="">Keyword Arguments in Generic Functions and Methods</span>
 
 When a generic function or any of its methods mentions &key in a lambda list, the specific set of keyword arguments accepted by the generic function varies according to the applicable methods. The set of keyword arguments accepted by the generic function for a particular call is the union of the keyword arguments accepted by all applicable methods and the keyword arguments mentioned after &key in the generic function definition, if any. A method that has &rest but not &key does not affect the set of acceptable keyword arguments. If the lambda list of any applicable method or of the generic function definition contains &allow-other-keys, all keyword arguments are accepted by the generic function.
 
 The lambda list congruence rules require that each method accept all of the keyword arguments mentioned after &key in the generic function definition, by accepting them explicitly, by specifying &allow-other-keys, or by specifying &rest but not &key. Each method can accept additional keyword arguments of its own, in addition to the keyword arguments mentioned in the generic function definition.
 
 If a generic function is passed a keyword argument that no applicable method accepts, an error should be signaled; see Section 3.5 (Error Checking in Function Calls).
-
-7.6.5.1 Examples of Keyword Arguments in Generic Functions and Methods
-
 
  7.6.5.1 Examples of Keyword Arguments in Generic Functions and Methods
 
@@ -519,7 +482,7 @@ The evaluation of the following form will not signal an error if the class named
 
 
 
- 7.6.6 Method Selection and Combination
+### 7.6.6 <span id="">Method Selection and Combination</span>
 
 When a generic function is called with particular arguments, it must determine the code to execute. This code is called the effective method for those arguments. The effective method is a combination of the applicable methods in the generic function that calls some or all of the methods.
 
@@ -527,16 +490,13 @@ If a generic function is called and no methods are applicable, the generic funct
 
 When the effective method has been determined, it is invoked with the same arguments as were passed to the generic function. Whatever values it returns are returned as the values of the generic function.
 
-7.6.6.1 Determining the Effective Method
-
-7.6.6.2 Standard Method Combination
-
-7.6.6.3 Declarative Method Combination
-
-7.6.6.4 Built-in Method Combination Types
+> * 7.6.6.1 [Determining the Effective Method](#)
+> * 7.6.6.2 [Standard Method Combination](#)
+> * 7.6.6.3 [Declarative Method Combination](#)
+> * 7.6.6.4 [Built-in Method Combination Types](#)
 
 
- 7.6.6.1 Determining the Effective Method
+#### 7.6.6.1 <span id="">Determining the Effective Method</span>
 
 The effective method is determined by the following three-step procedure:
 
@@ -546,18 +506,11 @@ The effective method is determined by the following three-step procedure:
 
 3. Apply method combination to the sorted list of applicable methods, producing the effective method.
 
-7.6.6.1.1 Selecting the Applicable Methods
-
-7.6.6.1.2 Sorting the Applicable Methods by Precedence Order
-
-7.6.6.1.3 Applying method combination to the sorted list of applicable methods
-
-
- 7.6.6.1.1 Selecting the Applicable Methods
+##### 7.6.6.1.1 Selecting the Applicable Methods
 
 This step is described in Section 7.6.2 (Introduction to Methods). 
 
- 7.6.6.1.2 Sorting the Applicable Methods by Precedence Order
+##### 7.6.6.1.2 Sorting the Applicable Methods by Precedence Order
 
 To compare the precedence of two methods, their parameter specializers are examined in order. The default examination order is from left to right, but an alternative order may be specified by the :argument-precedence-order option to defgeneric or to any of the other operators that specify generic function options.
 
@@ -570,7 +523,7 @@ If just one of a pair of corresponding parameter specializers is (eql object), t
 The resulting list of applicable methods has the most specific method first and the least specific method last. 
 
 
- 7.6.6.1.3 Applying method combination to the sorted list of applicable methods
+##### 7.6.6.1.3 Applying method combination to the sorted list of applicable methods
 
 In the simple case---if standard method combination is used and all applicable methods are primary methods---the effective method is the most specific method. That method can call the next most specific method by using the function call-next-method. The method that call-next-method will call is referred to as the next method. The predicate next-method-p tests whether a next method exists. If call-next-method is called and there is no next most specific method, the generic function no-next-method is invoked.
 
@@ -585,7 +538,7 @@ Another type of method combination can be specified by using the :method-combina
 New types of method combination can be defined by using the define-method-combination macro. 
 
 
- 7.6.6.2 Standard Method Combination
+#### 7.6.6.2 <span id="">Standard Method Combination</span>
 
 Standard method combination is supported by the class standard-generic-function. It is used if no other type of method combination is specified or if the built-in method combination type standard is specified.
 
@@ -624,12 +577,12 @@ By contrast, all around methods run before any other methods run. Thus a less sp
 If only primary methods are used and if call-next-method is not used, only the most specific method is invoked; that is, more specific methods shadow more general ones. 
 
 
- 7.6.6.3 Declarative Method Combination
+#### 7.6.6.3 <span id="">Declarative Method Combination</span>
 
 The macro define-method-combination defines new forms of method combination. It provides a mechanism for customizing the production of the effective method. The default procedure for producing an effective method is described in Section 7.6.6.1 (Determining the Effective Method). There are two forms of define-method-combination. The short form is a simple facility while the long form is more powerful and more verbose. The long form resembles defmacro in that the body is an expression that computes a Lisp form; it provides mechanisms for implementing arbitrary control structures within method combination and for arbitrary processing of method qualifiers. 
 
 
- 7.6.6.4 Built-in Method Combination Types
+#### 7.6.6.4 <span id="">Built-in Method Combination Types</span>
 
 The object system provides a set of built-in method combination types. To specify that a generic function is to use one of these method combination types, the name of the method combination type is given as the argument to the :method-combination option to defgeneric or to the :method-combination option to any of the other operators that specify generic function options.
 
@@ -669,7 +622,7 @@ The default order for the primary methods is :most-specific-first. However, the 
 The simple built-in method combination types require exactly one qualifier per method. An error is signaled if there are applicable methods with no qualifiers or with qualifiers that are not supported by the method combination type. An error is signaled if there are applicable around methods and no applicable primary methods. 
 
 
- 7.6.7 Inheritance of Methods
+### 7.6.7 <span id="">Inheritance of Methods</span>
 
 A subclass inherits methods in the sense that any method applicable to all instances of a class is also applicable to all instances of any subclass of that class.
 
@@ -678,88 +631,48 @@ The inheritance of methods acts the same way regardless of which of the method-d
 The inheritance of methods is described in detail in Section 7.6.6 (Method Selection and Combination). 
 
 
- 7.7 The Objects Dictionary
+## 7.7 <span id="">The Objects Dictionary</span>
 
 Standard Generic Function FUNCTION-KEYWORDS
-
 Function ENSURE-GENERIC-FUNCTION
-
 Standard Generic Function ALLOCATE-INSTANCE
-
 Standard Generic Function REINITIALIZE-INSTANCE
-
 Standard Generic Function SHARED-INITIALIZE
-
 Standard Generic Function UPDATE-INSTANCE-FOR-DIFFERENT-CLASS
-
 Standard Generic Function UPDATE-INSTANCE-FOR-REDEFINED-CLASS
-
 Standard Generic Function CHANGE-CLASS
-
 Function SLOT-BOUNDP
-
 Function SLOT-EXISTS-P
-
 Function SLOT-MAKUNBOUND
-
 Standard Generic Function SLOT-MISSING
-
 Standard Generic Function SLOT-UNBOUND
-
 Function SLOT-VALUE
-
 Standard Generic Function METHOD-QUALIFIERS
-
 Standard Generic Function NO-APPLICABLE-METHOD
-
 Standard Generic Function NO-NEXT-METHOD
-
 Standard Generic Function REMOVE-METHOD
-
 Standard Generic Function MAKE-INSTANCE
-
 Standard Generic Function MAKE-INSTANCES-OBSOLETE
-
 Standard Generic Function MAKE-LOAD-FORM
-
 Function MAKE-LOAD-FORM-SAVING-SLOTS
-
 Macro WITH-ACCESSORS
-
 Macro WITH-SLOTS
-
 Macro DEFCLASS
-
 Macro DEFGENERIC
-
 Macro DEFMETHOD
-
 Accessor FIND-CLASS
-
 Local Function NEXT-METHOD-P
-
 Local Macro CALL-METHOD, MAKE-METHOD
-
 Local Function CALL-NEXT-METHOD
-
 Standard Generic Function COMPUTE-APPLICABLE-METHODS
-
 Macro DEFINE-METHOD-COMBINATION
-
 Standard Generic Function FIND-METHOD
-
 Standard Generic Function ADD-METHOD
-
 Standard Generic Function INITIALIZE-INSTANCE
-
 Standard Generic Function CLASS-NAME
-
 Standard Generic Function (SETF CLASS-NAME)
-
 Function CLASS-OF
-
 Condition Type UNBOUND-SLOT
-
 Function UNBOUND-SLOT-INSTANCE
 
 
