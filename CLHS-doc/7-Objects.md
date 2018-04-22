@@ -24,63 +24,62 @@
 
 * 为 initialize-instance 和 shared-initialize 定义方法. 上面描述的槽填充行为是由一个系统提供的 initialize-instance 主方法来实现的, 它调用 shared-initialize. 广义函数 shared-initialize 分这四种情况实现了初始化部分<!-- TODO 待校验 -->: 创建一个实例的时候, 重新初始化一个实例的时候, 更新一个实例来符合重定义的类时, 还有更新一个实例来符合一个不同的类的定义时. shared-initialize 的系统提供的主方法直接实现上述槽填充行为, 而 initialize-instance 简单地调用 shared-initialize.
 
-> * 7.1.1 [Initialization Arguments](#)
-> * 7.1.2 [Declaring the Validity of Initialization Arguments](#)
-> * 7.1.3 [Defaulting of Initialization Arguments](#)
-> * 7.1.4 [Rules for Initialization Arguments](#)
-> * 7.1.5 [Shared-Initialize](#)
-> * 7.1.6 [Initialize-Instance](#)
-> * 7.1.7 [Definitions of Make-Instance and Initialize-Instance](#)
+> * 7.1.1 [初始化参数](#InitArguments)
+> * 7.1.2 [声明初始化参数的有效性](#DeclaringValidityInitArg)
+> * 7.1.3 [初始化参数的默认值](#DefaultInitArg)
+> * 7.1.4 [初始化参数的规则](#RulesInitArg)
+> * 7.1.5 [Shared-Initialize](#SharedInitialize)
+> * 7.1.6 [Initialize-Instance](#InitializeInstance)
+> * 7.1.7 [Make-Instance 和 Initialize-Instance 的定义](#DefMIII)
 
-### 7.1.1 <span id="">Initialization Arguments</span>
+### 7.1.1 <span id="InitArguments">初始化参数</span>
 
-An initialization argument controls object creation and initialization. It is often convenient to use keyword symbols to name initialization arguments, but the name of an initialization argument can be any symbol, including nil. An initialization argument can be used in two ways: to fill a slot with a value or to provide an argument for an initialization method. A single initialization argument can be used for both purposes.
+一个初始化参数控制对象的创建和初始化. 使用关键字符号来命名初始化参数往往是很方便的, 但是初始化参数的名字可以是任何符号, 包括 nil. 一个初始化参数可以以两种方式被使用: 用一个值去填充一个槽或者为一个初始化方法提供一个参数. 一个单个的初始化参数可以被同时用作这两个目的.
 
-An initialization argument list is a property list of initialization argument names and values. Its structure is identical to a property list and also to the portion of an argument list processed for &key parameters. As in those lists, if an initialization argument name appears more than once in an initialization argument list, the leftmost occurrence supplies the value and the remaining occurrences are ignored. The arguments to make-instance (after the first argument) form an initialization argument list.
+一个初始化参数列表是一个初始化参数名字和值的属性列表. 它的结构与属性列表相同, 也与处理过的 &key 参数的参数列表部分相同. 在这些列表中, 如果一个初始化参数名称在初始化参数列表中出现不止一次, 那么最左边出现的就会提供值, 而其余的会被忽略. 给 make-instance 的参数 (在第一个参数后面的) 组成初始化参数列表.
 
-An initialization argument can be associated with a slot. If the initialization argument has a value in the initialization argument list, the value is stored into the slot of the newly created object, overriding any :initform form associated with the slot. A single initialization argument can initialize more than one slot. An initialization argument that initializes a shared slot stores its value into the shared slot, replacing any previous value.
+一个初始化参数可以和一个槽关联. 如果这个初始化参数在初始化列表中有一个值, 这个值会被存储到新创建对象的那个槽中, 覆盖任何和这个槽关联的 :initform 表达式形式. 一个单个的初始化参数可以初始化不止一个槽. 初始化一个共享槽的初始化参数存储它的值到那个共享槽中, 替换掉任何先前的值.
 
-An initialization argument can be associated with a method. When an object is created and a particular initialization argument is supplied, the generic functions initialize-instance, shared-initialize, and allocate-instance are called with that initialization argument's name and value as a keyword argument pair. If a value for the initialization argument is not supplied in the initialization argument list, the method's lambda list supplies a default value.
+一个初始化参数可以和一个方法关联. 当一个对象被创建并且提供一个特定的初始化参数时, 广义函数 initialize-instance, shared-initialize, 和 allocate-instance 会被调用, 这个初始化参数的名字和值作为一个关键字参数对. 如果在关键字参数列表中没有给这个关键字参数提供一个值, 这个方法的 lambda 列表会提供一个默认值.
 
-Initialization arguments are used in four situations: when making an instance, when re-initializing an instance, when updating an instance to conform to a redefined class, and when updating an instance to conform to the definition of a different class.
+初始化参数被用于四种情况: 创建一个实例时, 重新初始化一个实例时, 更新一个实例去符合一个重定义的类, 还有更新一个实例去符合一个不同的类的定义.
 
-Because initialization arguments are used to control the creation and initialization of an instance of some particular class, we say that an initialization argument is ``an initialization argument for'' that class. 
-
-
-### 7.1.2 <span id="">Declaring the Validity of Initialization Arguments</span>
-
-Initialization arguments are checked for validity in each of the four situations that use them. An initialization argument may be valid in one situation and not another. For example, the system-supplied primary method for make-instance defined for the class standard-class checks the validity of its initialization arguments and signals an error if an initialization argument is supplied that is not declared as valid in that situation.
-
-There are two means for declaring initialization arguments valid.
-
-* Initialization arguments that fill slots are declared as valid by the :initarg slot option to defclass. The :initarg slot option is inherited from superclasses. Thus the set of valid initialization arguments that fill slots for a class is the union of the initialization arguments that fill slots declared as valid by that class and its superclasses. Initialization arguments that fill slots are valid in all four contexts.
-
-* Initialization arguments that supply arguments to methods are declared as valid by defining those methods. The keyword name of each keyword parameter specified in the method's lambda list becomes an initialization argument for all classes for which the method is applicable. The presence of &allow-other-keys in the lambda list of an applicable method disables validity checking of initialization arguments. Thus method inheritance controls the set of valid initialization arguments that supply arguments to methods. The generic functions for which method definitions serve to declare initialization arguments valid are as follows:
-
-    -- Making an instance of a class: allocate-instance, initialize-instance, and shared-initialize. Initialization arguments declared as valid by these methods are valid when making an instance of a class.
-
-    -- Re-initializing an instance: reinitialize-instance and shared-initialize. Initialization arguments declared as valid by these methods are valid when re-initializing an instance.
-
-    -- Updating an instance to conform to a redefined class: update-instance-for-redefined-class and shared-initialize. Initialization arguments declared as valid by these methods are valid when updating an instance to conform to a redefined class.
-
-    -- Updating an instance to conform to the definition of a different class: update-instance-for-different-class and shared-initialize. Initialization arguments declared as valid by these methods are valid when updating an instance to conform to the definition of a different class.
-
-The set of valid initialization arguments for a class is the set of valid initialization arguments that either fill slots or supply arguments to methods, along with the predefined initialization argument :allow-other-keys. The default value for :allow-other-keys is nil. Validity checking of initialization arguments is disabled if the value of the initialization argument :allow-other-keys is true. 
+由于初始化参数被用于控制某个特定类的实例的创建和初始化, 我们就说一个初始化参数是那个类的初始化参数. 
 
 
-### 7.1.3 <span id="">Defaulting of Initialization Arguments</span>
+### 7.1.2 <span id="DeclaringValidityInitArg">声明初始化参数的有效性</span>
 
-A default value form can be supplied for an initialization argument by using the :default-initargs class option. If an initialization argument is declared valid by some particular class, its default value form might be specified by a different class. In this case :default-initargs is used to supply a default value for an inherited initialization argument.
+在使用初始化参数的四种情况的任何一种时, 都会检测初始化参数的有效性. 一个初始化参数在一种情况是合法的但是在另一种缺是不合法的. 比如, 系统提供的针对类 standard-class 的 make-instance 的主方法检测它的初始化参数的合法性, 如果提供的一个初始化参数在那个情况下没有被声明为有效的, 那么就会发出一个错误.
 
-The :default-initargs option is used only to provide default values for initialization arguments; it does not declare a symbol as a valid initialization argument name. Furthermore, the :default-initargs option is used only to provide default values for initialization arguments when making an instance.
+关于声明初始化参数的有效性这里由两个意义.
 
-The argument to the :default-initargs class option is a list of alternating initialization argument names and forms. Each form is the default value form for the corresponding initialization argument. The default value form of an initialization argument is used and evaluated only if that initialization argument does not appear in the arguments to make-instance and is not defaulted by a more specific class. The default value form is evaluated in the lexical environment of the defclass form that supplied it; the resulting value is used as the initialization argument's value.
+* 填充槽的初始化参数通过给 defclass 的 :initarg 槽选项被声明为有效的. 这个 :initarg 槽选项从超类中继承下来. 因此一个类的填充槽的有效初始化参数是这个类和它的超类声明为有效的填充槽的初始化参数的并集. 填充槽的初始化参数在所有四种环境中都是有效的.
 
-The initialization arguments supplied to make-instance are combined with defaulted initialization arguments to produce a defaulted initialization argument list. A defaulted initialization argument list is a list of alternating initialization argument names and values in which unsupplied initialization arguments are defaulted and in which the explicitly supplied initialization arguments appear earlier in the list than the defaulted initialization arguments. Defaulted initialization arguments are ordered according to the order in the class precedence list of the classes that supplied the default values.
+* 给方法提供参数的初始化参数通过定义这些方法被声明为有效的. 在这个方法的 lambda 列表中指定的每个关键字参数的关键字名字成为这个方法可应用的所有类的初始化参数. 一个可应用的方法的 lambda 列表中 &allow-other-keys 的出现会禁用初始化参数的有效性检测. 因此方法继承控制了提供参数给方法的有效初始化参数的集合. 用于声明初始化参数有效的方法定义的广义函数如下所示:
 
-There is a distinction between the purposes of the :default-initargs and the :initform options with respect to the initialization of slots. The :default-initargs class option provides a mechanism for the user to give a default value form for an initialization argument without knowing whether the initialization argument initializes a slot or is passed to a method. If that initialization argument is not explicitly supplied in a call to make-instance, the default value form is used, just as if it had been supplied in the call. In contrast, the :initform slot option provides a mechanism for the user to give a default initial value form for a slot. An :initform form is used to initialize a slot only if no initialization argument associated with that slot is given as an argument to make-instance or is defaulted by :default-initargs.
+    -- 创建一个类的实例: allocate-instance, initialize-instance, 和 shared-initialize. 通过这些方法声明为有效的初始化参数在创建一个类的一个实例时是有效的.
 
-The order of evaluation of default value forms for initialization arguments and the order of evaluation of :initform forms are undefined. If the order of evaluation is important, initialize-instance or shared-initialize methods should be used instead. 
+    -- 重新初始化一个实例: reinitialize-instance 和 shared-initialize. 通过这些方法声明为有效的初始化参数在重新初始化一个实例时是有效的.
+
+    -- 更新一个实例来符合重定义的类: update-instance-for-redefined-class 和 shared-initialize. 通过这些方法声明为有效的初始化参数在更新一个实例来符合重定义的类时是有效的.
+
+    -- 更新一个实例来复合一个不同类的定义: update-instance-for-different-class 和 shared-initialize. 通过这些方法声明为有效的初始化参数在更新一个实例来复合一个不同类的定义时是有效的.
+
+一个类的有效初始化参数集是填充槽和给方法提供参数的初始化参数以及预定义的初始化参数 :allow-other-keys 的集合. :allow-other-keys 的默认值是 nil. 如果初始化参数 :allow-other-keys 的值是 true 那么初始化参数的有效性检测就会被禁用. 
+
+### 7.1.3 <span id="DefaultInitArg">初始化参数的默认值</span>
+
+可以使用类选项 :default-initargs 来给一个初始化参数提供一个默认值表达式形式. 如果一个初始化参数被某个特定的类声明为有效的, 它的默认值表达式形式可能被一个不同的类指定. 在这个情况下 :default-initargs 被用于给一个继承的初始化参数提供一个默认值.
+
+这个 :default-initargs 选项仅被用于给初始化参数提供默认值; 它不会声明一个符号作为有效初始化参数的名字. 此外, 这个 :default-initargs 选项仅在创建一个实例时被用于给初始化提供默认值.
+
+给这个 :default-initargs 类选项的参数是一个交替的初始化参数名字和表达式形式的列表. 每个表达式形式是对应初始化参数的默认值表达式形式. 一个初始化参数的默认值表达式形式当且仅当这个初始化参数没有出现在 make-instance 的参数中并且不是由一个更具体的类缺省的时被使用和求值. <!-- TODO defaulted 缺省的 ??--> 默认值表达式形式在提供它的 defclass 表达式形式的词法环境中被求值; 结果值被用作这个初始化参数的值.
+
+提供给 make-instance 的初始化参数和默认的初始化参数组合来产生一个默认的初始化参数列表. 默认的初始化参数列表是一个交替初始化参数名称和值的列表, 其中未提供的初始化参数是默认值, 其中显式提供的初始化参数出现在列表中默认的初始化参数的前面. 默认的初始化参数根据提供默认值的这些类的类优先级列表中的顺序来排序.
+
+就槽的初始化而言, :default-initargs 和 :initform 的目的存在一个区别. 这个 :default-initargs 类选项在不知道这个初始化参数是初始化一个槽还是传递给一个方法的情况下为用户提供一个机制去给这个初始化参数提供一个默认值表达式形式. 如果那个初始化参数没有在一个 make-instance 的调用中显式提供, 就使用这个默认值表达式形式, 就像在这个调用中提供了一样. 与此相反, 这个 :initform 槽选项为用户提供一个机制去给一个槽提供一个默认初始化表达式形式. 一个 :initform 表达式形式当且仅当没有给 make-instance 传递一个和这个槽关联的初始化参数或者在 :default-initargs 没有提供默认值的时候被用于初始化一个槽.
+
+初始化参数的默认值表达式形式的求值顺序和 :initform 表达式形式的求值顺序是没有定义的. 如果求值的顺序很重要, 应该使用 initialize-instance 或 shared-initialize 方法. 
 
 
 ### 7.1.4 <span id="">Rules for Initialization Arguments<\span>
