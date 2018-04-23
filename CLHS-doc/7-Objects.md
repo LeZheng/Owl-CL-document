@@ -82,110 +82,114 @@
 初始化参数的默认值表达式形式的求值顺序和 :initform 表达式形式的求值顺序是没有定义的. 如果求值的顺序很重要, 应该使用 initialize-instance 或 shared-initialize 方法. 
 
 
-### 7.1.4 <span id="">Rules for Initialization Arguments<\span>
+### 7.1.4 <span id="RulesInitArg">初始化参数的规则<\span>
 
-The :initarg slot option may be specified more than once for a given slot.
+这个 :initarg 槽选项对于一个给定的槽可能被指定不止一次.
 
-The following rules specify when initialization arguments may be multiply defined:
+下面的规则指定了初始化参数的多次定义:
 
-* A given initialization argument can be used to initialize more than one slot if the same initialization argument name appears in more than one :initarg slot option.
+* 如果相同的初始化参数名出现在不止一个 :initarg 槽选项中时, 一个给定的初始化参数可以被用于初始化不止一个槽.
 
-* A given initialization argument name can appear in the lambda list of more than one initialization method.
+* 一个给定的初始化参数名可以出现在不止一个初始化方法的 lambda 列表中.
 
-* A given initialization argument name can appear both in an :initarg slot option and in the lambda list of an initialization method.
+* 一个给定的初始化参数名可以同时出现在一个 :initarg 槽选项和一个初始化方法的 lambda 列表中.
 
-If two or more initialization arguments that initialize the same slot are given in the arguments to make-instance, the leftmost of these initialization arguments in the initialization argument list supplies the value, even if the initialization arguments have different names.
+如果在 make-instance 的参数中给定初始化同一个槽的两个或更多初始化参数, 在这个初始化参数列表中的这些初始化参数中的最左边的那个来提供值, 即便这些初始化参数有着不同的名字.
 
-If two or more different initialization arguments that initialize the same slot have default values and none is given explicitly in the arguments to make-instance, the initialization argument that appears in a :default-initargs class option in the most specific of the classes supplies the value. If a single :default-initargs class option specifies two or more initialization arguments that initialize the same slot and none is given explicitly in the arguments to make-instance, the leftmost in the :default-initargs class option supplies the value, and the values of the remaining default value forms are ignored.
+如果初始化同一个槽的两个或更多不同的初始化参数有默认值并且都没有提供给 make-instance 作为参数, 那么最具体的那些类的 :default-initargs 类选项来提供值. 如果一个单个的 :default-initargs 类选项指定了两个或更多初始化相同槽的初始化参数并且都没有显式出现在 make-instance 的参数中, 在 :default-initargs 类选项中最左边那个来提供值, 并且忽略剩余默认值表达式形式的值.
 
-Initialization arguments given explicitly in the arguments to make-instance appear to the left of defaulted initialization arguments. Suppose that the classes C1 and C2 supply the values of defaulted initialization arguments for different slots, and suppose that C1 is more specific than C2; then the defaulted initialization argument whose value is supplied by C1 is to the left of the defaulted initialization argument whose value is supplied by C2 in the defaulted initialization argument list. If a single :default-initargs class option supplies the values of initialization arguments for two different slots, the initialization argument whose value is specified farther to the left in the :default-initargs class option appears farther to the left in the defaulted initialization argument list.
+在 make-instance 的参数中给定的初始化参数出现在默认初始化参数的左边. 假设类 C1 和 C2 为不同的槽提供默认初始化参数值, 并且 C1 比 C2 更具体; 那么在默认初始化参数列表中 C1 提供的默认初始化参数值在 C2 提供的值的左边. 如果一个单个的 :default-initargs 类选项为两个不同的槽提供了初始化参数的值, the initialization argument whose value is specified farther to the left in the :default-initargs class option appears farther to the left in the defaulted initialization argument list.<!--TODO 待翻译-->
 
-If a slot has both an :initform form and an :initarg slot option, and the initialization argument is defaulted using :default-initargs or is supplied to make-instance, the captured :initform form is neither used nor evaluated.
+如果一个槽同时有一个 :initform 表达式形式和一个 :initarg 槽选项, 并且这个初始化参数使用 :default-initargs 提供默认值或提供给 make-instance, 那么这个 :initform 表达式形式不会被使用也不会被求值.
 
-The following is an example of the above rules:
+下面都是上述规则的一个示例:
 
- (defclass q () ((x :initarg a)))
- (defclass r (q) ((x :initarg b))
-   (:default-initargs a 1 b 2))
+```LISP
+(defclass q () ((x :initarg a)))
+(defclass r (q) ((x :initarg b))
+  (:default-initargs a 1 b 2))
+```
 
-                              Defaulted                                         
-Form                          Initialization Argument List  Contents of Slot X  
-----------
-                                                                                
-(make-instance 'r)            (a 1 b 2)                     1                   
-(make-instance 'r 'a 3)       (a 3 b 2)                     3                   
-(make-instance 'r 'b 4)       (b 4 a 1)                     4                   
-(make-instance 'r 'a 1 'a 2)  (a 1 a 2 b 2)                 1                   
-
-
-### 7.1.5 <span id="">Shared-Initialize</span>
-
-The generic function shared-initialize is used to fill the slots of an instance using initialization arguments and :initform forms when an instance is created, when an instance is re-initialized, when an instance is updated to conform to a redefined class, and when an instance is updated to conform to a different class. It uses standard method combination. It takes the following arguments: the instance to be initialized, a specification of a set of names of slots accessible in that instance, and any number of initialization arguments. The arguments after the first two must form an initialization argument list.
-
-The second argument to shared-initialize may be one of the following:
-
-* It can be a (possibly empty) list of slot names, which specifies the set of those slot names.
-
-* It can be the symbol t, which specifies the set of all of the slots.
-
-There is a system-supplied primary method for shared-initialize whose first parameter specializer is the class standard-object. This method behaves as follows on each slot, whether shared or local:
-
-* If an initialization argument in the initialization argument list specifies a value for that slot, that value is stored into the slot, even if a value has already been stored in the slot before the method is run. The affected slots are independent of which slots are indicated by the second argument to shared-initialize.
-
-* Any slots indicated by the second argument that are still unbound at this point are initialized according to their :initform forms. For any such slot that has an :initform form, that form is evaluated in the lexical environment of its defining defclass form and the result is stored into the slot. For example, if a before method stores a value in the slot, the :initform form will not be used to supply a value for the slot. If the second argument specifies a name that does not correspond to any slots accessible in the instance, the results are unspecified.
-
-* The rules mentioned in Section 7.1.4 (Rules for Initialization Arguments) are obeyed.
-
-The generic function shared-initialize is called by the system-supplied primary methods for reinitialize-instance, update-instance-for-different-class, update-instance-for-redefined-class, and initialize-instance. Thus, methods can be written for shared-initialize to specify actions that should be taken in all of these contexts. 
+                                                                       
+| 表达式形式                   |  默认初始化参数列表 | X 槽的内容 |
+|-                           |-                 |-          |         
+|(make-instance 'r)          |  (a 1 b 2)       |  1        |     
+|(make-instance 'r 'a 3)     |  (a 3 b 2)       |  3        |             
+|(make-instance 'r 'b 4)     |  (b 4 a 1)       |  4        |         
+|(make-instance 'r 'a 1 'a 2)|  (a 1 a 2 b 2)   |  1        |                 
 
 
-### 7.1.6 <span id="">Initialize-Instance</span>
+### 7.1.5 <span id="SharedInitialize">Shared-Initialize</span>
 
-The generic function initialize-instance is called by make-instance to initialize a newly created instance. It uses standard method combination. Methods for initialize-instance can be defined in order to perform any initialization that cannot be achieved simply by supplying initial values for slots.
+在一个实例被创建时, 一个实例被重新初始化时, 一个实例被更新去符合一个重定义的类时, 还有一个实例被更新去符合一个不同的类时, 广义函数 shared-initialize 被用于使用初始化参数和 :initform 表达式形式来填充一个实例的槽. 它使用标准方法组合. 它接受以下参数: 要被初始化的实例, 这个实例中可以访问的槽的名字集合的一份详述, 还有任意数量的初始化参数. 在前两个后面的参数一定组成一个初始化参数列表.
 
-During initialization, initialize-instance is invoked after the following actions have been taken:
+给 shared-initialize 的第二个参数可能是以下其中之一:
 
-* The defaulted initialization argument list has been computed by combining the supplied initialization argument list with any default initialization arguments for the class.
+* 它可以是指定那些槽名字的集合的槽名字的列表 (可能是空的).
 
-* The validity of the defaulted initialization argument list has been checked. If any of the initialization arguments has not been declared as valid, an error is signaled.
+* 它可以是符号 t, 它指定了所有槽的集合.
 
-* A new instance whose slots are unbound has been created.
+这里有个系统提供的 shared-initialize 的主方法, 其中第一个参数特化是类 standard-object. 这个方法在每个槽上表现如下, 不管是共享的或是局部的:
 
-The generic function initialize-instance is called with the new instance and the defaulted initialization arguments. There is a system-supplied primary method for initialize-instance whose parameter specializer is the class standard-object. This method calls the generic function shared-initialize to fill in the slots according to the initialization arguments and the :initform forms for the slots; the generic function shared-initialize is called with the following arguments: the instance, t, and the defaulted initialization arguments.
+* 如果这个初始化参数列表中的一个初始化参数为那个槽指定了一个值, 那个值就会被存储到那个槽中, 即便在这个方法执行前一个值已经被存储到那个槽里. 受影响的槽独立于 shared-initialize 第二个参数表示的槽.
 
-Note that initialize-instance provides the defaulted initialization argument list in its call to shared-initialize, so the first step performed by the system-supplied primary method for shared-initialize takes into account both the initialization arguments provided in the call to make-instance and the defaulted initialization argument list.
+* 任何在这个点是未绑定的第二个参数表示的槽都会根据它们的 :initform 表达式形式来初始化. 对于任何有着一个 :initform 表达式形式的槽, 那个表达式形式会在它的 defclass 定义的词法环境中被求值, 并且结果被存储到那个槽中. 比如, 如果一个 before 方法存储一个值到槽中, 这个 :initform 表达式形式不会被用来给这个槽提供一个值. 如果第二个参数指定了一个不对应这个实例中任何可访问的槽的名字, 结果是未定义的.
 
-Methods for initialize-instance can be defined to specify actions to be taken when an instance is initialized. If only after methods for initialize-instance are defined, they will be run after the system-supplied primary method for initialization and therefore will not interfere with the default behavior of initialize-instance.
+* 在章节 7.1.4 (Rules for Initialization Arguments) 中提及的规则也是遵守的.
 
-The object system provides two functions that are useful in the bodies of initialize-instance methods. The function slot-boundp returns a generic boolean value that indicates whether a specified slot has a value; this provides a mechanism for writing after methods for initialize-instance that initialize slots only if they have not already been initialized. The function slot-makunbound causes the slot to have no value. 
+广义函数 shared-initialize 会被系统提供的 reinitialize-instance, update-instance-for-different-class, update-instance-for-redefined-class, 和 initialize-instance 的主方法调用. 因此, 可以为 shared-initialize 写一个方法来指定发生在所有这些上下问中的动作. 
 
 
-### 7.1.7 <span id="">Definitions of Make-Instance and Initialize-Instance</span>
+### 7.1.6 <span id="InitializeInstance">Initialize-Instance</span>
 
-The generic function make-instance behaves as if it were defined as follows, except that certain optimizations are permitted:
+广义函数 initialize-instance 被 make-instance 调用来初始化一个新创建的实例. 它使用标准方法组合. 可以定义 initialize-instance 的方法, 以便执行任何无法通过为槽提供初始值来实现的初始化.
 
- (defmethod make-instance ((class standard-class) &rest initargs)
-   ...
-   (let ((instance (apply #'allocate-instance class initargs)))
-     (apply #'initialize-instance instance initargs)
-     instance))
+在初始化期间, initialize-instance 在以下动作执行后被调用:
 
- (defmethod make-instance ((class-name symbol) &rest initargs)
-   (apply #'make-instance (find-class class-name) initargs))
+* 默认初始化参数列表已经通过结合提供的初始化参数列表和这个类的默认初始化参数被计算.
 
-The elided code in the definition of make-instance augments the initargs with any defaulted initialization arguments and checks the resulting initialization arguments to determine whether an initialization argument was supplied that neither filled a slot nor supplied an argument to an applicable method.
+* 默认初始化参数列表的有效性已经被检测. 如果初始化参数中的任何一个没有被有效声明, 就会发出一个错误.
 
-The generic function initialize-instance behaves as if it were defined as follows, except that certain optimizations are permitted:
+* 一个槽还没有被绑定的实例被创建出来.
 
- (defmethod initialize-instance ((instance standard-object) &rest initargs)
-   (apply #'shared-initialize instance t initargs)))
+广义函数 initialize-instance 被调用并带有一个新的实例和默认初始化参数. 这里有一个系统提供的 initialize-instance 的主方法, 其中参数特化是类 standard-object. 这个方法调用广义函数 shared-initialize 根据初始化参数和槽的 :initform 表达式形式来填充槽; 广义函数 shared-initialize 被调用时带有以下参数: 这个实例, t, 还有默认初始化参数.
 
-These procedures can be customized.
+注意, initialize-instance 在它的 shared-initialize 调用中提供默认初始化参数列表, 因此，由系统提供的 shared-initialize 主要方法执行的第一步考虑了在调用 make-instance 和默认初始化参数列表中提供的初始化参数.
 
-Customizing at the Programmer Interface level includes using the :initform, :initarg, and :default-initargs options to defclass, as well as defining methods for make-instance, allocate-instance, and initialize-instance. It is also possible to define methods for shared-initialize, which would be invoked by the generic functions reinitialize-instance, update-instance-for-redefined-class, update-instance-for-different-class, and initialize-instance. The meta-object level supports additional customization.
+initialize-instance 方法可以被定义用来指定一个实例被初始化时采取的动作. 只有在 initialize-instance 的方法被定义之后, 它们会在系统提供的用于初始化的主方法之后被运行, 并且因此不会和 initialize-instance 的默认行为冲突.
 
-Implementations are permitted to make certain optimizations to initialize-instance and shared-initialize. The description of shared-initialize in Chapter 7 mentions the possible optimizations. 
+对象系统提供了两个在 initialize-instance 方法的主体中有用的函数. 函数 slot-boundp 返回一个表示一个指定的槽是否有一个值的广义 boolean 值; 这提供了一种机制, 用于在 initialize-instance 的方法之后编写初始化槽的方法, 只有在尚未初始化的情况下才会初始化槽. 函数 slot-makunbound 使这个槽没有值. 
 
+
+### 7.1.7 <span id="DefMIII">Make-Instance 和 Initialize-Instance 的定义</span>
+
+广义函数 make-instance 的行为表现就像它是如下定义的那样, 除了某些优化是允许的:
+
+```LISP
+(defmethod make-instance ((class standard-class) &rest initargs)
+  ...
+  (let ((instance (apply #'allocate-instance class initargs)))
+    (apply #'initialize-instance instance initargs)
+    instance))
+
+(defmethod make-instance ((class-name symbol) &rest initargs)
+  (apply #'make-instance (find-class class-name) initargs))
+```
+
+在 make-instance 的定义中, 省略的代码增加了 initargs 的默认初始化参数, 并检查产生的初始化参数，以确定是否提供了一个初始化参数, 既不填充槽, 也不向可应用的方法提供参数.
+
+广义函数 initialize-instance 的行为表现就像它是如下定义的那样, 除了某些优化是允许的:
+
+```LISP
+(defmethod initialize-instance ((instance standard-object) &rest initargs)
+  (apply #'shared-initialize instance t initargs)))
+```
+
+这些程序可以被定制.
+
+程序员接口级别的定制包括使用给 defclass 的 :initform, :initarg, 和 :default-initargs 选项, 还有为 make-instance, allocate-instance, 和 initialize-instance 定义方法. 也可以为 shared-initialize 定义方法, 它会被广义函数 reinitialize-instance, update-instance-for-redefined-class, update-instance-for-different-class, 和 initialize-instance 调用. 元对象级别支持额外的定制.
+
+具体实现允许去对 initialize-instance 和 shared-initialize 做某些优化. 在章节 7 中 shared-initialize 的描述提及了可能的定制. 
 
 ## 7.2 <span id="">Changing the Class of an Instance</span>
 
