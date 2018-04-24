@@ -2,7 +2,7 @@
 
 > * 7.1 [对象创建和初始化](#ObjectCreationInit)
 > * 7.2 [修改一个实例的类](#ChangeClassInstance)
-> * 7.3 [Reinitializing an Instance](#ReinitInstance)
+> * 7.3 [重新初始化一个实例](#ReinitInstance)
 > * 7.4 [Meta-Objects](#MetaObjects)
 > * 7.5 [Slots](#Slots)
 > * 7.6 [Generic Functions and Methods](#GenericFunctionsMethods)
@@ -223,21 +223,21 @@ update-instance-for-different-class 方法可以被定义用来指定一个实�
 
 shared-initialize 的方法可能被定义用来定制类的重定义行为. 关于更多信息, 见章节 7.1.5 (Shared-Initialize). 
 
-## 7.3 <span id="">Reinitializing an Instance</span>
+## 7.3 <span id="ReinitInstance">重新初始化一个实例</span>
 
-The generic function reinitialize-instance may be used to change the values of slots according to initialization arguments.
+广义函数 reinitialize-instance 可以被用于根据初始化参数来修改槽的值.
 
-The process of reinitialization changes the values of some slots and performs any user-defined actions. It does not modify the structure of an instance to add or delete slots, and it does not use any :initform forms to initialize slots.
+重新初始化的过程修改一些槽的值并执行任何用户定义的动作. 它不会修改一个实例的结构来添加或删除槽, 并且它也不会使用任何 :initform 表达式形式来初始化槽.
 
-The generic function reinitialize-instance may be called directly. It takes one required argument, the instance. It also takes any number of initialization arguments to be used by methods for reinitialize-instance or for shared-initialize. The arguments after the required instance must form an initialization argument list.
+广义函数 reinitialize-instance 可以被直接调用. 它接受一个必要参数, 这个实例. 它也接受任意数量的初始化参数来被 reinitialize-instance 或 shared-initialize 的方法使用. 在必要的实例后面的参数必须组成一个初始化参数列表.
 
-There is a system-supplied primary method for reinitialize-instance whose parameter specializer is the class standard-object. First this method checks the validity of initialization arguments and signals an error if an initialization argument is supplied that is not declared as valid. (For more information, see Section 7.1.2 (Declaring the Validity of Initialization Arguments).) Then it calls the generic function shared-initialize with the following arguments: the instance, nil, and the initialization arguments it received.
+这里有一个系统提供的 reinitialize-instance 主方法, 其中参数特化是类 standard-object. 首先这个方法检查初始化参数的有效性, 而过一个提供的参数没有被有效声明就会发出一个错误. (关于更多信息, 见章节 7.1.2 (Declaring the Validity of Initialization Arguments).) 然后它调用广义函数 shared-initialize 并传递如下参数: 这个实例, nil, 还有它收到的初始化参数.
 
-### 7.3.1 Customizing Reinitialization
+### 7.3.1 定制重新初始化行为
 
-Methods for reinitialize-instance may be defined to specify actions to be taken when an instance is updated. If only after methods for reinitialize-instance are defined, they will be run after the system-supplied primary method for initialization and therefore will not interfere with the default behavior of reinitialize-instance.
+reinitialize-instance 方法可以被定义, 用来指定一个实例被更新时采取的动作. 只有在 reinitialize-instance 方法被定义之后, 它们才会在系统提供的初始化主方法之后被运行并且因此不会影响 reinitialize-instance 的默认行为.
 
-Methods for shared-initialize may be defined to customize class redefinition. For more information, see Section 7.1.5 (Shared-Initialize). 
+shared-initialize 方法可以被定义, 用来定制类的重定义行为. 关于更多信息, 见章节 7.1.5 (Shared-Initialize). 
 
 
 ## 7.4 <span id="">Meta-Objects</span>
