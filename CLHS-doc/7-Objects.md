@@ -3,7 +3,7 @@
 > * 7.1 [对象创建和初始化](#ObjectCreationInit)
 > * 7.2 [修改一个实例的类](#ChangeClassInstance)
 > * 7.3 [重新初始化一个实例](#ReinitInstance)
-> * 7.4 [Meta-Objects](#MetaObjects)
+> * 7.4 [元对象](#MetaObjects)
 > * 7.5 [Slots](#Slots)
 > * 7.6 [Generic Functions and Methods](#GenericFunctionsMethods)
 > * 7.7 [The Objects Dictionary](#TheObjectsDictionary)
@@ -240,21 +240,21 @@ reinitialize-instance 方法可以被定义, 用来指定一个实例被更新�
 shared-initialize 方法可以被定义, 用来定制类的重定义行为. 关于更多信息, 见章节 7.1.5 (Shared-Initialize). 
 
 
-## 7.4 <span id="">Meta-Objects</span>
+## 7.4 <span id="MetaObjects">元对象</span>
 
-The implementation of the object system manipulates classes, methods, and generic functions. The object system contains a set of generic functions defined by methods on classes; the behavior of those generic functions defines the behavior of the object system. The instances of the classes on which those methods are defined are called meta-objects.
+对象系统的实现操纵类, 方法和广义函数. 对象系统包含了由类方法定义的广义函数的集合; 这些广义函数的行为定义了这个对象系统的行为. 这些方法被定义的对应的类的实例称之为元对象.
 
-### 7.4.1 Standard Meta-objects
+### 7.4.1 标准元对象
 
-The object system supplies a set of meta-objects, called standard meta-objects. These include the class standard-object and instances of the classes standard-method, standard-generic-function, and method-combination.
+对象系统提供了一个元对象的集合, 称之为标准元对象. 这些包括类 standard-object 和类 standard-method, standard-generic-function, method-combination 的实例.
 
-* The class standard-method is the default class of methods defined by the defmethod and defgeneric forms.
+* 类 standard-method 是 defmethod 和 defgeneric 表达式形式定义出来的方法的默认类.
 
-* The class standard-generic-function is the default class of generic functions defined by the forms defmethod, defgeneric, and defclass.
+* 类 standard-generic-function 是 defmethod, defgeneric, 和 defclass 定义的广义函数的默认类.
 
-* The class named standard-object is an instance of the class standard-class and is a superclass of every class that is an instance of standard-class except itself and structure-class.
+* 名为 standard-object 的类是类 standard-class 的一个实例并且它是每个 standard-class 的一个实例类的一个超类, 除了它自身和 structure-class.
 
-* Every method combination object is an instance of a subclass of class method-combination. 
+* 每个方法组合对象都是类 method-combination 的子类的一个实例. 
 
 
 ## 7.5 <span id="">Slots</span>
