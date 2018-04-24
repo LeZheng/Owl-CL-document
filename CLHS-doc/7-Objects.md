@@ -1,7 +1,7 @@
 # 7. Objects
 
 > * 7.1 [对象创建和初始化](#ObjectCreationInit)
-> * 7.2 [Changing the Class of an Instance](#ChangeClassInstance)
+> * 7.2 [修改一个实例的类](#ChangeClassInstance)
 > * 7.3 [Reinitializing an Instance](#ReinitInstance)
 > * 7.4 [Meta-Objects](#MetaObjects)
 > * 7.5 [Slots](#Slots)
@@ -191,40 +191,37 @@ initialize-instance 方法可以被定义用来指定一个实例被初始化时
 
 具体实现允许去对 initialize-instance 和 shared-initialize 做某些优化. 在章节 7 中 shared-initialize 的描述提及了可能的定制. 
 
-## 7.2 <span id="">Changing the Class of an Instance</span>
+## 7.2 <span id="ChangeClassInstance">修改一个实例的类</span>
 
-The function change-class can be used to change the class of an instance from its current class, Cfrom, to a different class, Cto; it changes the structure of the instance to conform to the definition of the class Cto.
+函数 change-class 可以被用来修改一个类的实例从它的当前类, Cfrom, 到一个不同的类, Cto; 它修改这个实例的结构来符合这个类 Cto 的定义.
 
-Note that changing the class of an instance may cause slots to be added or deleted. Changing the class of an instance does not change its identity as defined by the eq function.
+注意, 修改一个实例的类可能导致添加或删除槽. 修改一个实例的类不会修改由 eq 函数定义的它的同一性.
 
-When change-class is invoked on an instance, a two-step updating process takes place. The first step modifies the structure of the instance by adding new local slots and discarding local slots that are not specified in the new version of the instance. The second step initializes the newly added local slots and performs any other user-defined actions. These two steps are further described in the two following sections.
+当 change-class 在一个实例上被调用, 会发生一个两步的更新过程. 第一步通过添加新的局部槽还有废弃这个新版本的实例中没有指定的局部槽来修改这个实例的结构. 第二部初始化新添加的局部槽并执行其他任何用户定义的动作. 这两步在以下两个章节中有进一步的描述.
 
-### 7.2.1 Modifying the Structure of the Instance
+### 7.2.1 修改实例的结构
 
-In order to make the instance conform to the class Cto, local slots specified by the class Cto that are not specified by the class Cfrom are added, and local slots not specified by the class Cto that are specified by the class Cfrom are discarded.
+为了使这个实例去符合类 Cto, 类 Cto 指定而类 Cfrom 没有指定的局部槽会被添加, 并且类 Cfrom 指定而类 Cto 没有指定的局部槽会被丢弃.
 
-The values of local slots specified by both the class Cto and the class Cfrom are retained. If such a local slot was unbound, it remains unbound.
+类 Cto 和类 Cfrom 都指定的局部槽会被保留. 如果这样一个局部槽没有被绑定, 它就保持未绑定状态.
 
-The values of slots specified as shared in the class Cfrom and as local in the class Cto are retained.
+在类 Cfrom 中指定为共享的但是在类 Cto 中指定为局部的槽的值会被保留.
 
-This first step of the update does not affect the values of any shared slots. 
+更新中的第一步不会影响任何共享槽的值. 
 
+### 7.2.2 初始化新添加的局部槽
 
-### 7.2.2 Initializing Newly Added Local Slots
+更新操作的第二步初始化新添加的槽并且执行任何其他用户定义的动作. 这个步骤由广义函数 update-instance-for-different-class 来实现. 广义函数 update-instance-for-different-class 在更新的第一步完成后被 change-class 调用.
 
-The second step of the update initializes the newly added slots and performs any other user-defined actions. This step is implemented by the generic function update-instance-for-different-class. The generic function update-instance-for-different-class is invoked by change-class after the first step of the update has been completed.
+广义函数 update-instance-for-different-class 在 change-class 计算的参数上被调用. 传递的第一个参数是这个要被更新的实例的一个拷贝并且是类 Cfrom 的一个实例; 这个拷贝在广义函数 change-class 中有着动态范围. 第二个参数是 change-class 到目前为止更新的实例并且那是类 Cto 的一个实例. 剩余的参数是一个初始化参数列表.
 
-The generic function update-instance-for-different-class is invoked on arguments computed by change-class. The first argument passed is a copy of the instance being updated and is an instance of the class Cfrom; this copy has dynamic extent within the generic function change-class. The second argument is the instance as updated so far by change-class and is an instance of the class Cto. The remaining arguments are an initialization argument list.
+这里有一个系统提供的 update-instance-for-different-class 的主方法, 它有两个特化参数, 其中的每一个都是类 standard-object. 首先这个方法检测初始化参数的有效性, 如果提供的一个初始化参数没有被有效声明就会发出一个错误. (关于更多信息, 见章节 7.1.2 (Declaring the Validity of Initialization Arguments).) 然后它调用广义函数 shared-initialize 并传递以下参数: 这个新的实例, 新添加槽的名字的一个列表, 还有它收到的那些初始化参数. 
 
-There is a system-supplied primary method for update-instance-for-different-class that has two parameter specializers, each of which is the class standard-object. First this method checks the validity of initialization arguments and signals an error if an initialization argument is supplied that is not declared as valid. (For more information, see Section 7.1.2 (Declaring the Validity of Initialization Arguments).) Then it calls the generic function shared-initialize with the following arguments: the new instance, a list of names of the newly added slots, and the initialization arguments it received. 
+### 7.2.3 定制一个实例的类的改变
 
+update-instance-for-different-class 方法可以被定义用来指定一个实例被更新时发生的动作. 只有在 update-instance-for-different-class 方法被定义之后, 它们会在系统提供的初始化主方法之后被运行并且不会干涉 update-instance-for-different-class 的默认行为.
 
-### 7.2.3 Customizing the Change of Class of an Instance
-
-Methods for update-instance-for-different-class may be defined to specify actions to be taken when an instance is updated. If only after methods for update-instance-for-different-class are defined, they will be run after the system-supplied primary method for initialization and will not interfere with the default behavior of update-instance-for-different-class.
-
-Methods for shared-initialize may be defined to customize class redefinition. For more information, see Section 7.1.5 (Shared-Initialize). 
-
+shared-initialize 的方法可能被定义用来定制类的重定义行为. 关于更多信息, 见章节 7.1.5 (Shared-Initialize). 
 
 ## 7.3 <span id="">Reinitializing an Instance</span>
 
@@ -636,115 +633,115 @@ The inheritance of methods is described in detail in Section 7.6.6 (Method Selec
 
 ## 7.7 <span id="">The Objects Dictionary</span>
 
-Standard Generic Function FUNCTION-KEYWORDS
+> *  [标准广义函数 FUNCTION-KEYWORDS](#SGF-FUNCTION-KEYWORDS)
+> *  [函数 ENSURE-GENERIC-FUNCTION](#F-ENSURE-GENERIC-FUNCTION)
+> *  [标准广义函数 ALLOCATE-INSTANCE](#SGF-ALLOCATE-INSTANCE)
+> *  [标准广义函数 REINITIALIZE-INSTANCE](#SGF-REINITIALIZE-INSTANCE)
+> *  [标准广义函数 SHARED-INITIALIZE](#SGF-SHARED-INITIALIZE)
+> *  [标准广义函数 UPDATE-INSTANCE-FOR-DIFFERENT-CLASS](#SGF-U-I-F-D-C)
+> *  [标准广义函数 UPDATE-INSTANCE-FOR-REDEFINED-CLASS](#SGF-U-I-F-R-C)
+> *  [标准广义函数 CHANGE-CLASS](#SGF-CHANGE-CLASS)
+> *  [函数 SLOT-BOUNDP](#F-SLOT-BOUNDP)
+> *  [函数 SLOT-EXISTS-P](#F-SLOT-EXISTS-P)
+> *  [函数 SLOT-MAKUNBOUND](#F-SLOT-MAKUNBOUND)
+> *  [标准广义函数 SLOT-MISSING](#SGF-SLOT-MISSING)
+> *  [标准广义函数 SLOT-UNBOUND](#SGF-SLOT-UNBOUND)
+> *  [函数 SLOT-VALUE](#F-SLOT-VALUE)
+> *  [标准广义函数 METHOD-QUALIFIERS](#SGF-METHOD-QUALIFIERS)
+> *  [标准广义函数 NO-APPLICABLE-METHOD](#SGF-NO-APPLICABLE-METHOD)
+> *  [标准广义函数 NO-NEXT-METHOD](#SGF-NO-NEXT-METHOD)
+> *  [标准广义函数 REMOVE-METHOD](#SGF-REMOVE-METHOD)
+> *  [标准广义函数 MAKE-INSTANCE](#SGF-MAKE-INSTANCE)
+> *  [标准广义函数 MAKE-INSTANCES-OBSOLETE](#SGF-MAKE-INSTANCES-OBSOLETE)
+> *  [标准广义函数 MAKE-LOAD-FORM](#SGF-MAKE-LOAD-FORM)
+> *  [函数 MAKE-LOAD-FORM-SAVING-SLOTS](#F-MAKE-LOAD-FORM-SAVING-SLOTS)
+> *  [宏 WITH-ACCESSORS](#M-WITH-ACCESSORS)
+> *  [宏 WITH-SLOTS](#M-WITH-SLOTS)
+> *  [宏 DEFCLASS](#M-DEFCLASS)
+> *  [宏 DEFGENERIC](#M-DEFGENERIC)
+> *  [宏 DEFMETHOD](#M-DEFMETHOD)
+> *  [访问器 FIND-CLASS](#A-FIND-CLASS)
+> *  [局部函数 NEXT-METHOD-P](#LF-NEXT-METHOD-P)
+> *  [局部宏 CALL-METHOD, MAKE-METHOD](#LM-CALL-METHOD-MAKE-METHOD)
+> *  [局部函数 CALL-NEXT-METHOD](#LF-CALL-NEXT-METHODs)
+> *  [标准广义函数 COMPUTE-APPLICABLE-METHODS](#SGF-COMPUTE-APPLICABLE-METHODS)
+> *  [宏 DEFINE-METHOD-COMBINATION](#M-DEFINE-METHOD-COMBINATION)
+> *  [标准广义函数 FIND-METHOD](#SGF-FIND-METHOD)
+> *  [标准广义函数 ADD-METHOD](#SGF-ADD-METHOD)
+> *  [标准广义函数 INITIALIZE-INSTANCE](#SGF-INITIALIZE-INSTANCE)
+> *  [标准广义函数 CLASS-NAME](#SGF-CLASS-NAME)
+> *  [标准广义函数 (SETF CLASS-NAME)](#SGF-SETF-CLASS-NAME)
+> *  [函数 CLASS-OF](#F-CLASS-OF)
+> *  [状况类型 UNBOUND-SLOT](#CT-UNBOUND-SLOT)
+> *  [函数 UNBOUND-SLOT-INSTANCE](#F-UNBOUND-SLOT-INSTANCE)
+
+
+### <span id="SGF-FUNCTION-KEYWORDS">标准广义函数 FUNCTION-KEYWORDS</span>
+
+* 语法(Syntax):
+
+        function-keywords method => keys, allow-other-keys-p
+
+* 方法签名(Method Signatures):
+
+        function-keywords (method standard-method)
+
+* 参数和值(Arguments and Values):
+
+        method---一个方法.
+        keys---一个列表.
+        allow-other-keys-p---一个广义 boolean.
+
+* 描述(Description):
+
+        返回一个方法的关键字参数说明符.
+
+        返回两个值: 一个显式命名的关键字的列表和一个表示 &allow-other-keys 在这个方法定义中是否被指定的广义的 boolean.
+
+* 示例(Examples):
+
+    ```LISP
+    (defmethod gf1 ((a integer) &optional (b 2)
+                    &key (c 3) ((:dee d) 4) e ((eff f)))
+      (list a b c d e f))
+    =>  #<STANDARD-METHOD GF1 (INTEGER) 36324653>
+    (find-method #'gf1 '() (list (find-class 'integer))) 
+    =>  #<STANDARD-METHOD GF1 (INTEGER) 36324653>
+    (function-keywords *)
+    =>  (:C :DEE :E EFF), false
+    (defmethod gf2 ((a integer))
+      (list a b c d e f))
+    =>  #<STANDARD-METHOD GF2 (INTEGER) 42701775>
+    (function-keywords (find-method #'gf1 '() (list (find-class 'integer))))
+    =>  (), false
+    (defmethod gf3 ((a integer) &key b c d &allow-other-keys)
+      (list a b c d e f))
+    (function-keywords *)
+    =>  (:B :C :D), true
+    ```
+
+* 受此影响(Affected By):
+
+        defmethod
+
+* 异常情况(Exceptional Situations): None.
+
+* 也见(See Also):
+
+        defmethod
+
+* 注意(Notes): None. 
+
+
 Function ENSURE-GENERIC-FUNCTION
-Standard Generic Function ALLOCATE-INSTANCE
-Standard Generic Function REINITIALIZE-INSTANCE
-Standard Generic Function SHARED-INITIALIZE
-Standard Generic Function UPDATE-INSTANCE-FOR-DIFFERENT-CLASS
-Standard Generic Function UPDATE-INSTANCE-FOR-REDEFINED-CLASS
-Standard Generic Function CHANGE-CLASS
-Function SLOT-BOUNDP
-Function SLOT-EXISTS-P
-Function SLOT-MAKUNBOUND
-Standard Generic Function SLOT-MISSING
-Standard Generic Function SLOT-UNBOUND
-Function SLOT-VALUE
-Standard Generic Function METHOD-QUALIFIERS
-Standard Generic Function NO-APPLICABLE-METHOD
-Standard Generic Function NO-NEXT-METHOD
-Standard Generic Function REMOVE-METHOD
-Standard Generic Function MAKE-INSTANCE
-Standard Generic Function MAKE-INSTANCES-OBSOLETE
-Standard Generic Function MAKE-LOAD-FORM
-Function MAKE-LOAD-FORM-SAVING-SLOTS
-Macro WITH-ACCESSORS
-Macro WITH-SLOTS
-Macro DEFCLASS
-Macro DEFGENERIC
-Macro DEFMETHOD
-Accessor FIND-CLASS
-Local Function NEXT-METHOD-P
-Local Macro CALL-METHOD, MAKE-METHOD
-Local Function CALL-NEXT-METHOD
-Standard Generic Function COMPUTE-APPLICABLE-METHODS
-Macro DEFINE-METHOD-COMBINATION
-Standard Generic Function FIND-METHOD
-Standard Generic Function ADD-METHOD
-Standard Generic Function INITIALIZE-INSTANCE
-Standard Generic Function CLASS-NAME
-Standard Generic Function (SETF CLASS-NAME)
-Function CLASS-OF
-Condition Type UNBOUND-SLOT
-Function UNBOUND-SLOT-INSTANCE
 
-
-Standard Generic Function FUNCTION-KEYWORDS
-
-Syntax:
-
-function-keywords method => keys, allow-other-keys-p
-
-Method Signatures:
-
-function-keywords (method standard-method)
-
-Arguments and Values:
-
-method---a method.
-
-keys---a list.
-
-allow-other-keys-p---a generalized boolean.
-
-Description:
-
-Returns the keyword parameter specifiers for a method.
-
-Two values are returned: a list of the explicitly named keywords and a generalized boolean that states whether &allow-other-keys had been specified in the method definition.
-
-Examples:
-
- (defmethod gf1 ((a integer) &optional (b 2)
-                 &key (c 3) ((:dee d) 4) e ((eff f)))
-   (list a b c d e f))
-=>  #<STANDARD-METHOD GF1 (INTEGER) 36324653>
- (find-method #'gf1 '() (list (find-class 'integer))) 
-=>  #<STANDARD-METHOD GF1 (INTEGER) 36324653>
- (function-keywords *)
-=>  (:C :DEE :E EFF), false
- (defmethod gf2 ((a integer))
-   (list a b c d e f))
-=>  #<STANDARD-METHOD GF2 (INTEGER) 42701775>
- (function-keywords (find-method #'gf1 '() (list (find-class 'integer))))
-=>  (), false
- (defmethod gf3 ((a integer) &key b c d &allow-other-keys)
-   (list a b c d e f))
- (function-keywords *)
-=>  (:B :C :D), true
-
-Affected By:
-
-defmethod
-
-Exceptional Situations: None.
-
-See Also:
-
-defmethod
-
-Notes: None. 
-
-
-Function ENSURE-GENERIC-FUNCTION
-
-Syntax:
+* 语法(Syntax):
 
 ensure-generic-function function-name &key argument-precedence-order declare documentation environment generic-function-class lambda-list method-class method-combination
 
 => generic-function
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 function-name---a function name.
 
@@ -756,7 +753,7 @@ Environment -- the same as the &environment argument to macro expansion function
 
 generic-function---a generic function object.
 
-Description:
+* 描述(Description):
 
 The function ensure-generic-function is used to define a globally named generic function with no methods or to specify or modify options and declarations that pertain to a globally named generic function as a whole.
 
@@ -770,13 +767,13 @@ If function-name specifies a generic function that has a different value for the
 
 If function-name specifies a generic function that has a different value for the :method-class argument, the value is changed, but any existing methods are not changed.
 
-Examples: None.
+* 示例(Examples): None.
 
-Affected By:
+* 受此影响(Affected By):
 
 Existing function binding of function-name.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 If (fdefinition function-name) is an ordinary function, a macro, or a special operator, an error of type error is signaled.
 
@@ -784,26 +781,26 @@ If function-name specifies a generic function that has a different value for the
 
 If function-name specifies a generic function that has a different value for the :generic-function-class argument and if the new generic function class not is compatible with the old, an error of type error is signaled.
 
-See Also:
+* 也见(See Also):
 
 defgeneric
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
 Standard Generic Function ALLOCATE-INSTANCE
 
-Syntax:
+* 语法(Syntax):
 
 allocate-instance class &rest initargs &key &allow-other-keys => new-instance
 
-Method Signatures:
+* 方法签名(Method Signatures):
 
 allocate-instance (class standard-class) &rest initargs
 
 allocate-instance (class structure-class) &rest initargs
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 class---a class.
 
@@ -811,7 +808,7 @@ initargs---a list of keyword/value pairs (initialization argument names and valu
 
 new-instance---an object whose class is class.
 
-Description:
+* 描述(Description):
 
 The generic function allocate-instance creates and returns a new instance of the class, without initializing it. When the class is a standard class, this means that the slots are unbound; when the class is a structure class, this means the slots' values are unspecified.
 
@@ -819,73 +816,73 @@ The caller of allocate-instance is expected to have already checked the initiali
 
 The generic function allocate-instance is called by make-instance, as described in Section 7.1 (Object Creation and Initialization).
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 defclass, make-instance, class-of, Section 7.1 (Object Creation and Initialization)
 
-Notes:
+* 注意(Notes):
 
 The consequences of adding methods to allocate-instance is unspecified. This capability might be added by the Metaobject Protocol. 
 
 
 Standard Generic Function REINITIALIZE-INSTANCE
 
-Syntax:
+* 语法(Syntax):
 
 reinitialize-instance instance &rest initargs &key &allow-other-keys => instance
 
-Method Signatures:
+* 方法签名(Method Signatures):
 
 reinitialize-instance (instance standard-object) &rest initargs
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 instance---an object.
 
 initargs---an initialization argument list.
 
-Description:
+* 描述(Description):
 
 The generic function reinitialize-instance can be used to change the values of local slots of an instance according to initargs. This generic function can be called by users.
 
 The system-supplied primary method for reinitialize-instance checks the validity of initargs and signals an error if an initarg is supplied that is not declared as valid. The method then calls the generic function shared-initialize with the following arguments: the instance, nil (which means no slots should be initialized according to their initforms), and the initargs it received.
 
-Examples: None.
+* 示例(Examples): None.
 
 Side Effects:
 
 The generic function reinitialize-instance changes the values of local slots.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 The system-supplied primary method for reinitialize-instance signals an error if an initarg is supplied that is not declared as valid.
 
-See Also:
+* 也见(See Also):
 
 initialize-instance, shared-initialize, update-instance-for-redefined-class, update-instance-for-different-class, slot-boundp, slot-makunbound, Section 7.3 (Reinitializing an Instance), Section 7.1.4 (Rules for Initialization Arguments), Section 7.1.2 (Declaring the Validity of Initialization Arguments)
 
-Notes:
+* 注意(Notes):
 
 Initargs are declared as valid by using the :initarg option to defclass, or by defining methods for reinitialize-instance or shared-initialize. The keyword name of each keyword parameter specifier in the lambda list of any method defined on reinitialize-instance or shared-initialize is declared as a valid initialization argument name for all classes for which that method is applicable. 
 
 
 Standard Generic Function SHARED-INITIALIZE
 
-Syntax:
+* 语法(Syntax):
 
 shared-initialize instance slot-names &rest initargs &key &allow-other-keys => instance
 
-Method Signatures:
+* 方法签名(Method Signatures):
 
 shared-initialize (instance standard-object) slot-names &rest initargs
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 instance---an object.
 
@@ -893,7 +890,7 @@ slot-names---a list or t.
 
 initargs---a list of keyword/value pairs (of initialization argument names and values).
 
-Description:
+* 描述(Description):
 
 The generic function shared-initialize is used to fill the slots of an instance using initargs and :initform forms. It is called when an instance is created, when an instance is re-initialized, when an instance is updated to conform to a redefined class, and when an instance is updated to conform to a different class. The generic function shared-initialize is called by the system-supplied primary method for initialize-instance, reinitialize-instance, update-instance-for-redefined-class, and update-instance-for-different-class.
 
@@ -909,17 +906,17 @@ The system-supplied primary method behaves as follows, regardless of whether the
 
 The slots-names argument specifies the slots that are to be initialized according to their :initform forms if no initialization arguments apply. It can be a list of slot names, which specifies the set of those slot names; or it can be the symbol t, which specifies the set of all of the slots.
 
-Examples: None.
+* 示例(Examples): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 initialize-instance, reinitialize-instance, update-instance-for-redefined-class, update-instance-for-different-class, slot-boundp, slot-makunbound, Section 7.1 (Object Creation and Initialization), Section 7.1.4 (Rules for Initialization Arguments), Section 7.1.2 (Declaring the Validity of Initialization Arguments)
 
-Notes:
+* 注意(Notes):
 
 Initargs are declared as valid by using the :initarg option to defclass, or by defining methods for shared-initialize. The keyword name of each keyword parameter specifier in the lambda list of any method defined on shared-initialize is declared as a valid initarg name for all classes for which that method is applicable.
 
@@ -930,15 +927,15 @@ Implementations are permitted to optimize default initial value forms for initar
 
 Standard Generic Function UPDATE-INSTANCE-FOR-DIFFERENT-CLASS
 
-Syntax:
+* 语法(Syntax):
 
 update-instance-for-different-class previous current &rest initargs &key &allow-other-keys => implementation-dependent
 
-Method Signatures:
+* 方法签名(Method Signatures):
 
 update-instance-for-different-class (previous standard-object) (current standard-object) &rest initargs
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 previous---a copy of the original instance.
 
@@ -946,7 +943,7 @@ current---the original instance (altered).
 
 initargs---an initialization argument list.
 
-Description:
+* 描述(Description):
 
 The generic function update-instance-for-different-class is not intended to be called by programmers. Programmers may write methods for it. The function update-instance-for-different-class is called only by the function change-class.
 
@@ -958,21 +955,21 @@ Methods on update-instance-for-different-class can be defined to initialize slot
 
 The arguments to update-instance-for-different-class are computed by change-class. When change-class is invoked on an instance, a copy of that instance is made; change-class then destructively alters the original instance. The first argument to update-instance-for-different-class, previous, is that copy; it holds the old slot values temporarily. This argument has dynamic extent within change-class; if it is referenced in any way once update-instance-for-different-class returns, the results are undefined. The second argument to update-instance-for-different-class, current, is the altered original instance. The intended use of previous is to extract old slot values by using slot-value or with-slots or by invoking a reader generic function, or to run other methods that were applicable to instances of the original class.
 
-Examples:
+* 示例(Examples):
 
 See the example for the function change-class.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 The system-supplied primary method on update-instance-for-different-class signals an error if an initialization argument is supplied that is not declared as valid.
 
-See Also:
+* 也见(See Also):
 
 change-class, shared-initialize, Section 7.2 (Changing the Class of an Instance), Section 7.1.4 (Rules for Initialization Arguments), Section 7.1.2 (Declaring the Validity of Initialization Arguments)
 
-Notes:
+* 注意(Notes):
 
 Initargs are declared as valid by using the :initarg option to defclass, or by defining methods for update-instance-for-different-class or shared-initialize. The keyword name of each keyword parameter specifier in the lambda list of any method defined on update-instance-for-different-class or shared-initialize is declared as a valid initarg name for all classes for which that method is applicable.
 
@@ -981,17 +978,17 @@ The value returned by update-instance-for-different-class is ignored by change-c
 
 Standard Generic Function UPDATE-INSTANCE-FOR-REDEFINED-CLASS
 
-Syntax:
+* 语法(Syntax):
 
 update-instance-for-redefined-class instance added-slots discarded-slots property-list &rest initargs &key &allow-other-keys
 
 => result*
 
-Method Signatures:
+* 方法签名(Method Signatures):
 
 update-instance-for-redefined-class (instance standard-object) added-slots discarded-slots property-list &rest initargs
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 instance---an object.
 
@@ -1005,7 +1002,7 @@ initargs---an initialization argument list.
 
 result---an object.
 
-Description:
+* 描述(Description):
 
 The generic function update-instance-for-redefined-class is not intended to be called by programmers. Programmers may write methods for it. The generic function update-instance-for-redefined-class is called by the mechanism activated by make-instances-obsolete.
 
@@ -1015,7 +1012,7 @@ When make-instances-obsolete is invoked or when a class has been redefined and a
 
 The value returned by update-instance-for-redefined-class is ignored.
 
-Examples:
+* 示例(Examples):
 
   
  (defclass position () ())
@@ -1067,34 +1064,34 @@ Examples:
         new-y)))
  
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 The system-supplied primary method on update-instance-for-redefined-class signals an error if an initarg is supplied that is not declared as valid.
 
-See Also:
+* 也见(See Also):
 
 make-instances-obsolete, shared-initialize, Section 4.3.6 (Redefining Classes), Section 7.1.4 (Rules for Initialization Arguments), Section 7.1.2 (Declaring the Validity of Initialization Arguments)
 
-Notes:
+* 注意(Notes):
 
 Initargs are declared as valid by using the :initarg option to defclass, or by defining methods for update-instance-for-redefined-class or shared-initialize. The keyword name of each keyword parameter specifier in the lambda list of any method defined on update-instance-for-redefined-class or shared-initialize is declared as a valid initarg name for all classes for which that method is applicable. 
 
 
 Standard Generic Function CHANGE-CLASS
 
-Syntax:
+* 语法(Syntax):
 
 change-class instance new-class &key &allow-other-keys => instance
 
-Method Signatures:
+* 方法签名(Method Signatures):
 
 change-class (instance standard-object) (new-class standard-class) &rest initargs
 
 change-class (instance t) (new-class symbol) &rest initargs
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 instance---an object.
 
@@ -1102,7 +1099,7 @@ new-class---a class designator.
 
 initargs---an initialization argument list.
 
-Description:
+* 描述(Description):
 
 The generic function change-class changes the class of an instance to new-class. It destructively modifies and returns the instance.
 
@@ -1112,7 +1109,7 @@ After completing all other actions, change-class invokes update-instance-for-dif
 
 If the second of the above methods is selected, that method invokes change-class on instance, (find-class new-class), and the initargs.
 
-Examples:
+* 示例(Examples):
 
  
  (defclass position () ())
@@ -1150,28 +1147,28 @@ Examples:
 ;;; the old instance.
  
 
-Examples: None.
+* 示例(Examples): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 update-instance-for-different-class, Section 7.2 (Changing the Class of an Instance)
 
-Notes:
+* 注意(Notes):
 
 The generic function change-class has several semantic difficulties. First, it performs a destructive operation that can be invoked within a method on an instance that was used to select that method. When multiple methods are involved because methods are being combined, the methods currently executing or about to be executed may no longer be applicable. Second, some implementations might use compiler optimizations of slot access, and when the class of an instance is changed the assumptions the compiler made might be violated. This implies that a programmer must not use change-class inside a method if any methods for that generic function access any slots, or the results are undefined. 
 
 
 Function SLOT-BOUNDP
 
-Syntax:
+* 语法(Syntax):
 
 slot-boundp instance slot-name => generalized-boolean
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 instance---an object.
 
@@ -1179,15 +1176,15 @@ slot-name---a symbol naming a slot of instance.
 
 generalized-boolean---a generalized boolean.
 
-Description:
+* 描述(Description):
 
 Returns true if the slot named slot-name in instance is bound; otherwise, returns false.
 
-Examples: None.
+* 示例(Examples): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 If no slot of the name slot-name exists in the instance, slot-missing is called as follows:
 
@@ -1200,11 +1197,11 @@ If no slot of the name slot-name exists in the instance, slot-missing is called 
 
 The specific behavior depends on instance's metaclass. An error is never signaled if instance has metaclass standard-class. An error is always signaled if instance has metaclass built-in-class. The consequences are undefined if instance has any other metaclass--an error might or might not be signaled in this situation. Note in particular that the behavior for conditions and structures is not specified.
 
-See Also:
+* 也见(See Also):
 
 slot-makunbound, slot-missing
 
-Notes:
+* 注意(Notes):
 
 The function slot-boundp allows for writing after methods on initialize-instance in order to initialize only those slots that have not already been bound.
 
@@ -1213,11 +1210,11 @@ Although no implementation is required to do so, implementors are strongly encou
 
 Function SLOT-EXISTS-P
 
-Syntax:
+* 语法(Syntax):
 
 slot-exists-p object slot-name => generalized-boolean
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 object---an object.
 
@@ -1225,48 +1222,48 @@ slot-name---a symbol.
 
 generalized-boolean---a generalized boolean.
 
-Description:
+* 描述(Description):
 
 Returns true if the object has a slot named slot-name.
 
-Examples: None.
+* 示例(Examples): None.
 
-Affected By:
+* 受此影响(Affected By):
 
 defclass, defstruct
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 defclass, slot-missing
 
-Notes:
+* 注意(Notes):
 
 Although no implementation is required to do so, implementors are strongly encouraged to implement the function slot-exists-p using the function slot-exists-p-using-class described in the Metaobject Protocol. 
 
 
 Function SLOT-MAKUNBOUND
 
-Syntax:
+* 语法(Syntax):
 
 slot-makunbound instance slot-name => instance
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 instance -- instance.
 
 Slot-name---a symbol.
 
-Description:
+* 描述(Description):
 
 The function slot-makunbound restores a slot of the name slot-name in an instance to the unbound state.
 
-Examples: None.
+* 示例(Examples): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 If no slot of the name slot-name exists in the instance, slot-missing is called as follows:
 
@@ -1279,26 +1276,26 @@ If no slot of the name slot-name exists in the instance, slot-missing is called 
 
 The specific behavior depends on instance's metaclass. An error is never signaled if instance has metaclass standard-class. An error is always signaled if instance has metaclass built-in-class. The consequences are undefined if instance has any other metaclass--an error might or might not be signaled in this situation. Note in particular that the behavior for conditions and structures is not specified.
 
-See Also:
+* 也见(See Also):
 
 slot-boundp, slot-missing
 
-Notes:
+* 注意(Notes):
 
 Although no implementation is required to do so, implementors are strongly encouraged to implement the function slot-makunbound using the function slot-makunbound-using-class described in the Metaobject Protocol. 
 
 
 Standard Generic Function SLOT-MISSING
 
-Syntax:
+* 语法(Syntax):
 
 slot-missing class object slot-name operation &optional new-value => result*
 
-Method Signatures:
+* 方法签名(Method Signatures):
 
 slot-missing (class t) object slot-name operation &optional new-value
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 class---the class of object.
 
@@ -1312,7 +1309,7 @@ new-value---an object.
 
 result---an object.
 
-Description:
+* 描述(Description):
 
 The generic function slot-missing is invoked when an attempt is made to access a slot in an object whose metaclass is standard-class and the slot of the name slot-name is not a name of a slot in that class. The default method signals an error.
 
@@ -1330,34 +1327,34 @@ If slot-missing returns, its values will be treated as follows:
 
     If the operation is slot-boundp, any boolean equivalent of the primary value of the method might be is used, and all other values will be ignored.
 
-Examples: None.
+* 示例(Examples): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 The default method on slot-missing signals an error of type error.
 
-See Also:
+* 也见(See Also):
 
 defclass, slot-exists-p, slot-value
 
-Notes:
+* 注意(Notes):
 
 The set of arguments (including the class of the instance) facilitates defining methods on the metaclass for slot-missing. 
 
 
 Standard Generic Function SLOT-UNBOUND
 
-Syntax:
+* 语法(Syntax):
 
 slot-unbound class instance slot-name => result*
 
-Method Signatures:
+* 方法签名(Method Signatures):
 
 slot-unbound (class t) instance slot-name
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 class---the class of the instance.
 
@@ -1367,7 +1364,7 @@ slot-name---the name of the unbound slot.
 
 result---an object.
 
-Description:
+* 描述(Description):
 
 The generic function slot-unbound is called when an unbound slot is read in an instance whose metaclass is standard-class. The default method signals an error of type unbound-slot. The name slot of the unbound-slot condition is initialized to the name of the offending variable, and the instance slot of the unbound-slot condition is initialized to the offending instance.
 
@@ -1375,30 +1372,30 @@ The generic function slot-unbound is not intended to be called by programmers. P
 
 If slot-unbound returns, only the primary value will be used by the caller, and all other values will be ignored.
 
-Examples: None.
+* 示例(Examples): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 The default method on slot-unbound signals an error of type unbound-slot.
 
-See Also:
+* 也见(See Also):
 
 slot-makunbound
 
-Notes:
+* 注意(Notes):
 
 An unbound slot may occur if no :initform form was specified for the slot and the slot value has not been set, or if slot-makunbound has been called on the slot. 
 
 
 Function SLOT-VALUE
 
-Syntax:
+* 语法(Syntax):
 
 slot-value object slot-name => value
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 object---an object.
 
@@ -1406,13 +1403,13 @@ name---a symbol.
 
 value---an object.
 
-Description:
+* 描述(Description):
 
 The function slot-value returns the value of the slot named slot-name in the object. If there is no slot named slot-name, slot-missing is called. If the slot is unbound, slot-unbound is called.
 
 The macro setf can be used with slot-value to change the value of a slot.
 
-Examples:
+* 示例(Examples):
 
  (defclass foo () 
    ((a :accessor foo-a :initarg :a :initform 1)
@@ -1431,9 +1428,9 @@ Examples:
 =>  #<STANDARD-METHOD FOO-METHOD (FOO) 42720573>
  (foo-method foo1) =>  UNO
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 If an attempt is made to read a slot and no slot of the name slot-name exists in the object, slot-missing is called as follows:
 
@@ -1456,11 +1453,11 @@ If an attempt is made to write a slot and no slot of the name slot-name exists i
 
 The specific behavior depends on object's metaclass. An error is never signaled if object has metaclass standard-class. An error is always signaled if object has metaclass built-in-class. The consequences are unspecified if object has any other metaclass--an error might or might not be signaled in this situation. Note in particular that the behavior for conditions and structures is not specified.
 
-See Also:
+* 也见(See Also):
 
 slot-missing, slot-unbound, with-slots
 
-Notes:
+* 注意(Notes):
 
 Although no implementation is required to do so, implementors are strongly encouraged to implement the function slot-value using the function slot-value-using-class described in the Metaobject Protocol.
 
@@ -1469,52 +1466,52 @@ Implementations may optimize slot-value by compiling it inline.
 
 Standard Generic Function METHOD-QUALIFIERS
 
-Syntax:
+* 语法(Syntax):
 
 method-qualifiers method => qualifiers
 
-Method Signatures:
+* 方法签名(Method Signatures):
 
 method-qualifiers (method standard-method)
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 method---a method.
 
 qualifiers---a proper list.
 
-Description:
+* 描述(Description):
 
 Returns a list of the qualifiers of the method.
 
-Examples:
+* 示例(Examples):
 
  (defmethod some-gf :before ((a integer)) a)
 =>  #<STANDARD-METHOD SOME-GF (:BEFORE) (INTEGER) 42736540>
  (method-qualifiers *) =>  (:BEFORE)
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 define-method-combination
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
 Standard Generic Function NO-APPLICABLE-METHOD
 
-Syntax:
+* 语法(Syntax):
 
 no-applicable-method generic-function &rest function-arguments => result*
 
-Method Signatures:
+* 方法签名(Method Signatures):
 
 no-applicable-method (generic-function t) &rest function-arguments
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 generic-function---a generic function on which no applicable method was found.
 
@@ -1522,36 +1519,36 @@ function-arguments---arguments to the generic-function.
 
 result---an object.
 
-Description:
+* 描述(Description):
 
 The generic function no-applicable-method is called when a generic function is invoked and no method on that generic function is applicable. The default method signals an error.
 
 The generic function no-applicable-method is not intended to be called by programmers. Programmers may write methods for it.
 
-Examples: None.
+* 示例(Examples): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 The default method signals an error of type error.
 
-See Also:
+* 也见(See Also):
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
 Standard Generic Function NO-NEXT-METHOD
 
-Syntax:
+* 语法(Syntax):
 
 no-next-method generic-function method &rest args => result*
 
-Method Signatures:
+* 方法签名(Method Signatures):
 
 no-next-method (generic-function standard-generic-function) (method standard-method) &rest args
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 generic-function -- generic function to which method belongs.
 
@@ -1561,75 +1558,75 @@ args -- arguments to call-next-method.
 
 result---an object.
 
-Description:
+* 描述(Description):
 
 The generic function no-next-method is called by call-next-method when there is no next method.
 
 The generic function no-next-method is not intended to be called by programmers. Programmers may write methods for it.
 
-Examples: None.
+* 示例(Examples): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 The system-supplied method on no-next-method signals an error of type error.
 
-See Also:
+* 也见(See Also):
 
 call-next-method
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
 Standard Generic Function REMOVE-METHOD
 
-Syntax:
+* 语法(Syntax):
 
 remove-method generic-function method => generic-function
 
-Method Signatures:
+* 方法签名(Method Signatures):
 
 remove-method (generic-function standard-generic-function) method
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 generic-function---a generic function.
 
 method---a method.
 
-Description:
+* 描述(Description):
 
 The generic function remove-method removes a method from generic-function by modifying the generic-function (if necessary).
 
 remove-method must not signal an error if the method is not one of the methods on the generic-function.
 
-Examples: None.
+* 示例(Examples): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 find-method
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
 Standard Generic Function MAKE-INSTANCE
 
-Syntax:
+* 语法(Syntax):
 
 make-instance class &rest initargs &key &allow-other-keys => instance
 
-Method Signatures:
+* 方法签名(Method Signatures):
 
 make-instance (class standard-class) &rest initargs
 
 make-instance (class symbol) &rest initargs
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 class---a class, or a symbol that names a class.
 
@@ -1637,7 +1634,7 @@ initargs---an initialization argument list.
 
 instance---a fresh instance of class class.
 
-Description:
+* 描述(Description):
 
 The generic function make-instance creates and returns a new instance of the given class.
 
@@ -1647,36 +1644,36 @@ The initialization arguments are checked within make-instance.
 
 The generic function make-instance may be used as described in Section 7.1 (Object Creation and Initialization).
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 If any of the initialization arguments has not been declared as valid, an error of type error is signaled.
 
-See Also:
+* 也见(See Also):
 
 defclass, class-of, allocate-instance, initialize-instance, Section 7.1 (Object Creation and Initialization)
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
 Standard Generic Function MAKE-INSTANCES-OBSOLETE
 
-Syntax:
+* 语法(Syntax):
 
 make-instances-obsolete class => class
 
-Method Signatures:
+* 方法签名(Method Signatures):
 
 make-instances-obsolete (class standard-class)
 
 make-instances-obsolete (class symbol)
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 class---a class designator.
 
-Description:
+* 描述(Description):
 
 The function make-instances-obsolete has the effect of initiating the process of updating the instances of the class. During updating, the generic function update-instance-for-redefined-class will be invoked.
 
@@ -1684,26 +1681,26 @@ The generic function make-instances-obsolete is invoked automatically by the sys
 
 If the second of the above methods is selected, that method invokes make-instances-obsolete on (find-class class).
 
-Examples:
+* 示例(Examples):
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 update-instance-for-redefined-class, Section 4.3.6 (Redefining Classes)
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
 Standard Generic Function MAKE-LOAD-FORM
 
-Syntax:
+* 语法(Syntax):
 
 make-load-form object &optional environment => creation-form[, initialization-form]
 
-Method Signatures:
+* 方法签名(Method Signatures):
 
 make-load-form (object standard-object) &optional environment
 
@@ -1713,7 +1710,7 @@ make-load-form (object condition) &optional environment
 
 make-load-form (object class) &optional environment
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 object---an object.
 
@@ -1723,7 +1720,7 @@ creation-form---a form.
 
 initialization-form---a form.
 
-Description:
+* 描述(Description):
 
 The generic function make-load-form creates and returns one or two forms, a creation-form and an initialization-form, that enable load to construct an object equivalent to object. Environment is an environment object corresponding to the lexical environment in which the forms will be processed.
 
@@ -1749,7 +1746,7 @@ The method specialized on class returns a creation form using the name of the cl
 
 Both conforming implementations and conforming programs may further specialize make-load-form.
 
-Examples:
+* 示例(Examples):
 
  (defclass obj ()
     ((x :initarg :x :reader obj-x)
@@ -1818,19 +1815,19 @@ In the following example, the data structure to be dumped has no special propert
  (defmethod make-load-form ((s my-struct) &optional environment)
     (make-load-form-saving-slots s :environment environment))
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 The methods specialized on standard-object, structure-object, and condition all signal an error of type error.
 
 It is implementation-dependent whether calling make-load-form on a generalized instance of a system class signals an error or returns creation and initialization forms.
 
-See Also:
+* 也见(See Also):
 
 compile-file, make-load-form-saving-slots, Section 3.2.4.4 (Additional Constraints on Externalizable Objects) Section 3.1 (Evaluation), Section 3.2 (Compilation)
 
-Notes:
+* 注意(Notes):
 
 The file compiler calls make-load-form in specific circumstances detailed in Section 3.2.4.4 (Additional Constraints on Externalizable Objects).
 
@@ -1839,13 +1836,13 @@ Some implementations may provide facilities for defining new subclasses of class
 
 Function MAKE-LOAD-FORM-SAVING-SLOTS
 
-Syntax:
+* 语法(Syntax):
 
 make-load-form-saving-slots object &key slot-names environment
 
 => creation-form, initialization-form
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 object---an object.
 
@@ -1857,7 +1854,7 @@ creation-form---a form.
 
 initialization-form---a form.
 
-Description:
+* 描述(Description):
 
 Returns forms that, when evaluated, will construct an object equivalent to object, without executing initialization forms. The slots in the new object that correspond to initialized slots in object are initialized using the values from object. Uninitialized slots in object are not initialized in the new object. make-load-form-saving-slots works for any instance of standard-object or structure-object.
 
@@ -1867,19 +1864,19 @@ make-load-form-saving-slots returns two values, thus it can deal with circular s
 
 Environment is the environment in which the forms will be processed.
 
-Examples: None.
+* 示例(Examples): None.
 
 Side Effects: None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 make-load-form, make-instance, setf, slot-value, slot-makunbound
 
-Notes:
+* 注意(Notes):
 
 make-load-form-saving-slots can be useful in user-written make-load-form methods.
 
@@ -1888,7 +1885,7 @@ When the object is an instance of standard-object, make-load-form-saving-slots c
 
 Macro WITH-ACCESSORS
 
-Syntax:
+* 语法(Syntax):
 
 with-accessors (slot-entry*) instance-form declaration* form*
 
@@ -1896,7 +1893,7 @@ with-accessors (slot-entry*) instance-form declaration* form*
 
 slot-entry::= (variable-name accessor-name) 
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 variable-name---a variable name; not evaluated.
 
@@ -1910,11 +1907,11 @@ forms---an implicit progn.
 
 results---the values returned by the forms.
 
-Description:
+* 描述(Description):
 
 Creates a lexical environment in which the slots specified by slot-entry are lexically available through their accessors as if they were variables. The macro with-accessors invokes the appropriate accessors to access the slots specified by slot-entry. Both setf and setq can be used to set the value of the slot.
 
-Examples:
+* 示例(Examples):
 
  (defclass thing ()
            ((x :initarg :x :accessor thing-x)
@@ -1945,19 +1942,19 @@ Examples:
      (9)
      (9 9 2 2 (9) (9) 8 8))
 
-Affected By:
+* 受此影响(Affected By):
 
 defclass
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 The consequences are undefined if any accessor-name is not the name of an accessor for the instance.
 
-See Also:
+* 也见(See Also):
 
 with-slots, symbol-macrolet
 
-Notes:
+* 注意(Notes):
 
 A with-accessors expression of the form:
 
@@ -1975,7 +1972,7 @@ where Qi is
 
 Macro WITH-SLOTS
 
-Syntax:
+* 语法(Syntax):
 
 with-slots (slot-entry*) instance-form declaration* form*
 
@@ -1983,7 +1980,7 @@ with-slots (slot-entry*) instance-form declaration* form*
 
 slot-entry::= slot-name | (variable-name slot-name) 
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 slot-name---a slot name; not evaluated.
 
@@ -1999,13 +1996,13 @@ forms---an implicit progn.
 
 results---the values returned by the forms.
 
-Description:
+* 描述(Description):
 
 The macro with-slots establishes a lexical environment for referring to the slots in the instance named by the given slot-names as though they were variables. Within such a context the value of the slot can be specified by using its slot name, as if it were a lexically bound variable. Both setf and setq can be used to set the value of the slot.
 
 The macro with-slots translates an appearance of the slot name as a variable into a call to slot-value.
 
-Examples:
+* 示例(Examples):
 
  (defclass thing ()
            ((x :initarg :x :accessor thing-x)
@@ -2038,19 +2035,19 @@ Examples:
      (9)
      (9 9 2 2 (9) (9) 8 8))
 
-Affected By:
+* 受此影响(Affected By):
 
 defclass
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 The consequences are undefined if any slot-name is not the name of a slot in the instance.
 
-See Also:
+* 也见(See Also):
 
 with-accessors, slot-value, symbol-macrolet
 
-Notes:
+* 注意(Notes):
 
 A with-slots expression of the form:
 
@@ -2076,7 +2073,7 @@ if slot-entryi is of the form
 
 Macro DEFCLASS
 
-Syntax:
+* 语法(Syntax):
 
 defclass class-name ({superclass-name}*) ({slot-specifier}*) [[class-option]]
 
@@ -2097,7 +2094,7 @@ class-option::= (:default-initargs . initarg-list) |
                 (:documentation string) | 
                 (:metaclass class-name) 
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 Class-name---a non-nil symbol.
 
@@ -2127,7 +2124,7 @@ Class-name---a non-nil symbol. :metaclass can be supplied once at most.
 
 new-class---the new class object.
 
-Description:
+* 描述(Description):
 
 The macro defclass defines a new named class. It returns the new class object as its result.
 
@@ -2193,11 +2190,11 @@ If no reader, writer, or accessor is specified for a slot, the slot can only be 
 
 If a defclass form appears as a top level form, the compiler must make the class name be recognized as a valid type name in subsequent declarations (as for deftype) and be recognized as a valid class name for defmethod parameter specializers and for use as the :metaclass option of a subsequent defclass. The compiler must make the class definition available to be returned by find-class when its environment argument is a value received as the environment parameter of a macro.
 
-Examples: None.
+* 示例(Examples): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 If there are any duplicate slot names, an error of type program-error is signaled.
 
@@ -2207,16 +2204,16 @@ If any of the following slot options appears more than once in a single slot des
 
 It is required that all implementations signal an error of type program-error if they observe a class option or a slot option that is not implemented locally.
 
-See Also:
+* 也见(See Also):
 
 documentation, initialize-instance, make-instance, slot-value, Section 4.3 (Classes), Section 4.3.4 (Inheritance), Section 4.3.6 (Redefining Classes), Section 4.3.5 (Determining the Class Precedence List), Section 7.1 (Object Creation and Initialization)
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
 Macro DEFGENERIC
 
-Syntax:
+* 语法(Syntax):
 
 defgeneric function-name gf-lambda-list [[option | {method-description}*]]
 
@@ -2231,7 +2228,7 @@ option::= (:argument-precedence-order parameter-name+) |
 
 method-description::= (:method method-qualifier* specialized-lambda-list [[declaration* | documentation]] form*) 
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 function-name---a function name.
 
@@ -2255,7 +2252,7 @@ new-generic---the generic function object.
 
 parameter-name---a symbol that names a required parameter in the lambda-list. (If the :argument-precedence-order option is specified, each required parameter in the lambda-list must be used exactly once as a parameter-name.)
 
-Description:
+* 描述(Description):
 
 The macro defgeneric is used to define a generic function or to specify options and declarations that pertain to a generic function as a whole.
 
@@ -2297,11 +2294,11 @@ Implementations can extend defgeneric to include other options. It is required t
 
 defgeneric is not required to perform any compile-time side effects. In particular, the methods are not installed for invocation during compilation. An implementation may choose to store information about the generic function for the purposes of compile-time error-checking (such as checking the number of arguments on calls, or noting that a definition for the function name has been seen).
 
-Examples:
+* 示例(Examples):
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 If function-name names an ordinary function, a macro, or a special operator, an error of type program-error is signaled.
 
@@ -2317,16 +2314,16 @@ If function-name specifies an existing generic function that has a different val
 
 Implementations can extend defgeneric to include other options. It is required that an implementation signal an error of type program-error if it observes an option that is not implemented locally.
 
-See Also:
+* 也见(See Also):
 
 defmethod, documentation, ensure-generic-function, generic-function, Section 7.6.4 (Congruent Lambda-lists for all Methods of a Generic Function)
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
 Macro DEFMETHOD
 
-Syntax:
+* 语法(Syntax):
 
 defmethod function-name {method-qualifier}* specialized-lambda-list [[declaration* | documentation]] form*
 
@@ -2344,7 +2341,7 @@ specialized-lambda-list::= ({var | (var parameter-specializer-name)}*
                             [&aux {var | (var [initform] )}*] ) 
 parameter-specializer-name::= symbol | (eql eql-specializer-form)
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 declaration---a declare expression; not evaluated.
 
@@ -2362,7 +2359,7 @@ Supplied-p-parameter---variable name.
 
 new-method---the new method object.
 
-Description:
+* 描述(Description):
 
 The macro defmethod defines a method on a generic function.
 
@@ -2394,34 +2391,34 @@ defmethod is not required to perform any compile-time side effects. In particula
 
 Documentation is attached as a documentation string to the method object.
 
-Examples: None.
+* 示例(Examples): None.
 
-Affected By:
+* 受此影响(Affected By):
 
 The definition of the referenced generic function.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 If function-name names an ordinary function, a macro, or a special operator, an error of type error is signaled.
 
 If a generic function is currently named by function-name, the lambda list of the method must be congruent with the lambda list of the generic function, or an error of type error is signaled.
 
-See Also:
+* 也见(See Also):
 
 defgeneric, documentation, Section 7.6.2 (Introduction to Methods), Section 7.6.4 (Congruent Lambda-lists for all Methods of a Generic Function), Section 7.6.3 (Agreement on Parameter Specializers and Qualifiers), Section 3.4.11 (Syntactic Interaction of Documentation Strings and Declarations)
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
 Accessor FIND-CLASS
 
-Syntax:
+* 语法(Syntax):
 
 find-class symbol &optional errorp environment => class
 
 (setf (find-class symbol &optional errorp environment) new-class)
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 symbol---a symbol.
 
@@ -2431,7 +2428,7 @@ environment -- same as the &environment argument to macro expansion functions an
 
 class---a class object, or nil.
 
-Description:
+* 描述(Description):
 
 Returns the class object named by the symbol in the environment. If there is no such class, nil is returned if errorp is false; otherwise, if errorp is true, an error is signaled.
 
@@ -2441,32 +2438,32 @@ When using setf of find-class, any errorp argument is evaluated for effect, but 
 
 The environment might be used to distinguish between a compile-time and a run-time environment.
 
-Examples: None.
+* 示例(Examples): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 If there is no such class and errorp is true, find-class signals an error of type error.
 
-See Also:
+* 也见(See Also):
 
 defmacro, Section 4.3.7 (Integrating Types and Classes)
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
 Local Function NEXT-METHOD-P
 
-Syntax:
+* 语法(Syntax):
 
 next-method-p <no arguments> => generalized-boolean
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 generalized-boolean---a generalized boolean.
 
-Description:
+* 描述(Description):
 
 The locally defined function next-method-p can be used within the body forms (but not the lambda list) defined by a method-defining form to determine whether a next method exists.
 
@@ -2474,28 +2471,28 @@ The function next-method-p has lexical scope and indefinite extent.
 
 Whether or not next-method-p is fbound in the global environment is implementation-dependent; however, the restrictions on redefinition and shadowing of next-method-p are the same as for symbols in the COMMON-LISP package which are fbound in the global environment. The consequences of attempting to use next-method-p outside of a method-defining form are undefined.
 
-Examples: None.
+* 示例(Examples): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 call-next-method, defmethod, call-method
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
 Local Macro CALL-METHOD, MAKE-METHOD
 
-Syntax:
+* 语法(Syntax):
 
 call-method method &optional next-method-list => result*
 
 make-method form => method-object
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 method---a method object, or a list (see below); not evaluated.
 
@@ -2505,7 +2502,7 @@ next-method-list---a list of method objects; not evaluated.
 
 results---the values returned by the method invocation.
 
-Description:
+* 描述(Description):
 
 The macro call-method is used in method combination. It hides the implementation-dependent details of how methods are called. The macro call-method has lexical scope and can only be used within an effective method form.
 
@@ -2523,32 +2520,32 @@ The call-next-method function available to method will call the first method in 
 
 If next-method-list is not supplied, the call-next-method function available to method signals an error of type control-error and the next-method-p function available to method returns nil.
 
-Examples:
+* 示例(Examples):
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 call-next-method, define-method-combination, next-method-p
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
 Local Function CALL-NEXT-METHOD
 
-Syntax:
+* 语法(Syntax):
 
 call-next-method &rest args => result*
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 arg---an object.
 
 results---the values returned by the method it calls.
 
-Description:
+* 描述(Description):
 
 The function call-next-method can be used within the body forms (but not the lambda list) of a method defined by a method-defining form to call the next method.
 
@@ -2568,34 +2565,34 @@ The function call-next-method has lexical scope and indefinite extent and can on
 
 Whether or not call-next-method is fbound in the global environment is implementation-dependent; however, the restrictions on redefinition and shadowing of call-next-method are the same as for symbols in the COMMON-LISP package which are fbound in the global environment. The consequences of attempting to use call-next-method outside of a method-defining form are undefined.
 
-Examples: None.
+* 示例(Examples): None.
 
-Affected By:
+* 受此影响(Affected By):
 
 defmethod, call-method, define-method-combination.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 When providing arguments to call-next-method, the following rule must be satisfied or an error of type error should be signaled: the ordered set of applicable methods for a changed set of arguments for call-next-method must be the same as the ordered set of applicable methods for the original arguments to the generic function. Optimizations of the error checking are possible, but they must not change the semantics of call-next-method.
 
-See Also:
+* 也见(See Also):
 
 define-method-combination, defmethod, next-method-p, no-next-method, call-method, Section 7.6.6 (Method Selection and Combination), Section 7.6.6.2 (Standard Method Combination), Section 7.6.6.4 (Built-in Method Combination Types)
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
 Standard Generic Function COMPUTE-APPLICABLE-METHODS
 
-Syntax:
+* 语法(Syntax):
 
 compute-applicable-methods generic-function function-arguments => methods
 
-Method Signatures:
+* 方法签名(Method Signatures):
 
 compute-applicable-methods (generic-function standard-generic-function)
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 generic-function---a generic function.
 
@@ -2603,26 +2600,26 @@ function-arguments---a list of arguments for the generic-function.
 
 methods---a list of method objects.
 
-Description:
+* 描述(Description):
 
 Given a generic-function and a set of function-arguments, the function compute-applicable-methods returns the set of methods that are applicable for those arguments sorted according to precedence order. See Section 7.6.6 (Method Selection and Combination).
 
-Affected By:
+* 受此影响(Affected By):
 
 defmethod
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 Section 7.6.6 (Method Selection and Combination)
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
 Macro DEFINE-METHOD-COMBINATION
 
-Syntax:
+* 语法(Syntax):
 
 define-method-combination name [[short-form-option]]
 
@@ -2642,7 +2639,7 @@ long-form-option::= :description description |
                     :order order | 
                     :required required-p 
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 args-lambda-list---a define-method-combination arguments lambda list.
 
@@ -2672,7 +2669,7 @@ qualifier-pattern---a list, or the symbol *.
 
 required-p---a generalized boolean.
 
-Description:
+* 描述(Description):
 
 The macro define-method-combination is used to define new types of method combination.
 
@@ -2748,7 +2745,7 @@ Long Form
 
 If a define-method-combination form appears as a top level form, the compiler must make the method combination name be recognized as a valid method combination name in subsequent defgeneric forms. However, the method combination is executed no earlier than when the define-method-combination form is executed, and possibly as late as the time that generic functions that use the method combination are executed.
 
-Examples:
+* 示例(Examples):
 
 Most examples of the long form of define-method-combination also illustrate the use of the related functions that are provided as part of the declarative method combination facility.
 
@@ -2880,13 +2877,13 @@ Most examples of the long form of define-method-combination also illustrate the 
       (unlock (object-lock ,object))))
   
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
 Side Effects:
 
 The compiler is not required to perform any compile-time side-effects.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Method combination types defined with the short form require exactly one qualifier per method. An error of type error is signaled if there are applicable methods with no qualifiers or with qualifiers that are not supported by the method combination type. At least one primary method must be applicable or an error of type error is signaled.
 
@@ -2896,28 +2893,28 @@ If the value of the :required option is true and the method group is empty (that
 
 If the :order option evaluates to a value other than :most-specific-first or :most-specific-last, an error of type error is signaled.
 
-See Also:
+* 也见(See Also):
 
 call-method, call-next-method, documentation, method-qualifiers, method-combination-error, invalid-method-error, defgeneric, Section 7.6.6 (Method Selection and Combination), Section 7.6.6.4 (Built-in Method Combination Types), Section 3.4.11 (Syntactic Interaction of Documentation Strings and Declarations)
 
-Notes:
+* 注意(Notes):
 
 The :method-combination option of defgeneric is used to specify that a generic function should use a particular method combination type. The first argument to the :method-combination option is the name of a method combination type and the remaining arguments are options for that type. 
 
 
 Standard Generic Function FIND-METHOD
 
-Syntax:
+* 语法(Syntax):
 
 find-method generic-function method-qualifiers specializers &optional errorp
 
 => method
 
-Method Signatures:
+* 方法签名(Method Signatures):
 
 find-method (generic-function standard-generic-function) method-qualifiers specializers &optional errorp
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 generic-function---a generic function.
 
@@ -2929,7 +2926,7 @@ errorp---a generalized boolean. The default is true.
 
 method---a method object, or nil.
 
-Description:
+* 描述(Description):
 
 The generic function find-method takes a generic function and returns the method object that agrees on qualifiers and parameter specializers with the method-qualifiers and specializers arguments of find-method. Method-qualifiers contains the method qualifiers for the method. The order of the method qualifiers is significant. For a definition of agreement in this context, see Section 7.6.3 (Agreement on Parameter Specializers and Qualifiers).
 
@@ -2937,7 +2934,7 @@ The specializers argument contains the parameter specializers for the method. It
 
 If there is no such method and errorp is true, find-method signals an error. If there is no such method and errorp is false, find-method returns nil.
 
-Examples:
+* 示例(Examples):
 
  (defmethod some-operation ((a integer) (b float)) (list a b))
 =>  #<STANDARD-METHOD SOME-OPERATION (INTEGER FLOAT) 26723357>
@@ -2948,79 +2945,79 @@ Examples:
  (find-method #'some-operation '() (mapcar #'find-class '(integer integer)) nil)
 =>  NIL
 
-Affected By:
+* 受此影响(Affected By):
 
 add-method, defclass, defgeneric, defmethod
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 If the specializers argument does not correspond in length to the number of required arguments of the generic-function, an an error of type error is signaled.
 
 If there is no such method and errorp is true, find-method signals an error of type error.
 
-See Also:
+* 也见(See Also):
 
 Section 7.6.3 (Agreement on Parameter Specializers and Qualifiers)
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
 Standard Generic Function ADD-METHOD
 
-Syntax:
+* 语法(Syntax):
 
 add-method generic-function method => generic-function
 
-Method Signatures:
+* 方法签名(Method Signatures):
 
 add-method (generic-function standard-generic-function) (method method)
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 generic-function---a generic function object.
 
 method---a method object.
 
-Description:
+* 描述(Description):
 
 The generic function add-method adds a method to a generic function.
 
 If method agrees with an existing method of generic-function on parameter specializers and qualifiers, the existing method is replaced.
 
-Examples: None.
+* 示例(Examples): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 The lambda list of the method function of method must be congruent with the lambda list of generic-function, or an error of type error is signaled.
 
 If method is a method object of another generic function, an error of type error is signaled.
 
-See Also:
+* 也见(See Also):
 
 defmethod, defgeneric, find-method, remove-method, Section 7.6.3 (Agreement on Parameter Specializers and Qualifiers)
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
 Standard Generic Function INITIALIZE-INSTANCE
 
-Syntax:
+* 语法(Syntax):
 
 initialize-instance instance &rest initargs &key &allow-other-keys => instance
 
-Method Signatures:
+* 方法签名(Method Signatures):
 
 initialize-instance (instance standard-object) &rest initargs
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 instance---an object.
 
 initargs---a defaulted initialization argument list.
 
-Description:
+* 描述(Description):
 
 Called by make-instance to initialize a newly created instance. The generic function is called with the new instance and the defaulted initialization argument list.
 
@@ -3028,50 +3025,50 @@ The system-supplied primary method on initialize-instance initializes the slots 
 
 Programmers can define methods for initialize-instance to specify actions to be taken when an instance is initialized. If only after methods are defined, they will be run after the system-supplied primary method for initialization and therefore will not interfere with the default behavior of initialize-instance.
 
-Examples: None.
+* 示例(Examples): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 shared-initialize, make-instance, slot-boundp, slot-makunbound, Section 7.1 (Object Creation and Initialization), Section 7.1.4 (Rules for Initialization Arguments), Section 7.1.2 (Declaring the Validity of Initialization Arguments)
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
 Standard Generic Function CLASS-NAME
 
-Syntax:
+* 语法(Syntax):
 
 class-name class => name
 
-Method Signatures:
+* 方法签名(Method Signatures):
 
 class-name (class class)
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 class---a class object.
 
 name---a symbol.
 
-Description:
+* 描述(Description):
 
 Returns the name of the given class.
 
-Examples: None.
+* 示例(Examples): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 find-class, Section 4.3 (Classes)
 
-Notes:
+* 注意(Notes):
 
 If S is a symbol such that S =(class-name C) and C =(find-class S), then S is the proper name of C. For further discussion, see Section 4.3 (Classes).
 
@@ -3080,54 +3077,54 @@ The name of an anonymous class is nil.
 
 Standard Generic Function (SETF CLASS-NAME)
 
-Syntax:
+* 语法(Syntax):
 
 (setf class-name) new-value class => new-value
 
-Method Signatures:
+* 方法签名(Method Signatures):
 
 (setf class-name) new-value (class class)
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 new-value---a symbol.
 
 class---a class.
 
-Description:
+* 描述(Description):
 
 The generic function (setf class-name) sets the name of a class object.
 
-Examples: None.
+* 示例(Examples): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 find-class, proper name, Section 4.3 (Classes)
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
 Function CLASS-OF
 
-Syntax:
+* 语法(Syntax):
 
 class-of object => class
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 object---an object.
 
 class---a class object.
 
-Description:
+* 描述(Description):
 
 Returns the class of which the object is a direct instance.
 
-Examples:
+* 示例(Examples):
 
  (class-of 'fred) =>  #<BUILT-IN-CLASS SYMBOL 610327300>
  (class-of 2/3) =>  #<BUILT-IN-CLASS RATIO 610326642>
@@ -3141,15 +3138,15 @@ Examples:
  (defstruct kons kar kdr) =>  KONS
  (class-of (make-kons :kar 3 :kdr 4)) =>  #<STRUCTURE-CLASS KONS 250020317>
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 make-instance, type-of
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
 Condition Type UNBOUND-SLOT
@@ -3158,43 +3155,43 @@ Class Precedence List:
 
 unbound-slot, cell-error, error, serious-condition, condition, t
 
-Description:
+* 描述(Description):
 
 The object having the unbound slot is initialized by the :instanceinitialization argument to make-condition, and is accessed by the function unbound-slot-instance.
 
 The name of the cell (see cell-error) is the name of the slot.
 
-See Also:
+* 也见(See Also):
 
 cell-error-name, unbound-slot-object, Section 9.1 (Condition System Concepts) 
 
 
 Function UNBOUND-SLOT-INSTANCE
 
-Syntax:
+* 语法(Syntax):
 
 unbound-slot-instance condition => instance
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 condition---a condition of type unbound-slot.
 
 instance---an object.
 
-Description:
+* 描述(Description):
 
 Returns the instance which had the unbound slot in the situation represented by the condition.
 
-Examples: None.
+* 示例(Examples): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 cell-error-name, unbound-slot, Section 9.1 (Condition System Concepts)
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
