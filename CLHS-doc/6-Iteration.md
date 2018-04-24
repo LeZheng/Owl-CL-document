@@ -28,7 +28,7 @@
 > * 6.1.1.7 [解构](#Destructuring)
 > * 6.1.1.8 [副作用的限制](#RestrictionsSideEffects)
 
-#### 6.1.1.1 <span id="">简单 vs 扩展 Loop</span>
+#### 6.1.1.1 <span id="SimpleExtendedLoop">简单 vs 扩展 Loop</span>
 
 loop 表达式形式可以被分为两类: 简单 loop 表达式和扩展 loop 表达式.
 
@@ -1397,7 +1397,7 @@ finally 构造导致提供的复合表达式形式 compound-forms 在正常迭�
 
         在 dotimes 的主体中 go 可能被用于转移控制到一个 tag 标记的语句上. 
 
-### <span id="">Macro DOLIST</span>
+### <span id="MacroDOLIST">宏 DOLIST</span>
 
 * 语法(Syntax):
 

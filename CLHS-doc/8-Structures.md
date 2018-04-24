@@ -1,93 +1,76 @@
- 8. Structures
+# 8. 结构体
 
-8.1 The Structures Dictionary
+## 8.1 结构体的字典
 
- 8.1 The Structures Dictionary
+> * [宏 DEFSTRUCT](#MacroDEFSTRUCT)
+> * [函数 COPY-STRUCTURE](#FunctionCOPYSTRUCTURE)
 
-Macro DEFSTRUCT
+### <span id="MacroDEFSTRUCT">宏 DEFSTRUCT</span>
 
-Function COPY-STRUCTURE
+* 语法(Syntax):
 
-Macro DEFSTRUCT
+        defstruct name-and-options [documentation] {slot-description}*
+        => structure-name
 
-Syntax:
+        name-and-options::= structure-name | (structure-name [[options]]) 
 
-defstruct name-and-options [documentation] {slot-description}*
+        options::= conc-name-option | 
+                  {constructor-option}* | 
+                  copier-option | 
+                  include-option | 
+                  initial-offset-option | 
+                  named-option | 
+                  predicate-option | 
+                  printer-option | 
+                  type-option 
 
-=> structure-name
+        conc-name-option::= :conc-name | (:conc-name) | (:conc-name conc-name) 
 
-name-and-options::= structure-name | (structure-name [[options]]) 
+        constructor-option::= :constructor | 
+                              (:constructor) | 
+                              (:constructor constructor-name) | 
+                              (:constructor constructor-name constructor-arglist) 
 
-options::= conc-name-option | 
-           {constructor-option}* | 
-           copier-option | 
-           include-option | 
-           initial-offset-option | 
-           named-option | 
-           predicate-option | 
-           printer-option | 
-           type-option 
+        copier-option::= :copier | (:copier) | (:copier copier-name) 
 
-conc-name-option::= :conc-name | (:conc-name) | (:conc-name conc-name) 
+        predicate-option::= :predicate | (:predicate) | (:predicate predicate-name) 
 
-constructor-option::= :constructor | 
-                      (:constructor) | 
-                      (:constructor constructor-name) | 
-                      (:constructor constructor-name constructor-arglist) 
+        include-option::= (:include included-structure-name {slot-description}*) 
 
-copier-option::= :copier | (:copier) | (:copier copier-name) 
+        printer-option::= print-object-option | print-function-option 
 
-predicate-option::= :predicate | (:predicate) | (:predicate predicate-name) 
+        print-object-option::= (:print-object printer-name) | (:print-object) 
 
-include-option::= (:include included-structure-name {slot-description}*) 
+        print-function-option::= (:print-function printer-name) | (:print-function) 
 
-printer-option::= print-object-option | print-function-option 
+        type-option::= (:type type) 
 
-print-object-option::= (:print-object printer-name) | (:print-object) 
+        named-option::= :named 
 
-print-function-option::= (:print-function printer-name) | (:print-function) 
+        initial-offset-option::= (:initial-offset initial-offset) 
 
-type-option::= (:type type) 
+        slot-description::= slot-name |  
+                            (slot-name [slot-initform [[slot-option]]]) 
 
-named-option::= :named 
+        slot-option::= :type slot-type |  
+                      :read-only slot-read-only-p 
 
-initial-offset-option::= (:initial-offset initial-offset) 
+* 参数和值(Arguments and Values):
 
-slot-description::= slot-name |  
-                    (slot-name [slot-initform [[slot-option]]]) 
-
-slot-option::= :type slot-type |  
-               :read-only slot-read-only-p 
-
-Arguments and Values:
-
-conc-name---a string designator.
-
-constructor-arglist---a boa lambda list.
-
-constructor-name---a symbol.
-
-copier-name---a symbol.
-
-included-structure-name---an already-defined structure name. Note that a derived type is not permissible, even if it would expand into a structure name.
-
-initial-offset---a non-negative integer.
-
-predicate-name---a symbol.
-
-printer-name---a function name or a lambda expression.
-
-slot-name---a symbol.
-
-slot-initform---a form.
-
-slot-read-only-p---a generalized boolean.
-
-structure-name---a symbol.
-
-type---one of the type specifiers list, vector, or (vector size), or some other type specifier defined by the implementation to be appropriate.
-
-documentation---a string; not evaluated.
+        conc-name---一个字符串表示符.
+        constructor-arglist---一个 boa lambda 列表.
+        constructor-name---一个符号.
+        copier-name---一个符号.
+        included-structure-name---一个已经定义的结构体名字. 注意, 派生类型是不允许的, 即使它会扩展成一个结构体名称.
+        initial-offset---一个非负整数.
+        predicate-name---一个符号.
+        printer-name---一个函数名字或一个 lambda 表达式.
+        slot-name---一个符号.
+        slot-initform---一个表达式形式.
+        slot-read-only-p---一个广义的 boolean.
+        structure-name---一个符号.
+        type---类型指定符 list, vector, 或者 (vector size) 之一, 或者其他某个具体实现定义的类型指定符也是合适的.
+        documentation---一个字符串; 不求值.
 
 Description:
 
@@ -586,37 +569,36 @@ The restriction against issuing a warning for type mismatches between a slot-ini
 The mechanism by which defstruct arranges for slot accessors to be usable with setf is implementation-dependent; for example, it may use setf functions, setf expanders, or some other implementation-dependent mechanism known to that implementation's code for setf. 
 
 
-Function COPY-STRUCTURE
+### <span id="FunctionCOPYSTRUCTURE">函数 COPY-STRUCTURE</span>
 
-Syntax:
+* 语法(Syntax):
 
-copy-structure structure => copy
+        copy-structure structure => copy
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
-structure---a structure.
+        structure---一个结构体.
+        copy---一个结构体的拷贝.
 
-copy---a copy of the structure.
+* 描述(Description):
 
-Description:
+        返回这个结构体的一个拷贝.
 
-Returns a copy[6] of the structure.
+        只有这个结构体本身被拷贝; 这些槽的值不会.
 
-Only the structure itself is copied; not the values of the slots.
+* 示例(Examples): None.
 
-Examples: None.
+* 副作用(Side Effects): None.
 
-Side Effects: None.
+* 受此影响(Affected By): None.
 
-Affected By: None.
+* 异常情况(Exceptional Situations): None.
 
-Exceptional Situations: None.
+* 也见(See Also):
 
-See Also:
+        defstruct 的这个 :copier 选项
 
-the :copier option to defstruct
+* 注意(Notes):
 
-Notes:
-
-The copy is the same as the given structure under equalp, but not under equal. 
+        这个拷贝和给定的结构体在 equalp 下是相同的, 但是在 equal 下是不同的. 
 
