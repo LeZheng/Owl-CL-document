@@ -5,7 +5,7 @@
 > * 7.3 [重新初始化一个实例](#ReinitInstance)
 > * 7.4 [元对象](#MetaObjects)
 > * 7.5 [槽](#Slots)
-> * 7.6 [Generic Functions and Methods](#GenericFunctionsMethods)
+> * 7.6 [广义函数和方法](#GenericFunctionsMethods)
 > * 7.7 [The Objects Dictionary](#TheObjectsDictionary)
 
 ## 7.1 <span id="ObjectCreationInit">对象创建和初始化</span>
@@ -329,48 +329,48 @@ shared-initialize 方法可以被定义, 用来定制类的重定义行为. 关�
 访问槽的方法只使用槽的名字和槽的值的类型. 假设一个超类提供了一个方法, 该方法希望访问给定名称的共享槽, 并且一个子类定义了一个相同名字的局部槽. 如果超类提供的这个方法在子类的实例上被调用, 这个方法会访问这个局部槽. 
 
 
-## 7.6 <span id="">Generic Functions and Methods</span>
+## 7.6 <span id="GenericFunctionsMethods">广义函数和方法</span>
 
-> * 7.6.1 [Introduction to Generic Functions](#)
-> * 7.6.2 [Introduction to Methods](#)
-> * 7.6.3 [Agreement on Parameter Specializers and Qualifiers](#)
-> * 7.6.4 [Congruent Lambda-lists for all Methods of a Generic Function](#)
-> * 7.6.5 [Keyword Arguments in Generic Functions and Methods](#)
-> * 7.6.6 [Method Selection and Combination](#)
-> * 7.6.7 [Inheritance of Methods](#)
-
-
-### 7.6.1 <span id="">Introduction to Generic Functions</span>
-
-A generic function is a function whose behavior depends on the classes or identities of the arguments supplied to it. A generic function object is associated with a set of methods, a lambda list, a method combination[2], and other information.
-
-Like an ordinary function, a generic function takes arguments, performs a series of operations, and perhaps returns useful values. An ordinary function has a single body of code that is always executed when the function is called. A generic function has a set of bodies of code of which a subset is selected for execution. The selected bodies of code and the manner of their combination are determined by the classes or identities of one or more of the arguments to the generic function and by its method combination.
-
-Ordinary functions and generic functions are called with identical syntax.
-
-Generic functions are true functions that can be passed as arguments and used as the first argument to funcall and apply.
-
-A binding of a function name to a generic function can be established in one of several ways. It can be established in the global environment by ensure-generic-function, defmethod (implicitly, due to ensure-generic-function) or defgeneric (also implicitly, due to ensure-generic-function). No standardized mechanism is provided for establishing a binding of a function name to a generic function in the lexical environment.
-
-When a defgeneric form is evaluated, one of three actions is taken (due to ensure-generic-function):
-
-* If a generic function of the given name already exists, the existing generic function object is modified. Methods specified by the current defgeneric form are added, and any methods in the existing generic function that were defined by a previous defgeneric form are removed. Methods added by the current defgeneric form might replace methods defined by defmethod, defclass, define-condition, or defstruct. No other methods in the generic function are affected or replaced.
-
-* If the given name names an ordinary function, a macro, or a special operator, an error is signaled.
-
-* Otherwise a generic function is created with the methods specified by the method definitions in the defgeneric form.
-
-Some operators permit specification of the options of a generic function, such as the type of method combination it uses or its argument precedence order. These operators will be referred to as ``operators that specify generic function options.'' The only standardized operator in this category is defgeneric.
-
-Some operators define methods for a generic function. These operators will be referred to as method-defining operators; their associated forms are called method-defining forms. The standardized method-defining operators are listed in the next figure.
-
-defgeneric        defmethod  defclass  
-define-condition  defstruct            
-
-Figure 7-1. Standardized Method-Defining Operators Note that of the standardized method-defining operators only defgeneric can specify generic function options. defgeneric and any implementation-defined operators that can specify generic function options are also referred to as ``operators that specify generic function options.'' 
+> * 7.6.1 [广义函数的介绍](#IntroductionGF)
+> * 7.6.2 [方法的介绍](#IntroductionMethods)
+> * 7.6.3 [关于参数指定符和限定符的协议](#AgreeParamSpecQualifiers)
+> * 7.6.4 [一个广义函数的所有方法的一致的 Lambda-list](#LambdaMethodsGF)
+> * 7.6.5 [广义函数和方法中的关键字参数](#KeywordArgGFAndMethods)
+> * 7.6.6 [方法选择和组合](#MethodSelComb)
+> * 7.6.7 [方法的继承](#InheritanceMethods)
 
 
-### 7.6.2 <span id="">Introduction to Methods</span>
+### 7.6.1 <span id="IntroductionGF">广义函数的介绍</span>
+
+一个广义函数是一个行为取决于提供给它的参数的类或同一性的函数. 一个广义函数对象和一个方法的集合, 一个 lambda 列表, 一个方法组合, 还有其他信息相关联.<!--TODO identity 同一性？身份?-->
+
+像一个普通函数一样, 一个广义函数接受参数, 执行一系列动作, 并且可能返回有用的值. 一个普通函数由有一个在函数被调用时总是被执行的代码中的单个主体. 一个广义函数有着一个代码的主体的集合, 其中一个子集会被选择来执行. 选择的代码主体和它们的组合方式由给这个广义函数的一个或多个参数的类或同一性决定, 以及它们的方法组合.
+
+普通函数和广义函数用相同的语法来调用.
+
+广义函数是可以作为参数传递和用作给 funcall 和 apply 的第一个参数的真实函数.
+
+函数名与广义函数的绑定可以通过以下几种方式建立. 它可以通过 ensure-generic-function, defmethod (隐式的, 应归于 ensure-generic-function) 或 defgeneric (也是隐式的, 应归于 ensure-generic-function) 在全局环境中建立. 没有为在词法环境中建立一个函数名与广义函数的绑定提供标准化机制.
+
+当一个 defgeneric 表达式形式被求值, 采取这三个动作中的其中一个 (应归于 ensure-generic-function):
+
+* 如果一个给定名字的广义函数已经存在, 这个存在的广义函数对象会被修改. 当前 defgeneric 表达式形式指定的方法会被添加, 并且这个通过前面的 defgeneric 表达式形式定义的已存在的广义函数中的方法会被移除. 通过当前 defgeneric 表达式形式添加的方法可能替换由 defmethod, defclass, define-condition, 或 defstruct 定义的方法. 广义函数中没有其他方法受到影响或替换.
+
+* 如果这个给定的名字命名一个普通函数, 一个宏, 或者一个特殊操作符, 就会发出一个错误.
+
+* 否则就会使用这个 defgeneric 表达式形式中的方法定义指定的方法来创建一个广义函数.
+
+某些操作符允许规范一个广义函数的选项, 就像它使用的方法组合的类型或它的参数优先级顺序. 这些操作符会会被称为 "指定广义函数选项的操作符". 这个类别中唯一的标准化操作符是 defgeneric.
+
+某些操作符为一个广义函数定义方法. 这些操作符会被称作方法定义操作符; 它们关联的表达式形式被称作方法定义表达式形式. 标准化的方法定义操作符列在下面这段中.
+
+    defgeneric        defmethod  defclass  
+    define-condition  defstruct            
+
+    Figure 7-1. 标准化的方法定义操作符, 注意这些方法定义操作符中只有 defgeneric 可以指定广义函数选项. defgeneric 还有任何具体实现定义的可以指定广义函数选项的操作符都被称为 "指定广义函数选项的操作符".
+
+
+### 7.6.2 <span id="">方法的介绍</span>
 
 Methods define the class-specific or identity-specific behavior and operations of a generic function.
 
@@ -784,33 +784,30 @@ The inheritance of methods is described in detail in Section 7.6.6 (Method Selec
 * 注意(Notes): None. 
 
 
-Standard Generic Function ALLOCATE-INSTANCE
+### <span id="SGF-ALLOCATE-INSTANCE">标准广义函数 ALLOCATE-INSTANCE</span>
 
 * 语法(Syntax):
 
-allocate-instance class &rest initargs &key &allow-other-keys => new-instance
+        allocate-instance class &rest initargs &key &allow-other-keys => new-instance
 
 * 方法签名(Method Signatures):
 
-allocate-instance (class standard-class) &rest initargs
-
-allocate-instance (class structure-class) &rest initargs
+        allocate-instance (class standard-class) &rest initargs
+        allocate-instance (class structure-class) &rest initargs
 
 * 参数和值(Arguments and Values):
 
-class---a class.
-
-initargs---a list of keyword/value pairs (initialization argument names and values).
-
-new-instance---an object whose class is class.
+        class---一个类.
+        initargs---一个 keyword/value 对(初始化参数的名字和值) 的列表 .
+        new-instance---一个类是 class 的对象.
 
 * 描述(Description):
 
-The generic function allocate-instance creates and returns a new instance of the class, without initializing it. When the class is a standard class, this means that the slots are unbound; when the class is a structure class, this means the slots' values are unspecified.
+        广义函数 allocate-instance 创建并返回一个 class 的新的实例, 但是没有把它初始化. 当这个 class 是一个标准类时, 这就意味着这些槽是未绑定的; 当这个 class 是一个结构类时, 这就意味着这些槽的值是没有被指定的.
 
-The caller of allocate-instance is expected to have already checked the initialization arguments.
+        allocate-instance 的调用者被期望已经检查了初始化参数.
 
-The generic function allocate-instance is called by make-instance, as described in Section 7.1 (Object Creation and Initialization).
+        广义函数 allocate-instance 被 make-instance 所调用, 像章节 7.1 (Object Creation and Initialization) 中描述的那样.
 
 * 受此影响(Affected By): None.
 
@@ -818,11 +815,11 @@ The generic function allocate-instance is called by make-instance, as described 
 
 * 也见(See Also):
 
-defclass, make-instance, class-of, Section 7.1 (Object Creation and Initialization)
+        defclass, make-instance, class-of, Section 7.1 (Object Creation and Initialization)
 
 * 注意(Notes):
 
-The consequences of adding methods to allocate-instance is unspecified. This capability might be added by the Metaobject Protocol. 
+        给 allocate-instance 添加方法的后果是没有指定的. 这个功能可能被元对象协议添加进来. 
 
 
 Standard Generic Function REINITIALIZE-INSTANCE
