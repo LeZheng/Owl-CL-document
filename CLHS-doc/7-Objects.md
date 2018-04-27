@@ -370,54 +370,53 @@ shared-initialize 方法可以被定义, 用来定制类的重定义行为. 关�
     Figure 7-1. 标准化的方法定义操作符, 注意这些方法定义操作符中只有 defgeneric 可以指定广义函数选项. defgeneric 还有任何具体实现定义的可以指定广义函数选项的操作符都被称为 "指定广义函数选项的操作符".
 
 
-### 7.6.2 <span id="">方法的介绍</span>
+### 7.6.2 <span id="IntroductionMethods">方法的介绍</span>
+<!--TODO parameter specializer 参数特化符 特化参数??-->
+方法定义了特定类或者特定同一性的行为以及一个广义函数的操作.
 
-Methods define the class-specific or identity-specific behavior and operations of a generic function.
+一个方法对象和实现这个方法的代码相关联, 在这个给定方法可应用时指定的一个参数特化序列, 一个 lambda 列表, 还有一个被方法组合机制用来区分方法的限定符序列.
 
-A method object is associated with code that implements the method's behavior, a sequence of parameter specializers that specify when the given method is applicable, a lambda list, and a sequence of qualifiers that are used by the method combination facility to distinguish among methods.
+一个方法对象不是一个函数并且不能像函数一样被调用. 在这个对象系统中的各种机制接收一个方法对象并调用它的方法函数, 就像这个广义函数被调用时那样. 这个发生时就说这个方法被调用.
 
-A method object is not a function and cannot be invoked as a function. Various mechanisms in the object system take a method object and invoke its method function, as is the case when a generic function is invoked. When this occurs it is said that the method is invoked or called.
+方法定义表达式形式包含了当广义函数的参数导致它定义的方法被调用时要运行的代码 A method-defining form contains the code that is to be run when the arguments to the generic function cause the method that it defines to be invoked.<!--TODO 待校验--> 当一个方法定义表达式形式被求值, 一个方法对象会被创建并且采取这四种动作中的一个:
 
-A method-defining form contains the code that is to be run when the arguments to the generic function cause the method that it defines to be invoked. When a method-defining form is evaluated, a method object is created and one of four actions is taken:
+* 如果一个给定名字的广义函数已经存在并且如果一个在特化参数和限定符上都符合新的那个的方法对象已经存在, 那个新的对象会替换旧的那个. 对于一个方法的定义, 在参数指定器和限定符上与另一个方法达成一致的, 见章节 7.6.3 (Agreement on Parameter Specializers and Qualifiers).
 
-* If a generic function of the given name already exists and if a method object already exists that agrees with the new one on parameter specializers and qualifiers, the new method object replaces the old one. For a definition of one method agreeing with another on parameter specializers and qualifiers, see Section 7.6.3 (Agreement on Parameter Specializers and Qualifiers).
+* 如果一个给定名字的广义函数已经存在并且这里没有在特化参数和限定符上都符合新的那个的方法对象, 那个存在的广义函数对象会被修改来包含那个新的方法对象.
 
-* If a generic function of the given name already exists and if there is no method object that agrees with the new one on parameter specializers and qualifiers, the existing generic function object is modified to contain the new method object.
+* 如果给定的名字命名一个普通函数, 一个宏, 或者一个特殊操作符, 就会发出一个错误.
 
-* If the given name names an ordinary function, a macro, or a special operator, an error is signaled.
+* 否则就会用那个方法定义表达式形式指定的方法创建一个广义函数.
 
-* Otherwise a generic function is created with the method specified by the method-defining form.
+如果一个新的方法的 lambda 列表和广义函数是不相等的, 就会发出一个错误. 如果一个不能指定广义函数选项的方法定义操作符创建了一个新的广义函数, 这个广义函数的 lambda 列表是来自于这个方法定义表达式中的方法的 lambda 列表, 在这种方式下它们是一致的. 关于一致性的讨论, 见章节 7.6.4 (Congruent Lambda-lists for all Methods of a Generic Function).
 
-If the lambda list of a new method is not congruent with the lambda list of the generic function, an error is signaled. If a method-defining operator that cannot specify generic function options creates a new generic function, a lambda list for that generic function is derived from the lambda list of the method in the method-defining form in such a way as to be congruent with it. For a discussion of congruence, see Section 7.6.4 (Congruent Lambda-lists for all Methods of a Generic Function).
+每个方法都有一个专门的 lambda 列表, 它决定了何时这个方法可以被应用. 一个专门的 lambda 列表就像一个普通 lambda 列表除了一个特化参数可以出现来代替一个必要参数. 一个特化参数是一个列表 (variable-name parameter-specializer-name), 其中 parameter-specializer-name 以下的一种:
 
-Each method has a specialized lambda list, which determines when that method can be applied. A specialized lambda list is like an ordinary lambda list except that a specialized parameter may occur instead of the name of a required parameter. A specialized parameter is a list (variable-name parameter-specializer-name), where parameter-specializer-name is one of the following:
+一个符号
 
-a symbol
+    表示一个以该符号命名的类的参数特化符.
 
-    denotes a parameter specializer which is the class named by that symbol.
+一个类
 
-a class
-
-    denotes a parameter specializer which is the class itself.
+    表示一个参数特化符就是类本身.
 
 (eql form)
 
-    denotes a parameter specializer which satisfies the type specifier (eql object), where object is the result of evaluating form. The form form is evaluated in the lexical environment in which the method-defining form is evaluated. Note that form is evaluated only once, at the time the method is defined, not each time the generic function is called.
+    表示一个参数特化符需满足类型指定 (eql object), 其中 object 是求值 form 的结果. 这个 form 表达式形式在方法定义表达式形式被求值的词法环境中被求值. 注意, 这个 form 只被求值一次, 在方法被定义的时候, 而不是每次广义函数被调用的时候.
 
-Parameter specializer names are used in macros intended as the user-level interface (defmethod), while parameter specializers are used in the functional interface.
+参数特化符名字在用户级别接口的宏 (defmethod) 中使用, 而在函数接口中使用参数特化符.
 
-Only required parameters may be specialized, and there must be a parameter specializer for each required parameter. For notational simplicity, if some required parameter in a specialized lambda list in a method-defining form is simply a variable name, its parameter specializer defaults to the class t.
+只有必要参数可以被特化, 并且这里对于每一个必要参数都必须是参数特化符. 为了表达的简单性, 如果一个方法定义表达式形式的特化 lambda 列表中的某个必要参数仅仅是一个变量名, 它的参数特化符默认是类 t.
 
-Given a generic function and a set of arguments, an applicable method is a method for that generic function whose parameter specializers are satisfied by their corresponding arguments. The following definition specifies what it means for a method to be applicable and for an argument to satisfy a parameter specializer.
+给定一个广义函数和一个参数集合, 一个可应用的方法是一个参数特化符被它们对应的参数所满足的广义函数的方法. 下面的定义指定了什么是可应用的方法, 以及满足参数特化符的参数的含义.
 
-Let <A1, ..., An> be the required arguments to a generic function in order. Let <P1, ..., Pn> be the parameter specializers corresponding to the required parameters of the method M in order. The method M is applicable when each Ai is of the type specified by the type specifier Pi. Because every valid parameter specializer is also a valid type specifier, the function typep can be used during method selection to determine whether an argument satisfies a parameter specializer.
+让 <A1, ..., An> 依次是给一个广义函数的必要参数. 让 <P1, ..., Pn> 依次是对应方法 M 的必要参数的参数特化符. 当每一个 Ai 都是类型指定符 Pi 指定的类型时, 方法 M 是可应用的. 由于每个有效参数特化符也是一个有效的类型指定符, 在方法选择去决定一个参数是否满足一个参数特化符时, 可以使用函数 typep.
 
-A method all of whose parameter specializers are the class t is called a default method; it is always applicable but may be shadowed by a more specific method.
+一个所有参数特化符都是类 t 的方法被称为默认方法; 它总是可应用的但是可能被一个更具体的方法所遮蔽.
 
-Methods can have qualifiers, which give the method combination procedure a way to distinguish among methods. A method that has one or more qualifiers is called a qualified method. A method with no qualifiers is called an unqualified method. A qualifier is any non-list. The qualifiers defined by the standardized method combination types are symbols.
+方法可以有限定符, 它给方法组合过程提供一种区分方法的方式. 一个带有一个或多个限定符的方法被称为限定方法(qualified method).<!--TODO qualified method ？？--> 一个没有限定符的方法被称为一个非限定方法. 一个限定符是任何非列表元素. 标准方法组合类型定义的限定符是符号.
 
-In this specification, the terms ``primary method'' and ``auxiliary method'' are used to partition methods within a method combination type according to their intended use. In standard method combination, primary methods are unqualified methods and auxiliary methods are methods with a single qualifier that is one of :around, :before, or :after. Methods with these qualifiers are called around methods, before methods, and after methods, respectively. When a method combination type is defined using the short form of define-method-combination, primary methods are methods qualified with the name of the type of method combination, and auxiliary methods have the qualifier :around. Thus the terms ``primary method'' and ``auxiliary method'' have only a relative definition within a given method combination type. 
-
+在这个规范中, 术语 "主方法(primary method)" 和 "辅助方法(auxiliary method)" 在方法组合类型中根据它们的用途被用于区分方法. 在标准方法组合中, 主方法是非限定方法而辅助方法是有以下之一的单个限定符的方法: :around, :before, 或 :after. 有这些限定符的方法分别被称为 around 方法, before 方法, 还有 after 方法. 当使用 define-method-combination 简单的表达式形式定义一个方法组合类型时, 主要方法是用方法组合的类型命名的方法, 而辅助方法有着限定符 :around. 因此术语 "主方法(primary method)" 和 "辅助方法(auxiliary method)" 只有在给定方法组合类型中有相关定义. 
 
 ### 7.6.3 <span id="">Agreement on Parameter Specializers and Qualifiers</span>
 
