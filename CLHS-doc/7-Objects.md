@@ -448,37 +448,44 @@ shared-initialize 方法可以被定义, 用来定制类的重定义行为. 关�
     如果一个不能指定广义函数选项的方法定义操作符创建了一个广义函数, 并且这个方法的 lambda 列表提及关键字参数, 这个广义函数的 lambda 列表会提及 &key (但是没有关键字参数). 
 
 
-### 7.6.5 <span id="">Keyword Arguments in Generic Functions and Methods</span>
+### 7.6.5 <span id="KeywordArgGFAndMethods">广义函数和方法中的关键字参数</span>
 
-When a generic function or any of its methods mentions &key in a lambda list, the specific set of keyword arguments accepted by the generic function varies according to the applicable methods. The set of keyword arguments accepted by the generic function for a particular call is the union of the keyword arguments accepted by all applicable methods and the keyword arguments mentioned after &key in the generic function definition, if any. A method that has &rest but not &key does not affect the set of acceptable keyword arguments. If the lambda list of any applicable method or of the generic function definition contains &allow-other-keys, all keyword arguments are accepted by the generic function.
+当一个广义函数或者它的任何一个方法在一个 lambda 列表中提及 &key, 广义函数接受的特定关键字参数根据所应用的方法而变化. 对于一个特定的调用, 被这个广义函数所接收的关键字参数的集合是所有可应用方法的关键字参数的并集, 如果这个广义函数定义中的 &key 后提及关键字参数, 那么还包括这些关键字参数. 一个有着 &rest 没有 &key 的方法不会影响可接受参数的集合. 如果任何可应用的方法或广义函数定义的 lambda 列表中包含 &allow-other-keys, 所有关键字都可以被这个广义函数所接受.
 
-The lambda list congruence rules require that each method accept all of the keyword arguments mentioned after &key in the generic function definition, by accepting them explicitly, by specifying &allow-other-keys, or by specifying &rest but not &key. Each method can accept additional keyword arguments of its own, in addition to the keyword arguments mentioned in the generic function definition.
+这个 lambda 列表一致性规则要求每一个方法接受所有在广义函数的 &key 参数后提及的所有关键字参数, 通过显式地接收它们, 通过指定 &allow-other-keys, 通过指定 &rest 但不是 &key. 除了广义函数定义中提到的关键字参数之外, 每一个方法可以接受它自身的额外的关键字参数.
 
-If a generic function is passed a keyword argument that no applicable method accepts, an error should be signaled; see Section 3.5 (Error Checking in Function Calls).
+如果传递给一个广义函数一个没有可应用方法接收的关键字参数, 应该会发出一个错误; 见章节 3.5 (Error Checking in Function Calls).
 
- 7.6.5.1 Examples of Keyword Arguments in Generic Functions and Methods
+ 7.6.5.1 广义函数和方法的关键字参数示例
 
-For example, suppose there are two methods defined for width as follows:
+比如, 假设这里为 width 按照如下定义两个方法:
 
- (defmethod width ((c character-class) &key font) ...)
- 
- (defmethod width ((p picture-class) &key pixel-size) ...)
+```LISP
+(defmethod width ((c character-class) &key font) ...)
 
-Assume that there are no other methods and no generic function definition for width. The evaluation of the following form should signal an error because the keyword argument :pixel-size is not accepted by the applicable method.
+(defmethod width ((p picture-class) &key pixel-size) ...)
+```
 
- (width (make-instance `character-class :char #\Q) 
-        :font 'baskerville :pixel-size 10)
+假设这里没有 width 的其他方法并且没有 width 广义函数. 以下表达式形式的求值应该会发出一个错误 由于这个关键字参数 :pixel-size 不能被这个可应用的方法所接受.
 
-The evaluation of the following form should signal an error.
+```LISP
+(width (make-instance `character-class :char #\Q) 
+      :font 'baskerville :pixel-size 10)
+```
 
+以下表达式形式的求值应该发出一个错误.
+
+```LISP
  (width (make-instance `picture-class :glyph (glyph #\Q)) 
         :font 'baskerville :pixel-size 10)
+```
 
-The evaluation of the following form will not signal an error if the class named character-picture-class is a subclass of both picture-class and character-class.
+如果名为 character-picture-class 的类同时是 picture-class 和 character-class 的子类, 那么以下表达式形式的求值不会发出一个错误.
 
- (width (make-instance `character-picture-class :char #\Q)
-        :font 'baskerville :pixel-size 10)
-
+```LISP
+(width (make-instance `character-picture-class :char #\Q)
+      :font 'baskerville :pixel-size 10)
+```
 
 
 ### 7.6.6 <span id="">Method Selection and Combination</span>
