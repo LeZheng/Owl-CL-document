@@ -333,8 +333,8 @@ shared-initialize 方法可以被定义, 用来定制类的重定义行为. 关�
 
 > * 7.6.1 [广义函数的介绍](#IntroductionGF)
 > * 7.6.2 [方法的介绍](#IntroductionMethods)
-> * 7.6.3 [关于参数指定符和限定符的协议](#AgreeParamSpecQualifiers)
-> * 7.6.4 [一个广义函数的所有方法的一致的 Lambda-list](#LambdaMethodsGF)
+> * 7.6.3 [关于参数指定符和限定符的一致性](#AgreeParamSpecQualifiers)
+> * 7.6.4 [广义函数的所有方法的一致 Lambda-list](#LambdaMethodsGF)
 > * 7.6.5 [广义函数和方法中的关键字参数](#KeywordArgGFAndMethods)
 > * 7.6.6 [方法选择和组合](#MethodSelComb)
 > * 7.6.7 [方法的继承](#InheritanceMethods)
@@ -418,34 +418,34 @@ shared-initialize 方法可以被定义, 用来定制类的重定义行为. 关�
 
 在这个规范中, 术语 "主方法(primary method)" 和 "辅助方法(auxiliary method)" 在方法组合类型中根据它们的用途被用于区分方法. 在标准方法组合中, 主方法是非限定方法而辅助方法是有以下之一的单个限定符的方法: :around, :before, 或 :after. 有这些限定符的方法分别被称为 around 方法, before 方法, 还有 after 方法. 当使用 define-method-combination 简单的表达式形式定义一个方法组合类型时, 主要方法是用方法组合的类型命名的方法, 而辅助方法有着限定符 :around. 因此术语 "主方法(primary method)" 和 "辅助方法(auxiliary method)" 只有在给定方法组合类型中有相关定义. 
 
-### 7.6.3 <span id="">Agreement on Parameter Specializers and Qualifiers</span>
+### 7.6.3 <span id="AgreeParamSpecQualifiers">关于参数特化符和限定符的一致性</span>
 
-Two methods are said to agree with each other on parameter specializers and qualifiers if the following conditions hold:
+如果以下条件保持不变, 则两个方法在参数特化符和限定符之间达成一致:
 
-1. Both methods have the same number of required parameters. Suppose the parameter specializers of the two methods are P1,1...P1,n and P2,1...P2,n.
+1. 两个方法有相同数量的必要参数. 假设这两个方法的参数特化符为 P1,1...P1,n 和 P2,1...P2,n.
 
-2. For each 1<=i<=n, P1,i agrees with P2,i. The parameter specializer P1,i agrees with P2,i if P1,i and P2,i are the same class or if P1,i=(eql object1), P2,i=(eql object2), and (eql object1 object2). Otherwise P1,i and P2,i do not agree.
+2. 对于每一个 1<=i<=n, P1,i 和 P2,i 一致. 如果 P1,i 和 P2,i 是相同的类或者如果 P1,i=(eql object1), P2,i=(eql object2), 并且 (eql object1 object2), 那么参数特化符 P1,i 和 P2,i 是一致的. 否则 P1,i 和 P2,i 是不一致的.
 
-3. The two lists of qualifiers are the same under equal. 
+3. 两个限定符列表在 equal 下是相等的. 
 
 
-### 7.6.4 <span id="">Congruent Lambda-lists for all Methods of a Generic Function</span>
+### 7.6.4 <span id="LambdaMethodsGF">广义函数的所有方法的一致 Lambda-list</span>
 
-These rules define the congruence of a set of lambda lists, including the lambda list of each method for a given generic function and the lambda list specified for the generic function itself, if given.
+这些规则定义了一个 lambda 列表的集合的一致性, 包括对于一个给定广义函数的每个方法的那个 lambda 列表还有这个广义函数自身指定的那个 lambda 列表, 如果存在的话.
 
-1. Each lambda list must have the same number of required parameters.
+1. 每个 lambda 列表必须有相同数量的必要参数.
 
-2. Each lambda list must have the same number of optional parameters. Each method can supply its own default for an optional parameter.
+2. 每个 lambda 列表必须有着相同数量的可选参数. 每个方法可以为可选参数提供它自己的默认值.
 
-3. If any lambda list mentions &rest or &key, each lambda list must mention one or both of them.
+3. 如果任何 lambda 列表提及 &rest 或 &key, 那么每个 lambda 列表必须提及它们或它们的其中之一.
 
-4. If the generic function lambda list mentions &key, each method must accept all of the keyword names mentioned after &key, either by accepting them explicitly, by specifying &allow-other-keys, or by specifying &rest but not &key. Each method can accept additional keyword arguments of its own. The checking of the validity of keyword names is done in the generic function, not in each method. A method is invoked as if the keyword argument pair whose name is :allow-other-keys and whose value is true were supplied, though no such argument pair will be passed.
+4. 如果广义函数的 lambda 列表提及 &key, 每个方法必须接受 &key 后面提及的所有关键字的名字, 不管是通过显式地指定它们, 还是通过指定 &allow-other-keys, 或者通过指定 &rest 而不是 &key. 每个方法可以接收它自己的额外的关键字参数. 关键字名字的有效性检测在广义函数中进行, 不是在每个方法中. 一个方法被调用就像提供了名字为 :allow-other-keys 而值为 true 的关键字参数对一样, 尽管没有这样的参数对会被传递.
 
-5. The use of &allow-other-keys need not be consistent across lambda lists. If &allow-other-keys is mentioned in the lambda list of any applicable method or of the generic function, any keyword arguments may be mentioned in the call to the generic function.
+5. &allow-other-keys 的使用在 lambda 列表中不需要是一致的. 如果 &allow-other-keys 在这个广义函数的任何一个可应用方法的 lambda 列表中被提及, 那么在对这个广义函数的调用中任何关键字参数都可能被提及.
 
-6. The use of &aux need not be consistent across methods.
+6. &aux 的使用在方法中不需要是一致的.
 
-    If a method-defining operator that cannot specify generic function options creates a generic function, and if the lambda list for the method mentions keyword arguments, the lambda list of the generic function will mention &key (but no keyword arguments). 
+    如果一个不能指定广义函数选项的方法定义操作符创建了一个广义函数, 并且这个方法的 lambda 列表提及关键字参数, 这个广义函数的 lambda 列表会提及 &key (但是没有关键字参数). 
 
 
 ### 7.6.5 <span id="">Keyword Arguments in Generic Functions and Methods</span>
