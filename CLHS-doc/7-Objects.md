@@ -487,61 +487,59 @@ shared-initialize 方法可以被定义, 用来定制类的重定义行为. 关�
       :font 'baskerville :pixel-size 10)
 ```
 
+### 7.6.6 <span id="MethodSelComb">方法选择和组合</span>
 
-### 7.6.6 <span id="">Method Selection and Combination</span>
+当用特定的参数调用一个广义函数时, 它必须决定要执行的代码. 这个代码被称为这些参数的有效方法. 有效的方法是一个广义函数中可应用方法的组合, 它调用这些方法的一部分或全部.
 
-When a generic function is called with particular arguments, it must determine the code to execute. This code is called the effective method for those arguments. The effective method is a combination of the applicable methods in the generic function that calls some or all of the methods.
+如果一个广义函数被调用而没有可应用的方法, 广义函数 no-applicable-method 会被调用, 这个调用的结果被用作对原始广义函数调用的结果. 调用 no-applicable-method 优先于检测可接受的关键字参数; 见章节 7.6.5 (Keyword Arguments in Generic Functions and Methods).
 
-If a generic function is called and no methods are applicable, the generic function no-applicable-method is invoked, with the results from that call being used as the results of the call to the original generic function. Calling no-applicable-method takes precedence over checking for acceptable keyword arguments; see Section 7.6.5 (Keyword Arguments in Generic Functions and Methods).
+当这个有效方法已经被决定时, 会用传递给这个广义函数相同的参数去调用它. 不管它返回什么值都会作为这个广义函数的值被返回.
 
-When the effective method has been determined, it is invoked with the same arguments as were passed to the generic function. Whatever values it returns are returned as the values of the generic function.
-
-> * 7.6.6.1 [Determining the Effective Method](#)
-> * 7.6.6.2 [Standard Method Combination](#)
-> * 7.6.6.3 [Declarative Method Combination](#)
-> * 7.6.6.4 [Built-in Method Combination Types](#)
-
-
-#### 7.6.6.1 <span id="">Determining the Effective Method</span>
-
-The effective method is determined by the following three-step procedure:
-
-1. Select the applicable methods.
-
-2. Sort the applicable methods by precedence order, putting the most specific method first.
-
-3. Apply method combination to the sorted list of applicable methods, producing the effective method.
-
-##### 7.6.6.1.1 Selecting the Applicable Methods
-
-This step is described in Section 7.6.2 (Introduction to Methods). 
-
-##### 7.6.6.1.2 Sorting the Applicable Methods by Precedence Order
-
-To compare the precedence of two methods, their parameter specializers are examined in order. The default examination order is from left to right, but an alternative order may be specified by the :argument-precedence-order option to defgeneric or to any of the other operators that specify generic function options.
-
-The corresponding parameter specializers from each method are compared. When a pair of parameter specializers agree, the next pair are compared for agreement. If all corresponding parameter specializers agree, the two methods must have different qualifiers; in this case, either method can be selected to precede the other. For information about agreement, see Section 7.6.3 (Agreement on Parameter Specializers and Qualifiers).
-
-If some corresponding parameter specializers do not agree, the first pair of parameter specializers that do not agree determines the precedence. If both parameter specializers are classes, the more specific of the two methods is the method whose parameter specializer appears earlier in the class precedence list of the corresponding argument. Because of the way in which the set of applicable methods is chosen, the parameter specializers are guaranteed to be present in the class precedence list of the class of the argument.
-
-If just one of a pair of corresponding parameter specializers is (eql object), the method with that parameter specializer precedes the other method. If both parameter specializers are eql expressions, the specializers must agree (otherwise the two methods would not both have been applicable to this argument).
-
-The resulting list of applicable methods has the most specific method first and the least specific method last. 
+> * 7.6.6.1 [确定有效方法](#DetermEffectMethod)
+> * 7.6.6.2 [标准方法组合](#StandMethodComb)
+> * 7.6.6.3 [声明式方法组合](#DeclaraMethodComb)
+> * 7.6.6.4 [内建的方法组合类型](#BuiltInMethodCombTypes)
 
 
-##### 7.6.6.1.3 Applying method combination to the sorted list of applicable methods
+#### 7.6.6.1 <span id="DetermEffectMethod">确定有效方法</span>
 
-In the simple case---if standard method combination is used and all applicable methods are primary methods---the effective method is the most specific method. That method can call the next most specific method by using the function call-next-method. The method that call-next-method will call is referred to as the next method. The predicate next-method-p tests whether a next method exists. If call-next-method is called and there is no next most specific method, the generic function no-next-method is invoked.
+有效方法通过以下三个步骤来决定:
 
-In general, the effective method is some combination of the applicable methods. It is described by a form that contains calls to some or all of the applicable methods, returns the value or values that will be returned as the value or values of the generic function, and optionally makes some of the methods accessible by means of call-next-method.
+1. 选择可应用的方法.
 
-The role of each method in the effective method is determined by its qualifiers and the specificity of the method. A qualifier serves to mark a method, and the meaning of a qualifier is determined by the way that these marks are used by this step of the procedure. If an applicable method has an unrecognized qualifier, this step signals an error and does not include that method in the effective method.
+2. 通过优先级顺序对可应用方法排序, 把最具体的方法放在第一位.
 
-When standard method combination is used together with qualified methods, the effective method is produced as described in Section 7.6.6.2 (Standard Method Combination).
+3. 对排序后的可应用方法列表应用方法组合, 产生有效方法.
 
-Another type of method combination can be specified by using the :method-combination option of defgeneric or of any of the other operators that specify generic function options. In this way this step of the procedure can be customized.
+##### 7.6.6.1.1 选择可应用的方法
 
-New types of method combination can be defined by using the define-method-combination macro. 
+这个步骤在章节 7.6.2 (Introduction to Methods) 中描述. 
+
+##### 7.6.6.1.2 通过优先级顺序对可应用方法排序
+
+为了比较两个方法的优先级, 它们的参数指定符会被按顺序检查. 默认的检查顺序是从左到右, 但是可以通过对 defgeneric 或任何指定广义函数选项的操作符指定 :argument-precedence-order 选项来指定一个替代的顺序.
+
+每一个方法的对应参数指定符都会被比较. 当一对参数指定符一致时, 比较下一对的一致性. 如果所有对应的参数指定符都一致, 那么两个方法必须有不同的限定符; 在这个情况下, 任何一个方法都可以优先于另一个. 关于一致性的更多信息, 见章节 7.6.3 (Agreement on Parameter Specializers and Qualifiers).
+
+如果某些对应参数不一致, 第一对不一致的参数决定了这个优先级. 如果两个参数指定符都是类, 两个方法中更具体的是方法参数指定符在这个对应参数的类优先级列表中出现的更早的那个方法. 由于可应用方法被选择的这个方法, 参数指定符保证存在于参数的类的类优先列表中.
+
+如果一对对应参数指定符中只有一个是 (eql object), 带有这个参数指定符的方法优先于另一个方法. 如果两个参数指定符都是 eql 表达式, 这个参数指定符一定是一致的 (否则对于这个参数这两个方法不会都是可应用的).
+
+产生的可应用方法列表中最具体的方法在第一个, 最不具体的在最后一个. 
+
+##### 7.6.6.1.3 对排序后的可应用方法使用方法组合
+
+在这个简单的例子中---如果使用了标准方法组合并且所有可应用的方法都是主方法---这个有效方法就是最具体的方法. 这个方法可以通过函数 call-next-method 调用下一个最具体的方法. 这个 call-next-method 会调用的方法被称为下一个方法. 断言 next-method-p 检测是否存在下一个方法. 如果 call-next-method 被调用并且没有下一个最具体的方法, 广义函数 no-next-method 会被调用.
+
+通常, 有效方法是可应用方法的某个组合. 它由一个表达式形式来描述，这个表达式形式包含对某些或全部可应用方法的调用, 返回值或多值来作为广义函数返回的值或多值, 并可选地使一些方法可以通过 call-next-method 访问.
+
+在这个有效方法中的每一个方法的角色由它的限定符和方法的特性所决定. 一个限定符用于标记一个方法, 而限定符的含义由这个过程的这一步使用这些标记的方式决定. 如果一个可应用方法由一个不识别的限定符, 这个步骤会发出一个错误并且不会在有效方法中包含那个方法.
+
+当标准方法组合和限定符方法一起使用时, 产生的有效方法就像章节 7.6.6.2 (Standard Method Combination) 中所描述的那样.
+
+另一个方法组合的类型可以通过使用 defgenric 或者任何其他指定广义函数选项的操作符的 :method-combination 选项来指定. 在这个情况下, 这个过程的这个步骤可以被定制.
+
+新的方法组合类型可以通过使用 define-method-combination 宏来定义. 
 
 
 #### 7.6.6.2 <span id="">Standard Method Combination</span>
