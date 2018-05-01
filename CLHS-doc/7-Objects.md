@@ -542,43 +542,43 @@ shared-initialize 方法可以被定义, 用来定制类的重定义行为. 关�
 新的方法组合类型可以通过使用 define-method-combination 宏来定义. 
 
 
-#### 7.6.6.2 <span id="">Standard Method Combination</span>
+#### 7.6.6.2 <span id="StandMethodComb">标准方法组合</span>
 
-Standard method combination is supported by the class standard-generic-function. It is used if no other type of method combination is specified or if the built-in method combination type standard is specified.
+标准方法组合由类 standard-generic-function 支持. 如果没有指定其他类型的方法组合或者指定了内置的方法组合类型 standard, 那么这个标准方法组合就会被使用.
 
-Primary methods define the main action of the effective method, while auxiliary methods modify that action in one of three ways. A primary method has no method qualifiers.
+主方法(primary method)定义了这个有效方法的主要动作, 而辅助方法(auxiliary method)以三种方式之一修改那个动作. 一个主方法没有方法限定符.
 
-An auxiliary method is a method whose qualifier is :before, :after, or :around. Standard method combination allows no more than one qualifier per method; if a method definition specifies more than one qualifier per method, an error is signaled.
+一个辅助方法是一个限定符为 :before, :after, 或 :around 的方法. 标准方法组合不允许每个方法有超过一个限定符; 如果一个方法定义中指定了每个方法有超过一个限定符, 就会发出一个错误.
 
-* A before method has the keyword :before as its only qualifier. A before method specifies code that is to be run before any primary methods.
+* 一个 before 方法有着作为它仅有限定符的关键字 :before. 一个 before 方法指定在任何主方法之前执行的代码.
 
-* An after method has the keyword :after as its only qualifier. An after method specifies code that is to be run after primary methods.
+* 一个 after 方法有着作为它仅有限定符的关键字 :after. 一个 after 方法指定在主方法后面运行的代码.
 
-* An around method has the keyword :around as its only qualifier. An around method specifies code that is to be run instead of other applicable methods, but which might contain explicit code which calls some of those shadowed methods (via call-next-method).
+* 一个 around 方法有着作为它仅有限定符的关键字 :around. 一个 around 方法指定了要被运行的替代其他可应用方法的代码, 但是它可能包含显式的调用某些被遮蔽的方法的代码 (通过 call-next-method).
 
-The semantics of standard method combination is as follows:
+标准方法组合的语义如下:
 
-* If there are any around methods, the most specific around method is called. It supplies the value or values of the generic function.
+* 如果这里有任何 around 方法, 最具体的 around 方法会被调用. 它提供这个广义函数的值或多值.
 
-* Inside the body of an around method, call-next-method can be used to call the next method. When the next method returns, the around method can execute more code, perhaps based on the returned value or values. The generic function no-next-method is invoked if call-next-method is used and there is no applicable method to call. The function next-method-p may be used to determine whether a next method exists.
+* 在一个 around 方法的主体内, call-next-method 可以被用于调用下一个方法. 当下一个方法返回时, 这个 around 方法可以执行更多的代码, 可能基于返回的值和多值. 如果调用了 call-next-method 并且这里没有可应用的方法被调用, 那么广义函数 no-next-method 会被调用. 函数 next-method-p 可能被用于确定是否存在下一个方法.
 
-* If an around method invokes call-next-method, the next most specific around method is called, if one is applicable. If there are no around methods or if call-next-method is called by the least specific around method, the other methods are called as follows:
+* 如果一个 around 方法调用了 call-next-method, 下一个最具体的 around 方法会被调用, 如果存在的话. 如果这里没有 around 方法或者如果 call-next-method 被最不具体的 around 方法所调用, 其他方法会按如下所述被调用:
 
-    -- All the before methods are called, in most-specific-first order. Their values are ignored. An error is signaled if call-next-method is used in a before method.
+    -- 所有的 before 方法会被调用, 以最具体优先的顺序. 它们的返回值会被忽略. 如果在一个 before 方法中使用 call-next-method 那么就会发出一个错误.
 
-    -- The most specific primary method is called. Inside the body of a primary method, call-next-method may be used to call the next most specific primary method. When that method returns, the previous primary method can execute more code, perhaps based on the returned value or values. The generic function no-next-method is invoked if call-next-method is used and there are no more applicable primary methods. The function next-method-p may be used to determine whether a next method exists. If call-next-method is not used, only the most specific primary method is called.
+    -- 最具体的主方法会被调用. 在一个主方法的主体内, call-next-method 可以被用于调用下一个最具体的主方法. 当那个方法返回时, 前一个主要方法可以执行更多代码, 可能基于返回的值或多值. 如果使用了 call-next-method 并且这里没有更多可应用的主方法, 广义函数 no-next-method 会被调用. 函数 next-method-p 可能被用于确定是否存在下一个方法. 如果 call-next-method 没有被使用, 只有最具体的主方法会被调用.
 
-    -- All the after methods are called in most-specific-last order. Their values are ignored. An error is signaled if call-next-method is used in an after method.
+    -- 所有的 after 方法按最不具体的优先顺序被调用. 它们的值会被忽略. 如果在一个 after 方法中使用 call-next-method, 那么会发出一个错误.
 
-* If no around methods were invoked, the most specific primary method supplies the value or values returned by the generic function. The value or values returned by the invocation of call-next-method in the least specific around method are those returned by the most specific primary method.
+* 如果没有 around 方法被调用, 最具体的主方法提供这个广义函数返回的值或多值. 在最不具体的 around 方法中调用 call-next-method 返回的值或多值是最具体的主方法返回的那些.
 
-In standard method combination, if there is an applicable method but no applicable primary method, an error is signaled.
+在标准方法组合中, 如果这里有一个可应用的方法但是没有可应用的主方法, 会发出一个错误.
 
-The before methods are run in most-specific-first order while the after methods are run in least-specific-first order. The design rationale for this difference can be illustrated with an example. Suppose class C1 modifies the behavior of its superclass, C2, by adding before methods and after methods. Whether the behavior of the class C2 is defined directly by methods on C2 or is inherited from its superclasses does not affect the relative order of invocation of methods on instances of the class C1. Class C1's before method runs before all of class C2's methods. Class C1's after method runs after all of class C2's methods.
+这个 before 方法按最具体优先的顺序被运行而 after 方法则按最不具体优先的顺序被运行. 这个区别的设计原理可以用一个例子来说明. 假设类 C1 通过添加 before 和 after 方法修改了它的超类 C2 的行为. 不管这个类 C2 的行为是通过 C2 的方法直接定义或是从它的超类中继承而来, 都不会影响在类 C1 的实例上调用方法的相关顺序. 类 C1 的 before 方法在类 C2 的所有方法之前运行. 类 C1 的 after 方法在类 C2 的所有方法之后运行.
 
-By contrast, all around methods run before any other methods run. Thus a less specific around method runs before a more specific primary method.
+相比之下, 所有 around 方法在任何其他方法运行前运行. 因此一个较不具体的 around 方法在一个较具体的主方法之前运行.
 
-If only primary methods are used and if call-next-method is not used, only the most specific method is invoked; that is, more specific methods shadow more general ones. 
+如果只使用了主方法而没有使用 call-next-method, 那么只有最具体的方法会被调用; 这也就是说, 较为具体的方法遮蔽更一般的方法. 
 
 
 #### 7.6.6.3 <span id="">Declarative Method Combination</span>
