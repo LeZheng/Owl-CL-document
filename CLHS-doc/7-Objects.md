@@ -497,7 +497,7 @@ shared-initialize 方法可以被定义, 用来定制类的重定义行为. 关�
 
 > * 7.6.6.1 [确定有效方法](#DetermEffectMethod)
 > * 7.6.6.2 [标准方法组合](#StandMethodComb)
-> * 7.6.6.3 [声明式方法组合](#DeclaraMethodComb)
+> * 7.6.6.3 [声明方法组合](#DeclaraMethodComb)
 > * 7.6.6.4 [内建的方法组合类型](#BuiltInMethodCombTypes)
 
 
@@ -581,49 +581,49 @@ shared-initialize 方法可以被定义, 用来定制类的重定义行为. 关�
 如果只使用了主方法而没有使用 call-next-method, 那么只有最具体的方法会被调用; 这也就是说, 较为具体的方法遮蔽更一般的方法. 
 
 
-#### 7.6.6.3 <span id="">Declarative Method Combination</span>
+#### 7.6.6.3 <span id="DeclaraMethodComb">声明方法组合</span>
 
-The macro define-method-combination defines new forms of method combination. It provides a mechanism for customizing the production of the effective method. The default procedure for producing an effective method is described in Section 7.6.6.1 (Determining the Effective Method). There are two forms of define-method-combination. The short form is a simple facility while the long form is more powerful and more verbose. The long form resembles defmacro in that the body is an expression that computes a Lisp form; it provides mechanisms for implementing arbitrary control structures within method combination and for arbitrary processing of method qualifiers. 
+宏 define-method-combination 定义方法组合的新的表达式形式. 它为定制有效方法的产生提供了一个机制. 对于产生一个有效方法的默认过程在章节 7.6.6.1 (Determining the Effective Method) 中已描述. 这里有两个 define-method-combination 表达式形式. 短表达式形式是一个简单的工具而长表达式形式则更加强大和详细. 长表达式形式类似于 defmacro, 在它的主体中是一个计算一个 Lisp 表达式形式的表达式; 它为在方法组合中实现任意控制结构和方法限定符的任意处理提供一个机制. 
 
 
-#### 7.6.6.4 <span id="">Built-in Method Combination Types</span>
+#### 7.6.6.4 <span id="BuiltInMethodCombTypes">内建的方法组合类型</span>
 
-The object system provides a set of built-in method combination types. To specify that a generic function is to use one of these method combination types, the name of the method combination type is given as the argument to the :method-combination option to defgeneric or to the :method-combination option to any of the other operators that specify generic function options.
+这个对象系统提供了一个内建的方法组合类型集合. 为了指定一个广义函数去使用这些方法组合类型之一, 那个方法组合类型的名字会传递给 defgeneric 的 :method-combination 选项或传递给任何指定广义函数选项的其他操作符的 :method-combination 选项.
 
-The names of the built-in method combination types are listed in the next figure.
+内建的方法组合类型的名字列在下面这一段.
 
-+    append  max  nconc  progn     
-and  list    min  or     standard  
+    +    append  max  nconc  progn     
+    and  list    min  or     standard  
 
-Figure 7-2. Built-in Method Combination Types
+    Figure 7-2. 内建的方法组合类型
 
-The semantics of the standard built-in method combination type is described in Section 7.6.6.2 (Standard Method Combination). The other built-in method combination types are called simple built-in method combination types.
+standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (Standard Method Combination). 其他内置的方法组合类型称为简单内建的方法组合类型.
 
-The simple built-in method combination types act as though they were defined by the short form of define-method-combination. They recognize two roles for methods:
+简单内建方法组合类型表现得就像它们是通过 define-method-combination 的短表达式形式定义出来的. 它们识别方法的两种角色:
 
-* An around method has the keyword symbol :around as its sole qualifier. The meaning of :around methods is the same as in standard method combination. Use of the functions call-next-method and next-method-p is supported in around methods.
+* 一个 around 方法有着作为它唯一限定符的关键字符号 :around. 这个 :around 方法的意义和标准方法组合中一样. around 方法中支持使用函数 call-next-method 和 next-method-p.
 
-* A primary method has the name of the method combination type as its sole qualifier. For example, the built-in method combination type and recognizes methods whose sole qualifier is and; these are primary methods. Use of the functions call-next-method and next-method-p is not supported in primary methods.
+* 一个主方法有着作为它唯一限定符的方法组合类型的名字. 比如, 内建的方法组合类型 and 识别单一限定符为 and 的方法; 这些是主方法. 在主方法中不支持使用函数 call-next-method 和 next-method-p.
 
-The semantics of the simple built-in method combination types is as follows:
+简单内建方法组合类型的语义如下:
 
-* If there are any around methods, the most specific around method is called. It supplies the value or values of the generic function.
+* 如果这里有任何一个 around 方法, 最具体的 around 方法会被调用. 它提供了这个广义函数的值或多值.
 
-* Inside the body of an around method, the function call-next-method can be used to call the next method. The generic function no-next-method is invoked if call-next-method is used and there is no applicable method to call. The function next-method-p may be used to determine whether a next method exists. When the next method returns, the around method can execute more code, perhaps based on the returned value or values.
+* 在一个 around 方法的主体内, 函数 call-next-method 可以被用于调用下一个方法. 如果 call-next-method 被调用而这里没有可应用的方法被调用, 那么就会调用广义函数 no-next-method. 函数 next-method-p 可能被用于确定是否存在下一个方法. 当When the next method returns, the around method can execute more code, perhaps based on the returned value or values.
 
-* If an around method invokes call-next-method, the next most specific around method is called, if one is applicable. If there are no around methods or if call-next-method is called by the least specific around method, a Lisp form derived from the name of the built-in method combination type and from the list of applicable primary methods is evaluated to produce the value of the generic function. Suppose the name of the method combination type is operator and the call to the generic function is of the form
+* 如果一个 around 方法调用了 call-next-method, 下一个最具体的 around 方法被调用, 如果存在一个可应用的话. 如果这里没有 around 方法或者 call-next-method 被最不具体的 around 方法调用,从内建方法组合类型的名称和可应用的主方法列表中衍生出的 Lisp 表达式形式被求值来产生广义函数的值. 假设这个方法组合类型的名字是 operator 并且对广义函数的调用是
 
     (generic-function a1...an)
 
-Let M1,...,Mk be the applicable primary methods in order; then the derived Lisp form is
+让 M1,...,Mk 是按次序可应用的主方法; 那么衍生的 Lisp 表达式形式是
 
     (operator <M1 a1...an>...<Mk a1...an>)
 
-If the expression <Mi a1...an> is evaluated, the method Mi will be applied to the arguments a1...an. For example, if operator is or, the expression <Mi a1...an> is evaluated only if <Mj a1...an>, 1<=j<i, returned nil.
+如果表达式形式 <Mi a1...an> 被求值, 方法 Mi 会被应用给参数 a1...an. 比如, 如果 operator 是 or, 那么表达式形式 <Mi a1...an> 当且仅当 <Mj a1...an>, 1<=j<\i 返回 nil 时被求值.
 
-The default order for the primary methods is :most-specific-first. However, the order can be reversed by supplying :most-specific-last as the second argument to the :method-combination option.
+主方法的默认顺序是 :most-specific-first. 然而, 这个顺序可以通过提供 :most-specific-last 作为 :method-combination 选项的第二个参数来倒转.
 
-The simple built-in method combination types require exactly one qualifier per method. An error is signaled if there are applicable methods with no qualifiers or with qualifiers that are not supported by the method combination type. An error is signaled if there are applicable around methods and no applicable primary methods. 
+简单内建方法组合类型要求一个方法一个限定符. 如果这里存在没有限定符或者这个方法组合类型不支持的限定符的可应用的方法就会发出一个错误. 如果这里有可应用的 around 方法并且没有可应用的主方法, 那么也会发出一个错误. 
 
 
 ### 7.6.7 <span id="">Inheritance of Methods</span>
