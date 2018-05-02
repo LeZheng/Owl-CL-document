@@ -626,13 +626,13 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (Standard M
 简单内建方法组合类型要求一个方法一个限定符. 如果这里存在没有限定符或者这个方法组合类型不支持的限定符的可应用的方法就会发出一个错误. 如果这里有可应用的 around 方法并且没有可应用的主方法, 那么也会发出一个错误. 
 
 
-### 7.6.7 <span id="">Inheritance of Methods</span>
+### 7.6.7 <span id="InheritanceMethods">方法的继承</span>
 
-A subclass inherits methods in the sense that any method applicable to all instances of a class is also applicable to all instances of any subclass of that class.
+一个子类继承方法的意义在于任何适用于类的所有实例的方法也适用于该类的任何子类的所有实例.
 
-The inheritance of methods acts the same way regardless of which of the method-defining operators created the methods.
+不管那个方法定义操作符创建了这个方法, 方法的继承还是表现一样.
 
-The inheritance of methods is described in detail in Section 7.6.6 (Method Selection and Combination). 
+方法的继承在章节 7.6.6 (Method Selection and Combination) 中详细描述. 
 
 
 ## 7.7 <span id="">The Objects Dictionary</span>
@@ -826,47 +826,46 @@ The inheritance of methods is described in detail in Section 7.6.6 (Method Selec
         给 allocate-instance 添加方法的后果是没有指定的. 这个功能可能被元对象协议添加进来. 
 
 
-Standard Generic Function REINITIALIZE-INSTANCE
+### <span id="SGF-REINITIALIZE-INSTANCE">标准广义函数 REINITIALIZE-INSTANCE</span>
 
 * 语法(Syntax):
 
-reinitialize-instance instance &rest initargs &key &allow-other-keys => instance
+        reinitialize-instance instance &rest initargs &key &allow-other-keys => instance
 
 * 方法签名(Method Signatures):
 
-reinitialize-instance (instance standard-object) &rest initargs
+        reinitialize-instance (instance standard-object) &rest initargs
 
 * 参数和值(Arguments and Values):
 
-instance---an object.
-
-initargs---an initialization argument list.
+        instance---一个对象.
+        initargs---一个初始化参数列表.
 
 * 描述(Description):
 
-The generic function reinitialize-instance can be used to change the values of local slots of an instance according to initargs. This generic function can be called by users.
+        广义函数 reinitialize-instance 可以被用于根据 initargs 来修改一个实例的局部槽的值. 这个广义函数可以被用户调用.
 
-The system-supplied primary method for reinitialize-instance checks the validity of initargs and signals an error if an initarg is supplied that is not declared as valid. The method then calls the generic function shared-initialize with the following arguments: the instance, nil (which means no slots should be initialized according to their initforms), and the initargs it received.
+        系统提供的 reinitialize-instance 主方法检查 initargs 的有效性, 如果提供的 initargs 没有被有效声明, 就会发出一个错误. 这个方法接下来用以下参数来调用广义函数 shared-initialize: 这个实例, nil (这个意味着根据槽的初始化表达式形式没有槽应该被初始化), 还有它收到的 initargs.
 
 * 示例(Examples): None.
 
-Side Effects:
+* 副作用(Side Effects:):
 
-The generic function reinitialize-instance changes the values of local slots.
+        广义函数 reinitialize-instance 修改局部槽的值.
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-The system-supplied primary method for reinitialize-instance signals an error if an initarg is supplied that is not declared as valid.
+        如果提供的一个 initarg 没有被有效声明, 系统提供的 reinitialize-instance 主方法会发出一个错误.
 
 * 也见(See Also):
 
-initialize-instance, shared-initialize, update-instance-for-redefined-class, update-instance-for-different-class, slot-boundp, slot-makunbound, Section 7.3 (Reinitializing an Instance), Section 7.1.4 (Rules for Initialization Arguments), Section 7.1.2 (Declaring the Validity of Initialization Arguments)
+        initialize-instance, shared-initialize, update-instance-for-redefined-class, update-instance-for-different-class, slot-boundp, slot-makunbound, Section 7.3 (Reinitializing an Instance), Section 7.1.4 (Rules for Initialization Arguments), Section 7.1.2 (Declaring the Validity of Initialization Arguments)
 
 * 注意(Notes):
 
-Initargs are declared as valid by using the :initarg option to defclass, or by defining methods for reinitialize-instance or shared-initialize. The keyword name of each keyword parameter specifier in the lambda list of any method defined on reinitialize-instance or shared-initialize is declared as a valid initialization argument name for all classes for which that method is applicable. 
+        Initargs 通过使用给 defclass 的 :initarg 选项来声明为有效的, 或者通过定义 reinitialize-instance 或 shared-initialize 方法. 任何定义在 reinitialize-instance 或 shared-initialize 方法的 lambda 列表中的每个关键字参数指定符的关键字名字对于那个方法可应用的所有类都被声明为有效的初始化参数. <!--TODO 待校验-->
 
 
 Standard Generic Function SHARED-INITIALIZE
@@ -1205,56 +1204,52 @@ The function slot-boundp allows for writing after methods on initialize-instance
 Although no implementation is required to do so, implementors are strongly encouraged to implement the function slot-boundp using the function slot-boundp-using-class described in the Metaobject Protocol. 
 
 
-Function SLOT-EXISTS-P
+### <span id="F-SLOT-EXISTS-P">函数 SLOT-EXISTS-P</span>
 
 * 语法(Syntax):
 
-slot-exists-p object slot-name => generalized-boolean
+        slot-exists-p object slot-name => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-object---an object.
-
-slot-name---a symbol.
-
-generalized-boolean---a generalized boolean.
+        object---一个对象.
+        slot-name---一个符号.
+        generalized-boolean---一个广义的 boolean.
 
 * 描述(Description):
 
-Returns true if the object has a slot named slot-name.
+        如果这个对象由一个名为 slot-name 的槽就返回 true.
 
 * 示例(Examples): None.
 
 * 受此影响(Affected By):
 
-defclass, defstruct
+        defclass, defstruct
 
 * 异常情况(Exceptional Situations): None.
 
 * 也见(See Also):
 
-defclass, slot-missing
+        defclass, slot-missing
 
 * 注意(Notes):
 
-Although no implementation is required to do so, implementors are strongly encouraged to implement the function slot-exists-p using the function slot-exists-p-using-class described in the Metaobject Protocol. 
+        虽然没有具体实现被要求, 但是还是强烈鼓励实现者去使用元对象协议中描述的函数 slot-exists-p-using-class 来实现函数 slot-exists-p. 
 
-
-Function SLOT-MAKUNBOUND
+### <span id="F-SLOT-MAKUNBOUND">函数 SLOT-MAKUNBOUND</span>
 
 * 语法(Syntax):
 
-slot-makunbound instance slot-name => instance
+        slot-makunbound instance slot-name => instance
 
 * 参数和值(Arguments and Values):
 
-instance -- instance.
-
-Slot-name---a symbol.
+        instance -- 实例.
+        Slot-name---一个符号.
 
 * 描述(Description):
 
-The function slot-makunbound restores a slot of the name slot-name in an instance to the unbound state.
+        函数 slot-makunbound 将一个实例中名为 slot-name 的槽复原到未绑定状态.
 
 * 示例(Examples): None.
 
@@ -1262,24 +1257,24 @@ The function slot-makunbound restores a slot of the name slot-name in an instanc
 
 * 异常情况(Exceptional Situations):
 
-If no slot of the name slot-name exists in the instance, slot-missing is called as follows:
+        如果在这个实例中不存在名为 slot-name 的槽, slot-missing 会按如下被调用:
 
-(slot-missing (class-of instance)
-              instance
-              slot-name
-              'slot-makunbound)
+        (slot-missing (class-of instance)
+                      instance
+                      slot-name
+                      'slot-makunbound)
 
-(Any values returned by slot-missing in this case are ignored by slot-makunbound.)
+        (在这个情况下任何 slot-missing 返回的值都被会 slot-makunbound 忽略.)
 
-The specific behavior depends on instance's metaclass. An error is never signaled if instance has metaclass standard-class. An error is always signaled if instance has metaclass built-in-class. The consequences are undefined if instance has any other metaclass--an error might or might not be signaled in this situation. Note in particular that the behavior for conditions and structures is not specified.
+        这个具体行为依赖于实例的元类. 如果实例的元类为 standard-class 那么从不发出一个错误. 如果实例的元类为 built-in-class 那么总是发出一个错误. 如果实例有着任何其他元类那么结果是未定义的--在这个情况下一个错误可能或可能不会发出. 特别要注意的是, 状况(condition)和结构体(structure)的行为没有指定.
 
 * 也见(See Also):
 
-slot-boundp, slot-missing
+        slot-boundp, slot-missing
 
 * 注意(Notes):
 
-Although no implementation is required to do so, implementors are strongly encouraged to implement the function slot-makunbound using the function slot-makunbound-using-class described in the Metaobject Protocol. 
+        虽然没有实现被要求, 还是强烈鼓励实现者用元对象协议中描述的函数 slot-makunbound-using-class 来实现函数 slot-makunbound. 
 
 
 Standard Generic Function SLOT-MISSING
@@ -1863,7 +1858,7 @@ Environment is the environment in which the forms will be processed.
 
 * 示例(Examples): None.
 
-Side Effects: None.
+* 副作用(Side Effects:): None.
 
 * 受此影响(Affected By): None.
 
@@ -2876,7 +2871,7 @@ Most examples of the long form of define-method-combination also illustrate the 
 
 * 受此影响(Affected By): None.
 
-Side Effects:
+* 副作用(Side Effects:):
 
 The compiler is not required to perform any compile-time side-effects.
 
