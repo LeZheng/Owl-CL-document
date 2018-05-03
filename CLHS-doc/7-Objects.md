@@ -868,39 +868,37 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (Standard M
         Initargs 通过使用给 defclass 的 :initarg 选项来声明为有效的, 或者通过定义 reinitialize-instance 或 shared-initialize 方法. 任何定义在 reinitialize-instance 或 shared-initialize 方法的 lambda 列表中的每个关键字参数指定符的关键字名字对于那个方法可应用的所有类都被声明为有效的初始化参数. <!--TODO 待校验-->
 
 
-Standard Generic Function SHARED-INITIALIZE
+### <span id="SGF-SHARED-INITIALIZE">标准广义函数 SHARED-INITIALIZE</span>
 
 * 语法(Syntax):
 
-shared-initialize instance slot-names &rest initargs &key &allow-other-keys => instance
+        shared-initialize instance slot-names &rest initargs &key &allow-other-keys => instance
 
 * 方法签名(Method Signatures):
 
-shared-initialize (instance standard-object) slot-names &rest initargs
+        shared-initialize (instance standard-object) slot-names &rest initargs
 
 * 参数和值(Arguments and Values):
 
-instance---an object.
-
-slot-names---a list or t.
-
-initargs---a list of keyword/value pairs (of initialization argument names and values).
+        instance---一个对象.
+        slot-names---一个列表或者 t.
+        initargs---一个 keyword/value 对的列表 (其中是初始化参数的名字和值).
 
 * 描述(Description):
 
-The generic function shared-initialize is used to fill the slots of an instance using initargs and :initform forms. It is called when an instance is created, when an instance is re-initialized, when an instance is updated to conform to a redefined class, and when an instance is updated to conform to a different class. The generic function shared-initialize is called by the system-supplied primary method for initialize-instance, reinitialize-instance, update-instance-for-redefined-class, and update-instance-for-different-class.
+        广义函数 shared-initialize 被用于使用 initargs 和 :initform 来填充一个实例的槽. 当一个实例被创建时, 当一个实例被重新初始化时, 当一个实例被更新去符合一个重定义的类时,  还有当一个实例被更新来符合一个新的类时, 它会被调用. 广义函数 shared-initialize 被系统提供的 initialize-instance, reinitialize-instance, update-instance-for-redefined-class, 和 update-instance-for-different-class 的主函数调用.
 
-The generic function shared-initialize takes the following arguments: the instance to be initialized, a specification of a set of slot-names accessible in that instance, and any number of initargs. The arguments after the first two must form an initialization argument list. The system-supplied primary method on shared-initialize initializes the slots with values according to the initargs and supplied :initform forms. Slot-names indicates which slots should be initialized according to their :initform forms if no initargs are provided for those slots.
+        广义函数 shared-initialize 接受以下参数: 要被初始化的实例, 这个实例中可访问的slot-names 集合的一个说明, 还有任意数量的 initargs. 在前两个后面的参数必须组成一个初始化参数列表. 系统提供的 shared-initialize 主方法根据 initargs 和提供的 :initform 表达式形式用值初始化这些槽. Slot-names 表示要被初始化的槽, 如果没有 为这些槽提供 initargs 根据它们的 :initform 表达式形式.
 
-The system-supplied primary method behaves as follows, regardless of whether the slots are local or shared:
+        系统提供的主方法表现如下, 不管这个槽是局部的还是共享的:
 
-    If an initarg in the initialization argument list specifies a value for that slot, that value is stored into the slot, even if a value has already been stored in the slot before the method is run.
+            如果在初始化参数列表中的一个 initarg 为这个槽指定了一个值, 这个值会存储到这个槽中, 即便在这个方法被运行之前已经存储一个值到这个槽中.
 
-    Any slots indicated by slot-names that are still unbound at this point are initialized according to their :initform forms. For any such slot that has an :initform form, that form is evaluated in the lexical environment of its defining defclass form and the result is stored into the slot. For example, if a before method stores a value in the slot, the :initform form will not be used to supply a value for the slot.
+            任何 slot-names 指定的槽that are still unbound at this point are initialized according to their :initform forms. 对于任何这样由一个 :initform 表达式形式的槽, 这个表达式形式都会在它的定义 defclass 表达式形式的词法环境中被求值并且结果被存储到这个槽中. 比如, 如果一个 before 方法存储一个值到这个槽中, 那么这个 :initform 表达式形式不会为这个槽提供一个值.
 
-    The rules mentioned in Section 7.1.4 (Rules for Initialization Arguments) are obeyed.
+            在章节 7.1.4 (Rules for Initialization Arguments) 中提及的规则也是遵守的.
 
-The slots-names argument specifies the slots that are to be initialized according to their :initform forms if no initialization arguments apply. It can be a list of slot names, which specifies the set of those slot names; or it can be the symbol t, which specifies the set of all of the slots.
+        这个 slots-names 参数指定了要被初始化的槽, 如果没有提供初始化参数时就根据它们的 :initform 表达式形式. 它可以是一个槽名字的列表, 其中指定了这些槽名字的集合; 或者它可以是符号 t, 它表示所有槽的集合.
 
 * 示例(Examples): None.
 
@@ -910,66 +908,63 @@ The slots-names argument specifies the slots that are to be initialized accordin
 
 * 也见(See Also):
 
-initialize-instance, reinitialize-instance, update-instance-for-redefined-class, update-instance-for-different-class, slot-boundp, slot-makunbound, Section 7.1 (Object Creation and Initialization), Section 7.1.4 (Rules for Initialization Arguments), Section 7.1.2 (Declaring the Validity of Initialization Arguments)
+        initialize-instance, reinitialize-instance, update-instance-for-redefined-class, update-instance-for-different-class, slot-boundp, slot-makunbound, Section 7.1 (Object Creation and Initialization), Section 7.1.4 (Rules for Initialization Arguments), Section 7.1.2 (Declaring the Validity of Initialization Arguments)
 
 * 注意(Notes):
 
-Initargs are declared as valid by using the :initarg option to defclass, or by defining methods for shared-initialize. The keyword name of each keyword parameter specifier in the lambda list of any method defined on shared-initialize is declared as a valid initarg name for all classes for which that method is applicable.
+        可以通过对 defclass 使用 :initarg 选项或者定义 shared-initialize 的方法来有效声明 initargs. 任何定义在 shared-initialize 上的方法的 lambda 列表中的关键字参数指定符的关键字名字对于所有这个方法可应用的类而言都是有效的 initarg.
 
-Implementations are permitted to optimize :initform forms that neither produce nor depend on side effects, by evaluating these forms and storing them into slots before running any initialize-instance methods, rather than by handling them in the primary initialize-instance method. (This optimization might be implemented by having the allocate-instance method copy a prototype instance.)
+        具体实现允许去优化 :initform 表达式形式: 通过对这些表达式形式进行求值, 并在运行任何 initialize-instance 方法之前将它们存储到槽中, 而不是在 initialize-instance 主方法中处理它们, 从而使它们无法产生或依赖于副作用. (这种优化可以通过使用 allocate-instance 方法复制原型实例来实现.)
 
-Implementations are permitted to optimize default initial value forms for initargs associated with slots by not actually creating the complete initialization argument list when the only method that would receive the complete list is the method on standard-object. In this case default initial value forms can be treated like :initform forms. This optimization has no visible effects other than a performance improvement. 
+        当仅有的接受完整的参数列表的方法是 standard-object 上的方法时, 具体实现允许去通过没有实际创建完整初始化参数列表来优化和槽关联的默认初始化值表达式. 在这个情况下默认初始值表达式形式可以被当作 :initform 表达式形式对待. 除了性能改进之外, 这种优化没有明显的效果. 
 
-
-Standard Generic Function UPDATE-INSTANCE-FOR-DIFFERENT-CLASS
+### <span id="SGF-U-I-F-D-C">标准广义函数 UPDATE-INSTANCE-FOR-DIFFERENT-CLASS</span>
 
 * 语法(Syntax):
 
-update-instance-for-different-class previous current &rest initargs &key &allow-other-keys => implementation-dependent
+        update-instance-for-different-class previous current &rest initargs &key &allow-other-keys => implementation-dependent
 
 * 方法签名(Method Signatures):
 
-update-instance-for-different-class (previous standard-object) (current standard-object) &rest initargs
+        update-instance-for-different-class (previous standard-object) (current standard-object) &rest initargs
 
 * 参数和值(Arguments and Values):
 
-previous---a copy of the original instance.
-
-current---the original instance (altered).
-
-initargs---an initialization argument list.
+        previous---一个原始实例的拷贝.
+        current---原始实例 (修改后的).
+        initargs---一个初始化参数列表.
 
 * 描述(Description):
 
-The generic function update-instance-for-different-class is not intended to be called by programmers. Programmers may write methods for it. The function update-instance-for-different-class is called only by the function change-class.
+        广义函数 update-instance-for-different-class 不打算被程序员调用. 程序员可能为它写方法. 函数 update-instance-for-different-class 只有通过函数 change-class 被调用.
 
-The system-supplied primary method on update-instance-for-different-class checks the validity of initargs and signals an error if an initarg is supplied that is not declared as valid. This method then initializes slots with values according to the initargs, and initializes the newly added slots with values according to their :initform forms. It does this by calling the generic function shared-initialize with the following arguments: the instance (current), a list of names of the newly added slots, and the initargs it received. Newly added slots are those local slots for which no slot of the same name exists in the previous class.
+        系统提供的 update-instance-for-different-class 主方法会检查 initargs 的有效性, 如果提供的一个 initarg 没有被有效声明就会发出一个错误. 接下来这个方法会根据 initargs 的值来初始化槽, 并且根据新添加的槽的 :initform 表达式形式来初始化这些新添加的槽. 它通过使用以下参数调用广义函数 shared-initialize 来完成这个: 这个实例 (当前的), 一个新添加槽的名字的列表, 还有它接受到的 initargs. 新添加的槽是那些之前类中不存在相同名字的槽的局部槽.
 
-Methods for update-instance-for-different-class can be defined to specify actions to be taken when an instance is updated. If only after methods for update-instance-for-different-class are defined, they will be run after the system-supplied primary method for initialization and therefore will not interfere with the default behavior of update-instance-for-different-class.
+        update-instance-for-different-class 方法可以被定义用来指定当一个类被更新时要采取的动作. 如果只有 update-instance-for-different-class 的 after 方法被定义, 它们会在系统提供的初始化主方法之后被运行, 因此不会影响 update-instance-for-different-class 的默认行为.
 
-Methods on update-instance-for-different-class can be defined to initialize slots differently from change-class. The default behavior of change-class is described in Section 7.2 (Changing the Class of an Instance).
+        update-instance-for-different-class 的方法可以被定义用不同于 change-class 的方式来初始化槽. 这个 change-class 的默认行为在章节 7.2 (Changing the Class of an Instance) 中描述.
 
-The arguments to update-instance-for-different-class are computed by change-class. When change-class is invoked on an instance, a copy of that instance is made; change-class then destructively alters the original instance. The first argument to update-instance-for-different-class, previous, is that copy; it holds the old slot values temporarily. This argument has dynamic extent within change-class; if it is referenced in any way once update-instance-for-different-class returns, the results are undefined. The second argument to update-instance-for-different-class, current, is the altered original instance. The intended use of previous is to extract old slot values by using slot-value or with-slots or by invoking a reader generic function, or to run other methods that were applicable to instances of the original class.
+        给 update-instance-for-different-class 的参数通过 change-class 计算. 当 change-class 在一个实例上被调用, 会创建那个实例的一个拷贝; change-class 接下来会破坏性地修改原始的实例. 给 update-instance-for-different-class 的第一个参数, previous, 就是那个拷贝; 它临时持有旧的槽的值. 这个参数有着 change-class 内的动态范围; 如果一旦 update-instance-for-different-class 返回后它被引用, 结果是未定义的. 给 update-instance-for-different-class 的第二个参数, current, 是修改后的原始实例. 这个 previous 的使用意图是用 slot-value 或 with-slots 或通过调用一个 reader 广义函数来提取旧槽的, 或者用来运行可应用于原始类的实例的其他方法.
 
 * 示例(Examples):
 
-See the example for the function change-class.
+        见函数 change-class 的示例.
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-The system-supplied primary method on update-instance-for-different-class signals an error if an initialization argument is supplied that is not declared as valid.
+        如果一个提供的初始化参数没有被有效声明, 那么系统提供的 update-instance-for-different-class 主方法就会发出一个错误.
 
 * 也见(See Also):
 
-change-class, shared-initialize, Section 7.2 (Changing the Class of an Instance), Section 7.1.4 (Rules for Initialization Arguments), Section 7.1.2 (Declaring the Validity of Initialization Arguments)
+        change-class, shared-initialize, Section 7.2 (Changing the Class of an Instance), Section 7.1.4 (Rules for Initialization Arguments), Section 7.1.2 (Declaring the Validity of Initialization Arguments)
 
 * 注意(Notes):
 
-Initargs are declared as valid by using the :initarg option to defclass, or by defining methods for update-instance-for-different-class or shared-initialize. The keyword name of each keyword parameter specifier in the lambda list of any method defined on update-instance-for-different-class or shared-initialize is declared as a valid initarg name for all classes for which that method is applicable.
+        Initargs 通过使用给 defclass 的 :initarg 选项或者通过定义 update-instance-for-different-class 或 shared-initialize 的方法来合法声明. 定义在 update-instance-for-different-class 或 shared-initialize 上的方法的 lambda 列表中的每个关键字参数指定符的关键字名字被声明为一个对于所有那个方法可应用的类的有效 initarg 名字.
 
-The value returned by update-instance-for-different-class is ignored by change-class. 
+        这个 update-instance-for-different-class 返回的值会被 change-class 忽略. 
 
 
 Standard Generic Function UPDATE-INSTANCE-FOR-REDEFINED-CLASS
