@@ -967,176 +967,168 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (Standard M
         这个 update-instance-for-different-class 返回的值会被 change-class 忽略. 
 
 
-Standard Generic Function UPDATE-INSTANCE-FOR-REDEFINED-CLASS
+### <span id="SGF-U-I-F-R-C">标准广义函数 UPDATE-INSTANCE-FOR-REDEFINED-CLASS</span>
 
 * 语法(Syntax):
 
-update-instance-for-redefined-class instance added-slots discarded-slots property-list &rest initargs &key &allow-other-keys
-
-=> result*
+        update-instance-for-redefined-class instance added-slots discarded-slots property-list &rest initargs &key &allow-other-keys
+        => result*
 
 * 方法签名(Method Signatures):
 
-update-instance-for-redefined-class (instance standard-object) added-slots discarded-slots property-list &rest initargs
+        update-instance-for-redefined-class (instance standard-object) added-slots discarded-slots property-list &rest initargs
 
 * 参数和值(Arguments and Values):
 
-instance---an object.
-
-added-slots---a list.
-
-discarded-slots---a list.
-
-property-list---a list.
-
-initargs---an initialization argument list.
-
-result---an object.
+        instance---一个对象.
+        added-slots---一个列表.
+        discarded-slots---一个列表.
+        property-list---一个列表.
+        initargs---一个初始化参数列表.
+        result---一个对象.
 
 * 描述(Description):
 
-The generic function update-instance-for-redefined-class is not intended to be called by programmers. Programmers may write methods for it. The generic function update-instance-for-redefined-class is called by the mechanism activated by make-instances-obsolete.
+        广义函数 update-instance-for-redefined-class 不打算给程序员调用. 程序员可以为它写方法. 广义函数 update-instance-for-redefined-class 通过 make-instances-obsolete 的机制被调用.
 
-The system-supplied primary method on update-instance-for-redefined-class checks the validity of initargs and signals an error if an initarg is supplied that is not declared as valid. This method then initializes slots with values according to the initargs, and initializes the newly added-slots with values according to their :initform forms. It does this by calling the generic function shared-initialize with the following arguments: the instance, a list of names of the newly added-slots to instance, and the initargs it received. Newly added-slots are those local slots for which no slot of the same name exists in the old version of the class.
+        系统提供的 update-instance-for-redefined-class 主方法检查 initargs 的有效性, 如果一个 initarg 没有被有效声明就会发出一个错误. 接下来这个方法根据 initargs 的值来初始化槽, 并且根据新添加的槽的 :initform 表达式形式来初始化新的 added-slots. 它通过使用以下参数来调用广义函数 shared-initialize 来实现这个: 这个实例(instance), 给这个实例的新的 added-slots 的名称列表, 还有它收到的 initargs. 新添加的槽是那些在旧版本的类中不存在相同名字的局部槽.
 
-When make-instances-obsolete is invoked or when a class has been redefined and an instance is being updated, a property-list is created that captures the slot names and values of all the discarded-slots with values in the original instance. The structure of the instance is transformed so that it conforms to the current class definition. The arguments to update-instance-for-redefined-class are this transformed instance, a list of added-slots to the instance, a list discarded-slots from the instance, and the property-list containing the slot names and values for slots that were discarded and had values. Included in this list of discarded slots are slots that were local in the old class and are shared in the new class.
+        当 make-instances-obsolete 被调用或者当一个类被重定义并且一个实例被更新时, 会创建一个捕获在这个原始实例中所有 discarded-slots 的名字和值的属性列表. 这个实例的结构会被转化以便符合当前类的定义. 给 update-instance-for-redefined-class 的参数是这个转化后的实例, 一个给这个实例的 added-slots 列表, 一个来自这个实例的 discarded-slots 列表, 以及这个包含有值但是被丢弃的槽的名字和值的属性列表. 这个被丢弃的槽的列表中包括那些在旧的类中是局部的在新的类中是共享的那些槽.
 
-The value returned by update-instance-for-redefined-class is ignored.
+        这个 update-instance-for-redefined-class 返回的值会被忽略.
 
 * 示例(Examples):
 
-  
- (defclass position () ())
- 
- (defclass x-y-position (position)
-     ((x :initform 0 :accessor position-x)
-      (y :initform 0 :accessor position-y)))
- 
-;;; It turns out polar coordinates are used more than Cartesian 
-;;; coordinates, so the representation is altered and some new
-;;; accessor methods are added.
- 
- (defmethod update-instance-for-redefined-class :before
-    ((pos x-y-position) added deleted plist &key)
-   ;; Transform the x-y coordinates to polar coordinates
-   ;; and store into the new slots.
-   (let ((x (getf plist 'x))
-         (y (getf plist 'y)))
-     (setf (position-rho pos) (sqrt (+ (* x x) (* y y)))
-           (position-theta pos) (atan y x))))
-  
- (defclass x-y-position (position)
-     ((rho :initform 0 :accessor position-rho)
-      (theta :initform 0 :accessor position-theta)))
-  
-;;; All instances of the old x-y-position class will be updated
-;;; automatically.
- 
-;;; The new representation is given the look and feel of the old one.
- 
- (defmethod position-x ((pos x-y-position))  
-    (with-slots (rho theta) pos (* rho (cos theta))))
- 
- (defmethod (setf position-x) (new-x (pos x-y-position))
-    (with-slots (rho theta) pos
-      (let ((y (position-y pos)))
-        (setq rho (sqrt (+ (* new-x new-x) (* y y)))
-              theta (atan y new-x))
-        new-x)))
- 
- (defmethod position-y ((pos x-y-position))
-    (with-slots (rho theta) pos (* rho (sin theta))))
- 
- (defmethod (setf position-y) (new-y (pos x-y-position))
-    (with-slots (rho theta) pos
-      (let ((x (position-x pos)))
-        (setq rho (sqrt (+ (* x x) (* new-y new-y)))
-              theta (atan new-y x))
-        new-y)))
- 
+    ```LISP  
+    (defclass position () ())
+    
+    (defclass x-y-position (position)
+        ((x :initform 0 :accessor position-x)
+          (y :initform 0 :accessor position-y)))
+    
+    ;;; It turns out polar coordinates are used more than Cartesian 
+    ;;; coordinates, so the representation is altered and some new
+    ;;; accessor methods are added.
+    
+    (defmethod update-instance-for-redefined-class :before
+        ((pos x-y-position) added deleted plist &key)
+      ;; Transform the x-y coordinates to polar coordinates
+      ;; and store into the new slots.
+      (let ((x (getf plist 'x))
+            (y (getf plist 'y)))
+        (setf (position-rho pos) (sqrt (+ (* x x) (* y y)))
+              (position-theta pos) (atan y x))))
+      
+    (defclass x-y-position (position)
+        ((rho :initform 0 :accessor position-rho)
+          (theta :initform 0 :accessor position-theta)))
+      
+    ;;; All instances of the old x-y-position class will be updated
+    ;;; automatically.
+    
+    ;;; The new representation is given the look and feel of the old one.
+    
+    (defmethod position-x ((pos x-y-position))  
+        (with-slots (rho theta) pos (* rho (cos theta))))
+    
+    (defmethod (setf position-x) (new-x (pos x-y-position))
+        (with-slots (rho theta) pos
+          (let ((y (position-y pos)))
+            (setq rho (sqrt (+ (* new-x new-x) (* y y)))
+                  theta (atan y new-x))
+            new-x)))
+    
+    (defmethod position-y ((pos x-y-position))
+        (with-slots (rho theta) pos (* rho (sin theta))))
+    
+    (defmethod (setf position-y) (new-y (pos x-y-position))
+        (with-slots (rho theta) pos
+          (let ((x (position-x pos)))
+            (setq rho (sqrt (+ (* x x) (* new-y new-y)))
+                  theta (atan new-y x))
+            new-y)))
+    ```
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-The system-supplied primary method on update-instance-for-redefined-class signals an error if an initarg is supplied that is not declared as valid.
+        如果提供的一个 initarg 没有被有效声明系统提供的 update-instance-for-redefined-class 主方法会发出一个错误.
 
 * 也见(See Also):
 
-make-instances-obsolete, shared-initialize, Section 4.3.6 (Redefining Classes), Section 7.1.4 (Rules for Initialization Arguments), Section 7.1.2 (Declaring the Validity of Initialization Arguments)
+        make-instances-obsolete, shared-initialize, Section 4.3.6 (Redefining Classes), Section 7.1.4 (Rules for Initialization Arguments), Section 7.1.2 (Declaring the Validity of Initialization Arguments)
 
 * 注意(Notes):
 
-Initargs are declared as valid by using the :initarg option to defclass, or by defining methods for update-instance-for-redefined-class or shared-initialize. The keyword name of each keyword parameter specifier in the lambda list of any method defined on update-instance-for-redefined-class or shared-initialize is declared as a valid initarg name for all classes for which that method is applicable. 
+        Initargs 可以通过给 defclass 使用 :initarg, 或者通过为 update-instance-for-redefined-class 或 shared-initialize 定义方法来有效声明. 定义在 update-instance-for-redefined-class or shared-initialize 上的任何方法的 lambda 列表中的每个关键字参数指定符的关键字名字, 对于那个方法可应用的所有类都是有效的关键字. 
 
 
-Standard Generic Function CHANGE-CLASS
+### <span id="SGF-CHANGE-CLASS">标准广义函数 CHANGE-CLASS</span>
 
 * 语法(Syntax):
 
-change-class instance new-class &key &allow-other-keys => instance
+        change-class instance new-class &key &allow-other-keys => instance
 
 * 方法签名(Method Signatures):
 
-change-class (instance standard-object) (new-class standard-class) &rest initargs
+        change-class (instance standard-object) (new-class standard-class) &rest initargs
 
-change-class (instance t) (new-class symbol) &rest initargs
+        change-class (instance t) (new-class symbol) &rest initargs
 
 * 参数和值(Arguments and Values):
 
-instance---an object.
-
-new-class---a class designator.
-
-initargs---an initialization argument list.
+        instance---一个对象.
+        new-class---一个类指定符.
+        initargs---一个初始化参数列表.
 
 * 描述(Description):
 
-The generic function change-class changes the class of an instance to new-class. It destructively modifies and returns the instance.
+        广义函数 change-class 修改一个实例的类为 new-class. 它破坏性地修改并返回这个实例.
 
-If in the old class there is any slot of the same name as a local slot in the new-class, the value of that slot is retained. This means that if the slot has a value, the value returned by slot-value after change-class is invoked is eql to the value returned by slot-value before change-class is invoked. Similarly, if the slot was unbound, it remains unbound. The other slots are initialized as described in Section 7.2 (Changing the Class of an Instance).
+        如果在旧的类中存在任何和 new-class 中的局部槽名字相同的槽, 那个槽的值会被保留. 这个意味着如果这个槽有一个值, 在 change-class 被调用之后 slot-value 返回的值和在 change-class 之前是 eql 的. 类似地, 如果这个槽没有被绑定, 它就保持未绑定状态. 其他槽按照章节 7.2 (Changing the Class of an Instance) 中所描述的被初始化.
 
-After completing all other actions, change-class invokes update-instance-for-different-class. The generic function update-instance-for-different-class can be used to assign values to slots in the transformed instance. See Section 7.2.2 (Initializing Newly Added Local Slots).
+        在完成所有其他动作之后, change-class 调用 update-instance-for-different-class. 广义函数 update-instance-for-different-class 可以被用于给转化后的实例中的槽赋值. 见章节 7.2.2 (Initializing Newly Added Local Slots).
 
-If the second of the above methods is selected, that method invokes change-class on instance, (find-class new-class), and the initargs.
+        如果上述方法中的第二个被选择<!--TODO 第二个 ？？-->, 那个方法在 instance, (find-class new-class), 以及 initargs 上调用 change-class.
 
 * 示例(Examples):
 
- 
- (defclass position () ())
-  
- (defclass x-y-position (position)
-     ((x :initform 0 :initarg :x)
-      (y :initform 0 :initarg :y)))
-  
- (defclass rho-theta-position (position)
-     ((rho :initform 0)
-      (theta :initform 0)))
-  
- (defmethod update-instance-for-different-class :before ((old x-y-position) 
-                                                         (new rho-theta-position)
-                                                         &key)
-   ;; Copy the position information from old to new to make new
-   ;; be a rho-theta-position at the same position as old.
-   (let ((x (slot-value old 'x))
-         (y (slot-value old 'y)))
-     (setf (slot-value new 'rho) (sqrt (+ (* x x) (* y y)))
-           (slot-value new 'theta) (atan y x))))
-  
-;;; At this point an instance of the class x-y-position can be
-;;; changed to be an instance of the class rho-theta-position using
-;;; change-class:
- 
- (setq p1 (make-instance 'x-y-position :x 2 :y 0))
-  
- (change-class p1 'rho-theta-position)
-  
-;;; The result is that the instance bound to p1 is now an instance of
-;;; the class rho-theta-position.   The update-instance-for-different-class
-;;; method performed the initialization of the rho and theta slots based
-;;; on the value of the x and y slots, which were maintained by
-;;; the old instance.
- 
+    ```LISP
+    (defclass position () ())
+      
+    (defclass x-y-position (position)
+        ((x :initform 0 :initarg :x)
+          (y :initform 0 :initarg :y)))
+      
+    (defclass rho-theta-position (position)
+        ((rho :initform 0)
+          (theta :initform 0)))
+      
+    (defmethod update-instance-for-different-class :before ((old x-y-position) 
+                                                            (new rho-theta-position)
+                                                            &key)
+      ;; Copy the position information from old to new to make new
+      ;; be a rho-theta-position at the same position as old.
+      (let ((x (slot-value old 'x))
+            (y (slot-value old 'y)))
+        (setf (slot-value new 'rho) (sqrt (+ (* x x) (* y y)))
+              (slot-value new 'theta) (atan y x))))
+      
+    ;;; At this point an instance of the class x-y-position can be
+    ;;; changed to be an instance of the class rho-theta-position using
+    ;;; change-class:
+    
+    (setq p1 (make-instance 'x-y-position :x 2 :y 0))
+      
+    (change-class p1 'rho-theta-position)
+      
+    ;;; The result is that the instance bound to p1 is now an instance of
+    ;;; the class rho-theta-position.   The update-instance-for-different-class
+    ;;; method performed the initialization of the rho and theta slots based
+    ;;; on the value of the x and y slots, which were maintained by
+    ;;; the old instance.
+    ```
 
 * 示例(Examples): None.
 
@@ -1146,11 +1138,11 @@ If the second of the above methods is selected, that method invokes change-class
 
 * 也见(See Also):
 
-update-instance-for-different-class, Section 7.2 (Changing the Class of an Instance)
+        update-instance-for-different-class, Section 7.2 (Changing the Class of an Instance)
 
 * 注意(Notes):
 
-The generic function change-class has several semantic difficulties. First, it performs a destructive operation that can be invoked within a method on an instance that was used to select that method. When multiple methods are involved because methods are being combined, the methods currently executing or about to be executed may no longer be applicable. Second, some implementations might use compiler optimizations of slot access, and when the class of an instance is changed the assumptions the compiler made might be violated. This implies that a programmer must not use change-class inside a method if any methods for that generic function access any slots, or the results are undefined. 
+        函数 change-class 有几个语义难点. 首先, 它执行一个破坏性的操作, 并且可以在一个选择一个方法的实例上调用该方法. 当由于方法被组合而导致多个方法被调用时, 当前执行的方法或要被执行的方法可能不再是可应用的. 其次, 一些具体实现可能使用编译器对槽访问的优化, 当一个实例的类被修改时可能违背编译器所做的假设. 这个意味着如果一个广义函数的任何方法访问了任何槽, 那么程序员一定不能在那个方法中使用 change-class, 否则结果是未定义的. 
 
 
 Function SLOT-BOUNDP
