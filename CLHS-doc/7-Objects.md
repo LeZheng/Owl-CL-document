@@ -1145,23 +1145,21 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (Standard M
         函数 change-class 有几个语义难点. 首先, 它执行一个破坏性的操作, 并且可以在一个选择一个方法的实例上调用该方法. 当由于方法被组合而导致多个方法被调用时, 当前执行的方法或要被执行的方法可能不再是可应用的. 其次, 一些具体实现可能使用编译器对槽访问的优化, 当一个实例的类被修改时可能违背编译器所做的假设. 这个意味着如果一个广义函数的任何方法访问了任何槽, 那么程序员一定不能在那个方法中使用 change-class, 否则结果是未定义的. 
 
 
-Function SLOT-BOUNDP
+### <span id="F-SLOT-BOUNDP">函数 SLOT-BOUNDP</span>
 
 * 语法(Syntax):
 
-slot-boundp instance slot-name => generalized-boolean
+        slot-boundp instance slot-name => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-instance---an object.
-
-slot-name---a symbol naming a slot of instance.
-
-generalized-boolean---a generalized boolean.
+        instance---一个对象.
+        slot-name---命名 instance 的一个槽的名字.
+        generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
-Returns true if the slot named slot-name in instance is bound; otherwise, returns false.
+        如果在 instance 中名为 slot-name 的槽已经是绑定的, 那么就返回 true; 否则, 返回 false.
 
 * 示例(Examples): None.
 
@@ -1169,26 +1167,26 @@ Returns true if the slot named slot-name in instance is bound; otherwise, return
 
 * 异常情况(Exceptional Situations):
 
-If no slot of the name slot-name exists in the instance, slot-missing is called as follows:
+        如果在这个 instance 中没有名为 slot-name 的槽, 那么 slot-missing 会按如下被调用:
 
- (slot-missing (class-of instance)
-               instance
-               slot-name
-               'slot-boundp)
+        (slot-missing (class-of instance)
+                      instance
+                      slot-name
+                      'slot-boundp)
 
-(If slot-missing is invoked and returns a value, a boolean equivalent to its primary value is returned by slot-boundp.)
+        (如果 slot-missing 被调用并且返回了一个值, 它的主要的值的一个 boolean 等价物( boolean equivalent)会被 slot-boundp 返回.)
 
-The specific behavior depends on instance's metaclass. An error is never signaled if instance has metaclass standard-class. An error is always signaled if instance has metaclass built-in-class. The consequences are undefined if instance has any other metaclass--an error might or might not be signaled in this situation. Note in particular that the behavior for conditions and structures is not specified.
+        这个特殊的行为依赖于实例(instance)的元类. 如果 instance 元类为 standard-class, 那么从来不会发出一个错误. 如果 instance 元类为 built-in-class, 那么总是会发出一个错误. 如果 instance 有着其他元类那么结果是未定义的--在这个情况可能会也可能不会发出一个错误. 特别注意, 对于状况(condition)和结构体(structure)的行为是没有指定的.
 
 * 也见(See Also):
 
-slot-makunbound, slot-missing
+        slot-makunbound, slot-missing
 
 * 注意(Notes):
 
-The function slot-boundp allows for writing after methods on initialize-instance in order to initialize only those slots that have not already been bound.
+        函数 slot-boundp 允许为 initialize-instance 编写 after 方法仅用来来初始化那些还没有被绑定的槽.
 
-Although no implementation is required to do so, implementors are strongly encouraged to implement the function slot-boundp using the function slot-boundp-using-class described in the Metaobject Protocol. 
+        虽然没有具体实现被要求, 但是强烈鼓励实现者去使用元对象协议中描述的函数 slot-boundp-using-class 来实现函数 slot-boundp. 
 
 
 ### <span id="F-SLOT-EXISTS-P">函数 SLOT-EXISTS-P</span>
@@ -1264,47 +1262,42 @@ Although no implementation is required to do so, implementors are strongly encou
         虽然没有实现被要求, 还是强烈鼓励实现者用元对象协议中描述的函数 slot-makunbound-using-class 来实现函数 slot-makunbound. 
 
 
-Standard Generic Function SLOT-MISSING
+### <span id="SGF-SLOT-MISSING">标准广义函数 SLOT-MISSING</span>
 
 * 语法(Syntax):
 
-slot-missing class object slot-name operation &optional new-value => result*
+        slot-missing class object slot-name operation &optional new-value => result*
 
 * 方法签名(Method Signatures):
 
-slot-missing (class t) object slot-name operation &optional new-value
+        slot-missing (class t) object slot-name operation &optional new-value
 
 * 参数和值(Arguments and Values):
 
-class---the class of object.
-
-object---an object.
-
-slot-name---a symbol (the name of a would-be slot).
-
-operation---one of the symbols setf, slot-boundp, slot-makunbound, or slot-value.
-
-new-value---an object.
-
-result---an object.
+        class---object 的类.
+        object---一个对象.
+        slot-name---一个符号 (the name of a would-be slot).
+        operation---符号 setf, slot-boundp, slot-makunbound, 或 slot-value 的其中之一.
+        new-value---一个对象.
+        result---一个对象.
 
 * 描述(Description):
 
-The generic function slot-missing is invoked when an attempt is made to access a slot in an object whose metaclass is standard-class and the slot of the name slot-name is not a name of a slot in that class. The default method signals an error.
+        当尝试去访问一个元对象是 standard-class 的对象的槽并且在那个类中没有名为 slot-name 的槽时, 函数 slot-missing 会被调用. 这个默认方法会发出一个错误.
 
-The generic function slot-missing is not intended to be called by programmers. Programmers may write methods for it.
+        广义函数 slot-missing 不打算给程序员调用. 程序员可以为它写方法.
 
-The generic function slot-missing may be called during evaluation of slot-value, (setf slot-value), slot-boundp, and slot-makunbound. For each of these operations the corresponding symbol for the operation argument is slot-value, setf, slot-boundp, and slot-makunbound respectively.
+        广义函数 slot-missing 可能在 slot-value, (setf slot-value), slot-boundp, 还有 slot-makunbound 求值期间被调用. 对于这些操作符中的每一个, 对应 operation 参数的符号分别是 slot-value, setf, slot-boundp, 还有 slot-makunbound.
 
-The optional new-value argument to slot-missing is used when the operation is attempting to set the value of the slot.
+        当这个操作符尝试去设置这个槽的值时, 使用给 slot-missing 可选的 new-value 参数.
 
-If slot-missing returns, its values will be treated as follows:
+        如果 slot-missing 返回, 它的值会按照如下方式对待:
 
-    If the operation is setf or slot-makunbound, any values will be ignored by the caller.
+            如果这个 operation 是 setf 或 slot-makunbound, 任何值都会被调用者忽略.
 
-    If the operation is slot-value, only the primary value will be used by the caller, and all other values will be ignored.
+            如果这个 operation 是 slot-value, 只有主要的值会被调用者使用, 而其他所有值都会被忽略.
 
-    If the operation is slot-boundp, any boolean equivalent of the primary value of the method might be is used, and all other values will be ignored.
+            如果这个 operation 是 slot-boundp, 任何这个方法主要值的 boolean 等价物可能被使用, 而其他所有值都会被忽略.
 
 * 示例(Examples): None.
 
@@ -1312,15 +1305,15 @@ If slot-missing returns, its values will be treated as follows:
 
 * 异常情况(Exceptional Situations):
 
-The default method on slot-missing signals an error of type error.
+        这个 slot-missing 默认方法发出一个 error 类型的错误.
 
 * 也见(See Also):
 
-defclass, slot-exists-p, slot-value
+        defclass, slot-exists-p, slot-value
 
 * 注意(Notes):
 
-The set of arguments (including the class of the instance) facilitates defining methods on the metaclass for slot-missing. 
+        这个参数的集合 (包括这个实例的类) 有助于为 slot-missing 定义元类方法. 
 
 
 Standard Generic Function SLOT-UNBOUND
