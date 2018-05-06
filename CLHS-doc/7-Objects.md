@@ -1316,33 +1316,30 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (Standard M
         这个参数的集合 (包括这个实例的类) 有助于为 slot-missing 定义元类方法. 
 
 
-Standard Generic Function SLOT-UNBOUND
+### <span id="SGF-SLOT-UNBOUND">标准广义函数 SLOT-UNBOUND</span>
 
 * 语法(Syntax):
 
-slot-unbound class instance slot-name => result*
+      slot-unbound class instance slot-name => result*
 
 * 方法签名(Method Signatures):
 
-slot-unbound (class t) instance slot-name
+      slot-unbound (class t) instance slot-name
 
 * 参数和值(Arguments and Values):
 
-class---the class of the instance.
-
-instance---the instance in which an attempt was made to read the unbound slot.
-
-slot-name---the name of the unbound slot.
-
-result---an object.
+        class---这个 instance 的类.
+        instance---尝试去读取未绑定的槽所在的实例.
+        slot-name---未绑定槽的名字.
+        result---一个对象.
 
 * 描述(Description):
 
-The generic function slot-unbound is called when an unbound slot is read in an instance whose metaclass is standard-class. The default method signals an error of type unbound-slot. The name slot of the unbound-slot condition is initialized to the name of the offending variable, and the instance slot of the unbound-slot condition is initialized to the offending instance.
+        当元类为 standard-class 的一个实例的一个未绑定的槽被读取时, 广义函数 slot-unbound 会被调用. 这个默认方法会发出一个 unbound-slot 类型的错误. 这个 unbound-slot 状况的名称槽被初始化为这个违规变量的名字, 而这个 unbound-slot 状况的实例槽被初始化为这个违规实例.
 
-The generic function slot-unbound is not intended to be called by programmers. Programmers may write methods for it. The function slot-unbound is called only indirectly by slot-value.
+        广义函数 slot-unbound 不打算被程序员调用. 程序员可以为它写方法. 函数 slot-unbound 只会被 slot-value 间接调用.
 
-If slot-unbound returns, only the primary value will be used by the caller, and all other values will be ignored.
+        如果 slot-unbound 返回, 只有主要值会被调用者使用, 其他所有值都会被忽略.
 
 * 示例(Examples): None.
 
@@ -1350,117 +1347,118 @@ If slot-unbound returns, only the primary value will be used by the caller, and 
 
 * 异常情况(Exceptional Situations):
 
-The default method on slot-unbound signals an error of type unbound-slot.
+        这个 slot-unbound 上的默认方法发出一个 unbound-slot 类型的错误.
 
 * 也见(See Also):
 
-slot-makunbound
+        slot-makunbound
 
 * 注意(Notes):
 
-An unbound slot may occur if no :initform form was specified for the slot and the slot value has not been set, or if slot-makunbound has been called on the slot. 
+        如果为一个槽指定 :initform 表达式形式或这没有设置槽的值, 或者在那个槽上调用了 slot-makunbound, 那么可能出现一个未绑定的槽. 
 
 
-Function SLOT-VALUE
+### <span id="F-SLOT-VALUE">函数 SLOT-VALUE</span>
 
 * 语法(Syntax):
 
-slot-value object slot-name => value
+        slot-value object slot-name => value
 
 * 参数和值(Arguments and Values):
 
-object---an object.
-
-name---a symbol.
-
-value---an object.
+        object---一个对象.
+        name---一个符号.
+        value---一个对象.
 
 * 描述(Description):
 
-The function slot-value returns the value of the slot named slot-name in the object. If there is no slot named slot-name, slot-missing is called. If the slot is unbound, slot-unbound is called.
+        函数 slot-value 返回这个 object 中名为 slot-name 的槽的值. 如果这里没有名为 slot-name 的槽, 就会调用 slot-missing. 如果这个槽是未绑定的, slot-unbound 就会被调用.
 
-The macro setf can be used with slot-value to change the value of a slot.
+        宏 setf 可以和 slot-value 一起使用来改变一个槽的值.
 
 * 示例(Examples):
 
- (defclass foo () 
-   ((a :accessor foo-a :initarg :a :initform 1)
-    (b :accessor foo-b :initarg :b)
-    (c :accessor foo-c :initform 3)))
-=>  #<STANDARD-CLASS FOO 244020371>
- (setq foo1 (make-instance 'foo :a 'one :b 'two))
-=>  #<FOO 36325624>
- (slot-value foo1 'a) =>  ONE
- (slot-value foo1 'b) =>  TWO
- (slot-value foo1 'c) =>  3
- (setf (slot-value foo1 'a) 'uno) =>  UNO
- (slot-value foo1 'a) =>  UNO
- (defmethod foo-method ((x foo))
-   (slot-value x 'a))
-=>  #<STANDARD-METHOD FOO-METHOD (FOO) 42720573>
- (foo-method foo1) =>  UNO
+    ```LISP
+    (defclass foo () 
+      ((a :accessor foo-a :initarg :a :initform 1)
+        (b :accessor foo-b :initarg :b)
+        (c :accessor foo-c :initform 3)))
+    =>  #<STANDARD-CLASS FOO 244020371>
+    (setq foo1 (make-instance 'foo :a 'one :b 'two))
+    =>  #<FOO 36325624>
+    (slot-value foo1 'a) =>  ONE
+    (slot-value foo1 'b) =>  TWO
+    (slot-value foo1 'c) =>  3
+    (setf (slot-value foo1 'a) 'uno) =>  UNO
+    (slot-value foo1 'a) =>  UNO
+    (defmethod foo-method ((x foo))
+      (slot-value x 'a))
+    =>  #<STANDARD-METHOD FOO-METHOD (FOO) 42720573>
+    (foo-method foo1) =>  UNO
+    ```
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-If an attempt is made to read a slot and no slot of the name slot-name exists in the object, slot-missing is called as follows:
+        如果尝试去读取一个槽但是没有名为 slot-name 存在于这个对象中, slot-missing 会像下面这样被调用:
 
- (slot-missing (class-of instance)
-               instance
-               slot-name
-               'slot-value)
+        (slot-missing (class-of instance)
+                      instance
+                      slot-name
+                      'slot-value)
 
-(If slot-missing is invoked, its primary value is returned by slot-value.)
+        (如果 slot-missing 被调用, 它的主要返回值被 slot-value 返回.)
 
-If an attempt is made to write a slot and no slot of the name slot-name exists in the object, slot-missing is called as follows:
+        如果尝试去写入一个槽但是没有名为 slot-name 存在于这个对象中, slot-missing 会像下面这样被嗲用:
 
- (slot-missing (class-of instance)
-               instance
-               slot-name
-               'setf
-               new-value)
+        (slot-missing (class-of instance)
+                      instance
+                      slot-name
+                      'setf
+                      new-value)
 
-(If slot-missing returns in this case, any values are ignored.)
+        (如果这个情况下 slot-missing 返回了, 任何值都会被忽略.)
 
-The specific behavior depends on object's metaclass. An error is never signaled if object has metaclass standard-class. An error is always signaled if object has metaclass built-in-class. The consequences are unspecified if object has any other metaclass--an error might or might not be signaled in this situation. Note in particular that the behavior for conditions and structures is not specified.
+        这个特殊行为依赖于 object 的元类. 如果实例的元类为 standard-class 那么从不发出一个错误. 如果实例的元类为 built-in-class 那么总是发出一个错误. 如果实例有着任何其他元类那么结果是未定义的--在这个情况下一个错误可能或可能不会发出. 特别要注意的是, 状况(condition)和结构体(structure)的行为没有指定.
 
 * 也见(See Also):
 
-slot-missing, slot-unbound, with-slots
+        slot-missing, slot-unbound, with-slots
 
 * 注意(Notes):
 
-Although no implementation is required to do so, implementors are strongly encouraged to implement the function slot-value using the function slot-value-using-class described in the Metaobject Protocol.
+        虽然没有具体实现被要求做这个, 但是强烈鼓励实现者通过使用元对象协议中描述的函数 slot-value-using-class 来实现函数 slot-value.
 
-Implementations may optimize slot-value by compiling it inline. 
+        具体实现可能通过编译 slot-value 为内联的(inline)来优化它. 
 
 
-Standard Generic Function METHOD-QUALIFIERS
+### <span id="SGF-METHOD-QUALIFIERS">标准广义函数 METHOD-QUALIFIERS</span>
 
 * 语法(Syntax):
 
-method-qualifiers method => qualifiers
+        method-qualifiers method => qualifiers
 
 * 方法签名(Method Signatures):
 
-method-qualifiers (method standard-method)
+        method-qualifiers (method standard-method)
 
 * 参数和值(Arguments and Values):
 
-method---a method.
-
-qualifiers---a proper list.
+        method---一个方法.
+        qualifiers---一个合适的列表.
 
 * 描述(Description):
 
-Returns a list of the qualifiers of the method.
+        返回这个方法的限定符列表.
 
 * 示例(Examples):
 
- (defmethod some-gf :before ((a integer)) a)
-=>  #<STANDARD-METHOD SOME-GF (:BEFORE) (INTEGER) 42736540>
- (method-qualifiers *) =>  (:BEFORE)
+    ```LISP
+    (defmethod some-gf :before ((a integer)) a)
+    =>  #<STANDARD-METHOD SOME-GF (:BEFORE) (INTEGER) 42736540>
+    (method-qualifiers *) =>  (:BEFORE)
+    ```
 
 * 受此影响(Affected By): None.
 
@@ -1468,34 +1466,32 @@ Returns a list of the qualifiers of the method.
 
 * 也见(See Also):
 
-define-method-combination
+        define-method-combination
 
 * 注意(Notes): None. 
 
 
-Standard Generic Function NO-APPLICABLE-METHOD
+### <span id="SGF-NO-APPLICABLE-METHOD">标准广义函数 NO-APPLICABLE-METHOD</span>
 
 * 语法(Syntax):
 
-no-applicable-method generic-function &rest function-arguments => result*
+        no-applicable-method generic-function &rest function-arguments => result*
 
 * 方法签名(Method Signatures):
 
-no-applicable-method (generic-function t) &rest function-arguments
+        no-applicable-method (generic-function t) &rest function-arguments
 
 * 参数和值(Arguments and Values):
 
-generic-function---a generic function on which no applicable method was found.
-
-function-arguments---arguments to the generic-function.
-
-result---an object.
+        generic-function---一个没有找到可应用方法的广义函数.
+        function-arguments---给这个 generic-function 的参数.
+        result---一个对象.
 
 * 描述(Description):
 
-The generic function no-applicable-method is called when a generic function is invoked and no method on that generic function is applicable. The default method signals an error.
+        当一个广义函数被调用而这个广义函数上没有方法可应用, 那么这个广义函数 no-applicable-method 就会被调用. 默认方法会发出一个错误.
 
-The generic function no-applicable-method is not intended to be called by programmers. Programmers may write methods for it.
+        广义函数 no-applicable-method 不打算被程序员调用. 程序员可能为它写方法.
 
 * 示例(Examples): None.
 
@@ -1503,38 +1499,38 @@ The generic function no-applicable-method is not intended to be called by progra
 
 * 异常情况(Exceptional Situations):
 
-The default method signals an error of type error.
+        这个默认方法会发出一个 error 类型的错误.
 
 * 也见(See Also):
 
 * 注意(Notes): None. 
 
 
-Standard Generic Function NO-NEXT-METHOD
+### <span id="SGF-NO-NEXT-METHOD">标准广义函数 NO-NEXT-METHOD</span>
 
 * 语法(Syntax):
 
-no-next-method generic-function method &rest args => result*
+        no-next-method generic-function method &rest args => result*
 
 * 方法签名(Method Signatures):
 
-no-next-method (generic-function standard-generic-function) (method standard-method) &rest args
+        no-next-method (generic-function standard-generic-function) (method standard-method) &rest args
 
 * 参数和值(Arguments and Values):
 
-generic-function -- generic function to which method belongs.
+        generic-function -- method 所属的广义函数.
 
-method -- method that contained the call to call-next-method for which there is no next method.
+        method -- 包含了对 call-next-method 的调用但是没有下一个方法的方法.
 
-args -- arguments to call-next-method.
+        args -- 给 call-next-method 的参数.
 
-result---an object.
+        result---一个对象.
 
 * 描述(Description):
 
-The generic function no-next-method is called by call-next-method when there is no next method.
+        当这里没有下一个方法时, 广义函数 no-next-method 被 call-next-method 调用.
 
-The generic function no-next-method is not intended to be called by programmers. Programmers may write methods for it.
+        广义函数 no-next-method 不打算被程序员所调用. 程序员可以为它写方法.
 
 * 示例(Examples): None.
 
@@ -1542,36 +1538,35 @@ The generic function no-next-method is not intended to be called by programmers.
 
 * 异常情况(Exceptional Situations):
 
-The system-supplied method on no-next-method signals an error of type error.
+        系统提供的 no-next-method 上的方法会发出一个 error 类型的错误.
 
 * 也见(See Also):
 
-call-next-method
+        call-next-method
 
 * 注意(Notes): None. 
 
 
-Standard Generic Function REMOVE-METHOD
+### <span id="SGF-REMOVE-METHOD">标准广义函数 REMOVE-METHOD</span>
 
 * 语法(Syntax):
 
-remove-method generic-function method => generic-function
+        remove-method generic-function method => generic-function
 
 * 方法签名(Method Signatures):
 
-remove-method (generic-function standard-generic-function) method
+        remove-method (generic-function standard-generic-function) method
 
 * 参数和值(Arguments and Values):
 
-generic-function---a generic function.
-
-method---a method.
+        generic-function---一个广义函数.
+        method---一个方法.
 
 * 描述(Description):
 
-The generic function remove-method removes a method from generic-function by modifying the generic-function (if necessary).
+        广义函数 remove-method 通过修改这个 generic-function (如果必要的话)来从 generic-function 中移除一个方法.
 
-remove-method must not signal an error if the method is not one of the methods on the generic-function.
+        如果这个方法不是这个 generic-function 上的方法, 那么一定不会发出一个错误.
 
 * 示例(Examples): None.
 
@@ -1581,77 +1576,77 @@ remove-method must not signal an error if the method is not one of the methods o
 
 * 也见(See Also):
 
-find-method
+        find-method
 
 * 注意(Notes): None. 
 
 
-Standard Generic Function MAKE-INSTANCE
+### <span id="SGF-MAKE-INSTANCE">标准广义函数 MAKE-INSTANCE</span>
 
 * 语法(Syntax):
 
-make-instance class &rest initargs &key &allow-other-keys => instance
+        make-instance class &rest initargs &key &allow-other-keys => instance
 
 * 方法签名(Method Signatures):
 
-make-instance (class standard-class) &rest initargs
+        make-instance (class standard-class) &rest initargs
 
-make-instance (class symbol) &rest initargs
+        make-instance (class symbol) &rest initargs
 
 * 参数和值(Arguments and Values):
 
-class---a class, or a symbol that names a class.
+        class---一个类, 或者命名一个类的符号.
 
-initargs---an initialization argument list.
+        initargs---一个初始化参数列表.
 
-instance---a fresh instance of class class.
+        instance---一个类 class 的新的实例.
 
 * 描述(Description):
 
-The generic function make-instance creates and returns a new instance of the given class.
+        广义函数 make-instance 创建并返回这个给定 class 的新的实例.
 
-If the second of the above methods is selected, that method invokes make-instance on the arguments (find-class class) and initargs.
+        如果选择了上述方法中的第二个, 那个方法在 (find-class class) 和 initargs 上调用 make-instance.
 
-The initialization arguments are checked within make-instance.
+        初始化参数在 make-instance 中被检测.
 
-The generic function make-instance may be used as described in Section 7.1 (Object Creation and Initialization).
+        广义函数 make-instance 按章节 7.1 (Object Creation and Initialization) 中所描述的那样被使用.
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-If any of the initialization arguments has not been declared as valid, an error of type error is signaled.
+        如果任何一个初始化参数没有被有效声明, 会发出一个 error 类型的错误.
 
 * 也见(See Also):
 
-defclass, class-of, allocate-instance, initialize-instance, Section 7.1 (Object Creation and Initialization)
+        defclass, class-of, allocate-instance, initialize-instance, Section 7.1 (Object Creation and Initialization)
 
 * 注意(Notes): None. 
 
 
-Standard Generic Function MAKE-INSTANCES-OBSOLETE
+### <span id="SGF-MAKE-INSTANCES-OBSOLETE">标准广义函数 MAKE-INSTANCES-OBSOLETE</span>
 
 * 语法(Syntax):
 
-make-instances-obsolete class => class
+        make-instances-obsolete class => class
 
 * 方法签名(Method Signatures):
 
-make-instances-obsolete (class standard-class)
+        make-instances-obsolete (class standard-class)
 
-make-instances-obsolete (class symbol)
+        make-instances-obsolete (class symbol)
 
 * 参数和值(Arguments and Values):
 
-class---a class designator.
+        class---一个类指定符.
 
 * 描述(Description):
 
-The function make-instances-obsolete has the effect of initiating the process of updating the instances of the class. During updating, the generic function update-instance-for-redefined-class will be invoked.
+        函数 make-instances-obsolete 具有启动更新 class 的实例的过程的效果. 在更新期间, 广义函数 update-instance-for-redefined-class 会被调用.
 
-The generic function make-instances-obsolete is invoked automatically by the system when defclass has been used to redefine an existing standard class and the set of local slots accessible in an instance is changed or the order of slots in storage is changed. It can also be explicitly invoked by the user.
+        当 defclass 被用来重定义一个已存在的标准类并且在一个实例中可访问的局部槽的集合被改变或者存储中的槽的顺序被改变, 广义函数 make-instances-obsolete 会被系统自动调用. 它也可以被用户显式调用.
 
-If the second of the above methods is selected, that method invokes make-instances-obsolete on (find-class class).
+        如果选择了上述的第二个方法, 那个方法在 (find-class class) 上调用 make-instances-obsolete.
 
 * 示例(Examples):
 
@@ -1661,7 +1656,7 @@ If the second of the above methods is selected, that method invokes make-instanc
 
 * 也见(See Also):
 
-update-instance-for-redefined-class, Section 4.3.6 (Redefining Classes)
+        update-instance-for-redefined-class, Section 4.3.6 (Redefining Classes)
 
 * 注意(Notes): None. 
 
