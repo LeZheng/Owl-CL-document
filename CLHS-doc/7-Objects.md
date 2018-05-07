@@ -1661,144 +1661,148 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (Standard M
 * 注意(Notes): None. 
 
 
-Standard Generic Function MAKE-LOAD-FORM
-
+### <span id="SGF-MAKE-LOAD-FORM">标准广义函数 MAKE-LOAD-FORM</span>
+<!--TODO 待校验-->
 * 语法(Syntax):
 
-make-load-form object &optional environment => creation-form[, initialization-form]
+        make-load-form object &optional environment => creation-form[, initialization-form]
 
 * 方法签名(Method Signatures):
 
-make-load-form (object standard-object) &optional environment
-
-make-load-form (object structure-object) &optional environment
-
-make-load-form (object condition) &optional environment
-
-make-load-form (object class) &optional environment
+        make-load-form (object standard-object) &optional environment
+        make-load-form (object structure-object) &optional environment
+        make-load-form (object condition) &optional environment
+        make-load-form (object class) &optional environment
 
 * 参数和值(Arguments and Values):
 
-object---an object.
-
-environment---an environment object.
-
-creation-form---a form.
-
-initialization-form---a form.
+        object---一个对象.
+        environment---一个环境对象.
+        creation-form---一个表达式形式.
+        initialization-form---一个表达式形式.
 
 * 描述(Description):
 
-The generic function make-load-form creates and returns one or two forms, a creation-form and an initialization-form, that enable load to construct an object equivalent to object. Environment is an environment object corresponding to the lexical environment in which the forms will be processed.
+        广义函数 make-load-form 创建并返回一个或两个表达式形式, 一个 creation-form 和一个 initialization-form, 这个启用 load 去构造一个 object 等价的对象. Environment 是一个和这个表达式形式被处理时所在词法环境对应的环境对象.
 
-The file compiler calls make-load-form to process certain classes of literal objects; see Section 3.2.4.4 (Additional Constraints on Externalizable Objects).
+        文件编译器调用 make-load-form 来处理字面化对象确定的类; 见章节 3.2.4.4 (Additional Constraints on Externalizable Objects).
 
-Conforming programs may call make-load-form directly, providing object is a generalized instance of standard-object, structure-object, or condition.
+        符合规范的程序可能直接调用 make-load-form, 提供的 object 是 standard-object, structure-object, 或 condition 的一个普通实例.
 
-The creation form is a form that, when evaluated at load time, should return an object that is equivalent to object. The exact meaning of equivalent depends on the type of object and is up to the programmer who defines a method for make-load-form; see Section 3.2.4 (Literal Objects in Compiled Files).
+        这个创建表达式形式(creation-form)是一个在 load 时求值并且应该返回一个和 object 等价的对象的表达式形式. 这个等价的确切意义取决于对象的类型以及为 make-load-form 定义方法的程序员; 见章节 3.2.4 (Literal Objects in Compiled Files).
 
-The initialization form is a form that, when evaluated at load time, should perform further initialization of the object. The value returned by the initialization form is ignored. If make-load-form returns only one value, the initialization form is nil, which has no effect. If object appears as a constant in the initialization form, at load time it will be replaced by the equivalent object constructed by the creation form; this is how the further initialization gains access to the object.
+        这个初始化表达式形式(initialization-form)是一个在 load 时求值并且应该执行这个对象的进一步初始化的表达式形式. 这个初始化表达式形式返回的值会被忽略. 如果 make-load-form 只返回一个值, 初始化表达式形式就是 nil, 它是没有效果的. 如果 object 作为一个常量出现在初始化表达式形式中, 在 load 时它会被创建表达式形式构造的等价对象所替代; 这就是进一步的初始化如何获得对对象的访问.
 
-Both the creation-form and the initialization-form may contain references to any externalizable object. However, there must not be any circular dependencies in creation forms. An example of a circular dependency is when the creation form for the object X contains a reference to the object Y, and the creation form for the object Y contains a reference to the object X. Initialization forms are not subject to any restriction against circular dependencies, which is the reason that initialization forms exist; see the example of circular data structures below.
+        不管是 creation-form 还是 initialization-form 都可能包含对任何可外部化对象的引用. 然而, 在创建表达式形式中, 这里一定不能有任何循环依赖. 一个循环依赖的示例就是, 当这个对象 X 的创建表达式形式包含了对对象 Y 的一个引用, 并且对象 Y 的创建表达式形式包含了对对象 X 的引用. 初始化表达式形式不受任何对循环依赖的限制, 这就是初始化表达式形式存在的原因; 见下面环状数据结构.
 
-The creation form for an object is always evaluated before the initialization form for that object. When either the creation form or the initialization form references other objects that have not been referenced earlier in the file being compiled, the compiler ensures that all of the referenced objects have been created before evaluating the referencing form. When the referenced object is of a type which the file compiler processes using make-load-form, this involves evaluating the creation form returned for it. (This is the reason for the prohibition against circular references among creation forms).
+        一个对象的创建表达式形式总是在这个对象的初始化表达式形式之前被求值. 当不管是创建表达式形式还是初始化表达式形式引用了其他在编译的文件中没有被更早引用的对象时, 编译器保证在求值这些引用表达式形式之前所有这些引用的对象都已经被创建. 当引用的对象是文件编译器使用 make-load-form 处理的类型时, 这个就涉及到求值为它返回的创建表达式形式. (这就是禁止在创建表达式形式中循环引用的原因).
 
-Each initialization form is evaluated as soon as possible after its associated creation form, as determined by data flow. If the initialization form for an object does not reference any other objects not referenced earlier in the file and processed by the file compiler using make-load-form, the initialization form is evaluated immediately after the creation form. If a creation or initialization form F does contain references to such objects, the creation forms for those other objects are evaluated before F, and the initialization forms for those other objects are also evaluated before F whenever they do not depend on the object created or initialized by F. Where these rules do not uniquely determine an order of evaluation between two creation/initialization forms, the order of evaluation is unspecified.
+        每个初始化表达式形式在它关联的创建表达式形式之后尽快被求值, 由数据流决定. 如果一个对象的初始化表达式形式没有引用出现在该文件中且没有被更早地引用并且被文件编译器使用 make-load-form 处理的任何其他对象, 初始化表达式形式会在创建表达式形式之后被立即求值. 如果一个创建或初始化表达式形式 F 确实包含了对这样一个对象的引用, 这些其他对象的创建表达式形式在 F 之前被求值, 并且这些其他对象的初始化表达式形式也会在 F 之前被求值, 不管它们是否依赖 F 创建和初始化的对象. 在这些规则不能唯一确定一个在两个创建/初始化表达式形式之间的顺序的地方, 求值的顺序是未指定的.
 
-While these creation and initialization forms are being evaluated, the objects are possibly in an uninitialized state, analogous to the state of an object between the time it has been created by allocate-instance and it has been processed fully by initialize-instance. Programmers writing methods for make-load-form must take care in manipulating objects not to depend on slots that have not yet been initialized.
+        在这些创建和初始化表达式形式要被求值时, 对象可能处于一个未初始化状态, 类似一个对象在被 allocate-instance 创建和被 initialize-instance 完全处理之间的状态. 程序员为 make-load-form 写方法必须关注操纵的对象不依赖没有被初始化的槽.
 
-It is implementation-dependent whether load calls eval on the forms or does some other operation that has an equivalent effect. For example, the forms might be translated into different but equivalent forms and then evaluated, they might be compiled and the resulting functions called by load, or they might be interpreted by a special-purpose function different from eval. All that is required is that the effect be equivalent to evaluating the forms.
+        load 是否在表达式形式上调用 eval 或者执行某个其他有等价效果的操作是取决于具体实现的. 比如, 这些表达式形式可能被转成不同但是等价的表达式形式然后被求值, 它们可能被编译并且产生的函数被 load 调用, 或者它们可能被一个特殊目的的有别于 eval 的函数所解释. 所需要的只是效果和求值这些表达式形式等价.
 
-The method specialized on class returns a creation form using the name of the class if the class has a proper name in environment, signaling an error of type error if it does not have a proper name. Evaluation of the creation form uses the name to find the class with that name, as if by calling find-class. If a class with that name has not been defined, then a class may be computed in an implementation-defined manner. If a class cannot be returned as the result of evaluating the creation form, then an error of type error is signaled.
+        如果一个类在 environment 中有特定的名字, 那么在 class 上特化的方法返回一个使用该类的名字的创建表达式形式, 如果没有一个特定的名字就会发出一个 error 类型的错误. 这个创建表达式形式的求值使用这个名字去找到这个名字对应的类, 就像是通过调用 find-class 一样. 如果这个名字的一个类还没有被定义, 那么一个类可能以一种依赖于具体实现的方法被推断. 如果一个类不能被求值这个创建表达式形式作为结果返回, 那么就会发出一个 error 类型的错误.
 
-Both conforming implementations and conforming programs may further specialize make-load-form.
+        不管是符合规范的实现还是符合规范的程序都可能进一步特化 make-load-form.
 
 * 示例(Examples):
 
- (defclass obj ()
-    ((x :initarg :x :reader obj-x)
-     (y :initarg :y :reader obj-y)
-     (dist :accessor obj-dist)))
-=>  #<STANDARD-CLASS OBJ 250020030>
- (defmethod shared-initialize :after ((self obj) slot-names &rest keys)
-   (declare (ignore slot-names keys))
-   (unless (slot-boundp self 'dist)
-     (setf (obj-dist self)
-           (sqrt (+ (expt (obj-x self) 2) (expt (obj-y self) 2))))))
-=>  #<STANDARD-METHOD SHARED-INITIALIZE (:AFTER) (OBJ T) 26266714>
- (defmethod make-load-form ((self obj) &optional environment)
-   (declare (ignore environment))
-   ;; Note that this definition only works because X and Y do not
-   ;; contain information which refers back to the object itself.
-   ;; For a more general solution to this problem, see revised example below.
-   `(make-instance ',(class-of self)
-                   :x ',(obj-x self) :y ',(obj-y self)))
-=>  #<STANDARD-METHOD MAKE-LOAD-FORM (OBJ) 26267532>
- (setq obj1 (make-instance 'obj :x 3.0 :y 4.0)) =>  #<OBJ 26274136>
- (obj-dist obj1) =>  5.0
- (make-load-form obj1) =>  (MAKE-INSTANCE 'OBJ :X '3.0 :Y '4.0)
+    ```LISP
+    (defclass obj ()
+        ((x :initarg :x :reader obj-x)
+        (y :initarg :y :reader obj-y)
+        (dist :accessor obj-dist)))
+    =>  #<STANDARD-CLASS OBJ 250020030>
+    (defmethod shared-initialize :after ((self obj) slot-names &rest keys)
+      (declare (ignore slot-names keys))
+      (unless (slot-boundp self 'dist)
+        (setf (obj-dist self)
+              (sqrt (+ (expt (obj-x self) 2) (expt (obj-y self) 2))))))
+    =>  #<STANDARD-METHOD SHARED-INITIALIZE (:AFTER) (OBJ T) 26266714>
+    (defmethod make-load-form ((self obj) &optional environment)
+      (declare (ignore environment))
+      ;; Note that this definition only works because X and Y do not
+      ;; contain information which refers back to the object itself.
+      ;; For a more general solution to this problem, see revised example below.
+      `(make-instance ',(class-of self)
+                      :x ',(obj-x self) :y ',(obj-y self)))
+    =>  #<STANDARD-METHOD MAKE-LOAD-FORM (OBJ) 26267532>
+    (setq obj1 (make-instance 'obj :x 3.0 :y 4.0)) =>  #<OBJ 26274136>
+    (obj-dist obj1) =>  5.0
+    (make-load-form obj1) =>  (MAKE-INSTANCE 'OBJ :X '3.0 :Y '4.0)
+    ```
 
-In the above example, an equivalent instance of obj is reconstructed by using the values of two of its slots. The value of the third slot is derived from those two values.
+        在上述示例中, 一个 obj 等价的实例通过使用它的两个槽的值被重新构建. 第三个槽的值由那两个值得到.
 
-Another way to write the make-load-form method in that example is to use make-load-form-saving-slots. The code it generates might yield a slightly different result from the make-load-form method shown above, but the operational effect will be the same. For example:
+        在那个示例中写 make-load-form 方法的另一种方式是使用 make-load-form-saving-slots. 它产生的代码可能和上面展示的 make-load-form 方法产生稍微不同的结果, 但是运行效果是一样的. 比如:
 
- ;; Redefine method defined above.
- (defmethod make-load-form ((self obj) &optional environment)
-    (make-load-form-saving-slots self
-                                 :slot-names '(x y)
-                                 :environment environment))
-=>  #<STANDARD-METHOD MAKE-LOAD-FORM (OBJ) 42755655>
- ;; Try MAKE-LOAD-FORM on object created above.
- (make-load-form obj1)
-=>  (ALLOCATE-INSTANCE '#<STANDARD-CLASS OBJ 250020030>),
-    (PROGN
-      (SETF (SLOT-VALUE '#<OBJ 26274136> 'X) '3.0)
-      (SETF (SLOT-VALUE '#<OBJ 26274136> 'Y) '4.0)
-      (INITIALIZE-INSTANCE '#<OBJ 26274136>))
+    ```LISP
+    ;; Redefine method defined above.
+    (defmethod make-load-form ((self obj) &optional environment)
+        (make-load-form-saving-slots self
+                                    :slot-names '(x y)
+                                    :environment environment))
+    =>  #<STANDARD-METHOD MAKE-LOAD-FORM (OBJ) 42755655>
+    ;; Try MAKE-LOAD-FORM on object created above.
+    (make-load-form obj1)
+    =>  (ALLOCATE-INSTANCE '#<STANDARD-CLASS OBJ 250020030>),
+        (PROGN
+          (SETF (SLOT-VALUE '#<OBJ 26274136> 'X) '3.0)
+          (SETF (SLOT-VALUE '#<OBJ 26274136> 'Y) '4.0)
+          (INITIALIZE-INSTANCE '#<OBJ 26274136>))
+    ```
 
-In the following example, instances of my-frob are ``interned'' in some way. An equivalent instance is reconstructed by using the value of the name slot as a key for searching existing objects. In this case the programmer has chosen to create a new object if no existing object is found; alternatively an error could have been signaled in that case.
+        在下面这个示例中, my-frob 的实例以某种方式被 "捕捉(interned)". 通过使用名称槽作为键来搜索已存在的对象来重新构建一个等价实例. 在这个情况下如果没有找到已存在的对象, 程序员选择创建一个新对象; 或者在这种情况下可能会发出一个错误.
 
- (defclass my-frob ()
-    ((name :initarg :name :reader my-name)))
- (defmethod make-load-form ((self my-frob) &optional environment)
-   (declare (ignore environment))
-   `(find-my-frob ',(my-name self) :if-does-not-exist :create))
+    ```LISP
+    (defclass my-frob ()
+        ((name :initarg :name :reader my-name)))
+    (defmethod make-load-form ((self my-frob) &optional environment)
+      (declare (ignore environment))
+      `(find-my-frob ',(my-name self) :if-does-not-exist :create))
+    ```
 
-In the following example, the data structure to be dumped is circular, because each parent has a list of its children and each child has a reference back to its parent. If make-load-form is called on one object in such a structure, the creation form creates an equivalent object and fills in the children slot, which forces creation of equivalent objects for all of its children, grandchildren, etc. At this point none of the parent slots have been filled in. The initialization form fills in the parent slot, which forces creation of an equivalent object for the parent if it was not already created. Thus the entire tree is recreated at load time. At compile time, make-load-form is called once for each object in the tree. All of the creation forms are evaluated, in implementation-dependent order, and then all of the initialization forms are evaluated, also in implementation-dependent order.
+        在下面这个示例中, 被转储的数据结构是环状的<!--TODO dumped ??-->, 因为每个 parent 有着它的 children 的一个列表并且每个 child 有一个指回它的 parent 的引用. 如果在一个这样结构的对象上调用 make-load-form, 创建表达式形式创建一个等价对象并且填充在 children 槽中, 它强制进行它的 children, grandchildren, 等等的等价对象的创建. 在这个时候没有 parent 的槽被填充. 这个初始化表达式形式填充这个 parent 的槽, 如果等价对象没有被创建, 它强制创建这个 parent 的等价对象. 因此整个树在加载时被重新创建. 在编译时, make-load-form 对于这个树中的每个对象被调用一次. 所有创建表达式形式都被求值, 以依赖于具体实现的顺序, 然后所有初始化表达式形式被求值, 也按照依赖于实现的顺序.<!--TODO 待校对-->
 
- (defclass tree-with-parent () ((parent :accessor tree-parent)
-                                (children :initarg :children)))
- (defmethod make-load-form ((x tree-with-parent) &optional environment)
-   (declare (ignore environment))
-   (values
-     ;; creation form
-     `(make-instance ',(class-of x) :children ',(slot-value x 'children))
-     ;; initialization form
-     `(setf (tree-parent ',x) ',(slot-value x 'parent))))
+    ```LISP
+    (defclass tree-with-parent () ((parent :accessor tree-parent)
+                                    (children :initarg :children)))
+    (defmethod make-load-form ((x tree-with-parent) &optional environment)
+      (declare (ignore environment))
+      (values
+        ;; creation form
+        `(make-instance ',(class-of x) :children ',(slot-value x 'children))
+        ;; initialization form
+        `(setf (tree-parent ',x) ',(slot-value x 'parent))))
+    ```
 
-In the following example, the data structure to be dumped has no special properties and an equivalent structure can be reconstructed simply by reconstructing the slots' contents.
+        在下面示例中, 被转储的数据结构没有特殊属性并且一个等价结构可以简单地通过重新构建槽的内容来重新构建.
 
- (defstruct my-struct a b c)
- (defmethod make-load-form ((s my-struct) &optional environment)
-    (make-load-form-saving-slots s :environment environment))
+    ```LISP
+    (defstruct my-struct a b c)
+    (defmethod make-load-form ((s my-struct) &optional environment)
+        (make-load-form-saving-slots s :environment environment))
+    ```
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-The methods specialized on standard-object, structure-object, and condition all signal an error of type error.
+        在 standard-object, structure-object, and condition 上指定的所有这方法都会发出一个 error 类型的错误.
 
-It is implementation-dependent whether calling make-load-form on a generalized instance of a system class signals an error or returns creation and initialization forms.
+        在一个系统类的普通实例上调用 make-load-form 是发出一个错误还是返回创建和初始化表达式形式, 取决于具体实现.
 
 * 也见(See Also):
 
-compile-file, make-load-form-saving-slots, Section 3.2.4.4 (Additional Constraints on Externalizable Objects) Section 3.1 (Evaluation), Section 3.2 (Compilation)
+        compile-file, make-load-form-saving-slots, Section 3.2.4.4 (Additional Constraints on Externalizable Objects) Section 3.1 (Evaluation), Section 3.2 (Compilation)
 
 * 注意(Notes):
 
-The file compiler calls make-load-form in specific circumstances detailed in Section 3.2.4.4 (Additional Constraints on Externalizable Objects).
+        在特殊情况下文件编译器调用 make-load-form 在章节 3.2.4.4 (Additional Constraints on Externalizable Objects) 中详述.
 
-Some implementations may provide facilities for defining new subclasses of classes which are specified as system classes. (Some likely candidates include generic-function, method, and stream). Such implementations should document how the file compiler processes instances of such classes when encountered as literal objects, and should document any relevant methods for make-load-form. 
+        某些具体实现可能为定义被指定为系统类的类的子类提供工具. (一些候选项包括 generic-function, method, 还有 stream). 这样的具体实现应该记录文件编译器在遇到字面化对象时如何处理这样的类的实例<!--TODO 待校验-->, 并且应该记录任何和 make-load-form 相关的方法. 
 
 
 Function MAKE-LOAD-FORM-SAVING-SLOTS
