@@ -1805,35 +1805,30 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (Standard M
         某些具体实现可能为定义被指定为系统类的类的子类提供工具. (一些候选项包括 generic-function, method, 还有 stream). 这样的具体实现应该记录文件编译器在遇到字面化对象时如何处理这样的类的实例<!--TODO 待校验-->, 并且应该记录任何和 make-load-form 相关的方法. 
 
 
-Function MAKE-LOAD-FORM-SAVING-SLOTS
+### <span id="F-MAKE-LOAD-FORM-SAVING-SLOTS">函数 MAKE-LOAD-FORM-SAVING-SLOTS</span>
 
 * 语法(Syntax):
 
-make-load-form-saving-slots object &key slot-names environment
-
-=> creation-form, initialization-form
+        make-load-form-saving-slots object &key slot-names environment
+        => creation-form, initialization-form
 
 * 参数和值(Arguments and Values):
 
-object---an object.
-
-slot-names---a list.
-
-environment---an environment object.
-
-creation-form---a form.
-
-initialization-form---a form.
+        object---一个对象.
+        slot-names---一个列表.
+        environment---一个环境对象.
+        creation-form---一个表达式形式.
+        initialization-form---一个表达式形式.
 
 * 描述(Description):
 
-Returns forms that, when evaluated, will construct an object equivalent to object, without executing initialization forms. The slots in the new object that correspond to initialized slots in object are initialized using the values from object. Uninitialized slots in object are not initialized in the new object. make-load-form-saving-slots works for any instance of standard-object or structure-object.
+        返回在求值时不执行初始化表达式形式来构造和 object 等价的对象的表达式形式. 这个新的对象中和 object 对应初始化槽的那些槽使用来自 object 的值来初始化. 在 object 中没有初始化的槽在新的对象中不会被初始化. make-load-form-saving-slots 对任何 standard-object 或 structure-object 的实例都起作用.
 
-Slot-names is a list of the names of the slots to preserve. If slot-names is not supplied, its value is all of the local slots.
+        Slot-names 是要保留的槽的名称列表. 如果没有提供 slot-names, 它的值就是所有局部槽.
 
-make-load-form-saving-slots returns two values, thus it can deal with circular structures. Whether the result is useful in an application depends on whether the object's type and slot contents fully capture the application's idea of the object's state.
+        make-load-form-saving-slots 返回两个值, 因此它可以处理环状结构. 在一个应用中结果是否有用取决于这个对象的类型和槽的内容是否完全捕捉了这个对象状态的应用意义<!-- TODO application's idea ??-->.
 
-Environment is the environment in which the forms will be processed.
+        Environment 是这些表达式形式被处理时所处的环境.
 
 * 示例(Examples): None.
 
@@ -1845,100 +1840,96 @@ Environment is the environment in which the forms will be processed.
 
 * 也见(See Also):
 
-make-load-form, make-instance, setf, slot-value, slot-makunbound
+        make-load-form, make-instance, setf, slot-value, slot-makunbound
 
 * 注意(Notes):
 
-make-load-form-saving-slots can be useful in user-written make-load-form methods.
+        make-load-form-saving-slots 在用户编写的 make-load-form 方法中是很有用的.
 
-When the object is an instance of standard-object, make-load-form-saving-slots could return a creation form that calls allocate-instance and an initialization form that contains calls to setf of slot-value and slot-makunbound, though other functions of similar effect might actually be used. 
+        当这个 object 是 standard-object 的一个实例时, make-load-form-saving-slots 返回一个调用 allocate-instance 的创建表达式形式和一个包含对 slot-value 的 setf 和 slot-makunbound 的调用的初始化表达式形式, 尽管事实上可能使用其他类似效果的函数. 
 
 
-Macro WITH-ACCESSORS
+### <span id="M-WITH-ACCESSORS">宏 WITH-ACCESSORS</span>
 
 * 语法(Syntax):
 
-with-accessors (slot-entry*) instance-form declaration* form*
+        with-accessors (slot-entry*) instance-form declaration* form*
+        => result*
 
-=> result*
-
-slot-entry::= (variable-name accessor-name) 
+        slot-entry::= (variable-name accessor-name) 
 
 * 参数和值(Arguments and Values):
 
-variable-name---a variable name; not evaluated.
-
-accessor-name---a function name; not evaluated.
-
-instance-form---a form; evaluated.
-
-declaration---a declare expression; not evaluated.
-
-forms---an implicit progn.
-
-results---the values returned by the forms.
+        variable-name---一个变量名字; 不求值.
+        accessor-name---一个函数名; 不求值.
+        instance-form---一个表达式形式; 求值.
+        declaration---一个 declare 表达式; 不求值.
+        forms---一个隐式的 progn.
+        results---这个 forms 返回的值.
 
 * 描述(Description):
 
-Creates a lexical environment in which the slots specified by slot-entry are lexically available through their accessors as if they were variables. The macro with-accessors invokes the appropriate accessors to access the slots specified by slot-entry. Both setf and setq can be used to set the value of the slot.
+        创建一个词法环境, 在这里 slot-entry 指定的那些槽通过它们的访问器是词法上可用的, 就像它们是变量一样. 宏 with-accessors 调用合适的访问器来访问 slot-entry 指定的那些槽. 不管 setf 还是 setq 都可以被用来设置槽的值.
 
 * 示例(Examples):
 
- (defclass thing ()
-           ((x :initarg :x :accessor thing-x)
-            (y :initarg :y :accessor thing-y)))
-=>  #<STANDARD-CLASS THING 250020173>
- (defmethod (setf thing-x) :before (new-x (thing thing))
-   (format t "~&Changing X from ~D to ~D in ~S.~%"
-           (thing-x thing) new-x thing))
- (setq thing1 (make-instance 'thing :x 1 :y 2)) =>  #<THING 43135676>
- (setq thing2 (make-instance 'thing :x 7 :y 8)) =>  #<THING 43147374>
- (with-accessors ((x1 thing-x) (y1 thing-y))
-                 thing1
-   (with-accessors ((x2 thing-x) (y2 thing-y))
-                   thing2
-     (list (list x1 (thing-x thing1) y1 (thing-y thing1)
-                 x2 (thing-x thing2) y2 (thing-y thing2))
-           (setq x1 (+ y1 x2))
-           (list x1 (thing-x thing1) y1 (thing-y thing1)
-                 x2 (thing-x thing2) y2 (thing-y thing2))
-           (setf (thing-x thing2) (list x1))
-           (list x1 (thing-x thing1) y1 (thing-y thing1)
-                 x2 (thing-x thing2) y2 (thing-y thing2)))))
->>  Changing X from 1 to 9 in #<THING 43135676>.
->>  Changing X from 7 to (9) in #<THING 43147374>.
-=>  ((1 1 2 2 7 7 8 8)
-     9
-     (9 9 2 2 7 7 8 8) 
-     (9)
-     (9 9 2 2 (9) (9) 8 8))
+    ```LISP
+    (defclass thing ()
+              ((x :initarg :x :accessor thing-x)
+                (y :initarg :y :accessor thing-y)))
+    =>  #<STANDARD-CLASS THING 250020173>
+    (defmethod (setf thing-x) :before (new-x (thing thing))
+      (format t "~&Changing X from ~D to ~D in ~S.~%"
+              (thing-x thing) new-x thing))
+    (setq thing1 (make-instance 'thing :x 1 :y 2)) =>  #<THING 43135676>
+    (setq thing2 (make-instance 'thing :x 7 :y 8)) =>  #<THING 43147374>
+    (with-accessors ((x1 thing-x) (y1 thing-y))
+                    thing1
+      (with-accessors ((x2 thing-x) (y2 thing-y))
+                      thing2
+        (list (list x1 (thing-x thing1) y1 (thing-y thing1)
+                    x2 (thing-x thing2) y2 (thing-y thing2))
+              (setq x1 (+ y1 x2))
+              (list x1 (thing-x thing1) y1 (thing-y thing1)
+                    x2 (thing-x thing2) y2 (thing-y thing2))
+              (setf (thing-x thing2) (list x1))
+              (list x1 (thing-x thing1) y1 (thing-y thing1)
+                    x2 (thing-x thing2) y2 (thing-y thing2)))))
+    >>  Changing X from 1 to 9 in #<THING 43135676>.
+    >>  Changing X from 7 to (9) in #<THING 43147374>.
+    =>  ((1 1 2 2 7 7 8 8)
+        9
+        (9 9 2 2 7 7 8 8) 
+        (9)
+        (9 9 2 2 (9) (9) 8 8))
+    ```
 
 * 受此影响(Affected By):
 
-defclass
+        defclass
 
 * 异常情况(Exceptional Situations):
 
-The consequences are undefined if any accessor-name is not the name of an accessor for the instance.
+        如果任何 accessor-name 不是这个实例的一个访问器的名字, 那么结果是未定义的.
 
 * 也见(See Also):
 
-with-slots, symbol-macrolet
+        with-slots, symbol-macrolet
 
 * 注意(Notes):
 
-A with-accessors expression of the form:
+        这个表达式形式的一个 with-accessors 表达式:
 
-(with-accessors (slot-entry1 ... slot-entryn) instance-form form1 ... formk)
+        (with-accessors (slot-entry1 ... slot-entryn) instance-form form1 ... formk)
 
-expands into the equivalent of
+        展开为下面这个的等价体
 
-(let ((in instance-form))
-  (symbol-macrolet (Q1 ... Qn) form1 ... formk))
+        (let ((in instance-form))
+          (symbol-macrolet (Q1 ... Qn) form1 ... formk))
 
-where Qi is
+        其中 Qi 是
 
- (variable-namei () (accessor-namei in))
+        (variable-namei () (accessor-namei in))
 
 
 Macro WITH-SLOTS
