@@ -1932,108 +1932,103 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (Standard M
         (variable-namei () (accessor-namei in))
 
 
-Macro WITH-SLOTS
+### <span id="M-WITH-SLOTS">宏 WITH-SLOTS</span>
 
 * 语法(Syntax):
 
-with-slots (slot-entry*) instance-form declaration* form*
+        with-slots (slot-entry*) instance-form declaration* form*
+        => result*
 
-=> result*
-
-slot-entry::= slot-name | (variable-name slot-name) 
+        slot-entry::= slot-name | (variable-name slot-name) 
 
 * 参数和值(Arguments and Values):
 
-slot-name---a slot name; not evaluated.
-
-variable-name---a variable name; not evaluated.
-
-instance-form---a form; evaluted to produce instance.
-
-instance---an object.
-
-declaration---a declare expression; not evaluated.
-
-forms---an implicit progn.
-
-results---the values returned by the forms.
+        slot-name---一个槽的名字; 不求值.
+        variable-name---一个变量名; 不求值.
+        instance-form---一个表达式形式; 求值来产生这个实例.
+        instance---一个对象.
+        declaration---一个 declare 表达式; 不求值.
+        forms---一个隐式的 progn.
+        results---这个 forms 返回的值.
 
 * 描述(Description):
 
-The macro with-slots establishes a lexical environment for referring to the slots in the instance named by the given slot-names as though they were variables. Within such a context the value of the slot can be specified by using its slot name, as if it were a lexically bound variable. Both setf and setq can be used to set the value of the slot.
+        宏 with-slots 为引用这个 instance 实例中名为给定 slot-names 的槽建立一个词法环境就好像它们是变量一样. 在这样一个上下文中这个槽的值可以通过使用它们的槽名来指定, 就好像它们是一个词法上绑定的变量. 不管是 setf 还是 setq 都可以被用于设置这个槽的值.
 
-The macro with-slots translates an appearance of the slot name as a variable into a call to slot-value.
+        宏 with-slots 把这个槽名作为变量的出现转化为一个对 slot-value 的调用.
 
 * 示例(Examples):
 
- (defclass thing ()
-           ((x :initarg :x :accessor thing-x)
-            (y :initarg :y :accessor thing-y)))
-=>  #<STANDARD-CLASS THING 250020173>
- (defmethod (setf thing-x) :before (new-x (thing thing))
-   (format t "~&Changing X from ~D to ~D in ~S.~%"
-           (thing-x thing) new-x thing))
- (setq thing (make-instance 'thing :x 0 :y 1)) =>  #<THING 62310540>
- (with-slots (x y) thing (incf x) (incf y)) =>  2
- (values (thing-x thing) (thing-y thing)) =>  1, 2
- (setq thing1 (make-instance 'thing :x 1 :y 2)) =>  #<THING 43135676>
- (setq thing2 (make-instance 'thing :x 7 :y 8)) =>  #<THING 43147374>
- (with-slots ((x1 x) (y1 y))
-             thing1
-   (with-slots ((x2 x) (y2 y))
-               thing2
-     (list (list x1 (thing-x thing1) y1 (thing-y thing1)
-                 x2 (thing-x thing2) y2 (thing-y thing2))
-           (setq x1 (+ y1 x2))
-           (list x1 (thing-x thing1) y1 (thing-y thing1)
-                 x2 (thing-x thing2) y2 (thing-y thing2))
-           (setf (thing-x thing2) (list x1))
-           (list x1 (thing-x thing1) y1 (thing-y thing1)
-                 x2 (thing-x thing2) y2 (thing-y thing2)))))
->>  Changing X from 7 to (9) in #<THING 43147374>.
-=>  ((1 1 2 2 7 7 8 8)
-     9
-     (9 9 2 2 7 7 8 8) 
-     (9)
-     (9 9 2 2 (9) (9) 8 8))
+    ```LISP
+    (defclass thing ()
+              ((x :initarg :x :accessor thing-x)
+                (y :initarg :y :accessor thing-y)))
+    =>  #<STANDARD-CLASS THING 250020173>
+    (defmethod (setf thing-x) :before (new-x (thing thing))
+      (format t "~&Changing X from ~D to ~D in ~S.~%"
+              (thing-x thing) new-x thing))
+    (setq thing (make-instance 'thing :x 0 :y 1)) =>  #<THING 62310540>
+    (with-slots (x y) thing (incf x) (incf y)) =>  2
+    (values (thing-x thing) (thing-y thing)) =>  1, 2
+    (setq thing1 (make-instance 'thing :x 1 :y 2)) =>  #<THING 43135676>
+    (setq thing2 (make-instance 'thing :x 7 :y 8)) =>  #<THING 43147374>
+    (with-slots ((x1 x) (y1 y))
+                thing1
+      (with-slots ((x2 x) (y2 y))
+                  thing2
+        (list (list x1 (thing-x thing1) y1 (thing-y thing1)
+                    x2 (thing-x thing2) y2 (thing-y thing2))
+              (setq x1 (+ y1 x2))
+              (list x1 (thing-x thing1) y1 (thing-y thing1)
+                    x2 (thing-x thing2) y2 (thing-y thing2))
+              (setf (thing-x thing2) (list x1))
+              (list x1 (thing-x thing1) y1 (thing-y thing1)
+                    x2 (thing-x thing2) y2 (thing-y thing2)))))
+    >>  Changing X from 7 to (9) in #<THING 43147374>.
+    =>  ((1 1 2 2 7 7 8 8)
+        9
+        (9 9 2 2 7 7 8 8) 
+        (9)
+        (9 9 2 2 (9) (9) 8 8))
+    ```
 
 * 受此影响(Affected By):
 
-defclass
+        defclass
 
 * 异常情况(Exceptional Situations):
 
-The consequences are undefined if any slot-name is not the name of a slot in the instance.
+        如果任何的 slot-name 都不是这个 instance 实例中槽的名字, 那么结果是未定义的.
 
 * 也见(See Also):
 
-with-accessors, slot-value, symbol-macrolet
+        with-accessors, slot-value, symbol-macrolet
 
 * 注意(Notes):
 
-A with-slots expression of the form:
+        一个 with-slots 表达式 of the form:
 
-(with-slots (slot-entry1 ... slot-entryn) instance-form form1 ... formk)
+        (with-slots (slot-entry1 ... slot-entryn) instance-form form1 ... formk)
 
-expands into the equivalent of
+        展开为下面这个的等价体
 
-(let ((in instance-form))
-  (symbol-macrolet (Q1 ... Qn) form1 ... formk))
+        (let ((in instance-form))
+          (symbol-macrolet (Q1 ... Qn) form1 ... formk))
 
-where Qi is
+        其中 Qi 是
 
-(slot-entryi () (slot-value in 'slot-entryi))
+        (slot-entryi () (slot-value in 'slot-entryi))
 
-if slot-entryi is a symbol and is
+        如果 slot-entryi 是一个符号的话就是
 
-(variable-namei () (slot-value in 'slot-namei))
+        (variable-namei () (slot-value in 'slot-namei))
 
-if slot-entryi is of the form
+        如果 slot-entryi 是一个表达式形式, 那么就是
 
-(variable-namei 'slot-namei))
+        (variable-namei 'slot-namei))
 
 
-Macro DEFCLASS
+### <span id="M-DEFCLASS">宏 DEFCLASS</span>
 
 * 语法(Syntax):
 
@@ -2173,7 +2168,7 @@ documentation, initialize-instance, make-instance, slot-value, Section 4.3 (Clas
 * 注意(Notes): None. 
 
 
-Macro DEFGENERIC
+### <span id="M-DEFGENERIC">宏 DEFGENERIC</span>
 
 * 语法(Syntax):
 
@@ -2283,7 +2278,7 @@ defmethod, documentation, ensure-generic-function, generic-function, Section 7.6
 * 注意(Notes): None. 
 
 
-Macro DEFMETHOD
+### <span id="M-DEFMETHOD">宏 DEFMETHOD</span>
 
 * 语法(Syntax):
 
@@ -2372,33 +2367,33 @@ defgeneric, documentation, Section 7.6.2 (Introduction to Methods), Section 7.6.
 * 注意(Notes): None. 
 
 
-Accessor FIND-CLASS
+### <span id="A-FIND-CLASS">访问器 FIND-CLASS</span>
 
 * 语法(Syntax):
 
-find-class symbol &optional errorp environment => class
+        find-class symbol &optional errorp environment => class
 
-(setf (find-class symbol &optional errorp environment) new-class)
+        (setf (find-class symbol &optional errorp environment) new-class)
 
 * 参数和值(Arguments and Values):
 
-symbol---a symbol.
+        symbol---一个符号.
 
-errorp---a generalized boolean. The default is true.
+        errorp---一个广义 boolean. 默认是 true.
 
-environment -- same as the &environment argument to macro expansion functions and is used to distinguish between compile-time and run-time environments. The &environment argument has dynamic extent; the consequences are undefined if the &environment argument is referred to outside the dynamic extent of the macro expansion function.
+        environment -- 和给宏展开函数的 &environment 参数一样并且被用于区分编译时和运行时环境. 这个 &environment 有着动态范围; 如果这个 &environment 参数在这个宏展开函数的动态范围之外被引用, 那么结果是未定义的.
 
-class---a class object, or nil.
+        class---一个类对象, 或 nil.
 
 * 描述(Description):
 
-Returns the class object named by the symbol in the environment. If there is no such class, nil is returned if errorp is false; otherwise, if errorp is true, an error is signaled.
+        返回在这个 environment 中 symbol 命名的类对象. 如果这里没有这样一个类, 如果 errorp 是 false 就返回 nil; 否则, 如果 errorp 是 true, 就会发出一个错误.
 
-The class associated with a particular symbol can be changed by using setf with find-class; or, if the new class given to setf is nil, the class association is removed (but the class object itself is not affected). The results are undefined if the user attempts to change or remove the class associated with a symbol that is defined as a type specifier in this standard. See Section 4.3.7 (Integrating Types and Classes).
+        这个和特定符号关联的类可以通过用 find-class 来使用 setf 去改变; 或者, 如果给 setf 的新的类是 nil, 这个类关联就会被移除 (但是这个类对象自身不会被影响). 如果用户尝试去改变或移除一个在这个标准中被定义为类型指定符的符号所关联的类, 结果是未定义的. 见章节 4.3.7 (Integrating Types and Classes).
 
-When using setf of find-class, any errorp argument is evaluated for effect, but any values it returns are ignored; the errorp parameter is permitted primarily so that the environment parameter can be used.
+        当使用 find-class 的 setf 时, 任何 errorp 参数会为了效果被求值, 但是它返回的任何值都会被忽略; 这个 errorp 参数首先被允许这样这个  environment 参数可以被使用.<!--TODO 待校验-->
 
-The environment might be used to distinguish between a compile-time and a run-time environment.
+        这个 environment 可能被用于区分编译时环境和运行时环境.
 
 * 示例(Examples): None.
 
@@ -2406,32 +2401,32 @@ The environment might be used to distinguish between a compile-time and a run-ti
 
 * 异常情况(Exceptional Situations):
 
-If there is no such class and errorp is true, find-class signals an error of type error.
+        如果这里没有这样一个类并且 errorp 是 true, find-class 会发出一个 error 类型的错误.
 
 * 也见(See Also):
 
-defmacro, Section 4.3.7 (Integrating Types and Classes)
+        defmacro, Section 4.3.7 (Integrating Types and Classes)
 
 * 注意(Notes): None. 
 
 
-Local Function NEXT-METHOD-P
+### <span id="LF-NEXT-METHOD-P">局部函数 NEXT-METHOD-P</span>
 
 * 语法(Syntax):
 
-next-method-p <no arguments> => generalized-boolean
+        next-method-p <no arguments> => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-generalized-boolean---a generalized boolean.
+        generalized-boolean---一个广义的 boolean.
 
 * 描述(Description):
 
-The locally defined function next-method-p can be used within the body forms (but not the lambda list) defined by a method-defining form to determine whether a next method exists.
+        这样局部定义的函数 next-method-p 可以在一个方法定义表达式形式所定义的主体表达式形式中(而不是 lambda 列表)被用来确定是否存在下一个方法.
 
-The function next-method-p has lexical scope and indefinite extent.
+        函数 next-method-p 有着词法作用域和不确定的范围.
 
-Whether or not next-method-p is fbound in the global environment is implementation-dependent; however, the restrictions on redefinition and shadowing of next-method-p are the same as for symbols in the COMMON-LISP package which are fbound in the global environment. The consequences of attempting to use next-method-p outside of a method-defining form are undefined.
+        这个 next-method-p 在全局环境中是否是 fbound 的是依赖于具体实现的; 然而, 这个 next-method-p 的重定义和遮蔽的限制和 COMMON-LISP 包中在全局环境中被 fbound 的符号一样. 尝试在一个方法定义表达式形式外部使用 next-method-p 的后果是未定义的.
 
 * 示例(Examples): None.
 
@@ -2441,7 +2436,7 @@ Whether or not next-method-p is fbound in the global environment is implementati
 
 * 也见(See Also):
 
-call-next-method, defmethod, call-method
+        call-next-method, defmethod, call-method
 
 * 注意(Notes): None. 
 
