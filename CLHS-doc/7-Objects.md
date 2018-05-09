@@ -2032,120 +2032,106 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (Standard M
 
 * 语法(Syntax):
 
-defclass class-name ({superclass-name}*) ({slot-specifier}*) [[class-option]]
+        defclass class-name ({superclass-name}*) ({slot-specifier}*) [[class-option]]
+        => new-class
 
-=> new-class
-
-slot-specifier::= slot-name | (slot-name [[slot-option]])
-slot-name::= symbol
-slot-option::= {:reader reader-function-name}* | 
-               {:writer writer-function-name}* | 
-               {:accessor reader-function-name}* | 
-               {:allocation allocation-type} | 
-               {:initarg initarg-name}* | 
-               {:initform form} | 
-               {:type type-specifier} | 
-               {:documentation string} 
-function-name::= {symbol | (setf symbol)}
-class-option::= (:default-initargs . initarg-list) | 
-                (:documentation string) | 
-                (:metaclass class-name) 
+        slot-specifier::= slot-name | (slot-name [[slot-option]])
+        slot-name::= symbol
+        slot-option::= {:reader reader-function-name}* | 
+                      {:writer writer-function-name}* | 
+                      {:accessor reader-function-name}* | 
+                      {:allocation allocation-type} | 
+                      {:initarg initarg-name}* | 
+                      {:initform form} | 
+                      {:type type-specifier} | 
+                      {:documentation string} 
+        function-name::= {symbol | (setf symbol)}
+        class-option::= (:default-initargs . initarg-list) | 
+                        (:documentation string) | 
+                        (:metaclass class-name) 
 
 * 参数和值(Arguments and Values):
 
-Class-name---a non-nil symbol.
-
-Superclass-name--a non-nil symbol.
-
-Slot-name--a symbol. The slot-name argument is a symbol that is syntactically valid for use as a variable name.
-
-Reader-function-name---a non-nil symbol. :reader can be supplied more than once for a given slot.
-
-Writer-function-name---a generic function name. :writer can be supplied more than once for a given slot.
-
-Reader-function-name---a non-nil symbol. :accessor can be supplied more than once for a given slot.
-
-Allocation-type---(member :instance :class). :allocation can be supplied once at most for a given slot.
-
-Initarg-name---a symbol. :initarg can be supplied more than once for a given slot.
-
-Form---a form. :init-form can be supplied once at most for a given slot.
-
-Type-specifier---a type specifier. :type can be supplied once at most for a given slot.
-
-Class-option--- refers to the class as a whole or to all class slots.
-
-Initarg-list---a list of alternating initialization argument names and default initial value forms. :default-initargs can be supplied at most once.
-
-Class-name---a non-nil symbol. :metaclass can be supplied once at most.
-
-new-class---the new class object.
+        Class-name---一个非 nil 符号.
+        Superclass-name--一个非 nil 符号.
+        Slot-name--一个符号. 这个 slot-name 参数是一个你符号, 它用作一个变量名是句法上有效的.
+        Reader-function-name---一个非 nil 符号. 可以为一个给定的槽提供超过一个 :reader.
+        Writer-function-name---一个广义函数名字. 可以为一个给定的槽提供超过一个 :writer.
+        Reader-function-name---一个非 nil 符号. 可以为一个给定的槽提供超过一个 :accessor.
+        Allocation-type---(member :instance :class). 可以为一个给定的槽提供最多一个 :allocation.
+        Initarg-name---一个符号. 可以为一个给定的槽提供超过一个 :initarg.
+        Form---一个表达式形式. 可以为一个给定的槽提供最多一个 :init-form.
+        Type-specifier---一个类型指定符. 可以为一个给定的槽提供最多一个 :type.
+        Class-option--- 指的是整个类或类的所有槽.
+        Initarg-list---一个依次为初始化参数名字和默认初始化值表达式形式的列表. 可以提供最多一个 :default-initargs.
+        Class-name---一个非 nil 符号. 可以提供最多一个 :metaclass can be supplied once at most.
+        new-class---新的类对象.
 
 * 描述(Description):
 
-The macro defclass defines a new named class. It returns the new class object as its result.
+        宏 defclass 定义一个新的已命名的类. 它把新的类对象作为它的结果返回.
 
-The syntax of defclass provides options for specifying initialization arguments for slots, for specifying default initialization values for slots, and for requesting that methods on specified generic functions be automatically generated for reading and writing the values of slots. No reader or writer functions are defined by default; their generation must be explicitly requested. However, slots can always be accessed using slot-value.
+        defclass 的语法为给槽指定初始化参数, 为槽指定默认初始化值, 还有为给读取和写入槽的值自动生成指定广义函数的方法提供选项. 默认没有 reader 或 writer 函数被定义; 它们的生成必须是显式地请求. 然而, 槽可以总是通过使用 slot-value 来访问.
 
-Defining a new class also causes a type of the same name to be defined. The predicate (typep object class-name) returns true if the class of the given object is the class named by class-name itself or a subclass of the class class-name. A class object can be used as a type specifier. Thus (typep object class) returns true if the class of the object is class itself or a subclass of class.
+        定义一个新的类同时也导致一个相同名字的类型被定义. 如果给定 object 对象的类是 class-name 命名的类或是 class-name 命名的类的子类, 那么断言 (typep object class-name) 返回 true. 一个类对象可以被用作一个类型指定符. 因此如果这个 object 对象的类是 class 自身或者 class 的子类, 那么 (typep object class) 返回 true.
 
-The class-name argument specifies the proper name of the new class. If a class with the same proper name already exists and that class is an instance of standard-class, and if the defclass form for the definition of the new class specifies a class of class standard-class, the existing class is redefined, and instances of it (and its subclasses) are updated to the new definition at the time that they are next accessed. For details, see Section 4.3.6 (Redefining Classes).
+        这个 class-name 参数指定这个新的类的特定的名字. 如果相同特定名字的一个类已经存在并且那个类是 standard-class 的一个实例, 并且如果这个新的类定义的 defclass 表达式形式指定一个类 standard-class 的类, 那么这个存在的类会被重定义, 并且它的实例 (还有它的子类) 在它们被下一次访问时会被更新到新的定义. 关于详细信息, 见章节  4.3.6 (Redefining Classes).
 
-Each superclass-name argument specifies a direct superclass of the new class. If the superclass list is empty, then the superclass defaults depending on the metaclass, with standard-object being the default for standard-class.
+        每个 superclass-name 参数指定这个新的类的一个直接超类. 如果这个超类列表是空的, 那么这个超类默认值取决于这个元类, 而对于 standard-object 默认值就是 standard-class.
 
-The new class will inherit slots and methods from each of its direct superclasses, from their direct superclasses, and so on. For a discussion of how slots and methods are inherited, see Section 4.3.4 (Inheritance).
+        这个新的类会从它的每个直接超类, 直接超类的直接超类, 等等继承槽和方法. 关于槽和方法如何被继承的讨论, 见章节 4.3.4 (Inheritance).
 
-The following slot options are available:
+        以下槽选项是可用的:
 
-    The :reader slot option specifies that an unqualified method is to be defined on the generic function named reader-function-name to read the value of the given slot.
+            这个 :reader 槽选项指定在名为 reader-function-name 广义函数上定义一个未限定的方法来读取这个给定槽的值.
 
-    The :writer slot option specifies that an unqualified method is to be defined on the generic function named writer-function-name to write the value of the slot.
+            这个 :writer 槽选项指定在名为 writer-function-name 广义函数上定义一个未限定的方法来写入这个槽的值.
 
-    The :accessor slot option specifies that an unqualified method is to be defined on the generic function named reader-function-name to read the value of the given slot and that an unqualified method is to be defined on the generic function named (setf reader-function-name) to be used with setf to modify the value of the slot.
+            这个 :accessor 槽选项指定在名为 reader-function-name 的广义函数上定义一个未限定的方法来读取这个给定槽的值并且在名为 (setf reader-function-name) 的广义函数上定义一个未限定符方法来和 setf 一起使用来修改这个槽的值.
 
-    The :allocation slot option is used to specify where storage is to be allocated for the given slot. Storage for a slot can be located in each instance or in the class object itself. The value of the allocation-type argument can be either the keyword :instance or the keyword :class. If the :allocation slot option is not specified, the effect is the same as specifying :allocation :instance.
+            这个 :allocation 槽选项用于指定这个给定的槽要被存储的位置. 一个槽的存储可以位于每个实例或者这个类对象自身. 这个 allocation-type 参数的值可以是关键字 :instance 或者关键字 :class. 如果 :allocation 槽选项没有被指定, 结果和指定 :allocation :instance 一样.
 
-        If allocation-type is :instance, a local slot of the name slot-name is allocated in each instance of the class.
+                如果 allocation-type 是 :instance, 一个名为 slot-name 的局部槽会被分配在这个类的每个实例.
 
-        If allocation-type is :class, a shared slot of the given name is allocated in the class object created by this defclass form. The value of the slot is shared by all instances of the class. If a class C1 defines such a shared slot, any subclass C2 of C1 will share this single slot unless the defclass form for C2 specifies a slot of the same name or there is a superclass of C2 that precedes C1 in the class precedence list of C2 and that defines a slot of the same name.
+                如果 allocation-type 是 :class, 这个给定名字的共享槽会被分配在这个 defclass 表达式形式创建的类对象中. 这个槽的值被这个类的所有实例所共享. 如果一个类 C1 定义了这样一个共享槽, 任何 C1 的子类 C2 会共享同一个槽除非这个 C2 的 defclass 表达式形式指定了一个相同名字的槽或者这里有一个在 C2 的优先级列表中优先于 C1 并且定义了相同名字的槽的 C2 的超类.
 
-    The :initform slot option is used to provide a default initial value form to be used in the initialization of the slot. This form is evaluated every time it is used to initialize the slot. The lexical environment in which this form is evaluated is the lexical environment in which the defclass form was evaluated. Note that the lexical environment refers both to variables and to functions. For local slots, the dynamic environment is the dynamic environment in which make-instance is called; for shared slots, the dynamic environment is the dynamic environment in which the defclass form was evaluated. See Section 7.1 (Object Creation and Initialization).
+            这个 :initform 槽选项被用于提供在这个槽的初始化中使用的默认初始值表达式形式. 这个表达式形式在每次被用来初始化这个槽时都会被求值. 这个表达式形式被求值所在词法环境是defclass 表达式形式被求值所在的词法环境. 注意这个词法环境既引用了变量也引用了函数. 对于局部槽, 动态环境是 make-instance 被调用所在的动态环境; 对于共享槽, 动态环境是 defclass 表达式形式被求值所在的动态环境. 见章节 7.1 (Object Creation and Initialization).
 
-    No implementation is permitted to extend the syntax of defclass to allow (slot-name form) as an abbreviation for (slot-name :initform form).
+            没有具体实现被允许去扩展 defclass 的语法来允许 (slot-name form) 作为一个 (slot-name :initform form) 的简写.
 
-    The :initarg slot option declares an initialization argument named initarg-name and specifies that this initialization argument initializes the given slot. If the initialization argument has a value in the call to initialize-instance, the value will be stored into the given slot, and the slot's :initform slot option, if any, is not evaluated. If none of the initialization arguments specified for a given slot has a value, the slot is initialized according to the :initform slot option, if specified.
+            这个 :initarg 槽选项声明一个名为 initarg-name 的初始化参数并且指定这个初始化参数初始化给定的槽. 在对 initialize-instance 的调用中如果这个初始化参数有一个值, 那么就会被存储到给定的槽中, 并且, 如果存在这个槽的 :initform 槽选项, 就不会求值. 如果没有为一个给定的槽指定有值的初始化参数, 而指定了 :initform 槽选项的话, 就根据这个槽选项来初始化这个槽.
 
-    The :type slot option specifies that the contents of the slot will always be of the specified data type. It effectively declares the result type of the reader generic function when applied to an object of this class. The consequences of attempting to store in a slot a value that does not satisfy the type of the slot are undefined. The :type slot option is further discussed in Section 7.5.3 (Inheritance of Slots and Slot Options).
+            这个 :type 槽选项指定这个槽的内容总是为指定的数据类型. 它有效地声明应用到这个类的一个对象的 reader 广义函数的结果类型. 尝试去存储一个不符合一个槽的类型的值到这个槽中的后果是未定义的. 这个 :type 槽选项在章节 7.5.3 (Inheritance of Slots and Slot Options) 中被进一步讨论.
 
-    The :documentation slot option provides a documentation string for the slot. :documentation can be supplied once at most for a given slot.
+            这个 :documentation 槽选项为这个槽提供一个文档字符串. :documentation 提供给一个槽最多一次.
 
-Each class option is an option that refers to the class as a whole. The following class options are available:
+        每个类选项是一个把这个类当作整体的选项. 以下类选项是可用的:
 
-    The :default-initargs class option is followed by a list of alternating initialization argument names and default initial value forms. If any of these initialization arguments does not appear in the initialization argument list supplied to make-instance, the corresponding default initial value form is evaluated, and the initialization argument name and the form's value are added to the end of the initialization argument list before the instance is created; see Section 7.1 (Object Creation and Initialization). The default initial value form is evaluated each time it is used. The lexical environment in which this form is evaluated is the lexical environment in which the defclass form was evaluated. The dynamic environment is the dynamic environment in which make-instance was called. If an initialization argument name appears more than once in a :default-initargs class option, an error is signaled.
+            这个 :default-initargs 类选项后面跟着一个依次为初始化参数名和默认初始化值表达式形式的列表. 如果这些初始化参数中的任何一个没有出现在提供给 make-instance 的初始化列表中, 对应的默认初始值表达式形式就会被求值, 并且这个初始化参数名字和这个表达式形式的值会在这个实例被创建前被添加到这个初始化参数列表的末尾; 见章节 7.1 (Object Creation and Initialization). 默认初始值表达式形式在每次被使用时都会求值. 这个表达式形式被求值时所在词法环境是 defclass 表达式形式被求值时所在词法环境. 而动态环境是 make-instance 被调用时所处的动态环境. 如果一个初始化参数名字在一个 :default-initargs 槽选项中出现不止一次, 就会发出一个错误.
 
-    The :documentation class option causes a documentation string to be attached with the class object, and attached with kind type to the class-name. :documentation can be supplied once at most.
+            这个 :documentation 类选项导致一个文档字符串被绑定到这个类对象, 以及 class-name 对应的类型上. :documentation 最多只能被提供一次.
 
-    The :metaclass class option is used to specify that instances of the class being defined are to have a different metaclass than the default provided by the system (the class standard-class).
+            这个 :metaclass 类选项用于指定这个要被定义的类的实例有着和系统提供的默认值(类 standard-class)不同的元类.
 
-Note the following rules of defclass for standard classes:
+        注意以下这些标准类的 defclass 的规则:
 
-    It is not required that the superclasses of a class be defined before the defclass form for that class is evaluated.
+            一个类的超类不需要在这个类的 defclass 表达式形式被求值前被定义.
 
-    All the superclasses of a class must be defined before an instance of the class can be made.
+            一个类的所有超类必须在这个类的一个实例被创建前被定义.
 
-    A class must be defined before it can be used as a parameter specializer in a defmethod form.
+            一个类必须在它被用作 defmethod 表达式形式中的参数指定符之前被定义.
 
-The object system can be extended to cover situations where these rules are not obeyed.
+        对象系统可以扩展, 以覆盖不遵守这些规则的情况.
 
-Some slot options are inherited by a class from its superclasses, and some can be shadowed or altered by providing a local slot description. No class options except :default-initargs are inherited. For a detailed description of how slots and slot options are inherited, see Section 7.5.3 (Inheritance of Slots and Slot Options).
+        某些槽选项被一个类从它的超类中继承下来, 而某些可以通过提供一个局部槽描述来遮蔽或修改. 除了 :default-initargs 以外没有其他类选项被继承. 关于槽和槽选项如何被继承的详情, 见章节 7.5.3 (Inheritance of Slots and Slot Options).
 
-The options to defclass can be extended. It is required that all implementations signal an error if they observe a class option or a slot option that is not implemented locally.
+        给 defclass 的选项可以被扩展. 如果一个具体实现发现一个类选项或一个槽选项没有被本地实现, 那么这个具体实现就需要去发出一个错误.
 
-It is valid to specify more than one reader, writer, accessor, or initialization argument for a slot. No other slot option can appear more than once in a single slot description, or an error is signaled.
+        为一个槽指定超过一个的 reader, writer, accessor, 或初始化参数是有效的. 没有其他槽选项可以在单个槽描述中出现超过一次, 否则就发出一个错误.
 
-If no reader, writer, or accessor is specified for a slot, the slot can only be accessed by the function slot-value.
+        如果没有为一个槽指定 reader, writer, 或 accessor, 这个槽只能通过函数 slot-value 来访问.
 
-If a defclass form appears as a top level form, the compiler must make the class name be recognized as a valid type name in subsequent declarations (as for deftype) and be recognized as a valid class name for defmethod parameter specializers and for use as the :metaclass option of a subsequent defclass. The compiler must make the class definition available to be returned by find-class when its environment argument is a value received as the environment parameter of a macro.
+        如果一个 defclass 表达式形式作为一个顶层表达式形式出现, 编译器必须使这个类名在后面的声明中(就像 deftype)被识别为一个有效的类型名字, 在 defmethod 的参数指定符中被识别为一个有效的类名并且可以用所后面的 defclass 的 :metaclass 选项. 编译器必须使类定义能够被 find-class 返回, 当它的 environment 参数作为一个宏的环境参数接收到的值时.<!--TODO 待校验-->
 
 * 示例(Examples): None.
 
@@ -2153,17 +2139,17 @@ If a defclass form appears as a top level form, the compiler must make the class
 
 * 异常情况(Exceptional Situations):
 
-If there are any duplicate slot names, an error of type program-error is signaled.
+        如果这里有任何槽名字重复, 就会发出一个 program-error 类型的错误.
 
-If an initialization argument name appears more than once in :default-initargs class option, an error of type program-error is signaled.
+        如果一个初始化参数名字不止一次出现在 :default-initargs 类选项中, 就会发出一个 program-error 类型的错误.
 
-If any of the following slot options appears more than once in a single slot description, an error of type program-error is signaled: :allocation, :initform, :type, :documentation.
+        如果在单个槽描述中下面的任何一个槽选项出现超过一次, 就会发出一个 program-error 类型的错误: :allocation, :initform, :type, :documentation.
 
-It is required that all implementations signal an error of type program-error if they observe a class option or a slot option that is not implemented locally.
+        如果具体实现发现一个类选项或一个槽选项没有被本地实现<!--TODO implemented locally-->, 所有这样的实现都需要去发出一个 program-error 类型的错误.
 
 * 也见(See Also):
 
-documentation, initialize-instance, make-instance, slot-value, Section 4.3 (Classes), Section 4.3.4 (Inheritance), Section 4.3.6 (Redefining Classes), Section 4.3.5 (Determining the Class Precedence List), Section 7.1 (Object Creation and Initialization)
+        documentation, initialize-instance, make-instance, slot-value, Section 4.3 (Classes), Section 4.3.4 (Inheritance), Section 4.3.6 (Redefining Classes), Section 4.3.5 (Determining the Class Precedence List), Section 7.1 (Object Creation and Initialization)
 
 * 注意(Notes): None. 
 
@@ -2257,15 +2243,15 @@ defgeneric is not required to perform any compile-time side effects. In particul
 
 * 异常情况(Exceptional Situations):
 
-If function-name names an ordinary function, a macro, or a special operator, an error of type program-error is signaled.
+If function-name names an ordinary function, a macro, or a special operator, 就会发出一个 program-error 类型的错误.
 
-Each required argument, as specified in the gf-lambda-list argument, must be included exactly once as a parameter-name, or an error of type program-error is signaled.
+Each required argument, as specified in the gf-lambda-list argument, must be included exactly once as a parameter-name, or 就会发出一个 program-error 类型的错误.
 
 The lambda list of each method specified by a method-description must be congruent with the lambda list specified by the gf-lambda-list option, or an error of type error is signaled.
 
 If a defgeneric form is evaluated and some methods for that generic function have lambda lists that are not congruent with that given in the defgeneric form, an error of type error is signaled.
 
-A given option may occur only once, or an error of type program-error is signaled.
+A given option may occur only once, or 就会发出一个 program-error 类型的错误.
 
 If function-name specifies an existing generic function that has a different value for the :generic-function-class argument and the new generic function class is compatible with the old, change-class is called to change the class of the generic function; otherwise an error of type error is signaled.
 
