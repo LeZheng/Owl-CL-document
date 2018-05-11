@@ -2257,87 +2257,79 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (Standard M
 
 * 语法(Syntax):
 
-defmethod function-name {method-qualifier}* specialized-lambda-list [[declaration* | documentation]] form*
+        defmethod function-name {method-qualifier}* specialized-lambda-list [[declaration* | documentation]] form*
+        => new-method
 
-=> new-method
+        function-name::= {symbol | (setf symbol)}
 
-function-name::= {symbol | (setf symbol)}
+        method-qualifier::= non-list
 
-method-qualifier::= non-list
-
-specialized-lambda-list::= ({var | (var parameter-specializer-name)}* 
-                            [&optional {var | (var [initform [supplied-p-parameter] ])}*] 
-                            [&rest var] 
-                            [&key{var | ({var | (keywordvar)} [initform [supplied-p-parameter] ])}*
-                                 [&allow-other-keys] ] 
-                            [&aux {var | (var [initform] )}*] ) 
-parameter-specializer-name::= symbol | (eql eql-specializer-form)
+        specialized-lambda-list::= ({var | (var parameter-specializer-name)}* 
+                                    [&optional {var | (var [initform [supplied-p-parameter] ])}*] 
+                                    [&rest var] 
+                                    [&key{var | ({var | (keywordvar)} [initform [supplied-p-parameter] ])}*
+                                        [&allow-other-keys] ] 
+                                    [&aux {var | (var [initform] )}*] ) 
+        parameter-specializer-name::= symbol | (eql eql-specializer-form)
 
 * 参数和值(Arguments and Values):
 
-declaration---a declare expression; 不求值.
-
-documentation---a string; 不求值.
-
-var---a variable name.
-
-eql-specializer-form---a form.
-
-Form---a form.
-
-Initform---a form.
-
-Supplied-p-parameter---variable name.
-
-new-method---the new method object.
+        declaration---一个 declare 表达式; 不求值.
+        documentation---一个字符串; 不求值.
+        var---一个变量名.
+        eql-specializer-form---一个表达式形式.
+        Form---一个表达式形式.
+        Initform---一个表达式形式.
+        Supplied-p-parameter---variable name.
+        new-method---the new method object.
 
 * 描述(Description):
 
-The macro defmethod defines a method on a generic function.
+        宏 defmethod 在一个广义函数上定义方法.
 
-If (fboundp function-name) is nil, a generic function is created with default values for the argument precedence order (each argument is more specific than the arguments to its right in the argument list), for the generic function class (the class standard-generic-function), for the method class (the class standard-method), and for the method combination type (the standard method combination type). The lambda list of the generic function is congruent with the lambda list of the method being defined; if the defmethod form mentions keyword arguments, the lambda list of the generic function will mention ..... key (but no keyword arguments). If function-name names an ordinary function, a macro, or a special operator, an error is signaled.
+        如果 (fboundp function-name) 是 nil, 就会创建一个广义函数, 其中采用默认的参数优先级顺序 (每个参数都比在它的参数列表中它右边的参数更具体), 广义函数的类 (类 standard-generic-function), 方法的类 (类 standard-method), 方法组合类型 (标准方法组合类型). 这个广义函数的 lambda 列表和这个被定义的方法一致; 如果这个 defmethod 表达式形式提及关键字参数, 广义函数的 lambda 列表也会提及 ..... key (但是没有关键字参数). 如果 function-name 命名一个普通函数, 一个宏, 或者一个特殊操作符, 就会发出一个错误.
 
-If a generic function is currently named by function-name, the lambda list of the method must be congruent with the lambda list of the generic function. If this condition does not hold, an error is signaled. For a definition of congruence in this context, see Section 7.6.4 (Congruent Lambda-lists for all Methods of a Generic Function).
+        如果 function-name 当前命名一个广义函数, 这个方法的 lambda 列表必须和这个广义函数的一致. 如果这个状况没有被处理, 就会发出一个错误. 对于在这个上下文中的一致性定义, 见章节 7.6.4 (Congruent Lambda-lists for all Methods of a Generic Function).
 
-Each method-qualifier argument is an object that is used by method combination to identify the given method. The method combination type might further restrict what a method qualifier can be. The standard method combination type allows for unqualified methods and methods whose sole qualifier is one of the keywords :before, :after, or :around.
+        每个 method-qualifier 参数是一个被方法组合用于识别这个给定方法的对象. 方法组合类型可能会进一步限制方法限定符的作用. 标准方法组合类型允许非限定方法和单个限定符是关键字 :before, :after, 或 :around 之一的方法.
 
-The specialized-lambda-list argument is like an ordinary lambda list except that the names of required parameters can be replaced by specialized parameters. A specialized parameter is a list of the form (var parameter-specializer-name). Only required parameters can be specialized. If parameter-specializer-name is a symbol it names a class; if it is a list, it is of the form (eql eql-specializer-form). The parameter specializer name (eql eql-specializer-form) indicates that the corresponding argument must be eql to the object that is the value of eql-specializer-form for the method to be applicable. The eql-specializer-form is evaluated at the time that the expansion of the defmethod macro is evaluated. If no parameter specializer name is specified for a given required parameter, the parameter specializer defaults to the class t. For further discussion, see Section 7.6.2 (Introduction to Methods).
+        这个 specialized-lambda-list 参数和一个普通 lambda 列表类似, 除了必要参数的名字被特化参数替代. 一个特化参数是表达式形式 (var parameter-specializer-name) 的列表. 只有必要参数可以被特化. 如果 parameter-specializer-name 是一个符号, 它就命名一个类; 如果它是一个列表, 它就是表达式形式 (eql eql-specializer-form). 这个参数特化符名字 (eql eql-specializer-form) 表示对应的参数必须和一个对象 eql, 这个对象是对于这个方法可应用的 eql-specializer-form 的值. 这个 eql-specializer-form 在这个 defmethod 宏展开被求值的时候被求值. 如果一个给定的必要参数没有指定参数特化符的名字, 那么这个参数特化符默认是类 t. 关于进一步讨论, 见章节 7.6.2 (Introduction to Methods).
 
-The form arguments specify the method body. The body of the method is enclosed in an implicit block. If function-name is a symbol, this block bears the same name as the generic function. If function-name is a list of the form (setf symbol), the name of the block is symbol.
+        这个 form 参数指定这个方法的主体. 这个方法的主体被闭合在一个隐式的 block 中. 如果 function-name 是一个符号, 这个 block 具有和这个广义函数相同的名字. 如果 function-name 是表达式形式 (setf symbol), 那么这个 block 的名字是 symbol.
 
-The class of the method object that is created is that given by the method class option of the generic function on which the method is defined.
+        这个被创建的方法的类是这个方法定义所在的广义函数的方法类选项给定的.
 
-If the generic function already has a method that agrees with the method being defined on parameter specializers and qualifiers, defmethod replaces the existing method with the one now being defined. For a definition of agreement in this context. see Section 7.6.3 (Agreement on Parameter Specializers and Qualifiers).
+        如果这个广义函数已经有一个和要被定义的方法在参数特化符和限定符上一样的方法, defmethod 用现在要被定义的方法来替换已存在的那个. 关于这个上下文的一致性定义. 见章节 7.6.3 (Agreement on Parameter Specializers and Qualifiers).
 
-The parameter specializers are derived from the parameter specializer names as described in Section 7.6.2 (Introduction to Methods).
+        这些参数特化符源自于章节 7.6.2 (Introduction to Methods) 中描述的参数特化符的名字.
 
-The expansion of the defmethod macro ``refers to'' each specialized parameter (see the description of ignore within the description of declare). This includes parameters that have an explicit parameter specializer name of t. This means that a compiler warning does not occur if the body of the method does not refer to a specialized parameter, while a warning might occur if the body of the method does not refer to an unspecialized parameter. For this reason, a parameter that specializes on t is not quite synonymous with an unspecialized parameter in this context.
+        The expansion of the defmethod macro ``refers to'' each specialized parameter (见 declare 描述中的 ignore 的描述). 这个包括拥有显式参数特化符名字 t 的参数. 这个就意味着, 如果这个方法的主体没有引用一个特化的参数, 编译器不会发出警告, 而在这个方法的主体没有引用一个未特化参数时可能发出警告. 出于这个原因, 在这个上下文中一个在 t 上特化的参数并不完全等同于一个未特化的参数.
 
-Declarations at the head of the method body that apply to the method's lambda variables are treated as bound declarations whose scope is the same as the corresponding bindings.
+        在这个方法体头部的应用于这个方法的 lambda 变量的声明被当作是绑定声明, 它的作用域和对应绑定相同.
 
-Declarations at the head of the method body that apply to the functional bindings of call-next-method or next-method-p apply to references to those functions within the method body forms. Any outer bindings of the function names call-next-method and next-method-p, and declarations associated with such bindings are shadowed[2] within the method body forms.
+        在这个方法主体的头部应用于 call-next-method or next-method-p 的函数绑定的声明可应用于这个方法的主体表达式形式中对这个方法的引用. 任何更外部的名为 call-next-method 和 next-method-p 的函数的绑定, 以及和这样的绑定相关联的声明在这个方法主体表达式形式中都会被遮蔽.
 
-The scope of free declarations at the head of the method body is the entire method body, which includes any implicit local function definitions but excludes initialization forms for the lambda variables.
+        在这个方法主体的头部的自由声明的作用域是整个方法主体, 它包括任何隐式的局部方法定义但是不包括这些 lambda 变量的初始化表达式形式.
 
-defmethod is not required to perform any compile-time side effects. In particular, the methods are not installed for invocation during compilation. An implementation may choose to store information about the generic function for the purposes of compile-time error-checking (such as checking the number of arguments on calls, or noting that a definition for the function name has been seen).
+        defmethod 不需要执行任何编译时副作用. 特别是, 这个方法不会为了在编译期间调用而被设置. 一个具体实现可以选择为了编译时的错误检查去存储关于这个广义函数的信息 (比如在调用上检查参数数量, 或者记录这个函数名的定义已经出现过).
 
-Documentation is attached as a documentation string to the method object.
+        Documentation 作为文档字符串关联给这个方法对象.
 
 * 示例(Examples): None.
 
 * 受此影响(Affected By):
 
-The definition of the referenced generic function.
+        引用的广义函数的定义.
 
 * 异常情况(Exceptional Situations):
 
-If function-name names an ordinary function, a macro, or a special operator, an error of type error is signaled.
+        如果 function-name 命名一个普通函数, 一个宏, 或者一个特殊操作符, 那么就会发出一个 error 类型的错误.
 
-If a generic function is currently named by function-name, the lambda list of the method must be congruent with the lambda list of the generic function, or an error of type error is signaled.
+        如果 function-name 当前命名一个广义函数, 这个方法的 lambda 列表必须和这个广义函数的一致, 否则就会发出一个 error 类型的错误.
 
 * 也见(See Also):
 
-defgeneric, documentation, Section 7.6.2 (Introduction to Methods), Section 7.6.4 (Congruent Lambda-lists for all Methods of a Generic Function), Section 7.6.3 (Agreement on Parameter Specializers and Qualifiers), Section 3.4.11 (Syntactic Interaction of Documentation Strings and Declarations)
+        defgeneric, documentation, Section 7.6.2 (Introduction to Methods), Section 7.6.4 (Congruent Lambda-lists for all Methods of a Generic Function), Section 7.6.3 (Agreement on Parameter Specializers and Qualifiers), Section 3.4.11 (Syntactic Interaction of Documentation Strings and Declarations)
 
 * 注意(Notes): None. 
 
