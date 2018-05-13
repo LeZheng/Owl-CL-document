@@ -2408,41 +2408,38 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (Standard M
 * 注意(Notes): None. 
 
 
-Local Macro CALL-METHOD, MAKE-METHOD
+### <span id="LM-CALL-METHOD-MAKE-METHOD">局部宏 CALL-METHOD, MAKE-METHOD</span>
 
 * 语法(Syntax):
 
-call-method method &optional next-method-list => result*
+        call-method method &optional next-method-list => result*
 
-make-method form => method-object
+        make-method form => method-object
 
 * 参数和值(Arguments and Values):
 
-method---a method object, or a list (see below); 不求值.
-
-method-object---a method object.
-
-next-method-list---a list of method objects; 不求值.
-
-results---the values returned by the method invocation.
+        method---一个方法对象, 或者一个列表 (见下方); 不求值.
+        method-object---一个方法对象.
+        next-method-list---一个方法对象的列表; 不求值.
+        results---这个方法调用返回的值.
 
 * 描述(Description):
 
-The macro call-method is used in method combination. It hides the implementation-dependent details of how methods are called. The macro call-method has lexical scope and can only be used within an effective method form.
+        宏 call-method 被用于方法组合. 它隐藏了依赖于具体实现的方法如何被调用的细节. 宏 call-method 有词法作用域并且只能在有效的方法表达式形式中被使用.
 
-Whether or not call-method is fbound in the global environment is implementation-dependent; however, the restrictions on redefinition and shadowing of call-method are the same as for symbols in the COMMON-LISP package which are fbound in the global environment. The consequences of attempting to use call-method outside of an effective method form are undefined.
+        call-method 在全局环境中是否为 fbound 是依赖于具体实现的; 然而, 在 call-method 的重定义和遮蔽上的限制和那些 COMMON-LISP 包中在全局环境里是 fbound 的符号一样. 尝试在一个有效方法表达式形式外部使用 call-method 的后果是.
 
-The macro call-method invokes the specified method, supplying it with arguments and with definitions for call-next-method and for next-method-p. If the invocation of call-method is lexically inside of a make-method, the arguments are those that were supplied to that method. Otherwise the arguments are those that were supplied to the generic function. The definitions of call-next-method and next-method-p rely on the specified next-method-list.
+        宏 call-method 调用指定的方法, 把参数还有 call-next-method 和 next-method-p 的定义提供给它. 如果这个 call-method 的调用在词法上 make-method 的内部, 参数是提供给那个方法的那些. 否则参数是提供给那个广义函数的那些. 这个 call-next-method 和 next-method-p 的定义依赖指定的 next-method-list.
 
-If method is a list, the first element of the list must be the symbol make-method and the second element must be a form. Such a list specifies a method object whose method function has a body that is the given form.
+        如果 method 是一个列表, 这个列表的第一个元素必须是 make-method 并且第二个元素必须是一个表达式形式. 这样一个列表指定了一个方法函数的主体为给定表达式形式的方法对象.
 
-Next-method-list can contain method objects or lists, the first element of which must be the symbol make-method and the second element of which must be a form.
+        Next-method-list 可以包含多个方法对象或列表, 这个列表的第一个元素必须是 make-method 并且第二个元素必须是一个表达式形式.
 
-Those are the only two places where make-method can be used. The form used with make-method is evaluated in the null lexical environment augmented with a local macro definition for call-method and with bindings named by symbols not accessible from the COMMON-LISP-USER package.
+        那些是可以使用 make-method 的仅有的两处. 和 make-method 一起使用的那个 form 在空词法环境中被求值, 可以通过一个 call-method 的局部宏定义和不能从 COMMON-LISP-USER 包中访问的符号命名的绑定来扩展.
 
-The call-next-method function available to method will call the first method in next-method-list. The call-next-method function available in that method, in turn, will call the second method in next-method-list, and so on, until the list of next methods is exhausted.
+        对 method 可用的 call-next-method 会调用 next-method-list 中的第一个方法. 在那个方法中可用的 call-next-method 函数依次会调用 next-method-list 中的第二个方法, 以此类推, 直到后续方法的列表耗尽.
 
-If next-method-list is not supplied, the call-next-method function available to method signals an error of type control-error and the next-method-p function available to method returns nil.
+        如果没有提供 next-method-list, 对 method 可用的 call-next-method 函数发出一个 control-error 类型的错误并且对 method 可用的这个 next-method-p 函数返回 nil.
 
 * 示例(Examples):
 
@@ -2452,7 +2449,7 @@ If next-method-list is not supplied, the call-next-method function available to 
 
 * 也见(See Also):
 
-call-next-method, define-method-combination, next-method-p
+        call-next-method, define-method-combination, next-method-p
 
 * 注意(Notes): None. 
 
@@ -2962,25 +2959,25 @@ shared-initialize, make-instance, slot-boundp, slot-makunbound, Section 7.1 (Obj
 * 注意(Notes): None. 
 
 
-Standard Generic Function CLASS-NAME
+### <span id="SGF-CLASS-NAME">标准广义函数 CLASS-NAME</span>
 
 * 语法(Syntax):
 
-class-name class => name
+        class-name class => name
 
 * 方法签名(Method Signatures):
 
-class-name (class class)
+        class-name (class class)
 
 * 参数和值(Arguments and Values):
 
-class---a class object.
+        class---一个类对象.
 
-name---a symbol.
+        name---一个符号.
 
 * 描述(Description):
 
-Returns the name of the given class.
+        返回给定类的名字.
 
 * 示例(Examples): None.
 
@@ -2990,34 +2987,33 @@ Returns the name of the given class.
 
 * 也见(See Also):
 
-find-class, Section 4.3 (Classes)
+        find-class, Section 4.3 (Classes)
 
 * 注意(Notes):
 
-If S is a symbol such that S =(class-name C) and C =(find-class S), then S is the proper name of C. For further discussion, see Section 4.3 (Classes).
+        如果 S 是一个符号,其中 S =(class-name C) 并且 C =(find-class S), 那么 S 是 C 的一个特有的名字. 关于进一步讨论, 见章节 4.3 (Classes).
 
-The name of an anonymous class is nil. 
+        一个匿名类的名字是 nil. 
 
 
-Standard Generic Function (SETF CLASS-NAME)
+### <span id="SGF-SETF-CLASS-NAME">标准广义函数 (SETF CLASS-NAME)</span>
 
 * 语法(Syntax):
 
-(setf class-name) new-value class => new-value
+        (setf class-name) new-value class => new-value
 
 * 方法签名(Method Signatures):
 
-(setf class-name) new-value (class class)
+        (setf class-name) new-value (class class)
 
 * 参数和值(Arguments and Values):
 
-new-value---a symbol.
-
-class---a class.
+        new-value---一个符号.
+        class---一个类.
 
 * 描述(Description):
 
-The generic function (setf class-name) sets the name of a class object.
+        广义函数 (setf class-name) 设置一个类对象的名字.
 
 * 示例(Examples): None.
 
@@ -3027,7 +3023,7 @@ The generic function (setf class-name) sets the name of a class object.
 
 * 也见(See Also):
 
-find-class, proper name, Section 4.3 (Classes)
+        find-class, proper name, Section 4.3 (Classes)
 
 * 注意(Notes): None. 
 
