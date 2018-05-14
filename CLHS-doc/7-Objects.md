@@ -667,7 +667,7 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (Standard M
 > *  [访问器 FIND-CLASS](#A-FIND-CLASS)
 > *  [局部函数 NEXT-METHOD-P](#LF-NEXT-METHOD-P)
 > *  [局部宏 CALL-METHOD, MAKE-METHOD](#LM-CALL-METHOD-MAKE-METHOD)
-> *  [局部函数 CALL-NEXT-METHOD](#LF-CALL-NEXT-METHODs)
+> *  [局部函数 CALL-NEXT-METHOD](#LF-CALL-NEXT-METHOD)
 > *  [标准广义函数 COMPUTE-APPLICABLE-METHODS](#SGF-COMPUTE-APPLICABLE-METHODS)
 > *  [宏 DEFINE-METHOD-COMBINATION](#M-DEFINE-METHOD-COMBINATION)
 > *  [标准广义函数 FIND-METHOD](#SGF-FIND-METHOD)
@@ -2454,86 +2454,83 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (Standard M
 * 注意(Notes): None. 
 
 
-Local Function CALL-NEXT-METHOD
+### <span id="LF-CALL-NEXT-METHOD">局部函数 CALL-NEXT-METHOD</span>
 
 * 语法(Syntax):
 
-call-next-method &rest args => result*
+        call-next-method &rest args => result*
 
 * 参数和值(Arguments and Values):
 
-arg---an object.
-
-results---the values returned by the method it calls.
+        arg---一个对象.
+        results---它调用的方法的返回值.
 
 * 描述(Description):
 
-The function call-next-method can be used within the body forms (but not the lambda list) of a method defined by a method-defining form to call the next method.
+        函数 call-next-method 可以在一个通过方法定义表达式形式定义的方法的主体表达式形式中(但不包括 lambda 列表)被用来调用下一个方法.
 
-If there is no next method, the generic function no-next-method is called.
+        如果没有下一个方法, 那么广义函数 no-next-method 会被调用.
 
-The type of method combination used determines which methods can invoke call-next-method. The standard method combination type allows call-next-method to be used within primary methods and around methods. For generic functions using a type of method combination defined by the short form of define-method-combination, call-next-method can be used in around methods only.
+        使用的方法组合的类型决定哪些方法可以调用 call-next-method. 标准方法组合类型允许 call-next-method 在主方法和 around 方法中被使用. 对于使用通过 define-method-combination 的短表达式形式定义的方法组合类型的方法, call-next-method 只能被用于 around 方法.
 
-When call-next-method is called with no arguments, it passes the current method's original arguments to the next method. Neither argument defaulting, nor using setq, nor rebinding variables with the same names as parameters of the method affects the values call-next-method passes to the method it calls.
+        当 call-next-method 以无参数的情况被调用, 它传递当前方法的原始参数给下一个方法. 不管是参数违约, 还是使用 setq, 或者使用与方法参数相同的名称重新绑定变量, 这些变量都不会影响 call-next-method 传递给它所调用的方法的值.
 
-When call-next-method is called with arguments, the next method is called with those arguments.
+        当用参数调用 call-next-method 时, 下一个方法会用这些参数来调用.
 
-If call-next-method is called with arguments but omits optional arguments, the next method called defaults those arguments.
+        如果用参数调用了 call-next-method 但是省略了可选参数, 那么下一个方法被调用省略那些参数.<!--TODO 待校验-->
 
-The function call-next-method returns any values that are returned by the next method.
+        函数 call-next-method 返回任何下一个方法返回的值.
 
-The function call-next-method has lexical scope and indefinite extent and can only be used within the body of a method defined by a method-defining form.
+        函数 call-next-method 有着词法作用域和不确定的范围并且只能在一个通过方法定义表达式形式定义的方法的主体中被使用.
 
-Whether or not call-next-method is fbound in the global environment is implementation-dependent; however, the restrictions on redefinition and shadowing of call-next-method are the same as for symbols in the COMMON-LISP package which are fbound in the global environment. The consequences of attempting to use call-next-method outside of a method-defining form are undefined.
+        call-next-method 在全局环境中是否为 fbound 是依赖于具体实现的; 然而, 在 call-next-method 的重定义和遮蔽上的约束和 COMMON-LISP 包里在全局环境中被 fbound 的方法一样. 尝试在一个方法定义表达式形式的外部去使用 call-next-method 的后果是不确定的.
 
 * 示例(Examples): None.
 
 * 受此影响(Affected By):
 
-defmethod, call-method, define-method-combination.
+        defmethod, call-method, define-method-combination.
 
 * 异常情况(Exceptional Situations):
 
-When providing arguments to call-next-method, the following rule must be satisfied or an error of type error should be signaled: the ordered set of applicable methods for a changed set of arguments for call-next-method must be the same as the ordered set of applicable methods for the original arguments to the generic function. Optimizations of the error checking are possible, but they must not change the semantics of call-next-method.
+        当给 call-next-method 提供参数时, 下面的规则必须被满足, 否则就会发出一个 error 类型的错误: 对于 call-next-method 的一个被改变的参数集的可应用方法有序集必须和这个广义函数的原始参数的可应用方法有序集相同. 错误检查的优化是可以的，但是它们不能改变 call-next-method 的语义.
 
 * 也见(See Also):
 
-define-method-combination, defmethod, next-method-p, no-next-method, call-method, Section 7.6.6 (Method Selection and Combination), Section 7.6.6.2 (Standard Method Combination), Section 7.6.6.4 (Built-in Method Combination Types)
+        define-method-combination, defmethod, next-method-p, no-next-method, call-method, Section 7.6.6 (Method Selection and Combination), Section 7.6.6.2 (Standard Method Combination), Section 7.6.6.4 (Built-in Method Combination Types)
 
 * 注意(Notes): None. 
 
 
-Standard Generic Function COMPUTE-APPLICABLE-METHODS
+### <span id="SGF-COMPUTE-APPLICABLE-METHODS">标准广义函数 COMPUTE-APPLICABLE-METHODS</span>
 
 * 语法(Syntax):
 
-compute-applicable-methods generic-function function-arguments => methods
+        compute-applicable-methods generic-function function-arguments => methods
 
 * 方法签名(Method Signatures):
 
-compute-applicable-methods (generic-function standard-generic-function)
+        compute-applicable-methods (generic-function standard-generic-function)
 
 * 参数和值(Arguments and Values):
 
-generic-function---a generic function.
-
-function-arguments---a list of arguments for the generic-function.
-
-methods---a list of method objects.
+        generic-function---一个广义函数.
+        function-arguments---这个 generic-function 的参数列表.
+        methods---一个方法对象列表.
 
 * 描述(Description):
 
-Given a generic-function and a set of function-arguments, the function compute-applicable-methods returns the set of methods that are applicable for those arguments sorted according to precedence order. See Section 7.6.6 (Method Selection and Combination).
+        给定一个 generic-function 和一个 function-arguments 集合, 函数 compute-applicable-methods 返回可应用于这些根据优先级顺序排序后的参数的方法集合. 见章节 7.6.6 (Method Selection and Combination).
 
 * 受此影响(Affected By):
 
-defmethod
+        defmethod
 
 * 异常情况(Exceptional Situations): None.
 
 * 也见(See Also):
 
-Section 7.6.6 (Method Selection and Combination)
+        Section 7.6.6 (Method Selection and Combination)
 
 * 注意(Notes): None. 
 
@@ -2823,87 +2820,83 @@ call-method, call-next-method, documentation, method-qualifiers, method-combinat
 The :method-combination option of defgeneric is used to specify that a generic function should use a particular method combination type. The first argument to the :method-combination option is the name of a method combination type and the remaining arguments are options for that type. 
 
 
-Standard Generic Function FIND-METHOD
+### <span id="">标准广义函数 FIND-METHOD</span>
 
 * 语法(Syntax):
 
-find-method generic-function method-qualifiers specializers &optional errorp
-
-=> method
+        find-method generic-function method-qualifiers specializers &optional errorp
+        => method
 
 * 方法签名(Method Signatures):
 
-find-method (generic-function standard-generic-function) method-qualifiers specializers &optional errorp
+        find-method (generic-function standard-generic-function) method-qualifiers specializers &optional errorp
 
 * 参数和值(Arguments and Values):
 
-generic-function---a generic function.
-
-method-qualifiers---a list.
-
-specializers---a list.
-
-errorp---a generalized boolean. The default is true.
-
-method---a method object, or nil.
+        generic-function---一个广义函数.
+        method-qualifiers---一个列表.
+        specializers---一个里诶包.
+        errorp---一个广义 boolean. 默认值是 true.
+        method---一个方法对象, 或 nil.
 
 * 描述(Description):
 
-The generic function find-method takes a generic function and returns the method object that agrees on qualifiers and parameter specializers with the method-qualifiers and specializers arguments of find-method. Method-qualifiers contains the method qualifiers for the method. The order of the method qualifiers is significant. For a definition of agreement in this context, see Section 7.6.3 (Agreement on Parameter Specializers and Qualifiers).
+        广义函数 find-method 接受一个广义函数并且返回限定符和参数特化符与 find-method 参数中的 method-qualifiers 和 specializers 一致的方法对象. Method-qualifiers 包含了这个方法的方法限定符. 方法限定符的顺序是重要的. 对于在这个上下文中一致性的定义, 见章节 7.6.3 (Agreement on Parameter Specializers and Qualifiers).
 
-The specializers argument contains the parameter specializers for the method. It must correspond in length to the number of required arguments of the generic function, or an error is signaled. This means that to obtain the default method on a given generic-function, a list whose elements are the class t must be given.
+        这个 specializers 参数包含了这个方法的参数特化符. 它必须和这个广义函数的必要参数的数量对应, 否则就会发出一个错误. 这个意味着为了获取一个给定 generic-function 上的默认方法, 需要给定一个元素为类 t 的列表.
 
-If there is no such method and errorp is true, find-method signals an error. If there is no such method and errorp is false, find-method returns nil.
+        如果这里没有这样一个方法并且 errorp 是 true, find-method 会发出一个错误. 如果这里没有这样一个方法而 errorp 是 false, find-method 返回 nil.
 
 * 示例(Examples):
 
- (defmethod some-operation ((a integer) (b float)) (list a b))
-=>  #<STANDARD-METHOD SOME-OPERATION (INTEGER FLOAT) 26723357>
- (find-method #'some-operation '() (mapcar #'find-class '(integer float)))
-=>  #<STANDARD-METHOD SOME-OPERATION (INTEGER FLOAT) 26723357>
- (find-method #'some-operation '() (mapcar #'find-class '(integer integer)))
->>  Error: No matching method
- (find-method #'some-operation '() (mapcar #'find-class '(integer integer)) nil)
-=>  NIL
+    ```LISP
+    (defmethod some-operation ((a integer) (b float)) (list a b))
+    =>  #<STANDARD-METHOD SOME-OPERATION (INTEGER FLOAT) 26723357>
+    (find-method #'some-operation '() (mapcar #'find-class '(integer float)))
+    =>  #<STANDARD-METHOD SOME-OPERATION (INTEGER FLOAT) 26723357>
+    (find-method #'some-operation '() (mapcar #'find-class '(integer integer)))
+    >>  Error: No matching method
+    (find-method #'some-operation '() (mapcar #'find-class '(integer integer)) nil)
+    =>  NIL
+    ```
 
 * 受此影响(Affected By):
 
-add-method, defclass, defgeneric, defmethod
+        add-method, defclass, defgeneric, defmethod
 
 * 异常情况(Exceptional Situations):
 
-If the specializers argument does not correspond in length to the number of required arguments of the generic-function, an an error of type error is signaled.
+        如果 specializers 参数不对应 generic-function 必要参数的数量, 就会发出一个 error 类型的错误.
 
-If there is no such method and errorp is true, find-method signals an error of type error.
+        如果这里没有这样一个方法并且 errorp 是 true, find-method 发出一个 error 类型的错误.
 
 * 也见(See Also):
 
-Section 7.6.3 (Agreement on Parameter Specializers and Qualifiers)
+        Section 7.6.3 (Agreement on Parameter Specializers and Qualifiers)
 
 * 注意(Notes): None. 
 
 
-Standard Generic Function ADD-METHOD
+### <span id="SGF-ADD-METHOD">标准广义函数 ADD-METHOD</span>
 
 * 语法(Syntax):
 
-add-method generic-function method => generic-function
+        add-method generic-function method => generic-function
 
 * 方法签名(Method Signatures):
 
-add-method (generic-function standard-generic-function) (method method)
+        add-method (generic-function standard-generic-function) (method method)
 
 * 参数和值(Arguments and Values):
 
-generic-function---a generic function object.
-
-method---a method object.
+        generic-function---一个广义函数对象.
+        method---一个方法对象.
 
 * 描述(Description):
 
-The generic function add-method adds a method to a generic function.
+        广义函数 add-method 添加一个方法到广义函数.
 
-If method agrees with an existing method of generic-function on parameter specializers and qualifiers, the existing method is replaced.
+        如果 method 和广义函数中一个已存在的方法在参数特化符和限定符上一致, 那个存在的方法就会被替换.
 
 * 示例(Examples): None.
 
@@ -2911,40 +2904,39 @@ If method agrees with an existing method of generic-function on parameter specia
 
 * 异常情况(Exceptional Situations):
 
-The lambda list of the method function of method must be congruent with the lambda list of generic-function, or an error of type error is signaled.
+        method 的方法函数的 lambda 列表必须和广义函数的 lambda 列表一致, 否则就会发出一个 error 类型的错误.
 
-If method is a method object of another generic function, an error of type error is signaled.
+        如果 method 是另一个广义函数的方法对象, 就会发出一个 error 类型的错误.
 
 * 也见(See Also):
 
-defmethod, defgeneric, find-method, remove-method, Section 7.6.3 (Agreement on Parameter Specializers and Qualifiers)
+        defmethod, defgeneric, find-method, remove-method, Section 7.6.3 (Agreement on Parameter Specializers and Qualifiers)
 
 * 注意(Notes): None. 
 
 
-Standard Generic Function INITIALIZE-INSTANCE
+### <span id="SGF-INITIALIZE-INSTANCE">标准广义函数 INITIALIZE-INSTANCE</span>
 
 * 语法(Syntax):
 
-initialize-instance instance &rest initargs &key &allow-other-keys => instance
+        initialize-instance instance &rest initargs &key &allow-other-keys => instance
 
 * 方法签名(Method Signatures):
 
-initialize-instance (instance standard-object) &rest initargs
+        initialize-instance (instance standard-object) &rest initargs
 
 * 参数和值(Arguments and Values):
 
-instance---an object.
-
-initargs---a defaulted initialization argument list.
+        instance---一个对象.
+        initargs---一个默认初始化参数列表.
 
 * 描述(Description):
 
-Called by make-instance to initialize a newly created instance. The generic function is called with the new instance and the defaulted initialization argument list.
+        被 make-instance 调用来初始化新创建的实例. 这个广义函数用这个新的实例和默认初始化参数列表来调用.
 
-The system-supplied primary method on initialize-instance initializes the slots of the instance with values according to the initargs and the :initform forms of the slots. It does this by calling the generic function shared-initialize with the following arguments: the instance, t (this indicates that all slots for which no initialization arguments are provided should be initialized according to their :initform forms), and the initargs.
+        系统提供的 initialize-instance 主方法根据 initargs 和槽的 :initform 表达式形式的值来初始化实例 instance 的槽. 它通过使用以下参数调用广义函数 shared-initialize 来完成这个: 这个实例 instance, t (这个表示所有没有提供初始化参数的槽应该根据它们的 :initform 表达式形式来初始化), 还有 initargs.
 
-Programmers can define methods for initialize-instance to specify actions to be taken when an instance is initialized. If only after methods are defined, they will be run after the system-supplied primary method for initialization and therefore will not interfere with the default behavior of initialize-instance.
+        程序员可以为 initialize-instance 定义方法来指定在一个实例被初始化时采取的动作. 如果只定义了 alter 方法, 它们会在系统提供的用于初始化的主方法之后被运行, 因此不会影响到 initialize-instance 的默认行为.
 
 * 示例(Examples): None.
 
@@ -2954,7 +2946,7 @@ Programmers can define methods for initialize-instance to specify actions to be 
 
 * 也见(See Also):
 
-shared-initialize, make-instance, slot-boundp, slot-makunbound, Section 7.1 (Object Creation and Initialization), Section 7.1.4 (Rules for Initialization Arguments), Section 7.1.2 (Declaring the Validity of Initialization Arguments)
+        shared-initialize, make-instance, slot-boundp, slot-makunbound, Section 7.1 (Object Creation and Initialization), Section 7.1.4 (Rules for Initialization Arguments), Section 7.1.2 (Declaring the Validity of Initialization Arguments)
 
 * 注意(Notes): None. 
 
