@@ -667,7 +667,7 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (Standard M
 > *  [访问器 FIND-CLASS](#A-FIND-CLASS)
 > *  [局部函数 NEXT-METHOD-P](#LF-NEXT-METHOD-P)
 > *  [局部宏 CALL-METHOD, MAKE-METHOD](#LM-CALL-METHOD-MAKE-METHOD)
-> *  [局部函数 CALL-NEXT-METHOD](#LF-CALL-NEXT-METHODs)
+> *  [局部函数 CALL-NEXT-METHOD](#LF-CALL-NEXT-METHOD)
 > *  [标准广义函数 COMPUTE-APPLICABLE-METHODS](#SGF-COMPUTE-APPLICABLE-METHODS)
 > *  [宏 DEFINE-METHOD-COMBINATION](#M-DEFINE-METHOD-COMBINATION)
 > *  [标准广义函数 FIND-METHOD](#SGF-FIND-METHOD)
@@ -1932,225 +1932,206 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (Standard M
         (variable-namei () (accessor-namei in))
 
 
-Macro WITH-SLOTS
+### <span id="M-WITH-SLOTS">宏 WITH-SLOTS</span>
 
 * 语法(Syntax):
 
-with-slots (slot-entry*) instance-form declaration* form*
+        with-slots (slot-entry*) instance-form declaration* form*
+        => result*
 
-=> result*
-
-slot-entry::= slot-name | (variable-name slot-name) 
+        slot-entry::= slot-name | (variable-name slot-name) 
 
 * 参数和值(Arguments and Values):
 
-slot-name---a slot name; not evaluated.
-
-variable-name---a variable name; not evaluated.
-
-instance-form---a form; evaluted to produce instance.
-
-instance---an object.
-
-declaration---a declare expression; not evaluated.
-
-forms---an implicit progn.
-
-results---the values returned by the forms.
+        slot-name---一个槽的名字; 不求值.
+        variable-name---一个变量名; 不求值.
+        instance-form---一个表达式形式; 求值来产生这个实例.
+        instance---一个对象.
+        declaration---一个 declare 表达式; 不求值.
+        forms---一个隐式的 progn.
+        results---这个 forms 返回的值.
 
 * 描述(Description):
 
-The macro with-slots establishes a lexical environment for referring to the slots in the instance named by the given slot-names as though they were variables. Within such a context the value of the slot can be specified by using its slot name, as if it were a lexically bound variable. Both setf and setq can be used to set the value of the slot.
+        宏 with-slots 为引用这个 instance 实例中名为给定 slot-names 的槽建立一个词法环境就好像它们是变量一样. 在这样一个上下文中这个槽的值可以通过使用它们的槽名来指定, 就好像它们是一个词法上绑定的变量. 不管是 setf 还是 setq 都可以被用于设置这个槽的值.
 
-The macro with-slots translates an appearance of the slot name as a variable into a call to slot-value.
+        宏 with-slots 把这个槽名作为变量的出现转化为一个对 slot-value 的调用.
 
 * 示例(Examples):
 
- (defclass thing ()
-           ((x :initarg :x :accessor thing-x)
-            (y :initarg :y :accessor thing-y)))
-=>  #<STANDARD-CLASS THING 250020173>
- (defmethod (setf thing-x) :before (new-x (thing thing))
-   (format t "~&Changing X from ~D to ~D in ~S.~%"
-           (thing-x thing) new-x thing))
- (setq thing (make-instance 'thing :x 0 :y 1)) =>  #<THING 62310540>
- (with-slots (x y) thing (incf x) (incf y)) =>  2
- (values (thing-x thing) (thing-y thing)) =>  1, 2
- (setq thing1 (make-instance 'thing :x 1 :y 2)) =>  #<THING 43135676>
- (setq thing2 (make-instance 'thing :x 7 :y 8)) =>  #<THING 43147374>
- (with-slots ((x1 x) (y1 y))
-             thing1
-   (with-slots ((x2 x) (y2 y))
-               thing2
-     (list (list x1 (thing-x thing1) y1 (thing-y thing1)
-                 x2 (thing-x thing2) y2 (thing-y thing2))
-           (setq x1 (+ y1 x2))
-           (list x1 (thing-x thing1) y1 (thing-y thing1)
-                 x2 (thing-x thing2) y2 (thing-y thing2))
-           (setf (thing-x thing2) (list x1))
-           (list x1 (thing-x thing1) y1 (thing-y thing1)
-                 x2 (thing-x thing2) y2 (thing-y thing2)))))
->>  Changing X from 7 to (9) in #<THING 43147374>.
-=>  ((1 1 2 2 7 7 8 8)
-     9
-     (9 9 2 2 7 7 8 8) 
-     (9)
-     (9 9 2 2 (9) (9) 8 8))
+    ```LISP
+    (defclass thing ()
+              ((x :initarg :x :accessor thing-x)
+                (y :initarg :y :accessor thing-y)))
+    =>  #<STANDARD-CLASS THING 250020173>
+    (defmethod (setf thing-x) :before (new-x (thing thing))
+      (format t "~&Changing X from ~D to ~D in ~S.~%"
+              (thing-x thing) new-x thing))
+    (setq thing (make-instance 'thing :x 0 :y 1)) =>  #<THING 62310540>
+    (with-slots (x y) thing (incf x) (incf y)) =>  2
+    (values (thing-x thing) (thing-y thing)) =>  1, 2
+    (setq thing1 (make-instance 'thing :x 1 :y 2)) =>  #<THING 43135676>
+    (setq thing2 (make-instance 'thing :x 7 :y 8)) =>  #<THING 43147374>
+    (with-slots ((x1 x) (y1 y))
+                thing1
+      (with-slots ((x2 x) (y2 y))
+                  thing2
+        (list (list x1 (thing-x thing1) y1 (thing-y thing1)
+                    x2 (thing-x thing2) y2 (thing-y thing2))
+              (setq x1 (+ y1 x2))
+              (list x1 (thing-x thing1) y1 (thing-y thing1)
+                    x2 (thing-x thing2) y2 (thing-y thing2))
+              (setf (thing-x thing2) (list x1))
+              (list x1 (thing-x thing1) y1 (thing-y thing1)
+                    x2 (thing-x thing2) y2 (thing-y thing2)))))
+    >>  Changing X from 7 to (9) in #<THING 43147374>.
+    =>  ((1 1 2 2 7 7 8 8)
+        9
+        (9 9 2 2 7 7 8 8) 
+        (9)
+        (9 9 2 2 (9) (9) 8 8))
+    ```
 
 * 受此影响(Affected By):
 
-defclass
+        defclass
 
 * 异常情况(Exceptional Situations):
 
-The consequences are undefined if any slot-name is not the name of a slot in the instance.
+        如果任何的 slot-name 都不是这个 instance 实例中槽的名字, 那么结果是未定义的.
 
 * 也见(See Also):
 
-with-accessors, slot-value, symbol-macrolet
+        with-accessors, slot-value, symbol-macrolet
 
 * 注意(Notes):
 
-A with-slots expression of the form:
+        一个 with-slots 表达式 of the form:
 
-(with-slots (slot-entry1 ... slot-entryn) instance-form form1 ... formk)
+        (with-slots (slot-entry1 ... slot-entryn) instance-form form1 ... formk)
 
-expands into the equivalent of
+        展开为下面这个的等价体
 
-(let ((in instance-form))
-  (symbol-macrolet (Q1 ... Qn) form1 ... formk))
+        (let ((in instance-form))
+          (symbol-macrolet (Q1 ... Qn) form1 ... formk))
 
-where Qi is
+        其中 Qi 是
 
-(slot-entryi () (slot-value in 'slot-entryi))
+        (slot-entryi () (slot-value in 'slot-entryi))
 
-if slot-entryi is a symbol and is
+        如果 slot-entryi 是一个符号的话就是
 
-(variable-namei () (slot-value in 'slot-namei))
+        (variable-namei () (slot-value in 'slot-namei))
 
-if slot-entryi is of the form
+        如果 slot-entryi 是一个表达式形式, 那么就是
 
-(variable-namei 'slot-namei))
+        (variable-namei 'slot-namei))
 
 
-Macro DEFCLASS
+### <span id="M-DEFCLASS">宏 DEFCLASS</span>
 
 * 语法(Syntax):
 
-defclass class-name ({superclass-name}*) ({slot-specifier}*) [[class-option]]
+        defclass class-name ({superclass-name}*) ({slot-specifier}*) [[class-option]]
+        => new-class
 
-=> new-class
-
-slot-specifier::= slot-name | (slot-name [[slot-option]])
-slot-name::= symbol
-slot-option::= {:reader reader-function-name}* | 
-               {:writer writer-function-name}* | 
-               {:accessor reader-function-name}* | 
-               {:allocation allocation-type} | 
-               {:initarg initarg-name}* | 
-               {:initform form} | 
-               {:type type-specifier} | 
-               {:documentation string} 
-function-name::= {symbol | (setf symbol)}
-class-option::= (:default-initargs . initarg-list) | 
-                (:documentation string) | 
-                (:metaclass class-name) 
+        slot-specifier::= slot-name | (slot-name [[slot-option]])
+        slot-name::= symbol
+        slot-option::= {:reader reader-function-name}* | 
+                      {:writer writer-function-name}* | 
+                      {:accessor reader-function-name}* | 
+                      {:allocation allocation-type} | 
+                      {:initarg initarg-name}* | 
+                      {:initform form} | 
+                      {:type type-specifier} | 
+                      {:documentation string} 
+        function-name::= {symbol | (setf symbol)}
+        class-option::= (:default-initargs . initarg-list) | 
+                        (:documentation string) | 
+                        (:metaclass class-name) 
 
 * 参数和值(Arguments and Values):
 
-Class-name---a non-nil symbol.
-
-Superclass-name--a non-nil symbol.
-
-Slot-name--a symbol. The slot-name argument is a symbol that is syntactically valid for use as a variable name.
-
-Reader-function-name---a non-nil symbol. :reader can be supplied more than once for a given slot.
-
-Writer-function-name---a generic function name. :writer can be supplied more than once for a given slot.
-
-Reader-function-name---a non-nil symbol. :accessor can be supplied more than once for a given slot.
-
-Allocation-type---(member :instance :class). :allocation can be supplied once at most for a given slot.
-
-Initarg-name---a symbol. :initarg can be supplied more than once for a given slot.
-
-Form---a form. :init-form can be supplied once at most for a given slot.
-
-Type-specifier---a type specifier. :type can be supplied once at most for a given slot.
-
-Class-option--- refers to the class as a whole or to all class slots.
-
-Initarg-list---a list of alternating initialization argument names and default initial value forms. :default-initargs can be supplied at most once.
-
-Class-name---a non-nil symbol. :metaclass can be supplied once at most.
-
-new-class---the new class object.
+        Class-name---一个非 nil 符号.
+        Superclass-name--一个非 nil 符号.
+        Slot-name--一个符号. 这个 slot-name 参数是一个你符号, 它用作一个变量名是句法上有效的.
+        Reader-function-name---一个非 nil 符号. 可以为一个给定的槽提供超过一个 :reader.
+        Writer-function-name---一个广义函数名字. 可以为一个给定的槽提供超过一个 :writer.
+        Reader-function-name---一个非 nil 符号. 可以为一个给定的槽提供超过一个 :accessor.
+        Allocation-type---(member :instance :class). 可以为一个给定的槽提供最多一个 :allocation.
+        Initarg-name---一个符号. 可以为一个给定的槽提供超过一个 :initarg.
+        Form---一个表达式形式. 可以为一个给定的槽提供最多一个 :init-form.
+        Type-specifier---一个类型指定符. 可以为一个给定的槽提供最多一个 :type.
+        Class-option--- 指的是整个类或类的所有槽.
+        Initarg-list---一个依次为初始化参数名字和默认初始化值表达式形式的列表. 可以提供最多一个 :default-initargs.
+        Class-name---一个非 nil 符号. 可以提供最多一个 :metaclass can be supplied once at most.
+        new-class---新的类对象.
 
 * 描述(Description):
 
-The macro defclass defines a new named class. It returns the new class object as its result.
+        宏 defclass 定义一个新的已命名的类. 它把新的类对象作为它的结果返回.
 
-The syntax of defclass provides options for specifying initialization arguments for slots, for specifying default initialization values for slots, and for requesting that methods on specified generic functions be automatically generated for reading and writing the values of slots. No reader or writer functions are defined by default; their generation must be explicitly requested. However, slots can always be accessed using slot-value.
+        defclass 的语法为给槽指定初始化参数, 为槽指定默认初始化值, 还有为给读取和写入槽的值自动生成指定广义函数的方法提供选项. 默认没有 reader 或 writer 函数被定义; 它们的生成必须是显式地请求. 然而, 槽可以总是通过使用 slot-value 来访问.
 
-Defining a new class also causes a type of the same name to be defined. The predicate (typep object class-name) returns true if the class of the given object is the class named by class-name itself or a subclass of the class class-name. A class object can be used as a type specifier. Thus (typep object class) returns true if the class of the object is class itself or a subclass of class.
+        定义一个新的类同时也导致一个相同名字的类型被定义. 如果给定 object 对象的类是 class-name 命名的类或是 class-name 命名的类的子类, 那么断言 (typep object class-name) 返回 true. 一个类对象可以被用作一个类型指定符. 因此如果这个 object 对象的类是 class 自身或者 class 的子类, 那么 (typep object class) 返回 true.
 
-The class-name argument specifies the proper name of the new class. If a class with the same proper name already exists and that class is an instance of standard-class, and if the defclass form for the definition of the new class specifies a class of class standard-class, the existing class is redefined, and instances of it (and its subclasses) are updated to the new definition at the time that they are next accessed. For details, see Section 4.3.6 (Redefining Classes).
+        这个 class-name 参数指定这个新的类的特定的名字. 如果相同特定名字的一个类已经存在并且那个类是 standard-class 的一个实例, 并且如果这个新的类定义的 defclass 表达式形式指定一个类 standard-class 的类, 那么这个存在的类会被重定义, 并且它的实例 (还有它的子类) 在它们被下一次访问时会被更新到新的定义. 关于详细信息, 见章节  4.3.6 (Redefining Classes).
 
-Each superclass-name argument specifies a direct superclass of the new class. If the superclass list is empty, then the superclass defaults depending on the metaclass, with standard-object being the default for standard-class.
+        每个 superclass-name 参数指定这个新的类的一个直接超类. 如果这个超类列表是空的, 那么这个超类默认值取决于这个元类, 而对于 standard-object 默认值就是 standard-class.
 
-The new class will inherit slots and methods from each of its direct superclasses, from their direct superclasses, and so on. For a discussion of how slots and methods are inherited, see Section 4.3.4 (Inheritance).
+        这个新的类会从它的每个直接超类, 直接超类的直接超类, 等等继承槽和方法. 关于槽和方法如何被继承的讨论, 见章节 4.3.4 (Inheritance).
 
-The following slot options are available:
+        以下槽选项是可用的:
 
-    The :reader slot option specifies that an unqualified method is to be defined on the generic function named reader-function-name to read the value of the given slot.
+            这个 :reader 槽选项指定在名为 reader-function-name 广义函数上定义一个未限定的方法来读取这个给定槽的值.
 
-    The :writer slot option specifies that an unqualified method is to be defined on the generic function named writer-function-name to write the value of the slot.
+            这个 :writer 槽选项指定在名为 writer-function-name 广义函数上定义一个未限定的方法来写入这个槽的值.
 
-    The :accessor slot option specifies that an unqualified method is to be defined on the generic function named reader-function-name to read the value of the given slot and that an unqualified method is to be defined on the generic function named (setf reader-function-name) to be used with setf to modify the value of the slot.
+            这个 :accessor 槽选项指定在名为 reader-function-name 的广义函数上定义一个未限定的方法来读取这个给定槽的值并且在名为 (setf reader-function-name) 的广义函数上定义一个未限定符方法来和 setf 一起使用来修改这个槽的值.
 
-    The :allocation slot option is used to specify where storage is to be allocated for the given slot. Storage for a slot can be located in each instance or in the class object itself. The value of the allocation-type argument can be either the keyword :instance or the keyword :class. If the :allocation slot option is not specified, the effect is the same as specifying :allocation :instance.
+            这个 :allocation 槽选项用于指定这个给定的槽要被存储的位置. 一个槽的存储可以位于每个实例或者这个类对象自身. 这个 allocation-type 参数的值可以是关键字 :instance 或者关键字 :class. 如果 :allocation 槽选项没有被指定, 结果和指定 :allocation :instance 一样.
 
-        If allocation-type is :instance, a local slot of the name slot-name is allocated in each instance of the class.
+                如果 allocation-type 是 :instance, 一个名为 slot-name 的局部槽会被分配在这个类的每个实例.
 
-        If allocation-type is :class, a shared slot of the given name is allocated in the class object created by this defclass form. The value of the slot is shared by all instances of the class. If a class C1 defines such a shared slot, any subclass C2 of C1 will share this single slot unless the defclass form for C2 specifies a slot of the same name or there is a superclass of C2 that precedes C1 in the class precedence list of C2 and that defines a slot of the same name.
+                如果 allocation-type 是 :class, 这个给定名字的共享槽会被分配在这个 defclass 表达式形式创建的类对象中. 这个槽的值被这个类的所有实例所共享. 如果一个类 C1 定义了这样一个共享槽, 任何 C1 的子类 C2 会共享同一个槽除非这个 C2 的 defclass 表达式形式指定了一个相同名字的槽或者这里有一个在 C2 的优先级列表中优先于 C1 并且定义了相同名字的槽的 C2 的超类.
 
-    The :initform slot option is used to provide a default initial value form to be used in the initialization of the slot. This form is evaluated every time it is used to initialize the slot. The lexical environment in which this form is evaluated is the lexical environment in which the defclass form was evaluated. Note that the lexical environment refers both to variables and to functions. For local slots, the dynamic environment is the dynamic environment in which make-instance is called; for shared slots, the dynamic environment is the dynamic environment in which the defclass form was evaluated. See Section 7.1 (Object Creation and Initialization).
+            这个 :initform 槽选项被用于提供在这个槽的初始化中使用的默认初始值表达式形式. 这个表达式形式在每次被用来初始化这个槽时都会被求值. 这个表达式形式被求值所在词法环境是defclass 表达式形式被求值所在的词法环境. 注意这个词法环境既引用了变量也引用了函数. 对于局部槽, 动态环境是 make-instance 被调用所在的动态环境; 对于共享槽, 动态环境是 defclass 表达式形式被求值所在的动态环境. 见章节 7.1 (Object Creation and Initialization).
 
-    No implementation is permitted to extend the syntax of defclass to allow (slot-name form) as an abbreviation for (slot-name :initform form).
+            没有具体实现被允许去扩展 defclass 的语法来允许 (slot-name form) 作为一个 (slot-name :initform form) 的简写.
 
-    The :initarg slot option declares an initialization argument named initarg-name and specifies that this initialization argument initializes the given slot. If the initialization argument has a value in the call to initialize-instance, the value will be stored into the given slot, and the slot's :initform slot option, if any, is not evaluated. If none of the initialization arguments specified for a given slot has a value, the slot is initialized according to the :initform slot option, if specified.
+            这个 :initarg 槽选项声明一个名为 initarg-name 的初始化参数并且指定这个初始化参数初始化给定的槽. 在对 initialize-instance 的调用中如果这个初始化参数有一个值, 那么就会被存储到给定的槽中, 并且, 如果存在这个槽的 :initform 槽选项, 就不会求值. 如果没有为一个给定的槽指定有值的初始化参数, 而指定了 :initform 槽选项的话, 就根据这个槽选项来初始化这个槽.
 
-    The :type slot option specifies that the contents of the slot will always be of the specified data type. It effectively declares the result type of the reader generic function when applied to an object of this class. The consequences of attempting to store in a slot a value that does not satisfy the type of the slot are undefined. The :type slot option is further discussed in Section 7.5.3 (Inheritance of Slots and Slot Options).
+            这个 :type 槽选项指定这个槽的内容总是为指定的数据类型. 它有效地声明应用到这个类的一个对象的 reader 广义函数的结果类型. 尝试去存储一个不符合一个槽的类型的值到这个槽中的后果是未定义的. 这个 :type 槽选项在章节 7.5.3 (Inheritance of Slots and Slot Options) 中被进一步讨论.
 
-    The :documentation slot option provides a documentation string for the slot. :documentation can be supplied once at most for a given slot.
+            这个 :documentation 槽选项为这个槽提供一个文档字符串. :documentation 提供给一个槽最多一次.
 
-Each class option is an option that refers to the class as a whole. The following class options are available:
+        每个类选项是一个把这个类当作整体的选项. 以下类选项是可用的:
 
-    The :default-initargs class option is followed by a list of alternating initialization argument names and default initial value forms. If any of these initialization arguments does not appear in the initialization argument list supplied to make-instance, the corresponding default initial value form is evaluated, and the initialization argument name and the form's value are added to the end of the initialization argument list before the instance is created; see Section 7.1 (Object Creation and Initialization). The default initial value form is evaluated each time it is used. The lexical environment in which this form is evaluated is the lexical environment in which the defclass form was evaluated. The dynamic environment is the dynamic environment in which make-instance was called. If an initialization argument name appears more than once in a :default-initargs class option, an error is signaled.
+            这个 :default-initargs 类选项后面跟着一个依次为初始化参数名和默认初始化值表达式形式的列表. 如果这些初始化参数中的任何一个没有出现在提供给 make-instance 的初始化列表中, 对应的默认初始值表达式形式就会被求值, 并且这个初始化参数名字和这个表达式形式的值会在这个实例被创建前被添加到这个初始化参数列表的末尾; 见章节 7.1 (Object Creation and Initialization). 默认初始值表达式形式在每次被使用时都会求值. 这个表达式形式被求值时所在词法环境是 defclass 表达式形式被求值时所在词法环境. 而动态环境是 make-instance 被调用时所处的动态环境. 如果一个初始化参数名字在一个 :default-initargs 槽选项中出现不止一次, 就会发出一个错误.
 
-    The :documentation class option causes a documentation string to be attached with the class object, and attached with kind type to the class-name. :documentation can be supplied once at most.
+            这个 :documentation 类选项导致一个文档字符串被绑定到这个类对象, 以及 type 种类的 class-name 上. :documentation 最多只能被提供一次.
 
-    The :metaclass class option is used to specify that instances of the class being defined are to have a different metaclass than the default provided by the system (the class standard-class).
+            这个 :metaclass 类选项用于指定这个要被定义的类的实例有着和系统提供的默认值(类 standard-class)不同的元类.
 
-Note the following rules of defclass for standard classes:
+        注意以下这些标准类的 defclass 的规则:
 
-    It is not required that the superclasses of a class be defined before the defclass form for that class is evaluated.
+            一个类的超类不需要在这个类的 defclass 表达式形式被求值前被定义.
 
-    All the superclasses of a class must be defined before an instance of the class can be made.
+            一个类的所有超类必须在这个类的一个实例被创建前被定义.
 
-    A class must be defined before it can be used as a parameter specializer in a defmethod form.
+            一个类必须在它被用作 defmethod 表达式形式中的参数指定符之前被定义.
 
-The object system can be extended to cover situations where these rules are not obeyed.
+        对象系统可以扩展, 以覆盖不遵守这些规则的情况.
 
-Some slot options are inherited by a class from its superclasses, and some can be shadowed or altered by providing a local slot description. No class options except :default-initargs are inherited. For a detailed description of how slots and slot options are inherited, see Section 7.5.3 (Inheritance of Slots and Slot Options).
+        某些槽选项被一个类从它的超类中继承下来, 而某些可以通过提供一个局部槽描述来遮蔽或修改. 除了 :default-initargs 以外没有其他类选项被继承. 关于槽和槽选项如何被继承的详情, 见章节 7.5.3 (Inheritance of Slots and Slot Options).
 
-The options to defclass can be extended. It is required that all implementations signal an error if they observe a class option or a slot option that is not implemented locally.
+        给 defclass 的选项可以被扩展. 如果一个具体实现发现一个类选项或一个槽选项没有被本地实现, 那么这个具体实现就需要去发出一个错误.
 
-It is valid to specify more than one reader, writer, accessor, or initialization argument for a slot. No other slot option can appear more than once in a single slot description, or an error is signaled.
+        为一个槽指定超过一个的 reader, writer, accessor, 或初始化参数是有效的. 没有其他槽选项可以在单个槽描述中出现超过一次, 否则就发出一个错误.
 
-If no reader, writer, or accessor is specified for a slot, the slot can only be accessed by the function slot-value.
+        如果没有为一个槽指定 reader, writer, 或 accessor, 这个槽只能通过函数 slot-value 来访问.
 
-If a defclass form appears as a top level form, the compiler must make the class name be recognized as a valid type name in subsequent declarations (as for deftype) and be recognized as a valid class name for defmethod parameter specializers and for use as the :metaclass option of a subsequent defclass. The compiler must make the class definition available to be returned by find-class when its environment argument is a value received as the environment parameter of a macro.
+        如果一个 defclass 表达式形式作为一个顶层表达式形式出现, 编译器必须使这个类名在后面的声明中(就像 deftype)被识别为一个有效的类型名字, 在 defmethod 的参数指定符中被识别为一个有效的类名并且可以用所后面的 defclass 的 :metaclass 选项. 编译器必须使类定义能够被 find-class 返回, 当它的 environment 参数作为一个宏的环境参数接收到的值时.<!--TODO 待校验-->
 
 * 示例(Examples): None.
 
@@ -2158,103 +2139,92 @@ If a defclass form appears as a top level form, the compiler must make the class
 
 * 异常情况(Exceptional Situations):
 
-If there are any duplicate slot names, an error of type program-error is signaled.
+        如果这里有任何槽名字重复, 就会发出一个 program-error 类型的错误.
 
-If an initialization argument name appears more than once in :default-initargs class option, an error of type program-error is signaled.
+        如果一个初始化参数名字不止一次出现在 :default-initargs 类选项中, 就会发出一个 program-error 类型的错误.
 
-If any of the following slot options appears more than once in a single slot description, an error of type program-error is signaled: :allocation, :initform, :type, :documentation.
+        如果在单个槽描述中下面的任何一个槽选项出现超过一次, 就会发出一个 program-error 类型的错误: :allocation, :initform, :type, :documentation.
 
-It is required that all implementations signal an error of type program-error if they observe a class option or a slot option that is not implemented locally.
+        如果具体实现发现一个类选项或一个槽选项没有被本地实现<!--TODO implemented locally-->, 所有这样的实现都需要去发出一个 program-error 类型的错误.
 
 * 也见(See Also):
 
-documentation, initialize-instance, make-instance, slot-value, Section 4.3 (Classes), Section 4.3.4 (Inheritance), Section 4.3.6 (Redefining Classes), Section 4.3.5 (Determining the Class Precedence List), Section 7.1 (Object Creation and Initialization)
+        documentation, initialize-instance, make-instance, slot-value, Section 4.3 (Classes), Section 4.3.4 (Inheritance), Section 4.3.6 (Redefining Classes), Section 4.3.5 (Determining the Class Precedence List), Section 7.1 (Object Creation and Initialization)
 
 * 注意(Notes): None. 
 
 
-Macro DEFGENERIC
+### <span id="M-DEFGENERIC">宏 DEFGENERIC</span>
 
 * 语法(Syntax):
 
-defgeneric function-name gf-lambda-list [[option | {method-description}*]]
+        defgeneric function-name gf-lambda-list [[option | {method-description}*]]
+        => new-generic
 
-=> new-generic
+        option::= (:argument-precedence-order parameter-name+) | 
+                  (declare gf-declaration+) | 
+                  (:documentation gf-documentation) | 
+                  (:method-combination method-combination method-combination-argument*) | 
+                  (:generic-function-class generic-function-class) | 
+                  (:method-class method-class) 
 
-option::= (:argument-precedence-order parameter-name+) | 
-          (declare gf-declaration+) | 
-          (:documentation gf-documentation) | 
-          (:method-combination method-combination method-combination-argument*) | 
-          (:generic-function-class generic-function-class) | 
-          (:method-class method-class) 
-
-method-description::= (:method method-qualifier* specialized-lambda-list [[declaration* | documentation]] form*) 
+        method-description::= (:method method-qualifier* specialized-lambda-list [[declaration* | documentation]] form*) 
 
 * 参数和值(Arguments and Values):
 
-function-name---a function name.
-
-generic-function-class---a non-nil symbol naming a class.
-
-gf-declaration---an optimize declaration specifier; other declaration specifiers are not permitted.
-
-gf-documentation---a string; not evaluated.
-
-gf-lambda-list---a generic function lambda list.
-
-method-class---a non-nil symbol naming a class.
-
-method-combination-argument---an object.
-
-method-combination-name---a symbol naming a method combination type.
-
-method-qualifiers, specialized-lambda-list, declarations, documentation, forms---as per defmethod.
-
-new-generic---the generic function object.
-
-parameter-name---a symbol that names a required parameter in the lambda-list. (If the :argument-precedence-order option is specified, each required parameter in the lambda-list must be used exactly once as a parameter-name.)
+        function-name---一个函数对象.
+        generic-function-class---命名一个类的非 nil 符号.
+        gf-declaration---一个 optimize 声明指定符; 不允许其他声明指定符.
+        gf-documentation---一个字符串; 不求值.
+        gf-lambda-list---一个广义函数 lambda 列表.
+        method-class---命名一个类的非 nil 符号.
+        method-combination-argument---一个对象.
+        method-combination-name---命名一个方法组合类型的符号.
+        method-qualifiers, specialized-lambda-list, declarations, documentation, forms---as per defmethod.
+        new-generic---这个广义函数对象.
+        parameter-name---在 lambda-list 中命名一个必要参数的符号. (如果 :argument-precedence-order 选项被指定, 在 lambda-list 中的每个必要参数必须必须被作为 parameter-name 准确使用一次.)
 
 * 描述(Description):
 
-The macro defgeneric is used to define a generic function or to specify options and declarations that pertain to a generic function as a whole.
+        宏 defgeneric 被用于定义一个广义函数或指定或用来指定属于整个广义函数的选项和声明.
 
-If function-name is a list it must be of the form (setf symbol). If (fboundp function-name) is false, a new generic function is created. If (fdefinition function-name) is a generic function, that generic function is modified. If function-name names an ordinary function, a macro, or a special operator, an error is signaled.
+        如果 function-name 是一个列表那么它必须是表达式形式 (setf symbol). 如果 (fboundp function-name) 是 false, 一个新的广义函数就会被创建. 如果 (fdefinition function-name) 是一个广义函数, 那个广义函数就会被修改. 如果 function-name 命名了一个普通函数, 一个宏, 或者一个特殊操作符, 就会发出一个错误.
 
-The effect of the defgeneric macro is as if the following three steps were performed: first, methods defined by previous defgeneric forms are removed; second, ensure-generic-function is called; and finally, methods specified by the current defgeneric form are added to the generic function.
+        这个 defgeneric 宏的效果就好像执行了下面三步: 首先, 通过前面的 defgeneric 表达式形式定义的方法会被移除; 其次, ensure-generic-function 会被调用; 最终, 通过当前 defgeneric 表达式形式指定的方法会被添加到这个广义函数中.
 
-Each method-description defines a method on the generic function. The lambda list of each method must be congruent with the lambda list specified by the gf-lambda-list option. If no method descriptions are specified and a generic function of the same name does not already exist, a generic function with no methods is created.
+        每个 method-description 在这个广义函数上定义一个方法. 每个方法的 lambda 列表必须和 gf-lambda-list 选项指定的 lambda 列表一致. 如果没有指定方法描述并且相同名字的广义函数不存在, 一个没有方法的广义函数会被创建.
 
-The gf-lambda-list argument of defgeneric specifies the shape of lambda lists for the methods on this generic function. All methods on the resulting generic function must have lambda lists that are congruent with this shape. If a defgeneric form is evaluated and some methods for that generic function have lambda lists that are not congruent with that given in the defgeneric form, an error is signaled. For further details on method congruence, see Section 7.6.4 (Congruent Lambda-lists for all Methods of a Generic Function).
+        defgeneric 的 gf-lambda-list 参数指定了这个广义函数上的方法的 lambda 列表的外形. 在这个产生的广义函数上的方法必须有着和这个外形一致的 lambda 列表. 如果一个 defgeneric 表达式形式被求值并且这个广义函数的一些方法有着和这个广义函数中被给定的不一致的 lambda 列表, 就会发出一个错误. 关于方法一致性的详情, 见章节 7.6.4 (Congruent Lambda-lists for all Methods of a Generic Function).
 
-The generic function passes to the method all the argument values passed to it, and only those; default values are not supported. Note that optional and keyword arguments in method definitions, however, can have default initial value forms and can use supplied-p parameters.
+        广义函数把所有给它的参数值传递给方法, 并且只有那些; 不支持默认值. 注意, 方法定义中的可选参数和关键字参数, however, 可以有默认初始值表达式形式并且可以使用 supplied-p 参数.
 
-The following options are provided. Except as otherwise noted, a given option may occur only once.
+        以下选项是支持的. 除非另有说明, 一个给定选项只能出现一次.
 
-    The :argument-precedence-order option is used to specify the order in which the required arguments in a call to the generic function are tested for specificity when selecting a particular method. Each required argument, as specified in the gf-lambda-list argument, must be included exactly once as a parameter-name so that the full and unambiguous precedence order is supplied. If this condition is not met, an error is signaled.
+            这个 :argument-precedence-order 选项在选定一个特定的方法时被用于指定这些必要参数在一个对这个广义函数的调用中被检查特异度的顺序. 每个必要参数, 依照在 gf-lambda-list 参数中指定的, 必须被作为一个 parameter-name 准确包含一次这样才能提供完整且无歧义的优先级顺序. 如果这个条件没有满足, 就会出现一个错误.
 
-    The declare option is used to specify declarations that pertain to the generic function.
+            这个 declare 选项被用于指定属于这个广义函数的声明.
 
-    An optimize declaration specifier is allowed. It specifies whether method selection should be optimized for speed or space, but it has no effect on methods. To control how a method is optimized, an optimize declaration must be placed directly in the defmethod form or method description. The optimization qualities speed and space are the only qualities this standard requires, but an implementation can extend the object system to recognize other qualities. A simple implementation that has only one method selection technique and ignores optimize declaration specifiers is valid.
+            一个 optimize 声明指定符是允许的. 它指定了方法选择是否要对速度或空间进行优化, 但是它在方法上无效. 为了控制一个方法如何被优化, 一个 optimize 声明必须直接放置在 defmethod 表达式形式或方法描述中. 优化特性 speed 和 space 是这个标准要求的仅有的特性, 但是一个具体实现可以扩展这个对象系统来识别其他特性. 一个只有一种方法选择技术并且忽略 optimize 声明指定符的简单实现是有效的.
 
-    The special, ftype, function, inline, notinline, and declaration declarations are not permitted. Individual implementations can extend the declare option to support additional declarations. If an implementation notices a declaration specifier that it does not support and that has not been proclaimed as a non-standard declaration identifier name in a declaration proclamation, it should issue a warning.
+            special, ftype, function, inline, notinline, 以及 declaration 声明是不允许的. 个别具体实现可以去扩展这个 declare 选项来支持额外的声明. 如果一个具体实现注意到一个不支持的声明指定符并且在一个 declaration 全局声明中没有被声明为一个非标准声明标识符的名字, 它应该发出一个警告.
 
-    The declare option may be specified more than once. The effect is the same as if the lists of declaration specifiers had been appended together into a single list and specified as a single declare option.
+            这个 declare 选项可能被指定超过一次. 效果和这些声明指定符列表被一起追加到同一个列表中并指定单个的 declare 选项是一样的.
 
-    The :documentation argument is a documentation string to be attached to the generic function object, and to be attached with kind function to the function-name.
+            这个 :documentation 参数是一个绑定给这个广义函数对象的文档字符串, 并且也绑定给 function 种类的 function-name.
 
-    The :generic-function-class option may be used to specify that the generic function is to have a different class than the default provided by the system (the class standard-generic-function). The class-name argument is the name of a class that can be the class of a generic function. If function-name specifies an existing generic function that has a different value for the :generic-function-class argument and the new generic function class is compatible with the old, change-class is called to change the class of the generic function; otherwise an error is signaled.
+            这个 :generic-function-class 选项可以被用来指定这个广义函数去拥有一个和系统提供的默认值(类 standard-generic-function)不一样的类. 这个 class-name 参数是一个可以是广义函数的类的类名. 如果 function-name 指定了一个有着不同的 :generic-function-class 参数值的已存在的广义函数并且这个新的广义函数类和旧的兼容, 那么 change-class 会被调用来修改这个广义函数的类; 否则就发出一个错误.
 
-    The :method-class option is used to specify that all methods on this generic function are to have a different class from the default provided by the system (the class standard-method). The class-name argument is the name of a class that is capable of being the class of a method.
+            这个 :method-class 选项被用于指定这个广义函数上的所有方法都有着和提供提供的默认值(类 standard-method)不同的类. 这个 class-name 参数是能够称为一个方法的类的类名.
 
-    The :method-combination option is followed by a symbol that names a type of method combination. The arguments (if any) that follow that symbol depend on the type of method combination. Note that the standard method combination type does not support any arguments. However, all types of method combination defined by the short form of define-method-combination accept an optional argument named order, defaulting to :most-specific-first, where a value of :most-specific-last reverses the order of the primary methods without affecting the order of the auxiliary methods.
+            这个 :method-combination 选项后面跟着一个命名一个方法组合类型的符号. 跟随该符号的参数(如果有的话)依赖于方法组合的类型. 注意, 标准方法组合类型不支持任何参数. 然而, 通过 define-method-combination 的短表达式形式定义的所有方法组合的类型都接受一个名为 order 的可选参数, 默认为 :most-specific-first, 在这里一个 :most-specific-last 的值在不影响辅助方法的顺序下倒转主方法的顺序.
 
-The method-description arguments define methods that will be associated with the generic function. The method-qualifier and specialized-lambda-list arguments in a method description are the same as for defmethod.
+        这个 method-description 参数定义了和这个广义函数关联的方法. 在一个方法描述中的 method-qualifier 和 specialized-lambda-list 参数和 defmethod 中的是一样的.
 
-The form arguments specify the method body. The body of the method is enclosed in an implicit block. If function-name is a symbol, this block bears the same name as the generic function. If function-name is a list of the form (setf symbol), the name of the block is symbol.
+        这个 form 参数指定这个方法的主体(body). 这个方法的主体闭合在一个隐式的 block 中. 如果 function-name 是一个符号, 这个 block 就具有和这个广义函数相同的名字. 如果 function-name 是这样的一个表达式形式 (setf symbol), 这个 block 的名字就是 symbol.
 
-Implementations can extend defgeneric to include other options. It is required that an implementation signal an error if it observes an option that is not implemented locally.
+        具体实现可以去扩展 defgeneric 来包含其他选项. 如果一个具体实现发现一个选项没有被本地实现, 它就需要去发出一个错误.
 
-defgeneric is not required to perform any compile-time side effects. In particular, the methods are not installed for invocation during compilation. An implementation may choose to store information about the generic function for the purposes of compile-time error-checking (such as checking the number of arguments on calls, or noting that a definition for the function name has been seen).
+        defgeneric 不需要去执行任何编译时的副作用. 特别是, 这些方法不会为了在编译时调用而被设置. 一个具体实现可以选择为了编译时错误检查的目的去存储关于这个广义函数的信息 (比如在调用上检查参数数量, 或者记录这个函数名的定义已经出现过).
 
 * 示例(Examples):
 
@@ -2262,143 +2232,135 @@ defgeneric is not required to perform any compile-time side effects. In particul
 
 * 异常情况(Exceptional Situations):
 
-If function-name names an ordinary function, a macro, or a special operator, an error of type program-error is signaled.
+        如果 function-name 命名一个普通函数, 一个宏, 或者一个特殊操作符, 就会发出一个 program-error 类型的错误.
 
-Each required argument, as specified in the gf-lambda-list argument, must be included exactly once as a parameter-name, or an error of type program-error is signaled.
+        每个必要参数, 如 gf-lambda-list 参数中所指定的, 必须被准确包含一次作为一个 parameter-name, 否则就会发出一个 program-error 类型的错误.
 
-The lambda list of each method specified by a method-description must be congruent with the lambda list specified by the gf-lambda-list option, or an error of type error is signaled.
+        通过一个 method-description 指定的每个方法的 lambda 列表必须和 gf-lambda-list 选项指定的 lambda 列表一致, 否则就会发出一个 error 类型的错误.
 
-If a defgeneric form is evaluated and some methods for that generic function have lambda lists that are not congruent with that given in the defgeneric form, an error of type error is signaled.
+        如果一个 defgeneric 表达式形式被求值并且这个广义函数的某些方法拥有和这个 defgeneric 表达式形式中给定的不一致的 lambda 列表, 就会发出一个 error 类型的错误.
 
-A given option may occur only once, or an error of type program-error is signaled.
+        一个给定的选项可能只能出现一次, 否则就会发出一个 program-error 类型的错误.
 
-If function-name specifies an existing generic function that has a different value for the :generic-function-class argument and the new generic function class is compatible with the old, change-class is called to change the class of the generic function; otherwise an error of type error is signaled.
+        如果 function-name 指定一个已存在的且有着不相同值的 :generic-function-class 参数的广义函数而这个新的广义函数类和旧的兼容, change-class 会被调用来改变这个广义函数的类; 否则就会发出一个 error 类型的错误.
 
-Implementations can extend defgeneric to include other options. It is required that an implementation signal an error of type program-error if it observes an option that is not implemented locally.
+        具体实现可以去扩展 defgeneric 来包含其他选项. 如果一个具体实现发现一个选项没有被本地实现, 它就需要去发出一个 program-error 类型的错误.
 
 * 也见(See Also):
 
-defmethod, documentation, ensure-generic-function, generic-function, Section 7.6.4 (Congruent Lambda-lists for all Methods of a Generic Function)
+        defmethod, documentation, ensure-generic-function, generic-function, Section 7.6.4 (Congruent Lambda-lists for all Methods of a Generic Function)
 
 * 注意(Notes): None. 
 
 
-Macro DEFMETHOD
+### <span id="M-DEFMETHOD">宏 DEFMETHOD</span>
 
 * 语法(Syntax):
 
-defmethod function-name {method-qualifier}* specialized-lambda-list [[declaration* | documentation]] form*
+        defmethod function-name {method-qualifier}* specialized-lambda-list [[declaration* | documentation]] form*
+        => new-method
 
-=> new-method
+        function-name::= {symbol | (setf symbol)}
 
-function-name::= {symbol | (setf symbol)}
+        method-qualifier::= non-list
 
-method-qualifier::= non-list
-
-specialized-lambda-list::= ({var | (var parameter-specializer-name)}* 
-                            [&optional {var | (var [initform [supplied-p-parameter] ])}*] 
-                            [&rest var] 
-                            [&key{var | ({var | (keywordvar)} [initform [supplied-p-parameter] ])}*
-                                 [&allow-other-keys] ] 
-                            [&aux {var | (var [initform] )}*] ) 
-parameter-specializer-name::= symbol | (eql eql-specializer-form)
+        specialized-lambda-list::= ({var | (var parameter-specializer-name)}* 
+                                    [&optional {var | (var [initform [supplied-p-parameter] ])}*] 
+                                    [&rest var] 
+                                    [&key{var | ({var | (keywordvar)} [initform [supplied-p-parameter] ])}*
+                                        [&allow-other-keys] ] 
+                                    [&aux {var | (var [initform] )}*] ) 
+        parameter-specializer-name::= symbol | (eql eql-specializer-form)
 
 * 参数和值(Arguments and Values):
 
-declaration---a declare expression; not evaluated.
-
-documentation---a string; not evaluated.
-
-var---a variable name.
-
-eql-specializer-form---a form.
-
-Form---a form.
-
-Initform---a form.
-
-Supplied-p-parameter---variable name.
-
-new-method---the new method object.
+        declaration---一个 declare 表达式; 不求值.
+        documentation---一个字符串; 不求值.
+        var---一个变量名.
+        eql-specializer-form---一个表达式形式.
+        Form---一个表达式形式.
+        Initform---一个表达式形式.
+        Supplied-p-parameter---variable name.
+        new-method---the new method object.
 
 * 描述(Description):
 
-The macro defmethod defines a method on a generic function.
+        宏 defmethod 在一个广义函数上定义方法.
 
-If (fboundp function-name) is nil, a generic function is created with default values for the argument precedence order (each argument is more specific than the arguments to its right in the argument list), for the generic function class (the class standard-generic-function), for the method class (the class standard-method), and for the method combination type (the standard method combination type). The lambda list of the generic function is congruent with the lambda list of the method being defined; if the defmethod form mentions keyword arguments, the lambda list of the generic function will mention ..... key (but no keyword arguments). If function-name names an ordinary function, a macro, or a special operator, an error is signaled.
+        如果 (fboundp function-name) 是 nil, 就会创建一个广义函数, 其中采用默认的参数优先级顺序 (每个参数都比在它的参数列表中它右边的参数更具体), 广义函数的类 (类 standard-generic-function), 方法的类 (类 standard-method), 方法组合类型 (标准方法组合类型). 这个广义函数的 lambda 列表和这个被定义的方法一致; 如果这个 defmethod 表达式形式提及关键字参数, 广义函数的 lambda 列表也会提及 ..... key (但是没有关键字参数). 如果 function-name 命名一个普通函数, 一个宏, 或者一个特殊操作符, 就会发出一个错误.
 
-If a generic function is currently named by function-name, the lambda list of the method must be congruent with the lambda list of the generic function. If this condition does not hold, an error is signaled. For a definition of congruence in this context, see Section 7.6.4 (Congruent Lambda-lists for all Methods of a Generic Function).
+        如果 function-name 当前命名一个广义函数, 这个方法的 lambda 列表必须和这个广义函数的一致. 如果这个状况没有被处理, 就会发出一个错误. 对于在这个上下文中的一致性定义, 见章节 7.6.4 (Congruent Lambda-lists for all Methods of a Generic Function).
 
-Each method-qualifier argument is an object that is used by method combination to identify the given method. The method combination type might further restrict what a method qualifier can be. The standard method combination type allows for unqualified methods and methods whose sole qualifier is one of the keywords :before, :after, or :around.
+        每个 method-qualifier 参数是一个被方法组合用于识别这个给定方法的对象. 方法组合类型可能会进一步限制方法限定符的作用. 标准方法组合类型允许非限定方法和单个限定符是关键字 :before, :after, 或 :around 之一的方法.
 
-The specialized-lambda-list argument is like an ordinary lambda list except that the names of required parameters can be replaced by specialized parameters. A specialized parameter is a list of the form (var parameter-specializer-name). Only required parameters can be specialized. If parameter-specializer-name is a symbol it names a class; if it is a list, it is of the form (eql eql-specializer-form). The parameter specializer name (eql eql-specializer-form) indicates that the corresponding argument must be eql to the object that is the value of eql-specializer-form for the method to be applicable. The eql-specializer-form is evaluated at the time that the expansion of the defmethod macro is evaluated. If no parameter specializer name is specified for a given required parameter, the parameter specializer defaults to the class t. For further discussion, see Section 7.6.2 (Introduction to Methods).
+        这个 specialized-lambda-list 参数和一个普通 lambda 列表类似, 除了必要参数的名字被特化参数替代. 一个特化参数是表达式形式 (var parameter-specializer-name) 的列表. 只有必要参数可以被特化. 如果 parameter-specializer-name 是一个符号, 它就命名一个类; 如果它是一个列表, 它就是表达式形式 (eql eql-specializer-form). 这个参数特化符名字 (eql eql-specializer-form) 表示对应的参数必须和一个对象 eql, 这个对象是对于这个方法可应用的 eql-specializer-form 的值. 这个 eql-specializer-form 在这个 defmethod 宏展开被求值的时候被求值. 如果一个给定的必要参数没有指定参数特化符的名字, 那么这个参数特化符默认是类 t. 关于进一步讨论, 见章节 7.6.2 (Introduction to Methods).
 
-The form arguments specify the method body. The body of the method is enclosed in an implicit block. If function-name is a symbol, this block bears the same name as the generic function. If function-name is a list of the form (setf symbol), the name of the block is symbol.
+        这个 form 参数指定这个方法的主体. 这个方法的主体被闭合在一个隐式的 block 中. 如果 function-name 是一个符号, 这个 block 具有和这个广义函数相同的名字. 如果 function-name 是表达式形式 (setf symbol), 那么这个 block 的名字是 symbol.
 
-The class of the method object that is created is that given by the method class option of the generic function on which the method is defined.
+        这个被创建的方法的类是这个方法定义所在的广义函数的方法类选项给定的.
 
-If the generic function already has a method that agrees with the method being defined on parameter specializers and qualifiers, defmethod replaces the existing method with the one now being defined. For a definition of agreement in this context. see Section 7.6.3 (Agreement on Parameter Specializers and Qualifiers).
+        如果这个广义函数已经有一个和要被定义的方法在参数特化符和限定符上一样的方法, defmethod 用现在要被定义的方法来替换已存在的那个. 关于这个上下文的一致性定义. 见章节 7.6.3 (Agreement on Parameter Specializers and Qualifiers).
 
-The parameter specializers are derived from the parameter specializer names as described in Section 7.6.2 (Introduction to Methods).
+        这些参数特化符源自于章节 7.6.2 (Introduction to Methods) 中描述的参数特化符的名字.
 
-The expansion of the defmethod macro ``refers to'' each specialized parameter (see the description of ignore within the description of declare). This includes parameters that have an explicit parameter specializer name of t. This means that a compiler warning does not occur if the body of the method does not refer to a specialized parameter, while a warning might occur if the body of the method does not refer to an unspecialized parameter. For this reason, a parameter that specializes on t is not quite synonymous with an unspecialized parameter in this context.
+        The expansion of the defmethod macro ``refers to'' each specialized parameter (见 declare 描述中的 ignore 的描述). 这个包括拥有显式参数特化符名字 t 的参数. 这个就意味着, 如果这个方法的主体没有引用一个特化的参数, 编译器不会发出警告, 而在这个方法的主体没有引用一个未特化参数时可能发出警告. 出于这个原因, 在这个上下文中一个在 t 上特化的参数并不完全等同于一个未特化的参数.
 
-Declarations at the head of the method body that apply to the method's lambda variables are treated as bound declarations whose scope is the same as the corresponding bindings.
+        在这个方法体头部的应用于这个方法的 lambda 变量的声明被当作是绑定声明, 它的作用域和对应绑定相同.
 
-Declarations at the head of the method body that apply to the functional bindings of call-next-method or next-method-p apply to references to those functions within the method body forms. Any outer bindings of the function names call-next-method and next-method-p, and declarations associated with such bindings are shadowed[2] within the method body forms.
+        在这个方法主体的头部应用于 call-next-method or next-method-p 的函数绑定的声明可应用于这个方法的主体表达式形式中对这个方法的引用. 任何更外部的名为 call-next-method 和 next-method-p 的函数的绑定, 以及和这样的绑定相关联的声明在这个方法主体表达式形式中都会被遮蔽.
 
-The scope of free declarations at the head of the method body is the entire method body, which includes any implicit local function definitions but excludes initialization forms for the lambda variables.
+        在这个方法主体的头部的自由声明的作用域是整个方法主体, 它包括任何隐式的局部方法定义但是不包括这些 lambda 变量的初始化表达式形式.
 
-defmethod is not required to perform any compile-time side effects. In particular, the methods are not installed for invocation during compilation. An implementation may choose to store information about the generic function for the purposes of compile-time error-checking (such as checking the number of arguments on calls, or noting that a definition for the function name has been seen).
+        defmethod 不需要执行任何编译时副作用. 特别是, 这个方法不会为了在编译期间调用而被设置. 一个具体实现可以选择为了编译时的错误检查去存储关于这个广义函数的信息 (比如在调用上检查参数数量, 或者记录这个函数名的定义已经出现过).
 
-Documentation is attached as a documentation string to the method object.
+        Documentation 作为文档字符串关联给这个方法对象.
 
 * 示例(Examples): None.
 
 * 受此影响(Affected By):
 
-The definition of the referenced generic function.
+        引用的广义函数的定义.
 
 * 异常情况(Exceptional Situations):
 
-If function-name names an ordinary function, a macro, or a special operator, an error of type error is signaled.
+        如果 function-name 命名一个普通函数, 一个宏, 或者一个特殊操作符, 那么就会发出一个 error 类型的错误.
 
-If a generic function is currently named by function-name, the lambda list of the method must be congruent with the lambda list of the generic function, or an error of type error is signaled.
+        如果 function-name 当前命名一个广义函数, 这个方法的 lambda 列表必须和这个广义函数的一致, 否则就会发出一个 error 类型的错误.
 
 * 也见(See Also):
 
-defgeneric, documentation, Section 7.6.2 (Introduction to Methods), Section 7.6.4 (Congruent Lambda-lists for all Methods of a Generic Function), Section 7.6.3 (Agreement on Parameter Specializers and Qualifiers), Section 3.4.11 (Syntactic Interaction of Documentation Strings and Declarations)
+        defgeneric, documentation, Section 7.6.2 (Introduction to Methods), Section 7.6.4 (Congruent Lambda-lists for all Methods of a Generic Function), Section 7.6.3 (Agreement on Parameter Specializers and Qualifiers), Section 3.4.11 (Syntactic Interaction of Documentation Strings and Declarations)
 
 * 注意(Notes): None. 
 
 
-Accessor FIND-CLASS
+### <span id="A-FIND-CLASS">访问器 FIND-CLASS</span>
 
 * 语法(Syntax):
 
-find-class symbol &optional errorp environment => class
+        find-class symbol &optional errorp environment => class
 
-(setf (find-class symbol &optional errorp environment) new-class)
+        (setf (find-class symbol &optional errorp environment) new-class)
 
 * 参数和值(Arguments and Values):
 
-symbol---a symbol.
+        symbol---一个符号.
 
-errorp---a generalized boolean. The default is true.
+        errorp---一个广义 boolean. 默认是 true.
 
-environment -- same as the &environment argument to macro expansion functions and is used to distinguish between compile-time and run-time environments. The &environment argument has dynamic extent; the consequences are undefined if the &environment argument is referred to outside the dynamic extent of the macro expansion function.
+        environment -- 和给宏展开函数的 &environment 参数一样并且被用于区分编译时和运行时环境. 这个 &environment 有着动态范围; 如果这个 &environment 参数在这个宏展开函数的动态范围之外被引用, 那么结果是未定义的.
 
-class---a class object, or nil.
+        class---一个类对象, 或 nil.
 
 * 描述(Description):
 
-Returns the class object named by the symbol in the environment. If there is no such class, nil is returned if errorp is false; otherwise, if errorp is true, an error is signaled.
+        返回在这个 environment 中 symbol 命名的类对象. 如果这里没有这样一个类, 如果 errorp 是 false 就返回 nil; 否则, 如果 errorp 是 true, 就会发出一个错误.
 
-The class associated with a particular symbol can be changed by using setf with find-class; or, if the new class given to setf is nil, the class association is removed (but the class object itself is not affected). The results are undefined if the user attempts to change or remove the class associated with a symbol that is defined as a type specifier in this standard. See Section 4.3.7 (Integrating Types and Classes).
+        这个和特定符号关联的类可以通过用 find-class 来使用 setf 去改变; 或者, 如果给 setf 的新的类是 nil, 这个类关联就会被移除 (但是这个类对象自身不会被影响). 如果用户尝试去改变或移除一个在这个标准中被定义为类型指定符的符号所关联的类, 结果是未定义的. 见章节 4.3.7 (Integrating Types and Classes).
 
-When using setf of find-class, any errorp argument is evaluated for effect, but any values it returns are ignored; the errorp parameter is permitted primarily so that the environment parameter can be used.
+        当使用 find-class 的 setf 时, 任何 errorp 参数会为了效果被求值, 但是它返回的任何值都会被忽略; 这个 errorp 参数首先被允许这样这个  environment 参数可以被使用.<!--TODO 待校验-->
 
-The environment might be used to distinguish between a compile-time and a run-time environment.
+        这个 environment 可能被用于区分编译时环境和运行时环境.
 
 * 示例(Examples): None.
 
@@ -2406,32 +2368,32 @@ The environment might be used to distinguish between a compile-time and a run-ti
 
 * 异常情况(Exceptional Situations):
 
-If there is no such class and errorp is true, find-class signals an error of type error.
+        如果这里没有这样一个类并且 errorp 是 true, find-class 会发出一个 error 类型的错误.
 
 * 也见(See Also):
 
-defmacro, Section 4.3.7 (Integrating Types and Classes)
+        defmacro, Section 4.3.7 (Integrating Types and Classes)
 
 * 注意(Notes): None. 
 
 
-Local Function NEXT-METHOD-P
+### <span id="LF-NEXT-METHOD-P">局部函数 NEXT-METHOD-P</span>
 
 * 语法(Syntax):
 
-next-method-p <no arguments> => generalized-boolean
+        next-method-p <no arguments> => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-generalized-boolean---a generalized boolean.
+        generalized-boolean---一个广义的 boolean.
 
 * 描述(Description):
 
-The locally defined function next-method-p can be used within the body forms (but not the lambda list) defined by a method-defining form to determine whether a next method exists.
+        这样局部定义的函数 next-method-p 可以在一个方法定义表达式形式所定义的主体表达式形式中(而不是 lambda 列表)被用来确定是否存在下一个方法.
 
-The function next-method-p has lexical scope and indefinite extent.
+        函数 next-method-p 有着词法作用域和不确定的范围.
 
-Whether or not next-method-p is fbound in the global environment is implementation-dependent; however, the restrictions on redefinition and shadowing of next-method-p are the same as for symbols in the COMMON-LISP package which are fbound in the global environment. The consequences of attempting to use next-method-p outside of a method-defining form are undefined.
+        这个 next-method-p 在全局环境中是否是 fbound 的是依赖于具体实现的; 然而, 这个 next-method-p 的重定义和遮蔽的限制和 COMMON-LISP 包中在全局环境中被 fbound 的符号一样. 尝试在一个方法定义表达式形式外部使用 next-method-p 的后果是未定义的.
 
 * 示例(Examples): None.
 
@@ -2441,46 +2403,43 @@ Whether or not next-method-p is fbound in the global environment is implementati
 
 * 也见(See Also):
 
-call-next-method, defmethod, call-method
+        call-next-method, defmethod, call-method
 
 * 注意(Notes): None. 
 
 
-Local Macro CALL-METHOD, MAKE-METHOD
+### <span id="LM-CALL-METHOD-MAKE-METHOD">局部宏 CALL-METHOD, MAKE-METHOD</span>
 
 * 语法(Syntax):
 
-call-method method &optional next-method-list => result*
+        call-method method &optional next-method-list => result*
 
-make-method form => method-object
+        make-method form => method-object
 
 * 参数和值(Arguments and Values):
 
-method---a method object, or a list (see below); not evaluated.
-
-method-object---a method object.
-
-next-method-list---a list of method objects; not evaluated.
-
-results---the values returned by the method invocation.
+        method---一个方法对象, 或者一个列表 (见下方); 不求值.
+        method-object---一个方法对象.
+        next-method-list---一个方法对象的列表; 不求值.
+        results---这个方法调用返回的值.
 
 * 描述(Description):
 
-The macro call-method is used in method combination. It hides the implementation-dependent details of how methods are called. The macro call-method has lexical scope and can only be used within an effective method form.
+        宏 call-method 被用于方法组合. 它隐藏了依赖于具体实现的方法如何被调用的细节. 宏 call-method 有词法作用域并且只能在有效的方法表达式形式中被使用.
 
-Whether or not call-method is fbound in the global environment is implementation-dependent; however, the restrictions on redefinition and shadowing of call-method are the same as for symbols in the COMMON-LISP package which are fbound in the global environment. The consequences of attempting to use call-method outside of an effective method form are undefined.
+        call-method 在全局环境中是否为 fbound 是依赖于具体实现的; 然而, 在 call-method 的重定义和遮蔽上的限制和那些 COMMON-LISP 包中在全局环境里是 fbound 的符号一样. 尝试在一个有效方法表达式形式外部使用 call-method 的后果是.
 
-The macro call-method invokes the specified method, supplying it with arguments and with definitions for call-next-method and for next-method-p. If the invocation of call-method is lexically inside of a make-method, the arguments are those that were supplied to that method. Otherwise the arguments are those that were supplied to the generic function. The definitions of call-next-method and next-method-p rely on the specified next-method-list.
+        宏 call-method 调用指定的方法, 把参数还有 call-next-method 和 next-method-p 的定义提供给它. 如果这个 call-method 的调用在词法上 make-method 的内部, 参数是提供给那个方法的那些. 否则参数是提供给那个广义函数的那些. 这个 call-next-method 和 next-method-p 的定义依赖指定的 next-method-list.
 
-If method is a list, the first element of the list must be the symbol make-method and the second element must be a form. Such a list specifies a method object whose method function has a body that is the given form.
+        如果 method 是一个列表, 这个列表的第一个元素必须是 make-method 并且第二个元素必须是一个表达式形式. 这样一个列表指定了一个方法函数的主体为给定表达式形式的方法对象.
 
-Next-method-list can contain method objects or lists, the first element of which must be the symbol make-method and the second element of which must be a form.
+        Next-method-list 可以包含多个方法对象或列表, 这个列表的第一个元素必须是 make-method 并且第二个元素必须是一个表达式形式.
 
-Those are the only two places where make-method can be used. The form used with make-method is evaluated in the null lexical environment augmented with a local macro definition for call-method and with bindings named by symbols not accessible from the COMMON-LISP-USER package.
+        那些是可以使用 make-method 的仅有的两处. 和 make-method 一起使用的那个 form 在空词法环境中被求值, 可以通过一个 call-method 的局部宏定义和不能从 COMMON-LISP-USER 包中访问的符号命名的绑定来扩展.
 
-The call-next-method function available to method will call the first method in next-method-list. The call-next-method function available in that method, in turn, will call the second method in next-method-list, and so on, until the list of next methods is exhausted.
+        对 method 可用的 call-next-method 会调用 next-method-list 中的第一个方法. 在那个方法中可用的 call-next-method 函数依次会调用 next-method-list 中的第二个方法, 以此类推, 直到后续方法的列表耗尽.
 
-If next-method-list is not supplied, the call-next-method function available to method signals an error of type control-error and the next-method-p function available to method returns nil.
+        如果没有提供 next-method-list, 对 method 可用的 call-next-method 函数发出一个 control-error 类型的错误并且对 method 可用的这个 next-method-p 函数返回 nil.
 
 * 示例(Examples):
 
@@ -2490,91 +2449,88 @@ If next-method-list is not supplied, the call-next-method function available to 
 
 * 也见(See Also):
 
-call-next-method, define-method-combination, next-method-p
+        call-next-method, define-method-combination, next-method-p
 
 * 注意(Notes): None. 
 
 
-Local Function CALL-NEXT-METHOD
+### <span id="LF-CALL-NEXT-METHOD">局部函数 CALL-NEXT-METHOD</span>
 
 * 语法(Syntax):
 
-call-next-method &rest args => result*
+        call-next-method &rest args => result*
 
 * 参数和值(Arguments and Values):
 
-arg---an object.
-
-results---the values returned by the method it calls.
+        arg---一个对象.
+        results---它调用的方法的返回值.
 
 * 描述(Description):
 
-The function call-next-method can be used within the body forms (but not the lambda list) of a method defined by a method-defining form to call the next method.
+        函数 call-next-method 可以在一个通过方法定义表达式形式定义的方法的主体表达式形式中(但不包括 lambda 列表)被用来调用下一个方法.
 
-If there is no next method, the generic function no-next-method is called.
+        如果没有下一个方法, 那么广义函数 no-next-method 会被调用.
 
-The type of method combination used determines which methods can invoke call-next-method. The standard method combination type allows call-next-method to be used within primary methods and around methods. For generic functions using a type of method combination defined by the short form of define-method-combination, call-next-method can be used in around methods only.
+        使用的方法组合的类型决定哪些方法可以调用 call-next-method. 标准方法组合类型允许 call-next-method 在主方法和 around 方法中被使用. 对于使用通过 define-method-combination 的短表达式形式定义的方法组合类型的方法, call-next-method 只能被用于 around 方法.
 
-When call-next-method is called with no arguments, it passes the current method's original arguments to the next method. Neither argument defaulting, nor using setq, nor rebinding variables with the same names as parameters of the method affects the values call-next-method passes to the method it calls.
+        当 call-next-method 以无参数的情况被调用, 它传递当前方法的原始参数给下一个方法. 不管是参数违约, 还是使用 setq, 或者使用与方法参数相同的名称重新绑定变量, 这些变量都不会影响 call-next-method 传递给它所调用的方法的值.
 
-When call-next-method is called with arguments, the next method is called with those arguments.
+        当用参数调用 call-next-method 时, 下一个方法会用这些参数来调用.
 
-If call-next-method is called with arguments but omits optional arguments, the next method called defaults those arguments.
+        如果用参数调用了 call-next-method 但是省略了可选参数, 那么下一个方法被调用省略那些参数.<!--TODO 待校验-->
 
-The function call-next-method returns any values that are returned by the next method.
+        函数 call-next-method 返回任何下一个方法返回的值.
 
-The function call-next-method has lexical scope and indefinite extent and can only be used within the body of a method defined by a method-defining form.
+        函数 call-next-method 有着词法作用域和不确定的范围并且只能在一个通过方法定义表达式形式定义的方法的主体中被使用.
 
-Whether or not call-next-method is fbound in the global environment is implementation-dependent; however, the restrictions on redefinition and shadowing of call-next-method are the same as for symbols in the COMMON-LISP package which are fbound in the global environment. The consequences of attempting to use call-next-method outside of a method-defining form are undefined.
+        call-next-method 在全局环境中是否为 fbound 是依赖于具体实现的; 然而, 在 call-next-method 的重定义和遮蔽上的约束和 COMMON-LISP 包里在全局环境中被 fbound 的方法一样. 尝试在一个方法定义表达式形式的外部去使用 call-next-method 的后果是不确定的.
 
 * 示例(Examples): None.
 
 * 受此影响(Affected By):
 
-defmethod, call-method, define-method-combination.
+        defmethod, call-method, define-method-combination.
 
 * 异常情况(Exceptional Situations):
 
-When providing arguments to call-next-method, the following rule must be satisfied or an error of type error should be signaled: the ordered set of applicable methods for a changed set of arguments for call-next-method must be the same as the ordered set of applicable methods for the original arguments to the generic function. Optimizations of the error checking are possible, but they must not change the semantics of call-next-method.
+        当给 call-next-method 提供参数时, 下面的规则必须被满足, 否则就会发出一个 error 类型的错误: 对于 call-next-method 的一个被改变的参数集的可应用方法有序集必须和这个广义函数的原始参数的可应用方法有序集相同. 错误检查的优化是可以的，但是它们不能改变 call-next-method 的语义.
 
 * 也见(See Also):
 
-define-method-combination, defmethod, next-method-p, no-next-method, call-method, Section 7.6.6 (Method Selection and Combination), Section 7.6.6.2 (Standard Method Combination), Section 7.6.6.4 (Built-in Method Combination Types)
+        define-method-combination, defmethod, next-method-p, no-next-method, call-method, Section 7.6.6 (Method Selection and Combination), Section 7.6.6.2 (Standard Method Combination), Section 7.6.6.4 (Built-in Method Combination Types)
 
 * 注意(Notes): None. 
 
 
-Standard Generic Function COMPUTE-APPLICABLE-METHODS
+### <span id="SGF-COMPUTE-APPLICABLE-METHODS">标准广义函数 COMPUTE-APPLICABLE-METHODS</span>
 
 * 语法(Syntax):
 
-compute-applicable-methods generic-function function-arguments => methods
+        compute-applicable-methods generic-function function-arguments => methods
 
 * 方法签名(Method Signatures):
 
-compute-applicable-methods (generic-function standard-generic-function)
+        compute-applicable-methods (generic-function standard-generic-function)
 
 * 参数和值(Arguments and Values):
 
-generic-function---a generic function.
-
-function-arguments---a list of arguments for the generic-function.
-
-methods---a list of method objects.
+        generic-function---一个广义函数.
+        function-arguments---这个 generic-function 的参数列表.
+        methods---一个方法对象列表.
 
 * 描述(Description):
 
-Given a generic-function and a set of function-arguments, the function compute-applicable-methods returns the set of methods that are applicable for those arguments sorted according to precedence order. See Section 7.6.6 (Method Selection and Combination).
+        给定一个 generic-function 和一个 function-arguments 集合, 函数 compute-applicable-methods 返回可应用于这些根据优先级顺序排序后的参数的方法集合. 见章节 7.6.6 (Method Selection and Combination).
 
 * 受此影响(Affected By):
 
-defmethod
+        defmethod
 
 * 异常情况(Exceptional Situations): None.
 
 * 也见(See Also):
 
-Section 7.6.6 (Method Selection and Combination)
+        Section 7.6.6 (Method Selection and Combination)
 
 * 注意(Notes): None. 
 
@@ -2605,11 +2561,11 @@ long-form-option::= :description description |
 
 args-lambda-list---a define-method-combination arguments lambda list.
 
-declaration---a declare expression; not evaluated.
+declaration---a declare expression; 不求值.
 
 description---a format control.
 
-documentation---a string; not evaluated.
+documentation---a string; 不求值.
 
 forms---an implicit progn that must compute and return the form that specifies how the methods are combined, that is, the effective method.
 
@@ -2864,87 +2820,83 @@ call-method, call-next-method, documentation, method-qualifiers, method-combinat
 The :method-combination option of defgeneric is used to specify that a generic function should use a particular method combination type. The first argument to the :method-combination option is the name of a method combination type and the remaining arguments are options for that type. 
 
 
-Standard Generic Function FIND-METHOD
+### <span id="">标准广义函数 FIND-METHOD</span>
 
 * 语法(Syntax):
 
-find-method generic-function method-qualifiers specializers &optional errorp
-
-=> method
+        find-method generic-function method-qualifiers specializers &optional errorp
+        => method
 
 * 方法签名(Method Signatures):
 
-find-method (generic-function standard-generic-function) method-qualifiers specializers &optional errorp
+        find-method (generic-function standard-generic-function) method-qualifiers specializers &optional errorp
 
 * 参数和值(Arguments and Values):
 
-generic-function---a generic function.
-
-method-qualifiers---a list.
-
-specializers---a list.
-
-errorp---a generalized boolean. The default is true.
-
-method---a method object, or nil.
+        generic-function---一个广义函数.
+        method-qualifiers---一个列表.
+        specializers---一个里诶包.
+        errorp---一个广义 boolean. 默认值是 true.
+        method---一个方法对象, 或 nil.
 
 * 描述(Description):
 
-The generic function find-method takes a generic function and returns the method object that agrees on qualifiers and parameter specializers with the method-qualifiers and specializers arguments of find-method. Method-qualifiers contains the method qualifiers for the method. The order of the method qualifiers is significant. For a definition of agreement in this context, see Section 7.6.3 (Agreement on Parameter Specializers and Qualifiers).
+        广义函数 find-method 接受一个广义函数并且返回限定符和参数特化符与 find-method 参数中的 method-qualifiers 和 specializers 一致的方法对象. Method-qualifiers 包含了这个方法的方法限定符. 方法限定符的顺序是重要的. 对于在这个上下文中一致性的定义, 见章节 7.6.3 (Agreement on Parameter Specializers and Qualifiers).
 
-The specializers argument contains the parameter specializers for the method. It must correspond in length to the number of required arguments of the generic function, or an error is signaled. This means that to obtain the default method on a given generic-function, a list whose elements are the class t must be given.
+        这个 specializers 参数包含了这个方法的参数特化符. 它必须和这个广义函数的必要参数的数量对应, 否则就会发出一个错误. 这个意味着为了获取一个给定 generic-function 上的默认方法, 需要给定一个元素为类 t 的列表.
 
-If there is no such method and errorp is true, find-method signals an error. If there is no such method and errorp is false, find-method returns nil.
+        如果这里没有这样一个方法并且 errorp 是 true, find-method 会发出一个错误. 如果这里没有这样一个方法而 errorp 是 false, find-method 返回 nil.
 
 * 示例(Examples):
 
- (defmethod some-operation ((a integer) (b float)) (list a b))
-=>  #<STANDARD-METHOD SOME-OPERATION (INTEGER FLOAT) 26723357>
- (find-method #'some-operation '() (mapcar #'find-class '(integer float)))
-=>  #<STANDARD-METHOD SOME-OPERATION (INTEGER FLOAT) 26723357>
- (find-method #'some-operation '() (mapcar #'find-class '(integer integer)))
->>  Error: No matching method
- (find-method #'some-operation '() (mapcar #'find-class '(integer integer)) nil)
-=>  NIL
+    ```LISP
+    (defmethod some-operation ((a integer) (b float)) (list a b))
+    =>  #<STANDARD-METHOD SOME-OPERATION (INTEGER FLOAT) 26723357>
+    (find-method #'some-operation '() (mapcar #'find-class '(integer float)))
+    =>  #<STANDARD-METHOD SOME-OPERATION (INTEGER FLOAT) 26723357>
+    (find-method #'some-operation '() (mapcar #'find-class '(integer integer)))
+    >>  Error: No matching method
+    (find-method #'some-operation '() (mapcar #'find-class '(integer integer)) nil)
+    =>  NIL
+    ```
 
 * 受此影响(Affected By):
 
-add-method, defclass, defgeneric, defmethod
+        add-method, defclass, defgeneric, defmethod
 
 * 异常情况(Exceptional Situations):
 
-If the specializers argument does not correspond in length to the number of required arguments of the generic-function, an an error of type error is signaled.
+        如果 specializers 参数不对应 generic-function 必要参数的数量, 就会发出一个 error 类型的错误.
 
-If there is no such method and errorp is true, find-method signals an error of type error.
+        如果这里没有这样一个方法并且 errorp 是 true, find-method 发出一个 error 类型的错误.
 
 * 也见(See Also):
 
-Section 7.6.3 (Agreement on Parameter Specializers and Qualifiers)
+        Section 7.6.3 (Agreement on Parameter Specializers and Qualifiers)
 
 * 注意(Notes): None. 
 
 
-Standard Generic Function ADD-METHOD
+### <span id="SGF-ADD-METHOD">标准广义函数 ADD-METHOD</span>
 
 * 语法(Syntax):
 
-add-method generic-function method => generic-function
+        add-method generic-function method => generic-function
 
 * 方法签名(Method Signatures):
 
-add-method (generic-function standard-generic-function) (method method)
+        add-method (generic-function standard-generic-function) (method method)
 
 * 参数和值(Arguments and Values):
 
-generic-function---a generic function object.
-
-method---a method object.
+        generic-function---一个广义函数对象.
+        method---一个方法对象.
 
 * 描述(Description):
 
-The generic function add-method adds a method to a generic function.
+        广义函数 add-method 添加一个方法到广义函数.
 
-If method agrees with an existing method of generic-function on parameter specializers and qualifiers, the existing method is replaced.
+        如果 method 和广义函数中一个已存在的方法在参数特化符和限定符上一致, 那个存在的方法就会被替换.
 
 * 示例(Examples): None.
 
@@ -2952,40 +2904,39 @@ If method agrees with an existing method of generic-function on parameter specia
 
 * 异常情况(Exceptional Situations):
 
-The lambda list of the method function of method must be congruent with the lambda list of generic-function, or an error of type error is signaled.
+        method 的方法函数的 lambda 列表必须和广义函数的 lambda 列表一致, 否则就会发出一个 error 类型的错误.
 
-If method is a method object of another generic function, an error of type error is signaled.
+        如果 method 是另一个广义函数的方法对象, 就会发出一个 error 类型的错误.
 
 * 也见(See Also):
 
-defmethod, defgeneric, find-method, remove-method, Section 7.6.3 (Agreement on Parameter Specializers and Qualifiers)
+        defmethod, defgeneric, find-method, remove-method, Section 7.6.3 (Agreement on Parameter Specializers and Qualifiers)
 
 * 注意(Notes): None. 
 
 
-Standard Generic Function INITIALIZE-INSTANCE
+### <span id="SGF-INITIALIZE-INSTANCE">标准广义函数 INITIALIZE-INSTANCE</span>
 
 * 语法(Syntax):
 
-initialize-instance instance &rest initargs &key &allow-other-keys => instance
+        initialize-instance instance &rest initargs &key &allow-other-keys => instance
 
 * 方法签名(Method Signatures):
 
-initialize-instance (instance standard-object) &rest initargs
+        initialize-instance (instance standard-object) &rest initargs
 
 * 参数和值(Arguments and Values):
 
-instance---an object.
-
-initargs---a defaulted initialization argument list.
+        instance---一个对象.
+        initargs---一个默认初始化参数列表.
 
 * 描述(Description):
 
-Called by make-instance to initialize a newly created instance. The generic function is called with the new instance and the defaulted initialization argument list.
+        被 make-instance 调用来初始化新创建的实例. 这个广义函数用这个新的实例和默认初始化参数列表来调用.
 
-The system-supplied primary method on initialize-instance initializes the slots of the instance with values according to the initargs and the :initform forms of the slots. It does this by calling the generic function shared-initialize with the following arguments: the instance, t (this indicates that all slots for which no initialization arguments are provided should be initialized according to their :initform forms), and the initargs.
+        系统提供的 initialize-instance 主方法根据 initargs 和槽的 :initform 表达式形式的值来初始化实例 instance 的槽. 它通过使用以下参数调用广义函数 shared-initialize 来完成这个: 这个实例 instance, t (这个表示所有没有提供初始化参数的槽应该根据它们的 :initform 表达式形式来初始化), 还有 initargs.
 
-Programmers can define methods for initialize-instance to specify actions to be taken when an instance is initialized. If only after methods are defined, they will be run after the system-supplied primary method for initialization and therefore will not interfere with the default behavior of initialize-instance.
+        程序员可以为 initialize-instance 定义方法来指定在一个实例被初始化时采取的动作. 如果只定义了 alter 方法, 它们会在系统提供的用于初始化的主方法之后被运行, 因此不会影响到 initialize-instance 的默认行为.
 
 * 示例(Examples): None.
 
@@ -2995,30 +2946,30 @@ Programmers can define methods for initialize-instance to specify actions to be 
 
 * 也见(See Also):
 
-shared-initialize, make-instance, slot-boundp, slot-makunbound, Section 7.1 (Object Creation and Initialization), Section 7.1.4 (Rules for Initialization Arguments), Section 7.1.2 (Declaring the Validity of Initialization Arguments)
+        shared-initialize, make-instance, slot-boundp, slot-makunbound, Section 7.1 (Object Creation and Initialization), Section 7.1.4 (Rules for Initialization Arguments), Section 7.1.2 (Declaring the Validity of Initialization Arguments)
 
 * 注意(Notes): None. 
 
 
-Standard Generic Function CLASS-NAME
+### <span id="SGF-CLASS-NAME">标准广义函数 CLASS-NAME</span>
 
 * 语法(Syntax):
 
-class-name class => name
+        class-name class => name
 
 * 方法签名(Method Signatures):
 
-class-name (class class)
+        class-name (class class)
 
 * 参数和值(Arguments and Values):
 
-class---a class object.
+        class---一个类对象.
 
-name---a symbol.
+        name---一个符号.
 
 * 描述(Description):
 
-Returns the name of the given class.
+        返回给定类的名字.
 
 * 示例(Examples): None.
 
@@ -3028,34 +2979,33 @@ Returns the name of the given class.
 
 * 也见(See Also):
 
-find-class, Section 4.3 (Classes)
+        find-class, Section 4.3 (Classes)
 
 * 注意(Notes):
 
-If S is a symbol such that S =(class-name C) and C =(find-class S), then S is the proper name of C. For further discussion, see Section 4.3 (Classes).
+        如果 S 是一个符号,其中 S =(class-name C) 并且 C =(find-class S), 那么 S 是 C 的一个特有的名字. 关于进一步讨论, 见章节 4.3 (Classes).
 
-The name of an anonymous class is nil. 
+        一个匿名类的名字是 nil. 
 
 
-Standard Generic Function (SETF CLASS-NAME)
+### <span id="SGF-SETF-CLASS-NAME">标准广义函数 (SETF CLASS-NAME)</span>
 
 * 语法(Syntax):
 
-(setf class-name) new-value class => new-value
+        (setf class-name) new-value class => new-value
 
 * 方法签名(Method Signatures):
 
-(setf class-name) new-value (class class)
+        (setf class-name) new-value (class class)
 
 * 参数和值(Arguments and Values):
 
-new-value---a symbol.
-
-class---a class.
+        new-value---一个符号.
+        class---一个类.
 
 * 描述(Description):
 
-The generic function (setf class-name) sets the name of a class object.
+        广义函数 (setf class-name) 设置一个类对象的名字.
 
 * 示例(Examples): None.
 
@@ -3065,40 +3015,41 @@ The generic function (setf class-name) sets the name of a class object.
 
 * 也见(See Also):
 
-find-class, proper name, Section 4.3 (Classes)
+        find-class, proper name, Section 4.3 (Classes)
 
 * 注意(Notes): None. 
 
 
-Function CLASS-OF
+### <span id="F-CLASS-OF">函数 CLASS-OF</span>
 
 * 语法(Syntax):
 
-class-of object => class
+        class-of object => class
 
 * 参数和值(Arguments and Values):
 
-object---an object.
-
-class---a class object.
+        object---一个对象.
+        class---一个类对象.
 
 * 描述(Description):
 
-Returns the class of which the object is a direct instance.
+        返回这个直接实例为 object 的类.
 
 * 示例(Examples):
 
- (class-of 'fred) =>  #<BUILT-IN-CLASS SYMBOL 610327300>
- (class-of 2/3) =>  #<BUILT-IN-CLASS RATIO 610326642>
- 
- (defclass book () ()) =>  #<STANDARD-CLASS BOOK 33424745>
- (class-of (make-instance 'book)) =>  #<STANDARD-CLASS BOOK 33424745>
- 
- (defclass novel (book) ()) =>  #<STANDARD-CLASS NOVEL 33424764>
- (class-of (make-instance 'novel)) =>  #<STANDARD-CLASS NOVEL 33424764>
+    ```LISP
+    (class-of 'fred) =>  #<BUILT-IN-CLASS SYMBOL 610327300>
+    (class-of 2/3) =>  #<BUILT-IN-CLASS RATIO 610326642>
+    
+    (defclass book () ()) =>  #<STANDARD-CLASS BOOK 33424745>
+    (class-of (make-instance 'book)) =>  #<STANDARD-CLASS BOOK 33424745>
+    
+    (defclass novel (book) ()) =>  #<STANDARD-CLASS NOVEL 33424764>
+    (class-of (make-instance 'novel)) =>  #<STANDARD-CLASS NOVEL 33424764>
 
- (defstruct kons kar kdr) =>  KONS
- (class-of (make-kons :kar 3 :kdr 4)) =>  #<STRUCTURE-CLASS KONS 250020317>
+    (defstruct kons kar kdr) =>  KONS
+    (class-of (make-kons :kar 3 :kdr 4)) =>  #<STRUCTURE-CLASS KONS 250020317>
+    ```
 
 * 受此影响(Affected By): None.
 
@@ -3106,43 +3057,42 @@ Returns the class of which the object is a direct instance.
 
 * 也见(See Also):
 
-make-instance, type-of
+        make-instance, type-of
 
 * 注意(Notes): None. 
 
 
-Condition Type UNBOUND-SLOT
+### <span id="CT-UNBOUND-SLOT">状况类型 UNBOUND-SLOT</span>
 
-Class Precedence List:
+* 类优先级列表(Class Precedence List):
 
-unbound-slot, cell-error, error, serious-condition, condition, t
+        unbound-slot, cell-error, error, serious-condition, condition, t
 
 * 描述(Description):
 
-The object having the unbound slot is initialized by the :instanceinitialization argument to make-condition, and is accessed by the function unbound-slot-instance.
+        这个有着未绑定槽的对象通过给 make-condition 的 :instanceinitialization 参数被初始化, 并且通过函数 unbound-slot-instance 被访问.
 
-The name of the cell (see cell-error) is the name of the slot.
+        这个格(cell)(见 cell-error)的名字是这个槽的名字t.
 
 * 也见(See Also):
 
-cell-error-name, unbound-slot-object, Section 9.1 (Condition System Concepts) 
+        cell-error-name, unbound-slot-object, Section 9.1 (Condition System Concepts) 
 
 
-Function UNBOUND-SLOT-INSTANCE
+### <span id="F-UNBOUND-SLOT-INSTANCE">函数 UNBOUND-SLOT-INSTANCE</span>
 
 * 语法(Syntax):
 
-unbound-slot-instance condition => instance
+        unbound-slot-instance condition => instance
 
 * 参数和值(Arguments and Values):
 
-condition---a condition of type unbound-slot.
-
-instance---an object.
+        condition---一个类型 unbound-slot 的状况.
+        instance---一个对象.
 
 * 描述(Description):
 
-Returns the instance which had the unbound slot in the situation represented by the condition.
+        返回这个 condition 所表示的情况下有着未绑定槽的实例.
 
 * 示例(Examples): None.
 
@@ -3152,7 +3102,7 @@ Returns the instance which had the unbound slot in the situation represented by 
 
 * 也见(See Also):
 
-cell-error-name, unbound-slot, Section 9.1 (Condition System Concepts)
+        cell-error-name, unbound-slot, Section 9.1 (Condition System Concepts)
 
 * 注意(Notes): None. 
 
