@@ -2535,289 +2535,275 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (Standard M
 * 注意(Notes): None. 
 
 
-Macro DEFINE-METHOD-COMBINATION
-
+### <span id="M-DEFINE-METHOD-COMBINATION">宏 DEFINE-METHOD-COMBINATION</span>
+<!--TODO role ??  qualifier patterns?? -->
 * 语法(Syntax):
 
-define-method-combination name [[short-form-option]]
+        define-method-combination name [[short-form-option]]
+        => name
 
-=> name
+        define-method-combination name lambda-list (method-group-specifier*) [(:arguments . args-lambda-list)] [(:generic-function generic-function-symbol)] [[declaration* | documentation]] form*
+        => name
 
-define-method-combination name lambda-list (method-group-specifier*) [(:arguments . args-lambda-list)] [(:generic-function generic-function-symbol)] [[declaration* | documentation]] form*
+        short-form-option::= :documentation documentation |  
+                            :identity-with-one-argument identity-with-one-argument | 
+                            :operator operator 
 
-=> name
+        method-group-specifier::= (name {qualifier-pattern+ | predicate} [[long-form-option]]) 
 
-short-form-option::= :documentation documentation |  
-                     :identity-with-one-argument identity-with-one-argument | 
-                     :operator operator 
-
-method-group-specifier::= (name {qualifier-pattern+ | predicate} [[long-form-option]]) 
-
-long-form-option::= :description description | 
-                    :order order | 
-                    :required required-p 
+        long-form-option::= :description description | 
+                            :order order | 
+                            :required required-p 
 
 * 参数和值(Arguments and Values):
 
-args-lambda-list---a define-method-combination arguments lambda list.
-
-declaration---a declare expression; 不求值.
-
-description---a format control.
-
-documentation---a string; 不求值.
-
-forms---an implicit progn that must compute and return the form that specifies how the methods are combined, that is, the effective method.
-
-generic-function-symbol---a symbol.
-
-identity-with-one-argument---a generalized boolean.
-
-lambda-list---ordinary lambda list.
-
-name---a symbol. Non-keyword, non-nil symbols are usually used.
-
-operator---an operator. Name and operator are often the same symbol. This is the default, but it is not required.
-
-order---:most-specific-first or :most-specific-last; evaluated.
-
-predicate---a symbol that names a function of one argument that returns a generalized boolean.
-
-qualifier-pattern---a list, or the symbol *.
-
-required-p---a generalized boolean.
+        args-lambda-list---一个 define-method-combination 参数 lambda 列表.
+        declaration---一个 declare 表达式形式; 不求值.
+        description---一个格式化控制(format control).
+        documentation---一个字符串; 不求值.
+        forms---一个计算并返回指定这些方法如何组合的表达式形式的隐式的 progn, 这也就是说, 这个有效方法(effective method).
+        generic-function-symbol---一个符号.
+        identity-with-one-argument---一个广义 boolean.
+        lambda-list---普通 lambda 列表.
+        name---一个符号. 通常使用非关键字, 非 nil 的符号.
+        operator---一个操作符. Name 和 operator 经常是同一个符号. 这是默认的, 但不是必须的.
+        order---:most-specific-first 或 :most-specific-last; 求值的.
+        predicate---一个命名一个单参数并返回一个广义 boolean 的函数的符号.
+        qualifier-pattern---一个列表, 或者符号 *.
+        required-p---一个广义 boolean.
 
 * 描述(Description):
 
-The macro define-method-combination is used to define new types of method combination.
+        宏 define-method-combination 被用于定义新的方法组合类型.
 
-There are two forms of define-method-combination. The short form is a simple facility for the cases that are expected to be most commonly needed. The long form is more powerful but more verbose. It resembles defmacro in that the body is an expression, usually using backquote, that computes a form. Thus arbitrary control structures can be implemented. The long form also allows arbitrary processing of method qualifiers.
+        这里有两个 define-method-combination 的表达式形式. 短表达式形式是一个简单的工具, 用于最常见的情况. 长表达式形式更强大但也更繁琐. 它类似于 defmacro , 其中的主体是一个表达式, 通常使用反引号, 那个计算一个表达式形式. 因此可以实现任意控制结构. 长表达式形式也允许任意方法限定符的处理.
 
-Short Form
+        短表达式形式
 
-    The short form syntax of define-method-combination is recognized when the second subform is a non-nil symbol or is not present. When the short form is used, name is defined as a type of method combination that produces a Lisp form (operator method-call method-call ...). The operator is a symbol that can be the name of a function, macro, or special operator. The operator can be supplied by a keyword option; it defaults to name.
+            这个 define-method-combination 的短表达式形式的语法当它的第二个子表达式形式是非 nil 的符号或不存在时被识别. 当使用这个短表达式形式时, name 被定义为一个产生一个 Lisp 表达式形式(operator method-call method-call ...)的方法组合的类型 . 这个 operator 是一个符号, 它可以是一个函数, 宏, 或者特殊操作符的名字. 这个 operator 可以通过一个关键字选项来提供; 它默认为 name.
 
-    Keyword options for the short form are the following:
+            以下是短表达式形式的关键字选项:
 
-        The :documentation option is used to document the method-combination type; see description of long form below.
+                这个 :documentation 选项被用于记录这个 method-combination 类型; 参见下面的长表达式形式的描述.
 
-        The :identity-with-one-argument option enables an optimization when its value is true (the default is false). If there is exactly one applicable method and it is a primary method, that method serves as the effective method and operator is not called. This optimization avoids the need to create a new effective method and avoids the overhead of a function call. This option is designed to be used with operators such as progn, and, +, and max.
+                这个 :identity-with-one-argument 选项在它的值为 true 时(默认是 false)启动一个优化. 如果这里只有一个可应用方法并且它是一个主方法, 那个方法当作有效方法并且 operator 不会被调用. 这个优化避免去创建一个新的有效方法并且避免了一个方法调用的开销. 这个选项被设计来和例如 progn, and, +, 和 max 这样的操作符一起使用.
 
-        The :operator option specifies the name of the operator. The operator argument is a symbol that can be the name of a function, macro, or special form.
+                这个 :operator 选项指定这个操作符的名字. 这个操作符 operator 参数是一个可以为一个函数, 宏, 或特殊表达式形式的名字的符号.
 
-    These types of method combination require exactly one qualifier per method. An error is signaled if there are applicable methods with no qualifiers or with qualifiers that are not supported by the method combination type.
+            这些方法组合的类型必须一个方法一个限定符. 如果这里这里存在没有限定符或有着这个方法组合类型不支持的限定符, 就会发出一个错误.
 
-    A method combination procedure defined in this way recognizes two roles for methods. A method whose one qualifier is the symbol naming this type of method combination is defined to be a primary method. At least one primary method must be applicable or an error is signaled. A method with :around as its one qualifier is an auxiliary method that behaves the same as an around method in standard method combination. The function call-next-method can only be used in around methods; it cannot be used in primary methods defined by the short form of the define-method-combination macro.
+            以这种方法定义的一个方法组合过程识别方法的两个作用. 一个限定符是一个命名这个方法组合类型的符号的方法被定义为一个主方法. 至少一个主方法必须是可应用的, 否则就会发出一个错误. 一个限定符为 :around 的方法是一个辅助方法, 它的行为和标准方法组合类型中的 around 方法一样. 函数 call-next-method 只能被用于 around 方法中; 它不能被用于 define-method-combination 宏的短表达式形式定义的主方法中.
 
-    A method combination procedure defined in this way accepts an optional argument named order, which defaults to :most-specific-first. A value of :most-specific-last reverses the order of the primary methods without affecting the order of the auxiliary methods.
+            以这种方法定义的一个方法组合过程接受一个名为 order 的可选参数, 它默认为 :most-specific-first. 一个 :most-specific-last 值在不影响辅助方法顺序的情况下倒转这个主方法的顺序.
 
-    The short form automatically includes error checking and support for around methods.
+            这个短表达式形式自动包括错误检查和 around 方法的支持.
 
-    For a discussion of built-in method combination types, see Section 7.6.6.4 (Built-in Method Combination Types).
+            对于一个内建方法组合类型的讨论, 见章节 7.6.6.4 (Built-in Method Combination Types).
 
-Long Form
+        长表达式形式
 
-    The long form syntax of define-method-combination is recognized when the second subform is a list.
+            define-method-combination 的长表达式形式语法在它的第二个子表达式形式为一个列表时被识别.
 
-    The lambda-list receives any arguments provided after the name of the method combination type in the :method-combination option to defgeneric.
+            这个 lambda-list 接受给 defgeneric 的 :method-combination 选项中的方法组合类型的名字后面的任何参数.
 
-    A list of method group specifiers follows. Each specifier selects a subset of the applicable methods to play a particular role, either by matching their qualifiers against some patterns or by testing their qualifiers with a predicate. These method group specifiers define all method qualifiers that can be used with this type of method combination.
+            一个方法组说明符的列表如下. 每个说明符选择可应用方法的子集来扮演特定的角色, 或者通过匹配某些模式的限定符, 或者通过断言来测试他们的限定符. 这些方法组说明符定义了所有可以和这个方法组合类型一起使用的方法限定符.
 
-    The car of each method-group-specifier is a symbol which names a variable. During the execution of the forms in the body of define-method-combination, this variable is bound to a list of the methods in the method group. The methods in this list occur in the order specified by the :order option.
+            每个 method-group-specifier 的 car 是一个命名一个变量的符号. 在 define-method-combination 的主体中的表达式形式的执行期间, 这个变量被绑定给这个方法组中的一个方法列表. 这个列表中的方法以 :order 选项指定的顺序出现.
 
-    If qualifier-pattern is a symbol it must be *. A method matches a qualifier-pattern if the method's list of qualifiers is equal to the qualifier-pattern (except that the symbol * in a qualifier-pattern matches anything). Thus a qualifier-pattern can be one of the following: the empty list, which matches unqualified methods; the symbol *, which matches all methods; a true list, which matches methods with the same number of qualifiers as the length of the list when each qualifier matches the corresponding list element; or a dotted list that ends in the symbol * (the * matches any number of additional qualifiers).
+            如果 qualifier-pattern 是一个符号那么它必须是 *. 如果一个方法的限定符列表和 一个 qualifier-pattern 是 equal 的(除了这个符号 * 在一个 qualifier-pattern 中匹配任何东西), 那么这个方法匹配这个 qualifier-pattern. 因此一个 qualifier-pattern 可以是以下之一: 空列表, 它匹配未限定方法; 符号 *, 它匹配所有方法; 一个真实的列表, 它匹配和这个列表长度相同数量限定符的方法, 而其中每个限定符匹配这个列表的元素; 或者一个以 * 结尾的点对列表(这个 * 匹配任何数量的额外限定符).
 
-    Each applicable method is tested against the qualifier-patterns and predicates in left-to-right order. As soon as a qualifier-pattern matches or a predicate returns true, the method becomes a member of the corresponding method group and no further tests are made. Thus if a method could be a member of more than one method group, it joins only the first such group. If a method group has more than one qualifier-pattern, a method need only satisfy one of the qualifier-patterns to be a member of the group.
+            每个可应用方法都是根据 qualifier-patterns 来检测并且以从左到右的顺序判断. 在一个 qualifier-pattern 匹配后或一个断言返回 true, 这个方法就成为对应方法组的一个成员并且不会做进一步检测. 因此如果一个方法可以是超过一个方法组的一个成员, 它只加入到第一个这样的组中. 如果一个方法组有超过一个 qualifier-pattern, 一个方法只需要返回这些 qualifier-patterns 中的一个就可以称为这个组的成员.
 
-    The name of a predicate function can appear instead of qualifier-patterns in a method group specifier. The predicate is called for each method that has not been assigned to an earlier method group; it is called with one argument, the method's qualifier list. The predicate should return true if the method is to be a member of the method group. A predicate can be distinguished from a qualifier-pattern because it is a symbol other than nil or *.
+            一个 predicate 函数的名字可以出现在一个方法组的说明符中, 而不是  qualifier-patterns. 这个断言 predicate 被每一个没有被赋给一个更早的方法组的方法所调用; 它用一个参数来调用, 那个方法的限定符列表. 如果那个方法是这个方法组的一个成员, 那么这个 predicate 应该返回 true. 一个断言 predicate 可以和一个 qualifier-pattern 区分开来因为它是一个符号而不是 nil 或 *.
 
-    If there is an applicable method that does not fall into any method group, the function invalid-method-error is called.
+            如果这里有一个不属于任何方法组的可应用方法, 那么函数 invalid-method-error 会被调用.
 
-    Method group specifiers can have keyword options following the qualifier patterns or predicate. Keyword options can be distinguished from additional qualifier patterns because they are neither lists nor the symbol *. The keyword options are as follows:
+            方法组说明符可以有关键字选项更在这个限定符模式或断言后. 关键字选项有别于额外限定符模式因为它们既不是列表也不是符号 *. 这些关键字选项如下:
 
-        The :description option is used to provide a description of the role of methods in the method group. Programming environment tools use (apply #'format stream format-control (method-qualifiers method)) to print this description, which is expected to be concise. This keyword option allows the description of a method qualifier to be defined in the same module that defines the meaning of the method qualifier. In most cases, format-control will not contain any format directives, but they are available for generality. If :description is not supplied, a default description is generated based on the variable name and the qualifier patterns and on whether this method group includes the unqualified methods.
+                这个 :description 选项被用于提供这个方法组中方法作用的描述. 编程环境工具使用 (apply #'format stream format-control (method-qualifiers method)) 来打印这个描述, 预计会很简介. 这个关键字选项允许一个方法限定符的描述被定义在定义这个方法限定符的意义的相同模块中. 大部分情况下, format-control 不会包含任何 format 指令, 但是普遍上它们是可用的. 如果没有提供 :description, 会生成一个基于这个变量名和限定符模式还有这个方法组是否包含非限定方法的描述.
 
-        The :order option specifies the order of methods. The order argument is a form that evaluates to :most-specific-first or :most-specific-last. If it evaluates to any other value, an error is signaled. If :order is not supplied, it defaults to :most-specific-first.
+                这个 :order 选项指定了这些方法的顺序. 这个 order 参数是一个求值为 :most-specific-first 或 :most-specific-last 的表达式形式. 如果它求值为任何其他值, 就会发出一个错误. 如果没有提供 :order, 它默认为 :most-specific-first.
 
-        The :required option specifies whether at least one method in this method group is required. If its value is true and the method group is empty (that is, no applicable methods match the qualifier patterns or satisfy the predicate), an error is signaled. If :required is not supplied, it defaults to nil.
+                这个 :required 选项指定这个方法组中是否至少需要一个方法. 如果它的值为 true 而这个方法组是空的 (也就是说, 没有可应用的方法匹配这个限定符模式或满足这个断言), 就会发出一个错误. 如果没有提供 :required, 它默认为 nil.
 
-    The use of method group specifiers provides a convenient syntax to select methods, to divide them among the possible roles, and to perform the necessary error checking. It is possible to perform further filtering of methods in the body forms by using normal list-processing operations and the functions method-qualifiers and invalid-method-error. It is permissible to use setq on the variables named in the method group specifiers and to bind additional variables. It is also possible to bypass the method group specifier mechanism and do everything in the body forms. This is accomplished by writing a single method group with * as its only qualifier-pattern; the variable is then bound to a list of all of the applicable methods, in most-specific-first order.
+            这个方法组说明符的使用提供了一个方便的语法来选择方法, 来把它们划分给可能的角色, 并且去执行必要的错误检查. 在主体表达式形式中通过使用正常的 列表处理操作和函数 method-qualifiers 和 invalid-method-error 来执行方法的进一步过滤是可能的. 允许在方法组说明符中命名的变量上使用 setq, 也允许去绑定额外的变量. 绕开这个方法组说明符机制并在主体表达式形式中执行任何操作都是可能的. 这个通过写一个单个方法组来完成, 其中 * 作为它仅有的 qualifier-pattern; 这个变量接下来以最具体优先的顺序绑定给所有这些可应用方法的列表.
 
-    The body forms compute and return the form that specifies how the methods are combined, that is, the effective method. The effective method is evaluated in the null lexical environment augmented with a local macro definition for call-method and with bindings named by symbols not accessible from the COMMON-LISP-USER package. Given a method object in one of the lists produced by the method group specifiers and a list of next methods, call-method will invoke the method such that call-next-method has available the next methods.
+            主体表达式形式计算并返回指定这些方法如何组合的表达式形式, 换言之, 有效方法. 这个有效方法在空词法环境中被求值, 以 call-method 的局部宏定义和 COMMON-LISP-USER package 包中不可访问的符号命名的绑定为参数. 给定一个在由这些方法组说明符产生的其中一个列表中的方法对象和一个后续方法的列表, call-method 会调用那个方法, 这样 call-next-method 有可用的后续方法.
 
-    When an effective method has no effect other than to call a single method, some implementations employ an optimization that uses the single method directly as the effective method, thus avoiding the need to create a new effective method. This optimization is active when the effective method form consists entirely of an invocation of the call-method macro whose first subform is a method object and whose second subform is nil or unsupplied. Each define-method-combination body is responsible for stripping off redundant invocations of progn, and, multiple-value-prog1, and the like, if this optimization is desired.
+            当一个有效方法除了调用一个单一的方法之外没有其他效果, 一些具体实现采用一个优化, 使用这个单个的方法直接作为这个有效方法, 因此避免了创建一个新的有效方法的需要. 当有效方法表达式形式完全由一个 call-method 宏的调用组成, 它的第一个子表达式形式是一个方法对象而第二个子表达式形式是 nil 或未提供的, 那么这个优化就会被启用. 如果需要这种优化, 那么每个 define-method-combination 主体有责任去去除多余的 progn, and, multiple-value-prog1, 诸如此类的调用.
 
-    The list (:arguments . lambda-list) can appear before any declarations or documentation string. This form is useful when the method combination type performs some specific behavior as part of the combined method and that behavior needs access to the arguments to the generic function. Each parameter variable defined by lambda-list is bound to a form that can be inserted into the effective method. When this form is evaluated during execution of the effective method, its value is the corresponding argument to the generic function; the consequences of using such a form as the place in a setf form are undefined. Argument correspondence is computed by dividing the :arguments lambda-list and the generic function lambda-list into three sections: the required parameters, the optional parameters, and the keyword and rest parameters. The arguments supplied to the generic function for a particular call are also divided into three sections; the required arguments section contains as many arguments as the generic function has required parameters, the optional arguments section contains as many arguments as the generic function has optional parameters, and the keyword/rest arguments section contains the remaining arguments. Each parameter in the required and optional sections of the :arguments lambda-list accesses the argument at the same position in the corresponding section of the arguments. If the section of the :arguments lambda-list is shorter, extra arguments are ignored. If the section of the :arguments lambda-list is longer, excess required parameters are bound to forms that evaluate to nil and excess optional parameters are bound to their initforms. The keyword parameters and rest parameters in the :arguments lambda-list access the keyword/rest section of the arguments. If the :arguments lambda-list contains &key, it behaves as if it also contained &allow-other-keys.
+            列表 (:arguments . lambda-list) 可以在任何声明或文档字符串之前出现. 当这个方法组合类型执行一些特定的行为来作为组合的方法的一部分并且这个行为需要访问给这个广义函数的参数时, 这个表达式形式是由用的. 每个通过 lambda-list 定义的参数变量被绑定到一个表达式形式, 这个表达式形式可以被插入到这个有效方法中. 当这个表达式形式在这个有效方法的执行期间被求值时, 它的值是给这个广义函数的对应参数; 在一个 setf 表达式形式中使用这样一个表达式形式作为一个 place 的后果是未定义的. Argument correspondence 通过划分这个 :arguments lambda-list 还有广义函数的 lambda-list 为三个部分来计算: 必要参数, 可选参数, 还有关键字和剩余参数. 为特定调用提供的广义函数的参数也被划分为三个部分; 必要参数部分包括这个广义函数所拥有的必要参数, 可选参数部分包含了这个广义函数拥有的可选参数, 以及关键字/剩余参数部分包含了剩余的参数. :arguments lambda-list 的必要和可选部分的每个参数都在这些参数的对应部分中访问同一个位置的参数. 如果 :arguments lambda-list 的部分更短, 额外的参数就会被忽略. 如果这个 :arguments lambda-list 的部分更长, 超出的必要参数绑定给求值为 nil 的表达式形式而超出的可选参数绑定给它们的初始化表达式形式. :arguments lambda-list 中的关键字参数和剩余参数访问这些章节的关键字/剩余部分. 如果这个 :arguments lambda-list 包含了 &key, 它表现为就好像它也包含了 &allow-other-keys.<!--TODO 待校验-->
 
-    In addition, &whole var can be placed first in the :arguments lambda-list. It causes var to be bound to a form that evaluates to a list of all of the arguments supplied to the generic function. This is different from &rest because it accesses all of the arguments, not just the keyword/rest arguments.
+            另外, &whole var 可以被放置在 :arguments lambda-list 的第一个. 这个导致 var 被绑定给一个表达式形式, 这个表达式形式求值为一个提供给这个广义函数的所有参数的列表. 这个和 &rest 不同因为它访问所有这些参数, 不只是关键字/剩余参数.
 
-    Erroneous conditions detected by the body should be reported with method-combination-error or invalid-method-error; these functions add any necessary contextual information to the error message and will signal the appropriate error.
+            被这个主体检测到的错误的状况应该使用 method-combination-error 或 invalid-method-error 来报告; 这些函数添加任何必要的上下文信息给这个错误信息并且会发出一个合适的错误.
 
-    The body forms are evaluated inside of the bindings created by the lambda list and method group specifiers. Declarations at the head of the body are positioned directly inside of bindings created by the lambda list and outside of the bindings of the method group variables. Thus method group variables cannot be declared in this way. locally may be used around the body, however.
+            这个主体表达式形式在这个 lambda 列表和方法组说明符创建的绑定中求值. 位于主体头部的声明直接位于 lambda 列表创建的绑定内部以及方法组变量绑定的外部. 因此方法组变量不能以这种方式声明. 但是 locally 可以在这个主体周围使用.
 
-    Within the body forms, generic-function-symbol is bound to the generic function object.
+            在主体表达式形式中, generic-function-symbol 被绑定到这个广义函数对象.
 
-    Documentation is attached as a documentation string to name (as kind method-combination) and to the method combination object.
+            Documentation 作为一个文档字符串关联到 name (作为 method-combination 种类) 以及这个方法组合对象.
 
-    Note that two methods with identical specializers, but with different qualifiers, are not ordered by the algorithm described in Step 2 of the method selection and combination process described in Section 7.6.6 (Method Selection and Combination). Normally the two methods play different roles in the effective method because they have different qualifiers, and no matter how they are ordered in the result of Step 2, the effective method is the same. If the two methods play the same role and their order matters, an error is signaled. This happens as part of the qualifier pattern matching in define-method-combination.
+            注意, 两个有着相同特化符的方法, 但是限定符不同, 不会被章节 7.6.6 (Method Selection and Combination) 中描述方法选择和组合处理的步骤 2 中描述的算法所排序. 通常这两个方法在这个有效方法中扮演着不同的角色, 不管在那个步骤 2 的结果中如何被排序, 这个有效方法是相同的. 如果这两个方法扮演着相同的角色并且它们的顺序很重要, 就会发出一个错误. 这是在 define-method-combination 中匹配的限定符模式的一部分.
 
-If a define-method-combination form appears as a top level form, the compiler must make the method combination name be recognized as a valid method combination name in subsequent defgeneric forms. However, the method combination is executed no earlier than when the define-method-combination form is executed, and possibly as late as the time that generic functions that use the method combination are executed.
+        如果一个 define-method-combination 表达式形式作为顶层表达式形式出现, 编译器必须是这个方法组合的名字在后续的 defgeneric 表达式形式中被识别为一个有效方法组合名字. 然而, 方法组合执行的时间不早于 define-method-combination 表达式形式被执行时, 并且可能在使用这个方法组合的广义函数执行的时候执行.
 
 * 示例(Examples):
 
-Most examples of the long form of define-method-combination also illustrate the use of the related functions that are provided as part of the declarative method combination facility.
+        define-method-combination 的长表达式形式的大多数例子也说明了作为声明方法组合工具的一部分提供的相关函数的使用.
 
-;;; Examples of the short form of define-method-combination
- 
- (define-method-combination and :identity-with-one-argument t) 
-  
- (defmethod func and ((x class1) y) ...)
- 
-;;; The equivalent of this example in the long form is:
- 
- (define-method-combination and 
-         (&optional (order :most-specific-first))
-         ((around (:around))
-          (primary (and) :order order :required t))
-   (let ((form (if (rest primary)
-                   `(and ,@(mapcar #'(lambda (method)
-                                       `(call-method ,method))
-                                   primary))
-                   `(call-method ,(first primary)))))
-     (if around
-         `(call-method ,(first around)
-                       (,@(rest around)
-                        (make-method ,form)))
-         form)))
-  
-;;; Examples of the long form of define-method-combination
- 
-;The default method-combination technique
- (define-method-combination standard ()
-         ((around (:around))
-          (before (:before))
-          (primary () :required t)
-          (after (:after)))
-   (flet ((call-methods (methods)
-            (mapcar #'(lambda (method)
-                        `(call-method ,method))
-                    methods)))
-     (let ((form (if (or before after (rest primary))
-                     `(multiple-value-prog1
-                        (progn ,@(call-methods before)
-                               (call-method ,(first primary)
-                                            ,(rest primary)))
-                        ,@(call-methods (reverse after)))
-                     `(call-method ,(first primary)))))
-       (if around
-           `(call-method ,(first around)
-                         (,@(rest around)
-                          (make-method ,form)))
-           form))))
-  
-;A simple way to try several methods until one returns non-nil
- (define-method-combination or ()
-         ((methods (or)))
-   `(or ,@(mapcar #'(lambda (method)
-                      `(call-method ,method))
-                  methods)))
-  
-;A more complete version of the preceding
- (define-method-combination or 
-         (&optional (order ':most-specific-first))
-         ((around (:around))
-          (primary (or)))
-   ;; Process the order argument
-   (case order
-     (:most-specific-first)
-     (:most-specific-last (setq primary (reverse primary)))
-     (otherwise (method-combination-error "~S is an invalid order.~@
-     :most-specific-first and :most-specific-last are the possible values."
-                                          order)))
-   ;; Must have a primary method
-   (unless primary
-     (method-combination-error "A primary method is required."))
-   ;; Construct the form that calls the primary methods
-   (let ((form (if (rest primary)
-                   `(or ,@(mapcar #'(lambda (method)
-                                      `(call-method ,method))
-                                  primary))
-                   `(call-method ,(first primary)))))
-     ;; Wrap the around methods around that form
-     (if around
-         `(call-method ,(first around)
-                       (,@(rest around)
-                        (make-method ,form)))
-         form)))
-  
-;The same thing, using the :order and :required keyword options
- (define-method-combination or 
-         (&optional (order ':most-specific-first))
-         ((around (:around))
-          (primary (or) :order order :required t))
-   (let ((form (if (rest primary)
-                   `(or ,@(mapcar #'(lambda (method)
-                                      `(call-method ,method))
-                                  primary))
-                   `(call-method ,(first primary)))))
-     (if around
-         `(call-method ,(first around)
-                       (,@(rest around)
-                        (make-method ,form)))
-         form)))
-  
-;This short-form call is behaviorally identical to the preceding
- (define-method-combination or :identity-with-one-argument t)
- 
-;Order methods by positive integer qualifiers
-;:around methods are disallowed to keep the example small
- (define-method-combination example-method-combination ()
-         ((methods positive-integer-qualifier-p))
-   `(progn ,@(mapcar #'(lambda (method)
-                         `(call-method ,method))
-                     (stable-sort methods #'<
-                       :key #'(lambda (method)
-                                (first (method-qualifiers method)))))))
- 
- (defun positive-integer-qualifier-p (method-qualifiers)
-   (and (= (length method-qualifiers) 1)
-        (typep (first method-qualifiers) '(integer 0 *))))
-  
-;;; Example of the use of :arguments
- (define-method-combination progn-with-lock ()
-         ((methods ()))
-   (:arguments object)
-   `(unwind-protect
-        (progn (lock (object-lock ,object))
-               ,@(mapcar #'(lambda (method)
-                             `(call-method ,method))
-                         methods))
-      (unlock (object-lock ,object))))
-  
+    ```LISP
+    ;;; Examples of the short form of define-method-combination
+    
+    (define-method-combination and :identity-with-one-argument t) 
+      
+    (defmethod func and ((x class1) y) ...)
+    
+    ;;; The equivalent of this example in the long form is:
+    
+    (define-method-combination and 
+            (&optional (order :most-specific-first))
+            ((around (:around))
+              (primary (and) :order order :required t))
+      (let ((form (if (rest primary)
+                      `(and ,@(mapcar #'(lambda (method)
+                                          `(call-method ,method))
+                                      primary))
+                      `(call-method ,(first primary)))))
+        (if around
+            `(call-method ,(first around)
+                          (,@(rest around)
+                            (make-method ,form)))
+            form)))
+      
+    ;;; Examples of the long form of define-method-combination
+    
+    ;The default method-combination technique
+    (define-method-combination standard ()
+            ((around (:around))
+              (before (:before))
+              (primary () :required t)
+              (after (:after)))
+      (flet ((call-methods (methods)
+                (mapcar #'(lambda (method)
+                            `(call-method ,method))
+                        methods)))
+        (let ((form (if (or before after (rest primary))
+                        `(multiple-value-prog1
+                            (progn ,@(call-methods before)
+                                  (call-method ,(first primary)
+                                                ,(rest primary)))
+                            ,@(call-methods (reverse after)))
+                        `(call-method ,(first primary)))))
+          (if around
+              `(call-method ,(first around)
+                            (,@(rest around)
+                              (make-method ,form)))
+              form))))
+      
+    ;A simple way to try several methods until one returns non-nil
+    (define-method-combination or ()
+            ((methods (or)))
+      `(or ,@(mapcar #'(lambda (method)
+                          `(call-method ,method))
+                      methods)))
+      
+    ;A more complete version of the preceding
+    (define-method-combination or 
+            (&optional (order ':most-specific-first))
+            ((around (:around))
+              (primary (or)))
+      ;; Process the order argument
+      (case order
+        (:most-specific-first)
+        (:most-specific-last (setq primary (reverse primary)))
+        (otherwise (method-combination-error "~S is an invalid order.~@
+        :most-specific-first and :most-specific-last are the possible values."
+                                              order)))
+      ;; Must have a primary method
+      (unless primary
+        (method-combination-error "A primary method is required."))
+      ;; Construct the form that calls the primary methods
+      (let ((form (if (rest primary)
+                      `(or ,@(mapcar #'(lambda (method)
+                                          `(call-method ,method))
+                                      primary))
+                      `(call-method ,(first primary)))))
+        ;; Wrap the around methods around that form
+        (if around
+            `(call-method ,(first around)
+                          (,@(rest around)
+                            (make-method ,form)))
+            form)))
+      
+    ;The same thing, using the :order and :required keyword options
+    (define-method-combination or 
+            (&optional (order ':most-specific-first))
+            ((around (:around))
+              (primary (or) :order order :required t))
+      (let ((form (if (rest primary)
+                      `(or ,@(mapcar #'(lambda (method)
+                                          `(call-method ,method))
+                                      primary))
+                      `(call-method ,(first primary)))))
+        (if around
+            `(call-method ,(first around)
+                          (,@(rest around)
+                            (make-method ,form)))
+            form)))
+      
+    ;This short-form call is behaviorally identical to the preceding
+    (define-method-combination or :identity-with-one-argument t)
+    
+    ;Order methods by positive integer qualifiers
+    ;:around methods are disallowed to keep the example small
+    (define-method-combination example-method-combination ()
+            ((methods positive-integer-qualifier-p))
+      `(progn ,@(mapcar #'(lambda (method)
+                            `(call-method ,method))
+                        (stable-sort methods #'<
+                          :key #'(lambda (method)
+                                    (first (method-qualifiers method)))))))
+    
+    (defun positive-integer-qualifier-p (method-qualifiers)
+      (and (= (length method-qualifiers) 1)
+            (typep (first method-qualifiers) '(integer 0 *))))
+      
+    ;;; Example of the use of :arguments
+    (define-method-combination progn-with-lock ()
+            ((methods ()))
+      (:arguments object)
+      `(unwind-protect
+            (progn (lock (object-lock ,object))
+                  ,@(mapcar #'(lambda (method)
+                                `(call-method ,method))
+                            methods))
+          (unlock (object-lock ,object))))
+    ```
 
 * 受此影响(Affected By): None.
 
 * 副作用(Side Effects:):
 
-The compiler is not required to perform any compile-time side-effects.
+        编译器不需要去执行任何编译时的副作用.
 
 * 异常情况(Exceptional Situations):
 
-Method combination types defined with the short form require exactly one qualifier per method. An error of type error is signaled if there are applicable methods with no qualifiers or with qualifiers that are not supported by the method combination type. At least one primary method must be applicable or an error of type error is signaled.
+        用短表达式形式定义的方法组合类型需要每个方法一个限定符. 如果这里有一些可应用的方法没有限定符或者有着这个方法组合类型不支持的限定符, 就会发出一个 error 类型的错误. 至少一个主方法必须是可应用的否则就会发出一个 error 类型的错误.
 
-If an applicable method does not fall into any method group, the system signals an error of type error indicating that the method is invalid for the kind of method combination in use.
+        如果一个可应用的方法不属于任何方法组, 系统会发出一个 error 类型的错误, 表示这个方法对于使用的这个方法组合的种类是非法的.
 
-If the value of the :required option is true and the method group is empty (that is, no applicable methods match the qualifier patterns or satisfy the predicate), an error of type error is signaled.
+        如果这个 :required 选项的值是 true 并且这个方法组是空的 (这也就是说, 没有可应用的方法匹配这个限定符模式或满足这个断言), 那么就会发出一个 error 类型的错误.
 
-If the :order option evaluates to a value other than :most-specific-first or :most-specific-last, an error of type error is signaled.
+        如果 :order 选项求值为一个值而不是 :most-specific-first 或 :most-specific-last, 就会发出一个 error 类型的错误.
 
 * 也见(See Also):
 
-call-method, call-next-method, documentation, method-qualifiers, method-combination-error, invalid-method-error, defgeneric, Section 7.6.6 (Method Selection and Combination), Section 7.6.6.4 (Built-in Method Combination Types), Section 3.4.11 (Syntactic Interaction of Documentation Strings and Declarations)
+        call-method, call-next-method, documentation, method-qualifiers, method-combination-error, invalid-method-error, defgeneric, Section 7.6.6 (Method Selection and Combination), Section 7.6.6.4 (Built-in Method Combination Types), Section 3.4.11 (Syntactic Interaction of Documentation Strings and Declarations)
 
 * 注意(Notes):
 
-The :method-combination option of defgeneric is used to specify that a generic function should use a particular method combination type. The first argument to the :method-combination option is the name of a method combination type and the remaining arguments are options for that type. 
+        这个 defgeneric 的 :method-combination 选项被用于指定一个广义函数应该使用一个特殊的方法组合类型. 给 :method-combination 的第一个参数是一个方法组合的名字而剩下的参数是这个类型的选项. 
 
 
 ### <span id="">标准广义函数 FIND-METHOD</span>
