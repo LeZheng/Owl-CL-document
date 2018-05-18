@@ -151,27 +151,27 @@
 
             :constructor
 
-                This option takes zero, one, or two arguments. If at least one argument is supplied and the first argument is not nil, then that argument is a symbol which specifies the name of the constructor function. If the argument is not supplied (or if the option itself is not supplied), the name of the constructor is produced by concatenating the string "MAKE-" and the name of the structure, interning the name in whatever package is current at the time defstruct is expanded. If the argument is provided and is nil, no constructor function is defined.
+                这个选项接受 0 个, 1 个或 2 个参数. 如果至少提供了一个参数并且第一个参数不是 nil, 那么那个参数是一个指定这个构造函数名字的符号. 如果这个参数没有被提供 (或者如果这个选项自身就没有被提供), 那么这个构造器的名字通过字符串 "MAKE-" 和这个结构体的名字拼接而成, 在 defstruct 被展开时当前包中捕捉这个名字. 如果提供了这个参数并且是 nil, 那么没有构造函数被定义.
 
-                If :constructor is given as (:constructor name arglist), then instead of making a keyword driven constructor function, defstruct defines a ``positional'' constructor function, taking arguments whose meaning is determined by the argument's position and possibly by keywords. Arglist is used to describe what the arguments to the constructor will be. In the simplest case something like (:constructor make-foo (a b c)) defines make-foo to be a three-argument constructor function whose arguments are used to initialize the slots named a, b, and c.
+                如果 :constructor 以 (:constructor name arglist) 这种形式给定, 那么代替创建一个关键字驱动的构造函数, defstruct 会定义一个 "位置参数(positional)" 构造函数, 接受的参数的意义通过这个参数的位置来决定, 也可能通过关键字. Arglist 被用于描述给这个构造器的参数. 在像 (:constructor make-foo (a b c)) 这样的最简单的情况中, 它定义了 make-foo 为一个三参数的构造函数, 这个构造函数的参数被用于初始化名为 a, b, 和 c 的槽.
 
-                Because a constructor of this type operates ``By Order of Arguments,'' it is sometimes known as a ``boa constructor.''
+                由于一个这个类型构造器 "通过参数的顺序" 来操作, 它有时也被认为是一个 "boa 构造器".
 
-                For information on how the arglist for a ``boa constructor'' is processed, see Section 3.4.6 (Boa Lambda Lists).
+                关于这个 arglist 对于一个 "boa 构造器" 如何被处理, 见章节 3.4.6 (Boa Lambda Lists).
 
-                It is permissible to use the :constructor option more than once, so that you can define several different constructor functions, each taking different parameters.
+                允许不止一次使用 :constructor 选项, 这样你可以定义多个不同的构造器函数, 每一个都接收不同的参数.
 
-                defstruct creates the default-named keyword constructor function only if no explicit :constructor options are specified, or if the :constructor option is specified without a name argument.
+                当且仅当没有指定显式的 :constructor 选项或者这个 :constructor 选项被指定但没有 name 参数时, defstruct 创建这个默认命名的关键字构造函数.
 
-                (:constructor nil) is meaningful only when there are no other :constructor options specified. It prevents defstruct from generating any constructors at all.
+                只有在这里没有指定其他 :constructor 选项时, 这个 (:constructor nil) 是有意义的. 它阻止 defstruct 产生任何构造器.
 
-                Otherwise, defstruct creates a constructor function corresponding to each supplied :constructor option. It is permissible to specify multiple keyword constructor functions as well as multiple ``boa constructors''.
+                否则, defstruct 对应每个提供的 :constructor 选项创建一个构造函数. 允许指定多个关键字构造函数以及多个"boa 构造函数".
 
             :copier
 
-                This option takes one argument, a symbol, which specifies the name of the copier function. If the argument is not provided or if the option itself is not provided, the name of the copier is produced by concatenating the string "COPY-" and the name of the structure, interning the name in whatever package is current at the time defstruct is expanded. If the argument is provided and is nil, no copier function is defined.
+                这个选项接受一个参数, 一个符号, 它指定了这个拷贝函数的名字. 如果没有提供这个参数或者没有提供这个选项, 这个拷贝器的名字由字符串 "COPY-" 和这个结构体的名字拼接而成, 在 defstruct 被展开时当前包中捕捉这个名字. 如果提供的这个参数是 nil, 那么没有拷贝函数被定义.
 
-                The automatically defined copier function is a function of one argument, which must be of the structure type being defined. The copier function creates a fresh structure that has the same type as its argument, and that has the same component values as the original structure; that is, the component values are not copied recursively. If the defstruct :type option was not used, the following equivalence applies:
+                自动定义的这个拷贝函数是一个单个参数的函数, 这个参数一定是要被定义的结构体类型. 这个拷贝函数创建一个有着和它的参数相同类型的新的结构体, 并且有着和原始结构体相同的组件值; 也就是说, 组件值不会被递归拷贝. 如果这个 defstruct :type 选项没有被使用, 下面的等价适用:
 
                 (copier-name x) = (copy-structure (the structure-name x))
 
