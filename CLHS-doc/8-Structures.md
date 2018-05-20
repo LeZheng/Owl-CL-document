@@ -177,18 +177,18 @@
 
             :include
 
-                This option is used for building a new structure definition as an extension of another structure definition. For example:
+                这个选项被用于构建一个新的结构体定义, 作为另一个结构体定义的扩展. 比如:
 
                 (defstruct person name age sex)
 
-                To make a new structure to represent an astronaut that has the attributes of name, age, and sex, and functions that operate on person structures, astronaut is defined with :include as follows:
+                为了创建一个有着 name, age, 和 sex 属性以及在 person 结构体上操作的函数的 新的结构体 astronaut, astronaut 如下使用 :include 定义:
 
                 (defstruct (astronaut (:include person)
                                       (:conc-name astro-))
                     helmet-size
                     (favorite-beverage 'tang))
 
-                :include causes the structure being defined to have the same slots as the included structure. This is done in such a way that the reader functions for the included structure also work on the structure being defined. In this example, an astronaut therefore has five slots: the three defined in person and the two defined in astronaut itself. The reader functions defined by the person structure can be applied to instances of the astronaut structure, and they work correctly. Moreover, astronaut has its own reader functions for components defined by the person structure. The following examples illustrate the use of astronaut structures:
+                :include 导致这个要被定义的结构体有着和包含的结构体相同的槽. 这样做使得被包括的结构体的读取器函数也可以工作在要被定义的结构体上. 在此例中, 因此一个 astronaut 有五个槽: 三个在 person 中定义而两个在 astronaut 自身中定义. 通过 person 结构体定义的这些读取器函数可以被应用于这个 astronaut 结构体的实例, 并且它们会正常工作. 此外, astronaut 有着它自己的对于这个 person 结构体定义的组建的读取器函数. 下面例子说明了 astronaut 结构体的使用:
 
                 (setq x (make-astronaut :name 'buzz
                                         :age 45.
@@ -202,29 +202,29 @@
                                                       ; of the possibly empty
                                                       ; sequence of astros
 
-                The difference between the reader functions person-name and astro-name is that person-name can be correctly applied to any person, including an astronaut, while astro-name can be correctly applied only to an astronaut. An implementation might check for incorrect use of reader functions.
+                读取器抗旱数 person-name 和 astro-name 的区别是 person-name 可以准确应用于任何 person, 包括 astronaut, 而 astro-name 只能被应用于一个 astronaut. 一个具体实现可以检查读取器函数的不正确使用.
 
-                At most one :include can be supplied in a single defstruct. The argument to :include is required and must be the name of some previously defined structure. If the structure being defined has no :type option, then the included structure must also have had no :type option supplied for it. If the structure being defined has a :type option, then the included structure must have been declared with a :type option specifying the same representation type.
+                在一个 defstruct 中最多只能提供一个 :include. 给 :include 的参数是必须的并且一定是某个之前定义的结构体的名字. 这个这个要被定义的结构体没有 :type 选项, 那么这个被包含的结构体也必须没有给它提供的 :type 选项. 如果这个要被定义的结构体有一个 :type 选项, 那么这个被包含的结构体必须用一个指定相同表示类型的 :type 选项来声明.
 
-                If no :type option is involved, then the structure name of the including structure definition becomes the name of a data type, and therefore a valid type specifier recognizable by typep; it becomes a subtype of the included structure. In the above example, astronaut is a subtype of person; hence
+                如果没有涉及 :type 选项, 那么这个被包含的结构定义的结构名成为一个数据类型的名字, 因此一个有效的类型指定符被 typep 所识别; 它成为被包含结构体的一个子类型. 在上述例子中, astronaut 是 person 的一个子类型; 因此
 
                 (typep (make-astronaut) 'person) =>  true
 
-                indicating that all operations on persons also work on astronauts.
+                表示 person 上的所有操作也可以工作在 astronaut 上.
 
-                The structure using :include can specify default values or slot-options for the included slots different from those the included structure specifies, by giving the :include option as:
+                使用 :include 的结构体可以为包括的槽指定有别于被包含的结构体指定的默认值或槽选项, 通过像这样给定 :include 选项:
 
                 (:include included-structure-name slot-description*)
 
-                Each slot-description must have a slot-name that is the same as that of some slot in the included structure. If a slot-description has no slot-initform, then in the new structure the slot has no initial value. Otherwise its initial value form is replaced by the slot-initform in the slot-description. A normally writable slot can be made read-only. If a slot is read-only in the included structure, then it must also be so in the including structure. If a type is supplied for a slot, it must be a subtype of the type specified in the included structure.
+                每个 slot-description 必须有一个和被包含的结构体这栋的某个槽相同的槽名字. 如果一个 slot-description 没有槽初始化表达式形式, 那么在这个新的结构体中那个槽就没有初始值. 否则它的初始值表达式形式就会被 slot-description 中的槽初始化表达式形式替代. 一个普通的可写槽可以变为只读的. 如果一个槽在被包含的结构体中是只读的, 那么它在包含的结构体中也必须如此. 如果为一个槽提供了类型, 它必须是这个被包含的结构体中指定的类型的子类型.
 
-                For example, if the default age for an astronaut is 45, then
+                比如, 如果一个 astronaut 中默认 age 是 45, 那么就是
 
                 (defstruct (astronaut (:include person (age 45)))
                     helmet-size
                     (favorite-beverage 'tang))
 
-                If :include is used with the :type option, then the effect is first to skip over as many representation elements as needed to represent the included structure, then to skip over any additional elements supplied by the :initial-offset option, and then to begin allocation of elements from that point. For example:
+                如果 :include 和 :type 选项一起使用, 那么效果是, 首先跳过表示被包含结构所需要的一样多的表示元素, 接着跳过任何 :initial-offset 选项提供的额外元素, 然后从这一点开始分配元素. 比如:
 
                 (defstruct (binop (:type list) :named (:initial-offset 2))
                   (operator '? :type symbol)   
@@ -242,7 +242,7 @@
                                       :identity 1)
                   =>  (NIL NIL BINOP * X 5 NIL NIL NIL T T 1)
 
-                The first two nil elements stem from the :initial-offset of 2 in the definition of binop. The next four elements contain the structure name and three slots for binop. The next three nil elements stem from the :initial-offset of 3 in the definition of annotated-binop. The last three list elements contain the additional slots for an annotated-binop.
+                前两个 nil 元素源于 binop 定义中 2 的 :initial-offset. 接下来的四个元素包含了结构体名字和 binop 的三个槽. 接下来的三个 nil 元素源自 annotated-binop 定义中 3 的 :initial-offset. 最后三个列表元素包含了  annotated-binop 的额外的槽.
 
             :initial-offset
 
