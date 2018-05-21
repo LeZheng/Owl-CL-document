@@ -246,39 +246,39 @@
 
             :initial-offset
 
-                :initial-offset instructs defstruct to skip over a certain number of slots before it starts allocating the slots described in the body. This option's argument is the number of slots defstruct should skip. :initial-offset can be used only if :type is also supplied.
+                :initial-offset 指导 defstruct 在它开始分配这个主体中描述的槽之前去跳过一个确定的槽的数量. 这个选项的参数是 defstruct 应该跳过的槽的数量. :initial-offset 只能在 :type 也被提供时使用.
 
-                :initial-offset allows slots to be allocated beginning at a representational element other than the first. For example, the form
+                :initial-offset 允许从一个具象元素开始分配槽而不是在第一个. 比如, 这个表达式形式
 
                 (defstruct (binop (:type list) (:initial-offset 2))
                   (operator '? :type symbol)
                   operand-1
                   operand-2) =>  BINOP
 
-                would result in the following behavior for make-binop:
+                会导致以下 make-binop 的行为:
 
                 (make-binop :operator '+ :operand-1 'x :operand-2 5)
                 =>  (NIL NIL + X 5)
                 (make-binop :operand-2 4 :operator '*)
                 =>  (NIL NIL * NIL 4)
 
-                The selector functions binop-operator, binop-operand-1, and binop-operand-2 would be essentially equivalent to third, fourth, and fifth, respectively. Similarly, the form
+                选择器函数 binop-operator, binop-operand-1, 和 binop-operand-2 本质上分别等价于 third, fourth, 和 fifth. 类似的, 表达式形式
 
                 (defstruct (binop (:type list) :named (:initial-offset 2))
                   (operator '? :type symbol)
                   operand-1
                   operand-2) =>  BINOP
 
-                would result in the following behavior for make-binop:
+                会导致以下 make-binop 的行为:
 
                 (make-binop :operator '+ :operand-1 'x :operand-2 5) =>  (NIL NIL BINOP + X 5)
                 (make-binop :operand-2 4 :operator '*) =>  (NIL NIL BINOP * NIL 4)
 
-                The first two nil elements stem from the :initial-offset of 2 in the definition of binop. The next four elements contain the structure name and three slots for binop.
+                前两个 nil 元素源自 binop 的定义中 2 的 :initial-offset. 接下来四个元素包含这个结构体的名字和三个 binop 的槽.
 
             :named
 
-                :named specifies that the structure is named. If no :type is supplied, then the structure is always named.
+                :named 指定这个结构体是被命名的. 如果没有提供 :type, 那么结构体总是命名的.
 
                 For example:
 
@@ -287,39 +287,39 @@
                   operand-1
                   operand-2) =>  BINOP
 
-                This defines a constructor function make-binop and three selector functions, namely binop-operator, binop-operand-1, and binop-operand-2. (It does not, however, define a predicate binop-p, for reasons explained below.)
+                这个定义了一个构造函数 make-binop 和三个选择器函数, 也就是 binop-operator, binop-operand-1, and binop-operand-2. (然而它不会定义一个断言 binop-p, 出于下面解释的原因.)
 
-                The effect of make-binop is simply to construct a list of length three:
+                这个 make-binop 的效果仅仅是构造一个长度 3 的列表:
 
                 (make-binop :operator '+ :operand-1 'x :operand-2 5) =>  (+ X 5)  
                 (make-binop :operand-2 4 :operator '*) =>  (* NIL 4)
 
-                It is just like the function list except that it takes keyword arguments and performs slot defaulting appropriate to the binop conceptual data type. Similarly, the selector functions binop-operator, binop-operand-1, and binop-operand-2 are essentially equivalent to car, cadr, and caddr, respectively. They might not be completely equivalent because, for example, an implementation would be justified in adding error-checking code to ensure that the argument to each selector function is a length-3 list.
+                它就好像函数 list 除了它接受关键字参数并且执行适合域 binop 概念数据类型的槽默认值 that it takes keyword arguments and performs slot defaulting appropriate to the binop conceptual data type. <!--TODO 待校验-->同样地, 选择器函数 binop-operator, binop-operand-1, and binop-operand-2 本质上分别等价于 car, cadr, 和 caddr. 它们可能不是完全等价, 比如由于一个具体实现完全可以添加错误检测代码来确保给每个选择器函数的参数是长度为 3 的列表.
 
-                binop is a conceptual data type in that it is not made a part of the Common Lisp type system. typep does not recognize binop as a type specifier, and type-of returns list when given a binop structure. There is no way to distinguish a data structure constructed by make-binop from any other list that happens to have the correct structure.
+                binop 是一个概念数据类型, 由于它不是 Common Lisp 类型系统的一部分. typep 不识别 binop 为一个类型指定符, 并且当给定一个 binop 结构体时 type-of 返回 list. 这里没有方式去区分一个 make-binop 构造的数据类型和其他具有正确结构体的 list.
 
-                There is not any way to recover the structure name binop from a structure created by make-binop. This can only be done if the structure is named. A named structure has the property that, given an instance of the structure, the structure name (that names the type) can be reliably recovered. For structures defined with no :type option, the structure name actually becomes part of the Common Lisp data-type system. type-of, when applied to such a structure, returns the structure name as the type of the object; typep recognizes the structure name as a valid type specifier.
+                这里没有任何方式去从一个 make-binop 创建的结构体中恢复这个结构体名字 binop. 只有在这个结构被命名时才可以这样做. 命名结构具有这样的属性, 给定结构的一个实例, 可以可靠地恢复结构名称(它命名这个类型). 对于定义的没有 :type 选项的结构体, 这个结构体名字实际上成为 Common Lisp 数据类型系统的一部分. type-of, 当应用于这样一个结构体时, 返回这个结构体的名字作为这个对象的类型; typep 识别这个结构体名字为一个有效的类型指定符.
 
-                For structures defined with a :type option, type-of returns a type specifier such as list or (vector t), depending on the type supplied to the :type option. The structure name does not become a valid type specifier. However, if the :named option is also supplied, then the first component of the structure (as created by a defstruct constructor function) always contains the structure name. This allows the structure name to be recovered from an instance of the structure and allows a reasonable predicate for the conceptual type to be defined: the automatically defined name-p predicate for the structure operates by first checking that its argument is of the proper type (list, (vector t), or whatever) and then checking whether the first component contains the appropriate type name.
+                对于使用一个 :type 选项定义的结构体, type-of 返回一个类型指定符比如 list 或 (vector t), 取决于提供给这个 :type 选项的类型. 这个结构体名字不会称为一个有效类型指定符. 然而, 如果这个 :named 选项也被提供, 那么这个结构体(通过 defstruct 构造函数创建的)的第一个组件总是包含这个结构体的名字. 这允许这个结构体的名字从这个结构体的一个实例中恢复过来并且允许去为这个概念类型定义一个合理的断言: 自动定义的这个结构体的断言 name-p 通过首先检测它的参数为适当的类型 (list, (vector t), 或者诸如此类) 然后检测第一个组件是否包含了这个适当的类型名字.
 
-                Consider the binop example shown above, modified only to include the :named option:
+                细想上面展示的 binop 例子, 仅修改为包含 :named 选项:
 
                 (defstruct (binop (:type list) :named)
                   (operator '? :type symbol)
                   operand-1
                   operand-2) =>  BINOP
 
-                As before, this defines a constructor function make-binop and three selector functions binop-operator, binop-operand-1, and binop-operand-2. It also defines a predicate binop-p. The effect of make-binop is now to construct a list of length four:
+                和之前一样, 这个定义一个构造函数 make-binop 和三个选择器函数 binop-operator, binop-operand-1, and binop-operand-2. 它也定义了断言 binop-p. 现在 make-binop 的效果是构造一个长度 4 的列表:
 
                 (make-binop :operator '+ :operand-1 'x :operand-2 5) =>  (BINOP + X 5)
                 (make-binop :operand-2 4 :operator '*) =>  (BINOP * NIL 4)
 
-                The structure has the same layout as before except that the structure name binop is included as the first list element. The selector functions binop-operator, binop-operand-1, and binop-operand-2 are essentially equivalent to cadr, caddr, and cadddr, respectively. The predicate binop-p is more or less equivalent to this definition:
+                这个结构体和之前有着相同的布局除了这个结构体名字被包含作为第一个列表元素. 选择器函数 binop-operator, binop-operand-1, 和 binop-operand-2 本质上分别等价于 cadr, caddr, 和 cadddr. 断言 binop-p 或多或少等价于这个定义:
 
                 (defun binop-p (x)
                   (and (consp x) (eq (car x) 'binop))) =>  BINOP-P
 
-                The name binop is still not a valid type specifier recognizable to typep, but at least there is a way of distinguishing binop structures from other similarly defined structures.
+                名字 binop 对于 typep 始终不是一个有效的可识别的类型指定符, 但是至少这里有一种区分 binop 和其他定义的相似结构体的方法.
 
             :predicate
 
