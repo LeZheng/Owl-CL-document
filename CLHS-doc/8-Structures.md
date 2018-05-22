@@ -323,83 +323,83 @@
 
             :predicate
 
-                This option takes one argument, which specifies the name of the type predicate. If the argument is not supplied or if the option itself is not supplied, the name of the predicate is made by concatenating the name of the structure to the string "-P", interning the name in whatever package is current at the time defstruct is expanded. If the argument is provided and is nil, no predicate is defined. A predicate can be defined only if the structure is named; if :type is supplied and :named is not supplied, then :predicate must either be unsupplied or have the value nil.
+                这个选项接受一个参数, 它表示这个类型断言的名字. 如果这个参数没有被提供或者这个选项自身没有被提供, 这个断言的名字通过连接这个结构体的名字到字符串 "-P" 来完成, 在 defstruct 被展开的当前包中捕获这个名字. 如果提供了这个参数并且是 nil, 那么没有断言会被定义. 当且仅当这个结构体是命名的时候一个断言可以被定义 ; 如果提供了 :type 而 :named 没有被提供, 那么 :predicate 必须没有被提供或者值为 nil.
 
             :print-function, :print-object
 
-                The :print-function and :print-object options specify that a print-object method for structures of type structure-name should be generated. These options are not synonyms, but do perform a similar service; the choice of which option (:print-function or :print-object) is used affects how the function named printer-name is called. Only one of these options may be used, and these options may be used only if :type is not supplied.
+                这个 :print-function 和 :print-object 选项指定了应该为类型 structure-name 的结构体生成一个 print-object 方法. 这些选项不是同义词, 而是执行类似的服务; 选择使用哪一个选项 (:print-function 或 :print-object) 影响这个名为 printer-name 的函数如何被调用. 这些选项只有一个可以被使用, 并且这些选项只能在 :type 没有被提供时使用.
 
-                If the :print-function option is used, then when a structure of type structure-name is to be printed, the designated printer function is called on three arguments:
+                如果这个 :print-function 选项被使用, 那么当一个类型 structure-name 的结构体要被打印时, 这个指定打印函数在三个参数上被调用:
 
-                    the structure to be printed (a generalized instance of structure-name).
+                    要被打印的结构体 (一个普通的 structure-name 的实例).
 
-                    a stream to print to.
+                    一个要打印到的流.
 
-                    an integer indicating the current depth. The magnitude of this integer may vary between implementations; however, it can reliably be compared against *print-level* to determine whether depth abbreviation is appropriate.
+                    一个表示当前深度的整数. 这个整数的大小可能在不同的具体实现之间有所不同; 但是, 它可以可靠地与 *print-level* 进行比较, 以确定深度缩写(depth abbreviation)是否合适.<!--TODO depth abbreviation-->
 
-                Specifying (:print-function printer-name) is approximately equivalent to specifying:
+                指定 (:print-function printer-name) 近似等价于指定:
 
                 (defmethod print-object ((object structure-name) stream)
                   (funcall (function printer-name) object stream <<current-print-depth>>))
 
-                where the <<current-print-depth>> represents the printer's belief of how deep it is currently printing. It is implementation-dependent whether <<current-print-depth>> is always 0 and *print-level*, if non-nil, is re-bound to successively smaller values as printing descends recursively, or whether current-print-depth varies in value as printing descends recursively and *print-level* remains constant during the same traversal.
+                其中这个 <<current-print-depth>> 表示这个打印器对当前打印深度的判断. <<current-print-depth>> 是否总是为 0 以及 *print-level* 如果非 nil 是否随着打印递归递减陆续会被重新绑定到更小的值是依赖于具体实现的, 或者说 current-print-depth 的值随着打印递归递减是否会改变而 *print-level* 在相同的遍历过程中是否保持不变是依赖于具体实现的.
 
-                If the :print-object option is used, then when a structure of type structure-name is to be printed, the designated printer function is called on two arguments:
+                如果使用了这个 :print-object 选项, 那么当一个类型 structure-name 的结构体要被打印时, 指定的打印函数会在两个参数上被调用:
 
-                    the structure to be printed.
+                    要被打印的结构体.
 
-                    the stream to print to.
+                    要打印到的流.
 
-                Specifying (:print-object printer-name) is equivalent to specifying:
+                指定 (:print-object printer-name) 等价于指定:
 
                 (defmethod print-object ((object structure-name) stream)
                   (funcall (function printer-name) object stream))
 
-                If no :type option is supplied, and if either a :print-function or a :print-object option is supplied, and if no printer-name is supplied, then a print-object method specialized for structure-name is generated that calls a function that implements the default printing behavior for structures using #S notation; see Section 22.1.3.12 (Printing Structures).
+                如果没有提供 :type 选项, 并且提供一个 :print-function 或一个 :print-object 选项, 也没有提供 printer-name, 那么为 structure-name 特化的一个 print-object 方法会被生成, 它使用 #S 标记实现了结构体的默认打印行为; 见章节 22.1.3.12 (Printing Structures).
 
-                If neither a :print-function nor a :print-object option is supplied, then defstruct does not generate a print-object method specialized for structure-name and some default behavior is inherited either from a structure named in an :include option or from the default behavior for printing structures; see the function print-object and Section 22.1.3.12 (Printing Structures).
+                如果既没有提供一个 :print-function 选项也没有提供一个 :print-object 选项, 那么 defstruct 不会生成一个对 structure-name 特化的 print-object 方法, 而是从一个 :include 选项中的命名函数或从打印结构体的默认行为中继承某个默认行为; 见函数 print-object 和章节 22.1.3.12 (Printing Structures).
 
-                When *print-circle* is true, a user-defined print function can print objects to the supplied stream using write, prin1, princ, or format and expect circularities to be detected and printed using the #n# syntax. This applies to methods on print-object in addition to :print-function options. If a user-defined print function prints to a stream other than the one that was supplied, then circularity detection starts over for that stream. See the variable *print-circle*.
+                当 *print-circle* 是 true 时, 一个用户定义的打印函数可以使用 write, prin1, princ, or format 来打印对象到提供的流中并且认为循环会通过 #n# 语法被检测和打印. 这个应用于 print-object 上的方法, 除了 :print-function 选项. 如果用户提供的打印函数打印到一个流而不是提供的那个, 那么循环检测从这个流开始. 见变量 *print-circle*.
 
             :type
 
-                :type explicitly specifies the representation to be used for the structure. Its argument must be one of these types:
+                :type 显式指定了这个结构体要使用的表示法. 它的参数必须是以下类型之一:
 
                 vector
 
-                    This produces the same result as specifying (vector t). The structure is represented as a general vector, storing components as vector elements. The first component is vector element 1 if the structure is :named, and element 0 otherwise.
+                    这个和指定 (vector t) 产生相同的结果. 这个结构体被表示为普通的 vector, 把组件存储为 vector 元素. 如果这个结构体是 :named 那么第一个组件是 vector 的元素 1, 否则就是元素 0.
 
                 (vector element-type)
 
-                    The structure is represented as a (possibly specialized) vector, storing components as vector elements. Every component must be of a type that can be stored in a vector of the type specified. The first component is vector element 1 if the structure is :named, and element 0 otherwise. The structure can be :named only if the type symbol is a subtype of the supplied element-type.
+                    这个结构体被表示为一个 (可能是特化的) vector, 把组件存储为 vector 元素. 每个组件必须是可以存储到指定类型的 vector 中的类型. 如果这个结构体是 :named 那么第一个组件是 vector 的元素 1, 否则就是元素 0. 当且仅当这个类型符号是提供的 element-type 的一个子类型时, 这个结构体可以是 :named.
 
                 list
 
-                    The structure is represented as a list. The first component is the cadr if the structure is :named, and the car if it is not :named.
+                    这个结构体被表示为一个 list. 如果这个结构体是 :named 那么第一个元素就是 cadr 那个, 如果不是 :named 那么就是 car 那个.
 
-                Specifying this option has the effect of forcing a specific representation and of forcing the components to be stored in the order specified in defstruct in corresponding successive elements of the specified representation. It also prevents the structure name from becoming a valid type specifier recognizable by typep.
+                指定这个选项的效果是, 强制一个特定的表示, 并强制将组件按照在defstruct中指定的顺序存储到指定的表示法的相应连续元素中. 它还可以防止结构名称成为 typep 所识别的有效类型指定符.
 
-                For example:
+                比如:
 
                 (defstruct (quux (:type list) :named) x y)
 
-                should make a constructor that builds a list exactly like the one that list produces, with quux as its car.
+                应该产生一个构造器, 它构造一个就像是 list 创建的列表, 其中 quux 作为它的 car.
 
-                If this type is defined:
+                如果这个类型如下定义:
 
                 (deftype quux () '(satisfies quux-p))
 
-                then this form
+                那么这个表达式形式
 
                 (typep (make-quux) 'quux)
 
-                should return precisely what this one does
+                应该准确返回下面这个所做的结果
 
                 (typep (list 'quux nil nil) 'quux)
 
-                If :type is not supplied, the structure is represented as an object of type structure-object.
+                如果没有提供 :type, 这个结构体被表示为一个 structure-object 类型的对象.
 
-                defstruct without a :type option defines a class with the structure name as its name. The metaclass of structure instances is structure-class.
+                没有 :type 选项的 defstruct 定义一个类, 其中这个结构体的名字作为它的名字. 结构体实例的元类是 structure-class.
 
         重定义一个 defstruct 结构体的后果是未定义的.
 
