@@ -6,23 +6,23 @@
 > * 7.4 [元对象](#MetaObjects)
 > * 7.5 [槽](#Slots)
 > * 7.6 [广义函数和方法](#GenericFunctionsMethods)
-> * 7.7 [The Objects Dictionary](#TheObjectsDictionary)
+> * 7.7 [对象字典](#TheObjectsDictionary)
 
 ## 7.1 <span id="ObjectCreationInit">对象创建和初始化</span>
 
-广义函数 make-instance 创建并且返回一个类的实例. 第一个参数是一个类或者一个类的实例, 而剩余参数组成初始化参数列表.
+广义函数 make-instance 创建并且返回一个类的实例. 第一个参数是一个类或者一个类的名字, 而剩余参数组成初始化参数列表.
 
-一个新的实例的初始化由多个独立不同的步骤组成, 包括以下这些: 将显式提供的初始化参数与未提供的初始化参数的缺省值相结合, 检查初始化参数的有效性, 为实例分配存储, 用值来填充槽(slot), 并且执行用户提供的方法来执行额外的初始化. make-instance 的每个步骤都是通过一个广义函数实现的, 以提供一种定制该步骤的机制. 另外, make-instance 自身也是一个广义函数并且因此也可以被定制.
+一个新的实例的初始化由多个独立不同的步骤组成, 包括以下这些: 将显式提供的初始化参数与未提供的初始化参数的默认值相结合, 检查初始化参数的有效性, 为实例分配存储, 用值来填充槽(slot), 并且执行用户提供执行额外初始化的方法. make-instance 的每个步骤都是通过一个广义函数实现的, 以提供一种定制该步骤的机制. 另外, make-instance 自身也是一个广义函数并且因此也可以被定制.
 
-这个对象系统为每个步骤指定了系统提供的主要方法并且因此为整个初始化过程指定了一个定义明确的标准行为. 这个标准行为提供了四个简单的机制用于控制初始化:
+这个对象系统为每个步骤指定了系统提供的主方法并且因此为整个初始化过程指定了一个定义明确的标准行为. 这个标准行为提供了四个简单的机制用于控制初始化:
 
-* 声明一个符号作为一个槽的初始化参数. 一个初始化参数是通过给 defclass 使用 :initarg 槽选项来声明的. 这个为在一个 make-instance 调用中给一个槽提供一个值提供了一个机制This provides a mechanism for supplying a value for a slot in a call to make-instance.
+* 声明一个符号作为一个槽的初始化参数. 一个初始化参数是通过对 defclass 使用 :initarg 槽选项来声明的. 这个提供了一个机制用于一个 make-instance 调用中来给一个槽提供值.
 
-* 为一个初始化参数提供一个默认值表达式形式. 初始化参数的默认值表达式形式通过给 defclass 使用 :default-initargs 类选项来定义的. 如果没有给 make-instance 明确提供一个初始化参数作为参数, 那么默认值表达式形式就会在定义它的 defclass 表达式形式的词法环境中被求值, 并且结果值被用作这个初始化参数的值.
+* 为一个初始化参数提供一个默认值表达式形式. 初始化参数的默认值表达式形式通过对 defclass 使用 :default-initargs 类选项来定义的. 如果没有明确给 make-instance 提供一个初始化参数作为参数, 那么默认值表达式形式就会在定义它的 defclass 表达式形式所在的词法环境中被求值, 并且产生的值被用作这个初始化参数的值.
 
-* 为一个槽提供一个默认的初始值表达式形式. 一个槽的默认初始值表达式形式通过给 defclass 提供 :initform 槽选项来定义的. 如果没有给 make-instance 提供和那个槽关联的初始化参数或者通过 :default-initargs<!-- TODO 待校验 -->, 那么这个默认初始值表达式形式就会在定义它的 defclass 表达式形式的词法环境中被求值, 并且这个结果被存储到这个槽中. 当创建一个实例时, 更新一个实例来符合重定义的类时, 或者更新一个实例来符合不同类的定义时, 一个局部槽的这个 :initform 表达式形式可能被使用. 当定义或者重定义这个类时, 一个共享槽的这个 :initform 表达式形式会被使用.
+* 为一个槽提供一个默认的初始值表达式形式. 一个槽的默认初始值表达式形式通过对 defclass 提供 :initform 槽选项来定义的. 如果没有给 make-instance 提供和那个槽关联的初始化参数或者通过 :default-initargs 提供默认值, 那么这个默认初始值表达式形式就会在定义它的 defclass 表达式形式所在的词法环境中被求值, 并且产生的这个值被存储到这个槽中. 当创建一个实例时, 更新一个实例来符合重定义的类时, 或者更新一个实例来符合不同类的定义时, 一个局部槽的这个 :initform 表达式形式可能被使用. 当定义或者重定义这个类时, 一个共享槽的这个 :initform 表达式形式会被使用.
 
-* 为 initialize-instance 和 shared-initialize 定义方法. 上面描述的槽填充行为是由一个系统提供的 initialize-instance 主方法来实现的, 它调用 shared-initialize. 广义函数 shared-initialize 分这四种情况实现了初始化部分<!-- TODO 待校验 -->: 创建一个实例的时候, 重新初始化一个实例的时候, 更新一个实例来符合重定义的类时, 还有更新一个实例来符合一个不同的类的定义时. shared-initialize 的系统提供的主方法直接实现上述槽填充行为, 而 initialize-instance 简单地调用 shared-initialize.
+* 为 initialize-instance 和 shared-initialize 定义方法. 上面描述的槽填充行为是由一个系统提供的 initialize-instance 主方法来实现的, 它调用 shared-initialize. 广义函数 shared-initialize 实现了由这四种情况所共享的初始化部分: 创建一个实例的时候, 重新初始化一个实例的时候, 更新一个实例来符合重定义的类时, 还有更新一个实例来符合一个不同的类的定义时. shared-initialize 的系统提供的主方法直接实现上述槽填充行为, 而 initialize-instance 简单地调用 shared-initialize.
 
 > * 7.1.1 [初始化参数](#InitArguments)
 > * 7.1.2 [声明初始化参数的有效性](#DeclaringValidityInitArg)
@@ -36,26 +36,25 @@
 
 一个初始化参数控制对象的创建和初始化. 使用关键字符号来命名初始化参数往往是很方便的, 但是初始化参数的名字可以是任何符号, 包括 nil. 一个初始化参数可以以两种方式被使用: 用一个值去填充一个槽或者为一个初始化方法提供一个参数. 一个单个的初始化参数可以被同时用作这两个目的.
 
-一个初始化参数列表是一个初始化参数名字和值的属性列表. 它的结构与属性列表相同, 也与处理过的 &key 参数的参数列表部分相同. 在这些列表中, 如果一个初始化参数名称在初始化参数列表中出现不止一次, 那么最左边出现的就会提供值, 而其余的会被忽略. 给 make-instance 的参数 (在第一个参数后面的) 组成初始化参数列表.
+一个初始化参数列表是一个初始化参数名字和值的属性列表. 它的结构与属性列表相同, 也与处理过 &key 参数的参数列表部分相同. 在这些列表中, 如果一个初始化参数名称在初始化参数列表中出现不止一次, 那么最左边出现的就会提供值, 而其余的会被忽略. 给 make-instance 的参数 (在第一个参数后面的) 组成初始化参数列表.
 
 一个初始化参数可以和一个槽关联. 如果这个初始化参数在初始化列表中有一个值, 这个值会被存储到新创建对象的那个槽中, 覆盖任何和这个槽关联的 :initform 表达式形式. 一个单个的初始化参数可以初始化不止一个槽. 初始化一个共享槽的初始化参数存储它的值到那个共享槽中, 替换掉任何先前的值.
 
-一个初始化参数可以和一个方法关联. 当一个对象被创建并且提供一个特定的初始化参数时, 广义函数 initialize-instance, shared-initialize, 和 allocate-instance 会被调用, 这个初始化参数的名字和值作为一个关键字参数对. 如果在关键字参数列表中没有给这个关键字参数提供一个值, 这个方法的 lambda 列表会提供一个默认值.
+一个初始化参数可以和一个方法关联. 当一个对象被创建并且提供一个特定的初始化参数时, 这个初始化参数的名字和值作为一个关键字参数对来调用广义函数 initialize-instance, shared-initialize, 和 allocate-instance. 如果在关键字参数列表中没有给这个关键字参数提供一个值, 这个方法的 lambda 列表会提供一个默认值.
 
 初始化参数被用于四种情况: 创建一个实例时, 重新初始化一个实例时, 更新一个实例去符合一个重定义的类, 还有更新一个实例去符合一个不同的类的定义.
 
 由于初始化参数被用于控制某个特定类的实例的创建和初始化, 我们就说一个初始化参数是那个类的初始化参数. 
 
-
 ### 7.1.2 <span id="DeclaringValidityInitArg">声明初始化参数的有效性</span>
 
-在使用初始化参数的四种情况的任何一种时, 都会检测初始化参数的有效性. 一个初始化参数在一种情况是合法的但是在另一种缺是不合法的. 比如, 系统提供的针对类 standard-class 的 make-instance 的主方法检测它的初始化参数的合法性, 如果提供的一个初始化参数在那个情况下没有被声明为有效的, 那么就会发出一个错误.
+在使用初始化参数的四种情况的任何一种时, 都会检测初始化参数的有效性. 一个初始化参数可能在一种情况是有效的但是在另一种却是无效的. 比如, 系统提供的针对类 standard-class 的 make-instance 的主方法检测它的初始化参数的有效性, 如果提供的一个初始化参数在那个情况下没有被有效声明, 那么就会发出一个错误.
 
-关于声明初始化参数的有效性这里由两个意义.
+关于声明初始化参数有效这里有两个方法.
 
-* 填充槽的初始化参数通过给 defclass 的 :initarg 槽选项被声明为有效的. 这个 :initarg 槽选项从超类中继承下来. 因此一个类的填充槽的有效初始化参数是这个类和它的超类声明为有效的填充槽的初始化参数的并集. 填充槽的初始化参数在所有四种环境中都是有效的.
+* 填充槽的初始化参数通过给 defclass 的 :initarg 槽选项来有效声明. 这个 :initarg 槽选项从超类中继承下来. 因此为一个类填充槽的有效初始化参数是这个类和它的超类声明为有效的填充槽的初始化参数的并集. 填充槽的初始化参数在所有四种情况中都是有效的.
 
-* 给方法提供参数的初始化参数通过定义这些方法被声明为有效的. 在这个方法的 lambda 列表中指定的每个关键字参数的关键字名字成为这个方法可应用的所有类的初始化参数. 一个可应用的方法的 lambda 列表中 &allow-other-keys 的出现会禁用初始化参数的有效性检测. 因此方法继承控制了提供参数给方法的有效初始化参数的集合. 用于声明初始化参数有效的方法定义的广义函数如下所示:
+* 给方法提供参数的初始化参数通过定义这些方法被声明为有效的. 在这个方法的 lambda 列表中指定的每个关键字参数的关键字名字成为这个方法可应用的所有类的初始化参数. 一个可应用方法的 lambda 列表中 &allow-other-keys 的出现会禁用初始化参数的有效性检测. 因此方法继承控制了给方法提供参数的有效初始化参数的集合. 用于声明初始化参数有效的方法定义的广义函数如下所示:
 
     -- 创建一个类的实例: allocate-instance, initialize-instance, 和 shared-initialize. 通过这些方法声明为有效的初始化参数在创建一个类的一个实例时是有效的.
 
@@ -73,7 +72,7 @@
 
 这个 :default-initargs 选项仅被用于给初始化参数提供默认值; 它不会声明一个符号作为有效初始化参数的名字. 此外, 这个 :default-initargs 选项仅在创建一个实例时被用于给初始化提供默认值.
 
-给这个 :default-initargs 类选项的参数是一个交替的初始化参数名字和表达式形式的列表. 每个表达式形式是对应初始化参数的默认值表达式形式. 一个初始化参数的默认值表达式形式当且仅当这个初始化参数没有出现在 make-instance 的参数中并且不是由一个更具体的类缺省的时被使用和求值. <!-- TODO defaulted 缺省的 ??--> 默认值表达式形式在提供它的 defclass 表达式形式的词法环境中被求值; 结果值被用作这个初始化参数的值.
+给这个 :default-initargs 类选项的参数是一个初始化参数名字和表达式形式交替的列表. 每个表达式形式是对应初始化参数的默认值表达式形式. 一个初始化参数的默认值表达式形式当且仅当这个初始化参数没有出现在 make-instance 的参数中并且没有被一个更具体的类省略的时被使用和求值.默认值表达式形式在提供它的 defclass 表达式形式的词法环境中被求值; 产生的值被用作这个初始化参数的值.
 
 提供给 make-instance 的初始化参数和默认的初始化参数组合来产生一个默认的初始化参数列表. 默认的初始化参数列表是一个交替初始化参数名称和值的列表, 其中未提供的初始化参数是默认值, 其中显式提供的初始化参数出现在列表中默认的初始化参数的前面. 默认的初始化参数根据提供默认值的这些类的类优先级列表中的顺序来排序.
 
@@ -81,26 +80,25 @@
 
 初始化参数的默认值表达式形式的求值顺序和 :initform 表达式形式的求值顺序是没有定义的. 如果求值的顺序很重要, 应该使用 initialize-instance 或 shared-initialize 方法. 
 
-
 ### 7.1.4 <span id="RulesInitArg">初始化参数的规则<\span>
 
-这个 :initarg 槽选项对于一个给定的槽可能被指定不止一次.
+这个 :initarg 槽选项对于一个给定的槽可能不止一次被指定.
 
-下面的规则指定了初始化参数的多次定义:
+下面的规则指出了初始化参数被多次定义的时候:
 
-* 如果相同的初始化参数名出现在不止一个 :initarg 槽选项中时, 一个给定的初始化参数可以被用于初始化不止一个槽.
+* 如果相同的初始化参数名出现在超过一个 :initarg 槽选项中时, 一个给定的初始化参数可以被用于初始化不止一个槽.
 
-* 一个给定的初始化参数名可以出现在不止一个初始化方法的 lambda 列表中.
+* 一个给定的初始化参数名可以出现在超过一个初始化方法的 lambda 列表中.
 
 * 一个给定的初始化参数名可以同时出现在一个 :initarg 槽选项和一个初始化方法的 lambda 列表中.
 
 如果在 make-instance 的参数中给定初始化同一个槽的两个或更多初始化参数, 在这个初始化参数列表中的这些初始化参数中的最左边的那个来提供值, 即便这些初始化参数有着不同的名字.
 
-如果初始化同一个槽的两个或更多不同的初始化参数有默认值并且都没有提供给 make-instance 作为参数, 那么最具体的那些类的 :default-initargs 类选项来提供值. 如果一个单个的 :default-initargs 类选项指定了两个或更多初始化相同槽的初始化参数并且都没有显式出现在 make-instance 的参数中, 在 :default-initargs 类选项中最左边那个来提供值, 并且忽略剩余默认值表达式形式的值.
+如果初始化同一个槽的两个或更多不同的初始化参数有默认值并且都没有显式给 make-instance 提供那些参数, 那么最具体的那些类的 :default-initargs 类选项来提供值. 如果一个单个的 :default-initargs 类选项指定了两个或更多初始化相同槽的初始化参数并且都没有显式出现在 make-instance 的参数中, 在 :default-initargs 类选项中最左边那个来提供值, 并且忽略剩余默认值表达式形式的值.
 
-在 make-instance 的参数中给定的初始化参数出现在默认初始化参数的左边. 假设类 C1 和 C2 为不同的槽提供默认初始化参数值, 并且 C1 比 C2 更具体; 那么在默认初始化参数列表中 C1 提供的默认初始化参数值在 C2 提供的值的左边. 如果一个单个的 :default-initargs 类选项为两个不同的槽提供了初始化参数的值, the initialization argument whose value is specified farther to the left in the :default-initargs class option appears farther to the left in the defaulted initialization argument list.<!--TODO 待翻译-->
+在 make-instance 的参数中显式给定的初始化参数出现在默认初始化参数的左边. 假设类 C1 和 C2 为不同的槽提供默认初始化参数值, 并且 C1 比 C2 更具体; 那么在默认初始化参数列表中 C1 提供的默认初始化参数值在 C2 提供的值的左边. 如果一个单个的 :default-initargs 类选项为两个不同的槽提供了初始化参数的值, 被指定的值距离 :default-initargs 的左边更远的那个初始化参数在默认初始化参数列表中也距离左边更远.
 
-如果一个槽同时有一个 :initform 表达式形式和一个 :initarg 槽选项, 并且这个初始化参数使用 :default-initargs 提供默认值或提供给 make-instance, 那么这个 :initform 表达式形式不会被使用也不会被求值.
+如果一个槽同时有一个 :initform 表达式形式和一个 :initarg 槽选项, 并且这个初始化参数使用 :default-initargs 提供默认值或者给 make-instance 提供了这个参数, 那么这个捕获的 :initform 表达式形式不会被使用也不会被求值.
 
 下面都是上述规则的一个示例:
 
@@ -109,7 +107,6 @@
 (defclass r (q) ((x :initarg b))
   (:default-initargs a 1 b 2))
 ```
-
                                                                        
 | 表达式形式                   |  默认初始化参数列表 | X 槽的内容 |
 |-                           |-                 |-          |         
@@ -193,11 +190,11 @@ initialize-instance 方法可以被定义用来指定一个实例被初始化时
 
 ## 7.2 <span id="ChangeClassInstance">修改一个实例的类</span>
 
-函数 change-class 可以被用来修改一个类的实例从它的当前类, Cfrom, 到一个不同的类, Cto; 它修改这个实例的结构来符合这个类 Cto 的定义.
+函数 change-class 可以被用来修改一个类的实例, 从它的当前类 Cfrom 到一个不同的类 Cto; 它修改这个实例的结构来符合这个类 Cto 的定义.
 
-注意, 修改一个实例的类可能导致添加或删除槽. 修改一个实例的类不会修改由 eq 函数定义的它的同一性.
+注意, 修改一个实例的类可能导致槽被添加或删除. 修改一个实例的类不会修改由 eq 函数定义的它的同一性(identity).
 
-当 change-class 在一个实例上被调用, 会发生一个两步的更新过程. 第一步通过添加新的局部槽还有废弃这个新版本的实例中没有指定的局部槽来修改这个实例的结构. 第二部初始化新添加的局部槽并执行其他任何用户定义的动作. 这两步在以下两个章节中有进一步的描述.
+当 change-class 在一个实例上被调用, 会发生一个分为两步的更新过程. 第一步通过添加新的局部槽还有废弃这个新版本的实例中没有指定的局部槽来修改这个实例的结构. 第二部初始化新添加的局部槽并执行其他任何用户定义的动作. 这两步在以下两个章节中有进一步的描述.
 
 ### 7.2.1 修改实例的结构
 
@@ -217,7 +214,7 @@ initialize-instance 方法可以被定义用来指定一个实例被初始化时
 
 这里有一个系统提供的 update-instance-for-different-class 的主方法, 它有两个特化参数, 其中的每一个都是类 standard-object. 首先这个方法检测初始化参数的有效性, 如果提供的一个初始化参数没有被有效声明就会发出一个错误. (关于更多信息, 见章节 7.1.2 (Declaring the Validity of Initialization Arguments).) 然后它调用广义函数 shared-initialize 并传递以下参数: 这个新的实例, 新添加槽的名字的一个列表, 还有它收到的那些初始化参数. 
 
-### 7.2.3 定制一个实例的类的改变
+### 7.2.3 定制一个实例的类的变更
 
 update-instance-for-different-class 方法可以被定义用来指定一个实例被更新时发生的动作. 只有在 update-instance-for-different-class 方法被定义之后, 它们会在系统提供的初始化主方法之后被运行并且不会干涉 update-instance-for-different-class 的默认行为.
 
@@ -235,14 +232,14 @@ shared-initialize 的方法可能被定义用来定制类的重定义行为. 关
 
 ### 7.3.1 定制重新初始化行为
 
-reinitialize-instance 方法可以被定义, 用来指定一个实例被更新时采取的动作. 只有在 reinitialize-instance 方法被定义之后, 它们才会在系统提供的初始化主方法之后被运行并且因此不会影响 reinitialize-instance 的默认行为.
+reinitialize-instance 方法可以被定义, 用来指定一个实例被更新时采取的动作. 如果只有 reinitialize-instance 的 after 方法被定义, 它们会在系统提供的初始化主方法之后被运行并且因此不会影响 reinitialize-instance 的默认行为.
 
-shared-initialize 方法可以被定义, 用来定制类的重定义行为. 关于更多信息, 见章节 7.1.5 (Shared-Initialize). 
+shared-initialize 方法可以被定义用来定制类的重定义行为. 关于更多信息, 见章节 7.1.5 (Shared-Initialize). 
 
 
 ## 7.4 <span id="MetaObjects">元对象</span>
 
-对象系统的实现操纵类, 方法和广义函数. 对象系统包含了由类方法定义的广义函数的集合; 这些广义函数的行为定义了这个对象系统的行为. 这些方法被定义的对应的类的实例称之为元对象.
+对象系统的具体实现操纵类, 方法和广义函数. 对象系统包含了由类方法定义的广义函数的集合; 这些广义函数的行为定义了这个对象系统的行为. 这些方法被定义的对应的类的实例称之为元对象.
 
 ### 7.4.1 标准元对象
 
@@ -270,7 +267,7 @@ shared-initialize 方法可以被定义, 用来定制类的重定义行为. 关�
 
 当一个槽没有一个值时, 这个槽就被称为未绑定的(unbound). 当一个未绑定的槽被读取时, 广义函数 slot-unbound 会被调用. 系统提供的类 t 上的 slot-unbound 主方法会发出一个错误. 如果 slot-unbound 返回了, 它的主要的值那时会被用作那个槽的值.
 
-一个槽的默认初始值表达式形式被 :initform 槽选项所定义. 当这个 :initform 表达式形式被用于提供一个值的时候, 它会在求值 defclass 表达式形式的词法环境中被求值. 这个 :initform 求值 defclass 表达式形式的词法环境被称为一个被捕获的初始化表达式形式(captured initialization form). 关于更多详情, 见章节 7.1 (Object Creation and Initialization).
+一个槽的默认初始值表达式形式被 :initform 槽选项所定义. 当这个 :initform 表达式形式被用于提供一个值的时候, 它会在求值 defclass 表达式形式的词法环境中被求值. 这个 :initform 连同求值 defclass 表达式形式的词法环境一起被称为一个被捕获的初始化表达式形式(captured initialization form). 关于更多详情, 见章节 7.1 (Object Creation and Initialization).
 
 一个局部槽被定义为一个槽, 它仅对于一个实例是可访问的, 那个实例就是分配槽的那个. 一个共享槽被定义为一个槽, 它对于给定类和它的子类而言超过一个实例都是可见的.
 
@@ -280,14 +277,13 @@ shared-initialize 方法可以被定义, 用来定制类的重定义行为. 关�
 
 如果一个槽是由一个实例的类定义的, 或者是从该类的超类中继承的, 就说这个槽在这个类的实例中是可以访问的. 在一个实例中一个给定的名字的可访问的槽最多一个. 一个类定义的共享槽在这个类的所有实例中都是可以访问的. 关于槽的继承的详细解释在章节 7.5.3 (Inheritance of Slots and Slot Options) 中给出. 
 
-
 ### 7.5.2 <span id="AccessingSlots">访问槽</span>
 
 槽可以通过两种方式被访问: 通过使用基本函数 slot-value 和通过使用 defclass 表达式形式产生的广义函数.
 
 函数 slot-value 可以通过这个 defclass 表达式形式中指定的槽名字来使用, 用于访问给定类的一个实例中一个可访问的特定的槽.
 
-宏 defclass 为读取或写入槽提供语法. 如果需要一个 reader 方法, 用于读取这个槽的值的一个方法会被自动生成, 但是用于存储一个值到这个槽的方法不会被生成. 如果需要一个 writer 方法, 用于存储一个值到这个槽的一个方法会被自动生成, 但是读取它的值的方法不会被生成. 如果需要一个 accessor 方法, 一个用于读取这个槽的值的方法和一个用于存储一个值到这个槽的方法会被自动生成. Reader 和 writer 方法通过使用 slot-value 来实现.
+宏 defclass 为读取或写入槽提供语法. 如果请求了一个 reader 方法, 用于读取这个槽的值的一个方法会被自动生成, 但是用于存储一个值到这个槽的方法不会被生成. 如果请求了一个 writer 方法, 用于存储一个值到这个槽的一个方法会被自动生成, 但是读取它的值的方法不会被生成. 如果请求了一个 accessor 方法, 一个用于读取这个槽的值的方法和一个用于存储一个值到这个槽的方法会被自动生成. Reader 和 writer 方法通过使用 slot-value 来实现.
 
 当一个槽指定了 reader 或者 writer 方法, 所生成方法所属的广义函数的名字是直接指定的. 如果为这个 writer 方法指定的名字是这个符号 name, 那么用于写入这个槽的广义函数的名字就是 name, 这个广义函数接受两个参数: 新的值和这个实例, 以这样的顺序. 如果为 accessor 方法指定的名字是符号 name, 用于读取这个槽的广义函数的名字就是符号 name, 而用于写入这个槽的广义函数的名字就是列表 (setf name).
 
@@ -304,7 +300,7 @@ shared-initialize 方法可以被定义, 用来定制类的重定义行为. 关�
 
 一个类 C 的一个实例中所有可访问槽的名字集合是 C 和它的所有超类定义的槽的名字的并集. 一个实例的结构是这个实例中局部槽的名字集合.
 
-在最简单的情况下, 在C及其超类中只有一个类定义了一个带有给定槽名的槽. 如果 C 的一个超类定义了一个槽, 就说这个槽是继承的. 槽的特征是由定义类的槽指定符决定的. 细想一个槽 S 的定义类. 如果这个 :allocation 槽选项的值是 :instance, 那么 S 是一个局部槽并且 C 的每一个实例都有它自己的名为 S 的槽存储它自己的值. 如果这个 :allocation 槽选项的值是 :class, 那么 S 是一个共享槽, 定义 S 的类存储这个值, 并且所有 C 的实例可以访问那个单个的槽. 如果这个 :allocation 槽选项被省略, 就使用 :instance.
+在最简单的情况下, 在 C 及其超类中只有一个类定义了一个带有给定槽名的槽. 如果 C 的一个超类定义了一个槽, 就说这个槽是继承的. 槽的特征是由定义类的槽指定符决定的. 细想一个槽 S 的定义类. 如果这个 :allocation 槽选项的值是 :instance, 那么 S 是一个局部槽并且 C 的每一个实例都有它自己的名为 S 的槽存储它自己的值. 如果这个 :allocation 槽选项的值是 :class, 那么 S 是一个共享槽, 定义 S 的类存储这个值, 并且所有 C 的实例可以访问那个单个的槽. 如果这个 :allocation 槽选项被省略, 就使用 :instance.
 
 通常情况下, 在 C 及其超类中有多个类可以定义带有给定名称的槽. 这样的情况下, 在 C 的一个实例中给定名字的槽只有一个可以访问, 而这个槽的特性是这几个槽指定符的一个结合, 按如下计算:
 
@@ -342,13 +338,13 @@ shared-initialize 方法可以被定义, 用来定制类的重定义行为. 关�
 
 ### 7.6.1 <span id="IntroductionGF">广义函数的介绍</span>
 
-一个广义函数是一个行为取决于提供给它的参数的类或同一性的函数. 一个广义函数对象和一个方法的集合, 一个 lambda 列表, 一个方法组合, 还有其他信息相关联.<!--TODO identity 同一性？身份?-->
+一个广义函数是一个行为取决于提供给它的参数的类或同一性(identity)的函数. 一个广义函数对象和一个方法集合, 一个 lambda 列表, 一个方法组合, 还有其他信息相关联.
 
-像一个普通函数一样, 一个广义函数接受参数, 执行一系列动作, 并且可能返回有用的值. 一个普通函数由有一个在函数被调用时总是被执行的代码中的单个主体. 一个广义函数有着一个代码的主体的集合, 其中一个子集会被选择来执行. 选择的代码主体和它们的组合方式由给这个广义函数的一个或多个参数的类或同一性决定, 以及它们的方法组合.
+像一个普通函数一样, 一个广义函数接受参数, 执行一系列动作, 并且可能返回有用的值. 一个普通函数由有一个在函数被调用时总是被执行的代码中的单个主体. 一个广义函数有着一个代码主体的集合, 其中一个子集会被选择来执行. 选择的代码主体和它们的组合方式由给这个广义函数的一个或多个参数的类或同一性决定, 以及它们的方法组合.
 
 普通函数和广义函数用相同的语法来调用.
 
-广义函数是可以作为参数传递和用作给 funcall 和 apply 的第一个参数的真实函数.
+广义函数是可以作为参数传递给 funcall 和 apply 并且用作第一个参数的真实函数.
 
 函数名与广义函数的绑定可以通过以下几种方式建立. 它可以通过 ensure-generic-function, defmethod (隐式的, 应归于 ensure-generic-function) 或 defgeneric (也是隐式的, 应归于 ensure-generic-function) 在全局环境中建立. 没有为在词法环境中建立一个函数名与广义函数的绑定提供标准化机制.
 
@@ -360,7 +356,7 @@ shared-initialize 方法可以被定义, 用来定制类的重定义行为. 关�
 
 * 否则就会使用这个 defgeneric 表达式形式中的方法定义指定的方法来创建一个广义函数.
 
-某些操作符允许规范一个广义函数的选项, 就像它使用的方法组合的类型或它的参数优先级顺序. 这些操作符会会被称为 "指定广义函数选项的操作符". 这个类别中唯一的标准化操作符是 defgeneric.
+某些操作符允许规范一个广义函数的选项, 就像它使用的方法组合的类型或它的参数优先级顺序. 这些操作符会被称为 "指定广义函数选项的操作符". 这个类别中唯一的标准化操作符是 defgeneric.
 
 某些操作符为一个广义函数定义方法. 这些操作符会被称作方法定义操作符; 它们关联的表达式形式被称作方法定义表达式形式. 标准化的方法定义操作符列在下面这段中.
 
@@ -371,18 +367,18 @@ shared-initialize 方法可以被定义, 用来定制类的重定义行为. 关�
 
 
 ### 7.6.2 <span id="IntroductionMethods">方法的介绍</span>
-<!--TODO parameter specializer 参数特化符 特化参数??-->
-方法定义了特定类或者特定同一性的行为以及一个广义函数的操作.
 
-一个方法对象和实现这个方法的代码相关联, 在这个给定方法可应用时指定的一个参数特化序列, 一个 lambda 列表, 还有一个被方法组合机制用来区分方法的限定符序列.
+方法定义了一个广义函数的特定于类或者特定于同一性的行为以及操作.
+
+一个方法对象和实现这个方法的代码, 一个指定这个给定方法何时是可应用的参数特化序列, 一个 lambda 列表, 还有一个被方法组合机制用来区分方法的限定符序列相关联.
 
 一个方法对象不是一个函数并且不能像函数一样被调用. 在这个对象系统中的各种机制接收一个方法对象并调用它的方法函数, 就像这个广义函数被调用时那样. 这个发生时就说这个方法被调用.
 
-方法定义表达式形式包含了当广义函数的参数导致它定义的方法被调用时要运行的代码 A method-defining form contains the code that is to be run when the arguments to the generic function cause the method that it defines to be invoked.<!--TODO 待校验--> 当一个方法定义表达式形式被求值, 一个方法对象会被创建并且采取这四种动作中的一个:
+方法定义表达式形式包含了当广义函数的参数导致它定义的方法被调用时要运行的代码. 当一个方法定义表达式形式被求值, 一个方法对象会被创建并且采取这四种动作中的一个:
 
-* 如果一个给定名字的广义函数已经存在并且如果一个在特化参数和限定符上都符合新的那个的方法对象已经存在, 那个新的对象会替换旧的那个. 对于一个方法的定义, 在参数指定器和限定符上与另一个方法达成一致的, 见章节 7.6.3 (Agreement on Parameter Specializers and Qualifiers).
+* 如果一个给定名字的广义函数已经存在并且如果一个在参数特化符和限定符上都符合新的那个的方法对象已经存在, 那个新的对象会替换旧的那个. 关于一个方法在参数特化符和限定符上与另一个方法达成一致的定义, 见章节 7.6.3 (Agreement on Parameter Specializers and Qualifiers).
 
-* 如果一个给定名字的广义函数已经存在并且这里没有在特化参数和限定符上都符合新的那个的方法对象, 那个存在的广义函数对象会被修改来包含那个新的方法对象.
+* 如果一个给定名字的广义函数已经存在并且这里没有在参数特化符和限定符上都符合新的那个的方法对象, 那个存在的广义函数对象会被修改来包含那个新的方法对象.
 
 * 如果给定的名字命名一个普通函数, 一个宏, 或者一个特殊操作符, 就会发出一个错误.
 
@@ -390,7 +386,7 @@ shared-initialize 方法可以被定义, 用来定制类的重定义行为. 关�
 
 如果一个新的方法的 lambda 列表和广义函数是不相等的, 就会发出一个错误. 如果一个不能指定广义函数选项的方法定义操作符创建了一个新的广义函数, 这个广义函数的 lambda 列表是来自于这个方法定义表达式中的方法的 lambda 列表, 在这种方式下它们是一致的. 关于一致性的讨论, 见章节 7.6.4 (Congruent Lambda-lists for all Methods of a Generic Function).
 
-每个方法都有一个专门的 lambda 列表, 它决定了何时这个方法可以被应用. 一个专门的 lambda 列表就像一个普通 lambda 列表除了一个特化参数可以出现来代替一个必要参数. 一个特化参数是一个列表 (variable-name parameter-specializer-name), 其中 parameter-specializer-name 以下的一种:
+每个方法都有一个专门的 lambda 列表, 它决定了何时这个方法可以被应用. 一个专门的 lambda 列表就像一个普通 lambda 列表除了一个参数特化符可以出现来代替一个必要参数. 一个参数特化符是一个列表 (variable-name parameter-specializer-name), 其中 parameter-specializer-name 以下的一种:
 
 一个符号
 
@@ -414,13 +410,13 @@ shared-initialize 方法可以被定义, 用来定制类的重定义行为. 关�
 
 一个所有参数特化符都是类 t 的方法被称为默认方法; 它总是可应用的但是可能被一个更具体的方法所遮蔽.
 
-方法可以有限定符, 它给方法组合过程提供一种区分方法的方式. 一个带有一个或多个限定符的方法被称为限定方法(qualified method).<!--TODO qualified method ？？--> 一个没有限定符的方法被称为一个非限定方法. 一个限定符是任何非列表元素. 标准方法组合类型定义的限定符是符号.
+方法可以有限定符, 它给方法组合过程提供一种区分方法的方式. 一个带有一个或多个限定符的方法被称为受限方法(qualified method). 一个没有限定符的方法被称为一个非受限方法. 一个限定符是任何非列表元素. 标准方法组合类型定义的限定符是符号.
 
-在这个规范中, 术语 "主方法(primary method)" 和 "辅助方法(auxiliary method)" 在方法组合类型中根据它们的用途被用于区分方法. 在标准方法组合中, 主方法是非限定方法而辅助方法是有以下之一的单个限定符的方法: :around, :before, 或 :after. 有这些限定符的方法分别被称为 around 方法, before 方法, 还有 after 方法. 当使用 define-method-combination 简单的表达式形式定义一个方法组合类型时, 主要方法是用方法组合的类型命名的方法, 而辅助方法有着限定符 :around. 因此术语 "主方法(primary method)" 和 "辅助方法(auxiliary method)" 只有在给定方法组合类型中有相关定义. 
+在这个规范中, 术语 "主方法(primary method)" 和 "辅助方法(auxiliary method)" 在方法组合类型中根据它们的用途被用于区分方法. 在标准方法组合中, 主方法是非受限方法而辅助方法是有以下之一的单个限定符的方法: :around, :before, 或 :after. 有这些限定符的方法分别被称为 around 方法, before 方法, 还有 after 方法. 当使用 define-method-combination 简单的表达式形式定义一个方法组合类型时, 主要方法是用方法组合的类型命名的方法, 而辅助方法有着限定符 :around. 因此术语 "主方法(primary method)" 和 "辅助方法(auxiliary method)" 只有在给定方法组合类型中有相关定义. 
 
 ### 7.6.3 <span id="AgreeParamSpecQualifiers">关于参数特化符和限定符的一致性</span>
 
-如果以下条件保持不变, 则两个方法在参数特化符和限定符之间达成一致:
+如果遵循以下条件, 则两个方法在参数特化符和限定符之间达成一致:
 
 1. 两个方法有相同数量的必要参数. 假设这两个方法的参数特化符为 P1,1...P1,n 和 P2,1...P2,n.
 
@@ -456,7 +452,7 @@ shared-initialize 方法可以被定义, 用来定制类的重定义行为. 关�
 
 如果传递给一个广义函数一个没有可应用方法接收的关键字参数, 应该会发出一个错误; 见章节 3.5 (Error Checking in Function Calls).
 
- 7.6.5.1 广义函数和方法的关键字参数示例
+#### 7.6.5.1 广义函数和方法的关键字参数示例
 
 比如, 假设这里为 width 按照如下定义两个方法:
 
@@ -489,27 +485,27 @@ shared-initialize 方法可以被定义, 用来定制类的重定义行为. 关�
 
 ### 7.6.6 <span id="MethodSelComb">方法选择和组合</span>
 
-当用特定的参数调用一个广义函数时, 它必须决定要执行的代码. 这个代码被称为这些参数的有效方法. 有效的方法是一个广义函数中可应用方法的组合, 它调用这些方法的一部分或全部.
+当用特定的参数调用一个广义函数时, 它必须决定要执行的代码. 这个代码被称为这些参数的生效方法. 生效方法是一个广义函数中可应用方法的组合, 它调用这些方法的一部分或全部.
 
 如果一个广义函数被调用而没有可应用的方法, 广义函数 no-applicable-method 会被调用, 这个调用的结果被用作对原始广义函数调用的结果. 调用 no-applicable-method 优先于检测可接受的关键字参数; 见章节 7.6.5 (Keyword Arguments in Generic Functions and Methods).
 
-当这个有效方法已经被决定时, 会用传递给这个广义函数相同的参数去调用它. 不管它返回什么值都会作为这个广义函数的值被返回.
+当这个生效方法已经被决定时, 会用传递给这个广义函数相同的参数去调用它. 不管它返回什么值都会作为这个广义函数的值被返回.
 
-> * 7.6.6.1 [确定有效方法](#DetermEffectMethod)
+> * 7.6.6.1 [确定生效方法](#DetermEffectMethod)
 > * 7.6.6.2 [标准方法组合](#StandMethodComb)
 > * 7.6.6.3 [声明方法组合](#DeclaraMethodComb)
 > * 7.6.6.4 [内建的方法组合类型](#BuiltInMethodCombTypes)
 
 
-#### 7.6.6.1 <span id="DetermEffectMethod">确定有效方法</span>
+#### 7.6.6.1 <span id="DetermEffectMethod">确定生效方法</span>
 
-有效方法通过以下三个步骤来决定:
+生效方法通过以下三个步骤来决定:
 
 1. 选择可应用的方法.
 
 2. 通过优先级顺序对可应用方法排序, 把最具体的方法放在第一位.
 
-3. 对排序后的可应用方法列表应用方法组合, 产生有效方法.
+3. 对排序后的可应用方法列表应用方法组合, 产生生效方法.
 
 ##### 7.6.6.1.1 选择可应用的方法
 
@@ -529,13 +525,13 @@ shared-initialize 方法可以被定义, 用来定制类的重定义行为. 关�
 
 ##### 7.6.6.1.3 对排序后的可应用方法使用方法组合
 
-在这个简单的例子中---如果使用了标准方法组合并且所有可应用的方法都是主方法---这个有效方法就是最具体的方法. 这个方法可以通过函数 call-next-method 调用下一个最具体的方法. 这个 call-next-method 会调用的方法被称为下一个方法. 断言 next-method-p 检测是否存在下一个方法. 如果 call-next-method 被调用并且没有下一个最具体的方法, 广义函数 no-next-method 会被调用.
+在这个简单的例子中---如果使用了标准方法组合并且所有可应用的方法都是主方法---这个生效方法就是最具体的方法. 这个方法可以通过函数 call-next-method 调用下一个最具体的方法. 这个 call-next-method 会调用的方法被称为下一个方法. 断言 next-method-p 检测是否存在下一个方法. 如果 call-next-method 被调用并且没有下一个最具体的方法, 广义函数 no-next-method 会被调用.
 
-通常, 有效方法是可应用方法的某个组合. 它由一个表达式形式来描述，这个表达式形式包含对某些或全部可应用方法的调用, 返回值或多值来作为广义函数返回的值或多值, 并可选地使一些方法可以通过 call-next-method 访问.
+通常, 生效方法是可应用方法的某个组合. 它由一个表达式形式来描述，这个表达式形式包含对某些或全部可应用方法的调用, 返回值或多值来作为广义函数返回的值或多值, 并可选地使一些方法可以通过 call-next-method 访问.
 
-在这个有效方法中的每一个方法的角色由它的限定符和方法的特性所决定. 一个限定符用于标记一个方法, 而限定符的含义由这个过程的这一步使用这些标记的方式决定. 如果一个可应用方法由一个不识别的限定符, 这个步骤会发出一个错误并且不会在有效方法中包含那个方法.
+在这个生效方法中的每一个方法的角色由它的限定符和方法的特性所决定. 一个限定符用于标记一个方法, 而限定符的含义由这个过程的这一步使用这些标记的方式决定. 如果一个可应用方法由一个不识别的限定符, 这个步骤会发出一个错误并且不会在生效方法中包含那个方法.
 
-当标准方法组合和限定符方法一起使用时, 产生的有效方法就像章节 7.6.6.2 (Standard Method Combination) 中所描述的那样.
+当标准方法组合和限定符方法一起使用时, 产生的生效方法就像章节 7.6.6.2 (Standard Method Combination) 中所描述的那样.
 
 另一个方法组合的类型可以通过使用 defgenric 或者任何其他指定广义函数选项的操作符的 :method-combination 选项来指定. 在这个情况下, 这个过程的这个步骤可以被定制.
 
@@ -546,7 +542,7 @@ shared-initialize 方法可以被定义, 用来定制类的重定义行为. 关�
 
 标准方法组合由类 standard-generic-function 支持. 如果没有指定其他类型的方法组合或者指定了内置的方法组合类型 standard, 那么这个标准方法组合就会被使用.
 
-主方法(primary method)定义了这个有效方法的主要动作, 而辅助方法(auxiliary method)以三种方式之一修改那个动作. 一个主方法没有方法限定符.
+主方法(primary method)定义了这个生效方法的主要动作, 而辅助方法(auxiliary method)以三种方式之一修改那个动作. 一个主方法没有方法限定符.
 
 一个辅助方法是一个限定符为 :before, :after, 或 :around 的方法. 标准方法组合不允许每个方法有超过一个限定符; 如果一个方法定义中指定了每个方法有超过一个限定符, 就会发出一个错误.
 
@@ -583,7 +579,7 @@ shared-initialize 方法可以被定义, 用来定制类的重定义行为. 关�
 
 #### 7.6.6.3 <span id="DeclaraMethodComb">声明方法组合</span>
 
-宏 define-method-combination 定义方法组合的新的表达式形式. 它为定制有效方法的产生提供了一个机制. 对于产生一个有效方法的默认过程在章节 7.6.6.1 (Determining the Effective Method) 中已描述. 这里有两个 define-method-combination 表达式形式. 短表达式形式是一个简单的工具而长表达式形式则更加强大和详细. 长表达式形式类似于 defmacro, 在它的主体中是一个计算一个 Lisp 表达式形式的表达式; 它为在方法组合中实现任意控制结构和方法限定符的任意处理提供一个机制. 
+宏 define-method-combination 定义方法组合的新的表达式形式. 它为定制生效方法的产生提供了一个机制. 对于产生一个生效方法的默认过程在章节 7.6.6.1 (Determining the Effective Method) 中已描述. 这里有两个 define-method-combination 表达式形式. 短表达式形式是一个简单的工具而长表达式形式则更加强大和详细. 长表达式形式类似于 defmacro, 在它的主体中是一个计算一个 Lisp 表达式形式的表达式; 它为在方法组合中实现任意控制结构和方法限定符的任意处理提供一个机制. 
 
 
 #### 7.6.6.4 <span id="BuiltInMethodCombTypes">内建的方法组合类型</span>
@@ -634,8 +630,7 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (Standard M
 
 方法的继承在章节 7.6.6 (Method Selection and Combination) 中详细描述. 
 
-
-## 7.7 <span id="">The Objects Dictionary</span>
+## 7.7 <span id="TheObjectsDictionary">对象字典</span>
 
 > *  [标准广义函数 FUNCTION-KEYWORDS](#SGF-FUNCTION-KEYWORDS)
 > *  [函数 ENSURE-GENERIC-FUNCTION](#F-ENSURE-GENERIC-FUNCTION)
@@ -755,7 +750,7 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (Standard M
 
 * 描述(Description):
 
-        函数 ensure-generic-function 被用于定义一个全局命名的没有方法的广义函数或者去指定或修改属于一个全局命名广义函数的选项和声明 as a whole <!--TODO as a whole ??-->.
+        函数 ensure-generic-function 被用于定义一个全局命名的没有方法的广义函数或者作为整体去指定或修改属于一个全局命名广义函数的选项和声明.
 
         如果 function-name 没有在全局环境中被 fbound, 一个新的广义函数会被创建. 如果 (fdefinition function-name) 是一个普通函数, 一个宏, 或者一个特殊操作符, 就会发出一个错误.
 
@@ -865,7 +860,7 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (Standard M
 
 * 注意(Notes):
 
-        Initargs 通过使用给 defclass 的 :initarg 选项来声明为有效的, 或者通过定义 reinitialize-instance 或 shared-initialize 方法. 任何定义在 reinitialize-instance 或 shared-initialize 方法的 lambda 列表中的每个关键字参数指定符的关键字名字对于那个方法可应用的所有类都被声明为有效的初始化参数. <!--TODO 待校验-->
+        Initargs 通过使用给 defclass 的 :initarg 选项, 或者通过定义 reinitialize-instance 或 shared-initialize 方法来声明为有效的. 任何定义在 reinitialize-instance 或 shared-initialize 方法的 lambda 列表中的每个关键字参数指定符的关键字名字对于那个方法可应用的所有类都被声明为有效的初始化参数.
 
 
 ### <span id="SGF-SHARED-INITIALIZE">标准广义函数 SHARED-INITIALIZE</span>
@@ -886,15 +881,15 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (Standard M
 
 * 描述(Description):
 
-        广义函数 shared-initialize 被用于使用 initargs 和 :initform 来填充一个实例的槽. 当一个实例被创建时, 当一个实例被重新初始化时, 当一个实例被更新去符合一个重定义的类时,  还有当一个实例被更新来符合一个新的类时, 它会被调用. 广义函数 shared-initialize 被系统提供的 initialize-instance, reinitialize-instance, update-instance-for-redefined-class, 和 update-instance-for-different-class 的主函数调用.
+        广义函数 shared-initialize 被用于使用 initargs 和 :initform 来填充一个实例 instance 的槽. 当一个实例被创建时, 当一个实例被重新初始化时, 当一个实例被更新去符合一个重定义的类时,  还有当一个实例被更新来符合一个新的类时, 它会被调用. 广义函数 shared-initialize 被系统提供的 initialize-instance, reinitialize-instance, update-instance-for-redefined-class, 和 update-instance-for-different-class 的主函数调用.
 
-        广义函数 shared-initialize 接受以下参数: 要被初始化的实例, 这个实例中可访问的slot-names 集合的一个说明, 还有任意数量的 initargs. 在前两个后面的参数必须组成一个初始化参数列表. 系统提供的 shared-initialize 主方法根据 initargs 和提供的 :initform 表达式形式用值初始化这些槽. Slot-names 表示要被初始化的槽, 如果没有 为这些槽提供 initargs 根据它们的 :initform 表达式形式.
+        广义函数 shared-initialize 接受以下参数: 要被初始化的实例 instance, 这个实例中可访问的槽名字集合 slot-names 的一个说明, 还有任意数量的初始化参数 initargs. 在前两个后面的参数必须组成一个初始化参数列表. 系统提供的 shared-initialize 主方法根据 initargs 和提供的 :initform 表达式形式用值初始化这些槽. Slot-names 表示要被初始化的槽, 如果没有 为这些槽提供 initargs 根据它们的 :initform 表达式形式.
 
         系统提供的主方法表现如下, 不管这个槽是局部的还是共享的:
 
             如果在初始化参数列表中的一个 initarg 为这个槽指定了一个值, 这个值会存储到这个槽中, 即便在这个方法被运行之前已经存储一个值到这个槽中.
 
-            任何 slot-names 指定的槽that are still unbound at this point are initialized according to their :initform forms. 对于任何这样由一个 :initform 表达式形式的槽, 这个表达式形式都会在它的定义 defclass 表达式形式的词法环境中被求值并且结果被存储到这个槽中. 比如, 如果一个 before 方法存储一个值到这个槽中, 那么这个 :initform 表达式形式不会为这个槽提供一个值.
+            任何 slot-names 指定的槽在根据它们的 :initform 表达式形式来初始化时都是未绑定的. 对于任何这样由一个 :initform 表达式形式的槽, 这个表达式形式都会在它的定义 defclass 表达式形式的词法环境中被求值并且结果被存储到这个槽中. 比如, 如果一个 before 方法存储一个值到这个槽中, 那么这个 :initform 表达式形式不会为这个槽提供一个值.
 
             在章节 7.1.4 (Rules for Initialization Arguments) 中提及的规则也是遵守的.
 
@@ -936,7 +931,7 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (Standard M
 
 * 描述(Description):
 
-        广义函数 update-instance-for-different-class 不打算被程序员调用. 程序员可能为它写方法. 函数 update-instance-for-different-class 只有通过函数 change-class 被调用.
+        广义函数 update-instance-for-different-class 不旨在被程序员调用. 程序员可能为它写方法. 函数 update-instance-for-different-class 只有通过函数 change-class 被调用.
 
         系统提供的 update-instance-for-different-class 主方法会检查 initargs 的有效性, 如果提供的一个 initarg 没有被有效声明就会发出一个错误. 接下来这个方法会根据 initargs 的值来初始化槽, 并且根据新添加的槽的 :initform 表达式形式来初始化这些新添加的槽. 它通过使用以下参数调用广义函数 shared-initialize 来完成这个: 这个实例 (当前的), 一个新添加槽的名字的列表, 还有它接受到的 initargs. 新添加的槽是那些之前类中不存在相同名字的槽的局部槽.
 
@@ -1090,7 +1085,7 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (Standard M
 
         在完成所有其他动作之后, change-class 调用 update-instance-for-different-class. 广义函数 update-instance-for-different-class 可以被用于给转化后的实例中的槽赋值. 见章节 7.2.2 (Initializing Newly Added Local Slots).
 
-        如果上述方法中的第二个被选择<!--TODO 第二个 ？？-->, 那个方法在 instance, (find-class new-class), 以及 initargs 上调用 change-class.
+        如果上述方法中的第二个被选择, 那个方法在 instance, (find-class new-class), 以及 initargs 上调用 change-class.
 
 * 示例(Examples):
 
@@ -1337,7 +1332,7 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (Standard M
 
         当元类为 standard-class 的一个实例的一个未绑定的槽被读取时, 广义函数 slot-unbound 会被调用. 这个默认方法会发出一个 unbound-slot 类型的错误. 这个 unbound-slot 状况的名称槽被初始化为这个违规变量的名字, 而这个 unbound-slot 状况的实例槽被初始化为这个违规实例.
 
-        广义函数 slot-unbound 不打算被程序员调用. 程序员可以为它写方法. 函数 slot-unbound 只会被 slot-value 间接调用.
+        广义函数 slot-unbound 不旨在被程序员调用. 程序员可以为它写方法. 函数 slot-unbound 只会被 slot-value 间接调用.
 
         如果 slot-unbound 返回, 只有主要值会被调用者使用, 其他所有值都会被忽略.
 
@@ -1491,7 +1486,7 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (Standard M
 
         当一个广义函数被调用而这个广义函数上没有方法可应用, 那么这个广义函数 no-applicable-method 就会被调用. 默认方法会发出一个错误.
 
-        广义函数 no-applicable-method 不打算被程序员调用. 程序员可能为它写方法.
+        广义函数 no-applicable-method 不旨在被程序员调用. 程序员可能为它写方法.
 
 * 示例(Examples): None.
 
@@ -1590,15 +1585,12 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (Standard M
 * 方法签名(Method Signatures):
 
         make-instance (class standard-class) &rest initargs
-
         make-instance (class symbol) &rest initargs
 
 * 参数和值(Arguments and Values):
 
         class---一个类, 或者命名一个类的符号.
-
         initargs---一个初始化参数列表.
-
         instance---一个类 class 的新的实例.
 
 * 描述(Description):
@@ -1633,7 +1625,6 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (Standard M
 * 方法签名(Method Signatures):
 
         make-instances-obsolete (class standard-class)
-
         make-instances-obsolete (class symbol)
 
 * 参数和值(Arguments and Values):
@@ -1662,7 +1653,7 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (Standard M
 
 
 ### <span id="SGF-MAKE-LOAD-FORM">标准广义函数 MAKE-LOAD-FORM</span>
-<!--TODO 待校验-->
+
 * 语法(Syntax):
 
         make-load-form object &optional environment => creation-form[, initialization-form]
@@ -1695,15 +1686,15 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (Standard M
 
         不管是 creation-form 还是 initialization-form 都可能包含对任何可外部化对象的引用. 然而, 在创建表达式形式中, 这里一定不能有任何循环依赖. 一个循环依赖的示例就是, 当这个对象 X 的创建表达式形式包含了对对象 Y 的一个引用, 并且对象 Y 的创建表达式形式包含了对对象 X 的引用. 初始化表达式形式不受任何对循环依赖的限制, 这就是初始化表达式形式存在的原因; 见下面环状数据结构.
 
-        一个对象的创建表达式形式总是在这个对象的初始化表达式形式之前被求值. 当不管是创建表达式形式还是初始化表达式形式引用了其他在编译的文件中没有被更早引用的对象时, 编译器保证在求值这些引用表达式形式之前所有这些引用的对象都已经被创建. 当引用的对象是文件编译器使用 make-load-form 处理的类型时, 这个就涉及到求值为它返回的创建表达式形式. (这就是禁止在创建表达式形式中循环引用的原因).
+        一个对象的创建表达式形式总是在这个对象的初始化表达式形式之前被求值. 当创建表达式形式或是初始化表达式形式引用了其他在这个编译的文件中之前没有被引用的对象时, 编译器保证在求值这些引用表达式形式之前所有这些引用的对象都已经被创建. 当引用的对象是文件编译器使用 make-load-form 处理的类型时, 这个就涉及到求值为它返回的创建表达式形式. (这就是禁止在创建表达式形式中循环引用的原因).
 
-        每个初始化表达式形式在它关联的创建表达式形式之后尽快被求值, 由数据流决定. 如果一个对象的初始化表达式形式没有引用出现在该文件中且没有被更早地引用并且被文件编译器使用 make-load-form 处理的任何其他对象, 初始化表达式形式会在创建表达式形式之后被立即求值. 如果一个创建或初始化表达式形式 F 确实包含了对这样一个对象的引用, 这些其他对象的创建表达式形式在 F 之前被求值, 并且这些其他对象的初始化表达式形式也会在 F 之前被求值, 不管它们是否依赖 F 创建和初始化的对象. 在这些规则不能唯一确定一个在两个创建/初始化表达式形式之间的顺序的地方, 求值的顺序是未指定的.
+        每个初始化表达式形式在它关联的创建表达式形式之后尽快被求值, 由数据流决定. 如果一个对象的初始化表达式形式没有引用出现在该文件中且之前没有被引用并且被文件编译器使用 make-load-form 处理的任何其他对象, 初始化表达式形式会在创建表达式形式之后被立即求值. 如果一个创建或初始化表达式形式 F 确实包含了对这样一个对象的引用, 这些其他对象的创建表达式形式在 F 之前被求值, 并且这些其他对象的初始化表达式形式也会在 F 之前被求值, 不管它们是否依赖 F 创建和初始化的对象. 在这些规则不能唯一确定一个在两个创建/初始化表达式形式之间的顺序的地方, 求值的顺序是未指定的.
 
         在这些创建和初始化表达式形式要被求值时, 对象可能处于一个未初始化状态, 类似一个对象在被 allocate-instance 创建和被 initialize-instance 完全处理之间的状态. 程序员为 make-load-form 写方法必须关注操纵的对象不依赖没有被初始化的槽.
 
         load 是否在表达式形式上调用 eval 或者执行某个其他有等价效果的操作是取决于具体实现的. 比如, 这些表达式形式可能被转成不同但是等价的表达式形式然后被求值, 它们可能被编译并且产生的函数被 load 调用, 或者它们可能被一个特殊目的的有别于 eval 的函数所解释. 所需要的只是效果和求值这些表达式形式等价.
 
-        如果一个类在 environment 中有特定的名字, 那么在 class 上特化的方法返回一个使用该类的名字的创建表达式形式, 如果没有一个特定的名字就会发出一个 error 类型的错误. 这个创建表达式形式的求值使用这个名字去找到这个名字对应的类, 就像是通过调用 find-class 一样. 如果这个名字的一个类还没有被定义, 那么一个类可能以一种依赖于具体实现的方法被推断. 如果一个类不能被求值这个创建表达式形式作为结果返回, 那么就会发出一个 error 类型的错误.
+        如果一个类在 environment 中有特定的名字, 那么这个在 class 上特化的方法返回一个使用该类的名字的创建表达式形式, 如果没有一个特定的名字就会发出一个 error 类型的错误. 这个创建表达式形式的求值使用这个名字去找到这个名字对应的类, 就像是通过调用 find-class 一样. 如果这个名字的一个类还没有被定义, 那么一个类可能以一种依赖于具体实现的方法被推断. 如果一个类不能被求值这个创建表达式形式作为结果返回, 那么就会发出一个 error 类型的错误.
 
         不管是符合规范的实现还是符合规范的程序都可能进一步特化 make-load-form.
 
@@ -1764,7 +1755,7 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (Standard M
       `(find-my-frob ',(my-name self) :if-does-not-exist :create))
     ```
 
-        在下面这个示例中, 被转储的数据结构是环状的<!--TODO dumped ??-->, 因为每个 parent 有着它的 children 的一个列表并且每个 child 有一个指回它的 parent 的引用. 如果在一个这样结构的对象上调用 make-load-form, 创建表达式形式创建一个等价对象并且填充在 children 槽中, 它强制进行它的 children, grandchildren, 等等的等价对象的创建. 在这个时候没有 parent 的槽被填充. 这个初始化表达式形式填充这个 parent 的槽, 如果等价对象没有被创建, 它强制创建这个 parent 的等价对象. 因此整个树在加载时被重新创建. 在编译时, make-load-form 对于这个树中的每个对象被调用一次. 所有创建表达式形式都被求值, 以依赖于具体实现的顺序, 然后所有初始化表达式形式被求值, 也按照依赖于实现的顺序.<!--TODO 待校对-->
+        在下面这个示例中, 被转储的数据结构是环状的, 因为每个 parent 有着它的 children 的一个列表并且每个 child 有一个指回它的 parent 的引用. 如果在一个这样结构的对象上调用 make-load-form, 创建表达式形式创建一个等价对象并且填充在 children 槽中, 它强制进行它的 children, grandchildren, 等等的等价对象的创建. 在这个时候没有 parent 的槽被填充. 这个初始化表达式形式填充这个 parent 的槽, 如果等价对象没有被创建, 它强制创建这个 parent 的等价对象. 因此整个树在加载时被重新创建. 在编译时, make-load-form 对于这个树中的每个对象被调用一次. 所有创建表达式形式都被求值, 以依赖于具体实现的顺序, 然后所有初始化表达式形式被求值, 也按照依赖于实现的顺序.
 
     ```LISP
     (defclass tree-with-parent () ((parent :accessor tree-parent)
@@ -1802,7 +1793,7 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (Standard M
 
         在特殊情况下文件编译器调用 make-load-form 在章节 3.2.4.4 (Additional Constraints on Externalizable Objects) 中详述.
 
-        某些具体实现可能为定义被指定为系统类的类的子类提供工具. (一些候选项包括 generic-function, method, 还有 stream). 这样的具体实现应该记录文件编译器在遇到字面化对象时如何处理这样的类的实例<!--TODO 待校验-->, 并且应该记录任何和 make-load-form 相关的方法. 
+        某些具体实现可能为定义被指定为系统类的类的子类提供工具. (一些候选项包括 generic-function, method, 还有 stream). 这样的具体实现应该记录文件编译器在作为字面化对象遇到时如何处理这样的类的实例, 并且应该记录任何和 make-load-form 相关的方法. 
 
 
 ### <span id="F-MAKE-LOAD-FORM-SAVING-SLOTS">函数 MAKE-LOAD-FORM-SAVING-SLOTS</span>
@@ -1826,7 +1817,7 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (Standard M
 
         Slot-names 是要保留的槽的名称列表. 如果没有提供 slot-names, 它的值就是所有局部槽.
 
-        make-load-form-saving-slots 返回两个值, 因此它可以处理环状结构. 在一个应用中结果是否有用取决于这个对象的类型和槽的内容是否完全捕捉了这个对象状态的应用意义<!-- TODO application's idea ??-->.
+        make-load-form-saving-slots 返回两个值, 因此它可以处理环状结构. 在一个应用中结果是否有用取决于这个对象 object 的类型和槽的内容是否完全捕捉了这个对象状态的应用意义.
 
         Environment 是这些表达式形式被处理时所处的环境.
 
@@ -2131,7 +2122,7 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (Standard M
 
         如果没有为一个槽指定 reader, writer, 或 accessor, 这个槽只能通过函数 slot-value 来访问.
 
-        如果一个 defclass 表达式形式作为一个顶层表达式形式出现, 编译器必须使这个类名在后面的声明中(就像 deftype)被识别为一个有效的类型名字, 在 defmethod 的参数指定符中被识别为一个有效的类名并且可以用所后面的 defclass 的 :metaclass 选项. 编译器必须使类定义能够被 find-class 返回, 当它的 environment 参数作为一个宏的环境参数接收到的值时.<!--TODO 待校验-->
+        如果一个 defclass 表达式形式作为一个顶层表达式形式出现, 编译器必须使这个类名在后面的声明中(就像 deftype)被识别为一个有效的类型名字, 在 defmethod 的参数特化符中被识别为一个有效的类名并且可以用作后面的 defclass 的 :metaclass 选项. 当 find-class 的 environment 参数是作为一个宏的环境参数接收到的值时, 编译器必须使可用的类定义能够被 它返回.
 
 * 示例(Examples): None.
 
@@ -2145,7 +2136,7 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (Standard M
 
         如果在单个槽描述中下面的任何一个槽选项出现超过一次, 就会发出一个 program-error 类型的错误: :allocation, :initform, :type, :documentation.
 
-        如果具体实现发现一个类选项或一个槽选项没有被本地实现<!--TODO implemented locally-->, 所有这样的实现都需要去发出一个 program-error 类型的错误.
+        如果具体实现发现一个类选项或一个槽选项没有被本地实现, 所有这样的实现都需要去发出一个 program-error 类型的错误.
 
 * 也见(See Also):
 
@@ -2291,7 +2282,7 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (Standard M
 
         如果 function-name 当前命名一个广义函数, 这个方法的 lambda 列表必须和这个广义函数的一致. 如果这个状况没有被处理, 就会发出一个错误. 对于在这个上下文中的一致性定义, 见章节 7.6.4 (Congruent Lambda-lists for all Methods of a Generic Function).
 
-        每个 method-qualifier 参数是一个被方法组合用于识别这个给定方法的对象. 方法组合类型可能会进一步限制方法限定符的作用. 标准方法组合类型允许非限定方法和单个限定符是关键字 :before, :after, 或 :around 之一的方法.
+        每个 method-qualifier 参数是一个被方法组合用于识别这个给定方法的对象. 方法组合类型可能会进一步限制方法限定符的作用. 标准方法组合类型允许非受限方法和单个限定符是关键字 :before, :after, 或 :around 之一的方法.
 
         这个 specialized-lambda-list 参数和一个普通 lambda 列表类似, 除了必要参数的名字被特化参数替代. 一个特化参数是表达式形式 (var parameter-specializer-name) 的列表. 只有必要参数可以被特化. 如果 parameter-specializer-name 是一个符号, 它就命名一个类; 如果它是一个列表, 它就是表达式形式 (eql eql-specializer-form). 这个参数特化符名字 (eql eql-specializer-form) 表示对应的参数必须和一个对象 eql, 这个对象是对于这个方法可应用的 eql-specializer-form 的值. 这个 eql-specializer-form 在这个 defmethod 宏展开被求值的时候被求值. 如果一个给定的必要参数没有指定参数特化符的名字, 那么这个参数特化符默认是类 t. 关于进一步讨论, 见章节 7.6.2 (Introduction to Methods).
 
@@ -2358,7 +2349,7 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (Standard M
 
         这个和特定符号关联的类可以通过用 find-class 来使用 setf 去改变; 或者, 如果给 setf 的新的类是 nil, 这个类关联就会被移除 (但是这个类对象自身不会被影响). 如果用户尝试去改变或移除一个在这个标准中被定义为类型指定符的符号所关联的类, 结果是未定义的. 见章节 4.3.7 (Integrating Types and Classes).
 
-        当使用 find-class 的 setf 时, 任何 errorp 参数会为了效果被求值, 但是它返回的任何值都会被忽略; 这个 errorp 参数首先被允许这样这个  environment 参数可以被使用.<!--TODO 待校验-->
+        当使用 find-class 的 setf 时, 任何 errorp 参数会为了效果被求值, 但是它返回的任何值都会被忽略; 这个 errorp 参数首先被允许, 这样就可以使用这个 environment 参数.
 
         这个 environment 可能被用于区分编译时环境和运行时环境.
 
@@ -2425,9 +2416,9 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (Standard M
 
 * 描述(Description):
 
-        宏 call-method 被用于方法组合. 它隐藏了依赖于具体实现的方法如何被调用的细节. 宏 call-method 有词法作用域并且只能在有效的方法表达式形式中被使用.
+        宏 call-method 被用于方法组合. 它隐藏了依赖于具体实现的方法如何被调用的细节. 宏 call-method 有词法作用域并且只能在生效方法表达式形式中被使用.
 
-        call-method 在全局环境中是否为 fbound 是依赖于具体实现的; 然而, 在 call-method 的重定义和遮蔽上的限制和那些 COMMON-LISP 包中在全局环境里是 fbound 的符号一样. 尝试在一个有效方法表达式形式外部使用 call-method 的后果是.
+        call-method 在全局环境中是否为 fbound 是依赖于具体实现的; 然而, 在 call-method 的重定义和遮蔽上的限制和那些 COMMON-LISP 包中在全局环境里是 fbound 的符号一样. 尝试在一个生效方法表达式形式外部使用 call-method 的后果是.
 
         宏 call-method 调用指定的方法, 把参数还有 call-next-method 和 next-method-p 的定义提供给它. 如果这个 call-method 的调用在词法上 make-method 的内部, 参数是提供给那个方法的那些. 否则参数是提供给那个广义函数的那些. 这个 call-next-method 和 next-method-p 的定义依赖指定的 next-method-list.
 
@@ -2477,7 +2468,7 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (Standard M
 
         当用参数调用 call-next-method 时, 下一个方法会用这些参数来调用.
 
-        如果用参数调用了 call-next-method 但是省略了可选参数, 那么下一个方法被调用省略那些参数.<!--TODO 待校验-->
+        如果用参数调用了 call-next-method 但是省略了可选参数, 那么下一个被调用的方法省略那些参数.
 
         函数 call-next-method 返回任何下一个方法返回的值.
 
@@ -2561,7 +2552,7 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (Standard M
         declaration---一个 declare 表达式形式; 不求值.
         description---一个格式化控制(format control).
         documentation---一个字符串; 不求值.
-        forms---一个计算并返回指定这些方法如何组合的表达式形式的隐式的 progn, 这也就是说, 这个有效方法(effective method).
+        forms---一个计算并返回指定这些方法如何组合的表达式形式的隐式的 progn, 这也就是说, 这个生效方法(effective method).
         generic-function-symbol---一个符号.
         identity-with-one-argument---一个广义 boolean.
         lambda-list---普通 lambda 列表.
@@ -2586,13 +2577,13 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (Standard M
 
                 这个 :documentation 选项被用于记录这个 method-combination 类型; 参见下面的长表达式形式的描述.
 
-                这个 :identity-with-one-argument 选项在它的值为 true 时(默认是 false)启动一个优化. 如果这里只有一个可应用方法并且它是一个主方法, 那个方法当作有效方法并且 operator 不会被调用. 这个优化避免去创建一个新的有效方法并且避免了一个方法调用的开销. 这个选项被设计来和例如 progn, and, +, 和 max 这样的操作符一起使用.
+                这个 :identity-with-one-argument 选项在它的值为 true 时(默认是 false)启动一个优化. 如果这里只有一个可应用方法并且它是一个主方法, 那个方法当作生效方法并且 operator 不会被调用. 这个优化避免去创建一个新的生效方法并且避免了一个方法调用的开销. 这个选项被设计来和例如 progn, and, +, 和 max 这样的操作符一起使用.
 
                 这个 :operator 选项指定这个操作符的名字. 这个操作符 operator 参数是一个可以为一个函数, 宏, 或特殊表达式形式的名字的符号.
 
             这些方法组合的类型必须一个方法一个限定符. 如果这里这里存在没有限定符或有着这个方法组合类型不支持的限定符, 就会发出一个错误.
 
-            以这种方法定义的一个方法组合过程识别方法的两个作用. 一个限定符是一个命名这个方法组合类型的符号的方法被定义为一个主方法. 至少一个主方法必须是可应用的, 否则就会发出一个错误. 一个限定符为 :around 的方法是一个辅助方法, 它的行为和标准方法组合类型中的 around 方法一样. 函数 call-next-method 只能被用于 around 方法中; 它不能被用于 define-method-combination 宏的短表达式形式定义的主方法中.
+            以这种方法定义的一个方法组合过程识别方法的两个角色. 一个方法, 当它的一个限定符是命名这个方法组合类型的符号时, 这个方法被定义为一个主方法. 至少一个主方法必须是可应用的, 否则就会发出一个错误. 一个限定符为 :around 的方法是一个辅助方法, 它的行为和标准方法组合类型中的 around 方法一样. 函数 call-next-method 只能被用于 around 方法中; 它不能被用于 define-method-combination 宏的短表达式形式定义的主方法中.
 
             以这种方法定义的一个方法组合过程接受一个名为 order 的可选参数, 它默认为 :most-specific-first. 一个 :most-specific-last 值在不影响辅助方法顺序的情况下倒转这个主方法的顺序.
 
@@ -2610,7 +2601,7 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (Standard M
 
             每个 method-group-specifier 的 car 是一个命名一个变量的符号. 在 define-method-combination 的主体中的表达式形式的执行期间, 这个变量被绑定给这个方法组中的一个方法列表. 这个列表中的方法以 :order 选项指定的顺序出现.
 
-            如果 qualifier-pattern 是一个符号那么它必须是 *. 如果一个方法的限定符列表和 一个 qualifier-pattern 是 equal 的(除了这个符号 * 在一个 qualifier-pattern 中匹配任何东西), 那么这个方法匹配这个 qualifier-pattern. 因此一个 qualifier-pattern 可以是以下之一: 空列表, 它匹配未限定方法; 符号 *, 它匹配所有方法; 一个真实的列表, 它匹配和这个列表长度相同数量限定符的方法, 而其中每个限定符匹配这个列表的元素; 或者一个以 * 结尾的点对列表(这个 * 匹配任何数量的额外限定符).
+            如果 qualifier-pattern 是一个符号那么它必须是 *. 如果一个方法的限定符列表和 一个 qualifier-pattern 是 equal 的(除了这个符号 * 在一个 qualifier-pattern 中匹配任何东西), 那么这个方法匹配这个 qualifier-pattern. 因此一个 qualifier-pattern 可以是以下之一: 空列表, 它匹配未受限方法; 符号 *, 它匹配所有方法; 一个真实的列表, 它匹配和这个列表长度相同数量限定符的方法, 而其中每个限定符匹配这个列表的元素; 或者一个以 * 结尾的点对列表(这个 * 匹配任何数量的额外限定符).
 
             每个可应用方法都是根据 qualifier-patterns 来检测并且以从左到右的顺序判断. 在一个 qualifier-pattern 匹配后或一个断言返回 true, 这个方法就成为对应方法组的一个成员并且不会做进一步检测. 因此如果一个方法可以是超过一个方法组的一个成员, 它只加入到第一个这样的组中. 如果一个方法组有超过一个 qualifier-pattern, 一个方法只需要返回这些 qualifier-patterns 中的一个就可以称为这个组的成员.
 
@@ -2620,7 +2611,7 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (Standard M
 
             方法组说明符可以有关键字选项更在这个限定符模式或断言后. 关键字选项有别于额外限定符模式因为它们既不是列表也不是符号 *. 这些关键字选项如下:
 
-                这个 :description 选项被用于提供这个方法组中方法作用的描述. 编程环境工具使用 (apply #'format stream format-control (method-qualifiers method)) 来打印这个描述, 预计会很简介. 这个关键字选项允许一个方法限定符的描述被定义在定义这个方法限定符的意义的相同模块中. 大部分情况下, format-control 不会包含任何 format 指令, 但是普遍上它们是可用的. 如果没有提供 :description, 会生成一个基于这个变量名和限定符模式还有这个方法组是否包含非限定方法的描述.
+                这个 :description 选项被用于提供这个方法组中方法作用的描述. 编程环境工具使用 (apply #'format stream format-control (method-qualifiers method)) 来打印这个描述, 预计会很简介. 这个关键字选项允许一个方法限定符的描述被定义在定义这个方法限定符的意义的相同模块中. 大部分情况下, format-control 不会包含任何 format 指令, 但是普遍上它们是可用的. 如果没有提供 :description, 会生成一个基于这个变量名和限定符模式还有这个方法组是否包含非受限方法的描述.
 
                 这个 :order 选项指定了这些方法的顺序. 这个 order 参数是一个求值为 :most-specific-first 或 :most-specific-last 的表达式形式. 如果它求值为任何其他值, 就会发出一个错误. 如果没有提供 :order, 它默认为 :most-specific-first.
 
@@ -2628,11 +2619,11 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (Standard M
 
             这个方法组说明符的使用提供了一个方便的语法来选择方法, 来把它们划分给可能的角色, 并且去执行必要的错误检查. 在主体表达式形式中通过使用正常的 列表处理操作和函数 method-qualifiers 和 invalid-method-error 来执行方法的进一步过滤是可能的. 允许在方法组说明符中命名的变量上使用 setq, 也允许去绑定额外的变量. 绕开这个方法组说明符机制并在主体表达式形式中执行任何操作都是可能的. 这个通过写一个单个方法组来完成, 其中 * 作为它仅有的 qualifier-pattern; 这个变量接下来以最具体优先的顺序绑定给所有这些可应用方法的列表.
 
-            主体表达式形式计算并返回指定这些方法如何组合的表达式形式, 换言之, 有效方法. 这个有效方法在空词法环境中被求值, 以 call-method 的局部宏定义和 COMMON-LISP-USER package 包中不可访问的符号命名的绑定为参数. 给定一个在由这些方法组说明符产生的其中一个列表中的方法对象和一个后续方法的列表, call-method 会调用那个方法, 这样 call-next-method 有可用的后续方法.
+            主体表达式形式计算并返回指定这些方法如何组合的表达式形式, 换言之, 生效方法. 这个生效方法在空词法环境中被求值, 以 call-method 的局部宏定义和 COMMON-LISP-USER package 包中不可访问的符号命名的绑定为参数. 给定一个在由这些方法组说明符产生的其中一个列表中的方法对象和一个后续方法的列表, call-method 会调用那个方法, 这样 call-next-method 有可用的后续方法.
 
-            当一个有效方法除了调用一个单一的方法之外没有其他效果, 一些具体实现采用一个优化, 使用这个单个的方法直接作为这个有效方法, 因此避免了创建一个新的有效方法的需要. 当有效方法表达式形式完全由一个 call-method 宏的调用组成, 它的第一个子表达式形式是一个方法对象而第二个子表达式形式是 nil 或未提供的, 那么这个优化就会被启用. 如果需要这种优化, 那么每个 define-method-combination 主体有责任去去除多余的 progn, and, multiple-value-prog1, 诸如此类的调用.
+            当一个生效方法除了调用一个单一的方法之外没有其他效果, 一些具体实现采用一个优化, 使用这个单个的方法直接作为这个生效方法, 因此避免了创建一个新的生效方法的需要. 当生效方法表达式形式完全由一个 call-method 宏的调用组成, 它的第一个子表达式形式是一个方法对象而第二个子表达式形式是 nil 或未提供的, 那么这个优化就会被启用. 如果需要这种优化, 那么每个 define-method-combination 主体有责任去去除多余的 progn, and, multiple-value-prog1, 诸如此类的调用.
 
-            列表 (:arguments . lambda-list) 可以在任何声明或文档字符串之前出现. 当这个方法组合类型执行一些特定的行为来作为组合的方法的一部分并且这个行为需要访问给这个广义函数的参数时, 这个表达式形式是由用的. 每个通过 lambda-list 定义的参数变量被绑定到一个表达式形式, 这个表达式形式可以被插入到这个有效方法中. 当这个表达式形式在这个有效方法的执行期间被求值时, 它的值是给这个广义函数的对应参数; 在一个 setf 表达式形式中使用这样一个表达式形式作为一个 place 的后果是未定义的. Argument correspondence 通过划分这个 :arguments lambda-list 还有广义函数的 lambda-list 为三个部分来计算: 必要参数, 可选参数, 还有关键字和剩余参数. 为特定调用提供的广义函数的参数也被划分为三个部分; 必要参数部分包括这个广义函数所拥有的必要参数, 可选参数部分包含了这个广义函数拥有的可选参数, 以及关键字/剩余参数部分包含了剩余的参数. :arguments lambda-list 的必要和可选部分的每个参数都在这些参数的对应部分中访问同一个位置的参数. 如果 :arguments lambda-list 的部分更短, 额外的参数就会被忽略. 如果这个 :arguments lambda-list 的部分更长, 超出的必要参数绑定给求值为 nil 的表达式形式而超出的可选参数绑定给它们的初始化表达式形式. :arguments lambda-list 中的关键字参数和剩余参数访问这些章节的关键字/剩余部分. 如果这个 :arguments lambda-list 包含了 &key, 它表现为就好像它也包含了 &allow-other-keys.<!--TODO 待校验-->
+            列表 (:arguments . lambda-list) 可以在任何声明或文档字符串之前出现. 当这个方法组合类型执行一些特定的行为来作为组合的方法的一部分并且这个行为需要访问给这个广义函数的参数时, 这个表达式形式是很有用的. 每个通过 lambda-list 定义的参数变量被绑定到一个表达式形式, 这个表达式形式可以被插入到这个生效方法中. 当这个表达式形式在这个生效方法的执行期间被求值时, 它的值是给这个广义函数的对应参数; 在一个 setf 表达式形式中使用这样一个表达式形式作为一个 place 的后果是未定义的. 参数的匹配通过划分这个 :arguments lambda-list 还有广义函数的 lambda-list 为三个部分来计算: 必要参数, 可选参数, 还有关键字和剩余参数. 为特定调用提供的广义函数的参数也被划分为三个部分; 必要参数部分包括这个广义函数所拥有的必要参数, 可选参数部分包含了这个广义函数拥有的可选参数, 以及关键字/剩余参数部分包含了剩余的参数. :arguments lambda-list 的必要和可选部分的每个参数都在这些参数的对应部分中访问同一个位置的参数. 如果 :arguments lambda-list 的部分更短, 额外的参数就会被忽略. 如果这个 :arguments lambda-list 的部分更长, 超出的必要参数绑定给求值为 nil 的表达式形式而超出的可选参数绑定给它们的初始化表达式形式. :arguments lambda-list 中的关键字参数和剩余参数访问这些章节的关键字/剩余部分. 如果这个 :arguments lambda-list 包含了 &key, 它表现为就好像它也包含了 &allow-other-keys.
 
             另外, &whole var 可以被放置在 :arguments lambda-list 的第一个. 这个导致 var 被绑定给一个表达式形式, 这个表达式形式求值为一个提供给这个广义函数的所有参数的列表. 这个和 &rest 不同因为它访问所有这些参数, 不只是关键字/剩余参数.
 
@@ -2644,9 +2635,9 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (Standard M
 
             Documentation 作为一个文档字符串关联到 name (作为 method-combination 种类) 以及这个方法组合对象.
 
-            注意, 两个有着相同特化符的方法, 但是限定符不同, 不会被章节 7.6.6 (Method Selection and Combination) 中描述方法选择和组合处理的步骤 2 中描述的算法所排序. 通常这两个方法在这个有效方法中扮演着不同的角色, 不管在那个步骤 2 的结果中如何被排序, 这个有效方法是相同的. 如果这两个方法扮演着相同的角色并且它们的顺序很重要, 就会发出一个错误. 这是在 define-method-combination 中匹配的限定符模式的一部分.
+            注意, 两个有着相同特化符的方法, 但是限定符不同, 不会被章节 7.6.6 (Method Selection and Combination) 中描述方法选择和组合处理的步骤 2 中描述的算法所排序. 通常这两个方法在这个生效方法中扮演着不同的角色, 不管在那个步骤 2 的结果中如何被排序, 这个生效方法是相同的. 如果这两个方法扮演着相同的角色并且它们的顺序很重要, 就会发出一个错误. 这是在 define-method-combination 中匹配的限定符模式的一部分.
 
-        如果一个 define-method-combination 表达式形式作为顶层表达式形式出现, 编译器必须是这个方法组合的名字在后续的 defgeneric 表达式形式中被识别为一个有效方法组合名字. 然而, 方法组合执行的时间不早于 define-method-combination 表达式形式被执行时, 并且可能在使用这个方法组合的广义函数执行的时候执行.
+        如果一个 define-method-combination 表达式形式作为顶层表达式形式出现, 编译器必须是这个方法组合的名字在后续的 defgeneric 表达式形式中被识别为一个生效方法组合名字. 然而, 方法组合执行的时间不早于 define-method-combination 表达式形式被执行时, 并且可能在使用这个方法组合的广义函数执行的时候执行.
 
 * 示例(Examples):
 
