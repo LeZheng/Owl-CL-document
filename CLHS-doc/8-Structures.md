@@ -91,7 +91,7 @@
 
         给这个构造器函数的参数都是关键字参数. 每个槽关键字参数必须是一个名字对应一个结构体槽的名字的关键字. 所有这些关键字和表达式形式被求值. 如果一个槽没有以这种方式被初始化, 它会在构造器函数被调用时通过求值槽描述中的 slot-initform 来初始化, 如果尝试在一个值被显式赋予前读取这个槽的值, 那么结果是未定义的.
 
-        为一个 defstruct 组件提供的每个 slot-initform, 当被构造函数用于其他未提供的组件时, 在每个对这个构造函数的调用上被再次求值. 这个 slot-initform 不被求值除非在一个特殊结构体实例的创建中需要它. 如果从不需要它, 这里可以没有类型不匹配的错误, 即便这个槽的类型没有指定; 在这个情况下没有警告应该被发出. 比如, 在下面序列中, 只有最后一个调用是一个错误.<!--TODO 待校验-->
+        为一个 defstruct 组件提供的每个 slot-initform, 当被构造函数用于其他未提供的组件时, 在每个对这个构造函数的调用上被再次求值. 这个 slot-initform 不被求值除非在一个特殊结构体实例的创建中需要它. 如果从不需要它, 这里可以没有类型不匹配的错误, 即便这个槽的类型没有指定; 在这个情况下没有警告应该被发出. 比如, 在下面顺序中, 只有最后一个调用是一个错误.
 
     ```LISP
     (defstruct person (name 007 :type string)) 
@@ -101,7 +101,7 @@
 
         它就好像 slot-initforms 被用作这个构造函数的关键字的初始化表达式形式.
 
-        命名槽的这些符号一定不能被具体实现用作这个构造函数中 lambda 变量的名字, 因为这些符号中的一个或多个可能已经被声明未 special 或可能被定义未一个常量的名字. 这个槽默认初始化表达式形式在这个 defstruct 表达式形式出现的词法环境中, 在对这个构造函数调用出现的动态环境中被求值.
+        命名槽的这些符号一定不能被具体实现用作这个构造函数中 lambda 变量的名字, 因为这些符号中的一个或多个可能已经被声明为 special 或可能被定义为一个常量的名字. 这个槽默认初始化表达式形式在这个 defstruct 表达式形式出现的词法环境中, 在对这个构造函数调用出现的动态环境中被求值.
 
         比如, 如果表达式形式 (gensym) 被用作一个初始化表达式形式, 不管是在构造函数调用中或是作为 defstruct 的默认初始化表达式形式, 每个对这个构造函数的调用都会调用 gensym 来产生一个新的符号.
 
@@ -294,7 +294,7 @@
                 (make-binop :operator '+ :operand-1 'x :operand-2 5) =>  (+ X 5)  
                 (make-binop :operand-2 4 :operator '*) =>  (* NIL 4)
 
-                它就好像函数 list 除了它接受关键字参数并且执行适合域 binop 概念数据类型的槽默认值 that it takes keyword arguments and performs slot defaulting appropriate to the binop conceptual data type. <!--TODO 待校验-->同样地, 选择器函数 binop-operator, binop-operand-1, and binop-operand-2 本质上分别等价于 car, cadr, 和 caddr. 它们可能不是完全等价, 比如由于一个具体实现完全可以添加错误检测代码来确保给每个选择器函数的参数是长度为 3 的列表.
+                它就像是函数 list, 除了它接受关键字参数并且执行适合于 binop 概念数据类型的槽默认值初始化. 同样地, 选择器函数 binop-operator, binop-operand-1, and binop-operand-2 本质上分别等价于 car, cadr, 和 caddr. 它们可能不是完全等价, 比如由于一个具体实现完全可以添加错误检测代码来确保给每个选择器函数的参数是长度为 3 的列表.
 
                 binop 是一个概念数据类型, 由于它不是 Common Lisp 类型系统的一部分. typep 不识别 binop 为一个类型指定符, 并且当给定一个 binop 结构体时 type-of 返回 list. 这里没有方式去区分一个 make-binop 构造的数据类型和其他具有正确结构体的 list.
 
@@ -335,7 +335,7 @@
 
                     一个要打印到的流.
 
-                    一个表示当前深度的整数. 这个整数的大小可能在不同的具体实现之间有所不同; 但是, 它可以可靠地与 *print-level* 进行比较, 以确定深度缩写(depth abbreviation)是否合适.<!--TODO depth abbreviation-->
+                    一个表示当前深度的整数. 这个整数的大小可能在不同的具体实现之间有所不同; 但是, 它可以可靠地与 *print-level* 进行比较, 以确定深度缩写(depth abbreviation)是否合适.
 
                 指定 (:print-function printer-name) 近似等价于指定:
 
@@ -572,7 +572,7 @@
 
         这个 printer-name 应该观察像 *print-escape* 这样的打印控制变量的值.
 
-        对由于一个 slot-initform 和对应槽的 :type 选项的类型不匹配引起的一个警告的约束是有必要的, 因为一个 slot-initform 必须被指定用来指定槽选项; 在某些情况下, 可能不存在合适的默认项.<!--TODO 待校验-->
+        对由于一个 slot-initform 和对应槽的 :type 选项的类型不匹配引起的一个警告的约束是有必要的, 因为一个 slot-initform 必须被指定用来指定槽选项; 在某些情况下, 可能不存在合适的默认项.
 
         defstruct 安排槽访问器和 setf 是可用的原理是依赖于具体实现的; 比如, 它可能使用 setf 函数, setf 展开式, 或者某个其他依赖于具体实现的对具体实现的 setf 代码是已知的机制. 
 
