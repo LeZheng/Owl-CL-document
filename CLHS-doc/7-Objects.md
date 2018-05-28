@@ -844,7 +844,7 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (Standard M
 
 * 示例(Examples): None.
 
-* 副作用(Side Effects:):
+* 副作用(Side Effects):
 
         广义函数 reinitialize-instance 修改局部槽的值.
 
@@ -1823,7 +1823,7 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (Standard M
 
 * 示例(Examples): None.
 
-* 副作用(Side Effects:): None.
+* 副作用(Side Effects): None.
 
 * 受此影响(Affected By): None.
 
@@ -2774,7 +2774,7 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (Standard M
 
 * 受此影响(Affected By): None.
 
-* 副作用(Side Effects:):
+* 副作用(Side Effects):
 
         编译器不需要去执行任何编译时的副作用.
 

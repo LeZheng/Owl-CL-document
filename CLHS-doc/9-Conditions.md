@@ -1,10 +1,9 @@
- 9. Conditions
+# 9. Conditions
 
-9.1 Condition System Concepts
+> * 9.1 [Condition System Concepts](#ConditionSystemConcepts)
+> * 9.2 [The Conditions Dictionary](#ConditionsDictionary)
 
-9.2 The Conditions Dictionary
-
- 9.1 Condition System Concepts
+## 9.1 <span id="ConditionSystemConcepts">Condition System Concepts</span>
 
 Common Lisp constructs are described not only in terms of their behavior in situations during which they are intended to be used (see the ``Description'' part of each operator specification), but in all other situations (see the ``Exceptional Situations'' part of each operator specification).
 
@@ -32,20 +31,15 @@ Defer
 
     It can put off a decision about whether to handle or decline, by any of a number of actions, but most commonly by signaling another condition, resignaling the same condition, or forcing entry into the debugger.
 
-9.1.1 Condition Types
-
-9.1.2 Creating Conditions
-
-9.1.3 Printing Conditions
-
-9.1.4 Signaling and Handling Conditions
-
-9.1.5 Assertions
-
-9.1.6 Notes about the Condition System's Background
+> * 9.1.1 [Condition Types](#ConditionTypes)
+> * 9.1.2 [Creating Conditions](#CreatingConditions)
+> * 9.1.3 [Printing Conditions](#PrintingConditions)
+> * 9.1.4 [Signaling and Handling Conditions](#SignalingHandlingConditions)
+> * 9.1.5 [Assertions](#Assertions)
+> * 9.1.6 [Notes about the Condition System's Background](#NotesConditionSystemBackground)
 
 
- 9.1.1 Condition Types
+### 9.1.1 <span id="ConditionTypes">Condition Types</span>
 
 The next figure lists the standardized condition types. Additional condition types can be defined by using define-condition.
 
@@ -89,22 +83,16 @@ print-not-readable-object   unbound-slot-instance
 
 Figure 9-3. Operators that read condition slots.
 
-9.1.1.1 Serious Conditions
-
-
- 9.1.1.1 Serious Conditions
+#### 9.1.1.1 Serious Conditions
 
 A serious condition is a condition serious enough to require interactive intervention if not handled. Serious conditions are typically signaled with error or cerror; non-serious conditions are typically signaled with signal or warn. 
 
 
- 9.1.2 Creating Conditions
+### 9.1.2 <span id="CreatingConditions">Creating Conditions</span>
 
 The function make-condition can be used to construct a condition object explicitly. Functions such as error, cerror, signal, and warn operate on conditions and might create condition objects implicitly. Macros such as ccase, ctypecase, ecase, etypecase, check-type, and assert might also implicitly create (and signal) conditions.
 
-9.1.2.1 Condition Designators
-
-
- 9.1.2.1 Condition Designators
+#### 9.1.2.1 Condition Designators
 
 A number of the functions in the condition system take arguments which are identified as condition designators. By convention, those arguments are notated as
 
@@ -144,7 +132,7 @@ Here are some illustrations of how different condition designators can denote eq
 ==  (error 'simple-error :format-control "Bad luck." :format-arguments '())
 
 
- 9.1.3 Printing Conditions
+### 9.1.3 <span id="PrintingConditions">Printing Conditions</span>
 
 If the :report argument to define-condition is used, a print function is defined that is called whenever the defined condition is printed while the value of *print-escape* is false. This function is called the condition reporter; the text which it outputs is called a report message.
 
@@ -154,10 +142,7 @@ When *print-escape* is true, the object should print in an abbreviated fashion a
 
 No function is provided for directly accessing or invoking condition reporters.
 
-9.1.3.1 Recommended Style in Condition Reporting
-
-
- 9.1.3.1 Recommended Style in Condition Reporting
+#### 9.1.3.1 Recommended Style in Condition Reporting
 
 In order to ensure a properly aesthetic result when presenting report messages to the user, certain stylistic conventions are recommended.
 
@@ -165,18 +150,13 @@ There are stylistic recommendations for the content of the messages output by co
 
 The requirements on a program or implementation which invokes a condition reporter are somewhat stronger. A conforming program must be permitted to assume that if these style guidelines are followed, proper aesthetics will be maintained. Where appropriate, any specific requirements on such routines are explicitly mentioned below.
 
-9.1.3.1.1 Capitalization and Punctuation in Condition Reports
+> * 9.1.3.1.1 [Capitalization and Punctuation in Condition Reports](#CPCR)
+> * 9.1.3.1.2 [Leading and Trailing Newlines in Condition Reports](#LTNCR)
+> * 9.1.3.1.3 [Embedded Newlines in Condition Reports](#ENCR)
+> * 9.1.3.1.4 [Note about Tabs in Condition Reports](#NTCR)
+> * 9.1.3.1.5 [Mentioning Containing Function in Condition Reports](#MCFCR)
 
-9.1.3.1.2 Leading and Trailing Newlines in Condition Reports
-
-9.1.3.1.3 Embedded Newlines in Condition Reports
-
-9.1.3.1.4 Note about Tabs in Condition Reports
-
-9.1.3.1.5 Mentioning Containing Function in Condition Reports
-
-
- 9.1.3.1.1 Capitalization and Punctuation in Condition Reports
+##### 9.1.3.1.1 <span id="CPCR">Capitalization and Punctuation in Condition Reports</span>
 
 It is recommended that a report message be a complete sentences, in the proper case and correctly punctuated. In English, for example, this means the first letter should be uppercase, and there should be a trailing period.
 
@@ -186,7 +166,7 @@ It is recommended that a report message be a complete sentences, in the proper c
  (error "This is a message.") ; Recommended instead
 
 
- 9.1.3.1.2 Leading and Trailing Newlines in Condition Reports
+##### 9.1.3.1.2 <span id="LTNCR">Leading and Trailing Newlines in Condition Reports</span>
 
 It is recommended that a report message not begin with any introductory text, such as ``Error: '' or ``Warning: '' or even just freshline or newline. Such text is added, if appropriate to the context, by the routine invoking the condition reporter.
 
@@ -199,7 +179,7 @@ It is recommended that a report message not be followed by a trailing freshline 
  (error "This is a message.")     ; Recommended instead
 
 
- 9.1.3.1.3 Embedded Newlines in Condition Reports
+##### 9.1.3.1.3 <span id="ENCR">Embedded Newlines in Condition Reports</span>
 
 Especially if it is long, it is permissible and appropriate for a report message to contain one or more embedded newlines.
 
@@ -224,17 +204,17 @@ If the calling routine conventionally inserts some additional prefix (such as ``
            It has two lines.
 
 
- 9.1.3.1.4 Note about Tabs in Condition Reports
+##### 9.1.3.1.4 <span id="NTCR">Note about Tabs in Condition Reports</span>
 
 Because the indentation of a report message might be shifted to the right or left by an arbitrary amount, special care should be taken with the semi-standard character <Tab> (in those implementations that support such a character). Unless the implementation specifically defines its behavior in this context, its use should be avoided. 
 
 
- 9.1.3.1.5 Mentioning Containing Function in Condition Reports
+##### 9.1.3.1.5 <span id="MCFCR">Mentioning Containing Function in Condition Reports</span>
 
 The name of the containing function should generally not be mentioned in report messages. It is assumed that the debugger will make this information accessible in situations where it is necessary and appropriate. 
 
 
- 9.1.4 Signaling and Handling Conditions
+### 9.1.4 <span id="">Signaling and Handling Conditions</span>
 
 The operation of the condition system depends on the ordering of active applicable handlers from most recent to least recent.
 
@@ -256,12 +236,10 @@ handler-bind  handler-case  ignore-errors
 
 Figure 9-4. Operators relating to handling conditions.
 
-9.1.4.1 Signaling
+> * 9.1.4.1 [Signaling](#Signaling)
+> * 9.1.4.2 [Restarts](#Restarts)
 
-9.1.4.2 Restarts
-
-
- 9.1.4.1 Signaling
+#### 9.1.4.1 <span id="Signaling">Signaling</span>
 
 When a condition is signaled, the most recent applicable active handler is invoked. Sometimes a handler will decline by simply returning without a transfer of control. In such cases, the next most recent applicable active handler is invoked.
 
@@ -278,10 +256,7 @@ cerror              signal
 
 Figure 9-5. Defined names relating to signaling conditions.
 
-9.1.4.1.1 Resignaling a Condition
-
-
- 9.1.4.1.1 Resignaling a Condition
+##### 9.1.4.1.1 Resignaling a Condition
 
 During the dynamic extent of the signaling process for a particular condition object, signaling the same condition object again is permitted if and only if the situation represented in both cases are the same.
 
@@ -290,7 +265,7 @@ For example, a handler might legitimately signal the condition object that is it
 On the other hand, in an implementation that implemented asynchronous keyboard events by interrupting the user process with a call to signal, it would not be permissible for two distinct asynchronous keyboard events to signal identical condition objects at the same time for different situations. 
 
 
- 9.1.4.2 Restarts
+#### 9.1.4.2 <span id="Restarts">Restarts</span>
 
 The interactive condition handler returns only through non-local transfer of control to specially defined restarts that can be set up either by the system or by user code. Transferring control to a restart is called ``invoking'' the restart. Like handlers, active restarts are established dynamically, and only active restarts can be invoked. An active restart can be invoked by the user from the debugger or by a program by using invoke-restart.
 
@@ -310,16 +285,13 @@ Restarts of the same name can be ordered from least recent to most recent accord
 
 If a restart is invoked but does not transfer control, the values resulting from the restart function are returned by the function that invoked the restart, either invoke-restart or invoke-restart-interactively.
 
-9.1.4.2.1 Interactive Use of Restarts
-
-9.1.4.2.2 Interfaces to Restarts
-
-9.1.4.2.3 Restart Tests
-
-9.1.4.2.4 Associating a Restart with a Condition
+> * 9.1.4.2.1 [Interactive Use of Restarts](#InteractiveUseRestarts)
+> * 9.1.4.2.2 [Interfaces to Restarts](#InterfacesRestarts)
+> * 9.1.4.2.3 [Restart Tests](#RestartTests)
+> * 9.1.4.2.4 [Associating a Restart with a Condition](#AssociatingRestartCondition)
 
 
- 9.1.4.2.1 Interactive Use of Restarts
+##### 9.1.4.2.1 <span id="InteractiveUseRestarts">Interactive Use of Restarts</span>
 
 For interactive handling, two pieces of information are needed from a restart: a report function and an interactive function.
 
@@ -330,7 +302,7 @@ The interactive function, which can be specified using the :interactive-function
 invoke-restart invokes the most recently established restart whose name is the same as the first argument to invoke-restart. If a restart is invoked interactively by the debugger and does not transfer control but rather returns values, the precise action of the debugger on those values is implementation-defined. 
 
 
- 9.1.4.2.2 Interfaces to Restarts
+##### 9.1.4.2.2 <span id="InterfacesRestarts">Interfaces to Restarts</span>
 
 Some restarts have functional interfaces, such as abort, continue, muffle-warning, store-value, and use-value. They are ordinary functions that use find-restart and invoke-restart internally, that have the same name as the restarts they manipulate, and that are provided simply for notational convenience.
 
@@ -345,12 +317,12 @@ invoke-restart    restart-name
 Figure 9-6. Defined names relating to restarts. 
 
 
- 9.1.4.2.3 Restart Tests
+##### 9.1.4.2.3 <span id="RestartTests">Restart Tests</span>
 
 Each restart has an associated test, which is a function of one argument (a condition or nil) which returns true if the restart should be visible in the current situation. This test is created by the :test-function option to restart-bind or the :test option to restart-case. 
 
 
- 9.1.4.2.4 Associating a Restart with a Condition
+##### 9.1.4.2.4 <span id="AssociatingRestartCondition">Associating a Restart with a Condition</span>
 
 A restart can be ``associated with'' a condition explicitly by with-condition-restarts, or implicitly by restart-case. Such an assocation has dynamic extent.
 
@@ -359,7 +331,7 @@ A single restart may be associated with several conditions at the same time. A s
 Active restarts associated with a particular condition can be detected by calling a function such as find-restart, supplying that condition as the condition argument. Active restarts can also be detected without regard to any associated condition by calling such a function without a condition argument, or by supplying a value of nil for such an argument. 
 
 
- 9.1.5 Assertions
+### 9.1.5 <span id="Assertions">Assertions</span>
 
 Conditional signaling of conditions based on such things as key match, form evaluation, and type are handled by assertion operators. The next figure shows operators relating to assertions.
 
@@ -369,113 +341,68 @@ ccase   ctypecase   etypecase
 Figure 9-7. Operators relating to assertions. 
 
 
- 9.1.6 Notes about the Condition System's Background
+### 9.1.6 <span id="NotesConditionSystemBackground">Notes about the Condition System's Background</span>
 
 For a background reference to the abstract concepts detailed in this section, see Exceptional Situations in Lisp. The details of that paper are not binding on this document, but may be helpful in establishing a conceptual basis for understanding this material. 
 
 
- 9.2 The Conditions Dictionary
+## 9.2 <span id="ConditionsDictionary">The Conditions Dictionary</span>
 
-Condition Type CONDITION
-
-Condition Type WARNING
-
-Condition Type STYLE-WARNING
-
-Condition Type SERIOUS-CONDITION
-
-Condition Type ERROR
-
-Condition Type CELL-ERROR
-
-Function CELL-ERROR-NAME
-
-Condition Type PARSE-ERROR
-
-Condition Type STORAGE-CONDITION
-
-Macro ASSERT
-
-Function ERROR
-
-Function CERROR
-
-Macro CHECK-TYPE
-
-Condition Type SIMPLE-ERROR
-
-Function INVALID-METHOD-ERROR
-
-Function METHOD-COMBINATION-ERROR
-
-Function SIGNAL
-
-Condition Type SIMPLE-CONDITION
-
-Function SIMPLE-CONDITION-FORMAT-CONTROL, SIMPLE-CONDITION-FORMAT-ARGUMENTS
-
-Function WARN
-
-Condition Type SIMPLE-WARNING
-
-Function INVOKE-DEBUGGER
-
-Function BREAK
-
-Variable *DEBUGGER-HOOK*
-
-Variable *BREAK-ON-SIGNALS*
-
-Macro HANDLER-BIND
-
-Macro HANDLER-CASE
-
-Macro IGNORE-ERRORS
-
-Macro DEFINE-CONDITION
-
-Function MAKE-CONDITION
-
-System Class RESTART
-
-Function COMPUTE-RESTARTS
-
-Function FIND-RESTART
-
-Function INVOKE-RESTART
-
-Function INVOKE-RESTART-INTERACTIVELY
-
-Macro RESTART-BIND
-
-Macro RESTART-CASE
-
-Function RESTART-NAME
-
-Macro WITH-CONDITION-RESTARTS
-
-Macro WITH-SIMPLE-RESTART
-
-Restart ABORT
-
-Restart CONTINUE
-
-Restart MUFFLE-WARNING
-
-Restart STORE-VALUE
-
-Restart USE-VALUE
-
-Function ABORT, CONTINUE, MUFFLE-WARNING, STORE-VALUE, USE-VALUE
+> * [Condition Type CONDITION](#CT-CONDITION)
+> * [Condition Type WARNING](#CT-WARNING)
+> * [Condition Type STYLE-WARNING](#CT-STYLE-WARNING)
+> * [Condition Type SERIOUS-CONDITION](#CT-SERIOUS-CONDITION)
+> * [Condition Type ERROR](#CT-ERROR)
+> * [Condition Type CELL-ERROR](#CT-CELL-ERROR)
+> * [Function CELL-ERROR-NAME](#F-CELL-ERROR-NAME)
+> * [Condition Type PARSE-ERROR](#CT-PARSE-ERROR)
+> * [Condition Type STORAGE-CONDITION](#CT-STORAGE-CONDITION)
+> * [Macro ASSERT](#M-ASSERT)
+> * [Function ERROR](#F-ERROR)
+> * [Function CERROR](#F-CERROR)
+> * [Macro CHECK-TYPE](#M-CHECK-TYPE)
+> * [Condition Type SIMPLE-ERROR](#CT-SIMPLE-ERROR)
+> * [Function INVALID-METHOD-ERROR](#F-INVALID-METHOD-ERROR)
+> * [Function METHOD-COMBINATION-ERROR](#F-METHOD-COMBINATION-ERROR)
+> * [Function SIGNAL](#F-SIGNAL)
+> * [Condition Type SIMPLE-CONDITION](#CT-SIMPLE-CONDITION)
+> * [Function SIMPLE-CONDITION-FORMAT-CONTROL, SIMPLE-CONDITION-FORMAT-ARGUMENTS](#F-SCFC-SCFA)
+> * [Function WARN](#F-WARN)
+> * [Condition Type SIMPLE-WARNING](#CT-SIMPLE-WARNING)
+> * [Function INVOKE-DEBUGGER](#F-INVOKE-DEBUGGER)
+> * [Function BREAK](#F-BREAK)
+> * [Variable *DEBUGGER-HOOK*](#V-DEBUGGER-HOOK)
+> * [Variable *BREAK-ON-SIGNALS*](#V-BREAK-ON-SIGNALS)
+> * [Macro HANDLER-BIND](#M-HANDLER-BIND)
+> * [Macro HANDLER-CASE](#M-HANDLER-CASE)
+> * [Macro IGNORE-ERRORS](#M-IGNORE-ERRORS)
+> * [Macro DEFINE-CONDITION](#M-DEFINE-CONDITION)
+> * [Function MAKE-CONDITION](#F-MAKE-CONDITION)
+> * [System Class RESTART](#SC-RESTART)
+> * [Function COMPUTE-RESTARTS](#F-COMPUTE-RESTARTS)
+> * [Function FIND-RESTART](#F-FIND-RESTART)
+> * [Function INVOKE-RESTART](#F-INVOKE-RESTART)
+> * [Function INVOKE-RESTART-INTERACTIVELY](#F-INVOKE-RESTART-INTERACTIVELY)
+> * [Macro RESTART-BIND](#M-RESTART-BIND)
+> * [Macro RESTART-CASE](#M-RESTART-CASE)
+> * [Function RESTART-NAME](#F-RESTART-NAME)
+> * [Macro WITH-CONDITION-RESTARTS](#M-WITH-CONDITION-RESTARTS)
+> * [Macro WITH-SIMPLE-RESTART](#M-WITH-SIMPLE-RESTART)
+> * [Restart ABORT](#R-ABORT)
+> * [Restart CONTINUE](#R-CONTINUE)
+> * [Restart MUFFLE-WARNING](#R-MUFFLE-WARNING)
+> * [Restart STORE-VALUE](#R-STORE-VALUE)
+> * [Restart USE-VALUE](#R-USE-VALUE)
+> * [Function ABORT, CONTINUE, MUFFLE-WARNING, STORE-VALUE, USE-VALUE](#F-ABORT-CONTINUE-MW-SV-UV)
 
 
-Condition Type CONDITION
+### <span id="CT-CONDITION">Condition Type CONDITION</span>
 
-Class Precedence List:
+* 类优先级列表(Class Precedence List):
 
 condition, t
 
-Description:
+* 描述(Description):
 
 All types of conditions, whether error or non-error, must inherit from this type.
 
@@ -494,36 +421,36 @@ Conforming code must observe the following restrictions related to conditions:
 * slot-value, slot-boundp, slot-makunbound, and with-slots must not be used on condition objects. Instead, the appropriate accessor functions (defined by define-condition) should be used. 
 
 
-Condition Type WARNING
+### <span id="CT-WARNING">Condition Type WARNING</span>
 
-Class Precedence List:
+* 类优先级列表(Class Precedence List):
 
 warning, condition, t
 
-Description:
+* 描述(Description):
 
 The type warning consists of all types of warnings.
 
-See Also:
+* 也见(See Also):
 
 style-warning 
 
 
-Condition Type STYLE-WARNING
+### <span id="CT-STYLE-WARNING">Condition Type STYLE-WARNING</span>
 
-Class Precedence List:
+* 类优先级列表(Class Precedence List):
 
 style-warning, warning, condition, t
 
-Description:
+* 描述(Description):
 
 The type style-warning includes those conditions that represent situations involving code that is conforming code but that is nevertheless considered to be faulty or substandard.
 
-See Also:
+* 也见(See Also):
 
 muffle-warning
 
-Notes:
+* 注意(Notes):
 
 An implementation might signal such a condition if it encounters code that uses deprecated features or that appears unaesthetic or inefficient.
 
@@ -532,117 +459,117 @@ An `unused variable' warning must be of type style-warning.
 In general, the question of whether code is faulty or substandard is a subjective decision to be made by the facility processing that code. The intent is that whenever such a facility wishes to complain about code on such subjective grounds, it should use this condition type so that any clients who wish to redirect or muffle superfluous warnings can do so without risking that they will be redirecting or muffling other, more serious warnings. 
 
 
-Condition Type SERIOUS-CONDITION
+### <span id="CT-SERIOUS-CONDITION">Condition Type SERIOUS-CONDITION</span>
 
-Class Precedence List:
+* 类优先级列表(Class Precedence List):
 
 serious-condition, condition, t
 
-Description:
+* 描述(Description):
 
 All conditions serious enough to require interactive intervention if not handled should inherit from the type serious-condition. This condition type is provided primarily so that it may be included as a superclass of other condition types; it is not intended to be signaled directly.
 
-Notes:
+* 注意(Notes):
 
 Signaling a serious condition does not itself force entry into the debugger. However, except in the unusual situation where the programmer can assure that no harm will come from failing to handle a serious condition, such a condition is usually signaled with error rather than signal in order to assure that the program does not continue without handling the condition. (And conversely, it is conventional to use signal rather than error to signal conditions which are not serious conditions, since normally the failure to handle a non-serious condition is not reason enough for the debugger to be entered.) 
 
 
-Condition Type ERROR
+### <span id="CT-ERROR">Condition Type ERROR</span>
 
-Class Precedence List:
+* 类优先级列表(Class Precedence List):
 
 error, serious-condition, condition, t
 
-Description:
+* 描述(Description):
 
 The type error consists of all conditions that represent errors. 
 
 
-Condition Type CELL-ERROR
+### <span id="CT-CELL-ERROR">Condition Type CELL-ERROR</span>
 
-Class Precedence List:
+* 类优先级列表(Class Precedence List):
 
 cell-error, error, serious-condition, condition, t
 
-Description:
+* 描述(Description):
 
 The type cell-error consists of error conditions that occur during a location access. The name of the offending cell is initialized by the :nameinitialization argument to make-condition, and is accessed by the function cell-error-name.
 
-See Also:
+* 也见(See Also):
 
 cell-error-name 
 
 
-Function CELL-ERROR-NAME
+### <span id="F-CELL-ERROR-NAME">Function CELL-ERROR-NAME</span>
 
-Syntax:
+* 语法(Syntax):
 
 cell-error-name condition => name
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 condition---a condition of type cell-error.
 
 name---an object.
 
-Description:
+* 描述(Description):
 
 Returns the name of the offending cell involved in the situation represented by condition.
 
 The nature of the result depends on the specific type of condition. For example, if the condition is of type unbound-variable, the result is the name of the unbound variable which was being accessed, if the condition is of type undefined-function, this is the name of the undefined function which was being accessed, and if the condition is of type unbound-slot, this is the name of the slot which was being accessed.
 
-Examples: None.
+* 示例(Examples): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 cell-error, unbound-slot, unbound-variable, undefined-function, Section 9.1 (Condition System Concepts)
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Condition Type PARSE-ERROR
+### <span id="CT-PARSE-ERROR">Condition Type PARSE-ERROR</span>
 
-Class Precedence List:
+* 类优先级列表(Class Precedence List):
 
 parse-error, error, serious-condition, condition, t
 
-Description:
+* 描述(Description):
 
 The type parse-error consists of error conditions that are related to parsing.
 
-See Also:
+* 也见(See Also):
 
 parse-namestring, reader-error 
 
 
-Condition Type STORAGE-CONDITION
+### <span id="CT-STORAGE-CONDITION">Condition Type STORAGE-CONDITION</span>
 
-Class Precedence List:
+* 类优先级列表(Class Precedence List):
 
 storage-condition, serious-condition, condition, t
 
-Description:
+* 描述(Description):
 
 The type storage-condition consists of serious conditions that relate to problems with memory management that are potentially due to implementation-dependent limits rather than semantic errors in conforming programs, and that typically warrant entry to the debugger if not handled. Depending on the details of the implementation, these might include such problems as stack overflow, memory region overflow, and storage exhausted.
 
-Notes:
+* 注意(Notes):
 
 While some Common Lisp operations might signal storage-condition because they are defined to create objects, it is unspecified whether operations that are not defined to create objects create them anyway and so might also signal storage-condition. Likewise, the evaluator itself might create objects and so might signal storage-condition. (The natural assumption might be that such object creation is naturally inefficient, but even that is implementation-dependent.) In general, the entire question of how storage allocation is done is implementation-dependent, and so any operation might signal storage-condition at any time. Because such a condition is indicative of a limitation of the implementation or of the image rather than an error in a program, objects of type storage-condition are not of type error. 
 
 
-Macro ASSERT
+### <span id="M-ASSERT">Macro ASSERT</span>
 
-Syntax:
+* 语法(Syntax):
 
 assert test-form [(place*) [datum-form argument-form*]]
 
 => nil
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 test-form---a form; always evaluated.
 
@@ -654,13 +581,13 @@ argument-form---a form that evaluates to an argument. Evaluated each time an err
 
 datum, arguments---designators for a condition of default type error. (These designators are the result of evaluating datum-form and each of the argument-forms.)
 
-Description:
+* 描述(Description):
 
 assert assures that test-form evaluates to true. If test-form evaluates to false, assert signals a correctable error (denoted by datum and arguments). Continuing from this error using the continue restart makes it possible for the user to alter the values of the places before assert evaluates test-form again. If the value of test-form is non-nil, assert returns nil.
 
 The places are generalized references to data upon which test-form depends, whose values can be changed by the user in attempting to correct the error. Subforms of each place are only evaluated if an error is signaled, and might be re-evaluated if the error is re-signaled (after continuing without actually fixing the problem). The order of evaluation of the places is not specified; see Section 5.1.1.1 (Evaluation of Subforms to Places). If a place form is supplied that produces more values than there are store variables, the extra values are ignored. If the supplied form produces fewer values than there are store variables, the missing values are set to nil.
 
-Examples:
+* 示例(Examples):
 
  (setq x (make-array '(3 5) :initial-element 3))
 =>  #2A((3 3 3 3 3) (3 3 3 3 3) (3 3 3 3 3))
@@ -701,40 +628,40 @@ Examples:
 >>  Value for X: 7
 =>  14
 
-Affected By:
+* 受此影响(Affected By):
 
 *break-on-signals*
 
 The set of active condition handlers.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 check-type, error, Section 5.1 (Generalized Reference)
 
-Notes:
+* 注意(Notes):
 
 The debugger need not include the test-form in the error message, and the places should not be included in the message, but they should be made available for the user's perusal. If the user gives the ``continue'' command, the values of any of the references can be altered. The details of this depend on the implementation's style of user interface. 
 
 
-Function ERROR
+### <span id="F-ERROR">Function ERROR</span>
 
-Syntax:
+* 语法(Syntax):
 
 error datum &rest arguments =>|
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 datum, arguments---designators for a condition of default type simple-error.
 
-Description:
+* 描述(Description):
 
 error effectively invokes signal on the denoted condition.
 
 If the condition is not handled, (invoke-debugger condition) is done. As a consequence of calling invoke-debugger, error cannot directly return; the only exit from error can come by non-local transfer of control in a handler or by use of an interactive debugging command.
 
-Examples:
+* 示例(Examples):
 
  (defun factorial (x)
    (cond ((or (not (typep x 'integer)) (minusp x))
@@ -773,25 +700,25 @@ Examples:
 >>  Debug> :Continue 1
 >>  Return to Lisp Toplevel.
 
-Side Effects:
+* 副作用(Side Effects):
 
 Handlers for the specified condition, if any, are invoked and might have side effects. Program execution might stop, and the debugger might be entered.
 
-Affected By:
+* 受此影响(Affected By):
 
 Existing handler bindings.
 
 *break-on-signals*
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
 Signals an error of type type-error if datum and arguments are not designators for a condition.
 
-See Also:
+* 也见(See Also):
 
 cerror, signal, format, ignore-errors, *break-on-signals*, handler-bind, Section 9.1 (Condition System Concepts)
 
-Notes:
+* 注意(Notes):
 
 Some implementations may provide debugger commands for interactively returning from individual stack frames. However, it should be possible for the programmer to feel confident about writing code like:
 
@@ -804,25 +731,25 @@ In this scenario, there should be no chance that error will return and the butto
 While the meaning of this program is clear and it might be proven `safe' by a formal theorem prover, such a proof is no guarantee that the program is safe to execute. Compilers have been known to have bugs, computers to have signal glitches, and human beings to manually intervene in ways that are not always possible to predict. Those kinds of errors, while beyond the scope of the condition system to formally model, are not beyond the scope of things that should seriously be considered when writing code that could have the kinds of sweeping effects hinted at by this example. 
 
 
-Function CERROR
+### <span id="F-CERROR">Function CERROR</span>
 
-Syntax:
+* 语法(Syntax):
 
 cerror continue-format-control datum &rest arguments => nil
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 Continue-format-control---a format control.
 
 datum, arguments---designators for a condition of default type simple-error.
 
-Description:
+* 描述(Description):
 
 cerror effectively invokes error on the condition named by datum. As with any function that implicitly calls error, if the condition is not handled, (invoke-debugger condition) is executed. While signaling is going on, and while in the debugger if it is reached, it is possible to continue code execution (i.e., to return from cerror) using the continue restart.
 
 If datum is a condition, arguments can be supplied, but are used only in conjunction with the continue-format-control.
 
-Examples:
+* 示例(Examples):
 
  (defun real-sqrt (n)
    (when (minusp n)
@@ -931,19 +858,19 @@ Examples:
 >>  Type a large number: 259
 =>  259
 
-Affected By:
+* 受此影响(Affected By):
 
 *break-on-signals*.
 
 Existing handler bindings.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 error, format, handler-bind, *break-on-signals*, simple-type-error
 
-Notes:
+* 注意(Notes):
 
 If datum is a condition type rather than a string, the format directive ~* may be especially useful in the continue-format-control in order to ignore the keywords in the initialization argument list. For example:
 
@@ -953,13 +880,13 @@ If datum is a condition type rather than a string, the format directive ~* may b
 
 
 
-Macro CHECK-TYPE
+### <span id="M-CHECK-TYPE">Macro CHECK-TYPE</span>
 
-Syntax:
+* 语法(Syntax):
 
 check-type place typespec [string] => nil
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 place---a place.
 
@@ -967,7 +894,7 @@ typespec---a type specifier.
 
 string---a string; evaluated.
 
-Description:
+* 描述(Description):
 
 check-type signals a correctable error of type type-error if the contents of place are not of the type typespec.
 
@@ -977,7 +904,7 @@ The first time place is evaluated, it is evaluated by normal evaluation rules. I
 
 string should be an English description of the type, starting with an indefinite article (``a'' or ``an''). If string is not supplied, it is computed automatically from typespec. The automatically generated message mentions place, its contents, and the desired type. An implementation may choose to generate a somewhat differently worded error message if it recognizes that place is of a particular form, such as one of the arguments to the function that called check-type. string is allowed because some applications of check-type may require a more specific description of what is wanted than can be generated automatically from typespec.
 
-Examples:
+* 示例(Examples):
 
  (setq aardvarks '(sam harry fred))
 =>  (SAM HARRY FRED)
@@ -1033,47 +960,47 @@ Examples:
 
 Control is transferred to a handler.
 
-Side Effects:
+* 副作用(Side Effects):
 
 The debugger might be entered.
 
-Affected By:
+* 受此影响(Affected By):
 
 *break-on-signals*
 
 The implementation.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 Section 9.1 (Condition System Concepts)
 
-Notes:
+* 注意(Notes):
 
  (check-type place typespec)
  ==  (assert (typep place 'typespec) (place)
             'type-error :datum place :expected-type 'typespec)
 
 
-Condition Type SIMPLE-ERROR
+### <span id="CT-SIMPLE-ERROR">Condition Type SIMPLE-ERROR</span>
 
-Class Precedence List:
+* 类优先级列表(Class Precedence List):
 
 simple-error, simple-condition, error, serious-condition, condition, t
 
-Description:
+* 描述(Description):
 
 The type simple-error consists of conditions that are signaled by error or cerror when a format control is supplied as the function's first argument. 
 
 
-Function INVALID-METHOD-ERROR
+### <span id="F-INVALID-METHOD-ERROR">Function INVALID-METHOD-ERROR</span>
 
-Syntax:
+* 语法(Syntax):
 
 invalid-method-error method format-control &rest args => implementation-dependent
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 method---a method.
 
@@ -1081,7 +1008,7 @@ format-control---a format control.
 
 args---format arguments for the format-control.
 
-Description:
+* 描述(Description):
 
 The function invalid-method-error is used to signal an error of type error when there is an applicable method whose qualifiers are not valid for the method combination type. The error message is constructed by using the format-control suitable for format and any args to it. Because an implementation may need to add additional contextual information to the error message, invalid-method-error should be called only within the dynamic extent of a method combination function.
 
@@ -1089,38 +1016,38 @@ The function invalid-method-error is called automatically when a method fails to
 
 Whether invalid-method-error returns to its caller or exits via throw is implementation-dependent.
 
-Examples: None.
+* 示例(Examples): None.
 
-Side Effects:
+* 副作用(Side Effects):
 
 The debugger might be entered.
 
-Affected By:
+* 受此影响(Affected By):
 
 *break-on-signals*
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 define-method-combination
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function METHOD-COMBINATION-ERROR
+### <span id="F-METHOD-COMBINATION-ERROR">Function METHOD-COMBINATION-ERROR</span>
 
-Syntax:
+* 语法(Syntax):
 
 method-combination-error format-control &rest args => implementation-dependent
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 format-control---a format control.
 
 args---format arguments for format-control.
 
-Description:
+* 描述(Description):
 
 The function method-combination-error is used to signal an error in method combination.
 
@@ -1128,40 +1055,40 @@ The error message is constructed by using a format-control suitable for format a
 
 Whether method-combination-error returns to its caller or exits via throw is implementation-dependent.
 
-Examples: None.
+* 示例(Examples): None.
 
-Side Effects:
+* 副作用(Side Effects):
 
 The debugger might be entered.
 
-Affected By:
+* 受此影响(Affected By):
 
 *break-on-signals*
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 define-method-combination
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function SIGNAL
+### <span id="F-SIGNAL">Function SIGNAL</span>
 
-Syntax:
+* 语法(Syntax):
 
 signal datum &rest arguments => nil
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 datum, arguments---designators for a condition of default type simple-condition.
 
-Description:
+* 描述(Description):
 
 Signals the condition denoted by the given datum and arguments. If the condition is not handled, signal returns nil.
 
-Examples:
+* 示例(Examples):
 
  (defun handle-division-conditions (condition)
    (format t "Considering condition for division condition handling~%")
@@ -1191,53 +1118,53 @@ Considering condition for division condition handling
 Considering condition for arithmetic condition handling
 Back to Lisp Toplevel
 
-Side Effects:
+* 副作用(Side Effects):
 
 The debugger might be entered due to *break-on-signals*.
 
 Handlers for the condition being signaled might transfer control.
 
-Affected By:
+* 受此影响(Affected By):
 
 Existing handler bindings.
 
 *break-on-signals*
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 *break-on-signals*, error, simple-condition, Section 9.1.4 (Signaling and Handling Conditions)
 
-Notes:
+* 注意(Notes):
 
 If (typep datum *break-on-signals*) yields true, the debugger is entered prior to beginning the signaling process. The continue restart can be used to continue with the signaling process. This is also true for all other functions and macros that should, might, or must signal conditions. 
 
 
-Condition Type SIMPLE-CONDITION
+### <span id="CT-SIMPLE-CONDITION">Condition Type SIMPLE-CONDITION</span>
 
-Class Precedence List:
+* 类优先级列表(Class Precedence List):
 
 simple-condition, condition, t
 
-Description:
+* 描述(Description):
 
 The type simple-condition represents conditions that are signaled by signal whenever a format-control is supplied as the function's first argument. The format control and format arguments are initialized with the initialization arguments named :format-control and :format-arguments to make-condition, and are accessed by the functions simple-condition-format-control and simple-condition-format-arguments. If format arguments are not supplied to make-condition, nil is used as a default.
 
-See Also:
+* 也见(See Also):
 
 simple-condition-format-control, simple-condition-format-arguments 
 
 
-Function SIMPLE-CONDITION-FORMAT-CONTROL, SIMPLE-CONDITION-FORMAT-ARGUMENTS
+### <span id="F-SCFC-SCFA">Function SIMPLE-CONDITION-FORMAT-CONTROL, SIMPLE-CONDITION-FORMAT-ARGUMENTS</span>
 
-Syntax:
+* 语法(Syntax):
 
 simple-condition-format-control condition => format-control
 
 simple-condition-format-arguments condition => format-arguments
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 condition---a condition of type simple-condition.
 
@@ -1245,13 +1172,13 @@ format-control---a format control.
 
 format-arguments---a list.
 
-Description:
+* 描述(Description):
 
 simple-condition-format-control returns the format control needed to process the condition's format arguments.
 
 simple-condition-format-arguments returns a list of format arguments needed to process the condition's format control.
 
-Examples:
+* 示例(Examples):
 
  (setq foo (make-condition 'simple-condition
                           :format-control "Hi ~S"
@@ -1261,30 +1188,30 @@ Examples:
                      (simple-condition-format-arguments foo))
 =>  "Hi HO"
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 simple-condition, Section 9.1 (Condition System Concepts)
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function WARN
+### <span id="F-WARN">Function WARN</span>
 
-Syntax:
+* 语法(Syntax):
 
 warn datum &rest arguments => nil
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 datum, arguments---designators for a condition of default type simple-warning.
 
-Description:
+* 描述(Description):
 
 Signals a condition of type warning. If the condition is not handled, reports the condition to error output.
 
@@ -1302,7 +1229,7 @@ nil is returned
 
     The value returned by warn if it returns is nil.
 
-Examples:
+* 示例(Examples):
 
   (defun foo (x)
     (let ((result (* x 2)))
@@ -1330,51 +1257,51 @@ Examples:
 >>  Warning: You're using very big numbers.
 =>  4294967294
 
-Side Effects:
+* 副作用(Side Effects):
 
 A warning is issued. The debugger might be entered.
 
-Affected By:
+* 受此影响(Affected By):
 
 Existing handler bindings.
 
 *break-on-signals*, *error-output*.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 If datum is a condition and if the condition is not of type warning, or arguments is non-nil, an error of type type-error is signaled.
 
 If datum is a condition type, the result of (apply #'make-condition datum arguments) must be of type warning or an error of type type-error is signaled.
 
-See Also:
+* 也见(See Also):
 
 *break-on-signals*, muffle-warning, signal
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Condition Type SIMPLE-WARNING
+### <span id="CT-SIMPLE-WARNING">Condition Type SIMPLE-WARNING</span>
 
-Class Precedence List:
+* 类优先级列表(Class Precedence List):
 
 simple-warning, simple-condition, warning, condition, t
 
-Description:
+* 描述(Description):
 
 The type simple-warning represents conditions that are signaled by warn whenever a format control is supplied as the function's first argument. 
 
 
-Function INVOKE-DEBUGGER
+### <span id="F-INVOKE-DEBUGGER">Function INVOKE-DEBUGGER</span>
 
-Syntax:
+* 语法(Syntax):
 
 invoke-debugger condition =>|
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 condition---a condition object.
 
-Description:
+* 描述(Description):
 
 invoke-debugger attempts to enter the debugger with condition.
 
@@ -1382,7 +1309,7 @@ If *debugger-hook* is not nil, it should be a function (or the name of a functio
 
 The standard debugger never directly returns. Return can occur only by a non-local transfer of control, such as the use of a restart function.
 
-Examples:
+* 示例(Examples):
 
  (ignore-errors ;Normally, this would suppress debugger entry
    (handler-bind ((error #'invoke-debugger)) ;But this forces debugger entry
@@ -1392,36 +1319,36 @@ To continue, type :CONTINUE followed by an option number:
  1: Return to Lisp Toplevel.
 Debug>
 
-Side Effects:
+* 副作用(Side Effects):
 
 *debugger-hook* is bound to nil, program execution is discontinued, and the debugger is entered.
 
-Affected By:
+* 受此影响(Affected By):
 
 *debug-io* and *debugger-hook*.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 error, break
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function BREAK
+### <span id="F-BREAK">Function BREAK</span>
 
-Syntax:
+* 语法(Syntax):
 
 break &optional format-control &rest format-arguments => nil
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 format-control---a format control. The default is implementation-dependent.
 
 format-arguments---format arguments for the format-control.
 
-Description:
+* 描述(Description):
 
 break formats format-control and format-arguments and then goes directly into the debugger without allowing any possibility of interception by programmed error-handling facilities.
 
@@ -1429,7 +1356,7 @@ If the continue restart is used while in the debugger, break immediately returns
 
 break binds *debugger-hook* to nil before attempting to enter the debugger.
 
-Examples:
+* 示例(Examples):
 
  (break "You got here with arguments: ~:S." '(FOO 37 A))
 >>  BREAK: You got here with these arguments: FOO, 37, A.
@@ -1441,21 +1368,21 @@ Examples:
 =>  NIL
  
 
-Side Effects:
+* 副作用(Side Effects):
 
 The debugger is entered.
 
-Affected By:
+* 受此影响(Affected By):
 
 *debug-io*.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 error, invoke-debugger.
 
-Notes:
+* 注意(Notes):
 
 break is used as a way of inserting temporary debugging ``breakpoints'' in a program, not as a way of signaling errors. For this reason, break does not take the continue-format-control argument that cerror takes. This and the lack of any possibility of interception by condition handling are the only program-visible differences between break and cerror.
 
@@ -1473,21 +1400,21 @@ break could be defined by:
    nil)
 
 
-Variable *DEBUGGER-HOOK*
+### <span id="V-DEBUGGER-HOOK">Variable *DEBUGGER-HOOK*</span>
 
-Value Type:
+* 值类型(Value Type):
 
 a designator for a function of two arguments (a condition and the value of *debugger-hook* at the time the debugger was entered), or nil.
 
-Initial Value:
+* 初始值(Initial Value):
 
 nil.
 
-Description:
+* 描述(Description):
 
 When the value of *debugger-hook* is non-nil, it is called prior to normal entry into the debugger, either due to a call to invoke-debugger or due to automatic entry into the debugger from a call to error or cerror with a condition that is not handled. The function may either handle the condition (transfer control) or return normally (allowing the standard debugger to run). To minimize recursive errors while debugging, *debugger-hook* is bound to nil by invoke-debugger prior to calling the function.
 
-Examples:
+* 示例(Examples):
 
  (defun one-of (choices &optional (prompt "Choice"))
    (let ((n (length choices)) (i))
@@ -1522,34 +1449,34 @@ Examples:
 >>   Form to evaluate and use: 1
 =>  9
 
-Affected By:
+* 受此影响(Affected By):
 
 invoke-debugger
 
-See Also: None.
+* 也见(See Also): None.
 
-Notes:
+* 注意(Notes):
 
 When evaluating code typed in by the user interactively, it is sometimes useful to have the hook function bind *debugger-hook* to the function that was its second argument so that recursive errors can be handled using the same interactive facility. 
 
 
-Variable *BREAK-ON-SIGNALS*
+### <span id="V-BREAK-ON-SIGNALS">Variable *BREAK-ON-SIGNALS*</span>
 
-Value Type:
+* 值类型(Value Type):
 
 a type specifier.
 
-Initial Value:
+* 初始值(Initial Value):
 
 nil.
 
-Description:
+* 描述(Description):
 
 When (typep condition *break-on-signals*) returns true, calls to signal, and to other operators such as error that implicitly call signal, enter the debugger prior to signaling the condition.
 
 The continue restart can be used to continue with the normal signaling process when a break occurs process due to *break-on-signals*.
 
-Examples:
+* 示例(Examples):
 
  *break-on-signals* =>  NIL
  (ignore-errors (error 'simple-error :format-control "Fooey!"))
@@ -1581,28 +1508,28 @@ Examples:
 >>  Debug> :CONTINUE 1
 >>  Top level.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-See Also:
+* 也见(See Also):
 
 break, signal, warn, error, typep, Section 9.1 (Condition System Concepts)
 
-Notes:
+* 注意(Notes):
 
 *break-on-signals* is intended primarily for use in debugging code that does signaling. When setting *break-on-signals*, the user is encouraged to choose the most restrictive specification that suffices. Setting *break-on-signals* effectively violates the modular handling of condition signaling. In practice, the complete effect of setting *break-on-signals* might be unpredictable in some cases since the user might not be aware of the variety or number of calls to signal that are used in code called only incidentally.
 
 *break-on-signals* enables an early entry to the debugger but such an entry does not preclude an additional entry to the debugger in the case of operations such as error and cerror. 
 
 
-Macro HANDLER-BIND
+### <span id="M-HANDLER-BIND">Macro HANDLER-BIND</span>
 
-Syntax:
+* 语法(Syntax):
 
 handler-bind ({binding}*) form* => result*
 
 binding::= (type handler) 
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 type---a type specifier.
 
@@ -1614,7 +1541,7 @@ forms---an implicit progn.
 
 results---the values returned by the forms.
 
-Description:
+* 描述(Description):
 
 Executes forms in a dynamic environment where the indicated handler bindings are in effect.
 
@@ -1624,7 +1551,7 @@ If more than one handler binding is supplied, the handler bindings are searched 
 
 If no appropriate handler is found, other handlers are sought from dynamically enclosing contours. If no handler is found outside, then signal returns or error enters the debugger.
 
-Examples:
+* 示例(Examples):
 
 In the following code, if an unbound variable error is signaled in the body (and not handled by an intervening handler), the first function is called.
 
@@ -1651,22 +1578,22 @@ If any other kind of error is signaled, the second function is called. In either
 
 Note that ``Foo.'' is not printed because the condition made by signal is a simple condition, which is not of type error, so it doesn't trigger the handler for error set up by trap-errors.
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 handler-case
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Macro HANDLER-CASE
+### <span id="M-HANDLER-CASE">Macro HANDLER-CASE</span>
 
-Syntax:
+* 语法(Syntax):
 
 handler-case expression [[{error-clause}* | no-error-clause]] => result*
 
@@ -1676,7 +1603,7 @@ error-clause::= (typespec ([var]) declaration* form*)
 
 no-error-clause::= (:no-error lambda-list declaration* form*) 
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 expression---a form.
 
@@ -1692,7 +1619,7 @@ form---a form.
 
 results---In the normal situation, the values returned are those that result from the evaluation of expression; in the exceptional situation when control is transferred to a clause, the value of the last form in that clause is returned.
 
-Description:
+* 描述(Description):
 
 handler-case executes expression in a dynamic environment where various handlers are active. Each error-clause specifies how to handle a condition matching the indicated typespec. A no-error-clause allows the specification of a particular action if control returns normally.
 
@@ -1714,7 +1641,7 @@ can be written (typespec () form).
 
 If there are no forms in a selected clause, the case, and therefore handler-case, returns nil. If execution of expression returns normally and no no-error-clause exists, the values returned by expression are returned by handler-case. If execution of expression returns normally and a no-error-clause does exist, the values returned are used as arguments to the function described by constructing (lambda lambda-list form*) from the no-error-clause, and the values of that function call are returned by handler-case. The handlers which were established around the expression are no longer active at the time of this call.
 
-Examples:
+* 示例(Examples):
 
  (defun assess-condition (condition)
    (handler-case (signal condition)
@@ -1736,15 +1663,15 @@ Examples:
  (assess-condition (make-condition 'random-condition))
 =>  "Hardly worth mentioning."
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 handler-bind, ignore-errors, Section 9.1 (Condition System Concepts)
 
-Notes:
+* 注意(Notes):
 
  (handler-case form
    (type1 (var1) . body1)
@@ -1781,19 +1708,19 @@ is approximately equivalent to:
            (type1 (var1) . body1) ...)))))
 
 
-Macro IGNORE-ERRORS
+### <span id="M-IGNORE-ERRORS">Macro IGNORE-ERRORS</span>
 
-Syntax:
+* 语法(Syntax):
 
 ignore-errors form* => result*
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 forms---an implicit progn.
 
 results---In the normal situation, the values of the forms are returned; in the exceptional situation, two values are returned: nil and the condition.
 
-Description:
+* 描述(Description):
 
 ignore-errors is used to prevent conditions of type error from causing entry into the debugger.
 
@@ -1801,7 +1728,7 @@ Specifically, ignore-errors executes forms in a dynamic environment where a hand
 
 If a normal return from the forms occurs, any values returned are returned by ignore-errors.
 
-Examples:
+* 示例(Examples):
 
  (defun load-init-file (program)
    (let ((win nil))
@@ -1816,15 +1743,15 @@ Examples:
 >>  Init file failed to load.
 NIL
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 handler-case, Section 9.1 (Condition System Concepts)
 
-Notes:
+* 注意(Notes):
 
  (ignore-errors . forms)
 
@@ -1836,9 +1763,9 @@ is equivalent to:
 Because the second return value is a condition in the exceptional case, it is common (but not required) to arrange for the second return value in the normal case to be missing or nil so that the two situations can be distinguished. 
 
 
-Macro DEFINE-CONDITION
+### <span id="M-DEFINE-CONDITION">Macro DEFINE-CONDITION</span>
 
-Syntax:
+* 语法(Syntax):
 
 define-condition name (parent-type*) ({slot-spec}*) option*
 
@@ -1864,7 +1791,7 @@ allocation-type::= :instance | :class
 
 report-name::= string | symbol | lambda expression 
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 name---a symbol.
 
@@ -1914,7 +1841,7 @@ Option -- Any of the following:
 
     :report can be supplied once at most.
 
-Description:
+* 描述(Description):
 
 define-condition defines a new condition type called name, which is a subtype of the type or types named by parent-type. Each parent-type argument specifies a direct supertype of the new condition. The new condition inherits slots and methods from each of its direct supertypes, and so on.
 
@@ -1973,7 +1900,7 @@ The consequences are unspecified if an attempt is made to assign the slots by us
 
 If a define-condition form appears as a top level form, the compiler must make name recognizable as a valid type name, and it must be possible to reference the condition type as the parent-type of another condition type in a subsequent define-condition form in the file being compiled.
 
-Examples:
+* 示例(Examples):
 
 The following form defines a condition of type peg/hole-mismatch which inherits from a condition type called blocks-world-error:
 
@@ -2040,24 +1967,24 @@ Note that since no :report clause was given, the information inherited from mach
 >>  FRED ate too much CHOCOLATE ice-cream
 =>  NIL
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 make-condition, defclass, Section 9.1 (Condition System Concepts)
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function MAKE-CONDITION
+### <span id="F-MAKE-CONDITION">Function MAKE-CONDITION</span>
 
-Syntax:
+* 语法(Syntax):
 
 make-condition type &rest slot-initializations => condition
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 type---a type specifier (for a subtype of condition).
 
@@ -2065,11 +1992,11 @@ slot-initializations---an initialization argument list.
 
 condition---a condition.
 
-Description:
+* 描述(Description):
 
 Constructs and returns a condition of type type using slot-initializations for the initial values of the slots. The newly created condition is returned.
 
-Examples:
+* 示例(Examples):
 
  (defvar *oops-count* 0)
 
@@ -2088,47 +2015,47 @@ Examples:
 >>   1: Return to Lisp Toplevel.
 >>  Debug> 
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By:
+* 受此影响(Affected By):
 
 The set of defined condition types.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 define-condition, Section 9.1 (Condition System Concepts)
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-System Class RESTART
+### <span id="SC-RESTART">System Class RESTART</span>
 
-Class Precedence List:
+* 类优先级列表(Class Precedence List):
 
 restart, t
 
-Description:
+* 描述(Description):
 
 An object of type restart represents a function that can be called to perform some form of recovery action, usually a transfer of control to an outer point in the running program.
 
 An implementation is free to implement a restart in whatever manner is most convenient; a restart has only dynamic extent relative to the scope of the binding form which establishes it. 
 
 
-Function COMPUTE-RESTARTS
+### <span id="F-COMPUTE-RESTARTS">Function COMPUTE-RESTARTS</span>
 
-Syntax:
+* 语法(Syntax):
 
 compute-restarts &optional condition => restarts
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 condition---a condition object, or nil.
 
 restarts---a list of restarts.
 
-Description:
+* 描述(Description):
 
 compute-restarts uses the dynamic state of the program to compute a list of the restarts which are currently active.
 
@@ -2140,7 +2067,7 @@ compute-restarts returns all applicable restarts, including anonymous ones, even
 
 Implementations are permitted, but not required, to return distinct lists from repeated calls to compute-restarts while in the same dynamic environment. The consequences are undefined if the list returned by compute-restarts is every modified.
 
-Examples:
+* 示例(Examples):
 
  ;; One possible way in which an interactive debugger might present
  ;; restarts to the user.
@@ -2176,30 +2103,30 @@ Examples:
  ;; the "Return to Lisp Toplevel" restart offered above.
  
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By:
+* 受此影响(Affected By):
 
 Existing restarts.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 find-restart, invoke-restart, restart-bind
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function FIND-RESTART
+### <span id="F-FIND-RESTART">Function FIND-RESTART</span>
 
-Syntax:
+* 语法(Syntax):
 
 find-restart identifier &optional condition
 
 restart
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 identifier---a non-nil symbol, or a restart.
 
@@ -2207,7 +2134,7 @@ condition---a condition object, or nil.
 
 restart---a restart or nil.
 
-Description:
+* 描述(Description):
 
 find-restart searches for a particular restart in the current dynamic environment.
 
@@ -2217,7 +2144,7 @@ If identifier is a symbol, then the innermost (most recently established) applic
 
 If identifier is a currently active restart, then it is returned. Otherwise, nil is returned.
 
-Examples:
+* 示例(Examples):
 
  (restart-case
      (let ((r (find-restart 'my-restart)))
@@ -2228,21 +2155,21 @@ Examples:
  (find-restart 'my-restart)
 =>  NIL
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By:
+* 受此影响(Affected By):
 
 Existing restarts.
 
 restart-case, restart-bind, with-condition-restarts.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 compute-restarts
 
-Notes:
+* 注意(Notes):
 
  (find-restart identifier)
  ==  (find identifier (compute-restarts) :key :restart-name)
@@ -2250,13 +2177,13 @@ Notes:
 Although anonymous restarts have a name of nil, the consequences are unspecified if nil is given as an identifier. Occasionally, programmers lament that nil is not permissible as an identifier argument. In most such cases, compute-restarts can probably be used to simulate the desired effect. 
 
 
-Function INVOKE-RESTART
+### <span id="F-INVOKE-RESTART">Function INVOKE-RESTART</span>
 
-Syntax:
+* 语法(Syntax):
 
 invoke-restart restart &rest arguments => result*
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 restart---a restart designator.
 
@@ -2264,11 +2191,11 @@ argument---an object.
 
 results---the values returned by the function associated with restart, if that function returns.
 
-Description:
+* 描述(Description):
 
 Calls the function associated with restart, passing arguments to it. Restart must be valid in the current dynamic environment.
 
-Examples:
+* 示例(Examples):
 
  (defun add3 (x) (check-type x number) (+ x 3))
  
@@ -2280,42 +2207,42 @@ Examples:
 >>  Debug> (invoke-restart 'store-value 7)
 =>  10
 
-Side Effects:
+* 副作用(Side Effects):
 
 A non-local transfer of control might be done by the restart.
 
-Affected By:
+* 受此影响(Affected By):
 
 Existing restarts.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 If restart is not valid, an error of type control-error is signaled.
 
-See Also:
+* 也见(See Also):
 
 find-restart, restart-bind, restart-case, invoke-restart-interactively
 
-Notes:
+* 注意(Notes):
 
 The most common use for invoke-restart is in a handler. It might be used explicitly, or implicitly through invoke-restart-interactively or a restart function.
 
 Restart functions call invoke-restart, not vice versa. That is, invoke-restart provides primitive functionality, and restart functions are non-essential ``syntactic sugar.'' 
 
 
-Function INVOKE-RESTART-INTERACTIVELY
+### <span id="F-INVOKE-RESTART-INTERACTIVELY">Function INVOKE-RESTART-INTERACTIVELY</span>
 
-Syntax:
+* 语法(Syntax):
 
 invoke-restart-interactively restart => result*
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 restart---a restart designator.
 
 results---the values returned by the function associated with restart, if that function returns.
 
-Description:
+* 描述(Description):
 
 invoke-restart-interactively calls the function associated with restart, prompting for any necessary arguments. If restart is a name, it must be valid in the current dynamic environment.
 
@@ -2327,7 +2254,7 @@ Once the arguments have been determined, invoke-restart-interactively executes t
 
  (apply #'invoke-restart restart arguments)
 
-Examples:
+* 示例(Examples):
 
  (defun add3 (x) (check-type x number) (+ x 3))
  
@@ -2340,32 +2267,32 @@ Examples:
 >>  Type a form to evaluate and use: 7
 =>  10
 
-Side Effects:
+* 副作用(Side Effects):
 
 If prompting for arguments is necesary, some typeout may occur (on query I/O).
 
 A non-local transfer of control might be done by the restart.
 
-Affected By:
+* 受此影响(Affected By):
 
 *query-io*, active restarts
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 If restart is not valid, an error of type control-error is signaled.
 
-See Also:
+* 也见(See Also):
 
 find-restart, invoke-restart, restart-case, restart-bind
 
-Notes:
+* 注意(Notes):
 
 invoke-restart-interactively is used internally by the debugger and may also be useful in implementing other portable, interactive debugging tools. 
 
 
-Macro RESTART-BIND
+### <span id="M-RESTART-BIND">Macro RESTART-BIND</span>
 
-Syntax:
+* 语法(Syntax):
 
 restart-bind ({(name function {key-val-pair}*)}) form*
 
@@ -2375,7 +2302,7 @@ key-val-pair::= :interactive-function interactive-function |
                 :report-function report-function |  
                 :test-function test-function 
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 name---a symbol; not evaluated.
 
@@ -2391,7 +2318,7 @@ test-function---a form; evaluated.
 
 results---the values returned by the forms.
 
-Description:
+* 描述(Description):
 
 restart-bind executes the body of forms in a dynamic environment where restarts with the given names are in effect.
 
@@ -2421,26 +2348,26 @@ In the case of interactive invocation, the result is dependent on the value of :
 
     Value is evaluated in the current lexical environment and should return a function of one argument, a condition, which returns true if the restart is to be considered visible.
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By:
+* 受此影响(Affected By):
 
 *query-io*.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 restart-case, with-simple-restart
 
-Notes:
+* 注意(Notes):
 
 restart-bind is primarily intended to be used to implement restart-case and might be useful in implementing other macros. Programmers who are uncertain about whether to use restart-case or restart-bind should prefer restart-case for the cases where it is powerful enough, using restart-bind only in cases where its full generality is really needed. 
 
 
-Macro RESTART-CASE
+### <span id="M-RESTART-CASE">Macro RESTART-CASE</span>
 
-Syntax:
+* 语法(Syntax):
 
 restart-case restartable-form {clause} => result*
 
@@ -2448,7 +2375,7 @@ clause::= (case-name lambda-list
            [[:interactive interactive-expression | :report report-expression | :test test-expression]]  
            declaration* form*) 
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 restartable-form---a form.
 
@@ -2468,7 +2395,7 @@ form---a form.
 
 results---the values resulting from the evaluation of restartable-form, or the values returned by the last form executed in a chosen clause, or nil.
 
-Description:
+* 描述(Description):
 
 restart-case evaluates restartable-form in a dynamic environment where the clauses have special meanings as points to which control may be transferred. If restartable-form finishes executing and returns any values, all values returned are returned by restart-case and processing has completed. While restartable-form is executing, any code may transfer control to one of the clauses (see invoke-restart). If a transfer occurs, the forms in the body of that clause is evaluated and any values returned by the last such form are returned by restart-case. In this case, the dynamic state is unwound appropriately (so that the restarts established around the restartable-form are no longer active) prior to execution of the clause.
 
@@ -2518,7 +2445,7 @@ Keyword options have the following meaning.
 
 If the restartable-form is a list whose car is any of the symbols signal, error, cerror, or warn (or is a macro form which macroexpands into such a list), then with-condition-restarts is used implicitly to associate the indicated restarts with the condition to be signaled.
 
-Examples:
+* 示例(Examples):
 
  (restart-case
      (handler-bind ((error #'(lambda (c)
@@ -2583,17 +2510,17 @@ Examples:
 >>  Enter a new ice cream: 'chocolate
 =>  CHOCOLATE, CARAMEL, CHERRY
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 restart-bind, with-simple-restart.
 
-Notes:
+* 注意(Notes):
 
  (restart-case expression
     (name1 arglist1 ...options1... . body1)
@@ -2633,23 +2560,23 @@ Unnamed restarts are generally only useful interactively and an interactive opti
    (b ...))
 
 
-Function RESTART-NAME
+### <span id="F-RESTART-NAME">Function RESTART-NAME</span>
 
-Syntax:
+* 语法(Syntax):
 
 restart-name restart => name
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 restart---a restart.
 
 name---a symbol.
 
-Description:
+* 描述(Description):
 
 Returns the name of the restart, or nil if the restart is not named.
 
-Examples:
+* 示例(Examples):
 
  (restart-case 
      (loop for restart in (compute-restarts)
@@ -2662,28 +2589,28 @@ Examples:
  ;; In the example above the restart named ABORT was not created
  ;; explicitly, but was implicitly supplied by the system.
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 compute-restarts find-restart
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Macro WITH-CONDITION-RESTARTS
+### <span id="M-WITH-CONDITION-RESTARTS">Macro WITH-CONDITION-RESTARTS</span>
 
-Syntax:
+* 语法(Syntax):
 
 with-condition-restarts condition-form restarts-form form*
 
 => result*
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 condition-form---a form; evaluated to produce a condition.
 
@@ -2697,38 +2624,38 @@ forms---an implicit progn; evaluated.
 
 results---the values returned by forms.
 
-Description:
+* 描述(Description):
 
 First, the condition-form and restarts-form are evaluated in normal left-to-right order; the primary values yielded by these evaluations are respectively called the condition and the restart-list.
 
 Next, the forms are evaluated in a dynamic environment in which each restart in restart-list is associated with the condition. See Section 9.1.4.2.4 (Associating a Restart with a Condition).
 
-Examples: None.
+* 示例(Examples): None.
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 restart-case
 
-Notes:
+* 注意(Notes):
 
 Usually this macro is not used explicitly in code, since restart-case handles most of the common cases in a way that is syntactically more concise. 
 
 
-Macro WITH-SIMPLE-RESTART
+### <span id="M-WITH-SIMPLE-RESTART">Macro WITH-SIMPLE-RESTART</span>
 
-Syntax:
+* 语法(Syntax):
 
 with-simple-restart (name format-control format-argument*) form*
 
 => result*
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 name---a symbol.
 
@@ -2740,7 +2667,7 @@ forms---an implicit progn.
 
 results---in the normal situation, the values returned by the forms; in the exceptional situation where the restart named name is invoked, two values---nil and t.
 
-Description:
+* 描述(Description):
 
 with-simple-restart establishes a restart.
 
@@ -2750,7 +2677,7 @@ If name is nil, an anonymous restart is established.
 
 The format-control and format-arguments are used report the restart.
 
-Examples:
+* 示例(Examples):
 
  (defun read-eval-print-loop (level)
    (with-simple-restart (abort "Exit command level ~D." level)
@@ -2790,17 +2717,17 @@ COMPUTE-POWER-OF-2
 >>  Debug> :continue 1
 =>  SOMETHING-BIG
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 restart-case
 
-Notes:
+* 注意(Notes):
 
 with-simple-restart is shorthand for one of the most common uses of restart-case.
 
@@ -2818,32 +2745,32 @@ with-simple-restart could be defined by:
 Because the second return value is t in the exceptional case, it is common (but not required) to arrange for the second return value in the normal case to be missing or nil so that the two situations can be distinguished. 
 
 
-Restart ABORT
+### <span id="R-ABORT">Restart ABORT</span>
 
-Data Arguments Required:
+* 必要数据参数(Data Arguments Required):
 
 None.
 
-Description:
+* 描述(Description):
 
 The intent of the abort restart is to allow return to the innermost ``command level.'' Implementors are encouraged to make sure that there is always a restart named abort around any user code so that user code can call abort at any time and expect something reasonable to happen; exactly what the reasonable thing is may vary somewhat. Typically, in an interactive listener, the invocation of abort returns to the Lisp reader phase of the Lisp read-eval-print loop, though in some batch or multi-processing situations there may be situations in which having it kill the running process is more appropriate.
 
-See Also:
+* 也见(See Also):
 
 Section 9.1.4.2 (Restarts), Section 9.1.4.2.2 (Interfaces to Restarts), invoke-restart, abort (function) 
 
 
-Restart CONTINUE
+### <span id="R-CONTINUE">Restart CONTINUE</span>
 
-Data Arguments Required:
+* 必要数据参数(Data Arguments Required):
 
 None.
 
-Description:
+* 描述(Description):
 
 The continue restart is generally part of protocols where there is a single ``obvious'' way to continue, such as in break and cerror. Some user-defined protocols may also wish to incorporate it for similar reasons. In general, however, it is more reliable to design a special purpose restart with a name that more directly suits the particular application.
 
-Examples:
+* 示例(Examples):
 
  (let ((x 3))
    (handler-bind ((error #'(lambda (c)
@@ -2854,22 +2781,22 @@ Examples:
             (float x))
            (t x)))) =>  3.0
 
-See Also:
+* 也见(See Also):
 
 Section 9.1.4.2 (Restarts), Section 9.1.4.2.2 (Interfaces to Restarts), invoke-restart, continue (function), assert, cerror 
 
 
-Restart MUFFLE-WARNING
+### <span id="R-MUFFLE-WARNING">Restart MUFFLE-WARNING</span>
 
-Data Arguments Required:
+* 必要数据参数(Data Arguments Required):
 
 None.
 
-Description:
+* 描述(Description):
 
 This restart is established by warn so that handlers of warning conditions have a way to tell warn that a warning has already been dealt with and that no further action is warranted.
 
-Examples:
+* 示例(Examples):
 
  (defvar *all-quiet* nil) =>  *ALL-QUIET*
  (defvar *saved-warnings* '()) =>  *SAVED-WARNINGS*
@@ -2900,22 +2827,22 @@ Examples:
 >>  Situation #1.
 =>  NIL
 
-See Also:
+* 也见(See Also):
 
 Section 9.1.4.2 (Restarts), Section 9.1.4.2.2 (Interfaces to Restarts), invoke-restart, muffle-warning (function), warn 
 
 
-Restart STORE-VALUE
+### <span id="R-STORE-VALUE">Restart STORE-VALUE</span>
 
-Data Arguments Required:
+* 必要数据参数(Data Arguments Required):
 
 a value to use instead (on an ongoing basis).
 
-Description:
+* 描述(Description):
 
 The store-value restart is generally used by handlers trying to recover from errors of types such as cell-error or type-error, which may wish to supply a replacement datum to be stored permanently.
 
-Examples:
+* 示例(Examples):
 
  (defun type-error-auto-coerce (c)
    (when (typep c 'type-error)
@@ -2929,29 +2856,29 @@ Examples:
      (check-type x float)
      x)) =>  3.0
 
-See Also:
+* 也见(See Also):
 
 Section 9.1.4.2 (Restarts), Section 9.1.4.2.2 (Interfaces to Restarts), invoke-restart, store-value (function), ccase, check-type, ctypecase, use-value (function and restart) 
 
 
-Restart USE-VALUE
+### <span id="R-USE-VALUE">Restart USE-VALUE</span>
 
-Data Arguments Required:
+* 必要数据参数(Data Arguments Required):
 
 a value to use instead (once).
 
-Description:
+* 描述(Description):
 
 The use-value restart is generally used by handlers trying to recover from errors of types such as cell-error, where the handler may wish to supply a replacement datum for one-time use.
 
-See Also:
+* 也见(See Also):
 
 Section 9.1.4.2 (Restarts), Section 9.1.4.2.2 (Interfaces to Restarts), invoke-restart, use-value (function), store-value (function and restart) 
 
 
-Function ABORT, CONTINUE, MUFFLE-WARNING, STORE-VALUE, USE-VALUE
+### <span id="F-ABORT-CONTINUE-MW-SV-UV">Function ABORT, CONTINUE, MUFFLE-WARNING, STORE-VALUE, USE-VALUE</span>
 
-Syntax:
+* 语法(Syntax):
 
 abort &optional condition =>|
 
@@ -2963,13 +2890,13 @@ store-value value &optional condition => nil
 
 use-value value &optional condition => nil
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 value---an object.
 
 condition---a condition object, or nil.
 
-Description:
+* 描述(Description):
 
 Transfers control to the most recently established applicable restart having the same name as the function. That is, the function abort searches for an applicable abort restart, the function continue searches for an applicable continue restart, and so on.
 
@@ -2977,7 +2904,7 @@ If no such restart exists, the functions continue, store-value, and use-value re
 
 When condition is non-nil, only those restarts are considered that are either explicitly associated with that condition, or not associated with any condition; that is, the excluded restarts are those that are associated with a non-empty set of conditions of which the given condition is not an element. If condition is nil, all restarts are considered.
 
-Examples:
+* 示例(Examples):
 
 ;;; Example of the ABORT retart
 
@@ -3088,23 +3015,23 @@ Examples:
  (add-symbols-with-default 3 'x 'y 'z) =>  6
 
 
-Side Effects:
+* 副作用(Side Effects):
 
 A transfer of control may occur if an appropriate restart is available, or (in the case of the function abort or the function muffle-warning) execution may be stopped.
 
-Affected By:
+* 受此影响(Affected By):
 
 Each of these functions can be affected by the presence of a restart having the same name.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 If an appropriate abort restart is not available for the function abort, or an appropriate muffle-warning restart is not available for the function muffle-warning, an error of type control-error is signaled.
 
-See Also:
+* 也见(See Also):
 
 invoke-restart, Section 9.1.4.2 (Restarts), Section 9.1.4.2.2 (Interfaces to Restarts), assert, ccase, cerror, check-type, ctypecase, use-value, warn
 
-Notes:
+* 注意(Notes):
 
  (abort condition) ==  (invoke-restart 'abort)
  (muffle-warning)  ==  (invoke-restart 'muffle-warning)
