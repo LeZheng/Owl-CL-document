@@ -1,94 +1,96 @@
-# 9. Conditions
+# 9. 状况
 
-> * 9.1 [Condition System Concepts](#ConditionSystemConcepts)
-> * 9.2 [The Conditions Dictionary](#ConditionsDictionary)
+> * 9.1 [状况系统的概念](#ConditionSystemConcepts)
+> * 9.2 [状况字典](#ConditionsDictionary)
 
-## 9.1 <span id="ConditionSystemConcepts">Condition System Concepts</span>
+## 9.1 <span id="ConditionSystemConcepts">状况系统的概念</span>
 
-Common Lisp constructs are described not only in terms of their behavior in situations during which they are intended to be used (see the ``Description'' part of each operator specification), but in all other situations (see the ``Exceptional Situations'' part of each operator specification).
+描述 Common Lisp 构造不仅仅是它们打算被使用情况下的行为 (见每个操作符声明的 "描述(Description)" 部分), 还有其他所有情况 (见每个操作符说明的 "异常情况(Exceptional Situations)").
 
-A situation is the evaluation of an expression in a specific context. A condition is an object that represents a specific situation that has been detected. Conditions are generalized instances of the class condition. A hierarchy of condition classes is defined in Common Lisp. A condition has slots that contain data relevant to the situation that the condition represents.
+一个情况(situation)是一个表达式在一个特定上下文中的求值. 一个状况(condition)是表示一个被检测到的特定情况的一个对象. 状况是类 condition 的一个普通实例. 在 Common Lisp 定义了一个状况类的层次结构. 一个状况有槽, 可以包含这个状况表示的情况的相关数据.
 
-An error is a situation in which normal program execution cannot continue correctly without some form of intervention (either interactively by the user or under program control). Not all errors are detected. When an error goes undetected, the effects can be implementation-dependent, implementation-defined, unspecified, or undefined. See Section 1.4 (Definitions). All detected errors can be represented by conditions, but not all conditions represent errors.
+一个错误(error)是一个没有某个表达式形式的干预(不管是由用户交互还是在程序控制下), 程序就无法正常执行下去的情况. 不是所有错误都被检测到. 当一个错误未被检测到, 它的效果可以是取决于具体实现爱呢(implementation-dependent), 具体实现定义(implementation-defined), 未指定(unspecified), 或者未定义(undefined)的. 见章节 1.4 (Definitions). 所有检测到的错误可以被状况表示, 但不是所有状况都表示错误.
 
-Signaling is the process by which a condition can alter the flow of control in a program by raising the condition which can then be handled. The functions error, cerror, signal, and warn are used to signal conditions.
+发信号(Signaling) 是一个过程, 通过这个过程一个状况可以通过提升可以被处理的状况来修改一个程序中的控制流. 函数 error, cerror, signal, 还有 warn 被用于发出状况信号.
 
-The process of signaling involves the selection and invocation of a handler from a set of active handlers. A handler is a function of one argument (the condition) that is invoked to handle a condition. Each handler is associated with a condition type, and a handler will be invoked only on a condition of the handler's associated type.
+这个发信号的过程涉及从一组活跃的处理者(handler)中选择和调用一个处理者. 一个处理者(handler)是一个单参数(这个状况)的被调用来处理一个状况的函数. 每个处理者都和一个状况类型关联, 并且一个处理者只有在这个处理者关联的状况类型上被调用.
 
-Active handlers are established dynamically (see handler-bind or handler-case). Handlers are invoked in a dynamic environment equivalent to that of the signaler, except that the set of active handlers is bound in such a way as to include only those that were active at the time the handler being invoked was established. Signaling a condition has no side-effect on the condition, and there is no dynamic state contained in a condition.
+活跃的处理者被动态地确定 (见 handler-bind 或 handler-case). 处理者在和这个发送者(signaler)等价的动态环境中被调用, 除了这个活跃的处理者集合只包含在这个要被调用的处理者被建立时活跃的那些. 发出一个状况在这个状况上没有副作用, 并且这里没有动态的状态被包含在一个状况中.
 
-If a handler is invoked, it can address the situation in one of three ways:
+如果一个处理者被调用, 它可以通过以下三种方式来处理这个问题:
 
 Decline
 
-    It can decline to handle the condition. It does this by simply returning rather than transferring control. When this happens, any values returned by the handler are ignored and the next most recently established handler is invoked. If there is no such handler and the signaling function is error or cerror, the debugger is entered in the dynamic environment of the signaler. If there is no such handler and the signaling function is either signal or warn, the signaling function simply returns nil.
+    它可以拒绝去处理这个状况. 它通过简单的返回而不是转移控制来完成这个. 当这个发生的时候, 这个处理者返回的任何值都会被忽略并且下一个最近被建立的处理者会被调用. 如果这里没有这样的处理者并且发送函数是 error 或 cerror, 这个调试器会进入到这个发送者的动态环境中. 如果这里没有这样的处理者并且发送函数是 signal 或 warn, 那么这个发送函数简单地返回 nil.
 
 Handle
 
-    It can handle the condition by performing a non-local transfer of control. This can be done either primitively by using go, return, throw or more abstractly by using a function such as abort or invoke-restart.
+    它可以通过执行一个控制的非局部转移来处理这个状况. 这个可以通过简单地使用 go, return, throw 来完成, 或者通过使用例如 abort 或 invoke-restart 函数更抽象地完成.
 
 Defer
 
-    It can put off a decision about whether to handle or decline, by any of a number of actions, but most commonly by signaling another condition, resignaling the same condition, or forcing entry into the debugger.
+    它可以推迟一个关于是否处理(handle)或拒绝(decline)的决定, 通过任何一种动作, 但是最常见的是通过发送另一个状况, 重发相同的状况, 或者强制进入调试器.
 
-> * 9.1.1 [Condition Types](#ConditionTypes)
-> * 9.1.2 [Creating Conditions](#CreatingConditions)
-> * 9.1.3 [Printing Conditions](#PrintingConditions)
-> * 9.1.4 [Signaling and Handling Conditions](#SignalingHandlingConditions)
+> * 9.1.1 [状况类型](#ConditionTypes)
+> * 9.1.2 [创建状况](#CreatingConditions)
+> * 9.1.3 [打印状况](#PrintingConditions)
+> * 9.1.4 [发送和处理状况](#SignalingHandlingConditions)
 > * 9.1.5 [Assertions](#Assertions)
 > * 9.1.6 [Notes about the Condition System's Background](#NotesConditionSystemBackground)
 
 
-### 9.1.1 <span id="ConditionTypes">Condition Types</span>
+### 9.1.1 <span id="ConditionTypes">状况类型</span>
 
-The next figure lists the standardized condition types. Additional condition types can be defined by using define-condition.
+下一段中列出了标准状况类型. 额外的状况类型可以通过使用 define-condition 来定义.
 
-arithmetic-error                  floating-point-overflow   simple-type-error   
-cell-error                        floating-point-underflow  simple-warning      
-condition                         package-error             storage-condition   
-control-error                     parse-error               stream-error        
-division-by-zero                  print-not-readable        style-warning       
-end-of-file                       program-error             type-error          
-error                             reader-error              unbound-slot        
-file-error                        serious-condition         unbound-variable    
-floating-point-inexact            simple-condition          undefined-function  
-floating-point-invalid-operation  simple-error              warning             
+    arithmetic-error                  floating-point-overflow   simple-type-error   
+    cell-error                        floating-point-underflow  simple-warning      
+    condition                         package-error             storage-condition   
+    control-error                     parse-error               stream-error        
+    division-by-zero                  print-not-readable        style-warning       
+    end-of-file                       program-error             type-error          
+    error                             reader-error              unbound-slot        
+    file-error                        serious-condition         unbound-variable    
+    floating-point-inexact            simple-condition          undefined-function  
+    floating-point-invalid-operation  simple-error              warning             
 
-Figure 9-1. Standardized Condition Types
+    Figure 9-1. 标准状况类型
 
-All condition types are subtypes of type condition. That is,
+所有状况类型都是类型 condition 的子类型. 这也就是说,
 
- (typep c 'condition) =>  true
+```LISP
+(typep c 'condition) =>  true
+```
 
-if and only if c is a condition.
+当且仅当 c 是一个状况.
 
-Implementations must define all specified subtype relationships. Except where noted, all subtype relationships indicated in this document are not mutually exclusive. A condition inherits the structure of its supertypes.
+具体实现必须定义所有指定的子类型关系. 除非特别注解, 本文档中所示的所有子类型关系都不是相互排斥的. 一个状况继承自它的超类型的结构.
 
-The metaclass of the class condition is not specified. Names of condition types may be used to specify supertype relationships in define-condition, but the consequences are not specified if an attempt is made to use a condition type as a superclass in a defclass form.
+类 condition 的元类是未指定的. 状况类型的名字可能被用于指定 define-condition 中的超类型关系, 但是如果去尝试使用一个状况类型作为一个 defclass 表达式形式中的一个超类, 那么结果是未定义的.
 
-The next figure shows operators that define condition types and creating conditions.
+下面这段中展示了定义状况类型和创建状况的操作符.
 
-define-condition  make-condition    
+    define-condition  make-condition    
 
-Figure 9-2. Operators that define and create conditions.
+    Figure 9-2. 定义和创建状况的操作符.
 
-The next figure shows operators that read the value of condition slots.
+下面这段展示了读取状况中槽的值的操作符.
 
-arithmetic-error-operands   simple-condition-format-arguments  
-arithmetic-error-operation  simple-condition-format-control    
-cell-error-name             stream-error-stream                
-file-error-pathname         type-error-datum                   
-package-error-package       type-error-expected-type           
-print-not-readable-object   unbound-slot-instance              
+    arithmetic-error-operands   simple-condition-format-arguments  
+    arithmetic-error-operation  simple-condition-format-control    
+    cell-error-name             stream-error-stream                
+    file-error-pathname         type-error-datum                   
+    package-error-package       type-error-expected-type           
+    print-not-readable-object   unbound-slot-instance              
 
-Figure 9-3. Operators that read condition slots.
+    Figure 9-3. 读取状况槽的操作符.
 
-#### 9.1.1.1 Serious Conditions
+#### 9.1.1.1 严重状况
 
-A serious condition is a condition serious enough to require interactive intervention if not handled. Serious conditions are typically signaled with error or cerror; non-serious conditions are typically signaled with signal or warn. 
+一个严重状况(serious condition)是一个严重到如果没有处理就需要交互式干涉的状况. 严重状况典型地通过 error 或 cerror 发出; 非严重状况通常用 signal 或 warn 发出. 
 
 
-### 9.1.2 <span id="CreatingConditions">Creating Conditions</span>
+### 9.1.2 <span id="CreatingConditions">创建状况</span>
 
 The function make-condition can be used to construct a condition object explicitly. Functions such as error, cerror, signal, and warn operate on conditions and might create condition objects implicitly. Macros such as ccase, ctypecase, ecase, etypecase, check-type, and assert might also implicitly create (and signal) conditions.
 
@@ -132,7 +134,7 @@ Here are some illustrations of how different condition designators can denote eq
 ==  (error 'simple-error :format-control "Bad luck." :format-arguments '())
 
 
-### 9.1.3 <span id="PrintingConditions">Printing Conditions</span>
+### 9.1.3 <span id="PrintingConditions">打印状况</span>
 
 If the :report argument to define-condition is used, a print function is defined that is called whenever the defined condition is printed while the value of *print-escape* is false. This function is called the condition reporter; the text which it outputs is called a report message.
 
@@ -214,7 +216,7 @@ Because the indentation of a report message might be shifted to the right or lef
 The name of the containing function should generally not be mentioned in report messages. It is assumed that the debugger will make this information accessible in situations where it is necessary and appropriate. 
 
 
-### 9.1.4 <span id="">Signaling and Handling Conditions</span>
+### 9.1.4 <span id="">发送和处理状况</span>
 
 The operation of the condition system depends on the ordering of active applicable handlers from most recent to least recent.
 
@@ -346,7 +348,7 @@ Figure 9-7. Operators relating to assertions.
 For a background reference to the abstract concepts detailed in this section, see Exceptional Situations in Lisp. The details of that paper are not binding on this document, but may be helpful in establishing a conceptual basis for understanding this material. 
 
 
-## 9.2 <span id="ConditionsDictionary">The Conditions Dictionary</span>
+## 9.2 <span id="ConditionsDictionary">状况字典</span>
 
 > * [Condition Type CONDITION](#CT-CONDITION)
 > * [Condition Type WARNING](#CT-WARNING)
@@ -1134,7 +1136,7 @@ Existing handler bindings.
 
 * 也见(See Also):
 
-*break-on-signals*, error, simple-condition, Section 9.1.4 (Signaling and Handling Conditions)
+*break-on-signals*, error, simple-condition, Section 9.1.4 (发送和处理状况)
 
 * 注意(Notes):
 
