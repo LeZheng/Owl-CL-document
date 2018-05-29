@@ -92,128 +92,132 @@ Defer
 
 ### 9.1.2 <span id="CreatingConditions">创建状况</span>
 
-The function make-condition can be used to construct a condition object explicitly. Functions such as error, cerror, signal, and warn operate on conditions and might create condition objects implicitly. Macros such as ccase, ctypecase, ecase, etypecase, check-type, and assert might also implicitly create (and signal) conditions.
+函数 make-condition 可以被用于显式构造一个状况对象. 像 error, cerror, signal, 还有 warn 这样的函数在状况上操作并且可能创建状况对象. 像 ccase, ctypecase, ecase, etypecase, check-type, 还有 assert 这样的宏也可能隐式地创建 (以及发送) 状况.
 
-#### 9.1.2.1 Condition Designators
+#### 9.1.2.1 状况指定符
 
-A number of the functions in the condition system take arguments which are identified as condition designators. By convention, those arguments are notated as
+状况系统中的许多函数都采用被标识为状况指定符的参数. 按照惯例, 那些参数被记作
 
-datum &rest arguments
+    datum &rest arguments
 
-Taken together, the datum and the arguments are ``designators for a condition of default type default-type.'' How the denoted condition is computed depends on the type of the datum:
+合起来, 这个 datum 和 arguments 是 "一个 default-type 类型状况的指示符". 表示的状况如何被计算取决于这个 datum 的类型:
 
-* If the datum is a symbol naming a condition type ...
+* 如果这个 datum 是一个命名状况类型的符号 ...
 
-    The denoted condition is the result of
+    表示的状况是下面这个的结果
 
      (apply #'make-condition datum arguments)
 
-* If the datum is a format control ...
+* 如果这个 datum 是一个格式化控制 ...
 
-    The denoted condition is the result of
+    表示的状况是下面这个的结果
 
      (make-condition defaulted-type 
                      :format-control datum
                      :format-arguments arguments)
 
-    where the defaulted-type is a subtype of default-type.
+    其中 defaulted-type 是 default-type 的一个子类型.
 
-* If the datum is a condition ...
+* 如果这个 datum 是一个状况 ...
 
-    The denoted condition is the datum itself. In this case, unless otherwise specified by the description of the operator in question, the arguments must be null; that is, the consequences are undefined if any arguments were supplied.
+    这个表示的状况就是这个 datum 自身. 在这个情况下, 除非这个讨论中的操作符描述中另有说明, 否则参数 arguments 必须为 null; 这也就是说, 如果提供了任何其他参数那么结果是未定义的.
 
-Note that the default-type gets used only in the case where the datum string is supplied. In the other situations, the resulting condition is not necessarily of type default-type.
+注意, 这个 default-type 只有在 datum 字符串被提供的情况下才被使用. 在其他情况中, 产生的状况不必是类型 default-type.
 
-Here are some illustrations of how different condition designators can denote equivalent condition objects:
+这里有一些说明, 关于不同的状况指定符如何表示等价的状况对象:
 
+```LISP
 (let ((c (make-condition 'arithmetic-error :operator '/ :operands '(7 0))))
   (error c))
 ==  (error 'arithmetic-error :operator '/ :operands '(7 0))
 
 (error "Bad luck.")
 ==  (error 'simple-error :format-control "Bad luck." :format-arguments '())
-
+```
 
 ### 9.1.3 <span id="PrintingConditions">打印状况</span>
 
-If the :report argument to define-condition is used, a print function is defined that is called whenever the defined condition is printed while the value of *print-escape* is false. This function is called the condition reporter; the text which it outputs is called a report message.
+如果使用了给 define-condition 的 :report 参数, 一个打印函数会被定义, 无论何时当 \*print-escape\* 的值为 false 而且被定义的状况要被打印时, 它会被调用. 这个函数被称为状况汇报者(reporter); 它输出的文本被称为一个报告信息(report message).
 
-When a condition is printed and *print-escape* is false, the condition reporter for the condition is invoked. Conditions are printed automatically by functions such as invoke-debugger, break, and warn.
+当一个状况被打印并且 \*print-escape\* 是 false, 这个状况的状况汇报者会被调用. 状况通过像 invoke-debugger, break, 和 warn 这样的函数被自动打印.
 
-When *print-escape* is true, the object should print in an abbreviated fashion according to the style of the implementation (e.g., by print-unreadable-object). It is not required that a condition can be recreated by reading its printed representation.
+当 *print-escape* 是 true, 这个对象应该根据这个具体实现的风格以一种简短的方式打印 (比如, print-unreadable-object). 一个状况没有必要可以通过读取它的打印表示来重新构造.
 
-No function is provided for directly accessing or invoking condition reporters.
+没有为直接访问或调用状况汇报者提供函数.
 
-#### 9.1.3.1 Recommended Style in Condition Reporting
+#### 9.1.3.1 状况汇报中的推荐风格
 
-In order to ensure a properly aesthetic result when presenting report messages to the user, certain stylistic conventions are recommended.
+为了在向用户呈现汇报消息时确保正确的美观的结果, 推荐一些风格的惯例.
 
-There are stylistic recommendations for the content of the messages output by condition reporters, but there are no formal requirements on those programs. If a program violates the recommendations for some message, the display of that message might be less aesthetic than if the guideline had been observed, but the program is still considered a conforming program.
+对于通过状况汇报者输出的消息内容, 有一些风格上的建议, 但是在那些程序上没有正式的需求. 如果一个程序违反了某些信息的建议, 这条信息的显示可能没有遵循指导方针的那样美观, 但是这个程序仍然被认为是复合规范的程序.
 
-The requirements on a program or implementation which invokes a condition reporter are somewhat stronger. A conforming program must be permitted to assume that if these style guidelines are followed, proper aesthetics will be maintained. Where appropriate, any specific requirements on such routines are explicitly mentioned below.
+在一个调用一个状况汇报者的程序或具体实现上的这个要求更为强烈. 一个符合规范的程序必须被允许假定如果遵循这些样式准则, 将保持适当的美观. 在适当的情况下，关于此类程序的任何具体要求都在下面明确提到.
 
-> * 9.1.3.1.1 [Capitalization and Punctuation in Condition Reports](#CPCR)
-> * 9.1.3.1.2 [Leading and Trailing Newlines in Condition Reports](#LTNCR)
-> * 9.1.3.1.3 [Embedded Newlines in Condition Reports](#ENCR)
-> * 9.1.3.1.4 [Note about Tabs in Condition Reports](#NTCR)
-> * 9.1.3.1.5 [Mentioning Containing Function in Condition Reports](#MCFCR)
+> * 9.1.3.1.1 [在状况汇报中的大写和标点符号](#CPCR)
+> * 9.1.3.1.2 [在状况汇报中领导和尾随的新行](#LTNCR)
+> * 9.1.3.1.3 [在状况汇报中内嵌的新行](#ENCR)
+> * 9.1.3.1.4 [关于在状况汇报中的 tab 的注意事项](#NTCR)
+> * 9.1.3.1.5 [在状况汇报中提及包含函数](#MCFCR)
 
-##### 9.1.3.1.1 <span id="CPCR">Capitalization and Punctuation in Condition Reports</span>
+##### 9.1.3.1.1 <span id="CPCR">在状况汇报中的大写和标点符号</span>
 
-It is recommended that a report message be a complete sentences, in the proper case and correctly punctuated. In English, for example, this means the first letter should be uppercase, and there should be a trailing period.
+一个汇报信息建议为一个完整的句子, 以适当的大小写并且加标点. 在英语中, 比如, 这个意味着第一个字符应该为大写, 并且这里应该有一个尾部的句号.
 
- (error "This is a message")  ; Not recommended
- (error "this is a message.") ; Not recommended
+```LISP
+(error "This is a message")  ; Not recommended
+(error "this is a message.") ; Not recommended
 
- (error "This is a message.") ; Recommended instead
+(error "This is a message.") ; Recommended instead
+```
+
+##### 9.1.3.1.2 <span id="LTNCR">在状况汇报中领导和尾随的新行</span>
+
+一个汇报消息不建议以任何引导文本开始, 像 "Error:" 或 "Warning:" 这样或仅为 freshline 或 newline. 如果对于这个上下文合适, 这样的文本通过调用这个状况汇报者的程序来添加.
+
+一个汇报信息不建议跟着一个尾部的 freshline 或 newline. 如果对于这个上下文合适, 这样的文本通过调用这个状况汇报者的程序来添加.
+
+```LISP
+(error "This is a message.~%")   ; Not recommended
+(error "~&This is a message.")   ; Not recommended
+(error "~&This is a message.~%") ; Not recommended
+
+(error "This is a message.")     ; Recommended instead
+```
+
+##### 9.1.3.1.3 <span id="ENCR">在状况汇报中内嵌的新行</span>
+
+如果汇报消息尤其的长, 那么它包含一个或多个内嵌的新行是允许的和适当的.
+
+如果调用程序在消息的第一行中插入了一些额外的前缀(像 "Error:" 或 ";; Error:") , 它也必须确保一个合适的前缀会被添加到这个输出的后续每一行中, 这样这个被状况汇报者输出的信息的左边界会始终是正确对齐的.
+
+```LISP
+(defun test ()
+  (error "This is an error message.~%It has two lines."))
+
+;; Implementation A
+(test)
+This is an error message.
+It has two lines.
+
+;; Implementation B
+(test)
+;; Error: This is an error message.
+;;        It has two lines.
+
+;; Implementation C
+(test)
+>> Error: This is an error message. 
+          It has two lines.
+```
+
+##### 9.1.3.1.4 <span id="NTCR">关于在状况汇报中的 tab 的注意事项</span>
+
+因为汇报消息的缩进可能会以任意数量转移到右边或左边, 应该对这个不完全标准的字符 <Tab> 采取特别关注(在那些具体实现中支持这样的一个字符). 除非这个具体实现在这个上下文中特别定义了它的行为, 应该避免它的使用. 
 
 
-##### 9.1.3.1.2 <span id="LTNCR">Leading and Trailing Newlines in Condition Reports</span>
+##### 9.1.3.1.5 <span id="MCFCR">在状况汇报中提及包含函数</span>
 
-It is recommended that a report message not begin with any introductory text, such as ``Error: '' or ``Warning: '' or even just freshline or newline. Such text is added, if appropriate to the context, by the routine invoking the condition reporter.
-
-It is recommended that a report message not be followed by a trailing freshline or newline. Such text is added, if appropriate to the context, by the routine invoking the condition reporter.
-
- (error "This is a message.~%")   ; Not recommended
- (error "~&This is a message.")   ; Not recommended
- (error "~&This is a message.~%") ; Not recommended
-
- (error "This is a message.")     ; Recommended instead
-
-
-##### 9.1.3.1.3 <span id="ENCR">Embedded Newlines in Condition Reports</span>
-
-Especially if it is long, it is permissible and appropriate for a report message to contain one or more embedded newlines.
-
-If the calling routine conventionally inserts some additional prefix (such as ``Error: '' or ``;; Error: '') on the first line of the message, it must also assure that an appropriate prefix will be added to each subsequent line of the output, so that the left edge of the message output by the condition reporter will still be properly aligned.
-
- (defun test ()
-   (error "This is an error message.~%It has two lines."))
-
- ;; Implementation A
- (test)
- This is an error message.
- It has two lines.
-
- ;; Implementation B
- (test)
- ;; Error: This is an error message.
- ;;        It has two lines.
-
- ;; Implementation C
- (test)
- >> Error: This is an error message. 
-           It has two lines.
-
-
-##### 9.1.3.1.4 <span id="NTCR">Note about Tabs in Condition Reports</span>
-
-Because the indentation of a report message might be shifted to the right or left by an arbitrary amount, special care should be taken with the semi-standard character <Tab> (in those implementations that support such a character). Unless the implementation specifically defines its behavior in this context, its use should be avoided. 
-
-
-##### 9.1.3.1.5 <span id="MCFCR">Mentioning Containing Function in Condition Reports</span>
-
-The name of the containing function should generally not be mentioned in report messages. It is assumed that the debugger will make this information accessible in situations where it is necessary and appropriate. 
+这个包含函数的名字通常不应该在汇报信息中被提及. 假定调试器将使这些信息在必要和适当的情况下可访问. 
 
 
 ### 9.1.4 <span id="">发送和处理状况</span>
