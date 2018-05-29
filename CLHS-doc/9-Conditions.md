@@ -11,9 +11,9 @@
 
 一个错误(error)是一个没有某个表达式形式的干预(不管是由用户交互还是在程序控制下), 程序就无法正常执行下去的情况. 不是所有错误都被检测到. 当一个错误未被检测到, 它的效果可以是取决于具体实现爱呢(implementation-dependent), 具体实现定义(implementation-defined), 未指定(unspecified), 或者未定义(undefined)的. 见章节 1.4 (Definitions). 所有检测到的错误可以被状况表示, 但不是所有状况都表示错误.
 
-发信号(Signaling) 是一个过程, 通过这个过程一个状况可以通过提升可以被处理的状况来修改一个程序中的控制流. 函数 error, cerror, signal, 还有 warn 被用于发出状况信号.
+发送(Signaling) 是一个过程, 通过这个过程一个状况可以通过提升可以被处理的状况来修改一个程序中的控制流. 函数 error, cerror, signal, 还有 warn 被用于发出状况信号.
 
-这个发信号的过程涉及从一组活跃的处理者(handler)中选择和调用一个处理者. 一个处理者(handler)是一个单参数(这个状况)的被调用来处理一个状况的函数. 每个处理者都和一个状况类型关联, 并且一个处理者只有在这个处理者关联的状况类型上被调用.
+这个发送的过程涉及从一组活跃的处理者(handler)中选择和调用一个处理者. 一个处理者(handler)是一个单参数(这个状况)的被调用来处理一个状况的函数. 每个处理者都和一个状况类型关联, 并且一个处理者只有在这个处理者关联的状况类型上被调用.
 
 活跃的处理者被动态地确定 (见 handler-bind 或 handler-case). 处理者在和这个发送者(signaler)等价的动态环境中被调用, 除了这个活跃的处理者集合只包含在这个要被调用的处理者被建立时活跃的那些. 发出一个状况在这个状况上没有副作用, 并且这里没有动态的状态被包含在一个状况中.
 
@@ -220,58 +220,58 @@ It has two lines.
 这个包含函数的名字通常不应该在汇报信息中被提及. 假定调试器将使这些信息在必要和适当的情况下可访问. 
 
 
-### 9.1.4 <span id="">发送和处理状况</span>
+### 9.1.4 <span id="SignalingHandlingConditions">发送和处理状况</span>
 
-The operation of the condition system depends on the ordering of active applicable handlers from most recent to least recent.
+状况系统的操作取决于活跃可应用的处理者的顺序, 从最新近的到最不新近的.
 
-Each handler is associated with a type specifier that must designate a subtype of type condition. A handler is said to be applicable to a condition if that condition is of the type designated by the associated type specifier.
+每个处理者和一个类型指定符相关联, 这个指定符必须指定一个类型 condition 的子类型. 如果一个状况是关联的一个类型指定符指定的类型, 那么就说这个处理者对于这个状况是可应用的.
 
-Active handlers are established by using handler-bind (or an abstraction based on handler-bind, such as handler-case or ignore-errors).
+活跃的处理者通过使用 handler-bind (或者一个基于 handler-bind 的简写, 比如 handler-case 或 ignore-errors) 来建立.
 
-Active handlers can be established within the dynamic scope of other active handlers. At any point during program execution, there is a set of active handlers. When a condition is signaled, the most recent active applicable handler for that condition is selected from this set. Given a condition, the order of recentness of active applicable handlers is defined by the following two rules:
+活跃的处理者可以在其他活跃处理者的动态作用域中被建立. 在程序执行期间的任何点, 这里都有一组活跃处理者. 当发出一个状况时, 针对这个状况的最新近的活跃可应用的处理者会从这个组中被选择出来. 给定一个状态, 活跃可应用处理者的最新近顺序通过下面两条规则来定义:
 
-1. Each handler in a set of active handlers H1 is more recent than every handler in a set H2 if the handlers in H2 were active when the handlers in H1 were established.
+1. 如果在活跃处理者集合 H1 中的处理者被建立时活跃处理者集合 H2 中的处理者是活跃的, 那么 H1 中的每个处理者比 H2 中的更新近.
 
-2. Let h1 and h2 be two applicable active handlers established by the same form. Then h1 is more recent than h2 if h1 was defined to the left of h2 in the form that established them.
+2. 使 h1 和 h2 是相同表达式形式建立的两个可应用的活跃处理者. 如果在这个建立它们的表达式形式中 h1 被定义在 h2 的左边, 那么 h1 比 h2 更新近.
 
-Once a handler in a handler binding form (such as handler-bind or handler-case) has been selected, all handlers in that form become inactive for the remainder of the signaling process. While the selected handler runs, no other handler established by that form is active. That is, if the handler declines, no other handler established by that form will be considered for possible invocation.
+一旦一个处理者绑定表达式形式(例如 handler-bind 或 handler-case)中的一个处理者被选择, 那个表达式形式形式中的所有处理者变成对于这个发送过程的剩余部分非活跃的. 当这个选择的处理者运行时, 那个表达式形式建立的其他处理者没有是活跃的. 这也就是说, 如果这个处理者拒绝处理, 那个表达式形式建立的其他处理者不会被考虑为可能的调用.
 
-The next figure shows operators relating to the handling of conditions.
+下面这一段中展示了和处理状况相关的操作符.
 
-handler-bind  handler-case  ignore-errors  
+    handler-bind  handler-case  ignore-errors  
 
-Figure 9-4. Operators relating to handling conditions.
+    Figure 9-4. 状况处理相关的操作符.
 
-> * 9.1.4.1 [Signaling](#Signaling)
-> * 9.1.4.2 [Restarts](#Restarts)
+> * 9.1.4.1 [发送](#Signaling)
+> * 9.1.4.2 [重启动](#Restarts)
 
-#### 9.1.4.1 <span id="Signaling">Signaling</span>
+#### 9.1.4.1 <span id="Signaling">发送</span>
 
-When a condition is signaled, the most recent applicable active handler is invoked. Sometimes a handler will decline by simply returning without a transfer of control. In such cases, the next most recent applicable active handler is invoked.
+当发送一个状况时, 最新近的活跃可应用的处理者会被调用. 有时候一个处理者会通过没有控制转移的简单返回来拒绝. 在这样的情况下, 下一个最新近的活跃可应用的处理者会被调用.
 
-If there are no applicable handlers for a condition that has been signaled, or if all applicable handlers decline, the condition is unhandled.
+如果对于一个被发送的状况这里没有可应用的处理者, 或者如果所有可应用的处理者都拒绝了, 那么这个状况就是未处理的.
 
-The functions cerror and error invoke the interactive condition handler (the debugger) rather than return if the condition being signaled, regardless of its type, is unhandled. In contrast, signal returns nil if the condition being signaled, regardless of its type, is unhandled.
+如果对于函数 cerror 和 error 要被发送的状况没有被处理, 不管它们的类型, 那么函数 cerror 和 error 调用这个交互式的状况处理者 (就是这个调试器) 而不是返回. 相比之下, 对于 signal 如果要被发送的状况没有被处理, 不管它们的类型,  那么 signal 就返回 nil.
 
-The variable *break-on-signals* can be used to cause the debugger to be entered before the signaling process begins.
+变量 \*break-on-signals\* 可以被用于在这个发送过程开始前进入调试器.
 
-The next figure shows defined names relating to the signaling of conditions.
+下面这段展示了和状况的发送相关的定义的名字The next figure shows defined names relating to the signaling of conditions.
 
-*break-on-signals*  error   warn  
-cerror              signal        
+    *break-on-signals*  error   warn  
+    cerror              signal        
 
-Figure 9-5. Defined names relating to signaling conditions.
+    Figure 9-5. 状况的发送相关的定义的名字.
 
-##### 9.1.4.1.1 Resignaling a Condition
+##### 9.1.4.1.1 重发一个状况
 
-During the dynamic extent of the signaling process for a particular condition object, signaling the same condition object again is permitted if and only if the situation represented in both cases are the same.
+在一个特定的状况对象的发送过程的动态范围期间, 当且仅当两种情况下表示的情形是喜爱嗯童的时允许再次发送相同的状况对象.
 
-For example, a handler might legitimately signal the condition object that is its argument in order to allow outer handlers first opportunity to handle the condition. (Such a handlers is sometimes called a ``default handler.'') This action is permitted because the situation which the second signaling process is addressing is really the same situation.
+比如, 一个处理者可能合理地发送这个作为它的参数的状况对象来允许更外部的处理者第一时机去处理这个状况. (这样一个处理者有时被称作 "默认处理者(default handler)".) 这个行为是允许的因为第二个发送过程处理的情况确实是相同的情况.
 
-On the other hand, in an implementation that implemented asynchronous keyboard events by interrupting the user process with a call to signal, it would not be permissible for two distinct asynchronous keyboard events to signal identical condition objects at the same time for different situations. 
+另一方面, 在一个通过用一个对 signal 的调用来打断用户进程进而实现异步键盘事件的具体实现中, 对于两个不同的异步键盘事件在不同情况相同时间下发送相同的状况是不允许的. 
 
 
-#### 9.1.4.2 <span id="Restarts">Restarts</span>
+#### 9.1.4.2 <span id="Restarts">重启动</span>
 
 The interactive condition handler returns only through non-local transfer of control to specially defined restarts that can be set up either by the system or by user code. Transferring control to a restart is called ``invoking'' the restart. Like handlers, active restarts are established dynamically, and only active restarts can be invoked. An active restart can be invoked by the user from the debugger or by a program by using invoke-restart.
 
