@@ -35,7 +35,7 @@ Defer
 > * 9.1.2 [创建状况](#CreatingConditions)
 > * 9.1.3 [打印状况](#PrintingConditions)
 > * 9.1.4 [发送和处理状况](#SignalingHandlingConditions)
-> * 9.1.5 [Assertions](#Assertions)
+> * 9.1.5 [断言](#Assertions)
 > * 9.1.6 [Notes about the Condition System's Background](#NotesConditionSystemBackground)
 
 
@@ -325,31 +325,31 @@ invoke-restart 调用和给 invoke-restart 的第一个参数相同名字的最�
 
 ##### 9.1.4.2.3 <span id="RestartTests">重启动测试</span>
 
-Each restart has an associated test, which is a function of one argument (a condition or nil) which returns true if the restart should be visible in the current situation. This test is created by the :test-function option to restart-bind or the :test option to restart-case. 
+每个重启动都有一个关联的测试, 它是一个单参数(一个状况或者 nil)的函数, 如果这个重启动在当前情况下应该是可见的就返回 true. 这个测试通过给 restart-bind 的 :test-function 选项或者给 restart-case 的 :test 选项创建. 
 
 
 ##### 9.1.4.2.4 <span id="AssociatingRestartCondition">关联重启动和状况</span>
 
-A restart can be ``associated with'' a condition explicitly by with-condition-restarts, or implicitly by restart-case. Such an assocation has dynamic extent.
+一个重启动可以通过 with-condition-restarts 来和一个状况显式关联, 或者通过 restart-case 来隐式关联. 因此一个关联有着动态范围.
 
-A single restart may be associated with several conditions at the same time. A single condition may have several associated restarts at the same time.
+一个单个重启动可以同时和多个状况关联. 一个单个状况同时也可以和多个重启动关联.
 
-Active restarts associated with a particular condition can be detected by calling a function such as find-restart, supplying that condition as the condition argument. Active restarts can also be detected without regard to any associated condition by calling such a function without a condition argument, or by supplying a value of nil for such an argument. 
+和一个特定状况关联的活跃重启动可以通过调用例如 find-restart 函数并提供这个状况作为 condition 参数来检测. 没有任何关联状况的活跃重启动也可以通过以没有 condition 参数或者为这个参数提供 nil 值来调用这样一个函数而被检测到.
 
 
-### 9.1.5 <span id="Assertions">Assertions</span>
+### 9.1.5 <span id="Assertions">断言</span>
 
-Conditional signaling of conditions based on such things as key match, form evaluation, and type are handled by assertion operators. The next figure shows operators relating to assertions.
+基于键匹配, 表达式形式求值, 以及类型的条件状况发送由断言操作符处理. 下一段中展示了和断言相关的操作符.
 
-assert  check-type  ecase      
-ccase   ctypecase   etypecase  
+    assert  check-type  ecase      
+    ccase   ctypecase   etypecase  
 
-Figure 9-7. Operators relating to assertions. 
+    Figure 9-7. 断言相关的操作符. 
 
 
 ### 9.1.6 <span id="NotesConditionSystemBackground">Notes about the Condition System's Background</span>
 
-For a background reference to the abstract concepts detailed in this section, see Exceptional Situations in Lisp. The details of that paper are not binding on this document, but may be helpful in establishing a conceptual basis for understanding this material. 
+有关本节中详细描述的抽象概念的背景引用, 见 Exceptional Situations in Lisp. 尽管这篇论文的详情对这份文档没有约束力, 但可能有助于为理解这种资料建立概念基础. 
 
 
 ## 9.2 <span id="ConditionsDictionary">状况字典</span>
