@@ -273,62 +273,62 @@ It has two lines.
 
 #### 9.1.4.2 <span id="Restarts">重启动</span>
 
-The interactive condition handler returns only through non-local transfer of control to specially defined restarts that can be set up either by the system or by user code. Transferring control to a restart is called ``invoking'' the restart. Like handlers, active restarts are established dynamically, and only active restarts can be invoked. An active restart can be invoked by the user from the debugger or by a program by using invoke-restart.
+交互式状况处理者只通过非局部控制转移到特别定义的重启动来退出, 这个重启动可以通过系统或用户代码来设置. 转移控制到一个重启动被称为 "调用" 这个重启动. 类似于处理者, 活跃的重启动也动态地确立, 并且只有活跃的重启动可以被调用. 一个活跃的重启动可以被用户从调试器中或者被程序使用 invoke-restart 来调用.
 
-A restart contains a function to be called when the restart is invoked, an optional name that can be used to find or invoke the restart, and an optional set of interaction information for the debugger to use to enable the user to manually invoke a restart.
+当一个重启动被调用时, 这个重启动包含一个要被调用的函数, 一个被用于查找或调用这个重启动的可选名字, 以及一个用于调试器去使用户手动调用一个重启动的可选交互式信息集合.
 
-The name of a restart is used by invoke-restart. Restarts that can be invoked only within the debugger do not need names.
+一个重启动的名字被 invoke-restart 使用. 只能在调试器中调用的重启动不需要名字.
 
-Restarts can be established by using restart-bind, restart-case, and with-simple-restart. A restart function can itself invoke any other restart that was active at the time of establishment of the restart of which the function is part.
+重启动可以通过使用 restart-bind, restart-case, 和 with-simple-restart 来建立. 一个重启动函数自身可以调用任何其他的在这个函数所属的重启动建立时是活跃的重启动.
 
-The restarts established by a restart-bind form, a restart-case form, or a with-simple-restart form have dynamic extent which extends for the duration of that form's execution.
+通过一个 restart-bind 表达式形式, 一个 restart-case 表达式形式, 或者一个 with-simple-restart 表达式形式建立的重启动有着动态范围, 这个范围延伸到这个表达式形式执行期间.
 
-Restarts of the same name can be ordered from least recent to most recent according to the following two rules:
+相同名字的重启动可以根据下面两条规则来从最不新近的到最新近的排序:
 
-1. Each restart in a set of active restarts R1 is more recent than every restart in a set R2 if the restarts in R2 were active when the restarts in R1 were established.
+1. 如果活跃的重启动集合 R1 中的活跃重启动被建立时集合 R2 中的重启动是活跃的, 那么 R1 中的每个重启都比 R2 中的每个重启更新近.
 
-2. Let r1 and r2 be two active restarts with the same name established by the same form. Then r1 is more recent than r2 if r1 was defined to the left of r2 in the form that established them.
+2. 使 r1 和 r2 为相同表达式形式建立的两个相同名字的活跃重启动. 如果在建立它们的表达式形式中 r1 被定义在 r2 的左边那么 r1 比 r2 更新近.
 
-If a restart is invoked but does not transfer control, the values resulting from the restart function are returned by the function that invoked the restart, either invoke-restart or invoke-restart-interactively.
+如果一个重启动被调用但是没有转移控制, 那么这个重启动函数产生的值会被调用这个重启动的函数返回, 不管是 invoke-restart 还是 invoke-restart-interactively.
 
-> * 9.1.4.2.1 [Interactive Use of Restarts](#InteractiveUseRestarts)
-> * 9.1.4.2.2 [Interfaces to Restarts](#InterfacesRestarts)
-> * 9.1.4.2.3 [Restart Tests](#RestartTests)
-> * 9.1.4.2.4 [Associating a Restart with a Condition](#AssociatingRestartCondition)
-
-
-##### 9.1.4.2.1 <span id="InteractiveUseRestarts">Interactive Use of Restarts</span>
-
-For interactive handling, two pieces of information are needed from a restart: a report function and an interactive function.
-
-The report function is used by a program such as the debugger to present a description of the action the restart will take. The report function is specified and established by the :report-function keyword to restart-bind or the :report keyword to restart-case.
-
-The interactive function, which can be specified using the :interactive-function keyword to restart-bind or :interactive keyword to restart-case, is used when the restart is invoked interactively, such as from the debugger, to produce a suitable list of arguments.
-
-invoke-restart invokes the most recently established restart whose name is the same as the first argument to invoke-restart. If a restart is invoked interactively by the debugger and does not transfer control but rather returns values, the precise action of the debugger on those values is implementation-defined. 
+> * 9.1.4.2.1 [重启动的交互式使用](#InteractiveUseRestarts)
+> * 9.1.4.2.2 [重启动的接口](#InterfacesRestarts)
+> * 9.1.4.2.3 [重启动测试](#RestartTests)
+> * 9.1.4.2.4 [关联重启动和状况](#AssociatingRestartCondition)
 
 
-##### 9.1.4.2.2 <span id="InterfacesRestarts">Interfaces to Restarts</span>
+##### 9.1.4.2.1 <span id="InteractiveUseRestarts">重启动的交互式使用</span>
 
-Some restarts have functional interfaces, such as abort, continue, muffle-warning, store-value, and use-value. They are ordinary functions that use find-restart and invoke-restart internally, that have the same name as the restarts they manipulate, and that are provided simply for notational convenience.
+关于交互式处理, 一个重启动需要两个信息: 一个汇报函数和一个交互式函数.
 
-The next figure shows defined names relating to restarts.
+这个汇报函数被一个例如调试器的程序使用来呈现这个重启动会采取的动作的描述. 这个汇报函数通过给 restart-bind 的 :report-function 关键字或者给 restart-case 的 :report 关键字来指定和建立.
 
-abort             invoke-restart-interactively  store-value          
-compute-restarts  muffle-warning                use-value            
-continue          restart-bind                  with-simple-restart  
-find-restart      restart-case                                       
-invoke-restart    restart-name                                       
+这个可以使用给 restart-bind 的 :interactive-function 关键字或给 restart-case 的 :interactive 关键字来指定的交互式函数在重启动被交互式调用时, 例如从调试器中, 会被用来产生一个合适的参数列表.
 
-Figure 9-6. Defined names relating to restarts. 
+invoke-restart 调用和给 invoke-restart 的第一个参数相同名字的最近建立的重启动. 如果一个重启被调试器交互式调用并且没有转移控制而是返回值, 那么在这些值上的这个调试器的准确动作是由具体实现定义的. 
 
 
-##### 9.1.4.2.3 <span id="RestartTests">Restart Tests</span>
+##### 9.1.4.2.2 <span id="InterfacesRestarts">重启动的接口</span>
+
+一些重启动有着函数的接口, 例如 abort, continue, muffle-warning, store-value, 还有 use-value. 它们是内部使用 find-restart 和 invoke-restart 的普通函数, 有着和它们操纵的重启动相同的名字, 并且简单地出于标记方便而被提供.
+
+下面这段中展示了和重启动相关的定义的名字.
+
+    abort             invoke-restart-interactively  store-value          
+    compute-restarts  muffle-warning                use-value            
+    continue          restart-bind                  with-simple-restart  
+    find-restart      restart-case                                       
+    invoke-restart    restart-name                                       
+
+    Figure 9-6. 重启动相关的定义的名字. 
+
+
+##### 9.1.4.2.3 <span id="RestartTests">重启动测试</span>
 
 Each restart has an associated test, which is a function of one argument (a condition or nil) which returns true if the restart should be visible in the current situation. This test is created by the :test-function option to restart-bind or the :test option to restart-case. 
 
 
-##### 9.1.4.2.4 <span id="AssociatingRestartCondition">Associating a Restart with a Condition</span>
+##### 9.1.4.2.4 <span id="AssociatingRestartCondition">关联重启动和状况</span>
 
 A restart can be ``associated with'' a condition explicitly by with-condition-restarts, or implicitly by restart-case. Such an assocation has dynamic extent.
 
@@ -2634,7 +2634,7 @@ results---the values returned by forms.
 
 First, the condition-form and restarts-form are evaluated in normal left-to-right order; the primary values yielded by these evaluations are respectively called the condition and the restart-list.
 
-Next, the forms are evaluated in a dynamic environment in which each restart in restart-list is associated with the condition. See Section 9.1.4.2.4 (Associating a Restart with a Condition).
+Next, the forms are evaluated in a dynamic environment in which each restart in restart-list is associated with the condition. See Section 9.1.4.2.4 (关联重启动和状况).
 
 * 示例(Examples): None.
 
@@ -2763,7 +2763,7 @@ The intent of the abort restart is to allow return to the innermost ``command le
 
 * 也见(See Also):
 
-Section 9.1.4.2 (Restarts), Section 9.1.4.2.2 (Interfaces to Restarts), invoke-restart, abort (function) 
+Section 9.1.4.2 (Restarts), Section 9.1.4.2.2 (重启动的接口), invoke-restart, abort (function) 
 
 
 ### <span id="R-CONTINUE">Restart CONTINUE</span>
@@ -2789,7 +2789,7 @@ The continue restart is generally part of protocols where there is a single ``ob
 
 * 也见(See Also):
 
-Section 9.1.4.2 (Restarts), Section 9.1.4.2.2 (Interfaces to Restarts), invoke-restart, continue (function), assert, cerror 
+Section 9.1.4.2 (Restarts), Section 9.1.4.2.2 (重启动的接口), invoke-restart, continue (function), assert, cerror 
 
 
 ### <span id="R-MUFFLE-WARNING">Restart MUFFLE-WARNING</span>
@@ -2835,7 +2835,7 @@ This restart is established by warn so that handlers of warning conditions have 
 
 * 也见(See Also):
 
-Section 9.1.4.2 (Restarts), Section 9.1.4.2.2 (Interfaces to Restarts), invoke-restart, muffle-warning (function), warn 
+Section 9.1.4.2 (Restarts), Section 9.1.4.2.2 (重启动的接口), invoke-restart, muffle-warning (function), warn 
 
 
 ### <span id="R-STORE-VALUE">Restart STORE-VALUE</span>
@@ -2864,7 +2864,7 @@ The store-value restart is generally used by handlers trying to recover from err
 
 * 也见(See Also):
 
-Section 9.1.4.2 (Restarts), Section 9.1.4.2.2 (Interfaces to Restarts), invoke-restart, store-value (function), ccase, check-type, ctypecase, use-value (function and restart) 
+Section 9.1.4.2 (Restarts), Section 9.1.4.2.2 (重启动的接口), invoke-restart, store-value (function), ccase, check-type, ctypecase, use-value (function and restart) 
 
 
 ### <span id="R-USE-VALUE">Restart USE-VALUE</span>
@@ -2879,7 +2879,7 @@ The use-value restart is generally used by handlers trying to recover from error
 
 * 也见(See Also):
 
-Section 9.1.4.2 (Restarts), Section 9.1.4.2.2 (Interfaces to Restarts), invoke-restart, use-value (function), store-value (function and restart) 
+Section 9.1.4.2 (Restarts), Section 9.1.4.2.2 (重启动的接口), invoke-restart, use-value (function), store-value (function and restart) 
 
 
 ### <span id="F-ABORT-CONTINUE-MW-SV-UV">Function ABORT, CONTINUE, MUFFLE-WARNING, STORE-VALUE, USE-VALUE</span>
@@ -3035,7 +3035,7 @@ If an appropriate abort restart is not available for the function abort, or an a
 
 * 也见(See Also):
 
-invoke-restart, Section 9.1.4.2 (Restarts), Section 9.1.4.2.2 (Interfaces to Restarts), assert, ccase, cerror, check-type, ctypecase, use-value, warn
+invoke-restart, Section 9.1.4.2 (Restarts), Section 9.1.4.2.2 (重启动的接口), assert, ccase, cerror, check-type, ctypecase, use-value, warn
 
 * 注意(Notes):
 
