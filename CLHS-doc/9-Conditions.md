@@ -354,118 +354,118 @@ invoke-restart 调用和给 invoke-restart 的第一个参数相同名字的最�
 
 ## 9.2 <span id="ConditionsDictionary">状况字典</span>
 
-> * [Condition Type CONDITION](#CT-CONDITION)
-> * [Condition Type WARNING](#CT-WARNING)
-> * [Condition Type STYLE-WARNING](#CT-STYLE-WARNING)
-> * [Condition Type SERIOUS-CONDITION](#CT-SERIOUS-CONDITION)
-> * [Condition Type ERROR](#CT-ERROR)
-> * [Condition Type CELL-ERROR](#CT-CELL-ERROR)
-> * [Function CELL-ERROR-NAME](#F-CELL-ERROR-NAME)
-> * [Condition Type PARSE-ERROR](#CT-PARSE-ERROR)
-> * [Condition Type STORAGE-CONDITION](#CT-STORAGE-CONDITION)
-> * [Macro ASSERT](#M-ASSERT)
-> * [Function ERROR](#F-ERROR)
-> * [Function CERROR](#F-CERROR)
-> * [Macro CHECK-TYPE](#M-CHECK-TYPE)
-> * [Condition Type SIMPLE-ERROR](#CT-SIMPLE-ERROR)
-> * [Function INVALID-METHOD-ERROR](#F-INVALID-METHOD-ERROR)
-> * [Function METHOD-COMBINATION-ERROR](#F-METHOD-COMBINATION-ERROR)
-> * [Function SIGNAL](#F-SIGNAL)
-> * [Condition Type SIMPLE-CONDITION](#CT-SIMPLE-CONDITION)
-> * [Function SIMPLE-CONDITION-FORMAT-CONTROL, SIMPLE-CONDITION-FORMAT-ARGUMENTS](#F-SCFC-SCFA)
-> * [Function WARN](#F-WARN)
-> * [Condition Type SIMPLE-WARNING](#CT-SIMPLE-WARNING)
-> * [Function INVOKE-DEBUGGER](#F-INVOKE-DEBUGGER)
-> * [Function BREAK](#F-BREAK)
-> * [Variable *DEBUGGER-HOOK*](#V-DEBUGGER-HOOK)
-> * [Variable *BREAK-ON-SIGNALS*](#V-BREAK-ON-SIGNALS)
-> * [Macro HANDLER-BIND](#M-HANDLER-BIND)
-> * [Macro HANDLER-CASE](#M-HANDLER-CASE)
-> * [Macro IGNORE-ERRORS](#M-IGNORE-ERRORS)
-> * [Macro DEFINE-CONDITION](#M-DEFINE-CONDITION)
-> * [Function MAKE-CONDITION](#F-MAKE-CONDITION)
+> * [状况类型 CONDITION](#CT-CONDITION)
+> * [状况类型 WARNING](#CT-WARNING)
+> * [状况类型 STYLE-WARNING](#CT-STYLE-WARNING)
+> * [状况类型 SERIOUS-CONDITION](#CT-SERIOUS-CONDITION)
+> * [状况类型 ERROR](#CT-ERROR)
+> * [状况类型 CELL-ERROR](#CT-CELL-ERROR)
+> * [函数 CELL-ERROR-NAME](#F-CELL-ERROR-NAME)
+> * [状况类型 PARSE-ERROR](#CT-PARSE-ERROR)
+> * [状况类型 STORAGE-CONDITION](#CT-STORAGE-CONDITION)
+> * [宏 ASSERT](#M-ASSERT)
+> * [函数 ERROR](#F-ERROR)
+> * [函数 CERROR](#F-CERROR)
+> * [宏 CHECK-TYPE](#M-CHECK-TYPE)
+> * [状况类型 SIMPLE-ERROR](#CT-SIMPLE-ERROR)
+> * [函数 INVALID-METHOD-ERROR](#F-INVALID-METHOD-ERROR)
+> * [函数 METHOD-COMBINATION-ERROR](#F-METHOD-COMBINATION-ERROR)
+> * [函数 SIGNAL](#F-SIGNAL)
+> * [状况类型 SIMPLE-CONDITION](#CT-SIMPLE-CONDITION)
+> * [函数 SIMPLE-CONDITION-FORMAT-CONTROL, SIMPLE-CONDITION-FORMAT-ARGUMENTS](#F-SCFC-SCFA)
+> * [函数 WARN](#F-WARN)
+> * [状况类型 SIMPLE-WARNING](#CT-SIMPLE-WARNING)
+> * [函数 INVOKE-DEBUGGER](#F-INVOKE-DEBUGGER)
+> * [函数 BREAK](#F-BREAK)
+> * [变量 *DEBUGGER-HOOK*](#V-DEBUGGER-HOOK)
+> * [变量 *BREAK-ON-SIGNALS*](#V-BREAK-ON-SIGNALS)
+> * [宏 HANDLER-BIND](#M-HANDLER-BIND)
+> * [宏 HANDLER-CASE](#M-HANDLER-CASE)
+> * [宏 IGNORE-ERRORS](#M-IGNORE-ERRORS)
+> * [宏 DEFINE-CONDITION](#M-DEFINE-CONDITION)
+> * [函数 MAKE-CONDITION](#F-MAKE-CONDITION)
 > * [System Class RESTART](#SC-RESTART)
-> * [Function COMPUTE-RESTARTS](#F-COMPUTE-RESTARTS)
-> * [Function FIND-RESTART](#F-FIND-RESTART)
-> * [Function INVOKE-RESTART](#F-INVOKE-RESTART)
-> * [Function INVOKE-RESTART-INTERACTIVELY](#F-INVOKE-RESTART-INTERACTIVELY)
-> * [Macro RESTART-BIND](#M-RESTART-BIND)
-> * [Macro RESTART-CASE](#M-RESTART-CASE)
-> * [Function RESTART-NAME](#F-RESTART-NAME)
-> * [Macro WITH-CONDITION-RESTARTS](#M-WITH-CONDITION-RESTARTS)
-> * [Macro WITH-SIMPLE-RESTART](#M-WITH-SIMPLE-RESTART)
-> * [Restart ABORT](#R-ABORT)
-> * [Restart CONTINUE](#R-CONTINUE)
-> * [Restart MUFFLE-WARNING](#R-MUFFLE-WARNING)
-> * [Restart STORE-VALUE](#R-STORE-VALUE)
-> * [Restart USE-VALUE](#R-USE-VALUE)
-> * [Function ABORT, CONTINUE, MUFFLE-WARNING, STORE-VALUE, USE-VALUE](#F-ABORT-CONTINUE-MW-SV-UV)
+> * [函数 COMPUTE-RESTARTS](#F-COMPUTE-RESTARTS)
+> * [函数 FIND-RESTART](#F-FIND-RESTART)
+> * [函数 INVOKE-RESTART](#F-INVOKE-RESTART)
+> * [函数 INVOKE-RESTART-INTERACTIVELY](#F-INVOKE-RESTART-INTERACTIVELY)
+> * [宏 RESTART-BIND](#M-RESTART-BIND)
+> * [宏 RESTART-CASE](#M-RESTART-CASE)
+> * [函数 RESTART-NAME](#F-RESTART-NAME)
+> * [宏 WITH-CONDITION-RESTARTS](#M-WITH-CONDITION-RESTARTS)
+> * [宏 WITH-SIMPLE-RESTART](#M-WITH-SIMPLE-RESTART)
+> * [重启动 ABORT](#R-ABORT)
+> * [重启动 CONTINUE](#R-CONTINUE)
+> * [重启动 MUFFLE-WARNING](#R-MUFFLE-WARNING)
+> * [重启动 STORE-VALUE](#R-STORE-VALUE)
+> * [重启动 USE-VALUE](#R-USE-VALUE)
+> * [函数 ABORT, CONTINUE, MUFFLE-WARNING, STORE-VALUE, USE-VALUE](#F-ABORT-CONTINUE-MW-SV-UV)
 
 
-### <span id="CT-CONDITION">Condition Type CONDITION</span>
-
-* 类优先级列表(Class Precedence List):
-
-condition, t
-
-* 描述(Description):
-
-All types of conditions, whether error or non-error, must inherit from this type.
-
-No additional subtype relationships among the specified subtypes of type condition are allowed, except when explicitly mentioned in the text; however implementations are permitted to introduce additional types and one of these types can be a subtype of any number of the subtypes of type condition.
-
-Whether a user-defined condition type has slots that are accessible by with-slots is implementation-dependent. Furthermore, even in an implementation in which user-defined condition types would have slots, it is implementation-dependent whether any condition types defined in this document have such slots or, if they do, what their names might be; only the reader functions documented by this specification may be relied upon by portable code.
-
-Conforming code must observe the following restrictions related to conditions:
-
-* define-condition, not defclass, must be used to define new condition types.
-
-* make-condition, not make-instance, must be used to create condition objects explicitly.
-
-* The :report option of define-condition, not defmethod for print-object, must be used to define a condition reporter.
-
-* slot-value, slot-boundp, slot-makunbound, and with-slots must not be used on condition objects. Instead, the appropriate accessor functions (defined by define-condition) should be used. 
-
-
-### <span id="CT-WARNING">Condition Type WARNING</span>
+### <span id="CT-CONDITION">状况类型 CONDITION</span>
 
 * 类优先级列表(Class Precedence List):
 
-warning, condition, t
+        condition, t
 
 * 描述(Description):
 
-The type warning consists of all types of warnings.
+        所有状况类型, 不管是错误或是非错误, 必须继承自这个类型.
+
+        不允许在指定的类型 condition 的子类型中附加子类型关系, 除非在这个文本中明确提及; 但是具体实现允许去引入一些额外类型并且这些类型中的一个可以是类型 condition 任何数量的的子类型的一个子类型.
+
+        一个用户定义的状况类型是否有着可以被 with-slots 访问的槽是取决于具体实现的. 此外, 即便在一个具体实现中用户定义的状况类型有着槽, 但是这个文档中定义的任何状况类型是否有着槽是依赖于具体实现的, 如果它们确实有那么它们的名字也是依赖于具体实现的; 只有这个规范中记录的读取器函数可以被可移植代码所依赖.
+
+        符合规范的代码必须遵守下面这个和状况相关的约束:
+
+        * define-condition, 而不是 defclass, 必须被用于定义新的状况类型.
+
+        * make-condition, 而不是 make-instance, 必须被用于显式创建状况对象.
+
+        * define-condition 的这个 :report 选项, 而不是 defmethod 对于 print-object, 必须被用于定义一个状况汇报者.
+
+        * slot-value, slot-boundp, slot-makunbound, 和 with-slots 一定不能在状况对象上使用. 反而, 应该使用合适的访问器函数 (通过 define-condition 定义). 
+
+
+### <span id="CT-WARNING">状况类型 WARNING</span>
+
+* 类优先级列表(Class Precedence List):
+
+        warning, condition, t
+
+* 描述(Description):
+
+        类型 warning 包含所有警告的类型.
 
 * 也见(See Also):
 
-style-warning 
+        style-warning 
 
 
-### <span id="CT-STYLE-WARNING">Condition Type STYLE-WARNING</span>
+### <span id="CT-STYLE-WARNING">状况类型 STYLE-WARNING</span>
 
 * 类优先级列表(Class Precedence List):
 
-style-warning, warning, condition, t
+        style-warning, warning, condition, t
 
 * 描述(Description):
 
-The type style-warning includes those conditions that represent situations involving code that is conforming code but that is nevertheless considered to be faulty or substandard.
+        类型 style-warning 包括那些表示代码是符合规范的但是仍然被认为是错误的或者不符合标准的情况的状况.
 
 * 也见(See Also):
 
-muffle-warning
+        muffle-warning
 
 * 注意(Notes):
 
-An implementation might signal such a condition if it encounters code that uses deprecated features or that appears unaesthetic or inefficient.
+        如果一个具体实现遇到使用废弃特性的代码或者不美观的或无效的代码, 它可能发出这样一个状况.
 
-An `unused variable' warning must be of type style-warning.
+        一个 '没有被使用的变量(unused variable)' 警告必须是类型 style-warning.
 
-In general, the question of whether code is faulty or substandard is a subjective decision to be made by the facility processing that code. The intent is that whenever such a facility wishes to complain about code on such subjective grounds, it should use this condition type so that any clients who wish to redirect or muffle superfluous warnings can do so without risking that they will be redirecting or muffling other, more serious warnings. 
+        一般而言, 代码是错误的还是不合格的问题是由处理代码的工具做出的一个主观决定. 这样的意图是, 无论何时这样的一个工具想在主观理由上抱怨代码, 它应该使用这个状况类型, 以便用户去重定向或者抑制多余的警告而不用担心他们被重定向或抑制其他更严重的警告. 
 
 
-### <span id="CT-SERIOUS-CONDITION">Condition Type SERIOUS-CONDITION</span>
+### <span id="CT-SERIOUS-CONDITION">状况类型 SERIOUS-CONDITION</span>
 
 * 类优先级列表(Class Precedence List):
 
@@ -473,25 +473,25 @@ serious-condition, condition, t
 
 * 描述(Description):
 
-All conditions serious enough to require interactive intervention if not handled should inherit from the type serious-condition. This condition type is provided primarily so that it may be included as a superclass of other condition types; it is not intended to be signaled directly.
+        所有严重到如果没被处理就需要交互式干预的状况应该继承自类型 serious-condition. 提供这种状况类型主要是为了使它可以被包含作为其他状况类型的超类; 它不打算被直接发送.
 
 * 注意(Notes):
 
-Signaling a serious condition does not itself force entry into the debugger. However, except in the unusual situation where the programmer can assure that no harm will come from failing to handle a serious condition, such a condition is usually signaled with error rather than signal in order to assure that the program does not continue without handling the condition. (And conversely, it is conventional to use signal rather than error to signal conditions which are not serious conditions, since normally the failure to handle a non-serious condition is not reason enough for the debugger to be entered.) 
+        发送一个严重状况自身不会强制进入调试器. 然而, 除非在程序员可以确保不会因为处理不了严重状况而造成伤害的不寻常情况下, 否则这样一个状况通常使用 error 来发送而不是 signal 来确保这个程序在没有处理这个状况的情况下不会继续下去. (但反之, 使用 signal 而不是 error 去发送不是严重状况的状况是传统做法, 因为正常情况下, 处理非严重情况的失败并不是进入调试器的原因.) 
 
 
-### <span id="CT-ERROR">Condition Type ERROR</span>
+### <span id="CT-ERROR">状况类型 ERROR</span>
 
 * 类优先级列表(Class Precedence List):
 
-error, serious-condition, condition, t
+        error, serious-condition, condition, t
 
 * 描述(Description):
 
-The type error consists of all conditions that represent errors. 
+        这个类型包括所有表示错误的类型. 
 
 
-### <span id="CT-CELL-ERROR">Condition Type CELL-ERROR</span>
+### <span id="CT-CELL-ERROR">状况类型 CELL-ERROR</span>
 
 * 类优先级列表(Class Precedence List):
 
@@ -506,7 +506,7 @@ The type cell-error consists of error conditions that occur during a location ac
 cell-error-name 
 
 
-### <span id="F-CELL-ERROR-NAME">Function CELL-ERROR-NAME</span>
+### <span id="F-CELL-ERROR-NAME">函数 CELL-ERROR-NAME</span>
 
 * 语法(Syntax):
 
@@ -537,7 +537,7 @@ cell-error, unbound-slot, unbound-variable, undefined-function, Section 9.1 (Con
 * 注意(Notes): None. 
 
 
-### <span id="CT-PARSE-ERROR">Condition Type PARSE-ERROR</span>
+### <span id="CT-PARSE-ERROR">状况类型 PARSE-ERROR</span>
 
 * 类优先级列表(Class Precedence List):
 
@@ -552,7 +552,7 @@ The type parse-error consists of error conditions that are related to parsing.
 parse-namestring, reader-error 
 
 
-### <span id="CT-STORAGE-CONDITION">Condition Type STORAGE-CONDITION</span>
+### <span id="CT-STORAGE-CONDITION">状况类型 STORAGE-CONDITION</span>
 
 * 类优先级列表(Class Precedence List):
 
@@ -567,7 +567,7 @@ The type storage-condition consists of serious conditions that relate to problem
 While some Common Lisp operations might signal storage-condition because they are defined to create objects, it is unspecified whether operations that are not defined to create objects create them anyway and so might also signal storage-condition. Likewise, the evaluator itself might create objects and so might signal storage-condition. (The natural assumption might be that such object creation is naturally inefficient, but even that is implementation-dependent.) In general, the entire question of how storage allocation is done is implementation-dependent, and so any operation might signal storage-condition at any time. Because such a condition is indicative of a limitation of the implementation or of the image rather than an error in a program, objects of type storage-condition are not of type error. 
 
 
-### <span id="M-ASSERT">Macro ASSERT</span>
+### <span id="M-ASSERT">宏 ASSERT</span>
 
 * 语法(Syntax):
 
@@ -651,7 +651,7 @@ check-type, error, Section 5.1 (Generalized Reference)
 The debugger need not include the test-form in the error message, and the places should not be included in the message, but they should be made available for the user's perusal. If the user gives the ``continue'' command, the values of any of the references can be altered. The details of this depend on the implementation's style of user interface. 
 
 
-### <span id="F-ERROR">Function ERROR</span>
+### <span id="F-ERROR">函数 ERROR</span>
 
 * 语法(Syntax):
 
@@ -737,7 +737,7 @@ In this scenario, there should be no chance that error will return and the butto
 While the meaning of this program is clear and it might be proven `safe' by a formal theorem prover, such a proof is no guarantee that the program is safe to execute. Compilers have been known to have bugs, computers to have signal glitches, and human beings to manually intervene in ways that are not always possible to predict. Those kinds of errors, while beyond the scope of the condition system to formally model, are not beyond the scope of things that should seriously be considered when writing code that could have the kinds of sweeping effects hinted at by this example. 
 
 
-### <span id="F-CERROR">Function CERROR</span>
+### <span id="F-CERROR">函数 CERROR</span>
 
 * 语法(Syntax):
 
@@ -886,7 +886,7 @@ If datum is a condition type rather than a string, the format directive ~* may b
 
 
 
-### <span id="M-CHECK-TYPE">Macro CHECK-TYPE</span>
+### <span id="M-CHECK-TYPE">宏 CHECK-TYPE</span>
 
 * 语法(Syntax):
 
@@ -989,7 +989,7 @@ Section 9.1 (Condition System Concepts)
             'type-error :datum place :expected-type 'typespec)
 
 
-### <span id="CT-SIMPLE-ERROR">Condition Type SIMPLE-ERROR</span>
+### <span id="CT-SIMPLE-ERROR">状况类型 SIMPLE-ERROR</span>
 
 * 类优先级列表(Class Precedence List):
 
@@ -1000,7 +1000,7 @@ simple-error, simple-condition, error, serious-condition, condition, t
 The type simple-error consists of conditions that are signaled by error or cerror when a format control is supplied as the function's first argument. 
 
 
-### <span id="F-INVALID-METHOD-ERROR">Function INVALID-METHOD-ERROR</span>
+### <span id="F-INVALID-METHOD-ERROR">函数 INVALID-METHOD-ERROR</span>
 
 * 语法(Syntax):
 
@@ -1041,7 +1041,7 @@ define-method-combination
 * 注意(Notes): None. 
 
 
-### <span id="F-METHOD-COMBINATION-ERROR">Function METHOD-COMBINATION-ERROR</span>
+### <span id="F-METHOD-COMBINATION-ERROR">函数 METHOD-COMBINATION-ERROR</span>
 
 * 语法(Syntax):
 
@@ -1080,7 +1080,7 @@ define-method-combination
 * 注意(Notes): None. 
 
 
-### <span id="F-SIGNAL">Function SIGNAL</span>
+### <span id="F-SIGNAL">函数 SIGNAL</span>
 
 * 语法(Syntax):
 
@@ -1147,7 +1147,7 @@ Existing handler bindings.
 If (typep datum *break-on-signals*) yields true, the debugger is entered prior to beginning the signaling process. The continue restart can be used to continue with the signaling process. This is also true for all other functions and macros that should, might, or must signal conditions. 
 
 
-### <span id="CT-SIMPLE-CONDITION">Condition Type SIMPLE-CONDITION</span>
+### <span id="CT-SIMPLE-CONDITION">状况类型 SIMPLE-CONDITION</span>
 
 * 类优先级列表(Class Precedence List):
 
@@ -1162,7 +1162,7 @@ The type simple-condition represents conditions that are signaled by signal when
 simple-condition-format-control, simple-condition-format-arguments 
 
 
-### <span id="F-SCFC-SCFA">Function SIMPLE-CONDITION-FORMAT-CONTROL, SIMPLE-CONDITION-FORMAT-ARGUMENTS</span>
+### <span id="F-SCFC-SCFA">函数 SIMPLE-CONDITION-FORMAT-CONTROL, SIMPLE-CONDITION-FORMAT-ARGUMENTS</span>
 
 * 语法(Syntax):
 
@@ -1207,7 +1207,7 @@ simple-condition, Section 9.1 (Condition System Concepts)
 * 注意(Notes): None. 
 
 
-### <span id="F-WARN">Function WARN</span>
+### <span id="F-WARN">函数 WARN</span>
 
 * 语法(Syntax):
 
@@ -1286,7 +1286,7 @@ If datum is a condition type, the result of (apply #'make-condition datum argume
 * 注意(Notes): None. 
 
 
-### <span id="CT-SIMPLE-WARNING">Condition Type SIMPLE-WARNING</span>
+### <span id="CT-SIMPLE-WARNING">状况类型 SIMPLE-WARNING</span>
 
 * 类优先级列表(Class Precedence List):
 
@@ -1297,7 +1297,7 @@ simple-warning, simple-condition, warning, condition, t
 The type simple-warning represents conditions that are signaled by warn whenever a format control is supplied as the function's first argument. 
 
 
-### <span id="F-INVOKE-DEBUGGER">Function INVOKE-DEBUGGER</span>
+### <span id="F-INVOKE-DEBUGGER">函数 INVOKE-DEBUGGER</span>
 
 * 语法(Syntax):
 
@@ -1342,7 +1342,7 @@ error, break
 * 注意(Notes): None. 
 
 
-### <span id="F-BREAK">Function BREAK</span>
+### <span id="F-BREAK">函数 BREAK</span>
 
 * 语法(Syntax):
 
@@ -1406,7 +1406,7 @@ break could be defined by:
    nil)
 
 
-### <span id="V-DEBUGGER-HOOK">Variable *DEBUGGER-HOOK*</span>
+### <span id="V-DEBUGGER-HOOK">变量 *DEBUGGER-HOOK*</span>
 
 * 值类型(Value Type):
 
@@ -1466,7 +1466,7 @@ invoke-debugger
 When evaluating code typed in by the user interactively, it is sometimes useful to have the hook function bind *debugger-hook* to the function that was its second argument so that recursive errors can be handled using the same interactive facility. 
 
 
-### <span id="V-BREAK-ON-SIGNALS">Variable *BREAK-ON-SIGNALS*</span>
+### <span id="V-BREAK-ON-SIGNALS">变量 *BREAK-ON-SIGNALS*</span>
 
 * 值类型(Value Type):
 
@@ -1527,7 +1527,7 @@ break, signal, warn, error, typep, Section 9.1 (Condition System Concepts)
 *break-on-signals* enables an early entry to the debugger but such an entry does not preclude an additional entry to the debugger in the case of operations such as error and cerror. 
 
 
-### <span id="M-HANDLER-BIND">Macro HANDLER-BIND</span>
+### <span id="M-HANDLER-BIND">宏 HANDLER-BIND</span>
 
 * 语法(Syntax):
 
@@ -1597,7 +1597,7 @@ handler-case
 * 注意(Notes): None. 
 
 
-### <span id="M-HANDLER-CASE">Macro HANDLER-CASE</span>
+### <span id="M-HANDLER-CASE">宏 HANDLER-CASE</span>
 
 * 语法(Syntax):
 
@@ -1714,7 +1714,7 @@ is approximately equivalent to:
            (type1 (var1) . body1) ...)))))
 
 
-### <span id="M-IGNORE-ERRORS">Macro IGNORE-ERRORS</span>
+### <span id="M-IGNORE-ERRORS">宏 IGNORE-ERRORS</span>
 
 * 语法(Syntax):
 
@@ -1769,7 +1769,7 @@ is equivalent to:
 Because the second return value is a condition in the exceptional case, it is common (but not required) to arrange for the second return value in the normal case to be missing or nil so that the two situations can be distinguished. 
 
 
-### <span id="M-DEFINE-CONDITION">Macro DEFINE-CONDITION</span>
+### <span id="M-DEFINE-CONDITION">宏 DEFINE-CONDITION</span>
 
 * 语法(Syntax):
 
@@ -1984,7 +1984,7 @@ make-condition, defclass, Section 9.1 (Condition System Concepts)
 * 注意(Notes): None. 
 
 
-### <span id="F-MAKE-CONDITION">Function MAKE-CONDITION</span>
+### <span id="F-MAKE-CONDITION">函数 MAKE-CONDITION</span>
 
 * 语法(Syntax):
 
@@ -2049,7 +2049,7 @@ An object of type restart represents a function that can be called to perform so
 An implementation is free to implement a restart in whatever manner is most convenient; a restart has only dynamic extent relative to the scope of the binding form which establishes it. 
 
 
-### <span id="F-COMPUTE-RESTARTS">Function COMPUTE-RESTARTS</span>
+### <span id="F-COMPUTE-RESTARTS">函数 COMPUTE-RESTARTS</span>
 
 * 语法(Syntax):
 
@@ -2124,7 +2124,7 @@ find-restart, invoke-restart, restart-bind
 * 注意(Notes): None. 
 
 
-### <span id="F-FIND-RESTART">Function FIND-RESTART</span>
+### <span id="F-FIND-RESTART">函数 FIND-RESTART</span>
 
 * 语法(Syntax):
 
@@ -2183,7 +2183,7 @@ compute-restarts
 Although anonymous restarts have a name of nil, the consequences are unspecified if nil is given as an identifier. Occasionally, programmers lament that nil is not permissible as an identifier argument. In most such cases, compute-restarts can probably be used to simulate the desired effect. 
 
 
-### <span id="F-INVOKE-RESTART">Function INVOKE-RESTART</span>
+### <span id="F-INVOKE-RESTART">函数 INVOKE-RESTART</span>
 
 * 语法(Syntax):
 
@@ -2236,7 +2236,7 @@ The most common use for invoke-restart is in a handler. It might be used explici
 Restart functions call invoke-restart, not vice versa. That is, invoke-restart provides primitive functionality, and restart functions are non-essential ``syntactic sugar.'' 
 
 
-### <span id="F-INVOKE-RESTART-INTERACTIVELY">Function INVOKE-RESTART-INTERACTIVELY</span>
+### <span id="F-INVOKE-RESTART-INTERACTIVELY">函数 INVOKE-RESTART-INTERACTIVELY</span>
 
 * 语法(Syntax):
 
@@ -2296,7 +2296,7 @@ find-restart, invoke-restart, restart-case, restart-bind
 invoke-restart-interactively is used internally by the debugger and may also be useful in implementing other portable, interactive debugging tools. 
 
 
-### <span id="M-RESTART-BIND">Macro RESTART-BIND</span>
+### <span id="M-RESTART-BIND">宏 RESTART-BIND</span>
 
 * 语法(Syntax):
 
@@ -2371,7 +2371,7 @@ restart-case, with-simple-restart
 restart-bind is primarily intended to be used to implement restart-case and might be useful in implementing other macros. Programmers who are uncertain about whether to use restart-case or restart-bind should prefer restart-case for the cases where it is powerful enough, using restart-bind only in cases where its full generality is really needed. 
 
 
-### <span id="M-RESTART-CASE">Macro RESTART-CASE</span>
+### <span id="M-RESTART-CASE">宏 RESTART-CASE</span>
 
 * 语法(Syntax):
 
@@ -2566,7 +2566,7 @@ Unnamed restarts are generally only useful interactively and an interactive opti
    (b ...))
 
 
-### <span id="F-RESTART-NAME">Function RESTART-NAME</span>
+### <span id="F-RESTART-NAME">函数 RESTART-NAME</span>
 
 * 语法(Syntax):
 
@@ -2608,7 +2608,7 @@ compute-restarts find-restart
 * 注意(Notes): None. 
 
 
-### <span id="M-WITH-CONDITION-RESTARTS">Macro WITH-CONDITION-RESTARTS</span>
+### <span id="M-WITH-CONDITION-RESTARTS">宏 WITH-CONDITION-RESTARTS</span>
 
 * 语法(Syntax):
 
@@ -2653,7 +2653,7 @@ restart-case
 Usually this macro is not used explicitly in code, since restart-case handles most of the common cases in a way that is syntactically more concise. 
 
 
-### <span id="M-WITH-SIMPLE-RESTART">Macro WITH-SIMPLE-RESTART</span>
+### <span id="M-WITH-SIMPLE-RESTART">宏 WITH-SIMPLE-RESTART</span>
 
 * 语法(Syntax):
 
@@ -2751,7 +2751,7 @@ with-simple-restart could be defined by:
 Because the second return value is t in the exceptional case, it is common (but not required) to arrange for the second return value in the normal case to be missing or nil so that the two situations can be distinguished. 
 
 
-### <span id="R-ABORT">Restart ABORT</span>
+### <span id="R-ABORT">重启动 ABORT</span>
 
 * 必要数据参数(Data Arguments Required):
 
@@ -2766,7 +2766,7 @@ The intent of the abort restart is to allow return to the innermost ``command le
 Section 9.1.4.2 (Restarts), Section 9.1.4.2.2 (重启动的接口), invoke-restart, abort (function) 
 
 
-### <span id="R-CONTINUE">Restart CONTINUE</span>
+### <span id="R-CONTINUE">重启动 CONTINUE</span>
 
 * 必要数据参数(Data Arguments Required):
 
@@ -2792,7 +2792,7 @@ The continue restart is generally part of protocols where there is a single ``ob
 Section 9.1.4.2 (Restarts), Section 9.1.4.2.2 (重启动的接口), invoke-restart, continue (function), assert, cerror 
 
 
-### <span id="R-MUFFLE-WARNING">Restart MUFFLE-WARNING</span>
+### <span id="R-MUFFLE-WARNING">重启动 MUFFLE-WARNING</span>
 
 * 必要数据参数(Data Arguments Required):
 
@@ -2838,7 +2838,7 @@ This restart is established by warn so that handlers of warning conditions have 
 Section 9.1.4.2 (Restarts), Section 9.1.4.2.2 (重启动的接口), invoke-restart, muffle-warning (function), warn 
 
 
-### <span id="R-STORE-VALUE">Restart STORE-VALUE</span>
+### <span id="R-STORE-VALUE">重启动 STORE-VALUE</span>
 
 * 必要数据参数(Data Arguments Required):
 
@@ -2867,7 +2867,7 @@ The store-value restart is generally used by handlers trying to recover from err
 Section 9.1.4.2 (Restarts), Section 9.1.4.2.2 (重启动的接口), invoke-restart, store-value (function), ccase, check-type, ctypecase, use-value (function and restart) 
 
 
-### <span id="R-USE-VALUE">Restart USE-VALUE</span>
+### <span id="R-USE-VALUE">重启动 USE-VALUE</span>
 
 * 必要数据参数(Data Arguments Required):
 
@@ -2882,7 +2882,7 @@ The use-value restart is generally used by handlers trying to recover from error
 Section 9.1.4.2 (Restarts), Section 9.1.4.2.2 (重启动的接口), invoke-restart, use-value (function), store-value (function and restart) 
 
 
-### <span id="F-ABORT-CONTINUE-MW-SV-UV">Function ABORT, CONTINUE, MUFFLE-WARNING, STORE-VALUE, USE-VALUE</span>
+### <span id="F-ABORT-CONTINUE-MW-SV-UV">函数 ABORT, CONTINUE, MUFFLE-WARNING, STORE-VALUE, USE-VALUE</span>
 
 * 语法(Syntax):
 
