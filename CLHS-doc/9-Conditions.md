@@ -495,34 +495,33 @@ serious-condition, condition, t
 
 * 类优先级列表(Class Precedence List):
 
-cell-error, error, serious-condition, condition, t
+        cell-error, error, serious-condition, condition, t
 
 * 描述(Description):
 
-The type cell-error consists of error conditions that occur during a location access. The name of the offending cell is initialized by the :nameinitialization argument to make-condition, and is accessed by the function cell-error-name.
+        类型 cell-error 由发生在位置访问期间的错误状况组成. 违规的 cell 的名字由 make-condition 的 :name 初始化参数来初始化, 通过函数 cell-error-name 来访问.
 
 * 也见(See Also):
 
-cell-error-name 
+        cell-error-name 
 
 
 ### <span id="F-CELL-ERROR-NAME">函数 CELL-ERROR-NAME</span>
 
 * 语法(Syntax):
 
-cell-error-name condition => name
+        cell-error-name condition => name
 
 * 参数和值(Arguments and Values):
 
-condition---a condition of type cell-error.
-
-name---an object.
+        condition---一个类型 cell-error 的状况.
+        name---一个对象.
 
 * 描述(Description):
 
-Returns the name of the offending cell involved in the situation represented by condition.
+        返回那个状况 condition 所表示的情况中违规的 cell 的名字.
 
-The nature of the result depends on the specific type of condition. For example, if the condition is of type unbound-variable, the result is the name of the unbound variable which was being accessed, if the condition is of type undefined-function, this is the name of the undefined function which was being accessed, and if the condition is of type unbound-slot, this is the name of the slot which was being accessed.
+        结果的性质取决于状况 condition 指定的类型. 比如, 如果这个状况 condition 是类型 unbound-variable, 那么这个结果是那个要被访问的未绑定变量的名字, 如果这个状况 condition 是类型 undefined-function, 那么这个就是那个要被访问的未绑定函数的名字, 而当这个状况 condition 是类型 unbound-slot, 这个就是要被访问的槽的名字.
 
 * 示例(Examples): None.
 
@@ -532,7 +531,7 @@ The nature of the result depends on the specific type of condition. For example,
 
 * 也见(See Also):
 
-cell-error, unbound-slot, unbound-variable, undefined-function, Section 9.1 (Condition System Concepts)
+        cell-error, unbound-slot, unbound-variable, undefined-function, Section 9.1 (Condition System Concepts)
 
 * 注意(Notes): None. 
 
@@ -541,200 +540,200 @@ cell-error, unbound-slot, unbound-variable, undefined-function, Section 9.1 (Con
 
 * 类优先级列表(Class Precedence List):
 
-parse-error, error, serious-condition, condition, t
+        parse-error, error, serious-condition, condition, t
 
 * 描述(Description):
 
-The type parse-error consists of error conditions that are related to parsing.
+        类型 parse-error 由解析相关的错误状况组成.
 
 * 也见(See Also):
 
-parse-namestring, reader-error 
+        parse-namestring, reader-error 
 
 
 ### <span id="CT-STORAGE-CONDITION">状况类型 STORAGE-CONDITION</span>
 
 * 类优先级列表(Class Precedence List):
 
-storage-condition, serious-condition, condition, t
+        storage-condition, serious-condition, condition, t
 
 * 描述(Description):
 
-The type storage-condition consists of serious conditions that relate to problems with memory management that are potentially due to implementation-dependent limits rather than semantic errors in conforming programs, and that typically warrant entry to the debugger if not handled. Depending on the details of the implementation, these might include such problems as stack overflow, memory region overflow, and storage exhausted.
+        类型 storage-condition 由内存管理问题相关的严重状况组成, 这些状况可能是由于依赖于具体实现的限制而不是符合规范的程序中的语义错误, 并且如果没有被处理通常需要进入到调试器中. 根据具体实现的细节, 这些可能包括堆栈溢出, 内存区域溢出和存储耗尽等问题.
 
 * 注意(Notes):
 
-While some Common Lisp operations might signal storage-condition because they are defined to create objects, it is unspecified whether operations that are not defined to create objects create them anyway and so might also signal storage-condition. Likewise, the evaluator itself might create objects and so might signal storage-condition. (The natural assumption might be that such object creation is naturally inefficient, but even that is implementation-dependent.) In general, the entire question of how storage allocation is done is implementation-dependent, and so any operation might signal storage-condition at any time. Because such a condition is indicative of a limitation of the implementation or of the image rather than an error in a program, objects of type storage-condition are not of type error. 
+        尽管由于一些 Common Lisp 操作符被定义用来创建对象, 可能会发出 storage-condition, 但是那些不是被定义用来创建对象的操作符是否会创建它们并且是否也可能发出 storage-condition 是为指定的. 同样的, 求值器自身也可能创建对象并且因此可能发出 storage-condition. (自然的假设可能是, 这样的对象创建自然是低效的, 但即使这样做也是依赖于具体实现的.) 通常, 存储分配如何完成的整个问题都是和具体实现相关的, 因此任何操作符在任何时间都可能发出 storage-condition. 由于这样一个状况是具体实现或镜像的限制的象征而不是一个程序中的错误, 因此类型 storage-condition 的对象不是类型 error. 
 
 
 ### <span id="M-ASSERT">宏 ASSERT</span>
 
 * 语法(Syntax):
 
-assert test-form [(place*) [datum-form argument-form*]]
+        assert test-form [(place*) [datum-form argument-form*]]
 
 => nil
 
 * 参数和值(Arguments and Values):
 
-test-form---a form; always evaluated.
-
-place---a place; evaluated if an error is signaled.
-
-datum-form---a form that evaluates to a datum. Evaluated each time an error is to be signaled, or not at all if no error is to be signaled.
-
-argument-form---a form that evaluates to an argument. Evaluated each time an error is to be signaled, or not at all if no error is to be signaled.
-
-datum, arguments---designators for a condition of default type error. (These designators are the result of evaluating datum-form and each of the argument-forms.)
+        test-form---一个表达式形式; 总是求值的.
+        place---一个 place; 如果一个错误被发出就求值.
+        datum-form---一个求值为一个 datum 的表达式形式. 每次一个错误要被发出就求值, 如果没有错误发出就一次都不求值.
+        argument-form---求值为一个参数 argument 的一个表达式形式. 每次一个错误要被发出就求值, 如果没有错误发出就一次都不求值.
+        datum, arguments---一个默认类型 error 的状况的标识符. (这些标识符是求值 datum-form 和每个 argument-form 的结果.)
 
 * 描述(Description):
 
-assert assures that test-form evaluates to true. If test-form evaluates to false, assert signals a correctable error (denoted by datum and arguments). Continuing from this error using the continue restart makes it possible for the user to alter the values of the places before assert evaluates test-form again. If the value of test-form is non-nil, assert returns nil.
+        assert 确保这个 test-form 求值为 true. 如果 test-form 求值为 false, assert 发出一个可校正的错误 (用 datum 和 arguments 来表示). 从这个错误中使用 continue 重启动来继续使得用户在 assert 再一次求值 test-form 之前修改 places 的值是可能的. 如果这个 test-form 的值不是 nil, assert 返回 nil.
 
-The places are generalized references to data upon which test-form depends, whose values can be changed by the user in attempting to correct the error. Subforms of each place are only evaluated if an error is signaled, and might be re-evaluated if the error is re-signaled (after continuing without actually fixing the problem). The order of evaluation of the places is not specified; see Section 5.1.1.1 (Evaluation of Subforms to Places). If a place form is supplied that produces more values than there are store variables, the extra values are ignored. If the supplied form produces fewer values than there are store variables, the missing values are set to nil.
+        这些 place 是 test-form 所依赖的普通引用, 它们的值可以通过用户校正这个错误来改变. 每个 place 的子表达式形式只有在一个错误被发出时被求值, 并且在这个错误被再次发出时可能被再次求值 (在没有实际修正这个问题的情况下继续之后). 这些 place 的求值顺序没有被指定; 见章节 5.1.1.1 (Evaluation of Subforms to Places). 如果一个被提供的 place 表达式形式产生了超出看这些存储变量的值, 额外的值会被忽略. 如果提供的这个表达式形式产生的值少于这些存储变量, 那么缺少的值被设置为 nil.
 
 * 示例(Examples):
 
- (setq x (make-array '(3 5) :initial-element 3))
-=>  #2A((3 3 3 3 3) (3 3 3 3 3) (3 3 3 3 3))
- (setq y (make-array '(3 5) :initial-element 7))
-=>  #2A((7 7 7 7 7) (7 7 7 7 7) (7 7 7 7 7))
- (defun matrix-multiply (a b)
-   (let ((*print-array* nil))
-     (assert (and (= (array-rank a) (array-rank b) 2)
-                  (= (array-dimension a 1) (array-dimension b 0)))
-             (a b)
-             "Cannot multiply ~S by ~S." a b)
-            (really-matrix-multiply a b))) =>  MATRIX-MULTIPLY
- (matrix-multiply x y)
->>  Correctable error in MATRIX-MULTIPLY: 
->>  Cannot multiply #<ARRAY ...> by #<ARRAY ...>.
->>  Restart options:
->>   1: You will be prompted for one or more new values.
->>   2: Top level.
->>  Debug> :continue 1
->>  Value for A: x
->>  Value for B: (make-array '(5 3) :initial-element 6)
-=>  #2A((54 54 54 54 54)
-       (54 54 54 54 54)
-       (54 54 54 54 54)
-       (54 54 54 54 54)
-       (54 54 54 54 54))
+    ```LISP
+    (setq x (make-array '(3 5) :initial-element 3))
+    =>  #2A((3 3 3 3 3) (3 3 3 3 3) (3 3 3 3 3))
+    (setq y (make-array '(3 5) :initial-element 7))
+    =>  #2A((7 7 7 7 7) (7 7 7 7 7) (7 7 7 7 7))
+    (defun matrix-multiply (a b)
+      (let ((*print-array* nil))
+        (assert (and (= (array-rank a) (array-rank b) 2)
+                      (= (array-dimension a 1) (array-dimension b 0)))
+                (a b)
+                "Cannot multiply ~S by ~S." a b)
+                (really-matrix-multiply a b))) =>  MATRIX-MULTIPLY
+    (matrix-multiply x y)
+    >>  Correctable error in MATRIX-MULTIPLY: 
+    >>  Cannot multiply #<ARRAY ...> by #<ARRAY ...>.
+    >>  Restart options:
+    >>   1: You will be prompted for one or more new values.
+    >>   2: Top level.
+    >>  Debug> :continue 1
+    >>  Value for A: x
+    >>  Value for B: (make-array '(5 3) :initial-element 6)
+    =>  #2A((54 54 54 54 54)
+          (54 54 54 54 54)
+          (54 54 54 54 54)
+          (54 54 54 54 54)
+          (54 54 54 54 54))
 
- (defun double-safely (x) (assert (numberp x) (x)) (+ x x))
- (double-safely 4) 
-=>  8
- 
- (double-safely t)
->>  Correctable error in DOUBLE-SAFELY: The value of (NUMBERP X) must be non-NIL.
->>  Restart options:
->>   1: You will be prompted for one or more new values.
->>   2: Top level.
->>  Debug> :continue 1
->>  Value for X: 7
-=>  14
+    (defun double-safely (x) (assert (numberp x) (x)) (+ x x))
+    (double-safely 4) 
+    =>  8
+    
+    (double-safely t)
+    >>  Correctable error in DOUBLE-SAFELY: The value of (NUMBERP X) must be non-NIL.
+    >>  Restart options:
+    >>   1: You will be prompted for one or more new values.
+    >>   2: Top level.
+    >>  Debug> :continue 1
+    >>  Value for X: 7
+    =>  14
+    ```
 
 * 受此影响(Affected By):
 
-*break-on-signals*
+        *break-on-signals*
 
-The set of active condition handlers.
+        活跃的状况处理者集合.
 
 * 异常情况(Exceptional Situations): None.
 
 * 也见(See Also):
 
-check-type, error, Section 5.1 (Generalized Reference)
+        check-type, error, Section 5.1 (Generalized Reference)
 
 * 注意(Notes):
 
-The debugger need not include the test-form in the error message, and the places should not be included in the message, but they should be made available for the user's perusal. If the user gives the ``continue'' command, the values of any of the references can be altered. The details of this depend on the implementation's style of user interface. 
+        调试器不需要在错误信息中包含这个 test-form , 并且这些 place 也不应该被包含在这个信息中, 但是它们对于用户的目测应该是可用的. 如果用户给了  "continue" 命令, 这些引用的任何值都能被修改. 这个详情取决于具体实现的用户接口风格. 
 
 
 ### <span id="F-ERROR">函数 ERROR</span>
 
 * 语法(Syntax):
 
-error datum &rest arguments =>|
+        error datum &rest arguments =>|
 
 * 参数和值(Arguments and Values):
 
-datum, arguments---designators for a condition of default type simple-error.
+        datum, arguments---一个默认类型 simple-error 的状况标识符.
 
 * 描述(Description):
 
-error effectively invokes signal on the denoted condition.
+        error 实际上在表示的状况上调用 signal.
 
-If the condition is not handled, (invoke-debugger condition) is done. As a consequence of calling invoke-debugger, error cannot directly return; the only exit from error can come by non-local transfer of control in a handler or by use of an interactive debugging command.
+        如果这个状况没有被处理, (invoke-debugger condition) 就会被执行. 作为调用 invoke-debugger 的后果, error 不能直接返回; 从 error 中仅有的退出方式可以通过在一个处理者中非本地转移控制或使用交互式调试命令来实现.
 
 * 示例(Examples):
 
- (defun factorial (x)
-   (cond ((or (not (typep x 'integer)) (minusp x))
-          (error "~S is not a valid argument to FACTORIAL." x))
-         ((zerop x) 1)
-         (t (* x (factorial (- x 1))))))
-=>  FACTORIAL
-(factorial 20)
-=>  2432902008176640000
-(factorial -1)
->>  Error: -1 is not a valid argument to FACTORIAL.
->>  To continue, type :CONTINUE followed by an option number:
->>   1: Return to Lisp Toplevel.
->>  Debug> 
+    ```LISP
+    (defun factorial (x)
+      (cond ((or (not (typep x 'integer)) (minusp x))
+              (error "~S is not a valid argument to FACTORIAL." x))
+            ((zerop x) 1)
+            (t (* x (factorial (- x 1))))))
+    =>  FACTORIAL
+    (factorial 20)
+    =>  2432902008176640000
+    (factorial -1)
+    >>  Error: -1 is not a valid argument to FACTORIAL.
+    >>  To continue, type :CONTINUE followed by an option number:
+    >>   1: Return to Lisp Toplevel.
+    >>  Debug> 
 
- (setq a 'fred)
-=>  FRED
- (if (numberp a) (1+ a) (error "~S is not a number." A))
->>  Error: FRED is not a number.
->>  To continue, type :CONTINUE followed by an option number:
->>   1: Return to Lisp Toplevel.
->>  Debug> :Continue 1
->>  Return to Lisp Toplevel.
- 
- (define-condition not-a-number (error) 
-                   ((argument :reader not-a-number-argument :initarg :argument))
-   (:report (lambda (condition stream)
-              (format stream "~S is not a number."
-                      (not-a-number-argument condition)))))
-=>  NOT-A-NUMBER
- 
- (if (numberp a) (1+ a) (error 'not-a-number :argument a))
->>  Error: FRED is not a number.
->>  To continue, type :CONTINUE followed by an option number:
->>   1: Return to Lisp Toplevel.
->>  Debug> :Continue 1
->>  Return to Lisp Toplevel.
+    (setq a 'fred)
+    =>  FRED
+    (if (numberp a) (1+ a) (error "~S is not a number." A))
+    >>  Error: FRED is not a number.
+    >>  To continue, type :CONTINUE followed by an option number:
+    >>   1: Return to Lisp Toplevel.
+    >>  Debug> :Continue 1
+    >>  Return to Lisp Toplevel.
+    
+    (define-condition not-a-number (error) 
+                      ((argument :reader not-a-number-argument :initarg :argument))
+      (:report (lambda (condition stream)
+                  (format stream "~S is not a number."
+                          (not-a-number-argument condition)))))
+    =>  NOT-A-NUMBER
+    
+    (if (numberp a) (1+ a) (error 'not-a-number :argument a))
+    >>  Error: FRED is not a number.
+    >>  To continue, type :CONTINUE followed by an option number:
+    >>   1: Return to Lisp Toplevel.
+    >>  Debug> :Continue 1
+    >>  Return to Lisp Toplevel.
+    ```
 
 * 副作用(Side Effects):
 
-Handlers for the specified condition, if any, are invoked and might have side effects. Program execution might stop, and the debugger might be entered.
+        指定状况的那些处理者, 如果存在, 会被调用并且可能有副作用. 程序执行可能停止, 并且可能进入到调试器中.
 
 * 受此影响(Affected By):
 
-Existing handler bindings.
+        已存在的处理者绑定.
 
-*break-on-signals*
+        *break-on-signals*
 
-* 异常情况(Exceptional Situations): None.
+* 异常情况(Exceptional Situations): 
 
-Signals an error of type type-error if datum and arguments are not designators for a condition.
+        如果 datum 和 arguments 不是一个状况类型的标识符, 就发出一个类型 type-error 的错误.
 
 * 也见(See Also):
 
-cerror, signal, format, ignore-errors, *break-on-signals*, handler-bind, Section 9.1 (Condition System Concepts)
+        cerror, signal, format, ignore-errors, *break-on-signals*, handler-bind, Section 9.1 (Condition System Concepts)
 
 * 注意(Notes):
 
-Some implementations may provide debugger commands for interactively returning from individual stack frames. However, it should be possible for the programmer to feel confident about writing code like:
+        某些具体实现可能为从单独的堆栈帧中交互式返回提供调试器命令. 然而, 程序员应该有信心去编写像下面这样的代码:
 
- (defun wargames:no-win-scenario ()
-   (if (error "pushing the button would be stupid."))
-   (push-the-button))
+        (defun wargames:no-win-scenario ()
+          (if (error "pushing the button would be stupid."))
+          (push-the-button))
 
-In this scenario, there should be no chance that error will return and the button will get pushed.
+        在这种情况下, error 不可能返回，按钮不会被按下.<!-- TODO 这个程序有问题-->
 
-While the meaning of this program is clear and it might be proven `safe' by a formal theorem prover, such a proof is no guarantee that the program is safe to execute. Compilers have been known to have bugs, computers to have signal glitches, and human beings to manually intervene in ways that are not always possible to predict. Those kinds of errors, while beyond the scope of the condition system to formally model, are not beyond the scope of things that should seriously be considered when writing code that could have the kinds of sweeping effects hinted at by this example. 
+        虽然这个程序的意义是明确的, 并且它可能被正式的定理证明是"安全的", 但是这样的证明并不能保证程序的执行是安全的. 众所周知, 编译器有bug, 计算机有信号故障, 而人类则以不可能预测的方式进行手动干预 . 这些种类的错误, 虽然超出了状况系统对于正式建模的范围, 但它会超出编写代码时应该认真考虑的范围, 而这些代码可能会有本例所暗示的那种广泛的影响. 
 
 
 ### <span id="F-CERROR">函数 CERROR</span>
