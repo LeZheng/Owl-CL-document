@@ -740,148 +740,149 @@ serious-condition, condition, t
 
 * 语法(Syntax):
 
-cerror continue-format-control datum &rest arguments => nil
+        cerror continue-format-control datum &rest arguments => nil
 
 * 参数和值(Arguments and Values):
 
-Continue-format-control---a format control.
-
-datum, arguments---designators for a condition of default type simple-error.
+        Continue-format-control---一个格式化控制字符串.
+        datum, arguments---一个默认类型 simple-error 的状况的标识符.
 
 * 描述(Description):
 
-cerror effectively invokes error on the condition named by datum. As with any function that implicitly calls error, if the condition is not handled, (invoke-debugger condition) is executed. While signaling is going on, and while in the debugger if it is reached, it is possible to continue code execution (i.e., to return from cerror) using the continue restart.
+        cerror 实际上在名为 datum 的状况上调用 error. 就像任何隐式调用 error 的函数一样, 如果这个状况没有被处理, (invoke-debugger condition) 会被执行. 尽管正在发送中, 并且它到达了调试器中, 但是使用 continue 重启动来继续代码的执行(换句话说, 从 cerror 中返回)是可能的.
 
-If datum is a condition, arguments can be supplied, but are used only in conjunction with the continue-format-control.
+        如果 datum 是一个状况, 可以提供 arguments, 但是要和 continue-format-control 一起使用.
 
 * 示例(Examples):
 
- (defun real-sqrt (n)
-   (when (minusp n)
-     (setq n (- n))
-     (cerror "Return sqrt(~D) instead." "Tried to take sqrt(-~D)." n))
-   (sqrt n))
+    ```LISP
+    (defun real-sqrt (n)
+      (when (minusp n)
+        (setq n (- n))
+        (cerror "Return sqrt(~D) instead." "Tried to take sqrt(-~D)." n))
+      (sqrt n))
 
- (real-sqrt 4)
-=>  2.0
+    (real-sqrt 4)
+    =>  2.0
 
- (real-sqrt -9)
->>  Correctable error in REAL-SQRT: Tried to take sqrt(-9).
->>  Restart options:
->>   1: Return sqrt(9) instead.
->>   2: Top level.
->>  Debug> :continue 1
-=>  3.0
- 
- (define-condition not-a-number (error)
-   ((argument :reader not-a-number-argument :initarg :argument))
-   (:report (lambda (condition stream)
-              (format stream "~S is not a number." 
-                      (not-a-number-argument condition)))))
- 
- (defun assure-number (n)
-   (loop (when (numberp n) (return n))
-         (cerror "Enter a number."
-                 'not-a-number :argument n)
-         (format t "~&Type a number: ")
-         (setq n (read))
-         (fresh-line)))
+    (real-sqrt -9)
+    >>  Correctable error in REAL-SQRT: Tried to take sqrt(-9).
+    >>  Restart options:
+    >>   1: Return sqrt(9) instead.
+    >>   2: Top level.
+    >>  Debug> :continue 1
+    =>  3.0
+    
+    (define-condition not-a-number (error)
+      ((argument :reader not-a-number-argument :initarg :argument))
+      (:report (lambda (condition stream)
+                  (format stream "~S is not a number." 
+                          (not-a-number-argument condition)))))
+    
+    (defun assure-number (n)
+      (loop (when (numberp n) (return n))
+            (cerror "Enter a number."
+                    'not-a-number :argument n)
+            (format t "~&Type a number: ")
+            (setq n (read))
+            (fresh-line)))
 
- (assure-number 'a)
->>  Correctable error in ASSURE-NUMBER: A is not a number.
->>  Restart options:
->>   1: Enter a number.
->>   2: Top level.
->>  Debug> :continue 1
->>  Type a number: 1/2
-=>  1/2
+    (assure-number 'a)
+    >>  Correctable error in ASSURE-NUMBER: A is not a number.
+    >>  Restart options:
+    >>   1: Enter a number.
+    >>   2: Top level.
+    >>  Debug> :continue 1
+    >>  Type a number: 1/2
+    =>  1/2
 
- (defun assure-large-number (n)
-   (loop (when (and (numberp n) (> n 73)) (return n))
-         (cerror "Enter a number~:[~; a bit larger than ~D~]."
-                 "~*~A is not a large number." 
-                 (numberp n) n)
-         (format t "~&Type a large number: ")
-         (setq n (read))
-         (fresh-line)))
- 
- (assure-large-number 10000)
-=>  10000
+    (defun assure-large-number (n)
+      (loop (when (and (numberp n) (> n 73)) (return n))
+            (cerror "Enter a number~:[~; a bit larger than ~D~]."
+                    "~*~A is not a large number." 
+                    (numberp n) n)
+            (format t "~&Type a large number: ")
+            (setq n (read))
+            (fresh-line)))
+    
+    (assure-large-number 10000)
+    =>  10000
 
- (assure-large-number 'a)
->>  Correctable error in ASSURE-LARGE-NUMBER: A is not a large number.
->>  Restart options:
->>   1: Enter a number.
->>   2: Top level.
->>  Debug> :continue 1
->>  Type a large number: 88
-=>  88
+    (assure-large-number 'a)
+    >>  Correctable error in ASSURE-LARGE-NUMBER: A is not a large number.
+    >>  Restart options:
+    >>   1: Enter a number.
+    >>   2: Top level.
+    >>  Debug> :continue 1
+    >>  Type a large number: 88
+    =>  88
 
- (assure-large-number 37)
->>  Correctable error in ASSURE-LARGE-NUMBER: 37 is not a large number.
->>  Restart options:
->>   1: Enter a number a bit larger than 37.
->>   2: Top level.
->>  Debug> :continue 1
->>  Type a large number: 259
-=>  259
- 
- (define-condition not-a-large-number (error)
-   ((argument :reader not-a-large-number-argument :initarg :argument))
-   (:report (lambda (condition stream)
-              (format stream "~S is not a large number." 
-                      (not-a-large-number-argument condition)))))
- 
- (defun assure-large-number (n)
-   (loop (when (and (numberp n) (> n 73)) (return n))
-         (cerror "Enter a number~3*~:[~; a bit larger than ~*~D~]."
-                 'not-a-large-number
-                 :argument n 
-                 :ignore (numberp n)
-                 :ignore n
-                 :allow-other-keys t)
-         (format t "~&Type a large number: ")
-         (setq n (read))
-         (fresh-line)))
- 
+    (assure-large-number 37)
+    >>  Correctable error in ASSURE-LARGE-NUMBER: 37 is not a large number.
+    >>  Restart options:
+    >>   1: Enter a number a bit larger than 37.
+    >>   2: Top level.
+    >>  Debug> :continue 1
+    >>  Type a large number: 259
+    =>  259
+    
+    (define-condition not-a-large-number (error)
+      ((argument :reader not-a-large-number-argument :initarg :argument))
+      (:report (lambda (condition stream)
+                  (format stream "~S is not a large number." 
+                          (not-a-large-number-argument condition)))))
+    
+    (defun assure-large-number (n)
+      (loop (when (and (numberp n) (> n 73)) (return n))
+            (cerror "Enter a number~3*~:[~; a bit larger than ~*~D~]."
+                    'not-a-large-number
+                    :argument n 
+                    :ignore (numberp n)
+                    :ignore n
+                    :allow-other-keys t)
+            (format t "~&Type a large number: ")
+            (setq n (read))
+            (fresh-line)))
+    
 
- (assure-large-number 'a)
->>  Correctable error in ASSURE-LARGE-NUMBER: A is not a large number.
->>  Restart options:
->>   1: Enter a number.
->>   2: Top level.
->>  Debug> :continue 1
->>  Type a large number: 88
-=>  88
- 
- (assure-large-number 37)
->>  Correctable error in ASSURE-LARGE-NUMBER: A is not a large number.
->>  Restart options:
->>   1: Enter a number a bit larger than 37.
->>   2: Top level.
->>  Debug> :continue 1
->>  Type a large number: 259
-=>  259
+    (assure-large-number 'a)
+    >>  Correctable error in ASSURE-LARGE-NUMBER: A is not a large number.
+    >>  Restart options:
+    >>   1: Enter a number.
+    >>   2: Top level.
+    >>  Debug> :continue 1
+    >>  Type a large number: 88
+    =>  88
+    
+    (assure-large-number 37)
+    >>  Correctable error in ASSURE-LARGE-NUMBER: A is not a large number.
+    >>  Restart options:
+    >>   1: Enter a number a bit larger than 37.
+    >>   2: Top level.
+    >>  Debug> :continue 1
+    >>  Type a large number: 259
+    =>  259
+    ```
 
 * 受此影响(Affected By):
 
-*break-on-signals*.
+        *break-on-signals*.
 
-Existing handler bindings.
+        已存在的处理者绑定.
 
 * 异常情况(Exceptional Situations): None.
 
 * 也见(See Also):
 
-error, format, handler-bind, *break-on-signals*, simple-type-error
+        error, format, handler-bind, *break-on-signals*, simple-type-error
 
 * 注意(Notes):
 
-If datum is a condition type rather than a string, the format directive ~* may be especially useful in the continue-format-control in order to ignore the keywords in the initialization argument list. For example:
+        如果 datum 是一个状况类型而不是一个字符串, 格式化指令 ~* 在 continue-format-control 中用来忽略初始化参数列表中的关键字可能是特别有用的. 比如:
 
-(cerror "enter a new value to replace ~*~s" 
-        'not-a-number
-        :argument a)
+        (cerror "enter a new value to replace ~*~s" 
+                'not-a-number
+                :argument a)
 
 
 
@@ -889,114 +890,114 @@ If datum is a condition type rather than a string, the format directive ~* may b
 
 * 语法(Syntax):
 
-check-type place typespec [string] => nil
+        check-type place typespec [string] => nil
 
 * 参数和值(Arguments and Values):
 
-place---a place.
-
-typespec---a type specifier.
-
-string---a string; evaluated.
+        place---一个 place.
+        typespec---一个类型指定符.
+        string---一个字符串; 求值的.
 
 * 描述(Description):
+<!--TODO 待校验-->
+        如果这个 place 的内容不是类型 typespec, 那么 check-type 发出一个类型 type-error 的可校正错误.
 
-check-type signals a correctable error of type type-error if the contents of place are not of the type typespec.
+        当且仅当 store-value 重启动被调用, 不管是显式地从一个处理者或者隐式地作为作为调试器提供的其中一个选项, check-type 可以返回. 如果这个 store-value 重启动被调用, check-type 存储这个给重启动调用的 place 的参数(或者是通过调试器交互式提示的那个)新值并重新开始, 检测这个新值的类型并且如果它仍然不是要求的类型就会发出另一个错误.
 
-check-type can return only if the store-value restart is invoked, either explicitly from a handler or implicitly as one of the options offered by the debugger. If the store-value restart is invoked, check-type stores the new value that is the argument to the restart invocation (or that is prompted for interactively by the debugger) in place and starts over, checking the type of the new value and signaling another error if it is still not of the desired type.
+        第一次 place 被求值时, 它通过正常的求值规则来求值. 如果类型检测失败并且使用了这个 store-value 重启动那么它接下来被被求值为一个 place; 见章节 5.1.1.1 (Evaluation of Subforms to Places).
 
-The first time place is evaluated, it is evaluated by normal evaluation rules. It is later evaluated as a place if the type check fails and the store-value restart is used; see Section 5.1.1.1 (Evaluation of Subforms to Places).
-
-string should be an English description of the type, starting with an indefinite article (``a'' or ``an''). If string is not supplied, it is computed automatically from typespec. The automatically generated message mentions place, its contents, and the desired type. An implementation may choose to generate a somewhat differently worded error message if it recognizes that place is of a particular form, such as one of the arguments to the function that called check-type. string is allowed because some applications of check-type may require a more specific description of what is wanted than can be generated automatically from typespec.
+        字符串 string 应该是这个类型的一个英语描述, 以一个不确定的冠词开始 ("a" 或者 "an"). 如果没有提供字符串 string, 它就会自动通过 typespec 来计算. 这个自动生成的信息提及 place, 它的内容和要求的类型. 如果一个具体实现可能把这个 place 识别为一个特殊表达式形式, 例如给名为 check-type 的函数的其中一个参数, 一个具体实现可能选择去生成一个措词有点不同的错误信息. 字符串 string 是允许的, 因为 check-type 的一些应用可能需要一个比从typespec 自动生成的更具体的关于需要什么的描述.
 
 * 示例(Examples):
 
- (setq aardvarks '(sam harry fred))
-=>  (SAM HARRY FRED)
- (check-type aardvarks (array * (3)))
->>  Error: The value of AARDVARKS, (SAM HARRY FRED),
->>         is not a 3-long array.
->>  To continue, type :CONTINUE followed by an option number:
->>   1: Specify a value to use instead.
->>   2: Return to Lisp Toplevel.
->>  Debug> :CONTINUE 1
->>  Use Value: #(SAM FRED HARRY)
-=>  NIL
- aardvarks
-=>  #<ARRAY-T-3 13571>
- (map 'list #'identity aardvarks)
-=>  (SAM FRED HARRY)
- (setq aardvark-count 'foo)
-=>  FOO
- (check-type aardvark-count (integer 0 *) "A positive integer")
->>  Error: The value of AARDVARK-COUNT, FOO, is not a positive integer.
->>  To continue, type :CONTINUE followed by an option number:
->>   1: Specify a value to use instead.
->>   2: Top level.
->>  Debug> :CONTINUE 2
+    ```LISP
+    (setq aardvarks '(sam harry fred))
+    =>  (SAM HARRY FRED)
+    (check-type aardvarks (array * (3)))
+    >>  Error: The value of AARDVARKS, (SAM HARRY FRED),
+    >>         is not a 3-long array.
+    >>  To continue, type :CONTINUE followed by an option number:
+    >>   1: Specify a value to use instead.
+    >>   2: Return to Lisp Toplevel.
+    >>  Debug> :CONTINUE 1
+    >>  Use Value: #(SAM FRED HARRY)
+    =>  NIL
+    aardvarks
+    =>  #<ARRAY-T-3 13571>
+    (map 'list #'identity aardvarks)
+    =>  (SAM FRED HARRY)
+    (setq aardvark-count 'foo)
+    =>  FOO
+    (check-type aardvark-count (integer 0 *) "A positive integer")
+    >>  Error: The value of AARDVARK-COUNT, FOO, is not a positive integer.
+    >>  To continue, type :CONTINUE followed by an option number:
+    >>   1: Specify a value to use instead.
+    >>   2: Top level.
+    >>  Debug> :CONTINUE 2
 
- (defmacro define-adder (name amount)
-   (check-type name (and symbol (not null)) "a name for an adder function")
-   (check-type amount integer)
-   `(defun ,name (x) (+ x ,amount)))
-  
- (macroexpand '(define-adder add3 3))
-=>  (defun add3 (x) (+ x 3))
- 
- (macroexpand '(define-adder 7 7))
->>  Error: The value of NAME, 7, is not a name for an adder function.
->>  To continue, type :CONTINUE followed by an option number:
->>   1: Specify a value to use instead.
->>   2: Top level.
->>  Debug> :Continue 1
->>  Specify a value to use instead.
->>  Type a form to be evaluated and used instead: 'ADD7
-=>  (defun add7 (x) (+ x 7))
- 
- (macroexpand '(define-adder add5 something))
->>  Error: The value of AMOUNT, SOMETHING, is not an integer.
->>  To continue, type :CONTINUE followed by an option number:
->>   1: Specify a value to use instead.
->>   2: Top level.
->>  Debug> :Continue 1
->>  Type a form to be evaluated and used instead: 5
-=>  (defun add5 (x) (+ x 5))
- 
+    (defmacro define-adder (name amount)
+      (check-type name (and symbol (not null)) "a name for an adder function")
+      (check-type amount integer)
+      `(defun ,name (x) (+ x ,amount)))
+      
+    (macroexpand '(define-adder add3 3))
+    =>  (defun add3 (x) (+ x 3))
+    
+    (macroexpand '(define-adder 7 7))
+    >>  Error: The value of NAME, 7, is not a name for an adder function.
+    >>  To continue, type :CONTINUE followed by an option number:
+    >>   1: Specify a value to use instead.
+    >>   2: Top level.
+    >>  Debug> :Continue 1
+    >>  Specify a value to use instead.
+    >>  Type a form to be evaluated and used instead: 'ADD7
+    =>  (defun add7 (x) (+ x 7))
+    
+    (macroexpand '(define-adder add5 something))
+    >>  Error: The value of AMOUNT, SOMETHING, is not an integer.
+    >>  To continue, type :CONTINUE followed by an option number:
+    >>   1: Specify a value to use instead.
+    >>   2: Top level.
+    >>  Debug> :Continue 1
+    >>  Type a form to be evaluated and used instead: 5
+    =>  (defun add5 (x) (+ x 5))
+    ```
 
-Control is transferred to a handler.
+        控制被转移到一个处理者.
 
 * 副作用(Side Effects):
 
-The debugger might be entered.
+        可能进入到调试器中.
 
 * 受此影响(Affected By):
 
-*break-on-signals*
+        *break-on-signals*
 
-The implementation.
+        这个具体实现.
 
 * 异常情况(Exceptional Situations): None.
 
 * 也见(See Also):
 
-Section 9.1 (Condition System Concepts)
+        章节 9.1 (Condition System Concepts)
 
 * 注意(Notes):
 
- (check-type place typespec)
- ==  (assert (typep place 'typespec) (place)
-            'type-error :datum place :expected-type 'typespec)
-
+    ```LISP
+    (check-type place typespec)
+    ==  (assert (typep place 'typespec) (place)
+                'type-error :datum place :expected-type 'typespec)
+    ```
 
 ### <span id="CT-SIMPLE-ERROR">状况类型 SIMPLE-ERROR</span>
 
 * 类优先级列表(Class Precedence List):
 
-simple-error, simple-condition, error, serious-condition, condition, t
+        simple-error, simple-condition, error, serious-condition, condition, t
 
 * 描述(Description):
 
-The type simple-error consists of conditions that are signaled by error or cerror when a format control is supplied as the function's first argument. 
+        当提供了一个格式化控制作为 error 或 cerror 的第一个参数时, 类型 simple-error 由通过 error 或 cerror 发出的状况组成. 
 
 
 ### <span id="F-INVALID-METHOD-ERROR">函数 INVALID-METHOD-ERROR</span>
