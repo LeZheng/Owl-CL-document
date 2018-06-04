@@ -1004,39 +1004,37 @@ serious-condition, condition, t
 
 * 语法(Syntax):
 
-invalid-method-error method format-control &rest args => implementation-dependent
+        invalid-method-error method format-control &rest args => implementation-dependent
 
 * 参数和值(Arguments and Values):
 
-method---a method.
-
-format-control---a format control.
-
-args---format arguments for the format-control.
+        method---一个方法.
+        format-control---一个格式化控制.
+        args---format-control 的格式化参数.
 
 * 描述(Description):
 
-The function invalid-method-error is used to signal an error of type error when there is an applicable method whose qualifiers are not valid for the method combination type. The error message is constructed by using the format-control suitable for format and any args to it. Because an implementation may need to add additional contextual information to the error message, invalid-method-error should be called only within the dynamic extent of a method combination function.
+        当这里有一个方法组合类型的限定符不合法的可应用方法时, 函数 invalid-method-error 被用于发出一个 error 类型的错误. 错误信息通过使用适用于 format 的 format-control 以及给它的任何参数组成. 由于一个具体实现可能需要给错误信息添加额外的上下文信息, invalid-method-error 应该只在一个方法组合函数的动态作用域中被调用.
 
-The function invalid-method-error is called automatically when a method fails to satisfy every qualifier pattern and predicate in a define-method-combination form. A method combination function that imposes additional restrictions should call invalid-method-error explicitly if it encounters a method it cannot accept.
+        当一个方法不满足一个 define-method-combination 表达式形式中的每个限定符模式和断言, 那么函数 invalid-method-error 被自动调用. 如果一个强加额外限制的方法组合函数进入到一个它不能接受的方法中, 那么这个方法组合函数应该显式调用 invalid-method-error.
 
-Whether invalid-method-error returns to its caller or exits via throw is implementation-dependent.
+        invalid-method-error 是否返回到它的调用者还是通过 throw 退出是取决于具体实现的.
 
 * 示例(Examples): None.
 
 * 副作用(Side Effects):
 
-The debugger might be entered.
+        可能会进入调试器中.
 
 * 受此影响(Affected By):
 
-*break-on-signals*
+        *break-on-signals*
 
 * 异常情况(Exceptional Situations): None.
 
 * 也见(See Also):
 
-define-method-combination
+        define-method-combination
 
 * 注意(Notes): None. 
 
@@ -1045,37 +1043,36 @@ define-method-combination
 
 * 语法(Syntax):
 
-method-combination-error format-control &rest args => implementation-dependent
+        method-combination-error format-control &rest args => implementation-dependent
 
 * 参数和值(Arguments and Values):
 
-format-control---a format control.
-
-args---format arguments for format-control.
+        format-control---一个格式化控制.
+        args---format-control 的格式化参数.
 
 * 描述(Description):
 
-The function method-combination-error is used to signal an error in method combination.
+        函数 method-combination-error 被用于在方法组合中发出一个错误.
 
-The error message is constructed by using a format-control suitable for format and any args to it. Because an implementation may need to add additional contextual information to the error message, method-combination-error should be called only within the dynamic extent of a method combination function.
+        这个错误信息通过使用一个适用于 format 的 format-control 和给它的参数来构造. 由于一个具体实现可能需要给这个错误信息添加额外的上下文信息, method-combination-error 应该只在一个方法组合函数的动态范围中被调用.
 
-Whether method-combination-error returns to its caller or exits via throw is implementation-dependent.
+        method-combination-error 是否返回到它的调用者还是通过 throw 退出是取决于具体实现的.
 
 * 示例(Examples): None.
 
 * 副作用(Side Effects):
 
-The debugger might be entered.
+        可能进入到调试器中.
 
 * 受此影响(Affected By):
 
-*break-on-signals*
+        *break-on-signals*
 
 * 异常情况(Exceptional Situations): None.
 
 * 也见(See Also):
 
-define-method-combination
+        define-method-combination
 
 * 注意(Notes): None. 
 
@@ -1084,115 +1081,117 @@ define-method-combination
 
 * 语法(Syntax):
 
-signal datum &rest arguments => nil
+        signal datum &rest arguments => nil
 
 * 参数和值(Arguments and Values):
 
-datum, arguments---designators for a condition of default type simple-condition.
+        datum, arguments---一个默认类型 simple-condition 的状况的标识符.
 
 * 描述(Description):
 
-Signals the condition denoted by the given datum and arguments. If the condition is not handled, signal returns nil.
+        发出这个给定的 datum 和 arguments 表示的状况. 如果这个状况没有被处理, signal 就返回 nil.
 
 * 示例(Examples):
 
- (defun handle-division-conditions (condition)
-   (format t "Considering condition for division condition handling~%")
-   (when (and (typep condition 'arithmetic-error)
-              (eq '/ (arithmetic-error-operation condition)))
-     (invoke-debugger condition)))
-HANDLE-DIVISION-CONDITIONS
- (defun handle-other-arithmetic-errors (condition)
-   (format t "Considering condition for arithmetic condition handling~%")
-   (when (typep condition 'arithmetic-error)
-     (abort)))
-HANDLE-OTHER-ARITHMETIC-ERRORS
- (define-condition a-condition-with-no-handler (condition) ())
-A-CONDITION-WITH-NO-HANDLER
- (signal 'a-condition-with-no-handler)
-NIL
- (handler-bind ((condition #'handle-division-conditions)
-                  (condition #'handle-other-arithmetic-errors))
-   (signal 'a-condition-with-no-handler))
-Considering condition for division condition handling
-Considering condition for arithmetic condition handling
-NIL
- (handler-bind ((arithmetic-error #'handle-division-conditions)
-                  (arithmetic-error #'handle-other-arithmetic-errors))
-   (signal 'arithmetic-error :operation '* :operands '(1.2 b)))
-Considering condition for division condition handling
-Considering condition for arithmetic condition handling
-Back to Lisp Toplevel
+    ```LISP
+    (defun handle-division-conditions (condition)
+      (format t "Considering condition for division condition handling~%")
+      (when (and (typep condition 'arithmetic-error)
+                  (eq '/ (arithmetic-error-operation condition)))
+        (invoke-debugger condition)))
+    HANDLE-DIVISION-CONDITIONS
+    (defun handle-other-arithmetic-errors (condition)
+      (format t "Considering condition for arithmetic condition handling~%")
+      (when (typep condition 'arithmetic-error)
+        (abort)))
+    HANDLE-OTHER-ARITHMETIC-ERRORS
+    (define-condition a-condition-with-no-handler (condition) ())
+    A-CONDITION-WITH-NO-HANDLER
+    (signal 'a-condition-with-no-handler)
+    NIL
+    (handler-bind ((condition #'handle-division-conditions)
+                      (condition #'handle-other-arithmetic-errors))
+      (signal 'a-condition-with-no-handler))
+    Considering condition for division condition handling
+    Considering condition for arithmetic condition handling
+    NIL
+    (handler-bind ((arithmetic-error #'handle-division-conditions)
+                      (arithmetic-error #'handle-other-arithmetic-errors))
+      (signal 'arithmetic-error :operation '* :operands '(1.2 b)))
+    Considering condition for division condition handling
+    Considering condition for arithmetic condition handling
+    Back to Lisp Toplevel
+    ```
 
 * 副作用(Side Effects):
 
-The debugger might be entered due to *break-on-signals*.
+        可能由于 *break-on-signals* 进入到调试器中.
 
-Handlers for the condition being signaled might transfer control.
+        要被发送的状况的处理者可能转移控制.
 
 * 受此影响(Affected By):
 
-Existing handler bindings.
+        已存在的处理者绑定.
 
-*break-on-signals*
+        *break-on-signals*
 
 * 异常情况(Exceptional Situations): None.
 
 * 也见(See Also):
 
-*break-on-signals*, error, simple-condition, Section 9.1.4 (发送和处理状况)
+        *break-on-signals*, error, simple-condition, Section 9.1.4 (发送和处理状况)
 
 * 注意(Notes):
 
-If (typep datum *break-on-signals*) yields true, the debugger is entered prior to beginning the signaling process. The continue restart can be used to continue with the signaling process. This is also true for all other functions and macros that should, might, or must signal conditions. 
+        如果 (typep datum *break-on-signals*) 产生 true, 在这个发送过程开始前进入调试器. 这个 continue 重启动可以被用于继续这个发送过程. 对于所有应该, 可能, 或者必须发送状况的其他函数和宏, 这个也是对的. 
 
 
 ### <span id="CT-SIMPLE-CONDITION">状况类型 SIMPLE-CONDITION</span>
 
 * 类优先级列表(Class Precedence List):
 
-simple-condition, condition, t
+        simple-condition, condition, t
 
 * 描述(Description):
 
-The type simple-condition represents conditions that are signaled by signal whenever a format-control is supplied as the function's first argument. The format control and format arguments are initialized with the initialization arguments named :format-control and :format-arguments to make-condition, and are accessed by the functions simple-condition-format-control and simple-condition-format-arguments. If format arguments are not supplied to make-condition, nil is used as a default.
+        每当一个 format-control 被提供为 signal 函数的第一个参数, 类型 simple-condition 表示通过这个 signal 发出的状况. 这个格式化控制和格式化参数使用给 make-condition 的名为 :format-control 和 :format-arguments 的初始化参数来初始化, 并且可以通过函数 simple-condition-format-control 和 simple-condition-format-arguments 来访问. 如果格式化参数没有提供给 make-condition, 那么 nil 就被用作默认值.
 
 * 也见(See Also):
 
-simple-condition-format-control, simple-condition-format-arguments 
+        simple-condition-format-control, simple-condition-format-arguments 
 
 
 ### <span id="F-SCFC-SCFA">函数 SIMPLE-CONDITION-FORMAT-CONTROL, SIMPLE-CONDITION-FORMAT-ARGUMENTS</span>
 
 * 语法(Syntax):
 
-simple-condition-format-control condition => format-control
+        simple-condition-format-control condition => format-control
 
-simple-condition-format-arguments condition => format-arguments
+        simple-condition-format-arguments condition => format-arguments
 
 * 参数和值(Arguments and Values):
 
-condition---a condition of type simple-condition.
-
-format-control---a format control.
-
-format-arguments---a list.
+        condition---一个 simple-condition 类型的状况.
+        format-control---一个格式化控制.
+        format-arguments---一个列表.
 
 * 描述(Description):
 
-simple-condition-format-control returns the format control needed to process the condition's format arguments.
+        simple-condition-format-control 返回处理这个状况 condition 的格式化参数所需要的格式化控制.
 
-simple-condition-format-arguments returns a list of format arguments needed to process the condition's format control.
+        simple-condition-format-arguments 返回一个处理这个状况 condition 的格式化控制所需要的格式化参数的列表.
 
 * 示例(Examples):
 
- (setq foo (make-condition 'simple-condition
-                          :format-control "Hi ~S"
-                          :format-arguments '(ho)))
-=>  #<SIMPLE-CONDITION 26223553>
- (apply #'format nil (simple-condition-format-control foo)
-                     (simple-condition-format-arguments foo))
-=>  "Hi HO"
+    ```LISP
+    (setq foo (make-condition 'simple-condition
+                              :format-control "Hi ~S"
+                              :format-arguments '(ho)))
+    =>  #<SIMPLE-CONDITION 26223553>
+    (apply #'format nil (simple-condition-format-control foo)
+                        (simple-condition-format-arguments foo))
+    =>  "Hi HO"
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -1202,7 +1201,7 @@ simple-condition-format-arguments returns a list of format arguments needed to p
 
 * 也见(See Also):
 
-simple-condition, Section 9.1 (Condition System Concepts)
+        simple-condition, Section 9.1 (Condition System Concepts)
 
 * 注意(Notes): None. 
 
@@ -1211,77 +1210,79 @@ simple-condition, Section 9.1 (Condition System Concepts)
 
 * 语法(Syntax):
 
-warn datum &rest arguments => nil
+        warn datum &rest arguments => nil
 
 * 参数和值(Arguments and Values):
 
-datum, arguments---designators for a condition of default type simple-warning.
+        datum, arguments---一个默认类型 simple-warning 的状况的标识符.
 
 * 描述(Description):
 
-Signals a condition of type warning. If the condition is not handled, reports the condition to error output.
+        发送一个类型 warning 的状况. 如果这个状况没有被处理, 报告这个状况到错误输出.
 
-The precise mechanism for warning is as follows:
+        警告的精确机制如下:
 
-The warning condition is signaled
+        这个 warning 状况被发出
 
-    While the warning condition is being signaled, the muffle-warning restart is established for use by a handler. If invoked, this restart bypasses further action by warn, which in turn causes warn to immediately return nil.
+            当这个 warning 状况要被发送时, 这个 muffle-warning 重启动会为了被一个处理者使用而被建立. 如果被调用了, 这个重启动绕开 warn 的进一步动作, 这个反过来导致了 warn 立即返回 nil.
 
-If no handler for the warning condition is found
+        如果没有找到这个 warning 状况的处理者
 
-    If no handlers for the warning condition are found, or if all such handlers decline, then the condition is reported to error output by warn in an implementation-dependent format.
+            如果没有找到这个 warning 状况的处理者, 或者这些处理者拒绝了, 那么这个状况会通过 warn 以一种依赖于具体实现的格式被报告到错误输出.
 
-nil is returned
+        返回了 nil
 
-    The value returned by warn if it returns is nil.
+            如果 warn 返回的是 nil 那么这个值就被 warn 返回.
 
 * 示例(Examples):
 
-  (defun foo (x)
-    (let ((result (* x 2)))
-      (if (not (typep result 'fixnum))
-          (warn "You're using very big numbers."))
-      result))
-=>  FOO
- 
-  (foo 3)
-=>  6
- 
-  (foo most-positive-fixnum)
->>  Warning: You're using very big numbers.
-=>  4294967294
- 
-  (setq *break-on-signals* t)
-=>  T
- 
-  (foo most-positive-fixnum)
->>  Break: Caveat emptor.
->>  To continue, type :CONTINUE followed by an option number.
->>   1: Return from Break.
->>   2: Abort to Lisp Toplevel.
->>  Debug> :continue 1
->>  Warning: You're using very big numbers.
-=>  4294967294
+    ```LISP
+      (defun foo (x)
+        (let ((result (* x 2)))
+          (if (not (typep result 'fixnum))
+              (warn "You're using very big numbers."))
+          result))
+    =>  FOO
+    
+      (foo 3)
+    =>  6
+    
+      (foo most-positive-fixnum)
+    >>  Warning: You're using very big numbers.
+    =>  4294967294
+    
+      (setq *break-on-signals* t)
+    =>  T
+    
+      (foo most-positive-fixnum)
+    >>  Break: Caveat emptor.
+    >>  To continue, type :CONTINUE followed by an option number.
+    >>   1: Return from Break.
+    >>   2: Abort to Lisp Toplevel.
+    >>  Debug> :continue 1
+    >>  Warning: You're using very big numbers.
+    =>  4294967294
+    ```
 
 * 副作用(Side Effects):
 
-A warning is issued. The debugger might be entered.
+        发出一个警告. 可能进入到调试器中.
 
 * 受此影响(Affected By):
 
-Existing handler bindings.
+        已存在的处理者绑定.
 
-*break-on-signals*, *error-output*.
+        *break-on-signals*, *error-output*.
 
 * 异常情况(Exceptional Situations):
 
-If datum is a condition and if the condition is not of type warning, or arguments is non-nil, an error of type type-error is signaled.
+        如果 datum 是一个状况并且这个状况不是类型 warning, 或者参数 arguments 不是 nil, 会发出一个类型 type-error 的错误.
 
-If datum is a condition type, the result of (apply #'make-condition datum arguments) must be of type warning or an error of type type-error is signaled.
+        如果 datum 是一个状况类型, (apply #'make-condition datum arguments) 的结果必须是类型 warning, 否则发出一个类型 type-error 的错误.
 
 * 也见(See Also):
 
-*break-on-signals*, muffle-warning, signal
+        *break-on-signals*, muffle-warning, signal
 
 * 注意(Notes): None. 
 
