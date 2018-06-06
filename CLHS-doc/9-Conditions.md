@@ -1291,54 +1291,56 @@ serious-condition, condition, t
 
 * 类优先级列表(Class Precedence List):
 
-simple-warning, simple-condition, warning, condition, t
+        simple-warning, simple-condition, warning, condition, t
 
 * 描述(Description):
 
-The type simple-warning represents conditions that are signaled by warn whenever a format control is supplied as the function's first argument. 
+        每当一个格式化控制被提供为这个 warn 的第一个参数, 类型 simple-warning 表示 warn 发送的状况. 
 
 
 ### <span id="F-INVOKE-DEBUGGER">函数 INVOKE-DEBUGGER</span>
 
 * 语法(Syntax):
 
-invoke-debugger condition =>|
+        invoke-debugger condition =>|
 
 * 参数和值(Arguments and Values):
 
-condition---a condition object.
+        condition---一个状况对象.
 
 * 描述(Description):
 
-invoke-debugger attempts to enter the debugger with condition.
+        invoke-debugger 尝试去和状况 condition 一起进入这个调试器.
 
-If *debugger-hook* is not nil, it should be a function (or the name of a function) to be called prior to entry to the standard debugger. The function is called with *debugger-hook* bound to nil, and the function must accept two arguments: the condition and the value of *debugger-hook* prior to binding it to nil. If the function returns normally, the standard debugger is entered.
+        如果 *debugger-hook* 不是 nil, 它应该是一个在进入标准调试器之前要被调用的函数(或者一个函数的名字). 随着 *debugger-hook* 绑定为 nil 这个函数被调用, 并且这个函数必须接受两个参数: 这个状况 condition 和这个 *debugger-hook* 被绑定给 nil 的值. 如果这个函数正常范围, 就进入标准调试器.
 
-The standard debugger never directly returns. Return can occur only by a non-local transfer of control, such as the use of a restart function.
+        标准调试器从不直接返回. 只有通过一个例如使用 restart 函数的非局部转移才可能返回.
 
 * 示例(Examples):
 
- (ignore-errors ;Normally, this would suppress debugger entry
-   (handler-bind ((error #'invoke-debugger)) ;But this forces debugger entry
-     (error "Foo.")))
-Debug: Foo.
-To continue, type :CONTINUE followed by an option number:
- 1: Return to Lisp Toplevel.
-Debug>
+    ```LISP
+    (ignore-errors ;Normally, this would suppress debugger entry
+      (handler-bind ((error #'invoke-debugger)) ;But this forces debugger entry
+        (error "Foo.")))
+    Debug: Foo.
+    To continue, type :CONTINUE followed by an option number:
+    1: Return to Lisp Toplevel.
+    Debug>
+    ```
 
 * 副作用(Side Effects):
 
-*debugger-hook* is bound to nil, program execution is discontinued, and the debugger is entered.
+        *debugger-hook* 被绑定为 nil, 程序执行不会继续, 然后就进入到调试器中.
 
 * 受此影响(Affected By):
 
-*debug-io* and *debugger-hook*.
+        *debug-io* 和 *debugger-hook*.
 
 * 异常情况(Exceptional Situations): None.
 
 * 也见(See Also):
 
-error, break
+        error, break
 
 * 注意(Notes): None. 
 
@@ -1347,185 +1349,190 @@ error, break
 
 * 语法(Syntax):
 
-break &optional format-control &rest format-arguments => nil
+        break &optional format-control &rest format-arguments => nil
 
 * 参数和值(Arguments and Values):
 
-format-control---a format control. The default is implementation-dependent.
-
-format-arguments---format arguments for the format-control.
+        format-control---一个格式化控制. 默认值是依赖于具体实现的.
+        format-arguments---这个 format-control 的格式化参数.
 
 * 描述(Description):
 
-break formats format-control and format-arguments and then goes directly into the debugger without allowing any possibility of interception by programmed error-handling facilities.
+        break 格式化 format-control 和 format-arguments, 然后在没有任何被程控的错误处理工具拦截可能的情况下直接进入调试器中.
 
-If the continue restart is used while in the debugger, break immediately returns nil without taking any unusual recovery action.
+        如果在这个调试器中, 这个 continue 重启动被使用, break 在没有采取任何不寻常的恢复动作的情况下立即返回 nil.
 
-break binds *debugger-hook* to nil before attempting to enter the debugger.
+        break 在尝试进入调试器之前把 *debugger-hook* 绑定为 nil.
 
 * 示例(Examples):
 
- (break "You got here with arguments: ~:S." '(FOO 37 A))
->>  BREAK: You got here with these arguments: FOO, 37, A.
->>  To continue, type :CONTINUE followed by an option number:
->>   1: Return from BREAK.
->>   2: Top level.
->>  Debug> :CONTINUE 1
->>  Return from BREAK.
-=>  NIL
- 
+    ```LISP
+    (break "You got here with arguments: ~:S." '(FOO 37 A))
+    >>  BREAK: You got here with these arguments: FOO, 37, A.
+    >>  To continue, type :CONTINUE followed by an option number:
+    >>   1: Return from BREAK.
+    >>   2: Top level.
+    >>  Debug> :CONTINUE 1
+    >>  Return from BREAK.
+    =>  NIL
+    ```
 
 * 副作用(Side Effects):
 
-The debugger is entered.
+        进入到调试器中.
 
 * 受此影响(Affected By):
 
-*debug-io*.
+        *debug-io*.
 
 * 异常情况(Exceptional Situations): None.
 
 * 也见(See Also):
 
-error, invoke-debugger.
+        error, invoke-debugger.
 
 * 注意(Notes):
 
-break is used as a way of inserting temporary debugging ``breakpoints'' in a program, not as a way of signaling errors. For this reason, break does not take the continue-format-control argument that cerror takes. This and the lack of any possibility of interception by condition handling are the only program-visible differences between break and cerror.
+        break 被用作在一个程序中临时插入调试"断点(breakpoints)"的方式, 而不是作为发送错误的方式. 由于这个原因, break 不接受这个 cerror 接受的 continue-format-control 参数. 这个以及通过状况处理的拦截可能性的缺失是 break 和 cerror 之间仅有的程序可见的区别.
 
-The user interface aspects of break and cerror are permitted to vary more widely, in order to accomodate the interface needs of the implementation. For example, it is permissible for a Lisp read-eval-print loop to be entered by break rather than the conventional debugger.
+        break 和 cerror 的用户接口方面允许更广泛的变化, 为了适应这个具体实现的接口需求. 比如, 对于一个 Lisp read-eval-print 循环允许通过 break 而不是常规的调试器来进入.
 
-break could be defined by:
+        break 可以通过下面这样定义:
 
- (defun break (&optional (format-control "Break") &rest format-arguments)
-   (with-simple-restart (continue "Return from BREAK.")
-     (let ((*debugger-hook* nil))
-       (invoke-debugger
-           (make-condition 'simple-condition
-                           :format-control format-control
-                           :format-arguments format-arguments))))
-   nil)
-
+    ```LISP
+    (defun break (&optional (format-control "Break") &rest format-arguments)
+      (with-simple-restart (continue "Return from BREAK.")
+        (let ((*debugger-hook* nil))
+          (invoke-debugger
+              (make-condition 'simple-condition
+                              :format-control format-control
+                              :format-arguments format-arguments))))
+      nil)
+    ```
 
 ### <span id="V-DEBUGGER-HOOK">变量 *DEBUGGER-HOOK*</span>
 
 * 值类型(Value Type):
 
-a designator for a function of two arguments (a condition and the value of *debugger-hook* at the time the debugger was entered), or nil.
+        一个两参数函数 (a condition and the value of *debugger-hook* at the time the debugger was entered) 的标识符, 或者 nil.
 
 * 初始值(Initial Value):
 
-nil.
+        nil.
 
 * 描述(Description):
 
-When the value of *debugger-hook* is non-nil, it is called prior to normal entry into the debugger, either due to a call to invoke-debugger or due to automatic entry into the debugger from a call to error or cerror with a condition that is not handled. The function may either handle the condition (transfer control) or return normally (allowing the standard debugger to run). To minimize recursive errors while debugging, *debugger-hook* is bound to nil by invoke-debugger prior to calling the function.
+        当这个 *debugger-hook* 的值不是 nil, 它在正常进入调试器前被调用, 不管是由于调用 invoke-debugger 或是从一个带有一个未被处理的状况的 error 或 cerror 调用中进入调试器. 这个函数可能处理这个状况 (转移控制) 或者正常返回 (允许标准这个标准调试器来运行). 为了最小化调试期间的递归错误, *debugger-hook* 在调用这个函数前通过 invoke-debugger 被绑定为 nil.
 
 * 示例(Examples):
 
- (defun one-of (choices &optional (prompt "Choice"))
-   (let ((n (length choices)) (i))
-     (do ((c choices (cdr c)) (i 1 (+ i 1)))
-         ((null c))
-       (format t "~&[~D] ~A~%" i (car c)))
-     (do () ((typep i `(integer 1 ,n)))
-       (format t "~&~A: " prompt)
-       (setq i (read))
-       (fresh-line))
-     (nth (- i 1) choices)))
+    ```LISP
+    (defun one-of (choices &optional (prompt "Choice"))
+      (let ((n (length choices)) (i))
+        (do ((c choices (cdr c)) (i 1 (+ i 1)))
+            ((null c))
+          (format t "~&[~D] ~A~%" i (car c)))
+        (do () ((typep i `(integer 1 ,n)))
+          (format t "~&~A: " prompt)
+          (setq i (read))
+          (fresh-line))
+        (nth (- i 1) choices)))
 
- (defun my-debugger (condition me-or-my-encapsulation)
-   (format t "~&Fooey: ~A" condition)
-   (let ((restart (one-of (compute-restarts))))
-     (if (not restart) (error "My debugger got an error."))
-     (let ((*debugger-hook* me-or-my-encapsulation))
-       (invoke-restart-interactively restart))))
- 
- (let ((*debugger-hook* #'my-debugger))
-   (+ 3 'a))
->>  Fooey: The argument to +, A, is not a number.
->>   [1] Supply a replacement for A.
->>   [2] Return to Cloe Toplevel.
->>  Choice: 1
->>   Form to evaluate and use: (+ 5 'b)
->>   Fooey: The argument to +, B, is not a number.
->>   [1] Supply a replacement for B.
->>   [2] Supply a replacement for A.
->>   [3] Return to Cloe Toplevel.
->>  Choice: 1
->>   Form to evaluate and use: 1
-=>  9
+    (defun my-debugger (condition me-or-my-encapsulation)
+      (format t "~&Fooey: ~A" condition)
+      (let ((restart (one-of (compute-restarts))))
+        (if (not restart) (error "My debugger got an error."))
+        (let ((*debugger-hook* me-or-my-encapsulation))
+          (invoke-restart-interactively restart))))
+    
+    (let ((*debugger-hook* #'my-debugger))
+      (+ 3 'a))
+    >>  Fooey: The argument to +, A, is not a number.
+    >>   [1] Supply a replacement for A.
+    >>   [2] Return to Cloe Toplevel.
+    >>  Choice: 1
+    >>   Form to evaluate and use: (+ 5 'b)
+    >>   Fooey: The argument to +, B, is not a number.
+    >>   [1] Supply a replacement for B.
+    >>   [2] Supply a replacement for A.
+    >>   [3] Return to Cloe Toplevel.
+    >>  Choice: 1
+    >>   Form to evaluate and use: 1
+    =>  9
+    ```
 
 * 受此影响(Affected By):
 
-invoke-debugger
+        invoke-debugger
 
 * 也见(See Also): None.
 
 * 注意(Notes):
 
-When evaluating code typed in by the user interactively, it is sometimes useful to have the hook function bind *debugger-hook* to the function that was its second argument so that recursive errors can be handled using the same interactive facility. 
+        在求值用户交互式输入的代码时, 有时候, 让钩子函数绑定 *debugger-hook* 到它的第二个参数的函数是很有用的, 这样就可以使用相同的交互式工具来处理递归错误了. 
 
 
 ### <span id="V-BREAK-ON-SIGNALS">变量 *BREAK-ON-SIGNALS*</span>
-
+<!--TODO 待校验-->
 * 值类型(Value Type):
 
-a type specifier.
+        一个类型特化符.
 
 * 初始值(Initial Value):
 
-nil.
+        nil.
 
 * 描述(Description):
 
-When (typep condition *break-on-signals*) returns true, calls to signal, and to other operators such as error that implicitly call signal, enter the debugger prior to signaling the condition.
+        当 (typep condition *break-on-signals*) 返回 true 时, 调用 signal, 以及调用其他像 error 这样显式调用 signal 的操作符, 在发送这个状况前进入到调试器中.
 
-The continue restart can be used to continue with the normal signaling process when a break occurs process due to *break-on-signals*.
+        当一个 break 由于 *break-on-signals* 发生时, 这个 continue 重启动可以被用于继续这个正常的发送过程.
 
 * 示例(Examples):
 
- *break-on-signals* =>  NIL
- (ignore-errors (error 'simple-error :format-control "Fooey!"))
-=>  NIL, #<SIMPLE-ERROR 32207172>
+    ```LISP
+    *break-on-signals* =>  NIL
+    (ignore-errors (error 'simple-error :format-control "Fooey!"))
+    =>  NIL, #<SIMPLE-ERROR 32207172>
 
- (let ((*break-on-signals* 'error))
-   (ignore-errors (error 'simple-error :format-control "Fooey!")))
->>  Break: Fooey!
->>  BREAK entered because of *BREAK-ON-SIGNALS*.
->>  To continue, type :CONTINUE followed by an option number:
->>   1: Continue to signal.
->>   2: Top level.
->>  Debug> :CONTINUE 1
->>  Continue to signal.
-=>  NIL, #<SIMPLE-ERROR 32212257>
+    (let ((*break-on-signals* 'error))
+      (ignore-errors (error 'simple-error :format-control "Fooey!")))
+    >>  Break: Fooey!
+    >>  BREAK entered because of *BREAK-ON-SIGNALS*.
+    >>  To continue, type :CONTINUE followed by an option number:
+    >>   1: Continue to signal.
+    >>   2: Top level.
+    >>  Debug> :CONTINUE 1
+    >>  Continue to signal.
+    =>  NIL, #<SIMPLE-ERROR 32212257>
 
- (let ((*break-on-signals* 'error))
-   (error 'simple-error :format-control "Fooey!"))
->>  Break: Fooey!
->>  BREAK entered because of *BREAK-ON-SIGNALS*.
->>  To continue, type :CONTINUE followed by an option number:
->>   1: Continue to signal.
->>   2: Top level.
->>  Debug> :CONTINUE 1
->>  Continue to signal.
->>  Error: Fooey!
->>  To continue, type :CONTINUE followed by an option number:
->>   1: Top level.
->>  Debug> :CONTINUE 1
->>  Top level.
+    (let ((*break-on-signals* 'error))
+      (error 'simple-error :format-control "Fooey!"))
+    >>  Break: Fooey!
+    >>  BREAK entered because of *BREAK-ON-SIGNALS*.
+    >>  To continue, type :CONTINUE followed by an option number:
+    >>   1: Continue to signal.
+    >>   2: Top level.
+    >>  Debug> :CONTINUE 1
+    >>  Continue to signal.
+    >>  Error: Fooey!
+    >>  To continue, type :CONTINUE followed by an option number:
+    >>   1: Top level.
+    >>  Debug> :CONTINUE 1
+    >>  Top level.
+    ```
 
 * 受此影响(Affected By): None.
 
 * 也见(See Also):
 
-break, signal, warn, error, typep, Section 9.1 (Condition System Concepts)
+        break, signal, warn, error, typep, Section 9.1 (Condition System Concepts)
 
 * 注意(Notes):
 
-*break-on-signals* is intended primarily for use in debugging code that does signaling. When setting *break-on-signals*, the user is encouraged to choose the most restrictive specification that suffices. Setting *break-on-signals* effectively violates the modular handling of condition signaling. In practice, the complete effect of setting *break-on-signals* might be unpredictable in some cases since the user might not be aware of the variety or number of calls to signal that are used in code called only incidentally.
+        *break-on-signals* 主要用于调试已经发送的代码. 当设置了 *break-on-signals* 时, 鼓励用户去选择满足的最约束的说明. 设置 *break-on-signals* 实际上违反了状况发送的模块化处理. 事实上, 设置 *break-on-signals* 的完整影响在某些方面可能是不可预测的, 因为用户可能没有意识到在代码中使用的对 signal 调用的种类和数量.
 
-*break-on-signals* enables an early entry to the debugger but such an entry does not preclude an additional entry to the debugger in the case of operations such as error and cerror. 
+        *break-on-signals* 允许早期进入调试器, 但是这样的一个进入不会阻止例如 error 和 cerror 这样的操作下额外进入调试器. 
 
 
 ### <span id="M-HANDLER-BIND">宏 HANDLER-BIND</span>
