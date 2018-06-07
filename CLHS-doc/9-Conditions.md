@@ -1539,58 +1539,58 @@ serious-condition, condition, t
 
 * 语法(Syntax):
 
-handler-bind ({binding}*) form* => result*
+        handler-bind ({binding}*) form* => result*
 
-binding::= (type handler) 
+        binding::= (type handler) 
 
 * 参数和值(Arguments and Values):
 
-type---a type specifier.
-
-handler---a form; evaluated to produce a handler-function.
-
-handler-function---a designator for a function of one argument.
-
-forms---an implicit progn.
-
-results---the values returned by the forms.
+        type---一个类型特化符.
+        handler---一个表达式形式; 求值后产生一个 handler-function.
+        handler-function---一个单参数函数的标识符.
+        forms---一个隐式的 progn.
+        results---表达式形式 forms 返回的值.
 
 * 描述(Description):
 
-Executes forms in a dynamic environment where the indicated handler bindings are in effect.
+        在一个动态环境中执行表达式形式, 其中这个表示的处理者绑定是生效的.
 
-Each handler should evaluate to a handler-function, which is used to handle conditions of the given type during execution of the forms. This function should take a single argument, the condition being signaled.
+        每个处理者应该被求值为一个处理者函数 handler-function, 它被用于在执行这些表达式形式 forms 期间处理给定类型的状况. 这个函数应该接收单个参数, 就是要被发送的这个状况.
 
-If more than one handler binding is supplied, the handler bindings are searched sequentially from top to bottom in search of a match (by visual analogy with typecase). If an appropriate type is found, the associated handler is run in a dynamic environment where none of these handler bindings are visible (to avoid recursive errors). If the handler declines, the search continues for another handler.
+        如果提供了超过一个处理者, 这些处理者绑定从上到下依次搜索来寻找匹配 (通过使用 typecase 来做视觉类比). 如果找到一个合适的类型, 关联的处理者在一个动态环境中运行, 其中这些处理者绑定都不是可见的 (来避免递归错误). 如果这个处理者拒绝了, 这个搜索就继续到另一个处理者.
 
-If no appropriate handler is found, other handlers are sought from dynamically enclosing contours. If no handler is found outside, then signal returns or error enters the debugger.
+        如果没有找到合适的处理者, 其他处理者从动态闭合 contours 中寻找. 如果在外边没有找到处理者, 那么 signal 返回或者 error 进入到调试器中.
 
 * 示例(Examples):
 
-In the following code, if an unbound variable error is signaled in the body (and not handled by an intervening handler), the first function is called.
+        在以下代码中, 如果一个未绑定的变量 error 在这个主体中被发送 (并且没有被一个介入的处理者处理), 第一个函数会被调用.
 
- (handler-bind ((unbound-variable #'(lambda ...))
-                (error #'(lambda ...)))
-   ...)
+    ```LISP
+    (handler-bind ((unbound-variable #'(lambda ...))
+                    (error #'(lambda ...)))
+      ...)
+    ```
 
-If any other kind of error is signaled, the second function is called. In either case, neither handler is active while executing the code in the associated function.
+        如果任何其他种类的 error 被发送, 第二个函数会被调用. 不论发生何种情况, 在执行相关函数的代码期间这些处理者都不是活跃的.
 
- (defun trap-error-handler (condition)
-   (format *error-output* "~&~A~&" condition)
-   (throw 'trap-errors nil))
+    ```LISP
+    (defun trap-error-handler (condition)
+      (format *error-output* "~&~A~&" condition)
+      (throw 'trap-errors nil))
 
- (defmacro trap-errors (&rest forms)
-   `(catch 'trap-errors
-      (handler-bind ((error #'trap-error-handler))
-        ,@forms)))
- 
- (list (trap-errors (signal "Foo.") 1)
-       (trap-errors (error  "Bar.") 2)
-       (+ 1 2))
->>  Bar.
-=>  (1 NIL 3)
+    (defmacro trap-errors (&rest forms)
+      `(catch 'trap-errors
+          (handler-bind ((error #'trap-error-handler))
+            ,@forms)))
+    
+    (list (trap-errors (signal "Foo.") 1)
+          (trap-errors (error  "Bar.") 2)
+          (+ 1 2))
+    >>  Bar.
+    =>  (1 NIL 3)
+    ```
 
-Note that ``Foo.'' is not printed because the condition made by signal is a simple condition, which is not of type error, so it doesn't trigger the handler for error set up by trap-errors.
+        注意, 这个 "Foo." 不会被打印, 因为这个 signal 发送的状况是一个 simple-condition 类型的简单状况, 它不是类型 error, 所以它不会触发 trap-errors 设置的 error 的处理者.
 
 * 副作用(Side Effects): None.
 
@@ -1600,7 +1600,7 @@ Note that ``Foo.'' is not printed because the condition made by signal is a simp
 
 * 也见(See Also):
 
-handler-case
+        handler-case
 
 * 注意(Notes): None. 
 
@@ -1609,73 +1609,69 @@ handler-case
 
 * 语法(Syntax):
 
-handler-case expression [[{error-clause}* | no-error-clause]] => result*
+        handler-case expression [[{error-clause}* | no-error-clause]] => result*
 
-clause::= error-clause | no-error-clause 
+        clause::= error-clause | no-error-clause 
 
-error-clause::= (typespec ([var]) declaration* form*) 
+        error-clause::= (typespec ([var]) declaration* form*) 
 
-no-error-clause::= (:no-error lambda-list declaration* form*) 
+        no-error-clause::= (:no-error lambda-list declaration* form*) 
 
 * 参数和值(Arguments and Values):
 
-expression---a form.
-
-typespec---a type specifier.
-
-var---a variable name.
-
-lambda-list---an ordinary lambda list.
-
-declaration---a declare expression; not evaluated.
-
-form---a form.
-
-results---In the normal situation, the values returned are those that result from the evaluation of expression; in the exceptional situation when control is transferred to a clause, the value of the last form in that clause is returned.
+        expression---一个表达式形式.
+        typespec---一个类型特化符.
+        var---一个变量名字.
+        lambda-list---一个普通 lambda 列表.
+        declaration---一个 declare 表达式; 不求值的.
+        form---一个表达式形式.
+        results---在正常的情况下, 返回的值是那些表达式 expression 求值的结果; 在这个当控制被转移到一个子句 clause 中的异常情况中, 在那个 clause 中的最后一个表达式形式 form 的值会被返回.
 
 * 描述(Description):
+<!--TODO 待校验-->
+        handler-case 在一个各种处理者都活跃的动态环境中执行表达式 expression. 每个 error-clause 指定如果去处理一个匹配那个类型特化符 typespec 的状况. 如果控制正常返回, 那么一个 no-error-clause 允许一个特定动作的规范.
 
-handler-case executes expression in a dynamic environment where various handlers are active. Each error-clause specifies how to handle a condition matching the indicated typespec. A no-error-clause allows the specification of a particular action if control returns normally.
+        如果在表达式 expression 求值期间一个有着合适的 error-clause 的状况被发送 (换句话说, (typep condition 'typespec) 返回 true) 并且如果这里没有这个类型状况的介入处理者, 那么控制被装一到这个相关 error-clause 的主体当中. 在这个情况下, 这个动态的状态被解开 (这样这些在表达式 expression 周围建立的处理者不再是活跃的), 并且 var 被绑定为这个要被发送的状况. 如果提供了不止一个情况(case), 这些情况是平行的. 这也就是说, 在下面这个表达式形式中
 
-If a condition is signaled for which there is an appropriate error-clause during the execution of expression (i.e., one for which (typep condition 'typespec) returns true) and if there is no intervening handler for a condition of that type, then control is transferred to the body of the relevant error-clause. In this case, the dynamic state is unwound appropriately (so that the handlers established around the expression are no longer active), and var is bound to the condition that had been signaled. If more than one case is provided, those cases are made accessible in parallel. That is, in
+          (handler-case form
+            (typespec1 (var1) form1)
+            (typespec2 (var2) form2))
 
-  (handler-case form
-    (typespec1 (var1) form1)
-    (typespec2 (var2) form2))
+        如果第一个子句 (包括 form1) 已经被选择了, 第二个的处理者不再是可见的 (反之亦然).
 
-if the first clause (containing form1) has been selected, the handler for the second is no longer visible (or vice versa).
+        这些子句依次从上倒下被搜索. 如果这里有一个类型在 typespecs 之间重叠, 选择这些子句中更早的那个.
 
-The clauses are searched sequentially from top to bottom. If there is type overlap between typespecs, the earlier of the clauses is selected.
+        如果不需要 var, 它可以被省略. 这也就是说, 一个像这样的子句:
 
-If var is not needed, it can be omitted. That is, a clause such as:
+          (typespec (var) (declare (ignore var)) form)
 
-  (typespec (var) (declare (ignore var)) form)
+        可以被写为 (typespec () form).
 
-can be written (typespec () form).
-
-If there are no forms in a selected clause, the case, and therefore handler-case, returns nil. If execution of expression returns normally and no no-error-clause exists, the values returned by expression are returned by handler-case. If execution of expression returns normally and a no-error-clause does exist, the values returned are used as arguments to the function described by constructing (lambda lambda-list form*) from the no-error-clause, and the values of that function call are returned by handler-case. The handlers which were established around the expression are no longer active at the time of this call.
+        如果在一个选择的子句 clause 中没有表达式形式, 那么这个情况, 以及 handler-case, 返回 nil. 如果表达式 expression 的执行正常返回并且不存在 no-error-clause, 表达式 expression 返回的值会被 handler-case 返回. 如果表达式 expression 的执行正常返回并且存在一个 no-error-clause, 返回的值被用作给从 no-error-clause 通过构造 (lambda lambda-list form*) 所描述函数的参数, 并且这个函数调用的值会被 handler-case 返回. 在这个调用时, 在表达式 expression 周围建立的处理者不再是活跃的.
 
 * 示例(Examples):
 
- (defun assess-condition (condition)
-   (handler-case (signal condition)
-     (warning () "Lots of smoke, but no fire.")
-     ((or arithmetic-error control-error cell-error stream-error)
-        (condition)
-       (format nil "~S looks especially bad." condition))
-     (serious-condition (condition)
-       (format nil "~S looks serious." condition))
-     (condition () "Hardly worth mentioning.")))
-=>  ASSESS-CONDITION
- (assess-condition (make-condition 'stream-error :stream *terminal-io*))
-=>  "#<STREAM-ERROR 12352256> looks especially bad."
- (define-condition random-condition (condition) () 
-   (:report (lambda (condition stream)
-              (declare (ignore condition))
-              (princ "Yow" stream))))
-=>  RANDOM-CONDITION
- (assess-condition (make-condition 'random-condition))
-=>  "Hardly worth mentioning."
+    ```LISP
+    (defun assess-condition (condition)
+      (handler-case (signal condition)
+        (warning () "Lots of smoke, but no fire.")
+        ((or arithmetic-error control-error cell-error stream-error)
+            (condition)
+          (format nil "~S looks especially bad." condition))
+        (serious-condition (condition)
+          (format nil "~S looks serious." condition))
+        (condition () "Hardly worth mentioning.")))
+    =>  ASSESS-CONDITION
+    (assess-condition (make-condition 'stream-error :stream *terminal-io*))
+    =>  "#<STREAM-ERROR 12352256> looks especially bad."
+    (define-condition random-condition (condition) () 
+      (:report (lambda (condition stream)
+                  (declare (ignore condition))
+                  (princ "Yow" stream))))
+    =>  RANDOM-CONDITION
+    (assess-condition (make-condition 'random-condition))
+    =>  "Hardly worth mentioning."
+    ```
 
 * 受此影响(Affected By): None.
 
@@ -1683,44 +1679,50 @@ If there are no forms in a selected clause, the case, and therefore handler-case
 
 * 也见(See Also):
 
-handler-bind, ignore-errors, Section 9.1 (Condition System Concepts)
+        handler-bind, ignore-errors, Section 9.1 (Condition System Concepts)
 
 * 注意(Notes):
 
- (handler-case form
-   (type1 (var1) . body1)
-   (type2 (var2) . body2) ...)
+    ```LISP
+    (handler-case form
+      (type1 (var1) . body1)
+      (type2 (var2) . body2) ...)
+    ```
 
-is approximately equivalent to:
+        大约等价于:
 
- (block #1=#:g0001
-   (let ((#2=#:g0002 nil))
-     (tagbody
-       (handler-bind ((type1 #'(lambda (temp)
-                                       (setq #1# temp)
-                                       (go #3=#:g0003)))
-                      (type2 #'(lambda (temp)
-                                       (setq #2# temp)
-                                       (go #4=#:g0004))) ...)
-       (return-from #1# form))
-         #3# (return-from #1# (let ((var1 #2#)) . body1))
-         #4# (return-from #1# (let ((var2 #2#)) . body2)) ...)))
+    ```LISP
+    (block #1=#:g0001
+      (let ((#2=#:g0002 nil))
+        (tagbody
+          (handler-bind ((type1 #'(lambda (temp)
+                                          (setq #1# temp)
+                                          (go #3=#:g0003)))
+                          (type2 #'(lambda (temp)
+                                          (setq #2# temp)
+                                          (go #4=#:g0004))) ...)
+          (return-from #1# form))
+            #3# (return-from #1# (let ((var1 #2#)) . body1))
+            #4# (return-from #1# (let ((var2 #2#)) . body2)) ...)))
+    ```
 
- (handler-case form
-   (type1 (var1) . body1)
-   ...
-   (:no-error (varN-1 varN-2 ...) . bodyN))
+    ```LISP
+    (handler-case form
+      (type1 (var1) . body1)
+      ...
+      (:no-error (varN-1 varN-2 ...) . bodyN))
+    ```
 
-is approximately equivalent to:
+        大约等价于:
 
-
- (block #1=#:error-return
-  (multiple-value-call #'(lambda (varN-1 varN-2 ...) . bodyN)
-     (block #2=#:normal-return
-       (return-from #1#
-         (handler-case (return-from #2# form)
-           (type1 (var1) . body1) ...)))))
-
+    ```LISP
+    (block #1=#:error-return
+      (multiple-value-call #'(lambda (varN-1 varN-2 ...) . bodyN)
+        (block #2=#:normal-return
+          (return-from #1#
+            (handler-case (return-from #2# form)
+              (type1 (var1) . body1) ...)))))
+    ```
 
 ### <span id="M-IGNORE-ERRORS">宏 IGNORE-ERRORS</span>
 
