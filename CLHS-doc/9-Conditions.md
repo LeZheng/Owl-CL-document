@@ -1728,36 +1728,37 @@ serious-condition, condition, t
 
 * 语法(Syntax):
 
-ignore-errors form* => result*
+        ignore-errors form* => result*
 
 * 参数和值(Arguments and Values):
 
-forms---an implicit progn.
-
-results---In the normal situation, the values of the forms are returned; in the exceptional situation, two values are returned: nil and the condition.
+        forms---一个隐式的 progn.
+        results---在正常情况下, 这些表达式形式 forms 的值被返回; 在异常情况中, 返回两个值: nil 和这个状况.
 
 * 描述(Description):
 
-ignore-errors is used to prevent conditions of type error from causing entry into the debugger.
+        ignore-errors 被用于阻止 error 类型的错误去导致进入调试器.
 
-Specifically, ignore-errors executes forms in a dynamic environment where a handler for conditions of type error has been established; if invoked, it handles such conditions by returning two values, nil and the condition that was signaled, from the ignore-errors form.
+        具体的说, ignore-errors 在一个 error 类型的状况的处理者被建立的动态环境中执行这些表达式形式 forms; 如果被调用了, 它通过从 ignore-errors 表达式形式中返回两个值, nil 和这个被发送的状况, 来处理这样的状况.
 
-If a normal return from the forms occurs, any values returned are returned by ignore-errors.
+        如果发生了一个从这些表达式形式 forms 正常返回, 那么返回的任何值都被 ignore-errors 返回.
 
 * 示例(Examples):
 
- (defun load-init-file (program)
-   (let ((win nil))
-     (ignore-errors ;if this fails, don't enter debugger
-       (load (merge-pathnames (make-pathname :name program :type :lisp)
-                              (user-homedir-pathname)))
-       (setq win t))
-     (unless win (format t "~&Init file failed to load.~%"))
-     win))
- 
- (load-init-file "no-such-program")
->>  Init file failed to load.
-NIL
+    ```LISP
+    (defun load-init-file (program)
+      (let ((win nil))
+        (ignore-errors ;if this fails, don't enter debugger
+          (load (merge-pathnames (make-pathname :name program :type :lisp)
+                                  (user-homedir-pathname)))
+          (setq win t))
+        (unless win (format t "~&Init file failed to load.~%"))
+        win))
+    
+    (load-init-file "no-such-program")
+    >>  Init file failed to load.
+    NIL
+    ```
 
 * 受此影响(Affected By): None.
 
@@ -1765,18 +1766,18 @@ NIL
 
 * 也见(See Also):
 
-handler-case, Section 9.1 (Condition System Concepts)
+        handler-case, Section 9.1 (Condition System Concepts)
 
 * 注意(Notes):
 
- (ignore-errors . forms)
+        (ignore-errors . forms)
 
-is equivalent to:
+        等价于:
 
- (handler-case (progn . forms)
-   (error (condition) (values nil condition)))
+        (handler-case (progn . forms)
+          (error (condition) (values nil condition)))
 
-Because the second return value is a condition in the exceptional case, it is common (but not required) to arrange for the second return value in the normal case to be missing or nil so that the two situations can be distinguished. 
+        由于第二个返回值是在异常情况中的一个状况, 通常(但不是必须)在正常情况下第二个返回值被安排为缺失的或者 nil, 这样这两个情况就可以被区分开来. 
 
 
 ### <span id="M-DEFINE-CONDITION">宏 DEFINE-CONDITION</span>
@@ -2896,165 +2897,167 @@ Section 9.1.4.2 (Restarts), Section 9.1.4.2.2 (重启动的接口), invoke-resta
 
 * 语法(Syntax):
 
-abort &optional condition =>|
+        abort &optional condition =>|
 
-continue &optional condition => nil
+        continue &optional condition => nil
 
-muffle-warning &optional condition =>|
+        muffle-warning &optional condition =>|
 
-store-value value &optional condition => nil
+        store-value value &optional condition => nil
 
-use-value value &optional condition => nil
+        use-value value &optional condition => nil
 
 * 参数和值(Arguments and Values):
 
-value---an object.
-
-condition---a condition object, or nil.
+        value---一个对象.
+        condition---一个状况对象, 或者 nil.
 
 * 描述(Description):
 
-Transfers control to the most recently established applicable restart having the same name as the function. That is, the function abort searches for an applicable abort restart, the function continue searches for an applicable continue restart, and so on.
+        转移控制到最新建立的可应用的有着和这个函数相同名字的重启动. 这也就是说, 函数 abort 搜索一个可应用的 abort 重启动, 函数 continue 搜索一个可应用的 continue 重启动, 诸如此类.
 
-If no such restart exists, the functions continue, store-value, and use-value return nil, and the functions abort and muffle-warning signal an error of type control-error.
+        如果不存在这样的重启动, 函数 continue, store-value, 和 use-value 返回 nil, 并且函数 abort 和 muffle-warning 发出一个 control-error 类型的错误.
 
-When condition is non-nil, only those restarts are considered that are either explicitly associated with that condition, or not associated with any condition; that is, the excluded restarts are those that are associated with a non-empty set of conditions of which the given condition is not an element. If condition is nil, all restarts are considered.
+        当状况 condition 不是 nil, 只有那些和那个状况显式关联的或者没有和任何状况关联的重启动会被考虑; 这也就是说, 没有包含的重启动是那些和一个不包含给定状况 condition 的非空状况集合关联的重启动, 所有的重启动都会被考虑.
 
 * 示例(Examples):
 
-;;; Example of the ABORT retart
+    ```LISP
+    ;;; Example of the ABORT retart
 
- (defmacro abort-on-error (&body forms)
-   `(handler-bind ((error #'abort))
-      ,@forms)) =>  ABORT-ON-ERROR
- (abort-on-error (+ 3 5)) =>  8
- (abort-on-error (error "You lose."))
->>  Returned to Lisp Top Level.
+    (defmacro abort-on-error (&body forms)
+      `(handler-bind ((error #'abort))
+          ,@forms)) =>  ABORT-ON-ERROR
+    (abort-on-error (+ 3 5)) =>  8
+    (abort-on-error (error "You lose."))
+    >>  Returned to Lisp Top Level.
 
-;;; Example of the CONTINUE restart
+    ;;; Example of the CONTINUE restart
 
- (defun real-sqrt (n)
-   (when (minusp n)
-     (setq n (- n))
-     (cerror "Return sqrt(~D) instead." "Tried to take sqrt(-~D)." n))
-   (sqrt n))
+    (defun real-sqrt (n)
+      (when (minusp n)
+        (setq n (- n))
+        (cerror "Return sqrt(~D) instead." "Tried to take sqrt(-~D)." n))
+      (sqrt n))
 
- (real-sqrt 4) =>  2
- (real-sqrt -9)
->>  Error: Tried to take sqrt(-9).
->>  To continue, type :CONTINUE followed by an option number:
->>   1: Return sqrt(9) instead.
->>   2: Return to Lisp Toplevel.
->>  Debug> (continue)
->>  Return sqrt(9) instead.
-=>  3
- 
- (handler-bind ((error #'(lambda (c) (continue))))
-   (real-sqrt -9)) =>  3
+    (real-sqrt 4) =>  2
+    (real-sqrt -9)
+    >>  Error: Tried to take sqrt(-9).
+    >>  To continue, type :CONTINUE followed by an option number:
+    >>   1: Return sqrt(9) instead.
+    >>   2: Return to Lisp Toplevel.
+    >>  Debug> (continue)
+    >>  Return sqrt(9) instead.
+    =>  3
+    
+    (handler-bind ((error #'(lambda (c) (continue))))
+      (real-sqrt -9)) =>  3
 
-;;; Example of the MUFFLE-WARNING restart
+    ;;; Example of the MUFFLE-WARNING restart
 
- (defun count-down (x)
-   (do ((counter x (1- counter)))
-       ((= counter 0) 'done)
-     (when (= counter 1)
-       (warn "Almost done"))
-     (format t "~&~D~%" counter)))
-=>  COUNT-DOWN
- (count-down 3)
->>  3
->>  2
->>  Warning: Almost done
->>  1
-=>  DONE
- (defun ignore-warnings-while-counting (x)
-   (handler-bind ((warning #'ignore-warning))
-     (count-down x)))
-=>  IGNORE-WARNINGS-WHILE-COUNTING
- (defun ignore-warning (condition)
-   (declare (ignore condition))
-   (muffle-warning))
-=>  IGNORE-WARNING
- (ignore-warnings-while-counting 3)
->>  3
->>  2
->>  1
-=>  DONE
+    (defun count-down (x)
+      (do ((counter x (1- counter)))
+          ((= counter 0) 'done)
+        (when (= counter 1)
+          (warn "Almost done"))
+        (format t "~&~D~%" counter)))
+    =>  COUNT-DOWN
+    (count-down 3)
+    >>  3
+    >>  2
+    >>  Warning: Almost done
+    >>  1
+    =>  DONE
+    (defun ignore-warnings-while-counting (x)
+      (handler-bind ((warning #'ignore-warning))
+        (count-down x)))
+    =>  IGNORE-WARNINGS-WHILE-COUNTING
+    (defun ignore-warning (condition)
+      (declare (ignore condition))
+      (muffle-warning))
+    =>  IGNORE-WARNING
+    (ignore-warnings-while-counting 3)
+    >>  3
+    >>  2
+    >>  1
+    =>  DONE
 
-;;; Example of the STORE-VALUE and USE-VALUE restarts
+    ;;; Example of the STORE-VALUE and USE-VALUE restarts
 
- (defun careful-symbol-value (symbol)
-   (check-type symbol symbol)
-   (restart-case (if (boundp symbol)
-                     (return-from careful-symbol-value 
-                                  (symbol-value symbol))
-                     (error 'unbound-variable
-                            :name symbol))
-     (use-value (value)
-       :report "Specify a value to use this time."
-       value)
-     (store-value (value)
-       :report "Specify a value to store and use in the future."
-       (setf (symbol-value symbol) value))))
- (setq a 1234) =>  1234
- (careful-symbol-value 'a) =>  1234
- (makunbound 'a) =>  A
- (careful-symbol-value 'a)
->>  Error: A is not bound.
->>  To continue, type :CONTINUE followed by an option number.
->>   1: Specify a value to use this time.
->>   2: Specify a value to store and use in the future.
->>   3: Return to Lisp Toplevel.
->>  Debug> (use-value 12)
-=>  12
- (careful-symbol-value 'a)
->>  Error: A is not bound.
->>  To continue, type :CONTINUE followed by an option number.
->>    1: Specify a value to use this time.
->>    2: Specify a value to store and use in the future.
->>    3: Return to Lisp Toplevel.
->>  Debug> (store-value 24)
-=>  24
- (careful-symbol-value 'a)
-=>  24
+    (defun careful-symbol-value (symbol)
+      (check-type symbol symbol)
+      (restart-case (if (boundp symbol)
+                        (return-from careful-symbol-value 
+                                      (symbol-value symbol))
+                        (error 'unbound-variable
+                                :name symbol))
+        (use-value (value)
+          :report "Specify a value to use this time."
+          value)
+        (store-value (value)
+          :report "Specify a value to store and use in the future."
+          (setf (symbol-value symbol) value))))
+    (setq a 1234) =>  1234
+    (careful-symbol-value 'a) =>  1234
+    (makunbound 'a) =>  A
+    (careful-symbol-value 'a)
+    >>  Error: A is not bound.
+    >>  To continue, type :CONTINUE followed by an option number.
+    >>   1: Specify a value to use this time.
+    >>   2: Specify a value to store and use in the future.
+    >>   3: Return to Lisp Toplevel.
+    >>  Debug> (use-value 12)
+    =>  12
+    (careful-symbol-value 'a)
+    >>  Error: A is not bound.
+    >>  To continue, type :CONTINUE followed by an option number.
+    >>    1: Specify a value to use this time.
+    >>    2: Specify a value to store and use in the future.
+    >>    3: Return to Lisp Toplevel.
+    >>  Debug> (store-value 24)
+    =>  24
+    (careful-symbol-value 'a)
+    =>  24
 
-;;; Example of the USE-VALUE restart
+    ;;; Example of the USE-VALUE restart
 
- (defun add-symbols-with-default (default &rest symbols)
-   (handler-bind ((sys:unbound-symbol
-                    #'(lambda (c)
-                        (declare (ignore c)) 
-                        (use-value default))))
-     (apply #'+ (mapcar #'careful-symbol-value symbols))))
-=>  ADD-SYMBOLS-WITH-DEFAULT
- (setq x 1 y 2) =>  2
- (add-symbols-with-default 3 'x 'y 'z) =>  6
-
+    (defun add-symbols-with-default (default &rest symbols)
+      (handler-bind ((sys:unbound-symbol
+                        #'(lambda (c)
+                            (declare (ignore c)) 
+                            (use-value default))))
+        (apply #'+ (mapcar #'careful-symbol-value symbols))))
+    =>  ADD-SYMBOLS-WITH-DEFAULT
+    (setq x 1 y 2) =>  2
+    (add-symbols-with-default 3 'x 'y 'z) =>  6
+    ```
 
 * 副作用(Side Effects):
 
-A transfer of control may occur if an appropriate restart is available, or (in the case of the function abort or the function muffle-warning) execution may be stopped.
+        如果一个合适的重启动可用, 那么可能发生开一个控制转移, 否则 (在函数 abort 或者 muffle-warning 的情况下) 执行可能被停止.
 
 * 受此影响(Affected By):
 
-Each of these functions can be affected by the presence of a restart having the same name.
+        这些函数中的每一个头可以被一个相同名字的重启动的出现所影响.
 
 * 异常情况(Exceptional Situations):
 
-If an appropriate abort restart is not available for the function abort, or an appropriate muffle-warning restart is not available for the function muffle-warning, an error of type control-error is signaled.
+        如果对于函数 abort 一个合适的 abort 重启动是不可用的, 或者对于函数 muffle-warning 一个合适的 muffle-warning 重启动是不可用的, 那么就会发出一个类型 control-error 的错误.
 
 * 也见(See Also):
 
-invoke-restart, Section 9.1.4.2 (Restarts), Section 9.1.4.2.2 (重启动的接口), assert, ccase, cerror, check-type, ctypecase, use-value, warn
+        invoke-restart, Section 9.1.4.2 (Restarts), Section 9.1.4.2.2 (重启动的接口), assert, ccase, cerror, check-type, ctypecase, use-value, warn
 
 * 注意(Notes):
 
- (abort condition) ==  (invoke-restart 'abort)
- (muffle-warning)  ==  (invoke-restart 'muffle-warning)
- (continue)        ==  (let ((r (find-restart 'continue))) (if r (invoke-restart r)))
- (use-value x) ==  (let ((r (find-restart 'use-value))) (if r (invoke-restart r x)))
- (store-value x) ==  (let ((r (find-restart 'store-value))) (if r (invoke-restart r x)))
+    ```LISP
+    (abort condition) ==  (invoke-restart 'abort)
+    (muffle-warning)  ==  (invoke-restart 'muffle-warning)
+    (continue)        ==  (let ((r (find-restart 'continue))) (if r (invoke-restart r)))
+    (use-value x) ==  (let ((r (find-restart 'use-value))) (if r (invoke-restart r x)))
+    (store-value x) ==  (let ((r (find-restart 'store-value))) (if r (invoke-restart r x)))
+    ```
 
-No functions defined in this specification are required to provide a use-value restart. 
+        这个规范中没有定义需要去提供一个 use-value 重启动的函数. 
 
 
