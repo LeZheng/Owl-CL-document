@@ -2807,90 +2807,94 @@ Section 9.1.4.2 (Restarts), Section 9.1.4.2.2 (重启动的接口), invoke-resta
 
 * 必要数据参数(Data Arguments Required):
 
-None.
+        没有.
 
 * 描述(Description):
 
-This restart is established by warn so that handlers of warning conditions have a way to tell warn that a warning has already been dealt with and that no further action is warranted.
+        这个重启动通过 warn 建立, 这样 warning 状况的处理者就有一种途径去通知 warn 一个 warning 已经被处理并且不需要采取进一步的行动.
 
 * 示例(Examples):
 
- (defvar *all-quiet* nil) =>  *ALL-QUIET*
- (defvar *saved-warnings* '()) =>  *SAVED-WARNINGS*
- (defun quiet-warning-handler (c)
-   (when *all-quiet*
-     (let ((r (find-restart 'muffle-warning c)))
-       (when r 
-         (push c *saved-warnings*)
-         (invoke-restart r)))))
-=>  CUSTOM-WARNING-HANDLER
- (defmacro with-quiet-warnings (&body forms)
-   `(let ((*all-quiet* t)
-          (*saved-warnings* '()))
-      (handler-bind ((warning #'quiet-warning-handler))
-        ,@forms
-        *saved-warnings*)))
-=>  WITH-QUIET-WARNINGS
- (setq saved
-   (with-quiet-warnings
-     (warn "Situation #1.")
-     (let ((*all-quiet* nil))
-       (warn "Situation #2."))
-     (warn "Situation #3.")))
->>  Warning: Situation #2.
-=>  (#<SIMPLE-WARNING 42744421> #<SIMPLE-WARNING 42744365>)
- (dolist (s saved) (format t "~&~A~%" s))
->>  Situation #3.
->>  Situation #1.
-=>  NIL
+    ```LISP
+    (defvar *all-quiet* nil) =>  *ALL-QUIET*
+    (defvar *saved-warnings* '()) =>  *SAVED-WARNINGS*
+    (defun quiet-warning-handler (c)
+      (when *all-quiet*
+        (let ((r (find-restart 'muffle-warning c)))
+          (when r 
+            (push c *saved-warnings*)
+            (invoke-restart r)))))
+    =>  CUSTOM-WARNING-HANDLER
+    (defmacro with-quiet-warnings (&body forms)
+      `(let ((*all-quiet* t)
+              (*saved-warnings* '()))
+          (handler-bind ((warning #'quiet-warning-handler))
+            ,@forms
+            *saved-warnings*)))
+    =>  WITH-QUIET-WARNINGS
+    (setq saved
+      (with-quiet-warnings
+        (warn "Situation #1.")
+        (let ((*all-quiet* nil))
+          (warn "Situation #2."))
+        (warn "Situation #3.")))
+    >>  Warning: Situation #2.
+    =>  (#<SIMPLE-WARNING 42744421> #<SIMPLE-WARNING 42744365>)
+    (dolist (s saved) (format t "~&~A~%" s))
+    >>  Situation #3.
+    >>  Situation #1.
+    =>  NIL
+    ```
 
 * 也见(See Also):
 
-Section 9.1.4.2 (Restarts), Section 9.1.4.2.2 (重启动的接口), invoke-restart, muffle-warning (function), warn 
+        Section 9.1.4.2 (Restarts), Section 9.1.4.2.2 (重启动的接口), invoke-restart, muffle-warning (function), warn 
 
 
 ### <span id="R-STORE-VALUE">重启动 STORE-VALUE</span>
 
 * 必要数据参数(Data Arguments Required):
 
-a value to use instead (on an ongoing basis).
+        使用的代替值 (在持续的基础上).
 
 * 描述(Description):
 
-The store-value restart is generally used by handlers trying to recover from errors of types such as cell-error or type-error, which may wish to supply a replacement datum to be stored permanently.
+        这个 store-value 重启动通常被处理者用于尝试从例如 cell-error 或 type-error 这样的错误类型中恢复过来, 它可以希望去提供一个替换的数据来持久地存储.
 
 * 示例(Examples):
 
- (defun type-error-auto-coerce (c)
-   (when (typep c 'type-error)
-     (let ((r (find-restart 'store-value c)))
-       (handler-case (let ((v (coerce (type-error-datum c)
-                                      (type-error-expected-type c))))
-                       (invoke-restart r v))
-         (error ()))))) =>  TYPE-ERROR-AUTO-COERCE
- (let ((x 3))
-   (handler-bind ((type-error #'type-error-auto-coerce))
-     (check-type x float)
-     x)) =>  3.0
+    ```LISP
+    (defun type-error-auto-coerce (c)
+      (when (typep c 'type-error)
+        (let ((r (find-restart 'store-value c)))
+          (handler-case (let ((v (coerce (type-error-datum c)
+                                          (type-error-expected-type c))))
+                          (invoke-restart r v))
+            (error ()))))) =>  TYPE-ERROR-AUTO-COERCE
+    (let ((x 3))
+      (handler-bind ((type-error #'type-error-auto-coerce))
+        (check-type x float)
+        x)) =>  3.0
+    ```
 
 * 也见(See Also):
 
-Section 9.1.4.2 (Restarts), Section 9.1.4.2.2 (重启动的接口), invoke-restart, store-value (function), ccase, check-type, ctypecase, use-value (function and restart) 
+        Section 9.1.4.2 (Restarts), Section 9.1.4.2.2 (重启动的接口), invoke-restart, store-value (function), ccase, check-type, ctypecase, use-value (function and restart) 
 
 
 ### <span id="R-USE-VALUE">重启动 USE-VALUE</span>
 
 * 必要数据参数(Data Arguments Required):
 
-a value to use instead (once).
+        使用的代替值 (一次).
 
 * 描述(Description):
 
-The use-value restart is generally used by handlers trying to recover from errors of types such as cell-error, where the handler may wish to supply a replacement datum for one-time use.
+        这个 use-value 重启动通常被处理者用来尝试从例如 cell-error 这样的错误类型中恢复过来, 其中这个处理者可能希望去提供一个替代的数据用于单次使用.
 
 * 也见(See Also):
 
-Section 9.1.4.2 (Restarts), Section 9.1.4.2.2 (重启动的接口), invoke-restart, use-value (function), store-value (function and restart) 
+        Section 9.1.4.2 (Restarts), Section 9.1.4.2.2 (重启动的接口), invoke-restart, use-value (function), store-value (function and restart) 
 
 
 ### <span id="F-ABORT-CONTINUE-MW-SV-UV">函数 ABORT, CONTINUE, MUFFLE-WARNING, STORE-VALUE, USE-VALUE</span>
