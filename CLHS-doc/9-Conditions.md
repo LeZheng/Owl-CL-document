@@ -2581,30 +2581,31 @@ Unnamed restarts are generally only useful interactively and an interactive opti
 
 * 语法(Syntax):
 
-restart-name restart => name
+        restart-name restart => name
 
 * 参数和值(Arguments and Values):
 
-restart---a restart.
-
-name---a symbol.
+        restart---一个重启动.
+        name---一个符号.
 
 * 描述(Description):
 
-Returns the name of the restart, or nil if the restart is not named.
+        返回这个重启动 restart 的名字, 如果这个重启动 restart 没有被命名就返回 nil.
 
 * 示例(Examples):
 
- (restart-case 
-     (loop for restart in (compute-restarts)
-               collect (restart-name restart))
-   (case1 () :report "Return 1." 1)
-   (nil   () :report "Return 2." 2)
-   (case3 () :report "Return 3." 3)
-   (case1 () :report "Return 4." 4))
-=>  (CASE1 NIL CASE3 CASE1 ABORT)
- ;; In the example above the restart named ABORT was not created
- ;; explicitly, but was implicitly supplied by the system.
+    ```LISP
+    (restart-case 
+        (loop for restart in (compute-restarts)
+                  collect (restart-name restart))
+      (case1 () :report "Return 1." 1)
+      (nil   () :report "Return 2." 2)
+      (case3 () :report "Return 3." 3)
+      (case1 () :report "Return 4." 4))
+    =>  (CASE1 NIL CASE3 CASE1 ABORT)
+    ;; In the example above the restart named ABORT was not created
+    ;; explicitly, but was implicitly supplied by the system.
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -2614,7 +2615,7 @@ Returns the name of the restart, or nil if the restart is not named.
 
 * 也见(See Also):
 
-compute-restarts find-restart
+        compute-restarts find-restart
 
 * 注意(Notes): None. 
 
@@ -2623,29 +2624,23 @@ compute-restarts find-restart
 
 * 语法(Syntax):
 
-with-condition-restarts condition-form restarts-form form*
-
-=> result*
+        with-condition-restarts condition-form restarts-form form*
+        => result*
 
 * 参数和值(Arguments and Values):
 
-condition-form---a form; evaluated to produce a condition.
-
-condition---a condition object resulting from the evaluation of condition-form.
-
-restart-form---a form; evaluated to produce a restart-list.
-
-restart-list---a list of restart objects resulting from the evaluation of restart-form.
-
-forms---an implicit progn; evaluated.
-
-results---the values returned by forms.
+        condition-form---一个表达式形式; 求值来产生一个状况 condition.
+        condition---从 condition-form 的求值中产生的一个状况对象.
+        restart-form---一个表达式形式; 求值来产生一个重启动列表 restart-list.
+        restart-list---从重启动表达式形式 restart-form 的求值中产生的一个重启动对象的列表.
+        forms---一个隐式 progn; 求值的.
+        results---表达式形式 forms 返回的值.
 
 * 描述(Description):
 
-First, the condition-form and restarts-form are evaluated in normal left-to-right order; the primary values yielded by these evaluations are respectively called the condition and the restart-list.
+        首先, 这个 condition-form 和 restarts-form 以正常从左到右的顺序求值; 这些求值产生的主要的值分别调用这个 condition 和 restart-list.
 
-Next, the forms are evaluated in a dynamic environment in which each restart in restart-list is associated with the condition. See Section 9.1.4.2.4 (关联重启动和状况).
+        然后, 表达式形式 forms 在一个动态环境中被求值, 在这个环境中每个在 restart-list 中的重启动都和这个状况 condition 关联. 见章节 9.1.4.2.4 (关联重启动和状况).
 
 * 示例(Examples): None.
 
@@ -2657,82 +2652,79 @@ Next, the forms are evaluated in a dynamic environment in which each restart in 
 
 * 也见(See Also):
 
-restart-case
+        restart-case
 
 * 注意(Notes):
 
-Usually this macro is not used explicitly in code, since restart-case handles most of the common cases in a way that is syntactically more concise. 
+        通常这个宏不会在代码中被显式调用, 因为 restart-case 以一种语法上更简洁的方式处理大多数常见的情况. 
 
 
 ### <span id="M-WITH-SIMPLE-RESTART">宏 WITH-SIMPLE-RESTART</span>
 
 * 语法(Syntax):
 
-with-simple-restart (name format-control format-argument*) form*
-
-=> result*
+        with-simple-restart (name format-control format-argument*) form*
+        => result*
 
 * 参数和值(Arguments and Values):
 
-name---a symbol.
-
-format-control---a format control.
-
-format-argument---an object (i.e., a format argument).
-
-forms---an implicit progn.
-
-results---in the normal situation, the values returned by the forms; in the exceptional situation where the restart named name is invoked, two values---nil and t.
+        name---一个符号.
+        format-control---一个格式化控制.
+        format-argument---一个对象 (换句话说, 一个格式化参数).
+        forms---一个隐式 progn.
+        results---在正常情况中, 就是表达式形式 forms 返回的值; 在名为 name 的重启动被调用的异常情况中, 就是两个值---nil 和 t.
 
 * 描述(Description):
 
-with-simple-restart establishes a restart.
+        with-simple-restart 建立一个重启动.
 
-If the restart designated by name is not invoked while executing forms, all values returned by the last of forms are returned. If the restart designated by name is invoked, control is transferred to with-simple-restart, which returns two values, nil and t.
+        如果这个 name 表示的重启动没有在执行表达式形式 forms 期间被调用, 最后一个表达式形式返回的所有值都会被返回. 如果 name 表示的重启动被调用了, 那么控制会转移到 with-simple-restart, 它返回两个值, nil 和 t.
 
-If name is nil, an anonymous restart is established.
+        如果 name 是 nil, 就会建立一个匿名的重启动.
 
-The format-control and format-arguments are used report the restart.
+        这个 format-control 和 format-arguments 被用于报告这个重启动.
 
 * 示例(Examples):
 
- (defun read-eval-print-loop (level)
-   (with-simple-restart (abort "Exit command level ~D." level)
-     (loop
-       (with-simple-restart (abort "Return to command level ~D." level)
-         (let ((form (prog2 (fresh-line) (read) (fresh-line))))
-           (prin1 (eval form)))))))
-=>  READ-EVAL-PRINT-LOOP
- (read-eval-print-loop 1)
- (+ 'a 3)
->>  Error: The argument, A, to the function + was of the wrong type.
->>         The function expected a number.
->>  To continue, type :CONTINUE followed by an option number:
->>   1: Specify a value to use this time.
->>   2: Return to command level 1.
->>   3: Exit command level 1.
->>   4: Return to Lisp Toplevel.
+    ```LISP
+    (defun read-eval-print-loop (level)
+      (with-simple-restart (abort "Exit command level ~D." level)
+        (loop
+          (with-simple-restart (abort "Return to command level ~D." level)
+            (let ((form (prog2 (fresh-line) (read) (fresh-line))))
+              (prin1 (eval form)))))))
+    =>  READ-EVAL-PRINT-LOOP
+    (read-eval-print-loop 1)
+    (+ 'a 3)
+    >>  Error: The argument, A, to the function + was of the wrong type.
+    >>         The function expected a number.
+    >>  To continue, type :CONTINUE followed by an option number:
+    >>   1: Specify a value to use this time.
+    >>   2: Return to command level 1.
+    >>   3: Exit command level 1.
+    >>   4: Return to Lisp Toplevel.
 
- (defun compute-fixnum-power-of-2 (x)
-   (with-simple-restart (nil "Give up on computing 2^~D." x)
-     (let ((result 1))
-       (dotimes (i x result)
-         (setq result (* 2 result))
-         (unless (fixnump result)
-           (error "Power of 2 is too large."))))))
-COMPUTE-FIXNUM-POWER-OF-2
- (defun compute-power-of-2 (x)
-   (or (compute-fixnum-power-of-2 x) 'something big))
-COMPUTE-POWER-OF-2
- (compute-power-of-2 10)
-1024
- (compute-power-of-2 10000)
->>  Error: Power of 2 is too large.
->>  To continue, type :CONTINUE followed by an option number.
->>   1: Give up on computing 2^10000.
->>   2: Return to Lisp Toplevel
->>  Debug> :continue 1
-=>  SOMETHING-BIG
+    (defun compute-fixnum-power-of-2 (x)
+      (with-simple-restart (nil "Give up on computing 2^~D." x)
+        (let ((result 1))
+          (dotimes (i x result)
+            (setq result (* 2 result))
+            (unless (fixnump result)
+              (error "Power of 2 is too large."))))))
+    COMPUTE-FIXNUM-POWER-OF-2
+    (defun compute-power-of-2 (x)
+      (or (compute-fixnum-power-of-2 x) 'something big))
+    COMPUTE-POWER-OF-2
+    (compute-power-of-2 10)
+    1024
+    (compute-power-of-2 10000)
+    >>  Error: Power of 2 is too large.
+    >>  To continue, type :CONTINUE followed by an option number.
+    >>   1: Give up on computing 2^10000.
+    >>   2: Return to Lisp Toplevel
+    >>  Debug> :continue 1
+    =>  SOMETHING-BIG
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -2742,65 +2734,69 @@ COMPUTE-POWER-OF-2
 
 * 也见(See Also):
 
-restart-case
+        restart-case
 
 * 注意(Notes):
 
-with-simple-restart is shorthand for one of the most common uses of restart-case.
+        with-simple-restart 是 restart-case 最常见使用中的一个简写.
 
-with-simple-restart could be defined by:
+        with-simple-restart 可以被定义为:
 
- (defmacro with-simple-restart ((restart-name format-control
-                                              &rest format-arguments)
-                                &body forms)
-   `(restart-case (progn ,@forms)
-      (,restart-name ()
-          :report (lambda (stream)
-                    (format stream ,format-control ,@format-arguments))
-         (values nil t))))
+    ```LISP
+    (defmacro with-simple-restart ((restart-name format-control
+                                                  &rest format-arguments)
+                                    &body forms)
+      `(restart-case (progn ,@forms)
+          (,restart-name ()
+              :report (lambda (stream)
+                        (format stream ,format-control ,@format-arguments))
+            (values nil t))))
+    ```
 
-Because the second return value is t in the exceptional case, it is common (but not required) to arrange for the second return value in the normal case to be missing or nil so that the two situations can be distinguished. 
+        由于在异常的情况下第二个返回值是 t, 通常 (但不是必须) 安排在正常情况下第二个返回值为缺失的或者是 nil, 这样两种情况就可以被区分. 
 
 
 ### <span id="R-ABORT">重启动 ABORT</span>
 
 * 必要数据参数(Data Arguments Required):
 
-None.
+        None.
 
 * 描述(Description):
 
-The intent of the abort restart is to allow return to the innermost ``command level.'' Implementors are encouraged to make sure that there is always a restart named abort around any user code so that user code can call abort at any time and expect something reasonable to happen; exactly what the reasonable thing is may vary somewhat. Typically, in an interactive listener, the invocation of abort returns to the Lisp reader phase of the Lisp read-eval-print loop, though in some batch or multi-processing situations there may be situations in which having it kill the running process is more appropriate.
+        这个 abort 重启动的意图是允许返回到最里边的"命令层级(command level)". 鼓励实现者去确保在用户代码周围总是有一个名为 abort 的重启动, 这样用户代码可以在任何时间调用 abort 并且期待发生一些合理的事情; 合理的东西可能会有所不同. 典型地, 在一个交互式的监听器中, abort 的调用返回到 Lisp read-eval-print 循环阶段的 Lisp 读取器, 尽管在某个批处理或多进程情况中, 可能会有这样的情况: 让它杀死运行的过程更合适.
 
 * 也见(See Also):
 
-Section 9.1.4.2 (Restarts), Section 9.1.4.2.2 (重启动的接口), invoke-restart, abort (function) 
+        Section 9.1.4.2 (Restarts), Section 9.1.4.2.2 (重启动的接口), invoke-restart, abort (function) 
 
 
 ### <span id="R-CONTINUE">重启动 CONTINUE</span>
 
 * 必要数据参数(Data Arguments Required):
 
-None.
+        None.
 
 * 描述(Description):
-
-The continue restart is generally part of protocols where there is a single ``obvious'' way to continue, such as in break and cerror. Some user-defined protocols may also wish to incorporate it for similar reasons. In general, however, it is more reliable to design a special purpose restart with a name that more directly suits the particular application.
+<!--TODO 待校验-->
+        这个 continue 重启动通常是协议的一部分, 其中这里有一个单个的"明显"的方式来继续, 就像是在 break 和 cerror 中. 一些用户定义的协议也可能希望将其合并为类似的原因. 一般而言, 然而, 更可靠的方法是设计一个特殊用途的重启动, 它的名称更适合于特定的应用程序.
 
 * 示例(Examples):
 
- (let ((x 3))
-   (handler-bind ((error #'(lambda (c)
-                             (let ((r (find-restart 'continue c)))
-                               (when r (invoke-restart r))))))
-     (cond ((not (floatp x))
-            (cerror "Try floating it." "~D is not a float." x)
-            (float x))
-           (t x)))) =>  3.0
+    ```LISP
+    (let ((x 3))
+      (handler-bind ((error #'(lambda (c)
+                                (let ((r (find-restart 'continue c)))
+                                  (when r (invoke-restart r))))))
+        (cond ((not (floatp x))
+                (cerror "Try floating it." "~D is not a float." x)
+                (float x))
+              (t x)))) =>  3.0
+    ```
 
 * 也见(See Also):
 
-Section 9.1.4.2 (Restarts), Section 9.1.4.2.2 (重启动的接口), invoke-restart, continue (function), assert, cerror 
+        Section 9.1.4.2 (Restarts), Section 9.1.4.2.2 (重启动的接口), invoke-restart, continue (function), assert, cerror 
 
 
 ### <span id="R-MUFFLE-WARNING">重启动 MUFFLE-WARNING</span>
