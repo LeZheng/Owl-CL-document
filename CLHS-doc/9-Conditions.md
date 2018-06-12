@@ -2386,146 +2386,140 @@ restart-bind is primarily intended to be used to implement restart-case and migh
 
 * 语法(Syntax):
 
-restart-case restartable-form {clause} => result*
+        restart-case restartable-form {clause} => result*
 
-clause::= (case-name lambda-list  
-           [[:interactive interactive-expression | :report report-expression | :test test-expression]]  
-           declaration* form*) 
+        clause::= (case-name lambda-list  
+                  [[:interactive interactive-expression | :report report-expression | :test test-expression]]  
+                  declaration* form*) 
 
 * 参数和值(Arguments and Values):
 
-restartable-form---a form.
-
-case-name---a symbol or nil.
-
-lambda-list---an ordinary lambda list.
-
-interactive-expression---a symbol or a lambda expression.
-
-report-expression---a string, a symbol, or a lambda expression.
-
-test-expression---a symbol or a lambda expression.
-
-declaration---a declare expression; not evaluated.
-
-form---a form.
-
-results---the values resulting from the evaluation of restartable-form, or the values returned by the last form executed in a chosen clause, or nil.
+        restartable-form---一个表达式形式.
+        case-name---一个符号或 nil.
+        lambda-list---一个普通的 lambda 列表.
+        interactive-expression---一个符号或一个 lambda 表达式.
+        report-expression---一个字符串, 一个符号, 或一个 lambda 表达式.
+        test-expression---一个符号或 lambda 表达式.
+        declaration---一个 declare 表达式; 不求值的.
+        form---一个表达式形式.
+        results---这个 restartable-form 求值所产生的值, 或者在一个选定的子句 clause 中最后一个表达式形式返回的值, 或者是 nil.
 
 * 描述(Description):
 
-restart-case evaluates restartable-form in a dynamic environment where the clauses have special meanings as points to which control may be transferred. If restartable-form finishes executing and returns any values, all values returned are returned by restart-case and processing has completed. While restartable-form is executing, any code may transfer control to one of the clauses (see invoke-restart). If a transfer occurs, the forms in the body of that clause is evaluated and any values returned by the last such form are returned by restart-case. In this case, the dynamic state is unwound appropriately (so that the restarts established around the restartable-form are no longer active) prior to execution of the clause.
+        restart-case 在一个动态环境中求值 restartable-form, 这个环境中这些子句有着特殊的意义, 可以作为控制转移的点. 如果 restartable-form 完成执行并且返回任何值, 那么所有返回值都会被 restart-case 返回并且这个过程结束. 当 restartable-form 被执行时, 任何代码可以转移控制到这些子句的其中一个 (见 invoke-restart). 如果发生了一个转移, 那个子句的主体中的表达式形式会被求值并且最后一个这样的表达式形式返回的值会被 restart-case 返回. 在这个情况下, 在执行该子句之前, 动态状态被适当地解除(这样一来这些在 restartable-form 周围建立的重启动不再是活跃的).
 
-If there are no forms in a selected clause, restart-case returns nil.
+        如果在选择的子句中没有表达式形式 forms, restart-case 就返回 nil.
 
-If case-name is a symbol, it names this restart.
+        如果 case-name 是一个, 它就命名这个重启动.
 
-It is possible to have more than one clause use the same case-name. In this case, the first clause with that name is found by find-restart. The other clauses are accessible using compute-restarts.
+        可能有超过一个子句使用相同的 case-name. 在这个情况下, 带有那个名字的第一个子句会被 find-restart 发现. 其他的子句使用 compute-restarts 也是可访问的.
 
-Each arglist is an ordinary lambda list to be bound during the execution of its corresponding forms. These parameters are used by the restart-case clause to receive any necessary data from a call to invoke-restart.
+        每个 arglist 是一个在它对应表达式形式执行期间要被绑定的普通 lambda 列表. 这些参数被 restart-case 子句用来从一个对 invoke-restart 的调用中接收任何必要的数据.
 
-By default, invoke-restart-interactively passes no arguments and all arguments must be optional in order to accomodate interactive restarting. However, the arguments need not be optional if the :interactive keyword has been used to inform invoke-restart-interactively about how to compute a proper argument list.
+        默认情况下, invoke-restart-interactively 不传递参数并且所有参数必须是可选的, 为了适应交互式的重启动. 然而, 如果这个 :interactive 关键字已经被用来告知 invoke-restart-interactively 关于如果计算一个适当的参数列表, 那么这些参数不需要是可选的.
 
-Keyword options have the following meaning.
+        关键字 keyword 有着以下这些选项.
 
-:interactive
+        :interactive
 
-    The value supplied by :interactive value must be a suitable argument to function. (function value) is evaluated in the current lexical environment. It should return a function of no arguments which returns arguments to be used by invoke-restart-interactively when it is invoked. invoke-restart-interactively is called in the dynamic environment available prior to any restart attempt, and uses query I/O for user interaction.
+            通过 :interactive 提供的值 value 必须是一个给 function 的合适的参数. (function value) 在当前词法环境中被求值. 它应该返回一个没有参数的函数, 这个函数被调用时返回要被 invoke-restart-interactively 使用的参数. invoke-restart-interactively 在任何重启动尝试之前在这个可用的动态环境中被调用, 并且为用户交互使用查询 I/O.
 
-    If a restart is invoked interactively but no :interactive option was supplied, the argument list used in the invocation is the empty list.
+            如果一个重启动被交互式调用但是没有提供 :interactive 选项, 那么在这个调用中使用的参数列表是空列表.
 
-:report
+        :report
 
-    If the value supplied by :report value is a lambda expression or a symbol, it must be acceptable to function. (function value) is evaluated in the current lexical environment. It should return a function of one argument, a stream, which prints on the stream a description of the restart. This function is called whenever the restart is printed while *print-escape* is nil.
+            如果通过这个 :report 提供的值 value 是一个 lambda 表达式或者一个符号, 它对于 function 必须是可接受的. (function value) 在当前词法环境中被求值. 它应该返回一个单参数的函数, 这个参数是一个流, 这个函数应该在这个流上打印这个重启动的一个描述. 当 *print-escape* 是 nil 时, 无论何时这个重启动被打印, 这个函数都会被调用.
 
-    If value is a string, it is a shorthand for
+            如果值 value 是一个字符串, 它就是下面这个的一个缩写
 
-     (lambda (stream) (write-string value stream))
+            (lambda (stream) (write-string value stream))
 
-    If a named restart is asked to report but no report information has been supplied, the name of the restart is used in generating default report text.
+            如果一个已命名的重启动被请求来报告但是没有提供报告信息, 这个重启动的名字被用来产生默认的报告文本.
 
-    When *print-escape* is nil, the printer uses the report information for a restart. For example, a debugger might announce the action of typing a ``continue'' command by:
+            当 *print-escape* 是 nil 时, 打印器就使用一个重启动的报告信息. 例如, 一个调试器可能宣布输入一个"continue"命令的动作通过下面这个:
 
-     (format t "~&~S -- ~A~%" ':continue some-restart)
+            (format t "~&~S -- ~A~%" ':continue some-restart)
 
-    which might then display as something like:
+            它可能显示像这样的内容:
 
-     :CONTINUE -- Return to command level
+            :CONTINUE -- Return to command level
 
-    The consequences are unspecified if an unnamed restart is specified but no :report option is provided.
+            如果一个未命名的重启动被指定但是没有提供 :report 选项, 那么结果是未指定的.
 
-:test
+        :test
 
-    The value supplied by :test value must be a suitable argument to function. (function value) is evaluated in the current lexical environment. It should return a function of one argument, the condition, that returns true if the restart is to be considered visible.
+            通过 :test 提供的值 value 必须是一个给 function 的合适的值. (function value) 在当前词法环境中被求值. 它应该返回一个单参数的函数, 这个参数是这个状况, 如果这个重启动要被认为是可见的, 这个函数就返回 true.
 
-    The default for this option is equivalent to (lambda (c) (declare (ignore c)) t).
+            这个选项的默认值等价于 (lambda (c) (declare (ignore c)) t).
 
-If the restartable-form is a list whose car is any of the symbols signal, error, cerror, or warn (or is a macro form which macroexpands into such a list), then with-condition-restarts is used implicitly to associate the indicated restarts with the condition to be signaled.
+        如果这个 restartable-form 是一个是一个列表, 其中 car 部分是 signal, error, cerror, or warn 其中一个符号 (或者是一个宏展开为这样一个列表的宏表达式形式), 那么 with-condition-restarts 会被隐式地用来关联这个表示的重启动和这个要被发送的状况.
 
 * 示例(Examples):
 
- (restart-case
-     (handler-bind ((error #'(lambda (c)
-                             (declare (ignore condition))
-                             (invoke-restart 'my-restart 7))))
-       (error "Foo."))
-   (my-restart (&optional v) v))
-=>  7
+    ```LISP
+    (restart-case
+        (handler-bind ((error #'(lambda (c)
+                                (declare (ignore condition))
+                                (invoke-restart 'my-restart 7))))
+          (error "Foo."))
+      (my-restart (&optional v) v))
+    =>  7
 
- (define-condition food-error (error) ())
-=>  FOOD-ERROR
- (define-condition bad-tasting-sundae (food-error) 
-   ((ice-cream :initarg :ice-cream :reader bad-tasting-sundae-ice-cream)
-    (sauce :initarg :sauce :reader bad-tasting-sundae-sauce)
-    (topping :initarg :topping :reader bad-tasting-sundae-topping))
-   (:report (lambda (condition stream)
-              (format stream "Bad tasting sundae with ~S, ~S, and ~S"
-                      (bad-tasting-sundae-ice-cream condition)
-                      (bad-tasting-sundae-sauce condition)
-                      (bad-tasting-sundae-topping condition)))))
-=>  BAD-TASTING-SUNDAE
- (defun all-start-with-same-letter (symbol1 symbol2 symbol3)
-   (let ((first-letter (char (symbol-name symbol1) 0)))
-     (and (eql first-letter (char (symbol-name symbol2) 0))
-          (eql first-letter (char (symbol-name symbol3) 0)))))
-=>  ALL-START-WITH-SAME-LETTER
- (defun read-new-value ()
-   (format t "Enter a new value: ")
-   (multiple-value-list (eval (read))))
-=>  READ-NEW-VALUE
- (defun verify-or-fix-perfect-sundae (ice-cream sauce topping)
-   (do ()
-      ((all-start-with-same-letter ice-cream sauce topping))
-     (restart-case
-       (error 'bad-tasting-sundae
-              :ice-cream ice-cream
-              :sauce sauce
-              :topping topping)
-       (use-new-ice-cream (new-ice-cream)
-         :report "Use a new ice cream."
-         :interactive read-new-value  
-         (setq ice-cream new-ice-cream))
-       (use-new-sauce (new-sauce)
-         :report "Use a new sauce."
-         :interactive read-new-value
-         (setq sauce new-sauce))
-       (use-new-topping (new-topping)
-         :report "Use a new topping."
-         :interactive read-new-value
-         (setq topping new-topping))))
-   (values ice-cream sauce topping))
-=>  VERIFY-OR-FIX-PERFECT-SUNDAE
- (verify-or-fix-perfect-sundae 'vanilla 'caramel 'cherry)
->>  Error: Bad tasting sundae with VANILLA, CARAMEL, and CHERRY.
->>  To continue, type :CONTINUE followed by an option number:
->>   1: Use a new ice cream.
->>   2: Use a new sauce.
->>   3: Use a new topping.
->>   4: Return to Lisp Toplevel.
->>  Debug> :continue 1
->>  Use a new ice cream.
->>  Enter a new ice cream: 'chocolate
-=>  CHOCOLATE, CARAMEL, CHERRY
+    (define-condition food-error (error) ())
+    =>  FOOD-ERROR
+    (define-condition bad-tasting-sundae (food-error) 
+      ((ice-cream :initarg :ice-cream :reader bad-tasting-sundae-ice-cream)
+        (sauce :initarg :sauce :reader bad-tasting-sundae-sauce)
+        (topping :initarg :topping :reader bad-tasting-sundae-topping))
+      (:report (lambda (condition stream)
+                  (format stream "Bad tasting sundae with ~S, ~S, and ~S"
+                          (bad-tasting-sundae-ice-cream condition)
+                          (bad-tasting-sundae-sauce condition)
+                          (bad-tasting-sundae-topping condition)))))
+    =>  BAD-TASTING-SUNDAE
+    (defun all-start-with-same-letter (symbol1 symbol2 symbol3)
+      (let ((first-letter (char (symbol-name symbol1) 0)))
+        (and (eql first-letter (char (symbol-name symbol2) 0))
+              (eql first-letter (char (symbol-name symbol3) 0)))))
+    =>  ALL-START-WITH-SAME-LETTER
+    (defun read-new-value ()
+      (format t "Enter a new value: ")
+      (multiple-value-list (eval (read))))
+    =>  READ-NEW-VALUE
+    (defun verify-or-fix-perfect-sundae (ice-cream sauce topping)
+      (do ()
+          ((all-start-with-same-letter ice-cream sauce topping))
+        (restart-case
+          (error 'bad-tasting-sundae
+                  :ice-cream ice-cream
+                  :sauce sauce
+                  :topping topping)
+          (use-new-ice-cream (new-ice-cream)
+            :report "Use a new ice cream."
+            :interactive read-new-value  
+            (setq ice-cream new-ice-cream))
+          (use-new-sauce (new-sauce)
+            :report "Use a new sauce."
+            :interactive read-new-value
+            (setq sauce new-sauce))
+          (use-new-topping (new-topping)
+            :report "Use a new topping."
+            :interactive read-new-value
+            (setq topping new-topping))))
+      (values ice-cream sauce topping))
+    =>  VERIFY-OR-FIX-PERFECT-SUNDAE
+    (verify-or-fix-perfect-sundae 'vanilla 'caramel 'cherry)
+    >>  Error: Bad tasting sundae with VANILLA, CARAMEL, and CHERRY.
+    >>  To continue, type :CONTINUE followed by an option number:
+    >>   1: Use a new ice cream.
+    >>   2: Use a new sauce.
+    >>   3: Use a new topping.
+    >>   4: Return to Lisp Toplevel.
+    >>  Debug> :continue 1
+    >>  Use a new ice cream.
+    >>  Enter a new ice cream: 'chocolate
+    =>  CHOCOLATE, CARAMEL, CHERRY
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -2535,47 +2529,52 @@ If the restartable-form is a list whose car is any of the symbols signal, error,
 
 * 也见(See Also):
 
-restart-bind, with-simple-restart.
+        restart-bind, with-simple-restart.
 
 * 注意(Notes):
 
- (restart-case expression
-    (name1 arglist1 ...options1... . body1)
-    (name2 arglist2 ...options2... . body2))
+    ```LISP
+    (restart-case expression
+        (name1 arglist1 ...options1... . body1)
+        (name2 arglist2 ...options2... . body2))
+    ```
 
-is essentially equivalent to
+        大约等价于
 
- (block #1=#:g0001
-   (let ((#2=#:g0002 nil))
-        (tagbody
-        (restart-bind ((name1 #'(lambda (&rest temp)
-                                (setq #2# temp)
-                                (go #3=#:g0003))
-                          ...slightly-transformed-options1...)
-                       (name2 #'(lambda (&rest temp)
-                                (setq #2# temp)
-                                (go #4=#:g0004))
-                          ...slightly-transformed-options2...))
-        (return-from #1# expression))
-          #3# (return-from #1#
-                  (apply #'(lambda arglist1 . body1) #2#))
-          #4# (return-from #1#
-                  (apply #'(lambda arglist2 . body2) #2#)))))
+    ```LISP
+    (block #1=#:g0001
+      (let ((#2=#:g0002 nil))
+            (tagbody
+            (restart-bind ((name1 #'(lambda (&rest temp)
+                                    (setq #2# temp)
+                                    (go #3=#:g0003))
+                              ...slightly-transformed-options1...)
+                          (name2 #'(lambda (&rest temp)
+                                    (setq #2# temp)
+                                    (go #4=#:g0004))
+                              ...slightly-transformed-options2...))
+            (return-from #1# expression))
+              #3# (return-from #1#
+                      (apply #'(lambda arglist1 . body1) #2#))
+              #4# (return-from #1#
+                      (apply #'(lambda arglist2 . body2) #2#)))))
+    ```
 
-Unnamed restarts are generally only useful interactively and an interactive option which has no description is of little value. Implementations are encouraged to warn if an unnamed restart is used and no report information is provided at compilation time. At runtime, this error might be noticed when entering the debugger. Since signaling an error would probably cause recursive entry into the debugger (causing yet another recursive error, etc.) it is suggested that the debugger print some indication of such problems when they occur but not actually signal errors.
+        未命名的重启动通常只有在交互式的情况下有用, 并且一个没有描述的交互式选项没有什么价值. 如果使用了一个未命名的重启动并且在编译时没有提供报告信息的话, 鼓励具体实现去发出警告. 在运行时, 在进入调试器时可能会注意到这个错误. 由于发出一个错误可能会导致递归进入调试器中 (导致另一个递归错误, 等等) , 因此建议调试器在出现这些问题时打印出一些指示, 但实际上并不发出这些错误.
 
- (restart-case (signal fred)
-   (a ...)
-   (b ...))
- == 
- (restart-case
-     (with-condition-restarts fred 
-                              (list (find-restart 'a) 
-                                    (find-restart 'b))
-       (signal fred))
-   (a ...)
-   (b ...))
-
+    ```LISP
+    (restart-case (signal fred)
+      (a ...)
+      (b ...))
+    == 
+    (restart-case
+        (with-condition-restarts fred 
+                                  (list (find-restart 'a) 
+                                        (find-restart 'b))
+          (signal fred))
+      (a ...)
+      (b ...))
+    ```
 
 ### <span id="F-RESTART-NAME">函数 RESTART-NAME</span>
 
