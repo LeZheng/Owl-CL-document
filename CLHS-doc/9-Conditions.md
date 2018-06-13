@@ -2139,247 +2139,241 @@ find-restart, invoke-restart, restart-bind
 
 * 语法(Syntax):
 
-find-restart identifier &optional condition
+        find-restart identifier &optional condition
 
-restart
+        restart
 
 * 参数和值(Arguments and Values):
 
-identifier---a non-nil symbol, or a restart.
-
-condition---a condition object, or nil.
-
-restart---a restart or nil.
+        identifier---一个非 nil 符号, 或者是一个重启动.
+        condition---一个状况对象, 或者 nil.
+        restart---一个重启动或者 nil.
 
 * 描述(Description):
 
-find-restart searches for a particular restart in the current dynamic environment.
+        find-restart 在当前动态环境中搜索一个特定的重启动.
 
-When condition is non-nil, only those restarts are considered that are either explicitly associated with that condition, or not associated with any condition; that is, the excluded restarts are those that are associated with a non-empty set of conditions of which the given condition is not an element. If condition is nil, all restarts are considered.
+        当状况 condition 不是 nil 时, 只有那些和那个状况 condition 显式关联或者没有和任何状况关联的重启动会被考虑; 这也就是说, 排除在外的重启动是那些和一个包含给定状况 condition 的非空状况集合相关联的重启动. 如果这个状况 condition 是 nil, 所有重启动都会被考虑.
 
-If identifier is a symbol, then the innermost (most recently established) applicable restart with that name is returned. nil is returned if no such restart is found.
+        如果 identifier 是一个符号, 那么最内部 (most recently established) applicable 带有那个名字的重启动会被返回. 如果没有找到这样的重启动就返回 nil.
 
-If identifier is a currently active restart, then it is returned. Otherwise, nil is returned.
+        如果 identifier 是一个当前活跃的重启动, 那么它就被返回. 否则, 返回 nil.
 
 * 示例(Examples):
 
- (restart-case
-     (let ((r (find-restart 'my-restart)))
-       (format t "~S is named ~S" r (restart-name r)))
-   (my-restart () nil))
->>  #<RESTART 32307325> is named MY-RESTART
-=>  NIL
- (find-restart 'my-restart)
-=>  NIL
+    ```LISP
+    (restart-case
+        (let ((r (find-restart 'my-restart)))
+          (format t "~S is named ~S" r (restart-name r)))
+      (my-restart () nil))
+    >>  #<RESTART 32307325> is named MY-RESTART
+    =>  NIL
+    (find-restart 'my-restart)
+    =>  NIL
+    ```
 
 * 副作用(Side Effects): None.
 
 * 受此影响(Affected By):
 
-Existing restarts.
+        已存在的重启动.
 
-restart-case, restart-bind, with-condition-restarts.
+        restart-case, restart-bind, with-condition-restarts.
 
 * 异常情况(Exceptional Situations): None.
 
 * 也见(See Also):
 
-compute-restarts
+        compute-restarts
 
 * 注意(Notes):
 
- (find-restart identifier)
- ==  (find identifier (compute-restarts) :key :restart-name)
+        (find-restart identifier)
+        ==  (find identifier (compute-restarts) :key :restart-name)
 
-Although anonymous restarts have a name of nil, the consequences are unspecified if nil is given as an identifier. Occasionally, programmers lament that nil is not permissible as an identifier argument. In most such cases, compute-restarts can probably be used to simulate the desired effect. 
+        虽然匿名重启动由一个 nil 的名字, 如果 nil 被给定用作一个 identifier 那么结果是未指定的. 偶尔, 程序员叹息 nil 不允许用作一个 identifier 参数. 在大部分这样的情况下, compute-restarts 可能被用来模拟预期的效果. 
 
 
 ### <span id="F-INVOKE-RESTART">函数 INVOKE-RESTART</span>
 
 * 语法(Syntax):
 
-invoke-restart restart &rest arguments => result*
+        invoke-restart restart &rest arguments => result*
 
 * 参数和值(Arguments and Values):
 
-restart---a restart designator.
-
-argument---an object.
-
-results---the values returned by the function associated with restart, if that function returns.
+        restart---一个重启动标识符.
+        argument---一个对象.
+        results---和重启动 restart 关联的函数返回的值, 如果那个函数返回的话.
 
 * 描述(Description):
 
-Calls the function associated with restart, passing arguments to it. Restart must be valid in the current dynamic environment.
+        调用和重启动 restart 关联的函数, 传递参数 arguments 给它. 重启动 restart 在当前动态环境中必须是有效的.
 
 * 示例(Examples):
 
- (defun add3 (x) (check-type x number) (+ x 3))
- 
- (foo 'seven)
->>  Error: The value SEVEN was not of type NUMBER.
->>  To continue, type :CONTINUE followed by an option number:
->>   1: Specify a different value to use.
->>   2: Return to Lisp Toplevel.
->>  Debug> (invoke-restart 'store-value 7)
-=>  10
+    ```LISP
+    (defun add3 (x) (check-type x number) (+ x 3))
+    
+    (foo 'seven)
+    >>  Error: The value SEVEN was not of type NUMBER.
+    >>  To continue, type :CONTINUE followed by an option number:
+    >>   1: Specify a different value to use.
+    >>   2: Return to Lisp Toplevel.
+    >>  Debug> (invoke-restart 'store-value 7)
+    =>  10
+    ```
 
 * 副作用(Side Effects):
 
-A non-local transfer of control might be done by the restart.
+        一个非局部控制转移可能被这个重启动 restart 完成.
 
 * 受此影响(Affected By):
 
-Existing restarts.
+        已存在的重启动.
 
 * 异常情况(Exceptional Situations):
 
-If restart is not valid, an error of type control-error is signaled.
+        如果重启动 restart 是无效的, 一个类型 control-error 的错误会被发出.
 
 * 也见(See Also):
 
-find-restart, restart-bind, restart-case, invoke-restart-interactively
+        find-restart, restart-bind, restart-case, invoke-restart-interactively
 
 * 注意(Notes):
 
-The most common use for invoke-restart is in a handler. It might be used explicitly, or implicitly through invoke-restart-interactively or a restart function.
+        invoke-restart 的最常见的使用是在一个处理者中. 它可能被显式使用, 或者隐式地通过 invoke-restart-interactively 或一个重启动函数来使用.
 
-Restart functions call invoke-restart, not vice versa. That is, invoke-restart provides primitive functionality, and restart functions are non-essential ``syntactic sugar.'' 
+        重启动函数调用 invoke-restart, 但反之则不行. 这也就是说, invoke-restart 提供基本功能, 并且重启动函数是非必须的"语法糖".
 
 
 ### <span id="F-INVOKE-RESTART-INTERACTIVELY">函数 INVOKE-RESTART-INTERACTIVELY</span>
 
 * 语法(Syntax):
 
-invoke-restart-interactively restart => result*
+        invoke-restart-interactively restart => result*
 
 * 参数和值(Arguments and Values):
 
-restart---a restart designator.
-
-results---the values returned by the function associated with restart, if that function returns.
+        restart---一个重启动标识符.
+        results---和重启动 restart 关联的函数返回的值, 如果这个函数返回的话.
 
 * 描述(Description):
 
-invoke-restart-interactively calls the function associated with restart, prompting for any necessary arguments. If restart is a name, it must be valid in the current dynamic environment.
+        invoke-restart-interactively 调用和重启动 restart 关联的函数, 提示任何必要的参数. 如果重启动 restart 是一个名字, 它必须在当前动态环境中是有效的.
 
-invoke-restart-interactively prompts for arguments by executing the code provided in the :interactive keyword to restart-case or :interactive-function keyword to restart-bind.
+        invoke-restart-interactively 通过执行作为提供给 restart-case 的 :interactive 关键字或者给 restart-bind 的 :interactive-function 关键字中的代码来提示参数.
 
-If no such options have been supplied in the corresponding restart-bind or restart-case, then the consequences are undefined if the restart takes required arguments. If the arguments are optional, an argument list of nil is used.
+        如果没有在对应 restart-bind 或 restart-case 中提供对应选项, 如果这个重启动 restart 接收必要参数那么结果是未定义的. 如果参数是可选的, 一个 nil 的参数列表会被使用.
 
-Once the arguments have been determined, invoke-restart-interactively executes the following:
+        一旦这些参数已经被确定了, invoke-restart-interactively 执行以下代码:
 
- (apply #'invoke-restart restart arguments)
+        (apply #'invoke-restart restart arguments)
 
 * 示例(Examples):
 
- (defun add3 (x) (check-type x number) (+ x 3))
- 
- (add3 'seven)
->>  Error: The value SEVEN was not of type NUMBER.
->>  To continue, type :CONTINUE followed by an option number:
->>   1: Specify a different value to use.
->>   2: Return to Lisp Toplevel.
->>  Debug> (invoke-restart-interactively 'store-value)
->>  Type a form to evaluate and use: 7
-=>  10
+    ```LISP
+    (defun add3 (x) (check-type x number) (+ x 3))
+    
+    (add3 'seven)
+    >>  Error: The value SEVEN was not of type NUMBER.
+    >>  To continue, type :CONTINUE followed by an option number:
+    >>   1: Specify a different value to use.
+    >>   2: Return to Lisp Toplevel.
+    >>  Debug> (invoke-restart-interactively 'store-value)
+    >>  Type a form to evaluate and use: 7
+    =>  10
+    ```
 
 * 副作用(Side Effects):
 
-If prompting for arguments is necesary, some typeout may occur (on query I/O).
+        如果参数提示是必要的, 可能发生某个打印输出 (在查询 I/O 上).
 
-A non-local transfer of control might be done by the restart.
+        一个非局部控制转移可能被这个重启动完成.
 
 * 受此影响(Affected By):
 
-*query-io*, active restarts
+        *query-io*, 活跃的重启动
 
 * 异常情况(Exceptional Situations):
 
-If restart is not valid, an error of type control-error is signaled.
+        如果重启动 restart 是无效的, 一个类型 control-error 的错误会被发出.
 
 * 也见(See Also):
 
-find-restart, invoke-restart, restart-case, restart-bind
+        find-restart, invoke-restart, restart-case, restart-bind
 
 * 注意(Notes):
 
-invoke-restart-interactively is used internally by the debugger and may also be useful in implementing other portable, interactive debugging tools. 
+        invoke-restart-interactively 被调试器内部使用并且在实现其他可移植的交互式调试工具时可能也是有用的. 
 
 
 ### <span id="M-RESTART-BIND">宏 RESTART-BIND</span>
 
 * 语法(Syntax):
 
-restart-bind ({(name function {key-val-pair}*)}) form*
+        restart-bind ({(name function {key-val-pair}*)}) form*
+        => result*
 
-=> result*
-
-key-val-pair::= :interactive-function interactive-function |  
-                :report-function report-function |  
-                :test-function test-function 
+        key-val-pair::= :interactive-function interactive-function |  
+                        :report-function report-function |  
+                        :test-function test-function 
 
 * 参数和值(Arguments and Values):
 
-name---a symbol; not evaluated.
-
-function---a form; evaluated.
-
-forms---an implicit progn.
-
-interactive-function---a form; evaluated.
-
-report-function---a form; evaluated.
-
-test-function---a form; evaluated.
-
-results---the values returned by the forms.
+        name---一个符号; 不求值的.
+        function---一个表达式形式; 求值的.
+        forms---一个隐式 progn.
+        interactive-function---一个表达式形式; evaluated.
+        report-function---一个表达式形式; evaluated.
+        test-function---一个表达式形式; evaluated.
+        results---这些表达式形式 forms 返回的值.
 
 * 描述(Description):
 
-restart-bind executes the body of forms in a dynamic environment where restarts with the given names are in effect.
+        restart-bind 在动态环境中执行表达式形式 forms 的主体, 在这个环境中给定名字 names 的重启动是生效的.
 
-If a name is nil, it indicates an anonymous restart; if a name is a non-nil symbol, it indicates a named restart.
+        如果一个名字 name 是 nil, 它表示一个匿名的重启动; 如果一个名字 name 是一个非 nil 符号, 它表示一个已命名的重启动.
 
-The function, interactive-function, and report-function are unconditionally evaluated in the current lexical and dynamic environment prior to evaluation of the body. Each of these forms must evaluate to a function.
+        这个函数 function, 交互式函数 interactive-function, 以及报告函数 report-function 在当前的词法和动态环境中在主体被求值前被无条件求值. 这些表达式形式的每一个都必须求值为一个函数.
 
-If invoke-restart is done on that restart, the function which resulted from evaluating function is called, in the dynamic environment of the invoke-restart, with the arguments given to invoke-restart. The function may either perform a non-local transfer of control or may return normally.
+        如果 invoke-restart 在这个重启动上被完成了, 那么由求值函数 function 产生的函数会被用传递给 invoke-restart 的参数作为参数来调用, 在那个 invoke-restart 的动态环境中.
 
-If the restart is invoked interactively from the debugger (using invoke-restart-interactively), the arguments are defaulted by calling the function which resulted from evaluating interactive-function. That function may optionally prompt interactively on query I/O, and should return a list of arguments to be used by invoke-restart-interactively when invoking the restart.
+        如果这个重启动从调试器中被交互式地调用(使用 invoke-restart-interactively), 这些参数被调用求值 interactive-function 所产生的函数所缺省. 那个函数可以在查询 I/O 上选择性地提示, 然后在调用这个重启动时应该返回一个要被 invoke-restart-interactively 使用的参数列表.
 
-If a restart is invoked interactively but no interactive-function is used, then an argument list of nil is used. In that case, the function must be compatible with an empty argument list.
+        如果一个重启动被交互式调用但是没有交互式函数 interactive-function 被使用, 那么一个 nil 的参数列表会被使用. 在这个情况下, 函数必须和一个空参数列表兼容.
 
-If the restart is presented interactively (e.g., by the debugger), the presentation is done by calling the function which resulted from evaluating report-function. This function must be a function of one argument, a stream. It is expected to print a description of the action that the restart takes to that stream. This function is called any time the restart is printed while *print-escape* is nil.
+        如果这个重启动交互式地出现 (比如, 通过这个调试器), 展示是通过调用由求值 report-function 产生的函数来完成的. 这个函数必须是一个单参数的函数, 这个参数为一个流. 它被期望打印重启动采取的操作的描述到那个流中. 当 *print-escape* 是 nil 时, 这个函数每当这个重启动被打印的时候被调用.
 
-In the case of interactive invocation, the result is dependent on the value of :interactive-function as follows.
+        在交互式调用的情况下, 结果依赖于下面这样的 :interactive-function 的值.
 
-:interactive-function
+        :interactive-function
 
-    Value is evaluated in the current lexical environment and should return a function of no arguments which constructs a list of arguments to be used by invoke-restart-interactively when invoking this restart. The function may prompt interactively using query I/O if necessary.
+            值 value 在当前词法环境中被求值并且应该返回一个没有参数的函数, 它构造一个在调用这个重启动时要被 invoke-restart-interactively 使用的参数列表. 如果有必要这个函数可能使用查询 I/O 来交互式地提示.
 
-:report-function
+        :report-function
 
-    Value is evaluated in the current lexical environment and should return a function of one argument, a stream, which prints on the stream a summary of the action that this restart takes. This function is called whenever the restart is reported (printed while *print-escape* is nil). If no :report-function option is provided, the manner in which the restart is reported is implementation-dependent.
+            值 value 在当前词法环境中被求值并且应该返回一个单参数的函数, 这个参数是一个流, 这个函数打印这个重启动采取的动作的总结到这个流中. 这个函数每当这个重启动被报告的时候就会被调用 (当 *print-escape* 是 nil 时会被打印). 如果没有提供 :report-function 选项, 这个重启动被报告的方式是依赖于具体实现的.
 
-:test-function
+        :test-function
 
-    Value is evaluated in the current lexical environment and should return a function of one argument, a condition, which returns true if the restart is to be considered visible.
+            值 value 在当前词法环境中被求值并且返回一个单参数的函数, 这个参数是一个状况, 如果这个重启动被认为是可见的, 那么这个函数返回 true.
 
 * 副作用(Side Effects): None.
 
 * 受此影响(Affected By):
 
-*query-io*.
+        *query-io*.
 
 * 异常情况(Exceptional Situations): None.
 
 * 也见(See Also):
 
-restart-case, with-simple-restart
+        restart-case, with-simple-restart
 
 * 注意(Notes):
 
-restart-bind is primarily intended to be used to implement restart-case and might be useful in implementing other macros. Programmers who are uncertain about whether to use restart-case or restart-bind should prefer restart-case for the cases where it is powerful enough, using restart-bind only in cases where its full generality is really needed. 
+        restart-bind 主要被用于实现 restart-case, 在实现其他宏的时候可能也是有用的. 程序员对使用 restart-case 还是 restart-bind 不确定的话, 应该更倾向 restart-case 因为它足够强大, 只有在普遍性是非常必要的情况下使用 restart-bind. 
 
 
 ### <span id="M-RESTART-CASE">宏 RESTART-CASE</span>
