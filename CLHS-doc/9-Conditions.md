@@ -1999,38 +1999,38 @@ make-condition, defclass, Section 9.1 (Condition System Concepts)
 
 * 语法(Syntax):
 
-make-condition type &rest slot-initializations => condition
+        make-condition type &rest slot-initializations => condition
 
 * 参数和值(Arguments and Values):
 
-type---a type specifier (for a subtype of condition).
-
-slot-initializations---an initialization argument list.
-
-condition---a condition.
+        type---一个类型特化符 (对于一个 condition  的子类型).
+        slot-initializations---一个初始化参数列表.
+        condition---一个状况.
 
 * 描述(Description):
 
-Constructs and returns a condition of type type using slot-initializations for the initial values of the slots. The newly created condition is returned.
+        使用槽初始值的 slot-initializations 来构造并返回一个类型 type 类型的状况. 新创建的状况会被返回.
 
 * 示例(Examples):
 
- (defvar *oops-count* 0)
+    ```LISP
+    (defvar *oops-count* 0)
 
- (setq a (make-condition 'simple-error
-                         :format-control "This is your ~:R error."
-                         :format-arguments (list (incf *oops-count*))))
-=>  #<SIMPLE-ERROR 32245104>
- 
- (format t "~&~A~%" a)
->>  This is your first error.
-=>  NIL
- 
- (error a)
->>  Error: This is your first error.
->>  To continue, type :CONTINUE followed by an option number:
->>   1: Return to Lisp Toplevel.
->>  Debug> 
+    (setq a (make-condition 'simple-error
+                            :format-control "This is your ~:R error."
+                            :format-arguments (list (incf *oops-count*))))
+    =>  #<SIMPLE-ERROR 32245104>
+    
+    (format t "~&~A~%" a)
+    >>  This is your first error.
+    =>  NIL
+    
+    (error a)
+    >>  Error: This is your first error.
+    >>  To continue, type :CONTINUE followed by an option number:
+    >>   1: Return to Lisp Toplevel.
+    >>  Debug> 
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -2051,86 +2051,86 @@ define-condition, Section 9.1 (Condition System Concepts)
 
 * 类优先级列表(Class Precedence List):
 
-restart, t
+        restart, t
 
 * 描述(Description):
 
-An object of type restart represents a function that can be called to perform some form of recovery action, usually a transfer of control to an outer point in the running program.
+        一个类型 restart 的对象表示一个可以被调用来执行一些恢复动作的表达式形式的函数, 通常是到运行的程序中的一个更外部的点的控制转移.
 
-An implementation is free to implement a restart in whatever manner is most convenient; a restart has only dynamic extent relative to the scope of the binding form which establishes it. 
+        一个具体实现可以自由地以任何最方便的方式实现重启动; 一个重启动只有和建立它的绑定表达式作用域相关的动态范围. 
 
 
 ### <span id="F-COMPUTE-RESTARTS">函数 COMPUTE-RESTARTS</span>
 
 * 语法(Syntax):
 
-compute-restarts &optional condition => restarts
+        compute-restarts &optional condition => restarts
 
 * 参数和值(Arguments and Values):
 
-condition---a condition object, or nil.
-
-restarts---a list of restarts.
+        condition---一个状况对象, 或者 nil.
+        restarts---一个重启动列表.
 
 * 描述(Description):
 
-compute-restarts uses the dynamic state of the program to compute a list of the restarts which are currently active.
+        compute-restarts 使用这个程序的动态状态来计算一个当前是活跃的重启动列表.
 
-The resulting list is ordered so that the innermost (more-recently established) restarts are nearer the head of the list.
+        产生的列表是有序的, 因此最内部(较新建立的)的重启动较接近这个列表的头部.
 
-When condition is non-nil, only those restarts are considered that are either explicitly associated with that condition, or not associated with any condition; that is, the excluded restarts are those that are associated with a non-empty set of conditions of which the given condition is not an element. If condition is nil, all restarts are considered.
+        当状况 condition 不是 nil, 只有那些显式和那个状况 condition 关联的或者没有和任何状况关联的重启动会被考虑; 这也就是说, 排除在外的重启动是那些和一个包含给定状况 condition 的非空状况集合相关联的重启动. 如果状况 condition 是 nil, 所有重启动会被考虑.
 
-compute-restarts returns all applicable restarts, including anonymous ones, even if some of them have the same name as others and would therefore not be found by find-restart when given a symbol argument.
+        compute-restarts 返回所有可应用的重启动, 包括匿名的那些, 当给定一个符号参数时, 即便它们中的一部分有着和其他的相同的名字并且因此不会被 find-restart 找到.
 
-Implementations are permitted, but not required, to return distinct lists from repeated calls to compute-restarts while in the same dynamic environment. The consequences are undefined if the list returned by compute-restarts is every modified.
+        在相同的动态环境中时, 具体实现被允许, 但没有被要求从对 compute-restarts 的重复调用中去返回不同的列表. 如果 compute-restarts 返回的列表每次被修改那么结果是未定义的.
 
 * 示例(Examples):
 
- ;; One possible way in which an interactive debugger might present
- ;; restarts to the user.
- (defun invoke-a-restart ()
-   (let ((restarts (compute-restarts)))
-     (do ((i 0 (+ i 1)) (r restarts (cdr r))) ((null r))
-       (format t "~&~D: ~A~%" i (car r)))
-     (let ((n nil) (k (length restarts)))
-       (loop (when (and (typep n 'integer) (>= n 0) (< n k))
-               (return t))
-             (format t "~&Option: ")
-             (setq n (read))
-             (fresh-line))
-       (invoke-restart-interactively (nth n restarts)))))
+    ```LISP
+    ;; One possible way in which an interactive debugger might present
+    ;; restarts to the user.
+    (defun invoke-a-restart ()
+      (let ((restarts (compute-restarts)))
+        (do ((i 0 (+ i 1)) (r restarts (cdr r))) ((null r))
+          (format t "~&~D: ~A~%" i (car r)))
+        (let ((n nil) (k (length restarts)))
+          (loop (when (and (typep n 'integer) (>= n 0) (< n k))
+                  (return t))
+                (format t "~&Option: ")
+                (setq n (read))
+                (fresh-line))
+          (invoke-restart-interactively (nth n restarts)))))
 
- (restart-case (invoke-a-restart)
-   (one () 1)
-   (two () 2)
-   (nil () :report "Who knows?" 'anonymous)
-   (one () 'I)
-   (two () 'II))
->>  0: ONE
->>  1: TWO
->>  2: Who knows?
->>  3: ONE
->>  4: TWO
->>  5: Return to Lisp Toplevel.
->>  Option: 4
-=>  II
- 
- ;; Note that in addition to user-defined restart points, COMPUTE-RESTARTS
- ;; also returns information about any system-supplied restarts, such as
- ;; the "Return to Lisp Toplevel" restart offered above.
- 
+    (restart-case (invoke-a-restart)
+      (one () 1)
+      (two () 2)
+      (nil () :report "Who knows?" 'anonymous)
+      (one () 'I)
+      (two () 'II))
+    >>  0: ONE
+    >>  1: TWO
+    >>  2: Who knows?
+    >>  3: ONE
+    >>  4: TWO
+    >>  5: Return to Lisp Toplevel.
+    >>  Option: 4
+    =>  II
+    
+    ;; Note that in addition to user-defined restart points, COMPUTE-RESTARTS
+    ;; also returns information about any system-supplied restarts, such as
+    ;; the "Return to Lisp Toplevel" restart offered above.
+    ```
 
 * 副作用(Side Effects): None.
 
 * 受此影响(Affected By):
 
-Existing restarts.
+        已存在的重启动.
 
 * 异常情况(Exceptional Situations): None.
 
 * 也见(See Also):
 
-find-restart, invoke-restart, restart-bind
+        find-restart, invoke-restart, restart-bind
 
 * 注意(Notes): None. 
 
