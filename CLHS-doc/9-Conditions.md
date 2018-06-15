@@ -1784,205 +1784,212 @@ serious-condition, condition, t
 
 * 语法(Syntax):
 
-define-condition name (parent-type*) ({slot-spec}*) option*
+        define-condition name (parent-type*) ({slot-spec}*) option*
+        => name
 
-=> name
+        slot-spec::= slot-name | (slot-name slot-option) 
 
-slot-spec::= slot-name | (slot-name slot-option) 
+        slot-option::= [[{:reader symbol}* |  
+                      {:writer function-name}* |  
+                      {:accessor symbol}* |  
+                      {:allocation allocation-type} |  
+                      {:initarg symbol}* |  
+                      {:initform form} |  
+                      {:type type-specifier} ]] 
 
-slot-option::= [[{:reader symbol}* |  
-               {:writer function-name}* |  
-               {:accessor symbol}* |  
-               {:allocation allocation-type} |  
-               {:initarg symbol}* |  
-               {:initform form} |  
-               {:type type-specifier} ]] 
+        option::= [[(:default-initargs . initarg-list) |  
+                  (:documentation string) |  
+                  (:report report-name) ]] 
 
-option::= [[(:default-initargs . initarg-list) |  
-          (:documentation string) |  
-          (:report report-name) ]] 
+        function-name::= {symbol | (setf symbol)} 
 
-function-name::= {symbol | (setf symbol)} 
+        allocation-type::= :instance | :class 
 
-allocation-type::= :instance | :class 
-
-report-name::= string | symbol | lambda expression 
+        report-name::= string | symbol | lambda expression 
 
 * 参数和值(Arguments and Values):
 
-name---a symbol.
+        name---一个符号.
+        parent-type---一个命名一个状况类型的符号. 如果没有提供 parent-types, 这个 parent-types 默认是 (condition).
+        default-initargs---一个键值对列表.
+        Slot-spec -- 一个槽的名字或者一个由槽名字 slot-name 后面跟着零个或多个槽选项 slot-options 构成的列表.
+        Slot-name -- 一个槽名字 (一个符号), 一个槽名字的列表, 或者槽名/槽表达式形式对的列表.
 
-parent-type---a symbol naming a condition type. If no parent-types are supplied, the parent-types default to (condition).
+        Option -- 任意下面这些选项:
 
-default-initargs---a list of keyword/value pairs.
+        :reader
 
-Slot-spec -- the name of a slot or a list consisting of the slot-name followed by zero or more slot-options.
+            :reader 对于一个给定的槽可以被提供超过一次但是不能是 nil.
 
-Slot-name -- a slot name (a symbol), the list of a slot name, or the list of slot name/slot form pairs.
+        :writer
 
-Option -- Any of the following:
+            :writer 对于一个给定的槽可以被提供超过一次并且必须命名一个广义函数.
 
-:reader
+        :accessor
 
-    :reader can be supplied more than once for a given slot and cannot be nil.
+            :accessor 对于一个给定的槽可以被提供超过一次但是不能是 nil.
 
-:writer
+        :allocation
 
-    :writer can be supplied more than once for a given slot and must name a generic function.
+            :allocation 对于一个给定的槽可以被提供最多一次. 如果 :allocation 没有被提供那么默认值就是 :instance.
 
-:accessor
+        :initarg
 
-    :accessor can be supplied more than once for a given slot and cannot be nil.
+            :initarg 对于一个给定的槽可以被提供超过一次.
 
-:allocation
+        :initform
 
-    :allocation can be supplied once at most for a given slot. The default if :allocation is not supplied is :instance.
+            :initform 对于一个给定的槽可以被提供最多一次.
 
-:initarg
+        :type
 
-    :initarg can be supplied more than once for a given slot.
+            :type 对于一个给定的槽可以被提供最多一次.
 
-:initform
+        :documentation
 
-    :initform can be supplied once at most for a given slot.
+            :documentation 对于一个给定的槽可以被提供最多一次.
 
-:type
+        :report
 
-    :type can be supplied once at most for a given slot.
-
-:documentation
-
-    :documentation can be supplied once at most for a given slot.
-
-:report
-
-    :report can be supplied once at most.
+            :report 可以被提供最多一次.
 
 * 描述(Description):
 
-define-condition defines a new condition type called name, which is a subtype of the type or types named by parent-type. Each parent-type argument specifies a direct supertype of the new condition. The new condition inherits slots and methods from each of its direct supertypes, and so on.
+        define-condition 定义一个名为 name 的新的状况类型, 它是那个类型的一个子类型或者是名为 parent-type 的子类型. 每个 parent-type 参数为这个新的状况指定一个直接的超类. 这个新的状况从它的每个超类中继承槽和方法, 诸如此类.
 
-If a slot name/slot form pair is supplied, the slot form is a form that can be evaluated by make-condition to produce a default value when an explicit value is not provided. If no slot form is supplied, the contents of the slot is initialized in an implementation-dependent way.
+        如果提供了一个 槽的名字/槽表达式形式 对, 这个槽表达式形式是一个在没有显式提供值时被 make-condition 求值来提供一个默认值的表达式形式. 如果没有提供槽表达式形式, 这个槽的内容以一种依赖于具体实现的方式来初始化.
 
-If the type being defined and some other type from which it inherits have a slot by the same name, only one slot is allocated in the condition, but the supplied slot form overrides any slot form that might otherwise have been inherited from a parent-type. If no slot form is supplied, the inherited slot form (if any) is still visible.
+        如果要被定义的类型和某个它继承的其他类型有着相同名字的槽, 只会在这个状况中分配一个槽, 但是这个提供的槽表达式形式重写任何从一个 parent-type 中继承而来的槽表达式形式. 如果没有提供槽表达式形式, 继承的槽表达式形式(如果存在的话)始终是可见的.
 
-Accessors are created according to the same rules as used by defclass.
+        访问器根据和 defclass 使用的相同的规则被创建.
 
-A description of slot-options follows:
+        槽选项 slot-options 的一个描述如下:
 
-:reader
+        :reader
 
-    The :reader slot option specifies that an unqualified method is to be defined on the generic function named by the argument to :reader to read the value of the given slot.
+            这个 :reader 槽选项指定了一个要被定义在由给 :reader 的参数命名的这个广义函数上的非限定方法来入去这个给定槽的名字.
 
-* The :initform slot option is used to provide a default initial value form to be used in the initialization of the slot. This form is evaluated every time it is used to initialize the slot. The lexical environment in which this form is evaluated is the lexical environment in which the define-condition form was evaluated. Note that the lexical environment refers both to variables and to functions. For local slots, the dynamic environment is the dynamic environment in which make-condition was called; for shared slots, the dynamic environment is the dynamic environment in which the define-condition form was evaluated.
+        :initform
 
-    No implementation is permitted to extend the syntax of define-condition to allow (slot-name form) as an abbreviation for (slot-name :initform form).
+            这个 :initform 槽选项被用来提供一个在这个槽的初始化中使用的默认初始值表达式形式. 这个表达式形式在每次被用来初始化这个槽的时候被求值. 这个表达式形式求值所在的词法环境是这个 define-condition 表达式形式被求值所在的词法环境. 注意, 这个词法环境同时引用了变量和函数. 对于局部槽, 动态环境是那个 make-condition 被调用时所在的动态环境; 对于共享槽, 动态环境是那个 define-condition 表达式形式被求值时所在的动态环境.
 
-:initarg
+            没有具体实现被允许去扩展 define-condition 的语法来允许 (slot-name form) 作为 (slot-name :initform form) 的一个简写.
 
-    The :initarg slot option declares an initialization argument named by its symbol argument and specifies that this initialization argument initializes the given slot. If the initialization argument has a value in the call to initialize-instance, the value is stored into the given slot, and the slot's :initform slot option, if any, is not evaluated. If none of the initialization arguments specified for a given slot has a value, the slot is initialized according to the :initform slot option, if specified.
+        :initarg
 
-:type
+            这个 :initarg 槽选项声明了一个由它的符号参数命名的初始化参数并且指定了这个初始化参数初始化给定的槽. 如果这个初始化参数在对 initialize-instance 的调用中有一个值, 那么这个值就被存储在给定槽中, 并且这个槽的 :initform 槽选项如果存在的话, 就不会被求值. 如果为一个给定槽指定的初始化参数都没有值, 这个槽就根据这个 :initform 槽选项来初始化, 如果指定的话.
 
-    The :type slot option specifies that the contents of the slot is always of the specified type. It effectively declares the result type of the reader generic function when applied to an object of this condition type. The consequences of attempting to store in a slot a value that does not satisfy the type of the slot is undefined.
+        :type
 
-:default-initargs
+            这个 :type 槽选项指定了这个槽的内容总是为给定的类型. 它有效的声明了应用到这个状况类型的对象上的读取器广义函数的结果类型. 尝试去存储一个不满足这个槽的类型的值到这个槽中的后果是未定义的.
 
-    This option is treated the same as it would be defclass.
+        :default-initargs
 
-:documentation
+            这个选项被和 defclass 中一样的方式来对待.
 
-    The :documentation slot option provides a documentation string for the slot.
+        :documentation
 
-:report
+            这个 :documentation 槽选项为这个槽提供了一个文档字符串.
 
-    Condition reporting is mediated through the print-object method for the condition type in question, with *print-escape* always being nil. Specifying (:report report-name) in the definition of a condition type C is equivalent to:
+        :report
 
-     (defmethod print-object ((x c) stream)
-       (if *print-escape* (call-next-method) (report-name x stream)))
+            状况报告是通过成问题的那个状况类型的 print-object 方法来调节的, 此时 *print-escape* 总是为 nil. 在一个状况类型 C 中指定 (:report report-name) 等价于:
 
-    If the value supplied by the argument to :report (report-name) is a symbol or a lambda expression, it must be acceptable to function. (function report-name) is evaluated in the current lexical environment. It should return a function of two arguments, a condition and a stream, that prints on the stream a description of the condition. This function is called whenever the condition is printed while *print-escape* is nil.
+            (defmethod print-object ((x c) stream)
+              (if *print-escape* (call-next-method) (report-name x stream)))
 
-    If report-name is a string, it is a shorthand for
+            如果通过给 :report (report-name) 的参数提供的值是一个符号或者一个 lambda 表达式, 它对于 function 必须是可接受的. (function report-name) 在当前词法环境中被求值. 它应该返回一个两个参数的函数, 两个参数是一个状况和一个流, 这个函数把这个状况的一个描述打印到这个流中. 每当这个状况被打印并且 *print-escape* 是 nil, 这个函数就会被调用.
 
-     (lambda (condition stream)
-       (declare (ignore condition))
-       (write-string report-name stream))
+            如果 report-name 是一个字符串, 它是下面这个的一个简写
 
-    This option is processed after the new condition type has been defined, so use of the slot accessors within the :report function is permitted. If this option is not supplied, information about how to report this type of condition is inherited from the parent-type.
+            (lambda (condition stream)
+              (declare (ignore condition))
+              (write-string report-name stream))
 
-The consequences are unspecifed if an attempt is made to read a slot that has not been explicitly initialized and that has not been given a default value.
+            这个选项在这个新的状况类型已经被创建后被处理, 所以在这个 :report 函数中使用槽访问器是允许的. 如果没有提供这个选项, 关于如何去报告这个类型的状况的信息从 parent-type 继承而来.
 
-The consequences are unspecified if an attempt is made to assign the slots by using setf.
+        如果尝试去读取一个没有被显式初始化并且没有给定一个默认值的槽, 那么结果是未定义的.
 
-If a define-condition form appears as a top level form, the compiler must make name recognizable as a valid type name, and it must be possible to reference the condition type as the parent-type of another condition type in a subsequent define-condition form in the file being compiled.
+        如果尝试去使用 setf 对这个槽赋值, 那么结果也是未定义的.
+
+        如果一个 define-condition 表达式形式作为一个顶层表达式形式出现, 编译器必须使 name 成为一个可识别的有效类型名字, 并且它必须可以被要被编译的这个文件后面的其他状况类型的 define-condition 表达式形式作为 parent-type 来引用这个状况类型.
 
 * 示例(Examples):
 
-The following form defines a condition of type peg/hole-mismatch which inherits from a condition type called blocks-world-error:
+        下面表达式形式定义了类型 peg/hole-mismatch 的状况, 它继承自名为 blocks-world-error 的状况:
 
-(define-condition peg/hole-mismatch 
-                  (blocks-world-error)
-                  ((peg-shape  :initarg :peg-shape
-                               :reader peg/hole-mismatch-peg-shape)
-                   (hole-shape :initarg :hole-shape
-                               :reader peg/hole-mismatch-hole-shape))
-  (:report (lambda (condition stream)
-             (format stream "A ~A peg cannot go in a ~A hole."
-                     (peg/hole-mismatch-peg-shape  condition)
-                     (peg/hole-mismatch-hole-shape condition)))))
+    ```LISP
+    (define-condition peg/hole-mismatch 
+                      (blocks-world-error)
+                      ((peg-shape  :initarg :peg-shape
+                                  :reader peg/hole-mismatch-peg-shape)
+                      (hole-shape :initarg :hole-shape
+                                  :reader peg/hole-mismatch-hole-shape))
+      (:report (lambda (condition stream)
+                (format stream "A ~A peg cannot go in a ~A hole."
+                        (peg/hole-mismatch-peg-shape  condition)
+                        (peg/hole-mismatch-hole-shape condition)))))
+    ```
 
-The new type has slots peg-shape and hole-shape, so make-condition accepts :peg-shape and :hole-shape keywords. The readers peg/hole-mismatch-peg-shape and peg/hole-mismatch-hole-shape apply to objects of this type, as illustrated in the :report information.
+        这个新类型有着槽 peg-shape 和 hole-shape, 因此 make-condition 接受 :peg-shape 和 :hole-shape 关键字. 读取器 peg/hole-mismatch-peg-shape 和 peg/hole-mismatch-hole-shape 应用于这个类型的对象, 就像在那个 :report 信息中阐述的那样.
 
-The following form defines a condition type named machine-error which inherits from error:
+        下面这个表达式形式定义了名为 machine-error 的状况类型, 它继承自 error:
 
-(define-condition machine-error 
-                  (error)
-                  ((machine-name :initarg :machine-name
-                                 :reader machine-error-machine-name))
-  (:report (lambda (condition stream)
-             (format stream "There is a problem with ~A."
-                     (machine-error-machine-name condition)))))
+    ```LISP
+    (define-condition machine-error 
+                      (error)
+                      ((machine-name :initarg :machine-name
+                                    :reader machine-error-machine-name))
+      (:report (lambda (condition stream)
+                (format stream "There is a problem with ~A."
+                        (machine-error-machine-name condition)))))
+    ```
 
-Building on this definition, a new error condition can be defined which is a subtype of machine-error for use when machines are not available:
+        这个定义的基础上, 一个新的错误状况可以被定义, 它是 machine-error 的一个子类型, 在机器不可用时被使用:
 
-(define-condition machine-not-available-error (machine-error) ()
-  (:report (lambda (condition stream)
-             (format stream "The machine ~A is not available."
-                     (machine-error-machine-name condition)))))
+    ```LISP
+    (define-condition machine-not-available-error (machine-error) ()
+      (:report (lambda (condition stream)
+                (format stream "The machine ~A is not available."
+                        (machine-error-machine-name condition)))))
+    ```
 
-This defines a still more specific condition, built upon machine-not-available-error, which provides a slot initialization form for machine-name but which does not provide any new slots or report information. It just gives the machine-name slot a default initialization:
+        这个定义了一个更具体的状况, 在 machine-not-available-error 的基础上, 它为 machine-name 提供了一个槽初始化表达式形式但是它没有提供任何新的槽或者报告信息. 它只是给 machine-name 槽一个默认初始化:
 
-(define-condition my-favorite-machine-not-available-error
-                  (machine-not-available-error)
-  ((machine-name :initform "mc.lcs.mit.edu")))
+    ```LISP
+    (define-condition my-favorite-machine-not-available-error
+                      (machine-not-available-error)
+      ((machine-name :initform "mc.lcs.mit.edu")))
+    ```
 
-Note that since no :report clause was given, the information inherited from machine-not-available-error is used to report this type of condition.
+        注意, 由于没有给定 :report 子句, 从 machine-not-available-error 继承来的信息被用来报告这个状况的类型.
 
- (define-condition ate-too-much (error) 
-     ((person :initarg :person :reader ate-too-much-person)
-      (weight :initarg :weight :reader ate-too-much-weight)
-      (kind-of-food :initarg :kind-of-food
-                    :reader :ate-too-much-kind-of-food)))
-=>  ATE-TOO-MUCH
- (define-condition ate-too-much-ice-cream (ate-too-much)
-   ((kind-of-food :initform 'ice-cream)
-    (flavor       :initarg :flavor
-                  :reader ate-too-much-ice-cream-flavor
-                  :initform 'vanilla ))
-   (:report (lambda (condition stream)
-              (format stream "~A ate too much ~A ice-cream"
-                      (ate-too-much-person condition)
-                      (ate-too-much-ice-cream-flavor condition)))))
-=>  ATE-TOO-MUCH-ICE-CREAM
- (make-condition 'ate-too-much-ice-cream
-                 :person 'fred
-                 :weight 300
-                 :flavor 'chocolate)
-=>  #<ATE-TOO-MUCH-ICE-CREAM 32236101>
- (format t "~A" *)
->>  FRED ate too much CHOCOLATE ice-cream
-=>  NIL
+    ```LISP
+    (define-condition ate-too-much (error) 
+        ((person :initarg :person :reader ate-too-much-person)
+          (weight :initarg :weight :reader ate-too-much-weight)
+          (kind-of-food :initarg :kind-of-food
+                        :reader :ate-too-much-kind-of-food)))
+    =>  ATE-TOO-MUCH
+    (define-condition ate-too-much-ice-cream (ate-too-much)
+      ((kind-of-food :initform 'ice-cream)
+        (flavor       :initarg :flavor
+                      :reader ate-too-much-ice-cream-flavor
+                      :initform 'vanilla ))
+      (:report (lambda (condition stream)
+                  (format stream "~A ate too much ~A ice-cream"
+                          (ate-too-much-person condition)
+                          (ate-too-much-ice-cream-flavor condition)))))
+    =>  ATE-TOO-MUCH-ICE-CREAM
+    (make-condition 'ate-too-much-ice-cream
+                    :person 'fred
+                    :weight 300
+                    :flavor 'chocolate)
+    =>  #<ATE-TOO-MUCH-ICE-CREAM 32236101>
+    (format t "~A" *)
+    >>  FRED ate too much CHOCOLATE ice-cream
+    =>  NIL
+    ```
 
 * 受此影响(Affected By): None.
 
@@ -1990,7 +1997,7 @@ Note that since no :report clause was given, the information inherited from mach
 
 * 也见(See Also):
 
-make-condition, defclass, Section 9.1 (Condition System Concepts)
+        make-condition, defclass, Section 9.1 (Condition System Concepts)
 
 * 注意(Notes): None. 
 
