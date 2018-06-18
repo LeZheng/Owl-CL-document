@@ -1,10 +1,9 @@
- 10. Symbols
+# 10. 符号
 
-10.1 Symbol Concepts
+> * 10.1 [符号概念](#SymbolConcepts)
+> * 10.2 [符号字典](#TheSymbolsDictionary)
 
-10.2 The Symbols Dictionary
-
-10.1 Symbol Concepts
+## 10.1 <span id="SymbolConcepts">符号概念</span>
 
 The next figure lists some defined names that are applicable to the property lists of symbols.
 
@@ -21,56 +20,37 @@ gentemp      symbol-name
 Figure 10-2. Symbol creation and inquiry defined names
 
 
-10.2 The Symbols Dictionary
+## 10.2 <span id="TheSymbolsDictionary">符号字典</span>
 
-System Class SYMBOL
-
-Type KEYWORD
-
-Function SYMBOLP
-
-Function KEYWORDP
-
-Function MAKE-SYMBOL
-
-Function COPY-SYMBOL
-
-Function GENSYM
-
-Variable *GENSYM-COUNTER*
-
-Function GENTEMP
-
-Accessor SYMBOL-FUNCTION
-
-Function SYMBOL-NAME
-
-Function SYMBOL-PACKAGE
-
-Accessor SYMBOL-PLIST
-
-Accessor SYMBOL-VALUE
-
-Accessor GET
-
-Function REMPROP
-
-Function BOUNDP
-
-Function MAKUNBOUND
-
-Function SET
-
-Condition Type UNBOUND-VARIABLE
+> * [系统类 SYMBOL](#SC-SYMBOL)
+> * [类型 KEYWORD](#T-KEYWORD)
+> * [函数 SYMBOLP](#F-SYMBOLP)
+> * [函数 KEYWORDP](#F-KEYWORDP)
+> * [函数 MAKE-SYMBOL](#F-MAKE-SYMBOL)
+> * [函数 COPY-SYMBOL](#F-COPY-SYMBOL)
+> * [函数 GENSYM](#F-GENSYM)
+> * [变量 *GENSYM-COUNTER*](#V-GENSYM-COUNTER)
+> * [函数 GENTEMP](#F-GENTEMP)
+> * [访问器 SYMBOL-FUNCTION](#A-SYMBOL-FUNCTION)
+> * [函数 SYMBOL-NAME](#F-SYMBOL-NAME)
+> * [函数 SYMBOL-PACKAGE](#F-SYMBOL-PACKAGE)
+> * [访问器 SYMBOL-PLIST](#A-SYMBOL-PLIST)
+> * [访问器 SYMBOL-VALUE](#A-SYMBOL-VALUE)
+> * [访问器 GET](#A-GET)
+> * [函数 REMPROP](#F-REMPROP)
+> * [函数 BOUNDP](#F-BOUNDP)
+> * [函数 MAKUNBOUND](#F-MAKUNBOUND)
+> * [函数 SET](#F-SET)
+> * [状况类型 UNBOUND-VARIABLE](#CT-UNBOUND-VARIABLE)
 
 
-System Class SYMBOL
+### <span id="SC-SYMBOL">系统类 SYMBOL</span>
 
-Class Precedence List:
+* 类优先级列表(Class Precedence List):
 
 symbol, t
 
-Description:
+* 描述(Description):
 
 Symbols are used for their object identity to name various entities in Common Lisp, including (but not limited to) linguistic entities such as variables and functions.
 
@@ -114,18 +94,18 @@ Operations on a symbol's value cell and function cell are sometimes described in
 
 Symbols are used as identifiers for lexical variables and lexical function definitions, but in that role, only their object identity is significant. Common Lisp provides no operation on a symbol that can have any effect on a lexical variable or on a lexical function definition.
 
-See Also:
+* 也见(See Also):
 
 Section 2.3.4 (Symbols as Tokens), Section 2.3.1.1 (Potential Numbers as Tokens), Section 22.1.3.3 (Printing Symbols)
 
 
-Type KEYWORD
+### <span id="T-KEYWORD">类型 KEYWORD</span>
 
-Supertypes:
+* 超类型(Supertypes):
 
 keyword, symbol, t
 
-Description:
+* 描述(Description):
 
 The type keyword includes all symbols interned the KEYWORD package.
 
@@ -135,28 +115,28 @@ Interning a symbol in the KEYWORD package has three automatic effects:
 2. It causes the symbol to become an external symbol of the KEYWORD package.
 3. It causes the symbol to become a constant variable.
 
-See Also:
+* 也见(See Also):
 
 keywordp
 
 
-Function SYMBOLP
+### <span id="F-SYMBOLP">函数 SYMBOLP</span>
 
-Syntax:
+* 语法(Syntax):
 
 symbolp object => generalized-boolean
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 object---an object.
 
 generalized-boolean---a generalized boolean.
 
-Description:
+* 描述(Description):
 
 Returns true if object is of type symbol; otherwise, returns false.
 
-Examples:
+* 示例(Examples):
 
  (symbolp 'elephant) =>  true
  (symbolp 12) =>  false
@@ -165,38 +145,38 @@ Examples:
  (symbolp :test) =>  true
  (symbolp "hello") =>  false
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations):  None.
 
-See Also:
+* 也见(See Also):
 
 keywordp, symbol, typep
 
-Notes:
+* 注意(Notes):
 
  (symbolp object) ==  (typep object 'symbol)
 
 
- Function KEYWORDP
+ ### <span id="F-KEYWORDP">函数 KEYWORDP</span>
 
- Syntax:
+ * 语法(Syntax):
 
  keywordp object => generalized-boolean
 
- Arguments and Values:
+ * 参数和值(Arguments and Values):
 
  object---an object.
 
  generalized-boolean---a generalized boolean.
 
- Description:
+ * 描述(Description):
 
  Returns true if object is a keyword[1]; otherwise, returns false.
 
- Examples:
+ * 示例(Examples):
 
   (keywordp 'elephant) =>  false
   (keywordp 12) =>  false
@@ -209,38 +189,38 @@ Notes:
   (keywordp ":hello") =>  false
   (keywordp '&optional) =>  false
 
- Side Effects: None.
+ * 副作用(Side Effects): None.
 
- Affected By: None.
+ * 受此影响(Affected By): None.
 
- Exceptional Situations: None.
+ * 异常情况(Exceptional Situations):  None.
 
- See Also:
+ * 也见(See Also):
 
  constantp, keyword, symbolp, symbol-package
 
- Notes: None.
+ * 注意(Notes): None.
 
 
- Function MAKE-SYMBOL
+### <span id="F-MAKE-SYMBOL">函数 MAKE-SYMBOL</span>
 
-Syntax:
+* 语法(Syntax):
 
 make-symbol name => new-symbol
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 name---a string.
 
 new-symbol---a fresh, uninterned symbol.
 
-Description:
+* 描述(Description):
 
 make-symbol creates and returns a fresh, uninterned symbol whose name is the given name. The new-symbol is neither bound nor fbound and has a null property list.
 
 It is implementation-dependent whether the string that becomes the new-symbol's name is the given name or a copy of it. Once a string has been given as the name argument to make-symbol, the consequences are undefined if a subsequent attempt is made to alter that string.
 
-Examples:
+* 示例(Examples):
 
  (setq temp-string "temp") =>  "temp"
  (setq temp-symbol (make-symbol temp-string)) =>  #:|temp|
@@ -249,30 +229,30 @@ Examples:
  (find-symbol "temp") =>  NIL, NIL
  (eq (make-symbol temp-string) (make-symbol temp-string)) =>  false
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations): 
 
 Should signal an error of type type-error if name is not a string.
 
-See Also:
+* 也见(See Also):
 
 copy-symbol
 
-Notes:
+* 注意(Notes):
 
 No attempt is made by make-symbol to convert the case of the name to uppercase. The only case conversion which ever occurs for symbols is done by the Lisp reader. The program interface to symbol creation retains case, and the program interface to interning symbols is case-sensitive.
 
 
-Function COPY-SYMBOL
+### <span id="F-COPY-SYMBOL">函数 COPY-SYMBOL</span>
 
-Syntax:
+* 语法(Syntax):
 
 copy-symbol symbol &optional copy-properties => new-symbol
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 symbol---a symbol.
 
@@ -280,13 +260,13 @@ copy-properties---a generalized boolean. The default is false.
 
 new-symbol---a fresh, uninterned symbol.
 
-Description:
+* 描述(Description):
 
 copy-symbol returns a fresh, uninterned symbol, the name of which is string= to and possibly the same as the name of the given symbol.
 
 If copy-properties is false, the new-symbol is neither bound nor fbound and has a null property list. If copy-properties is true, then the initial value of new-symbol is the value of symbol, the initial function definition of new-symbol is the functional value of symbol, and the property list of new-symbol is a copy[2] of the property list of symbol.
 
-Examples:
+* 示例(Examples):
 
  (setq fred 'fred-smith) =>  FRED-SMITH
  (setf (symbol-value fred) 3) =>  3
@@ -311,36 +291,36 @@ Examples:
  (fboundp fred-clone-1a) =>  false
  (fboundp fred-clone-2a) =>  false
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations): 
 
 Should signal an error of type type-error if symbol is not a symbol.
 
-See Also:
+* 也见(See Also):
 
 make-symbol
 
-Notes:
+* 注意(Notes):
 
 Implementors are encouraged not to copy the string which is the symbol's name unnecessarily. Unless there is a good reason to do so, the normal implementation strategy is for the new-symbol's name to be identical to the given symbol's name.
 
 
-Function GENSYM
+### <span id="F-GENSYM">函数 GENSYM</span>
 
-Syntax:
+* 语法(Syntax):
 
 gensym &optional x => new-symbol
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 x---a string or a non-negative integer. Complicated defaulting behavior; see below.
 
 new-symbol---a fresh, uninterned symbol.
 
-Description:
+* 描述(Description):
 
 Creates and returns a fresh, uninterned symbol, as if by calling make-symbol. (The only difference between gensym and make-symbol is in how the new-symbol's name is determined.)
 
@@ -352,7 +332,7 @@ If x is supplied, and is an integer, then that integer, instead of the value of 
 
 If and only if no explicit suffix is supplied, *gensym-counter* is incremented after it is used.
 
-Examples:
+* 示例(Examples):
 
  (setq sym1 (gensym)) =>  #:G3142
  (symbol-package sym1) =>  NIL
@@ -363,28 +343,28 @@ Examples:
  (gensym "T") =>  #:T3143
  (gensym) =>  #:G3144
 
-Side Effects:
+* 副作用(Side Effects):
 
 Might increment *gensym-counter*.
 
-Affected By:
+* 受此影响(Affected By):
 
 *gensym-counter*
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations): 
 
 Should signal an error of type type-error if x is not a string or a non-negative integer.
 
-See Also:
+* 也见(See Also):
 
 gentemp, *gensym-counter*
 
-Notes:
+* 注意(Notes):
 
 The ability to pass a numeric argument to gensym has been deprecated; explicitly binding *gensym-counter* is now stylistically preferred. (The somewhat baroque conventions for the optional argument are historical in nature, and supported primarily for compatibility with older dialects of Lisp. In modern code, it is recommended that the only kind of argument used be a string prefix. In general, though, to obtain more flexible control of the new-symbol's name, consider using make-symbol instead.)
 
 
-Variable *GENSYM-COUNTER*
+### <span id="V-GENSYM-COUNTER">变量 *GENSYM-COUNTER*</span>
 
 Value Type:
 
@@ -394,34 +374,34 @@ Initial Value:
 
 implementation-dependent.
 
-Description:
+* 描述(Description):
 
 A number which will be used in constructing the name of the next symbol generated by the function gensym.
 
 *gensym-counter* can be either assigned or bound at any time, but its value must always be a non-negative integer.
 
-Examples: None.
+* 示例(Examples): None.
 
-Affected By:
+* 受此影响(Affected By):
 
 gensym.
 
-See Also:
+* 也见(See Also):
 
 gensym
 
-Notes:
+* 注意(Notes):
 
 The ability to pass a numeric argument to gensym has been deprecated; explicitly binding *gensym-counter* is now stylistically preferred.
 
 
-Function GENTEMP
+### <span id="F-GENTEMP">函数 GENTEMP</span>
 
-Syntax:
+* 语法(Syntax):
 
 gentemp &optional prefix package => new-symbol
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 prefix---a string. The default is "T".
 
@@ -429,13 +409,13 @@ package---a package designator. The default is the current package.
 
 new-symbol---a fresh, interned symbol.
 
-Description:
+* 描述(Description):
 
 gentemp creates and returns a fresh symbol, interned in the indicated package. The symbol is guaranteed to be one that was not previously accessible in package. It is neither bound nor fbound, and has a null property list.
 
 The name of the new-symbol is the concatenation of the prefix and a suffix, which is taken from an internal counter used only by gentemp. (If a symbol by that name is already accessible in package, the counter is incremented as many times as is necessary to produce a name that is not already the name of a symbol accessible in package.)
 
-Examples:
+* 示例(Examples):
 
  (gentemp) =>  T1298
  (gentemp "FOO") =>  FOO1299
@@ -446,25 +426,25 @@ Examples:
  (gentemp "FOO") =>  FOO1302
  (gentemp) =>  T1303
 
-Side Effects:
+* 副作用(Side Effects):
 
 Its internal counter is incremented one or more times.
 
 Interns the new-symbol in package.
 
-Affected By:
+* 受此影响(Affected By):
 
 The current state of its internal counter, and the current state of the package.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations): 
 
 Should signal an error of type type-error if prefix is not a string. Should signal an error of type type-error if package is not a package designator.
 
-See Also:
+* 也见(See Also):
 
 gensym
 
-Notes:
+* 注意(Notes):
 
 The function gentemp is deprecated.
 
@@ -475,15 +455,15 @@ The gentemp internal counter is independent of *gensym-counter*, the counter use
 Just because gentemp creates a symbol which did not previously exist does not mean that such a symbol might not be seen in the future (e.g., in a data file---perhaps even created by the same program in another session). As such, this symbol is not truly unique in the same sense as a gensym would be. In particular, programs which do automatic code generation should be careful not to attach global attributes to such generated symbols (e.g., special declarations) and then write them into a file because such global attributes might, in a different session, end up applying to other symbols that were automatically generated on another day for some other purpose.
 
 
-Accessor SYMBOL-FUNCTION
+### <span id="A-SYMBOL-FUNCTION">访问器 SYMBOL-FUNCTION</span>
 
-Syntax:
+* 语法(Syntax):
 
 symbol-function symbol => contents
 
 (setf (symbol-function symbol) new-contents)
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 symbol---a symbol.
 
@@ -491,11 +471,11 @@ contents--- If the symbol is globally defined as a macro or a special operator, 
 
 new-contents---a function.
 
-Description:
+* 描述(Description):
 
 Accesses the symbol's function cell.
 
-Examples:
+* 示例(Examples):
 
  (symbol-function 'car) =>  #<FUNCTION CAR>
  (symbol-function 'twice) is an error   ;because TWICE isn't defined.
@@ -530,23 +510,23 @@ Examples:
  (symbol-function-or-nil 'car) =>  #<FUNCTION CAR>
  (symbol-function-or-nil 'defun) =>  NIL
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By:
+* 受此影响(Affected By):
 
 defun
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations): 
 
 Should signal an error of type type-error if symbol is not a symbol.
 
 Should signal undefined-function if symbol is not fbound and an attempt is made to read its definition. (No such error is signaled on an attempt to write its definition.)
 
-See Also:
+* 也见(See Also):
 
 fboundp, fmakunbound, macro-function, special-operator-p
 
-Notes:
+* 注意(Notes):
 
 symbol-function cannot access the value of a lexical function name produced by flet or labels; it can access only the global function value.
 
@@ -557,58 +537,58 @@ setf may be used with symbol-function to replace a global function definition wh
 However, fdefinition accepts arguments other than just symbols.
 
 
-Function SYMBOL-NAME
+### <span id="F-SYMBOL-NAME">函数 SYMBOL-NAME</span>
 
-Syntax:
+* 语法(Syntax):
 
 symbol-name symbol => name
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 symbol---a symbol.
 
 name---a string.
 
-Description:
+* 描述(Description):
 
 symbol-name returns the name of symbol. The consequences are undefined if name is ever modified.
 
-Examples:
+* 示例(Examples):
 
  (symbol-name 'temp) =>  "TEMP"
  (symbol-name :start) =>  "START"
  (symbol-name (gensym)) =>  "G1234" ;for example
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations): 
 
 Should signal an error of type type-error if symbol is not a symbol.
 
-See Also: None.
+* 也见(See Also): None.
 
-Notes: None.
+* 注意(Notes): None.
 
 
-Function SYMBOL-PACKAGE
+### <span id="F-SYMBOL-PACKAGE">函数 SYMBOL-PACKAGE</span>
 
-Syntax:
+* 语法(Syntax):
 
 symbol-package symbol => contents
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 symbol---a symbol.
 
 contents---a package object or nil.
 
-Description:
+* 描述(Description):
 
 Returns the home package of symbol.
 
-Examples:
+* 示例(Examples):
 
  (in-package "CL-USER") =>  #<PACKAGE "COMMON-LISP-USER">
  (symbol-package 'car) =>  #<PACKAGE "COMMON-LISP">
@@ -634,42 +614,42 @@ Examples:
  (symbol-package s3) =>  NIL
  (eq s3 'pk2::sample3) =>  T
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By:
+* 受此影响(Affected By):
 
 import, intern, unintern
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations): 
 
 Should signal an error of type type-error if symbol is not a symbol.
 
-See Also:
+* 也见(See Also):
 
 intern
 
-Notes: None.
+* 注意(Notes): None.
 
 
-Accessor SYMBOL-PLIST
+### <span id="A-SYMBOL-PLIST">访问器 SYMBOL-PLIST</span>
 
-Syntax:
+* 语法(Syntax):
 
 symbol-plist symbol => plist
 
 (setf (symbol-plist symbol) new-plist)
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 symbol---a symbol.
 
 plist, new-plist---a property list.
 
-Description:
+* 描述(Description):
 
 Accesses the property list of symbol.
 
-Examples:
+* 示例(Examples):
 
  (setq sym (gensym)) =>  #:G9723
  (symbol-plist sym) =>  ()
@@ -680,42 +660,42 @@ Examples:
  (setf (symbol-plist sym) (list 'prop3 'val3)) =>  (PROP3 VAL3)
  (symbol-plist sym) =>  (PROP3 VAL3)
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations): 
 
 Should signal an error of type type-error if symbol is not a symbol.
 
-See Also:
+* 也见(See Also):
 
 get, remprop
 
-Notes:
+* 注意(Notes):
 
 The use of setf should be avoided, since a symbol's property list is a global resource that can contain information established and depended upon by unrelated programs in the same Lisp image.
 
 
-Accessor SYMBOL-VALUE
+### <span id="A-SYMBOL-VALUE">访问器 SYMBOL-VALUE</span>
 
-Syntax:
+* 语法(Syntax):
 
 symbol-value symbol => value
 
 (setf (symbol-value symbol) new-value)
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 symbol---a symbol that must have a value.
 
 value, new-value---an object.
 
-Description:
+* 描述(Description):
 
 Accesses the symbol's value cell.
 
-Examples:
+* 示例(Examples):
 
  (setf (symbol-value 'a) 1) =>  1
  (symbol-value 'a) =>  1
@@ -747,36 +727,36 @@ Examples:
  ;; The precision of this next one is implementation-dependent.
  (symbol-value 'pi) =>  3.141592653589793d0  
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By:
+* 受此影响(Affected By):
 
 makunbound, set, setq
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations): 
 
 Should signal an error of type type-error if symbol is not a symbol.
 
 Should signal unbound-variable if symbol is unbound and an attempt is made to read its value. (No such error is signaled on an attempt to write its value.)
 
-See Also:
+* 也见(See Also):
 
 boundp, makunbound, set, setq
 
-Notes:
+* 注意(Notes):
 
 symbol-value can be used to get the value of a constant variable. symbol-value cannot access the value of a lexical variable.
 
 
-Accessor GET
+### <span id="A-GET">访问器 GET</span>
 
-Syntax:
+* 语法(Syntax):
 
 get symbol indicator &optional default => value
 
 (setf (get symbol indicator &optional default) new-value)
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 symbol---a symbol.
 
@@ -788,13 +768,13 @@ value---if the indicated property exists, the object that is its value; otherwis
 
 new-value---an object.
 
-Description:
+* 描述(Description):
 
 get finds a property on the property list[2] of symbol whose property indicator is identical to indicator, and returns its corresponding property value. If there are multiple properties[1] with that property indicator, get uses the first such property. If there is no property with that property indicator, default is returned.
 
 setf of get may be used to associate a new object with an existing indicator already on the symbol's property list, or to create a new assocation if none exists. If there are multiple properties[1] with that property indicator, setf of get associates the new-value with the first such property. When a get form is used as a setf place, any default which is supplied is evaluated according to normal left-to-right evaluation rules, but its value is ignored.
 
-Examples:
+* 示例(Examples):
 
  (defun make-person (first-name last-name)
    (let ((person (gensym "PERSON")))
@@ -825,19 +805,19 @@ Examples:
  (age *john*) =>  25
  (age *john* 20) =>  25
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations): 
 
 Should signal an error of type type-error if symbol is not a symbol.
 
-See Also:
+* 也见(See Also):
 
 getf, symbol-plist, remprop
 
-Notes:
+* 注意(Notes):
 
  (get x y) ==  (getf (symbol-plist x) y)
 
@@ -846,13 +826,13 @@ Numbers and characters are not recommended for use as indicators in portable cod
 There is no way using get to distinguish an absent property from one whose value is default. However, see get-properties.
 
 
-Function REMPROP
+### <span id="F-REMPROP">函数 REMPROP</span>
 
-Syntax:
+* 语法(Syntax):
 
 remprop symbol indicator => generalized-boolean
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 symbol---a symbol.
 
@@ -860,7 +840,7 @@ indicator---an object.
 
 generalized-boolean---a generalized boolean.
 
-Description:
+* 描述(Description):
 
 remprop removes from the property list[2] of symbol a property[1] with a property indicator identical to indicator. If there are multiple properties[1] with the identical key, remprop only removes the first such property. remprop returns false if no such property was found, or true if a property was found.
 
@@ -868,7 +848,7 @@ The property indicator and the corresponding property value are removed in an un
 
  (remprop x y) ==  (remf (symbol-plist x) y)
 
-Examples:
+* 示例(Examples):
 
  (setq test (make-symbol "PSEUDO-PI")) =>  #:PSEUDO-PI
  (symbol-plist test) =>  ()
@@ -893,42 +873,42 @@ Examples:
  (symbol-plist test)
 =>  (APPROXIMATION 3 CONSTANT T)
 
-Side Effects:
+* 副作用(Side Effects):
 
 The property list of symbol is modified.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations): 
 
 Should signal an error of type type-error if symbol is not a symbol.
 
-See Also:
+* 也见(See Also):
 
 remf, symbol-plist
 
-Notes:
+* 注意(Notes):
 
 Numbers and characters are not recommended for use as indicators in portable code since remprop tests with eq rather than eql, and consequently the effect of using such indicators is implementation-dependent. Of course, if you've gotten as far as needing to remove such a property, you don't have much choice---the time to have been thinking about this was when you used setf of get to establish the property.
 
 
-Function BOUNDP
+### <span id="F-BOUNDP">函数 BOUNDP</span>
 
-Syntax:
+* 语法(Syntax):
 
 boundp symbol => generalized-boolean
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 symbol---a symbol.
 
 generalized-boolean---a generalized boolean.
 
-Description:
+* 描述(Description):
 
 Returns true if symbol is bound; otherwise, returns false.
 
-Examples:
+* 示例(Examples):
 
  (setq x 1) =>  1
  (boundp 'x) =>  true
@@ -937,36 +917,36 @@ Examples:
  (let ((x 2)) (boundp 'x)) =>  false
  (let ((x 2)) (declare (special x)) (boundp 'x)) =>  true
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations): 
 
 Should signal an error of type type-error if symbol is not a symbol.
 
-See Also:
+* 也见(See Also):
 
 set, setq, symbol-value, makunbound
 
-Notes:
+* 注意(Notes):
 
 The function bound determines only whether a symbol has a value in the global environment; any lexical bindings are ignored.
 
 
-Function MAKUNBOUND
+### <span id="F-MAKUNBOUND">函数 MAKUNBOUND</span>
 
-Syntax:
+* 语法(Syntax):
 
 makunbound symbol => symbol
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 symbol---a symbol
 
-Description:
+* 描述(Description):
 
 Makes the symbol be unbound, regardless of whether it was previously bound.
 
-Examples:
+* 示例(Examples):
 
  (setf (symbol-value 'a) 1)
  (boundp 'a) =>  true
@@ -974,42 +954,42 @@ Examples:
  (makunbound 'a) =>  A
  (boundp 'a) =>  false
 
-Side Effects:
+* 副作用(Side Effects):
 
 The value cell of symbol is modified.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations): 
 
 Should signal an error of type type-error if symbol is not a symbol.
 
-See Also:
+* 也见(See Also):
 
 boundp, fmakunbound
 
-Notes: None.
+* 注意(Notes): None.
 
 
-Function SET
+### <span id="F-SET">函数 SET</span>
 
-Syntax:
+* 语法(Syntax):
 
 set symbol value => value
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 symbol---a symbol.
 
 value---an object.
 
-Description:
+* 描述(Description):
 
 set changes the contents of the value cell of symbol to the given value.
 
 (set symbol value) ==  (setf (symbol-value symbol) value)
 
-Examples:
+* 示例(Examples):
 
  (setf (symbol-value 'n) 1) =>  1
  (set 'n 2) =>  2
@@ -1044,37 +1024,37 @@ Examples:
  *even-count* =>  6
  *odd-count* =>  20
 
-Side Effects:
+* 副作用(Side Effects):
 
 The value of symbol is changed.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations):  None.
 
-See Also:
+* 也见(See Also):
 
 setq, progv, symbol-value
 
-Notes:
+* 注意(Notes):
 
 The function set is deprecated.
 
 set cannot change the value of a lexical variable.
 
 
-Condition Type UNBOUND-VARIABLE
+### <span id="CT-UNBOUND-VARIABLE">状况类型 UNBOUND-VARIABLE</span>
 
-Class Precedence List:
+* 类优先级列表(Class Precedence List):
 
 unbound-variable, cell-error, error, serious-condition, condition, t
 
-Description:
+* 描述(Description):
 
 The type unbound-variable consists of error conditions that represent attempts to read the value of an unbound variable.
 
 The name of the cell (see cell-error) is the name of the variable that was unbound.
 
-See Also:
+* 也见(See Also):
 
 cell-error-name
