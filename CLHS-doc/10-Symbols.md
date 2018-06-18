@@ -5,19 +5,19 @@
 
 ## 10.1 <span id="SymbolConcepts">符号概念</span>
 
-The next figure lists some defined names that are applicable to the property lists of symbols.
+下面这段列出了一些可应用于符号属性列表的已定义的名字.
 
-get  remprop  symbol-plist  
+    get  remprop  symbol-plist  
 
-Figure 10-1. Property list defined names
+    Figure 10-1. 属性列表已定义的名字
 
-The next figure lists some defined names that are applicable to the creation of and inquiry about symbols.
+下一段列出了一些可应用于创建和查询符号的已定义名字.
 
-copy-symbol  keywordp     symbol-package  
-gensym       make-symbol  symbol-value    
-gentemp      symbol-name                  
+    copy-symbol  keywordp     symbol-package  
+    gensym       make-symbol  symbol-value    
+    gentemp      symbol-name                  
 
-Figure 10-2. Symbol creation and inquiry defined names
+    Figure 10-2. 符号创建和查询的已定义名字
 
 
 ## 10.2 <span id="TheSymbolsDictionary">符号字典</span>
@@ -48,55 +48,55 @@ Figure 10-2. Symbol creation and inquiry defined names
 
 * 类优先级列表(Class Precedence List):
 
-symbol, t
+        symbol, t
 
 * 描述(Description):
 
-Symbols are used for their object identity to name various entities in Common Lisp, including (but not limited to) linguistic entities such as variables and functions.
+        符号被用于它们的对象标识来命名 Common Lisp 中不同的实体, 包括 (但不限于) 像变量和函数这样的语言实体.
 
-Symbols can be collected together into packages. A symbol is said to be interned in a package if it is accessible in that package; the same symbol can be interned in more than one package. If a symbol is not interned in any package, it is called uninterned.
+        符号可以被一起收集到包中. 如果一个符号在一个包中是可访问的就是那个符号被捕捉到那个包中; 相同符号可以被捕捉到不止一个包中. 如果一个符号没有被捕捉到任何包中, 就说它是未捕捉的.
 
-An interned symbol is uniquely identifiable by its name from any package in which it is accessible.
+        一个被捕捉的符号在它是可访问的任何包中通过它的名称是唯一可识别的.
 
-Symbols have the following attributes. For historical reasons, these are sometimes referred to as cells, although the actual internal representation of symbols and their attributes is implementation-dependent.
+        符号有着以下属性. 出于历史原因, 它们有时作为 cell 被引用, 虽然符号和它们的属性的实际内部表示是依赖于具体实现的.
 
-Name
+        Name
 
-    The name of a symbol is a string used to identify the symbol. Every symbol has a name, and the consequences are undefined if that name is altered. The name is used as part of the external, printed representation of the symbol; see Section 2.1 (Character Syntax). The function symbol-name returns the name of a given symbol. A symbol may have any character in its name.
+            一个符号的名字是用于标识这个符号的一个字符串. 每个符号有一个名字, 如果那个名字被修改那么结果是未定义的. 这个名字被用作这个符号的外部的, 打印的表示部分; 见章节 2.1 (Character Syntax). 函数 symbol-name 返回一个给定符号的名字. 一个符号的名字中可能有任何字符.
 
-Package
+        Package
 
-    The object in this cell is called the home package of the symbol. If the home package is nil, the symbol is sometimes said to have no home package.
+            在这个 cell 的这个对象被称为这个符号的 home 包. 如果这个 home 包是 nil, 那么这个符号有时就说是没有 home 包.
 
-    When a symbol is first created, it has no home package. When it is first interned, the package in which it is initially interned becomes its home package. The home package of a symbol can be accessed by using the function symbol-package.
+            当一个符号被首次创建, 它没有 home 包. 当它被第一次捕捉时, 最初被捕捉所在包称为它的 home 包. 一个符号的 home 包可以通过函数 symbol-package 来访问.
 
-    If a symbol is uninterned from the package which is its home package, its home package is set to nil. Depending on whether there is another package in which the symbol is interned, the symbol might or might not really be an uninterned symbol. A symbol with no home package is therefore called apparently uninterned.
+            如果一个符号从它的 home 包中被解除捕捉, 它的 home 包会被设置为 nil. 这个符号可能或可能不是一个未被捕捉的符号取决于这里是否存在另一个包捕捉了这个符号. 一个没有 home 包的符号显然因此被称为是未被捕捉的.
 
-    The consequences are undefined if an attempt is made to alter the home package of a symbol external in the COMMON-LISP package or the KEYWORD package.
+            如果尝试去修改在 COMMON-LISP 包或者 KEYWORD 包中的一个符号的 home 包那么结果是未定义的.
 
-Property list
+        Property list
 
-    The property list of a symbol provides a mechanism for associating named attributes with that symbol. The operations for adding and removing entries are destructive to the property list. Common Lisp provides operators both for direct manipulation of property list objects (e.g., see getf, remf, and symbol-plist) and for implicit manipulation of a symbol's property list by reference to the symbol (e.g., see get and remprop). The property list associated with a fresh symbol is initially null.
+            一个符号的属性列表为关联已命名属性和那个符号提供了一个机制. 关于添加和移除的操作对于这个属性列表是破坏性的. Common Lisp 为直接操作属性列表对象 (比如, see getf, remf, 和 symbol-plist) 以及通过对这个符号的引用来隐式操作一个符号的属性列表 (比如, 见 get 和 remprop) 都提供了操作符. 和一个新的符号关联的属性列表被初始化为 null.
 
-Value
+        Value
 
-    If a symbol has a value attribute, it is said to be bound, and that fact can be detected by the function boundp. The object contained in the value cell of a bound symbol is the value of the global variable named by that symbol, and can be accessed by the function symbol-value. A symbol can be made to be unbound by the function makunbound.
+            如果一个符号有一个值属性, 它就被称为是绑定的, 并且这个事实可以通过函数 boundp 来被检测. 被包含在一个绑定的符号的值 cell 中的对象是那个符号命名的全局变量的值, 并且可以通过函数 symbol-value 来访问. 一个符号可以通过函数 makunbound 变得是未绑定的.
 
-    The consequences are undefined if an attempt is made to change the value of a symbol that names a constant variable, or to make such a symbol be unbound.
+            如果尝试去修改一个命名一个常变量的符号的值或者使这样一个符号变为未绑定的, 那么后果是未定义的.
 
-Function
+        Function
 
-    If a symbol has a function attribute, it is said to be fbound, and that fact can be detected by the function fboundp. If the symbol is the name of a function in the global environment, the function cell contains the function, and can be accessed by the function symbol-function. If the symbol is the name of either a macro in the global environment (see macro-function) or a special operator (see special-operator-p), the symbol is fbound, and can be accessed by the function symbol-function, but the object which the function cell contains is of implementation-dependent type and purpose. A symbol can be made to be funbound by the function fmakunbound.
+            如果一个符号有一个函数属性, 它就被称为是 fbound 的, 并且这个事实可以通过函数 fboundp 来检测. 如果这个符号是一个全局环境中的函数的名字, 这个函数 cell 就包含了那个函数, 并且可以通过函数 symbol-function 来访问. 如果这个符号是全局环境中的一个宏 (见 macro-function) 或者一个特殊操作符 (见 special-operator-p) 的名字, 那么这个符号就是 fbound 的, 并且可以通过函数 symbol-function 来访问, 但是那个函数 cell 所包含的对象的类型和目的是依赖于具体实现. 一个符号可以通过函数 fmakunbound 来变为 funbound 的.
 
-    The consequences are undefined if an attempt is made to change the functional value of a symbol that names a special form.
+            如果尝试去修改命名一个特殊表达式形式的符号的函数值, 那么后果是未定义的.
 
-Operations on a symbol's value cell and function cell are sometimes described in terms of their effect on the symbol itself, but the user should keep in mind that there is an intimate relationship between the contents of those cells and the global variable or global function definition, respectively.
+        在一个符号的值 cell 和函数 cell 上的操作有时被描述为对符号自身的影响, 但是用户应该注意在那些 cell 的内容和全局变量或全局函数定义之间分别存在一个紧密的关系.
 
-Symbols are used as identifiers for lexical variables and lexical function definitions, but in that role, only their object identity is significant. Common Lisp provides no operation on a symbol that can have any effect on a lexical variable or on a lexical function definition.
+        符号被用作词法变量和词法函数定义的标识, 但是在那个角色中<!--TODO but in that role ??-->, 只有它们的对象标识是有意义的. Common Lisp 没有在一个符号上提供在一个词法变量或一个词法函数定义上有任何效果的操作符.
 
 * 也见(See Also):
 
-Section 2.3.4 (Symbols as Tokens), Section 2.3.1.1 (Potential Numbers as Tokens), Section 22.1.3.3 (Printing Symbols)
+        Section 2.3.4 (Symbols as Tokens), Section 2.3.1.1 (Potential Numbers as Tokens), Section 22.1.3.3 (Printing Symbols)
 
 
 ### <span id="T-KEYWORD">类型 KEYWORD</span>
