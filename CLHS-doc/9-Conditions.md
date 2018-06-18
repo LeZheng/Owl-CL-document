@@ -899,11 +899,12 @@ serious-condition, condition, t
         string---一个字符串; 求值的.
 
 * 描述(Description):
-<!--TODO 待校验-->
+
         如果这个 place 的内容不是类型 typespec, 那么 check-type 发出一个类型 type-error 的可校正错误.
 
-        当且仅当 store-value 重启动被调用, 不管是显式地从一个处理者或者隐式地作为作为调试器提供的其中一个选项, check-type 可以返回. 如果这个 store-value 重启动被调用, check-type 存储这个给重启动调用的 place 的参数(或者是通过调试器交互式提示的那个)新值并重新开始, 检测这个新值的类型并且如果它仍然不是要求的类型就会发出另一个错误.
+        当且仅当 store-value 重启动被调用, 不管是显式地从一个处理者或者隐式地作为作为调试器提供的其中一个选项, check-type 可以返回. 如果这个 store-value 重启动被调用, check-type 存储这个给重启动调用的参数(或者是通过调试器交互式提示的那个)作为新值到 place 并重新开始, 检测这个新值的类型并且如果它仍然不是要求的类型就会发出另一个错误.
 
+<!--TODO 待校验-->
         第一次 place 被求值时, 它通过正常的求值规则来求值. 如果类型检测失败并且使用了这个 store-value 重启动那么它接下来被被求值为一个 place; 见章节 5.1.1.1 (Evaluation of Subforms to Places).
 
         字符串 string 应该是这个类型的一个英语描述, 以一个不确定的冠词开始 ("a" 或者 "an"). 如果没有提供字符串 string, 它就会自动通过 typespec 来计算. 这个自动生成的信息提及 place, 它的内容和要求的类型. 如果一个具体实现可能把这个 place 识别为一个特殊表达式形式, 例如给名为 check-type 的函数的其中一个参数, 一个具体实现可能选择去生成一个措词有点不同的错误信息. 字符串 string 是允许的, 因为 check-type 的一些应用可能需要一个比从typespec 自动生成的更具体的关于需要什么的描述.
@@ -1484,7 +1485,7 @@ serious-condition, condition, t
 
 * 描述(Description):
 
-        当 (typep condition *break-on-signals*) 返回 true 时, 调用 signal, 以及调用其他像 error 这样显式调用 signal 的操作符, 在发送这个状况前进入到调试器中.
+        当 (typep condition *break-on-signals*) 返回 true 时, 调用 signal, 以及调用其他像 error 这样隐式调用 signal 的操作符, 在发送这个状况前进入到调试器中.
 
         当一个 break 由于 *break-on-signals* 发生时, 这个 continue 重启动可以被用于继续这个正常的发送过程.
 
@@ -1628,8 +1629,8 @@ serious-condition, condition, t
         results---在正常的情况下, 返回的值是那些表达式 expression 求值的结果; 在这个当控制被转移到一个子句 clause 中的异常情况中, 在那个 clause 中的最后一个表达式形式 form 的值会被返回.
 
 * 描述(Description):
-<!--TODO 待校验-->
-        handler-case 在一个各种处理者都活跃的动态环境中执行表达式 expression. 每个 error-clause 指定如果去处理一个匹配那个类型特化符 typespec 的状况. 如果控制正常返回, 那么一个 no-error-clause 允许一个特定动作的规范.
+
+        handler-case 在一个各种处理者都活跃的动态环境中执行表达式 expression. 每个 error-clause 指定如果去处理一个匹配那个类型特化符 typespec 的状况. 如果控制正常返回, 那么一个 no-error-clause 允许一个特定动作的规范.<!--TODO 待校验-->
 
         如果在表达式 expression 求值期间一个有着合适的 error-clause 的状况被发送 (换句话说, (typep condition 'typespec) 返回 true) 并且如果这里没有这个类型状况的介入处理者, 那么控制被装一到这个相关 error-clause 的主体当中. 在这个情况下, 这个动态的状态被解开 (这样这些在表达式 expression 周围建立的处理者不再是活跃的), 并且 var 被绑定为这个要被发送的状况. 如果提供了不止一个情况(case), 这些情况是平行的. 这也就是说, 在下面这个表达式形式中
 
@@ -1647,7 +1648,7 @@ serious-condition, condition, t
 
         可以被写为 (typespec () form).
 
-        如果在一个选择的子句 clause 中没有表达式形式, 那么这个情况, 以及 handler-case, 返回 nil. 如果表达式 expression 的执行正常返回并且不存在 no-error-clause, 表达式 expression 返回的值会被 handler-case 返回. 如果表达式 expression 的执行正常返回并且存在一个 no-error-clause, 返回的值被用作给从 no-error-clause 通过构造 (lambda lambda-list form*) 所描述函数的参数, 并且这个函数调用的值会被 handler-case 返回. 在这个调用时, 在表达式 expression 周围建立的处理者不再是活跃的.
+        如果在一个选择的子句 clause 中没有表达式形式, 那么这个情况, 那么因此 handler-case, 返回 nil. 如果表达式 expression 的执行正常返回并且不存在 no-error-clause, 表达式 expression 返回的值会被 handler-case 返回. 如果表达式 expression 的执行正常返回并且存在一个 no-error-clause, 返回的值被用作给从 no-error-clause 通过构造 (lambda lambda-list form*) 所描述函数的参数, 并且这个函数调用的值会被 handler-case 返回. 在这个调用时, 在表达式 expression 周围建立的处理者不再是活跃的.<!--TODO 待校验-->
 
 * 示例(Examples):
 
@@ -2779,7 +2780,7 @@ define-condition, Section 9.1 (Condition System Concepts)
 
 * 描述(Description):
 <!--TODO 待校验-->
-        这个 continue 重启动通常是协议的一部分, 其中这里有一个单个的"明显"的方式来继续, 就像是在 break 和 cerror 中. 一些用户定义的协议也可能希望将其合并为类似的原因. 一般而言, 然而, 更可靠的方法是设计一个特殊用途的重启动, 它的名称更适合于特定的应用程序.
+        这个 continue 重启动通常是有一个单个的"明显"的方式来继续的协议的一部分, 比如在 break 和 cerror 中. 一些用户定义的协议也可能希望将其合并为类似的原因. 一般而言, 然而, 更可靠的方法是设计一个特殊用途的重启动, 它的名称更适合于特定的应用程序.
 
 * 示例(Examples):
 
