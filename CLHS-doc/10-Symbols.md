@@ -103,47 +103,48 @@
 
 * 超类型(Supertypes):
 
-keyword, symbol, t
+        keyword, symbol, t
 
 * 描述(Description):
 
-The type keyword includes all symbols interned the KEYWORD package.
+        类型 keyword 包括所有被捕捉在 KEYWORD 包的符号.
 
-Interning a symbol in the KEYWORD package has three automatic effects:
+        捕捉一个符号到 KEYWORD 包中有三个必然的影响:
 
-1. It causes the symbol to become bound to itself.
-2. It causes the symbol to become an external symbol of the KEYWORD package.
-3. It causes the symbol to become a constant variable.
+        1. 它导致这个符号被绑定到它自身.
+        2. 它导致这个符号变为这个 KEYWORD 包的外部符号.
+        3. 它导致这个符号变为一个常变量.
 
 * 也见(See Also):
 
-keywordp
+        keywordp
 
 
 ### <span id="F-SYMBOLP">函数 SYMBOLP</span>
 
 * 语法(Syntax):
 
-symbolp object => generalized-boolean
+        symbolp object => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-object---an object.
-
-generalized-boolean---a generalized boolean.
+        object---一个对象.
+        generalized-boolean---一个广义的 boolean.
 
 * 描述(Description):
 
-Returns true if object is of type symbol; otherwise, returns false.
+        如果对象 object 是 symbol 类型的就返回 true; 否则, 返回 false.
 
 * 示例(Examples):
 
- (symbolp 'elephant) =>  true
- (symbolp 12) =>  false
- (symbolp nil) =>  true
- (symbolp '()) =>  true
- (symbolp :test) =>  true
- (symbolp "hello") =>  false
+    ```LISP
+    (symbolp 'elephant) =>  true
+    (symbolp 12) =>  false
+    (symbolp nil) =>  true
+    (symbolp '()) =>  true
+    (symbolp :test) =>  true
+    (symbolp "hello") =>  false
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -153,41 +154,42 @@ Returns true if object is of type symbol; otherwise, returns false.
 
 * 也见(See Also):
 
-keywordp, symbol, typep
+        keywordp, symbol, typep
 
 * 注意(Notes):
 
- (symbolp object) ==  (typep object 'symbol)
+        (symbolp object) ==  (typep object 'symbol)
 
 
  ### <span id="F-KEYWORDP">函数 KEYWORDP</span>
 
  * 语法(Syntax):
 
- keywordp object => generalized-boolean
+        keywordp object => generalized-boolean
 
  * 参数和值(Arguments and Values):
 
- object---an object.
-
- generalized-boolean---a generalized boolean.
+        object---一个对象.
+        generalized-boolean---一个广义 boolean.
 
  * 描述(Description):
 
- Returns true if object is a keyword[1]; otherwise, returns false.
+        如果对象 object 是一个关键字就返回 true; 否则, 返回 false.
 
  * 示例(Examples):
 
-  (keywordp 'elephant) =>  false
-  (keywordp 12) =>  false
-  (keywordp :test) =>  true
-  (keywordp ':test) =>  true
-  (keywordp nil) =>  false
-  (keywordp :nil) =>  true
-  (keywordp '(:test)) =>  false
-  (keywordp "hello") =>  false
-  (keywordp ":hello") =>  false
-  (keywordp '&optional) =>  false
+    ```LISP
+      (keywordp 'elephant) =>  false
+      (keywordp 12) =>  false
+      (keywordp :test) =>  true
+      (keywordp ':test) =>  true
+      (keywordp nil) =>  false
+      (keywordp :nil) =>  true
+      (keywordp '(:test)) =>  false
+      (keywordp "hello") =>  false
+      (keywordp ":hello") =>  false
+      (keywordp '&optional) =>  false
+    ```
 
  * 副作用(Side Effects): None.
 
@@ -197,7 +199,7 @@ keywordp, symbol, typep
 
  * 也见(See Also):
 
- constantp, keyword, symbolp, symbol-package
+        constantp, keyword, symbolp, symbol-package
 
  * 注意(Notes): None.
 
@@ -206,28 +208,29 @@ keywordp, symbol, typep
 
 * 语法(Syntax):
 
-make-symbol name => new-symbol
+        make-symbol name => new-symbol
 
 * 参数和值(Arguments and Values):
 
-name---a string.
-
-new-symbol---a fresh, uninterned symbol.
+        name---一个字符串.
+        new-symbol---一个新的, 未被捕捉的符号.
 
 * 描述(Description):
 
-make-symbol creates and returns a fresh, uninterned symbol whose name is the given name. The new-symbol is neither bound nor fbound and has a null property list.
+        make-symbol 创建并返回一个新的, 未捕捉的名为给定名字 name 的符号. 这个新的符号 new-symbol 既没有被绑定也没有被 fbound 并且有一个 null 属性列表.
 
-It is implementation-dependent whether the string that becomes the new-symbol's name is the given name or a copy of it. Once a string has been given as the name argument to make-symbol, the consequences are undefined if a subsequent attempt is made to alter that string.
+        成为这个新符号 new-symbol 的名字的字符串是那个给定的名字 name 还是它的拷贝是依赖于具体实现的. 一旦一个字符串已经被给定作为给 make-symbol 的 name 参数, 如果后面去修改这个字符串那么后果是未定义的.
 
 * 示例(Examples):
 
- (setq temp-string "temp") =>  "temp"
- (setq temp-symbol (make-symbol temp-string)) =>  #:|temp|
- (symbol-name temp-symbol) =>  "temp"
- (eq (symbol-name temp-symbol) temp-string) =>  implementation-dependent
- (find-symbol "temp") =>  NIL, NIL
- (eq (make-symbol temp-string) (make-symbol temp-string)) =>  false
+    ```LISP
+    (setq temp-string "temp") =>  "temp"
+    (setq temp-symbol (make-symbol temp-string)) =>  #:|temp|
+    (symbol-name temp-symbol) =>  "temp"
+    (eq (symbol-name temp-symbol) temp-string) =>  implementation-dependent
+    (find-symbol "temp") =>  NIL, NIL
+    (eq (make-symbol temp-string) (make-symbol temp-string)) =>  false
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -235,61 +238,61 @@ It is implementation-dependent whether the string that becomes the new-symbol's 
 
 * 异常情况(Exceptional Situations): 
 
-Should signal an error of type type-error if name is not a string.
+        如果名字 name 不是一个字符串那么应该发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-copy-symbol
+        copy-symbol
 
 * 注意(Notes):
 
-No attempt is made by make-symbol to convert the case of the name to uppercase. The only case conversion which ever occurs for symbols is done by the Lisp reader. The program interface to symbol creation retains case, and the program interface to interning symbols is case-sensitive.
+        make-symbol 不会尝试去转换这个名字的大小写为大写的. 对于符号发生的仅有的大小写转换是通过 Lisp 读取器完成的. 对于符号创建的编程接口保留大小写, 并且对于捕捉符号的编程接口是大小写敏感的.
 
 
 ### <span id="F-COPY-SYMBOL">函数 COPY-SYMBOL</span>
 
 * 语法(Syntax):
 
-copy-symbol symbol &optional copy-properties => new-symbol
+        copy-symbol symbol &optional copy-properties => new-symbol
 
 * 参数和值(Arguments and Values):
 
-symbol---a symbol.
-
-copy-properties---a generalized boolean. The default is false.
-
-new-symbol---a fresh, uninterned symbol.
+        symbol---一个符号.
+        copy-properties---一个广义的 boolean. 默认是 false.
+        new-symbol---一个新的, 未捕捉的符号.
 
 * 描述(Description):
 
-copy-symbol returns a fresh, uninterned symbol, the name of which is string= to and possibly the same as the name of the given symbol.
+        copy-symbol 返回一个新的, 未被捕捉的符号, 它的名字和给定符号的名字是 string= 的或者可能是一样的.
 
-If copy-properties is false, the new-symbol is neither bound nor fbound and has a null property list. If copy-properties is true, then the initial value of new-symbol is the value of symbol, the initial function definition of new-symbol is the functional value of symbol, and the property list of new-symbol is a copy[2] of the property list of symbol.
+        如果 copy-properties 是 false, 这个新符号 new-symbol 即没有被绑定也没有被 fbound 并且有一个 null 属性列表. 如果 copy-properties 是 true, 那么这个新符号 new-symbol 的初始值是那个符号 symbol 的值, 这个新符号的初始函数定义是那个符号 symbol 的函数值, 并且那个新符号 new-symbol 的属性列表是符号 symbol 的属性列表的一个拷贝.
 
 * 示例(Examples):
 
- (setq fred 'fred-smith) =>  FRED-SMITH
- (setf (symbol-value fred) 3) =>  3
- (setq fred-clone-1a (copy-symbol fred nil)) =>  #:FRED-SMITH
- (setq fred-clone-1b (copy-symbol fred nil)) =>  #:FRED-SMITH
- (setq fred-clone-2a (copy-symbol fred t))   =>  #:FRED-SMITH
- (setq fred-clone-2b (copy-symbol fred t))   =>  #:FRED-SMITH
- (eq fred fred-clone-1a) =>  false
- (eq fred-clone-1a fred-clone-1b) =>  false
- (eq fred-clone-2a fred-clone-2b) =>  false
- (eq fred-clone-1a fred-clone-2a) =>  false
- (symbol-value fred) =>  3
- (boundp fred-clone-1a) =>  false
- (symbol-value fred-clone-2a) =>  3
- (setf (symbol-value fred-clone-2a) 4) =>  4
- (symbol-value fred) =>  3
- (symbol-value fred-clone-2a) =>  4
- (symbol-value fred-clone-2b) =>  3
- (boundp fred-clone-1a) =>  false
- (setf (symbol-function fred) #'(lambda (x) x)) =>  #<FUNCTION anonymous>
- (fboundp fred) =>  true
- (fboundp fred-clone-1a) =>  false
- (fboundp fred-clone-2a) =>  false
+    ```LISP
+    (setq fred 'fred-smith) =>  FRED-SMITH
+    (setf (symbol-value fred) 3) =>  3
+    (setq fred-clone-1a (copy-symbol fred nil)) =>  #:FRED-SMITH
+    (setq fred-clone-1b (copy-symbol fred nil)) =>  #:FRED-SMITH
+    (setq fred-clone-2a (copy-symbol fred t))   =>  #:FRED-SMITH
+    (setq fred-clone-2b (copy-symbol fred t))   =>  #:FRED-SMITH
+    (eq fred fred-clone-1a) =>  false
+    (eq fred-clone-1a fred-clone-1b) =>  false
+    (eq fred-clone-2a fred-clone-2b) =>  false
+    (eq fred-clone-1a fred-clone-2a) =>  false
+    (symbol-value fred) =>  3
+    (boundp fred-clone-1a) =>  false
+    (symbol-value fred-clone-2a) =>  3
+    (setf (symbol-value fred-clone-2a) 4) =>  4
+    (symbol-value fred) =>  3
+    (symbol-value fred-clone-2a) =>  4
+    (symbol-value fred-clone-2b) =>  3
+    (boundp fred-clone-1a) =>  false
+    (setf (symbol-function fred) #'(lambda (x) x)) =>  #<FUNCTION anonymous>
+    (fboundp fred) =>  true
+    (fboundp fred-clone-1a) =>  false
+    (fboundp fred-clone-2a) =>  false
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -297,15 +300,15 @@ If copy-properties is false, the new-symbol is neither bound nor fbound and has 
 
 * 异常情况(Exceptional Situations): 
 
-Should signal an error of type type-error if symbol is not a symbol.
+        如果 symbol 不是一个符号, 那么应该发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-make-symbol
+        make-symbol
 
 * 注意(Notes):
 
-Implementors are encouraged not to copy the string which is the symbol's name unnecessarily. Unless there is a good reason to do so, the normal implementation strategy is for the new-symbol's name to be identical to the given symbol's name.
+        鼓励实现者不要去拷贝那个没有必要是那个符号的名字的字符串. 除非这里有一个好的理由去做这个, 对于这个新符号 new-symbol 的名字的正常的具体实现策略是和给定符号 symbol 的名字是相同的.
 
 
 ### <span id="F-GENSYM">函数 GENSYM</span>
