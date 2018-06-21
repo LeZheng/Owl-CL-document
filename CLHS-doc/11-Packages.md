@@ -1,16 +1,14 @@
- 11. Packages
+# 11. 包
 
-11.1 Package Concepts
+> * 11.1 [包概念](#PackageConcepts)
+> * 11.2 [包字典](#ThePackagesDictionary)
 
-11.2 The Packages Dictionary
+## 11.1 <span id="PackageConcepts">包概念</span>
 
- 11.1 Package Concepts
+> * 11.1.1 [包的介绍](#IntroductionPackages)
+> * 11.1.2 [标准包](#StandardizedPackages)
 
-11.1.1 Introduction to Packages
-
-11.1.2 Standardized Packages
-
- 11.1.1 Introduction to Packages
+### 11.1.1 <span id="IntroductionPackages">包的介绍</span>
 
 A package establishes a mapping from names to symbols. At any given time, one package is current. The current package is the one that is the value of *package*. When using the Lisp reader, it is possible to refer to symbols in packages other than the current one through the use of package prefixes in the printed representation of the symbol.
 
@@ -29,42 +27,37 @@ find-symbol          package-used-by-list
 
 Figure 11-1. Some Defined Names related to Packages
 
-11.1.1.1 Package Names and Nicknames
+> * 11.1.1.1 [包名和别名](#PackageNamesNicknames)
+> * 11.1.1.2 [一个包中的符号](#SymbolsInPackage)
 
-11.1.1.2 Symbols in a Package
-
- 11.1.1.1 Package Names and Nicknames
+#### 11.1.1.1 <span id="PackageNamesNicknames">包名和别名</span>
 
 Each package has a name (a string) and perhaps some nicknames (also strings). These are assigned when the package is created and can be changed later.
 
 There is a single namespace for packages. The function find-package translates a package name or nickname into the associated package. The function package-name returns the name of a package. The function package-nicknames returns a list of all nicknames for a package. rename-package removes a package's current name and nicknames and replaces them with new ones specified by the caller. 
 
 
- 11.1.1.2 Symbols in a Package
+#### 11.1.1.2 <span id="SymbolsInPackage">一个包中的符号</span>
 
-11.1.1.2.1 Internal and External Symbols
+> * 11.1.1.2.1 [内部和外部符号](#InternalExternalSymbols)
+> * 11.1.1.2.2 [包的继承](#PackageInheritance)
+> * 11.1.1.2.3 [一个包中符号的访问](#AccessSymbolsPackage)
+> * 11.1.1.2.4 [Locating a Symbol in a Package](#LocatingSymbolPackage)
+> * 11.1.1.2.5 [包中的名字冲突的避免](#PreventionNameConflictsPackages)
 
-11.1.1.2.2 Package Inheritance
-
-11.1.1.2.3 Accessibility of Symbols in a Package
-
-11.1.1.2.4 Locating a Symbol in a Package
-
-11.1.1.2.5 Prevention of Name Conflicts in Packages
-
- 11.1.1.2.1 Internal and External Symbols
+##### 11.1.1.2.1 <span id="InternalExternalSymbols">内部和外部符号</span>
 
 The mappings in a package are divided into two classes, external and internal. The symbols targeted by these different mappings are called external symbols and internal symbols of the package. Within a package, a name refers to one symbol or to none; if it does refer to a symbol, then it is either external or internal in that package, but not both. External symbols are part of the package's public interface to other packages. Symbols become external symbols of a given package if they have been exported from that package.
 
 A symbol has the same name no matter what package it is present in, but it might be an external symbol of some packages and an internal symbol of others. 
 
- 11.1.1.2.2 Package Inheritance
+##### 11.1.1.2.2 <span id="PackageInheritance">包的继承</span>
 
 Packages can be built up in layers. From one point of view, a package is a single collection of mappings from strings into internal symbols and external symbols. However, some of these mappings might be established within the package itself, while other mappings are inherited from other packages via use-package. A symbol is said to be present in a package if the mapping is in the package itself and is not inherited from somewhere else.
 
 There is no way to inherit the internal symbols of another package; to refer to an internal symbol using the Lisp reader, a package containing the symbol must be made to be the current package, a package prefix must be used, or the symbol must be imported into the current package. 
 
- 11.1.1.2.3 Accessibility of Symbols in a Package
+##### 11.1.1.2.3 <span id="AccessSymbolsPackage">一个包中符号的访问</span>
 
 A symbol becomes accessible in a package if that is its home package when it is created, or if it is imported into that package, or by inheritance via use-package.
 
@@ -78,14 +71,14 @@ Symbols from one package can be made accessible in another package in two ways.
 
 -- The second mechanism for making symbols from one package accessible in another is provided by use-package. All of the external symbols of the used package are inherited by the using package. The function unuse-package undoes the effects of a previous use-package. 
 
- 11.1.1.2.4 Locating a Symbol in a Package
+##### 11.1.1.2.4 <span id="LocatingSymbolPackage">Locating a Symbol in a Package</span>
 
 When a symbol is to be located in a given package the following occurs:
 
 -- The external symbols and internal symbols of the package are searched for the symbol.
 -- The external symbols of the used packages are searched in some unspecified order. The order does not matter; see the rules for handling name conflicts listed below. 
 
- 11.1.1.2.5 Prevention of Name Conflicts in Packages
+##### 11.1.1.2.5 <span id="PreventionNameConflictsPackages">包中的名字冲突的避免</span>
 
 Within one package, any particular name can refer to at most one symbol. A name conflict is said to occur when there would be more than one candidate symbol. Any time a name conflict is about to occur, a correctable error is signaled.
 
@@ -113,7 +106,7 @@ The following rules apply to name conflicts:
 
 -- A name conflict in export or unintern due to a package's inheriting two distinct symbols with the same name (under string=) from two other packages can be resolved in favor of either symbol by importing it into the using package and making it a shadowing symbol, just as with use-package. 
 
- 11.1.2 Standardized Packages
+### 11.1.2 <span id="StandardizedPackages">标准包</span>
 
 This section describes the packages that are available in every conforming implementation. A summary of the names and nicknames of those standardized packages is given in the next figure.
 
@@ -124,15 +117,12 @@ KEYWORD           none
 
 Figure 11-2. Standardized Package Names
 
-11.1.2.1 The COMMON-LISP Package
+> * 11.1.2.1 [COMMON-LISP 包](#COMMON-LISP-Package)
+> * 11.1.2.2 [COMMON-LISP-USER 包](#COMMON-LISP-USER-Package)
+> * 11.1.2.3 [KEYWORD 包](#KEYWORD-Package)
+> * 11.1.2.4 [依赖于具体实现的包](#Implementation-Defined-Packages)
 
-11.1.2.2 The COMMON-LISP-USER Package
-
-11.1.2.3 The KEYWORD Package
-
-11.1.2.4 Implementation-Defined Packages
-
- 11.1.2.1 The COMMON-LISP Package
+#### 11.1.2.1 <span id="COMMON-LISP-Package">COMMON-LISP 包</span>
 
 The COMMON-LISP package contains the primitives of the Common Lisp system as defined by this specification. Its external symbols include all of the defined names (except for defined names in the KEYWORD package) that are present in the Common Lisp system, such as car, cdr, *package*, etc. The COMMON-LISP package has the nickname CL.
 
@@ -142,19 +132,16 @@ For example, the symbol HELP cannot be an external symbol of the COMMON-LISP pac
 
 The COMMON-LISP package can have additional internal symbols.
 
-11.1.2.1.1 Constraints on the COMMON-LISP Package for Conforming Implementations
 
-11.1.2.1.2 Constraints on the COMMON-LISP Package for Conforming Programs
-
-
- 11.1.2.1.1 Constraints on the COMMON-LISP Package for Conforming Implementations
+##### 11.1.2.1.1 符合规范的具体实现的 COMMON-LISP 包的约束
 
 In a conforming implementation, an external symbol of the COMMON-LISP package can have a function, macro, or special operator definition, a global variable definition (or other status as a dynamic variable due to a special proclamation), or a type definition only if explicitly permitted in this standard. For example, fboundp yields false for any external symbol of the COMMON-LISP package that is not the name of a standardized function, macro or special operator, and boundp returns false for any external symbol of the COMMON-LISP package that is not the name of a standardized global variable. It also follows that conforming programs can use external symbols of the COMMON-LISP package as the names of local lexical variables with confidence that those names have not been proclaimed special by the implementation unless those symbols are names of standardized global variables.
 
 A conforming implementation must not place any property on an external symbol of the COMMON-LISP package using a property indicator that is either an external symbol of any standardized package or a symbol that is otherwise accessible in the COMMON-LISP-USER package. 
 
 
- 11.1.2.1.2 Constraints on the COMMON-LISP Package for Conforming Programs
+##### 11.1.2.1.2 符合规范的程序的 COMMON-LISP 包的约束
+
 Except where explicitly allowed, the consequences are undefined if any of the following actions are performed on an external symbol of the COMMON-LISP package:
 
 1. Binding or altering its value (lexically or dynamically). (Some exceptions are noted below.)
@@ -195,9 +182,8 @@ Except where explicitly allowed, the consequences are undefined if any of the fo
 
 19. Defining a method for a standardized generic function which is applicable when all of the arguments are direct instances of standardized classes.
 
-11.1.2.1.2.1 Some Exceptions to Constraints on the COMMON-LISP Package for Conforming Programs
 
- 11.1.2.1.2.1 Some Exceptions to Constraints on the COMMON-LISP Package for Conforming Programs
+###### 11.1.2.1.2.1 符合规范的程序的 COMMON-LISP 包的约束的一些异常
 
 If an external symbol of the COMMON-LISP package is not globally defined as a standardized dynamic variable or constant variable, it is allowed to lexically bind it and to declare the type of that binding, and it is allowed to locally establish it as a symbol macro (e.g., with symbol-macrolet).
 
@@ -210,12 +196,12 @@ If an external symbol of the COMMON-LISP package is not defined as a standardize
 If an external symbol of the COMMON-LISP package is not defined as a standardized function, macro, or special operator, it is allowed to lexically bind its setf function name as a function, and to declare the ftype of that binding. 
 
 
- 11.1.2.2 The COMMON-LISP-USER Package
+#### 11.1.2.2 <span id="COMMON-LISP-USER-Package">COMMON-LISP-USER 包</span>
 
 The COMMON-LISP-USER package is the current package when a Common Lisp system starts up. This package uses the COMMON-LISP package. The COMMON-LISP-USER package has the nickname CL-USER. The COMMON-LISP-USER package can have additional symbols interned within it; it can use other implementation-defined packages. 
 
 
- 11.1.2.3 The KEYWORD Package
+#### 11.1.2.3 <span id="KEYWORD-Package">KEYWORD 包</span>
 
 The KEYWORD package contains symbols, called keywords[1], that are typically used as special markers in programs and their associated data expressions[1].
 
@@ -223,121 +209,87 @@ Symbol tokens that start with a package marker are parsed by the Lisp reader as 
 
 Symbols in the KEYWORD package are, by definition, of type keyword.
 
-11.1.2.3.1 Interning a Symbol in the KEYWORD Package
 
-11.1.2.3.2 Notes about The KEYWORD Package
-
-
- 11.1.2.3.1 Interning a Symbol in the KEYWORD Package
+##### 11.1.2.3.1 在 KEYWORD 包中捕捉一个符号
 
 The KEYWORD package is treated differently than other packages in that special actions are taken when a symbol is interned in it. In particular, when a symbol is interned in the KEYWORD package, it is automatically made to be an external symbol and is automatically made to be a constant variable with itself as a value. 
 
-
- 11.1.2.3.2 Notes about The KEYWORD Package
+##### 11.1.2.3.2 KEYWORD 包的注意点
 
 It is generally best to confine the use of keywords to situations in which there are a finitely enumerable set of names to be selected between. For example, if there were two states of a light switch, they might be called :on and :off.
 
 In situations where the set of names is not finitely enumerable (i.e., where name conflicts might arise) it is frequently best to use symbols in some package other than KEYWORD so that conflicts will be naturally avoided. For example, it is generally not wise for a program to use a keyword[1] as a property indicator, since if there were ever another program that did the same thing, each would clobber the other's data. 
 
 
- 11.1.2.4 Implementation-Defined Packages
+#### 11.1.2.4 <span id="Implementation-Defined-Packages">依赖于具体实现的包</span>
 
 Other, implementation-defined packages might be present in the initial Common Lisp environment.
 
 It is recommended, but not required, that the documentation for a conforming implementation contain a full list of all package names initially present in that implementation but not specified in this specification. (See also the function list-all-packages.) 
 
 
- 11.2 The Packages Dictionary
+## 11.2 <span id="ThePackagesDictionary">包字典</span>
 
-System Class PACKAGE
-
-Function EXPORT
-
-Function FIND-SYMBOL
-
-Function FIND-PACKAGE
-
-Function FIND-ALL-SYMBOLS
-
-Function IMPORT
-
-Function LIST-ALL-PACKAGES
-
-Function RENAME-PACKAGE
-
-Function SHADOW
-
-Function SHADOWING-IMPORT
-
-Function DELETE-PACKAGE
-
-Function MAKE-PACKAGE
-
-Macro WITH-PACKAGE-ITERATOR
-
-Function UNEXPORT
-
-Function UNINTERN
-
-Macro IN-PACKAGE
-
-Function UNUSE-PACKAGE
-
-Function USE-PACKAGE
-
-Macro DEFPACKAGE
-
-Macro DO-SYMBOLS, DO-EXTERNAL-SYMBOLS, DO-ALL-SYMBOLS
-
-Function INTERN
-
-Function PACKAGE-NAME
-
-Function PACKAGE-NICKNAMES
-
-Function PACKAGE-SHADOWING-SYMBOLS
-
-Function PACKAGE-USE-LIST
-
-Function PACKAGE-USED-BY-LIST
-
-Function PACKAGEP
-
-Variable *PACKAGE*
-
-Condition Type PACKAGE-ERROR
-
-Function PACKAGE-ERROR-PACKAGE
+> * [系统类 PACKAGE](#SC-PACKAGE)
+> * [函数 EXPORT](#F-EXPORT)
+> * [函数 FIND-SYMBOL](#F-FIND-SYMBOL)
+> * [函数 FIND-PACKAGE](#F-FIND-PACKAGE)
+> * [函数 FIND-ALL-SYMBOLS](#F-FIND-ALL-SYMBOLS)
+> * [函数 IMPORT](#F-IMPORT)
+> * [函数 LIST-ALL-PACKAGES](#F-LIST-ALL-PACKAGES)
+> * [函数 RENAME-PACKAGE](#F-RENAME-PACKAGE)
+> * [函数 SHADOW](#F-SHADOW)
+> * [函数 SHADOWING-IMPORT](#F-SHADOWING-IMPORT)
+> * [函数 DELETE-PACKAGE](#F-DELETE-PACKAGE)
+> * [函数 MAKE-PACKAGE](#F-MAKE-PACKAGE)
+> * [宏 WITH-PACKAGE-ITERATOR](#M-WITH-PACKAGE-ITERATOR)
+> * [函数 UNEXPORT](#F-UNEXPORT)
+> * [函数 UNINTERN](#F-UNINTERN)
+> * [宏 IN-PACKAGE](#M-IN-PACKAGE)
+> * [函数 UNUSE-PACKAGE](#F-UNUSE-PACKAGE)
+> * [函数 USE-PACKAGE](#F-USE-PACKAGE)
+> * [宏 DEFPACKAGE](#M-DEFPACKAGE)
+> * [宏 DO-SYMBOLS, DO-EXTERNAL-SYMBOLS, DO-ALL-SYMBOLS](#M-DS-DES-DAS)
+> * [函数 INTERN](#F-INTERN)
+> * [函数 PACKAGE-NAME](#F-PACKAGE-NAME)
+> * [函数 PACKAGE-NICKNAMES](#F-PACKAGE-NICKNAMES)
+> * [函数 PACKAGE-SHADOWING-SYMBOLS](#F-PACKAGE-SHADOWING-SYMBOLS)
+> * [函数 PACKAGE-USE-LIST](#F-PACKAGE-USE-LIST)
+> * [函数 PACKAGE-USED-BY-LIST](#F-PACKAGE-USED-BY-LIST)
+> * [函数 PACKAGEP](#F-PACKAGEP)
+> * [变量 *PACKAGE*](#V-PACKAGE)
+> * [状况类型 PACKAGE-ERROR](#CT-PACKAGE-ERROR)
+> * [函数 PACKAGE-ERROR-PACKAGE](#F-PACKAGE-ERROR-PACKAGE)
 
 
-System Class PACKAGE
+### <span id="SC-PACKAGE">系统类 PACKAGE</span>
 
-Class Precedence List:
+* 类优先级列表(Class Precedence List):
 
 package, t
 
-Description:
+* 描述(Description):
 
 A package is a namespace that maps symbol names to symbols; see Section 11.1 (Package Concepts).
 
-See Also:
+* 也见(See Also):
 
 Section 11.1 (Package Concepts), Section 22.1.3.13 (Printing Other Objects), Section 2.3.4 (Symbols as Tokens) 
 
 
-Function EXPORT
+### <span id="F-EXPORT">函数 EXPORT</span>
 
-Syntax:
+* 语法(Syntax):
 
 export symbols &optional package => t
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 symbols---a designator for a list of symbols.
 
 package---a package designator. The default is the current package.
 
-Description:
+* 描述(Description):
 
 export makes one or more symbols that are accessible in package (whether directly or by inheritance) be external symbols of that package.
 
@@ -347,7 +299,7 @@ export makes each symbol accessible to all the packages that use package. All of
 
 A name conflict in export between one of symbols being exported and a symbol already present in a package that would inherit the newly-exported symbol may be resolved in favor of the exported symbol by uninterning the other one, or in favor of the already-present symbol by making it a shadowing symbol.
 
-Examples:
+* 示例(Examples):
 
  (make-package 'temp :use nil) =>  #<PACKAGE "TEMP">
  (use-package 'temp) =>  T
@@ -356,32 +308,32 @@ Examples:
  (export (find-symbol "TEMP-SYM" 'temp) 'temp) =>  T
  (find-symbol "TEMP-SYM") =>  TEMP-SYM, :INHERITED
 
-Side Effects:
+* 副作用(Side Effects):
 
 The package system is modified.
 
-Affected By:
+* 受此影响(Affected By):
 
 Accessible symbols.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations): 
 
 If any of the symbols is not accessible at all in package, an error of type package-error is signaled that is correctable by permitting the user to interactively specify whether that symbol should be imported.
 
-See Also:
+* 也见(See Also):
 
 import, unexport, Section 11.1 (Package Concepts)
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function FIND-SYMBOL
+### <span id="F-FIND-SYMBOL">函数 FIND-SYMBOL</span>
 
-Syntax:
+* 语法(Syntax):
 
 find-symbol string &optional package => symbol, status
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 string---a string.
 
@@ -391,7 +343,7 @@ symbol---a symbol accessible in the package, or nil.
 
 status---one of :inherited, :external, :internal, or nil.
 
-Description:
+* 描述(Description):
 
 find-symbol locates a symbol whose name is string in a package. If a symbol named string is found in package, directly or by inheritance, the symbol found is returned as the first value; the second value is as follows:
 
@@ -409,7 +361,7 @@ find-symbol locates a symbol whose name is string in a package. If a symbol name
 
 If no such symbol is accessible in package, both values are nil.
 
-Examples:
+* 示例(Examples):
 
  (find-symbol "NEVER-BEFORE-USED") =>  NIL, NIL
  (find-symbol "NEVER-BEFORE-USED") =>  NIL, NIL
@@ -431,81 +383,81 @@ Examples:
 OR=>  :NIL, :EXTERNAL
  (find-symbol (symbol-name :nil) "KEYWORD") =>  :NIL, :EXTERNAL
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By:
+* 受此影响(Affected By):
 
 intern, import, export, use-package, unintern, unexport, unuse-package
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations):  None.
 
-See Also:
+* 也见(See Also):
 
 intern, find-all-symbols
 
-Notes:
+* 注意(Notes):
 
 find-symbol is operationally equivalent to intern, except that it never creates a new symbol. 
 
 
-Function FIND-PACKAGE
+### <span id="F-FIND-PACKAGE">函数 FIND-PACKAGE</span>
 
-Syntax:
+* 语法(Syntax):
 
 find-package name => package
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 name---a string designator or a package object.
 
 package---a package object or nil.
 
-Description:
+* 描述(Description):
 
 If name is a string designator, find-package locates and returns the package whose name or nickname is name. This search is case sensitive. If there is no such package, find-package returns nil.
 
 If name is a package object, that package object is returned.
 
-Examples:
+* 示例(Examples):
 
  (find-package 'common-lisp) =>  #<PACKAGE "COMMON-LISP">
  (find-package "COMMON-LISP-USER") =>  #<PACKAGE "COMMON-LISP-USER">
  (find-package 'not-there) =>  NIL
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By:
+* 受此影响(Affected By):
 
 The set of packages created by the implementation.
 
 defpackage, delete-package, make-package, rename-package
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations):  None.
 
-See Also:
+* 也见(See Also):
 
 make-package
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function FIND-ALL-SYMBOLS
+### <span id="F-FIND-ALL-SYMBOLS">函数 FIND-ALL-SYMBOLS</span>
 
-Syntax:
+* 语法(Syntax):
 
 find-all-symbols string => symbols
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 string---a string designator.
 
 symbols---a list of symbols.
 
-Description:
+* 描述(Description):
 
 find-all-symbols searches every registered package for symbols that have a name that is the same (under string=) as string. A list of all such symbols is returned. Whether or how the list is ordered is implementation-dependent.
 
-Examples:
+* 示例(Examples):
 
  (find-all-symbols 'car)
 =>  (CAR)
@@ -518,32 +470,32 @@ OR=>  (CAR TEMP::CAR)
 OR=>  (TEMP::CAR CAR VEHICLES:CAR)
 OR=>  (CAR TEMP::CAR VEHICLES:CAR)
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations):  None.
 
-See Also:
+* 也见(See Also):
 
 find-symbol
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function IMPORT
+### <span id="F-IMPORT">函数 IMPORT</span>
 
-Syntax:
+* 语法(Syntax):
 
 import symbols &optional package => t
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 symbols---a designator for a list of symbols.
 
 package---a package designator. The default is the current package.
 
-Description:
+* 描述(Description):
 
 import adds symbol or symbols to the internals of package, checking for name conflicts with existing symbols either present in package or accessible to it. Once the symbols have been imported, they may be referenced in the importing package without the use of a package prefix when using the Lisp reader.
 
@@ -553,7 +505,7 @@ The imported symbol is not automatically exported from the current package, but 
 
 If the symbol is already present in the importing package, import has no effect.
 
-Examples:
+* 示例(Examples):
 
  (import 'common-lisp::car (make-package 'temp :use nil)) =>  T
  (find-symbol "CAR" 'temp) =>  CAR, :INTERNAL
@@ -561,65 +513,65 @@ Examples:
 
 The form (import 'editor:buffer) takes the external symbol named buffer in the EDITOR package (this symbol was located when the form was read by the Lisp reader) and adds it to the current package as an internal symbol. The symbol buffer is then present in the current package.
 
-Side Effects:
+* 副作用(Side Effects):
 
 The package system is modified.
 
-Affected By:
+* 受此影响(Affected By):
 
 Current state of the package system.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations): 
 
 import signals a correctable error of type package-error if any of the symbols to be imported has the same name (under string=) as some distinct symbol (under eql) already accessible in the package, even if the conflict is with a shadowing symbol of the package.
 
-See Also:
+* 也见(See Also):
 
 shadow, export
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function LIST-ALL-PACKAGES
+### <span id="F-LIST-ALL-PACKAGES">函数 LIST-ALL-PACKAGES</span>
 
-Syntax:
+* 语法(Syntax):
 
 list-all-packages <no arguments> => packages
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 packages---a list of package objects.
 
-Description:
+* 描述(Description):
 
 list-all-packages returns a fresh list of all registered packages.
 
-Examples:
+* 示例(Examples):
 
  (let ((before (list-all-packages)))
     (make-package 'temp)
     (set-difference (list-all-packages) before)) =>  (#<PACKAGE "TEMP">)
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By:
+* 受此影响(Affected By):
 
 defpackage, delete-package, make-package
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations):  None.
 
-See Also: None.
+* 也见(See Also): None.
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function RENAME-PACKAGE
+### <span id="F-RENAME-PACKAGE">函数 RENAME-PACKAGE</span>
 
-Syntax:
+* 语法(Syntax):
 
 rename-package package new-name &optional new-nicknames => package-object
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 package---a package designator.
 
@@ -629,13 +581,13 @@ new-nicknames---a list of string designators. The default is the empty list.
 
 package-object---the renamed package object.
 
-Description:
+* 描述(Description):
 
 Replaces the name and nicknames of package. The old name and all of the old nicknames of package are eliminated and are replaced by new-name and new-nicknames.
 
 The consequences are undefined if new-name or any new-nickname conflicts with any existing package names.
 
-Examples:
+* 示例(Examples):
 
  (make-package 'temporary :nicknames '("TEMP")) =>  #<PACKAGE "TEMPORARY">
  (rename-package 'temp 'ephemeral) =>  #<PACKAGE "EPHEMERAL">
@@ -645,38 +597,38 @@ Examples:
 =>  #<PACKAGE "TEMPORARY">
  (package-nicknames (find-package 'temp)) =>  ("TEMP" "FLEETING")
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations):  None.
 
-See Also:
+* 也见(See Also):
 
 make-package
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function SHADOW
+### <span id="F-SHADOW">函数 SHADOW</span>
 
-Syntax:
+* 语法(Syntax):
 
 shadow symbol-names &optional package => t
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 symbol-names---a designator for a list of string designators.
 
 package---a package designator. The default is the current package.
 
-Description:
+* 描述(Description):
 
 shadow assures that symbols with names given by symbol-names are present in the package.
 
 Specifically, package is searched for symbols with the names supplied by symbol-names. For each such name, if a corresponding symbol is not present in package (directly, not by inheritance), then a corresponding symbol is created with that name, and inserted into package as an internal symbol. The corresponding symbol, whether pre-existing or newly created, is then added, if not already present, to the shadowing symbols list of package.
 
-Examples:
+* 示例(Examples):
 
  (package-shadowing-symbols (make-package 'temp)) =>  NIL
  (find-symbol 'car 'temp) =>  CAR, :INHERITED
@@ -697,38 +649,38 @@ Examples:
  (use-package 'test-2 (find-package 'test-1))    ;should not error
  
 
-Side Effects:
+* 副作用(Side Effects):
 
 shadow changes the state of the package system in such a way that the package consistency rules do not hold across the change.
 
-Affected By:
+* 受此影响(Affected By):
 
 Current state of the package system.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations):  None.
 
-See Also:
+* 也见(See Also):
 
 package-shadowing-symbols, Section 11.1 (Package Concepts)
 
-Notes:
+* 注意(Notes):
 
 If a symbol with a name in symbol-names already exists in package, but by inheritance, the inherited symbol becomes shadowed[3] by a newly created internal symbol. 
 
 
-Function SHADOWING-IMPORT
+### <span id="F-SHADOWING-IMPORT">函数 SHADOWING-IMPORT</span>
 
-Syntax:
+* 语法(Syntax):
 
 shadowing-import symbols &optional package => t
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 symbols---a designator for a list of symbols.
 
 package ---a package designator. The default is the current package.
 
-Description:
+* 描述(Description):
 
 shadowing-import is like import, but it does not signal an error even if the importation of a symbol would shadow some symbol already accessible in package.
 
@@ -736,7 +688,7 @@ shadowing-import inserts each of symbols into package as an internal symbol, reg
 
 shadowing-import does name-conflict checking to the extent that it checks whether a distinct existing symbol with the same name is accessible; if so, it is shadowed by the new symbol, which implies that it must be uninterned if it was present in package.
 
-Examples:
+* 示例(Examples):
 
  (in-package "COMMON-LISP-USER") =>  #<PACKAGE "COMMON-LISP-USER">
  (setq sym (intern "CONFLICT")) =>  CONFLICT
@@ -745,38 +697,38 @@ Examples:
  (shadowing-import sym 'temp) =>  T 
  (package-shadowing-symbols 'temp) =>  (CONFLICT)
 
-Side Effects:
+* 副作用(Side Effects):
 
 shadowing-import changes the state of the package system in such a way that the consistency rules do not hold across the change.
 
 package's shadowing-symbols list is modified.
 
-Affected By:
+* 受此影响(Affected By):
 
 Current state of the package system.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations):  None.
 
-See Also:
+* 也见(See Also):
 
 import, unintern, package-shadowing-symbols
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function DELETE-PACKAGE
+### <span id="F-DELETE-PACKAGE">函数 DELETE-PACKAGE</span>
 
-Syntax:
+* 语法(Syntax):
 
 delete-package package => generalized-boolean
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 package---a package designator.
 
 generalized-boolean---a generalized boolean.
 
-Description:
+* 描述(Description):
 
 delete-package deletes package from all package system data structures. If the operation is successful, delete-package returns true, otherwise nil. The effect of delete-package is that the name and nicknames of package cease to be recognized package names. The package object is still a package (i.e., packagep is true of it) but package-name returns nil. The consequences of deleting the COMMON-LISP package or the KEYWORD package are undefined. The consequences of invoking any other package operation on package once it has been deleted are unspecified. In particular, the consequences of invoking find-symbol, intern and other functions that look for a symbol name in a package are unspecified if they are called with *package* bound to the deleted package or with the deleted package as an argument.
 
@@ -784,7 +736,7 @@ If package is a package object that has already been deleted, delete-package imm
 
 After this operation completes, the home package of any symbol whose home package had previously been package is implementation-dependent. Except for this, symbols accessible in package are not modified in any other way; symbols whose home package is not package remain unchanged.
 
-Examples:
+* 示例(Examples):
 
  (setq *foo-package* (make-package "FOO" :use nil))
  (setq *foo-symbol*  (intern "FOO" *foo-package*))
@@ -859,28 +811,28 @@ Examples:
  (package-used-by-list *bar-package*) is unspecified
  (package-used-by-list *baz-package*) =>  ()
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations): 
 
 If the package designator is a name that does not currently name a package, a correctable error of type package-error is signaled. If correction is attempted, no deletion action is attempted; instead, delete-package immediately returns nil.
 
 If package is used by other packages, a correctable error of type package-error is signaled. If correction is attempted, unuse-package is effectively called to remove any dependencies, causing package's external symbols to cease being accessible to those packages that use package. delete-package then deletes package just as it would have had there been no packages that used it.
 
-See Also:
+* 也见(See Also):
 
 unuse-package
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function MAKE-PACKAGE
+### <span id="F-MAKE-PACKAGE">函数 MAKE-PACKAGE</span>
 
-Syntax:
+* 语法(Syntax):
 
 make-package package-name &key nicknames use => package
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 package-name---a string designator.
 
@@ -890,7 +842,7 @@ use---a list of package designators. The default is implementation-defined.
 
 package---a package.
 
-Description:
+* 描述(Description):
 
 Creates a new package with the name package-name.
 
@@ -898,45 +850,45 @@ Nicknames are additional names which may be used to refer to the new package.
 
 use specifies zero or more packages the external symbols of which are to be inherited by the new package. See the function use-package.
 
-Examples:
+* 示例(Examples):
 
  (make-package 'temporary :nicknames '("TEMP" "temp")) =>  #<PACKAGE "TEMPORARY">
  (make-package "OWNER" :use '("temp")) =>  #<PACKAGE "OWNER">
  (package-used-by-list 'temp) =>  (#<PACKAGE "OWNER">)
  (package-use-list 'owner) =>  (#<PACKAGE "TEMPORARY">)
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By:
+* 受此影响(Affected By):
 
 The existence of other packages in the system.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations): 
 
 The consequences are unspecified if packages denoted by use do not exist.
 
 A correctable error is signaled if the package-name or any of the nicknames is already the name or nickname of an existing package.
 
-See Also:
+* 也见(See Also):
 
 defpackage, use-package
 
-Notes:
+* 注意(Notes):
 
 In situations where the packages to be used contain symbols which would conflict, it is necessary to first create the package with :use '(), then to use shadow or shadowing-import to address the conflicts, and then after that to use use-package once the conflicts have been addressed.
 
 When packages are being created as part of the static definition of a program rather than dynamically by the program, it is generally considered more stylistically appropriate to use defpackage rather than make-package. 
 
 
-Macro WITH-PACKAGE-ITERATOR
+### <span id="M-WITH-PACKAGE-ITERATOR">宏 WITH-PACKAGE-ITERATOR</span>
 
-Syntax:
+* 语法(Syntax):
 
 with-package-iterator (name package-list-form &rest symbol-types) declaration* form*
 
 => result*
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 name---a symbol.
 
@@ -952,7 +904,7 @@ forms---an implicit progn.
 
 results---the values of the forms.
 
-Description:
+* 描述(Description):
 
 Within the lexical scope of the body forms, the name is defined via macrolet such that successive invocations of (name) will return the symbols, one by one, from the packages in package-list.
 
@@ -1001,7 +953,7 @@ It is unspecified what happens if any of the implicit interior state of an itera
 
 Any number of invocations of with-package-iterator can be nested, and the body of the innermost one can invoke all of the locally established macros, provided all those macros have distinct names.
 
-Examples:
+* 示例(Examples):
 
 The following function should return t on any package, and signal an error if the usage of with-package-iterator does not agree with the corresponding usage of do-symbols.
 
@@ -1042,42 +994,42 @@ The following function prints out every present symbol (possibly more than once)
             (print symbol)
             (return))))))
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations): 
 
 with-package-iterator signals an error of type program-error if no symbol-types are supplied or if a symbol-type is not recognized by the implementation is supplied.
 
 The consequences are undefined if the local function named name established by with-package-iterator is called after it has returned false as its primary value.
 
-See Also:
+* 也见(See Also):
 
 Section 3.6 (Traversal Rules and Side Effects)
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function UNEXPORT
+### <span id="F-UNEXPORT">函数 UNEXPORT</span>
 
-Syntax:
+* 语法(Syntax):
 
 unexport symbols &optional package => t
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 symbols---a designator for a list of symbols.
 
 package---a package designator. The default is the current package.
 
-Description:
+* 描述(Description):
 
 unexport reverts external symbols in package to internal status; it undoes the effect of export.
 
 unexport works only on symbols present in package, switching them back to internal status. If unexport is given a symbol that is already accessible as an internal symbol in package, it does nothing.
 
-Examples:
+* 示例(Examples):
 
  (in-package "COMMON-LISP-USER") =>  #<PACKAGE "COMMON-LISP-USER">
  (export (intern "CONTRABAND" (make-package 'temp)) 'temp) =>  T
@@ -1087,34 +1039,34 @@ Examples:
  (unexport 'contraband 'temp) =>  T
  (find-symbol "CONTRABAND") =>  NIL, NIL
 
-Side Effects:
+* 副作用(Side Effects):
 
 Package system is modified.
 
-Affected By:
+* 受此影响(Affected By):
 
 Current state of the package system.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations): 
 
 If unexport is given a symbol not accessible in package at all, an error of type package-error is signaled.
 
 The consequences are undefined if package is the KEYWORD package or the COMMON-LISP package.
 
-See Also:
+* 也见(See Also):
 
 export, Section 11.1 (Package Concepts)
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function UNINTERN
+### <span id="F-UNINTERN">函数 UNINTERN</span>
 
-Syntax:
+* 语法(Syntax):
 
 unintern symbol &optional package => generalized-boolean
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 symbol---a symbol.
 
@@ -1122,7 +1074,7 @@ package---a package designator. The default is the current package.
 
 generalized-boolean---a generalized boolean.
 
-Description:
+* 描述(Description):
 
 unintern removes symbol from package. If symbol is present in package, it is removed from package and also from package's shadowing symbols list if it is present there. If package is the home package for symbol, symbol is made to have no home package. Symbol may continue to be accessible in package by inheritance.
 
@@ -1130,7 +1082,7 @@ Use of unintern can result in a symbol that has no recorded home package, but th
 
 unintern returns true if it removes symbol, and nil otherwise.
 
-Examples:
+* 示例(Examples):
 
  (in-package "COMMON-LISP-USER") =>  #<PACKAGE "COMMON-LISP-USER">
  (setq temps-unpack (intern "UNPACK" (make-package 'temp))) =>  TEMP::UNPACK 
@@ -1138,81 +1090,81 @@ Examples:
  (find-symbol "UNPACK" 'temp) =>  NIL, NIL 
  temps-unpack =>  #:UNPACK 
 
-Side Effects:
+* 副作用(Side Effects):
 
 unintern changes the state of the package system in such a way that the consistency rules do not hold across the change.
 
-Affected By:
+* 受此影响(Affected By):
 
 Current state of the package system.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations): 
 
 Giving a shadowing symbol to unintern can uncover a name conflict that had previously been resolved by the shadowing. If package A uses packages B and C, A contains a shadowing symbol x, and B and C each contain external symbols named x, then removing the shadowing symbol x from A will reveal a name conflict between b:x and c:x if those two symbols are distinct. In this case unintern will signal an error.
 
-See Also:
+* 也见(See Also):
 
 Section 11.1 (Package Concepts)
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Macro IN-PACKAGE
+### <span id="M-IN-PACKAGE">宏 IN-PACKAGE</span>
 
-Syntax:
+* 语法(Syntax):
 
 in-package name => package
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 name---a string designator; not evaluated.
 
 package---the package named by name.
 
-Description:
+* 描述(Description):
 
 Causes the the package named by name to become the current package---that is, the value of *package*. If no such package already exists, an error of type package-error is signaled.
 
 Everything in-package does is also performed at compile time if the call appears as a top level form.
 
-Examples: None.
+* 示例(Examples): None.
 
-Side Effects:
+* 副作用(Side Effects):
 
 The variable *package* is assigned. If the in-package form is a top level form, this assignment also occurs at compile time.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations): 
 
 An error of type package-error is signaled if the specified package does not exist.
 
-See Also:
+* 也见(See Also):
 
 *package*
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function UNUSE-PACKAGE
+### <span id="F-UNUSE-PACKAGE">函数 UNUSE-PACKAGE</span>
 
-Syntax:
+* 语法(Syntax):
 
 unuse-package packages-to-unuse &optional package => t
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 packages-to-unuse---a designator for a list of package designators.
 
 package---a package designator. The default is the current package.
 
-Description:
+* 描述(Description):
 
 unuse-package causes package to cease inheriting all the external symbols of packages-to-unuse; unuse-package undoes the effects of use-package. The packages-to-unuse are removed from the use list of package.
 
 Any symbols that have been imported into package continue to be present in package.
 
-Examples:
+* 示例(Examples):
 
  (in-package "COMMON-LISP-USER") =>  #<PACKAGE "COMMON-LISP-USER">
  (export (intern "SHOES" (make-package 'temp)) 'temp) =>  T
@@ -1223,36 +1175,36 @@ Examples:
  (unuse-package 'temp) =>  T
  (find-symbol "SHOES") =>  NIL, NIL
 
-Side Effects:
+* 副作用(Side Effects):
 
 The use list of package is modified.
 
-Affected By:
+* 受此影响(Affected By):
 
 Current state of the package system.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations):  None.
 
-See Also:
+* 也见(See Also):
 
 use-package, package-use-list
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function USE-PACKAGE
+### <span id="F-USE-PACKAGE">函数 USE-PACKAGE</span>
 
-Syntax:
+* 语法(Syntax):
 
 use-package packages-to-use &optional package => t
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 packages-to-use---a designator for a list of package designators. The KEYWORD package may not be supplied.
 
 package---a package designator. The default is the current package. The package cannot be the KEYWORD package.
 
-Description:
+* 描述(Description):
 
 use-package causes package to inherit all the external symbols of packages-to-use. The inherited symbols become accessible as internal symbols of package.
 
@@ -1260,7 +1212,7 @@ Packages-to-use are added to the use list of package if they are not there alrea
 
 use-package checks for name conflicts between the newly imported symbols and those already accessible in package. A name conflict in use-package between two external symbols inherited by package from packages-to-use may be resolved in favor of either symbol by importing one of them into package and making it a shadowing symbol.
 
-Examples:
+* 示例(Examples):
 
  (export (intern "LAND-FILL" (make-package 'trash)) 'trash) =>  T
  (find-symbol "LAND-FILL" (make-package 'temp)) =>  NIL, NIL
@@ -1269,26 +1221,26 @@ Examples:
  (package-use-list 'temp) =>  (#<PACKAGE "TEMP"> #<PACKAGE "TRASH">)
  (find-symbol "LAND-FILL" 'temp) =>  TRASH:LAND-FILL, :INHERITED
 
-Side Effects:
+* 副作用(Side Effects):
 
 The use list of package may be modified.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations):  None.
 
-See Also:
+* 也见(See Also):
 
 unuse-package, package-use-list, Section 11.1 (Package Concepts)
 
-Notes:
+* 注意(Notes):
 
 It is permissible for a package P1 to use a package P2 even if P2 already uses P1. The using of packages is not transitive, so no problem results from the apparent circularity. 
 
 
-Macro DEFPACKAGE
+### <span id="M-DEFPACKAGE">宏 DEFPACKAGE</span>
 
-Syntax:
+* 语法(Syntax):
 
 defpackage defined-package-name [[option]] => package
 
@@ -1302,7 +1254,7 @@ option::= (:nicknames nickname*)* |
           (:intern {symbol-name}*)* |  
           (:size integer) 
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 defined-package-name---a string designator.
 
@@ -1314,7 +1266,7 @@ symbol-name---a string designator.
 
 package---the package named package-name.
 
-Description:
+* 描述(Description):
 
 defpackage creates a package as specified and returns the package.
 
@@ -1369,7 +1321,7 @@ Shadows are established first, since they might be necessary to block spurious n
 
 If a defpackage form appears as a top level form, all of the actions normally performed by this macro at load time must also be performed at compile time.
 
-Examples:
+* 示例(Examples):
 
  (defpackage "MY-PACKAGE"
    (:nicknames "MYPKG" "MY-PKG")
@@ -1388,11 +1340,11 @@ Examples:
    (:export "CONS")            ; this is the shadowed one.
    )
 
-Affected By:
+* 受此影响(Affected By):
 
 Existing packages.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations): 
 
 If one of the supplied :nicknames already refers to an existing package, an error of type package-error is signaled.
 
@@ -1406,11 +1358,11 @@ For the :shadowing-import-from and :import-from options, a correctable error of 
 
 Name conflict errors are handled by the underlying calls to make-package, use-package, import, and export. See Section 11.1 (Package Concepts).
 
-See Also:
+* 也见(See Also):
 
 documentation, Section 11.1 (Package Concepts), Section 3.2 (Compilation)
 
-Notes:
+* 注意(Notes):
 
 The :intern option is useful if an :import-from or a :shadowing-import-from option in a subsequent call to defpackage (for some other package) expects to find these symbols accessible but not necessarily external.
 
@@ -1433,9 +1385,9 @@ The macroexpansion of defpackage could usefully canonicalize the names into stri
 Frequently additional implementation-dependent options take the form of a keyword standing by itself as an abbreviation for a list (keyword T); this syntax should be properly reported as an unrecognized option in implementations that do not support it. 
 
 
-Macro DO-SYMBOLS, DO-EXTERNAL-SYMBOLS, DO-ALL-SYMBOLS
+### <span id="M-DS-DES-DAS">宏 DO-SYMBOLS, DO-EXTERNAL-SYMBOLS, DO-ALL-SYMBOLS</span>
 
-Syntax:
+* 语法(Syntax):
 
 do-symbols (var [package [result-form]]) declaration* {tag | statement}*
 
@@ -1449,7 +1401,7 @@ do-all-symbols (var [result-form]) declaration* {tag | statement}*
 
 => result*
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 var---a variable name; not evaluated.
 
@@ -1465,7 +1417,7 @@ statement---a compound form; evaluated as described below.
 
 results---the values returned by the result-form if a normal return occurs, or else, if an explicit return occurs, the values that were transferred.
 
-Description:
+* 描述(Description):
 
 do-symbols, do-external-symbols, and do-all-symbols iterate over the symbols of packages. For each symbol in the set of packages chosen, the var is bound to the symbol, and the statements in the body are executed. When all the symbols have been processed, result-form is evaluated and returned as the value of the macro.
 
@@ -1485,7 +1437,7 @@ For each of these macros, the scope of the name binding does not include any ini
 
 Any tag in the body is treated as with tagbody.
 
-Examples:
+* 示例(Examples):
 
  (make-package 'temp :use nil) =>  #<PACKAGE "TEMP">
  (intern "SHY" 'temp) =>  TEMP::SHY, NIL ;SHY will be an internal symbol
@@ -1507,26 +1459,26 @@ OR=>  (TEMP:BOLD TEMP::SHY)
 =>  (TEMP::SHY TEMP:BOLD)
 OR=>  (TEMP:BOLD TEMP::SHY)
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations):  None.
 
-See Also:
+* 也见(See Also):
 
 intern, export, Section 3.6 (Traversal Rules and Side Effects)
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function INTERN
+### <span id="F-INTERN">函数 INTERN</span>
 
-Syntax:
+* 语法(Syntax):
 
 intern string &optional package => symbol, status
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 string---a string.
 
@@ -1536,7 +1488,7 @@ symbol---a symbol.
 
 status---one of :inherited, :external, :internal, or nil.
 
-Description:
+* 描述(Description):
 
 intern enters a symbol named string into package. If a symbol whose name is the same as string is already accessible in package, it is returned. If no such symbol is accessible in package, a new symbol with the given name is created and entered into package as an internal symbol, or as an external symbol if the package is the KEYWORD package; package becomes the home package of the created symbol.
 
@@ -1560,7 +1512,7 @@ nil
 
     It is implementation-dependent whether the string that becomes the new symbol's name is the given string or a copy of it. Once a string has been given as the string argument to intern in this situation where a new symbol is created, the consequences are undefined if a subsequent attempt is made to alter that string.
 
-Examples:
+* 示例(Examples):
 
  (in-package "COMMON-LISP-USER") =>  #<PACKAGE "COMMON-LISP-USER">
  (intern "Never-Before") =>  |Never-Before|, NIL
@@ -1568,38 +1520,38 @@ Examples:
  (intern "NEVER-BEFORE" "KEYWORD") =>  :NEVER-BEFORE, NIL
  (intern "NEVER-BEFORE" "KEYWORD") =>  :NEVER-BEFORE, :EXTERNAL
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations):  None.
 
-See Also:
+* 也见(See Also):
 
 find-symbol, read, symbol, unintern, Section 2.3.4 (Symbols as Tokens)
 
-Notes:
+* 注意(Notes):
 
 intern does not need to do any name conflict checking because it never creates a new symbol if there is already an accessible symbol with the name given. 
 
 
-Function PACKAGE-NAME
+### <span id="F-PACKAGE-NAME">函数 PACKAGE-NAME</span>
 
-Syntax:
+* 语法(Syntax):
 
 package-name package => name
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 package---a package designator.
 
 name---a string or nil.
 
-Description:
+* 描述(Description):
 
 package-name returns the string that names package, or nil if the package designator is a package object that has no name (see the function delete-package).
 
-Examples:
+* 示例(Examples):
 
  (in-package "COMMON-LISP-USER") =>  #<PACKAGE "COMMON-LISP-USER">
  (package-name *package*) =>  "COMMON-LISP-USER"
@@ -1610,71 +1562,71 @@ Examples:
  (rename-package "FOO" "FOO0")
  (package-name *foo-package*) =>  "FOO0"
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations): 
 
 Should signal an error of type type-error if package is not a package designator.
 
-See Also: None.
+* 也见(See Also): None.
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function PACKAGE-NICKNAMES
+### <span id="F-PACKAGE-NICKNAMES">函数 PACKAGE-NICKNAMES</span>
 
-Syntax:
+* 语法(Syntax):
 
 package-nicknames package => nicknames
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 package---a package designator.
 
 nicknames---a list of strings.
 
-Description:
+* 描述(Description):
 
 Returns the list of nickname strings for package, not including the name of package.
 
-Examples:
+* 示例(Examples):
 
  (package-nicknames (make-package 'temporary
                                    :nicknames '("TEMP" "temp")))
 =>  ("temp" "TEMP") 
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations): 
 
 Should signal an error of type type-error if package is not a package designator.
 
-See Also: None.
+* 也见(See Also): None.
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function PACKAGE-SHADOWING-SYMBOLS
+### <span id="F-PACKAGE-SHADOWING-SYMBOLS">函数 PACKAGE-SHADOWING-SYMBOLS</span>
 
-Syntax:
+* 语法(Syntax):
 
 package-shadowing-symbols package => symbols
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 package---a package designator.
 
 symbols---a list of symbols.
 
-Description:
+* 描述(Description):
 
 Returns a list of symbols that have been declared as shadowing symbols in package by shadow or shadowing-import (or the equivalent defpackage options). All symbols on this list are present in package.
 
-Examples:
+* 示例(Examples):
 
  (package-shadowing-symbols (make-package 'temp)) =>  ()
  (shadow 'cdr 'temp) =>  T
@@ -1683,134 +1635,134 @@ Examples:
  (shadowing-import 'pill 'temp) =>  T
  (package-shadowing-symbols 'temp) =>  (PILL TEMP::CDR)
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations): 
 
 Should signal an error of type type-error if package is not a package designator.
 
-See Also:
+* 也见(See Also):
 
 shadow, shadowing-import
 
-Notes:
+* 注意(Notes):
 
 Whether the list of symbols is fresh is implementation-dependent. 
 
 
-Function PACKAGE-USE-LIST
+### <span id="F-PACKAGE-USE-LIST">函数 PACKAGE-USE-LIST</span>
 
-Syntax:
+* 语法(Syntax):
 
 package-use-list package => use-list
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 package---a package designator.
 
 use-list---a list of package objects.
 
-Description:
+* 描述(Description):
 
 Returns a list of other packages used by package.
 
-Examples:
+* 示例(Examples):
 
  (package-use-list (make-package 'temp)) =>  (#<PACKAGE "COMMON-LISP">)
  (use-package 'common-lisp-user 'temp) =>  T
  (package-use-list 'temp) =>  (#<PACKAGE "COMMON-LISP"> #<PACKAGE "COMMON-LISP-USER">)
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations): 
 
 Should signal an error of type type-error if package is not a package designator.
 
-See Also:
+* 也见(See Also):
 
 use-package, unuse-package
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function PACKAGE-USED-BY-LIST
+### <span id="F-PACKAGE-USED-BY-LIST">函数 PACKAGE-USED-BY-LIST</span>
 
-Syntax:
+* 语法(Syntax):
 
 package-used-by-list package => used-by-list
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 package---a package designator.
 
 used-by-list---a list of package objects.
 
-Description:
+* 描述(Description):
 
 package-used-by-list returns a list of other packages that use package.
 
-Examples:
+* 示例(Examples):
 
  (package-used-by-list (make-package 'temp)) =>  ()
  (make-package 'trash :use '(temp)) =>  #<PACKAGE "TRASH">
  (package-used-by-list 'temp) =>  (#<PACKAGE "TRASH">)
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations): 
 
 Should signal an error of type type-error if package is not a package.
 
-See Also:
+* 也见(See Also):
 
 use-package, unuse-package
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function PACKAGEP
+### <span id="F-PACKAGEP">函数 PACKAGEP</span>
 
-Syntax:
+* 语法(Syntax):
 
 packagep object => generalized-boolean
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 object---an object.
 
 generalized-boolean---a generalized boolean.
 
-Description:
+* 描述(Description):
 
 Returns true if object is of type package; otherwise, returns false.
 
-Examples:
+* 示例(Examples):
 
  (packagep *package*) =>  true 
  (packagep 'common-lisp) =>  false 
  (packagep (find-package 'common-lisp)) =>  true 
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations):  None.
 
-See Also: None.
+* 也见(See Also): None.
 
-Notes:
+* 注意(Notes):
 
  (packagep object) ==  (typep object 'package)
 
 
 
-Variable *PACKAGE*
+### <span id="V-PACKAGE">变量 *PACKAGE*</span>
 
 Value Type:
 
@@ -1820,11 +1772,11 @@ Initial Value:
 
 the COMMON-LISP-USER package.
 
-Description:
+* 描述(Description):
 
 Whatever package object is currently the value of *package* is referred to as the current package.
 
-Examples:
+* 示例(Examples):
 
  (in-package "COMMON-LISP-USER") =>  #<PACKAGE "COMMON-LISP-USER">
  *package* =>  #<PACKAGE "COMMON-LISP-USER">
@@ -1844,65 +1796,65 @@ Examples:
             (intern "FOO")))
 =>  false
 
-Affected By:
+* 受此影响(Affected By):
 
 load, compile-file, in-package
 
-See Also:
+* 也见(See Also):
 
 compile-file, in-package, load, package
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Condition Type PACKAGE-ERROR
+### <span id="CT-PACKAGE-ERROR">状况类型 PACKAGE-ERROR</span>
 
-Class Precedence List:
+* 类优先级列表(Class Precedence List):
 
 package-error, error, serious-condition, condition, t
 
-Description:
+* 描述(Description):
 
 The type package-error consists of error conditions related to operations on packages. The offending package (or package name) is initialized by the :packageinitialization argument to make-condition, and is accessed by the function package-error-package.
 
-See Also:
+* 也见(See Also):
 
 package-error-package, Section 9 (Conditions) 
 
 
-Function PACKAGE-ERROR-PACKAGE
+### <span id="F-PACKAGE-ERROR-PACKAGE">函数 PACKAGE-ERROR-PACKAGE</span>
 
-Syntax:
+* 语法(Syntax):
 
 package-error-package condition => package
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 condition---a condition of type package-error.
 
 package---a package designator.
 
-Description:
+* 描述(Description):
 
 Returns a designator for the offending package in the situation represented by the condition.
 
-Examples:
+* 示例(Examples):
 
  (package-error-package 
    (make-condition 'package-error
      :package (find-package "COMMON-LISP")))
 =>  #<Package "COMMON-LISP">
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations):  None.
 
-See Also:
+* 也见(See Also):
 
 package-error
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
