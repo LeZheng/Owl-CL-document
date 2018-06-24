@@ -41,7 +41,7 @@
 > * 11.1.1.2.1 [内部和外部符号](#InternalExternalSymbols)
 > * 11.1.1.2.2 [包的继承](#PackageInheritance)
 > * 11.1.1.2.3 [一个包中符号的访问](#AccessSymbolsPackage)
-> * 11.1.1.2.4 [Locating a Symbol in a Package](#LocatingSymbolPackage)
+> * 11.1.1.2.4 [查找一个包中的一个符号](#LocatingSymbolPackage)
 > * 11.1.1.2.5 [包中的名字冲突的避免](#PreventionNameConflictsPackages)
 
 ##### 11.1.1.2.1 <span id="InternalExternalSymbols">内部和外部符号</span>
@@ -70,40 +70,40 @@
 
 -- 使一个包中的符号在另一个包中是可访问的第二种机制是通过 use-package 提供的. 那个被使用的包中的所有外部符号都被那个使用的包所继承. 函数 unuse-package 撤销一个前面的 use-package 的影响. 
 
-##### 11.1.1.2.4 <span id="LocatingSymbolPackage">Locating a Symbol in a Package</span>
+##### 11.1.1.2.4 <span id="LocatingSymbolPackage">查找一个包中的一个符号</span>
 
-When a symbol is to be located in a given package the following occurs:
+当一个给定的包中的一个符号要被查找时会发生以下这些事:
 
--- The external symbols and internal symbols of the package are searched for the symbol.
--- The external symbols of the used packages are searched in some unspecified order. The order does not matter; see the rules for handling name conflicts listed below. 
+-- 对这个包的外部符号和内部符号进行搜索来查找这个符号.
+-- 所使用的包的外部符号会以某个未指定的顺序进行搜索. 顺序无关紧要; 见下面列出的用于处理名字冲突的规则. 
 
 ##### 11.1.1.2.5 <span id="PreventionNameConflictsPackages">包中的名字冲突的避免</span>
 
-Within one package, any particular name can refer to at most one symbol. A name conflict is said to occur when there would be more than one candidate symbol. Any time a name conflict is about to occur, a correctable error is signaled.
+在一个包中, 任何独有的名字最多只能引用一个符号. 当这里有超过一个候选符号时就说发生了名字冲突. 任何一个名字冲突将要发生时, 就会发出一个可校正的错误.
 
-The following rules apply to name conflicts:
+以下规则应用于名字冲突:
 
--- Name conflicts are detected when they become possible, that is, when the package structure is altered. Name conflicts are not checked during every name lookup.
+-- 当名字冲突称为可能时它们会被检测到, 这也就是说, 在这个包结构被修改时. 在每次名字查找时名字冲突不会被检测.
 
--- If the same symbol is accessible to a package through more than one path, there is no name conflict. A symbol cannot conflict with itself. Name conflicts occur only between distinct symbols with the same name (under string=).
+-- 如果对于一个包相同的符号可以通过超过一种途径访问, 那么这里没有名字冲突. 一个符号不能和自身冲突. 名字冲突只发生在有着相同名字(在 string= 下)的不同符号之间.
 
--- Every package has a list of shadowing symbols. A shadowing symbol takes precedence over any other symbol of the same name that would otherwise be accessible in the package. A name conflict involving a shadowing symbol is always resolved in favor of the shadowing symbol, without signaling an error (except for one exception involving import). See shadow and shadowing-import.
+-- 每个包都有一个遮蔽符号的列表. 一个遮蔽符号优先于其他在那个包中可访问的任何相同名字的符号. 一个涉及到遮蔽符号的名字冲突总是在没有发出一个错误的情况下, 以选择遮蔽符号的形式得到解决 (除了一个涉及 import 的例外情况). 见 shadow 和 shadowing-import.
 
--- The functions use-package, import, and export check for name conflicts.
+-- 函数 use-package, import, 和 export 检测名字冲突.
 
--- shadow and shadowing-import never signal a name-conflict error.
+-- shadow 和 shadowing-import 从不发出一个名字冲突的错误.
 
--- unuse-package and unexport do not need to do any name-conflict checking. unintern does name-conflict checking only when a symbol being uninterned is a shadowing symbol.
+-- unuse-package 和 unexport 不需要去做任何名字冲突的检测. unintern 只有在一个被解除捕捉的符号是一个遮蔽符号时执行名字冲突检测.
 
--- Giving a shadowing symbol to unintern can uncover a name conflict that had previously been resolved by the shadowing.
+-- 给 unintern 传递一个遮蔽符号可以发现一个之前通过遮蔽解决的名字冲突.
 
--- Package functions signal name-conflict errors of type package-error before making any change to the package structure. When multiple changes are to be made, it is permissible for the implementation to process each change separately. For example, when export is given a list of symbols, aborting from a name conflict caused by the second symbol in the list might still export the first symbol in the list. However, a name-conflict error caused by export of a single symbol will be signaled before that symbol's accessibility in any package is changed.
+-- 包函数在对包结构做任何改动之前 Package functions signal name-conflict errors of type package-error before making any change to the package structure. 当需要进行多次更改时, 允许具体实现分别处理每一个更改. 比如, 当 export 给定一个符号的列表时, 从列表中第二个符号导致的名字冲突终止可能仍然会导出这个列表的第一个符号. 然而, 一个由导出单个符号导致的名字冲突错误会在在任何包中那个符号的访问被改变之前被发出.
 
--- Continuing from a name-conflict error must offer the user a chance to resolve the name conflict in favor of either of the candidates. The package structure should be altered to reflect the resolution of the name conflict, via shadowing-import, unintern, or unexport.
+-- 从一个名字冲突错误中继续必须为用户提供一个机会去选择任何一个候选符号. 包结构应该被修改, 以反映名字冲突的解决方案, 通过 shadowing-import, unintern, 或 unexport.
 
--- A name conflict in use-package between a symbol present in the using package and an external symbol of the used package is resolved in favor of the first symbol by making it a shadowing symbol, or in favor of the second symbol by uninterning the first symbol from the using package.
+-- use-package 中在出现在使用包中的符号和被使用包中的外部符号之前的名字冲突, 通过使第一个符号变为遮蔽符号而选择第一个符号或者通过在使用包中解绑第一个符号而选择第二个符号来解决.
 
--- A name conflict in export or unintern due to a package's inheriting two distinct symbols with the same name (under string=) from two other packages can be resolved in favor of either symbol by importing it into the using package and making it a shadowing symbol, just as with use-package. 
+-- 在 export 或 unintern 中由于一个包从两个其他包中继承相同名字(在 string= 下)的不同符号而导致的一个名字冲突, 可以通过把任意一个符号导出到使用包中并且使它称为一个遮蔽符号来解决, 就像使用 use-package 一样. 
 
 ### 11.1.2 <span id="StandardizedPackages">标准包</span>
 
@@ -1475,49 +1475,48 @@ intern, export, Section 3.6 (Traversal Rules and Side Effects)
 
 * 语法(Syntax):
 
-intern string &optional package => symbol, status
+        intern string &optional package => symbol, status
 
 * 参数和值(Arguments and Values):
 
-string---a string.
-
-package---a package designator. The default is the current package.
-
-symbol---a symbol.
-
-status---one of :inherited, :external, :internal, or nil.
+        string---一个字符串.
+        package---一个包指示符. 默认为当前包.
+        symbol---一个符号.
+        status---:inherited, :external, :internal, 或者 nil 的其中之一.
 
 * 描述(Description):
 
-intern enters a symbol named string into package. If a symbol whose name is the same as string is already accessible in package, it is returned. If no such symbol is accessible in package, a new symbol with the given name is created and entered into package as an internal symbol, or as an external symbol if the package is the KEYWORD package; package becomes the home package of the created symbol.
+        intern 输入一个名为字符串 string 的符号到包 package 中. 如果一个名字和字符串 string 相同的符号在包 package 中已经可访问了, 就把它返回. 如果在包 package 中没有这样的符号, 那么带有这个给定名字的新的符号会被创建并输入到包 package 中作为一个内部符号, 如果包 package 是 KEYWROD 包就作为一个外部符号; 包 package 就成为创建的这个符号的 home 包.
 
-The first value returned by intern, symbol, is the symbol that was found or created. The meaning of the secondary value, status, is as follows:
+        由 intern 返回的第一个值, symbol, 是这个被找到或者被创建的符号. 第二个值, status, 分别是:
 
-:internal
+        :internal
 
-    The symbol was found and is present in package as an internal symbol.
+            这个符号被找到并且出现在包 package 中作为一个内部符号.
 
-:external
+        :external
 
-    The symbol was found and is present as an external symbol.
+            这个符号被找到并且出现在包 package 中作为一个外部符号.
 
-:inherited
+        :inherited
 
-    The symbol was found and is inherited via use-package (which implies that the symbol is internal).
+            这个符号被找到并且是通过 use-package 继承而来 (这也意味着这个符号是内部的).
 
-nil
+        nil
 
-    No pre-existing symbol was found, so one was created.
+            没有找到之前存在的符号, 所以创建一个.
 
-    It is implementation-dependent whether the string that becomes the new symbol's name is the given string or a copy of it. Once a string has been given as the string argument to intern in this situation where a new symbol is created, the consequences are undefined if a subsequent attempt is made to alter that string.
+            成为这个新符号名字的字符串是给定的字符串 string 还是它的一个拷贝是依赖于具体实现的. 在一个新符号被创建的情况下, 一旦一个字符串已经被给定作为给 intern 的 string 参数, 如果后面尝试去修改这个字符串那么后果是未定义的.
 
 * 示例(Examples):
 
- (in-package "COMMON-LISP-USER") =>  #<PACKAGE "COMMON-LISP-USER">
- (intern "Never-Before") =>  |Never-Before|, NIL
- (intern "Never-Before") =>  |Never-Before|, :INTERNAL 
- (intern "NEVER-BEFORE" "KEYWORD") =>  :NEVER-BEFORE, NIL
- (intern "NEVER-BEFORE" "KEYWORD") =>  :NEVER-BEFORE, :EXTERNAL
+    ```LISP
+    (in-package "COMMON-LISP-USER") =>  #<PACKAGE "COMMON-LISP-USER">
+    (intern "Never-Before") =>  |Never-Before|, NIL
+    (intern "Never-Before") =>  |Never-Before|, :INTERNAL 
+    (intern "NEVER-BEFORE" "KEYWORD") =>  :NEVER-BEFORE, NIL
+    (intern "NEVER-BEFORE" "KEYWORD") =>  :NEVER-BEFORE, :EXTERNAL
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -1527,11 +1526,11 @@ nil
 
 * 也见(See Also):
 
-find-symbol, read, symbol, unintern, Section 2.3.4 (Symbols as Tokens)
+        find-symbol, read, symbol, unintern, Section 2.3.4 (Symbols as Tokens)
 
 * 注意(Notes):
 
-intern does not need to do any name conflict checking because it never creates a new symbol if there is already an accessible symbol with the name given. 
+        如果这里已经有一个给定名字的可访问符号, intern 不需要去做任何名字冲突检测, 因为它不会创建一个新符号. 
 
 
 ### <span id="F-PACKAGE-NAME">函数 PACKAGE-NAME</span>
