@@ -107,14 +107,14 @@
 
 ### 11.1.2 <span id="StandardizedPackages">标准包</span>
 
-This section describes the packages that are available in every conforming implementation. A summary of the names and nicknames of those standardized packages is given in the next figure.
+这个章节描述了在每个符合规范的实现中都是可用的包. 这些标准包的名字和别名的汇总在下面这段中给定.
 
-Name              Nicknames  
-COMMON-LISP       CL         
-COMMON-LISP-USER  CL-USER    
-KEYWORD           none       
+    名称              别名  
+    COMMON-LISP       CL         
+    COMMON-LISP-USER  CL-USER    
+    KEYWORD           none       
 
-Figure 11-2. Standardized Package Names
+    Figure 11-2. 标准包名称
 
 > * 11.1.2.1 [COMMON-LISP 包](#COMMON-LISP-Package)
 > * 11.1.2.2 [COMMON-LISP-USER 包](#COMMON-LISP-USER-Package)
@@ -123,76 +123,76 @@ Figure 11-2. Standardized Package Names
 
 #### 11.1.2.1 <span id="COMMON-LISP-Package">COMMON-LISP 包</span>
 
-The COMMON-LISP package contains the primitives of the Common Lisp system as defined by this specification. Its external symbols include all of the defined names (except for defined names in the KEYWORD package) that are present in the Common Lisp system, such as car, cdr, *package*, etc. The COMMON-LISP package has the nickname CL.
+这个 COMMON-LISP 包包含了这个规范定义的 Common Lisp 系统的基本. 它的外部符号包含了出现在 Common Lisp 系统中的所有已定义的名字 (除了 KEYWORD 包中已定义的名字外), 例如 car, cdr, \*package\*, 等等. 这个 COMMON-LISP 有着别名 CL.
 
-The COMMON-LISP package has as external symbols those symbols enumerated in the figures in Section 1.9 (Symbols in the COMMON-LISP Package), and no others. These external symbols are present in the COMMON-LISP package but their home package need not be the COMMON-LISP package.
+这个 COMMON-LISP 包有着在章节 1.9 (Symbols in the COMMON-LISP Package) 中枚举的那些外部符号, 并且没有其他的. 这些外部符号出现在 COMMON-LISP 包中但是它们的 home 包不需要是 COMMON-LISP 包.
 
-For example, the symbol HELP cannot be an external symbol of the COMMON-LISP package because it is not mentioned in Section 1.9 (Symbols in the COMMON-LISP Package). In contrast, the symbol variable must be an external symbol of the COMMON-LISP package even though it has no definition because it is listed in that section (to support its use as a valid second argument to the function documentation).
+比如, 符号 HELP 不能是 COMMON-LISP 包的一个外部符号因为它没有在章节 1.9 (Symbols in the COMMON-LISP Package) 中被提及. 与此相反, 符号 variable 必须是 COMMON-LISP 包的一个外部符号即便它没有定义, 因为它在那个章节中被列出来了 (为了支持它被用作给函数 documentation 的第二个有效参数).
 
-The COMMON-LISP package can have additional internal symbols.
+这个 COMMON-LISP 包有着额外的内部符号.
 
 
 ##### 11.1.2.1.1 符合规范的具体实现的 COMMON-LISP 包的约束
 
-In a conforming implementation, an external symbol of the COMMON-LISP package can have a function, macro, or special operator definition, a global variable definition (or other status as a dynamic variable due to a special proclamation), or a type definition only if explicitly permitted in this standard. For example, fboundp yields false for any external symbol of the COMMON-LISP package that is not the name of a standardized function, macro or special operator, and boundp returns false for any external symbol of the COMMON-LISP package that is not the name of a standardized global variable. It also follows that conforming programs can use external symbols of the COMMON-LISP package as the names of local lexical variables with confidence that those names have not been proclaimed special by the implementation unless those symbols are names of standardized global variables.
+在一个符合规范的具体实现中, 这个 COMMON-LISP 包的一个外部符号可以有一个函数, 宏, 或者特殊操作符定义, 一个全局变量定义 (或者其他状态就像由于一个 special 全局声明作为一个动态变量), 或者只有在这个标准中显式允许时可以是一个类型定义. 比如, fboundp 对于 COMMON-LISP 包的任何不是一个标准函数, 宏或特殊操作符的名字的外部符号产生 false, 而 boundp 对于 COMMON-LISP 包中的任何不是标准全局变量名字的外部符号返回 false. 此外, 符合规范的程序可以使用 COMMON-LISP 包的外部符号作为局部词法变量的名字, 并相信这些名字没有被具体实现声明为 special, 除非这些符号是标准全局变量的名字.
 
-A conforming implementation must not place any property on an external symbol of the COMMON-LISP package using a property indicator that is either an external symbol of any standardized package or a symbol that is otherwise accessible in the COMMON-LISP-USER package. 
+一个符合规范的具体实现一定不能在 COMMON-LISP 包的外部符号上使用一个属性指示符放置任何属性,  A conforming implementation must not place any property on an external symbol of the COMMON-LISP package using a property indicator that is either an external symbol of any standardized package or a symbol that is otherwise accessible in the COMMON-LISP-USER package. <!--TODO 待翻译-->
 
 
 ##### 11.1.2.1.2 符合规范的程序的 COMMON-LISP 包的约束
 
-Except where explicitly allowed, the consequences are undefined if any of the following actions are performed on an external symbol of the COMMON-LISP package:
+除了显式允许的地方, 如果在一个 COMMON-LISP 包的外部符号上执行以下任何动作, 后果都是未定义的:
 
-1. Binding or altering its value (lexically or dynamically). (Some exceptions are noted below.)
+1. 绑定或修改它的值 (词法地或动态地). (下面记录一些异常情况.)
 
-2. Defining, undefining, or binding it as a function. (Some exceptions are noted below.)
+2. 定义, 解除定义, 或者绑定它为一个函数. (下面记录一些异常情况.)
 
-3. Defining, undefining, or binding it as a macro or compiler macro. (Some exceptions are noted below.)
+3. 定义, 解除定义, 或绑定它为一个宏或编译器宏. (下面记录一些异常情况.)
 
-4. Defining it as a type specifier (via defstruct, defclass, deftype, define-condition).
+4. 定义它为一个类型特化符 (通过 defstruct, defclass, deftype, define-condition).
 
-5. Defining it as a structure (via defstruct).
+5. 定义它为一个结构体 (通过 defstruct).
 
-6. Defining it as a declaration with a declaration proclamation.
+6. 使用 declaration 全局声明定义它为一个声明.
 
-7. Defining it as a symbol macro.
+7. 定义它为一个符号宏.
 
-8. Altering its home package.
+8. 修改它的 home 包.
 
-9. Tracing it (via trace).
+9. 追踪它 (通过 trace).
 
-10. Declaring or proclaiming it special (via declare, declaim, or proclaim).
+10. 声明或全局声明它为 special (通过 declare, declaim, 或 proclaim).
 
-11. Declaring or proclaiming its type or ftype (via declare, declaim, or proclaim). (Some exceptions are noted below.)
+11. 声明或全局声明它的 type 或 ftype (通过 declare, declaim, or proclaim). (下面记录一些异常情况.)
 
-12. Removing it from the COMMON-LISP package.
+12. 从 COMMON-LISP 包中移除它.
 
-13. Defining a setf expander for it (via defsetf or define-setf-method).
+13. 为它定义一个 setf 展开 (提供 defsetf 或 define-setf-method).
 
-14. Defining, undefining, or binding its setf function name.
+14. 定义, 解除定义, 或绑定它的 setf 函数名.
 
-15. Defining it as a method combination type (via define-method-combination).
+15. 定义它为一个方法组合类型 (通过 define-method-combination).
 
-16. Using it as the class-name argument to setf of find-class.
+16. 使用它作为给 find-class 的 setf 的 class-name 参数.
 
-17. Binding it as a catch tag.
+17. 绑定它为一个捕捉标记.
 
-18. Binding it as a restart name.
+18. 绑定它为一个重启动名字.
 
-19. Defining a method for a standardized generic function which is applicable when all of the arguments are direct instances of standardized classes.
+19. 当左右参数都是标准化类的直接实例时, 为一个可应用的标准广义函数定义一个方法.
 
 
 ###### 11.1.2.1.2.1 符合规范的程序的 COMMON-LISP 包的约束的一些异常
 
-If an external symbol of the COMMON-LISP package is not globally defined as a standardized dynamic variable or constant variable, it is allowed to lexically bind it and to declare the type of that binding, and it is allowed to locally establish it as a symbol macro (e.g., with symbol-macrolet).
+如果 COMMON-LISP 包的一个外部符号没有被全局定义为一个标准动态变量或常变量, 那么允许词法上绑定它并且声明那个绑定的类型, 并且允许去局部地建立它为一个符号宏 (比如, 使用 symbol-macrolet).
 
-Unless explicitly specified otherwise, if an external symbol of the COMMON-LISP package is globally defined as a standardized dynamic variable, it is permitted to bind or assign that dynamic variable provided that the ``Value Type'' constraints on the dynamic variable are maintained, and that the new value of the variable is consistent with the stated purpose of the variable.
+除非显式指定, 否则如果一个 COMMON-LISP 包的外部符号被全局定义为一个标准化动态变量, 允许去绑定或分配那个提供的动态变量, 前提是保持这个动态变量的 "值类型(Value Type)" 约束, 并且那个变量的新值和该变量声明的目的一致.
 
-If an external symbol of the COMMON-LISP package is not defined as a standardized function, macro, or special operator, it is allowed to lexically bind it as a function (e.g., with flet), to declare the ftype of that binding, and (in implementations which provide the ability to do so) to trace that binding.
+如果一个 COMMON-LISP 包的外部符号没有被定义为一个标准化函数, 宏, 或特殊操作符, 允许词法上绑定它为一个函数 (比如, 使用 flet), 去声明那个绑定的 ftype, 并且 (在提供了执行这个的能力的具体实现中) 去追踪那个绑定.
 
-If an external symbol of the COMMON-LISP package is not defined as a standardized function, macro, or special operator, it is allowed to lexically bind it as a macro (e.g., with macrolet).
+如果一个 COMMON-LISP 包的外部符号没有被定义为一个标准化函数, 宏, 或特殊操作符, 允许去词法上绑定它为一个宏 (比如, 使用 macrolet).
 
-If an external symbol of the COMMON-LISP package is not defined as a standardized function, macro, or special operator, it is allowed to lexically bind its setf function name as a function, and to declare the ftype of that binding. 
+如果一个 COMMON-LISP 包的外部符号没有被定义为一个标准化函数, 宏, 或特殊操作符, 允许去词法绑定它的 setf 函数名为一个函数, 并且去声明那个绑定的 ftype. 
 
 
 #### 11.1.2.2 <span id="COMMON-LISP-USER-Package">COMMON-LISP-USER 包</span>
