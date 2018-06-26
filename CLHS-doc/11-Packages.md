@@ -197,34 +197,34 @@
 
 #### 11.1.2.2 <span id="COMMON-LISP-USER-Package">COMMON-LISP-USER 包</span>
 
-The COMMON-LISP-USER package is the current package when a Common Lisp system starts up. This package uses the COMMON-LISP package. The COMMON-LISP-USER package has the nickname CL-USER. The COMMON-LISP-USER package can have additional symbols interned within it; it can use other implementation-defined packages. 
+在 Common Lisp 系统启动时, 这个 COMMON-LISP-USER 包是当前包. 这个包使用了 COMMON-LISP 包. 这个 COMMON-LISP-USER 包有着别名 CL-USER. 这个 COMMON-LISP-USER 包可以有捕捉在它内部的额外符号; 它可以使用其他具体实现定义的包. 
 
 
 #### 11.1.2.3 <span id="KEYWORD-Package">KEYWORD 包</span>
 
-The KEYWORD package contains symbols, called keywords[1], that are typically used as special markers in programs and their associated data expressions[1].
+这个 KEYWORD 包包含的称之为关键字的符号, 通常被用作程序以及它们关联的数据表达式中的特殊标记.
 
-Symbol tokens that start with a package marker are parsed by the Lisp reader as symbols in the KEYWORD package; see Section 2.3.4 (Symbols as Tokens). This makes it notationally convenient to use keywords when communicating between programs in different packages. For example, the mechanism for passing keyword parameters in a call uses keywords[1] to name the corresponding arguments; see Section 3.4.1 (Ordinary Lambda Lists).
+以一个包标记开始的符号 token被 Lisp 读取器解析为 KEYWORD 包中的符号; 见章节 2.3.4 (Symbols as Tokens). 这使得在不同包间的程序之间进行通信时使用关键字变得方便. 比如, 在调用中传递关键字参数的机制使用关键字来命名相应的参数; 见章节 3.4.1 (Ordinary Lambda Lists).
 
-Symbols in the KEYWORD package are, by definition, of type keyword.
+在 KEYWORD 包中的符号按照定义是 keyword 类型的.
 
 
 ##### 11.1.2.3.1 在 KEYWORD 包中捕捉一个符号
 
-The KEYWORD package is treated differently than other packages in that special actions are taken when a symbol is interned in it. In particular, when a symbol is interned in the KEYWORD package, it is automatically made to be an external symbol and is automatically made to be a constant variable with itself as a value. 
+KEYWORD 包的处理方式与其他包不同, 因为在其中插入一个符号时, 会采取特殊的操作. 特别地, 当一个符号被捕捉到 KEYWORD 包中时, 它自动成为一个外部符号并且自动成为一个以它自身作为值的常变量. 
 
 ##### 11.1.2.3.2 KEYWORD 包的注意点
 
-It is generally best to confine the use of keywords to situations in which there are a finitely enumerable set of names to be selected between. For example, if there were two states of a light switch, they might be called :on and :off.
+一般情况下, 最好将关键字的使用限制在存在要被选择的有限可枚举的名称集合的情况下. 比如, 如果一个亮度切换有两个状态, 它们可能被称作 :on 和 :off.
 
-In situations where the set of names is not finitely enumerable (i.e., where name conflicts might arise) it is frequently best to use symbols in some package other than KEYWORD so that conflicts will be naturally avoided. For example, it is generally not wise for a program to use a keyword[1] as a property indicator, since if there were ever another program that did the same thing, each would clobber the other's data. 
+在这个名称集合不是有限可枚举的情况下 (也就是说, 可能发生名字冲突的情况下) 最好去使用某个不是 KEYWORD 的包中的符号, 这样冲突自然会被避免. 比如, 一个程序去使用一个关键字作为属性指示符通常是不明智的, 因为如果这里有另一个程序做了相同的事, 每一个都会把另一个的数据重写掉. 
 
 
 #### 11.1.2.4 <span id="Implementation-Defined-Packages">依赖于具体实现的包</span>
 
-Other, implementation-defined packages might be present in the initial Common Lisp environment.
+其他的, 具体实现定义的包可能出现在最初的 Common Lisp 环境中.
 
-It is recommended, but not required, that the documentation for a conforming implementation contain a full list of all package names initially present in that implementation but not specified in this specification. (See also the function list-all-packages.) 
+一个符合规范的具体实现的文档建议但不是必须去包含一个最初出现在那个具体实现但没有在这个规范中指定的所有包名的列表. (也见函数 list-all-packages.) 
 
 
 ## 11.2 <span id="ThePackagesDictionary">包字典</span>
@@ -265,63 +265,64 @@ It is recommended, but not required, that the documentation for a conforming imp
 
 * 类优先级列表(Class Precedence List):
 
-package, t
+        package, t
 
 * 描述(Description):
 
-A package is a namespace that maps symbol names to symbols; see Section 11.1 (Package Concepts).
+        一个包是一个映射符号名到符号的命名空间; 见章节 11.1 (Package Concepts).
 
 * 也见(See Also):
 
-Section 11.1 (Package Concepts), Section 22.1.3.13 (Printing Other Objects), Section 2.3.4 (Symbols as Tokens) 
+        章节 11.1 (Package Concepts), 章节 22.1.3.13 (Printing Other Objects), 章节 2.3.4 (Symbols as Tokens) 
 
 
 ### <span id="F-EXPORT">函数 EXPORT</span>
 
 * 语法(Syntax):
 
-export symbols &optional package => t
+        export symbols &optional package => t
 
 * 参数和值(Arguments and Values):
 
-symbols---a designator for a list of symbols.
-
-package---a package designator. The default is the current package.
+        symbols---一个符号列表的标识符.
+        package---一个包标识符. 默认是当前包.
 
 * 描述(Description):
 
-export makes one or more symbols that are accessible in package (whether directly or by inheritance) be external symbols of that package.
+        export 使一个或多个在这个包 package 中可访问的符号 (whether directly or by inheritance) 变为包 package 的外部符号.
 
-If any of the symbols is already accessible as an external symbol of package, export has no effect on that symbol. If the symbol is present in package as an internal symbol, it is simply changed to external status. If it is accessible as an internal symbol via use-package, it is first imported into package, then exported. (The symbol is then present in the package whether or not package continues to use the package through which the symbol was originally inherited.)
+        如果这些符号 symbols 中的任何一个已经是包 package 中可访问的外部符号, export 在那个符号上没有效果. 如果那个符号 symbol 是作为一个内部符号出现在包 package 中, 它就被简单地改为外部状态. 如果它是通过 use-package 作为一个可访问的内部符号, 它首先被导入到包 package 中, 然后再导出. (不管接下来包 package 是否继续使用那个符号最初继承而来的包, 这个符号 symbol 接下来都会出现在包 package 中.)
 
-export makes each symbol accessible to all the packages that use package. All of these packages are checked for name conflicts: (export s p) does (find-symbol (symbol-name s) q) for each package q in (package-used-by-list p). Note that in the usual case of an export during the initial definition of a package, the result of package-used-by-list is nil and the name-conflict checking takes negligible time. When multiple changes are to be made, for example when export is given a list of symbols, it is permissible for the implementation to process each change separately, so that aborting from a name conflict caused by any but the first symbol in the list does not unexport the first symbol in the list. However, aborting from a name-conflict error caused by export of one of symbols does not leave that symbol accessible to some packages and inaccessible to others; with respect to each of symbols processed, export behaves as if it were as an atomic operation.
+        export 使得每个符号 symbol 对于所有使用包 package 的包都是可访问的. 所有这些包都会检测命名冲突: (export s p) 为每一个在 (package-used-by-list p) 中的包执行 (find-symbol (symbol-name s) q). 注意, 一个包的初始化定义期间, 通常情况下的一个 export Note that in the usual case of an export during the initial definition of a package<!--TODO 待翻译-->, package-used-by-list 的结果是 nil 并且名字冲突检测需要的时间忽略不计. 当执行了多次更改时, 比如当给 export 一个符号列表时, 允许具体实现去单独处理每一个更改, 这样一来跳过除了这个列表中的第一个符号以外的任何一个导致的名字冲突都不会解除导出这个列表中的第一个符号. 然而, 跳过一个有这些符号 symbols 中的其中一个导致的名字冲突错误不会让那个符号对于某些包是可访问的但对于其他是不可访问的; 对于被处理的符号 symbols 中的每一个, export 表现的就好像它是一个原子操作.
 
-A name conflict in export between one of symbols being exported and a symbol already present in a package that would inherit the newly-exported symbol may be resolved in favor of the exported symbol by uninterning the other one, or in favor of the already-present symbol by making it a shadowing symbol.
+        在 export 中, 要被导出的符号 symbols 的其中一个和已经出现在一个会继承那个新导出的符号的包中的符号之间的名字冲突, 可以通过解除捕捉另一个来选择导出的符号, 或者通过使那个已存在的符号变为一个遮蔽符号来选择那个已存在的符号.
 
 * 示例(Examples):
 
- (make-package 'temp :use nil) =>  #<PACKAGE "TEMP">
- (use-package 'temp) =>  T
- (intern "TEMP-SYM" 'temp) =>  TEMP::TEMP-SYM, NIL
- (find-symbol "TEMP-SYM") =>  NIL, NIL
- (export (find-symbol "TEMP-SYM" 'temp) 'temp) =>  T
- (find-symbol "TEMP-SYM") =>  TEMP-SYM, :INHERITED
+    ```LISP
+    (make-package 'temp :use nil) =>  #<PACKAGE "TEMP">
+    (use-package 'temp) =>  T
+    (intern "TEMP-SYM" 'temp) =>  TEMP::TEMP-SYM, NIL
+    (find-symbol "TEMP-SYM") =>  NIL, NIL
+    (export (find-symbol "TEMP-SYM" 'temp) 'temp) =>  T
+    (find-symbol "TEMP-SYM") =>  TEMP-SYM, :INHERITED
+    ```
 
 * 副作用(Side Effects):
 
-The package system is modified.
+        这个包系统被修改.
 
 * 受此影响(Affected By):
 
-Accessible symbols.
+        可访问的符号.
 
 * 异常情况(Exceptional Situations): 
 
-If any of the symbols is not accessible at all in package, an error of type package-error is signaled that is correctable by permitting the user to interactively specify whether that symbol should be imported.
+        如果符号 symbols 中的任何一个包 package 中不可访问, 会发出一个 package-error 类型的错误, 通过允许用户去交互式地指定是否应该导入该符号, 这是可校正的.
 
 * 也见(See Also):
 
-import, unexport, Section 11.1 (Package Concepts)
+        import, unexport, 章节 11.1 (Package Concepts)
 
 * 注意(Notes): None. 
 
@@ -330,112 +331,112 @@ import, unexport, Section 11.1 (Package Concepts)
 
 * 语法(Syntax):
 
-find-symbol string &optional package => symbol, status
+        find-symbol string &optional package => symbol, status
 
 * 参数和值(Arguments and Values):
 
-string---a string.
-
-package---a package designator. The default is the current package.
-
-symbol---a symbol accessible in the package, or nil.
-
-status---one of :inherited, :external, :internal, or nil.
+        string---一个符号.
+        package---一个包标识符. 默认是包标识符.
+        symbol---在包 package 中可访问的一个符号, 或者 nil.
+        status---:inherited, :external, :internal 其中之一, 或 nil.
 
 * 描述(Description):
 
-find-symbol locates a symbol whose name is string in a package. If a symbol named string is found in package, directly or by inheritance, the symbol found is returned as the first value; the second value is as follows:
+        find-symbol 查找一个包中的名为字符串 string 的符号. 如果在包 package 中找到名为字符串 string 的一个符号, 不管是直接地或是通过继承, 找到的符号会作为第一个值被返回; 第二个值如下:
 
-:internal
+        :internal
 
-    If the symbol is present in package as an internal symbol.
+            如果这个符号是作为一个内部符号出现在包 package.
 
-:external
+        :external
 
-    If the symbol is present in package as an external symbol.
+            如果这个符号是作为一个外部符号出现在包 package.
 
-:inherited
+        :inherited
 
-    If the symbol is inherited by package through use-package, but is not present in package.
+            如果这个符号是被包 package 通过 use-package 继承而来, 但是不是出现在包 package.
 
-If no such symbol is accessible in package, both values are nil.
+        如果在包 package 中没有这样的符号, 两个值都是 nil.
 
 * 示例(Examples):
 
- (find-symbol "NEVER-BEFORE-USED") =>  NIL, NIL
- (find-symbol "NEVER-BEFORE-USED") =>  NIL, NIL
- (intern "NEVER-BEFORE-USED") =>  NEVER-BEFORE-USED, NIL
- (intern "NEVER-BEFORE-USED") =>  NEVER-BEFORE-USED, :INTERNAL
- (find-symbol "NEVER-BEFORE-USED") =>  NEVER-BEFORE-USED, :INTERNAL
- (find-symbol "never-before-used") =>  NIL, NIL
- (find-symbol "CAR" 'common-lisp-user) =>  CAR, :INHERITED
- (find-symbol "CAR" 'common-lisp) =>  CAR, :EXTERNAL
- (find-symbol "NIL" 'common-lisp-user) =>  NIL, :INHERITED
- (find-symbol "NIL" 'common-lisp) =>  NIL, :EXTERNAL
- (find-symbol "NIL" (prog1 (make-package "JUST-TESTING" :use '())
-                           (intern "NIL" "JUST-TESTING")))
-=>  JUST-TESTING::NIL, :INTERNAL
- (export 'just-testing::nil 'just-testing)
- (find-symbol "NIL" 'just-testing) =>  JUST-TESTING:NIL, :EXTERNAL
- (find-symbol "NIL" "KEYWORD")
-=>  NIL, NIL
-OR=>  :NIL, :EXTERNAL
- (find-symbol (symbol-name :nil) "KEYWORD") =>  :NIL, :EXTERNAL
+    ```LISP
+    (find-symbol "NEVER-BEFORE-USED") =>  NIL, NIL
+    (find-symbol "NEVER-BEFORE-USED") =>  NIL, NIL
+    (intern "NEVER-BEFORE-USED") =>  NEVER-BEFORE-USED, NIL
+    (intern "NEVER-BEFORE-USED") =>  NEVER-BEFORE-USED, :INTERNAL
+    (find-symbol "NEVER-BEFORE-USED") =>  NEVER-BEFORE-USED, :INTERNAL
+    (find-symbol "never-before-used") =>  NIL, NIL
+    (find-symbol "CAR" 'common-lisp-user) =>  CAR, :INHERITED
+    (find-symbol "CAR" 'common-lisp) =>  CAR, :EXTERNAL
+    (find-symbol "NIL" 'common-lisp-user) =>  NIL, :INHERITED
+    (find-symbol "NIL" 'common-lisp) =>  NIL, :EXTERNAL
+    (find-symbol "NIL" (prog1 (make-package "JUST-TESTING" :use '())
+                              (intern "NIL" "JUST-TESTING")))
+    =>  JUST-TESTING::NIL, :INTERNAL
+    (export 'just-testing::nil 'just-testing)
+    (find-symbol "NIL" 'just-testing) =>  JUST-TESTING:NIL, :EXTERNAL
+    (find-symbol "NIL" "KEYWORD")
+    =>  NIL, NIL
+    OR=>  :NIL, :EXTERNAL
+    (find-symbol (symbol-name :nil) "KEYWORD") =>  :NIL, :EXTERNAL
+    ```
 
 * 副作用(Side Effects): None.
 
 * 受此影响(Affected By):
 
-intern, import, export, use-package, unintern, unexport, unuse-package
+        intern, import, export, use-package, unintern, unexport, unuse-package
 
 * 异常情况(Exceptional Situations):  None.
 
 * 也见(See Also):
 
-intern, find-all-symbols
+        intern, find-all-symbols
 
 * 注意(Notes):
 
-find-symbol is operationally equivalent to intern, except that it never creates a new symbol. 
+        find-symbol 操作上等价于 intern, 除了它从不创建一个新的符号. 
 
 
 ### <span id="F-FIND-PACKAGE">函数 FIND-PACKAGE</span>
 
 * 语法(Syntax):
 
-find-package name => package
+        find-package name => package
 
 * 参数和值(Arguments and Values):
 
-name---a string designator or a package object.
-
-package---a package object or nil.
+        name---一个字符串标识符或者一个包对象.
+        package---一个包对象或者 nil.
 
 * 描述(Description):
 
-If name is a string designator, find-package locates and returns the package whose name or nickname is name. This search is case sensitive. If there is no such package, find-package returns nil.
+        如果名字 name 是一个字符串标识符, find-package 查找并返回这个名字或别名为 name 的包. 这个查找是大小写敏感的. 如果这里没有这样的包, find-package 返回 nil.
 
-If name is a package object, that package object is returned.
+        如果 name 是一个包对象, 那么就返回那个包对象.
 
 * 示例(Examples):
 
- (find-package 'common-lisp) =>  #<PACKAGE "COMMON-LISP">
- (find-package "COMMON-LISP-USER") =>  #<PACKAGE "COMMON-LISP-USER">
- (find-package 'not-there) =>  NIL
+    ```LISP
+    (find-package 'common-lisp) =>  #<PACKAGE "COMMON-LISP">
+    (find-package "COMMON-LISP-USER") =>  #<PACKAGE "COMMON-LISP-USER">
+    (find-package 'not-there) =>  NIL
+    ```
 
 * 副作用(Side Effects): None.
 
 * 受此影响(Affected By):
 
-The set of packages created by the implementation.
+        这个具体实现创建的包的集合.
 
-defpackage, delete-package, make-package, rename-package
+        defpackage, delete-package, make-package, rename-package
 
 * 异常情况(Exceptional Situations):  None.
 
 * 也见(See Also):
 
-make-package
+        make-package
 
 * 注意(Notes): None. 
 
@@ -444,30 +445,31 @@ make-package
 
 * 语法(Syntax):
 
-find-all-symbols string => symbols
+        find-all-symbols string => symbols
 
 * 参数和值(Arguments and Values):
 
-string---a string designator.
-
-symbols---a list of symbols.
+        string---一个字符串标识符.
+        symbols---一个符号列表.
 
 * 描述(Description):
 
-find-all-symbols searches every registered package for symbols that have a name that is the same (under string=) as string. A list of all such symbols is returned. Whether or how the list is ordered is implementation-dependent.
+        find-all-symbols 在每一个已注册的包中搜索有着名字和字符串 string 相同(在 string= 下)的符号. 一个所有这样的符号列表会被返回. 这个列表是否排序或如何排序是依赖于具体实现的.
 
 * 示例(Examples):
 
- (find-all-symbols 'car)
-=>  (CAR)
-OR=>  (CAR VEHICLES:CAR)
-OR=>  (VEHICLES:CAR CAR)
- (intern "CAR" (make-package 'temp :use nil)) =>  TEMP::CAR, NIL
- (find-all-symbols 'car)
-=>  (TEMP::CAR CAR)
-OR=>  (CAR TEMP::CAR)
-OR=>  (TEMP::CAR CAR VEHICLES:CAR)
-OR=>  (CAR TEMP::CAR VEHICLES:CAR)
+    ```LISP
+    (find-all-symbols 'car)
+    =>  (CAR)
+    OR=>  (CAR VEHICLES:CAR)
+    OR=>  (VEHICLES:CAR CAR)
+    (intern "CAR" (make-package 'temp :use nil)) =>  TEMP::CAR, NIL
+    (find-all-symbols 'car)
+    =>  (TEMP::CAR CAR)
+    OR=>  (CAR TEMP::CAR)
+    OR=>  (TEMP::CAR CAR VEHICLES:CAR)
+    OR=>  (CAR TEMP::CAR VEHICLES:CAR)
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -477,7 +479,7 @@ OR=>  (CAR TEMP::CAR VEHICLES:CAR)
 
 * 也见(See Also):
 
-find-symbol
+        find-symbol
 
 * 注意(Notes): None. 
 
@@ -486,47 +488,48 @@ find-symbol
 
 * 语法(Syntax):
 
-import symbols &optional package => t
+        import symbols &optional package => t
 
 * 参数和值(Arguments and Values):
 
-symbols---a designator for a list of symbols.
-
-package---a package designator. The default is the current package.
+        symbols---一个符号列表的标识符.
+        package---一个包标识符. 默认是当前包.
 
 * 描述(Description):
 
-import adds symbol or symbols to the internals of package, checking for name conflicts with existing symbols either present in package or accessible to it. Once the symbols have been imported, they may be referenced in the importing package without the use of a package prefix when using the Lisp reader.
+        import 添加 symbol 或 symbols 包 package 的内部, 和包 package 中出现的或者可访问的已存在符号检查名字冲突. 一旦这些符号 symbols 已经被导入, 在使用 Lisp 读取器时, 它们可能在导入的包中被直接引用而不使用包前缀.
 
-A name conflict in import between the symbol being imported and a symbol inherited from some other package can be resolved in favor of the symbol being imported by making it a shadowing symbol, or in favor of the symbol already accessible by not doing the import. A name conflict in import with a symbol already present in the package may be resolved by uninterning that symbol, or by not doing the import.
+        在 import 中, 这个要被导入的符号 symbol 和从某个其他包中继承而来的符号之间的名字冲突, 可以通过是这个要被导入的符号为遮蔽符号来选择这个要被导入的符号, 或者不执行这个 import 来选择已经可访问的那个符号来解决. 在 import 中, 一个和一个已经出现在包 package 的符号之间的名字冲突可以通过解除捕捉那个符号或者不执行这个 import 来解决.
 
-The imported symbol is not automatically exported from the current package, but if it is already present and external, then the fact that it is external is not changed. If any symbol to be imported has no home package (i.e., (symbol-package symbol) => nil), import sets the home package of the symbol to package.
+        这个导入的符号不会被自动从这个当前包中导出, 但是如果它已经出现在包这栋并且是外部的, 那么它是外部的这个事实不会被改变. 如果要被导入的任何符号没有 home 包 (也就是说, (symbol-package symbol) => nil), import 会设置这个符号 symbol 的 home 包为 包 package.
 
-If the symbol is already present in the importing package, import has no effect.
+        如果这个符号 symbol 已经出现在这个导入的包中, import 就没有效果.
 
 * 示例(Examples):
 
- (import 'common-lisp::car (make-package 'temp :use nil)) =>  T
- (find-symbol "CAR" 'temp) =>  CAR, :INTERNAL
- (find-symbol "CDR" 'temp) =>  NIL, NIL 
+    ```LISP
+    (import 'common-lisp::car (make-package 'temp :use nil)) =>  T
+    (find-symbol "CAR" 'temp) =>  CAR, :INTERNAL
+    (find-symbol "CDR" 'temp) =>  NIL, NIL 
+    ```
 
-The form (import 'editor:buffer) takes the external symbol named buffer in the EDITOR package (this symbol was located when the form was read by the Lisp reader) and adds it to the current package as an internal symbol. The symbol buffer is then present in the current package.
+        表达式形式 (import 'editor:buffer) 接受 EDITOR 包中名为 buffer 的外部符号 (当这个表达式形式被 Lisp 读取器读取时这个符号会被查找) 并且添加它到当前包中作为一个内部符号. 然后这个符号 buffer 就会出现在当前包中.
 
 * 副作用(Side Effects):
 
-The package system is modified.
+        这个包系统会被修改.
 
 * 受此影响(Affected By):
 
-Current state of the package system.
+        这个包系统的当前状态.
 
 * 异常情况(Exceptional Situations): 
 
-import signals a correctable error of type package-error if any of the symbols to be imported has the same name (under string=) as some distinct symbol (under eql) already accessible in the package, even if the conflict is with a shadowing symbol of the package.
+        如果这些要被导入的符号 symbols 中的任何一个有着和包 package 中某个已经可以访问的不同(在 eql 下)符号相同的名字(在 string= 下), 那么 import 机会发出一个 package-error 类型的可校正错误, 即便这个冲突是和一个包 package 中的一个遮蔽符号.
 
 * 也见(See Also):
 
-shadow, export
+        shadow, export
 
 * 注意(Notes): None. 
 
@@ -535,27 +538,29 @@ shadow, export
 
 * 语法(Syntax):
 
-list-all-packages <no arguments> => packages
+        list-all-packages <no arguments> => packages
 
 * 参数和值(Arguments and Values):
 
-packages---a list of package objects.
+        packages---一个包对象列表.
 
 * 描述(Description):
 
-list-all-packages returns a fresh list of all registered packages.
+        list-all-packages 返回一个所有已注册包的新列表.
 
 * 示例(Examples):
 
- (let ((before (list-all-packages)))
-    (make-package 'temp)
-    (set-difference (list-all-packages) before)) =>  (#<PACKAGE "TEMP">)
+    ```LISP
+    (let ((before (list-all-packages)))
+        (make-package 'temp)
+        (set-difference (list-all-packages) before)) =>  (#<PACKAGE "TEMP">)
+    ```
 
 * 副作用(Side Effects): None.
 
 * 受此影响(Affected By):
 
-defpackage, delete-package, make-package
+        defpackage, delete-package, make-package
 
 * 异常情况(Exceptional Situations):  None.
 
@@ -568,33 +573,32 @@ defpackage, delete-package, make-package
 
 * 语法(Syntax):
 
-rename-package package new-name &optional new-nicknames => package-object
+        rename-package package new-name &optional new-nicknames => package-object
 
 * 参数和值(Arguments and Values):
 
-package---a package designator.
-
-new-name---a package designator.
-
-new-nicknames---a list of string designators. The default is the empty list.
-
-package-object---the renamed package object.
+        package---一个包标识符.
+        new-name---一个包标识符.
+        new-nicknames---一个字符串标识符列表. 默认是空列表.
+        package-object---重命名的包对象.
 
 * 描述(Description):
 
-Replaces the name and nicknames of package. The old name and all of the old nicknames of package are eliminated and are replaced by new-name and new-nicknames.
+        替换包 package 的名字和别名. 包 package 的旧名字和所有旧别名会被消除并且被替换为 new-name 和 new-nicknames.
 
-The consequences are undefined if new-name or any new-nickname conflicts with any existing package names.
+        如果 new-name 或 any new-nickname 和任何已存在包名冲突, 那么后果是未定义的.
 
 * 示例(Examples):
 
- (make-package 'temporary :nicknames '("TEMP")) =>  #<PACKAGE "TEMPORARY">
- (rename-package 'temp 'ephemeral) =>  #<PACKAGE "EPHEMERAL">
- (package-nicknames (find-package 'ephemeral)) =>  ()
- (find-package 'temporary) =>  NIL
- (rename-package 'ephemeral 'temporary '(temp fleeting))
-=>  #<PACKAGE "TEMPORARY">
- (package-nicknames (find-package 'temp)) =>  ("TEMP" "FLEETING")
+    ```LISP
+    (make-package 'temporary :nicknames '("TEMP")) =>  #<PACKAGE "TEMPORARY">
+    (rename-package 'temp 'ephemeral) =>  #<PACKAGE "EPHEMERAL">
+    (package-nicknames (find-package 'ephemeral)) =>  ()
+    (find-package 'temporary) =>  NIL
+    (rename-package 'ephemeral 'temporary '(temp fleeting))
+    =>  #<PACKAGE "TEMPORARY">
+    (package-nicknames (find-package 'temp)) =>  ("TEMP" "FLEETING")
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -604,7 +608,7 @@ The consequences are undefined if new-name or any new-nickname conflicts with an
 
 * 也见(See Also):
 
-make-package
+        make-package
 
 * 注意(Notes): None. 
 
