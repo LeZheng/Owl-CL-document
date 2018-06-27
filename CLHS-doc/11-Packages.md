@@ -617,104 +617,105 @@ KEYWORD 包的处理方式与其他包不同, 因为在其中插入一个符号�
 
 * 语法(Syntax):
 
-shadow symbol-names &optional package => t
+        shadow symbol-names &optional package => t
 
 * 参数和值(Arguments and Values):
 
-symbol-names---a designator for a list of string designators.
-
-package---a package designator. The default is the current package.
+        symbol-names---一个 string 标识符列表的标识符.
+        package---一个包标识符. 默认是当前包.
 
 * 描述(Description):
 
-shadow assures that symbols with names given by symbol-names are present in the package.
+        shadow 确保带有 symbol-names 给定的名字的符号出现在包 package 中.
 
-Specifically, package is searched for symbols with the names supplied by symbol-names. For each such name, if a corresponding symbol is not present in package (directly, not by inheritance), then a corresponding symbol is created with that name, and inserted into package as an internal symbol. The corresponding symbol, whether pre-existing or newly created, is then added, if not already present, to the shadowing symbols list of package.
+        特别地, 包 package 被搜索带有符号名 symbol-names 中所提供名字的符号. 对于每一个这样的名字, 如果一个对应的符号没有出现在包 package 中 (直接地, 或者通过继承), 那么会用这个名字创建一个对应符号, 并且插入到包 package 中作为一个内部符号. 这个对应的符号, 不管是之前存在的或是新创建的, 如果没有出现在那个包 package 中就会被添加到包 package 的遮蔽符号列表中.
 
 * 示例(Examples):
 
- (package-shadowing-symbols (make-package 'temp)) =>  NIL
- (find-symbol 'car 'temp) =>  CAR, :INHERITED
- (shadow 'car 'temp) =>  T
- (find-symbol 'car 'temp) =>  TEMP::CAR, :INTERNAL
- (package-shadowing-symbols 'temp) =>  (TEMP::CAR)
+    ```LISP
+    (package-shadowing-symbols (make-package 'temp)) =>  NIL
+    (find-symbol 'car 'temp) =>  CAR, :INHERITED
+    (shadow 'car 'temp) =>  T
+    (find-symbol 'car 'temp) =>  TEMP::CAR, :INTERNAL
+    (package-shadowing-symbols 'temp) =>  (TEMP::CAR)
 
- (make-package 'test-1) =>  #<PACKAGE "TEST-1">
- (intern "TEST" (find-package 'test-1)) =>  TEST-1::TEST, NIL
- (shadow 'test-1::test (find-package 'test-1)) =>  T
- (shadow 'TEST (find-package 'test-1)) =>  T
- (assert (not (null (member 'test-1::test (package-shadowing-symbols
-                                            (find-package 'test-1))))))
- 
- (make-package 'test-2) =>  #<PACKAGE "TEST-2">
- (intern "TEST" (find-package 'test-2)) =>  TEST-2::TEST, NIL
- (export 'test-2::test (find-package 'test-2)) =>  T
- (use-package 'test-2 (find-package 'test-1))    ;should not error
- 
+    (make-package 'test-1) =>  #<PACKAGE "TEST-1">
+    (intern "TEST" (find-package 'test-1)) =>  TEST-1::TEST, NIL
+    (shadow 'test-1::test (find-package 'test-1)) =>  T
+    (shadow 'TEST (find-package 'test-1)) =>  T
+    (assert (not (null (member 'test-1::test (package-shadowing-symbols
+                                                (find-package 'test-1))))))
+    
+    (make-package 'test-2) =>  #<PACKAGE "TEST-2">
+    (intern "TEST" (find-package 'test-2)) =>  TEST-2::TEST, NIL
+    (export 'test-2::test (find-package 'test-2)) =>  T
+    (use-package 'test-2 (find-package 'test-1))    ;should not error
+    ```
 
 * 副作用(Side Effects):
 
-shadow changes the state of the package system in such a way that the package consistency rules do not hold across the change.
+        shadow 改变这个包系统的状态, 以一种这个包一致性规则不适用于这个改变的方式.
 
 * 受此影响(Affected By):
 
-Current state of the package system.
+        这个包系统的当前状态.
 
 * 异常情况(Exceptional Situations):  None.
 
 * 也见(See Also):
 
-package-shadowing-symbols, Section 11.1 (Package Concepts)
+        package-shadowing-symbols, 章节 11.1 (Package Concepts)
 
 * 注意(Notes):
 
-If a symbol with a name in symbol-names already exists in package, but by inheritance, the inherited symbol becomes shadowed[3] by a newly created internal symbol. 
+        如果一个带有 symbol-names 中的一个名字的符号已经存在于包 package 中, 但是是通过继承而来的, 这个继承的符号会被一个新创建的内部符号所遮蔽. 
 
 
 ### <span id="F-SHADOWING-IMPORT">函数 SHADOWING-IMPORT</span>
 
 * 语法(Syntax):
 
-shadowing-import symbols &optional package => t
+        shadowing-import symbols &optional package => t
 
 * 参数和值(Arguments and Values):
 
-symbols---a designator for a list of symbols.
-
-package ---a package designator. The default is the current package.
+        symbols---一个符号列表的标识符.
+        package ---一个包标识符. 默认是当前包.
 
 * 描述(Description):
 
-shadowing-import is like import, but it does not signal an error even if the importation of a symbol would shadow some symbol already accessible in package.
+        shadowing-import 就像是 import, 但是它不会发出一个错误, 即便一个符号的导入会遮蔽某个在包 package 中已经可访问的某个符号.
 
-shadowing-import inserts each of symbols into package as an internal symbol, regardless of whether another symbol of the same name is shadowed by this action. If a different symbol of the same name is already present in package, that symbol is first uninterned from package. The new symbol is added to package's shadowing-symbols list.
+        shadowing-import 将这些符号 symbols 中的每一个插入到包 package 中作为一个内部符号, 不管另一个相同符号的名字是否被这个动作遮蔽. 如果一个相同名字的不同符号已经出现在包 package 中, 那个符号首先被从包 package 解除捕捉. 这个新的符号会被添加到包 package 的遮蔽符号列表中.
 
-shadowing-import does name-conflict checking to the extent that it checks whether a distinct existing symbol with the same name is accessible; if so, it is shadowed by the new symbol, which implies that it must be uninterned if it was present in package.
+        shadowing-import 对它要检测的范围执行名字冲突检测, 不管一个相同名字的不同的已存在符号是否可以访问; 如果这样, 它被这个新符号所遮蔽, 这意味着如果它出现在包 package 中它必须被解除捕捉.
 
 * 示例(Examples):
 
- (in-package "COMMON-LISP-USER") =>  #<PACKAGE "COMMON-LISP-USER">
- (setq sym (intern "CONFLICT")) =>  CONFLICT
- (intern "CONFLICT" (make-package 'temp)) =>  TEMP::CONFLICT, NIL
- (package-shadowing-symbols 'temp) =>  NIL
- (shadowing-import sym 'temp) =>  T 
- (package-shadowing-symbols 'temp) =>  (CONFLICT)
+    ```LISP
+    (in-package "COMMON-LISP-USER") =>  #<PACKAGE "COMMON-LISP-USER">
+    (setq sym (intern "CONFLICT")) =>  CONFLICT
+    (intern "CONFLICT" (make-package 'temp)) =>  TEMP::CONFLICT, NIL
+    (package-shadowing-symbols 'temp) =>  NIL
+    (shadowing-import sym 'temp) =>  T 
+    (package-shadowing-symbols 'temp) =>  (CONFLICT)
+    ```
 
 * 副作用(Side Effects):
 
-shadowing-import changes the state of the package system in such a way that the consistency rules do not hold across the change.
+        shadowing-import 以一种一致性规则不适用这个改变的方式修改这个包系统的状态.
 
-package's shadowing-symbols list is modified.
+        包 package 的遮蔽符号列表会被修改.
 
 * 受此影响(Affected By):
 
-Current state of the package system.
+        这个包系统的当前状态.
 
 * 异常情况(Exceptional Situations):  None.
 
 * 也见(See Also):
 
-import, unintern, package-shadowing-symbols
+        import, unintern, package-shadowing-symbols
 
 * 注意(Notes): None. 
 
@@ -723,108 +724,109 @@ import, unintern, package-shadowing-symbols
 
 * 语法(Syntax):
 
-delete-package package => generalized-boolean
+        delete-package package => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-package---a package designator.
-
-generalized-boolean---a generalized boolean.
+        package---一个包标识符.
+        generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
-delete-package deletes package from all package system data structures. If the operation is successful, delete-package returns true, otherwise nil. The effect of delete-package is that the name and nicknames of package cease to be recognized package names. The package object is still a package (i.e., packagep is true of it) but package-name returns nil. The consequences of deleting the COMMON-LISP package or the KEYWORD package are undefined. The consequences of invoking any other package operation on package once it has been deleted are unspecified. In particular, the consequences of invoking find-symbol, intern and other functions that look for a symbol name in a package are unspecified if they are called with *package* bound to the deleted package or with the deleted package as an argument.
+        delete-package 从所有包系统数据结构中删除包 package. 如果这个操作成功, delete-package 返回 true, 否则就是 nil. 这个 delete-package 的效果是包 package 的名字和别名不再被识别包名. 这个包对象仍然是个包 (换句话说, packagep 对于它是 true 的) 但是 package-name 返回 nil. 删除这个 COMMON-LISP 包或 KEYWORD 包的后果是未定义的. 一旦包 package 被删除, 在这个包上调用任何其他包操作的后果是未指定的. 特别地, 如果在 *package* 绑定给那个删除的包或者用这个删除的包作为参数的情况下调用 find-symbol, intern 和其他在一个包中查找符号名的函数的后果是未指定的.
 
-If package is a package object that has already been deleted, delete-package immediately returns nil.
+        如果包 package 是一个已经被删除的包对象, delete-package 立即返回 nil.
 
-After this operation completes, the home package of any symbol whose home package had previously been package is implementation-dependent. Except for this, symbols accessible in package are not modified in any other way; symbols whose home package is not package remain unchanged.
+        在这个操作完成后, 之前 home 包为包 package 的符号的 home 包是依赖于具体实现的. 除了这个, 在包 package 中可访问的符号不会以其他任何方式被修改; home 包不是包 package 的符号保持不变.
 
 * 示例(Examples):
 
- (setq *foo-package* (make-package "FOO" :use nil))
- (setq *foo-symbol*  (intern "FOO" *foo-package*))
- (export *foo-symbol* *foo-package*)
+    ```LISP
+    (setq *foo-package* (make-package "FOO" :use nil))
+    (setq *foo-symbol*  (intern "FOO" *foo-package*))
+    (export *foo-symbol* *foo-package*)
 
- (setq *bar-package* (make-package "BAR" :use '("FOO")))
- (setq *bar-symbol*  (intern "BAR" *bar-package*))
- (export *foo-symbol* *bar-package*)
- (export *bar-symbol* *bar-package*)
+    (setq *bar-package* (make-package "BAR" :use '("FOO")))
+    (setq *bar-symbol*  (intern "BAR" *bar-package*))
+    (export *foo-symbol* *bar-package*)
+    (export *bar-symbol* *bar-package*)
 
- (setq *baz-package* (make-package "BAZ" :use '("BAR")))
+    (setq *baz-package* (make-package "BAZ" :use '("BAR")))
 
- (symbol-package *foo-symbol*) =>  #<PACKAGE "FOO">
- (symbol-package *bar-symbol*) =>  #<PACKAGE "BAR">
+    (symbol-package *foo-symbol*) =>  #<PACKAGE "FOO">
+    (symbol-package *bar-symbol*) =>  #<PACKAGE "BAR">
 
- (prin1-to-string *foo-symbol*) =>  "FOO:FOO"
- (prin1-to-string *bar-symbol*) =>  "BAR:BAR"
+    (prin1-to-string *foo-symbol*) =>  "FOO:FOO"
+    (prin1-to-string *bar-symbol*) =>  "BAR:BAR"
 
- (find-symbol "FOO" *bar-package*) =>  FOO:FOO, :EXTERNAL
+    (find-symbol "FOO" *bar-package*) =>  FOO:FOO, :EXTERNAL
 
- (find-symbol "FOO" *baz-package*) =>  FOO:FOO, :INHERITED
- (find-symbol "BAR" *baz-package*) =>  BAR:BAR, :INHERITED
+    (find-symbol "FOO" *baz-package*) =>  FOO:FOO, :INHERITED
+    (find-symbol "BAR" *baz-package*) =>  BAR:BAR, :INHERITED
 
- (packagep *foo-package*) =>  true
- (packagep *bar-package*) =>  true
- (packagep *baz-package*) =>  true
+    (packagep *foo-package*) =>  true
+    (packagep *bar-package*) =>  true
+    (packagep *baz-package*) =>  true
 
- (package-name *foo-package*) =>  "FOO"
- (package-name *bar-package*) =>  "BAR"
- (package-name *baz-package*) =>  "BAZ"
+    (package-name *foo-package*) =>  "FOO"
+    (package-name *bar-package*) =>  "BAR"
+    (package-name *baz-package*) =>  "BAZ"
 
- (package-use-list *foo-package*) =>  ()
- (package-use-list *bar-package*) =>  (#<PACKAGE "FOO">)
- (package-use-list *baz-package*) =>  (#<PACKAGE "BAR">)
+    (package-use-list *foo-package*) =>  ()
+    (package-use-list *bar-package*) =>  (#<PACKAGE "FOO">)
+    (package-use-list *baz-package*) =>  (#<PACKAGE "BAR">)
 
- (package-used-by-list *foo-package*) =>  (#<PACKAGE "BAR">)
- (package-used-by-list *bar-package*) =>  (#<PACKAGE "BAZ">)
- (package-used-by-list *baz-package*) =>  ()
+    (package-used-by-list *foo-package*) =>  (#<PACKAGE "BAR">)
+    (package-used-by-list *bar-package*) =>  (#<PACKAGE "BAZ">)
+    (package-used-by-list *baz-package*) =>  ()
 
- (delete-package *bar-package*)
->>  Error: Package BAZ uses package BAR.
->>  If continued, BAZ will be made to unuse-package BAR,
->>  and then BAR will be deleted.
->>  Type :CONTINUE to continue.
->>  Debug> :CONTINUE
-=>  T
+    (delete-package *bar-package*)
+    >>  Error: Package BAZ uses package BAR.
+    >>  If continued, BAZ will be made to unuse-package BAR,
+    >>  and then BAR will be deleted.
+    >>  Type :CONTINUE to continue.
+    >>  Debug> :CONTINUE
+    =>  T
 
- (symbol-package *foo-symbol*) =>  #<PACKAGE "FOO">
- (symbol-package *bar-symbol*) is unspecified
+    (symbol-package *foo-symbol*) =>  #<PACKAGE "FOO">
+    (symbol-package *bar-symbol*) is unspecified
 
- (prin1-to-string *foo-symbol*) =>  "FOO:FOO"
- (prin1-to-string *bar-symbol*) is unspecified
+    (prin1-to-string *foo-symbol*) =>  "FOO:FOO"
+    (prin1-to-string *bar-symbol*) is unspecified
 
- (find-symbol "FOO" *bar-package*) is unspecified
+    (find-symbol "FOO" *bar-package*) is unspecified
 
- (find-symbol "FOO" *baz-package*) =>  NIL, NIL
- (find-symbol "BAR" *baz-package*) =>  NIL, NIL
+    (find-symbol "FOO" *baz-package*) =>  NIL, NIL
+    (find-symbol "BAR" *baz-package*) =>  NIL, NIL
 
- (packagep *foo-package*) =>  T
- (packagep *bar-package*) =>  T
- (packagep *baz-package*) =>  T
+    (packagep *foo-package*) =>  T
+    (packagep *bar-package*) =>  T
+    (packagep *baz-package*) =>  T
 
- (package-name *foo-package*) =>  "FOO"
- (package-name *bar-package*) =>  NIL
- (package-name *baz-package*) =>  "BAZ"
+    (package-name *foo-package*) =>  "FOO"
+    (package-name *bar-package*) =>  NIL
+    (package-name *baz-package*) =>  "BAZ"
 
- (package-use-list *foo-package*) =>  ()
- (package-use-list *bar-package*) is unspecified
- (package-use-list *baz-package*) =>  ()
+    (package-use-list *foo-package*) =>  ()
+    (package-use-list *bar-package*) is unspecified
+    (package-use-list *baz-package*) =>  ()
 
- (package-used-by-list *foo-package*) =>  ()
- (package-used-by-list *bar-package*) is unspecified
- (package-used-by-list *baz-package*) =>  ()
+    (package-used-by-list *foo-package*) =>  ()
+    (package-used-by-list *bar-package*) is unspecified
+    (package-used-by-list *baz-package*) =>  ()
+    ```
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations): 
 
-If the package designator is a name that does not currently name a package, a correctable error of type package-error is signaled. If correction is attempted, no deletion action is attempted; instead, delete-package immediately returns nil.
+        如果这个包标识符是一个当期没有命名一个包的名字, 就会发出一个 package-error 类型的可校正错误. 如果尝试了这个校正, 就不会尝试去做删除动作; 反而, delete-package 立即返回 nil.
 
-If package is used by other packages, a correctable error of type package-error is signaled. If correction is attempted, unuse-package is effectively called to remove any dependencies, causing package's external symbols to cease being accessible to those packages that use package. delete-package then deletes package just as it would have had there been no packages that used it.
+        如果包 package 被其他包所使用, 就会发出一个 package-error 类型的可校正错误. 如果尝试了一个校正, unuse-package 会被调用来移除任何依赖, 导致包 package 的外部符号对于那些使用了包 package 的包不再是可访问的. delete-package 接下来删除包 package 就好像已经没有包使用它了一样.
 
 * 也见(See Also):
 
-unuse-package
+        unuse-package
 
 * 注意(Notes): None. 
 
@@ -833,169 +835,165 @@ unuse-package
 
 * 语法(Syntax):
 
-make-package package-name &key nicknames use => package
+        make-package package-name &key nicknames use => package
 
 * 参数和值(Arguments and Values):
 
-package-name---a string designator.
-
-nicknames---a list of string designators. The default is the empty list.
-
-use---a list of package designators. The default is implementation-defined.
-
-package---a package.
+        package-name---一个字符串标识符.
+        nicknames---一个字符串标识符列表. 默认是空列表.
+        use---一个包标识符列表. 默认是具体实现定义的.
+        package---一个包.
 
 * 描述(Description):
 
-Creates a new package with the name package-name.
+        创建一个名为 package-name 的新包.
 
-Nicknames are additional names which may be used to refer to the new package.
+        别名 nicknames 是可以被用于引用这个新的包的额外的名字.
 
-use specifies zero or more packages the external symbols of which are to be inherited by the new package. See the function use-package.
+        use 指定了 0 个或多个包, 它们的外部符号会被这个新包所继承. 见函数 use-package.
 
 * 示例(Examples):
 
- (make-package 'temporary :nicknames '("TEMP" "temp")) =>  #<PACKAGE "TEMPORARY">
- (make-package "OWNER" :use '("temp")) =>  #<PACKAGE "OWNER">
- (package-used-by-list 'temp) =>  (#<PACKAGE "OWNER">)
- (package-use-list 'owner) =>  (#<PACKAGE "TEMPORARY">)
+    ```LISP
+    (make-package 'temporary :nicknames '("TEMP" "temp")) =>  #<PACKAGE "TEMPORARY">
+    (make-package "OWNER" :use '("temp")) =>  #<PACKAGE "OWNER">
+    (package-used-by-list 'temp) =>  (#<PACKAGE "OWNER">)
+    (package-use-list 'owner) =>  (#<PACKAGE "TEMPORARY">)
+    ```
 
 * 副作用(Side Effects): None.
 
 * 受此影响(Affected By):
 
-The existence of other packages in the system.
+        在这个系统中其他包的存在.
 
 * 异常情况(Exceptional Situations): 
 
-The consequences are unspecified if packages denoted by use do not exist.
+        如果 use 指定的包不存在, 那么后果是未指定的.
 
-A correctable error is signaled if the package-name or any of the nicknames is already the name or nickname of an existing package.
+        如果包名 package-name 或这些别名 nicknames 中的任何一个已经是一个已存在的包的包名或别名那么就会发出一个.
 
 * 也见(See Also):
 
-defpackage, use-package
+        defpackage, use-package
 
 * 注意(Notes):
 
-In situations where the packages to be used contain symbols which would conflict, it is necessary to first create the package with :use '(), then to use shadow or shadowing-import to address the conflicts, and then after that to use use-package once the conflicts have been addressed.
+        在要被使用的包包含了会冲突的符号的情况下, 有必要先用 :use '() 来创建这个包, 然后使用 shadow 或 shadowing-import 来定位这些冲突, 在这之后一旦这些冲突已经被定位就使用 use-package.
 
-When packages are being created as part of the static definition of a program rather than dynamically by the program, it is generally considered more stylistically appropriate to use defpackage rather than make-package. 
+        当要被创建的包是一个程序的静态定义的一部分而不是动态地被程序创建, 在文体上更适合使用 defpackage 而不是 make-package. 
 
 
 ### <span id="M-WITH-PACKAGE-ITERATOR">宏 WITH-PACKAGE-ITERATOR</span>
 
 * 语法(Syntax):
 
-with-package-iterator (name package-list-form &rest symbol-types) declaration* form*
-
-=> result*
+        with-package-iterator (name package-list-form &rest symbol-types) declaration* form*
+        => result*
 
 * 参数和值(Arguments and Values):
 
-name---a symbol.
-
-package-list-form---a form; evaluated once to produce a package-list.
-
-package-list---a designator for a list of package designators.
-
-symbol-type---one of the symbols :internal, :external, or :inherited.
-
-declaration---a declare expression; not evaluated.
-
-forms---an implicit progn.
-
-results---the values of the forms.
+        name---一个符号.
+        package-list-form---一个表达式形式; 求值一次来产生 package-list.
+        package-list---一个包标识符列表的标识符.
+        symbol-type---符号 :internal, :external, 或 :inherited 的其中之一.
+        declaration---一个 declare 表达式; 不求值.
+        forms---一个隐式 progn.
+        results---这些表达式形式 forms 的值.
 
 * 描述(Description):
 
-Within the lexical scope of the body forms, the name is defined via macrolet such that successive invocations of (name) will return the symbols, one by one, from the packages in package-list.
+        在这个主体表达式形式 forms 的词法作用域中, 这个名字 name 是通过 macrolet 定义的, 这么一来后续的 (name) 调用会一个接一个依次返回来自 package-list 中包的符号.
 
-It is unspecified whether symbols inherited from multiple packages are returned more than once. The order of symbols returned does not necessarily reflect the order of packages in package-list. When package-list has more than one element, it is unspecified whether duplicate symbols are returned once or more than once.
+        从多个包中继承的符号是否会被返回超过一次是未指定的. 返回符号的顺序没有必要反映 package-list 中包的顺序. 当 package-list 有着不止一个元素时, 重复符号会被返回一次还是不止一次是未指定的.
 
-Symbol-types controls which symbols that are accessible in a package are returned as follows:
+        如下的符号类型 Symbol-types 控制一个包中可以访问的哪些符号会被返回:
 
-:internal
+        :internal
 
-    The symbols that are present in the package, but that are not exported.
+            出现在包中但是没有被导出的符号.
 
-:external
+        :external
 
-    The symbols that are present in the package and are exported.
+            出现在包中并且被导出的符号.
 
-:inherited
+        :inherited
 
-    The symbols that are exported by used packages and that are not shadowed.
+            被使用的包导出并且没有被遮蔽的符号.
 
-When more than one argument is supplied for symbol-types, a symbol is returned if its accessibility matches any one of the symbol-types supplied. Implementations may extend this syntax by recognizing additional symbol accessibility types.
+        当为符号类型 symbol-types 提供了超过一个参数时, 如果一个符号的可访问性符合提供的其中一个 symbol-type, 它就会被返回. 具体实现可能通过识别额外的符号可访问性类型来扩展这个语法.
 
-An invocation of (name) returns four values as follows:
+        一个 (name) 调用返回如下四个值:
 
-1. A flag that indicates whether a symbol is returned (true means that a symbol is returned).
-2. A symbol that is accessible in one the indicated packages.
-3. The accessibility type for that symbol; i.e., one of the symbols :internal, :external, or :inherited.
-4. The package from which the symbol was obtained. The package is one of the packages present or named in package-list.
+        1. 一个表示一个符号是否被返回的标志 (true 表示一个符号被返回).
+        2. 一个在指定的包中是可访问的符号.
+        3. 那个符号的可访问性类型; 换句话说, 这些符号 :internal, :external, 或 :inherited 的其中一个.
+        4. 获取这个符号的包. 这个包是 package-list 中出现或命名的其中一个包.
 
-After all symbols have been returned by successive invocations of (name), then only one value is returned, namely nil.
+        通过依次调用 (name) 所有符号已经被返回后, 然后只有一个值会被返回, 也就是 nil.
 
-The meaning of the second, third, and fourth values is that the returned symbol is accessible in the returned package in the way indicated by the second return value as follows:
+        第二, 第三, 和第四个值的意义是, 返回的符号在返回的包中是可访问的, 其方式是由第二个返回值所指示的, 如下所示:
 
-:internal
+        :internal
 
-    Means present and not exported.
+            意味着出现但未导出.
 
-:external
+        :external
 
-    Means present and exported.
+            意味着出现并导出.
 
-:inherited
+        :inherited
 
-    Means not present (thus not shadowed) but inherited from some used package.
+            意味着没有出现 (因此没有被遮蔽) 但是从某个使用的包中继承.
 
-It is unspecified what happens if any of the implicit interior state of an iteration is returned outside the dynamic extent of the with-package-iterator form such as by returning some closure over the invocation form.
+        如果一个迭代的任何隐式的内部状态在这个 with-package-iterator 表达式形式的动态范围之外被返回, 比如通过在调用表达式形式中返回某个闭包, 那么会发生什么是不确定的.
 
-Any number of invocations of with-package-iterator can be nested, and the body of the innermost one can invoke all of the locally established macros, provided all those macros have distinct names.
+        任何数量的 with-package-iterator 调用可以被嵌套, 并且最内部的那个的主体可以调用所有这些局部建立的宏, 假设所有这些符号有着不同的名字.
 
 * 示例(Examples):
 
-The following function should return t on any package, and signal an error if the usage of with-package-iterator does not agree with the corresponding usage of do-symbols.
+        下面函数应该在任何包上都返回 t, 如果这个 with-package-iterator 的使用和对应 do-symbols 的使用不一致就会发出一个错误.
 
- (defun test-package-iterator (package)
-   (unless (packagep package)
-     (setq package (find-package package)))
-   (let ((all-entries '())
-         (generated-entries '()))
-     (do-symbols (x package) 
-       (multiple-value-bind (symbol accessibility) 
-           (find-symbol (symbol-name x) package)
-         (push (list symbol accessibility) all-entries)))
-     (with-package-iterator (generator-fn package 
-                             :internal :external :inherited)
-       (loop     
-         (multiple-value-bind (more? symbol accessibility pkg)
-             (generator-fn)
-           (unless more? (return))
-           (let ((l (multiple-value-list (find-symbol (symbol-name symbol) 
-                                                      package))))
-             (unless (equal l (list symbol accessibility))
-               (error "Symbol ~S not found as ~S in package ~A [~S]"
-                      symbol accessibility (package-name package) l))
-             (push l generated-entries)))))
-     (unless (and (subsetp all-entries generated-entries :test #'equal)
-                  (subsetp generated-entries all-entries :test #'equal))
-      (error "Generated entries and Do-Symbols entries don't correspond"))
-     t))
+    ```LISP
+    (defun test-package-iterator (package)
+      (unless (packagep package)
+        (setq package (find-package package)))
+      (let ((all-entries '())
+            (generated-entries '()))
+        (do-symbols (x package) 
+          (multiple-value-bind (symbol accessibility) 
+              (find-symbol (symbol-name x) package)
+            (push (list symbol accessibility) all-entries)))
+        (with-package-iterator (generator-fn package 
+                                :internal :external :inherited)
+          (loop     
+            (multiple-value-bind (more? symbol accessibility pkg)
+                (generator-fn)
+              (unless more? (return))
+              (let ((l (multiple-value-list (find-symbol (symbol-name symbol) 
+                                                          package))))
+                (unless (equal l (list symbol accessibility))
+                  (error "Symbol ~S not found as ~S in package ~A [~S]"
+                          symbol accessibility (package-name package) l))
+                (push l generated-entries)))))
+        (unless (and (subsetp all-entries generated-entries :test #'equal)
+                      (subsetp generated-entries all-entries :test #'equal))
+          (error "Generated entries and Do-Symbols entries don't correspond"))
+        t))
+    ```
 
-The following function prints out every present symbol (possibly more than once):
+        下面函数打印出每个出现的符号 (可能不止一次):
 
- (defun print-all-symbols () 
-   (with-package-iterator (next-symbol (list-all-packages)
-                           :internal :external)
-     (loop
-       (multiple-value-bind (more? symbol) (next-symbol)
-         (if more? 
-            (print symbol)
-            (return))))))
+    ```LISP
+    (defun print-all-symbols () 
+      (with-package-iterator (next-symbol (list-all-packages)
+                              :internal :external)
+        (loop
+          (multiple-value-bind (more? symbol) (next-symbol)
+            (if more? 
+                (print symbol)
+                (return))))))
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -1003,13 +1001,13 @@ The following function prints out every present symbol (possibly more than once)
 
 * 异常情况(Exceptional Situations): 
 
-with-package-iterator signals an error of type program-error if no symbol-types are supplied or if a symbol-type is not recognized by the implementation is supplied.
+        如果没有提供符号类型 symbol-types 或者提供了一个不被具体实现所识别的符号类型 symbol-type, 那么 with-package-iterator 会发出一个 program-error 类型的错误.
 
-The consequences are undefined if the local function named name established by with-package-iterator is called after it has returned false as its primary value.
+        如果通过 with-package-iterator 建立的名为 name 的局部函数在它返回 false 作为它的主要值之后被调用, 那么后果是未定义的.
 
 * 也见(See Also):
 
-Section 3.6 (Traversal Rules and Side Effects)
+        章节 3.6 (Traversal Rules and Side Effects)
 
 * 注意(Notes): None. 
 
