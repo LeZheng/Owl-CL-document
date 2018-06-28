@@ -1016,47 +1016,48 @@ KEYWORD 包的处理方式与其他包不同, 因为在其中插入一个符号�
 
 * 语法(Syntax):
 
-unexport symbols &optional package => t
+        unexport symbols &optional package => t
 
 * 参数和值(Arguments and Values):
 
-symbols---a designator for a list of symbols.
-
-package---a package designator. The default is the current package.
+        symbols---一个符号列表的标识符.
+        package---一个包标识符. 默认是当前包.
 
 * 描述(Description):
 
-unexport reverts external symbols in package to internal status; it undoes the effect of export.
+        unexport 回复包 package 中的外部符号为内部状态; 它撤销了 export 的效果.
 
-unexport works only on symbols present in package, switching them back to internal status. If unexport is given a symbol that is already accessible as an internal symbol in package, it does nothing.
+        unexport 只工作在出现在包 package 中的符号上, 把它们转换回内部状态. 如果给 unexport 一个已经作为内部符号出现在包 package 的一个符号, 它什么都不做.
 
 * 示例(Examples):
 
- (in-package "COMMON-LISP-USER") =>  #<PACKAGE "COMMON-LISP-USER">
- (export (intern "CONTRABAND" (make-package 'temp)) 'temp) =>  T
- (find-symbol "CONTRABAND") =>  NIL, NIL 
- (use-package 'temp) =>  T 
- (find-symbol "CONTRABAND") =>  CONTRABAND, :INHERITED
- (unexport 'contraband 'temp) =>  T
- (find-symbol "CONTRABAND") =>  NIL, NIL
+    ```LISP
+    (in-package "COMMON-LISP-USER") =>  #<PACKAGE "COMMON-LISP-USER">
+    (export (intern "CONTRABAND" (make-package 'temp)) 'temp) =>  T
+    (find-symbol "CONTRABAND") =>  NIL, NIL 
+    (use-package 'temp) =>  T 
+    (find-symbol "CONTRABAND") =>  CONTRABAND, :INHERITED
+    (unexport 'contraband 'temp) =>  T
+    (find-symbol "CONTRABAND") =>  NIL, NIL
+    ```
 
 * 副作用(Side Effects):
 
-Package system is modified.
+        包系统会被修改.
 
 * 受此影响(Affected By):
 
-Current state of the package system.
+        包系统的当前状态
 
 * 异常情况(Exceptional Situations): 
 
-If unexport is given a symbol not accessible in package at all, an error of type package-error is signaled.
+        如果给 unexport 一个在包 package 中不可访问的符号, 就会发出一个 package-error 类型的错误.
 
-The consequences are undefined if package is the KEYWORD package or the COMMON-LISP package.
+        如果包 package 是 KEYWORD 包或者 COMMON-LISP 包, 那么后果是未定义的.
 
 * 也见(See Also):
 
-export, Section 11.1 (Package Concepts)
+        export, 章节 11.1 (Package Concepts)
 
 * 注意(Notes): None. 
 
@@ -1065,47 +1066,47 @@ export, Section 11.1 (Package Concepts)
 
 * 语法(Syntax):
 
-unintern symbol &optional package => generalized-boolean
+        unintern symbol &optional package => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-symbol---a symbol.
-
-package---a package designator. The default is the current package.
-
-generalized-boolean---a generalized boolean.
+        symbol---一个符号.
+        package---一个包标识符. 默认是当前包.
+        generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
-unintern removes symbol from package. If symbol is present in package, it is removed from package and also from package's shadowing symbols list if it is present there. If package is the home package for symbol, symbol is made to have no home package. Symbol may continue to be accessible in package by inheritance.
+        unintern 从包 package 中移除符号 symbol. 如果符号 symbol 出现在包 package 中, 它被从包 package 中被移除并且如果出现在包 package 的遮蔽符号列表中那么也从其中移除. 如果包 package 是这个符号 symbol 的 home 包, 符号 symbol 会被变成没有 home 包. 符号 Symbol 可能在包 package 中通过继承仍然是可以访问的.
 
-Use of unintern can result in a symbol that has no recorded home package, but that in fact is accessible in some package. Common Lisp does not check for this pathological case, and such symbols are always printed preceded by #:.
+        unintern 的使用可以导致一个没有记录 home 包的符号, 但是事实上在某些包中是可以访问的. Common Lisp 没有检查这个异常情况, 并且这些符号总是在 #: 之前打印出来.
 
-unintern returns true if it removes symbol, and nil otherwise.
+        如果 unintern 移除了符号那么它就返回 true, 否则就是 nil.
 
 * 示例(Examples):
 
- (in-package "COMMON-LISP-USER") =>  #<PACKAGE "COMMON-LISP-USER">
- (setq temps-unpack (intern "UNPACK" (make-package 'temp))) =>  TEMP::UNPACK 
- (unintern temps-unpack 'temp) =>  T
- (find-symbol "UNPACK" 'temp) =>  NIL, NIL 
- temps-unpack =>  #:UNPACK 
+    ```LISP
+    (in-package "COMMON-LISP-USER") =>  #<PACKAGE "COMMON-LISP-USER">
+    (setq temps-unpack (intern "UNPACK" (make-package 'temp))) =>  TEMP::UNPACK 
+    (unintern temps-unpack 'temp) =>  T
+    (find-symbol "UNPACK" 'temp) =>  NIL, NIL 
+    temps-unpack =>  #:UNPACK 
+    ```
 
 * 副作用(Side Effects):
 
-unintern changes the state of the package system in such a way that the consistency rules do not hold across the change.
+        unintern 以一种这个一致性规则不适用的方式改变这个包系统的状态.
 
 * 受此影响(Affected By):
 
-Current state of the package system.
+        包系统的当前状态
 
 * 异常情况(Exceptional Situations): 
 
-Giving a shadowing symbol to unintern can uncover a name conflict that had previously been resolved by the shadowing. If package A uses packages B and C, A contains a shadowing symbol x, and B and C each contain external symbols named x, then removing the shadowing symbol x from A will reveal a name conflict between b:x and c:x if those two symbols are distinct. In this case unintern will signal an error.
+        给 unintern 一个遮蔽符号可以揭露一个之前通过遮蔽解决的名字冲突. 如果包 A 包 B 和 C, A 包含了一个遮蔽符号 x, 并且 B 和 C 每个都包含名为 x 的外部符号, 如果这两个符号是不同的, 那么从 A 中移除这个遮蔽的符号会揭露一个在 b:x 和 c:x 之间的名字冲突. 在这个情况中 unintern 会发出一个错误.
 
 * 也见(See Also):
 
-Section 11.1 (Package Concepts)
+        章节 11.1 (Package Concepts)
 
 * 注意(Notes): None. 
 
@@ -1114,35 +1115,34 @@ Section 11.1 (Package Concepts)
 
 * 语法(Syntax):
 
-in-package name => package
+        in-package name => package
 
 * 参数和值(Arguments and Values):
 
-name---a string designator; not evaluated.
-
-package---the package named by name.
+        name---一个字符串标识符; 不求值.
+        package---名为 name 的包.
 
 * 描述(Description):
 
-Causes the the package named by name to become the current package---that is, the value of *package*. If no such package already exists, an error of type package-error is signaled.
+        导致这个名为 name 的包称为当前包---这也就是说, 这个 *package* 的值. 如果不存在这样的包, 那么就会发出一个 package-error 类型的错误.
 
-Everything in-package does is also performed at compile time if the call appears as a top level form.
+        如果这个 in-package 调用作为顶层表达式形式出现, 那么 in-package 做的所有事也都在编译时执行.
 
 * 示例(Examples): None.
 
 * 副作用(Side Effects):
 
-The variable *package* is assigned. If the in-package form is a top level form, this assignment also occurs at compile time.
+        变量 *package* 会被赋值. 如果这个 in-package 表达式形式是一个顶层表达式形式, 这个赋值也会在编译时发生.
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations): 
 
-An error of type package-error is signaled if the specified package does not exist.
+        如果这个指定的包不存在, 就会发出一个 package-error 类型的错误.
 
 * 也见(See Also):
 
-*package*
+        *package*
 
 * 注意(Notes): None. 
 
@@ -1151,44 +1151,45 @@ An error of type package-error is signaled if the specified package does not exi
 
 * 语法(Syntax):
 
-unuse-package packages-to-unuse &optional package => t
+        unuse-package packages-to-unuse &optional package => t
 
 * 参数和值(Arguments and Values):
 
-packages-to-unuse---a designator for a list of package designators.
-
-package---a package designator. The default is the current package.
+        packages-to-unuse---一个包标识符列表的标识符.
+        package---一个包标识符. 默认是当前包.
 
 * 描述(Description):
 
-unuse-package causes package to cease inheriting all the external symbols of packages-to-unuse; unuse-package undoes the effects of use-package. The packages-to-unuse are removed from the use list of package.
+        unuse-package 导致包 package 不再从包 packages-to-unuse 中继承所有外部符号; unuse-package 撤销 use-package 的效果. 包 packages-to-unuse 被从包 package 的使用列表中移除.
 
-Any symbols that have been imported into package continue to be present in package.
+        任何已经被导入到包 package 中的符号仍然会出现在包 package 中.
 
 * 示例(Examples):
 
- (in-package "COMMON-LISP-USER") =>  #<PACKAGE "COMMON-LISP-USER">
- (export (intern "SHOES" (make-package 'temp)) 'temp) =>  T
- (find-symbol "SHOES") =>  NIL, NIL
- (use-package 'temp) =>  T
- (find-symbol "SHOES") =>  SHOES, :INHERITED
- (find (find-package 'temp) (package-use-list 'common-lisp-user)) =>  #<PACKAGE "TEMP">
- (unuse-package 'temp) =>  T
- (find-symbol "SHOES") =>  NIL, NIL
+    ```LISP
+    (in-package "COMMON-LISP-USER") =>  #<PACKAGE "COMMON-LISP-USER">
+    (export (intern "SHOES" (make-package 'temp)) 'temp) =>  T
+    (find-symbol "SHOES") =>  NIL, NIL
+    (use-package 'temp) =>  T
+    (find-symbol "SHOES") =>  SHOES, :INHERITED
+    (find (find-package 'temp) (package-use-list 'common-lisp-user)) =>  #<PACKAGE "TEMP">
+    (unuse-package 'temp) =>  T
+    (find-symbol "SHOES") =>  NIL, NIL
+    ```
 
 * 副作用(Side Effects):
 
-The use list of package is modified.
+        包 package 的使用列表会被修改.
 
 * 受此影响(Affected By):
 
-Current state of the package system.
+        包系统的当前状态
 
 * 异常情况(Exceptional Situations):  None.
 
 * 也见(See Also):
 
-use-package, package-use-list
+        use-package, package-use-list
 
 * 注意(Notes): None. 
 
@@ -1197,34 +1198,35 @@ use-package, package-use-list
 
 * 语法(Syntax):
 
-use-package packages-to-use &optional package => t
+        use-package packages-to-use &optional package => t
 
 * 参数和值(Arguments and Values):
 
-packages-to-use---a designator for a list of package designators. The KEYWORD package may not be supplied.
-
-package---a package designator. The default is the current package. The package cannot be the KEYWORD package.
+        packages-to-use---一个包标识符列表的标识符. 这个 KEYWORD 包不能被提供.
+        package---一个包标识符. 默认是当前包. 这个包不能是 KEYWORD 包.
 
 * 描述(Description):
 
-use-package causes package to inherit all the external symbols of packages-to-use. The inherited symbols become accessible as internal symbols of package.
+        use-package 导致包 package 去继承包列表 packages-to-use 的所有外部符号. 这些继承的符号成为包 package 中可访问的内部符号.
 
-Packages-to-use are added to the use list of package if they are not there already. All external symbols in packages-to-use become accessible in package as internal symbols. use-package does not cause any new symbols to be present in package but only makes them accessible by inheritance.
+        如果 packages-to-use 还没有出现在包 package 的使用列表中, 那么它会被添加到包 package 的使用列表中. 在 packages-to-use 中的所有外部符号都成为包 package 中可访问的内部符号. use-package 不会导致任何新的符号出现在包 package 中但是会使它们变为可以通过继承访问的.
 
-use-package checks for name conflicts between the newly imported symbols and those already accessible in package. A name conflict in use-package between two external symbols inherited by package from packages-to-use may be resolved in favor of either symbol by importing one of them into package and making it a shadowing symbol.
+        use-package 检测那些新导入符号和包 package 中已经可以访问的符号之间的名字冲突. 在 use-package 中的两个被包 package 从 packages-to-use 继承而来的外部符号之间的一个名字冲突可以通过导入它们中的其中一个符号到包 package 中并使它成为一个遮蔽符号来解决.
 
 * 示例(Examples):
 
- (export (intern "LAND-FILL" (make-package 'trash)) 'trash) =>  T
- (find-symbol "LAND-FILL" (make-package 'temp)) =>  NIL, NIL
- (package-use-list 'temp) =>  (#<PACKAGE "TEMP">)
- (use-package 'trash 'temp) =>  T
- (package-use-list 'temp) =>  (#<PACKAGE "TEMP"> #<PACKAGE "TRASH">)
- (find-symbol "LAND-FILL" 'temp) =>  TRASH:LAND-FILL, :INHERITED
+    ```LISP
+    (export (intern "LAND-FILL" (make-package 'trash)) 'trash) =>  T
+    (find-symbol "LAND-FILL" (make-package 'temp)) =>  NIL, NIL
+    (package-use-list 'temp) =>  (#<PACKAGE "TEMP">)
+    (use-package 'trash 'temp) =>  T
+    (package-use-list 'temp) =>  (#<PACKAGE "TEMP"> #<PACKAGE "TRASH">)
+    (find-symbol "LAND-FILL" 'temp) =>  TRASH:LAND-FILL, :INHERITED
+    ```
 
 * 副作用(Side Effects):
 
-The use list of package may be modified.
+        包 package 的使用列表会被修改.
 
 * 受此影响(Affected By): None.
 
@@ -1232,11 +1234,11 @@ The use list of package may be modified.
 
 * 也见(See Also):
 
-unuse-package, package-use-list, Section 11.1 (Package Concepts)
+        unuse-package, package-use-list, 章节 11.1 (Package Concepts)
 
 * 注意(Notes):
 
-It is permissible for a package P1 to use a package P2 even if P2 already uses P1. The using of packages is not transitive, so no problem results from the apparent circularity. 
+        即便一个包 P2 已经使用了包 P1, 包 P1 去使用包 P2 也是允许的. 包的使用不会被传递, 所以这个明显的循环不会导致问题. 
 
 
 ### <span id="M-DEFPACKAGE">宏 DEFPACKAGE</span>
@@ -1390,75 +1392,68 @@ Frequently additional implementation-dependent options take the form of a keywor
 
 * 语法(Syntax):
 
-do-symbols (var [package [result-form]]) declaration* {tag | statement}*
+        do-symbols (var [package [result-form]]) declaration* {tag | statement}*
+        => result*
 
-=> result*
+        do-external-symbols (var [package [result-form]]) declaration* {tag | statement}*
+        => result*
 
-do-external-symbols (var [package [result-form]]) declaration* {tag | statement}*
-
-=> result*
-
-do-all-symbols (var [result-form]) declaration* {tag | statement}*
-
-=> result*
+        do-all-symbols (var [result-form]) declaration* {tag | statement}*
+        => result*
 
 * 参数和值(Arguments and Values):
 
-var---a variable name; not evaluated.
-
-package---a package designator; evaluated. The default in do-symbols and do-external-symbols is the current package.
-
-result-form---a form; evaluated as described below. The default is nil.
-
-declaration---a declare expression; not evaluated.
-
-tag---a go tag; not evaluated.
-
-statement---a compound form; evaluated as described below.
-
-results---the values returned by the result-form if a normal return occurs, or else, if an explicit return occurs, the values that were transferred.
+        var---一个变量名; 不求值.
+        package---一个包标识符; 求值. 在 do-symbols 和 do-external-symbols 中默认为当前包.
+        result-form---一个表达式形式; 按如下所述求值. 默认为 nil.
+        declaration---一个 declare 表达式; 不求值.
+        tag---一个 go 标签; 不求值.
+        statement---一个复合表达式形式; 按如下所述求值.
+        results---如果发生了正常的返回, 就是 result-form 返回的值, 否则如果发生一个显式的 return, 就是传递的值.
 
 * 描述(Description):
 
-do-symbols, do-external-symbols, and do-all-symbols iterate over the symbols of packages. For each symbol in the set of packages chosen, the var is bound to the symbol, and the statements in the body are executed. When all the symbols have been processed, result-form is evaluated and returned as the value of the macro.
+        do-symbols, do-external-symbols, 和 do-all-symbols 遍历包中的符号. 对于每一个选择的包集合中的符号, 这个 var 都会被绑定为那个符号, 然后在主体中的语句 statements 会被执行. 当所有符号都已经被处理时, result-form 被求值并且并且作为这个宏的值被返回.
 
-do-symbols iterates over the symbols accessible in package. Statements may execute more than once for symbols that are inherited from multiple packages.
+        do-symbols 遍历包 package 中可访问的符号. 对于从多个包中继承的符号语句 statements 可能被执行不止一次.
 
-do-all-symbols iterates on every registered package. do-all-symbols will not process every symbol whatsoever, because a symbol not accessible in any registered package will not be processed. do-all-symbols may cause a symbol that is present in several packages to be processed more than once.
+        do-all-symbols 在每个注册的包上遍历. do-all-symbols 无论如何不会处理每个符号, 应为一个在任何注册的包中都不可访问的符号不会被处理. do-all-symbols 可能导致一个出现在多个包中的符号被处理不止一次.
 
-do-external-symbols iterates on the external symbols of package.
+        do-external-symbols 遍历包 package 中的外部符号.
 
-When result-form is evaluated, var is bound and has the value nil.
+        当 result-form 被求值时, var 被绑定并且值为 nil.
 
-An implicit block named nil surrounds the entire do-symbols, do-external-symbols, or do-all-symbols form. return or return-from may be used to terminate the iteration prematurely.
+        一个名为 nil 的隐式 block 在整个 do-symbols, do-external-symbols, 或 do-all-symbols 表达式形式周围. return 或 return-from 可能被用于提前终止这个迭代.
 
-If execution of the body affects which symbols are contained in the set of packages over which iteration is occurring, other than to remove the symbol currently the value of var by using unintern, the consequences are undefined.
+        如果主体的执行影响了被包含在正在被迭代的包的集合中的符号, 除了使用 unintern 去移除 var 当前的值的符号之外, 后果是未定义的.
 
-For each of these macros, the scope of the name binding does not include any initial value form, but the optional result forms are included.
+        对于这些宏中的每一个, 名称绑定的作用域不包括任何初始值表达式形式, 但是包括了那个可选的结果表达式形式.
 
-Any tag in the body is treated as with tagbody.
+        在主体中的任何 tag 都被和 tagbody 中一样对待.
 
 * 示例(Examples):
 
- (make-package 'temp :use nil) =>  #<PACKAGE "TEMP">
- (intern "SHY" 'temp) =>  TEMP::SHY, NIL ;SHY will be an internal symbol
-                                         ;in the package TEMP
- (export (intern "BOLD" 'temp) 'temp)  =>  T  ;BOLD will be external  
- (let ((lst ()))
-   (do-symbols (s (find-package 'temp)) (push s lst))
-   lst)
-=>  (TEMP::SHY TEMP:BOLD)
-OR=>  (TEMP:BOLD TEMP::SHY)
- (let ((lst ()))
-   (do-external-symbols (s (find-package 'temp) lst) (push s lst))
-   lst) 
-=>  (TEMP:BOLD)
- (let ((lst ()))                                                     
-   (do-all-symbols (s lst)
-     (when (eq (find-package 'temp) (symbol-package s)) (push s lst)))
-   lst)
-=>  (TEMP::SHY TEMP:BOLD)
-OR=>  (TEMP:BOLD TEMP::SHY)
+    ```LISP
+    (make-package 'temp :use nil) =>  #<PACKAGE "TEMP">
+    (intern "SHY" 'temp) =>  TEMP::SHY, NIL ;SHY will be an internal symbol
+                                            ;in the package TEMP
+    (export (intern "BOLD" 'temp) 'temp)  =>  T  ;BOLD will be external  
+    (let ((lst ()))
+      (do-symbols (s (find-package 'temp)) (push s lst))
+      lst)
+    =>  (TEMP::SHY TEMP:BOLD)
+    OR=>  (TEMP:BOLD TEMP::SHY)
+    (let ((lst ()))
+      (do-external-symbols (s (find-package 'temp) lst) (push s lst))
+      lst) 
+    =>  (TEMP:BOLD)
+    (let ((lst ()))                                                     
+      (do-all-symbols (s lst)
+        (when (eq (find-package 'temp) (symbol-package s)) (push s lst)))
+      lst)
+    =>  (TEMP::SHY TEMP:BOLD)
+    OR=>  (TEMP:BOLD TEMP::SHY)
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -1468,7 +1463,7 @@ OR=>  (TEMP:BOLD TEMP::SHY)
 
 * 也见(See Also):
 
-intern, export, Section 3.6 (Traversal Rules and Side Effects)
+        intern, export, 章节 3.6 (Traversal Rules and Side Effects)
 
 * 注意(Notes): None. 
 
