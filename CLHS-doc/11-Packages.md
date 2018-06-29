@@ -64,7 +64,7 @@
 
 来自一个包中的符号可以用两种方式使得它在另一个包中可以被访问.
 
--- 任何单个符号可以通过使用 import 被添加到一个包中. 在那个对 import 的调用后那个符号就出现在那个导入的包中. 在这个符号来自的包中(如果有的话)的这个符号的状况是不会被改变<!--TODO 语法不通顺-->, 并且这个符号的 home 包没有被改变. 一旦被导入, 一个符号就出现在那个导入的包中并且只能通过调用 unintern 来移除.
+-- 任何单个符号可以通过使用 import 被添加到一个包中. 在那个对 import 的调用后那个符号就出现在那个导入的包中. 在这个符号来源的包中(如果有的话), 这个符号的状态是不会被改变, 并且这个符号的 home 包没有被改变. 一旦被导入, 一个符号就出现在那个导入的包中并且只能通过调用 unintern 来移除.
 
     如果一个符号可以访问是通过继承而不是因为出现在一个包中的另一个同名符号, 那么这个符号在那个包中会被那个符号所遮蔽. 见 shadowing-import.
 
@@ -136,7 +136,7 @@
 
 在一个符合规范的具体实现中, 这个 COMMON-LISP 包的一个外部符号可以有一个函数, 宏, 或者特殊操作符定义, 一个全局变量定义 (或者其他状态就像由于一个 special 全局声明作为一个动态变量), 或者只有在这个标准中显式允许时可以是一个类型定义. 比如, fboundp 对于 COMMON-LISP 包的任何不是一个标准函数, 宏或特殊操作符的名字的外部符号产生 false, 而 boundp 对于 COMMON-LISP 包中的任何不是标准全局变量名字的外部符号返回 false. 此外, 符合规范的程序可以使用 COMMON-LISP 包的外部符号作为局部词法变量的名字, 并相信这些名字没有被具体实现声明为 special, 除非这些符号是标准全局变量的名字.
 
-一个符合规范的具体实现一定不能在 COMMON-LISP 包的外部符号上使用一个属性指示符放置任何属性,  A conforming implementation must not place any property on an external symbol of the COMMON-LISP package using a property indicator that is either an external symbol of any standardized package or a symbol that is otherwise accessible in the COMMON-LISP-USER package. <!--TODO 待翻译-->
+一个符合规范的具体实现一定不能在 COMMON-LISP 包的外部符号上使用一个属性指示符放置任何属性, 一个符合规范的具体实现一定不能使用任何标准包的外部符号或 COMMON-LISP-USER 包中的可访问的符号作为属性标识符在 COMMON-LISP 包的外部符号上放置属性. <!--TODO 还需校验-->
 
 
 ##### 11.1.2.1.2 符合规范的程序的 COMMON-LISP 包的约束
@@ -293,7 +293,7 @@ KEYWORD 包的处理方式与其他包不同, 因为在其中插入一个符号�
 
         如果这些符号 symbols 中的任何一个已经是包 package 中可访问的外部符号, export 在那个符号上没有效果. 如果那个符号 symbol 是作为一个内部符号出现在包 package 中, 它就被简单地改为外部状态. 如果它是通过 use-package 作为一个可访问的内部符号, 它首先被导入到包 package 中, 然后再导出. (不管接下来包 package 是否继续使用那个符号最初继承而来的包, 这个符号 symbol 接下来都会出现在包 package 中.)
 
-        export 使得每个符号 symbol 对于所有使用包 package 的包都是可访问的. 所有这些包都会检测命名冲突: (export s p) 为每一个在 (package-used-by-list p) 中的包执行 (find-symbol (symbol-name s) q). 注意, 一个包的初始化定义期间, 通常情况下的一个 export Note that in the usual case of an export during the initial definition of a package<!--TODO 待翻译-->, package-used-by-list 的结果是 nil 并且名字冲突检测需要的时间忽略不计. 当执行了多次更改时, 比如当给 export 一个符号列表时, 允许具体实现去单独处理每一个更改, 这样一来跳过除了这个列表中的第一个符号以外的任何一个导致的名字冲突都不会解除导出这个列表中的第一个符号. 然而, 跳过一个有这些符号 symbols 中的其中一个导致的名字冲突错误不会让那个符号对于某些包是可访问的但对于其他是不可访问的; 对于被处理的符号 symbols 中的每一个, export 表现的就好像它是一个原子操作.
+        export 使得每个符号 symbol 对于所有使用包 package 的包都是可访问的. 所有这些包都会检测命名冲突: (export s p) 为每一个在 (package-used-by-list p) 中的包执行 (find-symbol (symbol-name s) q). 注意, 一个包的最初定义期间通常的 export 情况下, package-used-by-list 的结果是 nil 并且名字冲突检测需要的时间忽略不计. 当执行了多次更改时, 比如当给 export 一个符号列表时, 允许具体实现去单独处理每一个更改, 这样一来跳过除了这个列表中的第一个符号以外的任何一个导致的名字冲突都不会解除导出这个列表中的第一个符号. 然而, 跳过一个有这些符号 symbols 中的其中一个导致的名字冲突错误不会让那个符号对于某些包是可访问的但对于其他是不可访问的; 对于被处理的符号 symbols 中的每一个, export 表现的就好像它是一个原子操作.
 
         在 export 中, 要被导出的符号 symbols 的其中一个和已经出现在一个会继承那个新导出的符号的包中的符号之间的名字冲突, 可以通过解除捕捉另一个来选择导出的符号, 或者通过使那个已存在的符号变为一个遮蔽符号来选择那个已存在的符号.
 
