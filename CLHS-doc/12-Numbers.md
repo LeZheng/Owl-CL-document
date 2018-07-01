@@ -1,26 +1,19 @@
- 12. Numbers
+# 12. Numbers
 
-12.1 Number Concepts
+> * 12.1 [Number Concepts](#)
+> * 12.2 [The Numbers Dictionary](#)
 
-12.2 The Numbers Dictionary
+## 12.1 <span id="">Number Concepts</span>
 
- 12.1 Number Concepts
+> * 12.1.1 [Numeric Operations](#)
+> * 12.1.2 [Implementation-Dependent Numeric Constants](#)
+> * 12.1.3 [Rational Computations](#)
+> * 12.1.4 [Floating-point Computations](#)
+> * 12.1.5 [Complex Computations](#)
+> * 12.1.6 [Interval Designators](#)
+> * 12.1.7 [Random-State Operations](#)
 
-12.1.1 Numeric Operations
-
-12.1.2 Implementation-Dependent Numeric Constants
-
-12.1.3 Rational Computations
-
-12.1.4 Floating-point Computations
-
-12.1.5 Complex Computations
-
-12.1.6 Interval Designators
-
-12.1.7 Random-State Operations
-
- 12.1.1 Numeric Operations
+### 12.1.1 <span id="">Numeric Operations</span>
 
 Common Lisp provides a large variety of operations related to numbers. This section provides an overview of those operations by grouping them into categories that emphasize some of the relationships among them.
 
@@ -70,22 +63,18 @@ float-precision  numerator
 
 Figure 12-4. Defined names relating to numeric type manipulation and coercion.
 
-12.1.1.1 Associativity and Commutativity in Numeric Operations
-
-12.1.1.2 Contagion in Numeric Operations
-
-12.1.1.3 Viewing Integers as Bits and Bytes
+> * 12.1.1.1 [Associativity and Commutativity in Numeric Operations](#)
+> * 12.1.1.2 [Contagion in Numeric Operations](#)
+> * 12.1.1.3 [Viewing Integers as Bits and Bytes](#)
 
 
- 12.1.1.1 Associativity and Commutativity in Numeric Operations
+#### 12.1.1.1 <span id="">Associativity and Commutativity in Numeric Operations</span>
 
 For functions that are mathematically associative (and possibly commutative), a conforming implementation may process the arguments in any manner consistent with associative (and possibly commutative) rearrangement. This does not affect the order in which the argument forms are evaluated; for a discussion of evaluation order, see Section 3.1.2.1.2.3 (Function Forms). What is unspecified is only the order in which the parameter values are processed. This implies that implementations may differ in which automatic coercions are applied; see Section 12.1.1.2 (Contagion in Numeric Operations).
 
 A conforming program can control the order of processing explicitly by separating the operations into separate (possibly nested) function forms, or by writing explicit calls to functions that perform coercions.
 
-12.1.1.1.1 Examples of Associativity and Commutativity in Numeric Operations
-
- 12.1.1.1.1 Examples of Associativity and Commutativity in Numeric Operations
+##### 12.1.1.1.1 Examples of Associativity and Commutativity in Numeric Operations
 
 Consider the following expression, in which we assume that 1.0 and 1.0e-15 both denote single floats:
 
@@ -104,19 +93,18 @@ A conforming program could control the order by writing, for example,
  (+ (+ 1/3 2/3) (+ 1.0d0 1.0e-15) 1.0)
 
 
- 12.1.1.2 Contagion in Numeric Operations
+#### 12.1.1.2 <span id="">Contagion in Numeric Operations</span>
 
 For information about the contagion rules for implicit coercions of arguments in numeric operations, see Section 12.1.4.4 (Rule of Float Precision Contagion), Section 12.1.4.1 (Rule of Float and Rational Contagion), and Section 12.1.5.2 (Rule of Complex Contagion). 
 
 
- 12.1.1.3 Viewing Integers as Bits and Bytes
+#### 12.1.1.3 <span id="">Viewing Integers as Bits and Bytes</span>
 
-12.1.1.3.1 Logical Operations on Integers
+> * 12.1.1.3.1 [Logical Operations on Integers](#)
+> * 12.1.1.3.2 [Byte Operations on Integers](#)
 
-12.1.1.3.2 Byte Operations on Integers
 
-
- 12.1.1.3.1 Logical Operations on Integers
+##### 12.1.1.3.1 <span id="">Logical Operations on Integers</span>
 
 Logical operations require integers as arguments; an error of type type-error should be signaled if an argument is supplied that is not an integer. Integer arguments to logical operations are treated as if they were represented in two's-complement notation.
 
@@ -136,7 +124,7 @@ boole-eqv    logandc2        logxor
 
 Figure 12-5. Defined names relating to logical operations on numbers. 
 
- 12.1.1.3.2 Byte Operations on Integers
+##### 12.1.1.3.2 <span id="">Byte Operations on Integers</span>
 
 The byte-manipulation functions use objects called byte specifiers to designate the size and position of a specific byte within an integer. The representation of a byte specifier is implementation-dependent; it might or might not be a number. The function byte will construct a byte specifier, which various other byte-manipulation functions will accept.
 
@@ -148,7 +136,7 @@ byte-size      ldb
 
 Figure 12-6. Defined names relating to byte manipulation. 
 
- 12.1.2 Implementation-Dependent Numeric Constants
+### 12.1.2 <span id="">Implementation-Dependent Numeric Constants</span>
 
 The next figure shows defined names relating to implementation-dependent details about numbers.
 
@@ -169,22 +157,20 @@ most-negative-double-float     single-float-negative-epsilon
 Figure 12-7. Defined names relating to implementation-dependent details about numbers. 
 
 
- 12.1.3 Rational Computations
+### 12.1.3 <span id="">Rational Computations</span>
 
 The rules in this section apply to rational computations.
 
-12.1.3.1 Rule of Unbounded Rational Precision
-
-12.1.3.2 Rule of Canonical Representation for Rationals
-
-12.1.3.3 Rule of Float Substitutability
+> * 12.1.3.1 [Rule of Unbounded Rational Precision](#)
+> * 12.1.3.2 [Rule of Canonical Representation for Rationals](#)
+> * 12.1.3.3 [Rule of Float Substitutability](#)
 
 
- 12.1.3.1 Rule of Unbounded Rational Precision
+#### 12.1.3.1 <span id="">Rule of Unbounded Rational Precision</span>
 
 Rational computations cannot overflow in the usual sense (though there may not be enough storage to represent a result), since integers and ratios may in principle be of any magnitude. 
 
- 12.1.3.2 Rule of Canonical Representation for Rationals
+#### 12.1.3.2 <span id="">Rule of Canonical Representation for Rationals</span>
 
 If any computation produces a result that is a mathematical ratio of two integers such that the denominator evenly divides the numerator, then the result is converted to the equivalent integer.
 
@@ -192,7 +178,7 @@ If the denominator does not evenly divide the numerator, the canonical represent
 
 When used as input (in the default syntax), the notation -0 always denotes the integer 0. A conforming implementation must not have a representation of ``minus zero'' for integers that is distinct from its representation of zero for integers. However, such a distinction is possible for floats; see the type float. 
 
- 12.1.3.3 Rule of Float Substitutability
+#### 12.1.3.3 <span id="">Rule of Float Substitutability</span>
 
 When the arguments to an irrational mathematical function are all rational and the true mathematical result is also (mathematically) rational, then unless otherwise noted an implementation is free to return either an accurate rational result or a single float approximation. If the arguments are all rational but the result cannot be expressed as a rational number, then a single float approximation is always returned.
 
@@ -227,29 +213,23 @@ tanh      (tanh 0) =>  0 or 0.0
 Figure 12-8. Functions Affected by Rule of Float Substitutability 
 
 
- 12.1.4 Floating-point Computations
+### 12.1.4 <span id="">Floating-point Computations</span>
 
 The following rules apply to floating point computations.
 
-12.1.4.1 Rule of Float and Rational Contagion
-
-12.1.4.2 Rule of Float Approximation
-
-12.1.4.3 Rule of Float Underflow and Overflow
-
-12.1.4.4 Rule of Float Precision Contagion
+> * 12.1.4.1 [Rule of Float and Rational Contagion](#)
+> * 12.1.4.2 [Rule of Float Approximation](#)
+> * 12.1.4.3 [Rule of Float Underflow and Overflow](#)
+> * 12.1.4.4 [Rule of Float Precision Contagion](#)
 
 
- 12.1.4.1 Rule of Float and Rational Contagion
+#### 12.1.4.1 <span id="">Rule of Float and Rational Contagion</span>
 
 When rationals and floats are combined by a numerical function, the rational is first converted to a float of the same format. For functions such as + that take more than two arguments, it is permitted that part of the operation be carried out exactly using rationals and the rest be done using floating-point arithmetic.
 
 When rationals and floats are compared by a numerical function, the function rational is effectively called to convert the float to a rational and then an exact comparison is performed. In the case of complex numbers, the real and imaginary parts are effectively handled individually.
 
-12.1.4.1.1 Examples of Rule of Float and Rational Contagion
-
-
- 12.1.4.1.1 Examples of Rule of Float and Rational Contagion
+##### 12.1.4.1.1 Examples of Rule of Float and Rational Contagion
 
  ;;;; Combining rationals with floats.
  ;;; This example assumes an implementation in which 
@@ -269,50 +249,46 @@ When rationals and floats are compared by a numerical function, the function rat
  (< (float 5/7) (float 5/7)) =>  false
 
 
- 12.1.4.2 Rule of Float Approximation
+#### 12.1.4.2 <span id="">Rule of Float Approximation</span>
+
 Computations with floats are only approximate, although they are described as if the results were mathematically accurate. Two mathematically identical expressions may be computationally different because of errors inherent in the floating-point approximation process. The precision of a float is not necessarily correlated with the accuracy of that number. For instance, 3.142857142857142857 is a more precise approximation to <PI> than 3.14159, but the latter is more accurate. The precision refers to the number of bits retained in the representation. When an operation combines a short float with a long float, the result will be a long float. Common Lisp functions assume that the accuracy of arguments to them does not exceed their precision. Therefore when two small floats are combined, the result is a small float. Common Lisp functions never convert automatically from a larger size to a smaller one. 
 
 
- 12.1.4.3 Rule of Float Underflow and Overflow
+#### 12.1.4.3 <span id="">Rule of Float Underflow and Overflow</span>
 
 An error of type floating-point-overflow or floating-point-underflow should be signaled if a floating-point computation causes exponent overflow or underflow, respectively. 
 
 
- 12.1.4.4 Rule of Float Precision Contagion
+#### 12.1.4.4 <span id="">Rule of Float Precision Contagion</span>
 
 The result of a numerical function is a float of the largest format among all the floating-point arguments to the function. 
 
- 12.1.5 Complex Computations
+### 12.1.5 <span id="">Complex Computations</span>
 
 The following rules apply to complex computations:
 
-12.1.5.1 Rule of Complex Substitutability
-
-12.1.5.2 Rule of Complex Contagion
-
-12.1.5.3 Rule of Canonical Representation for Complex Rationals
-
-12.1.5.4 Principal Values and Branch Cuts
+> * 12.1.5.1 [Rule of Complex Substitutability](#)
+> * 12.1.5.2 [Rule of Complex Contagion](#)
+> * 12.1.5.3 [Rule of Canonical Representation for Complex Rationals](#)
+> * 12.1.5.4 [Principal Values and Branch Cuts](#)
 
 
- 12.1.5.1 Rule of Complex Substitutability
+#### 12.1.5.1 <span id="">Rule of Complex Substitutability</span>
 
 Except during the execution of irrational and transcendental functions, no numerical function ever yields a complex unless one or more of its arguments is a complex. 
 
 
- 12.1.5.2 Rule of Complex Contagion
+#### 12.1.5.2 <span id="">Rule of Complex Contagion</span>
 
 When a real and a complex are both part of a computation, the real is first converted to a complex by providing an imaginary part of 0. 
 
 
- 12.1.5.3 Rule of Canonical Representation for Complex Rationals
+#### 12.1.5.3 <span id="">Rule of Canonical Representation for Complex Rationals</span>
 
 If the result of any computation would be a complex number whose real part is of type rational and whose imaginary part is zero, the result is converted to the rational which is the real part. This rule does not apply to complex numbers whose parts are floats. For example, #C(5 0) and 5 are not different objects in Common Lisp(they are always the same under eql); #C(5.0 0.0) and 5.0 are always different objects in Common Lisp they are never the same under eql, although they are the same under equalp and =).
 
-12.1.5.3.1 Examples of Rule of Canonical Representation for Complex Rationals
 
-
- 12.1.5.3.1 Examples of Rule of Canonical Representation for Complex Rationals
+##### 12.1.5.3.1 Examples of Rule of Canonical Representation for Complex Rationals
 
  #c(1.0 1.0) =>  #C(1.0 1.0)
  #c(0.0 0.0) =>  #C(0.0 0.0)
@@ -324,7 +300,7 @@ If the result of any computation would be a complex number whose real part is of
  (typep #c(0 0) '(complex (eql 0))) =>  false
 
 
- 12.1.5.4 Principal Values and Branch Cuts
+##### 12.1.5.4 <span id="">Principal Values and Branch Cuts</span>
 
 Many of the irrational and transcendental functions are multiply defined in the complex domain; for example, there are in general an infinite number of complex values for the logarithm function. In each such case, a principal value must be chosen for the function to return. In general, such values cannot be chosen so as to make the range continuous; lines in the domain called branch cuts must be defined, which in turn define the discontinuities in the range. Common Lisp defines the branch cuts, principal values, and boundary conditions for the complex functions following ``Principal Values and Branch Cuts in Complex APL.'' The branch cut rules that apply to each function are located with the description of that function.
 
@@ -342,7 +318,7 @@ The quadrant numbers referred to in the discussions of branch cuts are as illust
 
 Figure 12-10. Quadrant Numbering for Branch Cuts 
 
- 12.1.6 Interval Designators
+### 12.1.6 <span id="">Interval Designators</span>
 
 The compound type specifier form of the numeric type specifiers permit the user to specify an interval on the real number line which describe a subtype of the type which would be described by the corresponding atomic type specifier. A subtype of some type T is specified using an ordered pair of objects called interval designators for type T.
 
@@ -375,7 +351,7 @@ the symbol *
     This denotes the absence of an upper bound on the interval. 
 
 
- 12.1.7 Random-State Operations
+### 12.1.7 <span id="">Random-State Operations</span>
 
 The next figure lists some defined names that are applicable to random states.
 
@@ -385,302 +361,219 @@ make-random-state  random-state-p
 Figure 12-11. Random-state defined names 
 
 
- 12.2 The Numbers Dictionary
-
-System Class NUMBER
-
-System Class COMPLEX
-
-System Class REAL
-
-System Class FLOAT
-
-Type SHORT-FLOAT, SINGLE-FLOAT, DOUBLE-FLOAT, LONG-FLOAT
-
-System Class RATIONAL
-
-System Class RATIO
-
-System Class INTEGER
-
-Type SIGNED-BYTE
-
-Type UNSIGNED-BYTE
-
-Type Specifier MOD
-
-Type BIT
-
-Type FIXNUM
-
-Type BIGNUM
-
-Function =, /=, <, >, <=, >=
-
-Function MAX, MIN
-
-Function MINUSP, PLUSP
-
-Function ZEROP
-
-Function FLOOR, FFLOOR, CEILING, FCEILING, TRUNCATE, FTRUNCATE, ROUND, FROUND
-
-Function SIN, COS, TAN
-
-Function ASIN, ACOS, ATAN
-
-Constant Variable PI
-
-Function SINH, COSH, TANH, ASINH, ACOSH, ATANH
-
-Function *
-
-Function +
-
-Function -
-
-Function /
-
-Function 1+, 1-
-
-Function ABS
-
-Function EVENP, ODDP
-
-Function EXP, EXPT
-
-Function GCD
-
-Macro INCF, DECF
-
-Function LCM
-
-Function LOG
-
-Function MOD, REM
-
-Function SIGNUM
-
-Function SQRT, ISQRT
-
-System Class RANDOM-STATE
-
-Function MAKE-RANDOM-STATE
-
-Function RANDOM
-
-Function RANDOM-STATE-P
-
-Variable *RANDOM-STATE*
-
-Function NUMBERP
-
-Function CIS
-
-Function COMPLEX
-
-Function COMPLEXP
-
-Function CONJUGATE
-
-Function PHASE
-
-Function REALPART, IMAGPART
-
-Function UPGRADED-COMPLEX-PART-TYPE
-
-Function REALP
-
-Function NUMERATOR, DENOMINATOR
-
-Function RATIONAL, RATIONALIZE
-
-Function RATIONALP
-
-Function ASH
-
-Function INTEGER-LENGTH
-
-Function INTEGERP
-
-Function PARSE-INTEGER
-
-Function BOOLE
-
-Constant Variable BOOLE-1, BOOLE-2, BOOLE-AND, BOOLE-ANDC1, BOOLE-ANDC2, BOOLE-C1, BOOLE-C2, BOOLE-CLR, BOOLE-EQV, BOOLE-IOR, BOOLE-NAND, BOOLE-NOR, BOOLE-ORC1, BOOLE-ORC2, BOOLE-SET, BOOLE-XOR
-
-Function LOGAND, LOGANDC1, LOGANDC2, LOGEQV, LOGIOR, LOGNAND, LOGNOR, LOGNOT, LOGORC1, LOGORC2, LOGXOR
-
-Function LOGBITP
-
-Function LOGCOUNT
-
-Function LOGTEST
-
-Function BYTE, BYTE-SIZE, BYTE-POSITION
-
-Function DEPOSIT-FIELD
-
-Function DPB
-
-Accessor LDB
-
-Function LDB-TEST
-
-Accessor MASK-FIELD
-
-Constant Variable MOST-POSITIVE-FIXNUM, MOST-NEGATIVE-FIXNUM
-
-Function DECODE-FLOAT, SCALE-FLOAT, FLOAT-RADIX, FLOAT-SIGN, FLOAT-DIGITS, FLOAT-PRECISION, INTEGER-DECODE-FLOAT
-
-Function FLOAT
-
-Function FLOATP
-
-Constant Variable MOST-POSITIVE-SHORT-FLOAT, LEAST-POSITIVE-SHORT-FLOAT, LEAST-POSITIVE-NORMALIZED-SHORT-FLOAT, MOST-POSITIVE-DOUBLE-FLOAT, LEAST-POSITIVE-DOUBLE-FLOAT, LEAST-POSITIVE-NORMALIZED-DOUBLE-FLOAT, MOST-POSITIVE-LONG-FLOAT, LEAST-POSITIVE-LONG-FLOAT, LEAST-POSITIVE-NORMALIZED-LONG-FLOAT, MOST-POSITIVE-SINGLE-FLOAT, LEAST-POSITIVE-SINGLE-FLOAT, LEAST-POSITIVE-NORMALIZED-SINGLE-FLOAT, MOST-NEGATIVE-SHORT-FLOAT, LEAST-NEGATIVE-SHORT-FLOAT, LEAST-NEGATIVE-NORMALIZED-SHORT-FLOAT, MOST-NEGATIVE-SINGLE-FLOAT, LEAST-NEGATIVE-SINGLE-FLOAT, LEAST-NEGATIVE-NORMALIZED-SINGLE-FLOAT, MOST-NEGATIVE-DOUBLE-FLOAT, LEAST-NEGATIVE-DOUBLE-FLOAT, LEAST-NEGATIVE-NORMALIZED-DOUBLE-FLOAT, MOST-NEGATIVE-LONG-FLOAT, LEAST-NEGATIVE-LONG-FLOAT, LEAST-NEGATIVE-NORMALIZED-LONG-FLOAT
-
-Constant Variable SHORT-FLOAT-EPSILON, SHORT-FLOAT-NEGATIVE-EPSILON, SINGLE-FLOAT-EPSILON, SINGLE-FLOAT-NEGATIVE-EPSILON, DOUBLE-FLOAT-EPSILON, DOUBLE-FLOAT-NEGATIVE-EPSILON, LONG-FLOAT-EPSILON, LONG-FLOAT-NEGATIVE-EPSILON
-
-Condition Type ARITHMETIC-ERROR
-
-Function ARITHMETIC-ERROR-OPERANDS, ARITHMETIC-ERROR-OPERATION
-
-Condition Type DIVISION-BY-ZERO
-
-Condition Type FLOATING-POINT-INVALID-OPERATION
-
-Condition Type FLOATING-POINT-INEXACT
-
-Condition Type FLOATING-POINT-OVERFLOW
-
-Condition Type FLOATING-POINT-UNDERFLOW
-
-
-System Class NUMBER
-
-Class Precedence List:
+## 12.2 <span id="">The Numbers Dictionary</span>
+
+> * [System Class NUMBER](#)
+> * [System Class COMPLEX](#)
+> * [System Class REAL](#)
+> * [System Class FLOAT](#)
+> * [Type SHORT-FLOAT, SINGLE-FLOAT, DOUBLE-FLOAT, LONG-FLOAT](#)
+> * [System Class RATIONAL](#)
+> * [System Class RATIO](#)
+> * [System Class INTEGER](#)
+> * [Type SIGNED-BYTE](#)
+> * [Type UNSIGNED-BYTE](#)
+> * [Type Specifier MOD](#)
+> * [Type BIT](#)
+> * [Type FIXNUM](#)
+> * [Type BIGNUM](#)
+> * [Function =, /=, <, >, <=, >=](#)
+> * [Function MAX, MIN](#)
+> * [Function MINUSP, PLUSP](#)
+> * [Function ZEROP](#)
+> * [Function FLOOR, FFLOOR, CEILING, FCEILING, TRUNCATE, FTRUNCATE, ROUND, FROUND](#)
+> * [Function SIN, COS, TAN](#)
+> * [Function ASIN, ACOS, ATAN](#)
+> * [Constant Variable PI](#)
+> * [Function SINH, COSH, TANH, ASINH, ACOSH, ATANH](#)
+> * [Function *](#)
+> * [Function +](#)
+> * [Function -](#)
+> * [Function /](#)
+> * [Function 1+, 1-](#)
+> * [Function ABS](#)
+> * [Function EVENP, ODDP](#)
+> * [Function EXP, EXPT](#)
+> * [Function GCD](#)
+> * [Macro INCF, DECF](#)
+> * [Function LCM](#)
+> * [Function LOG](#)
+> * [Function MOD, REM](#)
+> * [Function SIGNUM](#)
+> * [Function SQRT, ISQRT](#)
+> * [System Class RANDOM-STATE](#)
+> * [Function MAKE-RANDOM-STATE](#)
+> * [Function RANDOM](#)
+> * [Function RANDOM-STATE-P](#)
+> * [Variable *RANDOM-STATE*](#)
+> * [Function NUMBERP](#)
+> * [Function CIS](#)
+> * [Function COMPLEX](#)
+> * [Function COMPLEXP](#)
+> * [Function CONJUGATE](#)
+> * [Function PHASE](#)
+> * [Function REALPART, IMAGPART](#)
+> * [Function UPGRADED-COMPLEX-PART-TYPE](#)
+> * [Function REALP](#)
+> * [Function NUMERATOR, DENOMINATOR](#)
+> * [Function RATIONAL, RATIONALIZE](#)
+> * [Function RATIONALP](#)
+> * [Function ASH](#)
+> * [Function INTEGER-LENGTH](#)
+> * [Function INTEGERP](#)
+> * [Function PARSE-INTEGER](#)
+> * [Function BOOLE](#)
+> * [Constant Variable BOOLE-1, BOOLE-2, BOOLE-AND, BOOLE-ANDC1, BOOLE-ANDC2, BOOLE-C1, BOOLE-C2, BOOLE-CLR, BOOLE-EQV, BOOLE-IOR, BOOLE-NAND, BOOLE-NOR, BOOLE-ORC1, BOOLE-ORC2, BOOLE-SET, BOOLE-XOR](#)
+> * [Function LOGAND, LOGANDC1, LOGANDC2, LOGEQV, LOGIOR, LOGNAND, LOGNOR, LOGNOT, LOGORC1, LOGORC2, LOGXOR](#)
+> * [Function LOGBITP](#)
+> * [Function LOGCOUNT](#)
+> * [Function LOGTEST](#)
+> * [Function BYTE, BYTE-SIZE, BYTE-POSITION](#)
+> * [Function DEPOSIT-FIELD](#)
+> * [Function DPB](#)
+> * [Accessor LDB](#)
+> * [Function LDB-TEST](#)
+> * [Accessor MASK-FIELD](#)
+> * [Constant Variable MOST-POSITIVE-FIXNUM, MOST-NEGATIVE-FIXNUM](#)
+> * [Function DECODE-FLOAT, SCALE-FLOAT, FLOAT-RADIX, FLOAT-SIGN, FLOAT-DIGITS, FLOAT-PRECISION, INTEGER-DECODE-FLOAT](#)
+> * [Function FLOAT](#)
+> * [Function FLOATP](#)
+> * [Constant Variable MOST-POSITIVE-SHORT-FLOAT, LEAST-POSITIVE-SHORT-FLOAT, LEAST-POSITIVE-NORMALIZED-SHORT-FLOAT, MOST-POSITIVE-DOUBLE-FLOAT, LEAST-POSITIVE-DOUBLE-FLOAT, LEAST-POSITIVE-NORMALIZED-DOUBLE-FLOAT, MOST-POSITIVE-LONG-FLOAT, LEAST-POSITIVE-LONG-FLOAT, LEAST-POSITIVE-NORMALIZED-LONG-FLOAT, MOST-POSITIVE-SINGLE-FLOAT, LEAST-POSITIVE-SINGLE-FLOAT, LEAST-POSITIVE-NORMALIZED-SINGLE-FLOAT, MOST-NEGATIVE-SHORT-FLOAT, LEAST-NEGATIVE-SHORT-FLOAT, LEAST-NEGATIVE-NORMALIZED-SHORT-FLOAT, MOST-NEGATIVE-SINGLE-FLOAT, LEAST-NEGATIVE-SINGLE-FLOAT, LEAST-NEGATIVE-NORMALIZED-SINGLE-FLOAT, MOST-NEGATIVE-DOUBLE-FLOAT, LEAST-NEGATIVE-DOUBLE-FLOAT, LEAST-NEGATIVE-NORMALIZED-DOUBLE-FLOAT, MOST-NEGATIVE-LONG-FLOAT, LEAST-NEGATIVE-LONG-FLOAT, LEAST-NEGATIVE-NORMALIZED-LONG-FLOAT](#)
+> * [Constant Variable SHORT-FLOAT-EPSILON, SHORT-FLOAT-NEGATIVE-EPSILON, SINGLE-FLOAT-EPSILON, SINGLE-FLOAT-NEGATIVE-EPSILON, DOUBLE-FLOAT-EPSILON, DOUBLE-FLOAT-NEGATIVE-EPSILON, LONG-FLOAT-EPSILON, LONG-FLOAT-NEGATIVE-EPSILON](#)
+> * [Condition Type ARITHMETIC-ERROR](#)
+> * [Function ARITHMETIC-ERROR-OPERANDS, ARITHMETIC-ERROR-OPERATION](#)
+> * [Condition Type DIVISION-BY-ZERO](#)
+> * [Condition Type FLOATING-POINT-INVALID-OPERATION](#)
+> * [Condition Type FLOATING-POINT-INEXACT](#)
+> * [Condition Type FLOATING-POINT-OVERFLOW](#)
+> * [Condition Type FLOATING-POINT-UNDERFLOW](#)
+
+
+### <span id="">System Class NUMBER</span>
+
+* 类优先级列表(Class Precedence List):
 
 number, t
 
-Description:
+* 描述(Description):
 
 The type number contains objects which represent mathematical numbers. The types real and complex are disjoint subtypes of number.
 
 The function = tests for numerical equality. The function eql, when its arguments are both numbers, tests that they have both the same type and numerical value. Two numbers that are the same under eql or = are not necessarily the same under eq.
 
-Notes:
+* 注意(Notes):
 
 Common Lisp differs from mathematics on some naming issues. In mathematics, the set of real numbers is traditionally described as a subset of the complex numbers, but in Common Lisp, the type real and the type complex are disjoint. The Common Lisp type which includes all mathematical complex numbers is called number. The reasons for these differences include historical precedent, compatibility with most other popular computer languages, and various issues of time and space efficiency. 
 
 
-System Class COMPLEX
+### <span id="">System Class COMPLEX</span>
 
-Class Precedence List:
+* 类优先级列表(Class Precedence List):
 
 complex, number, t
 
-Description:
+* 描述(Description):
 
 The type complex includes all mathematical complex numbers other than those included in the type rational. Complexes are expressed in Cartesian form with a real part and an imaginary part, each of which is a real. The real part and imaginary part are either both rational or both of the same float type. The imaginary part can be a float zero, but can never be a rational zero, for such a number is always represented by Common Lisp as a rational rather than a complex.
 
-Compound Type Specifier Kind:
+* 复合类型特化符类别(Compound Type Specifier Kind):
 
 Specializing.
 
-Compound Type Specifier Syntax:
+* 复合类型特化符语法(Compound Type Specifier Syntax):
 
 complex [typespec | *]
 
-Compound Type Specifier Arguments:
+* 复合类型特化符参数(Compound Type Specifier Arguments):
 
 typespec---a type specifier that denotes a subtype of type real.
 
-Compound Type Specifier Description:
+* 复合类型特化符描述(Compound Type Specifier Description):
 
 Every element of this type is a complex whose real part and imaginary part are each of type (upgraded-complex-part-type typespec). This type encompasses those complexes that can result by giving numbers of type typespec to complex.
 
 (complex type-specifier) refers to all complexes that can result from giving numbers of type type-specifier to the function complex, plus all other complexes of the same specialized representation.
 
-See Also:
+* 也见(See Also):
 
 Section 12.1.5.3 (Rule of Canonical Representation for Complex Rationals), Section 2.3.2 (Constructing Numbers from Tokens), Section 22.1.3.1.4 (Printing Complexes)
 
-Notes:
+* 注意(Notes):
 
 The input syntax for a complex with real part r and imaginary part i is #C(r i). For further details, see Section 2.4 (Standard Macro Characters).
 
 For every float, n, there is a complex which represents the same mathematical number and which can be obtained by (COERCE n 'COMPLEX). 
 
 
-System Class REAL
+### <span id="">System Class REAL</span>
 
-Class Precedence List:
+* 类优先级列表(Class Precedence List):
 
 real, number, t
 
-Description:
+* 描述(Description):
 
 The type real includes all numbers that represent mathematical real numbers, though there are mathematical real numbers (e.g., irrational numbers) that do not have an exact representation in Common Lisp. Only reals can be ordered using the <, >, <=, and >= functions.
 
 The types rational and float are disjoint subtypes of type real.
 
-Compound Type Specifier Kind:
+* 复合类型特化符类别(Compound Type Specifier Kind):
 
 Abbreviating.
 
-Compound Type Specifier Syntax:
+* 复合类型特化符语法(Compound Type Specifier Syntax):
 
 real [lower-limit [upper-limit]]
 
-Compound Type Specifier Arguments:
+* 复合类型特化符参数(Compound Type Specifier Arguments):
 
 lower-limit, upper-limit---interval designators for type real. The defaults for each of lower-limit and upper-limit is the symbol *.
 
-Compound Type Specifier Description:
+* 复合类型特化符描述(Compound Type Specifier Description):
 
 This denotes the reals on the interval described by lower-limit and upper-limit. 
 
 
-System Class FLOAT
+### <span id="">System Class FLOAT</span>
 
-Class Precedence List:
+* 类优先级列表(Class Precedence List):
 
 float, real, number, t
 
-Description:
+* 描述(Description):
 
 A float is a mathematical rational (but not a Common Lisp rational) of the form s*f*b^e-p, where s is +1 or -1, the sign; b is an integer greater than 1, the base or radix of the representation; p is a positive integer, the precision (in base-b digits) of the float; f is a positive integer between b^p-1 and b^p-1 (inclusive), the significand; and e is an integer, the exponent. The value of p and the range of e depends on the implementation and on the type of float within that implementation. In addition, there is a floating-point zero; depending on the implementation, there can also be a ``minus zero''. If there is no minus zero, then 0.0 and -0.0 are both interpreted as simply a floating-point zero. (= 0.0 -0.0) is always true. If there is a minus zero, (eql -0.0 0.0) is false, otherwise it is true.
 
 The types short-float, single-float, double-float, and long-float are subtypes of type float. Any two of them must be either disjoint types or the same type; if the same type, then any other types between them in the above ordering must also be the same type. For example, if the type single-float and the type long-float are the same type, then the type double-float must be the same type also.
 
-Compound Type Specifier Kind:
+* 复合类型特化符类别(Compound Type Specifier Kind):
 
 Abbreviating.
 
-Compound Type Specifier Syntax:
+* 复合类型特化符语法(Compound Type Specifier Syntax):
 
 float [lower-limit [upper-limit]]
 
-Compound Type Specifier Arguments:
+* 复合类型特化符参数(Compound Type Specifier Arguments):
 
 lower-limit, upper-limit---interval designators for type float. The defaults for each of lower-limit and upper-limit is the symbol *.
 
-Compound Type Specifier Description:
+* 复合类型特化符描述(Compound Type Specifier Description):
 
 This denotes the floats on the interval described by lower-limit and upper-limit.
 
-See Also:
+* 也见(See Also):
 
 Figure 2-9, Section 2.3.2 (Constructing Numbers from Tokens), Section 22.1.3.1.3 (Printing Floats)
 
-Notes:
+* 注意(Notes):
 
 Note that all mathematical integers are representable not only as Common Lisp reals, but also as complex floats. For example, possible representations of the mathematical number 1 include the integer 1, the float 1.0, or the complex #C(1.0 0.0). 
 
 
-Type SHORT-FLOAT, SINGLE-FLOAT, DOUBLE-FLOAT, LONG-FLOAT
+### <span id="">Type SHORT-FLOAT, SINGLE-FLOAT, DOUBLE-FLOAT, LONG-FLOAT</span>
 
-Supertypes:
+* 超类型(Supertypes):
 
 short-float: short-float, float, real, number, t
 
@@ -690,7 +583,7 @@ double-float: double-float, float, real, number, t
 
 long-float: long-float, float, real, number, t
 
-Description:
+* 描述(Description):
 
 For the four defined subtypes of type float, it is true that intermediate between the type short-float and the type long-float are the type single-float and the type double-float. The precise definition of these categories is implementation-defined. The precision (measured in ``bits'', computed as p log 2b) and the exponent size (also measured in ``bits,'' computed as log 2(n+1), where n is the maximum exponent value) is recommended to be at least as great as the values in the next figure. Each of the defined subtypes of type float might or might not have a minus zero.
 
@@ -719,11 +612,11 @@ There can be fewer than four internal representations for floats. If there are f
         Three types are provided: short-float, single-float, and double-float. An object can simultaneously be of type double-float and long-float.
         Three types are provided: single-float, double-float, and long-float. An object can simultaneously be of types single-float and short-float.
 
-Compound Type Specifier Kind:
+* 复合类型特化符类别(Compound Type Specifier Kind):
 
 Abbreviating.
 
-Compound Type Specifier Syntax:
+* 复合类型特化符语法(Compound Type Specifier Syntax):
 
 short-float [short-lower-limit [short-upper-limit]]
 
@@ -733,7 +626,7 @@ double-float [double-lower-limit [double-upper-limit]]
 
 long-float [long-lower-limit [long-upper-limit]]
 
-Compound Type Specifier Arguments:
+* 复合类型特化符参数(Compound Type Specifier Arguments):
 
 short-lower-limit, short-upper-limit---interval designators for type short-float. The defaults for each of lower-limit and upper-limit is the symbol *.
 
@@ -743,166 +636,166 @@ double-lower-limit, double-upper-limit---interval designators for type double-fl
 
 long-lower-limit, long-upper-limit---interval designators for type long-float. The defaults for each of lower-limit and upper-limit is the symbol *.
 
-Compound Type Specifier Description:
+* 复合类型特化符描述(Compound Type Specifier Description):
 
 Each of these denotes the set of floats of the indicated type that are on the interval specified by the interval designators. 
 
 
-System Class RATIONAL
+### <span id="">System Class RATIONAL</span>
 
-Class Precedence List:
+* 类优先级列表(Class Precedence List):
 
 rational, real, number, t
 
-Description:
+* 描述(Description):
 
 The canonical representation of a rational is as an integer if its value is integral, and otherwise as a ratio.
 
 The types integer and ratio are disjoint subtypes of type rational.
 
-Compound Type Specifier Kind:
+* 复合类型特化符类别(Compound Type Specifier Kind):
 
 Abbreviating.
 
-Compound Type Specifier Syntax:
+* 复合类型特化符语法(Compound Type Specifier Syntax):
 
 rational [lower-limit [upper-limit]]
 
-Compound Type Specifier Arguments:
+* 复合类型特化符参数(Compound Type Specifier Arguments):
 
 lower-limit, upper-limit---interval designators for type rational. The defaults for each of lower-limit and upper-limit is the symbol *.
 
-Compound Type Specifier Description:
+* 复合类型特化符描述(Compound Type Specifier Description):
 
 This denotes the rationals on the interval described by lower-limit and upper-limit. 
 
-System Class RATIO
+### <span id="">System Class RATIO</span>
 
-Class Precedence List:
+* 类优先级列表(Class Precedence List):
 
 ratio, rational, real, number, t
 
-Description:
+* 描述(Description):
 
 A ratio is a number representing the mathematical ratio of two non-zero integers, the numerator and denominator, whose greatest common divisor is one, and of which the denominator is positive and greater than one.
 
-See Also:
+* 也见(See Also):
 
 Figure 2-9, Section 2.3.2 (Constructing Numbers from Tokens), Section 22.1.3.1.2 (Printing Ratios) 
 
 
-System Class INTEGER
+### <span id="">System Class INTEGER</span>
 
-Class Precedence List:
+* 类优先级列表(Class Precedence List):
 
 integer, rational, real, number, t
 
-Description:
+* 描述(Description):
 
 An integer is a mathematical integer. There is no limit on the magnitude of an integer.
 
 The types fixnum and bignum form an exhaustive partition of type integer.
 
-Compound Type Specifier Kind:
+* 复合类型特化符类别(Compound Type Specifier Kind):
 
 Abbreviating.
 
-Compound Type Specifier Syntax:
+* 复合类型特化符语法(Compound Type Specifier Syntax):
 
 integer [lower-limit [upper-limit]]
 
-Compound Type Specifier Arguments:
+* 复合类型特化符参数(Compound Type Specifier Arguments):
 
 lower-limit, upper-limit---interval designators for type integer. The defaults for each of lower-limit and upper-limit is the symbol *.
 
-Compound Type Specifier Description:
+* 复合类型特化符描述(Compound Type Specifier Description):
 
 This denotes the integers on the interval described by lower-limit and upper-limit.
 
-See Also:
+* 也见(See Also):
 
 Figure 2-9, Section 2.3.2 (Constructing Numbers from Tokens), Section 22.1.3.1.1 (Printing Integers)
 
-Notes:
+* 注意(Notes):
 
 The type (integer lower upper), where lower and upper are most-negative-fixnum and most-positive-fixnum, respectively, is also called fixnum.
 
 The type (integer 0 1) is also called bit. The type (integer 0 *) is also called unsigned-byte. 
 
 
-Type SIGNED-BYTE
+### <span id="">Type SIGNED-BYTE</span>
 
-Supertypes:
+* 超类型(Supertypes):
 
 signed-byte, integer, rational, real, number, t
 
-Description:
+* 描述(Description):
 
 The atomic type specifier signed-byte denotes the same type as is denoted by the type specifier integer; however, the list forms of these two type specifiers have different semantics.
 
-Compound Type Specifier Kind:
+* 复合类型特化符类别(Compound Type Specifier Kind):
 
 Abbreviating.
 
-Compound Type Specifier Syntax:
+* 复合类型特化符语法(Compound Type Specifier Syntax):
 
 signed-byte [s | *]
 
-Compound Type Specifier Arguments:
+* 复合类型特化符参数(Compound Type Specifier Arguments):
 
 s---a positive integer.
 
-Compound Type Specifier Description:
+* 复合类型特化符描述(Compound Type Specifier Description):
 
 This denotes the set of integers that can be represented in two's-complement form in a byte of s bits. This is equivalent to (integer -2^s-1 2^s-1-1). The type signed-byte or the type (signed-byte *) is the same as the type integer. 
 
 
-Type UNSIGNED-BYTE
+### <span id="">Type UNSIGNED-BYTE</span>
 
-Supertypes:
+* 超类型(Supertypes):
 
 unsigned-byte, signed-byte, integer, rational, real, number, t
 
-Description:
+* 描述(Description):
 
 The atomic type specifier unsigned-byte denotes the same type as is denoted by the type specifier (integer 0 *).
 
-Compound Type Specifier Kind:
+* 复合类型特化符类别(Compound Type Specifier Kind):
 
 Abbreviating.
 
-Compound Type Specifier Syntax:
+* 复合类型特化符语法(Compound Type Specifier Syntax):
 
 unsigned-byte [s | *]
 
-Compound Type Specifier Arguments:
+* 复合类型特化符参数(Compound Type Specifier Arguments):
 
 s---a positive integer.
 
-Compound Type Specifier Description:
+* 复合类型特化符描述(Compound Type Specifier Description):
 
 This denotes the set of non-negative integers that can be represented in a byte of size s (bits). This is equivalent to (mod m) for m=2^s, or to (integer 0 n) for n=2^s-1. The type unsigned-byte or the type (unsigned-byte *) is the same as the type (integer 0 *), the set of non-negative integers.
 
-Notes:
+* 注意(Notes):
 
 The type (unsigned-byte 1) is also called bit. 
 
 
-Type Specifier MOD
+### <span id="">Type Specifier MOD</span>
 
-Compound Type Specifier Kind:
+* 复合类型特化符类别(Compound Type Specifier Kind):
 
 Abbreviating.
 
-Compound Type Specifier Syntax:
+* 复合类型特化符语法(Compound Type Specifier Syntax):
 
 mod n
 
-Compound Type Specifier Arguments:
+* 复合类型特化符参数(Compound Type Specifier Arguments):
 
 n---a positive integer.
 
-Compound Type Specifier Description:
+* 复合类型特化符描述(Compound Type Specifier Description):
 
 This denotes the set of non-negative integers less than n. This is equivalent to (integer 0 (n)) or to (integer 0 m), where m=n-1.
 
@@ -911,42 +804,42 @@ The argument is required, and cannot be *.
 The symbol mod is not valid as a type specifier. 
 
 
-Type BIT
+### <span id="">Type BIT</span>
 
-Supertypes:
+* 超类型(Supertypes):
 
 bit, unsigned-byte, signed-byte, integer, rational, real, number, t
 
-Description:
+* 描述(Description):
 
 The type bit is equivalent to the type (integer 0 1) and (unsigned-byte 1). 
 
 
-Type FIXNUM
+### <span id="">Type FIXNUM</span>
 
-Supertypes:
+* 超类型(Supertypes):
 
 fixnum, integer, rational, real, number, t
 
-Description:
+* 描述(Description):
 
 A fixnum is an integer whose value is between most-negative-fixnum and most-positive-fixnum inclusive. Exactly which integers are fixnums is implementation-defined. The type fixnum is required to be a supertype of (signed-byte 16). 
 
 
-Type BIGNUM
+### <span id="">Type BIGNUM</span>
 
-Supertypes:
+* 超类型(Supertypes):
 
 bignum, integer, rational, real, number, t
 
-Description:
+* 描述(Description):
 
 The type bignum is defined to be exactly (and integer (not fixnum)). 
 
 
-Function =, /=, <, >, <=, >=
+### <span id="">Function =, /=, <, >, <=, >=</span>
 
-Syntax:
+* 语法(Syntax):
 
 = &rest numbers+ => generalized-boolean
 
@@ -960,13 +853,13 @@ Syntax:
 
 >= &rest numbers+ => generalized-boolean
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 number---for <, >, <=, >=: a real; for =, /=: a number.
 
 generalized-boolean---a generalized boolean.
 
-Description:
+* 描述(Description):
 
 =, /=, <, >, <=, and >= perform arithmetic comparisons on their arguments as follows:
 
@@ -996,7 +889,7 @@ Description:
 
 =, /=, <, >, <=, and >= perform necessary type conversions.
 
-Examples:
+* 示例(Examples):
 
 The uses of these functions are illustrated in the next figure.
 
@@ -1027,40 +920,40 @@ The uses of these functions are illustrated in the next figure.
 
 Figure 12-13. Uses of /=, =, <, >, <=, and >=
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Might signal type-error if some argument is not a real. Might signal arithmetic-error if otherwise unable to fulfill its contract.
 
-See Also: None.
+* 也见(See Also): None.
 
-Notes:
+* 注意(Notes):
 
 = differs from eql in that (= 0.0 -0.0) is always true, because = compares the mathematical values of its operands, whereas eql compares the representational values, so to speak. 
 
 
-Function MAX, MIN
+### <span id="">Function MAX, MIN</span>
 
-Syntax:
+* 语法(Syntax):
 
 max &rest reals+ => max-real
 
 min &rest reals+ => min-real
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 real---a real.
 
 max-real, min-real---a real.
 
-Description:
+* 描述(Description):
 
 max returns the real that is greatest (closest to positive infinity). min returns the real that is least (closest to negative infinity).
 
 For max, the implementation has the choice of returning the largest argument as is or applying the rules of floating-point contagion, taking all the arguments into consideration for contagion purposes. Also, if one or more of the arguments are =, then any one of them may be chosen as the value to return. For example, if the reals are a mixture of rationals and floats, and the largest argument is a rational, then the implementation is free to produce either that rational or its float approximation; if the largest argument is a float of a smaller format than the largest format of any float argument, then the implementation is free to return the argument in its given format or expanded to the larger format. Similar remarks apply to min (replacing ``largest argument'' by ``smallest argument'').
 
-Examples:
+* 示例(Examples):
 
  (max 3) =>  3 
  (min 3) =>  3
@@ -1094,34 +987,34 @@ OR=>  3.0d0
 OR=>  1.0s0 
 OR=>  1.0d0
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should signal an error of type type-error if any number is not a real.
 
-See Also: None.
+* 也见(See Also): None.
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function MINUSP, PLUSP
+### <span id="">Function MINUSP, PLUSP</span>
 
-Syntax:
+* 语法(Syntax):
 
 minusp real => generalized-boolean
 
 plusp real => generalized-boolean
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 real---a real.
 
 generalized-boolean---a generalized boolean.
 
-Description:
+* 描述(Description):
 
 minusp returns true if real is less than zero; otherwise, returns false.
 
@@ -1129,48 +1022,48 @@ plusp returns true if real is greater than zero; otherwise, returns false.
 
 Regardless of whether an implementation provides distinct representations for positive and negative float zeros, (minusp -0.0) always returns false.
 
-Examples:
+* 示例(Examples):
 
  (minusp -1) =>  true
  (plusp 0) =>  false
  (plusp least-positive-single-float) =>  true
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should signal an error of type type-error if real is not a real.
 
-See Also: None.
+* 也见(See Also): None.
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function ZEROP
+### <span id="">Function ZEROP</span>
 
-Syntax:
+* 语法(Syntax):
 
 zerop number => generalized-boolean
 
-Pronunciation:
+* 发音(Pronunciation)::
 
 ['zee(,)roh(,)pee]
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 number---a number.
 
 generalized-boolean---a generalized boolean.
 
-Description:
+* 描述(Description):
 
 Returns true if number is zero (integer, float, or complex); otherwise, returns false.
 
 Regardless of whether an implementation provides distinct representations for positive and negative floating-point zeros, (zerop -0.0) always returns true.
 
-Examples:
+* 示例(Examples):
 
  (zerop 0) =>  true
  (zerop 1) =>  false
@@ -1178,24 +1071,24 @@ Examples:
  (zerop 0/100) =>  true
  (zerop #c(0 0.0)) =>  true
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should signal an error of type type-error if number is not a number.
 
-See Also: None.
+* 也见(See Also): None.
 
-Notes:
+* 注意(Notes):
 
  (zerop number) ==  (= number 0)
 
 
-Function FLOOR, FFLOOR, CEILING, FCEILING, TRUNCATE, FTRUNCATE, ROUND, FROUND
+### <span id="">Function FLOOR, FFLOOR, CEILING, FCEILING, TRUNCATE, FTRUNCATE, ROUND, FROUND</span>
 
-Syntax:
+* 语法(Syntax):
 
 floor number &optional divisor => quotient, remainder
 
@@ -1213,7 +1106,7 @@ round number &optional divisor => quotient, remainder
 
 fround number &optional divisor => quotient, remainder
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 number---a real.
 
@@ -1223,7 +1116,7 @@ quotient---for floor, ceiling, truncate, and round: an integer; for ffloor, fcei
 
 remainder---a real.
 
-Description:
+* 描述(Description):
 
 These functions divide number by divisor, returning a quotient and remainder, such that
 
@@ -1253,7 +1146,7 @@ The remainder is an integer if both x and y are integers, is a rational if both 
 
 ffloor, fceiling, ftruncate, and fround handle arguments of different types in the following way: If number is a float, and divisor is not a float of longer format, then the first result is a float of the same type as number. Otherwise, the first result is of the type determined by contagion rules; see Section 12.1.1.2 (Contagion in Numeric Operations).
 
-Examples:
+* 示例(Examples):
 
  (floor 3/2) =>  1, 1/2
  (ceiling 3 2) =>  2, -1
@@ -1281,15 +1174,15 @@ Examples:
 >>  -2.6 -3 -2 -2 -3
 =>  NIL
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also: None.
+* 也见(See Also): None.
 
-Notes:
+* 注意(Notes):
 
 When only number is given, the two results are exact; the mathematical sum of the two results is always equal to the mathematical value of number.
 
@@ -1301,9 +1194,9 @@ When only number is given, the two results are exact; the mathematical sum of th
 If an effect is desired that is similar to round, but that always rounds up or down (rather than toward the nearest even integer) if the mathematical quotient is exactly halfway between two integers, the programmer should consider a construction such as (floor (+ x 1/2)) or (ceiling (- x 1/2)). 
 
 
-Function SIN, COS, TAN
+### <span id="">Function SIN, COS, TAN</span>
 
-Syntax:
+* 语法(Syntax):
 
 sin radians => number
 
@@ -1311,39 +1204,39 @@ cos radians => number
 
 tan radians => number
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 radians---a number given in radians.
 
 number---a number.
 
-Description:
+* 描述(Description):
 
 sin, cos, and tan return the sine, cosine, and tangent, respectively, of radians.
 
-Examples:
+* 示例(Examples):
 
  (sin 0) =>  0.0
  (cos 0.7853982) =>  0.707107
  (tan #c(0 1)) =>  #C(0.0 0.761594)
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should signal an error of type type-error if radians is not a number. Might signal arithmetic-error.
 
-See Also:
+* 也见(See Also):
 
 asin, acos, atan, Section 12.1.3.3 (Rule of Float Substitutability)
 
-Notes: None. 
+* 注意(Notes): None. 
 
-Function ASIN, ACOS, ATAN
+### <span id="">Function ASIN, ACOS, ATAN</span>
 
-Syntax:
+* 语法(Syntax):
 
 asin number => radians
 
@@ -1351,7 +1244,7 @@ acos number => radians
 
 atan number1 &optional number2 => radians
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 number---a number.
 
@@ -1361,7 +1254,7 @@ number2---a real.
 
 radians---a number (of radians).
 
-Description:
+* 描述(Description):
 
 asin, acos, and atan compute the arc sine, arc cosine, and arc tangent respectively.
 
@@ -1427,41 +1320,41 @@ y = 0        x = 0        Origin           undefined consequences
 
 Figure 12-15. Quadrant information for arc tangent
 
-Examples:
+* 示例(Examples):
 
  (asin 0) =>  0.0 
  (acos #c(0 1))  =>  #C(1.5707963267948966 -0.8813735870195432)
  (/ (atan 1 (sqrt 3)) 6)  =>  0.087266 
  (atan #c(0 2)) =>  #C(-1.5707964 0.54930615)
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 acos and asin should signal an error of type type-error if number is not a number. atan should signal type-error if one argument is supplied and that argument is not a number, or if two arguments are supplied and both of those arguments are not reals.
 
 acos, asin, and atan might signal arithmetic-error.
 
-See Also:
+* 也见(See Also):
 
 log, sqrt, Section 12.1.3.3 (Rule of Float Substitutability)
 
-Notes:
+* 注意(Notes):
 
 The result of either asin or acos can be a complex even if number is not a complex; this occurs when the absolute value of number is greater than one. 
 
 
-Constant Variable PI
+### <span id="">Constant Variable PI</span>
 
 Value:
 
 an implementation-dependent long float.
 
-Description:
+* 描述(Description):
 
 The best long float approximation to the mathematical constant <PI>.
 
-Examples:
+* 示例(Examples):
 
  ;; In each of the following computations, the precision depends 
  ;; on the implementation.  Also, if `long float' is treated by 
@@ -1475,16 +1368,16 @@ Examples:
    (let ((x (if (floatp degrees) degrees (float degrees pi))))
      (sin (* x (/ (float pi x) 180)))))
 
-See Also: None.
+* 也见(See Also): None.
 
-Notes:
+* 注意(Notes):
 
 An approximation to <PI> in some other precision can be obtained by writing (float pi x), where x is a float of the desired precision, or by writing (coerce pi type), where type is the desired type, such as short-float. 
 
 
-Function SINH, COSH, TANH, ASINH, ACOSH, ATANH
+### <span id="">Function SINH, COSH, TANH, ASINH, ACOSH, ATANH</span>
 
-Syntax:
+* 语法(Syntax):
 
 sinh number => result
 
@@ -1498,13 +1391,13 @@ acosh number => result
 
 atanh number => result
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 number---a number.
 
 result---a number.
 
-Description:
+* 描述(Description):
 
 These functions compute the hyperbolic sine, cosine, tangent, arc sine, arc cosine, and arc tangent functions, which are mathematically defined for an argument x as given in the next figure.
 
@@ -1540,116 +1433,116 @@ i arctan z = arctanh iz.
 
 The branch cut for the inverse hyperbolic tangent function is in two pieces: one along the negative real axis to the left of -1 (inclusive), continuous with quadrant III, and one along the positive real axis to the right of 1 (inclusive), continuous with quadrant I. The points -1 and 1 are excluded from the domain. The range is that strip of the complex plane containing numbers whose imaginary part is between -<PI>/2 and <PI>/2. A number with imaginary part equal to -<PI>/2 is in the range if and only if its real part is strictly negative; a number with imaginary part equal to <PI>/2 is in the range if and only if its imaginary part is strictly positive. Thus the range of the inverse hyperbolic tangent function is identical to that of the inverse hyperbolic sine function with the points -<PI>i/2 and <PI>i/2 excluded.
 
-Examples:
+* 示例(Examples):
 
  (sinh 0) =>  0.0 
  (cosh (complex 0 -1)) =>  #C(0.540302 -0.0)
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should signal an error of type type-error if number is not a number. Might signal arithmetic-error.
 
-See Also:
+* 也见(See Also):
 
 log, sqrt, Section 12.1.3.3 (Rule of Float Substitutability)
 
-Notes:
+* 注意(Notes):
 
 The result of acosh may be a complex even if number is not a complex; this occurs when number is less than one. Also, the result of atanh may be a complex even if number is not a complex; this occurs when the absolute value of number is greater than one.
 
 The branch cut formulae are mathematically correct, assuming completely accurate computation. Implementors should consult a good text on numerical analysis. The formulae given above are not necessarily the simplest ones for real-valued computations; they are chosen to define the branch cuts in desirable ways for the complex case. 
 
 
-Function *
+### <span id="">Function *</span>
 
-Syntax:
+* 语法(Syntax):
 
 * &rest numbers => product
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 number---a number.
 
 product---a number.
 
-Description:
+* 描述(Description):
 
 Returns the product of numbers, performing any necessary type conversions in the process. If no numbers are supplied, 1 is returned.
 
-Examples:
+* 示例(Examples):
 
  (*) =>  1
  (* 3 5) =>  15
  (* 1.0 #c(22 33) 55/98) =>  #C(12.346938775510203 18.520408163265305)
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Might signal type-error if some argument is not a number. Might signal arithmetic-error.
 
-See Also:
+* 也见(See Also):
 
 Section 12.1.1 (Numeric Operations), Section 12.1.3 (Rational Computations), Section 12.1.4 (Floating-point Computations), Section 12.1.5 (Complex Computations)
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function +
+### <span id="">Function +</span>
 
-Syntax:
+* 语法(Syntax):
 
 + &rest numbers => sum
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 number---a number.
 
 sum---a number.
 
-Description:
+* 描述(Description):
 
 Returns the sum of numbers, performing any necessary type conversions in the process. If no numbers are supplied, 0 is returned.
 
-Examples:
+* 示例(Examples):
 
  (+) =>  0
  (+ 1) =>  1
  (+ 31/100 69/100) =>  1
  (+ 1/5 0.8) =>  1.0
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Might signal type-error if some argument is not a number. Might signal arithmetic-error.
 
-See Also:
+* 也见(See Also):
 
 Section 12.1.1 (Numeric Operations), Section 12.1.3 (Rational Computations), Section 12.1.4 (Floating-point Computations), Section 12.1.5 (Complex Computations)
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function -
+### <span id="">Function -</span>
 
-Syntax:
+* 语法(Syntax):
 
 - number => negation
 
 - minuend &rest subtrahends+ => difference
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 number, minuend, subtrahend---a number.
 
 negation, difference---a number.
 
-Description:
+* 描述(Description):
 
 The function - performs arithmetic subtraction and negation.
 
@@ -1659,7 +1552,7 @@ If more than one argument is given, it subtracts all of the subtrahends from the
 
 The function - performs necessary type conversions.
 
-Examples:
+* 示例(Examples):
 
  (- 55.55) =>  -55.55
  (- #c(3 -5)) =>  #C(-3 5)
@@ -1668,34 +1561,34 @@ Examples:
  (- #c(100 45) #c(0 45)) =>  100
  (- 10 1 2 3 4) =>  0
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Might signal type-error if some argument is not a number. Might signal arithmetic-error.
 
-See Also:
+* 也见(See Also):
 
 Section 12.1.1 (Numeric Operations), Section 12.1.3 (Rational Computations), Section 12.1.4 (Floating-point Computations), Section 12.1.5 (Complex Computations)
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function /
+### <span id="">Function /</span>
 
-Syntax:
+* 语法(Syntax):
 
 / number => reciprocal
 
 / numerator &rest denominators+ => quotient
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 number, denominator---a non-zero number.
 
 numerator, quotient, reciprocal---a number.
 
-Description:
+* 描述(Description):
 
 The function / performs division or reciprocation.
 
@@ -1709,7 +1602,7 @@ The function / performs necessary type conversions.
 
 If any argument is a float then the rules of floating-point contagion apply; see Section 12.1.4 (Floating-point Computations).
 
-Examples:
+* 示例(Examples):
 
  (/ 12 4) =>  3
  (/ 13 4) =>  13/4
@@ -1721,56 +1614,56 @@ Examples:
  (/ 60 -2 3 5.0) =>  -2.0
  (/ 2 #c(2 2)) =>  #C(1/2 -1/2)
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 The consequences are unspecified if any argument other than the first is zero. If there is only one argument, the consequences are unspecified if it is zero.
 
 Might signal type-error if some argument is not a number. Might signal division-by-zero if division by zero is attempted. Might signal arithmetic-error.
 
-See Also:
+* 也见(See Also):
 
 floor, ceiling, truncate, round
 
-Notes: None. 
+* 注意(Notes): None. 
 
-Function 1+, 1-
+### <span id="">Function 1+, 1-</span>
 
-Syntax:
+* 语法(Syntax):
 
 1+ number => successor
 
 1- number => predecessor
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 number---a number.
 
 successor, predecessor---a number.
 
-Description:
+* 描述(Description):
 
 1+ returns a number that is one more than its argument number. 1- returns a number that is one less than its argument number.
 
-Examples:
+* 示例(Examples):
 
  (1+ 99) =>  100 
  (1- 100) =>  99 
  (1+ (complex 0.0)) =>  #C(1.0 0.0) 
  (1- 5/3) =>  2/3 
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Might signal type-error if its argument is not a number. Might signal arithmetic-error.
 
-See Also:
+* 也见(See Also):
 
 incf, decf
 
-Notes:
+* 注意(Notes):
 
  (1+ number) ==  (+ number 1)
  (1- number) ==  (- number 1)
@@ -1778,19 +1671,19 @@ Notes:
 Implementors are encouraged to make the performance of both the previous expressions be the same. 
 
 
-Function ABS
+### <span id="">Function ABS</span>
 
-Syntax:
+* 语法(Syntax):
 
 abs number => absolute-value
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 number---a number.
 
 absolute-value---a non-negative real.
 
-Description:
+* 描述(Description):
 
 abs returns the absolute value of number.
 
@@ -1798,7 +1691,7 @@ If number is a real, the result is of the same type as number.
 
 If number is a complex, the result is a positive real with the same magnitude as number. The result can be a float even if number's components are rationals and an exact rational result would have been possible. Thus the result of (abs #c(3 4)) can be either 5 or 5.0, depending on the implementation.
 
-Examples:
+* 示例(Examples):
 
  (abs 0) =>  0
  (abs 12/13) =>  12/13
@@ -1808,71 +1701,73 @@ Examples:
  (abs #c(3/5 4/5)) =>  1 or approximately 1.0
  (eql (abs -0.0) -0.0) =>  true
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 Section 12.1.3.3 (Rule of Float Substitutability)
 
-Notes:
+* 注意(Notes):
 
 If number is a complex, the result is equivalent to the following:
 
 (sqrt (+ (expt (realpart number) 2) (expt (imagpart number) 2)))
 
-An implementation should not use this formula directly for all complexes but should handle very large or very small components specially to avoid intermediate overflow or underflow. Function EVENP, ODDP
+An implementation should not use this formula directly for all complexes but should handle very large or very small components specially to avoid intermediate overflow or underflow. 
 
-Syntax:
+### <span id="">Function EVENP, ODDP</span>
+
+* 语法(Syntax):
 
 evenp integer => generalized-boolean
 
 oddp integer => generalized-boolean
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 integer---an integer.
 
 generalized-boolean---a generalized boolean.
 
-Description:
+* 描述(Description):
 
 evenp returns true if integer is even (divisible by two); otherwise, returns false.
 
 oddp returns true if integer is odd (not divisible by two); otherwise, returns false.
 
-Examples:
+* 示例(Examples):
 
  (evenp 0) =>  true
  (oddp 10000000000000000000000) =>  false
  (oddp -1) =>  true
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should signal an error of type type-error if integer is not an integer.
 
-See Also: None.
+* 也见(See Also): None.
 
-Notes:
+* 注意(Notes):
 
  (evenp integer) ==  (not (oddp integer))
  (oddp integer)  ==  (not (evenp integer))
 
 
-Function EXP, EXPT
+### <span id="">Function EXP, EXPT</span>
 
-Syntax:
+* 语法(Syntax):
 
 exp number => result
 
 expt base-number power-number => result
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 number---a number.
 
@@ -1882,7 +1777,7 @@ power-number---a number.
 
 result---a number.
 
-Description:
+* 描述(Description):
 
 exp and expt perform exponentiation.
 
@@ -1900,7 +1795,7 @@ When power-number is an integer 0, then the result is always the value one in th
 
 If power-number is a zero of any other type, then the result is also the value one, in the type of the arguments after the application of the contagion rules in Section 12.1.1.2 (Contagion in Numeric Operations), with one exception: the consequences are undefined if base-number is zero when power-number is zero and not of type integer.
 
-Examples:
+* 示例(Examples):
 
  (exp 0) =>  1.0
  (exp 1) =>  2.718282
@@ -1911,15 +1806,15 @@ Examples:
  (expt #c(2 2) 3) =>  #C(-16 16)
  (expt #c(2 2) 4) =>  -64 
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 log, Section 12.1.3.3 (Rule of Float Substitutability)
 
-Notes:
+* 注意(Notes):
 
 Implementations of expt are permitted to use different algorithms for the cases of a power-number of type rational and a power-number of type float.
 
@@ -1932,23 +1827,23 @@ Note that by the following logic, (sqrt (expt x 3)) is not equivalent to (expt x
 
 
 
-Function GCD
+### <span id="">Function GCD</span>
 
-Syntax:
+* 语法(Syntax):
 
 gcd &rest integers => greatest-common-denominator
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 integer---an integer.
 
 greatest-common-denominator---a non-negative integer.
 
-Description:
+* 描述(Description):
 
 Returns the greatest common divisor of integers. If only one integer is supplied, its absolute value is returned. If no integers are given, gcd returns 0, which is an identity for this operation.
 
-Examples:
+* 示例(Examples):
 
  (gcd) =>  0
  (gcd 60 42) =>  6
@@ -1959,34 +1854,34 @@ Examples:
  (gcd 5) =>  5
  (gcd -4) =>  4
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should signal an error of type type-error if any integer is not an integer.
 
-See Also:
+* 也见(See Also):
 
 lcm
 
-Notes:
+* 注意(Notes):
 
 For three or more arguments,
 
  (gcd b c ... z) ==  (gcd (gcd a b) c ... z)
 
 
-Macro INCF, DECF
+### <span id="">Macro INCF, DECF</span>
 
-Syntax:
+* 语法(Syntax):
 
 incf place [delta-form] => new-value
 
 decf place [delta-form] => new-value
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 place---a place.
 
@@ -1996,7 +1891,7 @@ delta---a number.
 
 new-value---a number.
 
-Description:
+* 描述(Description):
 
 incf and decf are used for incrementing and decrementing the value of place, respectively.
 
@@ -2006,7 +1901,7 @@ Any necessary type conversions are performed automatically.
 
 For information about the evaluation of subforms of places, see Section 5.1.1.1 (Evaluation of Subforms to Places).
 
-Examples:
+* 示例(Examples):
 
  (setq n 0)
  (incf n) =>  1      
@@ -2019,33 +1914,33 @@ Examples:
  (decf n) =>  1.5
  n =>  1.5
 
-Side Effects:
+* 副作用(Side Effects):
 
 Place is modified.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 +, -, 1+, 1-, setf
 
-Notes: None. 
+* 注意(Notes): None. 
 
-Function LCM
+### <span id="">Function LCM</span>
 
-Syntax:
+* 语法(Syntax):
 
 lcm &rest integers => least-common-multiple
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 integer---an integer.
 
 least-common-multiple---a non-negative integer.
 
-Description:
+* 描述(Description):
 
 lcm returns the least common multiple of the integers.
 
@@ -2065,7 +1960,7 @@ For three or more arguments,
 
  (lcm a b c ... z) ==  (lcm (lcm a b) c ... z)
 
-Examples:
+* 示例(Examples):
 
  (lcm 10) =>  10
  (lcm 25 30) =>  150
@@ -2074,28 +1969,28 @@ Examples:
  (lcm 0 5) =>  0
  (lcm 1 2 3 4 5 6) =>  60
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should signal type-error if any argument is not an integer.
 
-See Also:
+* 也见(See Also):
 
 gcd
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function LOG
+### <span id="">Function LOG</span>
 
-Syntax:
+* 语法(Syntax):
 
 log number &optional base => logarithm
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 number---a non-zero number.
 
@@ -2103,7 +1998,7 @@ base---a number.
 
 logarithm---a number.
 
-Description:
+* 描述(Description):
 
 log returns the logarithm of number in base base. If base is not supplied its value is e, the base of the natural logarithms.
 
@@ -2130,7 +2025,7 @@ The two-argument logarithm function is defined as
 
 This defines the principal values precisely. The range of the two-argument logarithm function is the entire complex plane.
 
-Examples:
+* 示例(Examples):
 
  (log 100 10)
 =>  2.0
@@ -2144,27 +2039,27 @@ OR=>  #C(-1 0)
  (log #c(-16 16) #c(2 2)) =>  3 or approximately #c(3.0 0.0)
                                or approximately 3.0 (unlikely)
 
-Affected By:
+* 受此影响(Affected By):
 
 The implementation.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 exp, expt, Section 12.1.3.3 (Rule of Float Substitutability)
 
-Notes: None. 
+* 注意(Notes): None. 
 
-Function MOD, REM
+### <span id="">Function MOD, REM</span>
 
-Syntax:
+* 语法(Syntax):
 
 mod number divisor => modulus
 
 rem number divisor => remainder
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 number---a real.
 
@@ -2172,7 +2067,7 @@ divisor---a real.
 
 modulus, remainder---a real.
 
-Description:
+* 描述(Description):
 
 mod and rem are generalizations of the modulus and remainder functions respectively.
 
@@ -2182,7 +2077,7 @@ rem performs the operation truncate on number and divisor and returns the remain
 
 mod and rem are the modulus and remainder functions when number and divisor are integers.
 
-Examples:
+* 示例(Examples):
 
  (rem -1 5) =>  -1
  (mod -1 5) =>  4
@@ -2199,33 +2094,33 @@ Examples:
  (mod -13.4 1) =>  0.6
  (rem -13.4 1) =>  -0.4
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 floor, truncate
 
-Notes:
+* 注意(Notes):
 
 The result of mod is either zero or a real with the same sign as divisor. 
 
-Function SIGNUM
+### <span id="">Function SIGNUM</span>
 
-Syntax:
+* 语法(Syntax):
 
 signum number => signed-prototype
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 number---a number.
 
 signed-prototype---a number.
 
-Description:
+* 描述(Description):
 
 signum determines a numerical value that indicates whether number is negative, zero, or positive.
 
@@ -2235,7 +2130,7 @@ For rational arguments, signum is a rational function, but it may be irrational 
 
 If number is a float, the result is a float. If number is a rational, the result is a rational. If number is a complex float, the result is a complex float. If number is a complex rational, the result is a complex, but it is implementation-dependent whether that result is a complex rational or a complex float.
 
-Examples:
+* 示例(Examples):
 
  (signum 0) =>  0
  (signum 99) =>  1
@@ -2247,37 +2142,37 @@ Examples:
  (signum #c(0.0 -14.7)) =>  #C(0.0 -1.0)
  (eql (signum -0.0) -0.0) =>  true
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 Section 12.1.3.3 (Rule of Float Substitutability)
 
-Notes:
+* 注意(Notes):
 
  (signum x) ==  (if (zerop x) x (/ x (abs x)))
 
 
 
-Function SQRT, ISQRT
+### <span id="">Function SQRT, ISQRT</span>
 
-Syntax:
+* 语法(Syntax):
 
 sqrt number => root
 
 isqrt natural => natural-root
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 number, root---a number.
 
 natural, natural-root---a non-negative integer.
 
-Description:
+* 描述(Description):
 
 sqrt and isqrt compute square roots.
 
@@ -2293,7 +2188,7 @@ The mathematical definition of complex square root (whether or not minus zero is
 
 The branch cut for square root lies along the negative real axis, continuous with quadrant II. The range consists of the right half-plane, including the non-negative imaginary axis and excluding the negative imaginary axis.
 
-Examples:
+* 示例(Examples):
 
  (sqrt 9.0) =>  3.0
  (sqrt -9.0) =>  #C(0.0 3.0)
@@ -2309,11 +2204,11 @@ OR=>  5.0
  (sqrt -1) =>  #C(0.0 1.0)
  (sqrt #c(0 2)) =>  #C(1.0 1.0)
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 The function sqrt should signal type-error if its argument is not a number.
 
@@ -2321,53 +2216,53 @@ The function isqrt should signal type-error if its argument is not a non-negativ
 
 The functions sqrt and isqrt might signal arithmetic-error.
 
-See Also:
+* 也见(See Also):
 
 exp, log, Section 12.1.3.3 (Rule of Float Substitutability)
 
-Notes:
+* 注意(Notes):
 
  (isqrt x) ==  (values (floor (sqrt x))) 
 
 but it is potentially more efficient. 
 
 
-System Class RANDOM-STATE
+### <span id="">System Class RANDOM-STATE</span>
 
-Class Precedence List:
+* 类优先级列表(Class Precedence List):
 
 random-state, t
 
-Description:
+* 描述(Description):
 
 A random state object contains state information used by the pseudo-random number generator. The nature of a random state object is implementation-dependent. It can be printed out and successfully read back in by the same implementation, but might not function correctly as a random state in another implementation.
 
 Implementations are required to provide a read syntax for objects of type random-state, but the specific nature of that syntax is implementation-dependent.
 
-See Also:
+* 也见(See Also):
 
 *random-state*, random, Section 22.1.3.10 (Printing Random States) 
 
 
-Function MAKE-RANDOM-STATE
+### <span id="">Function MAKE-RANDOM-STATE</span>
 
-Syntax:
+* 语法(Syntax):
 
 make-random-state &optional state => new-state
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 state---a random state, or nil, or t. The default is nil.
 
 new-state---a random state object.
 
-Description:
+* 描述(Description):
 
 Creates a fresh object of type random-state suitable for use as the value of *random-state*.
 
 If state is a random state object, the new-state is a copy[5] of that object. If state is nil, the new-state is a copy[5] of the current random state. If state is t, the new-state is a fresh random state object that has been randomly initialized by some means.
 
-Examples:
+* 示例(Examples):
 
  (let* ((rs1 (make-random-state nil))
         (rs2 (make-random-state t))
@@ -2387,29 +2282,29 @@ Examples:
     (93 85 53 99 58 62 2 23 23 59)
     (68 24 35 54 65 54 55 50 59 49))
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should signal an error of type type-error if state is not a random state, or nil, or t.
 
-See Also:
+* 也见(See Also):
 
 random, *random-state*
 
-Notes:
+* 注意(Notes):
 
 One important use of make-random-state is to allow the same series of pseudo-random numbers to be generated many times within a single program. 
 
-Function RANDOM
+### <span id="">Function RANDOM</span>
 
-Syntax:
+* 语法(Syntax):
 
 random limit &optional random-state => random-number
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 limit---a positive integer, or a positive float.
 
@@ -2417,7 +2312,7 @@ random-state---a random state. The default is the current random state.
 
 random-number---a non-negative number less than limit and of the same type as limit.
 
-Description:
+* 描述(Description):
 
 Returns a pseudo-random number that is a non-negative number less than limit and of the same type as limit.
 
@@ -2425,70 +2320,70 @@ The random-state, which is modified by this function, encodes the internal state
 
 An approximately uniform choice distribution is used. If limit is an integer, each of the possible results occurs with (approximate) probability 1/limit.
 
-Examples:
+* 示例(Examples):
 
  (<= 0 (random 1000) 1000) =>  true
  (let ((state1 (make-random-state))
        (state2 (make-random-state)))
    (= (random 1000 state1) (random 1000 state2))) =>  true
 
-Side Effects:
+* 副作用(Side Effects):
 
 The random-state is modified.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should signal an error of type type-error if limit is not a positive integer or a positive real.
 
-See Also:
+* 也见(See Also):
 
 make-random-state, *random-state*
 
-Notes:
+* 注意(Notes):
 
 See Common Lisp: The Language for information about generating random numbers. 
 
 
-Function RANDOM-STATE-P
+### <span id="">Function RANDOM-STATE-P</span>
 
-Syntax:
+* 语法(Syntax):
 
 random-state-p object => generalized-boolean
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 object---an object.
 
 generalized-boolean---a generalized boolean.
 
-Description:
+* 描述(Description):
 
 Returns true if object is of type random-state; otherwise, returns false.
 
-Examples:
+* 示例(Examples):
 
  (random-state-p *random-state*) =>  true
  (random-state-p (make-random-state)) =>  true
  (random-state-p 'test-function) =>  false
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 make-random-state, *random-state*
 
-Notes:
+* 注意(Notes):
 
  (random-state-p object) ==  (typep object 'random-state)
 
 
-Variable *RANDOM-STATE*
+### <span id="">Variable *RANDOM-STATE*</span>
 
 Value Type:
 
@@ -2498,11 +2393,11 @@ Initial Value:
 
 implementation-dependent.
 
-Description:
+* 描述(Description):
 
 The current random state, which is used, for example, by the function random when a random state is not explicitly supplied.
 
-Examples:
+* 示例(Examples):
 
  (random-state-p *random-state*) =>  true
  (setq snap-shot (make-random-state))
@@ -2519,38 +2414,38 @@ Examples:
     (16 67 0 43 70 79 58 5 63 50)
     (16 67 0 43 70 79 58 5 63 50))
 
-Affected By:
+* 受此影响(Affected By):
 
 The implementation.
 
 random.
 
-See Also:
+* 也见(See Also):
 
 make-random-state, random, random-state
 
-Notes:
+* 注意(Notes):
 
 Binding *random-state* to a different random state object correctly saves and restores the old random state object. 
 
 
-Function NUMBERP
+### <span id="">Function NUMBERP</span>
 
-Syntax:
+* 语法(Syntax):
 
 numberp object => generalized-boolean
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 object---an object.
 
 generalized-boolean---a generalized boolean.
 
-Description:
+* 描述(Description):
 
 Returns true if object is of type number; otherwise, returns false.
 
-Examples:
+* 示例(Examples):
 
  (numberp 12) =>  true
  (numberp (expt 2 130)) =>  true
@@ -2558,59 +2453,59 @@ Examples:
  (numberp nil) =>  false
  (numberp (cons 1 2)) =>  false
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also: None.
+* 也见(See Also): None.
 
-Notes:
+* 注意(Notes):
 
  (numberp object) ==  (typep object 'number)
 
 
 
-Function CIS
+### <span id="">Function CIS</span>
 
-Syntax:
+* 语法(Syntax):
 
 cis radians => number
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 radians---a real.
 
 number---a complex.
 
-Description:
+* 描述(Description):
 
 cis returns the value of e^i* radians, which is a complex in which the real part is equal to the cosine of radians, and the imaginary part is equal to the sine of radians.
 
-Examples:
+* 示例(Examples):
 
  (cis 0) =>  #C(1.0 0.0)
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 Section 12.1.3.3 (Rule of Float Substitutability)
 
-Notes: None. 
+* 注意(Notes): None. 
 
-Function COMPLEX
+### <span id="">Function COMPLEX</span>
 
-Syntax:
+* 语法(Syntax):
 
 complex realpart &optional imagpart => complex
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 realpart---a real.
 
@@ -2618,7 +2513,7 @@ imagpart---a real.
 
 complex---a rational or a complex.
 
-Description:
+* 描述(Description):
 
 complex returns a number whose real part is realpart and whose imaginary part is imagpart.
 
@@ -2628,7 +2523,7 @@ If either realpart or imagpart is a float, the non-float is converted to a float
 
 Type upgrading implies a movement upwards in the type hierarchy lattice. In the case of complexes, the type-specifier must be a subtype of (upgraded-complex-part-type type-specifier). If type-specifier1 is a subtype of type-specifier2, then (upgraded-complex-element-type 'type-specifier1) must also be a subtype of (upgraded-complex-element-type 'type-specifier2). Two disjoint types can be upgraded into the same thing.
 
-Examples:
+* 示例(Examples):
 
  (complex 0) =>  0
  (complex 0.0) =>  #C(0.0 0.0)
@@ -2636,72 +2531,72 @@ Examples:
  (complex 1 .99) =>  #C(1.0 0.99)
  (complex 3/2 0.0) =>  #C(1.5 0.0)
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 realpart, imagpart, Section 2.4.8.11 (Sharpsign C)
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function COMPLEXP
+### <span id="">Function COMPLEXP</span>
 
-Syntax:
+* 语法(Syntax):
 
 complexp object => generalized-boolean
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 object---an object.
 
 generalized-boolean---a generalized boolean.
 
-Description:
+* 描述(Description):
 
 Returns true if object is of type complex; otherwise, returns false.
 
-Examples:
+* 示例(Examples):
 
  (complexp 1.2d2) =>  false
  (complexp #c(5/3 7.2)) =>  true
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 complex (function and type), typep
 
-Notes:
+* 注意(Notes):
 
  (complexp object) ==  (typep object 'complex)
 
 
-Function CONJUGATE
+### <span id="">Function CONJUGATE</span>
 
-Syntax:
+* 语法(Syntax):
 
 conjugate number => conjugate
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 number---a number.
 
 conjugate---a number.
 
-Description:
+* 描述(Description):
 
 Returns the complex conjugate of number. The conjugate of a real number is itself.
 
-Examples:
+* 示例(Examples):
 
  (conjugate #c(0 -1)) =>  #C(0 1)
  (conjugate #c(1 1)) =>  #C(1 -1)
@@ -2710,15 +2605,15 @@ Examples:
  (conjugate #C(0.0D0 -1.0D0)) =>  #C(0.0D0 1.0D0)
  (conjugate 3.7) =>  3.7
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also: None.
+* 也见(See Also): None.
 
-Notes:
+* 注意(Notes):
 
 For a complex number z,
 
@@ -2726,19 +2621,19 @@ For a complex number z,
 
 
 
-Function PHASE
+### <span id="">Function PHASE</span>
 
-Syntax:
+* 语法(Syntax):
 
 phase number => phase
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 number---a number.
 
 phase---a number.
 
-Description:
+* 描述(Description):
 
 phase returns the phase of number (the angle part of its polar representation) in radians, in the range -<PI> (exclusive) if minus zero is not supported, or -<PI> (inclusive) if minus zero is supported, to <PI> (inclusive). The phase of a positive real number is zero; that of a negative real number is <PI>. The phase of zero is defined to be zero.
 
@@ -2750,75 +2645,75 @@ The mathematical definition of phase is as follows:
 
 (phase x) = (atan (imagpart x) (realpart x))
 
-Examples:
+* 示例(Examples):
 
  (phase 1) =>  0.0s0
  (phase 0) =>  0.0s0
  (phase (cis 30)) =>  -1.4159266
  (phase #c(0 1)) =>  1.5707964
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should signal type-error if its argument is not a number. Might signal arithmetic-error.
 
-See Also:
+* 也见(See Also):
 
 Section 12.1.3.3 (Rule of Float Substitutability)
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function REALPART, IMAGPART
+### <span id="">Function REALPART, IMAGPART</span>
 
-Syntax:
+* 语法(Syntax):
 
 realpart number => real
 
 imagpart number => real
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 number---a number.
 
 real---a real.
 
-Description:
+* 描述(Description):
 
 realpart and imagpart return the real and imaginary parts of number respectively. If number is real, then realpart returns number and imagpart returns (* 0 number), which has the effect that the imaginary part of a rational is 0 and that of a float is a floating-point zero of the same format.
 
-Examples:
+* 示例(Examples):
 
  (realpart #c(23 41)) =>  23
  (imagpart #c(23 41.0)) =>  41.0
  (realpart #c(23 41.0)) =>  23.0
  (imagpart 23.0) =>  0.0
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should signal an error of type type-error if number is not a number.
 
-See Also:
+* 也见(See Also):
 
 complex
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function UPGRADED-COMPLEX-PART-TYPE
+### <span id="">Function UPGRADED-COMPLEX-PART-TYPE</span>
 
-Syntax:
+* 语法(Syntax):
 
 upgraded-complex-part-type typespec &optional environment => upgraded-typespec
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 typespec---a type specifier.
 
@@ -2826,7 +2721,7 @@ environment---an environment object. The default is nil, denoting the null lexic
 
 upgraded-typespec---a type specifier.
 
-Description:
+* 描述(Description):
 
 upgraded-complex-part-type returns the part type of the most specialized complex number representation that can hold parts of type typespec.
 
@@ -2834,65 +2729,65 @@ The typespec is a subtype of (and possibly type equivalent to) the upgraded-type
 
 The purpose of upgraded-complex-part-type is to reveal how an implementation does its upgrading.
 
-Examples: None.
+* 示例(Examples): None.
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 complex (function and type)
 
-Notes:
+* 注意(Notes):
 
-Function REALP
+### <span id="">Function REALP</span>
 
-Syntax:
+* 语法(Syntax):
 
 realp object => generalized-boolean
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 object---an object.
 
 generalized-boolean---a generalized boolean.
 
-Description:
+* 描述(Description):
 
 Returns true if object is of type real; otherwise, returns false.
 
-Examples:
+* 示例(Examples):
 
  (realp 12) =>  true
  (realp #c(5/3 7.2)) =>  false
  (realp nil) =>  false
  (realp (cons 1 2)) =>  false
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also: None.
+* 也见(See Also): None.
 
-Notes:
+* 注意(Notes):
 
  (realp object) ==  (typep object 'real)
 
 
-Function NUMERATOR, DENOMINATOR
+### <span id="">Function NUMERATOR, DENOMINATOR</span>
 
-Syntax:
+* 语法(Syntax):
 
 numerator rational => numerator
 
 denominator rational => denominator
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 rational---a rational.
 
@@ -2900,7 +2795,7 @@ numerator---an integer.
 
 denominator---a positive integer.
 
-Description:
+* 描述(Description):
 
 numerator and denominator reduce rational to canonical form and compute the numerator or denominator of that number.
 
@@ -2908,7 +2803,7 @@ numerator and denominator return the numerator or denominator of the canonical f
 
 If rational is an integer, numerator returns rational and denominator returns 1.
 
-Examples:
+* 示例(Examples):
 
  (numerator 1/2) =>  1
  (denominator 12/36) =>  3
@@ -2917,37 +2812,37 @@ Examples:
  (numerator (/ 8 -6)) =>  -4
  (denominator (/ 8 -6)) =>  3
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 /
 
-Notes:
+* 注意(Notes):
 
  (gcd (numerator x) (denominator x)) =>  1
 
 
 
-Function RATIONAL, RATIONALIZE
+### <span id="">Function RATIONAL, RATIONALIZE</span>
 
-Syntax:
+* 语法(Syntax):
 
 rational number => rational
 
 rationalize number => rational
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 number---a real.
 
 rational---a rational.
 
-Description:
+* 描述(Description):
 
 rational and rationalize convert reals to rationals.
 
@@ -2959,26 +2854,26 @@ rational assumes that the float is completely accurate.
 
 rationalize assumes that the float is accurate only to the precision of the floating-point representation.
 
-Examples:
+* 示例(Examples):
 
  (rational 0) =>  0
  (rationalize -11/100) =>  -11/100
  (rational .1) =>  13421773/134217728 ;implementation-dependent
  (rationalize .1) =>  1/10
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By:
+* 受此影响(Affected By):
 
 The implementation.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should signal an error of type type-error if number is not a real. Might signal arithmetic-error.
 
-See Also: None.
+* 也见(See Also): None.
 
-Notes:
+* 注意(Notes):
 
 It is always the case that
 
@@ -2990,50 +2885,50 @@ and
 
 That is, rationalizing a float by either method and then converting it back to a float of the same format produces the original number. 
 
-Function RATIONALP
+### <span id="">Function RATIONALP</span>
 
-Syntax:
+* 语法(Syntax):
 
 rationalp object => generalized-boolean
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 object---an object.
 
 generalized-boolean---a generalized boolean.
 
-Description:
+* 描述(Description):
 
 Returns true if object is of type rational; otherwise, returns false.
 
-Examples:
+* 示例(Examples):
 
  (rationalp 12) =>  true
  (rationalp 6/5) =>  true
  (rationalp 1.212) =>  false
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 rational
 
-Notes:
+* 注意(Notes):
 
  (rationalp object) ==  (typep object 'rational)
 
 
-Function ASH
+### <span id="">Function ASH</span>
 
-Syntax:
+* 语法(Syntax):
 
 ash integer count => shifted-integer
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 integer---an integer.
 
@@ -3041,7 +2936,7 @@ count---an integer.
 
 shifted-integer---an integer.
 
-Description:
+* 描述(Description):
 
 ash performs the arithmetic shift operation on the binary representation of integer, which is treated as if it were binary.
 
@@ -3051,44 +2946,44 @@ Mathematically speaking, ash performs the computation floor(integer*2^count). Lo
 
 ash is defined to behave as if integer were represented in two's complement form, regardless of how integers are represented internally.
 
-Examples:
+* 示例(Examples):
 
  (ash 16 1) =>  32
  (ash 16 0) =>  16
  (ash 16 -1) =>  8
  (ash -100000000000000000000000000000000 -100) =>  -79
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should signal an error of type type-error if integer is not an integer. Should signal an error of type type-error if count is not an integer. Might signal arithmetic-error.
 
-See Also: None.
+* 也见(See Also): None.
 
-Notes:
+* 注意(Notes):
 
  (logbitp j (ash n k))
  ==  (and (>= j k) (logbitp (- j k) n))
 
 
-Function INTEGER-LENGTH
+### <span id="">Function INTEGER-LENGTH</span>
 
-Syntax:
+* 语法(Syntax):
 
 integer-length integer => number-of-bits
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 integer---an integer.
 
 number-of-bits---a non-negative integer.
 
-Description:
+* 描述(Description):
 
 Returns the number of bits needed to represent integer in binary two's-complement format.
 
-Examples:
+* 示例(Examples):
 
  (integer-length 0) =>  0
  (integer-length 1) =>  1
@@ -3104,17 +2999,17 @@ Examples:
  (integer-length (- (expt 2 9))) =>  9
  (integer-length (- (1+ (expt 2 9)))) =>  10
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should signal an error of type type-error if integer is not an integer.
 
-See Also: None.
+* 也见(See Also): None.
 
-Notes:
+* 注意(Notes):
 
 This function could have been defined by:
 
@@ -3127,48 +3022,48 @@ This function could have been defined by:
 If integer is non-negative, then its value can be represented in unsigned binary form in a field whose width in bits is no smaller than (integer-length integer). Regardless of the sign of integer, its value can be represented in signed binary two's-complement form in a field whose width in bits is no smaller than (+ (integer-length integer) 1). 
 
 
-Function INTEGERP
+### <span id="">Function INTEGERP</span>
 
-Syntax:
+* 语法(Syntax):
 
 integerp object => generalized-boolean
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 object---an object.
 
 generalized-boolean---a generalized boolean.
 
-Description:
+* 描述(Description):
 
 Returns true if object is of type integer; otherwise, returns false.
 
-Examples:
+* 示例(Examples):
 
  (integerp 1) =>  true
  (integerp (expt 2 130)) =>  true
  (integerp 6/5) =>  false
  (integerp nil) =>  false
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also: None.
+* 也见(See Also): None.
 
-Notes:
+* 注意(Notes):
 
  (integerp object) ==  (typep object 'integer)
 
-Function PARSE-INTEGER
+### <span id="">Function PARSE-INTEGER</span>
 
-Syntax:
+* 语法(Syntax):
 
 parse-integer string &key start end radix junk-allowed => integer, pos
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 string---a string.
 
@@ -3182,7 +3077,7 @@ integer---an integer or false.
 
 pos---a bounding index of string.
 
-Description:
+* 描述(Description):
 
 parse-integer parses an integer in the specified radix from the substring of string delimited by start and end.
 
@@ -3196,32 +3091,32 @@ The first value returned is either the integer that was parsed, or else nil if n
 
 The second value is either the index into the string of the delimiter that terminated the parse, or the upper bounding index of the substring if the parse terminated at the end of the substring (as is always the case if junk-allowed is false).
 
-Examples:
+* 示例(Examples):
 
  (parse-integer "123") =>  123, 3
  (parse-integer "123" :start 1 :radix 5) =>  13, 3
  (parse-integer "no-integer" :junk-allowed t) =>  NIL, 0
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 If junk-allowed is false, an error is signaled if substring does not consist entirely of the representation of an integer, possibly surrounded on either side by whitespace[1] characters.
 
-See Also: None.
+* 也见(See Also): None.
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function BOOLE
+### <span id="">Function BOOLE</span>
 
-Syntax:
+* 语法(Syntax):
 
 boole op integer-1 integer-2 => result-integer
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 Op---a bit-wise logical operation specifier.
 
@@ -3231,7 +3126,7 @@ integer-2---an integer.
 
 result-integer---an integer.
 
-Description:
+* 描述(Description):
 
 boole performs bit-wise logical operations on integer-1 and integer-2, which are treated as if they were binary and in two's complement representation.
 
@@ -3259,7 +3154,7 @@ boole-xor    exclusive or
 
 Figure 12-17. Bit-Wise Logical Operations
 
-Examples:
+* 示例(Examples):
 
  (boole boole-ior 1 16) =>  17
  (boole boole-and -2 5) =>  4
@@ -3297,17 +3192,17 @@ Examples:
 >>   BOOLE-XOR     6         110    ...0110
 =>  NIL
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should signal type-error if its first argument is not a bit-wise logical operation specifier or if any subsequent argument is not an integer.
 
-See Also:
+* 也见(See Also):
 
 logand
 
-Notes:
+* 注意(Notes):
 
 In general,
 
@@ -3336,32 +3231,32 @@ Programmers who would prefer to use numeric indices rather than bit-wise logical
 
 
 
-Constant Variable BOOLE-1, BOOLE-2, BOOLE-AND, BOOLE-ANDC1, BOOLE-ANDC2, BOOLE-C1, BOOLE-C2, BOOLE-CLR, BOOLE-EQV, BOOLE-IOR, BOOLE-NAND, BOOLE-NOR, BOOLE-ORC1, BOOLE-ORC2, BOOLE-SET, BOOLE-XOR
+### <span id="">Constant Variable BOOLE-1, BOOLE-2, BOOLE-AND, BOOLE-ANDC1, BOOLE-ANDC2, BOOLE-C1, BOOLE-C2, BOOLE-CLR, BOOLE-EQV, BOOLE-IOR, BOOLE-NAND, BOOLE-NOR, BOOLE-ORC1, BOOLE-ORC2, BOOLE-SET, BOOLE-XOR</span>
 
 Constant Value:
 
 The identity and nature of the values of each of these variables is implementation-dependent, except that it must be distinct from each of the values of the others, and it must be a valid first argument to the function boole.
 
-Description:
+* 描述(Description):
 
 Each of these constants has a value which is one of the sixteen possible bit-wise logical operation specifiers.
 
-Examples:
+* 示例(Examples):
 
  (boole boole-ior 1 16) =>  17
  (boole boole-and -2 5) =>  4
  (boole boole-eqv 17 15) =>  -31
 
-See Also:
+* 也见(See Also):
 
 boole
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function LOGAND, LOGANDC1, LOGANDC2, LOGEQV, LOGIOR, LOGNAND, LOGNOR, LOGNOT, LOGORC1, LOGORC2, LOGXOR
+### <span id="">Function LOGAND, LOGANDC1, LOGANDC2, LOGEQV, LOGIOR, LOGNAND, LOGNOR, LOGNOT, LOGORC1, LOGORC2, LOGXOR</span>
 
-Syntax:
+* 语法(Syntax):
 
 logand &rest integers => result-integer
 
@@ -3385,7 +3280,7 @@ logorc2 integer-1 integer-2 => result-integer
 
 logxor &rest integers => result-integer
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 integers---integers.
 
@@ -3397,7 +3292,7 @@ integer-2---an integer.
 
 result-integer---an integer.
 
-Description:
+* 描述(Description):
 
 The functions logandc1, logandc2, logand, logeqv, logior, lognand, lognor, lognot, logorc1, logorc2, and logxor perform bit-wise logical operations on their arguments, that are treated as if they were binary.
 
@@ -3420,7 +3315,7 @@ Figure 12-18. Bit-wise Logical Operations on Integers
 
 Negative integers are treated as if they were in two's-complement notation.
 
-Examples:
+* 示例(Examples):
 
  (logior 1 2 4 8) =>  15
  (logxor 1 3 7 15) =>  10
@@ -3455,19 +3350,19 @@ Examples:
 >>  y = #o312557
 =>  NIL
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should signal type-error if any argument is not an integer.
 
-See Also:
+* 也见(See Also):
 
 boole
 
-Notes:
+* 注意(Notes):
 
 (logbitp k -1) returns true for all values of k.
 
@@ -3482,13 +3377,13 @@ Because the following functions are not associative, they take exactly two argum
  (logbitp j (lognot x)) ==  (not (logbitp j x))
 
 
-Function LOGBITP
+### <span id="">Function LOGBITP</span>
 
-Syntax:
+* 语法(Syntax):
 
 logbitp index integer => generalized-boolean
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 index---a non-negative integer.
 
@@ -3496,13 +3391,13 @@ integer---an integer.
 
 generalized-boolean---a generalized boolean.
 
-Description:
+* 描述(Description):
 
 logbitp is used to test the value of a particular bit in integer, that is treated as if it were binary. The value of logbitp is true if the bit in integer whose index is index (that is, its weight is 2^index) is a one-bit; otherwise it is false.
 
 Negative integers are treated as if they were in two's-complement notation.
 
-Examples:
+* 示例(Examples):
 
  (logbitp 1 1) =>  false
  (logbitp 0 1) =>  true
@@ -3511,38 +3406,38 @@ Examples:
  (logbitp 2 6) =>  true
  (logbitp 0 6) =>  false
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should signal an error of type type-error if index is not a non-negative integer. Should signal an error of type type-error if integer is not an integer.
 
-See Also: None.
+* 也见(See Also): None.
 
-Notes:
+* 注意(Notes):
 
  (logbitp k n) ==  (ldb-test (byte 1 k) n)
 
 
-Function LOGCOUNT
+### <span id="">Function LOGCOUNT</span>
 
-Syntax:
+* 语法(Syntax):
 
 logcount integer => number-of-on-bits
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 integer---an integer.
 
 number-of-on-bits---a non-negative integer.
 
-Description:
+* 描述(Description):
 
 Computes and returns the number of bits in the two's-complement binary representation of integer that are `on' or `set'. If integer is negative, the 0 bits are counted; otherwise, the 1 bits are counted.
 
-Examples:
+* 示例(Examples):
 
  (logcount 0) =>  0
  (logcount -1) =>  0
@@ -3555,17 +3450,17 @@ Examples:
  (logcount (- (expt 2 100))) =>  100
  (logcount (- (1+ (expt 2 100)))) =>  1
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should signal type-error if its argument is not an integer.
 
-See Also: None.
+* 也见(See Also): None.
 
-Notes:
+* 注意(Notes):
 
 Even if the implementation does not represent integers internally in two's complement binary, logcount behaves as if it did.
 
@@ -3576,13 +3471,13 @@ The following identity always holds:
  ==  (logcount (lognot x))
 
 
-Function LOGTEST
+### <span id="">Function LOGTEST</span>
 
-Syntax:
+* 语法(Syntax):
 
 logtest integer-1 integer-2 => generalized-boolean
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 integer-1---an integer.
 
@@ -3590,37 +3485,37 @@ integer-2---an integer.
 
 generalized-boolean---a generalized boolean.
 
-Description:
+* 描述(Description):
 
 Returns true if any of the bits designated by the 1's in integer-1 is 1 in integer-2; otherwise it is false. integer-1 and integer-2 are treated as if they were binary.
 
 Negative integer-1 and integer-2 are treated as if they were represented in two's-complement binary.
 
-Examples:
+* 示例(Examples):
 
  (logtest 1 7) =>  true
  (logtest 1 2) =>  false
  (logtest -2 -1) =>  true
  (logtest 0 -1) =>  false
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should signal an error of type type-error if integer-1 is not an integer. Should signal an error of type type-error if integer-2 is not an integer.
 
-See Also: None.
+* 也见(See Also): None.
 
-Notes:
+* 注意(Notes):
 
  (logtest x y) ==  (not (zerop (logand x y)))
 
 
-Function BYTE, BYTE-SIZE, BYTE-POSITION
+### <span id="">Function BYTE, BYTE-SIZE, BYTE-POSITION</span>
 
-Syntax:
+* 语法(Syntax):
 
 byte size position => bytespec
 
@@ -3628,13 +3523,13 @@ byte-size bytespec => size
 
 byte-position bytespec => position
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 size, position---a non-negative integer.
 
 bytespec---a byte specifier.
 
-Description:
+* 描述(Description):
 
 byte returns a byte specifier that indicates a byte of width size and whose bits have weights 2^position + size - 1 through 2^position, and whose representation is implementation-dependent.
 
@@ -3642,21 +3537,21 @@ byte-size returns the number of bits specified by bytespec.
 
 byte-position returns the position specified by bytespec.
 
-Examples:
+* 示例(Examples):
 
  (setq b (byte 100 200)) =>  #<BYTE-SPECIFIER size 100 position 200>
  (byte-size b) =>  100
  (byte-position b) =>  200
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 ldb, dpb
 
-Notes:
+* 注意(Notes):
 
  (byte-size (byte j k)) ==  j
  (byte-position (byte j k)) ==  k
@@ -3667,13 +3562,13 @@ A byte of size of 0 is permissible; it refers to a byte of width zero. For examp
  (dpb #o7777 (byte 0 3) 0) =>  0
 
 
-Function DEPOSIT-FIELD
+### <span id="">Function DEPOSIT-FIELD</span>
 
-Syntax:
+* 语法(Syntax):
 
 deposit-field newbyte bytespec integer => result-integer
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 newbyte---an integer.
 
@@ -3683,27 +3578,27 @@ integer---an integer.
 
 result-integer---an integer.
 
-Description:
+* 描述(Description):
 
 Replaces a field of bits within integer; specifically, returns an integer that contains the bits of newbyte within the byte specified by bytespec, and elsewhere contains the bits of integer.
 
-Examples:
+* 示例(Examples):
 
  (deposit-field 7 (byte 2 1) 0) =>  6
  (deposit-field -1 (byte 4 0) 0) =>  15
  (deposit-field 0 (byte 2 1) -3) =>  -7
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 byte, dpb
 
-Notes:
+* 注意(Notes):
 
  (logbitp j (deposit-field m (byte s p) n))
  ==  (if (and (>= j p) (< j (+ p s)))
@@ -3712,17 +3607,17 @@ Notes:
 
 deposit-field is to mask-field as dpb is to ldb. 
 
-Function DPB
+### <span id="">Function DPB</span>
 
-Syntax:
+* 语法(Syntax):
 
 dpb newbyte bytespec integer => result-integer
 
-Pronunciation:
+* 发音(Pronunciation)::
 
 [,duh'pib] or [,duh'puhb] or ['dee'pee'bee]
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 newbyte---an integer.
 
@@ -3732,29 +3627,29 @@ integer---an integer.
 
 result-integer---an integer.
 
-Description:
+* 描述(Description):
 
 dpb (deposit byte) is used to replace a field of bits within integer. dpb returns an integer that is the same as integer except in the bits specified by bytespec.
 
 Let s be the size specified by bytespec; then the low s bits of newbyte appear in the result in the byte specified by bytespec. Newbyte is interpreted as being right-justified, as if it were the result of ldb.
 
-Examples:
+* 示例(Examples):
 
  (dpb 1 (byte 1 10) 0) =>  1024
  (dpb -2 (byte 2 10) 0) =>  2048
  (dpb 1 (byte 2 10) 2048) =>  1024
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 byte, deposit-field, ldb
 
-Notes:
+* 注意(Notes):
 
  (logbitp j (dpb m (byte s p) n))
  ==  (if (and (>= j p) (< j (+ p s)))
@@ -3770,19 +3665,19 @@ for all valid values of x, y, and z.
 Historically, the name ``dpb'' comes from a DEC PDP-10 assembly language instruction meaning ``deposit byte.'' 
 
 
-Accessor LDB
+### <span id="">Accessor LDB</span>
 
-Syntax:
+* 语法(Syntax):
 
 ldb bytespec integer => byte
 
 (setf (ldb bytespec place) new-byte)
 
-Pronunciation:
+* 发音(Pronunciation)::
 
 ['lidib] or ['liduhb] or ['el'dee'bee]
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 bytespec---a byte specifier.
 
@@ -3790,7 +3685,7 @@ integer---an integer.
 
 byte, new-byte---a non-negative integer.
 
-Description:
+* 描述(Description):
 
 ldb extracts and returns the byte of integer specified by bytespec.
 
@@ -3798,24 +3693,24 @@ ldb returns an integer in which the bits with weights 2^(s-1) through 2^0 are th
 
 setf may be used with ldb to modify a byte within the integer that is stored in a given place. The order of evaluation, when an ldb form is supplied to setf, is exactly left-to-right. The effect is to perform a dpb operation and then store the result back into the place.
 
-Examples:
+* 示例(Examples):
 
  (ldb (byte 2 1) 10) =>  1
  (setq a (list 8)) =>  (8)
  (setf (ldb (byte 2 1) (car a)) 1) =>  1
  a =>  (10)
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 byte, byte-position, byte-size, dpb
 
-Notes:
+* 注意(Notes):
 
  (logbitp j (ldb (byte s p) n))
     ==  (and (< j s) (logbitp (+ j p) n))
@@ -3829,13 +3724,13 @@ for all valid values of x and y.
 Historically, the name ``ldb'' comes from a DEC PDP-10 assembly language instruction meaning ``load byte.'' 
 
 
-Function LDB-TEST
+### <span id="">Function LDB-TEST</span>
 
-Syntax:
+* 语法(Syntax):
 
 ldb-test bytespec integer => generalized-boolean
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 bytespec---a byte specifier.
 
@@ -3843,42 +3738,42 @@ integer---an integer.
 
 generalized-boolean---a generalized boolean.
 
-Description:
+* 描述(Description):
 
 Returns true if any of the bits of the byte in integer specified by bytespec is non-zero; otherwise returns false.
 
-Examples:
+* 示例(Examples):
 
  (ldb-test (byte 4 1) 16) =>  true
  (ldb-test (byte 3 1) 16) =>  false
  (ldb-test (byte 3 2) 16) =>  true
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 byte, ldb, zerop
 
-Notes:
+* 注意(Notes):
 
  (ldb-test bytespec n) == 
  (not (zerop (ldb bytespec n))) == 
  (logtest (ldb bytespec -1) n)
 
 
-Accessor MASK-FIELD
+### <span id="">Accessor MASK-FIELD</span>
 
-Syntax:
+* 语法(Syntax):
 
 mask-field bytespec integer => masked-integer
 
 (setf (mask-field bytespec place) new-masked-integer)
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 bytespec---a byte specifier.
 
@@ -3886,13 +3781,13 @@ integer---an integer.
 
 masked-integer, new-masked-integer---a non-negative integer.
 
-Description:
+* 描述(Description):
 
 mask-field performs a ``mask'' operation on integer. It returns an integer that has the same bits as integer in the byte specified by bytespec, but that has zero-bits everywhere else.
 
 setf may be used with mask-field to modify a byte within the integer that is stored in a given place. The effect is to perform a deposit-field operation and then store the result back into the place.
 
-Examples:
+* 示例(Examples):
 
  (mask-field (byte 1 5) -1) =>  32
  (setq a 15) =>  15
@@ -3901,17 +3796,17 @@ Examples:
  (setf (mask-field (byte 2 0) a) 1) =>  1
  a =>  13
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 byte, ldb
 
-Notes:
+* 注意(Notes):
 
  (ldb bs (mask-field bs n)) ==  (ldb bs n)
  (logbitp j (mask-field (byte s p) n))
@@ -3920,28 +3815,28 @@ Notes:
 
 
 
-Constant Variable MOST-POSITIVE-FIXNUM, MOST-NEGATIVE-FIXNUM
+### <span id="">Constant Variable MOST-POSITIVE-FIXNUM, MOST-NEGATIVE-FIXNUM</span>
 
 Constant Value:
 
 implementation-dependent.
 
-Description:
+* 描述(Description):
 
 most-positive-fixnum is that fixnum closest in value to positive infinity provided by the implementation, and greater than or equal to both 2^15 - 1 and array-dimension-limit.
 
 most-negative-fixnum is that fixnum closest in value to negative infinity provided by the implementation, and less than or equal to -2^15.
 
-Examples: None.
+* 示例(Examples): None.
 
-See Also: None.
+* 也见(See Also): None.
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function DECODE-FLOAT, SCALE-FLOAT, FLOAT-RADIX, FLOAT-SIGN, FLOAT-DIGITS, FLOAT-PRECISION, INTEGER-DECODE-FLOAT
+### <span id="">Function DECODE-FLOAT, SCALE-FLOAT, FLOAT-RADIX, FLOAT-SIGN, FLOAT-DIGITS, FLOAT-PRECISION, INTEGER-DECODE-FLOAT</span>
 
-Syntax:
+* 语法(Syntax):
 
 decode-float float => significand, exponent, sign
 
@@ -3957,7 +3852,7 @@ float-precision float => digits2
 
 integer-decode-float float => significand, exponent, integer-sign
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 digits1---a non-negative integer.
 
@@ -3985,7 +3880,7 @@ signed-float---a float.
 
 significand---a float.
 
-Description:
+* 描述(Description):
 
 decode-float computes three values that characterize float. The first value is of the same type as float and represents the significand. The second value represents the exponent to which the radix (notated in this description by b) must be raised to obtain the value that, when multiplied with the first result, produces the absolute value of float. If float is zero, any integer value may be returned, provided that the identity shown for scale-float holds. The third value is of the same type as float and is 1.0 if float is greater than or equal to zero or -1.0 otherwise.
 
@@ -4009,7 +3904,7 @@ integer-decode-float computes three values that characterize float - the signifi
                       (integer-decode-float f)
    (scale-float (float signif f) expon)) ==  (abs f)
 
-Examples:
+* 示例(Examples):
 
  ;; Note that since the purpose of this functionality is to expose
  ;; details of the implementation, all of these examples are necessarily
@@ -4032,13 +3927,13 @@ Examples:
  (float-precision least-positive-single-float) =>  1
  (integer-decode-float 1.0) =>  8388608, -23, 1
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By:
+* 受此影响(Affected By):
 
 The implementation's representation for floats.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 The functions decode-float, float-radix, float-digits, float-precision, and integer-decode-float should signal an error if their only argument is not a float.
 
@@ -4046,9 +3941,9 @@ The function scale-float should signal an error if its first argument is not a f
 
 The function float-sign should signal an error if its first argument is not a float or if its second argument is supplied but is not a float.
 
-See Also: None.
+* 也见(See Also): None.
 
-Notes:
+* 注意(Notes):
 
 The product of the first result of decode-float or integer-decode-float, of the radix raised to the power of the second result, and of the third result is exactly equal to the value of float.
 
@@ -4065,13 +3960,13 @@ and
 ==  f
 
 
-Function FLOAT
+### <span id="">Function FLOAT</span>
 
-Syntax:
+* 语法(Syntax):
 
 float number &optional prototype => float
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 number---a real.
 
@@ -4079,7 +3974,7 @@ prototype---a float.
 
 float---a float.
 
-Description:
+* 描述(Description):
 
 float converts a real number to a float.
 
@@ -4087,7 +3982,7 @@ If a prototype is supplied, a float is returned that is mathematically equal to 
 
 If prototype is not supplied, then if the number is already a float, it is returned; otherwise, a float is returned that is mathematically equal to number but is a single float.
 
-Examples:
+* 示例(Examples):
 
  (float 0) =>  0.0
  (float 1 .5) =>  1.0
@@ -4097,64 +3992,64 @@ Examples:
 OR=>  1.0
  (eql (float 1.0 1.0d0) 1.0d0) =>  true
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 coerce
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function FLOATP
+### <span id="">Function FLOATP</span>
 
-Syntax:
+* 语法(Syntax):
 
 floatp object
 
 generalized-boolean
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 object---an object.
 
 generalized-boolean---a generalized boolean.
 
-Description:
+* 描述(Description):
 
 Returns true if object is of type float; otherwise, returns false.
 
-Examples:
+* 示例(Examples):
 
  (floatp 1.2d2) =>  true
  (floatp 1.212) =>  true
  (floatp 1.2s2) =>  true
  (floatp (expt 2 130)) =>  false
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also: None.
+* 也见(See Also): None.
 
-Notes:
+* 注意(Notes):
 
  (floatp object) ==  (typep object 'float)
 
 
-Constant Variable MOST-POSITIVE-SHORT-FLOAT, LEAST-POSITIVE-SHORT-FLOAT, LEAST-POSITIVE-NORMALIZED-SHORT-FLOAT, MOST-POSITIVE-DOUBLE-FLOAT, LEAST-POSITIVE-DOUBLE-FLOAT, LEAST-POSITIVE-NORMALIZED-DOUBLE-FLOAT, MOST-POSITIVE-LONG-FLOAT, LEAST-POSITIVE-LONG-FLOAT, LEAST-POSITIVE-NORMALIZED-LONG-FLOAT, MOST-POSITIVE-SINGLE-FLOAT, LEAST-POSITIVE-SINGLE-FLOAT, LEAST-POSITIVE-NORMALIZED-SINGLE-FLOAT, MOST-NEGATIVE-SHORT-FLOAT, LEAST-NEGATIVE-SHORT-FLOAT, LEAST-NEGATIVE-NORMALIZED-SHORT-FLOAT, MOST-NEGATIVE-SINGLE-FLOAT, LEAST-NEGATIVE-SINGLE-FLOAT, LEAST-NEGATIVE-NORMALIZED-SINGLE-FLOAT, MOST-NEGATIVE-DOUBLE-FLOAT, LEAST-NEGATIVE-DOUBLE-FLOAT, LEAST-NEGATIVE-NORMALIZED-DOUBLE-FLOAT, MOST-NEGATIVE-LONG-FLOAT, LEAST-NEGATIVE-LONG-FLOAT, LEAST-NEGATIVE-NORMALIZED-LONG-FLOAT
+### <span id="">Constant Variable MOST-POSITIVE-SHORT-FLOAT, LEAST-POSITIVE-SHORT-FLOAT, LEAST-POSITIVE-NORMALIZED-SHORT-FLOAT, MOST-POSITIVE-DOUBLE-FLOAT, LEAST-POSITIVE-DOUBLE-FLOAT, LEAST-POSITIVE-NORMALIZED-DOUBLE-FLOAT, MOST-POSITIVE-LONG-FLOAT, LEAST-POSITIVE-LONG-FLOAT, LEAST-POSITIVE-NORMALIZED-LONG-FLOAT, MOST-POSITIVE-SINGLE-FLOAT, LEAST-POSITIVE-SINGLE-FLOAT, LEAST-POSITIVE-NORMALIZED-SINGLE-FLOAT, MOST-NEGATIVE-SHORT-FLOAT, LEAST-NEGATIVE-SHORT-FLOAT, LEAST-NEGATIVE-NORMALIZED-SHORT-FLOAT, MOST-NEGATIVE-SINGLE-FLOAT, LEAST-NEGATIVE-SINGLE-FLOAT, LEAST-NEGATIVE-NORMALIZED-SINGLE-FLOAT, MOST-NEGATIVE-DOUBLE-FLOAT, LEAST-NEGATIVE-DOUBLE-FLOAT, LEAST-NEGATIVE-NORMALIZED-DOUBLE-FLOAT, MOST-NEGATIVE-LONG-FLOAT, LEAST-NEGATIVE-LONG-FLOAT, LEAST-NEGATIVE-NORMALIZED-LONG-FLOAT</span>
 
 Constant Value:
 
 implementation-dependent.
 
-Description:
+* 描述(Description):
 
 These constant variables provide a way for programs to examine the implementation-defined limits for the various float formats.
 
@@ -4178,20 +4073,20 @@ Of these variables, each which has ``short-float'' in its name must have a value
 
     Each of these constant variables has as its value the negative float of the largest magnitude (closest in value to, but not equal to, negative infinity) for the float format implied by its name.
 
-Examples: None.
+* 示例(Examples): None.
 
-See Also: None.
+* 也见(See Also): None.
 
-Notes:
+* 注意(Notes):
 
 
-Constant Variable SHORT-FLOAT-EPSILON, SHORT-FLOAT-NEGATIVE-EPSILON, SINGLE-FLOAT-EPSILON, SINGLE-FLOAT-NEGATIVE-EPSILON, DOUBLE-FLOAT-EPSILON, DOUBLE-FLOAT-NEGATIVE-EPSILON, LONG-FLOAT-EPSILON, LONG-FLOAT-NEGATIVE-EPSILON
+### <span id="">Constant Variable SHORT-FLOAT-EPSILON, SHORT-FLOAT-NEGATIVE-EPSILON, SINGLE-FLOAT-EPSILON, SINGLE-FLOAT-NEGATIVE-EPSILON, DOUBLE-FLOAT-EPSILON, DOUBLE-FLOAT-NEGATIVE-EPSILON, LONG-FLOAT-EPSILON, LONG-FLOAT-NEGATIVE-EPSILON</span>
 
 Constant Value:
 
 implementation-dependent.
 
-Description:
+* 描述(Description):
 
 The value of each of the constants short-float-epsilon, single-float-epsilon, double-float-epsilon, and long-float-epsilon is the smallest positive float <EPSILON> of the given format, such that the following expression is true when evaluated:
 
@@ -4201,37 +4096,37 @@ The value of each of the constants short-float-negative-epsilon, single-float-ne
 
 (not (= (float 1 <EPSILON>) (- (float 1 <EPSILON>) <EPSILON>)))
 
-Examples: None.
+* 示例(Examples): None.
 
-See Also: None.
+* 也见(See Also): None.
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Condition Type ARITHMETIC-ERROR
+### <span id="">Condition Type ARITHMETIC-ERROR</span>
 
-Class Precedence List:
+* 类优先级列表(Class Precedence List):
 
 arithmetic-error, error, serious-condition, condition, t
 
-Description:
+* 描述(Description):
 
 The type arithmetic-error consists of error conditions that occur during arithmetic operations. The operation and operands are initialized with the initialization arguments named :operation and :operands to make-condition, and are accessed by the functions arithmetic-error-operation and arithmetic-error-operands.
 
-See Also:
+* 也见(See Also):
 
 arithmetic-error-operation, arithmetic-error-operands 
 
 
-Function ARITHMETIC-ERROR-OPERANDS, ARITHMETIC-ERROR-OPERATION
+### <span id="">Function ARITHMETIC-ERROR-OPERANDS, ARITHMETIC-ERROR-OPERATION</span>
 
-Syntax:
+* 语法(Syntax):
 
 arithmetic-error-operands condition => operands
 
 arithmetic-error-operation condition => operation
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 condition---a condition of type arithmetic-error.
 
@@ -4239,80 +4134,80 @@ operands---a list.
 
 operation---a function designator.
 
-Description:
+* 描述(Description):
 
 arithmetic-error-operands returns a list of the operands which were used in the offending call to the operation that signaled the condition.
 
 arithmetic-error-operation returns a list of the offending operation in the offending call that signaled the condition.
 
-Examples: None.
+* 示例(Examples): None.
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 arithmetic-error, Section 9 (Conditions)
 
-Notes:
+* 注意(Notes):
 
 
-Condition Type DIVISION-BY-ZERO
+### <span id="">Condition Type DIVISION-BY-ZERO</span>
 
-Class Precedence List:
+* 类优先级列表(Class Precedence List):
 
 division-by-zero, arithmetic-error, error, serious-condition, condition, t
 
-Description:
+* 描述(Description):
 
 The type division-by-zero consists of error conditions that occur because of division by zero. 
 
 
-Condition Type FLOATING-POINT-INVALID-OPERATION
+### <span id="">Condition Type FLOATING-POINT-INVALID-OPERATION</span>
 
-Class Precedence List:
+* 类优先级列表(Class Precedence List):
 
 floating-point-invalid-operation, arithmetic-error, error, serious-condition, condition, t
 
-Description:
+* 描述(Description):
 
 The type floating-point-invalid-operation consists of error conditions that occur because of certain floating point traps.
 
 It is implementation-dependent whether floating point traps occur, and whether or how they may be enabled or disabled. Therefore, conforming code may establish handlers for this condition, but must not depend on its being signaled. 
 
-Condition Type FLOATING-POINT-INEXACT
+### <span id="">Condition Type FLOATING-POINT-INEXACT</span>
 
-Class Precedence List:
+* 类优先级列表(Class Precedence List):
 
 floating-point-inexact, arithmetic-error, error, serious-condition, condition, t
 
-Description:
+* 描述(Description):
 
 The type floating-point-inexact consists of error conditions that occur because of certain floating point traps.
 
 It is implementation-dependent whether floating point traps occur, and whether or how they may be enabled or disabled. Therefore, conforming code may establish handlers for this condition, but must not depend on its being signaled. 
 
-Condition Type FLOATING-POINT-OVERFLOW
+### <span id="">Condition Type FLOATING-POINT-OVERFLOW</span>
 
-Class Precedence List:
+* 类优先级列表(Class Precedence List):
 
 floating-point-overflow, arithmetic-error, error, serious-condition, condition, t
 
-Description:
+* 描述(Description):
 
 The type floating-point-overflow consists of error conditions that occur because of floating-point overflow. 
 
 
-Condition Type FLOATING-POINT-UNDERFLOW
+### <span id="">Condition Type FLOATING-POINT-UNDERFLOW</span>
 
-Class Precedence List:
+* 类优先级列表(Class Precedence List):
 
 floating-point-underflow, arithmetic-error, error, serious-condition, condition, t
 
-Description:
+* 描述(Description):
 
 The type floating-point-underflow consists of error conditions that occur because of floating-point underflow. 
 
