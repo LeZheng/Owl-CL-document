@@ -1,19 +1,19 @@
-# 12. Numbers
+# 12. 数字
 
-> * 12.1 [Number Concepts](#)
-> * 12.2 [The Numbers Dictionary](#)
+> * 12.1 [数字的概念](#NumberConcepts)
+> * 12.2 [数字的字典](#NumbersDictionary)
 
-## 12.1 <span id="">Number Concepts</span>
+## 12.1 <span id="NumberConcepts">Number Concepts</span>
 
-> * 12.1.1 [Numeric Operations](#)
-> * 12.1.2 [Implementation-Dependent Numeric Constants](#)
-> * 12.1.3 [Rational Computations](#)
-> * 12.1.4 [Floating-point Computations](#)
-> * 12.1.5 [Complex Computations](#)
-> * 12.1.6 [Interval Designators](#)
-> * 12.1.7 [Random-State Operations](#)
+> * 12.1.1 [数值运算](#NumericOperations)
+> * 12.1.2 [依赖于具体实现的数字常量](#IDNumericConstants)
+> * 12.1.3 [有理数计算](#RationalComputations)
+> * 12.1.4 [浮点计算](#FloatingPointComputations)
+> * 12.1.5 [复数计算](#ComplexComputations)
+> * 12.1.6 [Interval Designators](#IntervalDesignators)
+> * 12.1.7 [随机状态运算](#RandomStateOperations)
 
-### 12.1.1 <span id="">Numeric Operations</span>
+### 12.1.1 <span id="NumericOperations">数值运算</span>
 
 Common Lisp provides a large variety of operations related to numbers. This section provides an overview of those operations by grouping them into categories that emphasize some of the relationships among them.
 
@@ -63,18 +63,18 @@ float-precision  numerator
 
 Figure 12-4. Defined names relating to numeric type manipulation and coercion.
 
-> * 12.1.1.1 [Associativity and Commutativity in Numeric Operations](#)
-> * 12.1.1.2 [Contagion in Numeric Operations](#)
-> * 12.1.1.3 [Viewing Integers as Bits and Bytes](#)
+> * 12.1.1.1 [数值运算中的结合律和交换律](#AssociativityCommutativityNO)
+> * 12.1.1.2 [数值运算的传递性](#ContagionNumericOperations)
+> * 12.1.1.3 [视整数为位和字节](#ViewingIntegersBitsBytes)
 
 
-#### 12.1.1.1 <span id="">Associativity and Commutativity in Numeric Operations</span>
+#### 12.1.1.1 <span id="AssociativityCommutativityNO">数值运算中的结合律和交换律</span>
 
 For functions that are mathematically associative (and possibly commutative), a conforming implementation may process the arguments in any manner consistent with associative (and possibly commutative) rearrangement. This does not affect the order in which the argument forms are evaluated; for a discussion of evaluation order, see Section 3.1.2.1.2.3 (Function Forms). What is unspecified is only the order in which the parameter values are processed. This implies that implementations may differ in which automatic coercions are applied; see Section 12.1.1.2 (Contagion in Numeric Operations).
 
 A conforming program can control the order of processing explicitly by separating the operations into separate (possibly nested) function forms, or by writing explicit calls to functions that perform coercions.
 
-##### 12.1.1.1.1 Examples of Associativity and Commutativity in Numeric Operations
+##### 12.1.1.1.1 数值运算中的结合律和交换律的示例
 
 Consider the following expression, in which we assume that 1.0 and 1.0e-15 both denote single floats:
 
@@ -93,18 +93,18 @@ A conforming program could control the order by writing, for example,
  (+ (+ 1/3 2/3) (+ 1.0d0 1.0e-15) 1.0)
 
 
-#### 12.1.1.2 <span id="">Contagion in Numeric Operations</span>
+#### 12.1.1.2 <span id="ContagionNumericOperations">数值运算的传递性</span>
 
 For information about the contagion rules for implicit coercions of arguments in numeric operations, see Section 12.1.4.4 (Rule of Float Precision Contagion), Section 12.1.4.1 (Rule of Float and Rational Contagion), and Section 12.1.5.2 (Rule of Complex Contagion). 
 
 
-#### 12.1.1.3 <span id="">Viewing Integers as Bits and Bytes</span>
+#### 12.1.1.3 <span id="ViewingIntegersBitsBytes">视整数为位和字节</span>
 
-> * 12.1.1.3.1 [Logical Operations on Integers](#)
-> * 12.1.1.3.2 [Byte Operations on Integers](#)
+> * 12.1.1.3.1 [整数上的逻辑操作](#LogicalOperationsIntegers)
+> * 12.1.1.3.2 [整数上的字节操作](#ByteOperationsIntegers)
 
 
-##### 12.1.1.3.1 <span id="">Logical Operations on Integers</span>
+##### 12.1.1.3.1 <span id="LogicalOperationsIntegers">整数上的逻辑操作</span>
 
 Logical operations require integers as arguments; an error of type type-error should be signaled if an argument is supplied that is not an integer. Integer arguments to logical operations are treated as if they were represented in two's-complement notation.
 
@@ -124,7 +124,7 @@ boole-eqv    logandc2        logxor
 
 Figure 12-5. Defined names relating to logical operations on numbers. 
 
-##### 12.1.1.3.2 <span id="">Byte Operations on Integers</span>
+##### 12.1.1.3.2 <span id="ByteOperationsIntegers">整数上的字节操作</span>
 
 The byte-manipulation functions use objects called byte specifiers to designate the size and position of a specific byte within an integer. The representation of a byte specifier is implementation-dependent; it might or might not be a number. The function byte will construct a byte specifier, which various other byte-manipulation functions will accept.
 
@@ -136,7 +136,7 @@ byte-size      ldb
 
 Figure 12-6. Defined names relating to byte manipulation. 
 
-### 12.1.2 <span id="">Implementation-Dependent Numeric Constants</span>
+### 12.1.2 <span id="IDNumericConstants">依赖于具体实现的数字常量</span>
 
 The next figure shows defined names relating to implementation-dependent details about numbers.
 
@@ -157,20 +157,20 @@ most-negative-double-float     single-float-negative-epsilon
 Figure 12-7. Defined names relating to implementation-dependent details about numbers. 
 
 
-### 12.1.3 <span id="">Rational Computations</span>
+### 12.1.3 <span id="RationalComputations">有理数计算</span>
 
 The rules in this section apply to rational computations.
 
-> * 12.1.3.1 [Rule of Unbounded Rational Precision](#)
-> * 12.1.3.2 [Rule of Canonical Representation for Rationals](#)
-> * 12.1.3.3 [Rule of Float Substitutability](#)
+> * 12.1.3.1 [无界的有理数精度规则](#RuleUnboundedRationalPrecision)
+> * 12.1.3.2 [有理数的规范表示规则](#RuleCanonicalReprRationals)
+> * 12.1.3.3 [浮点的置换性规则](#RuleFloatSubstitutability)
 
 
-#### 12.1.3.1 <span id="">Rule of Unbounded Rational Precision</span>
+#### 12.1.3.1 <span id="RuleUnboundedRationalPrecision">无界的有理数精度规则</span>
 
 Rational computations cannot overflow in the usual sense (though there may not be enough storage to represent a result), since integers and ratios may in principle be of any magnitude. 
 
-#### 12.1.3.2 <span id="">Rule of Canonical Representation for Rationals</span>
+#### 12.1.3.2 <span id="RuleCanonicalReprRationals">有理数的规范表示规则</span>
 
 If any computation produces a result that is a mathematical ratio of two integers such that the denominator evenly divides the numerator, then the result is converted to the equivalent integer.
 
@@ -178,7 +178,7 @@ If the denominator does not evenly divide the numerator, the canonical represent
 
 When used as input (in the default syntax), the notation -0 always denotes the integer 0. A conforming implementation must not have a representation of ``minus zero'' for integers that is distinct from its representation of zero for integers. However, such a distinction is possible for floats; see the type float. 
 
-#### 12.1.3.3 <span id="">Rule of Float Substitutability</span>
+#### 12.1.3.3 <span id="RuleFloatSubstitutability">浮点的置换性规则</span>
 
 When the arguments to an irrational mathematical function are all rational and the true mathematical result is also (mathematically) rational, then unless otherwise noted an implementation is free to return either an accurate rational result or a single float approximation. If the arguments are all rational but the result cannot be expressed as a rational number, then a single float approximation is always returned.
 
@@ -213,23 +213,23 @@ tanh      (tanh 0) =>  0 or 0.0
 Figure 12-8. Functions Affected by Rule of Float Substitutability 
 
 
-### 12.1.4 <span id="">Floating-point Computations</span>
+### 12.1.4 <span id="FloatingPointComputations">浮点计算</span>
 
 The following rules apply to floating point computations.
 
-> * 12.1.4.1 [Rule of Float and Rational Contagion](#)
-> * 12.1.4.2 [Rule of Float Approximation](#)
-> * 12.1.4.3 [Rule of Float Underflow and Overflow](#)
-> * 12.1.4.4 [Rule of Float Precision Contagion](#)
+> * 12.1.4.1 [浮点和有理数传递性的规则](#RuleFloatRationalContagion)
+> * 12.1.4.2 [浮点近似的规则](#RuleFloatApproximation)
+> * 12.1.4.3 [浮点的上溢和下溢规则](#RuleFloatUnderflowOverflow)
+> * 12.1.4.4 [浮点精度传递规则](#RuleFloatPrecisionContagion)
 
 
-#### 12.1.4.1 <span id="">Rule of Float and Rational Contagion</span>
+#### 12.1.4.1 <span id="RuleFloatRationalContagion">浮点和有理数传递性的规则</span>
 
 When rationals and floats are combined by a numerical function, the rational is first converted to a float of the same format. For functions such as + that take more than two arguments, it is permitted that part of the operation be carried out exactly using rationals and the rest be done using floating-point arithmetic.
 
 When rationals and floats are compared by a numerical function, the function rational is effectively called to convert the float to a rational and then an exact comparison is performed. In the case of complex numbers, the real and imaginary parts are effectively handled individually.
 
-##### 12.1.4.1.1 Examples of Rule of Float and Rational Contagion
+##### 12.1.4.1.1 浮点和有理数传递性的规则的示例
 
  ;;;; Combining rationals with floats.
  ;;; This example assumes an implementation in which 
@@ -249,46 +249,46 @@ When rationals and floats are compared by a numerical function, the function rat
  (< (float 5/7) (float 5/7)) =>  false
 
 
-#### 12.1.4.2 <span id="">Rule of Float Approximation</span>
+#### 12.1.4.2 <span id="RuleFloatApproximation">浮点近似的规则</span>
 
 Computations with floats are only approximate, although they are described as if the results were mathematically accurate. Two mathematically identical expressions may be computationally different because of errors inherent in the floating-point approximation process. The precision of a float is not necessarily correlated with the accuracy of that number. For instance, 3.142857142857142857 is a more precise approximation to <PI> than 3.14159, but the latter is more accurate. The precision refers to the number of bits retained in the representation. When an operation combines a short float with a long float, the result will be a long float. Common Lisp functions assume that the accuracy of arguments to them does not exceed their precision. Therefore when two small floats are combined, the result is a small float. Common Lisp functions never convert automatically from a larger size to a smaller one. 
 
 
-#### 12.1.4.3 <span id="">Rule of Float Underflow and Overflow</span>
+#### 12.1.4.3 <span id="RuleFloatUnderflowOverflow">浮点的上溢和下溢规则</span>
 
 An error of type floating-point-overflow or floating-point-underflow should be signaled if a floating-point computation causes exponent overflow or underflow, respectively. 
 
 
-#### 12.1.4.4 <span id="">Rule of Float Precision Contagion</span>
+#### 12.1.4.4 <span id="RuleFloatPrecisionContagion">浮点精度传递规则</span>
 
 The result of a numerical function is a float of the largest format among all the floating-point arguments to the function. 
 
-### 12.1.5 <span id="">Complex Computations</span>
+### 12.1.5 <span id="ComplexComputations">复数计算</span>
 
 The following rules apply to complex computations:
 
-> * 12.1.5.1 [Rule of Complex Substitutability](#)
-> * 12.1.5.2 [Rule of Complex Contagion](#)
-> * 12.1.5.3 [Rule of Canonical Representation for Complex Rationals](#)
-> * 12.1.5.4 [Principal Values and Branch Cuts](#)
+> * 12.1.5.1 [复数的置换性规则](#RuleComplexSubstitutability)
+> * 12.1.5.2 [复数传递规则](#RuleComplexContagion)
+> * 12.1.5.3 [复数的正规表示规则](#RuleCanonicalReprComplexRationals)
+> * 12.1.5.4 [Principal Values and Branch Cuts](#PrincipalValuesBranchCuts)
 
 
-#### 12.1.5.1 <span id="">Rule of Complex Substitutability</span>
+#### 12.1.5.1 <span id="RuleComplexSubstitutability">复数的置换性规则</span>
 
 Except during the execution of irrational and transcendental functions, no numerical function ever yields a complex unless one or more of its arguments is a complex. 
 
 
-#### 12.1.5.2 <span id="">Rule of Complex Contagion</span>
+#### 12.1.5.2 <span id="RuleComplexContagion">复数传递规则</span>
 
 When a real and a complex are both part of a computation, the real is first converted to a complex by providing an imaginary part of 0. 
 
 
-#### 12.1.5.3 <span id="">Rule of Canonical Representation for Complex Rationals</span>
+#### 12.1.5.3 <span id="RuleCanonicalReprComplexRationals">复数的正规表示规则</span>
 
 If the result of any computation would be a complex number whose real part is of type rational and whose imaginary part is zero, the result is converted to the rational which is the real part. This rule does not apply to complex numbers whose parts are floats. For example, #C(5 0) and 5 are not different objects in Common Lisp(they are always the same under eql); #C(5.0 0.0) and 5.0 are always different objects in Common Lisp they are never the same under eql, although they are the same under equalp and =).
 
 
-##### 12.1.5.3.1 Examples of Rule of Canonical Representation for Complex Rationals
+##### 12.1.5.3.1 复数的正规表示规则的示例
 
  #c(1.0 1.0) =>  #C(1.0 1.0)
  #c(0.0 0.0) =>  #C(0.0 0.0)
@@ -300,7 +300,7 @@ If the result of any computation would be a complex number whose real part is of
  (typep #c(0 0) '(complex (eql 0))) =>  false
 
 
-##### 12.1.5.4 <span id="">Principal Values and Branch Cuts</span>
+##### 12.1.5.4 <span id="PrincipalValuesBranchCuts">Principal Values and Branch Cuts</span>
 
 Many of the irrational and transcendental functions are multiply defined in the complex domain; for example, there are in general an infinite number of complex values for the logarithm function. In each such case, a principal value must be chosen for the function to return. In general, such values cannot be chosen so as to make the range continuous; lines in the domain called branch cuts must be defined, which in turn define the discontinuities in the range. Common Lisp defines the branch cuts, principal values, and boundary conditions for the complex functions following ``Principal Values and Branch Cuts in Complex APL.'' The branch cut rules that apply to each function are located with the description of that function.
 
@@ -318,7 +318,7 @@ The quadrant numbers referred to in the discussions of branch cuts are as illust
 
 Figure 12-10. Quadrant Numbering for Branch Cuts 
 
-### 12.1.6 <span id="">Interval Designators</span>
+### 12.1.6 <span id="IntervalDesignators">Interval Designators</span>
 
 The compound type specifier form of the numeric type specifiers permit the user to specify an interval on the real number line which describe a subtype of the type which would be described by the corresponding atomic type specifier. A subtype of some type T is specified using an ordered pair of objects called interval designators for type T.
 
@@ -351,7 +351,7 @@ the symbol *
     This denotes the absence of an upper bound on the interval. 
 
 
-### 12.1.7 <span id="">Random-State Operations</span>
+### 12.1.7 <span id="RandomStateOperations">随机状态运算</span>
 
 The next figure lists some defined names that are applicable to random states.
 
@@ -361,95 +361,95 @@ make-random-state  random-state-p
 Figure 12-11. Random-state defined names 
 
 
-## 12.2 <span id="">The Numbers Dictionary</span>
+## 12.2 <span id="NumbersDictionary">数字的字典</span>
 
-> * [System Class NUMBER](#)
-> * [System Class COMPLEX](#)
-> * [System Class REAL](#)
-> * [System Class FLOAT](#)
-> * [Type SHORT-FLOAT, SINGLE-FLOAT, DOUBLE-FLOAT, LONG-FLOAT](#)
-> * [System Class RATIONAL](#)
-> * [System Class RATIO](#)
-> * [System Class INTEGER](#)
-> * [Type SIGNED-BYTE](#)
-> * [Type UNSIGNED-BYTE](#)
-> * [Type Specifier MOD](#)
-> * [Type BIT](#)
-> * [Type FIXNUM](#)
-> * [Type BIGNUM](#)
-> * [Function =, /=, <, >, <=, >=](#)
-> * [Function MAX, MIN](#)
-> * [Function MINUSP, PLUSP](#)
-> * [Function ZEROP](#)
-> * [Function FLOOR, FFLOOR, CEILING, FCEILING, TRUNCATE, FTRUNCATE, ROUND, FROUND](#)
-> * [Function SIN, COS, TAN](#)
-> * [Function ASIN, ACOS, ATAN](#)
-> * [Constant Variable PI](#)
-> * [Function SINH, COSH, TANH, ASINH, ACOSH, ATANH](#)
-> * [Function *](#)
-> * [Function +](#)
-> * [Function -](#)
-> * [Function /](#)
-> * [Function 1+, 1-](#)
-> * [Function ABS](#)
-> * [Function EVENP, ODDP](#)
-> * [Function EXP, EXPT](#)
-> * [Function GCD](#)
-> * [Macro INCF, DECF](#)
-> * [Function LCM](#)
-> * [Function LOG](#)
-> * [Function MOD, REM](#)
-> * [Function SIGNUM](#)
-> * [Function SQRT, ISQRT](#)
-> * [System Class RANDOM-STATE](#)
-> * [Function MAKE-RANDOM-STATE](#)
-> * [Function RANDOM](#)
-> * [Function RANDOM-STATE-P](#)
-> * [Variable *RANDOM-STATE*](#)
-> * [Function NUMBERP](#)
-> * [Function CIS](#)
-> * [Function COMPLEX](#)
-> * [Function COMPLEXP](#)
-> * [Function CONJUGATE](#)
-> * [Function PHASE](#)
-> * [Function REALPART, IMAGPART](#)
-> * [Function UPGRADED-COMPLEX-PART-TYPE](#)
-> * [Function REALP](#)
-> * [Function NUMERATOR, DENOMINATOR](#)
-> * [Function RATIONAL, RATIONALIZE](#)
-> * [Function RATIONALP](#)
-> * [Function ASH](#)
-> * [Function INTEGER-LENGTH](#)
-> * [Function INTEGERP](#)
-> * [Function PARSE-INTEGER](#)
-> * [Function BOOLE](#)
-> * [Constant Variable BOOLE-1, BOOLE-2, BOOLE-AND, BOOLE-ANDC1, BOOLE-ANDC2, BOOLE-C1, BOOLE-C2, BOOLE-CLR, BOOLE-EQV, BOOLE-IOR, BOOLE-NAND, BOOLE-NOR, BOOLE-ORC1, BOOLE-ORC2, BOOLE-SET, BOOLE-XOR](#)
-> * [Function LOGAND, LOGANDC1, LOGANDC2, LOGEQV, LOGIOR, LOGNAND, LOGNOR, LOGNOT, LOGORC1, LOGORC2, LOGXOR](#)
-> * [Function LOGBITP](#)
-> * [Function LOGCOUNT](#)
-> * [Function LOGTEST](#)
-> * [Function BYTE, BYTE-SIZE, BYTE-POSITION](#)
-> * [Function DEPOSIT-FIELD](#)
-> * [Function DPB](#)
-> * [Accessor LDB](#)
-> * [Function LDB-TEST](#)
-> * [Accessor MASK-FIELD](#)
-> * [Constant Variable MOST-POSITIVE-FIXNUM, MOST-NEGATIVE-FIXNUM](#)
-> * [Function DECODE-FLOAT, SCALE-FLOAT, FLOAT-RADIX, FLOAT-SIGN, FLOAT-DIGITS, FLOAT-PRECISION, INTEGER-DECODE-FLOAT](#)
-> * [Function FLOAT](#)
-> * [Function FLOATP](#)
-> * [Constant Variable MOST-POSITIVE-SHORT-FLOAT, LEAST-POSITIVE-SHORT-FLOAT, LEAST-POSITIVE-NORMALIZED-SHORT-FLOAT, MOST-POSITIVE-DOUBLE-FLOAT, LEAST-POSITIVE-DOUBLE-FLOAT, LEAST-POSITIVE-NORMALIZED-DOUBLE-FLOAT, MOST-POSITIVE-LONG-FLOAT, LEAST-POSITIVE-LONG-FLOAT, LEAST-POSITIVE-NORMALIZED-LONG-FLOAT, MOST-POSITIVE-SINGLE-FLOAT, LEAST-POSITIVE-SINGLE-FLOAT, LEAST-POSITIVE-NORMALIZED-SINGLE-FLOAT, MOST-NEGATIVE-SHORT-FLOAT, LEAST-NEGATIVE-SHORT-FLOAT, LEAST-NEGATIVE-NORMALIZED-SHORT-FLOAT, MOST-NEGATIVE-SINGLE-FLOAT, LEAST-NEGATIVE-SINGLE-FLOAT, LEAST-NEGATIVE-NORMALIZED-SINGLE-FLOAT, MOST-NEGATIVE-DOUBLE-FLOAT, LEAST-NEGATIVE-DOUBLE-FLOAT, LEAST-NEGATIVE-NORMALIZED-DOUBLE-FLOAT, MOST-NEGATIVE-LONG-FLOAT, LEAST-NEGATIVE-LONG-FLOAT, LEAST-NEGATIVE-NORMALIZED-LONG-FLOAT](#)
-> * [Constant Variable SHORT-FLOAT-EPSILON, SHORT-FLOAT-NEGATIVE-EPSILON, SINGLE-FLOAT-EPSILON, SINGLE-FLOAT-NEGATIVE-EPSILON, DOUBLE-FLOAT-EPSILON, DOUBLE-FLOAT-NEGATIVE-EPSILON, LONG-FLOAT-EPSILON, LONG-FLOAT-NEGATIVE-EPSILON](#)
-> * [Condition Type ARITHMETIC-ERROR](#)
-> * [Function ARITHMETIC-ERROR-OPERANDS, ARITHMETIC-ERROR-OPERATION](#)
-> * [Condition Type DIVISION-BY-ZERO](#)
-> * [Condition Type FLOATING-POINT-INVALID-OPERATION](#)
-> * [Condition Type FLOATING-POINT-INEXACT](#)
-> * [Condition Type FLOATING-POINT-OVERFLOW](#)
-> * [Condition Type FLOATING-POINT-UNDERFLOW](#)
+> * [系统类 NUMBER](#SC-NUMBER)
+> * [系统类 COMPLEX](#SC-COMPLEX)
+> * [系统类 REAL](#SC-REAL)
+> * [系统类 FLOAT](#SC-FLOAT)
+> * [类型 SHORT-FLOAT, SINGLE-FLOAT, DOUBLE-FLOAT, LONG-FLOAT](#T-SF-SF-DF-LF)
+> * [系统类 RATIONAL](#SC-RATIONAL)
+> * [系统类 RATIO](#SC-RATIO)
+> * [系统类 INTEGER](#SC-INTEGER)
+> * [类型 SIGNED-BYTE](#T-SIGNED-BYTE)
+> * [类型 UNSIGNED-BYTE](#T-UNSIGNED-BYTE)
+> * [类型特化符 MOD](#TS-MOD)
+> * [类型 BIT](#T-BIT)
+> * [类型 FIXNUM](#T-FIXNUM)
+> * [类型 BIGNUM](#T-BIGNUM)
+> * [函数 =, /=, <, >, <=, >=](#F-Compare)
+> * [函数 MAX, MIN](#F-MAX-MIN)
+> * [函数 MINUSP, PLUSP](#F-MINUSP-PLUSP)
+> * [函数 ZEROP](#Function-ZEROP)
+> * [函数 FLOOR, FFLOOR, CEILING, FCEILING, TRUNCATE, FTRUNCATE, ROUND, FROUND](#F-F-F-C-F-T-F-R-F)
+> * [函数 SIN, COS, TAN](#F-SIN-COS-TAN)
+> * [函数 ASIN, ACOS, ATAN](#F-ASIN-ACOS-ATAN)
+> * [常量 PI](#CV-PI)
+> * [函数 SINH, COSH, TANH, ASINH, ACOSH, ATANH](#F-S-C-T-A-A-A)
+> * [函数 *](#F-Multiply)
+> * [函数 +](#F-Add)
+> * [函数 -](#F-Sub)
+> * [函数 /](#F-Div)
+> * [函数 1+, 1-](#F-OP-OI)
+> * [函数 ABS](#F-ABS)
+> * [函数 EVENP, ODDP](#F-EVENP-ODDP)
+> * [函数 EXP, EXPT](#F-EXP-EXPT)
+> * [函数 GCD](#F-GCD)
+> * [宏 INCF, DECF](#M-INCF-DECF)
+> * [函数 LCM](#F-LCM)
+> * [函数 LOG](#F-LOG)
+> * [函数 MOD, REM](#F-MOD-REM)
+> * [函数 SIGNUM](#F-SIGNUM)
+> * [函数 SQRT, ISQRT](#F-SQRT-ISQRT)
+> * [系统类 RANDOM-STATE](#SC-RANDOM-STATE)
+> * [函数 MAKE-RANDOM-STATE](#F-MAKE-RANDOM-STATE)
+> * [函数 RANDOM](#F-RANDOM)
+> * [函数 RANDOM-STATE-P](#F-RANDOM-STATE-P)
+> * [变量 *RANDOM-STATE*](#V-RANDOM-STATE)
+> * [函数 NUMBERP](#F-NUMBERP)
+> * [函数 CIS](#F-CIS)
+> * [函数 COMPLEX](#F-COMPLEX)
+> * [函数 COMPLEXP](#F-COMPLEXP)
+> * [函数 CONJUGATE](#F-CONJUGATE)
+> * [函数 PHASE](#F-PHASE)
+> * [函数 REALPART, IMAGPART](#F-REALPART-IMAGPART)
+> * [函数 UPGRADED-COMPLEX-PART-TYPE](#F-UPGRADED-COMPLEX-PART-TYPE)
+> * [函数 REALP](#F-REALP)
+> * [函数 NUMERATOR, DENOMINATOR](#F-NUMERATOR-DENOMINATOR)
+> * [函数 RATIONAL, RATIONALIZE](#F-RATIONAL-RATIONALIZE)
+> * [函数 RATIONALP](#F-RATIONALP)
+> * [函数 ASH](#F-ASH)
+> * [函数 INTEGER-LENGTH](#F-INTEGER-LENGTH)
+> * [函数 INTEGERP](#F-INTEGERP)
+> * [函数 PARSE-INTEGER](#F-PARSE-INTEGER)
+> * [函数 BOOLE](#F-BOOLE)
+> * [常量 BOOLE-1, BOOLE-2, BOOLE-AND, BOOLE-ANDC1, BOOLE-ANDC2, BOOLE-C1, BOOLE-C2, BOOLE-CLR, BOOLE-EQV, BOOLE-IOR, BOOLE-NAND, BOOLE-NOR, BOOLE-ORC1, BOOLE-ORC2, BOOLE-SET, BOOLE-XOR](#CV-B)
+> * [函数 LOGAND, LOGANDC1, LOGANDC2, LOGEQV, LOGIOR, LOGNAND, LOGNOR, LOGNOT, LOGORC1, LOGORC2, LOGXOR](#F-L)
+> * [函数 LOGBITP](#F-LOGBITP)
+> * [函数 LOGCOUNT](#F-LOGCOUNT)
+> * [函数 LOGTEST](#F-LOGTEST)
+> * [函数 BYTE, BYTE-SIZE, BYTE-POSITION](#F-BYTE-BYTE-SIZE-BYTE-POSITION)
+> * [函数 DEPOSIT-FIELD](#F-DEPOSIT-FIELD)
+> * [函数 DPB](#F-DPB)
+> * [访问器 LDB](#A-LDB)
+> * [函数 LDB-TEST](#F-LDB-TEST)
+> * [访问器 MASK-FIELD](#A-MASK-FIELD)
+> * [常量 MOST-POSITIVE-FIXNUM, MOST-NEGATIVE-FIXNUM](#CV-MM)
+> * [函数 DECODE-FLOAT, SCALE-FLOAT, FLOAT-RADIX, FLOAT-SIGN, FLOAT-DIGITS, FLOAT-PRECISION, INTEGER-DECODE-FLOAT](#F-DSFFFFI)
+> * [函数 FLOAT](#F-FLOAT)
+> * [函数 FLOATP](#F-FLOATP)
+> * [常量 MOST-POSITIVE-SHORT-FLOAT, LEAST-POSITIVE-SHORT-FLOAT, LEAST-POSITIVE-NORMALIZED-SHORT-FLOAT, MOST-POSITIVE-DOUBLE-FLOAT, LEAST-POSITIVE-DOUBLE-FLOAT, LEAST-POSITIVE-NORMALIZED-DOUBLE-FLOAT, MOST-POSITIVE-LONG-FLOAT, LEAST-POSITIVE-LONG-FLOAT, LEAST-POSITIVE-NORMALIZED-LONG-FLOAT, MOST-POSITIVE-SINGLE-FLOAT, LEAST-POSITIVE-SINGLE-FLOAT, LEAST-POSITIVE-NORMALIZED-SINGLE-FLOAT, MOST-NEGATIVE-SHORT-FLOAT, LEAST-NEGATIVE-SHORT-FLOAT, LEAST-NEGATIVE-NORMALIZED-SHORT-FLOAT, MOST-NEGATIVE-SINGLE-FLOAT, LEAST-NEGATIVE-SINGLE-FLOAT, LEAST-NEGATIVE-NORMALIZED-SINGLE-FLOAT, MOST-NEGATIVE-DOUBLE-FLOAT, LEAST-NEGATIVE-DOUBLE-FLOAT, LEAST-NEGATIVE-NORMALIZED-DOUBLE-FLOAT, MOST-NEGATIVE-LONG-FLOAT, LEAST-NEGATIVE-LONG-FLOAT, LEAST-NEGATIVE-NORMALIZED-LONG-FLOAT](#CV-MOST-LEAST)
+> * [常量 SHORT-FLOAT-EPSILON, SHORT-FLOAT-NEGATIVE-EPSILON, SINGLE-FLOAT-EPSILON, SINGLE-FLOAT-NEGATIVE-EPSILON, DOUBLE-FLOAT-EPSILON, DOUBLE-FLOAT-NEGATIVE-EPSILON, LONG-FLOAT-EPSILON, LONG-FLOAT-NEGATIVE-EPSILON](#CV-EPSILON)
+> * [状况类型 ARITHMETIC-ERROR](#CT-ARITHMETIC-ERROR)
+> * [函数 ARITHMETIC-ERROR-OPERANDS, ARITHMETIC-ERROR-OPERATION](#F-AEO-AEO)
+> * [状况类型 DIVISION-BY-ZERO](#CT-DIVISION-BY-ZERO)
+> * [状况类型 FLOATING-POINT-INVALID-OPERATION](#CT-FLOATING-POINT-INVALID-OPERATION)
+> * [状况类型 FLOATING-POINT-INEXACT](#CT-FLOATING-POINT-INEXACT)
+> * [状况类型 FLOATING-POINT-OVERFLOW](#CT-FLOATING-POINT-OVERFLOW)
+> * [状况类型 FLOATING-POINT-UNDERFLOW](#CT-FLOATING-POINT-UNDERFLOW)
 
 
-### <span id="">System Class NUMBER</span>
+### <span id="SC-NUMBER">系统类 NUMBER</span>
 
 * 类优先级列表(Class Precedence List):
 
@@ -466,7 +466,7 @@ The function = tests for numerical equality. The function eql, when its argument
 Common Lisp differs from mathematics on some naming issues. In mathematics, the set of real numbers is traditionally described as a subset of the complex numbers, but in Common Lisp, the type real and the type complex are disjoint. The Common Lisp type which includes all mathematical complex numbers is called number. The reasons for these differences include historical precedent, compatibility with most other popular computer languages, and various issues of time and space efficiency. 
 
 
-### <span id="">System Class COMPLEX</span>
+### <span id="SC-COMPLEX">系统类 COMPLEX</span>
 
 * 类优先级列表(Class Precedence List):
 
@@ -505,7 +505,7 @@ The input syntax for a complex with real part r and imaginary part i is #C(r i).
 For every float, n, there is a complex which represents the same mathematical number and which can be obtained by (COERCE n 'COMPLEX). 
 
 
-### <span id="">System Class REAL</span>
+### <span id="SC-REAL">系统类 REAL</span>
 
 * 类优先级列表(Class Precedence List):
 
@@ -534,7 +534,7 @@ lower-limit, upper-limit---interval designators for type real. The defaults for 
 This denotes the reals on the interval described by lower-limit and upper-limit. 
 
 
-### <span id="">System Class FLOAT</span>
+### <span id="SC-FLOAT">系统类 FLOAT</span>
 
 * 类优先级列表(Class Precedence List):
 
@@ -571,7 +571,7 @@ Figure 2-9, Section 2.3.2 (Constructing Numbers from Tokens), Section 22.1.3.1.3
 Note that all mathematical integers are representable not only as Common Lisp reals, but also as complex floats. For example, possible representations of the mathematical number 1 include the integer 1, the float 1.0, or the complex #C(1.0 0.0). 
 
 
-### <span id="">Type SHORT-FLOAT, SINGLE-FLOAT, DOUBLE-FLOAT, LONG-FLOAT</span>
+### <span id="T-SF-SF-DF-LF">类型 SHORT-FLOAT, SINGLE-FLOAT, DOUBLE-FLOAT, LONG-FLOAT</span>
 
 * 超类型(Supertypes):
 
@@ -641,7 +641,7 @@ long-lower-limit, long-upper-limit---interval designators for type long-float. T
 Each of these denotes the set of floats of the indicated type that are on the interval specified by the interval designators. 
 
 
-### <span id="">System Class RATIONAL</span>
+### <span id="SC-RATIONAL">系统类 RATIONAL</span>
 
 * 类优先级列表(Class Precedence List):
 
@@ -669,7 +669,7 @@ lower-limit, upper-limit---interval designators for type rational. The defaults 
 
 This denotes the rationals on the interval described by lower-limit and upper-limit. 
 
-### <span id="">System Class RATIO</span>
+### <span id="SC-RATIO">系统类 RATIO</span>
 
 * 类优先级列表(Class Precedence List):
 
@@ -684,7 +684,7 @@ A ratio is a number representing the mathematical ratio of two non-zero integers
 Figure 2-9, Section 2.3.2 (Constructing Numbers from Tokens), Section 22.1.3.1.2 (Printing Ratios) 
 
 
-### <span id="">System Class INTEGER</span>
+### <span id="SC-INTEGER">系统类 INTEGER</span>
 
 * 类优先级列表(Class Precedence List):
 
@@ -723,7 +723,7 @@ The type (integer lower upper), where lower and upper are most-negative-fixnum a
 The type (integer 0 1) is also called bit. The type (integer 0 *) is also called unsigned-byte. 
 
 
-### <span id="">Type SIGNED-BYTE</span>
+### <span id="T-SIGNED-BYTE">类型 SIGNED-BYTE</span>
 
 * 超类型(Supertypes):
 
@@ -750,7 +750,7 @@ s---a positive integer.
 This denotes the set of integers that can be represented in two's-complement form in a byte of s bits. This is equivalent to (integer -2^s-1 2^s-1-1). The type signed-byte or the type (signed-byte *) is the same as the type integer. 
 
 
-### <span id="">Type UNSIGNED-BYTE</span>
+### <span id="T-UNSIGNED-BYTE">类型 UNSIGNED-BYTE</span>
 
 * 超类型(Supertypes):
 
@@ -781,7 +781,7 @@ This denotes the set of non-negative integers that can be represented in a byte 
 The type (unsigned-byte 1) is also called bit. 
 
 
-### <span id="">Type Specifier MOD</span>
+### <span id="TS-MOD">类型特化符 MOD</span>
 
 * 复合类型特化符类别(Compound Type Specifier Kind):
 
@@ -804,7 +804,7 @@ The argument is required, and cannot be *.
 The symbol mod is not valid as a type specifier. 
 
 
-### <span id="">Type BIT</span>
+### <span id="T-BIT">类型 BIT</span>
 
 * 超类型(Supertypes):
 
@@ -815,7 +815,7 @@ bit, unsigned-byte, signed-byte, integer, rational, real, number, t
 The type bit is equivalent to the type (integer 0 1) and (unsigned-byte 1). 
 
 
-### <span id="">Type FIXNUM</span>
+### <span id="T-FIXNUM">类型 FIXNUM</span>
 
 * 超类型(Supertypes):
 
@@ -826,7 +826,7 @@ fixnum, integer, rational, real, number, t
 A fixnum is an integer whose value is between most-negative-fixnum and most-positive-fixnum inclusive. Exactly which integers are fixnums is implementation-defined. The type fixnum is required to be a supertype of (signed-byte 16). 
 
 
-### <span id="">Type BIGNUM</span>
+### <span id="T-BIGNUM">类型 BIGNUM</span>
 
 * 超类型(Supertypes):
 
@@ -837,7 +837,7 @@ bignum, integer, rational, real, number, t
 The type bignum is defined to be exactly (and integer (not fixnum)). 
 
 
-### <span id="">Function =, /=, <, >, <=, >=</span>
+### <span id="F-Compare">函数 =, /=, <, >, <=, >=</span>
 
 * 语法(Syntax):
 
@@ -933,7 +933,7 @@ Might signal type-error if some argument is not a real. Might signal arithmetic-
 = differs from eql in that (= 0.0 -0.0) is always true, because = compares the mathematical values of its operands, whereas eql compares the representational values, so to speak. 
 
 
-### <span id="">Function MAX, MIN</span>
+### <span id="F-MAX-MIN">函数 MAX, MIN</span>
 
 * 语法(Syntax):
 
@@ -1000,7 +1000,7 @@ Should signal an error of type type-error if any number is not a real.
 * 注意(Notes): None. 
 
 
-### <span id="">Function MINUSP, PLUSP</span>
+### <span id="F-MINUSP-PLUSP">函数 MINUSP, PLUSP</span>
 
 * 语法(Syntax):
 
@@ -1041,7 +1041,7 @@ Should signal an error of type type-error if real is not a real.
 * 注意(Notes): None. 
 
 
-### <span id="">Function ZEROP</span>
+### <span id="Function-ZEROP">函数 ZEROP</span>
 
 * 语法(Syntax):
 
@@ -1086,7 +1086,7 @@ Should signal an error of type type-error if number is not a number.
  (zerop number) ==  (= number 0)
 
 
-### <span id="">Function FLOOR, FFLOOR, CEILING, FCEILING, TRUNCATE, FTRUNCATE, ROUND, FROUND</span>
+### <span id="F-F-F-C-F-T-F-R-F">函数 FLOOR, FFLOOR, CEILING, FCEILING, TRUNCATE, FTRUNCATE, ROUND, FROUND</span>
 
 * 语法(Syntax):
 
@@ -1194,7 +1194,7 @@ When only number is given, the two results are exact; the mathematical sum of th
 If an effect is desired that is similar to round, but that always rounds up or down (rather than toward the nearest even integer) if the mathematical quotient is exactly halfway between two integers, the programmer should consider a construction such as (floor (+ x 1/2)) or (ceiling (- x 1/2)). 
 
 
-### <span id="">Function SIN, COS, TAN</span>
+### <span id="F-SIN-COS-TAN">函数 SIN, COS, TAN</span>
 
 * 语法(Syntax):
 
@@ -1234,7 +1234,7 @@ asin, acos, atan, Section 12.1.3.3 (Rule of Float Substitutability)
 
 * 注意(Notes): None. 
 
-### <span id="">Function ASIN, ACOS, ATAN</span>
+### <span id="F-ASIN-ACOS-ATAN">函数 ASIN, ACOS, ATAN</span>
 
 * 语法(Syntax):
 
@@ -1344,7 +1344,7 @@ log, sqrt, Section 12.1.3.3 (Rule of Float Substitutability)
 The result of either asin or acos can be a complex even if number is not a complex; this occurs when the absolute value of number is greater than one. 
 
 
-### <span id="">Constant Variable PI</span>
+### <span id="CV-PI">常量 PI</span>
 
 Value:
 
@@ -1375,7 +1375,7 @@ The best long float approximation to the mathematical constant <PI>.
 An approximation to <PI> in some other precision can be obtained by writing (float pi x), where x is a float of the desired precision, or by writing (coerce pi type), where type is the desired type, such as short-float. 
 
 
-### <span id="">Function SINH, COSH, TANH, ASINH, ACOSH, ATANH</span>
+### <span id="F-S-C-T-A-A-A">函数 SINH, COSH, TANH, ASINH, ACOSH, ATANH</span>
 
 * 语法(Syntax):
 
@@ -1457,7 +1457,7 @@ The result of acosh may be a complex even if number is not a complex; this occur
 The branch cut formulae are mathematically correct, assuming completely accurate computation. Implementors should consult a good text on numerical analysis. The formulae given above are not necessarily the simplest ones for real-valued computations; they are chosen to define the branch cuts in desirable ways for the complex case. 
 
 
-### <span id="">Function *</span>
+### <span id="F-Multiply">函数 *</span>
 
 * 语法(Syntax):
 
@@ -1492,7 +1492,7 @@ Section 12.1.1 (Numeric Operations), Section 12.1.3 (Rational Computations), Sec
 * 注意(Notes): None. 
 
 
-### <span id="">Function +</span>
+### <span id="F-Add">函数 +</span>
 
 * 语法(Syntax):
 
@@ -1528,7 +1528,7 @@ Section 12.1.1 (Numeric Operations), Section 12.1.3 (Rational Computations), Sec
 * 注意(Notes): None. 
 
 
-### <span id="">Function -</span>
+### <span id="F-Sub">函数 -</span>
 
 * 语法(Syntax):
 
@@ -1574,7 +1574,7 @@ Section 12.1.1 (Numeric Operations), Section 12.1.3 (Rational Computations), Sec
 * 注意(Notes): None. 
 
 
-### <span id="">Function /</span>
+### <span id="F-Div">函数 /</span>
 
 * 语法(Syntax):
 
@@ -1628,7 +1628,7 @@ floor, ceiling, truncate, round
 
 * 注意(Notes): None. 
 
-### <span id="">Function 1+, 1-</span>
+### <span id="F-OP-OI">函数 1+, 1-</span>
 
 * 语法(Syntax):
 
@@ -1671,7 +1671,7 @@ incf, decf
 Implementors are encouraged to make the performance of both the previous expressions be the same. 
 
 
-### <span id="">Function ABS</span>
+### <span id="F-ABS">函数 ABS</span>
 
 * 语法(Syntax):
 
@@ -1717,7 +1717,7 @@ If number is a complex, the result is equivalent to the following:
 
 An implementation should not use this formula directly for all complexes but should handle very large or very small components specially to avoid intermediate overflow or underflow. 
 
-### <span id="">Function EVENP, ODDP</span>
+### <span id="F-EVENP-ODDP">函数 EVENP, ODDP</span>
 
 * 语法(Syntax):
 
@@ -1759,7 +1759,7 @@ Should signal an error of type type-error if integer is not an integer.
  (oddp integer)  ==  (not (evenp integer))
 
 
-### <span id="">Function EXP, EXPT</span>
+### <span id="F-EXP-EXPT">函数 EXP, EXPT</span>
 
 * 语法(Syntax):
 
@@ -1827,7 +1827,7 @@ Note that by the following logic, (sqrt (expt x 3)) is not equivalent to (expt x
 
 
 
-### <span id="">Function GCD</span>
+### <span id="F-GCD">函数 GCD</span>
 
 * 语法(Syntax):
 
@@ -1873,7 +1873,7 @@ For three or more arguments,
  (gcd b c ... z) ==  (gcd (gcd a b) c ... z)
 
 
-### <span id="">Macro INCF, DECF</span>
+### <span id="M-INCF-DECF">宏 INCF, DECF</span>
 
 * 语法(Syntax):
 
@@ -1928,7 +1928,7 @@ Place is modified.
 
 * 注意(Notes): None. 
 
-### <span id="">Function LCM</span>
+### <span id="F-LCM">函数 LCM</span>
 
 * 语法(Syntax):
 
@@ -1984,7 +1984,7 @@ gcd
 * 注意(Notes): None. 
 
 
-### <span id="">Function LOG</span>
+### <span id="F-LOG">函数 LOG</span>
 
 * 语法(Syntax):
 
@@ -2051,7 +2051,7 @@ exp, expt, Section 12.1.3.3 (Rule of Float Substitutability)
 
 * 注意(Notes): None. 
 
-### <span id="">Function MOD, REM</span>
+### <span id="F-MOD-REM">函数 MOD, REM</span>
 
 * 语法(Syntax):
 
@@ -2108,7 +2108,7 @@ floor, truncate
 
 The result of mod is either zero or a real with the same sign as divisor. 
 
-### <span id="">Function SIGNUM</span>
+### <span id="F-SIGNUM">函数 SIGNUM</span>
 
 * 语法(Syntax):
 
@@ -2158,7 +2158,7 @@ Section 12.1.3.3 (Rule of Float Substitutability)
 
 
 
-### <span id="">Function SQRT, ISQRT</span>
+### <span id="F-SQRT-ISQRT">函数 SQRT, ISQRT</span>
 
 * 语法(Syntax):
 
@@ -2227,7 +2227,7 @@ exp, log, Section 12.1.3.3 (Rule of Float Substitutability)
 but it is potentially more efficient. 
 
 
-### <span id="">System Class RANDOM-STATE</span>
+### <span id="SC-RANDOM-STATE">系统类 RANDOM-STATE</span>
 
 * 类优先级列表(Class Precedence List):
 
@@ -2244,7 +2244,7 @@ Implementations are required to provide a read syntax for objects of type random
 *random-state*, random, Section 22.1.3.10 (Printing Random States) 
 
 
-### <span id="">Function MAKE-RANDOM-STATE</span>
+### <span id="F-MAKE-RANDOM-STATE">函数 MAKE-RANDOM-STATE</span>
 
 * 语法(Syntax):
 
@@ -2298,7 +2298,7 @@ random, *random-state*
 
 One important use of make-random-state is to allow the same series of pseudo-random numbers to be generated many times within a single program. 
 
-### <span id="">Function RANDOM</span>
+### <span id="F-RANDOM">函数 RANDOM</span>
 
 * 语法(Syntax):
 
@@ -2346,7 +2346,7 @@ make-random-state, *random-state*
 See Common Lisp: The Language for information about generating random numbers. 
 
 
-### <span id="">Function RANDOM-STATE-P</span>
+### <span id="F-RANDOM-STATE-P">函数 RANDOM-STATE-P</span>
 
 * 语法(Syntax):
 
@@ -2383,7 +2383,7 @@ make-random-state, *random-state*
  (random-state-p object) ==  (typep object 'random-state)
 
 
-### <span id="">Variable *RANDOM-STATE*</span>
+### <span id="V-RANDOM-STATE">变量 *RANDOM-STATE*</span>
 
 Value Type:
 
@@ -2429,7 +2429,7 @@ make-random-state, random, random-state
 Binding *random-state* to a different random state object correctly saves and restores the old random state object. 
 
 
-### <span id="">Function NUMBERP</span>
+### <span id="F-NUMBERP">函数 NUMBERP</span>
 
 * 语法(Syntax):
 
@@ -2467,7 +2467,7 @@ Returns true if object is of type number; otherwise, returns false.
 
 
 
-### <span id="">Function CIS</span>
+### <span id="F-CIS">函数 CIS</span>
 
 * 语法(Syntax):
 
@@ -2499,7 +2499,7 @@ Section 12.1.3.3 (Rule of Float Substitutability)
 
 * 注意(Notes): None. 
 
-### <span id="">Function COMPLEX</span>
+### <span id="F-COMPLEX">函数 COMPLEX</span>
 
 * 语法(Syntax):
 
@@ -2544,7 +2544,7 @@ realpart, imagpart, Section 2.4.8.11 (Sharpsign C)
 * 注意(Notes): None. 
 
 
-### <span id="">Function COMPLEXP</span>
+### <span id="F-COMPLEXP">函数 COMPLEXP</span>
 
 * 语法(Syntax):
 
@@ -2580,7 +2580,7 @@ complex (function and type), typep
  (complexp object) ==  (typep object 'complex)
 
 
-### <span id="">Function CONJUGATE</span>
+### <span id="F-CONJUGATE">函数 CONJUGATE</span>
 
 * 语法(Syntax):
 
@@ -2621,7 +2621,7 @@ For a complex number z,
 
 
 
-### <span id="">Function PHASE</span>
+### <span id="F-PHASE">函数 PHASE</span>
 
 * 语法(Syntax):
 
@@ -2667,7 +2667,7 @@ Section 12.1.3.3 (Rule of Float Substitutability)
 * 注意(Notes): None. 
 
 
-### <span id="">Function REALPART, IMAGPART</span>
+### <span id="F-REALPART-IMAGPART">函数 REALPART, IMAGPART</span>
 
 * 语法(Syntax):
 
@@ -2707,7 +2707,7 @@ complex
 * 注意(Notes): None. 
 
 
-### <span id="">Function UPGRADED-COMPLEX-PART-TYPE</span>
+### <span id="F-UPGRADED-COMPLEX-PART-TYPE">函数 UPGRADED-COMPLEX-PART-TYPE</span>
 
 * 语法(Syntax):
 
@@ -2743,7 +2743,7 @@ complex (function and type)
 
 * 注意(Notes):
 
-### <span id="">Function REALP</span>
+### <span id="F-REALP">函数 REALP</span>
 
 * 语法(Syntax):
 
@@ -2779,7 +2779,7 @@ Returns true if object is of type real; otherwise, returns false.
  (realp object) ==  (typep object 'real)
 
 
-### <span id="">Function NUMERATOR, DENOMINATOR</span>
+### <span id="F-NUMERATOR-DENOMINATOR">函数 NUMERATOR, DENOMINATOR</span>
 
 * 语法(Syntax):
 
@@ -2828,7 +2828,7 @@ If rational is an integer, numerator returns rational and denominator returns 1.
 
 
 
-### <span id="">Function RATIONAL, RATIONALIZE</span>
+### <span id="F-RATIONAL-RATIONALIZE">函数 RATIONAL, RATIONALIZE</span>
 
 * 语法(Syntax):
 
@@ -2885,7 +2885,7 @@ and
 
 That is, rationalizing a float by either method and then converting it back to a float of the same format produces the original number. 
 
-### <span id="">Function RATIONALP</span>
+### <span id="F-RATIONALP">函数 RATIONALP</span>
 
 * 语法(Syntax):
 
@@ -2922,7 +2922,7 @@ rational
  (rationalp object) ==  (typep object 'rational)
 
 
-### <span id="">Function ASH</span>
+### <span id="F-ASH">函数 ASH</span>
 
 * 语法(Syntax):
 
@@ -2967,7 +2967,7 @@ Should signal an error of type type-error if integer is not an integer. Should s
  ==  (and (>= j k) (logbitp (- j k) n))
 
 
-### <span id="">Function INTEGER-LENGTH</span>
+### <span id="F-INTEGER-LENGTH">函数 INTEGER-LENGTH</span>
 
 * 语法(Syntax):
 
@@ -3022,7 +3022,7 @@ This function could have been defined by:
 If integer is non-negative, then its value can be represented in unsigned binary form in a field whose width in bits is no smaller than (integer-length integer). Regardless of the sign of integer, its value can be represented in signed binary two's-complement form in a field whose width in bits is no smaller than (+ (integer-length integer) 1). 
 
 
-### <span id="">Function INTEGERP</span>
+### <span id="F-INTEGERP">函数 INTEGERP</span>
 
 * 语法(Syntax):
 
@@ -3057,7 +3057,7 @@ Returns true if object is of type integer; otherwise, returns false.
 
  (integerp object) ==  (typep object 'integer)
 
-### <span id="">Function PARSE-INTEGER</span>
+### <span id="F-PARSE-INTEGER">函数 PARSE-INTEGER</span>
 
 * 语法(Syntax):
 
@@ -3110,7 +3110,7 @@ If junk-allowed is false, an error is signaled if substring does not consist ent
 * 注意(Notes): None. 
 
 
-### <span id="">Function BOOLE</span>
+### <span id="F-BOOLE">函数 BOOLE</span>
 
 * 语法(Syntax):
 
@@ -3231,7 +3231,7 @@ Programmers who would prefer to use numeric indices rather than bit-wise logical
 
 
 
-### <span id="">Constant Variable BOOLE-1, BOOLE-2, BOOLE-AND, BOOLE-ANDC1, BOOLE-ANDC2, BOOLE-C1, BOOLE-C2, BOOLE-CLR, BOOLE-EQV, BOOLE-IOR, BOOLE-NAND, BOOLE-NOR, BOOLE-ORC1, BOOLE-ORC2, BOOLE-SET, BOOLE-XOR</span>
+### <span id="CV-B">常量 BOOLE-1, BOOLE-2, BOOLE-AND, BOOLE-ANDC1, BOOLE-ANDC2, BOOLE-C1, BOOLE-C2, BOOLE-CLR, BOOLE-EQV, BOOLE-IOR, BOOLE-NAND, BOOLE-NOR, BOOLE-ORC1, BOOLE-ORC2, BOOLE-SET, BOOLE-XOR</span>
 
 Constant Value:
 
@@ -3254,7 +3254,7 @@ boole
 * 注意(Notes): None. 
 
 
-### <span id="">Function LOGAND, LOGANDC1, LOGANDC2, LOGEQV, LOGIOR, LOGNAND, LOGNOR, LOGNOT, LOGORC1, LOGORC2, LOGXOR</span>
+### <span id="F-L">函数 LOGAND, LOGANDC1, LOGANDC2, LOGEQV, LOGIOR, LOGNAND, LOGNOR, LOGNOT, LOGORC1, LOGORC2, LOGXOR</span>
 
 * 语法(Syntax):
 
@@ -3377,7 +3377,7 @@ Because the following functions are not associative, they take exactly two argum
  (logbitp j (lognot x)) ==  (not (logbitp j x))
 
 
-### <span id="">Function LOGBITP</span>
+### <span id="F-LOGBITP">函数 LOGBITP</span>
 
 * 语法(Syntax):
 
@@ -3421,7 +3421,7 @@ Should signal an error of type type-error if index is not a non-negative integer
  (logbitp k n) ==  (ldb-test (byte 1 k) n)
 
 
-### <span id="">Function LOGCOUNT</span>
+### <span id="F-LOGCOUNT">函数 LOGCOUNT</span>
 
 * 语法(Syntax):
 
@@ -3471,7 +3471,7 @@ The following identity always holds:
  ==  (logcount (lognot x))
 
 
-### <span id="">Function LOGTEST</span>
+### <span id="F-LOGTEST">函数 LOGTEST</span>
 
 * 语法(Syntax):
 
@@ -3513,7 +3513,7 @@ Should signal an error of type type-error if integer-1 is not an integer. Should
  (logtest x y) ==  (not (zerop (logand x y)))
 
 
-### <span id="">Function BYTE, BYTE-SIZE, BYTE-POSITION</span>
+### <span id="F-BYTE-BYTE-SIZE-BYTE-POSITION">函数 BYTE, BYTE-SIZE, BYTE-POSITION</span>
 
 * 语法(Syntax):
 
@@ -3562,7 +3562,7 @@ A byte of size of 0 is permissible; it refers to a byte of width zero. For examp
  (dpb #o7777 (byte 0 3) 0) =>  0
 
 
-### <span id="">Function DEPOSIT-FIELD</span>
+### <span id="F-DEPOSIT-FIELD">函数 DEPOSIT-FIELD</span>
 
 * 语法(Syntax):
 
@@ -3607,7 +3607,7 @@ byte, dpb
 
 deposit-field is to mask-field as dpb is to ldb. 
 
-### <span id="">Function DPB</span>
+### <span id="F-DPB">函数 DPB</span>
 
 * 语法(Syntax):
 
@@ -3665,7 +3665,7 @@ for all valid values of x, y, and z.
 Historically, the name ``dpb'' comes from a DEC PDP-10 assembly language instruction meaning ``deposit byte.'' 
 
 
-### <span id="">Accessor LDB</span>
+### <span id="A-LDB">访问器 LDB</span>
 
 * 语法(Syntax):
 
@@ -3724,7 +3724,7 @@ for all valid values of x and y.
 Historically, the name ``ldb'' comes from a DEC PDP-10 assembly language instruction meaning ``load byte.'' 
 
 
-### <span id="">Function LDB-TEST</span>
+### <span id="F-LDB-TEST">函数 LDB-TEST</span>
 
 * 语法(Syntax):
 
@@ -3765,7 +3765,7 @@ byte, ldb, zerop
  (logtest (ldb bytespec -1) n)
 
 
-### <span id="">Accessor MASK-FIELD</span>
+### <span id="A-MASK-FIELD">访问器 MASK-FIELD</span>
 
 * 语法(Syntax):
 
@@ -3815,7 +3815,7 @@ byte, ldb
 
 
 
-### <span id="">Constant Variable MOST-POSITIVE-FIXNUM, MOST-NEGATIVE-FIXNUM</span>
+### <span id="CV-MM">常量 MOST-POSITIVE-FIXNUM, MOST-NEGATIVE-FIXNUM</span>
 
 Constant Value:
 
@@ -3834,7 +3834,7 @@ most-negative-fixnum is that fixnum closest in value to negative infinity provid
 * 注意(Notes): None. 
 
 
-### <span id="">Function DECODE-FLOAT, SCALE-FLOAT, FLOAT-RADIX, FLOAT-SIGN, FLOAT-DIGITS, FLOAT-PRECISION, INTEGER-DECODE-FLOAT</span>
+### <span id="F-DSFFFFI">函数 DECODE-FLOAT, SCALE-FLOAT, FLOAT-RADIX, FLOAT-SIGN, FLOAT-DIGITS, FLOAT-PRECISION, INTEGER-DECODE-FLOAT</span>
 
 * 语法(Syntax):
 
@@ -3960,7 +3960,7 @@ and
 ==  f
 
 
-### <span id="">Function FLOAT</span>
+### <span id="F-FLOAT">函数 FLOAT</span>
 
 * 语法(Syntax):
 
@@ -4005,7 +4005,7 @@ coerce
 * 注意(Notes): None. 
 
 
-### <span id="">Function FLOATP</span>
+### <span id="F-FLOATP">函数 FLOATP</span>
 
 * 语法(Syntax):
 
@@ -4043,7 +4043,7 @@ Returns true if object is of type float; otherwise, returns false.
  (floatp object) ==  (typep object 'float)
 
 
-### <span id="">Constant Variable MOST-POSITIVE-SHORT-FLOAT, LEAST-POSITIVE-SHORT-FLOAT, LEAST-POSITIVE-NORMALIZED-SHORT-FLOAT, MOST-POSITIVE-DOUBLE-FLOAT, LEAST-POSITIVE-DOUBLE-FLOAT, LEAST-POSITIVE-NORMALIZED-DOUBLE-FLOAT, MOST-POSITIVE-LONG-FLOAT, LEAST-POSITIVE-LONG-FLOAT, LEAST-POSITIVE-NORMALIZED-LONG-FLOAT, MOST-POSITIVE-SINGLE-FLOAT, LEAST-POSITIVE-SINGLE-FLOAT, LEAST-POSITIVE-NORMALIZED-SINGLE-FLOAT, MOST-NEGATIVE-SHORT-FLOAT, LEAST-NEGATIVE-SHORT-FLOAT, LEAST-NEGATIVE-NORMALIZED-SHORT-FLOAT, MOST-NEGATIVE-SINGLE-FLOAT, LEAST-NEGATIVE-SINGLE-FLOAT, LEAST-NEGATIVE-NORMALIZED-SINGLE-FLOAT, MOST-NEGATIVE-DOUBLE-FLOAT, LEAST-NEGATIVE-DOUBLE-FLOAT, LEAST-NEGATIVE-NORMALIZED-DOUBLE-FLOAT, MOST-NEGATIVE-LONG-FLOAT, LEAST-NEGATIVE-LONG-FLOAT, LEAST-NEGATIVE-NORMALIZED-LONG-FLOAT</span>
+### <span id="CV-MOST-LEAST">常量 MOST-POSITIVE-SHORT-FLOAT, LEAST-POSITIVE-SHORT-FLOAT, LEAST-POSITIVE-NORMALIZED-SHORT-FLOAT, MOST-POSITIVE-DOUBLE-FLOAT, LEAST-POSITIVE-DOUBLE-FLOAT, LEAST-POSITIVE-NORMALIZED-DOUBLE-FLOAT, MOST-POSITIVE-LONG-FLOAT, LEAST-POSITIVE-LONG-FLOAT, LEAST-POSITIVE-NORMALIZED-LONG-FLOAT, MOST-POSITIVE-SINGLE-FLOAT, LEAST-POSITIVE-SINGLE-FLOAT, LEAST-POSITIVE-NORMALIZED-SINGLE-FLOAT, MOST-NEGATIVE-SHORT-FLOAT, LEAST-NEGATIVE-SHORT-FLOAT, LEAST-NEGATIVE-NORMALIZED-SHORT-FLOAT, MOST-NEGATIVE-SINGLE-FLOAT, LEAST-NEGATIVE-SINGLE-FLOAT, LEAST-NEGATIVE-NORMALIZED-SINGLE-FLOAT, MOST-NEGATIVE-DOUBLE-FLOAT, LEAST-NEGATIVE-DOUBLE-FLOAT, LEAST-NEGATIVE-NORMALIZED-DOUBLE-FLOAT, MOST-NEGATIVE-LONG-FLOAT, LEAST-NEGATIVE-LONG-FLOAT, LEAST-NEGATIVE-NORMALIZED-LONG-FLOAT</span>
 
 Constant Value:
 
@@ -4080,7 +4080,7 @@ Of these variables, each which has ``short-float'' in its name must have a value
 * 注意(Notes):
 
 
-### <span id="">Constant Variable SHORT-FLOAT-EPSILON, SHORT-FLOAT-NEGATIVE-EPSILON, SINGLE-FLOAT-EPSILON, SINGLE-FLOAT-NEGATIVE-EPSILON, DOUBLE-FLOAT-EPSILON, DOUBLE-FLOAT-NEGATIVE-EPSILON, LONG-FLOAT-EPSILON, LONG-FLOAT-NEGATIVE-EPSILON</span>
+### <span id="CV-EPSILON">常量 SHORT-FLOAT-EPSILON, SHORT-FLOAT-NEGATIVE-EPSILON, SINGLE-FLOAT-EPSILON, SINGLE-FLOAT-NEGATIVE-EPSILON, DOUBLE-FLOAT-EPSILON, DOUBLE-FLOAT-NEGATIVE-EPSILON, LONG-FLOAT-EPSILON, LONG-FLOAT-NEGATIVE-EPSILON</span>
 
 Constant Value:
 
@@ -4103,7 +4103,7 @@ The value of each of the constants short-float-negative-epsilon, single-float-ne
 * 注意(Notes): None. 
 
 
-### <span id="">Condition Type ARITHMETIC-ERROR</span>
+### <span id="CT-ARITHMETIC-ERROR">状况类型 ARITHMETIC-ERROR</span>
 
 * 类优先级列表(Class Precedence List):
 
@@ -4118,7 +4118,7 @@ The type arithmetic-error consists of error conditions that occur during arithme
 arithmetic-error-operation, arithmetic-error-operands 
 
 
-### <span id="">Function ARITHMETIC-ERROR-OPERANDS, ARITHMETIC-ERROR-OPERATION</span>
+### <span id="F-AEO-AEO">函数 ARITHMETIC-ERROR-OPERANDS, ARITHMETIC-ERROR-OPERATION</span>
 
 * 语法(Syntax):
 
@@ -4155,7 +4155,7 @@ arithmetic-error, Section 9 (Conditions)
 * 注意(Notes):
 
 
-### <span id="">Condition Type DIVISION-BY-ZERO</span>
+### <span id="CT-DIVISION-BY-ZERO">状况类型 DIVISION-BY-ZERO</span>
 
 * 类优先级列表(Class Precedence List):
 
@@ -4166,7 +4166,7 @@ division-by-zero, arithmetic-error, error, serious-condition, condition, t
 The type division-by-zero consists of error conditions that occur because of division by zero. 
 
 
-### <span id="">Condition Type FLOATING-POINT-INVALID-OPERATION</span>
+### <span id="CT-FLOATING-POINT-INVALID-OPERATION">状况类型 FLOATING-POINT-INVALID-OPERATION</span>
 
 * 类优先级列表(Class Precedence List):
 
@@ -4178,7 +4178,7 @@ The type floating-point-invalid-operation consists of error conditions that occu
 
 It is implementation-dependent whether floating point traps occur, and whether or how they may be enabled or disabled. Therefore, conforming code may establish handlers for this condition, but must not depend on its being signaled. 
 
-### <span id="">Condition Type FLOATING-POINT-INEXACT</span>
+### <span id="CT-FLOATING-POINT-INEXACT">状况类型 FLOATING-POINT-INEXACT</span>
 
 * 类优先级列表(Class Precedence List):
 
@@ -4190,7 +4190,7 @@ The type floating-point-inexact consists of error conditions that occur because 
 
 It is implementation-dependent whether floating point traps occur, and whether or how they may be enabled or disabled. Therefore, conforming code may establish handlers for this condition, but must not depend on its being signaled. 
 
-### <span id="">Condition Type FLOATING-POINT-OVERFLOW</span>
+### <span id="CT-FLOATING-POINT-OVERFLOW">状况类型 FLOATING-POINT-OVERFLOW</span>
 
 * 类优先级列表(Class Precedence List):
 
@@ -4201,7 +4201,7 @@ floating-point-overflow, arithmetic-error, error, serious-condition, condition, 
 The type floating-point-overflow consists of error conditions that occur because of floating-point overflow. 
 
 
-### <span id="">Condition Type FLOATING-POINT-UNDERFLOW</span>
+### <span id="CT-FLOATING-POINT-UNDERFLOW">状况类型 FLOATING-POINT-UNDERFLOW</span>
 
 * 类优先级列表(Class Precedence List):
 
