@@ -15,41 +15,41 @@
 
 ### 12.1.1 <span id="NumericOperations">数值运算</span>
 
-Common Lisp provides a large variety of operations related to numbers. This section provides an overview of those operations by grouping them into categories that emphasize some of the relationships among them.
+Common Lisp 提供了大量和数字相关的操作. 这个章节通过把这些操作分组成类别来强调它们之间的关系进而提供这些操作的一个综述.
 
-The next figure shows operators relating to arithmetic operations.
+下面这段展示了和算术操作相关的运算.
 
-*  1+         gcd   
-+  1-         incf  
--  conjugate  lcm   
-/  decf             
+    *  1+         gcd   
+    +  1-         incf  
+    -  conjugate  lcm   
+    /  decf             
 
-Figure 12-1. Operators relating to Arithmetic.
+    Figure 12-1. 算术相关的运算.
 
-The next figure shows defined names relating to exponential, logarithmic, and trigonometric operations.
+下面这段展示了和指数, 对数, 以及三角运算相关的已定义的名字.
 
-abs    cos    signum  
-acos   cosh   sin     
-acosh  exp    sinh    
-asin   expt   sqrt    
-asinh  isqrt  tan     
-atan   log    tanh    
-atanh  phase          
-cis    pi             
+    abs    cos    signum  
+    acos   cosh   sin     
+    acosh  exp    sinh    
+    asin   expt   sqrt    
+    asinh  isqrt  tan     
+    atan   log    tanh    
+    atanh  phase          
+    cis    pi             
 
-Figure 12-2. Defined names relating to Exponentials, Logarithms, and Trigonometry.
+    Figure 12-2. 指数, 对数, 以及三角运算相关的已定义的名字.
 
-The next figure shows operators relating to numeric comparison and predication.
+下面这段展示了和数值比较和断言相关的操作符.
 
-/=  >=      oddp   
-<   evenp   plusp  
-<=  max     zerop  
-=   min            
->   minusp         
+    /=  >=      oddp   
+    <   evenp   plusp  
+    <=  max     zerop  
+    =   min            
+    >   minusp         
 
-Figure 12-3. Operators for numeric comparison and predication.
+    Figure 12-3. 数值比较和断言相关的操作符.
 
-The next figure shows defined names relating to numeric type manipulation and coercion.
+下面这段展示了和数值类型处理和强制转换相关的已定义的名字.
 
 ceiling          float-radix           rational     
 complex          float-sign            rationalize  
@@ -61,7 +61,7 @@ float            integer-decode-float  truncate
 float-digits     mod                                
 float-precision  numerator                          
 
-Figure 12-4. Defined names relating to numeric type manipulation and coercion.
+Figure 12-4. 数值类型处理和强制转换相关的已定义的名字.
 
 > * 12.1.1.1 [数值运算中的结合律和交换律](#AssociativityCommutativityNO)
 > * 12.1.1.2 [数值运算的传递性](#ContagionNumericOperations)
@@ -70,32 +70,32 @@ Figure 12-4. Defined names relating to numeric type manipulation and coercion.
 
 #### 12.1.1.1 <span id="AssociativityCommutativityNO">数值运算中的结合律和交换律</span>
 
-For functions that are mathematically associative (and possibly commutative), a conforming implementation may process the arguments in any manner consistent with associative (and possibly commutative) rearrangement. This does not affect the order in which the argument forms are evaluated; for a discussion of evaluation order, see Section 3.1.2.1.2.3 (Function Forms). What is unspecified is only the order in which the parameter values are processed. This implies that implementations may differ in which automatic coercions are applied; see Section 12.1.1.2 (Contagion in Numeric Operations).
+对于数学上相关联的 (可能是可交换的), 一个符合规范的具体实现可以以任何方式处理参数, 这些参数与关联的 (可能是可交换的) 重排一致 a conforming implementation may process the arguments in any manner consistent with associative (and possibly commutative) rearrangement.<!-- TODO 待校验 --> 这个不会影响参数表达式形式被求值的顺序 ; 关于求值顺序的讨论, 见章节 3.1.2.1.2.3 (Function Forms). 唯一不确定的是参数的值被处理的顺序. 这个意味着具体实现在自动强制转换应用的地方可能不同; 见章节 12.1.1.2 (Contagion in Numeric Operations).
 
-A conforming program can control the order of processing explicitly by separating the operations into separate (possibly nested) function forms, or by writing explicit calls to functions that perform coercions.
+一个符合规范的程序可以通过拆分这些操作到分开的函数表达式形式中, 或通过显式写明对执行强制转换函数的调用来控制显式处理的顺序.
 
 ##### 12.1.1.1.1 数值运算中的结合律和交换律的示例
 
-Consider the following expression, in which we assume that 1.0 and 1.0e-15 both denote single floats:
+思考下面表达式, 其中我们假设 1.0 和 1.0e-15 都表示单个的浮点数:
 
  (+ 1/3 2/3 1.0d0 1.0 1.0e-15)
 
-One conforming implementation might process the arguments from left to right, first adding 1/3 and 2/3 to get 1, then converting that to a double float for combination with 1.0d0, then successively converting and adding 1.0 and 1.0e-15.
+一个符合规范的具体实现可能从左到右处理这些参数, 首先添加 1/3 和 2/3 来得到 1, 然后把那个转换为一个双精度浮点用于和 1.0d0 结合, 接下来依次转换并添加 1.0 和 1.0e-15.
 
-Another conforming implementation might process the arguments from right to left, first performing a single float addition of 1.0 and 1.0e-15 (perhaps losing accuracy in the process), then converting the sum to a double float and adding 1.0d0, then converting 2/3 to a double float and adding it, and then converting 1/3 and adding that.
+另一个符合规范的具体实现可能从右到左处理这些参数, 首先执行一个单精度浮点数加法 1.0 和 1.0e-15 (可能在这个过程中丢失精度), 然后转换这个和为一个双精度浮点并且加 1.0d0, 接下来转换 2/3 为一个双精度浮点并且加上它, 接着转换 1/3 并且加上那个.
 
-A third conforming implementation might first scan all the arguments, process all the rationals first to keep that part of the computation exact, then find an argument of the largest floating-point format among all the arguments and add that, and then add in all other arguments, converting each in turn (all in a perhaps misguided attempt to make the computation as accurate as possible).
+第三种符合规范的具体实现可能首先扫描所有参数, 处理所有有理数来保持这个计算准确, 然后在所有参数中找到一个最大浮点格式的参数并添加, 然后添加所有其他参数, 依次转换它们 (所有这些可能是误导的尝试使计算尽可能准确).
 
-In any case, all three strategies are legitimate.
+在任何情况下, 这三种策略都是合法的.
 
-A conforming program could control the order by writing, for example,
+一个符合规范的程序可以通过在编写时控制这个顺序, 比如,
 
  (+ (+ 1/3 2/3) (+ 1.0d0 1.0e-15) 1.0)
 
 
 #### 12.1.1.2 <span id="ContagionNumericOperations">数值运算的传递性</span>
 
-For information about the contagion rules for implicit coercions of arguments in numeric operations, see Section 12.1.4.4 (Rule of Float Precision Contagion), Section 12.1.4.1 (Rule of Float and Rational Contagion), and Section 12.1.5.2 (Rule of Complex Contagion). 
+关于在数值运算中参数的隐式强制转换的传递性规则的信息, 见章节 12.1.4.4 (Rule of Float Precision Contagion), 章节 12.1.4.1 (Rule of Float and Rational Contagion), 还有章节 12.1.5.2 (Rule of Complex Contagion). 
 
 
 #### 12.1.1.3 <span id="ViewingIntegersBitsBytes">视整数为位和字节</span>
@@ -106,55 +106,55 @@ For information about the contagion rules for implicit coercions of arguments in
 
 ##### 12.1.1.3.1 <span id="LogicalOperationsIntegers">整数上的逻辑操作</span>
 
-Logical operations require integers as arguments; an error of type type-error should be signaled if an argument is supplied that is not an integer. Integer arguments to logical operations are treated as if they were represented in two's-complement notation.
+逻辑运算需要整数来作为参数; 如果提供一个不是整数的参数, 那么应该发出一个 type-error 类型的错误. 给逻辑运算的整数参数被当作是用两种补码表示法表示的.
 
-The next figure shows defined names relating to logical operations on numbers.
+下面这段展示了和数字上逻辑运算相关的已定义的名字.
 
-ash          boole-ior       logbitp   
-boole        boole-nand      logcount  
-boole-1      boole-nor       logeqv    
-boole-2      boole-orc1      logior    
-boole-and    boole-orc2      lognand   
-boole-andc1  boole-set       lognor    
-boole-andc2  boole-xor       lognot    
-boole-c1     integer-length  logorc1   
-boole-c2     logand          logorc2   
-boole-clr    logandc1        logtest   
-boole-eqv    logandc2        logxor    
+    ash          boole-ior       logbitp   
+    boole        boole-nand      logcount  
+    boole-1      boole-nor       logeqv    
+    boole-2      boole-orc1      logior    
+    boole-and    boole-orc2      lognand   
+    boole-andc1  boole-set       lognor    
+    boole-andc2  boole-xor       lognot    
+    boole-c1     integer-length  logorc1   
+    boole-c2     logand          logorc2   
+    boole-clr    logandc1        logtest   
+    boole-eqv    logandc2        logxor    
 
-Figure 12-5. Defined names relating to logical operations on numbers. 
+    Figure 12-5. 数字上逻辑运算相关的已定义的名字. 
 
 ##### 12.1.1.3.2 <span id="ByteOperationsIntegers">整数上的字节操作</span>
 
-The byte-manipulation functions use objects called byte specifiers to designate the size and position of a specific byte within an integer. The representation of a byte specifier is implementation-dependent; it might or might not be a number. The function byte will construct a byte specifier, which various other byte-manipulation functions will accept.
+字节操作函数使用称之为字节指定符的对象来指定一个整数内特定字节的大小和位置. 一个字节指定符的表示是依赖于具体实现的; 它可能是也可能不是一个数字. 函数 byte 会构造一个字节指定符, 它是各种其他字节操作函数都会接受的.
 
-The next figure shows defined names relating to manipulating bytes of numbers.
+下面这段展示和操作一个数字的字节相关的已定义的名字.
 
-byte           deposit-field  ldb-test    
-byte-position  dpb            mask-field  
-byte-size      ldb                        
+    byte           deposit-field  ldb-test    
+    byte-position  dpb            mask-field  
+    byte-size      ldb                        
 
-Figure 12-6. Defined names relating to byte manipulation. 
+    Figure 12-6. 字节操作相关的已定义的名字. 
 
 ### 12.1.2 <span id="IDNumericConstants">依赖于具体实现的数字常量</span>
 
-The next figure shows defined names relating to implementation-dependent details about numbers.
+下面这段展示了和数字的依赖于具体实现的详情相关的已定义名字.
 
-double-float-epsilon           most-negative-fixnum           
-double-float-negative-epsilon  most-negative-long-float       
-least-negative-double-float    most-negative-short-float      
-least-negative-long-float      most-negative-single-float     
-least-negative-short-float     most-positive-double-float     
-least-negative-single-float    most-positive-fixnum           
-least-positive-double-float    most-positive-long-float       
-least-positive-long-float      most-positive-short-float      
-least-positive-short-float     most-positive-single-float     
-least-positive-single-float    short-float-epsilon            
-long-float-epsilon             short-float-negative-epsilon   
-long-float-negative-epsilon    single-float-epsilon           
-most-negative-double-float     single-float-negative-epsilon  
+    double-float-epsilon           most-negative-fixnum           
+    double-float-negative-epsilon  most-negative-long-float       
+    least-negative-double-float    most-negative-short-float      
+    least-negative-long-float      most-negative-single-float     
+    least-negative-short-float     most-positive-double-float     
+    least-negative-single-float    most-positive-fixnum           
+    least-positive-double-float    most-positive-long-float       
+    least-positive-long-float      most-positive-short-float      
+    least-positive-short-float     most-positive-single-float     
+    least-positive-single-float    short-float-epsilon            
+    long-float-epsilon             short-float-negative-epsilon   
+    long-float-negative-epsilon    single-float-epsilon           
+    most-negative-double-float     single-float-negative-epsilon  
 
-Figure 12-7. Defined names relating to implementation-dependent details about numbers. 
+    Figure 12-7. 数字的依赖于具体实现的详情相关的已定义名字. 
 
 
 ### 12.1.3 <span id="RationalComputations">有理数计算</span>
@@ -3233,7 +3233,7 @@ Programmers who would prefer to use numeric indices rather than bit-wise logical
 
 ### <span id="CV-B">常量 BOOLE-1, BOOLE-2, BOOLE-AND, BOOLE-ANDC1, BOOLE-ANDC2, BOOLE-C1, BOOLE-C2, BOOLE-CLR, BOOLE-EQV, BOOLE-IOR, BOOLE-NAND, BOOLE-NOR, BOOLE-ORC1, BOOLE-ORC2, BOOLE-SET, BOOLE-XOR</span>
 
-Constant Value:
+* 常量值(Constant Value):
 
 The identity and nature of the values of each of these variables is implementation-dependent, except that it must be distinct from each of the values of the others, and it must be a valid first argument to the function boole.
 
@@ -3817,7 +3817,7 @@ byte, ldb
 
 ### <span id="CV-MM">常量 MOST-POSITIVE-FIXNUM, MOST-NEGATIVE-FIXNUM</span>
 
-Constant Value:
+* 常量值(Constant Value):
 
 implementation-dependent.
 
@@ -4045,7 +4045,7 @@ Returns true if object is of type float; otherwise, returns false.
 
 ### <span id="CV-MOST-LEAST">常量 MOST-POSITIVE-SHORT-FLOAT, LEAST-POSITIVE-SHORT-FLOAT, LEAST-POSITIVE-NORMALIZED-SHORT-FLOAT, MOST-POSITIVE-DOUBLE-FLOAT, LEAST-POSITIVE-DOUBLE-FLOAT, LEAST-POSITIVE-NORMALIZED-DOUBLE-FLOAT, MOST-POSITIVE-LONG-FLOAT, LEAST-POSITIVE-LONG-FLOAT, LEAST-POSITIVE-NORMALIZED-LONG-FLOAT, MOST-POSITIVE-SINGLE-FLOAT, LEAST-POSITIVE-SINGLE-FLOAT, LEAST-POSITIVE-NORMALIZED-SINGLE-FLOAT, MOST-NEGATIVE-SHORT-FLOAT, LEAST-NEGATIVE-SHORT-FLOAT, LEAST-NEGATIVE-NORMALIZED-SHORT-FLOAT, MOST-NEGATIVE-SINGLE-FLOAT, LEAST-NEGATIVE-SINGLE-FLOAT, LEAST-NEGATIVE-NORMALIZED-SINGLE-FLOAT, MOST-NEGATIVE-DOUBLE-FLOAT, LEAST-NEGATIVE-DOUBLE-FLOAT, LEAST-NEGATIVE-NORMALIZED-DOUBLE-FLOAT, MOST-NEGATIVE-LONG-FLOAT, LEAST-NEGATIVE-LONG-FLOAT, LEAST-NEGATIVE-NORMALIZED-LONG-FLOAT</span>
 
-Constant Value:
+* 常量值(Constant Value):
 
 implementation-dependent.
 
@@ -4082,7 +4082,7 @@ Of these variables, each which has ``short-float'' in its name must have a value
 
 ### <span id="CV-EPSILON">常量 SHORT-FLOAT-EPSILON, SHORT-FLOAT-NEGATIVE-EPSILON, SINGLE-FLOAT-EPSILON, SINGLE-FLOAT-NEGATIVE-EPSILON, DOUBLE-FLOAT-EPSILON, DOUBLE-FLOAT-NEGATIVE-EPSILON, LONG-FLOAT-EPSILON, LONG-FLOAT-NEGATIVE-EPSILON</span>
 
-Constant Value:
+* 常量值(Constant Value):
 
 implementation-dependent.
 
@@ -4159,56 +4159,56 @@ arithmetic-error, Section 9 (Conditions)
 
 * 类优先级列表(Class Precedence List):
 
-division-by-zero, arithmetic-error, error, serious-condition, condition, t
+        division-by-zero, arithmetic-error, error, serious-condition, condition, t
 
 * 描述(Description):
 
-The type division-by-zero consists of error conditions that occur because of division by zero. 
+        类型 division-by-zero 由因为被 0 除所导致的错误状况所组成. 
 
-
+<!--TODO 浮点陷阱 ??-->
 ### <span id="CT-FLOATING-POINT-INVALID-OPERATION">状况类型 FLOATING-POINT-INVALID-OPERATION</span>
 
 * 类优先级列表(Class Precedence List):
 
-floating-point-invalid-operation, arithmetic-error, error, serious-condition, condition, t
+        floating-point-invalid-operation, arithmetic-error, error, serious-condition, condition, t
 
 * 描述(Description):
 
-The type floating-point-invalid-operation consists of error conditions that occur because of certain floating point traps.
+        类型 floating-point-invalid-operation 由因为某些浮点陷阱造成的错误状况组成.
 
-It is implementation-dependent whether floating point traps occur, and whether or how they may be enabled or disabled. Therefore, conforming code may establish handlers for this condition, but must not depend on its being signaled. 
+        浮点陷阱是否发生, 并且它们是否或如何被启用或禁用是依赖于具体实现的. 因此, 符合规范的代码可能为这个状况建立处理者, 但是一定不能依赖于它的发送.  
 
 ### <span id="CT-FLOATING-POINT-INEXACT">状况类型 FLOATING-POINT-INEXACT</span>
 
 * 类优先级列表(Class Precedence List):
 
-floating-point-inexact, arithmetic-error, error, serious-condition, condition, t
+        floating-point-inexact, arithmetic-error, error, serious-condition, condition, t
 
 * 描述(Description):
 
-The type floating-point-inexact consists of error conditions that occur because of certain floating point traps.
+        类型 floating-point-inexact 由因为某些浮点陷阱造成的错误状况组成.
 
-It is implementation-dependent whether floating point traps occur, and whether or how they may be enabled or disabled. Therefore, conforming code may establish handlers for this condition, but must not depend on its being signaled. 
+        浮点陷阱是否发生, 并且它们是否或如何被启用或禁用是依赖于具体实现的. 因此, 符合规范的代码可能为这个状况建立处理者, 但是一定不能依赖于它的发送. 
 
 ### <span id="CT-FLOATING-POINT-OVERFLOW">状况类型 FLOATING-POINT-OVERFLOW</span>
 
 * 类优先级列表(Class Precedence List):
 
-floating-point-overflow, arithmetic-error, error, serious-condition, condition, t
+        floating-point-overflow, arithmetic-error, error, serious-condition, condition, t
 
 * 描述(Description):
 
-The type floating-point-overflow consists of error conditions that occur because of floating-point overflow. 
+        类型 floating-point-overflow 由因为浮点上溢造成的错误状况组成. 
 
 
 ### <span id="CT-FLOATING-POINT-UNDERFLOW">状况类型 FLOATING-POINT-UNDERFLOW</span>
 
 * 类优先级列表(Class Precedence List):
 
-floating-point-underflow, arithmetic-error, error, serious-condition, condition, t
+        floating-point-underflow, arithmetic-error, error, serious-condition, condition, t
 
 * 描述(Description):
 
-The type floating-point-underflow consists of error conditions that occur because of floating-point underflow. 
+        类型 floating-point-underflow 由因为浮点下溢造成的错误状况组成. 
 
 
