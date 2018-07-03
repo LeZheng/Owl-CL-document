@@ -159,7 +159,7 @@ Figure 12-4. 数值类型处理和强制转换相关的已定义的名字.
 
 ### 12.1.3 <span id="RationalComputations">有理数计算</span>
 
-The rules in this section apply to rational computations.
+这个章节中的规则适用于有理数计算.
 
 > * 12.1.3.1 [无界的有理数精度规则](#RuleUnboundedRationalPrecision)
 > * 12.1.3.2 [有理数的规范表示规则](#RuleCanonicalReprRationals)
@@ -168,49 +168,49 @@ The rules in this section apply to rational computations.
 
 #### 12.1.3.1 <span id="RuleUnboundedRationalPrecision">无界的有理数精度规则</span>
 
-Rational computations cannot overflow in the usual sense (though there may not be enough storage to represent a result), since integers and ratios may in principle be of any magnitude. 
+从一般意义上来说有理数计算不可能上溢 (尽管这里可能没有足够的存储来表示一个结果), 因为整数和比数原则上是任意大小的. 
 
 #### 12.1.3.2 <span id="RuleCanonicalReprRationals">有理数的规范表示规则</span>
 
-If any computation produces a result that is a mathematical ratio of two integers such that the denominator evenly divides the numerator, then the result is converted to the equivalent integer.
+如果任何计算产生一个结果是两个整数的数学比, 并且分母可以整除分子, 那么这个结果会被转换为等价的整数.
 
-If the denominator does not evenly divide the numerator, the canonical representation of a rational number is as the ratio that numerator and that denominator, where the greatest common divisor of the numerator and denominator is one, and where the denominator is positive and greater than one.
+如果分母不能整除分子, 那么一个有理数的标准表示是分子和分母的比例, 其中分子和分母最大的公约数是 1 , 并且分母是大于 1 的正数.
 
-When used as input (in the default syntax), the notation -0 always denotes the integer 0. A conforming implementation must not have a representation of ``minus zero'' for integers that is distinct from its representation of zero for integers. However, such a distinction is possible for floats; see the type float. 
+当作为一个输入时 (在默认语法中), 符号 -0 总是表示 0. 一个符合规范的具体实现不应该有与它对整数 0 的表示不同的"负零"的表示. 但是, 这样的区别对于浮点数也是有可能的; 见类型 float. 
 
 #### 12.1.3.3 <span id="RuleFloatSubstitutability">浮点的置换性规则</span>
 
-When the arguments to an irrational mathematical function are all rational and the true mathematical result is also (mathematically) rational, then unless otherwise noted an implementation is free to return either an accurate rational result or a single float approximation. If the arguments are all rational but the result cannot be expressed as a rational number, then a single float approximation is always returned.
+当一个不合理的数学函数的参数都是有理数的而真正的数学结果也是(数学上)有理数, 除非另有说明, 否则一个实现可以自由地返回一个准确的有理数结果或者一个浮点近似值. 如果参数都是有理数但是结果不能被表示为一个有理数数字, 那么总是会返回一个单精度浮点数表示.
 
-If the arguments to an irrational mathematical function are all of type (or rational (complex rational)) and the true mathematical result is (mathematically) a complex number with rational real and imaginary parts, then unless otherwise noted an implementation is free to return either an accurate result of type (or rational (complex rational)) or a single float (permissible only if the imaginary part of the true mathematical result is zero) or (complex single-float). If the arguments are all of type (or rational (complex rational)) but the result cannot be expressed as a rational or complex rational, then the returned value will be of type single-float (permissible only if the imaginary part of the true mathematical result is zero) or (complex single-float).
+当一个不合理的数学函数的参数都是类型 (or rational (complex rational)) 并且真正的数学结果是(数学上)一个带有有理数实部和虚部的复数, 除非另有说明, 否则一个具体实现可以自由地返回一个类型 (or rational (complex rational)) 的精准结果或者一个单精度浮点数 (只有当真实的数学结果的虚部为零时才允许) 或者 (complex single-float). 如果参数都是类型 (or rational (complex rational)) 但是结果不能被表示为一个有理数或者复数, 那么返回值会是 single-float 类型(只有当真实的数学结果的虚部为零时才允许) 或者 (complex single-float).
 
-Float substitutability applies neither to the rational functions +, -, *, and / nor to the related operators 1+, 1-, incf, decf, and conjugate. For rational functions, if all arguments are rational, then the result is rational; if all arguments are of type (or rational (complex rational)), then the result is of type (or rational (complex rational)).
+浮点数置换性不能应用于有理数函数 +, -, *, 和 / 也不能应用于相关操作符 1+, 1-, incf, decf, 和 conjugate. 对于有理数函数, 如果所有参数都是有理数, 那么结果就是有理数; 如果所有参数都是类型 (or rational (complex rational)), 那么结果也就是类型 (or rational (complex rational)).
 
-Function  Sample Results                                   
-abs       (abs #c(3 4)) =>  5 or 5.0                       
-acos      (acos 1) =>  0 or 0.0                            
-acosh     (acosh 1) =>  0 or 0.0                           
-asin      (asin 0) =>  0 or 0.0                            
-asinh     (asinh 0) =>  0 or 0.0                           
-atan      (atan 0) =>  0 or 0.0                            
-atanh     (atanh 0) =>  0 or 0.0                           
-cis       (cis 0) =>  1 or #c(1.0 0.0)                     
-cos       (cos 0) =>  1 or 1.0                             
-cosh      (cosh 0) =>  1 or 1.0                            
-exp       (exp 0) =>  1 or 1.0                             
-expt      (expt 8 1/3) =>  2 or 2.0                        
-log       (log 1) =>  0 or 0.0                             
-          (log 8 2) =>  3 or 3.0                           
-phase     (phase 7) =>  0 or 0.0                           
-signum    (signum #c(3 4)) =>  #c(3/5 4/5) or #c(0.6 0.8)  
-sin       (sin 0) =>  0 or 0.0                             
-sinh      (sinh 0) =>  0 or 0.0                            
-sqrt      (sqrt 4) =>  2 or 2.0                            
-          (sqrt 9/16) =>  3/4 or 0.75                      
-tan       (tan 0) =>  0 or 0.0                             
-tanh      (tanh 0) =>  0 or 0.0                            
+    Function  Sample Results                                   
+    abs       (abs #c(3 4)) =>  5 or 5.0                       
+    acos      (acos 1) =>  0 or 0.0                            
+    acosh     (acosh 1) =>  0 or 0.0                           
+    asin      (asin 0) =>  0 or 0.0                            
+    asinh     (asinh 0) =>  0 or 0.0                           
+    atan      (atan 0) =>  0 or 0.0                            
+    atanh     (atanh 0) =>  0 or 0.0                           
+    cis       (cis 0) =>  1 or #c(1.0 0.0)                     
+    cos       (cos 0) =>  1 or 1.0                             
+    cosh      (cosh 0) =>  1 or 1.0                            
+    exp       (exp 0) =>  1 or 1.0                             
+    expt      (expt 8 1/3) =>  2 or 2.0                        
+    log       (log 1) =>  0 or 0.0                             
+              (log 8 2) =>  3 or 3.0                           
+    phase     (phase 7) =>  0 or 0.0                           
+    signum    (signum #c(3 4)) =>  #c(3/5 4/5) or #c(0.6 0.8)  
+    sin       (sin 0) =>  0 or 0.0                             
+    sinh      (sinh 0) =>  0 or 0.0                            
+    sqrt      (sqrt 4) =>  2 or 2.0                            
+              (sqrt 9/16) =>  3/4 or 0.75                      
+    tan       (tan 0) =>  0 or 0.0                             
+    tanh      (tanh 0) =>  0 or 0.0                            
 
-Figure 12-8. Functions Affected by Rule of Float Substitutability 
+    Figure 12-8. 受浮点数置换性规则影响的函数 
 
 
 ### 12.1.4 <span id="FloatingPointComputations">浮点计算</span>
@@ -3835,162 +3835,152 @@ most-negative-fixnum is that fixnum closest in value to negative infinity provid
 
 
 ### <span id="F-DSFFFFI">函数 DECODE-FLOAT, SCALE-FLOAT, FLOAT-RADIX, FLOAT-SIGN, FLOAT-DIGITS, FLOAT-PRECISION, INTEGER-DECODE-FLOAT</span>
-
+<!--TODO 待校验 待翻译-->
 * 语法(Syntax):
 
-decode-float float => significand, exponent, sign
+        decode-float float => significand, exponent, sign
 
-scale-float float integer => scaled-float
+        scale-float float integer => scaled-float
 
-float-radix float => float-radix
+        float-radix float => float-radix
 
-float-sign float-1 &optional float-2 => signed-float
+        float-sign float-1 &optional float-2 => signed-float
 
-float-digits float => digits1
+        float-digits float => digits1
 
-float-precision float => digits2
+        float-precision float => digits2
 
-integer-decode-float float => significand, exponent, integer-sign
+        integer-decode-float float => significand, exponent, integer-sign
 
 * 参数和值(Arguments and Values):
 
-digits1---a non-negative integer.
-
-digits2---a non-negative integer.
-
-exponent---an integer.
-
-float---a float.
-
-float-1---a float.
-
-float-2---a float.
-
-float-radix---an integer.
-
-integer---a non-negative integer.
-
-integer-sign---the integer -1, or the integer 1.
-
-scaled-float---a float.
-
-sign---A float of the same type as float but numerically equal to 1.0 or -1.0.
-
-signed-float---a float.
-
-significand---a float.
+        digits1---一个非负整数.
+        digits2---一个非负整数.
+        exponent---一个整数.
+        float---一个浮点数.
+        float-1---一个浮点数.
+        float-2---一个浮点数.
+        float-radix---一个整数.
+        integer---一个非负整数.
+        integer-sign---整数 -1, 或者整数 1.
+        scaled-float---一个浮点数.
+        sign---一个和浮点数 float 相同类型但是数学上等价于 1.0 或 -1.0 一个浮点数.
+        signed-float---一个浮点数.
+        significand---一个浮点数.
 
 * 描述(Description):
 
-decode-float computes three values that characterize float. The first value is of the same type as float and represents the significand. The second value represents the exponent to which the radix (notated in this description by b) must be raised to obtain the value that, when multiplied with the first result, produces the absolute value of float. If float is zero, any integer value may be returned, provided that the identity shown for scale-float holds. The third value is of the same type as float and is 1.0 if float is greater than or equal to zero or -1.0 otherwise.
+        decode-float 计算描绘浮点数 float 的三个值. 第一个值和浮点数 float 相同类型并且表示有效位数 significand. 第二个值表示一个指数, 对于这个指数那个基数必须被提升到 The second value represents the exponent to which the radix (notated in this description by b) must be raised to obtain the value that, 当和第一个值相乘时, 产生浮点数 float 的完整值. 如果浮点数 float 是 0, 任何整数值可能被返回, provided that the identity shown for scale-float holds. 第三个值是和浮点数 float 相同类型并且如果浮点数 float 大于等于 0 就是 1.0 否则就是 -1.0.
 
-decode-float divides float by an integral power of b so as to bring its value between 1/b (inclusive) and 1 (exclusive), and returns the quotient as the first value. If float is zero, however, the result equals the absolute value of float (that is, if there is a negative zero, its significand is considered to be a positive zero).
+        decode-float divides float by an integral power of b so as to bring its value between 1/b (inclusive) and 1 (exclusive), 并且返回这个商作为对一个值. 然而, 如果浮点数 float 是 zero, 结果和这个浮点数 float 的绝对值相等 (这也就是说, 如果这里有个负零, 它的有效位数被认为是正零).
 
-scale-float returns (* float (expt (float b float) integer)), where b is the radix of the floating-point representation. float is not necessarily between 1/b and 1.
+        scale-float 返回 (* float (expt (float b float) integer)), 其中 b 是这个浮点表示的基数. 浮点数 float 没有必要在 1/b 和 1 之间.
 
-float-radix returns the radix of float.
+        float-radix 返回 float 的基数.
 
-float-sign returns a number z such that z and float-1 have the same sign and also such that z and float-2 have the same absolute value. If float-2 is not supplied, its value is (float 1 float-1). If an implementation has distinct representations for negative zero and positive zero, then (float-sign -0.0) => -1.0.
+        float-sign 返回一个数字 z, 这个 z 和 float-1 有着相同的符号并且 z 和 float-2 有着相同的绝对值. 如果没有提供 float-2, 它的值就是 (float 1 float-1). 如果一个具体实现对于负零和正零有着不同的表示, 那么 (float-sign -0.0) => -1.0.
 
-float-digits returns the number of radix b digits used in the representation of float (including any implicit digits, such as a ``hidden bit'').
+        float-digits 返回在浮点数 float 中使用的基数 b 的数量 (包括任何隐式的数量, 例如一个 "隐藏位(hidden bit)").
 
-float-precision returns the number of significant radix b digits present in float; if float is a float zero, then the result is an integer zero.
+        float-precision 返回在浮点数 float 中出现的重要的基数 b 的数量; 如果浮点数 float 是一个浮点数零, 那么结果就是一个整数零.
 
-For normalized floats, the results of float-digits and float-precision are the same, but the precision is less than the number of representation digits for a denormalized or zero number.
+        对于标准化浮点数, 这个 float-digits 和 float-precision 的结果是一样的, 但是精度比非标准化或零的表示数字要小.
 
-integer-decode-float computes three values that characterize float - the significand scaled so as to be an integer, and the same last two values that are returned by decode-float. If float is zero, integer-decode-float returns zero as the first value. The second value bears the same relationship to the first value as for decode-float:
+        integer-decode-float 计算描绘浮点数 float 的三个值 - 这个有效数字被缩放为一个整数, 和 decode-float 返回的最后两个值一样. 如果浮点数 float 是零, integer-decode-float 返回 0 作为第一个值. 第二个值与第一个值具有和 decode-float 中的相同的关系:
 
- (multiple-value-bind (signif expon sign)
-                      (integer-decode-float f)
-   (scale-float (float signif f) expon)) ==  (abs f)
+        (multiple-value-bind (signif expon sign)
+                              (integer-decode-float f)
+          (scale-float (float signif f) expon)) ==  (abs f)
 
 * 示例(Examples):
 
- ;; Note that since the purpose of this functionality is to expose
- ;; details of the implementation, all of these examples are necessarily
- ;; very implementation-dependent.  Results may vary widely.
- ;; Values shown here are chosen consistently from one particular implementation.
- (decode-float .5) =>  0.5, 0, 1.0
- (decode-float 1.0) =>  0.5, 1, 1.0
- (scale-float 1.0 1) =>  2.0
- (scale-float 10.01 -2) =>  2.5025
- (scale-float 23.0 0) =>  23.0
- (float-radix 1.0) =>  2
- (float-sign 5.0) =>  1.0
- (float-sign -5.0) =>  -1.0
- (float-sign 0.0) =>  1.0
- (float-sign 1.0 0.0) =>  0.0
- (float-sign 1.0 -10.0) =>  10.0
- (float-sign -1.0 10.0) =>  -10.0
- (float-digits 1.0) =>  24
- (float-precision 1.0) =>  24
- (float-precision least-positive-single-float) =>  1
- (integer-decode-float 1.0) =>  8388608, -23, 1
+    ```LISP
+    ;; Note that since the purpose of this functionality is to expose
+    ;; details of the implementation, all of these examples are necessarily
+    ;; very implementation-dependent.  Results may vary widely.
+    ;; Values shown here are chosen consistently from one particular implementation.
+    (decode-float .5) =>  0.5, 0, 1.0
+    (decode-float 1.0) =>  0.5, 1, 1.0
+    (scale-float 1.0 1) =>  2.0
+    (scale-float 10.01 -2) =>  2.5025
+    (scale-float 23.0 0) =>  23.0
+    (float-radix 1.0) =>  2
+    (float-sign 5.0) =>  1.0
+    (float-sign -5.0) =>  -1.0
+    (float-sign 0.0) =>  1.0
+    (float-sign 1.0 0.0) =>  0.0
+    (float-sign 1.0 -10.0) =>  10.0
+    (float-sign -1.0 10.0) =>  -10.0
+    (float-digits 1.0) =>  24
+    (float-precision 1.0) =>  24
+    (float-precision least-positive-single-float) =>  1
+    (integer-decode-float 1.0) =>  8388608, -23, 1
+    ```
 
 * 副作用(Side Effects): None.
 
 * 受此影响(Affected By):
 
-The implementation's representation for floats.
+        具体实现对于浮点数的表示法.
 
 * 异常情况(Exceptional Situations):
 
-The functions decode-float, float-radix, float-digits, float-precision, and integer-decode-float should signal an error if their only argument is not a float.
+        如果函数 decode-float, float-radix, float-digits, float-precision, and integer-decode-float 仅有的参数不是一个浮点数, 那么它们应该发出一个错误.
 
-The function scale-float should signal an error if its first argument is not a float or if its second argument is not an integer.
+        如果函数 scale-float 的第一个参数不是一个浮点数或者它的第二个参数不是一个整数, 那么它应该发出一个错误.
 
-The function float-sign should signal an error if its first argument is not a float or if its second argument is supplied but is not a float.
+        如果函数 float-sign 的第一个参数不是一个浮点数或者提供的第二个参数不是一个浮点数, 那么它应该发出一个错误.
 
 * 也见(See Also): None.
 
 * 注意(Notes):
 
-The product of the first result of decode-float or integer-decode-float, of the radix raised to the power of the second result, and of the third result is exactly equal to the value of float.
+        The product of the first result of decode-float or integer-decode-float, of the radix raised to the power of the second result, and of the third result is exactly equal to the value of float.
 
- (multiple-value-bind (signif expon sign)
-                      (decode-float f)
-   (scale-float signif expon))
-==  (abs f)
+        (multiple-value-bind (signif expon sign)
+                              (decode-float f)
+          (scale-float signif expon))
+        ==  (abs f)
 
-and
+        并且
 
- (multiple-value-bind (signif expon sign)
-                      (decode-float f)
-   (* (scale-float signif expon) sign))
-==  f
+        (multiple-value-bind (signif expon sign)
+                              (decode-float f)
+          (* (scale-float signif expon) sign))
+        ==  f
 
 
 ### <span id="F-FLOAT">函数 FLOAT</span>
 
 * 语法(Syntax):
 
-float number &optional prototype => float
+        float number &optional prototype => float
 
 * 参数和值(Arguments and Values):
 
-number---a real.
-
-prototype---a float.
-
-float---a float.
+        number---一个实数.
+        prototype---一个浮点数.
+        float---一个浮点数.
 
 * 描述(Description):
 
-float converts a real number to a float.
+        float 把一个实数转换为浮点数.
 
-If a prototype is supplied, a float is returned that is mathematically equal to number but has the same format as prototype.
+        如果提供了一个 prototype, 会返回一个和 number 数学上相等的但是有着和 prototype 相同格式的浮点数.
 
-If prototype is not supplied, then if the number is already a float, it is returned; otherwise, a float is returned that is mathematically equal to number but is a single float.
+        如果没有提供 prototype, 那么如果这个数字 number 已经是一个浮点数, 就把它返回; 否则, 就返回一个和 number 数学上相等的但是是一个单精度浮点的浮点数.
 
 * 示例(Examples):
 
- (float 0) =>  0.0
- (float 1 .5) =>  1.0
- (float 1.0) =>  1.0
- (float 1/2) =>  0.5
-=>  1.0d0
-OR=>  1.0
- (eql (float 1.0 1.0d0) 1.0d0) =>  true
+    ```LISP
+    (float 0) =>  0.0
+    (float 1 .5) =>  1.0
+    (float 1.0) =>  1.0
+    (float 1/2) =>  0.5
+    =>  1.0d0
+    OR=>  1.0
+    (eql (float 1.0 1.0d0) 1.0d0) =>  true
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -4000,7 +3990,7 @@ OR=>  1.0
 
 * 也见(See Also):
 
-coerce
+        coerce
 
 * 注意(Notes): None. 
 
@@ -4009,26 +3999,27 @@ coerce
 
 * 语法(Syntax):
 
-floatp object
+        floatp object
 
-generalized-boolean
+        generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-object---an object.
-
-generalized-boolean---a generalized boolean.
+        object---一个对象.
+        generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
-Returns true if object is of type float; otherwise, returns false.
+        如果对象 object 是 float 类型的就返回 true; 否则, 返回 false.
 
 * 示例(Examples):
 
- (floatp 1.2d2) =>  true
- (floatp 1.212) =>  true
- (floatp 1.2s2) =>  true
- (floatp (expt 2 130)) =>  false
+    ```LISP
+    (floatp 1.2d2) =>  true
+    (floatp 1.212) =>  true
+    (floatp 1.2s2) =>  true
+    (floatp (expt 2 130)) =>  false
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -4040,38 +4031,38 @@ Returns true if object is of type float; otherwise, returns false.
 
 * 注意(Notes):
 
- (floatp object) ==  (typep object 'float)
+        (floatp object) ==  (typep object 'float)
 
 
 ### <span id="CV-MOST-LEAST">常量 MOST-POSITIVE-SHORT-FLOAT, LEAST-POSITIVE-SHORT-FLOAT, LEAST-POSITIVE-NORMALIZED-SHORT-FLOAT, MOST-POSITIVE-DOUBLE-FLOAT, LEAST-POSITIVE-DOUBLE-FLOAT, LEAST-POSITIVE-NORMALIZED-DOUBLE-FLOAT, MOST-POSITIVE-LONG-FLOAT, LEAST-POSITIVE-LONG-FLOAT, LEAST-POSITIVE-NORMALIZED-LONG-FLOAT, MOST-POSITIVE-SINGLE-FLOAT, LEAST-POSITIVE-SINGLE-FLOAT, LEAST-POSITIVE-NORMALIZED-SINGLE-FLOAT, MOST-NEGATIVE-SHORT-FLOAT, LEAST-NEGATIVE-SHORT-FLOAT, LEAST-NEGATIVE-NORMALIZED-SHORT-FLOAT, MOST-NEGATIVE-SINGLE-FLOAT, LEAST-NEGATIVE-SINGLE-FLOAT, LEAST-NEGATIVE-NORMALIZED-SINGLE-FLOAT, MOST-NEGATIVE-DOUBLE-FLOAT, LEAST-NEGATIVE-DOUBLE-FLOAT, LEAST-NEGATIVE-NORMALIZED-DOUBLE-FLOAT, MOST-NEGATIVE-LONG-FLOAT, LEAST-NEGATIVE-LONG-FLOAT, LEAST-NEGATIVE-NORMALIZED-LONG-FLOAT</span>
 
 * 常量值(Constant Value):
 
-implementation-dependent.
+        依赖于具体实现.
 
 * 描述(Description):
 
-These constant variables provide a way for programs to examine the implementation-defined limits for the various float formats.
+        这些常量为程序去检测具体实现为多种浮点格式定义的限制提供了一种方式.
 
-Of these variables, each which has ``-normalized'' in its name must have a value which is a normalized float, and each which does not have ``-normalized'' in its name may have a value which is either a normalized float or a denormalized float, as appropriate.
+        这些变量中, 每个名字中有着 "-normalized" 的必须有着一个标准化浮点数的值, 而每个名字中没有 "-normalized" 的可能有着一个标准化的或者非标准化的浮点数的值, 视情况而定.
 
-Of these variables, each which has ``short-float'' in its name must have a value which is a short float, each which has ``single-float'' in its name must have a value which is a single float, each which has ``double-float'' in its name must have a value which is a double float, and each which has ``long-float'' in its name must have a value which is a long float.
+        这些变量中, 每个名字中有着 "short-float" 的必须有着一个短浮点数的值, 每个名字中有着 "single-float" 必须有着一个单精度浮点数的值, 每个名字中有着 "double-float" 的必须有着一个双精度浮点数的值, 而每个名字中有着 "long-float" 的必须有着一个长浮点数的值.
 
-    most-positive-short-float, most-positive-single-float, most-positive-double-float, most-positive-long-float
+            most-positive-short-float, most-positive-single-float, most-positive-double-float, most-positive-long-float
 
-    Each of these constant variables has as its value the positive float of the largest magnitude (closest in value to, but not equal to, positive infinity) for the float format implied by its name.
+            对于这些常量的名字所暗示的浮点格式, 这些常量中的每一个都有着作为它的值最大 (最接近, 但不等于正无穷) 正浮点数.
 
-    least-positive-short-float, least-positive-normalized-short-float, least-positive-single-float, least-positive-normalized-single-float, least-positive-double-float, least-positive-normalized-double-float, least-positive-long-float, least-positive-normalized-long-float
+            least-positive-short-float, least-positive-normalized-short-float, least-positive-single-float, least-positive-normalized-single-float, least-positive-double-float, least-positive-normalized-double-float, least-positive-long-float, least-positive-normalized-long-float
 
-    Each of these constant variables has as its value the smallest positive (nonzero) float for the float format implied by its name.
+            对于这些常量的名字所暗示的浮点格式, 这些常量中的每一个都有着作为它的值的最小 (非零) 正浮点数.
 
-    least-negative-short-float, least-negative-normalized-short-float, least-negative-single-float, least-negative-normalized-single-float, least-negative-double-float, least-negative-normalized-double-float, least-negative-long-float, least-negative-normalized-long-float
+            least-negative-short-float, least-negative-normalized-short-float, least-negative-single-float, least-negative-normalized-single-float, least-negative-double-float, least-negative-normalized-double-float, least-negative-long-float, least-negative-normalized-long-float
 
-    Each of these constant variables has as its value the negative (nonzero) float of the smallest magnitude for the float format implied by its name. (If an implementation supports minus zero as a different object from positive zero, this value must not be minus zero.)
+            对于这些常量的名字所暗示的浮点格式, 这些常量中的每一个都有着作为它的值的最小 (非零) 负浮点数. (如果一个实现支持 -0 作为一个和 +0 不同的对象, 这个值一定不能是 -0.)
 
-    most-negative-short-float, most-negative-single-float, most-negative-double-float, most-negative-long-float
+            most-negative-short-float, most-negative-single-float, most-negative-double-float, most-negative-long-float
 
-    Each of these constant variables has as its value the negative float of the largest magnitude (closest in value to, but not equal to, negative infinity) for the float format implied by its name.
+            对于这些常量的名字所暗示的浮点格式, 这些常量中的每一个都有着作为它的值的最大 (值接近于, 但不等于负无穷) 负浮点数.
 
 * 示例(Examples): None.
 
@@ -4084,17 +4075,17 @@ Of these variables, each which has ``short-float'' in its name must have a value
 
 * 常量值(Constant Value):
 
-implementation-dependent.
+        依赖于具体实现.
 
 * 描述(Description):
 
-The value of each of the constants short-float-epsilon, single-float-epsilon, double-float-epsilon, and long-float-epsilon is the smallest positive float <EPSILON> of the given format, such that the following expression is true when evaluated:
+        这些常量 short-float-epsilon, single-float-epsilon, double-float-epsilon, 和 long-float-epsilon 中的每一个的值都是给定格式下的最小正的浮点极小值 <EPSILON>, 这样一来下面表达式在求值时是 true 的:
 
-(not (= (float 1 <EPSILON>) (+ (float 1 <EPSILON>) <EPSILON>)))
+        (not (= (float 1 <EPSILON>) (+ (float 1 <EPSILON>) <EPSILON>)))
 
-The value of each of the constants short-float-negative-epsilon, single-float-negative-epsilon, double-float-negative-epsilon, and long-float-negative-epsilon is the smallest positive float <EPSILON> of the given format, such that the following expression is true when evaluated:
+        这些常量 short-float-negative-epsilon, single-float-negative-epsilon, double-float-negative-epsilon, 和 long-float-negative-epsilon 中的每一个的值都是给定格式下的最小正的浮点极小值, 这样一来下面表达式在求值时是 true 的:
 
-(not (= (float 1 <EPSILON>) (- (float 1 <EPSILON>) <EPSILON>)))
+        (not (= (float 1 <EPSILON>) (- (float 1 <EPSILON>) <EPSILON>)))
 
 * 示例(Examples): None.
 
@@ -4107,38 +4098,36 @@ The value of each of the constants short-float-negative-epsilon, single-float-ne
 
 * 类优先级列表(Class Precedence List):
 
-arithmetic-error, error, serious-condition, condition, t
+        arithmetic-error, error, serious-condition, condition, t
 
 * 描述(Description):
 
-The type arithmetic-error consists of error conditions that occur during arithmetic operations. The operation and operands are initialized with the initialization arguments named :operation and :operands to make-condition, and are accessed by the functions arithmetic-error-operation and arithmetic-error-operands.
+        类型 arithmetic-error 由运算操作期间发生的错误状况组成. 这个操作符和操作数通过给 make-condition 的名为 :operation 和 :operands 的初始化参数来初始化, 并且可以通过函数 arithmetic-error-operation 和 arithmetic-error-operands 访问.
 
 * 也见(See Also):
 
-arithmetic-error-operation, arithmetic-error-operands 
+        arithmetic-error-operation, arithmetic-error-operands 
 
 
 ### <span id="F-AEO-AEO">函数 ARITHMETIC-ERROR-OPERANDS, ARITHMETIC-ERROR-OPERATION</span>
 
 * 语法(Syntax):
 
-arithmetic-error-operands condition => operands
+        arithmetic-error-operands condition => operands
 
-arithmetic-error-operation condition => operation
+        arithmetic-error-operation condition => operation
 
 * 参数和值(Arguments and Values):
 
-condition---a condition of type arithmetic-error.
-
-operands---a list.
-
-operation---a function designator.
+        condition---一个 arithmetic-error 类型的状况.
+        operands---一个列表.
+        operation---一个函数标识符.
 
 * 描述(Description):
 
-arithmetic-error-operands returns a list of the operands which were used in the offending call to the operation that signaled the condition.
+        arithmetic-error-operands 返回一个操作数的列表, 这些操作数被用于对发出这个状况的操作符的违规调用中.
 
-arithmetic-error-operation returns a list of the offending operation in the offending call that signaled the condition.
+        arithmetic-error-operation 返回一个在发出这个状况的违规调用中违规的操作符列表.
 
 * 示例(Examples): None.
 
@@ -4150,7 +4139,7 @@ arithmetic-error-operation returns a list of the offending operation in the offe
 
 * 也见(See Also):
 
-arithmetic-error, Section 9 (Conditions)
+        arithmetic-error, 章节 9 (Conditions)
 
 * 注意(Notes):
 
