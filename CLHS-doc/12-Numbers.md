@@ -321,10 +321,10 @@ Figure 12-4. 数值类型处理和强制转换相关的已定义的名字.
     Figure 12-10. 分支切割的象限编号
 
 ### 12.1.6 <span id="IntervalDesignators">Interval Designators</span>
-
+<!-- TODO 待翻译 -->
 The compound type specifier form of the numeric type specifiers permit the user to specify an interval on the real number line which describe a subtype of the type which would be described by the corresponding atomic type specifier. A subtype of some type T is specified using an ordered pair of objects called interval designators for type T.
 
-The first of the two interval designators for type T can be any of the following:
+T 类型的两个间隔指示器的第一个可以是以下任意一种:
 
 a number N of type T
 
@@ -334,11 +334,11 @@ a singleton list whose element is a number M of type T
 
     This denotes a lower exclusive bound of M. That is, elements of the subtype of T will be greater than M.
 
-the symbol *
+符号 *
 
-    This denotes the absence of a lower bound on the interval.
+    这表示在区间上没有下限.
 
-The second of the two interval designators for type T can be any of the following:
+T 类型的两个间隔指示器的第二个可以是以下任意一种:
 
 a number N of type T
 
@@ -348,19 +348,19 @@ a singleton list whose element is a number M of type T
 
     This denotes an upper exclusive bound of M. That is, elements of the subtype of T will be less than M.
 
-the symbol *
+符号 *
 
-    This denotes the absence of an upper bound on the interval. 
+    这表示在区间上没有上限. 
 
 
 ### 12.1.7 <span id="RandomStateOperations">随机状态运算</span>
 
-The next figure lists some defined names that are applicable to random states.
+下面这段列出了可应用于随机状态的已定义的名字.
 
-*random-state*     random            
-make-random-state  random-state-p    
+    *random-state*     random            
+    make-random-state  random-state-p    
 
-Figure 12-11. Random-state defined names 
+    Figure 12-11. 随机状态已定义的名字 
 
 
 ## 12.2 <span id="NumbersDictionary">数字的字典</span>
@@ -3260,97 +3260,95 @@ boole
 
 * 语法(Syntax):
 
-logand &rest integers => result-integer
+        logand &rest integers => result-integer
 
-logandc1 integer-1 integer-2 => result-integer
+        logandc1 integer-1 integer-2 => result-integer
 
-logandc2 integer-1 integer-2 => result-integer
+        logandc2 integer-1 integer-2 => result-integer
 
-logeqv &rest integers => result-integer
+        logeqv &rest integers => result-integer
 
-logior &rest integers => result-integer
+        logior &rest integers => result-integer
 
-lognand integer-1 integer-2 => result-integer
+        lognand integer-1 integer-2 => result-integer
 
-lognor integer-1 integer-2 => result-integer
+        lognor integer-1 integer-2 => result-integer
 
-lognot integer => result-integer
+        lognot integer => result-integer
 
-logorc1 integer-1 integer-2 => result-integer
+        logorc1 integer-1 integer-2 => result-integer
 
-logorc2 integer-1 integer-2 => result-integer
+        logorc2 integer-1 integer-2 => result-integer
 
-logxor &rest integers => result-integer
+        logxor &rest integers => result-integer
 
 * 参数和值(Arguments and Values):
 
-integers---integers.
-
-integer---an integer.
-
-integer-1---an integer.
-
-integer-2---an integer.
-
-result-integer---an integer.
+        integers---多个整数.
+        integer---一个整数.
+        integer-1---一个整数.
+        integer-2---一个整数.
+        result-integer---一个整数.
 
 * 描述(Description):
 
-The functions logandc1, logandc2, logand, logeqv, logior, lognand, lognor, lognot, logorc1, logorc2, and logxor perform bit-wise logical operations on their arguments, that are treated as if they were binary.
+        函数 logandc1, logandc2, logand, logeqv, logior, lognand, lognor, lognot, logorc1, logorc2, 和 logxor 在它们的参数上执行位逻辑操作, 这些参数会被看作二进制数.
 
-The next figure lists the meaning of each of the functions. Where an `identity' is shown, it indicates the value yielded by the function when no arguments are supplied.
+        下面这段列出了这些函数中的每一个的意义. 在 'identity' 出现的位置, 表示当没有提供参数时函数产生的值.
 
-Function  Identity  Operation performed                         
-logandc1  ---       and complement of integer-1 with integer-2  
-logandc2  ---       and integer-1 with complement of integer-2  
-logand    -1        and                                         
-logeqv    -1        equivalence (exclusive nor)                 
-logior    0         inclusive or                                
-lognand   ---       complement of integer-1 and integer-2       
-lognor    ---       complement of integer-1 or integer-2        
-lognot    ---       complement                                  
-logorc1   ---       or complement of integer-1 with integer-2   
-logorc2   ---       or integer-1 with complement of integer-2   
-logxor    0         exclusive or                                
+            Function  Identity  Operation performed                         
+            logandc1  ---       and complement of integer-1 with integer-2  
+            logandc2  ---       and integer-1 with complement of integer-2  
+            logand    -1        and                                         
+            logeqv    -1        equivalence (exclusive nor)                 
+            logior    0         inclusive or                                
+            lognand   ---       complement of integer-1 and integer-2       
+            lognor    ---       complement of integer-1 or integer-2        
+            lognot    ---       complement                                  
+            logorc1   ---       or complement of integer-1 with integer-2   
+            logorc2   ---       or integer-1 with complement of integer-2   
+            logxor    0         exclusive or                                
 
-Figure 12-18. Bit-wise Logical Operations on Integers
+            Figure 12-18. 整数上的位逻辑操作
 
-Negative integers are treated as if they were in two's-complement notation.
+        负的整数会被看作它们是以两个补数的二进制表示的.
 
 * 示例(Examples):
 
- (logior 1 2 4 8) =>  15
- (logxor 1 3 7 15) =>  10
- (logeqv) =>  -1
- (logand 16 31) =>  16
- (lognot 0) =>  -1
- (lognot 1) =>  -2
- (lognot -1) =>  0
- (lognot (1+ (lognot 1000))) =>  999
+    ```LISP
+    (logior 1 2 4 8) =>  15
+    (logxor 1 3 7 15) =>  10
+    (logeqv) =>  -1
+    (logand 16 31) =>  16
+    (lognot 0) =>  -1
+    (lognot 1) =>  -2
+    (lognot -1) =>  0
+    (lognot (1+ (lognot 1000))) =>  999
 
-;;; In the following example, m is a mask.  For each bit in
-;;; the mask that is a 1, the corresponding bits in x and y are
-;;; exchanged.  For each bit in the mask that is a 0, the 
-;;; corresponding bits of x and y are left unchanged.
- (flet ((show (m x y)
-          (format t "~%m = #o~6,'0O~%x = #o~6,'0O~%y = #o~6,'0O~%"
-                  m x y)))
-   (let ((m #o007750)
-         (x #o452576)
-         (y #o317407))
-     (show m x y)
-     (let ((z (logand (logxor x y) m)))
-       (setq x (logxor z x))
-       (setq y (logxor z y))
-       (show m x y))))
->>  m = #o007750
->>  x = #o452576
->>  y = #o317407
->>  
->>  m = #o007750
->>  x = #o457426
->>  y = #o312557
-=>  NIL
+    ;;; In the following example, m is a mask.  For each bit in
+    ;;; the mask that is a 1, the corresponding bits in x and y are
+    ;;; exchanged.  For each bit in the mask that is a 0, the 
+    ;;; corresponding bits of x and y are left unchanged.
+    (flet ((show (m x y)
+              (format t "~%m = #o~6,'0O~%x = #o~6,'0O~%y = #o~6,'0O~%"
+                      m x y)))
+      (let ((m #o007750)
+            (x #o452576)
+            (y #o317407))
+        (show m x y)
+        (let ((z (logand (logxor x y) m)))
+          (setq x (logxor z x))
+          (setq y (logxor z y))
+          (show m x y))))
+    >>  m = #o007750
+    >>  x = #o452576
+    >>  y = #o317407
+    >>  
+    >>  m = #o007750
+    >>  x = #o457426
+    >>  y = #o312557
+    =>  NIL
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -3358,55 +3356,55 @@ Negative integers are treated as if they were in two's-complement notation.
 
 * 异常情况(Exceptional Situations):
 
-Should signal type-error if any argument is not an integer.
+        如果任何参数不是一个整数, 那么应该发出一个 type-error 错误.
 
 * 也见(See Also):
 
-boole
+        boole
 
 * 注意(Notes):
 
-(logbitp k -1) returns true for all values of k.
+        (logbitp k -1) 对于 k 的所有值都返回 true.
 
-Because the following functions are not associative, they take exactly two arguments rather than any number of arguments.
+        因为下面的函数不是结合的, 它们只取两个参数而不是任意数量的参数.
 
- (lognand n1 n2) ==  (lognot (logand n1 n2))
- (lognor n1 n2) ==  (lognot (logior n1 n2))
- (logandc1 n1 n2) ==  (logand (lognot n1) n2)
- (logandc2 n1 n2) ==  (logand n1 (lognot n2))
- (logiorc1 n1 n2) ==  (logior (lognot n1) n2)
- (logiorc2 n1 n2) ==  (logior n1 (lognot n2))
- (logbitp j (lognot x)) ==  (not (logbitp j x))
+        (lognand n1 n2) ==  (lognot (logand n1 n2))
+        (lognor n1 n2) ==  (lognot (logior n1 n2))
+        (logandc1 n1 n2) ==  (logand (lognot n1) n2)
+        (logandc2 n1 n2) ==  (logand n1 (lognot n2))
+        (logiorc1 n1 n2) ==  (logior (lognot n1) n2)
+        (logiorc2 n1 n2) ==  (logior n1 (lognot n2))
+        (logbitp j (lognot x)) ==  (not (logbitp j x))
 
 
 ### <span id="F-LOGBITP">函数 LOGBITP</span>
 
 * 语法(Syntax):
 
-logbitp index integer => generalized-boolean
+        logbitp index integer => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-index---a non-negative integer.
-
-integer---an integer.
-
-generalized-boolean---a generalized boolean.
+        index---一个非负整数.
+        integer---一个整数.
+        generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
-logbitp is used to test the value of a particular bit in integer, that is treated as if it were binary. The value of logbitp is true if the bit in integer whose index is index (that is, its weight is 2^index) is a one-bit; otherwise it is false.
+        logbitp 被用于测试整数 integer 中的特定位的值, 它会被当作一个二进制数处理. 如果整数 integer 的索引为 index (这也就是说, 它的权重是 2^index)的位是 1 比特, logbitp 的值就是 true; 否则就是 false.
 
-Negative integers are treated as if they were in two's-complement notation.
+        负的整数会被看作它们是以两个补数的二进制表示的.
 
 * 示例(Examples):
 
- (logbitp 1 1) =>  false
- (logbitp 0 1) =>  true
- (logbitp 3 10) =>  true
- (logbitp 1000000 -1) =>  true
- (logbitp 2 6) =>  true
- (logbitp 0 6) =>  false
+    ```LISP
+    (logbitp 1 1) =>  false
+    (logbitp 0 1) =>  true
+    (logbitp 3 10) =>  true
+    (logbitp 1000000 -1) =>  true
+    (logbitp 2 6) =>  true
+    (logbitp 0 6) =>  false
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -3414,43 +3412,44 @@ Negative integers are treated as if they were in two's-complement notation.
 
 * 异常情况(Exceptional Situations):
 
-Should signal an error of type type-error if index is not a non-negative integer. Should signal an error of type type-error if integer is not an integer.
+        如果 index 不是一个非负整数, 那么应该发出一个 type-error 类型的错误. 如果整数 integer 不是一个整数, 那么应该发出一个 type-error 类型的错误.
 
 * 也见(See Also): None.
 
 * 注意(Notes):
 
- (logbitp k n) ==  (ldb-test (byte 1 k) n)
+        (logbitp k n) ==  (ldb-test (byte 1 k) n)
 
 
 ### <span id="F-LOGCOUNT">函数 LOGCOUNT</span>
 
 * 语法(Syntax):
 
-logcount integer => number-of-on-bits
+        logcount integer => number-of-on-bits
 
 * 参数和值(Arguments and Values):
 
-integer---an integer.
-
-number-of-on-bits---a non-negative integer.
+        integer---一个整数.
+        number-of-on-bits---一个非负整数.
 
 * 描述(Description):
 
-Computes and returns the number of bits in the two's-complement binary representation of integer that are `on' or `set'. If integer is negative, the 0 bits are counted; otherwise, the 1 bits are counted.
+        计算并返回整数 integer 的两个补数的二进制表示中出于 'on' 或 'set' 的位的数量. 如果整数 integer 是负的, 计算的是 0 的位; 否则, 计算的就是 1 的位.
 
 * 示例(Examples):
 
- (logcount 0) =>  0
- (logcount -1) =>  0
- (logcount 7) =>  3
- (logcount  13) =>  3 ;Two's-complement binary: ...0001101
- (logcount -13) =>  2 ;Two's-complement binary: ...1110011
- (logcount  30) =>  4 ;Two's-complement binary: ...0011110
- (logcount -30) =>  4 ;Two's-complement binary: ...1100010
- (logcount (expt 2 100)) =>  1
- (logcount (- (expt 2 100))) =>  100
- (logcount (- (1+ (expt 2 100)))) =>  1
+    ```LISP
+    (logcount 0) =>  0
+    (logcount -1) =>  0
+    (logcount 7) =>  3
+    (logcount  13) =>  3 ;Two's-complement binary: ...0001101
+    (logcount -13) =>  2 ;Two's-complement binary: ...1110011
+    (logcount  30) =>  4 ;Two's-complement binary: ...0011110
+    (logcount -30) =>  4 ;Two's-complement binary: ...1100010
+    (logcount (expt 2 100)) =>  1
+    (logcount (- (expt 2 100))) =>  100
+    (logcount (- (1+ (expt 2 100)))) =>  1
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -3458,47 +3457,47 @@ Computes and returns the number of bits in the two's-complement binary represent
 
 * 异常情况(Exceptional Situations):
 
-Should signal type-error if its argument is not an integer.
+        如果它的参数不是一个整数, 那么应该发出一个 type-error 类型的错误.
 
 * 也见(See Also): None.
 
 * 注意(Notes):
 
-Even if the implementation does not represent integers internally in two's complement binary, logcount behaves as if it did.
+        即使这个具体实现内部不是把整数表示为两个补数的二进制数, logcount 还是表现地就像它所做的那样.
 
-The following identity always holds:
+        以下恒等式总是符合的:
 
-    (logcount x)
- ==  (logcount (- (+ x 1)))
- ==  (logcount (lognot x))
+            (logcount x)
+        ==  (logcount (- (+ x 1)))
+        ==  (logcount (lognot x))
 
 
 ### <span id="F-LOGTEST">函数 LOGTEST</span>
 
 * 语法(Syntax):
 
-logtest integer-1 integer-2 => generalized-boolean
+        logtest integer-1 integer-2 => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-integer-1---an integer.
-
-integer-2---an integer.
-
-generalized-boolean---a generalized boolean.
+        integer-1---一个整数.
+        integer-2---一个整数.
+        generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
-Returns true if any of the bits designated by the 1's in integer-1 is 1 in integer-2; otherwise it is false. integer-1 and integer-2 are treated as if they were binary.
+        如果 interger-1 中的 1 表示的位在 integer-2 中是 1 就返回 true; 否则就是 false. integer-1 和 integer-2 被当作二进制的.
 
-Negative integer-1 and integer-2 are treated as if they were represented in two's-complement binary.
+        负的 integer-1 和 integer-2 被当作就好像它们是以两个补数的二进制表示的.
 
 * 示例(Examples):
 
- (logtest 1 7) =>  true
- (logtest 1 2) =>  false
- (logtest -2 -1) =>  true
- (logtest 0 -1) =>  false
+    ```LISP
+    (logtest 1 7) =>  true
+    (logtest 1 2) =>  false
+    (logtest -2 -1) =>  true
+    (logtest 0 -1) =>  false
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -3506,44 +3505,45 @@ Negative integer-1 and integer-2 are treated as if they were represented in two'
 
 * 异常情况(Exceptional Situations):
 
-Should signal an error of type type-error if integer-1 is not an integer. Should signal an error of type type-error if integer-2 is not an integer.
+        如果 integer-1 不是一个整数就会发出一个 type-error 类型的错误. 如果 integer-2 不是一个整数就会发出一个 type-error 类型的错误.
 
 * 也见(See Also): None.
 
 * 注意(Notes):
 
- (logtest x y) ==  (not (zerop (logand x y)))
+        (logtest x y) ==  (not (zerop (logand x y)))
 
 
 ### <span id="F-BYTE-BYTE-SIZE-BYTE-POSITION">函数 BYTE, BYTE-SIZE, BYTE-POSITION</span>
 
 * 语法(Syntax):
 
-byte size position => bytespec
+        byte size position => bytespec
 
-byte-size bytespec => size
+        byte-size bytespec => size
 
-byte-position bytespec => position
+        byte-position bytespec => position
 
 * 参数和值(Arguments and Values):
 
-size, position---a non-negative integer.
-
-bytespec---a byte specifier.
+        size, position---一个非负整数.
+        bytespec---一个字节指定符.
 
 * 描述(Description):
 
-byte returns a byte specifier that indicates a byte of width size and whose bits have weights 2^position + size - 1 through 2^position, and whose representation is implementation-dependent.
+        byte 返回一个字节指定符, 它表示宽度为 size 的, 而它的位有着权重 2^position + size - 1 到 2^position, 并且它的表示是依赖于具体实现的.
 
-byte-size returns the number of bits specified by bytespec.
+        byte-size 返回 bytespec 指定的位数.
 
-byte-position returns the position specified by bytespec.
+        byte-position 返回 bytespec 指定的位置.
 
 * 示例(Examples):
 
- (setq b (byte 100 200)) =>  #<BYTE-SPECIFIER size 100 position 200>
- (byte-size b) =>  100
- (byte-position b) =>  200
+    ```LISP
+    (setq b (byte 100 200)) =>  #<BYTE-SPECIFIER size 100 position 200>
+    (byte-size b) =>  100
+    (byte-position b) =>  200
+    ```
 
 * 受此影响(Affected By): None.
 
@@ -3551,44 +3551,43 @@ byte-position returns the position specified by bytespec.
 
 * 也见(See Also):
 
-ldb, dpb
+        ldb, dpb
 
 * 注意(Notes):
 
- (byte-size (byte j k)) ==  j
- (byte-position (byte j k)) ==  k
+        (byte-size (byte j k)) ==  j
+        (byte-position (byte j k)) ==  k
 
-A byte of size of 0 is permissible; it refers to a byte of width zero. For example,
+        一个 0 大小的字节是允许的; 它指的是一个宽度为 0 的字节. 比如,
 
- (ldb (byte 0 3) #o7777) =>  0
- (dpb #o7777 (byte 0 3) 0) =>  0
+        (ldb (byte 0 3) #o7777) =>  0
+        (dpb #o7777 (byte 0 3) 0) =>  0
 
 
 ### <span id="F-DEPOSIT-FIELD">函数 DEPOSIT-FIELD</span>
 
 * 语法(Syntax):
 
-deposit-field newbyte bytespec integer => result-integer
+        deposit-field newbyte bytespec integer => result-integer
 
 * 参数和值(Arguments and Values):
 
-newbyte---an integer.
-
-bytespec---a byte specifier.
-
-integer---an integer.
-
-result-integer---an integer.
+        newbyte---一个整数.
+        bytespec---一个字节指定符.
+        integer---一个整数.
+        result-integer---一个整数.
 
 * 描述(Description):
 
-Replaces a field of bits within integer; specifically, returns an integer that contains the bits of newbyte within the byte specified by bytespec, and elsewhere contains the bits of integer.
+        替换整数 integer 中的一个位域; 具体的说, 返回一个整数, 其中 bytespec 所指定的字节中包含了 newbyte 的位, 而其他地方则包含整数 integer 的位.
 
 * 示例(Examples):
 
- (deposit-field 7 (byte 2 1) 0) =>  6
- (deposit-field -1 (byte 4 0) 0) =>  15
- (deposit-field 0 (byte 2 1) -3) =>  -7
+    ```LISP
+    (deposit-field 7 (byte 2 1) 0) =>  6
+    (deposit-field -1 (byte 4 0) 0) =>  15
+    (deposit-field 0 (byte 2 1) -3) =>  -7
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -3598,48 +3597,47 @@ Replaces a field of bits within integer; specifically, returns an integer that c
 
 * 也见(See Also):
 
-byte, dpb
+        byte, dpb
 
 * 注意(Notes):
 
- (logbitp j (deposit-field m (byte s p) n))
- ==  (if (and (>= j p) (< j (+ p s)))
-        (logbitp j m)
-        (logbitp j n))
+        (logbitp j (deposit-field m (byte s p) n))
+        ==  (if (and (>= j p) (< j (+ p s)))
+                (logbitp j m)
+                (logbitp j n))
 
-deposit-field is to mask-field as dpb is to ldb. 
+        deposit-field 对于 mask-field 就像是 dpb 对于 ldb. 
 
 ### <span id="F-DPB">函数 DPB</span>
 
 * 语法(Syntax):
 
-dpb newbyte bytespec integer => result-integer
+        dpb newbyte bytespec integer => result-integer
 
 * 发音(Pronunciation)::
 
-[,duh'pib] or [,duh'puhb] or ['dee'pee'bee]
+        [,duh'pib] 或 [,duh'puhb] 或 ['dee'pee'bee]
 
 * 参数和值(Arguments and Values):
 
-newbyte---an integer.
-
-bytespec---a byte specifier.
-
-integer---an integer.
-
-result-integer---an integer.
+        newbyte---一个整数.
+        bytespec---一个字节指定符.
+        integer---一个整数.
+        result-integer---一个整数.
 
 * 描述(Description):
 
-dpb (deposit byte) is used to replace a field of bits within integer. dpb returns an integer that is the same as integer except in the bits specified by bytespec.
+        dpb (deposit byte) 被用于替换整数 integer 中一个位域. dpb 返回一个和整数 integer 除了 bytespec 指定的位以外都相同的整数.
 
-Let s be the size specified by bytespec; then the low s bits of newbyte appear in the result in the byte specified by bytespec. Newbyte is interpreted as being right-justified, as if it were the result of ldb.
+        让 s 为 bytespec 指定的大小; 然后这个 newbyte 的低 s 位出现在 bytespec 指定的字节的结果中. Newbyte 被解释为是右对齐的, 就好像是 ldb 的结果.
 
 * 示例(Examples):
 
- (dpb 1 (byte 1 10) 0) =>  1024
- (dpb -2 (byte 2 10) 0) =>  2048
- (dpb 1 (byte 2 10) 2048) =>  1024
+    ```LISP
+    (dpb 1 (byte 1 10) 0) =>  1024
+    (dpb -2 (byte 2 10) 0) =>  2048
+    (dpb 1 (byte 2 10) 2048) =>  1024
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -3649,22 +3647,20 @@ Let s be the size specified by bytespec; then the low s bits of newbyte appear i
 
 * 也见(See Also):
 
-byte, deposit-field, ldb
+        byte, deposit-field, ldb
 
 * 注意(Notes):
 
- (logbitp j (dpb m (byte s p) n))
- ==  (if (and (>= j p) (< j (+ p s)))
-        (logbitp (- j p) m)
-        (logbitp j n))
+        (logbitp j (dpb m (byte s p) n))
+        ==  (if (and (>= j p) (< j (+ p s)))
+                (logbitp (- j p) m)
+                (logbitp j n))
 
-In general,
+        通常情况下, 对于所有有效的 x, y, 和 z 的值
 
- (dpb x (byte 0 y) z) =>  z
+        (dpb x (byte 0 y) z) =>  z
 
-for all valid values of x, y, and z.
-
-Historically, the name ``dpb'' comes from a DEC PDP-10 assembly language instruction meaning ``deposit byte.'' 
+        历史上, "dpb" 的名称来自于DEC的PDP-10汇编语言指令, 意思是 "存储字节(deposit byte)". 
 
 
 ### <span id="A-LDB">访问器 LDB</span>
@@ -3723,7 +3719,7 @@ Historically, the name ``dpb'' comes from a DEC PDP-10 assembly language instruc
 
         对于所有 x 和 y 的有效值.
 
-        在历史上, "ldb"的名称来自于DEC的PDP-10汇编语言指令, 意思是"load byte". 
+        在历史上, "ldb"的名称来自于DEC的PDP-10汇编语言指令, 意思是"载入字节(load byte)". 
 
 
 ### <span id="F-LDB-TEST">函数 LDB-TEST</span>
