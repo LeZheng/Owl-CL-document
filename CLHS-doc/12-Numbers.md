@@ -215,7 +215,7 @@ Figure 12-4. 数值类型处理和强制转换相关的已定义的名字.
 
 ### 12.1.4 <span id="FloatingPointComputations">浮点计算</span>
 
-The following rules apply to floating point computations.
+下面规则应用于浮点数计算.
 
 > * 12.1.4.1 [浮点和有理数传递性的规则](#RuleFloatRationalContagion)
 > * 12.1.4.2 [浮点近似的规则](#RuleFloatApproximation)
@@ -225,98 +225,100 @@ The following rules apply to floating point computations.
 
 #### 12.1.4.1 <span id="RuleFloatRationalContagion">浮点和有理数传递性的规则</span>
 
-When rationals and floats are combined by a numerical function, the rational is first converted to a float of the same format. For functions such as + that take more than two arguments, it is permitted that part of the operation be carried out exactly using rationals and the rest be done using floating-point arithmetic.
+当有理数和浮点数通过一个数值函数进行组合时, 这个有理数首先被转换为一个相同格式的浮点数. 对于像 + 这样的接受超过两个参数的函数, 允许部分操作使用有理数进行操作, 其余部分则使用浮点运算来完成.
 
-When rationals and floats are compared by a numerical function, the function rational is effectively called to convert the float to a rational and then an exact comparison is performed. In the case of complex numbers, the real and imaginary parts are effectively handled individually.
+当有理数和浮点数被一个数值函数进行比较时, 函数 rational 会被调用来将这个浮点数转换为一个有理数然后执行一个准确的比较. 在复数的情况下, 实部和虚部会被单独处理.
 
 ##### 12.1.4.1.1 浮点和有理数传递性的规则的示例
 
- ;;;; Combining rationals with floats.
- ;;; This example assumes an implementation in which 
- ;;; (float-radix 0.5) is 2 (as in IEEE) or 16 (as in IBM/360),
- ;;; or else some other implementation in which 1/2 has an exact 
- ;;;  representation in floating point.
- (+ 1/2 0.5) =>  1.0
- (- 1/2 0.5d0) =>  0.0d0
- (+ 0.5 -0.5 1/2) =>  0.5
+```LISP
+;;;; Combining rationals with floats.
+;;; This example assumes an implementation in which 
+;;; (float-radix 0.5) is 2 (as in IEEE) or 16 (as in IBM/360),
+;;; or else some other implementation in which 1/2 has an exact 
+;;;  representation in floating point.
+(+ 1/2 0.5) =>  1.0
+(- 1/2 0.5d0) =>  0.0d0
+(+ 0.5 -0.5 1/2) =>  0.5
 
- ;;;; Comparing rationals with floats.
- ;;; This example assumes an implementation in which the default float 
- ;;; format is IEEE single-float, IEEE double-float, or some other format
- ;;; in which 5/7 is rounded upwards by FLOAT.
- (< 5/7 (float 5/7)) =>  true
- (< 5/7 (rational (float 5/7))) =>  true
- (< (float 5/7) (float 5/7)) =>  false
-
+;;;; Comparing rationals with floats.
+;;; This example assumes an implementation in which the default float 
+;;; format is IEEE single-float, IEEE double-float, or some other format
+;;; in which 5/7 is rounded upwards by FLOAT.
+(< 5/7 (float 5/7)) =>  true
+(< 5/7 (rational (float 5/7))) =>  true
+(< (float 5/7) (float 5/7)) =>  false
+```
 
 #### 12.1.4.2 <span id="RuleFloatApproximation">浮点近似的规则</span>
 
-Computations with floats are only approximate, although they are described as if the results were mathematically accurate. Two mathematically identical expressions may be computationally different because of errors inherent in the floating-point approximation process. The precision of a float is not necessarily correlated with the accuracy of that number. For instance, 3.142857142857142857 is a more precise approximation to <PI> than 3.14159, but the latter is more accurate. The precision refers to the number of bits retained in the representation. When an operation combines a short float with a long float, the result will be a long float. Common Lisp functions assume that the accuracy of arguments to them does not exceed their precision. Therefore when two small floats are combined, the result is a small float. Common Lisp functions never convert automatically from a larger size to a smaller one. 
+浮点数的计算只是近似的, 尽管它们被描述为结果在数学上是准确的. 两个数学上相同的表达式可能在计算上是不同的因为浮点近似过程中固有的错误. 一个浮点数的精度不一定与这个数字的精度相关. 比如, 3.142857142857142857 相比 3.14159 是一个 <PI> 的更精确的近似, 但是后者更准确. 精度指的是在表示中保留的位元数. 当一个操作符组合一个短浮点数和一个长浮点数时, 结果会是一个长浮点数. Common Lisp 函数假定给它们的参数的精度不会超过它们的精度. 因此当两个 small float 被组合时, 结果是一个 small float. Common Lisp 函数不会从一个较大的值转换到较小的一个. 
 
 
 #### 12.1.4.3 <span id="RuleFloatUnderflowOverflow">浮点的上溢和下溢规则</span>
 
-An error of type floating-point-overflow or floating-point-underflow should be signaled if a floating-point computation causes exponent overflow or underflow, respectively. 
+如果一个浮点数运算分别导致指数上溢或下溢, 就会发出一个 floating-point-overflow 或 floating-point-underflow 类型的错误. 
 
 
 #### 12.1.4.4 <span id="RuleFloatPrecisionContagion">浮点精度传递规则</span>
 
-The result of a numerical function is a float of the largest format among all the floating-point arguments to the function. 
+一个数值函数的结果是给这个函数的所有浮点数参数中最大格式的一个浮点数 . 
 
 ### 12.1.5 <span id="ComplexComputations">复数计算</span>
 
-The following rules apply to complex computations:
+以下规则应用于复数计算:
 
 > * 12.1.5.1 [复数的置换性规则](#RuleComplexSubstitutability)
 > * 12.1.5.2 [复数传递规则](#RuleComplexContagion)
 > * 12.1.5.3 [复数的正规表示规则](#RuleCanonicalReprComplexRationals)
-> * 12.1.5.4 [Principal Values and Branch Cuts](#PrincipalValuesBranchCuts)
+> * 12.1.5.4 [主值和分支切割](#PrincipalValuesBranchCuts)
 
 
 #### 12.1.5.1 <span id="RuleComplexSubstitutability">复数的置换性规则</span>
-
-Except during the execution of irrational and transcendental functions, no numerical function ever yields a complex unless one or more of its arguments is a complex. 
+<!--TODO irrational and transcendental functions ??-->
+除了在无理数和超越函数的执行期间 Except during the execution of irrational and transcendental functions, 除非它的参数中的一个或多个是一个复数, 否则数值函数不会产生一个复数. 
 
 
 #### 12.1.5.2 <span id="RuleComplexContagion">复数传递规则</span>
 
-When a real and a complex are both part of a computation, the real is first converted to a complex by providing an imaginary part of 0. 
+当一个实数和一个复数都是计算的一部分时, 这个实数首先通过提供一个虚部的0来转换为复数. 
 
 
 #### 12.1.5.3 <span id="RuleCanonicalReprComplexRationals">复数的正规表示规则</span>
 
-If the result of any computation would be a complex number whose real part is of type rational and whose imaginary part is zero, the result is converted to the rational which is the real part. This rule does not apply to complex numbers whose parts are floats. For example, #C(5 0) and 5 are not different objects in Common Lisp(they are always the same under eql); #C(5.0 0.0) and 5.0 are always different objects in Common Lisp they are never the same under eql, although they are the same under equalp and =).
+如果任何计算的结果都是一个实部是有理数, 虚部是零的复数, 结果被转换成这个实部的有理数. 这个规则不能应用于两个部分都是浮点数的复数. 比如, #C(5 0) 和 5 在 Common Lisp(它们在 eql 下总是相同的) 中不是不同的对象; #C(5.0 0.0) 和 5.0 在 Common Lisp 中总是为不同的对象 (它们在 eql 下总是不相同的, 尽管它们在 equalp 和 = 下是相同的).
 
 
 ##### 12.1.5.3.1 复数的正规表示规则的示例
 
- #c(1.0 1.0) =>  #C(1.0 1.0)
- #c(0.0 0.0) =>  #C(0.0 0.0)
- #c(1.0 1) =>  #C(1.0 1.0)
- #c(0.0 0) =>  #C(0.0 0.0)
- #c(1 1) =>  #C(1 1)
- #c(0 0) =>  0
- (typep #c(1 1) '(complex (eql 1))) =>  true
- (typep #c(0 0) '(complex (eql 0))) =>  false
+```LISP
+#c(1.0 1.0) =>  #C(1.0 1.0)
+#c(0.0 0.0) =>  #C(0.0 0.0)
+#c(1.0 1) =>  #C(1.0 1.0)
+#c(0.0 0) =>  #C(0.0 0.0)
+#c(1 1) =>  #C(1 1)
+#c(0 0) =>  0
+(typep #c(1 1) '(complex (eql 1))) =>  true
+(typep #c(0 0) '(complex (eql 0))) =>  false
+```
 
+##### 12.1.5.4 <span id="PrincipalValuesBranchCuts">主值和分支切割</span>
+<!--TODO 待校验-->
+很多无理数和超越函数在复数领域会被多次定义; 比如, 对于对数函数, 一般来说有无穷多的复数值. 在每个这样的例子中, 必须为这个函数选择一个主要的值来返回. 通常情况下, 这样的值不能被选择, 从而使范围连续; 在被称为分支切割的领域中, 必须定义分支, 这又定义了范围内的不连续点. Common Lisp 为这些复数函数定义了分支切割, 主值, 还有边界状况, 这些函数遵循 "复数 APL 中的主值和分支切割". 适用于每个函数的分支切割规则和那个函数的描述相对应.
 
-##### 12.1.5.4 <span id="PrincipalValuesBranchCuts">Principal Values and Branch Cuts</span>
+下面这段列出了在复数域的适用部分中所遵守的恒等式, 即使是在分支切割上:
 
-Many of the irrational and transcendental functions are multiply defined in the complex domain; for example, there are in general an infinite number of complex values for the logarithm function. In each such case, a principal value must be chosen for the function to return. In general, such values cannot be chosen so as to make the range continuous; lines in the domain called branch cuts must be defined, which in turn define the discontinuities in the range. Common Lisp defines the branch cuts, principal values, and boundary conditions for the complex functions following ``Principal Values and Branch Cuts in Complex APL.'' The branch cut rules that apply to each function are located with the description of that function.
+    sin i z = i sinh z  sinh i z = i sin z        arctan i z = i arctanh z  
+    cos i z = cosh z    cosh i z = cos z          arcsinh i z = i arcsin z  
+    tan i z = i tanh z  arcsin i z = i arcsinh z  arctanh i z = i arctan z  
 
-The next figure lists the identities that are obeyed throughout the applicable portion of the complex domain, even on the branch cuts:
+    Figure 12-9. 复数域的三角恒等式
 
-sin i z = i sinh z  sinh i z = i sin z        arctan i z = i arctanh z  
-cos i z = cosh z    cosh i z = cos z          arcsinh i z = i arcsin z  
-tan i z = i tanh z  arcsin i z = i arcsinh z  arctanh i z = i arctan z  
+在分支切割的讨论中提到的象限编号如下图所示.
 
-Figure 12-9. Trigonometric Identities for Complex Domain
+    见 http://www.ai.mit.edu/projects/iiip/doc/CommonLISP/HyperSpec/Body/sec_12-1-5-4.html
 
-The quadrant numbers referred to in the discussions of branch cuts are as illustrated in the next figure.
-
-[Quadrants image]
-
-Figure 12-10. Quadrant Numbering for Branch Cuts 
+    Figure 12-10. 分支切割的象限编号
 
 ### 12.1.6 <span id="IntervalDesignators">Interval Designators</span>
 
@@ -3669,36 +3671,36 @@ Historically, the name ``dpb'' comes from a DEC PDP-10 assembly language instruc
 
 * 语法(Syntax):
 
-ldb bytespec integer => byte
+        ldb bytespec integer => byte
 
-(setf (ldb bytespec place) new-byte)
+        (setf (ldb bytespec place) new-byte)
 
 * 发音(Pronunciation)::
 
-['lidib] or ['liduhb] or ['el'dee'bee]
+        ['lidib] 或 ['liduhb] 或 ['el'dee'bee]
 
 * 参数和值(Arguments and Values):
 
-bytespec---a byte specifier.
-
-integer---an integer.
-
-byte, new-byte---a non-negative integer.
+        bytespec---一个字节指定符.
+        integer---一个整数.
+        byte, new-byte---一个非负整数.
 
 * 描述(Description):
 
-ldb extracts and returns the byte of integer specified by bytespec.
+        ldb 提取并返回整数 integer 中 bytespec 所指定的字节.
 
-ldb returns an integer in which the bits with weights 2^(s-1) through 2^0 are the same as those in integer with weights 2^(p+s-1) through 2^p, and all other bits zero; s is (byte-size bytespec) and p is (byte-position bytespec).
+        ldb 返回一个整数, 在这个整数中 2^(s-1) 到 2^0 的位和整数中 2^(p+s-1) 到 2^p 的一样, 其他位都是 0; s 是 (byte-size bytespec) 并且 p 是 (byte-position bytespec).
 
-setf may be used with ldb to modify a byte within the integer that is stored in a given place. The order of evaluation, when an ldb form is supplied to setf, is exactly left-to-right. The effect is to perform a dpb operation and then store the result back into the place.
+        setf 可以和 ldb 一起使用来修改存储在一个给定 place 中的这个整数中的字节. 当一个 ldb 表达式形式被提供给 setf 时, 求值顺序是从左到右的. 效果就是去执行一个 dpb 操作然后把结果存储回那个 place 中.
 
 * 示例(Examples):
 
- (ldb (byte 2 1) 10) =>  1
- (setq a (list 8)) =>  (8)
- (setf (ldb (byte 2 1) (car a)) 1) =>  1
- a =>  (10)
+    ```LISP
+    (ldb (byte 2 1) 10) =>  1
+    (setq a (list 8)) =>  (8)
+    (setf (ldb (byte 2 1) (car a)) 1) =>  1
+    a =>  (10)
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -3708,45 +3710,45 @@ setf may be used with ldb to modify a byte within the integer that is stored in 
 
 * 也见(See Also):
 
-byte, byte-position, byte-size, dpb
+        byte, byte-position, byte-size, dpb
 
 * 注意(Notes):
 
- (logbitp j (ldb (byte s p) n))
-    ==  (and (< j s) (logbitp (+ j p) n))
+        (logbitp j (ldb (byte s p) n))
+            ==  (and (< j s) (logbitp (+ j p) n))
 
-In general,
+        通常,
 
- (ldb (byte 0 x) y) =>  0
+        (ldb (byte 0 x) y) =>  0
 
-for all valid values of x and y.
+        对于所有 x 和 y 的有效值.
 
-Historically, the name ``ldb'' comes from a DEC PDP-10 assembly language instruction meaning ``load byte.'' 
+        在历史上, "ldb"的名称来自于DEC的PDP-10汇编语言指令, 意思是"load byte". 
 
 
 ### <span id="F-LDB-TEST">函数 LDB-TEST</span>
 
 * 语法(Syntax):
 
-ldb-test bytespec integer => generalized-boolean
+        ldb-test bytespec integer => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-bytespec---a byte specifier.
-
-integer---an integer.
-
-generalized-boolean---a generalized boolean.
+        bytespec---一个字节指定符.
+        integer---一个整数.
+        generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
-Returns true if any of the bits of the byte in integer specified by bytespec is non-zero; otherwise returns false.
+        如果整数 integer 中 bytespec 指定的字节的任意位不是 0 就返回 true; 否则返回 false.
 
 * 示例(Examples):
 
- (ldb-test (byte 4 1) 16) =>  true
- (ldb-test (byte 3 1) 16) =>  false
- (ldb-test (byte 3 2) 16) =>  true
+    ```LISP
+    (ldb-test (byte 4 1) 16) =>  true
+    (ldb-test (byte 3 1) 16) =>  false
+    (ldb-test (byte 3 2) 16) =>  true
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -3756,45 +3758,45 @@ Returns true if any of the bits of the byte in integer specified by bytespec is 
 
 * 也见(See Also):
 
-byte, ldb, zerop
+        byte, ldb, zerop
 
 * 注意(Notes):
 
- (ldb-test bytespec n) == 
- (not (zerop (ldb bytespec n))) == 
- (logtest (ldb bytespec -1) n)
+        (ldb-test bytespec n) == 
+        (not (zerop (ldb bytespec n))) == 
+        (logtest (ldb bytespec -1) n)
 
 
 ### <span id="A-MASK-FIELD">访问器 MASK-FIELD</span>
 
 * 语法(Syntax):
 
-mask-field bytespec integer => masked-integer
+        mask-field bytespec integer => masked-integer
 
-(setf (mask-field bytespec place) new-masked-integer)
+        (setf (mask-field bytespec place) new-masked-integer)
 
 * 参数和值(Arguments and Values):
 
-bytespec---a byte specifier.
-
-integer---an integer.
-
-masked-integer, new-masked-integer---a non-negative integer.
+        bytespec---一个字节指定符.
+        integer---一个整数.
+        masked-integer, new-masked-integer---一个非负整数.
 
 * 描述(Description):
 
-mask-field performs a ``mask'' operation on integer. It returns an integer that has the same bits as integer in the byte specified by bytespec, but that has zero-bits everywhere else.
+        mask-field 在整数 integer 上执行 "掩码(mask)" 操作. 它返回一个和整数 integer 在 bytespec 指定的字节上有着相同比特而其他都是 0 比特的整数.
 
-setf may be used with mask-field to modify a byte within the integer that is stored in a given place. The effect is to perform a deposit-field operation and then store the result back into the place.
+        setf 可以和 mask-field 一起使用来修改存储在一个给定 place 的整数中的一个字节. 这个的效果是去执行一个 deposit-field 操作然后存储结果到那个 place 中.
 
 * 示例(Examples):
 
- (mask-field (byte 1 5) -1) =>  32
- (setq a 15) =>  15
- (mask-field (byte 2 0) a) =>  3
- a =>  15
- (setf (mask-field (byte 2 0) a) 1) =>  1
- a =>  13
+    ```LISP
+    (mask-field (byte 1 5) -1) =>  32
+    (setq a 15) =>  15
+    (mask-field (byte 2 0) a) =>  3
+    a =>  15
+    (setf (mask-field (byte 2 0) a) 1) =>  1
+    a =>  13
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -3804,14 +3806,14 @@ setf may be used with mask-field to modify a byte within the integer that is sto
 
 * 也见(See Also):
 
-byte, ldb
+        byte, ldb
 
 * 注意(Notes):
 
- (ldb bs (mask-field bs n)) ==  (ldb bs n)
- (logbitp j (mask-field (byte s p) n))
-   ==  (and (>= j p) (< j s) (logbitp j n))
- (mask-field bs n) ==  (logand n (dpb -1 bs 0))
+        (ldb bs (mask-field bs n)) ==  (ldb bs n)
+        (logbitp j (mask-field (byte s p) n))
+          ==  (and (>= j p) (< j s) (logbitp j n))
+        (mask-field bs n) ==  (logand n (dpb -1 bs 0))
 
 
 
@@ -3819,13 +3821,13 @@ byte, ldb
 
 * 常量值(Constant Value):
 
-implementation-dependent.
+        依赖于具体实现.
 
 * 描述(Description):
 
-most-positive-fixnum is that fixnum closest in value to positive infinity provided by the implementation, and greater than or equal to both 2^15 - 1 and array-dimension-limit.
+        most-positive-fixnum 是最接近于这个具体实现提供的正无穷的 fixnum, 并且大于等于 2^15 - 1 和 array-dimension-limit.
 
-most-negative-fixnum is that fixnum closest in value to negative infinity provided by the implementation, and less than or equal to -2^15.
+        most-negative-fixnum 是最接近于这个具体实现提供的负无穷的 fixnum, 小于等于 -2^15.
 
 * 示例(Examples): None.
 
