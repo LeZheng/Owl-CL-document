@@ -450,393 +450,391 @@ a singleton list whose element is a number M of type T
 > * [状况类型 FLOATING-POINT-OVERFLOW](#CT-FLOATING-POINT-OVERFLOW)
 > * [状况类型 FLOATING-POINT-UNDERFLOW](#CT-FLOATING-POINT-UNDERFLOW)
 
-
+<!--TODO Compound Type Specifier Kind 的内容？？-->
 ### <span id="SC-NUMBER">系统类 NUMBER</span>
 
 * 类优先级列表(Class Precedence List):
 
-number, t
+        number, t
 
 * 描述(Description):
 
-The type number contains objects which represent mathematical numbers. The types real and complex are disjoint subtypes of number.
+        类型 number 包含了表示数学数字的对象. 类型 real 和 complex 是 number 互斥的子类型.
 
-The function = tests for numerical equality. The function eql, when its arguments are both numbers, tests that they have both the same type and numerical value. Two numbers that are the same under eql or = are not necessarily the same under eq.
+        函数 = 测试数值等价. 函数 eql, 当它的参数都是数字时, 测试它们是否有着相同的类型和数值. 两个数字在 eql 或 = 下是相同的但在 eq 下不一定相同.
 
 * 注意(Notes):
 
-Common Lisp differs from mathematics on some naming issues. In mathematics, the set of real numbers is traditionally described as a subset of the complex numbers, but in Common Lisp, the type real and the type complex are disjoint. The Common Lisp type which includes all mathematical complex numbers is called number. The reasons for these differences include historical precedent, compatibility with most other popular computer languages, and various issues of time and space efficiency. 
+        Common Lisp 在一些命名问题上和数学不同. 在数学中, 实数的集合习惯上被描述为是复数的一个子集, 但是在 Common Lisp 中, 类型 real 和类型 complex 是互斥的. 包含了所有数学复数的 Common Lisp 类型称为 number. 造成这些差异的原因包括历史先例, 和其他流行计算机语言兼容, 以及多种时间和空间效率问题.
 
 
 ### <span id="SC-COMPLEX">系统类 COMPLEX</span>
 
 * 类优先级列表(Class Precedence List):
 
-complex, number, t
+        complex, number, t
 
 * 描述(Description):
 
-The type complex includes all mathematical complex numbers other than those included in the type rational. Complexes are expressed in Cartesian form with a real part and an imaginary part, each of which is a real. The real part and imaginary part are either both rational or both of the same float type. The imaginary part can be a float zero, but can never be a rational zero, for such a number is always represented by Common Lisp as a rational rather than a complex.
+        类型 complex 包括所有数学上的复数除了被包含在类型 rational 中的那些. 复数被表示为一个实部和一个虚部的笛卡尔形式, 其中的每个部分都是一个实数. 实部和虚部都是有理数或都是相同的浮点数类型. 虚部可以是一个浮点数 0, 但不能是一个有理数 zero, 因为这样的一个数字被 Common Lisp 表示为一个有理数而不是一个复数.
 
-* 复合类型特化符类别(Compound Type Specifier Kind):
+* 复合类型指定符类别(Compound Type Specifier Kind):
 
-Specializing.
+        Specializing.
 
-* 复合类型特化符语法(Compound Type Specifier Syntax):
+* 复合类型指定符语法(Compound Type Specifier Syntax):
 
-complex [typespec | *]
+        complex [typespec | *]
 
-* 复合类型特化符参数(Compound Type Specifier Arguments):
+* 复合类型指定符参数(Compound Type Specifier Arguments):
 
-typespec---a type specifier that denotes a subtype of type real.
+        typespec---一个表示类型 real 的一个子类的类型指定符.
 
-* 复合类型特化符描述(Compound Type Specifier Description):
+* 复合类型指定符描述(Compound Type Specifier Description):
 
-Every element of this type is a complex whose real part and imaginary part are each of type (upgraded-complex-part-type typespec). This type encompasses those complexes that can result by giving numbers of type typespec to complex.
+        这个类型的每个元素都是实部和虚部为类型 (upgraded-complex-part-type typespec) 的一个复数. 这个类型包括那些可以通过给 complex 传递类型 typespec 的数字来产生的复数.
 
-(complex type-specifier) refers to all complexes that can result from giving numbers of type type-specifier to the function complex, plus all other complexes of the same specialized representation.
+        (complex type-specifier) 指的是所有可以通过给函数 complex 传递类型 type-specifier 数字来产生的复数, 加上所有其他的相同的专业表示.
 
 * 也见(See Also):
 
-Section 12.1.5.3 (Rule of Canonical Representation for Complex Rationals), Section 2.3.2 (Constructing Numbers from Tokens), Section 22.1.3.1.4 (Printing Complexes)
+        章节 12.1.5.3 (Rule of Canonical Representation for Complex Rationals), 章节 2.3.2 (Constructing Numbers from Tokens), 章节 22.1.3.1.4 (Printing Complexes)
 
 * 注意(Notes):
 
-The input syntax for a complex with real part r and imaginary part i is #C(r i). For further details, see Section 2.4 (Standard Macro Characters).
+        一个实部为 r 和虚部为 i 的复数的输入语法是 #C(r i). 关于更多详情, 见章节 2.4 (Standard Macro Characters).
 
-For every float, n, there is a complex which represents the same mathematical number and which can be obtained by (COERCE n 'COMPLEX). 
+        对于每个 float, n, 这里会有一个表示相同数学数值的复数, 可以通过 (COERCE n 'COMPLEX) 来获取. 
 
 
 ### <span id="SC-REAL">系统类 REAL</span>
 
 * 类优先级列表(Class Precedence List):
 
-real, number, t
+        real, number, t
 
 * 描述(Description):
 
-The type real includes all numbers that represent mathematical real numbers, though there are mathematical real numbers (e.g., irrational numbers) that do not have an exact representation in Common Lisp. Only reals can be ordered using the <, >, <=, and >= functions.
+        类型 real 包括表示数学上实数的所有数字, 尽管这里有着在 Common Lisp 中没有准确表示的数学上的实数. 只有实数可以使用 <, >, <=, 和 >= 函数来排序.
 
-The types rational and float are disjoint subtypes of type real.
+        类型 rational 和 float 是类型 real 互斥的子类型.
 
-* 复合类型特化符类别(Compound Type Specifier Kind):
+* 复合类型指定符类别(Compound Type Specifier Kind):
 
-Abbreviating.
+        Abbreviating.
 
-* 复合类型特化符语法(Compound Type Specifier Syntax):
+* 复合类型指定符语法(Compound Type Specifier Syntax):
 
-real [lower-limit [upper-limit]]
+        real [lower-limit [upper-limit]]
 
-* 复合类型特化符参数(Compound Type Specifier Arguments):
+* 复合类型指定符参数(Compound Type Specifier Arguments):
 
-lower-limit, upper-limit---interval designators for type real. The defaults for each of lower-limit and upper-limit is the symbol *.
+        lower-limit, upper-limit---类型 real 的区间指示符. 对于 lower-limit 和 upper-limit 中的每个默认都是符号 *.
 
-* 复合类型特化符描述(Compound Type Specifier Description):
+* 复合类型指定符描述(Compound Type Specifier Description):
 
-This denotes the reals on the interval described by lower-limit and upper-limit. 
+        这个表示下限 lower-limit 和上限 upper-limit 所描述区间上的实数. 
 
 
 ### <span id="SC-FLOAT">系统类 FLOAT</span>
 
 * 类优先级列表(Class Precedence List):
 
-float, real, number, t
+        float, real, number, t
 
 * 描述(Description):
 
-A float is a mathematical rational (but not a Common Lisp rational) of the form s*f*b^e-p, where s is +1 or -1, the sign; b is an integer greater than 1, the base or radix of the representation; p is a positive integer, the precision (in base-b digits) of the float; f is a positive integer between b^p-1 and b^p-1 (inclusive), the significand; and e is an integer, the exponent. The value of p and the range of e depends on the implementation and on the type of float within that implementation. In addition, there is a floating-point zero; depending on the implementation, there can also be a ``minus zero''. If there is no minus zero, then 0.0 and -0.0 are both interpreted as simply a floating-point zero. (= 0.0 -0.0) is always true. If there is a minus zero, (eql -0.0 0.0) is false, otherwise it is true.
+        一个浮点数是一个 s*f*b^e-p 形式的数学上有理数 (但不是一个 Common Lisp 有理数), 其中 s 是 +1 或 -1, 就是那个符号; b 是一个大于 1 的整数, 这个表示的基数或底数; p 是一个正整数, 这个浮点数的精度 (以b为基数的数字); f 是一个在 b^p-1 和 b^p-1 (包含的) 之间的正整数, 表示有效位数; 还有 e 是一个整数, 表示指数. p 的值和 e 的返回取决于这个具体实现和在这个具体实现中浮点数的类型. 另外, 这里有一个浮点数 0; 依赖于具体实现, 这里也可以有一个 "负零". 如果这里没有负零, 那么 0.0 和 -0.0 都被简单解释为浮点数零. (= 0.0 -0.0) 总是为. 如果这里存在负零, (eql -0.0 0.0) 是 false, 否则就是 true.
 
-The types short-float, single-float, double-float, and long-float are subtypes of type float. Any two of them must be either disjoint types or the same type; if the same type, then any other types between them in the above ordering must also be the same type. For example, if the type single-float and the type long-float are the same type, then the type double-float must be the same type also.
+        类型 short-float, single-float, double-float, 和 long-float 是类型 float 的子类型. 它们中的任意两个都必须是互斥的类型或者相同类型; 如果是相同类型, 那么在上面顺序中在它们之间的其他类型也必须是相同的类型. 比如, 如果类型 single-float 和类型 long-float 是相同类型, 那么类型 double-float 也必须是相同的类型.
 
-* 复合类型特化符类别(Compound Type Specifier Kind):
+* 复合类型指定符类别(Compound Type Specifier Kind):
 
-Abbreviating.
+        Abbreviating.
 
-* 复合类型特化符语法(Compound Type Specifier Syntax):
+* 复合类型指定符语法(Compound Type Specifier Syntax):
 
-float [lower-limit [upper-limit]]
+        float [lower-limit [upper-limit]]
 
-* 复合类型特化符参数(Compound Type Specifier Arguments):
+* 复合类型指定符参数(Compound Type Specifier Arguments):
 
-lower-limit, upper-limit---interval designators for type float. The defaults for each of lower-limit and upper-limit is the symbol *.
+        lower-limit, upper-limit---类型 float 的区间指示符. 对于 lower-limit 和 upper-limit 中的每个默认都是符号 *.
 
-* 复合类型特化符描述(Compound Type Specifier Description):
+* 复合类型指定符描述(Compound Type Specifier Description):
 
-This denotes the floats on the interval described by lower-limit and upper-limit.
+        这个表示下限 lower-limit 和上限 upper-limit 所描述区间上的浮点数.
 
 * 也见(See Also):
 
-Figure 2-9, Section 2.3.2 (Constructing Numbers from Tokens), Section 22.1.3.1.3 (Printing Floats)
+        Figure 2-9, 章节 2.3.2 (Constructing Numbers from Tokens), 章节 22.1.3.1.3 (Printing Floats)
 
 * 注意(Notes):
 
-Note that all mathematical integers are representable not only as Common Lisp reals, but also as complex floats. For example, possible representations of the mathematical number 1 include the integer 1, the float 1.0, or the complex #C(1.0 0.0). 
+        注意所有数学上的整数不仅能被表示为 Common Lisp 实数, 也可以是浮点复数(complex float). 比如, 数学上的数字 1 可能的表示包括整数 1, 浮点数 1.0, 或者复数 #C(1.0 0.0). 
 
 
 ### <span id="T-SF-SF-DF-LF">类型 SHORT-FLOAT, SINGLE-FLOAT, DOUBLE-FLOAT, LONG-FLOAT</span>
 
 * 超类型(Supertypes):
 
-short-float: short-float, float, real, number, t
+        short-float: short-float, float, real, number, t
 
-single-float: single-float, float, real, number, t
+        single-float: single-float, float, real, number, t
 
-double-float: double-float, float, real, number, t
+        double-float: double-float, float, real, number, t
 
-long-float: long-float, float, real, number, t
+        long-float: long-float, float, real, number, t
 
 * 描述(Description):
 
-For the four defined subtypes of type float, it is true that intermediate between the type short-float and the type long-float are the type single-float and the type double-float. The precise definition of these categories is implementation-defined. The precision (measured in ``bits'', computed as p log 2b) and the exponent size (also measured in ``bits,'' computed as log 2(n+1), where n is the maximum exponent value) is recommended to be at least as great as the values in the next figure. Each of the defined subtypes of type float might or might not have a minus zero.
+        对于这四个已定义的 float 的子类型, 类型 short-float 和类型 long-float 的中间是类型 single-float 和类型 double-float. 这些类别的精度定义是依赖于具体实现的. 精度 (以 "位" 来测量, 用 p log 2b 来计算) 和指数大小 (也是以 "位" 来测量, 用 log 2(n+1) 计算, 其中 n 是最大指数值) 建议至少和下一段中的值一样的. 每个已定义的类型 float 的子类型可能或可能没有一个负零.
 
-Format  Minimum Precision  Minimum Exponent Size  
-----------
+        格式  最小精度  最小指数大小  
+                                      
+        Short   13 bits            5 bits                 
+        Single  24 bits            8 bits                 
+        Double  50 bits            8 bits                 
+        Long    50 bits            8 bits                 
 
+        Figure 12-12. 建议的最小浮点精度和指数大小
 
-                                          
-Short   13 bits            5 bits                 
-Single  24 bits            8 bits                 
-Double  50 bits            8 bits                 
-Long    50 bits            8 bits                 
+        浮点数的内部表示可能少于 4 个. 如果存在更少的不同表示, 则适用以下规则:
 
-Figure 12-12. Recommended Minimum Floating-Point Precision and Exponent Size
+            如果这里只有一个, 那就是类型 single-float. 在这个表示中, 一个对象同时为类型 single-float, double-float, short-float, 和 long-float.
 
-There can be fewer than four internal representations for floats. If there are fewer distinct representations, the following rules apply:
+            两种内部表示可以通过以下两种方式进行:
 
-    If there is only one, it is the type single-float. In this representation, an object is simultaneously of types single-float, double-float, short-float, and long-float.
-    Two internal representations can be arranged in either of the following ways:
+                提供两种类型: single-float 和 short-float. 一个对象同时为 single-float, double-float, 和 long-float.
+                提供两种类型: single-float 和 double-float. 一个对象同时为 single-float 和 short-float, 或 double-float 和 long-float.
 
-        Two types are provided: single-float and short-float. An object is simultaneously of types single-float, double-float, and long-float.
-        Two types are provided: single-float and double-float. An object is simultaneously of types single-float and short-float, or double-float and long-float.
+            三种内部表示可以通过以下两种方式进行:
 
-    Three internal representations can be arranged in either of the following ways:
+                提供三种类型: short-float, single-float, 和 double-float. 一个对象同时为 double-float 和 long-float.
+                提供三种类型: single-float, double-float, 和 long-float. 一个对象同时为 single-float 和 short-float. 
 
-        Three types are provided: short-float, single-float, and double-float. An object can simultaneously be of type double-float and long-float.
-        Three types are provided: single-float, double-float, and long-float. An object can simultaneously be of types single-float and short-float.
+* 复合类型指定符类别(Compound Type Specifier Kind):
 
-* 复合类型特化符类别(Compound Type Specifier Kind):
+        Abbreviating.
 
-Abbreviating.
+* 复合类型指定符语法(Compound Type Specifier Syntax):
 
-* 复合类型特化符语法(Compound Type Specifier Syntax):
+        short-float [short-lower-limit [short-upper-limit]]
 
-short-float [short-lower-limit [short-upper-limit]]
+        single-float [single-lower-limit [single-upper-limit]]
 
-single-float [single-lower-limit [single-upper-limit]]
+        double-float [double-lower-limit [double-upper-limit]]
 
-double-float [double-lower-limit [double-upper-limit]]
+        long-float [long-lower-limit [long-upper-limit]]
 
-long-float [long-lower-limit [long-upper-limit]]
+* 复合类型指定符参数(Compound Type Specifier Arguments):
 
-* 复合类型特化符参数(Compound Type Specifier Arguments):
+        short-lower-limit, short-upper-limit---类型 short-float 的区间指示符. 对于 lower-limit 和 upper-limit 中的每个默认都是符号 *.
 
-short-lower-limit, short-upper-limit---interval designators for type short-float. The defaults for each of lower-limit and upper-limit is the symbol *.
+        single-lower-limit, single-upper-limit---类型 single-float 的区间指示符. 对于 lower-limit 和 upper-limit 中的每个默认都是符号 *.
 
-single-lower-limit, single-upper-limit---interval designators for type single-float. The defaults for each of lower-limit and upper-limit is the symbol *.
+        double-lower-limit, double-upper-limit---类型 double-float 的区间指示符. 对于 lower-limit 和 upper-limit 中的每个默认都是符号 *.
 
-double-lower-limit, double-upper-limit---interval designators for type double-float. The defaults for each of lower-limit and upper-limit is the symbol *.
+        long-lower-limit, long-upper-limit---类型 long-float 的区间指示符. 对于 lower-limit 和 upper-limit 中的每个默认都是符号 *.
 
-long-lower-limit, long-upper-limit---interval designators for type long-float. The defaults for each of lower-limit and upper-limit is the symbol *.
+* 复合类型指定符描述(Compound Type Specifier Description):
 
-* 复合类型特化符描述(Compound Type Specifier Description):
-
-Each of these denotes the set of floats of the indicated type that are on the interval specified by the interval designators. 
+        每一个都表示在区间指示符指定的区间内的指定类型的浮点数集合. 
 
 
 ### <span id="SC-RATIONAL">系统类 RATIONAL</span>
 
 * 类优先级列表(Class Precedence List):
 
-rational, real, number, t
+        rational, real, number, t
 
 * 描述(Description):
 
-The canonical representation of a rational is as an integer if its value is integral, and otherwise as a ratio.
+        如果一个有理数的的值是整形的, 那么它的正规表示是一个整数, 否则就是一个比数.
 
-The types integer and ratio are disjoint subtypes of type rational.
+        类型 integer 和 ratio 是类型 rational 的互斥的子类型.
 
-* 复合类型特化符类别(Compound Type Specifier Kind):
+* 复合类型指定符类别(Compound Type Specifier Kind):
 
-Abbreviating.
+        Abbreviating.
 
-* 复合类型特化符语法(Compound Type Specifier Syntax):
+* 复合类型指定符语法(Compound Type Specifier Syntax):
 
-rational [lower-limit [upper-limit]]
+        rational [lower-limit [upper-limit]]
 
-* 复合类型特化符参数(Compound Type Specifier Arguments):
+* 复合类型指定符参数(Compound Type Specifier Arguments):
 
-lower-limit, upper-limit---interval designators for type rational. The defaults for each of lower-limit and upper-limit is the symbol *.
+        lower-limit, upper-limit---类型 rational 的区间指示符. 对于 lower-limit 和 upper-limit 中的每个默认都是符号 *.
 
-* 复合类型特化符描述(Compound Type Specifier Description):
+* 复合类型指定符描述(Compound Type Specifier Description):
 
-This denotes the rationals on the interval described by lower-limit and upper-limit. 
+        这个表示由下限 lower-limit 和上限 upper-limit 描述的有理数. 
 
 ### <span id="SC-RATIO">系统类 RATIO</span>
 
 * 类优先级列表(Class Precedence List):
 
-ratio, rational, real, number, t
+        ratio, rational, real, number, t
 
 * 描述(Description):
 
-A ratio is a number representing the mathematical ratio of two non-zero integers, the numerator and denominator, whose greatest common divisor is one, and of which the denominator is positive and greater than one.
+        一个比数是一个表示数学上两个非零整数的比数的数字, 这两个整数分别为分子和分母, 它的最大公约数为 1, 其中分母为正的并且大于 1.
 
 * 也见(See Also):
 
-Figure 2-9, Section 2.3.2 (Constructing Numbers from Tokens), Section 22.1.3.1.2 (Printing Ratios) 
+        Figure 2-9, 章节 2.3.2 (Constructing Numbers from Tokens), 章节 22.1.3.1.2 (Printing Ratios) 
 
 
 ### <span id="SC-INTEGER">系统类 INTEGER</span>
 
 * 类优先级列表(Class Precedence List):
 
-integer, rational, real, number, t
+        integer, rational, real, number, t
 
 * 描述(Description):
 
-An integer is a mathematical integer. There is no limit on the magnitude of an integer.
+        一个整数是一个数学上的整数. 一个整数的大小是没有限制的.
 
-The types fixnum and bignum form an exhaustive partition of type integer.
+        类型 fixnum 和 bignum 组成类型 integer 的一个详尽的分区.
 
-* 复合类型特化符类别(Compound Type Specifier Kind):
+* 复合类型指定符类别(Compound Type Specifier Kind):
 
-Abbreviating.
+        Abbreviating.
 
-* 复合类型特化符语法(Compound Type Specifier Syntax):
+* 复合类型指定符语法(Compound Type Specifier Syntax):
 
-integer [lower-limit [upper-limit]]
+        integer [lower-limit [upper-limit]]
 
-* 复合类型特化符参数(Compound Type Specifier Arguments):
+* 复合类型指定符参数(Compound Type Specifier Arguments):
 
-lower-limit, upper-limit---interval designators for type integer. The defaults for each of lower-limit and upper-limit is the symbol *.
+        lower-limit, upper-limit---类型 integer 的区间指示符. 对于 lower-limit 和 upper-limit 中的每个默认都是符号 *.
 
-* 复合类型特化符描述(Compound Type Specifier Description):
+* 复合类型指定符描述(Compound Type Specifier Description):
 
-This denotes the integers on the interval described by lower-limit and upper-limit.
+        这个表示由下限 lower-limit 和上限 upper-limit 描述的整数.
 
 * 也见(See Also):
 
-Figure 2-9, Section 2.3.2 (Constructing Numbers from Tokens), Section 22.1.3.1.1 (Printing Integers)
+        Figure 2-9, 章节 2.3.2 (Constructing Numbers from Tokens), 章节 22.1.3.1.1 (Printing Integers)
 
 * 注意(Notes):
 
-The type (integer lower upper), where lower and upper are most-negative-fixnum and most-positive-fixnum, respectively, is also called fixnum.
+        类型 (integer lower upper), 其中 lower 和 upper 分别是 most-negative-fixnum 和 most-positive-fixnum, 也被称为 fixnum.
 
-The type (integer 0 1) is also called bit. The type (integer 0 *) is also called unsigned-byte. 
+        类型 (integer 0 1) 也被称为 bit. 类型 (integer 0 *) 也被称为 unsigned-byte. 
 
 
 ### <span id="T-SIGNED-BYTE">类型 SIGNED-BYTE</span>
 
 * 超类型(Supertypes):
 
-signed-byte, integer, rational, real, number, t
+        signed-byte, integer, rational, real, number, t
 
 * 描述(Description):
 
-The atomic type specifier signed-byte denotes the same type as is denoted by the type specifier integer; however, the list forms of these two type specifiers have different semantics.
+        这个原子类型指定符 signed-byte 表示和类型指定符 integer 表示的相同的类型; 但是, 这两个类型指定符的列表表达式形式有着不同的语义.
 
-* 复合类型特化符类别(Compound Type Specifier Kind):
+* 复合类型指定符类别(Compound Type Specifier Kind):
 
-Abbreviating.
+        Abbreviating.
 
-* 复合类型特化符语法(Compound Type Specifier Syntax):
+* 复合类型指定符语法(Compound Type Specifier Syntax):
 
-signed-byte [s | *]
+        signed-byte [s | *]
 
-* 复合类型特化符参数(Compound Type Specifier Arguments):
+* 复合类型指定符参数(Compound Type Specifier Arguments):
 
-s---a positive integer.
+        s---一个正整数.
 
-* 复合类型特化符描述(Compound Type Specifier Description):
+* 复合类型指定符描述(Compound Type Specifier Description):
 
-This denotes the set of integers that can be represented in two's-complement form in a byte of s bits. This is equivalent to (integer -2^s-1 2^s-1-1). The type signed-byte or the type (signed-byte *) is the same as the type integer. 
+        这个表示可以以二进制补码的形式用 s 比特的字节表示的整数的集合. 这个等价于 (integer -2^s-1 2^s-1-1). 类型 signed-byte 或类型 (signed-byte *) 和类型 integer 是相同的. 
 
 
 ### <span id="T-UNSIGNED-BYTE">类型 UNSIGNED-BYTE</span>
 
 * 超类型(Supertypes):
 
-unsigned-byte, signed-byte, integer, rational, real, number, t
+        unsigned-byte, signed-byte, integer, rational, real, number, t
 
 * 描述(Description):
 
-The atomic type specifier unsigned-byte denotes the same type as is denoted by the type specifier (integer 0 *).
+        这个原子类型指定符 unsigned-byte 表示类型指定符 (integer 0 *) 所表示的相同类型.
 
-* 复合类型特化符类别(Compound Type Specifier Kind):
+* 复合类型指定符类别(Compound Type Specifier Kind):
 
-Abbreviating.
+        Abbreviating.
 
-* 复合类型特化符语法(Compound Type Specifier Syntax):
+* 复合类型指定符语法(Compound Type Specifier Syntax):
 
-unsigned-byte [s | *]
+        unsigned-byte [s | *]
 
-* 复合类型特化符参数(Compound Type Specifier Arguments):
+* 复合类型指定符参数(Compound Type Specifier Arguments):
 
-s---a positive integer.
+        s---一个正整数.
 
-* 复合类型特化符描述(Compound Type Specifier Description):
+* 复合类型指定符描述(Compound Type Specifier Description):
 
-This denotes the set of non-negative integers that can be represented in a byte of size s (bits). This is equivalent to (mod m) for m=2^s, or to (integer 0 n) for n=2^s-1. The type unsigned-byte or the type (unsigned-byte *) is the same as the type (integer 0 *), the set of non-negative integers.
+        这个表示可以以一个大小为 s 比特的字节表示的非负整数的集合. 这个等价于 m=2^s 时的 (mod m), 或者等价于 n=2^s-1 时的 (integer 0 n). 类型 unsigned-byte 或类型 (unsigned-byte *) 和类型 (integer 0 *) 相同, 都表示非负的整数集合.
 
 * 注意(Notes):
 
-The type (unsigned-byte 1) is also called bit. 
+        类型 (unsigned-byte 1) 也被称为 bit. 
 
 
-### <span id="TS-MOD">类型特化符 MOD</span>
+### <span id="TS-MOD">类型指定符 MOD</span>
 
-* 复合类型特化符类别(Compound Type Specifier Kind):
+* 复合类型指定符类别(Compound Type Specifier Kind):
 
-Abbreviating.
+        Abbreviating.
 
-* 复合类型特化符语法(Compound Type Specifier Syntax):
+* 复合类型指定符语法(Compound Type Specifier Syntax):
 
-mod n
+        mod n
 
-* 复合类型特化符参数(Compound Type Specifier Arguments):
+* 复合类型指定符参数(Compound Type Specifier Arguments):
 
-n---a positive integer.
+        n---一个正整数.
 
-* 复合类型特化符描述(Compound Type Specifier Description):
+* 复合类型指定符描述(Compound Type Specifier Description):
 
-This denotes the set of non-negative integers less than n. This is equivalent to (integer 0 (n)) or to (integer 0 m), where m=n-1.
+        这个表示小于 n 的非负整数集合. 这等价于 (integer 0 (n)) 或 (integer 0 m), 其中 m=n-1.
 
-The argument is required, and cannot be *.
+        这个参数是必须的, 并且不能为 *.
 
-The symbol mod is not valid as a type specifier. 
+        符号 mod 作为一个类型指定符是无效的. 
 
 
 ### <span id="T-BIT">类型 BIT</span>
 
 * 超类型(Supertypes):
 
-bit, unsigned-byte, signed-byte, integer, rational, real, number, t
+        bit, unsigned-byte, signed-byte, integer, rational, real, number, t
 
 * 描述(Description):
 
-The type bit is equivalent to the type (integer 0 1) and (unsigned-byte 1). 
+        类型 bit 等价于类型 (integer 0 1) 和 (unsigned-byte 1). 
 
 
 ### <span id="T-FIXNUM">类型 FIXNUM</span>
 
 * 超类型(Supertypes):
 
-fixnum, integer, rational, real, number, t
+        fixnum, integer, rational, real, number, t
 
 * 描述(Description):
 
-A fixnum is an integer whose value is between most-negative-fixnum and most-positive-fixnum inclusive. Exactly which integers are fixnums is implementation-defined. The type fixnum is required to be a supertype of (signed-byte 16). 
+        一个 fixnum 是一个值在 most-negative-fixnum 和 most-positive-fixnum (包含的) 之间的整数. 那些整数是 fixnum 是具体实现定义的. 类型 fixnum 需要是 (signed-byte 16) 的一个子类型. 
 
 
 ### <span id="T-BIGNUM">类型 BIGNUM</span>
 
 * 超类型(Supertypes):
 
-bignum, integer, rational, real, number, t
+        bignum, integer, rational, real, number, t
 
 * 描述(Description):
 
-The type bignum is defined to be exactly (and integer (not fixnum)). 
+        类型 bignum 准确地被定义为 (and integer (not fixnum)). 
 
 
 ### <span id="F-Compare">函数 =, /=, <, >, <=, >=</span>
