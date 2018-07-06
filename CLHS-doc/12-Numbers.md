@@ -841,151 +841,152 @@ a singleton list whose element is a number M of type T
 
 * 语法(Syntax):
 
-= &rest numbers+ => generalized-boolean
+        = &rest numbers+ => generalized-boolean
 
-/= &rest numbers+ => generalized-boolean
+        /= &rest numbers+ => generalized-boolean
 
-< &rest numbers+ => generalized-boolean
+        < &rest numbers+ => generalized-boolean
 
-> &rest numbers+ => generalized-boolean
+        > &rest numbers+ => generalized-boolean
 
-<= &rest numbers+ => generalized-boolean
+        <= &rest numbers+ => generalized-boolean
 
->= &rest numbers+ => generalized-boolean
+        >= &rest numbers+ => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-number---for <, >, <=, >=: a real; for =, /=: a number.
+        number---对于 <, >, <=, >=: 一个实数; 对于 =, /=: 一个数字.
 
-generalized-boolean---a generalized boolean.
+        generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
-=, /=, <, >, <=, and >= perform arithmetic comparisons on their arguments as follows:
+        =, /=, <, >, <=, 和 >= 在它们的参数上按照如下执行数学比较:
 
-=
+        =
 
-    The value of = is true if all numbers are the same in value; otherwise it is false. Two complexes are considered equal by = if their real and imaginary parts are equal according to =.
+            如果所有数字的值都是相同的那么 = 的结果为 true; 否则就是 false. 如果两个复数的实部和虚部根据 = 都是相等的, 那么它们就被 = 认为是相等的.
 
-/=
+        /=
 
-    The value of /= is true if no two numbers are the same in value; otherwise it is false.
+            如果没有两个数字在值上是相等的那么 /= 的值就是 true; 否则就是 false.
 
-<
+        <
 
-    The value of < is true if the numbers are in monotonically increasing order; otherwise it is false.
+            如果数字是单调递增的那么 < 的值就是 true; 否则就是 false.
 
->
+        >
 
-    The value of > is true if the numbers are in monotonically decreasing order; otherwise it is false.
+            如果数字是单调递减的那么 > 的值就是 true; 否则就是 false.
 
-<=
+        <=
 
-    The value of <= is true if the numbers are in monotonically nondecreasing order; otherwise it is false.
+            如果数字是单调非递减的那么 <= 的值就是 true; 否则就是 false.
 
->=
+        >=
 
-    The value of >= is true if the numbers are in monotonically nonincreasing order; otherwise it is false.
+            如果数字是单调非递增的那么 >= 的值就是 true; 否则就是 false.
 
-=, /=, <, >, <=, and >= perform necessary type conversions.
+        =, /=, <, >, <=, 和 >= 执行必要的类型转换.
 
 * 示例(Examples):
 
-The uses of these functions are illustrated in the next figure.
+        这些函数的用法如下面这段所示.
 
-(= 3 3) is true.              (/= 3 3) is false.             
-(= 3 5) is false.             (/= 3 5) is true.              
-(= 3 3 3 3) is true.          (/= 3 3 3 3) is false.         
-(= 3 3 5 3) is false.         (/= 3 3 5 3) is false.         
-(= 3 6 5 2) is false.         (/= 3 6 5 2) is true.          
-(= 3 2 3) is false.           (/= 3 2 3) is false.           
-(< 3 5) is true.              (<= 3 5) is true.              
-(< 3 -5) is false.            (<= 3 -5) is false.            
-(< 3 3) is false.             (<= 3 3) is true.              
-(< 0 3 4 6 7) is true.        (<= 0 3 4 6 7) is true.        
-(< 0 3 4 4 6) is false.       (<= 0 3 4 4 6) is true.        
-(> 4 3) is true.              (>= 4 3) is true.              
-(> 4 3 2 1 0) is true.        (>= 4 3 2 1 0) is true.        
-(> 4 3 3 2 0) is false.       (>= 4 3 3 2 0) is true.        
-(> 4 3 1 2 0) is false.       (>= 4 3 1 2 0) is false.       
-(= 3) is true.                (/= 3) is true.                
-(< 3) is true.                (<= 3) is true.                
-(= 3.0 #c(3.0 0.0)) is true.  (/= 3.0 #c(3.0 1.0)) is true.  
-(= 3 3.0) is true.            (= 3.0s0 3.0d0) is true.       
-(= 0.0 -0.0) is true.         (= 5/2 2.5) is true.           
-(> 0.0 -0.0) is false.        (= 0 -0.0) is true.            
-(<= 0 x 9) is true if x is between 0 and 9, inclusive                               
-(< 0.0 x 1.0) is true if x is between 0.0 and 1.0, exclusive                               
-(< -1 j (length v)) is true if j is a valid array index for a vector v                               
+        (= 3 3) 是 true.              (/= 3 3) 是 false.             
+        (= 3 5) 是 false.             (/= 3 5) 是 true.              
+        (= 3 3 3 3) 是 true.          (/= 3 3 3 3) 是 false.         
+        (= 3 3 5 3) 是 false.         (/= 3 3 5 3) 是 false.         
+        (= 3 6 5 2) 是 false.         (/= 3 6 5 2) 是 true.          
+        (= 3 2 3) 是 false.           (/= 3 2 3) 是 false.           
+        (< 3 5) 是 true.              (<= 3 5) 是 true.              
+        (< 3 -5) 是 false.            (<= 3 -5) 是 false.            
+        (< 3 3) 是 false.             (<= 3 3) 是 true.              
+        (< 0 3 4 6 7) 是 true.        (<= 0 3 4 6 7) 是 true.        
+        (< 0 3 4 4 6) 是 false.       (<= 0 3 4 4 6) 是 true.        
+        (> 4 3) 是 true.              (>= 4 3) 是 true.              
+        (> 4 3 2 1 0) 是 true.        (>= 4 3 2 1 0) 是 true.        
+        (> 4 3 3 2 0) 是 false.       (>= 4 3 3 2 0) 是 true.        
+        (> 4 3 1 2 0) 是 false.       (>= 4 3 1 2 0) 是 false.       
+        (= 3) 是 true.                (/= 3) 是 true.                
+        (< 3) 是 true.                (<= 3) 是 true.                
+        (= 3.0 #c(3.0 0.0)) 是 true.  (/= 3.0 #c(3.0 1.0)) 是 true.  
+        (= 3 3.0) 是 true.            (= 3.0s0 3.0d0) 是 true.       
+        (= 0.0 -0.0) 是 true.         (= 5/2 2.5) 是 true.           
+        (> 0.0 -0.0) 是 false.        (= 0 -0.0) 是 true.            
+        (<= 0 x 9) 如果 x 在 0 和 9 之间包括 9 就是 true                               
+        (< 0.0 x 1.0) 如果 x 在 0.0 和 1.0 之间不包括 1.0 就是 true                              
+        (< -1 j (length v)) 如果 j 是一个序列 v 的有效索引就是 true
 
-Figure 12-13. Uses of /=, =, <, >, <=, and >=
+        Figure 12-13. /=, =, <, >, <=, 和 >= 的使用
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-Might signal type-error if some argument is not a real. Might signal arithmetic-error if otherwise unable to fulfill its contract.
+        如果某个参数不是一个实数, 那么就会发出一个 type-error 类型的错误. 如果不能满足它的 contract 可能发出 arithmetic-error 类型的错误.
 
 * 也见(See Also): None.
 
 * 注意(Notes):
 
-= differs from eql in that (= 0.0 -0.0) is always true, because = compares the mathematical values of its operands, whereas eql compares the representational values, so to speak. 
+        = 有别于 eql, = 在 (= 0.0 -0.0) 总是为 true, 因为 = 比较它的操作数的数学值, 然而 eql 比较表征值, 可以这么说. 
 
 
 ### <span id="F-MAX-MIN">函数 MAX, MIN</span>
 
 * 语法(Syntax):
 
-max &rest reals+ => max-real
+        max &rest reals+ => max-real
 
-min &rest reals+ => min-real
+        min &rest reals+ => min-real
 
 * 参数和值(Arguments and Values):
 
-real---a real.
-
-max-real, min-real---a real.
+        real---一个实数.
+        max-real, min-real---一个实数.
 
 * 描述(Description):
 
-max returns the real that is greatest (closest to positive infinity). min returns the real that is least (closest to negative infinity).
+        max 返回最大的实数 (接近于正无穷). min 返回最小的实数 (接近于负无穷).
 
-For max, the implementation has the choice of returning the largest argument as is or applying the rules of floating-point contagion, taking all the arguments into consideration for contagion purposes. Also, if one or more of the arguments are =, then any one of them may be chosen as the value to return. For example, if the reals are a mixture of rationals and floats, and the largest argument is a rational, then the implementation is free to produce either that rational or its float approximation; if the largest argument is a float of a smaller format than the largest format of any float argument, then the implementation is free to return the argument in its given format or expanded to the larger format. Similar remarks apply to min (replacing ``largest argument'' by ``smallest argument'').
+        对于 max, 具体实现可以选择去返回最大的参数 the implementation has the choice of returning the largest argument as is or applying the rules of floating-point contagion, taking all the arguments into consideration for contagion purposes<!--TODO 待翻译-->. 而且, 如果不止一个参数是 = 的, 那么它们中的任何一个可能被选择作为返回值. 比如, 如果这些实数是有理数和浮点数的混合, 那么最大值是个有理数, 然后具体实现可以自由地产生有理数或它的近似浮点数; 如果这个最大的参数是一个比任何浮点参数的最大格式都小的格式的浮点数, 然后具体实现可以自由地以给定的格式返回那个或者扩展到更大的格式. 相似的备注适用于 min (用 "最小参数" 替换 "最大参数").
 
 * 示例(Examples):
 
- (max 3) =>  3 
- (min 3) =>  3
- (max 6 12) =>  12 
- (min 6 12) =>  6
- (max -6 -12) =>  -6 
- (min -6 -12) =>  -12
- (max 1 3 2 -7) =>  3 
- (min 1 3 2 -7) =>  -7
- (max -2 3 0 7) =>  7 
- (min -2 3 0 7) =>  -2
- (max 5.0 2) =>  5.0 
- (min 5.0 2)
-=>  2
-OR=>  2.0
- (max 3.0 7 1)
-=>  7
-OR=>  7.0 
- (min 3.0 7 1)
-=>  1
-OR=>  1.0
- (max 1.0s0 7.0d0) =>  7.0d0
- (min 1.0s0 7.0d0)
-=>  1.0s0
-OR=>  1.0d0
- (max 3 1 1.0s0 1.0d0)
-=>  3
-OR=>  3.0d0
- (min 3 1 1.0s0 1.0d0)
-=>  1
-OR=>  1.0s0 
-OR=>  1.0d0
+    ```LISP
+    (max 3) =>  3 
+    (min 3) =>  3
+    (max 6 12) =>  12 
+    (min 6 12) =>  6
+    (max -6 -12) =>  -6 
+    (min -6 -12) =>  -12
+    (max 1 3 2 -7) =>  3 
+    (min 1 3 2 -7) =>  -7
+    (max -2 3 0 7) =>  7 
+    (min -2 3 0 7) =>  -2
+    (max 5.0 2) =>  5.0 
+    (min 5.0 2)
+    =>  2
+    OR=>  2.0
+    (max 3.0 7 1)
+    =>  7
+    OR=>  7.0 
+    (min 3.0 7 1)
+    =>  1
+    OR=>  1.0
+    (max 1.0s0 7.0d0) =>  7.0d0
+    (min 1.0s0 7.0d0)
+    =>  1.0s0
+    OR=>  1.0d0
+    (max 3 1 1.0s0 1.0d0)
+    =>  3
+    OR=>  3.0d0
+    (min 3 1 1.0s0 1.0d0)
+    =>  1
+    OR=>  1.0s0 
+    OR=>  1.0d0
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -993,7 +994,7 @@ OR=>  1.0d0
 
 * 异常情况(Exceptional Situations):
 
-Should signal an error of type type-error if any number is not a real.
+        如果任何数字不是一个实数, 那么应该会发出一个 type-error 类型的错误.
 
 * 也见(See Also): None.
 
@@ -1004,29 +1005,30 @@ Should signal an error of type type-error if any number is not a real.
 
 * 语法(Syntax):
 
-minusp real => generalized-boolean
+        minusp real => generalized-boolean
 
-plusp real => generalized-boolean
+        plusp real => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-real---a real.
-
-generalized-boolean---a generalized boolean.
+        real---一个实数.
+        generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
-minusp returns true if real is less than zero; otherwise, returns false.
+        如果实数 real 小于 0 那么 minusp 返回 true; 否则, 返回 false.
 
-plusp returns true if real is greater than zero; otherwise, returns false.
+        如果实数 real 大于 0 那么 plusp 返回 true; 否则, 返回 false.
 
-Regardless of whether an implementation provides distinct representations for positive and negative float zeros, (minusp -0.0) always returns false.
+        不管一个具体实现是否提供了正负浮点数零的不同表示, (minusp -0.0) 总是返回 false.
 
 * 示例(Examples):
 
- (minusp -1) =>  true
- (plusp 0) =>  false
- (plusp least-positive-single-float) =>  true
+    ```LISP
+    (minusp -1) =>  true
+    (plusp 0) =>  false
+    (plusp least-positive-single-float) =>  true
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -1034,7 +1036,7 @@ Regardless of whether an implementation provides distinct representations for po
 
 * 异常情况(Exceptional Situations):
 
-Should signal an error of type type-error if real is not a real.
+        如果 real 不是一个实数, 那么应该发出一个 type-error 类型的错误.
 
 * 也见(See Also): None.
 
@@ -1045,31 +1047,32 @@ Should signal an error of type type-error if real is not a real.
 
 * 语法(Syntax):
 
-zerop number => generalized-boolean
+        zerop number => generalized-boolean
 
 * 发音(Pronunciation)::
 
-['zee(,)roh(,)pee]
+        ['zee(,)roh(,)pee]
 
 * 参数和值(Arguments and Values):
 
-number---a number.
-
-generalized-boolean---a generalized boolean.
+        number---一个数字.
+        generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
-Returns true if number is zero (integer, float, or complex); otherwise, returns false.
+        如果数字 number 是 0(整数, 浮点数, 或复数) 就返回 true; 否则, 返回 false.
 
-Regardless of whether an implementation provides distinct representations for positive and negative floating-point zeros, (zerop -0.0) always returns true.
+        不管一个具体实现是否提供了正负浮点数零的不同表示, (zerop -0.0) 总是返回 true.
 
 * 示例(Examples):
 
+```LISP
  (zerop 0) =>  true
  (zerop 1) =>  false
  (zerop -0.0) =>  true
  (zerop 0/100) =>  true
  (zerop #c(0 0.0)) =>  true
+```
 
 * 副作用(Side Effects): None.
 
@@ -1077,102 +1080,101 @@ Regardless of whether an implementation provides distinct representations for po
 
 * 异常情况(Exceptional Situations):
 
-Should signal an error of type type-error if number is not a number.
+        如果 number 不是一个数字, 那么应该发出一个 type-error 类型的错误.
 
 * 也见(See Also): None.
 
 * 注意(Notes):
 
- (zerop number) ==  (= number 0)
+        (zerop number) ==  (= number 0)
 
 
 ### <span id="F-F-F-C-F-T-F-R-F">函数 FLOOR, FFLOOR, CEILING, FCEILING, TRUNCATE, FTRUNCATE, ROUND, FROUND</span>
 
 * 语法(Syntax):
 
-floor number &optional divisor => quotient, remainder
+        floor number &optional divisor => quotient, remainder
 
-ffloor number &optional divisor => quotient, remainder
+        ffloor number &optional divisor => quotient, remainder
 
-ceiling number &optional divisor => quotient, remainder
+        ceiling number &optional divisor => quotient, remainder
 
-fceiling number &optional divisor => quotient, remainder
+        fceiling number &optional divisor => quotient, remainder
 
-truncate number &optional divisor => quotient, remainder
+        truncate number &optional divisor => quotient, remainder
 
-ftruncate number &optional divisor => quotient, remainder
+        ftruncate number &optional divisor => quotient, remainder
 
-round number &optional divisor => quotient, remainder
+        round number &optional divisor => quotient, remainder
 
-fround number &optional divisor => quotient, remainder
+        fround number &optional divisor => quotient, remainder
 
 * 参数和值(Arguments and Values):
 
-number---a real.
-
-divisor---a non-zero real. The default is the integer 1.
-
-quotient---for floor, ceiling, truncate, and round: an integer; for ffloor, fceiling, ftruncate, and fround: a float.
-
-remainder---a real.
+        number---一个实数.
+        divisor---一个非零实数. 默认为整数 1.
+        quotient---对于 floor, ceiling, truncate, 和 round: 一个整数; 对于 ffloor, fceiling, ftruncate, 和 fround: 一个浮点数.
+        remainder---一个实数.
 
 * 描述(Description):
 
-These functions divide number by divisor, returning a quotient and remainder, such that
+        这些函数通过 divisor 来除数字 number, 返回商 quotient 和余数 remainder, 比如
 
-quotient*divisor+remainder=number
+        quotient*divisor+remainder=number
 
-The quotient always represents a mathematical integer. When more than one mathematical integer might be possible (i.e., when the remainder is not zero), the kind of rounding or truncation depends on the operator:
+        商 quotient 总是表示一个数学上的整数. 当一个以上的数学整数是可能的时 (换句话说, 当余数不是 zero), 舍入或截断的类型取决于操作符:
 
-floor, ffloor
+        floor, ffloor
 
-    floor and ffloor produce a quotient that has been truncated toward negative infinity; that is, the quotient represents the largest mathematical integer that is not larger than the mathematical quotient.
+            floor 和 ffloor 产生一个被朝向负无穷截断的商 quotient; 这也就是说, 这个商 quotient 表示不大于那个数学上商的最大数学整数.
 
-ceiling, fceiling
+        ceiling, fceiling
 
-    ceiling and fceiling produce a quotient that has been truncated toward positive infinity; that is, the quotient represents the smallest mathematical integer that is not smaller than the mathematical result.
+            ceiling 和 fceiling 产生一个被朝向正无穷截断的商 quotient; 这也就是说, 商 quotient 表示不小于那个数学上结果的最小数学整数.
 
-truncate, ftruncate
+        truncate, ftruncate
 
-    truncate and ftruncate produce a quotient that has been truncated towards zero; that is, the quotient represents the mathematical integer of the same sign as the mathematical quotient, and that has the greatest integral magnitude not greater than that of the mathematical quotient.
+            truncate 和 ftruncate 产生一个被朝向 0 截断的商 quotient; 这也就是说, 这个商 quotient 表示和那个数学上的商相同符号的数学上的整数, 并且有着不大于那个数学上的商的最大整形大小.
 
-round, fround
+        round, fround
 
-    round and fround produce a quotient that has been rounded to the nearest mathematical integer; if the mathematical quotient is exactly halfway between two integers, (that is, it has the form integer+1/2), then the quotient has been rounded to the even (divisible by two) integer.
+            round 和 fround 产生一个被四舍五入到最近的数学整数的商 quotient; 如果这个数学上的商刚好在两个整数中间, (也积极是说, 它有着 integer+1/2 的形式), 那么这个商 quotient 会被四舍五入到偶数 (可以被2整除).
 
-All of these functions perform type conversion operations on numbers.
+        所有这些函数在数字 number 上执行类型转换操作.
 
-The remainder is an integer if both x and y are integers, is a rational if both x and y are rationals, and is a float if either x or y is a float.
+        如果 x 和 y 都是整数那么余数 remainder 是一个整数, 如果 x 和 y 都是有理数那么就是一个有理数, 如果 x 或 y 是一个浮点数那么就是一个浮点数.
 
-ffloor, fceiling, ftruncate, and fround handle arguments of different types in the following way: If number is a float, and divisor is not a float of longer format, then the first result is a float of the same type as number. Otherwise, the first result is of the type determined by contagion rules; see Section 12.1.1.2 (Contagion in Numeric Operations).
+        ffloor, fceiling, ftruncate, 和 fround 以以下方式处理不同类型的参数: 如果 number 是一个浮点数, 并且 divisor 不是一个长格式的浮点数, 那么第一个结果是一个和 number 相同类型的浮点数. 否则, 第一个结果是由传递性规则决定的类型; 见章节 12.1.1.2 (Contagion in Numeric Operations).
 
 * 示例(Examples):
 
- (floor 3/2) =>  1, 1/2
- (ceiling 3 2) =>  2, -1
- (ffloor 3 2) =>  1.0, 1
- (ffloor -4.7) =>  -5.0, 0.3
- (ffloor 3.5d0) =>  3.0d0, 0.5d0
- (fceiling 3/2) =>  2.0, -1/2
- (truncate 1) =>  1, 0
- (truncate .5) =>  0, 0.5
- (round .5) =>  0, 0.5
- (ftruncate -7 2) =>  -3.0, -1
- (fround -7 2) =>  -4.0, 1
- (dolist (n '(2.6 2.5 2.4 0.7 0.3 -0.3 -0.7 -2.4 -2.5 -2.6))
-   (format t "~&~4,1@F ~2,' D ~2,' D ~2,' D ~2,' D"
-           n (floor n) (ceiling n) (truncate n) (round n)))
->>  +2.6  2  3  2  3
->>  +2.5  2  3  2  2
->>  +2.4  2  3  2  2
->>  +0.7  0  1  0  1
->>  +0.3  0  1  0  0
->>  -0.3 -1  0  0  0
->>  -0.7 -1  0  0 -1
->>  -2.4 -3 -2 -2 -2
->>  -2.5 -3 -2 -2 -2
->>  -2.6 -3 -2 -2 -3
-=>  NIL
+    ```LISP
+    (floor 3/2) =>  1, 1/2
+    (ceiling 3 2) =>  2, -1
+    (ffloor 3 2) =>  1.0, 1
+    (ffloor -4.7) =>  -5.0, 0.3
+    (ffloor 3.5d0) =>  3.0d0, 0.5d0
+    (fceiling 3/2) =>  2.0, -1/2
+    (truncate 1) =>  1, 0
+    (truncate .5) =>  0, 0.5
+    (round .5) =>  0, 0.5
+    (ftruncate -7 2) =>  -3.0, -1
+    (fround -7 2) =>  -4.0, 1
+    (dolist (n '(2.6 2.5 2.4 0.7 0.3 -0.3 -0.7 -2.4 -2.5 -2.6))
+      (format t "~&~4,1@F ~2,' D ~2,' D ~2,' D ~2,' D"
+              n (floor n) (ceiling n) (truncate n) (round n)))
+    >>  +2.6  2  3  2  3
+    >>  +2.5  2  3  2  2
+    >>  +2.4  2  3  2  2
+    >>  +0.7  0  1  0  1
+    >>  +0.3  0  1  0  0
+    >>  -0.3 -1  0  0  0
+    >>  -0.7 -1  0  0 -1
+    >>  -2.4 -3 -2 -2 -2
+    >>  -2.5 -3 -2 -2 -2
+    >>  -2.6 -3 -2 -2 -3
+    =>  NIL
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -1184,41 +1186,42 @@ ffloor, fceiling, ftruncate, and fround handle arguments of different types in t
 
 * 注意(Notes):
 
-When only number is given, the two results are exact; the mathematical sum of the two results is always equal to the mathematical value of number.
+        当只给定 number 时, 这两个结果是精确的; 这两个结果的数学和总是等于 number 的数学值.
 
-(function number divisor) and (function (/ number divisor)) (where function is any of one of floor, ceiling, ffloor, fceiling, truncate, round, ftruncate, and fround) return the same first value, but they return different remainders as the second value. For example:
+        (function number divisor) 和 (function (/ number divisor)) (其中 function 是 floor, ceiling, ffloor, fceiling, truncate, round, ftruncate, 和 fround 中的任何一个) 返回相同的第一个值, 但是它们返回不同的余数作为第二个值. 比如:
 
- (floor 5 2) =>  2, 1
- (floor (/ 5 2)) =>  2, 1/2
+        (floor 5 2) =>  2, 1
+        (floor (/ 5 2)) =>  2, 1/2
 
-If an effect is desired that is similar to round, but that always rounds up or down (rather than toward the nearest even integer) if the mathematical quotient is exactly halfway between two integers, the programmer should consider a construction such as (floor (+ x 1/2)) or (ceiling (- x 1/2)). 
+        如果需要一个类似于 round 的效果, 但是在商刚好在两个整数中间时总是向上或向下舍入 (而不是朝向最接近的偶数), 程序员应该考虑像 (floor (+ x 1/2)) 或 (ceiling (- x 1/2)) 这样的构造. 
 
 
 ### <span id="F-SIN-COS-TAN">函数 SIN, COS, TAN</span>
 
 * 语法(Syntax):
 
-sin radians => number
+        sin radians => number
 
-cos radians => number
+        cos radians => number
 
-tan radians => number
+        tan radians => number
 
 * 参数和值(Arguments and Values):
 
-radians---a number given in radians.
-
-number---a number.
+        radians---一个用弧度表示的数字.
+        number---一个数字.
 
 * 描述(Description):
 
-sin, cos, and tan return the sine, cosine, and tangent, respectively, of radians.
+        sin, cos, 和 tan 分别返回弧度 radians 正弦, 余弦和正切.
 
 * 示例(Examples):
 
- (sin 0) =>  0.0
- (cos 0.7853982) =>  0.707107
- (tan #c(0 1)) =>  #C(0.0 0.761594)
+    ```LISP
+    (sin 0) =>  0.0
+    (cos 0.7853982) =>  0.707107
+    (tan #c(0 1)) =>  #C(0.0 0.761594)
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -1226,11 +1229,11 @@ sin, cos, and tan return the sine, cosine, and tangent, respectively, of radians
 
 * 异常情况(Exceptional Situations):
 
-Should signal an error of type type-error if radians is not a number. Might signal arithmetic-error.
+        如果 radians 不是一个数字, 那么应该发出一个 type-error 类型的错误. 可能发出 arithmetic-error 类型的错误.
 
 * 也见(See Also):
 
-asin, acos, atan, Section 12.1.3.3 (Rule of Float Substitutability)
+        asin, acos, atan, 章节 12.1.3.3 (Rule of Float Substitutability)
 
 * 注意(Notes): None. 
 
