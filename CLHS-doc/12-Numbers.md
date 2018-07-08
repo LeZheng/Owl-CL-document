@@ -1348,97 +1348,100 @@ a singleton list whose element is a number M of type T
 
 ### <span id="CV-PI">常量 PI</span>
 
-Value:
+* 值(Value):
 
-an implementation-dependent long float.
+        一个依赖于具体实现的长浮点数.
 
 * 描述(Description):
 
-The best long float approximation to the mathematical constant <PI>.
+        对数学常数 <PI> 的最好的长浮点近似.
 
 * 示例(Examples):
 
- ;; In each of the following computations, the precision depends 
- ;; on the implementation.  Also, if `long float' is treated by 
- ;; the implementation as equivalent to some other float format 
- ;; (e.g., `double float') the exponent marker might be the marker
- ;; for that equivalent (e.g., `D' instead of `L').
- pi =>  3.141592653589793L0
- (cos pi) =>  -1.0L0
+    ```LISP
+    ;; In each of the following computations, the precision depends 
+    ;; on the implementation.  Also, if `long float' is treated by 
+    ;; the implementation as equivalent to some other float format 
+    ;; (e.g., `double float') the exponent marker might be the marker
+    ;; for that equivalent (e.g., `D' instead of `L').
+    pi =>  3.141592653589793L0
+    (cos pi) =>  -1.0L0
 
- (defun sin-of-degrees (degrees)
-   (let ((x (if (floatp degrees) degrees (float degrees pi))))
-     (sin (* x (/ (float pi x) 180)))))
+    (defun sin-of-degrees (degrees)
+      (let ((x (if (floatp degrees) degrees (float degrees pi))))
+        (sin (* x (/ (float pi x) 180)))))
+    ```
 
 * 也见(See Also): None.
 
 * 注意(Notes):
 
-An approximation to <PI> in some other precision can be obtained by writing (float pi x), where x is a float of the desired precision, or by writing (coerce pi type), where type is the desired type, such as short-float. 
+        一个对 <PI> 的某个其他精度的近似值可以通过编写 (float pi x) 来获取, 其中 x 是一个期望精度的浮点数, 或者编写 (coerce pi type), 其中 type 是期望的类型, 比如 short-float. 
 
 
 ### <span id="F-S-C-T-A-A-A">函数 SINH, COSH, TANH, ASINH, ACOSH, ATANH</span>
 
 * 语法(Syntax):
 
-sinh number => result
+        sinh number => result
 
-cosh number => result
+        cosh number => result
 
-tanh number => result
+        tanh number => result
 
-asinh number => result
+        asinh number => result
 
-acosh number => result
+        acosh number => result
 
-atanh number => result
+        atanh number => result
 
 * 参数和值(Arguments and Values):
 
-number---a number.
-
-result---a number.
+        number---一个数字.
+        result---一个数字.
 
 * 描述(Description):
 
-These functions compute the hyperbolic sine, cosine, tangent, arc sine, arc cosine, and arc tangent functions, which are mathematically defined for an argument x as given in the next figure.
+        这些函数计算双曲正弦, 余弦, 正切, 反正弦, 反余弦, 和反正切函数, 这些函数在数学上定义为在下一个图中给出一个参数 x 的形式.
 
-Function                Definition                              
-Hyperbolic sine         (e^x-e^-x)/2                            
-Hyperbolic cosine       (e^x+e^-x)/2                            
-Hyperbolic tangent      (e^x-e^-x)/(e^x+e^-x)                   
-Hyperbolic arc sine     log  (x+sqrt(1+x^2))                    
-Hyperbolic arc cosine   2 log  (sqrt((x+1)/2) + sqrt((x-1)/2))  
-Hyperbolic arc tangent  (log  (1+x) - log (1-x))/2              
+            Function                Definition                              
+            Hyperbolic sine         (e^x-e^-x)/2                            
+            Hyperbolic cosine       (e^x+e^-x)/2                            
+            Hyperbolic tangent      (e^x-e^-x)/(e^x+e^-x)                   
+            Hyperbolic arc sine     log  (x+sqrt(1+x^2))                    
+            Hyperbolic arc cosine   2 log  (sqrt((x+1)/2) + sqrt((x-1)/2))  
+            Hyperbolic arc tangent  (log  (1+x) - log (1-x))/2              
 
-Figure 12-16. Mathematical definitions for hyperbolic functions
+            Figure 12-16. 双曲函数的数学定义
 
-The following definition for the inverse hyperbolic cosine determines the range and branch cuts:
+        下面这个反双曲余弦的定义决定了范围和分支切割:
 
-arccosh z = 2 log (sqrt((z+1)/2) + sqrt((z-1)/2)).
+        arccosh z = 2 log (sqrt((z+1)/2) + sqrt((z-1)/2)).
 
-The branch cut for the inverse hyperbolic cosine function lies along the real axis to the left of 1 (inclusive), extending indefinitely along the negative real axis, continuous with quadrant II and (between 0 and 1) with quadrant I. The range is that half-strip of the complex plane containing numbers whose real part is non-negative and whose imaginary part is between -<PI> (exclusive) and <PI> (inclusive). A number with real part zero is in the range if its imaginary part is between zero (inclusive) and <PI> (inclusive).
+        反双曲余弦函数的分支切割沿着实轴到 1 的左边 (包含), 沿着负实轴无限延伸, 与第二象限 (在 0 和 1 之间) 和第一象限相连. 这个范围是包含了实部为非负并且虚部在 -<PI> (不包含) 和 <PI> (包含) 之间的数字的复平面的半条. 如果一个数字的虚部在 0 (包含) 和 <PI> (包含) 之间, 那么实部为 0 的这个数在这个范围内.
 
-The following definition for the inverse hyperbolic sine determines the range and branch cuts:
+        下面这个反双曲正弦的定义决定了范围和分支切割:
 
-arcsinh z = log (z+sqrt(1+z^2)).
+        arcsinh z = log (z+sqrt(1+z^2)).
 
-The branch cut for the inverse hyperbolic sine function is in two pieces: one along the positive imaginary axis above i (inclusive), continuous with quadrant I, and one along the negative imaginary axis below -i (inclusive), continuous with quadrant III. The range is that strip of the complex plane containing numbers whose imaginary part is between -<PI>/2 and <PI>/2. A number with imaginary part equal to -<PI>/2 is in the range if and only if its real part is non-positive; a number with imaginary part equal to <PI>/2 is in the range if and only if its imaginary part is non-negative.
+        这个反双曲正弦函数的分支切割分为两块: 一个沿着正虚轴到 i (包含) 上, 与第一象限相连, 而另一个沿着负虚轴到 -i (包含) 下, 与第三象限相连. 这个范围是包含虚部在 -<PI>/2 和 <PI>/2 之间的数字的复数带. 当且仅当一个实部为非负时, 这个虚部与 -<PI>/2 相等的复数在这个范围内; 当且仅当一个数字的虚部为非负时, 这个虚部等价于 <PI>/2 的数字在这个范围内.
 
-The following definition for the inverse hyperbolic tangent determines the range and branch cuts:
+        下面这个反双曲正切的定义决定了范围和分支切割:
 
-arctanh z = log (1+z) - log (1-z)/2.
+        arctanh z = log (1+z) - log (1-z)/2.
 
-Note that:
+        注意:
 
-i arctan z = arctanh iz.
+        i arctan z = arctanh iz.
 
-The branch cut for the inverse hyperbolic tangent function is in two pieces: one along the negative real axis to the left of -1 (inclusive), continuous with quadrant III, and one along the positive real axis to the right of 1 (inclusive), continuous with quadrant I. The points -1 and 1 are excluded from the domain. The range is that strip of the complex plane containing numbers whose imaginary part is between -<PI>/2 and <PI>/2. A number with imaginary part equal to -<PI>/2 is in the range if and only if its real part is strictly negative; a number with imaginary part equal to <PI>/2 is in the range if and only if its imaginary part is strictly positive. Thus the range of the inverse hyperbolic tangent function is identical to that of the inverse hyperbolic sine function with the points -<PI>i/2 and <PI>i/2 excluded.
+        这个反双曲正切函数的分支切割分为两块: 一个沿着负实轴到one along the negative real -1 (包含) 的左边, 与第三象限相连, 而另一个沿着正实轴到 1 (包含) 的右边, 与第一象限相连. 点 -1 和 1 被排除在这个域外. 这个范围是包含虚部在 -<PI>/2 和 <PI>/2 之间的数字的复数带. 当且仅当一个数字的实部是严格负的时, 这个虚部等于 -<PI>/2 的数字在这个范围内; 当且仅当一个数字的虚部是严格正的时, 这个虚部等于 <PI>/2 的数字在这个范围内. 因此反双曲正切函数的范围除了点 points -<PI>i/2 和 <PI>i/2 被排除之外和反向双曲正切函数是相同的.
 
 * 示例(Examples):
 
- (sinh 0) =>  0.0 
- (cosh (complex 0 -1)) =>  #C(0.540302 -0.0)
+    ```LISP
+    (sinh 0) =>  0.0 
+    (cosh (complex 0 -1)) =>  #C(0.540302 -0.0)
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -1446,50 +1449,51 @@ The branch cut for the inverse hyperbolic tangent function is in two pieces: one
 
 * 异常情况(Exceptional Situations):
 
-Should signal an error of type type-error if number is not a number. Might signal arithmetic-error.
+        如果 number 不是一个数字, 那么应该发出一个 type-error 类型的错误. 也可能发出 arithmetic-error 类型的错误.
 
 * 也见(See Also):
 
-log, sqrt, Section 12.1.3.3 (Rule of Float Substitutability)
+        log, sqrt, 章节 12.1.3.3 (Rule of Float Substitutability)
 
 * 注意(Notes):
 
-The result of acosh may be a complex even if number is not a complex; this occurs when number is less than one. Also, the result of atanh may be a complex even if number is not a complex; this occurs when the absolute value of number is greater than one.
+        即便 number 不是一个复数, acosh 的结果也可以是一个复数; 这个发生在 number 小于 1 时. 同样, 即便 number 不是一个复数, atanh 的结果也可以是一个复数; 这个发生在 number 的绝对值大于 1 时.
 
-The branch cut formulae are mathematically correct, assuming completely accurate computation. Implementors should consult a good text on numerical analysis. The formulae given above are not necessarily the simplest ones for real-valued computations; they are chosen to define the branch cuts in desirable ways for the complex case. 
+        假设完全准确的计算, 分支切割公式在数学上是正确的. 实现者应该在数值分析中参考一个好的文本. 上面给出的公式并不一定是实数值计算最简单的公式; 它们被选择以合适的方式为复杂的案例定义分支切割. 
 
 
 ### <span id="F-Multiply">函数 *</span>
 
 * 语法(Syntax):
 
-* &rest numbers => product
+        * &rest numbers => product
 
 * 参数和值(Arguments and Values):
 
-number---a number.
-
-product---a number.
+        number---一个数字.
+        product---一个数字.
 
 * 描述(Description):
 
-Returns the product of numbers, performing any necessary type conversions in the process. If no numbers are supplied, 1 is returned.
+        返回那些数字 numbers 的乘积, 在这个过程中执行任何必要的类型转换. 如果没有提供数字 numbers, 返回 1.
 
 * 示例(Examples):
 
- (*) =>  1
- (* 3 5) =>  15
- (* 1.0 #c(22 33) 55/98) =>  #C(12.346938775510203 18.520408163265305)
+    ```LISP
+    (*) =>  1
+    (* 3 5) =>  15
+    (* 1.0 #c(22 33) 55/98) =>  #C(12.346938775510203 18.520408163265305)
+    ```
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-Might signal type-error if some argument is not a number. Might signal arithmetic-error.
+        如果某个参数不是一个数字, 可能发出一个 type-error 类型的错误. 可能发出 arithmetic-error 类型的错误.
 
 * 也见(See Also):
 
-Section 12.1.1 (Numeric Operations), Section 12.1.3 (Rational Computations), Section 12.1.4 (Floating-point Computations), Section 12.1.5 (Complex Computations)
+        章节 12.1.1 (Numeric Operations), 章节 12.1.3 (Rational Computations), 章节 12.1.4 (Floating-point Computations), 章节 12.1.5 (Complex Computations)
 
 * 注意(Notes): None. 
 
@@ -1498,34 +1502,35 @@ Section 12.1.1 (Numeric Operations), Section 12.1.3 (Rational Computations), Sec
 
 * 语法(Syntax):
 
-+ &rest numbers => sum
+        + &rest numbers => sum
 
 * 参数和值(Arguments and Values):
 
-number---a number.
-
-sum---a number.
+        number---一个数字.
+        sum---一个数字.
 
 * 描述(Description):
 
-Returns the sum of numbers, performing any necessary type conversions in the process. If no numbers are supplied, 0 is returned.
+        返回数字 numbers 的和, 在这个过程中执行任何必要的类型转换. 如果没有提供 numbers, 返回 0.
 
 * 示例(Examples):
 
+```LISP
  (+) =>  0
  (+ 1) =>  1
  (+ 31/100 69/100) =>  1
  (+ 1/5 0.8) =>  1.0
+```
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-Might signal type-error if some argument is not a number. Might signal arithmetic-error.
+        如果某个参数不是一个数字, 可能发出一个 type-error 类型的错误. 可能发出 arithmetic-error 类型的错误.
 
 * 也见(See Also):
 
-Section 12.1.1 (Numeric Operations), Section 12.1.3 (Rational Computations), Section 12.1.4 (Floating-point Computations), Section 12.1.5 (Complex Computations)
+        章节 12.1.1 (Numeric Operations), 章节 12.1.3 (Rational Computations), 章节 12.1.4 (Floating-point Computations), 章节 12.1.5 (Complex Computations)
 
 * 注意(Notes): None. 
 
@@ -1534,44 +1539,45 @@ Section 12.1.1 (Numeric Operations), Section 12.1.3 (Rational Computations), Sec
 
 * 语法(Syntax):
 
-- number => negation
+        - number => negation
 
-- minuend &rest subtrahends+ => difference
+        - minuend &rest subtrahends+ => difference
 
 * 参数和值(Arguments and Values):
 
-number, minuend, subtrahend---a number.
-
-negation, difference---a number.
+        number, minuend, subtrahend---一个数字.
+        negation, difference---一个数字.
 
 * 描述(Description):
 
-The function - performs arithmetic subtraction and negation.
+        函数 - 执行数学减法和取反.
 
-If only one number is supplied, the negation of that number is returned.
+        如果只提供了一个 number, 对这个数字的相反数被返回.
 
-If more than one argument is given, it subtracts all of the subtrahends from the minuend and returns the result.
+        如果给定了不止一个参数, 它从被减数 minuend 减去所有的减数 subtrahends 并返回这个结果.
 
-The function - performs necessary type conversions.
+        函数 - 执行必要的类型转换.
 
 * 示例(Examples):
 
- (- 55.55) =>  -55.55
- (- #c(3 -5)) =>  #C(-3 5)
- (- 0) =>  0
- (eql (- 0.0) -0.0) =>  true
- (- #c(100 45) #c(0 45)) =>  100
- (- 10 1 2 3 4) =>  0
+    ```LISP
+    (- 55.55) =>  -55.55
+    (- #c(3 -5)) =>  #C(-3 5)
+    (- 0) =>  0
+    (eql (- 0.0) -0.0) =>  true
+    (- #c(100 45) #c(0 45)) =>  100
+    (- 10 1 2 3 4) =>  0
+    ```
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-Might signal type-error if some argument is not a number. Might signal arithmetic-error.
+        如果某个参数不是一个数字, 可能发出一个 type-error 类型的错误. 可能发出 arithmetic-error 类型的错误.
 
 * 也见(See Also):
 
-Section 12.1.1 (Numeric Operations), Section 12.1.3 (Rational Computations), Section 12.1.4 (Floating-point Computations), Section 12.1.5 (Complex Computations)
+        章节 12.1.1 (Numeric Operations), 章节 12.1.3 (Rational Computations), 章节 12.1.4 (Floating-point Computations), 章节 12.1.5 (Complex Computations)
 
 * 注意(Notes): None. 
 
@@ -1588,7 +1594,7 @@ Section 12.1.1 (Numeric Operations), Section 12.1.3 (Rational Computations), Sec
 
 number, denominator---a non-zero number.
 
-numerator, quotient, reciprocal---a number.
+numerator, quotient, reciprocal---一个数字.
 
 * 描述(Description):
 
@@ -1640,9 +1646,9 @@ floor, ceiling, truncate, round
 
 * 参数和值(Arguments and Values):
 
-number---a number.
+number---一个数字.
 
-successor, predecessor---a number.
+successor, predecessor---一个数字.
 
 * 描述(Description):
 
@@ -1681,7 +1687,7 @@ abs number => absolute-value
 
 * 参数和值(Arguments and Values):
 
-number---a number.
+number---一个数字.
 
 absolute-value---a non-negative real.
 
@@ -1771,13 +1777,13 @@ expt base-number power-number => result
 
 * 参数和值(Arguments and Values):
 
-number---a number.
+number---一个数字.
 
-base-number---a number.
+base-number---一个数字.
 
-power-number---a number.
+power-number---一个数字.
 
-result---a number.
+result---一个数字.
 
 * 描述(Description):
 
@@ -1889,9 +1895,9 @@ place---a place.
 
 delta-form---a form; evaluated to produce a delta. The default is 1.
 
-delta---a number.
+delta---一个数字.
 
-new-value---a number.
+new-value---一个数字.
 
 * 描述(Description):
 
@@ -1996,9 +2002,9 @@ log number &optional base => logarithm
 
 number---a non-zero number.
 
-base---a number.
+base---一个数字.
 
-logarithm---a number.
+logarithm---一个数字.
 
 * 描述(Description):
 
@@ -2118,9 +2124,9 @@ signum number => signed-prototype
 
 * 参数和值(Arguments and Values):
 
-number---a number.
+number---一个数字.
 
-signed-prototype---a number.
+signed-prototype---一个数字.
 
 * 描述(Description):
 
@@ -2170,7 +2176,7 @@ isqrt natural => natural-root
 
 * 参数和值(Arguments and Values):
 
-number, root---a number.
+number, root---一个数字.
 
 natural, natural-root---a non-negative integer.
 
@@ -2391,7 +2397,7 @@ Value Type:
 
 a random state.
 
-Initial Value:
+Initial * 值(Value):
 
 implementation-dependent.
 
@@ -2590,9 +2596,9 @@ conjugate number => conjugate
 
 * 参数和值(Arguments and Values):
 
-number---a number.
+number---一个数字.
 
-conjugate---a number.
+conjugate---一个数字.
 
 * 描述(Description):
 
@@ -2631,9 +2637,9 @@ phase number => phase
 
 * 参数和值(Arguments and Values):
 
-number---a number.
+number---一个数字.
 
-phase---a number.
+phase---一个数字.
 
 * 描述(Description):
 
@@ -2679,7 +2685,7 @@ imagpart number => real
 
 * 参数和值(Arguments and Values):
 
-number---a number.
+number---一个数字.
 
 real---a real.
 
