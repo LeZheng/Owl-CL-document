@@ -1241,110 +1241,109 @@ a singleton list whose element is a number M of type T
 
 * 语法(Syntax):
 
-asin number => radians
+        asin number => radians
 
-acos number => radians
+        acos number => radians
 
-atan number1 &optional number2 => radians
+        atan number1 &optional number2 => radians
 
 * 参数和值(Arguments and Values):
 
-number---a number.
-
-number1---a number if number2 is not supplied, or a real if number2 is supplied.
-
-number2---a real.
-
-radians---a number (of radians).
+        number---一个数字.
+        number1---如果没有提供 number2 就是一个数字, 如果 number2 提供了就是一个实数.
+        number2---一个实数.
+        radians---一个数字 (弧度).
 
 * 描述(Description):
 
-asin, acos, and atan compute the arc sine, arc cosine, and arc tangent respectively.
+        asin, acos, 和 atan 分别计算反正弦, 反余弦和反正切.
 
-The arc sine, arc cosine, and arc tangent (with only number1 supplied) functions can be defined mathematically for number or number1 specified as x as in the next figure.
+        反正弦, 反余弦和反正切 (只提供了 number1 的情况下) 函数可以被数学上定义为 number 或 number1 被指定为下一段中的 x 那样.
 
-Function     Definition                         
-Arc sine     -i log  (ix+ sqrt(1-x^2) )         
-Arc cosine   (<PI>/2) - arcsin  x               
-Arc tangent  -i log  ((1+ix) sqrt(1/(1+x^2)) )  
+            函数          定义                         
+            Arc sine     -i log  (ix+ sqrt(1-x^2) )         
+            Arc cosine   (<PI>/2) - arcsin  x               
+            Arc tangent  -i log  ((1+ix) sqrt(1/(1+x^2)) )  
 
-Figure 12-14. Mathematical definition of arc sine, arc cosine, and arc tangent
+            Figure 12-14. 反正弦, 反余弦和反正切的数学上的定义
 
-These formulae are mathematically correct, assuming completely accurate computation. They are not necessarily the simplest ones for real-valued computations.
+        这些公式在数学上是正确的, 假设计算完全准确. 它们不一定是实值计算中最简单的.
 
-If both number1 and number2 are supplied for atan, the result is the arc tangent of number1/number2. The value of atan is always between -<PI> (exclusive) and <PI> (inclusive) when minus zero is not supported. The range of the two-argument arc tangent when minus zero is supported includes -<PI>.
+        如果 number1 和 number2 都提供给了 atan, 那么结果实 number1/number2 的反正切. 当没有提供负零时, atan 的值总是在 -<PI> (不包含) 到 <PI> (包含) 之间. 当支持负零时, 两个参数的反正切的范围包括 -<PI>.
 
-For a real number1, the result is a real and lies between -<PI>/2 and <PI>/2 (both exclusive). number1 can be a complex if number2 is not supplied. If both are supplied, number2 can be zero provided number1 is not zero.
+        对于一个实数 number1, 结果也是一个实数并且位于 -<PI>/2 和 <PI>/2 之间(都不包含). 如果没有提供 number2, 那么 number1 可以是一个复数. 如果都提供了, 假设 number 不是零那么 number2 可以是零.
 
-The following definition for arc sine determines the range and branch cuts:
+        下面反正弦的定义决定了范围和分支切割:
 
-arcsin z = -i log (iz+sqrt(1-z^2))
+        arcsin z = -i log (iz+sqrt(1-z^2))
 
-The branch cut for the arc sine function is in two pieces: one along the negative real axis to the left of -1 (inclusive), continuous with quadrant II, and one along the positive real axis to the right of 1 (inclusive), continuous with quadrant IV. The range is that strip of the complex plane containing numbers whose real part is between -<PI>/2 and <PI>/2. A number with real part equal to -<PI>/2 is in the range if and only if its imaginary part is non-negative; a number with real part equal to <PI>/2 is in the range if and only if its imaginary part is non-positive.
+        反正弦函数的分支切割为两块: 一个沿着负实轴向 -1 的左边 (包含), 与第二象限连续, 而另一个沿着正实轴向 1 的右边 (包含), 与第四象限连续. 范围是包含实部在 -<PI>/2 和 <PI>/2 之间的数字的复平面的条带. 当切仅当一个数字的虚部时非负的的时候, 实部等价于 -<PI>/2 的这个数在这个范围内; 当切仅当一个数的虚部时非正的时候, 实部等价于 <PI>/2 的这个数在这个范围内.
 
-The following definition for arc cosine determines the range and branch cuts:
+        下面反余弦的定义决定了范围和分支切割:
 
-arccos z = <PI>/2- arcsin z
+        arccos z = <PI>/2- arcsin z
 
-or, which are equivalent,
+        或者, 这个也是等价的,
 
-arccos z = -i log (z+i sqrt(1-z^2))
+        arccos z = -i log (z+i sqrt(1-z^2))
 
-arccos z = 2 log (sqrt((1+z)/2) + i sqrt((1-z)/2))/i
+        arccos z = 2 log (sqrt((1+z)/2) + i sqrt((1-z)/2))/i
 
-The branch cut for the arc cosine function is in two pieces: one along the negative real axis to the left of -1 (inclusive), continuous with quadrant II, and one along the positive real axis to the right of 1 (inclusive), continuous with quadrant IV. This is the same branch cut as for arc sine. The range is that strip of the complex plane containing numbers whose real part is between 0 and <PI>. A number with real part equal to 0 is in the range if and only if its imaginary part is non-negative; a number with real part equal to <PI> is in the range if and only if its imaginary part is non-positive.
+        反余弦函数的分支切割为两块: 一个沿着负实轴向 -1 的左边 (包含), 与第二象限连续, 而另一个沿着正实轴向 1 的右边 (包含), 与第四象限连续. 这个和反正弦是相同的分支切割. 范围是包含了实部在 0 和 <PI> 之间的数字的复数带. 当切仅当一个数字的虚部时非负的的时候, 实部等价于 0 的这个数在这个范围内; 当切仅当一个数的虚部时非正的时候, 实部等价于 <PI> 的这个数在这个范围内.
 
-The following definition for (one-argument) arc tangent determines the range and branch cuts:
+        下面(单参数)反正切的定义决定了范围和分支切割:
 
-arctan z = log (1+iz) - log (1-iz)/(2i)
+        arctan z = log (1+iz) - log (1-iz)/(2i)
 
-Beware of simplifying this formula; ``obvious'' simplifications are likely to alter the branch cuts or the values on the branch cuts incorrectly. The branch cut for the arc tangent function is in two pieces: one along the positive imaginary axis above i (exclusive), continuous with quadrant II, and one along the negative imaginary axis below -i (exclusive), continuous with quadrant IV. The points i and -i are excluded from the domain. The range is that strip of the complex plane containing numbers whose real part is between -<PI>/2 and <PI>/2. A number with real part equal to -<PI>/2 is in the range if and only if its imaginary part is strictly positive; a number with real part equal to <PI>/2 is in the range if and only if its imaginary part is strictly negative. Thus the range of arc tangent is identical to that of arc sine with the points -<PI>/2 and <PI>/2 excluded.
+        注意不要简化这个公式; "明显" 的简化可能会改变分支切割或分支切割上的值不正确地修改. 反正切函数的分支切割为两块: 一个沿着正虚轴到 i 上 (不包含), 与第二象限连续, 一个沿着负虚轴到 -i 下 (exclusive), 与第四象限连续. 点 i 和 -i 被排除在这个域外. 范围是包含了实部在 -<PI>/2 和 <PI>/2 之间的数字的复数带. 当切仅当一个数字的虚部严格为正时, 实部等价于 -<PI>/2 的这个数在这个范围内; 当切仅当一个数字的虚部严格为负时, 实部等价于 <PI>/2 的这个数在这个范围内. 因此这个反正切的范围和反正弦的范围除了点 -<PI>/2 and <PI>/2 被排除之外是相同的.
 
-For atan, the signs of number1 (indicated as x) and number2 (indicated as y) are used to derive quadrant information. The next figure details various special cases. The asterisk (*) indicates that the entry in the figure applies to implementations that support minus zero.
+        对于 atan, 这个 number1 (表示为 x) 和 number2 (表示为 y) 的符号被用于获得象限信息. 下一段详细描述了各种特殊情况. 星号 (*) 表示在这段的这个条目适用于支持负零的具体实现.
 
-y Condition  x Condition  Cartesian locus  Range of result         
-y = 0        x > 0        Positive x-axis  0                       
-* y = +0     x > 0        Positive x-axis  +0                      
-* y = -0     x > 0        Positive x-axis  -0                      
-y > 0        x > 0        Quadrant I       0 < result< <PI>/2      
-y > 0        x = 0        Positive y-axis  <PI>/2                  
-y > 0        x < 0        Quadrant II      <PI>/2 < result< <PI>   
-y = 0        x < 0        Negative x-axis  <PI>                    
-* y = +0     x < 0        Negative x-axis  +<PI>                   
-* y = -0     x < 0        Negative x-axis  -<PI>                   
-y < 0        x < 0        Quadrant III     -<PI>< result< -<PI>/2  
-y < 0        x = 0        Negative y-axis  -<PI>/2                 
-y < 0        x > 0        Quadrant IV      -<PI>/2 < result< 0     
-y = 0        x = 0        Origin           undefined consequences  
-* y = +0     x = +0       Origin           +0                      
-* y = -0     x = +0       Origin           -0                      
-* y = +0     x = -0       Origin           +<PI>                   
-* y = -0     x = -0       Origin           -<PI>                   
+            y Condition  x Condition  Cartesian locus  Range of result         
+            y = 0        x > 0        Positive x-axis  0                       
+            * y = +0     x > 0        Positive x-axis  +0                      
+            * y = -0     x > 0        Positive x-axis  -0                      
+            y > 0        x > 0        Quadrant I       0 < result< <PI>/2      
+            y > 0        x = 0        Positive y-axis  <PI>/2                  
+            y > 0        x < 0        Quadrant II      <PI>/2 < result< <PI>   
+            y = 0        x < 0        Negative x-axis  <PI>                    
+            * y = +0     x < 0        Negative x-axis  +<PI>                   
+            * y = -0     x < 0        Negative x-axis  -<PI>                   
+            y < 0        x < 0        Quadrant III     -<PI>< result< -<PI>/2  
+            y < 0        x = 0        Negative y-axis  -<PI>/2                 
+            y < 0        x > 0        Quadrant IV      -<PI>/2 < result< 0     
+            y = 0        x = 0        Origin           undefined consequences  
+            * y = +0     x = +0       Origin           +0                      
+            * y = -0     x = +0       Origin           -0                      
+            * y = +0     x = -0       Origin           +<PI>                   
+            * y = -0     x = -0       Origin           -<PI>                   
 
-Figure 12-15. Quadrant information for arc tangent
+            Figure 12-15. 反正切的象限信息
 
 * 示例(Examples):
 
+```LISP
  (asin 0) =>  0.0 
  (acos #c(0 1))  =>  #C(1.5707963267948966 -0.8813735870195432)
  (/ (atan 1 (sqrt 3)) 6)  =>  0.087266 
  (atan #c(0 2)) =>  #C(-1.5707964 0.54930615)
+```
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-acos and asin should signal an error of type type-error if number is not a number. atan should signal type-error if one argument is supplied and that argument is not a number, or if two arguments are supplied and both of those arguments are not reals.
+        如果数字 number 不是一个数字, 那么 acos 和 asin 应该发出一个 type-error 类型的错误. 如果提供了一个参数并且这个参数不是一个数字, 或者如果提供了两个参数而这两个参数都不是实数, 那么 atan 应该发出一个 type-error 类型的错误.
 
-acos, asin, and atan might signal arithmetic-error.
+        acos, asin, 和 atan 可能发出 arithmetic-error.
 
 * 也见(See Also):
 
-log, sqrt, Section 12.1.3.3 (Rule of Float Substitutability)
+        log, sqrt, 章节 12.1.3.3 (Rule of Float Substitutability)
 
 * 注意(Notes):
 
-The result of either asin or acos can be a complex even if number is not a complex; this occurs when the absolute value of number is greater than one. 
+        即便数字 number 不是一个复数, asin 或 acos 的结果也可以是一个复数; 这个发生在数字 number 的绝对值大于 1 时. 
 
 
 ### <span id="CV-PI">常量 PI</span>
