@@ -1586,53 +1586,54 @@ a singleton list whose element is a number M of type T
 
 * 语法(Syntax):
 
-/ number => reciprocal
+        / number => reciprocal
 
-/ numerator &rest denominators+ => quotient
+        / numerator &rest denominators+ => quotient
 
 * 参数和值(Arguments and Values):
 
-number, denominator---a non-zero number.
-
-numerator, quotient, reciprocal---一个数字.
+        number, denominator---一个非零数字.
+        numerator, quotient, reciprocal---一个数字.
 
 * 描述(Description):
 
-The function / performs division or reciprocation.
+        函数 / 执行除法或取倒数.
 
-If no denominators are supplied, the function / returns the reciprocal of number.
+        如果没有提供分母, 那么函数 / 数字 number 的倒数.
 
-If at least one denominator is supplied, the function / divides the numerator by all of the denominators and returns the resulting quotient.
+        如果至少提供了一个分母, 函数 / 用所有分母 denominators 去除这个分子并返回产生的商.
 
-If each argument is either an integer or a ratio, and the result is not an integer, then it is a ratio.
+        如果每个参数都是一个整数或一个比数, 如果结果不是一个整数, 那么就是一个比数.
 
-The function / performs necessary type conversions.
+        函数 / 执行必要的类型转换.
 
-If any argument is a float then the rules of floating-point contagion apply; see Section 12.1.4 (Floating-point Computations).
+        如果任何参数是一个浮点数那么浮点数传递性规则就适用; 见章节 12.1.4 (Floating-point Computations).
 
 * 示例(Examples):
 
- (/ 12 4) =>  3
- (/ 13 4) =>  13/4
- (/ -8) =>  -1/8
- (/ 3 4 5) =>  3/20
- (/ 0.5) =>  2.0
- (/ 20 5) =>  4
- (/ 5 20) =>  1/4
- (/ 60 -2 3 5.0) =>  -2.0
- (/ 2 #c(2 2)) =>  #C(1/2 -1/2)
+    ```LISP
+    (/ 12 4) =>  3
+    (/ 13 4) =>  13/4
+    (/ -8) =>  -1/8
+    (/ 3 4 5) =>  3/20
+    (/ 0.5) =>  2.0
+    (/ 20 5) =>  4
+    (/ 5 20) =>  1/4
+    (/ 60 -2 3 5.0) =>  -2.0
+    (/ 2 #c(2 2)) =>  #C(1/2 -1/2)
+    ```
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-The consequences are unspecified if any argument other than the first is zero. If there is only one argument, the consequences are unspecified if it is zero.
+        如果除了第一个以外的任何参数是 0 那么后果是不确定的. 如果这里只有一个参数, 如果它是 0 那么后果是不确定的.
 
-Might signal type-error if some argument is not a number. Might signal division-by-zero if division by zero is attempted. Might signal arithmetic-error.
+        如果某个参数不是一个数字, 可能发出一个 type-error 类型的错误. 如果尝试去用 0 除可能发出一个 division-by-zero. 可能发出 arithmetic-error.
 
 * 也见(See Also):
 
-floor, ceiling, truncate, round
+        floor, ceiling, truncate, round
 
 * 注意(Notes): None. 
 
@@ -1640,74 +1641,76 @@ floor, ceiling, truncate, round
 
 * 语法(Syntax):
 
-1+ number => successor
+        1+ number => successor
 
-1- number => predecessor
+        1- number => predecessor
 
 * 参数和值(Arguments and Values):
 
-number---一个数字.
-
-successor, predecessor---一个数字.
+        number---一个数字.
+        successor, predecessor---一个数字.
 
 * 描述(Description):
 
-1+ returns a number that is one more than its argument number. 1- returns a number that is one less than its argument number.
+        1+ 返回比它的参数 number 多一个的数字. 1- 返回比它的参数 number 少一个的数字.
 
 * 示例(Examples):
 
- (1+ 99) =>  100 
- (1- 100) =>  99 
- (1+ (complex 0.0)) =>  #C(1.0 0.0) 
- (1- 5/3) =>  2/3 
+    ```LISP
+    (1+ 99) =>  100 
+    (1- 100) =>  99 
+    (1+ (complex 0.0)) =>  #C(1.0 0.0) 
+    (1- 5/3) =>  2/3 
+    ```
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-Might signal type-error if its argument is not a number. Might signal arithmetic-error.
+        如果它的参数不是一个数字, 那么可能发出 type-error 类型的错误. 可能发出 arithmetic-error.
 
 * 也见(See Also):
 
-incf, decf
+        incf, decf
 
 * 注意(Notes):
 
- (1+ number) ==  (+ number 1)
- (1- number) ==  (- number 1)
+        (1+ number) ==  (+ number 1)
+        (1- number) ==  (- number 1)
 
-Implementors are encouraged to make the performance of both the previous expressions be the same. 
+        鼓励实现者去使前面的两个表达式是相同的. 
 
 
 ### <span id="F-ABS">函数 ABS</span>
 
 * 语法(Syntax):
 
-abs number => absolute-value
+        abs number => absolute-value
 
 * 参数和值(Arguments and Values):
 
-number---一个数字.
-
-absolute-value---a non-negative real.
+        number---一个数字.
+        absolute-value---一个非负实数.
 
 * 描述(Description):
 
-abs returns the absolute value of number.
+        abs 返回数字 number 的绝对值.
+ 
+        如果 number 是一个实数, 结果是和 number 相同类型的.
 
-If number is a real, the result is of the same type as number.
-
-If number is a complex, the result is a positive real with the same magnitude as number. The result can be a float even if number's components are rationals and an exact rational result would have been possible. Thus the result of (abs #c(3 4)) can be either 5 or 5.0, depending on the implementation.
+        如果 number 是一个复数, 结果是和 number 相同大小的一个正实数. 即便这个数字 number 的部件是有理数, 结果可以是一个浮点数, 而一个准确的有理数结果也是可能的. 因此 (abs #c(3 4)) 的结果可能是 5 或 5.0, 取决于具体实现.
 
 * 示例(Examples):
 
- (abs 0) =>  0
- (abs 12/13) =>  12/13
- (abs -1.09) =>  1.09
- (abs #c(5.0 -5.0)) =>  7.071068
- (abs #c(5 5)) =>  7.071068
- (abs #c(3/5 4/5)) =>  1 or approximately 1.0
- (eql (abs -0.0) -0.0) =>  true
+    ```LISP
+    (abs 0) =>  0
+    (abs 12/13) =>  12/13
+    (abs -1.09) =>  1.09
+    (abs #c(5.0 -5.0)) =>  7.071068
+    (abs #c(5 5)) =>  7.071068
+    (abs #c(3/5 4/5)) =>  1 or approximately 1.0
+    (eql (abs -0.0) -0.0) =>  true
+    ```
 
 * 受此影响(Affected By): None.
 
@@ -1715,41 +1718,43 @@ If number is a complex, the result is a positive real with the same magnitude as
 
 * 也见(See Also):
 
-Section 12.1.3.3 (Rule of Float Substitutability)
+        章节 12.1.3.3 (Rule of Float Substitutability)
 
 * 注意(Notes):
 
-If number is a complex, the result is equivalent to the following:
+        如果数字 number 是一个复数, 结果等价于以下:
 
-(sqrt (+ (expt (realpart number) 2) (expt (imagpart number) 2)))
+        (sqrt (+ (expt (realpart number) 2) (expt (imagpart number) 2)))
 
-An implementation should not use this formula directly for all complexes but should handle very large or very small components specially to avoid intermediate overflow or underflow. 
+        一个具体实现不应该直接将这个公式用于所有的复数, 但是应该处理非常大或非常小的组件以避免中间的上溢或下溢. 
 
 ### <span id="F-EVENP-ODDP">函数 EVENP, ODDP</span>
 
 * 语法(Syntax):
 
-evenp integer => generalized-boolean
+        evenp integer => generalized-boolean
 
-oddp integer => generalized-boolean
+        oddp integer => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-integer---an integer.
+        integer---一个整数.
 
-generalized-boolean---a generalized boolean.
+        generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
-evenp returns true if integer is even (divisible by two); otherwise, returns false.
+        如果整数 integer 是偶数 (可以被 2 整除) evenp 返回 true; 否则, 返回 false.
 
-oddp returns true if integer is odd (not divisible by two); otherwise, returns false.
+        如果整数 integer 是奇数 (不能被 2 整除) oddp 返回 true; 否则, 返回 false.
 
 * 示例(Examples):
 
- (evenp 0) =>  true
- (oddp 10000000000000000000000) =>  false
- (oddp -1) =>  true
+    ```LISP
+    (evenp 0) =>  true
+    (oddp 10000000000000000000000) =>  false
+    (oddp -1) =>  true
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -1757,54 +1762,52 @@ oddp returns true if integer is odd (not divisible by two); otherwise, returns f
 
 * 异常情况(Exceptional Situations):
 
-Should signal an error of type type-error if integer is not an integer.
+        如果 integer 不是一个整数, 那么应该发出一个 type-error 类型的错误.
 
 * 也见(See Also): None.
 
 * 注意(Notes):
 
- (evenp integer) ==  (not (oddp integer))
- (oddp integer)  ==  (not (evenp integer))
+        (evenp integer) ==  (not (oddp integer))
+        (oddp integer)  ==  (not (evenp integer))
 
 
 ### <span id="F-EXP-EXPT">函数 EXP, EXPT</span>
 
 * 语法(Syntax):
 
-exp number => result
+        exp number => result
 
-expt base-number power-number => result
+        expt base-number power-number => result
 
 * 参数和值(Arguments and Values):
 
-number---一个数字.
-
-base-number---一个数字.
-
-power-number---一个数字.
-
-result---一个数字.
+        number---一个数字.
+        base-number---一个数字.
+        power-number---一个数字.
+        result---一个数字.
 
 * 描述(Description):
 
-exp and expt perform exponentiation.
+        exp 和 expt 执行求幂.
 
-exp returns e raised to the power number, where e is the base of the natural logarithms. exp has no branch cut.
+        exp 返回将 e 提升到幂 number, e 是自然对数的底数. exp 没有分支切割.
 
-expt returns base-number raised to the power power-number. If the base-number is a rational and power-number is an integer, the calculation is exact and the result will be of type rational; otherwise a floating-point approximation might result. For expt of a complex rational to an integer power, the calculation must be exact and the result is of type (or rational (complex rational)).
+        expt 返回将 base-number 提升到幂 power-number. 如果这个 base-number 是一个有理数而 power-number 是一个整数, 计算是准确的, 结果将是 rational 类型的; 否则可能产生一个浮点近似值. 对于一个复有理数到整数幂的 expt, 计算一定是准确的并且结果是 (or rational (complex rational)) 类型的.
 
-The result of expt can be a complex, even when neither argument is a complex, if base-number is negative and power-number is not an integer. The result is always the principal complex value. For example, (expt -8 1/3) is not permitted to return -2, even though -2 is one of the cube roots of -8. The principal cube root is a complex approximately equal to #C(1.0 1.73205), not -2.
+        即便每个参数都不是复数, 如果 base-number 是负的并且 power-number 不是一个整数, expt 的结果可以是一个复数. 结果总是为主复数值. 比如, (expt -8 1/3) 不允许返回 -2, 尽管 -2 是 -8 的立方根之一. 主立方根是一个近似等于 #C(1.0 1.73205), 而不是 -2 的复数.
 
-expt is defined as b^x = e^x log b. This defines the principal values precisely. The range of expt is the entire complex plane. Regarded as a function of x, with b fixed, there is no branch cut. Regarded as a function of b, with x fixed, there is in general a branch cut along the negative real axis, continuous with quadrant II. The domain excludes the origin. By definition, 0^0=1. If b=0 and the real part of x is strictly positive, then b^x=0. For all other values of x, 0^x is an error.
+        expt 被定义为 b^x = e^x log b. 这就精确地定义了主值. expt 的范围是整个复数域. 视为 x 的函数, 其中 b 固定, 这里没有分支切割. 视为 b 的函数, 其中 x 固定, 这里通常没有沿着负实轴的分支切割, 和第二象限相连. 这个区域排除了原点. 按照定义, 0^0=1. 如果 b=0 和 x 的实部是严格正的, 那么 b^x=0. 对于所有其他 x 的值, 0^x 是一个错误.
 
-When power-number is an integer 0, then the result is always the value one in the type of base-number, even if the base-number is zero (of any type). That is:
+        当 power-number 是一个整数 0, 那么结果总是为 base-number 的类型的值 1, 即便 base-number 是 0 (of any type). That is:
 
- (expt x 0) ==  (coerce 1 (type-of x))
+        (expt x 0) ==  (coerce 1 (type-of x))
 
-If power-number is a zero of any other type, then the result is also the value one, in the type of the arguments after the application of the contagion rules in Section 12.1.1.2 (Contagion in Numeric Operations), with one exception: the consequences are undefined if base-number is zero when power-number is zero and not of type integer.
+        如果 power-number 是一个其他任何类型的 0, 那么结果也是值 1, 是在章节 12.1.1.2 (Contagion in Numeric Operations) 的传递性规则应用后的参数类型, 带有一个异常: 如果 base-number 是 0 当 power-number 是 zero 并且不是 integer 类型时, 后果是未定义的.
 
 * 示例(Examples):
 
+```LISP
  (exp 0) =>  1.0
  (exp 1) =>  2.718282
  (exp (log 5)) =>  5.0 
@@ -1813,6 +1816,7 @@ If power-number is a zero of any other type, then the result is also the value o
  (expt #c(0 1) 2) =>  -1
  (expt #c(2 2) 3) =>  #C(-16 16)
  (expt #c(2 2) 4) =>  -64 
+```
 
 * 受此影响(Affected By): None.
 
@@ -1820,18 +1824,18 @@ If power-number is a zero of any other type, then the result is also the value o
 
 * 也见(See Also):
 
-log, Section 12.1.3.3 (Rule of Float Substitutability)
+        log, 章节 12.1.3.3 (Rule of Float Substitutability)
 
 * 注意(Notes):
 
-Implementations of expt are permitted to use different algorithms for the cases of a power-number of type rational and a power-number of type float.
+        expt 的具体实现允许去为一个 rational 类型的 power-number 和一个 float 类型的 power-number 的情况使用不同的算法.
 
-Note that by the following logic, (sqrt (expt x 3)) is not equivalent to (expt x 3/2).
+        请注意以下逻辑, (sqrt (expt x 3)) 不等价于 (expt x 3/2).
 
- (setq x (exp (/ (* 2 pi #c(0 1)) 3)))         ;exp(2.pi.i/3)
- (expt x 3) =>  1 ;except for round-off error
- (sqrt (expt x 3)) =>  1 ;except for round-off error
- (expt x 3/2) =>  -1 ;except for round-off error
+        (setq x (exp (/ (* 2 pi #c(0 1)) 3)))         ;exp(2.pi.i/3)
+        (expt x 3) =>  1 ;except for round-off error
+        (sqrt (expt x 3)) =>  1 ;except for round-off error
+        (expt x 3/2) =>  -1 ;except for round-off error
 
 
 
@@ -1839,28 +1843,29 @@ Note that by the following logic, (sqrt (expt x 3)) is not equivalent to (expt x
 
 * 语法(Syntax):
 
-gcd &rest integers => greatest-common-denominator
+        gcd &rest integers => greatest-common-denominator
 
 * 参数和值(Arguments and Values):
 
-integer---an integer.
-
-greatest-common-denominator---a non-negative integer.
+        integer---一个整数.
+        greatest-common-denominator---一个非负整数.
 
 * 描述(Description):
 
-Returns the greatest common divisor of integers. If only one integer is supplied, its absolute value is returned. If no integers are given, gcd returns 0, which is an identity for this operation.
+        返回这些整数 integers 的最大公约数. 如果只提供了一个整数 integer, 返回它的绝对值. 如果没有提供整数 integers, gcd 返回 0, 这是这个操作符的一个特性.
 
 * 示例(Examples):
 
- (gcd) =>  0
- (gcd 60 42) =>  6
- (gcd 3333 -33 101) =>  1
- (gcd 3333 -33 1002001) =>  11
- (gcd 91 -49) =>  7
- (gcd 63 -42 35) =>  7
- (gcd 5) =>  5
- (gcd -4) =>  4
+    ```LISP
+    (gcd) =>  0
+    (gcd 60 42) =>  6
+    (gcd 3333 -33 101) =>  1
+    (gcd 3333 -33 1002001) =>  11
+    (gcd 91 -49) =>  7
+    (gcd 63 -42 35) =>  7
+    (gcd 5) =>  5
+    (gcd -4) =>  4
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -1868,63 +1873,62 @@ Returns the greatest common divisor of integers. If only one integer is supplied
 
 * 异常情况(Exceptional Situations):
 
-Should signal an error of type type-error if any integer is not an integer.
+        如果任何一个 integer 不是一个整数, 那么应该发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-lcm
+        lcm
 
 * 注意(Notes):
 
-For three or more arguments,
+        对于三个或更多参数,
 
- (gcd b c ... z) ==  (gcd (gcd a b) c ... z)
+        (gcd b c ... z) ==  (gcd (gcd a b) c ... z)
 
 
 ### <span id="M-INCF-DECF">宏 INCF, DECF</span>
 
 * 语法(Syntax):
 
-incf place [delta-form] => new-value
+        incf place [delta-form] => new-value
 
-decf place [delta-form] => new-value
+        decf place [delta-form] => new-value
 
 * 参数和值(Arguments and Values):
 
-place---a place.
-
-delta-form---a form; evaluated to produce a delta. The default is 1.
-
-delta---一个数字.
-
-new-value---一个数字.
+        place---一个 place.
+        delta-form---一个表达式形式; 用来求值产生一个差值 delta. 默认是 1.
+        delta---一个数字.
+        new-value---一个数字.
 
 * 描述(Description):
 
-incf and decf are used for incrementing and decrementing the value of place, respectively.
+        incf 和 decf 分别被用于递增或递减 place 的值.
 
-The delta is added to (in the case of incf) or subtracted from (in the case of decf) the number in place and the result is stored in place.
+        这个差值 delta 会被添加到 place 中的数 (在 incf 的情况中) 或者从 place 中的数中减去 (在 decf 的情况中) 然后结果存储到 place 中.
 
-Any necessary type conversions are performed automatically.
+        自动执行任何必要的类型转换.
 
-For information about the evaluation of subforms of places, see Section 5.1.1.1 (Evaluation of Subforms to Places).
+        关于 places 的子表达式形式的求值信息, 见章节 5.1.1.1 (Evaluation of Subforms to Places).
 
 * 示例(Examples):
 
- (setq n 0)
- (incf n) =>  1      
- n =>  1
- (decf n 3) =>  -2   
- n =>  -2
- (decf n -5) =>  3      
- (decf n) =>  2      
- (incf n 0.5) =>  2.5
- (decf n) =>  1.5
- n =>  1.5
+    ```LISP
+    (setq n 0)
+    (incf n) =>  1      
+    n =>  1
+    (decf n 3) =>  -2   
+    n =>  -2
+    (decf n -5) =>  3      
+    (decf n) =>  2      
+    (incf n 0.5) =>  2.5
+    (decf n) =>  1.5
+    n =>  1.5
+    ```
 
 * 副作用(Side Effects):
 
-Place is modified.
+        place 会被修改.
 
 * 受此影响(Affected By): None.
 
@@ -1932,7 +1936,7 @@ Place is modified.
 
 * 也见(See Also):
 
-+, -, 1+, 1-, setf
+        +, -, 1+, 1-, setf
 
 * 注意(Notes): None. 
 
@@ -1940,42 +1944,43 @@ Place is modified.
 
 * 语法(Syntax):
 
-lcm &rest integers => least-common-multiple
+        lcm &rest integers => least-common-multiple
 
 * 参数和值(Arguments and Values):
 
-integer---an integer.
-
-least-common-multiple---a non-negative integer.
+        integer---一个整数.
+        least-common-multiple---一个非负整数.
 
 * 描述(Description):
 
-lcm returns the least common multiple of the integers.
+        lcm 返回整数 integers 的最小公倍数.
 
-If no integer is supplied, the integer 1 is returned.
+        如果没有提供整数 integer, 返回整数 1.
 
-If only one integer is supplied, the absolute value of that integer is returned.
+        如果只提供一个整数 integer, 返回那个整数的绝对值.
 
-For two arguments that are not both zero,
+        对于两个不是 0 的参数,
 
- (lcm a b) ==  (/ (abs (* a b)) (gcd a b))
+        (lcm a b) ==  (/ (abs (* a b)) (gcd a b))
 
-If one or both arguments are zero,
+        如果一个参数为 0 或两个参数都为 0,
 
- (lcm a 0) ==  (lcm 0 a) ==  0
+        (lcm a 0) ==  (lcm 0 a) ==  0
 
-For three or more arguments,
+        对于三个或更多参数,
 
- (lcm a b c ... z) ==  (lcm (lcm a b) c ... z)
+        (lcm a b c ... z) ==  (lcm (lcm a b) c ... z)
 
 * 示例(Examples):
 
- (lcm 10) =>  10
- (lcm 25 30) =>  150
- (lcm -24 18 10) =>  360
- (lcm 14 35) =>  70
- (lcm 0 5) =>  0
- (lcm 1 2 3 4 5 6) =>  60
+    ```LISP
+    (lcm 10) =>  10
+    (lcm 25 30) =>  150
+    (lcm -24 18 10) =>  360
+    (lcm 14 35) =>  70
+    (lcm 0 5) =>  0
+    (lcm 1 2 3 4 5 6) =>  60
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -1983,11 +1988,11 @@ For three or more arguments,
 
 * 异常情况(Exceptional Situations):
 
-Should signal type-error if any argument is not an integer.
+        如果任何一个参数不是一个整数, 那么应该发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-gcd
+        gcd
 
 * 注意(Notes): None. 
 
@@ -2222,7 +2227,7 @@ The function sqrt should signal type-error if its argument is not a number.
 
 The function isqrt should signal type-error if its argument is not a non-negative integer.
 
-The functions sqrt and isqrt might signal arithmetic-error.
+The functions sqrt and isqrt 可能发出 arithmetic-error.
 
 * 也见(See Also):
 
@@ -2364,7 +2369,7 @@ random-state-p object => generalized-boolean
 
 object---an object.
 
-generalized-boolean---a generalized boolean.
+generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
@@ -2447,7 +2452,7 @@ numberp object => generalized-boolean
 
 object---an object.
 
-generalized-boolean---a generalized boolean.
+generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
@@ -2562,7 +2567,7 @@ complexp object => generalized-boolean
 
 object---an object.
 
-generalized-boolean---a generalized boolean.
+generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
@@ -2666,7 +2671,7 @@ The mathematical definition of phase is as follows:
 
 * 异常情况(Exceptional Situations):
 
-Should signal type-error if its argument is not a number. Might signal arithmetic-error.
+Should signal type-error if its argument is not a number. 可能发出 arithmetic-error.
 
 * 也见(See Also):
 
@@ -2761,7 +2766,7 @@ realp object => generalized-boolean
 
 object---an object.
 
-generalized-boolean---a generalized boolean.
+generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
@@ -2799,7 +2804,7 @@ denominator rational => denominator
 
 rational---a rational.
 
-numerator---an integer.
+numerator---一个整数.
 
 denominator---a positive integer.
 
@@ -2877,7 +2882,7 @@ The implementation.
 
 * 异常情况(Exceptional Situations):
 
-Should signal an error of type type-error if number is not a real. Might signal arithmetic-error.
+Should signal an error of type type-error if number is not a real. 可能发出 arithmetic-error.
 
 * 也见(See Also): None.
 
@@ -2903,7 +2908,7 @@ rationalp object => generalized-boolean
 
 object---an object.
 
-generalized-boolean---a generalized boolean.
+generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
@@ -2938,11 +2943,11 @@ ash integer count => shifted-integer
 
 * 参数和值(Arguments and Values):
 
-integer---an integer.
+integer---一个整数.
 
-count---an integer.
+count---一个整数.
 
-shifted-integer---an integer.
+shifted-integer---一个整数.
 
 * 描述(Description):
 
@@ -2965,7 +2970,7 @@ ash is defined to behave as if integer were represented in two's complement form
 
 * 异常情况(Exceptional Situations):
 
-Should signal an error of type type-error if integer is not an integer. Should signal an error of type type-error if count is not an integer. Might signal arithmetic-error.
+Should signal an error of type type-error if integer is not an integer. Should signal an error of type type-error if count is not an integer. 可能发出 arithmetic-error.
 
 * 也见(See Also): None.
 
@@ -2983,7 +2988,7 @@ integer-length integer => number-of-bits
 
 * 参数和值(Arguments and Values):
 
-integer---an integer.
+integer---一个整数.
 
 number-of-bits---a non-negative integer.
 
@@ -3040,7 +3045,7 @@ integerp object => generalized-boolean
 
 object---an object.
 
-generalized-boolean---a generalized boolean.
+generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
@@ -3079,7 +3084,7 @@ start, end---bounding index designators of string. The defaults for start and en
 
 radix---a radix. The default is 10.
 
-junk-allowed---a generalized boolean. The default is false.
+junk-allowed---一个广义 boolean. The default is false.
 
 integer---an integer or false.
 
@@ -3128,11 +3133,11 @@ boole op integer-1 integer-2 => result-integer
 
 Op---a bit-wise logical operation specifier.
 
-integer-1---an integer.
+integer-1---一个整数.
 
-integer-2---an integer.
+integer-2---一个整数.
 
-result-integer---an integer.
+result-integer---一个整数.
 
 * 描述(Description):
 
