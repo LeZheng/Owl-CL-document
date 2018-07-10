@@ -2001,66 +2001,66 @@ a singleton list whose element is a number M of type T
 
 * 语法(Syntax):
 
-log number &optional base => logarithm
+        log number &optional base => logarithm
 
 * 参数和值(Arguments and Values):
 
-number---a non-zero number.
-
-base---一个数字.
-
-logarithm---一个数字.
+        number---一个非零数字.
+        base---一个数字.
+        logarithm---一个数字.
 
 * 描述(Description):
 
-log returns the logarithm of number in base base. If base is not supplied its value is e, the base of the natural logarithms.
+        log 返回数字 number 在基数 base 下的对数. 如果没有提供基数 base, 那么它的值就是 e, 那个自然对数的基数.
 
-log may return a complex when given a real negative number.
+        当给定一个实负数 number 时, log 可能返回一个复数.
 
- (log -1.0) ==  (complex 0.0 (float pi 0.0))
+        (log -1.0) ==  (complex 0.0 (float pi 0.0))
 
-If base is zero, log returns zero.
+        如果基数 base 是 zero, log 返回 zero.
 
-The result of (log 8 2) may be either 3 or 3.0, depending on the implementation. An implementation can use floating-point calculations even if an exact integer result is possible.
+        (log 8 2) 的结果可能是 3 或 3.0, 取决于. 即便一个整数结果是可能的, 一个具体实现仍可以使用浮点计算.
 
-The branch cut for the logarithm function of one argument (natural logarithm) lies along the negative real axis, continuous with quadrant II. The domain excludes the origin.
+        这个单参数的对数函数 (自然对数) 的分支切割位于沿着负实轴, 与第二象限相连. 这个区域不包括原点.
 
-The mathematical definition of a complex logarithm is as follows, whether or not minus zero is supported by the implementation:
+        复对数的数学定义如下, 不管具体实现是否支持 -0:
 
-(log x) ==  (complex (log (abs x)) (phase x))
+        (log x) ==  (complex (log (abs x)) (phase x))
 
-Therefore the range of the one-argument logarithm function is that strip of the complex plane containing numbers with imaginary parts between -<PI> (exclusive) and <PI> (inclusive) if minus zero is not supported, or -<PI> (inclusive) and <PI> (inclusive) if minus zero is supported.
+        因此这个单参数对数函数的范围是那个包含负零不支持时虚部在 -<PI> (不包含) 和 <PI> (包含) 之间的复数带以及支持负零时在 -<PI> (包含) 和 <PI> (包含) 之间的复数带.
 
-The two-argument logarithm function is defined as
+        两个参数的对数函数被定义为
 
- (log base number)
- ==  (/ (log number) (log base))
+        (log base number)
+        ==  (/ (log number) (log base))
 
-This defines the principal values precisely. The range of the two-argument logarithm function is the entire complex plane.
+        这就精确地定义了主值. 这个两个参数的对数函数的范围是整个复数域.
 
 * 示例(Examples):
 
- (log 100 10)
-=>  2.0
-=>  2
- (log 100.0 10) =>  2.0
- (log #c(0 1) #c(0 -1))
-=>  #C(-1.0 0.0)
-OR=>  #C(-1 0)
- (log 8.0 2) =>  3.0
+    ```LISP
+    (log 100 10)
+    =>  2.0
+    =>  2
+    (log 100.0 10) =>  2.0
+    (log #c(0 1) #c(0 -1))
+    =>  #C(-1.0 0.0)
+    OR=>  #C(-1 0)
+    (log 8.0 2) =>  3.0
 
- (log #c(-16 16) #c(2 2)) =>  3 or approximately #c(3.0 0.0)
-                               or approximately 3.0 (unlikely)
+    (log #c(-16 16) #c(2 2)) =>  3 or approximately #c(3.0 0.0)
+                                  or approximately 3.0 (unlikely)
+    ```
 
 * 受此影响(Affected By):
 
-The implementation.
+        具体实现.
 
 * 异常情况(Exceptional Situations): None.
 
 * 也见(See Also):
 
-exp, expt, Section 12.1.3.3 (Rule of Float Substitutability)
+        exp, expt, 章节 12.1.3.3 (Rule of Float Substitutability)
 
 * 注意(Notes): None. 
 
@@ -2068,44 +2068,44 @@ exp, expt, Section 12.1.3.3 (Rule of Float Substitutability)
 
 * 语法(Syntax):
 
-mod number divisor => modulus
+        mod number divisor => modulus
 
-rem number divisor => remainder
+        rem number divisor => remainder
 
 * 参数和值(Arguments and Values):
 
-number---a real.
-
-divisor---a real.
-
-modulus, remainder---a real.
+        number---一个实数.
+        divisor---一个实数.
+        modulus, remainder---一个实数.
 
 * 描述(Description):
 
-mod and rem are generalizations of the modulus and remainder functions respectively.
+        mod 和 rem 分别是模量和剩余函数的概括.
 
-mod performs the operation floor on number and divisor and returns the remainder of the floor operation.
+        mod 在数字 number 和除数 divisor 上执行操作 floor 并且返回这个 floor 操作的余数.
 
-rem performs the operation truncate on number and divisor and returns the remainder of the truncate operation.
+        rem 在数字 number 和除数 divisor 上执行操作 truncate 并且返回这个 truncate 操作的余数.
 
-mod and rem are the modulus and remainder functions when number and divisor are integers.
+        当数字 number 和除数 divisor 都是整数时, mod 和 rem 模量和剩余函数.
 
 * 示例(Examples):
 
- (rem -1 5) =>  -1
- (mod -1 5) =>  4
- (mod 13 4) =>  1
- (rem 13 4) =>  1
- (mod -13 4) =>  3
- (rem -13 4) =>  -1
- (mod 13 -4) =>  -3
- (rem 13 -4) =>  1
- (mod -13 -4) =>  -1
- (rem -13 -4) =>  -1
- (mod 13.4 1) =>  0.4
- (rem 13.4 1) =>  0.4
- (mod -13.4 1) =>  0.6
- (rem -13.4 1) =>  -0.4
+    ```LISP
+    (rem -1 5) =>  -1
+    (mod -1 5) =>  4
+    (mod 13 4) =>  1
+    (rem 13 4) =>  1
+    (mod -13 4) =>  3
+    (rem -13 4) =>  -1
+    (mod 13 -4) =>  -3
+    (rem 13 -4) =>  1
+    (mod -13 -4) =>  -1
+    (rem -13 -4) =>  -1
+    (mod 13.4 1) =>  0.4
+    (rem 13.4 1) =>  0.4
+    (mod -13.4 1) =>  0.6
+    (rem -13.4 1) =>  -0.4
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -2115,45 +2115,46 @@ mod and rem are the modulus and remainder functions when number and divisor are 
 
 * 也见(See Also):
 
-floor, truncate
+        floor, truncate
 
 * 注意(Notes):
 
-The result of mod is either zero or a real with the same sign as divisor. 
+        mod 的结果是 0 或一个带有和 divisor 相同符号的实数. 
 
 ### <span id="F-SIGNUM">函数 SIGNUM</span>
 
 * 语法(Syntax):
 
-signum number => signed-prototype
+        signum number => signed-prototype
 
 * 参数和值(Arguments and Values):
 
-number---一个数字.
-
-signed-prototype---一个数字.
+        number---一个数字.
+        signed-prototype---一个数字.
 
 * 描述(Description):
 
-signum determines a numerical value that indicates whether number is negative, zero, or positive.
+        signum 确定一个表示数字 number 是否为复数, 0, 或正数的一个数字值.
 
-For a rational, signum returns one of -1, 0, or 1 according to whether number is negative, zero, or positive. For a float, the result is a float of the same format whose value is minus one, zero, or one. For a complex number z, (signum z) is a complex number of the same phase but with unit magnitude, unless z is a complex zero, in which case the result is z.
+        对于一个有理数, signum 根据数字 number 是否为复数, 0, 或正数返回 -1, 0, 或 1 的其中一个. 对于一个浮点数, 结果是一个相同格式的浮点数, 它的值为负一, 零, 或一. 对于一个复数 z, (signum z) 是同一阶的单位大小的复数, 但单位大小, 除非 z 是复数 0, 在这种情况下, 结果是z.
 
-For rational arguments, signum is a rational function, but it may be irrational for complex arguments.
+        对于有理数参数, signum 是一个有理数函数, 但是它对于一个复数参数可能是无理数的.
 
-If number is a float, the result is a float. If number is a rational, the result is a rational. If number is a complex float, the result is a complex float. If number is a complex rational, the result is a complex, but it is implementation-dependent whether that result is a complex rational or a complex float.
+        如果数字 number 是一个浮点数, 结果是一个浮点数. 如果数字 number 是一个有理数, 结果就是一个有理数. 如果数字 number 是一个复浮点数, 结果就是一个复浮点数. 如果数字 number 是一个复有理数, 结果就是一个复数, 但是它的结果是一个复有理数还是一个负浮点数是依赖于具体实现的.
 
 * 示例(Examples):
 
- (signum 0) =>  0
- (signum 99) =>  1
- (signum 4/5) =>  1
- (signum -99/100) =>  -1
- (signum 0.0) =>  0.0
- (signum #c(0 33)) =>  #C(0.0 1.0)
- (signum #c(7.5 10.0)) =>  #C(0.6 0.8)
- (signum #c(0.0 -14.7)) =>  #C(0.0 -1.0)
- (eql (signum -0.0) -0.0) =>  true
+    ```LISP
+    (signum 0) =>  0
+    (signum 99) =>  1
+    (signum 4/5) =>  1
+    (signum -99/100) =>  -1
+    (signum 0.0) =>  0.0
+    (signum #c(0 33)) =>  #C(0.0 1.0)
+    (signum #c(7.5 10.0)) =>  #C(0.6 0.8)
+    (signum #c(0.0 -14.7)) =>  #C(0.0 -1.0)
+    (eql (signum -0.0) -0.0) =>  true
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -2163,11 +2164,11 @@ If number is a float, the result is a float. If number is a rational, the result
 
 * 也见(See Also):
 
-Section 12.1.3.3 (Rule of Float Substitutability)
+        章节 12.1.3.3 (Rule of Float Substitutability)
 
 * 注意(Notes):
 
- (signum x) ==  (if (zerop x) x (/ x (abs x)))
+        (signum x) ==  (if (zerop x) x (/ x (abs x)))
 
 
 
@@ -2175,47 +2176,48 @@ Section 12.1.3.3 (Rule of Float Substitutability)
 
 * 语法(Syntax):
 
-sqrt number => root
+        sqrt number => root
 
-isqrt natural => natural-root
+        isqrt natural => natural-root
 
 * 参数和值(Arguments and Values):
 
-number, root---一个数字.
-
-natural, natural-root---a non-negative integer.
+        number, root---一个数字.
+        natural, natural-root---一个负整数.
 
 * 描述(Description):
 
-sqrt and isqrt compute square roots.
+        sqrt 和 isqrt 计算平方根.
 
-sqrt returns the principal square root of number. If the number is not a complex but is negative, then the result is a complex.
+        sqrt 返回数字 number 的主要平方根. 如果数字 number 不是一个复数但是是负的, 那么结果就是一个复数.
 
-isqrt returns the greatest integer less than or equal to the exact positive square root of natural.
+        isqrt 返回小于等于自然数 natural 准确平方根的最大整数.
 
-If number is a positive rational, it is implementation-dependent whether root is a rational or a float. If number is a negative rational, it is implementation-dependent whether root is a complex rational or a complex float.
+        如果数字 number 是一个正有理数, 那么平方根 root 是一个有理数还是一个浮点数是依赖于具体实现的. 如果数字 number 是一个负有理数, 那么平方根 root 是一个复有理数还是一个复浮点数.
 
-The mathematical definition of complex square root (whether or not minus zero is supported) follows:
+        复数平方根的数学定义 (不管是否支持 -0)) 如下:
 
-(sqrt x) = (exp (/ (log x) 2))
+        (sqrt x) = (exp (/ (log x) 2))
 
-The branch cut for square root lies along the negative real axis, continuous with quadrant II. The range consists of the right half-plane, including the non-negative imaginary axis and excluding the negative imaginary axis.
+        平方根的分支切割位于沿着负实轴, 与第二象限相连. 这个返回由右半平面组成, 包括非负的虚轴, 不包括负的虚轴.
 
 * 示例(Examples):
 
- (sqrt 9.0) =>  3.0
- (sqrt -9.0) =>  #C(0.0 3.0)
- (isqrt 9) =>  3
- (sqrt 12) =>  3.4641016
- (isqrt 12) =>  3
- (isqrt 300) =>  17
- (isqrt 325) =>  18
- (sqrt 25)
-=>  5
-OR=>  5.0
- (isqrt 25) =>  5
- (sqrt -1) =>  #C(0.0 1.0)
- (sqrt #c(0 2)) =>  #C(1.0 1.0)
+    ```LISP
+    (sqrt 9.0) =>  3.0
+    (sqrt -9.0) =>  #C(0.0 3.0)
+    (isqrt 9) =>  3
+    (sqrt 12) =>  3.4641016
+    (isqrt 12) =>  3
+    (isqrt 300) =>  17
+    (isqrt 325) =>  18
+    (sqrt 25)
+    =>  5
+    OR=>  5.0
+    (isqrt 25) =>  5
+    (sqrt -1) =>  #C(0.0 1.0)
+    (sqrt #c(0 2)) =>  #C(1.0 1.0)
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -2223,60 +2225,60 @@ OR=>  5.0
 
 * 异常情况(Exceptional Situations):
 
-The function sqrt should signal type-error if its argument is not a number.
+        如果参数不是一个数字, 函数 sqrt 应该发出一个 type-error 类型的错误.
 
-The function isqrt should signal type-error if its argument is not a non-negative integer.
+        如果参数不是一个非负整数, 函数 isqrt 应该发出一个 type-error 类型的错误.
 
-The functions sqrt and isqrt 可能发出 arithmetic-error.
+        函数 sqrt 和 isqrt 可能发出 arithmetic-error.
 
 * 也见(See Also):
 
-exp, log, Section 12.1.3.3 (Rule of Float Substitutability)
+        exp, log, 章节 12.1.3.3 (Rule of Float Substitutability)
 
 * 注意(Notes):
 
- (isqrt x) ==  (values (floor (sqrt x))) 
+        (isqrt x) ==  (values (floor (sqrt x))) 
 
-but it is potentially more efficient. 
+        但它可能更有效率. 
 
 
 ### <span id="SC-RANDOM-STATE">系统类 RANDOM-STATE</span>
 
 * 类优先级列表(Class Precedence List):
 
-random-state, t
+        random-state, t
 
 * 描述(Description):
 
-A random state object contains state information used by the pseudo-random number generator. The nature of a random state object is implementation-dependent. It can be printed out and successfully read back in by the same implementation, but might not function correctly as a random state in another implementation.
+        一个随机状态对象包含了被 pseudo-random 数字生成器使用的状态信息. 一个随机状态对象的性质是依赖于具体实现的. 它可以被打印出来并且被相同的具体实现读回去, 但是在另一个实现中可能不能正确地作为一个随机状态运行.
 
-Implementations are required to provide a read syntax for objects of type random-state, but the specific nature of that syntax is implementation-dependent.
+        具体实现需要去为 random-state 类型的对象提供一个读取语法, 但是那个语法的特定的特性是依赖于具体实现的.
 
 * 也见(See Also):
 
-*random-state*, random, Section 22.1.3.10 (Printing Random States) 
+        *random-state*, random, 章节 22.1.3.10 (Printing Random States) 
 
 
 ### <span id="F-MAKE-RANDOM-STATE">函数 MAKE-RANDOM-STATE</span>
 
 * 语法(Syntax):
 
-make-random-state &optional state => new-state
+        make-random-state &optional state => new-state
 
 * 参数和值(Arguments and Values):
 
-state---a random state, or nil, or t. The default is nil.
-
-new-state---a random state object.
+        state---一个随机状态, 或 nil, 或 t. 默认是 nil.
+        new-state---一个随机.
 
 * 描述(Description):
 
-Creates a fresh object of type random-state suitable for use as the value of *random-state*.
+        创建一个适合用作 *random-state* 的值的 random-state 类型的新对象.
 
-If state is a random state object, the new-state is a copy[5] of that object. If state is nil, the new-state is a copy[5] of the current random state. If state is t, the new-state is a fresh random state object that has been randomly initialized by some means.
+        如果状态 state 是一个随机状态对象, 那么这个 new-state 是那个对象的一个拷贝. 如果状态 state 是 nil, 新的状态是当前随机状态的一个拷贝. 如果状态 state 是 t, 那么状态 new-state 是一个通过某种方式被随机初始化的新的随机状态对象.
 
 * 示例(Examples):
 
+```LISP
  (let* ((rs1 (make-random-state nil))
         (rs2 (make-random-state t))
         (rs3 (make-random-state rs2))
@@ -2294,6 +2296,7 @@ If state is a random state object, the new-state is a copy[5] of that object. If
     (93 85 53 99 58 62 2 23 23 59)
     (93 85 53 99 58 62 2 23 23 59)
     (68 24 35 54 65 54 55 50 59 49))
+```
 
 * 副作用(Side Effects): None.
 
@@ -2301,62 +2304,62 @@ If state is a random state object, the new-state is a copy[5] of that object. If
 
 * 异常情况(Exceptional Situations):
 
-Should signal an error of type type-error if state is not a random state, or nil, or t.
+        如果 state 不是一个随机状态, 或 nil, 或 t, 那么应该发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-random, *random-state*
+        random, *random-state*
 
 * 注意(Notes):
 
-One important use of make-random-state is to allow the same series of pseudo-random numbers to be generated many times within a single program. 
+        make-random-state 一个重要的使用是允许在单个程序中同样的一系列 pseudo-random 数字被生成多次. 
 
 ### <span id="F-RANDOM">函数 RANDOM</span>
 
 * 语法(Syntax):
 
-random limit &optional random-state => random-number
+        random limit &optional random-state => random-number
 
 * 参数和值(Arguments and Values):
 
-limit---a positive integer, or a positive float.
-
-random-state---a random state. The default is the current random state.
-
-random-number---a non-negative number less than limit and of the same type as limit.
+        limit---一个正整数, 或者一个正浮点数.
+        random-state---一个随机状态. 默认是当前的随机状态.
+        random-number---一个小于 limit 并且和 limit 相同类型的非负数字.
 
 * 描述(Description):
 
-Returns a pseudo-random number that is a non-negative number less than limit and of the same type as limit.
+        返回一个小于 limit 并且和 limit 相同类型的非负 pseudo-random 数字.
 
-The random-state, which is modified by this function, encodes the internal state maintained by the random number generator.
+        由这个函数修改的随机状态 random-state，编码由这个随机数生成器维护的内部状态.
 
-An approximately uniform choice distribution is used. If limit is an integer, each of the possible results occurs with (approximate) probability 1/limit.
+        使用了一个近似均匀的选择分布. 如果 limit 是一个整数, 每一个可能的结果发生的可能性 (近似) 是 1/limit.
 
 * 示例(Examples):
 
- (<= 0 (random 1000) 1000) =>  true
- (let ((state1 (make-random-state))
-       (state2 (make-random-state)))
-   (= (random 1000 state1) (random 1000 state2))) =>  true
+    ```LISP
+    (<= 0 (random 1000) 1000) =>  true
+    (let ((state1 (make-random-state))
+          (state2 (make-random-state)))
+      (= (random 1000 state1) (random 1000 state2))) =>  true
+    ```
 
 * 副作用(Side Effects):
 
-The random-state is modified.
+        这个随机状态 random-state 被修改.
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-Should signal an error of type type-error if limit is not a positive integer or a positive real.
+        如果 limit 不是一个正整数或一个正浮点数, 那么应该发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-make-random-state, *random-state*
+        make-random-state, *random-state*
 
 * 注意(Notes):
 
-See Common Lisp: The Language for information about generating random numbers. 
+        关于生成随机数的信息见 Common Lisp: The Language. 
 
 
 ### <span id="F-RANDOM-STATE-P">函数 RANDOM-STATE-P</span>
@@ -2488,7 +2491,7 @@ cis radians => number
 
 * 参数和值(Arguments and Values):
 
-radians---a real.
+radians---一个实数.
 
 number---a complex.
 
@@ -2520,9 +2523,9 @@ complex realpart &optional imagpart => complex
 
 * 参数和值(Arguments and Values):
 
-realpart---a real.
+realpart---一个实数.
 
-imagpart---a real.
+imagpart---一个实数.
 
 complex---a rational or a complex.
 
@@ -2692,7 +2695,7 @@ imagpart number => real
 
 number---一个数字.
 
-real---a real.
+real---一个实数.
 
 * 描述(Description):
 
@@ -2851,7 +2854,7 @@ rationalize number => rational
 
 * 参数和值(Arguments and Values):
 
-number---a real.
+number---一个实数.
 
 rational---a rational.
 
@@ -2990,7 +2993,7 @@ integer-length integer => number-of-bits
 
 integer---一个整数.
 
-number-of-bits---a non-negative integer.
+number-of-bits---一个负整数.
 
 * 描述(Description):
 
@@ -3127,121 +3130,119 @@ If junk-allowed is false, an error is signaled if substring does not consist ent
 
 * 语法(Syntax):
 
-boole op integer-1 integer-2 => result-integer
+        boole op integer-1 integer-2 => result-integer
 
 * 参数和值(Arguments and Values):
 
-Op---a bit-wise logical operation specifier.
-
-integer-1---一个整数.
-
-integer-2---一个整数.
-
-result-integer---一个整数.
+        Op---一个位逻辑操作指定符.
+        integer-1---一个整数.
+        integer-2---一个整数.
+        result-integer---一个整数.
 
 * 描述(Description):
 
-boole performs bit-wise logical operations on integer-1 and integer-2, which are treated as if they were binary and in two's complement representation.
+        boole 在整数 integer-1 和 integer-2 上执行一个位逻辑操作符, 它们被当作是以两个补码表示的二进制数.
 
-The operation to be performed and the return value are determined by op.
+        要执行的操作符和返回值由 op 决定.
 
-boole returns the values specified for any op in the next figure.
+        boole 返回下面这段中的操作符 op 指定的值.
 
-Op           Result                                      
-boole-1      integer-1                                   
-boole-2      integer-2                                   
-boole-andc1  and complement of integer-1 with integer-2  
-boole-andc2  and integer-1 with complement of integer-2  
-boole-and    and                                         
-boole-c1     complement of integer-1                     
-boole-c2     complement of integer-2                     
-boole-clr    always 0 (all zero bits)                    
-boole-eqv    equivalence (exclusive nor)                 
-boole-ior    inclusive or                                
-boole-nand   not-and                                     
-boole-nor    not-or                                      
-boole-orc1   or complement of integer-1 with integer-2   
-boole-orc2   or integer-1 with complement of integer-2   
-boole-set    always -1 (all one bits)                    
-boole-xor    exclusive or                                
+            Op           Result                                      
+            boole-1      integer-1                                   
+            boole-2      integer-2                                   
+            boole-andc1  and complement of integer-1 with integer-2  
+            boole-andc2  and integer-1 with complement of integer-2  
+            boole-and    and                                         
+            boole-c1     complement of integer-1                     
+            boole-c2     complement of integer-2                     
+            boole-clr    always 0 (all zero bits)                    
+            boole-eqv    equivalence (exclusive nor)                 
+            boole-ior    inclusive or                                
+            boole-nand   not-and                                     
+            boole-nor    not-or                                      
+            boole-orc1   or complement of integer-1 with integer-2   
+            boole-orc2   or integer-1 with complement of integer-2   
+            boole-set    always -1 (all one bits)                    
+            boole-xor    exclusive or                                
 
-Figure 12-17. Bit-Wise Logical Operations
+            Figure 12-17. 位逻辑操作符
 
 * 示例(Examples):
 
- (boole boole-ior 1 16) =>  17
- (boole boole-and -2 5) =>  4
- (boole boole-eqv 17 15) =>  -31
+    ```LISP
+    (boole boole-ior 1 16) =>  17
+    (boole boole-and -2 5) =>  4
+    (boole boole-eqv 17 15) =>  -31
 
-;;; These examples illustrate the result of applying BOOLE and each
-;;; of the possible values of OP to each possible combination of bits.
- (progn
-   (format t "~&Results of (BOOLE <op> #b0011 #b0101) ...~
-           ~%---Op-------Decimal-----Binary----Bits---~%")
-   (dolist (symbol '(boole-1     boole-2    boole-and  boole-andc1
-                     boole-andc2 boole-c1   boole-c2   boole-clr
-                     boole-eqv   boole-ior  boole-nand boole-nor
-                     boole-orc1  boole-orc2 boole-set  boole-xor))
-     (let ((result (boole (symbol-value symbol) #b0011 #b0101)))
-       (format t "~& ~A~13T~3,' D~23T~:*~5,' B~31T ...~4,'0B~%" 
-               symbol result (logand result #b1111)))))
->>  Results of (BOOLE <op> #b0011 #b0101) ...
->>  ---Op-------Decimal-----Binary----Bits---
->>   BOOLE-1       3          11    ...0011
->>   BOOLE-2       5         101    ...0101
->>   BOOLE-AND     1           1    ...0001
->>   BOOLE-ANDC1   4         100    ...0100
->>   BOOLE-ANDC2   2          10    ...0010
->>   BOOLE-C1     -4        -100    ...1100
->>   BOOLE-C2     -6        -110    ...1010
->>   BOOLE-CLR     0           0    ...0000
->>   BOOLE-EQV    -7        -111    ...1001
->>   BOOLE-IOR     7         111    ...0111
->>   BOOLE-NAND   -2         -10    ...1110
->>   BOOLE-NOR    -8       -1000    ...1000
->>   BOOLE-ORC1   -3         -11    ...1101
->>   BOOLE-ORC2   -5        -101    ...1011
->>   BOOLE-SET    -1          -1    ...1111
->>   BOOLE-XOR     6         110    ...0110
-=>  NIL
+    ;;; These examples illustrate the result of applying BOOLE and each
+    ;;; of the possible values of OP to each possible combination of bits.
+    (progn
+      (format t "~&Results of (BOOLE <op> #b0011 #b0101) ...~
+              ~%---Op-------Decimal-----Binary----Bits---~%")
+      (dolist (symbol '(boole-1     boole-2    boole-and  boole-andc1
+                        boole-andc2 boole-c1   boole-c2   boole-clr
+                        boole-eqv   boole-ior  boole-nand boole-nor
+                        boole-orc1  boole-orc2 boole-set  boole-xor))
+        (let ((result (boole (symbol-value symbol) #b0011 #b0101)))
+          (format t "~& ~A~13T~3,' D~23T~:*~5,' B~31T ...~4,'0B~%" 
+                  symbol result (logand result #b1111)))))
+    >>  Results of (BOOLE <op> #b0011 #b0101) ...
+    >>  ---Op-------Decimal-----Binary----Bits---
+    >>   BOOLE-1       3          11    ...0011
+    >>   BOOLE-2       5         101    ...0101
+    >>   BOOLE-AND     1           1    ...0001
+    >>   BOOLE-ANDC1   4         100    ...0100
+    >>   BOOLE-ANDC2   2          10    ...0010
+    >>   BOOLE-C1     -4        -100    ...1100
+    >>   BOOLE-C2     -6        -110    ...1010
+    >>   BOOLE-CLR     0           0    ...0000
+    >>   BOOLE-EQV    -7        -111    ...1001
+    >>   BOOLE-IOR     7         111    ...0111
+    >>   BOOLE-NAND   -2         -10    ...1110
+    >>   BOOLE-NOR    -8       -1000    ...1000
+    >>   BOOLE-ORC1   -3         -11    ...1101
+    >>   BOOLE-ORC2   -5        -101    ...1011
+    >>   BOOLE-SET    -1          -1    ...1111
+    >>   BOOLE-XOR     6         110    ...0110
+    =>  NIL
+    ```
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-Should signal type-error if its first argument is not a bit-wise logical operation specifier or if any subsequent argument is not an integer.
+        如果它的第一个参数不是一个位逻辑操作指定符或者任何后面的参数不是一个整数, 那么应该发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-logand
+        logand
 
 * 注意(Notes):
 
-In general,
+        通常情况下,
 
- (boole boole-and x y) ==  (logand x y)
+        (boole boole-and x y) ==  (logand x y)
 
-Programmers who would prefer to use numeric indices rather than bit-wise logical operation specifiers can get an equivalent effect by a technique such as the following:
+        更偏向于使用数字指标而不是位逻辑操作符的程序员可以通过下面这样的手法来得到同样效果:
 
-;; The order of the values in this `table' are such that
-;; (logand (boole (elt boole-n-vector n) #b0101 #b0011) #b1111) => n
- (defconstant boole-n-vector
-    (vector boole-clr   boole-and  boole-andc1 boole-2
-            boole-andc2 boole-1    boole-xor   boole-ior
-            boole-nor   boole-eqv  boole-c1    boole-orc1
-            boole-c2    boole-orc2 boole-nand  boole-set))
-=>  BOOLE-N-VECTOR
- (proclaim '(inline boole-n))
-=>  implementation-dependent
- (defun boole-n (n integer &rest more-integers)
-   (apply #'boole (elt boole-n-vector n) integer more-integers))
-=>  BOOLE-N
- (boole-n #b0111 5 3) =>  7
- (boole-n #b0001 5 3) =>  1
- (boole-n #b1101 5 3) =>  -3
- (loop for n from #b0000 to #b1111 collect (boole-n n 5 3))
-=>  (0 1 2 3 4 5 6 7 -8 -7 -6 -5 -4 -3 -2 -1)
-
+        ;; The order of the values in this `table' are such that
+        ;; (logand (boole (elt boole-n-vector n) #b0101 #b0011) #b1111) => n
+        (defconstant boole-n-vector
+            (vector boole-clr   boole-and  boole-andc1 boole-2
+                    boole-andc2 boole-1    boole-xor   boole-ior
+                    boole-nor   boole-eqv  boole-c1    boole-orc1
+                    boole-c2    boole-orc2 boole-nand  boole-set))
+        =>  BOOLE-N-VECTOR
+        (proclaim '(inline boole-n))
+        =>  implementation-dependent
+        (defun boole-n (n integer &rest more-integers)
+          (apply #'boole (elt boole-n-vector n) integer more-integers))
+        =>  BOOLE-N
+        (boole-n #b0111 5 3) =>  7
+        (boole-n #b0001 5 3) =>  1
+        (boole-n #b1101 5 3) =>  -3
+        (loop for n from #b0000 to #b1111 collect (boole-n n 5 3))
+        =>  (0 1 2 3 4 5 6 7 -8 -7 -6 -5 -4 -3 -2 -1)
 
 
 ### <span id="CV-B">常量 BOOLE-1, BOOLE-2, BOOLE-AND, BOOLE-ANDC1, BOOLE-ANDC2, BOOLE-C1, BOOLE-C2, BOOLE-CLR, BOOLE-EQV, BOOLE-IOR, BOOLE-NAND, BOOLE-NOR, BOOLE-ORC1, BOOLE-ORC2, BOOLE-SET, BOOLE-XOR</span>
