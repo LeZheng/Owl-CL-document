@@ -2366,23 +2366,24 @@ a singleton list whose element is a number M of type T
 
 * 语法(Syntax):
 
-random-state-p object => generalized-boolean
+        random-state-p object => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-object---an object.
-
-generalized-boolean---一个广义 boolean.
+        object---一个对象.
+        generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
-Returns true if object is of type random-state; otherwise, returns false.
+        如果对象 object 是 random-state 类型就返回 true; 否则, 返回 false.
 
 * 示例(Examples):
 
- (random-state-p *random-state*) =>  true
- (random-state-p (make-random-state)) =>  true
- (random-state-p 'test-function) =>  false
+    ```LISP
+    (random-state-p *random-state*) =>  true
+    (random-state-p (make-random-state)) =>  true
+    (random-state-p 'test-function) =>  false
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -2392,82 +2393,85 @@ Returns true if object is of type random-state; otherwise, returns false.
 
 * 也见(See Also):
 
-make-random-state, *random-state*
+        make-random-state, *random-state*
 
 * 注意(Notes):
 
- (random-state-p object) ==  (typep object 'random-state)
+        (random-state-p object) ==  (typep object 'random-state)
 
 
 ### <span id="V-RANDOM-STATE">变量 *RANDOM-STATE*</span>
 
-Value Type:
+* 值类型(Value Type):
 
-a random state.
+        一个随机状态.
 
-Initial * 值(Value):
+* 初始值(Initial Value):
 
-implementation-dependent.
+        依赖于具体实现.
 
 * 描述(Description):
 
-The current random state, which is used, for example, by the function random when a random state is not explicitly supplied.
+        当前的随机状态, 比如, 当一个随机对象没有提供给 random 函数时, 它会被使用.
 
 * 示例(Examples):
 
- (random-state-p *random-state*) =>  true
- (setq snap-shot (make-random-state))
- ;; The series from any given point is random,
- ;; but if you backtrack to that point, you get the same series.
- (list (loop for i from 1 to 10 collect (random))
-       (let ((*random-state* snap-shot))
-         (loop for i from 1 to 10 collect (random)))
-       (loop for i from 1 to 10 collect (random))
-       (let ((*random-state* snap-shot))
-         (loop for i from 1 to 10 collect (random))))
-=>  ((19 16 44 19 96 15 76 96 13 61)
-    (19 16 44 19 96 15 76 96 13 61)
-    (16 67 0 43 70 79 58 5 63 50)
-    (16 67 0 43 70 79 58 5 63 50))
+    ```LISP
+    (random-state-p *random-state*) =>  true
+    (setq snap-shot (make-random-state))
+    ;; The series from any given point is random,
+    ;; but if you backtrack to that point, you get the same series.
+    (list (loop for i from 1 to 10 collect (random))
+          (let ((*random-state* snap-shot))
+            (loop for i from 1 to 10 collect (random)))
+          (loop for i from 1 to 10 collect (random))
+          (let ((*random-state* snap-shot))
+            (loop for i from 1 to 10 collect (random))))
+    =>  ((19 16 44 19 96 15 76 96 13 61)
+        (19 16 44 19 96 15 76 96 13 61)
+        (16 67 0 43 70 79 58 5 63 50)
+        (16 67 0 43 70 79 58 5 63 50))
+    ```
 
 * 受此影响(Affected By):
 
-The implementation.
+        具体实现.
 
-random.
+        random.
 
 * 也见(See Also):
 
-make-random-state, random, random-state
+        make-random-state, random, random-state
 
 * 注意(Notes):
 
-Binding *random-state* to a different random state object correctly saves and restores the old random state object. 
+        将 *random-state* 绑定到一个不同的随机状态对象时, 正确地保存和还原旧的随机状态对象. 
 
 
 ### <span id="F-NUMBERP">函数 NUMBERP</span>
 
 * 语法(Syntax):
 
-numberp object => generalized-boolean
+        numberp object => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-object---an object.
-
-generalized-boolean---一个广义 boolean.
+        object---一个对象.
+        generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
-Returns true if object is of type number; otherwise, returns false.
+        如果对象 object 是 number 类型就返回 true; 否则, 返回 false.
 
 * 示例(Examples):
 
- (numberp 12) =>  true
- (numberp (expt 2 130)) =>  true
- (numberp #c(5/3 7.2)) =>  true
- (numberp nil) =>  false
- (numberp (cons 1 2)) =>  false
+    ```LISP
+    (numberp 12) =>  true
+    (numberp (expt 2 130)) =>  true
+    (numberp #c(5/3 7.2)) =>  true
+    (numberp nil) =>  false
+    (numberp (cons 1 2)) =>  false
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -2479,7 +2483,7 @@ Returns true if object is of type number; otherwise, returns false.
 
 * 注意(Notes):
 
- (numberp object) ==  (typep object 'number)
+        (numberp object) ==  (typep object 'number)
 
 
 
@@ -2487,21 +2491,22 @@ Returns true if object is of type number; otherwise, returns false.
 
 * 语法(Syntax):
 
-cis radians => number
+        cis radians => number
 
 * 参数和值(Arguments and Values):
 
-radians---一个实数.
-
-number---a complex.
+        radians---一个实数.
+        number---一个复数.
 
 * 描述(Description):
 
-cis returns the value of e^i* radians, which is a complex in which the real part is equal to the cosine of radians, and the imaginary part is equal to the sine of radians.
+        cis 返回 e^i* radians 的值, 它是一个实部等价于弧度 radians 的余弦并且虚部等价于弧度 radians 的正弦的复数.
 
 * 示例(Examples):
 
- (cis 0) =>  #C(1.0 0.0)
+    ```LISP
+    (cis 0) =>  #C(1.0 0.0)
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -2511,7 +2516,7 @@ cis returns the value of e^i* radians, which is a complex in which the real part
 
 * 也见(See Also):
 
-Section 12.1.3.3 (Rule of Float Substitutability)
+        章节 12.1.3.3 (Rule of Float Substitutability)
 
 * 注意(Notes): None. 
 
@@ -2519,33 +2524,33 @@ Section 12.1.3.3 (Rule of Float Substitutability)
 
 * 语法(Syntax):
 
-complex realpart &optional imagpart => complex
+        complex realpart &optional imagpart => complex
 
 * 参数和值(Arguments and Values):
 
-realpart---一个实数.
-
-imagpart---一个实数.
-
-complex---a rational or a complex.
+        realpart---一个实数.
+        imagpart---一个实数.
+        complex---一个有理数或一个复数.
 
 * 描述(Description):
 
-complex returns a number whose real part is realpart and whose imaginary part is imagpart.
+        complex 返回一个实部为 realpart 并且虚部为 imagpart 的数字.
 
-If realpart is a rational and imagpart is the rational number zero, the result of complex is realpart, a rational. Otherwise, the result is a complex.
+        如果 realpart 是一个有理数并且虚部是一个有理数 0, 那么 complex 结果是 realpart, 一个有理数. 否则, 结果就是一个复数.
 
-If either realpart or imagpart is a float, the non-float is converted to a float before the complex is created. If imagpart is not supplied, the imaginary part is a zero of the same type as realpart; i.e., (coerce 0 (type-of realpart)) is effectively used.
+        如果 realpart 或 imagpart 是一个浮点数, 这个非浮点数在这个复数被创建之前被转化为一个浮点数. 如果 imagpart 没有被提供, 这个虚部就是和实部相同类型的零; 换句话说, (coerce 0 (type-of realpart)) 实际被使用.
 
-Type upgrading implies a movement upwards in the type hierarchy lattice. In the case of complexes, the type-specifier must be a subtype of (upgraded-complex-part-type type-specifier). If type-specifier1 is a subtype of type-specifier2, then (upgraded-complex-element-type 'type-specifier1) must also be a subtype of (upgraded-complex-element-type 'type-specifier2). Two disjoint types can be upgraded into the same thing.
+        类型提升意味着在类型层次结构中向上移动. 在这个复数的情况下, 这个类型指定符 type-specifier 必须是 (upgraded-complex-part-type type-specifier) 的子类型. 如果类型指定符 type-specifier1 是类型指定符 type-specifier2 的子类型, 那么 (upgraded-complex-element-type 'type-specifier1) 必须也是 (upgraded-complex-element-type 'type-specifier2) 的一个子类型. 两个互斥的类型可以被提升到同一个类型.
 
 * 示例(Examples):
 
- (complex 0) =>  0
- (complex 0.0) =>  #C(0.0 0.0)
- (complex 1 1/2) =>  #C(1 1/2)
- (complex 1 .99) =>  #C(1.0 0.99)
- (complex 3/2 0.0) =>  #C(1.5 0.0)
+    ```LISP
+    (complex 0) =>  0
+    (complex 0.0) =>  #C(0.0 0.0)
+    (complex 1 1/2) =>  #C(1 1/2)
+    (complex 1 .99) =>  #C(1.0 0.99)
+    (complex 3/2 0.0) =>  #C(1.5 0.0)
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -2555,7 +2560,7 @@ Type upgrading implies a movement upwards in the type hierarchy lattice. In the 
 
 * 也见(See Also):
 
-realpart, imagpart, Section 2.4.8.11 (Sharpsign C)
+        realpart, imagpart, 章节 2.4.8.11 (Sharpsign C)
 
 * 注意(Notes): None. 
 
@@ -2564,22 +2569,23 @@ realpart, imagpart, Section 2.4.8.11 (Sharpsign C)
 
 * 语法(Syntax):
 
-complexp object => generalized-boolean
+        complexp object => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-object---an object.
-
-generalized-boolean---一个广义 boolean.
+        object---一个对象.
+        generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
-Returns true if object is of type complex; otherwise, returns false.
+        如果对象 object 是 complex 类型就返回 true; 否则, 返回 false.
 
 * 示例(Examples):
 
- (complexp 1.2d2) =>  false
- (complexp #c(5/3 7.2)) =>  true
+    ```LISP
+    (complexp 1.2d2) =>  false
+    (complexp #c(5/3 7.2)) =>  true
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -2589,37 +2595,38 @@ Returns true if object is of type complex; otherwise, returns false.
 
 * 也见(See Also):
 
-complex (function and type), typep
+        complex (function 和 type), typep
 
 * 注意(Notes):
 
- (complexp object) ==  (typep object 'complex)
+        (complexp object) ==  (typep object 'complex)
 
 
 ### <span id="F-CONJUGATE">函数 CONJUGATE</span>
 
 * 语法(Syntax):
 
-conjugate number => conjugate
+        conjugate number => conjugate
 
 * 参数和值(Arguments and Values):
 
-number---一个数字.
-
-conjugate---一个数字.
+        number---一个数字.
+        conjugate---一个数字.
 
 * 描述(Description):
 
-Returns the complex conjugate of number. The conjugate of a real number is itself.
+        返回数字 number 的复变位数(conjugate). 一个实数的复变位数(conjugate) 是它自身.
 
 * 示例(Examples):
 
- (conjugate #c(0 -1)) =>  #C(0 1)
- (conjugate #c(1 1)) =>  #C(1 -1)
- (conjugate 1.5) =>  1.5
- (conjugate #C(3/5 4/5)) =>  #C(3/5 -4/5)
- (conjugate #C(0.0D0 -1.0D0)) =>  #C(0.0D0 1.0D0)
- (conjugate 3.7) =>  3.7
+    ```LISP
+    (conjugate #c(0 -1)) =>  #C(0 1)
+    (conjugate #c(1 1)) =>  #C(1 -1)
+    (conjugate 1.5) =>  1.5
+    (conjugate #C(3/5 4/5)) =>  #C(3/5 -4/5)
+    (conjugate #C(0.0D0 -1.0D0)) =>  #C(0.0D0 1.0D0)
+    (conjugate 3.7) =>  3.7
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -2631,9 +2638,9 @@ Returns the complex conjugate of number. The conjugate of a real number is itsel
 
 * 注意(Notes):
 
-For a complex number z,
+        对于一个复数 z,
 
- (conjugate z) ==  (complex (realpart z) (- (imagpart z)))
+        (conjugate z) ==  (complex (realpart z) (- (imagpart z)))
 
 
 
@@ -2641,32 +2648,33 @@ For a complex number z,
 
 * 语法(Syntax):
 
-phase number => phase
+        phase number => phase
 
 * 参数和值(Arguments and Values):
 
-number---一个数字.
-
-phase---一个数字.
+        number---一个数字.
+        phase---一个数字.
 
 * 描述(Description):
 
-phase returns the phase of number (the angle part of its polar representation) in radians, in the range -<PI> (exclusive) if minus zero is not supported, or -<PI> (inclusive) if minus zero is supported, to <PI> (inclusive). The phase of a positive real number is zero; that of a negative real number is <PI>. The phase of zero is defined to be zero.
+        phase 返回表示弧度的数字 number 的相位 (它的极坐标表示的角度部分), 如果不支持负零, 那么范围就在 -<PI> (不包含) 到 <PI> (包含) 之间, 如果支持负零, 那么返回就在 -<PI> (包含) 到 <PI> (包含) 之间. 正实数的相位是零; 对于复实数就是 <PI>. 零的相位被定义为零.
 
-If number is a complex float, the result is a float of the same type as the components of number. If number is a float, the result is a float of the same type. If number is a rational or a complex rational, the result is a single float.
+        如果数字 number 是一个复浮点数, 结果就是和 number 各部分相同类型的浮点数. 如果数字 number 是一个浮点数, 结果就是一个相同类型的浮点数. 如果数字 number 是一个有理数或一个复有理数, 结果就是一个单浮点数.
 
-The branch cut for phase lies along the negative real axis, continuous with quadrant II. The range consists of that portion of the real axis between -<PI> (exclusive) and <PI> (inclusive).
+        phase 的分支切割位于沿着复实轴, 与第二象限相连. 范围由 -<PI> (不包含) 和 <PI> (不包含) 之间的实轴组成.
 
-The mathematical definition of phase is as follows:
+        这个 phase 的数学定义如下:
 
-(phase x) = (atan (imagpart x) (realpart x))
+        (phase x) = (atan (imagpart x) (realpart x))
 
 * 示例(Examples):
 
- (phase 1) =>  0.0s0
- (phase 0) =>  0.0s0
- (phase (cis 30)) =>  -1.4159266
- (phase #c(0 1)) =>  1.5707964
+    ```LISP
+    (phase 1) =>  0.0s0
+    (phase 0) =>  0.0s0
+    (phase (cis 30)) =>  -1.4159266
+    (phase #c(0 1)) =>  1.5707964
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -2674,11 +2682,11 @@ The mathematical definition of phase is as follows:
 
 * 异常情况(Exceptional Situations):
 
-Should signal type-error if its argument is not a number. 可能发出 arithmetic-error.
+        如果它的参数不是一个数字就应该发出一个 type-error 类型的错误. 可能发出 arithmetic-error.
 
 * 也见(See Also):
 
-Section 12.1.3.3 (Rule of Float Substitutability)
+        章节 12.1.3.3 (Rule of Float Substitutability)
 
 * 注意(Notes): None. 
 
@@ -2687,26 +2695,27 @@ Section 12.1.3.3 (Rule of Float Substitutability)
 
 * 语法(Syntax):
 
-realpart number => real
+        realpart number => real
 
-imagpart number => real
+        imagpart number => real
 
 * 参数和值(Arguments and Values):
 
-number---一个数字.
-
-real---一个实数.
+        number---一个数字.
+        real---一个实数.
 
 * 描述(Description):
 
-realpart and imagpart return the real and imaginary parts of number respectively. If number is real, then realpart returns number and imagpart returns (* 0 number), which has the effect that the imaginary part of a rational is 0 and that of a float is a floating-point zero of the same format.
+        realpart 和 imagpart 分别返回数字 number 的实部和虚部. 如果数字 number 是一个实数, 那么 realpart 返回数字 number 而 imagpart 返回 (* 0 number), 它的作用是, 一个有理数的虚部是 0 而浮点数是相同格式的浮点数 0.
 
 * 示例(Examples):
 
- (realpart #c(23 41)) =>  23
- (imagpart #c(23 41.0)) =>  41.0
- (realpart #c(23 41.0)) =>  23.0
- (imagpart 23.0) =>  0.0
+    ```LISP
+    (realpart #c(23 41)) =>  23
+    (imagpart #c(23 41.0)) =>  41.0
+    (realpart #c(23 41.0)) =>  23.0
+    (imagpart 23.0) =>  0.0
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -2714,11 +2723,11 @@ realpart and imagpart return the real and imaginary parts of number respectively
 
 * 异常情况(Exceptional Situations):
 
-Should signal an error of type type-error if number is not a number.
+        如果 number 不是一个数字, 那么应该发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-complex
+        complex
 
 * 注意(Notes): None. 
 
@@ -2727,23 +2736,21 @@ complex
 
 * 语法(Syntax):
 
-upgraded-complex-part-type typespec &optional environment => upgraded-typespec
+        upgraded-complex-part-type typespec &optional environment => upgraded-typespec
 
 * 参数和值(Arguments and Values):
 
-typespec---a type specifier.
-
-environment---an environment object. The default is nil, denoting the null lexical environment and the and current global environment.
-
-upgraded-typespec---a type specifier.
+        typespec---一个类型指定符.
+        environment---一个环境对象. 默认是 nil, 表示空的词法环境和当前全局环境.
+        upgraded-typespec---一个类型指定符.
 
 * 描述(Description):
 
-upgraded-complex-part-type returns the part type of the most specialized complex number representation that can hold parts of type typespec.
+        upgraded-complex-part-type 返回可以持有类型 typespec 的部分的最具体的复数表示的部分的类型.
 
-The typespec is a subtype of (and possibly type equivalent to) the upgraded-typespec.
+        这个 typespec 是 upgraded-typespec 的一个子类型 (也可能是相同类型)).
 
-The purpose of upgraded-complex-part-type is to reveal how an implementation does its upgrading.
+        upgraded-complex-part-type 的目的是去揭露一个具体实现如何执行它的提升.
 
 * 示例(Examples): None.
 
@@ -2755,7 +2762,7 @@ The purpose of upgraded-complex-part-type is to reveal how an implementation doe
 
 * 也见(See Also):
 
-complex (function and type)
+        complex (function 和 type)
 
 * 注意(Notes):
 
