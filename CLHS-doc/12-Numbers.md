@@ -2770,24 +2770,25 @@ a singleton list whose element is a number M of type T
 
 * 语法(Syntax):
 
-realp object => generalized-boolean
+        realp object => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-object---an object.
-
-generalized-boolean---一个广义 boolean.
+        object---一个对象.
+        generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
-Returns true if object is of type real; otherwise, returns false.
+        如果对象 object 不是 real 类型就返回 true; 否则, 返回 false.
 
 * 示例(Examples):
 
- (realp 12) =>  true
- (realp #c(5/3 7.2)) =>  false
- (realp nil) =>  false
- (realp (cons 1 2)) =>  false
+    ```LISP
+    (realp 12) =>  true
+    (realp #c(5/3 7.2)) =>  false
+    (realp nil) =>  false
+    (realp (cons 1 2)) =>  false
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -2799,41 +2800,41 @@ Returns true if object is of type real; otherwise, returns false.
 
 * 注意(Notes):
 
- (realp object) ==  (typep object 'real)
+        (realp object) ==  (typep object 'real)
 
 
 ### <span id="F-NUMERATOR-DENOMINATOR">函数 NUMERATOR, DENOMINATOR</span>
 
 * 语法(Syntax):
 
-numerator rational => numerator
+        numerator rational => numerator
 
-denominator rational => denominator
+        denominator rational => denominator
 
 * 参数和值(Arguments and Values):
 
-rational---a rational.
-
-numerator---一个整数.
-
-denominator---a positive integer.
+        rational---一个有理数.
+        numerator---一个整数.
+        denominator---一个正整数.
 
 * 描述(Description):
 
-numerator and denominator reduce rational to canonical form and compute the numerator or denominator of that number.
+        numerator 和 denominator 分解有理数 rational 为规范形式并计算那个数字的分子和分母.
 
-numerator and denominator return the numerator or denominator of the canonical form of rational.
+        numerator 和 denominator 返回有理数 rational 的规范形式的分子和分母.
 
-If rational is an integer, numerator returns rational and denominator returns 1.
+        如果有理数 rational 是一个整数, numerator 返回有理数并且 denominator 返回 1.
 
 * 示例(Examples):
 
- (numerator 1/2) =>  1
- (denominator 12/36) =>  3
- (numerator -1) =>  -1
- (denominator (/ -33)) =>  33
- (numerator (/ 8 -6)) =>  -4
- (denominator (/ 8 -6)) =>  3
+    ```LISP
+    (numerator 1/2) =>  1
+    (denominator 12/36) =>  3
+    (numerator -1) =>  -1
+    (denominator (/ -33)) =>  33
+    (numerator (/ 8 -6)) =>  -4
+    (denominator (/ 8 -6)) =>  3
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -2843,11 +2844,11 @@ If rational is an integer, numerator returns rational and denominator returns 1.
 
 * 也见(See Also):
 
-/
+        /
 
 * 注意(Notes):
 
- (gcd (numerator x) (denominator x)) =>  1
+        (gcd (numerator x) (denominator x)) =>  1
 
 
 
@@ -2855,80 +2856,82 @@ If rational is an integer, numerator returns rational and denominator returns 1.
 
 * 语法(Syntax):
 
-rational number => rational
+        rational number => rational
 
-rationalize number => rational
+        rationalize number => rational
 
 * 参数和值(Arguments and Values):
 
-number---一个实数.
-
-rational---a rational.
+        number---一个实数.
+        rational---一个有理数.
 
 * 描述(Description):
 
-rational and rationalize convert reals to rationals.
+        rational 和 rationalize 转换实数为有理数.
 
-If number is already rational, it is returned.
+        如果数字 number 已经是一个有理数, 它就会被返回.
 
-If number is a float, rational returns a rational that is mathematically equal in value to the float. rationalize returns a rational that approximates the float to the accuracy of the underlying floating-point representation.
+        如果数字 number 是一个浮点数, rational 返回一个值在数学上等价于这个浮点数的有理数. rationalize 返回一个那个浮点数近似于那个潜在浮点表示精度的有理数.
 
-rational assumes that the float is completely accurate.
+        rational 假定这个浮点数是完全准确的.
 
-rationalize assumes that the float is accurate only to the precision of the floating-point representation.
+        rationalize 假定那个浮点数仅对于那个浮点表示的精度是精确的.
 
 * 示例(Examples):
 
- (rational 0) =>  0
- (rationalize -11/100) =>  -11/100
- (rational .1) =>  13421773/134217728 ;implementation-dependent
- (rationalize .1) =>  1/10
+    ```LISP
+    (rational 0) =>  0
+    (rationalize -11/100) =>  -11/100
+    (rational .1) =>  13421773/134217728 ;implementation-dependent
+    (rationalize .1) =>  1/10
+    ```
 
 * 副作用(Side Effects): None.
 
 * 受此影响(Affected By):
 
-The implementation.
+        具体实现.
 
 * 异常情况(Exceptional Situations):
 
-Should signal an error of type type-error if number is not a real. 可能发出 arithmetic-error.
+        如果数字 number 不是一个实数, 那么应该发出一个 type-error 类型的错误. 可能发出 arithmetic-error.
 
 * 也见(See Also): None.
 
 * 注意(Notes):
 
-It is always the case that
+        情况总是如下
 
- (float (rational x) x) ==  x
+        (float (rational x) x) ==  x
 
-and
+        并且
 
- (float (rationalize x) x) ==  x
+        (float (rationalize x) x) ==  x
 
-That is, rationalizing a float by either method and then converting it back to a float of the same format produces the original number. 
+        这也就是说, 通过任意一个方法来有理化一个浮点数, 然后把它转换会一个相同格式的浮点数会产生原始的数字 number. 
 
 ### <span id="F-RATIONALP">函数 RATIONALP</span>
 
 * 语法(Syntax):
 
-rationalp object => generalized-boolean
+        rationalp object => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-object---an object.
-
-generalized-boolean---一个广义 boolean.
+        object---一个对象.
+        generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
-Returns true if object is of type rational; otherwise, returns false.
+        如果对象 object 是 rational 类型就返回 true; 否则, 返回 false.
 
 * 示例(Examples):
 
- (rationalp 12) =>  true
- (rationalp 6/5) =>  true
- (rationalp 1.212) =>  false
+    ```LISP
+    (rationalp 12) =>  true
+    (rationalp 6/5) =>  true
+    (rationalp 1.212) =>  false
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -2938,89 +2941,90 @@ Returns true if object is of type rational; otherwise, returns false.
 
 * 也见(See Also):
 
-rational
+        rational
 
 * 注意(Notes):
 
- (rationalp object) ==  (typep object 'rational)
+        (rationalp object) ==  (typep object 'rational)
 
 
 ### <span id="F-ASH">函数 ASH</span>
 
 * 语法(Syntax):
 
-ash integer count => shifted-integer
+        ash integer count => shifted-integer
 
 * 参数和值(Arguments and Values):
 
-integer---一个整数.
-
-count---一个整数.
-
-shifted-integer---一个整数.
+        integer---一个整数.
+        count---一个整数.
+        shifted-integer---一个整数.
 
 * 描述(Description):
 
-ash performs the arithmetic shift operation on the binary representation of integer, which is treated as if it were binary.
+        ash 在整数 integer 上执行算术位移操作, 这个整数被当作二进制数对待.
 
-ash shifts integer arithmetically left by count bit positions if count is positive, or right count bit positions if count is negative. The shifted value of the same sign as integer is returned.
+        如果 count 是正的 ash 就将整数 integer 左位移 count 位, 如果 count 是负的就右位移 count 位. 返回和整数 integer 相同符号的位移后的值.
 
-Mathematically speaking, ash performs the computation floor(integer*2^count). Logically, ash moves all of the bits in integer to the left, adding zero-bits at the right, or moves them to the right, discarding bits.
+        数学上说, ash 执行计算 floor(integer*2^count). 逻辑上, ash 移动整数 integer 中的所有位到左边, 在右边用零位填充, 或者移动它们到右边, 丢弃那些位.
 
-ash is defined to behave as if integer were represented in two's complement form, regardless of how integers are represented internally.
+        ash 被定义为表现得就好像整数 integer 是以两个补码的形式表示的, 不管这些整数内部怎么表示.
 
 * 示例(Examples):
 
- (ash 16 1) =>  32
- (ash 16 0) =>  16
- (ash 16 -1) =>  8
- (ash -100000000000000000000000000000000 -100) =>  -79
+    ```LISP
+    (ash 16 1) =>  32
+    (ash 16 0) =>  16
+    (ash 16 -1) =>  8
+    (ash -100000000000000000000000000000000 -100) =>  -79
+    ```
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-Should signal an error of type type-error if integer is not an integer. Should signal an error of type type-error if count is not an integer. 可能发出 arithmetic-error.
+        如果 integer 不是一个整数那么应该发出一个 type-error 类型的错误. 如果 count 不是一个整数那么应该发出一个 type-error 类型的错误. 可能发出 arithmetic-error.
 
 * 也见(See Also): None.
 
 * 注意(Notes):
 
- (logbitp j (ash n k))
- ==  (and (>= j k) (logbitp (- j k) n))
+        (logbitp j (ash n k))
+        ==  (and (>= j k) (logbitp (- j k) n))
 
 
 ### <span id="F-INTEGER-LENGTH">函数 INTEGER-LENGTH</span>
 
 * 语法(Syntax):
 
-integer-length integer => number-of-bits
+        integer-length integer => number-of-bits
 
 * 参数和值(Arguments and Values):
 
-integer---一个整数.
-
-number-of-bits---一个负整数.
+        integer---一个整数.
+        number-of-bits---一个负整数.
 
 * 描述(Description):
 
-Returns the number of bits needed to represent integer in binary two's-complement format.
+        返回以二进制补码的形式去表示整数 integer 所需的位数.
 
 * 示例(Examples):
 
- (integer-length 0) =>  0
- (integer-length 1) =>  1
- (integer-length 3) =>  2
- (integer-length 4) =>  3
- (integer-length 7) =>  3
- (integer-length -1) =>  0
- (integer-length -4) =>  2
- (integer-length -7) =>  3
- (integer-length -8) =>  3
- (integer-length (expt 2 9)) =>  10
- (integer-length (1- (expt 2 9))) =>  9
- (integer-length (- (expt 2 9))) =>  9
- (integer-length (- (1+ (expt 2 9)))) =>  10
+    ```LISP
+    (integer-length 0) =>  0
+    (integer-length 1) =>  1
+    (integer-length 3) =>  2
+    (integer-length 4) =>  3
+    (integer-length 7) =>  3
+    (integer-length -1) =>  0
+    (integer-length -4) =>  2
+    (integer-length -7) =>  3
+    (integer-length -8) =>  3
+    (integer-length (expt 2 9)) =>  10
+    (integer-length (1- (expt 2 9))) =>  9
+    (integer-length (- (expt 2 9))) =>  9
+    (integer-length (- (1+ (expt 2 9)))) =>  10
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -3028,45 +3032,46 @@ Returns the number of bits needed to represent integer in binary two's-complemen
 
 * 异常情况(Exceptional Situations):
 
-Should signal an error of type type-error if integer is not an integer.
+        如果 integer 不是一个整数那么应该发出一个 type-error 类型的错误.
 
 * 也见(See Also): None.
 
 * 注意(Notes):
 
-This function could have been defined by:
+        这个函数可以这样被定义:
 
-(defun integer-length (integer)
-  (ceiling (log (if (minusp integer)
-                    (- integer)
-                    (1+ integer))
-                2)))
+        (defun integer-length (integer)
+          (ceiling (log (if (minusp integer)
+                            (- integer)
+                            (1+ integer))
+                        2)))
 
-If integer is non-negative, then its value can be represented in unsigned binary form in a field whose width in bits is no smaller than (integer-length integer). Regardless of the sign of integer, its value can be represented in signed binary two's-complement form in a field whose width in bits is no smaller than (+ (integer-length integer) 1). 
+        如果整数 integer 非负, 那么它的值就可以用无符号的二进制形式表示在一个宽度不小于 (integer-length integer) 的字段中. 不管整数 integer 的符号, 它的值可以用带符号的二进制补码形式表示在一个位宽度不小于 (+ (integer-length integer) 1) 的字段中. 
 
 
 ### <span id="F-INTEGERP">函数 INTEGERP</span>
 
 * 语法(Syntax):
 
-integerp object => generalized-boolean
+        integerp object => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-object---an object.
-
-generalized-boolean---一个广义 boolean.
+        object---一个对象.
+        generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
-Returns true if object is of type integer; otherwise, returns false.
+        如果对象是 integer 类型就返回 true; 否则, 返回 false.
 
 * 示例(Examples):
 
- (integerp 1) =>  true
- (integerp (expt 2 130)) =>  true
- (integerp 6/5) =>  false
- (integerp nil) =>  false
+    ```LISP
+    (integerp 1) =>  true
+    (integerp (expt 2 130)) =>  true
+    (integerp 6/5) =>  false
+    (integerp nil) =>  false
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -3078,47 +3083,44 @@ Returns true if object is of type integer; otherwise, returns false.
 
 * 注意(Notes):
 
- (integerp object) ==  (typep object 'integer)
+        (integerp object) ==  (typep object 'integer)
 
 ### <span id="F-PARSE-INTEGER">函数 PARSE-INTEGER</span>
 
 * 语法(Syntax):
 
-parse-integer string &key start end radix junk-allowed => integer, pos
+        parse-integer string &key start end radix junk-allowed => integer, pos
 
 * 参数和值(Arguments and Values):
 
-string---a string.
-
-start, end---bounding index designators of string. The defaults for start and end are 0 and nil, respectively.
-
-radix---a radix. The default is 10.
-
-junk-allowed---一个广义 boolean. The default is false.
-
-integer---an integer or false.
-
-pos---a bounding index of string.
+        string---一个字符串.
+        start, end---字符串 string 的边界下标. 默认的 start 和 end 分别为 0 和 nil.
+        radix---a radix. 默认是 10.
+        junk-allowed---一个广义 boolean. 默认是 false.
+        integer---一个整数或者 false.
+        pos---字符串 string 的边界下标.
 
 * 描述(Description):
 
-parse-integer parses an integer in the specified radix from the substring of string delimited by start and end.
+        parse-integer 从由 start 和 end 限定的字符串 string 的子字符串中 以指定基数来解析一个整数.
 
-parse-integer expects an optional sign (+ or -) followed by a a non-empty sequence of digits to be interpreted in the specified radix. Optional leading and trailing whitespace[1] is ignored.
+        parse-integer 预期一个可选的符号 (+ or -) 后面跟着一个被解释为指定基数的非空数字序列. 可选的前后空格会被忽略.
 
-parse-integer does not recognize the syntactic radix-specifier prefixes #O, #B, #X, and #nR, nor does it recognize a trailing decimal point.
+        parse-integer 不识别语法的进制指定符前缀 #O, #B, #X, 和 #nR, 也不识别一个小数点.
 
-If junk-allowed is false, an error of type parse-error is signaled if substring does not consist entirely of the representation of a signed integer, possibly surrounded on either side by whitespace[1] characters.
+        如果 junk-allowed 是 false, 如果子字符串不是完全由一个带符号整数表示, 可能周围存在空白字符, 那么会发出一个 parse-error 类型的错误.
 
-The first value returned is either the integer that was parsed, or else nil if no syntactically correct integer was seen but junk-allowed was true.
+        返回的第一个值是被解析得到的整数, 或者如果没有语法上正确的整数被看到但是 junk-allowed 是 true 那么就是 nil.
 
-The second value is either the index into the string of the delimiter that terminated the parse, or the upper bounding index of the substring if the parse terminated at the end of the substring (as is always the case if junk-allowed is false).
+        第二个值是这个字符串 string 中终止这个解析的定界符的下标, 或者如果这个解析在子字符串的最后终止那么就是字符串的上边界 (如果 junk-allowed 为 false 则情况总是如此).
 
 * 示例(Examples):
 
- (parse-integer "123") =>  123, 3
- (parse-integer "123" :start 1 :radix 5) =>  13, 3
- (parse-integer "no-integer" :junk-allowed t) =>  NIL, 0
+    ```LISP
+    (parse-integer "123") =>  123, 3
+    (parse-integer "123" :start 1 :radix 5) =>  13, 3
+    (parse-integer "no-integer" :junk-allowed t) =>  NIL, 0
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -3126,7 +3128,7 @@ The second value is either the index into the string of the delimiter that termi
 
 * 异常情况(Exceptional Situations):
 
-If junk-allowed is false, an error is signaled if substring does not consist entirely of the representation of an integer, possibly surrounded on either side by whitespace[1] characters.
+        如果 junk-allowed 是 false, 如果子字符串不是完全由一个整数表示, 可能周围存在空白字符, 那么就会发出一个错误.
 
 * 也见(See Also): None.
 
