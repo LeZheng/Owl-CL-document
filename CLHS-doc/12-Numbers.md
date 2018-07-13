@@ -70,7 +70,7 @@ Figure 12-4. 数值类型处理和强制转换相关的已定义的名字.
 
 #### 12.1.1.1 <span id="AssociativityCommutativityNO">数值运算中的结合律和交换律</span>
 
-对于数学上相关联的 (可能是可交换的), 一个符合规范的具体实现可以以任何方式处理参数, 这些参数与关联的 (可能是可交换的) 重排一致 a conforming implementation may process the arguments in any manner consistent with associative (and possibly commutative) rearrangement.<!-- TODO 待校验 --> 这个不会影响参数表达式形式被求值的顺序 ; 关于求值顺序的讨论, 见章节 3.1.2.1.2.3 (Function Forms). 唯一不确定的是参数的值被处理的顺序. 这个意味着具体实现在自动强制转换应用的地方可能不同; 见章节 12.1.1.2 (Contagion in Numeric Operations).
+对于数学上可结合的 (可能是可交换的) 的函数, 一个符合规范的具体实现可以以任何与结合的 (可能是可交换的) 重排一致的方式处理参数. 这个不会影响参数表达式形式被求值的顺序 ; 关于求值顺序的讨论, 见章节 3.1.2.1.2.3 (Function Forms). 唯一不确定的是参数的值被处理的顺序. 这个意味着具体实现在自动强制转换应用的地方可能不同; 见章节 12.1.1.2 (Contagion in Numeric Operations).
 
 一个符合规范的程序可以通过拆分这些操作到分开的函数表达式形式中, 或通过显式写明对执行强制转换函数的调用来控制显式处理的顺序.
 
@@ -275,8 +275,8 @@ Figure 12-4. 数值类型处理和强制转换相关的已定义的名字.
 
 
 #### 12.1.5.1 <span id="RuleComplexSubstitutability">复数的置换性规则</span>
-<!--TODO irrational and transcendental functions ??-->
-除了在无理数和超越函数的执行期间 Except during the execution of irrational and transcendental functions, 除非它的参数中的一个或多个是一个复数, 否则数值函数不会产生一个复数. 
+
+除了在无理函数和超越函数的执行期间, 除非它的参数中的一个或多个是一个复数, 否则数值函数不会产生一个复数. 
 
 
 #### 12.1.5.2 <span id="RuleComplexContagion">复数传递规则</span>
@@ -303,8 +303,8 @@ Figure 12-4. 数值类型处理和强制转换相关的已定义的名字.
 ```
 
 ##### 12.1.5.4 <span id="PrincipalValuesBranchCuts">主值和分支切割</span>
-<!--TODO 待校验-->
-很多无理数和超越函数在复数领域会被多次定义; 比如, 对于对数函数, 一般来说有无穷多的复数值. 在每个这样的例子中, 必须为这个函数选择一个主要的值来返回. 通常情况下, 这样的值不能被选择, 从而使范围连续; 在被称为分支切割的领域中, 必须定义分支, 这又定义了范围内的不连续点. Common Lisp 为这些复数函数定义了分支切割, 主值, 还有边界状况, 这些函数遵循 "复数 APL 中的主值和分支切割". 适用于每个函数的分支切割规则和那个函数的描述相对应.
+
+很多无理函数和超越函数在复数领域会被多次定义; 比如, 对于对数函数, 一般来说有无穷多的复数值. 在每个这样的例子中, 必须为这个函数选择一个主要的值来返回. 通常情况下, 这样的值不能被选择, 从而使范围连续; 在被称为分支切割的区域中, 必须定义分支, 这又定义了范围内的不连续点. Common Lisp 为这些复数函数定义了分支切割, 主值, 还有边界状况, 这些函数遵循 "复数 APL 中的主值和分支切割". 适用于每个函数的分支切割规则和那个函数的描述相对应.
 
 下面这段列出了在复数域的适用部分中所遵守的恒等式, 即使是在分支切割上:
 
@@ -321,18 +321,18 @@ Figure 12-4. 数值类型处理和强制转换相关的已定义的名字.
     Figure 12-10. 分支切割的象限编号
 
 ### 12.1.6 <span id="IntervalDesignators">Interval Designators</span>
-<!-- TODO 待翻译 -->
-The compound type specifier form of the numeric type specifiers permit the user to specify an interval on the real number line which describe a subtype of the type which would be described by the corresponding atomic type specifier. A subtype of some type T is specified using an ordered pair of objects called interval designators for type T.
+
+一个数值类型指定符的复合类型指定符形式允许用户在实数线上去指定一个描述这个类型的子类型的区间, 该类型将由相应的原子类型指定符描述. 使用一个称为类型 T 的区间标识符的对象的有序对来指定的某个类型 T 的一个子类型.
 
 T 类型的两个间隔指示器的第一个可以是以下任意一种:
 
-a number N of type T
+一个类型 T 的数字 N
 
-    This denotes a lower inclusive bound of N. That is, elements of the subtype of T will be greater than or equal to N.
+    这个表示包含 N 的下边界. 这也就是说, T 的子类型的元素会大于等于 N.
 
-a singleton list whose element is a number M of type T
+一个元素为类型 T 的数字 M 的单元素列表
 
-    This denotes a lower exclusive bound of M. That is, elements of the subtype of T will be greater than M.
+    这个表示不包含 M 的下边界. 这也就是说, T 的子类型的元素会大于 M.
 
 符号 *
 
@@ -340,13 +340,13 @@ a singleton list whose element is a number M of type T
 
 T 类型的两个间隔指示器的第二个可以是以下任意一种:
 
-a number N of type T
+一个类型 T 的数字 N
 
-    This denotes an upper inclusive bound of N. That is, elements of the subtype of T will be less than or equal to N.
+    这个表示不包含 N 的上边界. 这也就是说, T 的子类型的元素会小于等于 N.
 
-a singleton list whose element is a number M of type T
+一个元素为类型 T 的数字 M 的单元素列表
 
-    This denotes an upper exclusive bound of M. That is, elements of the subtype of T will be less than M.
+    这个表示不包含 M 的上边界. 这也就是说, T 的子类型的元素会小于 M.
 
 符号 *
 
@@ -450,7 +450,6 @@ a singleton list whose element is a number M of type T
 > * [状况类型 FLOATING-POINT-OVERFLOW](#CT-FLOATING-POINT-OVERFLOW)
 > * [状况类型 FLOATING-POINT-UNDERFLOW](#CT-FLOATING-POINT-UNDERFLOW)
 
-<!--TODO Compound Type Specifier Kind 的内容？？-->
 ### <span id="SC-NUMBER">系统类 NUMBER</span>
 
 * 类优先级列表(Class Precedence List):
@@ -480,7 +479,7 @@ a singleton list whose element is a number M of type T
 
 * 复合类型指定符类别(Compound Type Specifier Kind):
 
-        Specializing.
+        详细的.
 
 * 复合类型指定符语法(Compound Type Specifier Syntax):
 
@@ -521,7 +520,7 @@ a singleton list whose element is a number M of type T
 
 * 复合类型指定符类别(Compound Type Specifier Kind):
 
-        Abbreviating.
+        缩写的.
 
 * 复合类型指定符语法(Compound Type Specifier Syntax):
 
@@ -550,7 +549,7 @@ a singleton list whose element is a number M of type T
 
 * 复合类型指定符类别(Compound Type Specifier Kind):
 
-        Abbreviating.
+        缩写的.
 
 * 复合类型指定符语法(Compound Type Specifier Syntax):
 
@@ -614,7 +613,7 @@ a singleton list whose element is a number M of type T
 
 * 复合类型指定符类别(Compound Type Specifier Kind):
 
-        Abbreviating.
+        缩写的.
 
 * 复合类型指定符语法(Compound Type Specifier Syntax):
 
@@ -655,7 +654,7 @@ a singleton list whose element is a number M of type T
 
 * 复合类型指定符类别(Compound Type Specifier Kind):
 
-        Abbreviating.
+        缩写的.
 
 * 复合类型指定符语法(Compound Type Specifier Syntax):
 
@@ -698,7 +697,7 @@ a singleton list whose element is a number M of type T
 
 * 复合类型指定符类别(Compound Type Specifier Kind):
 
-        Abbreviating.
+        缩写的.
 
 * 复合类型指定符语法(Compound Type Specifier Syntax):
 
@@ -735,7 +734,7 @@ a singleton list whose element is a number M of type T
 
 * 复合类型指定符类别(Compound Type Specifier Kind):
 
-        Abbreviating.
+        缩写的.
 
 * 复合类型指定符语法(Compound Type Specifier Syntax):
 
@@ -762,7 +761,7 @@ a singleton list whose element is a number M of type T
 
 * 复合类型指定符类别(Compound Type Specifier Kind):
 
-        Abbreviating.
+        缩写的.
 
 * 复合类型指定符语法(Compound Type Specifier Syntax):
 
@@ -785,7 +784,7 @@ a singleton list whose element is a number M of type T
 
 * 复合类型指定符类别(Compound Type Specifier Kind):
 
-        Abbreviating.
+        缩写的.
 
 * 复合类型指定符语法(Compound Type Specifier Syntax):
 
@@ -950,7 +949,7 @@ a singleton list whose element is a number M of type T
 
         max 返回最大的实数 (接近于正无穷). min 返回最小的实数 (接近于负无穷).
 
-        对于 max, 具体实现可以选择去返回最大的参数 the implementation has the choice of returning the largest argument as is or applying the rules of floating-point contagion, taking all the arguments into consideration for contagion purposes<!--TODO 待翻译-->. 而且, 如果不止一个参数是 = 的, 那么它们中的任何一个可能被选择作为返回值. 比如, 如果这些实数是有理数和浮点数的混合, 那么最大值是个有理数, 然后具体实现可以自由地产生有理数或它的近似浮点数; 如果这个最大的参数是一个比任何浮点参数的最大格式都小的格式的浮点数, 然后具体实现可以自由地以给定的格式返回那个或者扩展到更大的格式. 相似的备注适用于 min (用 "最小参数" 替换 "最大参数").
+        对于 max, 具体实现可以选择去返回最大的参数或者应用浮点数传递性规则, 将所有参数都列入传递性目的的考虑中. 而且, 如果不止一个参数是 = 的, 那么它们中的任何一个可能被选择作为返回值. 比如, 如果这些实数是有理数和浮点数的混合, 那么最大值是个有理数, 然后具体实现可以自由地产生有理数或它的近似浮点数; 如果这个最大的参数是一个比任何浮点参数的最大格式都小的格式的浮点数, 然后具体实现可以自由地以给定的格式返回那个或者扩展到更大的格式. 相似的备注适用于 min (用 "最小参数" 替换 "最大参数").
 
 * 示例(Examples):
 
@@ -3854,7 +3853,7 @@ boole
 
 
 ### <span id="F-DSFFFFI">函数 DECODE-FLOAT, SCALE-FLOAT, FLOAT-RADIX, FLOAT-SIGN, FLOAT-DIGITS, FLOAT-PRECISION, INTEGER-DECODE-FLOAT</span>
-<!--TODO 待校验 待翻译-->
+
 * 语法(Syntax):
 
         decode-float float => significand, exponent, sign
@@ -3889,9 +3888,9 @@ boole
 
 * 描述(Description):
 
-        decode-float 计算描绘浮点数 float 的三个值. 第一个值和浮点数 float 相同类型并且表示有效位数 significand. 第二个值表示一个指数, 对于这个指数那个基数必须被提升到 The second value represents the exponent to which the radix (notated in this description by b) must be raised to obtain the value that, 当和第一个值相乘时, 产生浮点数 float 的完整值. 如果浮点数 float 是 0, 任何整数值可能被返回, provided that the identity shown for scale-float holds. 第三个值是和浮点数 float 相同类型并且如果浮点数 float 大于等于 0 就是 1.0 否则就是 -1.0.
+        decode-float 计算描绘浮点数 float 的三个值. 第一个值和浮点数 float 相同类型并且表示有效位数 significand. 第二个值表示一个指数, 对于这个指数那个基数 (在 b 的描述中被提到) 必须被提升来获取一个值, 当这个值和第一个值相乘时, 产生浮点数 float 的完整值. 如果浮点数 float 是 0, 任何整数值可能被返回, 假设保持 scale-float 展示的恒等式. 第三个值是和浮点数 float 相同类型并且如果浮点数 float 大于等于 0 就是 1.0 否则就是 -1.0.
 
-        decode-float divides float by an integral power of b so as to bring its value between 1/b (inclusive) and 1 (exclusive), 并且返回这个商作为对一个值. 然而, 如果浮点数 float 是 zero, 结果和这个浮点数 float 的绝对值相等 (这也就是说, 如果这里有个负零, 它的有效位数被认为是正零).
+        decode-float 用 b 的一个整数幂来除浮点数进而使它的值在 1/b (包含) 和 1 (不包含) 之间, 并且返回这个商作为对一个值. 然而, 如果浮点数 float 是 zero, 结果和这个浮点数 float 的绝对值相等 (这也就是说, 如果这里有个负零, 它的有效位数被认为是正零).
 
         scale-float 返回 (* float (expt (float b float) integer)), 其中 b 是这个浮点表示的基数. 浮点数 float 没有必要在 1/b 和 1 之间.
 
@@ -3954,7 +3953,7 @@ boole
 
 * 注意(Notes):
 
-        The product of the first result of decode-float or integer-decode-float, of the radix raised to the power of the second result, and of the third result is exactly equal to the value of float.
+        decode-float 或 integer-decode-float的第一个结果的乘积, 它被提升到第二个结果的幂, 第三个结果与浮点数 float 的值完全相等.<!--TODO 待校验-->
 
         (multiple-value-bind (signif expon sign)
                               (decode-float f)
