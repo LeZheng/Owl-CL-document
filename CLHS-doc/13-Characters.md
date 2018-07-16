@@ -1,14 +1,14 @@
-# 13 Characters
+# 13 字符
 
-> * 13.1 [Character Concepts](#CharacterConcepts)
-> * 13.2 [The Characters Dictionary](#TheCharactersDictionary)
+> * 13.1 [字符概念](#CharacterConcepts)
+> * 13.2 [字符字典](#TheCharactersDictionary)
 
-## 13.1 <span id="CharacterConcepts">Character Concepts</span>
+## 13.1 <span id="CharacterConcepts">字符概念</span>
 
-> * 13.1.1 [Introduction to Characters](#IntroductionToCharacters)
+> * 13.1.1 [字符介绍](#IntroductionToCharacters)
 > * 13.1.2 [Introduction to Scripts and Repertoires](#IntroductionScriptsRepertoires)
-> * 13.1.3 [Character Attributes](#CharacterAttributes)
-> * 13.1.4 [Character Categories](#CharacterCategories)
+> * 13.1.3 [字符属性](#CharacterAttributes)
+> * 13.1.4 [字符类别](#CharacterCategories)
 > * 13.1.5 [Identity of Characters](#IdentityCharacters)
 > * 13.1.6 [Ordering of Characters](#OrderingCharacters)
 > * 13.1.7 [Character Names](#CharacterNames)
@@ -16,106 +16,106 @@
 > * 13.1.9 [Character Encodings](#CharacterEncodings)
 > * 13.1.10 [Documentation of Implementation-Defined Scripts](#DocImplDefinedScripts)
 
-### 13.1.1 <span id="IntroductionToCharacters">Introduction to Characters</span>
+### 13.1.1 <span id="IntroductionToCharacters">字符介绍</span>
 
-A character is an object that represents a unitary token (e.g., a letter, a special symbol, or a ``control character'') in an aggregate quantity of text (e.g., a string or a text stream).
+一个字符是一个在一个文本的总量中 (比如, 一个字符串或一个文本流) 表示单一记号 (比如, 一个字符, 一个特殊符号, 或者一个 "控制字符(control character)") 的对象.
 
-Common Lisp allows an implementation to provide support for international language characters as well as characters used in specialized arenas (e.g., mathematics).
+Common Lisp 允许一个具体实现去为国际语言字符和专门领域中(比如, 数学上)使用的字符提供支持.
 
-The following figures contain lists of defined names applicable to characters.
+下面这段包含了可应用于字符的已定义的名字.
 
-The next figure lists some defined names relating to character attributes and character predicates.
+下面这段列出了一些和字符属性和字符断言相关的已定义的名字.
 
-alpha-char-p     char-not-equal     char>            
-alphanumericp    char-not-greaterp  char>=           
-both-case-p      char-not-lessp     digit-char-p     
-char-code-limit  char/=             graphic-char-p   
-char-equal       char<              lower-case-p     
-char-greaterp    char<=             standard-char-p  
-char-lessp       char=              upper-case-p     
+    alpha-char-p     char-not-equal     char>            
+    alphanumericp    char-not-greaterp  char>=           
+    both-case-p      char-not-lessp     digit-char-p     
+    char-code-limit  char/=             graphic-char-p   
+    char-equal       char<              lower-case-p     
+    char-greaterp    char<=             standard-char-p  
+    char-lessp       char=              upper-case-p     
 
-Figure 13-1. Character defined names -- 1
+    Figure 13-1. 字符相关的已定义的名字 -- 1
 
-The next figure lists some character construction and conversion defined names.
+下面这段列出了一些字符构造和转换的已定义的名字.
 
-char-code      char-name    code-char   
-char-downcase  char-upcase  digit-char  
-char-int       character    name-char   
+    char-code      char-name    code-char   
+    char-downcase  char-upcase  digit-char  
+    char-int       character    name-char   
 
-Figure 13-2. Character defined names -- 2 
+    Figure 13-2. 字符相关的已定义的名字 -- 2 
 
 
 ### 13.1.2 <span id="IntroductionScriptsRepertoires">Introduction to Scripts and Repertoires</span>
 
 #### 13.1.2.1 Character Scripts
-
+<!-- TODO 待翻译 -->
 A script is one of possibly several sets that form an exhaustive partition of the type character.
 
 The number of such sets and boundaries between them is implementation-defined. Common Lisp does not require these sets to be types, but an implementation is permitted to define such types as an extension. Since no character from one script can ever be a member of another script, it is generally more useful to speak about character repertoires.
 
-Although the term ``script'' is chosen for definitional compatibility with ISO terminology, no conforming implementation is required to use any particular scripts standardized by ISO or by any other standards organization.
+虽然术语 "script" 为了和 ISO 术语定义上兼容而被选择, 但是没有符合规范的具体实现需要去使用 ISO 或者任何其他标准化组织标准化的特定 scripts.
 
 Whether and how the script or scripts used by any given implementation are named is implementation-dependent. 
 
 
 #### 13.1.2.2 Character Repertoires
 
-A repertoire is a type specifier for a subtype of type character. This term is generally used when describing a collection of characters independent of their coding. Characters in repertoires are only identified by name, by glyph, or by character description.
+一个 repertoire 是一个 character 类型的子类型的类型指定符. 这个术语通常在描述一个独立于编码的字符集合时被使用. repertoires 中的字符只能通过名字, 字符的可见表示, 或者通过字符描述来确认.
 
-A repertoire can contain characters from several scripts, and a character can appear in more than one repertoire.
+一个 repertoire 可以包含来自多个 scripts 的字符, 并且一个字符可以出现在不止一个 repertoire 中.
 
-For some examples of repertoires, see the coded character standards ISO 8859/1, ISO 8859/2, and ISO 6937/2. Note, however, that although the term ``repertoire'' is chosen for definitional compatibility with ISO terminology, no conforming implementation is required to use repertoires standardized by ISO or any other standards organization. 
-
-
-### 13.1.3 <span id="CharacterAttributes">Character Attributes</span>
-
-Characters have only one standardized attribute: a code. A character's code is a non-negative integer. This code is composed from a character script and a character label in an implementation-dependent way. See the functions char-code and code-char.
-
-Additional, implementation-defined attributes of characters are also permitted so that, for example, two characters with the same code may differ in some other, implementation-defined way.
-
-For any implementation-defined attribute there is a distinguished value called the null value for that attribute. A character for which each implementation-defined attribute has the null value for that attribute is called a simple character. If the implementation has no implementation-defined attributes, then all characters are simple characters. 
+关于 repertoires 的一些例子, 见字符编码标准 ISO 8859/1, ISO 8859/2, 和 ISO 6937/2. 注意, 虽然术语 "repertoire" 为了和 ISO 术语定义上兼容而被选择, 但是没有符合规范的具体实现需要去使用 ISO 或者任何其他标准化组织标准化的 repertoires. 
 
 
-### 13.1.4 <span id="CharacterCategories">Character Categories</span>
+### 13.1.3 <span id="CharacterAttributes">字符属性</span>
 
-There are several (overlapping) categories of characters that have no formally associated type but that are nevertheless useful to name. They include graphic characters, alphabetic[1] characters, characters with case (uppercase and lowercase characters), numeric characters, alphanumeric characters, and digits (in a given radix).
+字符只有一个标准化的属性: 一个码值. 一个字符的码值是一个非负整数. 这个码值是由一个字符 script 和一个字符标签以一种依赖于具体实现的方式组成. 见函数 char-code 和 code-char.
 
-For each implementation-defined attribute of a character, the documentation for that implementation must specify whether characters that differ only in that attribute are permitted to differ in whether are not they are members of one of the aforementioned categories.
+另外, 具体实现定义的字符的属性是允许的, 这样一来, 比如, 两个带有相同码值的字符可以以一个具体实现定义的方式来区分.
 
-Note that these terms are defined independently of any special syntax which might have been enabled in the current readtable.
-
-> * 13.1.4.1 [Graphic Characters](#GraphicCharacters)
-> * 13.1.4.2 [Alphabetic Characters](#AlphabeticCharacters)
-> * 13.1.4.3 [Characters With Case](#CharactersWithCase)
-> * 13.1.4.4 [Numeric Characters](#NumericCharacters)
-> * 13.1.4.5 [Alphanumeric Characters](#AlphanumericCharacters)
-> * 13.1.4.6 [Digits in a Radix](#DigitsRadix)
-
-#### 13.1.4.1 <span id="GraphicCharacters">Graphic Characters</span>
-
-Characters that are classified as graphic, or displayable, are each associated with a glyph, a visual representation of the character.
-
-A graphic character is one that has a standard textual representation as a single glyph, such as A or * or =. Space, which effectively has a blank glyph, is defined to be a graphic.
-
-Of the standard characters, newline is non-graphic and all others are graphic; see Section 2.1.3 (Standard Characters).
-
-Characters that are not graphic are called non-graphic. Non-graphic characters are sometimes informally called ``formatting characters'' or ``control characters.''
-
-#\Backspace, #\Tab, #\Rubout, #\Linefeed, #\Return, and #\Page, if they are supported by the implementation, are non-graphic. 
+对于任何具体实现定义的属性这里有一个突出的值称之为这个属性的 null 值. 一个每个具体实现定义的属性都有这个属性的 null 值的字符被称为一个简单字符. 如果这个具体实现没有具体实现定义的属性, 那么所有字符都是简单字符. 
 
 
-#### 13.1.4.2 <span id="AlphabeticCharacters">Alphabetic Characters</span>
+### 13.1.4 <span id="CharacterCategories">字符类别</span>
 
-The alphabetic[1] characters are a subset of the graphic characters. Of the standard characters, only these are the alphabetic[1] characters:
+有几个(重叠的)类别的字符没有正式关联的类型但这对名称很有用. 它们包括图形字符(graphic characters), 字母字符(alphabetic characters), 大小写字符 (大写和小写字符), 数字字符(numeric characters), 字母数字字符(alphanumeric characters), 还有数字 (以一个给定的基数).
 
-A B C D E F G H I J K L M N O P Q R S T U V W X Y Z
+对于一个字符的每个具体实现定义的属性, 那个具体实现的文档必须指明只能在那个属性上区分的字符是否允许和上述类别之一的成员之间存在差异 the documentation for that implementation must specify whether characters that differ only in that attribute are permitted to differ in whether are not they are members of one of the aforementioned categories.<!--TODO 待校验-->
 
-a b c d e f g h i j k l m n o p q r s t u v w x y z
+注意, 这些定义的术语独立于任何当前读取表中启用的特殊语法.
 
-Any implementation-defined character that has case must be alphabetic[1]. For each implementation-defined graphic character that has no case, it is implementation-defined whether that character is alphabetic[1]. 
+> * 13.1.4.1 [图形字符](#GraphicCharacters)
+> * 13.1.4.2 [字母字符](#AlphabeticCharacters)
+> * 13.1.4.3 [大小写字符](#CharactersWithCase)
+> * 13.1.4.4 [数字字符](#NumericCharacters)
+> * 13.1.4.5 [字母数字字符](#AlphanumericCharacters)
+> * 13.1.4.6 [一个给定基数的数字](#DigitsRadix)
+
+#### 13.1.4.1 <span id="GraphicCharacters">图形字符</span>
+
+每个被分类为图像或可显示的字符都和一个该字符的可见表示的字形相关联.
+
+一个图形字符是一个有着作为一个单个字形的标准文本表示的字符, 就像 A 或 * 或 =. 实际上有着空白字形的空格(space)被定义为是一个图形字符.
+
+在标准字符中, 换行(newline)是非图形的而所有其他的是图形的; 见章节 2.1.3 (Standard Characters).
+
+不是图形的字符被称为非图形字符. 非图形字符有时也被通俗地称为 "格式化字符(formatting characters)" 或 "控制字符(control characters)".
+
+如果 #\Backspace, #\Tab, #\Rubout, #\Linefeed, #\Return, 和 #\Page 被具体实现支持, 那么就是非图形的. 
 
 
-#### 13.1.4.3 <span id="AlphabeticCharacters">Characters With Case</span>
+#### 13.1.4.2 <span id="AlphabeticCharacters">字母字符</span>
+
+字母字符是图形字符的一个子集. 标准字符中, 只有这些是字母字符:
+
+    A B C D E F G H I J K L M N O P Q R S T U V W X Y Z
+
+    a b c d e f g h i j k l m n o p q r s t u v w x y z
+
+任何具体实现定义的有着大小写的字符都是字母的. 对于每个具体实现定义的没有大小写的图形字符, 它是否为字母的是具体实现定义的. 
+
+
+#### 13.1.4.3 <span id="AlphabeticCharacters">大小写字符</span>
 
 The characters with case are a subset of the alphabetic[1] characters. A character with case has the property of being either uppercase or lowercase. Every character with case is in one-to-one correspondence with some other character with the opposite case.
 
@@ -151,7 +151,7 @@ The uppercase standard characters A through Z mentioned above respectively corre
 An implementation may define that other implementation-defined graphic characters have case. Such definitions must always be done in pairs---one uppercase character in one-to-one correspondence with one lowercase character. 
 
 
-#### 13.1.4.4 <span id="NumericCharacters">Numeric Characters</span>
+#### 13.1.4.4 <span id="NumericCharacters">数字字符</span>
 
 The numeric characters are a subset of the graphic characters. Of the standard characters, only these are numeric characters:
 
@@ -160,11 +160,11 @@ The numeric characters are a subset of the graphic characters. Of the standard c
 For each implementation-defined graphic character that has no case, the implementation must define whether or not it is a numeric character. 
 
 
-#### 13.1.4.5 <span id="AlphanumericCharacters">Alphanumeric Characters</span>
+#### 13.1.4.5 <span id="AlphanumericCharacters">字母数字字符</span>
 
 The set of alphanumeric characters is the union of the set of alphabetic[1] characters and the set of numeric characters. 
 
-#### 13.1.4.6 <span id="DigitsRadix">Digits in a Radix</span>
+#### 13.1.4.6 <span id="DigitsRadix">一个给定基数的数字</span>
 
 What qualifies as a digit depends on the radix (an integer between 2 and 36, inclusive). The potential digits are:
 
@@ -264,7 +264,7 @@ An implementation must document the character scripts it supports. For each char
 * The interaction with file I/O, in particular, the supported coded character sets (for example, ISO8859/1-1987) and external encoding schemes supported are documented. 
 
 
-## 13.2 <span id="TheCharactersDictionary">The Characters Dictionary</span>
+## 13.2 <span id="TheCharactersDictionary">字符字典</span>
 
 > * [系统类 CHARACTER](#SC-CHARACTER)
 > * [类型 BASE-CHAR](#T-BASE-CHAR)
@@ -846,7 +846,7 @@ Should signal an error of type type-error if character is not a character.
 
 * 也见(See Also):
 
-upper-case-p, alpha-char-p, Section 13.1.4.3 (Characters With Case), Section 13.1.10 (Documentation of Implementation-Defined Scripts)
+upper-case-p, alpha-char-p, Section 13.1.4.3 (大小写字符), Section 13.1.10 (Documentation of Implementation-Defined Scripts)
 
 * 注意(Notes):
 
@@ -903,7 +903,7 @@ Should signal an error of type type-error if character is not a character.
 
 * 也见(See Also):
 
-char-upcase, char-downcase, Section 13.1.4.3 (Characters With Case), Section 13.1.10 (Documentation of Implementation-Defined Scripts)
+char-upcase, char-downcase, Section 13.1.4.3 (大小写字符), Section 13.1.10 (Documentation of Implementation-Defined Scripts)
 
 * 注意(Notes): None. 
 
