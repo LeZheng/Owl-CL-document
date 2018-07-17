@@ -9,11 +9,11 @@
 > * 13.1.2 [Introduction to Scripts and Repertoires](#IntroductionScriptsRepertoires)
 > * 13.1.3 [字符属性](#CharacterAttributes)
 > * 13.1.4 [字符类别](#CharacterCategories)
-> * 13.1.5 [Identity of Characters](#IdentityCharacters)
-> * 13.1.6 [Ordering of Characters](#OrderingCharacters)
-> * 13.1.7 [Character Names](#CharacterNames)
-> * 13.1.8 [Treatment of Newline during Input and Output](#TreatmentNewlineInputOutput)
-> * 13.1.9 [Character Encodings](#CharacterEncodings)
+> * 13.1.5 [字符的等价](#IdentityCharacters)
+> * 13.1.6 [字符的顺序](#OrderingCharacters)
+> * 13.1.7 [字符的名字](#CharacterNames)
+> * 13.1.8 [在输入和输出中的 Newline 的处理](#TreatmentNewlineInputOutput)
+> * 13.1.9 [字符编码](#CharacterEncodings)
 > * 13.1.10 [Documentation of Implementation-Defined Scripts](#DocImplDefinedScripts)
 
 ### 13.1.1 <span id="IntroductionToCharacters">字符介绍</span>
@@ -117,151 +117,150 @@ Whether and how the script or scripts used by any given implementation are named
 
 #### 13.1.4.3 <span id="AlphabeticCharacters">大小写字符</span>
 
-The characters with case are a subset of the alphabetic[1] characters. A character with case has the property of being either uppercase or lowercase. Every character with case is in one-to-one correspondence with some other character with the opposite case.
+带有大小写的字符是字母字符的一个子集. 一个带有大小写的字符有着可以是大写或小写的属性. 每个带有大小写的字符都和另一个带有相反大小写的字符一对一对应.
 
-> * 13.1.4.3.1 [Uppercase Characters](#UppercaseCharacters)
-> * 13.1.4.3.2 [Lowercase Characters](#LowercaseCharacters)
-> * 13.1.4.3.3 [Corresponding Characters in the Other Case](#CorrespondingCharactersOtherCase)
-> * 13.1.4.3.4 [Case of Implementation-Defined Characters](#CaseImplDefCharacters)
-
-
-##### 13.1.4.3.1 <span id="UppercaseCharacters">Uppercase Characters</span>
-
-An uppercase character is one that has a corresponding lowercase character that is different (and can be obtained using char-downcase).
-
-Of the standard characters, only these are uppercase characters:
-
-A B C D E F G H I J K L M N O P Q R S T U V W X Y Z 
+> * 13.1.4.3.1 [大写字符](#UppercaseCharacters)
+> * 13.1.4.3.2 [小写字符](#LowercaseCharacters)
+> * 13.1.4.3.3 [另一个大小写的对应字符](#CorrespondingCharactersOtherCase)
+> * 13.1.4.3.4 [具体实现定义的字符的大小写](#CaseImplDefCharacters)
 
 
-##### 13.1.4.3.2 <span id="LowercaseCharacters">Lowercase Characters</span>
+##### 13.1.4.3.1 <span id="UppercaseCharacters">大写字符</span>
 
-A lowercase character is one that has a corresponding uppercase character that is different (and can be obtained using char-upcase).
+一个大写字符是一个有着对应不同的小写字符(可以使用 char-downcase 来获取)的字符.
 
-Of the standard characters, only these are lowercase characters:
+标准字符中, 只有这些是大写字符:
 
-a b c d e f g h i j k l m n o p q r s t u v w x y z 
+    A B C D E F G H I J K L M N O P Q R S T U V W X Y Z 
 
-##### 13.1.4.3.3 <span id="CorrespondingCharactersOtherCase">Corresponding Characters in the Other Case</span>
 
-The uppercase standard characters A through Z mentioned above respectively correspond to the lowercase standard characters a through z mentioned above. For example, the uppercase character E corresponds to the lowercase character e, and vice versa. 
+##### 13.1.4.3.2 <span id="LowercaseCharacters">小写字符</span>
 
-##### 13.1.4.3.4 <span id="CaseImplDefCharacters">Case of Implementation-Defined Characters</span>
+一个小写字符是一个有着对应不同的大写字符(可以使用 char-upcase 来获取)的字符.
 
-An implementation may define that other implementation-defined graphic characters have case. Such definitions must always be done in pairs---one uppercase character in one-to-one correspondence with one lowercase character. 
+标准字符中, 只有这些是小写写字符:
 
+    a b c d e f g h i j k l m n o p q r s t u v w x y z 
+
+##### 13.1.4.3.3 <span id="CorrespondingCharactersOtherCase">另一个大小写的对应字符</span>
+
+上面提及的标准大写字符 A 到 Z 分别对应上面提及的标准小写字符 a 到 z. 比如, 大写字符 E 对应小写字符 e, 反之亦然. 
+
+##### 13.1.4.3.4 <span id="CaseImplDefCharacters">具体实现定义的字符的大小写</span>
+
+一个具体实现可能定义其他具体实现定义的图形字符有着大小写. 这样的定义必须总是成对的---一个大写字符和一个小写字符一对一对应. 
 
 #### 13.1.4.4 <span id="NumericCharacters">数字字符</span>
 
-The numeric characters are a subset of the graphic characters. Of the standard characters, only these are numeric characters:
+数字字符是图形字符的一个子集. 在标准字符中, 只有这些是数字字符:
 
-0 1 2 3 4 5 6 7 8 9
+    0 1 2 3 4 5 6 7 8 9
 
-For each implementation-defined graphic character that has no case, the implementation must define whether or not it is a numeric character. 
+对于每个具体实现定义的没有大小写的图形字符, 具体实现必须定义它是否为一个数字字符. 
 
 
 #### 13.1.4.5 <span id="AlphanumericCharacters">字母数字字符</span>
 
-The set of alphanumeric characters is the union of the set of alphabetic[1] characters and the set of numeric characters. 
+数字字母字符的集合是字母字符集合和数字字符集合的并集. 
 
 #### 13.1.4.6 <span id="DigitsRadix">一个给定基数的数字</span>
 
-What qualifies as a digit depends on the radix (an integer between 2 and 36, inclusive). The potential digits are:
+什么限制一个数位取决于基数 (一个在 2 到 36 之间的整数, 包含 36). 这些可能的数位是:
 
 0 1 2 3 4 5 6 7 8 9 A B C D E F G H I J K L M N O P Q R S T U V W X Y Z
 
-Their respective weights are 0, 1, 2, ... 35. In any given radix n, only the first n potential digits are considered to be digits. For example, the digits in radix 2 are 0 and 1, the digits in radix 10 are 0 through 9, and the digits in radix 16 are 0 through F.
+它们的权重分别是 0, 1, 2, ... 35. 在任何给定的基数 n, 只有前面 n 个可能的数位会被当作数位. 比如, 在基数 2 的数位是 0 和 1, 在基数 10 的数位是 0 到 9, 而在基数 16 的数位是 0 到 F.
 
-Case is not significant in digits; for example, in radix 16, both F and f are digits with weight 15. 
-
-
-### 13.1.5 <span id="IdentityCharacters">Identity of Characters</span>
-
-Two characters that are eql, char=, or char-equal are not necessarily eq. 
+在数位中大小写是无效的; 比如, 在基数 16 中, 不管是 F 还是 f 都是权重为 15 的数位. 
 
 
-### 13.1.6 <span id="OrderingCharacters">Ordering of Characters</span>
+### 13.1.5 <span id="IdentityCharacters">字符的等价</span>
 
-The total ordering on characters is guaranteed to have the following properties:
+字符的等价表示两个字符是 eql, char=, 或 char-equal 但没有必要是 eq. 
 
-* If two characters have the same implementation-defined attributes, then their ordering by char< is consistent with the numerical ordering by the predicate < on their code attributes.
 
-* If two characters differ in any attribute, then they are not char=.
+### 13.1.6 <span id="OrderingCharacters">字符的顺序</span>
 
-* The total ordering is not necessarily the same as the total ordering on the integers produced by applying char-int to the characters.
+字符的总顺序保证有着以下特性:
 
-* While alphabetic[1] standard characters of a given case must obey a partial ordering, they need not be contiguous; it is permissible for uppercase and lowercase characters to be interleaved. Thus (char<= #\a x #\z) is not a valid way of determining whether or not x is a lowercase character.
+* 如果两个字符有着相同的具体实现定义的属性, 那么它们根据 char< 的顺序和根据它们的码值上的 < 断言的数值顺序是一致的.
 
-Of the standard characters, those which are alphanumeric obey the following partial ordering:
+* 如果两个字符在任何一个属性上有区别, 那么它们就不是 char=.
 
- A<B<C<D<E<F<G<H<I<J<K<L<M<N<O<P<Q<R<S<T<U<V<W<X<Y<Z
- a<b<c<d<e<f<g<h<i<j<k<l<m<n<o<p<q<r<s<t<u<v<w<x<y<z
- 0<1<2<3<4<5<6<7<8<9
- either 9<A or Z<0
- either 9<a or z<0                                                      
+* 这个总的顺序没有必要和给这些字符应用 char-int 所产生的整数的总顺序一致.
 
-This implies that, for standard characters, alphabetic[1] ordering holds within each case (uppercase and lowercase), and that the numeric characters as a group are not interleaved with alphabetic characters. However, the ordering or possible interleaving of uppercase characters and lowercase characters is implementation-defined. 
+* 虽然一个给定大小写的标准字母字符必须遵循一个局部顺序, 它们不需要是连续的; 允许大写字母和小写字母是交错的. 因此 (char<= #\a x #\z) 不是一个确定 x 是否为一个小写字符的有效方法.
 
-### 13.1.7 <span id="CharacterNames">Character Names</span>
+在标准字符中, 那些数字字母字符遵循下面的局部顺序:
 
-The following character names must be present in all conforming implementations:
+    A<B<C<D<E<F<G<H<I<J<K<L<M<N<O<P<Q<R<S<T<U<V<W<X<Y<Z
+    a<b<c<d<e<f<g<h<i<j<k<l<m<n<o<p<q<r<s<t<u<v<w<x<y<z
+    0<1<2<3<4<5<6<7<8<9
+    9<A 或 Z<0
+    9<a 或 z<0                                                      
+
+这个意味着, 对于标准字符, 在每个大小写中(大写和小写)字母顺序保持不变, 并且数字字符作为一个组不会和字母字符交错. 但是, 大写字符和小写字符的顺序或交错可能性是具体实现定义的. 
+
+### 13.1.7 <span id="CharacterNames">字符的名字</span>
+
+下面这些字符的名字必须出现在所有符合规范的具体实现中:
 
 Newline
 
-    The character that represents the division between lines. An implementation must translate between #\Newline, a single-character representation, and whatever external representation(s) may be used.
+    这个字符表示行之间的分割. 一个具体实现必须在 #\Newline, 一个单字符表示, 和可能被使用的其他外部表示之间转换.
 
 Space
 
-    The space or blank character.
+    空格或空白字符.
 
-The following names are semi-standard; if an implementation supports them, they should be used for the described characters and no others.
+下面的名字是不完全标准的; 如果一个具体实现支持它们, 它们应该用于这些描述的字符, 而不是其他字符.
 
 Rubout
 
-    The rubout or delete character.
+    擦去或删除字符.
 
 Page
 
-    The form-feed or page-separator character.
+    格式符或页分割字符.
 
 Tab
 
-    The tabulate character.
+    制表符.
 
 Backspace
 
-    The backspace character.
+    退格符.
 
 Return
 
-    The carriage return character.
+    回车字符.
 
 Linefeed
 
-    The line-feed character.
+    换行符字符.
 
-In some implementations, one or more of these character names might denote a standard character; for example, #\Linefeed and #\Newline might be the same character in some implementations. 
-
-
-### 13.1.8 <span id="TreatmentNewlineInputOutput">Treatment of Newline during Input and Output</span>
-
-When the character #\Newline is written to an output file, the implementation must take the appropriate action to produce a line division. This might involve writing out a record or translating #\Newline to a CR/LF sequence. When reading, a corresponding reverse transformation must take place. 
+在一些具体实现中, 这些字符名字中的一个或多个可能表示一个标准字符; 比如, #\Linefeed 和 #\Newline 在某些具体实现中可能是相同字符. 
 
 
-### 13.1.9 <span id="CharacterEncodings">Character Encodings</span>
+### 13.1.8 <span id="TreatmentNewlineInputOutput">在输入和输出中的 Newline 的处理</span>
 
-A character is sometimes represented merely by its code, and sometimes by another integer value which is composed from the code and all implementation-defined attributes (in an implementation-defined way that might vary between Lisp images even in the same implementation). This integer, returned by the function char-int, is called the character's ``encoding.'' There is no corresponding function from a character's encoding back to the character, since its primary intended uses include things like hashing where an inverse operation is not really called for. 
+当这个 #\Newline 字符被写入到一个输出文件中, 具体实现必须采取适当的动作来产生一个行分割符. 这个可能涉及输出一个标记或转换 #\Newline 为一个 CR/LF 序列. 在读取时, 会发生一个对应的反向转换. 
+
+
+### 13.1.9 <span id="CharacterEncodings">字符编码</span>
+
+一个字符有时仅仅由它的码值表示, 而有时候通过另一个由码值和所有具体实现定义的属性组成的整数来表示 (以一种即便在相同具体实现中的 Lisp 镜像之间也可能改变的具体实现定义的方式). 这个被函数 char-int 返回的整数, 称为这个字符的 "编码(encoding)". 这里没有对应的函数从一个字符的编码回退到这个字符, 因为它的主要用途包括像哈希这样的东西, 在这里不需要进行逆运算. 
 
 ### 13.1.10 <span id="DocImplDefinedScripts">Documentation of Implementation-Defined Scripts</span>
 
-An implementation must document the character scripts it supports. For each character script supported, the documentation must describe at least the following:
+一个具体实现必须记录它支持的字符 scripts. 对于每个支持的字符 script, 这个文档必须描述以下这些:
 
-* Character labels, glyphs, and descriptions. Character labels must be uniquely named using only Latin capital letters A--Z, hyphen (-), and digits 0--9.
-* Reader canonicalization. Any mechanisms by which read treats different characters as equivalent must be documented.
-* The impact on char-upcase, char-downcase, and the case-sensitive format directives. In particular, for each character with case, whether it is uppercase or lowercase, and which character is its equivalent in the opposite case.
-* The behavior of the case-insensitive functions char-equal, char-not-equal, char-lessp, char-greaterp, char-not-greaterp, and char-not-lessp.
-* The behavior of any character predicates; in particular, the effects of alpha-char-p, lower-case-p, upper-case-p, both-case-p, graphic-char-p, and alphanumericp.
-* The interaction with file I/O, in particular, the supported coded character sets (for example, ISO8859/1-1987) and external encoding schemes supported are documented. 
+* 字符标签, 图形, 和描述. 字符标签必须使用拉丁大写字母 A--Z, 连字符 (-), 和数字 0--9 来唯一命名.
+* 读取器规范化. 任何 read 用来把不同的字符当作等价的机制必须被记录.
+* 对 char-upcase, char-downcase, 还有大小写敏感的格式化指令的影响. 特别地, 对于每个带有大小写的字符, 它是大写还是小写, 以及哪个字符是它在相反大小写的等价物.
+* 大小写敏感的函数 char-equal, char-not-equal, char-lessp, char-greaterp, char-not-greaterp, 和 char-not-lessp 的行为.
+* 任意字符断言的行为; 尤其, alpha-char-p, lower-case-p, upper-case-p, both-case-p, graphic-char-p, 和 alphanumericp 的效果.
+* 与文件 I/O 的交互, 特别地, 记录支持的编码字符集 (比如, ISO8859/1-1987) 和支持的外部编码方案. 
 
 
 ## 13.2 <span id="TheCharactersDictionary">字符字典</span>
@@ -1093,35 +1092,36 @@ Non-graphic characters having names are written by the Lisp printer as ``#\'' fo
 
 * 语法(Syntax):
 
-name-char name => char-p
+        name-char name => char-p
 
 * 参数和值(Arguments and Values):
 
-name---a string designator.
-
-char-p---a character or nil.
+        name---一个字符串标识符.
+        char-p---一个字符或 nil.
 
 * 描述(Description):
 
-Returns the character object whose name is name (as determined by string-equal---i.e., lookup is not case sensitive). If such a character does not exist, nil is returned.
+        返回名为 name 的字符对象 (由 string-equal 决定---换句话说, 查找是大小写敏感的). 如果这样一个字符不存在, 返回 nil.
 
 * 示例(Examples):
 
-(name-char 'space) =>  #\Space
-(name-char "space") =>  #\Space
-(name-char "Space") =>  #\Space
-(let ((x (char-name #\a)))
-  (or (not x) (eql (name-char x) #\a))) =>  true
+    ```LISP
+    (name-char 'space) =>  #\Space
+    (name-char "space") =>  #\Space
+    (name-char "Space") =>  #\Space
+    (let ((x (char-name #\a)))
+      (or (not x) (eql (name-char x) #\a))) =>  true
+    ```
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-Should signal an error of type type-error if name is not a string designator.
+        如果 name 不是一个字符串标识符, 那么应该发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-char-name
+        char-name
 
 * 注意(Notes): None. 
 
