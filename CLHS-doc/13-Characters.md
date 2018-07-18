@@ -291,185 +291,186 @@ Linefeed
 
 * 类优先级列表(Class Precedence List):
 
-character, t
+        character, t
 
 * 描述(Description):
 
-A character is an object that represents a unitary token in an aggregate quantity of text; see Section 13.1 (Character Concepts).
+      一个 character 是一个表示一个在文本总量中表示一个单一标记的对象; 见章节 13.1 (Character Concepts).
 
-The types base-char and extended-char form an exhaustive partition of the type character.
+      类型 base-char 和 extended-char 组成一个类型 character 的详尽分区.
 
 * 也见(See Also):
 
-Section 13.1 (Character Concepts), Section 2.4.8.1 (Sharpsign Backslash), Section 22.1.3.2 (Printing Characters) 
+        章节 13.1 (Character Concepts), 章节 2.4.8.1 (Sharpsign Backslash), 章节 22.1.3.2 (Printing Characters) 
 
 
 ### <span id="T-BASE-CHAR">类型 BASE-CHAR</span>
 
 * 超类型(Supertypes):
 
-base-char, character, t
+        base-char, character, t
 
 * 描述(Description):
 
-The type base-char is defined as the upgraded array element type of standard-char. An implementation can support additional subtypes of type character (besides the ones listed in this standard) that might or might not be supertypes of type base-char. In addition, an implementation can define base-char to be the same type as character.
+        类型 base-char 被定义为 standard-char 的提升<!--TODO 提升 ？？-->数组元素类型. 一个具体实现可以支持额外的 character 类型的子类型 (除了在这个标准中列出的那些), 它们可能或可能不是 base-char 类型的子类型. 另外, 一个具体实现可以定义 base-char 为 charactor 的相同类型.
 
-Base characters are distinguished in the following respects:
+        基本字符在以下方面有区别:
 
-1. The type standard-char is a subrepertoire of the type base-char.
-2. The selection of base characters that are not standard characters is implementation defined.
-3. Only objects of the type base-char can be elements of a base string.
-4. No upper bound is specified for the number of characters in the base-char repertoire; the size of that repertoire is implementation-defined. The lower bound is 96, the number of standard characters.
+        1. 类型 standard-char 是一个 base-char 的一个 subrepertoire.
+        2. 不是标准字符的基本字符的选择是具体实现定义的.
+        3. 只有 base-char 的类型的对象可以是一个 base-string 类型的元素.
+        4. 在这个 base-char 的 repertoire 中没有指定字符的数量上边界; 那个 repertoire 的大小是具体实现定义的. 下边界是 96, 就是标准字符的数量.
 
-Whether a character is a base character depends on the way that an implementation represents strings, and not any other properties of the implementation or the host operating system. For example, one implementation might encode all strings as characters having 16-bit encodings, and another might have two kinds of strings: those with characters having 8-bit encodings and those with characters having 16-bit encodings. In the first implementation, the type base-char is equivalent to the type character: there is only one kind of string. In the second implementation, the base characters might be those characters that could be stored in a string of characters having 8-bit encodings. In such an implementation, the type base-char is a proper subtype of the type character.
+        一个字符是否为一个基本字符依赖于一个具体实现表示字符串的方式, 而不是任何其他具体实现和主机操作系统的特性. 比如, 一个实现可能把所有字符串编码为有着16位编码的字符, 而另一种可能有着两种字符串: 那些有着8位编码的字符和有着16位编码的字符. 在第一个实现中, 类型 base-char 等价于 character 类型: 这里只有一种字符串. 在第二个实现中, 基本字符是那些可以被存储在一个有着8位编码字符的字符串的字符. 在这样一个实现中, 类型 base-char 是一个 charactor 类型的适当子类型.
 
-The type standard-char is a subtype of type base-char. 
+        类型 standard-char 是 type base-char 的子类型. 
 
 
 ### <span id="T-STANDARD-CHAR">类型 STANDARD-CHAR</span>
 
 * 超类型(Supertypes):
 
-standard-char, base-char, character, t
+        standard-char, base-char, character, t
 
 * 描述(Description):
 
-A fixed set of 96 characters required to be present in all conforming implementations. Standard characters are defined in Section 2.1.3 (Standard Characters).
+        在所有符合规范的实现中, 需要有一个96个字符的固定集合. 标准字符被定义在章节 2.1.3 (Standard Characters).
 
-Any character that is not simple is not a standard character.
+        任何不是简单字符的字符不是标准字符.
 
 * 也见(See Also):
 
-Section 2.1.3 (Standard Characters) 
+        章节 2.1.3 (Standard Characters) 
 
 ### </span id="T-EXTENDED-CHAR">类型 EXTENDED-CHAR</span>
 
 * 超类型(Supertypes):
 
-extended-char, character, t
+        extended-char, character, t
 
 * 描述(Description):
 
-The type extended-char is equivalent to the type (and character (not base-char)).
+        类型 extended-char 等价于类型 (and character (not base-char)).
 
 * 注意(Notes):
 
-The type extended-char might have no elements[4] in implementations in which all characters are of type base-char. 
+        类型 extended-char 在所有字符都是 base-char 类型的实现中可能没有元素. 
 
 ### <span id="F-CCCCCCCCCCCC">函数 CHAR=, CHAR/=, CHAR<, CHAR>, CHAR<=, CHAR>=, CHAR-EQUAL, CHAR-NOT-EQUAL, CHAR-LESSP, CHAR-GREATERP, CHAR-NOT-GREATERP, CHAR-NOT-LESSP</span>
 
 * 语法(Syntax):
 
-char= &rest characters+ => generalized-boolean
+        char= &rest characters+ => generalized-boolean
 
-char/= &rest characters+ => generalized-boolean
+        char/= &rest characters+ => generalized-boolean
 
-char< &rest characters+ => generalized-boolean
+        char< &rest characters+ => generalized-boolean
 
-char> &rest characters+ => generalized-boolean
+        char> &rest characters+ => generalized-boolean
 
-char<= &rest characters+ => generalized-boolean
+        char<= &rest characters+ => generalized-boolean
 
-char>= &rest characters+ => generalized-boolean
+        char>= &rest characters+ => generalized-boolean
 
-char-equal &rest characters+ => generalized-boolean
+        char-equal &rest characters+ => generalized-boolean
 
-char-not-equal &rest characters+ => generalized-boolean
+        char-not-equal &rest characters+ => generalized-boolean
 
-char-lessp &rest characters+ => generalized-boolean
+        char-lessp &rest characters+ => generalized-boolean
 
-char-greaterp &rest characters+ => generalized-boolean
+        char-greaterp &rest characters+ => generalized-boolean
 
-char-not-greaterp &rest characters+ => generalized-boolean
+        char-not-greaterp &rest characters+ => generalized-boolean
 
-char-not-lessp &rest characters+ => generalized-boolean
+        char-not-lessp &rest characters+ => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-character---a character.
-
-generalized-boolean---a generalized boolean.
+        character---一个字符.
+        generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
-These predicates compare characters.
+        这些断言用来比较字符串.
 
-char= returns true if all characters are the same; otherwise, it returns false. If two characters differ in any implementation-defined attributes, then they are not char=.
+        如果所有字符 characters 都是相同的那么 char= 返回 true; 否则, 它返回 false. 如果两个字符在任何一个具体实现定义的属性上不相同, 那么它们就不是 char= 的.
 
-char/= returns true if all characters are different; otherwise, it returns false.
+        如果所有字符 characters 都是不同的那么 char/= 返回 true; 否则, 它返回 false.
 
-char< returns true if the characters are monotonically increasing; otherwise, it returns false. If two characters have identical implementation-defined attributes, then their ordering by char< is consistent with the numerical ordering by the predicate < on their codes.
+        如果所有字符 characters 都是单调递增那么 char< 返回 true; 否则, 它返回 false. 如果两个字符有着相同的具体实现定义的属性, 那么它们根据 char< 得到的顺序和在它们的码值上根据断言 < 得到的顺序一致.
 
-char> returns true if the characters are monotonically decreasing; otherwise, it returns false. If two characters have identical implementation-defined attributes, then their ordering by char> is consistent with the numerical ordering by the predicate > on their codes.
+        如果所有字符 characters 都是单调递减那么 char> 返回 true; 否则, 它返回 false. 如果两个字符有着相同的具体实现定义的属性, 那么它们根据 char> 得到的顺序和在它们的码值上根据断言 > 得到的顺序一致.
 
-char<= returns true if the characters are monotonically nondecreasing; otherwise, it returns false. If two characters have identical implementation-defined attributes, then their ordering by char<= is consistent with the numerical ordering by the predicate <= on their codes.
+        如果所有字符 characters 都是非单调递减的那么 char<= 返回 true; 否则, 它返回 false. 如果两个字符有着相同的具体实现定义的属性, 那么它们根据 char<= 得到的顺序和在它们的码值上根据断言 <= 得到的顺序一致.
 
-char>= returns true if the characters are monotonically nonincreasing; otherwise, it returns false. If two characters have identical implementation-defined attributes, then their ordering by char>= is consistent with the numerical ordering by the predicate >= on their codes.
+        如果所有字符 characters 都是非单调递增的那么 char>= 返回 true; 否则, 它返回 false. 如果两个字符有着相同的具体实现定义的属性, 那么它们根据 char>= 得到的顺序和在它们的码值上根据断言 >= 得到的顺序一致.
 
-char-equal, char-not-equal, char-lessp, char-greaterp, char-not-greaterp, and char-not-lessp are similar to char=, char/=, char<, char>, char<=, char>=, respectively, except that they ignore differences in case and might have an implementation-defined behavior for non-simple characters. For example, an implementation might define that char-equal, etc. ignore certain implementation-defined attributes. The effect, if any, of each implementation-defined attribute upon these functions must be specified as part of the definition of that attribute.
+        char-equal, char-not-equal, char-lessp, char-greaterp, char-not-greaterp, 和 char-not-lessp 分别类似于 char=, char/=, char<, char>, char<=, char>=, 除了它们忽略大小写差异并且可能对非简单字符有着具体实现定义的行为. 比如, 一个具体实现可能定义 char-equal, 及其他, 忽略某些具体实现定义的属性. 在这些函数上的每个实现定义的属性的效果如果有的话必须被指定为该属性定义的一部分.
 
 * 示例(Examples):
 
- (char= #\d #\d) =>  true
- (char= #\A #\a) =>  false
- (char= #\d #\x) =>  false
- (char= #\d #\D) =>  false
- (char/= #\d #\d) =>  false
- (char/= #\d #\x) =>  true
- (char/= #\d #\D) =>  true
- (char= #\d #\d #\d #\d) =>  true
- (char/= #\d #\d #\d #\d) =>  false
- (char= #\d #\d #\x #\d) =>  false
- (char/= #\d #\d #\x #\d) =>  false
- (char= #\d #\y #\x #\c) =>  false
- (char/= #\d #\y #\x #\c) =>  true
- (char= #\d #\c #\d) =>  false
- (char/= #\d #\c #\d) =>  false
- (char< #\d #\x) =>  true
- (char<= #\d #\x) =>  true
- (char< #\d #\d) =>  false
- (char<= #\d #\d) =>  true
- (char< #\a #\e #\y #\z) =>  true
- (char<= #\a #\e #\y #\z) =>  true
- (char< #\a #\e #\e #\y) =>  false
- (char<= #\a #\e #\e #\y) =>  true
- (char> #\e #\d) =>  true
- (char>= #\e #\d) =>  true
- (char> #\d #\c #\b #\a) =>  true
- (char>= #\d #\c #\b #\a) =>  true
- (char> #\d #\d #\c #\a) =>  false
- (char>= #\d #\d #\c #\a) =>  true
- (char> #\e #\d #\b #\c #\a) =>  false
- (char>= #\e #\d #\b #\c #\a) =>  false
- (char> #\z #\A) =>  implementation-dependent
- (char> #\Z #\a) =>  implementation-dependent
- (char-equal #\A #\a) =>  true
- (stable-sort (list #\b #\A #\B #\a #\c #\C) #'char-lessp)
-=>  (#\A #\a #\b #\B #\c #\C)
- (stable-sort (list #\b #\A #\B #\a #\c #\C) #'char<)
-=>  (#\A #\B #\C #\a #\b #\c) ;Implementation A
-=>  (#\a #\b #\c #\A #\B #\C) ;Implementation B
-=>  (#\a #\A #\b #\B #\c #\C) ;Implementation C
-=>  (#\A #\a #\B #\b #\C #\c) ;Implementation D
-=>  (#\A #\B #\a #\b #\C #\c) ;Implementation E
+    ```LISP
+    (char= #\d #\d) =>  true
+    (char= #\A #\a) =>  false
+    (char= #\d #\x) =>  false
+    (char= #\d #\D) =>  false
+    (char/= #\d #\d) =>  false
+    (char/= #\d #\x) =>  true
+    (char/= #\d #\D) =>  true
+    (char= #\d #\d #\d #\d) =>  true
+    (char/= #\d #\d #\d #\d) =>  false
+    (char= #\d #\d #\x #\d) =>  false
+    (char/= #\d #\d #\x #\d) =>  false
+    (char= #\d #\y #\x #\c) =>  false
+    (char/= #\d #\y #\x #\c) =>  true
+    (char= #\d #\c #\d) =>  false
+    (char/= #\d #\c #\d) =>  false
+    (char< #\d #\x) =>  true
+    (char<= #\d #\x) =>  true
+    (char< #\d #\d) =>  false
+    (char<= #\d #\d) =>  true
+    (char< #\a #\e #\y #\z) =>  true
+    (char<= #\a #\e #\y #\z) =>  true
+    (char< #\a #\e #\e #\y) =>  false
+    (char<= #\a #\e #\e #\y) =>  true
+    (char> #\e #\d) =>  true
+    (char>= #\e #\d) =>  true
+    (char> #\d #\c #\b #\a) =>  true
+    (char>= #\d #\c #\b #\a) =>  true
+    (char> #\d #\d #\c #\a) =>  false
+    (char>= #\d #\d #\c #\a) =>  true
+    (char> #\e #\d #\b #\c #\a) =>  false
+    (char>= #\e #\d #\b #\c #\a) =>  false
+    (char> #\z #\A) =>  implementation-dependent
+    (char> #\Z #\a) =>  implementation-dependent
+    (char-equal #\A #\a) =>  true
+    (stable-sort (list #\b #\A #\B #\a #\c #\C) #'char-lessp)
+    =>  (#\A #\a #\b #\B #\c #\C)
+    (stable-sort (list #\b #\A #\B #\a #\c #\C) #'char<)
+    =>  (#\A #\B #\C #\a #\b #\c) ;Implementation A
+    =>  (#\a #\b #\c #\A #\B #\C) ;Implementation B
+    =>  (#\a #\A #\b #\B #\c #\C) ;Implementation C
+    =>  (#\A #\a #\B #\b #\C #\c) ;Implementation D
+    =>  (#\A #\B #\a #\b #\C #\c) ;Implementation E
+    ```
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-Should signal an error of type program-error if at least one character is not supplied.
+        如果一个参数都没有提供那么应该发出一个 program-error 类型的错误.
 
 * 也见(See Also):
 
-Section 2.1 (Character Syntax), Section 13.1.10 (Documentation of Implementation-Defined Scripts)
+        章节 2.1 (Character Syntax), 章节 13.1.10 (Documentation of Implementation-Defined Scripts)
 
 * 注意(Notes):
 
-If characters differ in their code attribute or any implementation-defined attribute, they are considered to be different by char=.
+        如果字符在它们的码值属性或其他具体实现定义的属性上有区别, 它们被 char= 当作是不同的.
 
-There is no requirement that (eq c1 c2) be true merely because (char= c1 c2) is true. While eq can distinguish two characters that char= does not, it is distinguishing them not as characters, but in some sense on the basis of a lower level implementation characteristic. If (eq c1 c2) is true, then (char= c1 c2) is also true. eql and equal compare characters in the same way that char= does.
+        没有必要仅仅因为 (char= c1 c2) 为 true, (eq c1 c2) 就要为 true. 尽管 eq 可以区分两个 char= 区分不了的字符时, 它不是作为字符来区分它们, 而是某种意义上基于较低层次的具体实现的特性. 如果 (eq c1 c2) 是 true, 那么 (char= c1 c2) 也是 true. eql 和 equal 比较字符的方式和 char= 相同.
 
-The manner in which case is used by char-equal, char-not-equal, char-lessp, char-greaterp, char-not-greaterp, and char-not-lessp implies an ordering for standard characters such that A=a, B=b, and so on, up to Z=z, and furthermore either 9<A or Z<0. 
+        char-equal, char-not-equal, char-lessp, char-greaterp, char-not-greaterp, 和 char-not-lessp 所使用的大小写的惯例意味着标准字符的顺序 A=a, B=b, 诸如此类, 直到 Z=z, 而且 9<A 或 Z<0. 
 
 
 ### <span id="F-CHARACTER">函数 CHARACTER</span>
