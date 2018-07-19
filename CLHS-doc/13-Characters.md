@@ -46,19 +46,19 @@ Common Lisp 允许一个具体实现去为国际语言字符和专门领域中(�
 
 
 ### 13.1.2 <span id="IntroductionScriptsRepertoires">Introduction to Scripts and Repertoires</span>
+<!-- TODO 待翻译 Scripts and Repertoires ？？-->
+#### 13.1.2.1 字符 Scripts
 
-#### 13.1.2.1 Character Scripts
-<!-- TODO 待翻译 -->
-A script is one of possibly several sets that form an exhaustive partition of the type character.
+一个 script 是组成这个 character 类型的详尽分区可能的几个集合中的一个.
 
-The number of such sets and boundaries between them is implementation-defined. Common Lisp does not require these sets to be types, but an implementation is permitted to define such types as an extension. Since no character from one script can ever be a member of another script, it is generally more useful to speak about character repertoires.
+这样的集合的数量以及它们之间的边界是具体实现定义的. Common Lisp 不需要这些集合称为类型, 但是一个具体实现允许开去定义这样的类型作为一个扩展. 因为一个 script 的字符不能是另一个 script 的成员, 所以它在谈及字符 repertoires 时是很有用的.
 
 虽然术语 "script" 为了和 ISO 术语定义上兼容而被选择, 但是没有符合规范的具体实现需要去使用 ISO 或者任何其他标准化组织标准化的特定 scripts.
 
-Whether and how the script or scripts used by any given implementation are named is implementation-dependent. 
+script 或 scripts 是否被任何给定的已命名的实现使用, 如何使用, 是依赖于具体实现的. 
 
 
-#### 13.1.2.2 Character Repertoires
+#### 13.1.2.2 字符 Repertoires
 
 一个 repertoire 是一个 character 类型的子类型的类型指定符. 这个术语通常在描述一个独立于编码的字符集合时被使用. repertoires 中的字符只能通过名字, 字符的可见表示, 或者通过字符描述来确认.
 
@@ -80,7 +80,7 @@ Whether and how the script or scripts used by any given implementation are named
 
 有几个(重叠的)类别的字符没有正式关联的类型但这对名称很有用. 它们包括图形字符(graphic characters), 字母字符(alphabetic characters), 大小写字符 (大写和小写字符), 数字字符(numeric characters), 字母数字字符(alphanumeric characters), 还有数字 (以一个给定的基数).
 
-对于一个字符的每个具体实现定义的属性, 那个具体实现的文档必须指明只能在那个属性上区分的字符是否允许和上述类别之一的成员之间存在差异 the documentation for that implementation must specify whether characters that differ only in that attribute are permitted to differ in whether are not they are members of one of the aforementioned categories.<!--TODO 待校验-->
+对于一个字符的每个具体实现定义的属性, 那个具体实现的文档必须指明只能在那个属性上区分的字符是否允许和上述类别之一的成员之间存在差异.
 
 注意, 这些定义的术语独立于任何当前读取表中启用的特殊语法.
 
@@ -477,68 +477,70 @@ Linefeed
 
 * 语法(Syntax):
 
-character character => denoted-character
+        character character => denoted-character
 
 * 参数和值(Arguments and Values):
 
-character---a character designator.
-
-denoted-character---a character.
+        character---一个字符标识符.
+        denoted-character---一个字符.
 
 * 描述(Description):
 
-Returns the character denoted by the character designator.
+        返回字符标识符 character 表示的字符.
 
 * 示例(Examples):
 
- (character #\a) =>  #\a
- (character "a") =>  #\a
- (character 'a) =>  #\A
- (character '\a) =>  #\a
- (character 65.) is an error.
- (character 'apple) is an error.
+    ```LISP
+    (character #\a) =>  #\a
+    (character "a") =>  #\a
+    (character 'a) =>  #\A
+    (character '\a) =>  #\a
+    (character 65.) is an error.
+    (character 'apple) is an error.
+    ```
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-Should signal an error of type type-error if object is not a character designator.
+        如果对象 object 不是一个字符标识符, 那么应该发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-coerce
+        coerce
 
 * 注意(Notes):
 
- (character object) ==  (coerce object 'character)
+        (character object) ==  (coerce object 'character)
 
 
 ### <span id="F-CHARACTERP">函数 CHARACTERP</span>
 
 * 语法(Syntax):
 
-characterp object => generalized-boolean
+        characterp object => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-object---an object.
-
-generalized-boolean---a generalized boolean.
+        object---一个对象.
+        generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
-Returns true if object is of type character; otherwise, returns false.
+        如果对象 object 是 character 类型就返回 true; 否则, 返回 false.
 
 * 示例(Examples):
 
- (characterp #\a) =>  true
- (characterp 'a) =>  false
- (characterp "a") =>  false
- (characterp 65.) =>  false
- (characterp #\Newline) =>  true
- ;; This next example presupposes an implementation 
- ;; in which #\Rubout is an implementation-defined character.
- (characterp #\Rubout) =>  true
+    ```LISP
+    (characterp #\a) =>  true
+    (characterp 'a) =>  false
+    (characterp "a") =>  false
+    (characterp 65.) =>  false
+    (characterp #\Newline) =>  true
+    ;; This next example presupposes an implementation 
+    ;; in which #\Rubout is an implementation-defined character.
+    (characterp #\Rubout) =>  true
+    ```
 
 * 受此影响(Affected By): None.
 
@@ -546,49 +548,50 @@ Returns true if object is of type character; otherwise, returns false.
 
 * 也见(See Also):
 
-character (type and function), typep
+        character (type and function), typep
 
 * 注意(Notes):
 
- (characterp object) ==  (typep object 'character)
+        (characterp object) ==  (typep object 'character)
 
 
 ### <span id="F-ALPHA-CHAR-P">函数 ALPHA-CHAR-P</span>
 
 * 语法(Syntax):
 
-alpha-char-p character => generalized-boolean
+        alpha-char-p character => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-character---a character.
-
-generalized-boolean---a generalized boolean.
+        character---一个字符.
+        generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
-Returns true if character is an alphabetic[1] character; otherwise, returns false.
+        如果字符 character 是一个字母字符就返回 true; 否则, 返回 false.
 
 * 示例(Examples):
 
- (alpha-char-p #\a) =>  true
- (alpha-char-p #\5) =>  false
- (alpha-char-p #\Newline) =>  false
- ;; This next example presupposes an implementation
- ;; in which #\<ALPHA> is a defined character.
- (alpha-char-p #\<ALPHA>) =>  implementation-dependent
+    ```LISP
+    (alpha-char-p #\a) =>  true
+    (alpha-char-p #\5) =>  false
+    (alpha-char-p #\Newline) =>  false
+    ;; This next example presupposes an implementation
+    ;; in which #\<ALPHA> is a defined character.
+    (alpha-char-p #\<ALPHA>) =>  implementation-dependent
+    ```
 
 * 受此影响(Affected By):
 
-None. (In particular, the results of this predicate are independent of any special syntax which might have been enabled in the current readtable.)
+        无. (特别地, 这个断言的结果独立于任何在当前读取表中被启用的特殊语法.)
 
 * 异常情况(Exceptional Situations):
 
-Should signal an error of type type-error if character is not a character.
+        如果 character 不是一个字符就应该发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-alphanumericp, Section 13.1.10 (Documentation of Implementation-Defined Scripts)
+        alphanumericp, 章节 13.1.10 (Documentation of Implementation-Defined Scripts)
 
 * 注意(Notes): None. 
 
@@ -596,75 +599,76 @@ alphanumericp, Section 13.1.10 (Documentation of Implementation-Defined Scripts)
 
 * 语法(Syntax):
 
-alphanumericp character => generalized-boolean
+        alphanumericp character => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-character---a character.
-
-generalized-boolean---a generalized boolean.
+        character---一个字符.
+        generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
-Returns true if character is an alphabetic[1] character or a numeric character; otherwise, returns false.
+        如果 character 是一个字母字符或一个数字字符就返回 true; 否则, 返回 false.
 
 * 示例(Examples):
 
- (alphanumericp #\Z) =>  true
- (alphanumericp #\9) =>  true
- (alphanumericp #\Newline) =>  false
- (alphanumericp #\#) =>  false
+    ```LISP
+    (alphanumericp #\Z) =>  true
+    (alphanumericp #\9) =>  true
+    (alphanumericp #\Newline) =>  false
+    (alphanumericp #\#) =>  false
+    ```
 
 * 受此影响(Affected By):
 
-None. (In particular, the results of this predicate are independent of any special syntax which might have been enabled in the current readtable.)
+        无. (特别地, 这个断言的结果独立于任何在当前读取表中被启用的特殊语法.)
 
 * 异常情况(Exceptional Situations):
 
-Should signal an error of type type-error if character is not a character.
+        如果 character 不是一个字符就应该发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-alpha-char-p, graphic-char-p, digit-char-p
+        alpha-char-p, graphic-char-p, digit-char-p
 
 * 注意(Notes):
 
-Alphanumeric characters are graphic as defined by graphic-char-p. The alphanumeric characters are a subset of the graphic characters. The standard characters A through Z, a through z, and 0 through 9 are alphanumeric characters.
+        字母数字字符是图形的就像 graphic-char-p 定义的那样. 字母数字字符是图形字符的一个子集. 标准字符 A 到 Z, a 到 z, 还有 0 到 9 是字母数字字符.
 
- (alphanumericp x)
-   ==  (or (alpha-char-p x) (not (null (digit-char-p x))))
+        (alphanumericp x)
+          ==  (or (alpha-char-p x) (not (null (digit-char-p x))))
 
 
 ### <span id="F-DIGIT-CHAR">函数 DIGIT-CHAR</span>
 
 * 语法(Syntax):
 
-digit-char weight &optional radix => char
+        digit-char weight &optional radix => char
 
 * 参数和值(Arguments and Values):
 
-weight---a non-negative integer.
-
-radix---a radix. The default is 10.
-
-char---a character or false.
+        weight---一个非负整数.
+        radix---一个基数. 默认是 10.
+        char---一个字符或或 false.
 
 * 描述(Description):
 
-If weight is less than radix, digit-char returns a character which has that weight when considered as a digit in the specified radix. If the resulting character is to be an alphabetic[1] character, it will be an uppercase character.
+        如果权重 weight 小于基数 radix, 那么 digit-char 返回一个字符, 这个字符被当作指定基数下的数字时有着那个权重 weight. 如果产生的字符是一个字母字符, 它会是一个大写的字符.
 
-If weight is greater than or equal to radix, digit-char returns false.
+        如果权重 weight 大于等于基数 radix, digit-char 返回 false.
 
 * 示例(Examples):
 
- (digit-char 0) =>  #\0
- (digit-char 10 11) =>  #\A
- (digit-char 10 10) =>  false
- (digit-char 7) =>  #\7
- (digit-char 12) =>  false
- (digit-char 12 16) =>  #\C  ;not #\c
- (digit-char 6 2) =>  false
- (digit-char 1 2) =>  #\1
+    ```LISP
+    (digit-char 0) =>  #\0
+    (digit-char 10 11) =>  #\A
+    (digit-char 10 10) =>  false
+    (digit-char 7) =>  #\7
+    (digit-char 12) =>  false
+    (digit-char 12 16) =>  #\C  ;not #\c
+    (digit-char 6 2) =>  false
+    (digit-char 1 2) =>  #\1
+    ```
 
 * 受此影响(Affected By): None.
 
@@ -672,7 +676,7 @@ If weight is greater than or equal to radix, digit-char returns false.
 
 * 也见(See Also):
 
-digit-char-p, graphic-char-p, Section 2.1 (Character Syntax)
+        digit-char-p, graphic-char-p, 章节 2.1 (Character Syntax)
 
 * 注意(Notes):
 
@@ -680,84 +684,85 @@ digit-char-p, graphic-char-p, Section 2.1 (Character Syntax)
 
 * 语法(Syntax):
 
-digit-char-p char &optional radix => weight
+        digit-char-p char &optional radix => weight
 
 * 参数和值(Arguments and Values):
 
-char---a character.
-
-radix---a radix. The default is 10.
-
-weight---either a non-negative integer less than radix, or false.
+        char---一个字符.
+        radix---一个基数 radix. 默认为 10.
+        weight---一个小于基数 radix 的非负整数, 或者 false.
 
 * 描述(Description):
 
-Tests whether char is a digit in the specified radix (i.e., with a weight less than radix). If it is a digit in that radix, its weight is returned as an integer; otherwise nil is returned.
+        测试字符 char 是否为给定基数下的一个数字 (换句话说, 它带有小于基数 radix 的权重). 如果它是那个基数下的一个数字, 它的权重会作为整数返回; 否则返回 nil.
 
 * 示例(Examples):
 
- (digit-char-p #\5)    =>  5
- (digit-char-p #\5 2)  =>  false
- (digit-char-p #\A)    =>  false
- (digit-char-p #\a)    =>  false
- (digit-char-p #\A 11) =>  10
- (digit-char-p #\a 11) =>  10
- (mapcar #'(lambda (radix) 
-             (map 'list #'(lambda (x) (digit-char-p x radix)) 
-                  "059AaFGZ"))
-         '(2 8 10 16 36))
- =>  ((0 NIL NIL NIL NIL NIL NIL NIL)
-     (0 5 NIL NIL NIL NIL NIL NIL)
-     (0 5 9 NIL NIL NIL NIL NIL)
-     (0 5 9 10 10 15 NIL NIL)
-     (0 5 9 10 10 15 16 35))
+    ```LISP
+    (digit-char-p #\5)    =>  5
+    (digit-char-p #\5 2)  =>  false
+    (digit-char-p #\A)    =>  false
+    (digit-char-p #\a)    =>  false
+    (digit-char-p #\A 11) =>  10
+    (digit-char-p #\a 11) =>  10
+    (mapcar #'(lambda (radix) 
+                (map 'list #'(lambda (x) (digit-char-p x radix)) 
+                      "059AaFGZ"))
+            '(2 8 10 16 36))
+    =>  ((0 NIL NIL NIL NIL NIL NIL NIL)
+        (0 5 NIL NIL NIL NIL NIL NIL)
+        (0 5 9 NIL NIL NIL NIL NIL)
+        (0 5 9 10 10 15 NIL NIL)
+        (0 5 9 10 10 15 16 35))
+    ```
 
 * 受此影响(Affected By):
 
-None. (In particular, the results of this predicate are independent of any special syntax which might have been enabled in the current readtable.)
+        无. (特别地, 这个断言的结果独立于任何在当前读取表中被启用的特殊语法.)
 
 * 异常情况(Exceptional Situations): None.
 
 * 也见(See Also):
 
-alphanumericp
+        alphanumericp
 
 * 注意(Notes):
 
-Digits are graphic characters. 
+        数字是一个图形字符. 
 
 ### <span id="F-GRAPHIC-CHAR-P">函数 GRAPHIC-CHAR-P</span>
 
 * 语法(Syntax):
 
-graphic-char-p char => generalized-boolean
+        graphic-char-p char => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-char---a character.
-
-generalized-boolean---a generalized boolean.
+        char---一个字符.
+        generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
-Returns true if character is a graphic character; otherwise, returns false.
+        如果字符 character 是一个图形字符就返回 true; 否则, 返回 false.
 
 * 示例(Examples):
 
- (graphic-char-p #\G) =>  true
- (graphic-char-p #\#) =>  true
- (graphic-char-p #\Space) =>  true
- (graphic-char-p #\Newline) =>  false
+    ```LISP
+    (graphic-char-p #\G) =>  true
+    (graphic-char-p #\#) =>  true
+    (graphic-char-p #\Space) =>  true
+    (graphic-char-p #\Newline) =>  false
+    ```
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-Should signal an error of type type-error if character is not a character.
+        如果 character 不是一个字符就应该发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-read, Section 2.1 (Character Syntax), Section 13.1.10 (Documentation of Implementation-Defined Scripts)
+        read, 章节 2.1 (Character Syntax), 章节 13.1.10 (Documentation of Implementation-Defined Scripts)
 
 * 注意(Notes): None. 
 
@@ -765,31 +770,32 @@ read, Section 2.1 (Character Syntax), Section 13.1.10 (Documentation of Implemen
 
 * 语法(Syntax):
 
-standard-char-p character => generalized-boolean
+        standard-char-p character => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-character---a character.
-
-generalized-boolean---a generalized boolean.
+        character---一个字符.
+        generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
-Returns true if character is of type standard-char; otherwise, returns false.
+        如果字符 character 是 standard-char 类型就返回 true; 否则, 返回 false.
 
 * 示例(Examples):
 
- (standard-char-p #\Space) =>  true
- (standard-char-p #\~) =>  true
- ;; This next example presupposes an implementation
- ;; in which #\Bell is a defined character.
- (standard-char-p #\Bell) =>  false
+    ```LISP
+    (standard-char-p #\Space) =>  true
+    (standard-char-p #\~) =>  true
+    ;; This next example presupposes an implementation
+    ;; in which #\Bell is a defined character.
+    (standard-char-p #\Bell) =>  false
+    ```
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-Should signal an error of type type-error if character is not a character.
+        如果 character 不是一个字符就应该发出一个 type-error 类型的错误.
 
 * 也见(See Also): None.
 
@@ -799,111 +805,114 @@ Should signal an error of type type-error if character is not a character.
 
 * 语法(Syntax):
 
-char-upcase character => corresponding-character
+        char-upcase character => corresponding-character
 
-char-downcase character => corresponding-character
+        char-downcase character => corresponding-character
 
 * 参数和值(Arguments and Values):
 
-character, corresponding-character---a character.
+        character, corresponding-character---一个字符.
 
 * 描述(Description):
 
-If character is a lowercase character, char-upcase returns the corresponding uppercase character. Otherwise, char-upcase just returns the given character.
+        如果字符 character 是一个小写字符, char-upcase 返回对应大写字符. 否则, char-upcase 只是返回给定字符.
 
-If character is an uppercase character, char-downcase returns the corresponding lowercase character. Otherwise, char-downcase just returns the given character.
+        如果 character 是一个大写字符, char-downcase 返回对应小写字符. 否则, char-downcase 只是返回给定字符.
 
-The result only ever differs from character in its code attribute; all implementation-defined attributes are preserved.
+        结果只在码值属性上和字符 character 有区别; 所有具体实现定义的属性都会被保留.
 
 * 示例(Examples):
 
- (char-upcase #\a) =>  #\A
- (char-upcase #\A) =>  #\A
- (char-downcase #\a) =>  #\a
- (char-downcase #\A) =>  #\a
- (char-upcase #\9) =>  #\9
- (char-downcase #\9) =>  #\9
- (char-upcase #\@) =>  #\@
- (char-downcase #\@) =>  #\@
- ;; Note that this next example might run for a very long time in 
- ;; some implementations if CHAR-CODE-LIMIT happens to be very large
- ;; for that implementation.
- (dotimes (code char-code-limit)
-   (let ((char (code-char code)))
-     (when char
-       (unless (cond ((upper-case-p char) (char= (char-upcase (char-downcase char)) char))
-                     ((lower-case-p char) (char= (char-downcase (char-upcase char)) char))
-                     (t (and (char= (char-upcase (char-downcase char)) char)
-                             (char= (char-downcase (char-upcase char)) char))))
-         (return char)))))
-=>  NIL
+    ```LISP
+    (char-upcase #\a) =>  #\A
+    (char-upcase #\A) =>  #\A
+    (char-downcase #\a) =>  #\a
+    (char-downcase #\A) =>  #\a
+    (char-upcase #\9) =>  #\9
+    (char-downcase #\9) =>  #\9
+    (char-upcase #\@) =>  #\@
+    (char-downcase #\@) =>  #\@
+    ;; Note that this next example might run for a very long time in 
+    ;; some implementations if CHAR-CODE-LIMIT happens to be very large
+    ;; for that implementation.
+    (dotimes (code char-code-limit)
+      (let ((char (code-char code)))
+        (when char
+          (unless (cond ((upper-case-p char) (char= (char-upcase (char-downcase char)) char))
+                        ((lower-case-p char) (char= (char-downcase (char-upcase char)) char))
+                        (t (and (char= (char-upcase (char-downcase char)) char)
+                                (char= (char-downcase (char-upcase char)) char))))
+            (return char)))))
+    =>  NIL
+    ```
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-Should signal an error of type type-error if character is not a character.
+        如果 character 不是一个字符就应该发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-upper-case-p, alpha-char-p, Section 13.1.4.3 (大小写字符), Section 13.1.10 (Documentation of Implementation-Defined Scripts)
+        upper-case-p, alpha-char-p, 章节 13.1.4.3 (大小写字符), 章节 13.1.10 (Documentation of Implementation-Defined Scripts)
 
 * 注意(Notes):
 
-If the corresponding-char is different than character, then both the character and the corresponding-char have case.
+        如果这个 corresponding-char 和 character 不同, 那么字符 character 和 corresponding-char 都有大小写.
 
-Since char-equal ignores the case of the characters it compares, the corresponding-character is always the same as character under char-equal. 
+        由于 char-equal 忽略它比较的字符的大小写, 因此这个 corresponding-character 在 char-equal 下总是和字符 character 相同. 
 
 
 ### <span id="F-CASE-P">函数 UPPER-CASE-P, LOWER-CASE-P, BOTH-CASE-P</span>
 
 * 语法(Syntax):
 
-upper-case-p character => generalized-boolean
+        upper-case-p character => generalized-boolean
 
-lower-case-p character => generalized-boolean
+        lower-case-p character => generalized-boolean
 
-both-case-p character => generalized-boolean
+        both-case-p character => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-character---a character.
-
-generalized-boolean---a generalized boolean.
+        character---一个符号.
+        generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
-These functions test the case of a given character.
+        这些函数测试给定字符的大小写.
 
-upper-case-p returns true if character is an uppercase character; otherwise, returns false.
+        如果字符 character 是一个大写字符那么 upper-case-p 返回 true; 否则, 返回 false.
 
-lower-case-p returns true if character is a lowercase character; otherwise, returns false.
+        如果字符 character 是一个小写字符那么 lower-case-p 返回 true; 否则, 返回 false.
 
-both-case-p returns true if character is a character with case; otherwise, returns false.
+        如果字符 character 是一个带有大小写的字符那么 both-case-p 返回 true; 否则, 返回 false.
 
 * 示例(Examples):
 
- (upper-case-p #\A) =>  true
- (upper-case-p #\a) =>  false
- (both-case-p #\a) =>  true
- (both-case-p #\5) =>  false
- (lower-case-p #\5) =>  false
- (upper-case-p #\5) =>  false
- ;; This next example presupposes an implementation 
- ;; in which #\Bell is an implementation-defined character.
- (lower-case-p #\Bell) =>  false
+    ```LISP
+    (upper-case-p #\A) =>  true
+    (upper-case-p #\a) =>  false
+    (both-case-p #\a) =>  true
+    (both-case-p #\5) =>  false
+    (lower-case-p #\5) =>  false
+    (upper-case-p #\5) =>  false
+    ;; This next example presupposes an implementation 
+    ;; in which #\Bell is an implementation-defined character.
+    (lower-case-p #\Bell) =>  false
+    ```
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-Should signal an error of type type-error if character is not a character.
+        如果 character 不是一个字符就应该发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-char-upcase, char-downcase, Section 13.1.4.3 (大小写字符), Section 13.1.10 (Documentation of Implementation-Defined Scripts)
+        char-upcase, char-downcase, 章节 13.1.4.3 (大小写字符), 章节 13.1.10 (Documentation of Implementation-Defined Scripts)
 
 * 注意(Notes): None. 
 
@@ -911,34 +920,35 @@ char-upcase, char-downcase, Section 13.1.4.3 (大小写字符), Section 13.1.10 
 
 * 语法(Syntax):
 
-char-code character => code
+        char-code character => code
 
 * 参数和值(Arguments and Values):
 
-character---a character.
-
-code---a character code.
+        character---一个字符.
+        code---一个字符的码值.
 
 * 描述(Description):
 
-char-code returns the code attribute of character.
+        char-code 返回字符 character 的码值属性.
 
 * 示例(Examples):
 
+```LISP
 ;; An implementation using ASCII character encoding 
 ;; might return these values:
 (char-code #\$) =>  36
 (char-code #\a) =>  97
+```
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-Should signal an error of type type-error if character is not a character.
+        如果 character 不是一个字符就应该发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-char-code-limit
+        char-code-limit
 
 * 注意(Notes): None. 
 
@@ -946,29 +956,28 @@ char-code-limit
 
 * 语法(Syntax):
 
-char-int character => integer
+        char-int character => integer
 
 * 参数和值(Arguments and Values):
 
-character---a character.
-
-integer---a non-negative integer.
+        character---一个字符.
+        integer---一个非负整数.
 
 * 描述(Description):
 
-Returns a non-negative integer encoding the character object. The manner in which the integer is computed is implementation-dependent. In contrast to sxhash, the result is not guaranteed to be independent of the particular Lisp image.
+        返回一个编码这个字符对象的非负整数 integer. 这个整数 integer 计算的惯例是依赖于具体实现的. 与 sxhash 相比, 结果不保证独立于特定的 Lisp 镜像.
 
-If character has no implementation-defined attributes, the results of char-int and char-code are the same.
+        如果字符 character 没有具体实现定义的属性, 那么对于字符 c1 和 c2, 结果和 char-int 还有 char-code 是相同的.
 
- (char= c1 c2) ==  (= (char-int c1) (char-int c2))
-
-for characters c1 and c2.
+        (char= c1 c2) ==  (= (char-int c1) (char-int c2))
 
 * 示例(Examples):
 
- (char-int #\A) =>  65       ; implementation A
- (char-int #\A) =>  577      ; implementation B
- (char-int #\A) =>  262145   ; implementation C
+    ```LISP
+    (char-int #\A) =>  65       ; implementation A
+    (char-int #\A) =>  577      ; implementation B
+    (char-int #\A) =>  262145   ; implementation C
+    ```
 
 * 受此影响(Affected By): None.
 
@@ -976,7 +985,7 @@ for characters c1 and c2.
 
 * 也见(See Also):
 
-char-code
+        char-code
 
 * 注意(Notes): None. 
 
@@ -984,110 +993,112 @@ char-code
 
 * 语法(Syntax):
 
-code-char code => char-p
+        code-char code => char-p
 
 * 参数和值(Arguments and Values):
 
-code---a character code.
-
-char-p---a character or nil.
+        code---一个字符码值.
+        char-p---一个字符或 nil.
 
 * 描述(Description):
 
-Returns a character with the code attribute given by code. If no such character exists and one cannot be created, nil is returned.
+        返回一个带有给定码值 code 的码值属性的字符. 如果不存在这样的字符以及不能创建一个, 那么就返回 nil.
 
 * 示例(Examples):
 
-(code-char 65.) =>  #\A  ;in an implementation using ASCII codes
-(code-char (char-code #\Space)) =>  #\Space  ;in any implementation
+    ```LISP
+    (code-char 65.) =>  #\A  ;in an implementation using ASCII codes
+    (code-char (char-code #\Space)) =>  #\Space  ;in any implementation
+    ```
 
 * 受此影响(Affected By):
 
-The implementation's character encoding.
+        具体实现的字符编码.
 
 * 异常情况(Exceptional Situations): None.
 
 * 也见(See Also):
 
-char-code
+        char-code
 
 * 注意(Notes):
 
 
 ### <span id="CV-CHAR-CODE-LIMIT">常量 CHAR-CODE-LIMIT</span>
 
-Constant Value:
+* 常量值(Constant Value):
 
-A non-negative integer, the exact magnitude of which is implementation-dependent, but which is not less than 96 (the number of standard characters).
+        一个非负整数, 它的准确大小是依赖于具体实现的, 但是不小于 96 (标准字符的数量).
 
 * 描述(Description):
 
-The upper exclusive bound on the value returned by the function char-code.
+        函数 char-code 返回的值的上边界.
 
 * 也见(See Also):
 
-char-code
+        char-code
 
 * 注意(Notes):
 
-The value of char-code-limit might be larger than the actual number of characters supported by the implementation. 
+        char-code-limit 的值可能大于这个具体实现所支持的字符数. 
 
 
 ### <span id="F-CHAR-NAME">函数 CHAR-NAME</span>
 
 * 语法(Syntax):
 
-char-name character => name
+        char-name character => name
 
 * 参数和值(Arguments and Values):
 
-character---a character.
-
-name---a string or nil.
+        character---一个字符.
+        name---一个字符串或 nil.
 
 * 描述(Description):
 
-Returns a string that is the name of the character, or nil if the character has no name.
+        返回字符 character 名称字符串, 如果字符 character 没有名称就是 nil.
 
-All non-graphic characters are required to have names unless they have some implementation-defined attribute which is not null. Whether or not other characters have names is implementation-dependent.
+        所有非图形字符需要有名字, 除非它们有着一些具体实现定义的不是 null 的属性. 其他字符是否有名称是依赖于具体实现的.
 
-The standard characters <Newline> and <Space> have the respective names "Newline" and "Space". The semi-standard characters <Tab>, <Page>, <Rubout>, <Linefeed>, <Return>, and <Backspace> (if they are supported by the implementation) have the respective names "Tab", "Page", "Rubout", "Linefeed", "Return", and "Backspace" (in the indicated case, even though name lookup by ``#\'' and by the function name-char is not case sensitive).
+        标准字符 <Newline> 和 <Space> 有着各自的名称 "Newline" 和 "Space". 不完全标准字符 <Tab>, <Page>, <Rubout>, <Linefeed>, <Return>, 和 <Backspace> (如果这个具体实现支持它们的话) 有着各自的名称 "Tab", "Page", "Rubout", "Linefeed", "Return", 和 "Backspace" (在这个指示的情况下, 即便名字是通过 "#\" 和函数 name-char 查找的也不是大小写敏感的).
 
 * 示例(Examples):
 
- (char-name #\ ) =>  "Space"
- (char-name #\Space) =>  "Space"
- (char-name #\Page) =>  "Page"
+    ```LISP
+    (char-name #\ ) =>  "Space"
+    (char-name #\Space) =>  "Space"
+    (char-name #\Page) =>  "Page"
 
- (char-name #\a)
-=>  NIL
-OR=>  "LOWERCASE-a"
-OR=>  "Small-A"
-OR=>  "LA01"
+    (char-name #\a)
+    =>  NIL
+    OR=>  "LOWERCASE-a"
+    OR=>  "Small-A"
+    OR=>  "LA01"
 
- (char-name #\A)
-=>  NIL
-OR=>  "UPPERCASE-A"
-OR=>  "Capital-A"
-OR=>  "LA02"
+    (char-name #\A)
+    =>  NIL
+    OR=>  "UPPERCASE-A"
+    OR=>  "Capital-A"
+    OR=>  "LA02"
 
- ;; Even though its CHAR-NAME can vary, #\A prints as #\A
- (prin1-to-string (read-from-string (format nil "#\\~A" (or (char-name #\A) "A"))))
-=>  "#\\A"
+    ;; Even though its CHAR-NAME can vary, #\A prints as #\A
+    (prin1-to-string (read-from-string (format nil "#\\~A" (or (char-name #\A) "A"))))
+    =>  "#\\A"
+    ```
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-Should signal an error of type type-error if character is not a character.
+        如果 character 不是一个字符就应该发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-name-char, Section 22.1.3.2 (Printing Characters)
+        name-char, 章节 22.1.3.2 (Printing Characters)
 
 * 注意(Notes):
 
-Non-graphic characters having names are written by the Lisp printer as ``#\'' followed by the their name; see Section 22.1.3.2 (Printing Characters). 
+        非图形字符的名字被 Lisp 打印器写做 "#\" 后面跟着这个名字; 见章节 22.1.3.2 (Printing Characters). 
 
 ### <span id="F-NAME-CHAR">函数 NAME-CHAR</span>
 
