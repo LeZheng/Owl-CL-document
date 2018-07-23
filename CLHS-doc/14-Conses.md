@@ -1,104 +1,103 @@
 # 14 构造(Conses)
 
-> * 14.1 [Cons Concepts](#ConsConcepts)
-> * 14.2 [The Conses Dictionary](#TheConsesDictionary)
+> * 14.1 [构造的概念](#ConsConcepts)
+> * 14.2 [构造的字典](#TheConsesDictionary)
 
 
-## 14.1 <span id="ConsConcepts">Cons Concepts</span>
+## 14.1 <span id="ConsConcepts">构造的概念</span>
 
-A cons is a compound data object having two components called the car and the cdr.
+一个构造(cons)是一个有着称为 car 和 cdr 两部分的复合数据对象.
 
-car  cons    rplacd  
-cdr  rplaca          
+    car  cons    rplacd  
+    cdr  rplaca          
 
-Figure 14-1. Some defined names relating to conses.
+    Figure 14-1. 和构造相关的已定义的名字.
 
-Depending on context, a group of connected conses can be viewed in a variety of different ways. A variety of operations is provided to support each of these various views.
+根据上下文, 一组连接的构造可以以各种不同的方式被查看. 提供了各种各样的操作来支持这些不同的视图.<!--TODO 待校对-->
 
-> * 14.1.1 [Conses as Trees](#ConsesTrees)
-> * 14.1.2 [Conses as Lists](#ConsesLists)
-
-
-### 14.1.1 <span id="ConsesTrees">Conses as Trees</span>
-
-A tree is a binary recursive data structure made up of conses and atoms: the conses are themselves also trees (sometimes called ``subtrees'' or ``branches''), and the atoms are terminal nodes (sometimes called leaves). Typically, the leaves represent data while the branches establish some relationship among that data.
-
-caaaar  caddar  cdar       nsubst         
-caaadr  cadddr  cddaar     nsubst-if      
-caaar   caddr   cddadr     nsubst-if-not  
-caadar  cadr    cddar      nthcdr         
-caaddr  cdaaar  cdddar     sublis         
-caadr   cdaadr  cddddr     subst          
-caar    cdaar   cdddr      subst-if       
-cadaar  cdadar  cddr       subst-if-not   
-cadadr  cdaddr  copy-tree  tree-equal     
-cadar   cdadr   nsublis                   
-
-Figure 14-2. Some defined names relating to trees.
-
-#### 14.1.1.1 General Restrictions on Parameters that must be Trees
-
-Except as explicitly stated otherwise, for any standardized function that takes a parameter that is required to be a tree, the consequences are undefined if that tree is circular. 
+> * 14.1.1 [构造作为树](#ConsesTrees)
+> * 14.1.2 [构造作为列表](#ConsesLists)
 
 
-### 14.1.2 <span id="ConsesLists">Conses as Lists</span>
+### 14.1.1 <span id="ConsesTrees">构造作为树</span>
 
-A list is a chain of conses in which the car of each cons is an element of the list, and the cdr of each cons is either the next link in the chain or a terminating atom.
+一个树是一个由构造(cons)和原子(atom)组成的二元递归数据结构: 这些构造(cons)自身也是树 (有时称之为 "子树(subtrees)" 或 "分枝(branches)"), 而这些原子是终止节点 (有时也称为叶). 典型地, 这些叶表示数据而分枝确定这些数据的关系.
 
-A proper list is a list terminated by the empty list. The empty list is a proper list, but is not a cons.
+    caaaar  caddar  cdar       nsubst         
+    caaadr  cadddr  cddaar     nsubst-if      
+    caaar   caddr   cddadr     nsubst-if-not  
+    caadar  cadr    cddar      nthcdr         
+    caaddr  cdaaar  cdddar     sublis         
+    caadr   cdaadr  cddddr     subst          
+    caar    cdaar   cdddr      subst-if       
+    cadaar  cdadar  cddr       subst-if-not   
+    cadadr  cdaddr  copy-tree  tree-equal     
+    cadar   cdadr   nsublis                   
 
-An improper list is a list that is not a proper list; that is, it is a circular list or a dotted list.
+    Figure 14-2. 和树相关的一些已定义的名字.
 
-A dotted list is a list that has a terminating atom that is not the empty list. A non-nil atom by itself is not considered to be a list of any kind---not even a dotted list.
+#### 14.1.1.1 对必须是树的参数的普通限制
 
-A circular list is a chain of conses that has no termination because some cons in the chain is the cdr of a later cons.
+除非有明确的声明, 对于任何接受一个需要为树的参数的标准化函数, 如果该树是环状的, 其后果是未定义的. 
 
-append      last           nbutlast  rest       
-butlast     ldiff          nconc     revappend  
-copy-alist  list           ninth     second     
-copy-list   list*          nreconc   seventh    
-eighth      list-length    nth       sixth      
-endp        make-list      nthcdr    tailp      
-fifth       member         pop       tenth      
-first       member-if      push      third      
-fourth      member-if-not  pushnew              
+### 14.1.2 <span id="ConsesLists">构造作为列表</span>
 
-Figure 14-3. Some defined names relating to lists.
+一个列表是一个构造(cons)的链, 其中每一个构造(cons)的 car 是这个列表的元素, 而每个构造(cons)的 cdr 是这个链中的下一个链接或一个终止原子.
 
-> * 14.1.2.1 [Lists as Association Lists](#ListsAssociationLists)
-> * 14.1.2.2 [Lists as Sets](#ListsSets)
-> * 14.1.2.3 [General Restrictions on Parameters that must be Lists](#GeneralRestrictParametersLists)
+一个 proper 列表是一个以空列表终止的列表. 这个空列表是一个 proper 列表, 但不是一个构造(cons).
 
+一个非 proper 列表是一个不是 proper 列表的列表; 这也就是说, 它是一个环状列表或一个点列表.
 
-#### 14.1.2.1 <span id="ListsAssociationLists">Lists as Association Lists</span>
+一个点列表是一个有着一个不是空列表的终止原子的列表. 一个非 nil 的原子自身不会被当作任何种类的列表---甚至不是一个点列表.
 
-An association list is a list of conses representing an association of keys with values, where the car of each cons is the key and the cdr is the value associated with that key.
+一个环状列表是一个构造(cons)的链, 由于这个链中的某个构造(cons)是后面一个构造(cons)的 cdr 所以它没有终止.
 
-acons  assoc-if      pairlis  rassoc-if      
-assoc  assoc-if-not  rassoc   rassoc-if-not  
+    append      last           nbutlast  rest       
+    butlast     ldiff          nconc     revappend  
+    copy-alist  list           ninth     second     
+    copy-list   list*          nreconc   seventh    
+    eighth      list-length    nth       sixth      
+    endp        make-list      nthcdr    tailp      
+    fifth       member         pop       tenth      
+    first       member-if      push      third      
+    fourth      member-if-not  pushnew              
 
-Figure 14-4. Some defined names related to assocation lists. 
+    Figure 14-3. 和列表相关的已定义的名字.
 
-
-#### 14.1.2.2 <span id="ListsSets">Lists as Sets</span>
-
-Lists are sometimes viewed as sets by considering their elements unordered and by assuming there is no duplication of elements.
-
-adjoin         nset-difference    set-difference    union  
-intersection   nset-exclusive-or  set-exclusive-or         
-nintersection  nunion             subsetp                  
-
-Figure 14-5. Some defined names related to sets. 
-
-
-#### 14.1.2.3 <span id="GeneralRestrictParametersLists">General Restrictions on Parameters that must be Lists</span>
-
-Except as explicitly specified otherwise, any standardized function that takes a parameter that is required to be a list should be prepared to signal an error of type type-error if the value received is a dotted list.
-
-Except as explicitly specified otherwise, for any standardized function that takes a parameter that is required to be a list, the consequences are undefined if that list is circular. 
+> * 14.1.2.1 [列表作为关联列表](#ListsAssociationLists)
+> * 14.1.2.2 [列表作为集合](#ListsSets)
+> * 14.1.2.3 [对必须是列表的参数的普通限制](#GeneralRestrictParametersLists)
 
 
-## 14.2 <span id="TheConsesDictionary">The Conses Dictionary</span>
+#### 14.1.2.1 <span id="ListsAssociationLists">列表作为关联列表</span>
+
+一个关联列表是一个表示一个键和值关联的构造(cons)的列表, 其中每一个构造(cons)的 car 是那个键而 cdr 是和那个键关联的值.
+
+    acons  assoc-if      pairlis  rassoc-if      
+    assoc  assoc-if-not  rassoc   rassoc-if-not  
+
+    Figure 14-4. 和关联列表相关的已定义的名字.
+
+
+#### 14.1.2.2 <span id="ListsSets">列表作为集合</span>
+
+列表有时可以通过把它们的元素当作无序的并且假定这里没有重复元素来视作集合.
+
+    adjoin         nset-difference    set-difference    union  
+    intersection   nset-exclusive-or  set-exclusive-or         
+    nintersection  nunion             subsetp                  
+
+    Figure 14-5. 和集合相关的已定义的名字.
+
+
+#### 14.1.2.3 <span id="GeneralRestrictParametersLists">对必须是列表的参数的普通限制</span>
+
+除非有明确的声明, 对于任何接受一个需要为列表的参数的标准化函数, 如果接收到的值是一个点列表, 都应该准备发出一个 type-error 类型的错误.
+
+除非有明确的声明, 对于任何接受一个需要为列表的参数的标准化函数, 如果列表是环状的那么后果是未定义的. 
+
+
+## 14.2 <span id="TheConsesDictionary">构造的字典</span>
 
 > * [系统类 LIST](#SC-LIST)
 > * [系统类 NULL](#SC-NULL)
