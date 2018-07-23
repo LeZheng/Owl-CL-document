@@ -1,11 +1,10 @@
- 14. Conses
+# 14 构造(Conses)
 
-14.1 Cons Concepts
+> * 14.1 [Cons Concepts](#ConsConcepts)
+> * 14.2 [The Conses Dictionary](#TheConsesDictionary)
 
-14.2 The Conses Dictionary
 
-
- 14.1 Cons Concepts
+## 14.1 <span id="ConsConcepts">Cons Concepts</span>
 
 A cons is a compound data object having two components called the car and the cdr.
 
@@ -16,12 +15,11 @@ Figure 14-1. Some defined names relating to conses.
 
 Depending on context, a group of connected conses can be viewed in a variety of different ways. A variety of operations is provided to support each of these various views.
 
-14.1.1 Conses as Trees
+> * 14.1.1 [Conses as Trees](#ConsesTrees)
+> * 14.1.2 [Conses as Lists](#ConsesLists)
 
-14.1.2 Conses as Lists
 
-
- 14.1.1 Conses as Trees
+### 14.1.1 <span id="ConsesTrees">Conses as Trees</span>
 
 A tree is a binary recursive data structure made up of conses and atoms: the conses are themselves also trees (sometimes called ``subtrees'' or ``branches''), and the atoms are terminal nodes (sometimes called leaves). Typically, the leaves represent data while the branches establish some relationship among that data.
 
@@ -38,15 +36,12 @@ cadar   cdadr   nsublis
 
 Figure 14-2. Some defined names relating to trees.
 
-14.1.1.1 General Restrictions on Parameters that must be Trees
-
-
- 14.1.1.1 General Restrictions on Parameters that must be Trees
+#### 14.1.1.1 General Restrictions on Parameters that must be Trees
 
 Except as explicitly stated otherwise, for any standardized function that takes a parameter that is required to be a tree, the consequences are undefined if that tree is circular. 
 
 
- 14.1.2 Conses as Lists
+### 14.1.2 <span id="ConsesLists">Conses as Lists</span>
 
 A list is a chain of conses in which the car of each cons is an element of the list, and the cdr of each cons is either the next link in the chain or a terminating atom.
 
@@ -70,14 +65,12 @@ fourth      member-if-not  pushnew
 
 Figure 14-3. Some defined names relating to lists.
 
-14.1.2.1 Lists as Association Lists
-
-14.1.2.2 Lists as Sets
-
-14.1.2.3 General Restrictions on Parameters that must be Lists
+> * 14.1.2.1 [Lists as Association Lists](#ListsAssociationLists)
+> * 14.1.2.2 [Lists as Sets](#ListsSets)
+> * 14.1.2.3 [General Restrictions on Parameters that must be Lists](#GeneralRestrictParametersLists)
 
 
- 14.1.2.1 Lists as Association Lists
+#### 14.1.2.1 <span id="ListsAssociationLists">Lists as Association Lists</span>
 
 An association list is a list of conses representing an association of keys with values, where the car of each cons is the key and the cdr is the value associated with that key.
 
@@ -87,7 +80,7 @@ assoc  assoc-if-not  rassoc   rassoc-if-not
 Figure 14-4. Some defined names related to assocation lists. 
 
 
- 14.1.2.2 Lists as Sets
+#### 14.1.2.2 <span id="ListsSets">Lists as Sets</span>
 
 Lists are sometimes viewed as sets by considering their elements unordered and by assuming there is no duplication of elements.
 
@@ -98,121 +91,73 @@ nintersection  nunion             subsetp
 Figure 14-5. Some defined names related to sets. 
 
 
- 14.1.2.3 General Restrictions on Parameters that must be Lists
+#### 14.1.2.3 <span id="GeneralRestrictParametersLists">General Restrictions on Parameters that must be Lists</span>
 
 Except as explicitly specified otherwise, any standardized function that takes a parameter that is required to be a list should be prepared to signal an error of type type-error if the value received is a dotted list.
 
 Except as explicitly specified otherwise, for any standardized function that takes a parameter that is required to be a list, the consequences are undefined if that list is circular. 
 
 
- 14.2 The Conses Dictionary
+## 14.2 <span id="TheConsesDictionary">The Conses Dictionary</span>
 
-System Class LIST
-
-System Class NULL
-
-System Class CONS
-
-Type ATOM
-
-Function CONS
-
-Function CONSP
-
-Function ATOM
-
-Function RPLACA, RPLACD
-
-Accessor CAR, CDR, CAAR, CADR, CDAR, CDDR, CAAAR, CAADR, CADAR, CADDR, CDAAR, CDADR, CDDAR, CDDDR, CAAAAR, CAAADR, CAADAR, CAADDR, CADAAR, CADADR, CADDAR, CADDDR, CDAAAR, CDAADR, CDADAR, CDADDR, CDDAAR, CDDADR, CDDDAR, CDDDDR
-
-Function COPY-TREE
-
-Function SUBLIS, NSUBLIS
-
-Function SUBST, SUBST-IF, SUBST-IF-NOT, NSUBST, NSUBST-IF, NSUBST-IF-NOT
-
-Function TREE-EQUAL
-
-Function COPY-LIST
-
-Function LIST, LIST*
-
-Function LIST-LENGTH
-
-Function LISTP
-
-Function MAKE-LIST
-
-Macro PUSH
-
-Macro POP
-
-Accessor FIRST, SECOND, THIRD, FOURTH, FIFTH, SIXTH, SEVENTH, EIGHTH, NINTH, TENTH
-
-Accessor NTH
-
-Function ENDP
-
-Function NULL
-
-Function NCONC
-
-Function APPEND
-
-Function REVAPPEND, NRECONC
-
-Function BUTLAST, NBUTLAST
-
-Function LAST
-
-Function LDIFF, TAILP
-
-Function NTHCDR
-
-Accessor REST
-
-Function MEMBER, MEMBER-IF, MEMBER-IF-NOT
-
-Function MAPC, MAPCAR, MAPCAN, MAPL, MAPLIST, MAPCON
-
-Function ACONS
-
-Function ASSOC, ASSOC-IF, ASSOC-IF-NOT
-
-Function COPY-ALIST
-
-Function PAIRLIS
-
-Function RASSOC, RASSOC-IF, RASSOC-IF-NOT
-
-Function GET-PROPERTIES
-
-Accessor GETF
-
-Macro REMF
-
-Function INTERSECTION, NINTERSECTION
-
-Function ADJOIN
-
-Macro PUSHNEW
-
-Function SET-DIFFERENCE, NSET-DIFFERENCE
-
-Function SET-EXCLUSIVE-OR, NSET-EXCLUSIVE-OR
-
-Function SUBSETP
-
-Function UNION, NUNION
+> * [系统类 LIST](#SC-LIST)
+> * [系统类 NULL](#SC-NULL)
+> * [系统类 CONS](#SC-CONS)
+> * [类型 ATOM](#T-ATOM)
+> * [函数 CONS](#F-CONS)
+> * [函数 CONSP](#F-CONSP)
+> * [函数 ATOM](#F-ATOM)
+> * [函数 RPLACA, RPLACD](#F-RPLACA-RPLACD)
+> * [访问器 CAR, CDR, CAAR, CADR, CDAR, CDDR, CAAAR, CAADR, CADAR, CADDR, CDAAR, CDADR, CDDAR, CDDDR, CAAAAR, CAAADR, CAADAR, CAADDR, CADAAR, CADADR, CADDAR, CADDDR, CDAAAR, CDAADR, CDADAR, CDADDR, CDDAAR, CDDADR, CDDDAR, CDDDDR](#A-CR-ALL)
+> * [函数 COPY-TREE](#F-COPY-TREE)
+> * [函数 SUBLIS, NSUBLIS](#F-SUBLIS-NSUBLIS)
+> * [函数 SUBST, SUBST-IF, SUBST-IF-NOT, NSUBST, NSUBST-IF, NSUBST-IF-NOT](#F-SUBST-ALL)
+> * [函数 TREE-EQUAL](#F-TREE-EQUAL)
+> * [函数 COPY-LIST](#F-COPY-LIST)
+> * [函数 LIST, LIST*](#F-LIST-LIST)
+> * [函数 LIST-LENGTH](#F-LIST-LENGTH)
+> * [函数 LISTP](#F-LISTP)
+> * [函数 MAKE-LIST](#F-MAKE-LIST)
+> * [宏 PUSH](#M-PUSH)
+> * [宏 POP](#M-POP)
+> * [访问器 FIRST, SECOND, THIRD, FOURTH, FIFTH, SIXTH, SEVENTH, EIGHTH, NINTH, TENTH](#A-FSTFFSSENT)
+> * [访问器 NTH](#A-NTH)
+> * [函数 ENDP](#F-ENDP)
+> * [函数 NULL](#F-NULL)
+> * [函数 NCONC](#F-NCONC)
+> * [函数 APPEND](#F-APPEND)
+> * [函数 REVAPPEND, NRECONC](#F-REVAPPEND-NRECONC)
+> * [函数 BUTLAST, NBUTLAST](#F-BUTLAST-NBUTLAST)
+> * [函数 LAST](#F-LAST)
+> * [函数 LDIFF, TAILP](#F-LDIFF-TAILP)
+> * [函数 NTHCDR](#F-NTHCDR)
+> * [访问器 REST](#A-REST)
+> * [函数 MEMBER, MEMBER-IF, MEMBER-IF-NOT](#F-MEMBER-ALL)
+> * [函数 MAPC, MAPCAR, MAPCAN, MAPL, MAPLIST, MAPCON](#F-MAP-ALL)
+> * [函数 ACONS](#F-ACONS)
+> * [函数 ASSOC, ASSOC-IF, ASSOC-IF-NOT](#F-ASSOC-ALL)
+> * [函数 COPY-ALIST](#F-COPY-ALIST)
+> * [函数 PAIRLIS](#F-PAIRLIS)
+> * [函数 RASSOC, RASSOC-IF, RASSOC-IF-NOT](#F-RASSOC-ALL)
+> * [函数 GET-PROPERTIES](#F-GET-PROPERTIES)
+> * [访问器 GETF](#A-GETF)
+> * [宏 REMF](#M-REMF)
+> * [函数 INTERSECTION, NINTERSECTION](#F-INTERSECTION-NINTERSECTION)
+> * [函数 ADJOIN](#F-ADJOIN)
+> * [宏 PUSHNEW](#M-PUSHNEW)
+> * [函数 SET-DIFFERENCE, NSET-DIFFERENCE](#F-SET-DIFFERENCE-ALL)
+> * [函数 SET-EXCLUSIVE-OR, NSET-EXCLUSIVE-OR](#F-SET-EXCLUSIVE-OR-ALL)
+> * [函数 SUBSETP](#F-SUBSETP)
+> * [函数 UNION, NUNION](#F-UNION-NUNION)
 
 
-System Class LIST
+### <span id="SC-LIST">系统类 LIST</span>
 
-Class Precedence List:
+* 类优先级列表(Class Precedence List):
 
 list, sequence, t
 
-Description:
+* 描述(Description):
 
 A list is a chain of conses in which the car of each cons is an element of the list, and the cdr of each cons is either the next link in the chain or a terminating atom.
 
@@ -224,77 +169,77 @@ For each element of a list there is a cons. The empty list has no elements and i
 
 The types cons and null form an exhaustive partition of the type list.
 
-See Also:
+* 也见(See Also):
 
 Section 2.4.1 (Left-Parenthesis), Section 22.1.3.5 (Printing Lists and Conses) 
 
 
-System Class NULL
+### <span id="SC-NULL">系统类 NULL</span>
 
-Class Precedence List:
+* 类优先级列表(Class Precedence List):
 
 null, symbol, list, sequence, t
 
-Description:
+* 描述(Description):
 
 The only object of type null is nil, which represents the empty list and can also be notated ().
 
-See Also:
+* 也见(See Also):
 
 Section 2.3.4 (Symbols as Tokens), Section 2.4.1 (Left-Parenthesis), Section 22.1.3.3 (Printing Symbols) 
 
 
-System Class CONS
+### <span id="SC-CONS">系统类 CONS</span>
 
-Class Precedence List:
+* 类优先级列表(Class Precedence List):
 
 cons, list, sequence, t
 
-Description:
+* 描述(Description):
 
 A cons is a compound object having two components, called the car and cdr. These form a dotted pair. Each component can be any object.
 
-Compound Type Specifier Kind:
+* 复合类型指定符类别(Compound Type Specifier Kind):
 
 Specializing.
 
-Compound Type Specifier Syntax:
+* 复合类型指定符语法(Compound Type Specifier Syntax):
 
 cons [car-typespec [cdr-typespec]]
 
-Compound Type Specifier Arguments:
+* 复合类型指定符参数(Compound Type Specifier Arguments):
 
 car-typespec---a type specifier, or the symbol *. The default is the symbol *.
 
 cdr-typespec---a type specifier, or the symbol *. The default is the symbol *.
 
-Compound Type Specifier Description:
+* 复合类型指定符描述(Compound Type Specifier Description):
 
 This denotes the set of conses whose car is constrained to be of type car-typespec and whose cdr is constrained to be of type cdr-typespec. (If either car-typespec or cdr-typespec is *, it is as if the type t had been denoted.)
 
-See Also:
+* 也见(See Also):
 
 Section 2.4.1 (Left-Parenthesis), Section 22.1.3.5 (Printing Lists and Conses) 
 
 
-Type ATOM
+### <span id="T-ATOM">类型 ATOM</span>
 
-Supertypes:
+* 超类型(Supertypes):
 
 atom, t
 
-Description:
+* 描述(Description):
 
 It is equivalent to (not cons). 
 
 
-Function CONS
+### <span id="F-CONS">函数 CONS</span>
 
-Syntax:
+* 语法(Syntax):
 
 cons object-1 object-2 => cons
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 object-1---an object.
 
@@ -302,11 +247,11 @@ object-2---an object.
 
 cons---a cons.
 
-Description:
+* 描述(Description):
 
 Creates a fresh cons, the car of which is object-1 and the cdr of which is object-2.
 
-Examples:
+* 示例(Examples):
 
  (cons 1 2) =>  (1 . 2)
  (cons 1 nil) =>  (1)
@@ -317,38 +262,38 @@ Examples:
  (cons 'a (cons 'b (cons 'c '()))) =>  (A B C)
  (cons 'a '(b c d)) =>  (A B C D)
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 list
 
-Notes:
+* 注意(Notes):
 
 If object-2 is a list, cons can be thought of as producing a new list which is like it but has object-1 prepended. 
 
 
-Function CONSP
+### <span id="F-CONSP">函数 CONSP</span>
 
-Syntax:
+* 语法(Syntax):
 
 consp object => generalized-boolean
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 object---an object.
 
 generalized-boolean---a generalized boolean.
 
-Description:
+* 描述(Description):
 
 Returns true if object is of type cons; otherwise, returns false.
 
-Examples:
+* 示例(Examples):
 
  (consp nil) =>  false
  (consp (cons 1 2)) =>  true
@@ -357,38 +302,38 @@ The empty list is not a cons, so
 
  (consp '()) ==  (consp 'nil) =>  false
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 listp
 
-Notes:
+* 注意(Notes):
 
  (consp object) ==  (typep object 'cons) ==  (not (typep object 'atom)) ==  (typep object '(not atom))
 
 
-Function ATOM
+### <span id="F-ATOM">函数 ATOM</span>
 
-Syntax:
+* 语法(Syntax):
 
 atom object => generalized-boolean
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 object---an object.
 
 generalized-boolean---a generalized boolean.
 
-Description:
+* 描述(Description):
 
 Returns true if object is of type atom; otherwise, returns false.
 
-Examples:
+* 示例(Examples):
 
  (atom 'sss) =>  true
  (atom (cons 1 2)) =>  false
@@ -396,45 +341,45 @@ Examples:
  (atom '()) =>  true
  (atom 3) =>  true
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also: None.
+* 也见(See Also): None.
 
-Notes:
+* 注意(Notes):
 
  (atom object) ==  (typep object 'atom) ==  (not (consp object))
  ==  (not (typep object 'cons)) ==  (typep object '(not cons))
 
 
-Function RPLACA, RPLACD
+### <span id="F-RPLACA-RPLACD">函数 RPLACA, RPLACD</span>
 
-Syntax:
+* 语法(Syntax):
 
 rplaca cons object => cons
 
 rplacd cons object => cons
 
-Pronunciation:
+* 发音(Pronunciation):
 
 rplaca: [,ree'plakuh] or [,ruh'plakuh]
 
 rplacd: [,ree'plakduh] or [,ruh'plakduh] or [,ree'plakdee] or [,ruh'plakdee]
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 cons---a cons.
 
 object---an object.
 
-Description:
+* 描述(Description):
 
 rplaca replaces the car of the cons with object.
 
 rplacd replaces the cdr of the cons with object.
 
-Examples:
+* 示例(Examples):
 
  (defparameter *some-list* (list* 'one 'two 'three 'four)) =>  *some-list*
  *some-list* =>  (ONE TWO THREE . FOUR)
@@ -443,23 +388,23 @@ Examples:
  (rplacd (last *some-list*) (list 'IV)) =>  (THREE IV)
  *some-list* =>  (UNO TWO THREE IV)
 
-Side Effects:
+* 副作用(Side Effects):
 
 The cons is modified.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
 Should signal an error of type type-error if cons is not a cons.
 
-See Also: None.
+* 也见(See Also): None.
 
-Notes: None. 
+* 注意(Notes): None. 
 
-Accessor CAR, CDR, CAAR, CADR, CDAR, CDDR, CAAAR, CAADR, CADAR, CADDR, CDAAR, CDADR, CDDAR, CDDDR, CAAAAR, CAAADR, CAADAR, CAADDR, CADAAR, CADADR, CADDAR, CADDDR, CDAAAR, CDAADR, CDADAR, CDADDR, CDDAAR, CDDADR, CDDDAR, CDDDDR
+### <span id="A-CR-ALL">访问器 CAR, CDR, CAAR, CADR, CDAR, CDDR, CAAAR, CAADR, CADAR, CADDR, CDAAR, CDADR, CDDAR, CDDDR, CAAAAR, CAAADR, CAADAR, CAADDR, CADAAR, CADADR, CADDAR, CADDDR, CDAAAR, CDAADR, CDADAR, CDADDR, CDDAAR, CDDADR, CDDDAR, CDDDDR</span>
 
-Syntax:
+* 语法(Syntax):
 
 car x => object
 
@@ -581,7 +526,7 @@ cddddr x => object
 
 (setf (cddddr x) new-object)
 
-Pronunciation:
+* 发音(Pronunciation):
 
 cadr: ['ka,duhr]
 
@@ -591,7 +536,7 @@ cdr: ['k,duhr]
 
 cddr: ['kduh,duhr] or ['kuh,dduhr]
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 x---a list.
 
@@ -599,7 +544,7 @@ object---an object.
 
 new-object---an object.
 
-Description:
+* 描述(Description):
 
 If x is a cons, car returns the car of that cons. If x is nil, car returns nil.
 
@@ -643,7 +588,7 @@ setf can also be used with any of these functions to change an existing componen
 
 The argument x is permitted to be a dotted list or a circular list.
 
-Examples:
+* 示例(Examples):
 
  (car nil) =>  NIL  
  (cdr '(1 . 2)) =>  2
@@ -652,17 +597,17 @@ Examples:
  (car '(a b c)) =>  A
  (cdr '(a b c)) =>  (B C)
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 The functions car and cdr should signal type-error if they receive an argument which is not a list. The other functions (caar, cadr, ... cddddr) should behave for the purpose of error checking as if defined by appropriate calls to car and cdr.
 
-See Also:
+* 也见(See Also):
 
 rplaca, first, rest
 
-Notes:
+* 注意(Notes):
 
 The car of a cons can also be altered by using rplaca, and the cdr of a cons can be altered by using rplacd.
 
@@ -672,19 +617,19 @@ The car of a cons can also be altered by using rplaca, and the cdr of a cons can
 (cadddr x) ==  (fourth x) ==  (car (cdr (cdr (cdr x))))
 
 
-Function COPY-TREE
+### <span id="F-COPY-TREE">函数 COPY-TREE</span>
 
-Syntax:
+* 语法(Syntax):
 
 copy-tree tree => new-tree
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 tree---a tree.
 
 new-tree---a tree.
 
-Description:
+* 描述(Description):
 
 Creates a copy of a tree of conses.
 
@@ -692,7 +637,7 @@ If tree is not a cons, it is returned; otherwise, the result is a new cons of th
 
 copy-tree does not preserve circularities and the sharing of substructure.
 
-Examples:
+* 示例(Examples):
 
  (setq object (list (cons 1 "one")
                     (cons 2 (list 'a 'b 'c))))
@@ -714,27 +659,27 @@ Examples:
  copy-as-alist =>  ((1 . "one") (2 "a" B C))
  copy-as-tree =>  ((1 . "one") (2 A B C)) 
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 tree-equal
 
-Notes: None. 
+* 注意(Notes): None. 
 
-Function SUBLIS, NSUBLIS
+### <span id="F-SUBLIS-NSUBLIS">函数 SUBLIS, NSUBLIS</span>
 
-Syntax:
+* 语法(Syntax):
 
 sublis alist tree &key key test test-not => new-tree
 
 nsublis alist tree &key key test test-not => new-tree
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 alist---an association list.
 
@@ -748,7 +693,7 @@ key---a designator for a function of one argument, or nil.
 
 new-tree---a tree.
 
-Description:
+* 描述(Description):
 
 sublis makes substitutions for objects in tree (a structure of conses). nsublis is like sublis but destructively modifies the relevant parts of the tree.
 
@@ -758,7 +703,7 @@ If sublis succeeds, a new copy of tree is returned in which each occurrence of s
 
 nsublis is permitted to modify tree but otherwise returns the same values as sublis.
 
-Examples:
+* 示例(Examples):
 
  (sublis '((x . 100) (z . zprime))
          '(plus x (minus g z x p) 4 . x))
@@ -789,19 +734,19 @@ Examples:
            :key #'(lambda (x) (or (atom x) (< (list-length x) 3))))
 =>  ((QUOTE TEMP) (QUOTE TEMP) QUOTE TEMP) 
 
-Side Effects:
+* 副作用(Side Effects):
 
 nsublis modifies tree.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 subst, Section 3.2.1 (Compiler Terminology), Section 3.6 (Traversal Rules and Side Effects)
 
-Notes:
+* 注意(Notes):
 
 The :test-not parameter is deprecated.
 
@@ -815,9 +760,9 @@ Because the side-effecting variants (e.g., nsublis) potentially change the path 
  (test-it #'nsublis) =>  ((A B) (A B))
 
 
-Function SUBST, SUBST-IF, SUBST-IF-NOT, NSUBST, NSUBST-IF, NSUBST-IF-NOT
+### <span id="F-SUBST-ALL">函数 SUBST, SUBST-IF, SUBST-IF-NOT, NSUBST, NSUBST-IF, NSUBST-IF-NOT</span>
 
-Syntax:
+* 语法(Syntax):
 
 subst new old tree &key key test test-not => new-tree
 
@@ -831,7 +776,7 @@ nsubst-if new predicate tree &key key => new-tree
 
 nsubst-if-not new predicate tree &key key => new-tree
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 new---an object.
 
@@ -849,7 +794,7 @@ key---a designator for a function of one argument, or nil.
 
 new-tree---a tree.
 
-Description:
+* 描述(Description):
 
 subst, subst-if, and subst-if-not perform substitution operations on tree. Each function searches tree for occurrences of a particular old item of an element or subexpression that satisfies the test.
 
@@ -863,7 +808,7 @@ For subst, subst-if, and subst-if-not, if the functions succeed, a new copy of t
 
 For nsubst, nsubst-if, and nsubst-if-not the original tree is modified and returned as the function result, but the result may not be eq to tree.
 
-Examples:
+* 示例(Examples):
 
  (setq tree1 '(1 (1 2) (1 2 3) (1 2 3 4))) =>  (1 (1 2) (1 2 3) (1 2 3 4))
  (subst "two" 2 tree1) =>  (1 (1 "two") (1 "two" 3) (1 "two" 3 4))
@@ -888,19 +833,19 @@ Examples:
 =>  (1 (1 2) X X)
  tree1 =>  (1 (1 2) X X)
 
-Side Effects:
+* 副作用(Side Effects):
 
 nsubst, nsubst-if, and nsubst-if-not might alter the tree structure of tree.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 substitute, nsubstitute, Section 3.2.1 (Compiler Terminology), Section 3.6 (Traversal Rules and Side Effects)
 
-Notes:
+* 注意(Notes):
 
 The :test-not parameter is deprecated.
 
@@ -921,13 +866,13 @@ One possible definition of subst:
                   (cons a d))))))
 
 
-Function TREE-EQUAL
+### <span id="F-TREE-EQUAL">函数 TREE-EQUAL</span>
 
-Syntax:
+* 语法(Syntax):
 
 tree-equal tree-1 tree-2 &key test test-not => generalized-boolean
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 tree-1---a tree.
 
@@ -939,7 +884,7 @@ test-not---a designator for a function of two arguments that returns a generaliz
 
 generalized-boolean---a generalized boolean.
 
-Description:
+* 描述(Description):
 
 tree-equal tests whether two trees are of the same shape and have the same leaves. tree-equal returns true if tree-1 and tree-2 are both atoms and satisfy the test, or if they are both conses and the car of tree-1 is tree-equal to the car of tree-2 and the cdr of tree-1 is tree-equal to the cdr of tree-2. Otherwise, tree-equal returns false.
 
@@ -947,7 +892,7 @@ tree-equal recursively compares conses but not any other objects that have compo
 
 The first argument to the :test or :test-not function is tree-1 or a car or cdr of tree-1; the second argument is tree-2 or a car or cdr of tree-2.
 
-Examples:
+* 示例(Examples):
 
  (setq tree1 '(1 (1 2))
        tree2 '(1 (1 2))) =>  (1 (1 2))
@@ -958,41 +903,41 @@ Examples:
 =>  ((QUOTE A) ((QUOTE B) (QUOTE C)))
  (tree-equal tree1 tree2 :test 'eq) =>  true
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 The consequences are undefined if both tree-1 and tree-2 are circular.
 
-See Also:
+* 也见(See Also):
 
 equal, Section 3.6 (Traversal Rules and Side Effects)
 
-Notes:
+* 注意(Notes):
 
 The :test-not parameter is deprecated. 
 
-Function COPY-LIST
+### <span id="F-COPY-LIST">函数 COPY-LIST</span>
 
-Syntax:
+* 语法(Syntax):
 
 copy-list list => copy
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 list---a proper list or a dotted list.
 
 copy---a list.
 
-Description:
+* 描述(Description):
 
 Returns a copy of list. If list is a dotted list, the resulting list will also be a dotted list.
 
 Only the list structure of list is copied; the elements of the resulting list are the same as the corresponding elements of the given list.
 
-Examples:
+* 示例(Examples):
 
  (setq lst (list 1 (list 2 3))) =>  (1 (2 3))
  (setq slst lst) =>  (1 (2 3))
@@ -1008,32 +953,32 @@ Examples:
  slst =>  ("one" ("two" 3))
  clst =>  (1 ("two" 3))
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 The consequences are undefined if list is a circular list.
 
-See Also:
+* 也见(See Also):
 
 copy-alist, copy-seq, copy-tree
 
-Notes:
+* 注意(Notes):
 
 The copy created is equal to list, but not eq. 
 
 
-Function LIST, LIST*
+### <span id="F-LIST-LIST">函数 LIST, LIST*</span>
 
-Syntax:
+* 语法(Syntax):
 
 list &rest objects => list
 
 list* &rest objects+ => result
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 object---an object.
 
@@ -1041,7 +986,7 @@ list---a list.
 
 result---an object.
 
-Description:
+* 描述(Description):
 
 list returns a list containing the supplied objects.
 
@@ -1051,7 +996,7 @@ If the last argument to list* is a list, the effect is to construct a new list w
 
 If list* receives only one object, that object is returned, regardless of whether or not it is a list.
 
-Examples:
+* 示例(Examples):
 
  (list 1) =>  (1)
  (list* 1) =>  1
@@ -1067,38 +1012,38 @@ Examples:
  (list* 'a 'b 'c 'd) ==  (cons 'a (cons 'b (cons 'c 'd))) =>  (A B C . D)
  (list* 'a 'b 'c '(d e f)) =>  (A B C D E F)
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 cons
 
-Notes:
+* 注意(Notes):
 
  (list* x) ==  x
 
 
-Function LIST-LENGTH
+### <span id="F-LIST-LENGTH">函数 LIST-LENGTH</span>
 
-Syntax:
+* 语法(Syntax):
 
 list-length list => length
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 list---a proper list or a circular list.
 
 length---a non-negative integer, or nil.
 
-Description:
+* 描述(Description):
 
 Returns the length of list if list is a proper list. Returns nil if list is a circular list.
 
-Examples:
+* 示例(Examples):
 
  (list-length '(a b c d)) =>  4
  (list-length '(a (b c) d)) =>  3
@@ -1111,19 +1056,19 @@ Examples:
  (list-length (circular-list 'a)) =>  NIL
  (list-length (circular-list)) =>  0
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should signal an error of type type-error if list is not a proper list or a circular list.
 
-See Also:
+* 也见(See Also):
 
 length
 
-Notes:
+* 注意(Notes):
 
 list-length could be implemented as follows:
 
@@ -1144,53 +1089,53 @@ list-length could be implemented as follows:
      (when (and (eq fast slow) (> n 0)) (return nil))))
  
 
-Function LISTP
+### <span id="F-LISTP">函数 LISTP</span>
 
-Syntax:
+* 语法(Syntax):
 
 listp object => generalized-boolean
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 object---an object.
 
 generalized-boolean---a generalized boolean.
 
-Description:
+* 描述(Description):
 
 Returns true if object is of type list; otherwise, returns false.
 
-Examples:
+* 示例(Examples):
 
  (listp nil) =>  true
  (listp (cons 1 2)) =>  true
  (listp (make-array 6)) =>  false
  (listp t) =>  false
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 consp
 
-Notes:
+* 注意(Notes):
 
 If object is a cons, listp does not check whether object is a proper list; it returns true for any kind of list.
 
  (listp object) ==  (typep object 'list) ==  (typep object '(or cons null))
 
 
-Function MAKE-LIST
+### <span id="F-MAKE-LIST">函数 MAKE-LIST</span>
 
-Syntax:
+* 语法(Syntax):
 
 make-list size &key initial-element => list
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 size---a non-negative integer.
 
@@ -1198,11 +1143,11 @@ initial-element---an object. The default is nil.
 
 list---a list.
 
-Description:
+* 描述(Description):
 
 Returns a list of length given by size, each of the elements of which is initial-element.
 
-Examples:
+* 示例(Examples):
 
  (make-list 5) =>  (NIL NIL NIL NIL NIL)
  (make-list 3 :initial-element 'rah) =>  (RAH RAH RAH)
@@ -1210,27 +1155,27 @@ Examples:
  (make-list 0) =>  NIL ;i.e.,  ()
  (make-list 0 :initial-element 'new-element) =>  NIL 
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should signal an error of type type-error if size is not a non-negative integer.
 
-See Also:
+* 也见(See Also):
 
 cons, list
 
-Notes: None. 
+* 注意(Notes): None. 
 
-Macro PUSH
+### <span id="M-PUSH">宏 PUSH</span>
 
-Syntax:
+* 语法(Syntax):
 
 push item place => new-place-value
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 item---an object.
 
@@ -1238,13 +1183,13 @@ place---a place, the value of which may be any object.
 
 new-place-value---a list (the new value of place).
 
-Description:
+* 描述(Description):
 
 push prepends item to the list that is stored in place, stores the resulting list in place, and returns the list.
 
 For information about the evaluation of subforms of place, see Section 5.1.1.1 (Evaluation of Subforms to Places).
 
-Examples:
+* 示例(Examples):
 
  (setq llst '(nil)) =>  (NIL)
  (push 1 (car llst)) =>  (1)
@@ -1255,19 +1200,19 @@ Examples:
  (push 5 (cadr x)) =>  (5 B C)  
  x =>  (A (5 B C) D)
 
-Side Effects:
+* 副作用(Side Effects):
 
 The contents of place are modified.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 pop, pushnew, Section 5.1 (Generalized Reference)
 
-Notes:
+* 注意(Notes):
 
 The effect of (push item place) is equivalent to
 
@@ -1275,25 +1220,25 @@ The effect of (push item place) is equivalent to
 
 except that the subforms of place are evaluated only once, and item is evaluated before place. 
 
-Macro POP
+### <span id="M-POP">宏 POP</span>
 
-Syntax:
+* 语法(Syntax):
 
 pop place => element
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 place---a place, the value of which is a list (possibly, but necessarily, a dotted list or circular list).
 
 element---an object (the car of the contents of place).
 
-Description:
+* 描述(Description):
 
 pop reads the value of place, remembers the car of the list which was retrieved, writes the cdr of the list back into the place, and finally yields the car of the originally retrieved list.
 
 For information about the evaluation of subforms of place, see Section 5.1.1.1 (Evaluation of Subforms to Places).
 
-Examples:
+* 示例(Examples):
 
  (setq stack '(a b c)) =>  (A B C)
  (pop stack) =>  A  
@@ -1302,19 +1247,19 @@ Examples:
  (pop (car llst)) =>  1
  llst =>  ((2 3 4))
 
-Side Effects:
+* 副作用(Side Effects):
 
 The contents of place are modified.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 push, pushnew, Section 5.1 (Generalized Reference)
 
-Notes:
+* 注意(Notes):
 
 The effect of (pop place) is roughly equivalent to
 
@@ -1323,9 +1268,9 @@ The effect of (pop place) is roughly equivalent to
 except that the latter would evaluate any subforms of place three times, while pop evaluates them only once. 
 
 
-Accessor FIRST, SECOND, THIRD, FOURTH, FIFTH, SIXTH, SEVENTH, EIGHTH, NINTH, TENTH
+### <span id="A-FSTFFSSENT">访问器 FIRST, SECOND, THIRD, FOURTH, FIFTH, SIXTH, SEVENTH, EIGHTH, NINTH, TENTH</span>
 
-Syntax:
+* 语法(Syntax):
 
 first list => object
 
@@ -1367,13 +1312,13 @@ tenth list => object
 
 (setf (tenth list) new-object)
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 list---a list, which might be a dotted list or a circular list.
 
 object, new-object---an object.
 
-Description:
+* 描述(Description):
 
 The functions first, second, third, fourth, fifth, sixth, seventh, eighth, ninth, and tenth access the first, second, third, fourth, fifth, sixth, seventh, eighth, ninth, and tenth elements of list, respectively. Specifically,
 
@@ -1392,7 +1337,7 @@ setf can also be used with any of these functions to change an existing componen
 
  (setf (fifth list) new-object) ==  (setf (car (cddddr list)) new-object)
 
-Examples:
+* 示例(Examples):
 
  (setq lst '(1 2 3 (4 5 6) ((V)) vi 7 8 9 10)) 
 =>  (1 2 3 (4 5 6) ((V)) VI 7 8 9 10)
@@ -1404,17 +1349,17 @@ Examples:
  (setf (fourth lst) "four") =>  "four"
  lst =>  (1 2 3 "four" ((V)) VI 7 8 9 10)
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 car, nth
 
-Notes:
+* 注意(Notes):
 
 first is functionally equivalent to car, second is functionally equivalent to cadr, third is functionally equivalent to caddr, and fourth is functionally equivalent to cadddr.
 
@@ -1423,15 +1368,15 @@ The ordinal numbering used here is one-origin, as opposed to the zero-origin num
  (fifth x) ==  (nth 4 x)
 
 
-Accessor NTH
+### <span id="A-NTH">访问器 NTH</span>
 
-Syntax:
+* 语法(Syntax):
 
 nth n list => object
 
 (setf (nth n list) new-object)
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 n---a non-negative integer.
 
@@ -1441,7 +1386,7 @@ object---an object.
 
 new-object---an object.
 
-Description:
+* 描述(Description):
 
 nth locates the nth element of list, where the car of the list is the ``zeroth'' element. Specifically,
 
@@ -1451,7 +1396,7 @@ nth may be used to specify a place to setf. Specifically,
 
  (setf (nth n list) new-object) ==  (setf (car (nthcdr n list)) new-object)
 
-Examples:
+* 示例(Examples):
 
  (nth 0 '(foo bar baz)) =>  FOO
  (nth 1 '(foo bar baz)) =>  BAR
@@ -1460,108 +1405,108 @@ Examples:
  (setf (nth 2 0-to-3) "two") =>  "two"
  0-to-3 =>  (0 1 "two" 3)
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 elt, first, nthcdr
 
-Notes: None. 
+* 注意(Notes): None. 
 
-Function ENDP
+### <span id="F-ENDP">函数 ENDP</span>
 
-Syntax:
+* 语法(Syntax):
 
 endp list => generalized-boolean
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 list---a list, which might be a dotted list or a circular list.
 
 generalized-boolean---a generalized boolean.
 
-Description:
+* 描述(Description):
 
 Returns true if list is the empty list. Returns false if list is a cons.
 
-Examples:
+* 示例(Examples):
 
  (endp nil) =>  true
  (endp '(1 2)) =>  false
  (endp (cddr '(1 2))) =>  true
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should signal an error of type type-error if list is not a list.
 
-See Also: None.
+* 也见(See Also): None.
 
-Notes:
+* 注意(Notes):
 
 The purpose of endp is to test for the end of proper list. Since endp does not descend into a cons, it is well-defined to pass it a dotted list. However, if shorter ``lists'' are iteratively produced by calling cdr on such a dotted list and those ``lists'' are tested with endp, a situation that has undefined consequences will eventually result when the non-nil atom (which is not in fact a list) finally becomes the argument to endp. Since this is the usual way in which endp is used, it is conservative programming style and consistent with the intent of endp to treat endp as simply a function on proper lists which happens not to enforce an argument type of proper list except when the argument is atomic. 
 
 
-Function NULL
+### <span id="F-NULL">函数 NULL</span>
 
-Syntax:
+* 语法(Syntax):
 
 null object => boolean
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 object---an object.
 
 boolean---a boolean.
 
-Description:
+* 描述(Description):
 
 Returns t if object is the empty list; otherwise, returns nil.
 
-Examples:
+* 示例(Examples):
 
  (null '()) =>  T
  (null nil) =>  T
  (null t) =>  NIL
  (null 1) =>  NIL
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 not
 
-Notes:
+* 注意(Notes):
 
 null is intended to be used to test for the empty list whereas not is intended to be used to invert a boolean (or generalized boolean). Operationally, null and not compute the same result; which to use is a matter of style.
 
  (null object) ==  (typep object 'null) ==  (eq object '())
 
 
-Function NCONC
+### <span id="F-NCONC">函数 NCONC</span>
 
-Syntax:
+* 语法(Syntax):
 
 nconc &rest lists => concatenated-list
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 list---each but the last must be a list (which might be a dotted list but must not be a circular list); the last list may be any object.
 
 concatenated-list---a list.
 
-Description:
+* 描述(Description):
 
 Returns a list that is the concatenation of lists. If no lists are supplied, (nconc) returns nil. nconc is defined using the following recursive relationship:
 
@@ -1571,7 +1516,7 @@ Returns a list that is the concatenation of lists. If no lists are supplied, (nc
  (nconc list-1 list-2) ==  (progn (rplacd (last list-1) list-2) list-1)
  (nconc list-1 list-2 . lists) ==  (nconc (nconc list-1 list-2) . lists)
 
-Examples:
+* 示例(Examples):
 
  (nconc) =>  NIL
  (setq x '(a b c)) =>  (A B C)
@@ -1597,38 +1542,38 @@ Note, in the example, that the value of x is now different, since its last cons 
  bar =>  (F G H I J K L M)
  baz =>  (K L M)
 
-Side Effects:
+* 副作用(Side Effects):
 
 The lists are modified rather than copied.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 append, concatenate
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function APPEND
+### <span id="F-APPEND">函数 APPEND</span>
 
-Syntax:
+* 语法(Syntax):
 
 append &rest lists => result
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 list---each must be a proper list except the last, which may be any object.
 
 result---an object. This will be a list unless the last list was not a list and all preceding lists were null.
 
-Description:
+* 描述(Description):
 
 append returns a new list that is the concatenation of the copies. lists are left unchanged; the list structure of each of lists except the last is copied. The last argument is not copied; it becomes the cdr of the final dotted pair of the concatenation of the preceding lists, or is returned directly if there are no preceding non-empty lists.
 
-Examples:
+* 示例(Examples):
 
  (append '(a b c) '(d e f) '() '(g)) =>  (A B C D E F G)
  (append '(a b c) 'd) =>  (A B C . D)
@@ -1638,25 +1583,25 @@ Examples:
  (append) =>  NIL
  (append 'a) =>  A
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 nconc, concatenate
 
-Notes: None. 
+* 注意(Notes): None. 
 
-Function REVAPPEND, NRECONC
+### <span id="F-REVAPPEND-NRECONC">函数 REVAPPEND, NRECONC</span>
 
-Syntax:
+* 语法(Syntax):
 
 revappend list tail => result-list
 
 nreconc list tail => result-list
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 list---a proper list.
 
@@ -1664,7 +1609,7 @@ tail---an object.
 
 result-list---an object.
 
-Description:
+* 描述(Description):
 
 revappend constructs a copy[2] of list, but with the elements in reverse order. It then appends (as if by nconc) the tail to that reversed list and returns the result.
 
@@ -1672,7 +1617,7 @@ nreconc reverses the order of elements in list (as if by nreverse). It then appe
 
 The resulting list shares list structure with tail.
 
-Examples:
+* 示例(Examples):
 
  (let ((list-1 (list 1 2 3))
        (list-2 (list 'a 'b 'c)))
@@ -1700,7 +1645,7 @@ Examples:
 >>  T
 =>  T
 
-Side Effects:
+* 副作用(Side Effects):
 
 revappend does not modify either of its arguments. nreconc is permitted to modify list but not tail.
 
@@ -1708,15 +1653,15 @@ Although it might be implemented differently, nreconc is constrained to have sid
 
  (nconc (nreverse list) tail)
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 reverse, nreverse, nconc
 
-Notes:
+* 注意(Notes):
 
 The following functional equivalences are true, although good implementations will typically use a faster algorithm for achieving the same effect:
 
@@ -1724,15 +1669,15 @@ The following functional equivalences are true, although good implementations wi
  (nreconc list tail) ==  (nconc (nreverse list) tail)
 
 
-Function BUTLAST, NBUTLAST
+### <span id="F-BUTLAST-NBUTLAST">函数 BUTLAST, NBUTLAST</span>
 
-Syntax:
+* 语法(Syntax):
 
 butlast list &optional n => result-list
 
 nbutlast list &optional n => result-list
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 list---a list, which might be a dotted list but must not be a circular list.
 
@@ -1740,13 +1685,13 @@ n---a non-negative integer.
 
 result-list---a list.
 
-Description:
+* 描述(Description):
 
 butlast returns a copy of list from which the last n conses have been omitted. If n is not supplied, its value is 1. If there are fewer than n conses in list, nil is returned and, in the case of nbutlast, list is not modified.
 
 nbutlast is like butlast, but nbutlast may modify list. It changes the cdr of the cons n+1 from the end of the list to nil.
 
-Examples:
+* 示例(Examples):
 
  (setq lst '(1 2 3 4 5 6 7 8 9)) =>  (1 2 3 4 5 6 7 8 9)
  (butlast lst) =>  (1 2 3 4 5 6 7 8)
@@ -1767,26 +1712,26 @@ Examples:
  (nbutlast (list 'a)) =>  NIL
  (nbutlast '()) =>  NIL
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should signal an error of type type-error if list is not a proper list or a dotted list. Should signal an error of type type-error if n is not a non-negative integer.
 
-See Also: None.
+* 也见(See Also): None.
 
-Notes:
+* 注意(Notes):
 
  (butlast list n) ==  (ldiff list (last list n))
 
 
-Function LAST
+### <span id="F-LAST">函数 LAST</span>
 
-Syntax:
+* 语法(Syntax):
 
 last list &optional n => tail
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 list---a list, which might be a dotted list but must not be a circular list.
 
@@ -1794,13 +1739,13 @@ n---a non-negative integer. The default is 1.
 
 tail---an object.
 
-Description:
+* 描述(Description):
 
 last returns the last n conses (not the last n elements) of list). If list is (), last returns ().
 
 If n is zero, the atom that terminates list is returned. If n is greater than or equal to the number of cons cells in list, the result is list.
 
-Examples:
+* 示例(Examples):
 
  (last nil) =>  NIL
  (last '(1 2 3)) =>  (3)
@@ -1822,19 +1767,19 @@ Examples:
  (last '(a . b) 1) =>  (A . B)
  (last '(a . b) 2) =>  (A . B)
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 The consequences are undefined if list is a circular list. Should signal an error of type type-error if n is not a non-negative integer.
 
-See Also:
+* 也见(See Also):
 
 butlast, nth
 
-Notes:
+* 注意(Notes):
 
 The following code could be used to define last.
 
@@ -1847,15 +1792,15 @@ The following code could be used to define last.
      (if (>= i n) (pop r))))
 
 
-Function LDIFF, TAILP
+### <span id="F-LDIFF-TAILP">函数 LDIFF, TAILP</span>
 
-Syntax:
+* 语法(Syntax):
 
 ldiff list object => result-list
 
 tailp object list => generalized-boolean
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 list---a list, which might be a dotted list.
 
@@ -1865,13 +1810,13 @@ result-list---a list.
 
 generalized-boolean---a generalized boolean.
 
-Description:
+* 描述(Description):
 
 If object is the same as some tail of list, tailp returns true; otherwise, it returns false.
 
 If object is the same as some tail of list, ldiff returns a fresh list of the elements of list that precede object in the list structure of list; otherwise, it returns a copy[2] of list.
 
-Examples:
+* 示例(Examples):
 
  (let ((lists '#((a b c) (a b c . d))))
    (dotimes (i (length lists)) ()
@@ -1904,21 +1849,21 @@ Examples:
 >>   object=X            NIL                    (A B C . D)
 =>  NIL
 
-Side Effects:
+* 副作用(Side Effects):
 
 Neither ldiff nor tailp modifies either of its arguments.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should be prepared to signal an error of type type-error if list is not a proper list or a dotted list.
 
-See Also:
+* 也见(See Also):
 
 set-difference
 
-Notes:
+* 注意(Notes):
 
 If the list is a circular list, tailp will reliably yield a value only if the given object is in fact a tail of list. Otherwise, the consequences are unspecified: a given implementation which detects the circularity must return false, but since an implementation is not obliged to detect such a situation, tailp might just loop indefinitely without returning in that case.
 
@@ -1941,13 +1886,13 @@ and ldiff could be defined by:
       (return (nreverse r)))))
 
 
-Function NTHCDR
+### <span id="F-NTHCDR">函数 NTHCDR</span>
 
-Syntax:
+* 语法(Syntax):
 
 nthcdr n list => tail
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 n---a non-negative integer.
 
@@ -1955,11 +1900,11 @@ list---a list, which might be a dotted list or a circular list.
 
 tail---an object.
 
-Description:
+* 描述(Description):
 
 Returns the tail of list that would be obtained by calling cdr n times in succession.
 
-Examples:
+* 示例(Examples):
 
  (nthcdr 0 '()) =>  NIL
  (nthcdr 3 '()) =>  NIL
@@ -1972,44 +1917,44 @@ Examples:
    (nthcdr 3 '(0 . 1)))
  Error: Attempted to take CDR of 1.
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should signal an error of type type-error if n is not a non-negative integer.
 
 For n being an integer greater than 1, the error checking done by (nthcdr n list) is the same as for (nthcdr (- n 1) (cdr list)); see the function cdr.
 
-See Also:
+* 也见(See Also):
 
 cdr, nth, rest
 
-Notes: None. 
+* 注意(Notes): None. 
 
-Accessor REST
+### <span id="A-REST">访问器 REST</span>
 
-Syntax:
+* 语法(Syntax):
 
 rest list => tail
 
 (setf (rest list) new-tail)
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 list---a list, which might be a dotted list or a circular list.
 
 tail---an object.
 
-Description:
+* 描述(Description):
 
 rest performs the same operation as cdr, but mnemonically complements first. Specifically,
 
  (rest list) ==  (cdr list)
  (setf (rest list) new-tail) ==  (setf (cdr list) new-tail)
 
-Examples:
+* 示例(Examples):
 
  (rest '(1 2)) =>  (2)
  (rest '(1 . 2)) =>  2
@@ -2018,23 +1963,23 @@ Examples:
  (setf (rest *cons*) "two") =>  "two"
  *cons* =>  (1 . "two")
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 cdr, nthcdr
 
-Notes:
+* 注意(Notes):
 
 rest is often preferred stylistically over cdr when the argument is to being subjectively viewed as a list rather than as a cons. 
 
-Function MEMBER, MEMBER-IF, MEMBER-IF-NOT
+### <span id="F-MEMBER-ALL">函数 MEMBER, MEMBER-IF, MEMBER-IF-NOT</span>
 
-Syntax:
+* 语法(Syntax):
 
 member item list &key key test test-not => tail
 
@@ -2042,7 +1987,7 @@ member-if predicate list &key key => tail
 
 member-if-not predicate list &key key => tail
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 item---an object.
 
@@ -2058,7 +2003,7 @@ key---a designator for a function of one argument, or nil.
 
 tail---a list.
 
-Description:
+* 描述(Description):
 
 member, member-if, and member-if-not each search list for item or for a top-level element that satisfies the test. The argument to the predicate function is an element of list.
 
@@ -2066,7 +2011,7 @@ If some element satisfies the test, the tail of list beginning with this element
 
 list is searched on the top level only.
 
-Examples:
+* 示例(Examples):
 
  (member 2 '(1 2 3)) =>  (2 3)                                 
  (member 2 '((1 . 2) (3 . 4)) :test-not #'= :key #'cdr) =>  ((3 . 4))
@@ -2078,19 +2023,19 @@ Examples:
                  '(3 6 9 11 . 12)
                  :key #'(lambda (x) (mod x 3))) =>  (11 . 12)
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should be prepared to signal an error of type type-error if list is not a proper list.
 
-See Also:
+* 也见(See Also):
 
 find, position, Section 3.6 (Traversal Rules and Side Effects)
 
-Notes:
+* 注意(Notes):
 
 The :test-not parameter is deprecated.
 
@@ -2103,9 +2048,9 @@ In the following
 the value returned by member is identical to the portion of the list beginning with a. Thus rplaca on the result of member can be used to alter the part of the list where a was found (assuming a check has been made that member did not return nil). 
 
 
-Function MAPC, MAPCAR, MAPCAN, MAPL, MAPLIST, MAPCON
+### <span id="F-MAP-ALL">函数 MAPC, MAPCAR, MAPCAN, MAPL, MAPLIST, MAPCON</span>
 
-Syntax:
+* 语法(Syntax):
 
 mapc function &rest lists+ => list-1
 
@@ -2119,7 +2064,7 @@ maplist function &rest lists+ => result-list
 
 mapcon function &rest lists+ => concatenated-results
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 function---a designator for a function that must take as many arguments as there are lists.
 
@@ -2131,7 +2076,7 @@ result-list---a list.
 
 concatenated-results---a list.
 
-Description:
+* 描述(Description):
 
 The mapping operation involves applying function to successive sets of arguments in which one argument is obtained from each sequence. Except for mapc and mapl, the result contains the results returned by function. In the cases of mapc and mapl, the resulting sequence is list.
 
@@ -2152,7 +2097,7 @@ mapcan and mapcon are like mapcar and maplist respectively, except that the resu
 
 and similarly for the relationship between mapcan and mapcar.
 
-Examples:
+* 示例(Examples):
 
  (mapcar #'car '((1 a) (2 b) (3 c))) =>  (1 2 3) 
  (mapcar #'abs '(3 -4 2 -5 -6)) =>  (3 4 2 5 6)
@@ -2189,26 +2134,26 @@ In this case the function serves as a filter; this is a standard Lisp idiom usin
 
  (mapcon #'list '(1 2 3 4)) =>  ((1 2 3 4) (2 3 4) (3 4) (4)) 
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should be prepared to signal an error of type type-error if any list is not a proper list.
 
-See Also:
+* 也见(See Also):
 
 dolist, map, Section 3.6 (Traversal Rules and Side Effects)
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function ACONS
+### <span id="F-ACONS">函数 ACONS</span>
 
-Syntax:
+* 语法(Syntax):
 
 acons key datum alist => new-alist
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 key---an object.
 
@@ -2218,11 +2163,11 @@ alist---an association list.
 
 new-alist---an association list.
 
-Description:
+* 描述(Description):
 
 Creates a fresh cons, the cdr of which is alist and the car of which is another fresh cons, the car of which is key and the cdr of which is datum.
 
-Examples:
+* 示例(Examples):
 
  (setq alist '()) =>  NIL
  (acons 1 "one" alist) =>  ((1 . "one"))
@@ -2232,25 +2177,25 @@ Examples:
  (setq alist (acons 1 "uno" alist)) =>  ((1 . "uno") (1 . "one") (2 . "two"))
  (assoc 1 alist) =>  (1 . "uno")
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 assoc, pairlis
 
-Notes:
+* 注意(Notes):
 
 (acons key datum alist) ==  (cons (cons key datum) alist)
 
 
 
-Function ASSOC, ASSOC-IF, ASSOC-IF-NOT
+### <span id="F-ASSOC-ALL">函数 ASSOC, ASSOC-IF, ASSOC-IF-NOT</span>
 
-Syntax:
+* 语法(Syntax):
 
 assoc item alist &key key test test-not => entry
 
@@ -2258,7 +2203,7 @@ assoc-if predicate alist &key key => entry
 
 assoc-if-not predicate alist &key key => entry
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 item---an object.
 
@@ -2274,13 +2219,13 @@ key---a designator for a function of one argument, or nil.
 
 entry---a cons that is an element of alist, or nil.
 
-Description:
+* 描述(Description):
 
 assoc, assoc-if, and assoc-if-not return the first cons in alist whose car satisfies the test, or nil if no such cons is found.
 
 For assoc, assoc-if, and assoc-if-not, if nil appears in alist in place of a pair, it is ignored.
 
-Examples:
+* 示例(Examples):
 
  (setq values '((x . 100) (y . 200) (z . 50))) =>  ((X . 100) (Y . 200) (Z . 50))
  (assoc 'y values) =>  (Y . 200)
@@ -2304,17 +2249,17 @@ Examples:
  (assoc-if-not #'alpha-char-p alist
                :key #'(lambda (x) (char x 0))) =>  ("2" . 2)
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should be prepared to signal an error of type type-error if alist is not an association list.
 
-See Also:
+* 也见(See Also):
 
 rassoc, find, member, position, Section 3.6 (Traversal Rules and Side Effects)
 
-Notes:
+* 注意(Notes):
 
 The :test-not parameter is deprecated.
 
@@ -2333,25 +2278,25 @@ and
 are equivalent in meaning with one exception: if nil appears in alist in place of a pair, and item is nil, find will compute the car of the nil in alist, find that it is equal to item, and return nil, whereas assoc will ignore the nil in alist and continue to search for an actual cons whose car is nil. 
 
 
-Function COPY-ALIST
+### <span id="F-COPY-ALIST">函数 COPY-ALIST</span>
 
-Syntax:
+* 语法(Syntax):
 
 copy-alist alist => new-alist
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 alist---an association list.
 
 new-alist---an association list.
 
-Description:
+* 描述(Description):
 
 copy-alist returns a copy of alist.
 
 The list structure of alist is copied, and the elements of alist which are conses are also copied (as conses only). Any other objects which are referred to, whether directly or indirectly, by the alist continue to be shared.
 
-Examples:
+* 示例(Examples):
 
 (defparameter *alist* (acons 1 "one" (acons 2 "two" '())))
 *alist* =>  ((1 . "one") (2 . "two"))
@@ -2366,25 +2311,25 @@ Examples:
 *list-copy* =>  ((1 . "uno") (2 . "two"))
 *alist* =>  ((1 . "uno") (2 . "two"))
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 copy-list
 
-Notes: None. 
+* 注意(Notes): None. 
 
-Function PAIRLIS
+### <span id="F-PAIRLIS">函数 PAIRLIS</span>
 
-Syntax:
+* 语法(Syntax):
 
 pairlis keys data &optional alist => new-alist
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 keys---a proper list.
 
@@ -2394,7 +2339,7 @@ alist---an association list. The default is the empty list.
 
 new-alist---an association list.
 
-Description:
+* 描述(Description):
 
 Returns an association list that associates elements of keys to corresponding elements of data. The consequences are undefined if keys and data are not of the same length.
 
@@ -2410,7 +2355,7 @@ or
 
  ((two . 2) (one . 1) (three . 3) (four . 19))
 
-Examples:
+* 示例(Examples):
 
  (setq keys '(1 2 3)
         data '("one" "two" "three")
@@ -2420,24 +2365,24 @@ Examples:
 =>  ((3 . "three") (2 . "two") (1 . "one") (4 . "four"))
  alist =>  ((4 . "four"))
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should be prepared to signal an error of type type-error if keys and data are not proper lists.
 
-See Also:
+* 也见(See Also):
 
 acons
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function RASSOC, RASSOC-IF, RASSOC-IF-NOT
+### <span id="F-RASSOC-ALL">函数 RASSOC, RASSOC-IF, RASSOC-IF-NOT</span>
 
-Syntax:
+* 语法(Syntax):
 
 rassoc item alist &key key test test-not => entry
 
@@ -2445,7 +2390,7 @@ rassoc-if predicate alist &key key => entry
 
 rassoc-if-not predicate alist &key key => entry
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 item---an object.
 
@@ -2461,13 +2406,13 @@ key---a designator for a function of one argument, or nil.
 
 entry---a cons that is an element of the alist, or nil.
 
-Description:
+* 描述(Description):
 
 rassoc, rassoc-if, and rassoc-if-not return the first cons whose cdr satisfies the test. If no such cons is found, nil s returned.
 
 If nil appears in alist in place of a pair, it is ignored.
 
-Examples:
+* 示例(Examples):
 
  (setq alist '((1 . "one") (2 . "two") (3 . 3))) 
 =>  ((1 . "one") (2 . "two") (3 . 3))
@@ -2479,17 +2424,17 @@ Examples:
  (rassoc-if #'stringp alist) =>  (1 . "one")
  (rassoc-if-not #'vectorp alist) =>  (3 . 3)
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 assoc, Section 3.6 (Traversal Rules and Side Effects)
 
-Notes:
+* 注意(Notes):
 
 The :test-not parameter is deprecated.
 
@@ -2508,13 +2453,13 @@ and
 are equivalent in meaning, except when the item is nil nd nil appears in place of a pair in the alist. See the function assoc. 
 
 
-Function GET-PROPERTIES
+### <span id="F-GET-PROPERTIES">函数 GET-PROPERTIES</span>
 
-Syntax:
+* 语法(Syntax):
 
 get-properties plist indicator-list => indicator, value, tail
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 plist---a property list.
 
@@ -2526,13 +2471,13 @@ value---an object.
 
 tail---a list.
 
-Description:
+* 描述(Description):
 
 get-properties is used to look up any of several property list entries all at once.
 
 It searches the plist for the first entry whose indicator is identical to one of the objects in indicator-list. If such an entry is found, the indicator and value returned are the property indicator and its associated property value, and the tail returned is the tail of the plist that begins with the found entry (i.e., whose car is the indicator). If no such entry is found, the indicator, value, and tail are all nil.
 
-Examples:
+* 示例(Examples):
 
  (setq x '()) =>  NIL
  (setq *indicator-list* '(prop1 prop2)) =>  (PROP1 PROP2)
@@ -2542,28 +2487,28 @@ Examples:
  (get-properties x *indicator-list*) =>  PROP1, VAL1, (PROP1 VAL1)
  x =>  (PROP1 VAL1)
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 get, getf
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Accessor GETF
+### <span id="A-GETF">访问器 GETF</span>
 
-Syntax:
+* 语法(Syntax):
 
 getf plist indicator &optional default => value
 
 (setf (getf place indicator &optional default) new-value)
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 plist---a property list.
 
@@ -2577,7 +2522,7 @@ value---an object.
 
 new-value---an object.
 
-Description:
+* 描述(Description):
 
 getf finds a property on the plist whose property indicator is identical to indicator, and returns its corresponding property value. If there are multiple properties[1] with that property indicator, getf uses the first such property. If there is no property with that property indicator, default is returned.
 
@@ -2585,7 +2530,7 @@ setf of getf may be used to associate a new object with an existing indicator in
 
 setf of getf is permitted to either write the value of place itself, or modify of any part, car or cdr, of the list structure held by place.
 
-Examples:
+* 示例(Examples):
 
  (setq x '()) =>  NIL
  (getf x 'prop1) =>  NIL
@@ -2609,17 +2554,17 @@ OR=>  (NIL)
 OR=>  (C NIL)
 OR=>  (C D)
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 get, get-properties, setf, Section 5.1.2.2 (Function Call Forms as Places)
 
-Notes:
+* 注意(Notes):
 
 There is no way (using getf) to distinguish an absent property from one whose value is default; but see get-properties.
 
@@ -2631,13 +2576,13 @@ Note that while supplying a default argument to getf in a setf situation is some
 
 
 
-Macro REMF
+### <span id="M-REMF">宏 REMF</span>
 
-Syntax:
+* 语法(Syntax):
 
 remf place indicator => generalized-boolean
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 place---a place.
 
@@ -2645,7 +2590,7 @@ indicator---an object.
 
 generalized-boolean---a generalized boolean.
 
-Description:
+* 描述(Description):
 
 remf removes from the property list stored in place a property[1] with a property indicator identical to indicator. If there are multiple properties[1] with the identical key, remf only removes the first such property. remf returns false if no such property was found, or true if a property was found.
 
@@ -2653,37 +2598,37 @@ The property indicator and the corresponding property value are removed in an un
 
 For information about the evaluation of subforms of place, see Section 5.1.1.1 (Evaluation of Subforms to Places).
 
-Examples:
+* 示例(Examples):
 
  (setq x (cons () ())) =>  (NIL)
  (setf (getf (car x) 'prop1) 'val1) =>  VAL1
  (remf (car x) 'prop1) =>  true
  (remf (car x) 'prop1) =>  false
 
-Side Effects:
+* 副作用(Side Effects):
 
 The property list stored in place is modified.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 remprop, getf
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function INTERSECTION, NINTERSECTION
+### <span id="F-INTERSECTION-NINTERSECTION)">函数 INTERSECTION, NINTERSECTION</span>
 
-Syntax:
+* 语法(Syntax):
 
 intersection list-1 list-2 &key key test test-not => result-list
 
 nintersection list-1 list-2 &key key test test-not => result-list
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 list-1---a proper list.
 
@@ -2697,7 +2642,7 @@ key---a designator for a function of one argument, or nil.
 
 result-list---a list.
 
-Description:
+* 描述(Description):
 
 intersection and nintersection return a list that contains every element that occurs in both list-1 and list-2.
 
@@ -2711,7 +2656,7 @@ For every pair that satifies the test, exactly one of the two elements of the pa
 
 There is no guarantee that the order of elements in the result will reflect the ordering of the arguments in any particular way. The result list may share cells with, or be eq to, either list-1 or list-2 if appropriate.
 
-Examples:
+* 示例(Examples):
 
  (setq list1 (list 1 1 2 3 4 a b c "A" "B" "C" "d")
        list2 (list 1 4 5 b c d "a" "B" "c" "D")) 
@@ -2730,34 +2675,34 @@ Examples:
  list1 =>  implementation-dependent ;e.g.,  ((1 . 2) (2 . 3) (3 . 4)) 
  list2 =>  implementation-dependent ;e.g.,  ((1 . 3) (2 . 4) (3 . 6) (4 . 8)) 
 
-Side Effects:
+* 副作用(Side Effects):
 
 nintersection can modify list-1, but not list-2.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should be prepared to signal an error of type type-error if list-1 and list-2 are not proper lists.
 
-See Also:
+* 也见(See Also):
 
 union, Section 3.2.1 (Compiler Terminology), Section 3.6 (Traversal Rules and Side Effects)
 
-Notes:
+* 注意(Notes):
 
 The :test-not parameter is deprecated.
 
 Since the nintersection side effect is not required, it should not be used in for-effect-only positions in portable code. 
 
 
-Function ADJOIN
+### <span id="F-ADJOIN">函数 ADJOIN</span>
 
-Syntax:
+* 语法(Syntax):
 
 adjoin item list &key key test test-not => new-list
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 item---an object.
 
@@ -2771,13 +2716,13 @@ key---a designator for a function of one argument, or nil.
 
 new-list---a list.
 
-Description:
+* 描述(Description):
 
 Tests whether item is the same as an existing element of list. If the item is not an existing element, adjoin adds it to list (as if by cons) and returns the resulting list; otherwise, nothing is added and the original list is returned.
 
 The test, test-not, and key affect how it is determined whether item is the same as an element of list. For details, see Section 17.2.1 (Satisfying a Two-Argument Test).
 
-Examples:
+* 示例(Examples):
 
  (setq slist '()) =>  NIL 
  (adjoin 'a slist) =>  (A) 
@@ -2788,17 +2733,17 @@ Examples:
  (adjoin '(new-test-item 1) slist :key #'cadr) =>  ((TEST-ITEM 1)) 
  (adjoin '(new-test-item 1) slist) =>  ((NEW-TEST-ITEM 1) (TEST-ITEM 1)) 
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should be prepared to signal an error of type type-error if list is not a proper list.
 
-See Also:
+* 也见(See Also):
 
 pushnew, Section 3.6 (Traversal Rules and Side Effects)
 
-Notes:
+* 注意(Notes):
 
 The :test-not parameter is deprecated.
 
@@ -2807,15 +2752,15 @@ The :test-not parameter is deprecated.
 
 
 
-Macro PUSHNEW
+### <span id="M-PUSHNEW">宏 PUSHNEW</span>
 
-Syntax:
+* 语法(Syntax):
 
 pushnew item place &key key test test-not
 
 => new-place-value
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 item---an object.
 
@@ -2829,7 +2774,7 @@ key---a designator for a function of one argument, or nil.
 
 new-place-value---a list (the new value of place).
 
-Description:
+* 描述(Description):
 
 pushnew tests whether item is the same as any existing element of the list stored in place. If item is not, it is prepended to the list, and the new list is stored in place.
 
@@ -2845,7 +2790,7 @@ For information about the evaluation of subforms of place, see Section 5.1.1.1 (
 
 It is implementation-dependent whether or not pushnew actually executes the storing form for its place in the situation where the item is already a member of the list held by place.
 
-Examples:
+* 示例(Examples):
 
  (setq x '(a (b c) d)) =>  (A (B C) D)
  (pushnew 5 (cadr x)) =>  (5 B C)   
@@ -2858,19 +2803,19 @@ Examples:
  (pushnew '(1) lst :test 'equal) =>  ((1) (2) (1) (1 2) (1 2 3))
  (pushnew '(1) lst :key #'car) =>  ((1) (2) (1) (1 2) (1 2 3)) 
 
-Side Effects:
+* 副作用(Side Effects):
 
 The contents of place may be modified.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 push, adjoin, Section 5.1 (Generalized Reference)
 
-Notes:
+* 注意(Notes):
 
 The effect of
 
@@ -2882,15 +2827,15 @@ is roughly equivalent to
 
 except that the subforms of place are evaluated only once, and item is evaluated before place. 
 
-Function SET-DIFFERENCE, NSET-DIFFERENCE
+### <span id="F-SET-DIFFERENCE-ALL">函数 SET-DIFFERENCE, NSET-DIFFERENCE</span>
 
-Syntax:
+* 语法(Syntax):
 
 set-difference list-1 list-2 &key key test test-not => result-list
 
 nset-difference list-1 list-2 &key key test test-not => result-list
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 list-1---a proper list.
 
@@ -2904,7 +2849,7 @@ key---a designator for a function of one argument, or nil.
 
 result-list---a list.
 
-Description:
+* 描述(Description):
 
 set-difference returns a list of elements of list-1 that do not appear in list-2.
 
@@ -2918,7 +2863,7 @@ An element of list-1 appears in the result if and only if it does not match any 
 
 There is no guarantee that the order of elements in the result will reflect the ordering of the arguments in any particular way. The result list may share cells with, or be eq to, either of list-1 or list-2, if appropriate.
 
-Examples:
+* 示例(Examples):
 
  (setq lst1 (list "A" "b" "C" "d")
        lst2 (list "a" "B" "C" "d")) =>  ("a" "B" "C" "d")
@@ -2942,33 +2887,33 @@ Examples:
           :test #'(lambda (s c) (find c s)))
 =>  ("banana" "rhubarb" "lemon")    ;One possible ordering.
 
-Side Effects:
+* 副作用(Side Effects):
 
 nset-difference may destroy list-1.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should be prepared to signal an error of type type-error if list-1 and list-2 are not proper lists.
 
-See Also:
+* 也见(See Also):
 
 Section 3.2.1 (Compiler Terminology), Section 3.6 (Traversal Rules and Side Effects)
 
-Notes:
+* 注意(Notes):
 
 The :test-not parameter is deprecated. 
 
-Function SET-EXCLUSIVE-OR, NSET-EXCLUSIVE-OR
+### <span id="F-SET-EXCLUSIVE-OR-ALL">函数 SET-EXCLUSIVE-OR, NSET-EXCLUSIVE-OR</span>
 
-Syntax:
+* 语法(Syntax):
 
 set-exclusive-or list-1 list-2 &key key test test-not => result-list
 
 nset-exclusive-or list-1 list-2 &key key test test-not => result-list
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 list-1---a proper list.
 
@@ -2982,7 +2927,7 @@ key---a designator for a function of one argument, or nil.
 
 result-list---a list.
 
-Description:
+* 描述(Description):
 
 set-exclusive-or returns a list of elements that appear in exactly one of list-1 and list-2.
 
@@ -2996,7 +2941,7 @@ The result contains precisely those elements of list-1 and list-2 that appear in
 
 The result list of set-exclusive-or might share storage with one of list-1 or list-2.
 
-Examples:
+* 示例(Examples):
 
  (setq lst1 (list 1 "a" "b")
        lst2 (list 1 "A" "b")) =>  (1 "A" "b")
@@ -3013,34 +2958,34 @@ Examples:
  lst1 =>  (("a" . "b") ("c" . "d") ("e" . "f"))
  lst2 =>  (("c" . "a") ("d" . "a")) 
 
-Side Effects:
+* 副作用(Side Effects):
 
 nset-exclusive-or is permitted to modify any part, car or cdr, of the list structure of list-1 or list-2.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should be prepared to signal an error of type type-error if list-1 and list-2 are not proper lists.
 
-See Also:
+* 也见(See Also):
 
 Section 3.2.1 (Compiler Terminology), Section 3.6 (Traversal Rules and Side Effects)
 
-Notes:
+* 注意(Notes):
 
 The :test-not parameter is deprecated.
 
 Since the nset-exclusive-or side effect is not required, it should not be used in for-effect-only positions in portable code. 
 
 
-Function SUBSETP
+### <span id="F-SUBSETP">函数 SUBSETP</span>
 
-Syntax:
+* 语法(Syntax):
 
 subsetp list-1 list-2 &key key test test-not => generalized-boolean
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 list-1---a proper list.
 
@@ -3054,7 +2999,7 @@ key---a designator for a function of one argument, or nil.
 
 generalized-boolean---a generalized boolean.
 
-Description:
+* 描述(Description):
 
 subsetp returns true if every element of list-1 matches some element of list-2, and false otherwise.
 
@@ -3062,7 +3007,7 @@ Whether a list element is the same as another list element is determined by the 
 
 The argument to the :key function is an element of either list-1 or list-2; the return value is part of the element of the supplied list element. If :key is not supplied or nil, the list-1 or list-2 element itself is supplied to the :test or :test-not function.
 
-Examples:
+* 示例(Examples):
 
  (setq cosmos '(1 "a" (1 2))) =>  (1 "a" (1 2))
  (subsetp '(1) cosmos) =>  true
@@ -3072,32 +3017,32 @@ Examples:
  (subsetp '((1) (2)) '((1) (2))) =>  false
  (subsetp '((1) (2)) '((1) (2)) :key #'car) =>  true
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should be prepared to signal an error of type type-error if list-1 and list-2 are not proper lists.
 
-See Also:
+* 也见(See Also):
 
 Section 3.6 (Traversal Rules and Side Effects)
 
-Notes:
+* 注意(Notes):
 
 The :test-not parameter is deprecated. 
 
 
-Function UNION, NUNION
+### <span id="F-UNION-NUNION">函数 UNION, NUNION</span>
 
-Syntax:
+* 语法(Syntax):
 
 union list-1 list-2 &key key test test-not => result-list
 
 nunion list-1 list-2 &key key test test-not => result-list
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 list-1---a proper list.
 
@@ -3111,7 +3056,7 @@ key---a designator for a function of one argument, or nil.
 
 result-list---a list.
 
-Description:
+* 描述(Description):
 
 union and nunion return a list that contains every element that occurs in either list-1 or list-2.
 
@@ -3125,7 +3070,7 @@ If there is a duplication between list-1 and list-2, only one of the duplicate i
 
 The order of elements in the result do not have to reflect the ordering of list-1 or list-2 in any way. The result list may be eq to either list-1 or list-2 if appropriate.
 
-Examples:
+* 示例(Examples):
 
  (union '(a b c) '(f a d))
 =>  (A B C F D)
@@ -3142,21 +3087,21 @@ OR=>  ((X 4) (Y 6) (Z 2))
 =>  (1 (1 2) "a" "b" 2 3 (2 3) "B" "C") 
 OR=>  (1 2 (1 2) "a" "b" "C" "B" (2 3) 3)
 
-Side Effects:
+* 副作用(Side Effects):
 
 nunion is permitted to modify any part, car or cdr, of the list structure of list-1 or list-2.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should be prepared to signal an error of type type-error if list-1 and list-2 are not proper lists.
 
-See Also:
+* 也见(See Also):
 
 intersection, Section 3.2.1 (Compiler Terminology), Section 3.6 (Traversal Rules and Side Effects)
 
-Notes:
+* 注意(Notes):
 
 The :test-not parameter is deprecated.
 

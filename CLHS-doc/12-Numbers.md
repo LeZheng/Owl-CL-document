@@ -1048,7 +1048,7 @@ T 类型的两个间隔指示器的第二个可以是以下任意一种:
 
         zerop number => generalized-boolean
 
-* 发音(Pronunciation)::
+* 发音(Pronunciation):
 
         ['zee(,)roh(,)pee]
 
@@ -3634,7 +3634,7 @@ boole
 
         dpb newbyte bytespec integer => result-integer
 
-* 发音(Pronunciation)::
+* 发音(Pronunciation):
 
         [,duh'pib] 或 [,duh'puhb] 或 ['dee'pee'bee]
 
@@ -3691,7 +3691,7 @@ boole
 
         (setf (ldb bytespec place) new-byte)
 
-* 发音(Pronunciation)::
+* 发音(Pronunciation):
 
         ['lidib] 或 ['liduhb] 或 ['el'dee'bee]
 
