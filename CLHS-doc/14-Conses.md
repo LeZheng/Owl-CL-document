@@ -154,112 +154,112 @@
 
 * 类优先级列表(Class Precedence List):
 
-list, sequence, t
+        list, sequence, t
 
 * 描述(Description):
 
-A list is a chain of conses in which the car of each cons is an element of the list, and the cdr of each cons is either the next link in the chain or a terminating atom.
+        一个列表是一个 cons 的链, 其中每一个 cons 的 car 是这个列表的一个元素, 而每个 cons 的 cdr 是这个链的下一个链接或一个终止原子 atom.
 
-A proper list is a chain of conses terminated by the empty list, (), which is itself a proper list. A dotted list is a list which has a terminating atom that is not the empty list. A circular list is a chain of conses that has no termination because some cons in the chain is the cdr of a later cons.
+        一个 proper 列表是一个由空列表 () 来终止的 cons 链, 这个空列表自身也是一个 proper 列表. 一个点列表是一个有着不是空列表终止 atom 的列表. 一个环状列表是一个由于链中的某个 cons 是后面的 cons 的 cdr 而没有终止的 cons 链.
 
-Dotted lists and circular lists are also lists, but usually the unqualified term ``list'' within this specification means proper list. Nevertheless, the type list unambiguously includes dotted lists and circular lists.
+        点列表和环状列表也是列表, 但通常在这个规范中的那个非限制术语 "list" 意味着 proper 列表. 然而, 类型 list 明确地包含了点列表和环状列表.
 
-For each element of a list there is a cons. The empty list has no elements and is not a cons.
+        对于一个列表中的每个元素这里都有一个 cons. 空列表没有元素并且不是一个 cons.
 
-The types cons and null form an exhaustive partition of the type list.
+        类型 cons 和 null 构成 list 类型的详尽的分区.
 
 * 也见(See Also):
 
-Section 2.4.1 (Left-Parenthesis), Section 22.1.3.5 (Printing Lists and Conses) 
+        章节 2.4.1 (Left-Parenthesis), 章节 22.1.3.5 (Printing Lists and Conses) 
 
 
 ### <span id="SC-NULL">系统类 NULL</span>
 
 * 类优先级列表(Class Precedence List):
 
-null, symbol, list, sequence, t
+        null, symbol, list, sequence, t
 
 * 描述(Description):
 
-The only object of type null is nil, which represents the empty list and can also be notated ().
+        null 仅有的对象是 nil, 它表示空列表并且也可以被标记为 ().
 
 * 也见(See Also):
 
-Section 2.3.4 (Symbols as Tokens), Section 2.4.1 (Left-Parenthesis), Section 22.1.3.3 (Printing Symbols) 
+        章节 2.3.4 (Symbols as Tokens), 章节 2.4.1 (Left-Parenthesis), 章节 22.1.3.3 (Printing Symbols) 
 
 
 ### <span id="SC-CONS">系统类 CONS</span>
 
 * 类优先级列表(Class Precedence List):
 
-cons, list, sequence, t
+        cons, list, sequence, t
 
 * 描述(Description):
 
-A cons is a compound object having two components, called the car and cdr. These form a dotted pair. Each component can be any object.
+        一个 cons 是一个有着两个部分的复合对象, 这两个部分称为 car 和 cdr. 这些组成了一个点对. 每个部分可以是任何对象.
 
 * 复合类型指定符类别(Compound Type Specifier Kind):
 
-Specializing.
+        详细的.
 
 * 复合类型指定符语法(Compound Type Specifier Syntax):
 
-cons [car-typespec [cdr-typespec]]
+        cons [car-typespec [cdr-typespec]]
 
 * 复合类型指定符参数(Compound Type Specifier Arguments):
 
-car-typespec---a type specifier, or the symbol *. The default is the symbol *.
+        car-typespec---一个类型指定符, 或者符号 *. 默认是符号 *.
 
-cdr-typespec---a type specifier, or the symbol *. The default is the symbol *.
+        cdr-typespec---一个类型指定符, 或者符号 *. 默认是符号 *.
 
 * 复合类型指定符描述(Compound Type Specifier Description):
 
-This denotes the set of conses whose car is constrained to be of type car-typespec and whose cdr is constrained to be of type cdr-typespec. (If either car-typespec or cdr-typespec is *, it is as if the type t had been denoted.)
+        这个表示这个 car 受 car-typespec 约束而 cdr 受 cdr-typespec 约束的 cons 集合. (如果 car-typespec 或 cdr-typespec 是 *, 它就好像被表示为类型 t.)
 
 * 也见(See Also):
 
-Section 2.4.1 (Left-Parenthesis), Section 22.1.3.5 (Printing Lists and Conses) 
+        章节 2.4.1 (Left-Parenthesis), 章节 22.1.3.5 (Printing Lists and Conses) 
 
 
 ### <span id="T-ATOM">类型 ATOM</span>
 
 * 超类型(Supertypes):
 
-atom, t
+        atom, t
 
 * 描述(Description):
 
-It is equivalent to (not cons). 
+        它等价于 (not cons). 
 
 
 ### <span id="F-CONS">函数 CONS</span>
 
 * 语法(Syntax):
 
-cons object-1 object-2 => cons
+        cons object-1 object-2 => cons
 
 * 参数和值(Arguments and Values):
 
-object-1---an object.
-
-object-2---an object.
-
-cons---a cons.
+        object-1---一个对象.
+        object-2---一个对象.
+        cons---一个 cons.
 
 * 描述(Description):
 
-Creates a fresh cons, the car of which is object-1 and the cdr of which is object-2.
+        创建一个新的 cons, 它的 car 是对象 object-1 而它的 cdr 是对象 object-2.
 
 * 示例(Examples):
 
- (cons 1 2) =>  (1 . 2)
- (cons 1 nil) =>  (1)
- (cons nil 2) =>  (NIL . 2)
- (cons nil nil) =>  (NIL)
- (cons 1 (cons 2 (cons 3 (cons 4 nil)))) =>  (1 2 3 4)
- (cons 'a 'b) =>  (A . B)
- (cons 'a (cons 'b (cons 'c '()))) =>  (A B C)
- (cons 'a '(b c d)) =>  (A B C D)
+    ```LISP
+    (cons 1 2) =>  (1 . 2)
+    (cons 1 nil) =>  (1)
+    (cons nil 2) =>  (NIL . 2)
+    (cons nil nil) =>  (NIL)
+    (cons 1 (cons 2 (cons 3 (cons 4 nil)))) =>  (1 2 3 4)
+    (cons 'a 'b) =>  (A . B)
+    (cons 'a (cons 'b (cons 'c '()))) =>  (A B C)
+    (cons 'a '(b c d)) =>  (A B C D)
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -269,37 +269,38 @@ Creates a fresh cons, the car of which is object-1 and the cdr of which is objec
 
 * 也见(See Also):
 
-list
+        list
 
 * 注意(Notes):
 
-If object-2 is a list, cons can be thought of as producing a new list which is like it but has object-1 prepended. 
+        如果 object-2 是一个列表, cons 可以被认为产生一个和 object-2 相似但是前面加上对象 object-1 的新的列表. 
 
 
 ### <span id="F-CONSP">函数 CONSP</span>
 
 * 语法(Syntax):
 
-consp object => generalized-boolean
+        consp object => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-object---an object.
-
-generalized-boolean---a generalized boolean.
+        object---一个对象.
+        generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
-Returns true if object is of type cons; otherwise, returns false.
+        如果对象 object 是 cons 类型就返回 true; 否则, 返回 false.
 
 * 示例(Examples):
 
- (consp nil) =>  false
- (consp (cons 1 2)) =>  true
+    ```LISP
+    (consp nil) =>  false
+    (consp (cons 1 2)) =>  true
+    ```
 
-The empty list is not a cons, so
+        空列表不是一个 cons, 因此
 
- (consp '()) ==  (consp 'nil) =>  false
+        (consp '()) ==  (consp 'nil) =>  false
 
 * 副作用(Side Effects): None.
 
@@ -309,36 +310,37 @@ The empty list is not a cons, so
 
 * 也见(See Also):
 
-listp
+        listp
 
 * 注意(Notes):
 
- (consp object) ==  (typep object 'cons) ==  (not (typep object 'atom)) ==  (typep object '(not atom))
+        (consp object) ==  (typep object 'cons) ==  (not (typep object 'atom)) ==  (typep object '(not atom))
 
 
 ### <span id="F-ATOM">函数 ATOM</span>
 
 * 语法(Syntax):
 
-atom object => generalized-boolean
+        atom object => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-object---an object.
-
-generalized-boolean---a generalized boolean.
+        object---一个对象.
+        generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
-Returns true if object is of type atom; otherwise, returns false.
+        如果对象是 atom 类型就返回 true; 否则, 返回 false.
 
 * 示例(Examples):
 
- (atom 'sss) =>  true
- (atom (cons 1 2)) =>  false
- (atom nil) =>  true
- (atom '()) =>  true
- (atom 3) =>  true
+    ```LISP
+    (atom 'sss) =>  true
+    (atom (cons 1 2)) =>  false
+    (atom nil) =>  true
+    (atom '()) =>  true
+    (atom 3) =>  true
+    ```
 
 * 受此影响(Affected By): None.
 
@@ -348,54 +350,55 @@ Returns true if object is of type atom; otherwise, returns false.
 
 * 注意(Notes):
 
- (atom object) ==  (typep object 'atom) ==  (not (consp object))
- ==  (not (typep object 'cons)) ==  (typep object '(not cons))
+        (atom object) ==  (typep object 'atom) ==  (not (consp object))
+        ==  (not (typep object 'cons)) ==  (typep object '(not cons))
 
 
 ### <span id="F-RPLACA-RPLACD">函数 RPLACA, RPLACD</span>
 
 * 语法(Syntax):
 
-rplaca cons object => cons
+        rplaca cons object => cons
 
-rplacd cons object => cons
+        rplacd cons object => cons
 
 * 发音(Pronunciation):
 
-rplaca: [,ree'plakuh] or [,ruh'plakuh]
+        rplaca: [,ree'plakuh] or [,ruh'plakuh]
 
-rplacd: [,ree'plakduh] or [,ruh'plakduh] or [,ree'plakdee] or [,ruh'plakdee]
+        rplacd: [,ree'plakduh] or [,ruh'plakduh] or [,ree'plakdee] or [,ruh'plakdee]
 
 * 参数和值(Arguments and Values):
 
-cons---a cons.
-
-object---an object.
+        cons---一个 cons.
+        object---一个对象.
 
 * 描述(Description):
 
-rplaca replaces the car of the cons with object.
+        rplaca 替换这个 cons 的 car 为对象 object.
 
-rplacd replaces the cdr of the cons with object.
+        rplacd 替换这个 cons 的 cdr 为对象 object.
 
 * 示例(Examples):
 
- (defparameter *some-list* (list* 'one 'two 'three 'four)) =>  *some-list*
- *some-list* =>  (ONE TWO THREE . FOUR)
- (rplaca *some-list* 'uno) =>  (UNO TWO THREE . FOUR)
- *some-list* =>  (UNO TWO THREE . FOUR)
- (rplacd (last *some-list*) (list 'IV)) =>  (THREE IV)
- *some-list* =>  (UNO TWO THREE IV)
+    ```LISP
+    (defparameter *some-list* (list* 'one 'two 'three 'four)) =>  *some-list*
+    *some-list* =>  (ONE TWO THREE . FOUR)
+    (rplaca *some-list* 'uno) =>  (UNO TWO THREE . FOUR)
+    *some-list* =>  (UNO TWO THREE . FOUR)
+    (rplacd (last *some-list*) (list 'IV)) =>  (THREE IV)
+    *some-list* =>  (UNO TWO THREE IV)
+    ```
 
 * 副作用(Side Effects):
 
-The cons is modified.
+        这个 cons 被修改.
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations): None.
 
-Should signal an error of type type-error if cons is not a cons.
+        如果 cons 不是一个构造(cons) 那么应该发出一个 type-error 类型的错误.
 
 * 也见(See Also): None.
 
@@ -405,258 +408,259 @@ Should signal an error of type type-error if cons is not a cons.
 
 * 语法(Syntax):
 
-car x => object
+        car x => object
 
-cdr x => object
+        cdr x => object
 
-caar x => object
+        caar x => object
 
-cadr x => object
+        cadr x => object
 
-cdar x => object
+        cdar x => object
 
-cddr x => object
+        cddr x => object
 
-caaar x => object
+        caaar x => object
 
-caadr x => object
+        caadr x => object
 
-cadar x => object
+        cadar x => object
 
-caddr x => object
+        caddr x => object
 
-cdaar x => object
+        cdaar x => object
 
-cdadr x => object
+        cdadr x => object
 
-cddar x => object
+        cddar x => object
 
-cdddr x => object
+        cdddr x => object
 
-caaaar x => object
+        caaaar x => object
 
-caaadr x => object
+        caaadr x => object
 
-caadar x => object
+        caadar x => object
 
-caaddr x => object
+        caaddr x => object
 
-cadaar x => object
+        cadaar x => object
 
-cadadr x => object
+        cadadr x => object
 
-caddar x => object
+        caddar x => object
 
-cadddr x => object
+        cadddr x => object
 
-cdaaar x => object
+        cdaaar x => object
 
-cdaadr x => object
+        cdaadr x => object
 
-cdadar x => object
+        cdadar x => object
 
-cdaddr x => object
+        cdaddr x => object
 
-cddaar x => object
+        cddaar x => object
 
-cddadr x => object
+        cddadr x => object
 
-cdddar x => object
+        cdddar x => object
 
-cddddr x => object
+        cddddr x => object
 
-(setf (car x) new-object)
+        (setf (car x) new-object)
 
-(setf (cdr x) new-object)
+        (setf (cdr x) new-object)
 
-(setf (caar x) new-object)
+        (setf (caar x) new-object)
 
-(setf (cadr x) new-object)
+        (setf (cadr x) new-object)
 
-(setf (cdar x) new-object)
+        (setf (cdar x) new-object)
 
-(setf (cddr x) new-object)
+        (setf (cddr x) new-object)
 
-(setf (caaar x) new-object)
+        (setf (caaar x) new-object)
 
-(setf (caadr x) new-object)
+        (setf (caadr x) new-object)
 
-(setf (cadar x) new-object)
+        (setf (cadar x) new-object)
 
-(setf (caddr x) new-object)
+        (setf (caddr x) new-object)
 
-(setf (cdaar x) new-object)
+        (setf (cdaar x) new-object)
 
-(setf (cdadr x) new-object)
+        (setf (cdadr x) new-object)
 
-(setf (cddar x) new-object)
+        (setf (cddar x) new-object)
 
-(setf (cdddr x) new-object)
+        (setf (cdddr x) new-object)
 
-(setf (caaaar x) new-object)
+        (setf (caaaar x) new-object)
 
-(setf (caaadr x) new-object)
+        (setf (caaadr x) new-object)
 
-(setf (caadar x) new-object)
+        (setf (caadar x) new-object)
 
-(setf (caaddr x) new-object)
+        (setf (caaddr x) new-object)
 
-(setf (cadaar x) new-object)
+        (setf (cadaar x) new-object)
 
-(setf (cadadr x) new-object)
+        (setf (cadadr x) new-object)
 
-(setf (caddar x) new-object)
+        (setf (caddar x) new-object)
 
-(setf (cadddr x) new-object)
+        (setf (cadddr x) new-object)
 
-(setf (cdaaar x) new-object)
+        (setf (cdaaar x) new-object)
 
-(setf (cdaadr x) new-object)
+        (setf (cdaadr x) new-object)
 
-(setf (cdadar x) new-object)
+        (setf (cdadar x) new-object)
 
-(setf (cdaddr x) new-object)
+        (setf (cdaddr x) new-object)
 
-(setf (cddaar x) new-object)
+        (setf (cddaar x) new-object)
 
-(setf (cddadr x) new-object)
+        (setf (cddadr x) new-object)
 
-(setf (cdddar x) new-object)
+        (setf (cdddar x) new-object)
 
-(setf (cddddr x) new-object)
+        (setf (cddddr x) new-object)
 
 * 发音(Pronunciation):
 
-cadr: ['ka,duhr]
+        cadr: ['ka,duhr]
 
-caddr: ['kaduh,duhr] or ['ka,dduhr]
+        caddr: ['kaduh,duhr] or ['ka,dduhr]
 
-cdr: ['k,duhr]
+        cdr: ['k,duhr]
 
-cddr: ['kduh,duhr] or ['kuh,dduhr]
+        cddr: ['kduh,duhr] or ['kuh,dduhr]
 
 * 参数和值(Arguments and Values):
 
-x---a list.
-
-object---an object.
-
-new-object---an object.
+        x---一个列表.
+        object---一个对象.
+        new-object---一个对象.
 
 * 描述(Description):
 
-If x is a cons, car returns the car of that cons. If x is nil, car returns nil.
+        如果 x 是一个 cons, car 返回这个 cons 的 car. 如果 x 是 nil, car 返回 nil.
 
-If x is a cons, cdr returns the cdr of that cons. If x is nil, cdr returns nil.
+        如果 x 是一个 cons, cdr 返回这个 cons 的 cdr. 如果 x 是 nil, cdr 返回 nil.
 
-Functions are provided which perform compositions of up to four car and cdr operations. Their names consist of a C, followed by two, three, or four occurrences of A or D, and finally an R. The series of A's and D's in each function's name is chosen to identify the series of car and cdr operations that is performed by the function. The order in which the A's and D's appear is the inverse of the order in which the corresponding operations are performed. The next figure defines the relationships precisely.
+        提供了执行多达四个 car 和 cdr 操作组合的函数. 它们的名字有一个 C, 后面跟着 2, 3, 或 4 个 A 或 D, 最后是一个 R. 在每个函数名字中的 A 和 D 的系列被选择用来确定这个函数执行的 car 和 cdr 操作的系列. 这个 A 和 D 出现的顺序是对应操作被执行的顺序的倒序. 下一段准确地定义了这些关系.<!--TODO series 系列 ？？-->
 
-This place ...  Is equivalent to this place ...  
-(caar x)        (car (car x))                    
-(cadr x)        (car (cdr x))                    
-(cdar x)        (cdr (car x))                    
-(cddr x)        (cdr (cdr x))                    
-(caaar x)       (car (car (car x)))              
-(caadr x)       (car (car (cdr x)))              
-(cadar x)       (car (cdr (car x)))              
-(caddr x)       (car (cdr (cdr x)))              
-(cdaar x)       (cdr (car (car x)))              
-(cdadr x)       (cdr (car (cdr x)))              
-(cddar x)       (cdr (cdr (car x)))              
-(cdddr x)       (cdr (cdr (cdr x)))              
-(caaaar x)      (car (car (car (car x))))        
-(caaadr x)      (car (car (car (cdr x))))        
-(caadar x)      (car (car (cdr (car x))))        
-(caaddr x)      (car (car (cdr (cdr x))))        
-(cadaar x)      (car (cdr (car (car x))))        
-(cadadr x)      (car (cdr (car (cdr x))))        
-(caddar x)      (car (cdr (cdr (car x))))        
-(cadddr x)      (car (cdr (cdr (cdr x))))        
-(cdaaar x)      (cdr (car (car (car x))))        
-(cdaadr x)      (cdr (car (car (cdr x))))        
-(cdadar x)      (cdr (car (cdr (car x))))        
-(cdaddr x)      (cdr (car (cdr (cdr x))))        
-(cddaar x)      (cdr (cdr (car (car x))))        
-(cddadr x)      (cdr (cdr (car (cdr x))))        
-(cdddar x)      (cdr (cdr (cdr (car x))))        
-(cddddr x)      (cdr (cdr (cdr (cdr x))))        
+            This place ...  Is equivalent to this place ...  
+            (caar x)        (car (car x))                    
+            (cadr x)        (car (cdr x))                    
+            (cdar x)        (cdr (car x))                    
+            (cddr x)        (cdr (cdr x))                    
+            (caaar x)       (car (car (car x)))              
+            (caadr x)       (car (car (cdr x)))              
+            (cadar x)       (car (cdr (car x)))              
+            (caddr x)       (car (cdr (cdr x)))              
+            (cdaar x)       (cdr (car (car x)))              
+            (cdadr x)       (cdr (car (cdr x)))              
+            (cddar x)       (cdr (cdr (car x)))              
+            (cdddr x)       (cdr (cdr (cdr x)))              
+            (caaaar x)      (car (car (car (car x))))        
+            (caaadr x)      (car (car (car (cdr x))))        
+            (caadar x)      (car (car (cdr (car x))))        
+            (caaddr x)      (car (car (cdr (cdr x))))        
+            (cadaar x)      (car (cdr (car (car x))))        
+            (cadadr x)      (car (cdr (car (cdr x))))        
+            (caddar x)      (car (cdr (cdr (car x))))        
+            (cadddr x)      (car (cdr (cdr (cdr x))))        
+            (cdaaar x)      (cdr (car (car (car x))))        
+            (cdaadr x)      (cdr (car (car (cdr x))))        
+            (cdadar x)      (cdr (car (cdr (car x))))        
+            (cdaddr x)      (cdr (car (cdr (cdr x))))        
+            (cddaar x)      (cdr (cdr (car (car x))))        
+            (cddadr x)      (cdr (cdr (car (cdr x))))        
+            (cdddar x)      (cdr (cdr (cdr (car x))))        
+            (cddddr x)      (cdr (cdr (cdr (cdr x))))        
 
-Figure 14-6. CAR and CDR variants
+            Figure 14-6. CAR 和 CDR 变体
 
-setf can also be used with any of these functions to change an existing component of x, but setf will not make new components. So, for example, the car of a cons can be assigned with setf of car, but the car of nil cannot be assigned with setf of car. Similarly, the car of the car of a cons whose car is a cons can be assigned with setf of caar, but neither nilnor a cons whose car is nil can be assigned with setf of caar.
+        setf 也可以和这些函数中的任意一个一起使用来改变一个已存在的 x 的组件, 但是 setf 不会创建新的组件. 所以, 比如, 一个 cons 的 car 可以用 car 的 setf 来赋值, 但是 nil 的car 不能使用 car 的 setf 来赋值. 相似地, 一个 car 为一个 cons 的 cons, 它的 car 的 car 可以使用 caar 的 setf 来赋值, 但是 nil 和一个 car 为 nil 的 cons 不能使用 caar 的 setf 来赋值.
 
-The argument x is permitted to be a dotted list or a circular list.
+        参数 x 允许为一个点列表或者一个环状列表.
 
 * 示例(Examples):
 
- (car nil) =>  NIL  
- (cdr '(1 . 2)) =>  2
- (cdr '(1 2)) =>  (2)
- (cadr '(1 2)) =>  2 
- (car '(a b c)) =>  A
- (cdr '(a b c)) =>  (B C)
+    ```LISP
+    (car nil) =>  NIL  
+    (cdr '(1 . 2)) =>  2
+    (cdr '(1 2)) =>  (2)
+    (cadr '(1 2)) =>  2 
+    (car '(a b c)) =>  A
+    (cdr '(a b c)) =>  (B C)
+    ```
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-The functions car and cdr should signal type-error if they receive an argument which is not a list. The other functions (caar, cadr, ... cddddr) should behave for the purpose of error checking as if defined by appropriate calls to car and cdr.
+        如果函数 car 和 cdr 收到一个参数不是一个列表, 那么它应该发出一个 type-error 类型的错误. 其他函数 (caar, cadr, ... cddddr) 应该为错误检查的目的而表现地就好像是通过对 car 和 cdr 的适当调用来定义的.
 
 * 也见(See Also):
 
-rplaca, first, rest
+        rplaca, first, rest
 
 * 注意(Notes):
 
-The car of a cons can also be altered by using rplaca, and the cdr of a cons can be altered by using rplacd.
+        一个 cons 的 car 也可以通过使用 rplaca 来修改, 而一个 cons 的 cdr 可以使用 rplacd 来修改.
 
-(car x)    ==  (first x)
-(cadr x)   ==  (second x) ==  (car (cdr x))
-(caddr x)  ==  (third x)  ==  (car (cdr (cdr x)))
-(cadddr x) ==  (fourth x) ==  (car (cdr (cdr (cdr x))))
+        (car x)    ==  (first x)
+        (cadr x)   ==  (second x) ==  (car (cdr x))
+        (caddr x)  ==  (third x)  ==  (car (cdr (cdr x)))
+        (cadddr x) ==  (fourth x) ==  (car (cdr (cdr (cdr x))))
 
 
 ### <span id="F-COPY-TREE">函数 COPY-TREE</span>
 
 * 语法(Syntax):
 
-copy-tree tree => new-tree
+        copy-tree tree => new-tree
 
 * 参数和值(Arguments and Values):
 
-tree---a tree.
-
-new-tree---a tree.
+        tree---一个树.
+        new-tree---一个树.
 
 * 描述(Description):
 
-Creates a copy of a tree of conses.
+        创建一个 cons 树的一个拷贝.
 
-If tree is not a cons, it is returned; otherwise, the result is a new cons of the results of calling copy-tree on the car and cdr of tree. In other words, all conses in the tree represented by tree are copied recursively, stopping only when non-conses are encountered.
+        如果 tree 不是一个 cons, 它会被返回; 否则, 结果就是在树 tree 的 car 和 cdr 上调用 copy-tree 的结果的 cons. 换句话说, 在根据 tree 表示的树中的所有 cons 会被递归复制, 只有在没有 cons 遇到时停止.
 
-copy-tree does not preserve circularities and the sharing of substructure.
+        copy-tree 不保持环状和子结构的共享.
 
 * 示例(Examples):
 
- (setq object (list (cons 1 "one")
-                    (cons 2 (list 'a 'b 'c))))
-=>  ((1 . "one") (2 A B C))
- (setq object-too object) =>  ((1 . "one") (2 A B C))
- (setq copy-as-list (copy-list object))
- (setq copy-as-alist (copy-alist object))
- (setq copy-as-tree (copy-tree object))
- (eq object object-too) =>  true
- (eq copy-as-tree object) =>  false
- (eql copy-as-tree object) =>  false
- (equal copy-as-tree object) =>  true
- (setf (first (cdr (second object))) "a"
-       (car (second object)) "two"
-       (car object) '(one . 1)) =>  (ONE . 1)
- object =>  ((ONE . 1) ("two" "a" B C))
- object-too =>  ((ONE . 1) ("two" "a" B C))
- copy-as-list =>  ((1 . "one") ("two" "a" B C))
- copy-as-alist =>  ((1 . "one") (2 "a" B C))
- copy-as-tree =>  ((1 . "one") (2 A B C)) 
+    ```LISP
+    (setq object (list (cons 1 "one")
+                        (cons 2 (list 'a 'b 'c))))
+    =>  ((1 . "one") (2 A B C))
+    (setq object-too object) =>  ((1 . "one") (2 A B C))
+    (setq copy-as-list (copy-list object))
+    (setq copy-as-alist (copy-alist object))
+    (setq copy-as-tree (copy-tree object))
+    (eq object object-too) =>  true
+    (eq copy-as-tree object) =>  false
+    (eql copy-as-tree object) =>  false
+    (equal copy-as-tree object) =>  true
+    (setf (first (cdr (second object))) "a"
+          (car (second object)) "two"
+          (car object) '(one . 1)) =>  (ONE . 1)
+    object =>  ((ONE . 1) ("two" "a" B C))
+    object-too =>  ((ONE . 1) ("two" "a" B C))
+    copy-as-list =>  ((1 . "one") ("two" "a" B C))
+    copy-as-alist =>  ((1 . "one") (2 "a" B C))
+    copy-as-tree =>  ((1 . "one") (2 A B C)) 
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -666,7 +670,7 @@ copy-tree does not preserve circularities and the sharing of substructure.
 
 * 也见(See Also):
 
-tree-equal
+        tree-equal
 
 * 注意(Notes): None. 
 
@@ -682,7 +686,7 @@ nsublis alist tree &key key test test-not => new-tree
 
 alist---an association list.
 
-tree---a tree.
+tree---一个树.
 
 test---a designator for a function of two arguments that returns a generalized boolean.
 
@@ -690,7 +694,7 @@ test-not---a designator for a function of two arguments that returns a generaliz
 
 key---a designator for a function of one argument, or nil.
 
-new-tree---a tree.
+new-tree---一个树.
 
 * 描述(Description):
 
@@ -777,13 +781,13 @@ nsubst-if-not new predicate tree &key key => new-tree
 
 * 参数和值(Arguments and Values):
 
-new---an object.
+new---一个对象.
 
-old---an object.
+old---一个对象.
 
 predicate---a symbol that names a function, or a function of one argument that returns a generalized boolean value.
 
-tree---a tree.
+tree---一个树.
 
 test---a designator for a function of two arguments that returns a generalized boolean.
 
@@ -791,7 +795,7 @@ test-not---a designator for a function of two arguments that returns a generaliz
 
 key---a designator for a function of one argument, or nil.
 
-new-tree---a tree.
+new-tree---一个树.
 
 * 描述(Description):
 
@@ -873,15 +877,15 @@ tree-equal tree-1 tree-2 &key test test-not => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-tree-1---a tree.
+tree-1---一个树.
 
-tree-2---a tree.
+tree-2---一个树.
 
 test---a designator for a function of two arguments that returns a generalized boolean.
 
 test-not---a designator for a function of two arguments that returns a generalized boolean.
 
-generalized-boolean---a generalized boolean.
+generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
@@ -928,7 +932,7 @@ copy-list list => copy
 
 list---a proper list or a dotted list.
 
-copy---a list.
+copy---一个列表.
 
 * 描述(Description):
 
@@ -979,11 +983,11 @@ list* &rest objects+ => result
 
 * 参数和值(Arguments and Values):
 
-object---an object.
+object---一个对象.
 
-list---a list.
+list---一个列表.
 
-result---an object.
+result---一个对象.
 
 * 描述(Description):
 
@@ -1096,9 +1100,9 @@ listp object => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-object---an object.
+object---一个对象.
 
-generalized-boolean---a generalized boolean.
+generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
@@ -1138,9 +1142,9 @@ make-list size &key initial-element => list
 
 size---a non-negative integer.
 
-initial-element---an object. The default is nil.
+initial-element---一个对象. The default is nil.
 
-list---a list.
+list---一个列表.
 
 * 描述(Description):
 
@@ -1176,7 +1180,7 @@ push item place => new-place-value
 
 * 参数和值(Arguments and Values):
 
-item---an object.
+item---一个对象.
 
 place---a place, the value of which may be any object.
 
@@ -1315,7 +1319,7 @@ tenth list => object
 
 list---a list, which might be a dotted list or a circular list.
 
-object, new-object---an object.
+object, new-object---一个对象.
 
 * 描述(Description):
 
@@ -1381,9 +1385,9 @@ n---a non-negative integer.
 
 list---a list, which might be a dotted list or a circular list.
 
-object---an object.
+object---一个对象.
 
-new-object---an object.
+new-object---一个对象.
 
 * 描述(Description):
 
@@ -1426,7 +1430,7 @@ endp list => generalized-boolean
 
 list---a list, which might be a dotted list or a circular list.
 
-generalized-boolean---a generalized boolean.
+generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
@@ -1461,7 +1465,7 @@ null object => boolean
 
 * 参数和值(Arguments and Values):
 
-object---an object.
+object---一个对象.
 
 boolean---a boolean.
 
@@ -1503,7 +1507,7 @@ nconc &rest lists => concatenated-list
 
 list---each but the last must be a list (which might be a dotted list but must not be a circular list); the last list may be any object.
 
-concatenated-list---a list.
+concatenated-list---一个列表.
 
 * 描述(Description):
 
@@ -1566,7 +1570,7 @@ append &rest lists => result
 
 list---each must be a proper list except the last, which may be any object.
 
-result---an object. This will be a list unless the last list was not a list and all preceding lists were null.
+result---一个对象. This will be a list unless the last list was not a list and all preceding lists were null.
 
 * 描述(Description):
 
@@ -1604,9 +1608,9 @@ nreconc list tail => result-list
 
 list---a proper list.
 
-tail---an object.
+tail---一个对象.
 
-result-list---an object.
+result-list---一个对象.
 
 * 描述(Description):
 
@@ -1682,7 +1686,7 @@ list---a list, which might be a dotted list but must not be a circular list.
 
 n---a non-negative integer.
 
-result-list---a list.
+result-list---一个列表.
 
 * 描述(Description):
 
@@ -1736,7 +1740,7 @@ list---a list, which might be a dotted list but must not be a circular list.
 
 n---a non-negative integer. The default is 1.
 
-tail---an object.
+tail---一个对象.
 
 * 描述(Description):
 
@@ -1803,11 +1807,11 @@ tailp object list => generalized-boolean
 
 list---a list, which might be a dotted list.
 
-object---an object.
+object---一个对象.
 
-result-list---a list.
+result-list---一个列表.
 
-generalized-boolean---a generalized boolean.
+generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
@@ -1897,7 +1901,7 @@ n---a non-negative integer.
 
 list---a list, which might be a dotted list or a circular list.
 
-tail---an object.
+tail---一个对象.
 
 * 描述(Description):
 
@@ -1944,7 +1948,7 @@ rest list => tail
 
 list---a list, which might be a dotted list or a circular list.
 
-tail---an object.
+tail---一个对象.
 
 * 描述(Description):
 
@@ -1988,7 +1992,7 @@ member-if-not predicate list &key key => tail
 
 * 参数和值(Arguments and Values):
 
-item---an object.
+item---一个对象.
 
 list---a proper list.
 
@@ -2000,7 +2004,7 @@ test-not---a designator for a function of two arguments that returns a generaliz
 
 key---a designator for a function of one argument, or nil.
 
-tail---a list.
+tail---一个列表.
 
 * 描述(Description):
 
@@ -2071,9 +2075,9 @@ list---a proper list.
 
 list-1---the first list (which must be a proper list).
 
-result-list---a list.
+result-list---一个列表.
 
-concatenated-results---a list.
+concatenated-results---一个列表.
 
 * 描述(Description):
 
@@ -2154,9 +2158,9 @@ acons key datum alist => new-alist
 
 * 参数和值(Arguments and Values):
 
-key---an object.
+key---一个对象.
 
-datum---an object.
+datum---一个对象.
 
 alist---an association list.
 
@@ -2204,7 +2208,7 @@ assoc-if-not predicate alist &key key => entry
 
 * 参数和值(Arguments and Values):
 
-item---an object.
+item---一个对象.
 
 alist---an association list.
 
@@ -2391,7 +2395,7 @@ rassoc-if-not predicate alist &key key => entry
 
 * 参数和值(Arguments and Values):
 
-item---an object.
+item---一个对象.
 
 alist---an association list.
 
@@ -2466,9 +2470,9 @@ indicator-list---a proper list (of indicators).
 
 indicator---an object that is an element of indicator-list.
 
-value---an object.
+value---一个对象.
 
-tail---a list.
+tail---一个列表.
 
 * 描述(Description):
 
@@ -2513,13 +2517,13 @@ plist---a property list.
 
 place---a place, the value of which is a property list.
 
-indicator---an object.
+indicator---一个对象.
 
-default---an object. The default is nil.
+default---一个对象. The default is nil.
 
-value---an object.
+value---一个对象.
 
-new-value---an object.
+new-value---一个对象.
 
 * 描述(Description):
 
@@ -2585,9 +2589,9 @@ remf place indicator => generalized-boolean
 
 place---a place.
 
-indicator---an object.
+indicator---一个对象.
 
-generalized-boolean---a generalized boolean.
+generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
@@ -2639,7 +2643,7 @@ test-not---a designator for a function of two arguments that returns a generaliz
 
 key---a designator for a function of one argument, or nil.
 
-result-list---a list.
+result-list---一个列表.
 
 * 描述(Description):
 
@@ -2703,7 +2707,7 @@ adjoin item list &key key test test-not => new-list
 
 * 参数和值(Arguments and Values):
 
-item---an object.
+item---一个对象.
 
 list---a proper list.
 
@@ -2713,7 +2717,7 @@ test-not---a designator for a function of two arguments that returns a generaliz
 
 key---a designator for a function of one argument, or nil.
 
-new-list---a list.
+new-list---一个列表.
 
 * 描述(Description):
 
@@ -2761,7 +2765,7 @@ pushnew item place &key key test test-not
 
 * 参数和值(Arguments and Values):
 
-item---an object.
+item---一个对象.
 
 place---a place, the value of which is a proper list.
 
@@ -2846,7 +2850,7 @@ test-not---a designator for a function of two arguments that returns a generaliz
 
 key---a designator for a function of one argument, or nil.
 
-result-list---a list.
+result-list---一个列表.
 
 * 描述(Description):
 
@@ -2924,7 +2928,7 @@ test-not---a designator for a function of two arguments that returns a generaliz
 
 key---a designator for a function of one argument, or nil.
 
-result-list---a list.
+result-list---一个列表.
 
 * 描述(Description):
 
@@ -2996,7 +3000,7 @@ test-not---a designator for a function of two arguments that returns a generaliz
 
 key---a designator for a function of one argument, or nil.
 
-generalized-boolean---a generalized boolean.
+generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
@@ -3053,7 +3057,7 @@ test-not---a designator for a function of two arguments that returns a generaliz
 
 key---a designator for a function of one argument, or nil.
 
-result-list---a list.
+result-list---一个列表.
 
 * 描述(Description):
 
