@@ -678,68 +678,65 @@
 
 * 语法(Syntax):
 
-sublis alist tree &key key test test-not => new-tree
+        sublis alist tree &key key test test-not => new-tree
 
-nsublis alist tree &key key test test-not => new-tree
+        nsublis alist tree &key key test test-not => new-tree
 
 * 参数和值(Arguments and Values):
 
-alist---an association list.
-
-tree---一个树.
-
-test---a designator for a function of two arguments that returns a generalized boolean.
-
-test-not---a designator for a function of two arguments that returns a generalized boolean.
-
-key---a designator for a function of one argument, or nil.
-
-new-tree---一个树.
+        alist---一个关联列表.
+        tree---一个树.
+        test---一个返回一个广义 boolean 的两参数函数的标识符.
+        test-not---一个返回一个广义 boolean 的两参数函数的标识符.
+        key---一个单参数函数的标识符, 或者 nil.
+        new-tree---一个树.
 
 * 描述(Description):
 
-sublis makes substitutions for objects in tree (a structure of conses). nsublis is like sublis but destructively modifies the relevant parts of the tree.
+        sublis 对树 tree (一个 cons 结构) 中的对象进行替换. nsublis 和 sublis 相似但是它会破坏性修改树 tree 中相关的结构.
 
-sublis looks at all subtrees and leaves of tree; if a subtree or leaf appears as a key in alist (that is, the key and the subtree or leaf satisfy the test), it is replaced by the object with which that key is associated. This operation is non-destructive. In effect, sublis can perform several subst operations simultaneously.
+        sublis 查找树 tree 中的所有子树和叶; 如果一个子树或叶作为关联列表 alist 中的一个键出现 (这也就是说, 这个键和这个子树或叶满足这个测试条件 test), 那么它就会被和那个键关联的对象所替换. 这个操作是非破坏性的. 实际上, sublis 可以同时执行多个 subst 操作.
 
-If sublis succeeds, a new copy of tree is returned in which each occurrence of such a subtree or leaf is replaced by the object with which it is associated. If no changes are made, the original tree is returned. The original tree is left unchanged, but the result tree may share cells with it.
+        如果 sublis 成功了, 一个树 tree 的新的拷贝会被返回, 其中每个出现的这样的子树或叶都会被它关联的对象所替代. 如果没有做出改变, 返回原始的树. 原始的树保持不修改, 但是产生的树可能和它共享 cell.
 
-nsublis is permitted to modify tree but otherwise returns the same values as sublis.
+        nsublis 允许去修改树 tree, 否则就返回和 sublis 一样的值.
 
 * 示例(Examples):
 
- (sublis '((x . 100) (z . zprime))
-         '(plus x (minus g z x p) 4 . x))
-=>  (PLUS 100 (MINUS G ZPRIME 100 P) 4 . 100)
- (sublis '(((+ x y) . (- x y)) ((- x y) . (+ x y)))
-         '(* (/ (+ x y) (+ x p)) (- x y))
-         :test #'equal)
-=>  (* (/ (- X Y) (+ X P)) (+ X Y))
- (setq tree1 '(1 (1 2) ((1 2 3)) (((1 2 3 4)))))
-=>  (1 (1 2) ((1 2 3)) (((1 2 3 4))))
- (sublis '((3 . "three")) tree1) 
-=>  (1 (1 2) ((1 2 "three")) (((1 2 "three" 4))))
- (sublis '((t . "string"))
-          (sublis '((1 . "") (4 . 44)) tree1)
-          :key #'stringp)
-=>  ("string" ("string" 2) (("string" 2 3)) ((("string" 2 3 44))))
- tree1 =>  (1 (1 2) ((1 2 3)) (((1 2 3 4))))
- (setq tree2 '("one" ("one" "two") (("one" "Two" "three"))))
-=>  ("one" ("one" "two") (("one" "Two" "three"))) 
- (sublis '(("two" . 2)) tree2) 
-=>  ("one" ("one" "two") (("one" "Two" "three"))) 
- tree2 =>  ("one" ("one" "two") (("one" "Two" "three"))) 
- (sublis '(("two" . 2)) tree2 :test 'equal) 
-=>  ("one" ("one" 2) (("one" "Two" "three"))) 
+    ```LISP
+    (sublis '((x . 100) (z . zprime))
+            '(plus x (minus g z x p) 4 . x))
+    =>  (PLUS 100 (MINUS G ZPRIME 100 P) 4 . 100)
+    (sublis '(((+ x y) . (- x y)) ((- x y) . (+ x y)))
+            '(* (/ (+ x y) (+ x p)) (- x y))
+            :test #'equal)
+    =>  (* (/ (- X Y) (+ X P)) (+ X Y))
+    (setq tree1 '(1 (1 2) ((1 2 3)) (((1 2 3 4)))))
+    =>  (1 (1 2) ((1 2 3)) (((1 2 3 4))))
+    (sublis '((3 . "three")) tree1) 
+    =>  (1 (1 2) ((1 2 "three")) (((1 2 "three" 4))))
+    (sublis '((t . "string"))
+              (sublis '((1 . "") (4 . 44)) tree1)
+              :key #'stringp)
+    =>  ("string" ("string" 2) (("string" 2 3)) ((("string" 2 3 44))))
+    tree1 =>  (1 (1 2) ((1 2 3)) (((1 2 3 4))))
+    (setq tree2 '("one" ("one" "two") (("one" "Two" "three"))))
+    =>  ("one" ("one" "two") (("one" "Two" "three"))) 
+    (sublis '(("two" . 2)) tree2) 
+    =>  ("one" ("one" "two") (("one" "Two" "three"))) 
+    tree2 =>  ("one" ("one" "two") (("one" "Two" "three"))) 
+    (sublis '(("two" . 2)) tree2 :test 'equal) 
+    =>  ("one" ("one" 2) (("one" "Two" "three"))) 
 
- (nsublis '((t . 'temp))
-           tree1
-           :key #'(lambda (x) (or (atom x) (< (list-length x) 3))))
-=>  ((QUOTE TEMP) (QUOTE TEMP) QUOTE TEMP) 
+    (nsublis '((t . 'temp))
+              tree1
+              :key #'(lambda (x) (or (atom x) (< (list-length x) 3))))
+    =>  ((QUOTE TEMP) (QUOTE TEMP) QUOTE TEMP) 
+    ```
 
 * 副作用(Side Effects):
 
-nsublis modifies tree.
+        nsublis 修改树 tree.
 
 * 受此影响(Affected By): None.
 
@@ -747,98 +744,93 @@ nsublis modifies tree.
 
 * 也见(See Also):
 
-subst, Section 3.2.1 (Compiler Terminology), Section 3.6 (Traversal Rules and Side Effects)
+        subst, 章节 3.2.1 (Compiler Terminology), 章节 3.6 (Traversal Rules and Side Effects)
 
 * 注意(Notes):
 
-The :test-not parameter is deprecated.
+        这个 :test-not 参数被废弃了.
 
-Because the side-effecting variants (e.g., nsublis) potentially change the path that is being traversed, their effects in the presence of shared or circular structure structure may vary in surprising ways when compared to their non-side-effecting alternatives. To see this, consider the following side-effect behavior, which might be exhibited by some implementations:
+        由于那些副作用变体 (e.g., nsublis) 潜在地改变了它要经过的路径, 它们对共享或环状结构的影响可能会以令人惊讶的方式不同于它们的无副作用替代方案. 为了看到这个, 细想下面这个带副作用的行为, 它可能被某些具体实现展示:
 
- (defun test-it (fn)
-   (let* ((shared-piece (list 'a 'b))
-          (data (list shared-piece shared-piece)))
-     (funcall fn '((a . b) (b . a)) data)))
- (test-it #'sublis) =>  ((B A) (B A))
- (test-it #'nsublis) =>  ((A B) (A B))
+        (defun test-it (fn)
+          (let* ((shared-piece (list 'a 'b))
+                  (data (list shared-piece shared-piece)))
+            (funcall fn '((a . b) (b . a)) data)))
+        (test-it #'sublis) =>  ((B A) (B A))
+        (test-it #'nsublis) =>  ((A B) (A B))
 
 
 ### <span id="F-SUBST-ALL">函数 SUBST, SUBST-IF, SUBST-IF-NOT, NSUBST, NSUBST-IF, NSUBST-IF-NOT</span>
 
 * 语法(Syntax):
 
-subst new old tree &key key test test-not => new-tree
+        subst new old tree &key key test test-not => new-tree
 
-subst-if new predicate tree &key key => new-tree
+        subst-if new predicate tree &key key => new-tree
 
-subst-if-not new predicate tree &key key => new-tree
+        subst-if-not new predicate tree &key key => new-tree
 
-nsubst new old tree &key key test test-not => new-tree
+        nsubst new old tree &key key test test-not => new-tree
 
-nsubst-if new predicate tree &key key => new-tree
+        nsubst-if new predicate tree &key key => new-tree
 
-nsubst-if-not new predicate tree &key key => new-tree
+        nsubst-if-not new predicate tree &key key => new-tree
 
 * 参数和值(Arguments and Values):
 
-new---一个对象.
-
-old---一个对象.
-
-predicate---a symbol that names a function, or a function of one argument that returns a generalized boolean value.
-
-tree---一个树.
-
-test---a designator for a function of two arguments that returns a generalized boolean.
-
-test-not---a designator for a function of two arguments that returns a generalized boolean.
-
-key---a designator for a function of one argument, or nil.
-
-new-tree---一个树.
+        new---一个对象.
+        old---一个对象.
+        predicate---命名一个函数的符号或者一个返回广义 boolean 值的单参数函数.
+        tree---一个树.
+        test---一个返回一个广义 boolean 的两参数函数的标识符.
+        test-not---一个返回一个广义 boolean 的两参数函数的标识符.
+        key---一个单参数函数的标识符, 或者 nil.
+        new-tree---一个树.
 
 * 描述(Description):
 
-subst, subst-if, and subst-if-not perform substitution operations on tree. Each function searches tree for occurrences of a particular old item of an element or subexpression that satisfies the test.
+        subst, subst-if, 和 subst-if-not 在树 tree 上执行替换操作. 每个函数都搜索树 tree, 以查找满足测试条件 test 的某个元素或子表达式的某个旧项的出现.
 
-nsubst, nsubst-if, and nsubst-if-not are like subst, subst-if, and subst-if-not respectively, except that the original tree is modified.
+        nsubst, nsubst-if, 和 nsubst-if-not 分别类似于 subst, subst-if, 和 subst-if-not, 除了原始的树会被修改.
 
-subst makes a copy of tree, substituting new for every subtree or leaf of tree (whether the subtree or leaf is a car or a cdr of its parent) such that old and the subtree or leaf satisfy the test.
+        subst 做一份树 tree 的拷贝, 用新的 new 替换树 tree 中每一个旧值 old 和满足测试条件 test 的子树和叶 (不管那个子树和叶是它的父节点的 car 还是 cdr).
 
-nsubst is a destructive version of subst. The list structure of tree is altered by destructively replacing with new each leaf of the tree such that old and the leaf satisfy the test.
+        nsubst 是 subst 的一个破坏性版本. 树 tree 的列表结构会被破坏性地替换, 用新值 new 替换树 tree 中的旧值 old 和满足测试条件 test 的叶.
 
-For subst, subst-if, and subst-if-not, if the functions succeed, a new copy of the tree is returned in which each occurrence of such an element is replaced by the new element or subexpression. If no changes are made, the original tree may be returned. The original tree is left unchanged, but the result tree may share storage with it.
+        对于 subst, subst-if, 和 subst-if-not, 如果这些函数成功了, 这个树 tree 的一个新的拷贝会被返回, 其中每一个这样的元素的出现都被替换成那个新的元素或子表达式. 如果没有发生变化, 返回原始的树. 原始的树保持不变, 但是产生的树可能和它共享存储.
 
-For nsubst, nsubst-if, and nsubst-if-not the original tree is modified and returned as the function result, but the result may not be eq to tree.
+        对于 nsubst, nsubst-if, 和 nsubst-if-not 原始的树会被修改并作为这个函数的结果返回, 但是结果可能和树 tree 是 eq 的.
 
 * 示例(Examples):
 
- (setq tree1 '(1 (1 2) (1 2 3) (1 2 3 4))) =>  (1 (1 2) (1 2 3) (1 2 3 4))
- (subst "two" 2 tree1) =>  (1 (1 "two") (1 "two" 3) (1 "two" 3 4))
- (subst "five" 5 tree1) =>  (1 (1 2) (1 2 3) (1 2 3 4))
- (eq tree1 (subst "five" 5 tree1)) =>  implementation-dependent
- (subst 'tempest 'hurricane
-        '(shakespeare wrote (the hurricane)))
-=>  (SHAKESPEARE WROTE (THE TEMPEST))
- (subst 'foo 'nil '(shakespeare wrote (twelfth night)))
-=>  (SHAKESPEARE WROTE (TWELFTH NIGHT . FOO) . FOO)
- (subst '(a . cons) '(old . pair)
-        '((old . spice) ((old . shoes) old . pair) (old . pair))
-        :test #'equal)
-=>  ((OLD . SPICE) ((OLD . SHOES) A . CONS) (A . CONS))
+    ```LISP
+    (setq tree1 '(1 (1 2) (1 2 3) (1 2 3 4))) =>  (1 (1 2) (1 2 3) (1 2 3 4))
+    (subst "two" 2 tree1) =>  (1 (1 "two") (1 "two" 3) (1 "two" 3 4))
+    (subst "five" 5 tree1) =>  (1 (1 2) (1 2 3) (1 2 3 4))
+    (eq tree1 (subst "five" 5 tree1)) =>  implementation-dependent
+    (subst 'tempest 'hurricane
+            '(shakespeare wrote (the hurricane)))
+    =>  (SHAKESPEARE WROTE (THE TEMPEST))
+    (subst 'foo 'nil '(shakespeare wrote (twelfth night)))
+    =>  (SHAKESPEARE WROTE (TWELFTH NIGHT . FOO) . FOO)
+    (subst '(a . cons) '(old . pair)
+            '((old . spice) ((old . shoes) old . pair) (old . pair))
+            :test #'equal)
+    =>  ((OLD . SPICE) ((OLD . SHOES) A . CONS) (A . CONS))
 
- (subst-if 5 #'listp tree1) =>  5
- (subst-if-not '(x) #'consp tree1) 
-=>  (1 X)
+    (subst-if 5 #'listp tree1) =>  5
+    (subst-if-not '(x) #'consp tree1) 
+    =>  (1 X)
 
- tree1 =>  (1 (1 2) (1 2 3) (1 2 3 4))
- (nsubst 'x 3 tree1 :key #'(lambda (y) (and (listp y) (third y)))) 
-=>  (1 (1 2) X X)
- tree1 =>  (1 (1 2) X X)
+    tree1 =>  (1 (1 2) (1 2 3) (1 2 3 4))
+    (nsubst 'x 3 tree1 :key #'(lambda (y) (and (listp y) (third y)))) 
+    =>  (1 (1 2) X X)
+    tree1 =>  (1 (1 2) X X)
+    ```
 
 * 副作用(Side Effects):
 
-nsubst, nsubst-if, and nsubst-if-not might alter the tree structure of tree.
+        nsubst, nsubst-if, 和 nsubst-if-not 可能修改树 tree 的树结构.
 
 * 受此影响(Affected By): None.
 
@@ -846,65 +838,63 @@ nsubst, nsubst-if, and nsubst-if-not might alter the tree structure of tree.
 
 * 也见(See Also):
 
-substitute, nsubstitute, Section 3.2.1 (Compiler Terminology), Section 3.6 (Traversal Rules and Side Effects)
+        substitute, nsubstitute, 章节 3.2.1 (Compiler Terminology), 章节 3.6 (Traversal Rules and Side Effects)
 
 * 注意(Notes):
 
-The :test-not parameter is deprecated.
+        这个 :test-not 参数被废弃了.
 
-The functions subst-if-not and nsubst-if-not are deprecated.
+        函数 subst-if-not 和 nsubst-if-not 被废弃了.
 
-One possible definition of subst:
+        subst 的一个可能的定义:
 
- (defun subst (old new tree &rest x &key test test-not key)
-   (cond ((satisfies-the-test old tree :test test
-                              :test-not test-not :key key)
-          new)
-         ((atom tree) tree)
-         (t (let ((a (apply #'subst old new (car tree) x))
-                  (d (apply #'subst old new (cdr tree) x)))
-              (if (and (eql a (car tree))
-                       (eql d (cdr tree)))
-                  tree
-                  (cons a d))))))
+        (defun subst (old new tree &rest x &key test test-not key)
+          (cond ((satisfies-the-test old tree :test test
+                                      :test-not test-not :key key)
+                  new)
+                ((atom tree) tree)
+                (t (let ((a (apply #'subst old new (car tree) x))
+                          (d (apply #'subst old new (cdr tree) x)))
+                      (if (and (eql a (car tree))
+                              (eql d (cdr tree)))
+                          tree
+                          (cons a d))))))
 
 
 ### <span id="F-TREE-EQUAL">函数 TREE-EQUAL</span>
 
 * 语法(Syntax):
 
-tree-equal tree-1 tree-2 &key test test-not => generalized-boolean
+        tree-equal tree-1 tree-2 &key test test-not => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-tree-1---一个树.
-
-tree-2---一个树.
-
-test---a designator for a function of two arguments that returns a generalized boolean.
-
-test-not---a designator for a function of two arguments that returns a generalized boolean.
-
-generalized-boolean---一个广义 boolean.
+        tree-1---一个树.
+        tree-2---一个树.
+        test---一个返回一个广义 boolean 的两参数函数的标识符.
+        test-not---一个返回一个广义 boolean 的两参数函数的标识符.
+        generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
-tree-equal tests whether two trees are of the same shape and have the same leaves. tree-equal returns true if tree-1 and tree-2 are both atoms and satisfy the test, or if they are both conses and the car of tree-1 is tree-equal to the car of tree-2 and the cdr of tree-1 is tree-equal to the cdr of tree-2. Otherwise, tree-equal returns false.
+        tree-equal 测试两个树是否是相同的形状并且有着相同的叶. 如果 tree-1 和 tree-2 都是原子并且满足测试条件 test, 或者它们都是 cons 并且 tree-1 的 car 和 tree-2 的 car 是 tree-equal 的而 tree-1 的 cdr 和 tree-2 的 cdr 也是 tree-equal 的, 那么 tree-equal 返回 true. 否则, tree-equal 返回 false.
 
-tree-equal recursively compares conses but not any other objects that have components.
+        tree-equal 递归地比较 cons 而不是其他有组件的对象.
 
-The first argument to the :test or :test-not function is tree-1 or a car or cdr of tree-1; the second argument is tree-2 or a car or cdr of tree-2.
+        给 :test 或 :test-not 函数的第一个参数是 tree-1 或者 tree-1 的一个 car 或 cdr; 第二个参数是 tree-2 或 tree-2 的一个 car 或 cdr.
 
 * 示例(Examples):
 
- (setq tree1 '(1 (1 2))
-       tree2 '(1 (1 2))) =>  (1 (1 2))
- (tree-equal tree1 tree2) =>  true
- (eql tree1 tree2) =>  false
- (setq tree1 '('a ('b 'c))
-       tree2 '('a ('b 'c))) =>  ('a ('b 'c)) 
-=>  ((QUOTE A) ((QUOTE B) (QUOTE C)))
- (tree-equal tree1 tree2 :test 'eq) =>  true
+    ```LISP
+    (setq tree1 '(1 (1 2))
+          tree2 '(1 (1 2))) =>  (1 (1 2))
+    (tree-equal tree1 tree2) =>  true
+    (eql tree1 tree2) =>  false
+    (setq tree1 '('a ('b 'c))
+          tree2 '('a ('b 'c))) =>  ('a ('b 'c)) 
+    =>  ((QUOTE A) ((QUOTE B) (QUOTE C)))
+    (tree-equal tree1 tree2 :test 'eq) =>  true
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -912,49 +902,50 @@ The first argument to the :test or :test-not function is tree-1 or a car or cdr 
 
 * 异常情况(Exceptional Situations):
 
-The consequences are undefined if both tree-1 and tree-2 are circular.
+        如果 tree-1 和 tree-2 都是环状的那么后果是不确定的.
 
 * 也见(See Also):
 
-equal, Section 3.6 (Traversal Rules and Side Effects)
+        equal, 章节 3.6 (Traversal Rules and Side Effects)
 
 * 注意(Notes):
 
-The :test-not parameter is deprecated. 
+        这个 :test-not 参数被废弃了. 
 
 ### <span id="F-COPY-LIST">函数 COPY-LIST</span>
 
 * 语法(Syntax):
 
-copy-list list => copy
+        copy-list list => copy
 
 * 参数和值(Arguments and Values):
 
-list---a proper list or a dotted list.
-
-copy---一个列表.
+        list---一个 proper 列表或者一个点列表.
+        copy---一个列表.
 
 * 描述(Description):
 
-Returns a copy of list. If list is a dotted list, the resulting list will also be a dotted list.
+        返回列表 list 的一个拷贝. 如果列表 list 是一个点列表, 那么产生的列表也是一个点列表.
 
-Only the list structure of list is copied; the elements of the resulting list are the same as the corresponding elements of the given list.
+        只有列表 list 的列表结构被拷贝; 产生的列表中的元素和给定列表 list 中的对应元素相同.
 
 * 示例(Examples):
 
- (setq lst (list 1 (list 2 3))) =>  (1 (2 3))
- (setq slst lst) =>  (1 (2 3))
- (setq clst (copy-list lst)) =>  (1 (2 3))
- (eq slst lst) =>  true
- (eq clst lst) =>  false
- (equal clst lst) =>  true
- (rplaca lst "one") =>  ("one" (2 3))
- slst =>  ("one" (2 3))
- clst =>  (1 (2 3))
- (setf (caadr lst) "two") =>  "two"
- lst =>  ("one" ("two" 3))
- slst =>  ("one" ("two" 3))
- clst =>  (1 ("two" 3))
+    ```LISP
+    (setq lst (list 1 (list 2 3))) =>  (1 (2 3))
+    (setq slst lst) =>  (1 (2 3))
+    (setq clst (copy-list lst)) =>  (1 (2 3))
+    (eq slst lst) =>  true
+    (eq clst lst) =>  false
+    (equal clst lst) =>  true
+    (rplaca lst "one") =>  ("one" (2 3))
+    slst =>  ("one" (2 3))
+    clst =>  (1 (2 3))
+    (setf (caadr lst) "two") =>  "two"
+    lst =>  ("one" ("two" 3))
+    slst =>  ("one" ("two" 3))
+    clst =>  (1 ("two" 3))
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -962,15 +953,15 @@ Only the list structure of list is copied; the elements of the resulting list ar
 
 * 异常情况(Exceptional Situations):
 
-The consequences are undefined if list is a circular list.
+        如果列表 list 是一个环状列表那么后果是未定义的.
 
 * 也见(See Also):
 
-copy-alist, copy-seq, copy-tree
+        copy-alist, copy-seq, copy-tree
 
 * 注意(Notes):
 
-The copy created is equal to list, but not eq. 
+        创建的拷贝和列表 list 是 equal 的, 但不是 eq 的. 
 
 
 ### <span id="F-LIST-LIST">函数 LIST, LIST*</span>
@@ -1998,11 +1989,11 @@ list---a proper list.
 
 predicate---a designator for a function of one argument that returns a generalized boolean.
 
-test---a designator for a function of two arguments that returns a generalized boolean.
+test---一个返回一个广义 boolean 的两参数函数的标识符.
 
-test-not---a designator for a function of two arguments that returns a generalized boolean.
+test-not---一个返回一个广义 boolean 的两参数函数的标识符.
 
-key---a designator for a function of one argument, or nil.
+key---一个单参数函数的标识符, 或者 nil.
 
 tail---一个列表.
 
@@ -2162,9 +2153,9 @@ key---一个对象.
 
 datum---一个对象.
 
-alist---an association list.
+alist---一个关联列表.
 
-new-alist---an association list.
+new-alist---一个关联列表.
 
 * 描述(Description):
 
@@ -2210,15 +2201,15 @@ assoc-if-not predicate alist &key key => entry
 
 item---一个对象.
 
-alist---an association list.
+alist---一个关联列表.
 
 predicate---a designator for a function of one argument that returns a generalized boolean.
 
-test---a designator for a function of two arguments that returns a generalized boolean.
+test---一个返回一个广义 boolean 的两参数函数的标识符.
 
-test-not---a designator for a function of two arguments that returns a generalized boolean.
+test-not---一个返回一个广义 boolean 的两参数函数的标识符.
 
-key---a designator for a function of one argument, or nil.
+key---一个单参数函数的标识符, 或者 nil.
 
 entry---a cons that is an element of alist, or nil.
 
@@ -2289,9 +2280,9 @@ copy-alist alist => new-alist
 
 * 参数和值(Arguments and Values):
 
-alist---an association list.
+alist---一个关联列表.
 
-new-alist---an association list.
+new-alist---一个关联列表.
 
 * 描述(Description):
 
@@ -2338,9 +2329,9 @@ keys---a proper list.
 
 data---a proper list.
 
-alist---an association list. The default is the empty list.
+alist---一个关联列表. The default is the empty list.
 
-new-alist---an association list.
+new-alist---一个关联列表.
 
 * 描述(Description):
 
@@ -2397,15 +2388,15 @@ rassoc-if-not predicate alist &key key => entry
 
 item---一个对象.
 
-alist---an association list.
+alist---一个关联列表.
 
 predicate---a designator for a function of one argument that returns a generalized boolean.
 
-test---a designator for a function of two arguments that returns a generalized boolean.
+test---一个返回一个广义 boolean 的两参数函数的标识符.
 
-test-not---a designator for a function of two arguments that returns a generalized boolean.
+test-not---一个返回一个广义 boolean 的两参数函数的标识符.
 
-key---a designator for a function of one argument, or nil.
+key---一个单参数函数的标识符, 或者 nil.
 
 entry---a cons that is an element of the alist, or nil.
 
@@ -2637,11 +2628,11 @@ list-1---a proper list.
 
 list-2---a proper list.
 
-test---a designator for a function of two arguments that returns a generalized boolean.
+test---一个返回一个广义 boolean 的两参数函数的标识符.
 
-test-not---a designator for a function of two arguments that returns a generalized boolean.
+test-not---一个返回一个广义 boolean 的两参数函数的标识符.
 
-key---a designator for a function of one argument, or nil.
+key---一个单参数函数的标识符, 或者 nil.
 
 result-list---一个列表.
 
@@ -2711,11 +2702,11 @@ item---一个对象.
 
 list---a proper list.
 
-test---a designator for a function of two arguments that returns a generalized boolean.
+test---一个返回一个广义 boolean 的两参数函数的标识符.
 
-test-not---a designator for a function of two arguments that returns a generalized boolean.
+test-not---一个返回一个广义 boolean 的两参数函数的标识符.
 
-key---a designator for a function of one argument, or nil.
+key---一个单参数函数的标识符, 或者 nil.
 
 new-list---一个列表.
 
@@ -2769,11 +2760,11 @@ item---一个对象.
 
 place---a place, the value of which is a proper list.
 
-test---a designator for a function of two arguments that returns a generalized boolean.
+test---一个返回一个广义 boolean 的两参数函数的标识符.
 
-test-not---a designator for a function of two arguments that returns a generalized boolean.
+test-not---一个返回一个广义 boolean 的两参数函数的标识符.
 
-key---a designator for a function of one argument, or nil.
+key---一个单参数函数的标识符, 或者 nil.
 
 new-place-value---a list (the new value of place).
 
@@ -2844,11 +2835,11 @@ list-1---a proper list.
 
 list-2---a proper list.
 
-test---a designator for a function of two arguments that returns a generalized boolean.
+test---一个返回一个广义 boolean 的两参数函数的标识符.
 
-test-not---a designator for a function of two arguments that returns a generalized boolean.
+test-not---一个返回一个广义 boolean 的两参数函数的标识符.
 
-key---a designator for a function of one argument, or nil.
+key---一个单参数函数的标识符, 或者 nil.
 
 result-list---一个列表.
 
@@ -2922,11 +2913,11 @@ list-1---a proper list.
 
 list-2---a proper list.
 
-test---a designator for a function of two arguments that returns a generalized boolean.
+test---一个返回一个广义 boolean 的两参数函数的标识符.
 
-test-not---a designator for a function of two arguments that returns a generalized boolean.
+test-not---一个返回一个广义 boolean 的两参数函数的标识符.
 
-key---a designator for a function of one argument, or nil.
+key---一个单参数函数的标识符, 或者 nil.
 
 result-list---一个列表.
 
@@ -2994,11 +2985,11 @@ list-1---a proper list.
 
 list-2---a proper list.
 
-test---a designator for a function of two arguments that returns a generalized boolean.
+test---一个返回一个广义 boolean 的两参数函数的标识符.
 
-test-not---a designator for a function of two arguments that returns a generalized boolean.
+test-not---一个返回一个广义 boolean 的两参数函数的标识符.
 
-key---a designator for a function of one argument, or nil.
+key---一个单参数函数的标识符, 或者 nil.
 
 generalized-boolean---一个广义 boolean.
 
@@ -3051,11 +3042,11 @@ list-1---a proper list.
 
 list-2---a proper list.
 
-test---a designator for a function of two arguments that returns a generalized boolean.
+test---一个返回一个广义 boolean 的两参数函数的标识符.
 
-test-not---a designator for a function of two arguments that returns a generalized boolean.
+test-not---一个返回一个广义 boolean 的两参数函数的标识符.
 
-key---a designator for a function of one argument, or nil.
+key---一个单参数函数的标识符, 或者 nil.
 
 result-list---一个列表.
 
