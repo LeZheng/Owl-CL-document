@@ -584,7 +584,7 @@
 
             Figure 14-6. CAR 和 CDR 变体
 
-        setf 也可以和这些函数中的任意一个一起使用来改变一个已存在的 x 的组件, 但是 setf 不会创建新的组件. 所以, 比如, 一个 cons 的 car 可以用 car 的 setf 来赋值, 但是 nil 的car 不能使用 car 的 setf 来赋值. 相似地, 一个 car 为一个 cons 的 cons, 它的 car 的 car 可以使用 caar 的 setf 来赋值, 但是 nil 和一个 car 为 nil 的 cons 不能使用 caar 的 setf 来赋值.
+        setf 也可以和这些函数中的任意一个一起使用来改变一个已存在的 x 的成分, 但是 setf 不会创建新的成分. 所以, 比如, 一个 cons 的 car 可以用 car 的 setf 来赋值, 但是 nil 的car 不能使用 car 的 setf 来赋值. 相似地, 一个 car 为一个 cons 的 cons, 它的 car 的 car 可以使用 caar 的 setf 来赋值, 但是 nil 和一个 car 为 nil 的 cons 不能使用 caar 的 setf 来赋值.
 
         参数 x 允许为一个点列表或者一个环状列表.
 
@@ -879,7 +879,7 @@
 
         tree-equal 测试两个树是否是相同的形状并且有着相同的叶. 如果 tree-1 和 tree-2 都是原子并且满足测试条件 test, 或者它们都是 cons 并且 tree-1 的 car 和 tree-2 的 car 是 tree-equal 的而 tree-1 的 cdr 和 tree-2 的 cdr 也是 tree-equal 的, 那么 tree-equal 返回 true. 否则, tree-equal 返回 false.
 
-        tree-equal 递归地比较 cons 而不是其他有组件的对象.
+        tree-equal 递归地比较 cons 而不是其他有成分的对象.
 
         给 :test 或 :test-not 函数的第一个参数是 tree-1 或者 tree-1 的一个 car 或 cdr; 第二个参数是 tree-2 或 tree-2 的一个 car 或 cdr.
 
@@ -968,43 +968,43 @@
 
 * 语法(Syntax):
 
-list &rest objects => list
+        list &rest objects => list
 
-list* &rest objects+ => result
+        list* &rest objects+ => result
 
 * 参数和值(Arguments and Values):
 
-object---一个对象.
-
-list---一个列表.
-
-result---一个对象.
+        object---一个对象.
+        list---一个列表.
+        result---一个对象.
 
 * 描述(Description):
 
-list returns a list containing the supplied objects.
+        list 返回一个包含提供的那些对象 objects 的列表.
 
-list* is like list except that the last argument to list becomes the car of the last cons constructed, while the last argument to list* becomes the cdr of the last cons constructed. Hence, any given call to list* always produces one fewer conses than a call to list with the same number of arguments.
+        list* 类似于 list, 除了给 list 的最后一个参数为构造的最后一个 cons 的 car, 而给 list* 的最后一个参数是构造的最后一个 cons 的cdr. 因此, 任何给定的对 list* 的调用总是产生比相同数量参数的 list 调用少一个 cons.
 
-If the last argument to list* is a list, the effect is to construct a new list which is similar, but which has additional elements added to the front corresponding to the preceding arguments of list*.
+        如果给 list* 的最后一个参数是一个列表, 那么效果就是构造一个新的相似的列表, 但是有着额外元素被添加到前面, 这些元素和 list* 的前面参数对应.
 
-If list* receives only one object, that object is returned, regardless of whether or not it is a list.
+        如果 list* 只接收到一个对象 object, 那么返回那个对象 object, 不管它是否为一个列表.
 
 * 示例(Examples):
 
- (list 1) =>  (1)
- (list* 1) =>  1
- (setq a 1) =>  1
- (list a 2) =>  (1 2)
- '(a 2) =>  (A 2)
- (list 'a 2) =>  (A 2)
- (list* a 2) =>  (1 . 2)
- (list) =>  NIL ;i.e.,  ()
- (setq a '(1 2)) =>  (1 2)
- (eq a (list* a)) =>  true
- (list 3 4 'a (car '(b . c)) (+ 6 -2)) =>  (3 4 A B 4)
- (list* 'a 'b 'c 'd) ==  (cons 'a (cons 'b (cons 'c 'd))) =>  (A B C . D)
- (list* 'a 'b 'c '(d e f)) =>  (A B C D E F)
+    ```LISP
+    (list 1) =>  (1)
+    (list* 1) =>  1
+    (setq a 1) =>  1
+    (list a 2) =>  (1 2)
+    '(a 2) =>  (A 2)
+    (list 'a 2) =>  (A 2)
+    (list* a 2) =>  (1 . 2)
+    (list) =>  NIL ;i.e.,  ()
+    (setq a '(1 2)) =>  (1 2)
+    (eq a (list* a)) =>  true
+    (list 3 4 'a (car '(b . c)) (+ 6 -2)) =>  (3 4 A B 4)
+    (list* 'a 'b 'c 'd) ==  (cons 'a (cons 'b (cons 'c 'd))) =>  (A B C . D)
+    (list* 'a 'b 'c '(d e f)) =>  (A B C D E F)
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -1014,41 +1014,42 @@ If list* receives only one object, that object is returned, regardless of whethe
 
 * 也见(See Also):
 
-cons
+        cons
 
 * 注意(Notes):
 
- (list* x) ==  x
+        (list* x) ==  x
 
 
 ### <span id="F-LIST-LENGTH">函数 LIST-LENGTH</span>
 
 * 语法(Syntax):
 
-list-length list => length
+        list-length list => length
 
 * 参数和值(Arguments and Values):
 
-list---a proper list or a circular list.
-
-length---a non-negative integer, or nil.
+        list---一个 proper 列表或一个环状列表.
+        length---一个非负整数, 或者 nil.
 
 * 描述(Description):
 
-Returns the length of list if list is a proper list. Returns nil if list is a circular list.
+        如果列表 list 是一个 proper 列表就返回这个列表 list 的长度. 如果列表 list 是一个环状列表就返回 nil.
 
 * 示例(Examples):
 
- (list-length '(a b c d)) =>  4
- (list-length '(a (b c) d)) =>  3
- (list-length '()) =>  0
- (list-length nil) =>  0
- (defun circular-list (&rest elements)
-   (let ((cycle (copy-list elements))) 
-     (nconc cycle cycle)))
- (list-length (circular-list 'a 'b)) =>  NIL
- (list-length (circular-list 'a)) =>  NIL
- (list-length (circular-list)) =>  0
+    ```LISP
+    (list-length '(a b c d)) =>  4
+    (list-length '(a (b c) d)) =>  3
+    (list-length '()) =>  0
+    (list-length nil) =>  0
+    (defun circular-list (&rest elements)
+      (let ((cycle (copy-list elements))) 
+        (nconc cycle cycle)))
+    (list-length (circular-list 'a 'b)) =>  NIL
+    (list-length (circular-list 'a)) =>  NIL
+    (list-length (circular-list)) =>  0
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -1056,55 +1057,56 @@ Returns the length of list if list is a proper list. Returns nil if list is a ci
 
 * 异常情况(Exceptional Situations):
 
-Should signal an error of type type-error if list is not a proper list or a circular list.
+        如果 list 不是一个 proper 列表或者一个环状列表, 那么应该发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-length
+        length
 
 * 注意(Notes):
 
-list-length could be implemented as follows:
+        list-length 可以通过以下方式来实现:
 
- (defun list-length (x)  
-   (do ((n 0 (+ n 2))           ;Counter.
-        (fast x (cddr fast))    ;Fast pointer: leaps by 2.
-        (slow x (cdr slow)))    ;Slow pointer: leaps by 1.
-       (nil)
-     ;; If fast pointer hits the end, return the count.
-     (when (endp fast) (return n))
-     (when (endp (cdr fast)) (return (+ n 1)))
-     ;; If fast pointer eventually equals slow pointer,
-     ;;  then we must be stuck in a circular list.
-     ;; (A deeper property is the converse: if we are
-     ;;  stuck in a circular list, then eventually the
-     ;;  fast pointer will equal the slow pointer.
-     ;;  That fact justifies this implementation.)
-     (when (and (eq fast slow) (> n 0)) (return nil))))
+        (defun list-length (x)  
+          (do ((n 0 (+ n 2))           ;Counter.
+                (fast x (cddr fast))    ;Fast pointer: leaps by 2.
+                (slow x (cdr slow)))    ;Slow pointer: leaps by 1.
+              (nil)
+            ;; If fast pointer hits the end, return the count.
+            (when (endp fast) (return n))
+            (when (endp (cdr fast)) (return (+ n 1)))
+            ;; If fast pointer eventually equals slow pointer,
+            ;;  then we must be stuck in a circular list.
+            ;; (A deeper property is the converse: if we are
+            ;;  stuck in a circular list, then eventually the
+            ;;  fast pointer will equal the slow pointer.
+            ;;  That fact justifies this implementation.)
+            (when (and (eq fast slow) (> n 0)) (return nil))))
  
 
 ### <span id="F-LISTP">函数 LISTP</span>
 
 * 语法(Syntax):
 
-listp object => generalized-boolean
+        listp object => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-object---一个对象.
-
-generalized-boolean---一个广义 boolean.
+        object---一个对象.
+        generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
-Returns true if object is of type list; otherwise, returns false.
+        如果对象 object 是 list 类型就返回 true; 否则, 返回 false.
 
 * 示例(Examples):
 
- (listp nil) =>  true
- (listp (cons 1 2)) =>  true
- (listp (make-array 6)) =>  false
- (listp t) =>  false
+    ```LISP
+    (listp nil) =>  true
+    (listp (cons 1 2)) =>  true
+    (listp (make-array 6)) =>  false
+    (listp t) =>  false
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -1114,40 +1116,40 @@ Returns true if object is of type list; otherwise, returns false.
 
 * 也见(See Also):
 
-consp
+        consp
 
 * 注意(Notes):
 
-If object is a cons, listp does not check whether object is a proper list; it returns true for any kind of list.
+        如果对象 object 是一个 cons, listp 不会检查对象 object 是否为一个 proper 列表; 对于任何种类的列表它都返回 true.
 
- (listp object) ==  (typep object 'list) ==  (typep object '(or cons null))
+        (listp object) ==  (typep object 'list) ==  (typep object '(or cons null))
 
 
 ### <span id="F-MAKE-LIST">函数 MAKE-LIST</span>
 
 * 语法(Syntax):
 
-make-list size &key initial-element => list
+        make-list size &key initial-element => list
 
 * 参数和值(Arguments and Values):
 
-size---a non-negative integer.
-
-initial-element---一个对象. The default is nil.
-
-list---一个列表.
+        size---一个非负整数.
+        initial-element---一个对象. 默认是 nil.
+        list---一个列表.
 
 * 描述(Description):
 
-Returns a list of length given by size, each of the elements of which is initial-element.
+        返回长度为给定大小 size 的列表, 其中每一个元素都是初始化元素 initial-element.
 
 * 示例(Examples):
 
- (make-list 5) =>  (NIL NIL NIL NIL NIL)
- (make-list 3 :initial-element 'rah) =>  (RAH RAH RAH)
- (make-list 2 :initial-element '(1 2 3)) =>  ((1 2 3) (1 2 3))
- (make-list 0) =>  NIL ;i.e.,  ()
- (make-list 0 :initial-element 'new-element) =>  NIL 
+    ```LISP
+    (make-list 5) =>  (NIL NIL NIL NIL NIL)
+    (make-list 3 :initial-element 'rah) =>  (RAH RAH RAH)
+    (make-list 2 :initial-element '(1 2 3)) =>  ((1 2 3) (1 2 3))
+    (make-list 0) =>  NIL ;i.e.,  ()
+    (make-list 0 :initial-element 'new-element) =>  NIL 
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -1155,11 +1157,11 @@ Returns a list of length given by size, each of the elements of which is initial
 
 * 异常情况(Exceptional Situations):
 
-Should signal an error of type type-error if size is not a non-negative integer.
+        如果 size 不是一个非负整数, 那么应该发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-cons, list
+        cons, list
 
 * 注意(Notes): None. 
 
@@ -1167,36 +1169,36 @@ cons, list
 
 * 语法(Syntax):
 
-push item place => new-place-value
+        push item place => new-place-value
 
 * 参数和值(Arguments and Values):
 
-item---一个对象.
-
-place---a place, the value of which may be any object.
-
-new-place-value---a list (the new value of place).
+        item---一个对象.
+        place---一个 place, 它的值可能是任何对象.
+        new-place-value---一个列表 (这个 place 的新值).
 
 * 描述(Description):
 
-push prepends item to the list that is stored in place, stores the resulting list in place, and returns the list.
+        push 在存储在 place 的列表前面加上 item, 把产生的列表存储到, 然后返回那个列表.
 
-For information about the evaluation of subforms of place, see Section 5.1.1.1 (Evaluation of Subforms to Places).
+        关于 place 的子表达式形式求值的信息, 见章节 5.1.1.1 (Evaluation of Subforms to Places).
 
 * 示例(Examples):
 
- (setq llst '(nil)) =>  (NIL)
- (push 1 (car llst)) =>  (1)
- llst =>  ((1))
- (push 1 (car llst)) =>  (1 1)
- llst =>  ((1 1))
- (setq x '(a (b c) d)) =>  (A (B C) D)
- (push 5 (cadr x)) =>  (5 B C)  
- x =>  (A (5 B C) D)
+    ```LISP
+    (setq llst '(nil)) =>  (NIL)
+    (push 1 (car llst)) =>  (1)
+    llst =>  ((1))
+    (push 1 (car llst)) =>  (1 1)
+    llst =>  ((1 1))
+    (setq x '(a (b c) d)) =>  (A (B C) D)
+    (push 5 (cadr x)) =>  (5 B C)  
+    x =>  (A (5 B C) D)
+    ```
 
 * 副作用(Side Effects):
 
-The contents of place are modified.
+        place 的内容会被修改.
 
 * 受此影响(Affected By): None.
 
@@ -1204,46 +1206,47 @@ The contents of place are modified.
 
 * 也见(See Also):
 
-pop, pushnew, Section 5.1 (Generalized Reference)
+        pop, pushnew, 章节 5.1 (Generalized Reference)
 
 * 注意(Notes):
 
-The effect of (push item place) is equivalent to
+        (push item place) 的效果等价于
 
- (setf place (cons item place))
+        (setf place (cons item place))
 
-except that the subforms of place are evaluated only once, and item is evaluated before place. 
+        除了这个 place 的子表达式形式只被求值一次, 并且这个 item 在 place 之前被求值. 
 
 ### <span id="M-POP">宏 POP</span>
 
 * 语法(Syntax):
 
-pop place => element
+        pop place => element
 
 * 参数和值(Arguments and Values):
 
-place---a place, the value of which is a list (possibly, but necessarily, a dotted list or circular list).
-
-element---an object (the car of the contents of place).
+        place---一个 place, 它的值是一个列表 (可能, 但不是必须, 是一个点列表或环状列表).<!--TODO 原文好像有问题-->
+        element---一个对象 (这个 place 的内容的 car).
 
 * 描述(Description):
 
-pop reads the value of place, remembers the car of the list which was retrieved, writes the cdr of the list back into the place, and finally yields the car of the originally retrieved list.
+        pop 读取 place 的值, 记住获取到的列表的 car, 把这个列表的 cdr 写回到那个 place 中, 并且最后产生这个原始获取的列表的 car 部分.
 
-For information about the evaluation of subforms of place, see Section 5.1.1.1 (Evaluation of Subforms to Places).
+        关于 place 的子表达式形式求值的信息, 见章节 5.1.1.1 (Evaluation of Subforms to Places).
 
 * 示例(Examples):
 
- (setq stack '(a b c)) =>  (A B C)
- (pop stack) =>  A  
- stack =>  (B C)
- (setq llst '((1 2 3 4))) =>  ((1 2 3 4))
- (pop (car llst)) =>  1
- llst =>  ((2 3 4))
+    ```LISP
+    (setq stack '(a b c)) =>  (A B C)
+    (pop stack) =>  A  
+    stack =>  (B C)
+    (setq llst '((1 2 3 4))) =>  ((1 2 3 4))
+    (pop (car llst)) =>  1
+    llst =>  ((2 3 4))
+    ```
 
 * 副作用(Side Effects):
 
-The contents of place are modified.
+        place 的内容会被修改.
 
 * 受此影响(Affected By): None.
 
@@ -1251,97 +1254,98 @@ The contents of place are modified.
 
 * 也见(See Also):
 
-push, pushnew, Section 5.1 (Generalized Reference)
+        push, pushnew, 章节 5.1 (Generalized Reference)
 
 * 注意(Notes):
 
-The effect of (pop place) is roughly equivalent to
+        (pop place) 的效果大致等价于
 
- (prog1 (car place) (setf place (cdr place)))
+        (prog1 (car place) (setf place (cdr place)))
 
-except that the latter would evaluate any subforms of place three times, while pop evaluates them only once. 
+        除了后面的可能会求值 place 中的任意子表达式形式三次, 而 pop 只求值它们一次. 
 
 
 ### <span id="A-FSTFFSSENT">访问器 FIRST, SECOND, THIRD, FOURTH, FIFTH, SIXTH, SEVENTH, EIGHTH, NINTH, TENTH</span>
 
 * 语法(Syntax):
 
-first list => object
+        first list => object
 
-second list => object
+        second list => object
 
-third list => object
+        third list => object
 
-fourth list => object
+        fourth list => object
 
-fifth list => object
+        fifth list => object
 
-sixth list => object
+        sixth list => object
 
-seventh list => object
+        seventh list => object
 
-eighth list => object
+        eighth list => object
 
-ninth list => object
+        ninth list => object
 
-tenth list => object
+        tenth list => object
 
-(setf (first list) new-object)
+        (setf (first list) new-object)
 
-(setf (second list) new-object)
+        (setf (second list) new-object)
 
-(setf (third list) new-object)
+        (setf (third list) new-object)
 
-(setf (fourth list) new-object)
+        (setf (fourth list) new-object)
 
-(setf (fifth list) new-object)
+        (setf (fifth list) new-object)
 
-(setf (sixth list) new-object)
+        (setf (sixth list) new-object)
 
-(setf (seventh list) new-object)
+        (setf (seventh list) new-object)
 
-(setf (eighth list) new-object)
+        (setf (eighth list) new-object)
 
-(setf (ninth list) new-object)
+        (setf (ninth list) new-object)
 
-(setf (tenth list) new-object)
+        (setf (tenth list) new-object)
 
 * 参数和值(Arguments and Values):
 
-list---a list, which might be a dotted list or a circular list.
-
-object, new-object---一个对象.
+        list---一个列表, 它可能是一个点列表或者一个环状列表.
+        object, new-object---一个对象.
 
 * 描述(Description):
 
-The functions first, second, third, fourth, fifth, sixth, seventh, eighth, ninth, and tenth access the first, second, third, fourth, fifth, sixth, seventh, eighth, ninth, and tenth elements of list, respectively. Specifically,
+        函数 first, second, third, fourth, fifth, sixth, seventh, eighth, ninth, 和 tenth 分别访问列表 list 的第一, 第二, 第三, 第四, 第五, 第六, 第七, 第八, 第九, 和第十的元素. 具体地说,
 
- (first list)    ==   (car list)
- (second list)   ==   (car (cdr list))
- (third list)    ==   (car (cddr list))
- (fourth list)   ==   (car (cdddr list))
- (fifth list)    ==   (car (cddddr list))
- (sixth list)    ==   (car (cdr (cddddr list)))
- (seventh list)  ==   (car (cddr (cddddr list)))
- (eighth list)   ==   (car (cdddr (cddddr list)))
- (ninth list)    ==   (car (cddddr (cddddr list)))
- (tenth list)    ==   (car (cdr (cddddr (cddddr list))))
+        (first list)    ==   (car list)
+        (second list)   ==   (car (cdr list))
+        (third list)    ==   (car (cddr list))
+        (fourth list)   ==   (car (cdddr list))
+        (fifth list)    ==   (car (cddddr list))
+        (sixth list)    ==   (car (cdr (cddddr list)))
+        (seventh list)  ==   (car (cddr (cddddr list)))
+        (eighth list)   ==   (car (cdddr (cddddr list)))
+        (ninth list)    ==   (car (cddddr (cddddr list)))
+        (tenth list)    ==   (car (cdr (cddddr (cddddr list))))
 
-setf can also be used with any of these functions to change an existing component. The same equivalences apply. For example:
+        setf 也可以和这些函数中的任何一个一起使用来改变一个已存在的成分. 应用相同的等式. 比如:
 
- (setf (fifth list) new-object) ==  (setf (car (cddddr list)) new-object)
+        (setf (fifth list) new-object) ==  (setf (car (cddddr list)) new-object)
 
 * 示例(Examples):
 
- (setq lst '(1 2 3 (4 5 6) ((V)) vi 7 8 9 10)) 
-=>  (1 2 3 (4 5 6) ((V)) VI 7 8 9 10)
- (first lst) =>  1
- (tenth lst) =>  10
- (fifth lst) =>  ((V))
- (second (fourth lst)) =>  5
- (sixth '(1 2 3)) =>  NIL
- (setf (fourth lst) "four") =>  "four"
- lst =>  (1 2 3 "four" ((V)) VI 7 8 9 10)
+    ```LISP
+    (setq lst '(1 2 3 (4 5 6) ((V)) vi 7 8 9 10)) 
+    =>  (1 2 3 (4 5 6) ((V)) VI 7 8 9 10)
+    (first lst) =>  1
+    (tenth lst) =>  10
+    (fifth lst) =>  ((V))
+    (second (fourth lst)) =>  5
+    (sixth '(1 2 3)) =>  NIL
+    (setf (fourth lst) "four") =>  "four"
+    lst =>  (1 2 3 "four" ((V)) VI 7 8 9 10)
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -1351,53 +1355,52 @@ setf can also be used with any of these functions to change an existing componen
 
 * 也见(See Also):
 
-car, nth
+        car, nth
 
 * 注意(Notes):
 
-first is functionally equivalent to car, second is functionally equivalent to cadr, third is functionally equivalent to caddr, and fourth is functionally equivalent to cadddr.
+        first 功能上等价于 car, second 功能上等价于 cadr, third 功能上等价于 caddr, 并且 fourth 功能上等价于 cadddr.
 
-The ordinal numbering used here is one-origin, as opposed to the zero-origin numbering used by nth:
+        这里使用的序号是从一开始的, 相比于 nth 使用的从零开始的序号:
 
- (fifth x) ==  (nth 4 x)
+        (fifth x) ==  (nth 4 x)
 
 
 ### <span id="A-NTH">访问器 NTH</span>
 
 * 语法(Syntax):
 
-nth n list => object
+        nth n list => object
 
-(setf (nth n list) new-object)
+        (setf (nth n list) new-object)
 
 * 参数和值(Arguments and Values):
 
-n---a non-negative integer.
-
-list---a list, which might be a dotted list or a circular list.
-
-object---一个对象.
-
-new-object---一个对象.
+        n---一个非负整数.
+        list---一个列表, 它可能是一个点列表或一个环状列表.
+        object---一个对象.
+        new-object---一个对象.
 
 * 描述(Description):
 
-nth locates the nth element of list, where the car of the list is the ``zeroth'' element. Specifically,
+        nth 查找列表 list 的第 n 个元素, 其中这个列表 list 的 car 是第 0 个元素. 具体来说,
 
- (nth n list) ==  (car (nthcdr n list))
+        (nth n list) ==  (car (nthcdr n list))
 
-nth may be used to specify a place to setf. Specifically,
+        nth 可以被用于给 setf 指定一个 place. 具体来说,
 
- (setf (nth n list) new-object) ==  (setf (car (nthcdr n list)) new-object)
+        (setf (nth n list) new-object) ==  (setf (car (nthcdr n list)) new-object)
 
 * 示例(Examples):
 
- (nth 0 '(foo bar baz)) =>  FOO
- (nth 1 '(foo bar baz)) =>  BAR
- (nth 3 '(foo bar baz)) =>  NIL
- (setq 0-to-3 (list 0 1 2 3)) =>  (0 1 2 3)
- (setf (nth 2 0-to-3) "two") =>  "two"
- 0-to-3 =>  (0 1 "two" 3)
+    ```LISP
+    (nth 0 '(foo bar baz)) =>  FOO
+    (nth 1 '(foo bar baz)) =>  BAR
+    (nth 3 '(foo bar baz)) =>  NIL
+    (setq 0-to-3 (list 0 1 2 3)) =>  (0 1 2 3)
+    (setf (nth 2 0-to-3) "two") =>  "two"
+    0-to-3 =>  (0 1 "two" 3)
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -1407,7 +1410,7 @@ nth may be used to specify a place to setf. Specifically,
 
 * 也见(See Also):
 
-elt, first, nthcdr
+        elt, first, nthcdr
 
 * 注意(Notes): None. 
 
@@ -1415,23 +1418,24 @@ elt, first, nthcdr
 
 * 语法(Syntax):
 
-endp list => generalized-boolean
+        endp list => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-list---a list, which might be a dotted list or a circular list.
-
-generalized-boolean---一个广义 boolean.
+        list---一个列表, 它可能是一个点列表或一个环状列表.
+        generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
-Returns true if list is the empty list. Returns false if list is a cons.
+        如果列表 list 是一个空列表就返回 true. 如果列表 list 是一个 cons 就返回 false.
 
 * 示例(Examples):
 
- (endp nil) =>  true
- (endp '(1 2)) =>  false
- (endp (cddr '(1 2))) =>  true
+    ```LISP
+    (endp nil) =>  true
+    (endp '(1 2)) =>  false
+    (endp (cddr '(1 2))) =>  true
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -1439,13 +1443,14 @@ Returns true if list is the empty list. Returns false if list is a cons.
 
 * 异常情况(Exceptional Situations):
 
-Should signal an error of type type-error if list is not a list.
+        如果 list 不是一个列表就应该发出一个 type-error 类型的错误.
 
 * 也见(See Also): None.
 
 * 注意(Notes):
 
-The purpose of endp is to test for the end of proper list. Since endp does not descend into a cons, it is well-defined to pass it a dotted list. However, if shorter ``lists'' are iteratively produced by calling cdr on such a dotted list and those ``lists'' are tested with endp, a situation that has undefined consequences will eventually result when the non-nil atom (which is not in fact a list) finally becomes the argument to endp. Since this is the usual way in which endp is used, it is conservative programming style and consistent with the intent of endp to treat endp as simply a function on proper lists which happens not to enforce an argument type of proper list except when the argument is atomic. 
+        endp 的目的是特使 proper 列表的结束. 由于 endp 不会进入到一个 cons, 它被定义为通过一个点列表 it is well-defined to pass it a dotted list. 然而, if shorter "lists" are iteratively produced by calling cdr on such a dotted list and those "lists" are tested with endp, a situation that has undefined consequences will eventually result when the non-nil atom (which is not in fact a list) finally becomes the argument to endp. 由于这是使用 endp 的常用方法, 所以它是保守的编程风格, 并且与 endp 的意图一致, 即把 endp 当作一个在 proper 列表上的函数, 而不是强制执行一个参数类型的适当列表, 除非参数是原子的. Since this is the usual way in which endp is used, it is conservative programming style and consistent with the intent of endp to treat endp as simply a function on proper lists which happens not to enforce an argument type of proper list except when the argument is atomic. 
+        <!--TODO 待翻译-->
 
 
 ### <span id="F-NULL">函数 NULL</span>
@@ -1675,7 +1680,7 @@ nbutlast list &optional n => result-list
 
 list---a list, which might be a dotted list but must not be a circular list.
 
-n---a non-negative integer.
+n---一个非负整数.
 
 result-list---一个列表.
 
@@ -1729,7 +1734,7 @@ last list &optional n => tail
 
 list---a list, which might be a dotted list but must not be a circular list.
 
-n---a non-negative integer. The default is 1.
+n---一个非负整数. The default is 1.
 
 tail---一个对象.
 
@@ -1888,7 +1893,7 @@ nthcdr n list => tail
 
 * 参数和值(Arguments and Values):
 
-n---a non-negative integer.
+n---一个非负整数.
 
 list---a list, which might be a dotted list or a circular list.
 
