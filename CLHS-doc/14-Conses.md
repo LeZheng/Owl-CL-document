@@ -1457,24 +1457,25 @@
 
 * 语法(Syntax):
 
-null object => boolean
+        null object => boolean
 
 * 参数和值(Arguments and Values):
 
-object---一个对象.
-
-boolean---a boolean.
+        object---一个对象.
+        boolean---一个 boolean.
 
 * 描述(Description):
 
-Returns t if object is the empty list; otherwise, returns nil.
+        如果对象是一个空列表就返回 t; 否则, 返回 nil.
 
 * 示例(Examples):
 
- (null '()) =>  T
- (null nil) =>  T
- (null t) =>  NIL
- (null 1) =>  NIL
+    ```LISP
+    (null '()) =>  T
+    (null nil) =>  T
+    (null t) =>  NIL
+    (null 1) =>  NIL
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -1484,66 +1485,69 @@ Returns t if object is the empty list; otherwise, returns nil.
 
 * 也见(See Also):
 
-not
+        not
 
 * 注意(Notes):
 
-null is intended to be used to test for the empty list whereas not is intended to be used to invert a boolean (or generalized boolean). Operationally, null and not compute the same result; which to use is a matter of style.
+        null 意图在于测试空列表而 not 意图在于反转一个 boolean (或广义的 boolean). 操作上, null 和 not 计算出相同的结果; 使用哪一个是风格的问题.
 
- (null object) ==  (typep object 'null) ==  (eq object '())
+        (null object) ==  (typep object 'null) ==  (eq object '())
 
 
 ### <span id="F-NCONC">函数 NCONC</span>
 
 * 语法(Syntax):
 
-nconc &rest lists => concatenated-list
+        nconc &rest lists => concatenated-list
 
 * 参数和值(Arguments and Values):
 
-list---each but the last must be a list (which might be a dotted list but must not be a circular list); the last list may be any object.
-
-concatenated-list---一个列表.
+        list---除了最后一个的没一个都必须是一个列表 (它可能是一个点列表但一定不是一个环状列表); 最后的 list 可以是任何对象.
+        concatenated-list---一个列表.
 
 * 描述(Description):
 
-Returns a list that is the concatenation of lists. If no lists are supplied, (nconc) returns nil. nconc is defined using the following recursive relationship:
+        返回这些列表 lists 的一个串接列表. 如果没有提供列表 lists, (nconc) 返回 nil. nconc 使用以下递归关系来定义:
 
- (nconc) =>  ()
- (nconc nil . lists) ==  (nconc . lists)
- (nconc list) =>  list
- (nconc list-1 list-2) ==  (progn (rplacd (last list-1) list-2) list-1)
- (nconc list-1 list-2 . lists) ==  (nconc (nconc list-1 list-2) . lists)
+        (nconc) =>  ()
+        (nconc nil . lists) ==  (nconc . lists)
+        (nconc list) =>  list
+        (nconc list-1 list-2) ==  (progn (rplacd (last list-1) list-2) list-1)
+        (nconc list-1 list-2 . lists) ==  (nconc (nconc list-1 list-2) . lists)
 
 * 示例(Examples):
 
- (nconc) =>  NIL
- (setq x '(a b c)) =>  (A B C)
- (setq y '(d e f)) =>  (D E F)
- (nconc x y) =>  (A B C D E F)
- x =>  (A B C D E F)
+    ```LISP
+    (nconc) =>  NIL
+    (setq x '(a b c)) =>  (A B C)
+    (setq y '(d e f)) =>  (D E F)
+    (nconc x y) =>  (A B C D E F)
+    x =>  (A B C D E F)
+    ```
 
-Note, in the example, that the value of x is now different, since its last cons has been rplacd'd to the value of y. If (nconc x y) were evaluated again, it would yield a piece of a circular list, whose printed representation would be (A B C D E F D E F D E F ...), repeating forever; if the *print-circle* switch were non-nil, it would be printed as (A B C . #1=(D E F . #1#)).
+        注意, 在这个例子中, 现在那个 x 的值是不同的, 因为它的最后一个 cons 已经被 rplacd 为 y 的值. 如果 (nconc x y) 被再一次求值, 它会产生一个环状列表, 它的打印表示会是 (A B C D E F D E F D E F ...), 一直重复; 如果这个 *print-circle* 开关不是 nil, 它会被打印为 (A B C . #1=(D E F . #1#)).
 
- (setq foo (list 'a 'b 'c 'd 'e)
-       bar (list 'f 'g 'h 'i 'j)
-       baz (list 'k 'l 'm)) =>  (K L M)
- (setq foo (nconc foo bar baz)) =>  (A B C D E F G H I J K L M)
- foo =>  (A B C D E F G H I J K L M)
- bar =>  (F G H I J K L M)
- baz =>  (K L M)
+    ```LISP
+    (setq foo (list 'a 'b 'c 'd 'e)
+          bar (list 'f 'g 'h 'i 'j)
+          baz (list 'k 'l 'm)) =>  (K L M)
+    (setq foo (nconc foo bar baz)) =>  (A B C D E F G H I J K L M)
+    foo =>  (A B C D E F G H I J K L M)
+    bar =>  (F G H I J K L M)
+    baz =>  (K L M)
 
- (setq foo (list 'a 'b 'c 'd 'e)
-       bar (list 'f 'g 'h 'i 'j)
-       baz (list 'k 'l 'm)) =>  (K L M)
- (setq foo (nconc nil foo bar nil baz)) =>  (A B C D E F G H I J K L M) 
- foo =>  (A B C D E F G H I J K L M)
- bar =>  (F G H I J K L M)
- baz =>  (K L M)
+    (setq foo (list 'a 'b 'c 'd 'e)
+          bar (list 'f 'g 'h 'i 'j)
+          baz (list 'k 'l 'm)) =>  (K L M)
+    (setq foo (nconc nil foo bar nil baz)) =>  (A B C D E F G H I J K L M) 
+    foo =>  (A B C D E F G H I J K L M)
+    bar =>  (F G H I J K L M)
+    baz =>  (K L M)
+    ```
 
 * 副作用(Side Effects):
 
-The lists are modified rather than copied.
+        这些列表 lists 会被修改而不是拷贝.
 
 * 受此影响(Affected By): None.
 
@@ -1551,7 +1555,7 @@ The lists are modified rather than copied.
 
 * 也见(See Also):
 
-append, concatenate
+        append, concatenate
 
 * 注意(Notes): None. 
 
@@ -1560,27 +1564,28 @@ append, concatenate
 
 * 语法(Syntax):
 
-append &rest lists => result
+        append &rest lists => result
 
 * 参数和值(Arguments and Values):
 
-list---each must be a proper list except the last, which may be any object.
-
-result---一个对象. This will be a list unless the last list was not a list and all preceding lists were null.
+        list---除了最后一个以外的每一个都必须是一个 proper 列表, 最后一个可能是任何对象.
+        result---一个对象. 这个会是一个列表, 除非最后一个 list 不是一个列表并且所有前面的 lists 都是 null.
 
 * 描述(Description):
 
-append returns a new list that is the concatenation of the copies. lists are left unchanged; the list structure of each of lists except the last is copied. The last argument is not copied; it becomes the cdr of the final dotted pair of the concatenation of the preceding lists, or is returned directly if there are no preceding non-empty lists.
+        append 返回一个由那些列表 lists 拼接而成的一个新列表. 那些列表 lists 保持不变; 这些列表 lists 中除了最后一个以外的每一个的列表结构都会被拷贝. 最后一个参数不会被拷贝; 它称为前面那些列表 lists 拼接后的最后一个点对的cdr, 如果前面没有非空列表就直接返回.
 
 * 示例(Examples):
 
- (append '(a b c) '(d e f) '() '(g)) =>  (A B C D E F G)
- (append '(a b c) 'd) =>  (A B C . D)
- (setq lst '(a b c)) =>  (A B C)
- (append lst '(d)) =>  (A B C D)
- lst =>  (A B C)
- (append) =>  NIL
- (append 'a) =>  A
+    ```LISP
+    (append '(a b c) '(d e f) '() '(g)) =>  (A B C D E F G)
+    (append '(a b c) 'd) =>  (A B C . D)
+    (setq lst '(a b c)) =>  (A B C)
+    (append lst '(d)) =>  (A B C D)
+    lst =>  (A B C)
+    (append) =>  NIL
+    (append 'a) =>  A
+    ```LISP
 
 * 受此影响(Affected By): None.
 
@@ -1588,7 +1593,7 @@ append returns a new list that is the concatenation of the copies. lists are lef
 
 * 也见(See Also):
 
-nconc, concatenate
+        nconc, concatenate
 
 * 注意(Notes): None. 
 
@@ -1596,61 +1601,61 @@ nconc, concatenate
 
 * 语法(Syntax):
 
-revappend list tail => result-list
+        revappend list tail => result-list
 
-nreconc list tail => result-list
+        nreconc list tail => result-list
 
 * 参数和值(Arguments and Values):
 
-list---a proper list.
-
-tail---一个对象.
-
-result-list---一个对象.
+        list---一个 proper 列表.
+        tail---一个对象.
+        result-list---一个对象.
 
 * 描述(Description):
 
-revappend constructs a copy[2] of list, but with the elements in reverse order. It then appends (as if by nconc) the tail to that reversed list and returns the result.
+        revappend 构造一个列表 list 的拷贝, 但是其中的元素是以相反的顺序. 它接下来追加 (就像是通过 nconc) 那个 tail 给那个反转后的列表并返回那个结果.
 
-nreconc reverses the order of elements in list (as if by nreverse). It then appends (as if by nconc) the tail to that reversed list and returns the result.
+        nreconc 反转在列表 list 中的顺序 (就像是通过 nreverse). 它接下来追加 (就像是通过 nconc) 那个 tail 给那个反转后的列表并返回那个结果.
 
-The resulting list shares list structure with tail.
+        产生的列表和 tail 共享列表结构.
 
 * 示例(Examples):
 
- (let ((list-1 (list 1 2 3))
-       (list-2 (list 'a 'b 'c)))
-   (print (revappend list-1 list-2))
-   (print (equal list-1 '(1 2 3)))
-   (print (equal list-2 '(a b c))))
->>  (3 2 1 A B C) 
->>  T
->>  T
-=>  T
+    ```LISP
+    (let ((list-1 (list 1 2 3))
+          (list-2 (list 'a 'b 'c)))
+      (print (revappend list-1 list-2))
+      (print (equal list-1 '(1 2 3)))
+      (print (equal list-2 '(a b c))))
+    >>  (3 2 1 A B C) 
+    >>  T
+    >>  T
+    =>  T
 
- (revappend '(1 2 3) '()) =>  (3 2 1)
- (revappend '(1 2 3) '(a . b)) =>  (3 2 1 A . B)
- (revappend '() '(a b c)) =>  (A B C)
- (revappend '(1 2 3) 'a) =>  (3 2 1 . A)
- (revappend '() 'a) =>  A   ;degenerate case
+    (revappend '(1 2 3) '()) =>  (3 2 1)
+    (revappend '(1 2 3) '(a . b)) =>  (3 2 1 A . B)
+    (revappend '() '(a b c)) =>  (A B C)
+    (revappend '(1 2 3) 'a) =>  (3 2 1 . A)
+    (revappend '() 'a) =>  A   ;degenerate case
 
- (let ((list-1 '(1 2 3))
-       (list-2 '(a b c)))
-   (print (nreconc list-1 list-2))
-   (print (equal list-1 '(1 2 3)))
-   (print (equal list-2 '(a b c))))
->>  (3 2 1 A B C) 
->>  NIL
->>  T
-=>  T
+    (let ((list-1 '(1 2 3))
+          (list-2 '(a b c)))
+      (print (nreconc list-1 list-2))
+      (print (equal list-1 '(1 2 3)))
+      (print (equal list-2 '(a b c))))
+    >>  (3 2 1 A B C) 
+    >>  NIL
+    >>  T
+    =>  T
+    ```
 
 * 副作用(Side Effects):
 
-revappend does not modify either of its arguments. nreconc is permitted to modify list but not tail.
+        revappend 不会修改它的参数中的任何一个. nreconc 允许去修改列表 list 但是不能修改 tail.
 
-Although it might be implemented differently, nreconc is constrained to have side-effect behavior equivalent to:
+        虽然它可能被不同地实现, nreconc 被限制为有着和下面这个等价的副作用行为:
 
- (nconc (nreverse list) tail)
+        (nconc (nreverse list) tail)
 
 * 受此影响(Affected By): None.
 
@@ -1658,113 +1663,113 @@ Although it might be implemented differently, nreconc is constrained to have sid
 
 * 也见(See Also):
 
-reverse, nreverse, nconc
+        reverse, nreverse, nconc
 
 * 注意(Notes):
 
-The following functional equivalences are true, although good implementations will typically use a faster algorithm for achieving the same effect:
+        下面这些功能性等价是对的, 虽然好的实现通常使用一个更快的算法来取得相同的效果:
 
- (revappend list tail) ==  (nconc (reverse list) tail)
- (nreconc list tail) ==  (nconc (nreverse list) tail)
+        (revappend list tail) ==  (nconc (reverse list) tail)
+        (nreconc list tail) ==  (nconc (nreverse list) tail)
 
 
 ### <span id="F-BUTLAST-NBUTLAST">函数 BUTLAST, NBUTLAST</span>
 
 * 语法(Syntax):
 
-butlast list &optional n => result-list
+        butlast list &optional n => result-list
 
-nbutlast list &optional n => result-list
+        nbutlast list &optional n => result-list
 
 * 参数和值(Arguments and Values):
 
-list---a list, which might be a dotted list but must not be a circular list.
-
-n---一个非负整数.
-
-result-list---一个列表.
+        list---一个列表, 它可能是一个点列表单一定不是一个环状列表.
+        n---一个非负整数.
+        result-list---一个列表.
 
 * 描述(Description):
 
-butlast returns a copy of list from which the last n conses have been omitted. If n is not supplied, its value is 1. If there are fewer than n conses in list, nil is returned and, in the case of nbutlast, list is not modified.
+        butlast 返回列表 list 的一个拷贝, 其中最后 n 个 cons 会被省略. 如果 n 没有被提供, 它的值就是 1. 如果在列表 list 中的 cons 少于 n 个, 返回 nil, 并且在 nbutlast 的情况中, 列表 list 不会被修改.
 
-nbutlast is like butlast, but nbutlast may modify list. It changes the cdr of the cons n+1 from the end of the list to nil.
+        nbutlast 类似于 butlast, 但是 nbutlast 可以修改列表 list. 它改变从这个列表 list 结尾开始的 n+1 个 cons 的 cdr 为 nil.
 
 * 示例(Examples):
 
- (setq lst '(1 2 3 4 5 6 7 8 9)) =>  (1 2 3 4 5 6 7 8 9)
- (butlast lst) =>  (1 2 3 4 5 6 7 8)
- (butlast lst 5) =>  (1 2 3 4)
- (butlast lst (+ 5 5)) =>  NIL
- lst =>  (1 2 3 4 5 6 7 8 9)
- (nbutlast lst 3) =>  (1 2 3 4 5 6)
- lst =>  (1 2 3 4 5 6)
- (nbutlast lst 99) =>  NIL
- lst =>  (1 2 3 4 5 6)
- (butlast '(a b c d)) =>  (A B C)
- (butlast '((a b) (c d))) =>  ((A B))
- (butlast '(a)) =>  NIL
- (butlast nil) =>  NIL
- (setq foo (list 'a 'b 'c 'd)) =>  (A B C D)
- (nbutlast foo) =>  (A B C)
- foo =>  (A B C)
- (nbutlast (list 'a)) =>  NIL
- (nbutlast '()) =>  NIL
+    ```LISP
+    (setq lst '(1 2 3 4 5 6 7 8 9)) =>  (1 2 3 4 5 6 7 8 9)
+    (butlast lst) =>  (1 2 3 4 5 6 7 8)
+    (butlast lst 5) =>  (1 2 3 4)
+    (butlast lst (+ 5 5)) =>  NIL
+    lst =>  (1 2 3 4 5 6 7 8 9)
+    (nbutlast lst 3) =>  (1 2 3 4 5 6)
+    lst =>  (1 2 3 4 5 6)
+    (nbutlast lst 99) =>  NIL
+    lst =>  (1 2 3 4 5 6)
+    (butlast '(a b c d)) =>  (A B C)
+    (butlast '((a b) (c d))) =>  ((A B))
+    (butlast '(a)) =>  NIL
+    (butlast nil) =>  NIL
+    (setq foo (list 'a 'b 'c 'd)) =>  (A B C D)
+    (nbutlast foo) =>  (A B C)
+    foo =>  (A B C)
+    (nbutlast (list 'a)) =>  NIL
+    (nbutlast '()) =>  NIL
+    ```
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-Should signal an error of type type-error if list is not a proper list or a dotted list. Should signal an error of type type-error if n is not a non-negative integer.
+        如果 list 不是一个 proper 列表或一个点列表那么应该发出一个 type-error 类型的错误. 如果 n 不是一个非负整数那么应该发出一个 type-error 类型的错误.
 
 * 也见(See Also): None.
 
 * 注意(Notes):
 
- (butlast list n) ==  (ldiff list (last list n))
+        (butlast list n) ==  (ldiff list (last list n))
 
 
 ### <span id="F-LAST">函数 LAST</span>
 
 * 语法(Syntax):
 
-last list &optional n => tail
+        last list &optional n => tail
 
 * 参数和值(Arguments and Values):
 
-list---a list, which might be a dotted list but must not be a circular list.
-
-n---一个非负整数. The default is 1.
-
-tail---一个对象.
+        list---一个列表, 它可能是一个点列表单一定不是一个环状列表.
+        n---一个非负整数. 默认是 1.
+        tail---一个对象.
 
 * 描述(Description):
 
-last returns the last n conses (not the last n elements) of list). If list is (), last returns ().
+        last 返回列表 list 的最后 n 个 cons (不是最后 n 个元素). 如果列表 list 是 (), last 返回 ().
 
-If n is zero, the atom that terminates list is returned. If n is greater than or equal to the number of cons cells in list, the result is list.
+        如果 n 是 0, 那么终止这个列表 list 的原子会被返回. 如果 n 大于或等于列表 list 中的 cons cell 的数量, 那么结果就是那个列表 list.
 
 * 示例(Examples):
 
- (last nil) =>  NIL
- (last '(1 2 3)) =>  (3)
- (last '(1 2 . 3)) =>  (2 . 3)
- (setq x (list 'a 'b 'c 'd)) =>  (A B C D)
- (last x) =>  (D)
- (rplacd (last x) (list 'e 'f)) x =>  (A B C D E F)
- (last x) =>  (F)
+    ```LISP
+    (last nil) =>  NIL
+    (last '(1 2 3)) =>  (3)
+    (last '(1 2 . 3)) =>  (2 . 3)
+    (setq x (list 'a 'b 'c 'd)) =>  (A B C D)
+    (last x) =>  (D)
+    (rplacd (last x) (list 'e 'f)) x =>  (A B C D E F)
+    (last x) =>  (F)
 
- (last '(a b c))   =>  (C)
+    (last '(a b c))   =>  (C)
 
- (last '(a b c) 0) =>  ()
- (last '(a b c) 1) =>  (C)
- (last '(a b c) 2) =>  (B C)
- (last '(a b c) 3) =>  (A B C)
- (last '(a b c) 4) =>  (A B C)
+    (last '(a b c) 0) =>  ()
+    (last '(a b c) 1) =>  (C)
+    (last '(a b c) 2) =>  (B C)
+    (last '(a b c) 3) =>  (A B C)
+    (last '(a b c) 4) =>  (A B C)
 
- (last '(a . b) 0) =>  B
- (last '(a . b) 1) =>  (A . B)
- (last '(a . b) 2) =>  (A . B)
+    (last '(a . b) 0) =>  B
+    (last '(a . b) 1) =>  (A . B)
+    (last '(a . b) 2) =>  (A . B)
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -1772,149 +1777,148 @@ If n is zero, the atom that terminates list is returned. If n is greater than or
 
 * 异常情况(Exceptional Situations):
 
-The consequences are undefined if list is a circular list. Should signal an error of type type-error if n is not a non-negative integer.
+        如果列表 list 是一个环状列表那么后果是未定义的. 如果 n 不是一个非负整数那么应该发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-butlast, nth
+        butlast, nth
 
 * 注意(Notes):
 
-The following code could be used to define last.
+        以下代码可以被用于定义 last.
 
- (defun last (list &optional (n 1))
-   (check-type n (integer 0))
-   (do ((l list (cdr l))
-        (r list)
-        (i 0 (+ i 1)))
-       ((atom l) r)
-     (if (>= i n) (pop r))))
+        (defun last (list &optional (n 1))
+          (check-type n (integer 0))
+          (do ((l list (cdr l))
+                (r list)
+                (i 0 (+ i 1)))
+              ((atom l) r)
+            (if (>= i n) (pop r))))
 
 
 ### <span id="F-LDIFF-TAILP">函数 LDIFF, TAILP</span>
 
 * 语法(Syntax):
 
-ldiff list object => result-list
+        ldiff list object => result-list
 
-tailp object list => generalized-boolean
+        tailp object list => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-list---a list, which might be a dotted list.
-
-object---一个对象.
-
-result-list---一个列表.
-
-generalized-boolean---一个广义 boolean.
+        list---一个列表, 它可能是一个点列表.
+        object---一个对象.
+        result-list---一个列表.
+        generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
-If object is the same as some tail of list, tailp returns true; otherwise, it returns false.
+        如果对象 object 和 list 的末端相同, tailp 返回 true; 否则, 它返回 false.
 
-If object is the same as some tail of list, ldiff returns a fresh list of the elements of list that precede object in the list structure of list; otherwise, it returns a copy[2] of list.
+        如果对象 object 和 list 的末端相同, ldiff 返回一个包含列表 list 中在 object 之前的列表元素的新的列表; 否则, 它返回列表 list 的一个拷贝.
 
 * 示例(Examples):
 
- (let ((lists '#((a b c) (a b c . d))))
-   (dotimes (i (length lists)) ()
-     (let ((list (aref lists i)))
-       (format t "~2&list=~S ~21T(tailp object list)~
-                  ~44T(ldiff list object)~%" list)
-         (let ((objects (vector list (cddr list) (copy-list (cddr list))
-                                '(f g h) '() 'd 'x)))
-           (dotimes (j (length objects)) ()
-             (let ((object (aref objects j)))
-               (format t "~& object=~S ~21T~S ~44T~S"
-                       object (tailp object list) (ldiff list object))))))))
->>  
->>  list=(A B C)         (tailp object list)    (ldiff list object)
->>   object=(A B C)      T                      NIL
->>   object=(C)          T                      (A B)
->>   object=(C)          NIL                    (A B C)
->>   object=(F G H)      NIL                    (A B C)
->>   object=NIL          T                      (A B C)
->>   object=D            NIL                    (A B C)
->>   object=X            NIL                    (A B C)
->>  
->>  list=(A B C . D)     (tailp object list)    (ldiff list object)
->>   object=(A B C . D)  T                      NIL
->>   object=(C . D)      T                      (A B)
->>   object=(C . D)      NIL                    (A B C . D)
->>   object=(F G H)      NIL                    (A B C . D)
->>   object=NIL          NIL                    (A B C . D)
->>   object=D            T                      (A B C)
->>   object=X            NIL                    (A B C . D)
-=>  NIL
+    ```LISP
+    (let ((lists '#((a b c) (a b c . d))))
+      (dotimes (i (length lists)) ()
+        (let ((list (aref lists i)))
+          (format t "~2&list=~S ~21T(tailp object list)~
+                      ~44T(ldiff list object)~%" list)
+            (let ((objects (vector list (cddr list) (copy-list (cddr list))
+                                    '(f g h) '() 'd 'x)))
+              (dotimes (j (length objects)) ()
+                (let ((object (aref objects j)))
+                  (format t "~& object=~S ~21T~S ~44T~S"
+                          object (tailp object list) (ldiff list object))))))))
+    >>  
+    >>  list=(A B C)         (tailp object list)    (ldiff list object)
+    >>   object=(A B C)      T                      NIL
+    >>   object=(C)          T                      (A B)
+    >>   object=(C)          NIL                    (A B C)
+    >>   object=(F G H)      NIL                    (A B C)
+    >>   object=NIL          T                      (A B C)
+    >>   object=D            NIL                    (A B C)
+    >>   object=X            NIL                    (A B C)
+    >>  
+    >>  list=(A B C . D)     (tailp object list)    (ldiff list object)
+    >>   object=(A B C . D)  T                      NIL
+    >>   object=(C . D)      T                      (A B)
+    >>   object=(C . D)      NIL                    (A B C . D)
+    >>   object=(F G H)      NIL                    (A B C . D)
+    >>   object=NIL          NIL                    (A B C . D)
+    >>   object=D            T                      (A B C)
+    >>   object=X            NIL                    (A B C . D)
+    =>  NIL
+    ```LISP
 
 * 副作用(Side Effects):
 
-Neither ldiff nor tailp modifies either of its arguments.
+        不管是 ldiff 函数 tailp 都不会修改它的参数中的任何一个.
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-Should be prepared to signal an error of type type-error if list is not a proper list or a dotted list.
+        如果 list 不是一个 proper 列表或者一个点列表那么应该发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-set-difference
+        set-difference
 
 * 注意(Notes):
 
-If the list is a circular list, tailp will reliably yield a value only if the given object is in fact a tail of list. Otherwise, the consequences are unspecified: a given implementation which detects the circularity must return false, but since an implementation is not obliged to detect such a situation, tailp might just loop indefinitely without returning in that case.
+        如果列表 list 是一个环状列表, 当且仅当给定对象 object 是 list 的一个末端时 tailp 会确实地产生一个值. 否则, 后果是未指定的: 一个给定的检测环状的实现一定返回 false, 但是由于一个实现没有义务去检测这样一种情况, 所以 tailp 可能会在不返回的情况下无限循环.
 
-tailp could be defined as follows:
+        tailp 可以通过如下来定义:
 
- (defun tailp (object list)
-   (do ((list list (cdr list)))
-       ((atom list) (eql list object))
-      (if (eql object list)
-          (return t))))
+        (defun tailp (object list)
+          (do ((list list (cdr list)))
+              ((atom list) (eql list object))
+              (if (eql object list)
+                  (return t))))
 
-and ldiff could be defined by:
+        并且 ldiff 可以通过如下来定义:
 
-(defun ldiff (list object)
-  (do ((list list (cdr list))
-       (r '() (cons (car list) r)))
-      ((atom list)
-       (if (eql list object) (nreverse r) (nreconc r list)))
-    (when (eql object list)
-      (return (nreverse r)))))
+        (defun ldiff (list object)
+          (do ((list list (cdr list))
+              (r '() (cons (car list) r)))
+              ((atom list)
+              (if (eql list object) (nreverse r) (nreconc r list)))
+            (when (eql object list)
+              (return (nreverse r)))))
 
 
 ### <span id="F-NTHCDR">函数 NTHCDR</span>
 
 * 语法(Syntax):
 
-nthcdr n list => tail
+        nthcdr n list => tail
 
 * 参数和值(Arguments and Values):
 
-n---一个非负整数.
-
-list---a list, which might be a dotted list or a circular list.
-
-tail---一个对象.
+        n---一个非负整数.
+        list---一个列表, 它可能是一个点列表或一个环状列表.
+        tail---一个对象.
 
 * 描述(Description):
 
-Returns the tail of list that would be obtained by calling cdr n times in succession.
+        返回通过成功调用 n 次 cdr 得到的列表 list 的末端.
 
 * 示例(Examples):
 
- (nthcdr 0 '()) =>  NIL
- (nthcdr 3 '()) =>  NIL
- (nthcdr 0 '(a b c)) =>  (A B C)
- (nthcdr 2 '(a b c)) =>  (C)
- (nthcdr 4 '(a b c)) =>  ()
- (nthcdr 1 '(0 . 1)) =>  1
+    ```LISP
+    (nthcdr 0 '()) =>  NIL
+    (nthcdr 3 '()) =>  NIL
+    (nthcdr 0 '(a b c)) =>  (A B C)
+    (nthcdr 2 '(a b c)) =>  (C)
+    (nthcdr 4 '(a b c)) =>  ()
+    (nthcdr 1 '(0 . 1)) =>  1
 
- (locally (declare (optimize (safety 3)))
-   (nthcdr 3 '(0 . 1)))
- Error: Attempted to take CDR of 1.
+    (locally (declare (optimize (safety 3)))
+      (nthcdr 3 '(0 . 1)))
+    Error: Attempted to take CDR of 1.
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -1922,13 +1926,13 @@ Returns the tail of list that would be obtained by calling cdr n times in succes
 
 * 异常情况(Exceptional Situations):
 
-Should signal an error of type type-error if n is not a non-negative integer.
+        如果 n 不是一个非负整数那么应该发出一个 type-error 类型的错误.
 
-For n being an integer greater than 1, the error checking done by (nthcdr n list) is the same as for (nthcdr (- n 1) (cdr list)); see the function cdr.
+        对于大于 1 的整数 n, 通过 (nthcdr n list) 完成的错误检测和 (nthcdr (- n 1) (cdr list)) 相同; 见函数 cdr.
 
 * 也见(See Also):
 
-cdr, nth, rest
+        cdr, nth, rest
 
 * 注意(Notes): None. 
 
@@ -1936,31 +1940,32 @@ cdr, nth, rest
 
 * 语法(Syntax):
 
-rest list => tail
+        rest list => tail
 
-(setf (rest list) new-tail)
+        (setf (rest list) new-tail)
 
 * 参数和值(Arguments and Values):
 
-list---a list, which might be a dotted list or a circular list.
-
-tail---一个对象.
+        list---一个列表, 它可能是一个点列表或一个环状列表.
+        tail---一个对象.
 
 * 描述(Description):
 
-rest performs the same operation as cdr, but mnemonically complements first. Specifically,
+        rest 执行和 cdr 相同的操作, 但是首先进行记忆补充. 具体来说,
 
- (rest list) ==  (cdr list)
- (setf (rest list) new-tail) ==  (setf (cdr list) new-tail)
+        (rest list) ==  (cdr list)
+        (setf (rest list) new-tail) ==  (setf (cdr list) new-tail)
 
 * 示例(Examples):
 
- (rest '(1 2)) =>  (2)
- (rest '(1 . 2)) =>  2
- (rest '(1)) =>  NIL
- (setq *cons* '(1 . 2)) =>  (1 . 2)
- (setf (rest *cons*) "two") =>  "two"
- *cons* =>  (1 . "two")
+    ```LISP
+    (rest '(1 2)) =>  (2)
+    (rest '(1 . 2)) =>  2
+    (rest '(1)) =>  NIL
+    (setq *cons* '(1 . 2)) =>  (1 . 2)
+    (setf (rest *cons*) "two") =>  "two"
+    *cons* =>  (1 . "two")
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -1970,11 +1975,11 @@ rest performs the same operation as cdr, but mnemonically complements first. Spe
 
 * 也见(See Also):
 
-cdr, nthcdr
+        cdr, nthcdr
 
 * 注意(Notes):
 
-rest is often preferred stylistically over cdr when the argument is to being subjectively viewed as a list rather than as a cons. 
+        当这个参数被主观上视作一个列表而不是一个 cons 时, rest 通常在风格上优于 cdr. 
 
 ### <span id="F-MEMBER-ALL">函数 MEMBER, MEMBER-IF, MEMBER-IF-NOT</span>
 
