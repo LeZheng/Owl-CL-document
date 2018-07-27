@@ -1985,47 +1985,43 @@
 
 * 语法(Syntax):
 
-member item list &key key test test-not => tail
+        member item list &key key test test-not => tail
 
-member-if predicate list &key key => tail
+        member-if predicate list &key key => tail
 
-member-if-not predicate list &key key => tail
+        member-if-not predicate list &key key => tail
 
 * 参数和值(Arguments and Values):
 
-item---一个对象.
-
-list---a proper list.
-
-predicate---a designator for a function of one argument that returns a generalized boolean.
-
-test---一个返回一个广义 boolean 的两参数函数的标识符.
-
-test-not---一个返回一个广义 boolean 的两参数函数的标识符.
-
-key---一个单参数函数的标识符, 或者 nil.
-
-tail---一个列表.
+        item---一个对象.
+        list---一个 proper 列表.
+        predicate---一个返回一个广义 boolean 的单参数函数的标识符.
+        test---一个返回一个广义 boolean 的两参数函数的标识符.
+        test-not---一个返回一个广义 boolean 的两参数函数的标识符.
+        key---一个单参数函数的标识符, 或者 nil.
+        tail---一个列表.
 
 * 描述(Description):
 
-member, member-if, and member-if-not each search list for item or for a top-level element that satisfies the test. The argument to the predicate function is an element of list.
+        member, member-if, 和 member-if-not 每一个都在列表 list 中搜索 item 或者一个满足测试条件 test 的顶层元素. 给这个断言函数的参数是列表 list 的一个元素.
 
-If some element satisfies the test, the tail of list beginning with this element is returned; otherwise nil is returned.
+        如果某个元素满足这个测试条件 test, 这个列表 list 从这个元素开始到末端的尾部会被返回; 否则返回 nil.
 
-list is searched on the top level only.
+        只在 list 的顶层搜索.
 
 * 示例(Examples):
 
- (member 2 '(1 2 3)) =>  (2 3)                                 
- (member 2 '((1 . 2) (3 . 4)) :test-not #'= :key #'cdr) =>  ((3 . 4))
- (member 'e '(a b c d)) =>  NIL
+    ```LISP
+    (member 2 '(1 2 3)) =>  (2 3)                                 
+    (member 2 '((1 . 2) (3 . 4)) :test-not #'= :key #'cdr) =>  ((3 . 4))
+    (member 'e '(a b c d)) =>  NIL
 
- (member-if #'listp '(a b nil c d)) =>  (NIL C D)
- (member-if #'numberp '(a #\Space 5/3 foo)) =>  (5/3 FOO)
- (member-if-not #'zerop 
-                 '(3 6 9 11 . 12)
-                 :key #'(lambda (x) (mod x 3))) =>  (11 . 12)
+    (member-if #'listp '(a b nil c d)) =>  (NIL C D)
+    (member-if #'numberp '(a #\Space 5/3 foo)) =>  (5/3 FOO)
+    (member-if-not #'zerop 
+                    '(3 6 9 11 . 12)
+                    :key #'(lambda (x) (mod x 3))) =>  (11 . 12)
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -2033,120 +2029,120 @@ list is searched on the top level only.
 
 * 异常情况(Exceptional Situations):
 
-Should be prepared to signal an error of type type-error if list is not a proper list.
+        如果 list 不是一个 proper 列表那么应该准备发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-find, position, Section 3.6 (Traversal Rules and Side Effects)
+        find, position, 章节 3.6 (Traversal Rules and Side Effects)
 
 * 注意(Notes):
 
-The :test-not parameter is deprecated.
+        这个 :test-not 参数被废弃了.
 
-The function member-if-not is deprecated.
+        函数 member-if-not 被废弃了.
 
-In the following
+        在下面这个中
 
- (member 'a '(g (a y) c a d e a f)) =>  (A D E A F)
+        (member 'a '(g (a y) c a d e a f)) =>  (A D E A F)
 
-the value returned by member is identical to the portion of the list beginning with a. Thus rplaca on the result of member can be used to alter the part of the list where a was found (assuming a check has been made that member did not return nil). 
+        member 返回的值和列表 list 中以 a 开始的部分相同. 因此在 member 的结果上调用 rplaca 可以被用来修改列表 list 中被找到的部分 (假定已经检测了这个 member 没有返回 nil). 
 
 
 ### <span id="F-MAP-ALL">函数 MAPC, MAPCAR, MAPCAN, MAPL, MAPLIST, MAPCON</span>
 
 * 语法(Syntax):
 
-mapc function &rest lists+ => list-1
+        mapc function &rest lists+ => list-1
 
-mapcar function &rest lists+ => result-list
+        mapcar function &rest lists+ => result-list
 
-mapcan function &rest lists+ => concatenated-results
+        mapcan function &rest lists+ => concatenated-results
 
-mapl function &rest lists+ => list-1
+        mapl function &rest lists+ => list-1
 
-maplist function &rest lists+ => result-list
+        maplist function &rest lists+ => result-list
 
-mapcon function &rest lists+ => concatenated-results
+        mapcon function &rest lists+ => concatenated-results
 
 * 参数和值(Arguments and Values):
 
-function---a designator for a function that must take as many arguments as there are lists.
-
-list---a proper list.
-
-list-1---the first list (which must be a proper list).
-
-result-list---一个列表.
-
-concatenated-results---一个列表.
+        function---一个接受和列表 lists 数量相同参数的函数的标识符.
+        list---一个 proper 列表.
+        list-1---第一个列表 list (它一定是一个 proper 列表).
+        result-list---一个列表.
+        concatenated-results---一个列表.
 
 * 描述(Description):
 
-The mapping operation involves applying function to successive sets of arguments in which one argument is obtained from each sequence. Except for mapc and mapl, the result contains the results returned by function. In the cases of mapc and mapl, the resulting sequence is list.
+        映射操作应用函数 function 到参数的连续集合上, 其中一个参数是从每一个序列获取而来. 除了 mapc 和 mapl, 结果都包含了函数 function 返回的结果. 在 mapc 和 mapl 的情况下, 产生的序列是列表 list.
 
-function is called first on all the elements with index 0, then on all those with index 1, and so on. result-type specifies the type of the resulting sequence. If function is a symbol, it is coerced to a function as if by symbol-function.
+        函数 function 首先在所有索引为 0 的元素上调用, 然后在所有索引为 1 的元素上调用, 以此类推. result-type 指定了产生序列的类型. 如果函数 function 是一个符号, 它被强制转为一个函数就像是通过 symbol-function.
 
-mapcar operates on successive elements of the lists. function is applied to the first element of each list, then to the second element of each list, and so on. The iteration terminates when the shortest list runs out, and excess elements in other lists are ignored. The value returned by mapcar is a list of the results of successive calls to function.
+        mapcar 在列表 lists 的连续元素上操作. 函数 function 被应用于每个列表 list 的第一个元素上, 然后到每个列表 list 的第二个元素上, 以此类推. 这个迭代操作在最短的列表耗尽时终止, 而在其他列表中的过量元素会被忽略. 由 mapcar 返回的值是对函数 function 连续调用的结果组成的列表.
 
-mapc is like mapcar except that the results of applying function are not accumulated. The list argument is returned.
+        mapc 类似于 mapcar 除了应用函数 function 的结果不会被累积. 这个 list 参数会被返回.
 
-maplist is like mapcar except that function is applied to successive sublists of the lists. function is first applied to the lists themselves, and then to the cdr of each list, and then to the cdr of the cdr of each list, and so on.
+        maplist 类似于 mapcar 除了函数 function 被应用于列表 lists 的连续子列表中. 函数  function 首先被应用到这些 lists 自身, 然后被应用到每个列表的 cdr, 然后是每个列表的 cdr 的 cdr, 以此类推.
 
-mapl is like maplist except that the results of applying function are not accumulated; list-1 is returned.
+        mapl 类似于 maplist 除了应用函数 function 的结果不会被累积; list-1 会被返回.
 
-mapcan and mapcon are like mapcar and maplist respectively, except that the results of applying function are combined into a list by the use of nconc rather than list. That is,
+        mapcan 和 mapcon 分别类似于 mapcar 和 maplist, 除了应用函数 function 的结果会通过使用 nconc 而不是 list 被组合到一个列表中. 这也就是说,
 
- (mapcon f x1 ... xn)
-   ==  (apply #'nconc (maplist f x1 ... xn))
+        (mapcon f x1 ... xn)
+          ==  (apply #'nconc (maplist f x1 ... xn))
 
-and similarly for the relationship between mapcan and mapcar.
+        而 mapcan 和 mapcar 之间的关系类似.
 
 * 示例(Examples):
 
- (mapcar #'car '((1 a) (2 b) (3 c))) =>  (1 2 3) 
- (mapcar #'abs '(3 -4 2 -5 -6)) =>  (3 4 2 5 6)
- (mapcar #'cons '(a b c) '(1 2 3)) =>  ((A . 1) (B . 2) (C . 3))
+    ```LISP
+    (mapcar #'car '((1 a) (2 b) (3 c))) =>  (1 2 3) 
+    (mapcar #'abs '(3 -4 2 -5 -6)) =>  (3 4 2 5 6)
+    (mapcar #'cons '(a b c) '(1 2 3)) =>  ((A . 1) (B . 2) (C . 3))
 
- (maplist #'append '(1 2 3 4) '(1 2) '(1 2 3)) 
-=>  ((1 2 3 4 1 2 1 2 3) (2 3 4 2 2 3)) 
- (maplist #'(lambda (x) (cons 'foo x)) '(a b c d))
-=>  ((FOO A B C D) (FOO B C D) (FOO C D) (FOO D))
- (maplist #'(lambda (x) (if (member (car x) (cdr x)) 0 1)) '(a b a c d b c))
-=>  (0 0 1 0 1 1 1)
-;An entry is 1 if the corresponding element of the input
-;  list was the last instance of that element in the input list.
+    (maplist #'append '(1 2 3 4) '(1 2) '(1 2 3)) 
+    =>  ((1 2 3 4 1 2 1 2 3) (2 3 4 2 2 3)) 
+    (maplist #'(lambda (x) (cons 'foo x)) '(a b c d))
+    =>  ((FOO A B C D) (FOO B C D) (FOO C D) (FOO D))
+    (maplist #'(lambda (x) (if (member (car x) (cdr x)) 0 1)) '(a b a c d b c))
+    =>  (0 0 1 0 1 1 1)
+    ;An entry is 1 if the corresponding element of the input
+    ;  list was the last instance of that element in the input list.
 
- (setq dummy nil) =>  NIL 
- (mapc #'(lambda (&rest x) (setq dummy (append dummy x)))
-        '(1 2 3 4)
-        '(a b c d e)
-        '(x y z)) =>  (1 2 3 4) 
- dummy =>  (1 A X 2 B Y 3 C Z)                   
+    (setq dummy nil) =>  NIL 
+    (mapc #'(lambda (&rest x) (setq dummy (append dummy x)))
+            '(1 2 3 4)
+            '(a b c d e)
+            '(x y z)) =>  (1 2 3 4) 
+    dummy =>  (1 A X 2 B Y 3 C Z)                   
 
- (setq dummy nil) =>  NIL 
- (mapl #'(lambda (x) (push x dummy)) '(1 2 3 4)) =>  (1 2 3 4) 
- dummy =>  ((4) (3 4) (2 3 4) (1 2 3 4)) 
+    (setq dummy nil) =>  NIL 
+    (mapl #'(lambda (x) (push x dummy)) '(1 2 3 4)) =>  (1 2 3 4) 
+    dummy =>  ((4) (3 4) (2 3 4) (1 2 3 4)) 
 
- (mapcan #'(lambda (x y) (if (null x) nil (list x y)))
-          '(nil nil nil d e)
-          '(1 2 3 4 5 6)) =>  (D 4 E 5) 
- (mapcan #'(lambda (x) (and (numberp x) (list x)))
-          '(a 1 b c 3 4 d 5))
-=>  (1 3 4 5)
+    (mapcan #'(lambda (x y) (if (null x) nil (list x y)))
+              '(nil nil nil d e)
+              '(1 2 3 4 5 6)) =>  (D 4 E 5) 
+    (mapcan #'(lambda (x) (and (numberp x) (list x)))
+              '(a 1 b c 3 4 d 5))
+    =>  (1 3 4 5)
+    ```
 
-In this case the function serves as a filter; this is a standard Lisp idiom using mapcan.
+        在这个情况中函数被当作一个过滤器; 这是使用 mapcan 的标准 Lisp 风格.
 
- (mapcon #'list '(1 2 3 4)) =>  ((1 2 3 4) (2 3 4) (3 4) (4)) 
+    ```LISP
+    (mapcon #'list '(1 2 3 4)) =>  ((1 2 3 4) (2 3 4) (3 4) (4)) 
+    ```
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-Should be prepared to signal an error of type type-error if any list is not a proper list.
+        如果任何 list 不是一个 proper 列表那么应该准备发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-dolist, map, Section 3.6 (Traversal Rules and Side Effects)
+        dolist, map, 章节 3.6 (Traversal Rules and Side Effects)
 
 * 注意(Notes): None. 
 
@@ -2155,31 +2151,30 @@ dolist, map, Section 3.6 (Traversal Rules and Side Effects)
 
 * 语法(Syntax):
 
-acons key datum alist => new-alist
+        acons key datum alist => new-alist
 
 * 参数和值(Arguments and Values):
 
-key---一个对象.
-
-datum---一个对象.
-
-alist---一个关联列表.
-
-new-alist---一个关联列表.
+        key---一个对象.
+        datum---一个对象.
+        alist---一个关联列表.
+        new-alist---一个关联列表.
 
 * 描述(Description):
 
-Creates a fresh cons, the cdr of which is alist and the car of which is another fresh cons, the car of which is key and the cdr of which is datum.
+        创建一个新的 cons, 其中的 cdr 是 alist 而 car 是另一个新的 cons, 这个新的 cons 的car 是键 key 而 cdr 是对象 datum.
 
 * 示例(Examples):
 
- (setq alist '()) =>  NIL
- (acons 1 "one" alist) =>  ((1 . "one"))
- alist =>  NIL
- (setq alist (acons 1 "one" (acons 2 "two" alist))) =>  ((1 . "one") (2 . "two"))
- (assoc 1 alist) =>  (1 . "one")
- (setq alist (acons 1 "uno" alist)) =>  ((1 . "uno") (1 . "one") (2 . "two"))
- (assoc 1 alist) =>  (1 . "uno")
+    ```LISP
+    (setq alist '()) =>  NIL
+    (acons 1 "one" alist) =>  ((1 . "one"))
+    alist =>  NIL
+    (setq alist (acons 1 "one" (acons 2 "two" alist))) =>  ((1 . "one") (2 . "two"))
+    (assoc 1 alist) =>  (1 . "one")
+    (setq alist (acons 1 "uno" alist)) =>  ((1 . "uno") (1 . "one") (2 . "two"))
+    (assoc 1 alist) =>  (1 . "uno")
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -2189,11 +2184,11 @@ Creates a fresh cons, the cdr of which is alist and the car of which is another 
 
 * 也见(See Also):
 
-assoc, pairlis
+        assoc, pairlis
 
 * 注意(Notes):
 
-(acons key datum alist) ==  (cons (cons key datum) alist)
+        (acons key datum alist) ==  (cons (cons key datum) alist)
 
 
 
@@ -2201,119 +2196,116 @@ assoc, pairlis
 
 * 语法(Syntax):
 
-assoc item alist &key key test test-not => entry
+        assoc item alist &key key test test-not => entry
 
-assoc-if predicate alist &key key => entry
+        assoc-if predicate alist &key key => entry
 
-assoc-if-not predicate alist &key key => entry
+        assoc-if-not predicate alist &key key => entry
 
 * 参数和值(Arguments and Values):
 
-item---一个对象.
-
-alist---一个关联列表.
-
-predicate---a designator for a function of one argument that returns a generalized boolean.
-
-test---一个返回一个广义 boolean 的两参数函数的标识符.
-
-test-not---一个返回一个广义 boolean 的两参数函数的标识符.
-
-key---一个单参数函数的标识符, 或者 nil.
-
-entry---a cons that is an element of alist, or nil.
+        item---一个对象.
+        alist---一个关联列表.
+        predicate---一个返回一个广义 boolean 的函数的标识符.
+        test---一个返回一个广义 boolean 的两参数函数的标识符.
+        test-not---一个返回一个广义 boolean 的两参数函数的标识符.
+        key---一个单参数函数的标识符, 或者 nil.
+        entry---是 alist 的一个元素的 cons, 或者是 nil.
 
 * 描述(Description):
 
-assoc, assoc-if, and assoc-if-not return the first cons in alist whose car satisfies the test, or nil if no such cons is found.
+        assoc, assoc-if, 和 assoc-if-not 返回在 alist 中的第一个 car 满足测试条件 test 的 cons, 如果没有找到这样的 cons 就是 nil.
 
-For assoc, assoc-if, and assoc-if-not, if nil appears in alist in place of a pair, it is ignored.
+        对于 assoc, assoc-if, 和 assoc-if-not, 如果在 alist 中出现一个 nil 代替一个对, 那么它会被忽略.
 
 * 示例(Examples):
 
- (setq values '((x . 100) (y . 200) (z . 50))) =>  ((X . 100) (Y . 200) (Z . 50))
- (assoc 'y values) =>  (Y . 200)
- (rplacd (assoc 'y values) 201) =>  (Y . 201)
- (assoc 'y values) =>  (Y . 201)
- (setq alist '((1 . "one")(2 . "two")(3 . "three"))) 
-=>  ((1 . "one") (2 . "two") (3 . "three"))
- (assoc 2 alist) =>  (2 . "two")
- (assoc-if #'evenp alist) =>  (2 . "two")
- (assoc-if-not #'(lambda(x) (< x 3)) alist) =>  (3 . "three")
- (setq alist '(("one" . 1)("two" . 2))) =>  (("one" . 1) ("two" . 2))
- (assoc "one" alist) =>  NIL
- (assoc "one" alist :test #'equalp) =>  ("one" . 1)
- (assoc "two" alist :key #'(lambda(x) (char x 2))) =>  NIL 
- (assoc #\o alist :key #'(lambda(x) (char x 2))) =>  ("two" . 2)
- (assoc 'r '((a . b) (c . d) (r . x) (s . y) (r . z))) =>   (R . X)
- (assoc 'goo '((foo . bar) (zoo . goo))) =>  NIL
- (assoc '2 '((1 a b c) (2 b c d) (-7 x y z))) =>  (2 B C D)
- (setq alist '(("one" . 1) ("2" . 2) ("three" . 3)))
-=>  (("one" . 1) ("2" . 2) ("three" . 3))
- (assoc-if-not #'alpha-char-p alist
-               :key #'(lambda (x) (char x 0))) =>  ("2" . 2)
+    ```LISP
+    (setq values '((x . 100) (y . 200) (z . 50))) =>  ((X . 100) (Y . 200) (Z . 50))
+    (assoc 'y values) =>  (Y . 200)
+    (rplacd (assoc 'y values) 201) =>  (Y . 201)
+    (assoc 'y values) =>  (Y . 201)
+    (setq alist '((1 . "one")(2 . "two")(3 . "three"))) 
+    =>  ((1 . "one") (2 . "two") (3 . "three"))
+    (assoc 2 alist) =>  (2 . "two")
+    (assoc-if #'evenp alist) =>  (2 . "two")
+    (assoc-if-not #'(lambda(x) (< x 3)) alist) =>  (3 . "three")
+    (setq alist '(("one" . 1)("two" . 2))) =>  (("one" . 1) ("two" . 2))
+    (assoc "one" alist) =>  NIL
+    (assoc "one" alist :test #'equalp) =>  ("one" . 1)
+    (assoc "two" alist :key #'(lambda(x) (char x 2))) =>  NIL 
+    (assoc #\o alist :key #'(lambda(x) (char x 2))) =>  ("two" . 2)
+    (assoc 'r '((a . b) (c . d) (r . x) (s . y) (r . z))) =>   (R . X)
+    (assoc 'goo '((foo . bar) (zoo . goo))) =>  NIL
+    (assoc '2 '((1 a b c) (2 b c d) (-7 x y z))) =>  (2 B C D)
+    (setq alist '(("one" . 1) ("2" . 2) ("three" . 3)))
+    =>  (("one" . 1) ("2" . 2) ("three" . 3))
+    (assoc-if-not #'alpha-char-p alist
+                  :key #'(lambda (x) (char x 0))) =>  ("2" . 2)
+    ```
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-Should be prepared to signal an error of type type-error if alist is not an association list.
+        如果 alist 不是一个关联列表那么应该准备发出一个 type-error 类型的错误..
 
 * 也见(See Also):
 
-rassoc, find, member, position, Section 3.6 (Traversal Rules and Side Effects)
+        rassoc, find, member, position, 章节 3.6 (Traversal Rules and Side Effects)
 
 * 注意(Notes):
 
-The :test-not parameter is deprecated.
+        这个 :test-not 参数已经被废弃.
 
-The function assoc-if-not is deprecated.
+        函数 assoc-if-not 已经被废弃.
 
-It is possible to rplacd the result of assoc, provided that it is not nil, in order to ``update'' alist.
+        有可能为了 "更新" alist 去 rplacd 这个 assoc 的结果, 假定它不是 nil.
 
-The two expressions
+        这两个表达式
 
- (assoc item list :test fn)
+        (assoc item list :test fn)
 
-and
+        和
 
- (find item list :test fn :key #'car)
+        (find item list :test fn :key #'car)
 
-are equivalent in meaning with one exception: if nil appears in alist in place of a pair, and item is nil, find will compute the car of the nil in alist, find that it is equal to item, and return nil, whereas assoc will ignore the nil in alist and continue to search for an actual cons whose car is nil. 
+        在意义上等价, 但是有一个例外: 如果 nil 出现在 alist 中替代一个对, 并且 item 是 nil, find 会计算 alist 中的 nil 的 car, 发现它等价于 item, 然后返回 nil, 反之 assoc 会忽略 alist 中的这个 nil 然后继续搜索一个实际的 car 为 nil 的 cons. 
 
 
 ### <span id="F-COPY-ALIST">函数 COPY-ALIST</span>
 
 * 语法(Syntax):
 
-copy-alist alist => new-alist
+        copy-alist alist => new-alist
 
 * 参数和值(Arguments and Values):
 
-alist---一个关联列表.
-
-new-alist---一个关联列表.
+        alist---一个关联列表.
+        new-alist---一个关联列表.
 
 * 描述(Description):
 
-copy-alist returns a copy of alist.
+        copy-alist 返回 alist 的一个拷贝.
 
-The list structure of alist is copied, and the elements of alist which are conses are also copied (as conses only). Any other objects which are referred to, whether directly or indirectly, by the alist continue to be shared.
+        这个 alist 的列表结构会被拷贝, 而 alist 中的 cons 元素也会被拷贝 (仅仅只是作为 cons). 任何其他被 alist 引用的对象, 不管是直接还是间接的, 都会被继续共享.
 
 * 示例(Examples):
 
-(defparameter *alist* (acons 1 "one" (acons 2 "two" '())))
-*alist* =>  ((1 . "one") (2 . "two"))
-(defparameter *list-copy* (copy-list *alist*))
-*list-copy* =>  ((1 . "one") (2 . "two"))
-(defparameter *alist-copy* (copy-alist *alist*))
-*alist-copy* =>  ((1 . "one") (2 . "two"))
-(setf (cdr (assoc 2 *alist-copy*)) "deux") =>  "deux"
-*alist-copy* =>  ((1 . "one") (2 . "deux"))
-*alist* =>  ((1 . "one") (2 . "two"))
-(setf (cdr (assoc 1 *list-copy*)) "uno") =>  "uno"
-*list-copy* =>  ((1 . "uno") (2 . "two"))
-*alist* =>  ((1 . "uno") (2 . "two"))
+    ```LISP
+    (defparameter *alist* (acons 1 "one" (acons 2 "two" '())))
+    *alist* =>  ((1 . "one") (2 . "two"))
+    (defparameter *list-copy* (copy-list *alist*))
+    *list-copy* =>  ((1 . "one") (2 . "two"))
+    (defparameter *alist-copy* (copy-alist *alist*))
+    *alist-copy* =>  ((1 . "one") (2 . "two"))
+    (setf (cdr (assoc 2 *alist-copy*)) "deux") =>  "deux"
+    *alist-copy* =>  ((1 . "one") (2 . "deux"))
+    *alist* =>  ((1 . "one") (2 . "two"))
+    (setf (cdr (assoc 1 *list-copy*)) "uno") =>  "uno"
+    *list-copy* =>  ((1 . "uno") (2 . "two"))
+    *alist* =>  ((1 . "uno") (2 . "two"))
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -2323,7 +2315,7 @@ The list structure of alist is copied, and the elements of alist which are conse
 
 * 也见(See Also):
 
-copy-list
+        copy-list
 
 * 注意(Notes): None. 
 
@@ -2331,43 +2323,42 @@ copy-list
 
 * 语法(Syntax):
 
-pairlis keys data &optional alist => new-alist
+        pairlis keys data &optional alist => new-alist
 
 * 参数和值(Arguments and Values):
 
-keys---a proper list.
-
-data---a proper list.
-
-alist---一个关联列表. The default is the empty list.
-
-new-alist---一个关联列表.
+        keys---一个 proper 列表.
+        data---一个 proper 列表.
+        alist---一个关联列表. 默认是空列表.
+        new-alist---一个关联列表.
 
 * 描述(Description):
 
-Returns an association list that associates elements of keys to corresponding elements of data. The consequences are undefined if keys and data are not of the same length.
+        返回一个关联 keys 的元素到对应 data 中的元素的关联列表. 如果 keys 和 data 不是相同长度那么后果是不确定的.
 
-If alist is supplied, pairlis returns a modified alist with the new pairs prepended to it. The new pairs may appear in the resulting association list in either forward or backward order. The result of
+        如果提供了 alist, pairlis 返回一个修改后的 alist, 这些新的对被添加到它的前面. 这些新的对可能以向前或向后的顺序出现在产生的关联列表中. 下面这个的结果
 
- (pairlis '(one two) '(1 2) '((three . 3) (four . 19)))
+        (pairlis '(one two) '(1 2) '((three . 3) (four . 19)))
 
-might be
+        可能是
 
- ((one . 1) (two . 2) (three . 3) (four . 19))
+        ((one . 1) (two . 2) (three . 3) (four . 19))
 
-or
+        或
 
- ((two . 2) (one . 1) (three . 3) (four . 19))
+        ((two . 2) (one . 1) (three . 3) (four . 19))
 
 * 示例(Examples):
 
- (setq keys '(1 2 3)
-        data '("one" "two" "three")
-        alist '((4 . "four"))) =>  ((4 . "four"))
- (pairlis keys data) =>  ((3 . "three") (2 . "two") (1 . "one"))
- (pairlis keys data alist)
-=>  ((3 . "three") (2 . "two") (1 . "one") (4 . "four"))
- alist =>  ((4 . "four"))
+    ```LISP
+    (setq keys '(1 2 3)
+            data '("one" "two" "three")
+            alist '((4 . "four"))) =>  ((4 . "four"))
+    (pairlis keys data) =>  ((3 . "three") (2 . "two") (1 . "one"))
+    (pairlis keys data alist)
+    =>  ((3 . "three") (2 . "two") (1 . "one") (4 . "four"))
+    alist =>  ((4 . "four"))
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -2375,11 +2366,11 @@ or
 
 * 异常情况(Exceptional Situations):
 
-Should be prepared to signal an error of type type-error if keys and data are not proper lists.
+        如果键 keys 和 data 不是 proper 列表那么应该发出一个 type-error 类型的错误s.
 
 * 也见(See Also):
 
-acons
+        acons
 
 * 注意(Notes): None. 
 
@@ -2388,45 +2379,41 @@ acons
 
 * 语法(Syntax):
 
-rassoc item alist &key key test test-not => entry
+        rassoc item alist &key key test test-not => entry
 
-rassoc-if predicate alist &key key => entry
+        rassoc-if predicate alist &key key => entry
 
-rassoc-if-not predicate alist &key key => entry
+        rassoc-if-not predicate alist &key key => entry
 
 * 参数和值(Arguments and Values):
 
-item---一个对象.
-
-alist---一个关联列表.
-
-predicate---a designator for a function of one argument that returns a generalized boolean.
-
-test---一个返回一个广义 boolean 的两参数函数的标识符.
-
-test-not---一个返回一个广义 boolean 的两参数函数的标识符.
-
-key---一个单参数函数的标识符, 或者 nil.
-
-entry---a cons that is an element of the alist, or nil.
+        item---一个对象.
+        alist---一个关联列表.
+        predicate---一个返回广义 boolean 的单参数函数的标识符.
+        test---一个返回一个广义 boolean 的两参数函数的标识符.
+        test-not---一个返回一个广义 boolean 的两参数函数的标识符.
+        key---一个单参数函数的标识符, 或者 nil.
+        entry---是 alist 中的一个 cons 元素, 或者是 nil.
 
 * 描述(Description):
 
-rassoc, rassoc-if, and rassoc-if-not return the first cons whose cdr satisfies the test. If no such cons is found, nil s returned.
+        rassoc, rassoc-if, 和 rassoc-if-not 返回 cdr 满足测试条件的第一个 cons. 如果没有找到这样的 cons, 就返回 nil.
 
-If nil appears in alist in place of a pair, it is ignored.
+        如果 nil 出现在 alist 中替代了一个对, 它会被忽略.
 
 * 示例(Examples):
 
- (setq alist '((1 . "one") (2 . "two") (3 . 3))) 
-=>  ((1 . "one") (2 . "two") (3 . 3))
- (rassoc 3 alist) =>  (3 . 3)
- (rassoc "two" alist) =>  NIL
- (rassoc "two" alist :test 'equal) =>  (2 . "two")
- (rassoc 1 alist :key #'(lambda (x) (if (numberp x) (/ x 3)))) =>  (3 . 3)
- (rassoc 'a '((a . b) (b . c) (c . a) (z . a))) =>  (C . A)
- (rassoc-if #'stringp alist) =>  (1 . "one")
- (rassoc-if-not #'vectorp alist) =>  (3 . 3)
+    ```LISP
+    (setq alist '((1 . "one") (2 . "two") (3 . 3))) 
+    =>  ((1 . "one") (2 . "two") (3 . 3))
+    (rassoc 3 alist) =>  (3 . 3)
+    (rassoc "two" alist) =>  NIL
+    (rassoc "two" alist :test 'equal) =>  (2 . "two")
+    (rassoc 1 alist :key #'(lambda (x) (if (numberp x) (/ x 3)))) =>  (3 . 3)
+    (rassoc 'a '((a . b) (b . c) (c . a) (z . a))) =>  (C . A)
+    (rassoc-if #'stringp alist) =>  (1 . "one")
+    (rassoc-if-not #'vectorp alist) =>  (3 . 3)
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -2436,60 +2423,58 @@ If nil appears in alist in place of a pair, it is ignored.
 
 * 也见(See Also):
 
-assoc, Section 3.6 (Traversal Rules and Side Effects)
+        assoc, 章节 3.6 (Traversal Rules and Side Effects)
 
 * 注意(Notes):
 
-The :test-not parameter is deprecated.
+        参数 :test-not 已经被废弃.
 
-The function rassoc-if-not is deprecated.
+        函数 rassoc-if-not 已经被废弃.
 
-It is possible to rplaca the result of rassoc, provided that it is not nil, in order to ``update'' alist.
+        有可能为了 "更新" alist 去 rplacd 这个 rassoc 的结果, 假定它不是 nil.
 
-The expressions
+        表达式
 
- (rassoc item list :test fn)
+        (rassoc item list :test fn)
 
-and
+        和
 
- (find item list :test fn :key #'cdr)
+        (find item list :test fn :key #'cdr)
 
-are equivalent in meaning, except when the item is nil nd nil appears in place of a pair in the alist. See the function assoc. 
+        在意义上是等价的, 除了当这个 item 是 nil 并且 nil 出现在 alist 中替换一个对时. 见函数 assoc. 
 
 
 ### <span id="F-GET-PROPERTIES">函数 GET-PROPERTIES</span>
 
 * 语法(Syntax):
 
-get-properties plist indicator-list => indicator, value, tail
+        get-properties plist indicator-list => indicator, value, tail
 
 * 参数和值(Arguments and Values):
 
-plist---a property list.
-
-indicator-list---a proper list (of indicators).
-
-indicator---an object that is an element of indicator-list.
-
-value---一个对象.
-
-tail---一个列表.
+        plist---一个属性列表.
+        indicator-list---一个 proper 列表 (标识符的).
+        indicator---一个是 indicator-list 中的元素的对象.
+        value---一个对象.
+        tail---一个列表.
 
 * 描述(Description):
 
-get-properties is used to look up any of several property list entries all at once.
+        get-properties 被用来同时查找多个属性列表条目.
 
-It searches the plist for the first entry whose indicator is identical to one of the objects in indicator-list. If such an entry is found, the indicator and value returned are the property indicator and its associated property value, and the tail returned is the tail of the plist that begins with the found entry (i.e., whose car is the indicator). If no such entry is found, the indicator, value, and tail are all nil.
+        它在 plist 中搜索第一个属性标识符和 indicator-list 中的其中一个对象一样的条目. 如果找到这样一个条目, 返回的 indicator 和 value 是这个属性标识符和它关联的属性值, 而返回的 tail 是以找到的条目开始的 plist 的尾部 (换句话说, 它的 car 就是那个 indicator). 如果没有找到这样的条目, 那么这个 indicator, value, 和 tail 都是 nil.
 
 * 示例(Examples):
 
- (setq x '()) =>  NIL
- (setq *indicator-list* '(prop1 prop2)) =>  (PROP1 PROP2)
- (getf x 'prop1) =>  NIL
- (setf (getf x 'prop1) 'val1) =>  VAL1
- (eq (getf x 'prop1) 'val1) =>  true
- (get-properties x *indicator-list*) =>  PROP1, VAL1, (PROP1 VAL1)
- x =>  (PROP1 VAL1)
+    ```LISP
+    (setq x '()) =>  NIL
+    (setq *indicator-list* '(prop1 prop2)) =>  (PROP1 PROP2)
+    (getf x 'prop1) =>  NIL
+    (setf (getf x 'prop1) 'val1) =>  VAL1
+    (eq (getf x 'prop1) 'val1) =>  true
+    (get-properties x *indicator-list*) =>  PROP1, VAL1, (PROP1 VAL1)
+    x =>  (PROP1 VAL1)
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -2499,7 +2484,7 @@ It searches the plist for the first entry whose indicator is identical to one of
 
 * 也见(See Also):
 
-get, getf
+        get, getf
 
 * 注意(Notes): None. 
 
@@ -2508,55 +2493,52 @@ get, getf
 
 * 语法(Syntax):
 
-getf plist indicator &optional default => value
+        getf plist indicator &optional default => value
 
-(setf (getf place indicator &optional default) new-value)
+        (setf (getf place indicator &optional default) new-value)
 
 * 参数和值(Arguments and Values):
 
-plist---a property list.
-
-place---a place, the value of which is a property list.
-
-indicator---一个对象.
-
-default---一个对象. The default is nil.
-
-value---一个对象.
-
-new-value---一个对象.
+        plist---一个属性列表.
+        place---一个 place, 它的值是一个属性列表.
+        indicator---一个对象.
+        default---一个对象. 默认是 nil.
+        value---一个对象.
+        new-value---一个对象.
 
 * 描述(Description):
 
-getf finds a property on the plist whose property indicator is identical to indicator, and returns its corresponding property value. If there are multiple properties[1] with that property indicator, getf uses the first such property. If there is no property with that property indicator, default is returned.
+        getf 在 plist 上查找一个属性标识符等于 indicator 的属性, 并且返回对应的属性值. 如果这里有多个带有那个属性标识符的属性, getf 使用第一个这样的属性. 如果这里没有带有那个属性标识符的属性, 返回 default.
 
-setf of getf may be used to associate a new object with an existing indicator in the property list held by place, or to create a new assocation if none exists. If there are multiple properties[1] with that property indicator, setf of getf associates the new-value with the first such property. When a getf form is used as a setf place, any default which is supplied is evaluated according to normal left-to-right evaluation rules, but its value is ignored.
+        getf 的 setf 可能被用于关联一个新的对象到由 place 持有的属性列表中的一个已存在的标识符, 或者如果不存在就创建一个新的关联. 如果这里有多个带有那个属性标识符的属性, getf 的 setf 会关联这个新值 new-value 到第一个这样的属性. 当一个 getf 表达式形式被用作一个 setf 的 place, 被提供的任何 default 根据正常的从左到右的求值规则被求值, 但是它的值会被忽略.
 
-setf of getf is permitted to either write the value of place itself, or modify of any part, car or cdr, of the list structure held by place.
+        getf 的 setf 允许去写入 place 自身的值, 或者修改 place 所持有的列表结构的任意部分, car 或 cdr.
 
 * 示例(Examples):
 
- (setq x '()) =>  NIL
- (getf x 'prop1) =>  NIL
- (getf x 'prop1 7) =>  7
- (getf x 'prop1) =>  NIL
- (setf (getf x 'prop1) 'val1) =>  VAL1
- (eq (getf x 'prop1) 'val1) =>  true
- (getf x 'prop1) =>  VAL1
- (getf x 'prop1 7) =>  VAL1
- x =>  (PROP1 VAL1)
+    ```LISP
+    (setq x '()) =>  NIL
+    (getf x 'prop1) =>  NIL
+    (getf x 'prop1 7) =>  7
+    (getf x 'prop1) =>  NIL
+    (setf (getf x 'prop1) 'val1) =>  VAL1
+    (eq (getf x 'prop1) 'val1) =>  true
+    (getf x 'prop1) =>  VAL1
+    (getf x 'prop1 7) =>  VAL1
+    x =>  (PROP1 VAL1)
 
-;; Examples of implementation variation permitted.
- (setq foo (list 'a 'b 'c 'd 'e 'f)) =>  (A B C D E F)
- (setq bar (cddr foo)) =>  (C D E F)
- (remf foo 'c) =>  true
- foo =>  (A B E F)
- bar
-=>  (C D E F)
-OR=>  (C)
-OR=>  (NIL)
-OR=>  (C NIL)
-OR=>  (C D)
+    ;; Examples of implementation variation permitted.
+    (setq foo (list 'a 'b 'c 'd 'e 'f)) =>  (A B C D E F)
+    (setq bar (cddr foo)) =>  (C D E F)
+    (remf foo 'c) =>  true
+    foo =>  (A B E F)
+    bar
+    =>  (C D E F)
+    OR=>  (C)
+    OR=>  (NIL)
+    OR=>  (C NIL)
+    OR=>  (C D)
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -2566,17 +2548,17 @@ OR=>  (C D)
 
 * 也见(See Also):
 
-get, get-properties, setf, Section 5.1.2.2 (Function Call Forms as Places)
+        get, get-properties, setf, 章节 5.1.2.2 (Function Call Forms as Places)
 
 * 注意(Notes):
 
-There is no way (using getf) to distinguish an absent property from one whose value is default; but see get-properties.
+        这里没有方式 (使用 getf) 去区分一个省略的属性和一个值为 default 的属性; 但是见 get-properties.
 
-Note that while supplying a default argument to getf in a setf situation is sometimes not very interesting, it is still important because some macros, such as push and incf, require a place argument which data is both read from and written to. In such a context, if a default argument is to be supplied for the read situation, it must be syntactically valid for the write situation as well. For example,
+        注意, 在一个 setf 的情况中给 getf 提供一个默认参数有时候不是非常有趣的, it is still important because some macros, such as push and incf, require a place argument which data is both read from and written to. 在这样一个上下文中, 如果一个默认参数被提供用于读取的情况, 对于读取的情况它必须也是语法上有效的. 比如,
 
- (let ((plist '()))
-   (incf (getf plist 'count 0))
-   plist) =>  (COUNT 1)
+        (let ((plist '()))
+          (incf (getf plist 'count 0))
+          plist) =>  (COUNT 1)
 
 
 
@@ -2634,9 +2616,9 @@ nintersection list-1 list-2 &key key test test-not => result-list
 
 * 参数和值(Arguments and Values):
 
-list-1---a proper list.
+list-1---一个 proper 列表.
 
-list-2---a proper list.
+list-2---一个 proper 列表.
 
 test---一个返回一个广义 boolean 的两参数函数的标识符.
 
@@ -2710,7 +2692,7 @@ adjoin item list &key key test test-not => new-list
 
 item---一个对象.
 
-list---a proper list.
+list---一个 proper 列表.
 
 test---一个返回一个广义 boolean 的两参数函数的标识符.
 
@@ -2841,9 +2823,9 @@ nset-difference list-1 list-2 &key key test test-not => result-list
 
 * 参数和值(Arguments and Values):
 
-list-1---a proper list.
+list-1---一个 proper 列表.
 
-list-2---a proper list.
+list-2---一个 proper 列表.
 
 test---一个返回一个广义 boolean 的两参数函数的标识符.
 
@@ -2919,9 +2901,9 @@ nset-exclusive-or list-1 list-2 &key key test test-not => result-list
 
 * 参数和值(Arguments and Values):
 
-list-1---a proper list.
+list-1---一个 proper 列表.
 
-list-2---a proper list.
+list-2---一个 proper 列表.
 
 test---一个返回一个广义 boolean 的两参数函数的标识符.
 
@@ -2991,9 +2973,9 @@ subsetp list-1 list-2 &key key test test-not => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-list-1---a proper list.
+list-1---一个 proper 列表.
 
-list-2---a proper list.
+list-2---一个 proper 列表.
 
 test---一个返回一个广义 boolean 的两参数函数的标识符.
 
@@ -3048,9 +3030,9 @@ nunion list-1 list-2 &key key test test-not => result-list
 
 * 参数和值(Arguments and Values):
 
-list-1---a proper list.
+list-1---一个 proper 列表.
 
-list-2---a proper list.
+list-2---一个 proper 列表.
 
 test---一个返回一个广义 boolean 的两参数函数的标识符.
 
