@@ -2554,7 +2554,7 @@
 
         这里没有方式 (使用 getf) 去区分一个省略的属性和一个值为 default 的属性; 但是见 get-properties.
 
-        注意, 在一个 setf 的情况中给 getf 提供一个默认参数有时候不是非常有趣的, it is still important because some macros, such as push and incf, require a place argument which data is both read from and written to. 在这样一个上下文中, 如果一个默认参数被提供用于读取的情况, 对于读取的情况它必须也是语法上有效的. 比如,
+        注意, 在一个 setf 的情况中给 getf 提供一个默认参数有时候不是非常有趣的, 但这仍然是 很重要的, 因为某些宏, 例如 push 和 incf, 需要一个数据可以被读取和写入的 place. 在这样一个上下文中, 如果一个默认参数被提供用于读取的情况, 对于读取的情况它必须也是语法上有效的. 比如,
 
         (let ((plist '()))
           (incf (getf plist 'count 0))
