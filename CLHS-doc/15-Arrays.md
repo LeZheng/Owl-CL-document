@@ -1,63 +1,51 @@
- 15. Arrays
+# 15 Arrays
 
-15.1 Array Concepts
+> * 15.1 [Array Concepts](#ArrayConcepts)
+> * 15.2 [The Arrays Dictionary](#TheArraysDictionary)
 
-15.2 The Arrays Dictionary
+## 15.1 <span id="ArrayConcepts">Array Concepts</span>
 
- 15.1 Array Concepts
+> * 15.1.1 [Array Elements](#ArrayElements)
+> * 15.1.2 [Specialized Arrays](#SpecializedArrays)
 
-15.1.1 Array Elements
-
-15.1.2 Specialized Arrays
-
- 15.1.1 Array Elements
+### 15.1.1 <span id="ArrayElements">Array Elements</span>
 
 An array contains a set of objects called elements that can be referenced individually according to a rectilinear coordinate system.
 
-15.1.1.1 Array Indices
+> * 15.1.1.1 [Array Indices](#ArrayIndices)
+> * 15.1.1.2 [Array Dimensions](#ArrayDimensions)
+> * 15.1.1.3 [Array Rank](#ArrayRank)
 
-15.1.1.2 Array Dimensions
-
-15.1.1.3 Array Rank
-
- 15.1.1.1 Array Indices
+#### 15.1.1.1 <span id="ArrayIndices">Array Indices</span>
 
 An array element is referred to by a (possibly empty) series of indices. The length of the series must equal the rank of the array. Each index must be a non-negative fixnum less than the corresponding array dimension. Array indexing is zero-origin. 
 
 
- 15.1.1.2 Array Dimensions
+#### 15.1.1.2 <span id="ArrayDimensions">Array Dimensions</span>
 
 An axis of an array is called a dimension.
 
 Each dimension is a non-negative fixnum; if any dimension of an array is zero, the array has no elements. It is permissible for a dimension to be zero, in which case the array has no elements, and any attempt to access an element is an error. However, other properties of the array, such as the dimensions themselves, may be used.
 
-15.1.1.2.1 Implementation Limits on Individual Array Dimensions
-
-
- 15.1.1.2.1 Implementation Limits on Individual Array Dimensions
+##### 15.1.1.2.1 Implementation Limits on Individual Array Dimensions
 
 An implementation may impose a limit on dimensions of an array, but there is a minimum requirement on that limit. See the variable array-dimension-limit. 
 
 
- 15.1.1.3 Array Rank
+#### 15.1.1.3 <span id="ArrayRank">Array Rank</span>
 
 An array can have any number of dimensions (including zero). The number of dimensions is called the rank.
 
 If the rank of an array is zero then the array is said to have no dimensions, and the product of the dimensions (see array-total-size) is then 1; a zero-rank array therefore has a single element.
 
-15.1.1.3.1 Vectors
+> * 15.1.1.3.1 [Vectors](#Vectors)
+> * 15.1.1.3.2 [Multidimensional Arrays](#MultiArrays)
 
-15.1.1.3.2 Multidimensional Arrays
-
-
- 15.1.1.3.1 Vectors
+##### 15.1.1.3.1 <span id="">Vectors</span>
 
 An array of rank one (i.e., a one-dimensional array) is called a vector.
 
-15.1.1.3.1.1 Fill Pointers
-
-
- 15.1.1.3.1.1 Fill Pointers
+###### 15.1.1.3.1.1 Fill Pointers
 
 A fill pointer is a non-negative integer no larger than the total number of elements in a vector. Not all vectors have fill pointers. See the functions make-array and adjust-array.
 
@@ -65,23 +53,17 @@ An element of a vector is said to be active if it has an index that is greater t
 
 Only vectors may have fill pointers; multidimensional arrays may not. A multidimensional array that is displaced to a vector that has a fill pointer can be created. 
 
- 15.1.1.3.2 Multidimensional Arrays
+##### 15.1.1.3.2 <span id="">Multidimensional Arrays</span>
 
-15.1.1.3.2.1 Storage Layout for Multidimensional Arrays
+###### 15.1.1.3.2.1 Storage Layout for Multidimensional Arrays
 
-15.1.1.3.2.2 Implementation Limits on Array Rank
+Multidimensional arrays store their components in row-major order; that is, internally a multidimensional array is stored as a one-dimensional array, with the multidimensional index sets ordered lexicographically, last index varying fastest. 
 
- 15.1.1.3.2 Multidimensional Arrays
-
-15.1.1.3.2.1 Storage Layout for Multidimensional Arrays
-
-15.1.1.3.2.2 Implementation Limits on Array Rank
-
- 15.1.1.3.2.2 Implementation Limits on Array Rank
+###### 15.1.1.3.2.2 Implementation Limits on Array Rank
 
 An implementation may impose a limit on the rank of an array, but there is a minimum requirement on that limit. See the variable array-rank-limit. 
 
- 15.1.2 Specialized Arrays
+### 15.1.2 <span id="SpecializedArrays">Specialized Arrays</span>
 
 An array can be a general array, meaning each element may be any object, or it may be a specialized array, meaning that each element must be of a restricted type.
 
@@ -100,12 +82,11 @@ array-element-type     fill-pointer              vector-push-extend
 
 Figure 15-1. General Purpose Array-Related Defined Names
 
-15.1.2.1 Array Upgrading
+> * 15.1.2.1 [Array Upgrading](#ArrayUpgrading)
+> * 15.1.2.2 [Required Kinds of Specialized Arrays](#RKOSA)
 
-15.1.2.2 Required Kinds of Specialized Arrays
 
-
- 15.1.2.1 Array Upgrading
+#### 15.1.2.1 <span id="ArrayUpgrading">Array Upgrading</span>
 
 The upgraded array element type of a type T1 is a type T2 that is a supertype of T1 and that is used instead of T1 whenever T1 is used as an array element type for object creation or type discrimination.
 
@@ -115,7 +96,7 @@ Type upgrading implies a movement upwards in the type hierarchy lattice. A type 
 
 The upgraded array element type T2 of a type T1 is a function only of T1 itself; that is, it is independent of any other property of the array for which T2 will be used, such as rank, adjustability, fill pointers, or displacement. The function upgraded-array-element-type can be used by conforming programs to predict how the implementation will upgrade a given type. 
 
- 15.1.2.2 Required Kinds of Specialized Arrays
+#### 15.1.2.2 <span id="RKOSA">Required Kinds of Specialized Arrays</span>
 
 Vectors whose elements are restricted to type character or a subtype of character are called strings. Strings are of type string. The next figure lists some defined names related to strings.
 
@@ -143,103 +124,69 @@ bit-eqv    bit-orc1
 
 Figure 15-3. Operators that Manipulate Bit Arrays 
 
- 15.2 The Arrays Dictionary
+## 15.2 <span id="TheArraysDictionary">The Arrays Dictionary</span>
 
-System Class ARRAY
+> * [System Class ARRAY](#SC-ARRAY)
+> * [Type SIMPLE-ARRAY](#T-SIMPLE-ARRAY)
+> * [System Class VECTOR](#SC-VECTOR)
+> * [Type SIMPLE-VECTOR](#T-SIMPLE-VECTOR)
+> * [System Class BIT-VECTOR](#SC-BIT-VECTOR)
+> * [Type SIMPLE-BIT-VECTOR](#T-SIMPLE-BIT-VECTOR)
+> * [Function MAKE-ARRAY](#F-MAKE-ARRAY)
+> * [Function ADJUST-ARRAY](#F-ADJUST-ARRAY)
+> * [Function ADJUSTABLE-ARRAY-P](#F-ADJUSTABLE-ARRAY-P)
+> * [Accessor AREF](#A-AREF)
+> * [Function ARRAY-DIMENSION](#F-ARRAY-DIMENSION)
+> * [Function ARRAY-DIMENSIONS](#F-ARRAY-DIMENSIONS)
+> * [Function ARRAY-ELEMENT-TYPE](#F-ARRAY-ELEMENT-TYPE)
+> * [Function ARRAY-HAS-FILL-POINTER-P](#F-ARRAY-HAS-FILL-POINTER-P)
+> * [Function ARRAY-DISPLACEMENT](#F-ARRAY-DISPLACEMENT)
+> * [Function ARRAY-IN-BOUNDS-P](#F-ARRAY-IN-BOUNDS-P)
+> * [Function ARRAY-RANK](#F-ARRAY-RANK)
+> * [Function ARRAY-ROW-MAJOR-INDEX](#F-ARRAY-ROW-MAJOR-INDEX)
+> * [Function ARRAY-TOTAL-SIZE](#F-ARRAY-TOTAL-SIZE)
+> * [Function ARRAYP](#F-ARRAYP)
+> * [Accessor FILL-POINTER](#A-FILL-POINTER)
+> * [Accessor ROW-MAJOR-AREF](#A-ROW-MAJOR-AREF)
+> * [Function UPGRADED-ARRAY-ELEMENT-TYPE](#F-UPGRADED-ARRAY-ELEMENT-TYPE)
+> * [Constant Variable ARRAY-DIMENSION-LIMIT](#CV-ARRAY-DIMENSION-LIMIT)
+> * [Constant Variable ARRAY-RANK-LIMIT](#CV-ARRAY-RANK-LIMIT)
+> * [Constant Variable ARRAY-TOTAL-SIZE-LIMIT](#CV-ARRAY-TOTAL-SIZE-LIMIT)
+> * [Function SIMPLE-VECTOR-P](#F-SIMPLE-VECTOR-P)
+> * [Accessor SVREF](#A-SVREF)
+> * [Function VECTOR](#F-VECTOR)
+> * [Function VECTOR-POP](#F-VECTOR-POP)
+> * [Function VECTOR-PUSH, VECTOR-PUSH-EXTEND](#F-V-PUSH-V-PUSH-EXTEND)
+> * [Function VECTORP](#F-VECTORP)
+> * [Accessor BIT, SBIT](#A-BIT-SBIT)
+> * [Function BIT-AND, BIT-ANDC1, BIT-ANDC2, BIT-EQV, BIT-IOR, BIT-NAND, BIT-NOR, BIT-NOT, BIT-ORC1, BIT-ORC2, BIT-XOR](#F-BIT-ALL)
+> * [Function BIT-VECTOR-P](#F-BIT-VECTOR-P)
+> * [Function SIMPLE-BIT-VECTOR-P](#F-SIMPLE-BIT-VECTOR-P)
 
-Type SIMPLE-ARRAY
 
-System Class VECTOR
+### <span id="">System Class ARRAY</span>
 
-Type SIMPLE-VECTOR
-
-System Class BIT-VECTOR
-
-Type SIMPLE-BIT-VECTOR
-
-Function MAKE-ARRAY
-
-Function ADJUST-ARRAY
-
-Function ADJUSTABLE-ARRAY-P
-
-Accessor AREF
-
-Function ARRAY-DIMENSION
-
-Function ARRAY-DIMENSIONS
-
-Function ARRAY-ELEMENT-TYPE
-
-Function ARRAY-HAS-FILL-POINTER-P
-
-Function ARRAY-DISPLACEMENT
-
-Function ARRAY-IN-BOUNDS-P
-
-Function ARRAY-RANK
-
-Function ARRAY-ROW-MAJOR-INDEX
-
-Function ARRAY-TOTAL-SIZE
-
-Function ARRAYP
-
-Accessor FILL-POINTER
-
-Accessor ROW-MAJOR-AREF
-
-Function UPGRADED-ARRAY-ELEMENT-TYPE
-
-Constant Variable ARRAY-DIMENSION-LIMIT
-
-Constant Variable ARRAY-RANK-LIMIT
-
-Constant Variable ARRAY-TOTAL-SIZE-LIMIT
-
-Function SIMPLE-VECTOR-P
-
-Accessor SVREF
-
-Function VECTOR
-
-Function VECTOR-POP
-
-Function VECTOR-PUSH, VECTOR-PUSH-EXTEND
-
-Function VECTORP
-
-Accessor BIT, SBIT
-
-Function BIT-AND, BIT-ANDC1, BIT-ANDC2, BIT-EQV, BIT-IOR, BIT-NAND, BIT-NOR, BIT-NOT, BIT-ORC1, BIT-ORC2, BIT-XOR
-
-Function BIT-VECTOR-P
-
-Function SIMPLE-BIT-VECTOR-P
-
-System Class ARRAY
-
-Class Precedence List:
+* 类优先级列表(Class Precedence List):
 
 array, t
 
-Description:
+* 描述(Description):
 
 An array contains objects arranged according to a Cartesian coordinate system. An array provides mappings from a set of fixnums {i0,i1,...,ir-1} to corresponding elements of the array, where 0 <=ij < dj, r is the rank of the array, and dj is the size of dimension j of the array.
 
 When an array is created, the program requesting its creation may declare that all elements are of a particular type, called the expressed array element type. The implementation is permitted to upgrade this type in order to produce the actual array element type, which is the element type for the array is actually specialized. See the function upgraded-array-element-type.
 
-Compound Type Specifier Kind:
+* 复合类型指定符类别(Compound Type Specifier Kind):
 
 Specializing.
 
-Compound Type Specifier Syntax:
+* 复合类型指定符语法(Compound Type Specifier Syntax):
 
 array [{element-type | *} [dimension-spec]]
 
 dimension-spec::= rank | * | ({dimension | *}*) 
 
-Compound Type Specifier Arguments:
+* 复合类型指定符参数(Compound Type Specifier Arguments):
 
 dimension---a valid array dimension.
 
@@ -247,7 +194,7 @@ element-type---a type specifier.
 
 rank---a non-negative fixnum.
 
-Compound Type Specifier Description:
+* 复合类型指定符描述(Compound Type Specifier Description):
 
 This denotes the set of arrays whose element type, rank, and dimensions match any given element-type, rank, and dimensions. Specifically:
 
@@ -255,37 +202,37 @@ If element-type is the symbol *, arrays are not excluded on the basis of their e
 
 If the dimension-spec is a rank, the set includes only those arrays having that rank. If the dimension-spec is a list of dimensions, the set includes only those arrays having a rank given by the length of the dimensions, and having the indicated dimensions; in this case, * matches any value for the corresponding dimension. If the dimension-spec is the symbol *, the set is not restricted on the basis of rank or dimension.
 
-See Also:
+* 也见(See Also):
 
 *print-array*, aref, make-array, vector, Section 2.4.8.12 (Sharpsign A), Section 22.1.3.8 (Printing Other Arrays)
 
-Notes:
+* 注意(Notes):
 
 Note that the type (array t) is a proper subtype of the type (array *). The reason is that the type (array t) is the set of arrays that can hold any object (the elements are of type t, which includes all objects). On the other hand, the type (array *) is the set of all arrays whatsoever, including for example arrays that can hold only characters. The type (array character) is not a subtype of the type (array t); the two sets are disjoint because the type (array character) is not the set of all arrays that can hold characters, but rather the set of arrays that are specialized to hold precisely characters and no other objects. 
 
-Type SIMPLE-ARRAY
+### <span id="">Type SIMPLE-ARRAY</span>
 
-Supertypes:
+* 超类型(Supertypes):
 
 simple-array, array, t
 
-Description:
+* 描述(Description):
 
 The type of an array that is not displaced to another array, has no fill pointer, and is not expressly adjustable is a subtype of type simple-array. The concept of a simple array exists to allow the implementation to use a specialized representation and to allow the user to declare that certain values will always be simple arrays.
 
 The types simple-vector, simple-string, and simple-bit-vector are disjoint subtypes of type simple-array, for they respectively mean (simple-array t (*)), the union of all (simple-array c (*)) for any c being a subtype of type character, and (simple-array bit (*)).
 
-Compound Type Specifier Kind:
+* 复合类型指定符类别(Compound Type Specifier Kind):
 
 Specializing.
 
-Compound Type Specifier Syntax:
+* 复合类型指定符语法(Compound Type Specifier Syntax):
 
 simple-array [{element-type | *} [dimension-spec]]
 
 dimension-spec::= rank | * | ({dimension | *}*) 
 
-Compound Type Specifier Arguments:
+* 复合类型指定符参数(Compound Type Specifier Arguments):
 
 dimension---a valid array dimension.
 
@@ -293,24 +240,24 @@ element-type---a type specifier.
 
 rank---a non-negative fixnum.
 
-Compound Type Specifier Description:
+* 复合类型指定符描述(Compound Type Specifier Description):
 
 This compound type specifier is treated exactly as the corresponding compound type specifier for type array would be treated, except that the set is further constrained to include only simple arrays.
 
-Notes:
+* 注意(Notes):
 
 It is implementation-dependent whether displaced arrays, vectors with fill pointers, or arrays that are actually adjustable are simple arrays.
 
 (simple-array *) refers to all simple arrays regardless of element type, (simple-array type-specifier) refers only to those simple arrays that can result from giving type-specifier as the :element-type argument to make-array. 
 
 
-System Class VECTOR
+### <span id="">System Class VECTOR</span>
 
-Class Precedence List:
+* 类优先级列表(Class Precedence List):
 
 vector, array, sequence, t
 
-Description:
+* 描述(Description):
 
 Any one-dimensional array is a vector.
 
@@ -318,21 +265,21 @@ The type vector is a subtype of type array; for all types x, (vector x) is the s
 
 The type (vector t), the type string, and the type bit-vector are disjoint subtypes of type vector.
 
-Compound Type Specifier Kind:
+* 复合类型指定符类别(Compound Type Specifier Kind):
 
 Specializing.
 
-Compound Type Specifier Syntax:
+* 复合类型指定符语法(Compound Type Specifier Syntax):
 
 vector [{element-type | *} [{size | *}]]
 
-Compound Type Specifier Arguments:
+* 复合类型指定符参数(Compound Type Specifier Arguments):
 
 size---a non-negative fixnum.
 
 element-type---a type specifier.
 
-Compound Type Specifier Description:
+* 复合类型指定符描述(Compound Type Specifier Description):
 
 This denotes the set of specialized vectors whose element type and dimension match the specified values. Specifically:
 
@@ -340,11 +287,11 @@ If element-type is the symbol *, vectors are not excluded on the basis of their 
 
 If a size is specified, the set includes only those vectors whose only dimension is size. If the symbol * is specified instead of a size, the set is not restricted on the basis of dimension.
 
-See Also:
+* 也见(See Also):
 
 Section 15.1.2.2 (Required Kinds of Specialized Arrays), Section 2.4.8.3 (Sharpsign Left-Parenthesis), Section 22.1.3.7 (Printing Other Vectors), Section 2.4.8.12 (Sharpsign A)
 
-Notes:
+* 注意(Notes):
 
 The type (vector e s) is equivalent to the type (array e (s)).
 
@@ -355,102 +302,102 @@ The union of all types (vector C), where C is any subtype of character, has the 
 (vector *) refers to all vectors regardless of element type, (vector type-specifier) refers only to those vectors that can result from giving type-specifier as the :element-type argument to make-array. 
 
 
-Type SIMPLE-VECTOR
+### <span id="">Type SIMPLE-VECTOR</span>
 
-Supertypes:
+* 超类型(Supertypes):
 
 simple-vector, vector, simple-array, array, sequence, t
 
-Description:
+* 描述(Description):
 
 The type of a vector that is not displaced to another array, has no fill pointer, is not expressly adjustable and is able to hold elements of any type is a subtype of type simple-vector.
 
 The type simple-vector is a subtype of type vector, and is a subtype of type (vector t).
 
-Compound Type Specifier Kind:
+* 复合类型指定符类别(Compound Type Specifier Kind):
 
 Specializing.
 
-Compound Type Specifier Syntax:
+* 复合类型指定符语法(Compound Type Specifier Syntax):
 
 simple-vector [size]
 
-Compound Type Specifier Arguments:
+* 复合类型指定符参数(Compound Type Specifier Arguments):
 
 size---a non-negative fixnum, or the symbol *. The default is the symbol *.
 
-Compound Type Specifier Description:
+* 复合类型指定符描述(Compound Type Specifier Description):
 
 This is the same as (simple-array t (size)). 
 
 
-System Class BIT-VECTOR
+### <span id="">System Class BIT-VECTOR</span>
 
-Class Precedence List:
+* 类优先级列表(Class Precedence List):
 
 bit-vector, vector, array, sequence, t
 
-Description:
+* 描述(Description):
 
 A bit vector is a vector the element type of which is bit.
 
 The type bit-vector is a subtype of type vector, for bit-vector means (vector bit).
 
-Compound Type Specifier Kind:
+* 复合类型指定符类别(Compound Type Specifier Kind):
 
 Abbreviating.
 
-Compound Type Specifier Syntax:
+* 复合类型指定符语法(Compound Type Specifier Syntax):
 
 bit-vector [size]
 
-Compound Type Specifier Arguments:
+* 复合类型指定符参数(Compound Type Specifier Arguments):
 
 size---a non-negative fixnum, or the symbol *.
 
-Compound Type Specifier Description:
+* 复合类型指定符描述(Compound Type Specifier Description):
 
 This denotes the same type as the type (array bit (size)); that is, the set of bit vectors of size size.
 
-See Also:
+* 也见(See Also):
 
 Section 2.4.8.4 (Sharpsign Asterisk), Section 22.1.3.6 (Printing Bit Vectors), Section 15.1.2.2 (Required Kinds of Specialized Arrays) 
 
-Type SIMPLE-BIT-VECTOR
+### <span id="">Type SIMPLE-BIT-VECTOR</span>
 
-Supertypes:
+* 超类型(Supertypes):
 
 simple-bit-vector, bit-vector, vector, simple-array, array, sequence, t
 
-Description:
+* 描述(Description):
 
 The type of a bit vector that is not displaced to another array, has no fill pointer, and is not expressly adjustable is a subtype of type simple-bit-vector.
 
-Compound Type Specifier Kind:
+* 复合类型指定符类别(Compound Type Specifier Kind):
 
 Abbreviating.
 
-Compound Type Specifier Syntax:
+* 复合类型指定符语法(Compound Type Specifier Syntax):
 
 simple-bit-vector [size]
 
-Compound Type Specifier Arguments:
+* 复合类型指定符参数(Compound Type Specifier Arguments):
 
 size---a non-negative fixnum, or the symbol *. The default is the symbol *.
 
-Compound Type Specifier Description:
+* 复合类型指定符描述(Compound Type Specifier Description):
 
 This denotes the same type as the type (simple-array bit (size)); that is, the set of simple bit vectors of size size. 
 
-Function MAKE-ARRAY
+### <span id="">Function MAKE-ARRAY</span>
 
-Syntax:
+* 语法(Syntax):
 
 make-array dimensions &key element-type initial-element initial-contents adjustable fill-pointer displaced-to displaced-index-offset
 
 => new-array
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 dimensions---a designator for a list of valid array dimensions.
 
@@ -470,7 +417,7 @@ displaced-index-offset---a valid array row-major index for displaced-to. The def
 
 new-array---an array.
 
-Description:
+* 描述(Description):
 
 Creates and returns an array constructed of the most specialized type that can accommodate elements of type given by element-type. If dimensions is nil then a zero-dimensional array is created.
 
@@ -502,7 +449,7 @@ If make-array is called with adjustable, fill-pointer, and displaced-to each nil
 
 When an array A is given as the :displaced-to argument to make-array when creating array B, then array B is said to be displaced to array A. The total number of elements in an array, called the total size of the array, is calculated as the product of all the dimensions. The consequences are unspecified if the total size of A is smaller than the sum of the total size of B plus the offset n supplied by the displaced-index-offset. The effect of displacing is that array B does not have any elements of its own, but instead maps accesses to itself into accesses to array A. The mapping treats both arrays as if they were one-dimensional by taking the elements in row-major order, and then maps an access to element k of array B to an access to element k+n of array A.
 
-Examples:
+* 示例(Examples):
 
 
  (make-array 5) ;; Creates a one-dimensional array of five elements.
@@ -567,28 +514,28 @@ The last example depends on the fact that arrays are, in effect, stored in row-m
  (length a3) =>  10
  (length b3) =>  5
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 adjustable-array-p, aref, arrayp, array-element-type, array-rank-limit, array-dimension-limit, fill-pointer, upgraded-array-element-type
 
-Notes:
+* 注意(Notes):
 
 There is no specified way to create an array for which adjustable-array-p definitely returns false. There is no specified way to create an array that is not a simple array. 
 
 
-Function ADJUST-ARRAY
+### <span id="">Function ADJUST-ARRAY</span>
 
-Syntax:
+* 语法(Syntax):
 
 adjust-array array new-dimensions &key element-type initial-element initial-contents fill-pointer displaced-to displaced-index-offset
 
 => adjusted-array
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 array---an array.
 
@@ -608,7 +555,7 @@ displaced-index-offset---an object of type (fixnum 0 n) where n is (array-total-
 
 adjusted-array---an array.
 
-Description:
+* 描述(Description):
 
 adjust-array changes the dimensions or elements of array. The result is an array of the same type and rank as array, that is either the modified array, or a newly created array to which array can be displaced, and that has the given new-dimensions.
 
@@ -662,7 +609,7 @@ If adjust-array is applied to an array that is actually adjustable, the array re
 
 Note that if an array A is displaced to another array B, and B is displaced to another array C, and B is altered by adjust-array, A must now refer to the adjust contents of B. This means that an implementation cannot collapse the chain to make A refer to C directly and forget that the chain of reference passes through B. However, caching techniques are permitted as long as they preserve the semantics specified here.
 
-Examples:
+* 示例(Examples):
 
  (adjustable-array-p
   (setq ada (adjust-array
@@ -699,36 +646,36 @@ is a 3-by-5 array with contents
     ( epsilon   zeta      eta       theta     baz )
     ( iota      kappa     lambda    mu        baz ))
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 An error of type error is signaled if fill-pointer is supplied and non-nil but array has no fill pointer.
 
-See Also:
+* 也见(See Also):
 
 adjustable-array-p, make-array, array-dimension-limit, array-total-size-limit, array
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function ADJUSTABLE-ARRAY-P
+### <span id="">Function ADJUSTABLE-ARRAY-P</span>
 
-Syntax:
+* 语法(Syntax):
 
 adjustable-array-p array => generalized-boolean
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 array---an array.
 
 generalized-boolean---a generalized boolean.
 
-Description:
+* 描述(Description):
 
 Returns true if and only if adjust-array could return a value which is identical to array when given that array as its first argument.
 
-Examples:
+* 示例(Examples):
 
  (adjustable-array-p 
    (make-array 5
@@ -737,28 +684,28 @@ Examples:
                :fill-pointer 3)) =>  true
  (adjustable-array-p (make-array 4)) =>  implementation-dependent
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should signal an error of type type-error if its argument is not an array.
 
-See Also:
+* 也见(See Also):
 
 adjust-array, make-array
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Accessor AREF
+### <span id="">Accessor AREF</span>
 
-Syntax:
+* 语法(Syntax):
 
 aref array &rest subscripts => element
 
 (setf (aref array &rest subscripts) new-element)
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 array---an array.
 
@@ -766,13 +713,13 @@ subscripts---a list of valid array indices for the array.
 
 element, new-element---an object.
 
-Description:
+* 描述(Description):
 
 Accesses the array element specified by the subscripts. If no subscripts are supplied and array is zero rank, aref accesses the sole element of array.
 
 aref ignores fill pointers. It is permissible to use aref to access any array element, whether active or not.
 
-Examples:
+* 示例(Examples):
 
 If the variable foo names a 3-by-5 array, then the first index could be 0, 1, or 2, and then second index could be 0, 1, 2, 3, or 4. The array elements can be referred to by using the function aref; for example, (aref foo 2 1) refers to element (2, 1) of the array.
 
@@ -789,24 +736,24 @@ If the variable foo names a 3-by-5 array, then the first index could be 0, 1, or
  (apply #'aref beta gamma) =>  3
  (aref beta 0 2) =>  3
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 bit, char, elt, row-major-aref, svref, Section 3.2.1 (Compiler Terminology)
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function ARRAY-DIMENSION
+### <span id="">Function ARRAY-DIMENSION</span>
 
-Syntax:
+* 语法(Syntax):
 
 array-dimension array axis-number => dimension
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 array---an array.
 
@@ -814,80 +761,80 @@ axis-number---an integer greater than or equal to zero and less than the rank of
 
 dimension---a non-negative integer.
 
-Description:
+* 描述(Description):
 
 array-dimension returns the axis-number dimension[1] of array. (Any fill pointer is ignored.)
 
-Examples:
+* 示例(Examples):
 
  (array-dimension (make-array 4) 0) =>  4
  (array-dimension (make-array '(2 3)) 1) =>  3
 
-Affected By:
+* 受此影响(Affected By):
 
 None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 array-dimensions, length
 
-Notes:
+* 注意(Notes):
 
  (array-dimension array n) ==  (nth n (array-dimensions array))
 
-Function ARRAY-DIMENSIONS
+### <span id="">Function ARRAY-DIMENSIONS</span>
 
-Syntax:
+* 语法(Syntax):
 
 array-dimensions array => dimensions
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 array---an array.
 
 dimensions---a list of integers.
 
-Description:
+* 描述(Description):
 
 Returns a list of the dimensions of array. (If array is a vector with a fill pointer, that fill pointer is ignored.)
 
-Examples:
+* 示例(Examples):
 
  (array-dimensions (make-array 4)) =>  (4)
  (array-dimensions (make-array '(2 3))) =>  (2 3)
  (array-dimensions (make-array 4 :fill-pointer 2)) =>  (4)
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should signal an error of type type-error if its argument is not an array.
 
-See Also:
+* 也见(See Also):
 
 array-dimension
 
-Notes: None. 
+* 注意(Notes): None. 
 
-Function ARRAY-ELEMENT-TYPE
+### <span id="">Function ARRAY-ELEMENT-TYPE</span>
 
-Syntax:
+* 语法(Syntax):
 
 array-element-type array => typespec
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 array---an array.
 
 typespec---a type specifier.
 
-Description:
+* 描述(Description):
 
 Returns a type specifier which represents the actual array element type of the array, which is the set of objects that such an array can hold. (Because of array upgrading, this type specifier can in some cases denote a supertype of the expressed array element type of the array.)
 
-Examples:
+* 示例(Examples):
 
  (array-element-type (make-array 4)) =>  T
  (array-element-type (make-array 12 :element-type '(unsigned-byte 8))) 
@@ -899,38 +846,38 @@ Examples:
 
 could be (mod 5), (mod 8), fixnum, t, or any other type of which (mod 5) is a subtype.
 
-Affected By:
+* 受此影响(Affected By):
 
 The implementation.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should signal an error of type type-error if its argument is not an array.
 
-See Also:
+* 也见(See Also):
 
 array, make-array, subtypep, upgraded-array-element-type
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function ARRAY-HAS-FILL-POINTER-P
+### <span id="">Function ARRAY-HAS-FILL-POINTER-P</span>
 
-Syntax:
+* 语法(Syntax):
 
 array-has-fill-pointer-p array => generalized-boolean
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 array---an array.
 
 generalized-boolean---a generalized boolean.
 
-Description:
+* 描述(Description):
 
 Returns true if array has a fill pointer; otherwise returns false.
 
-Examples:
+* 示例(Examples):
 
  (array-has-fill-pointer-p (make-array 4)) =>  implementation-dependent
  (array-has-fill-pointer-p (make-array '(2 3))) =>  false
@@ -939,28 +886,28 @@ Examples:
                :fill-pointer 2 
                :initial-element 'filler)) =>  true
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should signal an error of type type-error if its argument is not an array.
 
-See Also:
+* 也见(See Also):
 
 make-array, fill-pointer
 
-Notes:
+* 注意(Notes):
 
 Since arrays of rank other than one cannot have a fill pointer, array-has-fill-pointer-p always returns nil when its argument is such an array. 
 
 
-Function ARRAY-DISPLACEMENT
+### <span id="">Function ARRAY-DISPLACEMENT</span>
 
-Syntax:
+* 语法(Syntax):
 
 array-displacement array => displaced-to, displaced-index-offset
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 array---an array.
 
@@ -968,13 +915,13 @@ displaced-to---an array or nil.
 
 displaced-index-offset---a non-negative fixnum.
 
-Description:
+* 描述(Description):
 
 If the array is a displaced array, returns the values of the :displaced-to and :displaced-index-offset options for the array (see the functions make-array and adjust-array). If the array is not a displaced array, nil and 0 are returned.
 
 If array-displacement is called on an array for which a non-nil object was provided as the :displaced-to argument to make-array or adjust-array, it must return that object as its first value. It is implementation-dependent whether array-displacement returns a non-nil primary value for any other array.
 
-Examples:
+* 示例(Examples):
 
  (setq a1 (make-array 5)) =>  #<ARRAY 5 simple 46115576>
  (setq a2 (make-array 4 :displaced-to a1
@@ -988,25 +935,25 @@ Examples:
  (array-displacement a3)
 =>  #<ARRAY 4 indirect 46117134>, 2
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should signal an error of type type-error if array is not an array.
 
-See Also:
+* 也见(See Also):
 
 make-array
 
-Notes: None. 
+* 注意(Notes): None. 
 
-Function ARRAY-IN-BOUNDS-P
+### <span id="">Function ARRAY-IN-BOUNDS-P</span>
 
-Syntax:
+* 语法(Syntax):
 
 array-in-bounds-p array &rest subscripts => generalized-boolean
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 array---an array.
 
@@ -1014,11 +961,11 @@ subscripts---a list of integers of length equal to the rank of the array.
 
 generalized-boolean---a generalized boolean.
 
-Description:
+* 描述(Description):
 
 Returns true if the subscripts are all in bounds for array; otherwise returns false. (If array is a vector with a fill pointer, that fill pointer is ignored.)
 
-Examples:
+* 示例(Examples):
 
  (setq a (make-array '(7 11) :element-type 'string-char))
  (array-in-bounds-p a 0  0) =>  true
@@ -1027,63 +974,63 @@ Examples:
  (array-in-bounds-p a 0 11) =>  false
  (array-in-bounds-p a 7  0) =>  false
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 array-dimensions
 
-Notes:
+* 注意(Notes):
 
  (array-in-bounds-p array subscripts)   
  ==  (and (not (some #'minusp (list subscripts)))
 
 
-Function ARRAY-RANK
+### <span id="">Function ARRAY-RANK</span>
 
-Syntax:
+* 语法(Syntax):
 
 array-rank array => rank
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 array---an array.
 
 rank---a non-negative integer.
 
-Description:
+* 描述(Description):
 
 Returns the number of dimensions of array.
 
-Examples:
+* 示例(Examples):
 
  (array-rank (make-array '())) =>  0
  (array-rank (make-array 4)) =>  1
  (array-rank (make-array '(4))) =>  1
  (array-rank (make-array '(2 3))) =>  2
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should signal an error of type type-error if its argument is not an array.
 
-See Also:
+* 也见(See Also):
 
 array-rank-limit, make-array
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function ARRAY-ROW-MAJOR-INDEX
+### <span id="">Function ARRAY-ROW-MAJOR-INDEX</span>
 
-Syntax:
+* 语法(Syntax):
 
 array-row-major-index array &rest subscripts => index
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 array---an array.
 
@@ -1091,7 +1038,7 @@ subscripts---a list of valid array indices for the array.
 
 index---a valid array row-major index for the array.
 
-Description:
+* 描述(Description):
 
 Computes the position according to the row-major ordering of array for the element that is specified by subscripts, and returns the offset of the element in the computed position from the beginning of array.
 
@@ -1099,7 +1046,7 @@ For a one-dimensional array, the result of array-row-major-index equals subscrip
 
 array-row-major-index ignores fill pointers.
 
-Examples:
+* 示例(Examples):
 
  (setq a (make-array '(4 7) :element-type '(unsigned-byte 8)))
  (array-row-major-index a 1 2) =>  9
@@ -1110,13 +1057,13 @@ Examples:
                 :displaced-index-offset 4)
     0 2 1) =>  9
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also: None.
+* 也见(See Also): None.
 
-Notes:
+* 注意(Notes):
 
 A possible definition of array-row-major-index, with no error-checking, is
 
@@ -1128,23 +1075,23 @@ A possible definition of array-row-major-index, with no error-checking, is
 
 
 
-Function ARRAY-TOTAL-SIZE
+### <span id="">Function ARRAY-TOTAL-SIZE</span>
 
-Syntax:
+* 语法(Syntax):
 
 array-total-size array => size
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 array---an array.
 
 size---a non-negative integer.
 
-Description:
+* 描述(Description):
 
 Returns the array total size of the array.
 
-Examples:
+* 示例(Examples):
 
  (array-total-size (make-array 4)) =>  4
  (array-total-size (make-array 4 :fill-pointer 2)) =>  4
@@ -1153,17 +1100,17 @@ Examples:
  (array-total-size (make-array '(4 0))) =>  0
  (array-total-size (make-array '())) =>  1
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should signal an error of type type-error if its argument is not an array.
 
-See Also:
+* 也见(See Also):
 
 make-array, array-dimensions
 
-Notes:
+* 注意(Notes):
 
 If the array is a vector with a fill pointer, the fill pointer is ignored when calculating the array total size.
 
@@ -1174,23 +1121,23 @@ Since the product of no arguments is one, the array total size of a zero-dimensi
     ==  (reduce #'* (array-dimensions x))
 
 
-Function ARRAYP
+### <span id="">Function ARRAYP</span>
 
-Syntax:
+* 语法(Syntax):
 
 arrayp object => generalized-boolean
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 object---an object.
 
 generalized-boolean---a generalized boolean.
 
-Description:
+* 描述(Description):
 
 Returns true if object is of type array; otherwise, returns false.
 
-Examples:
+* 示例(Examples):
 
  (arrayp (make-array '(2 3 4) :adjustable t)) =>  true
  (arrayp (make-array 6)) =>  true
@@ -1199,38 +1146,38 @@ Examples:
  (arrayp 'hi) =>  false
  (arrayp 12) =>  false
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 typep
 
-Notes:
+* 注意(Notes):
 
  (arrayp object) ==  (typep object 'array)
 
 
-Accessor FILL-POINTER
+### <span id="">Accessor FILL-POINTER</span>
 
-Syntax:
+* 语法(Syntax):
 
 fill-pointer vector => fill-pointer
 
 (setf (fill-pointer vector) new-fill-pointer)
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 vector---a vector with a fill pointer.
 
 fill-pointer, new-fill-pointer---a valid fill pointer for the vector.
 
-Description:
+* 描述(Description):
 
 Accesses the fill pointer of vector.
 
-Examples:
+* 示例(Examples):
 
  (setq a (make-array 8 :fill-pointer 4)) =>  #(NIL NIL NIL NIL)
  (fill-pointer a) =>  4
@@ -1242,31 +1189,31 @@ Examples:
  (setf (fill-pointer a) 8) =>  8
  a =>  #(0 1 4 9 NIL NIL NIL NIL)
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should signal an error of type type-error if vector is not a vector with a fill pointer.
 
-See Also:
+* 也见(See Also):
 
 make-array, length
 
-Notes:
+* 注意(Notes):
 
 There is no operator that will remove a vector's fill pointer. 
 
-Accessor ROW-MAJOR-AREF
+### <span id="">Accessor ROW-MAJOR-AREF</span>
 
-Syntax:
+* 语法(Syntax):
 
 row-major-aref array index => element
 
 (setf (row-major-aref array index) new-element)
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 array---an array.
 
@@ -1274,25 +1221,25 @@ index---a valid array row-major index for the array.
 
 element, new-element---an object.
 
-Description:
+* 描述(Description):
 
 Considers array as a vector by viewing its elements in row-major order, and returns the element of that vector which is referred to by the given index.
 
 row-major-aref is valid for use with setf.
 
-Examples: None.
+* 示例(Examples): None.
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 aref, array-row-major-index
 
-Notes:
+* 注意(Notes):
 
  (row-major-aref array index) == 
    (aref (make-array (array-total-size array)
@@ -1304,13 +1251,13 @@ Notes:
      (row-major-aref array (array-row-major-index array i1 i2))
 
 
-Function UPGRADED-ARRAY-ELEMENT-TYPE
+### <span id="">Function UPGRADED-ARRAY-ELEMENT-TYPE</span>
 
-Syntax:
+* 语法(Syntax):
 
 upgraded-array-element-type typespec &optional environment => upgraded-typespec
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 typespec---a type specifier.
 
@@ -1318,7 +1265,7 @@ environment---an environment object. The default is nil, denoting the null lexic
 
 upgraded-typespec---a type specifier.
 
-Description:
+* 描述(Description):
 
 Returns the element type of the most specialized array representation capable of holding items of the type denoted by typespec.
 
@@ -1330,19 +1277,19 @@ The purpose of upgraded-array-element-type is to reveal how an implementation do
 
 The environment is used to expand any derived type specifiers that are mentioned in the typespec.
 
-Examples: None.
+* 示例(Examples): None.
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 array-element-type, make-array
 
-Notes:
+* 注意(Notes):
 
 Except for storage allocation consequences and dealing correctly with the optional environment argument, upgraded-array-element-type could be defined as:
 
@@ -1350,109 +1297,109 @@ Except for storage allocation consequences and dealing correctly with the option
    (array-element-type (make-array 0 :element-type type)))
 
 
-Constant Variable ARRAY-DIMENSION-LIMIT
+### <span id="">Constant Variable ARRAY-DIMENSION-LIMIT</span>
 
 Constant Value:
 
 A positive fixnum, the exact magnitude of which is implementation-dependent, but which is not less than 1024.
 
-Description:
+* 描述(Description):
 
 The upper exclusive bound on each individual dimension of an array.
 
-Examples: None.
+* 示例(Examples): None.
 
-See Also:
+* 也见(See Also):
 
 make-array
 
-Notes: None. 
+* 注意(Notes): None. 
 
-Constant Variable ARRAY-RANK-LIMIT
+### <span id="">Constant Variable ARRAY-RANK-LIMIT</span>
 
 Constant Value:
 
 A positive fixnum, the exact magnitude of which is implementation-dependent, but which is not less than 8.
 
-Description:
+* 描述(Description):
 
 The upper exclusive bound on the rank of an array.
 
-Examples: None.
+* 示例(Examples): None.
 
-See Also:
+* 也见(See Also):
 
 make-array
 
-Notes: None. 
+* 注意(Notes): None. 
 
-Constant Variable ARRAY-TOTAL-SIZE-LIMIT
+### <span id="">Constant Variable ARRAY-TOTAL-SIZE-LIMIT</span>
 
 Constant Value:
 
 A positive fixnum, the exact magnitude of which is implementation-dependent, but which is not less than 1024.
 
-Description:
+* 描述(Description):
 
 The upper exclusive bound on the array total size of an array.
 
 The actual limit on the array total size imposed by the implementation might vary according the element type of the array; in this case, the value of array-total-size-limit will be the smallest of these possible limits.
 
-Examples: None.
+* 示例(Examples): None.
 
-See Also:
+* 也见(See Also):
 
 make-array, array-element-type
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function SIMPLE-VECTOR-P
+### <span id="">Function SIMPLE-VECTOR-P</span>
 
-Syntax:
+* 语法(Syntax):
 
 simple-vector-p object => generalized-boolean
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 object---an object.
 
 generalized-boolean---a generalized boolean.
 
-Description:
+* 描述(Description):
 
 Returns true if object is of type simple-vector; otherwise, returns false..
 
-Examples:
+* 示例(Examples):
 
  (simple-vector-p (make-array 6)) =>  true
  (simple-vector-p "aaaaaa") =>  false
  (simple-vector-p (make-array 6 :fill-pointer t)) =>  false
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 simple-vector
 
-Notes:
+* 注意(Notes):
 
  (simple-vector-p object) ==  (typep object 'simple-vector)
 
 
-Accessor SVREF
+### <span id="">Accessor SVREF</span>
 
-Syntax:
+* 语法(Syntax):
 
 svref simple-vector index => element
 
 (setf (svref simple-vector index) new-element)
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 simple-vector---a simple vector.
 
@@ -1460,11 +1407,11 @@ index---a valid array index for the simple-vector.
 
 element, new-element---an object (whose type is a subtype of the array element type of the simple-vector).
 
-Description:
+* 描述(Description):
 
 Accesses the element of simple-vector specified by index.
 
-Examples:
+* 示例(Examples):
 
  (simple-vector-p (setq v (vector 1 2 'sirens))) =>  true
  (svref v 0) =>  1
@@ -1472,59 +1419,59 @@ Examples:
  (setf (svref v 1) 'newcomer) =>  NEWCOMER               
  v =>  #(1 NEWCOMER SIRENS)
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 aref, sbit, schar, vector, Section 3.2.1 (Compiler Terminology)
 
-Notes:
+* 注意(Notes):
 
 svref is identical to aref except that it requires its first argument to be a simple vector.
 
  (svref v i) ==  (aref (the simple-vector v) i)
 
 
-Function VECTOR
+### <span id="">Function VECTOR</span>
 
-Syntax:
+* 语法(Syntax):
 
 vector &rest objects => vector
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 object---an object.
 
 vector---a vector of type (vector t *).
 
-Description:
+* 描述(Description):
 
 Creates a fresh simple general vector whose size corresponds to the number of objects.
 
 The vector is initialized to contain the objects.
 
-Examples:
+* 示例(Examples):
 
  (arrayp (setq v (vector 1 2 'sirens))) =>  true
  (vectorp v) =>  true
  (simple-vector-p v) =>  true         
  (length v) =>  3
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 make-array
 
-Notes:
+* 注意(Notes):
 
 vector is analogous to list.
 
@@ -1535,23 +1482,23 @@ vector is analogous to list.
 
 
 
-Function VECTOR-POP
+### <span id="">Function VECTOR-POP</span>
 
-Syntax:
+* 语法(Syntax):
 
 vector-pop vector => element
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 vector---a vector with a fill pointer.
 
 element---an object.
 
-Description:
+* 描述(Description):
 
 Decreases the fill pointer of vector by one, and retrieves the element of vector that is designated by the new fill pointer.
 
-Examples:
+* 示例(Examples):
 
  (vector-push (setq fable (list 'fable))
               (setq fa (make-array 8
@@ -1562,35 +1509,35 @@ Examples:
  (vector-pop fa) =>  SISYPHUS 
  (fill-pointer fa) =>  1 
 
-Side Effects:
+* 副作用(Side Effects):
 
 The fill pointer is decreased by one.
 
-Affected By:
+* 受此影响(Affected By):
 
 The value of the fill pointer.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 An error of type type-error is signaled if vector does not have a fill pointer.
 
 If the fill pointer is zero, vector-pop signals an error of type error.
 
-See Also:
+* 也见(See Also):
 
 vector-push, vector-push-extend, fill-pointer
 
-Notes: None. 
+* 注意(Notes): None. 
 
-Function VECTOR-PUSH, VECTOR-PUSH-EXTEND
+### <span id="">Function VECTOR-PUSH, VECTOR-PUSH-EXTEND</span>
 
-Syntax:
+* 语法(Syntax):
 
 vector-push new-element vector => new-index-p
 
 vector-push-extend new-element vector &optional extension => new-index
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 new-element---an object.
 
@@ -1602,7 +1549,7 @@ new-index-p---a valid array index for vector, or nil.
 
 new-index---a valid array index for vector.
 
-Description:
+* 描述(Description):
 
 vector-push and vector-push-extend store new-element in vector. vector-push attempts to store new-element in the element of vector designated by the fill pointer, and to increase the fill pointer by one. If the (>= (fill-pointer vector) (array-dimension vector 0)), neither vector nor its fill pointer are affected. Otherwise, the store and increment take place and vector-push returns the former value of the fill pointer which is one less than the one it leaves in vector.
 
@@ -1610,7 +1557,7 @@ vector-push-extend is just like vector-push except that if the fill pointer gets
 
 vector-push and vector-push-extend return the index of new-element in vector. If (>= (fill-pointer vector) (array-dimension vector 0)), vector-push returns nil.
 
-Examples:
+* 示例(Examples):
 
  (vector-push (setq fable (list 'fable))
               (setq fa (make-array 8 
@@ -1630,41 +1577,41 @@ Examples:
  (vector-push-extend #\Z aa 4) =>  5 
  (array-total-size aa) =>  9 ;(or more)
 
-Affected By:
+* 受此影响(Affected By):
 
 The value of the fill pointer.
 
 How vector was created.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 An error of type error is signaled by vector-push-extend if it tries to extend vector and vector is not actually adjustable.
 
 An error of type error is signaled if vector does not have a fill pointer.
 
-See Also:
+* 也见(See Also):
 
 adjustable-array-p, fill-pointer, vector-pop
 
-Notes: None. 
+* 注意(Notes): None. 
 
-Function VECTORP
+### <span id="">Function VECTORP</span>
 
-Syntax:
+* 语法(Syntax):
 
 vectorp object => generalized-boolean
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 object---an object.
 
 generalized-boolean---a generalized boolean.
 
-Description:
+* 描述(Description):
 
 Returns true if object is of type vector; otherwise, returns false.
 
-Examples:
+* 示例(Examples):
 
  (vectorp "aaaaaa") =>  true
  (vectorp (make-array 6 :fill-pointer t)) =>  true
@@ -1672,22 +1619,22 @@ Examples:
  (vectorp #*11) =>  true
  (vectorp #b11) =>  false
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also: None.
+* 也见(See Also): None.
 
-Notes:
+* 注意(Notes):
 
  (vectorp object) ==  (typep object 'vector)
 
 
-Accessor BIT, SBIT
+### <span id="">Accessor BIT, SBIT</span>
 
-Syntax:
+* 语法(Syntax):
 
 bit bit-array &rest subscripts => bit
 
@@ -1697,7 +1644,7 @@ sbit bit-array &rest subscripts => bit
 
 (setf (sbit bit-array &rest subscripts) new-bit)
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 bit-array---for bit, a bit array; for sbit, a simple bit array.
 
@@ -1705,13 +1652,13 @@ subscripts---a list of valid array indices for the bit-array.
 
 bit---a bit.
 
-Description:
+* 描述(Description):
 
 bit and sbit access the bit-array element specified by subscripts.
 
 These functions ignore the fill pointer when accessing elements.
 
-Examples:
+* 示例(Examples):
 
  (bit (setq ba (make-array 8 
                             :element-type 'bit 
@@ -1723,24 +1670,24 @@ Examples:
  (setf (sbit ba 5) 1) =>  1
  (sbit ba 5) =>  1
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 aref, Section 3.2.1 (Compiler Terminology)
 
-Notes:
+* 注意(Notes):
 
 bit and sbit are like aref except that they require arrays to be a bit array and a simple bit array, respectively.
 
 bit and sbit, unlike char and schar, allow the first argument to be an array of any rank. 
 
 
-Function BIT-AND, BIT-ANDC1, BIT-ANDC2, BIT-EQV, BIT-IOR, BIT-NAND, BIT-NOR, BIT-NOT, BIT-ORC1, BIT-ORC2, BIT-XOR
+### <span id="">Function BIT-AND, BIT-ANDC1, BIT-ANDC2, BIT-EQV, BIT-IOR, BIT-NAND, BIT-NOR, BIT-NOT, BIT-ORC1, BIT-ORC2, BIT-XOR</span>
 
-Syntax:
+* 语法(Syntax):
 
 bit-and bit-array1 bit-array2 &optional opt-arg => resulting-bit-array
 
@@ -1764,7 +1711,7 @@ bit-xor bit-array1 bit-array2 &optional opt-arg => resulting-bit-array
 
 bit-not bit-array &optional opt-arg => resulting-bit-array
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 bit-array, bit-array1, bit-array2---a bit array.
 
@@ -1774,7 +1721,7 @@ Bit-array, bit-array1, bit-array2, and opt-arg (if an array) must all be of the 
 
 resulting-bit-array---a bit array.
 
-Description:
+* 描述(Description):
 
 These functions perform bit-wise logical operations on bit-array1 and bit-array2 and return an array of matching rank and dimensions, such that any given bit of the result is produced by operating on corresponding bits from each of the arguments.
 
@@ -1803,7 +1750,7 @@ bit-orc2                                                 or bit-array1 with comp
                                                                                                        
 Figure 15-4.  Bit-wise Logical Operations on Bit Arrays  
 
-Examples:
+* 示例(Examples):
 
  (bit-and (setq ba #*11101010) #*01101011) =>  #*01101010
  (bit-and #*1100 #*1010) =>  #*1000      
@@ -1818,33 +1765,33 @@ Examples:
  (equal rba tba) =>  true
  (bit-xor #*1100 #*1010) =>  #*0110
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 lognot, logand
 
-Notes: None. 
+* 注意(Notes): None. 
 
-Function BIT-VECTOR-P
+### <span id="">Function BIT-VECTOR-P</span>
 
-Syntax:
+* 语法(Syntax):
 
 bit-vector-p object => generalized-boolean
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 object---an object.
 
 generalized-boolean---a generalized boolean.
 
-Description:
+* 描述(Description):
 
 Returns true if object is of type bit-vector; otherwise, returns false.
 
-Examples:
+* 示例(Examples):
 
  (bit-vector-p (make-array 6 
                            :element-type 'bit 
@@ -1852,51 +1799,51 @@ Examples:
  (bit-vector-p #*) =>  true
  (bit-vector-p (make-array 6)) =>  false
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 typep
 
-Notes:
+* 注意(Notes):
 
  (bit-vector-p object) ==  (typep object 'bit-vector)
 
 
-Function SIMPLE-BIT-VECTOR-P
+### <span id="">Function SIMPLE-BIT-VECTOR-P</span>
 
-Syntax:
+* 语法(Syntax):
 
 simple-bit-vector-p object => generalized-boolean
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 object---an object.
 
 generalized-boolean---a generalized boolean.
 
-Description:
+* 描述(Description):
 
 Returns true if object is of type simple-bit-vector; otherwise, returns false.
 
-Examples:
+* 示例(Examples):
 
  (simple-bit-vector-p (make-array 6)) =>  false
  (simple-bit-vector-p #*) =>  true
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 simple-vector-p
 
-Notes:
+* 注意(Notes):
 
  (simple-bit-vector-p object) ==  (typep object 'simple-bit-vector)
 

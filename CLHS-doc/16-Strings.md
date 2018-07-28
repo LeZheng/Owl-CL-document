@@ -1,203 +1,187 @@
- 16. Strings
+# 16 Strings
 
-16.1 String Concepts
+> * 16.1 [String Concepts](#StringConcepts)
+> * 16.2 [The Strings Dictionary](#TheStringsDictionary)
 
-16.2 The Strings Dictionary
+## 16.1 <span id="StringConcepts">String Concepts</span>
 
- 16.1 String Concepts
-
-16.1.1 Implications of Strings Being Arrays
-
-16.1.2 Subtypes of STRING
-
- 16.1.1 Implications of Strings Being Arrays
+### 16.1.1 Implications of Strings Being Arrays
 
 Since all strings are arrays, all rules which apply generally to arrays also apply to strings. See Section 15.1 (Array Concepts).
 
 For example, strings can have fill pointers, and strings are also subject to the rules of element type upgrading that apply to arrays. 
 
- 16.1.2 Subtypes of STRING
+### 16.1.2 Subtypes of STRING
 All functions that operate on strings will operate on subtypes of string as well.
 
 However, the consequences are undefined if a character is inserted into a string for which the element type of the string does not include that character. 
 
- 16.2 The Strings Dictionary
+### 16.2 <span id="TheStringsDictionary">The Strings Dictionary</span>
 
-System Class STRING
-
-Type BASE-STRING
-
-Type SIMPLE-STRING
-
-Type SIMPLE-BASE-STRING
-
-Function SIMPLE-STRING-P
-
-Accessor CHAR, SCHAR
-
-Function STRING
-
-Function STRING-UPCASE, STRING-DOWNCASE, STRING-CAPITALIZE, NSTRING-UPCASE, NSTRING-DOWNCASE, NSTRING-CAPITALIZE
-
-Function STRING-TRIM, STRING-LEFT-TRIM, STRING-RIGHT-TRIM
-
-Function STRING=, STRING/=, STRING<, STRING>, STRING<=, STRING>=, STRING-EQUAL, STRING-NOT-EQUAL, STRING-LESSP, STRING-GREATERP, STRING-NOT-GREATERP, STRING-NOT-LESSP
-
-Function STRINGP
-
-Function MAKE-STRING
+> * [System Class STRING](#SC-STRING)
+> * [Type BASE-STRING](#T-BASE-STRING)
+> * [Type SIMPLE-STRING](#T-SIMPLE-STRING)
+> * [Type SIMPLE-BASE-STRING](#T-SIMPLE-BASE-STRING)
+> * [Function SIMPLE-STRING-P](#F-SIMPLE-STRING-P)
+> * [Accessor CHAR, SCHAR](#A-CHAR-SCHAR)
+> * [Function STRING](#F-STRING)
+> * [Function STRING-UPCASE, STRING-DOWNCASE, STRING-CAPITALIZE, NSTRING-UPCASE, NSTRING-DOWNCASE, NSTRING-CAPITALIZE](#F-STRING-CASE)
+> * [Function STRING-TRIM, STRING-LEFT-TRIM, STRING-RIGHT-TRIM](#F-STRING-TRIM)
+> * [Function STRING=, STRING/=, STRING<, STRING>, STRING<=, STRING>=, STRING-EQUAL, STRING-NOT-EQUAL, STRING-LESSP, STRING-GREATERP, STRING-NOT-GREATERP, STRING-NOT-LESSP](#F-STRING-COMPARE)
+> * [Function STRINGP](#F-STRINGP)
+> * [Function MAKE-STRING](#F-MAKE-STRING)
 
 
-System Class STRING
+### <span id="">System Class STRING</span>
 
-Class Precedence List:
+* 类优先级列表(Class Precedence List):
 
 string, vector, array, sequence, t
 
-Description:
+* 描述(Description):
 
 A string is a specialized vector whose elements are of type character or a subtype of type character. When used as a type specifier for object creation, string means (vector character).
 
-Compound Type Specifier Kind:
+* 复合类型指定符类别(Compound Type Specifier Kind):
 
 Abbreviating.
 
-Compound Type Specifier Syntax:
+* 复合类型指定符语法(Compound Type Specifier Syntax):
 
 string [size]
 
-Compound Type Specifier Arguments:
+* 复合类型指定符参数(Compound Type Specifier Arguments):
 
 size---a non-negative fixnum, or the symbol *.
 
-Compound Type Specifier Description:
+* 复合类型指定符描述(Compound Type Specifier Description):
 
 This denotes the union of all types (array c (size)) for all subtypes c of character; that is, the set of strings of size size.
 
-See Also:
+* 也见(See Also):
 
 Section 16.1 (String Concepts), Section 2.4.5 (Double-Quote), Section 22.1.3.4 (Printing Strings) 
 
 
-Type BASE-STRING
+### <span id="">Type BASE-STRING</span>
 
-Supertypes:
+* 超类型(Supertypes):
 
 base-string, string, vector, array, sequence, t
 
-Description:
+* 描述(Description):
 
 The type base-string is equivalent to (vector base-char). The base string representation is the most efficient string representation that can hold an arbitrary sequence of standard characters.
 
-Compound Type Specifier Kind:
+* 复合类型指定符类别(Compound Type Specifier Kind):
 
 Abbreviating.
 
-Compound Type Specifier Syntax:
+* 复合类型指定符语法(Compound Type Specifier Syntax):
 
 base-string [size]
 
-Compound Type Specifier Arguments:
+* 复合类型指定符参数(Compound Type Specifier Arguments):
 
 size---a non-negative fixnum, or the symbol *.
 
-Compound Type Specifier Description:
+* 复合类型指定符描述(Compound Type Specifier Description):
 
 This is equivalent to the type (vector base-char size); that is, the set of base strings of size size. 
 
 
-Type SIMPLE-STRING
+### <span id="">Type SIMPLE-STRING</span>
 
-Supertypes:
+* 超类型(Supertypes):
 
 simple-string, string, vector, simple-array, array, sequence, t
 
-Description:
+* 描述(Description):
 
 A simple string is a specialized one-dimensional simple array whose elements are of type character or a subtype of type character. When used as a type specifier for object creation, simple-string means (simple-array character (size)).
 
-Compound Type Specifier Kind:
+* 复合类型指定符类别(Compound Type Specifier Kind):
 
 Abbreviating.
 
-Compound Type Specifier Syntax:
+* 复合类型指定符语法(Compound Type Specifier Syntax):
 
 simple-string [size]
 
-Compound Type Specifier Arguments:
+* 复合类型指定符参数(Compound Type Specifier Arguments):
 
 size---a non-negative fixnum, or the symbol *.
 
-Compound Type Specifier Description:
+* 复合类型指定符描述(Compound Type Specifier Description):
 
 This denotes the union of all types (simple-array c (size)) for all subtypes c of character; that is, the set of simple strings of size size. 
 
 
-Type SIMPLE-BASE-STRING
+### <span id="">Type SIMPLE-BASE-STRING</span>
 
-Supertypes:
+* 超类型(Supertypes):
 
 simple-base-string, base-string, simple-string, string, vector, simple-array, array, sequence, t
 
-Description:
+* 描述(Description):
 
 The type simple-base-string is equivalent to (simple-array base-char (*)).
 
-Compound Type Specifier Kind:
+* 复合类型指定符类别(Compound Type Specifier Kind):
 
 Abbreviating.
 
-Compound Type Specifier Syntax:
+* 复合类型指定符语法(Compound Type Specifier Syntax):
 
 simple-base-string [size]
 
-Compound Type Specifier Arguments:
+* 复合类型指定符参数(Compound Type Specifier Arguments):
 
 size---a non-negative fixnum, or the symbol *.
 
-Compound Type Specifier Description:
+* 复合类型指定符描述(Compound Type Specifier Description):
 
 This is equivalent to the type (simple-array base-char (size)); that is, the set of simple base strings of size size. 
 
-Function SIMPLE-STRING-P
+### <span id="">Function SIMPLE-STRING-P</span>
 
-Syntax:
+* 语法(Syntax):
 
 simple-string-p object => generalized-boolean
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 object---an object.
 
 generalized-boolean---a generalized boolean.
 
-Description:
+* 描述(Description):
 
 Returns true if object is of type simple-string; otherwise, returns false.
 
-Examples:
+* 示例(Examples):
 
  (simple-string-p "aaaaaa") =>  true
  (simple-string-p (make-array 6 
                               :element-type 'character 
                               :fill-pointer t)) =>  false
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also: None.
+* 也见(See Also): None.
 
-Notes:
+* 注意(Notes):
 
  (simple-string-p object) ==  (typep object 'simple-string)
 
 
-Accessor CHAR, SCHAR
+### <span id="">Accessor CHAR, SCHAR</span>
 
-Syntax:
+* 语法(Syntax):
 
 char string index => character
 
@@ -207,7 +191,7 @@ schar string index => character
 
 (setf (schar string index) new-character)
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 string---for char, a string; for schar, a simple string.
 
@@ -215,13 +199,13 @@ index---a valid array index for the string.
 
 character, new-character---a character.
 
-Description:
+* 描述(Description):
 
 char and schar access the element of string specified by index.
 
 char ignores fill pointers when accessing elements.
 
-Examples:
+* 示例(Examples):
 
  (setq my-simple-string (make-string 6 :initial-element #\A)) =>  "AAAAAA"
  (schar my-simple-string 4) =>  #\A
@@ -239,32 +223,32 @@ Examples:
  (setf (fill-pointer my-filled-string) 6) =>  6
  my-filled-string =>  "AAACBD"
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 aref, elt, Section 3.2.1 (Compiler Terminology)
 
-Notes:
+* 注意(Notes):
 
  (char s j) ==  (aref (the string s) j)
 
 
-Function STRING
+### <span id="">Function STRING</span>
 
-Syntax:
+* 语法(Syntax):
 
 string x => string
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 x---a string, a symbol, or a character.
 
 string---a string.
 
-Description:
+* 描述(Description):
 
 Returns a string described by x; specifically:
 
@@ -273,32 +257,32 @@ Returns a string described by x; specifically:
     If x is a character, then a string containing that one character is returned.
     string might perform additional, implementation-defined conversions.
 
-Examples:
+* 示例(Examples):
 
  (string "already a string") =>  "already a string"
  (string 'elm) =>  "ELM"
  (string #\c) =>  "c"
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 In the case where a conversion is defined neither by this specification nor by the implementation, an error of type type-error is signaled.
 
-See Also:
+* 也见(See Also):
 
 coerce, string (type).
 
-Notes:
+* 注意(Notes):
 
 coerce can be used to convert a sequence of characters to a string.
 
 prin1-to-string, princ-to-string, write-to-string, or format (with a first argument of nil) can be used to get a string representation of a number or any other object. 
 
 
-Function STRING-UPCASE, STRING-DOWNCASE, STRING-CAPITALIZE, NSTRING-UPCASE, NSTRING-DOWNCASE, NSTRING-CAPITALIZE
+### <span id="">Function STRING-UPCASE, STRING-DOWNCASE, STRING-CAPITALIZE, NSTRING-UPCASE, NSTRING-DOWNCASE, NSTRING-CAPITALIZE</span>
 
-Syntax:
+* 语法(Syntax):
 
 string-upcase string &key start end => cased-string
 
@@ -312,7 +296,7 @@ nstring-downcase string &key start end => string
 
 nstring-capitalize string &key start end => string
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 string---a string designator. For nstring-upcase, nstring-downcase, and nstring-capitalize, the string designator must be a string.
 
@@ -320,7 +304,7 @@ start, end---bounding index designators of string. The defaults for start and en
 
 cased-string---a string.
 
-Description:
+* 描述(Description):
 
 string-upcase, string-downcase, string-capitalize, nstring-upcase, nstring-downcase, nstring-capitalize change the case of the subsequence of string bounded by start and end as follows:
 
@@ -342,7 +326,7 @@ nstring-upcase, nstring-downcase, nstring-capitalize
 
 For string-upcase, string-downcase, and string-capitalize, string is not modified. However, if no characters in string require conversion, the result may be either string or a copy of it, at the implementation's discretion.
 
-Examples:
+* 示例(Examples):
 
  (string-upcase "abcde") =>  "ABCDE"
  (string-upcase "Dr. Livingston, I presume?")
@@ -364,26 +348,26 @@ Examples:
  (nstring-downcase str :start 5 :end 7) =>  "0123AbcD890a"
  str =>  "0123AbcD890a"
 
-Side Effects:
+* 副作用(Side Effects):
 
 nstring-upcase, nstring-downcase, and nstring-capitalize modify string as appropriate rather than constructing a new string.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 char-upcase, char-downcase
 
-Notes:
+* 注意(Notes):
 
 The result is always of the same length as string. 
 
 
-Function STRING-TRIM, STRING-LEFT-TRIM, STRING-RIGHT-TRIM
+### <span id="">Function STRING-TRIM, STRING-LEFT-TRIM, STRING-RIGHT-TRIM</span>
 
-Syntax:
+* 语法(Syntax):
 
 string-trim character-bag string => trimmed-string
 
@@ -391,7 +375,7 @@ string-left-trim character-bag string => trimmed-string
 
 string-right-trim character-bag string => trimmed-string
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 character-bag---a sequence containing characters.
 
@@ -399,7 +383,7 @@ string---a string designator.
 
 trimmed-string---a string.
 
-Description:
+* 描述(Description):
 
 string-trim returns a substring of string, with all characters in character-bag stripped off the beginning and end. string-left-trim is similar but strips characters off only the beginning; string-right-trim strips off only the end.
 
@@ -407,7 +391,7 @@ If no characters need to be trimmed from the string, then either string itself o
 
 All of these functions observe the fill pointer.
 
-Examples:
+* 示例(Examples):
 
  (string-trim "abc" "abcaakaaakabcaaa") =>  "kaaak"
  (string-trim '(#\Space #\Tab #\Newline) " garbanzo beans
@@ -422,22 +406,22 @@ Examples:
  (string-right-trim " (*)" " ( *three (silly) words* ) ") 
 =>  " ( *three (silly) words"
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By:
+* 受此影响(Affected By):
 
 The implementation.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also: None.
+* 也见(See Also): None.
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function STRING=, STRING/=, STRING<, STRING>, STRING<=, STRING>=, STRING-EQUAL, STRING-NOT-EQUAL, STRING-LESSP, STRING-GREATERP, STRING-NOT-GREATERP, STRING-NOT-LESSP
+### <span id="">Function STRING=, STRING/=, STRING<, STRING>, STRING<=, STRING>=, STRING-EQUAL, STRING-NOT-EQUAL, STRING-LESSP, STRING-GREATERP, STRING-NOT-GREATERP, STRING-NOT-LESSP</span>
 
-Syntax:
+* 语法(Syntax):
 
 string= string1 string2 &key start1 end1 start2 end2 => generalized-boolean
 
@@ -463,7 +447,7 @@ string-not-greaterp string1 string2 &key start1 end1 start2 end2 => mismatch-ind
 
 string-not-lessp string1 string2 &key start1 end1 start2 end2 => mismatch-index
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 string1---a string designator.
 
@@ -477,7 +461,7 @@ generalized-boolean---a generalized boolean.
 
 mismatch-index---a bounding index of string1, or nil.
 
-Description:
+* 描述(Description):
 
 These functions perform lexicographic comparisons on string1 and string2. string= and string-equal are called equality functions; the others are called inequality functions. The comparison operations these functions perform are restricted to the subsequence of string1 bounded by start1 and end1 and to the subsequence of string2 bounded by start2 and end2.
 
@@ -527,7 +511,7 @@ string-not-greaterp, string-not-lessp
 
     string-not-greaterp and string-not-lessp are exactly like string<= and string>=, respectively, except that distinctions between uppercase and lowercase letters are ignored. It is as if char-lessp were used instead of char< for comparing characters.
 
-Examples:
+* 示例(Examples):
 
  (string= "foo" "foo") =>  true
  (string= "foo" "Foo") =>  false
@@ -542,62 +526,62 @@ Examples:
                                       :start2 2 :end2 6) =>  6
  (string-not-equal "AAAA" "aaaA") =>  false
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 char=
 
-Notes:
+* 注意(Notes):
 
 equal calls string= if applied to two strings. 
 
 
-Function STRINGP
+### <span id="">Function STRINGP</span>
 
-Syntax:
+* 语法(Syntax):
 
 stringp object => generalized-boolean
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 object---an object.
 
 generalized-boolean---a generalized boolean.
 
-Description:
+* 描述(Description):
 
 Returns true if object is of type string; otherwise, returns false.
 
-Examples:
+* 示例(Examples):
 
  (stringp "aaaaaa") =>  true
  (stringp #\a) =>  false
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 typep, string (type)
 
-Notes:
+* 注意(Notes):
 
  (stringp object) ==  (typep object 'string)
 
 
-Function MAKE-STRING
+### <span id="">Function MAKE-STRING</span>
 
-Syntax:
+* 语法(Syntax):
 
 make-string size &key initial-element element-type => string
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 size---a valid array dimension.
 
@@ -607,24 +591,24 @@ element-type---a type specifier. The default is character.
 
 string---a simple string.
 
-Description:
+* 描述(Description):
 
 make-string returns a simple string of length size whose elements have been initialized to initial-element.
 
 The element-type names the type of the elements of the string; a string is constructed of the most specialized type that can accommodate elements of the given type.
 
-Examples:
+* 示例(Examples):
 
  (make-string 10 :initial-element #\5) =>  "5555555555"
  (length (make-string 10)) =>  10
 
-Affected By:
+* 受此影响(Affected By):
 
 The implementation.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also: None.
+* 也见(See Also): None.
 
-Notes: None. 
+* 注意(Notes): None. 
 
