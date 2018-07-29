@@ -2566,34 +2566,34 @@
 
 * 语法(Syntax):
 
-remf place indicator => generalized-boolean
+        remf place indicator => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-place---a place.
-
-indicator---一个对象.
-
-generalized-boolean---一个广义 boolean.
+        place---一个 place.
+        indicator---一个对象.
+        generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
-remf removes from the property list stored in place a property[1] with a property indicator identical to indicator. If there are multiple properties[1] with the identical key, remf only removes the first such property. remf returns false if no such property was found, or true if a property was found.
+        remf 从存储在 place 中的属性列表中移除一个属性标识符和 indicator 相等的属性. 如果这里有多个带有相同键的属性, remf 只移除第一个这样的属性. 如果没有找到这样的属性 remf 就返回 false, 如果找到一个属性就返回 true.
 
-The property indicator and the corresponding property value are removed in an undefined order by destructively splicing the property list. remf is permitted to either setf place or to setf any part, car or cdr, of the list structure held by that place.
+        这个属性标识符和对应属性值会以未定义的顺序破坏性地拼接这个属性列表而被移除. remf 允许去 setf place 或者去 setf place 所持有的列表结构的任何部分, car 或 cdr.
 
-For information about the evaluation of subforms of place, see Section 5.1.1.1 (Evaluation of Subforms to Places).
+        关于 place 的子表达式形式的求值的信息, 见章节 5.1.1.1 (Evaluation of Subforms to Places).
 
 * 示例(Examples):
 
- (setq x (cons () ())) =>  (NIL)
- (setf (getf (car x) 'prop1) 'val1) =>  VAL1
- (remf (car x) 'prop1) =>  true
- (remf (car x) 'prop1) =>  false
+    ```LISP
+    (setq x (cons () ())) =>  (NIL)
+    (setf (getf (car x) 'prop1) 'val1) =>  VAL1
+    (remf (car x) 'prop1) =>  true
+    (remf (car x) 'prop1) =>  false
+    ```
 
 * 副作用(Side Effects):
 
-The property list stored in place is modified.
+        存储在 place 中的属性列表会被修改.
 
 * 受此影响(Affected By): None.
 
@@ -2601,7 +2601,7 @@ The property list stored in place is modified.
 
 * 也见(See Also):
 
-remprop, getf
+        remprop, getf
 
 * 注意(Notes): None. 
 
@@ -2610,131 +2610,125 @@ remprop, getf
 
 * 语法(Syntax):
 
-intersection list-1 list-2 &key key test test-not => result-list
+        intersection list-1 list-2 &key key test test-not => result-list
 
-nintersection list-1 list-2 &key key test test-not => result-list
+        nintersection list-1 list-2 &key key test test-not => result-list
 
 * 参数和值(Arguments and Values):
 
-list-1---一个 proper 列表.
-
-list-2---一个 proper 列表.
-
-test---一个返回一个广义 boolean 的两参数函数的标识符.
-
-test-not---一个返回一个广义 boolean 的两参数函数的标识符.
-
-key---一个单参数函数的标识符, 或者 nil.
-
-result-list---一个列表.
+        list-1---一个 proper 列表.
+        list-2---一个 proper 列表.
+        test---一个返回一个广义 boolean 的两参数函数的标识符.
+        test-not---一个返回一个广义 boolean 的两参数函数的标识符.
+        key---一个单参数函数的标识符, 或者 nil.
+        result-list---一个列表.
 
 * 描述(Description):
 
-intersection and nintersection return a list that contains every element that occurs in both list-1 and list-2.
+        intersection 和 nintersection 返回一个包含了 list-1 和 list-2 中每一个元素的列表.
 
-nintersection is the destructive version of intersection. It performs the same operation, but may destroy list-1 using its cells to construct the result. list-2 is not destroyed.
+        nintersection 是 intersection 的破坏性的版本. 它执行相同的操作, 但是可能破坏 list-1 使用它的 cell 来构造这个结果. list-2 不会被破坏.
 
-The intersection operation is described as follows. For all possible ordered pairs consisting of one element from list-1 and one element from list-2, :test or :test-not are used to determine whether they satisfy the test. The first argument to the :test or :test-not function is an element of list-1; the second argument is an element of list-2. If :test or :test-not is not supplied, eql is used. It is an error if :test and :test-not are supplied in the same function call.
+        这个 intersection 操作符描述如下. 对于所有可能由 list-1 的一个元素和 list-2 的一个元素构成的有序对 :test 或 :test-not 被用于确定它们是否满足这个测试条件. 给 :test 或 :test-not 函数的第一个参数是 list-1 的一个元素; 第二个参数是 list-2 的一个元素. 如果没有提供 :test 或 :test-not, 就使用 eql. 如果在同一个函数调用中提供了 :test 和 :test-not 那么就是一个错误.
 
-If :key is supplied (and not nil), it is used to extract the part to be tested from the list element. The argument to the :key function is an element of either list-1 or list-2; the :key function typically returns part of the supplied element. If :key is not supplied or nil, the list-1 and list-2 elements are used.
+        如果提供了 :key (并且不是 nil), 它被用于从这个列表元素中提取这个要被测试的部分. 给这个 :key 函数的参数是 list-1 或 list-2 的一个元素; 这个 :key 函数通常返回提供的元素的部分. 如果没有提供 :key 或者是 nil, 那么就使用这个 list-1 和 list-2 的元素.
 
-For every pair that satifies the test, exactly one of the two elements of the pair will be put in the result. No element from either list appears in the result that does not satisfy the test for an element from the other list. If one of the lists contains duplicate elements, there may be duplication in the result.
+        对于满足这个测试条件 test 的每一个对, 这个对的两个元素中的一个会被放到结果中. No element from either list appears in the result that does not satisfy the test for an element from the other list. 如果这些列表中的一个包含了重复的元素, 那么在结果中也可能会重复.<!--TODO 待翻译-->
 
-There is no guarantee that the order of elements in the result will reflect the ordering of the arguments in any particular way. The result list may share cells with, or be eq to, either list-1 or list-2 if appropriate.
+        不保证元素出现在结果中的顺序会以任何特定方式反映参数的顺序. 如果合适的话结果列表可能和 list-1 或 list-2 共享 cell, 或者和 list-1 或 list-2 是 eq 的.
 
 * 示例(Examples):
 
- (setq list1 (list 1 1 2 3 4 a b c "A" "B" "C" "d")
-       list2 (list 1 4 5 b c d "a" "B" "c" "D")) 
-  =>  (1 4 5 B C D "a" "B" "c" "D")
- (intersection list1 list2) =>  (C B 4 1 1)
- (intersection list1 list2 :test 'equal) =>  ("B" C B 4 1 1)
- (intersection list1 list2 :test #'equalp) =>  ("d" "C" "B" "A" C B 4 1 1) 
- (nintersection list1 list2) =>  (1 1 4 B C)
- list1 =>  implementation-dependent ;e.g.,  (1 1 4 B C)
- list2 =>  implementation-dependent ;e.g.,  (1 4 5 B C D "a" "B" "c" "D")
- (setq list1 (copy-list '((1 . 2) (2 . 3) (3 . 4) (4 . 5))))
-=>  ((1 . 2) (2 . 3) (3 . 4) (4 . 5)) 
- (setq list2 (copy-list '((1 . 3) (2 . 4) (3 . 6) (4 . 8))))
-=>  ((1 . 3) (2 . 4) (3 . 6) (4 . 8)) 
- (nintersection list1 list2 :key #'cdr) =>  ((2 . 3) (3 . 4)) 
- list1 =>  implementation-dependent ;e.g.,  ((1 . 2) (2 . 3) (3 . 4)) 
- list2 =>  implementation-dependent ;e.g.,  ((1 . 3) (2 . 4) (3 . 6) (4 . 8)) 
+    ```LISP
+    (setq list1 (list 1 1 2 3 4 a b c "A" "B" "C" "d")
+          list2 (list 1 4 5 b c d "a" "B" "c" "D")) 
+      =>  (1 4 5 B C D "a" "B" "c" "D")
+    (intersection list1 list2) =>  (C B 4 1 1)
+    (intersection list1 list2 :test 'equal) =>  ("B" C B 4 1 1)
+    (intersection list1 list2 :test #'equalp) =>  ("d" "C" "B" "A" C B 4 1 1) 
+    (nintersection list1 list2) =>  (1 1 4 B C)
+    list1 =>  implementation-dependent ;e.g.,  (1 1 4 B C)
+    list2 =>  implementation-dependent ;e.g.,  (1 4 5 B C D "a" "B" "c" "D")
+    (setq list1 (copy-list '((1 . 2) (2 . 3) (3 . 4) (4 . 5))))
+    =>  ((1 . 2) (2 . 3) (3 . 4) (4 . 5)) 
+    (setq list2 (copy-list '((1 . 3) (2 . 4) (3 . 6) (4 . 8))))
+    =>  ((1 . 3) (2 . 4) (3 . 6) (4 . 8)) 
+    (nintersection list1 list2 :key #'cdr) =>  ((2 . 3) (3 . 4)) 
+    list1 =>  implementation-dependent ;e.g.,  ((1 . 2) (2 . 3) (3 . 4)) 
+    list2 =>  implementation-dependent ;e.g.,  ((1 . 3) (2 . 4) (3 . 6) (4 . 8)) 
+    ```
 
 * 副作用(Side Effects):
 
-nintersection can modify list-1, but not list-2.
+        nintersection 可以修改 list-1, 但是不包括 list-2.
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-Should be prepared to signal an error of type type-error if list-1 and list-2 are not proper lists.
+        如果 list-1 和 list-2 不是 proper 列表, 那么应该准备发出agiel type-error 类型的错误.
 
 * 也见(See Also):
 
-union, Section 3.2.1 (Compiler Terminology), Section 3.6 (Traversal Rules and Side Effects)
+        union, 章节 3.2.1 (Compiler Terminology), 章节 3.6 (Traversal Rules and Side Effects)
 
 * 注意(Notes):
 
-The :test-not parameter is deprecated.
+        这个 :test-not 参数已经被废弃
 
-Since the nintersection side effect is not required, it should not be used in for-effect-only positions in portable code. 
+        因为这个 nintersection 副作用不是必须的, 它不应该被用于 for-effect-only 的可移植代码的.<!--TODO for-effect-only ??--> 
 
 
 ### <span id="F-ADJOIN">函数 ADJOIN</span>
 
 * 语法(Syntax):
 
-adjoin item list &key key test test-not => new-list
+        adjoin item list &key key test test-not => new-list
 
 * 参数和值(Arguments and Values):
 
-item---一个对象.
-
-list---一个 proper 列表.
-
-test---一个返回一个广义 boolean 的两参数函数的标识符.
-
-test-not---一个返回一个广义 boolean 的两参数函数的标识符.
-
-key---一个单参数函数的标识符, 或者 nil.
-
-new-list---一个列表.
+        item---一个对象.
+        list---一个 proper 列表.
+        test---一个返回一个广义 boolean 的两参数函数的标识符.
+        test-not---一个返回一个广义 boolean 的两参数函数的标识符.
+        key---一个单参数函数的标识符, 或者 nil.
+        new-list---一个列表.
 
 * 描述(Description):
 
-Tests whether item is the same as an existing element of list. If the item is not an existing element, adjoin adds it to list (as if by cons) and returns the resulting list; otherwise, nothing is added and the original list is returned.
+        测试 item 是否和列表 list 中的一个已存在的元素相同. 如果 item 不是一个已存在的元素, adjoin 把它添加到 list (就好像是通过 cons) 并且返回产生的列表; 否则, 没有东西会被添加并且原始的列表 list 会被返回.
 
-The test, test-not, and key affect how it is determined whether item is the same as an element of list. For details, see Section 17.2.1 (Satisfying a Two-Argument Test).
+        这个 test, test-not, 和 key 影响那个 item 是否和 list 中的一个元素相同的决定. 关于详情, 见章节 17.2.1 (Satisfying a Two-Argument Test).
 
 * 示例(Examples):
 
- (setq slist '()) =>  NIL 
- (adjoin 'a slist) =>  (A) 
- slist =>  NIL 
- (setq slist (adjoin '(test-item 1) slist)) =>  ((TEST-ITEM 1)) 
- (adjoin '(test-item 1) slist) =>  ((TEST-ITEM 1) (TEST-ITEM 1)) 
- (adjoin '(test-item 1) slist :test 'equal) =>  ((TEST-ITEM 1)) 
- (adjoin '(new-test-item 1) slist :key #'cadr) =>  ((TEST-ITEM 1)) 
- (adjoin '(new-test-item 1) slist) =>  ((NEW-TEST-ITEM 1) (TEST-ITEM 1)) 
+    ```LISP
+    (setq slist '()) =>  NIL 
+    (adjoin 'a slist) =>  (A) 
+    slist =>  NIL 
+    (setq slist (adjoin '(test-item 1) slist)) =>  ((TEST-ITEM 1)) 
+    (adjoin '(test-item 1) slist) =>  ((TEST-ITEM 1) (TEST-ITEM 1)) 
+    (adjoin '(test-item 1) slist :test 'equal) =>  ((TEST-ITEM 1)) 
+    (adjoin '(new-test-item 1) slist :key #'cadr) =>  ((TEST-ITEM 1)) 
+    (adjoin '(new-test-item 1) slist) =>  ((NEW-TEST-ITEM 1) (TEST-ITEM 1)) 
+    ```
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-Should be prepared to signal an error of type type-error if list is not a proper list.
+        如果 list 不是一个 proper 列表那么应该准备发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-pushnew, Section 3.6 (Traversal Rules and Side Effects)
+        pushnew, 章节 3.6 (Traversal Rules and Side Effects)
 
 * 注意(Notes):
 
-The :test-not parameter is deprecated.
+        这个 :test-not 参数已经被废弃
 
- (adjoin item list :key fn)
-   ==  (if (member (fn item) list :key fn) list (cons item list))
+        (adjoin item list :key fn)
+          ==  (if (member (fn item) list :key fn) list (cons item list))
 
 
 
@@ -2742,56 +2736,52 @@ The :test-not parameter is deprecated.
 
 * 语法(Syntax):
 
-pushnew item place &key key test test-not
-
-=> new-place-value
+        pushnew item place &key key test test-not
+        => new-place-value
 
 * 参数和值(Arguments and Values):
 
-item---一个对象.
-
-place---a place, the value of which is a proper list.
-
-test---一个返回一个广义 boolean 的两参数函数的标识符.
-
-test-not---一个返回一个广义 boolean 的两参数函数的标识符.
-
-key---一个单参数函数的标识符, 或者 nil.
-
-new-place-value---a list (the new value of place).
+        item---一个对象.
+        place---一个 place, 它的值是一个 proper 列表.
+        test---一个返回一个广义 boolean 的两参数函数的标识符.
+        test-not---一个返回一个广义 boolean 的两参数函数的标识符.
+        key---一个单参数函数的标识符, 或者 nil.
+        new-place-value---一个列表 (这个 place 的新的值).
 
 * 描述(Description):
 
-pushnew tests whether item is the same as any existing element of the list stored in place. If item is not, it is prepended to the list, and the new list is stored in place.
+        pushnew 测试 item 是否和存储在 place 中的列表中的一个已存在的元素相同. 如果 item 不是的话, 它就会被向前添加到 list 中, 并且这个新的列表被存储到 place 中.
 
-pushnew returns the new list that is stored in place.
+        pushnew 返回一个存储在 place 中的新的列表.
 
-Whether or not item is already a member of the list that is in place is determined by comparisons using :test or :test-not. The first argument to the :test or :test-not function is item; the second argument is an element of the list in place as returned by the :key function (if supplied).
+        item 是否已经为 place 中的列表中的成员是使用 :test 或 :test-not 比较决定的. 给 :test 或 :test-not 函数的第一个参数是 item; 第二个参数是 place 中的列表的元素通过 :key 函数返回的 (如果提供的话).
 
-If :key is supplied, it is used to extract the part to be tested from both item and the list element, as for adjoin.
+        如果提供了 :key, 它被用于提取 item 和列表元素中要被测试的部分, 就像 adjoin 一样.
 
-The argument to the :key function is an element of the list stored in place. The :key function typically returns part part of the element of the list. If :key is not supplied or nil, the list element is used.
+        给 :key 函数的参数是存储在 place 中的列表的元素. 这个 :key 函数通常返回列表的元素的一部分. 如果没有提供 :key 或者是 nil, 就是那个列表元素.
 
-For information about the evaluation of subforms of place, see Section 5.1.1.1 (Evaluation of Subforms to Places).
+        关于 place 的子表达式形式求值的信息, 见章节 5.1.1.1 (Evaluation of Subforms to Places).
 
-It is implementation-dependent whether or not pushnew actually executes the storing form for its place in the situation where the item is already a member of the list held by place.
+        It is implementation-dependent whether or not 在这个 item 已经是 place 所持有的列表的成员的情况下, pushnew 事实上是否会为它的 place 执行存储表达式形式是依赖于具体实现的.
 
 * 示例(Examples):
 
- (setq x '(a (b c) d)) =>  (A (B C) D)
- (pushnew 5 (cadr x)) =>  (5 B C)   
- x =>  (A (5 B C) D)
- (pushnew 'b (cadr x)) =>  (5 B C)  
- x =>  (A (5 B C) D)
- (setq lst '((1) (1 2) (1 2 3))) =>  ((1) (1 2) (1 2 3))
- (pushnew '(2) lst) =>  ((2) (1) (1 2) (1 2 3))
- (pushnew '(1) lst) =>  ((1) (2) (1) (1 2) (1 2 3))
- (pushnew '(1) lst :test 'equal) =>  ((1) (2) (1) (1 2) (1 2 3))
- (pushnew '(1) lst :key #'car) =>  ((1) (2) (1) (1 2) (1 2 3)) 
+    ```LISP
+    (setq x '(a (b c) d)) =>  (A (B C) D)
+    (pushnew 5 (cadr x)) =>  (5 B C)   
+    x =>  (A (5 B C) D)
+    (pushnew 'b (cadr x)) =>  (5 B C)  
+    x =>  (A (5 B C) D)
+    (setq lst '((1) (1 2) (1 2 3))) =>  ((1) (1 2) (1 2 3))
+    (pushnew '(2) lst) =>  ((2) (1) (1 2) (1 2 3))
+    (pushnew '(1) lst) =>  ((1) (2) (1) (1 2) (1 2 3))
+    (pushnew '(1) lst :test 'equal) =>  ((1) (2) (1) (1 2) (1 2 3))
+    (pushnew '(1) lst :key #'car) =>  ((1) (2) (1) (1 2) (1 2 3)) 
+    ```
 
 * 副作用(Side Effects):
 
-The contents of place may be modified.
+        这个 place 的内容可能被修改.
 
 * 受此影响(Affected By): None.
 
@@ -2799,19 +2789,19 @@ The contents of place may be modified.
 
 * 也见(See Also):
 
-push, adjoin, Section 5.1 (Generalized Reference)
+        push, adjoin, 章节 5.1 (Generalized Reference)
 
 * 注意(Notes):
 
-The effect of
+        这个
 
- (pushnew item place :test p)
+        (pushnew item place :test p)
 
-is roughly equivalent to
+        的效果近似等价于
 
- (setf place (adjoin item place :test p))
+        (setf place (adjoin item place :test p))
 
-except that the subforms of place are evaluated only once, and item is evaluated before place. 
+        除了那个 place 的子表达式形式只会被求值一次, 并且 item 在 place 之前被求值. 
 
 ### <span id="F-SET-DIFFERENCE-ALL">函数 SET-DIFFERENCE, NSET-DIFFERENCE</span>
 
@@ -2889,7 +2879,7 @@ Section 3.2.1 (Compiler Terminology), Section 3.6 (Traversal Rules and Side Effe
 
 * 注意(Notes):
 
-The :test-not parameter is deprecated. 
+这个 :test-not 参数已经被废弃 
 
 ### <span id="F-SET-EXCLUSIVE-OR-ALL">函数 SET-EXCLUSIVE-OR, NSET-EXCLUSIVE-OR</span>
 
@@ -2960,7 +2950,7 @@ Section 3.2.1 (Compiler Terminology), Section 3.6 (Traversal Rules and Side Effe
 
 * 注意(Notes):
 
-The :test-not parameter is deprecated.
+这个 :test-not 参数已经被废弃
 
 Since the nset-exclusive-or side effect is not required, it should not be used in for-effect-only positions in portable code. 
 
@@ -3017,7 +3007,7 @@ Section 3.6 (Traversal Rules and Side Effects)
 
 * 注意(Notes):
 
-The :test-not parameter is deprecated. 
+这个 :test-not 参数已经被废弃 
 
 
 ### <span id="F-UNION-NUNION">函数 UNION, NUNION</span>
@@ -3089,7 +3079,7 @@ intersection, Section 3.2.1 (Compiler Terminology), Section 3.6 (Traversal Rules
 
 * 注意(Notes):
 
-The :test-not parameter is deprecated.
+这个 :test-not 参数已经被废弃
 
 Since the nunion side effect is not required, it should not be used in for-effect-only positions in portable code. 
 
