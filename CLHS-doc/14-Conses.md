@@ -13,7 +13,7 @@
 
     Figure 14-1. 和构造相关的已定义的名字.
 
-根据上下文, 一组连接的构造可以以各种不同的方式被查看. 提供了各种各样的操作来支持这些不同的视图.<!--TODO 待校对-->
+根据上下文, 一组连接的构造可以以各种不同的视角来看. 提供了各种各样的操作来支持这些不同的视角.
 
 > * 14.1.1 [构造作为树](#ConsesTrees)
 > * 14.1.2 [构造作为列表](#ConsesLists)
@@ -550,7 +550,7 @@
 
         如果 x 是一个 cons, cdr 返回这个 cons 的 cdr. 如果 x 是 nil, cdr 返回 nil.
 
-        提供了执行多达四个 car 和 cdr 操作组合的函数. 它们的名字有一个 C, 后面跟着 2, 3, 或 4 个 A 或 D, 最后是一个 R. 在每个函数名字中的 A 和 D 的系列被选择用来确定这个函数执行的 car 和 cdr 操作的系列. 这个 A 和 D 出现的顺序是对应操作被执行的顺序的倒序. 下一段准确地定义了这些关系.<!--TODO series 系列 ？？-->
+        提供了执行多达四个 car 和 cdr 操作组合的函数. 它们的名字有一个 C, 后面跟着 2, 3, 或 4 个 A 或 D, 最后是一个 R. 在每个函数名字中的 A 和 D 的序列被选择用来确定这个函数执行的 car 和 cdr 操作的序列. 这个 A 和 D 出现的顺序是对应操作被执行的顺序的倒序. 下一段准确地定义了这些关系.
 
             This place ...  Is equivalent to this place ...  
             (caar x)        (car (car x))                    
@@ -1449,8 +1449,7 @@
 
 * 注意(Notes):
 
-        endp 的目的是特使 proper 列表的结束. 由于 endp 不会进入到一个 cons, 它被定义为通过一个点列表 it is well-defined to pass it a dotted list. 然而, if shorter "lists" are iteratively produced by calling cdr on such a dotted list and those "lists" are tested with endp, a situation that has undefined consequences will eventually result when the non-nil atom (which is not in fact a list) finally becomes the argument to endp. 由于这是使用 endp 的常用方法, 所以它是保守的编程风格, 并且与 endp 的意图一致, 即把 endp 当作一个在 proper 列表上的函数, 而不是强制执行一个参数类型的适当列表, 除非参数是原子的. Since this is the usual way in which endp is used, it is conservative programming style and consistent with the intent of endp to treat endp as simply a function on proper lists which happens not to enforce an argument type of proper list except when the argument is atomic. 
-        <!--TODO 待翻译-->
+        endp 的目的是测试 proper 列表的结束. 由于 endp 不会进入到一个 cons 中, 所以明确定义了传递给它点列表的情况. 然而, 如果通过在一个点列表上反复调用 cdr 来产生更短的"列表"并且使用 endp 来测试这些"列表", 当这个非 nil 的原子最终称为给 endp 的参数时, 最后会产生一个有着不确定后果的情况. 由于这是使用 endp 的常用方法, 所以它是保守的编程风格, 并且与 endp 的意图一致, 即把 endp 当作一个在 proper 列表上的函数, 而不是强制执行一个参数类型的适当列表, 除非参数是原子的. 由于这是 endp 被使用的常见方式, 把 endp 当作一个在 proper 列表上调用的并且除了参数为原子类型以外不会强制参数为 proper 列表类型的函数是一个保守的编程风格并且和 endp 的意图一致.
 
 
 ### <span id="F-NULL">函数 NULL</span>
@@ -2625,7 +2624,7 @@
 
 * 描述(Description):
 
-        intersection 和 nintersection 返回一个包含了 list-1 和 list-2 中每一个元素的列表.
+        intersection 和 nintersection 返回一个包含了同时出现在 list-1 和 list-2 中的每个元素的列表.
 
         nintersection 是 intersection 的破坏性的版本. 它执行相同的操作, 但是可能破坏 list-1 使用它的 cell 来构造这个结果. list-2 不会被破坏.
 
@@ -2633,7 +2632,7 @@
 
         如果提供了 :key (并且不是 nil), 它被用于从这个列表元素中提取这个要被测试的部分. 给这个 :key 函数的参数是 list-1 或 list-2 的一个元素; 这个 :key 函数通常返回提供的元素的部分. 如果没有提供 :key 或者是 nil, 那么就使用这个 list-1 和 list-2 的元素.
 
-        对于满足这个测试条件 test 的每一个对, 这个对的两个元素中的一个会被放到结果中. No element from either list appears in the result that does not satisfy the test for an element from the other list. 如果这些列表中的一个包含了重复的元素, 那么在结果中也可能会重复.<!--TODO 待翻译-->
+        对于满足这个测试条件 test 的每一个对, 这个对的两个元素中的一个会被放到结果中. 一个列表中的元素如果和另一个列表中的元素都不满足测试条件就不会出现在结果中. 如果这些列表中的一个包含了重复的元素, 那么在结果中也可能会重复.
 
         不保证元素出现在结果中的顺序会以任何特定方式反映参数的顺序. 如果合适的话结果列表可能和 list-1 或 list-2 共享 cell, 或者和 list-1 或 list-2 是 eq 的.
 
@@ -2676,7 +2675,7 @@
 
         这个 :test-not 参数已经被废弃
 
-        因为这个 nintersection 副作用不是必须的, 它不应该被用于 for-effect-only 的可移植代码的.<!--TODO for-effect-only ??--> 
+        因为这个 nintersection 副作用不是必须的, 它不应该被用于仅为了副作用(for-effect-only)的可移植代码的.
 
 
 ### <span id="F-ADJOIN">函数 ADJOIN</span>
@@ -2946,7 +2945,7 @@
 
         这个 :test-not 参数已经被废弃
 
-        因为这个 nset-exclusive-or 副作用不是必须的, 所以它不应该被用于可移植代码的 for-effect-only 的位置. 
+        因为这个 nset-exclusive-or 副作用不是必须的, 所以它不应该被用于可移植代码的仅为了副作用(for-effect-only)的位置. 
 
 
 ### <span id="F-SUBSETP">函数 SUBSETP</span>
@@ -3069,6 +3068,6 @@
 
         这个 :test-not 参数已经被废弃
 
-        因为 nunion 副作用不是必须的, 所以它不应该被用于可移植代码的 for-effect-only 位置. 
+        因为 nunion 副作用不是必须的, 所以它不应该被用于可移植代码的仅为了副作用(for-effect-only)位置. 
 
 
