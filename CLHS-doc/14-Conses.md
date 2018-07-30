@@ -2762,7 +2762,7 @@
 
         关于 place 的子表达式形式求值的信息, 见章节 5.1.1.1 (Evaluation of Subforms to Places).
 
-        It is implementation-dependent whether or not 在这个 item 已经是 place 所持有的列表的成员的情况下, pushnew 事实上是否会为它的 place 执行存储表达式形式是依赖于具体实现的.
+        在这个 item 已经是 place 所持有的列表的成员的情况下, pushnew 事实上是否会为它的 place 执行存储表达式形式是依赖于具体实现的.
 
 * 示例(Examples):
 
@@ -2807,191 +2807,182 @@
 
 * 语法(Syntax):
 
-set-difference list-1 list-2 &key key test test-not => result-list
+        set-difference list-1 list-2 &key key test test-not => result-list
 
-nset-difference list-1 list-2 &key key test test-not => result-list
+        nset-difference list-1 list-2 &key key test test-not => result-list
 
 * 参数和值(Arguments and Values):
 
-list-1---一个 proper 列表.
-
-list-2---一个 proper 列表.
-
-test---一个返回一个广义 boolean 的两参数函数的标识符.
-
-test-not---一个返回一个广义 boolean 的两参数函数的标识符.
-
-key---一个单参数函数的标识符, 或者 nil.
-
-result-list---一个列表.
+        list-1---一个 proper 列表.
+        list-2---一个 proper 列表.
+        test---一个返回一个广义 boolean 的两参数函数的标识符.
+        test-not---一个返回一个广义 boolean 的两参数函数的标识符.
+        key---一个单参数函数的标识符, 或者 nil.
+        result-list---一个列表.
 
 * 描述(Description):
 
-set-difference returns a list of elements of list-1 that do not appear in list-2.
+        set-difference 返回一个 list-1 中的但是没有出现在 list-2 中的元素的列表.
 
-nset-difference is the destructive version of set-difference. It may destroy list-1.
+        nset-difference 是 set-difference 的破坏性版本. 它可能破坏 list-1.
 
-For all possible ordered pairs consisting of one element from list-1 and one element from list-2, the :test or :test-not function is used to determine whether they satisfy the test. The first argument to the :test or :test-not function is the part of an element of list-1 that is returned by the :key function (if supplied); the second argument is the part of an element of list-2 that is returned by the :key function (if supplied).
+        对于由 list-1 的一个元素和 list-2 的一个元素组成的所有可能的有序对, 这个 :test 或 :test-not 函数被用于确定它们是否满足这个测试条件 test. 给 :test 或 :test-not 函数的第一个参数是由 :key 函数(如果提供的话)返回的 list-1 的元素的一部分; 给 :test 或 :test-not 函数的第二个参数是由 :key 函数(如果提供的话)返回的 list-2 的元素的一部分.
 
-If :key is supplied, its argument is a list-1 or list-2 element. The :key function typically returns part of the supplied element. If :key is not supplied, the list-1 or list-2 element is used.
+        如果提供了 :key, 它的参数就是一个 list-1 或 list-2 的元素. 这个 :key 函数通常返回提供的元素的一部分. 如果没有提供 :key, 就使用 list-1 或 list-2 的元素.
 
-An element of list-1 appears in the result if and only if it does not match any element of list-2.
+        当且仅当一个 list-1 中的元素不匹配任何 list-2 中的元素时它会出现在结果中.
 
-There is no guarantee that the order of elements in the result will reflect the ordering of the arguments in any particular way. The result list may share cells with, or be eq to, either of list-1 or list-2, if appropriate.
+        这里不保证出现在结果中的顺序会以任何特定方式反映参数的顺序. 如果合适的话结果列表可能和 list-1 或 list-2 共享 cell, 或者和 list-1 或 list-2 是 eq 的.
 
 * 示例(Examples):
 
- (setq lst1 (list "A" "b" "C" "d")
-       lst2 (list "a" "B" "C" "d")) =>  ("a" "B" "C" "d")
- (set-difference lst1 lst2) =>  ("d" "C" "b" "A")
- (set-difference lst1 lst2 :test 'equal) =>  ("b" "A")
- (set-difference lst1 lst2 :test #'equalp) =>  NIL 
- (nset-difference lst1 lst2 :test #'string=) =>  ("A" "b")
- (setq lst1 '(("a" . "b") ("c" . "d") ("e" . "f")))
-=>  (("a" . "b") ("c" . "d") ("e" . "f")) 
- (setq lst2 '(("c" . "a") ("e" . "b") ("d" . "a")))
-=>  (("c" . "a") ("e" . "b") ("d" . "a")) 
- (nset-difference lst1 lst2 :test #'string= :key #'cdr)
-=>  (("c" . "d") ("e" . "f")) 
- lst1 =>  (("a" . "b") ("c" . "d") ("e" . "f")) 
- lst2 =>  (("c" . "a") ("e" . "b") ("d" . "a")) 
+    ```LISP
+    (setq lst1 (list "A" "b" "C" "d")
+          lst2 (list "a" "B" "C" "d")) =>  ("a" "B" "C" "d")
+    (set-difference lst1 lst2) =>  ("d" "C" "b" "A")
+    (set-difference lst1 lst2 :test 'equal) =>  ("b" "A")
+    (set-difference lst1 lst2 :test #'equalp) =>  NIL 
+    (nset-difference lst1 lst2 :test #'string=) =>  ("A" "b")
+    (setq lst1 '(("a" . "b") ("c" . "d") ("e" . "f")))
+    =>  (("a" . "b") ("c" . "d") ("e" . "f")) 
+    (setq lst2 '(("c" . "a") ("e" . "b") ("d" . "a")))
+    =>  (("c" . "a") ("e" . "b") ("d" . "a")) 
+    (nset-difference lst1 lst2 :test #'string= :key #'cdr)
+    =>  (("c" . "d") ("e" . "f")) 
+    lst1 =>  (("a" . "b") ("c" . "d") ("e" . "f")) 
+    lst2 =>  (("c" . "a") ("e" . "b") ("d" . "a")) 
 
-;; Remove all flavor names that contain "c" or "w".
- (set-difference '("strawberry" "chocolate" "banana"
-                  "lemon" "pistachio" "rhubarb")
-          '(#\c #\w)
-          :test #'(lambda (s c) (find c s)))
-=>  ("banana" "rhubarb" "lemon")    ;One possible ordering.
+    ;; Remove all flavor names that contain "c" or "w".
+    (set-difference '("strawberry" "chocolate" "banana"
+                      "lemon" "pistachio" "rhubarb")
+              '(#\c #\w)
+              :test #'(lambda (s c) (find c s)))
+    =>  ("banana" "rhubarb" "lemon")    ;One possible ordering.
+    ```
 
 * 副作用(Side Effects):
 
-nset-difference may destroy list-1.
+        nset-difference 可能破坏 list-1.
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-Should be prepared to signal an error of type type-error if list-1 and list-2 are not proper lists.
+        如果 list-1 和 list-2 不是 proper 列表那么应该准备发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-Section 3.2.1 (Compiler Terminology), Section 3.6 (Traversal Rules and Side Effects)
+        章节 3.2.1 (Compiler Terminology), 章节 3.6 (Traversal Rules and Side Effects)
 
 * 注意(Notes):
 
-这个 :test-not 参数已经被废弃 
+        这个 :test-not 参数已经被废弃 
 
 ### <span id="F-SET-EXCLUSIVE-OR-ALL">函数 SET-EXCLUSIVE-OR, NSET-EXCLUSIVE-OR</span>
 
 * 语法(Syntax):
 
-set-exclusive-or list-1 list-2 &key key test test-not => result-list
+        set-exclusive-or list-1 list-2 &key key test test-not => result-list
 
-nset-exclusive-or list-1 list-2 &key key test test-not => result-list
+        nset-exclusive-or list-1 list-2 &key key test test-not => result-list
 
 * 参数和值(Arguments and Values):
 
-list-1---一个 proper 列表.
-
-list-2---一个 proper 列表.
-
-test---一个返回一个广义 boolean 的两参数函数的标识符.
-
-test-not---一个返回一个广义 boolean 的两参数函数的标识符.
-
-key---一个单参数函数的标识符, 或者 nil.
-
-result-list---一个列表.
+        list-1---一个 proper 列表.
+        list-2---一个 proper 列表.
+        test---一个返回一个广义 boolean 的两参数函数的标识符.
+        test-not---一个返回一个广义 boolean 的两参数函数的标识符.
+        key---一个单参数函数的标识符, 或者 nil.
+        result-list---一个列表.
 
 * 描述(Description):
 
-set-exclusive-or returns a list of elements that appear in exactly one of list-1 and list-2.
+        set-exclusive-or 返回一个只出现在 list-1 和 list-2 其中一个的元素的列表.
 
-nset-exclusive-or is the destructive version of set-exclusive-or.
+        nset-exclusive-or 是 set-exclusive-or 的破坏性版本.
 
-For all possible ordered pairs consisting of one element from list-1 and one element from list-2, the :test or :test-not function is used to determine whether they satisfy the test.
+        对于由 list-1 的一个元素和 list-2 的一个元素组成的所有可能的有序对, 这个 :test 或 :test-not 函数被用于确定它们是否满足这个测试条件 test.
 
-If :key is supplied, it is used to extract the part to be tested from the list-1 or list-2 element. The first argument to the :test or :test-not function is the part of an element of list-1 extracted by the :key function (if supplied); the second argument is the part of an element of list-2 extracted by the :key function (if supplied). If :key is not supplied or nil, the list-1 or list-2 element is used.
+        如果提供了 :key, 它被用于从 list-1 or list-2 元素中提取要被测试的部分. 给 :test 或 :test-not 函数的第一个参数是由 :key 函数(如果提供的话)返回的 list-1 的元素的一部分; 给 :test 或 :test-not 函数的第二个参数是由 :key 函数(如果提供的话)返回的 list-2 的元素的一部分. 如果没有提供 :key 或者是 nil, 就使用 list-1 或 list-2 元素.
 
-The result contains precisely those elements of list-1 and list-2 that appear in no matching pair.
+        这个结果准确包含了 list-1 和 list-2 中没有匹配对的元素.
 
-The result list of set-exclusive-or might share storage with one of list-1 or list-2.
+        这个 set-exclusive-or 的结果列表可能和 list-1 或 list-2 其中一个共享存储.
 
 * 示例(Examples):
 
- (setq lst1 (list 1 "a" "b")
-       lst2 (list 1 "A" "b")) =>  (1 "A" "b")
- (set-exclusive-or lst1 lst2) =>  ("b" "A" "b" "a")
- (set-exclusive-or lst1 lst2 :test #'equal) =>  ("A" "a")
- (set-exclusive-or lst1 lst2 :test 'equalp) =>  NIL 
- (nset-exclusive-or lst1 lst2) =>  ("a" "b" "A" "b") 
- (setq lst1 (list (("a" . "b") ("c" . "d") ("e" . "f"))))
-=>  (("a" . "b") ("c" . "d") ("e" . "f"))
- (setq lst2 (list (("c" . "a") ("e" . "b") ("d" . "a"))))
-=>  (("c" . "a") ("e" . "b") ("d" . "a")) 
- (nset-exclusive-or lst1 lst2 :test #'string= :key #'cdr)
-=>  (("c" . "d") ("e" . "f") ("c" . "a") ("d" . "a")) 
- lst1 =>  (("a" . "b") ("c" . "d") ("e" . "f"))
- lst2 =>  (("c" . "a") ("d" . "a")) 
+    ```LISP
+    (setq lst1 (list 1 "a" "b")
+          lst2 (list 1 "A" "b")) =>  (1 "A" "b")
+    (set-exclusive-or lst1 lst2) =>  ("b" "A" "b" "a")
+    (set-exclusive-or lst1 lst2 :test #'equal) =>  ("A" "a")
+    (set-exclusive-or lst1 lst2 :test 'equalp) =>  NIL 
+    (nset-exclusive-or lst1 lst2) =>  ("a" "b" "A" "b") 
+    (setq lst1 (list (("a" . "b") ("c" . "d") ("e" . "f"))))
+    =>  (("a" . "b") ("c" . "d") ("e" . "f"))
+    (setq lst2 (list (("c" . "a") ("e" . "b") ("d" . "a"))))
+    =>  (("c" . "a") ("e" . "b") ("d" . "a")) 
+    (nset-exclusive-or lst1 lst2 :test #'string= :key #'cdr)
+    =>  (("c" . "d") ("e" . "f") ("c" . "a") ("d" . "a")) 
+    lst1 =>  (("a" . "b") ("c" . "d") ("e" . "f"))
+    lst2 =>  (("c" . "a") ("d" . "a")) 
+    ```
 
 * 副作用(Side Effects):
 
-nset-exclusive-or is permitted to modify any part, car or cdr, of the list structure of list-1 or list-2.
+        nset-exclusive-or 允许去修改 list-1 或 list-2 的列表结构的任意部分, car 或 cdr.
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-Should be prepared to signal an error of type type-error if list-1 and list-2 are not proper lists.
+        如果 list-1 和 list-2 不是 proper 列表那么应该准备发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-Section 3.2.1 (Compiler Terminology), Section 3.6 (Traversal Rules and Side Effects)
+        章节 3.2.1 (Compiler Terminology), 章节 3.6 (Traversal Rules and Side Effects)
 
 * 注意(Notes):
 
-这个 :test-not 参数已经被废弃
+        这个 :test-not 参数已经被废弃
 
-Since the nset-exclusive-or side effect is not required, it should not be used in for-effect-only positions in portable code. 
+        因为这个 nset-exclusive-or 副作用不是必须的, 所以它不应该被用于可移植代码的 for-effect-only 的位置. 
 
 
 ### <span id="F-SUBSETP">函数 SUBSETP</span>
 
 * 语法(Syntax):
 
-subsetp list-1 list-2 &key key test test-not => generalized-boolean
+        subsetp list-1 list-2 &key key test test-not => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-list-1---一个 proper 列表.
-
-list-2---一个 proper 列表.
-
-test---一个返回一个广义 boolean 的两参数函数的标识符.
-
-test-not---一个返回一个广义 boolean 的两参数函数的标识符.
-
-key---一个单参数函数的标识符, 或者 nil.
-
-generalized-boolean---一个广义 boolean.
+        list-1---一个 proper 列表.
+        list-2---一个 proper 列表.
+        test---一个返回一个广义 boolean 的两参数函数的标识符.
+        test-not---一个返回一个广义 boolean 的两参数函数的标识符.
+        key---一个单参数函数的标识符, 或者 nil.
+        generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
-subsetp returns true if every element of list-1 matches some element of list-2, and false otherwise.
+        如果 list-1 中的每个元素都匹配 list-2 中的某个元素 subsetp 就返回 true, 否则返回 false.
 
-Whether a list element is the same as another list element is determined by the functions specified by the keyword arguments. The first argument to the :test or :test-not function is typically part of an element of list-1 extracted by the :key function; the second argument is typically part of an element of list-2 extracted by the :key function.
+        一个列表元素是否和另一个列表元素相同是由关键字参数指定的函数决定的. 给 :test 或 :test-not 函数的第一个参数是由 :key 函数提取的 list-1 的元素的一部分; 给 :test 或 :test-not 函数的第二个参数是由 :key 函数提取的 list-2 的元素的一部分.
 
-The argument to the :key function is an element of either list-1 or list-2; the return value is part of the element of the supplied list element. If :key is not supplied or nil, the list-1 or list-2 element itself is supplied to the :test or :test-not function.
+        给 :key 函数的参数是 list-1 或 list-2 的一个元素; 返回值是那个提供的列表元素的一部分. 如果没有提供 :key 或者是 nil, 那么这个 list-1 或 list-2 元素自身会被提供给 :test 或 :test-not 函数.
 
 * 示例(Examples):
 
- (setq cosmos '(1 "a" (1 2))) =>  (1 "a" (1 2))
- (subsetp '(1) cosmos) =>  true
- (subsetp '((1 2)) cosmos) =>  false
- (subsetp '((1 2)) cosmos :test 'equal) =>  true
- (subsetp '(1 "A") cosmos :test #'equalp) =>  true
- (subsetp '((1) (2)) '((1) (2))) =>  false
- (subsetp '((1) (2)) '((1) (2)) :key #'car) =>  true
+    ```LISP
+    (setq cosmos '(1 "a" (1 2))) =>  (1 "a" (1 2))
+    (subsetp '(1) cosmos) =>  true
+    (subsetp '((1 2)) cosmos) =>  false
+    (subsetp '((1 2)) cosmos :test 'equal) =>  true
+    (subsetp '(1 "A") cosmos :test #'equalp) =>  true
+    (subsetp '((1) (2)) '((1) (2))) =>  false
+    (subsetp '((1) (2)) '((1) (2)) :key #'car) =>  true
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -2999,88 +2990,85 @@ The argument to the :key function is an element of either list-1 or list-2; the 
 
 * 异常情况(Exceptional Situations):
 
-Should be prepared to signal an error of type type-error if list-1 and list-2 are not proper lists.
+        如果 list-1 和 list-2 不是 proper 列表那么应该准备发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-Section 3.6 (Traversal Rules and Side Effects)
+        章节 3.6 (Traversal Rules and Side Effects)
 
 * 注意(Notes):
 
-这个 :test-not 参数已经被废弃 
+        这个 :test-not 参数已经被废弃 
 
 
 ### <span id="F-UNION-NUNION">函数 UNION, NUNION</span>
 
 * 语法(Syntax):
 
-union list-1 list-2 &key key test test-not => result-list
+        union list-1 list-2 &key key test test-not => result-list
 
-nunion list-1 list-2 &key key test test-not => result-list
+        nunion list-1 list-2 &key key test test-not => result-list
 
 * 参数和值(Arguments and Values):
 
-list-1---一个 proper 列表.
-
-list-2---一个 proper 列表.
-
-test---一个返回一个广义 boolean 的两参数函数的标识符.
-
-test-not---一个返回一个广义 boolean 的两参数函数的标识符.
-
-key---一个单参数函数的标识符, 或者 nil.
-
-result-list---一个列表.
+        list-1---一个 proper 列表.
+        list-2---一个 proper 列表.
+        test---一个返回一个广义 boolean 的两参数函数的标识符.
+        test-not---一个返回一个广义 boolean 的两参数函数的标识符.
+        key---一个单参数函数的标识符, 或者 nil.
+        result-list---一个列表.
 
 * 描述(Description):
 
-union and nunion return a list that contains every element that occurs in either list-1 or list-2.
+        union 和 nunion 返回一个包含出现在 list-1 或 list-2 中的每一个元素的列表.
 
-For all possible ordered pairs consisting of one element from list-1 and one element from list-2, :test or :test-not is used to determine whether they satisfy the test. The first argument to the :test or :test-not function is the part of the element of list-1 extracted by the :key function (if supplied); the second argument is the part of the element of list-2 extracted by the :key function (if supplied).
+        对于由 list-1 的一个元素和 list-2 的一个元素组成的所有可能的有序对, 这个 :test 或 :test-not 函数被用于确定它们是否满足这个测试条件 test. 给 :test 或 :test-not 函数的第一个参数是由 :key 函数(如果提供的话)返回的 list-1 的元素的一部分; 给 :test 或 :test-not 函数的第二个参数是由 :key 函数(如果提供的话)返回的 list-2 的元素的一部分.
 
-The argument to the :key function is an element of list-1 or list-2; the return value is part of the supplied element. If :key is not supplied or nil, the element of list-1 or list-2 itself is supplied to the :test or :test-not function.
+        给 :key 函数的参数是 list-1 或 list-2 的一个元素; 返回值是那个提供的列表元素的一部分. 如果没有提供 :key 或者是 nil, 那么这个 list-1 或 list-2 元素自身会被提供给 :test 或 :test-not 函数.
 
-For every matching pair, one of the two elements of the pair will be in the result. Any element from either list-1 or list-2 that matches no element of the other will appear in the result.
+        对于每一个匹配对, 这个对的两个元素中的一个会出现在结果中. 任何来自于 list-1 或 list-2 并且在另一个中没有匹配元素的元素会出现在结果中.
 
-If there is a duplication between list-1 and list-2, only one of the duplicate instances will be in the result. If either list-1 or list-2 has duplicate entries within it, the redundant entries might or might not appear in the result.
+        如果在 list-1 和 list-2 之间有重复的, 这些重复实例中只有一个会出现在结果中. 如果 list-1 或 list-2 其中有着重复的条目, 那么这些重复的条目可能会也可能不会出现在结果中.
 
-The order of elements in the result do not have to reflect the ordering of list-1 or list-2 in any way. The result list may be eq to either list-1 or list-2 if appropriate.
+        结果中元素的顺序不需要去以任何方式返回 list-1 或 list-2 中的顺序. 如果合适的话这个结果列表可能和 list-1 或 list-2 是 eq 的.
 
 * 示例(Examples):
 
- (union '(a b c) '(f a d))
-=>  (A B C F D)
-OR=>  (B C F A D)
-OR=>  (D F A B C)
- (union '((x 5) (y 6)) '((z 2) (x 4)) :key #'car)
-=>  ((X 5) (Y 6) (Z 2))
-OR=>  ((X 4) (Y 6) (Z 2))
+    ```LISP
+    (union '(a b c) '(f a d))
+    =>  (A B C F D)
+    OR=>  (B C F A D)
+    OR=>  (D F A B C)
+    (union '((x 5) (y 6)) '((z 2) (x 4)) :key #'car)
+    =>  ((X 5) (Y 6) (Z 2))
+    OR=>  ((X 4) (Y 6) (Z 2))
 
- (setq lst1 (list 1 2 '(1 2) "a" "b")
-       lst2 (list 2 3 '(2 3) "B" "C"))
-=>  (2 3 (2 3) "B" "C")
- (nunion lst1 lst2)
-=>  (1 (1 2) "a" "b" 2 3 (2 3) "B" "C") 
-OR=>  (1 2 (1 2) "a" "b" "C" "B" (2 3) 3)
+    (setq lst1 (list 1 2 '(1 2) "a" "b")
+          lst2 (list 2 3 '(2 3) "B" "C"))
+    =>  (2 3 (2 3) "B" "C")
+    (nunion lst1 lst2)
+    =>  (1 (1 2) "a" "b" 2 3 (2 3) "B" "C") 
+    OR=>  (1 2 (1 2) "a" "b" "C" "B" (2 3) 3)
+    ```
 
 * 副作用(Side Effects):
 
-nunion is permitted to modify any part, car or cdr, of the list structure of list-1 or list-2.
+        nunion 允许去修改 list-1 或 list-2 的列表结构的任意部分, car 或 cdr.
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-Should be prepared to signal an error of type type-error if list-1 and list-2 are not proper lists.
+        如果 list-1 和 list-2 不是 proper 列表那么应该准备发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-intersection, Section 3.2.1 (Compiler Terminology), Section 3.6 (Traversal Rules and Side Effects)
+        intersection, 章节 3.2.1 (Compiler Terminology), 章节 3.6 (Traversal Rules and Side Effects)
 
 * 注意(Notes):
 
-这个 :test-not 参数已经被废弃
+        这个 :test-not 参数已经被废弃
 
-Since the nunion side effect is not required, it should not be used in for-effect-only positions in portable code. 
+        因为 nunion 副作用不是必须的, 所以它不应该被用于可移植代码的 for-effect-only 位置. 
 
 
