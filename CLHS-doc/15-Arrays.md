@@ -1,86 +1,86 @@
-# 15 Arrays
+# 15 数组
 
-> * 15.1 [Array Concepts](#ArrayConcepts)
-> * 15.2 [The Arrays Dictionary](#TheArraysDictionary)
+> * 15.1 [数组的概念](#ArrayConcepts)
+> * 15.2 [数组的字典](#TheArraysDictionary)
 
-## 15.1 <span id="ArrayConcepts">Array Concepts</span>
+## 15.1 <span id="ArrayConcepts">数组的概念</span>
 
-> * 15.1.1 [Array Elements](#ArrayElements)
+> * 15.1.1 [数组元素](#ArrayElements)
 > * 15.1.2 [Specialized Arrays](#SpecializedArrays)
 
-### 15.1.1 <span id="ArrayElements">Array Elements</span>
+### 15.1.1 <span id="ArrayElements">数组元素</span>
 
-An array contains a set of objects called elements that can be referenced individually according to a rectilinear coordinate system.
+一个数组包含了一个称为为元素的对象的集合, 它们可以通过一个直角坐标系统而被单独的引用.
 
-> * 15.1.1.1 [Array Indices](#ArrayIndices)
-> * 15.1.1.2 [Array Dimensions](#ArrayDimensions)
-> * 15.1.1.3 [Array Rank](#ArrayRank)
+> * 15.1.1.1 [数组索引](#ArrayIndices)
+> * 15.1.1.2 [数组维度](#ArrayDimensions)
+> * 15.1.1.3 [数组维数](#ArrayRank)
 
-#### 15.1.1.1 <span id="ArrayIndices">Array Indices</span>
+#### 15.1.1.1 <span id="ArrayIndices">数组索引</span>
 
-An array element is referred to by a (possibly empty) series of indices. The length of the series must equal the rank of the array. Each index must be a non-negative fixnum less than the corresponding array dimension. Array indexing is zero-origin. 
-
-
-#### 15.1.1.2 <span id="ArrayDimensions">Array Dimensions</span>
-
-An axis of an array is called a dimension.
-
-Each dimension is a non-negative fixnum; if any dimension of an array is zero, the array has no elements. It is permissible for a dimension to be zero, in which case the array has no elements, and any attempt to access an element is an error. However, other properties of the array, such as the dimensions themselves, may be used.
-
-##### 15.1.1.2.1 Implementation Limits on Individual Array Dimensions
-
-An implementation may impose a limit on dimensions of an array, but there is a minimum requirement on that limit. See the variable array-dimension-limit. 
+一个数组元素可以通过一个(可能是空的)索引的序列被引用. 这个序列的长度必须等于这个数组的范围. 每一个索引必须是一个小于对应数组尺寸的非负的 fixnum. 数组索引是从 0 开始的. 
 
 
-#### 15.1.1.3 <span id="ArrayRank">Array Rank</span>
+#### 15.1.1.2 <span id="ArrayDimensions">数组维度</span>
 
-An array can have any number of dimensions (including zero). The number of dimensions is called the rank.
+一个数组的坐标轴叫做维度.
 
-If the rank of an array is zero then the array is said to have no dimensions, and the product of the dimensions (see array-total-size) is then 1; a zero-rank array therefore has a single element.
+每一个维度都是一个非负 fixnum; 如果一个数组的任意维度都是 0, 那么这个数组就没有元素. 允许一个维度是 0, 在这个情况下这个数组没有元素, 并且去访问一个元素的任何尝试都是一个错误. 然而, 这个数组的其他属性, 比如这些维度自身, 可能被使用.
 
-> * 15.1.1.3.1 [Vectors](#Vectors)
-> * 15.1.1.3.2 [Multidimensional Arrays](#MultiArrays)
+##### 15.1.1.2.1 独立数组维度的实现限制
 
-##### 15.1.1.3.1 <span id="">Vectors</span>
+一个实现科恩嗯在数组的维度上强加一个限制, 但是在这个限制上这里有一个最小的需求. 见变量 array-dimension-limit. 
 
-An array of rank one (i.e., a one-dimensional array) is called a vector.
 
-###### 15.1.1.3.1.1 Fill Pointers
+#### 15.1.1.3 <span id="ArrayRank">数组维数</span>
 
-A fill pointer is a non-negative integer no larger than the total number of elements in a vector. Not all vectors have fill pointers. See the functions make-array and adjust-array.
+一个数组可以有任意数量的维度 (包括 zero). 这个维度的数量称为维数(rank).
 
-An element of a vector is said to be active if it has an index that is greater than or equal to zero, but less than the fill pointer (if any). For an array that has no fill pointer, all elements are considered active.
+如果一个数组的维数是 0 那么这个数组就被说成是没有维度的, 并且这个维度的结果是 1 (见 array-total-size); 一个零维数组因此只有一个单个元素.
 
-Only vectors may have fill pointers; multidimensional arrays may not. A multidimensional array that is displaced to a vector that has a fill pointer can be created. 
+> * 15.1.1.3.1 [向量](#Vectors)
+> * 15.1.1.3.2 [多维数组](#MultiArrays)
 
-##### 15.1.1.3.2 <span id="">Multidimensional Arrays</span>
+##### 15.1.1.3.1 <span id="Vectors">向量</span>
 
-###### 15.1.1.3.2.1 Storage Layout for Multidimensional Arrays
+一个维数为 1 的数组 (换句话说, 一个一维数组) 被称为一个向量(vector).
 
-Multidimensional arrays store their components in row-major order; that is, internally a multidimensional array is stored as a one-dimensional array, with the multidimensional index sets ordered lexicographically, last index varying fastest. 
+###### 15.1.1.3.1.1 填充指针
 
-###### 15.1.1.3.2.2 Implementation Limits on Array Rank
+一个填充指针是一个不大于向量中元素总数的非负整数. 不是所有的向量都有填充指针. 见函数 make-array 和 adjust-array.
 
-An implementation may impose a limit on the rank of an array, but there is a minimum requirement on that limit. See the variable array-rank-limit. 
+如果一个向量的一个元素有着大于等于 0 但是小于这个填充指针(如果有的话)的索引, 就说它是有效的. 对于一个没有填充指针的数组, 所有元素都被认为是有效的.
+
+只有向量可以有填充指针; 多维数组没有. 一个多维数组 A multidimensional array that is displaced to a vector that has a fill pointer can be created. <!--TODO 待翻译-->
+
+##### 15.1.1.3.2 <span id="">多维数组</span>
+
+###### 15.1.1.3.2.1 多维数组的存储布局
+
+多维数组以行优先的顺序存储它们的成分; 这也就是说, 一个多维数组内部被存储为一个一维数组, 其中多维度索引集有序地排列, 最后一个所有变化最快. 
+
+###### 15.1.1.3.2.2 数组维数的实现限制
+
+一个实现可能在一个数组的维数上强加一个限制, 但是在这个限制上这里有一个最小的需求. 见变量 array-rank-limit. 
 
 ### 15.1.2 <span id="SpecializedArrays">Specialized Arrays</span>
 
-An array can be a general array, meaning each element may be any object, or it may be a specialized array, meaning that each element must be of a restricted type.
+一个数组可以是一个普通数组, 意味着每个元素可以是任意对象, 或者它可能是一个特化的数组, 意味着每个元素都有一个约束的类型.
 
-The phrasing ``an array specialized to type <<type>>'' is sometimes used to emphasize the element type of an array. This phrasing is tolerated even when the <<type>> is t, even though an array specialized to type t is a general array, not a specialized array.
+"一个数组被特化为 <<\type>>" 的说法有时被用于强调一个数组的元素类型. 即便当这个 <<\type>> 是 t 这个说法也是认可的, 尽管一个被特化为类型 t 的数组是一个普通数组, 而不是一个特化数组.
 
-The next figure lists some defined names that are applicable to array creation, access, and information operations.
+下面这段列出了一些可应用于数组创建, 访问, 和信息操作的已定义的名字.
 
-adjust-array           array-has-fill-pointer-p  make-array                   
-adjustable-array-p     array-in-bounds-p         svref                        
-aref                   array-rank                upgraded-array-element-type  
-array-dimension        array-rank-limit          upgraded-complex-part-type   
-array-dimension-limit  array-row-major-index     vector                       
-array-dimensions       array-total-size          vector-pop                   
-array-displacement     array-total-size-limit    vector-push                  
-array-element-type     fill-pointer              vector-push-extend           
+    adjust-array           array-has-fill-pointer-p  make-array                   
+    adjustable-array-p     array-in-bounds-p         svref                        
+    aref                   array-rank                upgraded-array-element-type  
+    array-dimension        array-rank-limit          upgraded-complex-part-type   
+    array-dimension-limit  array-row-major-index     vector                       
+    array-dimensions       array-total-size          vector-pop                   
+    array-displacement     array-total-size-limit    vector-push                  
+    array-element-type     fill-pointer              vector-push-extend           
 
-Figure 15-1. General Purpose Array-Related Defined Names
+    Figure 15-1. 普通目的的数组相关的已定义名字
 
 > * 15.1.2.1 [Array Upgrading](#ArrayUpgrading)
 > * 15.1.2.2 [Required Kinds of Specialized Arrays](#RKOSA)
@@ -88,43 +88,43 @@ Figure 15-1. General Purpose Array-Related Defined Names
 
 #### 15.1.2.1 <span id="ArrayUpgrading">Array Upgrading</span>
 
-The upgraded array element type of a type T1 is a type T2 that is a supertype of T1 and that is used instead of T1 whenever T1 is used as an array element type for object creation or type discrimination.
+类型 T1 的提升数组元素类型 T2 是 T1 的超类型, 并且在 T1 可以被用作对象创建或类型区分的时候可以用来替换 T1.
 
-During creation of an array, the element type that was requested is called the expressed array element type. The upgraded array element type of the expressed array element type becomes the actual array element type of the array that is created.
+在一个数组创建期间, 需要的元素类型被称为表达数组元素类型. 这个表达数组元素类型的提升数组元素类型成为这个要被创建的数组的实际数组元素类型.
 
-Type upgrading implies a movement upwards in the type hierarchy lattice. A type is always a subtype of its upgraded array element type. Also, if a type Tx is a subtype of another type Ty, then the upgraded array element type of Tx must be a subtype of the upgraded array element type of Ty. Two disjoint types can be upgraded to the same type.
+类型提升意味着在类型层次结构中向上移动. 一个类型总是为它的提升数组元素类型的子类型. 同样, 如果一个类型 Tx 是另一个类型 Ty 的子类型, 那么 Tx 的提升数组元素类型必须是 Ty 的提升数组元素类型的子类型. 两个互斥的类型可以被提升为相同类型.
 
-The upgraded array element type T2 of a type T1 is a function only of T1 itself; that is, it is independent of any other property of the array for which T2 will be used, such as rank, adjustability, fill pointers, or displacement. The function upgraded-array-element-type can be used by conforming programs to predict how the implementation will upgrade a given type. 
+The upgraded array element type T2 of a type T1 is a function only of T1 itself;<!--TODO 待翻译--> 这也就是说, 它独立于将要使用 T2 的数组的任何其他属性, 例如维数, 可调性, 填充指针, 或位移. 函数 upgraded-array-element-type 可以被符合规范的程序用来预测这个实现会怎样提升一个给定类型. 
 
 #### 15.1.2.2 <span id="RKOSA">Required Kinds of Specialized Arrays</span>
 
-Vectors whose elements are restricted to type character or a subtype of character are called strings. Strings are of type string. The next figure lists some defined names related to strings.
+元素被约束为 character 类型或 character 的子类型的向量被称为字符串. 字符串是 string 类型. 下一段中列出了和字符串相关的已存在的名字.
 
-Strings are specialized arrays and might logically have been included in this chapter. However, for purposes of readability most information about strings does not appear in this chapter; see instead Section 16 (Strings).
+字符串是特化数组, 逻辑上可能包含在这一章中. 然而, 出于可读性的目的, 关于字符串的大部分信息不会出现在这个章节中; 见章节 16 (Strings).
 
-char                string-equal         string-upcase  
-make-string         string-greaterp      string/=       
-nstring-capitalize  string-left-trim     string<        
-nstring-downcase    string-lessp         string<=       
-nstring-upcase      string-not-equal     string=        
-schar               string-not-greaterp  string>        
-string              string-not-lessp     string>=       
-string-capitalize   string-right-trim                   
-string-downcase     string-trim                         
+    char                string-equal         string-upcase  
+    make-string         string-greaterp      string/=       
+    nstring-capitalize  string-left-trim     string<        
+    nstring-downcase    string-lessp         string<=       
+    nstring-upcase      string-not-equal     string=        
+    schar               string-not-greaterp  string>        
+    string              string-not-lessp     string>=       
+    string-capitalize   string-right-trim                   
+    string-downcase     string-trim                         
 
-Figure 15-2. Operators that Manipulate Strings
+    Figure 15-2. 操作字符串的操作符
 
-Vectors whose elements are restricted to type bit are called bit vectors. Bit vectors are of type bit-vector. The next figure lists some defined names for operations on bit arrays.
+元素被约束为 bit 类型的向量称为位向量. 位向量是 bit-vector 类型的. 下一段中列出了在位数组上操作的一些已定义的名字.
 
-bit        bit-ior   bit-orc2  
-bit-and    bit-nand  bit-xor   
-bit-andc1  bit-nor   sbit      
-bit-andc2  bit-not             
-bit-eqv    bit-orc1            
+    bit        bit-ior   bit-orc2  
+    bit-and    bit-nand  bit-xor   
+    bit-andc1  bit-nor   sbit      
+    bit-andc2  bit-not             
+    bit-eqv    bit-orc1            
 
-Figure 15-3. Operators that Manipulate Bit Arrays 
+    Figure 15-3. 操作位数组的操作符
 
-## 15.2 <span id="TheArraysDictionary">The Arrays Dictionary</span>
+## 15.2 <span id="TheArraysDictionary">数组的字典</span>
 
 > * [System Class ARRAY](#SC-ARRAY)
 > * [Type SIMPLE-ARRAY](#T-SIMPLE-ARRAY)
