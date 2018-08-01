@@ -126,45 +126,45 @@ The upgraded array element type T2 of a type T1 is a function only of T1 itself;
 
 ## 15.2 <span id="TheArraysDictionary">数组的字典</span>
 
-> * [System Class ARRAY](#SC-ARRAY)
-> * [Type SIMPLE-ARRAY](#T-SIMPLE-ARRAY)
-> * [System Class VECTOR](#SC-VECTOR)
-> * [Type SIMPLE-VECTOR](#T-SIMPLE-VECTOR)
-> * [System Class BIT-VECTOR](#SC-BIT-VECTOR)
-> * [Type SIMPLE-BIT-VECTOR](#T-SIMPLE-BIT-VECTOR)
-> * [Function MAKE-ARRAY](#F-MAKE-ARRAY)
-> * [Function ADJUST-ARRAY](#F-ADJUST-ARRAY)
-> * [Function ADJUSTABLE-ARRAY-P](#F-ADJUSTABLE-ARRAY-P)
-> * [Accessor AREF](#A-AREF)
-> * [Function ARRAY-DIMENSION](#F-ARRAY-DIMENSION)
-> * [Function ARRAY-DIMENSIONS](#F-ARRAY-DIMENSIONS)
-> * [Function ARRAY-ELEMENT-TYPE](#F-ARRAY-ELEMENT-TYPE)
-> * [Function ARRAY-HAS-FILL-POINTER-P](#F-ARRAY-HAS-FILL-POINTER-P)
-> * [Function ARRAY-DISPLACEMENT](#F-ARRAY-DISPLACEMENT)
-> * [Function ARRAY-IN-BOUNDS-P](#F-ARRAY-IN-BOUNDS-P)
-> * [Function ARRAY-RANK](#F-ARRAY-RANK)
-> * [Function ARRAY-ROW-MAJOR-INDEX](#F-ARRAY-ROW-MAJOR-INDEX)
-> * [Function ARRAY-TOTAL-SIZE](#F-ARRAY-TOTAL-SIZE)
-> * [Function ARRAYP](#F-ARRAYP)
-> * [Accessor FILL-POINTER](#A-FILL-POINTER)
-> * [Accessor ROW-MAJOR-AREF](#A-ROW-MAJOR-AREF)
-> * [Function UPGRADED-ARRAY-ELEMENT-TYPE](#F-UPGRADED-ARRAY-ELEMENT-TYPE)
-> * [Constant Variable ARRAY-DIMENSION-LIMIT](#CV-ARRAY-DIMENSION-LIMIT)
-> * [Constant Variable ARRAY-RANK-LIMIT](#CV-ARRAY-RANK-LIMIT)
-> * [Constant Variable ARRAY-TOTAL-SIZE-LIMIT](#CV-ARRAY-TOTAL-SIZE-LIMIT)
-> * [Function SIMPLE-VECTOR-P](#F-SIMPLE-VECTOR-P)
-> * [Accessor SVREF](#A-SVREF)
-> * [Function VECTOR](#F-VECTOR)
-> * [Function VECTOR-POP](#F-VECTOR-POP)
-> * [Function VECTOR-PUSH, VECTOR-PUSH-EXTEND](#F-V-PUSH-V-PUSH-EXTEND)
-> * [Function VECTORP](#F-VECTORP)
-> * [Accessor BIT, SBIT](#A-BIT-SBIT)
-> * [Function BIT-AND, BIT-ANDC1, BIT-ANDC2, BIT-EQV, BIT-IOR, BIT-NAND, BIT-NOR, BIT-NOT, BIT-ORC1, BIT-ORC2, BIT-XOR](#F-BIT-ALL)
-> * [Function BIT-VECTOR-P](#F-BIT-VECTOR-P)
-> * [Function SIMPLE-BIT-VECTOR-P](#F-SIMPLE-BIT-VECTOR-P)
+> * [系统类 ARRAY](#SC-ARRAY)
+> * [类型 SIMPLE-ARRAY](#T-SIMPLE-ARRAY)
+> * [系统类 VECTOR](#SC-VECTOR)
+> * [类型 SIMPLE-VECTOR](#T-SIMPLE-VECTOR)
+> * [系统类 BIT-VECTOR](#SC-BIT-VECTOR)
+> * [类型 SIMPLE-BIT-VECTOR](#T-SIMPLE-BIT-VECTOR)
+> * [函数 MAKE-ARRAY](#F-MAKE-ARRAY)
+> * [函数 ADJUST-ARRAY](#F-ADJUST-ARRAY)
+> * [函数 ADJUSTABLE-ARRAY-P](#F-ADJUSTABLE-ARRAY-P)
+> * [访问器 AREF](#A-AREF)
+> * [函数 ARRAY-DIMENSION](#F-ARRAY-DIMENSION)
+> * [函数 ARRAY-DIMENSIONS](#F-ARRAY-DIMENSIONS)
+> * [函数 ARRAY-ELEMENT-TYPE](#F-ARRAY-ELEMENT-TYPE)
+> * [函数 ARRAY-HAS-FILL-POINTER-P](#F-ARRAY-HAS-FILL-POINTER-P)
+> * [函数 ARRAY-DISPLACEMENT](#F-ARRAY-DISPLACEMENT)
+> * [函数 ARRAY-IN-BOUNDS-P](#F-ARRAY-IN-BOUNDS-P)
+> * [函数 ARRAY-RANK](#F-ARRAY-RANK)
+> * [函数 ARRAY-ROW-MAJOR-INDEX](#F-ARRAY-ROW-MAJOR-INDEX)
+> * [函数 ARRAY-TOTAL-SIZE](#F-ARRAY-TOTAL-SIZE)
+> * [函数 ARRAYP](#F-ARRAYP)
+> * [访问器 FILL-POINTER](#A-FILL-POINTER)
+> * [访问器 ROW-MAJOR-AREF](#A-ROW-MAJOR-AREF)
+> * [函数 UPGRADED-ARRAY-ELEMENT-TYPE](#F-UPGRADED-ARRAY-ELEMENT-TYPE)
+> * [常量 ARRAY-DIMENSION-LIMIT](#CV-ARRAY-DIMENSION-LIMIT)
+> * [常量 ARRAY-RANK-LIMIT](#CV-ARRAY-RANK-LIMIT)
+> * [常量 ARRAY-TOTAL-SIZE-LIMIT](#CV-ARRAY-TOTAL-SIZE-LIMIT)
+> * [函数 SIMPLE-VECTOR-P](#F-SIMPLE-VECTOR-P)
+> * [访问器 SVREF](#A-SVREF)
+> * [函数 VECTOR](#F-VECTOR)
+> * [函数 VECTOR-POP](#F-VECTOR-POP)
+> * [函数 VECTOR-PUSH, VECTOR-PUSH-EXTEND](#F-V-PUSH-V-PUSH-EXTEND)
+> * [函数 VECTORP](#F-VECTORP)
+> * [访问器 BIT, SBIT](#A-BIT-SBIT)
+> * [函数 BIT-AND, BIT-ANDC1, BIT-ANDC2, BIT-EQV, BIT-IOR, BIT-NAND, BIT-NOR, BIT-NOT, BIT-ORC1, BIT-ORC2, BIT-XOR](#F-BIT-ALL)
+> * [函数 BIT-VECTOR-P](#F-BIT-VECTOR-P)
+> * [函数 SIMPLE-BIT-VECTOR-P](#F-SIMPLE-BIT-VECTOR-P)
 
 
-### <span id="">System Class ARRAY</span>
+### <span id="">系统类 ARRAY</span>
 
 * 类优先级列表(Class Precedence List):
 
@@ -208,7 +208,7 @@ The upgraded array element type T2 of a type T1 is a function only of T1 itself;
 
         注意类型 (array t) 是类型 (array *) 的一个适当的子类型. 这个原因是类型 (array t) 是持有任何对象的数组的集合 (这些元素是类型 t, 它包括所有对象). 另一方面, 类型 (array *) 是所有数组的集合, 包括例如只持有字符的数组. 类型 (array character) 不是类型 (array t) 的一个子类型; 这两个集合是互斥的因为类型 (array character) 不是所有持有字符的数组的集合, 而是一组专门用来保存精确字符并且没有其他对象的数组的集合. 
 
-### <span id="">Type SIMPLE-ARRAY</span>
+### <span id="">类型 SIMPLE-ARRAY</span>
 
 * 超类型(Supertypes):
 
@@ -247,7 +247,7 @@ The upgraded array element type T2 of a type T1 is a function only of T1 itself;
         (simple-array *) 不管元素类型引用了所有简单数组, (simple-array type-specifier) 只引用那些可以通过给定 type-specifier 作为 make-array 的 :element-type 参数得到的简单数组. 
 
 
-### <span id="">System Class VECTOR</span>
+### <span id="">系统类 VECTOR</span>
 
 * 类优先级列表(Class Precedence List):
 
@@ -298,7 +298,7 @@ The union of all types (vector C), where C is any subtype of character, has the 
 (vector *) refers to all vectors regardless of element type, (vector type-specifier) refers only to those vectors that can result from giving type-specifier as the :element-type argument to make-array. 
 
 
-### <span id="">Type SIMPLE-VECTOR</span>
+### <span id="">类型 SIMPLE-VECTOR</span>
 
 * 超类型(Supertypes):
 
@@ -327,7 +327,7 @@ size---a non-negative fixnum, or the symbol *. The default is the symbol *.
 This is the same as (simple-array t (size)). 
 
 
-### <span id="">System Class BIT-VECTOR</span>
+### <span id="">系统类 BIT-VECTOR</span>
 
 * 类优先级列表(Class Precedence List):
 
@@ -359,7 +359,7 @@ This denotes the same type as the type (array bit (size)); that is, the set of b
 
 Section 2.4.8.4 (Sharpsign Asterisk), Section 22.1.3.6 (Printing Bit Vectors), Section 15.1.2.2 (Required Kinds of Specialized Arrays) 
 
-### <span id="">Type SIMPLE-BIT-VECTOR</span>
+### <span id="">类型 SIMPLE-BIT-VECTOR</span>
 
 * 超类型(Supertypes):
 
@@ -385,7 +385,7 @@ size---a non-negative fixnum, or the symbol *. The default is the symbol *.
 
 This denotes the same type as the type (simple-array bit (size)); that is, the set of simple bit vectors of size size. 
 
-### <span id="">Function MAKE-ARRAY</span>
+### <span id="">函数 MAKE-ARRAY</span>
 
 * 语法(Syntax):
 
@@ -523,7 +523,7 @@ adjustable-array-p, aref, arrayp, array-element-type, array-rank-limit, array-di
 There is no specified way to create an array for which adjustable-array-p definitely returns false. There is no specified way to create an array that is not a simple array. 
 
 
-### <span id="">Function ADJUST-ARRAY</span>
+### <span id="">函数 ADJUST-ARRAY</span>
 
 * 语法(Syntax):
 
@@ -655,7 +655,7 @@ adjustable-array-p, make-array, array-dimension-limit, array-total-size-limit, a
 * 注意(Notes): None. 
 
 
-### <span id="">Function ADJUSTABLE-ARRAY-P</span>
+### <span id="">函数 ADJUSTABLE-ARRAY-P</span>
 
 * 语法(Syntax):
 
@@ -693,7 +693,7 @@ adjust-array, make-array
 * 注意(Notes): None. 
 
 
-### <span id="">Accessor AREF</span>
+### <span id="">访问器 AREF</span>
 
 * 语法(Syntax):
 
@@ -743,7 +743,7 @@ bit, char, elt, row-major-aref, svref, Section 3.2.1 (Compiler Terminology)
 * 注意(Notes): None. 
 
 
-### <span id="">Function ARRAY-DIMENSION</span>
+### <span id="">函数 ARRAY-DIMENSION</span>
 
 * 语法(Syntax):
 
@@ -780,7 +780,7 @@ array-dimensions, length
 
  (array-dimension array n) ==  (nth n (array-dimensions array))
 
-### <span id="">Function ARRAY-DIMENSIONS</span>
+### <span id="">函数 ARRAY-DIMENSIONS</span>
 
 * 语法(Syntax):
 
@@ -814,7 +814,7 @@ array-dimension
 
 * 注意(Notes): None. 
 
-### <span id="">Function ARRAY-ELEMENT-TYPE</span>
+### <span id="">函数 ARRAY-ELEMENT-TYPE</span>
 
 * 语法(Syntax):
 
@@ -857,7 +857,7 @@ array, make-array, subtypep, upgraded-array-element-type
 * 注意(Notes): None. 
 
 
-### <span id="">Function ARRAY-HAS-FILL-POINTER-P</span>
+### <span id="">函数 ARRAY-HAS-FILL-POINTER-P</span>
 
 * 语法(Syntax):
 
@@ -897,7 +897,7 @@ make-array, fill-pointer
 Since arrays of rank other than one cannot have a fill pointer, array-has-fill-pointer-p always returns nil when its argument is such an array. 
 
 
-### <span id="">Function ARRAY-DISPLACEMENT</span>
+### <span id="">函数 ARRAY-DISPLACEMENT</span>
 
 * 语法(Syntax):
 
@@ -943,7 +943,7 @@ make-array
 
 * 注意(Notes): None. 
 
-### <span id="">Function ARRAY-IN-BOUNDS-P</span>
+### <span id="">函数 ARRAY-IN-BOUNDS-P</span>
 
 * 语法(Syntax):
 
@@ -984,7 +984,7 @@ array-dimensions
  ==  (and (not (some #'minusp (list subscripts)))
 
 
-### <span id="">Function ARRAY-RANK</span>
+### <span id="">函数 ARRAY-RANK</span>
 
 * 语法(Syntax):
 
@@ -1020,7 +1020,7 @@ array-rank-limit, make-array
 * 注意(Notes): None. 
 
 
-### <span id="">Function ARRAY-ROW-MAJOR-INDEX</span>
+### <span id="">函数 ARRAY-ROW-MAJOR-INDEX</span>
 
 * 语法(Syntax):
 
@@ -1071,7 +1071,7 @@ A possible definition of array-row-major-index, with no error-checking, is
 
 
 
-### <span id="">Function ARRAY-TOTAL-SIZE</span>
+### <span id="">函数 ARRAY-TOTAL-SIZE</span>
 
 * 语法(Syntax):
 
@@ -1117,7 +1117,7 @@ Since the product of no arguments is one, the array total size of a zero-dimensi
     ==  (reduce #'* (array-dimensions x))
 
 
-### <span id="">Function ARRAYP</span>
+### <span id="">函数 ARRAYP</span>
 
 * 语法(Syntax):
 
@@ -1155,7 +1155,7 @@ typep
  (arrayp object) ==  (typep object 'array)
 
 
-### <span id="">Accessor FILL-POINTER</span>
+### <span id="">访问器 FILL-POINTER</span>
 
 * 语法(Syntax):
 
@@ -1165,7 +1165,7 @@ fill-pointer vector => fill-pointer
 
 * 参数和值(Arguments and Values):
 
-vector---a vector with a fill pointer.
+vector---一个带有填充指针的向量.
 
 fill-pointer, new-fill-pointer---a valid fill pointer for the vector.
 
@@ -1201,7 +1201,7 @@ make-array, length
 
 There is no operator that will remove a vector's fill pointer. 
 
-### <span id="">Accessor ROW-MAJOR-AREF</span>
+### <span id="">访问器 ROW-MAJOR-AREF</span>
 
 * 语法(Syntax):
 
@@ -1247,7 +1247,7 @@ aref, array-row-major-index
      (row-major-aref array (array-row-major-index array i1 i2))
 
 
-### <span id="">Function UPGRADED-ARRAY-ELEMENT-TYPE</span>
+### <span id="">函数 UPGRADED-ARRAY-ELEMENT-TYPE</span>
 
 * 语法(Syntax):
 
@@ -1293,84 +1293,85 @@ Except for storage allocation consequences and dealing correctly with the option
    (array-element-type (make-array 0 :element-type type)))
 
 
-### <span id="">Constant Variable ARRAY-DIMENSION-LIMIT</span>
+### <span id="">常量 ARRAY-DIMENSION-LIMIT</span>
 
-Constant Value:
+* 常量值(Constant Value):
 
-A positive fixnum, the exact magnitude of which is implementation-dependent, but which is not less than 1024.
+        一个正的 fixnum, 它的准确大小是依赖于具体实现的, 但不小于 1024.
 
 * 描述(Description):
 
-The upper exclusive bound on each individual dimension of an array.
+        一个数组的每个独立维度的上边界.
 
 * 示例(Examples): None.
 
 * 也见(See Also):
 
-make-array
+        make-array
 
 * 注意(Notes): None. 
 
-### <span id="">Constant Variable ARRAY-RANK-LIMIT</span>
+### <span id="">常量 ARRAY-RANK-LIMIT</span>
 
-Constant Value:
+* 常量值(Constant Value):
 
-A positive fixnum, the exact magnitude of which is implementation-dependent, but which is not less than 8.
+        一个正的 fixnum, 它的准确大小是依赖于具体实现的, 但是不小于 8.
 
 * 描述(Description):
 
-The upper exclusive bound on the rank of an array.
+        一个数组维数的上边界.
 
 * 示例(Examples): None.
 
 * 也见(See Also):
 
-make-array
+        make-array
 
 * 注意(Notes): None. 
 
-### <span id="">Constant Variable ARRAY-TOTAL-SIZE-LIMIT</span>
+### <span id="">常量 ARRAY-TOTAL-SIZE-LIMIT</span>
 
-Constant Value:
+* 常量值(Constant Value):
 
-A positive fixnum, the exact magnitude of which is implementation-dependent, but which is not less than 1024.
+        一个正的 fixnum, 准确大小是依赖于具体实现的, 但是不小于 1024.
 
 * 描述(Description):
 
-The upper exclusive bound on the array total size of an array.
+        一个数组的数组总大小的上限.
 
-The actual limit on the array total size imposed by the implementation might vary according the element type of the array; in this case, the value of array-total-size-limit will be the smallest of these possible limits.
+        具体实现强加在数组总数大小的实际限制可能根据数组的元素类型变化; 在这种情况中, 这个 array-total-size-limit 的值回事这些可能的限制中最小的.
 
 * 示例(Examples): None.
 
 * 也见(See Also):
 
-make-array, array-element-type
+        make-array, array-element-type
 
 * 注意(Notes): None. 
 
 
-### <span id="">Function SIMPLE-VECTOR-P</span>
+### <span id="">函数 SIMPLE-VECTOR-P</span>
 
 * 语法(Syntax):
 
-simple-vector-p object => generalized-boolean
+        simple-vector-p object => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-object---一个对象.
-
-generalized-boolean---一个广义 boolean.
+        object---一个对象.
+        generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
-Returns true if object is of type simple-vector; otherwise, returns false..
+        如果 object 是 simple-vector 类型就返回 true; 否则, 返回 false.
 
 * 示例(Examples):
 
- (simple-vector-p (make-array 6)) =>  true
- (simple-vector-p "aaaaaa") =>  false
- (simple-vector-p (make-array 6 :fill-pointer t)) =>  false
+    ```LISP
+    (simple-vector-p (make-array 6)) =>  true
+    (simple-vector-p "aaaaaa") =>  false
+    (simple-vector-p (make-array 6 :fill-pointer t)) =>  false
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -1380,40 +1381,40 @@ Returns true if object is of type simple-vector; otherwise, returns false..
 
 * 也见(See Also):
 
-simple-vector
+        simple-vector
 
 * 注意(Notes):
 
- (simple-vector-p object) ==  (typep object 'simple-vector)
+        (simple-vector-p object) ==  (typep object 'simple-vector)
 
 
-### <span id="">Accessor SVREF</span>
+### <span id="">访问器 SVREF</span>
 
 * 语法(Syntax):
 
-svref simple-vector index => element
+        svref simple-vector index => element
 
-(setf (svref simple-vector index) new-element)
+        (setf (svref simple-vector index) new-element)
 
 * 参数和值(Arguments and Values):
 
-simple-vector---a simple vector.
-
-index---a valid array index for the simple-vector.
-
-element, new-element---an object (whose type is a subtype of the array element type of the simple-vector).
+        simple-vector---一个简单向量.
+        index---simple-vector 的有效数组索引.
+        element, new-element---一个对象 (它的类型是 simple-vector 的数组元素类型的子类型).
 
 * 描述(Description):
 
-Accesses the element of simple-vector specified by index.
+        访问有 index 指定的 simple-vector 中的元素.
 
 * 示例(Examples):
 
- (simple-vector-p (setq v (vector 1 2 'sirens))) =>  true
- (svref v 0) =>  1
- (svref v 2) =>  SIRENS
- (setf (svref v 1) 'newcomer) =>  NEWCOMER               
- v =>  #(1 NEWCOMER SIRENS)
+    ```LISP
+    (simple-vector-p (setq v (vector 1 2 'sirens))) =>  true
+    (svref v 0) =>  1
+    (svref v 2) =>  SIRENS
+    (setf (svref v 1) 'newcomer) =>  NEWCOMER               
+    v =>  #(1 NEWCOMER SIRENS)
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -1423,39 +1424,40 @@ Accesses the element of simple-vector specified by index.
 
 * 也见(See Also):
 
-aref, sbit, schar, vector, Section 3.2.1 (Compiler Terminology)
+        aref, sbit, schar, vector, 章节 3.2.1 (Compiler Terminology)
 
 * 注意(Notes):
 
-svref is identical to aref except that it requires its first argument to be a simple vector.
+        svref 和 aref 相同除了它需要第一个参数为一个简单向量.
 
- (svref v i) ==  (aref (the simple-vector v) i)
+        (svref v i) ==  (aref (the simple-vector v) i)
 
 
-### <span id="">Function VECTOR</span>
+### <span id="">函数 VECTOR</span>
 
 * 语法(Syntax):
 
-vector &rest objects => vector
+        vector &rest objects => vector
 
 * 参数和值(Arguments and Values):
 
-object---一个对象.
-
-vector---a vector of type (vector t *).
+        object---一个对象.
+        vector---一个 (vector t *) 类型的向量.
 
 * 描述(Description):
 
-Creates a fresh simple general vector whose size corresponds to the number of objects.
+        创建一个新的简单普通向量, 它的大小对应于对象 objects 的数量.
 
-The vector is initialized to contain the objects.
+        这个向量 vector 被初始化去包含这些对象 objects.
 
 * 示例(Examples):
 
- (arrayp (setq v (vector 1 2 'sirens))) =>  true
- (vectorp v) =>  true
- (simple-vector-p v) =>  true         
- (length v) =>  3
+    ```LISP
+    (arrayp (setq v (vector 1 2 'sirens))) =>  true
+    (vectorp v) =>  true
+    (simple-vector-p v) =>  true         
+    (length v) =>  3
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -1465,133 +1467,132 @@ The vector is initialized to contain the objects.
 
 * 也见(See Also):
 
-make-array
+        make-array
 
 * 注意(Notes):
 
-vector is analogous to list.
+        vector 与 list 类似.
 
- (vector a1 a2 ... an)
-  ==  (make-array (list n) :element-type t
-                          :initial-contents 
-                            (list a1 a2 ... an))
+        (vector a1 a2 ... an)
+          ==  (make-array (list n) :element-type t
+                                  :initial-contents 
+                                    (list a1 a2 ... an))
 
 
 
-### <span id="">Function VECTOR-POP</span>
+### <span id="">函数 VECTOR-POP</span>
 
 * 语法(Syntax):
 
-vector-pop vector => element
+        vector-pop vector => element
 
 * 参数和值(Arguments and Values):
 
-vector---a vector with a fill pointer.
-
-element---一个对象.
+        vector---一个带有填充指针的向量.
+        element---一个对象.
 
 * 描述(Description):
 
-Decreases the fill pointer of vector by one, and retrieves the element of vector that is designated by the new fill pointer.
+        向量 vector 的填充指针递减一, 并且检索向量 vector 中由这个新的填充指针所指示的元素.
 
 * 示例(Examples):
 
- (vector-push (setq fable (list 'fable))
-              (setq fa (make-array 8
-                                   :fill-pointer 2
-                                   :initial-element 'sisyphus))) =>  2 
- (fill-pointer fa) =>  3 
- (eq (vector-pop fa) fable) =>  true
- (vector-pop fa) =>  SISYPHUS 
- (fill-pointer fa) =>  1 
+    ```LISP
+    (vector-push (setq fable (list 'fable))
+                  (setq fa (make-array 8
+                                      :fill-pointer 2
+                                      :initial-element 'sisyphus))) =>  2 
+    (fill-pointer fa) =>  3 
+    (eq (vector-pop fa) fable) =>  true
+    (vector-pop fa) =>  SISYPHUS 
+    (fill-pointer fa) =>  1 
+    ```
 
 * 副作用(Side Effects):
 
-The fill pointer is decreased by one.
+        填充指针递减一.
 
 * 受此影响(Affected By):
 
-The value of the fill pointer.
+        这个填充指针的值.
 
 * 异常情况(Exceptional Situations):
 
-An error of type type-error is signaled if vector does not have a fill pointer.
+        如果向量 vector 没有一个填充指针那么应该发出一个 type-error 类型的错误.
 
-If the fill pointer is zero, vector-pop signals an error of type error.
+        如果填充指针是零, vector-pop 会发出一个 error 类型的错误.
 
 * 也见(See Also):
 
-vector-push, vector-push-extend, fill-pointer
+        vector-push, vector-push-extend, fill-pointer
 
 * 注意(Notes): None. 
 
-### <span id="">Function VECTOR-PUSH, VECTOR-PUSH-EXTEND</span>
+### <span id="">函数 VECTOR-PUSH, VECTOR-PUSH-EXTEND</span>
 
 * 语法(Syntax):
 
-vector-push new-element vector => new-index-p
+        vector-push new-element vector => new-index-p
 
-vector-push-extend new-element vector &optional extension => new-index
+        vector-push-extend new-element vector &optional extension => new-index
 
 * 参数和值(Arguments and Values):
 
-new-element---一个对象.
-
-vector---a vector with a fill pointer.
-
-extension---a positive integer. The default is implementation-dependent.
-
-new-index-p---a valid array index for vector, or nil.
-
-new-index---a valid array index for vector.
+        new-element---一个对象.
+        vector---一个带有填充指针的向量.
+        extension---一个正整数. 默认是依赖于具体实现的.
+        new-index-p---对于 vector 的一个有效数组索引, 或者 nil.
+        new-index---对于 vector 的一个有效数组索引.
 
 * 描述(Description):
 
-vector-push and vector-push-extend store new-element in vector. vector-push attempts to store new-element in the element of vector designated by the fill pointer, and to increase the fill pointer by one. If the (>= (fill-pointer vector) (array-dimension vector 0)), neither vector nor its fill pointer are affected. Otherwise, the store and increment take place and vector-push returns the former value of the fill pointer which is one less than the one it leaves in vector.
+        vector-push 和 vector-push-extend 存储新元素 new-element 到向量 vector 中. vector-push 尝试去存储 new-element 到 vector 的由填充指针所表示的元素中, 并且对填充指针加一. 如果 (>= (fill-pointer vector) (array-dimension vector 0)), 不管是 vector 还是它的填充指针都不会被影响. 否则, 这个存储和递增就会发生并且 vector-push 返回这个填充指针之前的值, 它比离开这个向量时的值小 1.
 
-vector-push-extend is just like vector-push except that if the fill pointer gets too large, vector is extended using adjust-array so that it can contain more elements. Extension is the minimum number of elements to be added to vector if it must be extended.
+        vector-push-extend 就像 vector-push 除了当填充指针太大时, vector 使用 adjust-array 来扩展这样它就可以包含更多元素. 如果这个 vector 必须要被扩展那么 extension 就是要被添加给它的最小数量的元素.
 
-vector-push and vector-push-extend return the index of new-element in vector. If (>= (fill-pointer vector) (array-dimension vector 0)), vector-push returns nil.
+        vector-push 和 vector-push-extend 返回这个 new-element 在 vector 中的索引. 如果 (>= (fill-pointer vector) (array-dimension vector 0)), vector-push 返回 nil.
 
 * 示例(Examples):
 
- (vector-push (setq fable (list 'fable))
-              (setq fa (make-array 8 
-                                   :fill-pointer 2
-                                   :initial-element 'first-one))) =>  2 
- (fill-pointer fa) =>  3 
- (eq (aref fa 2) fable) =>  true
- (vector-push-extend #\X
-                    (setq aa 
-                          (make-array 5
-                                      :element-type 'character
-                                      :adjustable t
-                                      :fill-pointer 3))) =>  3 
- (fill-pointer aa) =>  4 
- (vector-push-extend #\Y aa 4) =>  4 
- (array-total-size aa) =>  at least 5 
- (vector-push-extend #\Z aa 4) =>  5 
- (array-total-size aa) =>  9 ;(or more)
+    ```LISP
+    (vector-push (setq fable (list 'fable))
+                  (setq fa (make-array 8 
+                                      :fill-pointer 2
+                                      :initial-element 'first-one))) =>  2 
+    (fill-pointer fa) =>  3 
+    (eq (aref fa 2) fable) =>  true
+    (vector-push-extend #\X
+                        (setq aa 
+                              (make-array 5
+                                          :element-type 'character
+                                          :adjustable t
+                                          :fill-pointer 3))) =>  3 
+    (fill-pointer aa) =>  4 
+    (vector-push-extend #\Y aa 4) =>  4 
+    (array-total-size aa) =>  at least 5 
+    (vector-push-extend #\Z aa 4) =>  5 
+    (array-total-size aa) =>  9 ;(or more)
+    ```
 
 * 受此影响(Affected By):
 
-The value of the fill pointer.
+        这个填充指针的值.
 
-How vector was created.
+        向量 vector 如果被创建.
 
 * 异常情况(Exceptional Situations):
 
-An error of type error is signaled by vector-push-extend if it tries to extend vector and vector is not actually adjustable.
+        如果 vector-push-extend 尝试去扩展向量 vector 而 vector 事实上是不可调整的, 那么应该发出一个 error 类型的错误.
 
-An error of type error is signaled if vector does not have a fill pointer.
+        如果向量 vector 没有一个填充指针那么应该发出一个 error 类型的错误.
 
 * 也见(See Also):
 
-adjustable-array-p, fill-pointer, vector-pop
+        adjustable-array-p, fill-pointer, vector-pop
 
 * 注意(Notes): None. 
 
-### <span id="">Function VECTORP</span>
+### <span id="">函数 VECTORP</span>
 
 * 语法(Syntax):
 
@@ -1629,7 +1630,7 @@ adjustable-array-p, fill-pointer, vector-pop
         (vectorp object) ==  (typep object 'vector)
 
 
-### <span id="">Accessor BIT, SBIT</span>
+### <span id="">访问器 BIT, SBIT</span>
 
 * 语法(Syntax):
 
@@ -1682,7 +1683,7 @@ adjustable-array-p, fill-pointer, vector-pop
         bit 和 sbit, 不像 char 和 schar, 允许第一个参数为一个任意维数的数组. 
 
 
-### <span id="">Function BIT-AND, BIT-ANDC1, BIT-ANDC2, BIT-EQV, BIT-IOR, BIT-NAND, BIT-NOR, BIT-NOT, BIT-ORC1, BIT-ORC2, BIT-XOR</span>
+### <span id="">函数 BIT-AND, BIT-ANDC1, BIT-ANDC2, BIT-EQV, BIT-IOR, BIT-NAND, BIT-NOR, BIT-NOT, BIT-ORC1, BIT-ORC2, BIT-XOR</span>
 
 * 语法(Syntax):
 
@@ -1768,7 +1769,7 @@ adjustable-array-p, fill-pointer, vector-pop
 
 * 注意(Notes): None. 
 
-### <span id="">Function BIT-VECTOR-P</span>
+### <span id="">函数 BIT-VECTOR-P</span>
 
 * 语法(Syntax):
 
@@ -1806,7 +1807,7 @@ adjustable-array-p, fill-pointer, vector-pop
         (bit-vector-p object) ==  (typep object 'bit-vector)
 
 
-### <span id="">Function SIMPLE-BIT-VECTOR-P</span>
+### <span id="">函数 SIMPLE-BIT-VECTOR-P</span>
 
 * 语法(Syntax):
 
