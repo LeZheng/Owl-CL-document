@@ -168,87 +168,83 @@ The upgraded array element type T2 of a type T1 is a function only of T1 itself;
 
 * 类优先级列表(Class Precedence List):
 
-array, t
+        array, t
 
 * 描述(Description):
 
-An array contains objects arranged according to a Cartesian coordinate system. An array provides mappings from a set of fixnums {i0,i1,...,ir-1} to corresponding elements of the array, where 0 <=ij < dj, r is the rank of the array, and dj is the size of dimension j of the array.
+        一个数组包含了根据一个笛卡儿坐标系统排列的对象. 一个数组提供了一个从 fixnum 的集合 {i0,i1,...,ir-1} 到对应数组元素的映射, 其中 0 <=ij < dj, r 是这个数组的维数, 并且 dj 是这个数组的维度 j 的大小.
 
-When an array is created, the program requesting its creation may declare that all elements are of a particular type, called the expressed array element type. The implementation is permitted to upgrade this type in order to produce the actual array element type, which is the element type for the array is actually specialized. See the function upgraded-array-element-type.
+        当一个数组被创建时, 请求这个它的创建的程序可能声明所有元素为一个特定类型, 称为表达数组元素类型. 具体实现允许去提升这个类型来产生实际数组元素类型, 它是这个数组被实际指定的元素类型. 见函数 upgraded-array-element-type.
 
 * 复合类型指定符类别(Compound Type Specifier Kind):
 
-Specializing.
+        详细的.
 
 * 复合类型指定符语法(Compound Type Specifier Syntax):
 
-array [{element-type | *} [dimension-spec]]
+        array [{element-type | *} [dimension-spec]]
 
-dimension-spec::= rank | * | ({dimension | *}*) 
+        dimension-spec::= rank | * | ({dimension | *}*) 
 
 * 复合类型指定符参数(Compound Type Specifier Arguments):
 
-dimension---a valid array dimension.
-
-element-type---a type specifier.
-
-rank---a non-negative fixnum.
+        dimension---一个有效数组大小.
+        element-type---一个类型指定符.
+        rank---一个非负 fixnum.
 
 * 复合类型指定符描述(Compound Type Specifier Description):
 
-This denotes the set of arrays whose element type, rank, and dimensions match any given element-type, rank, and dimensions. Specifically:
+        这个表示元素类型, 维数, 和大小匹配给定 element-type, rank, 和 dimensions 的数组的集合. 具体的说:
 
-If element-type is the symbol *, arrays are not excluded on the basis of their element type. Otherwise, only those arrays are included whose actual array element type is the result of upgrading element-type; see Section 15.1.2.1 (Array Upgrading).
+        如果 element-type 是符号 *, 数组不被排除在它们的元素类型的基础上 arrays are not excluded on the basis of their element type.<!--TODO 待校对--> 否则, 只包括那些实际数组元素类型是 element-type 的提升结果的数组; 见章节 15.1.2.1 (Array Upgrading).
 
-If the dimension-spec is a rank, the set includes only those arrays having that rank. If the dimension-spec is a list of dimensions, the set includes only those arrays having a rank given by the length of the dimensions, and having the indicated dimensions; in this case, * matches any value for the corresponding dimension. If the dimension-spec is the symbol *, the set is not restricted on the basis of rank or dimension.
+        如果这个 dimension-spec 是一个 rank, 这个集合只包括那些有着那个 rank 的数组. 如果这个 dimension-spec 一个 dimensions 的列表, 这个集合只包括那些有着由 dimensions 的长度给定的 rank 并且有着那个指明的 dimensions 的数组; 在这个情况中, * 匹配对应大小的任何值. 如果这个 dimension-spec 是符号 *, 这个集合不会被约束在维数或大小的基础上.
 
 * 也见(See Also):
 
-*print-array*, aref, make-array, vector, Section 2.4.8.12 (Sharpsign A), Section 22.1.3.8 (Printing Other Arrays)
+        *print-array*, aref, make-array, vector, 章节 2.4.8.12 (Sharpsign A), 章节 22.1.3.8 (Printing Other Arrays)
 
 * 注意(Notes):
 
-Note that the type (array t) is a proper subtype of the type (array *). The reason is that the type (array t) is the set of arrays that can hold any object (the elements are of type t, which includes all objects). On the other hand, the type (array *) is the set of all arrays whatsoever, including for example arrays that can hold only characters. The type (array character) is not a subtype of the type (array t); the two sets are disjoint because the type (array character) is not the set of all arrays that can hold characters, but rather the set of arrays that are specialized to hold precisely characters and no other objects. 
+        注意类型 (array t) 是类型 (array *) 的一个适当的子类型. 这个原因是类型 (array t) 是持有任何对象的数组的集合 (这些元素是类型 t, 它包括所有对象). 另一方面, 类型 (array *) 是所有数组的集合, 包括例如只持有字符的数组. 类型 (array character) 不是类型 (array t) 的一个子类型; 这两个集合是互斥的因为类型 (array character) 不是所有持有字符的数组的集合, 而是一组专门用来保存精确字符并且没有其他对象的数组的集合. 
 
 ### <span id="">Type SIMPLE-ARRAY</span>
 
 * 超类型(Supertypes):
 
-simple-array, array, t
+        simple-array, array, t
 
 * 描述(Description):
 
-The type of an array that is not displaced to another array, has no fill pointer, and is not expressly adjustable is a subtype of type simple-array. The concept of a simple array exists to allow the implementation to use a specialized representation and to allow the user to declare that certain values will always be simple arrays.
+        一个没有被转移到另一个数组, 没有填充指针, 并且不是明显可调整的数组是类型 simple-array 的一个子类型. 简单数组的概念是允许实现使用特定的表示, 并允许用户声明某些值总是简单的数组.
 
-The types simple-vector, simple-string, and simple-bit-vector are disjoint subtypes of type simple-array, for they respectively mean (simple-array t (*)), the union of all (simple-array c (*)) for any c being a subtype of type character, and (simple-array bit (*)).
+        类型 simple-vector, simple-string, 和 simple-bit-vector 类型 simple-array 的互斥的子类型, 对于它们分别意味着 (simple-array t (*)), 所有 c 为 character 类型的子类型的 (simple-array c (*)) 的并集, 以及 (simple-array bit (*)).
 
 * 复合类型指定符类别(Compound Type Specifier Kind):
 
-Specializing.
+        详细的.
 
 * 复合类型指定符语法(Compound Type Specifier Syntax):
 
-simple-array [{element-type | *} [dimension-spec]]
+        simple-array [{element-type | *} [dimension-spec]]
 
-dimension-spec::= rank | * | ({dimension | *}*) 
+        dimension-spec::= rank | * | ({dimension | *}*) 
 
 * 复合类型指定符参数(Compound Type Specifier Arguments):
 
-dimension---a valid array dimension.
-
-element-type---a type specifier.
-
-rank---a non-negative fixnum.
+        dimension---一个有效数组大小.
+        element-type---一个类型指定符.
+        rank---一个非负 fixnum.
 
 * 复合类型指定符描述(Compound Type Specifier Description):
 
-This compound type specifier is treated exactly as the corresponding compound type specifier for type array would be treated, except that the set is further constrained to include only simple arrays.
+        这个复合类型指定符被准确地当作 array 类型会被当作的对应复合类型指定符, 除了那个被进一步约束为只包含简单数组的集合.
 
 * 注意(Notes):
 
-It is implementation-dependent whether displaced arrays, vectors with fill pointers, or arrays that are actually adjustable are simple arrays.
+        没有实际存储的数组, 带有填充指针的向量, 或实际可调整的数组是否为简单数组是依赖于具体实现的.
 
-(simple-array *) refers to all simple arrays regardless of element type, (simple-array type-specifier) refers only to those simple arrays that can result from giving type-specifier as the :element-type argument to make-array. 
+        (simple-array *) 不管元素类型引用了所有简单数组, (simple-array type-specifier) 只引用那些可以通过给定 type-specifier 作为 make-array 的 :element-type 参数得到的简单数组. 
 
 
 ### <span id="">System Class VECTOR</span>
@@ -275,9 +271,9 @@ vector [{element-type | *} [{size | *}]]
 
 * 复合类型指定符参数(Compound Type Specifier Arguments):
 
-size---a non-negative fixnum.
+size---一个非负 fixnum.
 
-element-type---a type specifier.
+element-type---一个类型指定符.
 
 * 复合类型指定符描述(Compound Type Specifier Description):
 
@@ -401,13 +397,13 @@ make-array dimensions &key element-type initial-element initial-contents adjusta
 
 dimensions---a designator for a list of valid array dimensions.
 
-element-type---a type specifier. The default is t.
+element-type---一个类型指定符. The default is t.
 
-initial-element---an object.
+initial-element---一个对象.
 
-initial-contents---an object.
+initial-contents---一个对象.
 
-adjustable---a generalized boolean. The default is nil.
+adjustable---一个广义 boolean. The default is nil.
 
 fill-pointer---a valid fill pointer for the array to be created, or t or nil. The default is nil.
 
@@ -541,11 +537,11 @@ array---an array.
 
 new-dimensions---a valid array dimension or a list of valid array dimensions.
 
-element-type---a type specifier.
+element-type---一个类型指定符.
 
-initial-element---an object. Initial-element must not be supplied if either initial-contents or displaced-to is supplied.
+initial-element---一个对象. Initial-element must not be supplied if either initial-contents or displaced-to is supplied.
 
-initial-contents---an object. If array has rank greater than zero, then initial-contents is composed of nested sequences, the depth of which must equal the rank of array. Otherwise, array is zero-dimensional and initial-contents supplies the single element. initial-contents must not be supplied if either initial-element or displaced-to is given.
+initial-contents---一个对象. If array has rank greater than zero, then initial-contents is composed of nested sequences, the depth of which must equal the rank of array. Otherwise, array is zero-dimensional and initial-contents supplies the single element. initial-contents must not be supplied if either initial-element or displaced-to is given.
 
 fill-pointer---a valid fill pointer for the array to be created, or t, or nil. The default is nil.
 
@@ -669,7 +665,7 @@ adjustable-array-p array => generalized-boolean
 
 array---an array.
 
-generalized-boolean---a generalized boolean.
+generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
@@ -711,7 +707,7 @@ array---an array.
 
 subscripts---a list of valid array indices for the array.
 
-element, new-element---an object.
+element, new-element---一个对象.
 
 * 描述(Description):
 
@@ -828,7 +824,7 @@ array-element-type array => typespec
 
 array---an array.
 
-typespec---a type specifier.
+typespec---一个类型指定符.
 
 * 描述(Description):
 
@@ -871,7 +867,7 @@ array-has-fill-pointer-p array => generalized-boolean
 
 array---an array.
 
-generalized-boolean---a generalized boolean.
+generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
@@ -913,7 +909,7 @@ array---an array.
 
 displaced-to---an array or nil.
 
-displaced-index-offset---a non-negative fixnum.
+displaced-index-offset---一个非负 fixnum.
 
 * 描述(Description):
 
@@ -959,7 +955,7 @@ array---an array.
 
 subscripts---a list of integers of length equal to the rank of the array.
 
-generalized-boolean---a generalized boolean.
+generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
@@ -1129,9 +1125,9 @@ arrayp object => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-object---an object.
+object---一个对象.
 
-generalized-boolean---a generalized boolean.
+generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
@@ -1219,7 +1215,7 @@ array---an array.
 
 index---a valid array row-major index for the array.
 
-element, new-element---an object.
+element, new-element---一个对象.
 
 * 描述(Description):
 
@@ -1259,11 +1255,11 @@ upgraded-array-element-type typespec &optional environment => upgraded-typespec
 
 * 参数和值(Arguments and Values):
 
-typespec---a type specifier.
+typespec---一个类型指定符.
 
 environment---an environment object. The default is nil, denoting the null lexical environment and the current global environment.
 
-upgraded-typespec---a type specifier.
+upgraded-typespec---一个类型指定符.
 
 * 描述(Description):
 
@@ -1362,9 +1358,9 @@ simple-vector-p object => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-object---an object.
+object---一个对象.
 
-generalized-boolean---a generalized boolean.
+generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
@@ -1444,7 +1440,7 @@ vector &rest objects => vector
 
 * 参数和值(Arguments and Values):
 
-object---an object.
+object---一个对象.
 
 vector---a vector of type (vector t *).
 
@@ -1492,7 +1488,7 @@ vector-pop vector => element
 
 vector---a vector with a fill pointer.
 
-element---an object.
+element---一个对象.
 
 * 描述(Description):
 
@@ -1539,7 +1535,7 @@ vector-push-extend new-element vector &optional extension => new-index
 
 * 参数和值(Arguments and Values):
 
-new-element---an object.
+new-element---一个对象.
 
 vector---a vector with a fill pointer.
 
@@ -1599,25 +1595,26 @@ adjustable-array-p, fill-pointer, vector-pop
 
 * 语法(Syntax):
 
-vectorp object => generalized-boolean
+        vectorp object => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-object---an object.
-
-generalized-boolean---a generalized boolean.
+        object---一个对象.
+        generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
-Returns true if object is of type vector; otherwise, returns false.
+        如果对象 object 为 vector 类型就返回 true; 否则, 返回 false.
 
 * 示例(Examples):
 
- (vectorp "aaaaaa") =>  true
- (vectorp (make-array 6 :fill-pointer t)) =>  true
- (vectorp (make-array '(2 3 4))) =>  false
- (vectorp #*11) =>  true
- (vectorp #b11) =>  false
+    ```LISP
+    (vectorp "aaaaaa") =>  true
+    (vectorp (make-array 6 :fill-pointer t)) =>  true
+    (vectorp (make-array '(2 3 4))) =>  false
+    (vectorp #*11) =>  true
+    (vectorp #b11) =>  false
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -1629,46 +1626,46 @@ Returns true if object is of type vector; otherwise, returns false.
 
 * 注意(Notes):
 
- (vectorp object) ==  (typep object 'vector)
+        (vectorp object) ==  (typep object 'vector)
 
 
 ### <span id="">Accessor BIT, SBIT</span>
 
 * 语法(Syntax):
 
-bit bit-array &rest subscripts => bit
+        bit bit-array &rest subscripts => bit
 
-sbit bit-array &rest subscripts => bit
+        sbit bit-array &rest subscripts => bit
 
-(setf (bit bit-array &rest subscripts) new-bit)
+        (setf (bit bit-array &rest subscripts) new-bit)
 
-(setf (sbit bit-array &rest subscripts) new-bit)
+        (setf (sbit bit-array &rest subscripts) new-bit)
 
 * 参数和值(Arguments and Values):
 
-bit-array---for bit, a bit array; for sbit, a simple bit array.
-
-subscripts---a list of valid array indices for the bit-array.
-
-bit---a bit.
+        bit-array---对于 bit, 是一个位数组; 对于 sbit, 一个 simple-array.
+        subscripts---bit-array 的一个有效数组索引的列表.
+        bit---一个 bit.
 
 * 描述(Description):
 
-bit and sbit access the bit-array element specified by subscripts.
-
-These functions ignore the fill pointer when accessing elements.
+        bit 和 sbit 访问通过 subscripts 指定的 bit-array 元素.
+        
+        当访问元素时, 这些函数忽略填充指针.
 
 * 示例(Examples):
 
- (bit (setq ba (make-array 8 
-                            :element-type 'bit 
-                            :initial-element 1))
-       3) =>  1
- (setf (bit ba 3) 0) =>  0
- (bit ba 3) =>  0
- (sbit ba 5) =>  1
- (setf (sbit ba 5) 1) =>  1
- (sbit ba 5) =>  1
+    ```LISP
+    (bit (setq ba (make-array 8 
+                                :element-type 'bit 
+                                :initial-element 1))
+          3) =>  1
+    (setf (bit ba 3) 0) =>  0
+    (bit ba 3) =>  0
+    (sbit ba 5) =>  1
+    (setf (sbit ba 5) 1) =>  1
+    (sbit ba 5) =>  1
+    ```
 
 * 受此影响(Affected By): None.
 
@@ -1676,94 +1673,90 @@ These functions ignore the fill pointer when accessing elements.
 
 * 也见(See Also):
 
-aref, Section 3.2.1 (Compiler Terminology)
+        aref, 章节 3.2.1 (Compiler Terminology)
 
 * 注意(Notes):
 
-bit and sbit are like aref except that they require arrays to be a bit array and a simple bit array, respectively.
+        bit 和 sbit 类似于 aref 除了它们要求数组分别为一个位数组和 simple-array.
 
-bit and sbit, unlike char and schar, allow the first argument to be an array of any rank. 
+        bit 和 sbit, 不像 char 和 schar, 允许第一个参数为一个任意维数的数组. 
 
 
 ### <span id="">Function BIT-AND, BIT-ANDC1, BIT-ANDC2, BIT-EQV, BIT-IOR, BIT-NAND, BIT-NOR, BIT-NOT, BIT-ORC1, BIT-ORC2, BIT-XOR</span>
 
 * 语法(Syntax):
 
-bit-and bit-array1 bit-array2 &optional opt-arg => resulting-bit-array
+        bit-and bit-array1 bit-array2 &optional opt-arg => resulting-bit-array
 
-bit-andc1 bit-array1 bit-array2 &optional opt-arg => resulting-bit-array
+        bit-andc1 bit-array1 bit-array2 &optional opt-arg => resulting-bit-array
 
-bit-andc2 bit-array1 bit-array2 &optional opt-arg => resulting-bit-array
+        bit-andc2 bit-array1 bit-array2 &optional opt-arg => resulting-bit-array
 
-bit-eqv bit-array1 bit-array2 &optional opt-arg => resulting-bit-array
+        bit-eqv bit-array1 bit-array2 &optional opt-arg => resulting-bit-array
 
-bit-ior bit-array1 bit-array2 &optional opt-arg => resulting-bit-array
+        bit-ior bit-array1 bit-array2 &optional opt-arg => resulting-bit-array
 
-bit-nand bit-array1 bit-array2 &optional opt-arg => resulting-bit-array
+        bit-nand bit-array1 bit-array2 &optional opt-arg => resulting-bit-array
 
-bit-nor bit-array1 bit-array2 &optional opt-arg => resulting-bit-array
+        bit-nor bit-array1 bit-array2 &optional opt-arg => resulting-bit-array
 
-bit-orc1 bit-array1 bit-array2 &optional opt-arg => resulting-bit-array
+        bit-orc1 bit-array1 bit-array2 &optional opt-arg => resulting-bit-array
 
-bit-orc2 bit-array1 bit-array2 &optional opt-arg => resulting-bit-array
+        bit-orc2 bit-array1 bit-array2 &optional opt-arg => resulting-bit-array
 
-bit-xor bit-array1 bit-array2 &optional opt-arg => resulting-bit-array
+        bit-xor bit-array1 bit-array2 &optional opt-arg => resulting-bit-array
 
-bit-not bit-array &optional opt-arg => resulting-bit-array
+        bit-not bit-array &optional opt-arg => resulting-bit-array
 
 * 参数和值(Arguments and Values):
 
-bit-array, bit-array1, bit-array2---a bit array.
-
-Opt-arg---a bit array, or t, or nil. The default is nil.
-
-Bit-array, bit-array1, bit-array2, and opt-arg (if an array) must all be of the same rank and dimensions.
-
-resulting-bit-array---a bit array.
+        bit-array, bit-array1, bit-array2---一个位数组.
+        Opt-arg---一个位数组, 或 t, 或 nil. 默认是 nil.
+        Bit-array, bit-array1, bit-array2, 和 opt-arg (if an array) 必须全都是相同的维数和大小.
+        resulting-bit-array---一个位数组.
 
 * 描述(Description):
 
-These functions perform bit-wise logical operations on bit-array1 and bit-array2 and return an array of matching rank and dimensions, such that any given bit of the result is produced by operating on corresponding bits from each of the arguments.
+        这些函数在 bit-array1 和 bit-array2 上执行按位的逻辑操作并且返回一个维数和大小匹配的数组, 如此以至于这个结果中的任何位都是有在这些参数的每一个的对应位上操作所产生的.
 
-In the case of bit-not, an array of rank and dimensions matching bit-array is returned that contains a copy of bit-array with all the bits inverted.
+        在 bit-not 的情况下, 返回一个和 bit-array 维数和大小匹配的数组, 这个数组包含了 bit-array 的一个所有位反转的拷贝.
 
-If opt-arg is of type (array bit) the contents of the result are destructively placed into opt-arg. If opt-arg is the symbol t, bit-array or bit-array1 is replaced with the result; if opt-arg is nil or omitted, a new array is created to contain the result.
+        如果 opt-arg 是类型 (array bit) 那么这个结果的内容被破坏性地放置到 opt-arg 中. 如果 opt-arg 是符号 t, bit-array 或 bit-array1 会被这个结果替换; 如果 opt-arg 是 nil 或省略了, 那么就创建一个新的数组来包含这个结果.
 
-The next figure indicates the logical operation performed by each of the functions.
-
+        下面这段指出有这些函数中的每一个执行的逻辑操作.
                                                                                                        
-Function                                                 Operation                                     
-----------
-                                                                                                       
-                                                         
-bit-and                                                  and                                           
-bit-eqv                                                  equivalence (exclusive nor)                   
-bit-not                                                  complement                                    
-bit-ior                                                  inclusive or                                  
-bit-xor                                                  exclusive or                                  
-bit-nand                                                 complement of bit-array1 and bit-array2       
-bit-nor                                                  complement of bit-array1 or bit-array2        
-bit-andc1                                                and complement of bit-array1 with bit-array2  
-bit-andc2                                                and bit-array1 with complement of bit-array2  
-bit-orc1                                                 or complement of bit-array1 with bit-array2   
-bit-orc2                                                 or bit-array1 with complement of bit-array2   
-                                                                                                       
-Figure 15-4.  Bit-wise Logical Operations on Bit Arrays  
+|Function                         |                        Operation                                     |
+|---|---|
+|bit-and                          |                        and                                           |
+|bit-eqv                          |                        equivalence (exclusive nor)                   |
+|bit-not                          |                        complement                                    |
+|bit-ior                          |                        inclusive or                                  |
+|bit-xor                          |                        exclusive or                                  |
+|bit-nand                         |                        complement of bit-array1 and bit-array2       |
+|bit-nor                          |                        complement of bit-array1 or bit-array2        |
+|bit-andc1                        |                        and complement of bit-array1 with bit-array2  |
+|bit-andc2                        |                        and bit-array1 with complement of bit-array2  |
+|bit-orc1                         |                        or complement of bit-array1 with bit-array2   |
+|bit-orc2                         |                        or bit-array1 with complement of bit-array2   |
+                                                                                                          
+    Figure 15-4.  Bit-wise Logical Operations on Bit Arrays  
 
 * 示例(Examples):
 
- (bit-and (setq ba #*11101010) #*01101011) =>  #*01101010
- (bit-and #*1100 #*1010) =>  #*1000      
- (bit-andc1 #*1100 #*1010) =>  #*0010
- (setq rba (bit-andc2 ba #*00110011 t)) =>  #*11001000
- (eq rba ba) =>  true
- (bit-not (setq ba #*11101010)) =>  #*00010101
- (setq rba (bit-not ba 
-                     (setq tba (make-array 8 
-                                           :element-type 'bit))))
-=>  #*00010101
- (equal rba tba) =>  true
- (bit-xor #*1100 #*1010) =>  #*0110
+    ```LISP
+    (bit-and (setq ba #*11101010) #*01101011) =>  #*01101010
+    (bit-and #*1100 #*1010) =>  #*1000      
+    (bit-andc1 #*1100 #*1010) =>  #*0010
+    (setq rba (bit-andc2 ba #*00110011 t)) =>  #*11001000
+    (eq rba ba) =>  true
+    (bit-not (setq ba #*11101010)) =>  #*00010101
+    (setq rba (bit-not ba 
+                        (setq tba (make-array 8 
+                                              :element-type 'bit))))
+    =>  #*00010101
+    (equal rba tba) =>  true
+    (bit-xor #*1100 #*1010) =>  #*0110
+    ```
 
 * 受此影响(Affected By): None.
 
@@ -1771,7 +1764,7 @@ Figure 15-4.  Bit-wise Logical Operations on Bit Arrays
 
 * 也见(See Also):
 
-lognot, logand
+        lognot, logand
 
 * 注意(Notes): None. 
 
@@ -1779,25 +1772,26 @@ lognot, logand
 
 * 语法(Syntax):
 
-bit-vector-p object => generalized-boolean
+        bit-vector-p object => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-object---an object.
-
-generalized-boolean---a generalized boolean.
+        object---一个对象.
+        generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
-Returns true if object is of type bit-vector; otherwise, returns false.
+        如果对象 object 是 bit-vector 类型的就返回 true; 否则, 返回 false.
 
 * 示例(Examples):
 
- (bit-vector-p (make-array 6 
-                           :element-type 'bit 
-                           :fill-pointer t)) =>  true
- (bit-vector-p #*) =>  true
- (bit-vector-p (make-array 6)) =>  false
+    ```LISP
+    (bit-vector-p (make-array 6 
+                              :element-type 'bit 
+                              :fill-pointer t)) =>  true
+    (bit-vector-p #*) =>  true
+    (bit-vector-p (make-array 6)) =>  false
+    ```
 
 * 受此影响(Affected By): None.
 
@@ -1805,33 +1799,34 @@ Returns true if object is of type bit-vector; otherwise, returns false.
 
 * 也见(See Also):
 
-typep
+        typep
 
 * 注意(Notes):
 
- (bit-vector-p object) ==  (typep object 'bit-vector)
+        (bit-vector-p object) ==  (typep object 'bit-vector)
 
 
 ### <span id="">Function SIMPLE-BIT-VECTOR-P</span>
 
 * 语法(Syntax):
 
-simple-bit-vector-p object => generalized-boolean
+        simple-bit-vector-p object => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-object---an object.
-
-generalized-boolean---a generalized boolean.
+        object---一个对象.
+        generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
-Returns true if object is of type simple-bit-vector; otherwise, returns false.
+        如果对象 object 是 simple-bit-vector 类型就返回 true; 否则, 返回 false.
 
 * 示例(Examples):
 
- (simple-bit-vector-p (make-array 6)) =>  false
- (simple-bit-vector-p #*) =>  true
+    ```LISP
+    (simple-bit-vector-p (make-array 6)) =>  false
+    (simple-bit-vector-p #*) =>  true
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -1841,11 +1836,11 @@ Returns true if object is of type simple-bit-vector; otherwise, returns false.
 
 * 也见(See Also):
 
-simple-vector-p
+        simple-vector-p
 
 * 注意(Notes):
 
- (simple-bit-vector-p object) ==  (typep object 'simple-bit-vector)
+        (simple-bit-vector-p object) ==  (typep object 'simple-bit-vector)
 
 
 
