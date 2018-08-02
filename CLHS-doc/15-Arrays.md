@@ -251,139 +251,138 @@ The upgraded array element type T2 of a type T1 is a function only of T1 itself;
 
 * 类优先级列表(Class Precedence List):
 
-vector, array, sequence, t
+        vector, array, sequence, t
 
 * 描述(Description):
 
-Any one-dimensional array is a vector.
+        任何一维数组都是一个向量.
 
-The type vector is a subtype of type array; for all types x, (vector x) is the same as (array x (*)).
+        类型 vector 是类型 array 的一个子类型; 对于所有类型 x, (vector x) 和 (array x (*)) 相同.
 
-The type (vector t), the type string, and the type bit-vector are disjoint subtypes of type vector.
+        类型 (vector t), 类型 string, 还有类型 bit-vector 是类型 vector 的互斥子类型.
 
 * 复合类型指定符类别(Compound Type Specifier Kind):
 
-Specializing.
+        详细的.
 
 * 复合类型指定符语法(Compound Type Specifier Syntax):
 
-vector [{element-type | *} [{size | *}]]
+        vector [{element-type | *} [{size | *}]]
 
 * 复合类型指定符参数(Compound Type Specifier Arguments):
 
-size---一个非负 fixnum.
-
-element-type---一个类型指定符.
+        size---一个非负 fixnum.
+        element-type---一个类型指定符.
 
 * 复合类型指定符描述(Compound Type Specifier Description):
 
-This denotes the set of specialized vectors whose element type and dimension match the specified values. Specifically:
+        这个表示那个元素类型和大小都匹配指定值的特化序列的集合. 具体来说:
 
-If element-type is the symbol *, vectors are not excluded on the basis of their element type. Otherwise, only those vectors are included whose actual array element type is the result of upgrading element-type; see Section 15.1.2.1 (Array Upgrading).
+        如果 element-type 是符号 *, vectors are not excluded on the basis of their element type.<!--待翻译--> 否则, 只有那些实际数组元素类型是 element-type 提升的结果的向量会被包括进去; 见章节 15.1.2.1 (Array Upgrading).
 
-If a size is specified, the set includes only those vectors whose only dimension is size. If the symbol * is specified instead of a size, the set is not restricted on the basis of dimension.
+        如果指定了一个 size, 那么这个集合只包括那些仅有的大小是 size 的向量. 如果符号 * 被指定而不是一个 size, 这个集合不会被约束在这个大小的基础上.
 
 * 也见(See Also):
 
-Section 15.1.2.2 (Required Kinds of Specialized Arrays), Section 2.4.8.3 (Sharpsign Left-Parenthesis), Section 22.1.3.7 (Printing Other Vectors), Section 2.4.8.12 (Sharpsign A)
+        章节 15.1.2.2 (Required Kinds of Specialized Arrays), 章节 2.4.8.3 (Sharpsign Left-Parenthesis), 章节 22.1.3.7 (Printing Other Vectors), 章节 2.4.8.12 (Sharpsign A)
 
 * 注意(Notes):
 
-The type (vector e s) is equivalent to the type (array e (s)).
+        类型 (vector e s) 等价于类型 (array e (s)).
 
-The type (vector bit) has the name bit-vector.
+        类型 (vector bit) 有着名称 bit-vector.
 
-The union of all types (vector C), where C is any subtype of character, has the name string.
+        所有类型 (vector C) 的并集, 其中 C 是 character 的任意子类型, 有着名字 string.
 
-(vector *) refers to all vectors regardless of element type, (vector type-specifier) refers only to those vectors that can result from giving type-specifier as the :element-type argument to make-array. 
+        (vector *) 引用所有的向量不管元素类型是什么, (vector type-specifier) 只引用那些可以通过给定 type-specifier 作为 make-array 的 :element-type 参数得到的向量. 
 
 
 ### <span id="">类型 SIMPLE-VECTOR</span>
 
 * 超类型(Supertypes):
 
-simple-vector, vector, simple-array, array, sequence, t
+        simple-vector, vector, simple-array, array, sequence, t
 
 * 描述(Description):
 
-The type of a vector that is not displaced to another array, has no fill pointer, is not expressly adjustable and is able to hold elements of any type is a subtype of type simple-vector.
+        一个不会被转移到另一个数组中, 没有填充指针, 不是明显可调整的并且可能持有任何类型元素的向量的类型是 simple-vector 的子类型.
 
-The type simple-vector is a subtype of type vector, and is a subtype of type (vector t).
+        类型 simple-vector 类型 vector 的一个子类型, 并且是类型 (vector t) 的子类型.
 
 * 复合类型指定符类别(Compound Type Specifier Kind):
 
-Specializing.
+        详细的.
 
 * 复合类型指定符语法(Compound Type Specifier Syntax):
 
-simple-vector [size]
+        simple-vector [size]
 
 * 复合类型指定符参数(Compound Type Specifier Arguments):
 
-size---a non-negative fixnum, or the symbol *. The default is the symbol *.
+        size---一个非负 fixnum, 或者符号 *. 默认是符号 *.
 
 * 复合类型指定符描述(Compound Type Specifier Description):
 
-This is the same as (simple-array t (size)). 
+        这个和 (simple-array t (size)) 是相同的. 
 
 
 ### <span id="">系统类 BIT-VECTOR</span>
 
 * 类优先级列表(Class Precedence List):
 
-bit-vector, vector, array, sequence, t
+        bit-vector, vector, array, sequence, t
 
 * 描述(Description):
 
-A bit vector is a vector the element type of which is bit.
+        一个位向量是一个元素类型为 bit 的向量.
 
-The type bit-vector is a subtype of type vector, for bit-vector means (vector bit).
+        例子 bit-vector 类型 vector 的一个子类型, 对于 bit-vector 意味着 (vector bit).
 
 * 复合类型指定符类别(Compound Type Specifier Kind):
 
-Abbreviating.
+        缩写的.
 
 * 复合类型指定符语法(Compound Type Specifier Syntax):
 
-bit-vector [size]
+        bit-vector [size]
 
 * 复合类型指定符参数(Compound Type Specifier Arguments):
 
-size---a non-negative fixnum, or the symbol *.
+        size---一个非负 fixnum, 或者符号 *.
 
 * 复合类型指定符描述(Compound Type Specifier Description):
 
-This denotes the same type as the type (array bit (size)); that is, the set of bit vectors of size size.
+        这个表示和类型 (array bit (size)) 相同的类型; 这也就是说, 大小为 size 的位向量的集合.
 
 * 也见(See Also):
 
-Section 2.4.8.4 (Sharpsign Asterisk), Section 22.1.3.6 (Printing Bit Vectors), Section 15.1.2.2 (Required Kinds of Specialized Arrays) 
+        章节 2.4.8.4 (Sharpsign Asterisk), 章节 22.1.3.6 (Printing Bit Vectors), 章节 15.1.2.2 (Required Kinds of Specialized Arrays) 
 
 ### <span id="">类型 SIMPLE-BIT-VECTOR</span>
 
 * 超类型(Supertypes):
 
-simple-bit-vector, bit-vector, vector, simple-array, array, sequence, t
+        simple-bit-vector, bit-vector, vector, simple-array, array, sequence, t
 
 * 描述(Description):
 
-The type of a bit vector that is not displaced to another array, has no fill pointer, and is not expressly adjustable is a subtype of type simple-bit-vector.
+        一个不会被转移到另一个数组中, 没有填充指针, 并且不是明显可调整的位向量的类型是类型 simple-bit-vector 的一个子类型.
 
 * 复合类型指定符类别(Compound Type Specifier Kind):
 
-Abbreviating.
+        缩写的.
 
 * 复合类型指定符语法(Compound Type Specifier Syntax):
 
-simple-bit-vector [size]
+        simple-bit-vector [size]
 
 * 复合类型指定符参数(Compound Type Specifier Arguments):
 
-size---a non-negative fixnum, or the symbol *. The default is the symbol *.
+        size---一个非负 fixnum, 或者符号 *. 默认是符号 *.
 
 * 复合类型指定符描述(Compound Type Specifier Description):
 
-This denotes the same type as the type (simple-array bit (size)); that is, the set of simple bit vectors of size size. 
+        这个表示和类型 (simple-array bit (size)) 相同的类型; 这也就是说, 大小为 size 的简单位向量的集合. 
 
 ### <span id="">函数 MAKE-ARRAY</span>
 
@@ -411,7 +410,7 @@ displaced-to---an array or nil. The default is nil. This option must not be supp
 
 displaced-index-offset---a valid array row-major index for displaced-to. The default is 0. This option must not be supplied unless a non-nil displaced-to is supplied.
 
-new-array---an array.
+new-array---一个数组.
 
 * 描述(Description):
 
@@ -533,7 +532,7 @@ adjust-array array new-dimensions &key element-type initial-element initial-cont
 
 * 参数和值(Arguments and Values):
 
-array---an array.
+array---一个数组.
 
 new-dimensions---a valid array dimension or a list of valid array dimensions.
 
@@ -549,7 +548,7 @@ displaced-to---an array or nil. initial-elements and initial-contents must not b
 
 displaced-index-offset---an object of type (fixnum 0 n) where n is (array-total-size displaced-to). displaced-index-offset may be supplied only if displaced-to is supplied.
 
-adjusted-array---an array.
+adjusted-array---一个数组.
 
 * 描述(Description):
 
@@ -663,7 +662,7 @@ adjustable-array-p array => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-array---an array.
+array---一个数组.
 
 generalized-boolean---一个广义 boolean.
 
@@ -703,7 +702,7 @@ aref array &rest subscripts => element
 
 * 参数和值(Arguments and Values):
 
-array---an array.
+array---一个数组.
 
 subscripts---a list of valid array indices for the array.
 
@@ -751,11 +750,11 @@ array-dimension array axis-number => dimension
 
 * 参数和值(Arguments and Values):
 
-array---an array.
+array---一个数组.
 
 axis-number---an integer greater than or equal to zero and less than the rank of the array.
 
-dimension---a non-negative integer.
+dimension---一个非负整数.
 
 * 描述(Description):
 
@@ -788,7 +787,7 @@ array-dimensions array => dimensions
 
 * 参数和值(Arguments and Values):
 
-array---an array.
+array---一个数组.
 
 dimensions---a list of integers.
 
@@ -822,7 +821,7 @@ array-element-type array => typespec
 
 * 参数和值(Arguments and Values):
 
-array---an array.
+array---一个数组.
 
 typespec---一个类型指定符.
 
@@ -865,7 +864,7 @@ array-has-fill-pointer-p array => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-array---an array.
+array---一个数组.
 
 generalized-boolean---一个广义 boolean.
 
@@ -905,7 +904,7 @@ array-displacement array => displaced-to, displaced-index-offset
 
 * 参数和值(Arguments and Values):
 
-array---an array.
+array---一个数组.
 
 displaced-to---an array or nil.
 
@@ -947,28 +946,28 @@ make-array
 
 * 语法(Syntax):
 
-array-in-bounds-p array &rest subscripts => generalized-boolean
+        array-in-bounds-p array &rest subscripts => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-array---an array.
-
-subscripts---a list of integers of length equal to the rank of the array.
-
-generalized-boolean---一个广义 boolean.
+        array---一个数组.
+        subscripts---一个长度等价于数组 array 的维数的整数列表.
+        generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
-Returns true if the subscripts are all in bounds for array; otherwise returns false. (If array is a vector with a fill pointer, that fill pointer is ignored.)
+        如果 subscripts 都在输入 array 的边界内就返回 true; 否则返回 false. (如果 array 是一个带有填充指针的向量, 那么忽略那个填充指针.)
 
 * 示例(Examples):
 
- (setq a (make-array '(7 11) :element-type 'string-char))
- (array-in-bounds-p a 0  0) =>  true
- (array-in-bounds-p a 6 10) =>  true
- (array-in-bounds-p a 0 -1) =>  false
- (array-in-bounds-p a 0 11) =>  false
- (array-in-bounds-p a 7  0) =>  false
+    ```LISP
+    (setq a (make-array '(7 11) :element-type 'string-char))
+    (array-in-bounds-p a 0  0) =>  true
+    (array-in-bounds-p a 6 10) =>  true
+    (array-in-bounds-p a 0 -1) =>  false
+    (array-in-bounds-p a 0 11) =>  false
+    (array-in-bounds-p a 7  0) =>  false
+    ```
 
 * 受此影响(Affected By): None.
 
@@ -976,46 +975,47 @@ Returns true if the subscripts are all in bounds for array; otherwise returns fa
 
 * 也见(See Also):
 
-array-dimensions
+        array-dimensions
 
 * 注意(Notes):
 
- (array-in-bounds-p array subscripts)   
- ==  (and (not (some #'minusp (list subscripts)))
+        (array-in-bounds-p array subscripts)   
+        ==  (and (not (some #'minusp (list subscripts)))
 
 
 ### <span id="">函数 ARRAY-RANK</span>
 
 * 语法(Syntax):
 
-array-rank array => rank
+        array-rank array => rank
 
 * 参数和值(Arguments and Values):
 
-array---an array.
-
-rank---a non-negative integer.
+        array---一个数组.
+        rank---一个非负整数.
 
 * 描述(Description):
 
-Returns the number of dimensions of array.
+        返回数组 array 的维数.
 
 * 示例(Examples):
 
- (array-rank (make-array '())) =>  0
- (array-rank (make-array 4)) =>  1
- (array-rank (make-array '(4))) =>  1
- (array-rank (make-array '(2 3))) =>  2
+    ```LISP
+    (array-rank (make-array '())) =>  0
+    (array-rank (make-array 4)) =>  1
+    (array-rank (make-array '(4))) =>  1
+    (array-rank (make-array '(2 3))) =>  2
+    ```
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-Should signal an error of type type-error if its argument is not an array.
+        如果它的参数不是一个 array 那么应该发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-array-rank-limit, make-array
+        array-rank-limit, make-array
 
 * 注意(Notes): None. 
 
@@ -1024,34 +1024,34 @@ array-rank-limit, make-array
 
 * 语法(Syntax):
 
-array-row-major-index array &rest subscripts => index
+        array-row-major-index array &rest subscripts => index
 
 * 参数和值(Arguments and Values):
 
-array---an array.
-
-subscripts---a list of valid array indices for the array.
-
-index---a valid array row-major index for the array.
+        array---一个数组.
+        subscripts---数组 array 的一个有效数组索引列表.
+        index---数组 array 的一个有效数组行优先索引.
 
 * 描述(Description):
 
-Computes the position according to the row-major ordering of array for the element that is specified by subscripts, and returns the offset of the element in the computed position from the beginning of array.
+        根据数组 array 的行优先顺序计算由 subscripts 指定的元素的位置, 并且返回这个元素在计算的位置到数组 array 的开始点的偏移.
 
-For a one-dimensional array, the result of array-row-major-index equals subscript.
+        对于一个一维数组, array-row-major-index 的结果等于 subscript.
 
-array-row-major-index ignores fill pointers.
+        array-row-major-index 忽略填充指针.
 
 * 示例(Examples):
 
- (setq a (make-array '(4 7) :element-type '(unsigned-byte 8)))
- (array-row-major-index a 1 2) =>  9
- (array-row-major-index 
-    (make-array '(2 3 4) 
-                :element-type '(unsigned-byte 8)
-                :displaced-to a
-                :displaced-index-offset 4)
-    0 2 1) =>  9
+    ```LISP
+    (setq a (make-array '(4 7) :element-type '(unsigned-byte 8)))
+    (array-row-major-index a 1 2) =>  9
+    (array-row-major-index 
+        (make-array '(2 3 4) 
+                    :element-type '(unsigned-byte 8)
+                    :displaced-to a
+                    :displaced-index-offset 4)
+        0 2 1) =>  9
+    ```
 
 * 受此影响(Affected By): None.
 
@@ -1061,13 +1061,13 @@ array-row-major-index ignores fill pointers.
 
 * 注意(Notes):
 
-A possible definition of array-row-major-index, with no error-checking, is
+        一个没有错误检测的可能的 array-row-major-index 定义是
 
- (defun array-row-major-index (a &rest subscripts)
-   (apply #'+ (maplist #'(lambda (x y)
-                            (* (car x) (apply #'* (cdr y))))
-                       subscripts
-                       (array-dimensions a))))
+        (defun array-row-major-index (a &rest subscripts)
+          (apply #'+ (maplist #'(lambda (x y)
+                                    (* (car x) (apply #'* (cdr y))))
+                              subscripts
+                              (array-dimensions a))))
 
 
 
@@ -1075,72 +1075,74 @@ A possible definition of array-row-major-index, with no error-checking, is
 
 * 语法(Syntax):
 
-array-total-size array => size
+        array-total-size array => size
 
 * 参数和值(Arguments and Values):
 
-array---an array.
-
-size---a non-negative integer.
+        array---一个数组.
+        size---一个非负整数.
 
 * 描述(Description):
 
-Returns the array total size of the array.
+        返回这个数组 array 的数组总大小.
 
 * 示例(Examples):
 
- (array-total-size (make-array 4)) =>  4
- (array-total-size (make-array 4 :fill-pointer 2)) =>  4
- (array-total-size (make-array 0)) =>  0
- (array-total-size (make-array '(4 2))) =>  8
- (array-total-size (make-array '(4 0))) =>  0
- (array-total-size (make-array '())) =>  1
+    ```LISP
+    (array-total-size (make-array 4)) =>  4
+    (array-total-size (make-array 4 :fill-pointer 2)) =>  4
+    (array-total-size (make-array 0)) =>  0
+    (array-total-size (make-array '(4 2))) =>  8
+    (array-total-size (make-array '(4 0))) =>  0
+    (array-total-size (make-array '())) =>  1
+    ```
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-Should signal an error of type type-error if its argument is not an array.
+        如果它的参数不是一个数组, 那么应该发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-make-array, array-dimensions
+        make-array, array-dimensions
 
 * 注意(Notes):
 
-If the array is a vector with a fill pointer, the fill pointer is ignored when calculating the array total size.
+        如果这个数组 array 是一个带有填充指针的向量, 那么在计算这个数组总大小时这个填充指针会被忽略.
 
-Since the product of no arguments is one, the array total size of a zero-dimensional array is one.
+        由于没有参数的结果是一, 所以一个零维数组的数组总大小是一.
 
- (array-total-size x)
-    ==  (apply #'* (array-dimensions x))
-    ==  (reduce #'* (array-dimensions x))
+        (array-total-size x)
+            ==  (apply #'* (array-dimensions x))
+            ==  (reduce #'* (array-dimensions x))
 
 
 ### <span id="">函数 ARRAYP</span>
 
 * 语法(Syntax):
 
-arrayp object => generalized-boolean
+        arrayp object => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-object---一个对象.
-
-generalized-boolean---一个广义 boolean.
+        object---一个对象.
+        generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
-Returns true if object is of type array; otherwise, returns false.
+        如果对象 object 是 array 类型就返回 true; 否则, 返回 false.
 
 * 示例(Examples):
 
- (arrayp (make-array '(2 3 4) :adjustable t)) =>  true
- (arrayp (make-array 6)) =>  true
- (arrayp #*1011) =>  true
- (arrayp "hi") =>  true
- (arrayp 'hi) =>  false
- (arrayp 12) =>  false
+    ```LISP
+    (arrayp (make-array '(2 3 4) :adjustable t)) =>  true
+    (arrayp (make-array 6)) =>  true
+    (arrayp #*1011) =>  true
+    (arrayp "hi") =>  true
+    (arrayp 'hi) =>  false
+    (arrayp 12) =>  false
+    ```
 
 * 受此影响(Affected By): None.
 
@@ -1148,42 +1150,43 @@ Returns true if object is of type array; otherwise, returns false.
 
 * 也见(See Also):
 
-typep
+        typep
 
 * 注意(Notes):
 
- (arrayp object) ==  (typep object 'array)
+        (arrayp object) ==  (typep object 'array)
 
 
 ### <span id="">访问器 FILL-POINTER</span>
 
 * 语法(Syntax):
 
-fill-pointer vector => fill-pointer
+        fill-pointer vector => fill-pointer
 
-(setf (fill-pointer vector) new-fill-pointer)
+        (setf (fill-pointer vector) new-fill-pointer)
 
 * 参数和值(Arguments and Values):
 
-vector---一个带有填充指针的向量.
-
-fill-pointer, new-fill-pointer---a valid fill pointer for the vector.
+        vector---一个带有填充指针的向量.
+        fill-pointer, new-fill-pointer---对于向量 vector 的一个有效的填充指针.
 
 * 描述(Description):
 
-Accesses the fill pointer of vector.
+        访问向量 vector 的填充指针.
 
 * 示例(Examples):
 
- (setq a (make-array 8 :fill-pointer 4)) =>  #(NIL NIL NIL NIL)
- (fill-pointer a) =>  4
- (dotimes (i (length a)) (setf (aref a i) (* i i))) =>  NIL
- a =>  #(0 1 4 9)
- (setf (fill-pointer a) 3) =>  3
- (fill-pointer a) =>  3
- a =>  #(0 1 4)
- (setf (fill-pointer a) 8) =>  8
- a =>  #(0 1 4 9 NIL NIL NIL NIL)
+    ```LISP
+    (setq a (make-array 8 :fill-pointer 4)) =>  #(NIL NIL NIL NIL)
+    (fill-pointer a) =>  4
+    (dotimes (i (length a)) (setf (aref a i) (* i i))) =>  NIL
+    a =>  #(0 1 4 9)
+    (setf (fill-pointer a) 3) =>  3
+    (fill-pointer a) =>  3
+    a =>  #(0 1 4)
+    (setf (fill-pointer a) 8) =>  8
+    a =>  #(0 1 4 9 NIL NIL NIL NIL)
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -1191,37 +1194,35 @@ Accesses the fill pointer of vector.
 
 * 异常情况(Exceptional Situations):
 
-Should signal an error of type type-error if vector is not a vector with a fill pointer.
+        如果 vector 不是一个带有填充指针的向量那么应该发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-make-array, length
+        make-array, length
 
 * 注意(Notes):
 
-There is no operator that will remove a vector's fill pointer. 
+        这里没有会移除向量 vector 的填充指针的操作符. 
 
 ### <span id="">访问器 ROW-MAJOR-AREF</span>
 
 * 语法(Syntax):
 
-row-major-aref array index => element
+        row-major-aref array index => element
 
-(setf (row-major-aref array index) new-element)
+        (setf (row-major-aref array index) new-element)
 
 * 参数和值(Arguments and Values):
 
-array---an array.
-
-index---a valid array row-major index for the array.
-
-element, new-element---一个对象.
+        array---一个数组.
+        index---对于数组 array 的一个有效数组行优先索引.
+        element, new-element---一个对象.
 
 * 描述(Description):
 
-Considers array as a vector by viewing its elements in row-major order, and returns the element of that vector which is referred to by the given index.
+        将数组看作是一个向量, 它以行优先的顺序查看其元素, 并且返回那么通过给定索引 index 引用的向量的元素.
 
-row-major-aref is valid for use with setf.
+        row-major-aref 和 setf 一起使用是有效的.
 
 * 示例(Examples): None.
 
@@ -1233,45 +1234,43 @@ row-major-aref is valid for use with setf.
 
 * 也见(See Also):
 
-aref, array-row-major-index
+        aref, array-row-major-index
 
 * 注意(Notes):
 
- (row-major-aref array index) == 
-   (aref (make-array (array-total-size array)
-                     :displaced-to array
-                     :element-type (array-element-type array))
-         index)
+        (row-major-aref array index) == 
+          (aref (make-array (array-total-size array)
+                            :displaced-to array
+                            :element-type (array-element-type array))
+                index)
 
- (aref array i1 i2 ...) == 
-     (row-major-aref array (array-row-major-index array i1 i2))
+        (aref array i1 i2 ...) == 
+            (row-major-aref array (array-row-major-index array i1 i2))
 
 
 ### <span id="">函数 UPGRADED-ARRAY-ELEMENT-TYPE</span>
 
 * 语法(Syntax):
 
-upgraded-array-element-type typespec &optional environment => upgraded-typespec
+        upgraded-array-element-type typespec &optional environment => upgraded-typespec
 
 * 参数和值(Arguments and Values):
 
-typespec---一个类型指定符.
-
-environment---an environment object. The default is nil, denoting the null lexical environment and the current global environment.
-
-upgraded-typespec---一个类型指定符.
+        typespec---一个类型指定符.
+        environment---一个环境对象. 默认是 nil, 表示空的词法环境和当前全局环境.
+        upgraded-typespec---一个类型指定符.
 
 * 描述(Description):
 
-Returns the element type of the most specialized array representation capable of holding items of the type denoted by typespec.
+        返回可以持有 typespec 所表示类型的条目的最具体数组表示的元素类型.
 
-The typespec is a subtype of (and possibly type equivalent to) the upgraded-typespec.
+        这个 typespec 是 upgraded-typespec 的一个子类型 (并且可能类型相等).
 
-If typespec is bit, the result is type equivalent to bit. If typespec is base-char, the result is type equivalent to base-char. If typespec is character, the result is type equivalent to character.
+        如果 typespec 是 bit, 那么结果和 bit 是类型等价的. 如果 typespec 是 base-char, 那么结果和 base-char 是类型等价的. 如果 typespec 是 character, 那么结果和 character 是类型等价的.
 
-The purpose of upgraded-array-element-type is to reveal how an implementation does its upgrading.
+        upgraded-array-element-type 的目的是去揭露一个实现如何执行这个提升.
 
-The environment is used to expand any derived type specifiers that are mentioned in the typespec.
+        这个环境 environment 被用于展开任何 typespec 中提及的衍生类型指定符.
 
 * 示例(Examples): None.
 
@@ -1283,14 +1282,14 @@ The environment is used to expand any derived type specifiers that are mentioned
 
 * 也见(See Also):
 
-array-element-type, make-array
+        array-element-type, make-array
 
 * 注意(Notes):
 
-Except for storage allocation consequences and dealing correctly with the optional environment argument, upgraded-array-element-type could be defined as:
+        除了存储分配的影响和正确处理这个可选的 environment 参数之外, upgraded-array-element-type 可以按如下定义:
 
- (defun upgraded-array-element-type (type &optional environment)
-   (array-element-type (make-array 0 :element-type type)))
+        (defun upgraded-array-element-type (type &optional environment)
+          (array-element-type (make-array 0 :element-type type)))
 
 
 ### <span id="">常量 ARRAY-DIMENSION-LIMIT</span>
