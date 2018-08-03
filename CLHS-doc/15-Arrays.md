@@ -388,126 +388,120 @@ The upgraded array element type T2 of a type T1 is a function only of T1 itself;
 
 * 语法(Syntax):
 
-make-array dimensions &key element-type initial-element initial-contents adjustable fill-pointer displaced-to displaced-index-offset
-
-=> new-array
+        make-array dimensions &key element-type initial-element initial-contents adjustable fill-pointer displaced-to displaced-index-offset
+        => new-array
 
 * 参数和值(Arguments and Values):
 
-dimensions---a designator for a list of valid array dimensions.
-
-element-type---一个类型指定符. The default is t.
-
-initial-element---一个对象.
-
-initial-contents---一个对象.
-
-adjustable---一个广义 boolean. The default is nil.
-
-fill-pointer---a valid fill pointer for the array to be created, or t or nil. The default is nil.
-
-displaced-to---an array or nil. The default is nil. This option must not be supplied if either initial-element or initial-contents is supplied.
-
-displaced-index-offset---a valid array row-major index for displaced-to. The default is 0. This option must not be supplied unless a non-nil displaced-to is supplied.
-
-new-array---一个数组.
+        dimensions---一个有效数组大小列表的标识符.
+        element-type---一个类型指定符. 默认是 t.
+        initial-element---一个对象.
+        initial-contents---一个对象.
+        adjustable---一个广义 boolean. 默认是 nil.
+        fill-pointer---对于这个要被创建的数组的有效填充指针, 或者是 t 或 nil. 默认是 nil.
+        displaced-to---一个数组或 nil. 默认是 nil. 如果 initial-element 或 initial-contents 被提供了那么这个选项一定不能被提供.
+        displaced-index-offset---对于 displaced-to 的一个有效数组行优先索引. 默认是 0. 这个选项一定不能被提供除非提供了一个非 nil 的 displaced-to.
+        new-array---一个数组.
 
 * 描述(Description):
 
-Creates and returns an array constructed of the most specialized type that can accommodate elements of type given by element-type. If dimensions is nil then a zero-dimensional array is created.
+        创建并返回一个由可以容纳 element-type 所给定的类型的元素的最具体类型构成的数组. 如果 dimensions 是 nil 那么一个零维数组会被创建.
 
-Dimensions represents the dimensionality of the new array.
+        dimensions 表示这个新数组的维度.
 
-element-type indicates the type of the elements intended to be stored in the new-array. The new-array can actually store any objects of the type which results from upgrading element-type; see Section 15.1.2.1 (Array Upgrading).
+        element-type 表示要被存储到新数组 new-array 中的元素的类型. 这个 new-array 实际上可以存储从 element-type 提升得到的类型的任何对象; 见章节 15.1.2.1 (Array Upgrading).
 
-If initial-element is supplied, it is used to initialize each element of new-array. If initial-element is supplied, it must be of the type given by element-type. initial-element cannot be supplied if either the :initial-contents option is supplied or displaced-to is non-nil. If initial-element is not supplied, the consequences of later reading an uninitialized element of new-array are undefined unless either initial-contents is supplied or displaced-to is non-nil.
+        如果提供了 initial-element, 它被用于初始化 new-array 的每一个元素. 如果提供了 initial-element, 它必须是 element-type 给定的类型. 如果 :initial-contents 选项被提供了或者 displaced-to 是非 nil, 那么 initial-element 不能被提供. 如果没有提供 initial-element, 那么后面去读取 new-array 的未初始化元素的后果是未定义的, 除非提供了 initial-contents 或者 displaced-to 不是 nil.
 
-initial-contents is used to initialize the contents of array. For example:
+        initial-contents 被用于初始化数组的内容. 比如:
 
- (make-array '(4 2 3) :initial-contents
-             '(((a b c) (1 2 3))
-              ((d e f) (3 1 2))
-              ((g h i) (2 3 1))
-              ((j k l) (0 0 0))))
+        (make-array '(4 2 3) :initial-contents
+                    '(((a b c) (1 2 3))
+                      ((d e f) (3 1 2))
+                      ((g h i) (2 3 1))
+                      ((j k l) (0 0 0))))
 
-initial-contents is composed of a nested structure of sequences. The numbers of levels in the structure must equal the rank of array. Each leaf of the nested structure must be of the type given by element-type. If array is zero-dimensional, then initial-contents specifies the single element. Otherwise, initial-contents must be a sequence whose length is equal to the first dimension; each element must be a nested structure for an array whose dimensions are the remaining dimensions, and so on. Initial-contents cannot be supplied if either initial-element is supplied or displaced-to is non-nil. If initial-contents is not supplied, the consequences of later reading an uninitialized element of new-array are undefined unless either initial-element is supplied or displaced-to is non-nil.
+        initial-contents 由一个嵌套的序列结构组成. 在这个结构中的层级的数量等价于数组的维数. 这个嵌套的结构的每一个叶必须是 element-type 给定的类型. 如果数组是零维的, 那么 initial-contents 指定单个元素. 否则, initial-contents 必须是一个长度和第一个维度相同的序列; 每一个元素必须是一个维度为剩余维度的数组的嵌套结构, 诸如此类. 如果 initial-element 被提供了或者 displaced-to 不是 nil, 那么 initial-contents 不能被提供. 如果没有提供 initial-contents, 那么后面去读取 new-array 的未初始化元素的后果是未定义的, 除非提供了 initial-contents 或者 displaced-to 不是 nil.
 
-If adjustable is non-nil, the array is expressly adjustable (and so actually adjustable); otherwise, the array is not expressly adjustable (and it is implementation-dependent whether the array is actually adjustable).
+        如果 adjustable 不是 nil, 那么这个数组就是明确可调整的 (所以实际上可调的); 否则, 这个数组就不是明确可调整的 (这个数组实际上是否可调整的是依赖于具体实现的).
 
-If fill-pointer is non-nil, the array must be one-dimensional; that is, the array must be a vector. If fill-pointer is t, the length of the vector is used to initialize the fill pointer. If fill-pointer is an integer, it becomes the initial fill pointer for the vector.
+        如果 fill-pointer 不是 nil, 数组必须是一维的; 这也就是说, 这个数组必须是一个向量. 如果 fill-pointer 是 t, 这个向量的长度被用于初始化这个填充指针. 如果 fill-pointer 是一个整数, 它成为这个向量的初始填充指针.
 
-If displaced-to is non-nil, make-array will create a displaced array and displaced-to is the target of that displaced array. In that case, the consequences are undefined if the actual array element type of displaced-to is not type equivalent to the actual array element type of the array being created. If displaced-to is nil, the array is not a displaced array.
+        如果 displaced-to 是 non-nil, make-array 会创建一个存储被转移的数组并且 displaced-to 就是那个被转移的数组的目标. 在这个情况中, the consequences are undefined if the actual array element type of displaced-to is not type equivalent to the actual array element type of the array being created. 如果 displaced-to 是 nil, 这个数组就不是一个存储被转移的数组.
 
-The displaced-index-offset is made to be the index offset of the array. When an array A is given as the :displaced-to argument to make-array when creating array B, then array B is said to be displaced to array A. The total number of elements in an array, called the total size of the array, is calculated as the product of all the dimensions. It is required that the total size of A be no smaller than the sum of the total size of B plus the offset n supplied by the displaced-index-offset. The effect of displacing is that array B does not have any elements of its own, but instead maps accesses to itself into accesses to array A. The mapping treats both arrays as if they were one-dimensional by taking the elements in row-major order, and then maps an access to element k of array B to an access to element k+n of array A.
+        The displaced-index-offset is made to be the index offset of the array. 当一个数组 A 在创建数组 B 时被给定用作给 make-array 的 :displaced-to 参数, 那么数组 B 就被说是转移到数组 A. 在一个数组中的元素的总数, 称为这个数组的总大小, 被计算为所有维度的乘积. 这就需要 A 的总大小不小于 B 加上 displaced-index-offset 提供的 n 以后的总大小. 这个转移的效果是数组 B 没有它自己的任何元素, but instead maps accesses to itself into accesses to array A. The mapping treats both arrays as if they were one-dimensional by taking the elements in row-major order, and then maps an access to element k of array B to an access to element k+n of array A.
 
-If make-array is called with adjustable, fill-pointer, and displaced-to each nil, then the result is a simple array. If make-array is called with one or more of adjustable, fill-pointer, or displaced-to being true, whether the resulting array is a simple array is implementation-dependent.
+        If make-array is called with adjustable, fill-pointer, and displaced-to each nil, then the result is a simple array. If make-array is called with one or more of adjustable, fill-pointer, or displaced-to being true, whether the resulting array is a simple array is implementation-dependent.
 
-When an array A is given as the :displaced-to argument to make-array when creating array B, then array B is said to be displaced to array A. The total number of elements in an array, called the total size of the array, is calculated as the product of all the dimensions. The consequences are unspecified if the total size of A is smaller than the sum of the total size of B plus the offset n supplied by the displaced-index-offset. The effect of displacing is that array B does not have any elements of its own, but instead maps accesses to itself into accesses to array A. The mapping treats both arrays as if they were one-dimensional by taking the elements in row-major order, and then maps an access to element k of array B to an access to element k+n of array A.
+        When an array A is given as the :displaced-to argument to make-array when creating array B, then array B is said to be displaced to array A. The total number of elements in an array, called the total size of the array, is calculated as the product of all the dimensions. The consequences are unspecified if the total size of A is smaller than the sum of the total size of B plus the offset n supplied by the displaced-index-offset. The effect of displacing is that array B does not have any elements of its own, but instead maps accesses to itself into accesses to array A. The mapping treats both arrays as if they were one-dimensional by taking the elements in row-major order, and then maps an access to element k of array B to an access to element k+n of array A.
 
 * 示例(Examples):
 
+    ```LISP
+    (make-array 5) ;; Creates a one-dimensional array of five elements.
+    (make-array '(3 4) :element-type '(mod 16)) ;; Creates a 
+                    ;;two-dimensional array, 3 by 4, with four-bit elements.
+    (make-array 5 :element-type 'single-float) ;; Creates an array of single-floats.
 
- (make-array 5) ;; Creates a one-dimensional array of five elements.
- (make-array '(3 4) :element-type '(mod 16)) ;; Creates a 
-                ;;two-dimensional array, 3 by 4, with four-bit elements.
- (make-array 5 :element-type 'single-float) ;; Creates an array of single-floats.
+    (make-array nil :initial-element nil) =>  #0ANIL
+    (make-array 4 :initial-element nil) =>  #(NIL NIL NIL NIL)
+    (make-array '(2 4) 
+                  :element-type '(unsigned-byte 2) 
+                  :initial-contents '((0 1 2 3) (3 2 1 0)))
+    =>  #2A((0 1 2 3) (3 2 1 0))
+    (make-array 6
+                  :element-type 'character 
+                  :initial-element #\a 
+                  :fill-pointer 3) =>  "aaa"
 
- (make-array nil :initial-element nil) =>  #0ANIL
- (make-array 4 :initial-element nil) =>  #(NIL NIL NIL NIL)
- (make-array '(2 4) 
-              :element-type '(unsigned-byte 2) 
-              :initial-contents '((0 1 2 3) (3 2 1 0)))
-=>  #2A((0 1 2 3) (3 2 1 0))
- (make-array 6
-              :element-type 'character 
-              :initial-element #\a 
-              :fill-pointer 3) =>  "aaa"
+    The following is an example of making a displaced array.
 
-The following is an example of making a displaced array.
+    (setq a (make-array '(4 3))) 
+    =>  #<ARRAY 4x3 simple 32546632>
+    (dotimes (i 4)
+      (dotimes (j 3)
+        (setf (aref a i j) (list i 'x j '= (* i j)))))
+    =>  NIL
+    (setq b (make-array 8 :displaced-to a
+                          :displaced-index-offset 2))
+    =>  #<ARRAY 8 indirect 32550757>
+    (dotimes (i 8)
+      (print (list i (aref b i))))
+    >>  (0 (0 X 2 = 0)) 
+    >>  (1 (1 X 0 = 0)) 
+    >>  (2 (1 X 1 = 1)) 
+    >>  (3 (1 X 2 = 2)) 
+    >>  (4 (2 X 0 = 0)) 
+    >>  (5 (2 X 1 = 2)) 
+    >>  (6 (2 X 2 = 4)) 
+    >>  (7 (3 X 0 = 0)) 
+    =>  NIL
+    ```
 
- (setq a (make-array '(4 3))) 
-=>  #<ARRAY 4x3 simple 32546632>
- (dotimes (i 4)
-   (dotimes (j 3)
-     (setf (aref a i j) (list i 'x j '= (* i j)))))
-=>  NIL
- (setq b (make-array 8 :displaced-to a
-                       :displaced-index-offset 2))
-=>  #<ARRAY 8 indirect 32550757>
- (dotimes (i 8)
-   (print (list i (aref b i))))
->>  (0 (0 X 2 = 0)) 
->>  (1 (1 X 0 = 0)) 
->>  (2 (1 X 1 = 1)) 
->>  (3 (1 X 2 = 2)) 
->>  (4 (2 X 0 = 0)) 
->>  (5 (2 X 1 = 2)) 
->>  (6 (2 X 2 = 4)) 
->>  (7 (3 X 0 = 0)) 
-=>  NIL
+        这个最后一个例子依赖于那个数组事实上以行优先顺序存储的事实.
 
-The last example depends on the fact that arrays are, in effect, stored in row-major order.
+    ```LISP
+    (setq a1 (make-array 50))
+    =>  #<ARRAY 50 simple 32562043>
+    (setq b1 (make-array 20 :displaced-to a1 :displaced-index-offset 10))
+    =>  #<ARRAY 20 indirect 32563346>
+    (length b1) =>  20
 
- (setq a1 (make-array 50))
-=>  #<ARRAY 50 simple 32562043>
- (setq b1 (make-array 20 :displaced-to a1 :displaced-index-offset 10))
-=>  #<ARRAY 20 indirect 32563346>
- (length b1) =>  20
+    (setq a2 (make-array 50 :fill-pointer 10))
+    =>  #<ARRAY 50 fill-pointer 10 46100216>
+    (setq b2 (make-array 20 :displaced-to a2 :displaced-index-offset 10))
+    =>  #<ARRAY 20 indirect 46104010>
+    (length a2) =>  10
+    (length b2) =>  20
 
- (setq a2 (make-array 50 :fill-pointer 10))
-=>  #<ARRAY 50 fill-pointer 10 46100216>
- (setq b2 (make-array 20 :displaced-to a2 :displaced-index-offset 10))
-=>  #<ARRAY 20 indirect 46104010>
- (length a2) =>  10
- (length b2) =>  20
-
- (setq a3 (make-array 50 :fill-pointer 10))
-=>  #<ARRAY 50 fill-pointer 10 46105663>
- (setq b3 (make-array 20 :displaced-to a3 :displaced-index-offset 10
-                         :fill-pointer 5))
-=>  #<ARRAY 20 indirect, fill-pointer 5 46107432>
- (length a3) =>  10
- (length b3) =>  5
+    (setq a3 (make-array 50 :fill-pointer 10))
+    =>  #<ARRAY 50 fill-pointer 10 46105663>
+    (setq b3 (make-array 20 :displaced-to a3 :displaced-index-offset 10
+                            :fill-pointer 5))
+    =>  #<ARRAY 20 indirect, fill-pointer 5 46107432>
+    (length a3) =>  10
+    (length b3) =>  5
+    ```
 
 * 受此影响(Affected By): None.
 
@@ -515,11 +509,11 @@ The last example depends on the fact that arrays are, in effect, stored in row-m
 
 * 也见(See Also):
 
-adjustable-array-p, aref, arrayp, array-element-type, array-rank-limit, array-dimension-limit, fill-pointer, upgraded-array-element-type
+        adjustable-array-p, aref, arrayp, array-element-type, array-rank-limit, array-dimension-limit, fill-pointer, upgraded-array-element-type
 
 * 注意(Notes):
 
-There is no specified way to create an array for which adjustable-array-p definitely returns false. There is no specified way to create an array that is not a simple array. 
+        这里没有指定去创建一个 adjustable-array-p 肯定返回 false 的数组的方法. 这里没有指定去创建一个不是简单数组的方法. 
 
 
 ### <span id="">函数 ADJUST-ARRAY</span>
