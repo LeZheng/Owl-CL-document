@@ -427,13 +427,13 @@ The upgraded array element type T2 of a type T1 is a function only of T1 itself;
 
         如果 fill-pointer 不是 nil, 数组必须是一维的; 这也就是说, 这个数组必须是一个向量. 如果 fill-pointer 是 t, 这个向量的长度被用于初始化这个填充指针. 如果 fill-pointer 是一个整数, 它成为这个向量的初始填充指针.
 
-        如果 displaced-to 是 non-nil, make-array 会创建一个存储被转移的数组并且 displaced-to 就是那个被转移的数组的目标. 在这个情况中, the consequences are undefined if the actual array element type of displaced-to is not type equivalent to the actual array element type of the array being created. 如果 displaced-to 是 nil, 这个数组就不是一个存储被转移的数组.
+        如果 displaced-to 是 non-nil, make-array 会创建一个存储被转移的数组并且 displaced-to 就是那个被转移的数组的目标. 在这个情况中, 如果 displaced-to 的实际数组元素类型和要被创建的实际数组元素类型不是相等的, 那么后果时未定义的. 如果 displaced-to 是 nil, 这个数组就不是一个存储被转移的数组.
 
-        The displaced-index-offset is made to be the index offset of the array. 当一个数组 A 在创建数组 B 时被给定用作给 make-array 的 :displaced-to 参数, 那么数组 B 就被说是转移到数组 A. 在一个数组中的元素的总数, 称为这个数组的总大小, 被计算为所有维度的乘积. 这就需要 A 的总大小不小于 B 加上 displaced-index-offset 提供的 n 以后的总大小. 这个转移的效果是数组 B 没有它自己的任何元素, but instead maps accesses to itself into accesses to array A. The mapping treats both arrays as if they were one-dimensional by taking the elements in row-major order, and then maps an access to element k of array B to an access to element k+n of array A.
+        displaced-index-offset 被设置为这个数组的索引偏移量. 当一个数组 A 在创建数组 B 时被给定用作给 make-array 的 :displaced-to 参数, 那么数组 B 就被说是转移到数组 A. 在一个数组中的元素的总数, 称为这个数组的总大小, 被计算为所有维度的乘积. 这就需要 A 的总大小不小于 B 加上 displaced-index-offset 提供的 n 以后的总大小. 这个转移的效果是数组 B 没有它自己的任何元素, 但是到它自己的访问被映射到对数组 A 的访问. 这个映射对待这两个数组就好像它们是一维的, 以行优先的顺序获取元素, 并且映射一个对数组 B 的元素 k 的访问到数组 A 的第 k+n 个元素.
 
-        If make-array is called with adjustable, fill-pointer, and displaced-to each nil, then the result is a simple array. If make-array is called with one or more of adjustable, fill-pointer, or displaced-to being true, whether the resulting array is a simple array is implementation-dependent.
+        如果 make-array 被调用时 adjustable, fill-pointer, 和 displaced-to 都是 nil, 那么结果就是一个简单数组. 如果 make-array 被调用时 adjustable, fill-pointer, 或 displaced-to 不止一个为 true, 产生的数组是否为一个简单数组是依赖于具体实现的.
 
-        When an array A is given as the :displaced-to argument to make-array when creating array B, then array B is said to be displaced to array A. The total number of elements in an array, called the total size of the array, is calculated as the product of all the dimensions. The consequences are unspecified if the total size of A is smaller than the sum of the total size of B plus the offset n supplied by the displaced-index-offset. The effect of displacing is that array B does not have any elements of its own, but instead maps accesses to itself into accesses to array A. The mapping treats both arrays as if they were one-dimensional by taking the elements in row-major order, and then maps an access to element k of array B to an access to element k+n of array A.
+        在创建数组 B 时, 当一个数组 A 被给定作为 make-array 的 :displaced-to 参数时, 那么数组 B 就会被说成时转移到了数组 A. 在一个数组中的元素总数, 称为这个元素的总大小, 通过所有维度的乘积计算出来. 如果 A 的总大小小于 B 加上 displaced-index-offset 提供的 n 以后的总大小, 那么后果是未指定的. 这个转移的效果是数组 B 没有它自己的任何元素, 但是到它自己的访问被映射到对数组 A 的访问. 这个映射对待这两个数组就好像它们是一维的, 以行优先的顺序获取元素, 并且映射一个对数组 B 的元素 k 的访问到数组 A 的第 k+n 个元素.
 
 * 示例(Examples):
 
@@ -894,45 +894,45 @@ Since arrays of rank other than one cannot have a fill pointer, array-has-fill-p
 
 * 语法(Syntax):
 
-array-displacement array => displaced-to, displaced-index-offset
+        array-displacement array => displaced-to, displaced-index-offset
 
 * 参数和值(Arguments and Values):
 
-array---一个数组.
-
-displaced-to---an array or nil.
-
-displaced-index-offset---一个非负 fixnum.
+        array---一个数组.
+        displaced-to---一个数组或 nil.
+        displaced-index-offset---一个非负 fixnum.
 
 * 描述(Description):
 
-If the array is a displaced array, returns the values of the :displaced-to and :displaced-index-offset options for the array (see the functions make-array and adjust-array). If the array is not a displaced array, nil and 0 are returned.
-
-If array-displacement is called on an array for which a non-nil object was provided as the :displaced-to argument to make-array or adjust-array, it must return that object as its first value. It is implementation-dependent whether array-displacement returns a non-nil primary value for any other array.
+        如果这个数组 array 是一个被转移的数组, 返回这个数组的 :displaced-to 和 :displaced-index-offset 选项的值 (见函数 make-array 和 adjust-array). 如果这个数组 array 不是一个被转移的数组, 返回 nil 或 0.
+<!-- TODO 翻译到此-->
+        如果 array-displacement is called on an array for which a non-nil object was provided as the :displaced-to argument to make-array or adjust-array, it must return that object as its first value. It is implementation-dependent whether array-displacement returns a non-nil primary value for any other array.
 
 * 示例(Examples):
 
- (setq a1 (make-array 5)) =>  #<ARRAY 5 simple 46115576>
- (setq a2 (make-array 4 :displaced-to a1
-                        :displaced-index-offset 1))
-=>  #<ARRAY 4 indirect 46117134>
- (array-displacement a2)
-=>  #<ARRAY 5 simple 46115576>, 1
- (setq a3 (make-array 2 :displaced-to a2
-                        :displaced-index-offset 2))
-=>  #<ARRAY 2 indirect 46122527>
- (array-displacement a3)
-=>  #<ARRAY 4 indirect 46117134>, 2
+    ```LISP
+    (setq a1 (make-array 5)) =>  #<ARRAY 5 simple 46115576>
+    (setq a2 (make-array 4 :displaced-to a1
+                            :displaced-index-offset 1))
+    =>  #<ARRAY 4 indirect 46117134>
+    (array-displacement a2)
+    =>  #<ARRAY 5 simple 46115576>, 1
+    (setq a3 (make-array 2 :displaced-to a2
+                            :displaced-index-offset 2))
+    =>  #<ARRAY 2 indirect 46122527>
+    (array-displacement a3)
+    =>  #<ARRAY 4 indirect 46117134>, 2
+    ```
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-Should signal an error of type type-error if array is not an array.
+        如果 array 不是一个数组, 那么应该发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-make-array
+        make-array
 
 * 注意(Notes): None. 
 
