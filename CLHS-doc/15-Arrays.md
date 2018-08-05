@@ -51,7 +51,7 @@
 
 如果一个向量的一个元素有着大于等于 0 但是小于这个填充指针(如果有的话)的索引, 就说它是有效的. 对于一个没有填充指针的数组, 所有元素都被认为是有效的.
 
-只有向量可以有填充指针; 多维数组没有. 一个多维数组 A multidimensional array that is displaced to a vector that has a fill pointer can be created. <!--TODO 待翻译-->
+只有向量可以有填充指针; 多维数组没有. 不能创建一个被转移到有着填充指针的向量的多维数组.
 
 ##### 15.1.1.3.2 <span id="">多维数组</span>
 
@@ -94,7 +94,7 @@
 
 类型提升意味着在类型层次结构中向上移动. 一个类型总是为它的提升数组元素类型的子类型. 同样, 如果一个类型 Tx 是另一个类型 Ty 的子类型, 那么 Tx 的提升数组元素类型必须是 Ty 的提升数组元素类型的子类型. 两个互斥的类型可以被提升为相同类型.
 
-The upgraded array element type T2 of a type T1 is a function only of T1 itself;<!--TODO 待翻译--> 这也就是说, 它独立于将要使用 T2 的数组的任何其他属性, 例如维数, 可调性, 填充指针, 或位移. 函数 upgraded-array-element-type 可以被符合规范的程序用来预测这个实现会怎样提升一个给定类型. 
+一个类型 T1 的提升数组元素类型 T2 是一个只有 T1 自身的函数; 这也就是说, 它独立于将要使用 T2 的数组的任何其他属性, 例如维数, 可调性, 填充指针, 或位移. 函数 upgraded-array-element-type 可以被符合规范的程序用来预测这个实现会怎样提升一个给定类型. 
 
 #### 15.1.2.2 <span id="RKOSA">Required Kinds of Specialized Arrays</span>
 
@@ -196,7 +196,7 @@ The upgraded array element type T2 of a type T1 is a function only of T1 itself;
 
         这个表示元素类型, 维数, 和大小匹配给定 element-type, rank, 和 dimensions 的数组的集合. 具体的说:
 
-        如果 element-type 是符号 *, 数组不被排除在它们的元素类型的基础上 arrays are not excluded on the basis of their element type.<!--TODO 待校对--> 否则, 只包括那些实际数组元素类型是 element-type 的提升结果的数组; 见章节 15.1.2.1 (Array Upgrading).
+        如果 element-type 是符号 *, 数组不被排除在它们的元素类型的基础上. 否则, 只包括那些实际数组元素类型是 element-type 的提升结果的数组; 见章节 15.1.2.1 (Array Upgrading).
 
         如果这个 dimension-spec 是一个 rank, 这个集合只包括那些有着那个 rank 的数组. 如果这个 dimension-spec 一个 dimensions 的列表, 这个集合只包括那些有着由 dimensions 的长度给定的 rank 并且有着那个指明的 dimensions 的数组; 在这个情况中, * 匹配对应大小的任何值. 如果这个 dimension-spec 是符号 *, 这个集合不会被约束在维数或大小的基础上.
 
@@ -547,7 +547,7 @@ The upgraded array element type T2 of a type T1 is a function only of T1 itself;
 
         如果 fill-pointer 是一个整数, 它就成为那个产生的数组的填充指针. 如果 fill-pointer 是符号 t, 它表示被用作那个产生的数组的填充指针的大小. 如果 fill-pointer 是 nil, 它表示填充指针应该保留为它的位置.
 
-        如果 displaced-to 是非 nil, 那么一个被转移的数组会被创建. 产生的数组和通过 displaced-to 给定的数组共享内容. 那个产生的数组不能包含比那个转移到的数组更多的元素. 如果没有提供 displaced-to 或者是 nil, 那么产生的数组不是一个被转移的数组. 如果数组 A is created displaced to array B and subsequently array B is given to adjust-array, array A will still be displaced to array B.<!--TODO 待翻译--> 虽然数组 array 可能是一个被转移的数组, 但是产生的数组不是一个被转移的数组除非提供了 displaced-to 并且不是 nil. 这个 adjust-array 和被转移的数组的交互就像下面给定的三个数组 A, B, 和 C 一样:
+        如果 displaced-to 是非 nil, 那么一个被转移的数组会被创建. 产生的数组和通过 displaced-to 给定的数组共享内容. 那个产生的数组不能包含比那个转移到的数组更多的元素. 如果没有提供 displaced-to 或者是 nil, 那么产生的数组不是一个被转移的数组. 如果数组 A 被创建转移到数组 B 并且后续数组 B 被给到 adjust-array, 数组 A 会始终转移到数组 B. 虽然数组 array 可能是一个被转移的数组, 但是产生的数组不是一个被转移的数组除非提供了 displaced-to 并且不是 nil. 这个 adjust-array 和被转移的数组的交互就像下面给定的三个数组 A, B, 和 C 一样:
 
         A 在调用前后都没有被转移
 
