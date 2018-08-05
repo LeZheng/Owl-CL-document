@@ -6,7 +6,7 @@
 ## 15.1 <span id="ArrayConcepts">数组的概念</span>
 
 > * 15.1.1 [数组元素](#ArrayElements)
-> * 15.1.2 [Specialized Arrays](#SpecializedArrays)
+> * 15.1.2 [特化的数组](#SpecializedArrays)
 
 ### 15.1.1 <span id="ArrayElements">数组元素</span>
 
@@ -53,7 +53,7 @@
 
 只有向量可以有填充指针; 多维数组没有. 不能创建一个被转移到有着填充指针的向量的多维数组.
 
-##### 15.1.1.3.2 <span id="">多维数组</span>
+##### 15.1.1.3.2 <span id="MultiArrays">多维数组</span>
 
 ###### 15.1.1.3.2.1 多维数组的存储布局
 
@@ -63,7 +63,7 @@
 
 一个实现可能在一个数组的维数上强加一个限制, 但是在这个限制上这里有一个最小的需求. 见变量 array-rank-limit. 
 
-### 15.1.2 <span id="SpecializedArrays">Specialized Arrays</span>
+### 15.1.2 <span id="SpecializedArrays">特化的数组</span>
 
 一个数组可以是一个普通数组, 意味着每个元素可以是任意对象, 或者它可能是一个特化的数组, 意味着每个元素都有一个约束的类型.
 
@@ -164,7 +164,7 @@
 > * [函数 SIMPLE-BIT-VECTOR-P](#F-SIMPLE-BIT-VECTOR-P)
 
 
-### <span id="">系统类 ARRAY</span>
+### <span id="SC-ARRAY">系统类 ARRAY</span>
 
 * 类优先级列表(Class Precedence List):
 
@@ -208,7 +208,7 @@
 
         注意类型 (array t) 是类型 (array *) 的一个适当的子类型. 这个原因是类型 (array t) 是持有任何对象的数组的集合 (这些元素是类型 t, 它包括所有对象). 另一方面, 类型 (array *) 是所有数组的集合, 包括例如只持有字符的数组. 类型 (array character) 不是类型 (array t) 的一个子类型; 这两个集合是互斥的因为类型 (array character) 不是所有持有字符的数组的集合, 而是一组专门用来保存精确字符并且没有其他对象的数组的集合. 
 
-### <span id="">类型 SIMPLE-ARRAY</span>
+### <span id="T-SIMPLE-ARRAY">类型 SIMPLE-ARRAY</span>
 
 * 超类型(Supertypes):
 
@@ -247,7 +247,7 @@
         (simple-array *) 不管元素类型引用了所有简单数组, (simple-array type-specifier) 只引用那些可以通过给定 type-specifier 作为 make-array 的 :element-type 参数得到的简单数组. 
 
 
-### <span id="">系统类 VECTOR</span>
+### <span id="SC-VECTOR">系统类 VECTOR</span>
 
 * 类优先级列表(Class Precedence List):
 
@@ -297,7 +297,7 @@
         (vector *) 引用所有的向量不管元素类型是什么, (vector type-specifier) 只引用那些可以通过给定 type-specifier 作为 make-array 的 :element-type 参数得到的向量. 
 
 
-### <span id="">类型 SIMPLE-VECTOR</span>
+### <span id="T-SIMPLE-VECTOR">类型 SIMPLE-VECTOR</span>
 
 * 超类型(Supertypes):
 
@@ -326,7 +326,7 @@
         这个和 (simple-array t (size)) 是相同的. 
 
 
-### <span id="">系统类 BIT-VECTOR</span>
+### <span id="SC-BIT-VECTOR">系统类 BIT-VECTOR</span>
 
 * 类优先级列表(Class Precedence List):
 
@@ -358,7 +358,7 @@
 
         章节 2.4.8.4 (Sharpsign Asterisk), 章节 22.1.3.6 (Printing Bit Vectors), 章节 15.1.2.2 (Required Kinds of Specialized Arrays) 
 
-### <span id="">类型 SIMPLE-BIT-VECTOR</span>
+### <span id="T-SIMPLE-BIT-VECTOR">类型 SIMPLE-BIT-VECTOR</span>
 
 * 超类型(Supertypes):
 
@@ -384,7 +384,7 @@
 
         这个表示和类型 (simple-array bit (size)) 相同的类型; 这也就是说, 大小为 size 的简单位向量的集合. 
 
-### <span id="">函数 MAKE-ARRAY</span>
+### <span id="F-MAKE-ARRAY">函数 MAKE-ARRAY</span>
 
 * 语法(Syntax):
 
@@ -516,7 +516,7 @@
         这里没有指定去创建一个 adjustable-array-p 肯定返回 false 的数组的方法. 这里没有指定去创建一个不是简单数组的方法. 
 
 
-### <span id="">函数 ADJUST-ARRAY</span>
+### <span id="F-ADJUST-ARRAY">函数 ADJUST-ARRAY</span>
 
 * 语法(Syntax):
 
@@ -641,7 +641,7 @@
 * 注意(Notes): None. 
 
 
-### <span id="">函数 ADJUSTABLE-ARRAY-P</span>
+### <span id="F-ADJUSTABLE-ARRAY-P">函数 ADJUSTABLE-ARRAY-P</span>
 
 * 语法(Syntax):
 
@@ -680,7 +680,7 @@
 * 注意(Notes): None. 
 
 
-### <span id="">访问器 AREF</span>
+### <span id="A-AREF">访问器 AREF</span>
 
 * 语法(Syntax):
 
@@ -730,7 +730,7 @@
 * 注意(Notes): None. 
 
 
-### <span id="">函数 ARRAY-DIMENSION</span>
+### <span id="F-ARRAY-DIMENSION">函数 ARRAY-DIMENSION</span>
 
 * 语法(Syntax):
 
@@ -765,7 +765,7 @@
 
         (array-dimension array n) ==  (nth n (array-dimensions array))
 
-### <span id="">函数 ARRAY-DIMENSIONS</span>
+### <span id="F-ARRAY-DIMENSIONS">函数 ARRAY-DIMENSIONS</span>
 
 * 语法(Syntax):
 
@@ -800,7 +800,7 @@
 
 * 注意(Notes): None. 
 
-### <span id="">函数 ARRAY-ELEMENT-TYPE</span>
+### <span id="F-ARRAY-ELEMENT-TYPE">函数 ARRAY-ELEMENT-TYPE</span>
 
 * 语法(Syntax):
 
@@ -844,7 +844,7 @@
 * 注意(Notes): None. 
 
 
-### <span id="">函数 ARRAY-HAS-FILL-POINTER-P</span>
+### <span id="F-ARRAY-HAS-FILL-POINTER-P">函数 ARRAY-HAS-FILL-POINTER-P</span>
 
 * 语法(Syntax):
 
@@ -885,7 +885,7 @@
         因为除了一维之外的数组不能有一个填充指针, 当 array-has-fill-pointer-p 的参数为这样一个数组时总是返回 nil. 
 
 
-### <span id="">函数 ARRAY-DISPLACEMENT</span>
+### <span id="F-ARRAY-DISPLACEMENT">函数 ARRAY-DISPLACEMENT</span>
 
 * 语法(Syntax):
 
@@ -931,7 +931,7 @@
 
 * 注意(Notes): None. 
 
-### <span id="">函数 ARRAY-IN-BOUNDS-P</span>
+### <span id="F-ARRAY-IN-BOUNDS-P">函数 ARRAY-IN-BOUNDS-P</span>
 
 * 语法(Syntax):
 
@@ -972,7 +972,7 @@
         ==  (and (not (some #'minusp (list subscripts)))
 
 
-### <span id="">函数 ARRAY-RANK</span>
+### <span id="F-ARRAY-RANK">函数 ARRAY-RANK</span>
 
 * 语法(Syntax):
 
@@ -1009,7 +1009,7 @@
 * 注意(Notes): None. 
 
 
-### <span id="">函数 ARRAY-ROW-MAJOR-INDEX</span>
+### <span id="F-ARRAY-ROW-MAJOR-INDEX">函数 ARRAY-ROW-MAJOR-INDEX</span>
 
 * 语法(Syntax):
 
@@ -1060,7 +1060,7 @@
 
 
 
-### <span id="">函数 ARRAY-TOTAL-SIZE</span>
+### <span id="F-ARRAY-TOTAL-SIZE">函数 ARRAY-TOTAL-SIZE</span>
 
 * 语法(Syntax):
 
@@ -1107,7 +1107,7 @@
             ==  (reduce #'* (array-dimensions x))
 
 
-### <span id="">函数 ARRAYP</span>
+### <span id="F-ARRAYP">函数 ARRAYP</span>
 
 * 语法(Syntax):
 
@@ -1146,7 +1146,7 @@
         (arrayp object) ==  (typep object 'array)
 
 
-### <span id="">访问器 FILL-POINTER</span>
+### <span id="A-FILL-POINTER">访问器 FILL-POINTER</span>
 
 * 语法(Syntax):
 
@@ -1193,7 +1193,7 @@
 
         这里没有会移除向量 vector 的填充指针的操作符. 
 
-### <span id="">访问器 ROW-MAJOR-AREF</span>
+### <span id="A-ROW-MAJOR-AREF">访问器 ROW-MAJOR-AREF</span>
 
 * 语法(Syntax):
 
@@ -1237,7 +1237,7 @@
             (row-major-aref array (array-row-major-index array i1 i2))
 
 
-### <span id="">函数 UPGRADED-ARRAY-ELEMENT-TYPE</span>
+### <span id="F-UPGRADED-ARRAY-ELEMENT-TYPE">函数 UPGRADED-ARRAY-ELEMENT-TYPE</span>
 
 * 语法(Syntax):
 
@@ -1281,7 +1281,7 @@
           (array-element-type (make-array 0 :element-type type)))
 
 
-### <span id="">常量 ARRAY-DIMENSION-LIMIT</span>
+### <span id="CV-ARRAY-DIMENSION-LIMIT">常量 ARRAY-DIMENSION-LIMIT</span>
 
 * 常量值(Constant Value):
 
@@ -1299,7 +1299,7 @@
 
 * 注意(Notes): None. 
 
-### <span id="">常量 ARRAY-RANK-LIMIT</span>
+### <span id="CV-ARRAY-RANK-LIMIT">常量 ARRAY-RANK-LIMIT</span>
 
 * 常量值(Constant Value):
 
@@ -1317,7 +1317,7 @@
 
 * 注意(Notes): None. 
 
-### <span id="">常量 ARRAY-TOTAL-SIZE-LIMIT</span>
+### <span id="CV-ARRAY-TOTAL-SIZE-LIMIT">常量 ARRAY-TOTAL-SIZE-LIMIT</span>
 
 * 常量值(Constant Value):
 
@@ -1338,7 +1338,7 @@
 * 注意(Notes): None. 
 
 
-### <span id="">函数 SIMPLE-VECTOR-P</span>
+### <span id="F-SIMPLE-VECTOR-P">函数 SIMPLE-VECTOR-P</span>
 
 * 语法(Syntax):
 
@@ -1376,7 +1376,7 @@
         (simple-vector-p object) ==  (typep object 'simple-vector)
 
 
-### <span id="">访问器 SVREF</span>
+### <span id="A-SVREF">访问器 SVREF</span>
 
 * 语法(Syntax):
 
@@ -1421,7 +1421,7 @@
         (svref v i) ==  (aref (the simple-vector v) i)
 
 
-### <span id="">函数 VECTOR</span>
+### <span id="F-VECTOR">函数 VECTOR</span>
 
 * 语法(Syntax):
 
@@ -1468,7 +1468,7 @@
 
 
 
-### <span id="">函数 VECTOR-POP</span>
+### <span id="F-VECTOR-POP">函数 VECTOR-POP</span>
 
 * 语法(Syntax):
 
@@ -1516,7 +1516,7 @@
 
 * 注意(Notes): None. 
 
-### <span id="">函数 VECTOR-PUSH, VECTOR-PUSH-EXTEND</span>
+### <span id="F-V-PUSH-V-PUSH-EXTEND">函数 VECTOR-PUSH, VECTOR-PUSH-EXTEND</span>
 
 * 语法(Syntax):
 
@@ -1580,7 +1580,7 @@
 
 * 注意(Notes): None. 
 
-### <span id="">函数 VECTORP</span>
+### <span id="F-VECTORP">函数 VECTORP</span>
 
 * 语法(Syntax):
 
@@ -1618,7 +1618,7 @@
         (vectorp object) ==  (typep object 'vector)
 
 
-### <span id="">访问器 BIT, SBIT</span>
+### <span id="A-BIT-SBIT">访问器 BIT, SBIT</span>
 
 * 语法(Syntax):
 
@@ -1671,7 +1671,7 @@
         bit 和 sbit, 不像 char 和 schar, 允许第一个参数为一个任意维数的数组. 
 
 
-### <span id="">函数 BIT-AND, BIT-ANDC1, BIT-ANDC2, BIT-EQV, BIT-IOR, BIT-NAND, BIT-NOR, BIT-NOT, BIT-ORC1, BIT-ORC2, BIT-XOR</span>
+### <span id="F-BIT-ALL">函数 BIT-AND, BIT-ANDC1, BIT-ANDC2, BIT-EQV, BIT-IOR, BIT-NAND, BIT-NOR, BIT-NOT, BIT-ORC1, BIT-ORC2, BIT-XOR</span>
 
 * 语法(Syntax):
 
@@ -1757,7 +1757,7 @@
 
 * 注意(Notes): None. 
 
-### <span id="">函数 BIT-VECTOR-P</span>
+### <span id="F-BIT-VECTOR-P">函数 BIT-VECTOR-P</span>
 
 * 语法(Syntax):
 
@@ -1795,7 +1795,7 @@
         (bit-vector-p object) ==  (typep object 'bit-vector)
 
 
-### <span id="">函数 SIMPLE-BIT-VECTOR-P</span>
+### <span id="F-SIMPLE-BIT-VECTOR-P">函数 SIMPLE-BIT-VECTOR-P</span>
 
 * 语法(Syntax):
 
