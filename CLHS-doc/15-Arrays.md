@@ -520,130 +520,123 @@ The upgraded array element type T2 of a type T1 is a function only of T1 itself;
 
 * 语法(Syntax):
 
-adjust-array array new-dimensions &key element-type initial-element initial-contents fill-pointer displaced-to displaced-index-offset
-
-=> adjusted-array
+        adjust-array array new-dimensions &key element-type initial-element initial-contents fill-pointer displaced-to displaced-index-offset
+        => adjusted-array
 
 * 参数和值(Arguments and Values):
 
-array---一个数组.
-
-new-dimensions---a valid array dimension or a list of valid array dimensions.
-
-element-type---一个类型指定符.
-
-initial-element---一个对象. Initial-element must not be supplied if either initial-contents or displaced-to is supplied.
-
-initial-contents---一个对象. If array has rank greater than zero, then initial-contents is composed of nested sequences, the depth of which must equal the rank of array. Otherwise, array is zero-dimensional and initial-contents supplies the single element. initial-contents must not be supplied if either initial-element or displaced-to is given.
-
-fill-pointer---a valid fill pointer for the array to be created, or t, or nil. The default is nil.
-
-displaced-to---an array or nil. initial-elements and initial-contents must not be supplied if displaced-to is supplied.
-
-displaced-index-offset---an object of type (fixnum 0 n) where n is (array-total-size displaced-to). displaced-index-offset may be supplied only if displaced-to is supplied.
-
-adjusted-array---一个数组.
+        array---一个数组.
+        new-dimensions---一个有效的数组大小或者一个有效数组大小的列表.
+        element-type---一个类型指定符.
+        initial-element---一个对象. 如果提供了 initial-contents 或 displaced-to, 那么 initial-element 一定不能被提供.
+        initial-contents---一个对象. 如果数组 array 有着大于零的维数, 那么 initial-contents 由嵌套的序列组成, 它的深度必须等于数组 array 的维数. 否则, 数组 array 是零维的并且 initial-contents 提供单个元素. 如果给定了 initial-element 或 displaced-to 那么 initial-contents 一定不能被提供.
+        fill-pointer---一个数组 array 的有效的填充指针会被创建, 或者 t, 或者 nil. 默认是 nil.
+        displaced-to---一个数组或 nil. 如果提供了 displaced-to 那么 initial-elements 和 initial-contents 一定不能提供.
+        displaced-index-offset---一个 (fixnum 0 n) 类型的对象其中 n 是 (array-total-size displaced-to). 当且仅当提供了 displaced-to 那么displaced-index-offset 可以被提供.
+        adjusted-array---一个数组.
 
 * 描述(Description):
 
-adjust-array changes the dimensions or elements of array. The result is an array of the same type and rank as array, that is either the modified array, or a newly created array to which array can be displaced, and that has the given new-dimensions.
+        adjust-array 改变数组 array 的大小和元素. 结果是一个和数组 array 相同类型和维数的数组, 这个是修改后的数组, 或者一个新创建的数组 array 所转移到的数组, 并且有着给定的新维度 new-dimensions.
 
-New-dimensions specify the size of each dimension of array.
+        New-dimensions 指定了数组 array 的每一个维度的大小.
 
-Element-type specifies the type of the elements of the resulting array. If element-type is supplied, the consequences are unspecified if the upgraded array element type of element-type is not the same as the actual array element type of array.
+        Element-type 指定了产生的数组的元素类型. 如果提供了 element-type, 如果 element-type 的提升数组元素类型和数组 array 的实际数组元素类型不相同那么后果是未指定的.
 
-If initial-contents is supplied, it is treated as for make-array. In this case none of the original contents of array appears in the resulting array.
+        如果提供了 initial-contents, 它会像 make-array 一样被对待. 在这个情况中数组 array 的原始内容不会出现在产生的数组中.
 
-If fill-pointer is an integer, it becomes the fill pointer for the resulting array. If fill-pointer is the symbol t, it indicates that the size of the resulting array should be used as the fill pointer. If fill-pointer is nil, it indicates that the fill pointer should be left as it is.
+        如果 fill-pointer 是一个整数, 它就成为那个产生的数组的填充指针. 如果 fill-pointer 是符号 t, 它表示被用作那个产生的数组的填充指针的大小. 如果 fill-pointer 是 nil, 它表示填充指针应该保留为它的位置.
 
-If displaced-to non-nil, a displaced array is created. The resulting array shares its contents with the array given by displaced-to. The resulting array cannot contain more elements than the array it is displaced to. If displaced-to is not supplied or nil, the resulting array is not a displaced array. If array A is created displaced to array B and subsequently array B is given to adjust-array, array A will still be displaced to array B. Although array might be a displaced array, the resulting array is not a displaced array unless displaced-to is supplied and not nil. The interaction between adjust-array and displaced arrays is as follows given three arrays, A, B, and C:
+        如果 displaced-to 是非 nil, 那么一个被转移的数组会被创建. 产生的数组和通过 displaced-to 给定的数组共享内容. 那个产生的数组不能包含比那个转移到的数组更多的元素. 如果没有提供 displaced-to 或者是 nil, 那么产生的数组不是一个被转移的数组. 如果数组 A is created displaced to array B and subsequently array B is given to adjust-array, array A will still be displaced to array B.<!--TODO 待翻译--> 虽然数组 array 可能是一个被转移的数组, 但是产生的数组不是一个被转移的数组除非提供了 displaced-to 并且不是 nil. 这个 adjust-array 和被转移的数组的交互就像下面给定的三个数组 A, B, 和 C 一样:
 
-A is not displaced before or after the call
+        A 在调用前后都没有被转移
 
-     (adjust-array A ...)
+            (adjust-array A ...)
 
-    The dimensions of A are altered, and the contents rearranged as appropriate. Additional elements of A are taken from initial-element. The use of initial-contents causes all old contents to be discarded.
+            这个 A 的维度被修改, 并且内容会被适当重新安排. A 的额外元素来自于 initial-element. 这个 initial-contents 的使用导致所有旧的内容被丢弃.
 
-A is not displaced before, but is displaced to C after the call
+        A 在调用之前没有被转移, 但是在调用之后被转移到 C
 
-     (adjust-array A ... :displaced-to C)
+            (adjust-array A ... :displaced-to C)
 
-    None of the original contents of A appears in A afterwards; A now contains the contents of C, without any rearrangement of C.
+            A 中的原始内容不会出现在之后的 A 中; A 现在包含了 C 的内容, 而 C 不带有任何的重新排列.
 
-A is displaced to B before the call, and is displaced to C after the call
+        A 在这个调用之前被转移到 B, 在调用之后被转移到 C
 
-     (adjust-array A ... :displaced-to B)
-     (adjust-array A ... :displaced-to C)
+            (adjust-array A ... :displaced-to B)
+            (adjust-array A ... :displaced-to C)
 
-    B and C might be the same. The contents of B do not appear in A afterward unless such contents also happen to be in C If displaced-index-offset is not supplied in the adjust-array call, it defaults to zero; the old offset into B is not retained.
+            B 和 C 可能相同. 如果在这个 adjust-array 调用中 displaced-index-offset 没有被提供, 它默认为 0, 那么之后 B 中的内容可能不会出现在 A 中除非这样的内容也出现在; 在 B 中的旧的偏移为不会被保留.
 
-A is displaced to B before the call, but not displaced afterward.
+        A 在调用前被转移到 B, 但是在调用后没有被转移.
 
-     (adjust-array A ... :displaced-to B)
-     (adjust-array A ... :displaced-to nil)
+            (adjust-array A ... :displaced-to B)
+            (adjust-array A ... :displaced-to nil)
 
-    A gets a new ``data region,'' and contents of B are copied into it as appropriate to maintain the existing old contents; additional elements of A are taken from initial-element if supplied. However, the use of initial-contents causes all old contents to be discarded.
+            A 得到一个新的 "数据区域(data region)", 而 B 的内容被拷贝到这个里面并保留已存在的旧元素; A 的另外的元素从 initial-element 中提取, 如果提供的话. 但是, 这个 initial-contents 的使用导致所有旧的内容被丢弃.
 
-If displaced-index-offset is supplied, it specifies the offset of the resulting array from the beginning of the array that it is displaced to. If displaced-index-offset is not supplied, the offset is 0. The size of the resulting array plus the offset value cannot exceed the size of the array that it is displaced to.
+        如果提供了 displaced-index-offset, 它指定了产生的数组从它被转移到的数组开始的偏移. 如果没有提供 displaced-index-offset, 偏移就是 0. 这个产生的数组的大小加上偏移值不能超过那个它被转移到的数组的大小.
 
-If only new-dimensions and an initial-element argument are supplied, those elements of array that are still in bounds appear in the resulting array. The elements of the resulting array that are not in the bounds of array are initialized to initial-element; if initial-element is not provided, the consequences of later reading any such new element of new-array before it has been initialized are undefined.
+        如果只提供了 new-dimensions 和一个 initial-element 参数, 数组 array 的那些元素仍然在结果数组的范围中出现. 产生的数组中没有出现在数组 array 范围中的元素被初始化为 initial-element; 如果没有提供 initial-element, 后续在元素被初始化之前去读取 new-array 的这样的新元素的后果是未定义的.
 
-If initial-contents or displaced-to is supplied, then none of the original contents of array appears in the new array.
+        如果提供了 initial-contents 或 displaced-to, 那么数组 array 中的原始内容不会出现在新的数组中.
 
-The consequences are unspecified if array is adjusted to a size smaller than its fill pointer without supplying the fill-pointer argument so that its fill-pointer is properly adjusted in the process.
+        如果数组 array 被调整为一个小于它的填充指针的大小并且没有提供 fill-pointer 参数, 这样它的填充指针在这个过程中会被适当调整, 那么后果是未指定的.
 
-If A is displaced to B, the consequences are unspecified if B is adjusted in such a way that it no longer has enough elements to satisfy A.
+        如果 A 被转移到 B, 如果 B 以一种不再有足够元素来满足 A 的方式被调整, 那么后果是未指定的.
 
-If adjust-array is applied to an array that is actually adjustable, the array returned is identical to array. If the array returned by adjust-array is distinct from array, then the argument array is unchanged.
+        如果 adjust-array 被应用到一个实际上可调整的数组, 那么返回的数组和数组 array 相等. 如果由 adjust-array 返回的数组和数组 array 不同, 那么参数 array 不会被改变.
 
-Note that if an array A is displaced to another array B, and B is displaced to another array C, and B is altered by adjust-array, A must now refer to the adjust contents of B. This means that an implementation cannot collapse the chain to make A refer to C directly and forget that the chain of reference passes through B. However, caching techniques are permitted as long as they preserve the semantics specified here.
+        注意, 如果一个数组 A 被装一到另一个数组 B, 而 B 被转移到另一个数组 C, 并且 B 被 adjust-array 修改, 那么 A 现在引用 B 中的调整的内容. 这个意味着一个实现不能折叠这个链来使 A 直接引用 C 而忘记了这个通过 B 的引用链. 但是, 缓存技术是允许的, 只要它们保留这里指定的语义.
 
 * 示例(Examples):
 
- (adjustable-array-p
-  (setq ada (adjust-array
-              (make-array '(2 3)
-                          :adjustable t
-                          :initial-contents '((a b c) (1 2 3)))
-              '(4 6)))) =>  T 
- (array-dimensions ada) =>  (4 6) 
- (aref ada 1 1) =>  2 
- (setq beta (make-array '(2 3) :adjustable t))
-=>  #2A((NIL NIL NIL) (NIL NIL NIL)) 
- (adjust-array beta '(4 6) :displaced-to ada)
-=>  #2A((A B C NIL NIL NIL)
-       (1 2 3 NIL NIL NIL)
-       (NIL NIL NIL NIL NIL NIL) 
-       (NIL NIL NIL NIL NIL NIL))
- (array-dimensions beta) =>  (4 6)
- (aref beta 1 1) =>  2 
+    ```LISP
+    (adjustable-array-p
+      (setq ada (adjust-array
+                  (make-array '(2 3)
+                              :adjustable t
+                              :initial-contents '((a b c) (1 2 3)))
+                  '(4 6)))) =>  T 
+    (array-dimensions ada) =>  (4 6) 
+    (aref ada 1 1) =>  2 
+    (setq beta (make-array '(2 3) :adjustable t))
+    =>  #2A((NIL NIL NIL) (NIL NIL NIL)) 
+    (adjust-array beta '(4 6) :displaced-to ada)
+    =>  #2A((A B C NIL NIL NIL)
+          (1 2 3 NIL NIL NIL)
+          (NIL NIL NIL NIL NIL NIL) 
+          (NIL NIL NIL NIL NIL NIL))
+    (array-dimensions beta) =>  (4 6)
+    (aref beta 1 1) =>  2 
+    ```
 
-Suppose that the 4-by-4 array in m looks like this:
+        假设在 m 中的 4×4 数组看上去这样:
 
-#2A(( alpha     beta      gamma     delta )
-    ( epsilon   zeta      eta       theta )
-    ( iota      kappa     lambda    mu    )
-    ( nu        xi        omicron   pi    ))
+        #2A(( alpha     beta      gamma     delta )
+            ( epsilon   zeta      eta       theta )
+            ( iota      kappa     lambda    mu    )
+            ( nu        xi        omicron   pi    ))
 
-Then the result of
+        那么下面这个的结果
 
- (adjust-array m '(3 5) :initial-element 'baz)
+        (adjust-array m '(3 5) :initial-element 'baz)
 
-is a 3-by-5 array with contents
+        是一个 3×5 的数组, 内容如下
 
-#2A(( alpha     beta      gamma     delta     baz )
-    ( epsilon   zeta      eta       theta     baz )
-    ( iota      kappa     lambda    mu        baz ))
+        #2A(( alpha     beta      gamma     delta     baz )
+            ( epsilon   zeta      eta       theta     baz )
+            ( iota      kappa     lambda    mu        baz ))
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-An error of type error is signaled if fill-pointer is supplied and non-nil but array has no fill pointer.
+        如果提供了 fill-pointer 并且不是 nil 但是 array 没有填充指针, 那么一个 error 类型的错误就会被发出.
 
 * 也见(See Also):
 
-adjustable-array-p, make-array, array-dimension-limit, array-total-size-limit, array
+        adjustable-array-p, make-array, array-dimension-limit, array-total-size-limit, array
 
 * 注意(Notes): None. 
 
@@ -652,36 +645,37 @@ adjustable-array-p, make-array, array-dimension-limit, array-total-size-limit, a
 
 * 语法(Syntax):
 
-adjustable-array-p array => generalized-boolean
+        adjustable-array-p array => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-array---一个数组.
-
-generalized-boolean---一个广义 boolean.
+        array---一个数组.
+        generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
-Returns true if and only if adjust-array could return a value which is identical to array when given that array as its first argument.
+        当且仅当给定那个数组作为 adjust-array 的第一个参数可以返回一个相同的值时这个函数返回 true.
 
 * 示例(Examples):
 
- (adjustable-array-p 
-   (make-array 5
-               :element-type 'character 
-               :adjustable t 
-               :fill-pointer 3)) =>  true
- (adjustable-array-p (make-array 4)) =>  implementation-dependent
+    ```LISP
+    (adjustable-array-p 
+      (make-array 5
+                  :element-type 'character 
+                  :adjustable t 
+                  :fill-pointer 3)) =>  true
+    (adjustable-array-p (make-array 4)) =>  implementation-dependent
+    ```
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-Should signal an error of type type-error if its argument is not an array.
+        如果它的参数不是一个数组应该发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-adjust-array, make-array
+        adjust-array, make-array
 
 * 注意(Notes): None. 
 
@@ -690,40 +684,40 @@ adjust-array, make-array
 
 * 语法(Syntax):
 
-aref array &rest subscripts => element
+        aref array &rest subscripts => element
 
-(setf (aref array &rest subscripts) new-element)
+        (setf (aref array &rest subscripts) new-element)
 
 * 参数和值(Arguments and Values):
 
-array---一个数组.
-
-subscripts---a list of valid array indices for the array.
-
-element, new-element---一个对象.
+        array---一个数组.
+        subscripts---一个数组 array 的有效数组索引的列表.
+        element, new-element---一个对象.
 
 * 描述(Description):
 
-Accesses the array element specified by the subscripts. If no subscripts are supplied and array is zero rank, aref accesses the sole element of array.
+        访问由 subscripts 指定的数组元素. 如果没有提供 subscripts 并且数组 array 是零维数的, aref 访问数组 array 的单个元素.
 
-aref ignores fill pointers. It is permissible to use aref to access any array element, whether active or not.
+        aref 忽略填充指针. 允许使用 aref 去访问任何数组元素, 不管是否有效.
 
 * 示例(Examples):
 
-If the variable foo names a 3-by-5 array, then the first index could be 0, 1, or 2, and then second index could be 0, 1, 2, 3, or 4. The array elements can be referred to by using the function aref; for example, (aref foo 2 1) refers to element (2, 1) of the array.
+        如果变量 foo 命名一个 3×5 的数组, 第一个索引可以是 0, 1, 或 2, 并且第二个元素为 0, 1, 2, 3, 或 4. 数组元素可以通过使用函数 aref 来引用; 比如, (aref foo 2 1) 引用这个数组 array 的 (2, 1) 元素.
 
- (aref (setq alpha (make-array 4)) 3) =>  implementation-dependent
- (setf (aref alpha 3) 'sirens) =>  SIRENS
- (aref alpha 3) =>  SIRENS
- (aref (setq beta (make-array '(2 4) 
-                    :element-type '(unsigned-byte 2)
-                    :initial-contents '((0 1 2 3) (3 2 1 0))))
-        1 2) =>  1
- (setq gamma '(0 2))
- (apply #'aref beta gamma) =>  2
- (setf (apply #'aref beta gamma) 3) =>  3
- (apply #'aref beta gamma) =>  3
- (aref beta 0 2) =>  3
+    ```LISP
+    (aref (setq alpha (make-array 4)) 3) =>  implementation-dependent
+    (setf (aref alpha 3) 'sirens) =>  SIRENS
+    (aref alpha 3) =>  SIRENS
+    (aref (setq beta (make-array '(2 4) 
+                        :element-type '(unsigned-byte 2)
+                        :initial-contents '((0 1 2 3) (3 2 1 0))))
+            1 2) =>  1
+    (setq gamma '(0 2))
+    (apply #'aref beta gamma) =>  2
+    (setf (apply #'aref beta gamma) 3) =>  3
+    (apply #'aref beta gamma) =>  3
+    (aref beta 0 2) =>  3
+    ```
 
 * 受此影响(Affected By): None.
 
@@ -731,7 +725,7 @@ If the variable foo names a 3-by-5 array, then the first index could be 0, 1, or
 
 * 也见(See Also):
 
-bit, char, elt, row-major-aref, svref, Section 3.2.1 (Compiler Terminology)
+        bit, char, elt, row-major-aref, svref, 章节 3.2.1 (Compiler Terminology)
 
 * 注意(Notes): None. 
 
@@ -740,70 +734,69 @@ bit, char, elt, row-major-aref, svref, Section 3.2.1 (Compiler Terminology)
 
 * 语法(Syntax):
 
-array-dimension array axis-number => dimension
+        array-dimension array axis-number => dimension
 
 * 参数和值(Arguments and Values):
 
-array---一个数组.
-
-axis-number---an integer greater than or equal to zero and less than the rank of the array.
-
-dimension---一个非负整数.
+        array---一个数组.
+        axis-number---一个大于等于 0 并且小于这个数组 array 的维数的整数.
+        dimension---一个非负整数.
 
 * 描述(Description):
 
-array-dimension returns the axis-number dimension[1] of array. (Any fill pointer is ignored.)
+        array-dimension 返回数组 array 的 axis-number 维度的大小. (忽略任何填充指针.)
 
 * 示例(Examples):
 
- (array-dimension (make-array 4) 0) =>  4
- (array-dimension (make-array '(2 3)) 1) =>  3
+    ```LISP
+    (array-dimension (make-array 4) 0) =>  4
+    (array-dimension (make-array '(2 3)) 1) =>  3
+    ```
 
-* 受此影响(Affected By):
-
-None.
+* 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations): None.
 
 * 也见(See Also):
 
-array-dimensions, length
+        array-dimensions, length
 
 * 注意(Notes):
 
- (array-dimension array n) ==  (nth n (array-dimensions array))
+        (array-dimension array n) ==  (nth n (array-dimensions array))
 
 ### <span id="">函数 ARRAY-DIMENSIONS</span>
 
 * 语法(Syntax):
 
-array-dimensions array => dimensions
+        array-dimensions array => dimensions
 
 * 参数和值(Arguments and Values):
 
-array---一个数组.
-
-dimensions---a list of integers.
+        array---一个数组.
+        dimensions---一个整数列表.
 
 * 描述(Description):
 
-Returns a list of the dimensions of array. (If array is a vector with a fill pointer, that fill pointer is ignored.)
+        返回数组 array 维度的一个列表. (如果数组 array 是一个带有填充指针的向量, 忽略那个填充指针.)
 
 * 示例(Examples):
 
- (array-dimensions (make-array 4)) =>  (4)
- (array-dimensions (make-array '(2 3))) =>  (2 3)
- (array-dimensions (make-array 4 :fill-pointer 2)) =>  (4)
+    ```LISP
+    (array-dimensions (make-array 4)) =>  (4)
+    (array-dimensions (make-array '(2 3))) =>  (2 3)
+    (array-dimensions (make-array 4 :fill-pointer 2)) =>  (4)
+    ```
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-Should signal an error of type type-error if its argument is not an array.
+        如果它的参数不是一个列表, 那么应该发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-array-dimension
+        array-dimension
 
 * 注意(Notes): None. 
 
@@ -811,41 +804,42 @@ array-dimension
 
 * 语法(Syntax):
 
-array-element-type array => typespec
+        array-element-type array => typespec
 
 * 参数和值(Arguments and Values):
 
-array---一个数组.
-
-typespec---一个类型指定符.
+        array---一个数组.
+        typespec---一个类型指定符.
 
 * 描述(Description):
 
-Returns a type specifier which represents the actual array element type of the array, which is the set of objects that such an array can hold. (Because of array upgrading, this type specifier can in some cases denote a supertype of the expressed array element type of the array.)
+        返回表示这个数组 array 的实际数组元素类型的类型指定符. (由于数组提升, 这个类型指定符在一些情况下表示这个数组 array 的表达数组元素类型的超类型.)
 
 * 示例(Examples):
 
- (array-element-type (make-array 4)) =>  T
- (array-element-type (make-array 12 :element-type '(unsigned-byte 8))) 
-=>  implementation-dependent
- (array-element-type (make-array 12 :element-type '(unsigned-byte 5)))
-=>  implementation-dependent
+    ```LISP
+    (array-element-type (make-array 4)) =>  T
+    (array-element-type (make-array 12 :element-type '(unsigned-byte 8))) 
+    =>  implementation-dependent
+    (array-element-type (make-array 12 :element-type '(unsigned-byte 5)))
+    =>  implementation-dependent
+    ```
 
- (array-element-type (make-array 5 :element-type '(mod 5)))
+        (array-element-type (make-array 5 :element-type '(mod 5)))
 
-could be (mod 5), (mod 8), fixnum, t, or any other type of which (mod 5) is a subtype.
+        可以是 (mod 5), (mod 8), fixnum, t, 或者任何其他 (mod 5) 是一个超类型的类型.
 
 * 受此影响(Affected By):
 
-The implementation.
+        这个实现.
 
 * 异常情况(Exceptional Situations):
 
-Should signal an error of type type-error if its argument is not an array.
+        如果它的参数不是一个数组, 那么应该发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-array, make-array, subtypep, upgraded-array-element-type
+        array, make-array, subtypep, upgraded-array-element-type
 
 * 注意(Notes): None. 
 
@@ -854,40 +848,41 @@ array, make-array, subtypep, upgraded-array-element-type
 
 * 语法(Syntax):
 
-array-has-fill-pointer-p array => generalized-boolean
+        array-has-fill-pointer-p array => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-array---一个数组.
-
-generalized-boolean---一个广义 boolean.
+        array---一个数组.
+        generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
-Returns true if array has a fill pointer; otherwise returns false.
+        如果数组 array 有一个填充指针就返回 true; 否则返回 false.
 
 * 示例(Examples):
 
- (array-has-fill-pointer-p (make-array 4)) =>  implementation-dependent
- (array-has-fill-pointer-p (make-array '(2 3))) =>  false
- (array-has-fill-pointer-p
-   (make-array 8 
-               :fill-pointer 2 
-               :initial-element 'filler)) =>  true
+    ```LISP
+    (array-has-fill-pointer-p (make-array 4)) =>  implementation-dependent
+    (array-has-fill-pointer-p (make-array '(2 3))) =>  false
+    (array-has-fill-pointer-p
+      (make-array 8 
+                  :fill-pointer 2 
+                  :initial-element 'filler)) =>  true
+    ```
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-Should signal an error of type type-error if its argument is not an array.
+        如果它的参数不是一个数组, 应该发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-make-array, fill-pointer
+        make-array, fill-pointer
 
 * 注意(Notes):
 
-Since arrays of rank other than one cannot have a fill pointer, array-has-fill-pointer-p always returns nil when its argument is such an array. 
+        因为除了一维之外的数组不能有一个填充指针, 当 array-has-fill-pointer-p 的参数为这样一个数组时总是返回 nil. 
 
 
 ### <span id="">函数 ARRAY-DISPLACEMENT</span>
@@ -905,8 +900,8 @@ Since arrays of rank other than one cannot have a fill pointer, array-has-fill-p
 * 描述(Description):
 
         如果这个数组 array 是一个被转移的数组, 返回这个数组的 :displaced-to 和 :displaced-index-offset 选项的值 (见函数 make-array 和 adjust-array). 如果这个数组 array 不是一个被转移的数组, 返回 nil 或 0.
-<!-- TODO 翻译到此-->
-        如果 array-displacement is called on an array for which a non-nil object was provided as the :displaced-to argument to make-array or adjust-array, it must return that object as its first value. It is implementation-dependent whether array-displacement returns a non-nil primary value for any other array.
+
+        如果 array-displacement 在一个数组上被调用, 对于这个数组一个非 nil 对象被提供作为给 make-array 或 adjust-array 的 :displaced-to 参数, 它一定返回这个对象作为它的第一个值. array-displacement 是否为任何其他数组返回一个非 nil 主值是依赖于具体实现的.
 
 * 示例(Examples):
 
