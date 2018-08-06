@@ -1,170 +1,172 @@
-# 16 Strings
+# 16 字符串
 
-> * 16.1 [String Concepts](#StringConcepts)
-> * 16.2 [The Strings Dictionary](#TheStringsDictionary)
+> * 16.1 [字符串的概念](#StringConcepts)
+> * 16.2 [字符串的字典](#TheStringsDictionary)
 
-## 16.1 <span id="StringConcepts">String Concepts</span>
+## 16.1 <span id="StringConcepts">字符串的概念</span>
 
-### 16.1.1 Implications of Strings Being Arrays
+### 16.1.1 字符串数组的含义
 
-Since all strings are arrays, all rules which apply generally to arrays also apply to strings. See Section 15.1 (Array Concepts).
+因为所有字符串是数组, 所有可应用于数组的规则也可以应用于字符串. 见章节 15.1 (Array Concepts).
 
-For example, strings can have fill pointers, and strings are also subject to the rules of element type upgrading that apply to arrays. 
+比如, 字符串可以有填充指针, 并且字符串也服从应用于数组的元素类型提升的规则. 
 
-### 16.1.2 Subtypes of STRING
-All functions that operate on strings will operate on subtypes of string as well.
+### 16.1.2 STRING 的子类型
 
-However, the consequences are undefined if a character is inserted into a string for which the element type of the string does not include that character. 
+所有在字符串上操作的函数也可以在字符串的子类型上操作.
 
-### 16.2 <span id="TheStringsDictionary">The Strings Dictionary</span>
+然而, 如果一个字符被插入到一个字符串中而这个字符串的元素类型不包括那个字符, 那么后果是未定义的. 
 
-> * [System Class STRING](#SC-STRING)
-> * [Type BASE-STRING](#T-BASE-STRING)
-> * [Type SIMPLE-STRING](#T-SIMPLE-STRING)
-> * [Type SIMPLE-BASE-STRING](#T-SIMPLE-BASE-STRING)
-> * [Function SIMPLE-STRING-P](#F-SIMPLE-STRING-P)
-> * [Accessor CHAR, SCHAR](#A-CHAR-SCHAR)
-> * [Function STRING](#F-STRING)
-> * [Function STRING-UPCASE, STRING-DOWNCASE, STRING-CAPITALIZE, NSTRING-UPCASE, NSTRING-DOWNCASE, NSTRING-CAPITALIZE](#F-STRING-CASE)
-> * [Function STRING-TRIM, STRING-LEFT-TRIM, STRING-RIGHT-TRIM](#F-STRING-TRIM)
-> * [Function STRING=, STRING/=, STRING<, STRING>, STRING<=, STRING>=, STRING-EQUAL, STRING-NOT-EQUAL, STRING-LESSP, STRING-GREATERP, STRING-NOT-GREATERP, STRING-NOT-LESSP](#F-STRING-COMPARE)
-> * [Function STRINGP](#F-STRINGP)
-> * [Function MAKE-STRING](#F-MAKE-STRING)
+### 16.2 <span id="TheStringsDictionary">字符串的字典</span>
+
+> * [系统类 STRING](#SC-STRING)
+> * [类型 BASE-STRING](#T-BASE-STRING)
+> * [类型 SIMPLE-STRING](#T-SIMPLE-STRING)
+> * [类型 SIMPLE-BASE-STRING](#T-SIMPLE-BASE-STRING)
+> * [函数 SIMPLE-STRING-P](#F-SIMPLE-STRING-P)
+> * [访问器 CHAR, SCHAR](#A-CHAR-SCHAR)
+> * [函数 STRING](#F-STRING)
+> * [函数 STRING-UPCASE, STRING-DOWNCASE, STRING-CAPITALIZE, NSTRING-UPCASE, NSTRING-DOWNCASE, NSTRING-CAPITALIZE](#F-STRING-CASE)
+> * [函数 STRING-TRIM, STRING-LEFT-TRIM, STRING-RIGHT-TRIM](#F-STRING-TRIM)
+> * [函数 STRING=, STRING/=, STRING<, STRING>, STRING<=, STRING>=, STRING-EQUAL, STRING-NOT-EQUAL, STRING-LESSP, STRING-GREATERP, STRING-NOT-GREATERP, STRING-NOT-LESSP](#F-STRING-COMPARE)
+> * [函数 STRINGP](#F-STRINGP)
+> * [函数 MAKE-STRING](#F-MAKE-STRING)
 
 
-### <span id="">System Class STRING</span>
+### <span id="SC-STRING">系统类 STRING</span>
 
 * 类优先级列表(Class Precedence List):
 
-string, vector, array, sequence, t
+        string, vector, array, sequence, t
 
 * 描述(Description):
 
-A string is a specialized vector whose elements are of type character or a subtype of type character. When used as a type specifier for object creation, string means (vector character).
+        一个字符串是一个元素为类型 character 或 character 的一个子类型的一个特化向量. 当被用作对象创建时的类型指定符时, string 意味着 (vector character).
 
 * 复合类型指定符类别(Compound Type Specifier Kind):
 
-Abbreviating.
+        缩写的.
 
 * 复合类型指定符语法(Compound Type Specifier Syntax):
 
-string [size]
+        string [size]
 
 * 复合类型指定符参数(Compound Type Specifier Arguments):
 
-size---a non-negative fixnum, or the symbol *.
+        size---一个非负 fixnum, 或者符号 *.
 
 * 复合类型指定符描述(Compound Type Specifier Description):
 
-This denotes the union of all types (array c (size)) for all subtypes c of character; that is, the set of strings of size size.
+        对于所有 character 的子类型 c, 这个表示所有 (array c (size)) 类型的并集; 这也就是说, 大小为 size 的字符串的集合.
 
 * 也见(See Also):
 
-Section 16.1 (String Concepts), Section 2.4.5 (Double-Quote), Section 22.1.3.4 (Printing Strings) 
+        章节 16.1 (String Concepts), 章节 2.4.5 (Double-Quote), 章节 22.1.3.4 (Printing Strings) 
 
 
-### <span id="">Type BASE-STRING</span>
-
-* 超类型(Supertypes):
-
-base-string, string, vector, array, sequence, t
-
-* 描述(Description):
-
-The type base-string is equivalent to (vector base-char). The base string representation is the most efficient string representation that can hold an arbitrary sequence of standard characters.
-
-* 复合类型指定符类别(Compound Type Specifier Kind):
-
-Abbreviating.
-
-* 复合类型指定符语法(Compound Type Specifier Syntax):
-
-base-string [size]
-
-* 复合类型指定符参数(Compound Type Specifier Arguments):
-
-size---a non-negative fixnum, or the symbol *.
-
-* 复合类型指定符描述(Compound Type Specifier Description):
-
-This is equivalent to the type (vector base-char size); that is, the set of base strings of size size. 
-
-
-### <span id="">Type SIMPLE-STRING</span>
+### <span id="T-BASE-STRING">类型 BASE-STRING</span>
 
 * 超类型(Supertypes):
 
-simple-string, string, vector, simple-array, array, sequence, t
+        base-string, string, vector, array, sequence, t
 
 * 描述(Description):
 
-A simple string is a specialized one-dimensional simple array whose elements are of type character or a subtype of type character. When used as a type specifier for object creation, simple-string means (simple-array character (size)).
+        类型 base-string 等价于 (vector base-char). 这个基本字符串表示是可以持有一个标准字符的任意序列的最有效字符串表示.
 
 * 复合类型指定符类别(Compound Type Specifier Kind):
 
-Abbreviating.
+        缩写的.
 
 * 复合类型指定符语法(Compound Type Specifier Syntax):
 
-simple-string [size]
+        base-string [size]
 
 * 复合类型指定符参数(Compound Type Specifier Arguments):
 
-size---a non-negative fixnum, or the symbol *.
+        size---一个非负 fixnum, 或者符号 *.
 
 * 复合类型指定符描述(Compound Type Specifier Description):
 
-This denotes the union of all types (simple-array c (size)) for all subtypes c of character; that is, the set of simple strings of size size. 
+        这个等价于类型 (vector base-char size); 这也就是说, 大小为 size 的基本字符串的集合. 
 
 
-### <span id="">Type SIMPLE-BASE-STRING</span>
+### <span id="T-SIMPLE-STRING">类型 SIMPLE-STRING</span>
 
 * 超类型(Supertypes):
 
-simple-base-string, base-string, simple-string, string, vector, simple-array, array, sequence, t
+        simple-string, string, vector, simple-array, array, sequence, t
 
 * 描述(Description):
 
-The type simple-base-string is equivalent to (simple-array base-char (*)).
+        一个简单字符串是一个特化的元素为 character 类型或 character 的子类型的一维简单数组. 当被用作对象创建时的类型指定符时, simple-string 意味着 (simple-array character (size)).
 
 * 复合类型指定符类别(Compound Type Specifier Kind):
 
-Abbreviating.
+        缩写的.
 
 * 复合类型指定符语法(Compound Type Specifier Syntax):
 
-simple-base-string [size]
+        simple-string [size]
 
 * 复合类型指定符参数(Compound Type Specifier Arguments):
 
-size---a non-negative fixnum, or the symbol *.
+        size---一个非负 fixnum, 或者符号 *.
 
 * 复合类型指定符描述(Compound Type Specifier Description):
 
-This is equivalent to the type (simple-array base-char (size)); that is, the set of simple base strings of size size. 
+        对于 character 的子类型 c, 这个表示所有 (simple-array c (size)) 类型的并集; 这也就是说, 大小为 size 的简单字符串的集合.
 
-### <span id="">Function SIMPLE-STRING-P</span>
+
+### <span id="T-SIMPLE-BASE-STRING">类型 SIMPLE-BASE-STRING</span>
+
+* 超类型(Supertypes):
+
+        simple-base-string, base-string, simple-string, string, vector, simple-array, array, sequence, t
+
+* 描述(Description):
+
+        类型 simple-base-string 等价于 (simple-array base-char (*)).
+
+* 复合类型指定符类别(Compound Type Specifier Kind):
+
+        缩写的.
+
+* 复合类型指定符语法(Compound Type Specifier Syntax):
+
+        simple-base-string [size]
+
+* 复合类型指定符参数(Compound Type Specifier Arguments):
+
+        size---一个非负 fixnum, 或者符号 *.
+
+* 复合类型指定符描述(Compound Type Specifier Description):
+
+        这个等价于类型 (simple-array base-char (size)); 这也就是说, 大小为 size 的简单基本字符串的集合. 
+
+### <span id="F-SIMPLE-STRING-P">函数 SIMPLE-STRING-P</span>
 
 * 语法(Syntax):
 
-simple-string-p object => generalized-boolean
+        simple-string-p object => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-object---an object.
-
-generalized-boolean---a generalized boolean.
+        object---一个对象.
+        generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
-Returns true if object is of type simple-string; otherwise, returns false.
+        如果对象 object 是 simple-string 类型就返回 true; 发在, 返回 false.
 
 * 示例(Examples):
 
- (simple-string-p "aaaaaa") =>  true
- (simple-string-p (make-array 6 
-                              :element-type 'character 
-                              :fill-pointer t)) =>  false
+    ```LISP
+    (simple-string-p "aaaaaa") =>  true
+    (simple-string-p (make-array 6 
+                                  :element-type 'character 
+                                  :fill-pointer t)) =>  false
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -176,52 +178,52 @@ Returns true if object is of type simple-string; otherwise, returns false.
 
 * 注意(Notes):
 
- (simple-string-p object) ==  (typep object 'simple-string)
+        (simple-string-p object) ==  (typep object 'simple-string)
 
 
-### <span id="">Accessor CHAR, SCHAR</span>
+### <span id="A-CHAR-SCHAR">访问器 CHAR, SCHAR</span>
 
 * 语法(Syntax):
 
-char string index => character
+        char string index => character
 
-schar string index => character
+        schar string index => character
 
-(setf (char string index) new-character)
+        (setf (char string index) new-character)
 
-(setf (schar string index) new-character)
+        (setf (schar string index) new-character)
 
 * 参数和值(Arguments and Values):
 
-string---for char, a string; for schar, a simple string.
-
-index---a valid array index for the string.
-
-character, new-character---a character.
+        string---对于 char, 一个字符串; 对于 schar, 一个简单字符串.
+        index---对于字符串 string 的一个有效数组索引.
+        character, new-character---一个字符.
 
 * 描述(Description):
 
-char and schar access the element of string specified by index.
+        char 和 schar 访问由索引 index 指定的字符串 string 中的元素.
 
-char ignores fill pointers when accessing elements.
+        当访问元素时 char 忽略填充指针.
 
 * 示例(Examples):
 
- (setq my-simple-string (make-string 6 :initial-element #\A)) =>  "AAAAAA"
- (schar my-simple-string 4) =>  #\A
- (setf (schar my-simple-string 4) #\B) =>  #\B
- my-simple-string =>  "AAAABA"
- (setq my-filled-string
-       (make-array 6 :element-type 'character
-                     :fill-pointer 5
-                     :initial-contents my-simple-string))
-=>  "AAAAB"
- (char my-filled-string 4) =>  #\B
- (char my-filled-string 5) =>  #\A
- (setf (char my-filled-string 3) #\C) =>  #\C
- (setf (char my-filled-string 5) #\D) =>  #\D
- (setf (fill-pointer my-filled-string) 6) =>  6
- my-filled-string =>  "AAACBD"
+    ```LISP
+    (setq my-simple-string (make-string 6 :initial-element #\A)) =>  "AAAAAA"
+    (schar my-simple-string 4) =>  #\A
+    (setf (schar my-simple-string 4) #\B) =>  #\B
+    my-simple-string =>  "AAAABA"
+    (setq my-filled-string
+          (make-array 6 :element-type 'character
+                        :fill-pointer 5
+                        :initial-contents my-simple-string))
+    =>  "AAAAB"
+    (char my-filled-string 4) =>  #\B
+    (char my-filled-string 5) =>  #\A
+    (setf (char my-filled-string 3) #\C) =>  #\C
+    (setf (char my-filled-string 5) #\D) =>  #\D
+    (setf (fill-pointer my-filled-string) 6) =>  6
+    my-filled-string =>  "AAACBD"
+    ```
 
 * 受此影响(Affected By): None.
 
@@ -229,58 +231,59 @@ char ignores fill pointers when accessing elements.
 
 * 也见(See Also):
 
-aref, elt, Section 3.2.1 (Compiler Terminology)
+        aref, elt, 章节 3.2.1 (Compiler Terminology)
 
 * 注意(Notes):
 
- (char s j) ==  (aref (the string s) j)
+        (char s j) ==  (aref (the string s) j)
 
 
-### <span id="">Function STRING</span>
+### <span id="F-STRING">函数 STRING</span>
 
 * 语法(Syntax):
 
-string x => string
+        string x => string
 
 * 参数和值(Arguments and Values):
 
-x---a string, a symbol, or a character.
-
-string---a string.
+        x---一个字符串, 一个符号, 或者一个字符.
+        string---一个字符串.
 
 * 描述(Description):
 
-Returns a string described by x; specifically:
+        返回一个由 x 描述的字符串; 具体来说:
 
-    If x is a string, it is returned.
-    If x is a symbol, its name is returned.
-    If x is a character, then a string containing that one character is returned.
-    string might perform additional, implementation-defined conversions.
+            如果 x 是一个字符串, 就返回它.
+            如果 x 是一个符号, 返回它的名字.
+            如果 x 是一个字符, 那么包含这样一个字符的字符串会被返回.
+            string 可能执行额外的, 具体实现定义的转换.
 
 * 示例(Examples):
 
- (string "already a string") =>  "already a string"
- (string 'elm) =>  "ELM"
- (string #\c) =>  "c"
+    ```LISP
+    (string "already a string") =>  "already a string"
+    (string 'elm) =>  "ELM"
+    (string #\c) =>  "c"
+    ```
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-In the case where a conversion is defined neither by this specification nor by the implementation, an error of type type-error is signaled.
+        在一个转换既没有被这个规范也没有被具体实现所定义的情况下, 就会发出一个 type-error 的错误.
 
 * 也见(See Also):
 
-coerce, string (type).
+        coerce, string (type).
 
 * 注意(Notes):
 
-coerce can be used to convert a sequence of characters to a string.
+        coerce 可以被用于去转换一个字符的序列为一个字符串.
 
-prin1-to-string, princ-to-string, write-to-string, or format (with a first argument of nil) can be used to get a string representation of a number or any other object. 
+        prin1-to-string, princ-to-string, write-to-string, 或 format (带有一个 nil 的第一个参数) 可以被用于获取一个数字或其他任何对象的字符串表示. 
 
 
-### <span id="">Function STRING-UPCASE, STRING-DOWNCASE, STRING-CAPITALIZE, NSTRING-UPCASE, NSTRING-DOWNCASE, NSTRING-CAPITALIZE</span>
+### <span id="F-STRING-CASE">函数 STRING-UPCASE, STRING-DOWNCASE, STRING-CAPITALIZE, NSTRING-UPCASE, NSTRING-DOWNCASE, NSTRING-CAPITALIZE</span>
 
 * 语法(Syntax):
 
@@ -302,7 +305,7 @@ string---a string designator. For nstring-upcase, nstring-downcase, and nstring-
 
 start, end---bounding index designators of string. The defaults for start and end are 0 and nil, respectively.
 
-cased-string---a string.
+cased-string---一个字符串.
 
 * 描述(Description):
 
@@ -365,7 +368,7 @@ char-upcase, char-downcase
 The result is always of the same length as string. 
 
 
-### <span id="">Function STRING-TRIM, STRING-LEFT-TRIM, STRING-RIGHT-TRIM</span>
+### <span id="F-STRING-TRIM">函数 STRING-TRIM, STRING-LEFT-TRIM, STRING-RIGHT-TRIM</span>
 
 * 语法(Syntax):
 
@@ -381,7 +384,7 @@ character-bag---a sequence containing characters.
 
 string---a string designator.
 
-trimmed-string---a string.
+trimmed-string---一个字符串.
 
 * 描述(Description):
 
@@ -419,7 +422,7 @@ The implementation.
 * 注意(Notes): None. 
 
 
-### <span id="">Function STRING=, STRING/=, STRING<, STRING>, STRING<=, STRING>=, STRING-EQUAL, STRING-NOT-EQUAL, STRING-LESSP, STRING-GREATERP, STRING-NOT-GREATERP, STRING-NOT-LESSP</span>
+### <span id="F-STRING-COMPARE">函数 STRING=, STRING/=, STRING<, STRING>, STRING<=, STRING>=, STRING-EQUAL, STRING-NOT-EQUAL, STRING-LESSP, STRING-GREATERP, STRING-NOT-GREATERP, STRING-NOT-LESSP</span>
 
 * 语法(Syntax):
 
@@ -457,7 +460,7 @@ start1, end1---bounding index designators of string1. The defaults for start and
 
 start2, end2---bounding index designators of string2. The defaults for start and end are 0 and nil, respectively.
 
-generalized-boolean---a generalized boolean.
+generalized-boolean---一个广义 boolean.
 
 mismatch-index---a bounding index of string1, or nil.
 
@@ -541,7 +544,7 @@ char=
 equal calls string= if applied to two strings. 
 
 
-### <span id="">Function STRINGP</span>
+### <span id="F-STRINGP">函数 STRINGP</span>
 
 * 语法(Syntax):
 
@@ -549,9 +552,9 @@ stringp object => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-object---an object.
+object---一个对象.
 
-generalized-boolean---a generalized boolean.
+generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
@@ -575,7 +578,7 @@ typep, string (type)
  (stringp object) ==  (typep object 'string)
 
 
-### <span id="">Function MAKE-STRING</span>
+### <span id="F-MAKE-STRING">函数 MAKE-STRING</span>
 
 * 语法(Syntax):
 
