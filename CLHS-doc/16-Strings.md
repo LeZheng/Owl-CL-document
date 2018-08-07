@@ -287,73 +287,73 @@
 
 * 语法(Syntax):
 
-string-upcase string &key start end => cased-string
+        string-upcase string &key start end => cased-string
 
-string-downcase string &key start end => cased-string
+        string-downcase string &key start end => cased-string
 
-string-capitalize string &key start end => cased-string
+        string-capitalize string &key start end => cased-string
 
-nstring-upcase string &key start end => string
+        nstring-upcase string &key start end => string
 
-nstring-downcase string &key start end => string
+        nstring-downcase string &key start end => string
 
-nstring-capitalize string &key start end => string
+        nstring-capitalize string &key start end => string
 
 * 参数和值(Arguments and Values):
 
-string---a string designator. For nstring-upcase, nstring-downcase, and nstring-capitalize, the string designator must be a string.
-
-start, end---bounding index designators of string. The defaults for start and end are 0 and nil, respectively.
-
-cased-string---一个字符串.
+        string---一个字符串标识符. 对于 nstring-upcase, nstring-downcase, 和 nstring-capitalize, 这个字符串标识符必须是一个字符串.
+        start, end---字符串 string 的边界索引标识符. 对于 start 和 end 默认分别是 0 和 nil.
+        cased-string---一个字符串.
 
 * 描述(Description):
 
-string-upcase, string-downcase, string-capitalize, nstring-upcase, nstring-downcase, nstring-capitalize change the case of the subsequence of string bounded by start and end as follows:
+        string-upcase, string-downcase, string-capitalize, nstring-upcase, nstring-downcase, nstring-capitalize 如下改变字符串 string 由 start 和 end 限制的子序列的大小写:
 
-string-upcase
+        string-upcase
 
-    string-upcase returns a string just like string with all lowercase characters replaced by the corresponding uppercase characters. More precisely, each character of the result string is produced by applying the function char-upcase to the corresponding character of string.
+            string-upcase 返回一个和字符串 string 相似的字符串, 其中所有小写字符被对应大写字符替换. 更确切地说, 结果字符串中的每个字符都由应用 char-upcase 函数到字符串 string 的对应字符上产生的.
 
-string-downcase
+        string-downcase
 
-    string-downcase is like string-upcase except that all uppercase characters are replaced by the corresponding lowercase characters (using char-downcase).
+            string-downcase 类似于 string-upcase 除了所有大写字符被对应小写字符替换(使用 char-downcase).
 
-string-capitalize
+        string-capitalize
 
-    string-capitalize produces a copy of string such that, for every word in the copy, the first character of the ``word,'' if it has case, is uppercase and any other characters with case in the word are lowercase. For the purposes of string-capitalize, a ``word'' is defined to be a consecutive subsequence consisting of alphanumeric characters, delimited at each end either by a non-alphanumeric character or by an end of the string.
+            string-capitalize 产生一个字符串 string 的一个拷贝 such that, 对于这个拷贝中的每一个词, 这个 "词" 的第一个字符, 如果有大小写, 就变为大写并且在这个词中的其他任何带有大小写的字符变为小写. 对于 string-capitalize 的目的, 一个"单词"被定义为一个连续的子序列, 由字母数字字符组成, 每一端都用非字母数字字符或字符串的结尾分隔.
 
-nstring-upcase, nstring-downcase, nstring-capitalize
+        nstring-upcase, nstring-downcase, nstring-capitalize
 
-    nstring-upcase, nstring-downcase, and nstring-capitalize are identical to string-upcase, string-downcase, and string-capitalize respectively except that they modify string.
+            nstring-upcase, nstring-downcase, 和 nstring-capitalize 分别等价于 string-upcase, string-downcase, 和 string-capitalize 除了它们修改字符串 string.
 
-For string-upcase, string-downcase, and string-capitalize, string is not modified. However, if no characters in string require conversion, the result may be either string or a copy of it, at the implementation's discretion.
+        对于 string-upcase, string-downcase, 和 string-capitalize, 字符串 string 不会被修改. 然而, 如果在字符串 string 中没有字符需要转换, 那么结果可能就是那个字符串或者它的一个拷贝, 由实现判定.
 
 * 示例(Examples):
 
- (string-upcase "abcde") =>  "ABCDE"
- (string-upcase "Dr. Livingston, I presume?")
-=>  "DR. LIVINGSTON, I PRESUME?"
- (string-upcase "Dr. Livingston, I presume?" :start 6 :end 10)
-=>  "Dr. LiVINGston, I presume?"
- (string-downcase "Dr. Livingston, I presume?")
-=>  "dr. livingston, i presume?"
+    ```LISP
+    (string-upcase "abcde") =>  "ABCDE"
+    (string-upcase "Dr. Livingston, I presume?")
+    =>  "DR. LIVINGSTON, I PRESUME?"
+    (string-upcase "Dr. Livingston, I presume?" :start 6 :end 10)
+    =>  "Dr. LiVINGston, I presume?"
+    (string-downcase "Dr. Livingston, I presume?")
+    =>  "dr. livingston, i presume?"
 
- (string-capitalize "elm 13c arthur;fig don't") =>  "Elm 13c Arthur;Fig Don'T"
- (string-capitalize " hello ") =>  " Hello "
- (string-capitalize "occlUDeD cASEmenTs FOreSTAll iNADVertent DEFenestraTION")
-=>   "Occluded Casements Forestall Inadvertent Defenestration"
- (string-capitalize 'kludgy-hash-search) =>  "Kludgy-Hash-Search"
- (string-capitalize "DON'T!") =>  "Don'T!"    ;not "Don't!"
- (string-capitalize "pipe 13a, foo16c") =>  "Pipe 13a, Foo16c"
+    (string-capitalize "elm 13c arthur;fig don't") =>  "Elm 13c Arthur;Fig Don'T"
+    (string-capitalize " hello ") =>  " Hello "
+    (string-capitalize "occlUDeD cASEmenTs FOreSTAll iNADVertent DEFenestraTION")
+    =>   "Occluded Casements Forestall Inadvertent Defenestration"
+    (string-capitalize 'kludgy-hash-search) =>  "Kludgy-Hash-Search"
+    (string-capitalize "DON'T!") =>  "Don'T!"    ;not "Don't!"
+    (string-capitalize "pipe 13a, foo16c") =>  "Pipe 13a, Foo16c"
 
- (setq str (copy-seq "0123ABCD890a")) =>  "0123ABCD890a"
- (nstring-downcase str :start 5 :end 7) =>  "0123AbcD890a"
- str =>  "0123AbcD890a"
+    (setq str (copy-seq "0123ABCD890a")) =>  "0123ABCD890a"
+    (nstring-downcase str :start 5 :end 7) =>  "0123AbcD890a"
+    str =>  "0123AbcD890a"
+    ```
 
 * 副作用(Side Effects):
 
-nstring-upcase, nstring-downcase, and nstring-capitalize modify string as appropriate rather than constructing a new string.
+        nstring-upcase, nstring-downcase, 和 nstring-capitalize 适当地修改字符串 string 而不是构建一个新的字符串.
 
 * 受此影响(Affected By): None.
 
@@ -361,59 +361,59 @@ nstring-upcase, nstring-downcase, and nstring-capitalize modify string as approp
 
 * 也见(See Also):
 
-char-upcase, char-downcase
+        char-upcase, char-downcase
 
 * 注意(Notes):
 
-The result is always of the same length as string. 
+        结果总是和字符串 string 有着相同长度. 
 
 
 ### <span id="F-STRING-TRIM">函数 STRING-TRIM, STRING-LEFT-TRIM, STRING-RIGHT-TRIM</span>
 
 * 语法(Syntax):
 
-string-trim character-bag string => trimmed-string
+        string-trim character-bag string => trimmed-string
 
-string-left-trim character-bag string => trimmed-string
+        string-left-trim character-bag string => trimmed-string
 
-string-right-trim character-bag string => trimmed-string
+        string-right-trim character-bag string => trimmed-string
 
 * 参数和值(Arguments and Values):
 
-character-bag---a sequence containing characters.
-
-string---a string designator.
-
-trimmed-string---一个字符串.
+        character-bag---一个包含字符的序列.
+        string---一个字符串标识符.
+        trimmed-string---一个字符串.
 
 * 描述(Description):
 
-string-trim returns a substring of string, with all characters in character-bag stripped off the beginning and end. string-left-trim is similar but strips characters off only the beginning; string-right-trim strips off only the end.
+        string-trim 返回字符串 string 的一个子字符串, 带有在 character-bag 中的所有字符除去开始和结尾. string-left-trim 也相似除了只脱去开头的字符; string-right-trim 只脱去结尾的字符.
 
-If no characters need to be trimmed from the string, then either string itself or a copy of it may be returned, at the discretion of the implementation.
+        如果没有字符需要从字符串 string 中被削减, 那么返回字符串 string 自身或者它的一个拷贝, 由这个实现来判定.
 
-All of these functions observe the fill pointer.
+        所有这些函数都会注意到这个填充指针.
 
 * 示例(Examples):
 
- (string-trim "abc" "abcaakaaakabcaaa") =>  "kaaak"
- (string-trim '(#\Space #\Tab #\Newline) " garbanzo beans
-        ") =>  "garbanzo beans"
- (string-trim " (*)" " ( *three (silly) words* ) ")
-=>  "three (silly) words"
+    ```LISP
+    (string-trim "abc" "abcaakaaakabcaaa") =>  "kaaak"
+    (string-trim '(#\Space #\Tab #\Newline) " garbanzo beans
+            ") =>  "garbanzo beans"
+    (string-trim " (*)" " ( *three (silly) words* ) ")
+    =>  "three (silly) words"
 
- (string-left-trim "abc" "labcabcabc") =>  "labcabcabc"
- (string-left-trim " (*)" " ( *three (silly) words* ) ")
-=>  "three (silly) words* ) "
+    (string-left-trim "abc" "labcabcabc") =>  "labcabcabc"
+    (string-left-trim " (*)" " ( *three (silly) words* ) ")
+    =>  "three (silly) words* ) "
 
- (string-right-trim " (*)" " ( *three (silly) words* ) ") 
-=>  " ( *three (silly) words"
+    (string-right-trim " (*)" " ( *three (silly) words* ) ") 
+    =>  " ( *three (silly) words"
+    ```
 
 * 副作用(Side Effects): None.
 
 * 受此影响(Affected By):
 
-The implementation.
+        这个具体实现.
 
 * 异常情况(Exceptional Situations): None.
 
@@ -426,108 +426,105 @@ The implementation.
 
 * 语法(Syntax):
 
-string= string1 string2 &key start1 end1 start2 end2 => generalized-boolean
+        string= string1 string2 &key start1 end1 start2 end2 => generalized-boolean
 
-string/= string1 string2 &key start1 end1 start2 end2 => mismatch-index
+        string/= string1 string2 &key start1 end1 start2 end2 => mismatch-index
 
-string< string1 string2 &key start1 end1 start2 end2 => mismatch-index
+        string< string1 string2 &key start1 end1 start2 end2 => mismatch-index
 
-string> string1 string2 &key start1 end1 start2 end2 => mismatch-index
+        string> string1 string2 &key start1 end1 start2 end2 => mismatch-index
 
-string<= string1 string2 &key start1 end1 start2 end2 => mismatch-index
+        string<= string1 string2 &key start1 end1 start2 end2 => mismatch-index
 
-string>= string1 string2 &key start1 end1 start2 end2 => mismatch-index
+        string>= string1 string2 &key start1 end1 start2 end2 => mismatch-index
 
-string-equal string1 string2 &key start1 end1 start2 end2 => generalized-boolean
+        string-equal string1 string2 &key start1 end1 start2 end2 => generalized-boolean
 
-string-not-equal string1 string2 &key start1 end1 start2 end2 => mismatch-index
+        string-not-equal string1 string2 &key start1 end1 start2 end2 => mismatch-index
 
-string-lessp string1 string2 &key start1 end1 start2 end2 => mismatch-index
+        string-lessp string1 string2 &key start1 end1 start2 end2 => mismatch-index
 
-string-greaterp string1 string2 &key start1 end1 start2 end2 => mismatch-index
+        string-greaterp string1 string2 &key start1 end1 start2 end2 => mismatch-index
 
-string-not-greaterp string1 string2 &key start1 end1 start2 end2 => mismatch-index
+        string-not-greaterp string1 string2 &key start1 end1 start2 end2 => mismatch-index
 
-string-not-lessp string1 string2 &key start1 end1 start2 end2 => mismatch-index
+        string-not-lessp string1 string2 &key start1 end1 start2 end2 => mismatch-index
 
 * 参数和值(Arguments and Values):
 
-string1---a string designator.
-
-string2---a string designator.
-
-start1, end1---bounding index designators of string1. The defaults for start and end are 0 and nil, respectively.
-
-start2, end2---bounding index designators of string2. The defaults for start and end are 0 and nil, respectively.
-
-generalized-boolean---一个广义 boolean.
-
-mismatch-index---a bounding index of string1, or nil.
+        string1---一个字符串标识符.
+        string2---一个字符串标识符.
+        start1, end1---字符串 string1 的边界索引标识符. 对于 start 和 end 默认分别为 0 和 nil.
+        start2, end2---字符串 string2 的边界索引标识符. 对于 start 和 end 默认分别为 0 和 nil.
+        generalized-boolean---一个广义 boolean.
+        mismatch-index---字符串 string1 的一个边界索引, 或者 nil.
 
 * 描述(Description):
 
-These functions perform lexicographic comparisons on string1 and string2. string= and string-equal are called equality functions; the others are called inequality functions. The comparison operations these functions perform are restricted to the subsequence of string1 bounded by start1 and end1 and to the subsequence of string2 bounded by start2 and end2.
+        这些函数 functions 在字符串 string1 和 string2 上执行字典式的比较. string= 和 string-equal 调用相等函数; 其他的调用不同的函数. 这些函数执行的比较操作被约束为在字符串 string1 由 start1 和 end1 限制的子序列以及字符串 string2 由 start2 和 end2 限制的子序列.
 
-A string a is equal to a string b if it contains the same number of characters, and the corresponding characters are the same under char= or char-equal, as appropriate.
+        如果一个字符串 a 和一个字符串 b 有着相同数量的字符, 并且对应字符在 char= 或 char-equal 下是相同的, 那么就说这两个字符串是相等的.
 
-A string a is less than a string b if in the first position in which they differ the character of a is less than the corresponding character of b according to char< or char-lessp as appropriate, or if string a is a proper prefix of string b (of shorter length and matching in all the characters of a).
+        如果在一个字符串 a 和一个字符串 b 有区别的第一个位置中, 根据 char< 或 char-lessp, a 的字符小于 b 中的对应字符, 或者如果字符串 a 是字符串 b 的一个前缀(更短的长度并且匹配 a 中的所有字符), 那么字符串 a 小于字符串 b.
 
-The equality functions return a generalized boolean that is true if the strings are equal, or false otherwise.
+        如果这些字符串是相等的, 那么这些相等函数就返回一个 true 的广义 boolean, 否则就是 false.
 
-The inequality functions return a mismatch-index that is true if the strings are not equal, or false otherwise. When the mismatch-index is true, it is an integer representing the first character position at which the two substrings differ, as an offset from the beginning of string1.
+        如果这些字符串不相等, 那么这些不相等的函数返回一个为 true 的 mismatch-index, 否则就是 false. 当这个 mismatch-index 是 true, 它是一个表示在两个子字符串中第一个不同的字符位置的整数, 作为从 string1 的起始点开始的偏移位.
 
-The comparison has one of the following results:
+        这个比较有着以下这些结果的其中之一:
 
-string=
+        string=
 
-    string= is true if the supplied substrings are of the same length and contain the same characters in corresponding positions; otherwise it is false.
+            如果提供的子字符串是相同长度并且在对应位置的字符是相同的, 那么 string= 返回 true; 否则它就是 false.
 
-string/=
+        string/=
 
-    string/= is true if the supplied substrings are different; otherwise it is false.
+            如果提供的子字符串是不同的, 那么 string/= 就是 true; 否则它就是 false.
 
-string-equal
+        string-equal
 
-    string-equal is just like string= except that differences in case are ignored; two characters are considered to be the same if char-equal is true of them.
+            string-equal 类似于 string= 除了在大小写上的区别会被忽略; 如果 char-equal 对于两个字符是 true, 那么它们就被认为是相同的.
 
-string<
+        string<
 
-    string< is true if substring1 is less than substring2; otherwise it is false.
+            如果 substring1 小于 substring2, 那么 string< 就是 true; 否则它就是 false.
 
-string>
+        string>
 
-    string> is true if substring1 is greater than substring2; otherwise it is false.
+            如果 substring1 大于 substring2, 那么 string> 就是 true; 否则它就是 false.
 
-string-lessp, string-greaterp
+        string-lessp, string-greaterp
 
-    string-lessp and string-greaterp are exactly like string< and string>, respectively, except that distinctions between uppercase and lowercase letters are ignored. It is as if char-lessp were used instead of char< for comparing characters.
+            string-lessp 和 string-greaterp 分别类似于 string< 和 string>, 除了忽略大小写字母之间的区别. 就好像是使用 char-lessp 而不是 char< 来比较字符.
 
-string<=
+        string<=
 
-    string<= is true if substring1 is less than or equal to substring2; otherwise it is false.
+            如果 substring1 小于等于 substring2, 那么 string<= 就是 true; 否则它就是 false.
 
-string>=
+        string>=
 
-    string>= is true if substring1 is greater than or equal to substring2; otherwise it is false.
+            如果 substring1 大于等于 substring2, 那么 string>= 就是 true; 否则它就是 false.
 
-string-not-greaterp, string-not-lessp
+        string-not-greaterp, string-not-lessp
 
-    string-not-greaterp and string-not-lessp are exactly like string<= and string>=, respectively, except that distinctions between uppercase and lowercase letters are ignored. It is as if char-lessp were used instead of char< for comparing characters.
+            string-not-greaterp 和 string-not-lessp 分别类似于 string<= 和 string>=, 除了忽略字母大小写之间的区别. 就好像是使用 char-lessp 而不是 char< 来比较字符.
 
 * 示例(Examples):
 
- (string= "foo" "foo") =>  true
- (string= "foo" "Foo") =>  false
- (string= "foo" "bar") =>  false
- (string= "together" "frog" :start1 1 :end1 3 :start2 2) =>  true
- (string-equal "foo" "Foo") =>  true
- (string= "abcd" "01234abcd9012" :start2 5 :end2 9) =>  true
- (string< "aaaa" "aaab") =>  3
- (string>= "aaaaa" "aaaa") =>  4
- (string-not-greaterp "Abcde" "abcdE") =>  5
- (string-lessp "012AAAA789" "01aaab6" :start1 3 :end1 7
-                                      :start2 2 :end2 6) =>  6
- (string-not-equal "AAAA" "aaaA") =>  false
+    ```LISP
+    (string= "foo" "foo") =>  true
+    (string= "foo" "Foo") =>  false
+    (string= "foo" "bar") =>  false
+    (string= "together" "frog" :start1 1 :end1 3 :start2 2) =>  true
+    (string-equal "foo" "Foo") =>  true
+    (string= "abcd" "01234abcd9012" :start2 5 :end2 9) =>  true
+    (string< "aaaa" "aaab") =>  3
+    (string>= "aaaaa" "aaaa") =>  4
+    (string-not-greaterp "Abcde" "abcdE") =>  5
+    (string-lessp "012AAAA789" "01aaab6" :start1 3 :end1 7
+                                          :start2 2 :end2 6) =>  6
+    (string-not-equal "AAAA" "aaaA") =>  false
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -537,33 +534,34 @@ string-not-greaterp, string-not-lessp
 
 * 也见(See Also):
 
-char=
+        char=
 
 * 注意(Notes):
 
-equal calls string= if applied to two strings. 
+        equal calls string= if applied to two strings. 
 
 
 ### <span id="F-STRINGP">函数 STRINGP</span>
 
 * 语法(Syntax):
 
-stringp object => generalized-boolean
+        stringp object => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-object---一个对象.
-
-generalized-boolean---一个广义 boolean.
+        object---一个对象.
+        generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
-Returns true if object is of type string; otherwise, returns false.
+        如果对象 object 是 string 类型就返回 true; 发在, 返回 false.
 
 * 示例(Examples):
 
- (stringp "aaaaaa") =>  true
- (stringp #\a) =>  false
+    ```LISP
+    (stringp "aaaaaa") =>  true
+    (stringp #\a) =>  false
+    ```
 
 * 受此影响(Affected By): None.
 
@@ -571,43 +569,42 @@ Returns true if object is of type string; otherwise, returns false.
 
 * 也见(See Also):
 
-typep, string (type)
+        typep, string (type)
 
 * 注意(Notes):
 
- (stringp object) ==  (typep object 'string)
+        (stringp object) ==  (typep object 'string)
 
 
 ### <span id="F-MAKE-STRING">函数 MAKE-STRING</span>
 
 * 语法(Syntax):
 
-make-string size &key initial-element element-type => string
+        make-string size &key initial-element element-type => string
 
 * 参数和值(Arguments and Values):
 
-size---a valid array dimension.
-
-initial-element---a character. The default is implementation-dependent.
-
-element-type---a type specifier. The default is character.
-
-string---a simple string.
+        size---一个有效数组大小.
+        initial-element---一个字符. 默认是依赖于具体实现的.
+        element-type---一个类型指定符. 默认是 character.
+        string---一个简单字符串.
 
 * 描述(Description):
 
-make-string returns a simple string of length size whose elements have been initialized to initial-element.
+        make-string 返回一个长度为 size 并且元素被初始化为 initial-element 的简单字符串.
 
-The element-type names the type of the elements of the string; a string is constructed of the most specialized type that can accommodate elements of the given type.
+        这个元素类型 element-type 命名这个字符串中元素的类型; 一个字符串由可以容纳给定类型元素的最具体类型构成.
 
 * 示例(Examples):
 
- (make-string 10 :initial-element #\5) =>  "5555555555"
- (length (make-string 10)) =>  10
+    ```LISP
+    (make-string 10 :initial-element #\5) =>  "5555555555"
+    (length (make-string 10)) =>  10
+    ```
 
 * 受此影响(Affected By):
 
-The implementation.
+        这个具体实现.
 
 * 异常情况(Exceptional Situations): None.
 
