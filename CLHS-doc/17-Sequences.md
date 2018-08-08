@@ -1,13 +1,11 @@
- 17. Sequences
+# 17 Sequences
 
-17.1 Sequence Concepts
-
-17.2 Rules about Test Functions
-
-17.3 The Sequences Dictionary
+> * 17.1 [Sequence Concepts](#SequenceConcepts)
+> * 17.2 [Rules about Test Functions](#RulesTestFunctions)
+> * 17.3 [The Sequences Dictionary](#TheSequencesDictionary)
 
 
- 17.1 Sequence Concepts
+## 17.1 <span id="SequenceConcepts">Sequence Concepts</span>
 
 A sequence is an ordered collection of elements, implemented as either a vector or a list.
 
@@ -33,20 +31,17 @@ find-if-not        reduce
 
 Figure 17-1. Standardized Sequence Functions
 
-17.1.1 General Restrictions on Parameters that must be Sequences
-
- 17.1.1 General Restrictions on Parameters that must be Sequences
+### 17.1.1 General Restrictions on Parameters that must be Sequences
 
 In general, lists (including association lists and property lists) that are treated as sequences must be proper lists. 
 
 
- 17.2 Rules about Test Functions
+## 17.2 <span id="RulesTestFunctions">Rules about Test Functions</span>
 
-17.2.1 Satisfying a Two-Argument Test
+> * 17.2.1 [Satisfying a Two-Argument Test](#SatisfyingTwoArgumentTest)
+> * 17.2.2 [Satisfying a One-Argument Test](#SatisfyingOneArgumentTest)
 
-17.2.2 Satisfying a One-Argument Test
-
- 17.2.1 Satisfying a Two-Argument Test
+### 17.2.1 <span id="SatisfyingTwoArgumentTest">Satisfying a Two-Argument Test</span>
 
 When an object O is being considered iteratively against each element Ei of a sequence S by an operator F listed in the next figure, it is sometimes useful to control the way in which the presence of O is tested in S is tested by F. This control is offered on the basis of a function designated with either a :test or :test-not argument.
 
@@ -75,10 +70,7 @@ If neither a :test nor a :test-not argument is supplied, it is as if a :test arg
 
 The consequences are unspecified if both a :test and a :test-not argument are supplied in the same call to F.
 
-17.2.1.1 Examples of Satisfying a Two-Argument Test
-
-
- 17.2.1.1 Examples of Satisfying a Two-Argument Test
+#### 17.2.1.1 Examples of Satisfying a Two-Argument Test
 
  (remove "FOO" '(foo bar "FOO" "BAR" "foo" "bar") :test #'equal)
 =>  (foo bar "BAR" "foo" "bar")
@@ -107,7 +99,7 @@ The consequences are unspecified if both a :test and a :test-not argument are su
 =>  2
 
 
- 17.2.2 Satisfying a One-Argument Test
+### 17.2.2 <span id="SatisfyingOneArgumentTest">Satisfying a One-Argument Test</span>
 
 When using one of the functions in the next figure, the elements E of a sequence S are filtered not on the basis of the presence or absence of an object O under a two argument predicate, as with the functions described in Section 17.2.1 (Satisfying a Two-Argument Test), but rather on the basis of a one argument predicate.
 
@@ -128,10 +120,8 @@ Functions defined in this specification and having a name that ends in ``-if'' a
 
 Functions defined in this specification and having a name that ends in ``-if-not'' accept a first argument that is a designator for a function of one argument, Zi. An Ei is said to satisfy the test if this :test function returns a generalized boolean representing false.
 
-17.2.2.1 Examples of Satisfying a One-Argument Test
 
-
- 17.2.2.1 Examples of Satisfying a One-Argument Test
+#### 17.2.2.1 Examples of Satisfying a One-Argument Test
 
  (count-if #'zerop '(1 #C(0.0 0.0) 0 0.0d0 0.0s0 3)) =>  4
 
@@ -144,62 +134,40 @@ Functions defined in this specification and having a name that ends in ``-if-not
 =>  3
 
 
- 17.3 The Sequences Dictionary
+## 17.3 <span id="TheSequencesDictionary">The Sequences Dictionary</span>
 
-System Class SEQUENCE
-
-Function COPY-SEQ
-
-Accessor ELT
-
-Function FILL
-
-Function MAKE-SEQUENCE
-
-Accessor SUBSEQ
-
-Function MAP
-
-Function MAP-INTO
-
-Function REDUCE
-
-Function COUNT, COUNT-IF, COUNT-IF-NOT
-
-Function LENGTH
-
-Function REVERSE, NREVERSE
-
-Function SORT, STABLE-SORT
-
-Function FIND, FIND-IF, FIND-IF-NOT
-
-Function POSITION, POSITION-IF, POSITION-IF-NOT
-
-Function SEARCH
-
-Function MISMATCH
-
-Function REPLACE
-
-Function SUBSTITUTE, SUBSTITUTE-IF, SUBSTITUTE-IF-NOT, NSUBSTITUTE, NSUBSTITUTE-IF, NSUBSTITUTE-IF-NOT
-
-Function CONCATENATE
-
-Function MERGE
-
-Function REMOVE, REMOVE-IF, REMOVE-IF-NOT, DELETE, DELETE-IF, DELETE-IF-NOT
-
-Function REMOVE-DUPLICATES, DELETE-DUPLICATES
+> * [System Class SEQUENCE](#SC-SEQUENCE)
+> * [Function COPY-SEQ](#F-COPY-SEQ)
+> * [Accessor ELT](#A-ELT)
+> * [Function FILL](#F-FILL)
+> * [Function MAKE-SEQUENCE](#F-MAKE-SEQUENCE)
+> * [Accessor SUBSEQ](#A-SUBSEQ)
+> * [Function MAP](#F-MAP)
+> * [Function MAP-INTO](#F-MAP-INTO)
+> * [Function REDUCE](#F-REDUCE)
+> * [Function COUNT, COUNT-IF, COUNT-IF-NOT](#F-COUNT-ALL)
+> * [Function LENGTH](#F-LENGTH)
+> * [Function REVERSE, NREVERSE](#F-REVERSE-ALL)
+> * [Function SORT, STABLE-SORT](#F-SORT-ALL)
+> * [Function FIND, FIND-IF, FIND-IF-NOT](#F-FIND-ALL)
+> * [Function POSITION, POSITION-IF, POSITION-IF-NOT](#F-POSITION-ALL)
+> * [Function SEARCH](#F-SEARCH)
+> * [Function MISMATCH](#F-MISMATCH)
+> * [Function REPLACE](#F-REPLACE)
+> * [Function SUBSTITUTE, SUBSTITUTE-IF, SUBSTITUTE-IF-NOT, NSUBSTITUTE, NSUBSTITUTE-IF, NSUBSTITUTE-IF-NOT](#F-SUBSTITUTE-ALL)
+> * [Function CONCATENATE](#F-CONCATENATE)
+> * [Function MERGE](#F-MERGE)
+> * [Function REMOVE, REMOVE-IF, REMOVE-IF-NOT, DELETE, DELETE-IF, DELETE-IF-NOT](#F-REMOVE-ALL)
+> * [Function REMOVE-DUPLICATES, DELETE-DUPLICATES](#F-DUPLICATES-ALL)
 
 
-System Class SEQUENCE
+### <span id="SC-SEQUENCE">System Class SEQUENCE</span>
 
-Class Precedence List:
+* 类优先级列表(Class Precedence List):
 
 sequence, t
 
-Description:
+* 描述(Description):
 
 Sequences are ordered collections of objects, called the elements of the sequence.
 
@@ -208,43 +176,43 @@ The types vector and the type list are disjoint subtypes of type sequence, but a
 When viewing a vector as a sequence, only the active elements of that vector are considered elements of the sequence; that is, sequence operations respect the fill pointer when given sequences represented as vectors. 
 
 
-Function COPY-SEQ
+### <span id="F-COPY-SEQ">Function COPY-SEQ</span>
 
-Syntax:
+* 语法(Syntax):
 
 copy-seq sequence => copied-sequence
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 sequence---a proper sequence.
 
 copied-sequence---a proper sequence.
 
-Description:
+* 描述(Description):
 
 Creates a copy of sequence. The elements of the new sequence are the same as the corresponding elements of the given sequence.
 
 If sequence is a vector, the result is a fresh simple array of rank one that has the same actual array element type as sequence. If sequence is a list, the result is a fresh list.
 
-Examples:
+* 示例(Examples):
 
  (setq str "a string") =>  "a string"
  (equalp str (copy-seq str)) =>  true
  (eql str (copy-seq str)) =>  false
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should be prepared to signal an error of type type-error if sequence is not a proper sequence.
 
-See Also:
+* 也见(See Also):
 
 copy-list
 
-Notes:
+* 注意(Notes):
 
 From a functional standpoint,
 
@@ -253,15 +221,15 @@ From a functional standpoint,
 However, the programmer intent is typically very different in these two cases. 
 
 
-Accessor ELT
+### <span id="A-ELT">Accessor ELT</span>
 
-Syntax:
+* 语法(Syntax):
 
 elt sequence index => object
 
 (setf (elt sequence index) new-object)
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 sequence---a proper sequence.
 
@@ -271,40 +239,40 @@ object---an object.
 
 new-object---an object.
 
-Description:
+* 描述(Description):
 
 Accesses the element of sequence specified by index.
 
-Examples:
+* 示例(Examples):
 
  (setq str (copy-seq "0123456789")) =>  "0123456789"
  (elt str 6) =>  #\6
  (setf (elt str 0) #\#) =>  #\#
  str =>  "#123456789"
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should be prepared to signal an error of type type-error if sequence is not a proper sequence. Should signal an error of type type-error if index is not a valid sequence index for sequence.
 
-See Also:
+* 也见(See Also):
 
 aref, nth, Section 3.2.1 (Compiler Terminology)
 
-Notes:
+* 注意(Notes):
 
 aref may be used to access vector elements that are beyond the vector's fill pointer. 
 
-Function FILL
+### <span id="F-FILL">Function FILL</span>
 
-Syntax:
+* 语法(Syntax):
 
 fill sequence item &key start end => sequence
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 sequence---a proper sequence.
 
@@ -312,11 +280,11 @@ item---a sequence.
 
 start, end---bounding index designators of sequence. The defaults for start and end are 0 and nil, respectively.
 
-Description:
+* 描述(Description):
 
 Replaces the elements of sequence bounded by start and end with item.
 
-Examples:
+* 示例(Examples):
 
  (fill (list 0 1 2 3 4 5) '(444)) =>  ((444) (444) (444) (444) (444) (444))
  (fill (copy-seq "01234") #\e :start 3) =>  "012ee"
@@ -326,32 +294,32 @@ Examples:
  (fill x 'p) =>  #(P P P P P)
  x =>  #(P P P P P)
 
-Side Effects:
+* 副作用(Side Effects):
 
 Sequence is destructively modified.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should be prepared to signal an error of type type-error if sequence is not a proper sequence. Should signal an error of type type-error if start is not a non-negative integer. Should signal an error of type type-error if end is not a non-negative integer or nil.
 
-See Also:
+* 也见(See Also):
 
 replace, nsubstitute
 
-Notes:
+* 注意(Notes):
 
 (fill sequence item) == (nsubstitute-if item (constantly t) sequence) 
 
 
-Function MAKE-SEQUENCE
+### <span id="F-MAKE-SEQUENCE">Function MAKE-SEQUENCE</span>
 
-Syntax:
+* 语法(Syntax):
 
 make-sequence result-type size &key initial-element => sequence
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 result-type---a sequence type specifier.
 
@@ -361,7 +329,7 @@ initial-element---an object. The default is implementation-dependent.
 
 sequence---a proper sequence.
 
-Description:
+* 描述(Description):
 
 Returns a sequence of the type result-type and of length size, each of the elements of which has been initialized to initial-element.
 
@@ -369,7 +337,7 @@ If the result-type is a subtype of list, the result will be a list.
 
 If the result-type is a subtype of vector, then if the implementation can determine the element type specified for the result-type, the element type of the resulting array is the result of upgrading that element type; or, if the implementation can determine that the element type is unspecified (or *), the element type of the resulting array is t; otherwise, an error is signaled.
 
-Examples:
+* 示例(Examples):
 
  (make-sequence 'list 0) =>  ()
  (make-sequence 'string 26 :initial-element #\.) 
@@ -381,11 +349,11 @@ Examples:
  (make-sequence '(vector * 2) 3) should signal an error
  (make-sequence '(vector * 4) 3) should signal an error
 
-Affected By:
+* 受此影响(Affected By):
 
 The implementation.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 The consequences are unspecified if initial-element is not an object which can be stored in the resulting sequence.
 
@@ -393,23 +361,23 @@ An error of type type-error must be signaled if the result-type is neither a rec
 
 An error of type type-error should be signaled if result-type specifies the number of elements and size is different from that number.
 
-See Also:
+* 也见(See Also):
 
 make-array, make-list
 
-Notes:
+* 注意(Notes):
 
  (make-sequence 'string 5) ==  (make-string 5)               
 
-Accessor SUBSEQ
+### <span id="A-SUBSEQ">Accessor SUBSEQ</span>
 
-Syntax:
+* 语法(Syntax):
 
 subseq sequence start &optional end => subsequence
 
 (setf (subseq sequence start &optional end) new-subsequence)
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 sequence---a proper sequence.
 
@@ -419,7 +387,7 @@ subsequence---a proper sequence.
 
 new-subsequence---a proper sequence.
 
-Description:
+* 描述(Description):
 
 subseq creates a sequence that is a copy of the subsequence of sequence bounded by start and end.
 
@@ -431,7 +399,7 @@ If sequence is a vector, the result is a fresh simple array of rank one that has
 
 setf may be used with subseq to destructively replace elements of a subsequence with elements taken from a sequence of new values. If the subsequence and the new sequence are not of equal length, the shorter length determines the number of elements that are replaced. The remaining elements at the end of the longer sequence are not modified in the operation.
 
-Examples:
+* 示例(Examples):
 
  (setq str "012345") =>  "012345"
  (subseq str 2) =>  "2345"
@@ -441,28 +409,28 @@ Examples:
  (setf (subseq str 0 2) "A") =>  "A"
  str =>  "A123ab"
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should be prepared to signal an error of type type-error if sequence is not a proper sequence. Should be prepared to signal an error of type type-error if new-subsequence is not a proper sequence.
 
-See Also:
+* 也见(See Also):
 
 replace
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function MAP
+### <span id="F-MAP">Function MAP</span>
 
-Syntax:
+* 语法(Syntax):
 
 map result-type function &rest sequences+ => result
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 result-type -- a sequence type specifier, or nil.
 
@@ -472,7 +440,7 @@ sequence---a proper sequence.
 
 result---if result-type is a type specifier other than nil, then a sequence of the type it denotes; otherwise (if the result-type is nil), nil.
 
-Description:
+* 描述(Description):
 
 Applies function to successive sets of arguments in which one argument is obtained from each sequence. The function is called first on all the elements with index 0, then on all those with index 1, and so on. The result-type specifies the type of the resulting sequence.
 
@@ -482,7 +450,7 @@ If the result-type is a subtype of list, the result will be a list.
 
 If the result-type is a subtype of vector, then if the implementation can determine the element type specified for the result-type, the element type of the resulting array is the result of upgrading that element type; or, if the implementation can determine that the element type is unspecified (or *), the element type of the resulting array is t; otherwise, an error is signaled.
 
-Examples:
+* 示例(Examples):
 
  (map 'string #'(lambda (x y)
                   (char "01234567890ABCDEF" (mod (+ x y) 16)))
@@ -498,9 +466,9 @@ Examples:
 
  (map '(vector * 4) #'cons "abc" "de") should signal an error
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 An error of type type-error must be signaled if the result-type is not a recognizable subtype of list, not a recognizable subtype of vector, and not nil.
 
@@ -508,20 +476,20 @@ Should be prepared to signal an error of type type-error if any sequence is not 
 
 An error of type type-error should be signaled if result-type specifies the number of elements and the minimum length of the sequences is different from that number.
 
-See Also:
+* 也见(See Also):
 
 Section 3.6 (Traversal Rules and Side Effects)
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function MAP-INTO
+### <span id="F-MAP-INTO">Function MAP-INTO</span>
 
-Syntax:
+* 语法(Syntax):
 
 map-into result-sequence function &rest sequences => result-sequence
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 result-sequence---a proper sequence.
 
@@ -529,7 +497,7 @@ function---a designator for a function of as many arguments as there are sequenc
 
 sequence---a proper sequence.
 
-Description:
+* 描述(Description):
 
 Destructively modifies result-sequence to contain the results of applying function to each element in the argument sequences in turn.
 
@@ -537,7 +505,7 @@ result-sequence and each element of sequences can each be either a list or a vec
 
 If function has side effects, it can count on being called first on all of the elements with index 0, then on all of those numbered 1, and so on.
 
-Examples:
+* 示例(Examples):
 
  (setq a (list 1 2 3 4) b (list 10 10 10 10)) =>  (10 10 10 10)
  (map-into a #'+ a b) =>  (11 12 13 14)
@@ -548,15 +516,15 @@ Examples:
  (map-into a #'gensym) =>  (#:G9090 #:G9091 #:G9092 #:G9093)
  a =>  (#:G9090 #:G9091 #:G9092 #:G9093)
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should be prepared to signal an error of type type-error if result-sequence is not a proper sequence. Should be prepared to signal an error of type type-error if sequence is not a proper sequence.
 
-See Also: None.
+* 也见(See Also): None.
 
-Notes:
+* 注意(Notes):
 
 map-into differs from map in that it modifies an existing sequence rather than creating a new one. In addition, map-into can be called with only two arguments, while map requires at least three arguments.
 
@@ -573,13 +541,13 @@ map-into could be defined by:
    result-sequence)
 
 
-Function REDUCE
+### <span id="F-REDUCE">Function REDUCE</span>
 
-Syntax:
+* 语法(Syntax):
 
 reduce function sequence &key key from-end start end initial-value => result
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 function---a designator for a function that might be called with either zero or two arguments.
 
@@ -595,7 +563,7 @@ initial-value---an object.
 
 result---an object.
 
-Description:
+* 描述(Description):
 
 reduce uses a binary operation, function, to combine the elements of sequence bounded by start and end.
 
@@ -609,7 +577,7 @@ If initial-value is supplied, it is logically placed before the subsequence (or 
 
 In the normal case, the result of reduce is the combined result of function's being applied to successive pairs of elements of sequence. If the subsequence contains exactly one element and no initial-value is given, then that element is returned and function is not called. If the subsequence is empty and an initial-value is given, then the initial-value is returned and function is not called. If the subsequence is empty and no initial-value is given, then the function is called with zero arguments, and reduce returns whatever function does. This is the only case where the function is called with other than two arguments.
 
-Examples:
+* 示例(Examples):
 
  (reduce #'* '(1 2 3 4 5)) =>  120
  (reduce #'append '((1) (2)) :initial-value '(i n i t)) =>  (I N I T 1 2)
@@ -627,24 +595,24 @@ Examples:
  (reduce #'list '(1 2 3 4)
         :from-end t :initial-value 'foo) =>  (1 (2 (3 (4 foo))))
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should be prepared to signal an error of type type-error if sequence is not a proper sequence.
 
-See Also:
+* 也见(See Also):
 
 Section 3.6 (Traversal Rules and Side Effects)
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function COUNT, COUNT-IF, COUNT-IF-NOT
+### <span id="F-COUNT-ALL">Function COUNT, COUNT-IF, COUNT-IF-NOT</span>
 
-Syntax:
+* 语法(Syntax):
 
 count item sequence &key from-end start end key test test-not => n
 
@@ -652,7 +620,7 @@ count-if predicate sequence &key from-end start end key => n
 
 count-if-not predicate sequence &key from-end start end key => n
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 item---an object.
 
@@ -672,56 +640,56 @@ key---a designator for a function of one argument, or nil.
 
 n---a non-negative integer less than or equal to the length of sequence.
 
-Description:
+* 描述(Description):
 
 count, count-if, and count-if-not count and return the number of elements in the sequence bounded by start and end that satisfy the test.
 
 The from-end has no direct effect on the result. However, if from-end is true, the elements of sequence will be supplied as arguments to the test, test-not, and key in reverse order, which may change the side-effects, if any, of those functions.
 
-Examples:
+* 示例(Examples):
 
  (count #\a "how many A's are there in here?") =>  2
  (count-if-not #'oddp '((1) (2) (3) (4)) :key #'car) =>  2
  (count-if #'upper-case-p "The Crying of Lot 49" :start 4) =>  2 
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should be prepared to signal an error of type type-error if sequence is not a proper sequence.
 
-See Also:
+* 也见(See Also):
 
 Section 17.2 (Rules about Test Functions), Section 3.6 (Traversal Rules and Side Effects)
 
-Notes:
+* 注意(Notes):
 
 The :test-not argument is deprecated.
 
 The function count-if-not is deprecated. 
 
 
-Function LENGTH
+### <span id="F-LENGTH">Function LENGTH</span>
 
-Syntax:
+* 语法(Syntax):
 
 length sequence => n
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 sequence---a proper sequence.
 
 n---a non-negative integer.
 
-Description:
+* 描述(Description):
 
 Returns the number of elements in sequence.
 
 If sequence is a vector with a fill pointer, the active length as specified by the fill pointer is returned.
 
-Examples:
+* 示例(Examples):
 
  (length "abc") =>  3
  (setq str (make-array '(3) :element-type 'character 
@@ -731,34 +699,34 @@ Examples:
  (setf (fill-pointer str) 2) =>  2
  (length str) =>  2
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should be prepared to signal an error of type type-error if sequence is not a proper sequence.
 
-See Also:
+* 也见(See Also):
 
 list-length, sequence
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function REVERSE, NREVERSE
+### <span id="F-REVERSE-ALL">Function REVERSE, NREVERSE</span>
 
-Syntax:
+* 语法(Syntax):
 
 reverse sequence => reversed-sequence
 
 nreverse sequence => reversed-sequence
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 sequence---a proper sequence.
 
 reversed-sequence---a sequence.
 
-Description:
+* 描述(Description):
 
 reverse and nreverse return a new sequence of the same kind as sequence, containing the same elements, but in reverse order.
 
@@ -770,7 +738,7 @@ For nreverse, if sequence is a vector, the result is a vector that has the same 
 
 For nreverse, sequence might be destroyed and re-used to produce the result. The result might or might not be identical to sequence. Specifically, when sequence is a list, nreverse is permitted to setf any part, car or cdr, of any cons that is part of the list structure of sequence. When sequence is a vector, nreverse is permitted to re-order the elements of sequence in order to produce the resulting vector.
 
-Examples:
+* 示例(Examples):
 
  (setq str "abc") =>  "abc"
  (reverse str) =>  "cba"
@@ -782,30 +750,30 @@ Examples:
  (nreverse l) =>  (3 2 1)
  l =>  implementation-dependent
 
-Side Effects:
+* 副作用(Side Effects):
 
 nreverse might either create a new sequence, modify the argument sequence, or both. (reverse does not modify sequence.)
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should be prepared to signal an error of type type-error if sequence is not a proper sequence.
 
-See Also: None.
+* 也见(See Also): None.
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function SORT, STABLE-SORT
+### <span id="F-SORT-ALL">Function SORT, STABLE-SORT</span>
 
-Syntax:
+* 语法(Syntax):
 
 sort sequence predicate &key key => sorted-sequence
 
 stable-sort sequence predicate &key key => sorted-sequence
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 sequence---a proper sequence.
 
@@ -815,7 +783,7 @@ key---a designator for a function of one argument, or nil.
 
 sorted-sequence---a sequence.
 
-Description:
+* 描述(Description):
 
 sort and stable-sort destructively sort sequences according to the order determined by the predicate function.
 
@@ -831,7 +799,7 @@ The sorting operation performed by sort is not guaranteed stable. Elements consi
 
 The sorting operation can be destructive in all cases. In the case of a vector argument, this is accomplished by permuting the elements in place. In the case of a list, the list is destructively reordered in the same manner as for nreverse.
 
-Examples:
+* 示例(Examples):
 
  (setq tester (copy-seq "lkjashd")) =>  "lkjashd"
  (sort tester #'char-lessp) =>  "adhjkls"
@@ -874,26 +842,26 @@ Examples:
      (("Gregor" "Kiczales") "Objects")
      (("David" "Moon") "Objects"))
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should be prepared to signal an error of type type-error if sequence is not a proper sequence.
 
-See Also:
+* 也见(See Also):
 
 merge, Section 3.2.1 (Compiler Terminology), Section 3.6 (Traversal Rules and Side Effects), Section 3.7 (Destructive Operations)
 
-Notes:
+* 注意(Notes):
 
 If sequence is a vector, the result might or might not be simple, and might or might not be identical to sequence. 
 
 
-Function FIND, FIND-IF, FIND-IF-NOT
+### <span id="F-FIND-ALL">Function FIND, FIND-IF, FIND-IF-NOT</span>
 
-Syntax:
+* 语法(Syntax):
 
 find item sequence &key from-end test test-not start end key => element
 
@@ -901,7 +869,7 @@ find-if predicate sequence &key from-end start end key => element
 
 find-if-not predicate sequence &key from-end start end key => element
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 item---an object.
 
@@ -921,7 +889,7 @@ key---a designator for a function of one argument, or nil.
 
 element---an element of the sequence, or nil.
 
-Description:
+* 描述(Description):
 
 find, find-if, and find-if-not each search for an element of the sequence bounded by start and end that satisfies the predicate predicate or that satisfies the test test or test-not, as appropriate.
 
@@ -929,7 +897,7 @@ If from-end is true, then the result is the rightmost element that satisfies the
 
 If the sequence contains an element that satisfies the test, then the leftmost or rightmost sequence element, depending on from-end, is returned; otherwise nil is returned.
 
-Examples:
+* 示例(Examples):
 
  (find #\d "here are some letters that can be looked at" :test #'char>)
 =>  #\Space 
@@ -938,28 +906,28 @@ Examples:
              '#(3.5 2 #C(1.0 0.0) #C(0.0 1.0))
              :start 2) =>  NIL 
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should be prepared to signal an error of type type-error if sequence is not a proper sequence.
 
-See Also:
+* 也见(See Also):
 
 position, Section 17.2 (Rules about Test Functions), Section 3.6 (Traversal Rules and Side Effects)
 
-Notes:
+* 注意(Notes):
 
 The :test-not argument is deprecated.
 
 The function find-if-not is deprecated. 
 
 
-Function POSITION, POSITION-IF, POSITION-IF-NOT
+### <span id="F-POSITION-ALL">Function POSITION, POSITION-IF, POSITION-IF-NOT</span>
 
-Syntax:
+* 语法(Syntax):
 
 position item sequence &key from-end test test-not start end key => position
 
@@ -967,7 +935,7 @@ position-if predicate sequence &key from-end start end key => position
 
 position-if-not predicate sequence &key from-end start end key => position
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 item---an object.
 
@@ -987,47 +955,47 @@ key---a designator for a function of one argument, or nil.
 
 position---a bounding index of sequence, or nil.
 
-Description:
+* 描述(Description):
 
 position, position-if, and position-if-not each search sequence for an element that satisfies the test.
 
 The position returned is the index within sequence of the leftmost (if from-end is true) or of the rightmost (if from-end is false) element that satisfies the test; otherwise nil is returned. The index returned is relative to the left-hand end of the entire sequence, regardless of the value of start, end, or from-end.
 
-Examples:
+* 示例(Examples):
 
  (position #\a "baobab" :from-end t) =>  4
  (position-if #'oddp '((1) (2) (3) (4)) :start 1 :key #'car) =>  2
  (position 595 '()) =>  NIL
  (position-if-not #'integerp '(1 2 3 4 5.0)) =>  4 
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should be prepared to signal an error of type type-error if sequence is not a proper sequence.
 
-See Also:
+* 也见(See Also):
 
 find, Section 3.6 (Traversal Rules and Side Effects)
 
-Notes:
+* 注意(Notes):
 
 The :test-not argument is deprecated.
 
 The function position-if-not is deprecated. 
 
 
-Function SEARCH
+### <span id="F-SEARCH">Function SEARCH</span>
 
-Syntax:
+* 语法(Syntax):
 
 search sequence-1 sequence-2 &key from-end test test-not key start1 start2 end1 end2
 
 => position
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 Sequence-1---a sequence.
 
@@ -1047,7 +1015,7 @@ start2, end2---bounding index designators of sequence-2. The defaults for start2
 
 position---a bounding index of sequence-2, or nil.
 
-Description:
+* 描述(Description):
 
 Searches sequence-2 for a subsequence that matches sequence-1.
 
@@ -1055,35 +1023,35 @@ The implementation may choose to search sequence-2 in any order; there is no gua
 
 If from-end is true, the index of the leftmost element of the rightmost matching subsequence is returned.
 
-Examples:
+* 示例(Examples):
 
  (search "dog" "it's a dog's life") =>  7
  (search '(0 1) '(2 4 6 1 3 5) :key #'oddp) =>  2
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 Section 3.6 (Traversal Rules and Side Effects)
 
-Notes:
+* 注意(Notes):
 
 The :test-not argument is deprecated. 
 
 
-Function MISMATCH
+### <span id="F-MISMATCH">Function MISMATCH</span>
 
-Syntax:
+* 语法(Syntax):
 
 mismatch sequence-1 sequence-2 &key from-end test test-not key start1 start2 end1 end2
 
 => position
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 Sequence-1---a sequence.
 
@@ -1103,7 +1071,7 @@ key---a designator for a function of one argument, or nil.
 
 position---a bounding index of sequence-1, or nil.
 
-Description:
+* 描述(Description):
 
 The specified subsequences of sequence-1 and sequence-2 are compared element-wise.
 
@@ -1113,35 +1081,35 @@ If sequence-1 and sequence-2 are of equal length and match in every element, the
 
 If from-end is true, then one plus the index of the rightmost position in which the sequences differ is returned. In effect, the subsequences are aligned at their right-hand ends; then, the last elements are compared, the penultimate elements, and so on. The index returned is an index relative to sequence-1.
 
-Examples:
+* 示例(Examples):
 
  (mismatch "abcd" "ABCDE" :test #'char-equal) =>  4
  (mismatch '(3 2 1 1 2 3) '(1 2 3) :from-end t) =>  3
  (mismatch '(1 2 3) '(2 3 4) :test-not #'eq :key #'oddp) =>  NIL
  (mismatch '(1 2 3 4 5 6) '(3 4 5 6 7) :start1 2 :end2 4) =>  NIL 
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 Section 3.6 (Traversal Rules and Side Effects)
 
-Notes:
+* 注意(Notes):
 
 The :test-not argument is deprecated. 
 
 
-Function REPLACE
+### <span id="F-REPLACE">Function REPLACE</span>
 
-Syntax:
+* 语法(Syntax):
 
 replace sequence-1 sequence-2 &key start1 end1 start2 end2 => sequence-1
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 sequence-1---a sequence.
 
@@ -1151,7 +1119,7 @@ start1, end1---bounding index designators of sequence-1. The defaults for start1
 
 start2, end2---bounding index designators of sequence-2. The defaults for start2 and end2 are 0 and nil, respectively.
 
-Description:
+* 描述(Description):
 
 Destructively modifies sequence-1 by replacing the elements of subsequence-1 bounded by start1 and end1 with the elements of subsequence-2 bounded by start2 and end2.
 
@@ -1161,7 +1129,7 @@ Sequence-1 is destructively modified by copying successive elements into it from
 
 If sequence-1 and sequence-2 are the same object and the region being modified overlaps the region being copied from, then it is as if the entire source region were copied to another place and only then copied back into the target region. However, if sequence-1 and sequence-2 are not the same, but the region being modified overlaps the region being copied from (perhaps because of shared list structure or displaced arrays), then after the replace operation the subsequence of sequence-1 being modified will have unpredictable contents. It is an error if the elements of sequence-2 are not of a type that can be stored into sequence-1.
 
-Examples:
+* 示例(Examples):
 
  (replace "abcdefghij" "0123456789" :start1 4 :end1 7 :start2 4) 
 =>  "abcd456hij"
@@ -1169,24 +1137,24 @@ Examples:
  (replace lst lst :start1 2 :start2 0) =>  "010123456"
  lst =>  "010123456"
 
-Side Effects:
+* 副作用(Side Effects):
 
 The sequence-1 is modified.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 fill
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function SUBSTITUTE, SUBSTITUTE-IF, SUBSTITUTE-IF-NOT, NSUBSTITUTE, NSUBSTITUTE-IF, NSUBSTITUTE-IF-NOT
+### <span id="F-SUBSTITUTE-ALL">Function SUBSTITUTE, SUBSTITUTE-IF, SUBSTITUTE-IF-NOT, NSUBSTITUTE, NSUBSTITUTE-IF, NSUBSTITUTE-IF-NOT</span>
 
-Syntax:
+* 语法(Syntax):
 
 substitute newitem olditem sequence &key from-end test test-not start end count key
 
@@ -1212,7 +1180,7 @@ nsubstitute-if-not newitem predicate sequence &key from-end start end count key
 
 => sequence
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 newitem---an object.
 
@@ -1236,7 +1204,7 @@ key---a designator for a function of one argument, or nil.
 
 result-sequence---a sequence.
 
-Description:
+* 描述(Description):
 
 substitute, substitute-if, and substitute-if-not return a copy of sequence in which each element that satisfies the test has been replaced with newitem.
 
@@ -1256,7 +1224,7 @@ substitute, substitute-if, and substitute-if-not return a sequence which can sha
 
 nsubstitute and nsubstitute-if are required to setf any car (if sequence is a list) or aref (if sequence is a vector) of sequence that is required to be replaced with newitem. If sequence is a list, none of the cdrs of the top-level list can be modified.
 
-Examples:
+* 示例(Examples):
 
  (substitute #\. #\SPACE "0 2 4 6") =>  "0.2.4.6"
  (substitute 9 4 '(1 2 4 1 3 4 5)) =>  (1 2 9 1 3 9 5)
@@ -1279,21 +1247,21 @@ Examples:
  (nsubstitute-if-not #\z #'alpha-char-p alpha-tester) =>  "abz"
  alpha-tester =>  "abz"
 
-Side Effects:
+* 副作用(Side Effects):
 
 nsubstitute, nsubstitute-if, and nsubstitute-if-not modify sequence.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should be prepared to signal an error of type type-error if sequence is not a proper sequence.
 
-See Also:
+* 也见(See Also):
 
 subst, nsubst, Section 3.2.1 (Compiler Terminology), Section 3.6 (Traversal Rules and Side Effects)
 
-Notes:
+* 注意(Notes):
 
 If sequence is a vector, the result might or might not be simple, and might or might not be identical to sequence.
 
@@ -1313,13 +1281,13 @@ Because the side-effecting variants (e.g., nsubstitute) potentially change the p
  (test-it #'nsubstitute) =>  (A . #1#)
 
 
-Function CONCATENATE
+### <span id="F-CONCATENATE">Function CONCATENATE</span>
 
-Syntax:
+* 语法(Syntax):
 
 concatenate result-type &rest sequences => result-sequence
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 result-type---a sequence type specifier.
 
@@ -1327,7 +1295,7 @@ sequences---a sequence.
 
 result-sequence---a proper sequence of type result-type.
 
-Description:
+* 描述(Description):
 
 concatenate returns a sequence that contains all the individual elements of all the sequences in the order that they are supplied. The sequence is of type result-type, which must be a subtype of type sequence.
 
@@ -1337,7 +1305,7 @@ It is an error if any element of the sequences cannot be an element of the seque
 
 If the result-type is a subtype of vector, then if the implementation can determine the element type specified for the result-type, the element type of the resulting array is the result of upgrading that element type; or, if the implementation can determine that the element type is unspecified (or *), the element type of the resulting array is t; otherwise, an error is signaled.
 
-Examples:
+* 示例(Examples):
 
 (concatenate 'string "all" " " "together" " " "now") =>  "all together now"
 (concatenate 'list "ABC" '(d e f) #(1 2 3) #*1011)
@@ -1346,28 +1314,28 @@ Examples:
 
   (concatenate '(vector * 2) "a" "bc") should signal an error
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 An error is signaled if the result-type is neither a recognizable subtype of list, nor a recognizable subtype of vector.
 
 An error of type type-error should be signaled if result-type specifies the number of elements and the sum of sequences is different from that number.
 
-See Also:
+* 也见(See Also):
 
 append
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function MERGE
+### <span id="F-MERGE">Function MERGE</span>
 
-Syntax:
+* 语法(Syntax):
 
 merge result-type sequence-1 sequence-2 predicate &key key => result-sequence
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 result-type---a sequence type specifier.
 
@@ -1381,7 +1349,7 @@ key---a designator for a function of one argument, or nil.
 
 result-sequence---a proper sequence of type result-type.
 
-Description:
+* 描述(Description):
 
 Destructively merges sequence-1 with sequence-2 according to an order determined by the predicate. merge determines the relationship between two elements by giving keys extracted from the sequence elements to the predicate.
 
@@ -1401,7 +1369,7 @@ If the result-type is a subtype of list, the result will be a list.
 
 If the result-type is a subtype of vector, then if the implementation can determine the element type specified for the result-type, the element type of the resulting array is the result of upgrading that element type; or, if the implementation can determine that the element type is unspecified (or *), the element type of the resulting array is t; otherwise, an error is signaled.
 
-Examples:
+* 示例(Examples):
 
  (setq test1 (list 1 3 4 6 7))
  (setq test2 (list 2 5 8))
@@ -1416,24 +1384,24 @@ Examples:
 
  (merge '(vector * 4) '(1 5) '(2 4 6) #'<) should signal an error
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 An error must be signaled if the result-type is neither a recognizable subtype of list, nor a recognizable subtype of vector.
 
 An error of type type-error should be signaled if result-type specifies the number of elements and the sum of the lengths of sequence-1 and sequence-2 is different from that number.
 
-See Also:
+* 也见(See Also):
 
 sort, stable-sort, Section 3.2.1 (Compiler Terminology), Section 3.6 (Traversal Rules and Side Effects)
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function REMOVE, REMOVE-IF, REMOVE-IF-NOT, DELETE, DELETE-IF, DELETE-IF-NOT
+### <span id="F-REMOVE-ALL">Function REMOVE, REMOVE-IF, REMOVE-IF-NOT, DELETE, DELETE-IF, DELETE-IF-NOT</span>
 
-Syntax:
+* 语法(Syntax):
 
 remove item sequence &key from-end test test-not start end count key => result-sequence
 
@@ -1447,7 +1415,7 @@ delete-if test sequence &key from-end start end count key => result-sequence
 
 delete-if-not test sequence &key from-end start end count key => result-sequence
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 item---an object.
 
@@ -1469,7 +1437,7 @@ key---a designator for a function of one argument, or nil.
 
 result-sequence---a sequence.
 
-Description:
+* 描述(Description):
 
 remove, remove-if, and remove-if-not return a sequence from which the elements that satisfy the test have been removed.
 
@@ -1495,7 +1463,7 @@ delete-if is constrained to behave exactly as follows:
              :test #'(lambda (ignore item) (funcall test item))
              ...)
 
-Examples:
+* 示例(Examples):
 
  (remove 4 '(1 3 4 5 9)) =>  (1 3 5 9)
  (remove 4 '(1 2 4 1 3 4 5)) =>  (1 2 1 3 5)
@@ -1533,21 +1501,21 @@ Examples:
  bar =>  ((C)) or ...
  (eq (cdr foo) (car bar)) =>  T or ...
 
-Side Effects:
+* 副作用(Side Effects):
 
 For delete, delete-if, and delete-if-not, sequence may be destroyed and used to construct the result.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should be prepared to signal an error of type type-error if sequence is not a proper sequence.
 
-See Also:
+* 也见(See Also):
 
 Section 3.2.1 (Compiler Terminology), Section 3.6 (Traversal Rules and Side Effects)
 
-Notes:
+* 注意(Notes):
 
 If sequence is a vector, the result might or might not be simple, and might or might not be identical to sequence.
 
@@ -1555,9 +1523,9 @@ The :test-not argument is deprecated.
 
 The functions delete-if-not and remove-if-not are deprecated. 
 
-Function REMOVE-DUPLICATES, DELETE-DUPLICATES
+### <span id="F-DUPLICATES-ALL">Function REMOVE-DUPLICATES, DELETE-DUPLICATES</span>
 
-Syntax:
+* 语法(Syntax):
 
 remove-duplicates sequence &key from-end test test-not start end key
 
@@ -1567,7 +1535,7 @@ delete-duplicates sequence &key from-end test test-not start end key
 
 => result-sequence
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 sequence---a proper sequence.
 
@@ -1583,7 +1551,7 @@ key---a designator for a function of one argument, or nil.
 
 result-sequence---a sequence.
 
-Description:
+* 描述(Description):
 
 remove-duplicates returns a modified copy of sequence from which any element that matches another element occurring in sequence has been removed.
 
@@ -1599,7 +1567,7 @@ remove-duplicates returns a sequence that may share with sequence or may be iden
 
 delete-duplicates, when sequence is a list, is permitted to setf any part, car or cdr, of the top-level list structure in that sequence. When sequence is a vector, delete-duplicates is permitted to change the dimensions of the vector and to slide its elements into new positions without permuting them to produce the resulting vector.
 
-Examples:
+* 示例(Examples):
 
  (remove-duplicates "aBcDAbCd" :test #'char-equal :from-end t) =>  "aBcD"
  (remove-duplicates '(a b c b d d e)) =>  (A C B D E)
@@ -1611,21 +1579,21 @@ Examples:
  (setq tester (list 0 1 2 3 4 5 6))
  (delete-duplicates tester :key #'oddp :start 1 :end 6) =>  (0 4 5 6)
 
-Side Effects:
+* 副作用(Side Effects):
 
 delete-duplicates might destructively modify sequence.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should signal an error of type type-error if sequence is not a proper sequence.
 
-See Also:
+* 也见(See Also):
 
 Section 3.2.1 (Compiler Terminology), Section 3.6 (Traversal Rules and Side Effects)
 
-Notes:
+* 注意(Notes):
 
 If sequence is a vector, the result might or might not be simple, and might or might not be identical to sequence.
 
