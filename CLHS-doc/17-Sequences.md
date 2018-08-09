@@ -138,69 +138,70 @@
 
 ## 17.3 <span id="TheSequencesDictionary">序列的字典</span>
 
-> * [System Class SEQUENCE](#SC-SEQUENCE)
-> * [Function COPY-SEQ](#F-COPY-SEQ)
-> * [Accessor ELT](#A-ELT)
-> * [Function FILL](#F-FILL)
-> * [Function MAKE-SEQUENCE](#F-MAKE-SEQUENCE)
-> * [Accessor SUBSEQ](#A-SUBSEQ)
-> * [Function MAP](#F-MAP)
-> * [Function MAP-INTO](#F-MAP-INTO)
-> * [Function REDUCE](#F-REDUCE)
-> * [Function COUNT, COUNT-IF, COUNT-IF-NOT](#F-COUNT-ALL)
-> * [Function LENGTH](#F-LENGTH)
-> * [Function REVERSE, NREVERSE](#F-REVERSE-ALL)
-> * [Function SORT, STABLE-SORT](#F-SORT-ALL)
-> * [Function FIND, FIND-IF, FIND-IF-NOT](#F-FIND-ALL)
-> * [Function POSITION, POSITION-IF, POSITION-IF-NOT](#F-POSITION-ALL)
-> * [Function SEARCH](#F-SEARCH)
-> * [Function MISMATCH](#F-MISMATCH)
-> * [Function REPLACE](#F-REPLACE)
-> * [Function SUBSTITUTE, SUBSTITUTE-IF, SUBSTITUTE-IF-NOT, NSUBSTITUTE, NSUBSTITUTE-IF, NSUBSTITUTE-IF-NOT](#F-SUBSTITUTE-ALL)
-> * [Function CONCATENATE](#F-CONCATENATE)
-> * [Function MERGE](#F-MERGE)
-> * [Function REMOVE, REMOVE-IF, REMOVE-IF-NOT, DELETE, DELETE-IF, DELETE-IF-NOT](#F-REMOVE-ALL)
-> * [Function REMOVE-DUPLICATES, DELETE-DUPLICATES](#F-DUPLICATES-ALL)
+> * [系统类 SEQUENCE](#SC-SEQUENCE)
+> * [函数 COPY-SEQ](#F-COPY-SEQ)
+> * [访问器 ELT](#A-ELT)
+> * [函数 FILL](#F-FILL)
+> * [函数 MAKE-SEQUENCE](#F-MAKE-SEQUENCE)
+> * [访问器 SUBSEQ](#A-SUBSEQ)
+> * [函数 MAP](#F-MAP)
+> * [函数 MAP-INTO](#F-MAP-INTO)
+> * [函数 REDUCE](#F-REDUCE)
+> * [函数 COUNT, COUNT-IF, COUNT-IF-NOT](#F-COUNT-ALL)
+> * [函数 LENGTH](#F-LENGTH)
+> * [函数 REVERSE, NREVERSE](#F-REVERSE-ALL)
+> * [函数 SORT, STABLE-SORT](#F-SORT-ALL)
+> * [函数 FIND, FIND-IF, FIND-IF-NOT](#F-FIND-ALL)
+> * [函数 POSITION, POSITION-IF, POSITION-IF-NOT](#F-POSITION-ALL)
+> * [函数 SEARCH](#F-SEARCH)
+> * [函数 MISMATCH](#F-MISMATCH)
+> * [函数 REPLACE](#F-REPLACE)
+> * [函数 SUBSTITUTE, SUBSTITUTE-IF, SUBSTITUTE-IF-NOT, NSUBSTITUTE, NSUBSTITUTE-IF, NSUBSTITUTE-IF-NOT](#F-SUBSTITUTE-ALL)
+> * [函数 CONCATENATE](#F-CONCATENATE)
+> * [函数 MERGE](#F-MERGE)
+> * [函数 REMOVE, REMOVE-IF, REMOVE-IF-NOT, DELETE, DELETE-IF, DELETE-IF-NOT](#F-REMOVE-ALL)
+> * [函数 REMOVE-DUPLICATES, DELETE-DUPLICATES](#F-DUPLICATES-ALL)
 
 
-### <span id="SC-SEQUENCE">System Class SEQUENCE</span>
+### <span id="SC-SEQUENCE">系统类 SEQUENCE</span>
 
 * 类优先级列表(Class Precedence List):
 
-sequence, t
+        sequence, t
 
 * 描述(Description):
 
-Sequences are ordered collections of objects, called the elements of the sequence.
+        序列是对象的有序集合, 这些对象称为序列的元素.
 
-The types vector and the type list are disjoint subtypes of type sequence, but are not necessarily an exhaustive partition of sequence.
+        类型 vector 类型 list 是类型 sequence 的互斥的子类型, 但没有必要是序列的一个详尽分区.
 
-When viewing a vector as a sequence, only the active elements of that vector are considered elements of the sequence; that is, sequence operations respect the fill pointer when given sequences represented as vectors. 
+        当把一个向量视作一个序列时, 只有这个向量的有效元素被当作这个序列的元素; 这也就是说, 当给定的序列被表示为向量时, 序列操作遵守填充指针. 
 
 
-### <span id="F-COPY-SEQ">Function COPY-SEQ</span>
+### <span id="F-COPY-SEQ">函数 COPY-SEQ</span>
 
 * 语法(Syntax):
 
-copy-seq sequence => copied-sequence
+        copy-seq sequence => copied-sequence
 
 * 参数和值(Arguments and Values):
 
-sequence---a proper sequence.
-
-copied-sequence---a proper sequence.
+        sequence---一个 proper 序列.
+        copied-sequence---一个 proper 序列.
 
 * 描述(Description):
 
-Creates a copy of sequence. The elements of the new sequence are the same as the corresponding elements of the given sequence.
+        创建一个序列 sequence 的拷贝. 这个新的序列中的元素和给定序列 sequence 中的对应元素是相同的.
 
-If sequence is a vector, the result is a fresh simple array of rank one that has the same actual array element type as sequence. If sequence is a list, the result is a fresh list.
+        如果序列 sequence 是一个向量, 那么结果就是维数为一的新的简单数组, 并且有着和序列 sequence 相同的实际数组元素类型. 如果序列 sequence 是一个列表, 那么结果就是一个新的列表.
 
 * 示例(Examples):
 
- (setq str "a string") =>  "a string"
- (equalp str (copy-seq str)) =>  true
- (eql str (copy-seq str)) =>  false
+    ```LISP
+    (setq str "a string") =>  "a string"
+    (equalp str (copy-seq str)) =>  true
+    (eql str (copy-seq str)) =>  false
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -208,49 +209,48 @@ If sequence is a vector, the result is a fresh simple array of rank one that has
 
 * 异常情况(Exceptional Situations):
 
-Should be prepared to signal an error of type type-error if sequence is not a proper sequence.
+        如果序列 sequence 不是一个 proper 序列, 那么应该准备发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-copy-list
+        copy-list
 
 * 注意(Notes):
 
-From a functional standpoint,
+        从功能的角度来看,
 
- (copy-seq x) ==  (subseq x 0)
+        (copy-seq x) ==  (subseq x 0)
 
-However, the programmer intent is typically very different in these two cases. 
+        然而, 在这两种情况下, 程序员的意图通常是非常不同的. 
 
 
-### <span id="A-ELT">Accessor ELT</span>
+### <span id="A-ELT">访问器 ELT</span>
 
 * 语法(Syntax):
 
-elt sequence index => object
+        elt sequence index => object
 
-(setf (elt sequence index) new-object)
+        (setf (elt sequence index) new-object)
 
 * 参数和值(Arguments and Values):
 
-sequence---a proper sequence.
-
-index---a valid sequence index for sequence.
-
-object---an object.
-
-new-object---an object.
+        sequence---一个proper 序列.
+        index---对于序列 sequence 的一个有效序列索引.
+        object---一个对象.
+        new-object---一个对象.
 
 * 描述(Description):
 
-Accesses the element of sequence specified by index.
+        访问由索引 index 指定的序列 sequence 中的元素.
 
 * 示例(Examples):
 
- (setq str (copy-seq "0123456789")) =>  "0123456789"
- (elt str 6) =>  #\6
- (setf (elt str 0) #\#) =>  #\#
- str =>  "#123456789"
+    ```LISP
+    (setq str (copy-seq "0123456789")) =>  "0123456789"
+    (elt str 6) =>  #\6
+    (setf (elt str 0) #\#) =>  #\#
+    str =>  "#123456789"
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -258,15 +258,15 @@ Accesses the element of sequence specified by index.
 
 * 异常情况(Exceptional Situations):
 
-Should be prepared to signal an error of type type-error if sequence is not a proper sequence. Should signal an error of type type-error if index is not a valid sequence index for sequence.
+        如果 sequence 不是一个 proper 序列, 那么应该准备发出一个 type-error 类型的错误. 如果 index 对于序列 sequence 的不是一个有效序列索引, 那么应该发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-aref, nth, Section 3.2.1 (Compiler Terminology)
+        aref, nth, 章节 3.2.1 (Compiler Terminology)
 
 * 注意(Notes):
 
-aref may be used to access vector elements that are beyond the vector's fill pointer. 
+        aref 可能被用于访问超出这个向量填充指针的向量元素. 
 
 ### <span id="F-FILL">Function FILL</span>
 
