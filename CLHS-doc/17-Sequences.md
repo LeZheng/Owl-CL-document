@@ -1,77 +1,78 @@
 # 17 Sequences
 
-> * 17.1 [Sequence Concepts](#SequenceConcepts)
-> * 17.2 [Rules about Test Functions](#RulesTestFunctions)
-> * 17.3 [The Sequences Dictionary](#TheSequencesDictionary)
+> * 17.1 [序列的概念](#SequenceConcepts)
+> * 17.2 [关于测试函数的规则](#RulesTestFunctions)
+> * 17.3 [序列的字典](#TheSequencesDictionary)
 
 
-## 17.1 <span id="SequenceConcepts">Sequence Concepts</span>
+## 17.1 <span id="SequenceConcepts">序列的概念</span>
 
-A sequence is an ordered collection of elements, implemented as either a vector or a list.
+一个序列是多个元素的一个有序集合, 实现为一个向量或一个列表.
 
-Sequences can be created by the function make-sequence, as well as other functions that create objects of types that are subtypes of sequence (e.g., list, make-list, mapcar, and vector).
+序列可以由函数 make-sequence 创建, 其他创建 sequence 的子类型的对象的函数也可以 (比如, list, make-list, mapcar, 和 vector).
 
-A sequence function is a function defined by this specification or added as an extension by the implementation that operates on one or more sequences. Whenever a sequence function must construct and return a new vector, it always returns a simple vector. Similarly, any strings constructed will be simple strings.
+一个序列函数是一个由这个规范定义的或者由具体实现作为一个扩展添加的一个在一个或多个序列上操作的函数. 在一个序列函数必须构造并返回一个新的向量时, 它总是返回一个简单向量. 类似地, 任何构造的字符串都会是简单字符串.
 
-concatenate        length              remove             
-copy-seq           map                 remove-duplicates  
-count              map-into            remove-if          
-count-if           merge               remove-if-not      
-count-if-not       mismatch            replace            
-delete             notany              reverse            
-delete-duplicates  notevery            search             
-delete-if          nreverse            some               
-delete-if-not      nsubstitute         sort               
-elt                nsubstitute-if      stable-sort        
-every              nsubstitute-if-not  subseq             
-fill               position            substitute         
-find               position-if         substitute-if      
-find-if            position-if-not     substitute-if-not  
-find-if-not        reduce                                 
+    concatenate        length              remove             
+    copy-seq           map                 remove-duplicates  
+    count              map-into            remove-if          
+    count-if           merge               remove-if-not      
+    count-if-not       mismatch            replace            
+    delete             notany              reverse            
+    delete-duplicates  notevery            search             
+    delete-if          nreverse            some               
+    delete-if-not      nsubstitute         sort               
+    elt                nsubstitute-if      stable-sort        
+    every              nsubstitute-if-not  subseq             
+    fill               position            substitute         
+    find               position-if         substitute-if      
+    find-if            position-if-not     substitute-if-not  
+    find-if-not        reduce                                 
 
-Figure 17-1. Standardized Sequence Functions
+    Figure 17-1. 标准序列函数
 
-### 17.1.1 General Restrictions on Parameters that must be Sequences
+### 17.1.1 在必须为序列的参数上的普遍约束
 
-In general, lists (including association lists and property lists) that are treated as sequences must be proper lists. 
+通常, 被当作序列的列表 (包括关联列表和属性列表) 必须是 proper 列表. 
 
 
-## 17.2 <span id="RulesTestFunctions">Rules about Test Functions</span>
+## 17.2 <span id="RulesTestFunctions">关于测试函数的规则</span>
 
-> * 17.2.1 [Satisfying a Two-Argument Test](#SatisfyingTwoArgumentTest)
-> * 17.2.2 [Satisfying a One-Argument Test](#SatisfyingOneArgumentTest)
+> * 17.2.1 [满足一个两个参数的测试](#SatisfyingTwoArgumentTest)
+> * 17.2.2 [满足一个单参数的测试](#SatisfyingOneArgumentTest)
 
-### 17.2.1 <span id="SatisfyingTwoArgumentTest">Satisfying a Two-Argument Test</span>
+### 17.2.1 <span id="SatisfyingTwoArgumentTest">满足一个两个参数的测试</span>
 
-When an object O is being considered iteratively against each element Ei of a sequence S by an operator F listed in the next figure, it is sometimes useful to control the way in which the presence of O is tested in S is tested by F. This control is offered on the basis of a function designated with either a :test or :test-not argument.
+当一个对象 O 要被迭代地和一个序列 S 的每一个元素 Ei 通过下面这段列出的操作符 F 考虑时, 有时候, 控制 O 在 S 中由 F 测试的方式是很有用的. 这个控制在一个被 :test 或 :test-not 参数标识的函数的基础上.
 
-adjoin           nset-exclusive-or  search            
-assoc            nsublis            set-difference    
-count            nsubst             set-exclusive-or  
-delete           nsubstitute        sublis            
-find             nunion             subsetp           
-intersection     position           subst             
-member           pushnew            substitute        
-mismatch         rassoc             tree-equal        
-nintersection    remove             union             
-nset-difference  remove-duplicates                    
+    adjoin           nset-exclusive-or  search            
+    assoc            nsublis            set-difference    
+    count            nsubst             set-exclusive-or  
+    delete           nsubstitute        sublis            
+    find             nunion             subsetp           
+    intersection     position           subst             
+    member           pushnew            substitute        
+    mismatch         rassoc             tree-equal        
+    nintersection    remove             union             
+    nset-difference  remove-duplicates                    
 
-Figure 17-2. Operators that have Two-Argument Tests to be Satisfied
+    Figure 17-2. 有两个参数的测试需要满足的操作符
 
-The object O might not be compared directly to Ei. If a :key argument is provided, it is a designator for a function of one argument to be called with each Ei as an argument, and yielding an object Zi to be used for comparison. (If there is no :key argument, Zi is Ei.)
+这个对象 O 可能不会直接和 Ei 比较. 如果提供了一个 :key 参数, 它就是要被调用的单参数的函数的标识符, 而每一个 Ei 作为一个参数, 并且产生一个对象 Zi 被用作这个比较. (如果这里没有 :key 参数, Zi 就是 Ei.)
 
-The function designated by the :key argument is never called on O itself. However, if the function operates on multiple sequences (e.g., as happens in set-difference), O will be the result of calling the :key function on an element of the other sequence.
+这个由 :key 参数标识的函数从不在 O 自身上调用. 然而, 如果这个函数在多个序列上操作 (比如, 就像发生在 set-difference), O 会是在另一个序列上调用这个函数的结果.
 
-A :test argument, if supplied to F, is a designator for a function of two arguments, O and Zi. An Ei is said (or, sometimes, an O and an Ei are said) to satisfy the test if this :test function returns a generalized boolean representing true.
+如果提供给 F 的一个 :test 参数, 那么它就是一个两参数函数的标识符, 参数为 O 和 Zi. 如果这个 :test 函数返回表示 true 的广义 boolean 那么就说一个 Ei (或者, 有时候, 就说一个 O 和一个 Ei) 满足这个测试条件.
 
-A :test-not argument, if supplied to F, is designator for a function of two arguments, O and Zi. An Ei is said (or, sometimes, an O and an Ei are said) to satisfy the test if this :test-not function returns a generalized boolean representing false.
+如果提供 F 一个 :test-not 参数, 那么它就是一个两个参数函数的标识符, 参数是 O 和 Zi. 如果这个 :test-not 函数返回一个表示 false 的广义 boolean, 那么就说 Ei (或者, 有时候, 就说一个 O 和一个 Ei) 满足这个测试条件.
 
-If neither a :test nor a :test-not argument is supplied, it is as if a :test argument of #'eql was supplied.
+如果 :test 和 :test-not 参数都没有提供, 那么就好像提供了一个 #'eql 的 :test 参数.
 
-The consequences are unspecified if both a :test and a :test-not argument are supplied in the same call to F.
+如果在对 F 的同一个调用中 :test 和 :test-not 参数都提供了, 那么后果是未指定的.
 
-#### 17.2.1.1 Examples of Satisfying a Two-Argument Test
+#### 17.2.1.1 满足一个两个参数的测试的示例
 
+```LISP
  (remove "FOO" '(foo bar "FOO" "BAR" "foo" "bar") :test #'equal)
 =>  (foo bar "BAR" "foo" "bar")
  (remove "FOO" '(foo bar "FOO" "BAR" "foo" "bar") :test #'equalp)
@@ -97,32 +98,33 @@ The consequences are unspecified if both a :test and a :test-not argument are su
         :key #'pathname-name
         :test #'equal)
 =>  2
+```
 
+### 17.2.2 <span id="SatisfyingOneArgumentTest">满足一个单参数的测试</span>
 
-### 17.2.2 <span id="SatisfyingOneArgumentTest">Satisfying a One-Argument Test</span>
+当使用下面这段中的函数的其中一个时, 序列 S 的元素 E 被过滤不是根据两个参数的断言下的对象 O 的存在或缺失的基础上, 如章节 17.2.1 (Satisfying a Two-Argument Test) 中描述的函数, 而是在单参数断言的基础上.
 
-When using one of the functions in the next figure, the elements E of a sequence S are filtered not on the basis of the presence or absence of an object O under a two argument predicate, as with the functions described in Section 17.2.1 (Satisfying a Two-Argument Test), but rather on the basis of a one argument predicate.
+    assoc-if       member-if           rassoc-if          
+    assoc-if-not   member-if-not       rassoc-if-not      
+    count-if       nsubst-if           remove-if          
+    count-if-not   nsubst-if-not       remove-if-not      
+    delete-if      nsubstitute-if      subst-if           
+    delete-if-not  nsubstitute-if-not  subst-if-not       
+    find-if        position-if         substitute-if      
+    find-if-not    position-if-not     substitute-if-not  
 
-assoc-if       member-if           rassoc-if          
-assoc-if-not   member-if-not       rassoc-if-not      
-count-if       nsubst-if           remove-if          
-count-if-not   nsubst-if-not       remove-if-not      
-delete-if      nsubstitute-if      subst-if           
-delete-if-not  nsubstitute-if-not  subst-if-not       
-find-if        position-if         substitute-if      
-find-if-not    position-if-not     substitute-if-not  
+    Figure 17-3. 有单参数的测试需要满足的操作符
 
-Figure 17-3. Operators that have One-Argument Tests to be Satisfied
+元素 Ei 可能不会被直接考虑. 如果提供了一个 :key 参数, 那么它就是一个单参数函数的标识符, 用每一个 Ei 作为参数来调用, 并且产生一个要被用来比较的对象 Zi. (如果没有 :key 参数, Zi 就是 Ei.)
 
-The element Ei might not be considered directly. If a :key argument is provided, it is a designator for a function of one argument to be called with each Ei as an argument, and yielding an object Zi to be used for comparison. (If there is no :key argument, Zi is Ei.)
+在这个规范中定义的并且有着一个以 "-if" 结尾的名字的函数接受一个单参数 Zi 的函数的标识符作为第一个参数. 如果这个 :test 函数返回一个表示  true 的广义 boolean, 那么就说一个 Ei 满足这个测试.
 
-Functions defined in this specification and having a name that ends in ``-if'' accept a first argument that is a designator for a function of one argument, Zi. An Ei is said to satisfy the test if this :test function returns a generalized boolean representing true.
-
-Functions defined in this specification and having a name that ends in ``-if-not'' accept a first argument that is a designator for a function of one argument, Zi. An Ei is said to satisfy the test if this :test function returns a generalized boolean representing false.
+在这个规范中定义的并且有着一个以 "-if-not" 结尾的名字的函数接受一个单参数 Zi 的函数的标识符作为第一个参数. 如果这个 :test 函数返回一个表示 false 的广义 boolean, 那么就说一个 Ei 满足这个测试条件.
 
 
 #### 17.2.2.1 Examples of Satisfying a One-Argument Test
 
+```LISP
  (count-if #'zerop '(1 #C(0.0 0.0) 0 0.0d0 0.0s0 3)) =>  4
 
  (remove-if-not #'symbolp '(0 1 2 3 4 5 6 7 8 9 A B C D E F))
@@ -132,9 +134,9 @@ Functions defined in this specification and having a name that ends in ``-if-not
 
  (count-if #'zerop '("foo" "" "bar" "" "" "baz" "quux") :key #'length)
 =>  3
+```
 
-
-## 17.3 <span id="TheSequencesDictionary">The Sequences Dictionary</span>
+## 17.3 <span id="TheSequencesDictionary">序列的字典</span>
 
 > * [System Class SEQUENCE](#SC-SEQUENCE)
 > * [Function COPY-SEQ](#F-COPY-SEQ)
