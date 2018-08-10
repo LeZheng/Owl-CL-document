@@ -268,148 +268,146 @@
 
         aref 可能被用于访问超出这个向量填充指针的向量元素. 
 
-### <span id="F-FILL">Function FILL</span>
+### <span id="F-FILL">函数 FILL</span>
 
 * 语法(Syntax):
 
-fill sequence item &key start end => sequence
+        fill sequence item &key start end => sequence
 
 * 参数和值(Arguments and Values):
 
-sequence---a proper sequence.
-
-item---a sequence.
-
-start, end---bounding index designators of sequence. The defaults for start and end are 0 and nil, respectively.
+        sequence---一个 proper 序列.
+        item---一个序列.
+        start, end---序列 sequence 的边界索引标识符. 对于 start 和 end 默认分别是 0 和 nil.
 
 * 描述(Description):
 
-Replaces the elements of sequence bounded by start and end with item.
+        用 item 替换由 start and end 限制的序列 sequence 中的元素.
 
 * 示例(Examples):
 
- (fill (list 0 1 2 3 4 5) '(444)) =>  ((444) (444) (444) (444) (444) (444))
- (fill (copy-seq "01234") #\e :start 3) =>  "012ee"
- (setq x (vector 'a 'b 'c 'd 'e)) =>  #(A B C D E)
- (fill x 'z :start 1 :end 3) =>  #(A Z Z D E)
- x =>  #(A Z Z D E)
- (fill x 'p) =>  #(P P P P P)
- x =>  #(P P P P P)
+    ```LISP
+    (fill (list 0 1 2 3 4 5) '(444)) =>  ((444) (444) (444) (444) (444) (444))
+    (fill (copy-seq "01234") #\e :start 3) =>  "012ee"
+    (setq x (vector 'a 'b 'c 'd 'e)) =>  #(A B C D E)
+    (fill x 'z :start 1 :end 3) =>  #(A Z Z D E)
+    x =>  #(A Z Z D E)
+    (fill x 'p) =>  #(P P P P P)
+    x =>  #(P P P P P)
+    ```
 
 * 副作用(Side Effects):
 
-Sequence is destructively modified.
+        序列 sequence 被破坏性地修改.
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-Should be prepared to signal an error of type type-error if sequence is not a proper sequence. Should signal an error of type type-error if start is not a non-negative integer. Should signal an error of type type-error if end is not a non-negative integer or nil.
+        如果序列 sequence 不是一个 proper 序列, 那么应该准备去发出一个 type-error 类型的错误. 如果 start 不是一个非负整数, 那么应该发出一个 type-error 类型的错误. 如果 end 不是一个非负整数或者 nil, 那么应该发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-replace, nsubstitute
+        replace, nsubstitute
 
 * 注意(Notes):
 
-(fill sequence item) == (nsubstitute-if item (constantly t) sequence) 
+        (fill sequence item) == (nsubstitute-if item (constantly t) sequence) 
 
 
-### <span id="F-MAKE-SEQUENCE">Function MAKE-SEQUENCE</span>
+### <span id="F-MAKE-SEQUENCE">函数 MAKE-SEQUENCE</span>
 
 * 语法(Syntax):
 
-make-sequence result-type size &key initial-element => sequence
+        make-sequence result-type size &key initial-element => sequence
 
 * 参数和值(Arguments and Values):
 
-result-type---a sequence type specifier.
-
-size---a non-negative integer.
-
-initial-element---an object. The default is implementation-dependent.
-
-sequence---a proper sequence.
+        result-type---一个序列类型指定符.
+        size---一个非负整数.
+        initial-element---一个对象. 默认值是依赖于具体实现的.
+        sequence---一个 proper 序列.
 
 * 描述(Description):
 
-Returns a sequence of the type result-type and of length size, each of the elements of which has been initialized to initial-element.
+        返回一个 result-type 类型并且长度为 size 的序列, 其中的每一个元素都被初始化为 initial-element.
 
-If the result-type is a subtype of list, the result will be a list.
+        如果 result-type 是 list 的一个子类型, 那么结果会是一个列表 list.
 
-If the result-type is a subtype of vector, then if the implementation can determine the element type specified for the result-type, the element type of the resulting array is the result of upgrading that element type; or, if the implementation can determine that the element type is unspecified (or *), the element type of the resulting array is t; otherwise, an error is signaled.
+        如果 result-type 是 vector 的一个子类型, 那么如果实现可以确定 result-type 指定的元素类型, 那么产生的数组的元素类型就是那个元素类型的提升的结果; 或者, 如果实现可以确定那个元素类型是未指定的 (或 *), 产生的元素类型就是 t; 否则, 发出一个错误.
 
 * 示例(Examples):
 
- (make-sequence 'list 0) =>  ()
- (make-sequence 'string 26 :initial-element #\.) 
-=>  ".........................."
- (make-sequence '(vector double-float) 2
-                :initial-element 1d0)
-=>  #(1.0d0 1.0d0)
+    ```LISP
+    (make-sequence 'list 0) =>  ()
+    (make-sequence 'string 26 :initial-element #\.) 
+    =>  ".........................."
+    (make-sequence '(vector double-float) 2
+                    :initial-element 1d0)
+    =>  #(1.0d0 1.0d0)
 
- (make-sequence '(vector * 2) 3) should signal an error
- (make-sequence '(vector * 4) 3) should signal an error
+    (make-sequence '(vector * 2) 3) should signal an error
+    (make-sequence '(vector * 4) 3) should signal an error
+    ```
 
 * 受此影响(Affected By):
 
-The implementation.
+        这个具体实现.
 
 * 异常情况(Exceptional Situations):
 
-The consequences are unspecified if initial-element is not an object which can be stored in the resulting sequence.
+        如果 initial-element 不是一个可以被存储在产生的序列中的对象, 那么后果是未指定的.
 
-An error of type type-error must be signaled if the result-type is neither a recognizable subtype of list, nor a recognizable subtype of vector.
+        如果 result-type 既不是一个 list 的可识别子类型, 也不是一个 vector 的可识别子类型, 那么就会发出一个 type-error 类型的错误.
 
-An error of type type-error should be signaled if result-type specifies the number of elements and size is different from that number.
+        如果 result-type 指定的元素的数量并且 size 和那个数量不同, 那么应该发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-make-array, make-list
+        make-array, make-list
 
 * 注意(Notes):
 
- (make-sequence 'string 5) ==  (make-string 5)               
+        (make-sequence 'string 5) ==  (make-string 5)               
 
 ### <span id="A-SUBSEQ">Accessor SUBSEQ</span>
 
 * 语法(Syntax):
 
-subseq sequence start &optional end => subsequence
+        subseq sequence start &optional end => subsequence
 
-(setf (subseq sequence start &optional end) new-subsequence)
+        (setf (subseq sequence start &optional end) new-subsequence)
 
 * 参数和值(Arguments and Values):
 
-sequence---a proper sequence.
-
-start, end---bounding index designators of sequence. The default for end is nil.
-
-subsequence---a proper sequence.
-
-new-subsequence---a proper sequence.
+        sequence---一个 proper 序列.
+        start, end---序列 sequence 边界索引标识符. 对于 end 默认是 nil.
+        subsequence---一个 proper 序列.
+        new-subsequence---一个 proper 序列.
 
 * 描述(Description):
 
-subseq creates a sequence that is a copy of the subsequence of sequence bounded by start and end.
+        subseq 创建一个序列, 它是由 start 和 end 限定的 sequence 的子序列的一个拷贝.
 
-Start specifies an offset into the original sequence and marks the beginning position of the subsequence. end marks the position following the last element of the subsequence.
+        start 指定了原始序列 sequence 中的一个偏移位并且标记这个子序列的起始位置. end 标记这个子序列的最后一个元素的后面的位置.
 
-subseq always allocates a new sequence for a result; it never shares storage with an old sequence. The result subsequence is always of the same type as sequence.
+        subseq 总是为一个结果分配一个新的序列; 它从不与旧的序列共享存储. 这个产生的子序列总是和 sequence 相同类型.
 
-If sequence is a vector, the result is a fresh simple array of rank one that has the same actual array element type as sequence. If sequence is a list, the result is a fresh list.
+        如果序列 sequence 是一个向量, 那么结果是一个新的一维的有着和 sequence 相同实际数组元素类型的简单数组. 如果序列 sequence 是一个列表, 那么结果是一个新的列表.
 
-setf may be used with subseq to destructively replace elements of a subsequence with elements taken from a sequence of new values. If the subsequence and the new sequence are not of equal length, the shorter length determines the number of elements that are replaced. The remaining elements at the end of the longer sequence are not modified in the operation.
+        setf 可以和 subseq 一起使用来破坏性地用一个新值的序列中的元素替换一个子序列的元素. 如果这个子序列和那个新的序列不是相同长度, 更短长度的那个确定了要被替换的元素的数量. 在较长序列中末尾的剩余元素在这个操作中不会被修改.
 
 * 示例(Examples):
 
- (setq str "012345") =>  "012345"
- (subseq str 2) =>  "2345"
- (subseq str 3 5) =>  "34"
- (setf (subseq str 4) "abc") =>  "abc"
- str =>  "0123ab"
- (setf (subseq str 0 2) "A") =>  "A"
- str =>  "A123ab"
+    ```LISP
+    (setq str "012345") =>  "012345"
+    (subseq str 2) =>  "2345"
+    (subseq str 3 5) =>  "34"
+    (setf (subseq str 4) "abc") =>  "abc"
+    str =>  "0123ab"
+    (setf (subseq str 0 2) "A") =>  "A"
+    str =>  "A123ab"
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -417,75 +415,74 @@ setf may be used with subseq to destructively replace elements of a subsequence 
 
 * 异常情况(Exceptional Situations):
 
-Should be prepared to signal an error of type type-error if sequence is not a proper sequence. Should be prepared to signal an error of type type-error if new-subsequence is not a proper sequence.
+        如果序列 sequence 不是一个 proper 序列, 那么应该准备去发出一个 type-error 类型的错误. 如果序列 new-subsequence 不是一个 proper 序列, 那么应该准备去发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-replace
+        replace
 
 * 注意(Notes): None. 
 
 
-### <span id="F-MAP">Function MAP</span>
+### <span id="F-MAP">函数 MAP</span>
 
 * 语法(Syntax):
 
-map result-type function &rest sequences+ => result
+        map result-type function &rest sequences+ => result
 
 * 参数和值(Arguments and Values):
 
-result-type -- a sequence type specifier, or nil.
-
-function---a function designator. function must take as many arguments as there are sequences.
-
-sequence---a proper sequence.
-
-result---if result-type is a type specifier other than nil, then a sequence of the type it denotes; otherwise (if the result-type is nil), nil.
+        result-type -- 一个 sequence 类型指定符, 或者 nil.
+        function---一个函数标识符. function 必须接受和 sequences 数量相同的参数.
+        sequence---一个 proper 序列.
+        result---如果 result-type 是一个类型指定符而不是 nil, 那么就是那个类型表示的一个序列; 否则 (如果 result-type 是 nil), 就是 nil.
 
 * 描述(Description):
 
-Applies function to successive sets of arguments in which one argument is obtained from each sequence. The function is called first on all the elements with index 0, then on all those with index 1, and so on. The result-type specifies the type of the resulting sequence.
+        应用函数 function 到参数的连续集合上, 这里的每一个参数从每个序列 sequence 中获取. 这个函数 function 首先在所有索引为 0 的元素上调用, 然后在所有索引为 1 的元素上, 以此类推. 这个 result-type 指定了产生的序列的类型.
 
-map returns nil if result-type is nil. Otherwise, map returns a sequence such that element j is the result of applying function to element j of each of the sequences. The result sequence is as long as the shortest of the sequences. The consequences are undefined if the result of applying function to the successive elements of the sequences cannot be contained in a sequence of the type given by result-type.
+        如果 result-type 是 nil, 那么 map 返回 nil. 否则, map 返回一个序列, 其中第 j 个元素是应用函数到每个序列的第 j 个元素的结果. 结果序列和这些序列 sequences 中最短的一个一样长. 如果应用函数到那些序列的连续元素的结果不能包含在一个给定的 result-type 类型的序列中, 那么后果是未指定的.
 
-If the result-type is a subtype of list, the result will be a list.
+        如果这个 result-type 是 list 的一个子类型, 这个结果就是一个列表.
 
-If the result-type is a subtype of vector, then if the implementation can determine the element type specified for the result-type, the element type of the resulting array is the result of upgrading that element type; or, if the implementation can determine that the element type is unspecified (or *), the element type of the resulting array is t; otherwise, an error is signaled.
+        如果 result-type 是 vector 的一个子类型, 那么如果实现可以确定 result-type 指定的元素类型, 那么产生的数组的元素类型就是那个元素类型的提升的结果; 或者, 如果实现可以确定那个元素类型是未指定的 (或 *), 产生的元素类型就是 t; 否则, 发出一个错误.
 
 * 示例(Examples):
 
- (map 'string #'(lambda (x y)
-                  (char "01234567890ABCDEF" (mod (+ x y) 16)))
-       '(1 2 3 4)
-       '(10 9 8 7)) =>  "AAAA"
- (setq seq '("lower" "UPPER" "" "123")) =>  ("lower" "UPPER" "" "123")
- (map nil #'nstring-upcase seq) =>  NIL
- seq =>  ("LOWER" "UPPER" "" "123")
- (map 'list #'- '(1 2 3 4)) =>  (-1 -2 -3 -4)
- (map 'string
-      #'(lambda (x) (if (oddp x) #\1 #\0))
-      '(1 2 3 4)) =>  "1010"
+    ```LISP
+    (map 'string #'(lambda (x y)
+                      (char "01234567890ABCDEF" (mod (+ x y) 16)))
+          '(1 2 3 4)
+          '(10 9 8 7)) =>  "AAAA"
+    (setq seq '("lower" "UPPER" "" "123")) =>  ("lower" "UPPER" "" "123")
+    (map nil #'nstring-upcase seq) =>  NIL
+    seq =>  ("LOWER" "UPPER" "" "123")
+    (map 'list #'- '(1 2 3 4)) =>  (-1 -2 -3 -4)
+    (map 'string
+          #'(lambda (x) (if (oddp x) #\1 #\0))
+          '(1 2 3 4)) =>  "1010"
 
- (map '(vector * 4) #'cons "abc" "de") should signal an error
+    (map '(vector * 4) #'cons "abc" "de") should signal an error
+    ```
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-An error of type type-error must be signaled if the result-type is not a recognizable subtype of list, not a recognizable subtype of vector, and not nil.
+        如果 result-type 不是 list 的一个可识别的子类型, 不是一个 vector 的可识别子类型, 并且不是 nil, 那么就会发出一个 type-error 的错误.
 
-Should be prepared to signal an error of type type-error if any sequence is not a proper sequence.
+        如果任何一个 sequence 不是一个 proper 序列, 那么应该准备发出一个 type-error 类型的错误.
 
-An error of type type-error should be signaled if result-type specifies the number of elements and the minimum length of the sequences is different from that number.
+        如果 result-type 指定了元素的数量而这些序列的最小长度和这个数量不同, 那么就会发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-Section 3.6 (Traversal Rules and Side Effects)
+        章节 3.6 (Traversal Rules and Side Effects)
 
 * 注意(Notes): None. 
 
 
-### <span id="F-MAP-INTO">Function MAP-INTO</span>
+### <span id="F-MAP-INTO">函数 MAP-INTO</span>
 
 * 语法(Syntax):
 
@@ -522,7 +519,7 @@ If function has side effects, it can count on being called first on all of the e
 
 * 异常情况(Exceptional Situations):
 
-Should be prepared to signal an error of type type-error if result-sequence is not a proper sequence. Should be prepared to signal an error of type type-error if sequence is not a proper sequence.
+Should be prepared to signal an error of type type-error if result-sequence is not a proper sequence. 如果序列 sequence 不是一个 proper 序列, 那么应该准备去发出一个 type-error 类型的错误.
 
 * 也见(See Also): None.
 
@@ -543,7 +540,7 @@ map-into could be defined by:
    result-sequence)
 
 
-### <span id="F-REDUCE">Function REDUCE</span>
+### <span id="F-REDUCE">函数 REDUCE</span>
 
 * 语法(Syntax):
 
@@ -603,7 +600,7 @@ In the normal case, the result of reduce is the combined result of function's be
 
 * 异常情况(Exceptional Situations):
 
-Should be prepared to signal an error of type type-error if sequence is not a proper sequence.
+如果序列 sequence 不是一个 proper 序列, 那么应该准备去发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
@@ -612,7 +609,7 @@ Section 3.6 (Traversal Rules and Side Effects)
 * 注意(Notes): None. 
 
 
-### <span id="F-COUNT-ALL">Function COUNT, COUNT-IF, COUNT-IF-NOT</span>
+### <span id="F-COUNT-ALL">函数 COUNT, COUNT-IF, COUNT-IF-NOT</span>
 
 * 语法(Syntax):
 
@@ -660,7 +657,7 @@ The from-end has no direct effect on the result. However, if from-end is true, t
 
 * 异常情况(Exceptional Situations):
 
-Should be prepared to signal an error of type type-error if sequence is not a proper sequence.
+如果序列 sequence 不是一个 proper 序列, 那么应该准备去发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
@@ -673,48 +670,49 @@ The :test-not argument is deprecated.
 The function count-if-not is deprecated. 
 
 
-### <span id="F-LENGTH">Function LENGTH</span>
+### <span id="F-LENGTH">函数 LENGTH</span>
 
 * 语法(Syntax):
 
-length sequence => n
+        length sequence => n
 
 * 参数和值(Arguments and Values):
 
-sequence---a proper sequence.
-
-n---a non-negative integer.
+        sequence---一个 proper 序列.
+        n---一个非负整数.
 
 * 描述(Description):
 
-Returns the number of elements in sequence.
+        返回在序列 sequence 中的元素数量.
 
-If sequence is a vector with a fill pointer, the active length as specified by the fill pointer is returned.
+        如果序列 sequence 是一个带有填充指针的向量, 返回由填充指针指定的有效长度.
 
 * 示例(Examples):
 
- (length "abc") =>  3
- (setq str (make-array '(3) :element-type 'character 
-                            :initial-contents "abc"
-                            :fill-pointer t)) =>  "abc"
- (length str) =>  3
- (setf (fill-pointer str) 2) =>  2
- (length str) =>  2
+    ```LISP
+    (length "abc") =>  3
+    (setq str (make-array '(3) :element-type 'character 
+                                :initial-contents "abc"
+                                :fill-pointer t)) =>  "abc"
+    (length str) =>  3
+    (setf (fill-pointer str) 2) =>  2
+    (length str) =>  2
+    ```
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-Should be prepared to signal an error of type type-error if sequence is not a proper sequence.
+        如果序列 sequence 不是一个 proper 序列, 那么应该准备去发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-list-length, sequence
+        list-length, sequence
 
 * 注意(Notes): None. 
 
 
-### <span id="F-REVERSE-ALL">Function REVERSE, NREVERSE</span>
+### <span id="F-REVERSE-ALL">函数 REVERSE, NREVERSE</span>
 
 * 语法(Syntax):
 
@@ -760,14 +758,14 @@ nreverse might either create a new sequence, modify the argument sequence, or bo
 
 * 异常情况(Exceptional Situations):
 
-Should be prepared to signal an error of type type-error if sequence is not a proper sequence.
+如果序列 sequence 不是一个 proper 序列, 那么应该准备去发出一个 type-error 类型的错误.
 
 * 也见(See Also): None.
 
 * 注意(Notes): None. 
 
 
-### <span id="F-SORT-ALL">Function SORT, STABLE-SORT</span>
+### <span id="F-SORT-ALL">函数 SORT, STABLE-SORT</span>
 
 * 语法(Syntax):
 
@@ -850,7 +848,7 @@ The sorting operation can be destructive in all cases. In the case of a vector a
 
 * 异常情况(Exceptional Situations):
 
-Should be prepared to signal an error of type type-error if sequence is not a proper sequence.
+如果序列 sequence 不是一个 proper 序列, 那么应该准备去发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
@@ -861,7 +859,7 @@ merge, Section 3.2.1 (Compiler Terminology), Section 3.6 (Traversal Rules and Si
 If sequence is a vector, the result might or might not be simple, and might or might not be identical to sequence. 
 
 
-### <span id="F-FIND-ALL">Function FIND, FIND-IF, FIND-IF-NOT</span>
+### <span id="F-FIND-ALL">函数 FIND, FIND-IF, FIND-IF-NOT</span>
 
 * 语法(Syntax):
 
@@ -914,7 +912,7 @@ If the sequence contains an element that satisfies the test, then the leftmost o
 
 * 异常情况(Exceptional Situations):
 
-Should be prepared to signal an error of type type-error if sequence is not a proper sequence.
+如果序列 sequence 不是一个 proper 序列, 那么应该准备去发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
@@ -927,7 +925,7 @@ The :test-not argument is deprecated.
 The function find-if-not is deprecated. 
 
 
-### <span id="F-POSITION-ALL">Function POSITION, POSITION-IF, POSITION-IF-NOT</span>
+### <span id="F-POSITION-ALL">函数 POSITION, POSITION-IF, POSITION-IF-NOT</span>
 
 * 语法(Syntax):
 
@@ -976,7 +974,7 @@ The position returned is the index within sequence of the leftmost (if from-end 
 
 * 异常情况(Exceptional Situations):
 
-Should be prepared to signal an error of type type-error if sequence is not a proper sequence.
+如果序列 sequence 不是一个 proper 序列, 那么应该准备去发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
@@ -989,7 +987,7 @@ The :test-not argument is deprecated.
 The function position-if-not is deprecated. 
 
 
-### <span id="F-SEARCH">Function SEARCH</span>
+### <span id="F-SEARCH">函数 SEARCH</span>
 
 * 语法(Syntax):
 
@@ -1045,7 +1043,7 @@ Section 3.6 (Traversal Rules and Side Effects)
 The :test-not argument is deprecated. 
 
 
-### <span id="F-MISMATCH">Function MISMATCH</span>
+### <span id="F-MISMATCH">函数 MISMATCH</span>
 
 * 语法(Syntax):
 
@@ -1105,7 +1103,7 @@ Section 3.6 (Traversal Rules and Side Effects)
 The :test-not argument is deprecated. 
 
 
-### <span id="F-REPLACE">Function REPLACE</span>
+### <span id="F-REPLACE">函数 REPLACE</span>
 
 * 语法(Syntax):
 
@@ -1154,7 +1152,7 @@ fill
 * 注意(Notes): None. 
 
 
-### <span id="F-SUBSTITUTE-ALL">Function SUBSTITUTE, SUBSTITUTE-IF, SUBSTITUTE-IF-NOT, NSUBSTITUTE, NSUBSTITUTE-IF, NSUBSTITUTE-IF-NOT</span>
+### <span id="F-SUBSTITUTE-ALL">函数 SUBSTITUTE, SUBSTITUTE-IF, SUBSTITUTE-IF-NOT, NSUBSTITUTE, NSUBSTITUTE-IF, NSUBSTITUTE-IF-NOT</span>
 
 * 语法(Syntax):
 
@@ -1257,7 +1255,7 @@ nsubstitute, nsubstitute-if, and nsubstitute-if-not modify sequence.
 
 * 异常情况(Exceptional Situations):
 
-Should be prepared to signal an error of type type-error if sequence is not a proper sequence.
+如果序列 sequence 不是一个 proper 序列, 那么应该准备去发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
@@ -1283,7 +1281,7 @@ Because the side-effecting variants (e.g., nsubstitute) potentially change the p
  (test-it #'nsubstitute) =>  (A . #1#)
 
 
-### <span id="F-CONCATENATE">Function CONCATENATE</span>
+### <span id="F-CONCATENATE">函数 CONCATENATE</span>
 
 * 语法(Syntax):
 
@@ -1305,7 +1303,7 @@ All of the sequences are copied from; the result does not share any structure wi
 
 It is an error if any element of the sequences cannot be an element of the sequence result. If the result-type is a subtype of list, the result will be a list.
 
-If the result-type is a subtype of vector, then if the implementation can determine the element type specified for the result-type, the element type of the resulting array is the result of upgrading that element type; or, if the implementation can determine that the element type is unspecified (or *), the element type of the resulting array is t; otherwise, an error is signaled.
+如果 result-type 是 vector 的一个子类型, 那么如果实现可以确定 result-type 指定的元素类型, 那么产生的数组的元素类型就是那个元素类型的提升的结果; 或者, 如果实现可以确定那个元素类型是未指定的 (或 *), 产生的元素类型就是 t; 否则, 发出一个错误.
 
 * 示例(Examples):
 
@@ -1331,7 +1329,7 @@ append
 * 注意(Notes): None. 
 
 
-### <span id="F-MERGE">Function MERGE</span>
+### <span id="F-MERGE">函数 MERGE</span>
 
 * 语法(Syntax):
 
@@ -1369,7 +1367,7 @@ sequence-1 and/or sequence-2 may be destroyed.
 
 If the result-type is a subtype of list, the result will be a list.
 
-If the result-type is a subtype of vector, then if the implementation can determine the element type specified for the result-type, the element type of the resulting array is the result of upgrading that element type; or, if the implementation can determine that the element type is unspecified (or *), the element type of the resulting array is t; otherwise, an error is signaled.
+如果 result-type 是 vector 的一个子类型, 那么如果实现可以确定 result-type 指定的元素类型, 那么产生的数组的元素类型就是那个元素类型的提升的结果; 或者, 如果实现可以确定那个元素类型是未指定的 (或 *), 产生的元素类型就是 t; 否则, 发出一个错误.
 
 * 示例(Examples):
 
@@ -1401,7 +1399,7 @@ sort, stable-sort, Section 3.2.1 (Compiler Terminology), Section 3.6 (Traversal 
 * 注意(Notes): None. 
 
 
-### <span id="F-REMOVE-ALL">Function REMOVE, REMOVE-IF, REMOVE-IF-NOT, DELETE, DELETE-IF, DELETE-IF-NOT</span>
+### <span id="F-REMOVE-ALL">函数 REMOVE, REMOVE-IF, REMOVE-IF-NOT, DELETE, DELETE-IF, DELETE-IF-NOT</span>
 
 * 语法(Syntax):
 
@@ -1511,7 +1509,7 @@ For delete, delete-if, and delete-if-not, sequence may be destroyed and used to 
 
 * 异常情况(Exceptional Situations):
 
-Should be prepared to signal an error of type type-error if sequence is not a proper sequence.
+如果序列 sequence 不是一个 proper 序列, 那么应该准备去发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
@@ -1525,7 +1523,7 @@ The :test-not argument is deprecated.
 
 The functions delete-if-not and remove-if-not are deprecated. 
 
-### <span id="F-DUPLICATES-ALL">Function REMOVE-DUPLICATES, DELETE-DUPLICATES</span>
+### <span id="F-DUPLICATES-ALL">函数 REMOVE-DUPLICATES, DELETE-DUPLICATES</span>
 
 * 语法(Syntax):
 
