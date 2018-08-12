@@ -486,113 +486,109 @@
 
 * 语法(Syntax):
 
-map-into result-sequence function &rest sequences => result-sequence
+        map-into result-sequence function &rest sequences => result-sequence
 
 * 参数和值(Arguments and Values):
 
-result-sequence---a proper sequence.
-
-function---a designator for a function of as many arguments as there are sequences.
-
-sequence---a proper sequence.
+        result-sequence---一个 proper 序列.
+        function---一个和序列 sequences 的数量相同参数的函数标识符.
+        sequence---一个 proper 序列.
 
 * 描述(Description):
 
-Destructively modifies result-sequence to contain the results of applying function to each element in the argument sequences in turn.
+        破坏性地修改 result-sequence 来包含依次应用函数 function 到参数序列 sequences 的结果.
 
-result-sequence and each element of sequences can each be either a list or a vector. If result-sequence and each element of sequences are not all the same length, the iteration terminates when the shortest sequence (of any of the sequences or the result-sequence) is exhausted. If result-sequence is a vector with a fill pointer, the fill pointer is ignored when deciding how many iterations to perform, and afterwards the fill pointer is set to the number of times function was applied. If result-sequence is longer than the shortest element of sequences, extra elements at the end of result-sequence are left unchanged. If result-sequence is nil, map-into immediately returns nil, since nil is a sequence of length zero.
+        result-sequence 和序列 sequences 的每个元素可以是一个列表或者一个向量. 如果 result-sequence 和 sequences 的每一个元素都不是相同长度, 当最短的序列(这些 sequences 中的任何一个或者 result-sequence)耗尽时迭代终止. 如果 result-sequence 是一个带有填充指针的向量, 在决定要执行多少迭代时, 这个填充指针会被忽略, 然后这个填充指针会被设置到函数 function 被应用的次数数量上. 如果 result-sequence 比这些序列 sequences 中最短的一个长, 在 result-sequence 末尾的额外元素保持不变. 如果 result-sequence 是 nil, map-into 立即返回 nil, 因为 nil 是长度为 0 的序列.
 
-If function has side effects, it can count on being called first on all of the elements with index 0, then on all of those numbered 1, and so on.
+        如果函数 function 有着副作用, 它可以首先在所有索引为 0 的元素上调用, 然后在所有索引为 1 上, 以此类推.
 
 * 示例(Examples):
 
- (setq a (list 1 2 3 4) b (list 10 10 10 10)) =>  (10 10 10 10)
- (map-into a #'+ a b) =>  (11 12 13 14)
- a =>  (11 12 13 14)
- b =>  (10 10 10 10)
- (setq k '(one two three)) =>  (ONE TWO THREE)
- (map-into a #'cons k a) =>  ((ONE . 11) (TWO . 12) (THREE . 13) 14)
- (map-into a #'gensym) =>  (#:G9090 #:G9091 #:G9092 #:G9093)
- a =>  (#:G9090 #:G9091 #:G9092 #:G9093)
+    ```LISP
+    (setq a (list 1 2 3 4) b (list 10 10 10 10)) =>  (10 10 10 10)
+    (map-into a #'+ a b) =>  (11 12 13 14)
+    a =>  (11 12 13 14)
+    b =>  (10 10 10 10)
+    (setq k '(one two three)) =>  (ONE TWO THREE)
+    (map-into a #'cons k a) =>  ((ONE . 11) (TWO . 12) (THREE . 13) 14)
+    (map-into a #'gensym) =>  (#:G9090 #:G9091 #:G9092 #:G9093)
+    a =>  (#:G9090 #:G9091 #:G9092 #:G9093)
+    ```
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-Should be prepared to signal an error of type type-error if result-sequence is not a proper sequence. 如果序列 sequence 不是一个 proper 序列, 那么应该准备去发出一个 type-error 类型的错误.
+        如果 result-sequence 不是一个 proper, 那么应该发出一个 type-error 类型的错误. 如果序列 sequence 不是一个 proper 序列, 那么应该准备去发出一个 type-error 类型的错误.
 
 * 也见(See Also): None.
 
 * 注意(Notes):
 
-map-into differs from map in that it modifies an existing sequence rather than creating a new one. In addition, map-into can be called with only two arguments, while map requires at least three arguments.
+        map-into 和 map 的区别在于它修改一个已存在的序列而不是创建一个新的. 另外, map-into 只能用两个参数来调用, 而 map 需要至少三个参数.
 
-map-into could be defined by:
+        map-into 可以被定义为:
 
- (defun map-into (result-sequence function &rest sequences)
-   (loop for index below (apply #'min 
-                                (length result-sequence)
-                                (mapcar #'length sequences))
-         do (setf (elt result-sequence index)
-                  (apply function
-                         (mapcar #'(lambda (seq) (elt seq index))
-                                 sequences))))
-   result-sequence)
+        (defun map-into (result-sequence function &rest sequences)
+          (loop for index below (apply #'min 
+                                        (length result-sequence)
+                                        (mapcar #'length sequences))
+                do (setf (elt result-sequence index)
+                          (apply function
+                                (mapcar #'(lambda (seq) (elt seq index))
+                                        sequences))))
+          result-sequence)
 
 
 ### <span id="F-REDUCE">函数 REDUCE</span>
 
 * 语法(Syntax):
 
-reduce function sequence &key key from-end start end initial-value => result
+        reduce function sequence &key key from-end start end initial-value => result
 
 * 参数和值(Arguments and Values):
 
-function---a designator for a function that might be called with either zero or two arguments.
-
-sequence---a proper sequence.
-
-key---a designator for a function of one argument, or nil.
-
-from-end---a generalized boolean. The default is false.
-
-start, end---bounding index designators of sequence. The defaults for start and end are 0 and nil, respectively.
-
-initial-value---an object.
-
-result---an object.
+        function---一个可以用零个或两个参数来调用的函数的标识符.
+        sequence---一个 proper 序列.
+        key---一个单参数函数的标识符, 或者 nil.
+        from-end---一个广义 boolean. 默认是 false.
+        start, end---序列 sequence 的边界索引标识符. 对于 start 和 end 默认分别为 0 或 nil.
+        initial-value---一个对象.
+        result---一个对象.
 
 * 描述(Description):
 
-reduce uses a binary operation, function, to combine the elements of sequence bounded by start and end.
+        reduce 使用一个二元操作符, function, 来组合由 start 和 end 限制的 sequence 的元素.
 
-The function must accept as arguments two elements of sequence or the results from combining those elements. The function must also be able to accept no arguments.
+        这个函数 function 必须接受序列 sequence 的两个元素作为参数或者 must accept as arguments two elements of sequence or the results from combining those elements. 这个函数 function 必须也可以接受没有参数的情况.<!--TODO 待翻译-->
 
-If key is supplied, it is used is used to extract the values to reduce. The key function is applied exactly once to each element of sequence in the order implied by the reduction order but not to the value of initial-value, if supplied. The key function typically returns part of the element of sequence. If key is not supplied or is nil, the sequence element itself is used.
+        如果提供了 key, 它被用于去提取给 reduce 的值. 这个 key 函数以那个归约的顺序暗示的顺序只应用一次到序列 sequence 的每个元素上, 除了 initial-value 的值意外, 如果提供的话. 这个 key 函数通常返回序列 sequence 的元素的一部分. 如果 key 没有被提供或者是 nil, 那么就使用这个序列的元素自身.
 
-The reduction is left-associative, unless from-end is true in which case it is right-associative.
+        这个归约时左结合的(left-associative), 除非 from-end 是 true 时, 在这个情况下是右结合的(right-associative).
 
-If initial-value is supplied, it is logically placed before the subsequence (or after it if from-end is true) and included in the reduction operation.
+        如果提供了 initial-value, 它会在这个子序列之前 (如果 from-end 是 true 就是在它之后) 被逻辑上替换并且包含在这个归约操作中.
 
-In the normal case, the result of reduce is the combined result of function's being applied to successive pairs of elements of sequence. If the subsequence contains exactly one element and no initial-value is given, then that element is returned and function is not called. If the subsequence is empty and an initial-value is given, then the initial-value is returned and function is not called. If the subsequence is empty and no initial-value is given, then the function is called with zero arguments, and reduce returns whatever function does. This is the only case where the function is called with other than two arguments.
+        在正常的情况中, 这个 reduce 的结果是函数 function 被应用到序列 sequence 的连续元素对的组合结果. 如果这个子序列只包含了一个元素并且没有给定 initial-value, 那么返回那个元素而函数 function 不会被调用. 如果这个子序列时空的并且给定了一个 initial-value, 那么返回这个 initial-value 而函数 function 不会被调用. 如果这个子序列是空并且没有给定 initial-value, 那么这个函数 function 会用零个参数被调用, 然后 reduce 返回函数 function 的结果. 这是仅有的函数 function 用两个参数以外被调用的情况.
 
 * 示例(Examples):
 
- (reduce #'* '(1 2 3 4 5)) =>  120
- (reduce #'append '((1) (2)) :initial-value '(i n i t)) =>  (I N I T 1 2)
- (reduce #'append '((1) (2)) :from-end t                  
-                             :initial-value '(i n i t)) =>  (1 2 I N I T) 
- (reduce #'- '(1 2 3 4)) ==  (- (- (- 1 2) 3) 4) =>  -8
- (reduce #'- '(1 2 3 4) :from-end t)    ;Alternating sum.
-==  (- 1 (- 2 (- 3 4))) =>  -2
- (reduce #'+ '()) =>  0
- (reduce #'+ '(3)) =>  3
- (reduce #'+ '(foo)) =>  FOO
- (reduce #'list '(1 2 3 4)) =>  (((1 2) 3) 4)
- (reduce #'list '(1 2 3 4) :from-end t) =>  (1 (2 (3 4)))
- (reduce #'list '(1 2 3 4) :initial-value 'foo) =>  ((((foo 1) 2) 3) 4)
- (reduce #'list '(1 2 3 4)
-        :from-end t :initial-value 'foo) =>  (1 (2 (3 (4 foo))))
+    ```LISP
+    (reduce #'* '(1 2 3 4 5)) =>  120
+    (reduce #'append '((1) (2)) :initial-value '(i n i t)) =>  (I N I T 1 2)
+    (reduce #'append '((1) (2)) :from-end t                  
+                                :initial-value '(i n i t)) =>  (1 2 I N I T) 
+    (reduce #'- '(1 2 3 4)) ==  (- (- (- 1 2) 3) 4) =>  -8
+    (reduce #'- '(1 2 3 4) :from-end t)    ;Alternating sum.
+    ==  (- 1 (- 2 (- 3 4))) =>  -2
+    (reduce #'+ '()) =>  0
+    (reduce #'+ '(3)) =>  3
+    (reduce #'+ '(foo)) =>  FOO
+    (reduce #'list '(1 2 3 4)) =>  (((1 2) 3) 4)
+    (reduce #'list '(1 2 3 4) :from-end t) =>  (1 (2 (3 4)))
+    (reduce #'list '(1 2 3 4) :initial-value 'foo) =>  ((((foo 1) 2) 3) 4)
+    (reduce #'list '(1 2 3 4)
+            :from-end t :initial-value 'foo) =>  (1 (2 (3 (4 foo))))
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -600,11 +596,11 @@ In the normal case, the result of reduce is the combined result of function's be
 
 * 异常情况(Exceptional Situations):
 
-如果序列 sequence 不是一个 proper 序列, 那么应该准备去发出一个 type-error 类型的错误.
+        如果序列 sequence 不是一个 proper 序列, 那么应该准备去发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-Section 3.6 (Traversal Rules and Side Effects)
+        章节 3.6 (Traversal Rules and Side Effects)
 
 * 注意(Notes): None. 
 
@@ -621,9 +617,9 @@ count-if-not predicate sequence &key from-end start end key => n
 
 * 参数和值(Arguments and Values):
 
-item---an object.
+item---一个对象.
 
-sequence---a proper sequence.
+sequence---一个 proper 序列.
 
 predicate---a designator for a function of one argument that returns a generalized boolean.
 
@@ -722,7 +718,7 @@ nreverse sequence => reversed-sequence
 
 * 参数和值(Arguments and Values):
 
-sequence---a proper sequence.
+sequence---一个 proper 序列.
 
 reversed-sequence---a sequence.
 
@@ -775,7 +771,7 @@ stable-sort sequence predicate &key key => sorted-sequence
 
 * 参数和值(Arguments and Values):
 
-sequence---a proper sequence.
+sequence---一个 proper 序列.
 
 predicate---a designator for a function of two arguments that returns a generalized boolean.
 
@@ -871,9 +867,9 @@ find-if-not predicate sequence &key from-end start end key => element
 
 * 参数和值(Arguments and Values):
 
-item---an object.
+item---一个对象.
 
-sequence---a proper sequence.
+sequence---一个 proper 序列.
 
 predicate---a designator for a function of one argument that returns a generalized boolean.
 
@@ -937,9 +933,9 @@ position-if-not predicate sequence &key from-end start end key => position
 
 * 参数和值(Arguments and Values):
 
-item---an object.
+item---一个对象.
 
-sequence---a proper sequence.
+sequence---一个 proper 序列.
 
 predicate---a designator for a function of one argument that returns a generalized boolean.
 
@@ -1182,11 +1178,11 @@ nsubstitute-if-not newitem predicate sequence &key from-end start end count key
 
 * 参数和值(Arguments and Values):
 
-newitem---an object.
+newitem---一个对象.
 
-olditem---an object.
+olditem---一个对象.
 
-sequence---a proper sequence.
+sequence---一个 proper 序列.
 
 predicate---a designator for a function of one argument that returns a generalized boolean.
 
@@ -1417,9 +1413,9 @@ delete-if-not test sequence &key from-end start end count key => result-sequence
 
 * 参数和值(Arguments and Values):
 
-item---an object.
+item---一个对象.
 
-sequence---a proper sequence.
+sequence---一个 proper 序列.
 
 test---a designator for a function of one argument that returns a generalized boolean.
 
@@ -1537,7 +1533,7 @@ delete-duplicates sequence &key from-end test test-not start end key
 
 * 参数和值(Arguments and Values):
 
-sequence---a proper sequence.
+sequence---一个 proper 序列.
 
 from-end---a generalized boolean. The default is false.
 
