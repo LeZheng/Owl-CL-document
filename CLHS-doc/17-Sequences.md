@@ -609,43 +609,37 @@
 
 * 语法(Syntax):
 
-count item sequence &key from-end start end key test test-not => n
+        count item sequence &key from-end start end key test test-not => n
 
-count-if predicate sequence &key from-end start end key => n
+        count-if predicate sequence &key from-end start end key => n
 
-count-if-not predicate sequence &key from-end start end key => n
+        count-if-not predicate sequence &key from-end start end key => n
 
 * 参数和值(Arguments and Values):
 
-item---一个对象.
-
-sequence---一个 proper 序列.
-
-predicate---a designator for a function of one argument that returns a generalized boolean.
-
-from-end---a generalized boolean. The default is false.
-
-test---a designator for a function of two arguments that returns a generalized boolean.
-
-test-not---a designator for a function of two arguments that returns a generalized boolean.
-
-start, end---bounding index designators of sequence. The defaults for start and end are 0 and nil, respectively.
-
-key---a designator for a function of one argument, or nil.
-
-n---a non-negative integer less than or equal to the length of sequence.
+        item---一个对象.
+        sequence---一个 proper 序列.
+        predicate---一个返回一个广义 boolean 的单参数函数的标识符.
+        from-end---一个广义 boolean. 默认是 false.
+        test---一个返回一个广义 boolean 的两参数函数的标识符.
+        test-not---一个返回一个广义 boolean 的两参数函数的标识符.
+        start, end---序列 sequence 的边界索引标识符. 对于 start 和 end 默认分别为 0 和 nil.
+        key---一个单参数函数的标识符, 或 nil.
+        n---一个小于等于序列 sequence 的长度的非负整数.
 
 * 描述(Description):
 
-count, count-if, and count-if-not count and return the number of elements in the sequence bounded by start and end that satisfy the test.
+        count, count-if, 和 count-if-not 计算并返回在序列 sequence 中由 start 和 end 限定并满足这个测试条件 test 的元素的数量.
 
-The from-end has no direct effect on the result. However, if from-end is true, the elements of sequence will be supplied as arguments to the test, test-not, and key in reverse order, which may change the side-effects, if any, of those functions.
+        这个 from-end 对结果没有直接影响. 然而, 如果 from-end 是 true, 这个序列 sequence 的元素会以逆序提供给 test, test-not, 和 key 作为参数, 它可能改变这些函数的副作用, 如果有的话.
 
 * 示例(Examples):
 
- (count #\a "how many A's are there in here?") =>  2
- (count-if-not #'oddp '((1) (2) (3) (4)) :key #'car) =>  2
- (count-if #'upper-case-p "The Crying of Lot 49" :start 4) =>  2 
+    ```LISP
+    (count #\a "how many A's are there in here?") =>  2
+    (count-if-not #'oddp '((1) (2) (3) (4)) :key #'car) =>  2
+    (count-if #'upper-case-p "The Crying of Lot 49" :start 4) =>  2 
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -653,17 +647,17 @@ The from-end has no direct effect on the result. However, if from-end is true, t
 
 * 异常情况(Exceptional Situations):
 
-如果序列 sequence 不是一个 proper 序列, 那么应该准备去发出一个 type-error 类型的错误.
+        如果序列 sequence 不是一个 proper 序列, 那么应该准备去发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-Section 17.2 (Rules about Test Functions), Section 3.6 (Traversal Rules and Side Effects)
+        章节 17.2 (Rules about Test Functions), 章节 3.6 (Traversal Rules and Side Effects)
 
 * 注意(Notes):
 
-The :test-not argument is deprecated.
+        这个 :test-not 参数已经被废弃.
 
-The function count-if-not is deprecated. 
+        函数 count-if-not 已经被废弃. 
 
 
 ### <span id="F-LENGTH">函数 LENGTH</span>
@@ -712,49 +706,50 @@ The function count-if-not is deprecated.
 
 * 语法(Syntax):
 
-reverse sequence => reversed-sequence
+        reverse sequence => reversed-sequence
 
-nreverse sequence => reversed-sequence
+        nreverse sequence => reversed-sequence
 
 * 参数和值(Arguments and Values):
 
-sequence---一个 proper 序列.
-
-reversed-sequence---a sequence.
+        sequence---一个 proper 序列.
+        reversed-sequence---一个序列.
 
 * 描述(Description):
 
-reverse and nreverse return a new sequence of the same kind as sequence, containing the same elements, but in reverse order.
+        reverse 和 nreverse 返回一个和序列 sequence 相同种类的新的序列, 包含相同的元素, 但是是以逆序的形式.
 
-reverse and nreverse differ in that reverse always creates and returns a new sequence, whereas nreverse might modify and return the given sequence. reverse never modifies the given sequence.
+        reverse 和 nreverse 的区别在于 reverse 总是创建并返回一个新的序列, 反之 nreverse 可能修改并返回给定的序列 sequence. reverse 从不修改那个给定的序列 sequence.
 
-For reverse, if sequence is a vector, the result is a fresh simple array of rank one that has the same actual array element type as sequence. If sequence is a list, the result is a fresh list.
+        对于 reverse, 如果序列 sequence 是一个向量, 那么那个结果是一个新的有着和 sequence 相同的实际数组元素类型的一维简单数组. 如果序列 sequence 是一个列表, 那么那个结果就是一个新的列表.
 
-For nreverse, if sequence is a vector, the result is a vector that has the same actual array element type as sequence. If sequence is a list, the result is a list.
+        对于 nreverse, 如果序列 sequence 是一个向量, 那么那个结果也是一个有着和 sequence 相同实际数组元素的向量. 如果序列 sequence 是一个列表, 结果就是一个列表.
 
-For nreverse, sequence might be destroyed and re-used to produce the result. The result might or might not be identical to sequence. Specifically, when sequence is a list, nreverse is permitted to setf any part, car or cdr, of any cons that is part of the list structure of sequence. When sequence is a vector, nreverse is permitted to re-order the elements of sequence in order to produce the resulting vector.
+        对于 nreverse, 序列 sequence 可能被破坏并且重新使用来产生那个结果. 结果可能和序列 sequence 一样, 也可能不一样. 具体来说, 当序列 sequence 是一个列表时, nreverse 允许去 setf 序列 sequence 的列表结构部分的 cons 的任何部分, car 或 cdr. 当序列 sequence 是一个向量时, nreverse 允许去重排序列 sequence 的元素来产生结果序列.
 
 * 示例(Examples):
 
- (setq str "abc") =>  "abc"
- (reverse str) =>  "cba"
- str =>  "abc"
- (setq str (copy-seq str)) =>  "abc"
- (nreverse str) =>  "cba"
- str =>  implementation-dependent
- (setq l (list 1 2 3)) =>  (1 2 3)
- (nreverse l) =>  (3 2 1)
- l =>  implementation-dependent
+    ```LISP
+    (setq str "abc") =>  "abc"
+    (reverse str) =>  "cba"
+    str =>  "abc"
+    (setq str (copy-seq str)) =>  "abc"
+    (nreverse str) =>  "cba"
+    str =>  implementation-dependent
+    (setq l (list 1 2 3)) =>  (1 2 3)
+    (nreverse l) =>  (3 2 1)
+    l =>  implementation-dependent
+    ```
 
 * 副作用(Side Effects):
 
-nreverse might either create a new sequence, modify the argument sequence, or both. (reverse does not modify sequence.)
+        nreverse 可能创建一个新序列, 或修改参数序列 sequence, 或两者都执行. (reverse 不会修改序列 sequence.)
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-如果序列 sequence 不是一个 proper 序列, 那么应该准备去发出一个 type-error 类型的错误.
+        如果序列 sequence 不是一个 proper 序列, 那么应该准备去发出一个 type-error 类型的错误.
 
 * 也见(See Also): None.
 
