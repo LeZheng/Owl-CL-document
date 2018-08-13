@@ -760,78 +760,77 @@
 
 * 语法(Syntax):
 
-sort sequence predicate &key key => sorted-sequence
+        sort sequence predicate &key key => sorted-sequence
 
-stable-sort sequence predicate &key key => sorted-sequence
+        stable-sort sequence predicate &key key => sorted-sequence
 
 * 参数和值(Arguments and Values):
 
-sequence---一个 proper 序列.
-
-predicate---a designator for a function of two arguments that returns a generalized boolean.
-
-key---a designator for a function of one argument, or nil.
-
-sorted-sequence---a sequence.
+        sequence---一个 proper 序列.
+        predicate---一个返回一个广义 boolean 的两参数函数的标识符.
+        key---一个单参数函数的标识符, 或 nil.
+        sorted-sequence---一个序列.
 
 * 描述(Description):
 
-sort and stable-sort destructively sort sequences according to the order determined by the predicate function.
+        sort 和 stable-sort 根据断言 predicate 函数确定的顺序破坏性地对序列 sequence 排序.
 
-If sequence is a vector, the result is a vector that has the same actual array element type as sequence. If sequence is a list, the result is a list.
+        如果序列 sequence 是一个向量, 那么结果是一个和 sequence 有着相同实际数组元素类型的向量. 如果序列 sequence 是一个列表, 那么结果也是有一个列表.
 
-sort determines the relationship between two elements by giving keys extracted from the elements to the predicate. The first argument to the predicate function is the part of one element of sequence extracted by the key function (if supplied); the second argument is the part of another element of sequence extracted by the key function (if supplied). Predicate should return true if and only if the first argument is strictly less than the second (in some appropriate sense). If the first argument is greater than or equal to the second (in the appropriate sense), then the predicate should return false.
+        sort 由给到断言 predicate 的元素中提取的键来确定两个元素之间的关系. 给这个断言 predicate 函数 的第一个参数是通过 key 函数(如果提供的话)提取的序列 sequence 的一个元素的一部分; 第二个参数是通过 key 函数(如果提供的话)提取的序列 sequence 的另一个元素的一部分. 如果第一个参数严格小于第二个参数(在某个适当的意义下), 那么断言 predicate 应该返回 true. 如果第一个参数大于或等于第二个参数(在某个适当的意义下), 那么这个断言 predicate 应该返回 false.
 
-The argument to the key function is the sequence element. The return value of the key function becomes an argument to predicate. If key is not supplied or nil, the sequence element itself is used. There is no guarantee on the number of times the key will be called.
+        给这个 key 函数的参数是这个序列 sequence 元素. 这个 key 函数的返回值称为给断言 predicate 的一个参数. 如果 key 没有被提供或者是 nil, 那么使用这个序列 sequence 的元素自身. 这里不保证这个 key 函数会被调用的次数.
 
-If the key and predicate always return, then the sorting operation will always terminate, producing a sequence containing the same elements as sequence (that is, the result is a permutation of sequence). This is guaranteed even if the predicate does not really consistently represent a total order (in which case the elements will be scrambled in some unpredictable way, but no element will be lost). If the key consistently returns meaningful keys, and the predicate does reflect some total ordering criterion on those keys, then the elements of the sorted-sequence will be properly sorted according to that ordering.
+        如果这个 key 和 predicate 总是返回, 那么这个排序操作总是会终止, 产生一个和 sequence 包含相同元素的序列 (这也就是说, 结果是序列 sequence 的一个变换). 这是有保证的即便这个断言 predicate 并不始终表示一个总顺序 (在这个情况中这些元素总是以一种不可预知的方式被搅乱, 但是没有元素会被丢失). 如果这个 key 函数始终返回有意义的键, 并且这个断言 predicate 确实反映了在这些键上的某个总排序准则, 那么在 sorted-sequence 的这些元素会根据那个顺序被正确排序.
 
-The sorting operation performed by sort is not guaranteed stable. Elements considered equal by the predicate might or might not stay in their original order. The predicate is assumed to consider two elements x and y to be equal if (funcall predicate x y) and (funcall predicate y x) are both false. stable-sort guarantees stability.
+        这个由 sort 执行的排序操作不保证稳定. 由断言 predicate 认为是相同的元素可能或可能不会以它们的原始顺序. 如果 (funcall predicate x y) 和 (funcall predicate y x) 都是 false, 那么这个断言 predicate 认为两个元素 x 和 y 是相等的. stable-sort 保证稳定性.
 
-The sorting operation can be destructive in all cases. In the case of a vector argument, this is accomplished by permuting the elements in place. In the case of a list, the list is destructively reordered in the same manner as for nreverse.
+        这个排序操作在所有情况下都可以是破坏性的. 在一个向量参数的情况下, 这是通过对元素进行适当的处理来实现的. 在一个列表的情况下, 这个列表会被破坏性地重排, 以和 nreverse 相同的规矩.
 
 * 示例(Examples):
 
- (setq tester (copy-seq "lkjashd")) =>  "lkjashd"
- (sort tester #'char-lessp) =>  "adhjkls"
- (setq tester (list '(1 2 3) '(4 5 6) '(7 8 9))) =>  ((1 2 3) (4 5 6) (7 8 9))
- (sort tester #'> :key #'car)  =>  ((7 8 9) (4 5 6) (1 2 3)) 
- (setq tester (list 1 2 3 4 5 6 7 8 9 0)) =>  (1 2 3 4 5 6 7 8 9 0)
- (stable-sort tester #'(lambda (x y) (and (oddp x) (evenp y))))
-=>  (1 3 5 7 9 2 4 6 8 0)
- (sort (setq committee-data
-             (vector (list (list "JonL" "White") "Iteration")
-                     (list (list "Dick" "Waters") "Iteration")
-                     (list (list "Dick" "Gabriel") "Objects")
-                     (list (list "Kent" "Pitman") "Conditions")
-                     (list (list "Gregor" "Kiczales") "Objects")
-                     (list (list "David" "Moon") "Objects")
-                     (list (list "Kathy" "Chapman") "Editorial")
-                     (list (list "Larry" "Masinter") "Cleanup")
-                     (list (list "Sandra" "Loosemore") "Compiler")))
-       #'string-lessp :key #'cadar)
-=>  #((("Kathy" "Chapman") "Editorial")
-     (("Dick" "Gabriel") "Objects")
-     (("Gregor" "Kiczales") "Objects")
-     (("Sandra" "Loosemore") "Compiler")
-     (("Larry" "Masinter") "Cleanup")
-     (("David" "Moon") "Objects")
-     (("Kent" "Pitman") "Conditions")
-     (("Dick" "Waters") "Iteration")
-     (("JonL" "White") "Iteration"))
- ;; Note that individual alphabetical order within `committees'
- ;; is preserved.
- (setq committee-data 
-       (stable-sort committee-data #'string-lessp :key #'cadr))
-=>  #((("Larry" "Masinter") "Cleanup")
-     (("Sandra" "Loosemore") "Compiler")
-     (("Kent" "Pitman") "Conditions")
-     (("Kathy" "Chapman") "Editorial")
-     (("Dick" "Waters") "Iteration")
-     (("JonL" "White") "Iteration")
-     (("Dick" "Gabriel") "Objects")
-     (("Gregor" "Kiczales") "Objects")
-     (("David" "Moon") "Objects"))
+    ```LISP
+    (setq tester (copy-seq "lkjashd")) =>  "lkjashd"
+    (sort tester #'char-lessp) =>  "adhjkls"
+    (setq tester (list '(1 2 3) '(4 5 6) '(7 8 9))) =>  ((1 2 3) (4 5 6) (7 8 9))
+    (sort tester #'> :key #'car)  =>  ((7 8 9) (4 5 6) (1 2 3)) 
+    (setq tester (list 1 2 3 4 5 6 7 8 9 0)) =>  (1 2 3 4 5 6 7 8 9 0)
+    (stable-sort tester #'(lambda (x y) (and (oddp x) (evenp y))))
+    =>  (1 3 5 7 9 2 4 6 8 0)
+    (sort (setq committee-data
+                (vector (list (list "JonL" "White") "Iteration")
+                        (list (list "Dick" "Waters") "Iteration")
+                        (list (list "Dick" "Gabriel") "Objects")
+                        (list (list "Kent" "Pitman") "Conditions")
+                        (list (list "Gregor" "Kiczales") "Objects")
+                        (list (list "David" "Moon") "Objects")
+                        (list (list "Kathy" "Chapman") "Editorial")
+                        (list (list "Larry" "Masinter") "Cleanup")
+                        (list (list "Sandra" "Loosemore") "Compiler")))
+          #'string-lessp :key #'cadar)
+    =>  #((("Kathy" "Chapman") "Editorial")
+        (("Dick" "Gabriel") "Objects")
+        (("Gregor" "Kiczales") "Objects")
+        (("Sandra" "Loosemore") "Compiler")
+        (("Larry" "Masinter") "Cleanup")
+        (("David" "Moon") "Objects")
+        (("Kent" "Pitman") "Conditions")
+        (("Dick" "Waters") "Iteration")
+        (("JonL" "White") "Iteration"))
+    ;; Note that individual alphabetical order within `committees'
+    ;; is preserved.
+    (setq committee-data 
+          (stable-sort committee-data #'string-lessp :key #'cadr))
+    =>  #((("Larry" "Masinter") "Cleanup")
+        (("Sandra" "Loosemore") "Compiler")
+        (("Kent" "Pitman") "Conditions")
+        (("Kathy" "Chapman") "Editorial")
+        (("Dick" "Waters") "Iteration")
+        (("JonL" "White") "Iteration")
+        (("Dick" "Gabriel") "Objects")
+        (("Gregor" "Kiczales") "Objects")
+        (("David" "Moon") "Objects"))
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -839,63 +838,57 @@ The sorting operation can be destructive in all cases. In the case of a vector a
 
 * 异常情况(Exceptional Situations):
 
-如果序列 sequence 不是一个 proper 序列, 那么应该准备去发出一个 type-error 类型的错误.
+        如果序列 sequence 不是一个 proper 序列, 那么应该准备去发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-merge, Section 3.2.1 (Compiler Terminology), Section 3.6 (Traversal Rules and Side Effects), Section 3.7 (Destructive Operations)
+        merge, 章节 3.2.1 (Compiler Terminology), 章节 3.6 (Traversal Rules and Side Effects), 章节 3.7 (Destructive Operations)
 
 * 注意(Notes):
 
-If sequence is a vector, the result might or might not be simple, and might or might not be identical to sequence. 
+        如果序列 sequence 是一个向量, 那么这个结果可能或可能不是一个简单的, 并且可能或可能不会和序列 sequence 相同. 
 
 
 ### <span id="F-FIND-ALL">函数 FIND, FIND-IF, FIND-IF-NOT</span>
 
 * 语法(Syntax):
 
-find item sequence &key from-end test test-not start end key => element
+        find item sequence &key from-end test test-not start end key => element
 
-find-if predicate sequence &key from-end start end key => element
+        find-if predicate sequence &key from-end start end key => element
 
-find-if-not predicate sequence &key from-end start end key => element
+        find-if-not predicate sequence &key from-end start end key => element
 
 * 参数和值(Arguments and Values):
 
-item---一个对象.
-
-sequence---一个 proper 序列.
-
-predicate---a designator for a function of one argument that returns a generalized boolean.
-
-from-end---a generalized boolean. The default is false.
-
-test---a designator for a function of two arguments that returns a generalized boolean.
-
-test-not---a designator for a function of two arguments that returns a generalized boolean.
-
-start, end---bounding index designators of sequence. The defaults for start and end are 0 and nil, respectively.
-
-key---a designator for a function of one argument, or nil.
-
-element---an element of the sequence, or nil.
+        item---一个对象.
+        sequence---一个 proper 序列.
+        predicate---一个返回一个广义 boolean 的单参数函数的标识符.
+        from-end---一个广义 boolean. 默认是 false.
+        test---一个返回一个广义 boolean 的两个参数的函数的标识符.
+        test-not---一个返回一个广义 boolean 的两个参数的函数的标识符.
+        start, end---序列 sequence 的边界索引标识符. 对于 start 和 end 默认分别为 0 和 nil.
+        key---一个单参数函数的标识符, 或者 nil.
+        element---序列 sequence 的一个元素, 或者 nil.
 
 * 描述(Description):
 
-find, find-if, and find-if-not each search for an element of the sequence bounded by start and end that satisfies the predicate predicate or that satisfies the test test or test-not, as appropriate.
+        find, find-if, 和 find-if-not 每一个都搜索序列 sequence 中由 start 和 end 限定, 满足断言 predicate 或满足测试条件 test 或 test-not, 视情况而定.
 
-If from-end is true, then the result is the rightmost element that satisfies the test.
+        如果 from-end 是 true, 那么结果是满足这个测试条件 test 的最右边的元素.
 
-If the sequence contains an element that satisfies the test, then the leftmost or rightmost sequence element, depending on from-end, is returned; otherwise nil is returned.
+        如果这个序列 sequence 包含了一个满足这个测试条件 test 的元素, 那么就会返回最左边或最右边的序列元素, 取决于 from-end; 否则返回 nil.
 
 * 示例(Examples):
 
- (find #\d "here are some letters that can be looked at" :test #'char>)
-=>  #\Space 
- (find-if #'oddp '(1 2 3 4 5) :end 3 :from-end t) =>  3
- (find-if-not #'complexp                                    
-             '#(3.5 2 #C(1.0 0.0) #C(0.0 1.0))
-             :start 2) =>  NIL 
+    ```LISP
+    (find #\d "here are some letters that can be looked at" :test #'char>)
+    =>  #\Space 
+    (find-if #'oddp '(1 2 3 4 5) :end 3 :from-end t) =>  3
+    (find-if-not #'complexp                                    
+                '#(3.5 2 #C(1.0 0.0) #C(0.0 1.0))
+                :start 2) =>  NIL 
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -903,61 +896,55 @@ If the sequence contains an element that satisfies the test, then the leftmost o
 
 * 异常情况(Exceptional Situations):
 
-如果序列 sequence 不是一个 proper 序列, 那么应该准备去发出一个 type-error 类型的错误.
+        如果序列 sequence 不是一个 proper 序列, 那么应该准备去发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-position, Section 17.2 (Rules about Test Functions), Section 3.6 (Traversal Rules and Side Effects)
+        position, 章节 17.2 (Rules about Test Functions), 章节 3.6 (Traversal Rules and Side Effects)
 
 * 注意(Notes):
 
-The :test-not argument is deprecated.
+        这个 :test-not 参数已经被废弃.
 
-The function find-if-not is deprecated. 
+        这个 find-if-not 函数已经被废弃. 
 
 
 ### <span id="F-POSITION-ALL">函数 POSITION, POSITION-IF, POSITION-IF-NOT</span>
 
 * 语法(Syntax):
 
-position item sequence &key from-end test test-not start end key => position
+        position item sequence &key from-end test test-not start end key => position
 
-position-if predicate sequence &key from-end start end key => position
+        position-if predicate sequence &key from-end start end key => position
 
-position-if-not predicate sequence &key from-end start end key => position
+        position-if-not predicate sequence &key from-end start end key => position
 
 * 参数和值(Arguments and Values):
 
-item---一个对象.
-
-sequence---一个 proper 序列.
-
-predicate---a designator for a function of one argument that returns a generalized boolean.
-
-from-end---a generalized boolean. The default is false.
-
-test---a designator for a function of two arguments that returns a generalized boolean.
-
-test-not---a designator for a function of two arguments that returns a generalized boolean.
-
-start, end---bounding index designators of sequence. The defaults for start and end are 0 and nil, respectively.
-
-key---a designator for a function of one argument, or nil.
-
-position---a bounding index of sequence, or nil.
+        item---一个对象.
+        sequence---一个 proper 序列.
+        predicate---一个返回广义 boolean 的单参数函数的标识符.
+        from-end---一个广义 boolean. 默认是 false.
+        test---一个返回广义 boolean 的两个参数函数的标识符.
+        test-not---一个返回广义 boolean 的两个参数函数的标识符.
+        start, end---序列 sequence 的边界索引标识符. 对于 start 和 end 默认分别是 0 和 nil.
+        key---一个单参数函数的标识符, 或者 nil.
+        position---序列 sequence 的一个边界索引, 或者 nil.
 
 * 描述(Description):
 
-position, position-if, and position-if-not each search sequence for an element that satisfies the test.
+        position, position-if, 和 position-if-not 每一个都搜索序列 sequence 来查找一个满足测试条件 test 的元素.
 
-The position returned is the index within sequence of the leftmost (if from-end is true) or of the rightmost (if from-end is false) element that satisfies the test; otherwise nil is returned. The index returned is relative to the left-hand end of the entire sequence, regardless of the value of start, end, or from-end.
+        返回的 position 是在序列 sequence 中满足测试条件 test 的最左边 (如果 from-end 是 true) 或者最右边 (如果 from-end 是 false) 的元素. 返回的索引是相对于整个序列 sequence 的左端, 不管那个 start, end, 或是 from-end 的值.
 
 * 示例(Examples):
 
- (position #\a "baobab" :from-end t) =>  4
- (position-if #'oddp '((1) (2) (3) (4)) :start 1 :key #'car) =>  2
- (position 595 '()) =>  NIL
- (position-if-not #'integerp '(1 2 3 4 5.0)) =>  4 
+    ```LISP
+    (position #\a "baobab" :from-end t) =>  4
+    (position-if #'oddp '((1) (2) (3) (4)) :start 1 :key #'car) =>  2
+    (position 595 '()) =>  NIL
+    (position-if-not #'integerp '(1 2 3 4 5.0)) =>  4 
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -965,17 +952,17 @@ The position returned is the index within sequence of the leftmost (if from-end 
 
 * 异常情况(Exceptional Situations):
 
-如果序列 sequence 不是一个 proper 序列, 那么应该准备去发出一个 type-error 类型的错误.
+        如果序列 sequence 不是一个 proper 序列, 那么应该准备去发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-find, Section 3.6 (Traversal Rules and Side Effects)
+        find, 章节 3.6 (Traversal Rules and Side Effects)
 
 * 注意(Notes):
 
-The :test-not argument is deprecated.
+        这个 :test-not 参数已经被废弃.
 
-The function position-if-not is deprecated. 
+        函数 position-if-not 已经被废弃. 
 
 
 ### <span id="F-SEARCH">函数 SEARCH</span>
@@ -988,15 +975,15 @@ search sequence-1 sequence-2 &key from-end test test-not key start1 start2 end1 
 
 * 参数和值(Arguments and Values):
 
-Sequence-1---a sequence.
+Sequence-1---一个序列.
 
-Sequence-2---a sequence.
+Sequence-2---一个序列.
 
-from-end---a generalized boolean. The default is false.
+from-end---一个广义 boolean. The default is false.
 
-test---a designator for a function of two arguments that returns a generalized boolean.
+test---一个返回广义 boolean 的两个参数函数的标识符.
 
-test-not---a designator for a function of two arguments that returns a generalized boolean.
+test-not---一个返回广义 boolean 的两个参数函数的标识符.
 
 key---a designator for a function of one argument, or nil.
 
@@ -1031,7 +1018,7 @@ Section 3.6 (Traversal Rules and Side Effects)
 
 * 注意(Notes):
 
-The :test-not argument is deprecated. 
+这个 :test-not 参数已经被废弃. 
 
 
 ### <span id="F-MISMATCH">函数 MISMATCH</span>
@@ -1044,15 +1031,15 @@ mismatch sequence-1 sequence-2 &key from-end test test-not key start1 start2 end
 
 * 参数和值(Arguments and Values):
 
-Sequence-1---a sequence.
+Sequence-1---一个序列.
 
-Sequence-2---a sequence.
+Sequence-2---一个序列.
 
-from-end---a generalized boolean. The default is false.
+from-end---一个广义 boolean. The default is false.
 
-test---a designator for a function of two arguments that returns a generalized boolean.
+test---一个返回广义 boolean 的两个参数函数的标识符.
 
-test-not---a designator for a function of two arguments that returns a generalized boolean.
+test-not---一个返回广义 boolean 的两个参数函数的标识符.
 
 start1, end1---bounding index designators of sequence-1. The defaults for start1 and end1 are 0 and nil, respectively.
 
@@ -1091,7 +1078,7 @@ Section 3.6 (Traversal Rules and Side Effects)
 
 * 注意(Notes):
 
-The :test-not argument is deprecated. 
+这个 :test-not 参数已经被废弃. 
 
 
 ### <span id="F-REPLACE">函数 REPLACE</span>
@@ -1102,9 +1089,9 @@ replace sequence-1 sequence-2 &key start1 end1 start2 end2 => sequence-1
 
 * 参数和值(Arguments and Values):
 
-sequence-1---a sequence.
+sequence-1---一个序列.
 
-sequence-2---a sequence.
+sequence-2---一个序列.
 
 start1, end1---bounding index designators of sequence-1. The defaults for start1 and end1 are 0 and nil, respectively.
 
@@ -1179,21 +1166,21 @@ olditem---一个对象.
 
 sequence---一个 proper 序列.
 
-predicate---a designator for a function of one argument that returns a generalized boolean.
+predicate---一个返回广义 boolean 的单参数函数的标识符.
 
-from-end---a generalized boolean. The default is false.
+from-end---一个广义 boolean. The default is false.
 
-test---a designator for a function of two arguments that returns a generalized boolean.
+test---一个返回广义 boolean 的两个参数函数的标识符.
 
-test-not---a designator for a function of two arguments that returns a generalized boolean.
+test-not---一个返回广义 boolean 的两个参数函数的标识符.
 
-start, end---bounding index designators of sequence. The defaults for start and end are 0 and nil, respectively.
+start, end---序列 sequence 的边界索引标识符. The defaults for start and end are 0 and nil, respectively.
 
 count---an integer or nil. The default is nil.
 
 key---a designator for a function of one argument, or nil.
 
-result-sequence---a sequence.
+result-sequence---一个序列.
 
 * 描述(Description):
 
@@ -1201,7 +1188,7 @@ substitute, substitute-if, and substitute-if-not return a copy of sequence in wh
 
 nsubstitute, nsubstitute-if, and nsubstitute-if-not are like substitute, substitute-if, and substitute-if-not respectively, but they may modify sequence.
 
-If sequence is a vector, the result is a vector that has the same actual array element type as sequence. If sequence is a list, the result is a list.
+If sequence is a vector, 那么结果是一个和 sequence 有着相同实际数组元素类型的向量. 如果序列 sequence 是一个列表, 那么结果也是有一个列表.
 
 Count, if supplied, limits the number of elements altered; if more than count elements satisfy the test, then of these elements only the leftmost or rightmost, depending on from-end, are replaced, as many as specified by count. If count is supplied and negative, the behavior is as if zero had been supplied instead. If count is nil, all matching items are affected.
 
@@ -1256,7 +1243,7 @@ subst, nsubst, Section 3.2.1 (Compiler Terminology), Section 3.6 (Traversal Rule
 
 If sequence is a vector, the result might or might not be simple, and might or might not be identical to sequence.
 
-The :test-not argument is deprecated.
+这个 :test-not 参数已经被废弃.
 
 The functions substitute-if-not and nsubstitute-if-not are deprecated.
 
@@ -1282,7 +1269,7 @@ concatenate result-type &rest sequences => result-sequence
 
 result-type---a sequence type specifier.
 
-sequences---a sequence.
+sequences---一个序列.
 
 result-sequence---a proper sequence of type result-type.
 
@@ -1330,11 +1317,11 @@ merge result-type sequence-1 sequence-2 predicate &key key => result-sequence
 
 result-type---a sequence type specifier.
 
-sequence-1---a sequence.
+sequence-1---一个序列.
 
-sequence-2---a sequence.
+sequence-2---一个序列.
 
-predicate---a designator for a function of two arguments that returns a generalized boolean.
+predicate---一个返回广义 boolean 的两个参数函数的标识符.
 
 key---a designator for a function of one argument, or nil.
 
@@ -1412,21 +1399,21 @@ item---一个对象.
 
 sequence---一个 proper 序列.
 
-test---a designator for a function of one argument that returns a generalized boolean.
+test---一个返回广义 boolean 的单参数函数的标识符.
 
-from-end---a generalized boolean. The default is false.
+from-end---一个广义 boolean. The default is false.
 
-test---a designator for a function of two arguments that returns a generalized boolean.
+test---一个返回广义 boolean 的两个参数函数的标识符.
 
-test-not---a designator for a function of two arguments that returns a generalized boolean.
+test-not---一个返回广义 boolean 的两个参数函数的标识符.
 
-start, end---bounding index designators of sequence. The defaults for start and end are 0 and nil, respectively.
+start, end---序列 sequence 的边界索引标识符. The defaults for start and end are 0 and nil, respectively.
 
 count---an integer or nil. The default is nil.
 
 key---a designator for a function of one argument, or nil.
 
-result-sequence---a sequence.
+result-sequence---一个序列.
 
 * 描述(Description):
 
@@ -1434,7 +1421,7 @@ remove, remove-if, and remove-if-not return a sequence from which the elements t
 
 delete, delete-if, and delete-if-not are like remove, remove-if, and remove-if-not respectively, but they may modify sequence.
 
-If sequence is a vector, the result is a vector that has the same actual array element type as sequence. If sequence is a list, the result is a list.
+If sequence is a vector, 那么结果是一个和 sequence 有着相同实际数组元素类型的向量. 如果序列 sequence 是一个列表, 那么结果也是有一个列表.
 
 Supplying a from-end of true matters only when the count is provided; in that case only the rightmost count elements satisfying the test are deleted.
 
@@ -1510,7 +1497,7 @@ Section 3.2.1 (Compiler Terminology), Section 3.6 (Traversal Rules and Side Effe
 
 If sequence is a vector, the result might or might not be simple, and might or might not be identical to sequence.
 
-The :test-not argument is deprecated.
+这个 :test-not 参数已经被废弃.
 
 The functions delete-if-not and remove-if-not are deprecated. 
 
@@ -1530,23 +1517,23 @@ delete-duplicates sequence &key from-end test test-not start end key
 
 sequence---一个 proper 序列.
 
-from-end---a generalized boolean. The default is false.
+from-end---一个广义 boolean. The default is false.
 
-test---a designator for a function of two arguments that returns a generalized boolean.
+test---一个返回广义 boolean 的两个参数函数的标识符.
 
-test-not---a designator for a function of two arguments that returns a generalized boolean.
+test-not---一个返回广义 boolean 的两个参数函数的标识符.
 
-start, end---bounding index designators of sequence. The defaults for start and end are 0 and nil, respectively.
+start, end---序列 sequence 的边界索引标识符. The defaults for start and end are 0 and nil, respectively.
 
 key---a designator for a function of one argument, or nil.
 
-result-sequence---a sequence.
+result-sequence---一个序列.
 
 * 描述(Description):
 
 remove-duplicates returns a modified copy of sequence from which any element that matches another element occurring in sequence has been removed.
 
-If sequence is a vector, the result is a vector that has the same actual array element type as sequence. If sequence is a list, the result is a list.
+If sequence is a vector, 那么结果是一个和 sequence 有着相同实际数组元素类型的向量. 如果序列 sequence 是一个列表, 那么结果也是有一个列表.
 
 delete-duplicates is like remove-duplicates, but delete-duplicates may modify sequence.
 
@@ -1588,7 +1575,7 @@ Section 3.2.1 (Compiler Terminology), Section 3.6 (Traversal Rules and Side Effe
 
 If sequence is a vector, the result might or might not be simple, and might or might not be identical to sequence.
 
-The :test-not argument is deprecated.
+这个 :test-not 参数已经被废弃.
 
 These functions are useful for converting sequence into a canonical form suitable for representing a set. 
 
