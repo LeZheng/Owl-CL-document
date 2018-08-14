@@ -969,42 +969,35 @@
 
 * 语法(Syntax):
 
-search sequence-1 sequence-2 &key from-end test test-not key start1 start2 end1 end2
-
-=> position
+        search sequence-1 sequence-2 &key from-end test test-not key start1 start2 end1 end2
+        => position
 
 * 参数和值(Arguments and Values):
 
-Sequence-1---一个序列.
-
-Sequence-2---一个序列.
-
-from-end---一个广义 boolean. The default is false.
-
-test---一个返回广义 boolean 的两个参数函数的标识符.
-
-test-not---一个返回广义 boolean 的两个参数函数的标识符.
-
-key---a designator for a function of one argument, or nil.
-
-start1, end1---bounding index designators of sequence-1. The defaults for start1 and end1 are 0 and nil, respectively.
-
-start2, end2---bounding index designators of sequence-2. The defaults for start2 and end2 are 0 and nil, respectively.
-
-position---a bounding index of sequence-2, or nil.
+        Sequence-1---一个序列.
+        Sequence-2---一个序列.
+        from-end---一个广义 boolean. 默认是 false.
+        test---一个返回广义 boolean 的两个参数函数的标识符.
+        test-not---一个返回广义 boolean 的两个参数函数的标识符.
+        key---一个单参数函数的标识符, 或 nil.
+        start1, end1---序列 sequence-1 的边界索引标识符. 对于 start1 和 end1 默认分别是 0 和 nil.
+        start2, end2---序列 sequence-2 的边界索引标识符. 对于 start2 和 end2 默认分别是 0 和 nil.
+        position---序列 sequence-2 的边界索引, 或 nil.
 
 * 描述(Description):
 
-Searches sequence-2 for a subsequence that matches sequence-1.
+        搜索序列 sequence-2 来查找一个匹配序列 sequence-1 的子序列.
 
-The implementation may choose to search sequence-2 in any order; there is no guarantee on the number of times the test is made. For example, when start-end is true, the sequence might actually be searched from left to right instead of from right to left (but in either case would return the rightmost matching subsequence). If the search succeeds, search returns the offset into sequence-2 of the first element of the leftmost or rightmost matching subsequence, depending on from-end; otherwise search returns nil.
+        具体实现可以选择以任何顺序搜索序列 sequence-2; there is no guarantee on the number of times the test is made. 比如, 当 start-end 是 true, 这个序列 sequence 事实上可能从左到右被搜索而不是从右到左 (但是不管在那种情况下都会返回最右边的匹配子序列). 如果这个搜索成功了, search 返回那个最左边或最右边的匹配子序列的第一个元素在序列 sequence-2 中的偏移位, 取决于 from-end; 否则 search 返回 nil.
 
-If from-end is true, the index of the leftmost element of the rightmost matching subsequence is returned.
+        如果 from-end 是 true, 那么那个最右边的匹配子序列的最左边的元素的索引会被返回.
 
 * 示例(Examples):
 
- (search "dog" "it's a dog's life") =>  7
- (search '(0 1) '(2 4 6 1 3 5) :key #'oddp) =>  2
+    ```LISP
+    (search "dog" "it's a dog's life") =>  7
+    (search '(0 1) '(2 4 6 1 3 5) :key #'oddp) =>  2
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -1014,57 +1007,50 @@ If from-end is true, the index of the leftmost element of the rightmost matching
 
 * 也见(See Also):
 
-Section 3.6 (Traversal Rules and Side Effects)
+        章节 3.6 (Traversal Rules and Side Effects)
 
 * 注意(Notes):
 
-这个 :test-not 参数已经被废弃. 
+        这个 :test-not 参数已经被废弃. 
 
 
 ### <span id="F-MISMATCH">函数 MISMATCH</span>
 
 * 语法(Syntax):
 
-mismatch sequence-1 sequence-2 &key from-end test test-not key start1 start2 end1 end2
-
-=> position
+        mismatch sequence-1 sequence-2 &key from-end test test-not key start1 start2 end1 end2
+        => position
 
 * 参数和值(Arguments and Values):
 
-Sequence-1---一个序列.
-
-Sequence-2---一个序列.
-
-from-end---一个广义 boolean. The default is false.
-
-test---一个返回广义 boolean 的两个参数函数的标识符.
-
-test-not---一个返回广义 boolean 的两个参数函数的标识符.
-
-start1, end1---bounding index designators of sequence-1. The defaults for start1 and end1 are 0 and nil, respectively.
-
-start2, end2---bounding index designators of sequence-2. The defaults for start2 and end2 are 0 and nil, respectively.
-
-key---a designator for a function of one argument, or nil.
-
-position---a bounding index of sequence-1, or nil.
+        Sequence-1---一个序列.
+        Sequence-2---一个序列.
+        from-end---一个广义 boolean. 默认是 false.
+        test---一个返回广义 boolean 的两个参数函数的标识符.
+        test-not---一个返回广义 boolean 的两个参数函数的标识符.
+        start1, end1---序列 sequence-1 的边界索引标识符. 对于 start1 和 end1 默认分别是 0 和 nil.
+        start2, end2---序列 sequence-2 的边界索引标识符. 对于 start2 和 end2 默认分别是 0 和 nil.
+        key---一个单参数函数的标识符, 或者 nil.
+        position---序列 sequence-1 的边界索引, 或者 nil.
 
 * 描述(Description):
 
-The specified subsequences of sequence-1 and sequence-2 are compared element-wise.
+        这个序列 sequence-1 和序列 sequence-2 的指定子序列按元素比较.
 
-The key argument is used for both the sequence-1 and the sequence-2.
+        这个 key 参数同时被用于序列 sequence-1 和序列 sequence-2.
 
-If sequence-1 and sequence-2 are of equal length and match in every element, the result is false. Otherwise, the result is a non-negative integer, the index within sequence-1 of the leftmost or rightmost position, depending on from-end, at which the two subsequences fail to match. If one subsequence is shorter than and a matching prefix of the other, the result is the index relative to sequence-1 beyond the last position tested.
+        如果序列 sequence-1 和序列 sequence-2 是相同长度并且每个元素都匹配, 那么结果就是 false. 否则, 结果是一个非负整数, 表示那个两个子序列不匹配的位置在序列 sequence-1 中最左边或最右边索引, 取决于 from-end. 如果一个子序列短于另一个或者是另一个的匹配前缀, 那么结果就是和序列 sequence-1 相关的超出最后一个测试的位置的索引.
 
-If from-end is true, then one plus the index of the rightmost position in which the sequences differ is returned. In effect, the subsequences are aligned at their right-hand ends; then, the last elements are compared, the penultimate elements, and so on. The index returned is an index relative to sequence-1.
+        如果 from-end 是 true, 那么返回一加上这些序列 sequences 不同的最右边位置的索引. 实际上, 这些子序列在它们的右边对齐; 那么, 最后一个元素会被比较, 然后是倒数第二个元素, 以此类推. 返回的那个索引是和序列 sequence-1 相关的索引.
 
 * 示例(Examples):
 
- (mismatch "abcd" "ABCDE" :test #'char-equal) =>  4
- (mismatch '(3 2 1 1 2 3) '(1 2 3) :from-end t) =>  3
- (mismatch '(1 2 3) '(2 3 4) :test-not #'eq :key #'oddp) =>  NIL
- (mismatch '(1 2 3 4 5 6) '(3 4 5 6 7) :start1 2 :end2 4) =>  NIL 
+    ```LISP
+    (mismatch "abcd" "ABCDE" :test #'char-equal) =>  4
+    (mismatch '(3 2 1 1 2 3) '(1 2 3) :from-end t) =>  3
+    (mismatch '(1 2 3) '(2 3 4) :test-not #'eq :key #'oddp) =>  NIL
+    (mismatch '(1 2 3 4 5 6) '(3 4 5 6 7) :start1 2 :end2 4) =>  NIL 
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -1074,50 +1060,49 @@ If from-end is true, then one plus the index of the rightmost position in which 
 
 * 也见(See Also):
 
-Section 3.6 (Traversal Rules and Side Effects)
+        章节 3.6 (Traversal Rules and Side Effects)
 
 * 注意(Notes):
 
-这个 :test-not 参数已经被废弃. 
+        这个 :test-not 参数已经被废弃. 
 
 
 ### <span id="F-REPLACE">函数 REPLACE</span>
 
 * 语法(Syntax):
 
-replace sequence-1 sequence-2 &key start1 end1 start2 end2 => sequence-1
+        replace sequence-1 sequence-2 &key start1 end1 start2 end2 => sequence-1
 
 * 参数和值(Arguments and Values):
 
-sequence-1---一个序列.
-
-sequence-2---一个序列.
-
-start1, end1---bounding index designators of sequence-1. The defaults for start1 and end1 are 0 and nil, respectively.
-
-start2, end2---bounding index designators of sequence-2. The defaults for start2 and end2 are 0 and nil, respectively.
+        sequence-1---一个序列.
+        sequence-2---一个序列.
+        start1, end1---序列 sequence-1 的边界索引标识符. 对于 start1 和 end1 默认分别是 0 和 nil.
+        start2, end2---序列 sequence-2 的边界索引标识符. 对于 start2 和 end2 默认分别是 0 和 nil.
 
 * 描述(Description):
 
-Destructively modifies sequence-1 by replacing the elements of subsequence-1 bounded by start1 and end1 with the elements of subsequence-2 bounded by start2 and end2.
+        通过用由 start2 和 end2 限定的子序列 subsequence-2 的元素来替换子序列 subsequence-1 中由 start1 和 end1 限定的元素来破坏性地修改序列 sequence-1.
 
-Sequence-1 is destructively modified by copying successive elements into it from sequence-2. Elements of the subsequence of sequence-2 bounded by start2 and end2 are copied into the subsequence of sequence-1 bounded by start1 and end1. If these subsequences are not of the same length, then the shorter length determines how many elements are copied; the extra elements near the end of the longer subsequence are not involved in the operation. The number of elements copied can be expressed as:
+        通过从序列 sequence-2 拷贝连续的元素到序列 sequence-1, 序列 sequence-1 被破坏性地修改. 序列 sequence-2 中由 start2 和 end2 限定的子序列的元素会被拷贝到序列 sequence-1 中由 start1 和 end1 限定的子序列中. 如果这些序列不是相同长度, 那么较短的长度决定了要拷贝多少个元素; 在较长的子序列末尾处的额外元素不会被涉及到这个操作. 被拷贝的数量可以表达为:
 
- (min (- end1 start1) (- end2 start2))
+        (min (- end1 start1) (- end2 start2))
 
-If sequence-1 and sequence-2 are the same object and the region being modified overlaps the region being copied from, then it is as if the entire source region were copied to another place and only then copied back into the target region. However, if sequence-1 and sequence-2 are not the same, but the region being modified overlaps the region being copied from (perhaps because of shared list structure or displaced arrays), then after the replace operation the subsequence of sequence-1 being modified will have unpredictable contents. It is an error if the elements of sequence-2 are not of a type that can be stored into sequence-1.
+        如果序列 sequence-1 和序列 sequence-2 是相同的对象并且被修改的区域与被复制的区域重叠, 那么就好像整个源区域被拷贝到另一个位置然后再拷贝回目标区域. 然而, 如果 sequence-1 和 sequence-2 是不同的, 但是被修改的区域与被复制的区域重叠 (或许是由于共享列表结构或者转移数组), 那么在这个替换操作后, 要被修改的序列 sequence-1 的子序列会有不可预测的内容. 如果序列 sequence-2 的元素不是一个可以被存储到序列 sequence-1 中的类型, 那么就是一个错误.
 
 * 示例(Examples):
 
- (replace "abcdefghij" "0123456789" :start1 4 :end1 7 :start2 4) 
-=>  "abcd456hij"
- (setq lst "012345678") =>  "012345678"
- (replace lst lst :start1 2 :start2 0) =>  "010123456"
- lst =>  "010123456"
+    ```LISP
+    (replace "abcdefghij" "0123456789" :start1 4 :end1 7 :start2 4) 
+    =>  "abcd456hij"
+    (setq lst "012345678") =>  "012345678"
+    (replace lst lst :start1 2 :start2 0) =>  "010123456"
+    lst =>  "010123456"
+    ```
 
 * 副作用(Side Effects):
 
-The sequence-1 is modified.
+        这个序列 sequence-1 会被修改.
 
 * 受此影响(Affected By): None.
 
@@ -1125,7 +1110,7 @@ The sequence-1 is modified.
 
 * 也见(See Also):
 
-fill
+        fill
 
 * 注意(Notes): None. 
 
@@ -1134,129 +1119,115 @@ fill
 
 * 语法(Syntax):
 
-substitute newitem olditem sequence &key from-end test test-not start end count key
+        substitute newitem olditem sequence &key from-end test test-not start end count key
+        => result-sequence
 
-=> result-sequence
+        substitute-if newitem predicate sequence &key from-end start end count key
+        => result-sequence
 
-substitute-if newitem predicate sequence &key from-end start end count key
+        substitute-if-not newitem predicate sequence &key from-end start end count key
+        => result-sequence
 
-=> result-sequence
+        nsubstitute newitem olditem sequence &key from-end test test-not start end count key
+        => sequence
 
-substitute-if-not newitem predicate sequence &key from-end start end count key
+        nsubstitute-if newitem predicate sequence &key from-end start end count key
+        => sequence
 
-=> result-sequence
-
-nsubstitute newitem olditem sequence &key from-end test test-not start end count key
-
-=> sequence
-
-nsubstitute-if newitem predicate sequence &key from-end start end count key
-
-=> sequence
-
-nsubstitute-if-not newitem predicate sequence &key from-end start end count key
-
-=> sequence
+        nsubstitute-if-not newitem predicate sequence &key from-end start end count key
+        => sequence
 
 * 参数和值(Arguments and Values):
 
-newitem---一个对象.
-
-olditem---一个对象.
-
-sequence---一个 proper 序列.
-
-predicate---一个返回广义 boolean 的单参数函数的标识符.
-
-from-end---一个广义 boolean. The default is false.
-
-test---一个返回广义 boolean 的两个参数函数的标识符.
-
-test-not---一个返回广义 boolean 的两个参数函数的标识符.
-
-start, end---序列 sequence 的边界索引标识符. The defaults for start and end are 0 and nil, respectively.
-
-count---an integer or nil. The default is nil.
-
-key---a designator for a function of one argument, or nil.
-
-result-sequence---一个序列.
+        newitem---一个对象.
+        olditem---一个对象.
+        sequence---一个 proper 序列.
+        predicate---一个返回广义 boolean 的单参数函数的标识符.
+        from-end---一个广义 boolean. 默认是 false.
+        test---一个返回广义 boolean 的两个参数函数的标识符.
+        test-not---一个返回广义 boolean 的两个参数函数的标识符.
+        start, end---序列 sequence 的边界索引标识符. 对于 start 和 end 默认分别为 0 和 nil.
+        count---一个整数或 nil. 默认是 nil.
+        key---一个单参数函数的标识符, 或者 nil.
+        result-sequence---一个序列.
 
 * 描述(Description):
 
-substitute, substitute-if, and substitute-if-not return a copy of sequence in which each element that satisfies the test has been replaced with newitem.
+        substitute, substitute-if, 和 substitute-if-not 返回序列 sequence 的一个拷贝, 其中每个满足测试条件 test 的元素都被替换为 newitem.
 
-nsubstitute, nsubstitute-if, and nsubstitute-if-not are like substitute, substitute-if, and substitute-if-not respectively, but they may modify sequence.
+        nsubstitute, nsubstitute-if, 和 nsubstitute-if-not 分别类似于 substitute, substitute-if, 和 substitute-if-not, 除了它们可能修改序列 sequence.
 
-If sequence is a vector, 那么结果是一个和 sequence 有着相同实际数组元素类型的向量. 如果序列 sequence 是一个列表, 那么结果也是有一个列表.
+        如果序列 sequence 是一个向量, 那么结果是一个和 sequence 有着相同实际数组元素类型的向量. 如果序列 sequence 是一个列表, 那么结果也是有一个列表.
 
-Count, if supplied, limits the number of elements altered; if more than count elements satisfy the test, then of these elements only the leftmost or rightmost, depending on from-end, are replaced, as many as specified by count. If count is supplied and negative, the behavior is as if zero had been supplied instead. If count is nil, all matching items are affected.
+        如果提供了 count, 限制要被修改的元素的数量; 如果超过 count 个元素满足测试条件 test, 那么那些元素中只有最左边或最右边的和 count 指定的一样多的元素会被替换, 取决于 from-end. 如果提供了 count 并且是负的, 那么这个行为就好像提供了零一样. 如果 count 是 nil, 所有匹配的项都会被影响.
 
-Supplying a from-end of true matters only when the count is provided (and non-nil); in that case, only the rightmost count elements satisfying the test are removed (instead of the leftmost).
+        只有在那个 count 被提供时 (and non-nil), 提供一个 true 的 from-end 是有关系的; 在这个情况中, 只有最右边 count 个满足测试条件 test 的元素会被移除 (而不是最左边).
 
-predicate, test, and test-not might be called more than once for each sequence element, and their side effects can happen in any order.
+        predicate, test, 和 test-not 对于每个序列元素可以被调用不止一次, 而它们的副作用可能以任意顺序发生.
 
-The result of all these functions is a sequence of the same type as sequence that has the same elements except that those in the subsequence bounded by start and end and satisfying the test have been replaced by newitem.
+        所有这些函数的结果是一个和 sequence 有着相同类型的序列, 它们有着相同的元素除了那些由 start 和 end 限定并且满足这个测试条件 test 的被替换为 newitem.
 
-substitute, substitute-if, and substitute-if-not return a sequence which can share with sequence or may be identical to the input sequence if no elements need to be changed.
+        substitute, substitute-if, 和 substitute-if-not 返回一个可能和序列 sequence 共享结构或者如果没有元素需要被改变那么就是和输入序列 sequence 相同的序列.
 
-nsubstitute and nsubstitute-if are required to setf any car (if sequence is a list) or aref (if sequence is a vector) of sequence that is required to be replaced with newitem. If sequence is a list, none of the cdrs of the top-level list can be modified.
+        nsubstitute 和 nsubstitute-if 需要去 setf 任何需要被替换为 newitem 的序列 sequence 的任何 car (如果序列 sequence 是一个列表) 或 aref (如果 sequence 是一个向量). 如果序列 sequence 是一个列表, 这些顶层列表的 cdr 都不会被修改.
 
 * 示例(Examples):
 
- (substitute #\. #\SPACE "0 2 4 6") =>  "0.2.4.6"
- (substitute 9 4 '(1 2 4 1 3 4 5)) =>  (1 2 9 1 3 9 5)
- (substitute 9 4 '(1 2 4 1 3 4 5) :count 1) =>  (1 2 9 1 3 4 5)
- (substitute 9 4 '(1 2 4 1 3 4 5) :count 1 :from-end t)
-=>  (1 2 4 1 3 9 5)
- (substitute 9 3 '(1 2 4 1 3 4 5) :test #'>) =>  (9 9 4 9 3 4 5)
+    ```LISP
+    (substitute #\. #\SPACE "0 2 4 6") =>  "0.2.4.6"
+    (substitute 9 4 '(1 2 4 1 3 4 5)) =>  (1 2 9 1 3 9 5)
+    (substitute 9 4 '(1 2 4 1 3 4 5) :count 1) =>  (1 2 9 1 3 4 5)
+    (substitute 9 4 '(1 2 4 1 3 4 5) :count 1 :from-end t)
+    =>  (1 2 4 1 3 9 5)
+    (substitute 9 3 '(1 2 4 1 3 4 5) :test #'>) =>  (9 9 4 9 3 4 5)
 
- (substitute-if 0 #'evenp '((1) (2) (3) (4)) :start 2 :key #'car)
-=>  ((1) (2) (3) 0)
- (substitute-if 9 #'oddp '(1 2 4 1 3 4 5)) =>  (9 2 4 9 9 4 9)
- (substitute-if 9 #'evenp '(1 2 4 1 3 4 5) :count 1 :from-end t)
-=>  (1 2 4 1 3 9 5)
+    (substitute-if 0 #'evenp '((1) (2) (3) (4)) :start 2 :key #'car)
+    =>  ((1) (2) (3) 0)
+    (substitute-if 9 #'oddp '(1 2 4 1 3 4 5)) =>  (9 2 4 9 9 4 9)
+    (substitute-if 9 #'evenp '(1 2 4 1 3 4 5) :count 1 :from-end t)
+    =>  (1 2 4 1 3 9 5)
 
- (setq some-things (list 'a 'car 'b 'cdr 'c)) =>  (A CAR B CDR C)
- (nsubstitute-if "function was here" #'fboundp some-things
-                 :count 1 :from-end t) =>  (A CAR B "function was here" C)
- some-things =>  (A CAR B "function was here" C)
- (setq alpha-tester (copy-seq "ab ")) =>  "ab "
- (nsubstitute-if-not #\z #'alpha-char-p alpha-tester) =>  "abz"
- alpha-tester =>  "abz"
+    (setq some-things (list 'a 'car 'b 'cdr 'c)) =>  (A CAR B CDR C)
+    (nsubstitute-if "function was here" #'fboundp some-things
+                    :count 1 :from-end t) =>  (A CAR B "function was here" C)
+    some-things =>  (A CAR B "function was here" C)
+    (setq alpha-tester (copy-seq "ab ")) =>  "ab "
+    (nsubstitute-if-not #\z #'alpha-char-p alpha-tester) =>  "abz"
+    alpha-tester =>  "abz"
+    ```
 
 * 副作用(Side Effects):
 
-nsubstitute, nsubstitute-if, and nsubstitute-if-not modify sequence.
+        nsubstitute, nsubstitute-if, 和 nsubstitute-if-not 序列 sequence.
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-如果序列 sequence 不是一个 proper 序列, 那么应该准备去发出一个 type-error 类型的错误.
+        如果序列 sequence 不是一个 proper 序列, 那么应该准备去发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-subst, nsubst, Section 3.2.1 (Compiler Terminology), Section 3.6 (Traversal Rules and Side Effects)
+        subst, nsubst, 章节 3.2.1 (Compiler Terminology), 章节 3.6 (Traversal Rules and Side Effects)
 
 * 注意(Notes):
 
-If sequence is a vector, the result might or might not be simple, and might or might not be identical to sequence.
+        如果序列 sequence 是一个向量, 那么结果可能或可能不是简单的, 并且可能或可能不会和序列 sequence 相同.
 
-这个 :test-not 参数已经被废弃.
+        这个 :test-not 参数已经被废弃.
 
-The functions substitute-if-not and nsubstitute-if-not are deprecated.
+        函数 substitute-if-not 和 nsubstitute-if-not 已经被废弃.
 
-nsubstitute and nsubstitute-if can be used in for-effect-only positions in code.
+        nsubstitute 和 nsubstitute-if 可以被用于代码中只为了副作用的位置.
 
-Because the side-effecting variants (e.g., nsubstitute) potentially change the path that is being traversed, their effects in the presence of shared or circular structure may vary in surprising ways when compared to their non-side-effecting alternatives. To see this, consider the following side-effect behavior, which might be exhibited by some implementations:
+        因为副作用变体(比如, nsubstitute)可能会改变被遍历的路径, 它们出现在共享或循环结构的副作用在和它们的无副作用替代比较时可能以令人惊讶的方式表现地不同. 为了观察到这个, 细想以下副作用行为, 它可能被某些实现展现出来:
 
- (defun test-it (fn)
-   (let ((x (cons 'b nil)))
-     (rplacd x x)
-     (funcall fn 'a 'b x :count 1)))
- (test-it #'substitute) =>  (A . #1=(B . #1#))
- (test-it #'nsubstitute) =>  (A . #1#)
+        (defun test-it (fn)
+          (let ((x (cons 'b nil)))
+            (rplacd x x)
+            (funcall fn 'a 'b x :count 1)))
+        (test-it #'substitute) =>  (A . #1=(B . #1#))
+        (test-it #'nsubstitute) =>  (A . #1#)
 
 
 ### <span id="F-CONCATENATE">函数 CONCATENATE</span>
@@ -1323,7 +1294,7 @@ sequence-2---一个序列.
 
 predicate---一个返回广义 boolean 的两个参数函数的标识符.
 
-key---a designator for a function of one argument, or nil.
+key---一个单参数函数的标识符, 或者 nil.
 
 result-sequence---a proper sequence of type result-type.
 
@@ -1411,7 +1382,7 @@ start, end---序列 sequence 的边界索引标识符. The defaults for start an
 
 count---an integer or nil. The default is nil.
 
-key---a designator for a function of one argument, or nil.
+key---一个单参数函数的标识符, 或者 nil.
 
 result-sequence---一个序列.
 
@@ -1525,7 +1496,7 @@ test-not---一个返回广义 boolean 的两个参数函数的标识符.
 
 start, end---序列 sequence 的边界索引标识符. The defaults for start and end are 0 and nil, respectively.
 
-key---a designator for a function of one argument, or nil.
+key---一个单参数函数的标识符, 或者 nil.
 
 result-sequence---一个序列.
 
