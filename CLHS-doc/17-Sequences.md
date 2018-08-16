@@ -1,4 +1,4 @@
-# 17 Sequences
+# 17 序列
 
 > * 17.1 [序列的概念](#SequenceConcepts)
 > * 17.2 [关于测试函数的规则](#RulesTestFunctions)
@@ -560,7 +560,7 @@
 
         reduce 使用一个二元操作符, function, 来组合由 start 和 end 限制的 sequence 的元素.
 
-        这个函数 function 必须接受序列 sequence 的两个元素作为参数或者 must accept as arguments two elements of sequence or the results from combining those elements. 这个函数 function 必须也可以接受没有参数的情况.<!--TODO 待翻译-->
+        这个函数 function 必须接受作为序列 sequence 的两个元素的参数, 或者将这些元素组合起来的结果. 这个函数 function 必须也可以接受没有参数的情况.
 
         如果提供了 key, 它被用于去提取给 reduce 的值. 这个 key 函数以那个归约的顺序暗示的顺序只应用一次到序列 sequence 的每个元素上, 除了 initial-value 的值意外, 如果提供的话. 这个 key 函数通常返回序列 sequence 的元素的一部分. 如果 key 没有被提供或者是 nil, 那么就使用这个序列的元素自身.
 
@@ -1234,46 +1234,46 @@
 
 * 语法(Syntax):
 
-concatenate result-type &rest sequences => result-sequence
+        concatenate result-type &rest sequences => result-sequence
 
 * 参数和值(Arguments and Values):
 
-result-type---a sequence type specifier.
-
-sequences---一个序列.
-
-result-sequence---a proper sequence of type result-type.
+        result-type---一个 sequence 类型指定符.
+        sequences---一个序列.
+        result-sequence---一个 result-type 类型的 proper 序列.
 
 * 描述(Description):
 
-concatenate returns a sequence that contains all the individual elements of all the sequences in the order that they are supplied. The sequence is of type result-type, which must be a subtype of type sequence.
+        concatenate 返回一个包含了所有这些序列 sequences 的单独元素的序列, 以它们被提供的顺序. 这个序列是 result-type 类型的, 这个类型必须是类型 sequence 的一个子类型.
 
-All of the sequences are copied from; the result does not share any structure with any of the sequences. Therefore, if only one sequence is provided and it is of type result-type, concatenate is required to copy sequence rather than simply returning it.
+        所有这些序列 sequences 都会被拷贝; 这个结果不会和这些序列 sequences 的任何一个共享结构. 因此, 如果只提供了一个序列 sequence 并且它是 result-type 类型的, concatenate 需要去拷贝这个序列 sequence 而不是简单地返回它.
 
-It is an error if any element of the sequences cannot be an element of the sequence result. If the result-type is a subtype of list, the result will be a list.
+        如果这些元素 sequences 的任何一个元素不能是这些结果序列的一个元素, 那么就是一个错误. 如果这个 result-type 是 list 的一个子类型, 结果会是一个列表.
 
-如果 result-type 是 vector 的一个子类型, 那么如果实现可以确定 result-type 指定的元素类型, 那么产生的数组的元素类型就是那个元素类型的提升的结果; 或者, 如果实现可以确定那个元素类型是未指定的 (或 *), 产生的元素类型就是 t; 否则, 发出一个错误.
+        如果 result-type 是 vector 的一个子类型, 那么如果实现可以确定 result-type 指定的元素类型, 那么产生的数组的元素类型就是那个元素类型的提升的结果; 或者, 如果实现可以确定那个元素类型是未指定的 (或 *), 产生的元素类型就是 t; 否则, 发出一个错误.
 
 * 示例(Examples):
 
-(concatenate 'string "all" " " "together" " " "now") =>  "all together now"
-(concatenate 'list "ABC" '(d e f) #(1 2 3) #*1011)
-=>  (#\A #\B #\C D E F 1 2 3 1 0 1 1)
-(concatenate 'list) =>  NIL
+    ```LISP
+    (concatenate 'string "all" " " "together" " " "now") =>  "all together now"
+    (concatenate 'list "ABC" '(d e f) #(1 2 3) #*1011)
+    =>  (#\A #\B #\C D E F 1 2 3 1 0 1 1)
+    (concatenate 'list) =>  NIL
 
-  (concatenate '(vector * 2) "a" "bc") should signal an error
+      (concatenate '(vector * 2) "a" "bc") should signal an error
+    ```
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-An error is signaled if the result-type is neither a recognizable subtype of list, nor a recognizable subtype of vector.
+        如果 result-type 既不是 list 的一个可识别子类型, 也不是 vector 的一个可识别子类型, 那么就会发出一个错误.
 
-An error of type type-error should be signaled if result-type specifies the number of elements and the sum of sequences is different from that number.
+        如果 result-type 指定的元素的数量和这些序列 sequences 的总数在数量上不同, 那么就会发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-append
+        append
 
 * 注意(Notes): None. 
 
@@ -1282,68 +1282,65 @@ append
 
 * 语法(Syntax):
 
-merge result-type sequence-1 sequence-2 predicate &key key => result-sequence
+        merge result-type sequence-1 sequence-2 predicate &key key => result-sequence
 
 * 参数和值(Arguments and Values):
 
-result-type---a sequence type specifier.
-
-sequence-1---一个序列.
-
-sequence-2---一个序列.
-
-predicate---一个返回广义 boolean 的两个参数函数的标识符.
-
-key---一个单参数函数的标识符, 或者 nil.
-
-result-sequence---a proper sequence of type result-type.
+        result-type---一个 sequence 类型指定符.
+        sequence-1---一个序列.
+        sequence-2---一个序列.
+        predicate---一个返回广义 boolean 的两个参数函数的标识符.
+        key---一个单参数函数的标识符, 或者 nil.
+        result-sequence---一个 result-type 类型的 proper 序列.
 
 * 描述(Description):
 
-Destructively merges sequence-1 with sequence-2 according to an order determined by the predicate. merge determines the relationship between two elements by giving keys extracted from the sequence elements to the predicate.
+        根据断言 predicate 决定的顺序破坏性地合并 sequence-1 和 sequence-2. merge 通过给定从这些序列元素中的键到这个断言 predicate 来决定两个元素之间的关系.
 
-The first argument to the predicate function is an element of sequence-1 as returned by the key (if supplied); the second argument is an element of sequence-2 as returned by the key (if supplied). Predicate should return true if and only if its first argument is strictly less than the second (in some appropriate sense). If the first argument is greater than or equal to the second (in the appropriate sense), then predicate should return false. merge considers two elements x and y to be equal if (funcall predicate x y) and (funcall predicate y x) both yield false.
+        给这个 predicate 函数的第一个参数是由 key 返回的序列 sequence-1 的一个元素 (如果提供的话); 第二个元素是由 key 返回的序列 sequence-2 的元素 (如果提供的话). 当且仅当这个断言 predicate 的第一个参数严格小于第二个参数时(在一些适当的意义上), 它应该返回 true. 如果第一个参数大于或等于第二个参数 (在一些适当的意义上), 那么断言 predicate 应该返回 false. 如果 (funcall predicate x y) 和 (funcall predicate y x) 都产生 false, 那么 merge 把这两个元素 x 和 y 认为是相等的.
 
-The argument to the key is the sequence element. Typically, the return value of the key becomes the argument to predicate. If key is not supplied or nil, the sequence element itself is used. The key may be executed more than once for each sequence element, and its side effects may occur in any order.
+        给 key 的参数是这个序列 sequence 元素. 通常地, 这个 key 的返回值成为给断言 predicate 的参数. 如果没有提供 key 或者是 nil, 那么就使用这个序列元素自身. 这个 key 对于每个序列元素可能被执行不止一次, 那么它的副作用可能以任意顺序发生.
 
-If key and predicate return, then the merging operation will terminate. The result of merging two sequences x and y is a new sequence of type result-type z, such that the length of z is the sum of the lengths of x and y, and z contains all the elements of x and y. If x1 and x2 are two elements of x, and x1 precedes x2 in x, then x1 precedes x2 in z, and similarly for elements of y. In short, z is an interleaving of x and y.
+        如果 key 和 predicate 返回了, 那么这个合并操作就会终止. 合并两个序列 x 和 y 的结果是一个类型 result-type 的新序列 z, 这样一来 z 的长度是 x 和 y 的总和, 并且 z 包含了 x 和 y 的所有元素. 如果 x1 和 x2 是 x 的两个元素, 并且在 x 中 x1 在 x2 前面, 那么在 z 中 x1 也在 x2 前面, 而对于 y 的元素也类型. 总之, z 是 x 和 y 的交错.
 
-If x and y were correctly sorted according to the predicate, then z will also be correctly sorted. If x or y is not so sorted, then z will not be sorted, but will nevertheless be an interleaving of x and y.
+        如果 x 和 y 根据断言 predicate 被正确地排序, 那么 z 也会被正确排序. 如果 x 或 y 没有被这样排序, 那么 z 不会被排序, 但它仍然是 x 和 y 的交错.
 
-The merging operation is guaranteed stable; if two or more elements are considered equal by the predicate, then the elements from sequence-1 will precede those from sequence-2 in the result.
+        这个合并操作保证稳定的; 如果根据这个断言 predicate, 两个或更多元素被认为是相等的, 那么在结果中来自于序列 sequence-1 的元素会在来自于序列 sequence-2 的元素之前.
 
-sequence-1 and/or sequence-2 may be destroyed.
+        sequence-1 和/或 sequence-2 可能会被破坏.
 
-If the result-type is a subtype of list, the result will be a list.
+        如果这个 result-type 是 list 的一个子类型, 结果可能是一个列表.
 
-如果 result-type 是 vector 的一个子类型, 那么如果实现可以确定 result-type 指定的元素类型, 那么产生的数组的元素类型就是那个元素类型的提升的结果; 或者, 如果实现可以确定那个元素类型是未指定的 (或 *), 产生的元素类型就是 t; 否则, 发出一个错误.
+        如果 result-type 是 vector 的一个子类型, 那么如果实现可以确定 result-type 指定的元素类型, 那么产生的数组的元素类型就是那个元素类型的提升的结果; 或者, 如果实现可以确定那个元素类型是未指定的 (或 *), 产生的元素类型就是 t; 否则, 发出一个错误.
 
 * 示例(Examples):
 
- (setq test1 (list 1 3 4 6 7))
- (setq test2 (list 2 5 8))
- (merge 'list test1 test2 #'<) =>  (1 2 3 4 5 6 7 8)
- (setq test1 (copy-seq "BOY"))
- (setq test2 (copy-seq :nosy"))
- (merge 'string test1 test2 #'char-lessp) =>  "BnOosYy"
- (setq test1 (vector ((red . 1) (blue . 4))))
- (setq test2 (vector ((yellow . 2) (green . 7))))
- (merge 'vector test1 test2 #'< :key #'cdr) 
-=>  #((RED . 1) (YELLOW . 2) (BLUE . 4) (GREEN . 7)) 
+    ```LISP
+    (setq test1 (list 1 3 4 6 7))
+    (setq test2 (list 2 5 8))
+    (merge 'list test1 test2 #'<) =>  (1 2 3 4 5 6 7 8)
+    (setq test1 (copy-seq "BOY"))
+    (setq test2 (copy-seq :nosy"))
+    (merge 'string test1 test2 #'char-lessp) =>  "BnOosYy"
+    (setq test1 (vector ((red . 1) (blue . 4))))
+    (setq test2 (vector ((yellow . 2) (green . 7))))
+    (merge 'vector test1 test2 #'< :key #'cdr) 
+    =>  #((RED . 1) (YELLOW . 2) (BLUE . 4) (GREEN . 7)) 
 
- (merge '(vector * 4) '(1 5) '(2 4 6) #'<) should signal an error
+    (merge '(vector * 4) '(1 5) '(2 4 6) #'<) should signal an error
+    ```
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-An error must be signaled if the result-type is neither a recognizable subtype of list, nor a recognizable subtype of vector.
+        如果 result-type 既不是 list 的一个可识别子类型, 也不是 vector 的一个可识别子类型, 那么就会发出一个错误.
 
-An error of type type-error should be signaled if result-type specifies the number of elements and the sum of the lengths of sequence-1 and sequence-2 is different from that number.
+        如果 result-type 指定的元素的数量和这些序列 sequence-1 和 sequence-2 的长度在数量上不同, 那么就会发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-sort, stable-sort, Section 3.2.1 (Compiler Terminology), Section 3.6 (Traversal Rules and Side Effects)
+        sort, stable-sort, 章节 3.2.1 (Compiler Terminology), 章节 3.6 (Traversal Rules and Side Effects)
 
 * 注意(Notes): None. 
 
@@ -1352,203 +1349,190 @@ sort, stable-sort, Section 3.2.1 (Compiler Terminology), Section 3.6 (Traversal 
 
 * 语法(Syntax):
 
-remove item sequence &key from-end test test-not start end count key => result-sequence
+        remove item sequence &key from-end test test-not start end count key => result-sequence
 
-remove-if test sequence &key from-end start end count key => result-sequence
+        remove-if test sequence &key from-end start end count key => result-sequence
 
-remove-if-not test sequence &key from-end start end count key => result-sequence
+        remove-if-not test sequence &key from-end start end count key => result-sequence
 
-delete item sequence &key from-end test test-not start end count key => result-sequence
+        delete item sequence &key from-end test test-not start end count key => result-sequence
 
-delete-if test sequence &key from-end start end count key => result-sequence
+        delete-if test sequence &key from-end start end count key => result-sequence
 
-delete-if-not test sequence &key from-end start end count key => result-sequence
+        delete-if-not test sequence &key from-end start end count key => result-sequence
 
 * 参数和值(Arguments and Values):
 
-item---一个对象.
-
-sequence---一个 proper 序列.
-
-test---一个返回广义 boolean 的单参数函数的标识符.
-
-from-end---一个广义 boolean. The default is false.
-
-test---一个返回广义 boolean 的两个参数函数的标识符.
-
-test-not---一个返回广义 boolean 的两个参数函数的标识符.
-
-start, end---序列 sequence 的边界索引标识符. The defaults for start and end are 0 and nil, respectively.
-
-count---an integer or nil. The default is nil.
-
-key---一个单参数函数的标识符, 或者 nil.
-
-result-sequence---一个序列.
+        item---一个对象.
+        sequence---一个 proper 序列.
+        test---一个返回广义 boolean 的单参数函数的标识符.
+        from-end---一个广义 boolean. 默认是 false.
+        test---一个返回广义 boolean 的两个参数函数的标识符.
+        test-not---一个返回广义 boolean 的两个参数函数的标识符.
+        start, end---序列 sequence 的边界索引标识符. 对于 start 和 end 默认分别为 0 和 nil.
+        count---一个整数 nil. 默认是 nil.
+        key---一个单参数函数的标识符, 或者 nil.
+        result-sequence---一个序列.
 
 * 描述(Description):
 
-remove, remove-if, and remove-if-not return a sequence from which the elements that satisfy the test have been removed.
+        remove, remove-if, 和 remove-if-not 返回一个序列, 这个序列中满足测试条件 test 的元素已经被移出.
 
-delete, delete-if, and delete-if-not are like remove, remove-if, and remove-if-not respectively, but they may modify sequence.
+        delete, delete-if, 和 delete-if-not 分别类似于 remove, remove-if, 和 remove-if-not, 但是它们修改序列 sequence.
 
-If sequence is a vector, 那么结果是一个和 sequence 有着相同实际数组元素类型的向量. 如果序列 sequence 是一个列表, 那么结果也是有一个列表.
+        如果序列 sequence 是一个 vector, 那么结果是一个和 sequence 有着相同实际数组元素类型的向量. 如果序列 sequence 是一个列表, 那么结果也是有一个列表.
 
-Supplying a from-end of true matters only when the count is provided; in that case only the rightmost count elements satisfying the test are deleted.
+        提供一个为 true 的 from-end 只有在这个 count 被提供时起作用; 在这个情况下只有最右边满足测试条件 test 的 count 的元素会被删除.
 
-Count, if supplied, limits the number of elements removed or deleted; if more than count elements satisfy the test, then of these elements only the leftmost or rightmost, depending on from-end, are deleted or removed, as many as specified by count. If count is supplied and negative, the behavior is as if zero had been supplied instead. If count is nil, all matching items are affected.
+        count, 如果提供的话, 限制要被移除或删除的元素的数量; 如果超过 count 个元素满足这个测试条件 test, 那么这些元素只有最右边或最左边由 count 指定的数量会被删除, 取决于 from-end. 如果 count 被提供并且是负的, 那么这个行为就跟提供了零一样. 如果 count 是 nil, 那么所有匹配的项都会被影响.
 
-For all these functions, elements not removed or deleted occur in the same order in the result as they did in sequence.
+        对于所有这些函数, 元素在结果中被移除的顺序和它们在序列 sequence 中的一样.
 
-remove, remove-if, remove-if-not return a sequence of the same type as sequence that has the same elements except that those in the subsequence bounded by start and end and satisfying the test have been removed. This is a non-destructive operation. If any elements need to be removed, the result will be a copy. The result of remove may share with sequence; the result may be identical to the input sequence if no elements need to be removed.
+        remove, remove-if, remove-if-not 返回一个和序列 sequence 相同类型的序列, 并且有着相同的元素除了那些在 start 和 end 限定的子序列中哦个满足这个测试条件 test 的会被移除. 这是一个非破坏性的操作. 如果没有元素需要被移除, 那么结果就是一个拷贝. 这个 remove 的结果可能和序列 sequence 共享结构; 如果没有元素需要被移除, 这个结果可能和输入的序列 sequence 是相同的.
 
-delete, delete-if, and delete-if-not return a sequence of the same type as sequence that has the same elements except that those in the subsequence bounded by start and end and satisfying the test have been deleted. Sequence may be destroyed and used to construct the result; however, the result might or might not be identical to sequence.
+        delete, delete-if, 和 delete-if-not 返回一个和序列 sequence 相同类型的序列, 并且有着相同的元素除了那些在 start 和 end 限定的子序列中哦个满足这个测试条件 test 的会被删除. 序列 sequence 可能被破坏并且被用于构造这个结果; 然而, 这个结果可能也可能不会和序列 sequence 相同.
 
-delete, when sequence is a list, is permitted to setf any part, car or cdr, of the top-level list structure in that sequence. When sequence is a vector, delete is permitted to change the dimensions of the vector and to slide its elements into new positions without permuting them to produce the resulting vector.
+        delete, 当序列 sequence 是一个列表时, 允许去 setf 这个序列 sequence 中的顶层列表结构的任何部分, car 或 cdr. 当序列 sequence 是一个向量时, delete 允许去改变这个向量的规模去滑动它的元素到新的位置, 在没有交换它们的情况下产生这个结果向量.
 
-delete-if is constrained to behave exactly as follows:
+        delete-if 被约束为表现得像下面这样:
 
- (delete nil sequence
-             :test #'(lambda (ignore item) (funcall test item))
-             ...)
+        (delete nil sequence
+                    :test #'(lambda (ignore item) (funcall test item))
+                    ...)
 
 * 示例(Examples):
 
- (remove 4 '(1 3 4 5 9)) =>  (1 3 5 9)
- (remove 4 '(1 2 4 1 3 4 5)) =>  (1 2 1 3 5)
- (remove 4 '(1 2 4 1 3 4 5) :count 1) =>  (1 2 1 3 4 5)
- (remove 4 '(1 2 4 1 3 4 5) :count 1 :from-end t) =>  (1 2 4 1 3 5)
- (remove 3 '(1 2 4 1 3 4 5) :test #'>) =>  (4 3 4 5)
- (setq lst '(list of four elements)) =>  (LIST OF FOUR ELEMENTS)
- (setq lst2 (copy-seq lst)) =>  (LIST OF FOUR ELEMENTS)
- (setq lst3 (delete 'four lst)) =>  (LIST OF ELEMENTS)
- (equal lst lst2) =>  false
- (remove-if #'oddp '(1 2 4 1 3 4 5)) =>  (2 4 4)
- (remove-if #'evenp '(1 2 4 1 3 4 5) :count 1 :from-end t) 
-=>  (1 2 4 1 3 5)
- (remove-if-not #'evenp '(1 2 3 4 5 6 7 8 9) :count 2 :from-end t)
-=>  (1 2 3 4 5 6 8)
- (setq tester (list 1 2 4 1 3 4 5)) =>  (1 2 4 1 3 4 5)
- (delete 4 tester) =>  (1 2 1 3 5)
- (setq tester (list 1 2 4 1 3 4 5)) =>  (1 2 4 1 3 4 5)
- (delete 4 tester :count 1) =>  (1 2 1 3 4 5)
- (setq tester (list 1 2 4 1 3 4 5)) =>  (1 2 4 1 3 4 5)
- (delete 4 tester :count 1 :from-end t) =>  (1 2 4 1 3 5)
- (setq tester (list 1 2 4 1 3 4 5)) =>  (1 2 4 1 3 4 5)
- (delete 3 tester :test #'>) =>  (4 3 4 5)
- (setq tester (list 1 2 4 1 3 4 5)) =>  (1 2 4 1 3 4 5)
- (delete-if #'oddp tester) =>  (2 4 4)
- (setq tester (list 1 2 4 1 3 4 5)) =>  (1 2 4 1 3 4 5)
- (delete-if #'evenp tester :count 1 :from-end t) =>  (1 2 4 1 3 5)    
- (setq tester (list 1 2 3 4 5 6)) =>  (1 2 3 4 5 6) 
- (delete-if #'evenp tester) =>  (1 3 5) 
- tester =>  implementation-dependent
+    ```LISP
+    (remove 4 '(1 3 4 5 9)) =>  (1 3 5 9)
+    (remove 4 '(1 2 4 1 3 4 5)) =>  (1 2 1 3 5)
+    (remove 4 '(1 2 4 1 3 4 5) :count 1) =>  (1 2 1 3 4 5)
+    (remove 4 '(1 2 4 1 3 4 5) :count 1 :from-end t) =>  (1 2 4 1 3 5)
+    (remove 3 '(1 2 4 1 3 4 5) :test #'>) =>  (4 3 4 5)
+    (setq lst '(list of four elements)) =>  (LIST OF FOUR ELEMENTS)
+    (setq lst2 (copy-seq lst)) =>  (LIST OF FOUR ELEMENTS)
+    (setq lst3 (delete 'four lst)) =>  (LIST OF ELEMENTS)
+    (equal lst lst2) =>  false
+    (remove-if #'oddp '(1 2 4 1 3 4 5)) =>  (2 4 4)
+    (remove-if #'evenp '(1 2 4 1 3 4 5) :count 1 :from-end t) 
+    =>  (1 2 4 1 3 5)
+    (remove-if-not #'evenp '(1 2 3 4 5 6 7 8 9) :count 2 :from-end t)
+    =>  (1 2 3 4 5 6 8)
+    (setq tester (list 1 2 4 1 3 4 5)) =>  (1 2 4 1 3 4 5)
+    (delete 4 tester) =>  (1 2 1 3 5)
+    (setq tester (list 1 2 4 1 3 4 5)) =>  (1 2 4 1 3 4 5)
+    (delete 4 tester :count 1) =>  (1 2 1 3 4 5)
+    (setq tester (list 1 2 4 1 3 4 5)) =>  (1 2 4 1 3 4 5)
+    (delete 4 tester :count 1 :from-end t) =>  (1 2 4 1 3 5)
+    (setq tester (list 1 2 4 1 3 4 5)) =>  (1 2 4 1 3 4 5)
+    (delete 3 tester :test #'>) =>  (4 3 4 5)
+    (setq tester (list 1 2 4 1 3 4 5)) =>  (1 2 4 1 3 4 5)
+    (delete-if #'oddp tester) =>  (2 4 4)
+    (setq tester (list 1 2 4 1 3 4 5)) =>  (1 2 4 1 3 4 5)
+    (delete-if #'evenp tester :count 1 :from-end t) =>  (1 2 4 1 3 5)    
+    (setq tester (list 1 2 3 4 5 6)) =>  (1 2 3 4 5 6) 
+    (delete-if #'evenp tester) =>  (1 3 5) 
+    tester =>  implementation-dependent
 
- (setq foo (list 'a 'b 'c)) =>  (A B C)
- (setq bar (cdr foo)) =>  (B C)
- (setq foo (delete 'b foo)) =>  (A C)
- bar =>  ((C)) or ...
- (eq (cdr foo) (car bar)) =>  T or ...
+    (setq foo (list 'a 'b 'c)) =>  (A B C)
+    (setq bar (cdr foo)) =>  (B C)
+    (setq foo (delete 'b foo)) =>  (A C)
+    bar =>  ((C)) or ...
+    (eq (cdr foo) (car bar)) =>  T or ...
+    ```
 
 * 副作用(Side Effects):
 
-For delete, delete-if, and delete-if-not, sequence may be destroyed and used to construct the result.
+        对于 delete, delete-if, 和 delete-if-not, sequence 可能被破坏并被用于构造这个结果.
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-如果序列 sequence 不是一个 proper 序列, 那么应该准备去发出一个 type-error 类型的错误.
+        如果序列 sequence 不是一个 proper 序列, 那么应该准备去发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-Section 3.2.1 (Compiler Terminology), Section 3.6 (Traversal Rules and Side Effects)
+        章节 3.2.1 (Compiler Terminology), 章节 3.6 (Traversal Rules and Side Effects)
 
 * 注意(Notes):
 
-If sequence is a vector, the result might or might not be simple, and might or might not be identical to sequence.
+        如果序列 sequence 是一个向量, 那么结果可能也可能不是简单的, 并且可能也可能不会和序列 sequence 相同.
 
-这个 :test-not 参数已经被废弃.
+        这个 :test-not 参数已经被废弃.
 
-The functions delete-if-not and remove-if-not are deprecated. 
+        函数 delete-if-not 和 remove-if-not 已经被废弃. 
 
 ### <span id="F-DUPLICATES-ALL">函数 REMOVE-DUPLICATES, DELETE-DUPLICATES</span>
 
 * 语法(Syntax):
 
-remove-duplicates sequence &key from-end test test-not start end key
+        remove-duplicates sequence &key from-end test test-not start end key
+        => result-sequence
 
-=> result-sequence
-
-delete-duplicates sequence &key from-end test test-not start end key
-
-=> result-sequence
+        delete-duplicates sequence &key from-end test test-not start end key
+        => result-sequence
 
 * 参数和值(Arguments and Values):
 
-sequence---一个 proper 序列.
-
-from-end---一个广义 boolean. The default is false.
-
-test---一个返回广义 boolean 的两个参数函数的标识符.
-
-test-not---一个返回广义 boolean 的两个参数函数的标识符.
-
-start, end---序列 sequence 的边界索引标识符. The defaults for start and end are 0 and nil, respectively.
-
-key---一个单参数函数的标识符, 或者 nil.
-
-result-sequence---一个序列.
+        sequence---一个 proper 序列.
+        from-end---一个广义 boolean. 默认是 false.
+        test---一个返回广义 boolean 的两个参数函数的标识符.
+        test-not---一个返回广义 boolean 的两个参数函数的标识符.
+        start, end---序列 sequence 的边界索引标识符. 对于 start 和 end 默认分别是 0 和 nil.
+        key---一个单参数函数的标识符, 或者 nil.
+        result-sequence---一个序列.
 
 * 描述(Description):
 
-remove-duplicates returns a modified copy of sequence from which any element that matches another element occurring in sequence has been removed.
+        remove-duplicates 返回序列 sequence 的一个被修改的拷贝, 其中任何匹配出现在序列 sequence 中的另一个元素的元素已经被移除.
 
-If sequence is a vector, 那么结果是一个和 sequence 有着相同实际数组元素类型的向量. 如果序列 sequence 是一个列表, 那么结果也是有一个列表.
+        如果 sequence 是一个向量, 那么结果是一个和 sequence 有着相同实际数组元素类型的向量. 如果序列 sequence 是一个列表, 那么结果也是有一个列表.
 
-delete-duplicates is like remove-duplicates, but delete-duplicates may modify sequence.
+        delete-duplicates 类似于 remove-duplicates, 但是 delete-duplicates 可能修改序列 sequence.
 
-The elements of sequence are compared pairwise, and if any two match, then the one occurring earlier in sequence is discarded, unless from-end is true, in which case the one later in sequence is discarded.
+        序列 sequence 的元素是成对的比较, 如果任意两个匹配, 那么更早出现在序列 sequence 中的那个会被丢弃, 除非 from-end 是 true, 在这个情况下在序列 sequence 中较晚的那个会被丢弃.
 
-remove-duplicates and delete-duplicates return a sequence of the same type as sequence with enough elements removed so that no two of the remaining elements match. The order of the elements remaining in the result is the same as the order in which they appear in sequence.
+        remove-duplicates 和 delete-duplicates 返回一个和序列 sequence 相同类型的序列, 其中足够的元素被移除以致于没有两个剩余元素是匹配的. 在这个结果中剩余元素的顺序和它们出现在序列 sequence 中的顺序是一样的.
 
-remove-duplicates returns a sequence that may share with sequence or may be identical to sequence if no elements need to be removed.
+        remove-duplicates 返回一个可能和序列 sequence 共享的序列, 如果没有元素需要被移除, 那么可能返回一个和序列 sequence 相同的序列.
 
-delete-duplicates, when sequence is a list, is permitted to setf any part, car or cdr, of the top-level list structure in that sequence. When sequence is a vector, delete-duplicates is permitted to change the dimensions of the vector and to slide its elements into new positions without permuting them to produce the resulting vector.
+        delete-duplicates, 当序列 sequence 是一个列表, 允许去 setf 这个序列 sequence 中的顶层列表结构的任何部分, car 或 cdr. 当序列 sequence 是一个向量时, delete 允许去改变这个向量的规模去滑动它的元素到新的位置, 在没有交换它们的情况下产生这个结果向量.
 
 * 示例(Examples):
 
- (remove-duplicates "aBcDAbCd" :test #'char-equal :from-end t) =>  "aBcD"
- (remove-duplicates '(a b c b d d e)) =>  (A C B D E)
- (remove-duplicates '(a b c b d d e) :from-end t) =>  (A B C D E)
- (remove-duplicates '((foo #\a) (bar #\%) (baz #\A))
-     :test #'char-equal :key #'cadr) =>  ((BAR #\%) (BAZ #\A))
- (remove-duplicates '((foo #\a) (bar #\%) (baz #\A)) 
-     :test #'char-equal :key #'cadr :from-end t) =>  ((FOO #\a) (BAR #\%))
- (setq tester (list 0 1 2 3 4 5 6))
- (delete-duplicates tester :key #'oddp :start 1 :end 6) =>  (0 4 5 6)
+    ```LISP
+    (remove-duplicates "aBcDAbCd" :test #'char-equal :from-end t) =>  "aBcD"
+    (remove-duplicates '(a b c b d d e)) =>  (A C B D E)
+    (remove-duplicates '(a b c b d d e) :from-end t) =>  (A B C D E)
+    (remove-duplicates '((foo #\a) (bar #\%) (baz #\A))
+        :test #'char-equal :key #'cadr) =>  ((BAR #\%) (BAZ #\A))
+    (remove-duplicates '((foo #\a) (bar #\%) (baz #\A)) 
+        :test #'char-equal :key #'cadr :from-end t) =>  ((FOO #\a) (BAR #\%))
+    (setq tester (list 0 1 2 3 4 5 6))
+    (delete-duplicates tester :key #'oddp :start 1 :end 6) =>  (0 4 5 6)
+    ```
 
 * 副作用(Side Effects):
 
-delete-duplicates might destructively modify sequence.
+        delete-duplicates 可能破坏性地修改序列 sequence.
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-Should signal an error of type type-error if sequence is not a proper sequence.
+        如果序列 sequence 不是一个 proper 序列, 那么应该发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-Section 3.2.1 (Compiler Terminology), Section 3.6 (Traversal Rules and Side Effects)
+        章节 3.2.1 (Compiler Terminology), 章节 3.6 (Traversal Rules and Side Effects)
 
 * 注意(Notes):
 
-If sequence is a vector, the result might or might not be simple, and might or might not be identical to sequence.
+        如果序列 sequence 是一个序列, 那么结果可能也可能不是简单的, 并且可能也可能不会和序列 sequence 相同.
 
-这个 :test-not 参数已经被废弃.
+        这个 :test-not 参数已经被废弃.
 
-These functions are useful for converting sequence into a canonical form suitable for representing a set. 
+        这些函数对于转换序列 sequence 为适合表示集合的规范形式是非常有用. 
 
 
 
