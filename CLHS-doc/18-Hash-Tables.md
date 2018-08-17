@@ -1,70 +1,67 @@
 
-18. Hash Tables
+# 18 Hash Tables
 
-18.1 Hash Table Concepts
+> * 18.1 [哈希表的概念](#HashTableConcepts)
+> * 18.2 [哈希表的字典](#TheHashTablesDictionary)
 
-18.2 The Hash Tables Dictionary
+## 18.1 <span id="HashTableConcepts">哈希表的概念</span>
 
- 18.1 Hash Table Concepts
-
-18.1.1 Hash-Table Operations
-
-18.1.2 Modifying Hash Table Keys
+> * 18.1.1 [哈希表操作](#HashTableOperations)
+> * 18.1.2 [修改哈希表的键](#ModifyingHashTableKeys)
 
 
- 18.1.1 Hash-Table Operations
+### 18.1.1 <span id="HashTableOperations">哈希表操作</span>
 
-The next figure lists some defined names that are applicable to hash tables. The following rules apply to hash tables.
+下面这段列出了一些可以应用于哈希表的已定义的名字. 下面规则应用于哈希表.
 
--- A hash table can only associate one value with a given key. If an attempt is made to add a second value for a given key, the second value will replace the first. Thus, adding a value to a hash table is a destructive operation; the hash table is modified.
+-- 一个哈希表只能关联一个值和一个给定的键. 对于一个给定的键如果尝试去添加第二个值, 第二个值会替换第一个. 因此, 添加一个值到哈希表是一个破坏性操作; 这个哈希表会被修改.
 
--- There are four kinds of hash tables: those whose keys are compared with eq, those whose keys are compared with eql, those whose keys are compared with equal, and those whose keys are compared with equalp.
+-- 这里有四种哈希表: 键使用 eq 来比较的那些, 键使用 eql 来比较的那些, 键使用 equal 来比较的那些, 以及键使用 equalp 来比较的那些.
 
--- Hash tables are created by make-hash-table. gethash is used to look up a key and find the associated value. New entries are added to hash tables using setf with gethash. remhash is used to remove an entry. For example:
+-- 哈希表由 make-hash-table 创建. gethash 被用于搜索一个键以及找到那个关联的值. 新的条目会使用 setf 和 gethash 来添加到哈希表中. remhash 被用于移除一个条目. 比如:
 
-     (setq a (make-hash-table)) =>  #<HASH-TABLE EQL 0/120 32536573>
-     (setf (gethash 'color a) 'brown) =>  BROWN
-     (setf (gethash 'name a) 'fred) =>  FRED
-     (gethash 'color a) =>  BROWN, true
-     (gethash 'name a) =>  FRED, true
-     (gethash 'pointy a) =>  NIL, false
+    ```LISP
+    (setq a (make-hash-table)) =>  #<HASH-TABLE EQL 0/120 32536573>
+    (setf (gethash 'color a) 'brown) =>  BROWN
+    (setf (gethash 'name a) 'fred) =>  FRED
+    (gethash 'color a) =>  BROWN, true
+    (gethash 'name a) =>  FRED, true
+    (gethash 'pointy a) =>  NIL, false
+    ```
 
-    In this example, the symbols color and name are being used as keys, and the symbols brown and fred are being used as the associated values. The hash table has two items in it, one of which associates from color to brown, and the other of which associates from name to fred.
+    在这个例子中, 符号 color 和 name 被用作键, 而符号 brown 和 fred 被用作关联的值. 这个哈希表中有两个值, 一个关联是从 color 到 brown, 而另一个关联是从 name 到 fred.
 
--- A key or a value may be any object.
+-- 一个键和一个值可以是任何对象.
 
--- The existence of an entry in the hash table can be determined from the secondary value returned by gethash.
+-- 一个条目在哈希表中的存在性可以由 gethash 返回的第二个值来决定.
 
 clrhash           hash-table-p     remhash  
 gethash           make-hash-table  sxhash   
 hash-table-count  maphash                   
 
-Figure 18-1. Hash-table defined names 
+Figure 18-1. Hash-table 已定义的名字 
 
- 18.1.2 Modifying Hash Table Keys
+### 18.1.2 <span id="ModifyingHashTableKeys">修改哈希表的键</span>
 
-The function supplied as the :test argument to make-hash-table specifies the `equivalence test' for the hash table it creates.
+提供给 make-hash-table 的 :test 参数的函数指定了它创建的哈希表的 '等价性测试条件(equivalence test)'.
 
-An object is `visibly modified' with regard to an equivalence test if there exists some set of objects (or potential objects) which are equivalent to the object before the modification but are no longer equivalent afterwards.
+如果存在一组对象(或潜在对象), 在修改之前, 对象是等价的, 但在随后的情况下不再是等价的, 那么对象就会被一个等价性测试条件当作被'可见地修改'.
 
-If an object O1 is used as a key in a hash table H and is then visibly modified with regard to the equivalence test of H, then the consequences are unspecified if O1, or any object O2 equivalent to O1 under the equivalence test (either before or after the modification), is used as a key in further operations on H. The consequences of using O1 as a key are unspecified even if O1 is visibly modified and then later modified again in such a way as to undo the visible modification.
+如果一个对象 O1 被用作哈希表 H 中的一个键并且被 H 的等价性测试条件当作被可见地修改, 那么如果 O1 或任何在这个等价性测试条件下等价于 O1 的对象 O2 (不管在这个修改之前或之后) 在后面对 H 的操作中被用作一个键, 后果是未指定的. 即便 O1 被可见地修改并且接着被再次修改来撤销这个可见的修改, 那么使用 O1 作为一个 key 的后果也是未指定的.
 
-Following are specifications of the modifications which are visible to the equivalence tests which must be supported by hash tables. The modifications are described in terms of modification of components, and are defined recursively. Visible modifications of components of the object are visible modifications of the object.
+下面是哈希表必须支持的对于等价性测试条件可见的修改的规范. 这些修改是用成员的修改来描述的, 并且是递归地定义的. 这个对象的成员的可见修改是这个对象的可见修改.
 
-18.1.2.1 Visible Modification of Objects with respect to EQ and EQL
-
-18.1.2.2 Visible Modification of Objects with respect to EQUAL
-
-18.1.2.3 Visible Modification of Objects with respect to EQUALP
-
-18.1.2.4 Visible Modifications by Language Extensions
+> * 18.1.2.1 [Visible Modification of Objects with respect to EQ and EQL](#VM-EQ-EQL)
+> * 18.1.2.2 [Visible Modification of Objects with respect to EQUAL](#VM-EQUAL)
+> * 18.1.2.3 [Visible Modification of Objects with respect to EQUALP](#VM-EQUALP)
+> * 18.1.2.4 [Visible Modifications by Language Extensions](#VM-LanguageExtensions)
 
 
- 18.1.2.1 Visible Modification of Objects with respect to EQ and EQL
+#### 18.1.2.1 <span id="VM-EQ-EQL">Visible Modification of Objects with respect to EQ and EQL</span>
 
 No standardized function is provided that is capable of visibly modifying an object with regard to eq or eql. 
 
- 18.1.2.2 Visible Modification of Objects with respect to EQUAL
+#### 18.1.2.2 <span id="VM-EQUAL">Visible Modification of Objects with respect to EQUAL</span>
 
 As a consequence of the behavior for equal, the rules for visible modification of objects not explicitly mentioned in this section are inherited from those in Section 18.1.2.1 (Visible Modification of Objects with respect to EQ and EQL).
 
@@ -83,95 +80,75 @@ Any visible change to the car or the cdr of a cons is considered a visible modif
 For a vector of type bit-vector or of type string, any visible change to an active element of the vector, or to the length of the vector (if it is actually adjustable or has a fill pointer) is considered a visible modification with regard to equal. 
 
 
- 18.1.2.3 Visible Modification of Objects with respect to EQUALP
+#### 18.1.2.3 <span id="VM-EQUALP">Visible Modification of Objects with respect to EQUALP</span>
 
 As a consequence of the behavior for equalp, the rules for visible modification of objects not explicitly mentioned in this section are inherited from those in Section 18.1.2.2 (Visible Modification of Objects with respect to EQUAL).
 
-18.1.2.3.1 Visible Modification of Structures with respect to EQUALP
-
-18.1.2.3.2 Visible Modification of Arrays with respect to EQUALP
-
-18.1.2.3.3 Visible Modification of Hash Tables with respect to EQUALP
-
-
- 18.1.2.3.1 Visible Modification of Structures with respect to EQUALP
+##### 18.1.2.3.1 Visible Modification of Structures with respect to EQUALP
 
 Any visible change to a slot of a structure is considered a visible modification with regard to equalp. 
 
 
- 18.1.2.3.2 Visible Modification of Arrays with respect to EQUALP
+##### 18.1.2.3.2 Visible Modification of Arrays with respect to EQUALP
 
 In an array, any visible change to an active element, to the fill pointer (if the array can and does have one), or to the dimensions (if the array is actually adjustable) is considered a visible modification with regard to equalp. 
 
- 18.1.2.3.3 Visible Modification of Hash Tables with respect to EQUALP
+##### 18.1.2.3.3 Visible Modification of Hash Tables with respect to EQUALP
 
 In a hash table, any visible change to the count of entries in the hash table, to the keys, or to the values associated with the keys is considered a visible modification with regard to equalp.
 
 Note that the visibility of modifications to the keys depends on the equivalence test of the hash table, not on the specification of equalp. 
 
- 18.1.2.4 Visible Modifications by Language Extensions
+#### 18.1.2.4 <span id="VM-LanguageExtensions">Visible Modifications by Language Extensions</span>
 
 Implementations that extend the language by providing additional mutator functions (or additional behavior for existing mutator functions) must document how the use of these extensions interacts with equivalence tests and hash table searches.
 
 Implementations that extend the language by defining additional acceptable equivalence tests for hash tables (allowing additional values for the :test argument to make-hash-table) must document the visible components of these tests. 
 
- 18.2 The Hash Tables Dictionary
+## 18.2 <span id="TheHashTablesDictionary">哈希表的字典</span>
 
-System Class HASH-TABLE
-
-Function MAKE-HASH-TABLE
-
-Function HASH-TABLE-P
-
-Function HASH-TABLE-COUNT
-
-Function HASH-TABLE-REHASH-SIZE
-
-Function HASH-TABLE-REHASH-THRESHOLD
-
-Function HASH-TABLE-SIZE
-
-Function HASH-TABLE-TEST
-
-Accessor GETHASH
-
-Function REMHASH
-
-Function MAPHASH
-
-Macro WITH-HASH-TABLE-ITERATOR
-
-Function CLRHASH
-
-Function SXHASH
+> * [System Class HASH-TABLE](#SC-HASH-TABLE)
+> * [Function MAKE-HASH-TABLE](#F-MAKE-HASH-TABLE)
+> * [Function HASH-TABLE-P](#F-HASH-TABLE-P)
+> * [Function HASH-TABLE-COUNT](#F-HASH-TABLE-COUNT)
+> * [Function HASH-TABLE-REHASH-SIZE](#F-HASH-TABLE-REHASH-SIZE)
+> * [Function HASH-TABLE-REHASH-THRESHOLD](#F-HASH-TABLE-REHASH-THRESHOLD)
+> * [Function HASH-TABLE-SIZE](#F-HASH-TABLE-SIZE)
+> * [Function HASH-TABLE-TEST](#F-HASH-TABLE-TEST)
+> * [Accessor GETHASH](#A-GETHASH)
+> * [Function REMHASH](#F-REMHASH)
+> * [Function MAPHASH](#F-MAPHASH)
+> * [Macro WITH-HASH-TABLE-ITERATOR](#M-WITH-HASH-TABLE-ITERATOR)
+> * [Function CLRHASH](#F-CLRHASH)
+> * [Function SXHASH](#F-SXHASH)
 
 
-System Class HASH-TABLE
+### <span id="SC-HASH-TABLE">System Class HASH-TABLE</span>
 
-Class Precedence List:
+* 类优先级列表(Class Precedence List):
 
 hash-table, t
 
-Description:
+* 描述(Description):
 
 Hash tables provide a way of mapping any object (a key) to an associated object (a value).
 
-See Also:
+* 也见(See Also):
 
 Section 18.1 (Hash Table Concepts), Section 22.1.3.13 (Printing Other Objects)
 
-Notes:
+* 注意(Notes):
 
 The intent is that this mapping be implemented by a hashing mechanism, such as that described in Section 6.4 ``Hashing'' of The Art of Computer Programming, Volume 3 (pp506-549). In spite of this intent, no conforming implementation is required to use any particular technique to implement the mapping. 
 
 
-Function MAKE-HASH-TABLE
+### <span id="F-MAKE-HASH-TABLE">Function MAKE-HASH-TABLE</span>
 
-Syntax:
+* 语法(Syntax):
 
 make-hash-table &key test size rehash-size rehash-threshold => hash-table
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 test---a designator for one of the functions eq, eql, equal, or equalp. The default is eql.
 
@@ -183,7 +160,7 @@ rehash-threshold---a real of type (real 0 1). The default is implementation-depe
 
 hash-table---a hash table.
 
-Description:
+* 描述(Description):
 
 Creates and returns a new hash table.
 
@@ -197,7 +174,7 @@ rehash-threshold specifies how full the hash-table can get before it must grow. 
 
 The values of rehash-size and rehash-threshold do not constrain the implementation to use any particular method for computing when and by how much the size of hash-table should be enlarged. Such decisions are implementation-dependent, and these values only hints from the programmer to the implementation, and the implementation is permitted to ignore them.
 
-Examples:
+* 示例(Examples):
 
  (setq table (make-hash-table)) =>  #<HASH-TABLE EQL 0/120 46142754>
  (setf (gethash "one" table) 1) =>  1
@@ -208,70 +185,70 @@ Examples:
  (make-hash-table :rehash-size 1.5 :rehash-threshold 0.7) 
 =>  #<HASH-TABLE EQL 0/120 46156620>
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 gethash, hash-table
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function HASH-TABLE-P
+### <span id="F-HASH-TABLE-P">Function HASH-TABLE-P</span>
 
-Syntax:
+* 语法(Syntax):
 
 hash-table-p object => generalized-boolean
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 object---an object.
 
 generalized-boolean---a generalized boolean.
 
-Description:
+* 描述(Description):
 
 Returns true if object is of type hash-table; otherwise, returns false.
 
-Examples:
+* 示例(Examples):
 
  (setq table (make-hash-table)) =>  #<HASH-TABLE EQL 0/120 32511220>
  (hash-table-p table) =>  true
  (hash-table-p 37) =>  false
  (hash-table-p '((a . 1) (b . 2))) =>  false
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also: None.
+* 也见(See Also): None.
 
-Notes:
+* 注意(Notes):
 
  (hash-table-p object) ==  (typep object 'hash-table)
 
 
-Function HASH-TABLE-COUNT
+### <span id="F-HASH-TABLE-COUNT">Function HASH-TABLE-COUNT</span>
 
-Syntax:
+* 语法(Syntax):
 
 hash-table-count hash-table => count
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 hash-table---a hash table.
 
 count---a non-negative integer.
 
-Description:
+* 描述(Description):
 
 Returns the number of entries in the hash-table. If hash-table has just been created or newly cleared (see clrhash) the entry count is 0.
 
-Examples:
+* 示例(Examples):
 
  (setq table (make-hash-table)) =>  #<HASH-TABLE EQL 0/120 32115135>
  (hash-table-count table) =>  0
@@ -280,19 +257,19 @@ Examples:
  (dotimes (i 100) (setf (gethash i table) i)) =>  NIL
  (hash-table-count table) =>  100
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By:
+* 受此影响(Affected By):
 
 clrhash, remhash, setf of gethash
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 hash-table-size
 
-Notes:
+* 注意(Notes):
 
 The following relationships are functionally correct, although in practice using hash-table-count is probably much faster:
 
@@ -306,154 +283,154 @@ The following relationships are functionally correct, although in practice using
    total)
 
 
-Function HASH-TABLE-REHASH-SIZE
+### <span id="F-HASH-TABLE-REHASH-SIZE">Function HASH-TABLE-REHASH-SIZE</span>
 
-Syntax:
+* 语法(Syntax):
 
 hash-table-rehash-size hash-table => rehash-size
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 hash-table---a hash table.
 
 rehash-size---a real of type (or (integer 1 *) (float (1.0) *)).
 
-Description:
+* 描述(Description):
 
 Returns the current rehash size of hash-table, suitable for use in a call to make-hash-table in order to produce a hash table with state corresponding to the current state of the hash-table.
 
-Examples:
+* 示例(Examples):
 
  (setq table (make-hash-table :size 100 :rehash-size 1.4))
 =>  #<HASH-TABLE EQL 0/100 2556371>
  (hash-table-rehash-size table) =>  1.4
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should signal an error of type type-error if hash-table is not a hash table.
 
-See Also:
+* 也见(See Also):
 
 make-hash-table, hash-table-rehash-threshold
 
-Notes:
+* 注意(Notes):
 
 If the hash table was created with an integer rehash size, the result is an integer, indicating that the rate of growth of the hash-table when rehashed is intended to be additive; otherwise, the result is a float, indicating that the rate of growth of the hash-table when rehashed is intended to be multiplicative. However, this value is only advice to the implementation; the actual amount by which the hash-table will grow upon rehash is implementation-dependent. 
 
-Function HASH-TABLE-REHASH-THRESHOLD
+### <span id="F-HASH-TABLE-REHASH-THRESHOLD">Function HASH-TABLE-REHASH-THRESHOLD</span>
 
-Syntax:
+* 语法(Syntax):
 
 hash-table-rehash-threshold hash-table => rehash-threshold
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 hash-table---a hash table.
 
 rehash-threshold---a real of type (real 0 1).
 
-Description:
+* 描述(Description):
 
 Returns the current rehash threshold of hash-table, which is suitable for use in a call to make-hash-table in order to produce a hash table with state corresponding to the current state of the hash-table.
 
-Examples:
+* 示例(Examples):
 
  (setq table (make-hash-table :size 100 :rehash-threshold 0.5))
 =>  #<HASH-TABLE EQL 0/100 2562446>
  (hash-table-rehash-threshold table) =>  0.5
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should signal an error of type type-error if hash-table is not a hash table.
 
-See Also:
+* 也见(See Also):
 
 make-hash-table, hash-table-rehash-size
 
-Notes: None. 
+* 注意(Notes): None. 
 
-Function HASH-TABLE-SIZE
+### <span id="F-HASH-TABLE-SIZE">Function HASH-TABLE-SIZE</span>
 
-Syntax:
+* 语法(Syntax):
 
 hash-table-size hash-table => size
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 hash-table---a hash table.
 
 size---a non-negative integer.
 
-Description:
+* 描述(Description):
 
 Returns the current size of hash-table, which is suitable for use in a call to make-hash-table in order to produce a hash table with state corresponding to the current state of the hash-table.
 
-Examples: None.
+* 示例(Examples): None.
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should signal an error of type type-error if hash-table is not a hash table.
 
-See Also:
+* 也见(See Also):
 
 hash-table-count, make-hash-table
 
-Notes: None.
+* 注意(Notes): None.
 
-Function HASH-TABLE-TEST
+### <span id="F-HASH-TABLE-TEST">Function HASH-TABLE-TEST</span>
 
-Syntax:
+* 语法(Syntax):
 
 hash-table-test hash-table => test
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 hash-table---a hash table.
 
 test---a function designator. For the four standardized hash table test functions (see make-hash-table), the test value returned is always a symbol. If an implementation permits additional tests, it is implementation-dependent whether such tests are returned as function objects or function names.
 
-Description:
+* 描述(Description):
 
 Returns the test used for comparing keys in hash-table.
 
-Examples: None.
+* 示例(Examples): None.
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should signal an error of type type-error if hash-table is not a hash table.
 
-See Also:
+* 也见(See Also):
 
 make-hash-table
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Accessor GETHASH
+### <span id="A-GETHASH">Accessor GETHASH</span>
 
-Syntax:
+* 语法(Syntax):
 
 gethash key hash-table &optional default => value, present-p
 
 (setf (gethash key hash-table &optional default) new-value)
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 key---an object.
 
@@ -465,7 +442,7 @@ value---an object.
 
 present-p---a generalized boolean.
 
-Description:
+* 描述(Description):
 
 Value is the object in hash-table whose key is the same as key under the hash-table's equivalence test. If there is no such entry, value is the default.
 
@@ -473,7 +450,7 @@ Present-p is true if an entry is found; otherwise, it is false.
 
 setf may be used with gethash to modify the value associated with a given key, or to add a new entry. When a gethash form is used as a setf place, any default which is supplied is evaluated according to normal left-to-right evaluation rules, but its value is ignored.
 
-Examples:
+* 示例(Examples):
 
  (setq table (make-hash-table)) =>  #<HASH-TABLE EQL 0/120 32206334>
  (gethash 1 table) =>  NIL, false
@@ -495,28 +472,28 @@ Examples:
  (how-many 'bar) =>  3
  (how-many 'quux) =>  0
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 remhash
 
-Notes:
+* 注意(Notes):
 
 The secondary value, present-p, can be used to distinguish the absence of an entry from the presence of an entry that has a value of default. 
 
 
-Function REMHASH
+### <span id="F-REMHASH">Function REMHASH</span>
 
-Syntax:
+* 语法(Syntax):
 
 remhash key hash-table => generalized-boolean
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 key---an object.
 
@@ -524,11 +501,11 @@ hash-table---a hash table.
 
 generalized-boolean---a generalized boolean.
 
-Description:
+* 描述(Description):
 
 Removes the entry for key in hash-table, if any. Returns true if there was such an entry, or false otherwise.
 
-Examples:
+* 示例(Examples):
 
  (setq table (make-hash-table)) =>  #<HASH-TABLE EQL 0/120 32115666>
  (setf (gethash 100 table) "C") =>  "C"
@@ -537,38 +514,38 @@ Examples:
  (gethash 100 table) =>  NIL, false
  (remhash 100 table) =>  false
 
-Side Effects:
+* 副作用(Side Effects):
 
 The hash-table is modified.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also: None.
+* 也见(See Also): None.
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function MAPHASH
+### <span id="F-MAPHASH">Function MAPHASH</span>
 
-Syntax:
+* 语法(Syntax):
 
 maphash function hash-table => nil
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 function---a designator for a function of two arguments, the key and the value.
 
 hash-table---a hash table.
 
-Description:
+* 描述(Description):
 
 Iterates over all entries in the hash-table. For each entry, the function is called with two arguments--the key and the value of that entry.
 
 The consequences are unspecified if any attempt is made to add or remove an entry from the hash-table while a maphash is in progress, with two exceptions: the function can use can use setf of gethash to change the value part of the entry currently being processed, or it can use remhash to remove that entry.
 
-Examples:
+* 示例(Examples):
 
  (setq table (make-hash-table)) =>  #<HASH-TABLE EQL 0/120 32304110>
  (dotimes (i 10) (setf (gethash i table) i)) =>  NIL
@@ -592,28 +569,28 @@ Examples:
 (4 16) 
 =>  NIL
 
-Side Effects:
+* 副作用(Side Effects):
 
 None, other than any which might be done by the function.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 loop, with-hash-table-iterator, Section 3.6 (Traversal Rules and Side Effects)
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Macro WITH-HASH-TABLE-ITERATOR
+### <span id="M-WITH-HASH-TABLE-ITERATOR">Macro WITH-HASH-TABLE-ITERATOR</span>
 
-Syntax:
+* 语法(Syntax):
 
 with-hash-table-iterator (name hash-table) declaration* form* => result*
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 name---a name suitable for the first argument to macrolet.
 
@@ -625,7 +602,7 @@ forms---an implicit progn.
 
 results---the values returned by forms.
 
-Description:
+* 描述(Description):
 
 Within the lexical scope of the body, name is defined via macrolet such that successive invocations of (name) return the items, one by one, from the hash table that is obtained by evaluating hash-table only once.
 
@@ -641,7 +618,7 @@ It is unspecified what happens if any of the implicit interior state of an itera
 
 Any number of invocations of with-hash-table-iterator can be nested, and the body of the innermost one can invoke all of the locally established macros, provided all of those macros have distinct names.
 
-Examples:
+* 示例(Examples):
 
 The following function should return t on any hash table, and signal an error if the usage of with-hash-table-iterator does not agree with the corresponding usage of maphash.
 
@@ -673,36 +650,36 @@ The following could be an acceptable definition of maphash, implemented by with-
              (unless more (return nil))
              (funcall function key value)))))
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 The consequences are undefined if the local function named name established by with-hash-table-iterator is called after it has returned false as its primary value.
 
-See Also:
+* 也见(See Also):
 
 Section 3.6 (Traversal Rules and Side Effects)
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function CLRHASH
+### <span id="F-CLRHASH">Function CLRHASH</span>
 
-Syntax:
+* 语法(Syntax):
 
 clrhash hash-table => hash-table
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 hash-table---a hash table.
 
-Description:
+* 描述(Description):
 
 Removes all entries from hash-table, and then returns that empty hash table.
 
-Examples:
+* 示例(Examples):
 
  (setq table (make-hash-table)) =>  #<HASH-TABLE EQL 0/120 32004073>
  (dotimes (i 100) (setf (gethash i table) (format nil "~R" i))) =>  NIL
@@ -712,32 +689,32 @@ Examples:
  (hash-table-count table) =>  0
  (gethash 57 table) =>  NIL, false
 
-Side Effects:
+* 副作用(Side Effects):
 
 The hash-table is modified.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also: None.
+* 也见(See Also): None.
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function SXHASH
+### <span id="F-SXHASH">Function SXHASH</span>
 
-Syntax:
+* 语法(Syntax):
 
 sxhash object => hash-code
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 object---an object.
 
 hash-code---a non-negative fixnum.
 
-Description:
+* 描述(Description):
 
 sxhash returns a hash code for object.
 
@@ -753,7 +730,7 @@ The manner in which the hash code is computed is implementation-dependent, but s
 
 5. Computation of the hash-code must terminate, even if the object contains circularities.
 
-Examples:
+* 示例(Examples):
 
  (= (sxhash (list 'list "ab")) (sxhash (list 'list "ab"))) =>  true
  (= (sxhash "a") (sxhash (make-string 1 :initial-element #\a))) =>  true
@@ -761,17 +738,17 @@ Examples:
    (= (sxhash r) (sxhash (make-random-state r))))
 =>  implementation-dependent
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By:
+* 受此影响(Affected By):
 
 The implementation.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also: None.
+* 也见(See Also): None.
 
-Notes:
+* 注意(Notes):
 
 Many common hashing needs are satisfied by make-hash-table and the related functions on hash tables. sxhash is intended for use where the pre-defined abstractions are insufficient. Its main intent is to allow the user a convenient means of implementing more complicated hashing paradigms than are provided through hash tables.
 
