@@ -51,98 +51,93 @@ Figure 18-1. Hash-table 已定义的名字
 
 下面是哈希表必须支持的对于等价性测试条件可见的修改的规范. 这些修改是用成员的修改来描述的, 并且是递归地定义的. 这个对象的成员的可见修改是这个对象的可见修改.
 
-> * 18.1.2.1 [Visible Modification of Objects with respect to EQ and EQL](#VM-EQ-EQL)
-> * 18.1.2.2 [Visible Modification of Objects with respect to EQUAL](#VM-EQUAL)
-> * 18.1.2.3 [Visible Modification of Objects with respect to EQUALP](#VM-EQUALP)
-> * 18.1.2.4 [Visible Modifications by Language Extensions](#VM-LanguageExtensions)
+> * 18.1.2.1 [关于 EQ 和 EQL 的对象可见修改](#VM-EQ-EQL)
+> * 18.1.2.2 [关于 EQUAL 的对象可见修改](#VM-EQUAL)
+> * 18.1.2.3 [关于 EQUALP 的对象可见修改](#VM-EQUALP)
+> * 18.1.2.4 [通过语言扩展的可见修改](#VM-LanguageExtensions)
 
 
-#### 18.1.2.1 <span id="VM-EQ-EQL">Visible Modification of Objects with respect to EQ and EQL</span>
+#### 18.1.2.1 <span id="VM-EQ-EQL">关于 EQ 和 EQL 的对象可见修改</span>
 
-No standardized function is provided that is capable of visibly modifying an object with regard to eq or eql. 
+没有提供标准化的函数能够对于 eq 或 eql 可见地修改一个对象. 
 
-#### 18.1.2.2 <span id="VM-EQUAL">Visible Modification of Objects with respect to EQUAL</span>
+#### 18.1.2.2 <span id="VM-EQUAL">关于 EQUAL 的对象可见修改</span>
 
-As a consequence of the behavior for equal, the rules for visible modification of objects not explicitly mentioned in this section are inherited from those in Section 18.1.2.1 (Visible Modification of Objects with respect to EQ and EQL).
+As a consequence of the behavior for equal,<!--TODO 待翻译--> 对于对象的可见修改没有在这个章节中被显式提及的规则衍生自那些在章节 18.1.2.1 (Visible Modification of Objects with respect to EQ and EQL) 中提及的.
 
-18.1.2.2.1 Visible Modification of Conses with respect to EQUAL
+##### 18.1.2.2.1 关于 EQUAL 的 cons 可见修改
 
-18.1.2.2.2 Visible Modification of Bit Vectors and Strings with respect to EQUAL
-
-
- 18.1.2.2.1 Visible Modification of Conses with respect to EQUAL
-
-Any visible change to the car or the cdr of a cons is considered a visible modification with regard to equal. 
+对一个 cons 的 car 或 cdr 的任何可见修改都被当作是对于 equal 可见的修改. 
 
 
- 18.1.2.2.2 Visible Modification of Bit Vectors and Strings with respect to EQUAL
+##### 18.1.2.2.2 关于 EQUAL 的字符串和位向量的可见修改
 
-For a vector of type bit-vector or of type string, any visible change to an active element of the vector, or to the length of the vector (if it is actually adjustable or has a fill pointer) is considered a visible modification with regard to equal. 
-
-
-#### 18.1.2.3 <span id="VM-EQUALP">Visible Modification of Objects with respect to EQUALP</span>
-
-As a consequence of the behavior for equalp, the rules for visible modification of objects not explicitly mentioned in this section are inherited from those in Section 18.1.2.2 (Visible Modification of Objects with respect to EQUAL).
-
-##### 18.1.2.3.1 Visible Modification of Structures with respect to EQUALP
-
-Any visible change to a slot of a structure is considered a visible modification with regard to equalp. 
+对于一个 bit-vector 类型或 string 类型的向量, 对这个向量的一个有效元素或者对这个向量的长度(如果它实际上是可调整的或者有着一个填充指针)的任何可见修改都被认为是对于 equal 的可见修改. 
 
 
-##### 18.1.2.3.2 Visible Modification of Arrays with respect to EQUALP
+#### 18.1.2.3 <span id="VM-EQUALP">关于 EQUALP 的对象可见修改</span>
 
-In an array, any visible change to an active element, to the fill pointer (if the array can and does have one), or to the dimensions (if the array is actually adjustable) is considered a visible modification with regard to equalp. 
+As a consequence of the behavior for equalp,<!--TODO 待翻译--> 对于对象的可见修改没有在这个章节中被显式提及的规则衍生自那些在章节 18.1.2.2 (Visible Modification of Objects with respect to EQUAL) 中提及的.
 
-##### 18.1.2.3.3 Visible Modification of Hash Tables with respect to EQUALP
+##### 18.1.2.3.1 关于 EQUALP 的结构体可见修改
 
-In a hash table, any visible change to the count of entries in the hash table, to the keys, or to the values associated with the keys is considered a visible modification with regard to equalp.
+对一个结构体的槽的任何可见修改都被当作是对于 equalp 可见的修改. 
 
-Note that the visibility of modifications to the keys depends on the equivalence test of the hash table, not on the specification of equalp. 
 
-#### 18.1.2.4 <span id="VM-LanguageExtensions">Visible Modifications by Language Extensions</span>
+##### 18.1.2.3.2 关于 EQUALP 的数组可见修改
 
-Implementations that extend the language by providing additional mutator functions (or additional behavior for existing mutator functions) must document how the use of these extensions interacts with equivalence tests and hash table searches.
+在一个数组中, 对一个有效元素, 填充指针(如果这个数组可以或确实有一个的话), 或者规模(如果这个数组实际上是可调整的话)的任何可见修改都会被当作对于 equalp 可见的修改. 
 
-Implementations that extend the language by defining additional acceptable equivalence tests for hash tables (allowing additional values for the :test argument to make-hash-table) must document the visible components of these tests. 
+##### 18.1.2.3.3 关于 EQUALP 的哈希表可见修改
+
+在一个哈希表中, 对这个哈希表中的条目数量, 键, 或者和那些键关联的值的任何可见修改都会被当作对于 equalp 可见的修改.
+
+注意, 对于这些键修改的可见性取决于这个哈希表的等价性测试条件, 而不是 equalp 的说明. 
+
+#### 18.1.2.4 <span id="VM-LanguageExtensions">通过语言扩展的可见修改</span>
+
+通过提供额外的设值方法函数(或者对于已存在的设值方法函数提供额外行为)来扩展这个语言的具体实现必须记录这些扩展的使用如何于等价性测试和哈希表搜索相互作用.
+
+通过为哈希表定义额外的可接受的等价性测试条件(给 make-hash-table 的 :test 参数提供额外的值)来扩展这个语言的具体实现必须记录这些测试条件的可见部分. 
 
 ## 18.2 <span id="TheHashTablesDictionary">哈希表的字典</span>
 
-> * [System Class HASH-TABLE](#SC-HASH-TABLE)
-> * [Function MAKE-HASH-TABLE](#F-MAKE-HASH-TABLE)
-> * [Function HASH-TABLE-P](#F-HASH-TABLE-P)
-> * [Function HASH-TABLE-COUNT](#F-HASH-TABLE-COUNT)
-> * [Function HASH-TABLE-REHASH-SIZE](#F-HASH-TABLE-REHASH-SIZE)
-> * [Function HASH-TABLE-REHASH-THRESHOLD](#F-HASH-TABLE-REHASH-THRESHOLD)
-> * [Function HASH-TABLE-SIZE](#F-HASH-TABLE-SIZE)
-> * [Function HASH-TABLE-TEST](#F-HASH-TABLE-TEST)
-> * [Accessor GETHASH](#A-GETHASH)
-> * [Function REMHASH](#F-REMHASH)
-> * [Function MAPHASH](#F-MAPHASH)
-> * [Macro WITH-HASH-TABLE-ITERATOR](#M-WITH-HASH-TABLE-ITERATOR)
-> * [Function CLRHASH](#F-CLRHASH)
-> * [Function SXHASH](#F-SXHASH)
+> * [系统类 HASH-TABLE](#SC-HASH-TABLE)
+> * [函数 MAKE-HASH-TABLE](#F-MAKE-HASH-TABLE)
+> * [函数 HASH-TABLE-P](#F-HASH-TABLE-P)
+> * [函数 HASH-TABLE-COUNT](#F-HASH-TABLE-COUNT)
+> * [函数 HASH-TABLE-REHASH-SIZE](#F-HASH-TABLE-REHASH-SIZE)
+> * [函数 HASH-TABLE-REHASH-THRESHOLD](#F-HASH-TABLE-REHASH-THRESHOLD)
+> * [函数 HASH-TABLE-SIZE](#F-HASH-TABLE-SIZE)
+> * [函数 HASH-TABLE-TEST](#F-HASH-TABLE-TEST)
+> * [访问器 GETHASH](#A-GETHASH)
+> * [函数 REMHASH](#F-REMHASH)
+> * [函数 MAPHASH](#F-MAPHASH)
+> * [宏 WITH-HASH-TABLE-ITERATOR](#M-WITH-HASH-TABLE-ITERATOR)
+> * [函数 CLRHASH](#F-CLRHASH)
+> * [函数 SXHASH](#F-SXHASH)
 
 
-### <span id="SC-HASH-TABLE">System Class HASH-TABLE</span>
+### <span id="SC-HASH-TABLE">系统类 HASH-TABLE</span>
 
 * 类优先级列表(Class Precedence List):
 
-hash-table, t
+        hash-table, t
 
 * 描述(Description):
 
-Hash tables provide a way of mapping any object (a key) to an associated object (a value).
+        哈希表提供了一个方式来映射任何对象(一个键)到一个关联的对象(一个值).
 
 * 也见(See Also):
 
-Section 18.1 (Hash Table Concepts), Section 22.1.3.13 (Printing Other Objects)
+        章节 18.1 (Hash Table Concepts), 章节 22.1.3.13 (Printing Other Objects)
 
 * 注意(Notes):
 
-The intent is that this mapping be implemented by a hashing mechanism, such as that described in Section 6.4 ``Hashing'' of The Art of Computer Programming, Volume 3 (pp506-549). In spite of this intent, no conforming implementation is required to use any particular technique to implement the mapping. 
+        其目的是通过一个哈希散列机制实现这个映射, 比如 The Art of Computer Programming, Volume 3 (pp506-549) 的章节 6.4 "Hashing" 中描述的. 尽管有这样的意图, 符合规范的实现不需要去使用任何特定的技巧来实现这个映射. 
 
 
-### <span id="F-MAKE-HASH-TABLE">Function MAKE-HASH-TABLE</span>
+### <span id="F-MAKE-HASH-TABLE">函数 MAKE-HASH-TABLE</span>
 
 * 语法(Syntax):
 
@@ -196,7 +191,7 @@ gethash, hash-table
 * 注意(Notes): None. 
 
 
-### <span id="F-HASH-TABLE-P">Function HASH-TABLE-P</span>
+### <span id="F-HASH-TABLE-P">函数 HASH-TABLE-P</span>
 
 * 语法(Syntax):
 
@@ -232,7 +227,7 @@ Returns true if object is of type hash-table; otherwise, returns false.
  (hash-table-p object) ==  (typep object 'hash-table)
 
 
-### <span id="F-HASH-TABLE-COUNT">Function HASH-TABLE-COUNT</span>
+### <span id="F-HASH-TABLE-COUNT">函数 HASH-TABLE-COUNT</span>
 
 * 语法(Syntax):
 
@@ -283,7 +278,7 @@ The following relationships are functionally correct, although in practice using
    total)
 
 
-### <span id="F-HASH-TABLE-REHASH-SIZE">Function HASH-TABLE-REHASH-SIZE</span>
+### <span id="F-HASH-TABLE-REHASH-SIZE">函数 HASH-TABLE-REHASH-SIZE</span>
 
 * 语法(Syntax):
 
@@ -321,7 +316,7 @@ make-hash-table, hash-table-rehash-threshold
 
 If the hash table was created with an integer rehash size, the result is an integer, indicating that the rate of growth of the hash-table when rehashed is intended to be additive; otherwise, the result is a float, indicating that the rate of growth of the hash-table when rehashed is intended to be multiplicative. However, this value is only advice to the implementation; the actual amount by which the hash-table will grow upon rehash is implementation-dependent. 
 
-### <span id="F-HASH-TABLE-REHASH-THRESHOLD">Function HASH-TABLE-REHASH-THRESHOLD</span>
+### <span id="F-HASH-TABLE-REHASH-THRESHOLD">函数 HASH-TABLE-REHASH-THRESHOLD</span>
 
 * 语法(Syntax):
 
@@ -357,7 +352,7 @@ make-hash-table, hash-table-rehash-size
 
 * 注意(Notes): None. 
 
-### <span id="F-HASH-TABLE-SIZE">Function HASH-TABLE-SIZE</span>
+### <span id="F-HASH-TABLE-SIZE">函数 HASH-TABLE-SIZE</span>
 
 * 语法(Syntax):
 
@@ -389,7 +384,7 @@ hash-table-count, make-hash-table
 
 * 注意(Notes): None.
 
-### <span id="F-HASH-TABLE-TEST">Function HASH-TABLE-TEST</span>
+### <span id="F-HASH-TABLE-TEST">函数 HASH-TABLE-TEST</span>
 
 * 语法(Syntax):
 
@@ -422,7 +417,7 @@ make-hash-table
 * 注意(Notes): None. 
 
 
-### <span id="A-GETHASH">Accessor GETHASH</span>
+### <span id="A-GETHASH">访问器 GETHASH</span>
 
 * 语法(Syntax):
 
@@ -487,7 +482,7 @@ remhash
 The secondary value, present-p, can be used to distinguish the absence of an entry from the presence of an entry that has a value of default. 
 
 
-### <span id="F-REMHASH">Function REMHASH</span>
+### <span id="F-REMHASH">函数 REMHASH</span>
 
 * 语法(Syntax):
 
@@ -527,7 +522,7 @@ The hash-table is modified.
 * 注意(Notes): None. 
 
 
-### <span id="F-MAPHASH">Function MAPHASH</span>
+### <span id="F-MAPHASH">函数 MAPHASH</span>
 
 * 语法(Syntax):
 
@@ -584,7 +579,7 @@ loop, with-hash-table-iterator, Section 3.6 (Traversal Rules and Side Effects)
 * 注意(Notes): None. 
 
 
-### <span id="M-WITH-HASH-TABLE-ITERATOR">Macro WITH-HASH-TABLE-ITERATOR</span>
+### <span id="M-WITH-HASH-TABLE-ITERATOR">宏 WITH-HASH-TABLE-ITERATOR</span>
 
 * 语法(Syntax):
 
@@ -665,7 +660,7 @@ Section 3.6 (Traversal Rules and Side Effects)
 * 注意(Notes): None. 
 
 
-### <span id="F-CLRHASH">Function CLRHASH</span>
+### <span id="F-CLRHASH">函数 CLRHASH</span>
 
 * 语法(Syntax):
 
@@ -702,7 +697,7 @@ The hash-table is modified.
 * 注意(Notes): None. 
 
 
-### <span id="F-SXHASH">Function SXHASH</span>
+### <span id="F-SXHASH">函数 SXHASH</span>
 
 * 语法(Syntax):
 
