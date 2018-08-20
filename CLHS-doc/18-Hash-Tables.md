@@ -141,44 +141,42 @@ As a consequence of the behavior for equalp,<!--TODO 待翻译--> 对于对象�
 
 * 语法(Syntax):
 
-make-hash-table &key test size rehash-size rehash-threshold => hash-table
+        make-hash-table &key test size rehash-size rehash-threshold => hash-table
 
 * 参数和值(Arguments and Values):
 
-test---a designator for one of the functions eq, eql, equal, or equalp. The default is eql.
-
-size---a non-negative integer. The default is implementation-dependent.
-
-rehash-size---a real of type (or (integer 1 *) (float (1.0) *)). The default is implementation-dependent.
-
-rehash-threshold---a real of type (real 0 1). The default is implementation-dependent.
-
-hash-table---a hash table.
+        test---函数 eq, eql, equal, 或 equalp 其中之一的标识符. 默认是 eql.
+        size---一个非负整数. 默认是依赖于具体实现的.
+        rehash-size---一个 (or (integer 1 *) (float (1.0) *)) 类型的实数. 默认是依赖于具体实现的.
+        rehash-threshold---一个 (real 0 1) 类型的实数. 默认是依赖于具体实现的.
+        hash-table---一个哈希表.
 
 * 描述(Description):
 
-Creates and returns a new hash table.
+        创建并返回一个新的哈希表.
 
-test determines how keys are compared. An object is said to be present in the hash-table if that object is the same under the test as the key for some entry in the hash-table.
+        test 决定了这些键如何比较. 如果一个对象在这个测试条件 test 下和这个哈希表 hash-table 中的某个条目的键是相同的, 就说这个对象出现在这个哈希表 hash-table 中.
 
-size is a hint to the implementation about how much initial space to allocate in the hash-table. This information, taken together with the rehash-threshold, controls the approximate number of entries which it should be possible to insert before the table has to grow. The actual size might be rounded up from size to the next `good' size; for example, some implementations might round to the next prime number.
+        size 是一个对于实现的暗示, 关于在这个哈希表 hash-table 中分配的初始空间的多少. 这个信息和 rehash-threshold 相联系来控制在这个表增长之前控制应该可以插入的条目的合适数量. 实际的大小可能在 size 到下一个'好的'大小; 比如, 一些具体实现可能会舍入到下一个质数.
 
-rehash-size specifies a minimum amount to increase the size of the hash-table when it becomes full enough to require rehashing; see rehash-theshold below. If rehash-size is an integer, the expected growth rate for the table is additive and the integer is the number of entries to add; if it is a float, the expected growth rate for the table is multiplicative and the float is the ratio of the new size to the old size. As with size, the actual size of the increase might be rounded up.
+        rehash-size 指定了当 hash-table 变得足够多以致于需要再散列时需要增长的最小数量; 见下面的 rehash-theshold. 如果 rehash-size 是一个整数, 这个表的预期增长率是加法的并且这个整数就是要增加的条目数; 如果它是一个浮点数, 这个表的预期增长率是乘法的并且这个浮点数就是新的大小和旧的大小的比值. 和 size 一样, 这个增长的实际大小可能会被舍入.
 
-rehash-threshold specifies how full the hash-table can get before it must grow. It specifies the maximum desired hash-table occupancy level.
+        rehash-threshold 指定了在 hash-table 必须增长前它可以的到的完整大小. 它指定了最大期望的 hash-table 占用级别.<!--TODO 待校对-->
 
-The values of rehash-size and rehash-threshold do not constrain the implementation to use any particular method for computing when and by how much the size of hash-table should be enlarged. Such decisions are implementation-dependent, and these values only hints from the programmer to the implementation, and the implementation is permitted to ignore them.
+        这个 rehash-size 和 rehash-threshold 的值不会强迫实现来使用任何特定的方法来计算哈希表 hash-table 何时要被扩展以及扩展的大小. 这样的决定是依赖于具体实现的, 这些值只是程序员对实现的提示, 并且允许具体实现去忽略它们.
 
 * 示例(Examples):
 
- (setq table (make-hash-table)) =>  #<HASH-TABLE EQL 0/120 46142754>
- (setf (gethash "one" table) 1) =>  1
- (gethash "one" table) =>  NIL, false
- (setq table (make-hash-table :test 'equal)) =>  #<HASH-TABLE EQUAL 0/139 46145547>
- (setf (gethash "one" table) 1) =>  1
- (gethash "one" table) =>  1, T
- (make-hash-table :rehash-size 1.5 :rehash-threshold 0.7) 
-=>  #<HASH-TABLE EQL 0/120 46156620>
+    ```LISP
+    (setq table (make-hash-table)) =>  #<HASH-TABLE EQL 0/120 46142754>
+    (setf (gethash "one" table) 1) =>  1
+    (gethash "one" table) =>  NIL, false
+    (setq table (make-hash-table :test 'equal)) =>  #<HASH-TABLE EQUAL 0/139 46145547>
+    (setf (gethash "one" table) 1) =>  1
+    (gethash "one" table) =>  1, T
+    (make-hash-table :rehash-size 1.5 :rehash-threshold 0.7) 
+    =>  #<HASH-TABLE EQL 0/120 46156620>
+    ```
 
 * 受此影响(Affected By): None.
 
@@ -186,7 +184,7 @@ The values of rehash-size and rehash-threshold do not constrain the implementati
 
 * 也见(See Also):
 
-gethash, hash-table
+        gethash, hash-table
 
 * 注意(Notes): None. 
 
@@ -195,24 +193,25 @@ gethash, hash-table
 
 * 语法(Syntax):
 
-hash-table-p object => generalized-boolean
+        hash-table-p object => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-object---an object.
-
-generalized-boolean---a generalized boolean.
+        object---一个对象.
+        generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
-Returns true if object is of type hash-table; otherwise, returns false.
+        如果对象 object 是 hash-table 类型就返回 true; 否则, 返回 false.
 
 * 示例(Examples):
 
- (setq table (make-hash-table)) =>  #<HASH-TABLE EQL 0/120 32511220>
- (hash-table-p table) =>  true
- (hash-table-p 37) =>  false
- (hash-table-p '((a . 1) (b . 2))) =>  false
+    ```LISP
+    (setq table (make-hash-table)) =>  #<HASH-TABLE EQL 0/120 32511220>
+    (hash-table-p table) =>  true
+    (hash-table-p 37) =>  false
+    (hash-table-p '((a . 1) (b . 2))) =>  false
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -224,81 +223,83 @@ Returns true if object is of type hash-table; otherwise, returns false.
 
 * 注意(Notes):
 
- (hash-table-p object) ==  (typep object 'hash-table)
+        (hash-table-p object) ==  (typep object 'hash-table)
 
 
 ### <span id="F-HASH-TABLE-COUNT">函数 HASH-TABLE-COUNT</span>
 
 * 语法(Syntax):
 
-hash-table-count hash-table => count
+        hash-table-count hash-table => count
 
 * 参数和值(Arguments and Values):
 
-hash-table---a hash table.
-
-count---a non-negative integer.
+        hash-table---一个哈希表.
+        count---一个非负整数.
 
 * 描述(Description):
 
-Returns the number of entries in the hash-table. If hash-table has just been created or newly cleared (see clrhash) the entry count is 0.
+        返回在这个哈希表 hash-table 中的条目的数量. 如果 hash-table 刚刚被创建或者重新被清理 (见 clrhash) 那么条目数量就是 0.
 
 * 示例(Examples):
 
- (setq table (make-hash-table)) =>  #<HASH-TABLE EQL 0/120 32115135>
- (hash-table-count table) =>  0
- (setf (gethash 57 table) "fifty-seven") =>  "fifty-seven"
- (hash-table-count table) =>  1
- (dotimes (i 100) (setf (gethash i table) i)) =>  NIL
- (hash-table-count table) =>  100
+    ```LISP
+    (setq table (make-hash-table)) =>  #<HASH-TABLE EQL 0/120 32115135>
+    (hash-table-count table) =>  0
+    (setf (gethash 57 table) "fifty-seven") =>  "fifty-seven"
+    (hash-table-count table) =>  1
+    (dotimes (i 100) (setf (gethash i table) i)) =>  NIL
+    (hash-table-count table) =>  100
+    ```
 
 * 副作用(Side Effects): None.
 
 * 受此影响(Affected By):
 
-clrhash, remhash, setf of gethash
+        clrhash, remhash, setf of gethash
 
 * 异常情况(Exceptional Situations): None.
 
 * 也见(See Also):
 
-hash-table-size
+        hash-table-size
 
 * 注意(Notes):
 
-The following relationships are functionally correct, although in practice using hash-table-count is probably much faster:
+        下面的关系在功能上是正确的, 尽管在实践中使用 hash-table-count 可能要快得多:
 
- (hash-table-count table) == 
- (loop for value being the hash-values of table count t) == 
- (let ((total 0))
-   (maphash #'(lambda (key value)
-                (declare (ignore key value))
-                (incf total))
-            table)
-   total)
+        (hash-table-count table) == 
+        (loop for value being the hash-values of table count t) == 
+        (let ((total 0))
+          (maphash #'(lambda (key value)
+                        (declare (ignore key value))
+                        (incf total))
+                    table)
+          total)
 
 
 ### <span id="F-HASH-TABLE-REHASH-SIZE">函数 HASH-TABLE-REHASH-SIZE</span>
 
 * 语法(Syntax):
 
-hash-table-rehash-size hash-table => rehash-size
+        hash-table-rehash-size hash-table => rehash-size
 
 * 参数和值(Arguments and Values):
 
-hash-table---a hash table.
-
-rehash-size---a real of type (or (integer 1 *) (float (1.0) *)).
+        hash-table---一个哈希表.
+        rehash-size---一个 (or (integer 1 *) (float (1.0) *)) 类型的实数.
 
 * 描述(Description):
 
-Returns the current rehash size of hash-table, suitable for use in a call to make-hash-table in order to produce a hash table with state corresponding to the current state of the hash-table.
+        返回哈希表 hash-table 的当前再散列大小, 适合用于 make-hash-table 的调用中来产生一个带有和 hash-table 当前状态对应的状态的哈希表.
 
 * 示例(Examples):
 
- (setq table (make-hash-table :size 100 :rehash-size 1.4))
-=>  #<HASH-TABLE EQL 0/100 2556371>
- (hash-table-rehash-size table) =>  1.4
+    ```LISP
+    (setq table (make-hash-table :size 100 :rehash-size 1.4))
+    =>  #<HASH-TABLE EQL 0/100 2556371>
+    (hash-table-rehash-size table) =>  1.4
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -306,37 +307,38 @@ Returns the current rehash size of hash-table, suitable for use in a call to mak
 
 * 异常情况(Exceptional Situations):
 
-Should signal an error of type type-error if hash-table is not a hash table.
+        如果 hash-table 不是一个哈希表那么应该发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-make-hash-table, hash-table-rehash-threshold
+        make-hash-table, hash-table-rehash-threshold
 
 * 注意(Notes):
 
-If the hash table was created with an integer rehash size, the result is an integer, indicating that the rate of growth of the hash-table when rehashed is intended to be additive; otherwise, the result is a float, indicating that the rate of growth of the hash-table when rehashed is intended to be multiplicative. However, this value is only advice to the implementation; the actual amount by which the hash-table will grow upon rehash is implementation-dependent. 
+        如果这个哈希表被创建时带有一个表示再散列大小的整数, 表示再散列时这个 hash-table 的增长率是加法的; 否则, 结果是一个浮点数, 表示再散列时这个 hash-table 的增长率是乘法的. 然而, 这个值只是给具体实现的建议; 再散列时这个 hash-table 增长的实际数量是依赖于具体实现的. 
 
 ### <span id="F-HASH-TABLE-REHASH-THRESHOLD">函数 HASH-TABLE-REHASH-THRESHOLD</span>
 
 * 语法(Syntax):
 
-hash-table-rehash-threshold hash-table => rehash-threshold
+        hash-table-rehash-threshold hash-table => rehash-threshold
 
 * 参数和值(Arguments and Values):
 
-hash-table---a hash table.
-
-rehash-threshold---a real of type (real 0 1).
+        hash-table---一个哈希表.
+        rehash-threshold---一个 (real 0 1) 类型的实数.
 
 * 描述(Description):
 
-Returns the current rehash threshold of hash-table, which is suitable for use in a call to make-hash-table in order to produce a hash table with state corresponding to the current state of the hash-table.
+        返回这个 hash-table 的当前再散列阈值, 它适合用于 make-hash-table 的调用中来产生一个带有和 hash-table 当前状态对应的状态的哈希表.
 
 * 示例(Examples):
 
- (setq table (make-hash-table :size 100 :rehash-threshold 0.5))
-=>  #<HASH-TABLE EQL 0/100 2562446>
- (hash-table-rehash-threshold table) =>  0.5
+    ```LISP
+    (setq table (make-hash-table :size 100 :rehash-threshold 0.5))
+    =>  #<HASH-TABLE EQL 0/100 2562446>
+    (hash-table-rehash-threshold table) =>  0.5
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -344,11 +346,11 @@ Returns the current rehash threshold of hash-table, which is suitable for use in
 
 * 异常情况(Exceptional Situations):
 
-Should signal an error of type type-error if hash-table is not a hash table.
+        如果 hash-table 不是一个哈希表那么应该发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-make-hash-table, hash-table-rehash-size
+        make-hash-table, hash-table-rehash-size
 
 * 注意(Notes): None. 
 
@@ -356,17 +358,16 @@ make-hash-table, hash-table-rehash-size
 
 * 语法(Syntax):
 
-hash-table-size hash-table => size
+        hash-table-size hash-table => size
 
 * 参数和值(Arguments and Values):
 
-hash-table---a hash table.
-
-size---a non-negative integer.
+        hash-table---一个哈希表.
+        size---一个非负整数.
 
 * 描述(Description):
 
-Returns the current size of hash-table, which is suitable for use in a call to make-hash-table in order to produce a hash table with state corresponding to the current state of the hash-table.
+        返回这个 hash-table 的当前大小, 适合用于 make-hash-table 的调用中来产生一个带有和 hash-table 当前状态对应的状态的哈希表.
 
 * 示例(Examples): None.
 
@@ -376,11 +377,11 @@ Returns the current size of hash-table, which is suitable for use in a call to m
 
 * 异常情况(Exceptional Situations):
 
-Should signal an error of type type-error if hash-table is not a hash table.
+        如果 hash-table 不是一个哈希表那么应该发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-hash-table-count, make-hash-table
+        hash-table-count, make-hash-table
 
 * 注意(Notes): None.
 
@@ -388,17 +389,16 @@ hash-table-count, make-hash-table
 
 * 语法(Syntax):
 
-hash-table-test hash-table => test
+        hash-table-test hash-table => test
 
 * 参数和值(Arguments and Values):
 
-hash-table---a hash table.
-
-test---a function designator. For the four standardized hash table test functions (see make-hash-table), the test value returned is always a symbol. If an implementation permits additional tests, it is implementation-dependent whether such tests are returned as function objects or function names.
+        hash-table---一个哈希表.
+        test---一个函数标识符. 对于这四个标准化的哈希表测试函数 (见 make-hash-table), 返回的这个 test 值总是为一个符号. 如果一个实现允许额外的测试条件, 那么这些测试条件是否作为函数对象或函数名字返回是依赖于具体实现的.
 
 * 描述(Description):
 
-Returns the test used for comparing keys in hash-table.
+        返回在这个 hash-table 中用来比较键的测试条件.
 
 * 示例(Examples): None.
 
@@ -408,11 +408,11 @@ Returns the test used for comparing keys in hash-table.
 
 * 异常情况(Exceptional Situations):
 
-Should signal an error of type type-error if hash-table is not a hash table.
+        如果 hash-table 不是一个哈希表那么应该发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-make-hash-table
+        make-hash-table
 
 * 注意(Notes): None. 
 
@@ -421,51 +421,49 @@ make-hash-table
 
 * 语法(Syntax):
 
-gethash key hash-table &optional default => value, present-p
+        gethash key hash-table &optional default => value, present-p
 
-(setf (gethash key hash-table &optional default) new-value)
+        (setf (gethash key hash-table &optional default) new-value)
 
 * 参数和值(Arguments and Values):
 
-key---an object.
-
-hash-table---a hash table.
-
-default---an object. The default is nil.
-
-value---an object.
-
-present-p---a generalized boolean.
+        key---一个对象.
+        hash-table---一个哈希表.
+        default---一个对象. 默认是 nil.
+        value---一个对象.
+        present-p---一个广义 boolean.
 
 * 描述(Description):
 
-Value is the object in hash-table whose key is the same as key under the hash-table's equivalence test. If there is no such entry, value is the default.
+        value 是一个在 hash-table 中键在这个 hash-table 的等价性测试条件下和 key 相同的对象. 如果这里没有这样的条目, value 就是那个默认值.
 
-Present-p is true if an entry is found; otherwise, it is false.
+        如果找到一个条目那么 present-p 就是 true; 否则, 它就是 false.
 
-setf may be used with gethash to modify the value associated with a given key, or to add a new entry. When a gethash form is used as a setf place, any default which is supplied is evaluated according to normal left-to-right evaluation rules, but its value is ignored.
+        setf 可以和 gethash 一起使用来修改和一个给定的键关联的值, 或者去添加一个新的条目. 当一个 gethash 表达式形式被用作一个 setf place 时, 任何提供的默认值都根据正常的从左到右的求值规则被求值, 但是它的值会被忽略.
 
 * 示例(Examples):
 
- (setq table (make-hash-table)) =>  #<HASH-TABLE EQL 0/120 32206334>
- (gethash 1 table) =>  NIL, false
- (gethash 1 table 2) =>  2, false
- (setf (gethash 1 table) "one") =>  "one"
- (setf (gethash 2 table "two") "two") =>  "two"
- (gethash 1 table) =>  "one", true
- (gethash 2 table) =>  "two", true
- (gethash nil table) =>  NIL, false
- (setf (gethash nil table) nil) =>  NIL 
- (gethash nil table) =>  NIL, true
- (defvar *counters* (make-hash-table)) =>  *COUNTERS*
- (gethash 'foo *counters*) =>  NIL, false
- (gethash 'foo *counters* 0) =>  0, false
- (defmacro how-many (obj) `(values (gethash ,obj *counters* 0))) =>  HOW-MANY
- (defun count-it (obj) (incf (how-many obj))) =>  COUNT-IT
- (dolist (x '(bar foo foo bar bar baz)) (count-it x))
- (how-many 'foo) =>  2
- (how-many 'bar) =>  3
- (how-many 'quux) =>  0
+    ```LISP
+    (setq table (make-hash-table)) =>  #<HASH-TABLE EQL 0/120 32206334>
+    (gethash 1 table) =>  NIL, false
+    (gethash 1 table 2) =>  2, false
+    (setf (gethash 1 table) "one") =>  "one"
+    (setf (gethash 2 table "two") "two") =>  "two"
+    (gethash 1 table) =>  "one", true
+    (gethash 2 table) =>  "two", true
+    (gethash nil table) =>  NIL, false
+    (setf (gethash nil table) nil) =>  NIL 
+    (gethash nil table) =>  NIL, true
+    (defvar *counters* (make-hash-table)) =>  *COUNTERS*
+    (gethash 'foo *counters*) =>  NIL, false
+    (gethash 'foo *counters* 0) =>  0, false
+    (defmacro how-many (obj) `(values (gethash ,obj *counters* 0))) =>  HOW-MANY
+    (defun count-it (obj) (incf (how-many obj))) =>  COUNT-IT
+    (dolist (x '(bar foo foo bar bar baz)) (count-it x))
+    (how-many 'foo) =>  2
+    (how-many 'bar) =>  3
+    (how-many 'quux) =>  0
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -475,43 +473,43 @@ setf may be used with gethash to modify the value associated with a given key, o
 
 * 也见(See Also):
 
-remhash
+        remhash
 
 * 注意(Notes):
 
-The secondary value, present-p, can be used to distinguish the absence of an entry from the presence of an entry that has a value of default. 
+        第二个值, present-p, 可以被用于区分一个缺失的条目和一个有着默认值的已存在条目. 
 
 
 ### <span id="F-REMHASH">函数 REMHASH</span>
 
 * 语法(Syntax):
 
-remhash key hash-table => generalized-boolean
+        remhash key hash-table => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-key---an object.
-
-hash-table---a hash table.
-
-generalized-boolean---a generalized boolean.
+        key---一个对象.
+        hash-table---一个哈希表.
+        generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
-Removes the entry for key in hash-table, if any. Returns true if there was such an entry, or false otherwise.
+        移除 hash-table 中 key 表示的条目, 如果存在的话. 如果这里有这样一个条目就返回 true, 否则返回 false.
 
 * 示例(Examples):
 
- (setq table (make-hash-table)) =>  #<HASH-TABLE EQL 0/120 32115666>
- (setf (gethash 100 table) "C") =>  "C"
- (gethash 100 table) =>  "C", true
- (remhash 100 table) =>  true
- (gethash 100 table) =>  NIL, false
- (remhash 100 table) =>  false
+    ```LISP
+    (setq table (make-hash-table)) =>  #<HASH-TABLE EQL 0/120 32115666>
+    (setf (gethash 100 table) "C") =>  "C"
+    (gethash 100 table) =>  "C", true
+    (remhash 100 table) =>  true
+    (gethash 100 table) =>  NIL, false
+    (remhash 100 table) =>  false
+    ```
 
 * 副作用(Side Effects):
 
-The hash-table is modified.
+        这个 hash-table 会被修改.
 
 * 受此影响(Affected By): None.
 
@@ -532,7 +530,7 @@ maphash function hash-table => nil
 
 function---a designator for a function of two arguments, the key and the value.
 
-hash-table---a hash table.
+hash-table---一个哈希表.
 
 * 描述(Description):
 
@@ -668,7 +666,7 @@ clrhash hash-table => hash-table
 
 * 参数和值(Arguments and Values):
 
-hash-table---a hash table.
+hash-table---一个哈希表.
 
 * 描述(Description):
 
@@ -705,7 +703,7 @@ sxhash object => hash-code
 
 * 参数和值(Arguments and Values):
 
-object---an object.
+object---一个对象.
 
 hash-code---a non-negative fixnum.
 
