@@ -1,5 +1,4 @@
-
-# 18 Hash Tables
+# 18 哈希表
 
 > * 18.1 [哈希表的概念](#HashTableConcepts)
 > * 18.2 [哈希表的字典](#TheHashTablesDictionary)
@@ -63,7 +62,7 @@ Figure 18-1. Hash-table 已定义的名字
 
 #### 18.1.2.2 <span id="VM-EQUAL">关于 EQUAL 的对象可见修改</span>
 
-As a consequence of the behavior for equal,<!--TODO 待翻译--> 对于对象的可见修改没有在这个章节中被显式提及的规则衍生自那些在章节 18.1.2.1 (Visible Modification of Objects with respect to EQ and EQL) 中提及的.
+作为 equal 的行为的结果,<!--TODO 待翻译--> 对于对象的可见修改没有在这个章节中被显式提及的规则衍生自那些在章节 18.1.2.1 (Visible Modification of Objects with respect to EQ and EQL) 中提及的.
 
 ##### 18.1.2.2.1 关于 EQUAL 的 cons 可见修改
 
@@ -77,7 +76,7 @@ As a consequence of the behavior for equal,<!--TODO 待翻译--> 对于对象的
 
 #### 18.1.2.3 <span id="VM-EQUALP">关于 EQUALP 的对象可见修改</span>
 
-As a consequence of the behavior for equalp,<!--TODO 待翻译--> 对于对象的可见修改没有在这个章节中被显式提及的规则衍生自那些在章节 18.1.2.2 (Visible Modification of Objects with respect to EQUAL) 中提及的.
+作为 equalp 的行为的结果,<!--TODO 待翻译--> 对于对象的可见修改没有在这个章节中被显式提及的规则衍生自那些在章节 18.1.2.2 (Visible Modification of Objects with respect to EQUAL) 中提及的.
 
 ##### 18.1.2.3.1 关于 EQUALP 的结构体可见修改
 
@@ -524,47 +523,48 @@ As a consequence of the behavior for equalp,<!--TODO 待翻译--> 对于对象�
 
 * 语法(Syntax):
 
-maphash function hash-table => nil
+        maphash function hash-table => nil
 
 * 参数和值(Arguments and Values):
 
-function---a designator for a function of two arguments, the key and the value.
-
-hash-table---一个哈希表.
+        function---一个两参数函数的标识符, 这两个参数为那个键和值.
+        hash-table---一个哈希表.
 
 * 描述(Description):
 
-Iterates over all entries in the hash-table. For each entry, the function is called with two arguments--the key and the value of that entry.
+        在这个哈希表 hash-table 的所有条目上迭代. 对于每一个条目, 用两个参数调用这个函数 function--那个条目的键和值.
 
-The consequences are unspecified if any attempt is made to add or remove an entry from the hash-table while a maphash is in progress, with two exceptions: the function can use can use setf of gethash to change the value part of the entry currently being processed, or it can use remhash to remove that entry.
+        如果在一个 maphash 正在进行时尝试从 hash-table 移除或添加一个条目, 那么后果是未指定的, 其中有两个例外: 这个函数 function 可以使用 gethash 的 setf 来改变当前正在被处理的条目的值部分, 或者它可以使用 remhash 来移除这个条目.
 
 * 示例(Examples):
 
- (setq table (make-hash-table)) =>  #<HASH-TABLE EQL 0/120 32304110>
- (dotimes (i 10) (setf (gethash i table) i)) =>  NIL
- (let ((sum-of-squares 0))
-    (maphash #'(lambda (key val) 
-                 (let ((square (* val val)))
-                   (incf sum-of-squares square)
-                   (setf (gethash key table) square)))
-             table)
-    sum-of-squares) =>  285
- (hash-table-count table) =>  10
- (maphash #'(lambda (key val)
-               (when (oddp val) (remhash key table)))
-           table) =>  NIL
- (hash-table-count table) =>  5
- (maphash #'(lambda (k v) (print (list k v))) table)
-(0 0) 
-(8 64) 
-(2 4) 
-(6 36) 
-(4 16) 
-=>  NIL
+    ```LISP
+    (setq table (make-hash-table)) =>  #<HASH-TABLE EQL 0/120 32304110>
+    (dotimes (i 10) (setf (gethash i table) i)) =>  NIL
+    (let ((sum-of-squares 0))
+        (maphash #'(lambda (key val) 
+                    (let ((square (* val val)))
+                      (incf sum-of-squares square)
+                      (setf (gethash key table) square)))
+                table)
+        sum-of-squares) =>  285
+    (hash-table-count table) =>  10
+    (maphash #'(lambda (key val)
+                  (when (oddp val) (remhash key table)))
+              table) =>  NIL
+    (hash-table-count table) =>  5
+    (maphash #'(lambda (k v) (print (list k v))) table)
+    (0 0) 
+    (8 64) 
+    (2 4) 
+    (6 36) 
+    (4 16) 
+    =>  NIL
+    ```
 
 * 副作用(Side Effects):
 
-None, other than any which might be done by the function.
+        没有, 除了任何可能由函数 function 完成的.
 
 * 受此影响(Affected By): None.
 
@@ -572,7 +572,7 @@ None, other than any which might be done by the function.
 
 * 也见(See Also):
 
-loop, with-hash-table-iterator, Section 3.6 (Traversal Rules and Side Effects)
+        loop, with-hash-table-iterator, 章节 3.6 (Traversal Rules and Side Effects)
 
 * 注意(Notes): None. 
 
@@ -581,67 +581,67 @@ loop, with-hash-table-iterator, Section 3.6 (Traversal Rules and Side Effects)
 
 * 语法(Syntax):
 
-with-hash-table-iterator (name hash-table) declaration* form* => result*
+        with-hash-table-iterator (name hash-table) declaration* form* => result*
 
 * 参数和值(Arguments and Values):
 
-name---a name suitable for the first argument to macrolet.
-
-hash-table---a form, evaluated once, that should produce a hash table.
-
-declaration---a declare expression; not evaluated.
-
-forms---an implicit progn.
-
-results---the values returned by forms.
+        name---一个适合用作给 macrolet 的第一个参数的名字.
+        hash-table---一个表达式形式, 求值一次, 它应该产生一个哈希表.
+        declaration---一个 declare 表达式; 不求值.
+        forms---一个隐式的 progn.
+        results---由表达式 forms 返回的值.
 
 * 描述(Description):
 
-Within the lexical scope of the body, name is defined via macrolet such that successive invocations of (name) return the items, one by one, from the hash table that is obtained by evaluating hash-table only once.
+        在这个主体的词法作用域中, name 通过 macrolet 被定义, 这样一来连续的对 (name) 的调用会一个接一个返回这个哈希表中的项, 这个哈希表通过只求值一次 hash-table 获取.
 
-An invocation (name) returns three values as follows:
+        一个 (name) 返回以下三个值:
 
-1. A generalized boolean that is true if an entry is returned.
-2. The key from the hash-table entry.
-3. The value from the hash-table entry.
+        1. 一个广义 boolean, 如果返回一个条目就是.
+        2. 这个 hash-table 条目的键.
+        3. 这个 hash-table 条目的值.
 
-After all entries have been returned by successive invocations of (name), then only one value is returned, namely nil.
+        在所有条目已经通过连续调用 (name) 返回后, 只有一个值会被返回, 也就是 nil.
 
-It is unspecified what happens if any of the implicit interior state of an iteration is returned outside the dynamic extent of the with-hash-table-iterator form such as by returning some closure over the invocation form.
+        如果一个迭代的任何隐式的内部状态被返回到这个 with-hash-table-iterator 表达式形式的动态范围以外, 比如通过从这个调用表达式形式返回某个闭包.
 
-Any number of invocations of with-hash-table-iterator can be nested, and the body of the innermost one can invoke all of the locally established macros, provided all of those macros have distinct names.
+        with-hash-table-iterator 的任意数量的调用可以是嵌套的, 并且最里边的那个的主体可以调用所有这些局部建立的宏, 假定所有这些宏都有着不同的名字.
 
 * 示例(Examples):
 
-The following function should return t on any hash table, and signal an error if the usage of with-hash-table-iterator does not agree with the corresponding usage of maphash.
+        以下函数应该在任何哈希表上返回 t, 如果 with-hash-table-iterator 的使用和对应 maphash 的使用不一致, 那么应该发出一个错误.
 
- (defun test-hash-table-iterator (hash-table)
-   (let ((all-entries '())
-         (generated-entries '())
-         (unique (list nil)))
-     (maphash #'(lambda (key value) (push (list key value) all-entries))
-              hash-table)
-     (with-hash-table-iterator (generator-fn hash-table)
-       (loop     
-         (multiple-value-bind (more? key value) (generator-fn)
-           (unless more? (return))
-           (unless (eql value (gethash key hash-table unique))
-             (error "Key ~S not found for value ~S" key value))
-           (push (list key value) generated-entries))))
-     (unless (= (length all-entries)
-                (length generated-entries)
-                (length (union all-entries generated-entries
-                               :key #'car :test (hash-table-test hash-table))))
-       (error "Generated entries and Maphash entries don't correspond"))
-     t))
+    ```LISP
+    (defun test-hash-table-iterator (hash-table)
+      (let ((all-entries '())
+            (generated-entries '())
+            (unique (list nil)))
+        (maphash #'(lambda (key value) (push (list key value) all-entries))
+                  hash-table)
+        (with-hash-table-iterator (generator-fn hash-table)
+          (loop     
+            (multiple-value-bind (more? key value) (generator-fn)
+              (unless more? (return))
+              (unless (eql value (gethash key hash-table unique))
+                (error "Key ~S not found for value ~S" key value))
+              (push (list key value) generated-entries))))
+        (unless (= (length all-entries)
+                    (length generated-entries)
+                    (length (union all-entries generated-entries
+                                  :key #'car :test (hash-table-test hash-table))))
+          (error "Generated entries and Maphash entries don't correspond"))
+        t))
+    ```
 
-The following could be an acceptable definition of maphash, implemented by with-hash-table-iterator.
+        下面这个可以是 maphash 通过 with-hash-table-iterator 实现的可接受定义.
 
- (defun maphash (function hash-table)
-   (with-hash-table-iterator (next-entry hash-table)
-     (loop (multiple-value-bind (more key value) (next-entry)
-             (unless more (return nil))
-             (funcall function key value)))))
+    ```LISP
+    (defun maphash (function hash-table)
+      (with-hash-table-iterator (next-entry hash-table)
+        (loop (multiple-value-bind (more key value) (next-entry)
+                (unless more (return nil))
+                (funcall function key value)))))
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -649,11 +649,11 @@ The following could be an acceptable definition of maphash, implemented by with-
 
 * 异常情况(Exceptional Situations):
 
-The consequences are undefined if the local function named name established by with-hash-table-iterator is called after it has returned false as its primary value.
+        如果这个由 with-hash-table-iterator 建立的名为 name 的局部函数在它已经返回 false 作为它的主要值之后被调用, 后果是未定义的.
 
 * 也见(See Also):
 
-Section 3.6 (Traversal Rules and Side Effects)
+        章节 3.6 (Traversal Rules and Side Effects)
 
 * 注意(Notes): None. 
 
@@ -662,29 +662,31 @@ Section 3.6 (Traversal Rules and Side Effects)
 
 * 语法(Syntax):
 
-clrhash hash-table => hash-table
+        clrhash hash-table => hash-table
 
 * 参数和值(Arguments and Values):
 
-hash-table---一个哈希表.
+        hash-table---一个哈希表.
 
 * 描述(Description):
 
-Removes all entries from hash-table, and then returns that empty hash table.
+        从 hash-table 中移除所有条目, 然后返回一个空的哈希表.
 
 * 示例(Examples):
 
- (setq table (make-hash-table)) =>  #<HASH-TABLE EQL 0/120 32004073>
- (dotimes (i 100) (setf (gethash i table) (format nil "~R" i))) =>  NIL
- (hash-table-count table) =>  100
- (gethash 57 table) =>  "fifty-seven", true
- (clrhash table) =>  #<HASH-TABLE EQL 0/120 32004073>
- (hash-table-count table) =>  0
- (gethash 57 table) =>  NIL, false
+    ```LISP
+    (setq table (make-hash-table)) =>  #<HASH-TABLE EQL 0/120 32004073>
+    (dotimes (i 100) (setf (gethash i table) (format nil "~R" i))) =>  NIL
+    (hash-table-count table) =>  100
+    (gethash 57 table) =>  "fifty-seven", true
+    (clrhash table) =>  #<HASH-TABLE EQL 0/120 32004073>
+    (hash-table-count table) =>  0
+    (gethash 57 table) =>  NIL, false
+    ```
 
 * 副作用(Side Effects):
 
-The hash-table is modified.
+        这个 hash-table 会被修改.
 
 * 受此影响(Affected By): None.
 
@@ -699,43 +701,44 @@ The hash-table is modified.
 
 * 语法(Syntax):
 
-sxhash object => hash-code
+        sxhash object => hash-code
 
 * 参数和值(Arguments and Values):
 
-object---一个对象.
-
-hash-code---a non-negative fixnum.
+        object---一个对象.
+        hash-code---一个非负 fixnum.
 
 * 描述(Description):
 
-sxhash returns a hash code for object.
+        sxhash 返回对象 object 的一个哈希值.
 
-The manner in which the hash code is computed is implementation-dependent, but subject to certain constraints:
+        这个哈希值计算的方式是依赖于具体实现的, 但是受限于某些约束条件:
 
-1. (equal x y) implies (= (sxhash x) (sxhash y)).
+        1. (equal x y) 意味着 (= (sxhash x) (sxhash y)).
 
-2. For any two objects, x and y, both of which are bit vectors, characters, conses, numbers, pathnames, strings, or symbols, and which are similar, (sxhash x) and (sxhash y) yield the same mathematical value even if x and y exist in different Lisp images of the same implementation. See Section 3.2.4 (Literal Objects in Compiled Files).
+        2. 对于任意两个对象, x 和 y, 它们两个都是位向量, 字符, conse, 数字, 路径名, 字符串, 或符号, 并且都是相似的, 那么 (sxhash x) 和 (sxhash y) 产生相同的数学值, 即便 x 和 y 只存在于同一实现的 Lisp 镜像. 见章节 3.2.4 (Literal Objects in Compiled Files).
 
-3. The hash-code for an object is always the same within a single session provided that the object is not visibly modified with regard to the equivalence test equal. See Section 18.1.2 (Modifying Hash Table Keys).
+        3. 对于一个对象的 hash-code 在单个会话中总是相同的, 假定对于等价性测试条件 equal 这个对象没有被可见修改. 见章节 18.1.2 (Modifying Hash Table Keys).
 
-4. The hash-code is intended for hashing. This places no verifiable constraint on a conforming implementation, but the intent is that an implementation should make a good-faith effort to produce hash-codes that are well distributed within the range of non-negative fixnums.
+        4. 这个 hash-code 用于散列. 这对符合标准的实现没有任何可验证的约束, 但其目的是一个实现应该作出善意的努力, 以生成在非负 fixnum 范围内分布良好的 hash-code.
 
-5. Computation of the hash-code must terminate, even if the object contains circularities.
+        5. 这个 hash-code 必须终止, 即便这个对象 object 包含了环.
 
 * 示例(Examples):
 
- (= (sxhash (list 'list "ab")) (sxhash (list 'list "ab"))) =>  true
- (= (sxhash "a") (sxhash (make-string 1 :initial-element #\a))) =>  true
- (let ((r (make-random-state)))
-   (= (sxhash r) (sxhash (make-random-state r))))
-=>  implementation-dependent
+    ```LISP
+    (= (sxhash (list 'list "ab")) (sxhash (list 'list "ab"))) =>  true
+    (= (sxhash "a") (sxhash (make-string 1 :initial-element #\a))) =>  true
+    (let ((r (make-random-state)))
+      (= (sxhash r) (sxhash (make-random-state r))))
+    =>  implementation-dependent
+    ```
 
 * 副作用(Side Effects): None.
 
 * 受此影响(Affected By):
 
-The implementation.
+        这个实现.
 
 * 异常情况(Exceptional Situations): None.
 
@@ -743,12 +746,12 @@ The implementation.
 
 * 注意(Notes):
 
-Many common hashing needs are satisfied by make-hash-table and the related functions on hash tables. sxhash is intended for use where the pre-defined abstractions are insufficient. Its main intent is to allow the user a convenient means of implementing more complicated hashing paradigms than are provided through hash tables.
+        很多常见的散列需要都是通过 make-hash-table 和在哈希表上相关的函数满足的. sxhash 的目的是在预定义的抽象不充分的地方使用. 它的主要目的是让用户能够方便地实现比哈希表提供的更复杂的散列范例.
 
-The hash codes returned by sxhash are not necessarily related to any hashing strategy used by any other function in Common Lisp.
+        sxhash 返回的哈希值不需要和任何其他 Common Lisp 中的函数使用的散列策略相关.
 
-For objects of types that equal compares with eq, item 3 requires that the hash-code be based on some immutable quality of the identity of the object. Another legitimate implementation technique would be to have sxhash assign (and cache) a random hash code for these objects, since there is no requirement that similar but non-eq objects have the same hash code.
+        对于类型 equal 的对象用 eq 比较, 条目 3 要求这个 hash-code 基于这个对象标识的某个不变的特性. 另一个合法的实现技术是让 sxhash 为这些对象分配(和缓存)一个随机的哈希值, 因为这里没有要求那个相似但是不是 eq 的对象有着相同的哈希值.<!--TODO 待校对-->
 
-Although similarity is defined for symbols in terms of both the symbol's name and the packages in which the symbol is accessible, item 3 disallows using package information to compute the hash code, since changes to the package status of a symbol are not visible to equal. 
+        虽然依据符号的名字和符号可访问的包都为符号定义了相似性, 条目 3 不允许使用包信息来计算哈希值, 因为对一个符号的包状态的改变对于 equal 是不可见的. 
 
 
