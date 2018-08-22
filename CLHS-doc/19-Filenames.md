@@ -1,67 +1,67 @@
-# 19 Filenames
+# 19 文件名
 
-> * 19.1 [Overview of Filenames](#OverviewFilenames)
+> * 19.1 [文件名概述](#OverviewFilenames)
 > * 19.2 [Pathnames](#Pathnames)
 > * 19.3 [Logical Pathnames](#LogicalPathnames)
 > * 19.4 [The Filenames Dictionary](#TheFilenamesDictionary)
 
 
-## 19.1 <span id="OverviewFilenames">Overview of Filenames</span>
+## 19.1 <span id="OverviewFilenames">文件名概述</span>
 
-There are many kinds of file systems, varying widely both in their superficial syntactic details, and in their underlying power and structure. The facilities provided by Common Lisp for referring to and manipulating files has been chosen to be compatible with many kinds of file systems, while at the same time minimizing the program-visible differences between kinds of file systems.
+这里有很多种文件系统, 在它们的表面语法细节, 以及它们的潜在的能力和结构上都有很大的不同. 由 Common Lisp 提供的用于引用和操作文件的工具被选择与许多类型的文件系统兼容, 同时最小化了不同文件系统之间的程序可见差异.
 
-Since file systems vary in their conventions for naming files, there are two distinct ways to represent filenames: as namestrings and as pathnames.
+因为文件系统在命名文件的约定上有区别, 这里有两种不同的方式来表示文件名: 作为名称字符串(namestring)和作为路径名(pathname).
 
-> * 19.1.1 [Namestrings as Filenames](#NamestringsFilenames)
-> * 19.1.2 [Pathnames as Filenames](#PathnamesFilenames)
-> * 19.1.3 [Parsing Namestrings Into Pathnames](#ParseNamestrIntoPathnames)
-
-
-### 19.1.1 <span id="NamestringsFilenames">Namestrings as Filenames</span>
-
-A namestring is a string that represents a filename.
-
-In general, the syntax of namestrings involves the use of implementation-defined conventions, usually those customary for the file system in which the named file resides. The only exception is the syntax of a logical pathname namestring, which is defined in this specification; see Section 19.3.1 (Syntax of Logical Pathname Namestrings).
-
-A conforming program must never unconditionally use a literal namestring other than a logical pathname namestring because Common Lisp does not define any namestring syntax other than that for logical pathnames that would be guaranteed to be portable. However, a conforming program can, if it is careful, successfully manipulate user-supplied data which contains or refers to non-portable namestrings.
-
-A namestring can be coerced to a pathname by the functions pathname or parse-namestring. 
+> * 19.1.1 [名称字符串作为文件名](#NamestringsFilenames)
+> * 19.1.2 [路径名作为文件名](#PathnamesFilenames)
+> * 19.1.3 [解析名称字符串为路径名](#ParseNamestrIntoPathnames)
 
 
-### 19.1.2 <span id="PathnamesFilenames">Pathnames as Filenames</span>
+### 19.1.1 <span id="NamestringsFilenames">名称字符串作为文件名</span>
 
-Pathnames are structured objects that can represent, in an implementation-independent way, the filenames that are used natively by an underlying file system.
+一个名称字符串(namestring)是一个表示一个文件名的字符串.
 
-In addition, pathnames can also represent certain partially composed filenames for which an underlying file system might not have a specific namestring representation.
+通常, 名称字符串的语法涉及到使用具体实现定义的约定, 通常是指所命名文件所在的文件系统的惯例. 仅有的例外是一个逻辑路径名的名称字符串的语法, 它被定义在这个规范中; 见章节 19.3.1 (Syntax of Logical Pathname Namestrings).
 
-A pathname need not correspond to any file that actually exists, and more than one pathname can refer to the same file. For example, the pathname with a version of :newest might refer to the same file as a pathname with the same components except a certain number as the version. Indeed, a pathname with version :newest might refer to different files as time passes, because the meaning of such a pathname depends on the state of the file system.
+一个符合规范的程序永远不能无条件地使用一个字面化的名称字符串, 而不是一个逻辑路径名的名称字符串因为 Common Lisp 没有定义任何保证可移植的名称字符串的语法, 除了逻辑路径名的名称字符串. 然而, 一个符合规范的程序, 如果足够小心, 可以成功地操纵用户提供了包含或引用不可移植的名称字符串的数据.
 
-Some file systems naturally use a structural model for their filenames, while others do not. Within the Common Lisp pathname model, all filenames are seen as having a particular structure, even if that structure is not reflected in the underlying file system. The nature of the mapping between structure imposed by pathnames and the structure, if any, that is used by the underlying file system is implementation-defined.
+一个名称字符串可以通过函数 pathname 或 parse-namestring 强制转为路径名. 
 
-Every pathname has six components: a host, a device, a directory, a name, a type, and a version. By naming files with pathnames, Common Lisp programs can work in essentially the same way even in file systems that seem superficially quite different. For a detailed description of these components, see Section 19.2.1 (Pathname Components).
 
-The mapping of the pathname components into the concepts peculiar to each file system is implementation-defined. There exist conceivable pathnames for which there is no mapping to a syntactically valid filename in a particular implementation. An implementation may use various strategies in an attempt to find a mapping; for example, an implementation may quietly truncate filenames that exceed length limitations imposed by the underlying file system, or ignore certain pathname components for which the file system provides no support. If such a mapping cannot be found, an error of type file-error is signaled.
+### 19.1.2 <span id="PathnamesFilenames">路径名作为文件名</span>
 
-The time at which this mapping and associated error signaling occurs is implementation-dependent. Specifically, it may occur at the time the pathname is constructed, when coercing a pathname to a namestring, or when an attempt is made to open or otherwise access the file designated by the pathname.
+路径名是结构化的对象, 可以用一种独立于具体实现的方式表示底层文件系统本地使用的文件名.
 
-The next figure lists some defined names that are applicable to pathnames.
+另外, 路径名还可以表示某些部分组成的文件名, 其中底层文件系统可能没有特定的名称字符串表示.
 
-*default-pathname-defaults*  namestring          pathname-name          
-directory-namestring         open                pathname-type          
-enough-namestring            parse-namestring    pathname-version       
-file-namestring              pathname            pathnamep              
-file-string-length           pathname-device     translate-pathname     
-host-namestring              pathname-directory  truename               
-make-pathname                pathname-host       user-homedir-pathname  
-merge-pathnames              pathname-match-p    wild-pathname-p        
+一个路径名不需要对应任何实际上已存在的文件, 并且多个路径名可以引用相同文件. 比如, 这个带有一个 :newest 的版本可能和一个带有相同成分除了某个数字作为版本的路径名引用相同的文件. 确实, 随着时间推移一个带有版本 :newest 的路径名可能引用不同的文件, 因为这样一个路径名的意义取决于文件系统的状态.
 
-Figure 19-1. Pathname Operations 
+某些文件系统自然地为它们的文件名使用一个结构模型, 而其他的则没有. 在 Common Lisp 路径名模型中, 所有文件名都被视作有着一个特定结构, 即便那个结构没有反映在底层文件系统中. 由路径名暗示的结构和底层文件系统所使用的结构(如果有的话)之间的映射性质是具体实现定义的.
 
-### 19.1.3 <span id="ParseNamestrIntoPathnames">Parsing Namestrings Into Pathnames</span>
+每一个路径名都有六个成分: 一个主机(host), 一个设备(device), 一个目录(directory), 一个名字(name), 一个类型(type), 和一个版本(version). 通过用路径名来命名文件, 即使在文件系统中看起来很不一样, Common Lisp 程序可以以相同的方式工作. 关于这些成分的详细描述, 见章节 19.2.1 (Pathname Components).
 
-Parsing is the operation used to convert a namestring into a pathname. Except in the case of parsing logical pathname namestrings, this operation is implementation-dependent, because the format of namestrings is implementation-dependent.
+这些路径名成分到每个文件系统的特有概念的映射是具体实现定义的. 存在可想到的路径名, 在特定的实现中, 没有映射到语法有效的文件名. 一个具体实现可能使用多种策略去尝试找到一个映射; 例如, 一个实现可能会悄悄地截断超过底层文件系统施加的长度限制的文件名, 或者忽略文件系统不提供支持的某些路径名组件. 如果没有找到这样一个映射, 就会发出一个 file-error 类型的错误.
 
-A conforming implementation is free to accommodate other file system features in its pathname representation and provides a parser that can process such specifications in namestrings. Conforming programs must not depend on any such features, since those features will not be portable. 
+这个映射和关联的错误发出的时间是依赖于具体实现的. 具体来说, 它可能出现在这个路径名被构造时, 吧一个路径名强制转为名称字符串时, 或者尝试去打开或访问这个路径名表示的文件时.
+
+下面这段列出了一些已定义的可应用于路径名的名字.
+
+    *default-pathname-defaults*  namestring          pathname-name          
+    directory-namestring         open                pathname-type          
+    enough-namestring            parse-namestring    pathname-version       
+    file-namestring              pathname            pathnamep              
+    file-string-length           pathname-device     translate-pathname     
+    host-namestring              pathname-directory  truename               
+    make-pathname                pathname-host       user-homedir-pathname  
+    merge-pathnames              pathname-match-p    wild-pathname-p        
+
+    Figure 19-1. 路径名操作
+
+### 19.1.3 <span id="ParseNamestrIntoPathnames">解析名称字符串为路径名</span>
+
+解析是一个被用于转换一个名称字符串为一个路径名的操作. 除了在解析逻辑路径名名称字符串时, 这个操作是依赖于具体实现的, 因为这个名称字符串的格式是依赖于具体实现的.
+
+一个符合规范的实现可以在它的路径名表示中自由地包含其他文件系统特性并且提供一个可以访问名称字符串中这样的参数的解析器. 符合规范的程序一定不能依赖这样的特性, 因为这些特性不是可移植的. 
 
 ## 19.2 <span id="Pathnames">Pathnames</span>
 
@@ -481,86 +481,87 @@ The null string, "", is not a valid value for any component of a logical pathnam
 
 * 类优先级列表(Class Precedence List):
 
-pathname, t
+        pathname, t
 
 * 描述(Description):
 
-A pathname is a structured object which represents a filename.
+        一个路径名是一个表示一个文件名的结构化对象.
 
-There are two kinds of pathnames---physical pathnames and logical pathnames. 
+        这里有两种路径名---物理路径名和逻辑路径名. 
 
 
 ### <span id="SC-LOGICAL-PATHNAME">System Class LOGICAL-PATHNAME</span>
 
 * 类优先级列表(Class Precedence List):
 
-logical-pathname, pathname, t
+        logical-pathname, pathname, t
 
 * 描述(Description):
 
-A pathname that uses a namestring syntax that is implementation-independent, and that has component values that are implementation-independent. Logical pathnames do not refer directly to filenames
+        一个使用独立于具体实现的名称字符串语法的并且有着独立于具体实现的成员值的路径名. 逻辑路径名不会直接引用文件名.
 
 * 也见(See Also):
 
-Section 20.1 (File System Concepts), Section 2.4.8.14 (Sharpsign P), Section 22.1.3.11 (Printing Pathnames) 
+        章节 20.1 (File System Concepts), 章节 2.4.8.14 (Sharpsign P), 章节 22.1.3.11 (Printing Pathnames) 
 
 
 ### <span id="F-PATHNAME">Function PATHNAME</span>
 
 * 语法(Syntax):
 
-pathname pathspec => pathname
+        pathname pathspec => pathname
 
 * 参数和值(Arguments and Values):
 
-pathspec---a pathname designator.
-
-pathname---a pathname.
+        pathspec---一个路径名标识符.
+        pathname---一个路径名.
 
 * 描述(Description):
 
-Returns the pathname denoted by pathspec.
+        返回 pathspec 表示的路径名.
 
-If the pathspec designator is a stream, the stream can be either open or closed; in both cases, the pathname returned corresponds to the filename used to open the file. pathname returns the same pathname for a file stream after it is closed as it did when it was open.
+        如果这个 pathspec 标识符是一个流, 那么这个流可以是打开的或关闭的; 不管在哪种请看, 这个 pathname 返回被用于打开这个文件的对应文件名. 在一个文件流被关闭后, pathname 还是返回和它被打开时相同的路径名.
 
-If the pathspec designator is a file stream created by opening a logical pathname, a logical pathname is returned.
+        如果这个 pathspec 标识符是一个通过打开一个逻辑路径名所创建的文件流, 就返回一个逻辑路径名.
 
 * 示例(Examples):
 
- ;; There is a great degree of variability permitted here.  The next
- ;; several examples are intended to illustrate just a few of the many
- ;; possibilities.  Whether the name is canonicalized to a particular
- ;; case (either upper or lower) depends on both the file system and the
- ;; implementation since two different implementations using the same
- ;; file system might differ on many issues.  How information is stored
- ;; internally (and possibly presented in #S notation) might vary,
- ;; possibly requiring `accessors' such as PATHNAME-NAME to perform case
- ;; conversion upon access.  The format of a namestring is dependent both
- ;; on the file system and the implementation since, for example, one
- ;; implementation might include the host name in a namestring, and
- ;; another might not.  #S notation would generally only be used in a
- ;; situation where no appropriate namestring could be constructed for use
- ;; with #P.
- (setq p1 (pathname "test"))
-=>  #P"CHOCOLATE:TEST" ; with case canonicalization (e.g., VMS)
-OR=>  #P"VANILLA:test"   ; without case canonicalization (e.g., Unix)
-OR=>  #P"test"
-OR=>  #S(PATHNAME :HOST "STRAWBERRY" :NAME "TEST")
-OR=>  #S(PATHNAME :HOST "BELGIAN-CHOCOLATE" :NAME "test")
- (setq p2 (pathname "test"))
-=>  #P"CHOCOLATE:TEST"
-OR=>  #P"VANILLA:test"
-OR=>  #P"test"
-OR=>  #S(PATHNAME :HOST "STRAWBERRY" :NAME "TEST")
-OR=>  #S(PATHNAME :HOST "BELGIAN-CHOCOLATE" :NAME "test")
- (pathnamep p1) =>  true
- (eq p1 (pathname p1)) =>  true
- (eq p1 p2)
-=>  true
-OR=>  false
- (with-open-file (stream "test" :direction :output)
-   (pathname stream))
-=>  #P"ORANGE-CHOCOLATE:>Gus>test.lisp.newest"
+    ```LISP
+    ;; There is a great degree of variability permitted here.  The next
+    ;; several examples are intended to illustrate just a few of the many
+    ;; possibilities.  Whether the name is canonicalized to a particular
+    ;; case (either upper or lower) depends on both the file system and the
+    ;; implementation since two different implementations using the same
+    ;; file system might differ on many issues.  How information is stored
+    ;; internally (and possibly presented in #S notation) might vary,
+    ;; possibly requiring `accessors' such as PATHNAME-NAME to perform case
+    ;; conversion upon access.  The format of a namestring is dependent both
+    ;; on the file system and the implementation since, for example, one
+    ;; implementation might include the host name in a namestring, and
+    ;; another might not.  #S notation would generally only be used in a
+    ;; situation where no appropriate namestring could be constructed for use
+    ;; with #P.
+    (setq p1 (pathname "test"))
+    =>  #P"CHOCOLATE:TEST" ; with case canonicalization (e.g., VMS)
+    OR=>  #P"VANILLA:test"   ; without case canonicalization (e.g., Unix)
+    OR=>  #P"test"
+    OR=>  #S(PATHNAME :HOST "STRAWBERRY" :NAME "TEST")
+    OR=>  #S(PATHNAME :HOST "BELGIAN-CHOCOLATE" :NAME "test")
+    (setq p2 (pathname "test"))
+    =>  #P"CHOCOLATE:TEST"
+    OR=>  #P"VANILLA:test"
+    OR=>  #P"test"
+    OR=>  #S(PATHNAME :HOST "STRAWBERRY" :NAME "TEST")
+    OR=>  #S(PATHNAME :HOST "BELGIAN-CHOCOLATE" :NAME "test")
+    (pathnamep p1) =>  true
+    (eq p1 (pathname p1)) =>  true
+    (eq p1 p2)
+    =>  true
+    OR=>  false
+    (with-open-file (stream "test" :direction :output)
+      (pathname stream))
+    =>  #P"ORANGE-CHOCOLATE:>Gus>test.lisp.newest"
+    ```
 
 * 受此影响(Affected By): None.
 
@@ -568,7 +569,7 @@ OR=>  false
 
 * 也见(See Also):
 
-pathname, logical-pathname, Section 20.1 (File System Concepts), Section 19.1.2 (Pathnames as Filenames)
+        pathname, logical-pathname, 章节 20.1 (File System Concepts), 章节 19.1.2 (路径名作为文件名)
 
 * 注意(Notes): None. 
 
@@ -662,7 +663,7 @@ The file system.
 
 * 也见(See Also):
 
-merge-pathnames, pathname, logical-pathname, Section 20.1 (File System Concepts), Section 19.1.2 (Pathnames as Filenames)
+merge-pathnames, pathname, logical-pathname, Section 20.1 (File System Concepts), Section 19.1.2 (路径名作为文件名)
 
 * 注意(Notes):
 
@@ -825,7 +826,7 @@ Should signal an error of type type-error if its first argument is not a pathnam
 
 * 也见(See Also):
 
-pathname, logical-pathname, Section 20.1 (File System Concepts), Section 19.1.2 (Pathnames as Filenames)
+pathname, logical-pathname, Section 20.1 (File System Concepts), Section 19.1.2 (路径名作为文件名)
 
 * 注意(Notes): None. 
 
@@ -1020,7 +1021,7 @@ If host is incorrectly supplied, an error of type type-error is signaled.
 
 * 也见(See Also):
 
-logical-pathname, Section 19.1.2 (Pathnames as Filenames)
+logical-pathname, Section 19.1.2 (路径名作为文件名)
 
 * 注意(Notes):
 
@@ -1186,7 +1187,7 @@ It is not necessarily possible to construct a valid namestring by concatenating 
 
 * 也见(See Also):
 
-truename, merge-pathnames, pathname, logical-pathname, Section 20.1 (File System Concepts), Section 19.1.2 (Pathnames as Filenames)
+truename, merge-pathnames, pathname, logical-pathname, Section 20.1 (File System Concepts), Section 19.1.2 (路径名作为文件名)
 
 * 注意(Notes): None. 
 
@@ -1279,7 +1280,7 @@ If thing is a logical pathname namestring and if the host portion of the namestr
 
 * 也见(See Also):
 
-pathname, logical-pathname, Section 20.1 (File System Concepts), Section 19.2.2.2.3 (:UNSPECIFIC as a Component Value), Section 19.1.2 (Pathnames as Filenames)
+pathname, logical-pathname, Section 20.1 (File System Concepts), Section 19.2.2.2.3 (:UNSPECIFIC as a Component Value), Section 19.1.2 (路径名作为文件名)
 
 * 注意(Notes): None. 
 
@@ -1327,7 +1328,7 @@ If pathname is not a pathname, a string, or a stream associated with a file an e
 
 * 也见(See Also):
 
-pathname, logical-pathname, Section 20.1 (File System Concepts), Section 19.1.2 (Pathnames as Filenames)
+pathname, logical-pathname, Section 20.1 (File System Concepts), Section 19.1.2 (路径名作为文件名)
 
 * 注意(Notes):
 
@@ -1364,7 +1365,7 @@ If pathname or wildcard is not a pathname, string, or stream associated with a f
 
 * 也见(See Also):
 
-directory, pathname, logical-pathname, Section 20.1 (File System Concepts), Section 19.1.2 (Pathnames as Filenames)
+directory, pathname, logical-pathname, Section 20.1 (File System Concepts), Section 19.1.2 (路径名作为文件名)
 
 * 注意(Notes): None. 
 
@@ -1409,7 +1410,7 @@ If no translation matches, an error of type file-error is signaled.
 
 * 也见(See Also):
 
-logical-pathname, logical-pathname-translations, logical-pathname, Section 20.1 (File System Concepts), Section 19.1.2 (Pathnames as Filenames)
+logical-pathname, logical-pathname-translations, logical-pathname, Section 20.1 (File System Concepts), Section 19.1.2 (路径名作为文件名)
 
 * 注意(Notes): None. 
 
@@ -1500,7 +1501,7 @@ If any of source, from-wildcard, or to-wildcard is not a pathname, a string, or 
 
 * 也见(See Also):
 
-namestring, pathname-host, pathname, logical-pathname, Section 20.1 (File System Concepts), Section 19.1.2 (Pathnames as Filenames)
+namestring, pathname-host, pathname, logical-pathname, Section 20.1 (File System Concepts), Section 19.1.2 (路径名作为文件名)
 
 * 注意(Notes):
 
@@ -1567,7 +1568,7 @@ merge-pathnames maps customary case in pathname into customary case in the outpu
 
 * 也见(See Also):
 
-*default-pathname-defaults*, pathname, logical-pathname, Section 20.1 (File System Concepts), Section 19.1.2 (Pathnames as Filenames)
+*default-pathname-defaults*, pathname, logical-pathname, Section 20.1 (File System Concepts), Section 19.1.2 (路径名作为文件名)
 
 * 注意(Notes):
 
