@@ -65,99 +65,95 @@
 
 ## 19.2 <span id="Pathnames">Pathnames</span>
 
-> * 19.2.1 [Pathname Components](#PathnameComponents)
-> * 19.2.2 [Interpreting Pathname Component Values](#InterpretPathnameCompValues)
-> * 19.2.3 [Merging Pathnames](#MergingPathnames)
+> * 19.2.1 [路径名成员](#PathnameComponents)
+> * 19.2.2 [解释路径名成员值](#InterpretPathnameCompValues)
+> * 19.2.3 [合并路径名](#MergingPathnames)
 
-### 19.2.1 <span id="PathnameComponents">Pathname Components</span>
+### 19.2.1 <span id="PathnameComponents">路径名成员</span>
 
-A pathname has six components: a host, a device, a directory, a name, a type, and a version.
+一个路径名有六个成员: 一个主机(host), 一个设备(device), 一个目录(directory), 一个名字(name), 一个类型(type), 和一个版本(version).
 
-#### 19.2.1.1 The Pathname Host Component
+#### 19.2.1.1 路径名主机成员
 
-The name of the file system on which the file resides, or the name of a logical host. 
+文件所在的文件系统的名称，或者逻辑主机的名称.
 
+#### 19.2.1.2 路径名设备成员
 
-#### 19.2.1.2 The Pathname Device Component
+在许多主机文件系统中对应于"设备"或"文件结构"概念: 包含这些文件的逻辑或物理设备的名字. 
 
-Corresponds to the ``device'' or ``file structure'' concept in many host file systems: the name of a logical or physical device containing files. 
+#### 19.2.1.3 路径名目录成员
 
+在许多主机文件系统中对应于"目录"概念: 一组相关文件的名字. 
 
-#### 19.2.1.3 The Pathname Directory Component
+#### 19.2.1.4 路径名名字成员
 
-Corresponds to the ``directory'' concept in many host file systems: the name of a group of related files. 
+一组可以被认为是概念上相关的文件的"名称"部分. 
 
+#### 19.2.1.5 路径名类型成员
 
-#### 19.2.1.4 The Pathname Name Component
-
-The ``name'' part of a group of files that can be thought of as conceptually related. 
-
-
-#### 19.2.1.5 The Pathname Type Component
-
-Corresponds to the ``filetype'' or ``extension'' concept in many host file systems. This says what kind of file this is. This component is always a string, nil, :wild, or :unspecific. 
+在许多主机文件系统中对应于"文件类型"或"扩展"概念. 这说明了这是什么类型的文件. 这个成员总是为一个字符串, nil, :wild, 或 :unspecific. 
 
 
-#### 19.2.1.6 The Pathname Version Component
+#### 19.2.1.6 路径名版本成员
 
-Corresponds to the ``version number'' concept in many host file systems.
+对应于许多主机文件系统中的"版本号"概念.
 
-The version is either a positive integer or a symbol from the following list: nil, :wild, :unspecific, or :newest (refers to the largest version number that already exists in the file system when reading a file, or to a version number greater than any already existing in the file system when writing a new file). Implementations can define other special version symbols. 
+这个版本是一个整数或者是下面列表中的一个符号: nil, :wild, :unspecific, 或 :newest (指在读取文件时, 文件系统中已经存在的最大版本号, 或者在编写新文件时比文件系统中已有的版本号更大的版本号). 具体实现可以定义其他特别的版本符号. 
 
 
-### 19.2.2 <span id="InterpretPathnameCompValues">Interpreting Pathname Component Values</span>
+### 19.2.2 <span id="InterpretPathnameCompValues">解释路径名成员值</span>
 
-> * 19.2.2.1 [Strings in Component Values](#StringsComponentValues)
-> * 19.2.2.2 [Special Pathname Component Values](#SpecPathnameComponentValues)
-> * 19.2.2.3 [Restrictions on Wildcard Pathnames](#RestrictionWildcardPathnames)
-> * 19.2.2.4 [Restrictions on Examining Pathname Components](#RestrictionExamPathnameComponents)
-> * 19.2.2.5 [Restrictions on Constructing Pathnames](#RestrictConstructPathnames)
+> * 19.2.2.1 [成员值中的字符串](#StringsComponentValues)
+> * 19.2.2.2 [特殊路径名成员值](#SpecPathnameComponentValues)
+> * 19.2.2.3 [通配符路径名上的限制](#RestrictionWildcardPathnames)
+> * 19.2.2.4 [检查路径名组件的限制](#RestrictionExamPathnameComponents)
+> * 19.2.2.5 [构造路径名的限制](#RestrictConstructPathnames)
 
-#### 19.2.2.1 <span id="StringsComponentValues">Strings in Component Values</span>
+#### 19.2.2.1 <span id="StringsComponentValues">成员值中的字符串</span>
 
-##### 19.2.2.1.1 Special Characters in Pathname Components
+##### 19.2.2.1.1 路径名成员中的特殊字符
 
-Strings in pathname component values never contain special characters that represent separation between pathname fields, such as slash in Unix filenames. Whether separator characters are permitted as part of a string in a pathname component is implementation-defined; however, if the implementation does permit it, it must arrange to properly ``quote'' the character for the file system when constructing a namestring. For example,
+路径名成员值中的字符串永远不会包含特殊字符, 这些字符表示路径名字段之间的间隔, 比如 Unix 文件名中的斜杠. 分离字符是否允许作为一个路径名成员中字符串的一部分是具体实现定义的; 然而, 如果实现确实允许这个, 它必须在构造一个名称字符串时, 安排正确地"引用"文件系统的字符. 例如,
 
+```LISP
  ;; In a TOPS-20 implementation, which uses ^V to quote 
  (NAMESTRING (MAKE-PATHNAME :HOST "OZ" :NAME "<TEST>"))
 =>  #P"OZ:PS:^V<TEST^V>"
 NOT=>  #P"OZ:PS:<TEST>"
+```
+
+##### 19.2.2.1.2 路径名成员中的大小写
+
+名称字符串总是使用本地文件系统的大小写约定, 但是操纵路径名成员的 Common Lisp 函数允许调用者通过给 :case 参数提供一个值去选择两种表示成员值大小写的约定中的任意一种. 下一段列出了和允许 :case 参数的路径名相关函数:
+
+    make-pathname    pathname-directory  pathname-name  
+    pathname-device  pathname-host       pathname-type  
+
+    Figure 19-2. 使用 :CASE 参数的路径名函数
+
+###### 19.2.2.1.2.1 路径名成员中的本地大小写
+
+对于 Figure 19-2 中的函数, :case 参数的一个 :local 值 (对于这些函数的默认值) 表示这些函数应该接受并产生成员值中的字符串, 就好像它们已经根据主机文件系统的大小写约定来表示了一样.
+
+如果这个文件系统两种大小写都支持, 在这个协议下给定或接收的字符串作为路径名组件值将被完全使用. 如果这个文件系统只支持一种大小写, 这个字符串会被转成那个大小写. 
 
 
+###### 19.2.2.1.2.2 路径名成员中的通用大小写
 
-##### 19.2.2.1.2 Case in Pathname Components
+对于 Figure 19-2 中的函数, :case 参数的一个 :common 值表示这些函数应该根据以下约定接受和产生成员值中的字符串:
 
-Namestrings always use local file system case conventions, but Common Lisp functions that manipulate pathname components allow the caller to select either of two conventions for representing case in component values by supplying a value for the :case keyword argument. The next figure lists the functions relating to pathnames that permit a :case argument:
+* 所有都是大写意味着使用一个文件系统习惯的大小写.
+* 所有都是小写字母表示使用与习惯情况相反的方法.
+* 混合大小写就表示自身.
 
-make-pathname    pathname-directory  pathname-name  
-pathname-device  pathname-host       pathname-type  
-
-Figure 19-2. Pathname functions using a :CASE argument
-
-###### 19.2.2.1.2.1 Local Case in Pathname Components
-
-For the functions in Figure 19-2, a value of :local for the :case argument (the default for these functions) indicates that the functions should receive and yield strings in component values as if they were already represented according to the host file system's convention for case.
-
-If the file system supports both cases, strings given or received as pathname component values under this protocol are to be used exactly as written. If the file system only supports one case, the strings will be translated to that case. 
+注意, 这些约定可以以这样一种方式被选择, 从 :local 转换到 :common 并转换回 :local 信息保持不变. 
 
 
-###### 19.2.2.1.2.2 Common Case in Pathname Components
-
-For the functions in Figure 19-2, a value of :common for the :case argument that these functions should receive and yield strings in component values according to the following conventions:
-
-* All uppercase means to use a file system's customary case.
-* All lowercase means to use the opposite of the customary case.
-* Mixed case represents itself.
-
-Note that these conventions have been chosen in such a way that translation from :local to :common and back to :local is information-preserving. 
-
-
-#### 19.2.2.2 <span id="SpecPathnameComponentValues">Special Pathname Component Values</span>
+#### 19.2.2.2 <span id="SpecPathnameComponentValues">特殊路径名成员值</span>
 
 ##### 19.2.2.2.1 NIL as a Component Value
 
-As a pathname component value, nilrepresents that the component is ``unfilled''; see Section 19.2.3 (Merging Pathnames).
+As a pathname component value, nilrepresents that the component is ``unfilled''; see Section 19.2.3 (合并路径名).
 
 The value of any pathname component can be nil.
 
@@ -188,10 +184,10 @@ When writing[1] the value of any pathname component, the consequences are undefi
 
 If a pathname is converted to a namestring, the symbols nil and :unspecific cause the field to be treated as if it were empty. That is, both nil and :unspecific cause the component not to appear in the namestring.
 
-However, when merging a pathname with a set of defaults, only a nil value for a component will be replaced with the default for that component, while a value of :unspecific will be left alone as if the field were ``filled''; see the function merge-pathnames and Section 19.2.3 (Merging Pathnames). 
+However, when merging a pathname with a set of defaults, only a nil value for a component will be replaced with the default for that component, while a value of :unspecific will be left alone as if the field were ``filled''; see the function merge-pathnames and Section 19.2.3 (合并路径名). 
 
 
-#### 19.2.2.3 <span id="RestrictionWildcardPathnames">Restrictions on Wildcard Pathnames</span>
+#### 19.2.2.3 <span id="RestrictionWildcardPathnames">通配符路径名上的限制</span>
 
 Wildcard pathnames can be used with directory but not with open, and return true from wild-pathname-p. When examining wildcard components of a wildcard pathname, conforming programs must be prepared to encounter any of the following additional values in any component or any element of a list that is the directory component:
 
@@ -202,11 +198,11 @@ Wildcard pathnames can be used with directory but not with open, and return true
 * Any object, representing an implementation-dependent wildcard pattern. 
 
 
-#### 19.2.2.4 <span id="RestrictionExamPathnameComponents">Restrictions on Examining Pathname Components</span>
+#### 19.2.2.4 <span id="RestrictionExamPathnameComponents">检查路径名组件的限制</span>
 
 The space of possible objects that a conforming program must be prepared to read[1] as the value of a pathname component is substantially larger than the space of possible objects that a conforming program is permitted to write[1] into such a component.
 
-While the values discussed in the subsections of this section, in Section 19.2.2.2 (Special Pathname Component Values), and in Section 19.2.2.3 (Restrictions on Wildcard Pathnames) apply to values that might be seen when reading the component values, substantially more restrictive rules apply to constructing pathnames; see Section 19.2.2.5 (Restrictions on Constructing Pathnames).
+While the values discussed in the subsections of this section, in Section 19.2.2.2 (特殊路径名成员值), and in Section 19.2.2.3 (通配符路径名上的限制) apply to values that might be seen when reading the component values, substantially more restrictive rules apply to constructing pathnames; see Section 19.2.2.5 (构造路径名的限制).
 
 When examining pathname components, conforming programs should be aware of the following restrictions.
 
@@ -218,7 +214,7 @@ It is implementation-dependent what object is used to represent the host.
 
 The device might be a string, :wild, :unspecific, or nil.
 
-Note that :wild might result from an attempt to read[1] the pathname component, even though portable programs are restricted from writing[1] such a component value; see Section 19.2.2.3 (Restrictions on Wildcard Pathnames) and Section 19.2.2.5 (Restrictions on Constructing Pathnames). 
+Note that :wild might result from an attempt to read[1] the pathname component, even though portable programs are restricted from writing[1] such a component value; see Section 19.2.2.3 (通配符路径名上的限制) and Section 19.2.2.5 (构造路径名的限制). 
 
 
 ##### 19.2.2.4.3 Restrictions on Examining a Pathname Directory Component
@@ -286,7 +282,7 @@ The version can be any symbol or any integer.
 
 The symbol :newest refers to the largest version number that already exists in the file system when reading, overwriting, appending, superseding, or directory listing an existing file. The symbol :newest refers to the smallest version number greater than any existing version number when creating a new file.
 
-The symbols nil, :unspecific, and :wild have special meanings and restrictions; see Section 19.2.2.2 (Special Pathname Component Values) and Section 19.2.2.5 (Restrictions on Constructing Pathnames).
+The symbols nil, :unspecific, and :wild have special meanings and restrictions; see Section 19.2.2.2 (特殊路径名成员值) and Section 19.2.2.5 (构造路径名的限制).
 
 Other symbols and integers have implementation-defined meaning.
 
@@ -302,7 +298,7 @@ It is suggested, but not required, that implementations do the following:
 * Use keywords for other special versions. 
 
 
-#### 19.2.2.5 <span id="RestrictConstructPathnames">Restrictions on Constructing Pathnames</span>
+#### 19.2.2.5 <span id="RestrictConstructPathnames">构造路径名的限制</span>
 
 When constructing a pathname from components, conforming programs must follow these rules:
 
@@ -319,7 +315,7 @@ When constructing a pathname from components, conforming programs must follow th
 * An implementation might support other values for some components, but a portable program cannot use those values. A conforming program can use implementation-dependent values but this can make it non-portable; for example, it might work only with Unix file systems. 
 
 
-### 19.2.3 <span id="MergingPathnames">Merging Pathnames</span>
+### 19.2.3 <span id="MergingPathnames">合并路径名</span>
 
 Merging takes a pathname with unfilled components and supplies values for those components from a source of defaults.
 
@@ -327,7 +323,7 @@ If a component's value is nil, that component is considered to be unfilled. If a
 
 Except as explicitly specified otherwise, for functions that manipulate or inquire about files in the file system, the pathname argument to such a function is merged with *default-pathname-defaults* before accessing the file system (as if by merge-pathnames).
 
-#### 19.2.3.1 Examples of Merging Pathnames
+#### 19.2.3.1 Examples of 合并路径名
 
 Although the following examples are possible to execute only in implementations which permit :unspecific in the indicated position andwhich permit four-letter type components, they serve to illustrate the basic concept of pathname merging.
 
@@ -459,25 +455,25 @@ The null string, "", is not a valid value for any component of a logical pathnam
 
 ## 19.4 <span id="TheFilenamesDictionary">The Filenames Dictionary</span>
 
-> * [System Class PATHNAME](#SC-PATHNAME)
-> * [System Class LOGICAL-PATHNAME](#SC-LOGICAL-PATHNAME)
-> * [Function PATHNAME](#F-PATHNAME)
-> * [Function MAKE-PATHNAME](#F-MAKE-PATHNAME)
-> * [Function PATHNAMEP](#F-PATHNAMEP)
-> * [Function PATHNAME-HOST, PATHNAME-DEVICE, PATHNAME-DIRECTORY, PATHNAME-NAME, PATHNAME-TYPE, PATHNAME-VERSION](#F-PATHNAME-ALL)
-> * [Function LOAD-LOGICAL-PATHNAME-TRANSLATIONS](#F-LOAD-LOGICAL-PATHNAME-TRANSLATIONS)
-> * [Accessor LOGICAL-PATHNAME-TRANSLATIONS](#A-LOGICAL-PATHNAME-TRANSLATIONS)
-> * [Function LOGICAL-PATHNAME](#F-LOGICAL-PATHNAME)
-> * [Variable *DEFAULT-PATHNAME-DEFAULTS*](#V-DEFAULT-PATHNAME-DEFAULTS)
-> * [Function NAMESTRING, FILE-NAMESTRING, DIRECTORY-NAMESTRING, HOST-NAMESTRING, ENOUGH-NAMESTRING](#F-NAMESTRING-ALL)
-> * [Function PARSE-NAMESTRING](#F-PARSE-NAMESTRING)
-> * [Function WILD-PATHNAME-P](#F-WILD-PATHNAME-P)
-> * [Function PATHNAME-MATCH-P](#F-PATHNAME-MATCH-P)
-> * [Function TRANSLATE-LOGICAL-PATHNAME](#F-TRANSLATE-LOGICAL-PATHNAME)
-> * [Function TRANSLATE-PATHNAME](#F-TRANSLATE-PATHNAME)
-> * [Function MERGE-PATHNAMES](#F-MERGE-PATHNAMES)
+> * [系统类 PATHNAME](#SC-PATHNAME)
+> * [系统类 LOGICAL-PATHNAME](#SC-LOGICAL-PATHNAME)
+> * [函数 PATHNAME](#F-PATHNAME)
+> * [函数 MAKE-PATHNAME](#F-MAKE-PATHNAME)
+> * [函数 PATHNAMEP](#F-PATHNAMEP)
+> * [函数 PATHNAME-HOST, PATHNAME-DEVICE, PATHNAME-DIRECTORY, PATHNAME-NAME, PATHNAME-TYPE, PATHNAME-VERSION](#F-PATHNAME-ALL)
+> * [函数 LOAD-LOGICAL-PATHNAME-TRANSLATIONS](#F-LOAD-LOGICAL-PATHNAME-TRANSLATIONS)
+> * [访问器 LOGICAL-PATHNAME-TRANSLATIONS](#A-LOGICAL-PATHNAME-TRANSLATIONS)
+> * [函数 LOGICAL-PATHNAME](#F-LOGICAL-PATHNAME)
+> * [变量 *DEFAULT-PATHNAME-DEFAULTS*](#V-DEFAULT-PATHNAME-DEFAULTS)
+> * [函数 NAMESTRING, FILE-NAMESTRING, DIRECTORY-NAMESTRING, HOST-NAMESTRING, ENOUGH-NAMESTRING](#F-NAMESTRING-ALL)
+> * [函数 PARSE-NAMESTRING](#F-PARSE-NAMESTRING)
+> * [函数 WILD-PATHNAME-P](#F-WILD-PATHNAME-P)
+> * [函数 PATHNAME-MATCH-P](#F-PATHNAME-MATCH-P)
+> * [函数 TRANSLATE-LOGICAL-PATHNAME](#F-TRANSLATE-LOGICAL-PATHNAME)
+> * [函数 TRANSLATE-PATHNAME](#F-TRANSLATE-PATHNAME)
+> * [函数 MERGE-PATHNAMES](#F-MERGE-PATHNAMES)
 
-### <span id="SC-PATHNAME">System Class PATHNAME</span>
+### <span id="SC-PATHNAME">系统类 PATHNAME</span>
 
 * 类优先级列表(Class Precedence List):
 
@@ -490,7 +486,7 @@ The null string, "", is not a valid value for any component of a logical pathnam
         这里有两种路径名---物理路径名和逻辑路径名. 
 
 
-### <span id="SC-LOGICAL-PATHNAME">System Class LOGICAL-PATHNAME</span>
+### <span id="SC-LOGICAL-PATHNAME">系统类 LOGICAL-PATHNAME</span>
 
 * 类优先级列表(Class Precedence List):
 
@@ -505,7 +501,7 @@ The null string, "", is not a valid value for any component of a logical pathnam
         章节 20.1 (File System Concepts), 章节 2.4.8.14 (Sharpsign P), 章节 22.1.3.11 (Printing Pathnames) 
 
 
-### <span id="F-PATHNAME">Function PATHNAME</span>
+### <span id="F-PATHNAME">函数 PATHNAME</span>
 
 * 语法(Syntax):
 
@@ -574,131 +570,125 @@ The null string, "", is not a valid value for any component of a logical pathnam
 * 注意(Notes): None. 
 
 
-### <span id="F-MAKE-PATHNAME">Function MAKE-PATHNAME</span>
+### <span id="F-MAKE-PATHNAME">函数 MAKE-PATHNAME</span>
 
 * 语法(Syntax):
 
-make-pathname &key host device directory name type version defaults case
-
-=> pathname
+        make-pathname &key host device directory name type version defaults case
+        => pathname
 
 * 参数和值(Arguments and Values):
 
-host---a valid physical pathname host. Complicated defaulting behavior; see below.
-
-device---a valid pathname device. Complicated defaulting behavior; see below.
-
-directory---a valid pathname directory. Complicated defaulting behavior; see below.
-
-name---a valid pathname name. Complicated defaulting behavior; see below.
-
-type---a valid pathname type. Complicated defaulting behavior; see below.
-
-version---a valid pathname version. Complicated defaulting behavior; see below.
-
-defaults---a pathname designator. The default is a pathname whose host component is the same as the host component of the value of *default-pathname-defaults*, and whose other components are all nil.
-
-case---one of :common or :local. The default is :local.
-
-pathname---a pathname.
+        host---一个有效的物理路径名主机. 复杂的缺省行为; 见下方.
+        device---一个有效的路径名设备. 复杂的缺省行为; 见下方.
+        directory---一个有效的路径名目录. 复杂的缺省行为; 见下方.
+        name---一个有效的路径名名称. 复杂的缺省行为; 见下方.
+        type---一个有效的路径名类型. 复杂的缺省行为; 见下方.
+        version---一个有效的路径名版本. 复杂的缺省行为; 见下方.
+        defaults---一个路径名标识符. 默认是一个主机成员和 *default-pathname-defaults* 的主机成员相同, 而其他成员都是 nil 的路径名.
+        case---:common 或 :local 其中之一. 默认是 :local.
+        pathname---一个路径名.
 
 * 描述(Description):
 
-Constructs and returns a pathname from the supplied keyword arguments.
+        从提供的关键字参数中构造并返回一个路径名.
 
-After the components supplied explicitly by host, device, directory, name, type, and version are filled in, the merging rules used by merge-pathnames are used to fill in any unsupplied components from the defaults supplied by defaults.
+        在这些通过显式提供 host, device, directory, name, type, 和 version 的成员被填充之后, merge-pathnames 使用的合并规则被用于填充 defaults 提供的默认值中的任何未提供的成员.
 
-Whenever a pathname is constructed the components may be canonicalized if appropriate. For the explanation of the arguments that can be supplied for each component, see Section 19.2.1 (Pathname Components).
+        无论何时构造路径名, 如果合适, 成员都可以被规范化. 对于可以为每个成员提供的参数的解释, 见章节 19.2.1 (Pathname Components).
 
-If case is supplied, it is treated as described in Section 19.2.2.1.2 (Case in Pathname Components).
+        如果提供了 case, 它会像章节 19.2.2.1.2 (路径名成员中的大小写) 描述的那样被对待.
 
-The resulting pathname is a logical pathname if and only its host component is a logical host or a string that names a defined logical host.
+        这个产生的路径名 pathname 当且仅当它的主机成员是一个逻辑主机或者一个命名一个已定义的逻辑主机的字符串时是一个逻辑路径名.
 
-If the directory is a string, it should be the name of a top level directory, and should not contain any punctuation characters; that is, specifying a string, str, is equivalent to specifying the list (:absolute str). Specifying the symbol :wild is equivalent to specifying the list (:absolute :wild-inferiors), or (:absolute :wild) in a file system that does not support :wild-inferiors.
+        如果这个 directory 是一个字符串, 它应该是一个顶层目录的名字, 并且不应该包含任何标点符号字符; 这就是说, 指定一个字符串, str, 等价于指定列表 (:absolute str). 指定符号 :wild 等价于指定列表 (:absolute :wild-inferiors), 或者在一个不支持 :wild-inferiors 的文件系统中是 (:absolute :wild).
 
 * 示例(Examples):
 
- ;; Implementation A -- an implementation with access to a single
- ;;  Unix file system.  This implementation happens to never display
- ;;  the `host' information in a namestring, since there is only one host. 
- (make-pathname :directory '(:absolute "public" "games")
-                :name "chess" :type "db")
-=>  #P"/public/games/chess.db" 
+    ```LISP
+    ;; Implementation A -- an implementation with access to a single
+    ;;  Unix file system.  This implementation happens to never display
+    ;;  the `host' information in a namestring, since there is only one host. 
+    (make-pathname :directory '(:absolute "public" "games")
+                    :name "chess" :type "db")
+    =>  #P"/public/games/chess.db" 
 
- ;; Implementation B -- an implementation with access to one or more
- ;;  VMS file systems.  This implementation displays `host' information
- ;;  in the namestring only when the host is not the local host.
- ;;  It uses a double colon to separate a host name from the host's local
- ;;  file name.
- (make-pathname :directory '(:absolute "PUBLIC" "GAMES")
-                :name "CHESS" :type "DB")
-=>  #P"SYS$DISK:[PUBLIC.GAMES]CHESS.DB" 
- (make-pathname :host "BOBBY"
-                :directory '(:absolute "PUBLIC" "GAMES")
-                :name "CHESS" :type "DB")
-=>  #P"BOBBY::SYS$DISK:[PUBLIC.GAMES]CHESS.DB" 
+    ;; Implementation B -- an implementation with access to one or more
+    ;;  VMS file systems.  This implementation displays `host' information
+    ;;  in the namestring only when the host is not the local host.
+    ;;  It uses a double colon to separate a host name from the host's local
+    ;;  file name.
+    (make-pathname :directory '(:absolute "PUBLIC" "GAMES")
+                    :name "CHESS" :type "DB")
+    =>  #P"SYS$DISK:[PUBLIC.GAMES]CHESS.DB" 
+    (make-pathname :host "BOBBY"
+                    :directory '(:absolute "PUBLIC" "GAMES")
+                    :name "CHESS" :type "DB")
+    =>  #P"BOBBY::SYS$DISK:[PUBLIC.GAMES]CHESS.DB" 
 
- ;; Implementation C -- an implementation with simultaneous access to
- ;;  multiple file systems from the same Lisp image.  In this 
- ;;  implementation, there is a convention that any text preceding the
- ;;  first colon in a pathname namestring is a host name.
- (dolist (case '(:common :local))
-   (dolist (host '("MY-LISPM" "MY-VAX" "MY-UNIX"))
-     (print (make-pathname :host host :case case
-                           :directory '(:absolute "PUBLIC" "GAMES")
-                           :name "CHESS" :type "DB"))))
->>  #P"MY-LISPM:>public>games>chess.db"
->>  #P"MY-VAX:SYS$DISK:[PUBLIC.GAMES]CHESS.DB"
->>  #P"MY-UNIX:/public/games/chess.db"
->>  #P"MY-LISPM:>public>games>chess.db" 
->>  #P"MY-VAX:SYS$DISK:[PUBLIC.GAMES]CHESS.DB" 
->>  #P"MY-UNIX:/PUBLIC/GAMES/CHESS.DB" 
-=>  NIL
+    ;; Implementation C -- an implementation with simultaneous access to
+    ;;  multiple file systems from the same Lisp image.  In this 
+    ;;  implementation, there is a convention that any text preceding the
+    ;;  first colon in a pathname namestring is a host name.
+    (dolist (case '(:common :local))
+      (dolist (host '("MY-LISPM" "MY-VAX" "MY-UNIX"))
+        (print (make-pathname :host host :case case
+                              :directory '(:absolute "PUBLIC" "GAMES")
+                              :name "CHESS" :type "DB"))))
+    >>  #P"MY-LISPM:>public>games>chess.db"
+    >>  #P"MY-VAX:SYS$DISK:[PUBLIC.GAMES]CHESS.DB"
+    >>  #P"MY-UNIX:/public/games/chess.db"
+    >>  #P"MY-LISPM:>public>games>chess.db" 
+    >>  #P"MY-VAX:SYS$DISK:[PUBLIC.GAMES]CHESS.DB" 
+    >>  #P"MY-UNIX:/PUBLIC/GAMES/CHESS.DB" 
+    =>  NIL
+    ```
 
 * 受此影响(Affected By):
 
-The file system.
+        文件系统.
 
 * 异常情况(Exceptional Situations): None.
 
 * 也见(See Also):
 
-merge-pathnames, pathname, logical-pathname, Section 20.1 (File System Concepts), Section 19.1.2 (路径名作为文件名)
+        merge-pathnames, pathname, logical-pathname, 章节 20.1 (File System Concepts), 章节 19.1.2 (路径名作为文件名)
 
 * 注意(Notes):
 
-Portable programs should not supply :unspecific for any component. See Section 19.2.2.2.3 (:UNSPECIFIC as a Component Value). 
+        可移植程序不应该为任何成员提供 :unspecific. 见章节 19.2.2.2.3 (:UNSPECIFIC as a Component Value). 
 
 
-### <span id="F-PATHNAMEP">Function PATHNAMEP</span>
+### <span id="F-PATHNAMEP">函数 PATHNAMEP</span>
 
 * 语法(Syntax):
 
-pathnamep object => generalized-boolean
+        pathnamep object => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-object---an object.
-
-generalized-boolean---a generalized boolean.
+        object---一个对象.
+        generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
-Returns true if object is of type pathname; otherwise, returns false.
+        如果对象 object 是 pathname 类型就返回 true; 否则, 返回 false.
 
 * 示例(Examples):
 
- (setq q "test")  =>  "test"
- (pathnamep q) =>  false
- (setq q (pathname "test"))
-=>  #S(PATHNAME :HOST NIL :DEVICE NIL :DIRECTORY NIL :NAME "test" :TYPE NIL
-       :VERSION NIL)
- (pathnamep q) =>  true 
- (setq q (logical-pathname "SYS:SITE;FOO.SYSTEM"))
-=>  #P"SYS:SITE;FOO.SYSTEM"
- (pathnamep q) =>  true
+    ```LISP
+    (setq q "test")  =>  "test"
+    (pathnamep q) =>  false
+    (setq q (pathname "test"))
+    =>  #S(PATHNAME :HOST NIL :DEVICE NIL :DIRECTORY NIL :NAME "test" :TYPE NIL
+          :VERSION NIL)
+    (pathnamep q) =>  true 
+    (setq q (logical-pathname "SYS:SITE;FOO.SYSTEM"))
+    =>  #P"SYS:SITE;FOO.SYSTEM"
+    (pathnamep q) =>  true
+    ```
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
 * 受此影响(Affected By): None.
 
@@ -708,130 +698,125 @@ Side Effects: None.
 
 * 注意(Notes):
 
- (pathnamep object) ==  (typep object 'pathname)
+        (pathnamep object) ==  (typep object 'pathname)
 
 
-### <span id="F-PATHNAME-ALL">Function PATHNAME-HOST, PATHNAME-DEVICE, PATHNAME-DIRECTORY, PATHNAME-NAME, PATHNAME-TYPE, PATHNAME-VERSION</span>
+### <span id="F-PATHNAME-ALL">函数 PATHNAME-HOST, PATHNAME-DEVICE, PATHNAME-DIRECTORY, PATHNAME-NAME, PATHNAME-TYPE, PATHNAME-VERSION</span>
 
 * 语法(Syntax):
 
-pathname-host pathname &key case => host
+        pathname-host pathname &key case => host
 
-pathname-device pathname &key case => device
+        pathname-device pathname &key case => device
 
-pathname-directory pathname &key case => directory
+        pathname-directory pathname &key case => directory
 
-pathname-name pathname &key case => name
+        pathname-name pathname &key case => name
 
-pathname-type pathname &key case => type
+        pathname-type pathname &key case => type
 
-pathname-version pathname => version
+        pathname-version pathname => version
 
 * 参数和值(Arguments and Values):
 
-pathname---a pathname designator.
-
-case---one of :local or :common. The default is :local.
-
-host---a valid pathname host.
-
-device---a valid pathname device.
-
-directory---a valid pathname directory.
-
-name---a valid pathname name.
-
-type---a valid pathname type.
-
-version---a valid pathname version.
+        pathname---一个路径名标识符.
+        case---:local 或 :common 其中之一. 默认是 :local.
+        host---一个有效的路径名主机.
+        device---一个有效的路径名设备.
+        directory---一个有效的路径名目录.
+        name---一个有效的路径名名称.
+        type---一个有效的路径名类型.
+        version---一个有效的路径名版本.
 
 * 描述(Description):
 
-These functions return the components of pathname.
+        这些函数返回路径名 pathname 的成员.
 
-If the pathname designator is a pathname, it represents the name used to open the file. This may be, but is not required to be, the actual name of the file.
+        如果这个 pathname 标识符是一个路径名, 它表示被用于打开这个文件的名字. 这可能是, 但不一定是文件的实际名称.
 
-If case is supplied, it is treated as described in Section 19.2.2.1.2 (Case in Pathname Components).
+        如果提供了 case, 它会像章节 19.2.2.1.2 (路径名成员中的大小写) 中描述的那样被对待.
 
 * 示例(Examples):
 
- (setq q (make-pathname :host "KATHY"
-                        :directory "CHAPMAN" 
-                        :name "LOGIN" :type "COM"))
-=>  #P"KATHY::[CHAPMAN]LOGIN.COM"
- (pathname-host q) =>  "KATHY"
- (pathname-name q) =>  "LOGIN"
- (pathname-type q) =>  "COM"
+    ```LISP
+    (setq q (make-pathname :host "KATHY"
+                            :directory "CHAPMAN" 
+                            :name "LOGIN" :type "COM"))
+    =>  #P"KATHY::[CHAPMAN]LOGIN.COM"
+    (pathname-host q) =>  "KATHY"
+    (pathname-name q) =>  "LOGIN"
+    (pathname-type q) =>  "COM"
 
- ;; Because namestrings are used, the results shown in the remaining
- ;; examples are not necessarily the only possible results.  Mappings
- ;; from namestring representation to pathname representation are 
- ;; dependent both on the file system involved and on the implementation
- ;; (since there may be several implementations which can manipulate the
- ;; the same file system, and those implementations are not constrained
- ;; to agree on all details). Consult the documentation for each
- ;; implementation for specific information on how namestrings are treated
- ;; that implementation.
+    ;; Because namestrings are used, the results shown in the remaining
+    ;; examples are not necessarily the only possible results.  Mappings
+    ;; from namestring representation to pathname representation are 
+    ;; dependent both on the file system involved and on the implementation
+    ;; (since there may be several implementations which can manipulate the
+    ;; the same file system, and those implementations are not constrained
+    ;; to agree on all details). Consult the documentation for each
+    ;; implementation for specific information on how namestrings are treated
+    ;; that implementation.
 
- ;; VMS
- (pathname-directory (parse-namestring "[FOO.*.BAR]BAZ.LSP"))
-=>  (:ABSOLUTE "FOO" "BAR")
- (pathname-directory (parse-namestring "[FOO.*.BAR]BAZ.LSP") :case :common)
-=>  (:ABSOLUTE "FOO" "BAR")
+    ;; VMS
+    (pathname-directory (parse-namestring "[FOO.*.BAR]BAZ.LSP"))
+    =>  (:ABSOLUTE "FOO" "BAR")
+    (pathname-directory (parse-namestring "[FOO.*.BAR]BAZ.LSP") :case :common)
+    =>  (:ABSOLUTE "FOO" "BAR")
 
- ;; Unix
- (pathname-directory "foo.l") =>  NIL
- (pathname-device "foo.l") =>  :UNSPECIFIC
- (pathname-name "foo.l") =>  "foo"
- (pathname-name "foo.l" :case :local) =>  "foo"
- (pathname-name "foo.l" :case :common) =>  "FOO"
- (pathname-type "foo.l") =>  "l"
- (pathname-type "foo.l" :case :local) =>  "l"
- (pathname-type "foo.l" :case :common) =>  "L"
- (pathname-type "foo") =>  :UNSPECIFIC
- (pathname-type "foo" :case :common) =>  :UNSPECIFIC
- (pathname-type "foo.") =>  ""
- (pathname-type "foo." :case :common) =>  ""
- (pathname-directory (parse-namestring "/foo/bar/baz.lisp") :case :local)
-=>  (:ABSOLUTE "foo" "bar")
- (pathname-directory (parse-namestring "/foo/bar/baz.lisp") :case :local)
-=>  (:ABSOLUTE "FOO" "BAR")
- (pathname-directory (parse-namestring "../baz.lisp"))
-=>  (:RELATIVE :UP)
- (PATHNAME-DIRECTORY (PARSE-NAMESTRING "/foo/BAR/../Mum/baz"))
-=>  (:ABSOLUTE "foo" "BAR" :UP "Mum")
- (PATHNAME-DIRECTORY (PARSE-NAMESTRING "/foo/BAR/../Mum/baz") :case :common)
-=>  (:ABSOLUTE "FOO" "bar" :UP "Mum")
- (PATHNAME-DIRECTORY (PARSE-NAMESTRING "/foo/*/bar/baz.l"))
-=>  (:ABSOLUTE "foo" :WILD "bar")
- (PATHNAME-DIRECTORY (PARSE-NAMESTRING "/foo/*/bar/baz.l") :case :common)
-=>  (:ABSOLUTE "FOO" :WILD "BAR")
+    ;; Unix
+    (pathname-directory "foo.l") =>  NIL
+    (pathname-device "foo.l") =>  :UNSPECIFIC
+    (pathname-name "foo.l") =>  "foo"
+    (pathname-name "foo.l" :case :local) =>  "foo"
+    (pathname-name "foo.l" :case :common) =>  "FOO"
+    (pathname-type "foo.l") =>  "l"
+    (pathname-type "foo.l" :case :local) =>  "l"
+    (pathname-type "foo.l" :case :common) =>  "L"
+    (pathname-type "foo") =>  :UNSPECIFIC
+    (pathname-type "foo" :case :common) =>  :UNSPECIFIC
+    (pathname-type "foo.") =>  ""
+    (pathname-type "foo." :case :common) =>  ""
+    (pathname-directory (parse-namestring "/foo/bar/baz.lisp") :case :local)
+    =>  (:ABSOLUTE "foo" "bar")
+    (pathname-directory (parse-namestring "/foo/bar/baz.lisp") :case :local)
+    =>  (:ABSOLUTE "FOO" "BAR")
+    (pathname-directory (parse-namestring "../baz.lisp"))
+    =>  (:RELATIVE :UP)
+    (PATHNAME-DIRECTORY (PARSE-NAMESTRING "/foo/BAR/../Mum/baz"))
+    =>  (:ABSOLUTE "foo" "BAR" :UP "Mum")
+    (PATHNAME-DIRECTORY (PARSE-NAMESTRING "/foo/BAR/../Mum/baz") :case :common)
+    =>  (:ABSOLUTE "FOO" "bar" :UP "Mum")
+    (PATHNAME-DIRECTORY (PARSE-NAMESTRING "/foo/*/bar/baz.l"))
+    =>  (:ABSOLUTE "foo" :WILD "bar")
+    (PATHNAME-DIRECTORY (PARSE-NAMESTRING "/foo/*/bar/baz.l") :case :common)
+    =>  (:ABSOLUTE "FOO" :WILD "BAR")
 
- ;; Symbolics LMFS
- (pathname-directory (parse-namestring ">foo>**>bar>baz.lisp"))
-=>  (:ABSOLUTE "foo" :WILD-INFERIORS "bar")
- (pathname-directory (parse-namestring ">foo>*>bar>baz.lisp"))
-=>  (:ABSOLUTE "foo" :WILD "bar")
- (pathname-directory (parse-namestring ">foo>*>bar>baz.lisp") :case :common)
-=>  (:ABSOLUTE "FOO" :WILD "BAR")
- (pathname-device (parse-namestring ">foo>baz.lisp")) =>  :UNSPECIFIC
+    ;; Symbolics LMFS
+    (pathname-directory (parse-namestring ">foo>**>bar>baz.lisp"))
+    =>  (:ABSOLUTE "foo" :WILD-INFERIORS "bar")
+    (pathname-directory (parse-namestring ">foo>*>bar>baz.lisp"))
+    =>  (:ABSOLUTE "foo" :WILD "bar")
+    (pathname-directory (parse-namestring ">foo>*>bar>baz.lisp") :case :common)
+    =>  (:ABSOLUTE "FOO" :WILD "BAR")
+    (pathname-device (parse-namestring ">foo>baz.lisp")) =>  :UNSPECIFIC
+    ```
 
 * 受此影响(Affected By):
 
-The implementation and the host file system.
+        这个具体实现和主机文件系统.
 
 * 异常情况(Exceptional Situations):
 
-Should signal an error of type type-error if its first argument is not a pathname.
+        如果它的第一个参数不是一个路径名, 那么应该发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-pathname, logical-pathname, Section 20.1 (File System Concepts), Section 19.1.2 (路径名作为文件名)
+        pathname, logical-pathname, 章节 20.1 (File System Concepts), 章节 19.1.2 (路径名作为文件名)
 
 * 注意(Notes): None. 
 
 
-### <span id="F-LOAD-LOGICAL-PATHNAME-TRANSLATIONS">Function LOAD-LOGICAL-PATHNAME-TRANSLATIONS</span>
+### <span id="F-LOAD-LOGICAL-PATHNAME-TRANSLATIONS">函数 LOAD-LOGICAL-PATHNAME-TRANSLATIONS</span>
 
 * 语法(Syntax):
 
@@ -878,7 +863,7 @@ Logical pathname definitions will be created not just by implementors but also b
 
 
 
-### <span id="A-LOGICAL-PATHNAME-TRANSLATIONS">Accessor LOGICAL-PATHNAME-TRANSLATIONS</span>
+### <span id="A-LOGICAL-PATHNAME-TRANSLATIONS">访问器 LOGICAL-PATHNAME-TRANSLATIONS</span>
 
 * 语法(Syntax):
 
@@ -1028,7 +1013,7 @@ logical-pathname, Section 19.1.2 (路径名作为文件名)
 Implementations can define additional functions that operate on logical pathname hosts, for example to specify additional translation rules or options. 
 
 
-### <span id="F-LOGICAL-PATHNAME">Function LOGICAL-PATHNAME</span>
+### <span id="F-LOGICAL-PATHNAME">函数 LOGICAL-PATHNAME</span>
 
 * 语法(Syntax):
 
@@ -1061,7 +1046,7 @@ logical-pathname, translate-logical-pathname, Section 19.3 (Logical Pathnames)
 * 注意(Notes): None. 
 
 
-### <span id="V-DEFAULT-PATHNAME-DEFAULTS">Variable *DEFAULT-PATHNAME-DEFAULTS*</span>
+### <span id="V-DEFAULT-PATHNAME-DEFAULTS">变量 *DEFAULT-PATHNAME-DEFAULTS*</span>
 
 Value Type:
 
@@ -1097,7 +1082,7 @@ The implementation.
 * 注意(Notes): None. 
 
 
-### <span id="F-NAMESTRING-ALL">Function NAMESTRING, FILE-NAMESTRING, DIRECTORY-NAMESTRING, HOST-NAMESTRING, ENOUGH-NAMESTRING</span>
+### <span id="F-NAMESTRING-ALL">函数 NAMESTRING, FILE-NAMESTRING, DIRECTORY-NAMESTRING, HOST-NAMESTRING, ENOUGH-NAMESTRING</span>
 
 * 语法(Syntax):
 
@@ -1192,7 +1177,7 @@ truename, merge-pathnames, pathname, logical-pathname, Section 20.1 (File System
 * 注意(Notes): None. 
 
 
-### <span id="F-PARSE-NAMESTRING">Function PARSE-NAMESTRING</span>
+### <span id="F-PARSE-NAMESTRING">函数 PARSE-NAMESTRING</span>
 
 * 语法(Syntax):
 
@@ -1285,7 +1270,7 @@ pathname, logical-pathname, Section 20.1 (File System Concepts), Section 19.2.2.
 * 注意(Notes): None. 
 
 
-### <span id="F-WILD-PATHNAME-P">Function WILD-PATHNAME-P</span>
+### <span id="F-WILD-PATHNAME-P">函数 WILD-PATHNAME-P</span>
 
 * 语法(Syntax):
 
@@ -1332,10 +1317,10 @@ pathname, logical-pathname, Section 20.1 (File System Concepts), Section 19.1.2 
 
 * 注意(Notes):
 
-Not all implementations support wildcards in all fields. See Section 19.2.2.2.2 (:WILD as a Component Value) and Section 19.2.2.3 (Restrictions on Wildcard Pathnames). 
+Not all implementations support wildcards in all fields. See Section 19.2.2.2.2 (:WILD as a Component Value) and Section 19.2.2.3 (通配符路径名上的限制). 
 
 
-### <span id="F-PATHNAME-MATCH-P">Function PATHNAME-MATCH-P</span>
+### <span id="F-PATHNAME-MATCH-P">函数 PATHNAME-MATCH-P</span>
 
 * 语法(Syntax):
 
@@ -1370,7 +1355,7 @@ directory, pathname, logical-pathname, Section 20.1 (File System Concepts), Sect
 * 注意(Notes): None. 
 
 
-### <span id="F-TRANSLATE-LOGICAL-PATHNAME">Function TRANSLATE-LOGICAL-PATHNAME</span>
+### <span id="F-TRANSLATE-LOGICAL-PATHNAME">函数 TRANSLATE-LOGICAL-PATHNAME</span>
 
 * 语法(Syntax):
 
@@ -1414,7 +1399,7 @@ logical-pathname, logical-pathname-translations, logical-pathname, Section 20.1 
 
 * 注意(Notes): None. 
 
-### <span id="F-TRANSLATE-PATHNAME">Function TRANSLATE-PATHNAME</span>
+### <span id="F-TRANSLATE-PATHNAME">函数 TRANSLATE-PATHNAME</span>
 
 * 语法(Syntax):
 
@@ -1510,7 +1495,7 @@ The exact behavior of translate-pathname cannot be dictated by the Common Lisp l
 The following is an implementation guideline. One file system performs this operation by examining each piece of the three pathnames in turn, where a piece is a pathname component or a list element of a structured component such as a hierarchical directory. Hierarchical directory elements in from-wildcard and to-wildcard are matched by whether they are wildcards, not by depth in the directory hierarchy. If the piece in to-wildcard is present and not wild, it is copied into the result. If the piece in to-wildcard is :wild or nil, the piece in source is copied into the result. Otherwise, the piece in to-wildcard might be a complex wildcard such as "foo*bar" and the piece in from-wildcard should be wild; the portion of the piece in source that matches the wildcard portion of the piece in from-wildcard replaces the wildcard portion of the piece in to-wildcard and the value produced is used in the result. 
 
 
-### <span id="F-MERGE-PATHNAMES">Function MERGE-PATHNAMES</span>
+### <span id="F-MERGE-PATHNAMES">函数 MERGE-PATHNAMES</span>
 
 * 语法(Syntax):
 
