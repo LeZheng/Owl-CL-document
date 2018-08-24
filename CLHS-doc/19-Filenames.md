@@ -23,7 +23,7 @@
 
 通常, 名称字符串的语法涉及到使用具体实现定义的约定, 通常是指所命名文件所在的文件系统的惯例. 仅有的例外是一个逻辑路径名的名称字符串的语法, 它被定义在这个规范中; 见章节 19.3.1 (Syntax of Logical Pathname Namestrings).
 
-一个符合规范的程序永远不能无条件地使用一个字面化的名称字符串, 而不是一个逻辑路径名的名称字符串因为 Common Lisp 没有定义任何保证可移植的名称字符串的语法, 除了逻辑路径名的名称字符串. 然而, 一个符合规范的程序, 如果足够小心, 可以成功地操纵用户提供了包含或引用不可移植的名称字符串的数据.
+一个符合规范的程序永远不能无条件地使用一个字面化的名称字符串, 而不是一个逻辑路径名的名称字符串因为 Common Lisp 没有定义任何保证可移植的名称字符串的语法, 除了逻辑路径名的名称字符串. 然而, 一个符合规范的程序, 如果足够小心, 可以成功地操纵用户提供的包含或引用不可移植的名称字符串的数据.
 
 一个名称字符串可以通过函数 pathname 或 parse-namestring 强制转为路径名. 
 
@@ -151,40 +151,39 @@ NOT=>  #P"OZ:PS:<TEST>"
 
 #### 19.2.2.2 <span id="SpecPathnameComponentValues">特殊路径名成员值</span>
 
-##### 19.2.2.2.1 NIL as a Component Value
+##### 19.2.2.2.1 NIL 作为一个成员值
 
-As a pathname component value, nilrepresents that the component is ``unfilled''; see Section 19.2.3 (合并路径名).
+作为一个成员值, nil 表示这个成员是"没有被填充"; 见章节 19.2.3 (合并路径名).
 
-The value of any pathname component can be nil.
+任何路径名成员值可以是 nil.
 
-When constructing a pathname, nil in the host component might mean a default host rather than an actual nil in some implementations. 
+在构造一个路径名时, 在主机成员的 nil 可能意味着一个默认主机而不是在某些实现中的一个实际的 nil. 
 
-##### 19.2.2.2.2 :WILD as a Component Value
+##### 19.2.2.2.2 :WILD 作为一个成员值
 
-If :wild is the value of a pathname component, that component is considered to be a wildcard, which matches anything.
+如果 :wild 是一个路径名成员的值, 那个成员被认为是一个通配符, 它可以匹配任何东西.
 
-A conforming program must be prepared to encounter a value of :wild as the value of any pathname component, or as an element of a list that is the value of the directory component.
+一个符合标准的程序必须准备好遇到一个值: :wild 作为任何路径名成员的值, 或者作为目录成员的值的列表的元素.
 
-When constructing a pathname, a conforming program may use :wild as the value of any or all of the directory, name, type, or version component, but must not use :wild as the value of the host, or device component.
+在构造一个路径名时, 一个符合规范的程序可能使用 :wild 作为目录, 名字, 类型, 或版本成员的其中一个或所有的值, 但是一定不能使用 :wild 作为主机, 或设备成员的值.
 
-If :wild is used as the value of the directory component in the construction of a pathname, the effect is equivalent to specifying the list (:absolute :wild-inferiors), or the same as (:absolute :wild) in a file system that does not support :wild-inferiors. 
+在构造一个路径名时如果 :wild 被用作这个目录成员的值, 效果等价于指定 (:absolute :wild-inferiors), 或者等价于一个不支持 :wild-inferiors 的文件系统的 (:absolute :wild). 
 
+##### 19.2.2.2.3 :UNSPECIFIC 作为成员值
 
-##### 19.2.2.2.3 :UNSPECIFIC as a Component Value
+如果 :unspecific 是一个路径名的成员值, 这个成员就被认为是"缺失的"或者在这个要被这个路径名表示的文件名中"没有意义的".
 
-If :unspecific is the value of a pathname component, the component is considered to be ``absent'' or to ``have no meaning'' in the filename being represented by the pathname.
+在这个实现可以访问的任何给定文件系统的任何成员上一个 :unspecific 值是否被允许是具体实现定义的. 一个符合规范的程序一定不能无条件使用一个 :unspecific 作为一个路径名成员的值, 因为这样一个值不保证在所有实现都是允许的. 然而, 一个符合规范的程序, 如果足够小心, 可以成功地操纵用户提供的包含或引用不可移植的路径名成员的数据. 当然, 一个符合规范的程序应该为一个路径名的任何组件都可能是 :unspecific 的可能性做好准备.
 
-Whether a value of :unspecific is permitted for any component on any given file system accessible to the implementation is implementation-defined. A conforming program must never unconditionally use a :unspecific as the value of a pathname component because such a value is not guaranteed to be permissible in all implementations. However, a conforming program can, if it is careful, successfully manipulate user-supplied data which contains or refers to non-portable pathname components. And certainly a conforming program should be prepared for the possibility that any components of a pathname could be :unspecific.
+当读取任何路径名成员的值时, 符合规范的程序应该对值为 :unspecific 有所准备.
 
-When reading[1] the value of any pathname component, conforming programs should be prepared for the value to be :unspecific.
+当写入任何路径名成员的值时, 如果 :unspecific 在文件系统中被赋予给一个路径名, 那么其后果是没有定义的, 因为它没有意义.
 
-When writing[1] the value of any pathname component, the consequences are undefined if :unspecific is given for a pathname in a file system for which it does not make sense.
+###### 19.2.2.2.3.1 成员值 NIL 和 :UNSPECIFIC 之间的联系
 
-###### 19.2.2.2.3.1 Relation between component values NIL and :UNSPECIFIC
+如果一个路径名被转换为一个名称字符串, 返回 nil 和 :unspecific 导致要被处理的那个域就像是空的一样. 这也就是说, nil 和 :unspecific 都导致这个成员不会出现在名称字符串中.
 
-If a pathname is converted to a namestring, the symbols nil and :unspecific cause the field to be treated as if it were empty. That is, both nil and :unspecific cause the component not to appear in the namestring.
-
-However, when merging a pathname with a set of defaults, only a nil value for a component will be replaced with the default for that component, while a value of :unspecific will be left alone as if the field were ``filled''; see the function merge-pathnames and Section 19.2.3 (合并路径名). 
+然而, 在合并一个路径名和一个默认值集合时, 只有一个成员的 nil 值会被那个成员的默认值替换, 而一个 :unspecific 值会被留下来就好像这个域已经被"填充"了; 见函数 merge-pathnames 和章节 19.2.3 (合并路径名). 
 
 
 #### 19.2.2.3 <span id="RestrictionWildcardPathnames">通配符路径名上的限制</span>
@@ -820,197 +819,197 @@ The null string, "", is not a valid value for any component of a logical pathnam
 
 * 语法(Syntax):
 
-load-logical-pathname-translations host => just-loaded
+        load-logical-pathname-translations host => just-loaded
 
 * 参数和值(Arguments and Values):
 
-host---a string.
-
-just-loaded---a generalized boolean.
+        host---一个字符串.
+        just-loaded---一个广义 boolean.
 
 * 描述(Description):
 
-Searches for and loads the definition of a logical host named host, if it is not already defined. The specific nature of the search is implementation-defined.
+        搜索并加载一个名为 host 的逻辑主机的定义, 如果它没有被定义的话. 这个搜索的具体性质是具体实现定义的.
 
-If the host is already defined, no attempt to find or load a definition is attempted, and false is returned. If the host is not already defined, but a definition is successfully found and loaded, true is returned. Otherwise, an error is signaled.
+        如果这个主机 host 已经被定义, 不会去尝试查找或加载定义的尝试, 并且返回 false. 如果这个主机 host 还没有被定义, 但是成功找到并加载了一个定义, 就返回 true. 否则, 发出一个错误.
 
 * 示例(Examples):
 
- (translate-logical-pathname "hacks:weather;barometer.lisp.newest")
->>  Error: The logical host HACKS is not defined.
- (load-logical-pathname-translations "HACKS")
->>  ;; Loading SYS:SITE;HACKS.TRANSLATIONS
->>  ;; Loading done.
-=>  true
- (translate-logical-pathname "hacks:weather;barometer.lisp.newest")
-=>  #P"HELIUM:[SHARED.HACKS.WEATHER]BAROMETER.LSP;0"
- (load-logical-pathname-translations "HACKS")
-=>  false
+    ```LISP
+    (translate-logical-pathname "hacks:weather;barometer.lisp.newest")
+    >>  Error: The logical host HACKS is not defined.
+    (load-logical-pathname-translations "HACKS")
+    >>  ;; Loading SYS:SITE;HACKS.TRANSLATIONS
+    >>  ;; Loading done.
+    =>  true
+    (translate-logical-pathname "hacks:weather;barometer.lisp.newest")
+    =>  #P"HELIUM:[SHARED.HACKS.WEATHER]BAROMETER.LSP;0"
+    (load-logical-pathname-translations "HACKS")
+    =>  false
+    ```
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-If no definition is found, an error of type error is signaled.
+        如果没有找到定义, 就会发出一个 error 类型的错误.
 
 * 也见(See Also):
 
-logical-pathname
+        logical-pathname
 
 * 注意(Notes):
 
-Logical pathname definitions will be created not just by implementors but also by programmers. As such, it is important that the search strategy be documented. For example, an implementation might define that the definition of a host is to be found in a file called ``host.translations'' in some specifically named directory.
-
-
+        逻辑路径名定义不止会被实现者创建, 也会被程序员创建. 因此, 重要的是要记录搜索策略. 比如, 一个具体实现可能定义了一个主机的定义要在某个特定已命名目录中称为"host.translations"的文件中找到.
 
 ### <span id="A-LOGICAL-PATHNAME-TRANSLATIONS">访问器 LOGICAL-PATHNAME-TRANSLATIONS</span>
 
 * 语法(Syntax):
 
-logical-pathname-translations host => translations
+        logical-pathname-translations host => translations
 
-(setf (logical-pathname-translations host) new-translations)
+        (setf (logical-pathname-translations host) new-translations)
 
 * 参数和值(Arguments and Values):
 
-host--a logical host designator.
-
-translations, new-translations---a list.
+        host--一个逻辑主机标识符.
+        translations, new-translations---一个列表.
 
 * 描述(Description):
 
-Returns the host's list of translations. Each translation is a list of at least two elements: from-wildcard and to-wildcard. Any additional elements are implementation-defined. From-wildcard is a logical pathname whose host is host. To-wildcard is a pathname.
+        返回这个主机的转化列表. 每一个转化都是一个两元素的列表: from-wildcard 和 to-wildcard. 任何额外的元素都是具体实现定义的. from-wildcard 是一个主机为 host 的逻辑路径名. to-wildcard 是一个路径名.
 
-(setf (logical-pathname-translations host) translations) sets a logical pathname host's list of translations. If host is a string that has not been previously used as a logical pathname host, a new logical pathname host is defined; otherwise an existing host's translations are replaced. logical pathname host names are compared with string-equal.
+        (setf (logical-pathname-translations host) translations) 设置一个逻辑路径名主机的转换列表. 如果 host 是一个之前没有被用作一个逻辑路径名主机的字符串, 那么就会定义一个新的逻辑路径名主机; 否则一个已存在的主机转换会被替换. 逻辑路径名主机名字可以使用 string-equal 比较.
 
-When setting the translations list, each from-wildcard can be a logical pathname whose host is host or a logical pathname namestring parseable by (parse-namestring string host), where host represents the appropriate object as defined by parse-namestring. Each to-wildcard can be anything coercible to a pathname by (pathname to-wildcard). If to-wildcard coerces to a logical pathname, translate-logical-pathname will perform repeated translation steps when it uses it.
+        在设置这个转换列表时, 每个 from-wildcard 都可以是一个逻辑路径名, 它的主机为 host 或者一个可通过 (parse-namestring string host) 解析的逻辑路径名字符串, 其中 host 表示由 parse-namestring 定义的合适对象. 每个 to-wildcard 可以是可通过 (pathname to-wildcard) 强制转为一个路径名的任何东西. 如果 to-wildcard 强制转为一个逻辑路径名, translate-logical-pathname 会在它使用它时执行重复的转化步骤.<!--TODO 待校对-->
 
-host is either the host component of a logical pathname or a string that has been defined as a logical pathname host name by setf of logical-pathname-translations.
+        host 是一个逻辑路径名的主机成员或是一个已经通过 logical-pathname-translations 的 setf 被定义为一个逻辑路径名主机名字的字符串.
 
 * 示例(Examples):
 
- ;;;A very simple example of setting up a logical pathname host.  No
- ;;;translations are necessary to get around file system restrictions, so
- ;;;all that is necessary is to specify the root of the physical directory
- ;;;tree that contains the logical file system.
- ;;;The namestring syntax on the right-hand side is implementation-dependent.
- (setf (logical-pathname-translations "foo")
-       '(("**;*.*.*"              "MY-LISPM:>library>foo>**>")))
- 
- ;;;Sample use of that logical pathname.  The return value
- ;;;is implementation-dependent.          
- (translate-logical-pathname "foo:bar;baz;mum.quux.3")
-=>  #P"MY-LISPM:>library>foo>bar>baz>mum.quux.3"
- 
- ;;;A more complex example, dividing the files among two file servers
- ;;;and several different directories.  This Unix doesn't support
- ;;;:WILD-INFERIORS in the directory, so each directory level must
- ;;;be translated individually.  No file name or type translations
- ;;;are required except for .MAIL to .MBX.
- ;;;The namestring syntax on the right-hand side is implementation-dependent.
- (setf (logical-pathname-translations "prog")
-       '(("RELEASED;*.*.*"        "MY-UNIX:/sys/bin/my-prog/")
-         ("RELEASED;*;*.*.*"      "MY-UNIX:/sys/bin/my-prog/*/")
-         ("EXPERIMENTAL;*.*.*"    "MY-UNIX:/usr/Joe/development/prog/")
-         ("EXPERIMENTAL;DOCUMENTATION;*.*.*"
-                                  "MY-VAX:SYS$DISK:[JOE.DOC]")
-         ("EXPERIMENTAL;*;*.*.*"  "MY-UNIX:/usr/Joe/development/prog/*/")
-         ("MAIL;**;*.MAIL"        "MY-VAX:SYS$DISK:[JOE.MAIL.PROG...]*.MBX")))
+    ```LISP
+    ;;;A very simple example of setting up a logical pathname host.  No
+    ;;;translations are necessary to get around file system restrictions, so
+    ;;;all that is necessary is to specify the root of the physical directory
+    ;;;tree that contains the logical file system.
+    ;;;The namestring syntax on the right-hand side is implementation-dependent.
+    (setf (logical-pathname-translations "foo")
+          '(("**;*.*.*"              "MY-LISPM:>library>foo>**>")))
+    
+    ;;;Sample use of that logical pathname.  The return value
+    ;;;is implementation-dependent.          
+    (translate-logical-pathname "foo:bar;baz;mum.quux.3")
+    =>  #P"MY-LISPM:>library>foo>bar>baz>mum.quux.3"
+    
+    ;;;A more complex example, dividing the files among two file servers
+    ;;;and several different directories.  This Unix doesn't support
+    ;;;:WILD-INFERIORS in the directory, so each directory level must
+    ;;;be translated individually.  No file name or type translations
+    ;;;are required except for .MAIL to .MBX.
+    ;;;The namestring syntax on the right-hand side is implementation-dependent.
+    (setf (logical-pathname-translations "prog")
+          '(("RELEASED;*.*.*"        "MY-UNIX:/sys/bin/my-prog/")
+            ("RELEASED;*;*.*.*"      "MY-UNIX:/sys/bin/my-prog/*/")
+            ("EXPERIMENTAL;*.*.*"    "MY-UNIX:/usr/Joe/development/prog/")
+            ("EXPERIMENTAL;DOCUMENTATION;*.*.*"
+                                      "MY-VAX:SYS$DISK:[JOE.DOC]")
+            ("EXPERIMENTAL;*;*.*.*"  "MY-UNIX:/usr/Joe/development/prog/*/")
+            ("MAIL;**;*.MAIL"        "MY-VAX:SYS$DISK:[JOE.MAIL.PROG...]*.MBX")))
 
- ;;;Sample use of that logical pathname.  The return value
- ;;;is implementation-dependent.          
- (translate-logical-pathname "prog:mail;save;ideas.mail.3")
-=>  #P"MY-VAX:SYS$DISK:[JOE.MAIL.PROG.SAVE]IDEAS.MBX.3"
+    ;;;Sample use of that logical pathname.  The return value
+    ;;;is implementation-dependent.          
+    (translate-logical-pathname "prog:mail;save;ideas.mail.3")
+    =>  #P"MY-VAX:SYS$DISK:[JOE.MAIL.PROG.SAVE]IDEAS.MBX.3"
 
- ;;;Example translations for a program that uses three files main.lisp,
- ;;;auxiliary.lisp, and documentation.lisp.  These translations might be
- ;;;supplied by a software supplier as examples.
+    ;;;Example translations for a program that uses three files main.lisp,
+    ;;;auxiliary.lisp, and documentation.lisp.  These translations might be
+    ;;;supplied by a software supplier as examples.
 
- ;;;For Unix with long file names
- (setf (logical-pathname-translations "prog")
-       '(("CODE;*.*.*"             "/lib/prog/")))
+    ;;;For Unix with long file names
+    (setf (logical-pathname-translations "prog")
+          '(("CODE;*.*.*"             "/lib/prog/")))
 
- ;;;Sample use of that logical pathname.  The return value
- ;;;is implementation-dependent.          
- (translate-logical-pathname "prog:code;documentation.lisp")
-=>  #P"/lib/prog/documentation.lisp"
+    ;;;Sample use of that logical pathname.  The return value
+    ;;;is implementation-dependent.          
+    (translate-logical-pathname "prog:code;documentation.lisp")
+    =>  #P"/lib/prog/documentation.lisp"
 
- ;;;For Unix with 14-character file names, using .lisp as the type
- (setf (logical-pathname-translations "prog")
-       '(("CODE;DOCUMENTATION.*.*" "/lib/prog/docum.*")
-         ("CODE;*.*.*"             "/lib/prog/")))
+    ;;;For Unix with 14-character file names, using .lisp as the type
+    (setf (logical-pathname-translations "prog")
+          '(("CODE;DOCUMENTATION.*.*" "/lib/prog/docum.*")
+            ("CODE;*.*.*"             "/lib/prog/")))
 
- ;;;Sample use of that logical pathname.  The return value
- ;;;is implementation-dependent.          
- (translate-logical-pathname "prog:code;documentation.lisp")
-=>  #P"/lib/prog/docum.lisp"
+    ;;;Sample use of that logical pathname.  The return value
+    ;;;is implementation-dependent.          
+    (translate-logical-pathname "prog:code;documentation.lisp")
+    =>  #P"/lib/prog/docum.lisp"
 
- ;;;For Unix with 14-character file names, using .l as the type
- ;;;The second translation shortens the compiled file type to .b
- (setf (logical-pathname-translations "prog")
-       `(("**;*.LISP.*"            ,(logical-pathname "PROG:**;*.L.*"))
-         (,(compile-file-pathname (logical-pathname "PROG:**;*.LISP.*"))
-                                   ,(logical-pathname "PROG:**;*.B.*"))
-         ("CODE;DOCUMENTATION.*.*" "/lib/prog/documentatio.*")
-         ("CODE;*.*.*"             "/lib/prog/")))
+    ;;;For Unix with 14-character file names, using .l as the type
+    ;;;The second translation shortens the compiled file type to .b
+    (setf (logical-pathname-translations "prog")
+          `(("**;*.LISP.*"            ,(logical-pathname "PROG:**;*.L.*"))
+            (,(compile-file-pathname (logical-pathname "PROG:**;*.LISP.*"))
+                                      ,(logical-pathname "PROG:**;*.B.*"))
+            ("CODE;DOCUMENTATION.*.*" "/lib/prog/documentatio.*")
+            ("CODE;*.*.*"             "/lib/prog/")))
 
- ;;;Sample use of that logical pathname.  The return value
- ;;;is implementation-dependent.          
- (translate-logical-pathname "prog:code;documentation.lisp")
-=>  #P"/lib/prog/documentatio.l"
+    ;;;Sample use of that logical pathname.  The return value
+    ;;;is implementation-dependent.          
+    (translate-logical-pathname "prog:code;documentation.lisp")
+    =>  #P"/lib/prog/documentatio.l"
 
- ;;;For a Cray with 6 character names and no directories, types, or versions.
- (setf (logical-pathname-translations "prog")
-       (let ((l '(("MAIN" "PGMN")
-                  ("AUXILIARY" "PGAUX")
-                  ("DOCUMENTATION" "PGDOC")))
-             (logpath (logical-pathname "prog:code;"))
-             (phypath (pathname "XXX")))
-         (append
-           ;; Translations for source files
-           (mapcar #'(lambda (x)
-                       (let ((log (first x))
-                             (phy (second x)))
-                         (list (make-pathname :name log
-                                              :type "LISP"
-                                              :version :wild
-                                              :defaults logpath)
-                               (make-pathname :name phy
-                                              :defaults phypath))))
-                   l)
-           ;; Translations for compiled files
-           (mapcar #'(lambda (x)
-                       (let* ((log (first x))
-                              (phy (second x))
-                              (com (compile-file-pathname
-                                     (make-pathname :name log
-                                                    :type "LISP"
-                                                    :version :wild
-                                                    :defaults logpath))))
-                         (setq phy (concatenate 'string phy "B"))
-                         (list com
-                               (make-pathname :name phy
-                                              :defaults phypath))))
-                   l))))
+    ;;;For a Cray with 6 character names and no directories, types, or versions.
+    (setf (logical-pathname-translations "prog")
+          (let ((l '(("MAIN" "PGMN")
+                      ("AUXILIARY" "PGAUX")
+                      ("DOCUMENTATION" "PGDOC")))
+                (logpath (logical-pathname "prog:code;"))
+                (phypath (pathname "XXX")))
+            (append
+              ;; Translations for source files
+              (mapcar #'(lambda (x)
+                          (let ((log (first x))
+                                (phy (second x)))
+                            (list (make-pathname :name log
+                                                  :type "LISP"
+                                                  :version :wild
+                                                  :defaults logpath)
+                                  (make-pathname :name phy
+                                                  :defaults phypath))))
+                      l)
+              ;; Translations for compiled files
+              (mapcar #'(lambda (x)
+                          (let* ((log (first x))
+                                  (phy (second x))
+                                  (com (compile-file-pathname
+                                        (make-pathname :name log
+                                                        :type "LISP"
+                                                        :version :wild
+                                                        :defaults logpath))))
+                            (setq phy (concatenate 'string phy "B"))
+                            (list com
+                                  (make-pathname :name phy
+                                                  :defaults phypath))))
+                      l))))
 
- ;;;Sample use of that logical pathname.  The return value
- ;;;is implementation-dependent.          
- (translate-logical-pathname "prog:code;documentation.lisp")
-=>  #P"PGDOC"
+    ;;;Sample use of that logical pathname.  The return value
+    ;;;is implementation-dependent.          
+    (translate-logical-pathname "prog:code;documentation.lisp")
+    =>  #P"PGDOC"
+    ```
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-If host is incorrectly supplied, an error of type type-error is signaled.
+        如果 host 没有被正确提供, 就会发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-logical-pathname, Section 19.1.2 (路径名作为文件名)
+        logical-pathname, 章节 19.1.2 (路径名作为文件名)
 
 * 注意(Notes):
 
-Implementations can define additional functions that operate on logical pathname hosts, for example to specify additional translation rules or options. 
+        具体实现可以定义在逻辑路径名主机上操作的额外函数, 比如去指定额外的转化规则或选项. 
 
 
 ### <span id="F-LOGICAL-PATHNAME">函数 LOGICAL-PATHNAME</span>
