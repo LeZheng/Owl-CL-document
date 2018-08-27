@@ -40,7 +40,7 @@
 
 每一个路径名都有六个成分: 一个主机(host), 一个设备(device), 一个目录(directory), 一个名字(name), 一个类型(type), 和一个版本(version). 通过用路径名来命名文件, 即使在文件系统中看起来很不一样, Common Lisp 程序可以以相同的方式工作. 关于这些成分的详细描述, 见章节 19.2.1 (Pathname Components).
 
-这些路径名成分到每个文件系统的特有概念的映射是具体实现定义的. 存在可想到的路径名, 在特定的实现中, 没有映射到语法有效的文件名. 一个具体实现可能使用多种策略去尝试找到一个映射; 例如, 一个实现可能会悄悄地截断超过底层文件系统施加的长度限制的文件名, 或者忽略文件系统不提供支持的某些路径名组件. 如果没有找到这样一个映射, 就会发出一个 file-error 类型的错误.
+这些路径名成分到每个文件系统的特有概念的映射是具体实现定义的. 存在可想到的路径名, 在特定的实现中, 没有映射到语法有效的文件名. 一个具体实现可能使用多种策略去尝试找到一个映射; 例如, 一个实现可能会悄悄地截断超过底层文件系统施加的长度限制的文件名, 或者忽略文件系统不提供支持的某些路径名成员. 如果没有找到这样一个映射, 就会发出一个 file-error 类型的错误.
 
 这个映射和关联的错误发出的时间是依赖于具体实现的. 具体来说, 它可能出现在这个路径名被构造时, 吧一个路径名强制转为名称字符串时, 或者尝试去打开或访问这个路径名表示的文件时.
 
@@ -106,7 +106,7 @@
 > * 19.2.2.1 [成员值中的字符串](#StringsComponentValues)
 > * 19.2.2.2 [特殊路径名成员值](#SpecPathnameComponentValues)
 > * 19.2.2.3 [通配符路径名上的限制](#RestrictionWildcardPathnames)
-> * 19.2.2.4 [检查路径名组件的限制](#RestrictionExamPathnameComponents)
+> * 19.2.2.4 [检查路径名成员的限制](#RestrictionExamPathnameComponents)
 > * 19.2.2.5 [构造路径名的限制](#RestrictConstructPathnames)
 
 #### 19.2.2.1 <span id="StringsComponentValues">成员值中的字符串</span>
@@ -135,7 +135,7 @@ NOT=>  #P"OZ:PS:<TEST>"
 
 对于 Figure 19-2 中的函数, :case 参数的一个 :local 值 (对于这些函数的默认值) 表示这些函数应该接受并产生成员值中的字符串, 就好像它们已经根据主机文件系统的大小写约定来表示了一样.
 
-如果这个文件系统两种大小写都支持, 在这个协议下给定或接收的字符串作为路径名组件值将被完全使用. 如果这个文件系统只支持一种大小写, 这个字符串会被转成那个大小写. 
+如果这个文件系统两种大小写都支持, 在这个协议下给定或接收的字符串作为路径名成员值将被完全使用. 如果这个文件系统只支持一种大小写, 这个字符串会被转成那个大小写. 
 
 
 ###### 19.2.2.1.2.2 路径名成员中的通用大小写
@@ -173,7 +173,7 @@ NOT=>  #P"OZ:PS:<TEST>"
 
 如果 :unspecific 是一个路径名的成员值, 这个成员就被认为是"缺失的"或者在这个要被这个路径名表示的文件名中"没有意义的".
 
-在这个实现可以访问的任何给定文件系统的任何成员上一个 :unspecific 值是否被允许是具体实现定义的. 一个符合规范的程序一定不能无条件使用一个 :unspecific 作为一个路径名成员的值, 因为这样一个值不保证在所有实现都是允许的. 然而, 一个符合规范的程序, 如果足够小心, 可以成功地操纵用户提供的包含或引用不可移植的路径名成员的数据. 当然, 一个符合规范的程序应该为一个路径名的任何组件都可能是 :unspecific 的可能性做好准备.
+在这个实现可以访问的任何给定文件系统的任何成员上一个 :unspecific 值是否被允许是具体实现定义的. 一个符合规范的程序一定不能无条件使用一个 :unspecific 作为一个路径名成员的值, 因为这样一个值不保证在所有实现都是允许的. 然而, 一个符合规范的程序, 如果足够小心, 可以成功地操纵用户提供的包含或引用不可移植的路径名成员的数据. 当然, 一个符合规范的程序应该为一个路径名的任何成员都可能是 :unspecific 的可能性做好准备.
 
 当读取任何路径名成员的值时, 符合规范的程序应该对值为 :unspecific 有所准备.
 
@@ -188,159 +188,159 @@ NOT=>  #P"OZ:PS:<TEST>"
 
 #### 19.2.2.3 <span id="RestrictionWildcardPathnames">通配符路径名上的限制</span>
 
-Wildcard pathnames can be used with directory but not with open, and return true from wild-pathname-p. When examining wildcard components of a wildcard pathname, conforming programs must be prepared to encounter any of the following additional values in any component or any element of a list that is the directory component:
+通配符路径名可以和 directory 一起使用, 但是不能和 open 一起使用, 并且从 wild-pathname-p 返回 true. 在检查通配符路径名的通配符成员时, 符合规范的程序必须准备好在任何成员或目录成员的任何元素中遇到下列附加值:<!--TODO 待校验-->
 
-* The symbol :wild, which matches anything.
+* 符号 :wild, 它匹配任何东西.
 
-* A string containing implementation-dependent special wildcard characters.
+* 一个包含依赖于具体实现的特殊通配符的字符串.
 
-* Any object, representing an implementation-dependent wildcard pattern. 
-
-
-#### 19.2.2.4 <span id="RestrictionExamPathnameComponents">检查路径名组件的限制</span>
-
-The space of possible objects that a conforming program must be prepared to read[1] as the value of a pathname component is substantially larger than the space of possible objects that a conforming program is permitted to write[1] into such a component.
-
-While the values discussed in the subsections of this section, in Section 19.2.2.2 (特殊路径名成员值), and in Section 19.2.2.3 (通配符路径名上的限制) apply to values that might be seen when reading the component values, substantially more restrictive rules apply to constructing pathnames; see Section 19.2.2.5 (构造路径名的限制).
-
-When examining pathname components, conforming programs should be aware of the following restrictions.
-
-##### 19.2.2.4.1 Restrictions on Examining a Pathname Host Component
-
-It is implementation-dependent what object is used to represent the host. 
-
-##### 19.2.2.4.2 Restrictions on Examining a Pathname Device Component
-
-The device might be a string, :wild, :unspecific, or nil.
-
-Note that :wild might result from an attempt to read[1] the pathname component, even though portable programs are restricted from writing[1] such a component value; see Section 19.2.2.3 (通配符路径名上的限制) and Section 19.2.2.5 (构造路径名的限制). 
+* 任何对象, 表示一个依赖于具体实现的通配符模式. 
 
 
-##### 19.2.2.4.3 Restrictions on Examining a Pathname Directory Component
+#### 19.2.2.4 <span id="RestrictionExamPathnameComponents">检查路径名成员的限制</span>
 
-The directory might be a string, :wild, :unspecific, or nil.
+一个符合条件的程序必须准备作为路径名成员的值来读取的可能的对象的空间, 要比一个符合条件的程序被允许写入这样一个成员的可能对象的空间大得多.
 
-The directory can be a list of strings and symbols. The car of the list is one of the symbols :absolute or :relative, meaning:
+尽管在这个章节的子章节, 在章节 19.2.2.2 (特殊路径名成员值), 还有章节 19.2.2.3 (通配符路径名上的限制) 中讨论的值可以被应用于读取成员值时可见的值, 而对于构造路径名, 则应用了更多的限制性规则; 见章节 19.2.2.5 (构造路径名的限制).
+
+在检查路径名成员时, 符合程序的程序应该知道以下限制.
+
+##### 19.2.2.4.1 检查路径名主机成员的限制
+
+什么对象被用于表示这个主机是依赖于具体实现的. 
+
+##### 19.2.2.4.2 检查路径名设备成员的限制
+
+这个设备可能是一个字符串, :wild, :unspecific, 或 nil.
+
+注意, 这个 :wild 可能产生于读取这个路径名成员的尝试中, 尽管可移植程序被限制在写入这样的成员值时; 见章节 19.2.2.3 (通配符路径名上的限制) 以及章节 19.2.2.5 (构造路径名的限制). 
+
+
+##### 19.2.2.4.3 检查路径名目录成员的限制
+
+这个目录可能是一个字符串, :wild, :unspecific, 或 nil.
+
+这个目录可以是一个字符串和符号的列表. 这个列表的 car 是符号 :absolute 或 :relative 其中之一, 表示:
 
 :absolute
 
-    A list whose car is the symbol :absolute represents a directory path starting from the root directory. The list (:absolute) represents the root directory. The list (:absolute "foo" "bar" "baz") represents the directory called "/foo/bar/baz" in Unix (except possibly for case).
+    一个 car 为符号 :absolute 的列表表示一个以根目录开始的目录路径. 列表 (:absolute) 表示根目录. 列表 (:absolute "foo" "bar" "baz") 表示 Unix 中的 "/foo/bar/baz" 目录 (除了可能的大小写下).
 
 :relative
 
-    A list whose car is the symbol :relative represents a directory path starting from a default directory. The list (:relative) has the same meaning as nil and hence is not used. The list (:relative "foo" "bar") represents the directory named "bar" in the directory named "foo" in the default directory.
+    一个 car 为符号 :relative 的列表表示一个以默认目录开始的目录路径. 列表 (:relative) 有着和 nil 相同的意义, 因此没有使用. 列表 (:relative "foo" "bar") 表示默认目录中名为 "foo" 的目录中的 "bar" 目录.
 
-Each remaining element of the list is a string or a symbol.
+这个列表的每一个剩余元素都是一个字符串或符号.
 
-Each string names a single level of directory structure. The strings should contain only the directory names themselves---no punctuation characters.
+每一个字符串命名目录结构中的单个层级. 这些字符串应该只包含目录名字自身---没有标点符号.
 
-In place of a string, at any point in the list, symbols can occur to indicate special file notations. The next figure lists the symbols that have standard meanings. Implementations are permitted to add additional objects of any type that is disjoint from string if necessary to represent features of their file systems that cannot be represented with the standard strings and symbols.
+在这个列表的任何位置, 都可以使用符号来表示特殊的文件符号来替换一个字符串. 下面一段列出的符号有着标准意义. 如果有必要去表示不能用标准字符串和符号表示的文件系统的特性, 允许具体实现去添加和 string 互斥任意类型的额外对象.
 
-Supplying any non-string, including any of the symbols listed below, to a file system for which it does not make sense signals an error of type file-error. For example, Unix does not support :wild-inferiors in most implementations.
+给一个文件系统提供任何非字符串, 包含下面列出的任意符号, 如果它们对于这个文件系统是没有意义的, 那么就会发出一个 file-error 类型的错误. 比如, Unix 在大部分实现不支持 :wild-inferiors.
 
-Symbol           Meaning                                             
-:wild            Wildcard match of one level of directory structure  
-:wild-inferiors  Wildcard match of any number of directory levels    
-:up              Go upward in directory structure (semantic)         
-:back            Go upward in directory structure (syntactic)        
+    符号           意义                                             
+    :wild            目录结构中一级的通配符匹配
+    :wild-inferiors  目录结构中任意数量的通配符匹配    
+    :up              在目录结构中向上一级 (语义)         
+    :back            在目录结构中向上一级 (语法)        
 
-Figure 19-3. Special Markers In Directory Component
+    Figure 19-3. 目录成员中的特殊标记
 
-The following notes apply to the previous figure:
+下面的注释适用于前面这段:
 
-Invalid Combinations
+无效组合
 
-    Using :absolute or :wild-inferiors immediately followed by :up or :back signals an error of type file-error.
+    使用 :absolute 或 :wild-inferiors 后立即跟着 :up 或 :back 会发出一个 file-error 类型的错误.
 
-Syntactic vs Semantic
+语法 vs 语义
 
-    ``Syntactic'' means that the action of :back depends only on the pathname and not on the contents of the file system.
+    "语法" 意味着那个 :back 动作只依赖于这个路径名, 不依赖这个文件系统的内容.
 
-    ``Semantic'' means that the action of :up depends on the contents of the file system; to resolve a pathname containing :up to a pathname whose directory component contains only :absolute and strings requires probing the file system.
+    "Semantic" 意味着那个 :up 的动作依赖于文件系统的内容; 为了解决一个包含了 :up 到一个目录成员只包含 :absolute 和字符串的路径名的路径名需要探索这个文件系统的问题.<!--TODO 待校对-->
 
-    :up differs from :back only in file systems that support multiple names for directories, perhaps via symbolic links. For example, suppose that there is a directory (:absolute "X" "Y" "Z") linked to (:absolute "A" "B" "C") and there also exist directories (:absolute "A" "B" "Q") and (:absolute "X" "Y" "Q"). Then (:absolute "X" "Y" "Z" :up "Q") designates (:absolute "A" "B" "Q") while (:absolute "X" "Y" "Z" :back "Q") designates (:absolute "X" "Y" "Q")
+    :up 和 :back 的区别仅在于文件系统支持多个多个目录名, 或许是通过符号链接. 例如, 假设这里有一个目录 (:absolute "X" "Y" "Z") 链接到 (:absolute "A" "B" "C") 并且这里也存在目录 (:absolute "A" "B" "Q") 和 (:absolute "X" "Y" "Q"). 那么 (:absolute "X" "Y" "Z" :up "Q") 表示 (:absolute "A" "B" "Q") 而 (:absolute "X" "Y" "Z" :back "Q") 表示 (:absolute "X" "Y" "Q")
 
-###### 19.2.2.4.3.1 Directory Components in Non-Hierarchical File Systems
+###### 19.2.2.4.3.1 非分层文件系统中的目录成员
 
-In non-hierarchical file systems, the only valid list values for the directory component of a pathname are (:absolute string) and (:absolute :wild). :relative directories and the keywords :wild-inferiors, :up, and :back are not used in non-hierarchical file systems. 
-
-
-##### 19.2.2.4.4 Restrictions on Examining a Pathname Name Component
-
-The name might be a string, :wild, :unspecific, or nil. 
+在非分层文件系统中, 一个路径名的目录成员的仅有的有效列表值是 (:absolute string) 和 (:absolute :wild). :relative 目录和关键字 :wild-inferiors, :up, 和 :back 在非分层文件系统中是不使用的. 
 
 
-##### 19.2.2.4.5 Restrictions on Examining a Pathname Type Component
+##### 19.2.2.4.4 检查路径名名称成员的限制
 
-The type might be a string, :wild, :unspecific, or nil. 
-
-
-##### 19.2.2.4.6 Restrictions on Examining a Pathname Version Component
-
-The version can be any symbol or any integer.
-
-The symbol :newest refers to the largest version number that already exists in the file system when reading, overwriting, appending, superseding, or directory listing an existing file. The symbol :newest refers to the smallest version number greater than any existing version number when creating a new file.
-
-The symbols nil, :unspecific, and :wild have special meanings and restrictions; see Section 19.2.2.2 (特殊路径名成员值) and Section 19.2.2.5 (构造路径名的限制).
-
-Other symbols and integers have implementation-defined meaning.
+这个名称可以是一个字符串, :wild, :unspecific, 或 nil. 
 
 
-##### 19.2.2.4.7 Notes about the Pathname Version Component
+##### 19.2.2.4.5 检查路径名类型成员的限制
 
-It is suggested, but not required, that implementations do the following:
+这个类型可以是一个字符串, :wild, :unspecific, 或 nil. 
 
-* Use positive integers starting at 1 as version numbers.
 
-* Recognize the symbol :oldest to designate the smallest existing version number.
+##### 19.2.2.4.6 检查路径名版本成员的限制
 
-* Use keywords for other special versions. 
+这个版本可以是任何符号或整数.
+
+在读取, 覆盖, 追加, 代替, 或列出现有文件的目录时, 符号 :newest 引用已经存在于文件系统中最大的版本数字. 在创建一个新的文件时, 符号 :newest 引用大于任何已存在版本数字的最小的版本数字.
+
+符号 nil, :unspecific, 和 :wild 有着特殊意义和限制; 见章节 19.2.2.2 (特殊路径名成员值) 和章节 19.2.2.5 (构造路径名的限制).
+
+其他符号和整数有着具体实现定义的意义.
+
+
+##### 19.2.2.4.7 关于路径名版本成员的注意事项
+
+建议, 但不是必须, 具体实现执行以下操作:
+
+* 使用从 1 开始的正整数作为版本数字.
+
+* 识别符号 :oldest 来表示最小的已存在版本数字.
+
+* 为其他特殊版本使用关键字. 
 
 
 #### 19.2.2.5 <span id="RestrictConstructPathnames">构造路径名的限制</span>
 
-When constructing a pathname from components, conforming programs must follow these rules:
+从成员来构造一个路径名时, 符合规范的程序必须遵守这些规则:
 
-* Any component can be nil. nil in the host might mean a default host rather than an actual nil in some implementations.
+* 任何成员可以是 nil. 在一些实现中, 主机中的 nil 可能意味着一个默认主机而不是一个实际的 nil.
 
-* The host, device, directory, name, and type can be strings. There are implementation-dependent limits on the number and type of characters in these strings.
+* 主机, 设备, 目录, 名字, 以及类型可以是字符串. 在这些字符串中的字符的类型和数量上有着依赖于具体实现的限制.
 
-* The directory can be a list of strings and symbols. There are implementation-dependent limits on the list's length and contents.
+* 目录可以是一个字符串和符号的列表. 在这个列表的长度和内容上有着依赖于具体实现的限制.
 
-* The version can be :newest.
+* 版本可以是 :newest.
 
-* Any component can be taken from the corresponding component of another pathname. When the two pathnames are for different file systems (in implementations that support multiple file systems), an appropriate translation occurs. If no meaningful translation is possible, an error is signaled. The definitions of ``appropriate'' and ``meaningful'' are implementation-dependent.
+* 任何成员都可以从另一个路径名的相应成员中获取. 当两个路径名是对于不同的文件系统时 (在支持多文件系统的实现中), 会出现一个适当的转换. 如果没有任何有意义的转换, 就会出现错误. 这个 "适当" 和 "有意义" 的定义是依赖于具体实现的.
 
-* An implementation might support other values for some components, but a portable program cannot use those values. A conforming program can use implementation-dependent values but this can make it non-portable; for example, it might work only with Unix file systems. 
-
+* 对于某些成员, 一个实现可能支持其他的值, 但是一个可移植程序不能使用这些值. 一个符合规范的程序可以使用依赖于具体实现的值但是这会使它变得不可移植; 例如, 它可能只有在 Unix 文件系统中正常工作. 
 
 ### 19.2.3 <span id="MergingPathnames">合并路径名</span>
 
-Merging takes a pathname with unfilled components and supplies values for those components from a source of defaults.
+合并使用一个带有未填充成员的路径名, 并从默认值中为这些成员提供值.
 
-If a component's value is nil, that component is considered to be unfilled. If a component's value is any non-nil object, including :unspecific, that component is considered to be filled.
+如果一个成员的值是 nil, 那么那个成员会被认为是未填充的. 如果一个成员的值是任何非 nil 对象, 包括 :unspecific, 那么那个成员会被认为是已填充的.
 
-Except as explicitly specified otherwise, for functions that manipulate or inquire about files in the file system, the pathname argument to such a function is merged with *default-pathname-defaults* before accessing the file system (as if by merge-pathnames).
+除了显式指定的以外, 对于操作或查询文件系统中的文件的函数, 在访问这个文件系统前, 给这样一个函数的路径名参数会和 \*default-pathname-defaults* 合并(就像是通过 merge-pathnames).
 
-#### 19.2.3.1 Examples of 合并路径名
+#### 19.2.3.1 合并路径名的示例
 
-Although the following examples are possible to execute only in implementations which permit :unspecific in the indicated position andwhich permit four-letter type components, they serve to illustrate the basic concept of pathname merging.
+虽然下面这些示例可能只有在允许 :unspecific 出现在指定位置并且允许四字母类型成员的实现中执行, 但是它们可以用来说明路径名合并的基本概念.
 
- (pathname-type 
-   (merge-pathnames (make-pathname :type "LISP")
-                    (make-pathname :type "TEXT")))
-=>  "LISP"
+    ```LISP
+    (pathname-type 
+      (merge-pathnames (make-pathname :type "LISP")
+                        (make-pathname :type "TEXT")))
+    =>  "LISP"
 
- (pathname-type 
-   (merge-pathnames (make-pathname :type nil)
-                    (make-pathname :type "LISP")))
-=>  "LISP"
+    (pathname-type 
+      (merge-pathnames (make-pathname :type nil)
+                        (make-pathname :type "LISP")))
+    =>  "LISP"
 
- (pathname-type 
-   (merge-pathnames (make-pathname :type :unspecific)
-                    (make-pathname :type "LISP")))
-=>  :UNSPECIFIC
-
+    (pathname-type 
+      (merge-pathnames (make-pathname :type :unspecific)
+                        (make-pathname :type "LISP")))
+    =>  :UNSPECIFIC
+    ```
 
 
 ## 19.3 <span id="LogicalPathnames">Logical Pathnames</span>
