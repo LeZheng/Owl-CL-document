@@ -2,7 +2,7 @@
 
 > * 19.1 [文件名概述](#OverviewFilenames)
 > * 19.2 [Pathnames](#Pathnames)
-> * 19.3 [Logical Pathnames](#LogicalPathnames)
+> * 19.3 [逻辑路径名](#LogicalPathnames)
 > * 19.4 [The Filenames Dictionary](#TheFilenamesDictionary)
 
 
@@ -21,7 +21,7 @@
 
 一个名称字符串(namestring)是一个表示一个文件名的字符串.
 
-通常, 名称字符串的语法涉及到使用具体实现定义的约定, 通常是指所命名文件所在的文件系统的惯例. 仅有的例外是一个逻辑路径名的名称字符串的语法, 它被定义在这个规范中; 见章节 19.3.1 (Syntax of Logical Pathname Namestrings).
+通常, 名称字符串的语法涉及到使用具体实现定义的约定, 通常是指所命名文件所在的文件系统的惯例. 仅有的例外是一个逻辑路径名的名称字符串的语法, 它被定义在这个规范中; 见章节 19.3.1 (逻辑路径名名称字符串的语法).
 
 一个符合规范的程序永远不能无条件地使用一个字面化的名称字符串, 而不是一个逻辑路径名的名称字符串因为 Common Lisp 没有定义任何保证可移植的名称字符串的语法, 除了逻辑路径名的名称字符串. 然而, 一个符合规范的程序, 如果足够小心, 可以成功地操纵用户提供的包含或引用不可移植的名称字符串的数据.
 
@@ -343,114 +343,104 @@ NOT=>  #P"OZ:PS:<TEST>"
     ```
 
 
-## 19.3 <span id="LogicalPathnames">Logical Pathnames</span>
+## 19.3 <span id="LogicalPathnames">逻辑路径名</span>
 
-> * 19.3.1 [Syntax of Logical Pathname Namestrings](#SyntaxLogicalPathnameNamestr)
-> * 19.3.2 [Logical Pathname Components](#LogicalPathnameComponents)
-
-
-### 19.3.1 <span id="SyntaxLogicalPathnameNamestr">Syntax of Logical Pathname Namestrings</span>
-
-The syntax of a logical pathname namestring is as follows. (Note that unlike many notational descriptions in this document, this is a syntactic description of character sequences, not a structural description of objects.)
-
-logical-pathname::= [host host-marker]  
-                    [relative-directory-marker] {directory directory-marker}*  
-                    [name] [type-marker type [version-marker version]] 
-
-host::= word 
-
-directory::= word | wildcard-word | wild-inferiors-word 
-
-name::= word | wildcard-word 
-
-type::= word | wildcard-word 
-
-version::= pos-int | newest-word | wildcard-version 
-
-host-marker---a colon.
-
-relative-directory-marker---a semicolon.
-
-directory-marker---a semicolon.
-
-type-marker---a dot.
-
-version-marker---a dot.
-
-wild-inferiors-word---The two character sequence ``**'' (two asterisks).
-
-newest-word---The six character sequence ``newest'' or the six character sequence ``NEWEST''.
-
-wildcard-version---an asterisk.
-
-wildcard-word---one or more asterisks, uppercase letters, digits, and hyphens, including at least one asterisk, with no two asterisks adjacent.
-
-word---one or more uppercase letters, digits, and hyphens.
-
-pos-int---a positive integer.
-
-#### 19.3.1.1 Additional Information about Parsing Logical Pathname Namestrings
-
-##### 19.3.1.1.1 The Host part of a Logical Pathname Namestring
-
-The host must have been defined as a logical pathname host; this can be done by using setf of logical-pathname-translations.
-
-The logical pathname host name "SYS" is reserved for the implementation. The existence and meaning of SYS: logical pathnames is implementation-defined.
+> * 19.3.1 [逻辑路径名名称字符串的语法](#SyntaxLogicalPathnameNamestr)
+> * 19.3.2 [逻辑路径名成员](#LogicalPathnameComponents)
 
 
-##### 19.3.1.1.2 The Device part of a Logical Pathname Namestring
+### 19.3.1 <span id="SyntaxLogicalPathnameNamestr">逻辑路径名名称字符串的语法</span>
 
-There is no syntax for a logical pathname device since the device component of a logical pathname is always :unspecific; see Section 19.3.2.1 (Unspecific Components of a Logical Pathname). 
+逻辑路径名名称字符串的语法如下. (注意, 与本文档中的许多符号描述不同, 这是对字符序列的语法描述, 而不是对象的结构描述.)
+
+    logical-pathname::= [host host-marker]  
+                        [relative-directory-marker] {directory directory-marker}*  
+                        [name] [type-marker type [version-marker version]] 
+
+    host::= word 
+
+    directory::= word | wildcard-word | wild-inferiors-word 
+
+    name::= word | wildcard-word 
+
+    type::= word | wildcard-word 
+
+    version::= pos-int | newest-word | wildcard-version 
+
+    host-marker---一个冒号.
+
+    relative-directory-marker---一个分号.
+
+    directory-marker---一个分号.
+
+    type-marker---一个点.
+
+    version-marker---一个点.
+
+    wild-inferiors-word---两个字符的序列 "**" (两个星号).
+
+    newest-word---六个字符的序列 "newest" 或者六个字符的序列 "NEWEST".
+
+    wildcard-version---一个星号.
+
+    wildcard-word---一个或多个星号, 大写字母, 数字, 以及连字符, 包含至少一个星号, 其中没有相邻的两个星号.
+
+    word---一个或多个大写字母, 数字, 以及连字符.
+
+    pos-int---一个正整数.
+
+#### 19.3.1.1 关于解析逻辑路径名名称字符串的额外信息
+
+##### 19.3.1.1.1 逻辑路径名名称字符串的主机部分
+
+这个主机必须已经被定义为一个逻辑路径名主机; 这个可以通过 logical-pathname-translations 的 setf 来完成.
+
+逻辑路径名主机名 "SYS" 为具体实现保留了. 这个 SYS: 逻辑路径名的存在性和意义是具体实现定义的.
+
+##### 19.3.1.1.2 逻辑路径名名称字符串的设备部分
+
+这里没有逻辑路径名设备的语法, 因为一个逻辑路径名的设备成员总是为 :unspecific; 见章节 19.3.2.1 (一个逻辑路径名的未指定成员). 
+
+##### 19.3.1.1.3 逻辑路径名名称字符串的目录部分
+
+如果在这些 directory 之前有一个 relative-directory-marker, 这个目录成员会被解析为是相对的; 否则, 这个目录成员会被解析为绝对的.
+
+如果指定了一个 wild-inferiors-marker, 它被解析为 :wild-inferiors. 
+
+##### 19.3.1.1.4 逻辑路径名名称字符串的类型部分
+
+一个源码文件的逻辑路径名的类型是 "LISP". 这应该被转换成任何在物理路径名中合适的类型. 
+
+##### 19.3.1.1.5 逻辑路径名名称字符串的版本部分
+
+一些文件系统没有版本. 对于这样一个文件系统, 逻辑路径名的转换会被忽略. 这意味着程序不能依赖于能够存储一个由逻辑路径名命名的文件的多个版本.
+
+如果指定了一个 wildcard-version, 它被解析为 :wild. 
+
+##### 19.3.1.1.6 逻辑路径名名称字符串的通配符
+
+在一个 wildcard-word 中的每一个星号匹配一个零或多个字符的序列. 这个 wildcard-word "*" 解析为 :wild; 其他 wildcard-word 解析为字符串. 
 
 
-##### 19.3.1.1.3 The Directory part of a Logical Pathname Namestring
+##### 19.3.1.1.7 逻辑路径名名称字符串的小写字母
 
-If a relative-directory-marker precedes the directories, the directory component parsed is as relative; otherwise, the directory component is parsed as absolute.
+在解析 words 和 wildcard-words 时, 小写字母会被转换为大写的. 
 
-If a wild-inferiors-marker is specified, it parses into :wild-inferiors. 
+##### 19.3.1.1.8 逻辑路径名名称字符串的其他语法
 
+在一个逻辑路径名名称字符串中使用字符而不是在这里指定的那些的后果是不确定的.
 
-##### 19.3.1.1.4 The Type part of a Logical Pathname Namestring
+使用任何没有在这里指定的值作为一个逻辑路径名的成员的后果是不确定的. 
 
-The type of a logical pathname for a source file is "LISP". This should be translated into whatever type is appropriate in a physical pathname. 
+### 19.3.2 <span id="LogicalPathnameComponents">逻辑路径名成员</span>
 
+#### 19.3.2.1 一个逻辑路径名的未指定成员
 
+一个逻辑路径名的设备成员总是为 :unspecific; 没有逻辑路径名的其他成员可以是 :unspecific. 
 
-##### 19.3.1.1.5 The Version part of a Logical Pathname Namestring
+#### 19.3.2.2 空字符串作为逻辑路径名的成员
 
-Some file systems do not have versions. Logical pathname translation to such a file system ignores the version. This implies that a program cannot rely on being able to store more than one version of a file named by a logical pathname.
-
-If a wildcard-version is specified, it parses into :wild. 
-
-
-##### 19.3.1.1.6 Wildcard Words in a Logical Pathname Namestring
-
-Each asterisk in a wildcard-word matches a sequence of zero or more characters. The wildcard-word ``*'' parses into :wild; other wildcard-words parse into strings. 
-
-
-##### 19.3.1.1.7 Lowercase Letters in a Logical Pathname Namestring
-
-When parsing words and wildcard-words, lowercase letters are translated to uppercase. 
-
-
-##### 19.3.1.1.8 Other Syntax in a Logical Pathname Namestring
-
-The consequences of using characters other than those specified here in a logical pathname namestring are unspecified.
-
-The consequences of using any value not specified here as a logical pathname component are unspecified. 
-
-
-### 19.3.2 <span id="LogicalPathnameComponents">Logical Pathname Components</span>
-
-#### 19.3.2.1 Unspecific Components of a Logical Pathname
-
-The device component of a logical pathname is always :unspecific; no other component of a logical pathname can be :unspecific. 
-
-
-#### 19.3.2.2 Null Strings as Components of a Logical Pathname
-
-The null string, "", is not a valid value for any component of a logical pathname. 
-
+空字符串, "", 不是一个逻辑路径名任意成员的有效值. 
 
 ## 19.4 <span id="TheFilenamesDictionary">The Filenames Dictionary</span>
 
@@ -1016,19 +1006,18 @@ The null string, "", is not a valid value for any component of a logical pathnam
 
 * 语法(Syntax):
 
-logical-pathname pathspec => logical-pathname
+        logical-pathname pathspec => logical-pathname
 
 * 参数和值(Arguments and Values):
 
-pathspec---a logical pathname, a logical pathname namestring, or a stream.
-
-logical-pathname---a logical pathname.
+        pathspec---一个逻辑路径名, 一个逻辑路径名名称字符串, 或者一个流.
+        logical-pathname---一个逻辑路径名.
 
 * 描述(Description):
 
-logical-pathname converts pathspec to a logical pathname and returns the new logical pathname. If pathspec is a logical pathname namestring, it should contain a host component and its following colon. If pathspec is a stream, it should be one for which pathname returns a logical pathname.
+        logical-pathname 把 pathspec 转换为一个逻辑路径名并返回这个新的逻辑路径名. 如果 pathspec 是一个逻辑路径名名称字符串, 它应该包含一个主机成员并且它跟随的冒号. 如果 pathspec 是一个流, 它应该是一个可以让 pathname 返回一个逻辑路径名的流.
 
-If pathspec is a stream, the stream can be either open or closed. logical-pathname returns the same logical pathname after a file is closed as it did when the file was open. It is an error if pathspec is a stream that is created with make-two-way-stream, make-echo-stream, make-broadcast-stream, make-concatenated-stream, make-string-input-stream, or make-string-output-stream.
+        如果 pathspec 是一个流, 这个流可以是打开的或者关闭的. 在一个文件被关闭后 logical-pathname 返回一个和这个文件打开时它返回的相同的逻辑路径名. 如果 pathspec 是一个使用 make-two-way-stream, make-echo-stream, make-broadcast-stream, make-concatenated-stream, make-string-input-stream, 或 make-string-output-stream 所创建的流, 那么就是一个错误.
 
 * 示例(Examples): None.
 
@@ -1036,45 +1025,47 @@ If pathspec is a stream, the stream can be either open or closed. logical-pathna
 
 * 异常情况(Exceptional Situations):
 
-Signals an error of type type-error if pathspec isn't supplied correctly.
+        如果 pathspec 没有被正确提供, 那么应该发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-logical-pathname, translate-logical-pathname, Section 19.3 (Logical Pathnames)
+        logical-pathname, translate-logical-pathname, 章节 19.3 (逻辑路径名)
 
 * 注意(Notes): None. 
 
 
 ### <span id="V-DEFAULT-PATHNAME-DEFAULTS">变量 *DEFAULT-PATHNAME-DEFAULTS*</span>
 
-Value Type:
+* 值类型(Value Type):
 
-a pathname object.
+        一个路径名对象.
 
-Initial Value:
+* 初始值(Initial Value):
 
-An implementation-dependent pathname, typically in the working directory that was current when Common Lisp was started up.
+        一个依赖于具体实现的路径名, 通常是在 Common Lisp 启动时当前的工作目录中.
 
 * 描述(Description):
 
-a pathname, used as the default whenever a function needs a default pathname and one is not supplied.
+        一个被用作默认值的路径名, 当一个函数需要一个默认的路径名并且没有没有提供时.
 
 * 示例(Examples):
 
- ;; This example illustrates a possible usage for a hypothetical Lisp running on a
- ;; DEC TOPS-20 file system.  Since pathname conventions vary between Lisp 
- ;; implementations and host file system types, it is not possible to provide a
- ;; general-purpose, conforming example.
- *default-pathname-defaults* =>  #P"PS:<FRED>"
- (merge-pathnames (make-pathname :name "CALENDAR"))
-=>  #P"PS:<FRED>CALENDAR"
- (let ((*default-pathname-defaults* (pathname "<MARY>")))
-   (merge-pathnames (make-pathname :name "CALENDAR")))
-=>  #P"<MARY>CALENDAR"
+    ```LISP
+    ;; This example illustrates a possible usage for a hypothetical Lisp running on a
+    ;; DEC TOPS-20 file system.  Since pathname conventions vary between Lisp 
+    ;; implementations and host file system types, it is not possible to provide a
+    ;; general-purpose, conforming example.
+    *default-pathname-defaults* =>  #P"PS:<FRED>"
+    (merge-pathnames (make-pathname :name "CALENDAR"))
+    =>  #P"PS:<FRED>CALENDAR"
+    (let ((*default-pathname-defaults* (pathname "<MARY>")))
+      (merge-pathnames (make-pathname :name "CALENDAR")))
+    =>  #P"<MARY>CALENDAR"
+    ```
 
 * 受此影响(Affected By):
 
-The implementation.
+        具体实现.
 
 * 也见(See Also): None.
 
@@ -1085,85 +1076,85 @@ The implementation.
 
 * 语法(Syntax):
 
-namestring pathname => namestring
+        namestring pathname => namestring
 
-file-namestring pathname => namestring
+        file-namestring pathname => namestring
 
-directory-namestring pathname => namestring
+        directory-namestring pathname => namestring
 
-host-namestring pathname => namestring
+        host-namestring pathname => namestring
 
-enough-namestring pathname &optional defaults => namestring
+        enough-namestring pathname &optional defaults => namestring
 
 * 参数和值(Arguments and Values):
 
-pathname---a pathname designator.
-
-defaults---a pathname designator. The default is the value of *default-pathname-defaults*.
-
-namestring---a string or nil.
+        pathname---一个路径名标识符.
+        defaults---一个路径名标识符. 默认是 *default-pathname-defaults* 的值.
+        namestring---一个字符串或 nil.
 
 * 描述(Description):
 
-These functions convert pathname into a namestring. The name represented by pathname is returned as a namestring in an implementation-dependent canonical form.
+        这些函数转换路径名 pathname 为一个名称字符串. 由路径名 pathname 表示的名称以一种依赖于具体实现的规范形式作为名称字符串返回.
 
-namestring returns the full form of pathname.
+        namestring 路径名 pathname 的完整形式.
 
-file-namestring returns just the name, type, and version components of pathname.
+        file-namestring 只返回路径名 pathname 的名称, 类型, 和版本成员.
 
-directory-namestring returns the directory name portion.
+        directory-namestring 返回目录名部分.
 
-host-namestring returns the host name.
+        host-namestring 返回主机名部分.
 
-enough-namestring returns an abbreviated namestring that is just sufficient to identify the file named by pathname when considered relative to the defaults. It is required that
+        enough-namestring 返回一个缩写的名称字符串, 它仅足以识别与 defaults 相关的 pathname 命名的文件. 在所有情况下, 它要求这样
 
- (merge-pathnames (enough-namestring pathname defaults) defaults)
-==  (merge-pathnames (parse-namestring pathname nil defaults) defaults)
+            (merge-pathnames (enough-namestring pathname defaults) defaults)
+            ==  (merge-pathnames (parse-namestring pathname nil defaults) defaults)
 
-in all cases, and the result of enough-namestring is the shortest reasonable string that will satisfy this criterion.
+        并且这个 enough-namestring 的结果是满足这个标准的最短的合理字符串.
 
-It is not necessarily possible to construct a valid namestring by concatenating some of the three shorter namestrings in some order.
+        不可能通过将三个较短的名称字符串以某种顺序连接在一起来构造一个有效的名称字符串.
 
 * 示例(Examples):
 
- (namestring "getty")            
-=>  "getty"
- (setq q (make-pathname :host "kathy" 
-                         :directory 
-                           (pathname-directory *default-pathname-defaults*)
-                         :name "getty")) 
-=>  #S(PATHNAME :HOST "kathy" :DEVICE NIL :DIRECTORY directory-name 
-       :NAME "getty" :TYPE NIL :VERSION NIL)
- (file-namestring q) =>  "getty"
- (directory-namestring q) =>  directory-name
- (host-namestring q) =>  "kathy" 
+    ```
+    (namestring "getty")            
+    =>  "getty"
+    (setq q (make-pathname :host "kathy" 
+                            :directory 
+                              (pathname-directory *default-pathname-defaults*)
+                            :name "getty")) 
+    =>  #S(PATHNAME :HOST "kathy" :DEVICE NIL :DIRECTORY directory-name 
+          :NAME "getty" :TYPE NIL :VERSION NIL)
+    (file-namestring q) =>  "getty"
+    (directory-namestring q) =>  directory-name
+    (host-namestring q) =>  "kathy" 
 
- ;;;Using Unix syntax and the wildcard conventions used by the
- ;;;particular version of Unix on which this example was created:
- (namestring
-   (translate-pathname "/usr/dmr/hacks/frob.l"
-                       "/usr/d*/hacks/*.l"
-                       "/usr/d*/backup/hacks/backup-*.*"))
-=>  "/usr/dmr/backup/hacks/backup-frob.l"
- (namestring
-   (translate-pathname "/usr/dmr/hacks/frob.l"
-                       "/usr/d*/hacks/fr*.l"
-                       "/usr/d*/backup/hacks/backup-*.*"))
-=>  "/usr/dmr/backup/hacks/backup-ob.l"
- 
- ;;;This is similar to the above example but uses two different hosts,
- ;;;U: which is a Unix and V: which is a VMS.  Note the translation
- ;;;of file type and alphabetic case conventions.
- (namestring
-   (translate-pathname "U:/usr/dmr/hacks/frob.l"
-                       "U:/usr/d*/hacks/*.l"
-                       "V:SYS$DISK:[D*.BACKUP.HACKS]BACKUP-*.*"))
-=>  "V:SYS$DISK:[DMR.BACKUP.HACKS]BACKUP-FROB.LSP"
- (namestring
-   (translate-pathname "U:/usr/dmr/hacks/frob.l"
-                       "U:/usr/d*/hacks/fr*.l"
-                       "V:SYS$DISK:[D*.BACKUP.HACKS]BACKUP-*.*"))
-=>  "V:SYS$DISK:[DMR.BACKUP.HACKS]BACKUP-OB.LSP"
+    ;;;Using Unix syntax and the wildcard conventions used by the
+    ;;;particular version of Unix on which this example was created:
+    (namestring
+      (translate-pathname "/usr/dmr/hacks/frob.l"
+                          "/usr/d*/hacks/*.l"
+                          "/usr/d*/backup/hacks/backup-*.*"))
+    =>  "/usr/dmr/backup/hacks/backup-frob.l"
+    (namestring
+      (translate-pathname "/usr/dmr/hacks/frob.l"
+                          "/usr/d*/hacks/fr*.l"
+                          "/usr/d*/backup/hacks/backup-*.*"))
+    =>  "/usr/dmr/backup/hacks/backup-ob.l"
+    
+    ;;;This is similar to the above example but uses two different hosts,
+    ;;;U: which is a Unix and V: which is a VMS.  Note the translation
+    ;;;of file type and alphabetic case conventions.
+    (namestring
+      (translate-pathname "U:/usr/dmr/hacks/frob.l"
+                          "U:/usr/d*/hacks/*.l"
+                          "V:SYS$DISK:[D*.BACKUP.HACKS]BACKUP-*.*"))
+    =>  "V:SYS$DISK:[DMR.BACKUP.HACKS]BACKUP-FROB.LSP"
+    (namestring
+      (translate-pathname "U:/usr/dmr/hacks/frob.l"
+                          "U:/usr/d*/hacks/fr*.l"
+                          "V:SYS$DISK:[D*.BACKUP.HACKS]BACKUP-*.*"))
+    =>  "V:SYS$DISK:[DMR.BACKUP.HACKS]BACKUP-OB.LSP"
+    ```
 
 * 受此影响(Affected By): None.
 
@@ -1171,7 +1162,7 @@ It is not necessarily possible to construct a valid namestring by concatenating 
 
 * 也见(See Also):
 
-truename, merge-pathnames, pathname, logical-pathname, Section 20.1 (File System Concepts), Section 19.1.2 (路径名作为文件名)
+        truename, merge-pathnames, pathname, logical-pathname, 章节 20.1 (File System Concepts), 章节 19.1.2 (路径名作为文件名)
 
 * 注意(Notes): None. 
 
