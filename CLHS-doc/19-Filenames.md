@@ -1171,91 +1171,86 @@ NOT=>  #P"OZ:PS:<TEST>"
 
 * 语法(Syntax):
 
-parse-namestring thing &optional host default-pathname &key start end junk-allowed
-
-=> pathname, position
+        parse-namestring thing &optional host default-pathname &key start end junk-allowed
+        => pathname, position
 
 * 参数和值(Arguments and Values):
 
-thing---a string, a pathname, or a stream associated with a file.
-
-host---a valid pathname host, a logical host, or nil.
-
-default-pathname---a pathname designator. The default is the value of *default-pathname-defaults*.
-
-start, end---bounding index designators of thing. The defaults for start and end are 0 and nil, respectively.
-
-junk-allowed---a generalized boolean. The default is false.
-
-pathname---a pathname, or nil.
-
-position---a bounding index designator for thing.
+        thing---一个字符串, 一个路径名, 或者一个和文件相关的流.
+        host---一个有效路径名主机, 一个逻辑主机, 或者 nil.
+        default-pathname---一个路径名标识符. 默认是 *default-pathname-defaults* 的值.
+        start, end---thing 的边界索引标识符. 对于 start 和 end 默认是 0 和 nil.
+        junk-allowed---一个广义 boolean. 默认是 false.
+        pathname---路径名, 或 nil.
+        position---对于 thing 的一个边界索引标识符.
 
 * 描述(Description):
 
-Converts thing into a pathname.
+        转换 thing 为一个路径名.
 
-The host supplies a host name with respect to which the parsing occurs.
+        主机 host 提供一个相对于解析发生的主机名.
 
-If thing is a stream associated with a file, processing proceeds as if the pathname used to open that file had been supplied instead.
+        如果 thing 是一个和一个文件关联的流, 处理的过程就好像是用来打开那个文件的路径名已经被提供了.
 
-If thing is a pathname, the host and the host component of thing are compared. If they match, two values are immediately returned: thing and start; otherwise (if they do not match), an error is signaled.
+        如果 thing 是一个路径名, 主机 host 和 thing 的主机成员会被比较. 如果它们匹配, 立即返回两个值: thing 和 start; 否则 (如果它们不匹配), 发出一个错误.
 
-Otherwise (if thing is a string), parse-namestring parses the name of a file within the substring of thing bounded by start and end.
+        否则 (如果 thing 是一个字符串), parse-namestring 在这个 thing 里 start 和 end 限定的子字符串中解析一个文件的名字.
 
-If thing is a string then the substring of thing bounded by start and end is parsed into a pathname as follows:
+        如果 thing 是一个字符串那么这个 thing 里 start 和 end 限定的子字符串按照如下被解析为一个路径名:
 
-* If host is a logical host then thing is parsed as a logical pathname namestring on the host.
+        * 如果 host 是一个逻辑主机那么 thing 解析为主机 host 上的一个逻辑路径名名称字符串.
 
-* If host is nil and thing is a syntactically valid logical pathname namestring containing an explicit host, then it is parsed as a logical pathname namestring.
+        * 如果 host 是 nil 并且 thing 是一个包含一个显式主机的语法有效的逻辑路径名名称字符串, 那么它被解析为一个逻辑路径名名称字符串.
 
-* If host is nil, default-pathname is a logical pathname, and thing is a syntactically valid logical pathname namestring without an explicit host, then it is parsed as a logical pathname namestring on the host that is the host component of default-pathname.
+        * 如果 host 是 nil, default-pathname 是一个逻辑路径名, 并且 thing 是一个没有一个显式主机的语法有效的逻辑路径名名称字符串, 那么它被解析为一个在 default-pathname 主机成员的主机上的逻辑路径名名称字符串.
 
-* Otherwise, the parsing of thing is implementation-defined.
+        * 否则, 这个 thing 的解析是具体实现定义的.
 
-In the first of these cases, the host portion of the logical pathname namestring and its following colon are optional.
+        在第一个情况中, 这个逻辑路径名名称字符串的主机部分和它跟随的冒号是可选的.
 
-If the host portion of the namestring and host are both present and do not match, an error is signaled.
+        如果这个名称字符串的主机部分和 host 都出现了但是不匹配, 就会发出一个错误.
 
-If junk-allowed is true, then the primary value is the pathname parsed or, if no syntactically correct pathname was seen, nil. If junk-allowed is false, then the entire substring is scanned, and the primary value is the pathname parsed.
+        如果 junk-allowed 是 true, 那么主要的值就是解析的路径名, 如果没有找到语法正确的路径名, 那么就是 nil. 如果 junk-allowed 是 false, 那么整个字符串子字符串会被扫描, 而主要的值就是解析的路径名.
 
-In either case, the secondary value is the index into thing of the delimiter that terminated the parse, or the index beyond the substring if the parse terminated at the end of the substring (as will always be the case if junk-allowed is false).
+        在每个情况中, 第二个值是 thing 中终止这个解析的索引, 或者如果这个解析在这个子字符串末尾终止, 就是超出这个子字符串的索引 (如果 junk-allowed 是 false, 情况总是如此).
 
-Parsing a null string always succeeds, producing a pathname with all components (except the host) equal to nil.
+        解析一个空字符串总是成功的, 产生一个所有成员等于 nil (除了主机)的路径名.
 
-If thing contains an explicit host name and no explicit device name, then it is implementation-defined whether parse-namestring will supply the standard default device for that host as the device component of the resulting pathname.
+        如果 thing 包含一个显式主机名而没有显式的设备名, 那么 parse-namestring 是否会为那个 host 提供标准默认设备作为产生路径名的设备成员是具体实现定义的.
 
 * 示例(Examples):
 
- (setq q (parse-namestring "test"))  
-=>  #S(PATHNAME :HOST NIL :DEVICE NIL :DIRECTORY NIL :NAME "test" 
-       :TYPE NIL :VERSION NIL)
- (pathnamep q) =>  true
- (parse-namestring "test") 
-=>  #S(PATHNAME :HOST NIL :DEVICE NIL :DIRECTORY NIL :NAME "test"
-       :TYPE NIL :VERSION NIL), 4
- (setq s (open xxx)) =>  #<Input File Stream...>
- (parse-namestring s) 
-=>  #S(PATHNAME :HOST NIL :DEVICE NIL :DIRECTORY NIL :NAME xxx 
-       :TYPE NIL :VERSION NIL), 0
- (parse-namestring "test" nil nil :start 2 :end 4 )
- =>  #S(PATHNAME ...), 15
- (parse-namestring "foo.lisp")
-=>  #P"foo.lisp"
+    ```LISP
+    (setq q (parse-namestring "test"))  
+    =>  #S(PATHNAME :HOST NIL :DEVICE NIL :DIRECTORY NIL :NAME "test" 
+          :TYPE NIL :VERSION NIL)
+    (pathnamep q) =>  true
+    (parse-namestring "test") 
+    =>  #S(PATHNAME :HOST NIL :DEVICE NIL :DIRECTORY NIL :NAME "test"
+          :TYPE NIL :VERSION NIL), 4
+    (setq s (open xxx)) =>  #<Input File Stream...>
+    (parse-namestring s) 
+    =>  #S(PATHNAME :HOST NIL :DEVICE NIL :DIRECTORY NIL :NAME xxx 
+          :TYPE NIL :VERSION NIL), 0
+    (parse-namestring "test" nil nil :start 2 :end 4 )
+    =>  #S(PATHNAME ...), 15
+    (parse-namestring "foo.lisp")
+    =>  #P"foo.lisp"
+    ```
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-If junk-allowed is false, an error of type parse-error is signaled if thing does not consist entirely of the representation of a pathname, possibly surrounded on either side by whitespace[1] characters if that is appropriate to the cultural conventions of the implementation.
+        如果 junk-allowed 是 false, 如果 thing 不完全由一个路径名的表示组成, 如果与具体实现的文化协定是合适的, 可能任何一边包围着空格, 那么就会发出一个 error 类型的错误.
 
-If host is supplied and not nil, and thing contains a manifest host name, an error of type error is signaled if the hosts do not match.
+        如果提供了 host 并且不是 nil, 那么 thing 会包含一个一个清单主机名, 如果这些主机不匹配就会发出一个 error 类型的错误.
 
-If thing is a logical pathname namestring and if the host portion of the namestring and host are both present and do not match, an error of type error is signaled.
+        如果 thing 是一个逻辑路径名名称字符串并且如果这个名称字符串的主机部分和 host 都出现但是不匹配, 就会发出一个 error 类型的错误.
 
 * 也见(See Also):
 
-pathname, logical-pathname, Section 20.1 (File System Concepts), Section 19.2.2.2.3 (:UNSPECIFIC as a Component Value), Section 19.1.2 (路径名作为文件名)
+        pathname, logical-pathname, 章节 20.1 (File System Concepts), 章节 19.2.2.2.3 (:UNSPECIFIC as a Component Value), 章节 19.1.2 (路径名作为文件名)
 
 * 注意(Notes): None. 
 
@@ -1264,71 +1259,69 @@ pathname, logical-pathname, Section 20.1 (File System Concepts), Section 19.2.2.
 
 * 语法(Syntax):
 
-wild-pathname-p pathname &optional field-key => generalized-boolean
+        wild-pathname-p pathname &optional field-key => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-pathname---a pathname designator.
-
-Field-key---one of :host, :device :directory, :name, :type, :version, or nil.
-
-generalized-boolean---a generalized boolean.
+        pathname---一个路径名标识符.
+        field-key---:host, :device :directory, :name, :type, :version 其中之一, 或者 nil.
+        generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
-wild-pathname-p tests pathname for the presence of wildcard components.
+        wild-pathname-p 检验 pathname 中通配符成员的存在性.
 
-If pathname is a pathname (as returned by pathname) it represents the name used to open the file. This may be, but is not required to be, the actual name of the file.
+        如果 pathname 是一个路径名 (就像是由 pathname 返回的), 那么它就表示被用来打开这个文件的名字. 这可能, 但不是必须, 是这个文件的实际名字.
 
-If field-key is not supplied or nil, wild-pathname-p returns true if pathname has any wildcard components, nil if pathname has none. If field-key is non-nil, wild-pathname-p returns true if the indicated component of pathname is a wildcard, nil if the component is not a wildcard.
+        如果没有提供 field-key 或者是 nil, 如果 pathname 有着任何的通配符成员, 那么 wild-pathname-p 返回 true, 如果没有就是 nil. 如果 field-key 是 non-nil, 如果表示的 pathname 的成员是一个通配符, 那么 wild-pathname-p 返回 true, 如果那个成员不是一个通配符就返回 nil.
 
 * 示例(Examples):
 
- ;;;The following examples are not portable.  They are written to run
- ;;;with particular file systems and particular wildcard conventions.
- ;;;Other implementations will behave differently.  These examples are
- ;;;intended to be illustrative, not to be prescriptive.
- 
- (wild-pathname-p (make-pathname :name :wild)) =>  true
- (wild-pathname-p (make-pathname :name :wild) :name) =>  true
- (wild-pathname-p (make-pathname :name :wild) :type) =>  false
- (wild-pathname-p (pathname "s:>foo>**>")) =>  true ;Lispm
- (wild-pathname-p (pathname :name "F*O")) =>  true ;Most places
+    ```LISP
+    ;;;The following examples are not portable.  They are written to run
+    ;;;with particular file systems and particular wildcard conventions.
+    ;;;Other implementations will behave differently.  These examples are
+    ;;;intended to be illustrative, not to be prescriptive.
+    
+    (wild-pathname-p (make-pathname :name :wild)) =>  true
+    (wild-pathname-p (make-pathname :name :wild) :name) =>  true
+    (wild-pathname-p (make-pathname :name :wild) :type) =>  false
+    (wild-pathname-p (pathname "s:>foo>**>")) =>  true ;Lispm
+    (wild-pathname-p (pathname :name "F*O")) =>  true ;Most places
+    ```
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-If pathname is not a pathname, a string, or a stream associated with a file an error of type type-error is signaled.
+        如果 pathname 不是一个路径名, 一个字符串, 或者一个和文件关联的流, 那么就会发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-pathname, logical-pathname, Section 20.1 (File System Concepts), Section 19.1.2 (路径名作为文件名)
+        pathname, logical-pathname, 章节 20.1 (File System Concepts), 章节 19.1.2 (路径名作为文件名)
 
 * 注意(Notes):
 
-Not all implementations support wildcards in all fields. See Section 19.2.2.2.2 (:WILD as a Component Value) and Section 19.2.2.3 (通配符路径名上的限制). 
+        不是所有的实现在所有域中都支持通配符. 见章节 19.2.2.2.2 (:WILD 作为一个成员值) 和章节 19.2.2.3 (通配符路径名上的限制). 
 
 
 ### <span id="F-PATHNAME-MATCH-P">函数 PATHNAME-MATCH-P</span>
 
 * 语法(Syntax):
 
-pathname-match-p pathname wildcard => generalized-boolean
+        pathname-match-p pathname wildcard => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-pathname---a pathname designator.
-
-wildcard---a designator for a wild pathname.
-
-generalized-boolean---a generalized boolean.
+        pathname---一个路径名标识符.
+        wildcard---一个通配路径名的标识符.
+        generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
-pathname-match-p returns true if pathname matches wildcard, otherwise nil. The matching rules are implementation-defined but should be consistent with directory. Missing components of wildcard default to :wild.
+        如果路径名 pathname 匹配通配符 wildcard 那么 pathname-match-p 就返回 true, 否则返回 nil. 这个匹配规则是具体实现定义的, 但是应该和 directory 一致. wildcard 的缺失成员默认为 :wild.
 
-It is valid for pathname to be a wild pathname; a wildcard field in pathname only matches a wildcard field in wildcard (i.e., pathname-match-p is not commutative). It is valid for wildcard to be a non-wild pathname.
+        对于路径名 pathname 是一个通配路径名也是有效的; 在路径名 pathname 中的一个通配符域只能匹配 wildcard 的一个通配符域(换句话说, pathname-match-p 是可交换的). 对于 wildcard 是一个非通配路径名也是有效的.
 
 * 示例(Examples): None.
 
@@ -1336,11 +1329,11 @@ It is valid for pathname to be a wild pathname; a wildcard field in pathname onl
 
 * 异常情况(Exceptional Situations):
 
-If pathname or wildcard is not a pathname, string, or stream associated with a file an error of type type-error is signaled.
+        如果 pathname 或 wildcard 不是一个路径名, 字符串, 或者一个和文件关联的流, 就会发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-directory, pathname, logical-pathname, Section 20.1 (File System Concepts), Section 19.1.2 (路径名作为文件名)
+        directory, pathname, logical-pathname, 章节 20.1 (File System Concepts), 章节 19.1.2 (路径名作为文件名)
 
 * 注意(Notes): None. 
 
@@ -1349,43 +1342,42 @@ directory, pathname, logical-pathname, Section 20.1 (File System Concepts), Sect
 
 * 语法(Syntax):
 
-translate-logical-pathname pathname &key => physical-pathname
+        translate-logical-pathname pathname &key => physical-pathname
 
 * 参数和值(Arguments and Values):
 
-pathname---a pathname designator, or a logical pathname namestring.
-
-physical-pathname---a physical pathname.
+        pathname---一个路径名标识符, 或者一个逻辑路径名名称字符串.
+        physical-pathname---一个物理路径名.
 
 * 描述(Description):
 
-Translates pathname to a physical pathname, which it returns.
+        把路径名 pathname 转换为一个物理路径名, 并返回它.
 
-If pathname is a stream, the stream can be either open or closed. translate-logical-pathname returns the same physical pathname after a file is closed as it did when the file was open. It is an error if pathname is a stream that is created with make-two-way-stream, make-echo-stream, make-broadcast-stream, make-concatenated-stream, make-string-input-stream, make-string-output-stream.
+        如果 pathname 是一个流, 这个流可以是打开的或关闭的. 在文件关闭之后 translate-logical-pathname 还是返回和这个文件打开时返回的相同的物理路径名. 如果路径名 pathname 是一个用 make-two-way-stream, make-echo-stream, make-broadcast-stream, make-concatenated-stream, make-string-input-stream, make-string-output-stream 创建的流, 那就是一个错误.
 
-If pathname is a logical pathname namestring, the host portion of the logical pathname namestring and its following colon are required.
+        如果 pathname 是一个逻辑路径名名称字符串, 这个逻辑路径名名称字符串的主机部分和它跟随的冒号就是必须的.
 
-Pathname is first coerced to a pathname. If the coerced pathname is a physical pathname, it is returned. If the coerced pathname is a logical pathname, the first matching translation (according to pathname-match-p) of the logical pathname host is applied, as if by calling translate-pathname. If the result is a logical pathname, this process is repeated. When the result is finally a physical pathname, it is returned. If no translation matches, an error is signaled.
+        pathname 受限被强制转为一个路径名. 如果这个强制转换后的路径名是一个物理路径名, 它会被返回. 如果这个强制转换后的路径名是一个逻辑路径名, 这个逻辑路径名主机第一个匹配的转换 (根据 pathname-match-p) 会被应用, 就像是通过调用 translate-pathname 的一样. 如果这个结果是一个逻辑路径名, 会重复这个过程. 当这个结果最终为一个物理路径名时, 它会被返回. 如果没有匹配的转换, 就会发出一个错误.
 
-translate-logical-pathname might perform additional translations, typically to provide translation of file types to local naming conventions, to accomodate physical file systems with limited length names, or to deal with special character requirements such as translating hyphens to underscores or uppercase letters to lowercase. Any such additional translations are implementation-defined. Some implementations do no additional translations.
+        translate-logical-pathname 可能执行额外的转换, 通常是将文件类型转换为本地命名约定, 以适应长度有限的物理文件系统, 或者处理特殊的字符需求, 例如将连字符转换为下划线或大写字母到小写. 任何这样的额外转换都是具体实现定义的. 某些实现没有额外的转换.
 
-There are no specified keyword arguments for translate-logical-pathname, but implementations are permitted to extend it by adding keyword arguments.
+        这里没有为 translate-logical-pathname 指定关键字参数, 但是具体实现允许通过添加关键字参数来扩展它.
 
 * 示例(Examples):
 
-See logical-pathname-translations.
+        见 logical-pathname-translations.
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-If pathname is incorrectly supplied, an error of type type-error is signaled.
+        如果 pathname 没有被正确提供, 就会发出一个 type-error 类型的错误.
 
-If no translation matches, an error of type file-error is signaled.
+        如果没有匹配的转换, 就会发出一个 file-error 类型的错误.
 
 * 也见(See Also):
 
-logical-pathname, logical-pathname-translations, logical-pathname, Section 20.1 (File System Concepts), Section 19.1.2 (路径名作为文件名)
+        logical-pathname, logical-pathname-translations, logical-pathname, 章节 20.1 (File System Concepts), 章节 19.1.2 (路径名作为文件名)
 
 * 注意(Notes): None. 
 
