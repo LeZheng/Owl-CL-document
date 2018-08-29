@@ -188,7 +188,7 @@ NOT=>  #P"OZ:PS:<TEST>"
 
 #### 19.2.2.3 <span id="RestrictionWildcardPathnames">通配符路径名上的限制</span>
 
-通配符路径名可以和 directory 一起使用, 但是不能和 open 一起使用, 并且从 wild-pathname-p 返回 true. 在检查通配符路径名的通配符成员时, 符合规范的程序必须准备好在任何成员或目录成员的任何元素中遇到下列附加值:<!--TODO 待校验-->
+通配符路径名可以和 directory 一起使用, 但是不能和 open 一起使用, 并且从 wild-pathname-p 返回 true. 在检查通配符路径名的通配符成员时, 符合规范的程序必须准备好在任何成员或目录成员的任何元素中遇到下列附加值:
 
 * 符号 :wild, 它匹配任何东西.
 
@@ -256,7 +256,7 @@ NOT=>  #P"OZ:PS:<TEST>"
 
     "语法" 意味着那个 :back 动作只依赖于这个路径名, 不依赖这个文件系统的内容.
 
-    "Semantic" 意味着那个 :up 的动作依赖于文件系统的内容; 为了解决一个包含了 :up 到一个目录成员只包含 :absolute 和字符串的路径名的路径名需要探索这个文件系统的问题.<!--TODO 待校对-->
+    "语义" 意味着那个 :up 的动作依赖于文件系统的内容; 为了解决一个包含了 :up 到一个目录成员只包含 :absolute 和字符串的路径名的路径名需要探索这个文件系统的问题.
 
     :up 和 :back 的区别仅在于文件系统支持多个多个目录名, 或许是通过符号链接. 例如, 假设这里有一个目录 (:absolute "X" "Y" "Z") 链接到 (:absolute "A" "B" "C") 并且这里也存在目录 (:absolute "A" "B" "Q") 和 (:absolute "X" "Y" "Q"). 那么 (:absolute "X" "Y" "Z" :up "Q") 表示 (:absolute "A" "B" "Q") 而 (:absolute "X" "Y" "Z" :back "Q") 表示 (:absolute "X" "Y" "Q")
 
@@ -870,7 +870,7 @@ NOT=>  #P"OZ:PS:<TEST>"
 
         (setf (logical-pathname-translations host) translations) 设置一个逻辑路径名主机的转换列表. 如果 host 是一个之前没有被用作一个逻辑路径名主机的字符串, 那么就会定义一个新的逻辑路径名主机; 否则一个已存在的主机转换会被替换. 逻辑路径名主机名字可以使用 string-equal 比较.
 
-        在设置这个转换列表时, 每个 from-wildcard 都可以是一个逻辑路径名, 它的主机为 host 或者一个可通过 (parse-namestring string host) 解析的逻辑路径名字符串, 其中 host 表示由 parse-namestring 定义的合适对象. 每个 to-wildcard 可以是可通过 (pathname to-wildcard) 强制转为一个路径名的任何东西. 如果 to-wildcard 强制转为一个逻辑路径名, translate-logical-pathname 会在它使用它时执行重复的转化步骤.<!--TODO 待校对-->
+        在设置这个转换列表时, 每个 from-wildcard 都可以是一个逻辑路径名, 它的主机为 host 或者一个可通过 (parse-namestring string host) 解析的逻辑路径名名称字符串, 其中 host 表示由 parse-namestring 定义的合适对象. 每个 to-wildcard 可以是可通过 (pathname to-wildcard) 强制转为一个路径名的任何东西. 如果 to-wildcard 强制转为一个逻辑路径名, translate-logical-pathname 会在它使用它时执行重复的转化步骤.<!--TODO 待校对-->
 
         host 是一个逻辑路径名的主机成员或是一个已经通过 logical-pathname-translations 的 setf 被定义为一个逻辑路径名主机名字的字符串.
 
@@ -1385,149 +1385,145 @@ NOT=>  #P"OZ:PS:<TEST>"
 
 * 语法(Syntax):
 
-translate-pathname source from-wildcard to-wildcard &key
-
-=> translated-pathname
+        translate-pathname source from-wildcard to-wildcard &key
+        => translated-pathname
 
 * 参数和值(Arguments and Values):
 
-source---a pathname designator.
-
-from-wildcard---a pathname designator.
-
-to-wildcard---a pathname designator.
-
-translated-pathname---a pathname.
+        source---一个路径名标识符.
+        from-wildcard---一个路径名标识符.
+        to-wildcard---一个路径名标识符.
+        translated-pathname---一个路径名.
 
 * 描述(Description):
 
-translate-pathname translates source (that matches from-wildcard) into a corresponding pathname that matches to-wildcard, and returns the corresponding pathname.
+        translate-pathname 把源 source (that matches from-wildcard) 转换为一个匹配 to-wildcard 的对应路径名, 并且返回这个对应路径名.
 
-The resulting pathname is to-wildcard with each wildcard or missing field replaced by a portion of source. A ``wildcard field'' is a pathname component with a value of :wild, a :wild element of a list-valued directory component, or an implementation-defined portion of a component, such as the "*" in the complex wildcard string "foo*bar" that some implementations support. An implementation that adds other wildcard features, such as regular expressions, must define how translate-pathname extends to those features. A ``missing field'' is a pathname component with a value of nil.
+        这个产生的路径名是 to-wildcard, 其中每一个通配符或缺失的域由 source 中的一个部分替换. 一个 "通配符域(wildcard field)" 是一个带有一个 :wild 值的路径名成员, 一个列表值的目录成员的 :wild 元素, 或者是一个成员的具体实现定义的一个部分, 例如一些实现支持的复杂通配符字符串 "foo*bar" 中的 "*". 一个添加例如正则表达式这样的其他通配符特性的具体实现必须定义 translate-pathname 如何扩展到这些特性的. 一个 "缺失的域(missing field)" 是一个带有 nil 值的路径名成员.
 
-The portion of source that is copied into the resulting pathname is implementation-defined. Typically it is determined by the user interface conventions of the file systems involved. Usually it is the portion of source that matches a wildcard field of from-wildcard that is in the same position as the wildcard or missing field of to-wildcard. If there is no wildcard field in from-wildcard at that position, then usually it is the entire corresponding pathname component of source, or in the case of a list-valued directory component, the entire corresponding list element.
+        这个 source 被拷贝到产生的路径名的部分是具体实现定义的. 通常它是由所涉及的文件系统的用户接口协议决定的. 通常，它是与 from-wildcard 的通配符字段相匹配的源的一部分, 它的位置与 to-wildcard 的通配符或缺失字段相同. 如果在 from-wildcard 的那个位置没有通配符域, 通常那么它是源 source 的整个对应路径名成员, 或者在一个列表值的目录成员中, 就是整个对应的列表元素.
 
-During the copying of a portion of source into the resulting pathname, additional implementation-defined translations of case or file naming conventions might occur, especially when from-wildcard and to-wildcard are for different hosts.
+        在拷贝源 source 的一个部分到产生的路径名期间, 可能发生额外的具体实现定义的大小写或文件命名惯例的转换, 尤其是当 from-wildcard 和 to-wildcard 是不同主机的时候.
 
-It is valid for source to be a wild pathname; in general this will produce a wild result. It is valid for from-wildcard and/or to-wildcard to be non-wild pathnames.
+        对于 source 是一个通配符路径名是有效的; 通常这个会产生一个通配符结果. 对于 from-wildcard 和/或 to-wildcard 为非通配符路径名也是有效的.
 
-There are no specified keyword arguments for translate-pathname, but implementations are permitted to extend it by adding keyword arguments.
+        这里没有为 translate-pathname 指定关键字参数, 但是允许具体实现通过添加关键字参数来扩展它.
 
-translate-pathname maps customary case in source into customary case in the output pathname.
+        translate-pathname 将源 source 的习惯案例映射到输出路径名的习惯用例中 maps customary case in source into customary case in the output pathname.<!--TODO 待校对-->
 
 * 示例(Examples):
 
- ;; The results of the following five forms are all implementation-dependent.
- ;; The second item in particular is shown with multiple results just to 
- ;; emphasize one of many particular variations which commonly occurs.
- (pathname-name (translate-pathname "foobar" "foo*" "*baz")) =>  "barbaz"
- (pathname-name (translate-pathname "foobar" "foo*" "*"))
-=>  "foobar"
-OR=>  "bar"
- (pathname-name (translate-pathname "foobar" "*"    "foo*")) =>  "foofoobar"
- (pathname-name (translate-pathname "bar"    "*"    "foo*")) =>  "foobar"
- (pathname-name (translate-pathname "foobar" "foo*" "baz*")) =>  "bazbar"
+    ```LISP
+    ;; The results of the following five forms are all implementation-dependent.
+    ;; The second item in particular is shown with multiple results just to 
+    ;; emphasize one of many particular variations which commonly occurs.
+    (pathname-name (translate-pathname "foobar" "foo*" "*baz")) =>  "barbaz"
+    (pathname-name (translate-pathname "foobar" "foo*" "*"))
+    =>  "foobar"
+    OR=>  "bar"
+    (pathname-name (translate-pathname "foobar" "*"    "foo*")) =>  "foofoobar"
+    (pathname-name (translate-pathname "bar"    "*"    "foo*")) =>  "foobar"
+    (pathname-name (translate-pathname "foobar" "foo*" "baz*")) =>  "bazbar"
 
- (defun translate-logical-pathname-1 (pathname rules)
-   (let ((rule (assoc pathname rules :test #'pathname-match-p)))
-     (unless rule (error "No translation rule for ~A" pathname))
-     (translate-pathname pathname (first rule) (second rule))))
- (translate-logical-pathname-1 "FOO:CODE;BASIC.LISP"
-                       '(("FOO:DOCUMENTATION;" "MY-UNIX:/doc/foo/")
-                         ("FOO:CODE;"          "MY-UNIX:/lib/foo/")
-                         ("FOO:PATCHES;*;"     "MY-UNIX:/lib/foo/patch/*/")))
-=>  #P"MY-UNIX:/lib/foo/basic.l"
+    (defun translate-logical-pathname-1 (pathname rules)
+      (let ((rule (assoc pathname rules :test #'pathname-match-p)))
+        (unless rule (error "No translation rule for ~A" pathname))
+        (translate-pathname pathname (first rule) (second rule))))
+    (translate-logical-pathname-1 "FOO:CODE;BASIC.LISP"
+                          '(("FOO:DOCUMENTATION;" "MY-UNIX:/doc/foo/")
+                            ("FOO:CODE;"          "MY-UNIX:/lib/foo/")
+                            ("FOO:PATCHES;*;"     "MY-UNIX:/lib/foo/patch/*/")))
+    =>  #P"MY-UNIX:/lib/foo/basic.l"
 
-;;;This example assumes one particular set of wildcard conventions
-;;;Not all file systems will run this example exactly as written
- (defun rename-files (from to)
-   (dolist (file (directory from))
-     (rename-file file (translate-pathname file from to))))
- (rename-files "/usr/me/*.lisp" "/dev/her/*.l")
-   ;Renames /usr/me/init.lisp to /dev/her/init.l
- (rename-files "/usr/me/pcl*/*" "/sys/pcl/*/")
-   ;Renames /usr/me/pcl-5-may/low.lisp to /sys/pcl/pcl-5-may/low.lisp
-   ;In some file systems the result might be /sys/pcl/5-may/low.lisp
- (rename-files "/usr/me/pcl*/*" "/sys/library/*/")
-   ;Renames /usr/me/pcl-5-may/low.lisp to /sys/library/pcl-5-may/low.lisp
-   ;In some file systems the result might be /sys/library/5-may/low.lisp
- (rename-files "/usr/me/foo.bar" "/usr/me2/")
-   ;Renames /usr/me/foo.bar to /usr/me2/foo.bar
- (rename-files "/usr/joe/*-recipes.text" "/usr/jim/cookbook/joe's-*-rec.text")
-   ;Renames /usr/joe/lamb-recipes.text to /usr/jim/cookbook/joe's-lamb-rec.text
-   ;Renames /usr/joe/pork-recipes.text to /usr/jim/cookbook/joe's-pork-rec.text
-   ;Renames /usr/joe/veg-recipes.text to /usr/jim/cookbook/joe's-veg-rec.text
+    ;;;This example assumes one particular set of wildcard conventions
+    ;;;Not all file systems will run this example exactly as written
+    (defun rename-files (from to)
+      (dolist (file (directory from))
+        (rename-file file (translate-pathname file from to))))
+    (rename-files "/usr/me/*.lisp" "/dev/her/*.l")
+      ;Renames /usr/me/init.lisp to /dev/her/init.l
+    (rename-files "/usr/me/pcl*/*" "/sys/pcl/*/")
+      ;Renames /usr/me/pcl-5-may/low.lisp to /sys/pcl/pcl-5-may/low.lisp
+      ;In some file systems the result might be /sys/pcl/5-may/low.lisp
+    (rename-files "/usr/me/pcl*/*" "/sys/library/*/")
+      ;Renames /usr/me/pcl-5-may/low.lisp to /sys/library/pcl-5-may/low.lisp
+      ;In some file systems the result might be /sys/library/5-may/low.lisp
+    (rename-files "/usr/me/foo.bar" "/usr/me2/")
+      ;Renames /usr/me/foo.bar to /usr/me2/foo.bar
+    (rename-files "/usr/joe/*-recipes.text" "/usr/jim/cookbook/joe's-*-rec.text")
+      ;Renames /usr/joe/lamb-recipes.text to /usr/jim/cookbook/joe's-lamb-rec.text
+      ;Renames /usr/joe/pork-recipes.text to /usr/jim/cookbook/joe's-pork-rec.text
+      ;Renames /usr/joe/veg-recipes.text to /usr/jim/cookbook/joe's-veg-rec.text
+    ```
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-If any of source, from-wildcard, or to-wildcard is not a pathname, a string, or a stream associated with a file an error of type type-error is signaled.
+        如果 source, from-wildcard, 或 to-wildcard 中的任意一个不是一个路径名, 一个字符串, 或者一个和文件关联的流, 那么就会发出一个 type-error 类型的错误.
 
-(pathname-match-p source from-wildcard) must be true or an error of type error is signaled.
+        (pathname-match-p source from-wildcard) 必须是 true, 否则就会发出一个 error 类型的错误.
 
 * 也见(See Also):
 
-namestring, pathname-host, pathname, logical-pathname, Section 20.1 (File System Concepts), Section 19.1.2 (路径名作为文件名)
+        namestring, pathname-host, pathname, logical-pathname, 章节 20.1 (File System Concepts), 章节 19.1.2 (路径名作为文件名)
 
 * 注意(Notes):
 
-The exact behavior of translate-pathname cannot be dictated by the Common Lisp language and must be allowed to vary, depending on the user interface conventions of the file systems involved.
+        translate-pathname 的确切行为不能由 Common Lisp 语言来决定, 必须允许更改, 取决于涉及的文件系统的用户接口协议.
 
-The following is an implementation guideline. One file system performs this operation by examining each piece of the three pathnames in turn, where a piece is a pathname component or a list element of a structured component such as a hierarchical directory. Hierarchical directory elements in from-wildcard and to-wildcard are matched by whether they are wildcards, not by depth in the directory hierarchy. If the piece in to-wildcard is present and not wild, it is copied into the result. If the piece in to-wildcard is :wild or nil, the piece in source is copied into the result. Otherwise, the piece in to-wildcard might be a complex wildcard such as "foo*bar" and the piece in from-wildcard should be wild; the portion of the piece in source that matches the wildcard portion of the piece in from-wildcard replaces the wildcard portion of the piece in to-wildcard and the value produced is used in the result. 
+        下面是一个实现指南. 一个文件系统通过检查三个路径名中的每一个片段来执行这个操作, 其中一个片段是一个路径名成员或者一个结构化成员的列表元素, 比如一个层次目录. from-wildcard 和 to-wildcard 中的分层目录元素通过它们是否为通配符来匹配, 而不是通过目录层次结构中的深度. 如果在 to-wildcard 中的这个片段出现并且不是通配的, 它会被拷贝到这个结果中. 如果在 to-wildcard 中的这个片段是 :wild 或 nil, 在 source 中的这个片段会被拷贝到这个结果中. 否则, 在 to-wildcard 中的这个片段可以是一个像 "foo*bar" 这样的复杂通配符并且在 from-wildcard 中的这个片段应该是通配的; 在 source 中, 与 from-wildcard 中片段的通配符部分匹配的部分将取代 to-wildcard 中的通配符部分, 产生的值被用到结果中. 
 
 
 ### <span id="F-MERGE-PATHNAMES">函数 MERGE-PATHNAMES</span>
 
 * 语法(Syntax):
 
-merge-pathnames pathname &optional default-pathname default-version
-
-=> merged-pathname
+        merge-pathnames pathname &optional default-pathname default-version
+        => merged-pathname
 
 * 参数和值(Arguments and Values):
 
-pathname---a pathname designator.
-
-default-pathname---a pathname designator. The default is the value of *default-pathname-defaults*.
-
-default-version---a valid pathname version. The default is :newest.
-
-merged-pathname---a pathname.
+        pathname---一个路径名标识符.
+        default-pathname---一个路径名标识符. 默认是 *default-pathname-defaults* 的值.
+        default-version---一个有效路径名版本. 默认是 :newest.
+        merged-pathname---一个路径名.
 
 * 描述(Description):
 
-Constructs a pathname from pathname by filling in any unsupplied components with the corresponding values from default-pathname and default-version.
+        从路径名 pathname 来构造一个路径名, 用 default-pathname 和 default-version 的对应值来填充任何未指定的成员.
 
-Defaulting of pathname components is done by filling in components taken from another pathname. This is especially useful for cases such as a program that has an input file and an output file. Unspecified components of the output pathname will come from the input pathname, except that the type should not default to the type of the input pathname but rather to the appropriate default type for output from the program; for example, see the function compile-file-pathname.
+        路径名成员的默认情况是通过填充从另一个路径名中提取的成员来完成的. 这对于像有输入文件和输出文件的程序这样的情况特别有用. 输出路径名的未指定的成员将来自输入路径名, 除了类型不应该默认为输入路径名的类型, 而是来自于程序输出的适当的默认类型; 比如, 见函数 compile-file-pathname.
 
-If no version is supplied, default-version is used. If default-version is nil, the version component will remain unchanged.
+        如果没有提供版本, 就使用默认版本 default-version. 如果 default-version 是 nil, 那么版本成员会保持不变.
 
-If pathname explicitly specifies a host and not a device, and if the host component of default-pathname matches the host component of pathname, then the device is taken from the default-pathname; otherwise the device will be the default file device for that host. If pathname does not specify a host, device, directory, name, or type, each such component is copied from default-pathname. If pathname does not specify a name, then the version, if not provided, will come from default-pathname, just like the other components. If pathname does specify a name, then the version is not affected by default-pathname. If this process leaves the version missing, the default-version is used. If the host's file name syntax provides a way to input a version without a name or type, the user can let the name and type default but supply a version different from the one in default-pathname.
+        如果路径名 pathname 显式指定一个主机而不是一个设备, 并且如果 default-pathname 主机成员匹配路径名 pathname 的主机成员, 那么这个设备会取自这个 default-pathname; 否则这个设备回事那个主机的默认文件设备. 如果 pathname 没有指定一个主机, 设备, 目录, 名称, 或类型, 那么每一个这样的元素会拷贝自 default-pathname. 如果 pathname 没有指定一个名称, 那么这个版本, 如果没有提供的话, 会拷贝自 default-pathname, 就像其他成员一样. 如果 pathname 确实指定了一个名称, 那么这个版本不会被 default-pathname 所影响. 如果这个过程导致版本丢失, 就使用默认版本 default-version. 如果主机的文件名语法提供了一种输入没有名称或类型的版本的方法, 用户可以让名称和类型默认，但是提供与 default-pathname 中的那个版本不同的版本.
 
-If pathname is a stream, pathname effectively becomes (pathname pathname). merge-pathnames can be used on either an open or a closed stream.
+        如果 pathname 是一个流, pathname 实际上变为 (pathname pathname). merge-pathnames 可以在一个打开的或关闭的流上被使用.
 
-If pathname is a pathname it represents the name used to open the file. This may be, but is not required to be, the actual name of the file.
+        如果 pathname 是一个 pathname 它就表示被用于打开那个文件的名字. 这个可能, 但不是必须, 是那个文件的实际名字.
 
-merge-pathnames recognizes a logical pathname namestring when default-pathname is a logical pathname, or when the namestring begins with the name of a defined logical host followed by a colon. In the first of these two cases, the host portion of the logical pathname namestring and its following colon are optional.
+        当 default-pathname 是一个逻辑路径名, 或者当这个名称字符串以一个冒号跟着已定义的逻辑主机名开始时, merge-pathnames 识别一个逻辑路径名名称字符串. 在这两种情况的第一种时, 这个逻辑路径名名称字符串的主机部分和它跟随的冒号都是可选的.
 
-merge-pathnames returns a logical pathname if and only if its first argument is a logical pathname, or its first argument is a logical pathname namestring with an explicit host, or its first argument does not specify a host and the default-pathname is a logical pathname.
+        当且仅当 merge-pathnames 的第一个参数是一个逻辑路径名, 或它的第一个参数是一个带有显式主机的逻辑路径名名称字符串, 或者它的第一个参数没有指定一个主机并且 default-pathname 是一个逻辑路径名时, merge-pathnames 返回一个逻辑路径名.
 
-Pathname merging treats a relative directory specially. If (pathname-directory pathname) is a list whose car is :relative, and (pathname-directory default-pathname) is a list, then the merged directory is the value of
+        路径名合并对一个相对目录特别处理. 如果 (pathname-directory pathname) 是一个 car 为 :relative 的列表, 并且 (pathname-directory default-pathname) 是一个列表, 那么合并的目录就是
 
- (append (pathname-directory default-pathname)
-         (cdr  ;remove :relative from the front
-           (pathname-directory pathname)))
+        (append (pathname-directory default-pathname)
+                (cdr  ;remove :relative from the front
+                  (pathname-directory pathname)))
 
-except that if the resulting list contains a string or :wild immediately followed by :back, both of them are removed. This removal of redundant :back keywords is repeated as many times as possible. If (pathname-directory default-pathname) is not a list or (pathname-directory pathname) is not a list whose car is :relative, the merged directory is (or (pathname-directory pathname) (pathname-directory default-pathname))
+        的值, 除非产生的列表包含一个跟在 :back 后面的字符串或 :wild, 它们两个都会被移除. 这个冗余的 :back 关键字的删除尽可能多地重复. 如果 (pathname-directory default-pathname) 不是一个列表或者 (pathname-directory pathname) 不是一个 car 为 :relative 的列表, 那么合并的目录就是 (or (pathname-directory pathname) (pathname-directory default-pathname))
 
-merge-pathnames maps customary case in pathname into customary case in the output pathname.
+        merge-pathnames 将路径名 pathname 的习惯案例映射到输出路径名的习惯用例中 maps customary case in pathname into customary case in the output pathname.<!--TODO 待校对-->
 
 * 示例(Examples):
 
- (merge-pathnames "CMUC::FORMAT"
-                  "CMUC::PS:<LISPIO>.FASL")
-=>  #P"CMUC::PS:<LISPIO>FORMAT.FASL.0"
+    ```LISP
+    (merge-pathnames "CMUC::FORMAT"
+                      "CMUC::PS:<LISPIO>.FASL")
+    =>  #P"CMUC::PS:<LISPIO>FORMAT.FASL.0"
+    ```
 
 * 受此影响(Affected By): None.
 
@@ -1535,9 +1531,9 @@ merge-pathnames maps customary case in pathname into customary case in the outpu
 
 * 也见(See Also):
 
-*default-pathname-defaults*, pathname, logical-pathname, Section 20.1 (File System Concepts), Section 19.1.2 (路径名作为文件名)
+        *default-pathname-defaults*, pathname, logical-pathname, 章节 20.1 (File System Concepts), 章节 19.1.2 (路径名作为文件名)
 
 * 注意(Notes):
 
-The net effect is that if just a name is supplied, the host, device, directory, and type will come from default-pathname, but the version will come from default-version. If nothing or just a directory is supplied, the name, type, and version will come from default-pathname together. 
+        最终的结果是, 如果只提供一个名称, 那么主机, 设备, 目录和类型将来自 default-pathname, 但是版本将来自 default-version. 如果什么都没提供或者只提供了目录, 那么名字, 类型, 和版本都一起来自于 default-pathname. 
 
