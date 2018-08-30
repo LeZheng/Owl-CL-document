@@ -3,70 +3,68 @@
 > * 20.1 [文件系统概念](#FileSystemConcepts)
 > * 20.2 [文件的字典](#TheFilesDictionary)
 
-
 ## 20.1 <span id="FileSystemConcepts">文件系统概念</span>
 
-This section describes the Common Lisp interface to file systems. The model used by this interface assumes that files are named by filenames, that a filename can be represented by a pathname object, and that given a pathname a stream can be constructed that connects to a file whose filename it represents.
+这个章节描述到文件系统的 Common Lisp 接口. 这个接口所使用的模型假定这些文件由文件名来命名, 这样一个文件名可以由一个路径名对象来表示, 并且给定一个路径名, 可以构造一条流, 连接到它所代表的文件名的文件.
 
-For information about opening and closing files, and manipulating their contents, see Section 21 (Streams).
+关于打开和关闭文件, 以及操作它们的内容的信息, 见章节 21 (Streams).
 
-The next figure lists some operators that are applicable to files and directories.
+下面这段列出了可应用于文件和目录的一些操作符.
 
-compile-file  file-length      open            
-delete-file   file-position    probe-file      
-directory     file-write-date  rename-file     
-file-author   load             with-open-file  
+    compile-file  file-length      open            
+    delete-file   file-position    probe-file      
+    directory     file-write-date  rename-file     
+    file-author   load             with-open-file  
 
-Figure 20-1. File and Directory Operations
+    Figure 20-1. 文件和目录操作符
 
 > * 20.1.1 [从流到路径名的强制转换](#CoercionStreamsPathnames)
 > * 20.1.2 [在打开或关闭的流上的文件操作](#FileOptOpenClosedStreams)
-> * 20.1.3 [Truenames](#Truenames)
+> * 20.1.3 [真实的名字](#Truenames)
 
 ### 20.1.1 <span id="CoercionStreamsPathnames">从流到路径名的强制转换</span>
 
-A stream associated with a file is either a file stream or a synonym stream whose target is a stream associated with a file. Such streams can be used as pathname designators.
+与文件相关联的流要么是文件流, 要么是 synonym-stream, 其目标是与文件相关联的流. 这样的流可以被用作路径名标识符.
 
-Normally, when a stream associated with a file is used as a pathname designator, it denotes the pathname used to open the file; this may be, but is not required to be, the actual name of the file.
+通常, 当与文件相关联的流用作路径名标识符时, 它表示用来打开文件的路径名; 这可能是; 但不必须是文件的实际名称.
 
-Some functions, such as truename and delete-file, coerce streams to pathnames in a different way that involves referring to the actual file that is open, which might or might not be the file whose name was opened originally. Such special situations are always notated specifically and are not the default. 
-
+一些函数, 如 truename 和 delete-file, 以一种不同的方式强制把流转换到路径名, 在涉及到引用打开的实际文件时, 可能也可能不是最初打开的文件. 这样的特殊情况总是会被特别标记出来并且不会是默认的. 
 
 ### 20.1.2 <span id="FileOptOpenClosedStreams">在打开或关闭的流上的文件操作</span>
 
-Many functions that perform file operations accept either open or closed streams as arguments; see Section 21.1.3 (Stream Arguments to Standardized Functions).
+执行文件操作的许多函数都接受打开或关闭的流作为参数; 见章节 21.1.3 (Stream Arguments to Standardized Functions).
 
-Of these, the functions in the next figure treat open and closed streams differently.
+这些函数中, 下面这段列出来的这些区别对待打开和关闭的流.
 
-delete-file  file-author      probe-file  
-directory    file-write-date  truename    
+    delete-file  file-author      probe-file  
+    directory    file-write-date  truename    
 
-Figure 20-2. File Functions that Treat Open and Closed Streams Differently
+    Figure 20-2. 区别对待打开和关闭的流的文件函数
 
-Since treatment of open streams by the file system may vary considerably between implementations, however, a closed stream might be the most reliable kind of argument for some of these functions---in particular, those in the next figure. For example, in some file systems, open files are written under temporary names and not renamed until closed and/or are held invisible until closed. In general, any code that is intended to be portable should use such functions carefully.
+由于文件系统对打开的流的处理可能在不同的实现之间有很大的不同, 但是对于某些函数来说, 关闭的流可能是最可靠的参数---特别是在下一段中的那些. 比如, 在某些文件系统中, 打开的文件是用临时的名称写的, 直到关闭时才重命名 和/或 隐藏. 通常情况下, 任何想要移植的代码都应该小心地使用这些函数.
 
-directory  probe-file  truename  
+    directory  probe-file  truename  
 
-Figure 20-3. File Functions where Closed Streams Might Work Best 
+    Figure 20-3. 关闭的流可以更好工作的文件函数 
 
 
-### 20.1.3 <span id="Truenames">Truenames</span>
+### 20.1.3 <span id="Truenames">真实的名字</span>
 
-Many file systems permit more than one filename to designate a particular file.
+很多文件系统允许不止一个文件名来表示一个特定的文件.
 
-Even where multiple names are possible, most file systems have a convention for generating a canonical filename in such situations. Such a canonical filename (or the pathname representing such a filename) is called a truename.
+即使在可能有多个名称的地方, 大多数文件系统都有一个在这种情况下生成规范文件名的惯例. 这样一个规范的文件名(或者表示这样一个文件名的路径名)被称为真实的名字(truename).
 
-The truename of a file may differ from other filenames for the file because of symbolic links, version numbers, logical device translations in the file system, logical pathname translations within Common Lisp, or other artifacts of the file system.
+一个文件的真实的名字可能有别于这个文件的其他文件名, 因为存在符号链接, 版本号, 文件系统中的逻辑设备转换, Common Lisp 中的逻辑路径名转换或文件系统的其他因素.
 
-The truename for a file is often, but not necessarily, unique for each file. For instance, a Unix file with multiple hard links could have several truenames.
+对于每个文件来说, 文件的真实的名字通常是唯一的, 但不是必须是唯一的. 比如, 一个带有硬链接的 Unix 文件可以有多个真实的名字.
 
-#### 20.1.3.1 Examples of Truenames
+#### 20.1.3.1 真实的名字的示例
 
-For example, a DEC TOPS-20 system with files PS:<JOE>FOO.TXT.1 and PS:<JOE>FOO.TXT.2 might permit the second file to be referred to as PS:<JOE>FOO.TXT.0, since the ``.0'' notation denotes ``newest'' version of several files. In the same file system, a ``logical device'' ``JOE:'' might be taken to refer to PS:<JOE>'' and so the names JOE:FOO.TXT.2 or JOE:FOO.TXT.0 might refer to PS:<JOE>FOO.TXT.2. In all of these cases, the truename of the file would probably be PS:<JOE>FOO.TXT.2.
+比如, 一个带有文件 PS:<JOE>FOO.TXT.1 和 PS:<JOE>FOO.TXT.2 的 DEC TOPS-20 系统可能允许第二个文件被引用为 PS:<JOE>FOO.TXT.0, 因为这个 ".0" 标记表示几个文件的 "最新" 版本. 在同一个文件系统中, 一个 "逻辑设备" "JOE:" 可能被用来引用 PS:<JOE> 并且这样一来名字 JOE:FOO.TXT.2 或 JOE:FOO.TXT.0 可能引用 PS:<JOE>FOO.TXT.2. 在所有这些情况中, 这个文件的真实的名字可能是 PS:<JOE>FOO.TXT.2.
 
-If a file is a symbolic link to another file (in a file system permitting such a thing), it is conventional for the truename to be the canonical name of the file after any symbolic links have been followed; that is, it is the canonical name of the file whose contents would become available if an input stream to that file were opened.
+如果一个文件是到另一个文件的符号链接 (在一个允许这东西的文件系统中), 跟在任何符号链接之后, truename 是该文件的规范名称 it is conventional for the truename to be the canonical name of the file after any symbolic links have been followed; 这就是说, 它是那个如果打开该文件的输入流, 内容将可用的文件的规范名称.<!--待校对-->
 
-In the case of a file still being created (that is, of an output stream open to such a file), the exact truename of the file might not be known until the stream is closed. In this case, the function truename might return different values for such a stream before and after it was closed. In fact, before it is closed, the name returned might not even be a valid name in the file system---for example, while a file is being written, it might have version :newest and might only take on a specific numeric value later when the file is closed even in a file system where all files have numeric versions. 
+在要去创建文件的情况下 (这就是说, 对这样一个文件打开的输出流), 这个文件的确切的真实名字知道这个流被关闭可能是不知道的. 在这个情况下, 对于这样一个流, 在它关闭前后函数 truename 可能返回不同的值. 事实上, 在它关闭前, 返回的名字在那个文件系统中可能不是一个有效的名字---比如, 当一个文件要被写入时, 即使在所有文件都有数字版本的文件系统中, 它可能有版本的 :newest 并且可能只在文件关闭时才会使用特定的数字值. 
 
 
 ## 20.2 <span id="TheFilesDictionary">文件的字典</span>
