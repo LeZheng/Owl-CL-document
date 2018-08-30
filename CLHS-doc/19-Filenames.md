@@ -870,7 +870,7 @@ NOT=>  #P"OZ:PS:<TEST>"
 
         (setf (logical-pathname-translations host) translations) 设置一个逻辑路径名主机的转换列表. 如果 host 是一个之前没有被用作一个逻辑路径名主机的字符串, 那么就会定义一个新的逻辑路径名主机; 否则一个已存在的主机转换会被替换. 逻辑路径名主机名字可以使用 string-equal 比较.
 
-        在设置这个转换列表时, 每个 from-wildcard 都可以是一个逻辑路径名, 它的主机为 host 或者一个可通过 (parse-namestring string host) 解析的逻辑路径名名称字符串, 其中 host 表示由 parse-namestring 定义的合适对象. 每个 to-wildcard 可以是可通过 (pathname to-wildcard) 强制转为一个路径名的任何东西. 如果 to-wildcard 强制转为一个逻辑路径名, translate-logical-pathname 会在它使用它时执行重复的转化步骤.<!--TODO 待校对-->
+        在设置这个转换列表时, 每个 from-wildcard 都可以是一个逻辑路径名, 它的主机为 host 或者一个可通过 (parse-namestring string host) 解析的逻辑路径名名称字符串, 其中 host 表示由 parse-namestring 定义的合适对象. 每个 to-wildcard 可以是可通过 (pathname to-wildcard) 强制转为一个路径名的任何东西. 如果 to-wildcard 强制转为一个逻辑路径名, translate-logical-pathname 会在它使用它时执行重复的转化步骤.
 
         host 是一个逻辑路径名的主机成员或是一个已经通过 logical-pathname-translations 的 setf 被定义为一个逻辑路径名主机名字的字符串.
 
