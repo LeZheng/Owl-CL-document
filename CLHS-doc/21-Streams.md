@@ -1,20 +1,16 @@
- 21. Streams
+# 21 Streams
 
-21.1 Stream Concepts
+> * 21.1 [Stream Concepts](#StreamConcepts)
+> * 21.2 [The Streams Dictionary](#TheStreamsDictionary)
 
-21.2 The Streams Dictionary
+## 21.1 <span id="StreamConcepts">Stream Concepts</span>
 
- 21.1 Stream Concepts
+> * 21.1.1 [Introduction to Streams](#IntroductionStreams)
+> * 21.1.2 [Stream Variables](#StreamVariables)
+> * 21.1.3 [Stream Arguments to Standardized Functions](#StreamArgStandFun)
+> * 21.1.4 [Restrictions on Composite Streams](#RestrictCompositeStreams)
 
-21.1.1 Introduction to Streams
-
-21.1.2 Stream Variables
-
-21.1.3 Stream Arguments to Standardized Functions
-
-21.1.4 Restrictions on Composite Streams
-
- 21.1.1 Introduction to Streams
+### 21.1.1 <span id="IntroductionStreams">Introduction to Streams</span>
 
 A stream is an object that can be used with an input or output function to identify an appropriate source or sink of characters or bytes for that operation. A character stream is a source or sink of characters. A binary stream is a source or sink of bytes.
 
@@ -29,23 +25,13 @@ Figure 21-1. Some General-Purpose Stream Operations
 
 Other operations are only meaningful on certain stream types. For example, read-char is only defined for character streams and read-byte is only defined for binary streams.
 
-21.1.1.1 Abstract Classifications of Streams
+> * 21.1.1.1 [Abstract Classifications of Streams](#AbstractClassStreams1)
+> * 21.1.1.2 [Abstract Classifications of Streams](#AbstractClassStreams2)
+> * 21.1.1.3 [Other Subclasses of Stream](#OtherSubclassesStream)
 
-21.1.1.2 Abstract Classifications of Streams
+#### 21.1.1.1 <span id="AbstractClassStreams1">Abstract Classifications of Streams</span>
 
-21.1.1.3 Other Subclasses of Stream
-
-
- 21.1.1.1 Abstract Classifications of Streams
-
-21.1.1.1.1 Input, Output, and Bidirectional Streams
-
-21.1.1.1.2 Open and Closed Streams
-
-21.1.1.1.3 Interactive Streams
-
-
- 21.1.1.1.1 Input, Output, and Bidirectional Streams
+##### 21.1.1.1.1 Input, Output, and Bidirectional Streams
 
 A stream, whether a character stream or a binary stream, can be an input stream (source of data), an output stream (sink for data), both, or (e.g., when ``:direction :probe'' is given to open) neither.
 
@@ -78,7 +64,7 @@ y-or-n-p  yes-or-no-p
 Figure 21-4. Operators relating to Bidirectional Streams. 
 
 
- 21.1.1.1.2 Open and Closed Streams
+##### 21.1.1.1.2 Open and Closed Streams
 
 Streams are either open or closed.
 
@@ -91,7 +77,7 @@ Except as explicitly specified otherwise, the consequences are undefined when a 
 Coercion of streams to pathnames is permissible for closed streams; in some situations, such as for a truename computation, the result might be different for an open stream and for that same stream once it has been closed. 
 
 
- 21.1.1.1.3 Interactive Streams
+##### 21.1.1.1.3 Interactive Streams
 
 An interactive stream is one on which it makes sense to perform interactive querying.
 
@@ -107,18 +93,15 @@ The general intent of having some streams be classified as interactive streams i
 
 Terminal I/O might or might not be an interactive stream. 
 
- 21.1.1.2 Abstract Classifications of Streams
+#### 21.1.1.2 <span id="AbstractClassStreams2">Abstract Classifications of Streams</span>
 
-21.1.1.2.1 File Streams
-
-
- 21.1.1.2.1 File Streams
+##### 21.1.1.2.1 File Streams
 
 Some streams, called file streams, provide access to files. An object of class file-stream is used to represent a file stream.
 
 The basic operation for opening a file is open, which typically returns a file stream (see its dictionary entry for details). The basic operation for closing a stream is close. The macro with-open-file is useful to express the common idiom of opening a file for the duration of a given body of code, and assuring that the resulting stream is closed upon exit from that body. 
 
- 21.1.1.3 Other Subclasses of Stream
+#### 21.1.1.3 <span id="OtherSubclassesStream">Other Subclasses of Stream</span>
 
 The class stream has a number of subclasses defined by this specification. The next figure shows some information about these subclasses.
 
@@ -143,7 +126,7 @@ two-way-stream       make-two-way-stream
 
 Figure 21-5. Defined Names related to Specialized Streams 
 
- 21.1.2 Stream Variables
+### 21.1.2 <span id="StreamVariables">Stream Variables</span>
 
 Variables whose values must be streams are sometimes called stream variables.
 
@@ -165,7 +148,7 @@ Note that, by convention, standardized stream variables have names ending in ``-
 User programs may assign or bind any standardized stream variable except *terminal-io*. 
 
 
- 21.1.3 Stream Arguments to Standardized Functions
+### 21.1.3 <span id="StreamArgStandFun">Stream Arguments to Standardized Functions</span>
 
 The operators in the next figure accept stream arguments that might be either open or closed streams.
 
@@ -208,154 +191,98 @@ make-two-way-stream       read-char
 
 Figure 21-8. Operators that accept Open Streams only 
 
- 21.1.4 Restrictions on Composite Streams
+### 21.1.4 <span id="RestrictCompositeStreams">Restrictions on Composite Streams</span>
 
 The consequences are undefined if any component of a composite stream is closed before the composite stream is closed.
 
 The consequences are undefined if the synonym stream symbol is not bound to an open stream from the time of the synonym stream's creation until the time it is closed. 
 
- 21.2 The Streams Dictionary
+## 21.2 <span id="TheStreamsDictionary">The Streams Dictionary</span>
 
-System Class STREAM
-
-System Class BROADCAST-STREAM
-
-System Class CONCATENATED-STREAM
-
-System Class ECHO-STREAM
-
-System Class FILE-STREAM
-
-System Class STRING-STREAM
-
-System Class SYNONYM-STREAM
-
-System Class TWO-WAY-STREAM
-
-Function INPUT-STREAM-P, OUTPUT-STREAM-P
-
-Function INTERACTIVE-STREAM-P
-
-Function OPEN-STREAM-P
-
-Function STREAM-ELEMENT-TYPE
-
-Function STREAMP
-
-Function READ-BYTE
-
-Function WRITE-BYTE
-
-Function PEEK-CHAR
-
-Function READ-CHAR
-
-Function READ-CHAR-NO-HANG
-
-Function TERPRI, FRESH-LINE
-
-Function UNREAD-CHAR
-
-Function WRITE-CHAR
-
-Function READ-LINE
-
-Function WRITE-STRING, WRITE-LINE
-
-Function READ-SEQUENCE
-
-Function WRITE-SEQUENCE
-
-Function FILE-LENGTH
-
-Function FILE-POSITION
-
-Function FILE-STRING-LENGTH
-
-Function OPEN
-
-Function STREAM-EXTERNAL-FORMAT
-
-macro WITH-OPEN-FILE
-
-Function CLOSE
-
-Macro WITH-OPEN-STREAM
-
-Function LISTEN
-
-Function CLEAR-INPUT
-
-Function FINISH-OUTPUT, FORCE-OUTPUT, CLEAR-OUTPUT
-
-Function Y-OR-N-P, YES-OR-NO-P
-
-Function MAKE-SYNONYM-STREAM
-
-Function SYNONYM-STREAM-SYMBOL
-
-Function BROADCAST-STREAM-STREAMS
-
-Function MAKE-BROADCAST-STREAM
-
-Function MAKE-TWO-WAY-STREAM
-
-Function TWO-WAY-STREAM-INPUT-STREAM, TWO-WAY-STREAM-OUTPUT-STREAM
-
-Function ECHO-STREAM-INPUT-STREAM, ECHO-STREAM-OUTPUT-STREAM
-
-Function MAKE-ECHO-STREAM
-
-Function CONCATENATED-STREAM-STREAMS
-
-Function MAKE-CONCATENATED-STREAM
-
-Function GET-OUTPUT-STREAM-STRING
-
-Function MAKE-STRING-INPUT-STREAM
-
-Function MAKE-STRING-OUTPUT-STREAM
-
-Macro WITH-INPUT-FROM-STRING
-
-Macro WITH-OUTPUT-TO-STRING
-
-Variable *DEBUG-IO*, *ERROR-OUTPUT*, *QUERY-IO*, *STANDARD-INPUT*, *STANDARD-OUTPUT*, *TRACE-OUTPUT*
-
-Variable *TERMINAL-IO*
-
-Condition Type STREAM-ERROR
-
-Function STREAM-ERROR-STREAM
-
-Condition Type END-OF-FILE
+> * [系统类 STREAM](#SC-STREAM)
+> * [系统类 BROADCAST-STREAM](#SC-BROADCAST-STREAM)
+> * [系统类 CONCATENATED-STREAM](#SC-CONCATENATED-STREAM)
+> * [系统类 ECHO-STREAM](#SC-ECHO-STREAM)
+> * [系统类 FILE-STREAM](#SC-FILE-STREAM)
+> * [系统类 STRING-STREAM](#SC-STRING-STREAM)
+> * [系统类 SYNONYM-STREAM](#SC-SYNONYM-STREAM)
+> * [系统类 TWO-WAY-STREAM](#SC-TWO-WAY-STREAM)
+> * [函数 INPUT-STREAM-P, OUTPUT-STREAM-P](#F-INPUT-AND-OUTPUT-STREAM-P)
+> * [函数 INTERACTIVE-STREAM-P](#F-INTERACTIVE-STREAM-P)
+> * [函数 OPEN-STREAM-P](#F-OPEN-STREAM-P)
+> * [函数 STREAM-ELEMENT-TYPE](#F-STREAM-ELEMENT-TYPE)
+> * [函数 STREAMP](#F-STREAMP)
+> * [函数 READ-BYTE](#F-READ-BYTE)
+> * [函数 WRITE-BYTE](#F-WRITE-BYTE)
+> * [函数 PEEK-CHAR](#F-PEEK-CHAR)
+> * [函数 READ-CHAR](#F-READ-CHAR)
+> * [函数 READ-CHAR-NO-HANG](#F-READ-CHAR-NO-HANG)
+> * [函数 TERPRI, FRESH-LINE](#F-TERPRI-FRESH-LINE)
+> * [函数 UNREAD-CHAR](#F-UNREAD-CHAR)
+> * [函数 WRITE-CHAR](#F-WRITE-CHAR)
+> * [函数 READ-LINE](#F-READ-LINE)
+> * [函数 WRITE-STRING, WRITE-LINE](#F-WRITE-STRING-WRITE-LINE)
+> * [函数 READ-SEQUENCE](#F-READ-SEQUENCE)
+> * [函数 WRITE-SEQUENCE](#F-WRITE-SEQUENCE)
+> * [函数 FILE-LENGTH](#F-FILE-LENGTH)
+> * [函数 FILE-POSITION](#F-FILE-POSITION)
+> * [函数 FILE-STRING-LENGTH](#F-FILE-STRING-LENGTH)
+> * [函数 OPEN](#F-OPEN)
+> * [函数 STREAM-EXTERNAL-FORMAT](#F-STREAM-EXTERNAL-FORMAT)
+> * [宏 WITH-OPEN-FILE](#M-WITH-OPEN-FILE)
+> * [函数 CLOSE](#F-CLOSE)
+> * [宏 WITH-OPEN-STREAM](#M-WITH-OPEN-STREAM)
+> * [函数 LISTEN](#F-LISTEN)
+> * [函数 CLEAR-INPUT](#F-CLEAR-INPUT)
+> * [函数 FINISH-OUTPUT, FORCE-OUTPUT, CLEAR-OUTPUT](#F-FINISH-AND-FORCE-AND-CLEAR-OUTPUT)
+> * [函数 Y-OR-N-P, YES-OR-NO-P](#F-Y-OR-N-P-YES-OR-NO-P)
+> * [函数 MAKE-SYNONYM-STREAM](#F-MAKE-SYNONYM-STREAM)
+> * [函数 SYNONYM-STREAM-SYMBOL](#F-SYNONYM-STREAM-SYMBOL)
+> * [函数 BROADCAST-STREAM-STREAMS](#F-BROADCAST-STREAM-STREAMS)
+> * [函数 MAKE-BROADCAST-STREAM](#F-MAKE-BROADCAST-STREAM)
+> * [函数 MAKE-TWO-WAY-STREAM](#F-MAKE-TWO-WAY-STREAM)
+> * [函数 TWO-WAY-STREAM-INPUT-STREAM, TWO-WAY-STREAM-OUTPUT-STREAM](#F-T-W-S-INPUT-AND-OUTPUT-STREAM)
+> * [函数 ECHO-STREAM-INPUT-STREAM, ECHO-STREAM-OUTPUT-STREAM](#F-ECHO-STREAM-INPUT-AND-OUTPUT-STREAM)
+> * [函数 MAKE-ECHO-STREAM](#F-MAKE-ECHO-STREAM)
+> * [函数 CONCATENATED-STREAM-STREAMS](#F-CONCATENATED-STREAM-STREAMS)
+> * [函数 MAKE-CONCATENATED-STREAM](#F-MAKE-CONCATENATED-STREAM)
+> * [函数 GET-OUTPUT-STREAM-STRING](#F-GET-OUTPUT-STREAM-STRING)
+> * [函数 MAKE-STRING-INPUT-STREAM](#F-MAKE-STRING-INPUT-STREAM)
+> * [函数 MAKE-STRING-OUTPUT-STREAM](#F-MAKE-STRING-OUTPUT-STREAM)
+> * [宏 WITH-INPUT-FROM-STRING](#M-WITH-INPUT-FROM-STRING)
+> * [宏 WITH-OUTPUT-TO-STRING](#M-WITH-OUTPUT-TO-STRING)
+> * [变量 *DEBUG-IO*, *ERROR-OUTPUT*, *QUERY-IO*, *STANDARD-INPUT*, *STANDARD-OUTPUT*, *TRACE-OUTPUT*](#V-IO-ALL)
+> * [变量 *TERMINAL-IO*](#V-TERMINAL-IO)
+> * [状况类型 STREAM-ERROR](#CT-STREAM-ERROR)
+> * [函数 STREAM-ERROR-STREAM](#F-STREAM-ERROR-STREAM)
+> * [状况类型 END-OF-FILE](#CT-END-OF-FILE)
 
 
-System Class STREAM
+### <span id="SC-STREAM">系统类 STREAM</span>
 
-Class Precedence List:
+* 类优先级列表(Class Precedence List):
 
 stream, t
 
-Description:
+* 描述(Description):
 
 A stream is an object that can be used with an input or output function to identify an appropriate source or sink of characters or bytes for that operation.
 
 For more complete information, see Section 21.1 (Stream Concepts).
 
-See Also:
+* 也见(See Also):
 
 Section 21.1 (Stream Concepts), Section 22.1.3.13 (Printing Other Objects), Section 22 (Printer), Section 23 (Reader) 
 
-System Class BROADCAST-STREAM
+### <span id="SC-BROADCAST-STREAM">系统类 BROADCAST-STREAM</span>
 
-Class Precedence List:
+* 类优先级列表(Class Precedence List):
 
 broadcast-stream, stream, t
 
-Description:
+* 描述(Description):
 
-A broadcast stream is an output stream which has associated with it a set of zero or more output streams such that any output sent to the broadcast stream gets passed on as output to each of the associated output streams. (If a broadcast stream has no component streams, then all output to the broadcast stream is discarded.)
+ A broadcast stream is an output stream which has associated with it a set of zero or more output streams such that any output sent to the broadcast stream gets passed on as output to each of the associated output streams. (If a broadcast stream has no component streams, then all output to the broadcast stream is discarded.)
 
 The set of operations that may be performed on a broadcast stream is the intersection of those for its associated output streams.
 
@@ -375,132 +302,132 @@ Some output operations (e.g., fresh-line) return values based on the state of th
 
 * For the input operations clear-input listen, peek-char, read-byte, read-char-no-hang, read-char, read-line, and unread-char, the consequences are undefined if the indicated operation is performed. However, an implementation is permitted to define such a behavior as an implementation-dependent extension.
 
-For any output operations not having their return values explicitly specified above or elsewhere in this document, it is defined that the values returned by such an operation are the values resulting from performing the operation on the last of its component streams; the values resulting from performing the operation on all preceding streams are discarded. If there are no component streams, the value is implementation-dependent.
+For any output operations not having their return values explicitly specified above or elsewhere in this document, it is defined that the values returned by such an operation are the values resulting from performing the operation on the last of its component streams; the values resulting from performing the operation on all preceding streams are discarded. If there are no component streams, the value is implementation-dependent. 
 
-See Also:
+* 也见(See Also):
 
 broadcast-stream-streams, make-broadcast-stream 
 
 
-System Class CONCATENATED-STREAM
+### <span id="SC-CONCATENATED-STREAM">系统类 CONCATENATED-STREAM</span>
 
-Class Precedence List:
+* 类优先级列表(Class Precedence List):
 
 concatenated-stream, stream, t
 
-Description:
+* 描述(Description):
 
 A concatenated stream is an input stream which is a composite stream of zero or more other input streams, such that the sequence of data which can be read from the concatenated stream is the same as the concatenation of the sequences of data which could be read from each of the constituent streams.
 
 Input from a concatenated stream is taken from the first of the associated input streams until it reaches end of file[1]; then that stream is discarded, and subsequent input is taken from the next input stream, and so on. An end of file on the associated input streams is always managed invisibly by the concatenated stream---the only time a client of a concatenated stream sees an end of file is when an attempt is made to obtain data from the concatenated stream but it has no remaining input streams from which to obtain such data.
 
-See Also:
+* 也见(See Also):
 
 concatenated-stream-streams, make-concatenated-stream 
 
 
-System Class ECHO-STREAM
+### <span id="SC-ECHO-STREAM">系统类 ECHO-STREAM</span>
 
-Class Precedence List:
+* 类优先级列表(Class Precedence List):
 
 echo-stream, stream, t
 
-Description:
+* 描述(Description):
 
 An echo stream is a bidirectional stream that gets its input from an associated input stream and sends its output to an associated output stream.
 
 All input taken from the input stream is echoed to the output stream. Whether the input is echoed immediately after it is encountered, or after it has been read from the input stream is implementation-dependent.
 
-See Also:
+* 也见(See Also):
 
 echo-stream-input-stream, echo-stream-output-stream, make-echo-stream 
 
 
-System Class FILE-STREAM
+### <span id="SC-FILE-STREAM">系统类 FILE-STREAM</span>
 
-Class Precedence List:
+* 类优先级列表(Class Precedence List):
 
 file-stream, stream, t
 
-Description:
+* 描述(Description):
 
 An object of type file-stream is a stream the direct source or sink of which is a file. Such a stream is created explicitly by open and with-open-file, and implicitly by functions such as load that process files.
 
-See Also:
+* 也见(See Also):
 
 load, open, with-open-file 
 
 
-System Class STRING-STREAM
+### <span id="SC-STRING-STREAM">系统类 STRING-STREAM</span>
 
-Class Precedence List:
+* 类优先级列表(Class Precedence List):
 
 string-stream, stream, t
 
-Description:
+* 描述(Description):
 
 A string stream is a stream which reads input from or writes output to an associated string.
 
 The stream element type of a string stream is always a subtype of type character.
 
-See Also:
+* 也见(See Also):
 
 make-string-input-stream, make-string-output-stream, with-input-from-string, with-output-to-string 
 
 
-System Class SYNONYM-STREAM
+### <span id="SC-SYNONYM-STREAM">系统类 SYNONYM-STREAM</span>
 
-Class Precedence List:
+* 类优先级列表(Class Precedence List):
 
 synonym-stream, stream, t
 
-Description:
+* 描述(Description):
 
 A stream that is an alias for another stream, which is the value of a dynamic variable whose name is the synonym stream symbol of the synonym stream.
 
 Any operations on a synonym stream will be performed on the stream that is then the value of the dynamic variable named by the synonym stream symbol. If the value of the variable should change, or if the variable should be bound, then the stream will operate on the new value of the variable.
 
-See Also:
+* 也见(See Also):
 
 make-synonym-stream, synonym-stream-symbol 
 
 
-System Class TWO-WAY-STREAM
+### <span id="SC-TWO-WAY-STREAM">系统类 TWO-WAY-STREAM</span>
 
-Class Precedence List:
+* 类优先级列表(Class Precedence List):
 
 two-way-stream, stream, t
 
-Description:
+* 描述(Description):
 
 A bidirectional composite stream that receives its input from an associated input stream and sends its output to an associated output stream.
 
-See Also:
+* 也见(See Also):
 
 make-two-way-stream, two-way-stream-input-stream, two-way-stream-output-stream 
 
 
-Function INPUT-STREAM-P, OUTPUT-STREAM-P
+### <span id="F-INPUT-AND-OUTPUT-STREAM-P">函数 INPUT-STREAM-P, OUTPUT-STREAM-P</span>
 
-Syntax:
+* 语法(Syntax):
 
 input-stream-p stream => generalized-boolean
 
 output-stream-p stream => generalized-boolean
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 stream---a stream.
 
 generalized-boolean---a generalized boolean.
 
-Description:
+* 描述(Description):
 
 input-stream-p returns true if stream is an input stream; otherwise, returns false.
 
 output-stream-p returns true if stream is an output stream; otherwise, returns false.
 
-Examples:
+* 示例(Examples):
 
  (input-stream-p *standard-input*) =>  true
  (input-stream-p *terminal-io*) =>  true
@@ -510,36 +437,36 @@ Examples:
  (output-stream-p *terminal-io*) =>  true
  (output-stream-p (make-string-input-stream "jr")) =>  false
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should signal an error of type type-error if stream is not a stream.
 
-See Also: None.
+* 也见(See Also): None.
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function INTERACTIVE-STREAM-P
+### <span id="F-INTERACTIVE-STREAM-P">函数 INTERACTIVE-STREAM-P</span>
 
-Syntax:
+* 语法(Syntax):
 
 interactive-stream-p stream => generalized-boolean
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 stream---a stream.
 
 generalized-boolean---a generalized boolean.
 
-Description:
+* 描述(Description):
 
 Returns true if stream is an interactive stream; otherwise, returns false.
 
-Examples:
+* 示例(Examples):
 
  (when (> measured limit)
    (let ((error (round (* (- measured limit) 100)
@@ -550,75 +477,75 @@ Examples:
                  (< error 15))  ;15% is acceptable
        (error "The frammis is out of tolerance by ~D%." error))))
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should signal an error of type type-error if stream is not a stream.
 
-See Also:
+* 也见(See Also):
 
 Section 21.1 (Stream Concepts)
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function OPEN-STREAM-P
+### <span id="F-OPEN-STREAM-P">函数 OPEN-STREAM-P</span>
 
-Syntax:
+* 语法(Syntax):
 
 open-stream-p stream => generalized-boolean
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 stream---a stream.
 
 generalized-boolean---a generalized boolean.
 
-Description:
+* 描述(Description):
 
 Returns true if stream is an open stream; otherwise, returns false.
 
 Streams are open until they have been explicitly closed with close, or until they are implicitly closed due to exit from a with-output-to-string, with-open-file, with-input-from-string, or with-open-stream form.
 
-Examples:
+* 示例(Examples):
 
  (open-stream-p *standard-input*) =>  true
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By:
+* 受此影响(Affected By):
 
 close.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should signal an error of type type-error if stream is not a stream.
 
-See Also: None.
+* 也见(See Also): None.
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function STREAM-ELEMENT-TYPE
+### <span id="F-STREAM-ELEMENT-TYPE">函数 STREAM-ELEMENT-TYPE</span>
 
-Syntax:
+* 语法(Syntax):
 
 stream-element-type stream => typespec
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 stream---a stream.
 
 typespec---a type specifier.
 
-Description:
+* 描述(Description):
 
 stream-element-type returns a type specifier that indicates the types of objects that may be read from or written to stream.
 
 Streams created by open have an element type restricted to integer or a subtype of type character.
 
-Examples:
+* 示例(Examples):
 
 ;; Note that the stream must accomodate at least the specified type,
 ;; but might accomodate other types.  Further note that even if it does
@@ -636,64 +563,60 @@ OR=>  (UNSIGNED-BYTE 1)
 OR=>  (INTEGER 0 1)
 OR=>  (INTEGER 0 (2))
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should signal an error of type type-error if stream is not a stream.
 
-See Also: None.
+* 也见(See Also): None.
 
-Notes: None.
+* 注意(Notes): None.
 
+### <span id="F-STREAMP">函数 STREAMP</span>
 
-
-Function STREAMP
-
-Syntax:
+* 语法(Syntax):
 
 streamp object => generalized-boolean
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 object---an object.
 
 generalized-boolean---a generalized boolean.
 
-Description:
+* 描述(Description):
 
 Returns true if object is of type stream; otherwise, returns false.
 
 streamp is unaffected by whether object, if it is a stream, is open or closed.
 
-Examples:
+* 示例(Examples):
 
  (streamp *terminal-io*) =>  true
  (streamp 1) =>  false
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also: None.
+* 也见(See Also): None.
 
-Notes:
+* 注意(Notes):
 
  (streamp object) ==  (typep object 'stream)
 
+### <span id="F-READ-BYTE">函数 READ-BYTE</span>
 
-
-Function READ-BYTE
-
-Syntax:
+* 语法(Syntax):
 
 read-byte stream &optional eof-error-p eof-value => byte
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 stream---a binary input stream.
 
@@ -703,13 +626,13 @@ eof-value---an object. The default is nil.
 
 byte---an integer, or the eof-value.
 
-Description:
+* 描述(Description):
 
 read-byte reads and returns one byte from stream.
 
 If an end of file[2] occurs and eof-error-p is false, the eof-value is returned.
 
-Examples:
+* 示例(Examples):
 
  (with-open-file (s "temp-bytes" 
                      :direction :output
@@ -720,13 +643,13 @@ Examples:
 >>  101 EOF
 =>  NIL
 
-Side Effects:
+* 副作用(Side Effects):
 
 Modifies stream.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should signal an error of type type-error if stream is not a stream.
 
@@ -734,64 +657,64 @@ Should signal an error of type error if stream is not a binary input stream.
 
 If there are no bytes remaining in the stream and eof-error-p is true, an error of type end-of-file is signaled.
 
-See Also:
+* 也见(See Also):
 
 read-char, read-sequence, write-byte
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function WRITE-BYTE
+### <span id="F-WRITE-BYTE">函数 WRITE-BYTE</span>
 
-Syntax:
+* 语法(Syntax):
 
 write-byte byte stream => byte
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 byte---an integer of the stream element type of stream.
 
 stream---a binary output stream.
 
-Description:
+* 描述(Description):
 
 write-byte writes one byte, byte, to stream.
 
-Examples:
+* 示例(Examples):
 
  (with-open-file (s "temp-bytes" 
                     :direction :output
                     :element-type 'unsigned-byte)
     (write-byte 101 s)) =>  101
 
-Side Effects:
+* 副作用(Side Effects):
 
 stream is modified.
 
-Affected By:
+* 受此影响(Affected By):
 
 The element type of the stream.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should signal an error of type type-error if stream is not a stream. Should signal an error of type error if stream is not a binary output stream.
 
 Might signal an error of type type-error if byte is not an integer of the stream element type of stream.
 
-See Also:
+* 也见(See Also):
 
 read-byte, write-char, write-sequence
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function PEEK-CHAR
+### <span id="F-PEEK-CHAR">函数 PEEK-CHAR</span>
 
-Syntax:
+* 语法(Syntax):
 
 peek-char &optional peek-type input-stream eof-error-p eof-value recursive-p => char
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 peek-type---a character or t or nil.
 
@@ -805,7 +728,7 @@ recursive-p---a generalized boolean. The default is false.
 
 char---a character or the eof-value.
 
-Description:
+* 描述(Description):
 
 peek-char obtains the next character in input-stream without actually reading it, thus leaving the character to be read at a later time. It can also be used to skip over and discard intervening characters in the input-stream until a particular character is found.
 
@@ -817,7 +740,7 @@ If recursive-p is true, this call is expected to be embedded in a higher-level c
 
 When input-stream is an echo stream, characters that are only peeked at are not echoed. In the case that peek-type is not nil, the characters that are passed by peek-char are treated as if by read-char, and so are echoed unless they have been marked otherwise by unread-char.
 
-Examples:
+* 示例(Examples):
 
  (with-input-from-string (input-stream "    1 2 3 4 5")
     (format t "~S ~S ~S" 
@@ -827,11 +750,11 @@ Examples:
 >>  #\1 #\4 #\4
 =>  NIL
 
-Affected By:
+* 受此影响(Affected By):
 
 *readtable*, *standard-input*, *terminal-io*.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 If eof-error-p is true and an end of file[2] occurs an error of type end-of-file is signaled.
 
@@ -839,18 +762,18 @@ If peek-type is a character, an end of file[2] occurs, and eof-error-p is true, 
 
 If recursive-p is true and an end of file[2] occurs, an error of type end-of-file is signaled.
 
-See Also: None.
+* 也见(See Also): None.
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function READ-CHAR
+### <span id="F-READ-CHAR">函数 READ-CHAR</span>
 
-Syntax:
+* 语法(Syntax):
 
 read-char &optional input-stream eof-error-p eof-value recursive-p => char
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 input-stream---an input stream designator. The default is standard input.
 
@@ -862,7 +785,7 @@ recursive-p---a generalized boolean. The default is false.
 
 char---a character or the eof-value.
 
-Description:
+* 描述(Description):
 
 read-char returns the next character from input-stream.
 
@@ -872,7 +795,7 @@ If recursive-p is true, this call is expected to be embedded in a higher-level c
 
 If an end of file[2] occurs and eof-error-p is false, eof-value is returned.
 
-Examples:
+* 示例(Examples):
 
  (with-input-from-string (is "0123")
     (do ((c (read-char is) (read-char is nil 'the-end)))
@@ -881,30 +804,30 @@ Examples:
 >>  #\0 #\1 #\2 #\3
 =>  NIL
 
-Affected By:
+* 受此影响(Affected By):
 
 *standard-input*, *terminal-io*.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 If an end of file[2] occurs before a character can be read, and eof-error-p is true, an error of type end-of-file is signaled.
 
-See Also:
+* 也见(See Also):
 
 read-byte, read-sequence, write-char, read
 
-Notes:
+* 注意(Notes):
 
 The corresponding output function is write-char. 
 
 
-Function READ-CHAR-NO-HANG
+### <span id="F-READ-CHAR-NO-HANG">函数 READ-CHAR-NO-HANG</span>
 
-Syntax:
+* 语法(Syntax):
 
 read-char-no-hang &optional input-stream eof-error-p eof-value recursive-p => char
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 input-stream -- an input stream designator. The default is standard input.
 
@@ -916,7 +839,7 @@ recursive-p---a generalized boolean. The default is false.
 
 char---a character or nil or the eof-value.
 
-Description:
+* 描述(Description):
 
 read-char-no-hang returns a character from input-stream if such a character is available. If no character is available, read-char-no-hang returns nil.
 
@@ -924,7 +847,7 @@ If recursive-p is true, this call is expected to be embedded in a higher-level c
 
 If an end of file[2] occurs and eof-error-p is false, eof-value is returned.
 
-Examples:
+* 示例(Examples):
 
 ;; This code assumes an implementation in which a newline is not
 ;; required to terminate input from the console.
@@ -946,44 +869,44 @@ Examples:
 >>  a<NEWLINE>
 =>  (#\a #\Newline NIL)
 
-Affected By:
+* 受此影响(Affected By):
 
 *standard-input*, *terminal-io*.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 If an end of file[2] occurs when eof-error-p is true, an error of type end-of-file is signaled .
 
-See Also:
+* 也见(See Also):
 
 listen
 
-Notes:
+* 注意(Notes):
 
 read-char-no-hang is exactly like read-char, except that if it would be necessary to wait in order to get a character (as from a keyboard), nil is immediately returned without waiting. 
 
 
-Function TERPRI, FRESH-LINE
+### <span id="F-TERPRI-FRESH-LINE">函数 TERPRI, FRESH-LINE</span>
 
-Syntax:
+* 语法(Syntax):
 
 terpri &optional output-stream => nil
 
 fresh-line &optional output-stream => generalized-boolean
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 output-stream -- an output stream designator. The default is standard output.
 
 generalized-boolean---a generalized boolean.
 
-Description:
+* 描述(Description):
 
 terpri outputs a newline to output-stream.
 
 fresh-line is similar to terpri but outputs a newline only if the output-stream is not already at the start of a line. If for some reason this cannot be determined, then a newline is output anyway. fresh-line returns true if it outputs a newline; otherwise it returns false.
 
-Examples:
+* 示例(Examples):
 
  (with-output-to-string (s)
     (write-string "some text" s)
@@ -1001,40 +924,40 @@ more text"
 =>  "some text
 more text"
 
-Side Effects:
+* 副作用(Side Effects):
 
 The output-stream is modified.
 
-Affected By:
+* 受此影响(Affected By):
 
 *standard-output*, *terminal-io*.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 None.
 
-See Also: None.
+* 也见(See Also): None.
 
-Notes:
+* 注意(Notes):
 
 terpri is identical in effect to
 
  (write-char #\Newline output-stream)
 
 
-Function UNREAD-CHAR
+### <span id="F-UNREAD-CHAR">函数 UNREAD-CHAR</span>
 
-Syntax:
+* 语法(Syntax):
 
 unread-char character &optional input-stream => nil
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 character---a character; must be the last character that was read from input-stream.
 
 input-stream---an input stream designator. The default is standard input.
 
-Description:
+* 描述(Description):
 
 unread-char places character back onto the front of input-stream so that it will again be the next character in input-stream.
 
@@ -1044,7 +967,7 @@ It is an error to invoke unread-char twice consecutively on the same stream with
 
 Invoking peek-char or read-char commits all previous characters. The consequences of invoking unread-char on any character preceding that which is returned by peek-char (including those passed over by peek-char that has a non-nil peek-type) are unspecified. In particular, the consequences of invoking unread-char after peek-char are unspecified.
 
-Examples:
+* 示例(Examples):
 
  (with-input-from-string (is "0123")
     (dotimes (i 6)
@@ -1055,38 +978,38 @@ Examples:
 >>  4 #\2
 =>  NIL
 
-Affected By:
+* 受此影响(Affected By):
 
 *standard-input*, *terminal-io*.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 peek-char, read-char, Section 21.1 (Stream Concepts)
 
-Notes:
+* 注意(Notes):
 
 unread-char is intended to be an efficient mechanism for allowing the Lisp reader and other parsers to perform one-character lookahead in input-stream. 
 
 
-Function WRITE-CHAR
+### <span id="F-WRITE-CHAR">函数 WRITE-CHAR</span>
 
-Syntax:
+* 语法(Syntax):
 
 write-char character &optional output-stream => character
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 character---a character.
 
 output-stream -- an output stream designator. The default is standard output.
 
-Description:
+* 描述(Description):
 
 write-char outputs character to output-stream.
 
-Examples:
+* 示例(Examples):
 
  (write-char #\a)
 >>  a
@@ -1097,32 +1020,32 @@ Examples:
    (write-char #\b s))
 =>  "a b"
 
-Side Effects:
+* 副作用(Side Effects):
 
 The output-stream is modified.
 
-Affected By:
+* 受此影响(Affected By):
 
 *standard-output*, *terminal-io*.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 read-char, write-byte, write-sequence
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function READ-LINE
+### <span id="F-READ-LINE">函数 READ-LINE</span>
 
-Syntax:
+* 语法(Syntax):
 
 read-line &optional input-stream eof-error-p eof-value recursive-p
 
 => line, missing-newline-p
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 input-stream---an input stream designator. The default is standard input.
 
@@ -1136,7 +1059,7 @@ line---a string or the eof-value.
 
 missing-newline-p---a generalized boolean.
 
-Description:
+* 描述(Description):
 
 Reads from input-stream a line of text that is terminated by a newline or end of file.
 
@@ -1146,7 +1069,7 @@ The primary value, line, is the line that is read, represented as a string (with
 
 The secondary value, missing-newline-p, is a generalized boolean that is false if the line was terminated by a newline, or true if the line was terminated by the end of file for input-stream (or if the line is the eof-value).
 
-Examples:
+* 示例(Examples):
 
  (setq a "line 1
  line2")
@@ -1159,34 +1082,34 @@ Examples:
  (read-line input-stream nil nil)
 =>  NIL, true
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By:
+* 受此影响(Affected By):
 
 *standard-input*, *terminal-io*.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 If an end of file[2] occurs before any characters are read in the line, an error is signaled if eof-error-p is true.
 
-See Also:
+* 也见(See Also):
 
 read
 
-Notes:
+* 注意(Notes):
 
 The corresponding output function is write-line.
 
 
-Function WRITE-STRING, WRITE-LINE
+### <span id="F-WRITE-STRING-WRITE-LINE">函数 WRITE-STRING, WRITE-LINE</span>
 
-Syntax:
+* 语法(Syntax):
 
 write-string string &optional output-stream &key start end => string
 
 write-line string &optional output-stream &key start end => string
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 string---a string.
 
@@ -1194,11 +1117,11 @@ output-stream -- an output stream designator. The default is standard output.
 
 start, end---bounding index designators of string. The defaults for start and end are 0 and nil, respectively.
 
-Description:
+* 描述(Description):
 
 write-string writes the characters of the subsequence of string bounded by start and end to output-stream. write-line does the same thing, but then outputs a newline afterwards.
 
-Examples:
+* 示例(Examples):
 
  (prog1 (write-string "books" nil :end 4) (write-string "worms"))
 >>  bookworms
@@ -1213,19 +1136,19 @@ Examples:
 >>  *
 =>  NIL
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By:
+* 受此影响(Affected By):
 
 *standard-output*, *terminal-io*.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 read-line, write-char
 
-Notes:
+* 注意(Notes):
 
 write-line and write-string return string, not the substring bounded by start and end.
 
@@ -1236,9 +1159,9 @@ write-line and write-string return string, not the substring bounded by start an
  (write-line string)
 ==  (prog1 (write-string string) (terpri))
 
-Function READ-SEQUENCE
+### <span id="F-READ-SEQUENCE">函数 READ-SEQUENCE</span>
 
-Syntax:
+* 语法(Syntax):
 
 read-sequence sequence stream &key start end => position
 
@@ -1250,7 +1173,7 @@ start, end---bounding index designators of sequence. The defaults for start and 
 
 position---an integer greater than or equal to zero, and less than or equal to the length of the sequence.
 
-Description:
+* 描述(Description):
 
 Destructively modifies sequence by replacing the elements of sequence bounded by start and end with elements read from stream.
 
@@ -1258,36 +1181,36 @@ Sequence is destructively modified by copying successive elements into it from s
 
 Position is the index of the first element of sequence that was not updated, which might be less than end because the end of file was reached.
 
-Examples:
+* 示例(Examples):
 
  (defvar *data* (make-array 15 :initial-element nil))
  (values (read-sequence *data* (make-string-input-stream "test string")) *data*)
  =>  11, #(#\t #\e #\s #\t #\Space #\s #\t #\r #\i #\n #\g NIL NIL NIL NIL)
 
-Side Effects:
+* 副作用(Side Effects):
 
 Modifies stream and sequence.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should be prepared to signal an error of type type-error if sequence is not a proper sequence. Should signal an error of type type-error if start is not a non-negative integer. Should signal an error of type type-error if end is not a non-negative integer or nil.
 
 Might signal an error of type type-error if an element read from the stream is not a member of the element type of the sequence.
 
-See Also:
+* 也见(See Also):
 
 Section 3.2.1 (Compiler Terminology), write-sequence, read-line
 
-Notes:
+* 注意(Notes):
 
 read-sequence is identical in effect to iterating over the indicated subsequence and reading one element at a time from stream and storing it into sequence, but may be more efficient than the equivalent loop. An efficient implementation is more likely to exist for the case where the sequence is a vector with the same element type as the stream. 
 
 
-Function WRITE-SEQUENCE
+### <span id="F-WRITE-SEQUENCE">函数 WRITE-SEQUENCE</span>
 
-Syntax:
+* 语法(Syntax):
 
 write-sequence sequence stream &key start end => sequence
 
@@ -1297,56 +1220,56 @@ stream---an output stream.
 
 start, end---bounding index designators of sequence. The defaults for start and end are 0 and nil, respectively.
 
-Description:
+* 描述(Description):
 
 write-sequence writes the elements of the subsequence of sequence bounded by start and end to stream.
 
-Examples:
+* 示例(Examples):
 
  (write-sequence "bookworms" *standard-output* :end 4)
  >>  book
  =>  "bookworms"
 
-Side Effects:
+* 副作用(Side Effects):
 
 Modifies stream.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should be prepared to signal an error of type type-error if sequence is not a proper sequence. Should signal an error of type type-error if start is not a non-negative integer. Should signal an error of type type-error if end is not a non-negative integer or nil.
 
 Might signal an error of type type-error if an element of the bounded sequence is not a member of the stream element type of the stream.
 
-See Also:
+* 也见(See Also):
 
 Section 3.2.1 (Compiler Terminology), read-sequence, write-string, write-line
 
-Notes:
+* 注意(Notes):
 
 write-sequence is identical in effect to iterating over the indicated subsequence and writing one element at a time to stream, but may be more efficient than the equivalent loop. An efficient implementation is more likely to exist for the case where the sequence is a vector with the same element type as the stream. 
 
 
-Function FILE-LENGTH
+### <span id="F-FILE-LENGTH">函数 FILE-LENGTH</span>
 
-Syntax:
+* 语法(Syntax):
 
 file-length stream => length
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 stream---a stream associated with a file.
 
 length---a non-negative integer or nil.
 
-Description:
+* 描述(Description):
 
 file-length returns the length of stream, or nil if the length cannot be determined.
 
 For a binary file, the length is measured in units of the element type of the stream.
 
-Examples:
+* 示例(Examples):
 
  (with-open-file (s "decimal-digits.text" 
                     :direction :output :if-exists :error)
@@ -1357,29 +1280,29 @@ Examples:
    (file-length s))
 =>  10
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should signal an error of type type-error if stream is not a stream associated with a file.
 
-See Also:
+* 也见(See Also):
 
 open
 
-Notes: None. 
+* 注意(Notes): None. 
 
-Function FILE-POSITION
+### <span id="F-FILE-POSITION">函数 FILE-POSITION</span>
 
-Syntax:
+* 语法(Syntax):
 
 file-position stream => position
 
 file-position stream position-spec => success-p
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 stream---a stream.
 
@@ -1389,7 +1312,7 @@ position---a file position or nil.
 
 success-p---a generalized boolean.
 
-Description:
+* 描述(Description):
 
 Returns or changes the current position within a stream.
 
@@ -1401,7 +1324,7 @@ An integer returned by file-position of one argument should be acceptable as pos
 
 For a character file, performing a single read-char or write-char operation may cause the file position to be increased by more than 1 because of character-set translations (such as translating between the Common Lisp f#\Newline character and an external ASCII carriage-return/line-feed sequence) and other aspects of the implementation. For a binary file, every read-byte or write-byte operation increases the file position by 1.
 
-Examples:
+* 示例(Examples):
 
  (defun tester ()
    (let ((noticed '()) file-written)
@@ -1435,34 +1358,34 @@ Examples:
 OR=>  (0 2 NIL 3 0 3 5 6 7)
 OR=>  (NIL NIL NIL NIL NIL NIL)
 
-Side Effects:
+* 副作用(Side Effects):
 
 When the position-spec argument is supplied, the file position in the stream might be moved.
 
-Affected By:
+* 受此影响(Affected By):
 
 The value returned by file-position increases monotonically as input or output operations are performed.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 If position-spec is supplied, but is too large or otherwise inappropriate, an error is signaled.
 
-See Also:
+* 也见(See Also):
 
 file-length, file-string-length, open
 
-Notes:
+* 注意(Notes):
 
 Implementations that have character files represented as a sequence of records of bounded size might choose to encode the file position as, for example, <<record-number>>*<<max-record-size>>+<<character-within-record>>. This is a valid encoding because it increases monotonically as each character is read or written, though not necessarily by 1 at each step. An integer might then be considered ``inappropriate'' as position-spec to file-position if, when decoded into record number and character number, it turned out that the supplied record was too short for the specified character number. 
 
 
-Function FILE-STRING-LENGTH
+### <span id="F-FILE-STRING-LENGTH">函数 FILE-STRING-LENGTH</span>
 
-Syntax:
+* 语法(Syntax):
 
 file-string-length stream object => length
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 stream---an output character file stream.
 
@@ -1470,32 +1393,32 @@ object---a string or a character.
 
 length---a non-negative integer, or nil.
 
-Description:
+* 描述(Description):
 
 file-string-length returns the difference between what (file-position stream) would be after writing object and its current value, or nil if this cannot be determined.
 
 The returned value corresponds to the current state of stream at the time of the call and might not be the same if it is called again when the state of the stream has changed.
 
-Examples: None.
+* 示例(Examples): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also: None.
+* 也见(See Also): None.
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function OPEN
+### <span id="F-OPEN">函数 OPEN</span>
 
-Syntax:
+* 语法(Syntax):
 
 open filespec &key direction element-type if-exists if-does-not-exist external-format
 
 => stream
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 filespec---a pathname designator.
 
@@ -1511,7 +1434,7 @@ external-format---an external file format designator. The default is :default.
 
 stream---a file stream or nil.
 
-Description:
+* 描述(Description):
 
 open creates, opens, and returns a file stream that is connected to the file specified by filespec. Filespec is the name of the file to be opened. If the filespec designator is a stream, that stream is not closed first or otherwise affected.
 
@@ -1611,7 +1534,7 @@ A file can be deleted, renamed, or destructively modified by open.
 
 For information about opening relative pathnames, see Section 19.2.3 (Merging Pathnames).
 
-Examples:
+* 示例(Examples):
 
  (open filespec :direction :probe)  =>  #<Closed Probe File Stream...>
  (setq q (merge-pathnames (user-homedir-pathname) "test"))
@@ -1623,11 +1546,11 @@ Examples:
     directory-name :NAME filespec :TYPE extension :VERSION 1>
  (open s :direction :output :if-exists nil) =>  NIL 
 
-Affected By:
+* 受此影响(Affected By):
 
 The nature and state of the host computer's file system.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 If if-exists is :error, (subject to the constraints on the meaning of if-exists listed above), an error of type file-error is signaled.
 
@@ -1643,11 +1566,11 @@ The various file systems in existence today have widely differing capabilities, 
 
 With regard to the :element-type option, if a type is requested that is not supported by the file system, a substitution of types such as that which goes on in upgrading is permissible. As a minimum requirement, it should be the case that opening an output stream to a file in a given element type and later opening an input stream to the same file in the same element type should work compatibly.
 
-See Also:
+* 也见(See Also):
 
 with-open-file, close, pathname, logical-pathname, Section 19.2.3 (Merging Pathnames), Section 19.1.2 (Pathnames as Filenames)
 
-Notes:
+* 注意(Notes):
 
 open does not automatically close the file when an abnormal exit occurs.
 
@@ -1658,23 +1581,23 @@ When element-type is a subtype of integer, read-byte and/or write-byte can be us
 When element-type is :default, the type can be determined by using stream-element-type. 
 
 
-Function STREAM-EXTERNAL-FORMAT
+### <span id="F-STREAM-EXTERNAL-FORMAT">函数 STREAM-EXTERNAL-FORMAT</span>
 
-Syntax:
+* 语法(Syntax):
 
 stream-external-format stream => format
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 stream---a file stream.
 
 format---an external file format.
 
-Description:
+* 描述(Description):
 
 Returns an external file format designator for the stream.
 
-Examples:
+* 示例(Examples):
 
  (with-open-file (stream "test" :direction :output)
    (stream-external-format stream))
@@ -1684,30 +1607,30 @@ OR=>  (:ASCII :SAIL)
 OR=>  ACME::PROPRIETARY-FILE-FORMAT-17
 OR=>  #<FILE-FORMAT :ISO646-1983 2343673>
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 the :external-format argument to the function open and the with-open-file macro.
 
-Notes:
+* 注意(Notes):
 
 The format returned is not necessarily meaningful to other implementations. 
 
 
-macro WITH-OPEN-FILE
+### <span id="M-WITH-OPEN-FILE">宏 WITH-OPEN-FILE</span>
 
-Syntax:
+* 语法(Syntax):
 
 with-open-file (stream filespec options*) declaration* form*
 
 => results
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 stream -- a variable.
 
@@ -1721,7 +1644,7 @@ forms---an implicit progn.
 
 results---the values returned by the forms.
 
-Description:
+* 描述(Description):
 
 with-open-file uses open to create a file stream to file named by filespec. Filespec is the name of the file to be opened. Options are used as keyword arguments to open.
 
@@ -1735,7 +1658,7 @@ It is possible by the use of :if-exists nil or :if-does-not-exist nil for stream
 
 The consequences are undefined if an attempt is made to assign the stream variable. The compiler may choose to issue a warning if such an attempt is detected.
 
-Examples:
+* 示例(Examples):
 
  (setq p (merge-pathnames "test"))
 =>  #<PATHNAME :HOST NIL :DEVICE device-name :DIRECTORY directory-name
@@ -1763,32 +1686,32 @@ Examples:
    (format foo "Hello"))
 =>  "Hello" ;FORMAT got an argument of NIL!
 
-Side Effects:
+* 副作用(Side Effects):
 
 Creates a stream to the file named by filename (upon entry), and closes the stream (upon exit). In some implementations, the file might be locked in some way while it is open. If the stream is an output stream, a file might be created.
 
-Affected By:
+* 受此影响(Affected By):
 
 The host computer's file system.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 See the function open.
 
-See Also:
+* 也见(See Also):
 
 open, close, pathname, logical-pathname, Section 19.1.2 (Pathnames as Filenames)
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function CLOSE
+### <span id="F-CLOSE">函数 CLOSE</span>
 
-Syntax:
+* 语法(Syntax):
 
 close stream &key abort => result
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 stream---a stream (either open or closed).
 
@@ -1796,7 +1719,7 @@ abort---a generalized boolean. The default is false.
 
 result---t if the stream was open at the time it was received as an argument, or implementation-dependent otherwise.
 
-Description:
+* 描述(Description):
 
 close closes stream. Closing a stream means that it may no longer be used in input or output operations. The act of closing a file stream ends the association between the stream and its associated file; the transaction with the file system is terminated, and input/output may no longer be performed on the stream.
 
@@ -1810,36 +1733,36 @@ The effect of close on a constructed stream is to close the argument stream only
 
 For a stream created with make-string-output-stream, the result of get-output-stream-string is unspecified after close.
 
-Examples:
+* 示例(Examples):
 
  (setq s (make-broadcast-stream)) =>  #<BROADCAST-STREAM>
  (close s) =>  T
  (output-stream-p s) =>  true
 
-Side Effects:
+* 副作用(Side Effects):
 
 The stream is closed (if necessary). If abort is true and the stream is an output file stream, its associated file might be deleted.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 open
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Macro WITH-OPEN-STREAM
+### <span id="M-WITH-OPEN-STREAM">宏 WITH-OPEN-STREAM</span>
 
-Syntax:
+* 语法(Syntax):
 
 with-open-stream (var stream) declaration* form*
 
 => result*
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 var---a variable name.
 
@@ -1851,7 +1774,7 @@ forms---an implicit progn.
 
 results---the values returned by the forms.
 
-Description:
+* 描述(Description):
 
 with-open-stream performs a series of operations on stream, returns a value, and then closes the stream.
 
@@ -1859,42 +1782,42 @@ Var is bound to the value of stream, and then forms are executed as an implicit 
 
 The consequences are undefined if an attempt is made to assign the the variable var with the forms.
 
-Examples:
+* 示例(Examples):
 
  (with-open-stream (s (make-string-input-stream "1 2 3 4"))
     (+ (read s) (read s) (read s))) =>  6
 
-Side Effects:
+* 副作用(Side Effects):
 
 The stream is closed (upon exit).
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 close
 
-Notes: None. 
+* 注意(Notes): None. 
 
-Function LISTEN
+### <span id="F-LISTEN">函数 LISTEN</span>
 
-Syntax:
+* 语法(Syntax):
 
 listen &optional input-stream => generalized-boolean
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 input-stream---an input stream designator. The default is standard input.
 
 generalized-boolean---a generalized boolean.
 
-Description:
+* 描述(Description):
 
 Returns true if there is a character immediately available from input-stream; otherwise, returns false. On a non-interactive input-stream, listen returns true except when at end of file[1]. If an end of file is encountered, listen returns false. listen is intended to be used when input-stream obtains characters from an interactive device such as a keyboard.
 
-Examples:
+* 示例(Examples):
 
  (progn (unread-char (read-char)) (list (listen) (read-char)))
 >>  1
@@ -1902,38 +1825,38 @@ Examples:
  (progn (clear-input) (listen))
 =>  NIL ;Unless you're a very fast typist!
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By:
+* 受此影响(Affected By):
 
 *standard-input*
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 interactive-stream-p, read-char-no-hang
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function CLEAR-INPUT
+### <span id="F-CLEAR-INPUT">函数 CLEAR-INPUT</span>
 
-Syntax:
+* 语法(Syntax):
 
 clear-input &optional input-stream => nil
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 input-stream---an input stream designator. The default is standard input.
 
-Description:
+* 描述(Description):
 
 Clears any available input from input-stream.
 
 If clear-input does not make sense for input-stream, then clear-input does nothing.
 
-Examples:
+* 示例(Examples):
 
 ;; The exact I/O behavior of this example might vary from implementation
 ;; to implementation depending on the kind of interactive buffering that
@@ -1968,27 +1891,27 @@ Examples:
 >>  >> 30
 =>  (10 30)
 
-Side Effects:
+* 副作用(Side Effects):
 
 The input-stream is modified.
 
-Affected By:
+* 受此影响(Affected By):
 
 *standard-input*
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should signal an error of type type-error if input-stream is not a stream designator.
 
-See Also:
+* 也见(See Also):
 
 clear-output
 
-Notes: None. 
+* 注意(Notes): None. 
 
-Function FINISH-OUTPUT, FORCE-OUTPUT, CLEAR-OUTPUT
+### <span id="F-FINISH-AND-FORCE-AND-CLEAR-OUTPUT">函数 FINISH-OUTPUT, FORCE-OUTPUT, CLEAR-OUTPUT</span>
 
-Syntax:
+* 语法(Syntax):
 
 finish-output &optional output-stream => nil
 
@@ -1996,11 +1919,11 @@ force-output &optional output-stream => nil
 
 clear-output &optional output-stream => nil
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 output-stream---an output stream designator. The default is standard output.
 
-Description:
+* 描述(Description):
 
 finish-output, force-output, and clear-output exercise control over the internal handling of buffered stream output.
 
@@ -2012,7 +1935,7 @@ clear-output attempts to abort any outstanding output operation in progress in o
 
 If any of these operations does not make sense for output-stream, then it does nothing. The precise actions of these functions are implementation-dependent.
 
-Examples:
+* 示例(Examples):
 
 ;; Implementation A
  (progn (princ "am i seen?") (clear-output))
@@ -2023,32 +1946,32 @@ Examples:
 >>  am i seen?
 =>  NIL
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By:
+* 受此影响(Affected By):
 
 *standard-output*
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should signal an error of type type-error if output-stream is not a stream designator.
 
-See Also:
+* 也见(See Also):
 
 clear-input
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function Y-OR-N-P, YES-OR-NO-P
+### <span id="F-Y-OR-N-P-YES-OR-NO-P">函数 Y-OR-N-P, YES-OR-NO-P</span>
 
-Syntax:
+* 语法(Syntax):
 
 y-or-n-p &optional control &rest arguments => generalized-boolean
 
 yes-or-no-p &optional control &rest arguments => generalized-boolean
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 control---a format control.
 
@@ -2056,7 +1979,7 @@ arguments---format arguments for control.
 
 generalized-boolean---a generalized boolean.
 
-Description:
+* 描述(Description):
 
 These functions ask a question and parse a response from the user. They return true if the answer is affirmative, or false if the answer is negative.
 
@@ -2068,7 +1991,7 @@ If format-control is supplied and not nil, then a fresh-line operation is perfor
 
 All input and output are performed using query I/O.
 
-Examples:
+* 示例(Examples):
 
  (y-or-n-p "(t or nil) given by")
 >>  (t or nil) given by (Y or N) Y
@@ -2081,42 +2004,42 @@ Examples:
 >>  Please respond with Y or N. n
 =>  false
 
-Side Effects:
+* 副作用(Side Effects):
 
 Output to and input from query I/O will occur.
 
-Affected By:
+* 受此影响(Affected By):
 
 *query-io*.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 format
 
-Notes:
+* 注意(Notes):
 
 yes-or-no-p and yes-or-no-p do not add question marks to the end of the prompt string, so any desired question mark or other punctuation should be explicitly included in the text query. 
 
 
-Function MAKE-SYNONYM-STREAM
+### <span id="F-MAKE-SYNONYM-STREAM">函数 MAKE-SYNONYM-STREAM</span>
 
-Syntax:
+* 语法(Syntax):
 
 make-synonym-stream symbol => synonym-stream
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 symbol---a symbol that names a dynamic variable.
 
 synonym-stream---a synonym stream.
 
-Description:
+* 描述(Description):
 
 Returns a synonym stream whose synonym stream symbol is symbol.
 
-Examples:
+* 示例(Examples):
 
  (setq a-stream (make-string-input-stream "a-stream")
         b-stream (make-string-input-stream "b-stream"))
@@ -2130,96 +2053,94 @@ Examples:
 =>  #<String Input Stream> 
  (read s-stream) =>  B-STREAM
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should signal type-error if its argument is not a symbol.
 
-See Also:
+* 也见(See Also):
 
 Section 21.1 (Stream Concepts)
 
-Notes: None. 
+* 注意(Notes): None. 
 
+### <span id="F-SYNONYM-STREAM-SYMBOL">函数 SYNONYM-STREAM-SYMBOL</span>
 
-
-Function SYNONYM-STREAM-SYMBOL
-
-Syntax:
+* 语法(Syntax):
 
 synonym-stream-symbol synonym-stream => symbol
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 synonym-stream---a synonym stream.
 
 symbol---a symbol.
 
-Description:
+* 描述(Description):
 
 Returns the symbol whose symbol-value the synonym-stream is using.
 
-Examples: None.
+* 示例(Examples): None.
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 make-synonym-stream
 
-Notes: None. 
+* 注意(Notes): None. 
 
-Function BROADCAST-STREAM-STREAMS
+### <span id="F-BROADCAST-STREAM-STREAMS">函数 BROADCAST-STREAM-STREAMS</span>
 
-Syntax:
+* 语法(Syntax):
 
 broadcast-stream-streams broadcast-stream => streams
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 broadcast-stream---a broadcast stream.
 
 streams---a list of streams.
 
-Description:
+* 描述(Description):
 
 Returns a list of output streams that constitute all the streams to which the broadcast-stream is broadcasting.
 
-Examples: None.
+* 示例(Examples): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also: None.
+* 也见(See Also): None.
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function MAKE-BROADCAST-STREAM
+### <span id="F-MAKE-BROADCAST-STREAM">函数 MAKE-BROADCAST-STREAM</span>
 
-Syntax:
+* 语法(Syntax):
 
 make-broadcast-stream &rest streams => broadcast-stream
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 stream---an output stream.
 
 broadcast-stream---a broadcast stream.
 
-Description:
+* 描述(Description):
 
 Returns a broadcast stream.
 
-Examples:
+* 示例(Examples):
 
  (setq a-stream (make-string-output-stream)
         b-stream (make-string-output-stream)) =>  #<String Output Stream>
@@ -2228,29 +2149,29 @@ Examples:
  (get-output-stream-string a-stream) =>  "this will go to both streams"
  (get-output-stream-string b-stream) =>  "this will go to both streams"
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should signal an error of type type-error if any stream is not an output stream.
 
-See Also:
+* 也见(See Also):
 
 broadcast-stream-streams
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
 
-Function MAKE-TWO-WAY-STREAM
+### <span id="F-MAKE-TWO-WAY-STREAM">函数 MAKE-TWO-WAY-STREAM</span>
 
-Syntax:
+* 语法(Syntax):
 
 make-two-way-stream input-stream output-stream => two-way-stream
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 input-stream---a stream.
 
@@ -2258,11 +2179,11 @@ output-stream---a stream.
 
 two-way-stream---a two-way stream.
 
-Description:
+* 描述(Description):
 
 Returns a two-way stream that gets its input from input-stream and sends its output to output-stream.
 
-Examples:
+* 示例(Examples):
 
  (with-output-to-string (out)
     (with-input-from-string (in "input...")
@@ -2271,28 +2192,28 @@ Examples:
         (setq what-is-read (read two))))) =>  "output..."
  what-is-read =>  INPUT... 
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should signal an error of type type-error if input-stream is not an input stream. Should signal an error of type type-error if output-stream is not an output stream.
 
-See Also: None.
+* 也见(See Also): None.
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function TWO-WAY-STREAM-INPUT-STREAM, TWO-WAY-STREAM-OUTPUT-STREAM
+### <span id="F-T-W-S-INPUT-AND-OUTPUT-STREAM">函数 TWO-WAY-STREAM-INPUT-STREAM, TWO-WAY-STREAM-OUTPUT-STREAM</span>
 
-Syntax:
+* 语法(Syntax):
 
 two-way-stream-input-stream two-way-stream => input-stream
 
 two-way-stream-output-stream two-way-stream => output-stream
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 two-way-stream---a two-way stream.
 
@@ -2300,34 +2221,34 @@ input-stream---an input stream.
 
 output-stream---an output stream.
 
-Description:
+* 描述(Description):
 
 two-way-stream-input-stream returns the stream from which two-way-stream receives input.
 
 two-way-stream-output-stream returns the stream to which two-way-stream sends output.
 
-Examples: None.
+* 示例(Examples): None.
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also: None.
+* 也见(See Also): None.
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function ECHO-STREAM-INPUT-STREAM, ECHO-STREAM-OUTPUT-STREAM
+### <span id="F-ECHO-STREAM-INPUT-AND-OUTPUT-STREAM">函数 ECHO-STREAM-INPUT-STREAM, ECHO-STREAM-OUTPUT-STREAM</span>
 
-Syntax:
+* 语法(Syntax):
 
 echo-stream-input-stream echo-stream => input-stream
 
 echo-stream-output-stream echo-stream => output-stream
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 echo-stream---an echo stream.
 
@@ -2335,32 +2256,32 @@ input-stream---an input stream.
 
 output-stream---an output stream.
 
-Description:
+* 描述(Description):
 
 echo-stream-input-stream returns the input stream from which echo-stream receives input.
 
 echo-stream-output-stream returns the output stream to which echo-stream sends output.
 
-Examples: None.
+* 示例(Examples): None.
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also: None.
+* 也见(See Also): None.
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function MAKE-ECHO-STREAM
+### <span id="F-MAKE-ECHO-STREAM">函数 MAKE-ECHO-STREAM</span>
 
-Syntax:
+* 语法(Syntax):
 
 make-echo-stream input-stream output-stream => echo-stream
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 input-stream---an input stream.
 
@@ -2368,11 +2289,11 @@ output-stream---an output stream.
 
 echo-stream---an echo stream.
 
-Description:
+* 描述(Description):
 
 Creates and returns an echo stream that takes input from input-stream and sends output to output-stream.
 
-Examples:
+* 示例(Examples):
 
  (let ((out (make-string-output-stream)))
     (with-open-stream 
@@ -2384,104 +2305,104 @@ Examples:
       (get-output-stream-string out)))
 =>  "this-is-read-and-echoed * this-is-direct-output"
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 echo-stream-input-stream, echo-stream-output-stream, make-two-way-stream
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function CONCATENATED-STREAM-STREAMS
+### <span id="F-CONCATENATED-STREAM-STREAMS">函数 CONCATENATED-STREAM-STREAMS</span>
 
-Syntax:
+* 语法(Syntax):
 
 concatenated-stream-streams concatenated-stream => streams
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 concatenated-stream -- a concatenated stream.
 
 streams---a list of input streams.
 
-Description:
+* 描述(Description):
 
 Returns a list of input streams that constitute the ordered set of streams the concatenated-stream still has to read from, starting with the current one it is reading from. The list may be empty if no more streams remain to be read.
 
 The consequences are undefined if the list structure of the streams is ever modified.
 
-Examples: None.
+* 示例(Examples): None.
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also: None.
+* 也见(See Also): None.
 
-Notes: None.
+* 注意(Notes): None.
 
 
-Function MAKE-CONCATENATED-STREAM
+### <span id="F-MAKE-CONCATENATED-STREAM">函数 MAKE-CONCATENATED-STREAM</span>
 
-Syntax:
+* 语法(Syntax):
 
 make-concatenated-stream &rest input-streams => concatenated-stream
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 input-stream---an input stream.
 
 concatenated-stream---a concatenated stream.
 
-Description:
+* 描述(Description):
 
 Returns a concatenated stream that has the indicated input-streams initially associated with it.
 
-Examples:
+* 示例(Examples):
 
  (read (make-concatenated-stream
          (make-string-input-stream "1")
          (make-string-input-stream "2"))) =>  12
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should signal type-error if any argument is not an input stream.
 
-See Also:
+* 也见(See Also):
 
 concatenated-stream-streams
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function GET-OUTPUT-STREAM-STRING
+### <span id="F-GET-OUTPUT-STREAM-STRING">函数 GET-OUTPUT-STREAM-STRING</span>
 
-Syntax:
+* 语法(Syntax):
 
 get-output-stream-string string-output-stream => string
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 string-output-stream---a stream.
 
 string---a string.
 
-Description:
+* 描述(Description):
 
 Returns a string containing, in order, all the characters that have been output to string-output-stream. This operation clears any characters on string-output-stream, so the string contains only those characters which have been output since the last call to get-output-stream-string or since the creation of the string-output-stream, whichever occurred most recently.
 
-Examples:
+* 示例(Examples):
 
  (setq a-stream (make-string-output-stream)
         a-string "abcdefghijklm") =>  "abcdefghijklm"
@@ -2489,32 +2410,32 @@ Examples:
  (get-output-stream-string a-stream) =>  "abcdefghijklm"
  (get-output-stream-string a-stream) =>  ""
 
-Side Effects:
+* 副作用(Side Effects):
 
 The string-output-stream is cleared.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 The consequences are undefined if stream-output-string is closed.
 
 The consequences are undefined if string-output-stream is a stream that was not produced by make-string-output-stream. The consequences are undefined if string-output-stream was created implicitly by with-output-to-string or format.
 
-See Also:
+* 也见(See Also):
 
 make-string-output-stream
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function MAKE-STRING-INPUT-STREAM
+### <span id="F-MAKE-STRING-INPUT-STREAM">函数 MAKE-STRING-INPUT-STREAM</span>
 
-Syntax:
+* 语法(Syntax):
 
 make-string-input-stream string &optional start end => string-stream
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 string---a string.
 
@@ -2522,11 +2443,11 @@ start, end---bounding index designators of string. The defaults for start and en
 
 string-stream---an input string stream.
 
-Description:
+* 描述(Description):
 
 Returns an input string stream. This stream will supply, in order, the characters in the substring of string bounded by start and end. After the last character has been supplied, the string stream will then be at end of file.
 
-Examples:
+* 示例(Examples):
 
  (let ((string-stream (make-string-input-stream "1 one ")))
    (list (read string-stream nil nil)
@@ -2536,38 +2457,38 @@ Examples:
 
  (read (make-string-input-stream "prefixtargetsuffix" 6 12)) =>  TARGET
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 with-input-from-string
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function MAKE-STRING-OUTPUT-STREAM
+### <span id="F-MAKE-STRING-OUTPUT-STREAM">函数 MAKE-STRING-OUTPUT-STREAM</span>
 
-Syntax:
+* 语法(Syntax):
 
 make-string-output-stream &key element-type => string-stream
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 element-type---a type specifier. The default is character.
 
 string-stream---an output string stream.
 
-Description:
+* 描述(Description):
 
 Returns an output string stream that accepts characters and makes available (via get-output-stream-string) a string that contains the characters that were actually output.
 
 The element-type names the type of the elements of the string; a string is constructed of the most specialized type that can accommodate elements of that element-type.
 
-Examples:
+* 示例(Examples):
 
  (let ((s (make-string-output-stream)))
    (write-string "testing... " s)
@@ -2575,26 +2496,26 @@ Examples:
    (get-output-stream-string s))
 =>  "testing... 1234"
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 get-output-stream-string, with-output-to-string
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Macro WITH-INPUT-FROM-STRING
+### <span id="M-WITH-INPUT-FROM-STRING">宏 WITH-INPUT-FROM-STRING</span>
 
-Syntax:
+* 语法(Syntax):
 
 with-input-from-string (var string &key index start end) declaration* form*
 
 => result*
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 var---a variable name.
 
@@ -2610,7 +2531,7 @@ forms---an implicit progn.
 
 result---the values returned by the forms.
 
-Description:
+* 描述(Description):
 
 Creates an input string stream, provides an opportunity to perform operations on the stream (returning zero or more values), and then closes the string stream.
 
@@ -2624,7 +2545,7 @@ start and index may both specify the same variable, which is a pointer within th
 
 The consequences are undefined if an attempt is made to assign the variable var.
 
-Examples:
+* 示例(Examples):
 
  (with-input-from-string (s "XXX1 2 3 4xxx"
                              :index ind
@@ -2636,30 +2557,30 @@ Examples:
 
 The variable j is set to 15.
 
-Side Effects:
+* 副作用(Side Effects):
 
 The value of the place named by index, if any, is modified.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 make-string-input-stream, Section 3.6 (Traversal Rules and Side Effects)
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Macro WITH-OUTPUT-TO-STRING
+### <span id="M-WITH-OUTPUT-TO-STRING">宏 WITH-OUTPUT-TO-STRING</span>
 
-Syntax:
+* 语法(Syntax):
 
 with-output-to-string (var &optional string-form &key element-type) declaration* form*
 
 => result*
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 var---a variable name.
 
@@ -2675,7 +2596,7 @@ forms---an implicit progn.
 
 results---If a string-form is not supplied or nil, a string; otherwise, the values returned by the forms.
 
-Description:
+* 描述(Description):
 
 with-output-to-string creates a character output stream, performs a series of operations that may send results to this stream, and then closes the stream.
 
@@ -2691,7 +2612,7 @@ If no string is provided, then with-output-from-string produces a stream that ac
 
 The consequences are undefined if an attempt is made to assign the variable var.
 
-Examples:
+* 示例(Examples):
 
  (setq fstr (make-array '(0) :element-type 'base-char
                              :fill-pointer 0 :adjustable t)) =>  ""
@@ -2700,24 +2621,24 @@ Examples:
     (input-stream-p s)) =>  false
  fstr =>  "here's some output"
 
-Side Effects:
+* 副作用(Side Effects):
 
 The string is modified.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 The consequences are undefined if destructive modifications are performed directly on the string during the dynamic extent of the call.
 
-See Also:
+* 也见(See Also):
 
 make-string-output-stream, vector-push-extend, Section 3.6 (Traversal Rules and Side Effects)
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Variable *DEBUG-IO*, *ERROR-OUTPUT*, *QUERY-IO*, *STANDARD-INPUT*, *STANDARD-OUTPUT*, *TRACE-OUTPUT*
+### <span id="V-IO-ALL">变量 *DEBUG-IO*, *ERROR-OUTPUT*, *QUERY-IO*, *STANDARD-INPUT*, *STANDARD-OUTPUT*, *TRACE-OUTPUT*</span>
 
 Value Type:
 
@@ -2731,7 +2652,7 @@ Initial Value:
 
 implementation-dependent, but it must be an open stream that is not a generalized synonym stream to an I/O customization variables but that might be a generalized synonym stream to the value of some I/O customization variable. The initial value might also be a generalized synonym stream to either the symbol *terminal-io* or to the stream that is its value.
 
-Description:
+* 描述(Description):
 
 These variables are collectively called the standardized I/O customization variables. They can be bound or assigned in order to change the default destinations for input and/or output used by various standardized operators and facilities.
 
@@ -2747,7 +2668,7 @@ The value of *standard-output*, called standard output, is a stream that is used
 
 The value of *trace-output*, called trace output, is the stream on which traced functions (see trace) and the time macro print their output.
 
-Examples:
+* 示例(Examples):
 
  (with-output-to-string (*error-output*)
    (warn "this string is sent to *error-output*"))
@@ -2781,11 +2702,11 @@ Examples:
 | 2 Exit FACT 2
 1 Exit FACT 6"
 
-See Also:
+* 也见(See Also):
 
 *terminal-io*, synonym-stream, time, trace, Section 9 (Conditions), Section 23 (Reader), Section 22 (Printer)
 
-Notes:
+* 注意(Notes):
 
 The intent of the constraints on the initial value of the I/O customization variables is to ensure that it is always safe to bind or assign such a variable to the value of another I/O customization variable, without unduly restricting implementation flexibility.
 
@@ -2800,7 +2721,7 @@ In the normal Lisp read-eval-print loop, output is sent to standard output. Many
 A program that wants, for example, to divert output to a file should do so by binding *standard-output*; that way error messages sent to *error-output* can still get to the user by going through *terminal-io* (if *error-output* is bound to *terminal-io*), which is usually what is desired. 
 
 
-Variable *TERMINAL-IO*
+### <span id="V-TERMINAL-IO">变量 *TERMINAL-IO*</span>
 
 Value Type:
 
@@ -2810,13 +2731,13 @@ Initial Value:
 
 implementation-dependent, but it must be an open stream that is not a generalized synonym stream to an I/O customization variables but that might be a generalized synonym stream to the value of some I/O customization variable.
 
-Description:
+* 描述(Description):
 
 The value of *terminal-io*, called terminal I/O, is ordinarily a bidirectional stream that connects to the user's console. Typically, writing to this stream would cause the output to appear on a display screen, for example, and reading from the stream would accept input from a keyboard. It is intended that standard input functions such as read and read-char, when used with this stream, cause echoing of the input into the output side of the stream. The means by which this is accomplished are implementation-dependent.
 
 The effect of changing the value of *terminal-io*, either by binding or assignment, is implementation-defined.
 
-Examples:
+* 示例(Examples):
 
  (progn (prin1 'foo) (prin1 'bar *terminal-io*))
 >>  FOOBAR
@@ -2827,47 +2748,47 @@ Examples:
 >>  BAR
 =>  "FOO"
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-See Also:
+* 也见(See Also):
 
 *debug-io*, *error-output*, *query-io*, *standard-input*, *standard-output*, *trace-output*
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Condition Type STREAM-ERROR
+### <span id="CT-STREAM-ERROR">状况类型 STREAM-ERROR</span>
 
-Class Precedence List:
+* 类优先级列表(Class Precedence List):
 
 stream-error, error, serious-condition, condition, t
 
-Description:
+* 描述(Description):
 
 The type stream-error consists of error conditions that are related to receiving input from or sending output to a stream. The ``offending stream'' is initialized by the :streaminitialization argument to make-condition, and is accessed by the function stream-error-stream.
 
-See Also:
+* 也见(See Also):
 
 stream-error-stream 
 
 
-Function STREAM-ERROR-STREAM
+### <span id="F-STREAM-ERROR-STREAM">函数 STREAM-ERROR-STREAM</span>
 
-Syntax:
+* 语法(Syntax):
 
 stream-error-stream condition => stream
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 condition---a condition of type stream-error.
 
 stream---a stream.
 
-Description:
+* 描述(Description):
 
 Returns the offending stream of a condition of type stream-error.
 
-Examples:
+* 示例(Examples):
 
  (with-input-from-string (s "(FOO")
    (handler-case (read s)
@@ -2875,30 +2796,30 @@ Examples:
        (format nil "~&End of file on ~S." (stream-error-stream c)))))
 "End of file on #<String Stream>."
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 stream-error, Section 9 (Conditions)
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Condition Type END-OF-FILE
+### <span id="CT-END-OF-FILE">状况类型 END-OF-FILE</span>
 
-Class Precedence List:
+* 类优先级列表(Class Precedence List):
 
 end-of-file, stream-error, error, serious-condition, condition, t
 
-Description:
+* 描述(Description):
 
 The type end-of-file consists of error conditions related to read operations that are done on streams that have no more data.
 
-See Also:
+* 也见(See Also):
 
 stream-error-stream 
 
