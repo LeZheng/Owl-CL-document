@@ -1,81 +1,80 @@
-# 21 Streams
+# 21 流
 
-> * 21.1 [Stream Concepts](#StreamConcepts)
-> * 21.2 [The Streams Dictionary](#TheStreamsDictionary)
+> * 21.1 [流的概念](#StreamConcepts)
+> * 21.2 [流的字典](#TheStreamsDictionary)
 
-## 21.1 <span id="StreamConcepts">Stream Concepts</span>
+## 21.1 <span id="StreamConcepts">流的概念</span>
 
-> * 21.1.1 [Introduction to Streams](#IntroductionStreams)
-> * 21.1.2 [Stream Variables](#StreamVariables)
-> * 21.1.3 [Stream Arguments to Standardized Functions](#StreamArgStandFun)
-> * 21.1.4 [Restrictions on Composite Streams](#RestrictCompositeStreams)
+> * 21.1.1 [流的介绍](#IntroductionStreams)
+> * 21.1.2 [流变量](#StreamVariables)
+> * 21.1.3 [给标准函数的流参数](#StreamArgStandFun)
+> * 21.1.4 [复合流上的限制](#RestrictCompositeStreams)
 
-### 21.1.1 <span id="IntroductionStreams">Introduction to Streams</span>
+### 21.1.1 <span id="IntroductionStreams">流的介绍</span>
 
-A stream is an object that can be used with an input or output function to identify an appropriate source or sink of characters or bytes for that operation. A character stream is a source or sink of characters. A binary stream is a source or sink of bytes.
+流是一个对象, 它可以与输入或输出函数一起使用, 以确定该操作的字符或字节的适当源或接收器. 一个字符流是一个字符的源或接收器. 一个二进制流是一个字节的源或接收器.
 
-Some operations may be performed on any kind of stream; the next figure provides a list of standardized operations that are potentially useful with any kind of stream.
+一些操作符可以在任何种类的流上执行; 下一段中提供了一个标准操作符的列表, 这些操作可能对任何类型的流都有用
 
-close                 stream-element-type  
-input-stream-p        streamp              
-interactive-stream-p  with-open-stream     
-output-stream-p                            
+    close                 stream-element-type  
+    input-stream-p        streamp              
+    interactive-stream-p  with-open-stream     
+    output-stream-p                            
 
-Figure 21-1. Some General-Purpose Stream Operations
+    Figure 21-1. 一些一般用途的流操作
 
-Other operations are only meaningful on certain stream types. For example, read-char is only defined for character streams and read-byte is only defined for binary streams.
+其他操作只对特定的流类型有意义. 比如, read-char 只定义给字符流而 read-byte 只定义给二进制流.
 
-> * 21.1.1.1 [Abstract Classifications of Streams](#AbstractClassStreams1)
-> * 21.1.1.2 [Abstract Classifications of Streams](#AbstractClassStreams2)
-> * 21.1.1.3 [Other Subclasses of Stream](#OtherSubclassesStream)
+> * 21.1.1.1 [抽象的流分类](#AbstractClassStreams1)
+> * 21.1.1.2 [抽象的流分类](#AbstractClassStreams2)
+> * 21.1.1.3 [流的其他子类](#OtherSubclassesStream)
 
-#### 21.1.1.1 <span id="AbstractClassStreams1">Abstract Classifications of Streams</span>
+#### 21.1.1.1 <span id="AbstractClassStreams1">抽象的流分类</span>
 
-##### 21.1.1.1.1 Input, Output, and Bidirectional Streams
+##### 21.1.1.1.1 输入, 输出, 和双向流
 
-A stream, whether a character stream or a binary stream, can be an input stream (source of data), an output stream (sink for data), both, or (e.g., when ``:direction :probe'' is given to open) neither.
+一个流, 不管是字符流或二进制流, 都可以是一个输入流 (数据源), 一个输出流 (数据的接收器), 两者都是, 或者 (比如, 当 ":direction :probe" 给定给 open 时) 都不是.
 
-The next figure shows operators relating to input streams.
+下一段中展示了和输入流相关的操作符.
 
-clear-input  read-byte            read-from-string            
-listen       read-char            read-line                   
-peek-char    read-char-no-hang    read-preserving-whitespace  
-read         read-delimited-list  unread-char                 
+    clear-input  read-byte            read-from-string            
+    listen       read-char            read-line                   
+    peek-char    read-char-no-hang    read-preserving-whitespace  
+    read         read-delimited-list  unread-char                 
 
-Figure 21-2. Operators relating to Input Streams.
+    Figure 21-2. 和输入流相关的操作符.
 
-The next figure shows operators relating to output streams.
+下一段中展示了和输出流相关的操作符.
 
-clear-output   prin1            write            
-finish-output  prin1-to-string  write-byte       
-force-output   princ            write-char       
-format         princ-to-string  write-line       
-fresh-line     print            write-string     
-pprint         terpri           write-to-string  
+    clear-output   prin1            write            
+    finish-output  prin1-to-string  write-byte       
+    force-output   princ            write-char       
+    format         princ-to-string  write-line       
+    fresh-line     print            write-string     
+    pprint         terpri           write-to-string  
 
-Figure 21-3. Operators relating to Output Streams.
+    Figure 21-3. 和输出流相关的操作符.
 
-A stream that is both an input stream and an output stream is called a bidirectional stream. See the functions input-stream-p and output-stream-p.
+一个同时为输入流和输出流的流被称为双向流. 见函数 input-stream-p 和 output-stream-p.
 
-Any of the operators listed in Figure 21-2 or Figure 21-3 an be used with bidirectional streams. In addition, the next figure hows a list of operators that relate specificaly to bidirectional streams.
+任何在 Figure 21-2 或 Figure 21-3 列出的操作符可以和双向流一起使用. 另外, 下一段列出了与双向流相关的操作符列表.
 
-y-or-n-p  yes-or-no-p    
+    y-or-n-p  yes-or-no-p    
 
-Figure 21-4. Operators relating to Bidirectional Streams. 
+    Figure 21-4. 和双向流相关的操作符. 
 
 
-##### 21.1.1.1.2 Open and Closed Streams
+##### 21.1.1.1.2 打开和关闭的流
 
-Streams are either open or closed.
+流可以使打开的或关闭的.
 
-Except as explicitly specified otherwise, operations that create and return streams return open streams.
+除非被显式指定, 否则创建和返回流的操作返回的是打开的流.
 
-The action of closing a stream marks the end of its use as a source or sink of data, permitting the implementation to reclaim its internal data structures, and to free any external resources which might have been locked by the stream when it was opened.
+关闭流的操作标志着它作为数据来源或接收器的结束, 允许实现收回其内部数据结构, 并释放在打开时可能被流锁定的任何外部资源.
 
-Except as explicitly specified otherwise, the consequences are undefined when a closed stream is used where a stream is called for.
+除非被显式指定, 否则当一个关闭的流被用于调用流时后果是未定义的.
 
-Coercion of streams to pathnames is permissible for closed streams; in some situations, such as for a truename computation, the result might be different for an open stream and for that same stream once it has been closed. 
-
+对于一个关闭的流, 把流强制转换为路径名是允许的; 在一些情况下, 例如在一个真实名字计算中, 对于一个打开的流和同一流被关闭后的结果是不同的. 
 
 ##### 21.1.1.1.3 Interactive Streams
 
@@ -93,7 +92,7 @@ The general intent of having some streams be classified as interactive streams i
 
 Terminal I/O might or might not be an interactive stream. 
 
-#### 21.1.1.2 <span id="AbstractClassStreams2">Abstract Classifications of Streams</span>
+#### 21.1.1.2 <span id="AbstractClassStreams2">抽象的流分类</span>
 
 ##### 21.1.1.2.1 File Streams
 
@@ -101,7 +100,7 @@ Some streams, called file streams, provide access to files. An object of class f
 
 The basic operation for opening a file is open, which typically returns a file stream (see its dictionary entry for details). The basic operation for closing a stream is close. The macro with-open-file is useful to express the common idiom of opening a file for the duration of a given body of code, and assuring that the resulting stream is closed upon exit from that body. 
 
-#### 21.1.1.3 <span id="OtherSubclassesStream">Other Subclasses of Stream</span>
+#### 21.1.1.3 <span id="OtherSubclassesStream">流的其他子类</span>
 
 The class stream has a number of subclasses defined by this specification. The next figure shows some information about these subclasses.
 
@@ -126,7 +125,7 @@ two-way-stream       make-two-way-stream
 
 Figure 21-5. Defined Names related to Specialized Streams 
 
-### 21.1.2 <span id="StreamVariables">Stream Variables</span>
+### 21.1.2 <span id="StreamVariables">流变量</span>
 
 Variables whose values must be streams are sometimes called stream variables.
 
@@ -148,7 +147,7 @@ Note that, by convention, standardized stream variables have names ending in ``-
 User programs may assign or bind any standardized stream variable except *terminal-io*. 
 
 
-### 21.1.3 <span id="StreamArgStandFun">Stream Arguments to Standardized Functions</span>
+### 21.1.3 <span id="StreamArgStandFun">给标准函数的流参数</span>
 
 The operators in the next figure accept stream arguments that might be either open or closed streams.
 
@@ -191,13 +190,13 @@ make-two-way-stream       read-char
 
 Figure 21-8. Operators that accept Open Streams only 
 
-### 21.1.4 <span id="RestrictCompositeStreams">Restrictions on Composite Streams</span>
+### 21.1.4 <span id="RestrictCompositeStreams">复合流上的限制</span>
 
 The consequences are undefined if any component of a composite stream is closed before the composite stream is closed.
 
 The consequences are undefined if the synonym stream symbol is not bound to an open stream from the time of the synonym stream's creation until the time it is closed. 
 
-## 21.2 <span id="TheStreamsDictionary">The Streams Dictionary</span>
+## 21.2 <span id="TheStreamsDictionary">流的字典</span>
 
 > * [系统类 STREAM](#SC-STREAM)
 > * [系统类 BROADCAST-STREAM](#SC-BROADCAST-STREAM)
@@ -268,11 +267,11 @@ stream, t
 
 A stream is an object that can be used with an input or output function to identify an appropriate source or sink of characters or bytes for that operation.
 
-For more complete information, see Section 21.1 (Stream Concepts).
+For more complete information, see Section 21.1 (流的概念).
 
 * 也见(See Also):
 
-Section 21.1 (Stream Concepts), Section 22.1.3.13 (Printing Other Objects), Section 22 (Printer), Section 23 (Reader) 
+Section 21.1 (流的概念), Section 22.1.3.13 (Printing Other Objects), Section 22 (Printer), Section 23 (Reader) 
 
 ### <span id="SC-BROADCAST-STREAM">系统类 BROADCAST-STREAM</span>
 
@@ -485,7 +484,7 @@ Should signal an error of type type-error if stream is not a stream.
 
 * 也见(See Also):
 
-Section 21.1 (Stream Concepts)
+Section 21.1 (流的概念)
 
 * 注意(Notes): None. 
 
@@ -986,7 +985,7 @@ Invoking peek-char or read-char commits all previous characters. The consequence
 
 * 也见(See Also):
 
-peek-char, read-char, Section 21.1 (Stream Concepts)
+peek-char, read-char, Section 21.1 (流的概念)
 
 * 注意(Notes):
 
@@ -2063,7 +2062,7 @@ Should signal type-error if its argument is not a symbol.
 
 * 也见(See Also):
 
-Section 21.1 (Stream Concepts)
+Section 21.1 (流的概念)
 
 * 注意(Notes): None. 
 
