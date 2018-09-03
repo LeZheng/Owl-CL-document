@@ -78,123 +78,123 @@
 
 ##### 21.1.1.1.3 Interactive Streams
 
-An interactive stream is one on which it makes sense to perform interactive querying.
+交互式流是可以在上面执行交互式查询的一种流.
 
-The precise meaning of an interactive stream is implementation-defined, and may depend on the underlying operating system. Some examples of the things that an implementation might choose to use as identifying characteristics of an interactive stream include:
+一个交互式流的准确定义是具体实现定义的, 并且可能依赖于底层操作系统. 实现可能选择用作识别交互流的特征的东西的一些示例包括:
 
-* The stream is connected to a person (or equivalent) in such a way that the program can prompt for information and expect to receive different input depending on the prompt.
+* 这个流与一个人 (或同等的) 连接在一起, 程序可以提示信息并期望根据提示接收不同的输入 The stream is connected to a person (or equivalent) in such a way that the program can prompt for information and expect to receive different input depending on the prompt.<!-- TODO 待校验 -->
 
-* The program is expected to prompt for input and support ``normal input editing''.
+* 该程序期望提示输入和支持 "正常的输入编辑".
 
-* read-char might wait for the user to type something before returning instead of immediately returning a character or end-of-file.
+* read-char 可能等待用户在返回之前去输入一些东西而不是立即返回一个字符或 end-of-file.
 
-The general intent of having some streams be classified as interactive streams is to allow them to be distinguished from streams containing batch (or background or command-file) input. Output to batch streams is typically discarded or saved for later viewing, so interactive queries to such streams might not have the expected effect.
+将一些流划分为交互式流的一般意图是允许它们与包含批处理 (或后台或命令文件) 输入的流区分开来. 批处理流的输出通常被丢弃或保存以供以后查看, 因此对此类流的交互式查询可能没有预期的效果.
 
-Terminal I/O might or might not be an interactive stream. 
+终端 I/O 可能是也可能不是一个交互式流. 
 
 #### 21.1.1.2 <span id="AbstractClassStreams2">抽象的流分类</span>
 
-##### 21.1.1.2.1 File Streams
+##### 21.1.1.2.1 文件流
 
-Some streams, called file streams, provide access to files. An object of class file-stream is used to represent a file stream.
+一些流, 称为文件流, 提供了对文件的访问. 一个 file-stream 类的对象被用来表示一个文件流.
 
-The basic operation for opening a file is open, which typically returns a file stream (see its dictionary entry for details). The basic operation for closing a stream is close. The macro with-open-file is useful to express the common idiom of opening a file for the duration of a given body of code, and assuring that the resulting stream is closed upon exit from that body. 
+打开一个文件的基础操作是 open, 它通常返回一个文件流 (详情见它的目录条目). 关闭一个流的基础操作是 close. 宏 with-open-file 是用来表达在给定代码主体的持续时间内打开文件的常用习惯，并确保在退出该主体时关闭那个产生的流.
 
 #### 21.1.1.3 <span id="OtherSubclassesStream">流的其他子类</span>
 
-The class stream has a number of subclasses defined by this specification. The next figure shows some information about these subclasses.
+类 stream 有许多由这个规范定义的子类. 下面这段展示了关于这些子类的一些信息.
 
-Class                Related Operators             
-broadcast-stream     make-broadcast-stream         
-                     broadcast-stream-streams      
-concatenated-stream  make-concatenated-stream      
-                     concatenated-stream-streams   
-echo-stream          make-echo-stream              
-                     echo-stream-input-stream      
-                     echo-stream-output-stream     
-string-stream        make-string-input-stream      
-                     with-input-from-string        
-                     make-string-output-stream     
-                     with-output-to-string         
-                     get-output-stream-string      
-synonym-stream       make-synonym-stream           
-                     synonym-stream-symbol         
-two-way-stream       make-two-way-stream           
-                     two-way-stream-input-stream   
-                     two-way-stream-output-stream  
+    类                  相关操作符             
+    broadcast-stream     make-broadcast-stream         
+                        broadcast-stream-streams      
+    concatenated-stream  make-concatenated-stream      
+                        concatenated-stream-streams   
+    echo-stream          make-echo-stream              
+                        echo-stream-input-stream      
+                        echo-stream-output-stream     
+    string-stream        make-string-input-stream      
+                        with-input-from-string        
+                        make-string-output-stream     
+                        with-output-to-string         
+                        get-output-stream-string      
+    synonym-stream       make-synonym-stream           
+                        synonym-stream-symbol         
+    two-way-stream       make-two-way-stream           
+                        two-way-stream-input-stream   
+                        two-way-stream-output-stream  
 
-Figure 21-5. Defined Names related to Specialized Streams 
+    Figure 21-5. 和特定的流相关的已定义的名字
 
 ### 21.1.2 <span id="StreamVariables">流变量</span>
 
-Variables whose values must be streams are sometimes called stream variables.
+值必须是流的变量有时称为流变量.
 
-Certain stream variables are defined by this specification to be the proper source of input or output in various situations where no specific stream has been specified instead. A complete list of such standardized stream variables appears in the next figure. The consequences are undefined if at any time the value of any of these variables is not an open stream.
+特定的流变量被这个规范定义为在没有指定特定流的情况下, 作为输入或输出的适当来源. 下一个段中会出现一个完整的标准流变量列表. 如果任何时候这些变量的任意一个的值不是一个打开的流, 后果是未定义的.
 
-Glossary Term    Variable Name      
-debug I/O        *debug-io*         
-error output     *error-output*     
-query I/O        *query-io*         
-standard input   *standard-input*   
-standard output  *standard-output*  
-terminal I/O     *terminal-io*      
-trace output     *trace-output*     
+    词汇术语          变量名      
+    debug I/O        *debug-io*         
+    error output     *error-output*     
+    query I/O        *query-io*         
+    standard input   *standard-input*   
+    standard output  *standard-output*  
+    terminal I/O     *terminal-io*      
+    trace output     *trace-output*     
 
-Figure 21-6. Standardized Stream Variables
+    Figure 21-6. 标准流变量
 
-Note that, by convention, standardized stream variables have names ending in ``-input*'' if they must be input streams, ending in ``-output*'' if they must be output streams, or ending in ``-io*'' if they must be bidirectional streams.
+注意, 按照惯例, 标准流变量如果一定式输入流, 那么就以 "-input*" 结尾, 如果一定是输出流那么就以 "-output*" 结尾, 如果一定是双向流就以 "-io*" 结尾.
 
-User programs may assign or bind any standardized stream variable except *terminal-io*. 
+用户程序可以赋值或绑定任何标准流变量除了 \*terminal-io\*. 
 
 
 ### 21.1.3 <span id="StreamArgStandFun">给标准函数的流参数</span>
 
-The operators in the next figure accept stream arguments that might be either open or closed streams.
+下面这段中的操作符接受打开或关闭的流作为流参数.
 
-broadcast-stream-streams     file-author       pathnamep                     
-close                        file-namestring   probe-file                    
-compile-file                 file-write-date   rename-file                   
-compile-file-pathname        host-namestring   streamp                       
-concatenated-stream-streams  load              synonym-stream-symbol         
-delete-file                  logical-pathname  translate-logical-pathname    
-directory                    merge-pathnames   translate-pathname            
-directory-namestring         namestring        truename                      
-dribble                      open              two-way-stream-input-stream   
-echo-stream-input-stream     open-stream-p     two-way-stream-output-stream  
-echo-stream-ouput-stream     parse-namestring  wild-pathname-p               
-ed                           pathname          with-open-file                
-enough-namestring            pathname-match-p                                
+    broadcast-stream-streams     file-author       pathnamep                     
+    close                        file-namestring   probe-file                    
+    compile-file                 file-write-date   rename-file                   
+    compile-file-pathname        host-namestring   streamp                       
+    concatenated-stream-streams  load              synonym-stream-symbol         
+    delete-file                  logical-pathname  translate-logical-pathname    
+    directory                    merge-pathnames   translate-pathname            
+    directory-namestring         namestring        truename                      
+    dribble                      open              two-way-stream-input-stream   
+    echo-stream-input-stream     open-stream-p     two-way-stream-output-stream  
+    echo-stream-ouput-stream     parse-namestring  wild-pathname-p               
+    ed                           pathname          with-open-file                
+    enough-namestring            pathname-match-p                                
 
-Figure 21-7. Operators that accept either Open or Closed Streams
+    Figure 21-7. 接受打开或关闭的流的操作符
 
-The operators in the next figure accept stream arguments that must be open streams.
+下面这段中的操作符只接受打开的流作为流参数.
 
-clear-input               output-stream-p          read-char-no-hang           
-clear-output              peek-char                read-delimited-list         
-file-length               pprint                   read-line                   
-file-position             pprint-fill              read-preserving-whitespace  
-file-string-length        pprint-indent            stream-element-type         
-finish-output             pprint-linear            stream-external-format      
-force-output              pprint-logical-block     terpri                      
-format                    pprint-newline           unread-char                 
-fresh-line                pprint-tab               with-open-stream            
-get-output-stream-string  pprint-tabular           write                       
-input-stream-p            prin1                    write-byte                  
-interactive-stream-p      princ                    write-char                  
-listen                    print                    write-line                  
-make-broadcast-stream     print-object             write-string                
-make-concatenated-stream  print-unreadable-object  y-or-n-p                    
-make-echo-stream          read                     yes-or-no-p                 
-make-synonym-stream       read-byte                                            
-make-two-way-stream       read-char                                            
+    clear-input               output-stream-p          read-char-no-hang           
+    clear-output              peek-char                read-delimited-list         
+    file-length               pprint                   read-line                   
+    file-position             pprint-fill              read-preserving-whitespace  
+    file-string-length        pprint-indent            stream-element-type         
+    finish-output             pprint-linear            stream-external-format      
+    force-output              pprint-logical-block     terpri                      
+    format                    pprint-newline           unread-char                 
+    fresh-line                pprint-tab               with-open-stream            
+    get-output-stream-string  pprint-tabular           write                       
+    input-stream-p            prin1                    write-byte                  
+    interactive-stream-p      princ                    write-char                  
+    listen                    print                    write-line                  
+    make-broadcast-stream     print-object             write-string                
+    make-concatenated-stream  print-unreadable-object  y-or-n-p                    
+    make-echo-stream          read                     yes-or-no-p                 
+    make-synonym-stream       read-byte                                            
+    make-two-way-stream       read-char                                            
 
-Figure 21-8. Operators that accept Open Streams only 
+    Figure 21-8. 只接受打开的流的操作符
 
 ### 21.1.4 <span id="RestrictCompositeStreams">复合流上的限制</span>
 
-The consequences are undefined if any component of a composite stream is closed before the composite stream is closed.
+如果一个复合流的任意成员在这个流被关闭之前关闭, 那么后果是未定义的.
 
-The consequences are undefined if the synonym stream symbol is not bound to an open stream from the time of the synonym stream's creation until the time it is closed. 
+如果 synonym-stream 流符号从它被创建到它被关闭这段时间都没有被绑定到一个打开的流, 那么后果是未定义的. 
 
 ## 21.2 <span id="TheStreamsDictionary">流的字典</span>
 
