@@ -261,180 +261,181 @@
 
 * 类优先级列表(Class Precedence List):
 
-stream, t
+        stream, t
 
 * 描述(Description):
 
-A stream is an object that can be used with an input or output function to identify an appropriate source or sink of characters or bytes for that operation.
+        一个流式一个可以和一个输入或输出函数一起使用, 以确定该操作的字符或字节的适当源或接收器.
 
-For more complete information, see Section 21.1 (流的概念).
+        关于更多完整信息, 见章节 21.1 (流的概念).
 
 * 也见(See Also):
 
-Section 21.1 (流的概念), Section 22.1.3.13 (Printing Other Objects), Section 22 (Printer), Section 23 (Reader) 
+        章节 21.1 (流的概念), 章节 22.1.3.13 (Printing Other Objects), 章节 22 (Printer), 章节 23 (Reader) 
 
 ### <span id="SC-BROADCAST-STREAM">系统类 BROADCAST-STREAM</span>
 
 * 类优先级列表(Class Precedence List):
 
-broadcast-stream, stream, t
+        broadcast-stream, stream, t
 
 * 描述(Description):
 
- A broadcast stream is an output stream which has associated with it a set of zero or more output streams such that any output sent to the broadcast stream gets passed on as output to each of the associated output streams. (If a broadcast stream has no component streams, then all output to the broadcast stream is discarded.)
+        一个广播流式一个输出流, 它和一个包含零个或多个输出流的集合关联, 这样一来发送到这个广播流的任何输出会作为输出传递到每一个关联的输出流上. (如果一个广播流没有成员流, 那么所有到广播流的输出会被废弃.)
 
-The set of operations that may be performed on a broadcast stream is the intersection of those for its associated output streams.
+        可以在一个广播流上执行的操作的集合是可应用到它关联的那些输出流的操作的交集.
 
-Some output operations (e.g., fresh-line) return values based on the state of the stream at the time of the operation. Since these values might differ for each of the component streams, it is necessary to describe their return value specifically:
+        一些输出操作 (比如, fresh-line) 返回基于这个操作时那个流的状态的值. 由于这些值可能有别于这些成员流的每一个, 有必要具体描述它们的返回值:
 
-* stream-element-type returns the value from the last component stream, or t if there are no component streams.
+        * stream-element-type 从最后一个成员流中返回这个值, 如果这里没有成员流就返回 t.
 
-* fresh-line returns the value from the last component stream, or nil if there are no component streams.
+        * fresh-line returns 从最后一个成员流中返回这个值, 如果这里没有成员流就返回 nil.
 
-* The functions file-length, file-position, file-string-length, and stream-external-format return the value from the last component stream; if there are no component streams, file-length and file-position return 0, file-string-length returns 1, and stream-external-format returns :default.
+        * 函数 file-length, file-position, file-string-length, 和 stream-external-format 从最后一个成员流来返回值; 如果这里没有成员流, file-length 和 file-position 返回 0, file-string-length 返回 1, 而 stream-external-format 返回 :default.
 
-* The functions streamp and output-stream-p always return true for broadcast streams.
+        * 函数 streamp 和 output-stream-p 对于广播流总是返回 true.
 
-* The functions open-stream-p tests whether the broadcast stream is open[2], not whether its component streams are open.
+        * 函数 open-stream-p 检验这个广播流是否打开, 而不是它的成员流是否打开.
 
-* The functions input-stream-p and interactive-stream-p return an implementation-defined, generalized boolean value.
+        * 函数 input-stream-p 和 interactive-stream-p 返回一个具体实现定义的, 广义 boolean 值.
 
-* For the input operations clear-input listen, peek-char, read-byte, read-char-no-hang, read-char, read-line, and unread-char, the consequences are undefined if the indicated operation is performed. However, an implementation is permitted to define such a behavior as an implementation-dependent extension.
+        * 对于输入操作 clear-input, listen, peek-char, read-byte, read-char-no-hang, read-char, read-line, 和 unread-char, 如果所指示的操作被执行, 其后果是未定义的. 然而, 一个实现允许去定义这样一个行为作为一个依赖于具体实现的扩展.
 
-For any output operations not having their return values explicitly specified above or elsewhere in this document, it is defined that the values returned by such an operation are the values resulting from performing the operation on the last of its component streams; the values resulting from performing the operation on all preceding streams are discarded. If there are no component streams, the value is implementation-dependent. 
+        对于任何上面或这个文档的其他地方没有显式指定返回值的输出操作, 定义了这样一个操作返回的值式在它的最后一个成员流上执行这个操作产生的值; 在前面所有的流上执行这个操作产生的值会被丢弃. 如果这里没有成员流, 这个值是依赖于具体实现的. 
 
 * 也见(See Also):
 
-broadcast-stream-streams, make-broadcast-stream 
+        broadcast-stream-streams, make-broadcast-stream 
 
 
 ### <span id="SC-CONCATENATED-STREAM">系统类 CONCATENATED-STREAM</span>
 
 * 类优先级列表(Class Precedence List):
 
-concatenated-stream, stream, t
+        concatenated-stream, stream, t
 
 * 描述(Description):
 
-A concatenated stream is an input stream which is a composite stream of zero or more other input streams, such that the sequence of data which can be read from the concatenated stream is the same as the concatenation of the sequences of data which could be read from each of the constituent streams.
+        一个串联流是一个输入流, 它式一个包含零个或多个输入流的复合流, 这样, 可以从串联流中读取的数据序列与可以从每个组成流中读取的数据序列的连接相同.
 
-Input from a concatenated stream is taken from the first of the associated input streams until it reaches end of file[1]; then that stream is discarded, and subsequent input is taken from the next input stream, and so on. An end of file on the associated input streams is always managed invisibly by the concatenated stream---the only time a client of a concatenated stream sees an end of file is when an attempt is made to obtain data from the concatenated stream but it has no remaining input streams from which to obtain such data.
+        来自串联流的输入从第一个相关的输入流中获取, 直到它到达文件的末尾; 然后这个流会被废弃, 并且后续的输入取自于下一个输入流, 以此类推. 在相关输入流上的文件结束总是由串联流来管理---串联流的客户端只有在尝试从串联流中获取数据，但是它没有剩余的输入流来获取这些数据时才会看到文件的结束.
 
 * 也见(See Also):
 
-concatenated-stream-streams, make-concatenated-stream 
+        concatenated-stream-streams, make-concatenated-stream 
 
 
 ### <span id="SC-ECHO-STREAM">系统类 ECHO-STREAM</span>
 
 * 类优先级列表(Class Precedence List):
 
-echo-stream, stream, t
+        echo-stream, stream, t
 
 * 描述(Description):
 
-An echo stream is a bidirectional stream that gets its input from an associated input stream and sends its output to an associated output stream.
+        一个回音流是一个双向流, 它从一个关联的输入流中得到它的输入并且发送它的输出到一个关联的输出流.
 
-All input taken from the input stream is echoed to the output stream. Whether the input is echoed immediately after it is encountered, or after it has been read from the input stream is implementation-dependent.
+        所有从输入流中获取的输入都与输出流相呼应. 输入是否在遇到后或者在从输入流中读取之后立即响应, 是依赖于具体实现的.
 
 * 也见(See Also):
 
-echo-stream-input-stream, echo-stream-output-stream, make-echo-stream 
+        echo-stream-input-stream, echo-stream-output-stream, make-echo-stream 
 
 
 ### <span id="SC-FILE-STREAM">系统类 FILE-STREAM</span>
 
 * 类优先级列表(Class Precedence List):
 
-file-stream, stream, t
+        file-stream, stream, t
 
 * 描述(Description):
 
-An object of type file-stream is a stream the direct source or sink of which is a file. Such a stream is created explicitly by open and with-open-file, and implicitly by functions such as load that process files.
+        一个 file-stream 类型的对象是一个直接源和接收器都是一个文件的流. 这样一个流通过 open 和 with-open-file 显式创建, 以及通过像 load 这样的处理文件的函数隐式打开.
 
 * 也见(See Also):
 
-load, open, with-open-file 
+        load, open, with-open-file 
 
 
 ### <span id="SC-STRING-STREAM">系统类 STRING-STREAM</span>
 
 * 类优先级列表(Class Precedence List):
 
-string-stream, stream, t
+        string-stream, stream, t
 
 * 描述(Description):
 
-A string stream is a stream which reads input from or writes output to an associated string.
+        一个字符串流式一个读取输入自一个关联字符串或写入输出到一个关联字符串的流.
 
-The stream element type of a string stream is always a subtype of type character.
+        一个字符串流的流元素类型总是为 character 类型的子类型.
 
 * 也见(See Also):
 
-make-string-input-stream, make-string-output-stream, with-input-from-string, with-output-to-string 
+        make-string-input-stream, make-string-output-stream, with-input-from-string, with-output-to-string 
 
 
 ### <span id="SC-SYNONYM-STREAM">系统类 SYNONYM-STREAM</span>
 
 * 类优先级列表(Class Precedence List):
 
-synonym-stream, stream, t
+        synonym-stream, stream, t
 
 * 描述(Description):
 
-A stream that is an alias for another stream, which is the value of a dynamic variable whose name is the synonym stream symbol of the synonym stream.
+        一个是另一个流的别名的流, 它是一个动态变量的值, 这个变量的名字是这个同义流的同义流符号.
 
-Any operations on a synonym stream will be performed on the stream that is then the value of the dynamic variable named by the synonym stream symbol. If the value of the variable should change, or if the variable should be bound, then the stream will operate on the new value of the variable.
+        任何在一个同义流上的操作会在一个流上被执行, 这个流是由那个同义流符号命名的动态变量的值. 如果那个变量的值将要改变, 或者如果那个变量的值将要被绑定, 那么这个流会操作在那个变量的新值上.
 
 * 也见(See Also):
 
-make-synonym-stream, synonym-stream-symbol 
+        make-synonym-stream, synonym-stream-symbol 
 
 
 ### <span id="SC-TWO-WAY-STREAM">系统类 TWO-WAY-STREAM</span>
 
 * 类优先级列表(Class Precedence List):
 
-two-way-stream, stream, t
+        two-way-stream, stream, t
 
 * 描述(Description):
 
-A bidirectional composite stream that receives its input from an associated input stream and sends its output to an associated output stream.
+        一个从一个关联输入流中接收它的输入并且发送它的输出到一个关联的输出流的双向复合流.
 
 * 也见(See Also):
 
-make-two-way-stream, two-way-stream-input-stream, two-way-stream-output-stream 
+        make-two-way-stream, two-way-stream-input-stream, two-way-stream-output-stream 
 
 
 ### <span id="F-INPUT-AND-OUTPUT-STREAM-P">函数 INPUT-STREAM-P, OUTPUT-STREAM-P</span>
 
 * 语法(Syntax):
 
-input-stream-p stream => generalized-boolean
+        input-stream-p stream => generalized-boolean
 
-output-stream-p stream => generalized-boolean
+        output-stream-p stream => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-stream---a stream.
-
-generalized-boolean---a generalized boolean.
+        stream---一个流.
+        generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
-input-stream-p returns true if stream is an input stream; otherwise, returns false.
+        如果流 stream 是一个输入流, input-stream-p 返回 true; 否则, 返回 false.
 
-output-stream-p returns true if stream is an output stream; otherwise, returns false.
+        如果流 stream 是一个输出流, output-stream-p 返回 true; 否则, 返回 false.
 
 * 示例(Examples):
 
- (input-stream-p *standard-input*) =>  true
- (input-stream-p *terminal-io*) =>  true
- (input-stream-p (make-string-output-stream)) =>  false
+    ```LISP
+    (input-stream-p *standard-input*) =>  true
+    (input-stream-p *terminal-io*) =>  true
+    (input-stream-p (make-string-output-stream)) =>  false
 
- (output-stream-p *standard-output*) =>  true
- (output-stream-p *terminal-io*) =>  true
- (output-stream-p (make-string-input-stream "jr")) =>  false
+    (output-stream-p *standard-output*) =>  true
+    (output-stream-p *terminal-io*) =>  true
+    (output-stream-p (make-string-input-stream "jr")) =>  false
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -442,7 +443,7 @@ output-stream-p returns true if stream is an output stream; otherwise, returns f
 
 * 异常情况(Exceptional Situations):
 
-Should signal an error of type type-error if stream is not a stream.
+        如果 stream 不是一个流, 那么应该发出一个 type-error 类型的错误.
 
 * 也见(See Also): None.
 
@@ -453,38 +454,39 @@ Should signal an error of type type-error if stream is not a stream.
 
 * 语法(Syntax):
 
-interactive-stream-p stream => generalized-boolean
+        interactive-stream-p stream => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-stream---a stream.
-
-generalized-boolean---a generalized boolean.
+        stream---一个流.
+        generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
-Returns true if stream is an interactive stream; otherwise, returns false.
+        如果流 stream 是一个交互式流, 就返回 true; 否则, 返回 false.
 
 * 示例(Examples):
 
- (when (> measured limit)
-   (let ((error (round (* (- measured limit) 100)
-                       limit)))
-     (unless (if (interactive-stream-p *query-io*)
-                 (yes-or-no-p "The frammis is out of tolerance by ~D%.~@
-                               Is it safe to proceed? " error)
-                 (< error 15))  ;15% is acceptable
-       (error "The frammis is out of tolerance by ~D%." error))))
+    ```LISP
+    (when (> measured limit)
+      (let ((error (round (* (- measured limit) 100)
+                          limit)))
+        (unless (if (interactive-stream-p *query-io*)
+                    (yes-or-no-p "The frammis is out of tolerance by ~D%.~@
+                                  Is it safe to proceed? " error)
+                    (< error 15))  ;15% is acceptable
+          (error "The frammis is out of tolerance by ~D%." error))))
+    ```
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-Should signal an error of type type-error if stream is not a stream.
+        如果 stream 不是一个流, 那么应该发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-Section 21.1 (流的概念)
+        章节 21.1 (流的概念)
 
 * 注意(Notes): None. 
 
@@ -493,33 +495,34 @@ Section 21.1 (流的概念)
 
 * 语法(Syntax):
 
-open-stream-p stream => generalized-boolean
+        open-stream-p stream => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-stream---a stream.
-
-generalized-boolean---a generalized boolean.
+        stream---一个流.
+        generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
-Returns true if stream is an open stream; otherwise, returns false.
+        如果流 stream 是一个打开的流就返回 true; 否则, 返回 false.
 
-Streams are open until they have been explicitly closed with close, or until they are implicitly closed due to exit from a with-output-to-string, with-open-file, with-input-from-string, or with-open-stream form.
+        直到流被 close 显式关闭, 或者直到退出 with-output-to-string, with-open-file, with-input-from-string, 或 with-open-stream 表达式形式而被隐式关闭之前, 流都是打开的.
 
 * 示例(Examples):
 
- (open-stream-p *standard-input*) =>  true
+    ```LISP
+    (open-stream-p *standard-input*) =>  true
+    ```
 
 * 副作用(Side Effects): None.
 
 * 受此影响(Affected By):
 
-close.
+        close.
 
 * 异常情况(Exceptional Situations):
 
-Should signal an error of type type-error if stream is not a stream.
+        如果 stream 不是一个流, 那么应该发出一个 type-error 类型的错误.
 
 * 也见(See Also): None.
 
@@ -530,37 +533,38 @@ Should signal an error of type type-error if stream is not a stream.
 
 * 语法(Syntax):
 
-stream-element-type stream => typespec
+        stream-element-type stream => typespec
 
 * 参数和值(Arguments and Values):
 
-stream---a stream.
-
-typespec---a type specifier.
+        stream---一个流.
+        typespec---一个类型指定符.
 
 * 描述(Description):
 
-stream-element-type returns a type specifier that indicates the types of objects that may be read from or written to stream.
+        stream-element-type 返回可以从流 stream 中读到或写入到流 stream 中的对象的一个类型指定符.
 
-Streams created by open have an element type restricted to integer or a subtype of type character.
+        由 open 创建的流有着被约束为 integer 或一个 character 类型的子类型的元素类型.
 
 * 示例(Examples):
 
-;; Note that the stream must accomodate at least the specified type,
-;; but might accomodate other types.  Further note that even if it does
-;; accomodate exactly the specified type, the type might be specified in
-;; any of several ways.
- (with-open-file (s "test" :element-type '(integer 0 1)
-                           :if-exists :error
-                           :direction :output)
-   (stream-element-type s))
-=>  INTEGER
-OR=>  (UNSIGNED-BYTE 16)
-OR=>  (UNSIGNED-BYTE 8)
-OR=>  BIT
-OR=>  (UNSIGNED-BYTE 1)
-OR=>  (INTEGER 0 1)
-OR=>  (INTEGER 0 (2))
+    ```LISP
+    ;; Note that the stream must accomodate at least the specified type,
+    ;; but might accomodate other types.  Further note that even if it does
+    ;; accomodate exactly the specified type, the type might be specified in
+    ;; any of several ways.
+    (with-open-file (s "test" :element-type '(integer 0 1)
+                              :if-exists :error
+                              :direction :output)
+      (stream-element-type s))
+    =>  INTEGER
+    OR=>  (UNSIGNED-BYTE 16)
+    OR=>  (UNSIGNED-BYTE 8)
+    OR=>  BIT
+    OR=>  (UNSIGNED-BYTE 1)
+    OR=>  (INTEGER 0 1)
+    OR=>  (INTEGER 0 (2))
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -568,7 +572,7 @@ OR=>  (INTEGER 0 (2))
 
 * 异常情况(Exceptional Situations):
 
-Should signal an error of type type-error if stream is not a stream.
+        如果 stream 不是一个流, 那么应该发出一个 type-error 类型的错误.
 
 * 也见(See Also): None.
 
@@ -578,24 +582,25 @@ Should signal an error of type type-error if stream is not a stream.
 
 * 语法(Syntax):
 
-streamp object => generalized-boolean
+        streamp object => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-object---an object.
-
-generalized-boolean---a generalized boolean.
+        object---一个对象.
+        generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
-Returns true if object is of type stream; otherwise, returns false.
+        如果对象 object 是 stream 类型就返回 true; 否则, 返回 false.
 
-streamp is unaffected by whether object, if it is a stream, is open or closed.
+        如果对象 object 是一个流, streamp 不会被这个流是打开的还是关闭的所影响.
 
 * 示例(Examples):
 
- (streamp *terminal-io*) =>  true
- (streamp 1) =>  false
+    ```LISP
+    (streamp *terminal-io*) =>  true
+    (streamp 1) =>  false
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -607,58 +612,57 @@ streamp is unaffected by whether object, if it is a stream, is open or closed.
 
 * 注意(Notes):
 
- (streamp object) ==  (typep object 'stream)
+        (streamp object) ==  (typep object 'stream)
 
 ### <span id="F-READ-BYTE">函数 READ-BYTE</span>
 
 * 语法(Syntax):
 
-read-byte stream &optional eof-error-p eof-value => byte
+        read-byte stream &optional eof-error-p eof-value => byte
 
 * 参数和值(Arguments and Values):
 
-stream---a binary input stream.
-
-eof-error-p---a generalized boolean. The default is true.
-
-eof-value---an object. The default is nil.
-
-byte---an integer, or the eof-value.
+        stream---一个二进制输入流.
+        eof-error-p---一个广义 boolean. 默认是 true.
+        eof-value---一个对象. 默认是 nil.
+        byte---一个整数, 或者是 eof-value.
 
 * 描述(Description):
 
-read-byte reads and returns one byte from stream.
+        read-byte 从流 stream 中读取并返回一个字节.
 
-If an end of file[2] occurs and eof-error-p is false, the eof-value is returned.
+        如果到达了文件的末尾并且 eof-error-p 是 false, 那么返回这个 eof-value.
 
 * 示例(Examples):
 
- (with-open-file (s "temp-bytes" 
-                     :direction :output
-                     :element-type 'unsigned-byte)
-    (write-byte 101 s)) =>  101
- (with-open-file (s "temp-bytes" :element-type 'unsigned-byte)
-    (format t "~S ~S" (read-byte s) (read-byte s nil 'eof)))
->>  101 EOF
-=>  NIL
+    ```LISP
+    (with-open-file (s "temp-bytes" 
+                        :direction :output
+                        :element-type 'unsigned-byte)
+        (write-byte 101 s)) =>  101
+    (with-open-file (s "temp-bytes" :element-type 'unsigned-byte)
+        (format t "~S ~S" (read-byte s) (read-byte s nil 'eof)))
+    >>  101 EOF
+    =>  NIL
+    ```
 
 * 副作用(Side Effects):
 
-Modifies stream.
+        修改流 stream.
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-Should signal an error of type type-error if stream is not a stream.
+        如果 stream 不是一个流, 那么应该发出一个 type-error 类型的错误.
 
-Should signal an error of type error if stream is not a binary input stream.
+        如果 stream 不是一个二进制输入流, 那么应该发出一个 error 类型的错误.
 
-If there are no bytes remaining in the stream and eof-error-p is true, an error of type end-of-file is signaled.
+        如果在流 stream 中没有剩余字节并且 eof-error-p 是 true, 就会发出一个 end-of-file 类型的错误.
 
 * 也见(See Also):
 
-read-char, read-sequence, write-byte
+        read-char, read-sequence, write-byte
 
 * 注意(Notes): None. 
 
@@ -667,42 +671,43 @@ read-char, read-sequence, write-byte
 
 * 语法(Syntax):
 
-write-byte byte stream => byte
+        write-byte byte stream => byte
 
 * 参数和值(Arguments and Values):
 
-byte---an integer of the stream element type of stream.
-
-stream---a binary output stream.
+        byte---一个流的流元素类型的整数.
+        stream---一个二进制输出流.
 
 * 描述(Description):
 
-write-byte writes one byte, byte, to stream.
+        write-byte 向流 stream 写入一个字节 byte.
 
 * 示例(Examples):
 
- (with-open-file (s "temp-bytes" 
-                    :direction :output
-                    :element-type 'unsigned-byte)
-    (write-byte 101 s)) =>  101
+    ```LISP
+    (with-open-file (s "temp-bytes" 
+                        :direction :output
+                        :element-type 'unsigned-byte)
+        (write-byte 101 s)) =>  101
+    ```
 
 * 副作用(Side Effects):
 
-stream is modified.
+        流 stream 会被修改.
 
 * 受此影响(Affected By):
 
-The element type of the stream.
+        流 stream 的元素类型.
 
 * 异常情况(Exceptional Situations):
 
-Should signal an error of type type-error if stream is not a stream. Should signal an error of type error if stream is not a binary output stream.
+        如果 stream 不是一个流, 那么应该发出一个 type-error 类型的错误. 如果 stream 不是一个二进制输出流, 那么应该发出一个 error 类型的错误.
 
-Might signal an error of type type-error if byte is not an integer of the stream element type of stream.
+        如果 byte 不是流 stream 的一个流元素类型的整数, 可能会发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-read-byte, write-char, write-sequence
+        read-byte, write-char, write-sequence
 
 * 注意(Notes): None. 
 
@@ -711,55 +716,52 @@ read-byte, write-char, write-sequence
 
 * 语法(Syntax):
 
-peek-char &optional peek-type input-stream eof-error-p eof-value recursive-p => char
+        peek-char &optional peek-type input-stream eof-error-p eof-value recursive-p => char
 
 * 参数和值(Arguments and Values):
 
-peek-type---a character or t or nil.
-
-input-stream---input stream designator. The default is standard input.
-
-eof-error-p---a generalized boolean. The default is true.
-
-eof-value---an object. The default is nil.
-
-recursive-p---a generalized boolean. The default is false.
-
-char---a character or the eof-value.
+        peek-type---一个字符或 t 或 nil.
+        input-stream---输入流标识符. 默认是标准输入.
+        eof-error-p---一个广义 boolean. 默认是 true.
+        eof-value---一个对象. 默认是 nil.
+        recursive-p---一个广义 boolean. 默认是 false.
+        char---一个字符或 eof-value.
 
 * 描述(Description):
+<!--TODO 待校验-->
+        peek-char 在没有实际读取的情况下获取流 input-stream 中的下一个字符, 这样就可以在以后的时间里读取这个字符. 它还可以用于跳过并丢弃输入流 input-stream 中的中间字符, 直到找到一个特定的字符为止.
 
-peek-char obtains the next character in input-stream without actually reading it, thus leaving the character to be read at a later time. It can also be used to skip over and discard intervening characters in the input-stream until a particular character is found.
+        如果 peek-type 没有被提供或者是 nil, peek-char 返回要从 input-stream 中读取的下一个字符, 实际上没有把它从 input-stream 中移除. 下一次从 input-stream 完成输入时, 这个字符仍然在那里. 如果 peek-type 是 t, 那么 peek-char 跳过空白字符, 但是不跳过注释, 然后在下一个字符执行窥视操作. 最后一个被检验的字符, 开始一个对象的那个, 不会从 input-stream 中被移除. 如果 peek-type 是一个字符, 那么 peek-char 跳过输入字符直到找到一个和那个字符 char= 的字符; 那个字符留在 input-stream 中.
 
-If peek-type is not supplied or nil, peek-char returns the next character to be read from input-stream, without actually removing it from input-stream. The next time input is done from input-stream, the character will still be there. If peek-type is t, then peek-char skips over whitespace[2] characters, but not comments, and then performs the peeking operation on the next character. The last character examined, the one that starts an object, is not removed from input-stream. If peek-type is a character, then peek-char skips over input characters until a character that is char= to that character is found; that character is left in input-stream.
+        如果到达了文件的末尾并且 eof-error-p 是 false, 就返回 eof-value.
 
-If an end of file[2] occurs and eof-error-p is false, eof-value is returned.
+        如果 recursive-p 是 true, 这个调用预期会被嵌入到一个更高层次的对 read 或一个 Lisp 读取器使用的类似函数的调用中.
 
-If recursive-p is true, this call is expected to be embedded in a higher-level call to read or a similar function used by the Lisp reader.
-
-When input-stream is an echo stream, characters that are only peeked at are not echoed. In the case that peek-type is not nil, the characters that are passed by peek-char are treated as if by read-char, and so are echoed unless they have been marked otherwise by unread-char.
+        当 input-stream 是一个回音流时, 只是被窥视的字符不会被重复. 在这个 peek-type 不是 nil 的情况中, 通过 peek-char 传递的这些字符会被当作通过 read-char 一样处理, 因此, 除非它们被 unread-char 标记出来否则就会得到回响.
 
 * 示例(Examples):
 
- (with-input-from-string (input-stream "    1 2 3 4 5")
-    (format t "~S ~S ~S" 
-            (peek-char t input-stream)
-            (peek-char #\4 input-stream)
-            (peek-char nil input-stream)))
->>  #\1 #\4 #\4
-=>  NIL
+    ```LISP
+    (with-input-from-string (input-stream "    1 2 3 4 5")
+        (format t "~S ~S ~S" 
+                (peek-char t input-stream)
+                (peek-char #\4 input-stream)
+                (peek-char nil input-stream)))
+    >>  #\1 #\4 #\4
+    =>  NIL
+    ```
 
 * 受此影响(Affected By):
 
-*readtable*, *standard-input*, *terminal-io*.
+        *readtable*, *standard-input*, *terminal-io*.
 
 * 异常情况(Exceptional Situations):
 
-If eof-error-p is true and an end of file[2] occurs an error of type end-of-file is signaled.
+        如果 eof-error-p 是 true 并且到达文件的末尾, 就会发出一个 end-of-file 类型的错误.
 
-If peek-type is a character, an end of file[2] occurs, and eof-error-p is true, an error of type end-of-file is signaled.
+        如果 peek-type 是一个字符, 到达文件的末尾, 并且 eof-error-p 是 true, 就会发出一个 end-of-file 类型的错误.
 
-If recursive-p is true and an end of file[2] occurs, an error of type end-of-file is signaled.
+        如果 recursive-p 是 true 到达文件的末尾, 就会发出一个 end-of-file 类型的错误.
 
 * 也见(See Also): None.
 
@@ -774,13 +776,13 @@ read-char &optional input-stream eof-error-p eof-value recursive-p => char
 
 * 参数和值(Arguments and Values):
 
-input-stream---an input stream designator. The default is standard input.
+input-stream---an input stream designator. 默认是标准输入.
 
-eof-error-p---a generalized boolean. The default is true.
+eof-error-p---一个广义 boolean. 默认是 true.
 
-eof-value---an object. The default is nil.
+eof-value---一个对象. 默认是 nil.
 
-recursive-p---a generalized boolean. The default is false.
+recursive-p---一个广义 boolean. 默认是 false.
 
 char---a character or the eof-value.
 
@@ -828,13 +830,13 @@ read-char-no-hang &optional input-stream eof-error-p eof-value recursive-p => ch
 
 * 参数和值(Arguments and Values):
 
-input-stream -- an input stream designator. The default is standard input.
+input-stream -- an input stream designator. 默认是标准输入.
 
-eof-error-p---a generalized boolean. The default is true.
+eof-error-p---一个广义 boolean. 默认是 true.
 
-eof-value---an object. The default is nil.
+eof-value---一个对象. 默认是 nil.
 
-recursive-p---a generalized boolean. The default is false.
+recursive-p---一个广义 boolean. 默认是 false.
 
 char---a character or nil or the eof-value.
 
@@ -897,7 +899,7 @@ fresh-line &optional output-stream => generalized-boolean
 
 output-stream -- an output stream designator. The default is standard output.
 
-generalized-boolean---a generalized boolean.
+generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
@@ -954,7 +956,7 @@ unread-char character &optional input-stream => nil
 
 character---a character; must be the last character that was read from input-stream.
 
-input-stream---an input stream designator. The default is standard input.
+input-stream---an input stream designator. 默认是标准输入.
 
 * 描述(Description):
 
@@ -1046,17 +1048,17 @@ read-line &optional input-stream eof-error-p eof-value recursive-p
 
 * 参数和值(Arguments and Values):
 
-input-stream---an input stream designator. The default is standard input.
+input-stream---an input stream designator. 默认是标准输入.
 
-eof-error-p---a generalized boolean. The default is true.
+eof-error-p---一个广义 boolean. 默认是 true.
 
-eof-value---an object. The default is nil.
+eof-value---一个对象. 默认是 nil.
 
-recursive-p---a generalized boolean. The default is false.
+recursive-p---一个广义 boolean. 默认是 false.
 
 line---a string or the eof-value.
 
-missing-newline-p---a generalized boolean.
+missing-newline-p---一个广义 boolean.
 
 * 描述(Description):
 
@@ -1303,13 +1305,13 @@ file-position stream position-spec => success-p
 
 * 参数和值(Arguments and Values):
 
-stream---a stream.
+stream---一个流.
 
 position-spec---a file position designator.
 
 position---a file position or nil.
 
-success-p---a generalized boolean.
+success-p---一个广义 boolean.
 
 * 描述(Description):
 
@@ -1714,7 +1716,7 @@ close stream &key abort => result
 
 stream---a stream (either open or closed).
 
-abort---a generalized boolean. The default is false.
+abort---一个广义 boolean. 默认是 false.
 
 result---t if the stream was open at the time it was received as an argument, or implementation-dependent otherwise.
 
@@ -1808,9 +1810,9 @@ listen &optional input-stream => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-input-stream---an input stream designator. The default is standard input.
+input-stream---an input stream designator. 默认是标准输入.
 
-generalized-boolean---a generalized boolean.
+generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
@@ -1847,7 +1849,7 @@ clear-input &optional input-stream => nil
 
 * 参数和值(Arguments and Values):
 
-input-stream---an input stream designator. The default is standard input.
+input-stream---an input stream designator. 默认是标准输入.
 
 * 描述(Description):
 
@@ -1976,7 +1978,7 @@ control---a format control.
 
 arguments---format arguments for control.
 
-generalized-boolean---a generalized boolean.
+generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
@@ -2172,9 +2174,9 @@ make-two-way-stream input-stream output-stream => two-way-stream
 
 * 参数和值(Arguments and Values):
 
-input-stream---a stream.
+input-stream---一个流.
 
-output-stream---a stream.
+output-stream---一个流.
 
 two-way-stream---a two-way stream.
 
@@ -2393,7 +2395,7 @@ get-output-stream-string string-output-stream => string
 
 * 参数和值(Arguments and Values):
 
-string-output-stream---a stream.
+string-output-stream---一个流.
 
 string---a string.
 
@@ -2775,25 +2777,26 @@ stream-error-stream
 
 * 语法(Syntax):
 
-stream-error-stream condition => stream
+        stream-error-stream condition => stream
 
 * 参数和值(Arguments and Values):
 
-condition---a condition of type stream-error.
-
-stream---a stream.
+        condition---一个 stream-error 类型的状况.
+        stream---一个流.
 
 * 描述(Description):
 
-Returns the offending stream of a condition of type stream-error.
+        返回一个 stream-error 类型的状况的违规的流.
 
 * 示例(Examples):
 
- (with-input-from-string (s "(FOO")
-   (handler-case (read s)
-     (end-of-file (c)
-       (format nil "~&End of file on ~S." (stream-error-stream c)))))
-"End of file on #<String Stream>."
+    ```LISP
+    (with-input-from-string (s "(FOO")
+      (handler-case (read s)
+        (end-of-file (c)
+          (format nil "~&End of file on ~S." (stream-error-stream c)))))
+    "End of file on #<String Stream>."
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -2803,7 +2806,7 @@ Returns the offending stream of a condition of type stream-error.
 
 * 也见(See Also):
 
-stream-error, Section 9 (Conditions)
+        stream-error, 章节 9 (Conditions)
 
 * 注意(Notes): None. 
 
@@ -2812,14 +2815,14 @@ stream-error, Section 9 (Conditions)
 
 * 类优先级列表(Class Precedence List):
 
-end-of-file, stream-error, error, serious-condition, condition, t
+        end-of-file, stream-error, error, serious-condition, condition, t
 
 * 描述(Description):
 
-The type end-of-file consists of error conditions related to read operations that are done on streams that have no more data.
+        类型 end-of-file 包含与在没有更多数据的流中完成的读取操作相关的错误状况.
 
 * 也见(See Also):
 
-stream-error-stream 
+        stream-error-stream 
 
 
