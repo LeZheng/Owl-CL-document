@@ -772,268 +772,267 @@
 
 * 语法(Syntax):
 
-read-char &optional input-stream eof-error-p eof-value recursive-p => char
+        read-char &optional input-stream eof-error-p eof-value recursive-p => char
 
 * 参数和值(Arguments and Values):
 
-input-stream---an input stream designator. 默认是标准输入.
-
-eof-error-p---一个广义 boolean. 默认是 true.
-
-eof-value---一个对象. 默认是 nil.
-
-recursive-p---一个广义 boolean. 默认是 false.
-
-char---a character or the eof-value.
+        input-stream---一个输入流标识符. 默认是标准输入.
+        eof-error-p---一个广义 boolean. 默认是 true.
+        eof-value---一个对象. 默认是 nil.
+        recursive-p---一个广义 boolean. 默认是 false.
+        char---一个字符或 eof-value.
 
 * 描述(Description):
 
-read-char returns the next character from input-stream.
+        read-char 从 input-stream 返回下一个字符.
 
-When input-stream is an echo stream, the character is echoed on input-stream the first time the character is seen. Characters that are not echoed by read-char are those that were put there by unread-char and hence are assumed to have been echoed already by a previous call to read-char.
+        当 input-stream 是一个回音流时, 在第一次看到这个字符时这个字符在 input-stream 上被响应. 不被read-char 所响应的字符是 unread-char 放在那里的, 因此被认为已经在之前的一次对 read-char 的调用中得到了响应.
 
-If recursive-p is true, this call is expected to be embedded in a higher-level call to read or a similar function used by the Lisp reader.
+        如果 recursive-p 是 true, 这个调用预期会被嵌入到一个更高层次的对 read 或一个 Lisp 读取器使用的类似函数的调用中.
 
-If an end of file[2] occurs and eof-error-p is false, eof-value is returned.
+        如果到达文件的末尾并且 eof-error-p 是 false, 就返回 eof-value.
 
 * 示例(Examples):
 
- (with-input-from-string (is "0123")
-    (do ((c (read-char is) (read-char is nil 'the-end)))
-        ((not (characterp c)))
-     (format t "~S " c)))
->>  #\0 #\1 #\2 #\3
-=>  NIL
+    ```LISP
+    (with-input-from-string (is "0123")
+        (do ((c (read-char is) (read-char is nil 'the-end)))
+            ((not (characterp c)))
+        (format t "~S " c)))
+    >>  #\0 #\1 #\2 #\3
+    =>  NIL
+    ```
 
 * 受此影响(Affected By):
 
-*standard-input*, *terminal-io*.
+        *standard-input*, *terminal-io*.
 
 * 异常情况(Exceptional Situations):
 
-If an end of file[2] occurs before a character can be read, and eof-error-p is true, an error of type end-of-file is signaled.
+        如果在一个字符可以被读取之前到达文件的末尾, 并且 eof-error-p 是 true, 就会发出一个 end-of-file 类型的错误.
 
 * 也见(See Also):
 
-read-byte, read-sequence, write-char, read
+        read-byte, read-sequence, write-char, read
 
 * 注意(Notes):
 
-The corresponding output function is write-char. 
+        对应的输入函数是 write-char. 
 
 
 ### <span id="F-READ-CHAR-NO-HANG">函数 READ-CHAR-NO-HANG</span>
 
 * 语法(Syntax):
 
-read-char-no-hang &optional input-stream eof-error-p eof-value recursive-p => char
+        read-char-no-hang &optional input-stream eof-error-p eof-value recursive-p => char
 
 * 参数和值(Arguments and Values):
 
-input-stream -- an input stream designator. 默认是标准输入.
-
-eof-error-p---一个广义 boolean. 默认是 true.
-
-eof-value---一个对象. 默认是 nil.
-
-recursive-p---一个广义 boolean. 默认是 false.
-
-char---a character or nil or the eof-value.
+        input-stream -- 一个输入流标识符. 默认是标准输入.
+        eof-error-p---一个广义 boolean. 默认是 true.
+        eof-value---一个对象. 默认是 nil.
+        recursive-p---一个广义 boolean. 默认是 false.
+        char---一个字符或 nil 或 eof-value.
 
 * 描述(Description):
 
-read-char-no-hang returns a character from input-stream if such a character is available. If no character is available, read-char-no-hang returns nil.
+        如果一个字符可用, read-char-no-hang 就从 input-stream 返回一个字符. 如果没有字符可用, read-char-no-hang 就返回 nil.
 
-If recursive-p is true, this call is expected to be embedded in a higher-level call to read or a similar function used by the Lisp reader.
+        如果 recursive-p 是 true, 这个调用预期会被嵌入到一个更高层次的对 read 或一个 Lisp 读取器使用的类似函数的调用中.
 
-If an end of file[2] occurs and eof-error-p is false, eof-value is returned.
+        如果到达文件末尾并且 eof-error-p 是 false, 就返回 eof-value.
 
 * 示例(Examples):
 
-;; This code assumes an implementation in which a newline is not
-;; required to terminate input from the console.
- (defun test-it ()
-   (unread-char (read-char))
-   (list (read-char-no-hang) 
-         (read-char-no-hang) 
-         (read-char-no-hang)))
-=>  TEST-IT
-;; Implementation A, where a Newline is not required to terminate
-;; interactive input on the console.
- (test-it)
->>  a
-=>  (#\a NIL NIL)
-;; Implementation B, where a Newline is required to terminate
-;; interactive input on the console, and where that Newline remains
-;; on the input stream.
- (test-it)
->>  a<NEWLINE>
-=>  (#\a #\Newline NIL)
+    ```LISP
+    ;; This code assumes an implementation in which a newline is not
+    ;; required to terminate input from the console.
+    (defun test-it ()
+      (unread-char (read-char))
+      (list (read-char-no-hang) 
+            (read-char-no-hang) 
+            (read-char-no-hang)))
+    =>  TEST-IT
+    ;; Implementation A, where a Newline is not required to terminate
+    ;; interactive input on the console.
+    (test-it)
+    >>  a
+    =>  (#\a NIL NIL)
+    ;; Implementation B, where a Newline is required to terminate
+    ;; interactive input on the console, and where that Newline remains
+    ;; on the input stream.
+    (test-it)
+    >>  a<NEWLINE>
+    =>  (#\a #\Newline NIL)
+    ```
 
 * 受此影响(Affected By):
 
-*standard-input*, *terminal-io*.
+        *standard-input*, *terminal-io*.
 
 * 异常情况(Exceptional Situations):
 
-If an end of file[2] occurs when eof-error-p is true, an error of type end-of-file is signaled .
+        当 eof-error-p 是 true 时, 如果到达文件末尾, 就会发出一个 end-of-file 类型的错误.
 
 * 也见(See Also):
 
-listen
+        listen
 
 * 注意(Notes):
 
-read-char-no-hang is exactly like read-char, except that if it would be necessary to wait in order to get a character (as from a keyboard), nil is immediately returned without waiting. 
+        read-char-no-hang 准确地像 read-char, 除了如果有必要去等待来获取一个字符 (比如来自于键盘), 会在没有等待的情况下立即返回 nil. 
 
 
 ### <span id="F-TERPRI-FRESH-LINE">函数 TERPRI, FRESH-LINE</span>
 
 * 语法(Syntax):
 
-terpri &optional output-stream => nil
+        terpri &optional output-stream => nil
 
-fresh-line &optional output-stream => generalized-boolean
+        fresh-line &optional output-stream => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-output-stream -- an output stream designator. The default is standard output.
-
-generalized-boolean---一个广义 boolean.
+        output-stream -- 一个输出流标识符. 默认是标准输出.
+        generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
-terpri outputs a newline to output-stream.
+        terpri 输出一个新行到 output-stream 中.
 
-fresh-line is similar to terpri but outputs a newline only if the output-stream is not already at the start of a line. If for some reason this cannot be determined, then a newline is output anyway. fresh-line returns true if it outputs a newline; otherwise it returns false.
+        fresh-line 类似于 terpri 但是当且仅当这个 output-stream 没有在一行的开头时输出一个新行. 如果出于某个原因不能确定这个, 那么无论怎样都会输出一个新行. 如果 fresh-line 输出一个新行就返回 true; 否则它返回 false.
 
 * 示例(Examples):
 
- (with-output-to-string (s)
-    (write-string "some text" s)
-    (terpri s)
-    (terpri s)
-    (write-string "more text" s))
-=>  "some text
+    ```LISP
+    (with-output-to-string (s)
+        (write-string "some text" s)
+        (terpri s)
+        (terpri s)
+        (write-string "more text" s))
+    =>  "some text
 
-more text"
- (with-output-to-string (s)
-    (write-string "some text" s)
-    (fresh-line s)
-    (fresh-line s)
-    (write-string "more text" s))
-=>  "some text
-more text"
+    more text"
+    (with-output-to-string (s)
+        (write-string "some text" s)
+        (fresh-line s)
+        (fresh-line s)
+        (write-string "more text" s))
+    =>  "some text
+    more text"
+    ```
 
 * 副作用(Side Effects):
 
-The output-stream is modified.
+        这个 output-stream 会被修改.
 
 * 受此影响(Affected By):
 
-*standard-output*, *terminal-io*.
+        *standard-output*, *terminal-io*.
 
 * 异常情况(Exceptional Situations):
 
-None.
+        None.
 
 * 也见(See Also): None.
 
 * 注意(Notes):
 
-terpri is identical in effect to
+      terpri 和下面这个效果是一样的
 
- (write-char #\Newline output-stream)
+      (write-char #\Newline output-stream)
 
 
 ### <span id="F-UNREAD-CHAR">函数 UNREAD-CHAR</span>
 
 * 语法(Syntax):
 
-unread-char character &optional input-stream => nil
+        unread-char character &optional input-stream => nil
 
 * 参数和值(Arguments and Values):
 
-character---a character; must be the last character that was read from input-stream.
-
-input-stream---an input stream designator. 默认是标准输入.
+        character---一个字符; 必须是从 input-stream 读到的最后一个字符.
+        input-stream---一个输入流标识符. 默认是标准输入.
 
 * 描述(Description):
 
-unread-char places character back onto the front of input-stream so that it will again be the next character in input-stream.
+        unread-char 把 character 放置回 input-stream 的前面, 这样一来它会再一次成为 input-stream 中的下一个字符.
 
-When input-stream is an echo stream, no attempt is made to undo any echoing of the character that might already have been done on input-stream. However, characters placed on input-stream by unread-char are marked in such a way as to inhibit later re-echo by read-char.
+        当 input-stream 是一个回音流时, 不要尝试去撤销字符 character 已经在 input-stream 上完成的任何响应. 然而, 通过 unread-char 放置在 input-stream 的字符以这样方式被标记来抑制后来通过 read-char 的再响应.
 
-It is an error to invoke unread-char twice consecutively on the same stream without an intervening call to read-char (or some other input operation which implicitly reads characters) on that stream.
+        在中间没有在一个流上调用 read-char (或者某个其他隐式读取字符的输入操作) 的情况下, 在同一个流上连续两次调用 unread-char 是一个错误.
 
-Invoking peek-char or read-char commits all previous characters. The consequences of invoking unread-char on any character preceding that which is returned by peek-char (including those passed over by peek-char that has a non-nil peek-type) are unspecified. In particular, the consequences of invoking unread-char after peek-char are unspecified.
+        调用 peek-char 或 read-char 提交所有前面的字符. 在 peek-char 返回的任何字符之前调用 unread-char (包括由 peek-char 传递的那些具有非 nil peek-type 类型的字符) 的后果是不明确的. 特别是, 在 peek-char 之后调用 unread-char 的后果是未指定的.
 
 * 示例(Examples):
 
- (with-input-from-string (is "0123")
-    (dotimes (i 6)
-      (let ((c (read-char is)))
-        (if (evenp i) (format t "~&~S ~S~%" i c) (unread-char c is)))))
->>  0 #\0
->>  2 #\1
->>  4 #\2
-=>  NIL
+    ```LISP
+    (with-input-from-string (is "0123")
+        (dotimes (i 6)
+          (let ((c (read-char is)))
+            (if (evenp i) (format t "~&~S ~S~%" i c) (unread-char c is)))))
+    >>  0 #\0
+    >>  2 #\1
+    >>  4 #\2
+    =>  NIL
+    ```LISP
 
 * 受此影响(Affected By):
 
-*standard-input*, *terminal-io*.
+        *standard-input*, *terminal-io*.
 
 * 异常情况(Exceptional Situations): None.
 
 * 也见(See Also):
 
-peek-char, read-char, Section 21.1 (流的概念)
+        peek-char, read-char, 章节 21.1 (流的概念)
 
 * 注意(Notes):
 
-unread-char is intended to be an efficient mechanism for allowing the Lisp reader and other parsers to perform one-character lookahead in input-stream. 
+        unread-char 旨在成为一种有效的机制, 允许 Lisp 读取器和其他解析器在输入流 input-stream 中执行一个字符的展望. 
 
 
 ### <span id="F-WRITE-CHAR">函数 WRITE-CHAR</span>
 
 * 语法(Syntax):
 
-write-char character &optional output-stream => character
+        write-char character &optional output-stream => character
 
 * 参数和值(Arguments and Values):
 
-character---a character.
-
-output-stream -- an output stream designator. The default is standard output.
+        character---一个字符.
+        output-stream -- 一个输出流标识符. 默认是标准输出.
 
 * 描述(Description):
 
-write-char outputs character to output-stream.
+        write-char 把字符 character 输出到 output-stream.
 
 * 示例(Examples):
 
- (write-char #\a)
->>  a
-=>  #\a
- (with-output-to-string (s) 
-   (write-char #\a s)
-   (write-char #\Space s)
-   (write-char #\b s))
-=>  "a b"
+    ```LISP
+    (write-char #\a)
+    >>  a
+    =>  #\a
+    (with-output-to-string (s) 
+      (write-char #\a s)
+      (write-char #\Space s)
+      (write-char #\b s))
+    =>  "a b"
+    ```
 
 * 副作用(Side Effects):
 
-The output-stream is modified.
+        流 output-stream 会被修改.
 
 * 受此影响(Affected By):
 
-*standard-output*, *terminal-io*.
+        *standard-output*, *terminal-io*.
 
 * 异常情况(Exceptional Situations): None.
 
 * 也见(See Also):
 
-read-char, write-byte, write-sequence
+        read-char, write-byte, write-sequence
 
 * 注意(Notes): None. 
 
@@ -1042,244 +1041,244 @@ read-char, write-byte, write-sequence
 
 * 语法(Syntax):
 
-read-line &optional input-stream eof-error-p eof-value recursive-p
-
-=> line, missing-newline-p
+        read-line &optional input-stream eof-error-p eof-value recursive-p
+        => line, missing-newline-p
 
 * 参数和值(Arguments and Values):
 
-input-stream---an input stream designator. 默认是标准输入.
-
-eof-error-p---一个广义 boolean. 默认是 true.
-
-eof-value---一个对象. 默认是 nil.
-
-recursive-p---一个广义 boolean. 默认是 false.
-
-line---a string or the eof-value.
-
-missing-newline-p---一个广义 boolean.
+        input-stream---一个输入流标识符. 默认是标准输入.
+        eof-error-p---一个广义 boolean. 默认是 true.
+        eof-value---一个对象. 默认是 nil.
+        recursive-p---一个广义 boolean. 默认是 false.
+        line---一个字符串或 eof-value.
+        missing-newline-p---一个广义 boolean.
 
 * 描述(Description):
 
-Reads from input-stream a line of text that is terminated by a newline or end of file.
+        从 input-stream 读取一个文本行, 由一个新行标识或文件末尾来结尾.
 
-If recursive-p is true, this call is expected to be embedded in a higher-level call to read or a similar function used by the Lisp reader.
+        If recursive-p is true, 这个调用预期会被嵌入到一个更高层次的对 read 或一个 Lisp 读取器使用的类似函数的调用中.
 
-The primary value, line, is the line that is read, represented as a string (without the trailing newline, if any). If eof-error-p is false and the end of file for input-stream is reached before any characters are read, eof-value is returned as the line.
+        这个主要的值, line, 是读取到的那行, 表示为一个字符串 (如果有这个字符串的话, 不带末尾的新行标识). 如果 eof-error-p 是 false 并且在读到任何字符之前到达 input-stream 的文件末尾, 返回 eof-value 作为这个 line.
 
-The secondary value, missing-newline-p, is a generalized boolean that is false if the line was terminated by a newline, or true if the line was terminated by the end of file for input-stream (or if the line is the eof-value).
+        第二个值, missing-newline-p, 是一个广义 boolean, 如果 line 是由新行标识来终止的就是 false, 如果 line 由 input-stream 文件结尾来终止(或者如果这个 line 就是 eof-value)就是 true .
 
 * 示例(Examples):
 
- (setq a "line 1
- line2")
-=>  "line 1
- line2"
- (read-line (setq input-stream (make-string-input-stream a)))
-=>  "line 1", false
- (read-line input-stream)
-=>  "line2", true
- (read-line input-stream nil nil)
-=>  NIL, true
+    ```LISP
+    (setq a "line 1
+    line2")
+    =>  "line 1
+    line2"
+    (read-line (setq input-stream (make-string-input-stream a)))
+    =>  "line 1", false
+    (read-line input-stream)
+    =>  "line2", true
+    (read-line input-stream nil nil)
+    =>  NIL, true
+    ```
 
 * 副作用(Side Effects): None.
 
 * 受此影响(Affected By):
 
-*standard-input*, *terminal-io*.
+        *standard-input*, *terminal-io*.
 
 * 异常情况(Exceptional Situations):
 
-If an end of file[2] occurs before any characters are read in the line, an error is signaled if eof-error-p is true.
+        如果在这行中任何字符被读取到之前就到达文件的末尾, 如果 eof-error-p 是 true 就会发出一个错误.
 
 * 也见(See Also):
 
-read
+        read
 
 * 注意(Notes):
 
-The corresponding output function is write-line.
+        对应输出函数是 write-line.
 
 
 ### <span id="F-WRITE-STRING-WRITE-LINE">函数 WRITE-STRING, WRITE-LINE</span>
 
 * 语法(Syntax):
 
-write-string string &optional output-stream &key start end => string
+        write-string string &optional output-stream &key start end => string
 
-write-line string &optional output-stream &key start end => string
+        write-line string &optional output-stream &key start end => string
 
 * 参数和值(Arguments and Values):
 
-string---a string.
-
-output-stream -- an output stream designator. The default is standard output.
-
-start, end---bounding index designators of string. The defaults for start and end are 0 and nil, respectively.
+        string---一个字符串.
+        output-stream -- 一个输出流标识符. 默认是标准输出.
+        start, end---字符串 string 的边界索引标识符. 对于 start 和 end 默认分别为 0 和 nil.
 
 * 描述(Description):
 
-write-string writes the characters of the subsequence of string bounded by start and end to output-stream. write-line does the same thing, but then outputs a newline afterwards.
+        write-string 把字符串 string 由 start 和 end 限定的子字符串的字符写到 output-stream 中. write-line 做相同的事, 但是会在之后输出一个新行标识.
 
 * 示例(Examples):
 
- (prog1 (write-string "books" nil :end 4) (write-string "worms"))
->>  bookworms
-=>  "books"
- (progn (write-char #\*)
-        (write-line "test12" *standard-output* :end 5) 
-        (write-line "*test2")
-        (write-char #\*)
-        nil)
->>  *test1
->>  *test2
->>  *
-=>  NIL
+    ```LISP
+    (prog1 (write-string "books" nil :end 4) (write-string "worms"))
+    >>  bookworms
+    =>  "books"
+    (progn (write-char #\*)
+            (write-line "test12" *standard-output* :end 5) 
+            (write-line "*test2")
+            (write-char #\*)
+            nil)
+    >>  *test1
+    >>  *test2
+    >>  *
+    =>  NIL
+    ```
 
 * 副作用(Side Effects): None.
 
 * 受此影响(Affected By):
 
-*standard-output*, *terminal-io*.
+        *standard-output*, *terminal-io*.
 
 * 异常情况(Exceptional Situations): None.
 
 * 也见(See Also):
 
-read-line, write-char
+        read-line, write-char
 
 * 注意(Notes):
 
-write-line and write-string return string, not the substring bounded by start and end.
+        write-line 和 write-string 返回 string, 不是由 start 和 end 限定的子字符串.
 
- (write-string string)
-==  (dotimes (i (length string)
-      (write-char (char string i)))
+        (write-string string)
+        ==  (dotimes (i (length string)
+              (write-char (char string i)))
 
- (write-line string)
-==  (prog1 (write-string string) (terpri))
+        (write-line string)
+        ==  (prog1 (write-string string) (terpri))
 
 ### <span id="F-READ-SEQUENCE">函数 READ-SEQUENCE</span>
 
 * 语法(Syntax):
 
-read-sequence sequence stream &key start end => position
+        read-sequence sequence stream &key start end => position
 
-sequence---a sequence.
+* 参数和值(Arguments and Values):
 
-stream---an input stream.
-
-start, end---bounding index designators of sequence. The defaults for start and end are 0 and nil, respectively.
-
-position---an integer greater than or equal to zero, and less than or equal to the length of the sequence.
+        sequence---一个序列.
+        stream---一个输入流.
+        start, end---序列 sequence 的边界索引标识符. 对于 start 和 end 默认分别为 0 和 nil.
+        position---一个大于等于零, 并且小于等于序列 sequence 长度的整数.
 
 * 描述(Description):
 
-Destructively modifies sequence by replacing the elements of sequence bounded by start and end with elements read from stream.
+        通过用读取自流 stream 的元素来替换序列 sequence 中由 start 和 end 限定的元素来破坏性地修改序列 sequence.
 
-Sequence is destructively modified by copying successive elements into it from stream. If the end of file for stream is reached before copying all elements of the subsequence, then the extra elements near the end of sequence are not updated.
+        通过从流 stream 中拷贝连续元素到序列 sequence 来破坏性地修改它. 如果在拷贝这个子序列的所有元素之前到达这个流 stream 的文件末尾, 那么在序列 sequence 的末尾旁边的元素不会被更新.
 
-Position is the index of the first element of sequence that was not updated, which might be less than end because the end of file was reached.
+        position 是序列 sequence 中第一个没有被更新的元素的索引, 由于到达文件的末尾的话它可能小于 end.
 
 * 示例(Examples):
 
- (defvar *data* (make-array 15 :initial-element nil))
- (values (read-sequence *data* (make-string-input-stream "test string")) *data*)
- =>  11, #(#\t #\e #\s #\t #\Space #\s #\t #\r #\i #\n #\g NIL NIL NIL NIL)
+    ```LISP
+    (defvar *data* (make-array 15 :initial-element nil))
+    (values (read-sequence *data* (make-string-input-stream "test string")) *data*)
+    =>  11, #(#\t #\e #\s #\t #\Space #\s #\t #\r #\i #\n #\g NIL NIL NIL NIL)
+    ```
 
 * 副作用(Side Effects):
 
-Modifies stream and sequence.
+        修改流 stream 和 sequence.
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-Should be prepared to signal an error of type type-error if sequence is not a proper sequence. Should signal an error of type type-error if start is not a non-negative integer. Should signal an error of type type-error if end is not a non-negative integer or nil.
+        如果序列 sequence 不是一个 proper 序列, 就应该准备发出一个 type-error 类型的错误. 如果 start 不是一个非负整数, 就会发出一个 type-error 类型的错误. 如果 end 不是一个非负整数或 nil, 就会发出一个 type-error 类型的错误.
 
-Might signal an error of type type-error if an element read from the stream is not a member of the element type of the sequence.
+        如果读取自流 stream 的一个元素不是 sequence 的一个元素类型的成员, 就会发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-Section 3.2.1 (Compiler Terminology), write-sequence, read-line
+        章节 3.2.1 (Compiler Terminology), write-sequence, read-line
 
 * 注意(Notes):
 
-read-sequence is identical in effect to iterating over the indicated subsequence and reading one element at a time from stream and storing it into sequence, but may be more efficient than the equivalent loop. An efficient implementation is more likely to exist for the case where the sequence is a vector with the same element type as the stream. 
+        read-sequence 和遍历指定的子序列并每次从流 stream 中读取一个元素并将其存储到序列 sequence 中的效果是相同的, 但是可能比等价循环更有效率. 一个有效的实现更有可能存在于 sequence 是一个具有与 stream 相同的元素类型的向量的情况下. 
 
 
 ### <span id="F-WRITE-SEQUENCE">函数 WRITE-SEQUENCE</span>
 
 * 语法(Syntax):
 
-write-sequence sequence stream &key start end => sequence
+        write-sequence sequence stream &key start end => sequence
 
-sequence---a sequence.
+* 参数和值(Arguments and Values):
 
-stream---an output stream.
-
-start, end---bounding index designators of sequence. The defaults for start and end are 0 and nil, respectively.
+        sequence---一个序列.
+        stream---一个输出流.
+        start, end---序列 sequence 的边界索引标识符. 对于 start 和 end 默认分别为 0 和 nil.
 
 * 描述(Description):
 
-write-sequence writes the elements of the subsequence of sequence bounded by start and end to stream.
+        write-sequence 把序列 sequence 中由 start 和 end 限定的子序列写入到流 stream 中.
 
 * 示例(Examples):
 
- (write-sequence "bookworms" *standard-output* :end 4)
- >>  book
- =>  "bookworms"
+    ```LISP
+    (write-sequence "bookworms" *standard-output* :end 4)
+    >>  book
+    =>  "bookworms"
+    ```
 
 * 副作用(Side Effects):
 
-Modifies stream.
+        修改流 stream.
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-Should be prepared to signal an error of type type-error if sequence is not a proper sequence. Should signal an error of type type-error if start is not a non-negative integer. Should signal an error of type type-error if end is not a non-negative integer or nil.
+        如果序列 sequence 不是一个 proper 序列, 就应该准备发出一个 type-error 类型的错误. 如果 start 不是一个非负整数, 就会发出一个 type-error 类型的错误. 如果 end 不是一个非负整数或 nil, 就会发出一个 type-error 类型的错误.
 
-Might signal an error of type type-error if an element of the bounded sequence is not a member of the stream element type of the stream.
+        如果限定的序列 sequence 的一个元素不是流 stream 的流元素类型的一个成员, 可能会发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-Section 3.2.1 (Compiler Terminology), read-sequence, write-string, write-line
+        章节 3.2.1 (Compiler Terminology), read-sequence, write-string, write-line
 
 * 注意(Notes):
 
-write-sequence is identical in effect to iterating over the indicated subsequence and writing one element at a time to stream, but may be more efficient than the equivalent loop. An efficient implementation is more likely to exist for the case where the sequence is a vector with the same element type as the stream. 
+        write-sequence 和遍历指定的子序列并每次写入一个元素到流 stream 中的效果是相同的, 但是可能比等价循环更有效率. 一个有效的实现更有可能存在于 sequence 是一个具有与 stream 相同的元素类型的向量的情况下.
 
 
 ### <span id="F-FILE-LENGTH">函数 FILE-LENGTH</span>
 
 * 语法(Syntax):
 
-file-length stream => length
+        file-length stream => length
 
 * 参数和值(Arguments and Values):
 
-stream---a stream associated with a file.
-
-length---a non-negative integer or nil.
+        stream---和一个文件关联的流.
+        length---一个非负整数或 nil.
 
 * 描述(Description):
 
-file-length returns the length of stream, or nil if the length cannot be determined.
+        file-length 返回流 stream 的长度, 如果长度不能确定就返回 nil.
 
-For a binary file, the length is measured in units of the element type of the stream.
+        对于一个二进制文件, 长度是以流 stream 的元素类型的单位来测量的.
 
 * 示例(Examples):
 
- (with-open-file (s "decimal-digits.text" 
-                    :direction :output :if-exists :error)
-   (princ "0123456789" s)
-   (truename s))
-=>  #P"A:>Joe>decimal-digits.text.1"
- (with-open-file (s "decimal-digits.text")
-   (file-length s))
-=>  10
+    ```LISP
+    (with-open-file (s "decimal-digits.text" 
+                        :direction :output :if-exists :error)
+      (princ "0123456789" s)
+      (truename s))
+    =>  #P"A:>Joe>decimal-digits.text.1"
+    (with-open-file (s "decimal-digits.text")
+      (file-length s))
+    =>  10
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -1287,11 +1286,11 @@ For a binary file, the length is measured in units of the element type of the st
 
 * 异常情况(Exceptional Situations):
 
-Should signal an error of type type-error if stream is not a stream associated with a file.
+        如果流 stream 不是一个和文件关联的流就会发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-open
+        open
 
 * 注意(Notes): None. 
 
@@ -2133,7 +2132,7 @@ make-broadcast-stream &rest streams => broadcast-stream
 
 * 参数和值(Arguments and Values):
 
-stream---an output stream.
+stream---一个输出流.
 
 broadcast-stream---a broadcast stream.
 
@@ -2218,9 +2217,9 @@ two-way-stream-output-stream two-way-stream => output-stream
 
 two-way-stream---a two-way stream.
 
-input-stream---an input stream.
+input-stream---一个输入流.
 
-output-stream---an output stream.
+output-stream---一个输出流.
 
 * 描述(Description):
 
@@ -2253,9 +2252,9 @@ echo-stream-output-stream echo-stream => output-stream
 
 echo-stream---an echo stream.
 
-input-stream---an input stream.
+input-stream---一个输入流.
 
-output-stream---an output stream.
+output-stream---一个输出流.
 
 * 描述(Description):
 
@@ -2284,9 +2283,9 @@ make-echo-stream input-stream output-stream => echo-stream
 
 * 参数和值(Arguments and Values):
 
-input-stream---an input stream.
+input-stream---一个输入流.
 
-output-stream---an output stream.
+output-stream---一个输出流.
 
 echo-stream---an echo stream.
 
@@ -2358,7 +2357,7 @@ make-concatenated-stream &rest input-streams => concatenated-stream
 
 * 参数和值(Arguments and Values):
 
-input-stream---an input stream.
+input-stream---一个输入流.
 
 concatenated-stream---a concatenated stream.
 
@@ -2397,7 +2396,7 @@ get-output-stream-string string-output-stream => string
 
 string-output-stream---一个流.
 
-string---a string.
+string---一个字符串.
 
 * 描述(Description):
 
@@ -2438,7 +2437,7 @@ make-string-input-stream string &optional start end => string-stream
 
 * 参数和值(Arguments and Values):
 
-string---a string.
+string---一个字符串.
 
 start, end---bounding index designators of string. The defaults for start and end are 0 and nil, respectively.
 
