@@ -1298,106 +1298,103 @@
 
 * 语法(Syntax):
 
-file-position stream => position
+        file-position stream => position
 
-file-position stream position-spec => success-p
+        file-position stream position-spec => success-p
 
 * 参数和值(Arguments and Values):
 
-stream---一个流.
-
-position-spec---a file position designator.
-
-position---a file position or nil.
-
-success-p---一个广义 boolean.
+        stream---一个流.
+        position-spec---一个文件位置标识符.
+        position---一个文件位置或 nil.
+        success-p---一个广义 boolean.
 
 * 描述(Description):
 
-Returns or changes the current position within a stream.
+        返回或改变一个流 stream 中的当前位置.
 
-When position-spec is not supplied, file-position returns the current file position in the stream, or nil if this cannot be determined.
+        当没有提供 position-spec 时, file-position 在流 stream 中的当前文件位置, 如果不能确定就返回 nil.
 
-When position-spec is supplied, the file position in stream is set to that file position (if possible). file-position returns true if the repositioning is performed successfully, or false if it is not.
+        当提供了 position-spec 时, 在流 stream 中的文件位置会被设置为那个文件位置 (如果可能的话). 如果这个重定位执行成功, file-position 返回 true, 如果没有就返回 false.
 
-An integer returned by file-position of one argument should be acceptable as position-spec for use with the same file.
+        由但参数的 file-position 返回的整数用作同一个文件的 position-spec 应该是可接受的.
 
-For a character file, performing a single read-char or write-char operation may cause the file position to be increased by more than 1 because of character-set translations (such as translating between the Common Lisp f#\Newline character and an external ASCII carriage-return/line-feed sequence) and other aspects of the implementation. For a binary file, every read-byte or write-byte operation increases the file position by 1.
+        对于一个字符文件, 执行一个单独的 read-char 或 write-char 操作可能造成这个文件位置递增超过 1, 因为字符集转换 because of character-set translations (比如在 Common Lisp f#\Newline 字符和一外部的 ASCII 回车/换行序列之间的转换) 以及具体实现的其他方面. 对于一个二进制文件, 每个 read-byte 或 write-byte 操作递增文件位置 1.
 
 * 示例(Examples):
 
- (defun tester ()
-   (let ((noticed '()) file-written)
-     (flet ((notice (x) (push x noticed) x))
-       (with-open-file (s "test.bin" 
-                          :element-type '(unsigned-byte 8)
-                          :direction :output
-                          :if-exists :error)
-          (notice (file-position s)) ;1
-          (write-byte 5 s) 
-          (write-byte 6 s)
-          (let ((p (file-position s)))
-            (notice p) ;2
-            (notice (when p (file-position s (1- p))))) ;3
-          (write-byte 7 s)
-          (notice (file-position s)) ;4
-          (setq file-written (truename s)))
-        (with-open-file (s file-written
-                           :element-type '(unsigned-byte 8)
-                           :direction :input)
-          (notice (file-position s)) ;5
-          (let ((length (file-length s)))
-            (notice length) ;6
-            (when length
-              (dotimes (i length)
-                (notice (read-byte s)))))) ;7,...
-        (nreverse noticed))))
-=>  tester
- (tester)
-=>  (0 2 T 2 0 2 5 7)
-OR=>  (0 2 NIL 3 0 3 5 6 7)
-OR=>  (NIL NIL NIL NIL NIL NIL)
+    ```LISP
+    (defun tester ()
+      (let ((noticed '()) file-written)
+        (flet ((notice (x) (push x noticed) x))
+          (with-open-file (s "test.bin" 
+                              :element-type '(unsigned-byte 8)
+                              :direction :output
+                              :if-exists :error)
+              (notice (file-position s)) ;1
+              (write-byte 5 s) 
+              (write-byte 6 s)
+              (let ((p (file-position s)))
+                (notice p) ;2
+                (notice (when p (file-position s (1- p))))) ;3
+              (write-byte 7 s)
+              (notice (file-position s)) ;4
+              (setq file-written (truename s)))
+            (with-open-file (s file-written
+                              :element-type '(unsigned-byte 8)
+                              :direction :input)
+              (notice (file-position s)) ;5
+              (let ((length (file-length s)))
+                (notice length) ;6
+                (when length
+                  (dotimes (i length)
+                    (notice (read-byte s)))))) ;7,...
+            (nreverse noticed))))
+    =>  tester
+    (tester)
+    =>  (0 2 T 2 0 2 5 7)
+    OR=>  (0 2 NIL 3 0 3 5 6 7)
+    OR=>  (NIL NIL NIL NIL NIL NIL)
+    ```
 
 * 副作用(Side Effects):
 
-When the position-spec argument is supplied, the file position in the stream might be moved.
+        当提供了这个 position-spec 参数时, 在这个 stream 中的文件位置可能被移动.
 
 * 受此影响(Affected By):
 
-The value returned by file-position increases monotonically as input or output operations are performed.
+        由 file-position 返回的值随着输入或输出操作的执行单调递增.
 
 * 异常情况(Exceptional Situations):
 
-If position-spec is supplied, but is too large or otherwise inappropriate, an error is signaled.
+        如果提供了 position-spec, 但是太大或者不合适, 就会发出一个错误.
 
 * 也见(See Also):
 
-file-length, file-string-length, open
+        file-length, file-string-length, open
 
 * 注意(Notes):
 
-Implementations that have character files represented as a sequence of records of bounded size might choose to encode the file position as, for example, <<record-number>>*<<max-record-size>>+<<character-within-record>>. This is a valid encoding because it increases monotonically as each character is read or written, though not necessarily by 1 at each step. An integer might then be considered ``inappropriate'' as position-spec to file-position if, when decoded into record number and character number, it turned out that the supplied record was too short for the specified character number. 
+        具有被表示为一个有界大小的记录序列的字符文件的具体实现可能选择去对这个文件位置进行编码, 比如, <<record-number>>*<<max-record-size>>+<<character-within-record>>. 这是一个有效的编码因为它随着每个字符被读取或写入单调递增, 尽管每次步进没有必要是 1. 作为给 file-position 的 position-spec, 如果在解码成记录的数字和字符号时, 结果表明所提供的记录对于指定的字符数来说太短了, 一个整数可能被认为是 "不合适的". <!--TODO 待校验-->
 
 
 ### <span id="F-FILE-STRING-LENGTH">函数 FILE-STRING-LENGTH</span>
 
 * 语法(Syntax):
 
-file-string-length stream object => length
+        file-string-length stream object => length
 
 * 参数和值(Arguments and Values):
 
-stream---an output character file stream.
-
-object---a string or a character.
-
-length---a non-negative integer, or nil.
+        stream---一个输出字符文件流.
+        object---一个字符串或一个字符.
+        length---一个非负整数, 或 nil.
 
 * 描述(Description):
 
-file-string-length returns the difference between what (file-position stream) would be after writing object and its current value, or nil if this cannot be determined.
+        file-string-length 返回 (file-position stream) 的当前值和它在写入对象 object 之后的值的区别, 如果不能确定就是 nil.
 
-The returned value corresponds to the current state of stream at the time of the call and might not be the same if it is called again when the state of the stream has changed.
+        返回值对应这个调用时流 stream 的当前状态, 当这个流 stream 的状态改变时再一次调用的值可能是不同的.
 
 * 示例(Examples): None.
 
@@ -1414,198 +1411,194 @@ The returned value corresponds to the current state of stream at the time of the
 
 * 语法(Syntax):
 
-open filespec &key direction element-type if-exists if-does-not-exist external-format
-
-=> stream
+        open filespec &key direction element-type if-exists if-does-not-exist external-format
+        => stream
 
 * 参数和值(Arguments and Values):
 
-filespec---a pathname designator.
-
-direction---one of :input, :output, :io, or :probe. The default is :input.
-
-element-type---a type specifier for recognizable subtype of character; or a type specifier for a finite recognizable subtype of integer; or one of the symbols signed-byte, unsigned-byte, or :default. The default is character.
-
-if-exists---one of :error, :new-version, :rename, :rename-and-delete, :overwrite, :append, :supersede, or nil. The default is :new-version if the version component of filespec is :newest, or :error otherwise.
-
-if-does-not-exist---one of :error, :create, or nil. The default is :error if direction is :input or if-exists is :overwrite or :append; :create if direction is :output or :io, and if-exists is neither :overwrite nor :append; or nil when direction is :probe.
-
-external-format---an external file format designator. The default is :default.
-
-stream---a file stream or nil.
+        filespec---一个路径名标识符.
+        direction---:input, :output, :io, 或 :probe 其中之一. 默认是 :input.
+        element-type---一个 character 的可识别子类型的类型指定负; 或者一个 integer 的有限可识别子类型; 或者符号 signed-byte, unsigned-byte, 或 :default 的其中一个. 默认是 character.
+        if-exists---:error, :new-version, :rename, :rename-and-delete, :overwrite, :append, :supersede, 或 nil 其中之一. 如果 filespec 的版本成员是 :newest, 默认就是 :new-version, 否则就是 :error.
+        if-does-not-exist---:error, :create, 或 nil 其中之一. 如果 direction 是 :input 或者 if-exists 是 :overwrite 或 :append, 默认就是 :error; 如果 direction 是 :output 或 :io, 并且 if-exists 既不是 :overwrite 也不是 :append, 那么就是 :create; 当 direction 是 :probe 时就是 nil.
+        external-format---一个额外的文件格式化标识符. 默认是 :default.
+        stream---一个文件流或 nil.
 
 * 描述(Description):
 
-open creates, opens, and returns a file stream that is connected to the file specified by filespec. Filespec is the name of the file to be opened. If the filespec designator is a stream, that stream is not closed first or otherwise affected.
+        open 创建, 打开, 并返回一个连接到 filespec 指定文件的文件流. filespec 是这个要被打开的文件的名字. 如果这个 filespec 标识符是一个流, 那个流首先没有被关闭否则就会被影响.
 
-The keyword arguments to open specify the characteristics of the file stream that is returned, and how to handle errors.
+        给 open 的关键字参数指定了返回的那个文件流的特质, 以及如何处理错误.
 
-If direction is :input or :probe, or if if-exists is not :new-version and the version component of the filespec is :newest, then the file opened is that file already existing in the file system that has a version greater than that of any other file in the file system whose other pathname components are the same as those of filespec.
+        如果 direction 是 :input 或 :probe, 或者如果 if-exists 不是 :new-version 而这个 filespec 的版本成员是 :newest, 那么这个打开的文件就是已经存在于那个文件系统中的文件, 该文件的版本比文件系统中的任何其他文件都要大, 其其他路径名成员与 filespec 相同.
 
-An implementation is required to recognize all of the open keyword options and to do something reasonable in the context of the host operating system. For example, if a file system does not support distinct file versions and does not distinguish the notions of deletion and expunging, :new-version might be treated the same as :rename or :supersede, and :rename-and-delete might be treated the same as :supersede.
+        一个具体实现需要去识别所有这些 open 关键字选项并且在这个主机操作系统的上下文中去做一些合理的事. 比如, 如果一个文件系统不支持不同的文件版本, 并且不区分删除(deletion)和除去(expunging)的概念, :new-version 可能被当作和 :rename 或 :supersede 一样, 而 :rename-and-delete 可能被当作和 :supersede 一样.
 
-:direction
+        :direction
 
-    These are the possible values for direction, and how they affect the nature of the stream that is created:
+            这些是 direction 的可能的值, 以及它们如何影响创建的流的性质:
 
-    :input
+            :input
 
-        Causes the creation of an input file stream.
+                导致创建一个输入文件流.
 
-    :output
+            :output
 
-        Causes the creation of an output file stream.
+                导致创建一个输出文件流.
 
-    :io
+            :io
 
-        Causes the creation of a bidirectional file stream.
+                导致创建一个双向文件流.
 
-    :probe
+            :probe
 
-        Causes the creation of a ``no-directional'' file stream; in effect, the file stream is created and then closed prior to being returned by open.
+                导致创建一个 "无方向(no-directional)" 文件流; 实际上, 这个文件流是在 open 返回之前创建并关闭的.
 
-:element-type
+        :element-type
 
-    The element-type specifies the unit of transaction for the file stream. If it is :default, the unit is determined by file system, possibly based on the file.
+            这个 element-type 指定文件流的事务单元. 如果它是 :default, 这个单元由文件系统决定, 可能基于这个文件.
 
-:if-exists
+        :if-exists
 
-    if-exists specifies the action to be taken if direction is :output or :io and a file of the name filespec already exists. If direction is :input, not supplied, or :probe, if-exists is ignored. These are the results of open as modified by if-exists:
+            if-exists 指定了如果 direction 是 :output 或 :io 而名为 filespec 的文件已经存在的话要采取的动作. 如果 direction 是 :input, 没有提供, 或 :probe, if-exists 会被忽略. 这些是 open 被 if-exists 修改的结果:
 
-    :error
+            :error
 
-        An error of type file-error is signaled.
+                发出一个 file-error 类型的错误.
 
-    :new-version
+            :new-version
 
-        A new file is created with a larger version number.
+                用一个更大的版本数字创建一个新文件.
 
-    :rename
+            :rename
 
-        The existing file is renamed to some other name and then a new file is created.
+                已存在的文件会重命名为某个其他的名字并且创建一个新文件.
 
-    :rename-and-delete
+            :rename-and-delete
 
-        The existing file is renamed to some other name, then it is deleted but not expunged, and then a new file is created.
+                已存在的文件会重命名为某个其他的名字, 它会被删除(delete)但不会被除去(expunge), 然后创建一个新文件.
 
-    :overwrite
+            :overwrite
 
-        Output operations on the stream destructively modify the existing file. If direction is :io the file is opened in a bidirectional mode that allows both reading and writing. The file pointer is initially positioned at the beginning of the file; however, the file is not truncated back to length zero when it is opened.
+                在这个流上的输出操作会破坏性地修改这个已存在的文件. 如果 direction 是 :io 那么这个文件会以同时允许读写的双向模式被打开. 这个文件指针的初始定位于这个文件的开始; 然而, 当文件打开时, 文件不会被截断为零.
 
-    :append
+            :append
 
-        Output operations on the stream destructively modify the existing file. The file pointer is initially positioned at the end of the file.
+                在这个流上的输出操作会破坏性地修改这个已存在的文件. 这个文件指针的初始定位于这个文件的末尾.
 
-        If direction is :io, the file is opened in a bidirectional mode that allows both reading and writing.
+                如果 direction 是 :io, 那么这个文件会以同时允许读写的双向模式被打开.
 
-    :supersede
+            :supersede
 
-        The existing file is superseded; that is, a new file with the same name as the old one is created. If possible, the implementation should not destroy the old file until the new stream is closed.
+                已存在的文件会被取代; 这就是说, 一个和旧的那个有着相同名字的新文件会被创建. 如果可能的话, 具体实现直到这个新的流关闭之前都不应该毁掉这个旧文件.
 
-    nil
+            nil
 
-        No file or stream is created; instead, nil is returned to indicate failure.
+                没有文件或流会被创建; 反而, 返回 nil 来表示这个失败.
 
-:if-does-not-exist
+        :if-does-not-exist
 
-    if-does-not-exist specifies the action to be taken if a file of name filespec does not already exist. These are the results of open as modified by if-does-not-exist:
+            if-does-not-exist 指定了名为 filespec 的文件不存在的话要采取的动作. 这些是 open 被 if-does-not-exist 修改的结果:
 
-    :error
+            :error
 
-        An error of type file-error is signaled.
+                发出一个 file-error 类型的错误.
 
-    :create
+            :create
 
-        An empty file is created. Processing continues as if the file had already existed but no processing as directed by if-exists is performed.
+                创建一个空文件. 处理过程继续, 好像文件已经存在, 但是没有执行 if-exists 所指示的处理.
 
-    nil
+            nil
 
-        No file or stream is created; instead, nil is returned to indicate failure.
+                没有文件或流会被创建; 反而, 返回 nil 来表示这个失败.
 
-:external-format
+        :external-format
 
-    This option selects an external file format for the file: The only standardized value for this option is :default, although implementations are permitted to define additional external file formats and implementation-dependent values returned by stream-external-format can also be used by conforming programs.
+            这个选项为文件选择一个外部文件格式: 这个选项的仅有标准化值是 :default, 尽管具体实现允许去定义额外的文件格式并且 stream-external-format 返回的依赖于具体实现的值也可以被符合规范的程序所使用.
 
-    The external-format is meaningful for any kind of file stream whose element type is a subtype of character. This option is ignored for streams for which it is not meaningful; however, implementations may define other element types for which it is meaningful. The consequences are unspecified if a character is written that cannot be represented by the given external file format.
+            这个 external-format 对于所有元素类型为 character 的一个子类的任何种类的文件流都是有意义的. 对于对这个选项无意义的流会忽略这个选项; 然而, 具体实现可能定义其他有意义的元素类型. 如果写入一个不能被给定外部文件格式所表示的字符, 后果是未指定的.
 
-When a file is opened, a file stream is constructed to serve as the file system's ambassador to the Lisp environment; operations on the file stream are reflected by operations on the file in the file system.
+        当一个文件被打开时, 文件流被构造成文件系统到 Lisp 环境的代表; 文件流上的操作反映在文件系统中的文件操作上.
 
-A file can be deleted, renamed, or destructively modified by open.
+        一个文件可以被 open 删除, 重命名, 或破坏性修改.
 
-For information about opening relative pathnames, see Section 19.2.3 (Merging Pathnames).
+        关于打开相对路径名的信息, 见章节 19.2.3 (Merging Pathnames).
 
 * 示例(Examples):
 
- (open filespec :direction :probe)  =>  #<Closed Probe File Stream...>
- (setq q (merge-pathnames (user-homedir-pathname) "test"))
-=>  #<PATHNAME :HOST NIL :DEVICE device-name :DIRECTORY directory-name
-    :NAME "test" :TYPE NIL :VERSION :NEWEST>
- (open filespec :if-does-not-exist :create) =>  #<Input File Stream...>
- (setq s (open filespec :direction :probe)) =>  #<Closed Probe File Stream...>
- (truename s) =>  #<PATHNAME :HOST NIL :DEVICE device-name :DIRECTORY
-    directory-name :NAME filespec :TYPE extension :VERSION 1>
- (open s :direction :output :if-exists nil) =>  NIL 
+    ```LISP
+    (open filespec :direction :probe)  =>  #<Closed Probe File Stream...>
+    (setq q (merge-pathnames (user-homedir-pathname) "test"))
+    =>  #<PATHNAME :HOST NIL :DEVICE device-name :DIRECTORY directory-name
+        :NAME "test" :TYPE NIL :VERSION :NEWEST>
+    (open filespec :if-does-not-exist :create) =>  #<Input File Stream...>
+    (setq s (open filespec :direction :probe)) =>  #<Closed Probe File Stream...>
+    (truename s) =>  #<PATHNAME :HOST NIL :DEVICE device-name :DIRECTORY
+        directory-name :NAME filespec :TYPE extension :VERSION 1>
+    (open s :direction :output :if-exists nil) =>  NIL 
+    ```
 
 * 受此影响(Affected By):
 
-The nature and state of the host computer's file system.
+        主机计算机文件系统的性质和状态.
 
 * 异常情况(Exceptional Situations):
 
-If if-exists is :error, (subject to the constraints on the meaning of if-exists listed above), an error of type file-error is signaled.
+        如果 if-exists 是 :error, (受限于上面列出的 if-exists 含义的限制), 就会发出一个 file-error 类型的错误.
 
-If if-does-not-exist is :error (subject to the constraints on the meaning of if-does-not-exist listed above), an error of type file-error is signaled.
+        如果 if-does-not-exist 是 :error (受限于上面列出的 if-does-not-exist 含义的限制), 就会发出一个 file-error 类型的错误.
 
-If it is impossible for an implementation to handle some option in a manner close to what is specified here, an error of type error might be signaled.
+        如果一个实现不可能以接近这里指定的方式处理某些选项, 就会发出一个 error 类型的错误.
 
-An error of type file-error is signaled if (wild-pathname-p filespec) returns true.
+        如果 (wild-pathname-p filespec) 返回 true 就会发出一个 file-error 类型的错误.
 
-An error of type error is signaled if the external-format is not understood by the implementation.
+        如果 external-format 不被具体实现所接受, 就会发出一个 error 类型的错误.
 
-The various file systems in existence today have widely differing capabilities, and some aspects of the file system are beyond the scope of this specification to define. A given implementation might not be able to support all of these options in exactly the manner stated. An implementation is required to recognize all of these option keywords and to try to do something ``reasonable'' in the context of the host file system. Where necessary to accomodate the file system, an implementation deviate slightly from the semantics specified here without being disqualified for consideration as a conforming implementation. If it is utterly impossible for an implementation to handle some option in a manner similar to what is specified here, it may simply signal an error.
+        目前存在的各种文件系统具有广泛的不同功能, 并且文件系统的某些方面超出了该规范定义的范围. 一个给定的实现可能无法以完全相同的方式支持所有这些选项. 一个实现需要去识别所有这些选项关键字, 并尝试在主机文件系统的上下文中执行一些"合理"的操作. 在必要的情况下, 为了适应文件系统, 一个实现稍微偏离了这里指定的语义, 而不被取消作为一个符合规范的实现的资格. 如果实现以类似于此处指定的方式处理某些选项是完全不可能的, 那么它可能只是发出一个错误.
 
-With regard to the :element-type option, if a type is requested that is not supported by the file system, a substitution of types such as that which goes on in upgrading is permissible. As a minimum requirement, it should be the case that opening an output stream to a file in a given element type and later opening an input stream to the same file in the same element type should work compatibly.
+        关于 :element-type 选项, 如果一个请求的类型不被文件系统所支持, 在升级中进行的类型替换是允许的 a substitution of types such as that which goes on in upgrading is permissible. 作为一个最小的需求, 应该是这样的情况: 在给定的元素类型中打开一个输出流, 然后在相同的元素类型中打开同一个文件的输入流应该是兼容的.
 
 * 也见(See Also):
 
-with-open-file, close, pathname, logical-pathname, Section 19.2.3 (Merging Pathnames), Section 19.1.2 (Pathnames as Filenames)
+        with-open-file, close, pathname, logical-pathname, 章节 19.2.3 (Merging Pathnames), 章节 19.1.2 (Pathnames as Filenames)
 
 * 注意(Notes):
 
-open does not automatically close the file when an abnormal exit occurs.
+        当一个反常的退出发生时, open 不会自动关闭这个文件.
 
-When element-type is a subtype of character, read-char and/or write-char can be used on the resulting file stream.
+        当 element-type 是 character 的一个子类型时, read-char 和/或 write-char 可以在产生的文件流上被使用.
 
-When element-type is a subtype of integer, read-byte and/or write-byte can be used on the resulting file stream.
+        当 element-type 是 integer 的一个子类型时, read-byte 和/或 write-byte 可以在产生的文件流上被使用.
 
-When element-type is :default, the type can be determined by using stream-element-type. 
+        当 element-type 是 :default 时, 类型可以通过使用 stream-element-type 来确定. 
 
 
 ### <span id="F-STREAM-EXTERNAL-FORMAT">函数 STREAM-EXTERNAL-FORMAT</span>
 
 * 语法(Syntax):
 
-stream-external-format stream => format
+        stream-external-format stream => format
 
 * 参数和值(Arguments and Values):
 
-stream---a file stream.
-
-format---an external file format.
+        stream---一个文件流.
+        format---一个外部文件格式.
 
 * 描述(Description):
 
-Returns an external file format designator for the stream.
+        返回流 stream 的一个外部文件格式标识符.
 
 * 示例(Examples):
 
- (with-open-file (stream "test" :direction :output)
-   (stream-external-format stream))
-=>  :DEFAULT
-OR=>  :ISO8859/1-1987
-OR=>  (:ASCII :SAIL)
-OR=>  ACME::PROPRIETARY-FILE-FORMAT-17
-OR=>  #<FILE-FORMAT :ISO646-1983 2343673>
+    ```LISP
+    (with-open-file (stream "test" :direction :output)
+      (stream-external-format stream))
+    =>  :DEFAULT
+    OR=>  :ISO8859/1-1987
+    OR=>  (:ASCII :SAIL)
+    OR=>  ACME::PROPRIETARY-FILE-FORMAT-17
+    OR=>  #<FILE-FORMAT :ISO646-1983 2343673>
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -1615,92 +1608,88 @@ OR=>  #<FILE-FORMAT :ISO646-1983 2343673>
 
 * 也见(See Also):
 
-the :external-format argument to the function open and the with-open-file macro.
+        给函数 open 和宏 with-open-file 的 :external-format 参数.
 
 * 注意(Notes):
 
-The format returned is not necessarily meaningful to other implementations. 
+        这个返回的格式没有必要对于其他实现是有意义的. 
 
 
 ### <span id="M-WITH-OPEN-FILE">宏 WITH-OPEN-FILE</span>
 
 * 语法(Syntax):
 
-with-open-file (stream filespec options*) declaration* form*
-
-=> results
+        with-open-file (stream filespec options*) declaration* form*
+        => results
 
 * 参数和值(Arguments and Values):
 
-stream -- a variable.
-
-filespec---a pathname designator.
-
-options -- forms; evaluated.
-
-declaration---a declare expression; not evaluated.
-
-forms---an implicit progn.
-
-results---the values returned by the forms.
+        stream -- 一个变量.
+        filespec---一个路径名标识符.
+        options -- 表达式形式; 求值的.
+        declaration---一个 declare 表达式; 不求值.
+        forms---一个隐式 progn.
+        results---由表达式形式 forms 返回的值.
 
 * 描述(Description):
 
-with-open-file uses open to create a file stream to file named by filespec. Filespec is the name of the file to be opened. Options are used as keyword arguments to open.
+        with-open-file 使用 open 来创建一个到名为 filespec 的文件的文件流. filespec 是要被打开的文件的名字. options 是用作给 open 的关键字参数的那些.
 
-The stream object to which the stream variable is bound has dynamic extent; its extent ends when the form is exited.
+        这个 stream 变量绑定的流对象有着动态范围; 它的范围在表达式形式退出时结束.
 
-with-open-file evaluates the forms as an implicit progn with stream bound to the value returned by open.
+        with-open-file 像一个隐式的 progn 求值表达式形式 forms, 其中流 stream 被绑定到 open 返回的值上.
 
-When control leaves the body, either normally or abnormally (such as by use of throw), the file is automatically closed. If a new output file is being written, and control leaves abnormally, the file is aborted and the file system is left, so far as possible, as if the file had never been opened.
+        当控制离开主体时, 不管是正常的还是反常的 (比如通过使用 throw), 这个文件会被自动关闭. 如果一个新的输出文件要被写入, 而控制不正常地离开了, 这个文件会被终止并且文件系统被保留, 尽可能地保留, 就好像文件从来没有打开过一样.
 
-It is possible by the use of :if-exists nil or :if-does-not-exist nil for stream to be bound to nil. Users of :if-does-not-exist nil should check for a valid stream.
+        对于流 stream 使用 :if-exists nil 或 :if-does-not-exist nil 来绑定为 nil 是可能的. :if-does-not-exist nil 的使用者应该检查是否为一个有效的流.
 
-The consequences are undefined if an attempt is made to assign the stream variable. The compiler may choose to issue a warning if such an attempt is detected.
+        如果尝试去对流变量赋值, 后果是未定义的. 如果检测到这样的尝试, 编译器可能选择去发出一个警告.
 
 * 示例(Examples):
 
- (setq p (merge-pathnames "test"))
-=>  #<PATHNAME :HOST NIL :DEVICE device-name :DIRECTORY directory-name
-    :NAME "test" :TYPE NIL :VERSION :NEWEST>
- (with-open-file (s p :direction :output :if-exists :supersede)
-    (format s "Here are a couple~%of test data lines~%")) =>  NIL
- (with-open-file (s p)
-    (do ((l (read-line s) (read-line s nil 'eof)))
-        ((eq l 'eof) "Reached end of file.")
-     (format t "~&*** ~A~%" l)))
->>  *** Here are a couple
->>  *** of test data lines
-=>  "Reached end of file."
+    ```LISP
+    (setq p (merge-pathnames "test"))
+    =>  #<PATHNAME :HOST NIL :DEVICE device-name :DIRECTORY directory-name
+        :NAME "test" :TYPE NIL :VERSION :NEWEST>
+    (with-open-file (s p :direction :output :if-exists :supersede)
+        (format s "Here are a couple~%of test data lines~%")) =>  NIL
+    (with-open-file (s p)
+        (do ((l (read-line s) (read-line s nil 'eof)))
+            ((eq l 'eof) "Reached end of file.")
+        (format t "~&*** ~A~%" l)))
+    >>  *** Here are a couple
+    >>  *** of test data lines
+    =>  "Reached end of file."
 
-;; Normally one would not do this intentionally because it is
-;; not perspicuous, but beware when using :IF-DOES-NOT-EXIST NIL
-;; that this doesn't happen to you accidentally...
- (with-open-file (foo "no-such-file" :if-does-not-exist nil)
-   (read foo))
->>  hello?
-=>  HELLO? ;This value was read from the terminal, not a file!
+    ;; Normally one would not do this intentionally because it is
+    ;; not perspicuous, but beware when using :IF-DOES-NOT-EXIST NIL
+    ;; that this doesn't happen to you accidentally...
+    (with-open-file (foo "no-such-file" :if-does-not-exist nil)
+      (read foo))
+    >>  hello?
+    =>  HELLO? ;This value was read from the terminal, not a file!
 
-;; Here's another bug to avoid...
- (with-open-file (foo "no-such-file" :direction :output :if-does-not-exist nil)
-   (format foo "Hello"))
-=>  "Hello" ;FORMAT got an argument of NIL!
+    ;; Here's another bug to avoid...
+    (with-open-file (foo "no-such-file" :direction :output :if-does-not-exist nil)
+      (format foo "Hello"))
+    =>  "Hello" ;FORMAT got an argument of NIL!
+    ```
 
 * 副作用(Side Effects):
 
-Creates a stream to the file named by filename (upon entry), and closes the stream (upon exit). In some implementations, the file might be locked in some way while it is open. If the stream is an output stream, a file might be created.
+        创建一个名为 filename 的文件的流 (进入时), 并且关闭这个流 (退出时). 在某些实现中, 在这个文件被打开时它可能被锁定. 如果这个流是一个输出流, 可能会创建一个文件.
 
 * 受此影响(Affected By):
 
-The host computer's file system.
+        主机计算机文件系统.
 
 * 异常情况(Exceptional Situations):
 
-See the function open.
+        见函数 open.
 
 * 也见(See Also):
 
-open, close, pathname, logical-pathname, Section 19.1.2 (Pathnames as Filenames)
+        open, close, pathname, logical-pathname, 章节 19.1.2 (Pathnames as Filenames)
 
 * 注意(Notes): None. 
 
