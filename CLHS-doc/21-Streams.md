@@ -1698,39 +1698,39 @@
 
 * 语法(Syntax):
 
-close stream &key abort => result
+        close stream &key abort => result
 
 * 参数和值(Arguments and Values):
 
-stream---a stream (either open or closed).
-
-abort---一个广义 boolean. 默认是 false.
-
-result---t if the stream was open at the time it was received as an argument, or implementation-dependent otherwise.
+        stream---一个流 (不管是打开的还是关闭的).
+        abort---一个广义 boolean. 默认是 false.
+        result---如果这个流 stream 在它被接受作为参数时是打开的就是 t, 否则就是依赖于具体实现的.
 
 * 描述(Description):
 
-close closes stream. Closing a stream means that it may no longer be used in input or output operations. The act of closing a file stream ends the association between the stream and its associated file; the transaction with the file system is terminated, and input/output may no longer be performed on the stream.
+        close 关闭流 stream. 关闭一个流意味着它可能不再被用于输入或输出操作了. 关闭一个文件流的行为会结束这个流 stream 和它关联的文件之间的关联; 与文件系统的事务会结束, 而输入/输出可能不再在这个流 stream 上执行.
 
-If abort is true, an attempt is made to clean up any side effects of having created stream. If stream performs output to a file that was created when the stream was created, the file is deleted and any previously existing file is not superseded.
+        如果 abort 是 true, 会尝试去清理已经创建的流的任何副作用. 如果流 stream 执行输出到一个在这个流 stream 被创建时被创建的文件, 这个文件会被删除并且任何之前存在的文件不会被取代.
 
-It is permissible to close an already closed stream, but in that case the result is implementation-dependent.
+        允许去关闭一个已经关闭的流, 但是在这个情况中结果是依赖于具体实现的.
 
-After stream is closed, it is still possible to perform the following query operations upon it: streamp, pathname, truename, merge-pathnames, pathname-host, pathname-device, pathname-directory,pathname-name, pathname-type, pathname-version, namestring, file-namestring, directory-namestring, host-namestring, enough-namestring, open, probe-file, and directory.
+        在流 stream 被关闭后, 仍然可能在它上面执行一下查询操作: streamp, pathname, truename, merge-pathnames, pathname-host, pathname-device, pathname-directory,pathname-name, pathname-type, pathname-version, namestring, file-namestring, directory-namestring, host-namestring, enough-namestring, open, probe-file, 和 directory.
 
-The effect of close on a constructed stream is to close the argument stream only. There is no effect on the constituents of composite streams.
+        在一个构造的流上的 close 的效果只是去关闭这个参数 stream. 对复合流的组成部分没有影响.
 
-For a stream created with make-string-output-stream, the result of get-output-stream-string is unspecified after close.
+        对于一个用 make-string-output-stream 创建的流, 在 close 后的 get-output-stream-string 结果是未指定的.
 
 * 示例(Examples):
 
- (setq s (make-broadcast-stream)) =>  #<BROADCAST-STREAM>
- (close s) =>  T
- (output-stream-p s) =>  true
+    ```LISP
+    (setq s (make-broadcast-stream)) =>  #<BROADCAST-STREAM>
+    (close s) =>  T
+    (output-stream-p s) =>  true
+    ```
 
 * 副作用(Side Effects):
 
-The stream is closed (if necessary). If abort is true and the stream is an output file stream, its associated file might be deleted.
+        流 stream 会被关闭 (如果必要的话). 如果 abort 是 true 并且这个流 stream 是一个输出文件流, 它关联的文件可能被删除.
 
 * 受此影响(Affected By): None.
 
@@ -1738,7 +1738,7 @@ The stream is closed (if necessary). If abort is true and the stream is an outpu
 
 * 也见(See Also):
 
-open
+        open
 
 * 注意(Notes): None. 
 
@@ -1747,38 +1747,35 @@ open
 
 * 语法(Syntax):
 
-with-open-stream (var stream) declaration* form*
-
-=> result*
+        with-open-stream (var stream) declaration* form*
+        => result*
 
 * 参数和值(Arguments and Values):
 
-var---a variable name.
-
-stream---a form; evaluated to produce a stream.
-
-declaration---a declare expression; not evaluated.
-
-forms---an implicit progn.
-
-results---the values returned by the forms.
+        var---一个变量名字.
+        stream---一个表达式形式; 求值来产生一个流.
+        declaration---一个 declare 表达式; 不求值.
+        forms---一个隐式 progn.
+        results---由这些表达式形式 forms 返回的结果.
 
 * 描述(Description):
 
-with-open-stream performs a series of operations on stream, returns a value, and then closes the stream.
+        with-open-stream 在流 stream 上执行一系列操作, 并返回一个值, 然后关闭这个流 stream.
 
-Var is bound to the value of stream, and then forms are executed as an implicit progn. stream is automatically closed on exit from with-open-stream, no matter whether the exit is normal or abnormal. The stream has dynamic extent; its extent ends when the form is exited.
+        var 被绑定为这个流 stream 的值, 然后这些表达式形式 forms 就像一个隐式的 progn 一样被求值. 流 stream 在从 with-open-stream 退出时会被自动关闭, 不管这个退出是正常的还是不正常的. 流 stream 有着动态范围; 它的范围在这个表达式形式退出时结束.
 
-The consequences are undefined if an attempt is made to assign the the variable var with the forms.
+        如果在这些表达式形式 forms 中尝试去对变量 var 赋值后果是未定义的.
 
 * 示例(Examples):
 
- (with-open-stream (s (make-string-input-stream "1 2 3 4"))
-    (+ (read s) (read s) (read s))) =>  6
+    ```LISP
+    (with-open-stream (s (make-string-input-stream "1 2 3 4"))
+        (+ (read s) (read s) (read s))) =>  6
+    ```
 
 * 副作用(Side Effects):
 
-The stream is closed (upon exit).
+        这个流 stream 会被关闭 (退出时).
 
 * 受此影响(Affected By): None.
 
@@ -1786,7 +1783,7 @@ The stream is closed (upon exit).
 
 * 也见(See Also):
 
-close
+        close
 
 * 注意(Notes): None. 
 
@@ -1794,37 +1791,38 @@ close
 
 * 语法(Syntax):
 
-listen &optional input-stream => generalized-boolean
+        listen &optional input-stream => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-input-stream---an input stream designator. 默认是标准输入.
-
-generalized-boolean---一个广义 boolean.
+        input-stream---一个输入流标识符. 默认是标准输入.
+        generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
-Returns true if there is a character immediately available from input-stream; otherwise, returns false. On a non-interactive input-stream, listen returns true except when at end of file[1]. If an end of file is encountered, listen returns false. listen is intended to be used when input-stream obtains characters from an interactive device such as a keyboard.
+        如果从输入流 input-stream 立即有一个字符可用就返回 true; 赋值, 返回 false. 在一个非交互式输入流上, listen 返回 true 除了到文件末尾时. 如果到达文件的末尾, listen 返回 false. 当输入流 input-stream 从一个交互式设备如键盘中获得字符时, 就会使用 listen.
 
 * 示例(Examples):
 
- (progn (unread-char (read-char)) (list (listen) (read-char)))
->>  1
-=>  (T #\1)
- (progn (clear-input) (listen))
-=>  NIL ;Unless you're a very fast typist!
+    ```LISP
+    (progn (unread-char (read-char)) (list (listen) (read-char)))
+    >>  1
+    =>  (T #\1)
+    (progn (clear-input) (listen))
+    =>  NIL ;Unless you're a very fast typist!
+    ```
 
 * 副作用(Side Effects): None.
 
 * 受此影响(Affected By):
 
-*standard-input*
+        *standard-input*
 
 * 异常情况(Exceptional Situations): None.
 
 * 也见(See Also):
 
-interactive-stream-p, read-char-no-hang
+        interactive-stream-p, read-char-no-hang
 
 * 注意(Notes): None. 
 
@@ -1833,68 +1831,70 @@ interactive-stream-p, read-char-no-hang
 
 * 语法(Syntax):
 
-clear-input &optional input-stream => nil
+        clear-input &optional input-stream => nil
 
 * 参数和值(Arguments and Values):
 
-input-stream---an input stream designator. 默认是标准输入.
+        input-stream---一个输入流标识符. 默认是标准输入.
 
 * 描述(Description):
 
-Clears any available input from input-stream.
+        从输入流 input-stream 中清理任何可用的输入.
 
-If clear-input does not make sense for input-stream, then clear-input does nothing.
+        如果 clear-input 对输入流 input-stream 没有意义, 那么 clear-input 什么都不做.
 
 * 示例(Examples):
 
-;; The exact I/O behavior of this example might vary from implementation
-;; to implementation depending on the kind of interactive buffering that
-;; occurs.  (The call to SLEEP here is intended to help even out the 
-;; differences in implementations which do not do line-at-a-time buffering.)
+    ```LISP
+    ;; The exact I/O behavior of this example might vary from implementation
+    ;; to implementation depending on the kind of interactive buffering that
+    ;; occurs.  (The call to SLEEP here is intended to help even out the 
+    ;; differences in implementations which do not do line-at-a-time buffering.)
 
-(defun read-sleepily (&optional (clear-p nil) (zzz 0))
-  (list (progn (print '>) (read))
-        ;; Note that input typed within the first ZZZ seconds 
-        ;; will be discarded.
-        (progn (print '>) 
-               (if zzz (sleep zzz))
-               (print '>>)
-               (if clear-p (clear-input))
-               (read))))
+    (defun read-sleepily (&optional (clear-p nil) (zzz 0))
+      (list (progn (print '>) (read))
+            ;; Note that input typed within the first ZZZ seconds 
+            ;; will be discarded.
+            (progn (print '>) 
+                  (if zzz (sleep zzz))
+                  (print '>>)
+                  (if clear-p (clear-input))
+                  (read))))
 
-(read-sleepily)
->>  > 10
->>  >
->>  >> 20
-=>  (10 20)
+    (read-sleepily)
+    >>  > 10
+    >>  >
+    >>  >> 20
+    =>  (10 20)
 
-(read-sleepily t)
->>  > 10
->>  >
->>  >> 20
-=>  (10 20)
+    (read-sleepily t)
+    >>  > 10
+    >>  >
+    >>  >> 20
+    =>  (10 20)
 
-(read-sleepily t 10)
->>  > 10
->>  > 20  ; Some implementations won't echo typeahead here.
->>  >> 30
-=>  (10 30)
+    (read-sleepily t 10)
+    >>  > 10
+    >>  > 20  ; Some implementations won't echo typeahead here.
+    >>  >> 30
+    =>  (10 30)
+    ```
 
 * 副作用(Side Effects):
 
-The input-stream is modified.
+        输入流 input-stream 会被修改.
 
 * 受此影响(Affected By):
 
-*standard-input*
+        *standard-input*
 
 * 异常情况(Exceptional Situations):
 
-Should signal an error of type type-error if input-stream is not a stream designator.
+        如果 input-stream 不是一个流标识符, 就应该发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-clear-output
+        clear-output
 
 * 注意(Notes): None. 
 
@@ -1902,52 +1902,54 @@ clear-output
 
 * 语法(Syntax):
 
-finish-output &optional output-stream => nil
+        finish-output &optional output-stream => nil
 
-force-output &optional output-stream => nil
+        force-output &optional output-stream => nil
 
-clear-output &optional output-stream => nil
+        clear-output &optional output-stream => nil
 
 * 参数和值(Arguments and Values):
 
-output-stream---an output stream designator. The default is standard output.
+        output-stream---一个输入流标识符. 默认是标准输出.
 
 * 描述(Description):
 
-finish-output, force-output, and clear-output exercise control over the internal handling of buffered stream output.
+        finish-output, force-output, 和 clear-output 可以控制缓冲流输出的内部处理.
 
-finish-output attempts to ensure that any buffered output sent to output-stream has reached its destination, and then returns.
+        finish-output 尝试去确保任何发送到 output-stream 的缓冲输出已经到达目的地, 然后返回.
 
-force-output initiates the emptying of any internal buffers but does not wait for completion or acknowledgment to return.
+        force-output 启动了任何一个内部缓冲区的清空, 但不等待完成或确认返回.
 
-clear-output attempts to abort any outstanding output operation in progress in order to allow as little output as possible to continue to the destination.
+        clear-output 试图中止任何正在进行中的未完成的输出操作, 以便尽可能少的输出以继续到达目的地.
 
-If any of these operations does not make sense for output-stream, then it does nothing. The precise actions of these functions are implementation-dependent.
+        如果这些操作的任何一个对于 output-stream 没有意义, 那么它什么都不做. 这些函数的准确行为是依赖于具体实现的.
 
 * 示例(Examples):
 
-;; Implementation A
- (progn (princ "am i seen?") (clear-output))
-=>  NIL
+    ```LISP
+    ;; Implementation A
+    (progn (princ "am i seen?") (clear-output))
+    =>  NIL
 
-;; Implementation B
- (progn (princ "am i seen?") (clear-output))
->>  am i seen?
-=>  NIL
+    ;; Implementation B
+    (progn (princ "am i seen?") (clear-output))
+    >>  am i seen?
+    =>  NIL
+    ```
 
 * 副作用(Side Effects): None.
 
 * 受此影响(Affected By):
 
-*standard-output*
+        *standard-output*
 
 * 异常情况(Exceptional Situations):
 
-Should signal an error of type type-error if output-stream is not a stream designator.
+        如果 output-stream 不是一个流标识符, 就应该发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-clear-input
+        clear-input
 
 * 注意(Notes): None. 
 
@@ -1956,91 +1958,92 @@ clear-input
 
 * 语法(Syntax):
 
-y-or-n-p &optional control &rest arguments => generalized-boolean
+        y-or-n-p &optional control &rest arguments => generalized-boolean
 
-yes-or-no-p &optional control &rest arguments => generalized-boolean
+        yes-or-no-p &optional control &rest arguments => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-control---a format control.
-
-arguments---format arguments for control.
-
-generalized-boolean---一个广义 boolean.
+        control---一个格式控制.
+        arguments---control 的格式参数.
+        generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
-These functions ask a question and parse a response from the user. They return true if the answer is affirmative, or false if the answer is negative.
+        这些函数询问一个问题并且解析一个来自用户的响应. 如果回答是肯定的, 它们返回 true, 如果是否定的就是 false.
 
-y-or-n-p is for asking the user a question whose answer is either ``yes'' or ``no.'' It is intended that the reply require the user to answer a yes-or-no question with a single character. yes-or-no-p is also for asking the user a question whose answer is either ``Yes'' or ``No.'' It is intended that the reply require the user to take more action than just a single keystroke, such as typing the full word yes or no followed by a newline.
+        y-or-n-p 被用于询问用户一个答案为 "yes" 或 "no" 的问题. 它的目的是要求用户用一个字符来回答一个 yes-or-no 的问题. yes-or-no-p 也被用于询问用户一个答案为 "yes" 或 "no" 的问题. 它的目的是要求用户采取更多的操作, 而不仅仅是一次击键, 比如输入完整的单词 "yes" 或 "no", 然后是换行符.
 
-y-or-n-p types out a message (if supplied), reads an answer in some implementation-dependent manner (intended to be short and simple, such as reading a single character such as Y or N). yes-or-no-p types out a message (if supplied), attracts the user's attention (for example, by ringing the terminal's bell), and reads an answer in some implementation-dependent manner (intended to be multiple characters, such as YES or NO).
+        y-or-n-p 输出一个信息 (如果提供的话), 以某种依赖于具体实现的方式读取一个回答 (目的是为了简短和简单, 比如读取一个字符, 比如 Y 或 N). yes-or-no-p 输出一个信息 (如果提供的话), 吸引用户的注意力 (比如, 通过终端的响铃), 并且以某种依赖于具体实现的方式读取一个回答 (目的是多字符, 比如 YES 或 NO).
 
-If format-control is supplied and not nil, then a fresh-line operation is performed; then a message is printed as if format-control and arguments were given to format. In any case, yes-or-no-p and y-or-n-p will provide a prompt such as ``(Y or N)'' or ``(Yes or No)'' if appropriate.
+        如果提供了 format-control 并且不是 nil, 那么会执行一个 fresh-line 操作; 然后打印一个信息, 就好像 format-control 和 arguments 给到 format 一样. 在任何情况下, 如果合适的话, yes-or-no-p 和 y-or-n-p 会提供一个提示, 比如 "(Y or N)" 或 "(Yes or No)".
 
-All input and output are performed using query I/O.
+        所有输入和输出执行都使用查询 I/O.
 
 * 示例(Examples):
 
- (y-or-n-p "(t or nil) given by")
->>  (t or nil) given by (Y or N) Y
-=>  true
- (yes-or-no-p "a ~S message" 'frightening) 
->>  a FRIGHTENING message (Yes or No) no
-=>  false
- (y-or-n-p "Produce listing file?") 
->>  Produce listing file?
->>  Please respond with Y or N. n
-=>  false
+    ```LISP
+    (y-or-n-p "(t or nil) given by")
+    >>  (t or nil) given by (Y or N) Y
+    =>  true
+    (yes-or-no-p "a ~S message" 'frightening) 
+    >>  a FRIGHTENING message (Yes or No) no
+    =>  false
+    (y-or-n-p "Produce listing file?") 
+    >>  Produce listing file?
+    >>  Please respond with Y or N. n
+    =>  false
+    ```
 
 * 副作用(Side Effects):
 
-Output to and input from query I/O will occur.
+        会发生查询 I/O 的输入或输出.
 
 * 受此影响(Affected By):
 
-*query-io*.
+        *query-io*.
 
 * 异常情况(Exceptional Situations): None.
 
 * 也见(See Also):
 
-format
+        format
 
 * 注意(Notes):
 
-yes-or-no-p and yes-or-no-p do not add question marks to the end of the prompt string, so any desired question mark or other punctuation should be explicitly included in the text query. 
+        yes-or-no-p 和 yes-or-no-p 不会在提示字符串的末尾添加问号, 因此任何想要的问号或其他标点符号都应该显式地包含在文本查询中. 
 
 
 ### <span id="F-MAKE-SYNONYM-STREAM">函数 MAKE-SYNONYM-STREAM</span>
 
 * 语法(Syntax):
 
-make-synonym-stream symbol => synonym-stream
+        make-synonym-stream symbol => synonym-stream
 
 * 参数和值(Arguments and Values):
 
-symbol---a symbol that names a dynamic variable.
-
-synonym-stream---a synonym stream.
+        symbol---命名动态变量的一个符号.
+        synonym-stream---一个 synonym-stream.
 
 * 描述(Description):
 
-Returns a synonym stream whose synonym stream symbol is symbol.
+        返回一个 synonym-stream 符号是 symbol 的 synonym-stream.
 
 * 示例(Examples):
 
- (setq a-stream (make-string-input-stream "a-stream")
-        b-stream (make-string-input-stream "b-stream"))
-=>  #<String Input Stream> 
- (setq s-stream (make-synonym-stream 'c-stream))
-=>  #<SYNONYM-STREAM for C-STREAM> 
- (setq c-stream a-stream)
-=>  #<String Input Stream> 
- (read s-stream) =>  A-STREAM
- (setq c-stream b-stream)
-=>  #<String Input Stream> 
- (read s-stream) =>  B-STREAM
+    ```LISP
+    (setq a-stream (make-string-input-stream "a-stream")
+            b-stream (make-string-input-stream "b-stream"))
+    =>  #<String Input Stream> 
+    (setq s-stream (make-synonym-stream 'c-stream))
+    =>  #<SYNONYM-STREAM for C-STREAM> 
+    (setq c-stream a-stream)
+    =>  #<String Input Stream> 
+    (read s-stream) =>  A-STREAM
+    (setq c-stream b-stream)
+    =>  #<String Input Stream> 
+    (read s-stream) =>  B-STREAM
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -2048,11 +2051,11 @@ Returns a synonym stream whose synonym stream symbol is symbol.
 
 * 异常情况(Exceptional Situations):
 
-Should signal type-error if its argument is not a symbol.
+        如果它的符号不是一个符号就应该发出 type-error.
 
 * 也见(See Also):
 
-Section 21.1 (流的概念)
+        章节 21.1 (流的概念)
 
 * 注意(Notes): None. 
 
@@ -2060,17 +2063,16 @@ Section 21.1 (流的概念)
 
 * 语法(Syntax):
 
-synonym-stream-symbol synonym-stream => symbol
+        synonym-stream-symbol synonym-stream => symbol
 
 * 参数和值(Arguments and Values):
 
-synonym-stream---a synonym stream.
-
-symbol---a symbol.
+        synonym-stream---一个 synonym-stream.
+        symbol---一个符号.
 
 * 描述(Description):
 
-Returns the symbol whose symbol-value the synonym-stream is using.
+        返回这个 synonym-stream 正在使用的 symbol-value 的符号.
 
 * 示例(Examples): None.
 
@@ -2082,7 +2084,7 @@ Returns the symbol whose symbol-value the synonym-stream is using.
 
 * 也见(See Also):
 
-make-synonym-stream
+        make-synonym-stream
 
 * 注意(Notes): None. 
 
@@ -2090,17 +2092,16 @@ make-synonym-stream
 
 * 语法(Syntax):
 
-broadcast-stream-streams broadcast-stream => streams
+        broadcast-stream-streams broadcast-stream => streams
 
 * 参数和值(Arguments and Values):
 
-broadcast-stream---a broadcast stream.
-
-streams---a list of streams.
+        broadcast-stream---一个广播流.
+        streams---一个流猎豹.
 
 * 描述(Description):
 
-Returns a list of output streams that constitute all the streams to which the broadcast-stream is broadcasting.
+        返回一个由这个广播流 broadcast-stream 正在广播的所有流组成的输出流列表.
 
 * 示例(Examples): None.
 
@@ -2117,26 +2118,27 @@ Returns a list of output streams that constitute all the streams to which the br
 
 * 语法(Syntax):
 
-make-broadcast-stream &rest streams => broadcast-stream
+        make-broadcast-stream &rest streams => broadcast-stream
 
 * 参数和值(Arguments and Values):
 
-stream---一个输出流.
-
-broadcast-stream---a broadcast stream.
+        stream---一个输出流.
+        broadcast-stream---一个广播流.
 
 * 描述(Description):
 
-Returns a broadcast stream.
+        返回一个广播流.
 
 * 示例(Examples):
 
- (setq a-stream (make-string-output-stream)
-        b-stream (make-string-output-stream)) =>  #<String Output Stream>
- (format (make-broadcast-stream a-stream b-stream)
-          "this will go to both streams") =>  NIL
- (get-output-stream-string a-stream) =>  "this will go to both streams"
- (get-output-stream-string b-stream) =>  "this will go to both streams"
+    ```LISP
+    (setq a-stream (make-string-output-stream)
+            b-stream (make-string-output-stream)) =>  #<String Output Stream>
+    (format (make-broadcast-stream a-stream b-stream)
+              "this will go to both streams") =>  NIL
+    (get-output-stream-string a-stream) =>  "this will go to both streams"
+    (get-output-stream-string b-stream) =>  "this will go to both streams"
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -2144,11 +2146,11 @@ Returns a broadcast stream.
 
 * 异常情况(Exceptional Situations):
 
-Should signal an error of type type-error if any stream is not an output stream.
+        如果任何一个 stream 不是一个输出流就会发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-broadcast-stream-streams
+        broadcast-stream-streams
 
 * 注意(Notes): None. 
 
@@ -2158,28 +2160,28 @@ broadcast-stream-streams
 
 * 语法(Syntax):
 
-make-two-way-stream input-stream output-stream => two-way-stream
+        make-two-way-stream input-stream output-stream => two-way-stream
 
 * 参数和值(Arguments and Values):
 
-input-stream---一个流.
-
-output-stream---一个流.
-
-two-way-stream---a two-way stream.
+        input-stream---一个流.
+        output-stream---一个流.
+        two-way-stream---一个 two-way-stream 双向流.
 
 * 描述(Description):
 
-Returns a two-way stream that gets its input from input-stream and sends its output to output-stream.
+        返回一个从 input-stream 得到输入并发送输出到 output-stream 的双向流.
 
 * 示例(Examples):
 
- (with-output-to-string (out)
-    (with-input-from-string (in "input...")
-      (let ((two (make-two-way-stream in out)))
-        (format two "output...")
-        (setq what-is-read (read two))))) =>  "output..."
- what-is-read =>  INPUT... 
+    ```LISP
+    (with-output-to-string (out)
+        (with-input-from-string (in "input...")
+          (let ((two (make-two-way-stream in out)))
+            (format two "output...")
+            (setq what-is-read (read two))))) =>  "output..."
+    what-is-read =>  INPUT... 
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -2187,7 +2189,7 @@ Returns a two-way stream that gets its input from input-stream and sends its out
 
 * 异常情况(Exceptional Situations):
 
-Should signal an error of type type-error if input-stream is not an input stream. Should signal an error of type type-error if output-stream is not an output stream.
+    如果 input-stream 不是一个输入流就应该发出一个 type-error 类型的错误. 如果 output-stream 不是一个输出流就应该发出一个 type-error 类型的错误.
 
 * 也见(See Also): None.
 
@@ -2198,23 +2200,21 @@ Should signal an error of type type-error if input-stream is not an input stream
 
 * 语法(Syntax):
 
-two-way-stream-input-stream two-way-stream => input-stream
+        two-way-stream-input-stream two-way-stream => input-stream
 
-two-way-stream-output-stream two-way-stream => output-stream
+        two-way-stream-output-stream two-way-stream => output-stream
 
 * 参数和值(Arguments and Values):
 
-two-way-stream---a two-way stream.
-
-input-stream---一个输入流.
-
-output-stream---一个输出流.
+        two-way-stream---一个 two-way-stream 双向流.
+        input-stream---一个输入流.
+        output-stream---一个输出流.
 
 * 描述(Description):
 
-two-way-stream-input-stream returns the stream from which two-way-stream receives input.
+        two-way-stream-input-stream 返回 two-way-stream 接收输入的那个流.
 
-two-way-stream-output-stream returns the stream to which two-way-stream sends output.
+        two-way-stream-output-stream 返回 two-way-stream 发送输出的那个流.
 
 * 示例(Examples): None.
 
@@ -2233,23 +2233,21 @@ two-way-stream-output-stream returns the stream to which two-way-stream sends ou
 
 * 语法(Syntax):
 
-echo-stream-input-stream echo-stream => input-stream
+        echo-stream-input-stream echo-stream => input-stream
 
-echo-stream-output-stream echo-stream => output-stream
+        echo-stream-output-stream echo-stream => output-stream
 
 * 参数和值(Arguments and Values):
 
-echo-stream---an echo stream.
-
-input-stream---一个输入流.
-
-output-stream---一个输出流.
+        echo-stream---一个回音流.
+        input-stream---一个输入流.
+        output-stream---一个输出流.
 
 * 描述(Description):
 
-echo-stream-input-stream returns the input stream from which echo-stream receives input.
+        echo-stream-input-stream 返回 echo-stream 接收输入的那个输入流.
 
-echo-stream-output-stream returns the output stream to which echo-stream sends output.
+        echo-stream-output-stream 分拣 echo-stream 发送输出的那个输出流.
 
 * 示例(Examples): None.
 
@@ -2268,22 +2266,21 @@ echo-stream-output-stream returns the output stream to which echo-stream sends o
 
 * 语法(Syntax):
 
-make-echo-stream input-stream output-stream => echo-stream
+        make-echo-stream input-stream output-stream => echo-stream
 
 * 参数和值(Arguments and Values):
 
-input-stream---一个输入流.
-
-output-stream---一个输出流.
-
-echo-stream---an echo stream.
+        input-stream---一个输入流.
+        output-stream---一个输出流.
+        echo-stream---一个回音流.
 
 * 描述(Description):
 
-Creates and returns an echo stream that takes input from input-stream and sends output to output-stream.
+        创建并返回一个从 input-stream 获取输入并发送输出到 output-stream 的回音流.
 
 * 示例(Examples):
 
+```LISP
  (let ((out (make-string-output-stream)))
     (with-open-stream 
         (s (make-echo-stream
@@ -2293,6 +2290,7 @@ Creates and returns an echo stream that takes input from input-stream and sends 
       (format s " * this-is-direct-output")
       (get-output-stream-string out)))
 =>  "this-is-read-and-echoed * this-is-direct-output"
+```
 
 * 副作用(Side Effects): None.
 
@@ -2302,7 +2300,7 @@ Creates and returns an echo stream that takes input from input-stream and sends 
 
 * 也见(See Also):
 
-echo-stream-input-stream, echo-stream-output-stream, make-two-way-stream
+        echo-stream-input-stream, echo-stream-output-stream, make-two-way-stream
 
 * 注意(Notes): None. 
 
@@ -2311,19 +2309,18 @@ echo-stream-input-stream, echo-stream-output-stream, make-two-way-stream
 
 * 语法(Syntax):
 
-concatenated-stream-streams concatenated-stream => streams
+        concatenated-stream-streams concatenated-stream => streams
 
 * 参数和值(Arguments and Values):
 
-concatenated-stream -- a concatenated stream.
-
-streams---a list of input streams.
+        concatenated-stream -- 一个连接流.
+        streams---一个输入流列表.
 
 * 描述(Description):
 
-Returns a list of input streams that constitute the ordered set of streams the concatenated-stream still has to read from, starting with the current one it is reading from. The list may be empty if no more streams remain to be read.
+        返回组成连接流 concatenated-stream 仍然需要读取的有序流集 streams 的输入流列表, 从当前读取的流开始. 如果没有更多的流被读取, 这个列表可能是空的.
 
-The consequences are undefined if the list structure of the streams is ever modified.
+        如果这些流 streams 的列表结构被修改, 那么后果是未定义的.
 
 * 示例(Examples): None.
 
@@ -2342,23 +2339,24 @@ The consequences are undefined if the list structure of the streams is ever modi
 
 * 语法(Syntax):
 
-make-concatenated-stream &rest input-streams => concatenated-stream
+        make-concatenated-stream &rest input-streams => concatenated-stream
 
 * 参数和值(Arguments and Values):
 
-input-stream---一个输入流.
-
-concatenated-stream---a concatenated stream.
+        input-stream---一个输入流.
+        concatenated-stream---一个连接流.
 
 * 描述(Description):
 
-Returns a concatenated stream that has the indicated input-streams initially associated with it.
+        返回一个连接流, 它具有最初与之关联的那些输入流 input-streams.
 
 * 示例(Examples):
 
- (read (make-concatenated-stream
-         (make-string-input-stream "1")
-         (make-string-input-stream "2"))) =>  12
+    ```LISP
+    (read (make-concatenated-stream
+            (make-string-input-stream "1")
+            (make-string-input-stream "2"))) =>  12
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -2366,11 +2364,11 @@ Returns a concatenated stream that has the indicated input-streams initially ass
 
 * 异常情况(Exceptional Situations):
 
-Should signal type-error if any argument is not an input stream.
+        如果任何一个参数不是一个输入流就应该发出 type-error.
 
 * 也见(See Also):
 
-concatenated-stream-streams
+        concatenated-stream-streams
 
 * 注意(Notes): None. 
 
@@ -2379,41 +2377,42 @@ concatenated-stream-streams
 
 * 语法(Syntax):
 
-get-output-stream-string string-output-stream => string
+        get-output-stream-string string-output-stream => string
 
 * 参数和值(Arguments and Values):
 
-string-output-stream---一个流.
-
-string---一个字符串.
+        string-output-stream---一个流.
+        string---一个字符串.
 
 * 描述(Description):
 
-Returns a string containing, in order, all the characters that have been output to string-output-stream. This operation clears any characters on string-output-stream, so the string contains only those characters which have been output since the last call to get-output-stream-string or since the creation of the string-output-stream, whichever occurred most recently.
+        返回一个字符串, 其中按顺序包含所有已输出到 string-output-stream 的字符. 这个操作清楚 string-output-stream 上的任何字符, 所有这个字符串 string 只包含那些从最后一次对 get-output-stream-string 的调用开始或者从 string-output-stream 创建开始已经被输出的那些字符, 取最近发生的那种情况.
 
 * 示例(Examples):
 
- (setq a-stream (make-string-output-stream)
-        a-string "abcdefghijklm") =>  "abcdefghijklm"
- (write-string a-string a-stream) =>  "abcdefghijklm"
- (get-output-stream-string a-stream) =>  "abcdefghijklm"
- (get-output-stream-string a-stream) =>  ""
+    ```LISP
+    (setq a-stream (make-string-output-stream)
+            a-string "abcdefghijklm") =>  "abcdefghijklm"
+    (write-string a-string a-stream) =>  "abcdefghijklm"
+    (get-output-stream-string a-stream) =>  "abcdefghijklm"
+    (get-output-stream-string a-stream) =>  ""
+    ```
 
 * 副作用(Side Effects):
 
-The string-output-stream is cleared.
+        这个 string-output-stream 会被清理.
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-The consequences are undefined if stream-output-string is closed.
+        如果 stream-output-string 被关闭, 那么后果是未定义的.
 
-The consequences are undefined if string-output-stream is a stream that was not produced by make-string-output-stream. The consequences are undefined if string-output-stream was created implicitly by with-output-to-string or format.
+        如果 string-output-stream 是一个不是由 make-string-output-stream 产生的流, 那么后果是未定义的. 如果 string-output-stream 是由 with-output-to-string 或 format 隐式创建的, 那么后果是未定义的.
 
 * 也见(See Also):
 
-make-string-output-stream
+        make-string-output-stream
 
 * 注意(Notes): None. 
 
