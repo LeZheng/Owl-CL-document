@@ -2421,29 +2421,29 @@
 
 * 语法(Syntax):
 
-make-string-input-stream string &optional start end => string-stream
+        make-string-input-stream string &optional start end => string-stream
 
 * 参数和值(Arguments and Values):
 
-string---一个字符串.
-
-start, end---bounding index designators of string. The defaults for start and end are 0 and nil, respectively.
-
-string-stream---an input string stream.
+        string---一个字符串.
+        start, end---string 的边界索引标识符. 对于 start 和 end 默认分别为 0 和 nil.
+        string-stream---一个输入字符串流.
 
 * 描述(Description):
 
-Returns an input string stream. This stream will supply, in order, the characters in the substring of string bounded by start and end. After the last character has been supplied, the string stream will then be at end of file.
+        返回一个输入字符串流. 这个流会依次提供 string 中由 start 和 end 限定的子字符串的字符. 在最后一个字符被提供之后, 这个字符串流会到达文件的末尾.
 
 * 示例(Examples):
 
- (let ((string-stream (make-string-input-stream "1 one ")))
-   (list (read string-stream nil nil)
-         (read string-stream nil nil)
-         (read string-stream nil nil)))
-=>  (1 ONE NIL)
+    ```LISP
+    (let ((string-stream (make-string-input-stream "1 one ")))
+      (list (read string-stream nil nil)
+            (read string-stream nil nil)
+            (read string-stream nil nil)))
+    =>  (1 ONE NIL)
 
- (read (make-string-input-stream "prefixtargetsuffix" 6 12)) =>  TARGET
+    (read (make-string-input-stream "prefixtargetsuffix" 6 12)) =>  TARGET
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -2453,7 +2453,7 @@ Returns an input string stream. This stream will supply, in order, the character
 
 * 也见(See Also):
 
-with-input-from-string
+        with-input-from-string
 
 * 注意(Notes): None. 
 
@@ -2462,27 +2462,28 @@ with-input-from-string
 
 * 语法(Syntax):
 
-make-string-output-stream &key element-type => string-stream
+        make-string-output-stream &key element-type => string-stream
 
 * 参数和值(Arguments and Values):
 
-element-type---a type specifier. The default is character.
-
-string-stream---an output string stream.
+        element-type---一个类型指定负. 默认是 character.
+        string-stream---一个输出字符串流.
 
 * 描述(Description):
 
-Returns an output string stream that accepts characters and makes available (via get-output-stream-string) a string that contains the characters that were actually output.
+        返回一个接收字符的输出字符串流, 并提供一个包含实际输出字符的字符串 (通过 get-output-stream-string).
 
-The element-type names the type of the elements of the string; a string is constructed of the most specialized type that can accommodate elements of that element-type.
+        这个元素类型 element-type 命名这个字符串元素的类型; 一个字符串由可以容纳 element-type 元素的最具体的类型构成.
 
 * 示例(Examples):
 
- (let ((s (make-string-output-stream)))
-   (write-string "testing... " s)
-   (prin1 1234 s)
-   (get-output-stream-string s))
-=>  "testing... 1234"
+    ```LISP
+    (let ((s (make-string-output-stream)))
+      (write-string "testing... " s)
+      (prin1 1234 s)
+      (get-output-stream-string s))
+    =>  "testing... 1234"
+    ```
 
 * 受此影响(Affected By): None.
 
@@ -2490,7 +2491,7 @@ The element-type names the type of the elements of the string; a string is const
 
 * 也见(See Also):
 
-get-output-stream-string, with-output-to-string
+        get-output-stream-string, with-output-to-string
 
 * 注意(Notes): None. 
 
@@ -2499,55 +2500,50 @@ get-output-stream-string, with-output-to-string
 
 * 语法(Syntax):
 
-with-input-from-string (var string &key index start end) declaration* form*
-
-=> result*
+        with-input-from-string (var string &key index start end) declaration* form*
+        => result*
 
 * 参数和值(Arguments and Values):
 
-var---a variable name.
-
-string---a form; evaluated to produce a string.
-
-index---a place.
-
-start, end---bounding index designators of string. The defaults for start and end are 0 and nil, respectively.
-
-declaration---a declare expression; not evaluated.
-
-forms---an implicit progn.
-
-result---the values returned by the forms.
+        var---一个变量名.
+        string---一个表达式形式; 求值来产生一个字符串.
+        index---一个 place.
+        start, end---string 的边界索引标识符. 对于 start 和 end 默认分别为 0 和 nil.
+        declaration---一个 declare 表达式; 不求值.
+        forms---一个隐式 progn.
+        result---由这些表达式形式 forms 返回的值.
 
 * 描述(Description):
 
-Creates an input string stream, provides an opportunity to perform operations on the stream (returning zero or more values), and then closes the string stream.
+        创建一个输入字符串流, 提供一个时机来执行在这个流上的操作 (返回 zero 更多的值), 任何关闭这个字符串流.
 
-String is evaluated first, and var is bound to a character input string stream that supplies characters from the subsequence of the resulting string bounded by start and end. The body is executed as an implicit progn.
+        string 首先被求值, 并且 var 被绑定为一个字符输入字符串流, 它从由 start 和 end 限定的字符串的子序列中提供字符. 主体部分作为一个隐式 progn 求值.
 
-The input string stream is automatically closed on exit from with-input-from-string, no matter whether the exit is normal or abnormal. The input string stream to which the variable var is bound has dynamic extent; its extent ends when the form is exited.
+        在从 with-input-from-string 退出时这个输入字符串流会自动关闭, 不管这个退出是正常的还是反常的. 变量 var 绑定的输入字符串流有着动态范围; 它的范围在这个表达式形式退出时结束.
 
-The index is a pointer within the string to be advanced. If with-input-from-string is exited normally, then index will have as its value the index into the string indicating the first character not read which is (length string) if all characters were used. The place specified by index is not updated as reading progresses, but only at the end of the operation.
+        这个 index 是这个要被推进的字符串 string 中的一个指针. 如果 with-input-from-string 正常退出, 那么 index 的值就是字符串 string 中表示第一个没有读取的字符的索引, 如果所有字符都使用了那么它就是 (length string). 由 index 指定的 place 不会随着读取进度而更新, 但是只有在这个操作的结尾更新.
 
-start and index may both specify the same variable, which is a pointer within the string to be advanced, perhaps repeatedly by some containing loop.
+        start 和 index 可能都执行同一个变量, 它是要被推进的字符串 string 中的一个指针, 可能会被一些包含循环的指针重复 which is a pointer within the string to be advanced, perhaps repeatedly by some containing loop.<!--TODO 待校对-->
 
-The consequences are undefined if an attempt is made to assign the variable var.
+        如果尝试去对变量 var 赋值, 那么后果是未定义的.
 
 * 示例(Examples):
 
- (with-input-from-string (s "XXX1 2 3 4xxx"
-                             :index ind
-                             :start 3 :end 10)
-    (+ (read s) (read s) (read s))) =>  6
- ind =>  9
- (with-input-from-string (s "Animal Crackers" :index j :start 6)
-   (read s)) =>  CRACKERS
+    ```LISP
+    (with-input-from-string (s "XXX1 2 3 4xxx"
+                                :index ind
+                                :start 3 :end 10)
+        (+ (read s) (read s) (read s))) =>  6
+    ind =>  9
+    (with-input-from-string (s "Animal Crackers" :index j :start 6)
+      (read s)) =>  CRACKERS
+    ```
 
-The variable j is set to 15.
+        变量 j 会被设置为 15.
 
 * 副作用(Side Effects):
 
-The value of the place named by index, if any, is modified.
+        由 index 命名的 place 如果存在的话, 值会被修改.
 
 * 受此影响(Affected By): None.
 
@@ -2555,7 +2551,7 @@ The value of the place named by index, if any, is modified.
 
 * 也见(See Also):
 
-make-string-input-stream, Section 3.6 (Traversal Rules and Side Effects)
+        make-string-input-stream, 章节 3.6 (Traversal Rules and Side Effects)
 
 * 注意(Notes): None. 
 
@@ -2564,183 +2560,182 @@ make-string-input-stream, Section 3.6 (Traversal Rules and Side Effects)
 
 * 语法(Syntax):
 
-with-output-to-string (var &optional string-form &key element-type) declaration* form*
-
-=> result*
+        with-output-to-string (var &optional string-form &key element-type) declaration* form*
+        => result*
 
 * 参数和值(Arguments and Values):
 
-var---a variable name.
-
-string-form---a form or nil; if non-nil, evaluated to produce string.
-
-string---a string that has a fill pointer.
-
-element-type---a type specifier; evaluated. The default is character.
-
-declaration---a declare expression; not evaluated.
-
-forms---an implicit progn.
-
-results---If a string-form is not supplied or nil, a string; otherwise, the values returned by the forms.
+        var---一个变量名字.
+        string-form---一个表达式形式或 nil; 如果不是 nil, 求值产生字符串 string.
+        string---一个有着填充指针的字符串.
+        element-type---一个类型指定负; 求值的. 默认是 character.
+        declaration---一个 declare 表达式; 不求值.
+        forms---一个隐式 progn.
+        results---如果没有提供一个 string-form 或者是 nil, 就是一个字符串; 否则, 就是这些表达式形式 forms 返回的值.
 
 * 描述(Description):
 
-with-output-to-string creates a character output stream, performs a series of operations that may send results to this stream, and then closes the stream.
+        with-output-to-string 创建一个字符输出流, 执行可能发送结果到这个流的一系列操作, 然后关闭这个流.
 
-The element-type names the type of the elements of the stream; a stream is constructed of the most specialized type that can accommodate elements of the given type.
+        这个元素类型 element-type 命名这个流的元素类型; 一个流由可以容纳给定类型的元素的最具体的类型构成.
 
-The body is executed as an implicit progn with var bound to an output string stream. All output to that string stream is saved in a string.
+        这个主体作为一个隐式的 progn 被执行, 其中 var 被绑定为一个输出字符串流. 所有到那个字符串流的输出都会保存到一个字符串中.
 
-If string is supplied, element-type is ignored, and the output is incrementally appended to string as if by use of vector-push-extend.
+        如果提供了 string, 那么 element-type 会被忽略, 并且这个输出会被递增地追加给这个字符串 string, 就像是通过 vector-push-extend 一样.
 
-The output stream is automatically closed on exit from with-output-from-string, no matter whether the exit is normal or abnormal. The output string stream to which the variable var is bound has dynamic extent; its extent ends when the form is exited.
+        这个输出流在从 with-output-from-string 退出时会自动关闭, 不管这个退出是正常的还是异常的. 这个绑定给变量 var 的输出字符串流有着动态范围; 它的范围在退出这个表达式形式时终止.
 
-If no string is provided, then with-output-from-string produces a stream that accepts characters and returns a string of the indicated element-type. If string is provided, with-output-to-string returns the results of evaluating the last form.
+        如果没有提供 string, 那么 with-output-from-string 产生一个接收字符的流并返回一个指定的 element-type 的字符串. 如果提供了 string, with-output-to-string 返回求值最后一个表达式形式的结果.
 
-The consequences are undefined if an attempt is made to assign the variable var.
+        如果尝试去对变量 var 赋值, 那么后果是未定义的.
 
 * 示例(Examples):
 
- (setq fstr (make-array '(0) :element-type 'base-char
-                             :fill-pointer 0 :adjustable t)) =>  ""
- (with-output-to-string (s fstr)
-    (format s "here's some output")
-    (input-stream-p s)) =>  false
- fstr =>  "here's some output"
+    ```LISP
+    (setq fstr (make-array '(0) :element-type 'base-char
+                                :fill-pointer 0 :adjustable t)) =>  ""
+    (with-output-to-string (s fstr)
+        (format s "here's some output")
+        (input-stream-p s)) =>  false
+    fstr =>  "here's some output"
+    ```
 
 * 副作用(Side Effects):
 
-The string is modified.
+        这个 string 会被修改.
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-The consequences are undefined if destructive modifications are performed directly on the string during the dynamic extent of the call.
+        如果在这个调用的动态范围内直接执行 string 上的破坏性修改, 那么后果是未定义的.
 
 * 也见(See Also):
 
-make-string-output-stream, vector-push-extend, Section 3.6 (Traversal Rules and Side Effects)
+        make-string-output-stream, vector-push-extend, 章节 3.6 (Traversal Rules and Side Effects)
 
 * 注意(Notes): None. 
 
 
 ### <span id="V-IO-ALL">变量 *DEBUG-IO*, *ERROR-OUTPUT*, *QUERY-IO*, *STANDARD-INPUT*, *STANDARD-OUTPUT*, *TRACE-OUTPUT*</span>
 
-Value Type:
+* 值类型(Value Type):
 
-For *standard-input*: an input stream
+        对于 *standard-input*: 一个输入流
 
-For *error-output*, *standard-output*, and *trace-output*: an output stream.
+        对于 *error-output*, *standard-output*, 和 *trace-output*: 一个输出流.
 
-For *debug-io*, *query-io*: a bidirectional stream.
+        对于 *debug-io*, *query-io*: 一个双向流.
 
-Initial Value:
+* 初始值(Initial Value):
 
-implementation-dependent, but it must be an open stream that is not a generalized synonym stream to an I/O customization variables but that might be a generalized synonym stream to the value of some I/O customization variable. The initial value might also be a generalized synonym stream to either the symbol *terminal-io* or to the stream that is its value.
+        依赖于具体实现的, 但是它必须是一个打开的流, 不是一个到 I/O 定制变量的广义的同义流但是可能是一个到某个 I/O 定制变量的值的广义的同义流. 这个初始值可能也是一个广义的同义流, 是符号 *terminal-io* 或者是作为它的值的流.
 
 * 描述(Description):
 
-These variables are collectively called the standardized I/O customization variables. They can be bound or assigned in order to change the default destinations for input and/or output used by various standardized operators and facilities.
+        这些变量全体被称为标准 I/O 定制变量. 它们可以被绑定和赋值, 来更改各种标准化操作符和工具所使用的输入和/或输出的默认目的地.
 
-The value of *debug-io*, called debug I/O, is a stream to be used for interactive debugging purposes.
+        *debug-io* 的值, 称为调试 I/O, 是一个被用于交互式调试目的的流.
 
-The value of *error-output*, called error output, is a stream to which warnings and non-interactive error messages should be sent.
+        *error-output* 的值, 称为错误输出, 是一个警告和非交互式错误信息应该被发送到的流.
 
-The value of *query-io*, called query I/O, is a bidirectional stream to be used when asking questions of the user. The question should be output to this stream, and the answer read from it.
+        *query-io* 的值, 称为查询 I/O, 是一个在询问用户问题时使用的双向流. 这个问题应该输出到这个流中, 并且答复也从这个流读取.
 
-The value of *standard-input*, called standard input, is a stream that is used by many operators as a default source of input when no specific input stream is explicitly supplied.
+        *standard-input* 的值, 称为标准输入, 是许多操作符没有明确提供特定的输入流时用作默认的输入源使用的一个流.
 
-The value of *standard-output*, called standard output, is a stream that is used by many operators as a default destination for output when no specific output stream is explicitly supplied.
+        *standard-output* 的值, 称为标准输出, 是许多操作符没有明确提供特定的输出流时用作默认的目的地使用的一个流.
 
-The value of *trace-output*, called trace output, is the stream on which traced functions (see trace) and the time macro print their output.
+        *trace-output* 的值, 称为跟踪输出, 是一个流, 跟踪函数(见 trace)和 time 宏打印它们的输出到这个流上.
 
 * 示例(Examples):
 
- (with-output-to-string (*error-output*)
-   (warn "this string is sent to *error-output*"))
- =>  "Warning: this string is sent to *error-output*
-" ;The exact format of this string is implementation-dependent.
+    ```LISP
+    (with-output-to-string (*error-output*)
+      (warn "this string is sent to *error-output*"))
+    =>  "Warning: this string is sent to *error-output*
+    " ;The exact format of this string is implementation-dependent.
 
- (with-input-from-string (*standard-input* "1001")
-    (+ 990 (read))) =>  1991                       
+    (with-input-from-string (*standard-input* "1001")
+        (+ 990 (read))) =>  1991                       
 
- (progn (setq out (with-output-to-string (*standard-output*)
-                     (print "print and format t send things to")
-                     (format t "*standard-output* now going to a string")))
-        :done)
-=>  :DONE
- out
-=>  "
-\"print and format t send things to\" *standard-output* now going to a string"
+    (progn (setq out (with-output-to-string (*standard-output*)
+                        (print "print and format t send things to")
+                        (format t "*standard-output* now going to a string")))
+            :done)
+    =>  :DONE
+    out
+    =>  "
+    \"print and format t send things to\" *standard-output* now going to a string"
 
- (defun fact (n) (if (< n 2) 1 (* n (fact (- n 1)))))
-=>  FACT
- (trace fact)
-=>  (FACT)
-;; Of course, the format of traced output is implementation-dependent.
- (with-output-to-string (*trace-output*)
-   (fact 3)) 
-=>  "
-1 Enter FACT 3
-| 2 Enter FACT 2
-|   3 Enter FACT 1
-|   3 Exit FACT 1
-| 2 Exit FACT 2
-1 Exit FACT 6"
+    (defun fact (n) (if (< n 2) 1 (* n (fact (- n 1)))))
+    =>  FACT
+    (trace fact)
+    =>  (FACT)
+    ;; Of course, the format of traced output is implementation-dependent.
+    (with-output-to-string (*trace-output*)
+      (fact 3)) 
+    =>  "
+    1 Enter FACT 3
+    | 2 Enter FACT 2
+    |   3 Enter FACT 1
+    |   3 Exit FACT 1
+    | 2 Exit FACT 2
+    1 Exit FACT 6"
+    ```
 
 * 也见(See Also):
 
-*terminal-io*, synonym-stream, time, trace, Section 9 (Conditions), Section 23 (Reader), Section 22 (Printer)
+        *terminal-io*, synonym-stream, time, trace, 章节 9 (Conditions), 章节 23 (Reader), 章节 22 (Printer)
 
 * 注意(Notes):
 
-The intent of the constraints on the initial value of the I/O customization variables is to ensure that it is always safe to bind or assign such a variable to the value of another I/O customization variable, without unduly restricting implementation flexibility.
+        这些 I/O 定制变量的初始值上约束的意图是去确保绑定或赋值这样一个变量到另一个 I/O 定制变量的值总是安全的, 不过度限制具体实现的灵活性.
 
-It is common for an implementation to make the initial values of *debug-io* and *query-io* be the same stream, and to make the initial values of *error-output* and *standard-output* be the same stream.
+        使 *debug-io* 和 *query-io* 的初始值为同一个流以及使 *error-output* 和 *standard-output* 的初始值为同一个流对于一个实现来说是很常见的.
 
-The functions y-or-n-p and yes-or-no-p use query I/O for their input and output.
+        函数 y-or-n-p 和 yes-or-no-p 使用查询 I/O 作为它们的输入和输出.
 
-In the normal Lisp read-eval-print loop, input is read from standard input. Many input functions, including read and read-char, take a stream argument that defaults to standard input.
+        在正常的 Lisp read-eval-print 循环中, 输入是从标准输入读取的. 很多输入函数, 包括 read 和 read-char, 接收一个默认为标准输入的流参数.
 
-In the normal Lisp read-eval-print loop, output is sent to standard output. Many output functions, including print and write-char, take a stream argument that defaults to standard output.
+        在正常的 Lisp read-eval-print 循环中, 输出被发送到标准输出. 好的输出函数, 包括 print 和 write-char, 接受默认为标准输出的参数.
 
-A program that wants, for example, to divert output to a file should do so by binding *standard-output*; that way error messages sent to *error-output* can still get to the user by going through *terminal-io* (if *error-output* is bound to *terminal-io*), which is usually what is desired. 
+        例如, 一个程序想要将输出转移到文件中, 应该通过绑定 *standard-output* 来实现; 发送到 *error-output* 的错误消息仍然可以通过 *terminal-io* 到达用户(如果 *error-output* 被绑定到 *terminal-io* 的话), 这通常是需要的. 
 
 
 ### <span id="V-TERMINAL-IO">变量 *TERMINAL-IO*</span>
 
-Value Type:
+* 值类型(Value Type):
 
-a bidirectional stream.
+        一个双向流.
 
-Initial Value:
+* 初始值(Initial Value):
 
-implementation-dependent, but it must be an open stream that is not a generalized synonym stream to an I/O customization variables but that might be a generalized synonym stream to the value of some I/O customization variable.
+        依赖于具体实现的, 但是它必须是一个打开的流, 不是一个到 I/O 定制变量的广义的同义流但是可能是一个到某个 I/O 定制变量的值的广义的同义流.
 
 * 描述(Description):
 
-The value of *terminal-io*, called terminal I/O, is ordinarily a bidirectional stream that connects to the user's console. Typically, writing to this stream would cause the output to appear on a display screen, for example, and reading from the stream would accept input from a keyboard. It is intended that standard input functions such as read and read-char, when used with this stream, cause echoing of the input into the output side of the stream. The means by which this is accomplished are implementation-dependent.
+        被称为终端 I/O 的 *terminal-io* 的值通常是一个连接到用户终端的双向流. 典型地, 写入到这个流会导致输出出现在一个显示的屏幕, 比如, 从这个流读取会从键盘接收一个输入. 它的目的是, 当与这个流一起使用时, 诸如 read 和 read-char 之类的标准输入函数, 会引起输入到流的输出端的响应. 实现这一点的方法是依赖于具体实现的.
 
-The effect of changing the value of *terminal-io*, either by binding or assignment, is implementation-defined.
+        改变 *terminal-io* 的值的效果, 不管是通过绑定还是赋值, 是具体实现定义的.
 
 * 示例(Examples):
 
- (progn (prin1 'foo) (prin1 'bar *terminal-io*))
->>  FOOBAR
-=>  BAR
- (with-output-to-string (*standard-output*)
-   (prin1 'foo) 
-   (prin1 'bar *terminal-io*))
->>  BAR
-=>  "FOO"
+    ```LISP
+    (progn (prin1 'foo) (prin1 'bar *terminal-io*))
+    >>  FOOBAR
+    =>  BAR
+    (with-output-to-string (*standard-output*)
+      (prin1 'foo) 
+      (prin1 'bar *terminal-io*))
+    >>  BAR
+    =>  "FOO"
+    ```
 
 * 受此影响(Affected By): None.
 
 * 也见(See Also):
 
-*debug-io*, *error-output*, *query-io*, *standard-input*, *standard-output*, *trace-output*
+        *debug-io*, *error-output*, *query-io*, *standard-input*, *standard-output*, *trace-output*
 
 * 注意(Notes): None. 
 
@@ -2749,15 +2744,15 @@ The effect of changing the value of *terminal-io*, either by binding or assignme
 
 * 类优先级列表(Class Precedence List):
 
-stream-error, error, serious-condition, condition, t
+        stream-error, error, serious-condition, condition, t
 
 * 描述(Description):
 
-The type stream-error consists of error conditions that are related to receiving input from or sending output to a stream. The ``offending stream'' is initialized by the :streaminitialization argument to make-condition, and is accessed by the function stream-error-stream.
+        类型 stream-error 由从一个流接收输入或发送输出到一个流相关的错误状况构成. 这个 "违规的流" 通过 给 make-condition 的 :streaminitialization 参数来初始化, 并且通过函数 stream-error-stream 来访问.
 
 * 也见(See Also):
 
-stream-error-stream 
+        stream-error-stream 
 
 
 ### <span id="F-STREAM-ERROR-STREAM">函数 STREAM-ERROR-STREAM</span>
