@@ -1,35 +1,25 @@
- 22. Printer
+# 22 Printer
 
-22.1 The Lisp Printer
-
-22.2 The Lisp Pretty Printer
-
-22.3 Formatted Output
-
-22.4 The Printer Dictionary
+> * 22.1 [The Lisp Printer](#TheLispPrinter)
+> * 22.2 [The Lisp Pretty Printer](#TheLispPrettyPrinter)
+> * 22.3 [Formatted Output](#FormattedOutput)
+> * 22.4 [The Printer Dictionary](#ThePrinterDictionary)
 
 
- 22.1 The Lisp Printer
+## 22.1 <span id="TheLispPrinter">The Lisp Printer</span>
 
-22.1.1 Overview of The Lisp Printer
+> * 22.1.1 [Overview of The Lisp Printer](#OverviewTheLispPrinter)
+> * 22.1.2 [Printer Dispatching](#PrinterDispatching)
+> * 22.1.3 [Default Print-Object Methods](#DefaultPrintObjectMethods)
+> * 22.1.4 [Examples of Printer Behavior](#ExamplesPrinterBehavior)
 
-22.1.2 Printer Dispatching
-
-22.1.3 Default Print-Object Methods
-
-22.1.4 Examples of Printer Behavior
-
-
- 22.1.1 Overview of The Lisp Printer
+### 22.1.1 <span id="OverviewTheLispPrinter">Overview of The Lisp Printer</span>
 
 Common Lisp provides a representation of most objects in the form of printed text called the printed representation. Functions such as print take an object and send the characters of its printed representation to a stream. The collection of routines that does this is known as the (Common Lisp) printer.
 
 Reading a printed representation typically produces an object that is equal to the originally printed object.
 
-22.1.1.1 Multiple Possible Textual Representations
-
-
- 22.1.1.1 Multiple Possible Textual Representations
+#### 22.1.1.1 Multiple Possible Textual Representations
 
 Most objects have more than one possible textual representation. For example, the positive integer with a magnitude of twenty-seven can be textually expressed in any of these ways:
 
@@ -63,10 +53,7 @@ In addition to the printer control variables, the following additional defined n
 
 Figure 22-2. Additional Influences on the Lisp printer.
 
-22.1.1.1.1 Printer Escaping
-
-
- 22.1.1.1.1 Printer Escaping
+##### 22.1.1.1.1 Printer Escaping
 
 The variable *print-escape* controls whether the Lisp printer tries to produce notations such as escape characters and package prefixes.
 
@@ -75,7 +62,7 @@ The variable *print-readably* can be used to override many of the individual asp
 One of the many effects of making the value of *print-readably* be true is that the Lisp printer behaves as if *print-escape* were also true. For notational convenience, we say that if the value of either *print-readably* or *print-escape* is true, then printer escaping is ``enabled''; and we say that if the values of both *print-readably* and *print-escape* are false, then printer escaping is ``disabled''. 
 
 
- 22.1.2 Printer Dispatching
+### 22.1.2 <span id="PrinterDispatching">Printer Dispatching</span>
 
 The Lisp printer makes its determination of how to print an object as follows:
 
@@ -83,62 +70,48 @@ If the value of *print-pretty* is true, printing is controlled by the current pp
 
 Otherwise (if the value of *print-pretty* is false), the object's print-object method is used; see Section 22.1.3 (Default Print-Object Methods). 
 
- 22.1.3 Default Print-Object Methods
+### 22.1.3 <span id="DefaultPrintObjectMethods">Default Print-Object Methods</span>
 
 This section describes the default behavior of print-object methods for the standardized types.
 
-22.1.3.1 Printing Numbers
-
-22.1.3.2 Printing Characters
-
-22.1.3.3 Printing Symbols
-
-22.1.3.4 Printing Strings
-
-22.1.3.5 Printing Lists and Conses
-
-22.1.3.6 Printing Bit Vectors
-
-22.1.3.7 Printing Other Vectors
-
-22.1.3.8 Printing Other Arrays
-
-22.1.3.10 Printing Random States
-
-22.1.3.11 Printing Pathnames
-
-22.1.3.12 Printing Structures
-
-22.1.3.13 Printing Other Objects
+> * 22.1.3.1 [Printing Numbers](#PrintingNumbers)
+> * 22.1.3.2 [Printing Characters](#PrintingCharacters)
+> * 22.1.3.3 [Printing Symbols](#PrintingSymbols)
+> * 22.1.3.4 [Printing Strings](#PrintingStrings)
+> * 22.1.3.5 [Printing Lists and Conses](#PrintingListsConses)
+> * 22.1.3.6 [Printing Bit Vectors](#PrintingBitVectors)
+> * 22.1.3.7 [Printing Other Vectors](#PrintingOtherVectors)
+> * 22.1.3.8 [Printing Other Arrays](#PrintingOtherArrays)
+> * 22.1.3.9 [Examples of Printing Arrays](#ExamplesPrintingArrays)
+> * 22.1.3.10 [Printing Random States](#PrintingRandomStates)
+> * 22.1.3.11 [Printing Pathnames](#PrintingPathnames)
+> * 22.1.3.12 [Printing Structures](#PrintingStructures)
+> * 22.1.3.13 [Printing Other Objects](#PrintingOtherObjects)
 
 
- 22.1.3.1 Printing Numbers
+#### 22.1.3.1 <span id="PrintingNumbers">Printing Numbers</span>
 
-22.1.3.1.1 Printing Integers
+> * 22.1.3.1.1 [Printing Integers](#PrintingIntegers)
+> * 22.1.3.1.2 [Printing Ratios](#PrintingRatios)
+> * 22.1.3.1.3 [Printing Floats](#PrintingFloats)
+> * 22.1.3.1.4 [Printing Complexes](#PrintingComplexes)
+> * 22.1.3.1.5 [Note about Printing Numbers](#NotePrintingNumbers)
 
-22.1.3.1.2 Printing Ratios
-
-22.1.3.1.3 Printing Floats
-
-22.1.3.1.4 Printing Complexes
-
-22.1.3.1.5 Note about Printing Numbers
-
- 22.1.3.1.1 Printing Integers
+##### 22.1.3.1.1 <span id="PrintingIntegers">Printing Integers</span>
 
 Integers are printed in the radix specified by the current output base in positional notation, most significant digit first. If appropriate, a radix specifier can be printed; see *print-radix*. If an integer is negative, a minus sign is printed and then the absolute value of the integer is printed. The integer zero is represented by the single digit 0 and never has a sign. A decimal point might be printed, depending on the value of *print-radix*.
 
 For related information about the syntax of an integer, see Section 2.3.2.1.1 (Syntax of an Integer). 
 
 
- 22.1.3.1.2 Printing Ratios
+##### 22.1.3.1.2 <span id="PrintingRatios">Printing Ratios</span>
 
 Ratios are printed as follows: the absolute value of the numerator is printed, as for an integer; then a /; then the denominator. The numerator and denominator are both printed in the radix specified by the current output base; they are obtained as if by numerator and denominator, and so ratios are printed in reduced form (lowest terms). If appropriate, a radix specifier can be printed; see *print-radix*. If the ratio is negative, a minus sign is printed before the numerator.
 
 For related information about the syntax of a ratio, see Section 2.3.2.1.2 (Syntax of a Ratio). 
 
 
- 22.1.3.1.3 Printing Floats
+##### 22.1.3.1.3 <span id="PrintingFloats">Printing Floats</span>
 
 If the magnitude of the float is either zero or between 10^-3 (inclusive) and 10^7 (exclusive), it is printed as the integer part of the number, then a decimal point, followed by the fractional part of the number; there is always at least one digit on each side of the decimal point. If the sign of the number (as determined by float-sign) is negative, then a minus sign is printed before the number. If the format of the number does not match that specified by *read-default-float-format*, then the exponent marker for that format and the digit 0 are also printed. For example, the base of the natural logarithms as a short float might be printed as 2.71828S0.
 
@@ -146,20 +119,19 @@ For non-zero magnitudes outside of the range 10^-3 to 10^7, a float is printed i
 
 For related information about the syntax of a float, see Section 2.3.2.2 (Syntax of a Float). 
 
-
- 22.1.3.1.4 Printing Complexes
+##### 22.1.3.1.4 <span id="PrintingComplexes">Printing Complexes</span>
 
 A complex is printed as #C, an open parenthesis, the printed representation of its real part, a space, the printed representation of its imaginary part, and finally a close parenthesis.
 
 For related information about the syntax of a complex, see Section 2.3.2.3 (Syntax of a Complex) and Section 2.4.8.11 (Sharpsign C). 
 
 
- 22.1.3.1.5 Note about Printing Numbers
+##### 22.1.3.1.5 <span id="NotePrintingNumbers">Note about Printing Numbers</span>
 
 The printed representation of a number must not contain escape characters; see Section 2.3.1.1.1 (Escape Characters and Potential Numbers). 
 
 
- 22.1.3.2 Printing Characters
+#### 22.1.3.2 <span id="PrintingCharacters">Printing Characters</span>
 
 When printer escaping is disabled, a character prints as itself; it is sent directly to the output stream. When printer escaping is enabled, then #\ syntax is used.
 
@@ -168,7 +140,7 @@ When the printer types out the name of a character, it uses the same table as th
 For details about the #\ reader macro, see Section 2.4.8.1 (Sharpsign Backslash). 
 
 
- 22.1.3.3 Printing Symbols
+#### 22.1.3.3 <span id="PrintingSymbols">Printing Symbols</span>
 
 When printer escaping is disabled, only the characters of the symbol's name are output (but the case in which to print characters in the name is controlled by *print-case*; see Section 22.1.3.3.2 (Effect of Readtable Case on the Lisp Printer)).
 
@@ -184,12 +156,10 @@ For information about how the Lisp reader parses symbols, see Section 2.3.4 (Sym
 
 nil might be printed as () when *print-pretty* is true and printer escaping is enabled.
 
-22.1.3.3.1 Package Prefixes for Symbols
+> * 22.1.3.3.1 [Package Prefixes for Symbols](#PackagePrefixesSymbols)
+> * 22.1.3.3.2 [Effect of Readtable Case on the Lisp Printer](#EffectReadtableCase)
 
-22.1.3.3.2 Effect of Readtable Case on the Lisp Printer
-
-
- 22.1.3.3.1 Package Prefixes for Symbols
+##### 22.1.3.3.1 <span id="PackagePrefixesSymbols">Package Prefixes for Symbols</span>
 
 Package prefixes are printed if necessary. The rules for package prefixes are as follows. When the symbol is printed, if it is in the KEYWORD package, then it is printed with a preceding colon; otherwise, if it is accessible in the current package, it is printed without any package prefix; otherwise, it is printed with a package prefix.
 
@@ -220,7 +190,7 @@ foo::bar
     #:bar is printed when bar is apparently uninterned, even in the pathological case that bar has no home package but is nevertheless somehow accessible in the current package. 
 
 
- 22.1.3.3.2 Effect of Readtable Case on the Lisp Printer
+##### 22.1.3.3.2 <span id="EffectReadtableCase">Effect of Readtable Case on the Lisp Printer</span>
 
 When printer escaping is disabled, or the characters under consideration are not already quoted specifically by single escape or multiple escape syntax, the readtable case of the current readtable affects the way the Lisp printer writes symbols in the following ways:
 
@@ -258,9 +228,7 @@ The rules for escaping alphabetic characters in symbol names are affected by the
 
     When the readtable case is :invert, no alphabetic characters need be escaped.
 
-22.1.3.3.2.1 Examples of Effect of Readtable Case on the Lisp Printer
-
- 22.1.3.3.2.1 Examples of Effect of Readtable Case on the Lisp Printer
+###### 22.1.3.3.2.1 Examples of Effect of Readtable Case on the Lisp Printer
 
  (defun test-readtable-case-printing ()
    (let ((*readtable* (copy-readtable nil))
@@ -321,13 +289,13 @@ The output from (test-readtable-case-printing) should be as follows:
     :INVERT        :CAPITALIZE   zebra        ZEBRA
 
 
- 22.1.3.4 Printing Strings
+#### 22.1.3.4 <span id="PrintingStrings">Printing Strings</span>
 
 The characters of the string are output in order. If printer escaping is enabled, a double-quote is output before and after, and all double-quotes and single escapes are preceded by backslash. The printing of strings is not affected by *print-array*. Only the active elements of the string are printed.
 
 For information on how the Lisp reader parses strings, see Section 2.4.5 (Double-Quote). 
 
- 22.1.3.5 Printing Lists and Conses
+#### 22.1.3.5 <span id="PrintingListsConses">Printing Lists and Conses</span>
 
 Wherever possible, list notation is preferred over dot notation. Therefore the following algorithm is used to print a cons x:
 
@@ -371,14 +339,14 @@ Following are examples of printed representations of lists:
 
 For information on how the Lisp reader parses lists and conses, see Section 2.4.1 (Left-Parenthesis). 
 
- 22.1.3.6 Printing Bit Vectors
+#### 22.1.3.6 <span id="PrintingBitVectors">Printing Bit Vectors</span>
 
 A bit vector is printed as #* followed by the bits of the bit vector in order. If *print-array* is false, then the bit vector is printed in a format (using #<) that is concise but not readable. Only the active elements of the bit vector are printed.
 
 For information on Lisp reader parsing of bit vectors, see Section 2.4.8.4 (Sharpsign Asterisk). 
 
 
- 22.1.3.7 Printing Other Vectors
+#### 22.1.3.7 <span id="PrintingOtherVectors">Printing Other Vectors</span>
 
 If *print-array* is true and *print-readably* is false, any vector other than a string or bit vector is printed using general-vector syntax; this means that information about specialized vector representations does not appear. The printed representation of a zero-length vector is #(). The printed representation of a non-zero-length vector begins with #(. Following that, the first element of the vector is printed. If there are any other elements, they are printed in turn, with each such additional element preceded by a space if *print-pretty* is false, or whitespace[1] if *print-pretty* is true. A right-parenthesis after the last element terminates the printed representation of the vector. The printing of vectors is affected by *print-level* and *print-length*. If the vector has a fill pointer, then only those elements below the fill pointer are printed.
 
@@ -388,7 +356,7 @@ If *print-readably* is true, the vector prints in an implementation-defined mann
 
 For information on how the Lisp reader parses these ``other vectors,'' see Section 2.4.8.3 (Sharpsign Left-Parenthesis). 
 
- 22.1.3.8 Printing Other Arrays
+#### 22.1.3.8 <span id="PrintingOtherArrays">Printing Other Arrays</span>
 
 If *print-array* is true and *print-readably* is false, any array other than a vector is printed using #nA format. Let n be the rank of the array. Then # is printed, then n as a decimal integer, then A, then n open parentheses. Next the elements are scanned in row-major order, using write on each element, and separating elements from each other with whitespace[1]. The array's dimensions are numbered 0 to n-1 from left to right, and are enumerated with the rightmost index changing fastest. Every time the index for dimension j is incremented, the following actions are taken:
 
@@ -408,9 +376,7 @@ If *print-readably* is true, the array prints in an implementation-defined manne
 
 For information on how the Lisp reader parses these ``other arrays,'' see Section 2.4.8.12 (Sharpsign A).
 
-22.1.3.9 Examples of Printing Arrays
-
- 22.1.3.9 Examples of Printing Arrays
+#### 22.1.3.9 <span id="ExamplesPrintingArrays">Examples of Printing Arrays</span>
 
  (let ((a (make-array '(3 3)))
        (*print-pretty* t)
@@ -425,7 +391,7 @@ For information on how the Lisp reader parses these ``other arrays,'' see Sectio
 =>  #<ARRAY 9 indirect 36363476>
 
 
- 22.1.3.10 Printing Random States
+#### 22.1.3.10 <span id="PrintingRandomStates">Printing Random States</span>
 
 A specific syntax for printing objects of type random-state is not specified. However, every implementation must arrange to print a random state object in such a way that, within the same implementation, read can construct from the printed representation a copy of the random state object as if the copy had been made by make-random-state.
 
@@ -435,7 +401,7 @@ If the type random state is effectively implemented by using the machinery for d
 
 where the components are implementation-dependent. 
 
- 22.1.3.11 Printing Pathnames
+#### 22.1.3.11 <span id="PrintingPathnames">Printing Pathnames</span>
 
 When printer escaping is enabled, the syntax #P"..." is how a pathname is printed by write and the other functions herein described. The "..." is the namestring representation of the pathname.
 
@@ -444,7 +410,7 @@ When printer escaping is disabled, write writes a pathname P by writing (namestr
 For information on how the Lisp reader parses pathnames, see Section 2.4.8.14 (Sharpsign P). 
 
 
- 22.1.3.12 Printing Structures
+#### 22.1.3.12 <span id="PrintingStructures">Printing Structures</span>
 
 By default, a structure of type S is printed using #S syntax. This behavior can be customized by specifying a :print-function or :print-object option to the defstruct form that defines S, or by writing a print-object method that is specialized for objects of type S.
 
@@ -458,7 +424,7 @@ For information on how the Lisp reader parses structures, see Section 2.4.8.13 (
 
 
 
- 22.1.3.13 Printing Other Objects
+#### 22.1.3.13 <span id="PrintingOtherObjects">Printing Other Objects</span>
 
 Other objects are printed in an implementation-dependent manner. It is not required that an implementation print those objects readably.
 
@@ -470,7 +436,7 @@ For information on how the Lisp reader treats this notation, see Section 2.4.8.2
 
 
 
- 22.1.4 Examples of Printer Behavior
+### 22.1.4 <span id="ExamplesPrinterBehavior">Examples of Printer Behavior</span>
 
  (let ((*print-escape* t)) (fresh-line) (write #\a))
 >>  #\a
@@ -524,15 +490,13 @@ For information on how the Lisp reader treats this notation, see Section 2.4.8.2
 =>  "WRITEPRIN1"
 
 
- 22.2 The Lisp Pretty Printer
+## 22.2 <span id="TheLispPrettyPrinter">The Lisp Pretty Printer</span>
 
-22.2.1 Pretty Printer Concepts
+> * 22.2.1 [Pretty Printer Concepts](#PrettyPrinterConcepts)
+> * 22.2.2 [Examples of using the Pretty Printer](#ExamplesPrettyPrinter)
+> * 22.2.3 [Notes about the Pretty Printer's Background](#NotesPrettyPrinterBackground)
 
-22.2.2 Examples of using the Pretty Printer
-
-22.2.3 Notes about the Pretty Printer's Background
-
- 22.2.1 Pretty Printer Concepts
+### 22.2.1 <span id="PrettyPrinterConcepts">Pretty Printer Concepts</span>
 
 The facilities provided by the pretty printer permit programs to redefine the way in which code is displayed, and allow the full power of pretty printing to be applied to complex combinations of data structures.
 
@@ -542,17 +506,13 @@ By providing direct access to the mechanisms within the pretty printer that make
 
 The pretty printer is driven entirely by dispatch based on the value of *print-pprint-dispatch*. The function set-pprint-dispatch makes it possible for conforming programs to associate new pretty printing functions with a type.
 
-22.2.1.1 Dynamic Control of the Arrangement of Output
+> * 22.2.1.1 [Dynamic Control of the Arrangement of Output](#DynamicControlArrangeOutput)
+> * 22.2.1.2 [Format Directive Interface](#FormatDirectiveInterface)
+> * 22.2.1.3 [Compiling Format Strings](#CompilingFormatStrings)
+> * 22.2.1.4 [Pretty Print Dispatch Tables](#PrettyPrintDispatchTables)
+> * 22.2.1.5 [Pretty Printer Margins](#PrettyPrinterMargins)
 
-22.2.1.2 Format Directive Interface
-
-22.2.1.3 Compiling Format Strings
-
-22.2.1.4 Pretty Print Dispatch Tables
-
-22.2.1.5 Pretty Printer Margins
-
- 22.2.1.1 Dynamic Control of the Arrangement of Output
+#### 22.2.1.1 <span id="DynamicControlArrangeOutput">Dynamic Control of the Arrangement of Output</span>
 
 The actions of the pretty printer when a piece of output is too large to fit in the space available can be precisely controlled. Three concepts underlie the way these operations work---logical blocks, conditional newlines, and sections. Before proceeding further, it is important to define these terms.
 
@@ -578,7 +538,7 @@ Figure 22-3. Example of Logical Blocks, Conditional Newlines, and Sections
 Whenever possible, the pretty printer displays the entire contents of a section on a single line. However, if the section is too long to fit in the space available, line breaks are inserted at conditional newline positions within the section. 
 
 
- 22.2.1.2 Format Directive Interface
+#### 22.2.1.2 <span id="FormatDirectiveInterface">Format Directive Interface</span>
 
 The primary interface to operations for dynamically determining the arrangement of output is provided through the functions and macros of the pretty printer. The next figure shows the defined names related to pretty printing.
 
@@ -600,14 +560,14 @@ The next figure identifies a set of format directives which serve as an alternat
 Figure 22-5. Format directives related to Pretty Printing 
 
 
- 22.2.1.3 Compiling Format Strings
+#### 22.2.1.3 <span id="CompilingFormatStrings">Compiling Format Strings</span>
 
 A format string is essentially a program in a special-purpose language that performs printing, and that is interpreted by the function format. The formatter macro provides the efficiency of using a compiled function to do that same printing but without losing the textual compactness of format strings.
 
 A format control is either a format string or a function that was returned by the the formatter macro. 
 
 
- 22.2.1.4 Pretty Print Dispatch Tables
+#### 22.2.1.4 <span id="PrettyPrintDispatchTables">Pretty Print Dispatch Tables</span>
 
 A pprint dispatch table is a mapping from keys to pairs of values. Each key is a type specifier. The values associated with a key are a ``function'' (specifically, a function designator or nil) and a ``numerical priority'' (specifically, a real). Basic insertion and retrieval is done based on the keys with the equality of keys being tested by equal.
 
@@ -618,12 +578,12 @@ The function is chosen from the current pprint dispatch table by finding the hig
 However, if there is no information in the table about how to pretty print a particular kind of object, a function is invoked which uses print-object to print the object. The value of *print-pretty* is still true when this function is called, and individual methods for print-object might still elect to produce output in a special format conditional on the value of *print-pretty*. 
 
 
- 22.2.1.5 Pretty Printer Margins
+#### 22.2.1.5 <span id="PrettyPrinterMargins">Pretty Printer Margins</span>
 
 A primary goal of pretty printing is to keep the output between a pair of margins. The column where the output begins is taken as the left margin. If the current column cannot be determined at the time output begins, the left margin is assumed to be zero. The right margin is controlled by *print-right-margin*. 
 
 
- 22.2.2 Examples of using the Pretty Printer
+### 22.2.2 <span id="ExamplesPrettyPrinter">Examples of using the Pretty Printer</span>
 
 As an example of the interaction of logical blocks, conditional newlines, and indentation, consider the function simple-pprint-defun below. This function prints out lists whose cars are defun in the standard way assuming that the list has exactly length 4.
 
@@ -815,12 +775,12 @@ The pretty printing function for the structure family specifies how to adjust th
 
 Note that a pretty printing function for a structure is different from the structure's print-object method. While print-object methods are permanently associated with a structure, pretty printing functions are stored in pprint dispatch tables and can be rapidly changed to reflect different printing needs. If there is no pretty printing function for a structure in the current pprint dispatch table, its print-object method is used instead. 
 
- 22.2.3 Notes about the Pretty Printer's Background
+### 22.2.3 <span id="NotesPrettyPrinterBackground">Notes about the Pretty Printer's Background</span>
 
 For a background reference to the abstract concepts detailed in this section, see XP: A Common Lisp Pretty Printing System. The details of that paper are not binding on this document, but may be helpful in establishing a conceptual basis for understanding this material. 
 
 
- 22.3 Formatted Output
+## 22.3 <span id="">Formatted Output</span>
 
 format is useful for producing nicely formatted text, producing good-looking messages, and so on. format can generate and return a string or output to destination.
 
@@ -854,44 +814,29 @@ format sends the output to destination. If destination is nil, format creates an
 
 In the description of the directives that follows, the term arg in general refers to the next item of the set of args to be processed. The word or phrase at the beginning of each description is a mnemonic for the directive. format directives do not bind any of the printer control variables (*print-...*) except as specified in the following descriptions. Implementations may specify the binding of new, implementation-specific printer control variables for each format directive, but they may neither bind any standard printer control variables not specified in description of a format directive nor fail to bind any standard printer control variables as specified in the description.
 
-22.3.1 FORMAT Basic Output
-
-22.3.2 FORMAT Radix Control
-
-22.3.3 FORMAT Floating-Point Printers
-
-22.3.4 FORMAT Printer Operations
-
-22.3.5 FORMAT Pretty Printer Operations
-
-22.3.6 FORMAT Layout Control
-
-22.3.7 FORMAT Control-Flow Operations
-
-22.3.8 FORMAT Miscellaneous Operations
-
-22.3.9 FORMAT Miscellaneous Pseudo-Operations
-
-22.3.10 Additional Information about FORMAT Operations
-
-22.3.11 Examples of FORMAT
-
-22.3.12 Notes about FORMAT
+> * 22.3.1 [FORMAT Basic Output](#FORMATBasicOutput)
+> * 22.3.2 [FORMAT Radix Control](#FORMATRadixControl)
+> * 22.3.3 [FORMAT Floating-Point Printers](#FORMATFloatingPointPrinters)
+> * 22.3.4 [FORMAT Printer Operations](#FORMATPrinterOperations)
+> * 22.3.5 [FORMAT Pretty Printer Operations](#FORMATPrettyPrinterOperations)
+> * 22.3.6 [FORMAT Layout Control](#FORMATLayoutControl)
+> * 22.3.7 [FORMAT Control-Flow Operations](#FORMATControlFlowOperation)
+> * 22.3.8 [FORMAT Miscellaneous Operations](#FORMATMiscellaneousOperation)
+> * 22.3.9 [FORMAT Miscellaneous Pseudo-Operations](#FORMATMiscellaneousPseudoOperation)
+> * 22.3.10 [Additional Information about FORMAT Operations](#AddInfoFORMATOperations)
+> * 22.3.11 [Examples of FORMAT](#ExamplesFORMAT)
+> * 22.3.12 [Notes about FORMAT](#NotesFORMAT)
 
 
- 22.3.1 FORMAT Basic Output
+### 22.3.1 <span id="FORMATBasicOutput">FORMAT Basic Output</span>
 
-22.3.1.1 Tilde C: Character
+> * 22.3.1.1 [Tilde C: Character](#TildeCCharacter)
+> * 22.3.1.2 [Tilde Percent: Newline](#TildePercentNewline)
+> * 22.3.1.3 [Tilde Ampersand: Fresh-Line](#TildeAmpersandFreshLine)
+> * 22.3.1.4 [Tilde Vertical-Bar: Page](#TildeVerticalBarPage)
+> * 22.3.1.5 [Tilde Tilde: Tilde](#TildeTildeTilde)
 
-22.3.1.2 Tilde Percent: Newline
-
-22.3.1.3 Tilde Ampersand: Fresh-Line
-
-22.3.1.4 Tilde Vertical-Bar: Page
-
-22.3.1.5 Tilde Tilde: Tilde
-
- 22.3.1.1 Tilde C: Character
+#### 22.3.1.1 <span id="TildeCCharacter">Tilde C: Character</span>
 
 The next arg should be a character; it is printed according to the modifier flags.
 
@@ -919,40 +864,35 @@ This is the format used for telling the user about a key he is expected to type,
 
 ~@C binds *print-escape* to t. 
 
- 22.3.1.2 Tilde Percent: Newline
+#### 22.3.1.2 <span id="TildePercentNewline">Tilde Percent: Newline</span>
 
 This outputs a #\Newline character, thereby terminating the current output line and beginning a new one. ~n% outputs n newlines. No arg is used. 
 
 
- 22.3.1.3 Tilde Ampersand: Fresh-Line
+#### 22.3.1.3 <span id="TildeAmpersandFreshLine">Tilde Ampersand: Fresh-Line</span>
 
 Unless it can be determined that the output stream is already at the beginning of a line, this outputs a newline. ~n& calls fresh-line and then outputs n-1 newlines. ~0& does nothing.
 
 
- 22.3.1.4 Tilde Vertical-Bar: Page
+#### 22.3.1.4 <span id="TildeVerticalBarPage">Tilde Vertical-Bar: Page</span>
 
 This outputs a page separator character, if possible. ~n| does this n times. 
 
 
- 22.3.1.5 Tilde Tilde: Tilde
+#### 22.3.1.5 <span id="TildeTildeTilde">Tilde Tilde: Tilde</span>
 
 This outputs a tilde. ~n~ outputs n tildes. 
 
 
- 22.3.2 FORMAT Radix Control
+### 22.3.2 <span id="FORMATRadixControl">FORMAT Radix Control</span>
 
-22.3.2.1 Tilde R: Radix
+> * 22.3.2.1 [Tilde R: Radix](#TildeRRadix)
+> * 22.3.2.2 [Tilde D: Decimal](#TildeDDecimal)
+> * 22.3.2.3 [Tilde B: Binary](#TildeBBinary)
+> * 22.3.2.4 [Tilde O: Octal](#TildeOOctal)
+> * 22.3.2.5 [Tilde X: Hexadecimal](#TildeXHexadecimal)
 
-22.3.2.2 Tilde D: Decimal
-
-22.3.2.3 Tilde B: Binary
-
-22.3.2.4 Tilde O: Octal
-
-22.3.2.5 Tilde X: Hexadecimal
-
-
- 22.3.2.1 Tilde R: Radix
+#### 22.3.2.1 <span id="TildeRRadix">Tilde R: Radix</span>
 
 ~nR prints arg in radix n. The modifier flags and any remaining parameters are used as for the ~D directive. ~D is the same as ~10R. The full form is ~radix,mincol,padchar,commachar,comma-intervalR.
 
@@ -978,7 +918,7 @@ If and only if the first parameter, n, is supplied, ~R binds *print-escape* to f
 
 If and only if no parameters are supplied, ~R binds *print-base* to 10. 
 
- 22.3.2.2 Tilde D: Decimal
+#### 22.3.2.2 <span id="TildeDDecimal">Tilde D: Decimal</span>
 
 An arg, which should be an integer, is printed in decimal radix. ~D will never put a decimal point after the number.
 
@@ -995,39 +935,36 @@ Thus the most general form of ~D is ~mincol,padchar,commachar,comma-intervalD.
 ~D binds *print-escape* to false, *print-radix* to false, *print-base* to 10, and *print-readably* to false. 
 
 
- 22.3.2.3 Tilde B: Binary
+#### 22.3.2.3 <span id="TildeBBinary">Tilde B: Binary</span>
 
 This is just like ~D but prints in binary radix (radix 2) instead of decimal. The full form is therefore ~mincol,padchar,commachar,comma-intervalB.
 
 ~B binds *print-escape* to false, *print-radix* to false, *print-base* to 2, and *print-readably* to false. 
 
 
- 22.3.2.4 Tilde O: Octal
+#### 22.3.2.4 <span id="TildeOOctal">Tilde O: Octal</span>
 
 This is just like ~D but prints in octal radix (radix 8) instead of decimal. The full form is therefore ~mincol,padchar,commachar,comma-intervalO.
 
 ~O binds *print-escape* to false, *print-radix* to false, *print-base* to 8, and *print-readably* to false. 
 
 
- 22.3.2.5 Tilde X: Hexadecimal
+#### 22.3.2.5 <span id="TildeXHexadecimal">Tilde X: Hexadecimal</span>
 
 This is just like ~D but prints in hexadecimal radix (radix 16) instead of decimal. The full form is therefore ~mincol,padchar,commachar,comma-intervalX.
 
 ~X binds *print-escape* to false, *print-radix* to false, *print-base* to 16, and *print-readably* to false. 
 
 
- 22.3.3 FORMAT Floating-Point Printers
+### 22.3.3 <span id="FORMATFloatingPointPrinters">FORMAT Floating-Point Printers</span>
 
-22.3.3.1 Tilde F: Fixed-Format Floating-Point
-
-22.3.3.2 Tilde E: Exponential Floating-Point
-
-22.3.3.3 Tilde G: General Floating-Point
-
-22.3.3.4 Tilde Dollarsign: Monetary Floating-Point
+> * 22.3.3.1 [Tilde F: Fixed-Format Floating-Point](#TildeFFixedFormat)
+> * 22.3.3.2 [Tilde E: Exponential Floating-Point](#TildeEExponential)
+> * 22.3.3.3 [Tilde G: General Floating-Point](#TildeGGeneral)
+> * 22.3.3.4 [Tilde Dollarsign: Monetary Floating-Point](#TildeDollarsignMonetary)
 
 
- 22.3.3.1 Tilde F: Fixed-Format Floating-Point
+#### 22.3.3.1 <span id="TildeFFixedFormat">Tilde F: Fixed-Format Floating-Point</span>
 
 The next arg is printed as a float.
 
@@ -1052,7 +989,7 @@ If arg is a complex number or some non-numeric object, then it is printed using 
 ~F binds *print-escape* to false and *print-readably* to false. 
 
 
- 22.3.3.2 Tilde E: Exponential Floating-Point
+#### 22.3.3.2 <span id="TildeEExponential">Tilde E: Exponential Floating-Point</span>
 
 The next arg is printed as a float in exponential notation.
 
@@ -1079,7 +1016,7 @@ If arg is a complex number or some non-numeric object, then it is printed using 
 ~E binds *print-escape* to false and *print-readably* to false. 
 
 
- 22.3.3.3 Tilde G: General Floating-Point
+#### 22.3.3.3 <span id="TildeGGeneral">Tilde G: General Floating-Point</span>
 
 The next arg is printed as a float in either fixed-format or exponential notation as appropriate.
 
@@ -1098,7 +1035,7 @@ In either case, an @ modifier is supplied to the ~F or ~E directive if and only 
 ~G binds *print-escape* to false and *print-readably* to false. 
 
 
- 22.3.3.4 Tilde Dollarsign: Monetary Floating-Point
+#### 22.3.3.4 <span id="TildeDollarsignMonetary">Tilde Dollarsign: Monetary Floating-Point</span>
 
 The next arg is printed as a float in fixed-format notation.
 
@@ -1115,15 +1052,9 @@ If arg is a complex number or some non-numeric object, then it is printed using 
 ~$ binds *print-escape* to false and *print-readably* to false. 
 
 
- 22.3.4 FORMAT Printer Operations
+### 22.3.4 <span id="FORMATPrinterOperations">FORMAT Printer Operations</span>
 
-22.3.4.1 Tilde A: Aesthetic
-
-22.3.4.2 Tilde S: Standard
-
-22.3.4.3 Tilde W: Write
-
- 22.3.4.1 Tilde A: Aesthetic
+#### 22.3.4.1 Tilde A: Aesthetic
 
 An arg, any object, is printed without escape characters (as by princ). If arg is a string, its characters will be output verbatim. If arg is nil it will be printed as nil; the colon modifier (~:A) will cause an arg of nil to be printed as (), but if arg is a composite structure, such as a list or vector, any contained occurrences of nil will still be printed as nil.
 
@@ -1133,39 +1064,30 @@ An arg, any object, is printed without escape characters (as by princ). If arg i
 
 ~A binds *print-escape* to false, and *print-readably* to false. 
 
- 22.3.4.2 Tilde S: Standard
+#### 22.3.4.2 Tilde S: Standard
 
 This is just like ~A, but arg is printed with escape characters (as by prin1 rather than princ). The output is therefore suitable for input to read. ~S accepts all the arguments and modifiers that ~A does.
 
 ~S binds *print-escape* to t. 
 
 
- 22.3.4.3 Tilde W: Write
+#### 22.3.4.3 Tilde W: Write
 
 An argument, any object, is printed obeying every printer control variable (as by write). In addition, ~W interacts correctly with depth abbreviation, by not resetting the depth counter to zero. ~W does not accept parameters. If given the colon modifier, ~W binds *print-pretty* to true. If given the at-sign modifier, ~W binds *print-level* and *print-length* to nil.
 
 ~W provides automatic support for the detection of circularity and sharing. If the value of *print-circle* is not nil and ~W is applied to an argument that is a circular (or shared) reference, an appropriate #n# marker is inserted in the output instead of printing the argument. 
 
 
- 22.3.5 FORMAT Pretty Printer Operations
+### 22.3.5 <span id="FORMATPrettyPrinterOperations">FORMAT Pretty Printer Operations</span>
 
 The following constructs provide access to the pretty printer:
 
-22.3.5.1 Tilde Underscore: Conditional Newline
-
-22.3.5.2 Tilde Less-Than-Sign: Logical Block
-
-22.3.5.3 Tilde I: Indent
-
-22.3.5.4 Tilde Slash: Call Function
-
-
- 22.3.5.1 Tilde Underscore: Conditional Newline
+#### 22.3.5.1 Tilde Underscore: Conditional Newline
 
 Without any modifiers, ~_ is the same as (pprint-newline :linear). ~@_ is the same as (pprint-newline :miser). ~:_ is the same as (pprint-newline :fill). ~:@_ is the same as (pprint-newline :mandatory). 
 
 
- 22.3.5.2 Tilde Less-Than-Sign: Logical Block
+#### 22.3.5.2 Tilde Less-Than-Sign: Logical Block
 
 ~<...~:>
 
@@ -1188,14 +1110,14 @@ To a considerable extent, the basic form of the directive ~<...~> is incompatibl
 See also Section 22.3.6.2 (Tilde Less-Than-Sign: Justification). 
 
 
- 22.3.5.3 Tilde I: Indent
+#### 22.3.5.3 Tilde I: Indent
 
 ~nI is the same as (pprint-indent :block n).
 
 ~n:I is the same as (pprint-indent :current n). In both cases, n defaults to zero, if it is omitted. 
 
 
- 22.3.5.4 Tilde Slash: Call Function
+#### 22.3.5.4 Tilde Slash: Call Function
 
 ~/name/
 
@@ -1206,16 +1128,9 @@ When a ~/name/ directive is encountered, the indicated function is called with f
 The three functions pprint-linear, pprint-fill, and pprint-tabular are specifically designed so that they can be called by ~/.../ (i.e., ~/pprint-linear/, ~/pprint-fill/, and ~/pprint-tabular/). In particular they take colon and at-sign arguments. 
 
 
- 22.3.6 FORMAT Layout Control
+### 22.3.6 <span id="FORMATLayoutControl">FORMAT Layout Control</span>
 
-22.3.6.1 Tilde T: Tabulate
-
-22.3.6.2 Tilde Less-Than-Sign: Justification
-
-22.3.6.3 Tilde Greater-Than-Sign: End of Justification
-
-
- 22.3.6.1 Tilde T: Tabulate
+#### 22.3.6.1 Tilde T: Tabulate
 
 This spaces over to a given column. ~colnum,colincT will output sufficient spaces to move the cursor to column colnum. If the cursor is already at or beyond column colnum, it will output spaces to move it to column colnum+k*colinc for the smallest positive integer k possible, unless colinc is zero, in which case no spaces are output if the cursor is already at or beyond column colnum. colnum and colinc default to 1.
 
@@ -1226,7 +1141,7 @@ If for some reason the current absolute column position cannot be determined by 
 If the colon modifier is used with the ~T directive, the tabbing computation is done relative to the horizontal position where the section immediately containing the directive begins, rather than with respect to a horizontal position of zero. The numerical parameters are both interpreted as being in units of ems and both default to 1. ~n,m:T is the same as (pprint-tab :section n m). ~n,m:@T is the same as (pprint-tab :section-relative n m). 
 
 
- 22.3.6.2 Tilde Less-Than-Sign: Justification
+#### 22.3.6.2 Tilde Less-Than-Sign: Justification
 
 ~mincol,colinc,minpad,padchar<str~>
 
@@ -1256,21 +1171,16 @@ See also Section 22.3.5.2 (Tilde Less-Than-Sign: Logical Block).
 ~> terminates a ~<. The consequences of using it elsewhere are undefined. 
 
 
- 22.3.7 FORMAT Control-Flow Operations
+#### 22.3.7 <span id="FORMATControlFlowOperation">FORMAT Control-Flow Operations</span>
 
-22.3.7.1 Tilde Asterisk: Go-To
+> * 22.3.7.1 [Tilde Asterisk: Go-To](#TildeAsteriskGoTo)
+> * 22.3.7.2 [Tilde Left-Bracket: Conditional Expression](#TildeLeftBracketCondExpr)
+> * 22.3.7.3 [Tilde Right-Bracket: End of Conditional Expression](#TildeRightBracketEndCondExpr)
+> * 22.3.7.4 [Tilde Left-Brace: Iteration](#TildeLeftBraceIteration)
+> * 22.3.7.5 [Tilde Right-Brace: End of Iteration](#TildeRightBraceEndIteration)
+> * 22.3.7.6 [Tilde Question-Mark: Recursive Processing](#TildeQuestionMarkRecursiveProc)
 
-22.3.7.2 Tilde Left-Bracket: Conditional Expression
-
-22.3.7.3 Tilde Right-Bracket: End of Conditional Expression
-
-22.3.7.4 Tilde Left-Brace: Iteration
-
-22.3.7.5 Tilde Right-Brace: End of Iteration
-
-22.3.7.6 Tilde Question-Mark: Recursive Processing
-
- 22.3.7.1 Tilde Asterisk: Go-To
+#### 22.3.7.1 <span id="TildeAsteriskGoTo">Tilde Asterisk: Go-To</span>
 
 The next arg is ignored. ~n* ignores the next n arguments.
 
@@ -1281,7 +1191,7 @@ When within a ~{ construct (see below), the ignoring (in either direction) is re
 ~n@* goes to the nth arg, where 0 means the first one; n defaults to 0, so ~@* goes back to the first arg. Directives after a ~n@* will take arguments in sequence beginning with the one gone to. When within a ~{ construct, the ``goto'' is relative to the list of arguments being processed by the iteration. 
 
 
- 22.3.7.2 Tilde Left-Bracket: Conditional Expression
+#### 22.3.7.2 <span id="TildeLeftBracketCondExpr">Tilde Left-Bracket: Conditional Expression</span>
 
 ~[str0~;str1~;...~;strn~]
 
@@ -1321,13 +1231,13 @@ The combination of ~[ and # is useful, for example, for dealing with English con
  (format nil foo 'foo 'bar 'baz 'quux) =>   "Items: FOO, BAR, BAZ, and QUUX."
 
 
- 22.3.7.3 Tilde Right-Bracket: End of Conditional Expression
+#### 22.3.7.3 <span id="TildeRightBracketEndCondExpr">Tilde Right-Bracket: End of Conditional Expression</span>
 
 ~] terminates a ~[. The consequences of using it elsewhere are undefined. 
 
 
 
- 22.3.7.4 Tilde Left-Brace: Iteration
+#### 22.3.7.4 <span id="TildeLeftBraceIteration">Tilde Left-Brace: Iteration</span>
 
 ~{str~}
 
@@ -1371,12 +1281,12 @@ If str is empty, then an argument is used as str. It must be a format control an
 This will use string as a formatting string. The ~1{ says it will be processed at most once, and the ~:} says it will be processed at least once. Therefore it is processed exactly once, using arguments as the arguments. This case may be handled more clearly by the ~? directive, but this general feature of ~{ is more powerful than ~?. 
 
 
- 22.3.7.5 Tilde Right-Brace: End of Iteration
+#### 22.3.7.5 <span id="TildeRightBraceEndIteration">Tilde Right-Brace: End of Iteration</span>
 
 ~} terminates a ~{. The consequences of using it elsewhere are undefined. 
 
 
- 22.3.7.6 Tilde Question-Mark: Recursive Processing
+#### 22.3.7.6 <span id="TildeQuestionMarkRecursiveProc">Tilde Question-Mark: Recursive Processing</span>
 
 The next arg must be a format control, and the one after it a list; both are consumed by the ~? directive. The two are processed as a control-string, with the elements of the list as the arguments. Once the recursive processing has been finished, the processing of the control string containing the ~? directive is resumed. Example:
 
@@ -1391,15 +1301,9 @@ With the @ modifier, only one arg is directly consumed. The arg must be a string
  (format nil "~@? ~D" "<~A ~D>" "Foo" 5 14 7) =>  "<Foo 5> 14"
 
 
- 22.3.8 FORMAT Miscellaneous Operations
+### 22.3.8 <span id="FORMATMiscellaneousOperation">FORMAT Miscellaneous Operations</span>
 
-22.3.8.1 Tilde Left-Paren: Case Conversion
-
-22.3.8.2 Tilde Right-Paren: End of Case Conversion
-
-22.3.8.3 Tilde P: Plural
-
- 22.3.8.1 Tilde Left-Paren: Case Conversion
+#### 22.3.8.1 Tilde Left-Paren: Case Conversion
 
 ~(str~)
 
@@ -1429,11 +1333,11 @@ When case conversions appear nested, the outer conversion dominates, as illustra
  NOT=>  "How is Bob Smith?"
 
 
- 22.3.8.2 Tilde Right-Paren: End of Case Conversion
+#### 22.3.8.2 Tilde Right-Paren: End of Case Conversion
 
 ~) terminates a ~(. The consequences of using it elsewhere are undefined. 
 
- 22.3.8.3 Tilde P: Plural
+#### 22.3.8.3 Tilde P: Plural
 
 If arg is not eql to the integer 1, a lowercase s is printed; if arg is eql to 1, nothing is printed. If arg is a floating-point 1.0, the s is printed.
 
@@ -1446,21 +1350,14 @@ If arg is not eql to the integer 1, a lowercase s is printed; if arg is eql to 1
  (format nil "~D tr~:@P/~D win~:P" 1 3) =>  "1 try/3 wins"
 
 
- 22.3.9 FORMAT Miscellaneous Pseudo-Operations
+### 22.3.9 <span id="FORMATMiscellaneousPseudoOperation">FORMAT Miscellaneous Pseudo-Operations</span>
 
-22.3.9.1 Tilde Semicolon: Clause Separator
-
-22.3.9.2 Tilde Circumflex: Escape Upward
-
-22.3.9.3 Tilde Newline: Ignored Newline
-
-
- 22.3.9.1 Tilde Semicolon: Clause Separator
+#### 22.3.9.1 Tilde Semicolon: Clause Separator
 
 This separates clauses in ~[ and ~< constructs. The consequences of using it elsewhere are undefined. 
 
 
- 22.3.9.2 Tilde Circumflex: Escape Upward
+#### 22.3.9.2 Tilde Circumflex: Escape Upward
 
 ~^
 
@@ -1498,7 +1395,7 @@ Following are examples of the use of ~^ within a ~< construct.
 =>   "FOO   BAR   BAZ"
 
 
- 22.3.9.3 Tilde Newline: Ignored Newline
+#### 22.3.9.3 Tilde Newline: Ignored Newline
 
 Tilde immediately followed by a newline ignores the newline and any following non-newline whitespace[1] characters. With a :, the newline is ignored, but any following whitespace[1] is left in place. With an @, the newline is left in place, but any following whitespace[1] is ignored. For example:
 
@@ -1520,17 +1417,9 @@ NIL
 Note that in this example newlines appear in the output only as specified by the ~& and ~% directives; the actual newline characters in the control string are suppressed because each is preceded by a tilde. 
 
 
- 22.3.10 Additional Information about FORMAT Operations
+### 22.3.10 <span id="AddInfoFORMATOperations">Additional Information about FORMAT Operations</span>
 
-22.3.10.1 Nesting of FORMAT Operations
-
-22.3.10.2 Missing and Additional FORMAT Arguments
-
-22.3.10.3 Additional FORMAT Parameters
-
-22.3.10.4 Undefined FORMAT Modifier Combinations
-
- 22.3.10.1 Nesting of FORMAT Operations
+#### 22.3.10.1 Nesting of FORMAT Operations
 
 The case-conversion, conditional, iteration, and justification constructs can contain other formatting constructs by bracketing them. These constructs must nest properly with respect to each other. For example, it is not legitimate to put the start of a case-conversion construct in each arm of a conditional and the end of the case-conversion construct outside the conditional:
 
@@ -1546,22 +1435,22 @@ The processing indirection caused by the ~? directive is also a kind of nesting 
 This notation is invalid because the ~? and ~(...~) constructs are not properly nested. 
 
 
- 22.3.10.2 Missing and Additional FORMAT Arguments
+#### 22.3.10.2 Missing and Additional FORMAT Arguments
 
 The consequences are undefined if no arg remains for a directive requiring an argument. However, it is permissible for one or more args to remain unprocessed by a directive; such args are ignored. 
 
 
- 22.3.10.3 Additional FORMAT Parameters
+#### 22.3.10.3 Additional FORMAT Parameters
 
 The consequences are undefined if a format directive is given more parameters than it is described here as accepting. 
 
 
- 22.3.10.4 Undefined FORMAT Modifier Combinations
+#### 22.3.10.4 Undefined FORMAT Modifier Combinations
 
 The consequences are undefined if colon or at-sign modifiers are given to a directive in a combination not specifically described here as being meaningful. 
 
 
- 22.3.11 Examples of FORMAT
+### 22.3.11 <span id="">Examples of FORMAT</span>
 
  (format nil "foo") =>  "foo"
  (setq x 5) =>  5
@@ -1651,7 +1540,7 @@ Scale factor  7: | 3141590.E-06|
   =>  "Written to foo.bin."
 
 
- 22.3.12 Notes about FORMAT
+### 22.3.12 <span id="NotesFORMAT">Notes about FORMAT</span>
 
 Formatted output is performed not only by format, but by certain other functions that accept a format control the way format does. For example, error-signaling functions such as cerror accept format controls.
 
@@ -1660,114 +1549,84 @@ Note that the meaning of nil and t as destinations to format are different than 
 The ~^ should appear only at the beginning of a ~< clause, because it aborts the entire clause in which it appears (as well as all following clauses). 
 
 
- 22.4 The Printer Dictionary
+## 22.4 <span id="ThePrinterDictionary">The Printer Dictionary</span>
 
-Function COPY-PPRINT-DISPATCH
+> * [函数 COPY-PPRINT-DISPATCH](#F-COPY-PPRINT-DISPATCH)
+> * [宏 FORMATTER](#M-FORMATTER)
+> * [函数 PPRINT-DISPATCH](#F-PPRINT-DISPATCH)
+> * [局部宏 PPRINT-EXIT-IF-LIST-EXHAUSTED](#LM-PPRINT-EXIT-IF-LIST-EXHAUSTED)
+> * [函数 PPRINT-FILL, PPRINT-LINEAR, PPRINT-TABULAR](#F-PPRINT-FILL-LINEAR-TABULAR)
+> * [函数 PPRINT-INDENT](#F-PPRINT-INDENT)
+> * [宏 PPRINT-LOGICAL-BLOCK](#M-PPRINT-LOGICAL-BLOCK)
+> * [函数 PPRINT-NEWLINE](#F-PPRINT-NEWLINE)
+> * [局部宏 PPRINT-POP](#LM-PPRINT-POP)
+> * [函数 PPRINT-TAB](#F-PPRINT-TAB)
+> * [标准广义函数 PRINT-OBJECT](#SGF-PRINT-OBJECT)
+> * [宏 PRINT-UNREADABLE-OBJECT](#M-PRINT-UNREADABLE-OBJECT)
+> * [函数 SET-PPRINT-DISPATCH](#F-SET-PPRINT-DISPATCH)
+> * [函数 WRITE, PRIN1, PRINT, PPRINT, PRINC](#F-WRITE-PRIN1-PRINT-PPRINT-PRINC)
+> * [函数 WRITE-TO-STRING, PRIN1-TO-STRING, PRINC-TO-STRING](#F-WRITE-PRIN1-PRINC-TO-STRING)
+> * [变量 *PRINT-ARRAY*](#V-PRINT-ARRAY)
+> * [变量 *PRINT-BASE*, *PRINT-RADIX*](#V-PRINT-BASE-RADIX)
+> * [变量 *PRINT-CASE*](#V-PRINT-CASE)
+> * [变量 *PRINT-CIRCLE*](#V-PRINT-CIRCLE)
+> * [变量 *PRINT-ESCAPE*](#V-PRINT-ESCAPE)
+> * [变量 *PRINT-GENSYM*](#V-PRINT-GENSYM)
+> * [变量 *PRINT-LEVEL*, *PRINT-LENGTH*](#V-PRINT-LEVEL-LENGTH)
+> * [变量 *PRINT-LINES*](#V-PRINT-LINES)
+> * [变量 *PRINT-MISER-WIDTH*](#V-PRINT-MISER-WIDTH)
+> * [变量 *PRINT-PPRINT-DISPATCH*](#V-PRINT-PPRINT-DISPATCH)
+> * [变量 *PRINT-PRETTY*](#V-PRINT-PRETTY)
+> * [变量 *PRINT-READABLY*](#V-PRINT-READABLY)
+> * [变量 *PRINT-RIGHT-MARGIN*](#V-PRINT-RIGHT-MARGIN)
+> * [状况类型 PRINT-NOT-READABLE](#CT-PRINT-NOT-READABLE)
+> * [函数 PRINT-NOT-READABLE-OBJECT](#F-PRINT-NOT-READABLE-OBJECT)
+> * [函数 FORMAT](#F-FORMAT)
 
-Macro FORMATTER
+### <span id="F-COPY-PPRINT-DISPATCH">函数 COPY-PPRINT-DISPATCH</span>
 
-Function PPRINT-DISPATCH
-
-Local Macro PPRINT-EXIT-IF-LIST-EXHAUSTED
-
-Function PPRINT-FILL, PPRINT-LINEAR, PPRINT-TABULAR
-
-Function PPRINT-INDENT
-
-Macro PPRINT-LOGICAL-BLOCK
-
-Function PPRINT-NEWLINE
-
-Local Macro PPRINT-POP
-
-Function PPRINT-TAB
-
-Standard Generic Function PRINT-OBJECT
-
-Macro PRINT-UNREADABLE-OBJECT
-
-Function SET-PPRINT-DISPATCH
-
-Function WRITE, PRIN1, PRINT, PPRINT, PRINC
-
-Function WRITE-TO-STRING, PRIN1-TO-STRING, PRINC-TO-STRING
-
-Variable *PRINT-ARRAY*
-
-Variable *PRINT-BASE*, *PRINT-RADIX*
-
-Variable *PRINT-CASE*
-
-Variable *PRINT-CIRCLE*
-
-Variable *PRINT-ESCAPE*
-
-Variable *PRINT-GENSYM*
-
-Variable *PRINT-LEVEL*, *PRINT-LENGTH*
-
-Variable *PRINT-LINES*
-
-Variable *PRINT-MISER-WIDTH*
-
-Variable *PRINT-PPRINT-DISPATCH*
-
-Variable *PRINT-PRETTY*
-
-Variable *PRINT-READABLY*
-
-Variable *PRINT-RIGHT-MARGIN*
-
-Condition Type PRINT-NOT-READABLE
-
-Function PRINT-NOT-READABLE-OBJECT
-
-Function FORMAT
-
-Function COPY-PPRINT-DISPATCH
-
-Syntax:
+* 语法(Syntax):
 
 copy-pprint-dispatch &optional table => new-table
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 table---a pprint dispatch table, or nil.
 
 new-table---a fresh pprint dispatch table.
 
-Description:
+* 描述(Description):
 
 Creates and returns a copy of the specified table, or of the value of *print-pprint-dispatch* if no table is specified, or of the initial value of *print-pprint-dispatch* if nil is specified.
 
-Examples: None.
+* 示例(Examples): None.
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should signal an error of type type-error if table is not a pprint dispatch table.
 
-See Also: None.
+* 也见(See Also): None.
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Macro FORMATTER
+### <span id="M-FORMATTER">宏 FORMATTER</span>
 
-Syntax:
+* 语法(Syntax):
 
 formatter control-string => function
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 control-string---a format string; not evaluated.
 
 function---a function.
 
-Description:
+* 描述(Description):
 
 Returns a function which has behavior equivalent to:
 
@@ -1777,7 +1636,7 @@ Returns a function which has behavior equivalent to:
 
 where arguments-tail is either the tail of arguments which has as its car the argument that would be processed next if there were more format directives in the control-string, or else nil if no more arguments follow the most recently processed argument.
 
-Examples:
+* 示例(Examples):
 
 (funcall (formatter "~&~A~A") *standard-output* 'a 'b 'c)
 >>  AB
@@ -1787,28 +1646,28 @@ Examples:
 >>  AB
 =>  NIL
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Might signal an error (at macro expansion time or at run time) if the argument is not a valid format string.
 
-See Also:
+* 也见(See Also):
 
 format
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function PPRINT-DISPATCH
+### <span id="F-PPRINT-DISPATCH">函数 PPRINT-DISPATCH</span>
 
-Syntax:
+* 语法(Syntax):
 
 pprint-dispatch object &optional table => function, found-p
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 object---an object.
 
@@ -1818,7 +1677,7 @@ function---a function designator.
 
 found-p---a generalized boolean.
 
-Description:
+* 描述(Description):
 
 Retrieves the highest priority function in table that is associated with a type specifier that matches object. The function is chosen by finding all of the type specifiers in table that match the object and selecting the highest priority function associated with any of these type specifiers. If there is more than one highest priority function, an arbitrary choice is made. If no type specifiers match the object, a function is returned that prints object using print-object.
 
@@ -1826,21 +1685,21 @@ The secondary value, found-p, is true if a matching type specifier was found in 
 
 If table is nil, retrieval is done in the initial pprint dispatch table.
 
-Examples: None.
+* 示例(Examples): None.
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By:
+* 受此影响(Affected By):
 
 The state of the table.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should signal an error of type type-error if table is neither a pprint-dispatch-table nor nil.
 
-See Also: None.
+* 也见(See Also): None.
 
-Notes:
+* 注意(Notes):
 
 (let ((*print-pretty* t))
   (write object :stream s))
@@ -1848,40 +1707,40 @@ Notes:
 
 
 
-Local Macro PPRINT-EXIT-IF-LIST-EXHAUSTED
+### <span id="LM-PPRINT-EXIT-IF-LIST-EXHAUSTED">局部宏 PPRINT-EXIT-IF-LIST-EXHAUSTED</span>
 
-Syntax:
+* 语法(Syntax):
 
 pprint-exit-if-list-exhausted <no arguments> => nil
 
-Arguments and Values: None.
+* 参数和值(Arguments and Values): None.
 
-Description:
+* 描述(Description):
 
 Tests whether or not the list passed to the lexically current logical block has been exhausted; see Section 22.2.1.1 (Dynamic Control of the Arrangement of Output). If this list has been reduced to nil, pprint-exit-if-list-exhausted terminates the execution of the lexically current logical block except for the printing of the suffix. Otherwise pprint-exit-if-list-exhausted returns nil.
 
 Whether or not pprint-exit-if-list-exhausted is fbound in the global environment is implementation-dependent; however, the restrictions on redefinition and shadowing of pprint-exit-if-list-exhausted are the same as for symbols in the COMMON-LISP package which are fbound in the global environment. The consequences of attempting to use pprint-exit-if-list-exhausted outside of pprint-logical-block are undefined.
 
-Examples: None.
+* 示例(Examples): None.
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 An error is signaled (at macro expansion time or at run time) if pprint-exit-if-list-exhausted is used anywhere other than lexically within a call on pprint-logical-block. Also, the consequences of executing pprint-if-list-exhausted outside of the dynamic extent of the pprint-logical-block which lexically contains it are undefined.
 
-See Also:
+* 也见(See Also):
 
 pprint-logical-block, pprint-pop.
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function PPRINT-FILL, PPRINT-LINEAR, PPRINT-TABULAR
+### <span id="F-PPRINT-FILL-LINEAR-TABULAR">函数 PPRINT-FILL, PPRINT-LINEAR, PPRINT-TABULAR</span>
 
-Syntax:
+* 语法(Syntax):
 
 pprint-fill stream object &optional colon-p at-sign-p => nil
 
@@ -1889,7 +1748,7 @@ pprint-linear stream object &optional colon-p at-sign-p => nil
 
 pprint-tabular stream object &optional colon-p at-sign-p tabsize => nil
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 stream---an output stream designator.
 
@@ -1901,7 +1760,7 @@ at-sign-p---a generalized boolean. The default is implementation-dependent.
 
 tabsize---a non-negative integer. The default is 16.
 
-Description:
+* 描述(Description):
 
 The functions pprint-fill, pprint-linear, and pprint-tabular specify particular ways of pretty printing a list to stream. Each function prints parentheses around the output if and only if colon-p is true. Each function ignores its at-sign-p argument. (Both arguments are included even though only one is needed so that these functions can be used via ~/.../ and as set-pprint-dispatch functions, as well as directly.) Each function handles abbreviation and the detection of circularity and sharing correctly, and uses write to print object when it is a non-list.
 
@@ -1913,7 +1772,7 @@ If object is a list and if the value of *print-pretty* is false, each of these f
 
     The function pprint-tabular is the same as pprint-fill except that it prints the elements so that they line up in columns. The tabsize specifies the column spacing in ems, which is the total spacing from the leading edge of one column to the leading edge of the next.
 
-Examples:
+* 示例(Examples):
 
 Evaluating the following with a line length of 25 produces the output shown.
 
@@ -1922,19 +1781,19 @@ Evaluating the following with a line length of 25 produces the output shown.
 Roads ELM     MAIN
       MAPLE   CENTER
 
-Side Effects:
+* 副作用(Side Effects):
 
 Performs output to the indicated stream.
 
-Affected By:
+* 受此影响(Affected By):
 
 The cursor position on the indicated stream, if it can be determined.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also: None.
+* 也见(See Also): None.
 
-Notes:
+* 注意(Notes):
 
 The function pprint-tabular could be defined as follows:
 
@@ -1953,13 +1812,13 @@ The function pprint-tabular could be defined as follows:
 Note that it would have been inconvenient to specify this function using format, because of the need to pass its tabsize argument through to a ~:T format directive nested within an iteration over a list. 
 
 
-Function PPRINT-INDENT
+### <span id="F-PPRINT-INDENT">函数 PPRINT-INDENT</span>
 
-Syntax:
+* 语法(Syntax):
 
 pprint-indent relative-to n &optional stream => nil
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 relative-to---either :block or :current.
 
@@ -1967,7 +1826,7 @@ n---a real.
 
 stream---an output stream designator. The default is standard output.
 
-Description:
+* 描述(Description):
 
 pprint-indent specifies the indentation to use in a logical block on stream. If stream is a pretty printing stream and the value of *print-pretty* is true, pprint-indent sets the indentation in the innermost dynamically enclosing logical block; otherwise, pprint-indent has no effect.
 
@@ -1975,32 +1834,32 @@ N specifies the indentation in ems. If relative-to is :block, the indentation is
 
 N can be negative; however, the total indentation cannot be moved left of the beginning of the line or left of the end of the rightmost per-line prefix---an attempt to move beyond one of these limits is treated the same as an attempt to move to that limit. Changes in indentation caused by pprint-indent do not take effect until after the next line break. In addition, in miser mode all calls to pprint-indent are ignored, forcing the lines corresponding to the logical block to line up under the first character in the block.
 
-Examples: None.
+* 示例(Examples): None.
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 An error is signaled if relative-to is any object other than :block or :current.
 
-See Also:
+* 也见(See Also):
 
 Section 22.3.5.3 (Tilde I: Indent)
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Macro PPRINT-LOGICAL-BLOCK
+### <span id="M-PPRINT-LOGICAL-BLOCK">宏 PPRINT-LOGICAL-BLOCK</span>
 
-Syntax:
+* 语法(Syntax):
 
 pprint-logical-block (stream-symbol object &key prefix per-line-prefix suffix) declaration* form*
 
 => nil
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 stream-symbol---a stream variable designator.
 
@@ -2016,7 +1875,7 @@ declaration---a declare expression; not evaluated.
 
 forms---an implicit progn.
 
-Description:
+* 描述(Description):
 
 Causes printing to be grouped into a logical block.
 
@@ -2036,15 +1895,15 @@ The body forms of a pprint-logical-block form must not perform any side-effects 
 
 The pprint-logical-block macro may be used regardless of the value of *print-pretty*.
 
-Examples: None.
+* 示例(Examples): None.
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By:
+* 受此影响(Affected By):
 
 *print-circle*, *print-level*.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 An error of type type-error is signaled if any of the :suffix, :prefix, or :per-line-prefix is supplied but does not evaluate to a string.
 
@@ -2054,30 +1913,30 @@ pprint-logical-block and the pretty printing stream it creates have dynamic exte
 
 It is also unspecified what happens if, within this extent, any output is sent directly to the underlying destination stream.
 
-See Also:
+* 也见(See Also):
 
 pprint-pop, pprint-exit-if-list-exhausted, Section 22.3.5.2 (Tilde Less-Than-Sign: Logical Block)
 
-Notes:
+* 注意(Notes):
 
 One reason for using the pprint-logical-block macro when the value of *print-pretty* is nil would be to allow it to perform checking for dotted lists, as well as (in conjunction with pprint-pop) checking for *print-level* or *print-length* being exceeded.
 
 Detection of circularity and sharing is supported by the pretty printer by in essence performing requested output twice. On the first pass, circularities and sharing are detected and the actual outputting of characters is suppressed. On the second pass, the appropriate ``#n='' and ``#n#'' markers are inserted and characters are output. This is why the restriction on side-effects is necessary. Obeying this restriction is facilitated by using pprint-pop, instead of an ordinary pop when traversing a list being printed by the body forms of the pprint-logical-block form.) 
 
 
-Function PPRINT-NEWLINE
+### <span id="F-PPRINT-NEWLINE">函数 PPRINT-NEWLINE</span>
 
-Syntax:
+* 语法(Syntax):
 
 pprint-newline kind &optional stream => nil
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 kind---one of :linear, :fill, :miser, or :mandatory.
 
 stream---a stream designator. The default is standard output.
 
-Description:
+* 描述(Description):
 
 If stream is a pretty printing stream and the value of *print-pretty* is true, a line break is inserted in the output when the appropriate condition below is satisfied; otherwise, pprint-newline has no effect.
 
@@ -2103,40 +1962,40 @@ When a line break is inserted by any type of conditional newline, any blanks tha
 
 There are a variety of ways unconditional newlines can be introduced into the output (i.e., via terpri or by printing a string containing a newline character). As with mandatory conditional newlines, this prevents any of the containing sections from being printed on one line. In general, when an unconditional newline is encountered, it is printed out without suppression of the preceding blanks and without any indentation following it. However, if a per-line prefix has been specified (see pprint-logical-block), this prefix will always be printed no matter how a newline originates.
 
-Examples:
+* 示例(Examples):
 
 See Section 22.2.2 (Examples of using the Pretty Printer).
 
-Side Effects:
+* 副作用(Side Effects):
 
 Output to stream.
 
-Affected By:
+* 受此影响(Affected By):
 
 *print-pretty*, *print-miser*. The presence of containing logical blocks. The placement of newlines and conditional newlines.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 An error of type type-error is signaled if kind is not one of :linear, :fill, :miser, or :mandatory.
 
-See Also:
+* 也见(See Also):
 
 Section 22.3.5.1 (Tilde Underscore: Conditional Newline), Section 22.2.2 (Examples of using the Pretty Printer)
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Local Macro PPRINT-POP
+### <span id="LM-PPRINT-POP">局部宏 PPRINT-POP</span>
 
-Syntax:
+* 语法(Syntax):
 
 pprint-pop <no arguments> => object
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 object---an element of the list being printed in the lexically current logical block, or nil.
 
-Description:
+* 描述(Description):
 
 Pops one element from the list being printed in the lexically current logical block, obeying *print-length* and *print-circle* as described below.
 
@@ -2154,38 +2013,38 @@ If pprint-logical-block is given a `list' argument of nil---because it is not pr
 
 Whether or not pprint-pop is fbound in the global environment is implementation-dependent; however, the restrictions on redefinition and shadowing of pprint-pop are the same as for symbols in the COMMON-LISP package which are fbound in the global environment. The consequences of attempting to use pprint-pop outside of pprint-logical-block are undefined.
 
-Examples: None.
+* 示例(Examples): None.
 
-Side Effects:
+* 副作用(Side Effects):
 
 Might cause output to the pretty printing stream associated with the lexically current logical block.
 
-Affected By:
+* 受此影响(Affected By):
 
 *print-length*, *print-circle*.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 An error is signaled (either at macro expansion time or at run time) if a usage of pprint-pop occurs where there is no lexically containing pprint-logical-block form.
 
 The consequences are undefined if pprint-pop is executed outside of the dynamic extent of this pprint-logical-block.
 
-See Also:
+* 也见(See Also):
 
 pprint-exit-if-list-exhausted, pprint-logical-block.
 
-Notes:
+* 注意(Notes):
 
 It is frequently a good idea to call pprint-exit-if-list-exhausted before calling pprint-pop. 
 
 
-Function PPRINT-TAB
+### <span id="F-PPRINT-TAB">函数 PPRINT-TAB</span>
 
-Syntax:
+* 语法(Syntax):
 
 pprint-tab kind colnum colinc &optional stream => nil
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 kind---one of :line, :section, :line-relative, or :section-relative.
 
@@ -2195,32 +2054,32 @@ colinc---a non-negative integer.
 
 stream---an output stream designator.
 
-Description:
+* 描述(Description):
 
 Specifies tabbing to stream as performed by the standard ~T format directive. If stream is a pretty printing stream and the value of *print-pretty* is true, tabbing is performed; otherwise, pprint-tab has no effect.
 
 The arguments colnum and colinc correspond to the two parameters to ~T and are in terms of ems. The kind argument specifies the style of tabbing. It must be one of :line (tab as by ~T), :section (tab as by ~:T, but measuring horizontal positions relative to the start of the dynamically enclosing section), :line-relative (tab as by ~@T), or :section-relative (tab as by ~:@T, but measuring horizontal positions relative to the start of the dynamically enclosing section).
 
-Examples: None.
+* 示例(Examples): None.
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 An error is signaled if kind is not one of :line, :section, :line-relative, or :section-relative.
 
-See Also:
+* 也见(See Also):
 
 pprint-logical-block
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Standard Generic Function PRINT-OBJECT
+### <span id="SGF-PRINT-OBJECT">标准广义函数 PRINT-OBJECT</span>
 
-Syntax:
+* 语法(Syntax):
 
 print-object object stream => object
 
@@ -2230,13 +2089,13 @@ print-object (object standard-object) stream
 
 print-object (object structure-object) stream
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 object---an object.
 
 stream---a stream.
 
-Description:
+* 描述(Description):
 
 The generic function print-object writes the printed representation of object to stream. The function print-object is called by the Lisp printer; it should not be called by the user.
 
@@ -2280,26 +2139,26 @@ In general, the printer and the print-object methods should not rebind the print
 
 In some implementations the stream argument passed to a print-object method is not the original stream, but is an intermediate stream that implements part of the printer. methods should therefore not depend on the identity of this stream.
 
-Examples: None.
+* 示例(Examples): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 pprint-fill, pprint-logical-block, pprint-pop, write, *print-readably*, *print-escape*, *print-pretty*, *print-length*, Section 22.1.3 (Default Print-Object Methods), Section 22.1.3.12 (Printing Structures), Section 22.2.1.4 (Pretty Print Dispatch Tables), Section 22.2.2 (Examples of using the Pretty Printer)
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Macro PRINT-UNREADABLE-OBJECT
+### <span id="M-PRINT-UNREADABLE-OBJECT">宏 PRINT-UNREADABLE-OBJECT</span>
 
-Syntax:
+* 语法(Syntax):
 
 print-unreadable-object (object stream &key type identity) form* => nil
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 object---an object; evaluated.
 
@@ -2311,13 +2170,13 @@ identity---a generalized boolean; evaluated.
 
 forms---an implicit progn.
 
-Description:
+* 描述(Description):
 
 Outputs a printed representation of object on stream, beginning with ``#<'' and ending with ``>''. Everything output to stream by the body forms is enclosed in the the angle brackets. If type is true, the output from forms is preceded by a brief description of the object's type and a space character. If identity is true, the output from forms is followed by a space character and a representation of the object's identity, typically a storage address.
 
 If either type or identity is not supplied, its value is false. It is valid to omit the body forms. If type and identity are both true and there are no body forms, only one space character separates the type and the identity.
 
-Examples:
+* 示例(Examples):
 
 ;; Note that in this example, the precise form of the output ;; is implementation-dependent.
 
@@ -2329,24 +2188,24 @@ Examples:
 =>  "#<Airplane NW0773 36000123135>"
 OR=>  "#<FAA:AIRPLANE NW0773 17>"
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 If *print-readably* is true, print-unreadable-object signals an error of type print-not-readable without printing anything.
 
-See Also: None.
+* 也见(See Also): None.
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function SET-PPRINT-DISPATCH
+### <span id="F-SET-PPRINT-DISPATCH">函数 SET-PPRINT-DISPATCH</span>
 
-Syntax:
+* 语法(Syntax):
 
 set-pprint-dispatch type-specifier function &optional priority table => nil
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 type-specifier---a type specifier.
 
@@ -2356,7 +2215,7 @@ priority---a real. The default is 0.
 
 table---a pprint dispatch table. The default is the value of *print-pprint-dispatch*.
 
-Description:
+* 描述(Description):
 
 Installs an entry into the pprint dispatch table which is table.
 
@@ -2368,19 +2227,19 @@ Priority is a priority to resolve conflicts when an object matches more than one
 
 It is permissible for function to be nil. In this situation, there will be no type-specifier entry in table after set-pprint-dispatch returns.
 
-Examples: None.
+* 示例(Examples): None.
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 An error is signaled if priority is not a real.
 
-See Also: None.
+* 也见(See Also): None.
 
-Notes:
+* 注意(Notes):
 
 Since pprint dispatch tables are often used to control the pretty printing of Lisp code, it is common for the type-specifier to be an expression of the form
 
@@ -2389,9 +2248,9 @@ Since pprint dispatch tables are often used to control the pretty printing of Li
 This signifies that the corresponding object must be a cons cell whose car matches the type specifier car-type and whose cdr matches the type specifier cdr-type. The cdr-type can be omitted in which case it defaults to t. 
 
 
-Function WRITE, PRIN1, PRINT, PPRINT, PRINC
+### <span id="F-WRITE-PRIN1-PRINT-PPRINT-PRINC">函数 WRITE, PRIN1, PRINT, PPRINT, PRINC</span>
 
-Syntax:
+* 语法(Syntax):
 
 write object &key array base case circle escape gensym length level lines miser-width pprint-dispatch pretty radix readably right-margin stream
 
@@ -2405,7 +2264,7 @@ print object &optional output-stream => object
 
 pprint object &optional output-stream => <no values>
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 object---an object.
 
@@ -2443,7 +2302,7 @@ right-margin---a non-negative integer, or nil.
 
 stream---an output stream designator. The default is standard output.
 
-Description:
+* 描述(Description):
 
 write, prin1, princ, print, and pprint write the printed representation of object to output-stream.
 
@@ -2480,17 +2339,17 @@ pprint is just like print except that the trailing space is omitted and object i
 
 Output-stream specifies the stream to which output is to be sent.
 
-Affected By:
+* 受此影响(Affected By):
 
 *standard-output*, *terminal-io*, *print-escape*, *print-radix*, *print-base*, *print-circle*, *print-pretty*, *print-level*, *print-length*, *print-case*, *print-gensym*, *print-array*, *read-default-float-format*.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 readtable-case, Section 22.3.4 (FORMAT Printer Operations)
 
-Notes:
+* 注意(Notes):
 
 The functions prin1 and print do not bind *print-readably*.
 
@@ -2510,9 +2369,9 @@ The functions prin1 and print do not bind *print-readably*.
 ==  (write object :stream output-stream :escape t :pretty t)
 
 
-Function WRITE-TO-STRING, PRIN1-TO-STRING, PRINC-TO-STRING
+### <span id="F-WRITE-PRIN1-PRINC-TO-STRING">函数 WRITE-TO-STRING, PRIN1-TO-STRING, PRINC-TO-STRING</span>
 
-Syntax:
+* 语法(Syntax):
 
 write-to-string object &key array base case circle escape gensym length level lines miser-width pprint-dispatch pretty radix readably right-margin
 
@@ -2522,7 +2381,7 @@ prin1-to-string object => string
 
 princ-to-string object => string
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 object---an object.
 
@@ -2558,7 +2417,7 @@ right-margin---a non-negative integer, or nil.
 
 string---a string.
 
-Description:
+* 描述(Description):
 
 write-to-string, prin1-to-string, and princ-to-string are used to create a string consisting of the printed representation of object. Object is effectively printed as if by write, prin1, or princ, respectively, and the characters that would be output are made into a string.
 
@@ -2572,24 +2431,24 @@ All other keywords that would be specified to write-to-string are default values
 
 The meanings and defaults for the keyword arguments to write-to-string are the same as those for write.
 
-Examples:
+* 示例(Examples):
 
  (prin1-to-string "abc") =>  "\"abc\""
  (princ-to-string "abc") =>  "abc"
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By:
+* 受此影响(Affected By):
 
 *print-escape*, *print-radix*, *print-base*, *print-circle*, *print-pretty*, *print-level*, *print-length*, *print-case*, *print-gensym*, *print-array*, *read-default-float-format*.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 write
 
-Notes:
+* 注意(Notes):
 
  (write-to-string object {key argument}*)
 ==  (with-output-to-string (#1=#:string-stream) 
@@ -2604,44 +2463,44 @@ Notes:
      (prin1 object string-stream))
 
 
-Variable *PRINT-ARRAY*
+### <span id="V-PRINT-ARRAY">变量 *PRINT-ARRAY*</span>
 
-Value Type:
+* 值类型(Value Type):
 
 a generalized boolean.
 
-Initial Value:
+* 初始值(Initial Value):
 
 implementation-dependent.
 
-Description:
+* 描述(Description):
 
 Controls the format in which arrays are printed. If it is false, the contents of arrays other than strings are never printed. Instead, arrays are printed in a concise form using #< that gives enough information for the user to be able to identify the array, but does not include the entire array contents. If it is true, non-string arrays are printed using #(...), #*, or #nA syntax.
 
-Examples: None.
+* 示例(Examples): None.
 
-Affected By:
+* 受此影响(Affected By):
 
 The implementation.
 
-See Also:
+* 也见(See Also):
 
 Section 2.4.8.3 (Sharpsign Left-Parenthesis), Section 2.4.8.20 (Sharpsign Less-Than-Sign)
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Variable *PRINT-BASE*, *PRINT-RADIX*
+### <span id="V-PRINT-BASE-RADIX">变量 *PRINT-BASE*, *PRINT-RADIX*</span>
 
-Value Type:
+* 值类型(Value Type):
 
 *print-base*---a radix. *print-radix*---a generalized boolean.
 
-Initial Value:
+* 初始值(Initial Value):
 
 The initial value of *print-base* is 10. The initial value of *print-radix* is false.
 
-Description:
+* 描述(Description):
 
 *print-base* and *print-radix* control the printing of rationals. The value of *print-base* is called the current output base.
 
@@ -2649,7 +2508,7 @@ The value of *print-base* is the radix in which the printer will print rationals
 
 If the value of *print-radix* is true, the printer will print a radix specifier to indicate the radix in which it is printing a rational number. The radix specifier is always printed using lowercase letters. If *print-base* is 2, 8, or 16, then the radix specifier used is #b, #o, or #x, respectively. For integers, base ten is indicated by a trailing decimal point instead of a leading radix specifier; for ratios, #10r is used.
 
-Examples:
+* 示例(Examples):
 
  (let ((*print-base* 24.) (*print-radix* t)) 
    (print 23.))
@@ -2678,34 +2537,34 @@ Examples:
 >>  #xA  #x1/A
 =>  NIL
 
-Affected By:
+* 受此影响(Affected By):
 
 Might be bound by format, and write, write-to-string.
 
-See Also:
+* 也见(See Also):
 
 format, write, write-to-string
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Variable *PRINT-CASE*
+### <span id="V-PRINT-CASE">变量 *PRINT-CASE*</span>
 
-Value Type:
+* 值类型(Value Type):
 
 One of the symbols :upcase, :downcase, or :capitalize.
 
-Initial Value:
+* 初始值(Initial Value):
 
 The symbol :upcase.
 
-Description:
+* 描述(Description):
 
 The value of *print-case* controls the case (upper, lower, or mixed) in which to print any uppercase characters in the names of symbols when vertical-bar syntax is not used.
 
 *print-case* has an effect at all times when the value of *print-escape* is false. *print-case* also has an effect when the value of *print-escape* is true unless inside an escape context (i.e., unless between vertical-bars or after a slash).
 
-Examples:
+* 示例(Examples):
 
  (defun test-print-case ()
    (dolist (*print-case* '(:upcase :downcase :capitalize))
@@ -2727,30 +2586,30 @@ Examples:
 >>  This-And-That A|nd-something-el|se
 =>  NIL
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-See Also:
+* 也见(See Also):
 
 write
 
-Notes:
+* 注意(Notes):
 
 read normally converts lowercase characters appearing in symbols to corresponding uppercase characters, so that internally print names normally contain only uppercase characters.
 
 If *print-escape* is true, lowercase characters in the name of a symbol are always printed in lowercase, and are preceded by a single escape character or enclosed by multiple escape characters; uppercase characters in the name of a symbol are printed in upper case, in lower case, or in mixed case so as to capitalize words, according to the value of *print-case*. The convention for what constitutes a ``word'' is the same as for string-capitalize. 
 
 
-Variable *PRINT-CIRCLE*
+### <span id="V-PRINT-CIRCLE">变量 *PRINT-CIRCLE*</span>
 
-Value Type:
+* 值类型(Value Type):
 
 a generalized boolean.
 
-Initial Value:
+* 初始值(Initial Value):
 
 false.
 
-Description:
+* 描述(Description):
 
 Controls the attempt to detect circularity and sharing in an object being printed.
 
@@ -2762,7 +2621,7 @@ If true, a user-defined print-object method can print objects to the supplied st
 
 Note that implementations should not use #n# notation when the Lisp reader would automatically assure sharing without it (e.g., as happens with interned symbols).
 
-Examples:
+* 示例(Examples):
 
  (let ((a (list 1 2 3)))
    (setf (cdddr a) a)
@@ -2772,28 +2631,28 @@ Examples:
 >>  #1=(1 2 3 . #1#)
 =>  :DONE
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-See Also:
+* 也见(See Also):
 
 write
 
-Notes:
+* 注意(Notes):
 
 An attempt to print a circular structure with *print-circle* set to nil may lead to looping behavior and failure to terminate. 
 
 
-Variable *PRINT-ESCAPE*
+### <span id="V-PRINT-ESCAPE">变量 *PRINT-ESCAPE*</span>
 
-Value Type:
+* 值类型(Value Type):
 
 a generalized boolean.
 
-Initial Value:
+* 初始值(Initial Value):
 
 true.
 
-Description:
+* 描述(Description):
 
 If false, escape characters and package prefixes are not output when an expression is printed.
 
@@ -2801,7 +2660,7 @@ If true, an attempt is made to print an expression in such a way that it can be 
 
 For more specific details of how the value of *print-escape* affects the printing of certain types, see Section 22.1.3 (Default Print-Object Methods).
 
-Examples:
+* 示例(Examples):
 
  (let ((*print-escape* t)) (write #\a))
 >>  #\a
@@ -2810,60 +2669,60 @@ Examples:
 >>  a
 =>  #\a
 
-Affected By:
+* 受此影响(Affected By):
 
 princ, prin1, format
 
-See Also:
+* 也见(See Also):
 
 write, readtable-case
 
-Notes:
+* 注意(Notes):
 
 princ effectively binds *print-escape* to false. prin1 effectively binds *print-escape* to true. 
 
 
-Variable *PRINT-GENSYM*
+### <span id="V-PRINT-GENSYM">变量 *PRINT-GENSYM*</span>
 
-Value Type:
+* 值类型(Value Type):
 
 a generalized boolean.
 
-Initial Value:
+* 初始值(Initial Value):
 
 true.
 
-Description:
+* 描述(Description):
 
 Controls whether the prefix ``#:'' is printed before apparently uninterned symbols. The prefix is printed before such symbols if and only if the value of *print-gensym* is true.
 
-Examples:
+* 示例(Examples):
 
  (let ((*print-gensym* nil))
    (print (gensym)))
 >>  G6040 
 =>  #:G6040
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-See Also:
+* 也见(See Also):
 
 write, *print-escape*
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Variable *PRINT-LEVEL*, *PRINT-LENGTH*
+### <span id="V-PRINT-LEVEL-LENGTH">变量 *PRINT-LEVEL*, *PRINT-LENGTH*</span>
 
-Value Type:
+* 值类型(Value Type):
 
 a non-negative integer, or nil.
 
-Initial Value:
+* 初始值(Initial Value):
 
 nil.
 
-Description:
+* 描述(Description):
 
 *print-level* controls how many levels deep a nested object will print. If it is false, then no control is exercised. Otherwise, it is an integer indicating the maximum level to be printed. An object to be printed is at level 0; its components (as of a list or vector) are at level 1; and so on. If an object to be recursively printed has components and is at a level equal to or greater than the value of *print-level*, then the object is printed as ``#''.
 
@@ -2871,7 +2730,7 @@ Description:
 
 *print-level* and *print-length* affect the printing of an any object printed with a list-like syntax. They do not affect the printing of symbols, strings, and bit vectors.
 
-Examples:
+* 示例(Examples):
 
  (setq a '(1 (2 (3 (4 (5 (6))))))) =>  (1 (2 (3 (4 (5 (6))))))
  (dotimes (i 8) 
@@ -2920,30 +2779,30 @@ Examples:
 >>  3 4 -- (IF (MEMBER X Y) (+ (CAR X) 3) '(FOO . #(A B C D ...)))
 =>  NIL
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-See Also:
+* 也见(See Also):
 
 write
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Variable *PRINT-LINES*
+### <span id="V-PRINT-LINES">变量 *PRINT-LINES*</span>
 
-Value Type:
+* 值类型(Value Type):
 
 a non-negative integer, or nil.
 
-Initial Value:
+* 初始值(Initial Value):
 
 nil.
 
-Description:
+* 描述(Description):
 
 When the value of *print-lines* is other than nil, it is a limit on the number of output lines produced when something is pretty printed. If an attempt is made to go beyond that many lines, ``..'' is printed at the end of the last line followed by all of the suffixes (closing delimiters) that are pending to be printed.
 
-Examples:
+* 示例(Examples):
 
  (let ((*print-right-margin* 25) (*print-lines* 3))
    (pprint '(progn (setq a 1 b 2 c 3 d 4))))
@@ -2952,73 +2811,73 @@ Examples:
 >>               C 3 ..))
 =>  <no values>
 
-See Also: None.
+* 也见(See Also): None.
 
-Notes:
+* 注意(Notes):
 
 The ``..'' notation is intentionally different than the ``...'' notation used for level abbreviation, so that the two different situations can be visually distinguished.
 
 This notation is used to increase the likelihood that the Lisp reader will signal an error if an attempt is later made to read the abbreviated output. Note however that if the truncation occurs in a string, as in "This string has been trunc..", the problem situation cannot be detected later and no such error will be signaled. 
 
 
-Variable *PRINT-MISER-WIDTH*
+### <span id="V-PRINT-MISER-WIDTH">变量 *PRINT-MISER-WIDTH*</span>
 
-Value Type:
+* 值类型(Value Type):
 
 a non-negative integer, or nil.
 
-Initial Value:
+* 初始值(Initial Value):
 
 implementation-dependent
 
-Description:
+* 描述(Description):
 
 If it is not nil, the pretty printer switches to a compact style of output (called miser style) whenever the width available for printing a substructure is less than or equal to this many ems.
 
-Examples: None.
+* 示例(Examples): None.
 
-See Also: None.
+* 也见(See Also): None.
 
-Notes: None.
+* 注意(Notes): None.
 
 
 
-Variable *PRINT-PPRINT-DISPATCH*
+### <span id="V-PRINT-PPRINT-DISPATCH">变量 *PRINT-PPRINT-DISPATCH*</span>
 
-Value Type:
+* 值类型(Value Type):
 
 a pprint dispatch table.
 
-Initial Value:
+* 初始值(Initial Value):
 
 implementation-dependent, but the initial entries all use a special class of priorities that have the property that they are less than every priority that can be specified using set-pprint-dispatch, so that the initial contents of any entry can be overridden.
 
-Description:
+* 描述(Description):
 
 The pprint dispatch table which currently controls the pretty printer.
 
-Examples: None.
+* 示例(Examples): None.
 
-See Also:
+* 也见(See Also):
 
 *print-pretty*, Section 22.2.1.4 (Pretty Print Dispatch Tables)
 
-Notes:
+* 注意(Notes):
 
 The intent is that the initial value of this variable should cause `traditional' pretty printing of code. In general, however, you can put a value in *print-pprint-dispatch* that makes pretty-printed output look exactly like non-pretty-printed output. Setting *print-pretty* to true just causes the functions contained in the current pprint dispatch table to have priority over normal print-object methods; it has no magic way of enforcing that those functions actually produce pretty output. For details, see Section 22.2.1.4 (Pretty Print Dispatch Tables). 
 
 
-Variable *PRINT-PRETTY*
+### <span id="V-PRINT-PRETTY">变量 *PRINT-PRETTY*</span>
 
-Value Type:
+* 值类型(Value Type):
 
 a generalized boolean.
 
-Initial Value:
+* 初始值(Initial Value):
 
 implementation-dependent.
 
-Description:
+* 描述(Description):
 
 Controls whether the Lisp printer calls the pretty printer.
 
@@ -3028,7 +2887,7 @@ If it is true, the pretty printer is used, and the Lisp printer will endeavor to
 
 *print-pretty* has an effect even when the value of *print-escape* is false.
 
-Examples:
+* 示例(Examples):
 
  (setq *print-pretty* 'nil) =>  NIL
  (progn (write '(let ((a 1) (b 2) (c 3)) (+ a b c))) nil)
@@ -3061,26 +2920,26 @@ Examples:
 >>      (LIST a b 'C #'D))
 =>  NIL
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-See Also:
+* 也见(See Also):
 
 write
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Variable *PRINT-READABLY*
+### <span id="V-PRINT-READABLY">变量 *PRINT-READABLY*</span>
 
-Value Type:
+* 值类型(Value Type):
 
 a generalized boolean.
 
-Initial Value:
+* 初始值(Initial Value):
 
 false.
 
-Description:
+* 描述(Description):
 
 If *print-readably* is true, some special rules for printing objects go into effect. Specifically, printing any object O1 produces a printed representation that, when seen by the Lisp reader while the standard readtable is in effect, will produce an object O2 that is similar to O1. The printed representation produced might or might not be the same as the printed representation produced when *print-readably* is false. If printing an object readably is not possible, an error of type print-not-readable is signaled rather than using a syntax (e.g., the ``#<'' syntax) that would not be readable by the same implementation. If the value of some other printer control variable is such that these requirements would be violated, the value of that other variable is ignored.
 
@@ -3092,7 +2951,7 @@ Individual methods for print-object, including user-defined methods, are respons
 
 If *read-eval* is false and *print-readably* is true, any such method that would output a reference to the ``#.'' reader macro will either output something else or will signal an error (as described above).
 
-Examples:
+* 示例(Examples):
 
  (let ((x (list "a" '\a (gensym) '((a (b (c))) d e f g)))
        (*print-escape* nil)
@@ -3137,93 +2996,93 @@ Examples:
 >>      HASH-TABLE)
 =>  #<HASH-TABLE EQL 0/120 32005763>
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-See Also:
+* 也见(See Also):
 
 write, print-unreadable-object
 
-Notes:
+* 注意(Notes):
 
 The rules for ``similarity'' imply that #A or #( syntax cannot be used for arrays of element type other than t. An implementation will have to use another syntax or signal an error of type print-not-readable. 
 
 
-Variable *PRINT-RIGHT-MARGIN*
+### <span id="V-PRINT-RIGHT-MARGIN">变量 *PRINT-RIGHT-MARGIN*</span>
 
-Value Type:
+* 值类型(Value Type):
 
 a non-negative integer, or nil.
 
-Initial Value:
+* 初始值(Initial Value):
 
 nil.
 
-Description:
+* 描述(Description):
 
 If it is non-nil, it specifies the right margin (as integer number of ems) to use when the pretty printer is making layout decisions.
 
 If it is nil, the right margin is taken to be the maximum line length such that output can be displayed without wraparound or truncation. If this cannot be determined, an implementation-dependent value is used.
 
-Examples: None.
+* 示例(Examples): None.
 
-See Also: None.
+* 也见(See Also): None.
 
-Notes:
+* 注意(Notes):
 
 This measure is in units of ems in order to be compatible with implementation-defined variable-width fonts while still not requiring the language to provide support for fonts. 
 
 
-Condition Type PRINT-NOT-READABLE
+### <span id="CT-PRINT-NOT-READABLE">状况类型 PRINT-NOT-READABLE</span>
 
 Class Precedence List:
 
 print-not-readable, error, serious-condition, condition, t
 
-Description:
+* 描述(Description):
 
 The type print-not-readable consists of error conditions that occur during output while *print-readably* is true, as a result of attempting to write a printed representation with the Lisp printer that would not be correctly read back with the Lisp reader. The object which could not be printed is initialized by the :objectinitialization argument to make-condition, and is accessed by the function print-not-readable-object.
 
-See Also:
+* 也见(See Also):
 
 print-not-readable-object 
 
 
-Function PRINT-NOT-READABLE-OBJECT
+### <span id="F-PRINT-NOT-READABLE-OBJECT">函数 PRINT-NOT-READABLE-OBJECT</span>
 
-Syntax:
+* 语法(Syntax):
 
 print-not-readable-object condition => object
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 condition---a condition of type print-not-readable.
 
 object---an object.
 
-Description:
+* 描述(Description):
 
 Returns the object that could not be printed readably in the situation represented by condition.
 
-Examples: None.
+* 示例(Examples): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 print-not-readable, Section 9 (Conditions)
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function FORMAT
+### <span id="F-FORMAT">函数 FORMAT</span>
 
-Syntax:
+* 语法(Syntax):
 
 format destination control-string &rest args => result
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 destination---nil, t, a stream, or a string with a fill pointer.
 
@@ -3233,7 +3092,7 @@ args---format arguments for control-string.
 
 result---if destination is non-nil, then nil; otherwise, a string.
 
-Description:
+* 描述(Description):
 
 format produces formatted output by outputting the characters of control-string and observing that a tilde introduces a directive. The character after the tilde, possibly preceded by prefix parameters and modifiers, specifies what kind of formatting is desired. Most directives use one or more elements of args to create their output.
 
@@ -3243,21 +3102,21 @@ format is useful for producing nicely formatted text, producing good-looking mes
 
 For details on how the control-string is interpreted, see Section 22.3 (Formatted Output).
 
-Examples: None.
+* 示例(Examples): None.
 
-Affected By:
+* 受此影响(Affected By):
 
 *standard-output*, *print-escape*, *print-radix*, *print-base*, *print-circle*, *print-pretty*, *print-level*, *print-length*, *print-case*, *print-gensym*, *print-array*.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 If destination is a string with a fill pointer, the consequences are undefined if destructive modifications are performed directly on the string during the dynamic extent of the call.
 
-See Also:
+* 也见(See Also):
 
 write, Section 13.1.10 (Documentation of Implementation-Defined Scripts)
 
-Notes: None.
+* 注意(Notes): None.
 
 
 

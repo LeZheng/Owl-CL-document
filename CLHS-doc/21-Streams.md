@@ -76,13 +76,13 @@
 
 对于一个关闭的流, 把流强制转换为路径名是允许的; 在一些情况下, 例如在一个真实名字计算中, 对于一个打开的流和同一流被关闭后的结果是不同的. 
 
-##### 21.1.1.1.3 Interactive Streams
+##### 21.1.1.1.3 交互式流
 
 交互式流是可以在上面执行交互式查询的一种流.
 
 一个交互式流的准确定义是具体实现定义的, 并且可能依赖于底层操作系统. 实现可能选择用作识别交互流的特征的东西的一些示例包括:
 
-* 这个流与一个人 (或同等的) 连接在一起, 程序可以提示信息并期望根据提示接收不同的输入 The stream is connected to a person (or equivalent) in such a way that the program can prompt for information and expect to receive different input depending on the prompt.<!-- TODO 待校验 -->
+* 这个流与一个人 (或等价物) 联系在一起, 程序可以提示信息并期望根据提示接收不同的输入.
 
 * 该程序期望提示输入和支持 "正常的输入编辑".
 
@@ -737,7 +737,7 @@
 
         如果 recursive-p 是 true, 这个调用预期会被嵌入到一个更高层次的对 read 或一个 Lisp 读取器使用的类似函数的调用中.
 
-        当 input-stream 是一个回音流时, 只是被窥视的字符不会被重复. 在这个 peek-type 不是 nil 的情况中, 通过 peek-char 传递的这些字符会被当作通过 read-char 一样处理, 因此, 除非它们被 unread-char 标记出来否则就会得到回响.
+        当 input-stream 是一个回音流时, 只是被窥视的字符不会被回响. 在这个 peek-type 不是 nil 的情况中, 通过 peek-char 传递的这些字符会被当作通过 read-char 一样处理, 因此, 除非它们被 unread-char 标记出来否则就会得到回响.
 
 * 示例(Examples):
 
@@ -1375,7 +1375,7 @@
 
 * 注意(Notes):
 
-        具有被表示为一个有界大小的记录序列的字符文件的具体实现可能选择去对这个文件位置进行编码, 比如, <<record-number>>*<<max-record-size>>+<<character-within-record>>. 这是一个有效的编码因为它随着每个字符被读取或写入单调递增, 尽管每次步进没有必要是 1. 作为给 file-position 的 position-spec, 如果在解码成记录的数字和字符号时, 结果表明所提供的记录对于指定的字符数来说太短了, 一个整数可能被认为是 "不合适的". <!--TODO 待校验-->
+        具有被表示为一个有界大小的记录序列的字符文件的具体实现可能选择去对这个文件位置进行编码, 比如, <<record-number>>*<<max-record-size>>+<<character-within-record>>. 这是一个有效的编码因为它随着每个字符被读取或写入单调递增, 尽管每次步进没有必要是 1. 作为给 file-position 的 position-spec, 如果在解码成记录的数字和字符号时, 结果表明所提供的记录对于指定的字符数来说太短了, 一个整数可能被认为是 "不合适的".
 
 
 ### <span id="F-FILE-STRING-LENGTH">函数 FILE-STRING-LENGTH</span>
@@ -2523,7 +2523,7 @@
 
         这个 index 是这个要被推进的字符串 string 中的一个指针. 如果 with-input-from-string 正常退出, 那么 index 的值就是字符串 string 中表示第一个没有读取的字符的索引, 如果所有字符都使用了那么它就是 (length string). 由 index 指定的 place 不会随着读取进度而更新, 但是只有在这个操作的结尾更新.
 
-        start 和 index 可能都执行同一个变量, 它是要被推进的字符串 string 中的一个指针, 可能会被一些包含循环的指针重复 which is a pointer within the string to be advanced, perhaps repeatedly by some containing loop.<!--TODO 待校对-->
+        start 和 index 可能都指向同一个变量, 它是要被推进的字符串 string 中的一个指针, 可能会被一些包含循环的指针重复.
 
         如果尝试去对变量 var 赋值, 那么后果是未定义的.
 
