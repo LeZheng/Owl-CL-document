@@ -1,74 +1,73 @@
-# 22 Printer
+# 22 打印器
 
-> * 22.1 [The Lisp Printer](#TheLispPrinter)
+> * 22.1 [Lisp 打印器](#TheLispPrinter)
 > * 22.2 [The Lisp Pretty Printer](#TheLispPrettyPrinter)
 > * 22.3 [Formatted Output](#FormattedOutput)
 > * 22.4 [The Printer Dictionary](#ThePrinterDictionary)
 
 
-## 22.1 <span id="TheLispPrinter">The Lisp Printer</span>
+## 22.1 <span id="TheLispPrinter">Lisp 打印器</span>
 
-> * 22.1.1 [Overview of The Lisp Printer](#OverviewTheLispPrinter)
+> * 22.1.1 [Lisp 打印器概览](#OverviewTheLispPrinter)
 > * 22.1.2 [Printer Dispatching](#PrinterDispatching)
 > * 22.1.3 [Default Print-Object Methods](#DefaultPrintObjectMethods)
 > * 22.1.4 [Examples of Printer Behavior](#ExamplesPrinterBehavior)
 
-### 22.1.1 <span id="OverviewTheLispPrinter">Overview of The Lisp Printer</span>
+### 22.1.1 <span id="OverviewTheLispPrinter">Lisp 打印器概览</span>
 
-Common Lisp provides a representation of most objects in the form of printed text called the printed representation. Functions such as print take an object and send the characters of its printed representation to a stream. The collection of routines that does this is known as the (Common Lisp) printer.
+Common Lisp 以打印文本的形式提供了大多数对象的表示形式, 称为打印表示. 像 print 这样的函数接受一个对象并且把它的打印表示的字符发送给一个流. 做这些的例程集合被称为(Common Lisp)打印器.
 
-Reading a printed representation typically produces an object that is equal to the originally printed object.
+读取一个打印表示通常产生一个和原始打印对象 equal 的对象.
 
-#### 22.1.1.1 Multiple Possible Textual Representations
+#### 22.1.1.1 多种可能的文本表示
 
-Most objects have more than one possible textual representation. For example, the positive integer with a magnitude of twenty-seven can be textually expressed in any of these ways:
+大部分对象有着超过一个可能的文本表示. 比如, 带有 27 大小的正整数在文本上可以被表示为这些方式的任意一种:
 
- 27    27.    #o33    #x1B    #b11011    #.(* 3 3 3)    81/3
+    27    27.    #o33    #x1B    #b11011    #.(* 3 3 3)    81/3
 
-A list containing the two symbols A and B can also be textually expressed in a variety of ways:
+一个包含两个符号 A 和 B 的列表也在文本上被表示为好几种方式:
 
- (A B)    (a b)    (  a  b )    (\A |B|) 
-(|\A|
-  B
-)
+    (A B)    (a b)    (  a  b )    (\A |B|) 
+    (|\A|
+      B
+    )
 
-In general, from the point of view of the Lisp reader, wherever whitespace is permissible in a textual representation, any number of spaces and newlines can appear in standard syntax.
+通常情况下, 从 Lisp 读取器的视角看, 在一个文本表示允许空白字符的地方, 任意数量的空格和换行可以出现在标准语法中.
 
-When a function such as print produces a printed representation, it must choose from among many possible textual representations. In most cases, it chooses a program readable representation, but in certain cases it might use a more compact notation that is not program-readable.
+当一个比如 print 这样的函数产生一个打印表示时, 它必须从几个可能的文本表示中选择. 在大部分情况下, 它选择一个程序可读的表示, 但在某些情况下, 它可能使用更紧凑的符号, 而不是程序可读的.
 
-A number of option variables, called printer control variables, are provided to permit control of individual aspects of the printed representation of objects. The next figure shows the standardized printer control variables; there might also be implementation-defined printer control variables.
+提供了许多被称之为打印器控制变量的选项变量来允许控制对象的打印表示的各个方面. 下一段中展示了标准打印器控制变量; 这里也可能存在具体实现定义的打印器控制变量.
 
-*print-array*   *print-gensym*       *print-pprint-dispatch*  
-*print-base*    *print-length*       *print-pretty*           
-*print-case*    *print-level*        *print-radix*            
-*print-circle*  *print-lines*        *print-readably*         
-*print-escape*  *print-miser-width*  *print-right-margin*     
+    *print-array*   *print-gensym*       *print-pprint-dispatch*  
+    *print-base*    *print-length*       *print-pretty*           
+    *print-case*    *print-level*        *print-radix*            
+    *print-circle*  *print-lines*        *print-readably*         
+    *print-escape*  *print-miser-width*  *print-right-margin*     
 
-Figure 22-1. Standardized Printer Control Variables
+    Figure 22-1. 标准打印器控制变量
 
-In addition to the printer control variables, the following additional defined names relate to or affect the behavior of the Lisp printer:
+除了打印器控制变量之外, 下面的附加已定义名称与 Lisp 打印器的行为相关或影响:
 
-*package*                    *read-eval*  readtable-case  
-*read-default-float-format*  *readtable*                  
+    *package*                    *read-eval*  readtable-case  
+    *read-default-float-format*  *readtable*                  
 
-Figure 22-2. Additional Influences on the Lisp printer.
+    Figure 22-2. 对 Lisp 打印器的额外影响.
 
-##### 22.1.1.1.1 Printer Escaping
+##### 22.1.1.1.1 打印器转义
 
-The variable *print-escape* controls whether the Lisp printer tries to produce notations such as escape characters and package prefixes.
+变量 \*print-escape* 控制 Lisp 打印器是否尝试去产生诸如转义字符和包前缀这类的标记.
 
-The variable *print-readably* can be used to override many of the individual aspects controlled by the other printer control variables when program-readable output is especially important.
+当程序可读的输出特别重要时, 变量 \*print-readably* 可以被用于重写由其他打印器控制变量控制的各个方面.
 
-One of the many effects of making the value of *print-readably* be true is that the Lisp printer behaves as if *print-escape* were also true. For notational convenience, we say that if the value of either *print-readably* or *print-escape* is true, then printer escaping is ``enabled''; and we say that if the values of both *print-readably* and *print-escape* are false, then printer escaping is ``disabled''. 
-
+使 \*print-readably* 的值为 true 的诸多影响中的一个是 Lisp 打印器表现地就好像 \*print-escape* 也是 true 一样. 为了表示方便, 我们说如果 \*print-readably* 或 \*print-escape* 任意一个值是 true, 那么打印器转义就是 "启用的"; 并且我们说如果 \*print-readably* 和 \*print-escape* 的值都是 false, 那么打印器转义就是 "禁用的". 
 
 ### 22.1.2 <span id="PrinterDispatching">Printer Dispatching</span>
 
-The Lisp printer makes its determination of how to print an object as follows:
+Lisp 打印器决定如何打印一个对象, 如下所示:
 
-If the value of *print-pretty* is true, printing is controlled by the current pprint dispatch table; see Section 22.2.1.4 (Pretty Print Dispatch Tables).
+如果 \*print-pretty* 的值是 true, 打印由当前的 pprint 分派表(current pprint dispatch table)控制; 见章节 22.2.1.4 (Pretty Print Dispatch Tables).
 
-Otherwise (if the value of *print-pretty* is false), the object's print-object method is used; see Section 22.1.3 (Default Print-Object Methods). 
+否则 (如果 \*print-pretty* 的值是 false), 使用对象的 print-object 方法; 见章节 22.1.3 (Default Print-Object Methods). 
 
 ### 22.1.3 <span id="DefaultPrintObjectMethods">Default Print-Object Methods</span>
 
@@ -1587,17 +1586,16 @@ The ~^ should appear only at the beginning of a ~< clause, because it aborts the
 
 * 语法(Syntax):
 
-copy-pprint-dispatch &optional table => new-table
+        copy-pprint-dispatch &optional table => new-table
 
 * 参数和值(Arguments and Values):
 
-table---a pprint dispatch table, or nil.
-
-new-table---a fresh pprint dispatch table.
+        table---一个 pprint 分派表, 或 nil.
+        new-table---一个新的 pprint 分派表.
 
 * 描述(Description):
 
-Creates and returns a copy of the specified table, or of the value of *print-pprint-dispatch* if no table is specified, or of the initial value of *print-pprint-dispatch* if nil is specified.
+        创建并返回指定的表 table 的一个拷贝, 如果没有指定表 table 那么就是 *print-pprint-dispatch* 的值的拷贝, 如果指定了 nil 那么就是 *print-pprint-dispatch* 初始值的拷贝.
 
 * 示例(Examples): None.
 
@@ -1607,7 +1605,7 @@ Creates and returns a copy of the specified table, or of the value of *print-ppr
 
 * 异常情况(Exceptional Situations):
 
-Should signal an error of type type-error if table is not a pprint dispatch table.
+        如果 table 不是一个 pprint 分派表那么应该发出一个 type-error 类型的错误.
 
 * 也见(See Also): None.
 
@@ -1618,33 +1616,34 @@ Should signal an error of type type-error if table is not a pprint dispatch tabl
 
 * 语法(Syntax):
 
-formatter control-string => function
+        formatter control-string => function
 
 * 参数和值(Arguments and Values):
 
-control-string---a format string; not evaluated.
-
-function---a function.
+        control-string---一个格式化字符串; 不求值.
+        function---一个函数.
 
 * 描述(Description):
 
-Returns a function which has behavior equivalent to:
+        返回一个表现和下面这个一样的函数:
 
-  #'(lambda (*standard-output* &rest arguments)
-      (apply #'format t control-string arguments)
-      arguments-tail)
+            #'(lambda (*standard-output* &rest arguments)
+                (apply #'format t control-string arguments)
+                arguments-tail)
 
-where arguments-tail is either the tail of arguments which has as its car the argument that would be processed next if there were more format directives in the control-string, or else nil if no more arguments follow the most recently processed argument.
+        如果在 control-string 中有更多格式化指令, 其中 arguments-tail 是参数 arguments 的末尾, 它有着下一个要被处理的参数作为它的 car, 如果最近处理的参数后没有更多 arguments 那么就是 nil.
 
 * 示例(Examples):
 
-(funcall (formatter "~&~A~A") *standard-output* 'a 'b 'c)
->>  AB
-=>  (C)
+    ```LISP
+    (funcall (formatter "~&~A~A") *standard-output* 'a 'b 'c)
+    >>  AB
+    =>  (C)
 
-(format t (formatter "~&~A~A") 'a 'b 'c)
->>  AB
-=>  NIL
+    (format t (formatter "~&~A~A") 'a 'b 'c)
+    >>  AB
+    =>  NIL
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -1652,11 +1651,11 @@ where arguments-tail is either the tail of arguments which has as its car the ar
 
 * 异常情况(Exceptional Situations):
 
-Might signal an error (at macro expansion time or at run time) if the argument is not a valid format string.
+        如果这个参数不是一个有效的格式化字符串, 那么可能会发出一个错误(在宏展开时或运行时).
 
 * 也见(See Also):
 
-format
+        format
 
 * 注意(Notes): None. 
 
@@ -1665,25 +1664,22 @@ format
 
 * 语法(Syntax):
 
-pprint-dispatch object &optional table => function, found-p
+        pprint-dispatch object &optional table => function, found-p
 
 * 参数和值(Arguments and Values):
 
-object---an object.
-
-table---a pprint dispatch table, or nil. The default is the value of *print-pprint-dispatch*.
-
-function---a function designator.
-
-found-p---a generalized boolean.
+        object---一个对象.
+        table---一个 pprint 分派表, 或者 nil. 默认是 *print-pprint-dispatch* 的值.
+        function---一个函数标识符.
+        found-p---一个广义 boolean.
 
 * 描述(Description):
 
-Retrieves the highest priority function in table that is associated with a type specifier that matches object. The function is chosen by finding all of the type specifiers in table that match the object and selecting the highest priority function associated with any of these type specifiers. If there is more than one highest priority function, an arbitrary choice is made. If no type specifiers match the object, a function is returned that prints object using print-object.
+        在表 table 中检索和 object 匹配的类型指定符相关联的最高优先级函数. 这个函数通过在表 table 中查找所有和对象 object 匹配的类型指定符并且挑选和这些类型指定符中的任意一个关联的最高优先级函数来选择的. 如果这里有超过一个最高优先级函数, 会执行任意的选择. 如果没有匹配 object 的类型指定符, 会返回一个使用 print-object 来打印对象 object 的函数.
 
-The secondary value, found-p, is true if a matching type specifier was found in table, or false otherwise.
+        第二个值, found-p, 如果在表 table 中找到匹配的类型指定符那么就是 true, 否则就是 false.
 
-If table is nil, retrieval is done in the initial pprint dispatch table.
+        如果 table 是 nil, 检索在最初的 pprint 分派表上进行.
 
 * 示例(Examples): None.
 
@@ -1691,21 +1687,19 @@ If table is nil, retrieval is done in the initial pprint dispatch table.
 
 * 受此影响(Affected By):
 
-The state of the table.
+        这个表 table 的状态.
 
 * 异常情况(Exceptional Situations):
 
-Should signal an error of type type-error if table is neither a pprint-dispatch-table nor nil.
+        如果 table 既不是 pprint-dispatch-table 也不是 nil 那么就会发出一个 type-error 类型的错误.
 
 * 也见(See Also): None.
 
 * 注意(Notes):
 
-(let ((*print-pretty* t))
-  (write object :stream s))
-==  (funcall (pprint-dispatch object) s object)
-
-
+        (let ((*print-pretty* t))
+          (write object :stream s))
+        ==  (funcall (pprint-dispatch object) s object)
 
 ### <span id="LM-PPRINT-EXIT-IF-LIST-EXHAUSTED">局部宏 PPRINT-EXIT-IF-LIST-EXHAUSTED</span>
 
@@ -1752,11 +1746,11 @@ pprint-tabular stream object &optional colon-p at-sign-p tabsize => nil
 
 stream---an output stream designator.
 
-object---an object.
+object---一个对象.
 
-colon-p---a generalized boolean. The default is true.
+colon-p---一个广义 boolean. The default is true.
 
-at-sign-p---a generalized boolean. The default is implementation-dependent.
+at-sign-p---一个广义 boolean. The default is implementation-dependent.
 
 tabsize---a non-negative integer. The default is 16.
 
@@ -2091,7 +2085,7 @@ print-object (object structure-object) stream
 
 * 参数和值(Arguments and Values):
 
-object---an object.
+object---一个对象.
 
 stream---a stream.
 
@@ -2266,21 +2260,21 @@ pprint object &optional output-stream => <no values>
 
 * 参数和值(Arguments and Values):
 
-object---an object.
+object---一个对象.
 
 output-stream---an output stream designator. The default is standard output.
 
-array---a generalized boolean.
+array---一个广义 boolean.
 
 base---a radix.
 
 case---a symbol of type (member :upcase :downcase :capitalize).
 
-circle---a generalized boolean.
+circle---一个广义 boolean.
 
-escape---a generalized boolean.
+escape---一个广义 boolean.
 
-gensym---a generalized boolean.
+gensym---一个广义 boolean.
 
 length---a non-negative integer, or nil.
 
@@ -2292,11 +2286,11 @@ miser-width---a non-negative integer, or nil.
 
 pprint-dispatch---a pprint dispatch table.
 
-pretty---a generalized boolean.
+pretty---一个广义 boolean.
 
-radix---a generalized boolean.
+radix---一个广义 boolean.
 
-readably---a generalized boolean.
+readably---一个广义 boolean.
 
 right-margin---a non-negative integer, or nil.
 
@@ -2383,19 +2377,19 @@ princ-to-string object => string
 
 * 参数和值(Arguments and Values):
 
-object---an object.
+object---一个对象.
 
-array---a generalized boolean.
+array---一个广义 boolean.
 
 base---a radix.
 
 case---a symbol of type (member :upcase :downcase :capitalize).
 
-circle---a generalized boolean.
+circle---一个广义 boolean.
 
-escape---a generalized boolean.
+escape---一个广义 boolean.
 
-gensym---a generalized boolean.
+gensym---一个广义 boolean.
 
 length---a non-negative integer, or nil.
 
@@ -2407,11 +2401,11 @@ miser-width---a non-negative integer, or nil.
 
 pprint-dispatch---a pprint dispatch table.
 
-pretty---a generalized boolean.
+pretty---一个广义 boolean.
 
-radix---a generalized boolean.
+radix---一个广义 boolean.
 
-readably---a generalized boolean.
+readably---一个广义 boolean.
 
 right-margin---a non-negative integer, or nil.
 
@@ -2494,7 +2488,7 @@ Section 2.4.8.3 (Sharpsign Left-Parenthesis), Section 2.4.8.20 (Sharpsign Less-T
 
 * 值类型(Value Type):
 
-*print-base*---a radix. *print-radix*---a generalized boolean.
+*print-base*---a radix. *print-radix*---一个广义 boolean.
 
 * 初始值(Initial Value):
 
@@ -3057,7 +3051,7 @@ print-not-readable-object condition => object
 
 condition---a condition of type print-not-readable.
 
-object---an object.
+object---一个对象.
 
 * 描述(Description):
 
