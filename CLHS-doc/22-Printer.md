@@ -9,8 +9,8 @@
 ## 22.1 <span id="TheLispPrinter">Lisp 打印器</span>
 
 > * 22.1.1 [Lisp 打印器概览](#OverviewTheLispPrinter)
-> * 22.1.2 [Printer Dispatching](#PrinterDispatching)
-> * 22.1.3 [Default Print-Object Methods](#DefaultPrintObjectMethods)
+> * 22.1.2 [打印器分派](#PrinterDispatching)
+> * 22.1.3 [默认 Print-Object 方法](#DefaultPrintObjectMethods)
 > * 22.1.4 [Examples of Printer Behavior](#ExamplesPrinterBehavior)
 
 ### 22.1.1 <span id="OverviewTheLispPrinter">Lisp 打印器概览</span>
@@ -61,192 +61,193 @@ Common Lisp 以打印文本的形式提供了大多数对象的表示形式, 称
 
 使 \*print-readably* 的值为 true 的诸多影响中的一个是 Lisp 打印器表现地就好像 \*print-escape* 也是 true 一样. 为了表示方便, 我们说如果 \*print-readably* 或 \*print-escape* 任意一个值是 true, 那么打印器转义就是 "启用的"; 并且我们说如果 \*print-readably* 和 \*print-escape* 的值都是 false, 那么打印器转义就是 "禁用的". 
 
-### 22.1.2 <span id="PrinterDispatching">Printer Dispatching</span>
+### 22.1.2 <span id="PrinterDispatching">打印器分派</span>
 
 Lisp 打印器决定如何打印一个对象, 如下所示:
 
 如果 \*print-pretty* 的值是 true, 打印由当前的 pprint 分派表(current pprint dispatch table)控制; 见章节 22.2.1.4 (Pretty Print Dispatch Tables).
 
-否则 (如果 \*print-pretty* 的值是 false), 使用对象的 print-object 方法; 见章节 22.1.3 (Default Print-Object Methods). 
+否则 (如果 \*print-pretty* 的值是 false), 使用对象的 print-object 方法; 见章节 22.1.3 (默认 Print-Object 方法). 
 
-### 22.1.3 <span id="DefaultPrintObjectMethods">Default Print-Object Methods</span>
+### 22.1.3 <span id="DefaultPrintObjectMethods">默认 Print-Object 方法</span>
 
-This section describes the default behavior of print-object methods for the standardized types.
+这一章节描述了 对于标准类型的 print-object 方法的默认行为.
 
-> * 22.1.3.1 [Printing Numbers](#PrintingNumbers)
-> * 22.1.3.2 [Printing Characters](#PrintingCharacters)
-> * 22.1.3.3 [Printing Symbols](#PrintingSymbols)
-> * 22.1.3.4 [Printing Strings](#PrintingStrings)
-> * 22.1.3.5 [Printing Lists and Conses](#PrintingListsConses)
-> * 22.1.3.6 [Printing Bit Vectors](#PrintingBitVectors)
-> * 22.1.3.7 [Printing Other Vectors](#PrintingOtherVectors)
-> * 22.1.3.8 [Printing Other Arrays](#PrintingOtherArrays)
-> * 22.1.3.9 [Examples of Printing Arrays](#ExamplesPrintingArrays)
-> * 22.1.3.10 [Printing Random States](#PrintingRandomStates)
-> * 22.1.3.11 [Printing Pathnames](#PrintingPathnames)
-> * 22.1.3.12 [Printing Structures](#PrintingStructures)
-> * 22.1.3.13 [Printing Other Objects](#PrintingOtherObjects)
-
-
-#### 22.1.3.1 <span id="PrintingNumbers">Printing Numbers</span>
-
-> * 22.1.3.1.1 [Printing Integers](#PrintingIntegers)
-> * 22.1.3.1.2 [Printing Ratios](#PrintingRatios)
-> * 22.1.3.1.3 [Printing Floats](#PrintingFloats)
-> * 22.1.3.1.4 [Printing Complexes](#PrintingComplexes)
-> * 22.1.3.1.5 [Note about Printing Numbers](#NotePrintingNumbers)
-
-##### 22.1.3.1.1 <span id="PrintingIntegers">Printing Integers</span>
-
-Integers are printed in the radix specified by the current output base in positional notation, most significant digit first. If appropriate, a radix specifier can be printed; see *print-radix*. If an integer is negative, a minus sign is printed and then the absolute value of the integer is printed. The integer zero is represented by the single digit 0 and never has a sign. A decimal point might be printed, depending on the value of *print-radix*.
-
-For related information about the syntax of an integer, see Section 2.3.2.1.1 (Syntax of an Integer). 
+> * 22.1.3.1 [打印数字](#PrintingNumbers)
+> * 22.1.3.2 [打印字符](#PrintingCharacters)
+> * 22.1.3.3 [打印符号](#PrintingSymbols)
+> * 22.1.3.4 [打印字符串](#PrintingStrings)
+> * 22.1.3.5 [打印列表和 cons](#PrintingListsConses)
+> * 22.1.3.6 [打印位向量](#PrintingBitVectors)
+> * 22.1.3.7 [打印其他向量](#PrintingOtherVectors)
+> * 22.1.3.8 [打印其他数组](#PrintingOtherArrays)
+> * 22.1.3.9 [打印数组的示例](#ExamplesPrintingArrays)
+> * 22.1.3.10 [打印随机状态](#PrintingRandomStates)
+> * 22.1.3.11 [打印路径名](#PrintingPathnames)
+> * 22.1.3.12 [打印结构体](#PrintingStructures)
+> * 22.1.3.13 [打印其他对象](#PrintingOtherObjects)
 
 
-##### 22.1.3.1.2 <span id="PrintingRatios">Printing Ratios</span>
+#### 22.1.3.1 <span id="PrintingNumbers">打印数字</span>
 
-Ratios are printed as follows: the absolute value of the numerator is printed, as for an integer; then a /; then the denominator. The numerator and denominator are both printed in the radix specified by the current output base; they are obtained as if by numerator and denominator, and so ratios are printed in reduced form (lowest terms). If appropriate, a radix specifier can be printed; see *print-radix*. If the ratio is negative, a minus sign is printed before the numerator.
+> * 22.1.3.1.1 [打印整数](#PrintingIntegers)
+> * 22.1.3.1.2 [打印比率](#PrintingRatios)
+> * 22.1.3.1.3 [打印浮点数](#PrintingFloats)
+> * 22.1.3.1.4 [打印复数](#PrintingComplexes)
+> * 22.1.3.1.5 [关于打印数字的注意事项](#NotePrintingNumbers)
 
-For related information about the syntax of a ratio, see Section 2.3.2.1.2 (Syntax of a Ratio). 
+##### 22.1.3.1.1 <span id="PrintingIntegers">打印整数</span>
 
+整数是用当前的输出基在位置符号中指定的基数来打印的, 首先是最重要的数字 Integers are printed in the radix specified by the current output base in positional notation, most significant digit first.<!--TODO 待校验--> 如果合适的话, 可以打印出一个基数说明符; 见 \*print-radix*. 如果一个整数是负的, 会打印一个负号还有那个整数的绝对值. 整数零会被表示为单个数字 0 并且不会有符号. 一个小数点可能被打印出来, 取决于 \*print-radix* 的值.
 
-##### 22.1.3.1.3 <span id="PrintingFloats">Printing Floats</span>
-
-If the magnitude of the float is either zero or between 10^-3 (inclusive) and 10^7 (exclusive), it is printed as the integer part of the number, then a decimal point, followed by the fractional part of the number; there is always at least one digit on each side of the decimal point. If the sign of the number (as determined by float-sign) is negative, then a minus sign is printed before the number. If the format of the number does not match that specified by *read-default-float-format*, then the exponent marker for that format and the digit 0 are also printed. For example, the base of the natural logarithms as a short float might be printed as 2.71828S0.
-
-For non-zero magnitudes outside of the range 10^-3 to 10^7, a float is printed in computerized scientific notation. The representation of the number is scaled to be between 1 (inclusive) and 10 (exclusive) and then printed, with one digit before the decimal point and at least one digit after the decimal point. Next the exponent marker for the format is printed, except that if the format of the number matches that specified by *read-default-float-format*, then the exponent marker E is used. Finally, the power of ten by which the fraction must be multiplied to equal the original number is printed as a decimal integer. For example, Avogadro's number as a short float is printed as 6.02S23.
-
-For related information about the syntax of a float, see Section 2.3.2.2 (Syntax of a Float). 
-
-##### 22.1.3.1.4 <span id="PrintingComplexes">Printing Complexes</span>
-
-A complex is printed as #C, an open parenthesis, the printed representation of its real part, a space, the printed representation of its imaginary part, and finally a close parenthesis.
-
-For related information about the syntax of a complex, see Section 2.3.2.3 (Syntax of a Complex) and Section 2.4.8.11 (Sharpsign C). 
+关于一个整数的语法相关信息, 见章节 2.3.2.1.1 (Syntax of an Integer). 
 
 
-##### 22.1.3.1.5 <span id="NotePrintingNumbers">Note about Printing Numbers</span>
+##### 22.1.3.1.2 <span id="PrintingRatios">打印比率</span>
 
-The printed representation of a number must not contain escape characters; see Section 2.3.1.1.1 (Escape Characters and Potential Numbers). 
+比率按如下打印: 打印分子的绝对值, as for an integer<!--TODO 待翻译-->; 然后是一个 /; 再是分母. 分子和分母都以当前输出基指定的基数打印; 它们就像是通过 numerator 和 denominator 获取到的, 所以比率以简化形式打印(最低项). 如果合适的话, 可以打印出一个基数说明符; 见 \*print-radix*. 如果这个比率是负的, 在分子前会打印一个负号.
 
-
-#### 22.1.3.2 <span id="PrintingCharacters">Printing Characters</span>
-
-When printer escaping is disabled, a character prints as itself; it is sent directly to the output stream. When printer escaping is enabled, then #\ syntax is used.
-
-When the printer types out the name of a character, it uses the same table as the #\ reader macro would use; therefore any character name that is typed out is acceptable as input (in that implementation). If a non-graphic character has a standardized name[5], that name is preferred over non-standard names for printing in #\ notation. For the graphic standard characters, the character itself is always used for printing in #\ notation---even if the character also has a name[5].
-
-For details about the #\ reader macro, see Section 2.4.8.1 (Sharpsign Backslash). 
+关于一个比率的语法相关信息, 见章节 2.3.2.1.2 (Syntax of a Ratio). 
 
 
-#### 22.1.3.3 <span id="PrintingSymbols">Printing Symbols</span>
+##### 22.1.3.1.3 <span id="PrintingFloats">打印浮点数</span>
 
-When printer escaping is disabled, only the characters of the symbol's name are output (but the case in which to print characters in the name is controlled by *print-case*; see Section 22.1.3.3.2 (Effect of Readtable Case on the Lisp Printer)).
+如果这个浮点数的大小是零或在 10^-3 (包含的) 和 10^7 (不包含的) 之间, 它会被打印为这个数字的整数部分, 然后一个小数点, 然后是这个数字的小数部分; 小数点的每一边都至少有一个数字. 如果这个数字的符号 (由 float-sign 确定) 是负的, 那么会在这个数字之前打印一个负号. 如果这个数字的格式不匹配由 \*read-default-float-format* 指定的, 那么打印出该格式的指数标记和数字 0. 例如, 自然对数作为一个短的浮点数可以被打印成 2.71828S0.
 
-The remainder of Section 22.1.3.3 applies only when printer escaping is enabled.
+对于范围 10^-3 到 10^7 之外的非零大小, 一个浮点数以计算机科学计数法打印的. 这个数字的表示被缩放到 1 (包含的) 和 10 (不包含的) 之间然后打印, 其中小数点前一位数, 小数点后至少有一个位. 接下来是打印这个格式的指数标记, 但是如果数字的格式与 \*read-default-float-format* 指定的格式相匹配, 那么就使用 E. 最后, 一个 10 的幂被打印成一个十进制整数, 这个小数和这个幂相乘的结果等于原始数字. 例如, 阿伏伽德罗数作为一个短浮点数会被打印为 6.02S23.
 
-When printing a symbol, the printer inserts enough single escape and/or multiple escape characters (backslashes and/or vertical-bars) so that if read were called with the same *readtable* and with *read-base* bound to the current output base, it would return the same symbol (if it is not apparently uninterned) or an uninterned symbol with the same print name (otherwise).
+关于一个浮点数的语法相关信息, 见章节 2.3.2.2 (Syntax of a Float). 
 
-For example, if the value of *print-base* were 16 when printing the symbol face, it would have to be printed as \FACE or \Face or |FACE|, because the token face would be read as a hexadecimal number (decimal value 64206) if the value of *read-base* were 16.
+##### 22.1.3.1.4 <span id="PrintingComplexes">打印复数</span>
 
-For additional restrictions concerning characters with nonstandard syntax types in the current readtable, see the variable *print-readably*
+一个复数被打印为一个 #C, 一个开圆括号, 它的实部的打印表示, 一个空格, 它的虚部的打印表示, 以及最后的闭圆括号.
 
-For information about how the Lisp reader parses symbols, see Section 2.3.4 (Symbols as Tokens) and Section 2.4.8.5 (Sharpsign Colon).
+关于一个复数的相关语法, 见章节 2.3.2.3 (Syntax of a Complex) and Section 2.4.8.11 (Sharpsign C). 
 
-nil might be printed as () when *print-pretty* is true and printer escaping is enabled.
 
-> * 22.1.3.3.1 [Package Prefixes for Symbols](#PackagePrefixesSymbols)
-> * 22.1.3.3.2 [Effect of Readtable Case on the Lisp Printer](#EffectReadtableCase)
+##### 22.1.3.1.5 <span id="NotePrintingNumbers">关于打印数字的注意事项</span>
 
-##### 22.1.3.3.1 <span id="PackagePrefixesSymbols">Package Prefixes for Symbols</span>
+一个数字的打印表示一定不能包含转义字符; 见章节 2.3.1.1.1 (Escape Characters and Potential Numbers). 
 
-Package prefixes are printed if necessary. The rules for package prefixes are as follows. When the symbol is printed, if it is in the KEYWORD package, then it is printed with a preceding colon; otherwise, if it is accessible in the current package, it is printed without any package prefix; otherwise, it is printed with a package prefix.
 
-A symbol that is apparently uninterned is printed preceded by ``#:'' if *print-gensym* is true and printer escaping is enabled; if *print-gensym* is false or printer escaping is disabled, then the symbol is printed without a prefix, as if it were in the current package.
+#### 22.1.3.2 <span id="PrintingCharacters">打印字符</span>
 
-Because the #: syntax does not intern the following symbol, it is necessary to use circular-list syntax if *print-circle* is true and the same uninterned symbol appears several times in an expression to be printed. For example, the result of
+当打印器转义被禁用时, 一个字符被打印为它的自身; 它被直接发送给输出流. 当打印器转义被启用时, 那么使用 #\ 语法.
 
- (let ((x (make-symbol "FOO"))) (list x x))
+当打印器打印输出一个字符的名字时, 它使用和 #\ 读取器宏相同的表; 因此输出的任何字符作为输入都是可接受的 (在那个实现中). 如果一个非图形化字符有着一个标准化名字, 这个名字比非标准的名字更喜欢用 #\ 符号打印. 对于图形化标准字符, 这个字符自身被用于 #\ 标记打印---即便这个字符也有一个名字.
 
-would be printed as (#:foo #:foo) if *print-circle* were false, but as (#1=#:foo #1#) if *print-circle* were true.
+关于 #\ 读取器宏的详细信息, 见章节 2.4.8.1 (Sharpsign Backslash). 
 
-A summary of the preceding package prefix rules follows:
+#### 22.1.3.3 <span id="PrintingSymbols">打印符号</span>
+
+当打印器转义被禁用时, 只有那个符号名字的字符会被输出 (但是打印名字中的字符的大小写由 \*print-case* 控制; 见章节 22.1.3.3.2 (Lisp 打印器上读取表大小写的影响)).
+
+章节 22.1.3.3 的其余部分仅在启用打印器转义时才适用.
+
+当打印一个符号时, 打印器插入足够的单转义 和/或 多转义字符 (反斜线 和/或 竖线) 这样一来如果用相同的 \*readtable* 以及绑定到当前输出基数的 \*read-base* 来调用 read, 它会返回相同的符号 (如果它没有被显式解除捕捉的话) 或者一个带有相同打印名的未捕捉符号 (否则的话).
+
+比如, 当打印符号 face 时如果 \*print-base* 的值是 16, 它可能会被打印为 \FACE 或 \Face 或 |FACE|, 因为如果 \*read-base* 的值是 16 那么记号 face 会被读取为一个十六进制数字 (数字值 64206).
+
+对于当前读取表中具有非标准语法类型字符的附加限制, 见变量 \*print-readably*
+
+关于 Lisp 读取器如何解析符号的信息, 见章节 2.3.4 (Symbols as Tokens) 和章节 2.4.8.5 (Sharpsign Colon).
+
+当 \*print-pretty* 是 true 并且打印器转义是启用时, nil 可能被打印为 () .
+
+> * 22.1.3.3.1 [符号的包前缀](#PackagePrefixesSymbols)
+> * 22.1.3.3.2 [Lisp](#EffectReadtableCase)
+
+##### 22.1.3.3.1 <span id="PackagePrefixesSymbols">符号的包前缀</span>
+
+如果必要的话, 包前缀会被打印. 包前缀的规则如下. 当这个符号被打印时, 如果它在 KEYWORD 包, 那么它和一个前置的冒号一起被打印; 否则, 如果它在当前包中可访问, 它被打印为不带包前缀的; 否则, 它会被打印为带有一个包前缀的.
+
+如果 \*print-gensym* 是 true 并且打印器转义是启用的, 那么一个被显式解除绑定的符号会以 "#:" 前置的方式被打印; 如果 \*print-gensym* 是 false 或打印器转义被禁用, 那么符号会以不带前缀的方式打印, 就好像它是在当前包中的.
+
+由于 #: 语法不会捕捉后面的符号, 如果 \*print-circle* 是 true 并且相同的未捕捉的符号在一个要被打印的表达式中出现多次, 有必要去使用循环列表的语法. 比如, 如果 \*print-circle*  是 false, 下面这个的结果
+
+    (let ((x (make-symbol "FOO"))) (list x x))
+
+会被打印为 (#:foo #:foo), 如果 \*print-circle* 是 true, 那么就是 (#1=#:foo #1#).
+
+前面的包前缀规则的总结如下:
 
 foo:bar
 
-    foo:bar is printed when symbol bar is external in its home package foo and is not accessible in the current package.
+    当符号 bar 在它的 home 包 foo 中是外部的并且在当前包中不可访问的时, 打印 foo:bar.
 
 foo::bar
 
-    foo::bar is printed when bar is internal in its home package foo and is not accessible in the current package.
+    当 bar 在它的 home 包 foo 中是内部的并且在当前包中不可访问时, 打印 foo::bar.
 
 :bar
 
-    :bar is printed when the home package of bar is the KEYWORD package.
+    当 bar 的 home 包是 KEYWORD 包时, 打印 :bar.
 
 #:bar
 
-    #:bar is printed when bar is apparently uninterned, even in the pathological case that bar has no home package but is nevertheless somehow accessible in the current package. 
+    当 bar 被显式解除绑定, 即使在病态的情况下, bar 没有 home 包, 但在当前的包中却可以访问的, 都会打印 #:bar. 
 
 
-##### 22.1.3.3.2 <span id="EffectReadtableCase">Effect of Readtable Case on the Lisp Printer</span>
+##### 22.1.3.3.2 <span id="EffectReadtableCase">Lisp 打印器上读取表大小写的影响</span>
 
-When printer escaping is disabled, or the characters under consideration are not already quoted specifically by single escape or multiple escape syntax, the readtable case of the current readtable affects the way the Lisp printer writes symbols in the following ways:
-
-:upcase
-
-    When the readtable case is :upcase, uppercase characters are printed in the case specified by *print-case*, and lowercase characters are printed in their own case.
-
-:downcase
-
-    When the readtable case is :downcase, uppercase characters are printed in their own case, and lowercase characters are printed in the case specified by *print-case*.
-
-:preserve
-
-    When the readtable case is :preserve, all alphabetic characters are printed in their own case.
-
-:invert
-
-    When the readtable case is :invert, the case of all alphabetic characters in single case symbol names is inverted. Mixed-case symbol names are printed as is.
-
-The rules for escaping alphabetic characters in symbol names are affected by the readtable-case if printer escaping is enabled. Alphabetic characters are escaped as follows:
+当打印器转义被禁用, 或正在考虑的字符还没有被单转义或多转义语法引用时, 当前读取表的读取表大小写以以下方式影响 Lisp 打印器写入符号的方式:
 
 :upcase
 
-    When the readtable case is :upcase, all lowercase characters must be escaped.
+    当读取表大小写是 :upcase 时, 大写字符由 *print-case* 指定的大小写来打印, 而小写字符按照它们自身的大小写打印.
 
 :downcase
 
-    When the readtable case is :downcase, all uppercase characters must be escaped.
+    当读取表大小写是 :downcase 时, 大写字符按照它们自身的大小写打印, 而小写字符由 *print-case* 指定的大小写来打印.
 
 :preserve
 
-    When the readtable case is :preserve, no alphabetic characters need be escaped.
+    当读取表大小写是 :preserve 时, 所有字母字符都按照它们自身的大小写打印.
 
 :invert
 
-    When the readtable case is :invert, no alphabetic characters need be escaped.
+    当读取表大小写是 :invert 时, 单一大小写符号名中的所有字符的大小写会被转换. 混合大小写符号名会保留原样打印.
 
-###### 22.1.3.3.2.1 Examples of Effect of Readtable Case on the Lisp Printer
+如果启用了打印器转义, 那么转义符号名中的字母字符的规则受 readtable-case 影响. 字母字符按如下转义:
 
- (defun test-readtable-case-printing ()
-   (let ((*readtable* (copy-readtable nil))
-         (*print-case* *print-case*))
-     (format t "READTABLE-CASE *PRINT-CASE*  Symbol-name  Output~
-              ~%--------------------------------------------------~
-              ~%")
-     (dolist (readtable-case '(:upcase :downcase :preserve :invert))
-       (setf (readtable-case *readtable*) readtable-case)
-       (dolist (print-case '(:upcase :downcase :capitalize))
-         (dolist (symbol '(|ZEBRA| |Zebra| |zebra|))
-           (setq *print-case* print-case)
-           (format t "~&:~A~15T:~A~29T~A~42T~A"
-                   (string-upcase readtable-case)
-                   (string-upcase print-case)
-                   (symbol-name symbol)
-                   (prin1-to-string symbol)))))))
+:upcase
 
-The output from (test-readtable-case-printing) should be as follows:
+    当读取表大小写是 :upcase 时, 所有小写字符必须被转义.
+
+:downcase
+
+    当读取表大小写是 :downcase 时, 所有大写字符必须被转义.
+
+:preserve
+
+    当读取表大小写是 :preserve 时, 没有字母字符需要被转义.
+
+:invert
+
+    当读取表大小写是 :invert 时, 没有字母字符需要被转义.
+
+###### 22.1.3.3.2.1 Examples of Lisp 打印器上读取表大小写的影响
+
+    ```LISP
+    (defun test-readtable-case-printing ()
+      (let ((*readtable* (copy-readtable nil))
+            (*print-case* *print-case*))
+        (format t "READTABLE-CASE *PRINT-CASE*  Symbol-name  Output~
+                  ~%--------------------------------------------------~
+                  ~%")
+        (dolist (readtable-case '(:upcase :downcase :preserve :invert))
+          (setf (readtable-case *readtable*) readtable-case)
+          (dolist (print-case '(:upcase :downcase :capitalize))
+            (dolist (symbol '(|ZEBRA| |Zebra| |zebra|))
+              (setq *print-case* print-case)
+              (format t "~&:~A~15T:~A~29T~A~42T~A"
+                      (string-upcase readtable-case)
+                      (string-upcase print-case)
+                      (symbol-name symbol)
+                      (prin1-to-string symbol)))))))
+    ```
+
+来自 (test-readtable-case-printing) 的输出应该如下:
 
     READTABLE-CASE *PRINT-CASE*  Symbol-name  Output
     --------------------------------------------------
@@ -288,13 +289,13 @@ The output from (test-readtable-case-printing) should be as follows:
     :INVERT        :CAPITALIZE   zebra        ZEBRA
 
 
-#### 22.1.3.4 <span id="PrintingStrings">Printing Strings</span>
+#### 22.1.3.4 <span id="PrintingStrings">打印字符串</span>
 
 The characters of the string are output in order. If printer escaping is enabled, a double-quote is output before and after, and all double-quotes and single escapes are preceded by backslash. The printing of strings is not affected by *print-array*. Only the active elements of the string are printed.
 
 For information on how the Lisp reader parses strings, see Section 2.4.5 (Double-Quote). 
 
-#### 22.1.3.5 <span id="PrintingListsConses">Printing Lists and Conses</span>
+#### 22.1.3.5 <span id="PrintingListsConses">打印列表和 cons</span>
 
 Wherever possible, list notation is preferred over dot notation. Therefore the following algorithm is used to print a cons x:
 
@@ -308,7 +309,7 @@ Wherever possible, list notation is preferred over dot notation. Therefore the f
 
 5. A right-parenthesis is printed.
 
-Actually, the above algorithm is only used when *print-pretty* is false. When *print-pretty* is true (or when pprint is used), additional whitespace[1] may replace the use of a single space, and a more elaborate algorithm with similar goals but more presentational flexibility is used; see Section 22.1.2 (Printer Dispatching).
+Actually, the above algorithm is only used when *print-pretty* is false. When *print-pretty* is true (or when pprint is used), additional whitespace[1] may replace the use of a single space, and a more elaborate algorithm with similar goals but more presentational flexibility is used; see Section 22.1.2 (打印器分派).
 
 Although the two expressions below are equivalent, and the reader accepts either one and produces the same cons, the printer always prints such a cons in the second form.
 
@@ -338,14 +339,14 @@ Following are examples of printed representations of lists:
 
 For information on how the Lisp reader parses lists and conses, see Section 2.4.1 (Left-Parenthesis). 
 
-#### 22.1.3.6 <span id="PrintingBitVectors">Printing Bit Vectors</span>
+#### 22.1.3.6 <span id="PrintingBitVectors">打印位向量</span>
 
 A bit vector is printed as #* followed by the bits of the bit vector in order. If *print-array* is false, then the bit vector is printed in a format (using #<) that is concise but not readable. Only the active elements of the bit vector are printed.
 
 For information on Lisp reader parsing of bit vectors, see Section 2.4.8.4 (Sharpsign Asterisk). 
 
 
-#### 22.1.3.7 <span id="PrintingOtherVectors">Printing Other Vectors</span>
+#### 22.1.3.7 <span id="PrintingOtherVectors">打印其他向量</span>
 
 If *print-array* is true and *print-readably* is false, any vector other than a string or bit vector is printed using general-vector syntax; this means that information about specialized vector representations does not appear. The printed representation of a zero-length vector is #(). The printed representation of a non-zero-length vector begins with #(. Following that, the first element of the vector is printed. If there are any other elements, they are printed in turn, with each such additional element preceded by a space if *print-pretty* is false, or whitespace[1] if *print-pretty* is true. A right-parenthesis after the last element terminates the printed representation of the vector. The printing of vectors is affected by *print-level* and *print-length*. If the vector has a fill pointer, then only those elements below the fill pointer are printed.
 
@@ -355,7 +356,7 @@ If *print-readably* is true, the vector prints in an implementation-defined mann
 
 For information on how the Lisp reader parses these ``other vectors,'' see Section 2.4.8.3 (Sharpsign Left-Parenthesis). 
 
-#### 22.1.3.8 <span id="PrintingOtherArrays">Printing Other Arrays</span>
+#### 22.1.3.8 <span id="PrintingOtherArrays">打印其他数组</span>
 
 If *print-array* is true and *print-readably* is false, any array other than a vector is printed using #nA format. Let n be the rank of the array. Then # is printed, then n as a decimal integer, then A, then n open parentheses. Next the elements are scanned in row-major order, using write on each element, and separating elements from each other with whitespace[1]. The array's dimensions are numbered 0 to n-1 from left to right, and are enumerated with the rightmost index changing fastest. Every time the index for dimension j is incremented, the following actions are taken:
 
@@ -375,7 +376,7 @@ If *print-readably* is true, the array prints in an implementation-defined manne
 
 For information on how the Lisp reader parses these ``other arrays,'' see Section 2.4.8.12 (Sharpsign A).
 
-#### 22.1.3.9 <span id="ExamplesPrintingArrays">Examples of Printing Arrays</span>
+#### 22.1.3.9 <span id="ExamplesPrintingArrays">打印数组的示例</span>
 
  (let ((a (make-array '(3 3)))
        (*print-pretty* t)
@@ -390,7 +391,7 @@ For information on how the Lisp reader parses these ``other arrays,'' see Sectio
 =>  #<ARRAY 9 indirect 36363476>
 
 
-#### 22.1.3.10 <span id="PrintingRandomStates">Printing Random States</span>
+#### 22.1.3.10 <span id="PrintingRandomStates">打印随机状态</span>
 
 A specific syntax for printing objects of type random-state is not specified. However, every implementation must arrange to print a random state object in such a way that, within the same implementation, read can construct from the printed representation a copy of the random state object as if the copy had been made by make-random-state.
 
@@ -400,7 +401,7 @@ If the type random state is effectively implemented by using the machinery for d
 
 where the components are implementation-dependent. 
 
-#### 22.1.3.11 <span id="PrintingPathnames">Printing Pathnames</span>
+#### 22.1.3.11 <span id="PrintingPathnames">打印路径名</span>
 
 When printer escaping is enabled, the syntax #P"..." is how a pathname is printed by write and the other functions herein described. The "..." is the namestring representation of the pathname.
 
@@ -409,7 +410,7 @@ When printer escaping is disabled, write writes a pathname P by writing (namestr
 For information on how the Lisp reader parses pathnames, see Section 2.4.8.14 (Sharpsign P). 
 
 
-#### 22.1.3.12 <span id="PrintingStructures">Printing Structures</span>
+#### 22.1.3.12 <span id="PrintingStructures">打印结构体</span>
 
 By default, a structure of type S is printed using #S syntax. This behavior can be customized by specifying a :print-function or :print-object option to the defstruct form that defines S, or by writing a print-object method that is specialized for objects of type S.
 
@@ -423,7 +424,7 @@ For information on how the Lisp reader parses structures, see Section 2.4.8.13 (
 
 
 
-#### 22.1.3.13 <span id="PrintingOtherObjects">Printing Other Objects</span>
+#### 22.1.3.13 <span id="PrintingOtherObjects">打印其他对象</span>
 
 Other objects are printed in an implementation-dependent manner. It is not required that an implementation print those objects readably.
 
@@ -1758,7 +1759,7 @@ tabsize---a non-negative integer. The default is 16.
 
 The functions pprint-fill, pprint-linear, and pprint-tabular specify particular ways of pretty printing a list to stream. Each function prints parentheses around the output if and only if colon-p is true. Each function ignores its at-sign-p argument. (Both arguments are included even though only one is needed so that these functions can be used via ~/.../ and as set-pprint-dispatch functions, as well as directly.) Each function handles abbreviation and the detection of circularity and sharing correctly, and uses write to print object when it is a non-list.
 
-If object is a list and if the value of *print-pretty* is false, each of these functions prints object using a minimum of whitespace, as described in Section 22.1.3.5 (Printing Lists and Conses). Otherwise (if object is a list and if the value of *print-pretty* is true):
+If object is a list and if the value of *print-pretty* is false, each of these functions prints object using a minimum of whitespace, as described in Section 22.1.3.5 (打印列表和 cons). Otherwise (if object is a list and if the value of *print-pretty* is true):
 
     The function pprint-linear prints a list either all on one line, or with each element on a separate line.
 
@@ -2095,7 +2096,7 @@ The generic function print-object writes the printed representation of object to
 
 Each implementation is required to provide a method on the class standard-object and on the class structure-object. In addition, each implementation must provide methods on enough other classes so as to ensure that there is always an applicable method. Implementations are free to add methods for other classes. Users may write methods for print-object for their own classes if they do not wish to inherit an implementation-dependent method.
 
-The method on the class structure-object prints the object in the default #S notation; see Section 22.1.3.12 (Printing Structures).
+The method on the class structure-object prints the object in the default #S notation; see Section 22.1.3.12 (打印结构体).
 
 Methods on print-object are responsible for implementing their part of the semantics of the printer control variables, as follows:
 
@@ -2141,7 +2142,7 @@ In some implementations the stream argument passed to a print-object method is n
 
 * 也见(See Also):
 
-pprint-fill, pprint-logical-block, pprint-pop, write, *print-readably*, *print-escape*, *print-pretty*, *print-length*, Section 22.1.3 (Default Print-Object Methods), Section 22.1.3.12 (Printing Structures), Section 22.2.1.4 (Pretty Print Dispatch Tables), Section 22.2.2 (Examples of using the Pretty Printer)
+pprint-fill, pprint-logical-block, pprint-pop, write, *print-readably*, *print-escape*, *print-pretty*, *print-length*, Section 22.1.3 (默认 Print-Object 方法), Section 22.1.3.12 (打印结构体), Section 22.2.1.4 (Pretty Print Dispatch Tables), Section 22.2.2 (Examples of using the Pretty Printer)
 
 * 注意(Notes): None. 
 
@@ -2652,7 +2653,7 @@ If false, escape characters and package prefixes are not output when an expressi
 
 If true, an attempt is made to print an expression in such a way that it can be read again to produce an equal expression. (This is only a guideline; not a requirement. See *print-readably*.)
 
-For more specific details of how the value of *print-escape* affects the printing of certain types, see Section 22.1.3 (Default Print-Object Methods).
+For more specific details of how the value of *print-escape* affects the printing of certain types, see Section 22.1.3 (默认 Print-Object 方法).
 
 * 示例(Examples):
 
