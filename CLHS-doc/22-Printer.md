@@ -11,7 +11,7 @@
 > * 22.1.1 [Lisp 打印器概览](#OverviewTheLispPrinter)
 > * 22.1.2 [打印器分派](#PrinterDispatching)
 > * 22.1.3 [默认 Print-Object 方法](#DefaultPrintObjectMethods)
-> * 22.1.4 [Examples of Printer Behavior](#ExamplesPrinterBehavior)
+> * 22.1.4 [打印器行为的示例](#ExamplesPrinterBehavior)
 
 ### 22.1.1 <span id="OverviewTheLispPrinter">Lisp 打印器概览</span>
 
@@ -291,204 +291,202 @@ foo::bar
 
 #### 22.1.3.4 <span id="PrintingStrings">打印字符串</span>
 
-The characters of the string are output in order. If printer escaping is enabled, a double-quote is output before and after, and all double-quotes and single escapes are preceded by backslash. The printing of strings is not affected by *print-array*. Only the active elements of the string are printed.
+字符串中的字符会被依次输出. 如果启用了打印器转义, 一个双引号会在之前或之后被输出, 并且所有的双引号和单转义前面会有一个反斜线. 字符串的打印不受 \*print-array* 的影响. 只有字符串中的有效元素会被打印.
 
-For information on how the Lisp reader parses strings, see Section 2.4.5 (Double-Quote). 
+关于 Lisp 读取器如何解析字符串的信息, 见章节 2.4.5 (Double-Quote). 
 
 #### 22.1.3.5 <span id="PrintingListsConses">打印列表和 cons</span>
 
-Wherever possible, list notation is preferred over dot notation. Therefore the following algorithm is used to print a cons x:
+只要有可能, 列表记号优先于点记号 Wherever possible, list notation is preferred over dot notation. 因此以下运算法则被用于打印一个 cons x:
 
-1. A left-parenthesis is printed.
+1. 打印一个左圆括号.
 
-2. The car of x is printed.
+2. 打印 x 的 car.
 
-3. If the cdr of x is itself a cons, it is made to be the current cons (i.e., x becomes that cons), a space is printed, and step 2 is re-entered.
+3. 如果 x 的 cdr 自身是一个 cons, 它会成为当前的 cons (换句话说, x 变为那个 cons), 打印一个空格, 然后再次进入步骤 2.
 
-4. If the cdr of x is not null, a space, a dot, a space, and the cdr of x are printed.
+4. 如果 x 的 cdr 不为空, 打印一个空格, 一个点, 一个空格, 以及 x 的 cdr.
 
-5. A right-parenthesis is printed.
+5. 打印一个右圆括号.
 
-Actually, the above algorithm is only used when *print-pretty* is false. When *print-pretty* is true (or when pprint is used), additional whitespace[1] may replace the use of a single space, and a more elaborate algorithm with similar goals but more presentational flexibility is used; see Section 22.1.2 (打印器分派).
+事实上, 只有当 \*print-pretty* 是 false 时, 使用以上运算法则. 当 \*print-pretty* 是 true 时(或者当使用 pprint 时), 额外的空格可能替换一个单空格的使用, 并且一种更复杂的, 具有类似的目标, 但具有更多的表示灵活性的算法会被使用; 见章节 22.1.2 (打印器分派).
 
-Although the two expressions below are equivalent, and the reader accepts either one and produces the same cons, the printer always prints such a cons in the second form.
+虽然以下两个表达式是等价的, 并且读取器接收任意一个并打印相同的 cons, 但是打印器总是用第二种形式来打印这样一个 cons.
 
- (a . (b . ((c . (d . nil)) . (e . nil))))
- (a b (c d) e)
+    (a . (b . ((c . (d . nil)) . (e . nil))))
+    (a b (c d) e)
 
-The printing of conses is affected by *print-level*, *print-length*, and *print-circle*.
+cons 的打印受 \*print-level*, \*print-length*, 和 \*print-circle* 的影响.
 
-Following are examples of printed representations of lists:
+下面是列表的打印表示的示例:
 
- (a . b)     ;A dotted pair of a and b
- (a.b)       ;A list of one element, the symbol named a.b
- (a. b)      ;A list of two elements a. and b
- (a .b)      ;A list of two elements a and .b
- (a b . c)   ;A dotted list of a and b with c at the end; two conses
- .iot        ;The symbol whose name is .iot
- (. b)       ;Invalid -- an error is signaled if an attempt is made to read 
-             ;this syntax.
- (a .)       ;Invalid -- an error is signaled.
- (a .. b)    ;Invalid -- an error is signaled.
- (a . . b)   ;Invalid -- an error is signaled.
- (a b c ...) ;Invalid -- an error is signaled.
- (a \. b)    ;A list of three elements a, ., and b
- (a |.| b)   ;A list of three elements a, ., and b
- (a \... b)  ;A list of three elements a, ..., and b
- (a |...| b) ;A list of three elements a, ..., and b
+    (a . b)     ;A dotted pair of a and b
+    (a.b)       ;A list of one element, the symbol named a.b
+    (a. b)      ;A list of two elements a. and b
+    (a .b)      ;A list of two elements a and .b
+    (a b . c)   ;A dotted list of a and b with c at the end; two conses
+    .iot        ;The symbol whose name is .iot
+    (. b)       ;Invalid -- an error is signaled if an attempt is made to read 
+                ;this syntax.
+    (a .)       ;Invalid -- an error is signaled.
+    (a .. b)    ;Invalid -- an error is signaled.
+    (a . . b)   ;Invalid -- an error is signaled.
+    (a b c ...) ;Invalid -- an error is signaled.
+    (a \. b)    ;A list of three elements a, ., and b
+    (a |.| b)   ;A list of three elements a, ., and b
+    (a \... b)  ;A list of three elements a, ..., and b
+    (a |...| b) ;A list of three elements a, ..., and b
 
-For information on how the Lisp reader parses lists and conses, see Section 2.4.1 (Left-Parenthesis). 
+关于 Lisp 读取器如何解析列表和 cons 的信息, 见章节 2.4.1 (Left-Parenthesis). 
 
 #### 22.1.3.6 <span id="PrintingBitVectors">打印位向量</span>
 
-A bit vector is printed as #* followed by the bits of the bit vector in order. If *print-array* is false, then the bit vector is printed in a format (using #<) that is concise but not readable. Only the active elements of the bit vector are printed.
+一个位向量被打印为 #* 后面依次跟着位向量的各个位. 如果 \*print-array* 是 false, 那么位向量以一种简洁但是不可读取的格式 (使用 #<) 来打印. 只有位向量中的有效元素会被打印.
 
-For information on Lisp reader parsing of bit vectors, see Section 2.4.8.4 (Sharpsign Asterisk). 
+关于 Lisp 读取器如何解析位向量的信息, 见章节 2.4.8.4 (Sharpsign Asterisk). 
 
 
 #### 22.1.3.7 <span id="PrintingOtherVectors">打印其他向量</span>
 
-If *print-array* is true and *print-readably* is false, any vector other than a string or bit vector is printed using general-vector syntax; this means that information about specialized vector representations does not appear. The printed representation of a zero-length vector is #(). The printed representation of a non-zero-length vector begins with #(. Following that, the first element of the vector is printed. If there are any other elements, they are printed in turn, with each such additional element preceded by a space if *print-pretty* is false, or whitespace[1] if *print-pretty* is true. A right-parenthesis after the last element terminates the printed representation of the vector. The printing of vectors is affected by *print-level* and *print-length*. If the vector has a fill pointer, then only those elements below the fill pointer are printed.
+如果 \*print-array* 是 true 并且 \*print-readably* 是 false, 除了字符串和位向量以外的向量会用普通向量语法来打印; 这意味着关于特殊向量表示的信息不会出现. 零长度向量的打印表示是 #(). 非零长度的向量用 #( 开始打印. 在那个后面, 向量的第一个元素会被打印. 如果这里有任何其他元素, 它们会依次被打印, 如果 \*print-pretty* 是 false 那么每一个另外的元素前面会有一个空格 space, 如果 \*print-pretty* 是 true 那么就是空格 whitespace. 最后一个元素后的右圆括号终止这个向量的打印表示. 向量的打印受 \*print-level* 和 \*print-length* 的影响. 如果这个向量有着填充指针, 那么只有那些在填充指针下的元素会被打印.
 
-If both *print-array* and *print-readably* are false, the vector is not printed as described above, but in a format (using #<) that is concise but not readable.
+如果 \*print-array* 和 \*print-readably* 都是 false, 向量不会按如上所述被打印, 而是以一种简洁但不可读的格式 (using #<) 来打印.
 
-If *print-readably* is true, the vector prints in an implementation-defined manner; see the variable *print-readably*.
+如果 \*print-readably* 是 true, 那么向量以一种具体实现定义的方式来打印; 见变量 \*print-readably*.
 
-For information on how the Lisp reader parses these ``other vectors,'' see Section 2.4.8.3 (Sharpsign Left-Parenthesis). 
+关于 Lisp 读取器如何解析"其他变量"的信息, 见章节 2.4.8.3 (Sharpsign Left-Parenthesis). 
 
 #### 22.1.3.8 <span id="PrintingOtherArrays">打印其他数组</span>
 
-If *print-array* is true and *print-readably* is false, any array other than a vector is printed using #nA format. Let n be the rank of the array. Then # is printed, then n as a decimal integer, then A, then n open parentheses. Next the elements are scanned in row-major order, using write on each element, and separating elements from each other with whitespace[1]. The array's dimensions are numbered 0 to n-1 from left to right, and are enumerated with the rightmost index changing fastest. Every time the index for dimension j is incremented, the following actions are taken:
+如果 \*print-array* 是 true 并且 \*print-readably* 是 false, 除了向量以外的任何数组都用 #nA 格式打印. 让 n 为这个数组的维数. 接着打印 #, 再是十进制整数 n, 然后是 A, 然后 n 个开括号. 接下来这些元素按照行优先的顺序被扫描, 在每一个元素上使用 write, 并且元素之间用空格 whitespace 分隔. 数组的维度从左到右被计为 0 到 n-1, and are enumerated with the rightmost index changing fastest<!--TODO 待翻译-->. 每次维度 j 的索引递增, 就会采取以下动作:
 
-* If j < n-1, then a close parenthesis is printed.
+* 如果 j < n-1, 那么打印一个闭圆括号.
 
-* If incrementing the index for dimension j caused it to equal dimension j, that index is reset to zero and the index for dimension j-1 is incremented (thereby performing these three steps recursively), unless j=0, in which case the entire algorithm is terminated. If incrementing the index for dimension j did not cause it to equal dimension j, then a space is printed.
+* 如果递增维度 j 的索引导致它和维度 j 相等, 那个索引被重置为零并且维度 j-1 的索引会递增 (因此递归执行这三个步骤), 除非 j=0, 在这个情况下终止整个运算法则. 如果递增维度 j 的索引没有导致它等于维度 j, 那么打印一个空格 space.<!--TODO 待校验-->
 
-* If j < n-1, then an open parenthesis is printed.
+* 如果 j < n-1, 打印一个开圆括号.
 
-This causes the contents to be printed in a format suitable for :initial-contents to make-array. The lists effectively printed by this procedure are subject to truncation by *print-level* and *print-length*.
+这个导致要被打印的内容以一种适合于给 make-array 的 :initial-contents 参数的格式来打印. 这个过程有效打印的列表会被 \*print-level* and \*print-length* 截断.
 
-If the array is of a specialized type, containing bits or characters, then the innermost lists generated by the algorithm given above can instead be printed using bit-vector or string syntax, provided that these innermost lists would not be subject to truncation by *print-length*.
+如果这个数组是特定类型的, 包含位或者字符, 那么由上述运算法则生成的最内部的列表可以用位向量或字符串的语法来打印, 假定这些最内部的列表不会受限于 \*print-length* 的截断.
 
-If both *print-array* and *print-readably* are false, then the array is printed in a format (using #<) that is concise but not readable.
+如果 \*print-array* 和 \*print-readably* 都是 false, 那么数组以一种简洁但不可读的方式 (使用 #<) 打印.
 
-If *print-readably* is true, the array prints in an implementation-defined manner; see the variable *print-readably*. In particular, this may be important for arrays having some dimension 0.
+如果 \*print-readably* 是 true, 这个数组以一种具体实现定义的方式打印; 见变量 \*print-readably*. 具体来说, 这对于 0 维数组来说是很重要的.
 
-For information on how the Lisp reader parses these ``other arrays,'' see Section 2.4.8.12 (Sharpsign A).
+关于 Lisp 读取器如何解析这些"其他数组"的信息, 见章节 2.4.8.12 (Sharpsign A).
 
 #### 22.1.3.9 <span id="ExamplesPrintingArrays">打印数组的示例</span>
 
- (let ((a (make-array '(3 3)))
-       (*print-pretty* t)
-       (*print-array* t))
-   (dotimes (i 3) (dotimes (j 3) (setf (aref a i j) (format nil "<~D,~D>" i j))))
-   (print a)
-   (print (make-array 9 :displaced-to a)))
->>  #2A(("<0,0>" "<0,1>" "<0,2>") 
->>      ("<1,0>" "<1,1>" "<1,2>") 
->>      ("<2,0>" "<2,1>" "<2,2>")) 
->>  #("<0,0>" "<0,1>" "<0,2>" "<1,0>" "<1,1>" "<1,2>" "<2,0>" "<2,1>" "<2,2>") 
-=>  #<ARRAY 9 indirect 36363476>
-
+    ```LISP
+    (let ((a (make-array '(3 3)))
+          (*print-pretty* t)
+          (*print-array* t))
+      (dotimes (i 3) (dotimes (j 3) (setf (aref a i j) (format nil "<~D,~D>" i j))))
+      (print a)
+      (print (make-array 9 :displaced-to a)))
+    >>  #2A(("<0,0>" "<0,1>" "<0,2>") 
+    >>      ("<1,0>" "<1,1>" "<1,2>") 
+    >>      ("<2,0>" "<2,1>" "<2,2>")) 
+    >>  #("<0,0>" "<0,1>" "<0,2>" "<1,0>" "<1,1>" "<1,2>" "<2,0>" "<2,1>" "<2,2>") 
+    =>  #<ARRAY 9 indirect 36363476>
+    ```
 
 #### 22.1.3.10 <span id="PrintingRandomStates">打印随机状态</span>
 
-A specific syntax for printing objects of type random-state is not specified. However, every implementation must arrange to print a random state object in such a way that, within the same implementation, read can construct from the printed representation a copy of the random state object as if the copy had been made by make-random-state.
+没有为打印 random-state 类型的对象指定具体的语法. 然而, 每个具体实现必须以这样一种方式来安排打印随机对象, 在相同实现中, read 可以从这个打印表示来构造这个随机状态的一个拷贝, 就好像这个拷贝是通过 make-random-state 创建的一样.
 
-If the type random state is effectively implemented by using the machinery for defstruct, the usual structure syntax can then be used for printing random state objects; one might look something like
+如果这个随机状态类型被实际上是被 defstruct 来有效实现的, 那么平常的那个结构体语法可以被用于打印随机状态对象; 一个可能看上去像下面这样
 
- #S(RANDOM-STATE :DATA #(14 49 98436589 786345 8734658324 ... ))
+    #S(RANDOM-STATE :DATA #(14 49 98436589 786345 8734658324 ... ))
 
-where the components are implementation-dependent. 
+其中的成员是依赖于具体实现的. 
 
 #### 22.1.3.11 <span id="PrintingPathnames">打印路径名</span>
 
-When printer escaping is enabled, the syntax #P"..." is how a pathname is printed by write and the other functions herein described. The "..." is the namestring representation of the pathname.
+当启用打印器转义时, 语法 #P"..." 是路径名如何被 write 和这里描述的函数打印的语法. 这个 "..." 这个路径名的名称字符串表示.
 
-When printer escaping is disabled, write writes a pathname P by writing (namestring P) instead.
+当禁用打印器转义时, write 通过写入 (namestring P) 来写入一个路径名 P.
 
-For information on how the Lisp reader parses pathnames, see Section 2.4.8.14 (Sharpsign P). 
+关于 Lisp 读取器如何解析路径名的信息, 见章节 2.4.8.14 (Sharpsign P). 
 
 
 #### 22.1.3.12 <span id="PrintingStructures">打印结构体</span>
 
-By default, a structure of type S is printed using #S syntax. This behavior can be customized by specifying a :print-function or :print-object option to the defstruct form that defines S, or by writing a print-object method that is specialized for objects of type S.
+默认情况下, 一个类型 S 的结构体使用 #S 语法打印. 这个行为可以通过给定义 S 的 defstruct 表达式形式指定一个 :print-function 或 :print-object 选项, 或者通过写一个为 S 类型的对象特化的 print-object 方法来定制.
 
-Different structures might print out in different ways; the default notation for structures is:
+不同的结构体可能以不同的方式打印; 结构体的默认表示法是:
 
- #S(structure-name {slot-key slot-value}*)
+    #S(structure-name {slot-key slot-value}*)
 
-where #S indicates structure syntax, structure-name is a structure name, each slot-key is an initialization argument name for a slot in the structure, and each corresponding slot-value is a representation of the object in that slot.
+其中 #S 表示结构体语法, structure-name 是一个结构体名字, 每一个 slot-key 是这个结构体中一个槽的初始化参数名, 而每一个对应的 slot-value 那个槽中的对象的一个表示.
 
-For information on how the Lisp reader parses structures, see Section 2.4.8.13 (Sharpsign S). 
-
-
+关于 Lisp 如何解析结构体的信息, 见章节 2.4.8.13 (Sharpsign S). 
 
 #### 22.1.3.13 <span id="PrintingOtherObjects">打印其他对象</span>
 
-Other objects are printed in an implementation-dependent manner. It is not required that an implementation print those objects readably.
+其他对象以一种依赖于具体实现的方式被打印. 一个具体实现以可读的方式打印那些对象不是必须的.
 
-For example, hash tables, readtables, packages, streams, and functions might not print readably.
+比如, 哈系表, 读取表, 包, 流, 和函数可能不会以可读的方式打印.
 
-A common notation to use in this circumstance is #<...>. Since #< is not readable by the Lisp reader, the precise format of the text which follows is not important, but a common format to use is that provided by the print-unreadable-object macro.
+在这个情况中使用的普遍表示是 #<...>. 由于 #< 不是通过 Lisp 读取器可读的, 它遵循的文本准确格式是不重要的, 但是一个要去使用的普遍格式是由 print-unreadable-object 宏提供的.
 
-For information on how the Lisp reader treats this notation, see Section 2.4.8.20 (Sharpsign Less-Than-Sign). For information on how to notate objects that cannot be printed readably, see Section 2.4.8.6 (Sharpsign Dot).
+关于 Lisp 读取器如何对待这种表示的信息, 见章节 2.4.8.20 (Sharpsign Less-Than-Sign). 关于如果表示不能被可读地打印的对象的信息, 见章节 2.4.8.6 (Sharpsign Dot).
 
+### 22.1.4 <span id="ExamplesPrinterBehavior">打印器行为的示例</span>
 
+    ```LISP
+    (let ((*print-escape* t)) (fresh-line) (write #\a))
+    >>  #\a
+    =>  #\a
+    (let ((*print-escape* nil) (*print-readably* nil))
+      (fresh-line)
+      (write #\a))
+    >>  a
+    =>  #\a
+    (progn (fresh-line) (prin1 #\a))
+    >>  #\a
+    =>  #\a
+    (progn (fresh-line) (print #\a))
+    >>  
+    >>  #\a
+    =>  #\a
+    (progn (fresh-line) (princ #\a))
+    >>  a
+    =>  #\a
 
-### 22.1.4 <span id="ExamplesPrinterBehavior">Examples of Printer Behavior</span>
+    (dolist (val '(t nil))
+      (let ((*print-escape* val) (*print-readably* val))
+        (print '#\a) 
+        (prin1 #\a) (write-char #\Space)
+        (princ #\a) (write-char #\Space)
+        (write #\a)))
+    >>  #\a #\a a #\a
+    >>  #\a #\a a a
+    =>  NIL
 
- (let ((*print-escape* t)) (fresh-line) (write #\a))
->>  #\a
-=>  #\a
- (let ((*print-escape* nil) (*print-readably* nil))
-   (fresh-line)
-   (write #\a))
->>  a
-=>  #\a
- (progn (fresh-line) (prin1 #\a))
->>  #\a
-=>  #\a
- (progn (fresh-line) (print #\a))
->>  
->>  #\a
-=>  #\a
- (progn (fresh-line) (princ #\a))
->>  a
-=>  #\a
+    (progn (fresh-line) (write '(let ((a 1) (b 2)) (+ a b))))
+    >>  (LET ((A 1) (B 2)) (+ A B))
+    =>  (LET ((A 1) (B 2)) (+ A B))
 
- (dolist (val '(t nil))
-   (let ((*print-escape* val) (*print-readably* val))
-     (print '#\a) 
-     (prin1 #\a) (write-char #\Space)
-     (princ #\a) (write-char #\Space)
-     (write #\a)))
->>  #\a #\a a #\a
->>  #\a #\a a a
-=>  NIL
+    (progn (fresh-line) (pprint '(let ((a 1) (b 2)) (+ a b))))
+    >>  (LET ((A 1)
+    >>        (B 2))               
+    >>    (+ A B))
+    =>  (LET ((A 1) (B 2)) (+ A B))
 
- (progn (fresh-line) (write '(let ((a 1) (b 2)) (+ a b))))
->>  (LET ((A 1) (B 2)) (+ A B))
-=>  (LET ((A 1) (B 2)) (+ A B))
+    (progn (fresh-line) 
+            (write '(let ((a 1) (b 2)) (+ a b)) :pretty t))
+    >>  (LET ((A 1)
+    >>        (B 2))
+    >>    (+ A B))                 
+    =>  (LET ((A 1) (B 2)) (+ A B))
 
- (progn (fresh-line) (pprint '(let ((a 1) (b 2)) (+ a b))))
->>  (LET ((A 1)
->>        (B 2))               
->>    (+ A B))
-=>  (LET ((A 1) (B 2)) (+ A B))
-
- (progn (fresh-line) 
-        (write '(let ((a 1) (b 2)) (+ a b)) :pretty t))
->>  (LET ((A 1)
->>        (B 2))
->>    (+ A B))                 
-=>  (LET ((A 1) (B 2)) (+ A B))
-
- (with-output-to-string (s)  
-    (write 'write :stream s)
-    (prin1 'prin1 s))
-=>  "WRITEPRIN1"
-
+    (with-output-to-string (s)  
+        (write 'write :stream s)
+        (prin1 'prin1 s))
+    =>  "WRITEPRIN1"
+    ```
 
 ## 22.2 <span id="TheLispPrettyPrinter">The Lisp Pretty Printer</span>
 
@@ -1706,15 +1704,15 @@ The ~^ should appear only at the beginning of a ~< clause, because it aborts the
 
 * 语法(Syntax):
 
-pprint-exit-if-list-exhausted <no arguments> => nil
+        pprint-exit-if-list-exhausted <no arguments> => nil
 
 * 参数和值(Arguments and Values): None.
 
 * 描述(Description):
 
-Tests whether or not the list passed to the lexically current logical block has been exhausted; see Section 22.2.1.1 (Dynamic Control of the Arrangement of Output). If this list has been reduced to nil, pprint-exit-if-list-exhausted terminates the execution of the lexically current logical block except for the printing of the suffix. Otherwise pprint-exit-if-list-exhausted returns nil.
+        检验传递给词法上当前逻辑块(lexically current logical block)的列表是否已经被耗尽; 见章节 22.2.1.1 (Dynamic Control of the Arrangement of Output). 如果这个列表已经被归约为 nil, pprint-exit-if-list-exhausted 终止这个词法上当前逻辑块的执行, 除了这个后缀的打印. 否则 pprint-exit-if-list-exhausted 返回 nil.
 
-Whether or not pprint-exit-if-list-exhausted is fbound in the global environment is implementation-dependent; however, the restrictions on redefinition and shadowing of pprint-exit-if-list-exhausted are the same as for symbols in the COMMON-LISP package which are fbound in the global environment. The consequences of attempting to use pprint-exit-if-list-exhausted outside of pprint-logical-block are undefined.
+        pprint-exit-if-list-exhausted 在全局环境中是否为 fbound 的是依赖于具体实现的; 然而, 在这个 pprint-exit-if-list-exhausted 上的重定义和遮蔽的限制和那些在 COMMON-LISP 包中在全局环境中是 fbound 的符号是一样的. 尝试在 pprint-logical-block 外部去使用 pprint-exit-if-list-exhausted 的后果是未定义的.
 
 * 示例(Examples): None.
 
@@ -1724,11 +1722,11 @@ Whether or not pprint-exit-if-list-exhausted is fbound in the global environment
 
 * 异常情况(Exceptional Situations):
 
-An error is signaled (at macro expansion time or at run time) if pprint-exit-if-list-exhausted is used anywhere other than lexically within a call on pprint-logical-block. Also, the consequences of executing pprint-if-list-exhausted outside of the dynamic extent of the pprint-logical-block which lexically contains it are undefined.
+        如果在任何不是词法上在一个 pprint-logical-block 调用中的地方使用 pprint-exit-if-list-exhausted 就会发出一个错误 (在宏展开时或运行时). 同样, 在 pprint-logical-block 的动态范围之外但是词法上包含时执行 pprint-if-list-exhausted 的后果是未定义的.
 
 * 也见(See Also):
 
-pprint-logical-block, pprint-pop.
+        pprint-logical-block, pprint-pop.
 
 * 注意(Notes): None. 
 
@@ -1737,52 +1735,50 @@ pprint-logical-block, pprint-pop.
 
 * 语法(Syntax):
 
-pprint-fill stream object &optional colon-p at-sign-p => nil
+        pprint-fill stream object &optional colon-p at-sign-p => nil
 
-pprint-linear stream object &optional colon-p at-sign-p => nil
+        pprint-linear stream object &optional colon-p at-sign-p => nil
 
-pprint-tabular stream object &optional colon-p at-sign-p tabsize => nil
+        pprint-tabular stream object &optional colon-p at-sign-p tabsize => nil
 
 * 参数和值(Arguments and Values):
 
-stream---an output stream designator.
-
-object---一个对象.
-
-colon-p---一个广义 boolean. The default is true.
-
-at-sign-p---一个广义 boolean. The default is implementation-dependent.
-
-tabsize---a non-negative integer. The default is 16.
+        stream---一个输出流标识符.
+        object---一个对象.
+        colon-p---一个广义 boolean. 默认是 true.
+        at-sign-p---一个广义 boolean. 默认是依赖于具体实现的.
+        tabsize---一个非负整数. 默认是 16.
 
 * 描述(Description):
 
-The functions pprint-fill, pprint-linear, and pprint-tabular specify particular ways of pretty printing a list to stream. Each function prints parentheses around the output if and only if colon-p is true. Each function ignores its at-sign-p argument. (Both arguments are included even though only one is needed so that these functions can be used via ~/.../ and as set-pprint-dispatch functions, as well as directly.) Each function handles abbreviation and the detection of circularity and sharing correctly, and uses write to print object when it is a non-list.
+        函数 pprint-fill, pprint-linear, 和 pprint-tabular 指定美观打印一个列表到一个流的特定方式. 当且仅当 colon-p 为 true 时, 每个函数在输出周围打印括号. 每个函数忽略它的 at-sign-p 参数. (这两个参数都包含在内, 即使只需要一个参数, 以便这些功能可以通过 ~/.../ 和 set-pprint-dispatch 函数, 以及直接使用.) 每个函数正确地处理缩写和循环的检测和共享, 并且当它不是一个列表时使用 write 来打印对象 object.<!--TOOD 待校对-->
 
-If object is a list and if the value of *print-pretty* is false, each of these functions prints object using a minimum of whitespace, as described in Section 22.1.3.5 (打印列表和 cons). Otherwise (if object is a list and if the value of *print-pretty* is true):
+        如果对象 object 是一个列表并且 *print-pretty* 的值是 false, 这些符号中的每一个都用最少的空格 whitespace 来打印对象, 就像章节 22.1.3.5 (打印列表和 cons) 中描述的. 否则 (如果对象 object 是一个列表并且 *print-pretty* 的值是 true):
 
-    The function pprint-linear prints a list either all on one line, or with each element on a separate line.
+            函数 pprint-linear 把一个列表的所有元素打印在一行中, 或者每个元素在一个分隔的行上.
 
-    The function pprint-fill prints a list with as many elements as possible on each line.
+            函数 pprint-fill 把一个列表尽可能多的元素打印到一行上.
 
-    The function pprint-tabular is the same as pprint-fill except that it prints the elements so that they line up in columns. The tabsize specifies the column spacing in ems, which is the total spacing from the leading edge of one column to the leading edge of the next.
+            函数 pprint-tabular 和 pprint-fill 一样除了它打印的这些元素按列对齐. 这个 tabsize 以西文排版行长单位指定了列间隔, 也就是从一列的前缘到下一列的前缘的总间距.
 
 * 示例(Examples):
 
-Evaluating the following with a line length of 25 produces the output shown.
+        以行长为 25 求值下面这个产生的输出.
 
-(progn (princ "Roads ") 
-       (pprint-tabular *standard-output* '(elm main maple center) nil nil 8))
-Roads ELM     MAIN
-      MAPLE   CENTER
+    ```LISP
+    (progn (princ "Roads ") 
+          (pprint-tabular *standard-output* '(elm main maple center) nil nil 8))
+    Roads ELM     MAIN
+          MAPLE   CENTER
+    ```
 
 * 副作用(Side Effects):
 
-Performs output to the indicated stream.
+        执行输出到指定的流 stream.
 
 * 受此影响(Affected By):
 
-The cursor position on the indicated stream, if it can be determined.
+        指定的流 stream 上的游标位置, 如果它可以被确定的话.
 
 * 异常情况(Exceptional Situations): None.
 
@@ -1790,21 +1786,23 @@ The cursor position on the indicated stream, if it can be determined.
 
 * 注意(Notes):
 
-The function pprint-tabular could be defined as follows:
+        函数 pprint-tabular 可以按如下定义:
 
-(defun pprint-tabular (s list &optional (colon-p t) at-sign-p (tabsize nil))
-  (declare (ignore at-sign-p))
-  (when (null tabsize) (setq tabsize 16))
-  (pprint-logical-block (s list :prefix (if colon-p "(" "")
-                                :suffix (if colon-p ")" ""))
-    (pprint-exit-if-list-exhausted)
-    (loop (write (pprint-pop) :stream s)
-          (pprint-exit-if-list-exhausted)
-          (write-char #\Space s)
-          (pprint-tab :section-relative 0 tabsize s)
-          (pprint-newline :fill s))))
+    ``LISP
+    (defun pprint-tabular (s list &optional (colon-p t) at-sign-p (tabsize nil))
+      (declare (ignore at-sign-p))
+      (when (null tabsize) (setq tabsize 16))
+      (pprint-logical-block (s list :prefix (if colon-p "(" "")
+                                    :suffix (if colon-p ")" ""))
+        (pprint-exit-if-list-exhausted)
+        (loop (write (pprint-pop) :stream s)
+              (pprint-exit-if-list-exhausted)
+              (write-char #\Space s)
+              (pprint-tab :section-relative 0 tabsize s)
+              (pprint-newline :fill s))))
+    ```
 
-Note that it would have been inconvenient to specify this function using format, because of the need to pass its tabsize argument through to a ~:T format directive nested within an iteration over a list. 
+        请注意, 使用 format 指定这个函数会很不方便, 因为需要将 tabsize 参数传递给一个 ~:T 格式指令, 并将其嵌套在列表的迭代中. 
 
 
 ### <span id="F-PPRINT-INDENT">函数 PPRINT-INDENT</span>
@@ -2043,9 +2041,9 @@ pprint-tab kind colnum colinc &optional stream => nil
 
 kind---one of :line, :section, :line-relative, or :section-relative.
 
-colnum---a non-negative integer.
+colnum---一个非负整数.
 
-colinc---a non-negative integer.
+colinc---一个非负整数.
 
 stream---an output stream designator.
 
@@ -3006,17 +3004,17 @@ The rules for ``similarity'' imply that #A or #( syntax cannot be used for array
 
 * 值类型(Value Type):
 
-a non-negative integer, or nil.
+        一个非负整数, 或 nil.
 
 * 初始值(Initial Value):
 
-nil.
+        nil.
 
 * 描述(Description):
 
-If it is non-nil, it specifies the right margin (as integer number of ems) to use when the pretty printer is making layout decisions.
+        如果它不是 nil, 当美观打印器要做布局决定时, 它指定了要使用的右边距 (西文排版行长单位的整形数字).
 
-If it is nil, the right margin is taken to be the maximum line length such that output can be displayed without wraparound or truncation. If this cannot be determined, an implementation-dependent value is used.
+        如果它是 nil, 正确的边距被认为是最大行长度, 这样输出就可以显示, 而不需要包绕或截断. 如果这个没有被确定, 使用一个依赖于具体实现的值.
 
 * 示例(Examples): None.
 
@@ -3024,39 +3022,38 @@ If it is nil, the right margin is taken to be the maximum line length such that 
 
 * 注意(Notes):
 
-This measure is in units of ems in order to be compatible with implementation-defined variable-width fonts while still not requiring the language to provide support for fonts. 
+        这个度量是用西文排版行长单位, 为了与具体实现定义的可变宽度字体兼容, 同时不要求语言提供对字体的支持. 
 
 
 ### <span id="CT-PRINT-NOT-READABLE">状况类型 PRINT-NOT-READABLE</span>
 
-Class Precedence List:
+* 类优先级列表(Class Precedence List):
 
-print-not-readable, error, serious-condition, condition, t
+        print-not-readable, error, serious-condition, condition, t
 
 * 描述(Description):
 
-The type print-not-readable consists of error conditions that occur during output while *print-readably* is true, as a result of attempting to write a printed representation with the Lisp printer that would not be correctly read back with the Lisp reader. The object which could not be printed is initialized by the :objectinitialization argument to make-condition, and is accessed by the function print-not-readable-object.
+        当 *print-readably* 为 true 时, 类型 print-not-readable 由输出期间发生的错误状况组成, 是尝试去用 Lisp 打印器写入一个不能被 Lisp 读取器读回的打印表示的结果. 这个不能被打印的对象通过给 make-condition 的 :object 初始化参数来初始化, 并且可以通过函数 print-not-readable-object 访问.
 
 * 也见(See Also):
 
-print-not-readable-object 
+        print-not-readable-object 
 
 
 ### <span id="F-PRINT-NOT-READABLE-OBJECT">函数 PRINT-NOT-READABLE-OBJECT</span>
 
 * 语法(Syntax):
 
-print-not-readable-object condition => object
+        print-not-readable-object condition => object
 
 * 参数和值(Arguments and Values):
 
-condition---a condition of type print-not-readable.
-
-object---一个对象.
+        condition---一个 print-not-readable 类型的状况.
+        object---一个对象.
 
 * 描述(Description):
 
-Returns the object that could not be printed readably in the situation represented by condition.
+        返回在状况 condition 所表示的情况中不能被可读地打印的对象.
 
 * 示例(Examples): None.
 
@@ -3066,7 +3063,7 @@ Returns the object that could not be printed readably in the situation represent
 
 * 也见(See Also):
 
-print-not-readable, Section 9 (Conditions)
+        print-not-readable, 章节 9 (Conditions)
 
 * 注意(Notes): None. 
 
@@ -3075,43 +3072,37 @@ print-not-readable, Section 9 (Conditions)
 
 * 语法(Syntax):
 
-format destination control-string &rest args => result
+        format destination control-string &rest args => result
 
 * 参数和值(Arguments and Values):
 
-destination---nil, t, a stream, or a string with a fill pointer.
-
-control-string---a format control.
-
-args---format arguments for control-string.
-
-result---if destination is non-nil, then nil; otherwise, a string.
+        destination---nil, t, 一个流, 或者一个带有填充指针的字符串.
+        control-string---一个格式化控制.
+        args---对于 control-string 的格式化参数.
+        result---如果 destination 不是 nil, 那么就是 nil; 否则, 一个字符串.
 
 * 描述(Description):
 
-format produces formatted output by outputting the characters of control-string and observing that a tilde introduces a directive. The character after the tilde, possibly preceded by prefix parameters and modifiers, specifies what kind of formatting is desired. Most directives use one or more elements of args to create their output.
+        format 通过输出 control-string 的字符并观察到一个波浪字符引入了一个指令来生成格式化的输出. 波浪符号后面的字符, 可能前面有前缀参数和和修饰符, 指定了想要的格式化种类. 大部分指令使用 args 中的一个或多个元素来创建它们的输出.
 
-If destination is a string, a stream, or t, then the result is nil. Otherwise, the result is a string containing the `output.'
+        如果 destination 是一个字符串, 一个流, 或 t, 那么结果是 nil. 否则, 结果是一个包含 'output' 的字符串.
 
-format is useful for producing nicely formatted text, producing good-looking messages, and so on. format can generate and return a string or output to destination.
+        format 用于产生良好格式化的文本, 产生美观的信息是很有用的, 依次类推. format 可以生成并返回一个字符串或者输出到 destination 中.
 
-For details on how the control-string is interpreted, see Section 22.3 (Formatted Output).
+        关于 control-string 任何被解释的详细信息, 见章节 22.3 (Formatted Output).
 
 * 示例(Examples): None.
 
 * 受此影响(Affected By):
 
-*standard-output*, *print-escape*, *print-radix*, *print-base*, *print-circle*, *print-pretty*, *print-level*, *print-length*, *print-case*, *print-gensym*, *print-array*.
+        *standard-output*, *print-escape*, *print-radix*, *print-base*, *print-circle*, *print-pretty*, *print-level*, *print-length*, *print-case*, *print-gensym*, *print-array*.
 
 * 异常情况(Exceptional Situations):
 
-If destination is a string with a fill pointer, the consequences are undefined if destructive modifications are performed directly on the string during the dynamic extent of the call.
+        如果 destination 是一个带有填充指针的字符串, 如果在这个调用的动态范围内直接在这个字符串上执行破坏性的修改, 那么后果是未定义的.
 
 * 也见(See Also):
 
-write, Section 13.1.10 (Documentation of Implementation-Defined Scripts)
+        write, 章节 13.1.10 (Documentation of Implementation-Defined Scripts)
 
 * 注意(Notes): None.
-
-
-
