@@ -1,7 +1,7 @@
 # 22 打印器
 
 > * 22.1 [Lisp 打印器](#TheLispPrinter)
-> * 22.2 [The Lisp Pretty Printer](#TheLispPrettyPrinter)
+> * 22.2 [Lisp 美观打印器](#TheLispPrettyPrinter)
 > * 22.3 [Formatted Output](#FormattedOutput)
 > * 22.4 [The Printer Dictionary](#ThePrinterDictionary)
 
@@ -65,7 +65,7 @@ Common Lisp 以打印文本的形式提供了大多数对象的表示形式, 称
 
 Lisp 打印器决定如何打印一个对象, 如下所示:
 
-如果 \*print-pretty* 的值是 true, 打印由当前的 pprint 分派表(current pprint dispatch table)控制; 见章节 22.2.1.4 (Pretty Print Dispatch Tables).
+如果 \*print-pretty* 的值是 true, 打印由当前的 pprint 分派表(current pprint dispatch table)控制; 见章节 22.2.1.4 (美观打印分派表).
 
 否则 (如果 \*print-pretty* 的值是 false), 使用对象的 print-object 方法; 见章节 22.1.3 (默认 Print-Object 方法). 
 
@@ -488,250 +488,281 @@ cons 的打印受 \*print-level*, \*print-length*, 和 \*print-circle* 的影响
     =>  "WRITEPRIN1"
     ```
 
-## 22.2 <span id="TheLispPrettyPrinter">The Lisp Pretty Printer</span>
+## 22.2 <span id="TheLispPrettyPrinter">Lisp 美观打印器</span>
 
-> * 22.2.1 [Pretty Printer Concepts](#PrettyPrinterConcepts)
-> * 22.2.2 [Examples of using the Pretty Printer](#ExamplesPrettyPrinter)
-> * 22.2.3 [Notes about the Pretty Printer's Background](#NotesPrettyPrinterBackground)
+> * 22.2.1 [美观打印器的概念](#PrettyPrinterConcepts)
+> * 22.2.2 [使用美观打印器的示例](#ExamplesPrettyPrinter)
+> * 22.2.3 [美观打印器背景的注意事项](#NotesPrettyPrinterBackground)
 
-### 22.2.1 <span id="PrettyPrinterConcepts">Pretty Printer Concepts</span>
+### 22.2.1 <span id="PrettyPrinterConcepts">美观打印器的概念</span>
 
-The facilities provided by the pretty printer permit programs to redefine the way in which code is displayed, and allow the full power of pretty printing to be applied to complex combinations of data structures.
+美观打印器提供的工具允许程序重新定义代码显示的方式, 并且允许美观打印的全部能力应用于复杂的数据结构组合.
 
-Whether any given style of output is in fact ``pretty'' is inherently a somewhat subjective issue. However, since the effect of the pretty printer can be customized by conforming programs, the necessary flexibility is provided for individual programs to achieve an arbitrary degree of aesthetic control.
+任何给定的输出样式实际上是否是"美观"的, 本质上是一个主观的问题. 然而, 由于美观打印器的效果可以通过符合标准的程序进行定制, 所以为单个程序提供了必要的灵活性以达到任意程度的审美控制.
 
-By providing direct access to the mechanisms within the pretty printer that make dynamic decisions about layout, the macros and functions pprint-logical-block, pprint-newline, and pprint-indent make it possible to specify pretty printing layout rules as a part of any function that produces output. They also make it very easy for the detection of circularity and sharing, and abbreviation based on length and nesting depth to be supported by the function.
+通过直接访问美观打印器内的机制来对布局做出动态决策, 这些宏以及函数 pprint-logical-block, pprint-newline, 和 pprint-indent 使得为产生输出的任意函数指定美观打印布局规则是可能的. 它们也使得环状和共享的检测以及要被函数支持的基于长度和嵌套深度的缩写变得简单.
 
-The pretty printer is driven entirely by dispatch based on the value of *print-pprint-dispatch*. The function set-pprint-dispatch makes it possible for conforming programs to associate new pretty printing functions with a type.
+美观打印器完全是根据 \*print-pprint-dispatch* 的值来驱动的. 函数 set-pprint-dispatch 使得符合规范的程序去关联美观打印函数和一个类型是可能的.
 
-> * 22.2.1.1 [Dynamic Control of the Arrangement of Output](#DynamicControlArrangeOutput)
-> * 22.2.1.2 [Format Directive Interface](#FormatDirectiveInterface)
-> * 22.2.1.3 [Compiling Format Strings](#CompilingFormatStrings)
-> * 22.2.1.4 [Pretty Print Dispatch Tables](#PrettyPrintDispatchTables)
-> * 22.2.1.5 [Pretty Printer Margins](#PrettyPrinterMargins)
+> * 22.2.1.1 [输出排列的动态控制](#DynamicControlArrangeOutput)
+> * 22.2.1.2 [格式指令接口](#FormatDirectiveInterface)
+> * 22.2.1.3 [编译格式字符串](#CompilingFormatStrings)
+> * 22.2.1.4 [美观打印分派表](#PrettyPrintDispatchTables)
+> * 22.2.1.5 [美观打印器边距](#PrettyPrinterMargins)
 
-#### 22.2.1.1 <span id="DynamicControlArrangeOutput">Dynamic Control of the Arrangement of Output</span>
+#### 22.2.1.1 <span id="DynamicControlArrangeOutput">输出排列的动态控制</span>
+<!--TODO 待校验-->
+当一个输出太大而无法容纳到可用空间时, 美观打印器的操作可以被精确地控制. 三个概念是这些操作工作的基础---逻辑块(logical blocks), 条件换行(conditional newlines), 以及节段(sections). 在继续之前, 定义这些术语是很重要的.
 
-The actions of the pretty printer when a piece of output is too large to fit in the space available can be precisely controlled. Three concepts underlie the way these operations work---logical blocks, conditional newlines, and sections. Before proceeding further, it is important to define these terms.
+下一段中的第一行展示了输出的示意图片段. 输出的每个字符都用 "-" 表示. 条件换行的位置由数字表示. 这个逻辑块的开始和结束分别由 "<" 和 ">" 表示.
 
-The first line of the next figure shows a schematic piece of output. Each of the characters in the output is represented by ``-''. The positions of conditional newlines are indicated by digits. The beginnings and ends of logical blocks are indicated by ``<'' and ``>'' respectively.
+输出作为一个整体是一个逻辑块和最外层节段. 这节段由 Figure 1 的第二行中的 0 表示. 嵌套在这个输出中的逻辑块通过宏 pprint-logical-block 来指定. 条件换行的位置由 pprint-newline 调用来指定. 每个条件换行定义了两个节段 (一个在它之前, 一个在它之后) 并且和一个第三个关联 (直接包含它的那个节段).
 
-The output as a whole is a logical block and the outermost section. This section is indicated by the 0's on the second line of Figure 1. Logical blocks nested within the output are specified by the macro pprint-logical-block. Conditional newline positions are specified by calls to pprint-newline. Each conditional newline defines two sections (one before it and one after it) and is associated with a third (the section immediately containing it).
+一个条件换行后面的节段由这些组成: 所有输出到, 但不包括, (a) 在同一个逻辑块中直接包含的下一个条件换行; 或者如果 (a) 是不可应用的, (b) 嵌套在逻辑块的更低级别的下一个换行; 或者如果 (b) 是不可应用的, (c) 输出的末尾.
 
-The section after a conditional newline consists of: all the output up to, but not including, (a) the next conditional newline immediately contained in the same logical block; or if (a) is not applicable, (b) the next newline that is at a lesser level of nesting in logical blocks; or if (b) is not applicable, (c) the end of the output.
+一个条件换行前面的节段由这些组成: 所有的输出都返回到, 但不包括, (a) 在同一个逻辑块中直接包含的前面的条件换行; 或者如果 (a) 不可应用, (b) 直接包含逻辑块的开头. Figure 1 中的最后四行表示四个条件换行前后的节段.
 
-The section before a conditional newline consists of: all the output back to, but not including, (a) the previous conditional newline that is immediately contained in the same logical block; or if (a) is not applicable, (b) the beginning of the immediately containing logical block. The last four lines in Figure 1 indicate the sections before and after the four conditional newlines.
+直接包含一个条件换行的节段是包含这个条件换行节段中最短的那个. 在下一段中, 第一个条件换行被直接包含在 0 标记的节段中, 第二个和第三个条件换行被直接包含在第四个条件换行之前的节段中, 并且第五个条件换行被直接包含在第一个条件换行之后的节段中.
 
-The section immediately containing a conditional newline is the shortest section that contains the conditional newline in question. In the next figure, the first conditional newline is immediately contained in the section marked with 0's, the second and third conditional newlines are immediately contained in the section before the fourth conditional newline, and the fourth conditional newline is immediately contained in the section after the first conditional newline.
+    <-1---<--<--2---3->--4-->->
+    000000000000000000000000000
+    11 111111111111111111111111
+              22 222
+                  333 3333
+            44444444444444 44444
 
- <-1---<--<--2---3->--4-->->
- 000000000000000000000000000
- 11 111111111111111111111111
-           22 222
-              333 3333
-        44444444444444 44444
+    Figure 22-3. 逻辑块, 条件换行, 和节段的示例
 
-Figure 22-3. Example of Logical Blocks, Conditional Newlines, and Sections
+只要有可能, 美观打印器在一行中显示一个节段的完整内容. 然而, 如果该节段太长, 无法容纳在可用空间, 则在该节段内的条件换行位置插入换行符. 
 
-Whenever possible, the pretty printer displays the entire contents of a section on a single line. However, if the section is too long to fit in the space available, line breaks are inserted at conditional newline positions within the section. 
 
+#### 22.2.1.2 <span id="FormatDirectiveInterface">格式指令接口</span>
 
-#### 22.2.1.2 <span id="FormatDirectiveInterface">Format Directive Interface</span>
+动态确定输出排列的操作的主要接口是通过美观打印器的函数和宏提供的. 下一段展示了和美观打印相关的已定义的名字.
 
-The primary interface to operations for dynamically determining the arrangement of output is provided through the functions and macros of the pretty printer. The next figure shows the defined names related to pretty printing.
+    *print-lines*            pprint-dispatch                pprint-pop           
+    *print-miser-width*      pprint-exit-if-list-exhausted  pprint-tab           
+    *print-pprint-dispatch*  pprint-fill                    pprint-tabular       
+    *print-right-margin*     pprint-indent                  set-pprint-dispatch  
+    copy-pprint-dispatch     pprint-linear                  write                
+    format                   pprint-logical-block                                
+    formatter                pprint-newline                                      
 
-*print-lines*            pprint-dispatch                pprint-pop           
-*print-miser-width*      pprint-exit-if-list-exhausted  pprint-tab           
-*print-pprint-dispatch*  pprint-fill                    pprint-tabular       
-*print-right-margin*     pprint-indent                  set-pprint-dispatch  
-copy-pprint-dispatch     pprint-linear                  write                
-format                   pprint-logical-block                                
-formatter                pprint-newline                                      
+    Figure 22-4. 和美观打印相关的已定义的名字.
 
-Figure 22-4. Defined names related to pretty printing.
+下一个段标识了一组格式指令, 它们以更简洁的形式作为相同的美观打印操作的替代接口.
 
-The next figure identifies a set of format directives which serve as an alternate interface to the same pretty printing operations in a more textually compact form.
+    ~I   ~W      ~<...~:>  
+    ~:T  ~/.../  ~_        
 
-~I   ~W      ~<...~:>  
-~:T  ~/.../  ~_        
+    Figure 22-5. 和美观打印相关的格式化指令
 
-Figure 22-5. Format directives related to Pretty Printing 
 
+#### 22.2.1.3 <span id="CompilingFormatStrings">编译格式字符串</span>
 
-#### 22.2.1.3 <span id="CompilingFormatStrings">Compiling Format Strings</span>
+格式化字符串本质上是一个用于执行打印的特殊目的语言的程序, 并且可以通过函数 format 来解释. formatter 宏提供了使用编译后的函数来完成相同的打印的效率, 但是不会丢失格式化字符串的文本紧凑性.
 
-A format string is essentially a program in a special-purpose language that performs printing, and that is interpreted by the function format. The formatter macro provides the efficiency of using a compiled function to do that same printing but without losing the textual compactness of format strings.
+一个格式化控制是一个格式化字符串或一个由 formatter 宏返回的函数. 
 
-A format control is either a format string or a function that was returned by the the formatter macro. 
 
+#### 22.2.1.4 <span id="PrettyPrintDispatchTables">美观打印分派表</span>
 
-#### 22.2.1.4 <span id="PrettyPrintDispatchTables">Pretty Print Dispatch Tables</span>
+一个美观打印分派表(pprint dispatch table) 是一个从键到值对的映射. 每一个键是一个类型指定符. 和一个键关联的值是一个 "函数" (具体的说, 一个函数标识符或 nil) 和一个 "优先级数值" (具体的说, 一个 real). 基本的插入和检索是基于由 equal 测试的键等价的键之上来完成的.
 
-A pprint dispatch table is a mapping from keys to pairs of values. Each key is a type specifier. The values associated with a key are a ``function'' (specifically, a function designator or nil) and a ``numerical priority'' (specifically, a real). Basic insertion and retrieval is done based on the keys with the equality of keys being tested by equal.
+当 \*print-pretty* 是 true 时, 当前的美观打印分派表 (在 \*print-pprint-dispatch* 中) 控制对象如何被打印. 这个表中的信息优先于指定如何打印对象的所有其他机制. 特别是, 它有着超过用户定义的 print-object 方法的优先级, 因为这个当前美观打印分派表是被优先考虑的.
 
-When *print-pretty* is true, the current pprint dispatch table (in *print-pprint-dispatch*) controls how objects are printed. The information in this table takes precedence over all other mechanisms for specifying how to print objects. In particular, it has priority over user-defined print-object methods because the current pprint dispatch table is consulted first.
+通过在当前美观打印分派表中查找和那个对象匹配的类型指定符相关联的最高优先级的函数来选择这个函数; 如果这里有不止一个这样的函数, 哪一个被使用是依赖于具体实现的.
 
-The function is chosen from the current pprint dispatch table by finding the highest priority function that is associated with a type specifier that matches the object; if there is more than one such function, it is implementation-dependent which is used.
+然而, 如果在这个表中没有关于如何美观打印一个特定种类对象的信息, 就会调用一个使用 print-object 来打印这个对象的函数. 当这个函数被调用时, \*print-pretty* 的值始终为 true, 并且对于 print-object 的个别方法可能仍然会选择以 \*print-pretty* 的值为条件的特殊格式输出. 
 
-However, if there is no information in the table about how to pretty print a particular kind of object, a function is invoked which uses print-object to print the object. The value of *print-pretty* is still true when this function is called, and individual methods for print-object might still elect to produce output in a special format conditional on the value of *print-pretty*. 
 
+#### 22.2.1.5 <span id="PrettyPrinterMargins">美观打印器边距</span>
 
-#### 22.2.1.5 <span id="PrettyPrinterMargins">Pretty Printer Margins</span>
+美观打印的主要目标是将输出保持在两个边距之间. 输出开始的列取自左边距. 如果当前列不能在输出开始时确定, 这个左边距被假定为零. 右边距由 \*print-right-margin* 控制. 
 
-A primary goal of pretty printing is to keep the output between a pair of margins. The column where the output begins is taken as the left margin. If the current column cannot be determined at the time output begins, the left margin is assumed to be zero. The right margin is controlled by *print-right-margin*. 
 
+### 22.2.2 <span id="ExamplesPrettyPrinter">使用美观打印器的示例</span>
 
-### 22.2.2 <span id="ExamplesPrettyPrinter">Examples of using the Pretty Printer</span>
+作为逻辑块, 条件换行, 和缩进相互作用的一个例子, 细想以下函数 simple-pprint-defun. 这个函数用标准的方式打印 car 为 defun 的列表, 假定这些列表的长度都是 4.
 
-As an example of the interaction of logical blocks, conditional newlines, and indentation, consider the function simple-pprint-defun below. This function prints out lists whose cars are defun in the standard way assuming that the list has exactly length 4.
-
-(defun simple-pprint-defun (*standard-output* list)
-  (pprint-logical-block (*standard-output* list :prefix "(" :suffix ")")
-    (write (first list))
-    (write-char #\Space)
-    (pprint-newline :miser)
-    (pprint-indent :current 0)
-    (write (second list))
-    (write-char #\Space)
-    (pprint-newline :fill)
-    (write (third list))
-    (pprint-indent :block 1)
-    (write-char #\Space)
-    (pprint-newline :linear)
-    (write (fourth list))))
-
-Suppose that one evaluates the following:
-
-(simple-pprint-defun *standard-output* '(defun prod (x y) (* x y)))
-
-If the line width available is greater than or equal to 26, then all of the output appears on one line. If the line width available is reduced to 25, a line break is inserted at the linear-style conditional newline before the expression (* x y), producing the output shown. The (pprint-indent :block 1) causes (* x y) to be printed at a relative indentation of 1 in the logical block.
-
- (DEFUN PROD (X Y) 
-   (* X Y))
-
-If the line width available is 15, a line break is also inserted at the fill style conditional newline before the argument list. The call on (pprint-indent :current 0) causes the argument list to line up under the function name.
-
-(DEFUN PROD
-       (X Y)
-  (* X Y))
-
-If *print-miser-width* were greater than or equal to 14, the example output above would have been as follows, because all indentation changes are ignored in miser mode and line breaks are inserted at miser-style conditional newlines.
-
- (DEFUN
-  PROD
-  (X Y)
-  (* X Y))
-
-As an example of a per-line prefix, consider that evaluating the following produces the output shown with a line width of 20 and *print-miser-width* of nil.
-
- (pprint-logical-block (*standard-output* nil :per-line-prefix ";;; ")
-   (simple-pprint-defun *standard-output* '(defun prod (x y) (* x y))))
- 
- ;;; (DEFUN PROD
- ;;;        (X Y)
- ;;;   (* X Y))
-
-As a more complex (and realistic) example, consider the function pprint-let below. This specifies how to print a let form in the traditional style. It is more complex than the example above, because it has to deal with nested structure. Also, unlike the example above it contains complete code to readably print any possible list that begins with the symbol let. The outermost pprint-logical-block form handles the printing of the input list as a whole and specifies that parentheses should be printed in the output. The second pprint-logical-block form handles the list of binding pairs. Each pair in the list is itself printed by the innermost pprint-logical-block. (A loop form is used instead of merely decomposing the pair into two objects so that readable output will be produced no matter whether the list corresponding to the pair has one element, two elements, or (being malformed) has more than two elements.) A space and a fill-style conditional newline are placed after each pair except the last. The loop at the end of the topmost pprint-logical-block form prints out the forms in the body of the let form separated by spaces and linear-style conditional newlines.
-
- (defun pprint-let (*standard-output* list)
-   (pprint-logical-block (nil list :prefix "(" :suffix ")")
-     (write (pprint-pop))
-     (pprint-exit-if-list-exhausted)
-     (write-char #\Space)
-     (pprint-logical-block (nil (pprint-pop) :prefix "(" :suffix ")")
-       (pprint-exit-if-list-exhausted)
-       (loop (pprint-logical-block (nil (pprint-pop) :prefix "(" :suffix ")")
-               (pprint-exit-if-list-exhausted)
-               (loop (write (pprint-pop))
-                     (pprint-exit-if-list-exhausted)
-                     (write-char #\Space)
-                     (pprint-newline :linear)))
-             (pprint-exit-if-list-exhausted)
-             (write-char #\Space)
-             (pprint-newline :fill)))
-     (pprint-indent :block 1)
-     (loop (pprint-exit-if-list-exhausted)
-           (write-char #\Space)
-           (pprint-newline :linear)
-           (write (pprint-pop)))))
-
-Suppose that one evaluates the following with *print-level* being 4, and *print-circle* being true.
-
- (pprint-let *standard-output*
-             '#1=(let (x (*print-length* (f (g 3))) 
-                       (z . 2) (k (car y)))
-                   (setq x (sqrt z)) #1#))
-
-If the line length is greater than or equal to 77, the output produced appears on one line. However, if the line length is 76, line breaks are inserted at the linear-style conditional newlines separating the forms in the body and the output below is produced. Note that, the degenerate binding pair x is printed readably even though it fails to be a list; a depth abbreviation marker is printed in place of (g 3); the binding pair (z . 2) is printed readably even though it is not a proper list; and appropriate circularity markers are printed.
-
- #1=(LET (X (*PRINT-LENGTH* (F #)) (Z . 2) (K (CAR Y))) 
-      (SETQ X (SQRT Z))
-      #1#)
-
-If the line length is reduced to 35, a line break is inserted at one of the fill-style conditional newlines separating the binding pairs.
-
- #1=(LET (X (*PRINT-PRETTY* (F #))
-          (Z . 2) (K (CAR Y)))
-      (SETQ X (SQRT Z))
-      #1#)
-
-Suppose that the line length is further reduced to 22 and *print-length* is set to 3. In this situation, line breaks are inserted after both the first and second binding pairs. In addition, the second binding pair is itself broken across two lines. Clause (b) of the description of fill-style conditional newlines (see the function pprint-newline) prevents the binding pair (z . 2) from being printed at the end of the third line. Note that the length abbreviation hides the circularity from view and therefore the printing of circularity markers disappears.
-
- (LET (X
-       (*PRINT-LENGTH*
-        (F #))
-       (Z . 2) ...)
-   (SETQ X (SQRT Z))
-   ...)
-
-The next function prints a vector using ``#(...)'' notation.
-
-(defun pprint-vector (*standard-output* v)
-  (pprint-logical-block (nil nil :prefix "#(" :suffix ")")
-    (let ((end (length v)) (i 0))
-      (when (plusp end)
-        (loop (pprint-pop)
-              (write (aref v i))
-              (if (= (incf i) end) (return nil))
+    ```LISP
+    (defun simple-pprint-defun (*standard-output* list)
+      (pprint-logical-block (*standard-output* list :prefix "(" :suffix ")")
+        (write (first list))
+        (write-char #\Space)
+        (pprint-newline :miser)
+        (pprint-indent :current 0)
+        (write (second list))
+        (write-char #\Space)
+        (pprint-newline :fill)
+        (write (third list))
+        (pprint-indent :block 1)
+        (write-char #\Space)
+        (pprint-newline :linear)
+        (write (fourth list))))
+    ```
+
+假设一个按照如下求值:
+
+    ```LISP
+    (simple-pprint-defun *standard-output* '(defun prod (x y) (* x y)))
+    ```
+
+如果可用的行宽大于等于 26, 那么所有输出会出现在一行中. 如果可用的行宽减少到 25, 在表达式 (* x y) 之前，在线性风格的条件换行中插入一条换行符, 产生这个输出展示. 这个 (pprint-indent :block 1) 导致 (* x y) 被打印在这个逻辑块中 1 个相对缩进.
+
+    ```LISP
+    (DEFUN PROD (X Y) 
+      (* X Y))
+    ```
+
+如果可用的行宽是 15, 在参数列表之前, 在填充样式的条件换行中插入一个换行符. 这个在 (pprint-indent :current 0) 上的调用导致参数列表排列在函数名字下.
+
+    ```LISP
+    (DEFUN PROD
+          (X Y)
+      (* X Y))
+    ```
+
+如果 \*print-miser-width* 大于等于 14, 上面输出示例会是如下这样, 因为在最小执行常式(miser)模式下所有缩进的改变会被忽略并且换行被插入到最小执行常式的条件换行中.
+
+    ```LISP
+    (DEFUN
+      PROD
+      (X Y)
+      (* X Y))
+    ```
+
+作为每行前缀的一个例子, 细想行宽为 20 并且 \*print-miser-width* 是 nil 的情况下求值以下产生的输出.
+
+    ```LISP
+    (pprint-logical-block (*standard-output* nil :per-line-prefix ";;; ")
+      (simple-pprint-defun *standard-output* '(defun prod (x y) (* x y))))
+    
+    ;;; (DEFUN PROD
+    ;;;        (X Y)
+    ;;;   (* X Y))
+    ```
+
+作为一个更加复杂 (并且真实) 示例, 细想下面的函数 pprint-let. 这个指定如何去用传统风格打印一个 let 表达式形式. 它比上面的例子更复杂, 因为它不得不去处理嵌套的结构. 同样的, 不像上面的例子, 它包含去可读地打印任何以符号 let 开始的可能的列表的完整代码. 最外部的 pprint-logical-block 表达式形式处理作为整体的输入列表的打印并且指定应该在输出中打印的圆括号. 第二个 pprint-logical-block 表达式形式处理绑定对的列表. 在列表中的每一对自身通过最内部的 pprint-logical-block 打印. (使用 loop 表达式形式, 而不是将这个对分解为两个对象, 这样一来不管这个对对应的列表有着一个元素, 两个元素, 或(难看的)不止两个元素都会产生可读的输出). 会在每一个对除了最后一个之外的后面放置一个空格和一个填充风格的条件换行. 在最顶层 pprint-logical-block 表达式形式末尾的循环打印在这个 let 表达式形式的主体中被空格和线性风格的条件换行分隔的表达式形式.
+
+    ```LISP
+    (defun pprint-let (*standard-output* list)
+      (pprint-logical-block (nil list :prefix "(" :suffix ")")
+        (write (pprint-pop))
+        (pprint-exit-if-list-exhausted)
+        (write-char #\Space)
+        (pprint-logical-block (nil (pprint-pop) :prefix "(" :suffix ")")
+          (pprint-exit-if-list-exhausted)
+          (loop (pprint-logical-block (nil (pprint-pop) :prefix "(" :suffix ")")
+                  (pprint-exit-if-list-exhausted)
+                  (loop (write (pprint-pop))
+                        (pprint-exit-if-list-exhausted)
+                        (write-char #\Space)
+                        (pprint-newline :linear)))
+                (pprint-exit-if-list-exhausted)
+                (write-char #\Space)
+                (pprint-newline :fill)))
+        (pprint-indent :block 1)
+        (loop (pprint-exit-if-list-exhausted)
               (write-char #\Space)
-              (pprint-newline :fill))))))
+              (pprint-newline :linear)
+              (write (pprint-pop)))))
+    ```
 
-Evaluating the following with a line length of 15 produces the output shown.
+细想在 \*print-level* 是 4, 并且 \*print-circle* 是 true 的情况下求值下名这个.
 
- (pprint-vector *standard-output* '#(12 34 567 8 9012 34 567 89 0 1 23))
- 
- #(12 34 567 8 
-   9012 34 567 
-   89 0 1 23)
+    ```LISP
+    (pprint-let *standard-output*
+                '#1=(let (x (*print-length* (f (g 3))) 
+                          (z . 2) (k (car y)))
+                      (setq x (sqrt z)) #1#))
+    ```
 
-As examples of the convenience of specifying pretty printing with format strings, consider that the functions simple-pprint-defun and pprint-let used as examples above can be compactly defined as follows. (The function pprint-vector cannot be defined using format because the data structure it traverses is not a list.)
+如果行宽大于等于 77, 这个产生的输出出现在一行中. 然而, 如果行宽是 76, 换行符会被插入在分隔这些表达式形式的线性风格的条件换行中并且产生下面这样的输出. 注意, 退化的结合对 x 是可读的即使它不是一个列表; 一个深度缩写标记会被打印来替换 (g 3); 这个绑定对 (z . 2) 会被可读地打印即便它不是一个 proper 列表; 并打印缩写的环状标记.
 
-(defun simple-pprint-defun (*standard-output* list)
-  (format T "~:<~W ~@_~:I~W ~:_~W~1I ~_~W~:>" list))
+    ```LISP
+    #1=(LET (X (*PRINT-LENGTH* (F #)) (Z . 2) (K (CAR Y))) 
+          (SETQ X (SQRT Z))
+          #1#)
+    ```
 
-(defun pprint-let (*standard-output* list)
-  (format T "~:<~W~^~:<~@{~:<~@{~W~^~_~}~:>~^~:_~}~:>~1I~@{~^~_~W~}~:>" list)) 
+如果行宽被减少到 35, 一个换行符会被插入到这些分隔绑定对的填充风格的条件换行中的一个.
 
-In the following example, the first form restores *print-pprint-dispatch* to the equivalent of its initial value. The next two forms then set up a special way to pretty print ratios. Note that the more specific type specifier has to be associated with a higher priority.
+    ```LISP
+    #1=(LET (X (*PRINT-PRETTY* (F #))
+              (Z . 2) (K (CAR Y)))
+          (SETQ X (SQRT Z))
+          #1#)
+    ```
 
- (setq *print-pprint-dispatch* (copy-pprint-dispatch nil))
+假设这个行宽进一步减少到 22 并且 \*print-length* 被设置为 3. 在这个情况中, 换行符被插入到第一个和第二个绑定对后面. 另外, 第二个绑定对自身被断开为两行. 填充风格的条件换行的描述中的子句 (b) (见函数 pprint-newline) 避免了绑定对 (z . 2) 被打印在第三行末尾. 注意, 长度缩写从视图上隐藏了环并且因此环标记的打印消失了.
 
- (set-pprint-dispatch 'ratio
-   #'(lambda (s obj)
-       (format s "#.(/ ~W ~W)" 
-                 (numerator obj) (denominator obj))))
+    ```LISP
+    (LET (X
+          (*PRINT-LENGTH*
+            (F #))
+          (Z . 2) ...)
+      (SETQ X (SQRT Z))
+      ...)
+    ```
 
- (set-pprint-dispatch '(and ratio (satisfies minusp))
-   #'(lambda (s obj)
-       (format s "#.(- (/ ~W ~W))" 
-               (- (numerator obj)) (denominator obj)))
-   5)
+下面这个函数打印了一个使用 "#(...)" 标识的向量.
 
- (pprint '(1/3 -2/3))
- (#.(/ 1 3) #.(- (/ 2 3)))
+    ```LISP
+    (defun pprint-vector (*standard-output* v)
+      (pprint-logical-block (nil nil :prefix "#(" :suffix ")")
+        (let ((end (length v)) (i 0))
+          (when (plusp end)
+            (loop (pprint-pop)
+                  (write (aref v i))
+                  (if (= (incf i) end) (return nil))
+                  (write-char #\Space)
+                  (pprint-newline :fill))))))
+    ```
 
-The following two forms illustrate the definition of pretty printing functions for types of code. The first form illustrates how to specify the traditional method for printing quoted objects using single-quote. Note the care taken to ensure that data lists that happen to begin with quote will be printed readably. The second form specifies that lists beginning with the symbol my-let should print the same way that lists beginning with let print when the initial pprint dispatch table is in effect.
+在行宽为 15 时求值下面这个的输出展示.
 
+    ```LISP
+    (pprint-vector *standard-output* '#(12 34 567 8 9012 34 567 89 0 1 23))
+    
+    #(12 34 567 8 
+      9012 34 567 
+      89 0 1 23)
+    ```
+
+作为用格式化字符串指定美观打印的便利的示例, 细想上面被用作示例的函数 simple-pprint-defun 和 pprint-let 可以按如下简洁地定义. (函数 pprint-vector 不能使用 format 来定义, 因为遍历的数据结构不是一个列表.)
+
+    ```LISP
+    (defun simple-pprint-defun (*standard-output* list)
+      (format T "~:<~W ~@_~:I~W ~:_~W~1I ~_~W~:>" list))
+
+    (defun pprint-let (*standard-output* list)
+      (format T "~:<~W~^~:<~@{~:<~@{~W~^~_~}~:>~^~:_~}~:>~1I~@{~^~_~W~}~:>" list)) 
+    ```
+
+在下面的示例中, 第一个表达式形式把 \*print-pprint-dispatch* 复原为它的等价初始值. 后面两个表达式形式 接下来的两种表达式形式为美观打印比率设置了一种特殊的方式. 注意, 更具体的类型指定符会和更高的优先级关联.
+
+    ```LISP
+    (setq *print-pprint-dispatch* (copy-pprint-dispatch nil))
+
+    (set-pprint-dispatch 'ratio
+      #'(lambda (s obj)
+          (format s "#.(/ ~W ~W)" 
+                    (numerator obj) (denominator obj))))
+
+    (set-pprint-dispatch '(and ratio (satisfies minusp))
+      #'(lambda (s obj)
+          (format s "#.(- (/ ~W ~W))" 
+                  (- (numerator obj)) (denominator obj)))
+      5)
+
+    (pprint '(1/3 -2/3))
+    (#.(/ 1 3) #.(- (/ 2 3)))
+    ```
+
+下面两个表达式形式阐述了关于代码类型的美观打印函数的定义. 第一个表达式形式阐述了如何为使用单引号引用的对象指定传统方法. 注意, 确保以 quote 开头的数据列表将被可读地打印出来. 第二个表达式形式指定了以符号 my-let 开始的列表应该和初始 pprint 分派表生效时以 let 开始的列表打印方式相同.
+
+```LISP
  (set-pprint-dispatch '(cons (member quote)) () 
    #'(lambda (s list)
        (if (and (consp (cdr list)) (null (cddr list)))
@@ -740,42 +771,49 @@ The following two forms illustrate the definition of pretty printing functions f
  
  (set-pprint-dispatch '(cons (member my-let)) 
                       (pprint-dispatch '(let) nil))
+```
 
-The next example specifies a default method for printing lists that do not correspond to function calls. Note that the functions pprint-linear, pprint-fill, and pprint-tabular are all defined with optional colon-p and at-sign-p arguments so that they can be used as pprint dispatch functions as well as ~/.../ functions.
+下一个示例为打印没有和函数调用对应的列表指定一个默认方法. 注意, 函数 pprint-linear, pprint-fill, 和 pprint-tabular 都用可选的 colon-p 和 at-sign-p 参数定义, 这样一来它们可以被用作 pprint 分派函数, 和 ~/.../ 函数一样.
 
- (set-pprint-dispatch '(cons (not (and symbol (satisfies fboundp))))
-                      #'pprint-fill -5)
- 
- ;; Assume a line length of 9
- (pprint '(0 b c d e f g h i j k))
- (0 b c d
-  e f g h
-  i j k)
+    ```LISP
+    (set-pprint-dispatch '(cons (not (and symbol (satisfies fboundp))))
+                          #'pprint-fill -5)
+    
+    ;; Assume a line length of 9
+    (pprint '(0 b c d e f g h i j k))
+    (0 b c d
+      e f g h
+      i j k)
+    ```
 
-This final example shows how to define a pretty printing function for a user defined data structure.
+最后的示例展示了如何为用户定义的数据结构定义一个美观打印函数.
 
- (defstruct family mom kids)
- 
- (set-pprint-dispatch 'family
-   #'(lambda (s f)
-       (funcall (formatter "~@<#<~;~W and ~2I~_~/pprint-fill/~;>~:>")
-               s (family-mom f) (family-kids f))))
+    ```LISP
+    (defstruct family mom kids)
+    
+    (set-pprint-dispatch 'family
+      #'(lambda (s f)
+          (funcall (formatter "~@<#<~;~W and ~2I~_~/pprint-fill/~;>~:>")
+                  s (family-mom f) (family-kids f))))
+    ```
 
-The pretty printing function for the structure family specifies how to adjust the layout of the output so that it can fit aesthetically into a variety of line widths. In addition, it obeys the printer control variables *print-level*, *print-length*, *print-lines*, *print-circle* and *print-escape*, and can tolerate several different kinds of malformity in the data structure. The output below shows what is printed out with a right margin of 25, *print-pretty* being true, *print-escape* being false, and a malformed kids list.
+结构体 family 的美观打印函数指定了如何去调整输出的布局以至于它可以很好地适应各种行的宽度. 另外, 它服从打印器控制变量 \*print-level*, \*print-length*, \*print-lines*, \*print-circle* 和 \*print-escape*, 并且可以容忍数据结构中几种不同的多样性. 下面的输出展示了在右边距为 25, \*print-pretty* 是 true, \*print-escape* 是 false, 以及一个多样的 kids 列表时什么会被打印出来.
 
- (write (list 'principal-family
-              (make-family :mom "Lucy"
-                           :kids '("Mark" "Bob" . "Dan")))
-        :right-margin 25 :pretty T :escape nil :miser-width nil)
- (PRINCIPAL-FAMILY
-  #<Lucy and
-      Mark Bob . Dan>)
+    ```LISP
+    (write (list 'principal-family
+                  (make-family :mom "Lucy"
+                              :kids '("Mark" "Bob" . "Dan")))
+            :right-margin 25 :pretty T :escape nil :miser-width nil)
+    (PRINCIPAL-FAMILY
+      #<Lucy and
+          Mark Bob . Dan>)
+    ```
 
-Note that a pretty printing function for a structure is different from the structure's print-object method. While print-object methods are permanently associated with a structure, pretty printing functions are stored in pprint dispatch tables and can be rapidly changed to reflect different printing needs. If there is no pretty printing function for a structure in the current pprint dispatch table, its print-object method is used instead. 
+注意, 一个结构体的美观打印函数和结构体的 print-object 方法是不同的. print-object 方法永久地和一个结构体关联, 美观打印函数是被存储在 pprint 分派表中并且可以迅速地改变来反映不同的打印需求. 如果在当前的 pprint 分派表中没有一个结构体的美观打印函数, 就会使用它的 print-object 方法. 
 
-### 22.2.3 <span id="NotesPrettyPrinterBackground">Notes about the Pretty Printer's Background</span>
+### 22.2.3 <span id="NotesPrettyPrinterBackground">美观打印器背景的注意事项</span>
 
-For a background reference to the abstract concepts detailed in this section, see XP: A Common Lisp Pretty Printing System. The details of that paper are not binding on this document, but may be helpful in establishing a conceptual basis for understanding this material. 
+有关本节中详细描述的抽象概念的背景引用, 见 XP: A Common Lisp Pretty Printing System. 这篇论文的细节对这份文件没有约束力, 但可能有助于建立理解这种资料的概念基础. 
 
 
 ## 22.3 <span id="">Formatted Output</span>
@@ -1710,7 +1748,7 @@ The ~^ should appear only at the beginning of a ~< clause, because it aborts the
 
 * 描述(Description):
 
-        检验传递给词法上当前逻辑块(lexically current logical block)的列表是否已经被耗尽; 见章节 22.2.1.1 (Dynamic Control of the Arrangement of Output). 如果这个列表已经被归约为 nil, pprint-exit-if-list-exhausted 终止这个词法上当前逻辑块的执行, 除了这个后缀的打印. 否则 pprint-exit-if-list-exhausted 返回 nil.
+        检验传递给词法上当前逻辑块(lexically current logical block)的列表是否已经被耗尽; 见章节 22.2.1.1 (输出排列的动态控制). 如果这个列表已经被归约为 nil, pprint-exit-if-list-exhausted 终止这个词法上当前逻辑块的执行, 除了这个后缀的打印. 否则 pprint-exit-if-list-exhausted 返回 nil.
 
         pprint-exit-if-list-exhausted 在全局环境中是否为 fbound 的是依赖于具体实现的; 然而, 在这个 pprint-exit-if-list-exhausted 上的重定义和遮蔽的限制和那些在 COMMON-LISP 包中在全局环境中是 fbound 的符号是一样的. 尝试在 pprint-logical-block 外部去使用 pprint-exit-if-list-exhausted 的后果是未定义的.
 
@@ -1957,7 +1995,7 @@ There are a variety of ways unconditional newlines can be introduced into the ou
 
 * 示例(Examples):
 
-See Section 22.2.2 (Examples of using the Pretty Printer).
+See Section 22.2.2 (使用美观打印器的示例).
 
 * 副作用(Side Effects):
 
@@ -1973,7 +2011,7 @@ An error of type type-error is signaled if kind is not one of :linear, :fill, :m
 
 * 也见(See Also):
 
-Section 22.3.5.1 (Tilde Underscore: Conditional Newline), Section 22.2.2 (Examples of using the Pretty Printer)
+Section 22.3.5.1 (Tilde Underscore: Conditional Newline), Section 22.2.2 (使用美观打印器的示例)
 
 * 注意(Notes): None. 
 
@@ -2002,7 +2040,7 @@ Each time pprint-pop is called, it pops the next value off the list passed to th
 
 If either of the three conditions above occurs, the indicated output is printed on the pretty printing stream created by the immediately containing pprint-logical-block and the execution of the immediately containing pprint-logical-block is terminated except for the printing of the suffix.
 
-If pprint-logical-block is given a `list' argument of nil---because it is not processing a list---pprint-pop can still be used to obtain support for *print-length*. In this situation, the first and third tests above are disabled and pprint-pop always returns nil. See Section 22.2.2 (Examples of using the Pretty Printer)---specifically, the pprint-vector example.
+If pprint-logical-block is given a `list' argument of nil---because it is not processing a list---pprint-pop can still be used to obtain support for *print-length*. In this situation, the first and third tests above are disabled and pprint-pop always returns nil. See Section 22.2.2 (使用美观打印器的示例)---specifically, the pprint-vector example.
 
 Whether or not pprint-pop is fbound in the global environment is implementation-dependent; however, the restrictions on redefinition and shadowing of pprint-pop are the same as for symbols in the COMMON-LISP package which are fbound in the global environment. The consequences of attempting to use pprint-pop outside of pprint-logical-block are undefined.
 
@@ -2108,11 +2146,11 @@ Methods on print-object are responsible for implementing their part of the seman
 
 *print-pretty*
 
-    The method may wish to perform specialized line breaking or other output conditional on the value of *print-pretty*. For further information, see (for example) the macro pprint-fill. See also Section 22.2.1.4 (Pretty Print Dispatch Tables) and Section 22.2.2 (Examples of using the Pretty Printer).
+    The method may wish to perform specialized line breaking or other output conditional on the value of *print-pretty*. For further information, see (for example) the macro pprint-fill. See also Section 22.2.1.4 (美观打印分派表) and Section 22.2.2 (使用美观打印器的示例).
 
 *print-length*
 
-    Methods that produce output of indefinite length must obey *print-length*. For further information, see (for example) the macros pprint-logical-block and pprint-pop. See also Section 22.2.1.4 (Pretty Print Dispatch Tables) and Section 22.2.2 (Examples of using the Pretty Printer).
+    Methods that produce output of indefinite length must obey *print-length*. For further information, see (for example) the macros pprint-logical-block and pprint-pop. See also Section 22.2.1.4 (美观打印分派表) and Section 22.2.2 (使用美观打印器的示例).
 
 *print-level*
 
@@ -2140,7 +2178,7 @@ In some implementations the stream argument passed to a print-object method is n
 
 * 也见(See Also):
 
-pprint-fill, pprint-logical-block, pprint-pop, write, *print-readably*, *print-escape*, *print-pretty*, *print-length*, Section 22.1.3 (默认 Print-Object 方法), Section 22.1.3.12 (打印结构体), Section 22.2.1.4 (Pretty Print Dispatch Tables), Section 22.2.2 (Examples of using the Pretty Printer)
+pprint-fill, pprint-logical-block, pprint-pop, write, *print-readably*, *print-escape*, *print-pretty*, *print-length*, Section 22.1.3 (默认 Print-Object 方法), Section 22.1.3.12 (打印结构体), Section 22.2.1.4 (美观打印分派表), Section 22.2.2 (使用美观打印器的示例)
 
 * 注意(Notes): None. 
 
@@ -2853,11 +2891,11 @@ The pprint dispatch table which currently controls the pretty printer.
 
 * 也见(See Also):
 
-*print-pretty*, Section 22.2.1.4 (Pretty Print Dispatch Tables)
+*print-pretty*, Section 22.2.1.4 (美观打印分派表)
 
 * 注意(Notes):
 
-The intent is that the initial value of this variable should cause `traditional' pretty printing of code. In general, however, you can put a value in *print-pprint-dispatch* that makes pretty-printed output look exactly like non-pretty-printed output. Setting *print-pretty* to true just causes the functions contained in the current pprint dispatch table to have priority over normal print-object methods; it has no magic way of enforcing that those functions actually produce pretty output. For details, see Section 22.2.1.4 (Pretty Print Dispatch Tables). 
+The intent is that the initial value of this variable should cause `traditional' pretty printing of code. In general, however, you can put a value in *print-pprint-dispatch* that makes pretty-printed output look exactly like non-pretty-printed output. Setting *print-pretty* to true just causes the functions contained in the current pprint dispatch table to have priority over normal print-object methods; it has no magic way of enforcing that those functions actually produce pretty output. For details, see Section 22.2.1.4 (美观打印分派表). 
 
 
 ### <span id="V-PRINT-PRETTY">变量 *PRINT-PRETTY*</span>
