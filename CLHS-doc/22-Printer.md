@@ -818,37 +818,37 @@ cons 的打印受 \*print-level*, \*print-length*, 和 \*print-circle* 的影响
 
 ## 22.3 <span id="">Formatted Output</span>
 
-format is useful for producing nicely formatted text, producing good-looking messages, and so on. format can generate and return a string or output to destination.
+format 用来产生格式化的字符串, 产生美观的信息, 等等是很有用的. format 可以生成和返回一个字符串或输出到目标 destination.
 
-The control-string argument to format is actually a format control. That is, it can be either a format string or a function, for example a function returned by the formatter macro.
+给 format 的控制字符串 control-string 参数是一个格式化控制. 这也就是说, 它可以是一个格式化字符串或一个函数, 比如由 formatter 宏返回的一个函数.
 
-If it is a function, the function is called with the appropriate output stream as its first argument and the data arguments to format as its remaining arguments. The function should perform whatever output is necessary and return the unused tail of the arguments (if any).
+如果它是一个函数, 用合适的输出流作为它的第一个参数并且给 format 的数据参数作为它的剩余参数来调用这个函数. 这个函数应该执行必要的输出, 并返回参数中未使用的尾部 (如果有的话).
 
-The compilation process performed by formatter produces a function that would do with its arguments as the format interpreter would do with those arguments.
+由 formatter 执行的编译过程产生一个函数, 它可以像 format 解释器处理这些参数一样来处理这些参数.
 
-The remainder of this section describes what happens if the control-string is a format string.
+这个章节的剩余部分描述了如果 control-string 是一个格式化字符串会发生什么.
 
-Control-string is composed of simple text (characters) and embedded directives.
+控制字符串 control-string 由简单文本 (字符) 和内嵌指令组成.
 
-format writes the simple text as is; each embedded directive specifies further text output that is to appear at the corresponding point within the simple text. Most directives use one or more elements of args to create their output.
+format 按这样写入简单文本; 每一个内嵌的指令指定了进一步出现在简单文本中对应位置的文本输出. 大部分指令使用参数 args 中的一个或多个来创建它们的输出.
 
-A directive consists of a tilde, optional prefix parameters separated by commas, optional colon and at-sign modifiers, and a single character indicating what kind of directive this is. There is no required ordering between the at-sign and colon modifier. The case of the directive character is ignored. Prefix parameters are notated as signed (sign is optional) decimal numbers, or as a single-quote followed by a character. For example, ~5,'0d can be used to print an integer in decimal radix in five columns with leading zeros, or ~5,'*d to get leading asterisks.
+一个指令由一个波浪符号, 一些由逗号分隔的可选前缀参数, 可选冒号和 at-sign 修饰语, 以及表示这个指令种类的单个字符. 在 at-sign 和冒号修饰符之间的顺序是没有必要的. 这个指令字符的大小写会被忽略. 前缀参数被表示为带符号的 (符号是可选的) 十进制数字, 或者一个单引号后面跟着一个字符. 比如, ~5,'0d 可以被用于在五列中以前导零打印一个整数, 或 ~5,'*d 来得到一个前导的星号.
 
-In place of a prefix parameter to a directive, V (or v) can be used. In this case, format takes an argument from args as a parameter to the directive. The argument should be an integer or character. If the arg used by a V parameter is nil, the effect is as if the parameter had been omitted. # can be used in place of a prefix parameter; it represents the number of args remaining to be processed. When used within a recursive format, in the context of ~? or ~{, the # prefix parameter represents the number of format arguments remaining within the recursive call.
+将前缀参数替换为指令, 可以使用 V (或 v). 在这个情况中, format 从 args 中接受一个参数作为给指令的参数. 这个参数应该是一个整数或字符. 如果这个被 V 参数使用的参数 arg 是 nil, 效果就好像这个参数被省略了一样. # 可以被用于替换一个前缀参数; 它表示剩下要被处理的参数 args 的数量. 当在一个递归的 format 中使用时, 在 ~? 或 ~{ 的上下文中, 这个 # 前缀参数表示在这个递归调用中剩余格式化参数的数量.
 
-Examples of format strings:
+格式化字符串的示例:
 
-"~S"        ;This is an S directive with no parameters or modifiers.  
-"~3,-4:@s"  ;This is an S directive with two parameters, 3 and -4,    
-            ; and both the colon and at-sign flags.                   
-"~,+4S"     ;Here the first prefix parameter is omitted and takes     
-            ; on its default value, while the second parameter is 4.  
+    "~S"        ;This is an S directive with no parameters or modifiers.  
+    "~3,-4:@s"  ;This is an S directive with two parameters, 3 and -4,    
+                ; and both the colon and at-sign flags.                   
+    "~,+4S"     ;Here the first prefix parameter is omitted and takes     
+                ; on its default value, while the second parameter is 4.  
 
-Figure 22-6. Examples of format control strings
+    Figure 22-6. 格式化控制字符串的示例
 
-format sends the output to destination. If destination is nil, format creates and returns a string containing the output from control-string. If destination is non-nil, it must be a string with a fill pointer, a stream, or the symbol t. If destination is a string with a fill pointer, the output is added to the end of the string. If destination is a stream, the output is sent to that stream. If destination is t, the output is sent to standard output.
+format 发送这个输出到目标 destination. 如果 destination 是 nil, format 创建并返回一个包含来自 control-string 的输出的字符串. 如果 destination 不是 nil, 它必须是一个带有填充指针的字符串, 一个流, 或者符号 t. 如果 destination 是一个带有填充指针的字符串, 输出会被添加到这个字符串的末尾. 如果 destination 是一个流, 输出会被发送到这个流. 如果 destination 是 t, 输出会被发送到标准输出.
 
-In the description of the directives that follows, the term arg in general refers to the next item of the set of args to be processed. The word or phrase at the beginning of each description is a mnemonic for the directive. format directives do not bind any of the printer control variables (*print-...*) except as specified in the following descriptions. Implementations may specify the binding of new, implementation-specific printer control variables for each format directive, but they may neither bind any standard printer control variables not specified in description of a format directive nor fail to bind any standard printer control variables as specified in the description.
+在对以下指令的描述中, 术语 arg 通常引用要被处理的 args 集合的下一个条目. 每个描述开头的词或短语是指令的助记符. format 指令不会绑定这些打印控制变量(\*print-...*)的任何一个除了在下面描述中指定的. 具体实现可能为每个格式化指令指定新的, 具体实现指定的打印控制变量绑定, 但是它们可能不绑定在一个标准打印器控制变量的描述中没有指定的任何标准打印器控制变量, 也不能绑定这个描述中指定的任何标准打印器控制变量.
 
 > * 22.3.1 [FORMAT Basic Output](#FORMATBasicOutput)
 > * 22.3.2 [FORMAT Radix Control](#FORMATRadixControl)
@@ -1847,23 +1847,21 @@ The ~^ should appear only at the beginning of a ~< clause, because it aborts the
 
 * 语法(Syntax):
 
-pprint-indent relative-to n &optional stream => nil
+        pprint-indent relative-to n &optional stream => nil
 
 * 参数和值(Arguments and Values):
 
-relative-to---either :block or :current.
-
-n---a real.
-
-stream---an output stream designator. The default is standard output.
+        relative-to---:block 或 :current.
+        n---一个实数.
+        stream---一个输出流标识符. 默认是标准输出.
 
 * 描述(Description):
 
-pprint-indent specifies the indentation to use in a logical block on stream. If stream is a pretty printing stream and the value of *print-pretty* is true, pprint-indent sets the indentation in the innermost dynamically enclosing logical block; otherwise, pprint-indent has no effect.
+        pprint-indent 指定了在流 stream 上的一个逻辑块中使用的缩进. 如果流 stream 是一个美观打印流并且 *print-pretty* 的值 true, pprint-indent 设置最内部的动态闭合逻辑块中的缩进; 否则, pprint-indent 没有效果.
 
-N specifies the indentation in ems. If relative-to is :block, the indentation is set to the horizontal position of the first character in the dynamically current logical block plus n ems. If relative-to is :current, the indentation is set to the current output position plus n ems. (For robustness in the face of variable-width fonts, it is advisable to use :current with an n of zero whenever possible.)
+        n 用西文排版行长单位指定了缩进. 如果 relative-to 是 :block, 这个缩进会被设置为在这个动态当前逻辑块中第一个字符的水平位置加上 n 个西文排版行长单位. 如果 relative-to 是 :current, 这个缩进被设置为当前输出位置加上 n 个西文排版行长单位. (为了面对可变宽度字体时的健壮性, 可能的情况下建议使用 :current 以及零作为一个 n.)
 
-N can be negative; however, the total indentation cannot be moved left of the beginning of the line or left of the end of the rightmost per-line prefix---an attempt to move beyond one of these limits is treated the same as an attempt to move to that limit. Changes in indentation caused by pprint-indent do not take effect until after the next line break. In addition, in miser mode all calls to pprint-indent are ignored, forcing the lines corresponding to the logical block to line up under the first character in the block.
+        N 可以是负的; 然而, 总的缩进不能移动到这行开始的左边或者最右边的每行前缀的末尾的左边---试图超越这些限制一的尝试与试图达到这个极限的尝试是一样的. 由 pprint-indent 导致的缩进的改变不会生效, 直到下一个换行符之后. 另外, 在最小执行常式模式中所有对 pprint-indent 的调用都被忽略, 强制对齐到逻辑块的行, 在块的第一个字符下面对齐.
 
 * 示例(Examples): None.
 
@@ -1873,11 +1871,11 @@ N can be negative; however, the total indentation cannot be moved left of the be
 
 * 异常情况(Exceptional Situations):
 
-An error is signaled if relative-to is any object other than :block or :current.
+        如果 relative-to 是任何不是 :block 或 :current 的对象, 就会发出一个错误.
 
 * 也见(See Also):
 
-Section 22.3.5.3 (Tilde I: Indent)
+        章节 22.3.5.3 (Tilde I: Indent)
 
 * 注意(Notes): None. 
 
@@ -1886,45 +1884,38 @@ Section 22.3.5.3 (Tilde I: Indent)
 
 * 语法(Syntax):
 
-pprint-logical-block (stream-symbol object &key prefix per-line-prefix suffix) declaration* form*
-
-=> nil
+        pprint-logical-block (stream-symbol object &key prefix per-line-prefix suffix) declaration* form*
+        => nil
 
 * 参数和值(Arguments and Values):
 
-stream-symbol---a stream variable designator.
-
-object---an object; evaluated.
-
-:prefix---a string; evaluated. Complicated defaulting behavior; see below.
-
-:per-line-prefix---a string; evaluated. Complicated defaulting behavior; see below.
-
-:suffix---a string; evaluated. The default is the null string.
-
-declaration---a declare expression; not evaluated.
-
-forms---an implicit progn.
+        stream-symbol---一个流变量标识符.
+        object---一个对象; 求值的.
+        :prefix---一个字符串; 求值的. 复杂的默认行为; 见下方.
+        :per-line-prefix---一个字符串; 求值的. 复杂的默认行为; 见下方.
+        :suffix---一个字符串; 求值的. 默认是空字符串.
+        declaration---一个 declare 表达式; 不求值的.
+        forms---一个隐式 progn;
 
 * 描述(Description):
 
-Causes printing to be grouped into a logical block.
+        使打印被分组到一个逻辑块中.
 
-The logical block is printed to the stream that is the value of the variable denoted by stream-symbol. During the execution of the forms, that variable is bound to a pretty printing stream that supports decisions about the arrangement of output and then forwards the output to the destination stream. All the standard printing functions (e.g., write, princ, and terpri) can be used to print output to the pretty printing stream. All and only the output sent to this pretty printing stream is treated as being in the logical block.
+        这个逻辑块被打印到一个流, 这个流是由 stream-symbol 表示的变量的值. 在这些表达式形式的执行期间, 那个变量被绑定为一个美观打印流, 它支持关于输出排列的决策, 然后将输出转发到目标流. 所有标准打印函数 (例如, write, princ, 和 terpri) 都可以被用于打印输出到这个美观打印流. 所有的和只有输出到这个美观打印流的输出被视为在逻辑块中.
 
-The prefix specifies a prefix to be printed before the beginning of the logical block. The per-line-prefix specifies a prefix that is printed before the block and at the beginning of each new line in the block. The :prefix and :pre-line-prefix arguments are mutually exclusive. If neither :prefix nor :per-line-prefix is specified, a prefix of the null string is assumed.
+        这个前缀 prefix 指定了在这个逻辑块开始前要被打印的前缀. 这个行前缀 per-line-prefix 指定了在这个逻辑块以及逻辑块中的每一个新行开始之前要打印的前缀. 这个 :prefix 和 :pre-line-prefix 参数是互斥的. 如果 :prefix 和 :per-line-prefix 都没有指定, 会采取一个空字符串前缀.
 
-The suffix specifies a suffix that is printed just after the logical block.
+        这个后缀 suffix 指定了在这个逻辑块后面打印的后缀.
 
-The object is normally a list that the body forms are responsible for printing. If object is not a list, it is printed using write. (This makes it easier to write printing functions that are robust in the face of malformed arguments.) If *print-circle* is non-nil and object is a circular (or shared) reference to a cons, then an appropriate ``#n#'' marker is printed. (This makes it easy to write printing functions that provide full support for circularity and sharing abbreviation.) If *print-level* is not nil and the logical block is at a dynamic nesting depth of greater than *print-level* in logical blocks, ``#'' is printed. (This makes easy to write printing functions that provide full support for depth abbreviation.)
+        这个 object 通常是一个主体表达式形式 forms 负责打印的列表. 如果 object 不是一个列表, 它使用 write 打印. (这使得编写出现错误的参数时是健壮的打印函数变得更加容易). 如果 *print-circle* 不是 nil 并且 object 是一个引用一个 cons 的循环 (或者共享的) 引用, 那么就会打印一个适当的 "#n#" 标记. (这使得编写为循环和共享缩写提供了完整的支持的打印函数变得很容易.) 如果 *print-level* 不是 nil 并且这个逻辑块在这些逻辑块中大于 *print-level* 的动态嵌套深度中, "#" 会被打印. (这使得编写提供了对深度缩写的完全支持的打印函数很容易.)
 
-If either of the three conditions above occurs, the indicated output is printed on stream-symbol and the body forms are skipped along with the printing of the :prefix and :suffix. (If the body forms are not to be responsible for printing a list, then the first two tests above can be turned off by supplying nil for the object argument.)
+        如果以上三个情况的任意一个发生了, 指定的输出打印在 stream-symbol 上并且随着 :prefix 和 :suffix 的打印, 主体表达式形式 forms 也被跳过了. (如果主体表达式形式 forms 不负责打印一个列表, 那么上述前两个检验可以通过为 object 参数提供 nil 来关闭.)
 
-In addition to the object argument of pprint-logical-block, the arguments of the standard printing functions (such as write, print, prin1, and pprint, as well as the arguments of the standard format directives such as ~A, ~S, (and ~W) are all checked (when necessary) for circularity and sharing. However, such checking is not applied to the arguments of the functions write-line, write-string, and write-char or to the literal text output by format. A consequence of this is that you must use one of the latter functions if you want to print some literal text in the output that is not supposed to be checked for circularity or sharing.
+        除了 pprint-logical-block 的 object 参数之外, 标准打印函数的参数 (例如 write, print, prin1, 和 pprint, 例如 ~A, ~S, 和 ~W 这样的标准格式化指令的参数也一样) 都会检测循环和共享 (当有必要的时候). 然而, 这样的检测不会应用到函数 write-line, write-string, 和 write-char 的参数上, 也不会应用到由 format 输出的字面文本上. 这样做的结果是, 如果您想要在输出中打印一些字面文本, 而这些文本不支持循环性或共享检测, 那么您必须使用后者的一个函数.
 
-The body forms of a pprint-logical-block form must not perform any side-effects on the surrounding environment; for example, no variables must be assigned which have not been bound within its scope.
+       一个 pprint-logical-block 表达式形式的主体表达式形式 forms 一定不能对周围环境产生副作用; 比如, 没有在它的作用域中被绑定的变量不能被赋值.
 
-The pprint-logical-block macro may be used regardless of the value of *print-pretty*.
+        不管 *print-pretty* 的值是什么, 这个 pprint-logical-block 宏都可能被使用.
 
 * 示例(Examples): None.
 
@@ -1932,27 +1923,27 @@ The pprint-logical-block macro may be used regardless of the value of *print-pre
 
 * 受此影响(Affected By):
 
-*print-circle*, *print-level*.
+        *print-circle*, *print-level*.
 
 * 异常情况(Exceptional Situations):
 
-An error of type type-error is signaled if any of the :suffix, :prefix, or :per-line-prefix is supplied but does not evaluate to a string.
+        如果提供的 :suffix, :prefix, or :per-line-prefix 的任何一个没有被求值为一个字符串, 那么就会发出一个 type-error 类型的错误.
 
-An error is signaled if :prefix and :pre-line-prefix are both used.
+        如果 :prefix 和 :pre-line-prefix 都使用了就会发出一个错误.
 
-pprint-logical-block and the pretty printing stream it creates have dynamic extent. The consequences are undefined if, outside of this extent, output is attempted to the pretty printing stream it creates.
+        pprint-logical-block 和它创建的美观打印流有着动态范围. 如果在这个作用域之外尝试去输出到它创建的这个美观打印流, 那么后果是未定义的.
 
-It is also unspecified what happens if, within this extent, any output is sent directly to the underlying destination stream.
+        如果在这个范围内直接发送任何输出到底层的目标流, 会发生什么也是不确定的.
 
 * 也见(See Also):
 
-pprint-pop, pprint-exit-if-list-exhausted, Section 22.3.5.2 (Tilde Less-Than-Sign: Logical Block)
+        pprint-pop, pprint-exit-if-list-exhausted, 章节 22.3.5.2 (Tilde Less-Than-Sign: Logical Block)
 
 * 注意(Notes):
 
-One reason for using the pprint-logical-block macro when the value of *print-pretty* is nil would be to allow it to perform checking for dotted lists, as well as (in conjunction with pprint-pop) checking for *print-level* or *print-length* being exceeded.
+        当 *print-pretty* 的值为 nil 时使用 pprint-logical-block 宏的一个原因是允许它对点列表执行检查, (和 pprint-pop 配合) 检查 *print-level* or *print-length* 溢出也一样.
 
-Detection of circularity and sharing is supported by the pretty printer by in essence performing requested output twice. On the first pass, circularities and sharing are detected and the actual outputting of characters is suppressed. On the second pass, the appropriate ``#n='' and ``#n#'' markers are inserted and characters are output. This is why the restriction on side-effects is necessary. Obeying this restriction is facilitated by using pprint-pop, instead of an ordinary pop when traversing a list being printed by the body forms of the pprint-logical-block form.) 
+        美观打印器支持循环和共享的检测, 本质上是执行两次请求的输出. 第一次通过时, 循环和共享被检测而实际输出的字符串被抑制. 在第二次通过时, 适当的 "#n=" 和 "#n#" 标记会被插入并且字符会被输出. 就就是为什么副作用上的约束是必要的. 当遍历一个要被 pprint-logical-block 表达式形式的主体表达式形式 forms 打印的列表时, 使用 pprint-pop 来实现这一限制, 而不是普通的 pop.
 
 
 ### <span id="F-PPRINT-NEWLINE">函数 PPRINT-NEWLINE</span>
@@ -2191,7 +2182,7 @@ print-unreadable-object (object stream &key type identity) form* => nil
 
 * 参数和值(Arguments and Values):
 
-object---an object; evaluated.
+object---一个对象; evaluated.
 
 stream---a stream designator; evaluated.
 
@@ -2199,7 +2190,7 @@ type---a generalized boolean; evaluated.
 
 identity---a generalized boolean; evaluated.
 
-forms---an implicit progn.
+forms---一个隐式 progn;
 
 * 描述(Description):
 
@@ -2902,60 +2893,62 @@ The intent is that the initial value of this variable should cause `traditional'
 
 * 值类型(Value Type):
 
-a generalized boolean.
+        一个广义 boolean.
 
 * 初始值(Initial Value):
 
-implementation-dependent.
+        依赖于具体实现的.
 
 * 描述(Description):
 
-Controls whether the Lisp printer calls the pretty printer.
+        控制 Lisp 打印器是否调用美观打印器.
 
-If it is false, the pretty printer is not used and a minimum of whitespace[1] is output when printing an expression.
+        如果它是 false, 美观打印器不会被使用并且当打印一个表达式时最小数量的空格会被输出.
 
-If it is true, the pretty printer is used, and the Lisp printer will endeavor to insert extra whitespace[1] where appropriate to make expressions more readable.
+        如果它是 true, 美观打印器会被使用, 并且 Lisp 打印器会尽可能的在可以使表达式变得更加可读的地方去插入额外的空格 whitespace.
 
-*print-pretty* has an effect even when the value of *print-escape* is false.
+        即便当 *print-escape* 的值是 false 时, *print-pretty* 也是有效的.
 
 * 示例(Examples):
 
- (setq *print-pretty* 'nil) =>  NIL
- (progn (write '(let ((a 1) (b 2) (c 3)) (+ a b c))) nil)
->>  (LET ((A 1) (B 2) (C 3)) (+ A B C))
-=>  NIL
- (let ((*print-pretty* t))
-   (progn (write '(let ((a 1) (b 2) (c 3)) (+ a b c))) nil))
->>  (LET ((A 1)
->>        (B 2)
->>        (C 3))
->>    (+ A B C))
-=>  NIL
-;; Note that the first two expressions printed by this next form
-;; differ from the second two only in whether escape characters are printed.
-;; In all four cases, extra whitespace is inserted by the pretty printer.
- (flet ((test (x)
-          (let ((*print-pretty* t))
-            (print x)
-            (format t "~%~S " x)
-            (terpri) (princ x) (princ " ")
-            (format t "~%~A " x))))
-  (test '#'(lambda () (list "a" #'c #'d))))
->>  #'(LAMBDA ()
->>      (LIST "a" #'C #'D))
->>  #'(LAMBDA ()
->>      (LIST "a" #'C #'D))
->>  #'(LAMBDA ()
->>      (LIST a b 'C #'D)) 
->>  #'(LAMBDA ()
->>      (LIST a b 'C #'D))
-=>  NIL
+    ```LISP
+    (setq *print-pretty* 'nil) =>  NIL
+    (progn (write '(let ((a 1) (b 2) (c 3)) (+ a b c))) nil)
+    >>  (LET ((A 1) (B 2) (C 3)) (+ A B C))
+    =>  NIL
+    (let ((*print-pretty* t))
+      (progn (write '(let ((a 1) (b 2) (c 3)) (+ a b c))) nil))
+    >>  (LET ((A 1)
+    >>        (B 2)
+    >>        (C 3))
+    >>    (+ A B C))
+    =>  NIL
+    ;; Note that the first two expressions printed by this next form
+    ;; differ from the second two only in whether escape characters are printed.
+    ;; In all four cases, extra whitespace is inserted by the pretty printer.
+    (flet ((test (x)
+              (let ((*print-pretty* t))
+                (print x)
+                (format t "~%~S " x)
+                (terpri) (princ x) (princ " ")
+                (format t "~%~A " x))))
+      (test '#'(lambda () (list "a" #'c #'d))))
+    >>  #'(LAMBDA ()
+    >>      (LIST "a" #'C #'D))
+    >>  #'(LAMBDA ()
+    >>      (LIST "a" #'C #'D))
+    >>  #'(LAMBDA ()
+    >>      (LIST a b 'C #'D)) 
+    >>  #'(LAMBDA ()
+    >>      (LIST a b 'C #'D))
+    =>  NIL
+    ```
 
 * 受此影响(Affected By): None.
 
 * 也见(See Also):
 
-write
+        write
 
 * 注意(Notes): None. 
 
@@ -2964,78 +2957,80 @@ write
 
 * 值类型(Value Type):
 
-a generalized boolean.
+        一个广义 boolean.
 
 * 初始值(Initial Value):
 
-false.
+        false.
 
 * 描述(Description):
 
-If *print-readably* is true, some special rules for printing objects go into effect. Specifically, printing any object O1 produces a printed representation that, when seen by the Lisp reader while the standard readtable is in effect, will produce an object O2 that is similar to O1. The printed representation produced might or might not be the same as the printed representation produced when *print-readably* is false. If printing an object readably is not possible, an error of type print-not-readable is signaled rather than using a syntax (e.g., the ``#<'' syntax) that would not be readable by the same implementation. If the value of some other printer control variable is such that these requirements would be violated, the value of that other variable is ignored.
+        如果 *print-readably* 是 true, 打印对象的一些特殊规则生效. 具体来说, 打印任何对象 O1 会产生一个打印表示, 当标准读取表生效时并且被 Lisp 读取器见到时, 会产生一个和 O1 相似的对象 O2. 产生的打印表示可能和 *print-readably* 是 false 时产生的打印表示一样, 也可能不一样. 如果打印一个可读对象是不可能的, 就会发出一个 print-not-readable 类型的错误而不是使用一个对于相同实现不可读的语法 (比如, "#<" 语法). 如果其他一些打印器控制变量的值是这样的, 那么这些需求就会被违背, 那么这个其他变量的值就会被忽略 If the value of some other printer control variable is such that these requirements would be violated, the value of that other variable is ignored.
 
-Specifically, if *print-readably* is true, printing proceeds as if *print-escape*, *print-array*, and *print-gensym* were also true, and as if *print-length*, *print-level*, and *print-lines* were false.
+        具体的说, 如果 *print-readably* 是 true, 打印就进行, 就好像 *print-escape*, *print-array*, 和 *print-gensym* 也是 true, 以及就好像 *print-length*, *print-level*, 和 *print-lines* 是 false.
 
-If *print-readably* is false, the normal rules for printing and the normal interpretations of other printer control variables are in effect.
+        如果 *print-readably* 是 false, 正常的打印规则和其他打印器控制变量的正常解释规则生效.
 
-Individual methods for print-object, including user-defined methods, are responsible for implementing these requirements.
+        单独的 print-object 方法, 包括用户定义的方法, 有责任去实现这些需要.
 
-If *read-eval* is false and *print-readably* is true, any such method that would output a reference to the ``#.'' reader macro will either output something else or will signal an error (as described above).
+        如果 *read-eval* 是 false 并且 *print-readably* 是 true, 任何这样会输出对 "#." 读取器宏的引用的方法, 要么输出其他的东西, 要么会发出错误的信号 (就像上面描述的).
 
 * 示例(Examples):
 
- (let ((x (list "a" '\a (gensym) '((a (b (c))) d e f g)))
-       (*print-escape* nil)
-       (*print-gensym* nil)
-       (*print-level* 3)
-       (*print-length* 3))
-   (write x)
-   (let ((*print-readably* t))
-     (terpri)
-     (write x)
-     :done))
->>  (a a G4581 ((A #) D E ...))
->>  ("a" |a| #:G4581 ((A (B (C))) D E F G))
-=>  :DONE
+    ```LISP
+    (let ((x (list "a" '\a (gensym) '((a (b (c))) d e f g)))
+          (*print-escape* nil)
+          (*print-gensym* nil)
+          (*print-level* 3)
+          (*print-length* 3))
+      (write x)
+      (let ((*print-readably* t))
+        (terpri)
+        (write x)
+        :done))
+    >>  (a a G4581 ((A #) D E ...))
+    >>  ("a" |a| #:G4581 ((A (B (C))) D E F G))
+    =>  :DONE
 
-;; This is setup code is shared between the examples
-;; of three hypothetical implementations which follow.
- (setq table (make-hash-table)) =>  #<HASH-TABLE EQL 0/120 32005763> 
- (setf (gethash table 1) 'one) =>  ONE
- (setf (gethash table 2) 'two) =>  TWO
+    ;; This is setup code is shared between the examples
+    ;; of three hypothetical implementations which follow.
+    (setq table (make-hash-table)) =>  #<HASH-TABLE EQL 0/120 32005763> 
+    (setf (gethash table 1) 'one) =>  ONE
+    (setf (gethash table 2) 'two) =>  TWO
 
-;; Implementation A
- (let ((*print-readably* t)) (print table))
- Error: Can't print #<HASH-TABLE EQL 0/120 32005763> readably.
+    ;; Implementation A
+    (let ((*print-readably* t)) (print table))
+    Error: Can't print #<HASH-TABLE EQL 0/120 32005763> readably.
 
-;; Implementation B
-;; No standardized #S notation for hash tables is defined, 
-;; but there might be an implementation-defined notation.
- (let ((*print-readably* t)) (print table))
->>  #S(HASH-TABLE :TEST EQL :SIZE 120 :CONTENTS (1 ONE 2 TWO))
-=>  #<HASH-TABLE EQL 0/120 32005763>
+    ;; Implementation B
+    ;; No standardized #S notation for hash tables is defined, 
+    ;; but there might be an implementation-defined notation.
+    (let ((*print-readably* t)) (print table))
+    >>  #S(HASH-TABLE :TEST EQL :SIZE 120 :CONTENTS (1 ONE 2 TWO))
+    =>  #<HASH-TABLE EQL 0/120 32005763>
 
-;; Implementation C
-;; Note that #. notation can only be used if *READ-EVAL* is true.
-;; If *READ-EVAL* were false, this same implementation might have to
-;; signal an error unless it had yet another printing strategy to fall
-;; back on.
- (let ((*print-readably* t)) (print table))
->>  #.(LET ((HASH-TABLE (MAKE-HASH-TABLE)))
->>      (SETF (GETHASH 1 HASH-TABLE) ONE)
->>      (SETF (GETHASH 2 HASH-TABLE) TWO)
->>      HASH-TABLE)
-=>  #<HASH-TABLE EQL 0/120 32005763>
+    ;; Implementation C
+    ;; Note that #. notation can only be used if *READ-EVAL* is true.
+    ;; If *READ-EVAL* were false, this same implementation might have to
+    ;; signal an error unless it had yet another printing strategy to fall
+    ;; back on.
+    (let ((*print-readably* t)) (print table))
+    >>  #.(LET ((HASH-TABLE (MAKE-HASH-TABLE)))
+    >>      (SETF (GETHASH 1 HASH-TABLE) ONE)
+    >>      (SETF (GETHASH 2 HASH-TABLE) TWO)
+    >>      HASH-TABLE)
+    =>  #<HASH-TABLE EQL 0/120 32005763>
+    ```
 
 * 受此影响(Affected By): None.
 
 * 也见(See Also):
 
-write, print-unreadable-object
+        write, print-unreadable-object
 
 * 注意(Notes):
 
-The rules for ``similarity'' imply that #A or #( syntax cannot be used for arrays of element type other than t. An implementation will have to use another syntax or signal an error of type print-not-readable. 
+        "相似性(similarity)" 规则意味着 #A 或 #( 语法不能被用于元素类型除了 t 以外的数组. 一个实现将不得不使用另一种语法或者发出一个 print-not-readable 类型的错误. 
 
 
 ### <span id="V-PRINT-RIGHT-MARGIN">变量 *PRINT-RIGHT-MARGIN*</span>
