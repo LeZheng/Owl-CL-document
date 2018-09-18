@@ -850,149 +850,153 @@ format 发送这个输出到目标 destination. 如果 destination 是 nil, form
 
 在对以下指令的描述中, 术语 arg 通常引用要被处理的 args 集合的下一个条目. 每个描述开头的词或短语是指令的助记符. format 指令不会绑定这些打印控制变量(\*print-...*)的任何一个除了在下面描述中指定的. 具体实现可能为每个格式化指令指定新的, 具体实现指定的打印控制变量绑定, 但是它们可能不绑定在一个标准打印器控制变量的描述中没有指定的任何标准打印器控制变量, 也不能绑定这个描述中指定的任何标准打印器控制变量.
 
-> * 22.3.1 [FORMAT Basic Output](#FORMATBasicOutput)
-> * 22.3.2 [FORMAT Radix Control](#FORMATRadixControl)
-> * 22.3.3 [FORMAT Floating-Point Printers](#FORMATFloatingPointPrinters)
-> * 22.3.4 [FORMAT Printer Operations](#FORMATPrinterOperations)
-> * 22.3.5 [FORMAT Pretty Printer Operations](#FORMATPrettyPrinterOperations)
-> * 22.3.6 [FORMAT Layout Control](#FORMATLayoutControl)
-> * 22.3.7 [FORMAT Control-Flow Operations](#FORMATControlFlowOperation)
-> * 22.3.8 [FORMAT Miscellaneous Operations](#FORMATMiscellaneousOperation)
-> * 22.3.9 [FORMAT Miscellaneous Pseudo-Operations](#FORMATMiscellaneousPseudoOperation)
-> * 22.3.10 [Additional Information about FORMAT Operations](#AddInfoFORMATOperations)
-> * 22.3.11 [Examples of FORMAT](#ExamplesFORMAT)
-> * 22.3.12 [Notes about FORMAT](#NotesFORMAT)
+> * 22.3.1 [FORMAT 基本输出](#FORMATBasicOutput)
+> * 22.3.2 [FORMAT 基数控制](#FORMATRadixControl)
+> * 22.3.3 [FORMAT 浮点打印器](#FORMATFloatingPointPrinters)
+> * 22.3.4 [FORMAT 打印器操作](#FORMATPrinterOperations)
+> * 22.3.5 [FORMAT 美观打印器操作](#FORMATPrettyPrinterOperations)
+> * 22.3.6 [FORMAT 布局控制](#FORMATLayoutControl)
+> * 22.3.7 [FORMAT 控制流操作](#FORMATControlFlowOperation)
+> * 22.3.8 [FORMAT 杂项操作](#FORMATMiscellaneousOperation)
+> * 22.3.9 [FORMAT 杂项伪操作](#FORMATMiscellaneousPseudoOperation)
+> * 22.3.10 [关于 FORMAT 的额外信息](#AddInfoFORMATOperations)
+> * 22.3.11 [FORMAT 的示例](#ExamplesFORMAT)
+> * 22.3.12 [FORMAT 的注意事项](#NotesFORMAT)
 
 
-### 22.3.1 <span id="FORMATBasicOutput">FORMAT Basic Output</span>
+### 22.3.1 <span id="FORMATBasicOutput">FORMAT 基本输出</span>
 
-> * 22.3.1.1 [Tilde C: Character](#TildeCCharacter)
-> * 22.3.1.2 [Tilde Percent: Newline](#TildePercentNewline)
-> * 22.3.1.3 [Tilde Ampersand: Fresh-Line](#TildeAmpersandFreshLine)
-> * 22.3.1.4 [Tilde Vertical-Bar: Page](#TildeVerticalBarPage)
-> * 22.3.1.5 [Tilde Tilde: Tilde](#TildeTildeTilde)
+> * 22.3.1.1 [波浪符号 C: 字符](#TildeCCharacter)
+> * 22.3.1.2 [波浪符号百分比号%: 换行](#TildePercentNewline)
+> * 22.3.1.3 [波浪符号和号&: 换行](#TildeAmpersandFreshLine)
+> * 22.3.1.4 [波浪符号竖杠|: 页](#TildeVerticalBarPage)
+> * 22.3.1.5 [波浪符号波浪符号~: 波浪符号](#TildeTildeTilde)
 
-#### 22.3.1.1 <span id="TildeCCharacter">Tilde C: Character</span>
+#### 22.3.1.1 <span id="TildeCCharacter">波浪符号 C: 字符</span>
 
-The next arg should be a character; it is printed according to the modifier flags.
+下一个参数 arg 应该是一个字符; 它是根据修饰符的标志打印出来的.
 
-~C prints the character as if by using write-char if it is a simple character. Characters that are not simple are not necessarily printed as if by write-char, but are displayed in an implementation-defined, abbreviated format. For example,
+如果这个字符是一个简单字符, 那么 ~C 打印这个字符就像是通过使用 write-char 一样. 不是简单的字符没有必要像是通过 write-char 打印, 但是以一种具体实现定义的简洁的格式显示. 比如,
 
- (format nil "~C" #\A) =>  "A"
- (format nil "~C" #\Space) =>  " "
+    ```LISP
+    (format nil "~C" #\A) =>  "A"
+    (format nil "~C" #\Space) =>  " "
+    ```
 
-~:C is the same as ~C for printing characters, but other characters are ``spelled out.'' The intent is that this is a ``pretty'' format for printing characters. For simple characters that are not printing, what is spelled out is the name of the character (see char-name). For characters that are not simple and not printing, what is spelled out is implementation-defined. For example,
+对于打印字符 ~:C 和 ~C 相同, 但是其他字符是 "拼写出来的". 其目的是, 打印字符的"美观"格式. 关于不打印的简单字符, 拼写出来的是字符的名称 (见 char-name). 对于没有打印的非简单字符, 什么被拼写出来是具体实现定义的. 比如,
 
- (format nil "~:C" #\A) =>  "A"
- (format nil "~:C" #\Space) =>  "Space"
-;; This next example assumes an implementation-defined "Control" attribute.
- (format nil "~:C" #\Control-Space)
-=>  "Control-Space"
-OR=>  "c-Space"
+    ```LISP
+    (format nil "~:C" #\A) =>  "A"
+    (format nil "~:C" #\Space) =>  "Space"
+    ;; This next example assumes an implementation-defined "Control" attribute.
+    (format nil "~:C" #\Control-Space)
+    =>  "Control-Space"
+    OR=>  "c-Space"
+    ```
 
-~:@C prints what ~:C would, and then if the character requires unusual shift keys on the keyboard to type it, this fact is mentioned. For example,
+~:@C 打印 ~:C 会打印的东西, 然后如果这个字符需要键盘上的不寻常的 shift 键来输入, 这个事实就会被提到 . 比如,
 
- (format nil "~:@C" #\Control-Partial) =>  "Control-<PARTIAL> (Top-F)"  
+    ```LISP
+    (format nil "~:@C" #\Control-Partial) =>  "Control-<PARTIAL> (Top-F)"  
+    ```
 
-This is the format used for telling the user about a key he is expected to type, in prompts, for instance. The precise output may depend not only on the implementation, but on the particular I/O devices in use.
+这是在提示中用来告诉用户他要输入的密钥的格式. 准确的输出可能不仅取决于实现, 还取决于所使用的特定 I/O 设备.
 
-~@C prints the character in a way that the Lisp reader can understand, using #\ syntax.
+~@C 以一种 Lisp 读取器可以理解的方式打印这个字符, 使用 #\ 语法.
 
-~@C binds *print-escape* to t. 
+~@C 绑定 \*print-escape* 为 t. 
 
-#### 22.3.1.2 <span id="TildePercentNewline">Tilde Percent: Newline</span>
+#### 22.3.1.2 <span id="TildePercentNewline">波浪符号百分比号%: 换行</span>
 
-This outputs a #\Newline character, thereby terminating the current output line and beginning a new one. ~n% outputs n newlines. No arg is used. 
+这个输出一个 #\Newline 子, 从而终止当前的输出行并开始一个新的输出行. ~n% 输出 n 个新行. 不使用参数 arg. 
 
+#### 22.3.1.3 <span id="TildeAmpersandFreshLine">波浪符号和号&: 换行</span>
 
-#### 22.3.1.3 <span id="TildeAmpersandFreshLine">Tilde Ampersand: Fresh-Line</span>
+除非它可以确定这个输出流已经在一行的开始, 否则这个就会输出一个新行. ~n& 调用 fresh-line 然后输出 n-1 个新行. ~0& 什么都不做.
 
-Unless it can be determined that the output stream is already at the beginning of a line, this outputs a newline. ~n& calls fresh-line and then outputs n-1 newlines. ~0& does nothing.
+#### 22.3.1.4 <span id="TildeVerticalBarPage">波浪符号竖杠|: 页</span>
 
+如果可能的话, 这个输出一个分页符号. ~n| 执行 n 次这个. 
 
-#### 22.3.1.4 <span id="TildeVerticalBarPage">Tilde Vertical-Bar: Page</span>
+#### 22.3.1.5 <span id="TildeTildeTilde">波浪符号波浪符号~: 波浪符号</span>
 
-This outputs a page separator character, if possible. ~n| does this n times. 
+这个输出一个波浪符号. ~n~ 输出 n 个波浪符号. 
 
+### 22.3.2 <span id="FORMATRadixControl">FORMAT 基数控制</span>
 
-#### 22.3.1.5 <span id="TildeTildeTilde">Tilde Tilde: Tilde</span>
+> * 22.3.2.1 [波浪符号 R: 基数](#TildeRRadix)
+> * 22.3.2.2 [波浪符号 D: 十进制](#TildeDDecimal)
+> * 22.3.2.3 [波浪符号 B: 二进制](#TildeBBinary)
+> * 22.3.2.4 [波浪符号 O: 八进制](#TildeOOctal)
+> * 22.3.2.5 [波浪符号 X: 十六进制](#TildeXHexadecimal)
 
-This outputs a tilde. ~n~ outputs n tildes. 
+#### 22.3.2.1 <span id="TildeRRadix">波浪符号 R: 基数</span>
 
+~nR 用基数 n 来打印参数 arg. 修饰符标识和任何剩余参数被用于 ~D 检测. ~D 和 ~10R 相同. 完整形式是 ~radix,mincol,padchar,commachar,comma-intervalR.
 
-### 22.3.2 <span id="FORMATRadixControl">FORMAT Radix Control</span>
+如果没有给 ~R 一个前缀参数, 那就就会给定一个不同的解释. 这个参数应该是一个整数. 比如, 如果参数 arg 是 4:
 
-> * 22.3.2.1 [Tilde R: Radix](#TildeRRadix)
-> * 22.3.2.2 [Tilde D: Decimal](#TildeDDecimal)
-> * 22.3.2.3 [Tilde B: Binary](#TildeBBinary)
-> * 22.3.2.4 [Tilde O: Octal](#TildeOOctal)
-> * 22.3.2.5 [Tilde X: Hexadecimal](#TildeXHexadecimal)
+* ~R 打印参数 arg 作为一个基本的英语数字: four.
 
-#### 22.3.2.1 <span id="TildeRRadix">Tilde R: Radix</span>
+* ~:R 打印参数 arg 作为一个英语序数: fourth.
 
-~nR prints arg in radix n. The modifier flags and any remaining parameters are used as for the ~D directive. ~D is the same as ~10R. The full form is ~radix,mincol,padchar,commachar,comma-intervalR.
+* ~@R 打印参数 arg 作为一个罗马数字: IV.
 
-If no prefix parameters are given to ~R, then a different interpretation is given. The argument should be an integer. For example, if arg is 4:
+* ~:@R 打印参数 arg 作为一个旧罗马数字: IIII.
 
-* ~R prints arg as a cardinal English number: four.
+比如:
 
-* ~:R prints arg as an ordinal English number: fourth.
+    ```LISP
+    (format nil "~,,' ,4:B" 13) =>  "1101"
+    (format nil "~,,' ,4:B" 17) =>  "1 0001"
+    (format nil "~19,0,' ,4:B" 3333) =>  "0000 1101 0000 0101"
+    (format nil "~3,,,' ,2:R" 17) =>  "1 22"
+    (format nil "~,,'|,2:D" #xFFFF) =>   "6|55|35"
+    ```
 
-* ~@R prints arg as a Roman numeral: IV.
+当且仅当第一个参数, n, 被提供, ~R 绑定 \*print-escape* 为 false, \*print-radix* 为 false, \*print-base* 为 n, 并且 \*print-readably* 为 false.
 
-* ~:@R prints arg as an old Roman numeral: IIII.
+当且仅当没有提供参数时, ~R 绑定 \*print-base* 为 10. 
 
-For example:
+#### 22.3.2.2 <span id="TildeDDecimal">波浪符号 D: 十进制</span>
 
- (format nil "~,,' ,4:B" 13) =>  "1101"
- (format nil "~,,' ,4:B" 17) =>  "1 0001"
- (format nil "~19,0,' ,4:B" 3333) =>  "0000 1101 0000 0101"
- (format nil "~3,,,' ,2:R" 17) =>  "1 22"
- (format nil "~,,'|,2:D" #xFFFF) =>   "6|55|35"
+一个应该为一个整数的参数 arg 用十进制基数来打印. ~D 不会在这个数字后面放一个小数点.
 
-If and only if the first parameter, n, is supplied, ~R binds *print-escape* to false, *print-radix* to false, *print-base* to n, and *print-readably* to false.
+~mincolD 使用 mincol 的列宽度; 如果这个数的数字和符号需要小于 mincal 列, 空格 space 就会被插入到左边. 如果这个数字不符合 n 列, 则需要额外的列.
 
-If and only if no parameters are supplied, ~R binds *print-base* to 10. 
+~mincol,padcharD 使用 padchar 作为填补字符而不是空格 space.
 
-#### 22.3.2.2 <span id="TildeDDecimal">Tilde D: Decimal</span>
+如果参数 arg 不是一个整数,它会用 ~A 格式和十进制基数来打印.
 
-An arg, which should be an integer, is printed in decimal radix. ~D will never put a decimal point after the number.
+这个 @ 修饰符导致这个数字的符号总是被打印; 默认当且仅当这个数字是负的才打印. 这个 : 修饰符导致逗号被打印在数字组之间; commachar 可能被用于改变被用作逗号的字符. comma-interval 一定是个整数并且默认为 3. 当这个 : 修饰符被给定为这些指令的任意一个时, 这个 commachar 被打印在 comma-interval 个数字组之间.
 
-~mincolD uses a column width of mincol; spaces are inserted on the left if the number requires fewer than mincol columns for its digits and sign. If the number doesn't fit in mincol columns, additional columns are used as needed.
+因此最广泛的 ~D 形式是 ~mincol,padchar,commachar,comma-intervalD.
 
-~mincol,padcharD uses padchar as the pad character instead of space.
-
-If arg is not an integer, it is printed in ~A format and decimal base.
-
-The @ modifier causes the number's sign to be printed always; the default is to print it only if the number is negative. The : modifier causes commas to be printed between groups of digits; commachar may be used to change the character used as the comma. comma-interval must be an integer and defaults to 3. When the : modifier is given to any of these directives, the commachar is printed between groups of comma-interval digits.
-
-Thus the most general form of ~D is ~mincol,padchar,commachar,comma-intervalD.
-
-~D binds *print-escape* to false, *print-radix* to false, *print-base* to 10, and *print-readably* to false. 
-
-
-#### 22.3.2.3 <span id="TildeBBinary">Tilde B: Binary</span>
-
-This is just like ~D but prints in binary radix (radix 2) instead of decimal. The full form is therefore ~mincol,padchar,commachar,comma-intervalB.
-
-~B binds *print-escape* to false, *print-radix* to false, *print-base* to 2, and *print-readably* to false. 
+~D 绑定 \*print-escape* 为 false, \*print-radix* 为 false, \*print-base* 为 10, 以及 \*print-readably* 为 false. 
 
 
-#### 22.3.2.4 <span id="TildeOOctal">Tilde O: Octal</span>
+#### 22.3.2.3 <span id="TildeBBinary">波浪符号 B: 二进制</span>
 
-This is just like ~D but prints in octal radix (radix 8) instead of decimal. The full form is therefore ~mincol,padchar,commachar,comma-intervalO.
+这个就像 ~D 但是用二进制基数 (基数 2) 而不是十进制来打印. 因此完整形式为 ~mincol,padchar,commachar,comma-intervalB.
 
-~O binds *print-escape* to false, *print-radix* to false, *print-base* to 8, and *print-readably* to false. 
-
-
-#### 22.3.2.5 <span id="TildeXHexadecimal">Tilde X: Hexadecimal</span>
-
-This is just like ~D but prints in hexadecimal radix (radix 16) instead of decimal. The full form is therefore ~mincol,padchar,commachar,comma-intervalX.
-
-~X binds *print-escape* to false, *print-radix* to false, *print-base* to 16, and *print-readably* to false. 
+~B 绑定 \*print-escape* 为 false, \*print-radix* 为 false, \*print-base* 为 2, 并且 \*print-readably* 为 false. 
 
 
-### 22.3.3 <span id="FORMATFloatingPointPrinters">FORMAT Floating-Point Printers</span>
+#### 22.3.2.4 <span id="TildeOOctal">波浪符号 O: 八进制</span>
+
+这个就像 ~D 但是用八进制基数 (基数 8) 而不是十进制来打印. 因此完整形式为 ~mincol,padchar,commachar,comma-intervalO.
+
+~O 绑定 \*print-escape* 为 false, \*print-radix* 为 false, \*print-base* 为 8, 并且 \*print-readably* 为 false. 
+
+
+#### 22.3.2.5 <span id="TildeXHexadecimal">波浪符号 X: 十六进制</span>
+
+这个就像 ~D 但是用十六进制基数 (基数 16) 而不是十进制来打印. 因此完整形式为 ~mincol,padchar,commachar,comma-intervalX.
+
+~X 绑定 \*print-escape* 为 false, \*print-radix* 为 false, \*print-base* 为 16, 并且 \*print-readably* 为 false. 
+
+
+### 22.3.3 <span id="FORMATFloatingPointPrinters">FORMAT 浮点打印器</span>
 
 > * 22.3.3.1 [Tilde F: Fixed-Format Floating-Point](#TildeFFixedFormat)
 > * 22.3.3.2 [Tilde E: Exponential Floating-Point](#TildeEExponential)
@@ -1088,7 +1092,7 @@ If arg is a complex number or some non-numeric object, then it is printed using 
 ~$ binds *print-escape* to false and *print-readably* to false. 
 
 
-### 22.3.4 <span id="FORMATPrinterOperations">FORMAT Printer Operations</span>
+### 22.3.4 <span id="FORMATPrinterOperations">FORMAT 打印器操作</span>
 
 #### 22.3.4.1 Tilde A: Aesthetic
 
@@ -1114,7 +1118,7 @@ An argument, any object, is printed obeying every printer control variable (as b
 ~W provides automatic support for the detection of circularity and sharing. If the value of *print-circle* is not nil and ~W is applied to an argument that is a circular (or shared) reference, an appropriate #n# marker is inserted in the output instead of printing the argument. 
 
 
-### 22.3.5 <span id="FORMATPrettyPrinterOperations">FORMAT Pretty Printer Operations</span>
+### 22.3.5 <span id="FORMATPrettyPrinterOperations">FORMAT 美观打印器操作</span>
 
 The following constructs provide access to the pretty printer:
 
@@ -1164,7 +1168,7 @@ When a ~/name/ directive is encountered, the indicated function is called with f
 The three functions pprint-linear, pprint-fill, and pprint-tabular are specifically designed so that they can be called by ~/.../ (i.e., ~/pprint-linear/, ~/pprint-fill/, and ~/pprint-tabular/). In particular they take colon and at-sign arguments. 
 
 
-### 22.3.6 <span id="FORMATLayoutControl">FORMAT Layout Control</span>
+### 22.3.6 <span id="FORMATLayoutControl">FORMAT 布局控制</span>
 
 #### 22.3.6.1 Tilde T: Tabulate
 
@@ -1207,7 +1211,7 @@ See also Section 22.3.5.2 (Tilde Less-Than-Sign: Logical Block).
 ~> terminates a ~<. The consequences of using it elsewhere are undefined. 
 
 
-#### 22.3.7 <span id="FORMATControlFlowOperation">FORMAT Control-Flow Operations</span>
+#### 22.3.7 <span id="FORMATControlFlowOperation">FORMAT 控制流操作</span>
 
 > * 22.3.7.1 [Tilde Asterisk: Go-To](#TildeAsteriskGoTo)
 > * 22.3.7.2 [Tilde Left-Bracket: Conditional Expression](#TildeLeftBracketCondExpr)
@@ -1337,7 +1341,7 @@ With the @ modifier, only one arg is directly consumed. The arg must be a string
  (format nil "~@? ~D" "<~A ~D>" "Foo" 5 14 7) =>  "<Foo 5> 14"
 
 
-### 22.3.8 <span id="FORMATMiscellaneousOperation">FORMAT Miscellaneous Operations</span>
+### 22.3.8 <span id="FORMATMiscellaneousOperation">FORMAT 杂项操作</span>
 
 #### 22.3.8.1 Tilde Left-Paren: Case Conversion
 
@@ -1386,7 +1390,7 @@ If arg is not eql to the integer 1, a lowercase s is printed; if arg is eql to 1
  (format nil "~D tr~:@P/~D win~:P" 1 3) =>  "1 try/3 wins"
 
 
-### 22.3.9 <span id="FORMATMiscellaneousPseudoOperation">FORMAT Miscellaneous Pseudo-Operations</span>
+### 22.3.9 <span id="FORMATMiscellaneousPseudoOperation">FORMAT 杂项伪操作</span>
 
 #### 22.3.9.1 Tilde Semicolon: Clause Separator
 
@@ -1453,7 +1457,7 @@ NIL
 Note that in this example newlines appear in the output only as specified by the ~& and ~% directives; the actual newline characters in the control string are suppressed because each is preceded by a tilde. 
 
 
-### 22.3.10 <span id="AddInfoFORMATOperations">Additional Information about FORMAT Operations</span>
+### 22.3.10 <span id="AddInfoFORMATOperations">关于 FORMAT 的额外信息</span>
 
 #### 22.3.10.1 Nesting of FORMAT Operations
 
@@ -1486,7 +1490,7 @@ The consequences are undefined if a format directive is given more parameters th
 The consequences are undefined if colon or at-sign modifiers are given to a directive in a combination not specifically described here as being meaningful. 
 
 
-### 22.3.11 <span id="">Examples of FORMAT</span>
+### 22.3.11 <span id="">FORMAT 的示例</span>
 
  (format nil "foo") =>  "foo"
  (setq x 5) =>  5
@@ -1576,7 +1580,7 @@ Scale factor  7: | 3141590.E-06|
   =>  "Written to foo.bin."
 
 
-### 22.3.12 <span id="NotesFORMAT">Notes about FORMAT</span>
+### 22.3.12 <span id="NotesFORMAT">FORMAT 的注意事项</span>
 
 Formatted output is performed not only by format, but by certain other functions that accept a format control the way format does. For example, error-signaling functions such as cerror accept format controls.
 
@@ -2304,13 +2308,13 @@ escape---一个广义 boolean.
 
 gensym---一个广义 boolean.
 
-length---a non-negative integer, or nil.
+length---一个非负整数, 或 nil.
 
-level---a non-negative integer, or nil.
+level---一个非负整数, 或 nil.
 
-lines---a non-negative integer, or nil.
+lines---一个非负整数, 或 nil.
 
-miser-width---a non-negative integer, or nil.
+miser-width---一个非负整数, 或 nil.
 
 pprint-dispatch---a pprint dispatch table.
 
@@ -2320,7 +2324,7 @@ radix---一个广义 boolean.
 
 readably---一个广义 boolean.
 
-right-margin---a non-negative integer, or nil.
+right-margin---一个非负整数, 或 nil.
 
 stream---an output stream designator. The default is standard output.
 
@@ -2369,7 +2373,7 @@ Output-stream specifies the stream to which output is to be sent.
 
 * 也见(See Also):
 
-readtable-case, Section 22.3.4 (FORMAT Printer Operations)
+readtable-case, Section 22.3.4 (FORMAT 打印器操作)
 
 * 注意(Notes):
 
@@ -2419,13 +2423,13 @@ escape---一个广义 boolean.
 
 gensym---一个广义 boolean.
 
-length---a non-negative integer, or nil.
+length---一个非负整数, 或 nil.
 
-level---a non-negative integer, or nil.
+level---一个非负整数, 或 nil.
 
-lines---a non-negative integer, or nil.
+lines---一个非负整数, 或 nil.
 
-miser-width---a non-negative integer, or nil.
+miser-width---一个非负整数, 或 nil.
 
 pprint-dispatch---a pprint dispatch table.
 
@@ -2435,7 +2439,7 @@ radix---一个广义 boolean.
 
 readably---一个广义 boolean.
 
-right-margin---a non-negative integer, or nil.
+right-margin---一个非负整数, 或 nil.
 
 string---a string.
 
@@ -2738,74 +2742,76 @@ write, *print-escape*
 
 * 值类型(Value Type):
 
-a non-negative integer, or nil.
+        一个非负整数, 或 nil.
 
 * 初始值(Initial Value):
 
-nil.
+        nil.
 
 * 描述(Description):
 
-*print-level* controls how many levels deep a nested object will print. If it is false, then no control is exercised. Otherwise, it is an integer indicating the maximum level to be printed. An object to be printed is at level 0; its components (as of a list or vector) are at level 1; and so on. If an object to be recursively printed has components and is at a level equal to or greater than the value of *print-level*, then the object is printed as ``#''.
+        *print-level* 控制一个嵌套对象打印多少层级深度. 如果它是 false, 那么不会执行控制. 否则, 它就是一个表示要被打印的最大层级的整数. 一个要被打印的对象处于 0 层级; 它的成员 (就像是在一个列表或向量中) 处于 1 层级; 以此类推. 如果一个要被递归打印的对象有着大于等于 *print-level* 的值的层级, 那么这个对象被打印为 "#".
 
-*print-length* controls how many elements at a given level are printed. If it is false, there is no limit to the number of components printed. Otherwise, it is an integer indicating the maximum number of elements of an object to be printed. If exceeded, the printer will print ``...'' in place of the other elements. In the case of a dotted list, if the list contains exactly as many elements as the value of *print-length*, the terminating atom is printed rather than printing ``...''
+        *print-length* 控制在一个给定的层级下多少个元素会被打印. 如果它是 false, 那么就没有打印成员数量上的限制. 否则, 它就是一个表示要被打印的对象的最大元素数的整数. 如果超过了, 这个打印器会打印 "..." 来替换其他元素. 在点对列表的情况下, 如果这个列表包含了和 *print-length* 的值一样多的元素, 终止的基元会被打印而不是打印 "..."
 
-*print-level* and *print-length* affect the printing of an any object printed with a list-like syntax. They do not affect the printing of symbols, strings, and bit vectors.
+        *print-level* 和 *print-length* 影响任何用类列表语法打印的对象的打印. 它们不会影响符号, 字符串, 和位向量的打印.
 
 * 示例(Examples):
 
- (setq a '(1 (2 (3 (4 (5 (6))))))) =>  (1 (2 (3 (4 (5 (6))))))
- (dotimes (i 8) 
-   (let ((*print-level* i)) 
-     (format t "~&~D -- ~S~%" i a)))
->>  0 -- #
->>  1 -- (1 #)
->>  2 -- (1 (2 #))
->>  3 -- (1 (2 (3 #)))
->>  4 -- (1 (2 (3 (4 #))))
->>  5 -- (1 (2 (3 (4 (5 #)))))
->>  6 -- (1 (2 (3 (4 (5 (6))))))
->>  7 -- (1 (2 (3 (4 (5 (6))))))
-=>  NIL
+    ```LISP
+    (setq a '(1 (2 (3 (4 (5 (6))))))) =>  (1 (2 (3 (4 (5 (6))))))
+    (dotimes (i 8) 
+      (let ((*print-level* i)) 
+        (format t "~&~D -- ~S~%" i a)))
+    >>  0 -- #
+    >>  1 -- (1 #)
+    >>  2 -- (1 (2 #))
+    >>  3 -- (1 (2 (3 #)))
+    >>  4 -- (1 (2 (3 (4 #))))
+    >>  5 -- (1 (2 (3 (4 (5 #)))))
+    >>  6 -- (1 (2 (3 (4 (5 (6))))))
+    >>  7 -- (1 (2 (3 (4 (5 (6))))))
+    =>  NIL
 
- (setq a '(1 2 3 4 5 6)) =>  (1 2 3 4 5 6)
- (dotimes (i 7) 
-   (let ((*print-length* i)) 
-     (format t "~&~D -- ~S~%" i a))) 
->>  0 -- (...)
->>  1 -- (1 ...)
->>  2 -- (1 2 ...)
->>  3 -- (1 2 3 ...)
->>  4 -- (1 2 3 4 ...)
->>  5 -- (1 2 3 4 5 6)
->>  6 -- (1 2 3 4 5 6)
-=>  NIL
+    (setq a '(1 2 3 4 5 6)) =>  (1 2 3 4 5 6)
+    (dotimes (i 7) 
+      (let ((*print-length* i)) 
+        (format t "~&~D -- ~S~%" i a))) 
+    >>  0 -- (...)
+    >>  1 -- (1 ...)
+    >>  2 -- (1 2 ...)
+    >>  3 -- (1 2 3 ...)
+    >>  4 -- (1 2 3 4 ...)
+    >>  5 -- (1 2 3 4 5 6)
+    >>  6 -- (1 2 3 4 5 6)
+    =>  NIL
 
-(dolist (level-length '((0 1) (1 1) (1 2) (1 3) (1 4) 
-                        (2 1) (2 2) (2 3) (3 2) (3 3) (3 4)))
- (let ((*print-level*  (first  level-length))
-       (*print-length* (second level-length)))
-   (format t "~&~D ~D -- ~S~%"
-           *print-level* *print-length* 
-           '(if (member x y) (+ (car x) 3) '(foo . #(a b c d "Baz"))))))
->>  0 1 -- #
->>  1 1 -- (IF ...)
->>  1 2 -- (IF # ...)
->>  1 3 -- (IF # # ...)
->>  1 4 -- (IF # # #)
->>  2 1 -- (IF ...)
->>  2 2 -- (IF (MEMBER X ...) ...)
->>  2 3 -- (IF (MEMBER X Y) (+ # 3) ...)
->>  3 2 -- (IF (MEMBER X ...) ...)
->>  3 3 -- (IF (MEMBER X Y) (+ (CAR X) 3) ...)
->>  3 4 -- (IF (MEMBER X Y) (+ (CAR X) 3) '(FOO . #(A B C D ...)))
-=>  NIL
+    (dolist (level-length '((0 1) (1 1) (1 2) (1 3) (1 4) 
+                          (2 1) (2 2) (2 3) (3 2) (3 3) (3 4)))
+    (let ((*print-level*  (first  level-length))
+          (*print-length* (second level-length)))
+      (format t "~&~D ~D -- ~S~%"
+              *print-level* *print-length* 
+              '(if (member x y) (+ (car x) 3) '(foo . #(a b c d "Baz"))))))
+    >>  0 1 -- #
+    >>  1 1 -- (IF ...)
+    >>  1 2 -- (IF # ...)
+    >>  1 3 -- (IF # # ...)
+    >>  1 4 -- (IF # # #)
+    >>  2 1 -- (IF ...)
+    >>  2 2 -- (IF (MEMBER X ...) ...)
+    >>  2 3 -- (IF (MEMBER X Y) (+ # 3) ...)
+    >>  3 2 -- (IF (MEMBER X ...) ...)
+    >>  3 3 -- (IF (MEMBER X Y) (+ (CAR X) 3) ...)
+    >>  3 4 -- (IF (MEMBER X Y) (+ (CAR X) 3) '(FOO . #(A B C D ...)))
+    =>  NIL
+    ```
 
 * 受此影响(Affected By): None.
 
 * 也见(See Also):
 
-write
+        write
 
 * 注意(Notes): None. 
 
@@ -2814,47 +2820,49 @@ write
 
 * 值类型(Value Type):
 
-a non-negative integer, or nil.
+        一个非负整数, 或 nil.
 
 * 初始值(Initial Value):
 
-nil.
+        nil.
 
 * 描述(Description):
 
-When the value of *print-lines* is other than nil, it is a limit on the number of output lines produced when something is pretty printed. If an attempt is made to go beyond that many lines, ``..'' is printed at the end of the last line followed by all of the suffixes (closing delimiters) that are pending to be printed.
+        当这个 *print-lines* 的值是除了 nil 以外的值时, 当某个东西要被美观打印时, 它是产生的输出行数的限制. 如果尝试去超出那么多行, ".." 会被打印在最后一行末尾, 后面跟着所有挂起待打印的后缀 (关闭分隔符) that are pending to be printed.
 
 * 示例(Examples):
 
- (let ((*print-right-margin* 25) (*print-lines* 3))
-   (pprint '(progn (setq a 1 b 2 c 3 d 4))))
->>  (PROGN (SETQ A 1
->>               B 2
->>               C 3 ..))
-=>  <no values>
+    ```LISP
+    (let ((*print-right-margin* 25) (*print-lines* 3))
+      (pprint '(progn (setq a 1 b 2 c 3 d 4))))
+    >>  (PROGN (SETQ A 1
+    >>               B 2
+    >>               C 3 ..))
+    =>  <no values>
+    ```
 
 * 也见(See Also): None.
 
 * 注意(Notes):
 
-The ``..'' notation is intentionally different than the ``...'' notation used for level abbreviation, so that the two different situations can be visually distinguished.
+        这个 ".." 标记是有意和用于级别缩写的 "..." 标记不同的, 这样一来这两个不同的情况可以被可见地区分.
 
-This notation is used to increase the likelihood that the Lisp reader will signal an error if an attempt is later made to read the abbreviated output. Note however that if the truncation occurs in a string, as in "This string has been trunc..", the problem situation cannot be detected later and no such error will be signaled. 
+        这个符号用于增加 Lisp 读取器如果尝试读取缩略输出时发出错误的可能性. 但是注意这个截断如果发生在一个字符串中, 比如在 "This string has been trunc.." 中, 以后不会检测到问题情况, 也不会出现此类错误. 
 
 
 ### <span id="V-PRINT-MISER-WIDTH">变量 *PRINT-MISER-WIDTH*</span>
 
 * 值类型(Value Type):
 
-a non-negative integer, or nil.
+        一个非负整数, 或 nil.
 
 * 初始值(Initial Value):
 
-implementation-dependent
+        依赖于具体实现的
 
 * 描述(Description):
 
-If it is not nil, the pretty printer switches to a compact style of output (called miser style) whenever the width available for printing a substructure is less than or equal to this many ems.
+        如果它不是 nil, 那么当打印子结构的宽度小于或等于这个许多西文排版行长单位时, 这个美观打印器切换到紧凑输出风格(称为 miser 风格).
 
 * 示例(Examples): None.
 
@@ -2868,25 +2876,25 @@ If it is not nil, the pretty printer switches to a compact style of output (call
 
 * 值类型(Value Type):
 
-a pprint dispatch table.
+        一个 pprint 分派表.
 
 * 初始值(Initial Value):
 
-implementation-dependent, but the initial entries all use a special class of priorities that have the property that they are less than every priority that can be specified using set-pprint-dispatch, so that the initial contents of any entry can be overridden.
+        依赖于具体实现的, 但是这些初始条目都使用了一个特殊的优先级, 它们有着小于所有可以用 set-pprint-dispatch 指定的优先级的属性, 这样一来任何条目的初始内容可以被重写.
 
 * 描述(Description):
 
-The pprint dispatch table which currently controls the pretty printer.
+        这个 pprint 分派表控制当前美观打印器.
 
 * 示例(Examples): None.
 
 * 也见(See Also):
 
-*print-pretty*, Section 22.2.1.4 (美观打印分派表)
+        *print-pretty*, 章节 22.2.1.4 (美观打印分派表)
 
 * 注意(Notes):
 
-The intent is that the initial value of this variable should cause `traditional' pretty printing of code. In general, however, you can put a value in *print-pprint-dispatch* that makes pretty-printed output look exactly like non-pretty-printed output. Setting *print-pretty* to true just causes the functions contained in the current pprint dispatch table to have priority over normal print-object methods; it has no magic way of enforcing that those functions actually produce pretty output. For details, see Section 22.2.1.4 (美观打印分派表). 
+        其目的是, 该变量的初始值应该导致"传统"的代码美观打印. 一般而言, 然而, 你可以在 *print-pprint-dispatch* 放置一个值来使美观打印输出看起来像是非美观打印输出. 设置 *print-pretty* 为 true 只会导致当前 pprint 分派表中的这些函数有着超过普通 print-object 方法的优先级; 没有神奇的方法来强制执行这些函数实际上产生了美观的输出. 关于详细信息, 见章节 22.2.1.4 (美观打印分派表). 
 
 
 ### <span id="V-PRINT-PRETTY">变量 *PRINT-PRETTY*</span>
