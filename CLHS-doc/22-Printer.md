@@ -998,98 +998,98 @@ format 发送这个输出到目标 destination. 如果 destination 是 nil, form
 
 ### 22.3.3 <span id="FORMATFloatingPointPrinters">FORMAT 浮点打印器</span>
 
-> * 22.3.3.1 [Tilde F: Fixed-Format Floating-Point](#TildeFFixedFormat)
-> * 22.3.3.2 [Tilde E: Exponential Floating-Point](#TildeEExponential)
-> * 22.3.3.3 [Tilde G: General Floating-Point](#TildeGGeneral)
-> * 22.3.3.4 [Tilde Dollarsign: Monetary Floating-Point](#TildeDollarsignMonetary)
+> * 22.3.3.1 [波浪符号 F: 固定格式浮点数](#TildeFFixedFormat)
+> * 22.3.3.2 [波浪符号 E: 指数浮点数](#TildeEExponential)
+> * 22.3.3.3 [波浪符号 G: 一般浮点数](#TildeGGeneral)
+> * 22.3.3.4 [波浪符号 美元符号: 货币浮点数](#TildeDollarsignMonetary)
 
 
-#### 22.3.3.1 <span id="TildeFFixedFormat">Tilde F: Fixed-Format Floating-Point</span>
+#### 22.3.3.1 <span id="TildeFFixedFormat">波浪符号 F: 固定格式浮点数</span>
 
-The next arg is printed as a float.
+下一个参数 arg 被打印为一个浮点数.
 
-The full form is ~w,d,k,overflowchar,padcharF. The parameter w is the width of the field to be printed; d is the number of digits to print after the decimal point; k is a scale factor that defaults to zero.
+完整形式是 ~w,d,k,overflowchar,padcharF. 参数 w 是要被打印的域宽度; d 是在小数点后面要被打印的数字的数量; k 是一个默认为零的伸缩因子.
 
-Exactly w characters will be output. First, leading copies of the character padchar (which defaults to a space) are printed, if necessary, to pad the field on the left. If the arg is negative, then a minus sign is printed; if the arg is not negative, then a plus sign is printed if and only if the @ modifier was supplied. Then a sequence of digits, containing a single embedded decimal point, is printed; this represents the magnitude of the value of arg times 10^k, rounded to d fractional digits. When rounding up and rounding down would produce printed values equidistant from the scaled value of arg, then the implementation is free to use either one. For example, printing the argument 6.375 using the format ~4,2F may correctly produce either 6.37 or 6.38. Leading zeros are not permitted, except that a single zero digit is output before the decimal point if the printed value is less than one, and this single zero digit is not output at all if w=d+1.
+w 个字符会被输出. 首先, 如果有必要, 打印出字符 padchar (默认为一个空格 space) 的前导副本, 来填充左边的域. 如果这个参数 arg 是负的, 那么会打印一个负号; 如果这个参数 arg 不是负的, 当且仅当提供了 @ 修饰符时会打印一个正号. 然后一个包含单小数点的数字序列会被打印; 这个表示参数 arg 的值的大小乘以 10^k, 舍入到 d 小数数位. 当向上舍入和向下舍入可能产生和参数 arg 的伸缩值等距的打印值时, 那么具体实现可以自由地去选择任意一个. 比如, 使用格式 ~4,2F 打印参数 6.375 可能正确地产生 6.37 或 6.38. 前导零是不允许的, 除了当打印的值小于 1 时一个单个的数字零会被输出到小数点前, 如果 w=d+1 那么这个单个的数字零不会被输出.
 
-If it is impossible to print the value in the required format in a field of width w, then one of two actions is taken. If the parameter overflowchar is supplied, then w copies of that parameter are printed instead of the scaled value of arg. If the overflowchar parameter is omitted, then the scaled value is printed using more than w characters, as many more as may be needed.
+如果用请求的格式在一个宽度为 w 的域中打印这个值是不可能的, 那么就会采取这两个动作中的一个. 如果提供了参数 overflowchar, 那么那么个参数的 w 个拷贝会被打印而不是这个参数 arg 的伸缩值. 如果省略了这个 overflowchar 参数, 那么这个伸缩值会使用超过 w 个字符来打印, 和它需要的一样多.
 
-If the w parameter is omitted, then the field is of variable width. In effect, a value is chosen for w in such a way that no leading pad characters need to be printed and exactly d characters will follow the decimal point. For example, the directive ~,2F will print exactly two digits after the decimal point and as many as necessary before the decimal point.
+如果省略了这个 w 参数, 那么这个域就是可变宽度的. 实际上, 会以这样一种方式为 w 选择一个值: 没有前导的填充字符需要被打印并且小数点后面准确地跟着 d 个字符. 比如, 指令 ~,2F 会准确打印小数点后两位数而小数点前根据必要尽可能多.
 
-If the parameter d is omitted, then there is no constraint on the number of digits to appear after the decimal point. A value is chosen for d in such a way that as many digits as possible may be printed subject to the width constraint imposed by the parameter w and the constraint that no trailing zero digits may appear in the fraction, except that if the fraction to be printed is zero, then a single zero digit should appear after the decimal point if permitted by the width constraint.
+如果省略了参数 d, 那么这里没有约束出现在小数点后面的数字. 会以这样一种方式为 d 选择一个值: 尽可能多的数字可能被打印出来, 取决于参数 w 所施加的宽度限制以及在小数末尾中不出现 0 数字的约束条件, 除非如果这个要被打印的小数是 0, 如果这个宽度约束允许, 那么一个单个零数字应该出现在小数点后面.
 
-If both w and d are omitted, then the effect is to print the value using ordinary free-format output; prin1 uses this format for any number whose magnitude is either zero or between 10^-3 (inclusive) and 10^7 (exclusive).
+如果 w 和 d 都被省略了, 那么效果就是使用普通的自由格式输出来打印这个值; prin1 为任何大小为零或在 10^-3 (包括的) 和 10^7 (不包括的) 之间的数字使用这个格式.
 
-If w is omitted, then if the magnitude of arg is so large (or, if d is also omitted, so small) that more than 100 digits would have to be printed, then an implementation is free, at its discretion, to print the number using exponential notation instead, as if by the directive ~E (with all parameters to ~E defaulted, not taking their values from the ~F directive).
+如果省略了 w, 那么如果这个参数 arg 的大小太大 (或者, 如果 d 也被省略, 那么就是太小) 以致于超过 100 个数字不得不被打印, 那么一个实现可以自由地去使用指数符号来打印这个数字, 就像是通过指令 ~E (所有给 ~E 的参数都是默认的, 没有从 ~F 指令中接收任何值).
 
-If arg is a rational number, then it is coerced to be a single float and then printed. Alternatively, an implementation is permitted to process a rational number by any other method that has essentially the same behavior but avoids loss of precision or overflow because of the coercion. If w and d are not supplied and the number has no exact decimal representation, for example 1/3, some precision cutoff must be chosen by the implementation since only a finite number of digits may be printed.
+如果 arg 是一个有理数, 那么它会被强制转换为一个单浮点数并且打印. 或者, 一个具体实现允许去用任何其他有着相同本质行为但是避免由于强制转换导致的精度丢失或溢出的方法来处理一个有理数. 如果没有提供 w 和 d 并且这个数字没有准确的十进制表示, 比如 1/3, 由于只有有限数量的数字可能被打印出来, 所以具体实现必须选择一个精确的截断.
 
-If arg is a complex number or some non-numeric object, then it is printed using the format directive ~wD, thereby printing it in decimal radix and a minimum field width of w.
+如果参数 arg 是一个复数或者某个非数值对象, 那么它会使用格式化指令 ~wD 来打印, 从而用十进制数字和 w 的最小域宽度来打印它.
 
-~F binds *print-escape* to false and *print-readably* to false. 
-
-
-#### 22.3.3.2 <span id="TildeEExponential">Tilde E: Exponential Floating-Point</span>
-
-The next arg is printed as a float in exponential notation.
-
-The full form is ~w,d,e,k,overflowchar,padchar,exponentcharE. The parameter w is the width of the field to be printed; d is the number of digits to print after the decimal point; e is the number of digits to use when printing the exponent; k is a scale factor that defaults to one (not zero).
-
-Exactly w characters will be output. First, leading copies of the character padchar (which defaults to a space) are printed, if necessary, to pad the field on the left. If the arg is negative, then a minus sign is printed; if the arg is not negative, then a plus sign is printed if and only if the @ modifier was supplied. Then a sequence of digits containing a single embedded decimal point is printed. The form of this sequence of digits depends on the scale factor k. If k is zero, then d digits are printed after the decimal point, and a single zero digit appears before the decimal point if the total field width will permit it. If k is positive, then it must be strictly less than d+2; k significant digits are printed before the decimal point, and d-k+1 digits are printed after the decimal point. If k is negative, then it must be strictly greater than -d; a single zero digit appears before the decimal point if the total field width will permit it, and after the decimal point are printed first -k zeros and then d+k significant digits. The printed fraction must be properly rounded. When rounding up and rounding down would produce printed values equidistant from the scaled value of arg, then the implementation is free to use either one. For example, printing the argument 637.5 using the format ~8,2E may correctly produce either 6.37E+2 or 6.38E+2.
-
-Following the digit sequence, the exponent is printed. First the character parameter exponentchar is printed; if this parameter is omitted, then the exponent marker that prin1 would use is printed, as determined from the type of the float and the current value of *read-default-float-format*. Next, either a plus sign or a minus sign is printed, followed by e digits representing the power of ten by which the printed fraction must be multiplied to properly represent the rounded value of arg.
-
-If it is impossible to print the value in the required format in a field of width w, possibly because k is too large or too small or because the exponent cannot be printed in e character positions, then one of two actions is taken. If the parameter overflowchar is supplied, then w copies of that parameter are printed instead of the scaled value of arg. If the overflowchar parameter is omitted, then the scaled value is printed using more than w characters, as many more as may be needed; if the problem is that d is too small for the supplied k or that e is too small, then a larger value is used for d or e as may be needed.
-
-If the w parameter is omitted, then the field is of variable width. In effect a value is chosen for w in such a way that no leading pad characters need to be printed.
-
-If the parameter d is omitted, then there is no constraint on the number of digits to appear. A value is chosen for d in such a way that as many digits as possible may be printed subject to the width constraint imposed by the parameter w, the constraint of the scale factor k, and the constraint that no trailing zero digits may appear in the fraction, except that if the fraction to be printed is zero then a single zero digit should appear after the decimal point.
-
-If the parameter e is omitted, then the exponent is printed using the smallest number of digits necessary to represent its value.
-
-If all of w, d, and e are omitted, then the effect is to print the value using ordinary free-format exponential-notation output; prin1 uses a similar format for any non-zero number whose magnitude is less than 10^-3 or greater than or equal to 10^7. The only difference is that the ~E directive always prints a plus or minus sign in front of the exponent, while prin1 omits the plus sign if the exponent is non-negative.
-
-If arg is a rational number, then it is coerced to be a single float and then printed. Alternatively, an implementation is permitted to process a rational number by any other method that has essentially the same behavior but avoids loss of precision or overflow because of the coercion. If w and d are unsupplied and the number has no exact decimal representation, for example 1/3, some precision cutoff must be chosen by the implementation since only a finite number of digits may be printed.
-
-If arg is a complex number or some non-numeric object, then it is printed using the format directive ~wD, thereby printing it in decimal radix and a minimum field width of w.
-
-~E binds *print-escape* to false and *print-readably* to false. 
+~F 绑定 \*print-escape* 为 false 并绑定 \*print-readably* 为 false. 
 
 
-#### 22.3.3.3 <span id="TildeGGeneral">Tilde G: General Floating-Point</span>
+#### 22.3.3.2 <span id="TildeEExponential">波浪符号 E: 指数浮点数</span>
+<!--待校验-->
+下一个参数 arg 用指数表示来打印为一个浮点数.
 
-The next arg is printed as a float in either fixed-format or exponential notation as appropriate.
+完整形式是 ~w,d,e,k,overflowchar,padchar,exponentcharE. 参数 w 是这个要被打印的域宽度; d 是在小数点后面要被打印的数字的数量; 当打印一个指数时 e 是要被使用的数字数量; k 是一个默认为 1 的伸缩因子 (不是零).
 
-The full form is ~w,d,e,k,overflowchar,padchar,exponentcharG. The format in which to print arg depends on the magnitude (absolute value) of the arg. Let n be an integer such that 10^n-1 <= |arg| < 10^n. Let ee equal e+2, or 4 if e is omitted. Let ww equal w-ee, or nil if w is omitted. If d is omitted, first let q be the number of digits needed to print arg with no loss of information and without leading or trailing zeros; then let d equal (max q (min n 7)). Let dd equal d-n.
+w 个字符会被准确地输出. 首先, 如果有必要, 打印出字符 padchar (默认为一个空格 space) 的前导副本, 来填充左边的域. 如果这个参数 arg 是负的, 那么会打印一个负号; 如果这个参数 arg 不是负的, 当且仅当提供了 @ 修饰符时会打印一个正号. 然后一个包含单小数点的数字序列会被打印. 这个数字序列的形式取决于伸缩因子 k. 如果 k 是 0, 那么在小数点后面打印 d 个数字, 如果总的域宽度允许, 一个单独的数字 0 会出现在小数点前面. 如果 k 是正的, 那么它必须严格小于 d+2; 小数点前打印 k 个有效数字, 而小数点之后打印 d-k+1 个数字. 如果 k 是负的, 那么它必须是严格大于 -d; 如果总的域宽度允许, 一个单独的 0 会出现在小数点前, 而在小数点后先打印 -k 个 0 然后是 d+k 个有效数字. 打印的小数必须正确地四舍五入. 当向上舍入和向下舍入可能产生和参数 arg 的伸缩值等距的打印值时, 那么具体实现可以自由地去选择任意一个. 比如, 使用 ~8,2E 格式来打印 637.5 可能正确地产生 6.37E+2 或 6.38E+2.
 
-If 0 <= dd <= d, then arg is printed as if by the format directives
+在这个数字序列后, 打印指数. 首先打印字符参数 exponentchar; 如果这个参数省略了, 那么这个 prin1 使用的指数标记会被打印, 从这个浮点数的类型和 \*read-default-float-format* 的当前值决定. 接着, 打印一个正号或负号, 后面跟着 e 个数字表示十的幂, 打印的小数必须乘以这个值来适当地表示参数 arg 的舍入值.
 
-~ww,dd,,overflowchar,padcharF~ee@T
+如果不可能以要求的格式在域宽度为 w 中打印这个值, 可能是因为 k 太大或太小或者因为这个指数不能被打印在 e 个字符位置中, 那么会采取这两个动作中的一个. 如果提供了参数 overflowchar, 那么那个参数的 w 个宽度副本会被打印而不是打印参数 arg 的伸缩值. 如果这个 overflowchar 参数被省略了, 那么打印的伸缩值使用超过 w 个字符, as many more as may be needed; 如果这个问题是对于提供的 k 这个 d 太小, 或者 e 太小, 那么就会按照需要使用一个更大的 d 或 e 值.
 
-Note that the scale factor k is not passed to the ~F directive. For all other values of dd, arg is printed as if by the format directive
+如果省略了这个 w 参数, 那么这个域就是可变宽度的. 事实上, 以一种没有前导填充字符需要被打印的方式来选择一个 w 值.
 
-~w,d,e,k,overflowchar,padchar,exponentcharE
+如果省略了参数 d, 那么在数字的出现数量上没有约束. 以这样的方式为 d 选择一个值: 尽可能多的数字可以打印在参数 w 所施加的宽度限制下, 这个伸缩因子 k 的约束, 以及没有数字零出现在小数的尾部中的约束, 除了如果要被打印的小数是 0 那么单独的数字零会出现在小数点后面.
 
-In either case, an @ modifier is supplied to the ~F or ~E directive if and only if one was supplied to the ~G directive.
+如果参数 e 被省略, 那么使用这些数字中最小的数字来打印这个指数, 以表示它的值.
 
-~G binds *print-escape* to false and *print-readably* to false. 
+如果 w, d, 和 e 都被省略, 那么这个效果是使用普通的自由格式的指数计数法来打印这个值; prin1 为任意非零大小是小于 10^-3 或大于 10^7 的数字使用一个类似的格式. 仅有的区别是这个 ~E 指令总是在指数前打印一个正号或符号, 而如果这个指数是非负的 prin1 省略这个正号.
+
+如果参数 arg 是一个有理数, 那么它会被强制转换为一个单浮点数并且打印. 或者, 一个具体实现允许去用任何其他有着相同本质行为但是避免由于强制转换导致的精度丢失或溢出的方法来处理一个有理数. 如果 w 和 d 没有被提供并且这个数字没有准确的十进制表示, 比如 1/3, 由于只有有限数量的数字可能被打印出来, 所以具体实现必须选择一个精确的截断.
+
+如果 arg 是一个复数或某个非数值对象, 那么它会使用格式化指令 ~wD 来打印, 从而以十进制基数和最小域宽度 w 来打印它.
+
+~E 绑定 \*print-escape* 为 false 并且绑定 \*print-readably* 为 false. 
 
 
-#### 22.3.3.4 <span id="TildeDollarsignMonetary">Tilde Dollarsign: Monetary Floating-Point</span>
+#### 22.3.3.3 <span id="TildeGGeneral">波浪符号 G: 一般浮点数</span>
 
-The next arg is printed as a float in fixed-format notation.
+下一个参数 arg 是情况用固定格式或指数表示打印一个浮点数.
 
-The full form is ~d,n,w,padchar$. The parameter d is the number of digits to print after the decimal point (default value 2); n is the minimum number of digits to print before the decimal point (default value 1); w is the minimum total width of the field to be printed (default value 0).
+完整形式是 ~w,d,e,k,overflowchar,padchar,exponentcharG. 用来打印参数 arg 的格式取决于参数 arg 的大小 (绝对值). 让 n 为一个满足 10^n-1 <= |arg| < 10^n 的整数. 让 ee 等于 e+2, 或者如果 e 省略了就是 4. 让 ww 等于 w-ee, 如果 w 省略了就是 nil. 如果 d 省略了, 首先让 q 成为打印 arg 所需的数字的数量, 不丢失任何信息, 没有前导或尾随的零; 然后让 d 等于 (max q (min n 7)). 让 dd 等于 d-n.
 
-First padding and the sign are output. If the arg is negative, then a minus sign is printed; if the arg is not negative, then a plus sign is printed if and only if the @ modifier was supplied. If the : modifier is used, the sign appears before any padding, and otherwise after the padding. If w is supplied and the number of other characters to be output is less than w, then copies of padchar (which defaults to a space) are output to make the total field width equal w. Then n digits are printed for the integer part of arg, with leading zeros if necessary; then a decimal point; then d digits of fraction, properly rounded.
+如果 0 <= dd <= d, 那么 arg 被打印, 就像是通过格式化指令
 
-If the magnitude of arg is so large that more than m digits would have to be printed, where m is the larger of w and 100, then an implementation is free, at its discretion, to print the number using exponential notation instead, as if by the directive ~w,q,,,,padcharE, where w and padchar are present or omitted according to whether they were present or omitted in the ~$ directive, and where q=d+n-1, where d and n are the (possibly default) values given to the ~$ directive.
+    ~ww,dd,,overflowchar,padcharF~ee@T
 
-If arg is a rational number, then it is coerced to be a single float and then printed. Alternatively, an implementation is permitted to process a rational number by any other method that has essentially the same behavior but avoids loss of precision or overflow because of the coercion.
+注意, 伸缩因子 k 不会传递给那个 ~F 指令. 对于 dd 的所有其他值, arg 被打印, 就像是通过格式化指令
 
-If arg is a complex number or some non-numeric object, then it is printed using the format directive ~wD, thereby printing it in decimal radix and a minimum field width of w.
+    ~w,d,e,k,overflowchar,padchar,exponentcharE
 
-~$ binds *print-escape* to false and *print-readably* to false. 
+在任何一种情况下, 当且仅当向 ~G 指令提供了一个 @ 修饰符, 那么它将被提供给 ~F 或 ~E 指令.
+
+~G 绑定 \*print-escape* 为 false 并且绑定 \*print-readably* 为 false. 
+
+
+#### 22.3.3.4 <span id="TildeDollarsignMonetary">波浪符号 美元符号: 货币浮点数</span>
+
+下一个参数 arg 用固定格式表示打印为一个浮点数.
+
+完整形式为 ~d,n,w,padchar$. 参数 d 是小数点后要被打印的数字的数量 (默认值 2); n 是小数点前要打印数字的最小数量 (默认值 1); w 是要被打印的这个域的最小总宽度 (默认值 0).
+
+首先填充和符号会被输出. 如果这个参数 arg 是负的, 那么会输出一个负号; 如果这个参数 arg 不是负的, 当且仅当提供一个 @ 修饰符时打印一个正号. 如果使用了这个 : 修饰符, 这个符号会出现在任何填充之前, 否则就是在填充之后. 如果提供了 w 并且其他要被输出的字符的数量小于 w, 那么 padchar (默认为一个空格 space) 的拷贝会被输出来使域的总宽度等于 w. 然后打印 n 个数字作为参数 arg 的整数部分, 如果必要的话, 带有前导的零; 然后打印一个小数点; 接着是小数的 d 个数字, 适当地舍入.
+
+如果参数 arg 的大小太大以致于超过 m 个数字需要被打印, 其中 m 是 w 和 100 的较大者, 那么一个具体实现可以自由地自行决定使用指数表示来打印这个数字, 就像是通过指令 ~w,q,,,,padcharE, 其中 w 和 padchar 是存在的还是省略的得根据它们在这个 ~$ 指令中是存在的还是省略的来决定, 并且其中 q=d+n-1, 而 d 和 n 是提供给 ~$ 指令的值 (可能是默认的).
+
+如果 arg 是一个有理数, 那么它会被强制转换为一个单浮点数并且打印. 或者, 一个具体实现允许去用任何其他有着相同本质行为但是避免由于强制转换导致的精度丢失或溢出的方法来处理一个有理数.
+
+如果 arg 是一个复数或者某个非数值对象, 那么它使用格式指令 ~wD 来打印, 从而以十进制基数和一个 w 的最小域宽度来打印它.
+
+~$ 绑定 \*print-escape* 为 false 并且绑定 \*print-readably* 为 false. 
 
 
 ### 22.3.4 <span id="FORMATPrinterOperations">FORMAT 打印器操作</span>
