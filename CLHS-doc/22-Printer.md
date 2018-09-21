@@ -1094,78 +1094,74 @@ w 个字符会被准确地输出. 首先, 如果有必要, 打印出字符 padch
 
 ### 22.3.4 <span id="FORMATPrinterOperations">FORMAT 打印器操作</span>
 
-#### 22.3.4.1 Tilde A: Aesthetic
+#### 22.3.4.1 波浪符号 A: Aesthetic
 
-An arg, any object, is printed without escape characters (as by princ). If arg is a string, its characters will be output verbatim. If arg is nil it will be printed as nil; the colon modifier (~:A) will cause an arg of nil to be printed as (), but if arg is a composite structure, such as a list or vector, any contained occurrences of nil will still be printed as nil.
+一个可以是任何对象的参数 arg 不用单转义字符被打印 (就像是通过 princ). 如果 arg 是一个字符串, 它的字符会逐字输出. 如果 arg 是 nil 它会被打印为 nil; 这个冒号修饰符 (~:A) 会倒是一个 nil 的参数 arg 被打印为 (), 但是如果参数 arg 是一个复合结构, 例如一个列表或向量, 任何包含 nil 的出现仍然打印为 nil.
 
-~mincolA inserts spaces on the right, if necessary, to make the width at least mincol columns. The @ modifier causes the spaces to be inserted on the left rather than the right.
+如果必要的话, ~mincolA 在右边插入空格来使这个宽度至少为 mincol 列. 这个 @ 修饰符导致空格被插入到左边而不是右边.
 
-~mincol,colinc,minpad,padcharA is the full form of ~A, which allows control of the padding. The string is padded on the right (or on the left if the @ modifier is used) with at least minpad copies of padchar; padding characters are then inserted colinc characters at a time until the total width is at least mincol. The defaults are 0 for mincol and minpad, 1 for colinc, and the space character for padchar.
+~mincol,colinc,minpad,padcharA 是 ~A 的完整形式, 它允许填充的控制. 这个字符串会用至少 minpad 个 padchar 的拷贝来填充右边 (如果使用了 @ 修饰符就是左边); 填充字符会在一个时间内插入 colinc 字符, 直到总宽度至少是 mincol. 对于 mincol 和 minpad 默认是 0, 对于 colinc 默认是 1, 并且对于 padchar 默认是空格字符.
 
-~A binds *print-escape* to false, and *print-readably* to false. 
+~A 绑定 \*print-escape* 为 false, 并且绑定 \*print-readably* 为 false. 
 
-#### 22.3.4.2 Tilde S: Standard
+#### 22.3.4.2 波浪符号 S: Standard
 
-This is just like ~A, but arg is printed with escape characters (as by prin1 rather than princ). The output is therefore suitable for input to read. ~S accepts all the arguments and modifiers that ~A does.
+这个就像是 ~A, 但是参数 arg 用单转义字符打印 (就像是通过 prin1 而不是 princ). 因此这个输出适合作为输入来读取. ~S 接受所有 ~A 接受的参数和修饰符.
 
-~S binds *print-escape* to t. 
+~S 绑定 \*print-escape* 为 t. 
 
+#### 22.3.4.3 波浪符号 W: Write
 
-#### 22.3.4.3 Tilde W: Write
+一个可以是任何对象的参数是按每个打印机控制变量打印的 (像是通过 write). 另外, ~W 与深度缩写进行正确的交互, 不将深度计数器重置为 0. ~W 不接受参数. 如果给定了冒号修饰符, ~W 绑定 \*print-pretty* 为 true. 如果给定了 at-sign 修饰符, ~W 绑定 \*print-level* 和 \*print-length* 为 nil.
 
-An argument, any object, is printed obeying every printer control variable (as by write). In addition, ~W interacts correctly with depth abbreviation, by not resetting the depth counter to zero. ~W does not accept parameters. If given the colon modifier, ~W binds *print-pretty* to true. If given the at-sign modifier, ~W binds *print-level* and *print-length* to nil.
-
-~W provides automatic support for the detection of circularity and sharing. If the value of *print-circle* is not nil and ~W is applied to an argument that is a circular (or shared) reference, an appropriate #n# marker is inserted in the output instead of printing the argument. 
-
+~W 为环状和共享的检测提供自动支持. 如果 \*print-circle* 的值表示 nil 并且 ~W 应用到了一个是环状(或共享)引用的参数, 一个适当的 #n# 标记会被插入到输出中而不是打印这个参数. 
 
 ### 22.3.5 <span id="FORMATPrettyPrinterOperations">FORMAT 美观打印器操作</span>
 
-The following constructs provide access to the pretty printer:
+以下构造提供了对美观打印器的访问:
 
-#### 22.3.5.1 Tilde Underscore: Conditional Newline
+#### 22.3.5.1 波浪符号 下划线: 条件换行
 
-Without any modifiers, ~_ is the same as (pprint-newline :linear). ~@_ is the same as (pprint-newline :miser). ~:_ is the same as (pprint-newline :fill). ~:@_ is the same as (pprint-newline :mandatory). 
+没有任何修饰符时, ~_ 和 (pprint-newline :linear) 一样. ~@_ 和 (pprint-newline :miser) 一样. ~:_ 和 (pprint-newline :fill) 一样. ~:@_ 和 (pprint-newline :mandatory) 一样. 
 
-
-#### 22.3.5.2 Tilde Less-Than-Sign: Logical Block
+#### 22.3.5.2 波浪符号 小于号: 逻辑块
 
 ~<...~:>
 
-If ~:> is used to terminate a ~<...~>, the directive is equivalent to a call to pprint-logical-block. The argument corresponding to the ~<...~:> directive is treated in the same way as the list argument to pprint-logical-block, thereby providing automatic support for non-list arguments and the detection of circularity, sharing, and depth abbreviation. The portion of the control-string nested within the ~<...~:> specifies the :prefix (or :per-line-prefix), :suffix, and body of the pprint-logical-block.
+如果 ~:> 被用于终止 ~<...~>, 这个指令等价于一个对 pprint-logical-block 的调用. 对应于 ~<...~:> 指令的参数和 pprint-logical-block 的列表参数相同方式处理, 因此为非列表参数和环, 共享和深度缩写的检测提供了自动支持. 嵌套在 ~<...~:> 中的 control-string 的一部分指定了 :prefix (or :per-line-prefix), :suffix, 和 pprint-logical-block 的主体.
 
-The control-string portion enclosed by ~<...~:> can be divided into segments ~<prefix~;body~;suffix~:> by ~; directives. If the first section is terminated by ~@;, it specifies a per-line prefix rather than a simple prefix. The prefix and suffix cannot contain format directives. An error is signaled if either the prefix or suffix fails to be a constant string or if the enclosed portion is divided into more than three segments.
+由 ~<...~:> 围绕的这个 control-string 部分可以通过 ~; 指令被划分为片段 ~<prefix~;body~;suffix~:>. 如果第一部分由 ~@; 终止, 它指定一个行前缀而不是一个简单的前缀. 这个前缀和后缀不能包含格式化指令. 如果前缀或后缀不是一个不变的字符串或者如果这个围绕的部分被拆分为不止三个片段, 那么就会发出一个错误.
 
-If the enclosed portion is divided into only two segments, the suffix defaults to the null string. If the enclosed portion consists of only a single segment, both the prefix and the suffix default to the null string. If the colon modifier is used (i.e., ~:<...~:>), the prefix and suffix default to "(" and ")" (respectively) instead of the null string.
+如果这个围绕的部分只被划分为两个片段, 后缀默认为空字符串. 如果这个围绕的部分只由一个单独的片段组成, 那么前缀和后缀都默认为空字符串. 如果使用了这个冒号修饰符 (具体来说, 就是 ~:<...~:>), 前缀和后缀默认分别为 "(" 和 ")" 而不是空字符串.
 
-The body segment can be any arbitrary format string. This format string is applied to the elements of the list corresponding to the ~<...~:> directive as a whole. Elements are extracted from this list using pprint-pop, thereby providing automatic support for malformed lists, and the detection of circularity, sharing, and length abbreviation. Within the body segment, ~^ acts like pprint-exit-if-list-exhausted.
+这个主体片段可以是任意格式化字符串. 这个格式化字符串被应用于把 ~<...~:> 作为一个整体对应的数组元素. 使用 pprint-pop 从这个列表中提取元素, 因此为畸形列表以及环, 共享和长度缩写的检测提供自动支持. 在这个主体片段中, ~^ 表现得就像是 pprint-exit-if-list-exhausted.
 
-~<...~:> supports a feature not supported by pprint-logical-block. If ~:@> is used to terminate the directive (i.e., ~<...~:@>), then a fill-style conditional newline is automatically inserted after each group of blanks immediately contained in the body (except for blanks after a <Newline> directive). This makes it easy to achieve the equivalent of paragraph filling.
+~<...~:> 支持一个 pprint-logical-block 不支持的特性. 如果 ~:@> 被用于终止指令 (i.e., ~<...~:@>), 那么一个填充风格的条件换行会被自动插入到这个主体中包含的每一个空白组后 (除了一个 <Newline> 指令后面的空白以外). 这使得段落填充的等价物的实现变得简单.
 
-If the at-sign modifier is used with ~<...~:>, the entire remaining argument list is passed to the directive as its argument. All of the remaining arguments are always consumed by ~@<...~:>, even if they are not all used by the format string nested in the directive. Other than the difference in its argument, ~@<...~:> is exactly the same as ~<...~:> except that circularity detection is not applied if ~@<...~:> is encountered at top level in a format string. This ensures that circularity detection is applied only to data lists, not to format argument lists.
+如果这个 at-sign 修饰符和 ~<...~:> 一起使用, 那么这个完整的剩余参数列表会被传递给这个指令, 作为这个指令的参数. 所有这些剩余参数都由 ~@<...~:> 消耗, 即便它们没有全部被嵌套在这个指令中的格式化字符串使用. 除了在它的参数中的区别, ~@<...~:> 和 ~<...~:> 一样, 除了如果 ~@<...~:> 在一个格式化字符串中到达了顶层, 这个环的检测就不会被应用. 这个保证这个环的检测只会应用到数据列表, 不会应用到格式化参数列表.
 
-" . #n#" is printed if circularity or sharing has to be indicated for its argument as a whole.
+如果要将环或共享作为一个整体来表示, " . #n#" 将被打印出来.
 
-To a considerable extent, the basic form of the directive ~<...~> is incompatible with the dynamic control of the arrangement of output by ~W, ~_, ~<...~:>, ~I, and ~:T. As a result, an error is signaled if any of these directives is nested within ~<...~>. Beyond this, an error is also signaled if the ~<...~:;...~> form of ~<...~> is used in the same format string with ~W, ~_, ~<...~:>, ~I, or ~:T.
+在很大程度上, 指令 ~<...~> 的基本形式和通过 ~W, ~\_, ~<...~:>, ~I, 和 ~:T 的输出配置的动态控制不兼容. 因此, 如果这些指令中的任何一个嵌套在 ~<...~> 中就会发出一个错误. 除了那个以外, 如果这个 ~<...~> 的 ~<...~:;...~> 形式和 ~W, ~_, ~<...~:>, ~I, 或 ~:T 一起在同一个格式化字符串中使用也会发出一个错误.
 
-See also Section 22.3.6.2 (Tilde Less-Than-Sign: Justification). 
-
-
-#### 22.3.5.3 Tilde I: Indent
-
-~nI is the same as (pprint-indent :block n).
-
-~n:I is the same as (pprint-indent :current n). In both cases, n defaults to zero, if it is omitted. 
+也见章节 22.3.6.2 (Tilde Less-Than-Sign: Justification). 
 
 
-#### 22.3.5.4 Tilde Slash: Call Function
+#### 22.3.5.3 波浪符号 I: 缩进
+
+~nI 和 (pprint-indent :block n) 一样.
+
+~n:I 和 (pprint-indent :current n) 一样. 在这两种情况中, 如果 n 被省略的话, 它默认为零. 
+
+#### 22.3.5.4 波浪符号 斜杠: 调用函数
 
 ~/name/
 
-User defined functions can be called from within a format string by using the directive ~/name/. The colon modifier, the at-sign modifier, and arbitrarily many parameters can be specified with the ~/name/ directive. name can be any arbitrary string that does not contain a "/". All of the characters in name are treated as if they were upper case. If name contains a single colon (:) or double colon (::), then everything up to but not including the first ":" or "::" is taken to be a string that names a package. Everything after the first ":" or "::" (if any) is taken to be a string that names a symbol. The function corresponding to a ~/name/ directive is obtained by looking up the symbol that has the indicated name in the indicated package. If name does not contain a ":" or "::", then the whole name string is looked up in the COMMON-LISP-USER package.
+可以在一个格式化字符串中通过使用 ~/name/ 指令来调用用户定义的函数. 这个冒号修饰符, 这个 at-sign 修饰符, 以及很多参数可以和 ~/name/ 指令一起被指定. name 可以是不包含 "/" 的任意字符串. 这个 name 中的所有字符都会像它们是大写的情况一样被对待. 如果 name 包含了一个单冒号 (:) 或双冒号 (::), 那么直到但不包括第一个 ":" 或 "::" 的所有字符被认为是命名一个包的字符串. 在第一个 ":" 或 "::" (如果有的话) 的所有字符都被认为是命名一个符号的字符串. 对应于一个 ~/name/ 指令的函数通过在表示的包中查找所表示的符号来获取. 如果 name 不包含 ":" 或 "::", 那么在 COMMON-LISP-USER 包中查找整个 name 字符串.
 
-When a ~/name/ directive is encountered, the indicated function is called with four or more arguments. The first four arguments are: the output stream, the format argument corresponding to the directive, a generalized boolean that is true if the colon modifier was used, and a generalized boolean that is true if the at-sign modifier was used. The remaining arguments consist of any parameters specified with the directive. The function should print the argument appropriately. Any values returned by the function are ignored.
+当与到一个 ~/name/ 指令时, 所表示的函数用四个或更多的参数来调用. 前四个参数是: 输出流, 对应这个指令的格式化参数, 一个如果使用了冒号修饰符就是 true 的广义 boolean, 以及一个如果使用了 at-sign 修饰符就是 true 的广义 boolean. 函数应该适当地打印参数. 这个函数返回的值都会被忽略.
 
-The three functions pprint-linear, pprint-fill, and pprint-tabular are specifically designed so that they can be called by ~/.../ (i.e., ~/pprint-linear/, ~/pprint-fill/, and ~/pprint-tabular/). In particular they take colon and at-sign arguments. 
+这三个函数 pprint-linear, pprint-fill, 和 pprint-tabular 是特别设计的以致于它们可以通过 ~/.../ 来调用 (换句话说, ~/pprint-linear/, ~/pprint-fill/, 和 ~/pprint-tabular/). 特别地, 它们接受冒号和 at-sign 参数. 
 
 
 ### 22.3.6 <span id="FORMATLayoutControl">FORMAT 布局控制</span>
@@ -2578,162 +2574,170 @@ format, write, write-to-string
 
 * 值类型(Value Type):
 
-One of the symbols :upcase, :downcase, or :capitalize.
+        符号 :upcase, :downcase, 或 :capitalize 其中之一.
 
 * 初始值(Initial Value):
 
-The symbol :upcase.
+        符号 :upcase.
 
 * 描述(Description):
 
-The value of *print-case* controls the case (upper, lower, or mixed) in which to print any uppercase characters in the names of symbols when vertical-bar syntax is not used.
+        这个 *print-case* 的值控制当没有使用竖杠语法时符号名字中的任何大写字符要被打印的大小写 (大写, 小写, 或混合的).
 
-*print-case* has an effect at all times when the value of *print-escape* is false. *print-case* also has an effect when the value of *print-escape* is true unless inside an escape context (i.e., unless between vertical-bars or after a slash).
+        当 *print-escape* 的值是 false 时, *print-case* 在所有时间都有效. 当 *print-escape* 的值是 true 时 *print-case* 也有效, 除非在一个转义上下文中 (换句话说, 除非在竖杠之间或一个斜杠之后).
 
 * 示例(Examples):
 
- (defun test-print-case ()
-   (dolist (*print-case* '(:upcase :downcase :capitalize))
-     (format t "~&~S ~S~%" 'this-and-that '|And-something-elSE|)))
-=>  TEST-PC
-;; Although the choice of which characters to escape is specified by
-;; *PRINT-CASE*, the choice of how to escape those characters 
-;; (i.e., whether single escapes or multiple escapes are used)
-;; is implementation-dependent.  The examples here show two of the
-;; many valid ways in which escaping might appear.
- (test-print-case) ;Implementation A
->>  THIS-AND-THAT |And-something-elSE|
->>  this-and-that a\n\d-\s\o\m\e\t\h\i\n\g-\e\lse
->>  This-And-That A\n\d-\s\o\m\e\t\h\i\n\g-\e\lse
-=>  NIL
- (test-print-case) ;Implementation B
->>  THIS-AND-THAT |And-something-elSE|
->>  this-and-that a|nd-something-el|se
->>  This-And-That A|nd-something-el|se
-=>  NIL
+    ```LISP
+    (defun test-print-case ()
+      (dolist (*print-case* '(:upcase :downcase :capitalize))
+        (format t "~&~S ~S~%" 'this-and-that '|And-something-elSE|)))
+    =>  TEST-PC
+    ;; Although the choice of which characters to escape is specified by
+    ;; *PRINT-CASE*, the choice of how to escape those characters 
+    ;; (i.e., whether single escapes or multiple escapes are used)
+    ;; is implementation-dependent.  The examples here show two of the
+    ;; many valid ways in which escaping might appear.
+    (test-print-case) ;Implementation A
+    >>  THIS-AND-THAT |And-something-elSE|
+    >>  this-and-that a\n\d-\s\o\m\e\t\h\i\n\g-\e\lse
+    >>  This-And-That A\n\d-\s\o\m\e\t\h\i\n\g-\e\lse
+    =>  NIL
+    (test-print-case) ;Implementation B
+    >>  THIS-AND-THAT |And-something-elSE|
+    >>  this-and-that a|nd-something-el|se
+    >>  This-And-That A|nd-something-el|se
+    =>  NIL
+    ```
 
 * 受此影响(Affected By): None.
 
 * 也见(See Also):
 
-write
+        write
 
 * 注意(Notes):
 
-read normally converts lowercase characters appearing in symbols to corresponding uppercase characters, so that internally print names normally contain only uppercase characters.
+        read 通常将出现在符号中的小写字符转换为大写字符, 这样一来内容的打印名字通常只包含大写字符.
 
-If *print-escape* is true, lowercase characters in the name of a symbol are always printed in lowercase, and are preceded by a single escape character or enclosed by multiple escape characters; uppercase characters in the name of a symbol are printed in upper case, in lower case, or in mixed case so as to capitalize words, according to the value of *print-case*. The convention for what constitutes a ``word'' is the same as for string-capitalize. 
+        如果 *print-escape* 是 true, 一个符号名字中的小写字符总是用小写打印, 并且前面有单转义字符或被多转义字符围绕; 根据 *print-case* 的值, 一个符号名字中的大写字符可能会用大写, 小写或混合的方式来打印, 以便使单词首字母大写. 关于构成一个 "单词(word)" 的惯例和 string-capitalize 一样. 
 
 
 ### <span id="V-PRINT-CIRCLE">变量 *PRINT-CIRCLE*</span>
 
 * 值类型(Value Type):
 
-a generalized boolean.
+        一个广义 boolean.
 
 * 初始值(Initial Value):
 
-false.
+        false.
 
 * 描述(Description):
 
-Controls the attempt to detect circularity and sharing in an object being printed.
+        控制尝试在一个要被打印的对象中检测环状和共享.
 
-If false, the printing process merely proceeds by recursive descent without attempting to detect circularity and sharing.
+        如果是 false, 打印过程仅仅是通过递归的下降来进行, 而不需要检测环状和共享.
 
-If true, the printer will endeavor to detect cycles and sharing in the structure to be printed, and to use #n= and #n# syntax to indicate the circularities or shared components.
+        如果是 true, 打印器将努力检测出要被打印的结构中的环和共享, 并且使用 #n= 和 #n# 语法来表示环或共享成员.
 
-If true, a user-defined print-object method can print objects to the supplied stream using write, prin1, princ, or format and expect circularities and sharing to be detected and printed using the #n# syntax. If a user-defined print-object method prints to a stream other than the one that was supplied, then circularity detection starts over for that stream.
+        如果是 true, 一个用户定义的 print-object 方法可以使用 write, prin1, princ, 或 format 打印对象到提供的流中并且期望使用 #n# 语法检测和打印环和共享. 如果一个用户定义的 print-object 方法打印到一个流而不是提供的那个, 那么环检测从这个流开始.
 
-Note that implementations should not use #n# notation when the Lisp reader would automatically assure sharing without it (e.g., as happens with interned symbols).
+        注意, 当 Lisp 读取器会自动确保没有它的共享时, 具体实现不应该使用 #n# 标记 (例如, as happens with interned symbols).
 
 * 示例(Examples):
 
- (let ((a (list 1 2 3)))
-   (setf (cdddr a) a)
-   (let ((*print-circle* t))
-     (write a)
-     :done))
->>  #1=(1 2 3 . #1#)
-=>  :DONE
+    ```LISP
+    (let ((a (list 1 2 3)))
+      (setf (cdddr a) a)
+      (let ((*print-circle* t))
+        (write a)
+        :done))
+    >>  #1=(1 2 3 . #1#)
+    =>  :DONE
+    ```
 
 * 受此影响(Affected By): None.
 
 * 也见(See Also):
 
-write
+        write
 
 * 注意(Notes):
 
-An attempt to print a circular structure with *print-circle* set to nil may lead to looping behavior and failure to terminate. 
+        在 *print-circle* 设置为 nil 的情况下尝试去打印一个环状结构可能导致循环行为并且不能终止. 
 
 
 ### <span id="V-PRINT-ESCAPE">变量 *PRINT-ESCAPE*</span>
 
 * 值类型(Value Type):
 
-a generalized boolean.
+        一个广义 boolean.
 
 * 初始值(Initial Value):
 
-true.
+        true.
 
 * 描述(Description):
 
-If false, escape characters and package prefixes are not output when an expression is printed.
+        如果是 false, 在打印一个表达式时, 转义字符和包前缀不会被输出.
 
-If true, an attempt is made to print an expression in such a way that it can be read again to produce an equal expression. (This is only a guideline; not a requirement. See *print-readably*.)
+        如果是 true, 尝试以一种它可以被再次读取以产生一个 equal 表达式的方式打印一个表达式. (这只是一个指导纲要; 不是必须的. 见 *print-readably*.)
 
-For more specific details of how the value of *print-escape* affects the printing of certain types, see Section 22.1.3 (默认 Print-Object 方法).
+        关于 *print-escape* 的值如何影响特定类型的打印的更具体信息, 见章节 22.1.3 (默认 Print-Object 方法).
 
 * 示例(Examples):
 
- (let ((*print-escape* t)) (write #\a))
->>  #\a
-=>  #\a
- (let ((*print-escape* nil)) (write #\a))
->>  a
-=>  #\a
+    ```LISP
+    (let ((*print-escape* t)) (write #\a))
+    >>  #\a
+    =>  #\a
+    (let ((*print-escape* nil)) (write #\a))
+    >>  a
+    =>  #\a
+    ```
 
 * 受此影响(Affected By):
 
-princ, prin1, format
+        princ, prin1, format
 
 * 也见(See Also):
 
-write, readtable-case
+        write, readtable-case
 
 * 注意(Notes):
 
-princ effectively binds *print-escape* to false. prin1 effectively binds *print-escape* to true. 
+        princ 实际上绑定 *print-escape* 为 false. prin1 实际上绑定 *print-escape* 为 true. 
 
 
 ### <span id="V-PRINT-GENSYM">变量 *PRINT-GENSYM*</span>
 
 * 值类型(Value Type):
 
-a generalized boolean.
+        一个广义 boolean.
 
 * 初始值(Initial Value):
 
-true.
+        true.
 
 * 描述(Description):
 
-Controls whether the prefix ``#:'' is printed before apparently uninterned symbols. The prefix is printed before such symbols if and only if the value of *print-gensym* is true.
+        控制在明显未捕捉的符号前面是否打印前缀 "#:". 当且仅当这个 *print-gensym* 的值是 true 时, 在这样一个符号之前打印这个前缀.
 
 * 示例(Examples):
 
- (let ((*print-gensym* nil))
-   (print (gensym)))
->>  G6040 
-=>  #:G6040
+    ```LISP
+    (let ((*print-gensym* nil))
+      (print (gensym)))
+    >>  G6040 
+    =>  #:G6040
+    ```
 
 * 受此影响(Affected By): None.
 
 * 也见(See Also):
 
-write, *print-escape*
+        write, *print-escape*
 
 * 注意(Notes): None. 
 
