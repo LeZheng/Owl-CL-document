@@ -1144,7 +1144,7 @@ w 个字符会被准确地输出. 首先, 如果有必要, 打印出字符 padch
 
 在很大程度上, 指令 ~<...~> 的基本形式和通过 ~W, ~\_, ~<...~:>, ~I, 和 ~:T 的输出配置的动态控制不兼容. 因此, 如果这些指令中的任何一个嵌套在 ~<...~> 中就会发出一个错误. 除了那个以外, 如果这个 ~<...~> 的 ~<...~:;...~> 形式和 ~W, ~_, ~<...~:>, ~I, 或 ~:T 一起在同一个格式化字符串中使用也会发出一个错误.
 
-也见章节 22.3.6.2 (Tilde Less-Than-Sign: Justification). 
+也见章节 22.3.6.2 (波浪符号 小于号: 对齐). 
 
 
 #### 22.3.5.3 波浪符号 I: 缩进
@@ -1166,46 +1166,44 @@ w 个字符会被准确地输出. 首先, 如果有必要, 打印出字符 padch
 
 ### 22.3.6 <span id="FORMATLayoutControl">FORMAT 布局控制</span>
 
-#### 22.3.6.1 Tilde T: Tabulate
+#### 22.3.6.1 波浪符号 T: 制表符
 
-This spaces over to a given column. ~colnum,colincT will output sufficient spaces to move the cursor to column colnum. If the cursor is already at or beyond column colnum, it will output spaces to move it to column colnum+k*colinc for the smallest positive integer k possible, unless colinc is zero, in which case no spaces are output if the cursor is already at or beyond column colnum. colnum and colinc default to 1.
+这个空格到一个给定的列. ~colnum,colincT 会输出足够的空格来使游标移动到列 colnum. 如果这个游标已经在或超过列 colnum, 它会输出空格来移动它到列 colnum+k*colinc, 其中 k 为可能的最小正整数, 除非 colinc 是零, 在这个情况下如果游标已经在或超过列 colnum 不会输出空格. colnum 和 colinc 默认为 1.
 
-If for some reason the current absolute column position cannot be determined by direct inquiry, format may be able to deduce the current column position by noting that certain directives (such as ~%, or ~&, or ~A with the argument being a string containing a newline) cause the column position to be reset to zero, and counting the number of characters emitted since that point. If that fails, format may attempt a similar deduction on the riskier assumption that the destination was at column zero when format was invoked. If even this heuristic fails or is implementationally inconvenient, at worst the ~T operation will simply output two spaces.
+如果由于某个原因, 当前完整的列位置不能由直接查询来确定, format 可能推理出当前的列位置 通过标记某些指令 (例如 ~%, 或 ~&, 或带有包含换行的字符串参数的 ~A) 导致这个列位置被重置为零, 并且统计从那个点开始发射的字符数量. 如果这样失败了, format 可能尝试一个类似的推理, 基于"当调用 format 时目标在零列"这个更加危险的设想上. 如果即便这个试探失败了 If even this heuristic fails or is implementationally inconvenient, 最坏情况下这个 ~T 操作符会简单输出两个空格.
 
-~@T performs relative tabulation. ~colrel,colinc@T outputs colrel spaces and then outputs the smallest non-negative number of additional spaces necessary to move the cursor to a column that is a multiple of colinc. For example, the directive ~3,8@T outputs three spaces and then moves the cursor to a ``standard multiple-of-eight tab stop'' if not at one already. If the current output column cannot be determined, however, then colinc is ignored, and exactly colrel spaces are output.
+~@T 执行相对的制表. ~colrel,colinc@T 输出 colrel 个空格并且接着输出最小非负数量的必要的额外空格来使游标移动到是 colinc 的倍数的一个列. 比如, 指令 ~3,8@T 输出三个空格然后移动游标到一个 "标准的八倍制表停止" if not at one already. 如果不能确定当前的输出列, 那么 colinc 就会被忽略, 而 colrel 个空格恰好是输出.
 
-If the colon modifier is used with the ~T directive, the tabbing computation is done relative to the horizontal position where the section immediately containing the directive begins, rather than with respect to a horizontal position of zero. The numerical parameters are both interpreted as being in units of ems and both default to 1. ~n,m:T is the same as (pprint-tab :section n m). ~n,m:@T is the same as (pprint-tab :section-relative n m). 
+如果这个冒号修饰符和 ~T 指令一起使用, 这个制表的计算是相对于立即包含指令的部分开始的水平位置, 而不是对于零的水平位置. 这两个数值参数都被解释为以 em 为单位并且默认为 1. ~n,m:T 和 (pprint-tab :section n m) 一样. ~n,m:@T 和 (pprint-tab :section-relative n m) 一样. 
 
 
-#### 22.3.6.2 Tilde Less-Than-Sign: Justification
+#### 22.3.6.2 波浪符号 小于号: 对齐
 
 ~mincol,colinc,minpad,padchar<str~>
 
-This justifies the text produced by processing str within a field at least mincol columns wide. str may be divided up into segments with ~;, in which case the spacing is evenly divided between the text segments.
+这个对齐由在至少 mincol 列宽度的域中处理 str 产生的文本. str 可能使用 ~; 划分片段, 在这个情况中间隔在文本段之间平均分配.
 
-With no modifiers, the leftmost text segment is left justified in the field, and the rightmost text segment is right justified. If there is only one text element, as a special case, it is right justified. The : modifier causes spacing to be introduced before the first text segment; the @ modifier causes spacing to be added after the last. The minpad parameter (default 0) is the minimum number of padding characters to be output between each segment. The padding character is supplied by padchar, which defaults to the space character. If the total width needed to satisfy these constraints is greater than mincol, then the width used is mincol+k*colinc for the smallest possible non-negative integer value k. colinc defaults to 1, and mincol defaults to 0.
+没有修饰符时, 最左边的文本片段在这个域中被左对齐, 并且最右边的文本片段被右对齐. 如果这里只有一个文本元素, 作为一个特殊情况, 它被右对齐. 这个 : 修饰符导致在第一个文本片段之前要被引入的间距; 这个 @ 修饰符导致在最后要被添加的间距. 这个 minpad 参数 (默认 0) 是在每一个片段之间要被输出的填充字符的最小数量. 填充字符由 padchar 提供, 默认为空格字符. 如果需要去满足这些约束的总宽度大于 mincol, 那么使用的宽度是 mincol+k*colinc, 其中 k 是可能的最小非负整数值. colinc 默认为 1, 并且 mincol 默认为 0.
 
-Note that str may include format directives. All the clauses in str are processed in order; it is the resulting pieces of text that are justified.
+注意, str 可能包含 format 指令. 在 str 中的所有子句依次被处理; 它是被对齐的文本片段.
 
-The ~^ directive may be used to terminate processing of the clauses prematurely, in which case only the completely processed clauses are justified.
+这个 ~^ 指令可以被用于过早地终止子句处理, 在这个情况下只有那些完整处理的子句会被对齐.
 
-If the first clause of a ~< is terminated with ~:; instead of ~;, then it is used in a special way. All of the clauses are processed (subject to ~^, of course), but the first one is not used in performing the spacing and padding. When the padded result has been determined, then if it will fit on the current line of output, it is output, and the text for the first clause is discarded. If, however, the padded text will not fit on the current line, then the text segment for the first clause is output before the padded text. The first clause ought to contain a newline (such as a ~% directive). The first clause is always processed, and so any arguments it refers to will be used; the decision is whether to use the resulting segment of text, not whether to process the first clause. If the ~:; has a prefix parameter n, then the padded text must fit on the current line with n character positions to spare to avoid outputting the first clause's text. For example, the control string
+如果 ~< 的第一个子句由 ~:; 终止而不是 ~;, 那么以一种特殊的方式来使用它. 所有这些子句被处理 (当然, 受限于 ~^), 但是第一个不会被用于执行隔开和填充. 当那个填充的结果已经被确定时, 那么如果它符合输出的当前行, 它就被输出, 并且第一个子句的文本会被丢弃. 然而, 如果填充的文本不符合当前行, 那么第一个子句的文本片段会在这个填充文本之前被输出. 第一个子句应该包含一个换行 (例如一个 ~% 指令). 第一个子句总是被处理, 因此它引用的任何参数都会被使用; 这个决策是是否使用生成的文本片段, 而不是是否处理第一个子句. 如果这个 ~:; 有一个前缀参数 n, 那么填充文本必须在当前的行中与 n 个字符位置相匹配以避免输出第一个子句的文本. 比如, 控制字符串
 
- "~%;; ~{ ~<~%;; ~1:; ~S~>~^ ,~} .~%"
+    "~%;; ~{ ~<~%;; ~1:; ~S~>~^ ,~} .~%"
 
-can be used to print a list of items separated by commas without breaking items over line boundaries, beginning each line with ;; . The prefix parameter 1 in ~1:; accounts for the width of the comma that will follow the justified item if it is not the last element in the list, or the period if it is. If ~:; has a second prefix parameter, then it is used as the width of the line, thus overriding the natural line width of the output stream. To make the preceding example use a line width of 50, one would write
+可以用来打印一个由逗号分隔的条目列表, 而不需要在行边界上破坏条目, 其中每一行用 ;; 开始. 在 ~1:; 中的前缀参数 1 说明了对齐条目后面的逗号宽度, 如果这个条目不是列表中的最后一个元素, 如果是最后一个元素的话就是句号的宽度. 如果 ~:; 有一个第二个前缀参数, 那么它被用作这个行的宽度, 因此覆盖了这个输出流的自然行宽度. 为了使前面的例子使用 50 的行宽, 一种方式可以写作
 
- "~%;; ~{ ~<~%;; ~1,50:; ~S~>~^ ,~}  .~%"
+    "~%;; ~{ ~<~%;; ~1,50:; ~S~>~^ ,~}  .~%"
 
-If the second argument is not supplied, then format uses the line width of the destination output stream. If this cannot be determined (for example, when producing a string result), then format uses 72 as the line length.
+如果没有提供第二个参数, 那么 format 使用 destination 输出流的行宽. 如果不能确定这个 (比如, 当产生一个字符串结果时), 那么 format 使用 72 作为行长度.
 
-See also Section 22.3.5.2 (Tilde Less-Than-Sign: Logical Block). 
+也见章节 22.3.5.2 (波浪符号 小于号: 逻辑块). 
 
+#### 22.3.6.3 波浪符号 大于号: 终止对齐
 
- 22.3.6.3 Tilde Greater-Than-Sign: End of Justification
-
-~> terminates a ~<. The consequences of using it elsewhere are undefined. 
-
+~> 终止一个 ~<. 在其他地方使用它的后果是未定义的. 
 
 #### 22.3.7 <span id="FORMATControlFlowOperation">FORMAT 控制流操作</span>
 
@@ -1797,7 +1795,7 @@ The ~^ should appear only at the beginning of a ~< clause, because it aborts the
 
             函数 pprint-fill 把一个列表尽可能多的元素打印到一行上.
 
-            函数 pprint-tabular 和 pprint-fill 一样除了它打印的这些元素按列对齐. 这个 tabsize 以西文排版行长单位指定了列间隔, 也就是从一列的前缘到下一列的前缘的总间距.
+            函数 pprint-tabular 和 pprint-fill 一样除了它打印的这些元素按列对齐. 这个 tabsize 以em 单位指定了列间隔, 也就是从一列的前缘到下一列的前缘的总间距.
 
 * 示例(Examples):
 
@@ -1859,7 +1857,7 @@ The ~^ should appear only at the beginning of a ~< clause, because it aborts the
 
         pprint-indent 指定了在流 stream 上的一个逻辑块中使用的缩进. 如果流 stream 是一个美观打印流并且 *print-pretty* 的值 true, pprint-indent 设置最内部的动态闭合逻辑块中的缩进; 否则, pprint-indent 没有效果.
 
-        n 用西文排版行长单位指定了缩进. 如果 relative-to 是 :block, 这个缩进会被设置为在这个动态当前逻辑块中第一个字符的水平位置加上 n 个西文排版行长单位. 如果 relative-to 是 :current, 这个缩进被设置为当前输出位置加上 n 个西文排版行长单位. (为了面对可变宽度字体时的健壮性, 可能的情况下建议使用 :current 以及零作为一个 n.)
+        n 用em 单位指定了缩进. 如果 relative-to 是 :block, 这个缩进会被设置为在这个动态当前逻辑块中第一个字符的水平位置加上 n 个em 单位. 如果 relative-to 是 :current, 这个缩进被设置为当前输出位置加上 n 个em 单位. (为了面对可变宽度字体时的健壮性, 可能的情况下建议使用 :current 以及零作为一个 n.)
 
         N 可以是负的; 然而, 总的缩进不能移动到这行开始的左边或者最右边的每行前缀的末尾的左边---试图超越这些限制一的尝试与试图达到这个极限的尝试是一样的. 由 pprint-indent 导致的缩进的改变不会生效, 直到下一个换行符之后. 另外, 在最小执行常式模式中所有对 pprint-indent 的调用都被忽略, 强制对齐到逻辑块的行, 在块的第一个字符下面对齐.
 
@@ -1937,7 +1935,7 @@ The ~^ should appear only at the beginning of a ~< clause, because it aborts the
 
 * 也见(See Also):
 
-        pprint-pop, pprint-exit-if-list-exhausted, 章节 22.3.5.2 (Tilde Less-Than-Sign: Logical Block)
+        pprint-pop, pprint-exit-if-list-exhausted, 章节 22.3.5.2 (波浪符号 小于号: 逻辑块)
 
 * 注意(Notes):
 
@@ -2274,240 +2272,207 @@ This signifies that the corresponding object must be a cons cell whose car match
 
 * 语法(Syntax):
 
-write object &key array base case circle escape gensym length level lines miser-width pprint-dispatch pretty radix readably right-margin stream
+        write object &key array base case circle escape gensym length level lines miser-width pprint-dispatch pretty radix readably right-margin stream
+        => object
 
-=> object
+        prin1 object &optional output-stream => object
 
-prin1 object &optional output-stream => object
+        princ object &optional output-stream => object
 
-princ object &optional output-stream => object
+        print object &optional output-stream => object
 
-print object &optional output-stream => object
-
-pprint object &optional output-stream => <no values>
+        pprint object &optional output-stream => <no values>
 
 * 参数和值(Arguments and Values):
 
-object---一个对象.
-
-output-stream---an output stream designator. The default is standard output.
-
-array---一个广义 boolean.
-
-base---a radix.
-
-case---a symbol of type (member :upcase :downcase :capitalize).
-
-circle---一个广义 boolean.
-
-escape---一个广义 boolean.
-
-gensym---一个广义 boolean.
-
-length---一个非负整数, 或 nil.
-
-level---一个非负整数, 或 nil.
-
-lines---一个非负整数, 或 nil.
-
-miser-width---一个非负整数, 或 nil.
-
-pprint-dispatch---a pprint dispatch table.
-
-pretty---一个广义 boolean.
-
-radix---一个广义 boolean.
-
-readably---一个广义 boolean.
-
-right-margin---一个非负整数, 或 nil.
-
-stream---an output stream designator. The default is standard output.
+        object---一个对象.
+        output-stream---一个输出流标识符. 默认是标准输出.
+        array---一个广义 boolean.
+        base---一个基数.
+        case---一个 (member :upcase :downcase :capitalize) 类型的符号.
+        circle---一个广义 boolean.
+        escape---一个广义 boolean.
+        gensym---一个广义 boolean.
+        length---一个非负整数, 或 nil.
+        level---一个非负整数, 或 nil.
+        lines---一个非负整数, 或 nil.
+        miser-width---一个非负整数, 或 nil.
+        pprint-dispatch---一个 pprint 分派表.
+        pretty---一个广义 boolean.
+        radix---一个广义 boolean.
+        readably---一个广义 boolean.
+        right-margin---一个非负整数, 或 nil.
+        stream---一个输出流标识符. 默认是标准输出.
 
 * 描述(Description):
 
-write, prin1, princ, print, and pprint write the printed representation of object to output-stream.
+        write, prin1, princ, print, 和 pprint 把对象 object 的打印表示写入到输出流 output-stream 中.
 
-write is the general entry point to the Lisp printer. For each explicitly supplied keyword parameter named in the next figure, the corresponding printer control variable is dynamically bound to its value while printing goes on; for each keyword parameter in the next figure that is not explicitly supplied, the value of the corresponding printer control variable is the same as it was at the time write was invoked. Once the appropriate bindings are established, the object is output by the Lisp printer.
+        write 是到 Lisp 打印器的一般入口点. 对于显式提供的下一段中命名的每个关键字参数, 对应的打印器控制变量在打印进行时会被动态地绑定为它的值; 对于没有显式提供的下一段中的每个关键字参数, 对应打印器控制变量的值和 write 被调用时一样. 一旦确定合适的绑定, 对象 object 会被 Lisp 打印器输出.
 
-Parameter        Corresponding Dynamic Variable  
-array            *print-array*                   
-base             *print-base*                    
-case             *print-case*                    
-circle           *print-circle*                  
-escape           *print-escape*                  
-gensym           *print-gensym*                  
-length           *print-length*                  
-level            *print-level*                   
-lines            *print-lines*                   
-miser-width      *print-miser-width*             
-pprint-dispatch  *print-pprint-dispatch*         
-pretty           *print-pretty*                  
-radix            *print-radix*                   
-readably         *print-readably*                
-right-margin     *print-right-margin*            
+            参数              对应的动态变量  
+            array            *print-array*                   
+            base             *print-base*                    
+            case             *print-case*                    
+            circle           *print-circle*                  
+            escape           *print-escape*                  
+            gensym           *print-gensym*                  
+            length           *print-length*                  
+            level            *print-level*                   
+            lines            *print-lines*                   
+            miser-width      *print-miser-width*             
+            pprint-dispatch  *print-pprint-dispatch*         
+            pretty           *print-pretty*                  
+            radix            *print-radix*                   
+            readably         *print-readably*                
+            right-margin     *print-right-margin*            
 
-Figure 22-7. Argument correspondences for the WRITE function.
+            Figure 22-7. 对于 WRITE 函数的参数对应关系.
 
-prin1, princ, print, and pprint implicitly bind certain print parameters to particular values. The remaining parameter values are taken from *print-array*, *print-base*, *print-case*, *print-circle*, *print-escape*, *print-gensym*, *print-length*, *print-level*, *print-lines*, *print-miser-width*, *print-pprint-dispatch*, *print-pretty*, *print-radix*, and *print-right-margin*.
+        prin1, princ, print, 和 pprint 隐式绑定某些打印参数为特定的值. 这些剩余参数值取自 *print-array*, *print-base*, *print-case*, *print-circle*, *print-escape*, *print-gensym*, *print-length*, *print-level*, *print-lines*, *print-miser-width*, *print-pprint-dispatch*, *print-pretty*, *print-radix*, 和 *print-right-margin*.
 
-prin1 produces output suitable for input to read. It binds *print-escape* to true.
+        prin1 产生适合于 read 的输入的输出. 它绑定 *print-escape* 为 true.
 
-princ is just like prin1 except that the output has no escape characters. It binds *print-escape* to false and *print-readably* to false. The general rule is that output from princ is intended to look good to people, while output from prin1 is intended to be acceptable to read.
+        princ 就像是 prin1 除了输出没有转义字符. 它绑定 *print-escape* 为 false 并且绑定 *print-readably* 为 false. 一般规则是, 来自 princ 的输出意图在于让人更好地查看, 而来自 prin1 的输出意图在于对于 read 是可接受的.
 
-print is just like prin1 except that the printed representation of object is preceded by a newline and followed by a space.
+        print 就像是 prin1 除了对象 object 的打印表示前面有一个换行并且后面有空格.
 
-pprint is just like print except that the trailing space is omitted and object is printed with the *print-pretty* flag non-nil to produce pretty output.
+        pprint 就像是 print 除了省略尾部的空格并且对象 object 使用非 nil 的 *print-pretty* 标志来打印, 进而产生美观的输出.
 
-Output-stream specifies the stream to which output is to be sent.
+        output-stream 指定输出要被发送到的流.
 
 * 受此影响(Affected By):
 
-*standard-output*, *terminal-io*, *print-escape*, *print-radix*, *print-base*, *print-circle*, *print-pretty*, *print-level*, *print-length*, *print-case*, *print-gensym*, *print-array*, *read-default-float-format*.
+        *standard-output*, *terminal-io*, *print-escape*, *print-radix*, *print-base*, *print-circle*, *print-pretty*, *print-level*, *print-length*, *print-case*, *print-gensym*, *print-array*, *read-default-float-format*.
 
 * 异常情况(Exceptional Situations): None.
 
 * 也见(See Also):
 
-readtable-case, Section 22.3.4 (FORMAT 打印器操作)
+        readtable-case, 章节 22.3.4 (FORMAT 打印器操作)
 
 * 注意(Notes):
 
-The functions prin1 and print do not bind *print-readably*.
+        函数 prin1 和 print 不会绑定 *print-readably*.
 
- (prin1 object output-stream)
-==  (write object :stream output-stream :escape t)
+        (prin1 object output-stream)
+        ==  (write object :stream output-stream :escape t)
 
- (princ object output-stream)
-==  (write object stream output-stream :escape nil :readably nil)
+        (princ object output-stream)
+        ==  (write object stream output-stream :escape nil :readably nil)
 
- (print object output-stream)
-==  (progn (terpri output-stream)
-           (write object :stream output-stream
-                         :escape t)
-           (write-char #\space output-stream))
+        (print object output-stream)
+        ==  (progn (terpri output-stream)
+                  (write object :stream output-stream
+                                :escape t)
+                  (write-char #\space output-stream))
 
- (pprint object output-stream)
-==  (write object :stream output-stream :escape t :pretty t)
+        (pprint object output-stream)
+        ==  (write object :stream output-stream :escape t :pretty t)
 
 
 ### <span id="F-WRITE-PRIN1-PRINC-TO-STRING">函数 WRITE-TO-STRING, PRIN1-TO-STRING, PRINC-TO-STRING</span>
 
 * 语法(Syntax):
 
-write-to-string object &key array base case circle escape gensym length level lines miser-width pprint-dispatch pretty radix readably right-margin
+        write-to-string object &key array base case circle escape gensym length level lines miser-width pprint-dispatch pretty radix readably right-margin
+        => string
 
-=> string
+        prin1-to-string object => string
 
-prin1-to-string object => string
-
-princ-to-string object => string
+        princ-to-string object => string
 
 * 参数和值(Arguments and Values):
 
-object---一个对象.
-
-array---一个广义 boolean.
-
-base---a radix.
-
-case---a symbol of type (member :upcase :downcase :capitalize).
-
-circle---一个广义 boolean.
-
-escape---一个广义 boolean.
-
-gensym---一个广义 boolean.
-
-length---一个非负整数, 或 nil.
-
-level---一个非负整数, 或 nil.
-
-lines---一个非负整数, 或 nil.
-
-miser-width---一个非负整数, 或 nil.
-
-pprint-dispatch---a pprint dispatch table.
-
-pretty---一个广义 boolean.
-
-radix---一个广义 boolean.
-
-readably---一个广义 boolean.
-
-right-margin---一个非负整数, 或 nil.
-
-string---a string.
+        object---一个对象.
+        array---一个广义 boolean.
+        base---一个基数.
+        case---一个类型 (member :upcase :downcase :capitalize) 的符号.
+        circle---一个广义 boolean.
+        escape---一个广义 boolean.
+        gensym---一个广义 boolean.
+        length---一个非负整数, 或 nil.
+        level---一个非负整数, 或 nil.
+        lines---一个非负整数, 或 nil.
+        miser-width---一个非负整数, 或 nil.
+        pprint-dispatch---一个 pprint 分派表.
+        pretty---一个广义 boolean.
+        radix---一个广义 boolean.
+        readably---一个广义 boolean.
+        right-margin---一个非负整数, 或 nil.
+        string---一个字符串.
 
 * 描述(Description):
 
-write-to-string, prin1-to-string, and princ-to-string are used to create a string consisting of the printed representation of object. Object is effectively printed as if by write, prin1, or princ, respectively, and the characters that would be output are made into a string.
+        write-to-string, prin1-to-string, 和 princ-to-string 被用于创建一个由对象 object 的打印表示组成的字符串. 对象 object 被有效地打印, 就像分别是通过 write, prin1, 或 princ 一样, 并且输出的字符被构成一个字符串.
 
-write-to-string is the general output function. It has the ability to specify all the parameters applicable to the printing of object.
+        write-to-string 是一个一般的输出函数. 它有着去指定所有可应用于对象 object 打印的参数的能力.
 
-prin1-to-string acts like write-to-string with :escape t, that is, escape characters are written where appropriate.
+        prin1-to-string 表现地就像是 write-to-string, 其中 :escape 为 t, 这也就是说, 转义字符会在了合适的地方被写入.
 
-princ-to-string acts like write-to-string with :escape nil :readably nil. Thus no escape characters are written.
+        princ-to-string 表现地就像是 write-to-string, 其中 :escape 为 nil 并且 :readably 为 nil. 因此没有转义字符会被写入.
 
-All other keywords that would be specified to write-to-string are default values when prin1-to-string or princ-to-string is invoked.
+        当 prin1-to-string 或 princ-to-string 被调用时, 所有会被指定给 write-to-string 的其他关键字是默认值.
 
-The meanings and defaults for the keyword arguments to write-to-string are the same as those for write.
+        给 write-to-string 的关键字参数的意义和默认值与 write 的相同.
 
 * 示例(Examples):
 
- (prin1-to-string "abc") =>  "\"abc\""
- (princ-to-string "abc") =>  "abc"
+    ```LISP
+    (prin1-to-string "abc") =>  "\"abc\""
+    (princ-to-string "abc") =>  "abc"
+    ```
 
 * 副作用(Side Effects): None.
 
 * 受此影响(Affected By):
 
-*print-escape*, *print-radix*, *print-base*, *print-circle*, *print-pretty*, *print-level*, *print-length*, *print-case*, *print-gensym*, *print-array*, *read-default-float-format*.
+        *print-escape*, *print-radix*, *print-base*, *print-circle*, *print-pretty*, *print-level*, *print-length*, *print-case*, *print-gensym*, *print-array*, *read-default-float-format*.
 
 * 异常情况(Exceptional Situations): None.
 
 * 也见(See Also):
 
-write
+        write
 
 * 注意(Notes):
 
- (write-to-string object {key argument}*)
-==  (with-output-to-string (#1=#:string-stream) 
-     (write object :stream #1# {key argument}*))
+        (write-to-string object {key argument}*)
+        ==  (with-output-to-string (#1=#:string-stream) 
+            (write object :stream #1# {key argument}*))
 
- (princ-to-string object)
-==  (with-output-to-string (string-stream)
-     (princ object string-stream))
+        (princ-to-string object)
+        ==  (with-output-to-string (string-stream)
+            (princ object string-stream))
 
- (prin1-to-string object)
-==  (with-output-to-string (string-stream)
-     (prin1 object string-stream))
+        (prin1-to-string object)
+        ==  (with-output-to-string (string-stream)
+            (prin1 object string-stream))
 
 
 ### <span id="V-PRINT-ARRAY">变量 *PRINT-ARRAY*</span>
 
 * 值类型(Value Type):
 
-a generalized boolean.
+        一个广义 boolean.
 
 * 初始值(Initial Value):
 
-implementation-dependent.
+        依赖于具体实现的.
 
 * 描述(Description):
 
-Controls the format in which arrays are printed. If it is false, the contents of arrays other than strings are never printed. Instead, arrays are printed in a concise form using #< that gives enough information for the user to be able to identify the array, but does not include the entire array contents. If it is true, non-string arrays are printed using #(...), #*, or #nA syntax.
+        控制数组被打印的格式. 如果它是 false, 除了字符串以外的数组内容不会被打印. 反而, 数组以一个使用 #< 的简洁形式来打印, 这个形式为用户提供了足够的信息来辨别这个数组, 但是不会包含整个数组内容. 如果它是 true, 非字符串数组使用 #(...), #*, 或 #nA 语法打印.
 
 * 示例(Examples): None.
 
 * 受此影响(Affected By):
 
-The implementation.
+        具体实现.
 
 * 也见(See Also):
 
-Section 2.4.8.3 (Sharpsign Left-Parenthesis), Section 2.4.8.20 (Sharpsign Less-Than-Sign)
+        章节 2.4.8.3 (Sharpsign Left-Parenthesis), 章节 2.4.8.20 (Sharpsign Less-Than-Sign)
 
 * 注意(Notes): None. 
 
@@ -2516,56 +2481,58 @@ Section 2.4.8.3 (Sharpsign Left-Parenthesis), Section 2.4.8.20 (Sharpsign Less-T
 
 * 值类型(Value Type):
 
-*print-base*---a radix. *print-radix*---一个广义 boolean.
+        *print-base*---a radix. *print-radix*---一个广义 boolean.
 
 * 初始值(Initial Value):
 
-The initial value of *print-base* is 10. The initial value of *print-radix* is false.
+        这个 *print-base* 的初始值是 10. 这个 *print-radix* 的初始值是 false.
 
 * 描述(Description):
 
-*print-base* and *print-radix* control the printing of rationals. The value of *print-base* is called the current output base.
+        *print-base* 和 *print-radix* 控制有理数的打印. 这个 *print-base* 的值称为当前输出基数.
 
-The value of *print-base* is the radix in which the printer will print rationals. For radices above 10, letters of the alphabet are used to represent digits above 9.
+        这个 *print-base* 的值是打印器打印有理数所用的基数. 对于 10 以上的基数, 字母表中的字母被用于表示 9 以上的数字.
 
-If the value of *print-radix* is true, the printer will print a radix specifier to indicate the radix in which it is printing a rational number. The radix specifier is always printed using lowercase letters. If *print-base* is 2, 8, or 16, then the radix specifier used is #b, #o, or #x, respectively. For integers, base ten is indicated by a trailing decimal point instead of a leading radix specifier; for ratios, #10r is used.
+        如果 *print-radix* 的值是 true, 那么打印器会打印一个基数指定符来表示它用于打印有理数所用的基数. 这个基数指定符总是用小写字母来打印. 如果 *print-base* 是 2, 8, 或 16, 那么使用的基数指定负分别是 #b, #o, 或 #x. 对于整数, 基数10是用一个尾部的小数点来表示而不是一个前导的基数指定符; 对于比率, 使用 #10r.
 
 * 示例(Examples):
 
- (let ((*print-base* 24.) (*print-radix* t)) 
-   (print 23.))
->>  #24rN
-=>  23
- (setq *print-base* 10) =>  10
- (setq *print-radix* nil) =>  NIL                                          
- (dotimes (i 35)
-    (let ((*print-base* (+ i 2)))           ;print the decimal number 40 
-      (write 40)                            ;in each base from 2 to 36
-      (if (zerop (mod i 10)) (terpri) (format t " "))))
->>  101000
->>  1111 220 130 104 55 50 44 40 37 34
->>  31 2C 2A 28 26 24 22 20 1J 1I
->>  1H 1G 1F 1E 1D 1C 1B 1A 19 18
->>  17 16 15 14 
-=>  NIL
- (dolist (pb '(2 3 8 10 16))               
-    (let ((*print-radix* t)                 ;print the integer 10 and 
-          (*print-base* pb))                ;the ratio 1/10 in bases 2, 
-     (format t "~&~S  ~S~%" 10 1/10)))        ;3, 8, 10, 16
->>  #b1010  #b1/1010
->>  #3r101  #3r1/101
->>  #o12  #o1/12
->>  10.  #10r1/10
->>  #xA  #x1/A
-=>  NIL
+    ```LISP
+    (let ((*print-base* 24.) (*print-radix* t)) 
+      (print 23.))
+    >>  #24rN
+    =>  23
+    (setq *print-base* 10) =>  10
+    (setq *print-radix* nil) =>  NIL                                          
+    (dotimes (i 35)
+        (let ((*print-base* (+ i 2)))           ;print the decimal number 40 
+          (write 40)                            ;in each base from 2 to 36
+          (if (zerop (mod i 10)) (terpri) (format t " "))))
+    >>  101000
+    >>  1111 220 130 104 55 50 44 40 37 34
+    >>  31 2C 2A 28 26 24 22 20 1J 1I
+    >>  1H 1G 1F 1E 1D 1C 1B 1A 19 18
+    >>  17 16 15 14 
+    =>  NIL
+    (dolist (pb '(2 3 8 10 16))               
+        (let ((*print-radix* t)                 ;print the integer 10 and 
+              (*print-base* pb))                ;the ratio 1/10 in bases 2, 
+        (format t "~&~S  ~S~%" 10 1/10)))        ;3, 8, 10, 16
+    >>  #b1010  #b1/1010
+    >>  #3r101  #3r1/101
+    >>  #o12  #o1/12
+    >>  10.  #10r1/10
+    >>  #xA  #x1/A
+    =>  NIL
+    ```
 
 * 受此影响(Affected By):
 
-Might be bound by format, and write, write-to-string.
+        可能被 format, 和 write, write-to-string 绑定.
 
 * 也见(See Also):
 
-format, write, write-to-string
+        format, write, write-to-string
 
 * 注意(Notes): None. 
 
@@ -2866,7 +2833,7 @@ format, write, write-to-string
 
 * 描述(Description):
 
-        如果它不是 nil, 那么当打印子结构的宽度小于或等于这个许多西文排版行长单位时, 这个美观打印器切换到紧凑输出风格(称为 miser 风格).
+        如果它不是 nil, 那么当打印子结构的宽度小于或等于这个许多em 单位时, 这个美观打印器切换到紧凑输出风格(称为 miser 风格).
 
 * 示例(Examples): None.
 
@@ -3057,7 +3024,7 @@ format, write, write-to-string
 
 * 描述(Description):
 
-        如果它不是 nil, 当美观打印器要做布局决定时, 它指定了要使用的右边距 (西文排版行长单位的整形数字).
+        如果它不是 nil, 当美观打印器要做布局决定时, 它指定了要使用的右边距 (em 单位的整形数字).
 
         如果它是 nil, 正确的边距被认为是最大行长度, 这样输出就可以显示, 而不需要包绕或截断. 如果这个没有被确定, 使用一个依赖于具体实现的值.
 
@@ -3067,7 +3034,7 @@ format, write, write-to-string
 
 * 注意(Notes):
 
-        这个度量是用西文排版行长单位, 为了与具体实现定义的可变宽度字体兼容, 同时不要求语言提供对字体的支持. 
+        这个度量是用em 单位, 为了与具体实现定义的可变宽度字体兼容, 同时不要求语言提供对字体的支持. 
 
 
 ### <span id="CT-PRINT-NOT-READABLE">状况类型 PRINT-NOT-READABLE</span>
