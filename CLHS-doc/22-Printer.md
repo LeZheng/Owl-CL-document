@@ -1207,133 +1207,147 @@ w 个字符会被准确地输出. 首先, 如果有必要, 打印出字符 padch
 
 #### 22.3.7 <span id="FORMATControlFlowOperation">FORMAT 控制流操作</span>
 
-> * 22.3.7.1 [Tilde Asterisk: Go-To](#TildeAsteriskGoTo)
-> * 22.3.7.2 [Tilde Left-Bracket: Conditional Expression](#TildeLeftBracketCondExpr)
-> * 22.3.7.3 [Tilde Right-Bracket: End of Conditional Expression](#TildeRightBracketEndCondExpr)
-> * 22.3.7.4 [Tilde Left-Brace: Iteration](#TildeLeftBraceIteration)
-> * 22.3.7.5 [Tilde Right-Brace: End of Iteration](#TildeRightBraceEndIteration)
-> * 22.3.7.6 [Tilde Question-Mark: Recursive Processing](#TildeQuestionMarkRecursiveProc)
+> * 22.3.7.1 [波浪符号 星号: Go-To](#TildeAsteriskGoTo)
+> * 22.3.7.2 [波浪符号 左括号: 条件表达式](#TildeLeftBracketCondExpr)
+> * 22.3.7.3 [波浪符号 右括号: 条件表达式的结束](#TildeRightBracketEndCondExpr)
+> * 22.3.7.4 [波浪符号 左大括号: 循环](#TildeLeftBraceIteration)
+> * 22.3.7.5 [波浪符号 右大括号: 循环的结束](#TildeRightBraceEndIteration)
+> * 22.3.7.6 [波浪符号 问号: 递归处理](#TildeQuestionMarkRecursiveProc)
 
-#### 22.3.7.1 <span id="TildeAsteriskGoTo">Tilde Asterisk: Go-To</span>
+#### 22.3.7.1 <span id="TildeAsteriskGoTo">波浪符号 星号: Go-To</span>
 
-The next arg is ignored. ~n* ignores the next n arguments.
+下一个参数 arg 会被忽略. ~n* 忽略接下来的 n 个参数.
 
-~:* backs up in the list of arguments so that the argument last processed will be processed again. ~n:* backs up n arguments.
+~:* 在参数列表中倒退, 这样一来最后处理的参数会被再一次处理. ~n:* 倒退 n 个参数.
 
-When within a ~{ construct (see below), the ignoring (in either direction) is relative to the list of arguments being processed by the iteration.
+当在一个 ~{ 构造 (见下方) 中时, 这个忽略 (不管在哪个方向) 是相对于要被这个循环处理的参数列表.
 
-~n@* goes to the nth arg, where 0 means the first one; n defaults to 0, so ~@* goes back to the first arg. Directives after a ~n@* will take arguments in sequence beginning with the one gone to. When within a ~{ construct, the ``goto'' is relative to the list of arguments being processed by the iteration. 
+~n@* 转到第 n 个参数 arg, 这里的 0 表示第一个; n 默认为 0, 因此 ~@* 转移回第一个参数 arg. 在一个 ~n@* 后的指令会接收一个序列中的参数, 这个序列以那个转移到的参数开始. 当在一个 ~{ 构造中时, 这个 "goto" 是相对于要被这个循环处理的参数列表 . 
 
-
-#### 22.3.7.2 <span id="TildeLeftBracketCondExpr">Tilde Left-Bracket: Conditional Expression</span>
+#### 22.3.7.2 <span id="TildeLeftBracketCondExpr">波浪符号 左括号: 条件表达式</span>
 
 ~[str0~;str1~;...~;strn~]
 
-This is a set of control strings, called clauses, one of which is chosen and used. The clauses are separated by ~; and the construct is terminated by ~]. For example,
+这个是一个控制字符串的集合, 称为子句, 它们的其中一个会被选择并使用. 这些子句由 ~; 分隔并且这个构造由 ~] 终止. 比如,
 
-"~[Siamese~;Manx~;Persian~] Cat"
+    "~[Siamese~;Manx~;Persian~] Cat"
 
-The argth clause is selected, where the first clause is number 0. If a prefix parameter is given (as ~n[), then the parameter is used instead of an argument. If arg is out of range then no clause is selected and no error is signaled. After the selected alternative has been processed, the control string continues after the ~].
+这个第 arg 个子句会被选择, 其中第一个子句是数字 0. 如果给定了一个前缀参数 (例如 ~n[), 那么那个参数(parameter)会被使用而不是一个参数(argument). 如果这个参数 arg 在范围之外那么没有子句会被选择并且不会发出错误. 在这个选择的方案被处理后, 这个控制字符串在 ~] 后开始.
 
-~[str0~;str1~;...~;strn~:;default~] has a default case. If the last ~; used to separate clauses is ~:; instead, then the last clause is an else clause that is performed if no other clause is selected. For example:
+~[str0~;str1~;...~;strn~:;default~] has a default case. 如果最后 ~; 用于分隔子句是 ~:;, 那么最后那个子句是一个 else 子句, 没有其他子句被选择时被执行. 比如:
 
-"~[Siamese~;Manx~;Persian~:;Alley~] Cat"
+    "~[Siamese~;Manx~;Persian~:;Alley~] Cat"
 
-~:[alternative~;consequent~] selects the alternative control string if arg is false, and selects the consequent control string otherwise.
+如果参数 arg 是 false, 那么 ~:[alternative~;consequent~] 选择 alternative 控制字符串, 否则选择 consequent 控制字符串.
 
-~@[consequent~] tests the argument. If it is true, then the argument is not used up by the ~[ command but remains as the next one to be processed, and the one clause consequent is processed. If the arg is false, then the argument is used up, and the clause is not processed. The clause therefore should normally use exactly one argument, and may expect it to be non-nil. For example:
+~@[consequent~] 检验这个参数. 如果它是 true, 那么这个参数没有被 ~[ 命令用完但是保持为下一个要被处理的参数, 并且那个子句 consequent 被处理. 如果参数 arg 是 false, 那么这个参数会被用完, 并且子句不会被处理. 因此这个子句应该正常使用一个参数, 并且可能期望它为非 nil. 比如:
 
- (setq *print-level* nil *print-length* 5)
- (format nil
+```LISP
+(setq *print-level* nil *print-length* 5)
+(format nil
         "~@[ print level = ~D~]~@[ print length = ~D~]"
         *print-level* *print-length*)
 =>   " print length = 5"
+```
 
-Note also that
+注意
 
- (format stream "...~@[str~]..." ...)
+```LISP
+(format stream "...~@[str~]..." ...)
 ==  (format stream "...~:[~;~:*str~]..." ...)
+```
 
-The combination of ~[ and # is useful, for example, for dealing with English conventions for printing lists:
+这个 ~[ 和 # 的组合是很有用的, 比如, 用于处理打印列表的英语规约:
 
- (setq foo "Items:~#[ none~; ~S~; ~S and ~S~
-           ~:;~@{~#[~; and~] ~S~^ ,~}~].")
- (format nil foo) =>   "Items: none."
- (format nil foo 'foo) =>   "Items: FOO."
- (format nil foo 'foo 'bar) =>   "Items: FOO and BAR."
- (format nil foo 'foo 'bar 'baz) =>   "Items: FOO, BAR, and BAZ."
- (format nil foo 'foo 'bar 'baz 'quux) =>   "Items: FOO, BAR, BAZ, and QUUX."
+```LISP
+(setq foo "Items:~#[ none~; ~S~; ~S and ~S~
+          ~:;~@{~#[~; and~] ~S~^ ,~}~].")
+(format nil foo) =>   "Items: none."
+(format nil foo 'foo) =>   "Items: FOO."
+(format nil foo 'foo 'bar) =>   "Items: FOO and BAR."
+(format nil foo 'foo 'bar 'baz) =>   "Items: FOO, BAR, and BAZ."
+(format nil foo 'foo 'bar 'baz 'quux) =>   "Items: FOO, BAR, BAZ, and QUUX."
+```
 
+#### 22.3.7.3 <span id="TildeRightBracketEndCondExpr">波浪符号 右括号: 条件表达式的结束</span>
 
-#### 22.3.7.3 <span id="TildeRightBracketEndCondExpr">Tilde Right-Bracket: End of Conditional Expression</span>
+~] 终止一个 ~[. 在其他地方使用它的后果是未定义的. 
 
-~] terminates a ~[. The consequences of using it elsewhere are undefined. 
-
-
-
-#### 22.3.7.4 <span id="TildeLeftBraceIteration">Tilde Left-Brace: Iteration</span>
+#### 22.3.7.4 <span id="TildeLeftBraceIteration">波浪符号 左大括号: 循环</span>
 
 ~{str~}
 
-This is an iteration construct. The argument should be a list, which is used as a set of arguments as if for a recursive call to format. The string str is used repeatedly as the control string. Each iteration can absorb as many elements of the list as it likes as arguments; if str uses up two arguments by itself, then two elements of the list will get used up each time around the loop. If before any iteration step the list is empty, then the iteration is terminated. Also, if a prefix parameter n is given, then there will be at most n repetitions of processing of str. Finally, the ~^ directive can be used to terminate the iteration prematurely.
+整数一个循环构造. 参数应该是一个列表, 它被用作一个参数集合, 就像是一个对 format 的递归调用. 字符串 str 被重复用作控制字符串. 每个循环都可以吸收列表中它希望的一样多的元素作为参数; 如果 str 本身使用了两个参数, 那么列表中的两个元素将在每次循环时被耗尽. 如果在任何循环步骤之前这个列表就是空的, 那么这个循环会被终止. 同样地, 如果给定了一个前缀参数 n, 那么这里会有至少 n 个 str 的处理的重复. 最后, 这个 ~^ 指令可以被用于提前终止这个循环.
 
-For example:
+比如:
 
- (format nil "The winners are:~{ ~S~}." 
-         '(fred harry jill)) 
+```LISP
+(format nil "The winners are:~{ ~S~}." 
+        '(fred harry jill)) 
 =>  "The winners are: FRED HARRY JILL."                           
- (format nil "Pairs:~{ <~S,~S>~}." 
-         '(a 1 b 2 c 3))
+(format nil "Pairs:~{ <~S,~S>~}." 
+        '(a 1 b 2 c 3))
 =>  "Pairs: <A,1> <B,2> <C,3>."
+```
 
-~:{str~} is similar, but the argument should be a list of sublists. At each repetition step, one sublist is used as the set of arguments for processing str; on the next repetition, a new sublist is used, whether or not all of the last sublist had been processed. For example:
+~:{str~} 类似, 但是参数应该是一个子表的列表. 在每一个重复步骤, 一个子表被用作处理 str 的参数的集合; 下一次重复时, 使用一个新的子表, 不管最后的子表是否已经被处理. 例如:
 
- (format nil "Pairs:~:{ <~S,~S>~} ." 
-                 '((a 1) (b 2) (c 3)))
+```LISP
+(format nil "Pairs:~:{ <~S,~S>~} ." 
+                '((a 1) (b 2) (c 3)))
 =>  "Pairs: <A,1> <B,2> <C,3>."
+```
 
-~@{str~} is similar to ~{str~}, but instead of using one argument that is a list, all the remaining arguments are used as the list of arguments for the iteration. Example:
+~@{str~} 类似于 ~{str~}, 但是不使用一个列表参数, 所有的剩余参数被用作这个循环的参数列表. 例如:
 
- (format nil "Pairs:~@{ <~S,~S>~} ." 'a 1 'b 2 'c 3)
+```LISP
+(format nil "Pairs:~@{ <~S,~S>~} ." 'a 1 'b 2 'c 3)
 =>  "Pairs: <A,1> <B,2> <C,3>."
+```
 
-If the iteration is terminated before all the remaining arguments are consumed, then any arguments not processed by the iteration remain to be processed by any directives following the iteration construct.
+如果在所有剩余参数被消费之间循环终止, 那么任何没有被这个循环处理的参数保留给这个循环构造后面的指令处理.
 
-~:@{str~} combines the features of ~:{str~} and ~@{str~}. All the remaining arguments are used, and each one must be a list. On each iteration, the next argument is used as a list of arguments to str. Example:
+~:@{str~} 组合 ~:{str~} and ~@{str~} 的特性. 所有这些剩余参数都会被使用, 并且每一个一定是一个列表. 在每一个循环中, 下一个参数被用作给 str 的参数列表. 例如:
 
+```LISP
  (format nil "Pairs:~:@{ <~S,~S>~} ." 
               '(a 1) '(b 2) '(c 3)) 
 =>  "Pairs: <A,1> <B,2> <C,3>."
+```
 
-Terminating the repetition construct with ~:} instead of ~} forces str to be processed at least once, even if the initial list of arguments is null. However, this will not override an explicit prefix parameter of zero.
+用 ~:} 而不是 ~} 终止这个重复构造强制对 str 至少处理一次, 即便参数的初始列表是空的. 然而, 这个不会覆盖一个显式的前缀参数零.
 
-If str is empty, then an argument is used as str. It must be a format control and precede any arguments processed by the iteration. As an example, the following are equivalent:
+如果 str 是空的, 那么一个参数被用作 str. 它必须是一个格式化控制并且先于任何要被这个循环处理的参数之前. 举个例子, 下面这个是等价的:
 
+```LISP
     (apply #'format stream string arguments)
  ==  (format stream "~1{~:}" string arguments)
+```
 
-This will use string as a formatting string. The ~1{ says it will be processed at most once, and the ~:} says it will be processed at least once. Therefore it is processed exactly once, using arguments as the arguments. This case may be handled more clearly by the ~? directive, but this general feature of ~{ is more powerful than ~?. 
-
-
-#### 22.3.7.5 <span id="TildeRightBraceEndIteration">Tilde Right-Brace: End of Iteration</span>
-
-~} terminates a ~{. The consequences of using it elsewhere are undefined. 
+这个会使用 string 作为一个格式化字符串. 这个 ~1{ 说明它最多只会被处理一次, 而这个 ~:} 说明它会被处理至少一次. 因此它只处理一次, 使用 arguments 作为参数. 这个情况可能被 ~? 指令更清晰地处理, 但是这个 ~{ 的一般特性比 ~? 更强大. 
 
 
-#### 22.3.7.6 <span id="TildeQuestionMarkRecursiveProc">Tilde Question-Mark: Recursive Processing</span>
+#### 22.3.7.5 <span id="TildeRightBraceEndIteration">波浪符号 右大括号: 循环的结束</span>
 
-The next arg must be a format control, and the one after it a list; both are consumed by the ~? directive. The two are processed as a control-string, with the elements of the list as the arguments. Once the recursive processing has been finished, the processing of the control string containing the ~? directive is resumed. Example:
+~} 终止一个 ~{. 在其他地方使用它的后果是未定义的. 
 
- (format nil "~? ~D" "<~A ~D>" '("Foo" 5) 7) =>  "<Foo 5> 7"
- (format nil "~? ~D" "<~A ~D>" '("Foo" 5 14) 7) =>  "<Foo 5> 7"
+#### 22.3.7.6 <span id="TildeQuestionMarkRecursiveProc">波浪符号 问号: 递归处理</span>
 
-Note that in the second example three arguments are supplied to the format string "<~A ~D>", but only two are processed and the third is therefore ignored.
+下一个参数 arg 必须是一个格式化控制, 并且在它后面的是一个列表; 这两个都被 ~? 指令消费. 这两个被处理成一个 control-string, 其中这个列表的元素作为这个参数. 一旦这个递归处理已经完成, 这个包含 ~? 指令的控制字符串的处理就会恢复. 例如:
 
-With the @ modifier, only one arg is directly consumed. The arg must be a string; it is processed as part of the control string as if it had appeared in place of the ~@? construct, and any directives in the recursively processed control string may consume arguments of the control string containing the ~@? directive. Example:
+```LISP
+(format nil "~? ~D" "<~A ~D>" '("Foo" 5) 7) =>  "<Foo 5> 7"
+(format nil "~? ~D" "<~A ~D>" '("Foo" 5 14) 7) =>  "<Foo 5> 7"
+```
 
- (format nil "~@? ~D" "<~A ~D>" "Foo" 5 7) =>  "<Foo 5> 7"
- (format nil "~@? ~D" "<~A ~D>" "Foo" 5 14 7) =>  "<Foo 5> 14"
+注意, 在第二个例子中三个参数被提供给格式化字符串 "<~A ~D>", 但是只有两个被处理并且第三个因此被忽略.
 
+带有这个 @ 修饰符时, 只有一个参数 arg 被直接消费. 这个参数 arg 必须是一个字符串; 它被处理为这个控制字符串的部分, 就好像它已经出现在这个 ~@? 构造中, 并且这个递归处理的字符串中的任何指令可能消费这个包含 ~@? 指令的控制字符串的参数. 例如:
+
+```LISP
+(format nil "~@? ~D" "<~A ~D>" "Foo" 5 7) =>  "<Foo 5> 7"
+(format nil "~@? ~D" "<~A ~D>" "Foo" 5 14 7) =>  "<Foo 5> 14"
+```
 
 ### 22.3.8 <span id="FORMATMiscellaneousOperation">FORMAT 杂项操作</span>
 
