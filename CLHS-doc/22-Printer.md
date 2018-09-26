@@ -1351,251 +1351,267 @@ w 个字符会被准确地输出. 首先, 如果有必要, 打印出字符 padch
 
 ### 22.3.8 <span id="FORMATMiscellaneousOperation">FORMAT 杂项操作</span>
 
-#### 22.3.8.1 Tilde Left-Paren: Case Conversion
+#### 22.3.8.1 波浪符号 左圆括号: 大小写转换
 
 ~(str~)
 
-The contained control string str is processed, and what it produces is subject to case conversion.
+包含的控制字符串 str 被处理, 并且产生的受限于大小写转换.
 
-With no flags, every uppercase character is converted to the corresponding lowercase character.
+在没有标志的情况下, 每一个大写字符会被转换为对应小写字符.
 
-~:( capitalizes all words, as if by string-capitalize.
+~:( 用大写字母写所有单词, 就像是通过 string-capitalize.
 
-~@( capitalizes just the first word and forces the rest to lower case.
+~@( 只是用大写字母写第一个单词并且强制剩余的为小写.
 
-~:@( converts every lowercase character to the corresponding uppercase character.
+~:@( 转换每一个小写字符为对应大写字符.
 
-In this example ~@( is used to cause the first word produced by ~@R to be capitalized:
+在这个例子中 ~@( 被用于导致由 ~@R 产生的第一个单词用大写字母写:
 
- (format nil "~@R ~(~@R~)" 14 14) 
+```LISP
+(format nil "~@R ~(~@R~)" 14 14) 
 =>  "XIV xiv"
- (defun f (n) (format nil "~@(~R~) error~:P detected." n)) =>  F
- (f 0) =>  "Zero errors detected."
- (f 1) =>  "One error detected."
- (f 23) =>  "Twenty-three errors detected."
+(defun f (n) (format nil "~@(~R~) error~:P detected." n)) =>  F
+(f 0) =>  "Zero errors detected."
+(f 1) =>  "One error detected."
+(f 23) =>  "Twenty-three errors detected."
+```
 
-When case conversions appear nested, the outer conversion dominates, as illustrated in the following example:
+当大小写转换嵌套出现时, 外部的转换来主导, 像下面这个例子中说明的:
 
- (format nil "~@(how is ~:(BOB SMITH~)?~)")
- =>  "How is bob smith?"
- NOT=>  "How is Bob Smith?"
+```LISP
+(format nil "~@(how is ~:(BOB SMITH~)?~)")
+=>  "How is bob smith?"
+NOT=>  "How is Bob Smith?"
+```
 
+#### 22.3.8.2 波浪符号 右圆括号: 大小写转换的终止
 
-#### 22.3.8.2 Tilde Right-Paren: End of Case Conversion
+~) 终止一个 ~(. 在其他地方使用它的后果是未定义的. 
 
-~) terminates a ~(. The consequences of using it elsewhere are undefined. 
+#### 22.3.8.3 波浪符号 P: Plural
 
-#### 22.3.8.3 Tilde P: Plural
+如果 arg 没有和整数 1 是 eql, 打印一个小写的 s; 如果参数 arg 和 1 是 eql 的, 什么都不打印. 如果 arg 是一个浮点数 1.0, 那么打印 s.
 
-If arg is not eql to the integer 1, a lowercase s is printed; if arg is eql to 1, nothing is printed. If arg is a floating-point 1.0, the s is printed.
+~:P 做相同的事, 在执行一个 ~:* 后倒退一个参数; 这也就是说, 如果前面的参数不是 1, 那么它打印一个小写的 s.
 
-~:P does the same thing, after doing a ~:* to back up one argument; that is, it prints a lowercase s if the previous argument was not 1.
+如果参数是 1, ~@P 打印 y, 如果不是就是 ies. ~:@P 做相同的事, 但是后退到第一个.
 
-~@P prints y if the argument is 1, or ies if it is not. ~:@P does the same thing, but backs up first.
-
- (format nil "~D tr~:@P/~D win~:P" 7 1) =>  "7 tries/1 win"
- (format nil "~D tr~:@P/~D win~:P" 1 0) =>  "1 try/0 wins"
- (format nil "~D tr~:@P/~D win~:P" 1 3) =>  "1 try/3 wins"
-
+```LISP
+(format nil "~D tr~:@P/~D win~:P" 7 1) =>  "7 tries/1 win"
+(format nil "~D tr~:@P/~D win~:P" 1 0) =>  "1 try/0 wins"
+(format nil "~D tr~:@P/~D win~:P" 1 3) =>  "1 try/3 wins"
+```
 
 ### 22.3.9 <span id="FORMATMiscellaneousPseudoOperation">FORMAT 杂项伪操作</span>
 
-#### 22.3.9.1 Tilde Semicolon: Clause Separator
+#### 22.3.9.1 波浪符号 分号: 子句分隔符
 
-This separates clauses in ~[ and ~< constructs. The consequences of using it elsewhere are undefined. 
+这个分隔 ~[ 和 ~< 构造中的子句. 在其他地方是用它的后果是未定义的. 
 
 
-#### 22.3.9.2 Tilde Circumflex: Escape Upward
+#### 22.3.9.2 波浪符号 抑扬符: 向上转义
 
 ~^
 
-This is an escape construct. If there are no more arguments remaining to be processed, then the immediately enclosing ~{ or ~< construct is terminated. If there is no such enclosing construct, then the entire formatting operation is terminated. In the ~< case, the formatting is performed, but no more segments are processed before doing the justification. ~^ may appear anywhere in a ~{ construct.
+这是一个转义构造. 如果这里没有更多要被处理的参数剩余, 那么这个紧接着闭合的 ~{ 或 ~< 构造会被终止. 如果这里没有这样闭合的构造, 那么整个格式化操作会被终止. 在 ~< 的情况中, 这个格式化会被执行, 但是在执行这个调整之前没有更多的片段会被处理. ~^ 可能出现在一个 ~{ 构造中的任何地方.
 
- (setq donestr "Done.~^ ~D warning~:P.~^ ~D error~:P.")
+```LISP
+(setq donestr "Done.~^ ~D warning~:P.~^ ~D error~:P.")
 =>  "Done.~^ ~D warning~:P.~^ ~D error~:P."
- (format nil donestr) =>  "Done."
- (format nil donestr 3) =>  "Done. 3 warnings."
- (format nil donestr 1 5) =>  "Done. 1 warning. 5 errors."
+(format nil donestr) =>  "Done."
+(format nil donestr 3) =>  "Done. 3 warnings."
+(format nil donestr 1 5) =>  "Done. 1 warning. 5 errors."
+```
 
-If a prefix parameter is given, then termination occurs if the parameter is zero. (Hence ~^ is equivalent to ~#^.) If two parameters are given, termination occurs if they are equal. If three parameters are given, termination occurs if the first is less than or equal to the second and the second is less than or equal to the third. Of course, this is useless if all the prefix parameters are constants; at least one of them should be a # or a V parameter.
+如果给定了一个前缀参数, 如果这个参数是零那么就会发生终止. (因此 ~^ 等价域 ~#^.) 如果给定了两个参数, 如果它们是相等的那么发生终止. 如果给定了三个参数, 如果第一个小于等于第二个并且第二个小于等于第三个那么就会发生终止. 当然, 如果所有这些前置参数都是常数, 这是没有用的; 它们中至少一个应该是 # 或一个 V 参数.
 
-If ~^ is used within a ~:{ construct, then it terminates the current iteration step because in the standard case it tests for remaining arguments of the current step only; the next iteration step commences immediately. ~:^ is used to terminate the iteration process. ~:^ may be used only if the command it would terminate is ~:{ or ~:@{. The entire iteration process is terminated if and only if the sublist that is supplying the arguments for the current iteration step is the last sublist in the case of ~:{, or the last format argument in the case of ~:@{. ~:^ is not equivalent to ~#:^; the latter terminates the entire iteration if and only if no arguments remain for the current iteration step. For example:
+如果 ~^ 在一个 ~:{ 构造中被使用, 那么它终止当前的循环步骤, 因为在标准情况下它只测试当前步骤的剩余参数; 下一个循环步骤立即开始. ~:^ 被用于终止这个循环过程. ~:^ 可能只有当它会终止的命令是 ~:{ 或 ~:@{ 时才使用. 当且仅当这个为当前循环步骤提供参数的子列表是 ~:{ 中的最后一个子列表时, 或者是 ~:@{ 中的最后一个 format 参数时整个循环过程终止, . ~:^ 不等价于 ~#:^; 当且仅当当前循环步骤没有参数剩余时, 后者会终止整个循环步骤. 比如:
 
- (format nil "~:{ ~@?~:^ ...~} " '(("a") ("b"))) =>  "a...b"
+```LISP
+(format nil "~:{ ~@?~:^ ...~} " '(("a") ("b"))) =>  "a...b"
+```
 
-If ~^ appears within a control string being processed under the control of a ~? directive, but not within any ~{ or ~< construct within that string, then the string being processed will be terminated, thereby ending processing of the ~? directive. Processing then continues within the string containing the ~? directive at the point following that directive.
+如果 ~^ 出现在一个 ~? 指令控制下的要被处理的控制字符串中, 但是没有在那个字符串的任何 ~{ 或 ~< 构造中, 那么这个要被处理的字符串会被终止, 因此结束这个 ~? 指令的处理. 然后在包含这个 ~? 指令的字符串中的这个指令后面继续处理.
 
-If ~^ appears within a ~[ or ~( construct, then all the commands up to the ~^ are properly selected or case-converted, the ~[ or ~( processing is terminated, and the outward search continues for a ~{ or ~< construct to be terminated. For example:
+如果 ~^ 出现在一个 ~[ 或 ~( 构造中, 那么所有直到 ~^ 的命令会被适当地选择或转换大小写, 这个 ~[ 或 ~( 处理会终止, and the outward search continues 并且这个外部搜索继续一个要被终止的 ~{ 或 ~< 构造. 例如:
 
- (setq tellstr "~@(~@[~R~]~^ ~A!~)")
+```LISP
+(setq tellstr "~@(~@[~R~]~^ ~A!~)")
 =>  "~@(~@[~R~]~^ ~A!~)"
- (format nil tellstr 23) =>  "Twenty-three!"
- (format nil tellstr nil "losers") =>  " Losers!"
- (format nil tellstr 23 "losers") =>  "Twenty-three losers!"
+(format nil tellstr 23) =>  "Twenty-three!"
+(format nil tellstr nil "losers") =>  " Losers!"
+(format nil tellstr 23 "losers") =>  "Twenty-three losers!"
+```
 
-Following are examples of the use of ~^ within a ~< construct.
+下面是在一个 ~< 构造中使用 ~^ 的示例.
 
- (format nil "~15<~S~;~^~S~;~^~S~>" 'foo)
+```LISP
+(format nil "~15<~S~;~^~S~;~^~S~>" 'foo)
 =>   "            FOO"
- (format nil "~15<~S~;~^~S~;~^~S~>" 'foo 'bar)
+(format nil "~15<~S~;~^~S~;~^~S~>" 'foo 'bar)
 =>   "FOO         BAR"
- (format nil "~15<~S~;~^~S~;~^~S~>" 'foo 'bar 'baz)
+(format nil "~15<~S~;~^~S~;~^~S~>" 'foo 'bar 'baz)
 =>   "FOO   BAR   BAZ"
+```
 
+#### 22.3.9.3 波浪符号 换行符: 忽略换行
 
-#### 22.3.9.3 Tilde Newline: Ignored Newline
+波浪符号后面立即跟着一个换行符会忽略换行以及后面的非换行空白字符. 带有一个 : 的话, 换行符会被忽略, 但是任何后面的空白字符会留在原处. 带有一个 @ 的话, 换行符会留在原处, 但是任何后面的空白字符会被忽略. 例如:
 
-Tilde immediately followed by a newline ignores the newline and any following non-newline whitespace[1] characters. With a :, the newline is ignored, but any following whitespace[1] is left in place. With an @, the newline is left in place, but any following whitespace[1] is ignored. For example:
-
- (defun type-clash-error (fn nargs argnum right-type wrong-type)
-   (format *error-output*
-           "~&~S requires its ~:[~:R~;~*~]~ 
-           argument to be of type ~S,~%but it was called ~
-           with an argument of type ~S.~%"
-           fn (eql nargs 1) argnum right-type wrong-type))
- (type-clash-error 'aref nil 2 'integer 'vector)  prints:
+```LISP
+(defun type-clash-error (fn nargs argnum right-type wrong-type)
+  (format *error-output*
+          "~&~S requires its ~:[~:R~;~*~]~ 
+          argument to be of type ~S,~%but it was called ~
+          with an argument of type ~S.~%"
+          fn (eql nargs 1) argnum right-type wrong-type))
+(type-clash-error 'aref nil 2 'integer 'vector)  prints:
 AREF requires its second argument to be of type INTEGER,
 but it was called with an argument of type VECTOR.
 NIL
- (type-clash-error 'car 1 1 'list 'short-float)  prints:
+(type-clash-error 'car 1 1 'list 'short-float)  prints:
 CAR requires its argument to be of type LIST,
 but it was called with an argument of type SHORT-FLOAT.
 NIL
+```
 
-Note that in this example newlines appear in the output only as specified by the ~& and ~% directives; the actual newline characters in the control string are suppressed because each is preceded by a tilde. 
-
+注意, 在这个例子中换行符只出现在由 ~& 和 ~% 指令指定的输出中; 这些在这个控制字符串中的实际换行符被抑制, 因为每一个前面都有一个波浪符号. 
 
 ### 22.3.10 <span id="AddInfoFORMATOperations">关于 FORMAT 的额外信息</span>
 
-#### 22.3.10.1 Nesting of FORMAT Operations
+#### 22.3.10.1 FORMAT 操作的嵌套
 
-The case-conversion, conditional, iteration, and justification constructs can contain other formatting constructs by bracketing them. These constructs must nest properly with respect to each other. For example, it is not legitimate to put the start of a case-conversion construct in each arm of a conditional and the end of the case-conversion construct outside the conditional:
+这个大小写转换, 条件, 循环, 和对齐构造可以通过把其他格式化构造括在一起来包含它们. 这些构造必须和其他每一个正确地嵌套. 例如, 在条件的每个分支中放置一个大小写转换构造的开始是不合法的, 并且在条件之外放置大小写转换结构的结束是不合法的:
 
- (format nil "~:[abc~:@(def~;ghi~
+```LISP
+(format nil "~:[abc~:@(def~;ghi~
 :@(jkl~]mno~)" x) ;Invalid!
+```
 
-This notation is invalid because the ~[...~;...~] and ~(...~) constructs are not properly nested.
+这个表示是非法的因为 ~[...~;...~] 和 ~(...~) 构造是不正确地嵌套.
 
-The processing indirection caused by the ~? directive is also a kind of nesting for the purposes of this rule of proper nesting. It is not permitted to start a bracketing construct within a string processed under control of a ~? directive and end the construct at some point after the ~? construct in the string containing that construct, or vice versa. For example, this situation is invalid:
+由 ~? 指令引起的间接处理也是一种嵌套, 以达到这种正确嵌套规则的目的. 在一个 ~? 指令的控制下, 不允许在一个字符串中启动一个括号构造, 并在包含该构造的字符串的 ~? 构造之后结束这个构造, 反之亦然. 例如, 这个情况是非法的:
 
- (format nil "~@?ghi~)" "abc~@(def") ;Invalid!
+```LISP
+(format nil "~@?ghi~)" "abc~@(def") ;Invalid!
+```
 
-This notation is invalid because the ~? and ~(...~) constructs are not properly nested. 
+这个表示是非法的因为 ~? 和 ~(...~) 构造是不正确地嵌套. 
 
+#### 22.3.10.2 缺失的以及额外的 FORMAT 参数
 
-#### 22.3.10.2 Missing and Additional FORMAT Arguments
+如果对于一个需要一个参数的指令没有剩余参数, 那么后果是未定义的. 然而, 允许一个或更多剩下的参数没有被一个指令处理; 这样的参数 args 会被我忽略. 
 
-The consequences are undefined if no arg remains for a directive requiring an argument. However, it is permissible for one or more args to remain unprocessed by a directive; such args are ignored. 
+#### 22.3.10.3 额外的 FORMAT 参数
 
+如果一个格式化指令给定了比它在这里描述的可接受参数更多的参数, 那么后果是未定义的. 
 
-#### 22.3.10.3 Additional FORMAT Parameters
+#### 22.3.10.4 未定义的 FORMAT 修饰符组合
 
-The consequences are undefined if a format directive is given more parameters than it is described here as accepting. 
-
-
-#### 22.3.10.4 Undefined FORMAT Modifier Combinations
-
-The consequences are undefined if colon or at-sign modifiers are given to a directive in a combination not specifically described here as being meaningful. 
-
+如果冒号或 at-sign 修饰符以一种没有在这里描述为有意义的组合给一个指令, 那么后果是未定义的. 
 
 ### 22.3.11 <span id="">FORMAT 的示例</span>
 
- (format nil "foo") =>  "foo"
- (setq x 5) =>  5
- (format nil "The answer is ~D." x) =>  "The answer is 5."
- (format nil "The answer is ~3D." x) =>  "The answer is   5."
- (format nil "The answer is ~3,'0D." x) =>  "The answer is 005."
- (format nil "The answer is ~:D." (expt 47 x))
+```LISP
+(format nil "foo") =>  "foo"
+(setq x 5) =>  5
+(format nil "The answer is ~D." x) =>  "The answer is 5."
+(format nil "The answer is ~3D." x) =>  "The answer is   5."
+(format nil "The answer is ~3,'0D." x) =>  "The answer is 005."
+(format nil "The answer is ~:D." (expt 47 x))
 =>  "The answer is 229,345,007."
- (setq y "elephant") =>  "elephant"
- (format nil "Look at the ~A!" y) =>  "Look at the elephant!"
- (setq n 3) =>  3
- (format nil "~D item~:P found." n) =>  "3 items found."
- (format nil "~R dog~:[s are~; is~] here." n (= n 1))
+(setq y "elephant") =>  "elephant"
+(format nil "Look at the ~A!" y) =>  "Look at the elephant!"
+(setq n 3) =>  3
+(format nil "~D item~:P found." n) =>  "3 items found."
+(format nil "~R dog~:[s are~; is~] here." n (= n 1))
 =>  "three dogs are here."
- (format nil "~R dog~:*~[s are~; is~:;s are~] here." n)
+(format nil "~R dog~:*~[s are~; is~:;s are~] here." n)
 =>  "three dogs are here."
- (format nil "Here ~[are~;is~:;are~] ~:*~R pupp~:@P." n)
+(format nil "Here ~[are~;is~:;are~] ~:*~R pupp~:@P." n)
 =>  "Here are three puppies."
 
- (defun foo (x)
-   (format nil "~6,2F|~6,2,1,'*F|~6,2,,'?F|~6F|~,2F|~F"
-           x x x x x x)) =>  FOO
- (foo 3.14159)  =>  "  3.14| 31.42|  3.14|3.1416|3.14|3.14159"
- (foo -3.14159) =>  " -3.14|-31.42| -3.14|-3.142|-3.14|-3.14159"
- (foo 100.0)    =>  "100.00|******|100.00| 100.0|100.00|100.0"
- (foo 1234.0)   =>  "1234.00|******|??????|1234.0|1234.00|1234.0"
- (foo 0.006)    =>  "  0.01|  0.06|  0.01| 0.006|0.01|0.006"
+(defun foo (x)
+  (format nil "~6,2F|~6,2,1,'*F|~6,2,,'?F|~6F|~,2F|~F"
+          x x x x x x)) =>  FOO
+(foo 3.14159)  =>  "  3.14| 31.42|  3.14|3.1416|3.14|3.14159"
+(foo -3.14159) =>  " -3.14|-31.42| -3.14|-3.142|-3.14|-3.14159"
+(foo 100.0)    =>  "100.00|******|100.00| 100.0|100.00|100.0"
+(foo 1234.0)   =>  "1234.00|******|??????|1234.0|1234.00|1234.0"
+(foo 0.006)    =>  "  0.01|  0.06|  0.01| 0.006|0.01|0.006"
 
- (defun foo (x)  
-    (format nil
-           "~9,2,1,,'*E|~10,3,2,2,'?,,'$E|~
-            ~9,3,2,-2,'%@E|~9,2E"
-           x x x x))
- (foo 3.14159)  =>  "  3.14E+0| 31.42$-01|+.003E+03|  3.14E+0"
- (foo -3.14159) =>  " -3.14E+0|-31.42$-01|-.003E+03| -3.14E+0"
- (foo 1100.0)   =>  "  1.10E+3| 11.00$+02|+.001E+06|  1.10E+3"
- (foo 1100.0L0) =>  "  1.10L+3| 11.00$+02|+.001L+06|  1.10L+3"
- (foo 1.1E13)   =>  "*********| 11.00$+12|+.001E+16| 1.10E+13"
- (foo 1.1L120)  =>  "*********|??????????|%%%%%%%%%|1.10L+120"
- (foo 1.1L1200) =>  "*********|??????????|%%%%%%%%%|1.10L+1200"
+(defun foo (x)  
+  (format nil
+          "~9,2,1,,'*E|~10,3,2,2,'?,,'$E|~
+          ~9,3,2,-2,'%@E|~9,2E"
+          x x x x))
+(foo 3.14159)  =>  "  3.14E+0| 31.42$-01|+.003E+03|  3.14E+0"
+(foo -3.14159) =>  " -3.14E+0|-31.42$-01|-.003E+03| -3.14E+0"
+(foo 1100.0)   =>  "  1.10E+3| 11.00$+02|+.001E+06|  1.10E+3"
+(foo 1100.0L0) =>  "  1.10L+3| 11.00$+02|+.001L+06|  1.10L+3"
+(foo 1.1E13)   =>  "*********| 11.00$+12|+.001E+16| 1.10E+13"
+(foo 1.1L120)  =>  "*********|??????????|%%%%%%%%%|1.10L+120"
+(foo 1.1L1200) =>  "*********|??????????|%%%%%%%%%|1.10L+1200"
+```
 
-As an example of the effects of varying the scale factor, the code
+作为一个可变伸缩因子影响的例子, 代码
 
- (dotimes (k 13)
-   (format t "~%Scale factor ~2D: |~13,6,2,VE|"
-           (- k 5) (- k 5) 3.14159))
+```LISP
+(dotimes (k 13)
+  (format t "~%Scale factor ~2D: |~13,6,2,VE|"
+          (- k 5) (- k 5) 3.14159))
+```
 
-produces the following output:
+产生以下输出:
 
-Scale factor -5: | 0.000003E+06|
-Scale factor -4: | 0.000031E+05|
-Scale factor -3: | 0.000314E+04|
-Scale factor -2: | 0.003142E+03|
-Scale factor -1: | 0.031416E+02|
-Scale factor  0: | 0.314159E+01|
-Scale factor  1: | 3.141590E+00|
-Scale factor  2: | 31.41590E-01|
-Scale factor  3: | 314.1590E-02|
-Scale factor  4: | 3141.590E-03|
-Scale factor  5: | 31415.90E-04|
-Scale factor  6: | 314159.0E-05|
-Scale factor  7: | 3141590.E-06|
+    Scale factor -5: | 0.000003E+06|
+    Scale factor -4: | 0.000031E+05|
+    Scale factor -3: | 0.000314E+04|
+    Scale factor -2: | 0.003142E+03|
+    Scale factor -1: | 0.031416E+02|
+    Scale factor  0: | 0.314159E+01|
+    Scale factor  1: | 3.141590E+00|
+    Scale factor  2: | 31.41590E-01|
+    Scale factor  3: | 314.1590E-02|
+    Scale factor  4: | 3141.590E-03|
+    Scale factor  5: | 31415.90E-04|
+    Scale factor  6: | 314159.0E-05|
+    Scale factor  7: | 3141590.E-06|
 
- (defun foo (x)
-   (format nil "~9,2,1,,'*G|~9,3,2,3,'?,,'$G|~9,3,2,0,'%G|~9,2G"
+```LISP
+(defun foo (x)
+  (format nil "~9,2,1,,'*G|~9,3,2,3,'?,,'$G|~9,3,2,0,'%G|~9,2G"
           x x x x))                                     
- (foo 0.0314159) =>  "  3.14E-2|314.2$-04|0.314E-01|  3.14E-2"
- (foo 0.314159)  =>  "  0.31   |0.314    |0.314    | 0.31    "
- (foo 3.14159)   =>  "   3.1   | 3.14    | 3.14    |  3.1    "
- (foo 31.4159)   =>  "   31.   | 31.4    | 31.4    |  31.    "
- (foo 314.159)   =>  "  3.14E+2| 314.    | 314.    |  3.14E+2"
- (foo 3141.59)   =>  "  3.14E+3|314.2$+01|0.314E+04|  3.14E+3"
- (foo 3141.59L0) =>  "  3.14L+3|314.2$+01|0.314L+04|  3.14L+3"
- (foo 3.14E12)   =>  "*********|314.0$+10|0.314E+13| 3.14E+12"
- (foo 3.14L120)  =>  "*********|?????????|%%%%%%%%%|3.14L+120"
- (foo 3.14L1200) =>  "*********|?????????|%%%%%%%%%|3.14L+1200"
+(foo 0.0314159) =>  "  3.14E-2|314.2$-04|0.314E-01|  3.14E-2"
+(foo 0.314159)  =>  "  0.31   |0.314    |0.314    | 0.31    "
+(foo 3.14159)   =>  "   3.1   | 3.14    | 3.14    |  3.1    "
+(foo 31.4159)   =>  "   31.   | 31.4    | 31.4    |  31.    "
+(foo 314.159)   =>  "  3.14E+2| 314.    | 314.    |  3.14E+2"
+(foo 3141.59)   =>  "  3.14E+3|314.2$+01|0.314E+04|  3.14E+3"
+(foo 3141.59L0) =>  "  3.14L+3|314.2$+01|0.314L+04|  3.14L+3"
+(foo 3.14E12)   =>  "*********|314.0$+10|0.314E+13| 3.14E+12"
+(foo 3.14L120)  =>  "*********|?????????|%%%%%%%%%|3.14L+120"
+(foo 3.14L1200) =>  "*********|?????????|%%%%%%%%%|3.14L+1200"
 
- (format nil "~10<foo~;bar~>")   =>  "foo    bar"
- (format nil "~10:<foo~;bar~>")  =>  "  foo  bar"
- (format nil "~10<foobar~>")     =>  "    foobar"
- (format nil "~10:<foobar~>")    =>  "    foobar"
- (format nil "~10:@<foo~;bar~>") =>  "  foo bar "
- (format nil "~10@<foobar~>")    =>  "foobar    "
- (format nil "~10:@<foobar~>")   =>  "  foobar  "
+(format nil "~10<foo~;bar~>")   =>  "foo    bar"
+(format nil "~10:<foo~;bar~>")  =>  "  foo  bar"
+(format nil "~10<foobar~>")     =>  "    foobar"
+(format nil "~10:<foobar~>")    =>  "    foobar"
+(format nil "~10:@<foo~;bar~>") =>  "  foo bar "
+(format nil "~10@<foobar~>")    =>  "foobar    "
+(format nil "~10:@<foobar~>")   =>  "  foobar  "
 
   (FORMAT NIL "Written to ~A." #P"foo.bin")
   =>  "Written to foo.bin."
-
+```
 
 ### 22.3.12 <span id="NotesFORMAT">FORMAT 的注意事项</span>
 
-Formatted output is performed not only by format, but by certain other functions that accept a format control the way format does. For example, error-signaling functions such as cerror accept format controls.
+格式化输出不仅仅通过 format 来执行, 也可以通过某些其他的接收一个和 format 使用的相同格式化控制的函数. 例如, 像 cerror 这样的发送错误的函数接收格式化控制.
 
-Note that the meaning of nil and t as destinations to format are different than those of nil and t as stream designators.
+注意, 给 format 作为目标的 nil 和 t 的意义和那些作为流标识符的 nil 和 t 不同.
 
-The ~^ should appear only at the beginning of a ~< clause, because it aborts the entire clause in which it appears (as well as all following clauses). 
-
+这个 ~^ 应该只出现在一个 ~< 子句的开始, 因为它终止这个它出现的完整子句 (所有后面的子句也一样). 
 
 ## 22.4 <span id="ThePrinterDictionary">The Printer Dictionary</span>
 
