@@ -2092,23 +2092,20 @@ It is frequently a good idea to call pprint-exit-if-list-exhausted before callin
 
 * 语法(Syntax):
 
-pprint-tab kind colnum colinc &optional stream => nil
+        pprint-tab kind colnum colinc &optional stream => nil
 
 * 参数和值(Arguments and Values):
 
-kind---one of :line, :section, :line-relative, or :section-relative.
-
-colnum---一个非负整数.
-
-colinc---一个非负整数.
-
-stream---an output stream designator.
+        kind--- :line, :section, :line-relative, 或 :section-relative 其中之一.
+        colnum---一个非负整数.
+        colinc---一个非负整数.
+        stream---一个输出流标识符.
 
 * 描述(Description):
 
-Specifies tabbing to stream as performed by the standard ~T format directive. If stream is a pretty printing stream and the value of *print-pretty* is true, tabbing is performed; otherwise, pprint-tab has no effect.
+        指定对于流 stream 的制表就像是通过标准 ~T 格式化指令执行的. 如果流 stream 是一个美观打印流并且 *print-pretty* 的值是 true, 那么制表就会被执行; 否则, pprint-tab 没有效果.
 
-The arguments colnum and colinc correspond to the two parameters to ~T and are in terms of ems. The kind argument specifies the style of tabbing. It must be one of :line (tab as by ~T), :section (tab as by ~:T, but measuring horizontal positions relative to the start of the dynamically enclosing section), :line-relative (tab as by ~@T), or :section-relative (tab as by ~:@T, but measuring horizontal positions relative to the start of the dynamically enclosing section).
+        参数 colnum 和 colinc 对应于给 ~T 的两个参数并且根据 ems 单位. 这个 kind 参数指定了 tabbing 的样式. 它必须是 :line (就如 ~T 一样制表), :section (就如 ~:T 一样制表, 但是相对于这个动态闭合部分的开始来水平测量), :line-relative (就如 ~@T 一样制表), 或 :section-relative (就如 ~:@T 一样制表, 但是相对于这个动态闭合部分的开始来水平测量) 其中之一.
 
 * 示例(Examples): None.
 
@@ -2118,11 +2115,11 @@ The arguments colnum and colinc correspond to the two parameters to ~T and are i
 
 * 异常情况(Exceptional Situations):
 
-An error is signaled if kind is not one of :line, :section, :line-relative, or :section-relative.
+        如果 kind 不是 :line, :section, :line-relative, 或 :section-relative 其中之一, 那么就会发出一个错误.
 
 * 也见(See Also):
 
-pprint-logical-block
+        pprint-logical-block
 
 * 注意(Notes): None. 
 
@@ -2131,63 +2128,62 @@ pprint-logical-block
 
 * 语法(Syntax):
 
-print-object object stream => object
+        print-object object stream => object
 
-Method Signatures:
+* 方法签名(Method Signatures):
 
-print-object (object standard-object) stream
+        print-object (object standard-object) stream
 
-print-object (object structure-object) stream
+        print-object (object structure-object) stream
 
 * 参数和值(Arguments and Values):
 
-object---一个对象.
-
-stream---a stream.
+        object---一个对象.
+        stream---一个流.
 
 * 描述(Description):
 
-The generic function print-object writes the printed representation of object to stream. The function print-object is called by the Lisp printer; it should not be called by the user.
+        广义函数 print-object 把对象 object 的打印表示写入到流 stream. 函数 print-object 是通过 Lisp 打印器调用的; 它不应该被用户调用.
 
-Each implementation is required to provide a method on the class standard-object and on the class structure-object. In addition, each implementation must provide methods on enough other classes so as to ensure that there is always an applicable method. Implementations are free to add methods for other classes. Users may write methods for print-object for their own classes if they do not wish to inherit an implementation-dependent method.
+        每个具体实现都需要在类 standard-object 和类 structure-object 上提供一个方法. 另外, 每一个实现必须在足够的其他类上提供方法来确保这里总是由一个可应用的方法. 具体实现可以自由地去给其他类添加方法. 用户如果不希望去继承一个依赖于具体实现的方法, 可以为它们自己的类编写 print-object 方法.
 
-The method on the class structure-object prints the object in the default #S notation; see Section 22.1.3.12 (打印结构体).
+        类 structure-object 上的方法以默认的 #S 表示打印这个对象; 见章节 22.1.3.12 (打印结构体).
 
-Methods on print-object are responsible for implementing their part of the semantics of the printer control variables, as follows:
+        print-object 上的方法有责任去实现它们的这些打印器控制变量的语义部分, 如下:
 
-*print-readably*
+        *print-readably*
 
-    All methods for print-object must obey *print-readably*. This includes both user-defined methods and implementation-defined methods. Readable printing of structures and standard objects is controlled by their print-object method, not by their make-load-form method. Similarity for these objects is application dependent and hence is defined to be whatever these methods do; see Section 3.2.4.2 (Similarity of Literal Objects).
+            所有 print-object 的方法必须遵循 *print-readably*. 这个包括用户定义的方法和具体实现定义的方法. 结构体和标准对象的可读打印由它们的 print-object 方法控制, 不是由它们的 make-load-form 方法. 这些对象的相似性是依赖于应用的并且因此被定义为这些方法所做的那样; 见章节 3.2.4.2 (Similarity of Literal Objects).
 
-*print-escape*
+        *print-escape*
 
-    Each method must implement *print-escape*.
+            每个方法必须实现 *print-escape*.
 
-*print-pretty*
+        *print-pretty*
 
-    The method may wish to perform specialized line breaking or other output conditional on the value of *print-pretty*. For further information, see (for example) the macro pprint-fill. See also Section 22.2.1.4 (美观打印分派表) and Section 22.2.2 (使用美观打印器的示例).
+            这个方法可能希望执行某个特殊的断行或在 *print-pretty* 的值上的其他输出条件句. 关于进一步的信息, 见 (例如) 宏 pprint-fill. 也见章节 22.2.1.4 (美观打印分派表) 和章节 22.2.2 (使用美观打印器的示例).
 
-*print-length*
+        *print-length*
 
-    Methods that produce output of indefinite length must obey *print-length*. For further information, see (for example) the macros pprint-logical-block and pprint-pop. See also Section 22.2.1.4 (美观打印分派表) and Section 22.2.2 (使用美观打印器的示例).
+            产生无限长度输出的方法必须遵循 *print-length*. 关于进一步的信息, 见 (例如) 宏 pprint-logical-block 和 pprint-pop. 也见章节 22.2.1.4 (美观打印分派表) 和章节 22.2.2 (使用美观打印器的示例).
 
-*print-level*
+        *print-level*
 
-    The printer takes care of *print-level* automatically, provided that each method handles exactly one level of structure and calls write (or an equivalent function) recursively if there are more structural levels. The printer's decision of whether an object has components (and therefore should not be printed when the printing depth is not less than *print-level*) is implementation-dependent. In some implementations its print-object method is not called; in others the method is called, and the determination that the object has components is based on what it tries to write to the stream.
+            打印器自动关注 *print-level*, 假设每个方法处理结构的一个层级而如果这里有更多的结构层级就递归调用 write (或者一个等价的函数). 打印器对于一个对象是否有着成员的决策是依赖于具体实现的 (并且因此当打印深度不小于 *print-level* 时不应该被打印). 在某些实现中它的 print-object 方法不会被调用; 在其他实现中这个方法会被调用, 并且这个对象有着成员的决定是基于它尝试把什么写入到这个流中.
 
-*print-circle*
+        *print-circle*
 
-    When the value of *print-circle* is true, a user-defined print-object method can print objects to the supplied stream using write, prin1, princ, or format and expect circularities to be detected and printed using the #n# syntax. If a user-defined print-object method prints to a stream other than the one that was supplied, then circularity detection starts over for that stream. See *print-circle*.
+            当 *print-circle* 的值是 true 时, 一个用户定义的 print-object 方法可以使用 write, prin1, princ, 或 format 打印对象到提供的流, 并且期望环状会被检测到并使用 #n# 语法打印. 如果一个用户定义的 print-object 方法打印到一个不是提供的那个的流, 那么对于这个流的环状检测重新开始. 见 *print-circle*.
 
-*print-base*, *print-radix*, *print-case*, *print-gensym*, and *print-array*
+        *print-base*, *print-radix*, *print-case*, *print-gensym*, and *print-array*
 
-    These printer control variables apply to specific types of objects and are handled by the methods for those objects.
+            这些打印器控制变量应用于特定对象类型并且由这些对象的方法来处理.
 
-If these rules are not obeyed, the results are undefined.
+        如果这些规则没有被遵守, 结果就是没有定义的.
 
-In general, the printer and the print-object methods should not rebind the print control variables as they operate recursively through the structure, but this is implementation-dependent.
+        通常情况下, 打印器和 print-object 方法不应该随着它们在结构中递归操作重新绑定这些打印控制变量, 但是这个是依赖于具体实现的.
 
-In some implementations the stream argument passed to a print-object method is not the original stream, but is an intermediate stream that implements part of the printer. methods should therefore not depend on the identity of this stream.
+        在某些实现中传递给一个 print-object 方法的这个 stream 参数不是原始的流, 而是一个实现了这个打印器部分的中间流. 因此方法不应该依赖于这个流的标识.
 
 * 示例(Examples): None.
 
@@ -2197,7 +2193,7 @@ In some implementations the stream argument passed to a print-object method is n
 
 * 也见(See Also):
 
-pprint-fill, pprint-logical-block, pprint-pop, write, *print-readably*, *print-escape*, *print-pretty*, *print-length*, Section 22.1.3 (默认 Print-Object 方法), Section 22.1.3.12 (打印结构体), Section 22.2.1.4 (美观打印分派表), Section 22.2.2 (使用美观打印器的示例)
+        pprint-fill, pprint-logical-block, pprint-pop, write, *print-readably*, *print-escape*, *print-pretty*, *print-length*, 章节 22.1.3 (默认 Print-Object 方法), 章节 22.1.3.12 (打印结构体), 章节 22.2.1.4 (美观打印分派表), 章节 22.2.2 (使用美观打印器的示例)
 
 * 注意(Notes): None. 
 
@@ -2206,43 +2202,41 @@ pprint-fill, pprint-logical-block, pprint-pop, write, *print-readably*, *print-e
 
 * 语法(Syntax):
 
-print-unreadable-object (object stream &key type identity) form* => nil
+        print-unreadable-object (object stream &key type identity) form* => nil
 
 * 参数和值(Arguments and Values):
 
-object---一个对象; evaluated.
-
-stream---a stream designator; evaluated.
-
-type---a generalized boolean; evaluated.
-
-identity---a generalized boolean; evaluated.
-
-forms---一个隐式 progn;
+        object---一个对象; 求值的.
+        stream---一个流标识符; 求值的.
+        type---一个广义 boolean; 求值的.
+        identity---一个广义 boolean; 求值的.
+        forms---一个隐式 progn;
 
 * 描述(Description):
 
-Outputs a printed representation of object on stream, beginning with ``#<'' and ending with ``>''. Everything output to stream by the body forms is enclosed in the the angle brackets. If type is true, the output from forms is preceded by a brief description of the object's type and a space character. If identity is true, the output from forms is followed by a space character and a representation of the object's identity, typically a storage address.
+        在流 stream 上输出对象 object 的打印表示, 用 "#<" 开始并且用 ">" 结束. 所有通过主体表达式形式 forms 输出到流 stream 的所有东西被闭合在一个尖括号中. 如果 type 是 true, 来自表达式形式 forms 的输出前有着这个对象 object 类型的简要描述和一个空白字符. 如果 identity 是 true, 那么这个来自表达式形式 forms 的输出后跟着一个空白字符和一个和这个对象身份的一个表示, 通常是一个存储地址.
 
-If either type or identity is not supplied, its value is false. It is valid to omit the body forms. If type and identity are both true and there are no body forms, only one space character separates the type and the identity.
+        如果 type 或 identity 没有被提供, 它的值就是 false. 省略主体表达式形式 forms 是有效的. 如果 type 和 identity 都是 true 并且这里没有主体表达式形式 forms, 只有一个空白字符分隔着类型和身份.
 
 * 示例(Examples):
 
-;; Note that in this example, the precise form of the output ;; is implementation-dependent.
+    ```LISP
+    ;; Note that in this example, the precise form of the output ;; is implementation-dependent.
 
- (defmethod print-object ((obj airplane) stream)
-   (print-unreadable-object (obj stream :type t :identity t)
-     (princ (tail-number obj) stream)))
+    (defmethod print-object ((obj airplane) stream)
+      (print-unreadable-object (obj stream :type t :identity t)
+        (princ (tail-number obj) stream)))
 
- (prin1-to-string my-airplane)
-=>  "#<Airplane NW0773 36000123135>"
-OR=>  "#<FAA:AIRPLANE NW0773 17>"
+    (prin1-to-string my-airplane)
+    =>  "#<Airplane NW0773 36000123135>"
+    OR=>  "#<FAA:AIRPLANE NW0773 17>"
+    ```
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-If *print-readably* is true, print-unreadable-object signals an error of type print-not-readable without printing anything.
+        如果 *print-readably* 是 true, print-unreadable-object 在不打印任何东西的情况下发出一个 print-not-readable 类型的错误.
 
 * 也见(See Also): None.
 
@@ -2253,29 +2247,26 @@ If *print-readably* is true, print-unreadable-object signals an error of type pr
 
 * 语法(Syntax):
 
-set-pprint-dispatch type-specifier function &optional priority table => nil
+        set-pprint-dispatch type-specifier function &optional priority table => nil
 
 * 参数和值(Arguments and Values):
 
-type-specifier---a type specifier.
-
-function---a function, a function name, or nil.
-
-priority---a real. The default is 0.
-
-table---a pprint dispatch table. The default is the value of *print-pprint-dispatch*.
+        type-specifier---一个类型指定符.
+        function---一个函数, 一个函数名, 或 nil.
+        priority---一个实数. 默认是 0.
+        table---一个 pprint 风派表上. 默认是 *print-pprint-dispatch* 的值.
 
 * 描述(Description):
 
-Installs an entry into the pprint dispatch table which is table.
+        安装一个条目到 pprint 分派表 table.
 
-Type-specifier is the key of the entry. The first action of set-pprint-dispatch is to remove any pre-existing entry associated with type-specifier. This guarantees that there will never be two entries associated with the same type specifier in a given pprint dispatch table. Equality of type specifiers is tested by equal.
+        type-specifier 是这个条目的键. set-pprint-dispatch 的第一个动作是移除任何之前存在的和 type-specifier 关联条目. 这个保证在一个给定的 pprint 分派表中不会有和同一个类型指定符关联的两个条目. 类型指定符的等价性由 equal 确定.
 
-Two values are associated with each type specifier in a pprint dispatch table: a function and a priority. The function must accept two arguments: the stream to which output is sent and the object to be printed. The function should pretty print the object to the stream. The function can assume that object satisfies the type given by type-specifier. The function must obey *print-readably*. Any values returned by the function are ignored.
+        在一个 pprint 分派表中每一个类型指定符和两个值关联: 一个函数 function 和一个优先级 priority. 这个函数 function 必须接受两个参数: 要被输出的流以及要被打印的对象. 那个函数应该把对象 object 打印到那个流 stream. 这个函数 function 可以假定那个对象 object 满足由 type-specifier 给定的类型. 函数 function 遵循 *print-readably*. 任何由那个函数 function 返回的值会被忽略.
 
-Priority is a priority to resolve conflicts when an object matches more than one entry.
+        当一个对象匹配不止一个条目时, priority 是用于解决冲突的优先级.
 
-It is permissible for function to be nil. In this situation, there will be no type-specifier entry in table after set-pprint-dispatch returns.
+        允许函数 function 为 nil. 在这个情况中, 在 set-pprint-dispatch 返回后在表 table 中没有 type-specifier 条目.
 
 * 示例(Examples): None.
 
@@ -2285,17 +2276,19 @@ It is permissible for function to be nil. In this situation, there will be no ty
 
 * 异常情况(Exceptional Situations):
 
-An error is signaled if priority is not a real.
+        如果 priority 不是一个实数, 就会发出一个错误.
 
 * 也见(See Also): None.
 
 * 注意(Notes):
 
-Since pprint dispatch tables are often used to control the pretty printing of Lisp code, it is common for the type-specifier to be an expression of the form
+        因为 pprint 分派表经常被哟你关于控制 Lisp 代码的美观打印, 对于 type-specifier 为这个形式的一个表达式是很普遍的.
 
- (cons car-type cdr-type)
+    ```LISP
+    (cons car-type cdr-type)
+    ```
 
-This signifies that the corresponding object must be a cons cell whose car matches the type specifier car-type and whose cdr matches the type specifier cdr-type. The cdr-type can be omitted in which case it defaults to t. 
+        这个表示这个对应对象必须是一个 cons cell, 它的 car 匹配类型指定符 car-type 以及它的 cdr 匹配类型指定符 cdr-type. 这个 cdr-type 可以被省略, 这个情况下它默认为 t. 
 
 
 ### <span id="F-WRITE-PRIN1-PRINT-PPRINT-PRINC">函数 WRITE, PRIN1, PRINT, PPRINT, PRINC</span>
