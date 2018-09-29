@@ -1,4 +1,5 @@
 # 22 打印器
+<!--TODO 整章待校验-->
 
 > * 22.1 [Lisp 打印器](#TheLispPrinter)
 > * 22.2 [Lisp 美观打印器](#TheLispPrettyPrinter)
@@ -1978,59 +1979,58 @@ NIL
 
 * 语法(Syntax):
 
-pprint-newline kind &optional stream => nil
+        pprint-newline kind &optional stream => nil
 
 * 参数和值(Arguments and Values):
 
-kind---one of :linear, :fill, :miser, or :mandatory.
-
-stream---a stream designator. The default is standard output.
+        kind---:linear, :fill, :miser, 或 :mandatory 的其中之一.
+        stream---一个流标识符. 默认是标准输出.
 
 * 描述(Description):
 
-If stream is a pretty printing stream and the value of *print-pretty* is true, a line break is inserted in the output when the appropriate condition below is satisfied; otherwise, pprint-newline has no effect.
+        如果流 stream 是一个美观打印流并且 *print-pretty* 的值是 true, 当满足以下适当条件时, 一个断行会被插入到输出中; 否则, pprint-newline 没有效果.
 
-Kind specifies the style of conditional newline. This parameter is treated as follows:
+        kind 指定了条件换行的样式. 这个参数按如下对待:
 
-:linear
+        :linear
 
-    This specifies a ``linear-style'' conditional newline. A line break is inserted if and only if the immediately containing section cannot be printed on one line. The effect of this is that line breaks are either inserted at every linear-style conditional newline in a logical block or at none of them.
+            这个指定了一个 "线性风格(linear-style)" 条件换行. 当且仅当这个直接包含的片段没有被打印在一行中时会插入一个断行. 这个的效果是断行被插入到一个逻辑块的每一个线性风格的条件换行中或者一个也不插入.
 
-:miser
+        :miser
 
-    This specifies a ``miser-style'' conditional newline. A line break is inserted if and only if the immediately containing section cannot be printed on one line and miser style is in effect in the immediately containing logical block. The effect of this is that miser-style conditional newlines act like linear-style conditional newlines, but only when miser style is in effect. Miser style is in effect for a logical block if and only if the starting position of the logical block is less than or equal to *print-miser-width* ems from the right margin.
+            这个指定了一个 "miser-style" 条件换行. 当且仅当这个直接包含的片段没有被打印在一行中并且在这个直接包含的逻辑块中这个 miser style 是生效时会插入一个断行. 这个效果是 miser-style 条件换行表现得像线性风格条件换行一样, 但是只有当 miser style 生效时. 当且仅当一个逻辑块的起始位置距离右边距小于或等于 *print-miser-width* 个 ems 单位时, 这个逻辑块的 miser style 是生效的.
 
-:fill
+        :fill
 
-    This specifies a ``fill-style'' conditional newline. A line break is inserted if and only if either (a) the following section cannot be printed on the end of the current line, (b) the preceding section was not printed on a single line, or (c) the immediately containing section cannot be printed on one line and miser style is in effect in the immediately containing logical block. If a logical block is broken up into a number of subsections by fill-style conditional newlines, the basic effect is that the logical block is printed with as many subsections as possible on each line. However, if miser style is in effect, fill-style conditional newlines act like linear-style conditional newlines.
+            这个指定一个 "填充风格(fill-style)" 条件换行. 当且仅当以下情况满足任意一条时, 会插入一个断行: (a) 后面的片段不会被打印在当前行的结尾, (b) 前面的片段不会被打印在一个单独的行, 或 (c) 这个直接包含的片段不能被打印在一行上并且 miser style 在这个直接包含的逻辑块中是生效的. 如果一个逻辑块被填充风格的条件换行分解成一些子片段, 其基本效果是在每一行上以尽可能多的子片段打印逻辑块. 但是, 如果 miser style 是生效的, fill-style 条件换行表现得像线性风格条件换行一样.
 
-:mandatory
+        :mandatory
 
-    This specifies a ``mandatory-style'' conditional newline. A line break is always inserted. This implies that none of the containing sections can be printed on a single line and will therefore trigger the insertion of line breaks at linear-style conditional newlines in these sections.
+            这个指定一个 "强制风格(mandatory-style)" 条件换行. 一个断行总是会被插入. 这个意味着这些包含的片段中没有一个可以被打印在一个单独的行并且因此会触发在这些片段中的线性风格条件换行中的断行插入.
 
-When a line break is inserted by any type of conditional newline, any blanks that immediately precede the conditional newline are omitted from the output and indentation is introduced at the beginning of the next line. By default, the indentation causes the following line to begin in the same horizontal position as the first character in the immediately containing logical block. (The indentation can be changed via pprint-indent.)
+        当一个断行通过条件换行的任何类型被插入时, 任何直接位于条件换行之前的空白会从这个输出中被省略并且在下一行的开始引入缩进. 默认情况下, 这个缩进导致下面这行从和直接包含的逻辑块的第一个字符相同的水平位置开始. (缩进不能经由 pprint-indent 被改变.)
 
-There are a variety of ways unconditional newlines can be introduced into the output (i.e., via terpri or by printing a string containing a newline character). As with mandatory conditional newlines, this prevents any of the containing sections from being printed on one line. In general, when an unconditional newline is encountered, it is printed out without suppression of the preceding blanks and without any indentation following it. However, if a per-line prefix has been specified (see pprint-logical-block), this prefix will always be printed no matter how a newline originates.
+        这里有一些把非条件换行引入到输出的方法 (换句话说, 通过 terpri 或通过打印一个包含一个换行字符的字符串). 与强制条件换行一样, 这可以防止任何包含的片段在一行上被打印出来. 通常情况下, 当遇到一个非条件换行时, 它是在没有对前面的空格的压制下打印出来的, 并且没有任何缩进. 然而, 如果指定一个行前缀 (见 pprint-logical-block), 这个前缀总是被打印, 不管一个新行是如何开始的.
 
 * 示例(Examples):
 
-See Section 22.2.2 (使用美观打印器的示例).
+        见章节 22.2.2 (使用美观打印器的示例).
 
 * 副作用(Side Effects):
 
-Output to stream.
+        输出到流 stream.
 
 * 受此影响(Affected By):
 
-*print-pretty*, *print-miser*. The presence of containing logical blocks. The placement of newlines and conditional newlines.
+        *print-pretty*, *print-miser*. 包含的逻辑块的出现. 换行符和条件换行符的位置.
 
 * 异常情况(Exceptional Situations):
 
-An error of type type-error is signaled if kind is not one of :linear, :fill, :miser, or :mandatory.
+        如果 kind 表示 :linear, :fill, :miser, 或 :mandatory 的其中之一, 就会发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-Section 22.3.5.1 (Tilde Underscore: Conditional Newline), Section 22.2.2 (使用美观打印器的示例)
+        章节 22.3.5.1 (波浪符号 下划线: 条件换行), 章节 22.2.2 (使用美观打印器的示例)
 
 * 注意(Notes): None. 
 
@@ -2039,53 +2039,53 @@ Section 22.3.5.1 (Tilde Underscore: Conditional Newline), Section 22.2.2 (使用
 
 * 语法(Syntax):
 
-pprint-pop <no arguments> => object
+        pprint-pop <no arguments> => object
 
 * 参数和值(Arguments and Values):
 
-object---an element of the list being printed in the lexically current logical block, or nil.
+        object---在当前词法逻辑块中要被打印的列表的一个元素, 或者 nil.
 
 * 描述(Description):
 
-Pops one element from the list being printed in the lexically current logical block, obeying *print-length* and *print-circle* as described below.
+        从在当前词法逻辑块中要被打印的列表中弹出一个元素, 按如下所述遵循 *print-length* 和 *print-circle*.
 
-Each time pprint-pop is called, it pops the next value off the list passed to the lexically current logical block and returns it. However, before doing this, it performs three tests:
+        每次 pprint-pop 被调用, 它把传递给当前词法逻辑块的列表的下一个值弹出并返回. 但是, 在做这个之前, 它执行三个检验:
 
-    If the remaining `list' is not a list, ``. '' is printed followed by the remaining `list.' (This makes it easier to write printing functions that are robust in the face of malformed arguments.)
+            如果剩余的 'list' 不是一个列表, ". " 在剩余的 'list' 后面被打印. (这个使得编写一个面对难看的参数是强健的打印函数变得更容易.)
 
-    If *print-length* is non-nil, and pprint-pop has already been called *print-length* times within the immediately containing logical block, ``...'' is printed. (This makes it easy to write printing functions that properly handle *print-length*.)
+            如果 *print-length* 不是 nil, 并且 pprint-pop 在直接包含的逻辑块中已经被调用 *print-length* 次, 那么 "..." 会被打印. (这使得编写一个适当处理 *print-length* 的函数变得容易.)
 
-    If *print-circle* is non-nil, and the remaining list is a circular (or shared) reference, then ``. '' is printed followed by an appropriate ``#n#'' marker. (This catches instances of cdr circularity and sharing in lists.)
+            如果 *print-circle* 不是 nil, 并且剩余列表是一个环状 (或者共享) 引用, 那么 ". " 在一个适当的 "#n#" 标记后打印. (这个捕捉列表中环状和共享的 cdr 实例.)
 
-If either of the three conditions above occurs, the indicated output is printed on the pretty printing stream created by the immediately containing pprint-logical-block and the execution of the immediately containing pprint-logical-block is terminated except for the printing of the suffix.
+        如果发生了上面的三个状况中的任意一个, 那么表示的输出会被打印在由直接包含的 pprint-logical-block 创建的美观打印流上并且直接包含的 pprint-logical-block 会终止, 除了后缀的打印.
 
-If pprint-logical-block is given a `list' argument of nil---because it is not processing a list---pprint-pop can still be used to obtain support for *print-length*. In this situation, the first and third tests above are disabled and pprint-pop always returns nil. See Section 22.2.2 (使用美观打印器的示例)---specifically, the pprint-vector example.
+        如果 pprint-logical-block 被给定一个 nil 的 'list' 参数---因为它没有处理一个列表---pprint-pop 仍然可以被用来获取对 *print-length* 的支持. 在这个情况中, 上面的第一个和第三个测试会被禁用并且 pprint-pop 总是返回 nil. 见章节 22.2.2 (使用美观打印器的示例)---具体来说, 那个 pprint-vector 示例.
 
-Whether or not pprint-pop is fbound in the global environment is implementation-dependent; however, the restrictions on redefinition and shadowing of pprint-pop are the same as for symbols in the COMMON-LISP package which are fbound in the global environment. The consequences of attempting to use pprint-pop outside of pprint-logical-block are undefined.
+        pprint-pop 在全局环境中是否是 fbound 的是依赖于具体实现的; 但是, 在 pprint-pop 的重定义和遮蔽上的约束和 COMMON-LISP 包中在全局环境中被 fbound 的符号相同. 在 pprint-logical-block 外部尝试去使用 pprint-pop 的后果是 未定义的.
 
 * 示例(Examples): None.
 
 * 副作用(Side Effects):
 
-Might cause output to the pretty printing stream associated with the lexically current logical block.
+        可能导致输出到和当前词法逻辑块相关联的美观打印流.
 
 * 受此影响(Affected By):
 
-*print-length*, *print-circle*.
+        *print-length*, *print-circle*.
 
 * 异常情况(Exceptional Situations):
 
-An error is signaled (either at macro expansion time or at run time) if a usage of pprint-pop occurs where there is no lexically containing pprint-logical-block form.
+        如果一个 pprint-pop 的使用出现在没有词法上包含在 pprint-logical-block 表达式形式的地方, 那么就会发出一个错误 (不管是宏展开时或是运行时).
 
-The consequences are undefined if pprint-pop is executed outside of the dynamic extent of this pprint-logical-block.
+        如果 pprint-pop 在这个 pprint-logical-block 的动态范围外被执行, 那么后果是未定义的.
 
 * 也见(See Also):
 
-pprint-exit-if-list-exhausted, pprint-logical-block.
+        pprint-exit-if-list-exhausted, pprint-logical-block.
 
 * 注意(Notes):
 
-It is frequently a good idea to call pprint-exit-if-list-exhausted before calling pprint-pop. 
+        在调用 pprint-pop 之前调用 pprint-exit-if-list-exhausted 经常是一个好办法. 
 
 
 ### <span id="F-PPRINT-TAB">函数 PPRINT-TAB</span>
