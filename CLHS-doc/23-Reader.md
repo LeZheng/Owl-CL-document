@@ -1,25 +1,21 @@
- 23. Reader
+# 23 Reader
 
-23.1 Reader Concepts
+> * 23.1 [Reader Concepts](#ReaderConcepts)
+> * 23.2 [The Reader Dictionary](#TheReaderDictionary)
 
-23.2 The Reader Dictionary
+## 23.1 <span id="ReaderConcepts">Reader Concepts</span>
 
-
- 23.1 Reader Concepts
-
-23.1.1 Dynamic Control of the Lisp Reader
-
-23.1.2 Effect of Readtable Case on the Lisp Reader
-
-23.1.3 Argument Conventions of Some Reader Functions
+> * 23.1.1 [Dynamic Control of the Lisp Reader](#DynamicControlLispReader)
+> * 23.1.2 [Effect of Readtable Case on the Lisp Reader](#EffectReadtableLispReader)
+> * 23.1.3 [Argument Conventions of Some Reader Functions](#ArgConventSomeReaderFun)
 
 
- 23.1.1 Dynamic Control of the Lisp Reader
+### 23.1.1 <span id="DynamicControlLispReader">Dynamic Control of the Lisp Reader</span>
 
 Various aspects of the Lisp reader can be controlled dynamically. See Section 2.1.1 (Readtables) and Section 2.1.2 (Variables that affect the Lisp Reader). 
 
 
- 23.1.2 Effect of Readtable Case on the Lisp Reader
+### 23.1.2 <span id="EffectReadtableLispReader">Effect of Readtable Case on the Lisp Reader</span>
 
 The readtable case of the current readtable affects the Lisp reader in the following ways:
 
@@ -39,10 +35,7 @@ The readtable case of the current readtable affects the Lisp reader in the follo
 
     When the readtable case is :invert, then if all of the unescaped letters in the extended token are of the same case, those (unescaped) letters are converted to the opposite case.
 
-23.1.2.1 Examples of Effect of Readtable Case on the Lisp Reader
-
-
- 23.1.2.1 Examples of Effect of Readtable Case on the Lisp Reader
+#### 23.1.2.1 Examples of Effect of Readtable Case on the Lisp Reader
 
  (defun test-readtable-case-reading ()
    (let ((*readtable* (copy-readtable nil)))
@@ -75,21 +68,16 @@ The output from (test-readtable-case-reading) should be as follows:
     :INVERT         zebra   ZEBRA
 
 
- 23.1.3 Argument Conventions of Some Reader Functions
+### 23.1.3 <span id="ArgConventSomeReaderFun">Argument Conventions of Some Reader Functions</span>
 
-23.1.3.1 The EOF-ERROR-P argument
-
-23.1.3.2 The RECURSIVE-P argument
-
-
- 23.1.3.1 The EOF-ERROR-P argument
+#### 23.1.3.1 The EOF-ERROR-P argument
 
 Eof-error-p in input function calls controls what happens if input is from a file (or any other input source that has a definite end) and the end of the file is reached. If eof-error-p is true (the default), an error of type end-of-file is signaled at end of file. If it is false, then no error is signaled, and instead the function returns eof-value.
 
 Functions such as read that read the representation of an object rather than a single character always signals an error, regardless of eof-error-p, if the file ends in the middle of an object representation. For example, if a file does not contain enough right parentheses to balance the left parentheses in it, read signals an error. If a file ends in a symbol or a number immediately followed by end-of-file, read reads the symbol or number successfully and when called again will act according to eof-error-p. Similarly, the function read-line successfully reads the last line of a file even if that line is terminated by end-of-file rather than the newline character. Ignorable text, such as lines containing only whitespace[2] or comments, are not considered to begin an object; if read begins to read an expression but sees only such ignorable text, it does not consider the file to end in the middle of an object. Thus an eof-error-p argument controls what happens when the file ends between objects. 
 
 
- 23.1.3.2 The RECURSIVE-P argument
+#### 23.1.3.2 The RECURSIVE-P argument
 
 If recursive-p is supplied and not nil, it specifies that this function call is not an outermost call to read but an embedded call, typically from a reader macro function. It is important to distinguish such recursive calls for three reasons.
 
@@ -115,69 +103,52 @@ If recursive-p is supplied and not nil, it specifies that this function call is 
 
 3. When end-of-file is encountered and the eof-error-p argument is not nil, the kind of error that is signaled may depend on the value of recursive-p. If recursive-p is true, then the end-of-file is deemed to have occurred within the middle of a printed representation; if recursive-p is false, then the end-of-file may be deemed to have occurred between objects rather than within the middle of one. 
 
- 23.2 The Reader Dictionary
+## 23.2 <span id="TheReaderDictionary">The Reader Dictionary</span>
 
-System Class READTABLE
-
-Function COPY-READTABLE
-
-Function MAKE-DISPATCH-MACRO-CHARACTER
-
-Function READ, READ-PRESERVING-WHITESPACE
-
-Function READ-DELIMITED-LIST
-
-Function READ-FROM-STRING
-
-Accessor READTABLE-CASE
-
-Function READTABLEP
-
-Function SET-DISPATCH-MACRO-CHARACTER, GET-DISPATCH-MACRO-CHARACTER
-
-Function SET-MACRO-CHARACTER, GET-MACRO-CHARACTER
-
-Function SET-SYNTAX-FROM-CHAR
-
-Macro WITH-STANDARD-IO-SYNTAX
-
-Variable *READ-BASE*
-
-Variable *READ-DEFAULT-FLOAT-FORMAT*
-
-Variable *READ-EVAL*
-
-Variable *READ-SUPPRESS*
-
-Variable *READTABLE*
-
-Condition Type READER-ERROR
+> * [系统类 READTABLE](#SC-READTABLE)
+> * [函数 COPY-READTABLE](#F-COPY-READTABLE)
+> * [函数 MAKE-DISPATCH-MACRO-CHARACTER](#F-MDMC)
+> * [函数 READ, READ-PRESERVING-WHITESPACE](#F-READ-AND-RPW)
+> * [函数 READ-DELIMITED-LIST](#F-READ-DELIMITED-LIST)
+> * [函数 READ-FROM-STRING](#F-READ-FROM-STRING)
+> * [访问器 READTABLE-CASE](#A-READTABLE-CASE)
+> * [函数 READTABLEP](#F-READTABLEP)
+> * [函数 SET-DISPATCH-MACRO-CHARACTER, GET-DISPATCH-MACRO-CHARACTER](#F-SET-AND-GET-DMC)
+> * [函数 SET-MACRO-CHARACTER, GET-MACRO-CHARACTER](#F-SET-AND-GET-MC)
+> * [函数 SET-SYNTAX-FROM-CHAR](#F-SET-SYNTAX-FROM-CHAR)
+> * [宏 WITH-STANDARD-IO-SYNTAX](#M-WITH-STANDARD-IO-SYNTAX)
+> * [变量 *READ-BASE*](#V-READ-BASE)
+> * [变量 *READ-DEFAULT-FLOAT-FORMAT*](#V-READ-DEFAULT-FLOAT-FORMAT)
+> * [变量 *READ-EVAL*](#V-READ-EVAL)
+> * [变量 *READ-SUPPRESS*](#V-READ-SUPPRESS)
+> * [变量 *READTABLE*](#V-READTABLE)
+> * [状况类型 READER-ERROR](#CT-READER-ERROR)
 
 
-System Class READTABLE
+### <span id="SC-READTABLE">系统类 READTABLE</span>
 
-Class Precedence List:
+* 类优先级列表(Class Precedence List):
 
 readtable, t
 
-Description:
+* 描述(Description):
 
 A readtable maps characters into syntax types for the Lisp reader; see Section 2 (Syntax). A readtable also contains associations between macro characters and their reader macro functions, and records information about the case conversion rules to be used by the Lisp reader when parsing symbols.
 
 Each simple character must be representable in the readtable. It is implementation-defined whether non-simple characters can have syntax descriptions in the readtable.
 
-See Also:
+* 也见(See Also):
 
 Section 2.1.1 (Readtables), Section 22.1.3.13 (Printing Other Objects) 
 
 
-Function COPY-READTABLE
+### <span id="F-COPY-READTABLE">函数 COPY-READTABLE</span>
 
-Syntax:
+* 语法(Syntax):
 
 copy-readtable &optional from-readtable to-readtable => readtable
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 from-readtable---a readtable designator. The default is the current readtable.
 
@@ -185,7 +156,7 @@ to-readtable---a readtable or nil. The default is nil.
 
 readtable---the to-readtable if it is non-nil, or else a fresh readtable.
 
-Description:
+* 描述(Description):
 
 copy-readtable copies from-readtable.
 
@@ -193,7 +164,7 @@ If to-readtable is nil, a new readtable is created and returned. Otherwise the r
 
 copy-readtable copies the setting of readtable-case.
 
-Examples:
+* 示例(Examples):
 
  (setq zvar 123) =>  123
  (set-syntax-from-char #\z #\' (setq table2 (copy-readtable))) =>  T
@@ -205,15 +176,15 @@ Examples:
  (setq *readtable* (copy-readtable nil)) =>  #<READTABLE 46302670>
  zvar =>  123
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 readtable, *readtable*
 
-Notes:
+* 注意(Notes):
 
 (setq *readtable* (copy-readtable nil))
 
@@ -228,13 +199,13 @@ replaces the current readtable with a copy of itself. This is useful if you want
 (let ((*readtable* (copy-readtable))) ...)
 
 
-Function MAKE-DISPATCH-MACRO-CHARACTER
+### <span id="F-MDMC">函数 MAKE-DISPATCH-MACRO-CHARACTER</span>
 
-Syntax:
+* 语法(Syntax):
 
 make-dispatch-macro-character char &optional non-terminating-p readtable => t
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 char---a character.
 
@@ -242,7 +213,7 @@ non-terminating-p---a generalized boolean. The default is false.
 
 readtable---a readtable. The default is the current readtable.
 
-Description:
+* 描述(Description):
 
 make-dispatch-macro-character makes char be a dispatching macro character in readtable.
 
@@ -250,7 +221,7 @@ Initially, every character in the dispatch table associated with the char has an
 
 If non-terminating-p is true, the dispatching macro character is made a non-terminating macro character; if non-terminating-p is false, the dispatching macro character is made a terminating macro character.
 
-Examples:
+* 示例(Examples):
 
  (get-macro-character #\{) =>  NIL, false
  (make-dispatch-macro-character #\{) =>  T
@@ -260,20 +231,20 @@ Side Effects: None.
 
 The readtable is altered.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 *readtable*, set-dispatch-macro-character
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function READ, READ-PRESERVING-WHITESPACE
+### <span id="F-READ-AND-RPW">函数 READ, READ-PRESERVING-WHITESPACE</span>
 
-Syntax:
+* 语法(Syntax):
 
 read &optional input-stream eof-error-p eof-value recursive-p => object
 
@@ -281,7 +252,7 @@ read-preserving-whitespace &optional input-stream eof-error-p eof-value recursiv
 
 => object
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 input-stream---an input stream designator.
 
@@ -293,7 +264,7 @@ recursive-p---a generalized boolean. The default is false.
 
 object---an object (parsed by the Lisp reader) or the eof-value.
 
-Description:
+* 描述(Description):
 
 read parses the printed representation of an object from input-stream and builds such an object.
 
@@ -307,7 +278,7 @@ If recursive-p is true, the call to read is expected to be made from within some
 
 Both functions return the object read from input-stream. Eof-value is returned if eof-error-p is false and end of file is reached before the beginning of an object.
 
-Examples:
+* 示例(Examples):
 
  (read)
 >>  'a
@@ -347,30 +318,30 @@ However, if read had been used instead of read-preserving-whitespace, then after
 
 There are times when whitespace[2] should be discarded. If a command interpreter takes single-character commands, but occasionally reads an object then if the whitespace[2] after a symbol is not discarded it might be interpreted as a command some time later after the symbol had been read.
 
-Affected By:
+* 受此影响(Affected By):
 
 *standard-input*, *terminal-io*, *readtable*, *read-default-float-format*, *read-base*, *read-suppress*, *package*, *read-eval*.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 read signals an error of type end-of-file, regardless of eof-error-p, if the file ends in the middle of an object representation. For example, if a file does not contain enough right parentheses to balance the left parentheses in it, read signals an error. This is detected when read or read-preserving-whitespace is called with recursive-p and eof-error-p non-nil, and end-of-file is reached before the beginning of an object.
 
 If eof-error-p is true, an error of type end-of-file is signaled at the end of file.
 
-See Also:
+* 也见(See Also):
 
 peek-char, read-char, unread-char, read-from-string, read-delimited-list, parse-integer, Section 2 (Syntax), Section 23.1 (Reader Concepts)
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function READ-DELIMITED-LIST
+### <span id="F-READ-DELIMITED-LIST">函数 READ-DELIMITED-LIST</span>
 
-Syntax:
+* 语法(Syntax):
 
 read-delimited-list char &optional input-stream recursive-p => list
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 char---a character.
 
@@ -380,7 +351,7 @@ recursive-p---a generalized boolean. The default is false.
 
 list---a list of the objects read.
 
-Description:
+* 描述(Description):
 
 read-delimited-list reads objects from input-stream until the next character after an object's representation (ignoring whitespace[2] characters and comments) is char.
 
@@ -392,7 +363,7 @@ It is an error to reach end-of-file during the operation of read-delimited-list.
 
 The consequences are undefined if char has a syntax type of whitespace[2] in the current readtable.
 
-Examples:
+* 示例(Examples):
 
  (read-delimited-list #\]) 1 2 3 4 5 6 ]
 =>  (1 2 3 4 5 6)
@@ -426,30 +397,30 @@ would be considered a constituent character, part of the symbol named a}. This c
 
 Giving } the same definition as the standard definition of the character ) has the twin benefit of making it terminate tokens for use with read-delimited-list and also making it invalid for use in any other context. Attempting to read a stray } will signal an error.
 
-Affected By:
+* 受此影响(Affected By):
 
 *standard-input*, *readtable*, *terminal-io*.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 read, peek-char, read-char, unread-char.
 
-Notes:
+* 注意(Notes):
 
 read-delimited-list is intended for use in implementing reader macros. Usually it is desirable for char to be a terminating macro character so that it can be used to delimit tokens; however, read-delimited-list makes no attempt to alter the syntax specified for char by the current readtable. The caller must make any necessary changes to the readtable syntax explicitly. 
 
 
-Function READ-FROM-STRING
+### <span id="F-READ-FROM-STRING">函数 READ-FROM-STRING</span>
 
-Syntax:
+* 语法(Syntax):
 
 read-from-string string &optional eof-error-p eof-value &key start end preserve-whitespace
 
 => object, position
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 string---a string.
 
@@ -465,7 +436,7 @@ object---an object (parsed by the Lisp reader) or the eof-value.
 
 position---an integer greater than or equal to zero, and less than or equal to one more than the length of the string.
 
-Description:
+* 描述(Description):
 
 Parses the printed representation of an object from the subsequence of string bounded by start and end, as if read had been called on an input stream containing those same characters.
 
@@ -475,81 +446,81 @@ If an object is successfully parsed, the primary value, object, is the object th
 
 The secondary value, position, is the index of the first character in the bounded string that was not read. The position may depend upon the value of preserve-whitespace. If the entire string was read, the position returned is either the length of the string or one greater than the length of the string.
 
-Examples:
+* 示例(Examples):
 
  (read-from-string " 1 3 5" t nil :start 2) =>  3, 5
  (read-from-string "(a b c)") =>  (A B C), 7
 
 Side Effects: None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 If the end of the supplied substring occurs before an object can be read, an error is signaled if eof-error-p is true. An error is signaled if the end of the substring occurs in the middle of an incomplete object.
 
-See Also:
+* 也见(See Also):
 
 read, read-preserving-whitespace
 
-Notes:
+* 注意(Notes):
 
 The reason that position is allowed to be beyond the length of the string is to permit (but not require) the implementation to work by simulating the effect of a trailing delimiter at the end of the bounded string. When preserve-whitespace is true, the position might count the simulated delimiter. 
 
 
-Accessor READTABLE-CASE
+### <span id="A-READTABLE-CASE">访问器 READTABLE-CASE</span>
 
-Syntax:
+* 语法(Syntax):
 
 readtable-case readtable => mode
 
 (setf (readtable-case readtable) mode)
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 readtable---a readtable.
 
 mode---a case sensitivity mode.
 
-Description:
+* 描述(Description):
 
 Accesses the readtable case of readtable, which affects the way in which the Lisp Reader reads symbols and the way in which the Lisp Printer writes symbols.
 
-Examples:
+* 示例(Examples):
 
 See Section 23.1.2.1 (Examples of Effect of Readtable Case on the Lisp Reader) and Section 22.1.3.3.2.1 (Examples of Effect of Readtable Case on the Lisp Printer).
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 Should signal an error of type type-error if readtable is not a readtable. Should signal an error of type type-error if mode is not a case sensitivity mode.
 
-See Also:
+* 也见(See Also):
 
 *readtable*, *print-escape*, Section 2.2 (Reader Algorithm), Section 23.1.2 (Effect of Readtable Case on the Lisp Reader), Section 22.1.3.3.2 (Effect of Readtable Case on the Lisp Printer)
 
-Notes:
+* 注意(Notes):
 
 copy-readtable copies the readtable case of the readtable. 
 
-Function READTABLEP
+### <span id="F-READTABLEP">函数 READTABLEP</span>
 
-Syntax:
+* 语法(Syntax):
 
 readtablep object => generalized-boolean
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 object---an object.
 
 generalized-boolean---a generalized boolean.
 
-Description:
+* 描述(Description):
 
 Returns true if object is of type readtable; otherwise, returns false.
 
-Examples:
+* 示例(Examples):
 
  (readtablep *readtable*) =>  true
  (readtablep (copy-readtable)) =>  true
@@ -557,26 +528,26 @@ Examples:
 
 Side Effects: None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also: None.
+* 也见(See Also): None.
 
-Notes:
+* 注意(Notes):
 
  (readtablep object) ==  (typep object 'readtable) 
 
 
-Function SET-DISPATCH-MACRO-CHARACTER, GET-DISPATCH-MACRO-CHARACTER
+### <span id="F-SET-AND-GET-DMC">函数 SET-DISPATCH-MACRO-CHARACTER, GET-DISPATCH-MACRO-CHARACTER</span>
 
-Syntax:
+* 语法(Syntax):
 
 get-dispatch-macro-character disp-char sub-char &optional readtable => function
 
 set-dispatch-macro-character disp-char sub-char new-function &optional readtable => t
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 disp-char---a character.
 
@@ -588,7 +559,7 @@ function---a function designator or nil.
 
 new-function---a function designator.
 
-Description:
+* 描述(Description):
 
 set-dispatch-macro-character causes new-function to be called when disp-char followed by sub-char is read. If sub-char is a lowercase letter, it is converted to its uppercase equivalent. It is an error if sub-char is one of the ten decimal digits.
 
@@ -600,7 +571,7 @@ get-dispatch-macro-character retrieves the dispatch function associated with dis
 
 get-dispatch-macro-character returns the macro-character function for sub-char under disp-char, or nil if there is no function associated with sub-char. If sub-char is a decimal digit, get-dispatch-macro-character returns nil.
 
-Examples:
+* 示例(Examples):
 
  (get-dispatch-macro-character #\# #\{) =>  NIL
  (set-dispatch-macro-character #\# #\{        ;dispatch on #{
@@ -621,7 +592,7 @@ If it is desired that #$foo : as if it were (dollars foo).
    (list 'dollars (read stream t nil t))) =>  |#$-reader|
  (set-dispatch-macro-character #\# #\$ #'|#$-reader|) =>  T
 
-See Also:
+* 也见(See Also):
 
 Section 2.1.4.4 (Macro Characters)
 
@@ -629,32 +600,32 @@ Side Effects:
 
 The readtable is modified.
 
-Affected By:
+* 受此影响(Affected By):
 
 *readtable*.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations):
 
 For either function, an error is signaled if disp-char is not a dispatching macro character in readtable.
 
-See Also:
+* 也见(See Also):
 
 *readtable*
 
-Notes:
+* 注意(Notes):
 
 It is necessary to use make-dispatch-macro-character to set up the dispatch character before specifying its sub-characters. 
 
 
-Function SET-MACRO-CHARACTER, GET-MACRO-CHARACTER
+### <span id="F-SET-AND-GET-MC">函数 SET-MACRO-CHARACTER, GET-MACRO-CHARACTER</span>
 
-Syntax:
+* 语法(Syntax):
 
 get-macro-character char &optional readtable => function, non-terminating-p
 
 set-macro-character char new-function &optional non-terminating-p readtable => t
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 char---a character.
 
@@ -666,13 +637,13 @@ function---nil, or a designator for a function of two arguments.
 
 new-function---a function designator.
 
-Description:
+* 描述(Description):
 
 get-macro-character returns as its primary value, function, the reader macro function associated with char in readtable (if any), or else nil if char is not a macro character in readtable. The secondary value, non-terminating-p, is true if char is a non-terminating macro character; otherwise, it is false.
 
 set-macro-character causes char to be a macro character associated with the reader macro function new-function (or the designator for new-function) in readtable. If non-terminating-p is true, char becomes a non-terminating macro character; otherwise it becomes a terminating macro character.
 
-Examples:
+* 示例(Examples):
 
  (get-macro-character #\{) =>  NIL, false
  (not (get-macro-character #\;)) =>  false
@@ -701,24 +672,24 @@ Side Effects:
 
 The readtable is modified.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 *readtable*
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Function SET-SYNTAX-FROM-CHAR
+### <span id="F-SET-SYNTAX-FROM-CHAR">函数 SET-SYNTAX-FROM-CHAR</span>
 
-Syntax:
+* 语法(Syntax):
 
 set-syntax-from-char to-char from-char &optional to-readtable from-readtable => t
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 to-char---a character.
 
@@ -728,7 +699,7 @@ to-readtable---a readtable. The default is the current readtable.
 
 from-readtable---a readtable designator. The default is the standard readtable.
 
-Description:
+* 描述(Description):
 
 set-syntax-from-char makes the syntax of to-char in to-readtable be the same as the syntax of from-char in from-readtable.
 
@@ -736,7 +707,7 @@ set-syntax-from-char copies the syntax types of from-char. If from-char is a mac
 
 A macro definition from a character such as " can be copied to another character; the standard definition for " looks for another character that is the same as the character that invoked it. The definition of ( can not be meaningfully copied to {, on the other hand. The result is that lists are of the form {a b c), not {a b c}, because the definition always looks for a closing parenthesis, not a closing brace.
 
-Examples:
+* 示例(Examples):
 
  (set-syntax-from-char #\7 #\;) =>  T
  123579 =>  1235
@@ -745,38 +716,38 @@ Side Effects:
 
 The to-readtable is modified.
 
-Affected By:
+* 受此影响(Affected By):
 
 The existing values in the from-readtable.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also:
+* 也见(See Also):
 
 set-macro-character, make-dispatch-macro-character, Section 2.1.4 (Character Syntax Types)
 
-Notes:
+* 注意(Notes):
 
 The constituent traits of a character are ``hard wired'' into the parser for extended tokens. For example, if the definition of S is copied to *, then * will become a constituent that is alphabetic[2] but that cannot be used as a short float exponent marker. For further information, see Section 2.1.4.2 (Constituent Traits). 
 
 
-Macro WITH-STANDARD-IO-SYNTAX
+### <span id="M-WITH-STANDARD-IO-SYNTAX">宏 WITH-STANDARD-IO-SYNTAX</span>
 
-Syntax:
+* 语法(Syntax):
 
 with-standard-io-syntax form* => result*
 
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 forms---an implicit progn.
 
 results---the values returned by the forms.
 
-Description:
+* 描述(Description):
 
 Within the dynamic extent of the body of forms, all reader/printer control variables, including any implementation-defined ones not specified by this standard, are bound to values that produce standard read/print behavior. The values for the variables specified by this standard are listed in the next figure.
 
-Variable                     Value                               
+变量                     Value                               
 *package*                    The CL-USER package                 
 *print-array*                t                                   
 *print-base*                 10                                  
@@ -801,7 +772,7 @@ Variable                     Value
 
 Figure 23-1. Values of standard control variables
 
-Examples:
+* 示例(Examples):
 
  (with-open-file (file pathname :direction :output)
    (with-standard-io-syntax
@@ -813,26 +784,26 @@ Examples:
    (with-standard-io-syntax
      (setq data (read file))))
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also: None.
+* 也见(See Also): None.
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Variable *READ-BASE*
+### <span id="M-WITH-STANDARD-IO-SYNTAX">变量 *READ-BASE*</span>
 
-Value Type:
+* 值类型(Value Type):
 
 a radix.
 
-Initial Value:
+* 初始值(Initial Value):
 
 10.
 
-Description:
+* 描述(Description):
 
 Controls the interpretation of tokens by read as being integers or ratios.
 
@@ -840,7 +811,7 @@ The value of *read-base*, called the current input base, is the radix in which i
 
 The effect of *read-base* on the reading of any particular rational number can be locally overridden by explicit use of the #O, #X, #B, or #nR syntax or by a trailing decimal point.
 
-Examples:
+* 示例(Examples):
 
  (dotimes (i 6)
    (let ((*read-base* (+ 10. i)))
@@ -854,31 +825,31 @@ Examples:
 >>  (15 (DAD 3088 BEE 2699 123 258))
 =>  NIL
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-See Also: None.
+* 也见(See Also): None.
 
-Notes:
+* 注意(Notes):
 
 Altering the input radix can be useful when reading data files in special formats. 
 
-Variable *READ-DEFAULT-FLOAT-FORMAT*
+### <span id="V-READ-DEFAULT-FLOAT-FORMAT">变量 *READ-DEFAULT-FLOAT-FORMAT*</span>
 
-Value Type:
+* 值类型(Value Type):
 
 one of the atomic type specifiers short-float, single-float, double-float, or long-float, or else some other type specifier defined by the implementation to be acceptable.
 
-Initial Value:
+* 初始值(Initial Value):
 
 The symbol single-float.
 
-Description:
+* 描述(Description):
 
 Controls the floating-point format that is to be used when reading a floating-point number that has no exponent marker or that has e or E for an exponent marker. Other exponent markers explicitly prescribe the floating-point format to be used.
 
 The printer uses *read-default-float-format* to guide the choice of exponent markers when printing floating-point numbers.
 
-Examples:
+* 示例(Examples):
 
  (let ((*read-default-float-format* 'double-float))
    (read-from-string "(1.0 1.0e0 1.0s0 1.0f0 1.0d0 1.0L0)"))
@@ -889,51 +860,51 @@ Examples:
 =>  (1.0d0 1.0d0 1.0   1.0 1.0d0 1.0L0) ;Implementation has float formats F, D, L.
 =>  (1.0d0 1.0d0 1.0s0 1.0 1.0d0 1.0L0) ;Implementation has formats S, F, D, L.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-See Also: None.
+* 也见(See Also): None.
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Variable *READ-EVAL*
+### <span id="V-READ-EVAL">变量 *READ-EVAL*</span>
 
-Value Type:
+* 值类型(Value Type):
 
 a generalized boolean.
 
-Initial Value:
+* 初始值(Initial Value):
 
 true.
 
-Description:
+* 描述(Description):
 
 If it is true, the #. reader macro has its normal effect. Otherwise, that reader macro signals an error of type reader-error.
 
-Examples: None.
+* 示例(Examples): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-See Also:
+* 也见(See Also):
 
 *print-readably*
 
-Notes:
+* 注意(Notes):
 
 If *read-eval* is false and *print-readably* is true, any method for print-object that would output a reference to the #. reader macro either outputs something different or signals an error of type print-not-readable. 
 
 
-Variable *READ-SUPPRESS*
+### <span id="V-READ-SUPPRESS">变量 *READ-SUPPRESS*</span>
 
-Value Type:
+* 值类型(Value Type):
 
 a generalized boolean.
 
-Initial Value:
+* 初始值(Initial Value):
 
 false.
 
-Description:
+* 描述(Description):
 
 This variable is intended primarily to support the operation of the read-time conditional notations #+ and #-. It is important for the reader macros which implement these notations to be able to skip over the printed representation of an expression despite the possibility that the syntax of the skipped expression may not be entirely valid for the current implementation, since #+ and #- exist in order to allow the same program to be shared among several Lisp implementations (including dialects other than Common Lisp) despite small incompatibilities of syntax.
 
@@ -959,7 +930,7 @@ Dispatching macro characters (including sharpsign)
 
 No matter what the value of *read-suppress*, parentheses still continue to delimit and construct lists; the #( notation continues to delimit vectors; and comments, strings, and the single-quote and backquote notations continue to be interpreted properly. Such situations as '), #<, #), and #<Space> continue to signal errors.
 
-Examples:
+* 示例(Examples):
 
  (let ((*read-suppress* t))
    (mapcar #'read-from-string
@@ -968,32 +939,32 @@ Examples:
              "#*ABC" "#\GARBAGE" "#RALPHA" "#3R444")))
 =>  (NIL NIL NIL NIL NIL NIL NIL NIL NIL NIL)
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-See Also:
+* 也见(See Also):
 
 read, Section 2 (Syntax)
 
-Notes:
+* 注意(Notes):
 
 Programmers and implementations that define additional macro characters are strongly encouraged to make them respect *read-suppress* just as standardized macro characters do. That is, when the value of *read-suppress* is true, they should ignore type errors when reading a following object and the functions that implement dispatching macro characters should tolerate nil as their infix parameter value even if a numeric value would ordinarily be required. 
 
 
-Variable *READTABLE*
+### <span id="V-READTABLE">变量 *READTABLE*</span>
 
-Value Type:
+* 值类型(Value Type):
 
 a readtable.
 
-Initial Value:
+* 初始值(Initial Value):
 
 A readtable that conforms to the description of Common Lisp syntax in Section 2 (Syntax).
 
-Description:
+* 描述(Description):
 
 The value of *readtable* is called the current readtable. It controls the parsing behavior of the Lisp reader, and can also influence the Lisp printer (e.g., see the function readtable-case).
 
-Examples:
+* 示例(Examples):
 
  (readtablep *readtable*) =>  true
  (setq zvar 123) =>  123
@@ -1004,28 +975,28 @@ Examples:
  (setq *readtable* (copy-readtable nil)) =>  #<READTABLE>
  zvar =>  123
 
-Affected By:
+* 受此影响(Affected By):
 
 compile-file, load
 
-See Also:
+* 也见(See Also):
 
 compile-file, load, readtable, Section 2.1.1.1 (The Current Readtable)
 
-Notes: None. 
+* 注意(Notes): None. 
 
 
-Condition Type READER-ERROR
+### <span id="CT-READER-ERROR">状况类型 READER-ERROR</span>
 
-Class Precedence List:
+* 类优先级列表(Class Precedence List):
 
 reader-error, parse-error, stream-error, error, serious-condition, condition, t
 
-Description:
+* 描述(Description):
 
 The type reader-error consists of error conditions that are related to tokenization and parsing done by the Lisp reader.
 
-See Also:
+* 也见(See Also):
 
 read, stream-error-stream, Section 23.1 (Reader Concepts) 
 
