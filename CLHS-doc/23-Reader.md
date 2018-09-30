@@ -1,109 +1,115 @@
-# 23 Reader
+# 23 读取器
 
-> * 23.1 [Reader Concepts](#ReaderConcepts)
-> * 23.2 [The Reader Dictionary](#TheReaderDictionary)
+> * 23.1 [读取器的概念](#ReaderConcepts)
+> * 23.2 [读取器的字典](#TheReaderDictionary)
 
-## 23.1 <span id="ReaderConcepts">Reader Concepts</span>
+## 23.1 <span id="ReaderConcepts">读取器的概念</span>
 
-> * 23.1.1 [Dynamic Control of the Lisp Reader](#DynamicControlLispReader)
-> * 23.1.2 [Effect of Readtable Case on the Lisp Reader](#EffectReadtableLispReader)
-> * 23.1.3 [Argument Conventions of Some Reader Functions](#ArgConventSomeReaderFun)
-
-
-### 23.1.1 <span id="DynamicControlLispReader">Dynamic Control of the Lisp Reader</span>
-
-Various aspects of the Lisp reader can be controlled dynamically. See Section 2.1.1 (Readtables) and Section 2.1.2 (Variables that affect the Lisp Reader). 
+> * 23.1.1 [Lisp 读取器的动态控制](#DynamicControlLispReader)
+> * 23.1.2 [Lisp 读取器上的读取表大小写的影响](#EffectReadtableLispReader)
+> * 23.1.3 [一些读取器函数的参数转换](#ArgConventSomeReaderFun)
 
 
-### 23.1.2 <span id="EffectReadtableLispReader">Effect of Readtable Case on the Lisp Reader</span>
+### 23.1.1 <span id="DynamicControlLispReader">Lisp 读取器的动态控制</span>
 
-The readtable case of the current readtable affects the Lisp reader in the following ways:
+Lisp 读取器的各个方面可以被动态控制. 见章节 2.1.1 (Readtables) 和章节 2.1.2 (Variables that affect the Lisp Reader). 
+
+### 23.1.2 <span id="EffectReadtableLispReader">Lisp 读取器上的读取表大小写的影响</span>
+
+当前读取表的读取表大小写以以下方式影响 Lisp 读取器:
 
 :upcase
 
-    When the readtable case is :upcase, unescaped constituent characters are converted to uppercase, as specified in Section 2.2 (Reader Algorithm).
+    当读取表大小写是 :upcase 时, 未转义的成分字符会被转换为大写, 如章节 2.2 (Reader Algorithm) 中所指定的那样.
 
 :downcase
 
-    When the readtable case is :downcase, unescaped constituent characters are converted to lowercase.
+    当读取表大小写是 :downcase 时, 未转义的成分字符会被转换为小写.
 
 :preserve
 
-    When the readtable case is :preserve, the case of all characters remains unchanged.
+    当读取表大小写是 :preserve 时, 所有字符的大小写保持不变.
 
 :invert
 
-    When the readtable case is :invert, then if all of the unescaped letters in the extended token are of the same case, those (unescaped) letters are converted to the opposite case.
+    当读取表大小写是 :invert 时, 那么如果所有这些未转义字母在扩展 token 中是相同类型的, 这些 (未转义的) 字母会被转换为相反的类型.
 
-#### 23.1.2.1 Examples of Effect of Readtable Case on the Lisp Reader
+#### 23.1.2.1 Lisp 读取器上的读取表大小写的影响的示例
 
- (defun test-readtable-case-reading ()
-   (let ((*readtable* (copy-readtable nil)))
-     (format t "READTABLE-CASE  Input   Symbol-name~
+```LISP
+(defun test-readtable-case-reading ()
+  (let ((*readtable* (copy-readtable nil)))
+    (format t "READTABLE-CASE  Input   Symbol-name~
               ~%-----------------------------------~
               ~%")
-     (dolist (readtable-case '(:upcase :downcase :preserve :invert))
-       (setf (readtable-case *readtable*) readtable-case)
-       (dolist (input '("ZEBRA" "Zebra" "zebra"))
-         (format t "~&:~A~16T~A~24T~A"
-                 (string-upcase readtable-case)
-                 input
-                 (symbol-name (read-from-string input)))))))
+    (dolist (readtable-case '(:upcase :downcase :preserve :invert))
+      (setf (readtable-case *readtable*) readtable-case)
+      (dolist (input '("ZEBRA" "Zebra" "zebra"))
+        (format t "~&:~A~16T~A~24T~A"
+                (string-upcase readtable-case)
+                input
+                (symbol-name (read-from-string input)))))))
+```
 
-The output from (test-readtable-case-reading) should be as follows:
+来自 (test-readtable-case-reading) 的输出 应该如下:
 
- READTABLE-CASE     Input Symbol-name
- -------------------------------------
-    :UPCASE         ZEBRA   ZEBRA
-    :UPCASE         Zebra   ZEBRA
-    :UPCASE         zebra   ZEBRA
-    :DOWNCASE       ZEBRA   zebra
-    :DOWNCASE       Zebra   zebra
-    :DOWNCASE       zebra   zebra
-    :PRESERVE       ZEBRA   ZEBRA
-    :PRESERVE       Zebra   Zebra
-    :PRESERVE       zebra   zebra
-    :INVERT         ZEBRA   zebra
-    :INVERT         Zebra   Zebra
-    :INVERT         zebra   ZEBRA
-
-
-### 23.1.3 <span id="ArgConventSomeReaderFun">Argument Conventions of Some Reader Functions</span>
-
-#### 23.1.3.1 The EOF-ERROR-P argument
-
-Eof-error-p in input function calls controls what happens if input is from a file (or any other input source that has a definite end) and the end of the file is reached. If eof-error-p is true (the default), an error of type end-of-file is signaled at end of file. If it is false, then no error is signaled, and instead the function returns eof-value.
-
-Functions such as read that read the representation of an object rather than a single character always signals an error, regardless of eof-error-p, if the file ends in the middle of an object representation. For example, if a file does not contain enough right parentheses to balance the left parentheses in it, read signals an error. If a file ends in a symbol or a number immediately followed by end-of-file, read reads the symbol or number successfully and when called again will act according to eof-error-p. Similarly, the function read-line successfully reads the last line of a file even if that line is terminated by end-of-file rather than the newline character. Ignorable text, such as lines containing only whitespace[2] or comments, are not considered to begin an object; if read begins to read an expression but sees only such ignorable text, it does not consider the file to end in the middle of an object. Thus an eof-error-p argument controls what happens when the file ends between objects. 
+| READTABLE-CASE  |   Input | Symbol-name |
+| --              |--       |--           |
+|  :UPCASE        | ZEBRA   | ZEBRA       |
+|  :UPCASE        | Zebra   | ZEBRA       |
+|  :UPCASE        | zebra   | ZEBRA       |
+|  :DOWNCASE      | ZEBRA   | zebra       |
+|  :DOWNCASE      | Zebra   | zebra       |
+|  :DOWNCASE      | zebra   | zebra       |
+|  :PRESERVE      | ZEBRA   | ZEBRA       |
+|  :PRESERVE      | Zebra   | Zebra       |
+|  :PRESERVE      | zebra   | zebra       |
+|  :INVERT        | ZEBRA   | zebra       |
+|  :INVERT        | Zebra   | Zebra       |
+|  :INVERT        | zebra   | ZEBRA       |
 
 
-#### 23.1.3.2 The RECURSIVE-P argument
+### 23.1.3 <span id="ArgConventSomeReaderFun">一些读取器函数的参数转换</span>
 
-If recursive-p is supplied and not nil, it specifies that this function call is not an outermost call to read but an embedded call, typically from a reader macro function. It is important to distinguish such recursive calls for three reasons.
+#### 23.1.3.1 EOF-ERROR-P 参数
 
-1. An outermost call establishes the context within which the #n= and #n# syntax is scoped. Consider, for example, the expression
+在输入函数调用中的 eof-error-p 控制如果输入来自于一个文件(或者任何其他有着有限结尾的输入源)并且到达了文件的末尾会发生什么. 如果 eof-error-p 是 true (默认的), 就会在文件的结尾发出一个 end-of-file 类型的错误. 如果它是 false, 那么没有错误会发生, 并且这个函数返回 eof-value.
 
-     (cons '#3=(p q r) '(x y . #3#))
+像 read 这样读取一个对象的打印表示而不是单个字符的函数, 如果文件结束在一个对象打印表示的中间, 不管 eof-error-p, 都会发出一个错误. 比如, 如果一个文件确实不包含足够的右括号来平衡它里面的右括号, read 就会发出一个错误. 如果一个文件以一个符号或一个数字后面直接跟着 end-of-file 终止. 类似地, 函数 read-line 成功地读取一个文件的最后一行, 即便那行用 end-of-file 终止而不是用一个换行字符. 可忽略的文本, 例如只包含空格或注释, 不会被认为开始一个对象; 如果 read 开始去读取一个表达式但是只看到这样的可忽略文本, 它不会认为这个文件终止在一个对象的中间. 因此一个 eof-error-p 参数控制当文件在对象之间结束时会发生什么. 
 
-    If the single-quote reader macro were defined in this way:
+#### 23.1.3.2 RECURSIVE-P 参数
 
-     (set-macro-character #\'       ;incorrect
-        #'(lambda (stream char)
-             (declare (ignore char))
-             (list 'quote (read stream))))
+如果 recursive-p 被提供并且不是 nil, 它指明这个函数调用不是一个对 read 的最外部的调用而是一个内嵌的调用, 通常来自于一个读取器宏函数. 区分这样的递归调用是很重要的, 原因有三.
 
-    then each call to the single-quote reader macro function would establish independent contexts for the scope of read information, including the scope of identifications between markers like ``#3='' and ``#3#''. However, for this expression, the scope was clearly intended to be determined by the outer set of parentheses, so such a definition would be incorrect. The correct way to define the single-quote reader macro uses recursive-p:
+1. 一个最外部的调用建立上下文, 这个 #n= 和 #n# 语法在这个上下文中被审视. 细想, 例如, 表达式
 
-     (set-macro-character #\'       ;correct
-        #'(lambda (stream char)
-             (declare (ignore char))
-             (list 'quote (read stream t nil t))))
+    ```LISP
+    (cons '#3=(p q r) '(x y . #3#))
+    ```
 
-2. A recursive call does not alter whether the reading process is to preserve whitespace[2] or not (as determined by whether the outermost call was to read or read-preserving-whitespace). Suppose again that single-quote were to be defined as shown above in the incorrect definition. Then a call to read-preserving-whitespace that read the expression 'foo<Space> would fail to preserve the space character following the symbol foo because the single-quote reader macro function calls read, not read-preserving-whitespace, to read the following expression (in this case foo). The correct definition, which passes the value true for recursive-p to read, allows the outermost call to determine whether whitespace[2] is preserved.
+    如果这个单引号读取器宏用这种方式定义:
 
-3. When end-of-file is encountered and the eof-error-p argument is not nil, the kind of error that is signaled may depend on the value of recursive-p. If recursive-p is true, then the end-of-file is deemed to have occurred within the middle of a printed representation; if recursive-p is false, then the end-of-file may be deemed to have occurred between objects rather than within the middle of one. 
+    ```LISP
+    (set-macro-character #\'       ;incorrect
+      #'(lambda (stream char)
+            (declare (ignore char))
+            (list 'quote (read stream))))
+    ```
 
-## 23.2 <span id="TheReaderDictionary">The Reader Dictionary</span>
+    那么每一个对这个单引号读取器宏函数的调用会为 read 信息的作用域建立一个独立的上下文, 包括在像 "#3=" 和 "#3#" 这样的标记之间的识别作用域. 但是, 对于这个表达式, 这个作用域显然是由更外面的一组括号来决定的, 所以这样一个定义是不正确的. 正确的方式去定义这个单引号读取器宏是使用 recursive-p:
+
+    ```LISP
+    (set-macro-character #\'       ;correct
+      #'(lambda (stream char)
+            (declare (ignore char))
+            (list 'quote (read stream t nil t))))
+    ```
+
+2. 一个递归调用不会改变这个读取过程是否保留空格 (由这个最外面的调用是否为 read 或 read-preserving-whitespace 决定). 再一次假设这个单引号被定义为上面不正确的定义所展示的那样. 然后一个读取表达式 'foo<Space> 的对 read-preserving-whitespace 的调用会无法保留符号 foo 后的空白字符, 因为这个单引号读取器宏函数调用 read 而不是 read-preserving-whitespace 去读取后面的表达式 (在这个情况 foo). 传递给 read 的 recursive-p 值为 true 的正确定义允许最外部的调用去决定是否保留空格.
+
+3. 当遇到 end-of-file 并且 eof-error-p 参数不是 nil 时, 发送的错误的种类可能取决于 recursive-p 的值. 如果 recursive-p 是 true, 那么这个 end-of-file 被认为已经出现在一个打印表示的中间; 如果 recursive-p 是 false, 那么这个 end-of-file 可能被认为已经出现在对象之间而不是在一个的中间. 
+
+## 23.2 <span id="TheReaderDictionary">读取器的字典</span>
 
 > * [系统类 READTABLE](#SC-READTABLE)
 > * [函数 COPY-READTABLE](#F-COPY-READTABLE)
@@ -488,7 +494,7 @@ Accesses the readtable case of readtable, which affects the way in which the Lis
 
 * 示例(Examples):
 
-See Section 23.1.2.1 (Examples of Effect of Readtable Case on the Lisp Reader) and Section 22.1.3.3.2.1 (Examples of Effect of Readtable Case on the Lisp Printer).
+See Section 23.1.2.1 (Examples of Lisp 读取器上的读取表大小写的影响) and Section 22.1.3.3.2.1 (Examples of Effect of Readtable Case on the Lisp Printer).
 
 * 受此影响(Affected By): None.
 
@@ -498,7 +504,7 @@ Should signal an error of type type-error if readtable is not a readtable. Shoul
 
 * 也见(See Also):
 
-*readtable*, *print-escape*, Section 2.2 (Reader Algorithm), Section 23.1.2 (Effect of Readtable Case on the Lisp Reader), Section 22.1.3.3.2 (Effect of Readtable Case on the Lisp Printer)
+*readtable*, *print-escape*, Section 2.2 (Reader Algorithm), Section 23.1.2 (Lisp 读取器上的读取表大小写的影响), Section 22.1.3.3.2 (Effect of Readtable Case on the Lisp Printer)
 
 * 注意(Notes):
 
