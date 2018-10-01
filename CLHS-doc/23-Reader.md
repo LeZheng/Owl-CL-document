@@ -135,52 +135,52 @@ Lisp 读取器的各个方面可以被动态控制. 见章节 2.1.1 (Readtables)
 
 * 类优先级列表(Class Precedence List):
 
-readtable, t
+        readtable, t
 
 * 描述(Description):
 
-A readtable maps characters into syntax types for the Lisp reader; see Section 2 (Syntax). A readtable also contains associations between macro characters and their reader macro functions, and records information about the case conversion rules to be used by the Lisp reader when parsing symbols.
+        一个读取表映射字符到 Lisp 读取器的语法类型; 见章节 2 (Syntax). 一个读取表也包含宏字符和它们的读取器宏函数之间的关联, 并且记录当解析符号时, 关于 Lisp 读取器使用的大小写转换规则的信息.
 
-Each simple character must be representable in the readtable. It is implementation-defined whether non-simple characters can have syntax descriptions in the readtable.
+        每一个简单字符在这个读取表中必须是可以表示的. 非简单字符是否在读取表中是否可以有语法描述是具体实现定义的.
 
 * 也见(See Also):
 
-Section 2.1.1 (Readtables), Section 22.1.3.13 (Printing Other Objects) 
+        章节 2.1.1 (Readtables), 章节 22.1.3.13 (Printing Other Objects) 
 
 
 ### <span id="F-COPY-READTABLE">函数 COPY-READTABLE</span>
 
 * 语法(Syntax):
 
-copy-readtable &optional from-readtable to-readtable => readtable
+        copy-readtable &optional from-readtable to-readtable => readtable
 
 * 参数和值(Arguments and Values):
 
-from-readtable---a readtable designator. The default is the current readtable.
-
-to-readtable---a readtable or nil. The default is nil.
-
-readtable---the to-readtable if it is non-nil, or else a fresh readtable.
+        from-readtable---一个读取表标识符. 默认是当前读取表.
+        to-readtable---一个读取表或 nil. 默认是 nil.
+        readtable---如果它不是 nil 那么就是 to-readtable, 否则就是一个新的读取表.
 
 * 描述(Description):
 
-copy-readtable copies from-readtable.
+        copy-readtable 复制 from-readtable.
 
-If to-readtable is nil, a new readtable is created and returned. Otherwise the readtable specified by to-readtable is modified and returned.
+        如果 to-readtable 是 nil, 一个新的读取表会被创建并返回. 否则由 to-readtable 指定的读取表会被修改并返回.
 
-copy-readtable copies the setting of readtable-case.
+        copy-readtable 复制 readtable-case 的设置.
 
 * 示例(Examples):
 
- (setq zvar 123) =>  123
- (set-syntax-from-char #\z #\' (setq table2 (copy-readtable))) =>  T
- zvar =>  123
- (copy-readtable table2 *readtable*) =>  #<READTABLE 614000277>
- zvar =>  VAR
- (setq *readtable* (copy-readtable)) =>  #<READTABLE 46210223>
- zvar =>  VAR
- (setq *readtable* (copy-readtable nil)) =>  #<READTABLE 46302670>
- zvar =>  123
+    ```LISP
+    (setq zvar 123) =>  123
+    (set-syntax-from-char #\z #\' (setq table2 (copy-readtable))) =>  T
+    zvar =>  123
+    (copy-readtable table2 *readtable*) =>  #<READTABLE 614000277>
+    zvar =>  VAR
+    (setq *readtable* (copy-readtable)) =>  #<READTABLE 46210223>
+    zvar =>  VAR
+    (setq *readtable* (copy-readtable nil)) =>  #<READTABLE 46302670>
+    zvar =>  123
+    ```
 
 * 受此影响(Affected By): None.
 
@@ -188,54 +188,54 @@ copy-readtable copies the setting of readtable-case.
 
 * 也见(See Also):
 
-readtable, *readtable*
+        readtable, *readtable*
 
 * 注意(Notes):
 
-(setq *readtable* (copy-readtable nil))
+        (setq *readtable* (copy-readtable nil))
 
-restores the input syntax to standard Common Lisp syntax, even if the initial readtable has been clobbered (assuming it is not so badly clobbered that you cannot type in the above expression).
+        恢复输入语法未标准的 Common Lisp 语法, 即便那个初始的读取表已经被重写 (假定它没有被恶劣的重写以至于你不能输入上述表达式).
 
-On the other hand,
+        另一方面,
 
-(setq *readtable* (copy-readtable))
+        (setq *readtable* (copy-readtable))
 
-replaces the current readtable with a copy of itself. This is useful if you want to save a copy of a readtable for later use, protected from alteration in the meantime. It is also useful if you want to locally bind the readtable to a copy of itself, as in:
+        用当前表自身的一个拷贝替换当前表. 如果你想去保存一个读取表的拷贝用于后面的使用, 同时又不需要修改, 那么这是非常有用的. 如果你想局部绑定这个读取表为它自身的一个拷贝, 这也是很有用的, 像下面这样:
 
-(let ((*readtable* (copy-readtable))) ...)
+        (let ((*readtable* (copy-readtable))) ...)
 
 
 ### <span id="F-MDMC">函数 MAKE-DISPATCH-MACRO-CHARACTER</span>
 
 * 语法(Syntax):
 
-make-dispatch-macro-character char &optional non-terminating-p readtable => t
+        make-dispatch-macro-character char &optional non-terminating-p readtable => t
 
 * 参数和值(Arguments and Values):
 
-char---a character.
-
-non-terminating-p---a generalized boolean. The default is false.
-
-readtable---a readtable. The default is the current readtable.
+        char---一个字符.
+        non-terminating-p---一个广义 boolean. 默认是 false.
+        readtable---a readtable. 默认是当前读取表.
 
 * 描述(Description):
 
-make-dispatch-macro-character makes char be a dispatching macro character in readtable.
+        make-dispatch-macro-character 使 char 成为表 readtable 中的一个分派宏字符.
 
-Initially, every character in the dispatch table associated with the char has an associated function that signals an error of type reader-error.
+        首先, 在这个分派表中和 char 关联的每一个字符有一个发出 reader-error 类型的错误的关联函数.
 
-If non-terminating-p is true, the dispatching macro character is made a non-terminating macro character; if non-terminating-p is false, the dispatching macro character is made a terminating macro character.
+        如果 non-terminating-p 是 true, 这个分派宏字符会是一个非终止宏字符; 如果 non-terminating-p 是 false, 这个分派宏字符会是一个终止宏字符.
 
 * 示例(Examples):
 
- (get-macro-character #\{) =>  NIL, false
- (make-dispatch-macro-character #\{) =>  T
- (not (get-macro-character #\{)) =>  false
+    ```LISP
+    (get-macro-character #\{) =>  NIL, false
+    (make-dispatch-macro-character #\{) =>  T
+    (not (get-macro-character #\{)) =>  false
+    ```
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-The readtable is altered.
+        这个读取表 readtable 会被修改.
 
 * 受此影响(Affected By): None.
 
@@ -243,7 +243,7 @@ The readtable is altered.
 
 * 也见(See Also):
 
-*readtable*, set-dispatch-macro-character
+        *readtable*, set-dispatch-macro-character
 
 * 注意(Notes): None. 
 
@@ -252,91 +252,96 @@ The readtable is altered.
 
 * 语法(Syntax):
 
-read &optional input-stream eof-error-p eof-value recursive-p => object
+        read &optional input-stream eof-error-p eof-value recursive-p => object
 
-read-preserving-whitespace &optional input-stream eof-error-p eof-value recursive-p
-
-=> object
+        read-preserving-whitespace &optional input-stream eof-error-p eof-value recursive-p
+        => object
 
 * 参数和值(Arguments and Values):
 
-input-stream---an input stream designator.
-
-eof-error-p---a generalized boolean. The default is true.
-
-eof-value---an object. The default is nil.
-
-recursive-p---a generalized boolean. The default is false.
-
-object---an object (parsed by the Lisp reader) or the eof-value.
+        input-stream---一个输入流标识符.
+        eof-error-p---一个广义 boolean. 默认是 true.
+        eof-value---一个对象. 默认是 nil.
+        recursive-p---一个广义 boolean. 默认是 false.
+        object---一个对象 (由 Lisp 读取器解析的) 或者 eof-value.
 
 * 描述(Description):
 
-read parses the printed representation of an object from input-stream and builds such an object.
+        read 从输入流 input-stream 解析一个对象的打印表示并且构建这样一个对象.
 
-read-preserving-whitespace is like read but preserves any whitespace[2] character that delimits the printed representation of the object. read-preserving-whitespace is exactly like read when the recursive-p argument to read-preserving-whitespace is true.
+        read-preserving-whitespace 类似于 read 但是保留任何分隔这个对象的打印表示的空格字符. 当给 read-preserving-whitespace 的 recursive-p 参数是 true 时 read-preserving-whitespace 和 read 一样.
 
-When *read-suppress* is false, read throws away the delimiting character required by certain printed representations if it is a whitespace[2] character; but read preserves the character (using unread-char) if it is syntactically meaningful, because it could be the start of the next expression.
+        当 *read-suppress* 是 false 时, 如果是空白字符, read 会丢弃某些打印表示所需要的分隔字符; 但是如果它是语法上有意义的, 那么 read 会保留这个字符 (使用 unread-char), 因为它可以是下一个表达式的开始.
 
-If a file ends in a symbol or a number immediately followed by an end of file[1], read reads the symbol or number successfully; when called again, it sees the end of file[1] and only then acts according to eof-error-p. If a file contains ignorable text at the end, such as blank lines and comments, read does not consider it to end in the middle of an object.
+        如果一个文件终止于一个符号或一个数字后直接跟着文件的末尾, read 成功地读取这个符号或数字; 当再一次调用时, 它见到文件的末尾并且根据 eof-error-p 行动. 如果一个文件在末尾包含了可忽略的文本, 例如空白行和注释, read 不会把这个当作终止于一个对象的中间.
 
-If recursive-p is true, the call to read is expected to be made from within some function that itself has been called from read or from a similar input function, rather than from the top level.
+        如果 recursive-p 是 true, 这个对 read 的调用应该是由某个函数内部生成的, 而这个函数本身是由 read 或类似的输入函数调用的, 而不是从顶层调用的.
 
-Both functions return the object read from input-stream. Eof-value is returned if eof-error-p is false and end of file is reached before the beginning of an object.
+        两个函数都返回从 input-stream 中读取到的函数. 如果 eof-error-p 是 false 并且在开始一个对象前到达了文件的末尾, 那么返回 eof-value.
 
 * 示例(Examples):
 
- (read)
->>  'a
-=>  (QUOTE A)
- (with-input-from-string (is " ") (read is nil 'the-end)) =>  THE-END
- (defun skip-then-read-char (s c n)
-    (if (char= c #\{) (read s t nil t) (read-preserving-whitespace s))
-    (read-char-no-hang s)) =>  SKIP-THEN-READ-CHAR
- (let ((*readtable* (copy-readtable nil)))
-    (set-dispatch-macro-character #\# #\{ #'skip-then-read-char)
-    (set-dispatch-macro-character #\# #\} #'skip-then-read-char)
-    (with-input-from-string (is "#{123 x #}123 y")
-      (format t "~S ~S" (read is) (read is)))) =>  #\x, #\Space, NIL
+    ```LISP
+    (read)
+    >>  'a
+    =>  (QUOTE A)
+    (with-input-from-string (is " ") (read is nil 'the-end)) =>  THE-END
+    (defun skip-then-read-char (s c n)
+        (if (char= c #\{) (read s t nil t) (read-preserving-whitespace s))
+        (read-char-no-hang s)) =>  SKIP-THEN-READ-CHAR
+    (let ((*readtable* (copy-readtable nil)))
+        (set-dispatch-macro-character #\# #\{ #'skip-then-read-char)
+        (set-dispatch-macro-character #\# #\} #'skip-then-read-char)
+        (with-input-from-string (is "#{123 x #}123 y")
+          (format t "~S ~S" (read is) (read is)))) =>  #\x, #\Space, NIL
+    ```
 
-As an example, consider this reader macro definition:
+        作为一个示例, 思考这个读取器宏定义:
 
- (defun slash-reader (stream char)
-   (declare (ignore char))
-   `(path . ,(loop for dir = (read-preserving-whitespace stream t nil t)
-                   then (progn (read-char stream t nil t)
-                               (read-preserving-whitespace stream t nil t))
-                   collect dir
-                   while (eql (peek-char nil stream nil nil t) #\/))))
- (set-macro-character #\/ #'slash-reader)
+    ```LISP
+    (defun slash-reader (stream char)
+      (declare (ignore char))
+      `(path . ,(loop for dir = (read-preserving-whitespace stream t nil t)
+                      then (progn (read-char stream t nil t)
+                                  (read-preserving-whitespace stream t nil t))
+                      collect dir
+                      while (eql (peek-char nil stream nil nil t) #\/))))
+    (set-macro-character #\/ #'slash-reader)
+    ```
 
-Consider now calling read on this expression:
+        思考现在在这个表达式上调用 read:
 
- (zyedh /usr/games/zork /usr/games/boggle)
+    ```LISP
+    (zyedh /usr/games/zork /usr/games/boggle)
+    ```
 
-The / macro reads objects separated by more / characters; thus /usr/games/zork is intended to read as (path usr games zork). The entire example expression should therefore be read as
+        这个 / 读取器宏读取由多个 / 字符分隔的对象; 因此 /usr/games/zork 打算被读取为 (path usr games zork). 这整个示例表达式应该因此被读取为
 
- (zyedh (path usr games zork) (path usr games boggle))
+    ```LISP
+    (zyedh (path usr games zork) (path usr games boggle))
+    ```
 
-However, if read had been used instead of read-preserving-whitespace, then after the reading of the symbol zork, the following space would be discarded; the next call to peek-char would see the following /, and the loop would continue, producing this interpretation:
+        然而, 如果 read 已经被使用而不是 read-preserving-whitespace, 那么在符号 zork 的读取后, 后面的空格会被丢弃; 下一个对 peek-char 的调用会见到后面的 /, 并且这个循环会继续, 产生这个解释:
 
- (zyedh (path usr games zork usr games boggle))
+    ```LISP
+    (zyedh (path usr games zork usr games boggle))
+    ```
 
-There are times when whitespace[2] should be discarded. If a command interpreter takes single-character commands, but occasionally reads an object then if the whitespace[2] after a symbol is not discarded it might be interpreted as a command some time later after the symbol had been read.
+        有时候空白应该被丢弃. 入股一个命令解释器接受单字符命令, 但是偶尔读取一个对象, 那么如果一个符号后的空格没有被丢弃, 它有时可能在读取这个符号后被解释为一个命令.
 
 * 受此影响(Affected By):
 
-*standard-input*, *terminal-io*, *readtable*, *read-default-float-format*, *read-base*, *read-suppress*, *package*, *read-eval*.
+        *standard-input*, *terminal-io*, *readtable*, *read-default-float-format*, *read-base*, *read-suppress*, *package*, *read-eval*.
 
 * 异常情况(Exceptional Situations):
 
-read signals an error of type end-of-file, regardless of eof-error-p, if the file ends in the middle of an object representation. For example, if a file does not contain enough right parentheses to balance the left parentheses in it, read signals an error. This is detected when read or read-preserving-whitespace is called with recursive-p and eof-error-p non-nil, and end-of-file is reached before the beginning of an object.
+        如果文件终止于一个对象表示的中间, 那么不管 eof-error-p 的值, read 发出一个 end-of-file 类型的错误. 例如, 如果一个文件没有包含足够的右括号来平衡它里面的左括号, read 就会发出一个错误. 当 read 或 read-preserving-whitespace 被调用时 recursive-p 和 eof-error-p 不是 nil, 并且在一个对象开始前到达了文件的末尾, 这个会被检测到.
 
-If eof-error-p is true, an error of type end-of-file is signaled at the end of file.
+        如果 eof-error-p 是 true, 在文件的末尾发出一个 end-of-file 类型的错误.
 
 * 也见(See Also):
 
-peek-char, read-char, unread-char, read-from-string, read-delimited-list, parse-integer, Section 2 (Syntax), Section 23.1 (Reader Concepts)
+        peek-char, read-char, unread-char, read-from-string, read-delimited-list, parse-integer, 章节 2 (Syntax), 章节 23.1 (Reader Concepts)
 
 * 注意(Notes): None. 
 
@@ -345,77 +350,82 @@ peek-char, read-char, unread-char, read-from-string, read-delimited-list, parse-
 
 * 语法(Syntax):
 
-read-delimited-list char &optional input-stream recursive-p => list
+        read-delimited-list char &optional input-stream recursive-p => list
 
 * 参数和值(Arguments and Values):
 
-char---a character.
-
-input-stream---an input stream designator. The default is standard input.
-
-recursive-p---a generalized boolean. The default is false.
-
-list---a list of the objects read.
+        char---一个字符.
+        input-stream---一个输入流标识符. 默认是标准输入.
+        recursive-p---一个广义 boolean. 默认是 false.
+        list---一个读取到的对象列表.
 
 * 描述(Description):
 
-read-delimited-list reads objects from input-stream until the next character after an object's representation (ignoring whitespace[2] characters and comments) is char.
+        read-delimited-list 从 input-stream 中读取对象直到在一个对象表示后面的字符下一个字符(忽略空格字符和注释)是 char.
 
-read-delimited-list looks ahead at each step for the next non-whitespace[2] character and peeks at it as if with peek-char. If it is char, then the character is consumed and the list of objects is returned. If it is a constituent or escape character, then read is used to read an object, which is added to the end of the list. If it is a macro character, its reader macro function is called; if the function returns a value, that value is added to the list. The peek-ahead process is then repeated.
+        read-delimited-list 向前查看每一步, 以查找下一个非空格字符, 并以 peek-char 的方式观察它. 如果它是 char, 那么这个字符被消耗并且返回对象列表. 如果它是一个 constituent 或转义字符, 那么 read 被用于读取一个对象, 它会被添加到这个对象的末尾. 如果它是一个宏字符, 那么就会调用它的读取器宏函数; 如果这个函数返回一个值, 那么这个值会被添加给列表. 然后重复窥视的过程.
 
-If recursive-p is true, this call is expected to be embedded in a higher-level call to read or a similar function.
+        如果 recursive-p 是 true, 这个调用预计被嵌入在一个更高层的对 read 或一个相似函数的调用中.
 
-It is an error to reach end-of-file during the operation of read-delimited-list.
+        在 read-delimited-list 操作期间到达文件末尾是一个错误.
 
-The consequences are undefined if char has a syntax type of whitespace[2] in the current readtable.
+        如果 char 有一个当前读取表中的空格的语法类型, 那么后果是未定义的.
 
 * 示例(Examples):
 
- (read-delimited-list #\]) 1 2 3 4 5 6 ]
-=>  (1 2 3 4 5 6)
+    ```LISP
+    (read-delimited-list #\]) 1 2 3 4 5 6 ]
+    =>  (1 2 3 4 5 6)
+    ```
 
-Suppose you wanted #{a b c ... z} to read as a list of all pairs of the elements a, b, c, ..., z, for example.
+        假设你想 #{a b c ... z} 被读取未元素 a, b, c, ..., z 的所有序对的列表, 例如.
 
- #{p q z a}  reads as  ((p q) (p z) (p a) (q z) (q a) (z a))
+            #{p q z a}  读取为  ((p q) (p z) (p a) (q z) (q a) (z a))
 
-This can be done by specifying a macro-character definition for #{ that does two things: reads in all the items up to the }, and constructs the pairs. read-delimited-list performs the first task.
+        这个可以通过为 #{ 指定一个宏字符定义来完成, 这个宏字符定义完成两件事: 读入直到 } 的所有项, 并且构造这些序对. read-delimited-list 执行第一个任务.
 
- (defun |#{-reader| (stream char arg)
-   (declare (ignore char arg))
-   (mapcon #'(lambda (x)
-              (mapcar #'(lambda (y) (list (car x) y)) (cdr x)))
-          (read-delimited-list #\} stream t))) =>  |#{-reader|
+    ```LISP
+    (defun |#{-reader| (stream char arg)
+      (declare (ignore char arg))
+      (mapcon #'(lambda (x)
+                  (mapcar #'(lambda (y) (list (car x) y)) (cdr x)))
+              (read-delimited-list #\} stream t))) =>  |#{-reader|
 
- (set-dispatch-macro-character #\# #\{ #'|#{-reader|) =>  T 
- (set-macro-character #\} (get-macro-character #\) nil))
+    (set-dispatch-macro-character #\# #\{ #'|#{-reader|) =>  T 
+    (set-macro-character #\} (get-macro-character #\) nil))
+    ```
 
-Note that true is supplied for the recursive-p argument.
+        注意提供给 recursive-p 参数的 true.
 
-It is necessary here to give a definition to the character } as well to prevent it from being a constituent. If the line
+        这里有必要对字符 } 给出一个定义, 并防止其成为一个 constituent. 如果上面显示的这行
 
- (set-macro-character #\} (get-macro-character #\) nil))
+    ```LISP
+    (set-macro-character #\} (get-macro-character #\) nil))
+    ```
 
-shown above were not included, then the } in
+        没有包括在内, 那么在
 
- #{ p q z a}
+    ```LISP
+    #{ p q z a}
+    ```
 
-would be considered a constituent character, part of the symbol named a}. This could be corrected by putting a space before the }, but it is better to call set-macro-character.
+        中的 } 会被认为是一个 constituent 字符, 成为名为 a} 的符号的一部分. 这个可以通过在 } 之前放置一个空格来纠正, 但是去调用 set-macro-character 更好.
 
-Giving } the same definition as the standard definition of the character ) has the twin benefit of making it terminate tokens for use with read-delimited-list and also making it invalid for use in any other context. Attempting to read a stray } will signal an error.
+        给 } 和字符 ) 的标准定义相同的定义有着双重好处: 使它和 read-delimited-list 一起使用时终止标记并且也使它在其他上下文中使用是无效的. 尝试去读取一个偏离的 } 会发出一个错误.
 
 * 受此影响(Affected By):
 
-*standard-input*, *readtable*, *terminal-io*.
+        *standard-input*, *readtable*, *terminal-io*.
 
 * 异常情况(Exceptional Situations): None.
 
 * 也见(See Also):
 
-read, peek-char, read-char, unread-char.
+        read, peek-char, read-char, unread-char.
 
 * 注意(Notes):
 
-read-delimited-list is intended for use in implementing reader macros. Usually it is desirable for char to be a terminating macro character so that it can be used to delimit tokens; however, read-delimited-list makes no attempt to alter the syntax specified for char by the current readtable. The caller must make any necessary changes to the readtable syntax explicitly. 
+        read-delimited-list 意图在于被用来实现读取器宏. 通常, char 应该是一个终止的宏字符, 以便可以使用它来分隔记号; 但是, read-delimited-list 不会尝试去修改有当前读取器表指定的 char 的语法. 调用者必须对读取表语法做出显式的必要改变. 
 
 
 ### <span id="F-READ-FROM-STRING">函数 READ-FROM-STRING</span>
@@ -430,15 +440,15 @@ read-from-string string &optional eof-error-p eof-value &key start end preserve-
 
 string---a string.
 
-eof-error-p---a generalized boolean. The default is true.
+eof-error-p---一个广义 boolean. 默认是 true.
 
-eof-value---an object. The default is nil.
+eof-value---一个对象. 默认是 nil.
 
 start, end---bounding index designators of string. The defaults for start and end are 0 and nil, respectively.
 
-preserve-whitespace---a generalized boolean. The default is false.
+preserve-whitespace---一个广义 boolean. 默认是 false.
 
-object---an object (parsed by the Lisp reader) or the eof-value.
+object---一个对象 (由 Lisp 读取器解析的) 或者 eof-value
 
 position---an integer greater than or equal to zero, and less than or equal to one more than the length of the string.
 
@@ -457,7 +467,7 @@ The secondary value, position, is the index of the first character in the bounde
  (read-from-string " 1 3 5" t nil :start 2) =>  3, 5
  (read-from-string "(a b c)") =>  (A B C), 7
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
 * 受此影响(Affected By): None.
 
@@ -518,9 +528,9 @@ readtablep object => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-object---an object.
+object---一个对象.
 
-generalized-boolean---a generalized boolean.
+generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
@@ -532,7 +542,7 @@ Returns true if object is of type readtable; otherwise, returns false.
  (readtablep (copy-readtable)) =>  true
  (readtablep '*readtable*) =>  false
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
 * 受此影响(Affected By): None.
 
@@ -555,11 +565,11 @@ set-dispatch-macro-character disp-char sub-char new-function &optional readtable
 
 * 参数和值(Arguments and Values):
 
-disp-char---a character.
+disp-char---一个字符.
 
-sub-char---a character.
+sub-char---一个字符.
 
-readtable---a readtable designator. The default is the current readtable.
+readtable---a readtable designator. 默认是当前读取表.
 
 function---a function designator or nil.
 
@@ -602,7 +612,7 @@ If it is desired that #$foo : as if it were (dollars foo).
 
 Section 2.1.4.4 (Macro Characters)
 
-Side Effects:
+* 副作用(Side Effects):
 
 The readtable is modified.
 
@@ -633,11 +643,11 @@ set-macro-character char new-function &optional non-terminating-p readtable => t
 
 * 参数和值(Arguments and Values):
 
-char---a character.
+char---一个字符.
 
-non-terminating-p---a generalized boolean. The default is false.
+non-terminating-p---一个广义 boolean. 默认是 false.
 
-readtable---a readtable designator. The default is the current readtable.
+readtable---a readtable designator. 默认是当前读取表.
 
 function---nil, or a designator for a function of two arguments.
 
@@ -674,7 +684,7 @@ The following is a possible definition for the semicolon reader macro in standar
    (values)) =>  SEMICOLON-READER
  (set-macro-character #\; #'semicolon-reader) =>  T
 
-Side Effects:
+* 副作用(Side Effects):
 
 The readtable is modified.
 
@@ -697,11 +707,11 @@ set-syntax-from-char to-char from-char &optional to-readtable from-readtable => 
 
 * 参数和值(Arguments and Values):
 
-to-char---a character.
+to-char---一个字符.
 
-from-char---a character.
+from-char---一个字符.
 
-to-readtable---a readtable. The default is the current readtable.
+to-readtable---a readtable. 默认是当前读取表.
 
 from-readtable---a readtable designator. The default is the standard readtable.
 
@@ -718,7 +728,7 @@ A macro definition from a character such as " can be copied to another character
  (set-syntax-from-char #\7 #\;) =>  T
  123579 =>  1235
 
-Side Effects:
+* 副作用(Side Effects):
 
 The to-readtable is modified.
 
@@ -960,34 +970,36 @@ Programmers and implementations that define additional macro characters are stro
 
 * 值类型(Value Type):
 
-a readtable.
+        一个读取表.
 
 * 初始值(Initial Value):
 
-A readtable that conforms to the description of Common Lisp syntax in Section 2 (Syntax).
+        一个符合章节 2 (Syntax) Common Lisp 语法描述的读取表.
 
 * 描述(Description):
 
-The value of *readtable* is called the current readtable. It controls the parsing behavior of the Lisp reader, and can also influence the Lisp printer (e.g., see the function readtable-case).
+        *readtable* 的值被称为当前的读取表. 它控制 Lisp 读取器的解析行为, 并且也可以影响 Lisp 打印器 (比如, 见函数 readtable-case).
 
 * 示例(Examples):
 
- (readtablep *readtable*) =>  true
- (setq zvar 123) =>  123
- (set-syntax-from-char #\z #\' (setq table2 (copy-readtable))) =>  T
- zvar =>  123
- (setq *readtable* table2) =>  #<READTABLE>
- zvar =>  VAR
- (setq *readtable* (copy-readtable nil)) =>  #<READTABLE>
- zvar =>  123
+    ```LISP
+    (readtablep *readtable*) =>  true
+    (setq zvar 123) =>  123
+    (set-syntax-from-char #\z #\' (setq table2 (copy-readtable))) =>  T
+    zvar =>  123
+    (setq *readtable* table2) =>  #<READTABLE>
+    zvar =>  VAR
+    (setq *readtable* (copy-readtable nil)) =>  #<READTABLE>
+    zvar =>  123
+    ```
 
 * 受此影响(Affected By):
 
-compile-file, load
+        compile-file, load
 
 * 也见(See Also):
 
-compile-file, load, readtable, Section 2.1.1.1 (The Current Readtable)
+        compile-file, load, readtable, 章节 2.1.1.1 (The Current Readtable)
 
 * 注意(Notes): None. 
 
@@ -996,13 +1008,13 @@ compile-file, load, readtable, Section 2.1.1.1 (The Current Readtable)
 
 * 类优先级列表(Class Precedence List):
 
-reader-error, parse-error, stream-error, error, serious-condition, condition, t
+        reader-error, parse-error, stream-error, error, serious-condition, condition, t
 
 * 描述(Description):
 
-The type reader-error consists of error conditions that are related to tokenization and parsing done by the Lisp reader.
+        类型 reader-error 由 Lisp 读取器执行的标记化和解析的错误状况组成.
 
 * 也见(See Also):
 
-read, stream-error-stream, Section 23.1 (Reader Concepts) 
+        read, stream-error-stream, 章节 23.1 (Reader Concepts) 
 
