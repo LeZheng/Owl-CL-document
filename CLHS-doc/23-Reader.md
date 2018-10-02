@@ -215,7 +215,7 @@ Lisp 读取器的各个方面可以被动态控制. 见章节 2.1.1 (Readtables)
 
         char---一个字符.
         non-terminating-p---一个广义 boolean. 默认是 false.
-        readtable---a readtable. 默认是当前读取表.
+        readtable---一个读取表. 默认是当前读取表.
 
 * 描述(Description):
 
@@ -432,40 +432,35 @@ Lisp 读取器的各个方面可以被动态控制. 见章节 2.1.1 (Readtables)
 
 * 语法(Syntax):
 
-read-from-string string &optional eof-error-p eof-value &key start end preserve-whitespace
-
-=> object, position
+        read-from-string string &optional eof-error-p eof-value &key start end preserve-whitespace
+        => object, position
 
 * 参数和值(Arguments and Values):
 
-string---a string.
-
-eof-error-p---一个广义 boolean. 默认是 true.
-
-eof-value---一个对象. 默认是 nil.
-
-start, end---bounding index designators of string. The defaults for start and end are 0 and nil, respectively.
-
-preserve-whitespace---一个广义 boolean. 默认是 false.
-
-object---一个对象 (由 Lisp 读取器解析的) 或者 eof-value
-
-position---an integer greater than or equal to zero, and less than or equal to one more than the length of the string.
+        string---一个字符串.
+        eof-error-p---一个广义 boolean. 默认是 true.
+        eof-value---一个对象. 默认是 nil.
+        start, end---字符串 string 的边界索引标识符. 对于 start 和 end 默认分别为 0 和 nil.
+        preserve-whitespace---一个广义 boolean. 默认是 false.
+        object---一个对象 (由 Lisp 读取器解析的) 或者 eof-value
+        position---一个大于等于零并且小于等于字符串 string 的长度减一的整数.
 
 * 描述(Description):
 
-Parses the printed representation of an object from the subsequence of string bounded by start and end, as if read had been called on an input stream containing those same characters.
+        从字符串 string 中由 string 和 end 限定的子序列中解析一个对象的打印表示, 就好像 read 在一个包含相同的这些字符的输入流上被调用一样.
 
-If preserve-whitespace is true, the operation will preserve whitespace[2] as read-preserving-whitespace would do.
+        如果 preserve-whitespace 是 true, 这个操作会保留空格, 就好像 read-preserving-whitespace 做的一样.
 
-If an object is successfully parsed, the primary value, object, is the object that was parsed. If eof-error-p is false and if the end of the substring is reached, eof-value is returned.
+        如果一个对象被成功解析, 这个主要的值, object, 就是那个解析的对象. 如果 eof-error-p 是 false 并且到达了这个子字符串的末尾, 就会返回 eof-value.
 
-The secondary value, position, is the index of the first character in the bounded string that was not read. The position may depend upon the value of preserve-whitespace. If the entire string was read, the position returned is either the length of the string or one greater than the length of the string.
+        第二个值, position, 是限定的字符串 string 中第一个没有被读取的字符的索引. 这个 position 可能依赖 preserve-whitespace 的值. 如果这个完整的字符串被读取, 这个返回的 position 是这个字符串 string 的长度或者比这个字符串 string 长度大一的数.
 
 * 示例(Examples):
 
- (read-from-string " 1 3 5" t nil :start 2) =>  3, 5
- (read-from-string "(a b c)") =>  (A B C), 7
+    ```LISP
+    (read-from-string " 1 3 5" t nil :start 2) =>  3, 5
+    (read-from-string "(a b c)") =>  (A B C), 7
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -473,74 +468,74 @@ The secondary value, position, is the index of the first character in the bounde
 
 * 异常情况(Exceptional Situations):
 
-If the end of the supplied substring occurs before an object can be read, an error is signaled if eof-error-p is true. An error is signaled if the end of the substring occurs in the middle of an incomplete object.
+        如果在一个对象可以被读取之前到达这个提供的子字符串的末尾, 如果 eof-error-p 是 true 就会发出一个错误. 如果这个子字符串的末尾出现在一个未完成的对象中间, 那么就会发出一个错误.
 
 * 也见(See Also):
 
-read, read-preserving-whitespace
+        read, read-preserving-whitespace
 
 * 注意(Notes):
 
-The reason that position is allowed to be beyond the length of the string is to permit (but not require) the implementation to work by simulating the effect of a trailing delimiter at the end of the bounded string. When preserve-whitespace is true, the position might count the simulated delimiter. 
+        这个 position 被允许超过这个字符串 string 的长度的原因是为了允许具体实现去通过模拟这些限定字符串 string 末尾的一个尾部分隔符的效果来工作. 当 preserve-whitespace 是 true 时, 这个 position 可能统计了模拟分隔符. 
 
 
 ### <span id="A-READTABLE-CASE">访问器 READTABLE-CASE</span>
 
 * 语法(Syntax):
 
-readtable-case readtable => mode
+        readtable-case readtable => mode
 
-(setf (readtable-case readtable) mode)
+        (setf (readtable-case readtable) mode)
 
 * 参数和值(Arguments and Values):
 
-readtable---a readtable.
-
-mode---a case sensitivity mode.
+        readtable---一个读取表.
+        mode---一个大小写敏感模式.
 
 * 描述(Description):
 
-Accesses the readtable case of readtable, which affects the way in which the Lisp Reader reads symbols and the way in which the Lisp Printer writes symbols.
+        访问 readtable 的读取表大小写, 它影响 Lisp 读取器读取符号的方式以及 Lisp 打印器写入符号的方式.
 
 * 示例(Examples):
 
-See Section 23.1.2.1 (Examples of Lisp 读取器上的读取表大小写的影响) and Section 22.1.3.3.2.1 (Examples of Effect of Readtable Case on the Lisp Printer).
+        见示例 23.1.2.1 (Examples of Lisp 读取器上的读取表大小写的影响) 以及章节 22.1.3.3.2.1 (Examples of Effect of Readtable Case on the Lisp Printer).
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-Should signal an error of type type-error if readtable is not a readtable. Should signal an error of type type-error if mode is not a case sensitivity mode.
+        如果 readtable 不是一个读取表, 那么应该发出一个 type-error 类型的错误. 如果 mode 不是一个大小写敏感模式, 那么应该发出一个 type-error 类型的错误.
 
 * 也见(See Also):
 
-*readtable*, *print-escape*, Section 2.2 (Reader Algorithm), Section 23.1.2 (Lisp 读取器上的读取表大小写的影响), Section 22.1.3.3.2 (Effect of Readtable Case on the Lisp Printer)
+        *readtable*, *print-escape*, 章节 2.2 (Reader Algorithm), 章节 23.1.2 (Lisp 读取器上的读取表大小写的影响), 章节 22.1.3.3.2 (Effect of Readtable Case on the Lisp Printer)
 
 * 注意(Notes):
 
-copy-readtable copies the readtable case of the readtable. 
+        copy-readtable 拷贝这个 readtable 的读取表大小写. 
 
 ### <span id="F-READTABLEP">函数 READTABLEP</span>
 
 * 语法(Syntax):
 
-readtablep object => generalized-boolean
+        readtablep object => generalized-boolean
 
 * 参数和值(Arguments and Values):
 
-object---一个对象.
-
-generalized-boolean---一个广义 boolean.
+        object---一个对象.
+        generalized-boolean---一个广义 boolean.
 
 * 描述(Description):
 
-Returns true if object is of type readtable; otherwise, returns false.
+        如果对象 object 是 readtable 类型就返回 true; 否则, 返回 false.
 
 * 示例(Examples):
 
- (readtablep *readtable*) =>  true
- (readtablep (copy-readtable)) =>  true
- (readtablep '*readtable*) =>  false
+    ```LISP
+    (readtablep *readtable*) =>  true
+    (readtablep (copy-readtable)) =>  true
+    (readtablep '*readtable*) =>  false
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -552,141 +547,143 @@ Returns true if object is of type readtable; otherwise, returns false.
 
 * 注意(Notes):
 
- (readtablep object) ==  (typep object 'readtable) 
+        (readtablep object) ==  (typep object 'readtable) 
 
 
 ### <span id="F-SET-AND-GET-DMC">函数 SET-DISPATCH-MACRO-CHARACTER, GET-DISPATCH-MACRO-CHARACTER</span>
 
 * 语法(Syntax):
 
-get-dispatch-macro-character disp-char sub-char &optional readtable => function
+        get-dispatch-macro-character disp-char sub-char &optional readtable => function
 
-set-dispatch-macro-character disp-char sub-char new-function &optional readtable => t
+        set-dispatch-macro-character disp-char sub-char new-function &optional readtable => t
 
 * 参数和值(Arguments and Values):
 
-disp-char---一个字符.
-
-sub-char---一个字符.
-
-readtable---a readtable designator. 默认是当前读取表.
-
-function---a function designator or nil.
-
-new-function---a function designator.
+        disp-char---一个字符.
+        sub-char---一个字符.
+        readtable---一个读取表标识符. 默认是当前读取表.
+        function---一个函数标识符或 nil.
+        new-function---一个函数标识符.
 
 * 描述(Description):
 
-set-dispatch-macro-character causes new-function to be called when disp-char followed by sub-char is read. If sub-char is a lowercase letter, it is converted to its uppercase equivalent. It is an error if sub-char is one of the ten decimal digits.
+        set-dispatch-macro-character 导致 new-function 在读取到 disp-char 后面跟着 sub-char 时被调用. 如果 sub-char 是一个小写字母, 它会被转换为它的大写等价. 如果 sub-char 是一个十进制数字中的一个, 那么就是一个错误.
 
-set-dispatch-macro-character installs a new-function to be called when a particular dispatching macro character pair is read. New-function is installed as the dispatch function to be called when readtable is in use and when disp-char is followed by sub-char.
+        set-dispatch-macro-character 安装一个 new-function, 当一个特定分派宏字符对被读取到时 new-function 会被调用. new-function 被安装为当 readtable 正在被使用并且 disp-char 后跟着 sub-char 时要被调用的分派函数.
 
-For more information about how the new-function is invoked, see Section 2.1.4.4 (Macro Characters).
+        关于这个 new-function 被调用的更多信息, 见章节 2.1.4.4 (Macro Characters).
 
-get-dispatch-macro-character retrieves the dispatch function associated with disp-char and sub-char in readtable.
+        get-dispatch-macro-character 检索表 readtable 中和 disp-char 以及 sub-char 关联的分派函数.
 
-get-dispatch-macro-character returns the macro-character function for sub-char under disp-char, or nil if there is no function associated with sub-char. If sub-char is a decimal digit, get-dispatch-macro-character returns nil.
+        get-dispatch-macro-character 返回这个 sub-char 从属 disp-char 的宏字符函数, 如果这里没有和 sub-char 关联的函数那么就是 nil. 如果 sub-char 是一个十进制数字, get-dispatch-macro-character 返回 nil.
 
 * 示例(Examples):
 
- (get-dispatch-macro-character #\# #\{) =>  NIL
- (set-dispatch-macro-character #\# #\{        ;dispatch on #{
-    #'(lambda(s c n)
-        (let ((list (read s nil (values) t)))  ;list is object after #n{
-          (when (consp list)                   ;return nth element of list
-            (unless (and n (< 0 n (length list))) (setq n 0))
-            (setq list (nth n list)))
-         list))) =>  T
- #{(1 2 3 4) =>  1
- #3{(0 1 2 3) =>  3
- #{123 =>  123
+    ```LISP
+    (get-dispatch-macro-character #\# #\{) =>  NIL
+    (set-dispatch-macro-character #\# #\{        ;dispatch on #{
+        #'(lambda(s c n)
+            (let ((list (read s nil (values) t)))  ;list is object after #n{
+              (when (consp list)                   ;return nth element of list
+                (unless (and n (< 0 n (length list))) (setq n 0))
+                (setq list (nth n list)))
+            list))) =>  T
+    #{(1 2 3 4) =>  1
+    #3{(0 1 2 3) =>  3
+    #{123 =>  123
+    ```
 
-If it is desired that #$foo : as if it were (dollars foo).
+        如果期望 #$foo : 就像 (dollars foo) 一样.
 
-(defun |#$-reader| (stream subchar arg)
-   (declare (ignore subchar arg))
-   (list 'dollars (read stream t nil t))) =>  |#$-reader|
- (set-dispatch-macro-character #\# #\$ #'|#$-reader|) =>  T
+    ```LISP
+    (defun |#$-reader| (stream subchar arg)
+      (declare (ignore subchar arg))
+      (list 'dollars (read stream t nil t))) =>  |#$-reader|
+    (set-dispatch-macro-character #\# #\$ #'|#$-reader|) =>  T
+    ```
 
 * 也见(See Also):
 
-Section 2.1.4.4 (Macro Characters)
+        章节 2.1.4.4 (Macro Characters)
 
 * 副作用(Side Effects):
 
-The readtable is modified.
+        这个读取表 readtable 会被修改.
 
 * 受此影响(Affected By):
 
-*readtable*.
+        *readtable*.
 
 * 异常情况(Exceptional Situations):
 
-For either function, an error is signaled if disp-char is not a dispatching macro character in readtable.
+        对于任何一个函数, 如果 disp-char 不是一个 readtable 中的分派宏字符, 就会发出一个错误.
 
 * 也见(See Also):
 
-*readtable*
+        *readtable*
 
 * 注意(Notes):
 
-It is necessary to use make-dispatch-macro-character to set up the dispatch character before specifying its sub-characters. 
+        有必要在指定这个分派字符的子字符之前使用 make-dispatch-macro-character 去设置这个分派字符. 
 
 
 ### <span id="F-SET-AND-GET-MC">函数 SET-MACRO-CHARACTER, GET-MACRO-CHARACTER</span>
 
 * 语法(Syntax):
 
-get-macro-character char &optional readtable => function, non-terminating-p
+        get-macro-character char &optional readtable => function, non-terminating-p
 
-set-macro-character char new-function &optional non-terminating-p readtable => t
+        set-macro-character char new-function &optional non-terminating-p readtable => t
 
 * 参数和值(Arguments and Values):
 
-char---一个字符.
-
-non-terminating-p---一个广义 boolean. 默认是 false.
-
-readtable---a readtable designator. 默认是当前读取表.
-
-function---nil, or a designator for a function of two arguments.
-
-new-function---a function designator.
+        char---一个字符.
+        non-terminating-p---一个广义 boolean. 默认是 false.
+        readtable---一个读取表标识符. 默认是当前读取表.
+        function---nil, 或者一个两参数函数的标识符.
+        new-function---一个函数标识符.
 
 * 描述(Description):
 
-get-macro-character returns as its primary value, function, the reader macro function associated with char in readtable (if any), or else nil if char is not a macro character in readtable. The secondary value, non-terminating-p, is true if char is a non-terminating macro character; otherwise, it is false.
+        get-macro-character 返回这个在读取表 readtable 中和 char 相关联的读取器宏函数作为它的主要的值 (如果有的话), 或者如果 char 不是一个读取表 readtable 中的一个宏字符, 那么就是 nil. 第二个值, non-terminating-p, 如果 char 是一个非终止宏字符, 那么就是 true; 否则, 它就是 false.
 
-set-macro-character causes char to be a macro character associated with the reader macro function new-function (or the designator for new-function) in readtable. If non-terminating-p is true, char becomes a non-terminating macro character; otherwise it becomes a terminating macro character.
+        set-macro-character 导致 char 成为读取表 readtable 中和读取器宏函数 new-function (或者 new-function 的标识符) 相关联的宏字符. 如果 non-terminating-p 是 true, char 成为非终止宏字符; 否则它成为一个终止宏字符.
 
 * 示例(Examples):
 
- (get-macro-character #\{) =>  NIL, false
- (not (get-macro-character #\;)) =>  false
+    ```LISP
+    (get-macro-character #\{) =>  NIL, false
+    (not (get-macro-character #\;)) =>  false
+    ```
 
-The following is a possible definition for the single-quote reader macro in standard syntax:
+        以下是一个对于标准语法中的单引号读取器宏的可能的定义:
 
- (defun single-quote-reader (stream char)
-   (declare (ignore char))
-   (list 'quote (read stream t nil t))) =>  SINGLE-QUOTE-READER
- (set-macro-character #\' #'single-quote-reader) =>  T
+    ```LISP
+    (defun single-quote-reader (stream char)
+      (declare (ignore char))
+      (list 'quote (read stream t nil t))) =>  SINGLE-QUOTE-READER
+    (set-macro-character #\' #'single-quote-reader) =>  T
+    ```
 
-Here single-quote-reader reads an object following the single-quote and returns a list of quote and that object. The char argument is ignored.
+        这里 single-quote-reader 读取一个跟在单引号后面的对象并且返回一个 quote 和那个对象的列表. 这个 char 参数被忽略.
 
-The following is a possible definition for the semicolon reader macro in standard syntax:
+        下面是一个对于标准语法中的分号读取器宏的可能的定义:
 
- (defun semicolon-reader (stream char)
-   (declare (ignore char))
-   ;; First swallow the rest of the current input line.
-   ;; End-of-file is acceptable for terminating the comment.
-   (do () ((char= (read-char stream nil #\Newline t) #\Newline)))
-   ;; Return zero values.
-   (values)) =>  SEMICOLON-READER
- (set-macro-character #\; #'semicolon-reader) =>  T
+    ```LISP
+    (defun semicolon-reader (stream char)
+      (declare (ignore char))
+      ;; First swallow the rest of the current input line.
+      ;; End-of-file is acceptable for terminating the comment.
+      (do () ((char= (read-char stream nil #\Newline t) #\Newline)))
+      ;; Return zero values.
+      (values)) =>  SEMICOLON-READER
+    (set-macro-character #\; #'semicolon-reader) =>  T
+    ```
 
 * 副作用(Side Effects):
 
-The readtable is modified.
+        这个读取表 readtable 被修改.
 
 * 受此影响(Affected By): None.
 
@@ -694,7 +691,7 @@ The readtable is modified.
 
 * 也见(See Also):
 
-*readtable*
+        *readtable*
 
 * 注意(Notes): None. 
 
@@ -703,102 +700,102 @@ The readtable is modified.
 
 * 语法(Syntax):
 
-set-syntax-from-char to-char from-char &optional to-readtable from-readtable => t
+        set-syntax-from-char to-char from-char &optional to-readtable from-readtable => t
 
 * 参数和值(Arguments and Values):
 
-to-char---一个字符.
-
-from-char---一个字符.
-
-to-readtable---a readtable. 默认是当前读取表.
-
-from-readtable---a readtable designator. The default is the standard readtable.
+        to-char---一个字符.
+        from-char---一个字符.
+        to-readtable---一个读取表. 默认是当前读取表.
+        from-readtable---一个读取表标识符. 默认是标准读取表.
 
 * 描述(Description):
 
-set-syntax-from-char makes the syntax of to-char in to-readtable be the same as the syntax of from-char in from-readtable.
+        set-syntax-from-char 使得 to-readtable 中的 to-char 语法和 from-readtable 中的 from-char 一样.
 
-set-syntax-from-char copies the syntax types of from-char. If from-char is a macro character, its reader macro function is copied also. If the character is a dispatching macro character, its entire dispatch table of reader macro functions is copied. The constituent traits of from-char are not copied.
+        set-syntax-from-char 拷贝 from-char 的语法类型. 如果 from-char 是一个宏字符, 它的读取器宏函数也被拷贝. 如果这个字符是一个分派宏字符, 它的整个读取器宏函数的分派表被拷贝. 这个 from-char 的 constituent 特质不会被拷贝.
 
-A macro definition from a character such as " can be copied to another character; the standard definition for " looks for another character that is the same as the character that invoked it. The definition of ( can not be meaningfully copied to {, on the other hand. The result is that lists are of the form {a b c), not {a b c}, because the definition always looks for a closing parenthesis, not a closing brace.
+        一个来自一个字符的宏定义可以被拷贝到另一个字符, 例如 "; 这个 " 的标准定义查找另一个和调用它的字符相同的字符. 这个 ( 的定义不能被有意义地拷贝到 {, 另一方面. 结果是那个列表为 {a b c) 形式, 而不是 {a b c}, 因为这个定义总是查找一个闭合的圆括号, 不是一个闭合的大括号.
 
 * 示例(Examples):
 
- (set-syntax-from-char #\7 #\;) =>  T
- 123579 =>  1235
-
+    ```LISP
+    (set-syntax-from-char #\7 #\;) =>  T
+    123579 =>  1235
+    ```
+    
 * 副作用(Side Effects):
 
-The to-readtable is modified.
+        这个 to-readtable 被修改.
 
 * 受此影响(Affected By):
 
-The existing values in the from-readtable.
+        在 from-readtable 中已存在的值.
 
 * 异常情况(Exceptional Situations): None.
 
 * 也见(See Also):
 
-set-macro-character, make-dispatch-macro-character, Section 2.1.4 (Character Syntax Types)
+        set-macro-character, make-dispatch-macro-character, 章节 2.1.4 (Character Syntax Types)
 
 * 注意(Notes):
 
-The constituent traits of a character are ``hard wired'' into the parser for extended tokens. For example, if the definition of S is copied to *, then * will become a constituent that is alphabetic[2] but that cannot be used as a short float exponent marker. For further information, see Section 2.1.4.2 (Constituent Traits). 
+        一个字符的 constituent 特质被 "硬连接(hard wired)" 到扩展标记的解析器中. 例如, 如果 S 的定义被拷贝到 *, 那么 * 会成为一个字母 constituent 但是不能被用作一个短浮点指数标记. 关于进一步信息, 见章节 2.1.4.2 (Constituent Traits). 
 
 
 ### <span id="M-WITH-STANDARD-IO-SYNTAX">宏 WITH-STANDARD-IO-SYNTAX</span>
 
 * 语法(Syntax):
 
-with-standard-io-syntax form* => result*
+        with-standard-io-syntax form* => result*
 
 * 参数和值(Arguments and Values):
 
-forms---an implicit progn.
-
-results---the values returned by the forms.
+        forms---一个隐式 progn.
+        results---由表达式形式 forms 返回的值.
 
 * 描述(Description):
 
-Within the dynamic extent of the body of forms, all reader/printer control variables, including any implementation-defined ones not specified by this standard, are bound to values that produce standard read/print behavior. The values for the variables specified by this standard are listed in the next figure.
+        在这个 forms 主体的动态范围内, 所有读取器/打印器控制变量, 包括任何这个标准没有指定但是具体实现定义的, 被绑定为产生标准读取/打印行为的值. 这个标准指定的变量的值列在下一段中.
 
-变量                     Value                               
-*package*                    The CL-USER package                 
-*print-array*                t                                   
-*print-base*                 10                                  
-*print-case*                 :upcase                             
-*print-circle*               nil                                 
-*print-escape*               t                                   
-*print-gensym*               t                                   
-*print-length*               nil                                 
-*print-level*                nil                                 
-*print-lines*                nil                                 
-*print-miser-width*          nil                                 
-*print-pprint-dispatch*      The standard pprint dispatch table  
-*print-pretty*               nil                                 
-*print-radix*                nil                                 
-*print-readably*             t                                   
-*print-right-margin*         nil                                 
-*read-base*                  10                                  
-*read-default-float-format*  single-float                        
-*read-eval*                  t                                   
-*read-suppress*              nil                                 
-*readtable*                  The standard readtable              
+        变量                          值                               
+        *package*                    The CL-USER package                 
+        *print-array*                t                                   
+        *print-base*                 10                                  
+        *print-case*                 :upcase                             
+        *print-circle*               nil                                 
+        *print-escape*               t                                   
+        *print-gensym*               t                                   
+        *print-length*               nil                                 
+        *print-level*                nil                                 
+        *print-lines*                nil                                 
+        *print-miser-width*          nil                                 
+        *print-pprint-dispatch*      The standard pprint dispatch table  
+        *print-pretty*               nil                                 
+        *print-radix*                nil                                 
+        *print-readably*             t                                   
+        *print-right-margin*         nil                                 
+        *read-base*                  10                                  
+        *read-default-float-format*  single-float                        
+        *read-eval*                  t                                   
+        *read-suppress*              nil                                 
+        *readtable*                  The standard readtable              
 
-Figure 23-1. Values of standard control variables
+        Figure 23-1. 标准控制变量的值
 
 * 示例(Examples):
 
- (with-open-file (file pathname :direction :output)
-   (with-standard-io-syntax
-     (print data file)))
+    ```LISP
+    (with-open-file (file pathname :direction :output)
+      (with-standard-io-syntax
+        (print data file)))
 
-;;; ... Later, in another Lisp:
+    ;;; ... Later, in another Lisp:
 
- (with-open-file (file pathname :direction :input)
-   (with-standard-io-syntax
-     (setq data (read file))))
+    (with-open-file (file pathname :direction :input)
+      (with-standard-io-syntax
+        (setq data (read file))))
+    ```
 
 * 受此影响(Affected By): None.
 
@@ -813,33 +810,35 @@ Figure 23-1. Values of standard control variables
 
 * 值类型(Value Type):
 
-a radix.
+        一个基数.
 
 * 初始值(Initial Value):
 
-10.
+        10.
 
 * 描述(Description):
 
-Controls the interpretation of tokens by read as being integers or ratios.
+        控制被读取为整数或比数的标记的解释.
 
-The value of *read-base*, called the current input base, is the radix in which integers and ratios are to be read by the Lisp reader. The parsing of other numeric types (e.g., floats) is not affected by this option.
+        这个 *read-base* 的值, 称为当前的输入基数, 是整数和比数要被 Lisp 读取器读取的基数. 其他数值类型(例如, 浮点数)的解析不被这个选项所影响.
 
-The effect of *read-base* on the reading of any particular rational number can be locally overridden by explicit use of the #O, #X, #B, or #nR syntax or by a trailing decimal point.
+        *read-base* 在任何特定的有理数的读取上的效果可以通过显式使用 #O, #X, #B, 或 #nR 语法或通过一个尾部的小数点覆盖.
 
 * 示例(Examples):
 
- (dotimes (i 6)
-   (let ((*read-base* (+ 10. i)))
-     (let ((object (read-from-string "(\\DAD DAD |BEE| BEE 123. 123)")))
-       (print (list *read-base* object)))))
->>  (10 (DAD DAD BEE BEE 123 123))
->>  (11 (DAD DAD BEE BEE 123 146))
->>  (12 (DAD DAD BEE BEE 123 171))
->>  (13 (DAD DAD BEE BEE 123 198))
->>  (14 (DAD 2701 BEE BEE 123 227))
->>  (15 (DAD 3088 BEE 2699 123 258))
-=>  NIL
+    ```LISP
+    (dotimes (i 6)
+      (let ((*read-base* (+ 10. i)))
+        (let ((object (read-from-string "(\\DAD DAD |BEE| BEE 123. 123)")))
+          (print (list *read-base* object)))))
+    >>  (10 (DAD DAD BEE BEE 123 123))
+    >>  (11 (DAD DAD BEE BEE 123 146))
+    >>  (12 (DAD DAD BEE BEE 123 171))
+    >>  (13 (DAD DAD BEE BEE 123 198))
+    >>  (14 (DAD 2701 BEE BEE 123 227))
+    >>  (15 (DAD 3088 BEE 2699 123 258))
+    =>  NIL
+    ```
 
 * 受此影响(Affected By): None.
 
@@ -847,55 +846,56 @@ The effect of *read-base* on the reading of any particular rational number can b
 
 * 注意(Notes):
 
-Altering the input radix can be useful when reading data files in special formats. 
+        在读取特殊格式的数据文件时, 修改输入基数是很有用的.
 
 ### <span id="V-READ-DEFAULT-FLOAT-FORMAT">变量 *READ-DEFAULT-FLOAT-FORMAT*</span>
 
 * 值类型(Value Type):
 
-one of the atomic type specifiers short-float, single-float, double-float, or long-float, or else some other type specifier defined by the implementation to be acceptable.
+        原子类型指定符 short-float, single-float, double-float, 或 long-float 其中之一, 或者某个具体实现定义的其他类型指定符也是可接受的.
 
 * 初始值(Initial Value):
 
-The symbol single-float.
+       符号 single-float.
 
 * 描述(Description):
 
-Controls the floating-point format that is to be used when reading a floating-point number that has no exponent marker or that has e or E for an exponent marker. Other exponent markers explicitly prescribe the floating-point format to be used.
+        控制当读取一个没有指数标记或者有着 e 或 E 的指数标记的浮点数时要被使用的浮点格式. 其他指数标记显式规定了要被使用的浮点数格式.
 
-The printer uses *read-default-float-format* to guide the choice of exponent markers when printing floating-point numbers.
+        当打印一个浮点数时, 打印器使用 *read-default-float-format* 来引导指数标记的选择.
 
 * 示例(Examples):
 
- (let ((*read-default-float-format* 'double-float))
-   (read-from-string "(1.0 1.0e0 1.0s0 1.0f0 1.0d0 1.0L0)"))
-=>  (1.0   1.0   1.0   1.0 1.0   1.0)   ;Implementation has float format F.
-=>  (1.0   1.0   1.0s0 1.0 1.0   1.0)   ;Implementation has float formats S and F.
-=>  (1.0d0 1.0d0 1.0   1.0 1.0d0 1.0d0) ;Implementation has float formats F and D.
-=>  (1.0d0 1.0d0 1.0s0 1.0 1.0d0 1.0d0) ;Implementation has float formats S, F, D.
-=>  (1.0d0 1.0d0 1.0   1.0 1.0d0 1.0L0) ;Implementation has float formats F, D, L.
-=>  (1.0d0 1.0d0 1.0s0 1.0 1.0d0 1.0L0) ;Implementation has formats S, F, D, L.
+    ```LISP
+    (let ((*read-default-float-format* 'double-float))
+      (read-from-string "(1.0 1.0e0 1.0s0 1.0f0 1.0d0 1.0L0)"))
+    =>  (1.0   1.0   1.0   1.0 1.0   1.0)   ;Implementation has float format F.
+    =>  (1.0   1.0   1.0s0 1.0 1.0   1.0)   ;Implementation has float formats S and F.
+    =>  (1.0d0 1.0d0 1.0   1.0 1.0d0 1.0d0) ;Implementation has float formats F and D.
+    =>  (1.0d0 1.0d0 1.0s0 1.0 1.0d0 1.0d0) ;Implementation has float formats S, F, D.
+    =>  (1.0d0 1.0d0 1.0   1.0 1.0d0 1.0L0) ;Implementation has float formats F, D, L.
+    =>  (1.0d0 1.0d0 1.0s0 1.0 1.0d0 1.0L0) ;Implementation has formats S, F, D, L.
+    ```
 
 * 受此影响(Affected By): None.
 
 * 也见(See Also): None.
 
-* 注意(Notes): None. 
-
+* 注意(Notes): None.
 
 ### <span id="V-READ-EVAL">变量 *READ-EVAL*</span>
 
 * 值类型(Value Type):
 
-a generalized boolean.
+        一个广义 boolean.
 
 * 初始值(Initial Value):
 
-true.
+        true.
 
 * 描述(Description):
 
-If it is true, the #. reader macro has its normal effect. Otherwise, that reader macro signals an error of type reader-error.
+        如果它是 true, 那么这个 #. 读取器后果有着它的正常效果. 否则, 这个读取器宏发出一个 reader-error 类型的错误.
 
 * 示例(Examples): None.
 
@@ -903,68 +903,68 @@ If it is true, the #. reader macro has its normal effect. Otherwise, that reader
 
 * 也见(See Also):
 
-*print-readably*
+        *print-readably*
 
 * 注意(Notes):
 
-If *read-eval* is false and *print-readably* is true, any method for print-object that would output a reference to the #. reader macro either outputs something different or signals an error of type print-not-readable. 
-
+        如果 *read-eval* 是 false 并且 *print-readably* 是 true, 那么会输出一个对 #. 读取器宏的引用的 print-object 的任何方法会输出一个不同的东西或者发出一个 print-not-readable 类型的错误.
 
 ### <span id="V-READ-SUPPRESS">变量 *READ-SUPPRESS*</span>
 
 * 值类型(Value Type):
 
-a generalized boolean.
+        一个广义 boolean.
 
 * 初始值(Initial Value):
 
-false.
+        false.
 
 * 描述(Description):
 
-This variable is intended primarily to support the operation of the read-time conditional notations #+ and #-. It is important for the reader macros which implement these notations to be able to skip over the printed representation of an expression despite the possibility that the syntax of the skipped expression may not be entirely valid for the current implementation, since #+ and #- exist in order to allow the same program to be shared among several Lisp implementations (including dialects other than Common Lisp) despite small incompatibilities of syntax.
+        这个变量主要用于支持读取时的条件标记 #+ 和 #- 的操作. 重要的是读取器宏实现这些符号能够跳过一个表达式的打印表示尽管可能跳过的语法表达可能不是完全有效的当前实现, 因为 #+ 和 #- 的存在为了允许同一程序在多个 Lisp 语言实现 (包括除了 Common Lisp 以外的方言) 之间共享, 尽管有小的不兼容的语法.
 
-If it is false, the Lisp reader operates normally.
+        如果它是 false, 那么这个 Lisp 读取器正常操作.
 
-If the value of *read-suppress* is true, read, read-preserving-whitespace, read-delimited-list, and read-from-string all return a primary value of nil when they complete successfully; however, they continue to parse the representation of an object in the normal way, in order to skip over the object, and continue to indicate end of file in the normal way. Except as noted below, any standardized reader macro[2] that is defined to read[2] a following object or token will do so, but not signal an error if the object read is not of an appropriate type or syntax. The standard syntax and its associated reader macros will not construct any new objects (e.g., when reading the representation of a symbol, no symbol will be constructed or interned).
+        如果这个 *read-suppress* 的值是 true, 那么 read, read-preserving-whitespace, read-delimited-list, 和 read-from-string 都在它们成功完成时返回一个 nil 的主要值; 但是, 它们继续用正常的方式去解析一个对象的打印表示, 来跳过这个对象, 并且继续用正常方式去表示文件的末尾. 除了下面记录的, 任何定义去读取一个后面对象或标记的标准读取器宏都会这样做, 但是如果这个读取到的对象不是一个合适的类型或语法, 那么不会发出一个错误. 这个标准语法和它关联的读取器宏不会构造任何新对象 (比如, 当读取一个符号的打印表示时, 没有符号会被构造或捕捉).
 
-Extended tokens
+        扩展标记
 
-    All extended tokens are completely uninterpreted. Errors such as those that might otherwise be signaled due to detection of invalid potential numbers, invalid patterns of package markers, and invalid uses of the dot character are suppressed.
+            所有扩展标记都完全不解释. 由于检测到无效的潜在数字, 包标记的无效模式和点字符的无效使用, 这些错误可能会被抑制.
 
-Dispatching macro characters (including sharpsign)
+        分派宏字符 (包括井号)
 
-    Dispatching macro characters continue to parse an infix numerical argument, and invoke the dispatch function. The standardized sharpsign reader macros do not enforce any constraints on either the presence of or the value of the numerical argument.
+            分派宏字符继续去解析一个中缀数值参数, 并且调用分派函数. 标准的井号读取器宏不会在这个数值参数的出现和值上实施任何约束.
 
-#=
+        #=
 
-    The #= notation is totally ignored. It does not read a following object. It produces no object, but is treated as whitespace[2].
+            这个 #= 标记整个忽略. 它不会读取一个后面的对象. 它不产生对象, 但是会被像空格一样对待.
 
-##
+        ##
 
-    The ## notation always produces nil.
+            这个 ## 标记总是产生 nil.
 
-No matter what the value of *read-suppress*, parentheses still continue to delimit and construct lists; the #( notation continues to delimit vectors; and comments, strings, and the single-quote and backquote notations continue to be interpreted properly. Such situations as '), #<, #), and #<Space> continue to signal errors.
+        不管 *read-suppress* 的值是什么, 圆括号仍然继续去分隔和构造列表; 这个 #( 标记继续去分隔向量; 并且注释, 字符串, 以及单引号和反引号继续去被正常解释. 像 '), #<, #), 和 #<Space> 这样的情况继续去发出错误.
 
 * 示例(Examples):
 
- (let ((*read-suppress* t))
-   (mapcar #'read-from-string
-           '("#(foo bar baz)" "#P(:type :lisp)" "#c1.2"
-             "#.(PRINT 'FOO)" "#3AHELLO" "#S(INTEGER)"
-             "#*ABC" "#\GARBAGE" "#RALPHA" "#3R444")))
-=>  (NIL NIL NIL NIL NIL NIL NIL NIL NIL NIL)
+    ```LISP
+    (let ((*read-suppress* t))
+      (mapcar #'read-from-string
+              '("#(foo bar baz)" "#P(:type :lisp)" "#c1.2"
+                "#.(PRINT 'FOO)" "#3AHELLO" "#S(INTEGER)"
+                "#*ABC" "#\GARBAGE" "#RALPHA" "#3R444")))
+    =>  (NIL NIL NIL NIL NIL NIL NIL NIL NIL NIL)
+    ```
 
 * 受此影响(Affected By): None.
 
 * 也见(See Also):
 
-read, Section 2 (Syntax)
+        read, 章节 2 (Syntax)
 
 * 注意(Notes):
 
-Programmers and implementations that define additional macro characters are strongly encouraged to make them respect *read-suppress* just as standardized macro characters do. That is, when the value of *read-suppress* is true, they should ignore type errors when reading a following object and the functions that implement dispatching macro characters should tolerate nil as their infix parameter value even if a numeric value would ordinarily be required. 
-
+        强烈鼓励定义额外宏字符的程序员和具体实现去使它们遵守 *read-suppress*, 就像标准化宏字符那样. 这也就是说, 当 *read-suppress* 的值是 true 时, 它们应该在读取一个后续的对象时忽略类型错误, 并且实现分派宏字符的函数应该接受 nil 作为它们的中缀参数值, 即便通常要求为一个数值.
 
 ### <span id="V-READTABLE">变量 *READTABLE*</span>
 
