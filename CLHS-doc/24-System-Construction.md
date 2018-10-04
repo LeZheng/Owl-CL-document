@@ -1,675 +1,629 @@
- 24. System Construction
+# 24 系统构造
 
-24.1 System Construction Concepts
+> * 24.1 [系统构造的概念](#SystemConstructionConcepts)
+> * 24.2 [系统构造的字典](#SystemConstructionDictionary)
 
-24.2 The System Construction Dictionary
+## 24.1 <span id="SystemConstructionConcepts">系统构造的概念</span>
 
+> * 24.1.1 [加载](#Loading)
+> * 24.1.2 [特性](#Features)
 
- 24.1 System Construction Concepts
+### 24.1.1 <span id="Loading">加载</span>
 
-24.1.1 Loading
+去加载一个文件就是去吧它的内容当作代码并且执行那些代码. 这个文件可能包含源代码或编译后的代码.
 
-24.1.2 Features
+一个包含源代码的文件称为源码文件. 加载一个源码文件由顺序读取这个文件中的表达式形式, 在读取后立即求值每一个来完成的.
 
+一个包含编译后代码的文件被称为一个编译后的文件. 加载一个编译后的文件类似于加载一个源码文件, 除了这个文件不会包含文本而是一种由编译器创建的预处理的依赖于具体实现的表示. 通常, 一个编译后的文件可以比一个源码文件更快地加载. 见章节 3.2 (Compilation).
 
- 24.1.1 Loading
+区分源码文件和编译后文件的方式是依赖于具体实现的.
 
-To load a file is to treat its contents as code and execute that code. The file may contain source code or compiled code.
+### 24.1.2 <span id="Features">特性</span>
 
-A file containing source code is called a source file. Loading a source file is accomplished essentially by sequentially reading[2] the forms in the file, evaluating each immediately after it is read.
+一个特性是一个 Common Lisp 的, 具体实现的或者环境的样子或属性. 一个特性由一个符号标识.
 
-A file containing compiled code is called a compiled file. Loading a compiled file is similar to loading a source file, except that the file does not contain text but rather an implementation-dependent representation of pre-digested expressions created by the compiler. Often, a compiled file can be loaded more quickly than a source file. See Section 3.2 (Compilation).
+当且仅当一个命名一个特性的符号是变量 \*features* 持有的列表的一个元素时, 就说这个特性存在于一个 Lisp 镜像中, 这个列表被称为特性列表.
 
-The way in which a source file is distinguished from a compiled file is implementation-dependent. 
+#### 24.1.2.1 特性表达式
 
+称为特性表达式的特性的 boolean 组合被 #+ 和 #- 读取器宏用来指导表达式被 Lisp 读取器条件读取.
 
- 24.1.2 Features
-
-A feature is an aspect or attribute of Common Lisp, of the implementation, or of the environment. A feature is identified by a symbol.
-
-A feature is said to be present in a Lisp image if and only if the symbol naming it is an element of the list held by the variable *features*, which is called the features list.
-
-24.1.2.1 Feature Expressions
-
-
- 24.1.2.1 Feature Expressions
-
-Boolean combinations of features, called feature expressions, are used by the #+ and #- reader macros in order to direct conditional reading of expressions by the Lisp reader.
-
-The rules for interpreting a feature expression are as follows:
+解释一个特性表达式的规则如下:
 
 feature
 
-    If a symbol naming a feature is used as a feature expression, the feature expression succeeds if that feature is present; otherwise it fails.
+    如果命名一个特性的符号被用作一个特性表达式, 如果那个特性存在, 那么这个特性表达式成功; 否则就是失败.
 
 (not feature-conditional)
 
-    A not feature expression succeeds if its argument feature-conditional fails; otherwise, it succeeds.
+    如果一个 not 特性表达式的参数 feature-conditional 失败了, 那么这个 not 特性表达式成功; 负责, 它失败.<!--原文好像不对-->
 
 (and feature-conditional*)
 
-    An and feature expression succeeds if all of its argument feature-conditionals succeed; otherwise, it fails.
+    如果一个 and 特性表达式的所有参数都成功, 那么这个 and 特性表达式成功; 否则, 它就是失败的.
 
 (or feature-conditional*)
 
-    An or feature expression succeeds if any of its argument feature-conditionals succeed; otherwise, it fails.
+    如果一个 or 特性表达式的任意参数成功, 那么这个 or 特性表达式成功; 负责, 它失败.
 
-24.1.2.1.1 Examples of Feature Expressions
+##### 24.1.2.1.1 特性表达式的示例
 
+比如, 假设在实现 A 中, 存在特性 spice 和 perq, 但是特性 lispm 不存在; 在实现 B 中, 存在特性 lispm, 但是不存在特性 spice 和 perq; 并且在实现 C 中, 特性 spice, lispm, 或 perq 都不存在. 下一段展示了一些简单表达式, 以及它们在这些实现中如何会被读取.
 
- 24.1.2.1.1 Examples of Feature Expressions
-For example, suppose that in implementation A, the features spice and perq are present, but the feature lispm is not present; in implementation B, the feature lispm is present, but the features spice and perq are not present; and in implementation C, none of the features spice, lispm, or perq are present. The next figure shows some sample expressions, and how they would be read[2] in these implementations.
+    (cons #+spice "Spice" #-spice "Lispm" x)                             
+                                                          
+    in implementation A ...  (CONS "Spice" X)             
+    in implementation B ...  (CONS "Lispm" X)             
+    in implementation C ...  (CONS "Lispm" X)             
+                                                          
+    (cons #+spice "Spice" #+LispM "Lispm" x)                             
+                                                          
+    in implementation A ...  (CONS "Spice" X)             
+    in implementation B ...  (CONS "Lispm" X)             
+    in implementation C ...  (CONS X)                     
+                                                          
+    (setq a '(1 2 #+perq 43 #+(not perq) 27))                             
+                                                          
+    in implementation A ...  (SETQ A '(1 2 43))           
+    in implementation B ...  (SETQ A '(1 2 27))           
+    in implementation C ...  (SETQ A '(1 2 27))           
+                                                          
+    (let ((a 3) #+(or spice lispm) (b 3)) (foo a))                             
+                                                          
+    in implementation A ...  (LET ((A 3) (B 3)) (FOO A))  
+    in implementation B ...  (LET ((A 3) (B 3)) (FOO A))  
+    in implementation C ...  (LET ((A 3)) (FOO A))        
+                                                          
+    (cons #+Lispm "#+Spice" #+Spice "foo" #-(or Lispm Spice) 7 x)                             
+                                                          
+    in implementation A ...  (CONS "foo" X)               
+    in implementation B ...  (CONS "#+Spice" X)           
+    in implementation C ...  (CONS 7 X)                   
 
-(cons #+spice "Spice" #-spice "Lispm" x)                             
-                                                      
-in implementation A ...  (CONS "Spice" X)             
-in implementation B ...  (CONS "Lispm" X)             
-in implementation C ...  (CONS "Lispm" X)             
-                                                      
-(cons #+spice "Spice" #+LispM "Lispm" x)                             
-                                                      
-in implementation A ...  (CONS "Spice" X)             
-in implementation B ...  (CONS "Lispm" X)             
-in implementation C ...  (CONS X)                     
-                                                      
-(setq a '(1 2 #+perq 43 #+(not perq) 27))                             
-                                                      
-in implementation A ...  (SETQ A '(1 2 43))           
-in implementation B ...  (SETQ A '(1 2 27))           
-in implementation C ...  (SETQ A '(1 2 27))           
-                                                      
-(let ((a 3) #+(or spice lispm) (b 3)) (foo a))                             
-                                                      
-in implementation A ...  (LET ((A 3) (B 3)) (FOO A))  
-in implementation B ...  (LET ((A 3) (B 3)) (FOO A))  
-in implementation C ...  (LET ((A 3)) (FOO A))        
-                                                      
-(cons #+Lispm "#+Spice" #+Spice "foo" #-(or Lispm Spice) 7 x)                             
-                                                      
-in implementation A ...  (CONS "foo" X)               
-in implementation B ...  (CONS "#+Spice" X)           
-in implementation C ...  (CONS 7 X)                   
+    Figure 24-1. 特性示例
 
-Figure 24-1. Features examples 
+## 24.2 <span id="SystemConstructionDictionary">系统构造的字典</span>
 
+> * [函数 COMPILE-FILE](#F-COMPILE-FILE)
+> * [函数 COMPILE-FILE-PATHNAME](#F-COMPILE-FILE-PATHNAME)
+> * [函数 LOAD](#F-LOAD)
+> * [宏 WITH-COMPILATION-UNIT](#M-WITH-COMPILATION-UNIT)
+> * [变量 *FEATURES*](#V-FEATURES)
+> * [变量 *COMPILE-FILE-PATHNAME*, *COMPILE-FILE-TRUENAME*](#V-CF-TRUENAME-PATHNAME)
+> * [变量 *LOAD-PATHNAME*, *LOAD-TRUENAME*](#V-LOAD-PATHNAME-TRUENAME)
+> * [变量 *COMPILE-PRINT*, *COMPILE-VERBOSE*](#V-COMPILE-PRINT-VERBOSE)
+> * [变量 *LOAD-PRINT*, *LOAD-VERBOSE*](#V-LOAD-PRINT-VERBOSE)
+> * [变量 *MODULES*](#V-MODULES)
+> * [函数 PROVIDE, REQUIRE](#F-PROVIDE-REQUIRE)
 
- 24.2 The System Construction Dictionary
+### <span id="F-COMPILE-FILE">函数 COMPILE-FILE</span>
 
-Function COMPILE-FILE
+* 语法(Syntax):
 
-Function COMPILE-FILE-PATHNAME
+        compile-file input-file &key output-file verbose print external-format
+        => output-truename, warnings-p, failure-p
 
-Function LOAD
+* 参数和值(Arguments and Values):
 
-Macro WITH-COMPILATION-UNIT
+        input-file---一个路径名标识符. (未指定的成员的默认填充是取自 *default-pathname-defaults*.)
+        output-file---一个路径名标识符. 默认是具体实现定义的.
+        verbose---一个广义 boolean. 默认是 *compile-verbose* 的值.
+        print---一个广义 boolean. 默认是 *compile-print* 的值.
+        external-format---一个外部文件格式标识符. 默认是 :default.
+        output-truename---一个路径名 (输出文件的真实名字 truename), 或 nil.
+        warnings-p---一个广义 boolean.
+        failure-p---一个广义 boolean.
 
-Variable *FEATURES*
+* 描述(Description):
 
-Variable *COMPILE-FILE-PATHNAME*, *COMPILE-FILE-TRUENAME*
+        compile-file 把由 input-file 指定的文件的内容转化为依赖于具体实现的二进制数据, 放置在由 output-file 指定的文件中.
 
-Variable *LOAD-PATHNAME*, *LOAD-TRUENAME*
+        这个 input-file 引用的文件应该是一个源码文件. output-file 可以被用于指定一个输出路径名; 编译后的代码要被输出到的编译后文件的实际路径名被计算, 就像是通过调用 compile-file-pathname 一样.
 
-Variable *COMPILE-PRINT*, *COMPILE-VERBOSE*
+        如果 input-file 或 output-file 是一个逻辑路径名, 那么它会被转化为一个物理路径名, 就像是通过调用 translate-logical-pathname 一样.
 
-Variable *LOAD-PRINT*, *LOAD-VERBOSE*
+        如果 verbose 是 true, compile-file 用一个注释的形式打印一个信息 (换句话说, 用一个前导分号) 到标准输出来表示什么文件要被编译以及其他有用的信息. 如果 verbose 是 false, compile-file 不打印这个信息.
 
-Variable *MODULES*
+        如果 print 是 true, 关于这个文件中要被编译的顶层表达式形式的信息会被打印到标准输出. 确切地说, 打印的内容依赖于具体实现, 但是仍然会打印一些信息. 如果 print 是 nil, 没有信息要被打印.
 
-Function PROVIDE, REQUIRE
+        这个 external-format 指定了当打开这个文件时要被使用的外部文件格式; 见函数 open. compile-file 以及 load 必须以这样一种方式互操作: 产生的编译后文件可以不重新指定一个外部文件格式来加载; 见函数 load.
 
+        compile-file 绑定 *readtable* 和 *package* 为它们在处理这个文件之前的值.
 
-Function COMPILE-FILE
+        *compile-file-truename* 被 compile-file 绑定来持有这个要被编译的文件的真实名字.
 
-Syntax:
+        *compile-file-pathname* 被 compile-file 绑定来持有传递给 compile-file 的第一个参数所表示的路径名, 这个路径名和默认的合并; 这也就是说, (pathname (merge-pathnames input-file)).
 
-compile-file input-file &key output-file verbose print external-format
+        这个编译后文件包含的编译后的函数在这个编译后文件被加载入 Lisp 中时是可用的. 任何由编译器处理的函数定义, 包括 #'(lambda ...) 表达式形式和由 flet, labels 创建的局部函数定义以及 defun 表达式形式, 产生一个 compiled-function 类型的对象.
 
-=> output-truename, warnings-p, failure-p
+        由 compile-file 返回的主要值, output-truename, 是那个输出文件的真实名字, 或者如果这个文件没有被创建那么就是 nil.
 
-Arguments and Values:
+        第二个值, warnings-p, 如果编译器没有检测到 error 或 warning 类型的状况, 那么就是 false, 否则就是 true.
 
-input-file---a pathname designator. (Default fillers for unspecified components are taken from *default-pathname-defaults*.)
+        第三个值, failure-p, 如果编译器没有检测到 error 或 warning 类型的状况 (除了 style-warning), 那么就是 false, 否则就是 true.
 
-output-file---a pathname designator. The default is implementation-defined.
+        关于这个文件编译器如何处理文集的一般信息, 见章节 3.2.3 (File Compilation).
 
-verbose---a generalized boolean. The default is the value of *compile-verbose*.
+        要被文件编译器编译的程序必须只包含可外部化的对象; 关于这样的对象的详细信息, 见章节 3.2.4 (Literal Objects in Compiled Files). 关于如何去扩展可外部化对象集合的信息, 见函数 make-load-form 和章节 3.2.4.4 (Additional Constraints on Externalizable Objects).
 
-print---a generalized boolean. The default is the value of *compile-print*.
+* 示例(Examples): None.
 
-external-format---an external file format designator. The default is :default.
+* 受此影响(Affected By):
 
-output-truename---a pathname (the truename of the output file), or nil.
+        *error-output*, *standard-output*, *compile-verbose*, *compile-print*
 
-warnings-p---a generalized boolean.
+        计算机的文件系统.
 
-failure-p---a generalized boolean.
+* 异常情况(Exceptional Situations):
 
-Description:
+        关于编译处理期间的错误检测的信息 For informaftion about errors detected during the compilation procss, 见章节 3.2.5 (Exceptional Situations in the Compiler).
 
-compile-file transforms the contents of the file specified by input-file into implementation-dependent binary data which are placed in the file specified by output-file.
+        如果 (wild-pathname-p input-file) 返回 true, 那么可能会发出一个 file-error 类型的错误.
 
-The file to which input-file refers should be a source file. output-file can be used to specify an output pathname; the actual pathname of the compiled file to which compiled code will be output is computed as if by calling compile-file-pathname.
+        如果尝试去打开一个用于输入的源码文件或者尝试去打开一个用于输出的编译后文件失败了, 那么就会发出一个 file-error 类型的错误.
 
-If input-file or output-file is a logical pathname, it is translated into a physical pathname as if by calling translate-logical-pathname.
+* 也见(See Also):
 
-If verbose is true, compile-file prints a message in the form of a comment (i.e., with a leading semicolon) to standard output indicating what file is being compiled and other useful information. If verbose is false, compile-file does not print this information.
+        compile, declare, eval-when, pathname, logical-pathname, 章节 20.1 (File System Concepts), 章节 19.1.2 (Pathnames as Filenames)
 
-If print is true, information about top level forms in the file being compiled is printed to standard output. Exactly what is printed is implementation-dependent, but nevertheless some information is printed. If print is nil, no information is printed.
+* 注意(Notes): None.
 
-The external-format specifies the external file format to be used when opening the file; see the function open. compile-file and load must cooperate in such a way that the resulting compiled file can be loaded without specifying an external file format anew; see the function load.
+### <span id="F-COMPILE-FILE-PATHNAME">函数 COMPILE-FILE-PATHNAME</span>
 
-compile-file binds *readtable* and *package* to the values they held before processing the file.
+* 语法(Syntax):
 
-*compile-file-truename* is bound by compile-file to hold the truename of the pathname of the file being compiled.
+        compile-file-pathname input-file &key output-file &allow-other-keys => pathname
 
-*compile-file-pathname* is bound by compile-file to hold a pathname denoted by the first argument to compile-file, merged against the defaults; that is, (pathname (merge-pathnames input-file)).
+* 参数和值(Arguments and Values):
 
-The compiled functions contained in the compiled file become available for use when the compiled file is loaded into Lisp. Any function definition that is processed by the compiler, including #'(lambda ...) forms and local function definitions made by flet, labels and defun forms, result in an object of type compiled-function.
+        input-file---一个路径名标识符. (对于未指定成员的填充取自于 *default-pathname-defaults*.)
+        output-file---一个路径名标识符. 默认是具体实现定义的.
+        pathname---一个路径名.
 
-The primary value returned by compile-file, output-truename, is the truename of the output file, or nil if the file could not be created.
+* 描述(Description):
 
-The secondary value, warnings-p, is false if no conditions of type error or warning were detected by the compiler, and true otherwise.
+        返回这个 compile-file 会写入的路径名, 如果给定相同参数的话.
 
-The tertiary value, failure-p, is false if no conditions of type error or warning (other than style-warning) were detected by the compiler, and true otherwise.
+        这个 output-file 的默认值取自于合并 input-file 和 *default-pathname-defaults* 的值所产生的路径名, 除了那个 type 成员应该为适当的具体实现定义用于编译后文件的默认类型.
 
-For general information about how files are processed by the file compiler, see Section 3.2.3 (File Compilation).
+        如果 input-file 是一个逻辑路径名并且 output-file 没有被提供, 那么结果也是一个逻辑路径名. 如果 input-file 是一个逻辑路径名, 它会被转化为一个物理路径名, 就像是通过 calling translate-logical-pathname 一样. 如果 input-file 是一个流, 那个流可以是打开的或关闭的. compile-file-pathname 在一个文件被关闭后返回和那个文件开始时返回的相同的路径名. 如果 input-file 是一个用 make-two-way-stream, make-echo-stream, make-broadcast-stream, make-concatenated-stream, make-string-input-stream, make-string-output-stream 创建的流那么就是一个错误.
 
-Programs to be compiled by the file compiler must only contain externalizable objects; for details on such objects, see Section 3.2.4 (Literal Objects in Compiled Files). For information on how to extend the set of externalizable objects, see the function make-load-form and Section 3.2.4.4 (Additional Constraints on Externalizable Objects).
+        如果一个具体实现支持给 compile-file 的额外参数, compile-file-pathname 必须接受相同的参数.
 
-Examples: None.
+* 示例(Examples):
 
-Affected By:
+        见 logical-pathname-translations.
 
-*error-output*, *standard-output*, *compile-verbose*, *compile-print*
+* 受此影响(Affected By): None.
 
-The computer's file system.
+* 异常情况(Exceptional Situations):
 
-Exceptional Situations:
+        如果 input-file 或 output-file 是通配符, 那么就会发出一个 file-error 类型的错误.
 
-For information about errors detected during the compilation process, see Section 3.2.5 (Exceptional Situations in the Compiler).
+* 也见(See Also):
 
-An error of type file-error might be signaled if (wild-pathname-p input-file) returns true.
+        compile-file, pathname, logical-pathname, 章节 20.1 (File System Concepts), 章节 19.1.2 (Pathnames as Filenames)
 
-If either the attempt to open the source file for input or the attempt to open the compiled file for output fails, an error of type file-error is signaled.
+* 注意(Notes): None.
 
-See Also:
+### <span id="F-LOAD">函数 LOAD</span>
 
-compile, declare, eval-when, pathname, logical-pathname, Section 20.1 (File System Concepts), Section 19.1.2 (Pathnames as Filenames)
+* 语法(Syntax):
 
-Notes: None. 
+        load filespec &key verbose print if-does-not-exist external-format
+        => generalized-boolean
 
+* 参数和值(Arguments and Values):
 
-Function COMPILE-FILE-PATHNAME
+        filespec---一个流, 或者一个路径名标识符. 默认值取自于 *default-pathname-defaults*.
+        verbose---一个广义 boolean. 默认是 *load-verbose* 的值.
+        print---一个广义 boolean. 默认是 *load-print* 的值.
+        if-does-not-exist---一个广义 boolean. 默认是 true.
+        external-format---一个外部文件格式标识符. 默认是 :default.
+        generalized-boolean---一个广义 boolean.
 
-Syntax:
+* 描述(Description):
 
-compile-file-pathname input-file &key output-file &allow-other-keys => pathname
+        load 加载由 filespec 命名的文件到这个 Lisp 环境中.
 
-Arguments and Values:
+        一个源码文件和一个编译后文件的区分方式是依赖于具体实现的. 如果这个文件说明是不完整的并且匹配的源码文件和编译后文件都存在, 那么这些文件中的哪一个被选择是依赖于具体实现的.
 
-input-file---a pathname designator. (Default fillers for unspecified components are taken from *default-pathname-defaults*.)
+        如果 filespec 是一个流, load 确定流的种类并且直接从那个流中加载. 如果 filespec 是一个逻辑路径名, 它会被转化为一个物理路径名, 就像是通过调用 translate-logical-pathname 一样.
 
-output-file---a pathname designator. The default is implementation-defined.
+        load 顺序依次执行在这个由 filespec 命名的文件中它遇到的每一个表达式形式. 如果这个文件是一个源码文件并且这个具体实现选择去执行隐式的编译, load 必须按章节 3.2.3.1 (Processing of Top Level Forms) 中描述的那样识别顶层表达式形式并且安排每一个顶层表达式形式在开始下一个隐式编译前被执行. (注意, 然而, load 处理那个 eval-when 表达式形式是由 :execute 情况控制的.)
 
-pathname---a pathname.
+        如果 verbose 是 true, compile-file 用一个注释的形式打印一个信息 (换句话说, 用一个前导分号) 到标准输出来表示什么文件要被编译以及其他有用的信息. 如果 verbose 是 false, compile-file 不打印这个信息.
 
-Description:
+        如果 print 是 true, load 递增地打印信息到标准输出来展示这个加载的进度. 对于一个源码文件, 这个信息可能意味着这个文件中的每一个表达式形式产生的值在这些值返回时被打印. 对于一个编译后文件, 打印到东西可能不会准确反映这个源码文件的内容, 但有些信息通常是打印出来的. 如果 print 是 false, load 不会打印这个信息.
 
-Returns the pathname that compile-file would write into, if given the same arguments.
+        如果这个由 filespec 命名的文件被成功加载, load 返回 true.
 
-The defaults for the output-file are taken from the pathname that results from merging the input-file with the value of *default-pathname-defaults*, except that the type component should default to the appropriate implementation-defined default type for compiled files.
+        如果这个文件不存在, 采取依赖于 if-does-not-exist 的特定动作: 如果它是 nil, load 返回 nil; 否则, load 发出一个错误.
 
-If input-file is a logical pathname and output-file is unsupplied, the result is a logical pathname. If input-file is a logical pathname, it is translated into a physical pathname as if by calling translate-logical-pathname. If input-file is a stream, the stream can be either open or closed. compile-file-pathname returns the same pathname after a file is closed as it did when the file was open. It is an error if input-file is a stream that is created with make-two-way-stream, make-echo-stream, make-broadcast-stream, make-concatenated-stream, make-string-input-stream, make-string-output-stream.
+        这个 external-format 指定了当打开这个文件时要被使用的外部文件格式 (见函数 open), 除了当 filespec 命名的文件是一个编译后文件时, 这个 external-format 会被忽略. compile-file 和 load 以一种依赖于具体实现的方式互操作, 来确保这个源码文件被文件编译器以给定外部文件格式处理时, 在这个源码文件中引用的字符的相似性的保留, 不管这个 external-format 的值在编译后文件被加载时是什么.
 
-If an implementation supports additional keyword arguments to compile-file, compile-file-pathname must accept the same arguments.
+        load 绑定 *readtable* 和 *package* 为它们在处理这个文件之前的值.
 
-Examples:
+        *load-truename* 被 load 绑定来持有那个要被加载的文件的路径名的真实名字.
 
-See logical-pathname-translations.
+        *load-pathname* 被 load 绑定来持有一个路径名, 这个路径名表示 filespec 和默认值合并. 这也就是说, (pathname (merge-pathnames filespec)).
 
-Affected By: None.
+* 示例(Examples):
 
-Exceptional Situations:
+    ```LISP
+    ;Establish a data file...
+    (with-open-file (str "data.in" :direction :output :if-exists :error)
+      (print 1 str) (print '(setq a 888) str) t)
+    =>  T
+    (load "data.in") =>  true
+    a =>  888
+    (load (setq p (merge-pathnames "data.in")) :verbose t)
+    ; Loading contents of file /fred/data.in
+    ; Finished loading /fred/data.in
+    =>  true
+    (load p :print t) 
+    ; Loading contents of file /fred/data.in
+    ;  1
+    ;  888
+    ; Finished loading /fred/data.in
+    =>  true
 
-An error of type file-error might be signaled if either input-file or output-file is wild.
+    ;----[Begin file SETUP]----
+    (in-package "MY-STUFF")
+    (defmacro compile-truename () `',*compile-file-truename*)
+    (defvar *my-compile-truename* (compile-truename) "Just for debugging.")
+    (defvar *my-load-pathname* *load-pathname*)
+    (defun load-my-system ()
+      (dolist (module-name '("FOO" "BAR" "BAZ"))
+        (load (merge-pathnames module-name *my-load-pathname*))))
+    ;----[End of file SETUP]----
 
-See Also:
+    (load "SETUP")
+    (load-my-system)
+    ```
 
-compile-file, pathname, logical-pathname, Section 20.1 (File System Concepts), Section 19.1.2 (Pathnames as Filenames)
+* 受此影响(Affected By):
 
-Notes: None. 
+        具体实现, 以及主机计算机的文件系统.
 
+* 异常情况(Exceptional Situations):
 
-Function LOAD
+        如果 :if-does-not-exist 被提供并且是 true, 或者没有被提供, 那么如果这个由 filespec 命名的文件不存在或者如果这个文件系统不能处理这个请求的操作, 那么就会发出一个 file-error 类型的错误.
 
-Syntax:
+        如果 (wild-pathname-p filespec) 返回 true, 那么就可能发出一个 file-error 类型的错误.
 
-load filespec &key verbose print if-does-not-exist external-format
+* 也见(See Also):
 
-=> generalized-boolean
+        error, merge-pathnames, *load-verbose*, *default-pathname-defaults*, pathname, logical-pathname, 章节 20.1 (File System Concepts), 章节 19.1.2 (Pathnames as Filenames)
 
-Arguments and Values:
+* 注意(Notes): None.
 
-filespec---a stream, or a pathname designator. The default is taken from *default-pathname-defaults*.
+### <span id="M-WITH-COMPILATION-UNIT">宏 WITH-COMPILATION-UNIT</span>
 
-verbose---a generalized boolean. The default is the value of *load-verbose*.
+* 语法(Syntax):
 
-print---a generalized boolean. The default is the value of *load-print*.
+        with-compilation-unit ([[option]]) form* => result*
 
-if-does-not-exist---a generalized boolean. The default is true.
+        option::= :override override
 
-external-format---an external file format designator. The default is :default.
+* 参数和值(Arguments and Values):
 
-generalized-boolean---a generalized boolean.
+        override---一个广义 boolean; 求值的. 默认是 nil.
+        forms---一个隐式 progn.
+        results---由这些表达式形式 forms 返回的值.
 
-Description:
+* 描述(Description):
 
-load loads the file named by filespec into the Lisp environment.
+        从左到右执行表达式形式 forms. 在这个 with-compilation-unit 的动态环境中, 被这个编译器推迟到这个编译结束的动作会被推迟到这个对 with-compilation-unit 的最外部调用的结束.
 
-The manner in which a source file is distinguished from a compiled file is implementation-dependent. If the file specification is not complete and both a source file and a compiled file exist which might match, then which of those files load selects is implementation-dependent.
+        允许的选项集合可能被具体实现扩展, 但是仅有的标准关键字是 :override.
 
-If filespec is a stream, load determines what kind of stream it is and loads directly from the stream. If filespec is a logical pathname, it is translated into a physical pathname as if by calling translate-logical-pathname.
+        如果是动态嵌套, 那么只有那个更外部的对 with-compilation-unit 的调用有效, 除非和 :override 关联的值是 true, 在这个情况下警告只会被推迟到最内部调用的结束, 而 override 是 true.
 
-load sequentially executes each form it encounters in the file named by filespec. If the file is a source file and the implementation chooses to perform implicit compilation, load must recognize top level forms as described in Section 3.2.3.1 (Processing of Top Level Forms) and arrange for each top level form to be executed before beginning implicit compilation of the next. (Note, however, that processing of eval-when forms by load is controlled by the :execute situation.)
+        函数 compile-file 提供了
 
-If verbose is true, load prints a message in the form of a comment (i.e., with a leading semicolon) to standard output indicating what file is being loaded and other useful information. If verbose is false, load does not print this information.
+        (with-compilation-unit (:override nil) ...)
 
-If print is true, load incrementally prints information to standard output showing the progress of the loading process. For a source file, this information might mean printing the values yielded by each form in the file as soon as those values are returned. For a compiled file, what is printed might not reflect precisely the contents of the source file, but some information is generally printed. If print is false, load does not print this information.
+        围绕在它的代码周围的效果.
 
-If the file named by filespec is successfully loaded, load returns true.
+        任何依赖于具体实现的扩展只能被提供作为通过使用依赖于具体实现的关键字的显式程序员请求的结果. 具体实现禁止去为这个没有涉及关键字或只有关键字 :override 的宏的使用添加额外的意义.
 
-If the file does not exist, the specific action taken depends on if-does-not-exist: if it is nil, load returns nil; otherwise, load signals an error.
+* 示例(Examples):
 
-The external-format specifies the external file format to be used when opening the file (see the function open), except that when the file named by filespec is a compiled file, the external-format is ignored. compile-file and load cooperate in an implementation-dependent way to assure the preservation of the similarity of characters referred to in the source file at the time the source file was processed by the file compiler under a given external file format, regardless of the value of external-format at the time the compiled file is loaded.
+        如果一个具体实现会正常地推迟特定种类的警告, 例如关于未定义函数的警告, 到这个编译单元的结束 (例如一个文件), 那么下面这个示例展示了如果使这些警告被推迟到几个文件的编译结束.
 
-load binds *readtable* and *package* to the values they held before loading the file.
+    ```LISP
+    (defun compile-files (&rest files)
+      (with-compilation-unit ()
+        (mapcar #'(lambda (file) (compile-file file)) files)))
 
-*load-truename* is bound by load to hold the truename of the pathname of the file being loaded.
+    (compile-files "A" "B" "C")
+    ```
 
-*load-pathname* is bound by load to hold a pathname that represents filespec merged against the defaults. That is, (pathname (merge-pathnames filespec)).
+        但是注意, 如果具体实现没有正常地推迟任何警告, with-compilation-unit 的使用可能没有任何效果.
 
-Examples:
+* 受此影响(Affected By): None.
 
-;Establish a data file...
- (with-open-file (str "data.in" :direction :output :if-exists :error)
-   (print 1 str) (print '(setq a 888) str) t)
-=>  T
- (load "data.in") =>  true
- a =>  888
- (load (setq p (merge-pathnames "data.in")) :verbose t)
-; Loading contents of file /fred/data.in
-; Finished loading /fred/data.in
-=>  true
- (load p :print t) 
-; Loading contents of file /fred/data.in
-;  1
-;  888
-; Finished loading /fred/data.in
-=>  true
+* 异常情况(Exceptional Situations): None.
 
- ;----[Begin file SETUP]----
- (in-package "MY-STUFF")
- (defmacro compile-truename () `',*compile-file-truename*)
- (defvar *my-compile-truename* (compile-truename) "Just for debugging.")
- (defvar *my-load-pathname* *load-pathname*)
- (defun load-my-system ()
-   (dolist (module-name '("FOO" "BAR" "BAZ"))
-     (load (merge-pathnames module-name *my-load-pathname*))))
- ;----[End of file SETUP]----
+* 也见(See Also):
 
- 
- (load "SETUP")
- (load-my-system)
+        compile, compile-file
 
-Affected By:
+* 注意(Notes): None.
 
-The implementation, and the host computer's file system.
+### <span id="V-FEATURES">变量 *FEATURES*</span>
 
-Exceptional Situations:
+* 值类型(Value Type):
 
-If :if-does-not-exist is supplied and is true, or is not supplied, load signals an error of type file-error if the file named by filespec does not exist, or if the file system cannot perform the requested operation.
+        一个 proper 列表.
 
-An error of type file-error might be signaled if (wild-pathname-p filespec) returns true.
+* 初始值(Initial Value):
 
-See Also:
+        依赖于具体实现的.
 
-error, merge-pathnames, *load-verbose*, *default-pathname-defaults*, pathname, logical-pathname, Section 20.1 (File System Concepts), Section 19.1.2 (Pathnames as Filenames)
+* 描述(Description):
 
-Notes: None. 
+        这个 *features* 的值被称为特性列表. 它是一个被称为特性的符号的列表, 这些符号对应于这个实现或环境的某个方面.
 
+        大部分特性有着依赖于具体实现的意义; 特性名称的含义如下:
 
-Macro WITH-COMPILATION-UNIT
+        :cltl1
 
-Syntax:
+            如果存在, 表示这个 LISP 包符合 1984 规范 Common Lisp: The Language. 对于一个符合规范的实现, 可能但不是必须有这个特性, 因为这个规范指定它的符号在 COMMON-LISP 包中, 而不是 LISP 包.
 
-with-compilation-unit ([[option]]) form* => result*
+        :cltl2
 
-option::= :override override 
+            如果存在, 表示这个实现符合 Common Lisp: The Language, Second Edition. 这个特性一定不会出现在任何符合规范的实现中, 因为那个文档的符合性和这个规范的符合性不兼容. 但是, 这个规范保留了这个名称, 以便帮助程序区分符合该文档的实现和符合该规范的实现.
 
-Arguments and Values:
+        :ieee-floating-point
 
-override---a generalized boolean; evaluated. The default is nil.
+            如果存在, 表示这个具体实现符合 IEEE Standard for Binary Floating-Point Arithmetic 的要求.
 
-forms---an implicit progn.
+        :x3j13
 
-results---the values returned by the forms.
+            如果存在, 表示这个实现符合此规范的某些特定工作草案, 或者符合某些特性子集, 这些特性近似于对该规范可能包含的内容的理念. 一个符合规范的实现可能或可能不会包含这样的特性. (这个特性主要是作为一种权宜之计, 以便在标准草案可用之前为实现者提供一些可用的东西, 来阻止他们过早地引入 :draft-ansi-cl 和 :ansi-cl 特性.)
 
-Description:
+        :draft-ansi-cl
 
-Executes forms from left to right. Within the dynamic environment of with-compilation-unit, actions deferred by the compiler until the end of compilation will be deferred until the end of the outermost call to with-compilation-unit.
+            如果存在, 表示这个实现符合这个规范的第一个完整草案, 它在 1992 年被公开复审. 一个有着 :draft-ansi-cl-2 或 :ansi-cl 特性的符合规范的实现不允许去保留这个 :draft-ansi-cl 特性, 因为在第一个草案之后进行了不兼容的修改.
 
-The set of options permitted may be extended by the implementation, but the only standardized keyword is :override.
+        :draft-ansi-cl-2
 
-If nested dynamically only the outer call to with-compilation-unit has any effect unless the value associated with :override is true, in which case warnings are deferred only to the end of the innermost call for which override is true.
+            如果存在, 表示这个规范的第二个完整草案已经公开复审, 并且这个实现符合这个规范. (如果产生另外的公开复审草案, 这个关键字会继续与引用第二个草案, 而额外的关键字会被添加来标识这些后面的草案的符合性. 同样地, 这个关键字的意义可以被依赖不随时间改变). 如果最终被认可的标准和这个标准草案不兼容, 一个有着 :ansi-cl 特性的符合规范的实现只允许去保留 :draft-ansi-cl 特性.
 
-The function compile-file provides the effect of
+        :ansi-cl
 
- (with-compilation-unit (:override nil) ...)
+            如果存在, 表示这个规范已经被 ANSI 采用作为官方标准, 并且这个实现符合了.
 
-around its code.
+        :common-lisp
 
-Any implementation-dependent extensions can only be provided as the result of an explicit programmer request by use of an implementation-dependent keyword. Implementations are forbidden from attaching additional meaning to a use of this macro which involves either no keywords or just the keyword :override.
+            对于有着 :x3j13, :draft-ansi-cl, 或 :ansi-cl 中的一个或多个特性的任何实现, 这个特性也必须出现在 *features* 中. 它还应该出现在具有 :cltl1 或 :cltl2 特性的实现中, 但是这个规范不能强制这样的行为. 其目的是, 该特性应该识别名为 "Common Lisp" 的语言家族, 而不是该家族中的某些特定方言.
 
-Examples:
+* 示例(Examples): None.
 
-If an implementation would normally defer certain kinds of warnings, such as warnings about undefined functions, to the end of a compilation unit (such as a file), the following example shows how to cause those warnings to be deferred to the end of the compilation of several files.
+* 受此影响(Affected By): None.
 
- (defun compile-files (&rest files)
-   (with-compilation-unit ()
-     (mapcar #'(lambda (file) (compile-file file)) files)))
+* 也见(See Also):
 
- (compile-files "A" "B" "C")
+        章节 1.5.2.1.1 (Use of Read-Time Conditionals), 章节 2.4 (Standard Macro Characters)
 
-Note however that if the implementation does not normally defer any warnings, use of with-compilation-unit might not have any effect.
+* 注意(Notes):
 
-Affected By: None.
+        被 #+ 和 #- 读取器宏所使用的 *features* 的值.
 
-Exceptional Situations: None.
+        在特性列表中的符号可能在任何包中, 但是实际上它们通常在 KEYWORD 包中. 这是因为 KEYWORD 是在 #+ 和 #- 读取器宏中读取特性表达式默认使用的包. 需要在一个包 P 中 (而不是 KEYWORD) 命名一个特性的代码可以通过显式使用 P 的包前缀来完成, 但是主意这样的代码必须确保这个包 P 存在, 以便读取特性表达式---即使在特性表达式预期失败的情况下也是如此.
 
-See Also:
+        通常认为, 具体实现包含一个或多个标识特定实现的特性是明智的, 这样就可以写出条件表达式来区分一个实现的特性和另一个实现的特性. 由于特性通常是 KEYWORD 包中的符号, 在那里名字冲突可能很容易发生, 并且由于没有设计独特已定义的机制去决定谁有权使用哪些符号出于什么原因, 一个保守的策略是更喜欢使用来源于自己的公司或产品名称的名字, 因为那些名字通常是商标, 因此不太可能无意中被另一个实现使用.
 
-compile, compile-file
+### <span id="V-CF-TRUENAME-PATHNAME">变量 *COMPILE-FILE-PATHNAME*, *COMPILE-FILE-TRUENAME*</span>
 
-Notes: None. 
+* 值类型(Value Type):
 
+        这个 *compile-file-pathname* 的值总是为一个路径名或 nil. 这个 *compile-file-truename* 的值总是为一个物理路径名或 nil.
 
-Variable *FEATURES*
+* 初始值(Initial Value):
 
-Value Type:
+        nil.
 
-a proper list.
+* 描述(Description):
 
-Initial Value:
+        在对 compile-file 的调用期间, *compile-file-pathname* 被绑定为给 compile-file 的第一个参数所表示的路径名和默认值合并的路径名; 就是说, 它被绑定为 (pathname (merge-pathnames input-file)). 在相同的时间间隔期间, *compile-file-truename* 被绑定为这个要被编译的文件的真实名字.
 
-implementation-dependent.
+        在其他时间, 这些变量的值都是 nil.
 
-Description:
+        如果在 compile-file 正在进行时进入一个 break loop, 那么这些变量是否保留在进入 break loop 之前的值, 或者它们是否被绑定为 nil, 都取决于具体实现.
 
-The value of *features* is called the features list. It is a list of symbols, called features, that correspond to some aspect of the implementation or environment.
+        如果尝试去赋值或绑定这些变量的任意一个, 后果是未定义的.
 
-Most features have implementation-dependent meanings; The following meanings have been assigned to feature names:
+* 示例(Examples): None.
 
-:cltl1
+* 受此影响(Affected By):
 
-    If present, indicates that the LISP package purports to conform to the 1984 specification Common Lisp: The Language. It is possible, but not required, for a conforming implementation to have this feature because this specification specifies that its symbols are to be in the COMMON-LISP package, not the LISP package.
+        文件系统.
 
-:cltl2
+* 也见(See Also):
 
-    If present, indicates that the implementation purports to conform to Common Lisp: The Language, Second Edition. This feature must not be present in any conforming implementation, since conformance to that document is not compatible with conformance to this specification. The name, however, is reserved by this specification in order to help programs distinguish implementations which conform to that document from implementations which conform to this specification.
+        compile-file
 
-:ieee-floating-point
+* 注意(Notes): None.
 
-    If present, indicates that the implementation purports to conform to the requirements of IEEE Standard for Binary Floating-Point Arithmetic.
+### <span id="V-LOAD-PATHNAME-TRUENAME">变量 *LOAD-PATHNAME*, *LOAD-TRUENAME*</span>
 
-:x3j13
+* 值类型(Value Type):
 
-    If present, indicates that the implementation conforms to some particular working draft of this specification, or to some subset of features that approximates a belief about what this specification might turn out to contain. A conforming implementation might or might not contain such a feature. (This feature is intended primarily as a stopgap in order to provide implementors something to use prior to the availability of a draft standard, in order to discourage them from introducing the :draft-ansi-cl and :ansi-cl features prematurely.)
+        这个 *load-pathname* 的值总是为一个路径名或 nil. 这个 *load-truename* 的值总是为一个物理路径名或 nil.
 
-:draft-ansi-cl
+* 初始值(Initial Value):
 
-    If present, indicates that the implementation purports to conform to the first full draft of this specification, which went to public review in 1992. A conforming implementation which has the :draft-ansi-cl-2 or :ansi-cl feature is not permitted to retain the :draft-ansi-cl feature since incompatible changes were made subsequent to the first draft.
+        nil.
 
-:draft-ansi-cl-2
+* 描述(Description):
 
-    If present, indicates that a second full draft of this specification has gone to public review, and that the implementation purports to conform to that specification. (If additional public review drafts are produced, this keyword will continue to refer to the second draft, and additional keywords will be added to identify conformance with such later drafts. As such, the meaning of this keyword can be relied upon not to change over time.) A conforming implementation which has the :ansi-cl feature is only permitted to retain the :draft-ansi-cl feature if the finally approved standard is not incompatible with the draft standard.
+        在一个对 load 调用期间, *load-pathname* 被绑定为给 load 的第一个参数所表示的路径名和默认值合并的路径名; 这也就是说, 它被绑定为 (pathname (merge-pathnames filespec)). 在相同的时间间隔期间, *load-truename* 被绑定为这个要被处理的文件的真是名字.
 
-:ansi-cl
+        在其他时间, 这些变量的值都是 nil.
 
-    If present, indicates that this specification has been adopted by ANSI as an official standard, and that the implementation purports to conform.
+        如果在 load 正在进行时进入一个 break loop, 那么这些变量是否保留在进入 break loop 之前的值, 或者它们是否被绑定为 nil, 都取决于具体实现.
 
-:common-lisp
+        如果尝试去赋值或绑定这些变量的任意一个, 后果是未定义的.
 
-    This feature must appear in *features* for any implementation that has one or more of the features :x3j13, :draft-ansi-cl, or :ansi-cl. It is intended that it should also appear in implementations which have the features :cltl1 or :cltl2, but this specification cannot force such behavior. The intent is that this feature should identify the language family named ``Common Lisp,'' rather than some specific dialect within that family.
+* 示例(Examples): None.
 
-Examples: None.
+* 受此影响(Affected By):
 
-Affected By: None.
+        文件系统.
 
-See Also:
+* 也见(See Also):
 
-Section 1.5.2.1.1 (Use of Read-Time Conditionals), Section 2.4 (Standard Macro Characters)
+        load
 
-Notes:
+* 注意(Notes): None.
 
-The value of *features* is used by the #+ and #- reader syntax.
+### <span id="V-COMPILE-PRINT-VERBOSE">变量 *COMPILE-PRINT*, *COMPILE-VERBOSE*</span>
 
-Symbols in the features list may be in any package, but in practice they are generally in the KEYWORD package. This is because KEYWORD is the package used by default when reading[2] feature expressions in the #+ and #- reader macros. Code that needs to name a feature[2] in a package P (other than KEYWORD) can do so by making explicit use of a package prefix for P, but note that such code must also assure that the package P exists in order for the feature expression to be read[2]---even in cases where the feature expression is expected to fail.
+* 值类型(Value Type):
 
-It is generally considered wise for an implementation to include one or more features identifying the specific implementation, so that conditional expressions can be written which distinguish idiosyncrasies of one implementation from those of another. Since features are normally symbols in the KEYWORD package where name collisions might easily result, and since no uniquely defined mechanism is designated for deciding who has the right to use which symbol for what reason, a conservative strategy is to prefer names derived from one's own company or product name, since those names are often trademarked and are hence less likely to be used unwittingly by another implementation. 
+        一个广义 boolean.
 
+* 初始值(Initial Value):
 
-Variable *COMPILE-FILE-PATHNAME*, *COMPILE-FILE-TRUENAME*
+        依赖于具体实现.
 
-Value Type:
+* 描述(Description):
 
-The value of *compile-file-pathname* must always be a pathname or nil. The value of *compile-file-truename* must always be a physical pathname or nil.
+        这个 *compile-print* 的值是给 compile-file 的 :print 参数的默认值. 这个 *compile-verbose* 的值是给 compile-file 的 :verbose 参数的默认值.
 
-Initial Value:
+* 示例(Examples): None.
 
-nil.
+* 受此影响(Affected By): None.
 
-Description:
+* 也见(See Also):
 
-During a call to compile-file, *compile-file-pathname* is bound to the pathname denoted by the first argument to compile-file, merged against the defaults; that is, it is bound to (pathname (merge-pathnames input-file)). During the same time interval, *compile-file-truename* is bound to the truename of the file being compiled.
+        compile-file
 
-At other times, the value of these variables is nil.
+* 注意(Notes): None.
 
-If a break loop is entered while compile-file is ongoing, it is implementation-dependent whether these variables retain the values they had just prior to entering the break loop or whether they are bound to nil.
+### <span id="V-LOAD-PRINT-VERBOSE">变量 *LOAD-PRINT*, *LOAD-VERBOSE*</span>
 
-The consequences are unspecified if an attempt is made to assign or bind either of these variables.
+* 值类型(Value Type):
 
-Examples: None.
+        一个广义 boolean.
 
-Affected By:
+* 初始值(Initial Value):
 
-The file system.
+        这个 *load-print* 的初始值是 false. 这个 *load-verbose* 的初始值是依赖于具体实现的.
 
-See Also:
+* 描述(Description):
 
-compile-file
+        这个 *load-print* 的值是给 load 的 :print 参数的默认值. 这个 *load-verbose* 的值是给 load 的 :verbose 参数的默认值.
 
-Notes: None. 
+* 示例(Examples): None.
 
+* 受此影响(Affected By): None.
 
-Variable *LOAD-PATHNAME*, *LOAD-TRUENAME*
+* 也见(See Also):
 
-Value Type:
+        load
 
-The value of *load-pathname* must always be a pathname or nil. The value of *load-truename* must always be a physical pathname or nil.
+* 注意(Notes): None.
 
-Initial Value:
+### <span id="V-MODULES">变量 *MODULES*</span>
 
-nil.
+* 值类型(Value Type):
 
-Description:
+        一个字符串列表.
 
-During a call to load, *load-pathname* is bound to the pathname denoted by the the first argument to load, merged against the defaults; that is, it is bound to (pathname (merge-pathnames filespec)). During the same time interval, *load-truename* is bound to the truename of the file being loaded.
+* 初始值(Initial Value):
 
-At other times, the value of these variables is nil.
+        依赖于具体实现.
 
-If a break loop is entered while load is ongoing, it is implementation-dependent whether these variables retain the values they had just prior to entering the break loop or whether they are bound to nil.
+* 描述(Description):
 
-The consequences are unspecified if an attempt is made to assign or bind either of these variables.
+        这个 *modules* 的值是一个已经被加载到当前 Lisp 镜像中的模块名称列表.
 
-Examples: None.
+* 示例(Examples): None.
 
-Affected By:
+* 受此影响(Affected By):
 
-The file system.
+        provide
 
-See Also:
+* 也见(See Also):
 
-load
+        provide, require
 
-Notes: None. 
+* 注意(Notes):
 
+        这个 *modules* 已经被废弃.
 
-Variable *COMPILE-PRINT*, *COMPILE-VERBOSE*
+### <span id="F-PROVIDE-REQUIRE">函数 PROVIDE, REQUIRE</span>
 
-Value Type:
+* 语法(Syntax):
 
-a generalized boolean.
+        provide module-name => implementation-dependent
 
-Initial Value:
+        require module-name &optional pathname-list => implementation-dependent
 
-implementation-dependent.
+* 参数和值(Arguments and Values):
 
-Description:
+        module-name---一个字符串标识符.
+        pathname-list---nil, 或者一个非空路径名标识符列表的标识符. 默认是 nil.
 
-The value of *compile-print* is the default value of the :print argument to compile-file. The value of *compile-verbose* is the default value of the :verbose argument to compile-file.
+* 描述(Description):
 
-Examples: None.
+        如果 module-name 还没有出现在由 *modules* 持有的列表中, 那么 provide 添加这个 module-name 到该列表中.
 
-Affected By: None.
+        require 检验 module-name 在由 *modules* 持有的列表中的存在性. 如果它存在, require 立即返回. 否则, 尝试去加载一个如下文件的适当集合: 这个 pathname-list 参数, 如果不是 nil, 就指定一个要被从左到右依次加载的路径名列表. 如果这个 pathname-list 是 nil, 一个依赖于具体实现的机制会被调用来加载名为 module-name 的模块; 如果没有这样的模块可以被加载, 会发出一个 error 类型的错误.
 
-See Also:
+        两个函数都使用 string= 来检测一个 module-name 的存在性.
 
-compile-file
+* 示例(Examples):
 
-Notes: None. 
+    ```LISP
+    ;;; This illustrates a nonportable use of REQUIRE, because it
+    ;;; depends on the implementation-dependent file-loading mechanism.
 
+    (require "CALCULUS")
 
-Variable *LOAD-PRINT*, *LOAD-VERBOSE*
+    ;;; This use of REQUIRE is nonportable because of the literal 
+    ;;; physical pathname.  
 
-Value Type:
+    (require "CALCULUS" "/usr/lib/lisp/calculus")
 
-a generalized boolean.
+    ;;; One form of portable usage involves supplying a logical pathname,
+    ;;; with appropriate translations defined elsewhere.
 
-Initial Value:
+    (require "CALCULUS" "lib:calculus")
 
-The initial value of *load-print* is false. The initial value of *load-verbose* is implementation-dependent.
+    ;;; Another form of portable usage involves using a variable or
+    ;;; table lookup function to determine the pathname, which again
+    ;;; must be initialized elsewhere.
 
-Description:
+    (require "CALCULUS" *calculus-module-pathname*)
+    ```
 
-The value of *load-print* is the default value of the :print argument to load. The value of *load-verbose* is the default value of the :verbose argument to load.
+* 副作用(Side Effects):
 
-Examples: None.
+        provide 修改 *modules*.
 
-Affected By: None.
+* 受此影响(Affected By):
 
-See Also:
+        The specific action taken 由 require 采取的特定通过是受对 provide 的调用影响 (或者, 一般而言, 任何对 *modules* 的值的改变).
 
-load
+* 异常情况(Exceptional Situations):
 
-Notes: None. 
+        如果 module-name 不是一个字符串标识符, 那么就应该发出一个 type-error 类型的错误.
 
+        如果 require 由于一个在和文件系统交互时的问题而未完成那个请求的操作, 那么就会发出一个 file-error 类型的错误.
 
-Variable *MODULES*
+        如果在 pathname-list 中的任意路径名是一个通配符路径名的标识符, 那么就会发出一个 file-error 类型的错误.
 
-Value Type:
+* 也见(See Also):
 
-a list of strings.
+        *modules*, 章节 19.1.2 (Pathnames as Filenames)
 
-Initial Value:
+* 注意(Notes):
 
-implementation-dependent.
+        函数 provide 和 require 已经被废弃.
 
-Description:
-
-The value of *modules* is a list of names of the modules that have been loaded into the current Lisp image.
-
-Examples: None.
-
-Affected By:
-
-provide
-
-See Also:
-
-provide, require
-
-Notes:
-
-The variable *modules* is deprecated. 
-
-
-Function PROVIDE, REQUIRE
-
-Syntax:
-
-provide module-name => implementation-dependent
-
-require module-name &optional pathname-list => implementation-dependent
-
-Arguments and Values:
-
-module-name---a string designator.
-
-pathname-list---nil, or a designator for a non-empty list of pathname designators. The default is nil.
-
-Description:
-
-provide adds the module-name to the list held by *modules*, if such a name is not already present.
-
-require tests for the presence of the module-name in the list held by *modules*. If it is present, require immediately returns. Otherwise, an attempt is made to load an appropriate set of files as follows: The pathname-list argument, if non-nil, specifies a list of pathnames to be loaded in order, from left to right. If the pathname-list is nil, an implementation-dependent mechanism will be invoked in an attempt to load the module named module-name; if no such module can be loaded, an error of type error is signaled.
-
-Both functions use string= to test for the presence of a module-name.
-
-Examples:
-
-;;; This illustrates a nonportable use of REQUIRE, because it
-;;; depends on the implementation-dependent file-loading mechanism.
-
-(require "CALCULUS")
-
-;;; This use of REQUIRE is nonportable because of the literal 
-;;; physical pathname.  
-
-(require "CALCULUS" "/usr/lib/lisp/calculus")
-
-;;; One form of portable usage involves supplying a logical pathname,
-;;; with appropriate translations defined elsewhere.
-
-(require "CALCULUS" "lib:calculus")
-
-;;; Another form of portable usage involves using a variable or
-;;; table lookup function to determine the pathname, which again
-;;; must be initialized elsewhere.
-
-(require "CALCULUS" *calculus-module-pathname*)
-
-Side Effects:
-
-provide modifies *modules*.
-
-Affected By:
-
-The specific action taken by require is affected by calls to provide (or, in general, any changes to the value of *modules*).
-
-Exceptional Situations:
-
-Should signal an error of type type-error if module-name is not a string designator.
-
-If require fails to perform the requested operation due to a problem while interacting with the file system, an error of type file-error is signaled.
-
-An error of type file-error might be signaled if any pathname in pathname-list is a designator for a wild pathname.
-
-See Also:
-
-*modules*, Section 19.1.2 (Pathnames as Filenames)
-
-Notes:
-
-The functions provide and require are deprecated.
-
-If a module consists of a single package, it is customary for the package and module names to be the same. 
+        如果一个模块由单独的包组成, 照惯例这个包和模块名是相同的.
