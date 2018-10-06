@@ -1,1563 +1,1485 @@
- 25. Environment
+# 25 环境
 
-25.1 The External Environment
+> * 25.1 [外部环境](#TheExternalEnvironment)
+> * 25.2 [环境字典](#TheEnvironmentDictionary)
 
-25.2 The Environment Dictionary
+## 25.1 <span id="TheExternalEnvironment">外部环境</span>
 
+> * 25.1.1 [顶层循环](#TopLevelLoop)
+> * 25.1.2 [调试工具](#DebuggingUtilities)
+> * 25.1.3 [环境查询](#EnvironmentInquiry)
+> * 25.1.4 [时间](#Time)
 
- 25.1 The External Environment
+### 25.1.1 <span id="TopLevelLoop">顶层循环</span>
 
-25.1.1 Top level loop
+顶层循环是用户用来和 Common Lisp 系统正常交互的 Common Lisp 机制. 这个循环有时引用为 Lisp read-eval-print 循环, 因为它通常由一个读取一个表达式, 求值它然后打印结果这样的无止尽的循环组成.
 
-25.1.2 Debugging Utilities
+这个顶层循环没有被完全指定; 因此用户接口是具体实现定义的. 这个顶层循环打印所有来自于求值一个表达式形式的值. 下一段中列出了由 Lisp read-eval-print 循环来保存的变量.
 
-25.1.3 Environment Inquiry
+    *    +    /    -  
+    **   ++   //
+    ***  +++  ///
 
-25.1.4 Time
+    Figure 25-1. 由 Read-Eval-Print 循环来保存的变量
 
+### 25.1.2 <span id="DebuggingUtilities">调试工具</span>
 
- 25.1.1 Top level loop
-The top level loop is the Common Lisp mechanism by which the user normally interacts with the Common Lisp system. This loop is sometimes referred to as the Lisp read-eval-print loop because it typically consists of an endless loop that reads an expression, evaluates it and prints the results.
+下一段展示了和调试相关的已定义的名字.
 
-The top level loop is not completely specified; thus the user interface is implementation-defined. The top level loop prints all values resulting from the evaluation of a form. The next figure lists variables that are maintained by the Lisp read-eval-print loop.
+    *debugger-hook*  documentation    step
+    apropos          dribble          time
+    apropos-list     ed               trace
+    break            inspect          untrace  
+    describe         invoke-debugger
 
-*    +    /    -  
-**   ++   //      
-***  +++  ///     
+    Figure 25-2. 和调试相关的已定义的名字
 
-Figure 25-1. Variables maintained by the Read-Eval-Print Loop 
+### 25.1.3 <span id="EnvironmentInquiry">环境查询</span>
 
+环境查询的已定义名字提供了关于硬件和软件配置的信息, 一个 Common Lisp 程序基于这些信息执行.
 
- 25.1.2 Debugging Utilities
+下一段展示了和环境查询相关的已定义的名字.
 
-The next figure shows defined names relating to debugging.
+    *features*                   machine-instance  short-site-name
+    lisp-implementation-type     machine-type      software-type
+    lisp-implementation-version  machine-version   software-version  
+    long-site-name               room
 
-*debugger-hook*  documentation    step     
-apropos          dribble          time     
-apropos-list     ed               trace    
-break            inspect          untrace  
-describe         invoke-debugger           
+    Figure 25-3. 和环境查询相关的已定义的名字.
 
-Figure 25-2. Defined names relating to debugging 
+### 25.1.4 <span id="Time">时间</span>
 
+时间在 Common Lisp 中用四种不同的方式被表示: 解码时间(decoded time), 通用时间(universal time), 内部时间(internal time)和秒(seconds). 解码时间和通用时间主要被用于表示日历时间, 并且只精确到一秒. 内部时间主要被用于表示计算机时间的度量 (例如运行时间) 并且精确到某个依赖于具体实现的秒的分数, 称之为内部时间单元(internal time unit), 由 internal-time-units-per-second 指定. 一个内部时间可以被用于绝对和相对的时间度量. 一个通用时间和一个解码时间都只能被用于绝对时间度量. 在一个 sleep 函数的情况中, 时间间隔被表示为一个秒的非负实数.
 
- 25.1.3 Environment Inquiry
-Environment inquiry defined names provide information about the hardware and software configuration on which a Common Lisp program is being executed.
+下一段展示了和时间相关的已定义的名字.
 
-The next figure shows defined names relating to environment inquiry.
+    decode-universal-time   get-internal-run-time
+    encode-universal-time   get-universal-time
+    get-decoded-time        internal-time-units-per-second  
+    get-internal-real-time  sleep
 
-*features*                   machine-instance  short-site-name   
-lisp-implementation-type     machine-type      software-type     
-lisp-implementation-version  machine-version   software-version  
-long-site-name               room                                
+    Figure 25-4. 涉及到时间的已定义名字.
 
-Figure 25-3. Defined names relating to environment inquiry. 
+> * 25.1.4.1 [解码时间(Decoded Time)](#DecodedTime)
+> * 25.1.4.2 [通用时间(Universal Time)](#UniversalTime)
+> * 25.1.4.3 [内部时间(Internal Time)](#InternalTime)
+> * 25.1.4.4 [秒](#Seconds)
 
+#### 25.1.4.1 <span id="DecodedTime">解码时间(Decoded Time)</span>
 
- 25.1.4 Time
+一个解码时间是一个 9 个值的有序序列, 加在一起表示日历时间中的一个点 (忽略闰秒(leap seconds)):
 
-Time is represented in four different ways in Common Lisp: decoded time, universal time, internal time, and seconds. Decoded time and universal time are used primarily to represent calendar time, and are precise only to one second. Internal time is used primarily to represent measurements of computer time (such as run time) and is precise to some implementation-dependent fraction of a second called an internal time unit, as specified by internal-time-units-per-second. An internal time can be used for either absolute and relative time measurements. Both a universal time and a decoded time can be used only for absolute time measurements. In the case of one function, sleep, time intervals are represented as a non-negative real number of seconds.
+    Second
 
-The next figure shows defined names relating to time.
+        一个 0 和 59 之间的整数, 是包含的.
 
-decode-universal-time   get-internal-run-time           
-encode-universal-time   get-universal-time              
-get-decoded-time        internal-time-units-per-second  
-get-internal-real-time  sleep                           
+    Minute
 
-Figure 25-4. Defined names involving Time.
+        一个 0 和 59 之间的整数, 是包含的.
 
-25.1.4.1 Decoded Time
+    Hour
 
-25.1.4.2 Universal Time
+        一个 0 和 23 之间的整数, 是包含的.
 
-25.1.4.3 Internal Time
+    Date
 
-25.1.4.4 Seconds
+        一个 1 和 31 之间的整数, 是包含的 (当然这个上限实际上依赖于月份和年).
 
+    Month
 
- 25.1.4.1 Decoded Time
+        一个 1 和 12 之间的整数, 是包含的; 1 意味着 January, 2 意味着 February, 以此类推; 12 意味着 December.
 
-A decoded time is an ordered series of nine values that, taken together, represent a point in calendar time (ignoring leap seconds):
+    Year
 
-Second
+        一个表示公元年的整数. 然而, 如果这个整数在 0 和 99 之间, 使用 "obvious" 的年; 更确切地说, 假设那一年等于整数模100, 并且在本年度的 50 年内 (向后包含但是向前不包含). 因此, 在 1978 年, 年 28 是 1928 但是年 27 是 2027. (以这种格式返回时间的函数总是返回全年数字.)
 
-    An integer between 0 and 59, inclusive.
+    Day of week
 
-Minute
+        一个 0 和 6 之间的整数, 是包含的; 0 意味着周一(Monday), 1 意味着周二(Tuesday), 以此类推; 6 意味着周日(Sunday).
 
-    An integer between 0 and 59, inclusive.
+    Daylight saving time flag
 
-Hour
+        一个广义 boolean, 如果为 true, 表示夏令时生效.
 
-    An integer between 0 and 23, inclusive.
+    Time zone
 
-Date
+        一个时区.
 
-    An integer between 1 and 31, inclusive (the upper limit actually depends on the month and year, of course).
+下一段展示了和解码时间相关的已定义的名字.
 
-Month
+    decode-universal-time  get-decoded-time  
 
-    An integer between 1 and 12, inclusive; 1 means January, 2 means February, and so on; 12 means December.
+    Figure 25-5. 在解码时间中涉及时间的已定义名称.
 
-Year
+#### 25.1.4.2 <span id="UniversalTime">通用时间(Universal Time)</span>
 
-    An integer indicating the year A.D. However, if this integer is between 0 and 99, the ``obvious'' year is used; more precisely, that year is assumed that is equal to the integer modulo 100 and within fifty years of the current year (inclusive backwards and exclusive forwards). Thus, in the year 1978, year 28 is 1928 but year 27 is 2027. (Functions that return time in this format always return a full year number.)
+通用时间是一个表示为一个单独的非负整数的绝对时间---这个整数是从 January 1, 1900 GMT (忽略闰秒(leap seconds)) 半夜开始的秒数. 因此时间 1 就是 00:00:01 (也就是说, 12:00:01 a.m.) January 1, 1900 GMT. 类似地, 时间 2398291201 对应于时间 00:00:01 January 1, 1976 GMT. 回想一下, 1900 年不是闰年; 出于 Common Lisp 的用途, 当且仅当一个年的数字可以被 4 整除, 那么这年是一个闰年, 除了可以被 100 整除的年不是闰年, 可以被 400 整除的年是闰年. 因此 2000 年回事一个闰年. 因为通用时间必须是一个非负整数, 在 January 1, 1900 GMT 半夜之前的时间不能被 Common Lisp 处理.
 
-Day of week
+    decode-universal-time  get-universal-time  
+    encode-universal-time
 
-    An integer between 0 and 6, inclusive; 0 means Monday, 1 means Tuesday, and so on; 6 means Sunday.
+    Figure 25-6. 在通用时间中涉及时间的已定义名称.
 
-Daylight saving time flag
+#### 25.1.4.3 <span id="InternalTime">内部时间(Internal Time)</span>
 
-    A generalized boolean that, if true, indicates that daylight saving time is in effect.
+内部时间把时间表示为一个单独的整数, 根据一个称之为内部时间单位(internal time unit)的依赖于具体实现的单位. 相对时间用这些单位的数量来衡量. 绝对时间是相对于任意的时间基数的.
 
-Time zone
+下一段展示了和内部时间相关的已定义的名字.
 
-    A time zone.
+    get-internal-real-time  internal-time-units-per-second  
+    get-internal-run-time
 
-The next figure shows defined names relating to decoded time.
+    Figure 25-7. 在内部时间中涉及时间的已定义名称.
 
-decode-universal-time  get-decoded-time  
+#### 25.1.4.4 <span id="Seconds">秒</span>
 
-Figure 25-5. Defined names involving time in Decoded Time. 
+一个函数, sleep, 它的参数是一个秒的非负实数. 非正式地, 把这看作一个相对普遍的时间可能是有用的, 但它在一个重要的方面是不同的: 通用时间总是非负整数, 而 sleep 的参数可以是任何非负实数, 以便考虑到分数秒的可能性.
 
+    sleep
 
- 25.1.4.2 Universal Time
+    Figure 25-8. 在秒中涉及时间的已定义名称.
 
-Universal time is an absolute time represented as a single non-negative integer---the number of seconds since midnight, January 1, 1900 GMT (ignoring leap seconds). Thus the time 1 is 00:00:01 (that is, 12:00:01 a.m.) on January 1, 1900 GMT. Similarly, the time 2398291201 corresponds to time 00:00:01 on January 1, 1976 GMT. Recall that the year 1900 was not a leap year; for the purposes of Common Lisp, a year is a leap year if and only if its number is divisible by 4, except that years divisible by 100 are not leap years, except that years divisible by 400 are leap years. Therefore the year 2000 will be a leap year. Because universal time must be a non-negative integer, times before the base time of midnight, January 1, 1900 GMT cannot be processed by Common Lisp.
+## 25.2 <span id="TheEnvironmentDictionary">环境字典</span>
 
-decode-universal-time  get-universal-time  
-encode-universal-time                      
+> * [函数 DECODE-UNIVERSAL-TIME](#F-DECODE-UNIVERSAL-TIME)
+> * [函数 ENCODE-UNIVERSAL-TIME](#F-ENCODE-UNIVERSAL-TIME)
+> * [函数 GET-UNIVERSAL-TIME, GET-DECODED-TIME](#F-GET-TIME-ALL)
+> * [函数 SLEEP](#F-SLEEP)
+> * [函数 APROPOS, APROPOS-LIST](#F-APROPOS-ALL)
+> * [函数 DESCRIBE](#F-DESCRIBE)
+> * [标准广义函数 DESCRIBE-OBJECT](#SGF-DESCRIBE-OBJECT)
+> * [宏 TRACE, UNTRACE](#M-TRACE-UNTRACE)
+> * [宏 STEP](#M-STEP)
+> * [宏 TIME](#M-TIME)
+> * [常量 INTERNAL-TIME-UNITS-PER-SECOND](#CV-INTERNAL-TIME-UNITS-PER-SECOND)
+> * [函数 GET-INTERNAL-REAL-TIME](#F-GET-INTERNAL-REAL-TIME)
+> * [函数 GET-INTERNAL-RUN-TIME](#F-GET-INTERNAL-RUN-TIME)
+> * [函数 DISASSEMBLE](#F-DISASSEMBLE)
+> * [标准广义函数 DOCUMENTATION, (SETF DOCUMENTATION)](#SGF-DOCUMENTATION-ALL)
+> * [函数 ROOM](#F-ROOM)
+> * [函数 ED](#F-ED)
+> * [函数 INSPECT](#F-INSPECT)
+> * [函数 DRIBBLE](#F-DRIBBLE)
+> * [常量 -](#V-MINUS)
+> * [常量 +, ++, +++](#V-ADD-ALL)
+> * [常量 *, **, ***](#V-ASTERISK)
+> * [常量 /, //, ///](#V-SLASH)
+> * [函数 LISP-IMPLEMENTATION-TYPE, LISP-IMPLEMENTATION-VERSION](#F-LISP-IMPLEMENTATION-ALL)
+> * [函数 SHORT-SITE-NAME, LONG-SITE-NAME](#F-SITE-NAME-ALL)
+> * [函数 MACHINE-INSTANCE](#F-MACHINE-INSTANCE)
+> * [函数 MACHINE-TYPE](#F-MACHINE-TYPE)
+> * [函数 MACHINE-VERSION](#F-MACHINE-VERSION)
+> * [函数 SOFTWARE-TYPE, SOFTWARE-VERSION](#F-SOFTWARE-ALL)
+> * [函数 USER-HOMEDIR-PATHNAME](#F-USER-HOMEDIR-PATHNAME)
 
-Figure 25-6. Defined names involving time in Universal Time. 
+### <span id="F-DECODE-UNIVERSAL-TIME">函数 DECODE-UNIVERSAL-TIME</span>
 
+* 语法(Syntax):
 
- 25.1.4.3 Internal Time
+        decode-universal-time universal-time &optional time-zone
+        => second, minute, hour, date, month, year, day, daylight-p, zone
 
-Internal time represents time as a single integer, in terms of an implementation-dependent unit called an internal time unit. Relative time is measured as a number of these units. Absolute time is relative to an arbitrary time base.
+* 参数和值(Arguments and Values):
 
-The next figure shows defined names related to internal time.
+        universal-time---一个通用时间.
+        time-zone---一个时区.
+        second, minute, hour, date, month, year, day, daylight-p, zone---一个解码时间.
 
-get-internal-real-time  internal-time-units-per-second  
-get-internal-run-time                                   
+* 描述(Description):
 
-Figure 25-7. Defined names involving time in Internal Time. 
+    返回给定的通用时间表示的解码时间.
 
+    如果没有提供 time-zone, 它默认为当前时区, 调整为夏令时. 如果提供了 time-zone, 忽略夏令时信息. 如果提供了 time-zone 那么夏令时标志就是 nil.
 
- 25.1.4.4 Seconds
+* 示例(Examples):
 
-One function, sleep, takes its argument as a non-negative real number of seconds. Informally, it may be useful to think of this as a relative universal time, but it differs in one important way: universal times are always non-negative integers, whereas the argument to sleep can be any kind of non-negative real, in order to allow for the possibility of fractional seconds.
+    ```LISP
+    (decode-universal-time 0 0) =>  0, 0, 0, 1, 1, 1900, 0, false, 0
 
-sleep    
+    ;; The next two examples assume Eastern Daylight Time.
+    (decode-universal-time 2414296800 5) =>  0, 0, 1, 4, 7, 1976, 6, false, 5
+    (decode-universal-time 2414293200) =>  0, 0, 1, 4, 7, 1976, 6, true, 5
 
-Figure 25-8. Defined names involving time in Seconds. 
+    ;; This example assumes that the time zone is Eastern Daylight Time
+    ;; (and that the time zone is constant throughout the example).
+    (let* ((here (nth 8 (multiple-value-list (get-decoded-time)))) ;Time zone
+            (recently (get-universal-time))
+            (a (nthcdr 7 (multiple-value-list (decode-universal-time recently))))
+            (b (nthcdr 7 (multiple-value-list (decode-universal-time recently here)))))
+      (list a b (equal a b))) =>  ((T 5) (NIL 5) NIL)
+    ```
 
+* 受此影响(Affected By):
 
- 25.2 The Environment Dictionary
+        依赖于具体实现的用于计算夏时制或夏时制是否对任何给定会话有效的机制.
 
-Function DECODE-UNIVERSAL-TIME
+* 异常情况(Exceptional Situations): None.
 
-function ENCODE-UNIVERSAL-TIME
+* 也见(See Also):
 
-Function GET-UNIVERSAL-TIME, GET-DECODED-TIME
+        encode-universal-time, get-universal-time, 章节 25.1.4 (时间)
 
-Function SLEEP
+* 注意(Notes): None.
 
-Function APROPOS, APROPOS-LIST
+### <span id="F-ENCODE-UNIVERSAL-TIME">函数 ENCODE-UNIVERSAL-TIME</span>
 
-Function DESCRIBE
+* 语法(Syntax):
 
-Standard Generic Function DESCRIBE-OBJECT
+        encode-universal-time second minute hour date month year &optional time-zone
+        => universal-time
 
-Macro TRACE, UNTRACE
+* 参数和值(Arguments and Values):
 
-Macro STEP
+        second, minute, hour, date, month, year, time-zone---一个解码时间的对应部分. (注意，在一个完整的解码时间中, 9 个值中的一些是冗余的, 因此不用作此函数的输入.)
+        universal-time---一个通用时间.
 
-Macro TIME
+* 描述(Description):
 
-Constant Variable INTERNAL-TIME-UNITS-PER-SECOND
+        encode-universal-time 转换一个来自解码时间的时间为一个通用时间.
 
-Function GET-INTERNAL-REAL-TIME
+        如果提供了 time-zone, 不会执行夏令时的调整.
 
-Function GET-INTERNAL-RUN-TIME
+* 示例(Examples):
 
-Function DISASSEMBLE
+    ```LISP
+    (encode-universal-time 0 0 0 1 1 1900 0) =>  0
+    (encode-universal-time 0 0 1 4 7 1976 5) =>  2414296800
+    ;; The next example assumes Eastern Daylight Time.
+    (encode-universal-time 0 0 1 4 7 1976) =>  2414293200
+    ```
 
-Standard Generic Function DOCUMENTATION, (SETF DOCUMENTATION)
+* 受此影响(Affected By): None.
 
-Function ROOM
+* 异常情况(Exceptional Situations): None.
 
-Function ED
+* 也见(See Also):
 
-Function INSPECT
+        decode-universal-time, get-decoded-time
 
-Function DRIBBLE
+* 注意(Notes): None.
 
-Variable -
+### <span id="F-GET-TIME-ALL">函数 GET-UNIVERSAL-TIME, GET-DECODED-TIME</span>
 
-Variable +, ++, +++
+* 语法(Syntax):
 
-Variable *, **, ***
+        get-universal-time <no arguments> => universal-time
 
-Variable /, //, ///
+        get-decoded-time <no arguments>
+        => second, minute, hour, date, month, year, day, daylight-p, zone
 
-Function LISP-IMPLEMENTATION-TYPE, LISP-IMPLEMENTATION-VERSION
+* 参数和值(Arguments and Values):
 
-Function SHORT-SITE-NAME, LONG-SITE-NAME
+        universal-time---一个通用时间.
+        second, minute, hour, date, month, year, day, daylight-p, zone---一个解码时间.
 
-Function MACHINE-INSTANCE
+* 描述(Description):
 
-Function MACHINE-TYPE
+        get-universal-time 返回当前时间, 表示为一个通用时间.
 
-Function MACHINE-VERSION
+        get-decoded-time 返回当前时间, 表示为一个解码的时间.
 
-Function SOFTWARE-TYPE, SOFTWARE-VERSION
+* 示例(Examples):
 
-Function USER-HOMEDIR-PATHNAME
+    ```LISP
+    ;; At noon on July 4, 1976 in Eastern Daylight Time.
+    (get-decoded-time) =>  0, 0, 12, 4, 7, 1976, 6, true, 5
+    ;; At exactly the same instant.
+    (get-universal-time) =>  2414332800
+    ;; Exactly five minutes later.
+    (get-universal-time) =>  2414333100
+    ;; The difference is 300 seconds (five minutes)
+    (- * **) =>  300
+    ```
 
+* 副作用(Side Effects): None.
 
-Function DECODE-UNIVERSAL-TIME
+* 受此影响(Affected By):
 
-Syntax:
+        一天的时间 (换句话说, 流逝的时间), 系统时钟保持精确时间的能力, 以及系统时钟初始设置的准确性.
 
-decode-universal-time universal-time &optional time-zone
+* 异常情况(Exceptional Situations):
 
-=> second, minute, hour, date, month, year, day, daylight-p, zone
+        如果当前时间不能确定, 那么就会发出一个 error 类型的错误.
 
-Arguments and Values:
+* 也见(See Also):
 
-universal-time---a universal time.
+        decode-universal-time, encode-universal-time, 章节 25.1.4 (时间)
 
-time-zone---a time zone.
+* 注意(Notes):
 
-second, minute, hour, date, month, year, day, daylight-p, zone---a decoded time.
+        (get-decoded-time) ==  (decode-universal-time (get-universal-time))
 
-Description:
+        没有要求具体实现有着一种方式去核实返回的时间是正确的. 然而, 如果一个具体实现提供正确性检测 (例如, 未能正确初始化系统时钟可以可靠地检测到) 并且那个正确性检测失败了, 强烈鼓励 (但不是必须) 具体实现去发出一个 error 类型的错误 (而不是, 例如, 返回一个已知是错误的值), 它是可纠正的, 允许用户去交互式地设置正确的时间.
 
-Returns the decoded time represented by the given universal time.
+### <span id="F-SLEEP">函数 SLEEP</span>
 
-If time-zone is not supplied, it defaults to the current time zone adjusted for daylight saving time. If time-zone is supplied, daylight saving time information is ignored. The daylight saving time flag is nil if time-zone is supplied.
+* 语法(Syntax):
 
-Examples:
+        sleep seconds => nil
 
- (decode-universal-time 0 0) =>  0, 0, 0, 1, 1, 1900, 0, false, 0
+* 参数和值(Arguments and Values):
 
-;; The next two examples assume Eastern Daylight Time.
- (decode-universal-time 2414296800 5) =>  0, 0, 1, 4, 7, 1976, 6, false, 5
- (decode-universal-time 2414293200) =>  0, 0, 1, 4, 7, 1976, 6, true, 5
+        seconds---一个非负实数.
 
-;; This example assumes that the time zone is Eastern Daylight Time
-;; (and that the time zone is constant throughout the example).
- (let* ((here (nth 8 (multiple-value-list (get-decoded-time)))) ;Time zone
-        (recently (get-universal-time))
-        (a (nthcdr 7 (multiple-value-list (decode-universal-time recently))))
-        (b (nthcdr 7 (multiple-value-list (decode-universal-time recently here)))))
-   (list a b (equal a b))) =>  ((T 5) (NIL 5) NIL)
+* 描述(Description):
 
-Affected By:
+        使执行停止并进入休眠状态, 大约以 seconds 表示的实时秒数, 然后恢复执行.
 
-Implementation-dependent mechanisms for calculating when or if daylight savings time is in effect for any given session.
+* 示例(Examples):
 
-Exceptional Situations: None.
+    ```LISP
+    (sleep 1) =>  NIL
 
-See Also:
+    ;; Actually, since SLEEP is permitted to use approximate timing,
+    ;; this might not always yield true, but it will often enough that
+    ;; we felt it to be a productive example of the intent.
+    (let ((then (get-universal-time))
+          (now  (progn (sleep 10) (get-universal-time))))
+      (>= (- now then) 10))
+    =>  true
+    ```
 
-encode-universal-time, get-universal-time, Section 25.1.4 (Time)
+* 副作用(Side Effects):
 
-Notes: None. 
+        导致执行终止.
 
+* 受此影响(Affected By):
 
-function ENCODE-UNIVERSAL-TIME
+        调度程序的粒度.
 
-Syntax:
+* 异常情况(Exceptional Situations):
 
-encode-universal-time second minute hour date month year &optional time-zone
+        如果 seconds 不是一个非负实数, 就会发出一个 type-error 类型的错误.
 
-=> universal-time
+* 也见(See Also): None.
 
-Arguments and Values:
+* 注意(Notes): None.
 
-second, minute, hour, date, month, year, time-zone---the corresponding parts of a decoded time. (Note that some of the nine values in a full decoded time are redundant, and so are not used as inputs to this function.)
+### <span id="F-APROPOS-ALL">函数 APROPOS, APROPOS-LIST</span>
 
-universal-time---a universal time.
+* 语法(Syntax):
 
-Description:
+        apropos string &optional package => <no values>
 
-encode-universal-time converts a time from Decoded Time format to a universal time.
+        apropos-list string &optional package => symbols
 
-If time-zone is supplied, no adjustment for daylight savings time is performed.
+* 参数和值(Arguments and Values):
 
-Examples:
+        string---一个字符串标识符.
+        package---一个包标识符或 nil. 默认是 nil.
+        symbols---一个符号列表.
 
- (encode-universal-time 0 0 0 1 1 1900 0) =>  0
- (encode-universal-time 0 0 1 4 7 1976 5) =>  2414296800
-;; The next example assumes Eastern Daylight Time.
- (encode-universal-time 0 0 1 4 7 1976) =>  2414293200
+* 描述(Description):
 
-Affected By: None.
+        这些函数搜索名字中包含子字符串 string 的已捕捉的符号.
 
-Exceptional Situations: None.
+        对于 apropos, 作为每一个被找到的符号, 它的名字被打印在标准输出. 另外, 如果这样的一个符号被定义为一个函数或动态变量, 关于这些定义的信息也会被打印.
 
-See Also:
+        对于 apropos-list, 随着这个搜索的进行不会产生输出; 而是当搜索完成时返回匹配的符号的列表.
 
-decode-universal-time, get-decoded-time
+        如果 package 不是 nil, 只有那个包中可访问的符号会被搜索; 否则任何包中的所有符号都会被搜索.
 
-Notes: None. 
+        由于一个符号可能通过多个继承路径可用, apropos 可能打印关于同一个符号的信息不止一次, 或者 apropos-list 可能返回一个包含重复符号的列表.
 
+        这个搜索是否是大小写敏感的是具体实现定义的.
 
-Function GET-UNIVERSAL-TIME, GET-DECODED-TIME
+* 示例(Examples): None.
 
-Syntax:
+* 受此影响(Affected By):
 
-get-universal-time <no arguments> => universal-time
+        在任何要被搜索的包中当前被捕捉的符号的集合.
 
-get-decoded-time <no arguments>
+        apropos 也受 *standard-output* 影响.
 
-=> second, minute, hour, date, month, year, day, daylight-p, zone
+* 异常情况(Exceptional Situations): None.
 
-Arguments and Values:
+* 也见(See Also): None.
 
-universal-time---a universal time.
+* 注意(Notes): None.
 
-second, minute, hour, date, month, year, day, daylight-p, zone---a decoded time.
+### <span id="F-DESCRIBE">函数 DESCRIBE</span>
 
-Description:
+* 语法(Syntax):
 
-get-universal-time returns the current time, represented as a universal time.
+        describe object &optional stream => <no values>
 
-get-decoded-time returns the current time, represented as a decoded time.
+* 参数和值(Arguments and Values):
 
-Examples:
+        object---一个符号.
+        stream---一个输出流标识符. 默认是标准输出.
 
-;; At noon on July 4, 1976 in Eastern Daylight Time.
- (get-decoded-time) =>  0, 0, 12, 4, 7, 1976, 6, true, 5
-;; At exactly the same instant.
- (get-universal-time) =>  2414332800
-;; Exactly five minutes later.
- (get-universal-time) =>  2414333100
-;; The difference is 300 seconds (five minutes)
- (- * **) =>  300
+* 描述(Description):
 
-Side Effects: None.
+        describe 显示关于对象 object 的信息到流 stream.
 
-Affected By:
+        比如, 一个符号的描述可能展示这个符号的值, 它的定义, 已经它的每一个属性. 一个浮点数的描述可能以一种有助于跟踪舍入错误的方式显示数字的内部表示. 在所有情况中, 然而, 这个描述输出的性质和格式是依赖于具体实现的.
 
-The time of day (i.e., the passage of time), the system clock's ability to keep accurate time, and the accuracy of the system clock's initial setting.
+        describe 可以描述它在这个对象 object 中找到的东西; 在这样的情况中, 通常使用诸如增加缩进或在表中定位等符号图案, 以便从视觉上区分这种递归描述和参数 object 的描述.
 
-Exceptional Situations:
+        描述这个对象的实际行为是由 describe-object 实现的. describe 存在作为一个管理缺省参数的接口 (包括参数 t 和 nil 到流对象的转换) 以及去抑制来自 describe-object 的任何返回值.
 
-An error of type error might be signaled if the current time cannot be determined.
+        describe 不打算作为一个交互式的函数. 在一个复合规范的实现中, 默认情况下, describe 一定不能为用户输入提示. 用户定义的 describe-objec 方法同样受限.
 
-See Also:
+* 示例(Examples): None.
 
-decode-universal-time, encode-universal-time, Section 25.1.4 (Time)
+* 副作用(Side Effects):
 
-Notes:
+        输出到标准输出或终端 I/O.
 
- (get-decoded-time) ==  (decode-universal-time (get-universal-time))
+* 受此影响(Affected By):
 
-No implementation is required to have a way to verify that the time returned is correct. However, if an implementation provides a validity check (e.g., the failure to have properly initialized the system clock can be reliably detected) and that validity check fails, the implementation is strongly encouraged (but not required) to signal an error of type error (rather than, for example, returning a known-to-be-wrong value) that is correctable by allowing the user to interactively set the correct time. 
+        *standard-output* 和 *terminal-io*, 在有着用户定义的类的对象上的 describe-object 和 print-object 方法.
 
-Function SLEEP
+* 异常情况(Exceptional Situations): None.
 
-Syntax:
+* 也见(See Also):
 
-sleep seconds => nil
+        inspect, describe-object
 
-Arguments and Values:
+* 注意(Notes): None.
 
-seconds---a non-negative real.
+### <span id="SGF-DESCRIBE-OBJECT">标准广义函数 DESCRIBE-OBJECT</span>
 
-Description:
+* 语法(Syntax):
 
-Causes execution to cease and become dormant for approximately the seconds of real time indicated by seconds, whereupon execution is resumed.
+        describe-object object stream => implementation-dependent
 
-Examples:
+* 方法签名(Method Signatures):
 
- (sleep 1) =>  NIL 
+        describe-object (object standard-object) stream
 
-;; Actually, since SLEEP is permitted to use approximate timing, 
-;; this might not always yield true, but it will often enough that
-;; we felt it to be a productive example of the intent.
- (let ((then (get-universal-time))
-       (now  (progn (sleep 10) (get-universal-time))))
-   (>= (- now then) 10))
-=>  true
+* 参数和值(Arguments and Values):
 
-Side Effects:
+        object---一个符号.
+        stream---一个流.
 
-Causes processing to pause.
+* 描述(Description):
 
-Affected By:
+        广义函数 describe-object 打印对象 object 的描述到一个流 stream. describe-object 被 describe 调用; 它一定不能被用户调用.
 
-The granularity of the scheduler.
+        每一个具体实现需要去提供一个类 standard-object 上的方法以及其他类上的足够的方法来确保这里总是有一个可应用的方法. 具体实现可以自由地去为其他的类添加方法. 如果用户不想去继承一个具体实现提供的方法, 那么用户可以为他们自己的类编写 describe-object 方法.
 
-Exceptional Situations:
+        在 describe-object 上的方法可以递归调用 describe. 缩进, 深度限制, 还有环状检测都是自动处理的, 如果这里有更多结构层级, 那么假设每一个方法处理结构的一层并且递归调用 describe. 如果没有遵守这个规则的后果是未定义的.
 
-Should signal an error of type type-error if seconds is not a non-negative real.
+        在一些具体实现中,传递给一个 describe-object 方法的 这个 stream 流参数不是那个原始的流, 而是一个实现了 describe 部分的中间流. 因此方法不应该依赖于这个流的标识.
 
-See Also: None.
+* 示例(Examples):
 
-Notes: None. 
+    ```LISP
+    (defclass spaceship ()
+      ((captain :initarg :captain :accessor spaceship-captain)
+        (serial# :initarg :serial-number :accessor spaceship-serial-number)))
 
+    (defclass federation-starship (spaceship) ())
 
-Function APROPOS, APROPOS-LIST
+    (defmethod describe-object ((s spaceship) stream)
+      (with-slots (captain serial#) s
+        (format stream "~&~S is a spaceship of type ~S,~
+                        ~%with ~A at the helm ~
+                          and with serial number ~D.~%"
+                s (type-of s) captain serial#)))
 
-Syntax:
+    (make-instance 'federation-starship
+                    :captain "Rachel Garrett"
+                    :serial-number "NCC-1701-C")
+    =>  #<FEDERATION-STARSHIP 26312465>
 
-apropos string &optional package => <no values>
+    (describe *)
+    >>  #<FEDERATION-STARSHIP 26312465> is a spaceship of type FEDERATION-STARSHIP,
+    >>  with Rachel Garrett at the helm and with serial number NCC-1701-C.
+    =>  <no values>
+    ```
 
-apropos-list string &optional package => symbols
+* 受此影响(Affected By): None.
 
-Arguments and Values:
+* 异常情况(Exceptional Situations): None.
 
-string---a string designator.
+* 也见(See Also):
 
-package---a package designator or nil. The default is nil.
+        describe
 
-symbols---a list of symbols.
+* 注意(Notes):
 
-Description:
+        和应用于 print-object 相同的实现机制被应用于 describe-object.
 
-These functions search for interned symbols whose names contain the substring string.
+        使这个 describe-object 的返回值是未指定的原因是去避免强制用户在所有它们的方法中去包含明确的值. describe 负责这个.
 
-For apropos, as each such symbol is found, its name is printed on standard output. In addition, if such a symbol is defined as a function or dynamic variable, information about those definitions might also be printed.
+### <span id="M-TRACE-UNTRACE">宏 TRACE, UNTRACE</span>
 
-For apropos-list, no output occurs as the search proceeds; instead a list of the matching symbols is returned when the search is complete.
+* 语法(Syntax):
 
-If package is non-nil, only the symbols accessible in that package are searched; otherwise all symbols accessible in any package are searched.
+        trace function-name* => trace-result
 
-Because a symbol might be available by way of more than one inheritance path, apropos might print information about the same symbol more than once, or apropos-list might return a list containing duplicate symbols.
+        untrace function-name* => untrace-result
 
-Whether or not the search is case-sensitive is implementation-defined.
+* 参数和值(Arguments and Values):
 
-Examples: None.
+        function-name---一个函数名字.
+        trace-result---依赖于具体实现的, 除非没有提供 function-names, 在这个情况中 trace-result 是一个函数名字的列表.
+        untrace-result---依赖于具体实现的.
 
-Affected By:
+* 描述(Description):
 
-The set of symbols which are currently interned in any packages being searched.
+        trace 和 untrace 控制那个跟踪工具的调用.
 
-apropos is also affected by *standard-output*.
+        用不止一个函数名 function-names 调用 trace 导致表示的函数被 "追踪". 无论何时一个被追踪的函数被调用, 关于这个调用, 关于这些参数传递, 以及关于最后返回值的信息会被打印到跟踪输出(trace output). 如果 trace 没有和函数名 function-names 一起使用, 不会执行跟踪的动作; 反而, 一个当前正在被跟踪的函数列表会被返回.
 
-Exceptional Situations: None.
+        用不止一个函数名调用 untrace 导致那些函数被 "解除追踪(untraced)" (换句话说, 不再被追踪). 如果 untrace 没有和函数名 function-names 一起使用, 所有当前正在被追踪的函数会被解除追踪.
 
-See Also: None.
+        如果一个要被追踪的函数已经是 open-coded 的(例如, 由于它被申明为 inline), 一个对那个函数的调用可能不会产生跟踪输出.
 
-Notes: None. 
+* 示例(Examples):
 
-Function DESCRIBE
+    ```LISP
+    (defun fact (n) (if (zerop n) 1 (* n (fact (- n 1)))))
+    =>  FACT
+    (trace fact)
+    =>  (FACT)
+    ;; Of course, the format of traced output is implementation-dependent.
+    (fact 3)
+    >>  1 Enter FACT 3
+    >>  | 2 Enter FACT 2
+    >>  |   3 Enter FACT 1
+    >>  |   | 4 Enter FACT 0
+    >>  |   | 4 Exit FACT 1
+    >>  |   3 Exit FACT 1
+    >>  | 2 Exit FACT 2
+    >>  1 Exit FACT 6
+    =>  6
+    ```
 
-Syntax:
+* 副作用(Side Effects):
 
-describe object &optional stream => <no values>
+        可能改变由 function-names 命名的那些函数的定义.
 
-Arguments and Values:
+* 受此影响(Affected By):
 
-object---an object.
+        那个命名的函数是否被定义或者是否已经被跟踪.
 
-stream---an output stream designator. The default is standard output.
+* 异常情况(Exceptional Situations):
 
-Description:
+        跟踪一个已经被跟踪的函数, 或者解除一个当前没有被跟踪的函数的跟踪, 都不应该产生有害的效果, 但是可能发出一个警告.
 
-describe displays information about object to stream.
+* 也见(See Also):
 
-For example, describe of a symbol might show the symbol's value, its definition, and each of its properties. describe of a float might show the number's internal representation in a way that is useful for tracking down round-off errors. In all cases, however, the nature and format of the output of describe is implementation-dependent.
+        *trace-output*, step
 
-describe can describe something that it finds inside the object; in such cases, a notational device such as increased indentation or positioning in a table is typically used in order to visually distinguish such recursive descriptions from descriptions of the argument object.
+* 注意(Notes):
 
-The actual act of describing the object is implemented by describe-object. describe exists as an interface primarily to manage argument defaulting (including conversion of arguments t and nil into stream objects) and to inhibit any return values from describe-object.
+        trace 和 untrace 可能也接受具体实现定义的额外的参数格式. 这个跟踪输出的格式是依赖于具体实现的.
 
-describe is not intended to be an interactive function. In a conforming implementation, describe must not, by default, prompt for user input. User-defined methods for describe-object are likewise restricted.
+        虽然 trace 可以被扩展来允许非标准选项, 不过还是鼓励具体实现 (但不是必须) 去警告关于既没有被这个标准指定也没有被这个实现添加为一个扩展的语法或选项的使用, 由于它们可以是印刷错误或倚赖一些实现支持而当前实现不支持的特性的症状.
 
-Examples: None.
+### <span id="M-STEP">宏 STEP</span>
 
-Side Effects:
+* 语法(Syntax):
 
-Output to standard output or terminal I/O.
+        step form => result*
 
-Affected By:
+* 参数和值(Arguments and Values):
 
-*standard-output* and *terminal-io*, methods on describe-object and print-object for objects having user-defined classes.
+        form---一个表达式形式; 按以下描述求值.
+        results---由表达式形式 form 返回的值.
 
-Exceptional Situations: None.
+* 描述(Description):
 
-See Also:
+        step 实现了一个调试范例, 在其中程序员允许去单步调试一个表达式形式的求值. 这个交互的具体性质, 包括哪个 I/O 流会被使用并且这个步进是否有着词法或动态的作用域, 是具体实现定义的.
 
-inspect, describe-object
+        step 在当前环境中求值表达式形式 form. 一个对 step 的调用可以被编译, 但是对于一个要交互式单步调试被解释的计算部分的实现这是可接受的.
 
-Notes: None. 
+        对于一个符合规范的实现除了正常求值这个表达式形式 form 以外不采取动作是技术上允许的. 在这样一个情况中, (step form) 等价于, 例如, (let () form). 在实现中就是这样, 这个关联的文档应该提及这个事实.
 
-Standard Generic Function DESCRIBE-OBJECT
+* 示例(Examples): None.
 
-Syntax:
+* 受此影响(Affected By): None.
 
-describe-object object stream => implementation-dependent
+* 异常情况(Exceptional Situations): None.
 
-Method Signatures:
+* 也见(See Also):
 
-describe-object (object standard-object) stream
+        trace
 
-Arguments and Values:
+* 注意(Notes):
 
-object---an object.
+        鼓励具体实现通过提供包含命令列表的帮助去回应 ? 的输入或一个 "help key" 的按下.
 
-stream---a stream.
+### <span id="M-TIME">宏 TIME</span>
 
-Description:
+* 语法(Syntax):
 
-The generic function describe-object prints a description of object to a stream. describe-object is called by describe; it must not be called by the user.
+        time form => result*
 
-Each implementation is required to provide a method on the class standard-object and methods on enough other classes so as to ensure that there is always an applicable method. Implementations are free to add methods for other classes. Users can write methods for describe-object for their own classes if they do not wish to inherit an implementation-supplied method.
+* 参数和值(Arguments and Values):
 
-Methods on describe-object can recursively call describe. Indentation, depth limits, and circularity detection are all taken care of automatically, provided that each method handles exactly one level of structure and calls describe recursively if there are more structural levels. The consequences are undefined if this rule is not obeyed.
+        form---一个表达式形式; 按如下所述求值.
+        results---由这个表达式形式 form 返回的值.
 
-In some implementations the stream argument passed to a describe-object method is not the original stream, but is an intermediate stream that implements parts of describe. Methods should therefore not depend on the identity of this stream.
+* 描述(Description):
 
-Examples:
+        time 在当前环境中 (词法和动态的) 求值表达式形式 form. 一个对 time 的调用可以被编译.
 
- (defclass spaceship ()
-   ((captain :initarg :captain :accessor spaceship-captain)
-    (serial# :initarg :serial-number :accessor spaceship-serial-number)))
+        time 打印各种时间数据和其他信息到跟踪输出(trace output). 这个打印信息的性质和格式是具体实现定义的. 鼓励具体实现去提供这样的信息作为经过的实际时间, 机器运行时间, 以及存储管理统计.
 
- (defclass federation-starship (spaceship) ())
+* 示例(Examples): None.
 
- (defmethod describe-object ((s spaceship) stream)
-   (with-slots (captain serial#) s
-     (format stream "~&~S is a spaceship of type ~S,~
-                     ~%with ~A at the helm ~
-                       and with serial number ~D.~%"
-             s (type-of s) captain serial#)))
+* 受此影响(Affected By):
 
- (make-instance 'federation-starship
-                :captain "Rachel Garrett"
-                :serial-number "NCC-1701-C")
-=>  #<FEDERATION-STARSHIP 26312465>
+        结果的准确性除其他外，还取决于底层操作系统提供的相应功能的准确性.
 
- (describe *)
->>  #<FEDERATION-STARSHIP 26312465> is a spaceship of type FEDERATION-STARSHIP,
->>  with Rachel Garrett at the helm and with serial number NCC-1701-C.
-=>  <no values>
+        结果的大小可能取决于硬件, 操作系统, lisp 具体实现和全局环境的状态. 一些具体问题常常影响结果是硬件速度, 调度器(如果有的话)的性质, 进程竞争过程(如果有的话), 系统分页, 这个调用是否被解释或编译, 这个被调用的函数是否被编译, 涉及的垃圾收集器的种类以及它是否运行, 是否内部数据结构(例如,哈希表)隐式地重组, 等等.
 
-Affected By: None.
+* 异常情况(Exceptional Situations): None.
 
-Exceptional Situations: None.
+* 也见(See Also):
 
-See Also:
+        get-internal-real-time, get-internal-run-time
 
-describe
+* 注意(Notes):
 
-Notes:
+        通常情况下, 对于市场比较来说, 这些时间安排并不能保证足够可靠. 它们的值主要是启发式的, 用于调优.
 
-The same implementation techniques that are applicable to print-object are applicable to describe-object.
+        有关解释计时结果所涉及的复杂问题的有用背景资料, 见 Performance and Evaluation of Lisp Programs.
 
-The reason for making the return values for describe-object unspecified is to avoid forcing users to include explicit (values) in all of their methods. describe takes care of that. 
+### <span id="CV-INTERNAL-TIME-UNITS-PER-SECOND">常量 INTERNAL-TIME-UNITS-PER-SECOND</span>
 
+* 常量值(Constant Value):
 
-Macro TRACE, UNTRACE
+        一个正整数, 它的大小是依赖于具体实现的.
 
-Syntax:
+* 描述(Description):
 
-trace function-name* => trace-result
+        一秒钟内的内部时间单位数.
 
-untrace function-name* => untrace-result
+* 示例(Examples): None.
 
-Arguments and Values:
+* 也见(See Also):
 
-function-name---a function name.
+        get-internal-run-time, get-internal-real-time
 
-trace-result---implementation-dependent, unless no function-names are supplied, in which case trace-result is a list of function names.
+* 注意(Notes):
 
-untrace-result---implementation-dependent.
+        这些单元构成了内部时间格式表示的基础.
 
-Description:
+### <span id="F-GET-INTERNAL-REAL-TIME">函数 GET-INTERNAL-REAL-TIME</span>
 
-trace and untrace control the invocation of the trace facility.
+* 语法(Syntax):
 
-Invoking trace with one or more function-names causes the denoted functions to be ``traced.'' Whenever a traced function is invoked, information about the call, about the arguments passed, and about any eventually returned values is printed to trace output. If trace is used with no function-names, no tracing action is performed; instead, a list of the functions currently being traced is returned.
+        get-internal-real-time <no arguments> => internal-time
 
-Invoking untrace with one or more function names causes those functions to be ``untraced'' (i.e., no longer traced). If untrace is used with no function-names, all functions currently being traced are untraced.
+* 参数和值(Arguments and Values):
 
-If a function to be traced has been open-coded (e.g., because it was declared inline), a call to that function might not produce trace output.
+        internal-time---一个非负整数.
 
-Examples:
+* 描述(Description):
 
- (defun fact (n) (if (zerop n) 1 (* n (fact (- n 1)))))
-=>  FACT
- (trace fact)
-=>  (FACT)
-;; Of course, the format of traced output is implementation-dependent.
- (fact 3)
->>  1 Enter FACT 3
->>  | 2 Enter FACT 2
->>  |   3 Enter FACT 1
->>  |   | 4 Enter FACT 0
->>  |   | 4 Exit FACT 1
->>  |   3 Exit FACT 1
->>  | 2 Exit FACT 2
->>  1 Exit FACT 6
-=>  6
+        get-internal-real-time 以整数形式返回内部时间单元中的当前时间, 相对于任意的时间基数. 两次调用这个函数的值的区别就是这两次调用之间逝去的实际时间总和 (换句话说, 时钟时间).
 
-Side Effects:
+* 示例(Examples): None.
 
-Might change the definitions of the functions named by function-names.
+* 副作用(Side Effects): None.
 
-Affected By:
+* 受此影响(Affected By):
 
-Whether the functions named are defined or already being traced.
+        一天的时间 (换句话说, 时间的流逝). 时间基数影响结果的大小.
 
-Exceptional Situations:
+* 异常情况(Exceptional Situations): None.
 
-Tracing an already traced function, or untracing a function not currently being traced, should produce no harmful effects, but might signal a warning.
+* 也见(See Also):
 
-See Also:
+        internal-time-units-per-second
 
-*trace-output*, step
+* 注意(Notes): None.
 
-Notes:
+### <span id="F-GET-INTERNAL-RUN-TIME">函数 GET-INTERNAL-RUN-TIME</span>
 
-trace and untrace may also accept additional implementation-dependent argument formats. The format of the trace output is implementation-dependent.
+* 语法(Syntax):
 
-Although trace can be extended to permit non-standard options, implementations are nevertheless encouraged (but not required) to warn about the use of syntax or options that are neither specified by this standard nor added as an extension by the implementation, since they could be symptomatic of typographical errors or of reliance on features supported in implementations other than the current implementation. 
+        get-internal-run-time <no arguments> => internal-time
 
-Macro STEP
+* 参数和值(Arguments and Values):
 
-Syntax:
+        internal-time---一个非负整数.
 
-step form => result*
+* 描述(Description):
 
-Arguments and Values:
+        以整数形式返回内部时间单元中的当前运行时间. 这个量的确切含义是由具体实现定义的; 它可能测量实际时间, 运行时间, CPU 周期, 或者某个其他量. 目的是这个函数的两个调用的值之间的差值是两个调用之间的时间总量, 在此期间, 代表执行程序花费了计算工作量.
 
-form---a form; evaluated as described below.
+* 示例(Examples): None.
 
-results---the values returned by the form.
+* 副作用(Side Effects): None.
 
-Description:
+* 受此影响(Affected By):
 
-step implements a debugging paradigm wherein the programmer is allowed to step through the evaluation of a form. The specific nature of the interaction, including which I/O streams are used and whether the stepping has lexical or dynamic scope, is implementation-defined.
+        具体实现, 一天的时间 (换句话说, 时间的流逝).
 
-step evaluates form in the current environment. A call to step can be compiled, but it is acceptable for an implementation to interactively step through only those parts of the computation that are interpreted.
+* 异常情况(Exceptional Situations): None.
 
-It is technically permissible for a conforming implementation to take no action at all other than normal execution of the form. In such a situation, (step form) is equivalent to, for example, (let () form). In implementations where this is the case, the associated documentation should mention that fact.
+* 也见(See Also):
 
-Examples: None.
+        internal-time-units-per-second
 
-Affected By: None.
+* 注意(Notes):
 
-Exceptional Situations: None.
+        依赖于具体实现, 换页时间和垃圾收集时间可能被包含在这个测量中. 同样的, 在多任务环境中, 或许不可能去展示这个运行过程的时间, 因此在一些实现中, 其他进程在这期间所用掉的时间也可能被包含在这个测量中.
 
-See Also:
+### <span id="F-DISASSEMBLE">函数 DISASSEMBLE</span>
 
-trace
+* 语法(Syntax):
 
-Notes:
+        disassemble fn => nil
 
-Implementations are encouraged to respond to the typing of ? or the pressing of a ``help key'' by providing help including a list of commands. 
+* 参数和值(Arguments and Values):
 
+        fn---一个扩展函数标识符或一个 lambda 表达式.
 
-Macro TIME
+* 描述(Description):
 
-Syntax:
+        函数 disassemble 是一个调试工具, 它用某种与实现相关的语言组成符号指令或表达式, 表示用于生成参数 fn 所命名的函数的代码. 结果以一种依赖于具体实现的格式显示到标准输出.
 
-time form => result*
+        如果 fn 是一个 lambda 表达式或一个被解释的函数, 它首先会被编译然后结果被解体.
 
-Arguments and Values:
+        如果这个 fn 标识符是一个函数名字, 那么它命名的函数会被解体. (如果那个函数是一个被解释的函数, 它首先被编译但是这个隐式编译的结果不会被安装.)
 
-form---a form; evaluated as described below.
+* 示例(Examples):
 
-results---the values returned by the form.
+    ```LISP
+    (defun f (a) (1+ a)) =>  F
+    (eq (symbol-function 'f)
+        (progn (disassemble 'f)
+                (symbol-function 'f))) =>  true
+    ```
 
-Description:
+* 副作用(Side Effects): None.
 
-time evaluates form in the current environment (lexical and dynamic). A call to time can be compiled.
+* 受此影响(Affected By):
 
-time prints various timing data and other information to trace output. The nature and format of the printed information is implementation-defined. Implementations are encouraged to provide such information as elapsed real time, machine run time, and storage management statistics.
+        *standard-output*.
 
-Examples: None.
+* 异常情况(Exceptional Situations):
 
-Affected By:
+        如果 fn 不是一个扩展函数标识符或一个 lambda 表达式, 那么就应该发出一个 type-error 类型的错误.
 
-The accuracy of the results depends, among other things, on the accuracy of the corresponding functions provided by the underlying operating system.
+* 也见(See Also): None.
 
-The magnitude of the results may depend on the hardware, the operating system, the lisp implementation, and the state of the global environment. Some specific issues which frequently affect the outcome are hardware speed, nature of the scheduler (if any), number of competing processes (if any), system paging, whether the call is interpreted or compiled, whether functions called are compiled, the kind of garbage collector involved and whether it runs, whether internal data structures (e.g., hash tables) are implicitly reorganized, etc.
+* 注意(Notes): None.
 
-Exceptional Situations: None.
+### <span id="SGF-DOCUMENTATION-ALL">标准广义函数 DOCUMENTATION, (SETF DOCUMENTATION)</span>
 
-See Also:
+* 语法(Syntax):
 
-get-internal-real-time, get-internal-run-time
+        documentation x doc-type => documentation
 
-Notes:
+        (setf documentation) new-value x doc-type => new-value
 
-In general, these timings are not guaranteed to be reliable enough for marketing comparisons. Their value is primarily heuristic, for tuning purposes.
+* 参数优先级顺序(Argument Precedence Order):
 
-For useful background information on the complicated issues involved in interpreting timing results, see Performance and Evaluation of Lisp Programs. 
+        doc-type, object
 
+* 方法签名(Method Signatures):
 
-Constant Variable INTERNAL-TIME-UNITS-PER-SECOND
+    函数, 宏, 和特殊表达式:
 
-Constant Value:
+        documentation (x function) (doc-type (eql 't))
+        documentation (x function) (doc-type (eql 'function))
+        documentation (x list) (doc-type (eql 'function))
+        documentation (x list) (doc-type (eql 'compiler-macro))
+        documentation (x symbol) (doc-type (eql 'function))
+        documentation (x symbol) (doc-type (eql 'compiler-macro))
+        documentation (x symbol) (doc-type (eql 'setf))
 
-A positive integer, the magnitude of which is implementation-dependent.
+        (setf documentation) new-value (x function) (doc-type (eql 't))
+        (setf documentation) new-value (x function) (doc-type (eql 'function))
+        (setf documentation) new-value (x list) (doc-type (eql 'function))
+        (setf documentation) new-value (x list) (doc-type (eql 'compiler-macro))
+        (setf documentation) new-value (x symbol) (doc-type (eql 'function))
+        (setf documentation) new-value (x symbol) (doc-type (eql 'compiler-macro))
+        (setf documentation) new-value (x symbol) (doc-type (eql 'setf))
 
-Description:
+    方法组合:
 
-The number of internal time units in one second.
+        documentation (x method-combination) (doc-type (eql 't))
+        documentation (x method-combination) (doc-type (eql 'method-combination))
+        documentation (x symbol) (doc-type (eql 'method-combination))
 
-Examples: None.
+        (setf documentation) new-value (x method-combination) (doc-type (eql 't))
+        (setf documentation) new-value (x method-combination) (doc-type (eql 'method-combination))
+        (setf documentation) new-value (x symbol) (doc-type (eql 'method-combination))
 
-See Also:
+    方法:
 
-get-internal-run-time, get-internal-real-time
+        documentation (x standard-method) (doc-type (eql 't))
 
-Notes:
+        (setf documentation) new-value (x standard-method) (doc-type (eql 't))
 
-These units form the basis of the Internal Time format representation. 
+    包:
 
+        documentation (x package) (doc-type (eql 't))
 
-Function GET-INTERNAL-REAL-TIME
+        (setf documentation) new-value (x package) (doc-type (eql 't))
 
-Syntax:
+    类型, 类, 以及结构体名字:
 
-get-internal-real-time <no arguments> => internal-time
+        documentation (x standard-class) (doc-type (eql 't))
+        documentation (x standard-class) (doc-type (eql 'type))
+        documentation (x structure-class) (doc-type (eql 't))
+        documentation (x structure-class) (doc-type (eql 'type))
+        documentation (x symbol) (doc-type (eql 'type))
+        documentation (x symbol) (doc-type (eql 'structure))
 
-Arguments and Values:
+        (setf documentation) new-value (x standard-class) (doc-type (eql 't))
+        (setf documentation) new-value (x standard-class) (doc-type (eql 'type))
+        (setf documentation) new-value (x structure-class) (doc-type (eql 't))
+        (setf documentation) new-value (x structure-class) (doc-type (eql 'type))
+        (setf documentation) new-value (x symbol) (doc-type (eql 'type))
+        (setf documentation) new-value (x symbol) (doc-type (eql 'structure))
 
-internal-time---a non-negative integer.
+    变量:
 
-Description:
+        documentation (x symbol) (doc-type (eql 'variable))
 
-get-internal-real-time returns as an integer the current time in internal time units, relative to an arbitrary time base. The difference between the values of two calls to this function is the amount of elapsed real time (i.e., clock time) between the two calls.
+        (setf documentation) new-value (x symbol) (doc-type (eql 'variable))
 
-Examples: None.
+* 参数和值(Arguments and Values):
 
-Side Effects: None.
+        x---一个符号.
+        doc-type---一个符号.
+        documentation---一个字符串或 nil.
+        new-value---一个字符串.
 
-Affected By:
+* 描述(Description):
 
-Time of day (i.e., the passage of time). The time base affects the result magnitude.
+        广义函数 documentation 返回和给定的对象相关联的文档字符串, 如果可用的话; 否则它返回 nil.
 
-Exceptional Situations: None.
+        广义函数 (setf documentation) 更新和 x 相关联的文档字符串为 new-value. 如果 x 是一个列表, 它必须是 (setf symbol) 形式.
 
-See Also:
+        文档字符串可用于调试目的. 符合规范的程序允许在文档字符串存在时去使用这些文档字符串, 但是不应该将它们的正确行为依赖于这些文档字符串的存在性. 允许一个具体实现出于具体实现定义的原因在任何时间丢弃文档字符串.
 
-internal-time-units-per-second
+        返回的文档字符串的性质依赖于 doc-type, 如下:
 
-Notes: None. 
+        compiler-macro
 
-Function GET-INTERNAL-RUN-TIME
+            返回这个名字为函数名 x 的编译器宏的文档字符串.
 
-Syntax:
+        function
 
-get-internal-run-time <no arguments> => internal-time
+            如果 x 是一个函数名, 返回名为 x 的函数, 宏, 或特殊操作符的文档字符串.
 
-Arguments and Values:
+            如果 x 是一个函数, 返回和 x 关联的文档字符串.
 
-internal-time---a non-negative integer.
+        method-combination
 
-Description:
+            如果 x 是一个符号, 返回名为 x 的方法组合的文档字符串.
 
-Returns as an integer the current run time in internal time units. The precise meaning of this quantity is implementation-defined; it may measure real time, run time, CPU cycles, or some other quantity. The intent is that the difference between the values of two calls to this function be the amount of time between the two calls during which computational effort was expended on behalf of the executing program.
+            如果 x 是一个方法组合, 返回和 x 关联的文档字符串.
 
-Examples: None.
+        setf
 
-Side Effects: None.
+            返回名为符号 x 的 setf 展开式的文档字符串.
 
-Affected By:
+        structure
 
-The implementation, the time of day (i.e., the passage of time).
+            返回和结构体名 x 相关联的文档字符串.
 
-Exceptional Situations: None.
+        t
 
-See Also:
+            返回针对参数 x 自身的类的文档字符串. 比如, 如果 x 是一个函数, 返回和那个函数 x 关联的文档字符串.
 
-internal-time-units-per-second
+        type
 
-Notes:
+            如果 x 是一个符号, 那么如果这里有这样一个函数, 就返回名为符号 x 的类的文档字符串. 否则, 返回类型指定符 x 的文档字符串.
 
-Depending on the implementation, paging time and garbage collection time might be included in this measurement. Also, in a multitasking environment, it might not be possible to show the time for just the running process, so in some implementations, time taken by other processes during the same time interval might be included in this measurement as well. 
+            如果 x 是一个结构体类或者标准类, 那么返回和类 x 关联的文档字符串.
 
+        variable
 
-Function DISASSEMBLE
+            返回名为 x 的动态变量或常量的文档字符串.
 
-Syntax:
+        一个符合规范的实现或一个符合规范的程序可能扩展这个可接受作为 doc-type 的符号集合.
 
-disassemble fn => nil
+* 示例(Examples): None.
 
-Arguments and Values:
+* 受此影响(Affected By): None.
 
-fn---an extended function designator or a lambda expression.
+* 异常情况(Exceptional Situations): None.
 
-Description:
+* 也见(See Also): None.
 
-The function disassemble is a debugging aid that composes symbolic instructions or expressions in some implementation-dependent language which represent the code used to produce the function which is or is named by the argument fn. The result is displayed to standard output in an implementation-dependent format.
+* 注意(Notes):
 
-If fn is a lambda expression or interpreted function, it is compiled first and the result is disassembled.
+        这个标准没有规定检索 defclass 表达式形式中指定的单独的操的文档字符串的方法, 但是具体实现可能仍然提供调试工具 和/或 编程语言扩展来操纵这个信息. 我们鼓励希望提供这种支持的实现者咨询元对象协议, 以获得关于如何做到这一点的建议.
 
-If the fn designator is a function name, the function that it names is disassembled. (If that function is an interpreted function, it is first compiled but the result of this implicit compilation is not installed.)
+### <span id="F-ROOM">函数 ROOM</span>
 
-Examples:
+* 语法(Syntax):
 
- (defun f (a) (1+ a)) =>  F
- (eq (symbol-function 'f)
-     (progn (disassemble 'f)
-            (symbol-function 'f))) =>  true
+        room &optional x => implementation-dependent
 
-Side Effects: None.
+* 参数和值(Arguments and Values):
 
-Affected By:
+        x---t, nil, 或 :default 其中之一.
 
-*standard-output*.
+* 描述(Description):
 
-Exceptional Situations:
+        room 打印关于内部存储的状态信息以及它的管理到标准输出. 这可能包括内存使用量和内存压缩程度的描述, 如果合适的话, 可能会按内部数据类型分解. 打印信息的性质和格式是依赖于具体实现的. 目的是提供程序员可能用于为特定实现优化程序的信息.
 
-Should signal an error of type type-error if fn is not an extended function designator or a lambda expression.
+        (room nil) 打印出最少量的信息. (room t) 打印出最多量的信息. (room) 或 (room :default) 打印出可能有用的中间量的信息.
 
-See Also: None.
+* 示例(Examples): None.
 
-Notes: None. 
+* 副作用(Side Effects):
 
+        输出到标准输出.
 
-Standard Generic Function DOCUMENTATION, (SETF DOCUMENTATION)
+* 受此影响(Affected By):
 
-Syntax:
+        *standard-output*.
 
-documentation x doc-type => documentation
+* 异常情况(Exceptional Situations): None.
 
-(setf documentation) new-value x doc-type => new-value
+* 也见(See Also): None.
 
-Argument Precedence Order:
+* 注意(Notes): None.
 
-doc-type, object
+### <span id="F-ED">函数 ED</span>
 
-Method Signatures:
+* 语法(Syntax):
 
-Functions, Macros, and Special Forms:
+        ed &optional x => implementation-dependent
 
-documentation (x function) (doc-type (eql 't))
+* 参数和值(Arguments and Values):
 
-documentation (x function) (doc-type (eql 'function))
+        x---nil, 一个路径名, 一个字符串, 或一个函数名. 默认是 nil.
 
-documentation (x list) (doc-type (eql 'function))
+* 描述(Description):
 
-documentation (x list) (doc-type (eql 'compiler-macro))
+        如果这个实现提供一个常驻内存的编辑器, 那么 ed 调用那个编辑器.
 
-documentation (x symbol) (doc-type (eql 'function))
+        如果 x 是 nil, 就进入那个编辑器. 如果之前已经进入那个编辑器, 那么如果可能的话, 恢复它的之前状态.
 
-documentation (x symbol) (doc-type (eql 'compiler-macro))
+        如果 x 是一个路径名或字符串, 它会被用作一个要被编辑的文件的路径名标识符.
 
-documentation (x symbol) (doc-type (eql 'setf))
+        如果 x 是一个函数名, 编辑它的定义的文本. 获取那个函数文本的方式是具体实现定义的.
 
-(setf documentation) new-value (x function) (doc-type (eql 't))
+* 示例(Examples): None.
 
-(setf documentation) new-value (x function) (doc-type (eql 'function))
+* 受此影响(Affected By): None.
 
-(setf documentation) new-value (x list) (doc-type (eql 'function))
+* 异常情况(Exceptional Situations):
 
-(setf documentation) new-value (x list) (doc-type (eql 'compiler-macro))
+        如果这个实现没有提供一个常驻内存的编辑器, 那么后果是未定义的.
 
-(setf documentation) new-value (x symbol) (doc-type (eql 'function))
+        如果提供了它的参数但是不是一个符号, 一个路径名, 或 nil, 那么可能发出一个 type-error 类型的错误.
 
-(setf documentation) new-value (x symbol) (doc-type (eql 'compiler-macro))
+        如果尝试编辑一个文件期间在执行某个文件系统上的操作时发生一个故障, 那么一个 file-error 类型的错误会被发出.
 
-(setf documentation) new-value (x symbol) (doc-type (eql 'setf))
+        如果 x 是一个通配符路径名的标识符, 那么就可能会发出 file-error 类型的错误.
 
-Method Combinations:
+        依赖于具体实现的额外状况也可能被发出.
 
-documentation (x method-combination) (doc-type (eql 't))
+* 也见(See Also):
 
-documentation (x method-combination) (doc-type (eql 'method-combination))
+        pathname, logical-pathname, compile-file, load, 章节 19.1.2 (Pathnames as Filenames)
 
-documentation (x symbol) (doc-type (eql 'method-combination))
+* 注意(Notes): None.
 
-(setf documentation) new-value (x method-combination) (doc-type (eql 't))
+### <span id="F-INSPECT">函数 INSPECT</span>
 
-(setf documentation) new-value (x method-combination) (doc-type (eql 'method-combination))
+* 语法(Syntax):
 
-(setf documentation) new-value (x symbol) (doc-type (eql 'method-combination))
+        inspect object => implementation-dependent
 
-Methods:
+* 参数和值(Arguments and Values):
 
-documentation (x standard-method) (doc-type (eql 't))
+        object---一个符号.
 
-(setf documentation) new-value (x standard-method) (doc-type (eql 't))
+* 描述(Description):
 
-Packages:
+        inspect 是 describe 的一个交互式版本. 这个交互的性质是依赖于具体实现的, 但是这个 inspect 的目的是使看遍一个数据结构, 检验并修改它的各个部分变得容易.
 
-documentation (x package) (doc-type (eql 't))
+* 示例(Examples): None.
 
-(setf documentation) new-value (x package) (doc-type (eql 't))
+* 副作用(Side Effects):
 
-Types, Classes, and Structure Names:
+        依赖于具体实现.
 
-documentation (x standard-class) (doc-type (eql 't))
+* 受此影响(Affected By):
 
-documentation (x standard-class) (doc-type (eql 'type))
+        依赖于具体实现.
 
-documentation (x structure-class) (doc-type (eql 't))
+* 异常情况(Exceptional Situations):
 
-documentation (x structure-class) (doc-type (eql 'type))
+        依赖于具体实现.
 
-documentation (x symbol) (doc-type (eql 'type))
+* 也见(See Also):
 
-documentation (x symbol) (doc-type (eql 'structure))
+        describe
 
-(setf documentation) new-value (x standard-class) (doc-type (eql 't))
+* 注意(Notes):
 
-(setf documentation) new-value (x standard-class) (doc-type (eql 'type))
+        鼓励具体实现通过提供包含命令列表的帮助去回应 ? 的输入或一个 "help key" 的按下.
 
-(setf documentation) new-value (x structure-class) (doc-type (eql 't))
+### <span id="F-DRIBBLE">函数 DRIBBLE</span>
 
-(setf documentation) new-value (x structure-class) (doc-type (eql 'type))
+* 语法(Syntax):
 
-(setf documentation) new-value (x symbol) (doc-type (eql 'type))
+        dribble &optional pathname => implementation-dependent
 
-(setf documentation) new-value (x symbol) (doc-type (eql 'structure))
+* 参数和值(Arguments and Values):
 
-Variables:
+        pathname---一个路径名标识符.
 
-documentation (x symbol) (doc-type (eql 'variable))
+* 描述(Description):
 
-(setf documentation) new-value (x symbol) (doc-type (eql 'variable))
+        绑定 *standard-input* 和 *standard-output* 或采取其他适当的操作, 以便将 输入/输出 交互的记录发送到 pathname 命名的文件. dribble 旨在创建交互式会话的可读记录.
 
-Arguments and Values:
+        如果 pathname 是一个逻辑路径名, 它会被转换为一个物理路径名, 就像是通过调用 translate-logical-pathname 一样.
 
-x---an object.
+        (dribble) 终止输入和输出的记录并且关闭这个 dribble 文件.
 
-doc-type---a symbol.
+        如果当一个来自上次对 dribble 调用的到 "dribble file" 的流仍然打开的, 那么效果是具体实现定义的. 比如, 这个已经打开的流可能被关闭, 或者 dribbling 可能对于旧的流和新的流同时发生, 或者那个旧的流可能保持打开但是不接受进一步的输出, 或者这个新的请求会被忽略, 或者采取某个其他动作.
 
-documentation---a string, or nil.
+* 示例(Examples): None.
 
-new-value---a string.
+* 受此影响(Affected By):
 
-Description:
+        具体实现.
 
-The generic function documentation returns the documentation string associated with the given object if it is available; otherwise it returns nil.
+* 异常情况(Exceptional Situations):
 
-The generic function (setf documentation) updates the documentation string associated with x to new-value. If x is a list, it must be of the form (setf symbol).
+        如果创建这个 dribble 文件期间在执行某个文件系统上的操作时发生一个故障, 那么一个 file-error 类型的错误会被发出.
 
-Documentation strings are made available for debugging purposes. Conforming programs are permitted to use documentation strings when they are present, but should not depend for their correct behavior on the presence of those documentation strings. An implementation is permitted to discard documentation strings at any time for implementation-defined reasons.
+        如果 pathname 是一个通配符路径名的标识符, 那么就可能会发出 file-error 类型的错误.
 
-The nature of the documentation string returned depends on the doc-type, as follows:
+* 也见(See Also):
 
-compiler-macro
+        章节 19.1.2 (Pathnames as Filenames)
 
-    Returns the documentation string of the compiler macro whose name is the function name x.
+* 注意(Notes):
 
-function
+        dribble 可以在后续的表达式形式执行之前返回. 它也可以进入到一个递归的交互式循环中, 只有当 (dribble) 完成时返回.
 
-    If x is a function name, returns the documentation string of the function, macro, or special operator whose name is x.
+        dribble 主要用于交互式调试; 在一个程序中使用它时, 不能依赖它的效果.
 
-    If x is a function, returns the documentation string associated with x.
+### <span id="V-MINUS">常量 -</span>
 
-method-combination
+* 值类型(Value Type):
 
-    If x is a symbol, returns the documentation string of the method combination whose name is x.
+        一个表达式形式.
 
-    If x is a method combination, returns the documentation string associated with x.
+* 初始值(Initial Value):
 
-setf
+        依赖于具体实现.
 
-    Returns the documentation string of the setf expander whose name is the symbol x.
+* 描述(Description):
 
-structure
+        这个 - 的值是当前被 Lisp read-eval-print 循环求值的表达式形式.
 
-    Returns the documentation string associated with the structure name x.
+* 示例(Examples):
 
-t
+    ```LISP
+    (format t "~&Evaluating ~S~%" -)
+    >>  Evaluating (FORMAT T "~&Evaluating ~S~%" -)
+    =>  NIL
+    ```
 
-    Returns a documentation string specialized on the class of the argument x itself. For example, if x is a function, the documentation string associated with the function x is returned.
+* 受此影响(Affected By):
 
-type
+        Lisp read-eval-print 循环.
 
-    If x is a symbol, returns the documentation string of the class whose name is the symbol x, if there is such a class. Otherwise, it returns the documentation string of the type which is the type specifier symbol x.
+* 也见(See Also):
 
-    If x is a structure class or standard class, returns the documentation string associated with the class x.
+        + (variable), * (variable), / (variable), 章节 25.1.1 (顶层循环)
 
-variable
+* 注意(Notes): None.
 
-    Returns the documentation string of the dynamic variable or constant variable whose name is the symbol x.
+### <span id="V-ADD-ALL">常量 +, ++, +++</span>
 
-A conforming implementation or a conforming program may extend the set of symbols that are acceptable as the doc-type.
+* 值类型(Value Type):
 
-Examples: None.
+        一个对象.
 
-Affected By: None.
+* 初始值(Initial Value):
 
-Exceptional Situations: None.
+        依赖于具体实现.
 
-See Also: None.
+* 描述(Description):
 
-Notes:
+        这些 +, ++, 和 +++ 变量由 Lisp read-eval-print 循环维护, 来保存最近求值的表达式形式.
 
-This standard prescribes no means to retrieve the documentation strings for individual slots specified in a defclass form, but implementations might still provide debugging tools and/or programming language extensions which manipulate this information. Implementors wishing to provide such support are encouraged to consult the Metaobject Protocol for suggestions about how this might be done. 
+        这个 + 的值是最后求值的表达式形式, 这个 ++ 的值是 + 的前一个值, 而 +++ 的值是 ++ 的前一个值.
 
+* 示例(Examples):
 
-Function ROOM
+    ```LISP
+    (+ 0 1) =>  1
+    (- 4 2) =>  2
+    (/ 9 3) =>  3
+    (list + ++ +++) =>  ((/ 9 3) (- 4 2) (+ 0 1))
+    (setq a 1 b 2 c 3 d (list a b c)) =>  (1 2 3)
+    (setq a 4 b 5 c 6 d (list a b c)) =>  (4 5 6)
+    (list a b c) =>  (4 5 6)
+    (eval +++) =>  (1 2 3)
+    #.`(,@++ d) =>  (1 2 3 (1 2 3))
+    ```
 
-Syntax:
+* 受此影响(Affected By):
 
-room &optional x => implementation-dependent
+        Lisp read-eval-print 循环.
 
-Arguments and Values:
+* 也见(See Also):
 
-x---one of t, nil, or :default.
+        - (variable), * (variable), / (variable), 章节 25.1.1 (顶层循环)
 
-Description:
+* 注意(Notes): None.
 
-room prints, to standard output, information about the state of internal storage and its management. This might include descriptions of the amount of memory in use and the degree of memory compaction, possibly broken down by internal data type if that is appropriate. The nature and format of the printed information is implementation-dependent. The intent is to provide information that a programmer might use to tune a program for a particular implementation.
+### <span id="V-ASTERISK">常量 *, **, ***</span>
 
-(room nil) prints out a minimal amount of information. (room t) prints out a maximal amount of information. (room) or (room :default) prints out an intermediate amount of information that is likely to be useful.
+* 值类型(Value Type):
 
-Examples: None.
+        一个对象.
 
-Side Effects:
+* 初始值(Initial Value):
 
-Output to standard output.
+        依赖于具体实现.
 
-Affected By:
+* 描述(Description):
 
-*standard-output*.
+        *, **, 和 *** 这些变量由 Lisp read-eval-print 循环维护, 来保存每一次通过这个循环打印的结果值.
 
-Exceptional Situations: None.
+        这个 * 是最近被打印的主要值, 这个 ** 的值是 * 的前一个值, 而 *** 的值是 ** 的前一个值.
 
-See Also: None.
+        如果产生多个值, * 只包含第一个值; 如果没有值产生, 那么 * 包含 nil.
 
-Notes: None. 
+        *, **, 和 *** 的这些值被 Lisp read-eval-print 循环在打印顶层表达式形式的返回值之前被更新. 如果这样一个表达式形式的求值在它正常返回之前被中止, 那么 *, **, 和 *** 的这些值都不会被更新.
 
-Function ED
+* 示例(Examples):
 
-Syntax:
+    ```LISP
+    (values 'a1 'a2) =>  A1, A2
+    'b =>  B
+    (values 'c1 'c2 'c3) =>  C1, C2, C3
+    (list * ** ***) =>  (C1 B A1)
 
-ed &optional x => implementation-dependent
+    (defun cube-root (x) (expt x 1/3)) =>  CUBE-ROOT
+    (compile *) =>  CUBE-ROOT
+    (setq a (cube-root 27.0)) =>  3.0
+    (* * 9.0) =>  27.0
+    ```
 
-Arguments and Values:
+* 受此影响(Affected By):
 
-x---nil, a pathname, a string, or a function name. The default is nil.
+        Lisp read-eval-print 循环.
 
-Description:
+* 也见(See Also):
 
-ed invokes the editor if the implementation provides a resident editor.
+        - (variable), + (variable), / (variable), 章节 25.1.1 (顶层循环)
 
-If x is nil, the editor is entered. If the editor had been previously entered, its prior state is resumed, if possible.
+* 注意(Notes):
 
-If x is a pathname or string, it is taken as the pathname designator for a file to be edited.
+        *   ==  (car /)
+        **  ==  (car //)
+        *** ==  (car ///)
 
-If x is a function name, the text of its definition is edited. The means by which the function text is obtained is implementation-defined.
+### <span id="V-SLASH">常量 /, //, ///</span>
 
-Examples: None.
+* 值类型(Value Type):
 
-Affected By: None.
+        一个属性列表.
 
-Exceptional Situations:
+* 初始值(Initial Value):
 
-The consequences are undefined if the implementation does not provide a resident editor.
+        依赖于具体实现.
 
-Might signal type-error if its argument is supplied but is not a symbol, a pathname, or nil.
+* 描述(Description):
 
-If a failure occurs when performing some operation on the file system while attempting to edit a file, an error of type file-error is signaled.
+        /, //, 和 /// 这些变量由 Lisp read-eval-print 循环维护, 来保存这个循环最后被打印的结果的值.
 
-An error of type file-error might be signaled if x is a designator for a wild pathname.
+        这个 / 的值是最近被打印的值的列表, 这个 // 的值是 / 的前一个值, 而这个 /// 的值是 // 的前一个值.
 
-Implementation-dependent additional conditions might be signaled as well.
+        /, //, 和 /// 的这些值被 Lisp read-eval-print 循环在打印顶层表达式形式的返回值之前被更新. 如果这样一个表达式形式的求值在它正常返回之前被中止, 那么 /, //, 和 /// 的这些值都不会被更新.
 
-See Also:
+* 示例(Examples):
 
-pathname, logical-pathname, compile-file, load, Section 19.1.2 (Pathnames as Filenames)
+    ```LISP
+    (floor 22 7) =>  3, 1
+    (+ (* (car /) 7) (cadr /)) =>  22
+    ```
 
-Notes: None. 
+* 受此影响(Affected By):
 
+        Lisp read-eval-print 循环.
 
-Function INSPECT
+* 也见(See Also):
 
-Syntax:
+        - (variable), + (variable), * (variable), 章节 25.1.1 (顶层循环)
 
-inspect object => implementation-dependent
+* 注意(Notes): None.
 
-Arguments and Values:
+### <span id="F-LISP-IMPLEMENTATION-ALL">函数 LISP-IMPLEMENTATION-TYPE, LISP-IMPLEMENTATION-VERSION</span>
 
-object---an object.
+* 语法(Syntax):
 
-Description:
+        lisp-implementation-type <no arguments> => description
 
-inspect is an interactive version of describe. The nature of the interaction is implementation-dependent, but the purpose of inspect is to make it easy to wander through a data structure, examining and modifying parts of it.
+        lisp-implementation-version <no arguments> => description
 
-Examples: None.
-
-Side Effects:
-
-implementation-dependent.
-
-Affected By:
-
-implementation-dependent.
-
-Exceptional Situations:
-
-implementation-dependent.
-
-See Also:
-
-describe
-
-Notes:
-
-Implementations are encouraged to respond to the typing of ? or a ``help key'' by providing help, including a list of commands. 
-
-
-Function DRIBBLE
-
-Syntax:
-
-dribble &optional pathname => implementation-dependent
-
-Arguments and Values:
-
-pathname---a pathname designator.
-
-Description:
-
-Either binds *standard-input* and *standard-output* or takes other appropriate action, so as to send a record of the input/output interaction to a file named by pathname. dribble is intended to create a readable record of an interactive session.
-
-If pathname is a logical pathname, it is translated into a physical pathname as if by calling translate-logical-pathname.
-
-(dribble) terminates the recording of input and output and closes the dribble file.
-
-If dribble is called while a stream to a ``dribble file'' is still open from a previous call to dribble, the effect is implementation-defined. For example, the already-open stream might be closed, or dribbling might occur both to the old stream and to a new one, or the old stream might stay open but not receive any further output, or the new request might be ignored, or some other action might be taken.
-
-Examples: None.
-
-Affected By:
-
-The implementation.
-
-Exceptional Situations:
-
-If a failure occurs when performing some operation on the file system while creating the dribble file, an error of type file-error is signaled.
-
-An error of type file-error might be signaled if pathname is a designator for a wild pathname.
-
-See Also:
-
-Section 19.1.2 (Pathnames as Filenames)
-
-Notes:
-
-dribble can return before subsequent forms are executed. It also can enter a recursive interaction loop, returning only when (dribble) is done.
-
-dribble is intended primarily for interactive debugging; its effect cannot be relied upon when used in a program. 
-
-
-Variable -
-
-Value Type:
-
-a form.
-
-Initial Value:
-
-implementation-dependent.
-
-Description:
-
-The value of - is the form that is currently being evaluated by the Lisp read-eval-print loop.
-
-Examples:
-
-(format t "~&Evaluating ~S~%" -)
->>  Evaluating (FORMAT T "~&Evaluating ~S~%" -)
-=>  NIL
-
-Affected By:
-
-Lisp read-eval-print loop.
-
-See Also:
-
-+ (variable), * (variable), / (variable), Section 25.1.1 (Top level loop)
-
-Notes: None. 
-
-
-Variable +, ++, +++
-
-Value Type:
-
-an object.
-
-Initial Value:
-
-implementation-dependent.
-
-Description:
-
-The variables +, ++, and +++ are maintained by the Lisp read-eval-print loop to save forms that were recently evaluated.
-
-The value of + is the last form that was evaluated, the value of ++ is the previous value of +, and the value of +++ is the previous value of ++.
-
-Examples:
-
-(+ 0 1) =>  1
-(- 4 2) =>  2
-(/ 9 3) =>  3
-(list + ++ +++) =>  ((/ 9 3) (- 4 2) (+ 0 1))
-(setq a 1 b 2 c 3 d (list a b c)) =>  (1 2 3)
-(setq a 4 b 5 c 6 d (list a b c)) =>  (4 5 6)
-(list a b c) =>  (4 5 6)
-(eval +++) =>  (1 2 3)
-#.`(,@++ d) =>  (1 2 3 (1 2 3))
-
-Affected By:
-
-Lisp read-eval-print loop.
-
-See Also:
-
-- (variable), * (variable), / (variable), Section 25.1.1 (Top level loop)
-
-Notes: None. 
-
-
-Variable *, **, ***
-
-Value Type:
-
-an object.
-
-Initial Value:
-
-implementation-dependent.
-
-Description:
-
-The variables *, **, and *** are maintained by the Lisp read-eval-print loop to save the values of results that are printed each time through the loop.
-
-The value of * is the most recent primary value that was printed, the value of ** is the previous value of *, and the value of *** is the previous value of **.
-
-If several values are produced, * contains the first value only; * contains nil if zero values are produced.
-
-The values of *, **, and *** are updated immediately prior to printing the return value of a top-level form by the Lisp read-eval-print loop. If the evaluation of such a form is aborted prior to its normal return, the values of *, **, and *** are not updated.
-
-Examples:
-
-(values 'a1 'a2) =>  A1, A2
-'b =>  B
-(values 'c1 'c2 'c3) =>  C1, C2, C3
-(list * ** ***) =>  (C1 B A1)
-
-(defun cube-root (x) (expt x 1/3)) =>  CUBE-ROOT
-(compile *) =>  CUBE-ROOT
-(setq a (cube-root 27.0)) =>  3.0
-(* * 9.0) =>  27.0
-
-Affected By:
-
-Lisp read-eval-print loop.
-
-See Also:
-
-- (variable), + (variable), / (variable), Section 25.1.1 (Top level loop)
-
-Notes:
-
- *   ==  (car /)
- **  ==  (car //)
- *** ==  (car ///)
-
-
-Variable /, //, ///
-
-Value Type:
-
-a proper list.
-
-Initial Value:
-
-implementation-dependent.
-
-Description:
-
-The variables /, //, and /// are maintained by the Lisp read-eval-print loop to save the values of results that were printed at the end of the loop.
-
-The value of / is a list of the most recent values that were printed, the value of // is the previous value of /, and the value of /// is the previous value of //.
-
-The values of /, //, and /// are updated immediately prior to printing the return value of a top-level form by the Lisp read-eval-print loop. If the evaluation of such a form is aborted prior to its normal return, the values of /, //, and /// are not updated.
-
-Examples:
-
- (floor 22 7) =>  3, 1
- (+ (* (car /) 7) (cadr /)) =>  22
-
-Affected By:
-
-Lisp read-eval-print loop.
-
-See Also:
-
-- (variable), + (variable), * (variable), Section 25.1.1 (Top level loop)
-
-Notes: None. 
-
-
-Function LISP-IMPLEMENTATION-TYPE, LISP-IMPLEMENTATION-VERSION
-
-Syntax:
-
-lisp-implementation-type <no arguments> => description
-
-lisp-implementation-version <no arguments> => description
-
-Arguments and Values:
+* 参数和值(Arguments and Values):
 
 description---a string or nil.
 
-Description:
+* 描述(Description):
 
-lisp-implementation-type and lisp-implementation-version identify the current implementation of Common Lisp.
+        lisp-implementation-type 和 lisp-implementation-version 识别当前的 Common Lisp 实现.
 
-lisp-implementation-type returns a string that identifies the generic name of the particular Common Lisp implementation.
+        lisp-implementation-type 返回一个标识这个特定 Common Lisp 实现的通用名称的字符串.
 
-lisp-implementation-version returns a string that identifies the version of the particular Common Lisp implementation.
+        lisp-implementation-version 返回一个标识这个特定 Common Lisp 实现的版本的字符串.
 
-If no appropriate and relevant result can be produced, nil is returned instead of a string.
+        如果不能产生适当的和相关的结果, 会返回 nil 而不是一个字符串.
 
-Examples:
+* 示例(Examples):
 
- (lisp-implementation-type)
-=>  "ACME Lisp"
-OR=>  "Joe's Common Lisp"
- (lisp-implementation-version)
-=>  "1.3a"
-=>  "V2"
-OR=>  "Release 17.3, ECO #6"
+    ```LISP
+    (lisp-implementation-type)
+    =>  "ACME Lisp"
+    OR=>  "Joe's Common Lisp"
+    (lisp-implementation-version)
+    =>  "1.3a"
+    =>  "V2"
+    OR=>  "Release 17.3, ECO #6"
+    ```
 
-Side Effects: None.
+* 副作用(Side Effects): None.
 
-Affected By: None.
+* 受此影响(Affected By): None.
 
-Exceptional Situations: None.
+* 异常情况(Exceptional Situations): None.
 
-See Also: None.
+* 也见(See Also): None.
 
-Notes: None. 
+* 注意(Notes): None.
 
+### <span id="F-SITE-NAME-ALL">函数 SHORT-SITE-NAME, LONG-SITE-NAME</span>
 
-Function SHORT-SITE-NAME, LONG-SITE-NAME
+* 语法(Syntax):
 
-Syntax:
+        short-site-name <no arguments> => description
 
-short-site-name <no arguments> => description
+        long-site-name <no arguments> => description
 
-long-site-name <no arguments> => description
+* 参数和值(Arguments and Values):
 
-Arguments and Values:
+        description---一个字符串或 nil.
 
-description---a string or nil.
+* 描述(Description):
 
-Description:
+        short-site-name 和 long-site-name 返回一个标识这个计算机硬件的物理部署信息的字符串, 如果不能产生适当的描述, 就返回 nil.
 
-short-site-name and long-site-name return a string that identifies the physical location of the computer hardware, or nil if no appropriate description can be produced.
+* 示例(Examples):
 
-Examples:
+    ```LISP
+    (short-site-name)
+    =>  "MIT AI Lab"
+    OR=>  "CMU-CSD"
+    (long-site-name)
+    =>  "MIT Artificial Intelligence Laboratory"
+    OR=>  "CMU Computer Science Department"
+    ```
 
- (short-site-name)
-=>  "MIT AI Lab"
-OR=>  "CMU-CSD"
- (long-site-name)
-=>  "MIT Artificial Intelligence Laboratory"
-OR=>  "CMU Computer Science Department"
+* 副作用(Side Effects): None.
 
-Side Effects: None.
+* 受此影响(Affected By):
 
-Affected By:
+        具体实现, 计算机硬件的物理部署信息, 以及安装/配置过程.
 
-The implementation, the location of the computer hardware, and the installation/configuration process.
+* 异常情况(Exceptional Situations): None.
 
-Exceptional Situations: None.
+* 也见(See Also): None.
 
-See Also: None.
+* 注意(Notes): None.
 
-Notes: None. 
+### <span id="F-MACHINE-INSTANCE">函数 MACHINE-INSTANCE</span>
 
+* 语法(Syntax):
 
-Function MACHINE-INSTANCE
+        machine-instance <no arguments> => description
 
-Syntax:
+* 参数和值(Arguments and Values):
 
-machine-instance <no arguments> => description
+        description---一个字符串或 nil.
 
-Arguments and Values:
+* 描述(Description):
 
-description---a string or nil.
+        返回一个标识 Common Lisp 正在运行的这个计算机硬件的特定实例的字符串, 如果没有这样的字符串可以被计算就返回 nil.
 
-Description:
+* 示例(Examples):
 
-Returns a string that identifies the particular instance of the computer hardware on which Common Lisp is running, or nil if no such string can be computed.
+    ```LISP
+    (machine-instance)
+    =>  "ACME.COM"
+    OR=>  "S/N 123231"
+    OR=>  "18.26.0.179"
+    OR=>  "AA-00-04-00-A7-A4"
+    ```
 
-Examples:
+* 副作用(Side Effects): None.
 
- (machine-instance)
-=>  "ACME.COM"
-OR=>  "S/N 123231"
-OR=>  "18.26.0.179"
-OR=>  "AA-00-04-00-A7-A4"
+* 受此影响(Affected By):
 
-Side Effects: None.
+        机器实力, 以及具体实现.
 
-Affected By:
+* 异常情况(Exceptional Situations): None.
 
-The machine instance, and the implementation.
+* 也见(See Also):
 
-Exceptional Situations: None.
+        machine-type, machine-version
 
-See Also:
+* 注意(Notes): None.
 
-machine-type, machine-version
+### <span id="F-MACHINE-TYPE">函数 MACHINE-TYPE</span>
 
-Notes: None. 
+* 语法(Syntax):
 
+        machine-type <no arguments> => description
 
-Function MACHINE-TYPE
+* 参数和值(Arguments and Values):
 
-Syntax:
+        description---一个字符串或 nil.
 
-machine-type <no arguments> => description
+* 描述(Description):
 
-Arguments and Values:
+        返回一个标识这个 Common Lisp 正在运行的计算机硬件的通用名称的字符串.
 
-description---a string or nil.
+* 示例(Examples):
 
-Description:
+    ```LISP
+    (machine-type)
+    =>  "DEC PDP-10"
+    OR=>  "Symbolics LM-2"
+    ```
 
-Returns a string that identifies the generic name of the computer hardware on which Common Lisp is running.
+* 副作用(Side Effects): None.
 
-Examples:
+* 受此影响(Affected By):
 
- (machine-type)
-=>  "DEC PDP-10"
-OR=>  "Symbolics LM-2"
+        这个机器类型. 具体实现.
 
-Side Effects: None.
+* 异常情况(Exceptional Situations): None.
 
-Affected By:
+* 也见(See Also):
 
-The machine type. The implementation.
+        machine-version
 
-Exceptional Situations: None.
+* 注意(Notes): None.
 
-See Also:
+### <span id="F-MACHINE-VERSION">函数 MACHINE-VERSION</span>
 
-machine-version
+* 语法(Syntax):
 
-Notes: None. 
+        machine-version <no arguments> => description
 
-Function MACHINE-VERSION
+* 参数和值(Arguments and Values):
 
-Syntax:
+        description---一个字符串或 nil.
 
-machine-version <no arguments> => description
+* 描述(Description):
 
-Arguments and Values:
+        返回一个标识这个 Common Lisp 正在运行的计算机硬件的版本的字符串, 如果没有这样的值可以被计算就返回 nil.
 
-description---a string or nil.
+* 示例(Examples):
 
-Description:
+    ```LISP
+    (machine-version) =>  "KL-10, microcode 9"
+    ```
 
-Returns a string that identifies the version of the computer hardware on which Common Lisp is running, or nil if no such value can be computed.
+* 副作用(Side Effects): None.
 
-Examples:
+* 受此影响(Affected By):
 
- (machine-version) =>  "KL-10, microcode 9"
+        机器的版本, 和具体实现.
 
-Side Effects: None.
+* 异常情况(Exceptional Situations): None.
 
-Affected By:
+* 也见(See Also):
 
-The machine version, and the implementation.
+        machine-type, machine-instance
 
-Exceptional Situations: None.
+* 注意(Notes): None.
 
-See Also:
+### <span id="F-SOFTWARE-ALL">函数 SOFTWARE-TYPE, SOFTWARE-VERSION</span>
 
-machine-type, machine-instance
+* 语法(Syntax):
 
-Notes: None. 
+        software-type <no arguments> => description
 
+        software-version <no arguments> => description
 
-Function SOFTWARE-TYPE, SOFTWARE-VERSION
+* 参数和值(Arguments and Values):
 
-Syntax:
+        description---一个字符串或 nil.
 
-software-type <no arguments> => description
+* 描述(Description):
 
-software-version <no arguments> => description
+        software-type 返回一个标识任何相关支持软件的通用名字的字符串, 如果不能产生适当的或相关的值就返回 nil.
 
-Arguments and Values:
+        software-version 返回一个标识任何相关支持软件的版本的字符串, 如果不能产生适当的或相关的值就返回 nil.
 
-description---a string or nil.
+* 示例(Examples):
 
-Description:
+    ```LISP
+    (software-type) =>  "Multics"
+    (software-version) =>  "1.3x"
+    ```
 
-software-type returns a string that identifies the generic name of any relevant supporting software, or nil if no appropriate or relevant result can be produced.
+* 副作用(Side Effects): None.
 
-software-version returns a string that identifies the version of any relevant supporting software, or nil if no appropriate or relevant result can be produced.
+* 受此影响(Affected By):
 
-Examples:
+        操作系统环境.
 
- (software-type) =>  "Multics"
- (software-version) =>  "1.3x"
+* 异常情况(Exceptional Situations): None.
 
-Side Effects: None.
+* 也见(See Also): None.
 
-Affected By:
+* 注意(Notes):
 
-Operating system environment.
+        这些信息应该对具体实现的维护者有用.
 
-Exceptional Situations: None.
+### <span id="F-USER-HOMEDIR-PATHNAME">函数 USER-HOMEDIR-PATHNAME</span>
 
-See Also: None.
+* 语法(Syntax):
 
-Notes:
+        user-homedir-pathname &optional host => pathname
 
-This information should be of use to maintainers of the implementation. 
+* 参数和值(Arguments and Values):
 
+        host---一个字符串, 一个字符串列表, 或 :unspecific.
+        pathname---一个路径名或 nil.
 
-Function USER-HOMEDIR-PATHNAME
+* 描述(Description):
 
-Syntax:
+        user-homedir-pathname 确定在主机 host 上对应用户家目录的路径名. 如果没有提供 host, 它的值是依赖于具体实现的. 对于一个 :unspecific 的描述, 见章节 19.2.1 (Pathname Components).
 
-user-homedir-pathname &optional host => pathname
+        家目录的定义是依赖于具体实现的, 但是在 Common Lisp 中的定义意味着用户保存例如初始化文件和邮件之类的个人文件的目录.
 
-Arguments and Values:
+        user-homedir-pathname 为主机 host 上的用户家目录返回一个不带任何名称, 类型, 或版本成员的路径名 (这些成员都是 nil).
 
-host---a string, a list of strings, or :unspecific.
+        如果不能去确定主机 host 上的用户家目录, 就么就会返回 nil. 如果没有提供 host, 那么 user-homedir-pathname 从不返回 nil.
 
-pathname---a pathname, or nil.
+* 示例(Examples):
 
-Description:
+    ```LISP
+    (pathnamep (user-homedir-pathname)) =>  true
+    ```
 
-user-homedir-pathname determines the pathname that corresponds to the user's home directory on host. If host is not supplied, its value is implementation-dependent. For a description of :unspecific, see Section 19.2.1 (Pathname Components).
+* 副作用(Side Effects): None.
 
-The definition of home directory is implementation-dependent, but defined in Common Lisp to mean the directory where the user keeps personal files such as initialization files and mail.
+* 受此影响(Affected By):
 
-user-homedir-pathname returns a pathname without any name, type, or version component (those components are all nil) for the user's home directory on host.
+        主机计算机文件系统, 以及具体实现.
 
-If it is impossible to determine the user's home directory on host, then nil is returned. user-homedir-pathname never returns nil if host is not supplied.
+* 异常情况(Exceptional Situations): None.
 
-Examples:
+* 也见(See Also): None.
 
- (pathnamep (user-homedir-pathname)) =>  true
-
-Side Effects: None.
-
-Affected By:
-
-The host computer's file system, and the implementation.
-
-Exceptional Situations: None.
-
-See Also: None.
-
-Notes: None. 
-
-
+* 注意(Notes): None.
