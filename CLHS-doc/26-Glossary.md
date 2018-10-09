@@ -400,7 +400,7 @@ define-method-combination arguments lambda list n. a lambda list used by the :ar
 
 define-modify-macro lambda list n. a lambda list used by define-modify-macro. See Section 3.4.9 (Define-modify-macro Lambda Lists).
 
-defined name n. a symbol the meaning of which is defined by Common Lisp.
+defined name n. 一个意义已经由 Common Lisp 定义了的符号.
 
 defining form n. a form that has the side-effect of establishing a definition. ``defun and defparameter are defining forms.''
 
@@ -829,7 +829,7 @@ Lisp printer n. Trad. the procedure that prints the character representation of 
 
 Lisp read-eval-print loop n. Trad. an endless loop that reads[2] a form, evaluates it, and prints (i.e., writes[2]) the results. In many implementations, the default mode of interaction with Common Lisp during program development is through such a loop.
 
-Lisp reader n. Trad. the procedure that parses character representations of objects from a stream, producing objects. (This procedure is implemented by the function read.)
+Lisp reader n. Trad. 从一个流(stream)中解析对象(object)的字符表示并产生对象(objects)的程序. (这个程序由函数 read 实现.)
 
 list n. 1. a chain of conses in which the car of each cons is an element of the list, and the cdr of each cons is either the next link in the chain or a terminating atom. See also proper list, dotted list, or circular list. 2. the type that is the union of null and cons.
 
@@ -1067,7 +1067,7 @@ proclamation n. a global declaration.
 
 prog tag n. Trad. a go tag.
 
-program n. Trad. Common Lisp code.
+program n. Trad. Common Lisp 代码.
 
 programmer n. an active entity, typically a human, that writes a program, and that might or might not also be a user of the program.
 
@@ -1323,7 +1323,7 @@ standard readtable n. A readtable that is different from the initial readtable, 
 
 standard syntax n. the syntax represented by the standard readtable and used as a reference syntax throughout this document. See Section 2.1 (Character Syntax).
 
-standardized adj. (of a name, object, or definition) having been defined by Common Lisp. ``All standardized variables that are required to hold bidirectional streams have ``-io*'' in their name.''
+standardized adj. (一个名字(name), 对象(object), 或定义) 已经被 Common Lisp 定义. "All standardized variables that are required to hold bidirectional streams have \"-io*\" in their name".
 
 startup environment n. the global environment of the running Lisp image from which the compiler was invoked.
 
@@ -1428,7 +1428,7 @@ truename n. 1. the canonical filename of a file in the file system. See Section 
 
 two-way stream n. a stream of type two-way-stream, which is a bidirectional composite stream that receives its input from an associated input stream and sends its output to an associated output stream.
 
-type n. 1. a set of objects, usually with common structure, behavior, or purpose. (Note that the expression ``X is of type Sa'' naturally implies that ``X is of type Sb'' if Sa is a subtype of Sb.) 2. (immediately following the name of a type) a subtype of that type. ``The type vector is an array type.''
+type n. 1. 一个对象(object)的集合, 通常带有共同的结构, 行为, 和目的. (注意, 如果 Sa 是 Sb 的一个子类型, 语句 "X is of type Sa" 自然意味着 "X is of type Sb".) 2. (immediately following the name of a type<!--待翻译-->) 那个类型(type)的一个子类型(subtype). "The type vector is an array type."
 
 type declaration n. a declaration that asserts that every reference to a specified binding within the scope of the declaration results in some object of the specified type.
 
