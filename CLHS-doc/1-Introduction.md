@@ -131,7 +131,7 @@ Lisp 的其中一个最重要的发展是在20世纪70年代后半期: Scheme. S
 > * 1.4.1 [符号规约](#NotationalConventions)
 > * 1.4.2 [错误术语](#ErrorTerminology)
 > * 1.4.3 [本标准未正式规定的部分](#SectionsNotFormallyPartOfThisStandard)
-> * 1.4.4 [解释的字典条目](#InterpretingDictionaryEntries)
+> * 1.4.4 [解释字典条目](#InterpretingDictionaryEntries)
 
 ### 1.4.1 <span id = "NotationalConventions">符号规约</span>
 
@@ -170,7 +170,7 @@ name
 
 *name*
 
-    表示一个参数[parameter]或者值[value]的名字.
+    表示一个形参[parameter]或者值[value]的名字.
 
     有些情况下也使用标记 "<<name>>" (换句话说, 同样的字体, 但是带有 "尖括号" 围绕) 来为包在里面的多个字符提供更好的目视间距. 这些 "尖括号" 是元语法, 并且实际上从不出现在程序的输入输出中.
 
@@ -431,7 +431,7 @@ Common Lisp 中的一些对象[object]不止一种表示的方法. 这种情况�
     (A B C D E F)
 
 虽然圆点[dot]是符号的一个合法成分字符, 但是没有标准化的[standardized]符号包含了圆点[dot]字符, 所以这个文档中对句子末尾符号[symbol]的引用后面的句号总是解释为一个句号而不是符号[symbol]名[name]的一部分. 比如, 这个文档中, 就像这样 "This sample sentence refers to the symbol car." 的一个句子引用了一个名字为 "CAR" 的符号(带有三个字母), 不表示4个字母的 "CAR."
-<!--TODO 校验到此-->
+
 ##### 1.4.1.4.4 <span id = "NIL">NIL</span>
 
 nil 有很多意思. 它是 COMMON-LISP 包中名字[name]为 "NIL" 的符号[symbol], 也是布尔值[boolean] (而且是广义布尔[generalized boolean]) false, 它是空列表[empty list], 并且它是空类型[empty type]的名字[name] (所有类型[type]的子类型[subtype]).
@@ -469,7 +469,7 @@ Figure 1-1. NIL 的表示
 
 一个标识符[designator]是一个表示另一个对象[object]的对象[object].
 
-在一个操作符[operator]的参数[parameter]被描述为标识符[designator]的地方, 这个操作符[operator]的描述以假定这个参数[parameter]的值是表示的对象[object]的方式编写; 这就表示, 这个参数[parameter]是表示的类型[type]. (由一个 "<\<type>> 表示符" 或者 "对于 <\<type>> 的一个标识符" 指定的这个对象[object]的具体性质可以在术语表中 "<\<type>> designator" 条目找到.)
+在一个操作符[operator]的形参[parameter]被描述为标识符[designator]的地方, 这个操作符[operator]的描述以假定这个形参[parameter]的值是表示的对象[object]的方式编写; 这就表示, 这个形参[parameter]是表示的类型[type]. (由一个 "<\<type>> 表示符" 或者 "对于 <\<type>> 的一个标识符" 指定的这个对象[object]的具体性质可以在术语表中 "<\<type>> designator" 条目找到.)
 
 比如, "nil" 和 "the value of \*standard-output*" 作为流标识符[stream designator]在操作上是难以区分的. 类似的, 作为字符串标识符[string designator], 符号 foo 和字符串 "FOO" 在操作上也是难以区分的.
 
@@ -580,350 +580,343 @@ OR=>  (2 4 5 6)
 
     这意味着在适当上下文中 (比如, 编译的时候), 鼓励具体实现[implementation]去发出一个警告的. 然而, 一个符合规范的实现[conforming implementation]不需要发出一个警告.
 
-<!--TODO 校验到此-->
+
 ### 1.4.3 <span id = "SectionsNotFormallyPartOfThisStandard">本标准未正式规定的部分</span>
 
-这个标准的前页和书后的附属资料, 就像 \``Table of Contents,'' \``Index,'' \``Figures,'' \``Credits,'' 和 \``Appendix'' 没有正规地考虑过, 所以我们保留更新这些部分所需要的灵活性, 以便于即使在最后一刻也不需要担心修改文档的这些部分需要正式的投票. 这些条目很短并且很有用, 然而, 不推荐在这个文档的删减版本里把它们删除.
+这个标准的前页和书后的附属资料, 就像 "Table of Contents", "Index", "Figures", "Credits", 和 "Appendix" 不是这个标准的正规考虑的部分, 所以我们保留更新这些部分所需要的灵活性, 以便于即使在最后一刻也不需要担心修改文档的这些部分需要正式的投票. 这些条目很短并且很有用, 然而, 不推荐在这个文档的删减版本里把它们删除.
 
-在概念性的章节里, 提供的名字以单词 \``Note'' 或 \``Notes'' 或 \``Example'' 或 \``Examples'' 开头的部分只用于说明目的, 并且不被认为是标准的一部分.
+在概念性的章节里, 提供的名字以单词 "注意(Note)" 或 "注意(Notes)" 或 "例如(Example)" 或 "例如(Examples)" 开头的部分只用于说明目的, 并且不被认为是标准的一部分.
 
 已经试着把这些章节放在父章节的末尾, 这样它们就可以被移除而不需要修改相邻章节的序号来减少文档的大小.
 
-同样的, 字典条目中的这个 \``Examples'' 和 \``Notes'' 章节也不被认为是标准的一部分, 如有必要可以移除.
+同样的, 字典条目中的这个 "示例(Examples)" 和 "注意(Notes)" 部分也不被认为是标准的一部分, 如有必要可以移除.
 
-不过, 这些示例对剩下的部分提供了重要的说明和规范性检查, 并且这样的删减是不推荐的除非完全无法避免.
+不过, 这些示例对剩下的部分提供了重要的说明和规范性检查, 这样的删减是不推荐的, 除非完全无法避免.
 
-### 1.4.4 <span id = "InterpretingDictionaryEntries">解释的字典条目</span>
-<TODO 这几个条目的具体意思在后面阅读的时候再来调整, 使语言表述更流畅>
+### 1.4.4 <span id = "InterpretingDictionaryEntries">解释字典条目</span>
 
-这个字典条目对于每个定义的名字都是按章节来分割的. 除非明确表示, 每个章节由确定这个章节的标签引入. 章节的删减表示这个章节是不可应用的或者没有提供什么有意思的信息.
+每个已定义的名字[defined name]的字典条目被划分为几个部分. 除非明确表示, 每个部分由确定这个部分的标签引入. 该部分的遗漏表示这个章节是不可应用的或者没有提供什么有意思的信息.
 
 这个章节定义了每个可能出现在字典章节的条目的意义.
 
-> * 1.4.4.1 [``Affected By'' 字典条目部分](#AffectedBySDE)
-> * 1.4.4.2 [``Arguments'' 字典条目部分](#ArgumentsSDE)
-> * 1.4.4.3 [``Arguments and Values'' 字典条目部分](#ArgumentsAndValuesSDE)
-> * 1.4.4.4 [``Binding Types Affected'' 字典条目部分](#BindingTypesAffectedSDE)
-> * 1.4.4.5 [``Class Precedence List'' 字典条目部分](#ClassPrecedenceListSDE)
+> * 1.4.4.1 ["受此影响(Affected By)" 字典条目部分](#AffectedBySDE)
+> * 1.4.4.2 ["参数(Arguments)" 字典条目部分](#ArgumentsSDE)
+> * 1.4.4.3 ["参数和值(Arguments and Values)" 字典条目部分](#ArgumentsAndValuesSDE)
+> * 1.4.4.4 ["绑定类型的影响(Binding Types Affected)" 字典条目部分](#BindingTypesAffectedSDE)
+> * 1.4.4.5 ["类优先级列表(Class Precedence List)" 字典条目部分](#ClassPrecedenceListSDE)
 > * 1.4.4.6 [类型标识符的字典条目](#DictionaryEntriesForTS)
-> * 1.4.4.7 [``Constant Value'' 字典条目部分](#ConstantValue)
-> * 1.4.4.8 [``Description'' 字典条目部分](#DescriptionSDE)
-> * 1.4.4.9 [``Examples'' 字典条目部分](#ExamplesSDE)
-> * 1.4.4.10 [``Exceptional Situations'' 字典条目部分](#ExceptionalSituationsSED)
-> * 1.4.4.11 [``Initial Value'' 字典条目部分](#InitialValueSDE)
-> * 1.4.4.12 [``Argument Precedence Order'' 字典条目部分](#ArgumentPrecedenceOrderSDE)
-> * 1.4.4.13 [``Method Signature'' 字典条目部分](#MethodSignatureSDE)
-> * 1.4.4.14 [``Name'' 字典条目部分](#NameSDE)
-> * 1.4.4.15 [``Notes'' 字典条目部分](#NotesSDE)
-> * 1.4.4.16 [``Pronunciation'' 字典条目部分](#PronunciationSDE)
-> * 1.4.4.17 [``See Also'' 字典条目部分](#SeeAlsoSDE)
-> * 1.4.4.18 [``Side Effects'' 字典条目部分](#SideEffectsSDE)
-> * 1.4.4.19 [``Supertypes'' 字典条目部分](#SupertypesSDE)
-> * 1.4.4.20 [``Syntax'' 字典条目部分](#SyntaxSDE)
-> * 1.4.4.21 [``Valid Context'' 字典条目部分](#ValidContextSDE)
-> * 1.4.4.22 [``Value Type'' 字典条目部分](#ValueTypeSDE)
+> * 1.4.4.7 ["常量值(Constant Value)" 字典条目部分](#ConstantValue)
+> * 1.4.4.8 ["描述(Description)" 字典条目部分](#DescriptionSDE)
+> * 1.4.4.9 ["示例(Examples)" 字典条目部分](#ExamplesSDE)
+> * 1.4.4.10 ["异常情况(Exceptional Situations)" 字典条目部分](#ExceptionalSituationsSED)
+> * 1.4.4.11 ["初始值(Initial Value)" 字典条目部分](#InitialValueSDE)
+> * 1.4.4.12 ["参数优先级顺序(Argument Precedence Order)" 字典条目部分](#ArgumentPrecedenceOrderSDE)
+> * 1.4.4.13 ["方法签名(Method Signature)" 字典条目部分](#MethodSignatureSDE)
+> * 1.4.4.14 ["名称(Name)" 字典条目部分](#NameSDE)
+> * 1.4.4.15 ["注意(Notes)" 字典条目部分](#NotesSDE)
+> * 1.4.4.16 ["发音(Pronunciation)" 字典条目部分](#PronunciationSDE)
+> * 1.4.4.17 ["也见(See Also)" 字典条目部分](#SeeAlsoSDE)
+> * 1.4.4.18 ["副作用(Side Effects)" 字典条目部分](#SideEffectsSDE)
+> * 1.4.4.19 ["超类型(Supertypes)" 字典条目部分](#SupertypesSDE)
+> * 1.4.4.20 ["语法(Syntax)" 字典条目部分](#SyntaxSDE)
+> * 1.4.4.21 ["合法上下文(Valid Context)" 字典条目部分](#ValidContextSDE)
+> * 1.4.4.22 ["值类型(Value Type)" 字典条目部分](#ValueTypeSDE)
 
-#### 1.4.4.1 <span id = "AffectedBySDE">``Affected By'' 字典条目部分</span>
+#### 1.4.4.1 <span id = "AffectedBySDE">"受此影响(Affected By)" 字典条目部分</span>
 
-对于一个操作符, 它可以影响副作用或者返回值.
+对于一个操作符[operator], 就是任何可以影响这个操作符[operator]的副作用或者返回的值[value]的事物.
 
-对于一个变量, 对它绑定或赋值都可能影响这个变量的值包括函数.
+对于一个变量[variable], 就是任何可以影响这个变量[variable]的值[value]的事物, 这个值包括绑定或赋值给这个变量的函数[function].
 
-#### 1.4.4.2 <span id = "ArgumentsSDE">``Arguments'' 字典条目部分</span>
+#### 1.4.4.2 <span id = "ArgumentsSDE">"参数(Arguments)" 字典条目部分</span>
 
-这个信息描述那些不作为表达式形式求值也没有返回值的声明还有特殊表达式条目的语法信息的条目.
+这个信息描述那些声明[declaration]还有不求值为表达式形式[form]并且求值也不返回值[value]的特殊表达式[expression]条目的语法信息.
 
-#### 1.4.4.3 <span id = "ArgumentsAndValuesSDE">``Arguments and Values'' 字典条目部分</span>
+#### 1.4.4.3 <span id = "ArgumentsAndValuesSDE">"参数和值(Arguments and Values)" 字典条目部分</span>
 
-这是对操作符接收参数还有返回值的英语描述, 包括遗漏的默认参数的信息 (就像optional参数和关键字参数). 对于特殊操作符和宏, 它们的参数不会被求值除非在它们的描述中就明确指定它们被求值.
+这是对操作符[operator]接收实参[argument]还有返回的值[value]的英语描述(译者注: 这里的英语对应到本译文是中文), 包括可遗漏实参[argument]的默认形参[parameter]的信息 (例如可选参数[optional parameter]和关键字参数[keyword parameter]). 对于特殊操作符[special operator]和宏[macro], 它们的实参[argument]不会被求值, 除非在它们的描述中就明确指定它们被求值.
 
-除了明确指定以外, 如果这些类型约束被违反了, 那么结果将是未定义的.
+除了显式指明以外, 如果这些类型约束被违反了, 那么结果将是未定义的.
 
-#### 1.4.4.4 <span id = "BindingTypesAffectedSDE">``Binding Types Affected'' 字典条目部分</span>
+#### 1.4.4.4 <span id = "BindingTypesAffectedSDE">"绑定类型的影响(Binding Types Affected)" 字典条目部分</span>
 
-这个信息警告读者这个类型的绑定可能被一个声明所影响. 事实上任何这样的绑定是否被影响取决于额外因素. 详情见 ``Description'' 章节中问题的声明.
+这个信息警告读者这个类型的绑定[binding]可能被一个声明所影响. 事实上任何这样的特定绑定[binding]是否被影响取决于其他因素. 详情见 "描述(Description)" 部分中问题的声明.
 
+#### 1.4.4.5 <span id = "ClassPrecedenceListSDE">"类优先级列表(Class Precedence List)" 字典条目部分</span>
 
-#### 1.4.4.5 <span id = "ClassPrecedenceListSDE">``Class Precedence List'' 字典条目部分</span>
+这个出现在类[class]的字典条目, 并且包含由 Common Lisp 定义的类[class]的一个有序列表, 这个列表一定在这个类[class]的优先级列表[class precedence list]中.
 
-这个出现在类的字典条目, 并且包含一个必须存在这个类的优先级列表中的Common Lisp定义的类的列表.
+允许其他类[class] (具体实现定义的[implementation-defined]) 出现在具体实现的这个类[class]的优先级列表[class precedence list]中.
 
-其他依赖于具体实现的类出现在实现的类的优先级列表中是允许的.
+允许标准对象[standard-object]或者结构体对象[structure-object]出现在具体实现[implementation]的类优先级列表[class precedence list]中; 详情见章节 4.2.2 (类型关系).
 
-标准对象或者结构对象出现在类的优先级列表中也是允许的; 详情见章节 4.2.2 (Type Relationships).
+除非在这个说明书里明确说明, 没有标准化[standardized]的类[class]出现在具体实现的类优先级列表[class precedence list]中.
 
-除非在这个说明书里明确说明, 没有标准的类出现在具体实现的类的优先级列表中.
+根据类和类型之间的关系定义, 这部分列出来的类[class]也是这个类[class]表示的类型[type]的超类型[supertype].
 
-根据类和类型之间的关系定义, 这节列出来的类也是对应类的子类.
+#### 1.4.4.6 <span id = "DictionaryEntriesForTS">类型标识符的字典条目</span>
 
-#### 1.4.4.6 <span id = "DictionaryEntriesForTS">Dictionary Entries for Type Specifiers</span>
+这个原子类型指定符[atomic type specifier]是那些 Figure 4-2 列出的已定义的名字[defined name]. 这些字典条目是 "类(Class)", "状况类型(Condition Type)", "系统类(System Class)", 或者 "类型(Type)" 种类的. 如何去把命名这些类型[type]或类[class]的符号[symbol]解释为原子类型指定符[atomic type specifier]的描述在每个字典条目的 "描述(Description)" 部分.
 
-这个原子类型说明符是那些 Figure 4-2 列出的定义的名字. 这个字典条目是 \``Class,'' \``Condition Type,'' \``System Class,'' 或者 \``Type'' 类型的. 一个如何去把这些类型或类解释为原子类型说明符的描述在每个字典条目的 \``Description'' 章节.
+复合类型指定符[compound type specifiers]是那些 Figure 4-3 列出的已定义的名字[defined name]. 这样的字典条目是 "类(Class)", "系统类(System Class)", "类型(Type)", 或 "类型指定符(Type Specifier)" 类型的. 如何去把一个 car 为这样一个符号[symbol]的列表[list]解释为复合类型指定符[compound type specifiers]的描述可以在这样一个字典条目的 "复合类型指定符种类(Compound Type Specifier Kind)", "复合类型指定符语法(Compound Type Specifier Syntax)", "复合类型指定符参数(Compound Type Specifier Arguments)", 还有 "复合类型指定符描述(Compound Type Specifier Description)" 这些部分中找到.
 
-复合类型说明符是那些 Figure 4-3 列出的名字. 这样的字典条目是 \``Class,'' \``System Class,'' \``Type,'' 或 \``Type Specifier'' 类型的. 如何去解释复合类型列表的描述是看它的car部分是 \``Compound Type Specifier Kind,'' \``Compound Type Specifier Syntax,'' \``Compound Type Specifier Arguments,'' 还有 \``Compound Type Specifier Description'' 中哪个字典条目章节中的符号.
+> * 1.4.4.6.1 [ "复合类型指定符种类(Compound Type Specifier Kind)" 字典条目部分](#CTSKindSDE)
+> * 1.4.4.6.2 [ "复合类型指定符语法(Compound Type Specifier Syntax)" 字典条目部分](#CTSSyntaxSDE)
+> * 1.4.4.6.3 [ "复合类型指定符参数(Compound Type Specifier Arguments)" 字典条目部分](#CTSArgumentsSDE)
+> * 1.4.4.6.4 [ "复合类型指定符描述(Compound Type Specifier Description)" 字典条目部分](#CTSDescriptionSDE)
 
-> * 1.4.4.6.1 [``Compound Type Specifier Kind'' 字典条目部分](#CTSKindSDE)
-> * 1.4.4.6.2 [``Compound Type Specifier Syntax'' 字典条目部分](#CTSSyntaxSDE)
-> * 1.4.4.6.3 [``Compound Type Specifier Arguments'' 字典条目部分](#CTSArgumentsSDE)
-> * 1.4.4.6.4 [``Compound Type Specifier Description'' 字典条目部分](#CTSDescriptionSDE)
+##### 1.4.4.6.1 <span id = "CTSKindSDE"> "复合类型指定符种类(Compound Type Specifier Kind)" 字典条目部分</span>
 
-##### 1.4.4.6.1 <span id = "CTSKindSDE">``Compound Type Specifier Kind'' 字典条目部分</span>
+一个 "abbreviating" 类型指定符[type specifier]描述了一个原则上可以枚举出这些元素[elements]但是实践上没有可操作性的一个子类型[subtype].
 
-一个 \``abbreviating'' 类型说明符描述了原则上可以枚举出来但是实践上没有可操作性的一个图表.
+一个 "specializing" 类型指定符[type specifier]通过约束这个类型[type]的一个或多个成员的类型[type], 例如元素类型[element type]或复数部分类型[complex part type], 来描述一个子类型[subtype].
 
-一个 \``specializing'' 类型说明符描述了约束了类型中一个或多个子类型的图表, 就像元素类型或者复数部分类型.
+一个 "predicating" 类型指定符[type specifier]描述了一个只包含满足给定断言[predicate]的那些对象[object]的子类型[subtype].
 
-一个 ``predicating'' 类型说明符描述了一个只包含满足给定断言的那些对象的图表.
+一个 "combining" 类型指定符[type specifier]描述一种以组合的方式的子类型[subtype], 通过在其他类型[type]上使用组合操作符 (例如 "and", "or", 和 "not") .
 
-一个 \``combining'' 类型说明符描述一种以组合的方式的图表, 通过在其他类型上使用组合操作符 (就像 \``and,'' \``or,'' 和 \``not'') .
+##### 1.4.4.6.2 <span id = "CTSSyntaxSDE"> "复合类型指定符语法(Compound Type Specifier Syntax)" 字典条目部分</span>
 
-##### 1.4.4.6.2 <span id = "CTSSyntaxSDE">``Compound Type Specifier Syntax'' 字典条目部分</span>
+这个关于一个类型[type]的信息描述了这个类型[type]的复合类型指定符[compound type specifier]的语法.
 
-这类信息描述了复合类型说明符的语法.
+这个类型是否可以作为原子类型指定符[atomic type specifier]在这里没有说明; 见章节 1.4.4.6 (类型标识符的字典条目).
 
-这个类型是否可以作为原子类型说明符在这里没有说明; 见章节 1.4.4.6 (Dictionary Entries for Type Specifiers).
+##### 1.4.4.6.3 <span id = "CTSArgumentsSDE"> "复合类型指定符参数(Compound Type Specifier Arguments)" 字典条目部分</span>
 
-##### 1.4.4.6.3 <span id = "CTSArgumentsSDE">``Compound Type Specifier Arguments'' 字典条目部分</span>
+这个描述了定义在 "复合类型指定符语法(Compound Type Specifier Syntax)" 部分的结构的类型[type]信息.
 
-这个描述了定义在 ``Compound Type Specifier Syntax'' 章节的结构的类型信息.
+##### 1.4.4.6.4 <span id = "CTSDescriptionSDE"> "复合类型指定符描述(Compound Type Specifier Description)" 字典条目部分</span>
 
-##### 1.4.4.6.4 <span id = "CTSDescriptionSDE">``Compound Type Specifier Description'' 字典条目部分</span>
+这个描述了定义在 "复合类型指定符语法(Compound Type Specifier Syntax)" 部分的结构的意义.
 
-这个描述了定义在 ``Compound Type Specifier Syntax'' 章节的结构的意义.
+#### 1.4.4.7 <span id = "ConstantValue">"常量值(Constant Value)" 字典条目部分</span>
 
-#### 1.4.4.7 <span id = "ConstantValue">``Constant Value'' 字典条目部分</span>
+这个描述了一个常量[constant variable]的不变的类型[type]和值[value].
 
-这个描述了一个常变量的不变的类型和值.
+#### 1.4.4.8 <span id = "DescriptionSDE">"描述(Description)" 字典条目部分</span>
 
-#### 1.4.4.8 <span id = "DescriptionSDE">``Description'' 字典条目部分</span>
+这个操作符[opterator]还有它的所有目的方面的一个总结, 但是没有必要包含下面引用的所有字段("副作用(Side Effects)", "异常情况(Exceptional Situations)", 等等.)
 
-这个操作符还有它的所有预期方面的一个总结, 但是没有必要包含在它后面引用的所有域(\``Side Effects,'' \``Exceptional Situations,'' 等等.)
+#### 1.4.4.9 <span id = "ExamplesSDE">"示例(Examples)" 字典条目部分</span>
 
-#### 1.4.4.9 <span id = "ExamplesSDE">``Examples'' 字典条目部分</span>
+这个操作符[opterator]的使用示例. 这些示例不被认为是这个标准的一部分; 见章节 1.4.3 (本标准未正式规定的部分).
 
-这个操作符的使用示例. 这些示例不被认为是这个标准的一部分; 见章节 1.4.3 (Sections Not Formally Part Of This Standard).
-
-#### 1.4.4.10 <span id = "ExceptionalSituationsSED">``Exceptional Situations'' 字典条目部分</span>
+#### 1.4.4.10 <span id = "ExceptionalSituationsSED">"异常情况(Exceptional Situations)" 字典条目部分</span>
 
 三种类型的信息可以出现在这里:
 
-    被这个函数检测到且发出来的情况.
-    这个函数处理的情况.
-    可能被这个函数检测到的情况.
+    被这个函数[function]检测到且正常发出来的情况.
+    被这个函数[function]处理的情况.
+    可能被这个函数[function]检测到的情况.
 
-<!-- TODO 有疑问 -->
-该字段不包含可以通过传递给函数的函数来表示的条件, 该操作符作为参数或通过动态变量进行调用, 如果它是宏或特殊操作符, 也不包括该操作符的子形式.
+该字段既不包含传递给这个操作符[operator]作为参数或者作为动态变量由这个操作符[operator]调用的函数[function]所发出的状况, 也不包括当这个操作符[operator]是宏[macro]或特殊操作符[special operator]时, 执行这个操作符的子表达式所发出的状况.
 
-#### 1.4.4.11 <span id = "InitialValueSDE">``Initial Value'' 字典条目部分</span>
+#### 1.4.4.11 <span id = "InitialValueSDE">"初始值(Initial Value)" 字典条目部分</span>
 
-这个信息描述了一个动态变量的初始值. 因为这个变量可能会改变, 见 ``Value Type'' 章节的类型限制.
+这个信息描述了一个动态变量[dynamic variable]的初始值[value]. 因为这个变量可能会改变, 见 "值类型(Value Type)" 部分的类型限制.
 
-#### 1.4.4.12 <span id = "ArgumentPrecedenceOrderSDE">``Argument Precedence Order'' 字典条目部分</span>
+#### 1.4.4.12 <span id = "ArgumentPrecedenceOrderSDE">"参数优先级顺序(Argument Precedence Order)" 字典条目部分</span>
 
-这个信息描述了参数优先级顺序. 如果它被省略, 参数的优先级顺序就是默认的 (从左到右).
+这个信息描述了参数优先级顺序[argument precedence order]. 如果它被省略, 参数的优先级顺序[argument precedence order]就是默认的 (从左到右).
 
-#### 1.4.4.13 <span id = "MethodSignatureSDE">``Method Signature'' 字典条目部分</span>
+#### 1.4.4.13 <span id = "MethodSignatureSDE">"方法签名(Method Signature)" 字典条目部分</span>
 
-这个广义函数的描述包括了这个标准广义函数定义的方法描述. 一个方法签名被用于描述每一个方法的参数和 parameter specializers. 广义函数定义的方法必须是方法签名所描述表达式形式.
+这个广义函数[generic function]的描述包含了在这个标准定义在这个广义函数[generic function]上的的方法[method]描述. 一个方法签名被用于描述每一个方法[method]的形参[parameter]和形参指定符[parameter specializer]. 对于这个广义函数[generic function]定义的方法[method]必须是这个方法[method]的签名[signature]所描述形式.
 
 F (x class) (y t) &optional z &key k
 
-这个签名表示这个广义函数F的方法有两个需要的参数: 必须是类class的实例的x; 还有可以是任何对象的 y (换句话说, 可以类 t 的泛化实例). 另外, 这里有一个可选的参数z 和一个关键字参数k. 这个签名也表示这个方法F是一个主方法并且没有限定符.
+这个签名[signature]表示这个广义函数[generic function] F 的方法有两个必要参数[required parameter]: 必须是类[class] class 的广义实例[generalized instance]的 x; 还有可以是任何对象[object]的 y (换句话说, 可以类 t 的广义实例[generalized instance]). 另外, 这里有一个可选参数[optional parameter] z 和一个关键字参数[keyword parameter] k. 这个签名[signature]也表示这个 F 上的方法是一个主方法[primary method]并且没有限定符[qualifiers].
 
-对于每个参数, 提供的实参必须是对应的广义函数描述的类型和方法签名里的类型的交集 (不仅仅是这个说明书里定义的方法, 也包括在允许定义方法的地方具体实现定义的或者用户定义的).
+对于每个形参[parameter], 提供的实参[argument]必须是对应的广义函数描述的类型和某个方法的签名里的类型的交集 (不仅仅是这个规范里定义的方法[method], 也包括在允许定义方法[method]的地方具体实现定义的[ implementation-defined]或者用户定义的方法[method]).
 
-#### 1.4.4.14 <span id = "NameSDE">``Name'' 字典条目部分</span>
+#### 1.4.4.14 <span id = "NameSDE">"名称(Name)" 字典条目部分</span>
 
-这个章节介绍字典条目. 它不是明确标记的. 它出现在前面并且后面跟一个水平栏.
+这个章节介绍字典条目. 它没有被显式标记. 它出现在一个横线的前面或后面.
 
-在左边打印的是定义的名字; 如果这个条目不只一个定义的名字, 所有这样的名字都会显示出来, 通过逗号分割.
+在左边打印的大字体是已定义的名字[defined name]; 如果不只一个已定义的名字[defined name]要被这个条目描述, 所有这样的名字[name]都会显示出来, 通过逗号分割.
 
-在右边打印的小的斜体的是这个字典条目是什么种类的介绍. 可能的值是:
+在右边打印的小的斜体的是这个字典条目是什么种类的表示. 可能的值是:
 
-Accessor
+访问器(Accessor)
 
-    这个是访问器函数.
+    这个是访问器[accessor]函数[function].
 
-Class
+类(Class)
 
-    这是一个类.
+    这是一个类[class].
 
-Condition Type
+状况类型(Condition Type)
 
-    这个是类型condition的表.
+    这个是类型[type] condition 的子类型[subtype].
 
-Constant Variable
+常量(Constant Variable)
 
-    这是一个常变量.
+    这是一个常量[constant variable].
 
-Declaration
+声明(Declaration)
 
-    这是一个定义标识符.
+    这是一个声明标识符[declaration identifier].
 
-Function
+函数(Function)
 
-    这是一个函数.
+    这是一个函数[function].
 
-Local Function
+局部函数(Local Function)
 
-    这是一个定义在宏形式里的词法作用域里的函数.
+    这是一个词法上定义在宏表达式形式[macro form]的作用域里的函数[function].
 
-Local Macro
+局部宏(Local Macro)
 
-    这是定义在一些宏形式的词法作用域里的宏.
+    这是一个词法上定义在宏表达式形式[macro form]的作用域里的宏[macro].
 
-Macro
+宏(Macro)
 
-    这是一个宏.
+    这是一个宏[macro].
 
-Restart
+重启动(Restart)
 
-    这是一个重启.
+    这是一个重启动[restart].
 
-Special Operator
+特殊操作符(Special Operator)
 
-    这是一个特殊操作符.
+    这是一个特殊操作符[special operator].
 
-Standard Generic Function
+标准广义函数(Standard Generic Function)
 
-    这是一个标准的广义函数.
+    这是一个标准广义函数[standard generic function].
 
-Symbol
+符号(Symbol)
 
-    这是一个在特定场合被识别的符号, 就像宏的语法中.
+    这是在某些特定情况下特别识别的符号[symbol], 例如宏[macro]的语法.
 
-System Class
+系统类(System Class)
 
-    这是一个类, 但是它表示内置的类. (事实上没有类需要去成为内置类.)
+    这就像一个类[class], 但是它可能表示的是内置类[built-in class]. (事实上没有类[class]必须成为内置类[built-in class].)
 
-Type
+类型[Type]
 
-    这是一个原子类型分类符, 并且依赖于每一个特定条目的信息, 可能去组成其他类型分类符.
+    这是一个原子类型指定符[atomic type specifier], 并且依赖于每一个特定条目的信息, 可能会被其他类型指定符[type specifier]所接受.<!--TODO 需要和后面的字典条目校对下-->
 
-Type Specifier
+类型指定符[Type Specifier]
 
-    这是一个定义的不是原子类型分类符的名字, 但是可以被用于构建合法类型分类符.
+    这是一个不是原子类型指定符[atomic type specifier]的已定义的名字[defined name], 但是可以被用于构建合法类型指定符[type specifier].
 
-Variable
+变量[Variable]
 
-    这是一个动态变量.
+    这是一个动态变量[dynamic variable].
 
 
-#### 1.4.4.15 <span id = "NotesSDE">The ``Notes'' 字典条目部分</span>
+#### 1.4.4.15 <span id = "NotesSDE">The "注意(Notes)" 字典条目部分</span>
 
-在其他地方没有的关于这个操作符的信息. 在其他东西中, 这个可能包含了跨引用信息, 代码等价, 文体暗示, 实现暗示, 典型使用. 这个信息不被认为是这标准的一部分; 任何确定的实现和程序允许忽略这个信息.
+在其他地方没有的关于这个操作符[operator]的信息. 在其他情况中, 这个可能包含了交叉引用信息, 代码等价性, 格式上的暗示, 实现的暗示, 典型使用. 这个信息不被认为是这标准的一部分; 任何符合规范的实现[conforming implementation]和符合规范的程序[conforming program]允许忽略这个信息.
 
-#### 1.4.4.16 <span id = "PronunciationSDE">``Pronunciation'' 字典条目部分</span>
+#### 1.4.4.16 <span id = "PronunciationSDE">"发音(Pronunciation)" 字典条目部分</span>
 
-这个为定义的名字提供了一个建议的发音方式, 这样人们没有在和最初的设计者们一起交流的情况下也能弄明白这个没有出现在正常英语中的单词如何发音. 这个信息是劝告性的, 不被认为是这个标准的一部分. 为了简洁性, 它只提供给特定Common Lisp名字的条目并且不会出现在未删减的 Webster's Third New International Dictionary the English Language.
+这个为已定义的名字[defined name]提供了一个推荐的发音方式, 这样人们没有在和最初的设计者们一起交流的情况下也能弄明白这个没有出现在正常英语中的单词如何发音. 这个信息是劝告性的, 不被认为是这个标准的一部分. 为了简洁性, 它只提供给带有特定于 Common Lisp 而不会出现在未删减的《Webster's Third New International Dictionary the English Language》中的名字的条目.
 
-#### 1.4.4.17 <span id = "SeeAlsoSDE">``See Also'' 字典条目部分</span>
+#### 1.4.4.17 <span id = "SeeAlsoSDE">"也见(See Also)" 字典条目部分</span>
 
-这个标准中提供有关这个操作符信息的引用列表. 这个列表不是这个标准的一部分.
+对这个标准其他部分的引用的列表, 这些引用提供有关这个操作符[operator]信息. 这个列表不是这个标准的一部分.
 
-#### 1.4.4.18 <span id = "SideEffectsSDE">The ``Side Effects'' 字典条目部分</span>
+#### 1.4.4.18 <span id = "SideEffectsSDE">The "副作用(Side Effects)" 字典条目部分</span>
 
-包含这个操作符的表达式形式求值时作为结果的任何东西的改变.
+任何因对包含该操作符[operator]的表达式形式[form]的求值而改变的东西.
 
-#### 1.4.4.19 <span id = "SupertypesSDE">The ``Supertypes'' 字典条目部分</span>
+#### 1.4.4.19 <span id = "SupertypesSDE">The "超类型(Supertypes)" 字典条目部分</span>
 
-这个出现在一个类型的字典条目中, 包含了这个类型的标准化基类的列表.
+这个出现在一个类型[type]的字典条目中, 包含了一个标准化[standardized]类型[type]的列表, 它们必须是这个类型[type]的超类型[supertype].
 
-在具体实现中对应一个类的地方, 在类的优先级列表中的类顺序和在这个章节中出现的顺序是一致的.
+在具体实现[implementation]中有一个对应类[class]的地方, 在类优先级列表[class precedence list]中这些类[class]的顺序和在这个章节中出现的顺序是一致的.
 
-#### 1.4.4.20 <span id = "SyntaxSDE">``Syntax'' 字典条目部分</span>
+#### 1.4.4.20 <span id = "SyntaxSDE">"语法(Syntax)" 字典条目部分</span>
 
-这个章节描述了如何在代码中使用定义的名字. 关于广义函数的 \``Syntax'' 部分描述了广义函数自身的lambda列表, 而 \``Method Signatures'' 描述了定义的方法的lambda列表. 关于一般函数, 宏, 或者一个特殊操作符 \``Syntax'' 描述了他们的参数.
+这个章节描述了如何在代码中使用已定义的名字[defined name]. 关于广义函数[generic function]的 "语法(Syntax)" 部分描述了广义函数[generic function]自身的 lambda 列表[lambda list], 而 "方法签名(Method Signatures)" 描述了已定义的方法[method]的 lambda 列表[lambda list]. 一个普通函数, 宏, 或者一个特殊操作符的 "语法(Syntax)" 描述叙述了它们的形参[parameter].
 
-比如, 一个操作符描述可能是:
+比如, 一个操作符[operator]描述可能是:
 
-F x y &optional z &key k
+    F x y &optional z &key k
 
-这个描述表示函数F有两个必须的参数, x 和 y. 另外, 这里还有个可选的参数 z 和一个关键字参数 k.
+这个描述表示函数 F 有两个必要参数, x 和 y. 另外, 这里还有个可选参数 z 和一个关键字参数 k.
 
-关于宏和特殊操作符, 语法已经通过修改的 BNF 标注给了; 见章节 1.4.1.2 (Modified BNF Syntax). 关于函数给定一个lambda列表. 然而在两种情况下, 最外层的括号和默认值信息省略了.
+关于宏[macro]和特殊操作符[special operator], 语法由修改的 BNF 表示给定; 见章节 1.4.1.2 (修改后的 BNF 语法). 对于函数[function]给定一个 lambda 列表[lambda list]. 然而在两种情况下, 最外层的括号和默认值信息省略了.
 
-> * 1.4.4.20.1 [重载操作符特殊的 ``Syntax'' 表示法](#SpecialSyntaxNotations)
+> * 1.4.4.20.1 [重载操作符特殊的 "语法(Syntax)" 表示](#SpecialSyntaxNotations)
 > * 1.4.4.20.2 [剩余参数的命名转化](#NamingConventions)
-> * 1.4.4.20.3 [在 ``Syntax'' 部分需要非空剩余参数](#RequiringNonNullRestParameters)
-> * 1.4.4.20.4 [在 ``Syntax'' 部分的返回值](#ReturnValuesInSyntaxSection)
+> * 1.4.4.20.3 [在 "语法(Syntax)" 部分要求非空剩余参数](#RequiringNonNullRestParameters)
+> * 1.4.4.20.4 [在 "语法(Syntax)" 部分的返回值](#ReturnValuesInSyntaxSection)
 
-##### 1.4.4.20.1 <span id = "SpecialSyntaxNotations">重载操作符特殊的 ``Syntax'' 表示法</span>
+##### 1.4.4.20.1 <span id = "SpecialSyntaxNotations">重载操作符特殊的 "语法(Syntax)" 表示</span>
 
 如果同一个操作符带有不同数量的参数有两个描述, 那么额外的参数就被认为是可选的. 比如, 这两行:
 
-file-position stream => position
+    file-position stream => position
 
-file-position stream position-spec => success-p
+    file-position stream position-spec => success-p
 
 操作上等价于:
 
-file-position stream &optional position-spec => result
+    file-position stream &optional position-spec => result
 
-并且不同点仅在于为每一个情况提供不同的参数和值的名字来介绍. 这个分开的 (多行) 表示法被用于当操作符以这种方式被重载, 并且参数根据提供的参数数量被用于不同的方式 (比如, 函数 /) 或者两种情况下返回值不同 (比如, 函数 file-position).
+并且不同点仅在于为每一个情况提供一个机会去为形参[parameter]和值[value]引入不同的的名字. 当操作符[operator] 使用形参[parameter]根据提供的实参[argument]数量以不同的方式被使用 (比如, 函数[function] /) 或者两种情况下返回值不同 (比如, 函数 file-position) 的方式重载时, 使用这个分开的 (多行) 表示法.
 
 ##### 1.4.4.20.2 <span id = "NamingConventions">剩余参数的命名转化</span>
 
-在这个规格书中, 如果剩余参数的名字选择为复数名词, 这个名字表示剩余参数绑定的列表. 使用前面指定的名字的单数形式表示这个列表中的一个元素.
+在这个规范中, 如果选择的一个剩余参数[rest parameter]的名字为复数名词, 在 *parameter* 字体下的这个名字的使用引用了这个剩余参数[rest parameter]被绑定到的列表[list]. 在 *parameter* 字体下的这个名字的单数形式的使用引用了那个列表[list]的一个元素[element].
 
 比如, 给定一个像这样的语法描述:
 
-F &rest arguments
+    F &rest arguments
 
-可以通过名字 arguments 引用这些剩余参数, 或者通过 \``an argument,'' \``some argument,'' \``each argument'' 等等来引用其中一个.
+可以通过名字来引用这些名为 arguments 的剩余参数[rest parameter], 或者通过 "一个 argument", "某个 argument", "每个 argument" 等等来引用其中一个.
 
-##### 1.4.4.20.3 <span id = "RequiringNonNullRestParameters">在 ``Syntax'' 部分需要非空剩余参数</span>
+##### 1.4.4.20.3 <span id = "RequiringNonNullRestParameters">在 "语法(Syntax)" 部分要求非空剩余参数</span>
 
-在一些情况下同时需要一个以上的参数以剩余参数作为单个聚集体引用所有参数是很有用的. 多种必要的宣称意味着在代码中表示这种约束是可以的, 然而它们通常不在lambda列表中显示自己. 在这个文档中为了表述目的,
+在某些情况下, 当需要至少一个参数时, 使用剩余参数[rest parameter]将所有参数都视为单个聚合体是很有用的. 在代码[code]中可以使用各种命令式和声明性方法来表达这样的限制, 但是它们通常不会在 lambda 列表[lambda list]中显示出来. 在这个文档中为了表述目的,
 
-F &rest arguments+
+    F &rest arguments+
 
 意味着和下面的相等
 
-F &rest arguments
+    F &rest arguments
 
-但是表示另外的意思: 这里至少需要一个参数.
+但是引入了额外的需要: 这里至少需要一个参数 argument.
 
-##### 1.4.4.20.4 <span id = "ReturnValuesInSyntaxSection">在 ``Syntax'' 部分的返回值</span>
+##### 1.4.4.20.4 <span id = "ReturnValuesInSyntaxSection">在 "语法(Syntax)" 部分的返回值</span>
 
-一个求值箭头 ``=> '' 表示前面的表达式返回的值. 比如:
+一个求值箭头 "=> " 先于要被返回的值[value]的列表. 比如:
 
-F a b c => x
+    F a b c => x
 
-表示这个 F 是一个操作符, 它需要三个参数 (换句话说, a, b, 还有 c) 以及返回一个值 (就是 x). 如果不止一个值被这个操作符返回, 这些值的名字会用逗号区分, 就像:
+表示这个 F 是一个操作符, 它需要三个必要参数[required parameter] (换句话说, a, b, 还有 c) 以及返回一个值[value] (就是 x). 如果不止一个值[value]被这个操作符返回, 这些值[value]的名字[name]会用逗号区分, 就像:
 
-F a b c => x, y, z
+    F a b c => x, y, z
 
-> * 1.4.4.20.4.1 在 ``Syntax'' 部分没有参数和返回值
-> * 1.4.4.20.4.2 在 ``Syntax'' 部分控制无条件转移
+###### 1.4.4.20.4.1 在 "Syntax" 部分没有参数和返回值
 
-###### 1.4.4.20.4.1 在 ``Syntax'' 部分没有参数和返回值
+如果允许没有实参[argument]或者没有返回的值[value], 一个特别的标记被用于使这个更显而易见. 比如,
 
-如果没有参数也没有返回值, 一个特别的标记被用于使这个更显而易见. 比如,
+    F <no arguments> => <no values>
 
-F \<no arguments> => \<no values>
+表示这个 F 操作符不接受实参[argument]并且不返回值[value].
 
-表示这个 F 操作符不接受参数和返回值.
+###### 1.4.4.20.4.2 在 "Syntax" 部分控制的非条件转移
 
-###### 1.4.4.20.4.2 在 ``Syntax'' 部分控制无条件转移
+一些操作符[operator]会有控制无条件转移的动作, 并且没有任何返回值. 这样的操作符[operator]通过以下方式表示:
 
-一些操作符会有控制无条件转移的动作, 并且没有任何返回值. 这样的操作符通过以下方式表示:
+    F a b c =>|
 
-F a b c =>|
+#### 1.4.4.21 <span id = "ValidContextSDE">"合法上下文(Valid Context)" 字典条目部分</span>
 
+这个信息被用于例如 "声明(Declarations)" 字典条目, 用于约束这个声明可以出现的上下文.
 
-#### 1.4.4.21 <span id = "ValidContextSDE">``Valid Context'' 字典条目部分</span>
+一个给定的 "声明(Declaration)" 可能出现在一个声明[declaration] (换句话说, 一个 declare 表达式[expression]) , 一个全局声明[proclamation] (换句话说, 一个 declaim 或 proclaim 表达式形式[form]), 或者都有.
 
-这个信息被用于例如 ``Declarations'' 字典条目, 用于约束这个声明可能出现的上下文.
+#### 1.4.4.22 <span id = "ValueTypeSDE">"值类型(Value Type)" 字典条目部分</span>
 
-一个给定的 ``Declaration'' 可能出现在一个声明 (换句话说, 一个声明表达式), 一个宣告 (换句话说, a declaim or proclaim form), 或者都有.
+这个信息描述了一个动态变量[dynamic variable]的任何类型[type]约束条件.
 
-#### 1.4.4.22 <span id = "ValueTypeSDE">``Value Type'' 字典条目部分</span>
-
-这个信息描述了一个动态变量的任何类型约束条件.
 除非明确指定外, 违反这个类型约束时结果是不可预测的.
-
-
+<!--TODO 校验到此-->
 ## 1.5 <span id = "Conformance">规范性</span>
 
 这个标准提出了一个合格实现需要去实现的语法和语义 (以及它的附加文档). 另外, 它对符合规范的程序加了一些要求.
