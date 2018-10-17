@@ -916,86 +916,84 @@ F (x class) (y t) &optional z &key k
 这个信息描述了一个动态变量[dynamic variable]的任何类型[type]约束条件.
 
 除非明确指定外, 违反这个类型约束时结果是不可预测的.
-<!--TODO 校验到此-->
+
 ## 1.5 <span id = "Conformance">规范性</span>
 
-这个标准提出了一个合格实现需要去实现的语法和语义 (以及它的附加文档). 另外, 它对符合规范的程序加了一些要求.
+这个标准提出了一个符合规范的具体实现[conforming implementation]需要去实现的语法和语义 (以及它的附加文档). 另外, 它对符合规范的程序[conforming program]加了一些要求.
 
-> * 1.5.1 [合格的实现](#ComformingImpl)
-> * 1.5.2 [合格的程序](#ComformingProg)
-
+> * 1.5.1 [符合规范的实现](#ComformingImpl)
+> * 1.5.2 [符合规范的程序](#ComformingProg)
  
-### 1.5.1 <span id = "ComformingImpl">合格的实现</span>
+### 1.5.1 <span id = "ComformingImpl">符合规范的实现</span>
 
-一个合格的实现应该遵守这个章节中所述的要求.
+一个符合规范的实现[conforming implementation]应该遵守这个章节中所述的要求.
 
-> * 1.5.1.1 [需要的语言特性](#RequiredLanguageFeatures)
+> * 1.5.1.1 [必要的语言特性](#RequiredLanguageFeatures)
 > * 1.5.1.2 [依赖具体实现的特性文档](#DocImplDepFeatures)
 > * 1.5.1.3 [扩展文档](#DocExtensions)
 > * 1.5.1.4 [异常情况的处理](#TreatmentExceptionalSituations)
 > * 1.5.1.5 [规范性声明](#ConformanceStatement)
 
-#### 1.5.1.1 <span id = "RequiredLanguageFeatures">需要的语言特性</span>
+#### 1.5.1.1 <span id = "RequiredLanguageFeatures">必要的语言特性</span>
 
-一个合格的实现需要去接受这个标准中指定的所有语言特性 (包括弃用的特性) 以及它们的意义.
+一个符合规范的实现[conforming implementation]需要去接受这个标准中指定的所有语言特性 (包括弃用的特性), 并带有这个标准中指定的意义.
 
-符合规范的实现不需要在代码中包含替代或额外的语言元素, 以完成该标准中指定的一个语言特性. 
+一个符合规范的实现[conforming implementation]不需要在代码中包含替代或额外的语言元素, 以完成该标准中指定的一个语言特性. 
 
 #### 1.5.1.2 <span id = "DocImplDepFeatures">依赖具体实现的特性文档</span>
 
-一个符合规范的实现应该附加一个文档, 里面提供这个说明书中所说的所有依赖具体实现的定义.
+一个符合规范的实现[conforming implementation]应该附加一个文档, 里面提供这个规范定义的语言的所有具体实现定义的[implementation-defined]方面的定义.
 
-另外, 一个符合标准的实现鼓励 (但是不是必须) 去文档化这个标准中标注的依赖实现的条目, 尽管一些情况下这个文档可能简单地把这些条目标注为 ``undefined.'' 
+另外, 一个符合规范的实现[conforming implementation]鼓励 (但是不是必须) 去记录这个标准中被标注为依赖于具体实现[implementation-dependent]的条目, 尽管一些情况下这个文档可能简单地把这些条目标注为 "undefined". 
 
 #### 1.5.1.3 <span id = "DocExtensions">扩展文档</span>
 
-一个符合规范的实现应该附带一个文档分开叙述那些这个标准中没有但是实现中有的特性, 但是加到这个语言标准中不应导致任何的歧义和矛盾. 这样的扩展应该被描述为 ``extensions to Common Lisp as specified by ANSI <\<standard number>>.'' 
+一个符合规范的实现[conforming implementation]应该附带一个文档分开叙述那些这个标准中没有但是具体实现[implementation]中有的特性, 但是加到这个语言标准中时不应导致任何的歧义和矛盾. 这样的扩展应该被描述为 "由 ANSI <\<standard number>> 指定的 Common Lisp 的扩展". 
 
 #### 1.5.1.4 <span id = "TreatmentExceptionalSituations">异常情况的处理</span>
 
-一个符合规范的实现应该和这个说明书一样处理异常情况.
+一个符合规范的实现[conforming implementation]应该和这个规范一致的方式去处理异常情况.
 
 ##### 1.5.1.4.1 异常情况下明显冲突的解决
 
-如果在这个说明书中针对同样的情况出现不止一种互相冲突的段落, 那么以最确切的方式描述这个情况的段落优先 (提供最约束的错误检测是没必要的) .
+如果在这个规范中不止一个片段应用于相同的情况但是以冲突的方式, 那么以最具体的方式描述这个情况的段落优先 (这个片段没有必要提供最约束的错误检测) .
 
 ###### 1.5.1.4.1.1 异常情况中的明显冲突解决示例
 
-假设函数foo是操作数字的函数集合S的一个成员. 假设一个段落阐述如果任何一个S中的函数被给予一个17的参数就会发出一个错误. 假设一个明显的冲突段落阐述如果参数为17则结果是未定义的. 然后第二个段落(更加针对foo的那个)会占主要地位, 因为这个情况的上下文描述最详细的, 即便对于参数17集合S中的其他函数需要去发出一个错误这个函数foo也不需要. 
+假设函数 foo 是操作数字的函数[function]集合 S 的一个成员. 假设一个段落阐述如果任何一个 S 中的函数[function]被给予一个 17 作为参数就会发出一个错误. 假设一个明显的冲突段落阐述如果参数为 17 则结果是未定义的. 那么第二个段落(更加针对 foo 的那个)会占主要地位, 因为这个情况的上下文描述最详细的, 即便对于参数 17 集合 S 中的其他函数需要去发出一个错误, 这个函数 foo 也不需要. 
 
 #### 1.5.1.5 <span id = "ConformanceStatement">规范性声明</span>
 
-一个符合规范的实现应该提供一个规范性声明作为使用这个实现的结果, 或者在附带的文档中加入这个声明. 如果这个具体实现符合这个标准的所有方面, 这个规范性说明应该为
+一个符合规范的实现[conforming implementation]应该提供一个规范性声明作为使用这个实现的结果, 或者在附带的文档中加入这个声明. 如果这个具体实现符合这个标准的所有方面, 这个规范性声明应该为
 
-``<\<Implementation>> conforms with the requirements of ANSI <\<standard number>>''
+    "<<Implementation>> 符合 ANSI <<standard number>> 的要求"
 
-如果这个实现符合这个标准中的一部分并非全部, 这个说明应该为
+如果这个实现[implementation]符合这个标准中的一部分并非全部, 这个说明应该为
 
-``<\<Implementation>> conforms with the requirements of ANSI <\<standard number>> with the following exceptions: <\<reference to or complete list of the requirements of the standard with which the implementation does not conform>>.'' 
+    "<<Implementation>> 符合 ANSI <<standard number>> 的要求, 除了以下例外: <<这个实现不符合的这个标准的要求的引用或完整列表>>".
 
-### 1.5.2 <span id = "ComformingProg">合格的程序</span>
+### 1.5.2 <span id = "ComformingProg">符合规范的程序</span>
 
 符合这个规范的代码应该坚持下面几条:
 
-    合格的代码应该只使用定义在这个标准中的语言语法和语义特性或者这个标准中扩展机制指定的.
+    符合规范的代码[conforming code]应该只使用这个标准指定的或者通过这个标准指定的扩展机制定义的语言语法和语义特性.
 
-    合格的代码可能使用依赖实现的特征和值, 但是不应该依赖于任何这些特征和值的特别解释而不是那些在代码的执行中发现的.
+    符合规范的代码[conforming code]可能使用依赖实现的[implementation-dependent]特性和值, 但是不应该依赖于任何这些特征和值的特别解释, 除了那些在代码[code]的执行中发现的.
 
-    合格的代码不应依赖未定义或者未指定情况的结果.
+    符合规范的代码[conforming code]不应依赖未定义或者未指定情况的结果.
 
-    合格的代码不使用这个标准禁止的任何结构.
+    符合规范的代码[conforming code]不使用这个标准禁止的任何构造.
 
-    合格的代码不依赖于一个具体实现的扩展.
+    符合规范的代码[conforming code]不依赖于一个包含在具体实现中的扩展.
 
 > * 1.5.2.1 [具体实现定义的语言特征的使用](#UseImplDefLangFeature)
 > * 1.5.2.2 [可移植代码的字符集](#CharsetForPortCode)
 
-
 #### 1.5.2.1 <span id = "UseImplDefLangFeature">具体实现定义的语言特征的使用</span>
 
-注意合格的代码可能依赖一个特别的实现定义的特征或值. 也注意同一份合格的代码被符合规范的不同实现处理时, 结果并不总是一样的. 结果可能一样, 或者它们可能不同.
+注意, 符合规范的代码[conforming code]可能依赖一个特定的具体实现定义的[implementation-defined]特性或值. 也注意, 符合规范的代码[conforming code]和符合规范的实现[conforming implementation]的需求中不要求一个符合规范的代码[conforming code]被符合规范的实现[conforming implementation]处理时产生的结果总是相同的. 结果可能一样, 或者它们可能不同.
 
-合格的代码可能可以运行于所有符合规范的实现中, 但是可能有实现定义的行为导致这个代码不可移植. 比如, 下面就是一个符合规范的表达式形式的例子, 但是在不同实现会返回不同的值:
+符合规范的代码[conforming code]可能可以运行于所有符合规范的实现[conforming implementation]中, 但是可能有具体实现定义的[implementation-defined]可允许行为导致这个代码不可移植. 比如, 下面就是一个符合规范的表达式形式[form]在不同实现会返回不同的值的示例:
 
 ```BNF
 (evenp most-positive-fixnum) =>  implementation-dependent
@@ -1004,9 +1002,9 @@ F (x class) (y t) &optional z &key k
 (char-name #\A) =>  implementation-dependent
 ```
 
-##### 1.5.2.1.1 使用读取时条件
+##### 1.5.2.1.1 读取时条件的使用
 
-使用 #+ 和 #- 不会使程序变得不规范. 如果没有特征使得程序不规范, 那么一个使用了 #+ 和 #- 的程序就是规范的. 当然, 合格的程序不一定是实际工作的程序. 下面的程序是符合规范的:
+使用 #+ 和 #- 不会自动取消程序的规范性资格. 如果没有使用会使程序不规范的特性, 那么一个使用了 #+ 和 #- 的程序就是规范的. 当然, 符合规范的程序[conforming program]不一定是实际工作的程序. 下面的程序是符合规范的:
 
 ```Lisp
 (defun foo ()
@@ -1014,101 +1012,104 @@ F (x class) (y t) &optional z &key k
   (print 'hello-there))
 ```
 
-然而, 这个程序可能不会工作, 取决于特征 ACME 是否存在, 意味着名为 acme:initialize-something 的函数是否存在于这个环境中. 事实上, 在符合规范的程序里使用 #+ 或 #- 意味着增加一个变量 \*features* 作为这个程序的输入参数. 就像其他进入程序的数据一样, 程序员有责任去确保这个程序不做基于这个基本输入数据的无根据的假设. 
+然而, 这个程序可能不会工作, 取决于特性 ACME 是否存在, 意味着名为 acme:initialize-something 的函数是否存在于这个环境中. 事实上, 在符合规范的程序[conforming program]里使用 #+ 或 #- 意味着增加一个变量 \*features* 作为这个程序的输入参数. 就像其他进入程序的数据一样, 程序员有责任去确保这个程序不做基于这个基本输入数据的无根据的假设. 
 
 #### 1.5.2.2 <span id = "CharsetForPortCode">可移植代码的字符集</span>
 
-可移植代码只用标准字符集编写. 
+可移植[portable]代码[code]只用标准字符[standard character]]编写. 
 
 ## 1.6 <span id = "LanguageExtensions">语言的扩展</span>
 
-一个语言的扩展是指标准中定义的名字对应的实现定义的有别于标准中所描述的行为, 或者标准指定一个情况的文档记录结果为 undefined, unspecified, 或者 extendable by the implementation. 比如, 如果这个标准说 ``the results are unspecified,'' , 那么一个扩展会指定这个结果.
+一个语言的扩展是指标准中已定义的名字[defined name]对应的具体实现定义的[implementation-defined]有别于标准中所描述的已记录的行为, 或者是这个标准指定为未定义, 未指定, 或通过实现可扩展的情况的已记录的后果. 比如, 如果这个标准说 "这个结果是未指定的(the results are unspecified)" , 那么一个扩展会去指定这个结果.
 
-如果一个程序的正确行为依赖一个扩展的结果, 只有带有同样实现的扩展会正确执行这段程序. 注意这样的程序可能是不符合规范的. 如果这个标准中说 ``an implementation may be extended'', 那么用了这个扩展的程序是一个符合规范的但是不可移植的程序.
+如果一个程序的正确行为依赖一个扩展所提供的结果, 那么只有带有同样扩展的实现会正确执行这段程序. 注意这样的程序可能是不符合规范的. 如果这个标准中说 "一个实现可以被扩展(an implementation may be extended)", 那么用了这个扩展的程序是一个符合规范的但是不可移植的程序.
 
-假如一个扩展没有修改符合规范代码的行为并且没有被这个标准明确禁止, 那么一个实现可以有这个扩展.
+假定一些扩展没有修改符合规范代码的行为也没有被这个标准显式禁止, 那么一个实现可以有这些扩展.
 
-术语 ``extension'' 仅适用于启动时可用的扩展. 一个具体实现可以自由地允许或禁止重定义扩展.
+术语 "extension" 仅引用启动时可用的扩展. 一个具体实现可以自由地允许或禁止一个扩展的重定义.
 
-下面的列表包括了一个实现的关于某些类型的扩展的具体指引.
+下面的列表包含了关于特定类型扩展的具体实现指南.
 
 额外的返回值
 
-    一个实现必须返回这个标准指定的准确数量的返回值, 除非标准明确声明外.
+    一个实现必须返回这个标准指定的准确数量的返回值, 除非标准特别声明以外.
 
-未经允许的信息
+未经请求的信息
 
-    除了这个标准里指定的外, 或者由于函数检测到信号的条件, 函数不会产生输出.
+    除了这个标准里指定的外, 或者由于函数检测到状况[condition]的发出, 函数不会产生输出.
 
-    未经允许的输出, 就像垃圾收集提醒和自动加载的预兆, 不应该直接到标准中定义的流变量里, 但是可以使用同义的流 *terminal-io* 间接到终端 I/O 中.
+    未经请求的输出, 例如垃圾收集提醒和自动加载的预兆, 不应该直接到标准中定义的流[stream]变量的值对应的流[stream]里, 但是可以使用到 *terminal-io* 的同义流[synonym stream]间接到终端 I/O [terminal I/O] 中.
 
-    来自函数比如 load 和 compile 的进度报告被认为是请求过得, 并且不会被这个禁止覆盖.
+    来自函数比如 load 和 compile 的进度报告被认为是请求过的, 并且不会被这个禁令覆盖.
 
 宏和特殊表达式的实现
 
-    这个标准中定义的宏和特殊操作符不能是函数. 
+    这个标准中定义的宏[macro]和特殊操作符[special operator]不能是函数[function]. 
 
 ## 1.7 <span id = "LanguageSubsets">语言的子集</span>
 
 这个标准中描述的语言没有子集, 尽管并没有禁止子集.
 
-对于一个被认为是子集的语言, 这个语言下合法的程序一定有等价的语义并且可以被任何符合规范的全语言实现直接运行 (没有语言外的预处理, 并且没有专门的兼容性包).
+对于一个被认为是子集的语言, 这个语言下合法的程序[program]一定有等价的语义并且可以被任何全语言的符合规范的实现[conforming implementation]直接运行 (没有语言外的预处理, 并且没有专门的兼容性包).
 
-一个遵守这个要求的语言应该被描述为一个a ``subset of Common Lisp as specified by ANSI <\<standard number>>.''
-
-
+一个符合这个要求的语言应该被描述为一个 "由 ANSI <\<standard number>> 指定的 Common Lisp 的子集.''
+<!--TODO 校验到此-->
 ## 1.8 <span id = "DeprecatedLanguageFeatures">弃用的语言特性</span>
 
-废弃的语言特性是不希望出现在未来的 Common Lisp 标准中的, 但是为了符合这个标准需要被实现; 见章节 1.5.1.1 (Required Language Features).
+废弃的语言特性是不希望出现在未来的 Common Lisp 标准中的, 但是为了符合这个标准需要被实现; 见章节 1.5.1.1 (必要的语言特性).
 
-符合规范的程序可以使用废弃的语言特性; 然而, 避免使用它们是良好的编程风格. 在编译的时候允许编译器对这些特性的使用产生警告, 但是在程序执行的时候不应该有警告. 
+符合规范的程序[[conforming program]]可以使用废弃的语言特性; 然而, 避免使用它们是良好的编程风格. 在编译的时候允许编译器对这些特性的使用产生风格警告[style warning], 但是在程序执行的时候不应该有这样的警告. 
 
 > * 1.8.1 [废弃的函数](#DeprecatedFunctions)
 > * 1.8.2 [废弃的参数约定](#DeprecatedArgumentConventions)
 > * 1.8.3 [废弃的变量](#DeprecatedVariables)
-> * 1.8.4 [废弃的读取语法](#DeprecatedReaderSyntax)
+> * 1.8.4 [废弃的读取器语法](#DeprecatedReaderSyntax)
 
 ### 1.8.1 <span id = "DeprecatedFunctions">废弃的函数</span>
 
-下面这块函数是被废弃的.
+下面这块函数[function]是被废弃的.
 
     assoc-if-not   nsubst-if-not       require            
     count-if-not   nsubstitute-if-not  set                
     delete-if-not  position-if-not     subst-if-not       
     find-if-not    provide             substitute-if-not  
     gentemp        rassoc-if-not                          
-    member-if-not  remove-if-not                          
+    member-if-not  remove-if-not     
+
+    Figure 1-2. 废弃的函数                    
 
 ### 1.8.2 <span id = "DeprecatedArgumentConventions">废弃的参数约定</span>
 
-传递一个数字参数给 gensym 已经废弃了.
+传递一个数字实参[argument]给 gensym 的能力已经废弃了.
 
-这个给函数的 :test-not 参数在下面的函数中是被废弃的.
+这个给下面这段中的函数的 :test-not 实参[argument]已经被废弃.
 
-adjoin             nset-difference    search            
-assoc              nset-exclusive-or  set-difference    
-count              nsublis            set-exclusive-or  
-delete             nsubst             sublis            
-delete-duplicates  nsubstitute        subsetp           
-find               nunion             subst             
-intersection       position           substitute        
-member             rassoc             tree-equal        
-mismatch           remove             union             
-nintersection      remove-duplicates                    
+    adjoin             nset-difference    search            
+    assoc              nset-exclusive-or  set-difference    
+    count              nsublis            set-exclusive-or  
+    delete             nsubst             sublis            
+    delete-duplicates  nsubstitute        subsetp           
+    find               nunion             subst             
+    intersection       position           substitute        
+    member             rassoc             tree-equal        
+    mismatch           remove             union             
+    nintersection      remove-duplicates     
 
-在eval-when中使用的compile, load, 和 eval 是被废弃的. 
+    Figure 1-3. 带有废弃的 :TEST-NOT 参数的函数               
+
+在 eval-when 中名为 compile, load, 和 eval 的情况的使用被废弃了. 
 
 ### 1.8.3 <span id = "DeprecatedVariables">废弃的变量</span>
 
-变量 \*modules* 是废弃的. 
+变量[variable] \*modules* 被废弃了. 
 
-### 1.8.4 <span id = "DeprecatedReaderSyntax">废弃的读取语法</span>
+### 1.8.4 <span id = "DeprecatedReaderSyntax">废弃的读取器语法</span>
 
-这个 #S 读取宏强迫关键字名字到 KEYWORD 包里; 见章节 2.4.8.13 (Sharpsign S). 这个特征被废弃了; 在未来, 关键字的名字将会在他们被读入的包中被取出, 因此, 如果这是需要的, 那么实际上在关键字包中的符号应该被使用. 
+这个 #S 读取宏[reader macro]强制关键字名字到 KEYWORD 包里; 见章节 2.4.8.13 (井号S(#S)). 这个特性被废弃了; 在未来, 关键字的名字将会在它们被读入的包中被取出, 因此, 如果这是需要的, 那么实际上在关键字包中的符号[symbol]应该被使用. 
 
 ## 1.9 <span id = "SymbolsInTheCOMMON-LISPPackage">COMMON-LISP 包中的符号</span>
 
-下面这段包括了COMMON-LISP包中978个符号的完整枚举.
+下面这段包括了 COMMON-LISP 包中 978 个外部符号[symbol]的完整枚举.
 
     &allow-other-keys            *print-miser-width*     
     &aux                         *print-pprint-dispatch*      
