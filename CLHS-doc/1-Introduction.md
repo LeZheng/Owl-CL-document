@@ -176,7 +176,7 @@ name
 
 #### 1.4.1.2 <span id = "ModifiedBNFSyntax">修改后的 BNF 语法</span>
 
-这个说明书使用了一个扩展 BNF 范式来描述 Common Lisp 宏表达式形式[macro form]和特殊表达式形式[special form]的语法. 这个章节讨论 BNF 范式的语法.
+这个规范使用了一个扩展 BNF 范式来描述 Common Lisp 宏表达式形式[macro form]和特殊表达式形式[special form]的语法. 这个章节讨论 BNF 范式的语法.
 
 > * 1.4.1.2.1 [修改后BNF语法的拼接](#SplicingInModifiedBNFSyntax)
 > * 1.4.1.2.2 [修改后BNF语法的间接引用](#IndirectionInModifiedBNFSyntax)
@@ -306,7 +306,7 @@ otherwise-clause::= ({otherwise | t} form*)
 clause::= normal-clause | otherwise-clause
 ```
 
-这里的术语 "clause" 似乎是 "废弃的(dead)" 因为它没有被使用于上面的BNF表达式里. 然而, 这个BNF的目的并不只是引导解析, 但是也定义有用的术语为了给在后面的描述性文本作参考. 像这个样子, 术语 "clause" 可能出现在后面跟着的文本中, 作为 "normal-clause 或 otherwise-clause" 的速记法.
+这里的术语 "clause" 似乎是 "废弃的(dead)" 因为它没有被使用于上面的 BNF 表达式里. 然而, 这个 BNF 的目的并不只是引导解析, 但是也定义有用的术语为了给在后面的描述性文本作参考. 像这个样子, 术语 "clause" 可能出现在后面跟着的文本中, 作为 "normal-clause 或 otherwise-clause" 的速记法.
 
 
 #### 1.4.1.3 <span id = "SpecialSymbols">特殊符号</span>
@@ -372,7 +372,7 @@ NOT=>
 
 \>>
 
-    Common Lisp 指定了输入和输出为非交互的流模型. 这个指定了 交互式的输入输出流如何映射到非交互的模型的具体详情是具体实现定义的[implementation-defined].
+    Common Lisp 指定了输入和输出为非交互的流模型. 这个指定了交互式的输入输出流如何映射到非交互的模型的具体详情是具体实现定义的[implementation-defined].
 
     比如, 允许符合规范的实现[conforming implementation]去区分交互式输入如何中止的问题. 比如, 当最后的定界符被输入到非交互的流中, read 函数[function]中止. 在一些具体实现中, 一个交互式的对 read 的调用在最后的定界符一输入就返回, 甚至那个定界符不是换行符[newline]. 在其他实现[implementation]中, 总是需要一个最后的换行符[newline]. 在其他实现中, 可能会有一个命令去 "激活" 一个满的输入缓冲区, 而这个命令本身在程序输入流中不可见.
 
@@ -410,7 +410,7 @@ Common Lisp 中的一些对象[object]不止一种表示的方法. 这种情况�
 
 反斜线符号[backslash]和竖线符号[vertical-bar]被用于显式引用大小写[case]还有其他解析相关的字符方面. 即便如此, 标记法 |hello| 和 \h\e\l\l\o 是表示 "hello" 符号的等价方式, 并且明显不同[distinct]于符号 "HELLO".
 
-符号[symbol]对应的 Common Lisp 定义的名字[defined name]已经大写化[uppercase]了, 即便它们的名字通常以小写[lowercase]的方式出现在文档里.
+符号[symbol]对应的 Common Lisp 已定义的名字[defined name]已经大写化[uppercase]了, 即便它们的名字通常以小写[lowercase]的方式出现在文档里.
 
 ##### 1.4.1.4.2 <span id = "Numbers">数字</span>
 
@@ -473,7 +473,7 @@ Figure 1-1. NIL 的表示
 
 比如, "nil" 和 "the value of \*standard-output*" 作为流标识符[stream designator]在操作上是难以区分的. 类似的, 作为字符串标识符[string designator], 符号 foo 和字符串 "FOO" 在操作上也是难以区分的.
 
-除了另外的提示, 在这个指定的对象[object]被多次使用的情况下, 这个对象[object]是只求值一次还是被使用时每次都求值, 依赖于具体实现[implementation-dependent].
+除了额外的提示, 在这个指定的对象[object]被多次使用的情况下, 这个对象[object]是只求值一次还是被使用时每次都求值, 依赖于具体实现[implementation-dependent].
 
 比如, mapcar 接受一个函数标识符[function designator]作为参数, 并且它的描述中写的就像它只是个函数. 事实上, 这个函数标识符[function designator]是被马上求值还是在表达式形式的内部在每次被需要的时候求值是依赖于具体实现[implementation-dependent]. 大部分情况下, 符合规范的程序[conforming program]不能检测到其中的区别, 但是也有一些不正常的情况 (尤其是那些包含自身重定义或者相互重定义的函数) 确实符合并且可以检测这个区别. 下面的程序就是一个符合规范的程序[conforming program], 但是可能有或者没有明显正确的结果, 取决于它的正确性是否依赖一个或其他的结果:
 

@@ -67,7 +67,7 @@ accessibility n. the state of being accessible.
 
 accessible adj. 1. (of an object) capable of being referenced. 2. (of shared slots or local slots in an instance of a class) having been defined by the class of the instance or inherited from a superclass of that class. 3. (of a symbol in a package) capable of being referenced without a package prefix when that package is current, regardless of whether the symbol is present in that package or is inherited.
 
-accessor n. an operator that performs an access. See reader and writer.
+**accessor** n. 执行一个访问[access]的一个操作符[operator]. 见读取函数[reader]和写入函数[writer].
 
 active adj. 1. (of a handler, a restart, or a catch tag) having been established but not yet disestablished. 2. (of an element of an array) having an index that is greater than or equal to zero, but less than the fill pointer (if any). For an array that has no fill pointer, all elements are considered active.
 
@@ -111,7 +111,7 @@ applicable restart n. 1. (for a condition) an active handler for which the assoc
 
 apply v.t. (a function to a list) to call the function with arguments that are the elements of the list. ``Applying the function + to a list of integers returns the sum of the elements of that list.''
 
-argument n. 1. (of a function) an object which is offered as data to the function when it is called. 2. (of a format control) a format argument.
+**argument** n. 1. (一个函数[function]的) 当这个函数[function]被调用时, 作为数据提供给它的对象[object]. 2. (一个格式化控制[format control]的) 一个格式化参数[format argument].
 
 argument evaluation order n. the order in which arguments are evaluated in a function call. ``The argument evaluation order for Common Lisp is left to right.'' See Section 3.1 (Evaluation).
 
@@ -161,9 +161,9 @@ bidirectional adj. (of a stream) being both an input stream and an output stream
 
 binary adj. 1. (of a stream) being a stream that has an element type that is a subtype of type integer. The most fundamental operation on a binary input stream is read-byte and on a binary output stream is write-byte. See character. 2. (of a file) having been created by opening a binary stream. (It is implementation-dependent whether this is an detectable aspect of the file, or whether any given character file can be treated as a binary file.)
 
-bind v.t. (a variable) to establish a binding for the variable.
+**bind** v.t. (一个变量[variable]) 去建立这个变量[variable]的一个绑定[binding].
 
-binding n. an association between a name and that which the name denotes. ``A lexical binding is a lexical association between a name and its value.'' When the term binding is qualified by the name of a namespace, such as ``variable'' or ``function,'' it restricts the binding to the indicated namespace, as in: ``let establishes variable bindings.'' or ``let establishes bindings of variables.''
+**binding** n. 一个名字[name]和那个名字[name]所表示的之间的一个关联. "一个词法绑定是一个名字和它的值之间的一个词法关联". 当这个术语绑定[binding]被一个命名空间[namespace]的名字限定时, 例如 "变量(variable)" 或 "函数(function)", 它约束这个绑定[binding]到指定的命名空间[namespace], 就像在: "let 建立变量绑定." 或 "let 建立多个变量的绑定" 中
 
 bit n. an object of type bit; that is, the integer 0 or the integer 1.
 
@@ -217,7 +217,7 @@ captured initialization form n. an initialization form along with the lexical en
 
 car n. 1. a. (of a cons) the component of a cons corresponding to the first argument to cons; the other component is the cdr. ``The function rplaca modifies the car of a cons.'' b. (of a list) the first element of the list, or nil if the list is the empty list. 2. the object that is held in the car[1]. ``The function car returns the car of a cons.''
 
-case n. (of a character) the property of being either uppercase or lowercase. Not all characters have case. ``The characters #\A and #\a have case, but the character #\$ has no case.'' See Section 13.1.4.3 (Characters With Case) and the function both-case-p.
+**case** n. (一个字符[character]) 大写或小写的属性. 不是所有字符[character]都有大小写[case]. "The characters #\A and #\a have case, but the character #\$ has no case". 见章节 13.1.4.3 (大小写字符) 以及函数[function] both-case-p.
 
 case sensitivity mode n. one of the symbols :upcase, :downcase, :preserve, or :invert.
 
@@ -380,7 +380,7 @@ debug I/O n. the bidirectional stream that is the value of the variable *debug-i
 
 debugger n. a facility that allows the user to handle a condition interactively. For example, the debugger might permit interactive selection of a restart from among the active restarts, and it might perform additional implementation-defined services for the purposes of debugging.
 
-declaration n. a global declaration or local declaration.
+**declaration** n. 一个全局声明[global declaration]或局部声明[local declaration].
 
 declaration identifier n. one of the symbols declaration, dynamic-extent, ftype, function, ignore, inline, notinline, optimize, special, or type; or a symbol which is the name of a type; or a symbol which has been declared to be a declaration identifier by using a declaration declaration.
 
@@ -477,7 +477,7 @@ element type n. 1. (of an array) the array element type of the array. 2. (of a s
 
 em n. Trad. a context-dependent unit of measure commonly used in typesetting, equal to the displayed width of of a letter ``M'' in the current font. (The letter ``M'' is traditionally chosen because it is typically represented by the widest glyph in the font, and other characters' widths are typically fractions of an em. In implementations providing non-Roman characters with wider characters than ``M,'' it is permissible for another character to be the implementation-defined reference character for this measure, and for ``M'' to be only a fraction of an em wide.) In a fixed width font, a line with n characters is n ems wide; in a variable width font, n ems is the expected upper bound on the width of such a line.
 
-empty list n. the list containing no elements. See ().
+**empty list** n. 不包含元素[element]的列表[list]. 见 ().
 
 empty type n. the type that contains no elements, and that is a subtype of all types (including itself). See nil.
 
@@ -976,7 +976,7 @@ object-traversing adj. operating in succession on components of an object. ``The
 
 open adj., v.t. (a file) 1. v.t. to create and return a stream to the file. 2. adj. (of a stream) having been opened[1], but not yet closed.
 
-operator n. 1. a function, macro, or special operator. 2. a symbol that names such a function, macro, or special operator. 3. (in a function special form) the cadr of the function special form, which might be either an operator[2] or a lambda expression. 4. (of a compound form) the car of the compound form, which might be either an operator[2] or a lambda expression, and which is never (setf symbol).
+**operator** n. 1. 一个函数[function], 宏[macro], 或[special operator]. 2. 命名这样一个函数[function], 宏[macro], 或特殊操作符[special operator]的符号[symbol]. 3. (在一个 function 特殊表达式形式[special form]中) 这个 function 特殊表达式形式[special form] 的 cadr, 它可能是一个操作符[operator[2]] 或者一个 lambda 表达式[lambda expression]. 4. (一个复合表达式形式[compound form]的) 这个复合表达式形式[compound form]的 car, 它可能是一个操作符[operator[2]] 或者一个 lambda 表达式[lambda expression], 并且它从来不是 (setf symbol).
 
 optimize quality n. one of several aspects of a program that might be optimizable by certain compilers. Since optimizing one such quality might conflict with optimizing another, relative priorities for qualities can be established in an optimize declaration. The standardized optimize qualities are compilation-speed (speed of the compilation process), debug (ease of debugging), safety (run-time error checking), space (both code size and run-time space), and speed (of the object code). Implementations may define additional optimize qualities.
 
