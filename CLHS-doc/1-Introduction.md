@@ -1053,7 +1053,7 @@ F (x class) (y t) &optional z &key k
 对于一个被认为是子集的语言, 这个语言下合法的程序[program]一定有等价的语义并且可以被任何全语言的符合规范的实现[conforming implementation]直接运行 (没有语言外的预处理, 并且没有专门的兼容性包).
 
 一个符合这个要求的语言应该被描述为一个 "由 ANSI <\<standard number>> 指定的 Common Lisp 的子集.''
-<!--TODO 校验到此-->
+
 ## 1.8 <span id = "DeprecatedLanguageFeatures">弃用的语言特性</span>
 
 废弃的语言特性是不希望出现在未来的 Common Lisp 标准中的, 但是为了符合这个标准需要被实现; 见章节 1.5.1.1 (必要的语言特性).

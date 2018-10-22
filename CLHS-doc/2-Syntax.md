@@ -7,138 +7,141 @@
 
 ## 2.1 <span id = "CharacterSyntax">字符语法</span>
 
-Lisp 读取器从一个流中读取字符, 然后将其解释为一个对象的打印表示, 构建这个对象并且返回它.
+Lisp 读取器[Lisp reader]从一个流[stream]中读取字符[character], 然后将其解释为一个对象[object]的打印表示, 构建这个对象[object]并且返回它.
 
-这个章节描述的语法称之为标准语法. Common Lisp提供了对应操作, 因此可以在程序的控制下修改读取表所表示的语法信息的各个方面; 见章节 23 (Reader). 除了明确说明的以外, 这个文档中使用的就是标准语法.
+这个章节描述的语法称之为标准语法[standard syntax]. Common Lisp 提供了对应操作, 因此可以在程序的控制下修改读取表[readtable]所表示的语法信息的各个方面; 见章节 23 (读取器). 除了明确说明的以外, 这个文档中使用的就是标准语法[standard syntax].
 
 > * 2.1.1 [读取表](#Readtables)
-> * 2.1.2 [影响Lisp读取器的变量](#VariablesAffectReader)
+> * 2.1.2 [影响 Lisp 读取器的变量](#VariablesAffectReader)
 > * 2.1.3 [标准字符](#StandardCharacters)
 > * 2.1.4 [字符语法类型](#CharacterSyntaxTypes)
 
 ### 2.1.1 <span id = "Readtables">读取表</span>
 
-Lisp读取器使用的语法信息包含在一个称之为读取表(readtable)的对象中. 此外，readtable还包含字符和语法类型之间的关联.
+Lisp 读取器[Lisp reader]使用的语法信息体现在一个称之为读取表[readtable]的对象[object]中. 此外，这个读取表[readtable]还包含字符[character]和语法类型[syntax type]之间的关联.
 
 下一块列出了一些适用于读取表的定义的名字.
 
-    \*readtable*                   readtable-case                
+    *readtable*                   readtable-case                
     copy-readtable                 readtablep                    
     get-dispatch-macro-character   set-dispatch-macro-character  
     get-macro-character            set-macro-character           
     make-dispatch-macro-character  set-syntax-from-char          
 
-Figure 2-1. 读取表定义的名字
+    Figure 2-1. 读取表已定义的名字
 
 > * 2.1.1.1 [当前的读取表](#CurrentReadtable)
 > * 2.1.1.2 [标准读取表](#StandardReadtable)
-> * 2.1.1.3 [最初的读取表](#InitialReadtable)
+> * 2.1.1.3 [初始读取表](#InitialReadtable)
 
 #### 2.1.1.1 <span id = "CurrentReadtable">当前的读取表</span>
 
-可以存在一些描述不同语法的读取表，但是在任何给定的时间内都只存在一个, 称之为当前读取表, 影响着Lisp读取器把表达式解析为对象的方式. 当前的读取表在一个给定的动态环境中是这个环境中的 \*readtable* 的值. 为了使一个不同的读取表成为当前的读取表, \*readtable* 可以被赋值或绑定. 
+可以存在一些描述不同语法的读取表[readtable]，但是在任何给定的时间内都只存在一个影响着 Lisp 读取器[Lisp reader]把表达式[expression]解析为对象[object]的方式, 称之为当前读取表[current readtable]. 在一个给定的动态环境[dynamic environment]中的当前读取表[current readtable]是这个环境[environment]中的 \*readtable* 的值[value]. 为了使一个不同的读取表[readtable]成为当前的读取表[current readtable], \*readtable* 可以被赋值或绑定[bound]. 
 
 #### 2.1.1.2 <span id = "StandardReadtable">标准读取表</span>
 
-这个标准读取表符合标准语法. 如果尝试去修改标准的读取表, 结果是不可预料的. 为了实现修改或者扩展语法的效果, 可以去创建一个标准读取表的副本; 见函数 copy-readtable.
+这个标准读取表[standard readtable]符合标准语法[standard syntax]. 如果尝试去修改标准读取表[standard readtable], 后果是未定义的. 为了实现修改或者扩展标准语法[standard syntax]的效果, 可以去创建一个标准读取表[standard readtable]的副本; 见函数[function] copy-readtable.
 
-:upcase就是标准读取表的案例. 
+标准读取表[standard readtable]的读取表大小写模式[readtable case]是 :upcase. 
 
-#### 2.1.1.3 <span id = "InitialReadtable">最初的读取表</span>
+#### 2.1.1.3 <span id = "InitialReadtable">初始读取表</span>
 
-最初的读取表是这个Lisp镜像开始时的当前读取表. 在那个时候, 它符合标准语法. 最初的读取表不同于标准读取表. 一个符合规范的程序去修改最初的读取表是允许的. 
+初始读取表[initial readtable]是这个 Lisp 镜像[Lisp image]开始时的当前读取表[current readtable]. 在那个时候, 它符合标准语法[standard syntax]. 初始读取表[initial readtable]不同[distinct]于标准读取表[standard readtable]. 一个符合规范的程序[conforming program]去修改初始读取表[initial readtable]是允许的. 
 
-### 2.1.2 <span id = "VariablesAffectReader">影响Lisp读取器的变量</span>
+### 2.1.2 <span id = "VariablesAffectReader">影响 Lisp 读取器的变量</span>
 
-Lisp读取器不止受当前读取表所影响, 也被很多动态变量所影响. 下面这段就列出了这些影响Lisp读取器行为的变量.
+Lisp 读取器[Lisp reader]不止受当前读取表[current readtable]所影响, 也被很多动态变量[dynamic variable]所影响. 下面这段就列出了这些影响Lisp 读取器[Lisp reader]行为的变量[variable].
 
     *package*    *read-default-float-format*  *readtable*  
     *read-base*  *read-suppress*                           
 
-Figure 2-2. 影响Lisp读取器的变量. 
+    Figure 2-2. 影响 Lisp 读取器的变量. 
 
 ### 2.1.3 <span id = "StandardCharacters">标准字符</span>
 
-所有实现必须支持的一个字符集合称之为标准字符集合; 这个字符集合中的成员称之为标准字符.
+所有实现[implementation]必须支持的一个称之为 standard-char 的字符[character]字元库[repertoire]; 这个字元库[repertoire]中的成员字符[character]称之为标准字符[standard character].
 
-这个标准字符集合由非图形化的字符newline, 图形化字符space, 还有以下94个图形化字符或者它们的等价物构成:
+这个 standard-char 字元库[repertoire]由非图形化[non-graphic]字符[character]换行[newline], 图形化[graphic]字符[character]空格[space], 还有以下 94 个图形化[graphic]字符[character]或者它们的等价体构成:
 
-    Graphic ID  Glyph  Description  Graphic ID  Glyph  Description  
-    LA01        a      small a      LN01        n      small n      
-    LA02        A      capital A    LN02        N      capital N    
-    LB01        b      small b      LO01        o      small o      
-    LB02        B      capital B    LO02        O      capital O    
-    LC01        c      small c      LP01        p      small p      
-    LC02        C      capital C    LP02        P      capital P    
-    LD01        d      small d      LQ01        q      small q      
-    LD02        D      capital D    LQ02        Q      capital Q    
-    LE01        e      small e      LR01        r      small r      
-    LE02        E      capital E    LR02        R      capital R    
-    LF01        f      small f      LS01        s      small s      
-    LF02        F      capital F    LS02        S      capital S    
-    LG01        g      small g      LT01        t      small t      
-    LG02        G      capital G    LT02        T      capital T    
-    LH01        h      small h      LU01        u      small u      
-    LH02        H      capital H    LU02        U      capital U    
-    LI01        i      small i      LV01        v      small v      
-    LI02        I      capital I    LV02        V      capital V    
-    LJ01        j      small j      LW01        w      small w      
-    LJ02        J      capital J    LW02        W      capital W    
-    LK01        k      small k      LX01        x      small x      
-    LK02        K      capital K    LX02        X      capital X    
-    LL01        l      small l      LY01        y      small y      
-    LL02        L      capital L    LY02        Y      capital Y    
-    LM01        m      small m      LZ01        z      small z      
-    LM02        M      capital M    LZ02        Z      capital Z    
+  | 图形ID       | 字形    | 描述         | 图形ID      | 字形    | 描述  |
+  | :------:   | :------:| :------:  | :------:  | :------:| :------:|
+  |LA01        |a      |小写 a      |LN01        |n      |小写 n      |
+  |LA02        |A      |大写 A    |LN02        |N      |大写 N    |
+  |LB01        |b      |小写 b      |LO01        |o      |小写 o      |
+  |LB02        |B      |大写 B    |LO02        |O      |大写 O    |
+  |LC01        |c      |小写 c      |LP01        |p      |小写 p      |
+  |LC02        |C      |大写 C    |LP02        |P      |大写 P    |
+  |LD01        |d      |小写 d      |LQ01        |q      |小写 q      |
+  |LD02        |D      |大写 D    |LQ02        |Q      |大写 Q    |
+  |LE01        |e      |小写 e      |LR01        |r      |小写 r      |
+  |LE02        |E      |大写 E    |LR02        |R      |大写 R    |
+  |LF01        |f      |小写 f      |LS01        |s      |小写 s      |
+  |LF02        |F      |大写 F    |LS02        |S      |大写 S    |
+  |LG01        |g      |小写 g      |LT01        |t      |小写 t      |
+  |LG02        |G      |大写 G    |LT02        |T      |大写 T    |
+  |LH01        |h      |小写 h      |LU01        |u      |小写 u      |
+  |LH02        |H      |大写 H    |LU02        |U      |大写 U    |
+  |LI01        |i      |小写 i      |LV01        |v      |小写 v      |
+  |LI02        |I      |大写 I    |LV02        |V      |大写 V    |
+  |LJ01        |j      |小写 j      |LW01        |w      |小写 w      |
+  |LJ02        |J      |大写 J    |LW02        |W      |大写 W    |
+  |LK01        |k      |小写 k      |LX01        |x      |小写 x      |
+  |LK02        |K      |大写 K    |LX02        |X      |大写 X    |
+  |LL01        |l      |小写 l      |LY01        |y      |小写 y      |
+  |LL02        |L      |大写 L    |LY02        |Y      |大写 Y    |
+  |LM01        |m      |小写 m      |LZ01        |z      |小写 z      |
+  |LM02        |M      |大写 M    |LZ02        |Z      |大写 Z    |
 
 Figure 2-3. 标准字符子表 (Part 1 of 3: 拉丁字母)
 
-    Graphic ID  Glyph  Description  Graphic ID  Glyph  Description  
-    ND01        1      digit 1      ND06        6      digit 6      
-    ND02        2      digit 2      ND07        7      digit 7      
-    ND03        3      digit 3      ND08        8      digit 8      
-    ND04        4      digit 4      ND09        9      digit 9      
-    ND05        5      digit 5      ND10        0      digit 0      
+  |图形ID       |字形   |描述          |图形ID       |字形   |描述  |
+  | :------:   | :------:| :------:  | :------:  | :------:| :------:|
+  |ND01        |1      |digit 1      |ND06        |6      |digit 6      |
+  |ND02        |2      |digit 2      |ND07        |7      |digit 7      |
+  |ND03        |3      |digit 3      |ND08        |8      |digit 8      |
+  |ND04        |4      |digit 4      |ND09        |9      |digit 9      |
+  |ND05        |5      |digit 5      |ND10        |0      |digit 0      |
 
 Figure 2-4. 标准字符子表 (Part 2 of 3: 数字字符)
 
-    Graphic ID  Glyph  Description                              
-    SP02        !      exclamation mark                         
-    SC03        $      dollar sign                              
-    SP04        "      quotation mark, or double quote          
-    SP05        '      apostrophe, or [single] quote            
-    SP06        (      left parenthesis, or open parenthesis    
-    SP07        )      right parenthesis, or close parenthesis  
-    SP08        ,      comma                                    
-    SP09        _      low line, or underscore                  
-    SP10        -      hyphen, or minus [sign]                  
-    SP11        .      full stop, period, or dot                
-    SP12        /      solidus, or slash                        
-    SP13        :      colon                                    
-    SP14        ;      semicolon                                
-    SP15        ?      question mark                            
-    SA01        +      plus [sign]                              
-    SA03        <      less-than [sign]                         
-    SA04        =      equals [sign]                            
-    SA05        >      greater-than [sign]                      
-    SM01        #      number sign, or sharp[sign]              
-    SM02        %      percent [sign]                           
-    SM03        &      ampersand                                
-    SM04        *      asterisk, or star                        
-    SM05        @      commercial at, or at-sign                
-    SM06        [      left [square] bracket                    
-    SM07        \      reverse solidus, or backslash            
-    SM08        ]      right [square] bracket                   
-    SM11        {      left curly bracket, or left brace        
-    SM13        |      vertical bar                             
-    SM14        }      right curly bracket, or right brace      
-    SD13        `      grave accent, or backquote               
-    SD15        ^      circumflex accent                        
-    SD19        ~      tilde                                    
+  |图形ID       |字形   |描述                              |
+  | :------:   | :------:| :------:  |
+  |SP02        |!      |感叹号                         |
+  |SC03        |$      |美元符号                              |
+  |SP04        |"      |引号, 或双引号          |
+  |SP05        |'      |撇号, 或 [单] 引号            |
+  |SP06        |(      |左圆括号, 或开圆括号    |
+  |SP07        |)      |右圆括号, 或闭圆括号  |
+  |SP08        |,      |逗号                                    |
+  |SP09        |_      |下划线, 或底部线                  |
+  |SP10        |-      |连字符, 或减 [号]                  |
+  |SP11        |.      |休止符, 句号, 或点                |
+  |SP12        |/      |斜线, 或斜杠                        |
+  |SP13        |:      |冒号                                    |
+  |SP14        |;      |分号                                |
+  |SP15        |?      |问号                            |
+  |SA01        |+      |加 [号]                              |
+  |SA03        |<      |小于 [号]                         |
+  |SA04        |=      |等于 [号]                            |
+  |SA05        |>      |大于 [号]                      |
+  |SM01        |#      |数字符号, 或井[号]              |
+  |SM02        |%      |百分 [号]                           |
+  |SM03        |&      |和号                                |
+  |SM04        |*      |星号, 或星                        |
+  |SM05        |@      |单价记号, 或 at-号                |
+  |SM06        |[      |左 [方] 括号                    |
+  |SM07        |\      |反斜线号, 或反斜杠            |
+  |SM08        |]      |右 [方] 括号                   |
+  |SM11        |{      |左卷括号, 或左大括号        |
+  |SM13        ||      |竖杠                             |
+  |SM14        |}      |右卷括号, 或右大括号      |
+  |SD13        |`      |沉音符, 或反引号               |
+  |SD15        |^      |抑扬音符号                        |
+  |SD19        |~      |波浪符号                                    |
 
 Figure 2-5. 标准字符子表 (Part 3 of 3: 特殊字符)
 
-这个图形化ID (graphic ID) 在Common Lisp中不可用, 但是为了和ISO 6937/2交叉引用的目的而提供. 注意图形化ID的第一个字母把字符分成以下几类: L---Latin, N---Numeric, S---Special.
+这个图形ID(图形ID)在 Common Lisp 中不可用, 但是为了和 ISO 6937/2 交叉引用的目的而提供. 注意图形ID(图形ID)的第一个字母把字符分成以下几类: L---Latin, N---Numeric, S---Special.
 
 ### 2.1.4 <span id = "CharacterSyntaxTypes">字符语法类型</span>
 
