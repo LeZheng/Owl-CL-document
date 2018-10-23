@@ -341,9 +341,9 @@ constant object n. an object that is constrained (e.g., by its context in a prog
 
 constant variable n. a variable, the value of which can never change; that is, a keyword[1] or a named constant. ``The symbols t, nil, :direction, and most-positive-fixnum are constant variables.''
 
-constituent n., adj. 1. a. n. the syntax type of a character that is part of a token. For details, see Section 2.1.4.1 (Constituent Characters). b. adj. (of a character) having the constituent[1a] syntax type[2]. c. n. a constituent[1b] character. 2. n. (of a composite stream) one of possibly several objects that collectively comprise the source or sink of that stream.
+**constituent** n., adj. 1. a. n. 作为标记[token]的一部分的字符[character]的语法类型[syntax type]. 关于详情, 见章节 2.1.4.1 (标记成分字符). b. adj. (一个字符[character]) 有着标记成分[constituent[1a]] 语法类型[syntax type[2]]. c. n. 一个标记成分[constituent[1b]]字符[character]. 2. n. (一个复合流[composite stream]) 组成该流[stream]的源或汇聚的几个对象[object]之一.
 
-constituent trait n. (of a character) one of several classifications of a constituent character in a readtable. See Section 2.1.4.1 (Constituent Characters).
+**constituent trait** n. (一个字符[character]) 一个读取表[readtable]中的一个标记成分[constituent[1b]]字符[character]的几个分类中的一个. 见章节 2.1.4.1 (标记成分字符).
 
 constructed stream n. a stream whose source or sink is a Lisp object. Note that since a stream is another Lisp object, composite streams are considered constructed streams. ``A string stream is a constructed stream.''
 
@@ -1113,9 +1113,9 @@ rank n. a non-negative integer indicating the number of dimensions of an array.
 
 ratio n. an object of type ratio.
 
-ratio marker n. a character which is used in the textual notation for a ratio to separate the numerator from the denominator, and which is slash in the standard readtable. See Section 2.1 (Character Syntax).
+**ratio marker** n. 在一个比率[ratio]的文本标记中被用于分隔分子和分母的字符, 它在标准读取表[standard readtable]中是一个斜杠[slash]. 见章节 2.1 (字符语法).
 
-rational n. an object of type rational.
+**rational** n. 一个 rational 类型[type]的对象[object].
 
 read v.t. 1. (a binding or slot or component) to obtain the value of the binding or slot. 2. (an object from a stream) to parse an object from its representation on the stream.
 
@@ -1412,7 +1412,7 @@ time a representation of a point (absolute time) or an interval (relative time) 
 
 time zone n. a rational multiple of 1/3600 between -24 (inclusive) and 24 (inclusive) that represents a time zone as a number of hours offset from Greenwich Mean Time. Time zone values increase with motion to the west, so Massachusetts, U.S.A. is in time zone 5, California, U.S.A. is time zone 8, and Moscow, Russia is time zone -3. (When ``daylight savings time'' is separately represented as an argument or return value, the time zone that accompanies it does not depend on whether daylight savings time is in effect.)
 
-token n. a textual representation for a number or a symbol. See Section 2.3 (Interpretation of Tokens).
+**token** n. 一个数字[number]或符号[symbol]的文本表示. 见章节 2.3 (Interpretation of Tokens).
 
 top level form n. a form which is processed specially by compile-file for the purposes of enabling compile time evaluation of that form. Top level forms include those forms which are not subforms of any other form, and certain other cases. See Section 3.2.3.1 (Processing of Top Level Forms).
 

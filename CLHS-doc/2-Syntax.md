@@ -2,7 +2,7 @@
 
 > * 2.1 [字符语法](#CharacterSyntax)
 > * 2.2 [读取器算法](#ReaderAlgorithm)
-> * 2.3 [token的解释](#InterpretationOfTokens)
+> * 2.3 [token 标记的解释](#InterpretationOfTokens)
 > * 2.4 [标准宏字符](#StandardMacroCharacters)
 
 ## 2.1 <span id = "CharacterSyntax">字符语法</span>
@@ -144,136 +144,135 @@ Figure 2-5. 标准字符子表 (Part 3 of 3: 特殊字符)
 这个图形ID(图形ID)在 Common Lisp 中不可用, 但是为了和 ISO 6937/2 交叉引用的目的而提供. 注意图形ID(图形ID)的第一个字母把字符分成以下几类: L---Latin, N---Numeric, S---Special.
 
 ### 2.1.4 <span id = "CharacterSyntaxTypes">字符语法类型</span>
+<!--TODO constituent ??-->
+Lisp 读取器[Lisp reader]通过根据语法类型[syntax type]解释输入文本的每一个字符[character]来构建一个对象[object]. Lisp 读取器[Lisp reader]不能接受 Lisp 打印器[Lisp printer]所生成的所有内容, 并且 Lisp 读取器[Lisp reader]包含了不能被 Lisp 打印器[Lisp printer]所使用的特性. Lisp 读取器[Lisp reader]可以用作更通用的用户编写的解析器的词法分析器.
 
-Lisp读取器通过根据语法类型解释输入文本的每一个字符来构建一个对象. Lisp读取器不能接受Lisp打印器所生成的所有内容, 并且Lisp读取器包含了不能被Lisp打印器所使用的特性. Lisp读取器可以用作更通用的用户编写的解析器的词法分析器.
-
-当Lisp读取器被调用, 它从输入流中读取单个字符并且根据这个字符的语法类型分派它. 每个出现在输入流中的字符都是Figure 2-6中出现的语法类型中的一个.
+当 Lisp 读取器[Lisp reader]被调用, 它从输入[input]流[stream]中读取单个字符并且根据这个字符[character]的语法类型[syntax type]分派它. 每个出现在输入[input]流[stream]中的字符[character]都是Figure 2-6中出现的语法类型[syntax type]中的一个.
 
     constituent  macro character  single escape  
     invalid      multiple escape  whitespace[2]  
 
-Figure 2-6. 可能的字符语法类型
+    Figure 2-6. 可能的字符语法类型
 
-一个字符在读取表中的语法类型决定了当这个读取表是当前读取表时Lisp读取器如何解释这个字符. 在任何给定的时间, 每个字符都有一个确定的语法类型.
+一个字符[character]在读取表[readtable]中的语法类型[syntax type]决定了当这个读取表[readtable]是当前读取表[current readtable]时 Lisp 读取器[[Lisp reader]]如何解释这个字符. 在任何给定的时间, 每个字符都有一个确定的语法类型.
 
-Figure 2-7 列出了每个字符在标准语法中的语法类型.
+Figure 2-7 列出了每个字符[character]在标准语法[standard syntax]中的语法类型[syntax type].
 
-    character  syntax type                 character  syntax type             
-    Backspace  constituent                 0--9       constituent             
-    Tab        whitespace[2]               :          constituent             
-    Newline    whitespace[2]               ;          terminating macro char  
-    Linefeed   whitespace[2]               <          constituent             
-    Page       whitespace[2]               =          constituent             
-    Return     whitespace[2]               >          constituent             
-    Space      whitespace[2]               ?          constituent*            
-    !          constituent*                @          constituent             
-    "          terminating macro char      A--Z       constituent             
-    \#          non-terminating macro char  [          constituent*            
-    $          constituent                 \          single escape           
-    %          constituent                 ]          constituent*            
-    &          constituent                 ^          constituent             
-    '          terminating macro char      _          constituent             
-    (          terminating macro char      `          terminating macro char  
-    )          terminating macro char      a--z       constituent             
-    \*          constituent                 {          constituent*            
-    \+          constituent                 |          multiple escape         
-    ,          terminating macro char      }          constituent*            
-    \-          constituent                 ~          constituent             
-    .          constituent                 Rubout     constituent             
-    /          constituent                 
+  字符       | 语法类型                    | 字符       | 语法类型  
+  | :------:| :------:                   | :------:  | :------:  |           
+  Backspace | constituent                | 0--9      | constituent             
+  Tab       | whitespace[2]              | :         | constituent             
+  Newline   | whitespace[2]              | ;         | terminating macro char  
+  Linefeed  | whitespace[2]              | <         | constituent             
+  Page      | whitespace[2]              | =         | constituent             
+  Return    | whitespace[2]              | >         | constituent             
+  Space     | whitespace[2]              | ?         | constituent*            
+  !         | constituent*               | @         | constituent             
+  "         | terminating macro char     | A--Z      | constituent             
+  #         | non-terminating macro char | [         | constituent*            
+  $         | constituent                | \         | single escape           
+  %         | constituent                | ]         | constituent*            
+  &         | constituent                | ^         | constituent             
+  '         | terminating macro char     | _         | constituent             
+  (         | terminating macro char     | `         | terminating macro char  
+  )         | terminating macro char     | a--z      | constituent             
+  *         | constituent                | {         | constituent*            
+  +         | constituent                | |         | multiple escape         
+  ,         | terminating macro char     | }         | constituent*            
+  -         | constituent                | ~         | constituent             
+  .         | constituent                | Rubout    | constituent             
+  /         | constituent                |           |
 
-Figure 2-7. 标准语法中的字符语法类型
+    Figure 2-7. 标准语法中的字符语法类型
 
-用星号(*)标记的字符是最初的构成成分, 但是它们不被用于任何标准的Common Lisp标记中. 这些字符被显式地保留给程序员. ~ 不被用于 Common Lisp, 保留给实现者. $ 和 % 是字母字符, 但是不被用于任何标准Common Lisp定义的名字.
+用星号(*)标记的字符是最初的标记成分[constituent], 但是它们不被用于任何标准的 Common Lisp 标记中. 这些字符被明确地地保留给程序员[programmer]. ~ 不被用于 Common Lisp, 保留给实现者. $ 和 % 是字母[alphabetic[2]]字符[character], 但是不被用于任何标准 Common Lisp 已定义名字[defined name]的名字.
 
-空白字符充当分隔符的作用但是被忽略. 组成和转义字符被累计起来，以使其成为一个被解释为一个数字或一个符号的token. 宏字符触发对函数的调用(可能是用户提供的)，可以执行任意的解析操作. 宏字符被分为2种, 终止和非终止的, 取决于它们是否会终结一个token. 以下是每一种语法类型的描述.
+空白[Whitespace[2]]字符充当分隔符, 但在其他情况下被忽略. 标记成分[constituent]和转义[escape]字符[character]被累计起来，以使其成为一个被解释为一个数字[number]或一个符号[symbol]的标记[token]. 宏字符[macro character]触发对函数[function]的调用(可能是用户提供的)，可以执行任意的解析操作. 宏字符[macro character]被分为2种, 终止[terminating]和非终止[non-terminating]的, 取决于它们是否会终结一个标记[token]. 以下是每一种语法类型[syntax type]的描述.
 
-> * 2.1.4.1 [组成成分字符](#ConstituentCharacters)
-> * 2.1.4.2 [组成成分特性](#ConstituentTraits)
+> * 2.1.4.1 [标记成分字符](#ConstituentCharacters)
+> * 2.1.4.2 [标记成分特质](#ConstituentTraits)
 > * 2.1.4.3 [非法字符](#InvalidCharacters)
 > * 2.1.4.4 [宏字符](#MacroCharacters)
-> * 2.1.4.5 [多重转义字符](#MultipleEscapeCharacters)
+> * 2.1.4.5 [多转义字符](#MultipleEscapeCharacters)
 > * 2.1.4.6 [单转义字符](#SingleEscapeCharacter)
 > * 2.1.4.7 [空白字符](#WhitespaceCharacters)
 
-#### 2.1.4.1 <span id = "ConstituentCharacters">组成成分字符</spans>
+#### 2.1.4.1 <span id = "ConstituentCharacters">标记成分字符</spans>
 
-组成成分字符被用于token中. 一个token表示为一个数字或符号. 字母和数字就是组成成分字符的示例.
+标记成分[constituent]字符[character]被用于标记[token]中. 一个标记[token]是一个数字[number]或符号[symbol]的表示. 字母和数字就是标记成分[constituent]字符[character]的示例.
 
-当符号名被读取时, 其中的字母有时会被转换成大小写相反的字母; 见章节 23.1.2 (Effect of Readtable Case on the Lisp Reader). 大小写转换可以通过使用单个或多个转义符抑制.
+当符号名被读取时, 其中的字母有时会被转换成大小写[case]相反的字母; 见章节 23.1.2 (Effect of Readtable Case on the Lisp Reader). 大小写[case]转换可以通过使用单转义[single escape]或多转义[multiple escape]字符抑制.
 
-#### 2.1.4.2 <span id = "ConstituentTraits">组成成分特性</span>
+#### 2.1.4.2 <span id = "ConstituentTraits">标记成分特质</span>
 
-每个字符都有一个或多个构成特性定义了当这个字符是组成成分字符时如何被Lisp读取器解释. 这些构成特性是 alphabetic[2], digit, package marker, plus sign, minus sign, dot, decimal point, ratio marker, exponent marker, 还有 invalid. Figure 2-8 展示了标准的和不完全标准字符的构成特性; 不提供改变字符的构成特征的机制. 如果当前输入基数大于该字符的数字值, 那么任何具有数字(alphadigit)组成特征的字符都是一个数字, 否则字符是字母的(alphabetic). 任何字符被单个转义符引用, 不管它正常的语法, 都被当作 alphabetic[2] 组成成分.
+每个字符[character]都有一个或多个标记成分特质[constituent trait], 它们定义了当这个字符[character]是标记成分[constituent]字符[character]时如何被 Lisp 读取器[Lisp reader]解释. 这些标记成分特质[constituent trait]是字母[alphabetic[2]], 数字, 包标记[package marker], 加号, 减号, 点, 小数点, 比率标记[ratio marker], 指数标记[exponent marker], 还有非法[invalid]. Figure 2-8 展示了标准字符[standard characters]和不完全标准[semi-standard]字符[character]的标记成分特质[constituent trait]; 没有为改变字符[character]的标记成分特质[constituent trait]提供机制. 如果当前输入基数[current input base]大于一个字符的数字值, 那么任何具有字母数字(alphadigit)标记成分特质[constituent trait]的字符[character]都是一个数字, 否则字符[character]是字母[alphabetic[2]]. 任何被单转义符[single escape]引用的字符, 不管它正常的语法, 都被当作字母[alphabetic[2]]标记成分.
                                                                                     
-    constituent  traits          constituent  traits                                    
-    character                    character    
-    ----------
-                                                                                    
-    Backspace    invalid         {            alphabetic[2]                             
-    Tab          invalid*        }            alphabetic[2]                             
-    Newline      invalid*        +            alphabetic[2], plus sign                  
-    Linefeed     invalid*        -            alphabetic[2], minus sign                 
-    Page         invalid*        .            alphabetic[2], dot, decimal point         
-    Return       invalid*        /            alphabetic[2], ratio marker               
-    Space        invalid*        A, a         alphadigit                                
-    !            alphabetic[2]   B, b         alphadigit                                
-    "            alphabetic[2]*  C, c         alphadigit                                
-    #            alphabetic[2]*  D, d         alphadigit, double-float exponent marker  
-    $            alphabetic[2]   E, e         alphadigit, float exponent marker         
-    %            alphabetic[2]   F, f         alphadigit, single-float exponent marker  
-    &            alphabetic[2]   G, g         alphadigit                                
-    '            alphabetic[2]*  H, h         alphadigit                                
-    (            alphabetic[2]*  I, i         alphadigit                                
-    )            alphabetic[2]*  J, j         alphadigit                                
-    *            alphabetic[2]   K, k         alphadigit                                
-    ,            alphabetic[2]*  L, l         alphadigit, long-float exponent marker    
-    0-9          alphadigit      M, m         alphadigit                                
-    :            package marker  N, n         alphadigit                                
-    ;            alphabetic[2]*  O, o         alphadigit                                
-    <            alphabetic[2]   P, p         alphadigit                                
-    =            alphabetic[2]   Q, q         alphadigit                                
-    >            alphabetic[2]   R, r         alphadigit                                
-    ?            alphabetic[2]   S, s         alphadigit, short-float exponent marker   
-    @            alphabetic[2]   T, t         alphadigit                                
-    [            alphabetic[2]   U, u         alphadigit                                
-    \            alphabetic[2]*  V, v         alphadigit                                
-    ]            alphabetic[2]   W, w         alphadigit                                
-    ^            alphabetic[2]   X, x         alphadigit                                
-    _            alphabetic[2]   Y, y         alphadigit                                
-    `            alphabetic[2]*  Z, z         alphadigit                                
-    |            alphabetic[2]*  Rubout       invalid                                   
-    ~            alphabetic[2]   
+  标记成分字符 | 特质                    | 标记成分字符 | 特质  
+  | :------:| :------:                   | :------:  | :------:  |  
+  Backspace |   invalid                | {           |  alphabetic[2]
+  Tab       |   invalid*               | }           |  alphabetic[2] 
+  Newline   |   invalid*               | +           |  alphabetic[2], plus sign   
+  Linefeed  |   invalid*               | -           |  alphabetic[2], minus sign
+  Page      |   invalid*               | .           |  alphabetic[2], dot, decimal point  
+  Return    |   invalid*               | /           |  alphabetic[2], ratio marker  
+  Space     |   invalid*               | A, a        |  alphadigit 
+  !         |   alphabetic[2]          | B, b        |  alphadigit  
+  "         |   alphabetic[2]*         | C, c        |  alphadigit    
+  #         |   alphabetic[2]*         | D, d        |  alphadigit, double-float exponent marker
+  $         |   alphabetic[2]          | E, e        |  alphadigit, float exponent marker 
+  %         |   alphabetic[2]          | F, f        |  alphadigit, single-float exponent marker
+  &         |   alphabetic[2]          | G, g        |  alphadigit  
+  '         |   alphabetic[2]*         | H, h        |  alphadigit  
+  (         |   alphabetic[2]*         | I, i        |  alphadigit   
+  )         |   alphabetic[2]*         | J, j        |  alphadigit    
+  *         |   alphabetic[2]          | K, k        |  alphadigit 
+  ,         |   alphabetic[2]*         | L, l        |  alphadigit, long-float exponent marker 
+  0-9       |   alphadigit             | M, m        |  alphadigit 
+  :         |   package marker         | N, n        |  alphadigit 
+  ;         |   alphabetic[2]*         | O, o        |  alphadigit   
+  <         |   alphabetic[2]          | P, p        |  alphadigit 
+  =         |   alphabetic[2]          | Q, q        |  alphadigit   
+  >         |   alphabetic[2]          | R, r        |  alphadigit   
+  ?         |   alphabetic[2]          | S, s        |  alphadigit, short-float exponent marker
+  @         |   alphabetic[2]          | T, t        |  alphadigit    
+  [         |   alphabetic[2]          | U, u        |  alphadigit   
+  \         |   alphabetic[2]*         | V, v        |  alphadigit  
+  ]         |   alphabetic[2]          | W, w        |  alphadigit  
+  ^         |   alphabetic[2]          | X, x        |  alphadigit 
+  _         |   alphabetic[2]          | Y, y        |  alphadigit    
+  `         |   alphabetic[2]*         | Z, z        |  alphadigit   
+  |         |   alphabetic[2]*         | Rubout      |  invalid    
+  ~         |   alphabetic[2]          |             |
                                                                                     
 Figure 2-8. 标准字符和不完全标准字符的构成成分特性
 
-这个表中的解释方式只应用于语法类型为constituent的字符. 标记了星号 (*) 的条目正常是被屏蔽的因为这些字符是 空格(whitespace), 宏字符(macro character), 单转义(single escape), 或者 多重转义(multiple escape) 语法类型; 如果它们的语法类型改变为组成成分(constituent)这些组成特性才适用于它们. 
+这个表中的解释方式只应用于语法类型[syntax type]为标记成分[constituent]的字符[character]. 标记了星号 (*) 的条目正常是被屏蔽[shadow[2]]的, 因为这些表示的字符[character]是空白[whitespace], 宏字符[macro character], 单转义[single escape], 或者多转义[multiple escape]语法类型[syntax type]; 只有当它们的语法类型被改变为标记成分[constituent]时, 这些标记成分特质[constituent trait]才适用于它们. 
 
 #### 2.1.4.3 <span id = "InvalidCharacters">非法字符</span>
 
-具有组成成分无效(invalid)的字符不能出现在token里, 除非在单转义字符的控制下. 当读取时遇到一个非法的字符, 会发出一个 reader-error 类型的错误. 如果一个非法字符前有一个转义符, 它会被当作 alphabetic[2] constituent. 
+带有标记成分特质[constituent trait]无效[invalid]的字符[character]不能出现在标记[token]里, 除非在单转义[single escape]字符[character]的控制下. 如果一个对象[object]被读取时遇到一个无效[invalid]字符[character], 会发出一个 reader-error 类型[type]的错误. 如果一个无效[invalid]字符[character]前有一个单转义[single escape]字符[character], 它会被当作字母[alphabetic[2]]标记成分[constituent]. 
 
 #### 2.1.4.4 <span id = "MacroCharacters">宏字符</span>
 
-当Lisp读取器从输入流中读入一个宏字符, 将对输入流中的后续字符进行特殊解析.
+当 Lisp 读取器[Lisp reader]从输入[input]流[stream]中读入一个宏字符[macro character]时, 将对输入[input]流[stream]中的后续字符[character]进行特殊解析.
 
-一个宏字符有一个关联的函数称之为读取器宏函数实现了它专门的解析行为. 一个这样的关联可以在一个规范的程序中通过使用函数 set-macro-character 和 set-dispatch-macro-character 被确定和修改.
+一个宏字符[macro character]有一个关联的函数[function]称之为读取器宏函数[reader macro function]实现了它专门的解析行为. 一个这样的关联可以在一个符合规范的程序[conforming program]的控制下通过使用函数[function] set-macro-character 和 set-dispatch-macro-character 来建立和修改.
 
-遇到一个宏字符时, 这个Lisp读取器会调用它的读取器宏函数, 由它从输入流中解析一个经过特殊格式化的对象. 这个函数也返回解析后的对象, 或者它不返回表示函数扫描的字符被忽略了 (比如, 在注释的情况下). 宏字符的示例是反引号(backquote), 单引号(single-quote), 左小括号(left-parenthesis), 还有右小括号(right-parenthesis).
+遇到一个宏字符[macro character]时, 这个 Lisp 读取器[Lisp reader]会调用它的读取器宏函数[reader macro function], 它从输入[input]流[stream]中解析一个经过特殊格式化的对象. 这个函数[function]也返回解析后的对象[object], 或者它不返回值[value]表示函数[function]扫描的这些字符被忽略了 (比如, 在注释的情况下). 宏字符[macro character]的示例是反引号[backquote], 单引号[single-quote], 左圆括号[left-parenthesis], 还有右圆括号[right-parenthesis].
 
-宏字符要么是终止，要么是非终止. 终止和非终止宏字符的区别在于当这些字符出现在token中间时，会发生什么. 如果一个非终止的宏字符出现在token中, 这个非终止宏字符关联的函数不会被调用, 并且这个非终止的宏字符不终结这个token的名字; 它就像是一个真的组成成分字符(constituent character) 一样成为这个名字的一部分. 一个终止宏字符会终结任何token, 并且它关联的读取宏函数会被调用, 无论这个字符出现在哪里. 在标准语法中唯一个非终结宏字符是#号(sharpsign).
+宏字符[macro character]要么是终止的[terminating]，要么是非终止的[non-terminating]. 终止的[terminating]和非终止的[non-terminating]宏字符[macro character]的区别在于当这些字符出现在标记[token]中间时，会发生什么. 如果一个非终止的[non-terminating]宏字符[macro character]出现在标记[token]中, 这个非终止的[non-terminating]宏字符[macro character]关联的函数[function]不会被调用, 并且这个非终止的[non-terminating]宏字符[macro character]不终结这个标记[token]的名字; 它就好像这个宏字符[macro character]真的是一个标记成分字符一样成为这个名字的一部分. 一个终止的[terminating]宏字符[macro character]会终结任何标记[token], 并且它关联的读取器宏函数[reader macro function]会被调用, 无论这个字符[character]出现在哪里. 在标准语法[standard syntax]中唯一个非终止的[non-terminating]宏字符[macro character]是#号[sharpsign].
 
-如果一个字符是一个调度宏字符 C1, 它的读取器宏函数是具体实现提供的函数. 这个函数读取十进制数字字符直到读取到一个非数字的C2. 如果读取到任何数字, 它们转化为一个对应的整数中缀的参数数 P; 否则, 这个中缀参数 P 就是 nil. 这个终止的非数字 C2 是一个与调度宏字符 C1 相关联的调度表中查找到的字符 (有时被称为"子字符"，以强调其在调度中的从属角色) . 与子字符 C2 关联的这个读取器宏函数调用需要三个参数: 流, 子字符 C2, 还有中缀参数 P. 关于调度字符的更多信息, 见函数 set-dispatch-macro-character.
+如果一个字符[character]是一个分派宏字符[dispatching macro character] C1, 它的读取器宏函数[reader macro function]是一个具体实现[implementation]提供的函数[function]. 这个函数[function]读取十进制数字[digit]字符[character]直到读取到一个非数字的 C2. 如果读取到任何数字[digit], 它们转化为一个对应的整数[integer]中缀的参数 P; 否则, 这个中缀参数 P 就是 nil. 这个终止的非数字 C2 是一个与分派宏字符[dispatching macro character] C1 相关联的分派表中查找到的字符 (有时被称为"子字符(sub-character)"，以强调其在分派中的从属角色) . 与子字符 C2 关联的这个读取器宏函数[[reader macro function]]调用需要三个参数: 流[stream], 子字符 C2, 还有中缀参数 P. 关于分派字符的更多信息, 见函数[function] set-dispatch-macro-character.
 
-关于标准语法中可用的宏字符的信息, 见章节 2.4 (Standard Macro Characters). 
+关于标准语法[standard syntax]中可用的宏字符[macro character]的信息, 见章节 2.4 (标准宏字符). 
 
-#### 2.1.4.5 <span id = "MultipleEscapeCharacters">多重转义字符</span>
+#### 2.1.4.5 <span id = "MultipleEscapeCharacters">多转义字符</span>
 
-一对多重转义字符用于指明一个可能包含宏字符和空白字符的闭合字符序列当作保持大小写的字母字符. 在序列中出现的任何单转义字符和多重转义字符都必须有一个转义字符.
+一对多转义[multiple escape]字符[character]用于指明一个可能包含宏字符[macro character]和空白[whitespace[2]]字符[character]的闭合字符序列被认为是保持大小写[case]的字母[alphabetic[2]]字符[character]. 在序列中出现的任何单转义字符和多转义字符都必须有一个转义字符.
 
-垂直条(Vertical-bar)是标准语法中的一个多重转义字符.
+竖杠[vertical-bar]是标准语法[standard syntax]中的一个多转义[multiple escape]字符[character].
 
-##### 2.1.4.5.1 多重转义字符的示例
+##### 2.1.4.5.1 多转义字符的示例
 
 ```LISP
  ;; The following examples assume the readtable case of *readtable* 
@@ -286,9 +285,9 @@ Figure 2-8. 标准字符和不完全标准字符的构成成分特性
 
 #### 2.1.4.6 <span id = "SingleEscapeCharacter">单转义字符</span>
 
-一个单转义字符被用于表明下一个字符被当作字母字符处理, 保留大小写, 无论它是什么字符或者它由什么组成成分特性.
+一个单转义符[single escape]被用于表明下一个字符[character]被当作字母[alphabetic[2]]字符[character]处理, 保留大小写[case], 无论它是什么字符[character]或者它由什么标记成分特质[constituent trait].
 
-反斜杠(backslash) 是标准语法中一个单转义字符.
+反斜杠[backslash]是标准语法[standard syntax]中一个单转义[single escape]字符[character].
 
 ##### 2.1.4.6.1 单转义字符示例
 
@@ -303,9 +302,9 @@ Figure 2-8. 标准字符和不完全标准字符的构成成分特性
 
 #### 2.1.4.7 <span id = "WhitespaceCharacters">空白字符</span>
 
-空白字符被用于分割token.
+空白[Whitespace[2]]字符[character]被用于分隔多个标记[token].
 
-空格(Space) 和 新行(newline) 是标准语法中的空白字符.
+空格[Space]和换行[newline]是标准语法[standard syntax]中的空白[Whitespace[2]]字符[character].
 
 ##### 2.1.4.7.1 空白字符的示例
 
@@ -340,13 +339,13 @@ Lisp读取器使用的算法规则如下:
 
     这个读取器宏函数可能返回0个值或者一个值. 如果一个值被返回, 这个返回的值就是这个读取操作的结果; 这个读取算法规则结束. 如果没有值返回, 然后会再次进入步骤1.
 
-5. 如果 x 是单转义字符, 那么下一个字符 y 会被读取或者在文件末尾时发出一个 end-of-file 类型的错误. y 被当作一个组成成分(constituent), 它的唯一的组成成分特性是字母的(alphabetic). y 被用于开始一个token, 并且进入步骤8.
+5. 如果 x 是单转义字符, 那么下一个字符 y 会被读取或者在文件末尾时发出一个 end-of-file 类型的错误. y 被当作一个组成成分(constituent), 它的唯一的标记成分特质是字母的(alphabetic). y 被用于开始一个token, 并且进入步骤8.
 
-6. 如果x是一个多重转义字符, 那么一个token(最初不包含字符)就会开始并且进入步骤9.
+6. 如果x是一个多转义字符, 那么一个token(最初不包含字符)就会开始并且进入步骤9.
 
-7. 如果 x 是一个组成成分字符(constituent character), 它会开始一个token. 在这个token被读取后, 它会被解释为一个Lisp对象或者一个无效的语法. 如果这个token表示一个对象, 就会返回这个对象作为这个读取操作的结果. 如果这个token是一个无效的字符, 就会发出一个错误. 如果x是一个小写的字符，它可能会被替换为相反情况的对应字符, 取决于当前读取表的情况, 就像章节 23.1.2 (Effect of Readtable Case on the Lisp Reader)阐述的一样. X 被用于开始一个token, 并且进入步骤8.
+7. 如果 x 是一个标记成分字符(constituent character), 它会开始一个token. 在这个token被读取后, 它会被解释为一个Lisp对象或者一个无效的语法. 如果这个token表示一个对象, 就会返回这个对象作为这个读取操作的结果. 如果这个token是一个无效的字符, 就会发出一个错误. 如果x是一个小写的字符，它可能会被替换为相反情况的对应字符, 取决于当前读取表的情况, 就像章节 23.1.2 (Effect of Readtable Case on the Lisp Reader)阐述的一样. X 被用于开始一个token, 并且进入步骤8.
 
-8. 此时已经累积到一个token, 并且遇到多个多重转义字符. 如果到了文件的末尾, 就进入步骤10. 否则, 一个字符, y, 被读入, 并且根据它的语法类型以下操作会被执行:
+8. 此时已经累积到一个token, 并且遇到多个多转义字符. 如果到了文件的末尾, 就进入步骤10. 否则, 一个字符, y, 被读入, 并且根据它的语法类型以下操作会被执行:
 
     * 如果 y 是一个组成成分(constituent) 或者一个非终止宏字符:
 
@@ -354,9 +353,9 @@ Lisp读取器使用的算法规则如下:
         -- Y 被追加到构建的对应token中.
         -- 重复步骤8.
 
-    * 如果 y 是一个单转义字符, 那么下一个字符 z 会被读取或者在文件末尾时发出一个 end-of-file 类型的错误. z 被当作一个组成成分(constituent), 它的唯一的组成成分特性是字母的(alphabetic). Z 会被追加到构建的token中, 并且重复步骤8.
+    * 如果 y 是一个单转义字符, 那么下一个字符 z 会被读取或者在文件末尾时发出一个 end-of-file 类型的错误. z 被当作一个组成成分(constituent), 它的唯一的标记成分特质是字母的(alphabetic). Z 会被追加到构建的token中, 并且重复步骤8.
 
-    * 如果 y 是一个多重转义字符, 就会进入步骤9.
+    * 如果 y 是一个多转义字符, 就会进入步骤9.
 
     * 如果 y 是一个非法的字符, 一个 reader-error 类型的错误就会被发出.
 
@@ -364,19 +363,19 @@ Lisp读取器使用的算法规则如下:
 
     * 如果 y 是一个空白字符, 它会终止这个token. 首先如果合适的话这个字符 y 会被撤销读取(见 read-preserving-whitespace), 然后进入步骤10.
 
-9. 此时，将会累积一个token，并且会遇到奇数个多重转义字符. 如果到了文件的末尾就会发出一个 end-of-file 类型的错误. 否则, 一个字符, y, 会被读取, 根据它的类型下面的其中一个动作会被执行:
+9. 此时，将会累积一个token，并且会遇到奇数个多转义字符. 如果到了文件的末尾就会发出一个 end-of-file 类型的错误. 否则, 一个字符, y, 会被读取, 根据它的类型下面的其中一个动作会被执行:
 
     * 如果 y 是一个组成成分(constituent), 宏, 或者空格字符, y 被认为是一个组成成分(constituent), 并且它唯一的组成特性是字母(alphabetic). Y 被追加到构建的token中, 然后重复步骤9.
 
-    * 如果 y 是一个单转义字符, 那么下一个字符 z 会被读取或者在文件末尾时发出一个 end-of-file 类型的错误. z 被当作一个组成成分(constituent), 它的唯一的组成成分特性是字母的(alphabetic). Z 会被追加到构建的token中, 并且重复步骤9.
+    * 如果 y 是一个单转义字符, 那么下一个字符 z 会被读取或者在文件末尾时发出一个 end-of-file 类型的错误. z 被当作一个组成成分(constituent), 它的唯一的标记成分特质是字母的(alphabetic). Z 会被追加到构建的token中, 并且重复步骤9.
 
-    * 如果 y 是一个多重转义字符, 那么进入步骤8.
+    * 如果 y 是一个多转义字符, 那么进入步骤8.
 
     * 如果 y 是个非法字符, 会发出一个类型为 reader-error 的错误.
 
 10. 已经遇到一个完整的token. 这个token表示的对象作为这个读取操作的结果返回, 如果这个token是无效的就发出一个 reader-error 类型的错误. 
 
-## 2.3 <span id = "InterpretationOfTokens">token的解释</span>
+## 2.3 <span id = "InterpretationOfTokens">token 标记的解释</span>
 
 > * 2.3.1 [数字token](#NumbersAsTokens)
 > * 2.3.2 [从token构建数字](#ConstructingNumbersFromTokens)
@@ -829,7 +828,7 @@ Print-print consistency
 
 Figure 2-18. 双引号字符的示例
 
-注意, 要将单个转义字符或双引号放入字符串中, 这样的字符必须先有一个转义字符. 还要注意, 多重转义字符不需要被字符串中的单转义字符引用.
+注意, 要将单个转义字符或双引号放入字符串中, 这样的字符必须先有一个转义字符. 还要注意, 多转义字符不需要被字符串中的单转义字符引用.
 
 关于Lisp打印器如何打印字符串的信息, 见章节 22.1.3.4 (Printing Strings). 
 
@@ -931,13 +930,13 @@ Figure 2-18. 双引号字符的示例
 
 ### 2.4.8 <span id = "Sharpsign">井号</span>
 
-井号是一个非终止调度宏字符. 它读取一个可选的数字序列和至少一个字符, 然后使用这个字符去选择一个函数作为读取器宏函数来运行.
+井号是一个非终止分派宏字符. 它读取一个可选的数字序列和至少一个字符, 然后使用这个字符去选择一个函数作为读取器宏函数来运行.
 
 标准语法包括由 # 字符引入的结构. 这些结构的语法如下: 标识结构类型的字符后面跟着一些表达式形式的参数. 如果这个字符是一个字母, 它的大小写是不重要的;比如 #O 和 #o 被认为是等价的.
 
 某些 # 构造允许在 # 和字符之间出现一个无符号的十进制数.
 
-和调度宏字符 # 关联的读取器宏在这个章节的后面部分有描述, 并且总结在下面这段.
+和分派宏字符 # 关联的读取器宏在这个章节的后面部分有描述, 并且总结在下面这段.
 
     dispatch char  purpose                  dispatch char  purpose                
     Backspace      signals error            {              undefined*             
@@ -974,7 +973,7 @@ Figure 2-18. 双引号字符的示例
     |              balanced comment         Z, z           undefined              
     ~              undefined                Rubout         undefined              
 
-Figure 2-19. 标准 # 调度宏字符语法
+Figure 2-19. 标准 # 分派宏字符语法
 
 由星号(\*)标记的组合被显式地保留给用户. 没有符合规范的实现定义它们.
 
@@ -1061,7 +1060,7 @@ Figure 2-19. 标准 # 调度宏字符语法
 
 标记 #* 和 #0* 每个都表示一个空的位序列.
 
-不管是否提供那个可选的参数 n,星号后面的token会被正常的token分隔符来分割. 然而, (除非 \*read-suppress* 的值是 true) 如果这个token不是完全由 0 和 1 组成, 或者如果提供了 n 但是位数却大于 n 位, 或者 n 大于等于 1, 但是没有提供元素, 都会发出一个 reader-error 类型的错误. 单转义字符和多重转义字符都不允许出现在这个token里.
+不管是否提供那个可选的参数 n,星号后面的token会被正常的token分隔符来分割. 然而, (除非 \*read-suppress* 的值是 true) 如果这个token不是完全由 0 和 1 组成, 或者如果提供了 n 但是位数却大于 n 位, 或者 n 大于等于 1, 但是没有提供元素, 都会发出一个 reader-error 类型的错误. 单转义字符和多转义字符都不允许出现在这个token里.
 
 关于Lisp打印器如何打印位字符的信息, 见章节 22.1.3.6 (Printing Bit Vectors).
 
@@ -1358,7 +1357,7 @@ The following are some examples that exploit the #|...|# notation:
 
 ##### 2.4.8.19.2 井号竖线风格的注意事项
 
-一些声称理解 Lisp 语法的文本编辑器把任何 |...| 作为不能嵌套的对称对 (就像它们只是对使用在标注符号的多重转义字符对做了对称). 为了弥补这一缺陷, 一些程序员使用 #||...#||...||#...||# 而不是 #|...#|...|#...|#. 注意这个替代方式并不是一个不同的读取器宏; 它只是利用了额外的垂直条在注释中出现的事实, 这一方法可以让特定的文本编辑器以更好地支持嵌套的注释. 像这样, 一个可能的代码:
+一些声称理解 Lisp 语法的文本编辑器把任何 |...| 作为不能嵌套的对称对 (就像它们只是对使用在标注符号的多转义字符对做了对称). 为了弥补这一缺陷, 一些程序员使用 #||...#||...||#...||# 而不是 #|...#|...|#...|#. 注意这个替代方式并不是一个不同的读取器宏; 它只是利用了额外的垂直条在注释中出现的事实, 这一方法可以让特定的文本编辑器以更好地支持嵌套的注释. 像这样, 一个可能的代码:
 
 ```LISP
 #|| (+ #|| 3 ||# 4 5) ||# 
