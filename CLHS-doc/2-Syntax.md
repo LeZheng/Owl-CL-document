@@ -668,12 +668,12 @@ Figure 2-17. 标记的合法模式
 
 ## 2.4 <span id = "StandardMacroCharacters">标准宏字符</span>
 
-如果读取器遇到一个宏字符, 那么它的关联读取器宏函数会被调用并且可能产生一个返回的对象. 这个函数可能读取流中宏字符后面任何语法的字符并且返回这个语法对应的对象.
+如果读取器遇到一个宏字符[macro character], 那么它的关联读取器宏函数[reader macro function]会被调用并且可能产生一个要被返回的对象[object]. 这个函数[function]可能以任何语法读取流中宏字符[macro character]后面的那些字符[character]并且返回这个语法所表示的对象[object].
 
-任何字符都可以作为宏字符. 一个合格的实现定义的宏字符包括以下这些:
+任何字符[character]都可以作为宏字符[macro character]. 一个符合规范的实现[conforming implementation]中最初定义的宏字符[macro character]包括以下这些:
 
 > * 2.4.1 [左圆括号](#LeftParenthesis)
-> * 2.4.2 [右括号](#RightParenthesis)
+> * 2.4.2 [右圆括号](#RightParenthesis)
 > * 2.4.3 [单引号](#SingleQuote)
 > * 2.4.4 [分号](#Semicolon)
 > * 2.4.5 [双引号](#DoubleQuote)
@@ -684,23 +684,23 @@ Figure 2-17. 标记的合法模式
  
 ### 2.4.1 <span id = "LeftParenthesis">左圆括号</span>
 
-左括号开始一个列表的读取. read 会被递归调用去读取连续的对象直到在流中找到一个右括号. 返回一个读取的对象列表. 因此
+左圆括号[left-parenthesis]开始一个列表[list]的读取. read 会被递归调用去读取后续的对象直到在这个输入流[stream]中找到一个右圆括号. 返回一个读取到的对象[object]的列表[list]. 因此
 
 ```LISP
  (a b c)
 ```
 
-被读取为一个三个对象的列表 (符号 a, b, 还有 c). 右括号不需要紧跟着最后一个对象的打印形式后面; 空格字符和注释可能在它之前.
+被读取为一个三个对象[object]的列表[list] (符号[symbol] a, b, 还有 c). 右圆括号不需要紧跟着最后一个对象[object]的打印形式后面; 空白字符[whitespace[2]]和注释可能在它之前.
 
-如果在右括号前没有对象, 它就读取一个0对象的列表 (一个空列表).
+如果在右圆括号前没有对象[object], 它就读取到一个零对象[object]的列表[list] (一个空列表[empty list]).
 
-如果一个token只是一个点, 而不是在一个转义字符之前就被读取, 那么在某个对象之后再读取一个对象, 那么就会有另一个对象紧跟这个点, 然后可能是在空白字符或注释后面, 后面跟着右括号:
+如果一个标记[token]只是一个点, 而前面不是紧挨着一个在某个对象[object]后被读取的转义字符, 那么这个这个点之后一定跟着又一个对象, 然后可能前后有空白字符[whitespace[2]]或注释, 后面跟着右圆括号:
 
 ```LISP
  (a b c . d)
 ```
 
-这就意味着这个list最后一个cons的cdr部分不是nil, 而是点之后表示的对象. 上面的例子可能是下面表达式的结果
+这就意味着这个列表[list]最后一个 cons 的 cdr 部分不是 nil, 而是点之后表示的对象[object]. 上面的例子可能是下面表达式的求值结果
 
 ```LISP
  (cons 'a (cons 'b (cons 'c 'd)))
@@ -712,23 +712,23 @@ Figure 2-17. 标记的合法模式
  (cons 'this-one 'that-one) =>  (this-one . that-one)
 ```
 
-跟在点后面的对象也允许是一个列表:
+跟在点后面的对象也允许是一个列表[list]:
 
 ```LISP
  (a b c d . (e f . (g))) ==  (a b c d e f g)
 ```
 
-关于Lisp打印器如何打印列表和cons的信息, 见章节 22.1.3.5 (Printing Lists and Conses). 
+关于 Lisp 打印器[Lisp printer]如何打印列表[list]和 cons 的信息, 见章节 22.1.3.5 (打印列表和 cons). 
 
-### 2.4.2 <span id = "RightParenthesis">右括号</span>
+### 2.4.2 <span id = "RightParenthesis">右圆括号</span>
 
-除了和一个左括号字符结合, 右括号是非法. 关于更多的信息, 见章节 2.2 (Reader Algorithm). 
+除了和一个左圆括号字符结合以外, 右圆括号[right-parenthesis]是非法. 关于更多的信息, 见章节 2.2 (读取器算法). 
 
 ### 2.4.3 <span id = "SingleQuote">单引号</span>
 
 语法: '<\<exp>>
 
-一个单引号表示一个表达式被 ``quoted''. 单引号后面跟着一个表达式 exp 会被Lisp 读取器[Lisp reader]当作一个缩写并且并被解析为同等表达式的缩写 (quote exp). 见特殊操作符 quote.
+一个单引号[single-quote]引入一个要被被"引用(quoted)"的表达式[expression]. 单引号[single-quote]后面跟着一个表达式[expression] exp 会被 Lisp 读取器[Lisp reader]当作一个缩写并且和表达式(quote exp)同等方式被解析. 见特殊操作符[special operator] quote.
 
 #### 2.4.3.1 单引号的示例
 
@@ -740,9 +740,9 @@ Figure 2-17. 标记的合法模式
 
 ### 2.4.4 <span id = "Semicolon">分号</span>
 
-语法: ;<<text>>
+语法: ;<\<text>>
 
-一个分号表示字符需要被忽略, 就像注释. 分号和所有的字符, 包括下一个换行符或文件的结尾都被忽略了.
+一个分号[semicolon]引入需要被忽略的字符[character], 就像注释. 分号[semicolon]和所有直到并包括下一个换行符或到文件结尾的字符都被忽略.
 
 #### 2.4.4.1 分号的示例
 
@@ -754,7 +754,7 @@ Figure 2-17. 标记的合法模式
 
 #### 2.4.4.2 关于分号样式的注释
 
-一些文本编辑器根据开始注释的分号数量来对期望的缩进做出假设. 下面的样式惯例是较通用的, 尽管不是普遍的.
+一些文本编辑器根据开始注释的分号[semicolon]数量来对期望的缩进做出假设. 下面的样式规约是较普遍的, 尽管不是通用的.
 
 > * 2.4.4.2.1 [单分号的使用](#UseOfSingleSemicolon)
 > * 2.4.4.2.2 [两个分号的使用](#UseOfDoubleSemicolon)
@@ -764,19 +764,19 @@ Figure 2-17. 标记的合法模式
 
 ##### 2.4.4.2.1 <span id = "UseOfSingleSemicolon">单分号的使用</span>
 
-以一个分号开始的注释都对齐到右边的同一列上 (有时也被称为 ``comment column''). 这样一个注释的文本通常值应用于它出现的行. 偶尔会有两个或三个一起包含单个句子的; 这有时被用来表示除了第一个带了额外的空格 (在分号后) 其他都是缩进. 
+以一个分号[semicolon]开始的注释都对齐到右边的同一列上 (有时也被称为 "注释列(comment column)"). 这样一个注释的文本通常只应用于它出现的行. 偶尔会有两个或三个一起包含一个单句; 这有时通过用一个额外的空格 (在分号[semicolon]后) 缩进除了第一个以外的所有来表示. 
 
 ##### 2.4.4.2.2 <span id = "UseOfDoubleSemicolon">两个分号的使用</span>
 
-以双分号开头的注释都对齐到相同的缩进水平, 就像表单在代码中处于相同的位置. 这样的注释的文本通常用来描述注释出现点的程序的状态, 或者这个注释后的代码, 或者都描述了. 
+以双分号[semicolon]开头的注释都和在代码[code]中处于相同位置的表达式形式[form]对齐到相同的缩进级别. 这样的注释的文本通常用来描述注释出现点的程序[program]的状态, 或者这个注释后的代码[code], 或者两者都描述了. 
 
 ##### 2.4.4.2.3 <span id = "UseOfTripleSemicolon">三个分号的使用</span>
 
-以三个分号开头的注释都对齐到左边框. 通常它们是在定义或定义集之前使用的, 而不是定义在定义中. 
+以三个分号[semicolon]开头的注释都对齐到左边框. 通常它们是在一个定义或定义集合之前使用的, 而不是在定义中. 
 
 ##### 2.4.4.2.4 <span id = "UseOfQuadrupleSemicolon">四个分号的使用</span>
 
-以四个个分号开头的注释都对齐到左边框, 并且通常包含一小段文本作为后面跟着的代码的标题, 并且可能被用于这个程序的页眉或页脚, 作为代码的一个硬拷贝文档. 
+以四个个分号[semicolon]开头的注释都对齐到左边框, 并且通常包含一小段文本作为后面跟着的代码的标题, 并且可能被用于这个程序的页眉或页脚中, 该程序准备代码以作为一个硬拷贝文档呈现. 
 
 ##### 2.4.4.2.5 <span id = "ExamplesOfStyleForSemicolon">分号风格的示例</span>
 
@@ -803,11 +803,11 @@ Figure 2-17. 标记的合法模式
 
 ### 2.4.5 <span id = "DoubleQuote">双引号</span>
 
-语法: "<<text>>"
+语法: "<\<text>>"
 
-双引号被用于开始或结束一个字符串. 当遇到一个双引号, 从输入流中读取到的字符会累积直到遇到另一个双引号. 如果见到一个单转义字符, 这个单转义字符会被丢弃, 累积下一个字符并继续. 直到匹配的双引号为止的字符会被转成一个简单字符串并返回. 累积字符的哪些属性会在这个操作中被移除是取决于具体实现的.
+双引号[double-quote]被用于开始和结束一个字符串. 当遇到一个双引号[double-quote]时, 从输入[input]流[stream]中读取到的字符[character]会累积直到遇到另一个双引号[double-quote]. 如果见到一个单转义[single escape]字符[character], 这个单转义[single escape]字符[character]会被丢弃, 累积下一个字符并继续. 直到匹配的双引号为止但不包括双引号[double-quote]的那些字符[character]会被转成一个简单字符串[simple string]并返回. 这些累积字符的哪些属性[attribute]会在这个操作中被移除是依赖于具体实现的[implementation-dependent].
 
-下一段中有双引号字符的示例.
+下一段中有双引号[double-quote]字符的示例.
 
 ```LISP
 "Foo"                      ;A string with three characters in it  
@@ -818,9 +818,9 @@ Figure 2-17. 标记的合法模式
 
 Figure 2-18. 双引号字符的示例
 
-注意, 要将单个转义字符或双引号放入字符串中, 这样的字符必须先有一个转义字符. 还要注意, 多转义字符不需要被字符串中的单转义字符引用.
+注意, 要将单转义字符或双引号[double-quote]放入字符串中, 这样的字符必须先有一个单转义字符. 还要注意, 多转义字符不需要被字符串中的单转义字符引用.
 
-关于Lisp打印器如何打印字符串的信息, 见章节 22.1.3.4 (Printing Strings). 
+关于 Lisp 打印器[Lisp printer]如何打印字符串[string]的信息, 见章节 22.1.3.4 (打印字符串). 
 
 ### 2.4.6 <span id = "Backquote">反引号</span>
 
