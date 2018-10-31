@@ -824,7 +824,7 @@ Figure 2-18. 双引号字符的示例
 
 ### 2.4.6 <span id = "Backquote">反引号</span>
 
-反引号表示一个要创建的数据结构的模板. 比如, 写下
+反引号[backquote]引入一个要创建的数据结构的模板. 比如, 写下
 
 ```LISP
 `(cond ((numberp ,x) ,@y) (t (print ,x) ,@y))
@@ -838,9 +838,9 @@ Figure 2-18. 双引号字符的示例
     (list* 't (list 'print x) y))
 ```
 
-这个模板中出现逗号的地方, 这个逗号后面的表达式会被求值并产生一个对象插入到这个地方. 假定 b 的值是3, 比如求值 `(a b ,b ,(+ b 1) b) 表示的结构会产生结果 (a b 3 4 b).
+这个模板中出现逗号的地方, 这个逗号后面的表达式[expression]会被求值并产生一个对象插入到这个地方. 假定 b 的值是 3, 比如求值 `(a b ,b ,(+ b 1) b) 表示的表达式形式[form]会产生结果 (a b 3 4 b).
 
-如果一个逗号紧跟着 @, 这个 @ 符号后面的表达式形式会被求值并产生一个对象列表. 这些对象会被拼接进这个模板. 比如, 如果 x 的值为 (a b c), 那么
+如果一个逗号紧跟着 @ 符号[at-sign], 这个 @ 符号[at-sign]后面的表达式形式[form]会被求值并产生一个对象[object]列表[list]. 这些对象[object]会被"接合(splice)"进这个模板. 比如, 如果 x 的值为 (a b c), 那么
 
 ```LISP
 `(x ,x ,@x foo ,(cadr x) bar ,(cdr x) baz ,@(cdr x))
@@ -849,53 +849,53 @@ Figure 2-18. 双引号字符的示例
 
 这个反引号语法可以被总结为如下.
 
-* \`basic 等同于 'basic, 也就表示, (quote basic), 对于上面任何表达式 basic 都不是一个列表或序列.
+* 对于任何不是一个列表[list]或一个普通向量[vector]的表达式[expression] basic, `basic 等同于 'basic, 也就表示, (quote basic).
 
-* `,form 等同于 form, 对于任何 form, 提供没有以 @ 或者 点 开始的 form 的表示. (对于一个逗号后面的所有出现的情况, 也有类似的警告.)
+* 对于任何不是以 @ 符号[at-sign]或者点[dot]开始的表达式形式 form, `,form 等同于 form. (对于一个逗号[comma]后面的所有出现的情况, 也有类似的警告.) <!--TODO 待校验-->
 
-* `,@form 有着不可预计的结果.
+* `,@form 有着未定义的后果.
 
 * `(x1 x2 x3 ... xn . atom) 可能被解释成
 
      (append [ x1] [ x2] [ x3] ... [ xn] (quote atom))
 
-    其中方括号被用于表示如下的一个 xj 的转化:
+    其中方括号被用于表示一个如下的一个 xj 的转化:
 
-    -- [form] 被解释为 (list `form), 包含一个反引号的 form 必须继续被解释.
+    -- [form] 被解释为 (list `form), 包含一个接下来必须被进一步解释的反引号表达式形式.
 
     -- [,form] 被解释为 (list form).
 
     -- [,@form] 被解释为 form.
 
-* \`(x1 x2 x3 ... xn) 可能被解释为相同的反引号表达式 \`(x1 x2 x3 ... xn . nil), 因此将其减少到前一种情况.
+* \`(x1 x2 x3 ... xn) 可能被解释为相同的反引号表达式 `(x1 x2 x3 ... xn . nil), 由此将其规约到前一种情况.
 
 * `(x1 x2 x3 ... xn . ,form) 可能被解释为
 
      (append [ x1] [ x2] [ x3] ... [ xn] form)
 
-    其中的方括号表示如上所述的 xj 的转换.
+    其中的方括号表示一个如上所述的一个 xj 的转换.
 
-* \`(x1 x2 x3 ... xn . ,@form) 有着不可预计的结果.
+* `(x1 x2 x3 ... xn . ,@form) 有着未定义的后果.
 
 * \`#(x1 x2 x3 ... xn) 可能被解释为 (apply #'vector `(x1 x2 x3 ... xn)).
 
-任何可能使用 \``,@'' 的地方, 可能使用 \``,.'' 来表示允许在 \``,.'' 后面的表达式形式的列表结构中对列表结构进行破坏性的操作 (实际上, 去使用 nconc 而不是 append).
+任何可能使用 ",@" 的地方, 可能使用 ",." 来表示允许在 ",." 后面的表达式形式产生的列表结构[list structure]上进行破坏性的操作 (实际上, 使用 nconc 而不是 append).
 
-如果反引号语法是嵌套的, 那么最内层的反引号表达式形式应该首先展开. 这个也意味着如果有多个逗号出现在一行中, 最左边的一个是属于最里面的反引号.
+如果反引号语法是嵌套的, 那么最内层的反引号表达式形式应该首先展开. 这个也意味着如果有多个逗号出现在一行中, 最左边的一个是属于最里面的反引号[backquote].
 
-一个具体实现可以自由地解释一个反引号表达式形式 F1 为任何表达式形式 F2, 在求值后, 会产生一个适用于上面定义的结果, 提供的副作用行为替代形式F2也符合上述描述. 模板的构造拷贝可能和模板自身共享列表的结构. 就像例子中, 上面的定义意味着
+一个具体实现[implementation]可以自由地解释一个反引号表达式形式[form] F1 为任何表达式形式[form] F2, 在求值时, 会产生一个和上面定义暗示的结果在 equal 下是相同[same]的结果, 假定替代的表达式形式[form] F2 的副作用行为也和上述给定的描述一致. 模板的构造拷贝可能也可能不和模板自身共享列表[list]的结构. 例如, 上面的定义意味着
 
 ```LISP
 `((,a b) ,c ,@d)
 ```
 
-会被解释为就像
+会被解释为
 
 ```LISP
 (append (list (append (list a) (list 'b) 'nil)) (list c) d 'nil)
 ```
 
-但是它也可能被合理地解释为以下任何一种:
+但是它也可能被合法地解释为以下任何一种:
 
 ```LISP
 (append (list (append (list a) (list 'b))) (list c) d)
@@ -908,66 +908,67 @@ Figure 2-18. 双引号字符的示例
 
 #### 2.4.6.1 关于反引号的注意事项
 
-因为Lisp 读取器[Lisp reader]解析一个包含反引号读取宏的表达式的确切方式没有指定, 一个具体实现可以自由地选择任何保留描述的语法的表示形式.
+由于 Lisp 读取器[Lisp reader]解析一个涉及反引号[backquote]读取器宏[reader macro]的表达式[expressioni]的确切方式没有指定, 一个具体实现[implementation]可以自由地选择任何保留描述的语义的表示形式.
 
-通常, 实现会选择一种便于打印表达式的表示形式, 这样 (pprint \`(a ,b)) 会显示 \`(a ,b) 而不是比如 (list 'a b). 然而, 这不是必须的.
+通常, 实现会选择一种便于美观打印表达式的表示形式, 这样一来 ``(pprint `(a ,b))`` 会显示 ``\`(a ,b)`` 而不是例如 ``(list 'a b)``. 然而, 这不是必须的.
 
-没有特定理由做出选择的实现者可能希望引用IEEE标准来实现Scheme编程语言, Scheme确定了一种流行的表示方式, 它可以为一些用户社区提供有用的兼容性. 没有任何要求, 然而, 任何符合规范的实现都使用这个特定的表示. 此信息仅用于交叉引用目的.
+没有特定理由做出一个选择或另一个的实现者可能希望引用《IEEE Standard for the Scheme Programming Language》, 它为这样的表达式确定了一种流行的表示方式, 可以为一些用户社区提供有用的兼容性. 然而这里没有任何必要条件, 要求任何符合规范的实现[conforming implementation]使用这个特定的表示. 此信息仅用于交叉引用目的.
 
 ### 2.4.7 <span id = "Comma">逗号</span>
 
-逗号是反引号语法的一部分; 见章节 2.4.6 (Backquote). 如果逗号被用于非上面所述的反引号表达式语法中是非法的. 
+逗号[comma]是反引号语法的一部分; 见章节 2.4.6 (反引号). 如果在上述的反引号表达式[expression]的主体之外的地方使用逗号[comma], 那么它的非法的. 
 
 ### 2.4.8 <span id = "Sharpsign">井号</span>
 
-井号是一个非终止分派宏字符. 它读取一个可选的数字序列和至少一个字符, 然后使用这个字符去选择一个函数作为读取器宏函数来运行.
+井号[sharpsign]是一个非终止[non-terminating]分派宏字符[dispatching macro character]. 它读取一个可选的数字序列然后再读取一个字符, 然后使用这个字符去选择一个函数[function]作为读取器宏函数[reader macro function]来运行.
 
-标准语法包括由 # 字符引入的结构. 这些结构的语法如下: 标识结构类型的字符后面跟着一些表达式形式的参数. 如果这个字符是一个字母, 它的大小写是不重要的;比如 #O 和 #o 被认为是等价的.
+标准语法[standard syntax]包括由 # 字符引入的结构. 这些结构的语法如下: 标识结构类型的字符后面跟着一些某个形式的参数. 如果这个字符是一个字母, 它的大小写[case]是不重要的; 比如 #O 和 #o 被认为是等价的.
 
-某些 # 构造允许在 # 和字符之间出现一个无符号的十进制数.
+某些 # 结构允许在 # 和字符之间出现一个无符号的十进制数.
 
-和分派宏字符 # 关联的读取器宏在这个章节的后面部分有描述, 并且总结在下面这段.
+和分派宏字符[dispatching macro character] # 关联的读取器宏[reader macro]在这个章节的后面部分有描述, 并且总结在下面这段.
 
-    dispatch char  purpose                  dispatch char  purpose                
-    Backspace      signals error            {              undefined*             
-    Tab            signals error            }              undefined*             
-    Newline        signals error            +              read-time conditional  
-    Linefeed       signals error            -              read-time conditional  
-    Page           signals error            .              read-time evaluation   
-    Return         signals error            /              undefined              
-    Space          signals error            A, a           array                  
-    !              undefined*               B, b           binary rational        
-    "              undefined                C, c           complex number         
-    #              reference to = label     D, d           undefined              
-    $              undefined                E, e           undefined              
-    %              undefined                F, f           undefined              
-    &              undefined                G, g           undefined              
-    '              function abbreviation    H, h           undefined              
-    (              simple vector            I, i           undefined              
-    )              signals error            J, j           undefined              
-    *              bit vector               K, k           undefined              
-    ,              undefined                L, l           undefined              
-    :              uninterned symbol        M, m           undefined              
-    ;              undefined                N, n           undefined              
-    <              signals error            O, o           octal rational         
-    =              labels following object  P, p           pathname               
-    >              undefined                Q, q           undefined              
-    ?              undefined*               R, r           radix-n rational       
-    @              undefined                S, s           structure              
-    [              undefined*               T, t           undefined              
-    \              character object         U, u           undefined              
-    ]              undefined*               V, v           undefined              
-    ^              undefined                W, w           undefined              
-    _              undefined                X, x           hexadecimal rational   
-    `              undefined                Y, y           undefined              
-    |              balanced comment         Z, z           undefined              
-    ~              undefined                Rubout         undefined              
+  分派字符        | 目的                    | 分派字符      | 目的      
+  | :------:| :------:                   | :------:  | :------:  | 
+  Backspace      | signals error          | {            | undefined*             
+  Tab            | signals error          | }            | undefined*             
+  Newline        | signals error          | +            | read-time conditional  
+  Linefeed       | signals error          | -            | read-time conditional  
+  Page           | signals error          | .            | read-time evaluation   
+  Return         | signals error          | /            | undefined              
+  Space          | signals error          | A, a         | array                  
+  !              | undefined*             | B, b         | binary rational        
+  "              | undefined              | C, c         | complex number         
+  #              | reference to = label   | D, d         | undefined              
+  $              | undefined              | E, e         | undefined              
+  %              | undefined              | F, f         | undefined              
+  &              | undefined              | G, g         | undefined              
+  '              | function abbreviation  | H, h         | undefined              
+  (              | simple vector          | I, i         | undefined              
+  )              | signals error          | J, j         | undefined              
+  *              | bit vector             | K, k         | undefined              
+  ,              | undefined              | L, l         | undefined              
+  :              | uninterned symbol      | M, m         | undefined              
+  ;              | undefined              | N, n         | undefined              
+  <              | signals error          | O, o         | octal rational         
+  =              | labels following object| P, p         | pathname               
+  >              | undefined              | Q, q         | undefined              
+  ?              | undefined*             | R, r         | radix-n rational       
+  @              | undefined              | S, s         | structure              
+  [              | undefined*             | T, t         | undefined              
+  \              | character object       | U, u         | undefined              
+  ]              | undefined*             | V, v         | undefined              
+  ^              | undefined              | W, w         | undefined              
+  _              | undefined              | X, x         | hexadecimal rational   
+  `              | undefined              | Y, y         | undefined              
+  |              | balanced comment       | Z, z         | undefined              
+  ~              | undefined              | Rubout       | undefined              
 
 Figure 2-19. 标准 # 分派宏字符语法
 
-由星号(\*)标记的组合被显式地保留给用户. 没有符合规范的实现定义它们.
+由星号(\*)标记的组合被显式地保留给用户. 符合规范的实现[conforming implementation]不会定义它们.
 
-注意数字也没有出现在之前的表中. 这是因为标记 #0, #1, ..., #9 保留给另一个占相同句法空间的目的. 当一个数字跟着一个井号, 它不会被认为是调度字符. 取而代之的是, 一个无符号整型的参数被累计起来, 并作为参数传递给数字后面字符的读取器宏. 比如, #2A((1 2) (3 4)) 就是一个参数为 2 的 #A 的使用.
+注意数字[digit]也没有出现在前面的表中. 这是因为标记 #0, #1, ..., #9 保留给另一个占相同语法空间的目的. 当一个数字[digit]跟在一个井号[sharpsign]后面, 它不会被认为是分派字符. 取而代之的是, 一个无符号整型的参数被累计起来, 并作为实参[argument]传递给数字后面字符[character]的读取器宏[reader macro]. 比如, #2A((1 2) (3 4)) 就是一个参数为 2 的 #A 的使用.
 
 > * 2.4.8.1 [井号反斜线(#\\)](#SharpsignBackslash)
 > * 2.4.8.2 [井号单引号(#')](#SharpsignSingleQuote)
@@ -996,17 +997,17 @@ Figure 2-19. 标准 # 分派宏字符语法
 
 语法: #\\<\<x>>
 
-当一个 token x 是单个字符长时, 这个会被解析为字面字符 char. 在 #\ 后面大小写字母是区分开来的; #\A 和 #\a 表示不同的字符对象. 任何在 #\ 后面的单个字符都会正常工作, 甚至那些读取时非常特殊的, 例如左括号和右括号.
+当这个标记[token] x 是单个字符[character]长时, 这个会被解析为字面字符[character] char. 在 #\ 后面大写[uppercase]字母和小写[lowercase]字母是区分开来的; #\A 和 #\a 表示不同的字符[character]对象[object]. 任何在 #\ 后面的单个字符[character]都会正常工作, 甚至那些对于 read 通常是非常特殊的字符, 例如左圆括号[left-parenthesis]和右圆括号[right-parenthesis].
 
-在单字符情况下, x 后面必须跟着一个非构成字符. 在 #\ 被读取之后, 读取器退到斜线前然后开始读取一个token, 把最初的斜线作为单转义字符 (不管它是否真的在当前的读取表里).
+在单字符[character]情况下, x 后面必须跟着一个非成分字符[character]. 在 #\ 被读取之后, 读取器备份<!--TODO back up over ??-->斜线[slash]然后开始读取一个标记[token], 把最初的斜线[slash]作为单转义[single escape]字符[character] (不管它在当前读取表[current readtable]里是否为单转义字符).
 
-当这个 token 不止一个字符长度时, 这个 x 必须有着符号的语法, 并且其中没有包标记符. 在这种情况下, 这个井号反斜线标记被解析为名为 (string-upcase x) 的字符; 见章节 13.1.7 (Character Names).
+当这个标记[token]不止一个字符[character]长度时, 这个 x 必须有着符号[symbol]的语法, 并且其中没有内嵌的包标记[package marker]. 在这种情况下, 这个井号[sharpsign]反斜线[backslash]标记被解析为名为 (string-upcase x) 的字符[character]; 见章节 13.1.7 (字符的名字).
 
-关于Lisp打印器如何打印字符对象的信息, 见章节 22.1.3.2 (Printing Characters). 
+关于 Lisp 打印器[Lisp printer]如何打印字符[character]对象[object]的信息, 见章节 22.1.3.2 (打印字符). 
 
 #### 2.4.8.2 <span id = "SharpsignSingleQuote">井号单引号(#')</span>
 
-任何前面有 #' (井号后面是单引号) 的表达式, 就像 #'expression, 被Lisp 读取器[Lisp reader]当作是一个缩写并且解释为表达式 (function expression). 见 function. 比如,
+任何前面有 #' (井号[sharpsign]后面是单引号[single-quote]) 的表达式, 就像 #'expression, 被 Lisp 读取器[Lisp reader]当作是一个缩写并且解释为表达式[expression] (function expression). 见 function. 比如,
 
 ```LISP
 (apply #'+ l) ==  (apply (function +) l)
@@ -1014,9 +1015,9 @@ Figure 2-19. 标准 # 分派宏字符语法
 
 #### 2.4.8.3 <span id = "SharpsignLeftParenthesis">井号左括号(#()</span>
 
-\#( and ) 被用于表示一个简单序列.
+#( 和 ) 被用于表示一个简单向量[simple vector].
 
-如果一个无符号十进制整数出现在 # 和 ( 中间, 它明确指明这个序列的长度. 如果在结束的 ) 之前的对象数超过那个无符号十进制整数, 结果是无法预料的. 在结束的 ) 之前提供的对象数量如果小于那个无符号十进制整数大于0那么最后一个对象被用于填充这个序列的剩余部分. 如果这个无符号十进制整数是非空的但是在结束的 ) 之前提供的对象数是0那么结果是未定义的. 比如,
+如果一个无符号十进制整数出现在 # 和 ( 中间, 它明确指明这个向量[vector]的长度. 如果在结束的 ) 之前的对象[object]数超过那个无符号十进制整数, 后果是未定义的. 在结束的 ) 之前提供的对象[object]数量如果小于那个无符号十进制整数大于 0 那么最后一个对象[object]被用于填充这个向量[vector]的剩余部分. 如果这个无符号十进制整数是非零的但是在结束的 ) 之前提供的对象[object]数是 0 那么结果是未定义的. 比如,
 
 ```LISP
 #(a b c c c c)
@@ -1025,7 +1026,7 @@ Figure 2-19. 标准 # 分派宏字符语法
 #6(a b c c)
 ```
 
-都意味着同样的东西: 一个长度为6的序列, 其中有a, b, 和4个 c 作为其中的元素. 其他例子如下:
+都意味着同样的东西: 一个长度为 6 的向量, 带有 a, b, 和 4 个 c 元素[element]. 其他例子如下:
 
 ```LISP
 #(a b c)               ;A vector of length 3
@@ -1034,25 +1035,25 @@ Figure 2-19. 标准 # 分派宏字符语法
 #()                    ;An empty vector
 ```
 
-标记 #() 表示一个空序列, 就像 #0().
+标记 #() 表示一个空向量, 就像 #0().
 
-关于Lisp打印器如何打印序列的信息, 见章节 22.1.3.4 (Printing Strings), 章节 22.1.3.6 (Printing Bit Vectors), 或章节 22.1.3.7 (Printing Other Vectors). 
+关于 Lisp 打印器[Lisp printer]如何打印向量的信息, 见章节 22.1.3.4 (打印字符串), 章节 22.1.3.6 (打印位向量), 或章节 22.1.3.7 (打印其他向量). 
 
 #### 2.4.8.4 <span id = "SharpsignAsterisk">井号星号(#*)</span>
 
 语法: #*<\<bits>>
 
-一个简单的包含指定的位 (0's 和 1's) 的位序列会被构建, 其中最左边的位索引为 0 并且后面的位有增长的索引.
+构造一个包含指定的位 (0's 和 1's) 的简单位向量[simple bit vector], 其中最左边的位索引为 0 并且后面的位有着递增的索引.
 
 语法: #<\<n>>*<\<bits>>
 
-带有一个参数 n, 这个要创建的序列的长度是 n. 如果位数少于 n 但是大于 0, 那么最后一位会被用于填充这个位序列的剩余部分.
+带有一个参数 n, 那么这个要创建的向量的长度是 n. 如果位的数量少于 n 但是大于 0, 那么最后一位会被用于填充这个位向量[bit vector]的剩余部分.
 
-标记 #* 和 #0* 每个都表示一个空的位序列.
+标记 #* 和 #0* 每个都表示一个空的位向量[bit vector].
 
-不管是否提供那个可选的参数 n,星号后面的token会被正常的token分隔符来分割. 然而, (除非 \*read-suppress* 的值是 true) 如果这个token不是完全由 0 和 1 组成, 或者如果提供了 n 但是位数却大于 n 位, 或者 n 大于等于 1, 但是没有提供元素, 都会发出一个 reader-error 类型的错误. 单转义字符和多转义字符都不允许出现在这个token里.
+不管是否提供那个可选的参数 n, 星号[asterisk]后面的标记[token]会被正常的标记[token]分隔符来分割. 然而, 如果这个标记[token]不是完全由 0 和 1 组成, 或者如果提供了 n 但是位的数量却大于 n 位, 或者 n 大于 1, 但是没有提供位元素, 都会发出一个 reader-error 类型[type]的错误 (除非 \*read-suppress* 的值[value]是 true). 单转义字符[single escape]和多转义字符[multiple escape]都不允许出现在这个标记[token]里.
 
-关于Lisp打印器如何打印位字符的信息, 见章节 22.1.3.6 (Printing Bit Vectors).
+关于 Lisp 打印器[Lisp printer]如何打印位向量[bit vector]的信息, 见章节 22.1.3.6 (打印位向量).
 
 ##### 2.4.8.4.1 井号星号的示例
 
@@ -1065,7 +1066,7 @@ Figure 2-19. 标准 # 分派宏字符语法
 #6*1011
 ```
 
-都意味着相同的东西: 一个长度6的序列, 带有元素 1, 0, 1, 1, 1, 和 1.
+都意味着相同的东西: 一个长度 6 的向量, 带有元素[element] 1, 0, 1, 1, 1, 和 1.
 
 比如:
 
@@ -1077,32 +1078,32 @@ Figure 2-19. 标准 # 分派宏字符语法
 
 语法: #:<\<symbol-name>>
 
-\#: 引入一个名字为 symbol-name 的未拘留的符号. 每次遇到这个语法, 会创建一个不同的未拘留的符号. 这个 symbol-name 必须有符号的语法并且没有包标记符.
+\#: 引入一个名字[name]为 symbol-name 的未捕捉[uninterned]的符号[symbol]. 每次遇到这个语法, 会创建一个不同[distinct]的未拘留[uninterned]符号[symbol]. 这个 symbol-name 必须有符号[symbol]的语法并且没有包前缀[package prefix].
 
-关于Lisp 读取器[Lisp reader]如何打印未拘留的符号, 见章节 22.1.3.3 (Printing Symbols). 
+关于 Lisp 读取器[Lisp reader]如何打印未拘留[uninterned]符号[symbol], 见章节 22.1.3.3 (打印符号). 
 
 #### 2.4.8.6 <span id = "SharpsignDot">井号点(#.)</span>
 
-\#.foo 被读取为 foo 表示的对象求值的结果. 当读取到 #. 标记, 求值会在读取过程中完成. 因此这个 #. 语法执行了一个 foo 的读取时求值.
+\#.foo 被读取为 foo 表示的对象[object]求值产生的对象[object]. 当读取到这个 #. 标记时, 求值会在 read 过程中完成. 因此这个 #. 语法执行了一个 foo 的读取时求值.
 
-当 \*read-eval* 是 false 时, 这个 #. 正常的影响会被抑制. 在这个情况下, 会发出一个 reader-error 类型的错误.
+当 \*read-eval* 的值[value]是 false 时, 这个 #. 正常的影响会被抑制. 在这个情况下, 会发出一个 reader-error 类型[type]的错误.
 
-对于一个没有适当的打印表示的对象, 计算对象的表达式形式可以使用符号 #. 表示. 
+对于一个没有适当的打印表示的对象[object], 一个计算这个对象[object]的表达式形式[form]可以使用符号 #. 来给定. 
 
 #### 2.4.8.7 <span id = "SharpsignB">井号B(#B)</span>
 
-\#Brational 读取二进制有理数. 比如,
+\#Brational 用二进制(基数 2)读取有理数 rational. 比如,
 
 ```LISP
 #B1101 ==  13 ;11012
 #b101/11 ==  5/3
 ```
 
-如果紧跟这个 #B 的 token没有二进制的语法, 那么结果是未定义的. 
+如果紧跟这个 #B 的标记没有二进制(换句话说, 基数 2)有理数[rational]的语法, 那么结果是未定义的. 
 
 #### 2.4.8.8 <span id = "SharpsignO">井号O(#O)</span>
 
-\#Orational 读取八进制有理数. 比如,
+\#Orational 用八进制(基数 8)读取有理数 rational. 比如,
 
 ```LISP
 #o37/15 ==  31/13
@@ -1110,26 +1111,26 @@ Figure 2-19. 标准 # 分派宏字符语法
 #o105 ==  69 ;1058
 ```
 
-如果紧跟在 #O 后的token没有八进制有理数的语法, 结果是未定义的. 
+如果紧跟在 #O 后的标记没有八进制(换句话说, 基数 8)有理数[rational]的语法, 结果是未定义的. 
 
 #### 2.4.8.9 <span id = "SharpsignX">井号X(#X)</span>
 
-\#Xrational 读取十六进制有理数. 在 9 之上的数字是字母 A 到 F (小写字母 a 到 f 也是可接受的). 比如,
+\#Xrational 用十六进制(基数 16)读取有理数. 在 9 之上的数字是字母 A 到 F (小写字母 a 到 f 也是可接受的). 比如,
 
 ```LISP
 #xF00 ==  3840             
 #x105 ==  261 ;10516
 ```
 
-如果紧跟着 #X 的token没有十六进制有理数的语法, 那么结果是未定义的. 
+如果紧跟着 #X 的标记没有十六进制(换句话说, 基数 16)有理数[rational]的语法, 那么结果是未定义的. 
 
 #### 2.4.8.10 <span id = "SharpsignR">井号R(#R)</span>
 
 \#nR
 
-\#radixRrational 根据指定的进制来读取有理数. 进制必须是十进制有理数的整数; 它的值必须在 2 和 36 (包括)之间. 只有指定的进制中合法的数字可以被使用.
+\#radixRrational 根据指定的进制 radix 来读取有理数 rational. 进制 radix 必须是由解释为十进制整数[integer]的数字组成; 它的值必须在 2 和 36 (包括)之间. 只有指定的进制中合法的数字可以被使用.
 
-比如, #3r102 是另一种写 11(十进制) 的方式, 并且 #11R32 是写 35(十进制) 的另一种方式. 对于进制数大于 10, 字母表中的字母按顺序被用于 9 之后的进制. 对于十进制数没有替代的 # 表示法.
+比如, #3r102 是另一种编写 11(十进制) 的方式, 并且 #11R32 是写 35(十进制) 的另一种方式. 对于大于 10 的进制数, 字母表中的字母依次被用于 9 之后的进制. 由于一个小数点就足够了, 不存在替代十进制数的 # 表示法.
 
 下一段包括了 #B, #O, #X, 和 #R 的使用.
 
@@ -1146,15 +1147,15 @@ Figure 2-19. 标准 # 分派宏字符语法
 #xACCEDED    ;181202413, in hexadecimal radix     
 ```
 
-Figure 2-20. 进制指示器的例子
+Figure 2-20. 进制指示符的示例
 
-如果跟在 #nR 后的token不满足 n 进制有理数的语法, 结果是未定义的. 
+如果跟在 #nR 后的标记不满足 n 进制有理数[rational]的语法, 结果是未定义的. 
 
 #### 2.4.8.11 <span id = "SharpsignC">井号C(#C)</span>
 
-\#C 读取一个跟在后面的对象, 这个对象必须是一个长度为 2 且其中的元素都是实数的列表. 这两个实数分别表示一个复数的实部和虚部. 如果这两部分不是相同的数据类型, 那么它们会根据章节 12.1.1.2 (Contagion in Numeric Operations) 描述的浮点数转换的规则被转换.
+\#C 读取一个跟在后面的对象[object], 这个对象必须是一个长度为 2 且其中的元素[element]都是实数的列表[list]. 这两个实数分别表示一个复数[complex]的实部和虚部. 如果这两部分不是相同的数据类型, 那么它们会根据章节 12.1.1.2 (数值运算的传递性) 描述的浮点数传递的规则被转换.
 
-\#C(real imag) 等价于 #.(complex (quote real) (quote imag)), 除了这个 #C 不会被 \*read-eval* 影响. See the function complex.
+\#C(real imag) 等价于 #.(complex (quote real) (quote imag)), 除了这个 #C 不会被 \*read-eval* 影响. 见函数[function] complex.
 
 下一段中包含了 #C 的使用示例.
 
@@ -1167,42 +1168,36 @@ Figure 2-20. 进制指示器的例子
 
 Figure 2-21. 复数示例
 
-关于更多信息, 见章节 22.1.3.1.4 (打印复数) 和章节 2.3.2.3 (Syntax of a Complex). 
+关于更多信息, 见章节 22.1.3.1.4 (打印复数) 和章节 2.3.2.3 (复数的语法). 
 
 #### 2.4.8.12 <span id = "SharpsignA">井号A(#A)</span>
 
 \#nA
 
-\#nAobject 构建一个n维数组, 使用 object 作为 :initial-contents 参数的值调用 make-array.
+\#nAobject 构建一个 n 维数组[array], 使用 object 作为 :initial-contents 参数的值调用 make-array.
 
-比如, #2A((0 1 5) (foo 2 (hot dog))) 表示一个 2-by-3 矩阵:
+比如, #2A((0 1 5) (foo 2 (hot dog))) 表示一个 2×3 矩阵:
 
-```
-0       1       5
-foo     2       (hot dog)
-```
+    0       1       5
+    foo     2       (hot dog)
 
-相对的, #1A((0 1 5) (foo 2 (hot dog))) 表示一个长度 2 的序列, 其中的元素是列表:
+相对的, #1A((0 1 5) (foo 2 (hot dog))) 表示一个长度[length] 2 的向量[vector], 其中的元素[element]是列表[list]:
 
-```LISP
-(0 1 5) (foo 2 (hot dog))
-```
+    (0 1 5) (foo 2 (hot dog))
 
-\#0A((0 1 5) (foo 2 (hot dog))) 表示一个0维数组, 其中其中仅有的元素是一个列表:
+\#0A((0 1 5) (foo 2 (hot dog))) 表示一个 0 维数组[array], 其中其中仅有的元素是一个列表[list]:
 
-```LISP
-((0 1 5) (foo 2 (hot dog)))
-```
+    ((0 1 5) (foo 2 (hot dog)))
 
-\#0A foo 表示一个0维数组, 其中仅有的元素是 foo. 这个 #1A foo 标记是非法的因为 foo 不是一个序列.
+\#0A foo 表示一个 0 维数组[array], 其中仅有的元素是符号[symbol] foo. 这个 #1A foo 标记是非法的因为 foo 不是一个序列[sequence].
 
-如果一些数组的维度表示被解析为0, 所有的维度 (也就是说, 更高的维度) 也被认为是 0.
+如果这个表示要被解析的数组[array]的某个容积[dimension]被发现是 0, 所有右边的容积[dimension] (也就是说, 更高的容积[dimension]) 也被认为是 0.
 
-关于Lisp打印器如何打印数组的信息, 见章节 22.1.3.4 (Printing Strings), Section 22.1.3.6 (Printing Bit Vectors), Section 22.1.3.7 (Printing Other Vectors), 或者 Section 22.1.3.8 (Printing Other Arrays). 
+关于 Lisp 打印器[Lisp printer]如何打印数组[array]的信息, 见章节 22.1.3.4 (打印字符串), 章节 22.1.3.6 (打印位向量), 章节 22.1.3.7 (打印其他向量), 或者 章节 22.1.3.8 (打印其他数组). 
 
 #### 2.4.8.13 <span id = "SharpsignS">井号S(#S)</span>
 
-\#s(name slot1 value1 slot2 value2 ...) 表示一个结构. 如果 name 是一个 defstruct 已经定义的结构的名字 并且如果这个结构的类型有标准构造函数, 这也是有效的. 让 cm 成为这个构造器函数的 name; 那么这个语法等价于
+\#s(name slot1 value1 slot2 value2 ...) 表示一个结构体[structure]. 只有当 name 是一个 defstruct 已经定义的结构体[structure]类型[type]的名字并且这个结构体[structure]类型[type]有标准构造函数, 这个才是有效的. 让 cm 成为这个构造器函数的 name; 那么这个语法等价于
 
 ```LISP
 #.(cm keyword1 'value1 keyword2 'value2 ...)
@@ -1214,31 +1209,31 @@ foo     2       (hot dog)
 (intern (string slotj) (find-package 'keyword))
 ```
 
-其净效果是构造器函数被调用, 其中指定的槽具有指定的值. (这个强制特性被弃用; 在未来, keyword 的名字将会在他们被读入的包中被取出, 因此如果这是需要的, 那么实际上在 KEYWORD 包中的符号应该被使用.)
+其净效果是用带有指定的值的指定的槽调用构造器函数. (这个强制特性被弃用; 在未来, 关键字的名字将会取自它们被读入的包, 因此如果希望如此, 那么实际上在 KEYWORD 包中的符号[symbol]应该被使用.)
 
-无论构造器函数返回的是什么对象都会通过 #S 语法.
+无论构造器函数返回的是什么对象[object]都会被 #S 语法返回.
 
-关于Lisp打印器如何打印结构信息, 见章节 22.1.3.12 (Printing Structures). 
+关于 Lisp 打印器[Lisp printer]如何打印结构体[structure]信息, 见章节 22.1.3.12 (打印结构体). 
 
 #### 2.4.8.14 <span id = "SharpsignP">井号P(#P)</span>
 
-\#P 读取后面的对象, 它必须是一个字符串.
+\#P 读取后面的对象[object], 它必须是一个字符串[string].
 
 \#P<\<expression>> 等价于 #.(parse-namestring '<\<expression>>), 除了 #P 不受 \*read-eval* 影响.
 
-关于Lisp打印器如何打印一个路径名的信息, 见章节 22.1.3.11 (Printing Pathnames). 
+关于 Lisp 打印器[Lisp printer]如何打印一个路径名[pathname]的信息, 见章节 22.1.3.11 (打印路径名). 
 
 #### 2.4.8.15 <span id = "SharpsignEqualSign">井号等号(#=)</span>
 
 \#n=
 
-\#n=object 读取这个对象无论它是否是他的打印表示. 但是, 该对象是由n所标记的, 这是一个必需的无符号小数, 可以通过语法 #n# 进行引用. 这个标记的作用域是被读取的最外面调用的表达式; 这个表达式里, 相同的标记可能不会出像第二次. 
+\#n=object 就像读取有着对象 object 作为打印表示的对象. 但是, 该对象[object]是由一个必要的无符号十进制整数 n 所标记的, 为了可以通过语法 #n# 进行引用. 这个标记的作用域是被最外面对 read 的调用所读取的表达式[expression]; 这个表达式[expression]里, 相同的标记可能不会出像第二次. 
 
 #### 2.4.8.16 <span id = "SharpsignSharpsign">井号井号(##)</span>
 
 \#n#
 
-\#n#, 其中的 n 是一个必须的无符号整数, 提供一个对 #n= 标记的对象的引用; 这就是说, #n# 表示一个指向 #n= 标记的对象相同 (eq) 对象的指针. 比如, 变量 y 的结构会被这个代码创建出来:
+\#n#, 其中的 n 是一个必要的无符号十进制整数[integer], 提供一个对 #n= 标记的某个对象[object]的引用; 这就是说, #n# 表示一个指向和 #n= 标记的对象相同 (eq) 对象的指针. 比如, 被下面这个代码创建出来的变量 y 中的结构:
 
 ```LISP
 (setq x (list 'p 'q))
@@ -1248,45 +1243,39 @@ foo     2       (hot dog)
 
 可以通过以下方式表示:
 
-```LISP
-((a b) . #1=(#2=(p q) foo #2# . #1#))
-```
+    ((a b) . #1=(#2=(p q) foo #2# . #1#))
 
-在这种表示下,如果 \*print-length* 设置为 10 并且 \*print-circle* 设置为 nil, 结构会被以下面方式打印:
+不用这个标记, 如果 \*print-length* 设置为 10 并且 \*print-circle* 设置为 nil, 结构会被以下面方式打印:
 
-```LISP
-((a b) (p q) foo (p q) (p q) foo (p q) (p q) foo (p q) ...)
-```
+    ((a b) (p q) foo (p q) (p q) foo (p q) (p q) foo (p q) ...)
 
-一个 #n# 引用可能只出现在一个 #n= 标记后; 超前的引用是不允许的. 这个引用可能不会出现在这个对象自身的标记中 (就是说, #n=#n#) 因为这个 #n= 标记的对象在这个情况下还没有被定义好. 
+一个 #n# 引用可能只出现在一个 #n= 标记后; 超前的引用是不允许的. 这个引用可能不会出现在这个对象自身的标记中 (就是说, #n=#n#) 可能不会被写入因为这个 #n= 标记的对象[object]在这个情况下还没有被定义好. <!--TODO 断句有疑问-->
 
 #### 2.4.8.17 <span id = "SharpsignPlus">井号加号(#+)</span>
 
-\#+ 提供一个读取时条件化机制; 语法是 #+test expression. 如果这个特性 expression 测试成功, 那么这个文本标记表述一个打印表示是一个表达式的对象. 如果这个特性 expression 测试失败, 那么这个文本的标记就当作空白字符对待; 这就是说, 就好象 ``#+ test expression'' 不会出现并且只有一个空格出现在它的位置.
+\#+ 提供一个读取时条件化机制; 语法是 #+test expression. 如果这个特性表达式[feature expression] test 成功, 那么这个文本标记表示一个打印表示是表达式 expression 的对象[object]. 如果这个特性表达式[feature expression] test 失败, 那么这个文本的标记就当作空白字符[whitespace[2]]对待; 这就是说, 就好象 "#+ test expression" 没有出现而只有一个空格出现在它的位置.
 
-关于这个特性表达式测试的成功与否的详细描述, 见章节 24.1.2.1 (Feature Expressions).
+关于这个特性表达式[feature expression]的成功与否的详细描述, 见章节 24.1.2.1 (特性表达式).
 
-#+ 通过第一次读取这个特性表达式时操作并且如果测性表达式测试失败就会跳回这个表达式. 读取这个 test 时, 当前包是 KEYWORD 包. 跳过这个表达式形式是通过将 \*read-suppress* 绑定到 true 然后调用 read 来完成的.
+\#+ 通过首先读取这个特性表达式[feature expression]然后如果测性表达式[feature expression]失败就会跳过这个表达式形式来操作的. 读取这个 test 时, 当前包[current package]是 KEYWORD 包. 跳过这个表达式形式是通过将 \*read-suppress* 绑定[binding]到真[true]然后调用 read 来完成的.
 
-关于示例, 见章节 24.1.2.1.1 (Examples of Feature Expressions). 
+关于示例, 见章节 24.1.2.1.1 (特性表达式的示例). 
 
 #### 2.4.8.18 <span id = "SharpsignMinus">井号减号(#-)</span>
 
-\#- 就像 #+ 除了它会在那个测试正确是跳过这个表达式; 也就是说,
+\#- 就像 #+ 除了它会在那个 test 正确时跳过这个表达式 expression; 也就是说,
 
-```LISP
-#-test expression ==  #+(not test) expression
-```
+    #-test expression ==  #+(not test) expression
 
-关于示例, 见章节 24.1.2.1.1 (Examples of Feature Expressions). 
+关于示例, 见章节 24.1.2.1.1 (特性表达式的示例). 
 
 #### 2.4.8.19 <span id = "SharpsignVerticalBar">井号竖线(#|)</span>
 
-\#|...|# 被读取器当作是一个注释. 它必须与 #| 和 |# 的出现保持平衡, 但是除此之外, 它可能包含任何字符.
+\#|...|# 被读取器当作是一个注释. 它必须与 #| 和 |# 的其他出现保持平衡, 但是除此之外, 它可能包含任何字符.
 
-##### 2.4.8.19.1 竖线的示例
+##### 2.4.8.19.1 井号竖线的示例
 
-The following are some examples that exploit the #|...|# notation:
+下面是利用 #|...|# 标记的一些示例:
 
 ```LISP
 ;;; In this example, some debugging code is commented out with #|...|#
@@ -1347,7 +1336,7 @@ The following are some examples that exploit the #|...|# notation:
 
 ##### 2.4.8.19.2 井号竖线风格的注意事项
 
-一些声称理解 Lisp 语法的文本编辑器把任何 |...| 作为不能嵌套的对称对 (就像它们只是对使用在标注符号的多转义字符对做了对称). 为了弥补这一缺陷, 一些程序员使用 #||...#||...||#...||# 而不是 #|...#|...|#...|#. 注意这个替代方式并不是一个不同的读取器宏; 它只是利用了额外的垂直条在注释中出现的事实, 这一方法可以让特定的文本编辑器以更好地支持嵌套的注释. 像这样, 一个可能的代码:
+一些声称理解 Lisp 语法的文本编辑器把任何 |...| 作为不能嵌套的对称对 (就像它们只是被用于标注特定符号的多转义字符的平衡对). 为了弥补这一缺陷, 一些程序员使用 #||...#||...||#...||# 而不是 #|...#|...|#...|#. 注意这个替代方式并不是一个不同的读取器宏[reader macro]; 它只是利用了额外的竖线以一种欺骗特定文本编辑器来更好地支持嵌套注释的方式出现在注释中的事实. 像这样, 一个可能的代码:
 
 ```LISP
 #|| (+ #|| 3 ||# 4 5) ||# 
@@ -1361,21 +1350,21 @@ The following are some examples that exploit the #|...|# notation:
 
 #### 2.4.8.20 <span id = "SharpsignLessThanSign">井号小于号(#<)</span>
 
-\#< 不是一个合法的读取器语法. Lisp 读取器[Lisp reader]在遇到 #< 时会发出一个 reader-error 类型的错误. 这个语法通常被用于不能被读回的对象的打印表示. 
+\#< 不是一个合法的读取器语法. Lisp 读取器[Lisp reader]在遇到 #< 时会发出一个 reader-error 类型[type]的错误. 这个语法通常被用于不能被读回的对象[object]的打印表示. 
 
 #### 2.4.8.21 <span id = "SharpsignWhitespace">井号空格(# )</span>
 
-\# 后面紧跟空格键不是一个合法的读取器宏. 如果Lisp 读取器[Lisp reader]遇到 #<Newline> 或 #<Space> 会发出一个 reader-error 类型的错误. 
+\# 后面紧跟空白字符[whitespace[1]]不是一个合法的读取器宏. 如果 Lisp 读取器[Lisp reader]遇到 #<Newline> 或 #<Space> 读取器宏标记会发出一个 reader-error 类型[type]的错误. 
 
 #### 2.4.8.22 <span id = "SharpsignRightParenthesis">井号右括号(#))</span>
 
 这不是一个合法的读取器语法.
 
-如果Lisp 读取器[Lisp reader]遇到一个 #) 会发出一个 reader-error 类型的错误. 
+如果 Lisp 读取器[Lisp reader]遇到一个 #) 会发出一个 reader-error 类型[type]的错误. 
 
 ### 2.4.9 <span id = "ReReadingAbbreviatedExpressions">重复读取缩写的表达式</span>
 
-注意, 当读取一个由于 \``..'', \``...'', \``#'' 后面跟着空格和 \``#)'' 长度或级别 (见 \*print-level\*, \*print-length\*, 和 \*print-lines\*) 限制而被简化的表达式时, Lisp 读取器[Lisp reader]通常会发出一个 reader-error 类型的错误. 
+注意, 当读取一个由于 "..", "...", "#" 后面跟着空白字符[whitespace[1]]以及 "#)" 的约束而长度或层级限制(见 \*print-level\*, \*print-length\*, 和 \*print-lines\*)而被简化的表达式[expression[2]]时, Lisp 读取器[Lisp reader]通常会发出一个 reader-error 类型[type]的错误. 
 
 
 
