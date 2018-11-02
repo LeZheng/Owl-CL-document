@@ -91,9 +91,9 @@ after method n. a method having the qualifier :after.
 
 alist ['ay,list], n. an association list.
 
-alphabetic n., adj. 1. adj. (of a character) being one of the standard characters A through Z or a through z, or being any implementation-defined character that has case, or being some other graphic character defined by the implementation to be alphabetic[1]. 2. a. n. one of several possible constituent traits of a character. For details, see Section 2.1.4.1 (Constituent Characters) and Section 2.2 (Reader Algorithm). b. adj. (of a character) being a character that has syntax type constituent in the current readtable and that has the constituent trait alphabetic[2a]. See Figure 2-8.
+**alphabetic** n., adj. 1. adj. (一个字符[character]的) 是标准字符[standard character] A 到 Z 或 a 到 z 的一个, 或者是任何具体实现定义的[implementation-defined]有着大小写[case]的字符, 或者是某个其他的由具体实现[implementation]定义为字母的[alphabetic[1]]的图形[graphic]字符[character]. 2. a. n. 一个字符的几种标记成分特质[constituent trait]中的一个. 关于详情, 见章节 2.1.4.1 (标记成分字符) 和章节 2.2 (读取器算法). b. adj. (一个字符[character]的) 是一个在当前读取表中有着标记成分[constituent]语法类型[syntax type]并且有着标记成分特质[constituent trait]字母[alphabetic[2a]]的字符. 见 Figure 2-8.
 
-alphanumeric adj. (of a character) being either an alphabetic[1] character or a numeric character.
+**alphanumeric** adj. (一个字符[character]的) 是一个字母[alphabetic[1]]字符[character]或一个数值[numeric]字符.
 
 ampersand n. the standard character that is called ``ampersand'' (&). See Figure 2-5.
 
@@ -185,7 +185,7 @@ boolean n. an object of type boolean; that is, one of the following objects: the
 
 boolean equivalent n. (of an object O1) any object O2 that has the same truth value as O1 when both O1 and O2 are viewed as generalized booleans.
 
-bound adj., v.t. 1. adj. having an associated denotation in a binding. ``The variables named by a let are bound within its body.'' See unbound. 2. adj. having a local binding which shadows[2] another. ``The variable *print-escape* is bound while in the princ function.'' 3. v.t. the past tense of bind.
+**bound** adj., v.t. 1. adj. 在一个绑定[binding]中有一个关联的表示. "这些由一个 let 命名的变量在它的主体中是被绑定的(The variables named by a let are bound within its body)". 见未绑定的[unbound]. 2. adj. 有着一个遮蔽[shadows[2]]另一个的局部绑定[binding]. "在 princ 函数中时, 变量 \*print-escape* 是被绑定的(The variable \*print-escape* is bound while in the princ function)". 3. v.t. 绑定[bind]的过去时态.
 
 bound declaration n. a declaration that refers to or is associated with a variable or function and that appears within the special form that establishes the variable or function, but before the body of that special form (specifically, at the head of that form's body). (If a bound declaration refers to a function binding or a lexical variable binding, the scope of the declaration is exactly the scope of that binding. If the declaration refers to a dynamic variable binding, the scope of the declaration is what the scope of the binding would have been if it were lexical rather than dynamic.)
 
@@ -231,7 +231,7 @@ cdr ['k,duhr], n. 1. a. (of a cons) the component of a cons corresponding to the
 
 cell n. Trad. (of an object) a conceptual slot of that object. The dynamic variable and global function bindings of a symbol are sometimes referred to as its value cell and function cell, respectively.
 
-character n., adj. 1. n. an object of type character; that is, an object that represents a unitary token in an aggregate quantity of text; see Section 13.1 (Character Concepts). 2. adj. a. (of a stream) having an element type that is a subtype of type character. The most fundamental operation on a character input stream is read-char and on a character output stream is write-char. See binary. b. (of a file) having been created by opening a character stream. (It is implementation-dependent whether this is an inspectable aspect of the file, or whether any given binary file can be treated as a character file.)
+**character** n., adj. 1. n. 一个 character 类型[type]的对象[object]; 这也就是说, 一个表示一个文本的聚合总量中的单一标记; 见章节 13.1 (字符概念). 2. adj. a. (一个流[stream]的) 有着一个是 character 类型[type]的子类型[subtype]的元素类型[element type]. 在一个字符[character]输入[input]流[stream]上最基本的操作是 read-char 而在一个字符[character]输出[output]流[stream]上是 write-char. 见二进制[binary]. b. (一个文件[file]的) 已经通过打开一个字符[character]流[stream]来创建了. (这个是否是这个文件[file]的可检查方面, 或者任何给定的二进制[binary]文件[file]是否可以被当作一个字符[character]文件[file]是依赖于具体实现的[implementation-dependent].)
 
 character code n. 1. one of possibly several attributes of a character. 2. a non-negative integer less than the value of char-code-limit that is suitable for use as a character code[1].
 
@@ -369,7 +369,7 @@ current pprint dispatch table n. (in a dynamic environment) the pprint dispatch 
 
 current random state n. (in a dynamic environment) the random state that is the value of *random-state* in that environment, and that is the default random state employed by random.
 
-current readtable n. (in a dynamic environment) the readtable that is the value of *readtable* in that environment, and that affects the way in which expressions[2] are parsed into objects by the Lisp reader. 
+**current readtable** n. (在一个动态环境[dynamic environment]中) 那个环境中作为 \*readtable* 的值的读取表, 并且影响着表达式[expressions[2]]被 Lisp 读取器[Lisp reader]解析为对象[object]的方式. 
 
 
 D
@@ -462,7 +462,7 @@ dynamic extent n. an extent whose duration is bounded by points of establishment
 
 dynamic scope n. indefinite scope along with dynamic extent.
 
-dynamic variable n. a variable the binding for which is in the dynamic environment. See special. 
+**dynamic variable** n. 一个变量[variable], 它的绑定[binding]是在动态环境[dynamic environment]中的. 见 special. 
 
 
 E
@@ -538,7 +538,7 @@ expressed array element type n. (of an array) the type which is the array elemen
 
 expressed complex part type n. (of a complex) the type which is implied as the complex part type by a type declaration for the complex, or which is the requested complex part type at its time of creation, prior to any selection of an upgraded complex part type. (Common Lisp does not provide a way of detecting this type directly at run time, but an implementation is permitted to make assumptions about the operations which may be performed on the complex when this type is noted during code analysis, even if those assumptions would not be valid in general for the upgraded complex part type of the expressed complex part type.)
 
-expression n. 1. an object, often used to emphasize the use of the object to encode or represent information in a specialized format, such as program text. ``The second expression in a let form is a list of bindings.'' 2. the textual notation used to notate an object in a source file. ``The expression 'sample is equivalent to (quote sample).''
+**expression** n. 1. 一个对象[object], 经常用于强调这个对象[object]的使用以一种专门的格式来编码或表示信息, 例如程序文本. "在一个 let 表达式形式中的第二个表达式是一个绑定列表(The second expression in a let form is a list of bindings)". 2. 用于表示一个源文件中的一个对象[object]的文本记号. "表达式 'sample 等价于 (quote sample)".
 
 expressly adjustable adj. (of an array) being actually adjustable by virtue of an explicit request for this characteristic having been made at the time of its creation. All arrays that are expressly adjustable are actually adjustable, but not necessarily vice versa.
 
@@ -701,7 +701,7 @@ identifier n. 1. a symbol used to identify or to distinguish names. 2. a string 
 
 immutable adj. not subject to change, either because no operator is provided which is capable of effecting such change or because some constraint exists which prohibits the use of an operator that might otherwise be capable of effecting such a change. Except as explicitly indicated otherwise, implementations are not required to detect attempts to modify immutable objects or cells; the consequences of attempting to make such modification are undefined. ``Numbers are immutable.''
 
-implementation n. a system, mechanism, or body of code that implements the semantics of Common Lisp.
+**implementation** n. 一个实现了 Common Lisp 的语义的系统, 机制, 或代码体.
 
 implementation limit n. a restriction imposed by an implementation.
 
@@ -737,7 +737,7 @@ inherit v.t. 1. to receive or acquire a quality, trait, or characteristic; to ga
 
 initial pprint dispatch table n. the value of *print-pprint-dispatch* at the time the Lisp image is started.
 
-initial readtable n. the value of *readtable* at the time the Lisp image is started.
+**initial readtable** n. Lisp 镜像[Lisp image]开始时 \*readtable* 的值[value].
 
 initialization argument list n. a property list of initialization argument names and values used in the protocol for initializing and reinitializing instances of classes. See Section 7.1 (Object Creation and Initialization).
 
@@ -825,11 +825,11 @@ lexical variable n. a variable the binding for which is in the lexical environme
 
 Lisp image n. a running instantiation of a Common Lisp implementation. A Lisp image is characterized by a single address space in which any object can directly refer to any another in conformance with this specification, and by a single, common, global environment. (External operating systems sometimes call this a ``core image,'' ``fork,'' ``incarnation,'' ``job,'' or ``process.'' Note however, that the issue of a ``process'' in such an operating system is technically orthogonal to the issue of a Lisp image being defined here. Depending on the operating system, a single ``process'' might have multiple Lisp images, and multiple ``processes'' might reside in a single Lisp image. Hence, it is the idea of a fully shared address space for direct reference among all objects which is the defining characteristic. Note, too, that two ``processes'' which have a communication area that permits the sharing of some but not all objects are considered to be distinct Lisp images.)
 
-Lisp printer n. Trad. the procedure that prints the character representation of an object onto a stream. (This procedure is implemented by the function write.)
+**Lisp printer** n. Trad. 打印一个对象[object]的字符表示到一个流[stream]的程序. (这个程序由函数[function] write 实现.)
 
 Lisp read-eval-print loop n. Trad. an endless loop that reads[2] a form, evaluates it, and prints (i.e., writes[2]) the results. In many implementations, the default mode of interaction with Common Lisp during program development is through such a loop.
 
-Lisp reader n. Trad. 从一个流(stream)中解析对象(object)的字符表示并产生对象(objects)的程序. (这个程序由函数 read 实现.)
+**Lisp reader** n. Trad. 从一个流[stream]中解析对象[object]的字符表示并产生对象[object]的程序. (这个程序由函数[function] read 实现.)
 
 list n. 1. a chain of conses in which the car of each cons is an element of the list, and the cdr of each cons is either the next link in the chain or a terminating atom. See also proper list, dotted list, or circular list. 2. the type that is the union of null and cons.
 
@@ -906,7 +906,7 @@ modified lambda list n. a list resembling an ordinary lambda list in form and pu
 
 most recent adj. innermost; that is, having been established (and not yet disestablished) more recently than any other of its kind.
 
-multiple escape n., adj. 1. n. the syntax type of a character that is used in pairs to indicate that the enclosed characters are to be treated as alphabetic[2] characters with their case preserved. For details, see Section 2.1.4.5 (Multiple Escape Characters). 2. adj. (of a character) having the multiple escape syntax type. 3. n. a multiple escape[2] character. (In the standard readtable, vertical-bar is a multiple escape character.)
+**multiple escape** n., adj. 1. n. 一个被成对使用的字符[character]的语法类型[syntax type], 来表示括起来的那些字符要被当作字母[alphabetic[2]]字符[character], 保留它们的大小写[case]. 关于详情, 见章节 2.1.4.5 (多转义字符). 2. adj. (一个字符[character]的) 有着多转义[multiple escape]语法类型[syntax type]. 3. n. 一个多转义[multiple escape[2]]字符[character]. (在标准读取表[standard readtable]中, 竖线[vertical-bar]是一个多转义[multiple escape]字符[character].)
 
 multiple values n. 1. more than one value. ``The function truncate returns multiple values.'' 2. a variable number of values, possibly including zero or one. ``The function values returns multiple values.'' 3. a fixed number of values other than one. ``The macro multiple-value-bind is among the few operators in Common Lisp which can detect and manipulate multiple values.'' 
 
@@ -921,7 +921,7 @@ namespace n. 1. bindings whose denotations are restricted to a particular kind. 
 
 namestring n. a string that represents a filename using either the standardized notation for naming logical pathnames described in Section 19.3.1 (Syntax of Logical Pathname Namestrings), or some implementation-defined notation for naming a physical pathname.
 
-newline n. the standard character <Newline>, notated for the Lisp reader as #\Newline.
+**newline** n. 标准字符[standard character] <Newline>, 为 Lisp 读取器[Lisp reader]表示为 #\Newline.
 
 next method n. the next method to be invoked with respect to a given method for a particular set of arguments or argument classes. See Section 7.6.6.1.3 (Applying method combination to the sorted list of applicable methods).
 
@@ -951,7 +951,7 @@ non-null lexical environment n. a lexical environment that has additional inform
 
 non-simple adj. not simple.
 
-non-terminating adj. (of a macro character) being such that it is treated as a constituent character when it appears in the middle of an extended token. See Section 2.2 (Reader Algorithm).
+non-terminating adj. (一个宏字符[macro character]的) 是这样的, 当它出现在一个扩展标记中时, 它会被当作一个标记成分字符[character]. 见章节 2.2 (读取器算法).
 
 non-top-level form n. a form that, by virtue of its position as a subform of another form, is not a top level form. See Section 3.2.3.1 (Processing of Top Level Forms).
 
@@ -970,7 +970,7 @@ numeric adj. (of a character) being one of the standard characters 0 through 9, 
 
 O
 
-object n. 1. any Lisp datum. ``The function cons creates an object which refers to two other objects.'' 2. (immediately following the name of a type) an object which is of that type, used to emphasize that the object is not just a name for an object of that type but really an element of the type in cases where objects of that type (such as function or class) are commonly referred to by name. ``The function symbol-function takes a function name and returns a function object.''
+**object** n. 1. 任何 Lisp 数据. "函数 cons 创建一个引用其他两个对象的对象(The function cons creates an object which refers to two other objects)". 2. (直接跟在一个类型[type]的名字后面) 一个那个类型[type]的对象[object], 被用于强调那个对象[object]不止是那个类型[type]的一个对象的名字[name], 并且在那个类型[type](例如 function 或 class)的对象[object]普遍通过名字[name]来引用的情况下是那个类型[type]的一个元素[element]. "函数 symbol-function 接收一个函数名并返回一个函数对象(The function symbol-function takes a function name and returns a function object)".
 
 object-traversing adj. operating in succession on components of an object. ``The operators mapcar, maphash, with-package-iterator and count perform object-traversing operations.''
 
@@ -1029,7 +1029,7 @@ portable adj. (of code) required to produce equivalent results and observable si
 
 potential copy n. (of an object O1 subject to constriants) an object O2 that if the specified constraints are satisfied by O1 without any modification might or might not be identical to O1, or else that must be a fresh object that resembles a copy of O1 except that it has been modified as necessary to satisfy the constraints.
 
-potential number n. A textual notation that might be parsed by the Lisp reader in some conforming implementation as a number but is not required to be parsed as a number. No object is a potential number---either an object is a number or it is not. See Section 2.3.1.1 (Potential Numbers as Tokens).
+**potential number** n. 一个文本标记, 可能在某个符合规范的实现[conforming implementation]中被 Lisp 读取器[Lisp reader]解析为一个数字[number], 但不是必须解析为一个数字[number]. 没有对象[object]是一个潜在数字[potential number]---一个对象[object]要么是一个数字[number]要么不是. 见章节 2.3.1.1 (潜在数字作为标记).
 
 pprint dispatch table n. an object that can be the value of *print-pprint-dispatch* and hence can control how objects are printed when *print-pretty* is true. See Section 22.2.1.4 (Pretty Print Dispatch Tables).
 
@@ -1127,9 +1127,9 @@ reader macro n. 1. a textual notation introduced by dispatch on one or two chara
 
 reader macro function n. a function designator that denotes a function that implements a reader macro[2]. See the functions set-macro-character and set-dispatch-macro-character.
 
-readtable n. an object of type readtable.
+**readtable** n. 一个 readtable 类型[type]的对象[object].
 
-readtable case n. an attribute of a readtable whose value is a case sensitivity mode, and that selects the manner in which characters in a symbol's name are to be treated by the Lisp reader and the Lisp printer. See Section 23.1.2 (Effect of Readtable Case on the Lisp Reader) and Section 22.1.3.3.2 (Effect of Readtable Case on the Lisp Printer).
+**readtable case** n. 一个读取表[readtable]的一个属性, 它的值是一个大小写敏感模式[case sensitivity mode], 并且它选择了一个符号[symbol]的名字[name]中的字符[character]会被 Lisp 读取器[Lisp reader]和 Lisp 打印器[Lisp printer]对待的方式. 见章节 23.1.2 (Lisp 读取器上的读取表大小写的影响) 和章节 22.1.3.3.2 (Lisp 打印器上读取表大小写的影响).
 
 readtable designator n. a designator for a readtable; that is, an object that denotes a readtable and that is one of: nil (denoting the standard readtable), or a readtable (denoting itself).
 
@@ -1141,7 +1141,7 @@ registered package n. a package object that is installed in the package registry
 
 relative adj. 1. (of a time) representing an offset from an absolute time in the units appropriate to that time. For example, a relative internal time is the difference between two absolute internal times, and is measured in internal time units. 2. (of a pathname) representing a position in a directory hierarchy by motion from a position other than the root, which might therefore vary. ``The notation #P"../foo.text" denotes a relative pathname if the host file system is Unix.'' See absolute.
 
-repertoire n., ISO a subtype of character. See Section 13.1.2.2 (Character Repertoires).
+**repertoire** n., ISO 一个 character 的子类型[subtype]. 见章节 13.1.2.2 (字符字元库).
 
 report n. (of a condition) to call the function print-object on the condition in an environment where the value of *print-escape* is false.
 
@@ -1263,7 +1263,7 @@ simple string n. a string of type simple-string.
 
 simple vector n. a vector of type simple-vector, sometimes called a ``simple general vector.'' Not all vectors that are simple are simple vectors---only those that have element type t.
 
-single escape n., adj. 1. n. the syntax type of a character that indicates that the next character is to be treated as an alphabetic[2] character with its case preserved. For details, see Section 2.1.4.6 (Single Escape Character). 2. adj. (of a character) having the single escape syntax type. 3. n. a single escape[2] character. (In the standard readtable, slash is the only single escape.)
+**single escape** n., adj. 1. n. 一个字符[character]的语法类型[syntax type], 表示下一个字符[character]被当作是字母[alphabetic[2]]字符[character], 保留它的大小写[case]. 关于详情, 见章节 2.1.4.6 (单转义字符). 2. adj. (一个字符[character]的) 有着单转义[single escape]语法类型[syntax type]. 3. n. 一个单转义[single escape[2]]字符[character]. (在标准读取表[standard readtable]中, 斜线[slash]是仅有的单转义[single escape].)
 
 single float n. an object of type single-float.
 
@@ -1319,9 +1319,9 @@ standard output n. the output stream which is the value of the dynamic variable 
 
 standard pprint dispatch table n. A pprint dispatch table that is different from the initial pprint dispatch table, that implements pretty printing as described in this specification, and that, unlike other pprint dispatch tables, must never be modified by any program. (Although the definite reference ``the standard pprint dispatch table'' is generally used within this document, it is actually implementation-dependent whether a single object fills the role of the standard pprint dispatch table, or whether there might be multiple such objects, any one of which could be used on any given occasion where ``the standard pprint dispatch table'' is called for. As such, this phrase should be seen as an indefinite reference in all cases except for anaphoric references.)
 
-standard readtable n. A readtable that is different from the initial readtable, that implements the expression syntax defined in this specification, and that, unlike other readtables, must never be modified by any program. (Although the definite reference ``the standard readtable'' is generally used within this document, it is actually implementation-dependent whether a single object fills the role of the standard readtable, or whether there might be multiple such objects, any one of which could be used on any given occasion where ``the standard readtable'' is called for. As such, this phrase should be seen as an indefinite reference in all cases except for anaphoric references.)
+**standard readtable** n. 一个区别[different]于初始读取表[initial readtable]的读取表[readtable], 它实现了这个规范中定义的表达式[expression]语法, 并且它不像其他读取表[readtable], 一定不能被任何程序所修改. (虽然明确的引用 "标准读取表[standard readtable]" 被普遍用于这个文档中, 事实上, 是否是一个单独的对象[object]充当这个标准读取表[standard readtable]的角色, 还是这里存在多个这样的对象, 它们中的任意一个都可以被用于需要 "标准读取表[standard readtable]" 的场合, 这个是依赖于具体实现的[implementation-dependent]. 因此, 这个短语在所有情况下都应该被看作是不确定的引用, 除了照应前项引用(anaphoric reference).)
 
-standard syntax n. the syntax represented by the standard readtable and used as a reference syntax throughout this document. See Section 2.1 (Character Syntax).
+**standard syntax** n. 由标准读取表[standard readtable]表示的语法, 并且被用作贯穿这个文档的参考语法. 见章节 2.1 (字符语法).
 
 standardized adj. (一个名字(name), 对象(object), 或定义) 已经被 Common Lisp 定义. "All standardized variables that are required to hold bidirectional streams have \"-io*\" in their name".
 
@@ -1329,7 +1329,7 @@ startup environment n. the global environment of the running Lisp image from whi
 
 step v.t., n. 1. v.t. (an iteration variable) to assign the variable a new value at the end of an iteration, in preparation for a new iteration. 2. n. the code that identifies how the next value in an iteration is to be computed. 3. v.t. (code) to specially execute the code, pausing at intervals to allow user confirmation or intervention, usually for debugging.
 
-stream n. an object that can be used with an input or output function to identify an appropriate source or sink of characters or bytes for that operation.
+stream n. 可以被一个输入或输出函数用来标识这个操作的一个字符[character]或字节[byte]源或目标的对象[object].
 
 stream associated with a file n. a file stream, or a synonym stream the target of which is a stream associated with a file. Such a stream cannot be created with make-two-way-stream, make-echo-stream, make-broadcast-stream, make-concatenated-stream, make-string-input-stream, or make-string-output-stream.
 
@@ -1381,7 +1381,7 @@ synonym stream n. 1. a stream of type synonym-stream, which is consequently a st
 
 synonym stream symbol n. (of a synonym stream) the symbol which names the dynamic variable which has as its value another stream for which the synonym stream is an alias.
 
-syntax type n. (of a character) one of several classifications, enumerated in Figure 2-6, that are used for dispatch during parsing by the Lisp reader. See Section 2.1.4 (Character Syntax Types).
+**syntax type** n. (一个字符[character]的) 几个在解析期间被 Lisp 读取器[Lisp reader]用来分派的类型中的一个, 枚举在 Figure 2-6 中. 见章节 2.1.4 (字符语法类型).
 
 system class n. a class that may be of type built-in-class in a conforming implementation and hence cannot be inherited by classes defined by conforming programs.
 
@@ -1400,7 +1400,7 @@ target n. 1. (of a constructed stream) a constituent of the constructed stream. 
 
 terminal I/O n. the bidirectional stream that is the value of the variable *terminal-io*.
 
-terminating n. (of a macro character) being such that, if it appears while parsing a token, it terminates that token. See Section 2.2 (Reader Algorithm).
+**terminating** n. (一个宏字符[macro character]的) 是这样的, 如果它在解析一个标记时出现, 那么它终止那个标记. 见章节 2.2 (读取器算法).
 
 tertiary value n. (of values resulting from the evaluation of a form) the third value, if any, or else nil if there are fewer than three values.
 
@@ -1517,7 +1517,7 @@ vertical-bar n. the standard character that is called ``vertical bar'' (|). See 
 
 W
 
-whitespace n. 1. one or more characters that are either the graphic character #\Space or else non-graphic characters such as #\Newline that only move the print position. 2. a. n. the syntax type of a character that is a token separator. For details, see Section 2.1.4.7 (Whitespace Characters). b. adj. (of a character) having the whitespace[2a] syntax type[2]. c. n. a whitespace[2b] character.
+**whitespace** n. 1. 一个或多个是图形[graphic]字符[character] #\Space 或是例如 #\Newline 这样只移动打印位置的非图形[non-graphic]字符的字符[character]. 2. a. n. 一个是标记[token]分隔符的字符[character]的语法类型[syntax type]. 关于详情, 见章节 2.1.4.7 (空白字符). b. adj. (一个字符[character]的) 有着空白[whitespace[2a]]语法类型[syntax type[2]]. c. n. 一个空白[whitespace[2b]]字符[character].
 
 wild adj. 1. (of a namestring) using an implementation-defined syntax for naming files, which might ``match'' any of possibly several possible filenames, and which can therefore be used to refer to the aggregate of the files named by those filenames. 2. (of a pathname) a structured representation of a name which might ``match'' any of possibly several pathnames, and which can therefore be used to refer to the aggregate of the files named by those pathnames. The set of wild pathnames includes, but is not restricted to, pathnames which have a component which is :wild, or which have a directory component which contains :wild or :wild-inferors. See the function wild-pathname-p.
 

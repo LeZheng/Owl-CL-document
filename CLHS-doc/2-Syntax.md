@@ -20,9 +20,9 @@ Lisp 读取器[Lisp reader]从一个流[stream]中读取字符[character], 然�
 
 Lisp 读取器[Lisp reader]使用的语法信息体现在一个称之为读取表[readtable]的对象[object]中. 此外, 这个读取表[readtable]还包含字符[character]和语法类型[syntax type]之间的关联.
 
-下一块列出了一些适用于读取表的定义的名字.
+下一块列出了一些适用于读取表的已定义的名字[defined name].
 
-    *readtable*                   readtable-case                
+    *readtable*                    readtable-case                
     copy-readtable                 readtablep                    
     get-dispatch-macro-character   set-dispatch-macro-character  
     get-macro-character            set-macro-character           
@@ -50,7 +50,7 @@ Lisp 读取器[Lisp reader]使用的语法信息体现在一个称之为读取�
 
 ### 2.1.2 <span id = "VariablesAffectReader">影响 Lisp 读取器的变量</span>
 
-Lisp 读取器[Lisp reader]不止受当前读取表[current readtable]所影响, 也被很多动态变量[dynamic variable]所影响. 下面这段就列出了这些影响Lisp 读取器[Lisp reader]行为的变量[variable].
+Lisp 读取器[Lisp reader]不止受当前读取表[current readtable]所影响, 也被很多动态变量[dynamic variable]所影响. 下面这段就列出了这些影响 Lisp 读取器[Lisp reader]行为的变量[variable].
 
     *package*    *read-default-float-format*  *readtable*  
     *read-base*  *read-suppress*                           
@@ -302,9 +302,9 @@ Figure 2-8. 标准字符和不完全标准字符的构成成分特性
 
 #### 2.1.4.7 <span id = "WhitespaceCharacters">空白字符</span>
 
-空白[Whitespace[2]]字符[character]被用于分隔多个标记[token].
+空白[whitespace[2]]字符[character]被用于分隔多个标记[token].
 
-空格[Space]和换行[newline]是标准语法[standard syntax]中的空白[Whitespace[2]]字符[character].
+空格[space]和换行[newline]是标准语法[standard syntax]中的空白[whitespace[2]]字符[character].
 
 ##### 2.1.4.7.1 空白字符的示例
 
@@ -424,7 +424,7 @@ Lisp 读取器[Lisp reader]使用的算法规则如下:
 
 Figure 2-9. 数字标记的语法
 
-#### 2.3.1.1 潜在数字标记
+#### 2.3.1.1 潜在数字作为标记
 
 为了允许实现者和未来 Common Lisp 标准去扩展数字的语法, 定义了一个比数字语法更通用的潜在数字语法. 如果一个标记[token]满足下面的所有需求它就是一个潜在数字[potential number]:
 
@@ -690,11 +690,11 @@ Figure 2-17. 标记的合法模式
  (a b c)
 ```
 
-被读取为一个三个对象[object]的列表[list] (符号[symbol] a, b, 还有 c). 右圆括号不需要紧跟着最后一个对象[object]的打印形式后面; 空白字符[whitespace[2]]和注释可能在它之前.
+被读取为一个三个对象[object]的列表[list] (符号[symbol] a, b, 还有 c). 右圆括号不需要紧跟着最后一个对象[object]的打印形式后面; 空白[whitespace[2]]和注释可能在它之前.
 
 如果在右圆括号前没有对象[object], 它就读取到一个零对象[object]的列表[list] (一个空列表[empty list]).
 
-如果一个标记[token]只是一个点, 而前面不是紧挨着一个在某个对象[object]后被读取的转义字符, 那么这个这个点之后一定跟着又一个对象, 然后可能前后有空白字符[whitespace[2]]或注释, 后面跟着右圆括号:
+如果一个标记[token]只是一个点, 而前面不是紧挨着一个在某个对象[object]后被读取的转义字符, 那么这个这个点之后一定跟着又一个对象, 然后可能前后有空白[whitespace[2]]或注释, 后面跟着右圆括号:
 
 ```LISP
  (a b c . d)
@@ -851,7 +851,7 @@ Figure 2-18. 双引号字符的示例
 
 * 对于任何不是一个列表[list]或一个普通向量[vector]的表达式[expression] basic, `basic 等同于 'basic, 也就表示, (quote basic).
 
-* 对于任何不是以 @ 符号[at-sign]或者点[dot]开始的表达式形式 form, `,form 等同于 form. (对于一个逗号[comma]后面的所有出现的情况, 也有类似的警告.) <!--TODO 待校验-->
+* 对于任何不是以 @ 符号[at-sign]或者点[dot]开始的表达式形式 form, `,form 等同于 form. (对于一个逗号[comma]后面的一个表达式形式的所有出现情况, 也有类似的警告.) <!--TODO 待校验-->
 
 * `,@form 有着未定义的后果.
 
@@ -1249,11 +1249,11 @@ Figure 2-21. 复数示例
 
     ((a b) (p q) foo (p q) (p q) foo (p q) (p q) foo (p q) ...)
 
-一个 #n# 引用可能只出现在一个 #n= 标记后; 超前的引用是不允许的. 这个引用可能不会出现在这个对象自身的标记中 (就是说, #n=#n#) 可能不会被写入因为这个 #n= 标记的对象[object]在这个情况下还没有被定义好. <!--TODO 断句有疑问-->
+一个 #n# 引用可能只出现在一个 #n= 标记后; 超前的引用是不允许的. 这个引用可能不会作为被标记的对象自身出现 (就是说, #n=#n#) 可能不会被写入因为这个 #n= 标记的对象[object]在这个情况下还没有被定义好. <!--TODO 断句有疑问-->
 
 #### 2.4.8.17 <span id = "SharpsignPlus">井号加号(#+)</span>
 
-\#+ 提供一个读取时条件化机制; 语法是 #+test expression. 如果这个特性表达式[feature expression] test 成功, 那么这个文本标记表示一个打印表示是表达式 expression 的对象[object]. 如果这个特性表达式[feature expression] test 失败, 那么这个文本的标记就当作空白字符[whitespace[2]]对待; 这就是说, 就好象 "#+ test expression" 没有出现而只有一个空格出现在它的位置.
+\#+ 提供一个读取时条件化机制; 语法是 #+test expression. 如果这个特性表达式[feature expression] test 成功, 那么这个文本标记表示一个打印表示是表达式 expression 的对象[object]. 如果这个特性表达式[feature expression] test 失败, 那么这个文本的标记就当作空白[whitespace[2]]对待; 这就是说, 就好象 "#+ test expression" 没有出现而只有一个空格出现在它的位置.
 
 关于这个特性表达式[feature expression]的成功与否的详细描述, 见章节 24.1.2.1 (特性表达式).
 
@@ -1354,7 +1354,7 @@ Figure 2-21. 复数示例
 
 #### 2.4.8.21 <span id = "SharpsignWhitespace">井号空格(# )</span>
 
-\# 后面紧跟空白字符[whitespace[1]]不是一个合法的读取器宏. 如果 Lisp 读取器[Lisp reader]遇到 #<Newline> 或 #<Space> 读取器宏标记会发出一个 reader-error 类型[type]的错误. 
+\# 后面紧跟空白[whitespace[1]]不是一个合法的读取器宏. 如果 Lisp 读取器[Lisp reader]遇到 #<Newline> 或 #<Space> 读取器宏标记会发出一个 reader-error 类型[type]的错误. 
 
 #### 2.4.8.22 <span id = "SharpsignRightParenthesis">井号右括号(#))</span>
 
@@ -1364,7 +1364,7 @@ Figure 2-21. 复数示例
 
 ### 2.4.9 <span id = "ReReadingAbbreviatedExpressions">重复读取缩写的表达式</span>
 
-注意, 当读取一个由于 "..", "...", "#" 后面跟着空白字符[whitespace[1]]以及 "#)" 的约束而长度或层级限制(见 \*print-level\*, \*print-length\*, 和 \*print-lines\*)而被简化的表达式[expression[2]]时, Lisp 读取器[Lisp reader]通常会发出一个 reader-error 类型[type]的错误. 
+注意, 当读取一个由于 "..", "...", "#" 后面跟着空白[whitespace[1]]以及 "#)" 的约束而长度或层级限制(见 \*print-level\*, \*print-length\*, 和 \*print-lines\*)而被简化的表达式[expression[2]]时, Lisp 读取器[Lisp reader]通常会发出一个 reader-error 类型[type]的错误. 
 
 
 

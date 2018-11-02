@@ -156,7 +156,7 @@ Lisp 打印器决定如何打印一个对象, 如下所示:
 当 \*print-pretty* 是 true 并且打印器转义是启用时, nil 可能被打印为 () .
 
 > * 22.1.3.3.1 [符号的包前缀](#PackagePrefixesSymbols)
-> * 22.1.3.3.2 [Lisp](#EffectReadtableCase)
+> * 22.1.3.3.2 [Lisp 打印器上读取表大小写的影响](#EffectReadtableCase)
 
 ##### 22.1.3.3.1 <span id="PackagePrefixesSymbols">符号的包前缀</span>
 
