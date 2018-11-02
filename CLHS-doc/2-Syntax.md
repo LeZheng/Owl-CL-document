@@ -36,7 +36,7 @@ Lisp 读取器[Lisp reader]使用的语法信息体现在一个称之为读取�
 
 #### 2.1.1.1 <span id = "CurrentReadtable">当前的读取表</span>
 
-可以存在一些描述不同语法的读取表[readtable], 但是在任何给定的时间内都只存在一个影响着 Lisp 读取器[Lisp reader]把表达式[expression]解析为对象[object]的方式, 称之为当前读取表[current readtable]. 在一个给定的动态环境[dynamic environment]中的当前读取表[current readtable]是这个环境[environment]中的 \*readtable* 的值[value]. 为了使一个不同的读取表[readtable]成为当前的读取表[current readtable], \*readtable* 可以被赋值或绑定[bound]. 
+可以存在一些描述不同语法的读取表[readtable], 但是在任何给定的时间内都只存在一个读取表影响着 Lisp 读取器[Lisp reader]把表达式[expression]解析为对象[object]的方式, 称之为当前读取表[current readtable]. 在一个给定的动态环境[dynamic environment]中的当前读取表[current readtable]是这个环境[environment]中的 \*readtable* 的值[value]. 为了使一个不同的读取表[readtable]成为当前的读取表[current readtable], \*readtable* 可以被赋值或绑定[bound]. 
 
 #### 2.1.1.2 <span id = "StandardReadtable">标准读取表</span>
 
@@ -144,10 +144,10 @@ Figure 2-5. 标准字符子表 (Part 3 of 3: 特殊字符)
 这个图形ID(图形ID)在 Common Lisp 中不可用, 但是为了和 ISO 6937/2 交叉引用的目的而提供. 注意图形ID(图形ID)的第一个字母把字符分成以下几类: L---Latin, N---Numeric, S---Special.
 
 ### 2.1.4 <span id = "CharacterSyntaxTypes">字符语法类型</span>
-<!--TODO constituent ??-->
+
 Lisp 读取器[Lisp reader]通过根据语法类型[syntax type]解释输入文本的每一个字符[character]来构建一个对象[object]. Lisp 读取器[Lisp reader]不能接受 Lisp 打印器[Lisp printer]所生成的所有内容, 并且 Lisp 读取器[Lisp reader]包含了不能被 Lisp 打印器[Lisp printer]所使用的特性. Lisp 读取器[Lisp reader]可以用作更通用的用户编写的解析器的词法分析器.
 
-当 Lisp 读取器[Lisp reader]被调用, 它从输入[input]流[stream]中读取单个字符并且根据这个字符[character]的语法类型[syntax type]分派它. 每个出现在输入[input]流[stream]中的字符[character]都是Figure 2-6中出现的语法类型[syntax type]中的一个.
+当 Lisp 读取器[Lisp reader]被调用, 它从输入[input]流[stream]中读取单个字符并且根据这个字符[character]的语法类型[syntax type]分派它. 每个出现在输入[input]流[stream]中的字符[character]都是 Figure 2-6 中出现的语法类型[syntax type]中的一个.
 
     constituent  macro character  single escape  
     invalid      multiple escape  whitespace[2]  
@@ -169,17 +169,17 @@ Figure 2-7 列出了每个字符[character]在标准语法[standard syntax]中�
   Space     | whitespace[2]              | ?         | constituent*            
   !         | constituent*               | @         | constituent             
   "         | terminating macro char     | A--Z      | constituent             
-  #         | non-terminating macro char | [         | constituent*            
+  \#         | non-terminating macro char | [         | constituent*            
   $         | constituent                | \         | single escape           
   %         | constituent                | ]         | constituent*            
   &         | constituent                | ^         | constituent             
   '         | terminating macro char     | _         | constituent             
   (         | terminating macro char     | `         | terminating macro char  
   )         | terminating macro char     | a--z      | constituent             
-  *         | constituent                | {         | constituent*            
-  +         | constituent                | |         | multiple escape         
+  \*         | constituent                | {         | constituent*            
+  \+         | constituent                | |         | multiple escape         
   ,         | terminating macro char     | }         | constituent*            
-  -         | constituent                | ~         | constituent             
+  \-         | constituent                | ~         | constituent             
   .         | constituent                | Rubout    | constituent             
   /         | constituent                |           |
 
@@ -218,21 +218,21 @@ Figure 2-7 列出了每个字符[character]在标准语法[standard syntax]中�
   Space     |   invalid*               | A, a        |  alphadigit 
   !         |   alphabetic[2]          | B, b        |  alphadigit  
   "         |   alphabetic[2]*         | C, c        |  alphadigit    
-  #         |   alphabetic[2]*         | D, d        |  alphadigit, double-float exponent marker
+  \#         |   alphabetic[2]*         | D, d        |  alphadigit, double-float exponent marker
   $         |   alphabetic[2]          | E, e        |  alphadigit, float exponent marker 
   %         |   alphabetic[2]          | F, f        |  alphadigit, single-float exponent marker
   &         |   alphabetic[2]          | G, g        |  alphadigit  
   '         |   alphabetic[2]*         | H, h        |  alphadigit  
   (         |   alphabetic[2]*         | I, i        |  alphadigit   
   )         |   alphabetic[2]*         | J, j        |  alphadigit    
-  *         |   alphabetic[2]          | K, k        |  alphadigit 
+  \*         |   alphabetic[2]          | K, k        |  alphadigit 
   ,         |   alphabetic[2]*         | L, l        |  alphadigit, long-float exponent marker 
   0-9       |   alphadigit             | M, m        |  alphadigit 
   :         |   package marker         | N, n        |  alphadigit 
   ;         |   alphabetic[2]*         | O, o        |  alphadigit   
   <         |   alphabetic[2]          | P, p        |  alphadigit 
   =         |   alphabetic[2]          | Q, q        |  alphadigit   
-  >         |   alphabetic[2]          | R, r        |  alphadigit   
+  \>         |   alphabetic[2]          | R, r        |  alphadigit   
   ?         |   alphabetic[2]          | S, s        |  alphadigit, short-float exponent marker
   @         |   alphabetic[2]          | T, t        |  alphadigit    
   [         |   alphabetic[2]          | U, u        |  alphadigit   
