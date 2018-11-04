@@ -428,7 +428,7 @@ Figure 2-9. 数字标记的语法
 
 为了允许实现者和未来 Common Lisp 标准去扩展数字的语法, 定义了一个比数字语法更通用的潜在数字语法. 如果一个标记[token]满足下面的所有需求它就是一个潜在数字[potential number]:
 
-1. 这个标记[token]完全由数字[digit], 正负号[sign], 比率标记[ratio marker], 小数点(.), 扩展字符(^ or _), 还有数字标记构成. 一个数字标记是一个字母. 一个字母是否会被当作数字标记取决于上下文, 但是与其他字母相邻的字母不能被视为数字标记. 指数标记[exponent marker]也是数字标记.
+1. 这个标记[token]完全由数字[digit], 正负号[sign], 比率标记[ratio marker], 小数点(.), 扩展字符(^ 或 _), 还有数字标记构成. 一个数字标记是一个字母. 一个字母是否会被当作数字标记取决于上下文, 但是与其他字母相邻的字母不能被视为数字标记. 指数标记[exponent marker]也是数字标记.<!--TODO letter 文字？字母？-->
 
 2. 这个标记[token]包含了至少一个数字. 根据当前输入基数[current input base], 字母可能被认为是数字, 但只在没有小数点的标记[token]中.
 
@@ -939,20 +939,20 @@ Figure 2-18. 双引号字符的示例
   Space          | signals error          | A, a         | array                  
   !              | undefined*             | B, b         | binary rational        
   "              | undefined              | C, c         | complex number         
-  #              | reference to = label   | D, d         | undefined              
+  \#              | reference to = label   | D, d         | undefined              
   $              | undefined              | E, e         | undefined              
   %              | undefined              | F, f         | undefined              
   &              | undefined              | G, g         | undefined              
   '              | function abbreviation  | H, h         | undefined              
   (              | simple vector          | I, i         | undefined              
   )              | signals error          | J, j         | undefined              
-  *              | bit vector             | K, k         | undefined              
+  \*              | bit vector             | K, k         | undefined              
   ,              | undefined              | L, l         | undefined              
   :              | uninterned symbol      | M, m         | undefined              
   ;              | undefined              | N, n         | undefined              
   <              | signals error          | O, o         | octal rational         
   =              | labels following object| P, p         | pathname               
-  >              | undefined              | Q, q         | undefined              
+  \>              | undefined              | Q, q         | undefined              
   ?              | undefined*             | R, r         | radix-n rational       
   @              | undefined              | S, s         | structure              
   [              | undefined*             | T, t         | undefined              
@@ -961,7 +961,7 @@ Figure 2-18. 双引号字符的示例
   ^              | undefined              | W, w         | undefined              
   _              | undefined              | X, x         | hexadecimal rational   
   `              | undefined              | Y, y         | undefined              
-  |              | balanced comment       | Z, z         | undefined              
+  \|              | balanced comment       | Z, z         | undefined              
   ~              | undefined              | Rubout       | undefined              
 
 Figure 2-19. 标准 # 分派宏字符语法
