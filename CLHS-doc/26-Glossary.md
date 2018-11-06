@@ -725,9 +725,9 @@ improper list n. a list which is not a proper list: a circular list or a dotted 
 
 inaccessible adj. not accessible.
 
-indefinite extent n. an extent whose duration is unlimited. ``Most Common Lisp objects have indefinite extent.''
+**indefinite extent** n. 时长是无限的一个范围[extent]. "大部分 Common Lisp 对象有着无限范围(Most Common Lisp objects have indefinite extent)".
 
-indefinite scope n. scope that is unlimited.
+**indefinite scope** n. 没有限制的作用域[scope].
 
 indicator n. a property indicator.
 

@@ -3,7 +3,7 @@
 > * 3.1 [求值](#Evaluation)
 > * 3.2 [编译](#Compilation)
 > * 3.3 [声明](#Declarations)
-> * 3.4 [Lambda列表](#LambdaLists)
+> * 3.4 [Lambda 列表](#LambdaLists)
 > * 3.5 [函数调用中的错误检测](#ErrorChecking)
 > * 3.6 [遍历规则和副作用](#TraversalRulesSideEffects)
 > * 3.7 [破坏性操作](#DestructiveOperations)
@@ -11,17 +11,17 @@
 
 ## 3.1 <span id = "Evaluation">求值</span>
 
-代码的执行可以通过多种方式来完成, 从对一个程序的直接解释到一个编译器生成的编译代码的调用都可以.
+代码[code]的执行可以通过多种方式来完成, 从对表示一个程序[program]的表达式形式[form]的直接解释到一个编译器[compiler]生成的编译代码[compiled code]的调用都可以.
 
-求值(Evaluation)是一个过程, 程序通过它在 Common Lisp 中执行. 求值机制通过 Lisp read-eval-print 循环的效果来隐式表现, 并且可以显式地通过函数 eval, compile, compile-file 和 load 的表现出来. 其中的任何一个都可能共享相同的执行策略, 或者每个都可能使用不同的执行策略.
+求值[evaluation]是一个过程, 程序[program]通过这个过程在 Common Lisp 中执行. 求值[evaluation]机制通过 Lisp read-eval-print 循环[Lisp read-eval-print loop]的效果来隐式表现, 并且可以通过函数[function] eval, compile, compile-file 和 load 显式表现. 其中的任何一个都可能共享相同的执行策略, 或者每个都可能使用不同的执行策略.
 
-符合规范的程序被 eval 和被 compile-file 处理后的行为可能不同; 见章节 3.2.2.3 (Semantic Constraints).
+符合规范的程序[conforming program]被 eval 和被 compile-file 处理后的行为可能不同; 见章节 3.2.2.3 (语义约束).
 
-可以通过一个模型来理解求值, 在这个模型中, 解释器递归地遍历一个表达式形式, 执行计算过程中的每一个步骤. 这个描述了 Common Lisp 程序语义的模型, 被描述在章节 3.1.2 (The Evaluation Model).
+可以通过一个模型来理解求值, 在这个模型中, 解释器递归地遍历一个表达式形式[form], 它执行计算过程中的每一个步骤. 这个描述了 Common Lisp 程序[program]语义的模型, 被描述在章节 3.1.2 (求值模型).
 
 > * 3.1.1 [环境的介绍](#IntroductionEnvironments)
 > * 3.1.2 [求值模型](#TheEvaluationModel)
-> * 3.1.3 [Lambda表达式](#LambdaExpressions)
+> * 3.1.3 [lambda 表达式](#LambdaExpressions)
 > * 3.1.4 [闭包和词法绑定](#ClosuresLexicalBinding)
 > * 3.1.5 [遮蔽](#Shadowing)
 > * 3.1.6 [范围](#Extent)
@@ -29,91 +29,91 @@
 
 ### 3.1.1 <span id = "IntroductionEnvironments">环境的介绍</span>
 
-一个绑定(binding)是一个名字和它所表示的东西的关联. 绑定由特定的特殊操作符(special operators)在一个词法环境(lexical environment)或动态环境(dynamic environment)中建立.
+一个绑定[binding]是一个名字和它所表示的东西的关联. 绑定[binding]由特定的特殊操作符[special operators]在一个词法环境[lexical environment]或动态环境[dynamic environment]中建立.
 
-一个环境(environment)由一个绑定的集合和求值过程中使用的其他信息 (比如, 用来关联名字和意义的信息) 组成.
+一个环境[environment]由一个绑定[binding]集合和求值过程中使用的其他信息 (比如, 用来关联名字和意义的信息) 组成.
 
-一个环境中的绑定被用命名空间来划分. 单个的名字在每一个环境中可以同时有超过一个关联的绑定, 每一个命名空间只能有一个关联的绑定.
+一个环境[environment]中的绑定[binding]被用命名空间[namespace]来划分. 单独的名字在每一个环境[environment]中可以同时有超过一个关联的绑定[binding], 每一个命名空间[namespace]只能有一个关联的绑定[binding].
 
 > * 3.1.1.1 [全局的环境](#TheGlobalEnvironment)
 > * 3.1.1.2 [动态环境](#DynamicEnvironments)
 > * 3.1.1.3 [词法环境](#LexicalEnvironments)
 > * 3.1.1.4 [环境对象](#EnvironmentObjects)
-<!-- TODO 环境的一部分 ？？-->
+
 #### 3.1.1.1 <span id = "TheGlobalEnvironment">全局的环境</span>
 
-全局环境(global environment)是包含不确定作用域(indefinite scope)和不确定范围(indefinite extent)的绑定的环境的一部分. 全局环境包括以下部分:
+全局环境[global environment]是环境[environment]中包含无限作用域[indefinite scope]和无限范围[indefinite extent]的绑定[binding]的部分. 全局环境[global environment]包括以下部分:
 
-    动态变量和常量的绑定.
-    函数, 宏, 特殊操作符的绑定.
-    编译器宏绑定.
-    类型和类名绑定.
-    全局声明(proclamations)相关的信息. 
+    动态变量[dynamic variable]和常变量[constant variable]的绑定[binding].
+    函数[function], 宏[macro], 特殊操作符[special operator]的绑定[binding].
+    编译器宏[compiler macro]绑定[binding].
+    类型[type]和类[class]名[name]绑定[binding].
+    全局声明[proclamation]相关的信息. 
 
 #### 3.1.1.2 <span id = "DynamicEnvironments">动态环境</span>
 
-求值的动态环境(dynamic environment)是包含绑定的环境的一部分, 这些绑定的持续时间受限于这个建立绑定的表达式形式执行过程中绑定建立和解除的点. 一个动态环境包括以下内容:
+求值[evaluation]的动态环境[dynamic environment]是环境[environment]中包含了持续时间受限于建立绑定[binding]的表达式形式[form]执行期间绑定建立和解除的点的那些绑定[binding]的部分. 一个动态环境[dynamic environment]包括以下内容:
 
-    动态变量的绑定.
-    有效的 catch 标签的信息.
-    unwind-protect 确定的退出点.
-    有效的处理者(handler)和重启器(restart)的信息.
+    动态变量[dynamic variable]的绑定[binding].
+    活跃[active]的捕捉标签[catch tag]的信息.
+    unwind-protect 建立的退出点[exit point]的信息.
+    活跃的处理者[handler]和重启动[restart]的信息.
 
-在程序执行过程中任何给定的时间点, 有效的动态环境都被指定为"当前动态环境(the current dynamic environment)", 或者有时只是"动态环境(the dynamic environment)".
+在程序[program]执行过程中, 在任何明确引用"当前动态环境(the current dynamic environment)", 或者有时只是"动态环境(the dynamic environment)"的地方, 动态环境[dynamic environment]都是可用的.
 
-在给定的命名空间中, 如果在动态环境中有一个与其名称相关联的绑定, 或者在全局环境中有一个与它的名称相关联的绑定, 那么就说名称就被绑定到动态环境中. 
+在给定的命名空间[namespace]中, 如果在动态环境[dynamic environment]中有一个与一个名称[name]相关联的绑定[binding], 或者在全局环境[global environment]中有一个与这个名称[name]相关联的绑定[binding], 那么就说这个名称[name]被绑定到这个动态环境[dynamic environment]中. 
 
 #### 3.1.1.3 <span id = "LexicalEnvironments">词法环境</span>
 
-在一个程序中, 一些位置的求值的词法环境是包含这个位置的表达式形式的词法作用域信息的环境的一部分. 一个词法环境包含以下内容:
+在一个程序[program]中, 某个位置的求值[evaluation]的词法环境[lexical environment]是环境[environment]中包含了特定信息的部分, 这些信息有着在包含这个位置的那些表达式形式[form]中的词法作用域[lexical environment]. 一个词法环境[lexical environment]包含以下内容:
 
-    词法变量和符号宏的绑定.
-    函数和宏的绑定. (这里隐含关于本地禁用的编译器宏的信息.)
-    block块标记的绑定.
-    go标记的绑定.
-    声明的信息.
+    词法变量[lexical variable]和符号宏[symbol macro]的绑定[binding].
+    函数[function]和宏[macro]的绑定. (这里隐含了关于局部禁用的编译器宏[compiler macro]的信息.)
+    block 标记[block tag]的绑定[binding].
+    go 标记[go tag]的绑定[binding].
+    声明[declaration]的信息.
 
-在被语义处理的程序中, 任何给定位置的有效的词汇环境都被称为"当前词法环境(the current lexical environment)"，或者有时只是"词法环境(the lexical environment)".
+在一个正在被语义处理的程序中被明确引用为"当前词法环境(the current lexical environment)"或者有时只是"词法环境(the lexical environment)"的任何给定位置, 词法环境[lexical environment]都是有效的.
 
-在给定的命名空间中, 如果在词法环境中有一个与其名称相关联的绑定, 那么就称该名称被绑定到词法环境中, 否则, 在全局环境中有一个与它的名称相关联的绑定.
+在给定的命名空间[namespace]中, 如果在词法环境[lexical environment]中有一个与一个名称[name]相关联的绑定[binding], 或者在全局环境[global environment]中有一个与这个名称[name]相关联的绑定[binding], 那么就说这个名称[name]被绑定到这个词法环境[lexical environment]中.
 
 ##### 3.1.1.3.1 空的词法环境
 
-空的词法环境等价于全局环境.
+空的词法环境[null lexical environment]等价于全局环境[[global environment]].
 
-虽然通常一个环境对象的表示是取决于具体实现的, 但是 nil 可以被用于任何情况表示空的词法环境的环境对象. 
+虽然通常一个环境[environment]对象[object]的表示是依赖于具体实现的[implementation-dependent], 但是 nil 可以被用于任何需要一个环境[environment]对象[object]来表示表示空的词法环境[null lexical environment]的情况. 
 
 #### 3.1.1.4 <span id = "EnvironmentObjects">环境对象</span>
 
-一些操作符使用一个称为环境对象(environment object)的对象, 这表示在给定的词法环境中对表达式形式执行语义分析所需的词法绑定集合. 环境对象中的绑定集合可能是实际执行求值所需的绑定的子集; 比如, 在相应的词法环境中，与变量名和函数名相关联的值可能无法在一个环境对象中使用.
+一些操作符[operator]使用一个称为环境对象[environment object]的对象[object], 这表示对给定的词法环境[lexical environment]中的一个表达式形式[form]上执行语义分析所需的词法绑定[lexical binding]的集合. 环境对象[environment object]中的绑定[binding]集合可能是实际执行求值所需的绑定[binding]的子集; 比如, 在相应的词法环境[lexical environment]中与变量[variable]名[name]和函数名[function name]相关联的值[value]可能无法在一个环境对象[environment object]中使用.
 
-一个环境对象的类型和性质是依赖于具体实现的. 给宏函数的环境参数的值就是环境对象的示例.
+一个环境对象[environment object]的类型[type]和性质是依赖于具体实现的[implementation-dependent]. 给宏函数[macro function]的环境参数[environment parameter]的值[value]就是环境对象[environment object]的示例.
 
-当 nil 对象被用于一个环境对象时, 表示空的词法环境; 见章节 3.1.1.3.1 (The Null Lexical Environment). 
+当 nil 对象[object]被用于一个环境对象[environment object]时, 表示空的词法环境[null lexical environment]; 见章节 3.1.1.3.1 (空的词法环境). 
 
 ### 3.1.2 <span id = "TheEvaluationModel">求值模型</span>
 
-Common Lisp 系统对表达式形式进行求值涉及词法, 动态和全局环境. 下面章节描述的 Common Lisp 求值模型的组成部分.
+一个 Common Lisp 系统根据词法, 动态和全局环境[environment]对表达式形式[form]进行求值. 下面章节描述的 Common Lisp 求值模型的组成部分.
 
-#### 3.1.2.1 表达式求值
+#### 3.1.2.1 表达式形式求值
 
-表达式形式分为三个类别: 符号, cons和自求值对象. 下面的章节介绍这些类别.
+表达式形式[form]分为三个类别: 符号[symbol], cons 和自求值对象[self-evaluating object]. 下面的章节介绍这些类别.
 
-> * 3.1.2.1.1 [符号表达式](#SymbolsForms)
-> * 3.1.2.1.2 [Cons表达式](#ConsesForms)
+> * 3.1.2.1.1 [符号表达式形式](#SymbolsForms)
+> * 3.1.2.1.2 [cons 表达式形式](#ConsesForms)
 > * 3.1.2.1.3 [自求值对象](#SelfEvaluatingObjects)
 
-##### 3.1.2.1.1 <span id = "SymbolsForms">符号表达式</span>
+##### 3.1.2.1.1 <span id = "SymbolsForms">符号表达式形式</span>
 
-如果一个表达式形式是一个符号, 那么它要么是一个符号宏, 要么是一个变量.
+如果一个表达式形式[form]是一个符号[symbol], 那么它要么是一个符号宏[symbol macro], 要么是一个变量[variable].
 
-如果在当前的词法环境中有一个符号作为符号宏的绑定, 那么这个符号就会命名一个符号宏(见 define-symbol-macro 和 symbol-macrolet). 如果这个符号是一个符号宏, 就会得到它的展开函数. 展开函数是一个带有两个参数的函数, 通过调用 \*macroexpand-hook\* 对应的钩子函数来调用它, 并把它作为该函数的第一个参数, 这个符号作为第二个参数, 并且一个环境对象(对应当前词法环境)作为第三个参数. 然后, 这个宏展开钩子函数调用展开函数, 把这个表达式形式作为第一个参数并且把环境作为它的第二个参数. 传递给宏展开钩子函数的展开函数的值是一个表达式形式. 这个结果表达式形式会替换到原来符号的位置.
+如果在当前的词法环境[lexical environment]中有这个符号[symbol]作为符号宏[symbol macro]的绑定[binding](见 define-symbol-macro 和 symbol-macrolet), 那么这个符号[symbol]就会命名一个符号宏[symbol macro]. 如果这个符号[symbol]是一个符号宏[symbol macro], 就会得到它的展开函数. 展开函数是一个带有两个参数的函数, 通过把这个展开函数作为第一个参数, 这个符号[symbol]作为第二个参数, 以及一个环境对象[environment object] (对应当前词法环境[lexical environment])作为第三个参数调用宏展开钩子[macroexpand hook]来调用它. 然后, 这个宏展开钩子[macroexpand hook]调用展开函数, 把这个表达式形式[form]作为第一个参数并且把环境[environment]作为它的第二个参数. 传递给宏展开钩子[macroexpand hook]的展开函数的值[value]是一个表达式形式[form]. 产生的这个表达式形式[form]会替换到原来符号[symbol]的位置.
 
-如果一个表达式形式是一个不是符号宏的符号, 那么它就是一个变量的名字, 并且返回这个变量的值. 这里有三种变量: 词法变量, 动态变量, 还有常变量. 一个变量可以存储一个对象. 在一个变量上的主要操作是读取和改变它的值.
+如果一个表达式形式[form]是一个符号[symbol], 但不是符号宏[symbol macro], 那么它就是一个变量[variable]的名字[name], 并且返回这个变量[variable]的值[name]. 这里有三种变量: 词法变量[lexical variable], 动态变量[dynamic variable], 还有常变量[constant variable]. 一个变量[variable]可以存储一个对象[object]. 在一个变量[variable]上的主要操作是读取[read[1]]和写入[write[1]]它的值[value].
 
-如果引用到一个未绑定的变量, 会发出一个 unbound-variable 类型的错误.
+如果引用到一个未绑定的变量[unbound variable], 会发出一个 unbound-variable 类型[type]的错误.
 
-非常变量可以通过 setq 或者 let 来绑定赋值. 下面这段列出了可以赋值, 绑定, 和定义变量的名字.
+非常量[non-constant variable]可以通过 setq 来赋值或者 let 来绑定[bound[3]]. 下面这段列出了可以赋值, 绑定, 和定义变量[variable]的一些已定义名字[defined name].
 
     boundp        let                  progv         
     defconstant   let*                 psetq         
@@ -121,9 +121,9 @@ Common Lisp 系统对表达式形式进行求值涉及词法, 动态和全局环
     defvar        multiple-value-bind  setq          
     lambda        multiple-value-setq  symbol-value  
 
-Figure 3-1. 可应用于变量的一些定义的名字
+Figure 3-1. 可应用于变量的一些已定义的名字
 
-下面是对每种变量的描述.
+下面是对每个变量种类的描述.
 
 > * 3.1.2.1.1.1 [词法变量](#LexicalVariables)
 > * 3.1.2.1.1.2 [动态变量](#DynamicVariables)
@@ -132,43 +132,43 @@ Figure 3-1. 可应用于变量的一些定义的名字
 
 ###### 3.1.2.1.1.1 <span id = "LexicalVariables">词法变量</span>
 
-词法变量(lexical variable)是一个变量, 它只能在建立该变量的表达式形式的词法作用域内引用; 词法变量有词法作用域. 每次一个表达式形式创建一个变量的词法绑定, 就确定一个新的绑定.
+词法变量[lexical variable]是一个只能在建立该变量[variable]的表达式形式[form]的词法作用域[lexical scope]内引用的变量[variable]; 词法变量[lexical variable]有词法作用域[lexical scope]. 每次一个表达式形式[form]创建一个变量[variable]的词法绑定, 就建立一个新的绑定[fresh binding].
 
-在一个词法绑定的变量名的作用域里, 把这个名字作为变量使用被认为是对这个绑定的引用除非这个变量被一个建立该变量新的绑定的表达式形式所遮蔽, 或者被一个表达式形式将该名字局部声明为 special.
+在一个词法变量[lexical variable]名字[name]的绑定[binding]的作用域[scope]里, 这个名字[name]作为变量[variable]的使用被认为是对这个绑定[binding]的引用, 除了这个变量[variable]被遮蔽[shadow[2]]的地方, 通过一个建立[establish]该变量[variable]名[name]的新的[fresh]绑定[binding]的表达式形式[form], 或者通过一个表达式形式[form]将该名字[name]局部声明[declare]为 special.
 
-一个词法变量总是有一个值. 这里没有引入一个词法变量的绑定而没有给初始值的操作, 也没有任何操作符可以使一个词法变量解绑.
+一个词法变量[lexical variable]总是有一个值[value]. 这里没有可以引入一个词法变量[lexical variable]的绑定[binding]而没有给初始值[value]的操作符[operator], 也没有任何操作符[operator]可以使一个词法变量[lexical variable]解绑[unbound].
 
-词法变量的绑定可以在词法环境中找到. 
+词法变量[lexical variable]的绑定[binding]可以在词法环境[lexical environment]中找到. 
 
 ###### 3.1.2.1.1.2 <span id = "DynamicVariables">动态变量</span>
 
-如果一个变量满足下面条件的其中之一, 那么这个变量就是一个动态变量:
+如果一个变量[variable]满足下面条件的其中之一, 那么这个变量[variable]就是一个动态变量[dynamic variable]:
 
     它被局部声明或全局声明为 special.
 
-    它以文本形式出现在一个为同名变量创建一个动态绑定的表达式中, 并且这个绑定没有被一个对相同变量名创建词法绑定的表达式所遮蔽.
+    它以文本形式出现在一个为相同[same]名字[name]的变量[variable]创建一个动态绑定[dynamic binding]的表达式形式[form]中, 并且这个绑定[binding]没有被一个对相同变量[variable]名[name]创建词法绑定[lexical binding]的表达式形式[form]所遮蔽[shadow[2]].
 
-一个动态变量可以在任何程序的任何时间被引用; 对动态变量的引用没有文本限制. 在任何给定时间, 具有给定名称的所有动态变量都确切地引用一个绑定, 不管是在动态环境中或全局环境中.
+一个动态变量[dynamic variable]可以在任何程序[program]的任何时间被引用; 对动态变量[dynamic variable]的引用没有文本限制. 在任何给定时间, 具有给定名称的所有动态变量[dynamic variable]都精确地引用一个绑定[binding], 不管是在动态环境[dynamic environment]中或全局环境[global environment]中.
 
-一个动态变量绑定的值部分可能是空的; 在这个情况下, 这个动态变量被说成没有值或者没被绑定. 一个动态变量可以通过使用 makunbound 来解除绑定.
+一个动态变量[dynamic variable]的绑定[binding]的值[value]部分可能是空的; 在这个情况下, 就说这个动态变量[dynamic variable]没有值[value]或者被解除绑定[unbound]. 一个动态变量[dynamic variable]可以通过使用 makunbound 来解除绑定[unbound].
 
-绑定一个动态变量的效果是创建一个新的绑定, 在创建这个动态绑定的表达式形式求值的持续时间中, 任何程序中所有引用该动态变量都是指新创建的绑定.
+绑定[binding]一个动态变量[dynamic variable]的效果是创建一个新的绑定[binding], 在创建这个动态绑定[dynamic binding]的表达式形式[form]求值[evaluation]期间, 任何程序[program]中所有对该动态变量[dynamic variable]的引用都是指新创建的绑定.
 
-动态变量可以在绑定它的表达式的动态范围之外引用. 这种变量有时被称为"全局变量"(global variable), 但它仍然在所有方面都只是一个动态变量, 它的绑定恰好存在于全局环境中, 而不是在某些动态环境中.
+动态变量[dynamic variable]可以在绑定[bind]它的表达式形式[form]的动态范围[dynamic extent]之外引用. 这种变量[variable]有时被称为"全局变量(global variable)", 但它仍然在所有方面都只是一个动态变量[dynamic variable], 它的绑定[binding]恰好存在于全局环境[global environment]中, 而不是在某些动态环境[dynamic environment]中.
 
-动态变量除非明确赋值, 或者该规范或具体实现中定义了初始值的变量, 否则就是未绑定的. 
+除了这个规范或具体实现[implementation]中定义了初始值的变量以外的动态变量[dynamic variable]除非显式赋值, 否则就是未绑定的[unbound]. 
 
 ###### 3.1.2.1.1.3 <span id = "ConstantVariables">常变量</span>
 
-某些变量, 称为常量变量, 被保留为"命名常量"("named constants"). 如果尝试去给它赋值, 或者给一个常变量创建一个绑定, 结果是未定义的, 除了使用兼容的 defconstant 去重定义一个常变量是允许的; 见宏 defconstant.
+某些变量, 称为常变量[constant variable], 被保留为"已命名常量(named constants)". 如果尝试去给它赋值, 或者给一个常变量[constant variable]创建一个绑定[binding], 后果是未定义的, 除了使用兼容的 defconstant 去重定义一个常变量[constant variable]是允许的; 见宏[macro] defconstant.
 
-关键字, Common Lisp或者具体实现定义作为常量的符号 (就像 nil, t, 和 pi), 还有通过 defconstant 定义的符号也作为常变量. 
+关键字[keyword], Common Lisp 或者具体实现[implementation]定义为常量的符号[symbol] (就像 nil, t, 和 pi), 还有通过 defconstant 声明为常量的符号也是常变量[constant variable]. 
 
 ###### 3.1.2.1.1.4 <span id = "SymbolsNamingLDVariables">同时命名词法和动态变量的符号</span>
 
-同一个符号可以命名一个词法变量和动态变量, 但是从来不出现在相同的词法环境下.
+同一个符号[symbol]可以命名一个词法变量[lexical variable]和动态变量[dynamic variable], 但是从来不出现在相同的词法环境[lexical environment]中.
 
-下面的例子中, 符号 x 被使用, 在不同的时间, 作为词法变量的名字和动态变量的名字.
+下面的例子中, 符号 x 在不同的时间被用作词法变量[lexical variable]的名字[name]和动态变量[dynamic variable]的名字[name].
 
 ```LISP
 (let ((x 1))            ;Binds a special variable X
@@ -180,28 +180,28 @@ Figure 3-1. 可应用于变量的一些定义的名字
 =>  3
 ```
 
-##### 3.1.2.1.2 <span id = "ConsesForms">Cons表达式</span>
+##### 3.1.2.1.2 <span id = "ConsesForms">cons 表达式形式</span>
 
-一个 cons 被用于作为一个表达式形式时, 称这个表达式为复合表达式形式.
+被用作一个表达式形式[form]的一个 cons, 被称为为复合表达式形式[compound form].
 
-如果这个复合表达式的 car 是一个符号, 这个符号是一个操作符的名字, 那么这个表达式形式是一个特殊表达式, 一个宏表达式, 还是一个函数表达式, 取决于这个操作符在当前词法作用域的函数绑定. 如果这个操作符不是一个特殊操作符也不是一个宏的名字, 它被假定为一个函数名字 (甚至在这里没有定义这样的函数的情况下).
+如果这个复合表达式形式[compound form]的 car 是一个符号[symbol], 这个符号[symbol]是一个操作符[operator]的名字[name], 那么这个表达式形式[form]是一个特殊表达式形式[special form], 一个宏表达式[macro form], 或者是一个函数表达式[function form], 取决于这个操作符[operator]在当前词法环境[lexical environment]的函数[function]绑定[binding]. 如果这个操作符[operator]既不是一个特殊操作符[special operator]也不是一个宏名字[macro name], 那么它被假定为一个函数名字[function name] (即便在这里没有这样的一个函数[function]定义).
 
-如果这个复合表达式形式的 car 部分不是一个符号, 那么这个 car 必须是一个 lambda 表达式, 在这个情况下这个复合表达式就是一个lambda表达式形式.
+如果这个复合表达式形式[compound form]的 car 部分不是一个符号[symbol], 那么这个 car 必须是一个 lambda 表达式[lambda expression], 在这个情况下这个复合表达式形式[compound form]就是一个 lambda 表达式形式[lambda form].
 
-一个复合表达式如何被处理取决于它被归类为特殊表达式, 宏表达式, 函数表达式, 还是一个lambda表达式.
+一个复合表达式[compound form]如何被处理取决于它被归类为特殊表达式形式[special form], 宏表达式形式[macro form], 函数表达式形式[function form], 还是一个 lambda 表达式形式[lambda form].
 
-> * 3.1.2.1.2.1 [特殊表达式](#SpecialForms)
-> * 3.1.2.1.2.2 [宏表达式](#MacroForms)
-> * 3.1.2.1.2.3 [函数表达式](#FunctionForms)
-> * 3.1.2.1.2.4 [Lambda表达式](#LambdaForms)
+> * 3.1.2.1.2.1 [特殊表达式形式](#SpecialForms)
+> * 3.1.2.1.2.2 [宏表达式形式](#MacroForms)
+> * 3.1.2.1.2.3 [函数表达式形式](#FunctionForms)
+> * 3.1.2.1.2.4 [lambda 表达式形式](#LambdaForms)
 
-###### 3.1.2.1.2.1 <span id = "SpecialForms">特殊表达式</span>
+###### 3.1.2.1.2.1 <span id = "SpecialForms">特殊表达式形式</span>
 
-一个特殊表达式是一个带有特殊语法或者特殊求值规则或者两者都有的表达式形式, 可能控制求值环境, 控制流, 或者都控制. 一个特殊操作符可以访问当前的词法环境和当前的动态环境. 每个特殊操作符都定义了它的子表达式的处理方式---哪些是表达式形式, 哪些是特殊表达式, 等等.
+一个特殊表达式形式[special form]是一个带有特殊语法或者特殊求值规则或者两者都有的表达式形式[form], 可能控制求值环境, 控制流, 或者都控制. 一个特殊操作符[special operator]可以访问当前的词法环境[lexical environment]和当前的动态环境[dynamic environment]. 每个特殊操作符[special operator]都定义了它的那些子表达式[subexpression]的处理方式---哪些是表达式形式[form], 哪些是特殊语法, 等等.
 
-一些特殊操作符创建新的词法或动态环境, 以便在对特殊表达式形式的子表达式进行求值时使用. 比如, block 会创建一个新的词法环境, 该环境与 block 表达式形式的求值时的那个相同, 它添加了 block 名称的绑定到 block 的退出点.
+一些特殊操作符[special operator]创建新的词法或动态环境[environment], 以便在对这个特殊表达式形式[special form]的那些子表达式形式[subform]的求值[evaluation]期间使用. 比如, block 会创建一个新的词法环境[lexical environment], 该环境与 block 表达式形式[form]的求值时的那个相同, 只是在 block 的退出点[exit point]添加了 block 名称的绑定[binding].
 
-特殊操作符的名字的集合被固定于Common Lisp中; 没有给用户提供定义特殊操作符的方法. 下面这段列出了所有被定义为特殊操作符的 Common Lisp 符号.
+特殊操作符[special operator]的名字[name]的集合在 Common Lisp 中是固定的; 没有给用户提供定义特殊操作符[special operator]的方法. 下面这段列出了所有被定义为特殊操作符[special operator]的 Common Lisp 符号[symbol].
 
     block      let*                  return-from      
     catch      load-time-value       setq             
@@ -215,38 +215,38 @@ Figure 3-1. 可应用于变量的一些定义的名字
 
 Figure 3-2. Common Lisp 特殊操作符
 
-###### 3.1.2.1.2.2 <span id = "MacroForms">宏表达式</span>
+###### 3.1.2.1.2.2 <span id = "MacroForms">宏表达式形式</span>
 
-如果这个操作符命名了一个宏, 它的关联宏函数会被应用于整个表达式形式并且将结果替换原来的表达式.
+如果这个操作符[operator]命名了一个宏[macro], 它关联的宏函数[macro function]会被应用于整个表达式形式[form]并且将这个应用的结果替换原来的表达式形式[form].
 
-具体来说, 如果对于一个符号和一个给定的词法环境 macro-function 返回 true 那么在这个环境中这个符号命名了一个宏. 这个 macro-function 返回的函数是一个2个参数的函数, 称之为展开函数. 这个展开函数通过调用  *macroexpand-hook* 变量的钩子函数而调用, 并作为它的第一个参数, 这个完整的宏表达式作为它的第二个参数, 并且一个环境对象(对应当前词法环境)作为第三个参数. 这个宏展开钩子函数反过来调用这个展开函数, 将这个表达式形式作为第一个参数并将环境对象作为第二个参数. 这个传递给宏展开钩子函数的展开函数的值是一个表达式形式. 返回的表达式形式在原来的表达式的位置被求值.
+具体来说, 如果对于一个符号[symbol]和一个给定的词法环境[lexical environment] macro-function 返回 true 那么在这个环境中这个符号[symbol]命名了一个宏[macro]. 这个 macro-function 返回的函数[function]是一个 2 个参数的函数[function], 称之为展开函数. 通过把这个展开函数作为第一个参数, 整个宏表达式形式[macro form]作为第二个参数, 以及一个环境对象[environment object] (对应当前词法环境[lexical environment])作为第三个参数调用宏展开钩子[macroexpand hook]来调用这个展开函数. 这个宏展开钩子[macroexpand hook]反过来调用这个展开函数, 将这个表达式形式[form]作为第一个参数并将环境对象[environment object]作为第二个参数. 这个传递给宏展开钩子[macroexpand hook]的展开函数的值[value]是一个表达式形式[form]. 返回的表达式形式[form]被求值来取代原来的表达式形式[form].
 
-如果这个宏函数破坏性地修改它的表达式参数的任何部分, 那么结果是无法预料的.
+如果这个宏函数[macro function]破坏性地修改它的表达式形式[form]参数的任何部分, 那么后果是未定义的.
 
-一个宏的名字不是一个函数描述符, 并且不能被用于函数例如 apply, funcall, 或者 map 的参数.
+一个宏名字[macro name]不是一个函数标识符[function designator], 并且不能被用于例如 apply, funcall, 或者 map 这样的函数[function]的 function 参数.
 
-一个具体实现可以自由地将 Common Lisp 特殊操作符实现为一个宏. 一个实现也能自由地将任何宏操作符实现为一个特殊操作符, 但是只能在一个定义上等价的宏被提供的情况下.
+一个具体实现[implementation]可以自由地将 Common Lisp 特殊操作符[special operator]实现为一个宏[macro]. 一个实现[implementation]也能自由地将任何宏[macro]操作符[operator]实现为一个特殊操作符[special operator], 但是只能在这个宏[macro]的一个等价定义被提供的情况下.
 
-下面这段列出了一些可应用于宏的已定义名字.
+下面这段列出了一些可应用于宏[macro]的一些已定义名字[defined name].
 
     *macroexpand-hook*  macro-function  macroexpand-1  
     defmacro            macroexpand     macrolet       
 
 Figure 3-3. 应用于宏的定义的名字
 
-###### 3.1.2.1.2.3 <span id = "FunctionForms">函数表达式</span>
+###### 3.1.2.1.2.3 <span id = "FunctionForms">函数表达式形式</span>
 
-如果这个操作符是一个函数名的符号, 这个表达式就表示一个函数表达式形式, 并且这个列表的 cdr 部分包含了求值后作为参数传递给函数的表达式.
+如果这个操作符[operator]是一个命名一个函数[function]的符号[symbol], 那么这个表达式形式[form]就表示一个函数表达式形式[function form], 并且这个列表的 cdr 部分包含了求值后作为参数传递给这个函数[function]的表达式形式[form].
 
-当一个函数名字没有定义的时候, 应该会在运行时发出一个 undefined-function 的错误; 见章节 3.2.2.3 (Semantic Constraints).
+当一个函数名字[function name]没有定义的时候, 应该会在运行时发出一个 undefined-function 类型[type]的错误; 见章节 3.2.2.3 (语义约束).
 
-一个函数表达式会像下面所述的被求值:
+一个函数表达式形式[function form]会按如下所述被求值:
 
-原始表达式的 cdr 的子表达式按照从左到右的顺序在词法和动态环境中被求值. 每次求值的主要的值作为参数传递给命名的函数; 任何子表达式返回的额外的值会被丢弃.
+原始表达式形式[form]的 cdr 中的子表达式形式[subform]按照从左到右的顺序在词法和动态环境[environment]中被求值. 每次这样的求值[evaluation]的主值[primary value]作为参数传递给命名的函数[function]; 任何子表达式形式[subform]返回的额外的值[value]会被丢弃.
 
-从词法环境中检索操作符的函数值, 并使用指定的参数调用该函数.
+从词法环境[lexical environment]中检索操作符[operator]的函数值[functional value], 并使用指定的参数调用该函数[function].
 
-虽然参数子表达式的求值顺序是严格的从左到右, 但是如果有多个参数子表达式, 没有指定一个函数表达式中查询操作符的定义是在参数子表达式之前, 之后, 又或者是任意两个参数子表达式之间. 比如, 下面可能返回 23 或者 24.
+虽然实参[argument]子表达式形式[subform]的求值[evaluation]顺序是严格的从左到右, 但是没有指定一个函数表达式形式[function form]中操作符[operator]的定义是在实参[argument]子表达式形式[subform]求值之前还是之后被查找, 或者不止一个实参[argument]子表达式形式[subform]时任意两个实参[argument]子表达式形式[subform]求值之间被查找. 比如, 下面可能返回 23 或者 24.
 
 ```LISP
 (defun foo (x) (+ x 3))
@@ -254,9 +254,9 @@ Figure 3-3. 应用于宏的定义的名字
 (foo (progn (bar) 20))
 ```
 
-一个函数名字的绑定可以通过几种方式的一种来建立. 一个全局环境中的函数名可以通过 defun ,fdefinition 的 setf, symbol-function 的 setf, ensure-generic-function, defmethod (隐式的, 由于ensure-generic-function), 或者 defgeneric 来建立. 一个词法环境中的函数名可以通过 flet 或者 labels 来建立.
+一个函数名字[function name]的绑定[binding]可以通过几种方式的一种来建立. 一个全局环境[global environment]中的函数名[function name]的绑定[binding]可以通过 defun ,fdefinition 的 setf, symbol-function 的 setf, ensure-generic-function, defmethod (隐式的, 由于ensure-generic-function), 或者 defgeneric 来建立. 一个词法环境[lexical environment]中的函数名[function name]的绑定[binding]可以通过 flet 或者 labels 来建立.
 
-下一段中列出了可应用于函数的一些定义的名字.
+下一段中列出了可应用于函数[function]的一些已定义的名字[defined name].
 
     apply                 fdefinition  mapcan               
     call-arguments-limit  flet         mapcar               
@@ -269,25 +269,25 @@ Figure 3-3. 应用于宏的定义的名字
 
 Figure 3-4. 一些已定义的函数相关的名字 
 
-###### 3.1.2.1.2.4 <span id = "LambdaForms">Lambda表达式</span>
+###### 3.1.2.1.2.4 <span id = "LambdaForms">lambda 表达式形式</span>
 
-一个lambda表达式类似于函数表达式, 除了函数名被一个lambda表达式替换.
+一个 lambda 表达式形式[lambda form]类似于函数表达式[function form], 除了函数名[function name]被一个 lambda 表达式[lambda expression]替换.
 
-一个lambda表达式等价于使用一个lambda表达式词法闭包的给定参数的 funcall 调用. (在实践中, 一些编译器很可能生成lambda表达式的内联代码, 而不是一个已声明为内联的任意命名函数; 然而, 这样的区别不是语义上的.)
+一个 lambda 表达式形式[lambda form]等价于在给定的那些实参[argument]上使用一个 lambda 表达式[lambda expression]的词法闭包[lexical closure]的 funcall 调用. (在实践中, 比起已声明为 inline 的任意命名函数, 一些编译器更有可能为  lambda 表达式形式[lambda form]生成内联代码.)
 
-关于更多信息, 见章节 3.1.3 (Lambda Expressions). 
+关于更多信息, 见章节 3.1.3 (lambda 表达式). 
 
 ##### 3.1.2.1.3 <span id = "SelfEvaluatingObjects">自求值对象</span>
 
-一个表达式形式既不是一个符号也不是一个cons, 就被定义为一个自求值对象. 对这样的对象进行求值, 会产生结果相同的对象.
+一个既不是一个符号[symbol]也不是一个 cons 的表达式形式[form]被定义为一个自求值对象[self-evaluating object]. 对这样的对象[object]进行求值, 会产生[yield]相同的[same]对象[object]来作为结果.
 
-某些特定的符号和集合也可能是"自求值"但只是作为关于求值符号和 cons 的一个更普遍的规则的特殊案例; 这样的对象不被认为是自求值对象.
+某些特定的符号[symbol]和 cons 偶尔也可能是"自求值", 但只是作为关于符号[symbol]和 cons 求值[evaluation]的一个更普遍的规则集合的特例; 这样的对象[object]不被认为是自求值对象[self-evaluating object].
 
-如果字面上的对象(包括自求值对象)被破坏性的修改, 结果是无法定义的.
+如果字面[literal]对象[object] (包括自求值对象[self-evaluating object])被破坏性的修改, 结果是无法定义的.
 
 ###### 3.1.2.1.3.1 自求值对象的示例
 
-数字, 路径名, 还有数组都是自求值对象的示例.
+数字[number], 路径名[pathname], 还有数组[array]都是自求值对象[self-evaluating object]的示例.
 
 ```LISP
 3 =>  3
@@ -297,9 +297,9 @@ Figure 3-4. 一些已定义的函数相关的名字
 "fred smith" =>  "fred smith"
 ```
 
-### 3.1.3 <span id = "LambdaExpressions">Lambda表达式</span>
+### 3.1.3 <span id = "LambdaExpressions">lambda 表达式</span>
 
-在lambda表达式中, 主体部分在一个词法环境中求值, 这个词法环境是通过在lambda列表中给每个参数的绑定添加当前词法环境下参数的对应值来构成.
+在lambda表达式中, 主体部分在一个词法环境[lexical environment]中求值, 这个词法环境[lexical environment]是通过在lambda列表中给每个参数的绑定添加当前词法环境[lexical environment]下参数的对应值来构成.
 
 有关如何基于lambda列表建立绑定的进一步讨论, 见章节 3.4 (Lambda Lists).
 
@@ -321,7 +321,7 @@ Figure 3-4. 一些已定义的函数相关的名字
 (funcall (car funs)) =>  43
 ```
 
-function 的特殊表达式形式将lambda表达式强制转换为闭包, 在这个闭包中, 当对特殊表达式形式进行求值时, 词法环境与lambda表达式一起被捕获.
+function 的特殊表达式形式将lambda表达式强制转换为闭包, 在这个闭包中, 当对特殊表达式形式进行求值时, 词法环境[lexical environment]与lambda表达式一起被捕获.
 
 这个 two-funs 函数返回两个函数的列表, 它们中的每一个都引用了函数 two-funs 被调用时创建的变量 x 的绑定. 这个变量有初始值 6, 但是 setq 可以修改这个绑定. 为第一个lambda表达式创建的词法闭包在创建闭包时不会"快照" x 的值 6;而是抓住了 x 的绑定. 第二个函数可以被用于修改同样的(捕获的)绑定(在示例中改为 43), 并且这个修改后的变量绑定之后影响了第一个函数的返回值.
 
@@ -423,7 +423,7 @@ z)
 
 在执行 funcall 的时候, 有两个明显的 block 退出点, 每个显然都命名为 here. 这个 return-from 表达式被作为 funcall 操作的结果执行时引用外面的退出点(here1), 不是内部的那个(here2). 它指的是在 function(这里通过 #' 语法缩写了)执行时出现的退出点，它导致了由 funcall 实际调用的函数对象的创建.
 
-如果在这个例子中, 一个人打算把 (funcall f) 改为 (funcall g), 那么调用 (contorted-example nil nil 2) 的值会是 9. 这个值会改变是因为 funcall 会导致 (return-from here2 4) 的执行, 从而导致一个从内部的退出点(here2)返回. 当这个发生时, 值 4 会被中间的 contorted-example 调用返回, 5 被加到它上面成了 9, 并且这个值会被外部的 contorted-example 调用返回. 重点是, 退出点的选择与它的最内部或最外层无关; 而是, 它取决于在执行函数时使用lambda表达式打包的词法环境. 
+如果在这个例子中, 一个人打算把 (funcall f) 改为 (funcall g), 那么调用 (contorted-example nil nil 2) 的值会是 9. 这个值会改变是因为 funcall 会导致 (return-from here2 4) 的执行, 从而导致一个从内部的退出点(here2)返回. 当这个发生时, 值 4 会被中间的 contorted-example 调用返回, 5 被加到它上面成了 9, 并且这个值会被外部的 contorted-example 调用返回. 重点是, 退出点的选择与它的最内部或最外层无关; 而是, 它取决于在执行函数时使用lambda表达式打包的词法环境[lexical environment]. 
 
 ### 3.1.6 <span id = "Extent">范围</span>
 
@@ -539,9 +539,9 @@ Figure 3-5. 一些可应用于接收多值的操作符
 
 编译器宏可以定义为一个同时命名一个函数或宏的名称. 这也就是说, 一个函数名可能同时命名函数和编译器宏.
 
-如果 compiler-macro-function 对于出现在词法环境中的一个函数名返回 true, 这个函数名命名一个编译器宏. 为这个函数名字创建一个词法绑定不止创建一个局部函数或宏定义, 并且也遮蔽了这个名字的编译器宏.
+如果 compiler-macro-function 对于出现在词法环境[lexical environment]中的一个函数名返回 true, 这个函数名命名一个编译器宏. 为这个函数名字创建一个词法绑定不止创建一个局部函数或宏定义, 并且也遮蔽了这个名字的编译器宏.
 
-这个 compiler-macro-function 返回的函数是一个两个参数的函数, 称为展开函数(expansion function). 为了展开一个编译器宏, 这个展开函数被宏展开钩子函数所调用, 这个展开函数作为第一个函数, 这个完整的编译器宏表达式作为第二个参数, 并且当前的编译环境(或者是当前词法环境, 如果表达式在 compile-file 后被其他处理过) 作为第三个参数. 然后, 宏展开钩子函数将展开函数称为第一个参数而环境则是第二个参数. 扩展函数的返回值, 由宏展开钩子函数传递, 可能是相同的表达式, 或者是另一种表达式, 在执行展开的代码中, 可以替换到原始表达式形式的位置上.
+这个 compiler-macro-function 返回的函数是一个两个参数的函数, 称为展开函数(expansion function). 为了展开一个编译器宏, 这个展开函数被宏展开钩子函数所调用, 这个展开函数作为第一个函数, 这个完整的编译器宏表达式作为第二个参数, 并且当前的编译环境(或者是当前词法环境[lexical environment], 如果表达式在 compile-file 后被其他处理过) 作为第三个参数. 然后, 宏展开钩子函数将展开函数称为第一个参数而环境则是第二个参数. 扩展函数的返回值, 由宏展开钩子函数传递, 可能是相同的表达式, 或者是另一种表达式, 在执行展开的代码中, 可以替换到原始表达式形式的位置上.
 
     *macroexpand-hook*  compiler-macro-function  define-compiler-macro  
 
@@ -657,7 +657,7 @@ Figure 3-6. 应用于编译器宏的定义的名字
 
 * 如果表达式是一个 progn 表达式, 它的主体表达式中的每一个子表达式会被依次当作顶层表达式在相同的处理模式下处理.
 
-* 如果这个表达式是一个 locally, macrolet, 或者 symbol-macrolet, compile-file 建立适当的绑定并将主体表达式作为顶层表达式形式处理, 并在相同的处理模式下执行这些绑定. (注意, 这意味着顶层表达式处理的词法环境不一定是空词法环境.)
+* 如果这个表达式是一个 locally, macrolet, 或者 symbol-macrolet, compile-file 建立适当的绑定并将主体表达式作为顶层表达式形式处理, 并在相同的处理模式下执行这些绑定. (注意, 这意味着顶层表达式处理的词法环境[lexical environment]不一定是空词法环境.)
 
 * 如果表达式是一个 eval-when 表达式, 它会根据下面这段被处理.
 
@@ -680,7 +680,7 @@ Figure 3-6. 应用于编译器宏的定义的名字
 
     Process: 在指定模式下把主体作为顶层表达式处理.
 
-    Evaluate: 在编译器的动态执行上下文中对主体进行求值, 使用求值环境作为全局环境和 eval-when 出现的词法环境.
+    Evaluate: 在编译器的动态执行上下文中对主体进行求值, 使用求值环境作为全局环境和 eval-when 出现的词法环境[lexical environment].
 
     Discard: 忽略这个表达式.
 
@@ -1013,7 +1013,7 @@ Figure 3-9. Common Lisp 声明标识符
 
 在这个例子, 第四行的第一个 x 引用是指第三行建立的 x 的词法绑定. 然而, 出现在第四行的第二个 x 位于第五行的自由声明的作用域内 (因为这个是 dotimes 的 结果表达式(result-form)) 并且因此引用 x 的动态绑定. 
 
-## 3.4 <span id = "LambdaLists">Lambda列表</span>
+## 3.4 <span id = "LambdaLists">Lambda 列表</span>
 
 一个lambda列表是一个指明了参数集合(有时也称为lambda变量)和一个用于接收和这些参数有关的值的规程.
 
@@ -1055,11 +1055,11 @@ Figure 3-11. 可应用于lambda列表的定义的名字
 > * 3.4.3 [特化的lambda列表](#SpecializedLambdaLists)
 > * 3.4.4 [宏lambda列表](#MacroLambdaLists)
 > * 3.4.5 [解构lambda列表](#DestructuringLambdaLists)
-> * 3.4.6 [Boa Lambda列表](#BoaLambdaLists)
-> * 3.4.7 [Defsetf Lambda列表](#DefsetfLambdaLists)
-> * 3.4.8 [Deftype Lambda列表](#DeftypeLambdaLists)
-> * 3.4.9 [Define-modify-macro Lambda列表](#DefineMMLambdaLists)
-> * 3.4.10 [Define-method-combination 参数Lambda列表](#DefineMCArgumentsLambdaLists)
+> * 3.4.6 [Boa Lambda 列表](#BoaLambdaLists)
+> * 3.4.7 [Defsetf Lambda 列表](#DefsetfLambdaLists)
+> * 3.4.8 [Deftype Lambda 列表](#DeftypeLambdaLists)
+> * 3.4.9 [Define-modify-macro Lambda 列表](#DefineMMLambdaLists)
+> * 3.4.10 [Define-method-combination 参数 Lambda 列表](#DefineMCArgumentsLambdaLists)
 > * 3.4.11 [文档字符串和声明的语法交互](#SIDSD)
 
 ### 3.4.1 <span id = "OrdinaryLambdaLists">普通lambda列表</span>
@@ -1357,7 +1357,7 @@ Figure 3-18. 宏lambda列表使用的lambda列表参数
 
 &whole 跟着一个绑定给整个 macro-call 表达式的单个变量; 这是这个宏函数收到的第一个参数的值. 如果出现 &whole 和一个跟在后面的变量, 它们必须出现在lambda列表的最前面, 在任何其他参数或者lambda列表关键字之前. &whole 可以出现在一个宏lambda列表的任何级别. 在内部级别, 这个 &whole 变量绑定给参数的对应部分, 正如 &rest, 但是不像 &rest, 其他参数也是允许的. 这个 &whole 的使用不影响参数指定的模式.
 
-&environment 后面跟着一个绑定给表示当前词法环境的环境, 这个环境是这个宏调用被解释时所处的环境. 这个环境应该和 macro-function, get-setf-expansion, compiler-macro-function, 还有 macroexpand (比如) 在计算宏展开式一起使用, 来确保这个编译环境中确定的任何词法绑定或定义被考虑进去. &environment 只能出现在宏lambda列表的顶层, 并且只能出现一次, 但是可以出现在这个列表的任何地方; 这个 &environment 和 &whole 被在这个lambda列表的任何其他变量之前被绑定, 不管 &environment 出现在这个lambda列表的什么地方. 绑定到环境参数的对象具有动态范围.
+&environment 后面跟着一个绑定给表示当前词法环境[lexical environment]的环境, 这个环境是这个宏调用被解释时所处的环境. 这个环境应该和 macro-function, get-setf-expansion, compiler-macro-function, 还有 macroexpand (比如) 在计算宏展开式一起使用, 来确保这个编译环境中确定的任何词法绑定或定义被考虑进去. &environment 只能出现在宏lambda列表的顶层, 并且只能出现一次, 但是可以出现在这个列表的任何地方; 这个 &environment 和 &whole 被在这个lambda列表的任何其他变量之前被绑定, 不管 &environment 出现在这个lambda列表的什么地方. 绑定到环境参数的对象具有动态范围.
 
 解构允许一个宏lambda列表去表达宏调用语法结构. 如果没有出现lambda列表关键字, 那么这个宏lambda列表是在叶子中包含参数名称的树. 匹配模式和宏表达式必须具有兼容的树结构; 这就是说, 它们的树结构必须是等价的, 或者它只能在匹配模式的某些叶节点与宏形式的非原子对象匹配时有所不同. 关于这种情况下的错误检测的信息, 见章节 3.5.1.7 (Destructuring Mismatch).
 
@@ -1469,7 +1469,7 @@ Figure 3-18. 宏lambda列表使用的lambda列表参数
     lambda-list::= (wholevar reqvars optvars restvar keyvars auxvars) | 
                   (wholevar reqvars optvars . var) 
 
-### 3.4.6 <span id = "BoaLambdaLists">Boa Lambda列表</span>
+### 3.4.6 <span id = "BoaLambdaLists">Boa Lambda 列表</span>
 
 一个 boa lambda 列表是一个语法上像普通lambda列表的lambda列表, 但是这个是按照参数的顺序风格处理.
 
@@ -1528,7 +1528,7 @@ Figure 3-18. 宏lambda列表使用的lambda列表参数
 
 这个 c-token 参数只是给 c 槽的初始化提供一个值. 这个与可选参数和关键字参数相关的 supplied-p 参数也可以使用这种方式. 
 
-### 3.4.7 <span id = "DefsetfLambdaLists">Defsetf Lambda列表</span>
+### 3.4.7 <span id = "DefsetfLambdaLists">Defsetf Lambda 列表</span>
 
 一个 defsetf lambda列表被 defsetf 所使用.
 
@@ -1547,11 +1547,11 @@ lambda-list::= (var*
     &allow-other-keys  &key       &rest  
     &environment       &optional         
 
-Figure 3-19. Defsetf Lambda列表使用的lambda列表关键字
+Figure 3-19. Defsetf Lambda 列表使用的lambda列表关键字
 
 一个 defsetf lambda列表和普通lambda列表的区别仅在于它不允许使用 &aux, 并且它允许使用表示环境参数的 &environment. 
 
-### 3.4.8 <span id = "DeftypeLambdaLists">Deftype Lambda列表</span>
+### 3.4.8 <span id = "DeftypeLambdaLists">Deftype Lambda 列表</span>
 
 一个 deftype lambda列表被 deftype 所使用.
 
@@ -1559,7 +1559,7 @@ Figure 3-19. Defsetf Lambda列表使用的lambda列表关键字
 
 一个 deftype lambda列表和宏lambda列表的区别仅在于如果没有给一个可选参数或关键字参数提供 init-from, 那么这个参数的默认值就是符号 * (而不是 nil). 
 
-### 3.4.9 <span id = "DefineMMLambdaLists">Define-modify-macro Lambda列表</span>
+### 3.4.9 <span id = "DefineMMLambdaLists">Define-modify-macro Lambda 列表</span>
 
 一个 define-modify-macro lambda列表被 define-modify-macro 使用.
 
@@ -1567,11 +1567,11 @@ Figure 3-19. Defsetf Lambda列表使用的lambda列表关键字
 
     &optional  &rest  
 
-Figure 3-20. Define-modify-macro Lambda列表使用的lambda列表关键字
+Figure 3-20. Define-modify-macro Lambda 列表使用的lambda列表关键字
 
 Define-modify-macro lambda列表类似于普通lambda列表, 但是不支持关键字参数. define-modify-macro 不需要去匹配关键字, 并且一个剩余参数就足够了. Aux 变量也不支持, 因为 define-modify-macro 没有主体表达式来引用这些绑定. 见宏 define-modify-macro. 
 
-### 3.4.10 <span id = "DefineMCArgumentsLambdaLists">Define-method-combination 参数Lambda列表</span>
+### 3.4.10 <span id = "DefineMCArgumentsLambdaLists">Define-method-combination 参数 Lambda 列表</span>
 
 一个 define-method-combination 参数lambda列表被 define-method-combination 的 :arguments 选项所使用.
 
@@ -1580,7 +1580,7 @@ Define-modify-macro lambda列表类似于普通lambda列表, 但是不支持关�
     &allow-other-keys  &key       &rest   
     &aux               &optional  &whole  
 
-Figure 3-21. Define-method-combination 参数Lambda列表使用的lambda列表关键字
+Figure 3-21. Define-method-combination 参数 Lambda 列表使用的lambda列表关键字
 
 Define-method-combination 参数lambda列表类似于普通lambda列表, 但是也允许使用 &whole. 
 
@@ -2187,9 +2187,9 @@ OR=>  (1 2 4 3)
 
         Read-only-p 指定这个结果是否可以被当作常量对象. 如果是 t, 结果就是一个 read-only 的量 that can, 如果适用于实现, 它可以被拷贝到只读空间 并且/或 和来自其他程序的相似的常量对象惊醒合并. 如果是 nil (默认的), 结果必须既不被复制, 也不能被合并; 它必须被认为是可能修改的数据.
 
-        如果一个 load-time-value 表达式被 compile-file 处理, 这个编译器在这个表达式上执行它正常的语义处理 (就像宏展开并转为机器码), 但是为这个表达式的执行安排在了加载时在一个 null 的词法环境中, 这个求值的结果被当作是一个运行时的字面化对象. 确保表达式的求值只有在文件加载时才会发生, 但是对文件中顶级表达式的求值的求值顺序是由依赖实现的.
+        如果一个 load-time-value 表达式被 compile-file 处理, 这个编译器在这个表达式上执行它正常的语义处理 (就像宏展开并转为机器码), 但是为这个表达式的执行安排在了加载时在一个 null 的词法环境[lexical environment]中, 这个求值的结果被当作是一个运行时的字面化对象. 确保表达式的求值只有在文件加载时才会发生, 但是对文件中顶级表达式的求值的求值顺序是由依赖实现的.
 
-        如果一个 load-time-value 表达式出现在被 compile 编译的函数中, 这个表达式在编译时的一个 null 词法环境中被求值. 这个编译时求值的结果被当作是编译后代码中的字面化对象.
+        如果一个 load-time-value 表达式出现在被 compile 编译的函数中, 这个表达式在编译时的一个 null 词法环境[lexical environment]中被求值. 这个编译时求值的结果被当作是编译后代码中的字面化对象.
 
         如果一个 load-time-value 表达式被 eval 处理, 表达式在一个 null 词法环境中被求值, 并且返回一个值. 由 eval 处理的隐式编译(或部分编译)表达式的实现可能只在编译完成时才计算一次.
 
@@ -2499,7 +2499,7 @@ OR=>  (1 2 4 3)
 
 * 描述(Description):
 
-        通过把一个宏函数关联到全局环境中的这个 name 来把 name 定义为一个宏. 这个宏函数被定义在 defmacro 表达式形式出现的相同的词法环境中.
+        通过把一个宏函数关联到全局环境中的这个 name 来把 name 定义为一个宏. 这个宏函数被定义在 defmacro 表达式形式出现的相同的词法环境[lexical environment]中.
 
         在 lambda-list 列表里的参数变量被绑定到这个宏调用的解构的部分里.
 
@@ -2630,7 +2630,7 @@ OR=>  (1 2 4 3)
 
         确定 symbol 在指定的环境中是否有一个函数定义作为一个宏.
 
-        如果是这样, 则返回宏展开函数, 即两个参数的函数. 如果 symbol 在这个词法环境中没有函数定义, 或者它的定义不是一个宏, macro-function 返回 nil.
+        如果是这样, 则返回宏展开函数, 即两个参数的函数. 如果 symbol 在这个词法环境[lexical environment]中没有函数定义, 或者它的定义不是一个宏, macro-function 返回 nil.
 
         对于 symbol, macro-function 和 special-operator-p 都返回 true 是有可能的. 宏定义必须可用于那些只理解标准的 Common Lisp 特殊表达式的程序.
 
@@ -3785,7 +3785,7 @@ OR=>  (1 2 4 3)
 
 * 描述(Description):
 
-        在一个词法环境中, 在给定的声明具有效果的情况下, 对表达式中的主体进行求值.
+        在一个词法环境[lexical environment]中, 在给定的声明具有效果的情况下, 对表达式中的主体进行求值.
 
 * 示例(Examples):
 
