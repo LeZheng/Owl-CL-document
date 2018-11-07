@@ -1,5 +1,5 @@
 # 3. 编译和求值
-
+<!--TODO 范围[extent] ??-->
 > * 3.1 [求值](#Evaluation)
 > * 3.2 [编译](#Compilation)
 > * 3.3 [声明](#Declarations)
@@ -299,15 +299,15 @@ Figure 3-4. 一些已定义的函数相关的名字
 
 ### 3.1.3 <span id = "LambdaExpressions">lambda 表达式</span>
 
-在lambda表达式中, 主体部分在一个词法环境[lexical environment]中求值, 这个词法环境[lexical environment]是通过在lambda列表中给每个参数的绑定添加当前词法环境[lexical environment]下参数的对应值来构成.
+在 lambda 表达式[lambda expression]中, 主体部分在一个词法环境[lexical environment]中求值, 这个词法环境[lexical environment]是通过添加 lambda 列表[lambda list]中的每个形参[parameter]和来自实参[argument]的对应值[value]的绑定[binding]到当前词法环境[environment]中来构成的.
 
-有关如何基于lambda列表建立绑定的进一步讨论, 见章节 3.4 (Lambda Lists).
+有关如何基于 lambda 列表[lambda list]建立绑定[binding]的进一步讨论, 见章节 3.4 (Lambda 列表).
 
-一个lambda表达式的 body 是一个隐式的 progn; 它返回的值会被这个lambda表达式返回. 
+一个 lambda 表达式[lambda expression]的主体是一个隐式的 progn[implicit progn]; 它返回的值会被这个 lambda 表达式[lambda expression]返回. 
 
 ### 3.1.4 <span id = "ClosuresLexicalBinding">闭包和词法绑定</span>
 
-一个词法闭包(lexical closure)是一个函数, 它可以引用和更改由包含函数定义的绑定表达式形式所确定的词法绑定的值.
+一个词法闭包[lexical closure]是一个函数[function], 它可以引用和更改由包含函数定义的绑定[binding]表达式形式[form]所建立的词法绑定[lexical binding]的值.
 
 细想这段 x 没有声明为 special 的代码:
 
@@ -321,11 +321,11 @@ Figure 3-4. 一些已定义的函数相关的名字
 (funcall (car funs)) =>  43
 ```
 
-function 的特殊表达式形式将lambda表达式强制转换为闭包, 在这个闭包中, 当对特殊表达式形式进行求值时, 词法环境[lexical environment]与lambda表达式一起被捕获.
+这个 function 的特殊表达式形式[special form]将一个 lambda 表达式[lambda expression]强制转换为闭包[closure], 当对这个特殊表达式形式[special form]进行求值时, 事实上这个词法环境[lexical environment]与这个 lambda 表达式[lambda expression]一起被捕获到这个闭包[closure]中.
 
-这个 two-funs 函数返回两个函数的列表, 它们中的每一个都引用了函数 two-funs 被调用时创建的变量 x 的绑定. 这个变量有初始值 6, 但是 setq 可以修改这个绑定. 为第一个lambda表达式创建的词法闭包在创建闭包时不会"快照" x 的值 6;而是抓住了 x 的绑定. 第二个函数可以被用于修改同样的(捕获的)绑定(在示例中改为 43), 并且这个修改后的变量绑定之后影响了第一个函数的返回值.
+这个 two-funs 函数返回一个两函数[function]的列表[list], 它们中的每一个都引用了函数 two-funs 被调用时在入口创建的变量 x 的绑定[binding]. 这个变量有初始值 6, 但是 setq 可以修改这个绑定[binding]. 为第一个 lambda 表达式[lambda expression]创建的词法闭包[lexical closure]在创建这个闭包[closure]时不会"快照(snapshot)" x 的值[value] 6;而是捕捉了 x 的绑定. 第二个函数[function]可以被用于修改相同的(被捕获的)绑定[binding]中的值[value] (在示例中改为 43), 并且这个修改后的变量绑定接下来影响了第一个函数[function]的返回值.
 
-在同一组绑定中, 一个lambda表达式的闭包可能不止一次地产生, 产生的多个闭包可能是相同的也可能是不同的, 由具体实现来决定. 也就是说, 两种行为无法区分的函数可能或不完全相同. 行为上可区分的两个函数是截然不同的. 示例:
+在同一组绑定中, 一个 lambda 表达式[lambda expression]的闭包[closure]可能不止一次地产生的情况下, 产生的多个闭包[closure]可能或可能不相同[identical], 由具体实现来决定. 也就是说, 两个行为无法区分的函数[function]可能或可能不相同[identical]. 行为上可区分的两个函数[function]是截然不同的[distinct]. 示例:
 
 ```LISP
 (let ((x 5) (funs '()))
@@ -336,7 +336,7 @@ function 的特殊表达式形式将lambda表达式强制转换为闭包, 在这
   funs)
 ```
 
-上面表达式形式的列表是一个十个闭包的列表. 每一个都只需要 x 的绑定. 每个情况下都是相同的绑定, 但是这十个闭包对象可能是相同也可能不同. 另一方面, 下面表达式的结果
+上面表达式形式[form]的结果是是一个十个闭包[closure]的列表[list]. 每一个都只需要 x 的绑定[binding]. 每个情况下都是相同的绑定[binding], 但是这十个闭包[closure]对象[object]可能或可能不相同[identical]. 另一方面, 下面这个表达式形式[form]的结果
 
 ```LISP
 (let ((funs '()))     
@@ -348,9 +348,9 @@ function 的特殊表达式形式将lambda表达式强制转换为闭包, 在这
 funs)
 ```
 
-也是十个闭包的列表. 然而, 在这个情况下没有两个闭包对象是相同的因为每一个闭包都隐藏了一个不同的 x 的绑定, 并且由于 setq 的使用这些绑定可以从行为上区分.
+也是十个闭包[closure]的列表[list]. 然而, 在这个情况下没有两个闭包[closure]对象[object]是相同的[identical]因为每一个闭包[closure]都封闭了一个不同的 x 的绑定[binding], 并且由于 setq 的使用这些绑定[binding]可以从行为上区分.
 
-下面这个表达式的结果
+下面这个表达式形式[form]的结果
 
 ```LISP
 (let ((funs '()))
@@ -361,7 +361,7 @@ funs)
   funs)
 ```
 
-是一个可能相同也可能不同的十个闭包对象的列表. 每一个闭包都有一个不同的 x 的绑定, 但是这个绑定是不能区分的, 因为它们的值是相同的且不可变 (这里没有在 x 上进行 setq 操作). 一个编译器可以在内部把这个表达式形式转换成下面这种
+是一个可能或可能不相同[identical]的十个闭包[closure]对象[object]的列表[list]. 每一个闭包[closure]都涉及一个不同的 x 的绑定[binding], 但是这些绑定[binding]是不能区分的, 因为它们的值是相同的[same]且不可变 (这里没有在 x 上进行 setq 操作). 一个编译器可以在内部把这个表达式形式[form]转换成下面这种
 
 ```LISP
 (let ((funs '()))
@@ -371,19 +371,19 @@ funs)
 funs)
 ```
 
-其中的闭包可能是一样的.
+其中的闭包[closure]可能是一样的.
 
-一个闭包没有包含任何变量绑定也是可能的. 在这个代码片段中
+一个闭包[closure]没有封闭任何变量绑定也是可能的. 在这个代码片段中
 
 ```LISP
 (mapcar (function (lambda (x) (+ x 2))) y)
 ```
 
-函数 (lambda (x) (+ x 2)) 没有包含任何外部对象的引用. 在这个情况下, 对于所有的函数表达式可能返回相同的闭包. 
+函数 (lambda (x) (+ x 2)) 没有包含任何外部对象的引用. 在这个情况下, 对于所有的 function 表达式形式[form]的求值, 可能返回相同的闭包[closure]. 
 
 ### 3.1.5 <span id = "Shadowing">遮蔽</span>
 
-如果用相同的名字 N 确定词法绑定的两个表达式形式是文本上嵌套的, 那么内部表达式对 N 的引用会引用到内部表达式确定的绑定; 这个内部 N 绑定会遮蔽外部的 N 绑定. 内部表达式外面但是外部表达式的里面对 N 的引用会引用到外部表达式确定的绑定上. 比如:
+如果用相同的名字[name] N 建立[establish]词法绑定[lexical binding]的两个表达式形式[form]在文本上是嵌套的, 那么内部表达式形式[form]对 N 的引用会引用到内部表达式形式[form]建立的绑定[binding]; 这个内部 N 的绑定[binding]会遮蔽[shadow]外部 N 的绑定[binding]. 内部表达式形式[form]外面但是外部那个的里面对 N 的引用会引用到外部表达式形式[form]建立的绑定[binding]上. 比如:
 
 ```LISP
 (defun test (x z)
@@ -392,9 +392,9 @@ funs)
 z)
 ```
 
-通过 let 创建的这个变量 z 的绑定遮蔽了函数 test 的参数绑定. 在 print 表达式中对变量 z 的引用会引用 let 绑定的. 在函数 test 的最后对 z 的引用会引用到 z 命名的参数上.
+由 let 创建的这个变量 z 的绑定[binding]遮蔽了函数 test 的形参[parameter]绑定. 在 print 表达式形式[form]中对变量 z 的引用会引用 let 绑定的. 在函数 test 的最后对 z 的引用会引用到名为 z 的形参[parameter]上.
 
-词法作用域作用的构造就像在每次执行时为每个对象生成新的名称一样. 因此, 动态遮蔽不会发生. 比如:
+具有词法作用域的构造就像在每次执行时为每个对象[object]生成新的名称一样. 因此, 动态遮蔽不会发生. 比如:
 
 ```LISP
 (defun contorted-example (f g x)
@@ -406,7 +406,7 @@ z)
                                 (- x 1))))))
 ```
 
-细想 (contorted-example nil nil 2) 这个调用. 这个产生 4. 在执行过程中, 这个有三个对 contorted-example 的调用, 通过 2 个 block 交叉存取:
+细想 (contorted-example nil nil 2) 这个调用. 这个产生 4. 在执行过程中, 这个有三个对 contorted-example 的调用, 带有 2 个 block 交错:
 
 ```LISP
 (contorted-example nil nil 2)
@@ -421,13 +421,13 @@ z)
                 (return-from here1 4)
 ```
 
-在执行 funcall 的时候, 有两个明显的 block 退出点, 每个显然都命名为 here. 这个 return-from 表达式被作为 funcall 操作的结果执行时引用外面的退出点(here1), 不是内部的那个(here2). 它指的是在 function(这里通过 #' 语法缩写了)执行时出现的退出点，它导致了由 funcall 实际调用的函数对象的创建.
+在执行 funcall 的时候, 有两个未偿还的 block 退出点[exit point], 每个都明显命名为 here. 这个被作为 funcall 操作的结果执行的 return-from 表达式形式[form]引用外面的未偿还的退出点[exit point] (here1), 不是内部的那个(here2). 它指的是在 function (这里通过 #' 语法缩写了)执行时文本上可见的退出点[exit point], 这个 function 导致了实际被 funcall 调用的函数[function]对象[object]的创建.
 
-如果在这个例子中, 一个人打算把 (funcall f) 改为 (funcall g), 那么调用 (contorted-example nil nil 2) 的值会是 9. 这个值会改变是因为 funcall 会导致 (return-from here2 4) 的执行, 从而导致一个从内部的退出点(here2)返回. 当这个发生时, 值 4 会被中间的 contorted-example 调用返回, 5 被加到它上面成了 9, 并且这个值会被外部的 contorted-example 调用返回. 重点是, 退出点的选择与它的最内部或最外层无关; 而是, 它取决于在执行函数时使用lambda表达式打包的词法环境[lexical environment]. 
+如果在这个例子中, 一个人打算把 (funcall f) 改为 (funcall g), 那么调用 (contorted-example nil nil 2) 的值会是 9. 这个值会改变是因为 funcall 会导致 (return-from here2 4) 的执行, 从而导致一个从内部的退出点[exit point] (here2)的返回. 当这个发生时, 值 4 会被中间的 contorted-example 调用返回, 5 被加到它上面成了 9, 并且这个值会被外部 block 和外部 contorted-example 调用返回. 重点是, 返回的退出点[exit point]的选择与它是最内部或最外层无关; 而是, 它取决于在执行 function 时和 lambda 表达式[lambda expression]一起打包的词法环境[lexical environment]. 
 
 ### 3.1.6 <span id = "Extent">范围</span>
 
-Contorted-example 可以工作仅因为在退出点的范围内调用了由 f 命名的函数. 一旦这个执行的控制流离开了这个 block, 这个退出点就会被废除. 比如:
+这个 contorted-example 可以工作仅因为在退出点[exit point]的范围[extent]内调用了由 f 命名的函数[function]. 一旦这个执行的控制流离开了这个 block, 这个退出点[exit point]就会被废除. 比如:
 
 ```LISP
 (defun invalid-example ()
@@ -435,11 +435,11 @@ Contorted-example 可以工作仅因为在退出点的范围内调用了由 f �
     (if (numberp y) y (funcall y 5))))
 ```
 
-您可能期望调用 (invalid-example) 通过以下不正确的推理生成5: let 绑定 y 给 block 的值; 这个值是一个从lambda表达式得到的函数. 因为 y 不是一个数字, 它被在值 5 上被调用. 这个 return-from 应该从 here 命名的退出点返回这个值, 从而再一次退出 block 并且把值 5 给 y, 这时 y 是number, 然后把这个值作为调用 invalid-example 的结果返回.
+您可能期望调用 (invalid-example) 根据以下不正确的推理生成 5: let 把 y 绑定到 block 的值; 这个值是一个由 lambda 表达式[lambda expression]产生的函数. 因为 y 不是一个数字, 所以它被在值 5 上被调用. 这个 return-from 应该从名为 here 的退出点[exit point]返回这个值, 从而再一次退出 block 并且把值 5 给 y, 成为一个数字, 然后把这个值作为调用 invalid-example 的结果返回.
 
-这个论证失败仅因为退出点有动态范围. 这个论证直到 return-from 的执行还是正确的. 这个 return-from 的执行应该会发出一个 control-error 类型的错误, 然而, 不是因为它引用到那个退出点而发出, 但是因为它确实引用到一个退出点并且那个退出点已经被废弃.
+这个论证失败仅因为退出点[exit point]有动态范围[dynamic extent]. 这个论证直到 return-from 的执行还是正确的. 这个 return-from 的执行应该会发出一个 control-error 类型[type]的错误, 然而, 不是因为它不能引用到那个退出点[exit point]而发出, 而是因为它正确地引用到那个退出点[exit point]而那个退出点[exit point]已经被废弃.
 
-对动态退出点绑定的引用, 如catch标记, 指的是最近已建立的该名称的绑定, 该绑定没有被认为是废弃的. 比如:
+一个根据名字对动态退出点[exit point]绑定的引用, 如 catch 标记[catch tag], 引用的是最近已建立的还没有被废弃的该名称的绑定[binding]. 比如:
 
 ```LISP
 (defun fun1 (x)
@@ -450,22 +450,22 @@ Contorted-example 可以工作仅因为在退出点的范围内调用了由 f �
   (throw 'trap z))
 ```
 
-细想这个调用 (fun1 7). 结果是 10. 在那个 throw 被执行的时候, 这里有两个外部的 catch 带有名字 trap: 一个在程序 fun1 中确定, 并且另外一个在程序 fun2 中确定, 所以这个值 7 是从 fun2 的catch中被返回. 从 fun3 中来看, 在 fun2 中的那个 catch 遮蔽了在 fun1 中的那个. fun2 被定义为
+细想这个调用 (fun1 7). 结果是 10. 在那个 throw 被执行的时候, 这里有两个未偿还的带有名字 trap 的捕捉者(catcher): 一个在程序 fun1 中建立, 并且另外一个在程序 fun2 中建立. 后面那个更接近, 所以这个值 7 是从 fun2 的 catch 中被返回. 从 fun3 中来看, 在 fun2 中的那个 catch 遮蔽了在 fun1 中的那个. fun2 被定义为
 
 ```LISP
 (defun fun2 (y)
   (catch 'snare (* 5 (fun3 y))))
 ```
 
-那么两个退出点会有不同的名字, 因此 fun1 的那个不会被遮蔽. 这个结果会是 7. 
+那么两个退出点[exit point]会有不同的名字[name], 因此 fun1 的那个不会被遮蔽. 这个结果会是 7. 
 
 ### 3.1.7 <span id = "ReturnValues">返回值</span>
 
-通常调用函数的结果是一个单个的对象. 然而, 有时候, 一个函数可以很方便地计算多个对象并返回它们.
+通常调用函数[function]的结果是一个单独的对象[object]. 然而, 有时候, 一个函数可以很方便地计算多个对象[object]并返回它们.
 
-为了从一个表达式形式接受一个以上的返回值, 几个特殊表达式中的一个必须被用于请求那些值. 如果一个表达式形式产生了多个值但是没有以这种方式接收, 那么第一个返回值会被给到调用者并且其他的会被丢弃; 如果这个表达式形式提供 0 个值, 那么调用者会收到一个 nil 作为值.
+为了从一个表达式形式[form]接受一个以上的返回值, 几个特殊表达式形式[special form]或宏[macro]中的一个必须被用于请求那些值. 如果一个表达式形式[form]产生了多值[multiple value]但是没有以这种方式接收, 那么第一个返回值会被给到调用者并且其他的会被丢弃; 如果这个表达式形式[form]产生零个值, 那么调用者会收到一个 nil 作为值.
 
-下面这段列出了接收多个值的操作符. 这些操作符可以被用于指明去求值的一个或多个表达式形式并且接收这些表达式返回的多个值.
+下面这段列出了接收多值[multiple value]的操作符[operator]. 这些操作符[operator]可以被用于指定一个或多个表达式形式[form]去求值[evaluate]以及指定这些表达式形式[form]返回的那些值[value]放置到哪里.
 
     multiple-value-bind  multiple-value-prog1  return-from  
     multiple-value-call  multiple-value-setq   throw        
@@ -473,7 +473,7 @@ Contorted-example 可以工作仅因为在退出点的范围内调用了由 f �
 
 Figure 3-5. 一些可应用于接收多值的操作符
 
-函数 values 可以被用于产生多值. (values) 返回 0 个值; (values form) 返回 form 返回的主要的值; (values form1 form2) 返回两个值, 都是 form1 和 form2 的主要的值; 诸如此类.
+函数[function] values 可以被用于产生多值[multiple values[2]]. (values) 返回 0 个值; (values form) 返回 form 返回的主值[primary value]; (values form1 form2) 返回两个值, form1 的主值[primary value]和 form2 的主值[primary value]; 以此类推.
 
 见 multiple-values-limit 和 values-list. 
 
