@@ -489,47 +489,47 @@ Figure 3-5. 一些可应用于接收多值的操作符
 
 以下术语被用于这个章节.
 
-编译器是一个将代码转换为一个具体实现相关的可以被有效的表示和执行的表达式形式的工具. 术语编译器 (compiler) 指的是 compile 和 compile-file 这两个函数.
+编译器[compiler]是一个将代码转换为一个具体实现相关的[implementation-dependent]可以被有效地表示和执行的形式的工具. 术语编译器[compiler]指的是 compile 和 compile-file 这两个函数[function].
 
-术语编译后的代码(compiled code)指的是表示编译后程序的对象, 就像被 compile 或者加载一个编译后文件时 load 构造的对象.
+术语编译后的代码[compiled code]指的是表示编译后程序的对象[object], 例如加载一个编译后文件[compiled file]时被 compile 或者 load 构造的对象[object].
 
-术语隐式编译(implicit compilation)指的是在求值的时候编译.
+术语隐式编译[implicit compilation]指的是在求值[evaluation]期间执行的编译[compilation].
 
-术语字面化对象(literal object) 指的是一个引用的对象或者一个自求值对象或者一个对象是另一个的底层构造. 一个常变量自身不是一个字面化对象.
+术语字面化[literal]对象[object]指的是一个引用的对象[object]或者一个自求值对象[self-evaluating object]或者这样一个对象的底层结构对象<!--TODO 待校对-->. 一个常变量[constant variable]自身不是一个字面化[literal]对象[object].
 
-术语合并(coalesce) 按如下定义. 假定 A 和 B 是源代码中的两个字面化常量, 并且 A' 和 B' 是对应编译后代码中的对象. 如果 A' 和 B' 是 eql 但是 A 和 B 不是 eql, 那么就说 A 和 B 被编译器所合并.
+术语合并[coalesce]按如下定义. 假定 A 和 B 是源代码[source code]中的两个字面化[literal]常量[constant], 并且 A' 和 B' 是编译后代码[compiled code]中对应的对象[object]. 如果 A' 和 B' 是 eql 但是 A 和 B 不是 eql, 那么就说 A 和 B 被编译器所合并.
 
-术语最小编译(minimal compilation)指的是编译器必须在编译期执行的动作. 这些动作声明在章节 3.2.2 (Compilation Semantics).
+术语最小编译[minimal compilation]指的是编译器必须在编译期[compile time]执行的动作. 这些动作声明在章节 3.2.2 (编译语义).
 
-动词过程(process)指的是执行最小编译, 确定一个表达式形式的求值时间, 并可能求值该表达式(如果需要的话).
+动词处理[process]指的是执行最小编译[minimal compilation], 确定一个表达式形式[form]的求值时间, 并可能求值该表达式形式[form] (如果需要的话).
 
-术语进一步编译(further compilation)指的是具体实现相关依赖的编译, 而不仅仅是最小编译. 这就意味着, 过程并不意味着完整编译. 块编译和机器特定指令的生成是进一步编译的示例. 进一步编译允许发生在运行时.
+术语进一步编译[further compilation]指的是超出最小编译[minimal compilation]的依赖于具体实现的[ implementation-dependent]的编译. 这就意味着, 处理并不意味着完整编译. 块编译和机器特定指令的生成是进一步编译的示例. 进一步编译允许发生在运行时[run time].
 
-与编译相关的4个不同的环境: 启动环境(the startup environment), 编译环境(the compilation environment), 求值环境(the evaluation environment), 还有运行时环境(the run-time environment).
+区分与编译相关的 4 个不同的环境[environment]: 启动环境[startup environment], 编译环境[compilation environment], 求值环境[evaluation environment], 还有运行时环境[run-time environment].
 
-启动环境是编译器被调用的 Lisp 镜像的环境.
+启动环境[startup environment]是编译器被调用的那个 Lisp 镜像[Lisp image]的环境[environment].
 
-编译环境由编译器维护, 并用于保存编译器内部使用的定义和声明. 只有正确编译所需的定义部分才会被保存. 编译环境用作编译器调用的宏展开函数的环境参数. 在编译环境中可用的定义是否可以用于启动环境或求值环境中所启动的求值中, 这是未知的.
+编译环境[compilation environment]由编译器维护, 并用于保存编译器内部使用的定义和声明. 只有正确编译所需的定义部分才会被保存. 编译环境[compilation environment]用作编译器调用的宏展开函数的环境[environment]实参[argument]. 在编译环境[compilation environment]中可用的定义是否可以用于启动环境[startup environment]或求值环境[evaluation environment]中所启动的求值[evaluation]中, 这是未知的.
 
-求值环境是一个运行时环境, 在这个环境中, 要求值的 eval-when 指定的求值的代码和宏展开会被求值. 由编译器发起的所有求值都在求值环境中进行.
+求值环境[evaluation environment]是一个运行时环境[run-time environment], 在这个环境中, 由 eval-when 指定的要被求值的代码和宏展开会被求值. 由编译器[compiler]发起的所有求值都在求值环境[evaluation environment]中进行.
 
-运行时环境是被编译后的的程序将被执行的环境.
+运行时环境[run-time environment]是被编译后的的程序将被执行的环境[environment].
 
-编译环境从求值环境继承而来, 并且编译环境和求值环境可能是相同的. 这个求值环境从启动环境中继承而来, 并且这个启动环境和求值环境可能是一样的.
+编译环境[compilation environment]从求值环境[evaluation environment]继承而来, 并且编译环境[compilation environment]和求值环境[evaluation environment]可能是相同的[identical]. 这个求值环境[evaluation environment]从启动环境[startup environment]中继承而来, 并且这个启动环境[startup environment]和求值环境[evaluation environment]可能是一样的[identical].
 
-术语编译时(compile time) 指的是编译器处理源代码的那段时间. 在编译时, 只有编译环境和求值环境可用.
+术语编译时[compile time]指的是编译器处理源代码[source code]的那段时间. 在编译期[compile time], 只有编译环境[compilation environment]和求值环境[evaluation environment]可用.
 
-术语编译期定义(compile-time definition)指的是编译环境中的定义. 比如, 编译一个文件时, 一个函数如果声明为内联的, 那么它的定义可能被保留在编译环境中. 这个定义可能在求值环境中不可用.
+术语编译期定义[compile-time definition]指的是编译环境[compilation environment]中的定义. 比如, 编译一个文件时, 一个函数如果声明为 inline, 那么它的定义可能被保留在编译环境[compilation environment]中. 这个定义可能在求值环境[evaluation environment]中不可用.
 
-术语运行时(run time) 指的是加载器加载编译后的代码和编译后的代码被执行的那段时间. 在运行时, 只有运行时环境可用.
+术语运行时[run time]指的是加载器加载编译后的代码或编译后的代码被执行的那段时间. 在运行时, 只有运行时环境[run-time environment]可用.
 
-术语运行时定义(run-time definition)指的是运行时环境中的定义.
+术语运行时定义[run-time definition]指的是运行时环境[run-time environment]中的一个定义.
 
-术语运行时编译器(run-time compiler) 指的是 compile 函数或者隐式编译, 对于它们来说编译环境和运行时环境是在同一个Lisp镜像中. 注意当运行时编译器被使用时, 运行时环境和启动环境是一样的. 
+术语运行时编译器[run-time compiler]指的是 compile 函数[function]或者隐式编译[implicit compilation], 对于它们来说编译和运行时环境[environment]是在同一个 Lisp 镜像[Lisp image]中. 注意当运行时编译器[[run-time compiler]]被使用时, 运行时环境[run-time environment]和启动环境[startup environment]是一样的. 
 
 ### 3.2.2 <span id = "CompilationSemantics">编译语义</span>
 
-从概念上讲, 编译是一个遍历代码, 使用在编译环境中提供的信息(如声明和宏定义)执行特定的语法和语义分析, 并生成等价的、可能更有效的代码的过程.
+从概念上讲, 编译是一个遍历代码, 使用在编译环境[compilation environment]中提供的信息(如全局声明和宏[macro]定义)来执行特定的语法和语义分析, 并生成等价的, 可能更有效的代码的过程.
 
 > * 3.2.2.1 [编译器宏](#CompilerMacros)
 > * 3.2.2.2 [最小化编译](#MinimalCompilation)
@@ -537,11 +537,11 @@ Figure 3-5. 一些可应用于接收多值的操作符
 
 #### 3.2.2.1 <span id = "CompilerMacros">编译器宏</span>
 
-编译器宏可以定义为一个同时命名一个函数或宏的名称. 这也就是说, 一个函数名可能同时命名函数和编译器宏.
+编译器宏[compiler macro]可以定义给一个同时也命名一个函数[function]或宏[macro]的名称[name]. 这也就是说, 一个函数名[function name]可能同时命名函数[function]和编译器宏[compiler macro].
 
-如果 compiler-macro-function 对于出现在词法环境[lexical environment]中的一个函数名返回 true, 这个函数名命名一个编译器宏. 为这个函数名字创建一个词法绑定不止创建一个局部函数或宏定义, 并且也遮蔽了这个名字的编译器宏.
+如果 compiler-macro-function 对于出现在词法环境[lexical environment]中的一个函数名[function name]返回 true, 这个函数名[function name]命名一个编译器宏[compiler macro]. 为这个函数名[function name]创建一个词法绑定[lexical binding]不止创建一个局部函数[function]或宏[macro]定义, 并且也遮蔽[shadows[2]]了这个编译器宏[compiler macro].
 
-这个 compiler-macro-function 返回的函数是一个两个参数的函数, 称为展开函数(expansion function). 为了展开一个编译器宏, 这个展开函数被宏展开钩子函数所调用, 这个展开函数作为第一个函数, 这个完整的编译器宏表达式作为第二个参数, 并且当前的编译环境(或者是当前词法环境[lexical environment], 如果表达式在 compile-file 后被其他处理过) 作为第三个参数. 然后, 宏展开钩子函数将展开函数称为第一个参数而环境则是第二个参数. 扩展函数的返回值, 由宏展开钩子函数传递, 可能是相同的表达式, 或者是另一种表达式, 在执行展开的代码中, 可以替换到原始表达式形式的位置上.
+这个 compiler-macro-function 返回的函数[function]是一个两个参数的函数[function], 称为展开函数(expansion function). 为了展开一个编译器宏[compiler macro], 通过用这个展开函数作为第一个参数, 整个编译器宏表达式形式[form]作为第二个参数, 当前编译环境(或者如果这个表达式形式[form]被 compile-file 以外的其他处理过, 那么就是当前的词法环境[environment])作为第三个参数来调用宏展开钩子[macroexpand hook]进而调用这个展开函数. 宏展开钩子[macroexpand hook]反过来将这个表达式形式[form]作为第一个参数而环境[environment]作为第二个参数来调用这个展开函数. 展开函数的返回值, 由宏展开钩子函数传递, 可能是相同的[same]表达式形式[form], 或者是另一种表达式形式[form], 由执行展开的代码[code]决定, 被用于替换到原始表达式形式[form].
 
     *macroexpand-hook*  compiler-macro-function  define-compiler-macro  
 
@@ -549,117 +549,117 @@ Figure 3-6. 应用于编译器宏的定义的名字
 
 ##### 3.2.2.1.1 编译器宏的目的
 
-这个编译器宏机制的目的是允许选择性的源代码转换为编译器的优化建议. 当一种复合表达式被处理(如由编译器), 如果操作符命名了一个编译器宏, 那么这个编译器宏函数可能在这个表达式上被调用, 而结果的展开则递归地处理, 按照其通常的解释为函数形式或宏形式进行处理.
+这个编译器宏[compiler macro]机制的目的是允许选择性的源代码转换为编译器的优化建议. 当一种复合表达式形式[compound form]被处理(如由编译器), 如果这个操作符[operator]命名了一个编译器宏[compiler macro], 那么这个编译器宏函数[compiler macro function]可能在这个表达式形式[form]上被调用, 而产生的展开进行递归处理优先于在原始表达式形式[form]上根据它作为函数表达式形式[function form]或宏表达式形式[macro form]的解释执行常规处理.
 
-一个编译器宏函数, 就像一个宏函数, 是一个两个参数的函数: 整个调用的表达式和环境对象. 不像一个普通的宏函数, 一个编译器宏函数可以通过返回与原始表达式形式相同的值来提供扩展. 如果编译器宏破坏性地修改的它的表达式部分的参数, 那么结果是未定义的.
+一个编译器宏函数[compiler macro function], 就像一个宏函数[macro function], 是一个两个实参[argument]的函数[function]: 整个调用的表达式形式[form]和那个环境[environment]. 不像一个普通的宏函数[macro function], 一个编译器宏函数[compiler macro function]可以通过只返回与原始表达式形式[form]相同的值来拒绝提供展开式. 如果编译器宏函数[compiler macro function]破坏性地修改的它的表达式形式[form]参数的任何部分, 那么后果是未定义的.
 
-传递给编译器宏函数的表达式可以是一个 car 部分是一个函数名的列表或者一个 car 部分是 funcall 并且 cadr 部分是一个列表 (function name); 注意, 这会影响编译器宏函数对表达式形式参数的解构. define-compiler-macro 会为两种可能的格式正确地执行对参数的解构.
+传递给编译器宏函数[compiler macro function]的表达式形式[form]可以是一个 car 部分为一个函数名的列表[list]或者一个 car 部分是 funcall 并且 cadr 部分是一个列表 (function name) 的列表; 注意, 这会影响编译器宏函数[compiler macro function]对表达式形式参数的解构. define-compiler-macro 会为两种可能的格式的参数正确解构做准备.
 
-当 compile-file 选择展开顶层表达式时, 它是一个编译器宏表达式, 那么展开后的也被当作顶层表达式来处理, 以便在 eval-when 的处理; 见章节 3.2.3.1 (Processing of Top Level Forms). 
+当 compile-file 选择展开一个编译器宏[compiler macro]表达式形式[form]的顶层表达式形式[top level form]时, 那么展开式出于 eval-when 处理的目的也被当作顶层表达式形式[top level form]来处理; 见章节 3.2.3.1 (顶层表达式形式的处理). 
 
 ##### 3.2.2.1.2 编译器宏的命名
 
-可以为命名宏和函数的函数名定义编译器宏.
+编译器宏[compiler macro]可以被定义为命名了函数[function]和宏[macro]的函数名[function name].
 
-编译器宏定义是严格的全局定义. 在 macrolet 定义本地宏的方式中, 没有定义本地编译器宏的规定. 一个函数名字的词法绑定会遮蔽任何和这个名字关联的编译器宏, 还有和这个名字关联的全局的函数和宏定义.
+编译器宏[compiler macro]定义是严格的全局定义. 没有提供 macrolet 定义局部宏[macro]的方式来定义局部编译器宏[compiler macro]. 一个函数名字的词法绑定会遮蔽任何和这个名字关联的编译器宏[compiler macro], 还有和这个名字关联的全局的函数[function]和宏[macro]定义.
 
 注意, 编译器宏定义的存在不会影响访问函数定义(比如, fboundp)或宏定义(比如, macroexpand)的函数返回的值. 编译器宏是全局的, 并且函数 compiler-macro-function 足以解决它们与其他词法和全局定义之间的交互作用. 
 
-##### 3.2.2.1.3 编译器宏被使用的时候
+##### 3.2.2.1.3 编译器宏被使用的时机
 
-一个函数或宏的编译器宏定义的存在表明, 编译器应该使用编译器宏的展开, 而不是原来的函数表达式或宏表达式. 然而, 任何语言处理器(编译器, 求值器, 或者其他的 code walker)都不需要实际调用编译器宏函数, 或者在调用编译器宏函数时使用结果展开.
+一个函数[function]或宏[macro]的编译器宏[compiler macro]定义的存在表明, 编译器应该使用编译器宏[compiler macro]的展开, 而不是原来的函数表达式形式[function form]或宏表达式形式[macro form]. 然而, 任何语言处理器(编译器, 求值器, 或者其他的 code walker)都不需要实际调用编译器宏函数[compiler macro function], 或者如果调用编译器宏函数[compiler macro function]也不使用产生的展开.
 
-当编译器在处理一个表达式中遇到一个对编译器宏名称的调用(这不是声明的非内联)时, 编译器可能会展开编译器宏, 并可能使用展开的表达式代替原来的表达式.
+当编译器[compiler]在处理时遇到一个对编译器宏[compiler macro]名称[name]调用的表达式形式[form] (这个没有被声明为 notinline)时, 编译器[compiler]可能会展开编译器宏[compiler macro], 并可能使用展开式代替原始表达式形式[form].
 
-当 eval 在处理过程中遇到一个对编译器宏名称的调用(不是声明为非内联的)的调用时, eval 可能会展开编译器宏, 并可能使用展开的表达式代替原来的表达式.
+当 eval 在处理时遇到一个对编译器宏[compiler macro]名称[name]调用的表达式形式[form] (这个没有被声明为 notinline)时, eval 可能会展开编译器宏[compiler macro], 并可能使用展开式代替原始表达式形式[form].
 
-这里有编译器宏定义一定不能被任何语言处理器所使用的两种情况:
+这里有两个编译器宏[compiler macro]定义一定不能被任何语言处理器所使用的情况:
 
-    与编译器宏关联的全局函数名绑定被函数名的词法绑定所遮蔽.
+    与编译器宏关联的全局函数名称绑定被那个函数名的词法绑定所遮蔽.
 
-    函数名已被声明或声明为非内联, 而调用表达式出现在声明的范围内.
+    函数名已被全局声明或局部声明为 notinline, 而调用表达式形式出现在声明的作用域内.
 
-在其他情况下, 编译器宏是否被展开或使用是未知的.
+在其他情况下, 编译器宏[compiler macro]是否被展开或使用是未知的.
 
 ###### 3.2.2.1.3.1 关于编译器宏实现的注意事项
 
-虽然从技术上讲, 如上所述, 对于 eval 在与编译器相同的情况下处理编译器宏是允许的, 但是这在解释具体实现中并不一定是个好主意.
+如上所述, 虽然从技术上对于 eval 在与编译器[compiler]相同的情况下处理编译器宏[compiler macro]是允许的, 但是这在解释型具体实现[interpreted implementation]中并不一定是个好主意.
 
-编译器宏的存在目的是为了用编译时速度换取运行时速度. 编写编译器宏的程序员倾向于假设编译器宏比正常函数和宏花费更多的时间来生成代码, 因此正常的函数和宏在运行时是特别适合的. 由于 eval 在解释具体实现中可能多次执行相同形式的语义分析, 因此在每次这样的求值中选择调用编译器宏可能会很低效.
+编译器宏[compiler macro]的存在是为了用编译时速度换取运行时速度的目的. 编写编译器宏[compiler macro]的程序员倾向于假设编译器宏[compiler macro]比正常函数[function]和宏[macro]花费更多的时间进而来生成用于运行时的最佳的代码. 由于 eval 在解释型具体实现[interpreted implementation]中可能多次执行相同表达式形式的语义分析, 因此具体实现[implementation]在每次这样的求值[evaluation]中选择调用编译器宏[compiler macro]可能会很低效.
 
-然而, 关于在这些情况下应该做什么的决定留给每个具体实现. 
+然而, 关于在这些情况下应该做什么的决定留给每个具体实现[implementation]. 
 
 #### 3.2.2.2 <span id = "MinimalCompilation">最小化编译</span>
 
-最小化编译根据如下定义:
+最小化编译[minimal compilation]根据如下定义:
 
-    在编译时, 正在编译的源代码中出现的所有编译器宏调用都被展开了; 它们不会在运行时展开.
+    在编译时, 正在编译的源代码[source code]中出现的所有编译器宏[compiler macro]调用都被展开; 它们不会在运行时展开.
 
-    正在编译的源代码中出现的所有宏和符号宏调用都在编译时进行了展开, 这样它们就不会在运行时再次被展开. macrolet 和 symbol-macrolet 实际上被替换为与它们的主体相对应的表达式，在这些表达式中，对宏的调用被它们的展开表达式所取代.
+    正在编译的源代码中出现的所有宏[macro]和符号宏[symbol macro]调用都在编译时进行展开, 这样它们就不会在运行时再次被展开. macrolet 和 symbol-macrolet 实际上被替换为与它们的主体相对应的表达式，在这里，对宏[macro]的调用被它们的展开式所取代.
 
-    在 compile 处理的源代码中一个 load-time-value 表达式的第一个参数在编译时被求值; 在 compile-file 处理的源代码中, 编译器安排它在加载时被求值. 不论发生何种情况, 这个求值的结果会被记住并且在执行时被用于后面 load-time-value 表达式的值. 
+    在被 compile 处理的源代码[source code]中一个 load-time-value 表达式形式[form]的第一个实参[argument]在编译期[compile time]被求值; 在被 compile-file 处理的源代码[source code]中, 编译器安排它在加载时[load time]被求值. 不论发生何种情况, 这个求值[evaluation]的结果会被记住并且在执行时[execution time]被用于后面 load-time-value 表达式形式[form]的值. 
 
 #### 3.2.2.3 <span id = "SemanticConstraints">语义约束</span>
 
-所有符合规范的程序必须符合以下约束, 这些被设计用于减少编译和解释程序的可观测差异:
+所有符合规范的程序[conforming program]必须遵守以下约束, 这些被设计用于减少编译和解释的程序的可观测差异:
 
-    任何引用的宏的定义必须在编译环境中出现. 任何在编译环境中不是以特殊操作符或宏定义的符号开始的表达式, 编译器将其作为函数调用来处理.
+  * 任何被引用的宏[macro]的定义必须出现在编译环境[compilation environment]中. 任何以一个不是命名编译环境[compilation environment]中定义的特殊操作符[special operator]或宏[macro]的符号[symbol]开始的列表[list]表达式形式[form]会被编译器当作一个函数调用.
 
-    必须在编译环境中对动态变量进行 special 全局声明. 对于任何绑定编译环境中没有特殊声明或全局声明的任何绑定都被编译器视为词法绑定.
+  * 必须在编译环境[compilation environment]中对动态变量[dynamic variable]进行 special 全局声明. 在编译环境[compilation environment]中没有 special 声明或全局声明的任何绑定[binding]都被编译器视为词法绑定[lexical binding].
 
-    在编译环境中定义和声明为内联的函数的定义在运行时必须是相同的.
+  * 在编译环境[compilation environment]中定义和声明为 inline 的函数的定义在运行时必须是相同的.
 
-    在一个名为 F 的函数中, 这个编译器可能 (但不是必须) 假定一个对名为 F 的函数明显的递归调用指向 F 的相同的定义, 除非这个函数已经被声明为非内联的. 在执行时, 重定义这样一个递归定义函数 F 的结果是没有定义的.
+  * 在一个名为 F 的函数[function]中, 这个编译器可能 (但不是必须) 假定一个对名为 F 的函数的明显递归调用指向 F 的相同定义, 除非这个函数已经被声明为 notinline. 在函数[function] F 执行时, 重定义这样一个递归定义函数[function] F 的后果是没有定义的.
 
-    一个文件内的一个调用函数, 这个函数在同一个文件中定义, 除非该函数被声明为非内联的, 否则指的就是该函数. 如果函数在运行时被单独定义或者在一个文件里多次定义, 那么结果是未知的.
+  * 在一个文件中对一个定义在相同文件中的已命名函数的调用指的就是那个函数, 除非该函数被声明为 notinline. 如果函数在运行时被单独重定义或者在一个相同文件里多次定义, 那么后果是未指定的.
 
-    所有在编译时声明 ftype 的函数的参数语法和返回值数量必须在运行时保持不变.
+  * 所有在编译时声明 ftype 的函数的参数语法和返回值数量必须在运行时保持不变.
 
-    在编译环境中定义的常量变量在运行时必须具有相似的值. 源代码中一个常量变量的引用等价于对一个常量变量值的字面化对象的引用.
+  * 在编译环境[compilation environment]中定义的常变量[constant variable]在运行时必须具有相似[similar]的值. 源代码[source code]中对一个常变量[constant variable]的引用等价于对一个常变量[constant variable]值[value]的字面化[literal]对象[object]的引用.
 
-    用 deftype 或者 defstruct 在编译环境中定义的类型必须和运行时保持相同的定义. 被 defclass 在编译环境中定义的类必须和运行时定义的有相同的超类和元类.
+  * 用 deftype 或者 defstruct 在编译环境[compilation environment]中所做的类型定义必须在运行时保持相同的定义. 由 defclass 在编译环境[compilation environment]中定义的类必须在运行时被定义有着相同的超类[superclasse]和元类[metaclass].
 
-    这个也就意味着 subtype/supertype 类型声明的关系必须在编译时和运行时保持不变.
+    这个也就意味着类型指定符[type specifier]的子类型[subtype]/超类型[supertype]关系必须在编译期[compile time]和运行期[run time]保持不变.
 
-    在编译环境中出现的类型声明必须在运行时准确地描述对应的值; 否则, 结果就是未定义的. 在编译时, 一个未知类型出现在声明中是允许的, 但是在这种情况下可能会发出警告.
+  * 在编译环境[environment]中出现的类型声明必须准确地描述在运行时的对应值; 否则, 后果就是未定义的. 在编译时, 允许一个未知类型[type]出现在一个声明中, 但是在这种情况下可能会发出一个警告.
 
-    除了上面明确列出的情况外, 在求值环境中定义的函数可以在运行时具有不同的定义或不同的签名, 并且运行时定义生效.
+  * 除了上面显式列出的情况外, 在求值环境[evaluation environment]中定义的一个函数[function]允许在运行时具有不同的定义或不同的签名, 并且运行时定义生效.
 
-不应该使用任何关于运行时环境与启动、评估和编译环境之间一致性的附加假设来编写符合标准的程序.
+不应该使用额外的任何关于运行时环境[environment]与启动、求值和编译环境[environment]之间一致性的假设来编写符合规范的程序[conforming programs].
 
-除非另行注明, 当一个编译期定义和运行时不同, 会在运行出现以下情况的一种:
+除非另行注明, 当一个编译期定义和运行时不同, 会在运行时出现以下情况的一种:
 
-    an error of type error is signaled
-    the compile-time definition prevails
-    the run-time definition prevails
+  * 发出一个 error 类型[type]的错误
+  * 那个编译器定义生效
+  * 那个运行时定义生效
 
-如果编译器处理的是在编译时没有定义操作符的函数表达式, 那么编译时就不会发出错误. 
+如果编译器[compiler]处理一个在编译时没有定义操作符[operator]的函数表达式形式[function form], 那么编译时就不会发出错误. 
 
 ### 3.2.3 <span id = "FileCompilation">文件编译</span>
 
-函数 compile-file 对一个文件中的表达式根据章节 3.2.2 (Compilation Semantics) 中的规则执行编译, 并且产生一个可以通过 load 被载入的输出文件.
+函数[function] compile-file 对一个文件中的表达式形式[form]根据章节 3.2.2 (Compilation Semantics) 中的规则执行编译, 并且产生一个可以通过 load 被载入的输出文件.
 
-通常情况下, 在 compile-file 编译的文件中出现的顶层表达式只在加载编译后文件时才进行求值, 而不是在编译文件时才进行求值. 但是, 通常情况下, 文件中的某些表达式需要在编译时进行求值，以便能够正确地读取和编译文件的其余部分.
+通常情况下, 在 compile-file 编译的文件中出现的顶层表达式形式[top level form]只在加载编译后文件时才进行求值, 而不是在编译文件时进行求值. 但是, 通常情况下, 文件中的某些表达式需要在编译时进行求值，以便能够正确地读取和编译文件的其余部分.
 
-这个 eval-when 特殊表达式可以被用于控制一个顶层表达式形式是否在编译时, 加载时, 或者都求值. 用 eval-when 指定这三种情况的任何几个都是可以的, 通过符号 :compile-toplevel, :load-toplevel, 还有 :execute 来指明. 对于顶层的 eval-when 表达式, :compile-toplevel 表示编译器必须在编译时求值这个主体部分, 并且 :load-toplevel 表示这个编译器必须安排在加载时求值这个主体. 关于非顶层的 eval-when 表达式, :execute 表示这个主体必须在运行时环境被求值.
+这个 eval-when 特殊表达式[special form]可以被用于控制一个顶层表达式形式[top level form]是否在编译时, 加载时, 或者两个时机都求值. 用 eval-when 指定这三种情况的任何几个都是可以的, 通过符号 :compile-toplevel, :load-toplevel, 还有 :execute 来表示. 对于顶层的 eval-when 表达式形式, :compile-toplevel 表示编译器必须在编译期求值这个主体部分, 而 :load-toplevel 表示这个编译器必须安排在加载时求值这个主体. 关于非顶层的 eval-when 表达式, :execute 表示这个主体必须在运行时环境[environment]被执行.
 
-这种表达式的行为可以更精确地理解为 compile-file 如何处理一个文件要被编译的表达式的模型. 这个有两种处理模型, 称之为 "not-compile-time" 还有 "compile-time-too".
+这种表达式形式[form]的行为可以从 compile-file 如何处理一个要被编译的文件中的表达式形式的模型的方面来更精确地理解. 这个有两种处理模式, 称之为 "not-compile-time" 还有 "compile-time-too".
 
-文件中的连续表达式被 compile-file 读取并且在 not-compile-time 模式下被处理; 在这个模式下, compile-file 安排表达式只在加载时被求值而不是在编译时. 当 compile-file 在 compile-time-too 模式下, 表达式在加载和编译时都求值.
+文件中的连续表达式形式被 compile-file 读取并且在 not-compile-time 模式下被处理; 在这个模式下, compile-file 安排表达式形式只在加载时被求值而不是在编译时. 当 compile-file 在 compile-time-too 模式下时, 表达式形式在加载和编译时都求值.
 
-#### 3.2.3.1 顶层表达式的处理
+#### 3.2.3.1 顶层表达式形式的处理
 
-在文件编译器中对顶级表达式的处理定义如下:
+在文件编译器中对顶层表达式形式[top level form]的处理定义如下:
 
-* 如果这个表达式是一个编译器宏表达式 (没有被一个 notinline 声明所禁用), 具体实现可能或可能不选择计算该表达式的编译器宏展开, 并且执行了展开, 可能也可能不会选择在相同的处理模式(compile-time-too 或 not-compile-time)下将结果作为顶级表达式进行处理. 如果它拒绝获取或使用展开, 它必须处理原始的表达式.
+* 如果这个表达式形式[form]是一个编译器宏表达式形式[compiler macro form] (没有被一个 notinline 声明[declaration]所禁用), 具体实现[implementation]可能或可能不选择计算该表达式形式[form]的编译器宏展开式[ compiler macro expansion], 并且执行那个展开式, 可能也可能不会选择在相同的处理模式(compile-time-too 或 not-compile-time)下将结果作为顶层表达式形式[top level form]进行处理. 如果它拒绝获取或使用展开式, 它必须处理原始的表达式[form].
 
-* 如果这个表达式是一个宏表达式, 它的宏展开会被作为顶层表达式在相同的处理模式下(compile-time-too 或 not-compile-time)计算并处理.
+* 如果这个表达式形式是一个宏表达式形式[macro form], 它的宏展开会在相同的处理模式下(compile-time-too 或 not-compile-time)按照顶层表达式形式[top level form]被计算并处理.
 
-* 如果表达式是一个 progn 表达式, 它的主体表达式中的每一个子表达式会被依次当作顶层表达式在相同的处理模式下处理.
+* 如果表达式形式是一个 progn 表达式形式, 它的主体表达式形式[form]中的每一个会被依次当作顶层表达式形式[top level form]在相同的处理模式下处理.
 
-* 如果这个表达式是一个 locally, macrolet, 或者 symbol-macrolet, compile-file 建立适当的绑定并将主体表达式作为顶层表达式形式处理, 并在相同的处理模式下执行这些绑定. (注意, 这意味着顶层表达式处理的词法环境[lexical environment]不一定是空词法环境.)
+* 如果这个表达式形式是一个 locally, macrolet, 或者 symbol-macrolet, 那么 compile-file 建立适当的绑定并实际上用这些绑定在相同的处理模式下按照顶层表达式形式[top level form]处理主体表达式形式. (注意, 这意味着被处理的顶层表达式形式的词法环境[environment]没有必要是空词法环境[null lexical environment].)
 
-* 如果表达式是一个 eval-when 表达式, 它会根据下面这段被处理.
+* 如果表达式形式是一个 eval-when 表达式形式, 它会根据下面这段被处理.
 
     CT | LT | E | Mode | Action | New Mode
     - | :-: | -: | - | - | -
@@ -678,27 +678,27 @@ Figure 3-6. 应用于编译器宏的定义的名字
 
     这个 Action 列指明三种动作中的一种:
 
-    Process: 在指定模式下把主体作为顶层表达式处理.
+    Process: 在指定模式下按照顶层表达式形式[top level form]处理主体.
 
-    Evaluate: 在编译器的动态执行上下文中对主体进行求值, 使用求值环境作为全局环境和 eval-when 出现的词法环境[lexical environment].
+    Evaluate: 在编译器的动态执行上下文中对主体进行求值, 使用求值环境[evaluation environment]作为全局环境以及 eval-when 出现的词法环境[lexical environment].
 
-    Discard: 忽略这个表达式.
+    Discard: 忽略这个表达式形式[form].
 
     这个 New Mode 列表示新的处理模式. 一个代字符 (---) 表示编译器保留当前模式.
 
-* 否则, 这个表达式就是一个顶层表达式而不是特殊情况下的一个表达式. 在 compile-time-too 模式下, 这个编译器首先在求值环境中对表达式进行求值, 然后对其进行最低限度的编译. 在 not-compile-time 模式下, 表达式只是简单地编译了. 所有子表达式被当作非顶层(non-top-level) 表达式.
+* 否则, 这个表达式形式就是一个不是这些特殊情况之一的顶层表达式形式[top level form]. 在 compile-time-too 模式下, 这个编译器首先在求值环境[environment]中对表达式形式进行求值, 然后对其进行最低限度的编译. 在 not-compile-time 模式下, 表达式形式[form]只是简单地最低限度地编译了. 所有子表达式形式[subform]被当作非顶层表达式形式[non-top-level form]. 
 
-    注意, 顶层表达式是按照在文件中显示的顺序处理的, 并且编译器读取的每个顶层表达式都在读取下一个之前进行处理. 然而, 只要 Common Lisp 的语义被保留, 就不指定非顶层子表达式(包括宏展开的)的处理顺序还有进一步编译的顺序.
+    注意, 顶层表达式形式[top level form]是按照在文件中显示的顺序处理的, 并且编译器读取的每个顶层表达式形式[top level form]都在读取下一个之前进行处理. 然而, 只要 Common Lisp 的语义被保留, 不是顶层表达式形式[top level form]的子表达式[subform]的处理(包括宏展开的)顺序还有进一步编译的顺序是未指定的.
 
-eval-when 表达式导致的编译期求值仅限顶层. 对于非顶层表达式 :compile-toplevel 和 :load-toplevel 情况声明都会被忽略. 对于非顶层表达式, 一个 eval-when 指定为 :execute 的情况被当作一个隐式的 progn 包括 eval-when 表达式的主体部分; 否则, 在主体中的表达式就被忽略.
+eval-when 表达式形式[form]导致的编译期求值仅限顶层. 对于非顶层表达式形式[non-top-level form] :compile-toplevel 和 :load-toplevel 情况声明都会被忽略. 对于非顶层表达式形式[non-top-level form], 一个指定了 :execute 情况的 eval-when 被当作一个包括 eval-when 表达式形式[form]的主体部分的隐式 progn[implicit progn ]; 否则, 在主体中的表达式形式[form]就被忽略.
 
 ##### 3.2.3.1.1 定义宏的处理
 
-出现在一个文件中的定义宏 (就像 defmacro 或者 defvar) 会被 compile-file 处理, 正常情况下会有编译期副作用, 影响同一个文件中后面的表达式的编译. 解释这些副作用是如何发生的一个很方便的模型是, 定义宏被展开为一个或多个 eval-when 表达式, 然后这个调用会导致发生在一个 (eval-when (:compile-toplevel) ...) 表达式的主体部分的编译器副作用.
+出现在一个要被 compile-file 处理的文件中的那些定义宏[macro] (就像 defmacro 或者 defvar), 通常会有编译期副作用, 影响同一个文件[file]中后续表达式形式[form]的编译. 解释这些副作用是如何发生的一个很方便的模型是, 定义宏被展开为一个或多个 eval-when 表达式形式[form], 然后导致编译期副作用发生的这些调用会出现在一个 (eval-when (:compile-toplevel) ...) 表达式形式[form]的主体部分.
 
 编译期的副作用可能会导致对定义的信息的存储方式不同于以"正常"方式处理定义宏 (要么是解释, 要么是加载已编译的文件).
 
-具体来说, 编译时定义宏所存储的信息可能或可能无法用于解释器 (不管是编译时或是编译后), 或者是后续的编译器的调用. 比如, 下面这段代码是不可移植的因为它假定对于解释器可用时编译器也存储了 foo 宏定义:
+具体来说, 在编译期由定义宏[macro]所存储的信息可能或可能无法用于解释器 (不管是编译时或是编译后), 或者是后续对编译器[compiler]的调用中. 比如, 下面这段代码是不可移植的因为它假定在对于解释器可用的地方编译器[compiler]也存储了 foo 宏定义:
 
 ```LISP
 (defmacro foo (x) `(car ,x))
@@ -706,7 +706,7 @@ eval-when 表达式导致的编译期求值仅限顶层. 对于非顶层表达�
   (print (foo '(a b c))))
 ```
 
-一种完成相同工作的可移植的方式是把宏定义包含在 eval-when 表达式里, 就像:
+一种完成相同工作的可移植的方式是把宏定义包含在 eval-when 表达式形式[form]里, 就像:
 
 ```LISP
 (eval-when (:execute :compile-toplevel :load-toplevel)
@@ -714,7 +714,7 @@ eval-when 表达式导致的编译期求值仅限顶层. 对于非顶层表达�
   (print (foo '(a b c))))
 ```
 
-下面这段列出了使得定义可以在编译时和运行时环境都可用的宏. 没有指定在编译环境中可用的定义是否在求值环境中可用, 也没有指定它们在后续编译单元中是否可用, 或者在编译器的后续调用中是否可用. 与 eval-when 一样, 这些编译期副作用只发生在定义宏出现在顶层时.
+下面这段列出了使得定义可以在编译时和运行时环境[environment]都可用的宏. 既没有指定在编译环境[compilation environment]中可用的定义是否在求值环境[environment]中可用, 也没有指定它们在后续编译单元中或者在编译器的后续调用中是否可用. 与 eval-when 一样, 这些编译期副作用只发生在定义宏出现在顶层时.
 
     declaim                define-modify-macro   defsetf    
     defclass               define-setf-expander  defstruct  
@@ -722,13 +722,13 @@ eval-when 表达式导致的编译期求值仅限顶层. 对于非顶层表达�
     define-compiler-macro  defpackage            defvar     
     define-condition       defparameter                     
 
-Figure 3-8. 影响编译环境的定义宏
+Figure 3-8. 影响编译期环境的定义宏
 
 ##### 3.2.3.1.2 对宏和编译器宏的限制
 
-除了在显式声明之外, 在 Common Lisp 标准中定义的宏都不会产生导致宏表达式的任何子表达式都被当作顶层表达式来处理的展开式. 如果一个具体实现还提供了一个 Common Lisp 宏的特殊操作符定义, 那么这个特殊操作符定义必须在这方面是语义上等价的.
+除了在显式声明之外, 在 Common Lisp 标准中定义的宏都不会产生导致这个宏表达式形式[macro form]的任何子表达式形式[subform]被当作顶层表达式形式[top level form]来处理的展开式. 如果一个具体实现[implementation]还提供了一个 Common Lisp 宏[macro]的特殊操作符[special operator]定义, 那么这个特殊操作符[special operator]定义在这方面必须是语义上等价的.
 
-编译器宏展开还必须具有与它们所取代的表达式相同的顶层求值语义. 这对符合规范的实现和符合规范的程序都需要去关注的. 
+编译器宏[compiler macro]展开式也必须具有与它们所取代的表达式形式[form]相同的顶层求值语义. 这对符合规范的实现[conforming implementation]和符合规范的程序[conforming program]都需要去关注的. 
 
 ### 3.2.4 <span id = "LiteralObjectsInCompiledFiles">编译后文件中的字面对象</span>
 
