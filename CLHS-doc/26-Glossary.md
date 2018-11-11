@@ -263,25 +263,25 @@ colon n. the standard character that is called ``colon'' (:). See Figure 2-5.
 
 comma n. the standard character that is called ``comma'' (,). See Figure 2-5.
 
-compilation n. the process of compiling code by the compiler.
+**compilation** n. 编译器[compiler]编译代码[code]的过程.
 
-compilation environment n. 1. An environment that represents information known by the compiler about a form that is being compiled. See Section 3.2.1 (Compiler Terminology). 2. An object that represents the compilation environment[1] and that is used as a second argument to a macro function (which supplies a value for any &environment parameter in the macro function's definition).
+**compilation environment** n. 1. 一个环境[environment], 表示编译器[compiler]所知的关于一个要被编译的表达式形式[form]的信息. 见章节 3.2.1 (编译器术语). 2. 一个对象[object], 表示编译环境[compilation environment[1]]并且被用作给一个宏函数[macro function]的第二个参数 (它为这个宏函数[macro function]定义中的任何 &environment 形参[parameter]提供一个值[value]).
 
-compilation unit n. an interval during which a single unit of compilation is occurring. See the macro with-compilation-unit.
+**compilation unit** n. 发生单个编译单元的时间间隔. 见宏[macro] with-compilation-unit.
 
 compile v.t. 1. (code) to perform semantic preprocessing of the code, usually optimizing one or more qualities of the code, such as run-time speed of execution or run-time storage usage. The minimum semantic requirements of compilation are that it must remove all macro calls and arrange for all load time values to be resolved prior to run time. 2. (a function) to produce a new object of type compiled-function which represents the result of compiling the code represented by the function. See the function compile. 3. (a source file) to produce a compiled file from a source file. See the function compile-file.
 
-compile time n. the duration of time that the compiler is processing source code.
+**compile time** n. 编译器[compiler]处理源代码[source code]的持续时间.
 
-compile-time definition n. a definition in the compilation environment.
+**compile-time definition** n. 编译环境[compilation environment]中的一个定义.
 
-compiled code n. 1. compiled functions. 2. code that represents compiled functions, such as the contents of a compiled file.
+**compiled code** n. 1. 编译后的函数[compiled function]. 2. 表示编译后的函数[compiled function]的代码[code], 例如一个编译后文件[compiled file]的内容.
 
-compiled file n. a file which represents the results of compiling the forms which appeared in a corresponding source file, and which can be loaded. See the function compile-file.
+**compiled file** n. 一个文件[file], 表示编译那些出现在对应源文件[source file]中的表达式形式[form]的结果, 并且可以被加载. 见函数[function] compile-file.
 
-compiled function n. an object of type compiled-function, which is a function that has been compiled, which contains no references to macros that must be expanded at run time, and which contains no unresolved references to load time values.
+**compiled function** n. 一个 compiled-function 类型[type]的对象[object], 它是一个已经被编译的函数[function], 不包含必须在运行时被展开的宏[macro]的引用, 并且不包含对加载期值[load time value]的无法解决的引用.
 
-compiler n. a facility that is part of Lisp and that translates code into an implementation-dependent form that might be represented or executed efficiently. The functions compile and compile-file permit programs to invoke the compiler.
+**compiler** n. 一个工具, 它是 Lisp 的一部分, 将代码[code]转换为一个依赖于具体实现的[implementation-dependent]可以被高效地表示和执行的形式. 函数 compile 和 compile-file 允许程序去调用这个编译器[compiler].
 
 compiler macro n. an auxiliary macro definition for a globally defined function or macro which might or might not be called by any given conforming implementation and which must preserve the semantics of the globally defined function or macro but which might perform some additional optimizations. (Unlike a macro, a compiler macro does not extend the syntax of Common Lisp; rather, it provides an alternate implementation strategy for some existing syntax or functionality.)
 
