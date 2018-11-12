@@ -482,7 +482,7 @@ Figure 3-5. 一些可应用于接收多值的操作符
 > * 3.2.1 [编译器术语](#CompilerTerminology)
 > * 3.2.2 [编译语义](#CompilationSemantics)
 > * 3.2.3 [文件编译](#FileCompilation)
-> * 3.2.4 [编译后文件中的字面对象](#LiteralObjectsInCompiledFiles)
+> * 3.2.4 [编译后文件中的字面化对象](#LiteralObjectsInCompiledFiles)
 > * 3.2.5 [编译器中的异常情况](#ExceptionalSituationsCompiler)
 
 ### 3.2.1 <span id = "CompilerTerminology">编译器术语</span>
@@ -730,13 +730,13 @@ Figure 3-8. 影响编译期环境的定义宏
 
 编译器宏[compiler macro]展开式也必须具有与它们所取代的表达式形式[form]相同的顶层求值语义. 这对符合规范的实现[conforming implementation]和符合规范的程序[conforming program]都需要去关注的. 
 
-### 3.2.4 <span id = "LiteralObjectsInCompiledFiles">编译后文件中的字面对象</span>
+### 3.2.4 <span id = "LiteralObjectsInCompiledFiles">编译后文件中的字面化对象</span>
 
-函数 eval 和 compile 需要去确保字面化对象引用的解释和编译结果的对象和对应源代码中的是一样的. 从另一方面说, compile-file 必须产生一个编译后的文件, 它被 load 加载时, 构建源代码中定义的对象并且产生指向它们的引用.
+函数 eval 和 compile 需要去确保引用的字面化[literal]对象[object]在产生的解释后或编译后的代码对象和源代码[source code]中的对应对象[object]是相同的[same]. 从另一方面说, compile-file 必须产生一个编译后的文件[compiled file], 它被 load 加载时, 构建源代码[source code]中定义的对象并且产生指向它们的引用.
 
-在 compile-file 的情况下, 编译后的文件被 load 所构建的对象不能被认为与编译时构造的对象相同, 因为编译后的文件可能被加载到不同的 Lisp 镜像中, 而不是它编译时的镜像. 这个部分定义了相似(similarity)的概念, 它将求值环境中的对象与运行时环境中的相应对象关联起来.
+在 compile-file 的情况下, 编译后的文件[compiled file]被 load 加载所构建的对象[object]不能被认为与编译时构造的对象[object]相同[same], 因为编译后的文件[compiled file]可能被加载到不同的 Lisp 镜像[Lisp image]中, 而不是它编译时所在的那个. 这个部分定义了相似性[similarity]的概念, 它将求值环境[evaluation environment]中的对象[object]与运行时环境[run-time environment]中的相应对象[object]关联起来.
 
-在这个章节中描述的字面对象约束只能应用于 compile-file; eval 和 compile 不会拷贝或合并常量.
+在这个章节中描述的字面化[literal]对象[object]上的约束只能应用于 compile-file; eval 和 compile 不会拷贝或合并常量.
 
 > * 3.2.4.1 [可外部化的对象](#ExternalizableObjects)
 > * 3.2.4.2 [字面化对象的相似性](#SimilarityLiteralObjects)
@@ -745,145 +745,145 @@ Figure 3-8. 影响编译期环境的定义宏
 
 #### 3.2.4.1 <span id = "ExternalizableObjects">可外部化的对象</span>
 
-事实上文件编译器在编译后的文件中额外表示字面对象并且在文件被加载时重构这些对象和适合的等价对象, 这也就需要去约束文件编译器处理的代码中的可以被用作字面化对象的对象特性.
+事实上文件编译器[file compiler]在编译后的文件[compiled file]中外部表示字面化[literal]对象[object]并且在文件[file]被加载时重构这些对象[object]的适合的等价对象, 这也意味着就需要去约束被文件编译器[file compiler]处理的代码[code]中的可以被用作字面化[literal]对象[object]的那些对象[object]的特性.
 
-可以在一个将要被文件编译器处理的代码中作为一个字面化对象使用的对象被称为可外部化对象(externalizable object).
+一个可以被用作要被文件编译器[file compiler]处理的代码[code]中的字面化[literal]对象[object]的对象[object]被称为可外部化对象[externalizable object].
 
-如果两个对象满足概念上等价断言(下面定义的), 我们就定义这两个对象是相似的, 不依赖于 Lisp 镜像所以两个在不同 Lisp 镜像中的对象可以在这个断言下理解为等价的. 更进一步, 通过检查这个概念性断言的定义, 程序员可以通过文件编译来预测对象的哪些方面是可靠的.
+如果两个对象[object]满足一个二位的概念上等价断言(下面定义的), 我们就定义它们是相似的[similar], 这个断言不依赖于 Lisp 镜像[Lisp image], 所以两个在不同 Lisp 镜像[Lisp image]中的对象[object]可以在这个断言下理解为等价的. 更进一步, 通过检查这个概念性断言的定义, 程序员可以预测一个对象[object]的哪些方面确实被文件[file]编译[compilation]保留了.
 
-文件编译器必须与加载器合作, 以确保在每个可外部化的对象作为一个字面化对象处理的情况下, 加载器会构造一个类似的对象.
+文件编译器[file compiler]必须与加载器[loader]合作, 以确保可外部化的对象[externalizable object]作为一个字面化[literal]对象[object]处理的每个情况中, 加载器[loader]会构造一个类似的[similar]对象[object].
 
-新概念术语"similar"为了可外部化对象的对象集合而定义, 如此以致于编译后的文件被加载时, 一个和文件编译器操作时存在的原始对象相似的对象会被构建. 
+新的概念术语"相似[similar]"就是为了可外部化对象[externalizable object]的对象[object]集合而定义, 这样一来当编译后的文件[compiled file]被加载时, 一个和文件编译器[file compiler]操作时存在的原始对象[object]相似的对象[object]会被构建. 
 
 #### 3.2.4.2 <span id = "SimilarityLiteralObjects">字面化对象的相似性</span>
 
 ##### 3.2.4.2.1 聚合对象的相似性
 
-在已定义相似性以外类型中, 一些被当作是聚合对象. 对于这些类型, 相似性是递归定义的. 我们说这些类型的对象有着确定的基本特性并且为了满足相似性关系, 两个对象的对应特性的值也必须是相似的.
+在已定义相似性[similarity]之外的类型[type]中, 一些被当作是聚合对象. 对于这些类型, 相似性[similarity]是递归定义的. 我们说这些类型的对象有着确定的"基本特性(basic qualities)"并且为了满足相似性[similarity]关系, 两个对象[object]的对应特性的值也必须是相似的.
 
 ##### 3.2.4.2.2 相似性的定义
 
-两个对象 S (在源代码中) 和 C (在编译后的代码中) 仅当它们同时都是这里列出的类型(或者具体实现定义的)中的一个并且它们都满足该定义指明的所有额外需求就被定义为相似的.
+两个对象[object] S (在源代码[source code]中) 和 C (在编译后的代码[compiled code]中) 仅当它们同时都是这里列出的类型[type] (或者具体实现[implementation]定义的)之一并且它们都满足该类型[type]的相似性[similarity]的所有额外需求, 那么它们就被定义为相似的[similar].
 
 number
 
-    两个数字 S and C 如果它们是相同的类型并且表示相同的数学上的值, 那么它们就是相似的.
+    两个数字[number] S 和 C 如果它们是相同的类型[type]并且表示相同的数学上的值, 那么它们就是相似的[similar].
 
 character
 
-    如果两个简单字符 S 和 C 有相似的字符属性, 那么它们就是相似的.
+    如果两个简单[simple]字符[character] S 和 C 有相似的[similar]字符码[code]属性[attribute], 那么它们就是相似的[similar].
 
-    具体实现提供的额外的依赖于实现的属性必须定义非简单字符是否可以被当作相似的并且如何被当作相似的.
+    具体实现[implementation]假定额外的, 依赖于具体实现的[implementation-defined]属性[attribute]必须定义非简单[non-simple]字符[character]是否可以被当作相似的[similar]并且如何被当作相似的[similar].
 
 symbol
 
-    如果两个显而易见的非捕捉符号它们的名字是相似的, 那么它们就是相似的.
+    如果两个显而易见的未捕捉[apparently uninterned]符号[sumbol] S 和 C 的名字[name]是相似的[similar], 那么它们就是相似的[similar].
 
-    如果两个被捕捉的符号 S 和 C 名字是相似的并且编译时 S 可以在当前包访问而加载时 C 可以在当前包访问, 或者 C 在 S home 包的相似包中可访问, 那么它们就是相似的.
+    如果两个被捕捉的[interned]符号 S 和 C 名字[name]是相似的[similar]并且编译时 S 可以在当前包[current package]是访问的而加载时 C 可以在当前包[current package]也是可访问的, 或者 C 在 S home 包[home package]的相似的[similar]包[package]中是可访问, 那么它们就是相似的[similar].
 
-    (注意, 符号的相似性不依赖于当前的读取表, 也不依赖函数 read 如何来解析符号名称中的字符.)
+    (注意, 符号[symbol]的相似性[similarity]不依赖于当前的读取表[current readtable], 也不依赖函数[function] read 如何来解析符号[symbol]名称[name]中的字符[character].)
 
 package
 
-    如果两个包 S 和 C 的名字是相似的, 那么它们就是相似的.
+    如果两个包[package] S 和 C 的名字[name]是相似的[similar], 那么它们就是相似的[similar].
 
-    注意, 虽然一个包对象是一个可外部化的对象, 但是当代码将其引用为一个字面化对象时, 程序员有责任确保相应的包已经存在. 加载器通过调用带有该名称的 find-package 来查找相应的包对象. 如果加载时包不存在, 则加载器会发出一个错误.
+    注意, 虽然一个包[package]对象[object]是一个可外部化的对象[externalizable object], 但是当代码将其作为一个字面化[literal]对象[object]引用时, 程序员有责任确保相应的包[package]已经存在. 加载器[loader]就像是通过使用该名称[name]作为实参[argument]调用的 find-package 来查找相应的包[package]对象[object]. 如果加载时包[package]不存在, 则加载器[loader]会发出一个错误.
 
 random-state
 
-    如果两个随机状态 S 和 C 中假定每种情况下 limit 参数等价, 当一个 C 的拷贝作为 random-state 参数给函数 random 时 S 一直产生相同的伪随机数序列, 那么它们就是等价的.
+    如果两个随机状态[random state] S 和 C 中, 假定每种情况下 limit 实参[argument]等价, 当给定作为函数[function] random 的 random-state 实参[argument]时, S 总是产生和 C 的拷贝[copy[5]]相同的伪随机数序列, 那么它们就是相似的[similar].
 
-    (注意, 因为 C 已经被文件处理器处理过了, 它不能被直接用于 random 的参数因为 random 会有副作用.)
+    (注意, 因为 C 已经被文件编译器[file compiler]处理过了, 它不能被直接用于 random 的实参[argument]因为 random 会有副作用.)
 
 cons
 
-    两个 cons S 和 C 如果它们的 car 和 cdr 部分分别都是相似的, 那么它们就是相似的.
+    两个 cons S 和 C 如果它们的 car 和 cdr 部分分别都是相似的[similar], 那么它们就是相似的[similar].
 
 array
 
-    如果两个一维的数组 S 和 C 的长度以及实际中数组元素的类型还有每一个可用的元素对应也是相似的, 那么它们就是相似的.
+    如果两个一维的数组[array] S 和 C 的长度[length]以及实际数组元素类型[actual array element type]还有每一个对应可用的[active]元素[element]也是相似的[similar], 那么它们就是相似的[similar].
 
-    两个一维以外的数组 S 和 C 如果它们的维度是相似的, 每一个对应的维度也是相似的, 每一个对应实际数组元素的类型也是相似的, 并且每一个对应的元素也是相似的, 那么它们就是相似的.
+    两个一维[rank]以外的数组 S 和 C 如果它们的维度[rank]是相似的[similar], 每一个对应维度的规模[dimension[1]]也是相似的[similar], 每一个对应实际数组元素类型[actual array element type]也是相似的[similar], 并且每一个对应的元素[element]也是相似的[similar], 那么它们就是相似的[similar].
 
-    另外, 如果 S 是一个简单数组, 那么 C 也必须是一个简单数组. 如果 S 是一个带有一个填充指针或者实际的 adjustable 内容的偏移数组, 那么 C 被允许缺乏任何或所有这些特性.
+    另外, 如果 S 是一个简单数组[simple array], 那么 C 也必须是一个简单数组[ simple array]. 如果 S 是一个带有一个填充指针[fill pointer]或者实际可调整[actually adjustable]的偏移数组[displaced array], 那么 C 被允许缺乏任何或所有这些特性.
 
 hash-table
 
-    如果两个哈希表 S 和 C 满足下面三条需求, 那么它们就是相似的:
+    如果两个哈希表[hash table] S 和 C 满足下面三条需求, 那么它们就是相似的[similar]:
 
-        它们都有相同的 test 部分(不如, 它们都是 eql 哈希表).
+        它们都有相同的 test 部分(比如, 它们都是 eql 哈希表[hash table]).
 
-        两个哈希表的键之间存在唯一的一对一匹配, 这样对应的键就是相似的.
+        两个哈希表[hash table]的键之间存在唯一的一对一匹配, 这样一来对应的键就是相似的[similar].
 
-        对于所有的键, 与两个表中对应键关联的值是相似的.
+        对于所有的键, 与两个对应键关联的值是相似的[similar].
 
-    如果在 S 和 C 中的键不止一个一对一匹配, 结果是无法定义的. 一个符合规范的程序不能使用像 S 的表作为可外部化常量.
+    如果在 S 和 C 中的键之间不止一个一对一对应, 结果是未指定的. 一个符合规范的程序[conforming program]不能使用像 S 这个的表作为可外部化常量.
 
 pathname
 
-    如果两个路径名 S 和 C 对应的路径名成分是相似的, 那么它们就是相似的.
+    如果两个路径名[pathname] S 和 C 对应的所有路径名[pathname]成分是相似的[similar], 那么它们就是相似的[similar].
 
 function
 
-    函数不是可外部化对象.
+    函数[function]不是可外部化对象[externalizable object].
 
-structure-object and standard-object
+structure-object 和 standard-object
 
-    对于结构体和标准对象不存在相似性的通用概念. 然而, 一个符合规范的程序允许去为这个程序所定义的 structure-object 或 standard-object 的子类 K 定义一个 make-load-form 方法. 这样一个方法的影响就是定义当源代码中类型 K 的对象 S 和 编译后的代码中类型 K 的对象中 C 是通过对 S 调用 make-load-form 构造出来的时, S 和 C 就是相似的. 
+    对于结构体[structure]和标准对象[standard object]不存在相似性[similarity]的通用概念. 然而, 一个符合规范的程序[conforming program]允许去为这个程序[program]所定义的 structure-object 或 standard-object 的子类[subclass] K 定义一个 make-load-form 方法[method]. 这样一个方法[method]的效果就是定义当源代码[source code]中类型[type] K 的对象[object] S 和编译后的代码[compiled code]中类型[type] K 的对象[object] C 是通过对 S 调用 make-load-form 的代码[code]构造出来的时, S 和 C 就是相似的[similar]. 
 
 #### 3.2.4.3 <span id = "ExtensionsSimilarityRules">相似性规则的扩展</span>
 
-一些对象, 就像流, 读取表还有方法在上面给定的相似性定义下不是可外部化的对象. 这就是说, 这些对象可能不能作为文件编译器处理的代码中的字面化对象可移植地出现.
+在上面给定的相似性定义下, 一些对象[object], 例如流[stream], 读取表还有方法不是可外部化的对象[externalizable object]. 这就是说, 这些对象[object]可能不能像要被文件编译器[file compiler]处理的代码[code]中的字面化[literal]对象[object]那样可移植地出现.
 
-一个具体实现允许去扩展相似性规则, 这样其他种类的对象对于这个具体实现也是可外部化对象.
+一个具体实现[implementation]允许去扩展相似性规则, 这样一来其他种类的对象[object]对于这个具体实现[implementation]也是可外部化对象[externalizable object].
 
-如果对于一些类型的对象, 相似性没有被这个说明文档和具体实现所定义, 那么文件编译器在遇到这样一个对象作为字面化对象时会发出一个错误. 
+如果对于某个类型的对象[object], 相似性[similarity]既没有被这个说明文档也没有被具体实现[implementation]所定义, 那么文件编译器[file compiler]在遇到这样一个对象[object]作为字面化[literal]常量[constant]时会发出一个错误. 
 
 #### 3.2.4.4 <span id = "ACEO">外部化对象的附加约束</span>
 
-如果在文件编译器处理的单个文件中出现的两个字面化对象是相同的, 那么编译后的代码中相应的对象也必须是相同的. 除了符号和包, 文件编译器处理的代码中的任何两个相似的字面化对象都可以合并; 如果它们是两个符号或者两个包, 它们可能只有在它们是相同的前提下才会合并.
+如果在文件编译器[file compiler]处理的单个文件源代码中出现的两个字面化[literal]对象[object]是相同的[identical], 那么编译后的代码[compiled code]中相应的对象[object]也必须是相同的[identical]. 除了符号[symbol]和包[package], 文件编译器[file compiler]处理的代码中的任何两个字面化[literal]对象[object]仅当它们是相似的[similar]时候可以被合并[coalesce]; 如果它们两个都是符号[symbol]或者包[package], 它们可能只有在它们是相同的[identical]时候才会被合并[coalesced].
 
-包含循环引用的对象可以是可外部化对象. 文件编译器需要在一个文件中保存子结构的 eqlness. 保留 eqlness 意味着在源代码中相同的子对象在相应的编译代码中必须是相同的.
+包含循环引用的对象[object]可以是可外部化对象[externalizable object]. 文件编译器[file compiler]需要在一个文件[file]中保存子结构的相等性(eqlness). 保留相等性(eqlness)意味着在源代码[source code]中相同的[same]子对象在相应的编译后代码[compiled code]中必须是相同的[same].
 
-另外, 下面是文件编译器对字面化对象处理的约束:
+另外, 下面是文件编译器[file compiler]对字面化[literal]对象[object]处理上的约束:
 
-array: 如果一个在源代码中的数组是一个简单数组, 那么在编译后代码中的对应数组也是一个简单数组. 如果一个数组在源代码中是一个填充数组, 带有一个填充指针或者一个实际的 adjustable 值, 那么编译后代码中的对应数组可能缺少任何或者所有这些特性. 如果一个源代码中的数组有一个填充指针, 那么编译后的代码中对应的数组可能只是填充指针所暗示的大小.
+  **array**: 如果在源代码中的一个数组[array]是一个简单数组[simple array], 那么在编译后代码中的对应数组[array]也是一个简单数组[simple array]. 如果一个数组在源代码中是偏移的, 带有一个填充指针[fill pointer]或者一个实际可调整的[actually adjustable], 那么编译后代码中的对应数组[array]可能缺少任何或者所有这些特性. 如果一个源代码中的数组[array]有一个填充指针, 那么编译后的代码中对应的数组[array]可能只是填充指针所暗示的大小.
 
-packages: 加载器需要去找到对应包对象, 就像通过调用以包名为参数的 find-package 一样. 如果加载的时候这个名字对应的包不存在, 那么就会发出一个 package-error 类型的错误.
+  **packages**: 加载器需要去找到对应包[package]对象[object], 就像通过用这个包名为参数调用 find-package 一样. 如果加载的时候这个名字对应的包[package]不存在, 那么就会发出一个 package-error 类型[type]的错误.
 
-random-state: 一个不变的 random 状态对象不能作为函数 random 的状态的参数因为这个函数会修改这个数据结构.
+  **random-state**: 一个不变的随机状态[random state]对象不能用作函数[function] random 的状态参数, 因为 random 会修改这个数据结构.
 
-structure, standard-object: 如果存在类型适合的 make-load-form 方法那么 structure-object 和 standard-object 类型的对象也可能出现在编译后的常量中.
+  **structure, standard-object**: 如果存在类型[type]适合的 make-load-form 方法那么 structure-object 和 standard-object 类型[type]的对象[object]也可能出现在编译后的常量中.
 
-    如果被引用为文字对象的对象是 standard-object, structure-object, condition, 或者任何依赖于实现的类 (可能是 empty) ,那么文件编译器就会在这个对象上调用 make-load-form 对于单个文件中任何给定的对象文件编译器只会调用一次 make-load-form 方法.
+      文件编译器[file compiler]在任何被引用作为字面化[literal]对象[object]的对象[object]上调用 make-load-form, 如果这个对象[object]是 standard-object, structure-object, condition, 或者任何依赖于具体实现的[implementation-dependent]其他类[class]集合(可能是空的)的任何一个的广义实例[generalized instance]的话. 对于单独文件[file]中任何给定的对象[object]文件编译器[file compiler]只会调用一次 make-load-form.
 
-symbol: 为了保证编译后的文件能够正确加载, 用户必须确保这些文件中引用的包在编译时和加载时一致地定义. 符合规范的程序必须满足以下要求:
+  **symbol**: 为了保证那些编译后的文件[compiled file]能够正确加载, 用户必须确保这些文件[file]中引用的包[package]在编译时和加载时被一致地定义. 符合规范的程序[conforming program]必须满足以下要求:
 
-        1.被 compile-file 处理的文件中的顶层表达式所在的当前包必须和编译后文件中对应顶层表达式被 load 执行时所在当前包相同. 特别地:
+          1.当文件[file]中的顶层表达式形式[top level form]被 compile-file 处理时的当前包[current package]必须和编译后文件[compiled file]中对应顶层表达式形式[top level form]被 load 执行时的当前包相同[current package]. 特别地:
 
-            a. 任何修改当前包的文件中的顶层表达式都必须在编译时和加载时将其更改为同一名称的包.
+              a. 任何在一个文件[file]中修改当前包[current package]的顶层表达式形式[top level form]都必须在编译时和加载时将其更改为同一名称[name]的包[package].
 
-            b. 如果文件中的第一个非原子级顶层表达式不是一个 in-package 的表达式, 那么调用 load 时的当前包的名称必须是与 compile-file 被调用时当前包的名字相同.
+              b. 如果在这个文件[file]中的第一个非原子[non-atomic]顶层表达式形式[top level form]不是一个 in-package 的表达式形式[form], 那么调用 load 时的当前包[current package]必须与 compile-file 被调用时的当前包[current package]有着相同名称[name].
 
-        2.在一个顶层表达式在编译期被处理期间, 对于词法上出现在这个顶层表达式并且可以通过当前包来访问而 home 包是另一个包的所有符号, 在加载时当前包和编译时 home 包有着相同名字的包中也必须存在一个可以访问的, 相同名字的符号.
+          2.在编译期一个顶层表达式形式[top level form]被处理期间, 对于词法上出现在这个顶层表达式形式[top level form]中并且在当前包[current package]中是可访问的[accessible]而 home 包[home package]是另一个包[package]的所有符号[symbol], 在加载时当前包[current package]以及和编译时 home 包[home package]有着相同名字[name]的包[package]中也必须存在一个可访问的[accessible]相同名字[name]的符号[symbol].
 
-        3.对于所有出现在编译后的文件中, 编译时在 home 包里是外部符号的符号, 在加载时相同名字的这个包里也必须存在名字相同的外部符号.
+          3.对于编译后的文件[compiled file]中出现的所有在编译时是它们 home 包[home package]的外部符号[external symbol]的符号[symbol], 在加载时相同名字[name]的这个包[package]里也必须存在名字[name]相同的外部符号[external symbol].
 
-    如果其中任何一个条件都不成立, 那么加载器查找受影响的符号的包就不确定了. 具体实现允许去发出一个错误或者定义这个行为. 
+      如果其中任何一个条件都不成立, 那么加载器[loader]查找受影响的符号[symbol]的包[package]就是未指定的. 具体实现[implementation]允许去发出一个错误或者定义这个行为. 
 
 ### 3.2.5 <span id = "ExceptionalSituationsCompiler">编译器中的异常情况</span>
 
-compile 和 compile-file 允许去发出错误和警告, 包括由于处理编译期的 (eval-when (:compile-toplevel) ...) 表达式, 宏展开的错误, 还有编译器自身发出的 condition .
+compile 和 compile-file 允许去发出错误和警告, 包括由于处理编译期的 (eval-when (:compile-toplevel) ...) 表达式形式的处理, 宏展开, 还有编译器自身发出的状况(condition)引起的错误.
 
-在不进行干预编译就不能处理的情况下, 类型错误的状况可能由编译器发出.
+编译在没有干预就不能处理的情况下, error 类型[type]的状况[condition]可能由编译器发出.
 
-除了这个标准指定的必须或者可能发出警告类型状况的情况外, 在编译器可以确定结果未定义或者一个运行时错误会发出情况下也可能发出警告. 以下是这种情况的示例: 违反类型声明, 对 defconstant 定义的常量的值赋值或修改, 用错误数量的参数或者残缺的关键字列表调用内置的 Lisp 函数, 还有不可识别的声明标识.
+除了这个标准指定的必须或者可能发出 warning 类型[type]的状况[condition]的情况外, 在编译器可以确定结果未定义或者一个运行时错误会发出情况下也可能发出警告. 以下是这种情况的示例: 违反类型声明, 对 defconstant 定义的常量的值进行赋值或修改, 用错误数量的参数或者残缺的关键字列表调用内置的 Lisp 函数, 还有使用不可识别的声明标识符.
 
-编译器允许去提出一个关于编程风格问题, 作为 style-warning 类型的状况警告. 以下是这个情况的示例: 使用不同的参数列表重定义一个函数, 用错误数量的参数调用一个函数, 没有对一个没有引用到的本地变量声明 ignore, 还有引用一个声明为 ignore 的变量.
+编译器允许以 style-warning 类型[type]的状况去提出一个关于编程风格问题的警告. 以下是这个情况的示例: 使用不同的参数列表重定义一个函数, 用错误数量的参数调用一个函数, 没有对一个没有引用到的局部变量声明 ignore, 还有引用一个声明为 ignore 的变量.
 
-compile 和 compile-file 都允许(但不是必须)去为一个类型错误状况确定一个处理者. 比如, 它们可能会发出一个警告, 并且从一些依赖于具体实现的点重启来让编译在没有手动干预的情况下进行下去.
+compile 和 compile-file 都允许(但不是必须)去为一个 error 类型[type]的状况[condition]建立[establish]一个处理者[handler]. 比如, 它们可能会发出一个警告, 并且从某个依赖于具体实现的[implementation-dependent]点重启编译来让这个编译在没有手动干预的情况下进行下去.
 
-compile 和 compile-file 都返回 3 个值, 前两个表示被编译的源代码中是否有错误还有是否提出风格警告.
+compile 和 compile-file 都返回 3 个值, 前两个表示被编译的源代码中是否包含错误以及是否提出风格警告.
 
 一些警告可能会被推迟到编译结束的时候. 见 with-compilation-unit. 
 
