@@ -889,13 +889,13 @@ compile 和 compile-file 都返回 3 个值, 前两个表示被编译的源代�
 
 ## 3.3 <span id = "Declarations">声明</span>
 
-声明(Declarations)提供了一种指定例如求值器或者编译器这样的程序处理器使用的信息的方式.
+声明[Declaration]提供了一种指定像求值器或者编译器这样的程序处理器使用的信息的方式.
 
-局部声明可以通过 declare 嵌入到可执行的代码中. 全局声明, 或者公告(proclamation), 可以通过 proclaim 或者 declaim 来建立.
+局部声明[local declaration]可以通过 declare 嵌入到可执行的代码中. 全局声明[global declaration], 或者公告[proclamation], 可以通过 proclaim 或者 declaim 来建立.
 
-这个 the 特殊表达式提供了一种简写标记来创建一个关于给定表达式的值的类型的局部声明.
+这个 the 特殊表达式形式[special form]提供了一种简写标记来创建一个关于给定表达式形式[form]的值[type]的类型[type]的局部声明[local declaration].
 
-如果一个程序违反了声明和公告, 结果是没有定义的.
+如果一个程序违反了声明[declaration]和公告[proclamation], 结果是没有定义的.
 
 > * 3.3.1 [最低的声明处理需求](#MDPR)
 > * 3.3.2 [声明指定符](#DeclarationSpecifiers)
@@ -904,23 +904,23 @@ compile 和 compile-file 都返回 3 个值, 前两个表示被编译的源代�
 
 ### 3.3.1 <span id = "MDPR">最低的声明处理需求</span>
 
-通常, 一个具体实现可以自由地忽视除了 declaration, notinline, safety 还有 special 以外的声明指定符.
+通常, 一个具体实现[implementation]可以自由地忽视除了 declaration, notinline, safety 还有 special 以外的声明指定符[declaration specifier].
 
-一个 declaration 声明必须抑制关于不识别这个种类的声明的警告. 如果一个实现没有产生关于不识别声明的警告, 它可能安全地忽视了这个声明.
+一个 declaration 声明[declaration]必须抑制关于不识别这个种类的声明[declaration]的警告. 如果一个实现[implementation]没有产生关于不识别声明的警告, 它可能安全地忽视了这个声明[declaration].
 
-一个 notinline 声明必须被任何支持内联函数或者编译器宏的实现所识别进而废弃那些机制. 一个不使用内联函数或者编译器宏的实现可能会安全地忽略这个声明.
+一个 notinline 声明[declaration]必须被任何支持内联函数或者编译器宏[compiler macro]的具体实现[implementation]所识别进而废弃那些机制. 一个不使用内联函数或者编译器宏[compiler macro]的具体实现[implementation]可能会安全地忽略这个声明[declaration].
 
-一个 safety 声明必须被识别, 它会提高当前的安全等级. 一个始终对代码进行处理的实现, 就像 safety 高一样, 可能安全地忽略这个声明.
+一个 safety 声明[declaration]必须总是被识别, 它会提高当前的安全等级. 一个始终对代码进行处理的实现, 就像 safety 高一样, 可能安全地忽略这个声明.
 
-一个 special 声明必须被所有实现所处理. 
+一个 special 声明[declaration]必须被所有实现[implementation]所处理. 
 
 ### 3.3.2 <span id = "DeclarationSpecifiers">声明指定符</span>
 
-一个声明指定符是一个可以出现在层定的 declare 表达式或者一个 declaim 表达式或者作为参数给 proclaim. 它是一个的列表, 其中 car 部分为声明标识符, cdr 部分为根据这个声明标识符所指定的规则解释出来的数据.
+一个声明指定符[declaration specifier]是一个表达式[expression], 它可以出现在顶层的 declare 表达式或者一个 declaim 表达式形式或者作为给 proclaim 的参数. 它是一个的列表[list], 其中 car 部分为声明标识符[declaration identifier], cdr 部分为根据这个声明标识符[declaration identifier]所指定的规则解释的数据.
 
 ### 3.3.3 <span id = "DeclarationIdentifiers">声明标识符</span>
 
-下面这段展示了这个标准定义的所有的声明标识符.
+下面这段展示了这个标准定义的所有的声明标识符[declaration identifier].
 
     declaration     ignore     special  
     dynamic-extent  inline     type     
@@ -929,29 +929,29 @@ compile 和 compile-file 都返回 3 个值, 前两个表示被编译的源代�
 
 Figure 3-9. Common Lisp 声明标识符
 
-一个具体实现可以自由地去支持其他(依赖实现)声明标识符. 如果一个声明标识符没有在上面定义, 也没有被具体实现所定义, 不是一个类型名字, 也没有在 declaration 全局公告中声明, 可能会发出一个警告.
+一个具体实现可以自由地去支持其他(依赖于具体实现的[implementation-defined])声明标识符[declaration identifier]. 如果一个声明标识符[declaration identifier]没有在上面定义, 也没有被具体实现[implementation]所定义, 不是一个类型[type]名字[name], 也没有在 declaration 全局公告[proclamation]中声明, 那么可能会发出一个警告.
 
 #### 3.3.3.1 类型声明的简写标记
 
-类型说明符可以用作声明标识符. (type-specifier var\*) 可以当作 (type type-specifier var\*) 的简写. 
+类型指定符[type specifier]可以用作声明标识符[declaration identifier]. (type-specifier var\*) 可以当作 (type type-specifier var\*) 的简写. 
 
 ### 3.3.4 <span id = "DeclarationScope">声明的作用域</span>
 
-声明可以被分成两种类型: 一些适用于变量或函数的绑定; 一些则不适用于绑定.
+声明[declaration]可以被分成两种类型: 一些适用于变量[variable]或函数[function]的绑定[binding]; 一些则不适用于绑定[binding].
 
-一个出现在绑定表达式的头部并且适用于这个表达式创建的变量或函数的绑定的声明称之为绑定声明; 这个声明会影响这个声明作用域内的该绑定和任何该绑定的引用.
+一个出现在绑定表达式形式[form]的头部并且适用于这个表达式形式[form]创建的变量[variable]或函数[function]的绑定[binding]的声明[declaration]称之为绑定声明[bound declaration]; 这个声明[declaration]会影响这个声明[declaration]的作用域[scope]内的该绑定[binding]和任何该绑定的引用.
 
-不是绑定声明的声明称为自由声明(free declarations).
+不是绑定声明[bound declaration]的声明[declaration]称为自由声明[free declarations].
 
-在表达式 F1 中, 一个自由声明, 它适用于由某些表达式 F2 所建立的一个名字 N 的绑定, 其中 F1 是 F2 的一个子表达式, 它只影响 N 在F1中的引用; 它不适用于其他在 F1 以外的绑定, 也不影响 F2 中建立的 N 绑定的行为.
+在表达式形式[form] F1 中的一个自由声明[free declarations], 它适用于由某个表达式形式[from] F2 所建立的一个名字[name] N 的绑定[binding], 其中 F1 是 F2 的一个子表达式形式[subform], 那么它只影响 N 在 F1 中的引用; 它不适用于其他在 F1 以外的对 N 的引用, 也不影响 F2 中 N 的绑定[binding]被建立[establish]的方式.
 
-不适用于绑定的声明只能以自由绑定出现.
+不适用于绑定[binding]的声明[declaration]只能以自由声明[free declarations]的形式出现.
 
-一个绑定声明的作用域和它对应的绑定的词法作用域相同; 对于特殊变量, 这意味拥有这个绑定的作用域所拥有的是一个词法绑定.
+一个绑定声明[bound declaration]的作用域[scope]和它应用的绑定[binding]的词法作用域[lexical scope]相同; 对于特殊变量[special variable], 这意味拥有这个绑定[binding]会拥有的作用域[scope]使得它成为一个词法绑定[lexical binding].
 
-除非明确声明, 自由声明的作用域只包括它出现在头部的表达式的主体的子表达式, 不包括其他的子表达式. 自由声明的作用域不包括包含声明的表达式所建立的绑定的初始化表达式.
+除非明确声明, 一个自由声明[free declaration]的作用域[scope]只包括它出现在头部的表达式形式[form]的主体子表达式形式[subform], 不包括其他的子表达式形式[subform]. 自由声明[free declaration]的作用域[scope]不包括包含这些声明[declaration]的表达式形式[form]所建立的绑定[binding]的初始化表达式形式[initialization form].
 
-一些循环表达式包含 step, end-test, 或者 result 子表达式, 这些子表达式也包含在循环表达式中出现的声明作用域内. 具体地说, 涉及的循环表达式和子表达式是:
+一些循环表达式形式[iteration form]包含 step, end-test, 或者 result 子表达式, 这些子表达式形式[subform]也被包含在循环表达式形式[iteration form]中出现的那些声明[declaration]的作用域[scope]内. 具体地说, 涉及的循环表达式形式[iteration form]和子表达式形式[subform]是:
 
     do, do*: step-forms, end-test-form, and result-forms.
     dolist, dotimes: result-form
@@ -959,7 +959,7 @@ Figure 3-9. Common Lisp 声明标识符
 
 #### 3.3.4.1 声明作用域的示例
 
-下面是一个示例, 说明了绑定声明的作用域.
+下面是一个示例, 说明了绑定声明[bound declaration]的作用域[scope].
 
 ```LISP
 (let ((x 1))                ;[1] 1st occurrence of x
@@ -972,9 +972,9 @@ Figure 3-9. Common Lisp 声明标识符
 =>  (2 3)
 ```
 
-由于 x 的 special 声明在第二行, 第一个出现的 x 确定一个 x 的动态绑定. 第三个出现的 x 确定是一个 x 的词法绑定 (因为在对应的 let 表达式里没有 special 声明). 第四个出现的 x 是一个指向第三行确定的 x 的词法绑定的引用. 第五个出现的 x 为 let 表达式的 body 部分建立一个 x 的动态绑定因为这个 x 的特殊声明在第六行. 第四行的 x 引用没有被第六行的 special 声明影响因为这个引用不是在第五行变量 x 的词法作用域内. 第七行 x 的引用是第五行建立的 x 的动态绑定的引用.
+由于 x 在第二行的 special 声明[declaration], 第一个出现的 x 建立[establish]一个 x 的动态绑定[dynamic binding]. 第三个出现的 x 建立[establish]一个 x 的词法绑定[lexical binding] (因为在对应的 let 表达式形式[form]里没有 special 声明[declaration]). 第四个出现的 x 是一个引用第三行建立[establish]的 x 的词法绑定[lexical binding]. 因为在第六行的这个 x 的 special 声明[declaration], 第五个出现的 x 为 let 表达式形式[form]的 body 部分建立一个 x 的动态绑定[dynamic binding]. 第四行的 x 引用没有被第六行的 special 声明[declaration]影响因为这个引用不是在第五行变量[variable] x 的"潜在的词法作用域(would-be lexical scope)"内. 第七行 x 的引用是第五行建立[establish]的 x 的动态绑定[dynamic binding]的一个引用.
 
-这里是另一个示例, 用来介绍自由声明的作用域. 如下:
+这里是另一个示例, 用来介绍自由声明[free declaration]的作用域[scope]. 如下:
 
 ```LISP
 (lambda (&optional (x (foo 1))) ;[1]
@@ -982,7 +982,7 @@ Figure 3-9. Common Lisp 声明标识符
   (foo x))                      ;[3]
 ```
 
-第一行对 foo 的调用可能会被编译为内联即便第三行对 foo 的调用一定不会的情况下. 这是因为第二行对 foo 的 notinline 声明只适用于第三行的主体部分. 为了抑制每次调用的内联, 一种方式是这么写:
+第一行对 foo 的调用[call]可能会被编译为内联的, 即便第三行对 foo 的调用一定不会的情况下. 这是因为第二行对 foo 的 notinline 声明[declaration]只适用于第三行的主体部分. 为了抑制两个调用[call]的内联, 一种方式是这么写:
 
 ```LISP
 (locally (declare (notinline foo)) ;[1]
@@ -994,13 +994,13 @@ Figure 3-9. Common Lisp 声明标识符
 
 ```LISP
 (lambda (&optional                               ;[1]
-          (x (locally (declare (notinline foo)) ;[2]
+          (x (locally (declare (notinline foo))  ;[2]
                 (foo 1))))                       ;[3]
   (declare (notinline foo))                      ;[4]
   (foo x))                                       ;[5]
 ```
 
-最后, 这里有一个循环表达式声明的作用域的示例.
+最后, 这里有一个循环表达式形式[iteration form]中声明[declaration]的作用域[scope]的示例.
 
 ```LISP
 (let ((x  1))                     ;[1]
@@ -1011,7 +1011,7 @@ Figure 3-9. Common Lisp 声明标识符
 =>  1
 ```
 
-在这个例子, 第四行的第一个 x 引用是指第三行建立的 x 的词法绑定. 然而, 出现在第四行的第二个 x 位于第五行的自由声明的作用域内 (因为这个是 dotimes 的 结果表达式(result-form)) 并且因此引用 x 的动态绑定. 
+在这个例子, 第四行的第一个 x 引用是指第三行建立的 x 的词法绑定[lexical binding]. 然而, 出现在第四行的第二个 x 位于第五行的自由声明[declaration]的作用域[scope]内 (因为这个是 dotimes 的结果表达式形式(result-form)) 并且因此引用 x 的动态绑定[dynamic binding]. 
 
 ## 3.4 <span id = "LambdaLists">Lambda 列表</span>
 
