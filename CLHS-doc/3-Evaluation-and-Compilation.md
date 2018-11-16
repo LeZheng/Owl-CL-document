@@ -1015,46 +1015,46 @@ Figure 3-9. Common Lisp 声明标识符
 
 ## 3.4 <span id = "LambdaLists">Lambda 列表</span>
 
-一个lambda列表是一个指明了参数集合(有时也称为lambda变量)和一个用于接收和这些参数有关的值的规程.
+一个 lambda 列表[lambda list]是一个列表[list], 它指明了形参[parameter]集合(有时也称为 lambda 变量[lambda variable])和一个用于接收和这些形参[parameter]有关的值[value]的协议.
 
-这里有几种lambda列表的类型.
+这里有几种 lambda 列表[lambda list]的类型.
 
-|    上下文               |                       lambda 列表的种类   |
-|   -   | - |
-|defun form                                   |ordinary lambda list                             |
-|defmacro form                                |macro lambda list                                |
-|lambda expression                            |ordinary lambda list                             |
-|flet local function definition               |ordinary lambda list                             |
-|labels local function definition             |ordinary lambda list                             |
-|handler-case clause specification            |ordinary lambda list                             |
-|restart-case clause specification            |ordinary lambda list                             |
-|macrolet local macro definition              |macro lambda list                                |
-|define-method-combination                    |ordinary lambda list                             |
-|define-method-combination :arguments option  |define-method-combination arguments lambda list  |
-|defstruct :constructor option                |boa lambda list                                  |
-|defgeneric form                              |generic function lambda list                     |
-|defgeneric method clause                     |specialized lambda list                          |
-|defmethod form                               |specialized lambda list                          |
-|defsetf form                                 |defsetf lambda list                              |
-|define-setf-expander form                    |macro lambda list                                |
-|deftype form                                 |deftype lambda list                              |
-|destructuring-bind form                      |destructuring lambda list                        |
-|define-compiler-macro form                   |macro lambda list                                |
-|define-modify-macro form                     |define-modify-macro lambda list                  |
+  |    上下文               |                       lambda 列表的种类   |
+  |   -   | - |
+  |defun 表达式形式[form]             |普通 lambds 列表[ordinary lambda list] |
+  |defmacro 表达式形式[form]          |宏 lambda 列表[macro lambda list]    |
+  |lambda 表达式[lambda expression]  |普通 lambds 列表[ordinary lambda list]  |
+  |flet 局部函数[function]定义        |普通 lambds 列表[ordinary lambda list]  |
+  |labels 局部函数[function]定义      |普通 lambds 列表[ordinary lambda list]  |
+  |handler-case 子句说明             |普通 lambds 列表[ordinary lambda list]  |
+  |restart-case 子句说明             |普通 lambds 列表[ordinary lambda list]  |
+  |macrolet 局部宏[macro]定义         |宏 lambda 列表[macro lambda list]    |
+  |define-method-combination        |普通 lambds 列表[ordinary lambda list]  |
+  |define-method-combination :arguments 选项  |define-method-combination 参数 lambda 列表[define-method-combination arguments lambda list]  |
+  |defstruct :constructor 选项       |boa lambda 列表[boa lambda list]     |
+  |defgeneric 表达式形式[form]        |广义函数 lambda 列表[generic function lambda list]   |
+  |defgeneric 方法[method]子句       |特化 lambda 列表[specialized lambda list]   |
+  |defmethod 表达式形式[form]         |特化 lambda 列表[specialized lambda list]  |
+  |defsetf 表达式形式[form]           |defsetf lambda 列表[defsetf lambda list]       |
+  |define-setf-expander 表达式形式[form] |宏 lambda 列表[macro lambda list]               |
+  |deftype 表达式形式[form]           |deftype lambda 列表[deftype lambda list]     |
+  |destructuring-bind 表达式形式[form] |解构 lambda 列表[destructuring lambda list]   |
+  |define-compiler-macro 表达式形式[form] |宏 lambda 列表[macro lambda list]            |
+  |define-modify-macro 表达式形式[form]  |define-modify-macro lambda 列表[define-modify-macro lambda list]  |
 
 Figure 3-10. 要使用的lambda列表的种类
 
-下面这段列出了可应用于lambda列表的定义的名字.
+下面这段列出了可应用于 lambda 列表[lambda list]的已定义的名字[defined name].
 
     lambda-list-keywords  lambda-parameters-limit    
 
-Figure 3-11. 可应用于lambda列表的定义的名字
+Figure 3-11. 可应用于 lambda 列表的已定义的名字
 
-> * 3.4.1 [普通lambda列表](#OrdinaryLambdaLists)
-> * 3.4.2 [广义函数lambda列表](#GenericFunctionLambdaLists)
-> * 3.4.3 [特化的lambda列表](#SpecializedLambdaLists)
-> * 3.4.4 [宏lambda列表](#MacroLambdaLists)
-> * 3.4.5 [解构lambda列表](#DestructuringLambdaLists)
+> * 3.4.1 [普通 lambda 列表](#OrdinaryLambdaLists)
+> * 3.4.2 [广义函数 lambda 列表](#GenericFunctionLambdaLists)
+> * 3.4.3 [特化的 lambda 列表](#SpecializedLambdaLists)
+> * 3.4.4 [宏 lambda 列表](#MacroLambdaLists)
+> * 3.4.5 [解构 lambda 列表](#DestructuringLambdaLists)
 > * 3.4.6 [Boa Lambda 列表](#BoaLambdaLists)
 > * 3.4.7 [Defsetf Lambda 列表](#DefsetfLambdaLists)
 > * 3.4.8 [Deftype Lambda 列表](#DeftypeLambdaLists)
@@ -1062,26 +1062,26 @@ Figure 3-11. 可应用于lambda列表的定义的名字
 > * 3.4.10 [Define-method-combination 参数 Lambda 列表](#DefineMCArgumentsLambdaLists)
 > * 3.4.11 [文档字符串和声明的语法交互](#SIDSD)
 
-### 3.4.1 <span id = "OrdinaryLambdaLists">普通lambda列表</span>
+### 3.4.1 <span id = "OrdinaryLambdaLists">普通 lambda 列表</span>
 
-一个普通lambda列表被用于描述一个参数集合如何被普通函数所接收. 下面定义的名字使用普通lambda列表:
+一个普通 lambda 列表[ordinary lambda list]被用于描述一个实参[argument]集合如何被普通函数[functioni]所接收. 下面是使用普通 lambda 列表[ordinary lambda list]的已定义的名字[defined name]:
 
     define-method-combination  handler-case  restart-case  
     defun                      labels                      
     flet                       lambda                      
 
-Figure 3-12. 使用普通lambda的标准操作
+Figure 3-12. 使用普通 lambda 列表的标准操作
 
-一个普通lambda列表可以包含下面这段展示的lambda列表关键字.
+一个普通 lambda 列表[ordinary lambda list]可以包含下面这段展示的 lambda 列表关键字[lambda list keyword].
 
     &allow-other-keys  &key       &rest  
     &aux               &optional         
 
-Figure 3-13. 普通lambda列表使用的lambda列表
+Figure 3-13. 被普通 lambda 列表使用的 lambda 关键字列表
 
-lambda列表中的每一个元素是一个参数说明符或者一个lambda列表关键字. 具体实现可以自由地提供额外的lambda列表关键字. 对于一个实现中使用的lambda列表关键字, 见 lambda-list-keywords.
+一个 lambda 列表[lambda list]中的每一个元素[element]是一个参数指定符或者一个 lambda 列表关键字[lambda list keyword]. 具体实现可以自由地提供额外的 lambda 列表关键字[lambda list keyword]. 关于一个实现中使用的 lambda 列表关键字[lambda list keyword], 见 lambda-list-keywords.
 
-普通lambda列表的语法如下:
+普通 lambda 列表[ordinary lambda list]的语法如下:
 
     lambda-list::= (var* 
                     [&optional {var | (var [init-form [supplied-p-parameter]])}*] 
@@ -1089,40 +1089,40 @@ lambda列表中的每一个元素是一个参数说明符或者一个lambda列�
                     [&key {var | ({var | (keyword-name var)} [init-form [supplied-p-parameter]])}* [&allow-other-keys]] 
                     [&aux {var | (var [init-form])}*]) 
 
-一个 var 或 supplied-p-parameter 必须是一个不是常变量的名字的符号.
+一个 var 或 supplied-p-parameter 必须是一个符号[symbol], 并且不是常变量[constant variable]的名字.
 
-一个 init-form 可以是任何表达式形式. 无论何时对于任何参数说明符任何的 init-form 的求值, 那个表达式形式可能引用任何这个说明符左边的参数变量, 包括任何 supplied-p-parameter 变量, 并且可能依赖没有其他参数变量已经被绑定的事实(包括它自己的参数变量) .
+一个 init-form 可以是任何表达式形式[form]. 无论何时为任何参数指定符求值任何 init-form, 那个表达式形式[form]可能引用这个 init-form 出现指定符左边的任何参数变量, 包括任何 supplied-p-parameter 变量, 并且可能依赖于没有其他参数变量已经被绑定的事实(包括它自己的参数变量) .
 
-一个 keyword-name 可以是任何符号, 但是按照惯例是一个正常的关键字; 所有标准化的实现遵守这个惯例.
+一个 keyword-name 可以是任何符号[symbol], 但是按照惯例通常是一个关键字[keyword[1]]; 所有标准化[standardized]的函数[function]都遵守这个惯例.
 
-一个普通的lambda列表有5个部分, 其中的任何部分或者全部可以是空的. 关于不匹配参数处理的信息, 见章节 3.5 (Error Checking in Function Calls).
+一个普通 lambda 列表[ordinary lambda list]有5个部分, 其中的任何部分或者全部可以是空的. 关于不匹配参数处理的信息, 见章节 3.5 (函数调用中的错误检测).
 
-> * 3.4.1.1 [必要参数指定符](#SpecifiersRequiredParameters)
-> * 3.4.1.2 [可选参数指定符](#SpecifiersOptionalParameters)
-> * 3.4.1.3 [剩余参数指定符](#SpecifierRestParameter)
-> * 3.4.1.4 [关键字参数指定符](#SpecifiersKeywordParameters)
-> * 3.4.1.5 [&aux变量的指定符](#SpecifiersAuxVariables)
-> * 3.4.1.6 [普通lambda列表的示例](#ExamplesOrdinaryLambdaLists)
+> * 3.4.1.1 [必要参数的指定符](#SpecifiersRequiredParameters)
+> * 3.4.1.2 [可选参数的指定符](#SpecifiersOptionalParameters)
+> * 3.4.1.3 [剩余参数的指定符](#SpecifierRestParameter)
+> * 3.4.1.4 [关键字参数的指定符](#SpecifiersKeywordParameters)
+> * 3.4.1.5 [&aux 变量的指定符](#SpecifiersAuxVariables)
+> * 3.4.1.6 [普通 lambda 列表[ordinary lambda list]的示例](#ExamplesOrdinaryLambdaLists)
 
-#### 3.4.1.1 <span id = "SpecifiersRequiredParameters">必要参数指定符</span>
+#### 3.4.1.1 <span id = "SpecifiersRequiredParameters">必要参数的指定符</span>
 
-这些指的是直到第一个lambda列表关键字为止的参数指定符; 如果这里没有lambda列表关键字, 那么所有指定符都是必要参数. 每一个必要参数被参数变量 var 指定. var 绑定给一个词法变量除非它被声明为 special.
+这些指的是直到第一个 lambda 列表关键字[lambda list keyword]为止的那些参数指定符; 如果这里没有 lambda 列表关键字[lambda list keyword], 那么所有指定符都是必要参数. 每一个必要参数被参数变量 var 指定. var 被绑定为一个词法变量, 除非它被声明为 special.
 
-如果这里有 n 个必要参数 (n 可能是 0), 这里至少必须传递 n 个参数, 并且必要参数绑定给前 n 个传递的参数; 见章节 3.5 (Error Checking in Function Calls). 其他参数保留给后面的剩余参数.
+如果这里有 n 个必要参数 (n 可能是 0), 这里至少必须传递 n 个实参, 并且必要参数绑定给前 n 个传递的实参; 见章节 3.5 (函数调用中的错误检测). 其他参数保留给后面的剩余参数.
 
-#### 3.4.1.2 <span id = "SpecifiersOptionalParameters">可选参数指定符</span>
+#### 3.4.1.2 <span id = "SpecifiersOptionalParameters">可选参数的指定符</span>
 
-如果出现 &optional, 可选参数指定符就是那些跟在 &optional 后面直到下一个lambda列表关键字或者直到列表结束的那些指定符. 如果指定了可选参数, 然后每一个都按如下处理. 如果存在未处理的参数, 则参数变量 var 将绑定到后面的剩余参数, 就像必要参数一样. 如果没有参数剩下, 不管怎样, 那么 init-form 被求值, 并且参数变量被绑定给结果值(如果没有 init-form 出现在参数指定符就是 nil). 如果另一个变量名 supplied-p-parameter 出现在这个指定符中, 如果有一个参数可用它会被绑定为 true, 如果没有参数剩余它会被绑定为 false (因此 init-form 需要被求值). Supplied-p-parameter 不是绑定一个参数而是一个值, 它表示是否为相应的 var 提供了一个对应的参数. 
+如果出现 &optional, 可选参数指定符就是那些跟在 &optional 后面直到下一个 lambda 列表关键字[lambda list keyword]或者直到列表结束的那些指定符. 如果指定了可选参数, 然后每一个都按如下处理. 如果存在未处理的参数, 则参数变量 var 将绑定到下一个的剩余参数, 就像必要参数一样. 如果没有参数剩下, 不管怎样, 那么 init-form 被求值, 并且那个参数变量被绑定给产生的值(如果没有 init-form 出现在参数指定符中就绑定为 nil). 如果另一个变量名 supplied-p-parameter 出现在这个指定符中, 如果有一个参数可用它会被绑定为 true, 如果没有参数剩余它会被绑定为 false (因此 init-form 需要被求值). supplied-p-parameter 不是绑定一个参数而是一个值, 它表示是否为相应的 var 提供了一个对应的参数. 
 
-#### 3.4.1.3 <span id = "SpecifierRestParameter">剩余参数指定符</span>
+#### 3.4.1.3 <span id = "SpecifierRestParameter">剩余参数的指定符</span>
 
-&rest, 如果出现, 后面必须跟着单个的剩余参数指定符, 后面依次必须跟着另一个lambda列表关键字或者到lambda列表的末尾. 在所有可选参数被处理后, 这里可能是一个剩余参数. 如果这里是一个剩余参数, 它给绑定给一个所有 as-yet-unprocessed 参数的列表. 如果没有未处理参数剩下, 这个剩余参数绑定给空列表. 如果这里没有剩余参数和关键字参数并且有任何未处理参数剩余, 会发出一个错误; 见章节 3.5 (Error Checking in Function Calls). 剩余参数的值是允许的, 但不是必需的, 以便与 apply 最后一个参数共享结构. 
+&rest, 如果出现, 后面必须跟着单独的剩余参数[rest parameter]指定符, 而那个指定符后面必须跟着另一个 lambda 列表关键字[lambda list keyword]或者 lambda 列表[lambda list]的末尾. 在所有可选参数被处理后, 这里可能由也可能没有一个剩余参数[rest parameter]. 如果这里有一个剩余参数[rest parameter], 它给绑定给一个所有还没有被处理(as-yet-unprocessed)参数的列表[list]. 如果没有未处理参数剩下, 这个剩余参数[rest parameter]绑定给空列表[empty list]. 如果这里没有剩余参数[rest parameter]和关键字参数[keyword parameter], 那么如果有任何未处理参数剩余就会发出一个错误; 见章节 3.5 (函数调用中的错误检测). 剩余参数[rest parameter]的值是允许, 但不是必需, 去和给 apply 的最后一个参数共享结构. 
 
-#### 3.4.1.4 <span id = "SpecifiersKeywordParameters">关键字参数指定符</span>
+#### 3.4.1.4 <span id = "SpecifiersKeywordParameters">关键字参数的指定符</span>
 
-如果出现 &key , 所有直到下一个lambda列表关键字或者列表末尾的指定符都是关键字参数指定符. 当关键字参数被处理, 同样被处理的参数会被做成一个列表作为剩余参数. 同时指定 &rest 和 &key 是允许的. 在这个情况下剩下的参数被同时用于这两种目的; 这就是说, 所有剩下的参数被做成lambda列表作为剩余参数, 也被当作关键字参数处理. 如果指定了 &key, 必须有偶数个参数; 见章节 3.5.1.6 (Odd Number of Keyword Arguments). 这些参数被当作对, 每一对中的第一个参数被解释为一个名字而第二个作为对应的值. 每个对中的第一个对象必须是一个符号; 见章节 3.5.1.5 (Invalid Keyword Arguments). 这个关键字参数指定符可能可选地跟着lambda列表关键字 &allow-other-keys.
+如果出现 &key , 所有直到下一个 lambda 列表关键字[lambda list keyword]或者列表[list]末尾的指定符都是关键字参数指定符. 当关键字参数被处理, 同样被处理的参数会被做到一个列表[list]中作为剩余参数[rest parameter]. 允许同时指定 &rest 和 &key. 在这个情况下剩下的参数被同时用于这两种目的; 这就是说, 所有剩下的参数被做到剩余参数[rest parameter]的列表[list]中, 也被当作 &key 参数被处理. 如果指定了 &key, 必须有偶数个参数; 见章节 3.5.1.6 (奇数数量的关键字参数). 这些参数被当作对, 每一对中的第一个参数被解释为一个名字而第二个作为对应的值. 每个对中的第一个对象[object]必须是一个符号[symbol]; 见章节 3.5.1.5 (非法的关键字参数). 这个关键字参数指定符后面可能可选地跟着 lambda 列表关键字[lambda list keyword] &allow-other-keys.
 
-在每一个关键字参数指定符中必须是一个名字 var 作为参数变量. 如果这个 var 单独出现或者在一个 (var init-form) 组合中, 当匹配参数时参数是一个 KEYWORD 包中名字和 var 相同的符号时, 这个关键字名字会被使用. 如果这个 ((keyword-name var) init-form) 表示法被使用, 那么这个用于匹配参数的关键字名字是 keyword-name, 它可能是任何包中的符号(当然, 如果它不是 KEYWORD 包中的符号, 它没有必要自求值, 所以当调用这个函数时必须额外关心来确保正常的求值一直跳过这个关键字名字). 因此
+在每一个关键字参数指定符中参数变量必须是一个名字 var. 如果这个 var 单独出现或者在一个 (var init-form) 组合中, 当匹配实参[argument]到形参[parameter]时, 使用的关键字名字是一个 KEYWORD 包中名字[name]和 var 相同[same] (在 string= 下)的符号[symbol]. 如果使用了这个 ((keyword-name var) init-form) 表示法, 那么用于匹配实参[argument]到形参[parameter]的关键字名字是 keyword-name, 它可能是任何包[package]中的符号[symbol] (当然, 如果它不是 KEYWORD 包中的符号[symbol], 它没有必要自求值, 所以当调用这个函数时必须额外关心来确保正常的求值一直产生这个关键字名字). 因此
 
 ```LISP
 (defun foo (&key radix (type 'integer)) ...)
@@ -1134,25 +1134,25 @@ lambda列表中的每一个元素是一个参数说明符或者一个lambda列�
 (defun foo (&key ((:radix radix)) ((:type type) 'integer)) ...)
 ```
 
-关键字参数指定符和所有参数指定符一样, 实际上从左到右进行处理. 对于每一个关键字参数指定符, 如果这里有一个名字匹配这个指定符的名字的参数对 (这就是说, 名字是 eq 的), 那么这个指定符对应的参数变量绑定给这个参数对的第二项(值部分). 如果不止一个这样的参数对匹配, 会使用最左边的参数对. 如果不存在这样的参数对, 那么这个指定符的对应 init-form 被求值并且这个参数变量绑定给那个值 (如果没有指定 init-form , 那就是 nil). supplied-p-parameter 和 &optional 参数一样的处理方式: 如果这里有匹配的参数对它被绑定为 true, 否则就是 false.
+关键字参数指定符和所有参数指定符一样, 实际上从左到右进行处理. 对于每一个关键字参数指定符, 如果这里有一个名字匹配这个指定符的名字的实参对 (这就是说, 名字之间是 eq 的), 那么这个指定符的参数变量绑定为这个实参对的第二项(值部分). 如果不止一个这样的参数对匹配, 会使用最左边的实参对. 如果不存在这样的实参对, 那么这个指定符的对应 init-form 被求值并且这个参数变量绑定为那个值 (如果没有指定 init-form , 那就绑定为 nil). supplied-p-parameter 和 &optional 参数一样的处理方式: 如果这里有匹配的实参对它被绑定为 true, 否则就是 false.
 
-除非关键字参数检测被抑制, 一个参数对必须和一个参数指定符名字匹配; 见章节 3.5.1.4 (Unrecognized Keyword Arguments).
+除非关键字参数检测被抑制, 一个实参对必须和一个参数指定符名字匹配; 见章节 3.5.1.4 (不识别的关键字参数).
 
-如果关键字参数检测被抑制, 那么一个参数对没有匹配的参数指定符是允许的, 并且这个参数对会被忽略, 但是如果提供了剩余参数, 这样的一个参数是可以通过剩余参数访问的. 这些机制的目的是去允许在多个lambda表达式之间共享参数列表并且允许调用者和被调用的lambda表达式去指定这样的共享是可能发生的.
+如果关键字参数检测被抑制, 那么允许一个实参对没有匹配的参数指定符, 并且这个实参对会被忽略, 但是如果提供了剩余参数[rest parameter], 这样的一个参数是可以通过剩余参数[rest parameter]访问的. 这些机制的目的是去允许在多个 lambda 表达式[lambda expression]之间共享参数列表并且允许调用者和被调用的 lambda 表达式[lambda expression]去指定这样的共享是可能发生的.
 
-注意如果 &key 出现了, 一个 :allow-other-keys 关键字参数总是是允许的---不管关联的值是 true 或者 false. 然而, 如果这个值是 false, 其他不匹配的关键字是不接受的 (除非使用了 &allow-other-keys).
+注意如果 &key 出现了, 一个 :allow-other-keys 的关键字参数总是是允许的---不管关联的值是 true 或者 false. 然而, 如果这个值是 false, 其他不匹配的关键字是不接受的 (除非使用了 &allow-other-keys).
 
-此外, 如果接收的参数列表指定了一个普通的会被 :allow-other-keys 标记的参数, 那么 :allow-other-keys 同时有它的 special-cased 意义(确定是否允许附加的关键字)和它的正常意义(数据流入到提及的函数中).
-
+此外, 如果接收的参数列表指定了一个会被 :allow-other-keys 标记的普通参数, 那么 :allow-other-keys 同时有它的 special-cased 意义(标识是否允许附加的关键字)和它的正常意义(数据流入到提及的函数中).
+<!--TODO special-cased ??-->
 ##### 3.4.1.4.1 抑制参数检测
 
-如果一个函数的lambda列表中指定了 &allow-other-keys, 对这个函数的调用中关键字参数检测会被抑制.
+如果一个函数[function]的 lambda 列表[lambda list]中指定了 &allow-other-keys, 对这个函数[function]的调用中关键字[keyword[2]]实参[argument]检测会被抑制.
 
-如果在一个函数的调用中 :allow-other-keys 参数是 true, 在这个调用中关键字参数检测是被抑制的.
+如果在一个函数[function]的调用中 :allow-other-keys 参数[argument]是 true, 在这个调用中关键字[keyword[2]]实参[argument]检测是被抑制的.
 
-这个 :allow-other-keys 在所有涉及关键字参数的地方都是允许的, 甚至当它关联的值是 false 时.
+这个 :allow-other-keys 实参[argument]在所有涉及关键字[keyword[2]]实参[argument]的地方都是允许的, 即便当它关联的值[value]是 false 时.
 
-###### 3.4.1.4.1.1 抑制关键字参数检测的例子
+###### 3.4.1.4.1.1 抑制关键字参数检测的示例
 
 ```LISP
 ;;; The caller can supply :ALLOW-OTHER-KEYS T to suppress checking.
@@ -1173,18 +1173,18 @@ lambda列表中的每一个元素是一个参数说明符或者一个lambda列�
 :x 1 :y 2 :allow-other-keys nil :allow-other-keys t)
 ```
 
-#### 3.4.1.5 <span id = "SpecifiersAuxVariables">&aux变量的指定符</span>
+#### 3.4.1.5 <span id = "SpecifiersAuxVariables">&aux 变量的指定符</span>
 
-这些不是真的参数. 如果这个lambda列表出现 &aux, 所有在它后面的指定符都是辅助变量指定符. 在所有参数指定符被处理后, 辅助变量指定符(那些在 &aux 后面的)从左到右被处理. 对于其中的每一个, init-form 被求值并且 var 被绑定给那个值 (如果没有 init-form 就是 nil). &aux 变量处理类似于 let* 处理.
+这些不是真的参数. 如果出现这个 lambda 列表关键字[lambda list keyword] &aux, 所有在它后面的指定符都是辅助变量指定符. 在所有参数指定符被处理后, 这些辅助变量指定符(那些跟在 &aux 后面的)从左到右被处理. 对于其中的每一个, init-form 被求值并且 var 被绑定为那个值 (如果没有 init-form 就绑定为 nil). &aux 变量处理类似于 let* 处理.
 
 ```LISP
 (lambda (x y &aux (a (car x)) (b 2) c) (list x y a b c))
   ==  (lambda (x y) (let* ((a (car x)) (b 2) c) (list x y a b c)))
 ```
 
-#### 3.4.1.6 <span id = "ExamplesOrdinaryLambdaLists">普通lambda列表的示例</span>
+#### 3.4.1.6 <span id = "ExamplesOrdinaryLambdaLists">普通 lambda 列表的示例</span>
 
-这里是可选参数和剩余参数的例子:
+这里是可选参数[optional parameter]和剩余参数[rest parameter]的例子:
 
 ```LISP
 ((lambda (a b) (+ a (* b 3))) 4 5) =>  19
@@ -1203,7 +1203,7 @@ lambda列表中的每一个元素是一个参数说明符或者一个lambda列�
 =>  (6 t 3 t (8 9 10 11))
 ```
 
-这里是关键字参数的例子:
+这里是关键字参数[keyword parameter]的例子:
 
 ```LISP
 ((lambda (a b &key c d) (list a b c d)) 1 2) =>  (1 2 NIL NIL)
@@ -1217,7 +1217,7 @@ lambda列表中的每一个元素是一个参数说明符或者一个lambda列�
 ((lambda (a b &key ((c c)) d) (list a b c d)) 1 2 'c 6) =>  (1 2 6 NIL)
 ```
 
-这里是同时启用可选参数和剩余参数还有关键字参数的示例:
+这里是同时启用可选参数[optional parameter]和剩余参数[rest parameter]还有关键字参数[keyword parameter]的示例:
 
 ```LISP
 ((lambda (a &optional (b 3) &rest x &key c (d a))
@@ -1240,7 +1240,7 @@ lambda列表中的每一个元素是一个参数说明符或者一个lambda列�
 =>  (1 6 9 8 (:d 8 :c 9 :d 10))
 ```
 
-作为 &allow-other-keys 和 :allow-other-keys 使用的示例, 细想一个函数, 它接受两个命名的参数, 并接受附加的命名参数, 以将其传递给 make-array:
+作为 &allow-other-keys 和 :allow-other-keys 使用的示例, 细想一个函数[function], 它接受它自身的两个已命名的参数, 并接受附加的命名参数, 以将其传递给 make-array:
 
 ```LISP
 (defun array-of-strings (str dims &rest named-pairs
@@ -1251,58 +1251,58 @@ lambda列表中的每一个元素是一个参数说明符或者一个lambda列�
         named-pairs))
 ```
 
-这个函数需要一个字符串和一个维度信息并且返回一个指定维度的数组, 它的每一个指定的元素是指定的字符串. 然而, :start 和 :end 命名的参数可能被用于指定应该使用的给定字符串中的子字符串. 另外, 在这个lambda列表中出现的 &allow-other-keys 表示调用者可能提供额外的命名参数; 这个剩余参数提供对它们的访问. 这些额外的命名的参数被传递给 make-array. 这个 make-array 函数正常不允许命名参数 :start 和 :end 被使用, 并且如果这样命名的参数提供给 make-array 会发出一个错误. 然而, 对 make-array 的调用中参数 :allow-other-keys 带有一个 true 值导致任何额外的命名参数, 包括 :start 和 :end, 是可接受的并且忽略掉. 
+这个函数[function]需要一个字符串[string]和一个维度信息并且返回一个指定维度的数组[array], 它的每一个元素都是指定的字符串[string]. 然而, :start 和 :end 命名的参数可能被用于指定给定字符串[string]中应该使用的子字符串. 另外, 在这个 lambda 列表[lambda list]中出现的 &allow-other-keys 表示调用者可能提供额外的已命名参数; 这个剩余参数[rest parameter]提供对它们的访问. 这些额外已命名的参数被传递给 make-array. 这个 make-array 函数[function]正常不允许使用已命名参数 :start 和 :end, 并且如果这样的已命名参数提供给 make-array 应该会发出一个错误. 然而, 对 make-array 的调用中已命名参数 :allow-other-keys 以及一个 true 值的出现导致任何额外的已命名参数, 包括 :start 和 :end, 是可接受的并且被忽略掉. 
 
-### 3.4.2 <span id = "GenericFunctionLambdaLists">广义函数lambda列表</span>
+### 3.4.2 <span id = "GenericFunctionLambdaLists">广义函数 lambda 列表</span>
+<!--TODO 有效方法[effective method] ??-->
+一个广义函数 lambda 列表[generic function lambda list]被用于描述被一个广义函数[generic function]接受的实参列表的整体形状. 个别方法[method]签名[signature]可能为有效方法[effective method]的 lambda 列表[lambda list]提供额外的关键字参数[keyword parameter].
 
-一个广义函数lambda列表被用于描述被一个广义函数接受的参数列表的整体形状. 个别方法签名可能为有效方法的lambda列表提供额外的关键字参数.
+一个广义函数 lambda 列表[generic function lambda list]被 defgeneric 所使用.
 
-一个广义函数lambda列表被 defgeneric 所使用.
-
-一个广义函数lambda列表有着以下语法:
+一个广义函数 lambda 列表[generic function lambda list]有着以下语法:
 
     lambda-list::= (var* 
                     [&optional {var | (var)}*] 
                     [&rest var] 
                     [&key {var | ({var | (keyword-name var)})}* [&allow-other-keys]]) 
 
-一个广义函数lambda列表可以包含下面这段中的lambda列表关键字.
+一个广义函数 lambda 列表[generic function lambda list]可以包含下面这段展示的 lambda 列表关键字[lambda list keyword].
 
     &allow-other-keys  &optional    
     &key               &rest        
 
-Figure 3-14. 广义函数lambda列表使用的lambda列表关键字
+Figure 3-14. 广义函数 lambda 列表使用的 lambda 列表关键字
 
-一个广义函数lambda列表在以下方面有别于普通lambda列表:
+一个广义函数 lambda 列表[generic function lambda list]在以下方面有别于普通 lambda 列表[ordinary lambda list]:
 
 必要参数
 
-    0个或更多必要参数必须被指定.
+    0个或多个必要参数[required parameter]必须被指定.
 
 可选和个关键字参数
 
-    可选参数和关键字参数可能没有默认的初始值表达式也没有使用 supplied-p 参数.
+    可选参数[optional parameter]和关键字参数[keyword parameter]可能没有默认的初始值表达式也没有使用 supplied-p 参数.
 
 &aux 的使用
 
     &aux 的使用是不允许的. 
 
-### 3.4.3 <span id = "SpecializedLambdaLists">特化的lambda列表</span>
+### 3.4.3 <span id = "SpecializedLambdaLists">特化的 lambda 列表</span>
 
-一个特化的lambda列表被用于为一个特定的签名特化一个方法并且去描述匹配这个签名的参数如何被方法接收. 下一段中定义的名字以某种方式使用特化的lambda列表; 关于其中的每一个怎样处理的信息见字典条目.
+一个特化的 lambda 列表[specialized lambda list]被用于为一个特定的签名[signature]特化[specialize]一个方法[method]并且去描述匹配这个签名[signature]的那些实参[argument]如何被这个方法[method]接收. 下一段中已定义的名字[defined name]以某种方式使用特化的 lambda 列表[specialized lambda list]; 关于其中的每一个怎样处理的信息见字典条目.
 
     defmethod  defgeneric    
 
-Figure 3-15. 使用特化的lambda列表的标准化操作符
+Figure 3-15. 使用特化的 lambda 列表的标准化操作符
 
-一个特化的lambda列表可以包含下面这段中展示的lambda列表关键字.
+一个特化的 lambda 列表[specialized lambda list]可以包含下面这段中展示的 lambda 列表关键字[lambda list keyword].
 
     &allow-other-keys  &key       &rest  
     &aux               &optional         
 
-Figure 3-16. 特定lambda列表使用的lambda列表关键字
+Figure 3-16. 特化 lambda 列表使用的 lambda 列表关键字
 
-一个特化的lambda列表是语法上等价于一个普通的lambda列表除了每一个必要参数可能可选地和一个类或者一个对象关联, 该参数是特定的.
+一个特化的 lambda 列表[specialized lambda list]是语法上等价于一个普通 lambda 列表[ordinary lambda list]除了每一个必要参数[required parameter]可能可选地和一个该形参[parameter]被特化[specialize]的类[class]或者一个对象[object]关联.
 
     lambda-list::= ({var | (var [specializer])}* 
                     [&optional {var | (var [init-form [supplied-p-parameter]])}*] 
@@ -1310,16 +1310,16 @@ Figure 3-16. 特定lambda列表使用的lambda列表关键字
                     [&key {var | ({var | (keyword-name var)} [init-form [supplied-p-parameter]])}* [&allow-other-keys]] 
                     [&aux {var | (var [init-form])}*]) 
 
-### 3.4.4 <span id = "MacroLambdaLists">宏lambda列表</span>
+### 3.4.4 <span id = "MacroLambdaLists">宏 lambda 列表</span>
 
-一个宏lambda列表被用于描述下面这段中的操作符定义的宏.
+一个宏 lambda 列表[macro lambda list]被用于描述下面这段中的这些操作符[operator]定义的宏[macro].
 
     define-compiler-macro  defmacro  macrolet  
     define-setf-expander                       
 
-Figure 3-17. 使用宏lambda列表的操作符
+Figure 3-17. 使用宏 lambda 列表[macro lambda list]的操作符
 
-对于一个环境参数可能只出现一次(在描述的任何位置)的附加限制, 一个宏lambda列表有以下语法:
+在一个环境参数[environment parameter]可能只出现一次(在描述的任何位置)的附加限制下, 一个宏 lambda 列表[macro lambda list]有以下语法:
 
     reqvars::= var* 
 
@@ -1343,81 +1343,81 @@ Figure 3-17. 使用宏lambda列表的操作符
     pattern::= (wholevar reqvars optvars restvar keyvars auxvars) | 
               (wholevar reqvars optvars . var) 
 
-一个宏lambda列表可以包含下面这段展示的lambda列表关键字.
+一个宏 lambda 列表[macro lambda list]可以包含下面这段展示的 lambda 列表关键字[lambda list keyword].
 
     &allow-other-keys  &environment  &rest   
     &aux               &key          &whole  
     &body              &optional             
 
-Figure 3-18. 宏lambda列表使用的lambda列表参数
+Figure 3-18. 宏 lambda 列表[macro lambda list]使用的lambda列表参数
 
-可选参数 (通过 &optional 引入) 和关键字参数 (通过 &key 引入) 可以在一个宏lambda列表中被提供, 就像在普通lambda列表中一样. 每一个都可能包含默认初始化表达式和 supplied-p 参数.
+可选参数[optional parameter] (通过 &optional 引入) 和关键字参数[keyword parameter] (通过 &key 引入) 可以在一个宏 lambda 列表[macro lambda list]中被提供, 就像在普通 lambda 列表[ordinary lambda list]中一样. 两个中的每一个都可能包含默认初始化表达式形式和 supplied-p 参数[supplied-p parameter].
 
-&body 在函数中和 &rest 一样, 但是它可以被用于通知确定的输出格式化和编辑函数这个表达式的剩余部分被当作一个主体(body), 并且应该相应地缩进. 在任何特定的级别 &body 或者 &rest 只有一个可以被使用; 见章节 3.4.4.1 (Destructuring by Lambda Lists). &body 可以出现在一个宏lambda表达式的任何级别; 关于详细情况, 见章节 3.4.4.1 (Destructuring by Lambda Lists).
+&body 在函数中和 &rest 一样, 但是它可以被用于通知特定的输出格式化和编辑函数这个表达式形式[form]的剩余部分被当作一个主体(body), 并且应该相应地缩进. 在任何特定的级别 &body 或者 &rest 只有一个可以被使用; 见章节 3.4.4.1 (lambda 列表的解构). &body 可以出现在一个宏 lambda 列表[macro lambda list]的任何级别; 关于详细情况, 见章节 3.4.4.1 (lambda 列表的解构).
 
-&whole 跟着一个绑定给整个 macro-call 表达式的单个变量; 这是这个宏函数收到的第一个参数的值. 如果出现 &whole 和一个跟在后面的变量, 它们必须出现在lambda列表的最前面, 在任何其他参数或者lambda列表关键字之前. &whole 可以出现在一个宏lambda列表的任何级别. 在内部级别, 这个 &whole 变量绑定给参数的对应部分, 正如 &rest, 但是不像 &rest, 其他参数也是允许的. 这个 &whole 的使用不影响参数指定的模式.
+&whole 后面跟着一个绑定为整个宏调用表达式形式的单独变量; 这是这个宏函数[macro function]作为第一个参数收到的值. 如果出现 &whole 和一个跟在后面的变量, 它们必须出现在 lambda 列表的最前面, 在任何其他参数或者 lambda 列表关键字[lambda list keyword]之前. &whole 可以出现在一个宏 lambda 列表[macro lambda list]的任何级别. 在内部级别, 这个 &whole 变量绑定为参数的对应部分, 正如 &rest, 但是不像 &rest, 其他参数也是允许的. 这个 &whole 的使用不影响指定参数的匹配.
 
-&environment 后面跟着一个绑定给表示当前词法环境[lexical environment]的环境, 这个环境是这个宏调用被解释时所处的环境. 这个环境应该和 macro-function, get-setf-expansion, compiler-macro-function, 还有 macroexpand (比如) 在计算宏展开式一起使用, 来确保这个编译环境中确定的任何词法绑定或定义被考虑进去. &environment 只能出现在宏lambda列表的顶层, 并且只能出现一次, 但是可以出现在这个列表的任何地方; 这个 &environment 和 &whole 被在这个lambda列表的任何其他变量之前被绑定, 不管 &environment 出现在这个lambda列表的什么地方. 绑定到环境参数的对象具有动态范围.
+&environment 后面跟着一个绑定为表示这个宏调用被解释时所处的当前词法环境[lexical environment]的环境[environment]的单独变量. 这个环境[environment]应该和 macro-function, get-setf-expansion, compiler-macro-function, 还有 macroexpand (比如) 在计算宏展开式一起使用, 来确保这个编译环境[compilation environment]中建立的任何词法绑定[lexical binding]或定义被考虑进去. &environment 只能出现在宏 lambda 列表[macro lambda list]的顶层, 并且只能出现一次, 但是可以出现在这个列表的任何位置; 这个 &environment 和 &whole 形参[parameter]在这个 lambda 列表[lambda list]的任何其他变量[variable]之前被绑定[bound], 不管 &environment 出现在这个 lambda 列表[lambda list]的什么地方. 绑定为环境参数[environment parameter]的对象[object]具有动态范围[dynamic extent].
 
-解构允许一个宏lambda列表去表达宏调用语法结构. 如果没有出现lambda列表关键字, 那么这个宏lambda列表是在叶子中包含参数名称的树. 匹配模式和宏表达式必须具有兼容的树结构; 这就是说, 它们的树结构必须是等价的, 或者它只能在匹配模式的某些叶节点与宏形式的非原子对象匹配时有所不同. 关于这种情况下的错误检测的信息, 见章节 3.5.1.7 (Destructuring Mismatch).
+解构允许一个宏 lambda 列表[macro lambda list]去表达宏调用语法的结构. 如果没有出现 lambda 列表关键字[lambda list keyword], 那么这个宏 lambda 列表[macro lambda list]是在叶子中包含参数名称的树[tree]. 匹配模式和宏表达式形式[macro form]必须具有兼容的树结构[tree structure]; 这就是说, 它们的树结构[tree structure]必须是等价的, 或者它只能在匹配模式的某些叶节点与宏表达式形式[macro form]的非原子[non-atomic]对象[object]匹配时有所不同. 关于这种求值情况[situation]下的错误检测的信息, 见章节 3.5.1.7 (解构不匹配).
 
-一个解构的lambda列表(不管在顶层还是嵌入的)可以是点对的(dotted), 以一个参数名结束. 这种情况的处理方式与结束列表的参数名称在 &rest 前面出现的情况完全相同.
+一个解构 lambda 列表[lambda list] (不管在顶层还是嵌入的)可以是点对的(dotted), 以一个参数名结束. 这种情况的处理方式与列表末尾出现 &rest 前面的参数名称完全相同.
 
-对于一个宏表达式(或者是一个宏表达式的子表达式)是一个点对列表是允许的, 只有在和 (... &rest var) 或 (... . var) 匹配时. 宏需要去识别和处理这种情况.
+只有在和 (... &rest var) 或 (... . var) 匹配时, 允许一个宏表达式形式[macro form] (或者是一个宏表达式形式[macro form]的子表达式[subexpression])是一个点对列表. 宏[macro]需要去识别和处理这种情况.
 
-#### 3.4.4.1 lambda列表的解构
+#### 3.4.4.1 lambda 列表的解构
 
-在一个宏lambda列表中任何参数名字可以出现的地方, 还有普通lambda列表语法中(在章节 3.4.1 (Ordinary Lambda Lists) 描述的)不允许一个列表的地方, 一个解构lambda列表可以出现在参数名字的地方. 在这样做时, 与参数匹配的参数被当作一个(可能是点对的)列表, 作为一个参数列表, 用于满足内嵌的lambda列表中的参数. 这就被认为是解构(destructuring).
+在一个宏 lambda 列表[macro lambda list]中参数名字可以出现的任何地方, 还有普通 lambda 列表[ordinary lambda list]语法中(在章节 3.4.1 (普通 lambda 列表) 描述的)不允许一个列表[list]的地方, 一个解构 lambda 列表[destructuring lambda list]可以出现来替换这个参数名字. 在这样做时, 会与形参匹配的实参被当作一个(可能是点对的)列表[list], 作为一个参数列表, 用作满足内嵌的 lambda 列表[lambda list]中的参数的实参列表. 这就被认为是解构(destructuring).
 
-解构是将一个复合对象分解为它的组件部分的过程, 使用一种缩写的声明式语法, 而不是用原始的组件访问函数. 每一个组件部分绑定给一个变量.
+解构是将一个复合对象[object]分解为它的组件部分的过程, 使用一种缩写的声明式语法, 而不是用原始的组件访问函数手写出来. 每一个组件部分绑定给一个变量.
 
-一个解构操作需要一个将要解构的对象, 一个指定要提取哪些组件的匹配模式, 以及那些值为组件的变量的名称.
+一个解构操作需要一个将要解构的对象[object], 一个指定要提取哪些组件的匹配模式, 以及那些值为那些组件的变量的名称.
 
-##### 3.4.4.1.1 lambda列表的数据导向解构
+##### 3.4.4.1.1 lambda 列表的数据导向解构
 
-在数据导向的解构中, 匹配模式是一个要被分解的类型的对象. 无论在哪里提取组件, 在匹配模式中对应地方都会出现一个符号; 这个符号是变量的名称, 它的值是那个组件.
+在数据导向的解构中, 匹配模式是一个要被分解的类型[type]的简单对象[object]. 无论在哪里提取组件, 在匹配模式中对应地方都会出现一个符号[symbol]; 这个符号[symbol]是变量的名称, 它的值是那个组件.
 
-###### 3.4.4.1.1.1 lambda列表的数据导向解构示例
+###### 3.4.4.1.1.1 lambda 列表的数据导向解构示例
 
-一个示例匹配模式是
+一个匹配模式示例是
 
 ```LISP
 (a b c)
 ```
 
-它解构了一个三个元素的列表. 这个变量 a 被赋值第一个元素, b 给赋值第二个, 等等. 一个更加复杂的例子是
+它解构了一个三个元素的列表. 这个变量 a 被赋值为第一个元素, b 给赋值为第二个, 等等. 一个更加复杂的例子是
 
 ```LISP
 ((first . rest) . more)
 ```
 
-简单的语法和扩展到lambda列表导向的能力是数据导向解构的重要特性. 
+语法简单性和扩展到 lambda 列表导向解构的能力是数据导向解构的重要特性. 
 
-##### 3.4.4.1.2 lambda列表的lambda列表导向解构
+##### 3.4.4.1.2 lambda 列表的 lambda 列表导向解构
 
-树的数据导向解构的一个延伸是lambda列表导向的解构. 这是从三元素的解构模式的类比中得出的
-
-```LISP
-(first second third)
-```
-
-并且这个三个参数的lambda列表
+树[tree]的数据导向解构的一个延伸是 lambda 列表导向的解构. 这是从三元素的解构模式
 
 ```LISP
 (first second third)
 ```
 
-如果没有lambda列表关键字出现在匹配模式中那么lambda列表导向的解构和数据导向的结构是相同的. 任何在这个匹配模式中的列表(不管是一个子列表或是整个匹配模式本身)包含lambda列表关键字就会被特别地解释. 这个列表中第一个lambda列表关键字左边的元素被当作解构匹配模式处理, 像平常一样, 但是列表中剩下的元素被当作函数lambda列表一样处理, 除了在通常需要一个变量的情况下, 可以使用任意的解构匹配模式. 注意, 在不确定的情况下，lambda列表语法优于解构语法. 因此, 在 &optional 之后，一个元素列表是一个解构匹配模式和一个默认值表达式的列表.
+以及下面这个三参数的 lambda 列表的类比中得出的
 
-每个lambda列表关键字在lambda列表导向的解构匹配模式中的具体行为如下:
+```LISP
+(first second third)
+```
+
+如果没有 lambda 列表关键字[lambda list keyword]出现在匹配模式中, 那么 lambda 列表导向的解构和数据导向的结构是相同的. 在这个包含 lambda 列表关键字[lambda list keyword]的匹配模式中的任何列表(不管是一个子列表或是整个匹配模式本身)就会被特别地解释. 这个列表中第一个 lambda 列表关键字[lambda list keyword]左边的那些元素被当作解构匹配模式处理, 像平常一样, 但是列表中剩下的元素被当作函数的 lambda 列表[lambda list]一样处理, 除了在通常需要一个变量的情况下, 允许使用任意的解构匹配模式. 注意, 在不确定的情况下，lambda 列表[lambda list]语法优于解构语法. 因此, 在 &optional 之后，一个元素列表是一个解构匹配模式和一个默认值表达式形式的列表.
+
+每个 lambda 列表关键字[lambda list keyword]在 lambda 列表导向的解构匹配模式中的具体行为如下:
 
 &optional
 
-    每一个后面的元素是一个变量或者一个解构匹配模式, 一个默认值的表达式和一个 supplied-p 变量的列表. 这个默认值和 supplied-p 可以被省略. 如果这个被解构列表提前结束, 而它没有一个元素来匹配这个解构匹配模式或子模式, 那么这个默认表达式会求值并解构. 如果这个默认表达式被使用了 supplied-p 变量会收到值 nil, 否则就是 t.
+    每一个后面的元素是一个变量或者一个解构匹配模式, 一个默认值表达式形式和一个 supplied-p 变量的列表. 这个默认值和 supplied-p 可以被省略. 如果这个被解构的列表提前结束, 而它没有一个元素来匹配这个解构匹配模式或子模式, 那么这个默认表达式形式会求值并解构. 如果这个默认表达式形式被使用了, 那么 supplied-p 变量会收到值 nil, 否则就是 t.
 
 &rest, &body
 
-    下一个元素是一个匹配这个列表剩余部分的解构匹配模式. &body 和 &rest 一样但是声明所匹配的是构成表达式主体的表达式列表. 这下一个元素必须是最后一个除非后面跟着一个lambda列表关键字.
+    下一个元素是一个匹配这个列表剩余部分的解构匹配模式. &body 和 &rest 一样但是声明所匹配的是构成表达式形式[form]主体的表达式形式列表. 这下一个元素必须是最后一个除非后面跟着一个 lambda 列表关键字[lambda list keyword].
 
 &aux
 
@@ -1425,19 +1425,19 @@ Figure 3-18. 宏lambda列表使用的lambda列表参数
 
 &whole
 
-    下一个元素是一个匹配一个宏里的整个表达式的解构匹配模式, 或者内部层级的整个子表达式.
+    下一个元素是一个匹配一个宏里的整个表达式形式的解构匹配模式, 或者内部层级的整个子表达式[subexpression].
 
 &key
 
     后面跟着的元素是以下其中之一
 
-    一个变量,
+    一个变量[variable],
 
-    或者一个变量, 一个可选的初始化表达式, 和一个可选的 supplied-p 变量的列表.
+    或者一个变量, 一个可选的初始化表达式形式, 和一个可选的 supplied-p 变量的列表.
 
-    或者一个关键字列表和一个解构匹配模式, 一个可选初始化表达式, 和一个可选 supplied-p 变量的列表.
+    或者一个关键字和一个解构匹配模式的列表, 一个可选初始化表达式形式, 和一个可选 supplied-p 变量的列表.
 
-    被解构的列表的其余部分被认为是交替的关键字和值并且被适当地分开了.
+    被解构的列表的其余部分被认为是交替的关键字和值, 并且被适当地分开了.
 
 &allow-other-keys
 
@@ -1445,11 +1445,11 @@ Figure 3-18. 宏lambda列表使用的lambda列表参数
 
 ### 3.4.5 <span id = "DestructuringLambdaLists">解构lambda列表</span>
 
-一个解构lambda列表可以被 destructuring-bind 使用.
+一个解构 lambda 列表[destructuring lambda list]被 destructuring-bind 使用.
 
-解构lambda列表与宏lambda列表密切相关; 见章节 3.4.4 (Macro Lambda Lists). 除了 &environment 之外, 一个解构lambda列表可以包含所有其他用于宏lambda列表的lambda列表关键字, 并且支持相同方式下的解构. 在宏lambda列表中嵌套的内部lambda列表具有解构lambda列表的语法.
+解构 lambda 列表[destructuring lambda list]与宏 lambda 列表[macro lambda list]密切相关; 见章节 3.4.4 (宏 lambda 列表). 除了 &environment 之外, 一个解构 lambda 列表[destructuring lambda list]可以包含所有其他用于宏 lambda 列表[macro lambda list]的 lambda 列表关键字[lambda list keyword], 并且支持相同方式下的解构. 在宏 lambda 列表[macro lambda list]中嵌套的内部 lambda 列表[lambda list]具有解构 lambda 列表[destructuring lambda list]的语法.
 
-一个解构lambda列表具有以下语法:
+一个解构 lambda 列表[destructuring lambda list]具有以下语法:
 
     reqvars::= var* 
 
@@ -1471,20 +1471,20 @@ Figure 3-18. 宏lambda列表使用的lambda列表参数
 
 ### 3.4.6 <span id = "BoaLambdaLists">Boa Lambda 列表</span>
 
-一个 boa lambda 列表是一个语法上像普通lambda列表的lambda列表, 但是这个是按照参数的顺序风格处理.
+一个 boa lambda 列表[boa lambda list]是一个语法上像普通 lambda 列表[ordinary lambda list]的 lambda 列表[lambda list], 但是这个是 "根据参数顺序" 风格处理.
 
-一个 boa lambda 列表只被 defstruct 表达式使用, 当明确指定构造器函数的lambda列表时 (有时称之为 "boa constructor").
+一个 boa lambda 列表[boa lambda list]只被 defstruct 表达式形式[form]使用, 当显式指定构造器函数[function]的 lambda 列表[lambda list]的时候 (有时称之为 "boa 构造器(boa constructor)").
 
-这个 &optional, &rest, &aux, &key, 还有 &allow-other-keys lambda列表关键字在boa lambda表达式中是被识别的. 这些lambda列表关键字有别于在普通lambda列表中的使用方式.
+在 boa lambda 列表[boa lambda list]中的这些 &optional, &rest, &aux, &key, 还有 &allow-other-keys lambda 列表关键字[lambda list keyword]是被识别的. 这些 lambda 列表关键字[lambda list keyword]的使用方式有别于在普通 lambda 列表[ordinary lambda list]中.
 
-细想这个示例, 它描述了解构如何处理它的 :constructor.
+细想这个示例, 它描述了解构(destruct)如何处理它的 :constructor.
 
 ```LISP
 (:constructor create-foo
         (a &optional b (c 'sea) &rest d &aux e (f 'eff)))
 ```
 
-这个定义了 create-foo 去做为一个或更多参数的构造器. 第一个参数被用于初始化 a 槽. 第二个参数用于初始化 b 槽. 如果这里没有第二个参数, 那么 defstruct 主体中给定的默认值(如果给了的话)被使用. 第三个参数被用于初始化 c 槽. 如果这里没有任何第三个参数, 那么符号 sea 就会被使用. 任何跟在第三个参数后面的参数被收集到一个列表中然后被用于初始化 d 槽. 如果这里有三个或更少的参数, 那么 d 槽的内容就是 nil. e 槽没有被初始化; 它的初始化值是实现定义的. 最后, f 槽被初始化去包含符号 eff. &key 和 &allow-other-keys 参数默认类似于 &optional 参数: 如果在这个lambda列表中没有提供默认值, 那么使用 defstruct 主体中给定的默认值(如果给了的话). 举例说:
+这个定义了 create-foo 去作为一个或多个参数的构造器. 第一个参数被用于初始化 a 槽. 第二个参数用于初始化 b 槽. 如果这里没有第二个参数, 那么 defstruct 主体中给定的默认值(如果给了的话)被使用. 第三个参数被用于初始化 c 槽. 如果这里没有任何第三个参数, 那么符号 sea 就会被使用. 任何跟在第三个参数后面的参数被收集到一个列表[list]中然后被用于初始化 d 槽. 如果这里只有三个或更少的参数, 那么 d 槽的内容就是 nil. e 槽没有被初始化; 它的初始化值是具体实现定义的[implementation-defined]. 最后, f 槽被初始化去包含符号 eff. &key 和 &allow-other-keys 参数默认类似于 &optional 参数: 如果在这个 lambda 列表[lambda list]中没有提供默认值, 那么使用 defstruct 主体中给定的默认值(如果给了的话). 举例说:
 
 ```LISP
 (defstruct (foo (:constructor CREATE-FOO (a &optional b (c 'sea)
@@ -1497,13 +1497,13 @@ Figure 3-18. 宏lambda列表使用的lambda列表参数
 =>  #S(FOO A 10 B BEE C SEE D DEE E implemention-dependent F EFF)
 ```
 
-如果这个表达式的关键字参数 ((key var) [default [svar]]) 被指定了, 这个槽的名字和 var 匹配(不是 key).
+如果指定了这个表达式形式 ((key var) [default [svar]]) 的关键字参数, 这个槽[slot]的名字[name]和 var 匹配(不是 key).
 
-在 b 和 e 情况下采取的行动被仔细选择, 以允许用户指定所有可能的行为. 这个 &aux 变量被用于完全重写主体中给定的默认的初值.
+仔细选择在 b 和 e 情况下采取的行动, 来允许用户指定所有可能的行为. 这个 &aux 变量被用于完全重写主体中给定的默认的初值.
 
-如果没有给一个 aux 变量提供默认值, 在槽被明确赋值前尝试去读取对应槽的值那么结果是为定义的. 如果这样一个槽指定了一个 :type 选项, 这种被抑制的初始化并不意味着类型不匹配的情况; 声明的类型只有在槽最终赋值时才需要应用.
+如果没有给一个 aux 变量[aux variable]提供默认值, 那么如果在槽被显式赋值前尝试去读取对应槽[slot]的值的话, 结果是未定义的. 如果这样一个槽[slot]指定了一个 :type 选项, 这种被抑制的初始化并不意味着类型不匹配的情况; 声明的类型只有在槽最终赋值时才需要应用.
 
-在这个定义下, 下面的可以被写成:
+在这个定义下, 可以写成下面这样:
 
 ```LISP
 (create-foo 1 2)
@@ -1515,9 +1515,9 @@ Figure 3-18. 宏lambda列表使用的lambda列表参数
 (make-foo :a 1 :b 2)
 ```
 
-并且 create-foo 提供了和 make-foo 不同的默认设置.
+并且 create-foo 提供了和 make-foo 不同的默认值.
 
-附加的参数不对应于槽名, 但只提供在随后的初始化计算中使用的值. 比如, 在这个定义中
+不对应于槽名但只提供在随后的初始化计算中使用的值的附加参数是允许的. 比如, 在这个定义中
 
 ```LISP
 (defstruct (frob (:constructor create-frob
@@ -1526,13 +1526,13 @@ Figure 3-18. 宏lambda列表使用的lambda列表参数
         a b c)
 ```
 
-这个 c-token 参数只是给 c 槽的初始化提供一个值. 这个与可选参数和关键字参数相关的 supplied-p 参数也可以使用这种方式. 
+这个 c-token 参数只是给 c 槽的初始化提供一个值. 与可选参数[optional parameter]和关键字参数[keyword parameter]相关的这些 supplied-p 参数[supplied-p parameter]也可以使用这种方式. 
 
 ### 3.4.7 <span id = "DefsetfLambdaLists">Defsetf Lambda 列表</span>
 
-一个 defsetf lambda列表被 defsetf 所使用.
+一个 defsetf lambda 列表[defsetf lambda list]被 defsetf 所使用.
 
-一个 defsetf lambda列表遵循以下语法:
+一个 defsetf lambda 列表[defsetf lambda list]遵循以下语法:
 
 ```LISP
 lambda-list::= (var* 
@@ -1542,53 +1542,53 @@ lambda-list::= (var*
                 [&environment var] 
 ```
 
-一个 defsetf lambda列表可以包含下面这段展示的lambda列表关键字.
+一个 defsetf lambda 列表[defsetf lambda list]可以包含下面这段展示的这些 lambda 列表关键字[lambda list keyword].
 
     &allow-other-keys  &key       &rest  
     &environment       &optional         
 
-Figure 3-19. Defsetf Lambda 列表使用的lambda列表关键字
+Figure 3-19. Defsetf Lambda 列表使用的 lambda 列表关键字
 
-一个 defsetf lambda列表和普通lambda列表的区别仅在于它不允许使用 &aux, 并且它允许使用表示环境参数的 &environment. 
+一个 defsetf lambda 列表[defsetf lambda list]和普通 lambda 列表[ordinary lambda list]的区别仅在于它不允许使用 &aux, 并且它允许使用引入环境参数[environment parameter]的 &environment. 
 
 ### 3.4.8 <span id = "DeftypeLambdaLists">Deftype Lambda 列表</span>
 
-一个 deftype lambda列表被 deftype 所使用.
+一个 deftype lambda 列表[deftype lambda list]被 deftype 所使用.
 
-一个 deftype lambda列表有着像宏lambda列表相同的语法, 并且可以包含和宏lambda列表相同的lambda列表关键字.
+一个 deftype lambda 列表[deftype lambda list]有着像宏 lambda 列表[macro lambda list]相同的语法, 并且因此可以包含和宏 lambda 列表[macro lambda list]相同的 lambda 列表关键字[lambda list keyword].
 
-一个 deftype lambda列表和宏lambda列表的区别仅在于如果没有给一个可选参数或关键字参数提供 init-from, 那么这个参数的默认值就是符号 * (而不是 nil). 
+一个 deftype lambda 列表[deftype lambda list]和宏 lambda 列表[macro lambda list]的区别仅在于如果没有给一个可选参数[optional parameter]和关键字参数[keyword parameter]提供初始化表达式形式 init-from, 那么这个形参[parametaer]的默认值[value]就是符号[symbol] * (而不是 nil). 
 
 ### 3.4.9 <span id = "DefineMMLambdaLists">Define-modify-macro Lambda 列表</span>
 
-一个 define-modify-macro lambda列表被 define-modify-macro 使用.
+一个 define-modify-macro lambda 列表[deftype lambda list]被 define-modify-macro 所使用.
 
-一个 define-modify-macro lambda列表可以包含下面这段展示的lambda列表关键字.
+一个 define-modify-macro lambda 列表[deftype lambda list]可以包含下面这段展示的 lambda 列表关键字[lambda list keyword].
 
     &optional  &rest  
 
-Figure 3-20. Define-modify-macro Lambda 列表使用的lambda列表关键字
+Figure 3-20. Define-modify-macro Lambda 列表使用的 lambda 列表关键字
 
-Define-modify-macro lambda列表类似于普通lambda列表, 但是不支持关键字参数. define-modify-macro 不需要去匹配关键字, 并且一个剩余参数就足够了. Aux 变量也不支持, 因为 define-modify-macro 没有主体表达式来引用这些绑定. 见宏 define-modify-macro. 
+Define-modify-macro lambda 列表[deftype lambda list]类似于普通 lambda 列表[ordinary lambda list], 但是不支持关键字参数. define-modify-macro 不需要去匹配关键字, 并且一个剩余参数[rest parameter]就足够了. aux 变量[aux variable]也不支持, 因为 define-modify-macro 没有主体表达式来引用这些绑定[binding]. 见宏 define-modify-macro. 
 
 ### 3.4.10 <span id = "DefineMCArgumentsLambdaLists">Define-method-combination 参数 Lambda 列表</span>
 
-一个 define-method-combination 参数lambda列表被 define-method-combination 的 :arguments 选项所使用.
+一个 define-method-combination 参数 lambda 列表[define-method-combination arguments lambda list]被 define-method-combination 的 :arguments 选项所使用.
 
-一个 define-method-combination 参数lambda列表可以包含下面这段中展示的lambda列表关键字.
+一个 define-method-combination 参数 lambda 列表[define-method-combination arguments lambda list]可以包含下面这段中展示的 lambda 列表关键字[lambda list keyword].
 
     &allow-other-keys  &key       &rest   
     &aux               &optional  &whole  
 
-Figure 3-21. Define-method-combination 参数 Lambda 列表使用的lambda列表关键字
+Figure 3-21. Define-method-combination 参数 Lambda 列表使用的 lambda 列表关键字
 
-Define-method-combination 参数lambda列表类似于普通lambda列表, 但是也允许使用 &whole. 
+define-method-combination 参数 lambda 列表[define-method-combination arguments lambda list]类似于普通 lambda 列表[ordinary lambda list], 但是也允许使用 &whole. 
 
 ### 3.4.11 <span id = "SIDSD">文档字符串和声明的语法交互</span>
 
-在许多情况下, 文档字符串可以在一系列表达式形式之前出现在一系列声明表达式中.
+在许多情况下, 文档字符串[documentation string]可以出现在一系列表达式形式之前的一系列 declare 表达式[expression]中.
 
-在这个情况下, 如果字符串 S 出现在允许文档字符串被允许的地方而后面没有声明表达式或表达式形式那么 S 就被认为是一种表达式; 否则, S 被当作一个文档字符串. 如果出现不止一个文档字符串那么结果是未定义的. 
+在这个情况下, 如果字符串[string] S 出现在允许文档字符串[documentation string]的地方并且后面既没有 declare 表达式[expression]或一个表达式形式[form]那么 S 就被认为是一种表达式形式[form]; 否则, S 被当作一个文档字符串[documentation string]. 如果出现不止一个文档字符串[documentation string]那么结果是未定义的. 
 
 ## 3.5 <span id = "ErrorChecking">函数调用中的错误检测</span>
 
@@ -1830,7 +1830,7 @@ OR=>  (1 2 4 3)
 
 * * 参数(Arguments):
 
-        lambda-list---一个普通lambda列表.
+        lambda-list---一个普通 lambda 列表[ordinary lambda list].
         declaration---一个声明表达式; 没有被求值的.
         documentation---一个字符串; 没有被求值的.
         form---一个表达式形式.
@@ -2348,7 +2348,7 @@ OR=>  (1 2 4 3)
 * 参数和值(Arguments and Values):
 
         name---一个函数名字.
-        lambda-list---一个宏lambda列表.
+        lambda-list---一个宏 lambda 列表[macro lambda list].
         declaration---一个声明表达式; 没有求值.
         documentation---一个字符串; 没有求值.
         form---一个表达式形式.
