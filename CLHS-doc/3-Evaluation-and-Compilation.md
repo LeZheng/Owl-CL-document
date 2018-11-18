@@ -1144,7 +1144,7 @@ Figure 3-13. 被普通 lambda 列表使用的 lambda 关键字列表
 
 此外, 如果接收的参数列表指定了一个会被 :allow-other-keys 标记的普通参数, 那么 :allow-other-keys 同时有它的 special-cased 意义(标识是否允许附加的关键字)和它的正常意义(数据流入到提及的函数中).
 <!--TODO special-cased ??-->
-##### 3.4.1.4.1 抑制参数检测
+##### 3.4.1.4.1 抑制关键字参数检测
 
 如果一个函数[function]的 lambda 列表[lambda list]中指定了 &allow-other-keys, 对这个函数[function]的调用中关键字[keyword[2]]实参[argument]检测会被抑制.
 
@@ -1595,97 +1595,97 @@ define-method-combination 参数 lambda 列表[define-method-combination argumen
 ### 3.5.1 参数匹配检测
 
 > * 3.5.1.1 [安全和非安全调用](#SafeUnsafeCalls)
-> * 3.5.1.2 [参数太少(Too Few Arguments)](#TooFewArguments)
-> * 3.5.1.3 [参数太多(Too Many Arguments)](#TooManyArguments)
-> * 3.5.1.4 [不识别的关键字参数(Unrecognized Keyword Arguments)](#UnrecognizedKeywordArguments)
-> * 3.5.1.5 [非法的关键字参数(Invalid Keyword Arguments)](#InvalidKeywordArguments)
-> * 3.5.1.6 [奇数数量的关键字参数(Odd Number of Keyword Arguments)](#OddNumberKeywordArguments)
-> * 3.5.1.7 [解构不匹配(Destructuring Mismatch)](#DestructuringMismatch)
-> * 3.5.1.8 [调用下一个方法时的错误(Errors When Calling a Next Method)](#ErrorsWhenCallingNextMethod)
+> * 3.5.1.2 [参数太少](#TooFewArguments)
+> * 3.5.1.3 [参数太多](#TooManyArguments)
+> * 3.5.1.4 [不识别的关键字参数](#UnrecognizedKeywordArguments)
+> * 3.5.1.5 [非法的关键字参数](#InvalidKeywordArguments)
+> * 3.5.1.6 [奇数数量的关键字参数](#OddNumberKeywordArguments)
+> * 3.5.1.7 [解构不匹配](#DestructuringMismatch)
+> * 3.5.1.8 [调用下一个方法时的错误](#ErrorsWhenCallingNextMethod)
 
 #### 3.5.1.1 <span id = "SafeUnsafeCalls">安全和非安全调用</span>
 
-如果下面中的每一个都是安全代码或者系统代码那么这个调用就是安全的调用 (除了由程序员代码的宏展开所导致的系统代码之外):
+如果下面中的每一个都是安全[safe]代码[code]或者系统代码[system code] (除了由程序员代码[programmer code]的宏展开[macro expansion]所产生的系统代码[system code]之外)那么这个调用[call]就是安全调用[safe call] :
 
-* 这个调用.
-* 被调用函数的定义.
-* 函数求值的点
+* 这个调用[call].
+* 要被调用的函数[function]的定义.
+* 函数性求值[functional evaluation]的点
 
 以下特殊情况需要一些细化:
 
-* 如果被调用的函数是一个广义函数, 如果下面列出的所有部分都是安全的代码或者系统代码那么它就被认为是安全的:
+* 如果被调用的函数[function]是一个广义函数[generic function], 如果下面列出的所有部分都是安全[safe]代码[code]或者系统代码[system code]那么它就被认为是安全的[safe]:
 
-        -- 它的定义 (如果它被明确定义).
-        -- 所有适用方法的方法定义.
-        -- 它的方法组合的定义.
+        -- 它的定义 (如果它被显式定义的话).
+        -- 所有可应用[applicable]方法[method]的方法[method]定义.
+        -- 它的方法组合[method combination]的定义.
 
-* 对于表达式 (coerce x 'function), 其中 x 是一个 lambda 表达式, 当 coerce 执行时, 全局环境中优化质量 safety 的值也适用于产生的函数.
+* 对于表达式形式 (coerce x 'function), 其中 x 是一个 lambda 表达式[lambda expression], 当 coerce 执行时, 全局环境中优化质量[optimize quality] safety 的值应用于产生的函数[function].
 
-* 对于一个函数 ensure-generic-function 的调用, 在作为 :environment 参数传递的环境对象中优化质量 safety 的值也适用于产生的广义函数.
+* 对于一个函数[function] ensure-generic-function 的调用, 在作为 :environment 参数[argument]传递的环境[environment]对象[object]中优化质量[optimize quality] safety 的值应用于产生的广义函数[generic function].
 
-* 对于一个对lambda表达式作为参数的 compile 的调用, 在 compile 被调用时全局环境中优化质量 safety 的值适用于编译出来的函数.
+* 对于一个用 lambda 表达式[lambda expression]作为实参[argument]的 compile 的调用, 在 compile 被调用时全局环境[global environment]中优化质量[optimize quality] safety 的值应用于编译后的函数[compiled function].
 
-* 对于一个单个参数的 compile 调用, 如果函数的原始定义是安全的, 那么作为结果编译后的函数也必须是安全的.
+* 对于一个单参数的 compile 调用, 如果函数[function]的原始定义是安全的[safe], 那么产生的编译后的函数[compiled function]也必须是安全的[safe].
 
-* 一个被 call-next-method 调用的方法如果下面的每一个都被认为是安全代码或者系统代码那么这个方法就被认为是安全的:
+* 一个通过 call-next-method 的对方法[method]的调用[call]中, 如果下面的每一个都被认为是安全[safe]代码[code]或者系统代码[system code], 那么这个调用一定被认为是安全的[safe]:
 
-    -- 这个广义函数的定义 (如果它被明确定义).
-    -- 所有适用方法的方法定义.
-    -- 方法组合的定义.
-    -- 方法定义表达式主体部分的入口点, 即确定 call-next-method 绑定的地方.
-    -- 名字 call-next-method 函数求值的点.
+    -- 这个广义函数[generic function]的定义 (如果它被显式定义的话).
+    -- 所有可应用[applicable]方法[method]的方法[method]定义.
+    -- 方法组合[method combination]的定义.
+    -- 方法[method]定义表达式形式[defining form]主体部分的入口点, 即建立 call-next-method 绑定[binding]的地方.
+    -- 名字 call-next-method 函数性求值[functional evaluation]的点.
 
-一个不安全调用就是一个不是安全调用的调用.
+一个不安全调用[unsafe call]就是一个不是安全调用[safe call]的调用[call].
 
-非正式的意图是, 如果已经采取了所有合理的步骤来确保调用是安全的, 即使在涉及到系统代码的情况下, 程序员也可以依赖于一个安全的调用. 比如, 如果一个程序员从安全的代码中调用 mapcar 并且提供了一个被编译为安全的函数, 那么这个具体实现也需要去确保这个 mapcar 是一个安全的调用.
+非正式的意图是, 如果已经采取了所有合理的步骤来确保调用[call]是安全的[safe], 即使在涉及到系统代码[system code]的情况下, 程序员也可以依赖于一个调用[call]是安全的[safe].<!--TODO 非正式意图 ？？ 需重新校对--> 比如, 如果一个程序员[programmer]从安全[safe]代码[code]中调用 mapcar 并且提供了一个被编译为安全的[safe]函数[function], 那么这个具体实现[implementation]也需要去确保这个 mapcar 是一个安全调用[safe call].
 
-3.5.1.1.1 安全调用的错误检测时间
+##### 3.5.1.1.1 安全调用的错误检测时间
 
-如果在安全调用中发出一个错误, 这个准确的发出点是依赖于实现的. 具体来说, 它可能在编译时或运行时发出, 如果在运行时发出, 它可能在执行这个调用时, 或之前, 或之后发出. 然而它总是在这个被调用函数的主体执行之前. 
+如果在安全调用[safe call]中发出一个错误, 这个发出[signal]的准确的点是依赖于具体实现的[implementation-dependent]. 具体来说, 它可能在编译时或运行时发出, 如果在运行时发出, 它可能在执行这个调用[call]时, 或之前, 或之后发出. 然而它总是在这个被调用函数[function]的主体执行之前. 
 
-#### 3.5.1.2 <span id = "TooFewArguments">参数太少(Too Few Arguments)</span>
+#### 3.5.1.2 <span id = "TooFewArguments">参数太少</span>
 
-对一个函数提供的参数太少是不允许的. 太少的参数意味着参数少于这个函数需要到参数数量.
+不允许对一个函数[function]提供过少的实参[argument]. 过少的参数意味着实参[argument]少于这个函数必要参数[required parameter]的数量.
 
-如果这个情况发生在一个安全调用中, 一定会发出一个 program-error 类型的错误; 如果发生在一个不安全的调用中结果是不可预料的. 
+如果这个求值情况[situation]发生在一个安全调用[safe call]中, 一定会发出一个 program-error 类型[type]的错误; 如果在一个不安全的调用[unsafe call]中这个求值情况[situation]有着未定义的后果. 
 
-#### 3.5.1.3 <span id = "TooManyArguments">参数太多(Too Many Arguments)</span>
+#### 3.5.1.3 <span id = "TooManyArguments">参数太多</span>
 
-对一个函数提供的参数太多是不允许的. 太多的参数意味着更多的参数, 而不仅仅是所需参数的数量加上可选参数的数量; 然而, 如果函数使用 &rest 或者 &key, 它不可能接受太多参数.
+不允许对一个函数[function]提供过多的实参[argument]. 太多的参数意味实参[argument]多于这个函数必要参数[required parameter]加上可选参数[optional parameter]的数量; 然而, 如果这个函数[function]使用 &rest 或者 &key, 它不可能接受过多参数.
 
-如果情况发生在安全的调用里, 一定会发出一个 program-error 类型的错误; 如果发生在一个不安全的调用中结果是不可预料的. 
+如果这个求值情况[situation]发生在一个安全调用[safe call]中, 一定会发出一个 program-error 类型[type]的错误; 如果在一个不安全的调用[unsafe call]中这个求值情况[situation]有着未定义的后果. 
 
-#### 3.5.1.4 <span id = "UnrecognizedKeywordArguments">不识别的关键字参数(Unrecognized Keyword Arguments)</span>
+#### 3.5.1.4 <span id = "UnrecognizedKeywordArguments">不识别的关键字参数</span>
 
-向一个函数提供一个不被识别的关键字参数是不允许的, 除非就像章节 3.4.1.4.1 (Suppressing Keyword Argument Checking) 描述的那样关键字参数检测被抑制.
+不允许向一个函数[function]提供一个名字不被识别的关键字参数, 除非就像章节 3.4.1.4.1 (抑制关键字参数检测) 描述的那样抑制关键字参数检测.
 
-如果情况发生在安全的调用里, 一定会发出一个 program-error 类型的错误; 如果发生在一个不安全的调用中结果是不可预料的. 
+如果这个求值情况[situation]发生在一个安全调用[safe call]中, 一定会发出一个 program-error 类型[type]的错误; 如果在一个不安全的调用[unsafe call]中这个求值情况[situation]有着未定义的后果. 
 
-#### 3.5.1.5 <span id = "InvalidKeywordArguments">非法的关键字参数(Invalid Keyword Arguments)</span>
+#### 3.5.1.5 <span id = "InvalidKeywordArguments">非法的关键字参数</span>
 
-通过使用一个不是符号的名字给函数传递关键字参数是不允许的.
+不允许使用一个不是符号[symbol]的名字来给函数提供关键字参数.
 
-如果情况发生在安全的调用里, 一定会发出一个 program-error 类型的错误, 除非就像章节 3.4.1.4.1 (Suppressing Keyword Argument Checking) 描述的那样关键字参数检测被抑制; 如果发生在一个不安全的调用中结果是不可预料的. 
+如果这个求值情况[situation]发生在一个安全调用[safe call]中, 一定会发出一个 program-error 类型[type]的错误, 除非就像章节 3.4.1.4.1 (抑制关键字参数检测) 描述的那样抑制关键字参数检测; 如果在一个不安全的调用[unsafe call]中这个求值情况[situation]有着未定义的后果. 
 
-#### 3.5.1.6 <span id = "OddNumberKeywordArguments">奇数数量的关键字参数(Odd Number of Keyword Arguments)</span>
+#### 3.5.1.6 <span id = "OddNumberKeywordArguments">奇数数量的关键字参数</span>
 
-奇数数量的关键字一定不能提供给关键字参数.
+一定不能提供奇数数量的实参[argument]给关键字参数[keyword parameter].
 
-如果情况发生在安全的调用里, 一定会发出一个 program-error 类型的错误, 除非就像章节 3.4.1.4.1 (Suppressing Keyword Argument Checking) 描述的那样关键字参数检测被抑制; 如果发生在一个不安全的调用中结果是不可预料的. 
+如果这个求值情况[situation]发生在一个安全调用[safe call]中, 一定会发出一个 program-error 类型[type]的错误, 除非就像章节 3.4.1.4.1 (抑制关键字参数检测) 描述的那样抑制关键字参数检测; 如果在一个不安全的调用[unsafe call]中这个求值情况[situation]有着未定义的后果. 
 
-#### 3.5.1.7 <span id = "DestructuringMismatch">解构不匹配(Destructuring Mismatch)</span>
+#### 3.5.1.7 <span id = "DestructuringMismatch">解构不匹配</span>
 
-当一个结构lambda列表和一个表达式匹配时, 这个解构匹配模式和表达式必须有像章节 3.4.4 (Macro Lambda Lists) 描述的兼容的树结构.
+当匹配一个解构 lambda 列表[destructuring lambda list]和一个表达式形式[form]时, 这个解构匹配模式和表达式形式[form]必须有着兼容的树结构[tree structur], 像章节 3.4.4 (宏 lambda 列表) 描述的那样.
 
-否则, 如果情况发生在安全的调用里, 一定会发出一个 program-error 类型的错误; 如果发生在一个不安全的调用中结果是不可预料的. 
+否则, 如果这个求值情况[situation]发生在一个安全调用[safe call]中, 一定会发出一个 program-error 类型[type]的错误; 如果在一个不安全的调用[unsafe call]中这个求值情况[situation]有着未定义的后果.
 
 #### 3.5.1.8 <span id = "ErrorsWhenCallingNextMethod">调用下一个方法时的错误(Errors When Calling a Next Method)</span>
 
-如果 call-next-method 调用时带了参数, 用于 call-next-method 的变更后的参数集合的可适用方法集必须与这个广义函数的原始参数的可适用方法集相同, 否则应该会发出一个错误.
+如果用实参[argument]调用 call-next-method, 用于 call-next-method 的变更后的参数集合的可应用[applicable]方法[method]的有序集合必须与这个广义函数[generic function]的原始实参[argument]的可应用[applicable]方法[method]有序集合相同, 否则应该会发出一个错误.
 
-对新参数的一组方法和适用于原始参数的方法集合之间的比较, 其中相同指示符的方法次序是不敏感的.
+对于应用于新的那些参数的方法集合和应用于原始参数的方法集合之间的比较, 其中相同特化符的方法之间的次序差别是不敏感的.
 
-如果 call-next-method 的参数指定了不同的可适用方法的不同排序集, 并且没有可用的下一个方法, 那么对不同方法的测试和相关错误信号的发出(存在的话)的将优先于调用 no-next-method. 
+如果使用指定了不同的可应用方法的有序集的实参[argument]来调用 call-next-method , 并且没有可用的下一个方法[next method], 那么对不同方法的测试和相关错误的发出(存在的话)的将优先于调用 no-next-method. 
 
 ## 3.6 <span id = "TraversalRulesSideEffects">遍历规则和副作用</span>
 
