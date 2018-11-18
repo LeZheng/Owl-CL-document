@@ -1689,89 +1689,89 @@ define-method-combination 参数 lambda 列表[define-method-combination argumen
 
 ## 3.6 <span id = "TraversalRulesSideEffects">遍历规则和副作用</span>
 
-当在一个对象遍历操作中执行的代码以一种可能影响正在进行的遍历操作的方式修改对象时, 其后果是未定义的. 尤其, 适用于以下规则.
+当在一个对象遍历[object-traversing]操作期间执行的代码[code]以一种可能影响正在进行的遍历操作的方式修改对象[object]时, 其后果是未定义的. 具体来说, 应用以下规则.
 
 列表遍历(List traversal)
 
-    对于列表遍历操作, 列表中的 cdr 链是不允许被破坏性修改的.
+    对于列表[list]遍历操作, 列表[list]中的 cdr 链是不允许被破坏性修改的.
 
 数组遍历(Array traversal)
 
-    对于数组遍历操作, 不允许对数组进行调整, 并且填充指针不允许被修改.
+    对于数组[array]遍历操作, 不允许对数组[array]进行调整, 并且填充指针不允许被修改, 如果有的话.
 
 哈希表遍历(Hash-table traversal)
 
-    对于哈希表遍历操作, 新元素可能不会被添加或删除, 除非与当前散列键对应的元素可以被更改或删除.
+    对于哈希表[hash table]遍历操作, 新元素可能不会被添加或删除, 除了当前散列键对应的元素可以被更改或删除的话.
 
 包遍历(Package traversal)
 
-    对于包遍历操作 (比如, do-symbols), 新的符号不能从被遍历的包或者它使用的任何包中被捕捉或者 解除捕捉, 除非当前的符号可以从被遍历的包中被解除捕捉.
+    对于包[package]遍历操作 (比如, do-symbols), 新的符号[symbol]不能从被遍历的包[package]或者它使用的任何包[package]中被捕捉[interned]或者解除捕捉[uninterned], 除了当前的符号[symbol]可以从被遍历的包[package]中被解除捕捉[uninterned].
 
 ## 3.7 <span id = "DestructiveOperations">破坏性操作</span>
 
 ### 3.7.1 字面化对象的修改
 
-如果字面化对象被破坏性地修改那么结果是不可预料的. 出于这个目的, 以下操作被认为是破坏性的:
+如果字面化[literal]对象[object]被破坏性地修改那么后果是未定义的. 出于这个目的, 以下操作被认为是破坏性的[destructive]:
 
 random-state
 
-    使用它作为函数 random 的一个参数.
+    使用它作为函数[function] random 的一个参数[argument].
 
 cons
 
-    修改 cons 的 car 或者 cdr 部分, 或者对一个 cons 的 car 或者 cdr 部分对象执行破坏性操作.
+    修改 cons 的 car 或者 cdr 部分, 或者对一个 cons 的 car 或者 cdr 部分的对象[object]执行破坏性[destructive]操作.
 
 array
 
-    将一个新值存储到数组的某个元素中, 或者对已经是该元素的对象执行破坏性操作.
+    将一个新值存储到数组[array]的某个元素中, 或者对已经是这样一个元素[element]的对象[object]执行破坏性[destructive]操作.
 
-    改变数组的填充指针, 维度或位移 (不管这个数组实际上是否为可调整的).
+    改变数组[array]的填充指针[fill pointer], 规模[dimension]或位移 (不管这个数组[array]是否为实际上可调整的[actually adjustable]).
 
-    对一个数组执行破坏性操作, 这个数组的内容被转移到另一个数组或者和另一个数组共享内容.
+    在另一个数组[array]上执行破坏性[destructive]操作, 它被转移到这个数组或者和这个数组[array]共享内容.
 
 hash-table
 
-    对任何 key 做破坏性操作.
+    对任何键[key]做破坏性[destructive]操作.
 
-    为任何 key 存储一个新的 value, 或者对这样的 value 对象执行破坏性操作.
+    为任何键[key]存储一个新的值[value[4]], 或者在这样一个值[value]的任何对象上执行破坏性[destructive]操作.
 
-    从这个hash表中添加或删除元素.
+    从这个哈希表[hash table]中添加或删除元素.
 
 structure-object
 
-    存储一个新的值到任何槽中, 或者对一些槽的值对象执行破坏性的操作.
+    存储一个新的值到任何槽中, 或者对一些槽的值对象[object]执行破坏性[destructive]操作.
 
 standard-object
 
-    存储一个新的值到任何槽中, 或者对一些槽的值对象执行破坏性的操作.
+    存储一个新的值到任何槽中, 或者对一些槽的值对象[object]执行破坏性[destructive]操作.
 
-    改变这个对象的类 (比如, 使用函数 change-class).
+    改变这个对象[object]的类 (比如, 使用函数[function] change-class).
 
 readtable
 
-    更改 readtable 用例.
+    更改读写表大小写[readtable case].
 
-    修改这个 readtable 中的任何字符的语法类型.
+    修改这个读取表中任何字符的语法类型.
 
-    修改与 readtable 中任何字符相关的读取器宏函数, 或修改与在 readtable 中指定的字符相关的字符读取器宏函数.
+    修改与读取表[readtable]中任何字符[character]关联的读取器宏函数[reader macro function], 或修改在读取表[readtable]被定义为分派宏字符[dispatching macro character]的字符[character]关联的读取器宏函数[reader macro function].
 
 stream
 
-    对 stream 执行 I/O 操作, 或者关闭这个 stream.
+    在流[stream]上执行 I/O 操作, 或者关闭这个流[stream].
 
 所有其他标准化类型
 
-    [这个范畴包括, 比如, character, condition, function, method-combination, method, number, package, pathname, restart, 还有 symbol.]
+    [这个范围包括, 比如, character, condition, function, method-combination, method, number, package, pathname, restart, 还有 symbol.]
 
-    在这些类型的对象上没有标准化的破坏性操作. 
+    在这些类型[type]的对象[object]上没有标准化[standardized]破坏性[destructive]操作. 
 
 ### 3.7.2 破坏性操作期间的控制转移
 
-如果将控制从破坏性的操作中转移出来(比如, 由于一个错误)就会发生被修改的对象的状态是实现依赖的.
+如果将控制从破坏性[destructive]的操作中转移出来(比如, 由于一个错误), 就会被修改对象的状态是依赖于具体实现的[implementation-dependent].
 
 #### 3.7.2.1 破坏性操作期间的控制转移的示例
 
-下面的示例演示了许多方法中的一部分, 在这些方法下修改的实现依赖的本质得以展现.
+下面的示例演示了许多方法中的一部分, 在这些方法下这个修改的依赖于具体实现的[implementation-dependent]本质得以展现.
 
 ```LISP
 (let ((a (list 2 1 4 3 7 6 'five)))
