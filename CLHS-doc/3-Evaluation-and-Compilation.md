@@ -303,7 +303,7 @@ Figure 3-4. 一些已定义的函数相关的名字
 
 有关如何基于 lambda 列表[lambda list]建立绑定[binding]的进一步讨论, 见章节 3.4 (Lambda 列表).
 
-一个 lambda 表达式[lambda expression]的主体是一个隐式的 progn[implicit progn]; 它返回的值会被这个 lambda 表达式[lambda expression]返回. 
+一个 lambda 表达式[lambda expression]的主体是一个隐式 progn [implicit progn]; 它返回的值会被这个 lambda 表达式[lambda expression]返回. 
 
 ### 3.1.4 <span id = "ClosuresLexicalBinding">闭包和词法绑定</span>
 
@@ -595,7 +595,7 @@ Figure 3-6. 应用于编译器宏的定义的名字
 
     在编译时, 正在编译的源代码[source code]中出现的所有编译器宏[compiler macro]调用都被展开; 它们不会在运行时展开.
 
-    正在编译的源代码中出现的所有宏[macro]和符号宏[symbol macro]调用都在编译时进行展开, 这样它们就不会在运行时再次被展开. macrolet 和 symbol-macrolet 实际上被替换为与它们的主体相对应的表达式，在这里，对宏[macro]的调用被它们的展开式所取代.
+    正在编译的源代码中出现的所有宏[macro]和符号宏[symbol macro]调用都在编译时进行展开, 这样它们就不会在运行时再次被展开. macrolet 和 symbol-macrolet 实际上被替换为与它们的主体相对应的表达式, 在这里, 对宏[macro]的调用被它们的展开式所取代.
 
     在被 compile 处理的源代码[source code]中一个 load-time-value 表达式形式[form]的第一个实参[argument]在编译期[compile time]被求值; 在被 compile-file 处理的源代码[source code]中, 编译器安排它在加载时[load time]被求值. 不论发生何种情况, 这个求值[evaluation]的结果会被记住并且在执行时[execution time]被用于后面 load-time-value 表达式形式[form]的值. 
 
@@ -639,7 +639,7 @@ Figure 3-6. 应用于编译器宏的定义的名字
 
 函数[function] compile-file 对一个文件中的表达式形式[form]根据章节 3.2.2 (Compilation Semantics) 中的规则执行编译, 并且产生一个可以通过 load 被载入的输出文件.
 
-通常情况下, 在 compile-file 编译的文件中出现的顶层表达式形式[top level form]只在加载编译后文件时才进行求值, 而不是在编译文件时进行求值. 但是, 通常情况下, 文件中的某些表达式需要在编译时进行求值，以便能够正确地读取和编译文件的其余部分.
+通常情况下, 在 compile-file 编译的文件中出现的顶层表达式形式[top level form]只在加载编译后文件时才进行求值, 而不是在编译文件时进行求值. 但是, 通常情况下, 文件中的某些表达式需要在编译时进行求值, 以便能够正确地读取和编译文件的其余部分.
 
 这个 eval-when 特殊表达式[special form]可以被用于控制一个顶层表达式形式[top level form]是否在编译时, 加载时, 或者两个时机都求值. 用 eval-when 指定这三种情况的任何几个都是可以的, 通过符号 :compile-toplevel, :load-toplevel, 还有 :execute 来表示. 对于顶层的 eval-when 表达式形式, :compile-toplevel 表示编译器必须在编译期求值这个主体部分, 而 :load-toplevel 表示这个编译器必须安排在加载时求值这个主体. 关于非顶层的 eval-when 表达式, :execute 表示这个主体必须在运行时环境[environment]被执行.
 
@@ -773,7 +773,7 @@ character
 
     如果两个简单[simple]字符[character] S 和 C 有相似的[similar]字符码[code]属性[attribute], 那么它们就是相似的[similar].
 
-    具体实现[implementation]假定额外的, 依赖于具体实现的[implementation-defined]属性[attribute]必须定义非简单[non-simple]字符[character]是否可以被当作相似的[similar]并且如何被当作相似的[similar].
+    具体实现[implementation]假定额外的, 具体实现定义的[implementation-defined]属性[attribute]必须定义非简单[non-simple]字符[character]是否可以被当作相似的[similar]并且如何被当作相似的[similar].
 
 symbol
 
@@ -1407,7 +1407,7 @@ Figure 3-18. 宏 lambda 列表[macro lambda list]使用的lambda列表参数
 (first second third)
 ```
 
-如果没有 lambda 列表关键字[lambda list keyword]出现在匹配模式中, 那么 lambda 列表导向的解构和数据导向的结构是相同的. 在这个包含 lambda 列表关键字[lambda list keyword]的匹配模式中的任何列表(不管是一个子列表或是整个匹配模式本身)就会被特别地解释. 这个列表中第一个 lambda 列表关键字[lambda list keyword]左边的那些元素被当作解构匹配模式处理, 像平常一样, 但是列表中剩下的元素被当作函数的 lambda 列表[lambda list]一样处理, 除了在通常需要一个变量的情况下, 允许使用任意的解构匹配模式. 注意, 在不确定的情况下，lambda 列表[lambda list]语法优于解构语法. 因此, 在 &optional 之后，一个元素列表是一个解构匹配模式和一个默认值表达式形式的列表.
+如果没有 lambda 列表关键字[lambda list keyword]出现在匹配模式中, 那么 lambda 列表导向的解构和数据导向的结构是相同的. 在这个包含 lambda 列表关键字[lambda list keyword]的匹配模式中的任何列表(不管是一个子列表或是整个匹配模式本身)就会被特别地解释. 这个列表中第一个 lambda 列表关键字[lambda list keyword]左边的那些元素被当作解构匹配模式处理, 像平常一样, 但是列表中剩下的元素被当作函数的 lambda 列表[lambda list]一样处理, 除了在通常需要一个变量的情况下, 允许使用任意的解构匹配模式. 注意, 在不确定的情况下, lambda 列表[lambda list]语法优于解构语法. 因此, 在 &optional 之后, 一个元素列表是一个解构匹配模式和一个默认值表达式形式的列表.
 
 每个 lambda 列表关键字[lambda list keyword]在 lambda 列表导向的解构匹配模式中的具体行为如下:
 
@@ -1831,29 +1831,29 @@ OR=>  (1 2 4 3)
 * * 参数(Arguments):
 
         lambda-list---一个普通 lambda 列表[ordinary lambda list].
-        declaration---一个声明表达式; 没有被求值的.
-        documentation---一个字符串; 没有被求值的.
-        form---一个表达式形式.
+        declaration---一个 declare 表达式[expression]; 不求值.
+        documentation---一个字符串[string]; 没有被求值的.
+        form---一个表达式形式[form].
 
 * * 描述(Description):
 
-        lambda表达式是一种列表, 可以替代特定上下文中使用函数名来表示的函数, 通过直接描述其行为而不是间接地引用已建立函数的名称来表示函数.
+        lambda 表达式[lambda expression]是一种列表[list], 可以被用于替代特定上下文中的一个函数名[function name], 通过直接描述其行为而不是间接地引用一个已建立函数[function]的名称来表示一个函数[function].
 
-        Documentation 作为文档字符串被附加到所表示的函数(如果有实际创建的话).
+        documentation 作为文档字符串[documentation string]被附加到所表示的函数 function (如果有实际创建的话).
 
 * * 也见(See Also):
 
-        function, documentation, Section 3.1.3 (Lambda Expressions), Section 3.1.2.1.2.4 (Lambda Forms), Section 3.4.11 (Syntactic Interaction of Documentation Strings and Declarations)
+        function, documentation, 章节 3.1.3 (lambda 表达式), 章节 3.1.2.1.2.4 (lambda 表达式形式), 章节 3.4.11 (文档字符串和声明的语法交互)
 
 * * 注意(Notes):
 
-    * 这个lambda表达式形式
+    * 这个 lambda 表达式形式[lambda form]
 
         ```LISP
         ((lambda lambda-list . body) . arguments)
         ```
 
-    * 语法上等价于函数表达式
+    * 语义上等价于函数表达式[function form]
 
         ```LISP
         (funcall #'(lambda lambda-list . body) . arguments)
@@ -1867,21 +1867,19 @@ OR=>  (1 2 4 3)
 
 * 参数和值(Arguments and Values):
 
-        lambda-list---一个普通lambda表达式.
-        declaration---一个声明表达式; 没有被求值.
-        documentation---一个字符串; 没有被求值.
-        form---一个表达式形式.
-        function---一个函数.
+        lambda-list---一个普通 lambda 表达式[ordinary lambda list].
+        declaration---一个 declare 表达式[expression]; 不求值.
+        documentation---一个字符串[string]; 不求值.
+        form---一个表达式形式[form].
+        function---一个函数[function].
 
 * 描述(Description):
 
-    * 为一个包含 lambda 表达式的函数的特殊表达式提供了一个简短的符号标记:
+        为一个涉及一个 lambda 表达式[lambda expression]的 function 特殊表达式形式[special form]提供一个简写表示, 例如:
 
-        ```LISP
         (lambda lambda-list [[declaration* | documentation]] form*)
         ==  (function (lambda lambda-list [[declaration* | documentation]] form*))
         ==  #'(lambda lambda-list [[declaration* | documentation]] form*)
-        ```
 
 * 示例(Examples):
 
@@ -1901,13 +1899,13 @@ OR=>  (1 2 4 3)
 
 * 注意(Notes):
 
-    * 这个宏可以这样实现:
+        这个宏可以这样实现:
 
-        ```LISP
-        (defmacro lambda (&whole form &rest bvl-decls-and-body)
-        (declare (ignore bvl-decls-and-body))
-        `#',form)
-        ```
+    ```LISP
+    (defmacro lambda (&whole form &rest bvl-decls-and-body)
+    (declare (ignore bvl-decls-and-body))
+    `#',form)
+    ```
 
 ### <span id = "FunctionCOMPILE">函数 COMPILE</span>
 
@@ -1917,27 +1915,27 @@ OR=>  (1 2 4 3)
 
 * 参数和值(Arguments and Values):
 
-        name---一个函数名字, 或者 nil.
-        definition---一个lambda表达式或者一个函数. 如果 name 命名一个函数那么默认就是这个名字的函数定义, 或者如果 name 命名一个宏那么默认就是这个名字的宏函数. 当 name 是 nil 时没有提供这个参数那么结果是不可预料的.
-        function---这个 function-name, 或者一个编译后的函数.
-        warnings-p---一个普通的 boolean 值.
-        failure-p---一个普通的 boolean 值.
+        name---一个函数名字[function name], 或者 nil.
+        definition---一个 lambda 表达式[lambda expression]或者一个函数[function]. 如果 name 命名一个函数[function]那么默认就是这个名字 name 的函数定义, 或者如果 name 命名一个宏[macro]那么默认就是这个名字 name 的宏函数[macro function]. 当 name 是 nil 时如果没有提供这个定义 definition 那么后果是未定义的.
+        function---这个函数名 function-name, 或者一个编译后的函数[compiled function].
+        warnings-p---一个广义 boolean[generalized boolean].
+        failure-p---一个广义 boolean[generalized boolean].
 
 * 描述(Description):
 
-        编译一个解释的函数.
+        编译一个解释的函数[interpreted function].
 
-        compile 从(definition)定义中产生一个编译后的函数. 如果定义(definition)是一个lambda表达式, 它被强制为一个函数. 如果这个定义(definition)已经是一个编译后的函数, compile 会产出那个函数自身(换句话说, 是一个 identity 操作)或者一个等价的函数.
+        compile 从定义 definition 中产生一个编译后的函数[compiled function]. 如果定义 definition 是一个 lambda 表达式[lambda expression], 它被强制转为一个函数[function]. 如果这个定义 definition 已经是一个编译后的函数[compiled function], compile 会产生那个函数自身(换句话说, 是一个恒等(identity)操作)或者一个等价的函数.
 
-        如果这个名字(name)是 nil, 编译后的函数直接作为主要返回值返回. 如果给定一个非 nil 的名字(name), 那么编译后的函数替换这个名字对应的已存在的函数定义并且这个名字作为主要值返回; 如果名字(name)是一个命名了宏的符号, 它的宏函数会被更新并且名字(name)作为主要返回值返回.
+        如果这个名字 name 是 nil, 产生的编译后的函数[compiled function]作为主值[primary value]直接返回. 如果给定一个非 nil[non-nil]的名字 name, 那么产生的编译后的函数[compiled function]替换这个名字 name 对应的已存在的函数[function]定义并且作为主值[primary value]返回这个名字 name; 如果名字 name 是一个命名一个宏[macro]的符号[symbol], 它的宏函数[macro function]会被更新并且名字 name 作为主值[primary value]返回.
 
-        在 compile 函数处理的代码中出现的字面化对象既不是复制的也不是合并的. 从 compile 的执行中返回的代码引用和源代码中对应对象 eql 的对象.
+        在 compile 函数处理的代码中出现的字面化[literal]对象[object]既没有被复制也没有被合并[coalesce]. 从 compile 的执行中产生的代码引用和源代码中对应对象[object] eql 的对象[object].
 
-        compile 允许但不是必须去确定 error 类型状况的处理者. 比如, 处理者可能会发出警告, 并从一些与实现相关的点重新启动编译, 以便在无需人工干预的情况下进行编译.
+        compile 允许但不是必须去为 error 类型[type]的状况[condition]建立[establish]处理者[handler]. 比如, 处理者[handler]可能会发出警告, 并从某个依赖于具体实现的[implementation-dependent]点重新启动编译, 以便在无需人工干预的情况下进行编译.
 
-        第二个返回值, warnings-p, 如果编译器没有检测到 error 或者 warning 类型的状况那么就是 false, 否则就是 true.
+        第二个返回值[secondary value], warnings-p, 如果编译器没有检测到 error 或者 warning 类型[type]的状况[condition]那么就是 false, 否则就是 true.
 
-        第三个返回值, failure-p, 如果编译器没有检测到 error 或者 warning(除了 style-warning) 类型的状况那么就是 false, 否则就是 true.
+        第三个返回值[tertiary value], failure-p, 如果编译器没有检测到 error 或者 warning(除了 style-warning) 类型[type]的状况[condition]那么就是 false, 否则就是 true.
 
 * 示例(Examples):
 
@@ -1953,15 +1951,15 @@ OR=>  (1 2 4 3)
 
 * 受此影响(Affected By):
 
-    * \*error-output\*, \*macroexpand-hook\*.
+        *error-output*, *macroexpand-hook*.
 
-    * 宏定义和公告(proclamation)的存在.
+        宏定义和全局声明(proclamation)的存在.
 
 * 异常情况(Exceptional Situations):
 
-        如果要编译的函数的词汇环境包含除宏、符号宏或声明之外的任何绑定, 则其结果是未定义的.
+        如果包围在要编译的函数上的词法环境[lexical environment]包含除了宏[macros], 符号宏[symbol macros]或声明[declaration]之外的任何绑定[binding], 则其结果是未定义的.
 
-        关于在编译过程中的错误检测信息, 见章节 3.2.5 (Exceptional Situations in the Compiler).
+        关于在编译过程中的错误检测信息, 见章节 3.2.5 (编译器中的异常情况).
 
 * 也见(See Also):
 
@@ -1977,18 +1975,18 @@ OR=>  (1 2 4 3)
 
 * 参数和值(Arguments and Values):
 
-        form---一个表达式形式.
-        results---表达式形式求值产生的值.
+        form---一个表达式形式[form].
+        results---表达式形式 form 的求值[evaluation]产生[yield]的值[value].
 
 * 描述(Description):
 
-        在当前动态作用域和 null 词法作用域下求值表达式.
+        在当前动态环境[dynamic environment]和空词法环境[null lexical environment]下求值表达式形式 form.
 
         eval 是一个求值器的用户接口.
 
         这个求值器展开宏调用就像通过使用 macroexpand-1 一样.
 
-        出现在被 eval 处理的代码中的常量既不会被复制也不会被合并. 从 eval 返回的结果代码引用的对象和源代码中对应的对象是 eql 的.
+        出现在被 eval 处理的代码中的常量既不会被复制也不会被合并. 从 eval 的执行产生的代码引用的对象[object]和源代码中对应的对象[object]是 eql 的.
 
 * 示例(Examples):
 
@@ -2006,19 +2004,19 @@ OR=>  (1 2 4 3)
 
 * 也见(See Also):
 
-        macroexpand-1, Section 3.1.2 (The Evaluation Model)
+        macroexpand-1, 章节 3.1.2 (求值模型)
 
 * 注意(Notes):
 
-    * 为了获得一个符号的当前动态值, 使用 symbol-value 等价于(而且通常更可取的)使用 eval.
+        为了获得一个符号[symbol]的当前动态值, 使用 symbol-value 等价于(而且通常更可取的)使用 eval.
 
-    * 注意, eval表达式需要对其参数进行两个级别的求值. 第一, 表达式是通过常规的参数求值机制来求值的, 就像任何调用一样. 从这个普通的参数求值得出的对象成为表达式参数的值, 然后作为 eval 表达式的一部分进行求值. 比如:
+        注意, eval 表达式形式[form]需要对其实参[argument]进行两个级别的求值[evaluation]. 第一, 表达式形式 form 通过常规的参数求值机制来求值求值[evaluation], 就像任何调用[call]一样. 从这个普通的实参[argument]求值[evaluation]得出的对象[object]成为表达式形式 form 形参[parameter]的值[value], 然后作为 eval 表达式形式[form]的一部分进行求值[evaluate]. 比如:
 
-        ```LISP
-        (eval (list 'cdr (car '((quote (a . b)) c)))) =>  b
-        ```
+    ```LISP
+    (eval (list 'cdr (car '((quote (a . b)) c)))) =>  b
+    ```
 
-    * 这个参数表达式 (list 'cdr (car '((quote (a . b)) c))) 以正常方式求值产生参数 (cdr (quote (a . b))); 然后 eval 求值它的参数, (cdr (quote (a . b))), 产生 b. 因为一个单次求值已经发生在任何函数表达式的任何参数表达式中, 所以 eval 有时被称为执行"一个额外级别的求值".
+        这个实参[argument]表达式形式[form] (list 'cdr (car '((quote (a . b)) c))) 以正常方式求值来产生实参 (cdr (quote (a . b))); 然后 eval 求值它的实参[argument], (cdr (quote (a . b))), 产生 b. 因为一个单独求值[evaluation]已经发生在任何函数表达式形式[function form]中的任何实参[argument]表达式形式[form]中, 所以有时称 eval 执行 "一个额外级别的求值".
 
 ### <span id = "SpecialOperatorEVALWHEN">特殊操作符 EVAL-WHEN</span>
 
@@ -2028,79 +2026,79 @@ OR=>  (1 2 4 3)
 
 * 参数和值(Arguments and Values):
 
-        situation---这些符号中的一个 :compile-toplevel, :load-toplevel, :execute, compile, load, 或 eval. 这里 eval, compile, 和 load 被废弃了.
-        forms---一个隐式的 progn.
-        results---如果表达式被执行, 这个就是它们的值, 如果没有就是 nil.
+        situation---这些 :compile-toplevel, :load-toplevel, :execute, compile, load, 或 eval 符号[symbol]中的一个. 这里 eval, compile, 和 load 被废弃了.
+        forms---一个隐式 progn [implicit progn].
+        results---如果这些表达式形式[form]被执行, 这个就是它们的值, 如果没有就是 nil.
 
 * 描述(Description):
 
-        一个 eval-when 表达式形式的主体被当作一个隐式的 progn 处理, 但是只有在列出的情况(situations)下.
+        一个 eval-when 表达式形式的主体被当作一个隐式 progn [implicit progn]处理, 但是只有在列出的那些求值情况 situation 下.
 
-        这里情况 :compile-toplevel (或 compile) 还有 :load-toplevel (或 load) 的使用控制着当 eval-when 作为顶层表达式出现在被 compile-file 处理的代码中时是否会被求值.
+        这里求值情况 :compile-toplevel (或 compile) 还有 :load-toplevel (或 load) 的使用控制着当 eval-when 作为顶层表达式形式[top level form]出现在被 compile-file 处理的代码中时是否会发生求值[evaluation]以及何时发生求值[evaluation].
 
-        这里情况 :execute (或者 eval) 的使用控制着其他 eval-when 表达式是否被求值; 这指的是, 那些不是顶层表达式的, 或者那些在被 eval 或 compile 处理的代码中. 如果这个 :execute 情况(situation) 在这样一个表达式中被指定, 那么其中的主体表达式作为一个隐式的 progn 处理; 否则, 这个 eval-when 表达式形式返回 nil.
+        这里求值情况 :execute (或者 eval) 的使用控制着其他 eval-when 表达式形式[form]是否发生求值; 这就是说, 那些不是顶层表达式形式[top level form]的, 或者那些在被 eval 或 compile 处理的代码中的. 如果这个 :execute 求值情况在这样一个表达式形式[form]中被指定, 那么其中的主体表达式形式作为一个隐式 progn [implicit progn]处理; 否则, 这个 eval-when 表达式形式[form]返回 nil.
 
-        eval-when 正常出现在顶层表达式, 但是对于它出现在非顶层表达式也是有意义的. 然而, 这个描述在章节 3.2 (Compilation) 的编译时副作用只发生在当 eval-when 出现在顶层表达式的时候.
+        eval-when 通常作为顶层表达式形式[top level form]出现, 但是对于它作为非顶层表达式形式[non-top-level form]出现在也是有意义的. 然而, 这个描述在章节 3.2 (编译) 的编译时副作用只发生在当 eval-when 作为顶层表达式形式[top level form]出现的时候.
 
 * 示例(Examples):
 
-    * 使用 eval-when 的一个示例是, 当编译器使用用户定义的读取器宏时, 可以正确地读取文件, 它有必要写成
+        eval-when 使用的一个示例是, 为了当编译器使用用户定义的读取器宏[reader macro]时可以正确地读取文件, 它有必要写成
 
-        ```LISP
-        (eval-when (:compile-toplevel :load-toplevel :execute)
-        (set-macro-character #\$ #'(lambda (stream char)
-                                        (declare (ignore char))
-                                        (list 'dollar (read stream))))) =>  T
-        ```
+    ```LISP
+    (eval-when (:compile-toplevel :load-toplevel :execute)
+      (set-macro-character #\$ #'(lambda (stream char)
+                                      (declare (ignore char))
+                                      (list 'dollar (read stream))))) =>  T
+    ```
 
-    * 这个导致对 set-macro-character 的调用在编译器的执行环境中被执行, 从而修改它的读取器语法表.
+        这个导致对 set-macro-character 的调用在编译器的执行环境中被执行, 从而修改它的读取器语法表.
 
-        ```LISP
-        ;;;     The EVAL-WHEN in this case is not at toplevel, so only the :EXECUTE
-        ;;;     keyword is considered. At compile time, this has no effect.
-        ;;;     At load time (if the LET is at toplevel), or at execution time
-        ;;;     (if the LET is embedded in some other form which does not execute
-        ;;;     until later) this sets (SYMBOL-FUNCTION 'FOO1) to a function which
-        ;;;     returns 1.
-        (let ((x 1))
+    ```LISP
+    ;;;     The EVAL-WHEN in this case is not at toplevel, so only the :EXECUTE
+    ;;;     keyword is considered. At compile time, this has no effect.
+    ;;;     At load time (if the LET is at toplevel), or at execution time
+    ;;;     (if the LET is embedded in some other form which does not execute
+    ;;;     until later) this sets (SYMBOL-FUNCTION 'FOO1) to a function which
+    ;;;     returns 1.
+    (let ((x 1))
+      (eval-when (:execute :load-toplevel :compile-toplevel)
+        (setf (symbol-function 'foo1) #'(lambda () x))))
+
+    ;;;     If this expression occurs at the toplevel of a file to be compiled,
+    ;;;     it has BOTH a compile time AND a load-time effect of setting
+    ;;;     (SYMBOL-FUNCTION 'FOO2) to a function which returns 2.
+    (eval-when (:execute :load-toplevel :compile-toplevel)
+      (let ((x 2))
         (eval-when (:execute :load-toplevel :compile-toplevel)
-            (setf (symbol-function 'foo1) #'(lambda () x))))
+          (setf (symbol-function 'foo2) #'(lambda () x)))))
 
-        ;;;     If this expression occurs at the toplevel of a file to be compiled,
-        ;;;     it has BOTH a compile time AND a load-time effect of setting
-        ;;;     (SYMBOL-FUNCTION 'FOO2) to a function which returns 2.
-        (eval-when (:execute :load-toplevel :compile-toplevel)
-        (let ((x 2))
-            (eval-when (:execute :load-toplevel :compile-toplevel)
-            (setf (symbol-function 'foo2) #'(lambda () x)))))
+    ;;;     If this expression occurs at the toplevel of a file to be compiled,
+    ;;;     it has BOTH a compile time AND a load-time effect of setting the
+    ;;;     function cell of FOO3 to a function which returns 3.
+    (eval-when (:execute :load-toplevel :compile-toplevel)
+      (setf (symbol-function 'foo3) #'(lambda () 3)))
+    
+    ;;; #4: This always does nothing. It simply returns NIL.
+    (eval-when (:compile-toplevel)
+      (eval-when (:compile-toplevel) 
+        (print 'foo4)))
 
-        ;;;     If this expression occurs at the toplevel of a file to be compiled,
-        ;;;     it has BOTH a compile time AND a load-time effect of setting the
-        ;;;     function cell of FOO3 to a function which returns 3.
-        (eval-when (:execute :load-toplevel :compile-toplevel)
-        (setf (symbol-function 'foo3) #'(lambda () 3)))
-        
-        ;;; #4: This always does nothing. It simply returns NIL.
-        (eval-when (:compile-toplevel)
-        (eval-when (:compile-toplevel) 
-            (print 'foo4)))
-
-        ;;;     If this form occurs at toplevel of a file to be compiled, FOO5 is
-        ;;;     printed at compile time. If this form occurs in a non-top-level
-        ;;;     position, nothing is printed at compile time. Regardless of context,
-        ;;;     nothing is ever printed at load time or execution time.
-        (eval-when (:compile-toplevel) 
-        (eval-when (:execute)
-            (print 'foo5)))
-        
-        ;;;     If this form occurs at toplevel of a file to be compiled, FOO6 is
-        ;;;     printed at compile time.  If this form occurs in a non-top-level
-        ;;;     position, nothing is printed at compile time. Regardless of context,
-        ;;;     nothing is ever printed at load time or execution time.
-        (eval-when (:execute :load-toplevel)
-        (eval-when (:compile-toplevel)
-            (print 'foo6)))
-        ```
+    ;;;     If this form occurs at toplevel of a file to be compiled, FOO5 is
+    ;;;     printed at compile time. If this form occurs in a non-top-level
+    ;;;     position, nothing is printed at compile time. Regardless of context,
+    ;;;     nothing is ever printed at load time or execution time.
+    (eval-when (:compile-toplevel) 
+      (eval-when (:execute)
+        (print 'foo5)))
+    
+    ;;;     If this form occurs at toplevel of a file to be compiled, FOO6 is
+    ;;;     printed at compile time.  If this form occurs in a non-top-level
+    ;;;     position, nothing is printed at compile time. Regardless of context,
+    ;;;     nothing is ever printed at load time or execution time.
+    (eval-when (:execute :load-toplevel)
+      (eval-when (:compile-toplevel)
+        (print 'foo6)))
+    ```
 
 * 受此影响(Affected By): None.
 
@@ -2108,66 +2106,64 @@ OR=>  (1 2 4 3)
 
 * 也见(See Also):
 
-        compile-file, Section 3.2 (Compilation)
+        compile-file, 章节 3.2 (编译)
 
 * 注意(Notes):
 
-    * 以下的影响是对 eval-when 的定义的逻辑结果:
+        以下效果是 eval-when 的定义的逻辑结果:
 
-        * 一个单个的 eval-when 的执行对主体代码的执行不超过一次.
+        * 一个单独的 eval-when 表达式执行主体代码不超过一次.
 
-        * 用于在顶层表达式中使用的宏应该被编写, 以便在宏展开中使用各种表达式形式的副作用. 这个 macro-expander 自身不应该产生副作用.
+        * 应该编写用于顶层表达式形式[top level form]中的宏, 以便在宏展开中的表达式形式的副作用. 这个宏展开器(macro-expander)自身不应该产生副作用.<!--TODO 待校验-->
 
             比如:
 
             错误的:
 
-            ```LISP
-            (defmacro foo ()
-            (really-foo)
-            `(really-foo))
-            ```
+    ```LISP
+    (defmacro foo ()
+      (really-foo)
+      `(really-foo))
+    ```
 
             正确的:
 
-            ```LISP
-            (defmacro foo ()
-            `(eval-when (:compile-toplevel :execute :load-toplevel) (really-foo)))
-            ```
+    ```LISP
+    (defmacro foo ()
+      `(eval-when (:compile-toplevel :execute :load-toplevel) (really-foo)))
+    ```
 
-            遵守这个约定意味着这些宏在出现在非顶层表达式时表现得很直观.
+            遵守这个约定意味着这样的宏[macro]在作为非顶层表达式形式[non-top-level form]出现在时直观地表现.
 
-        * 在一个 eval-when 周围放置一个变量的绑定确实会捕获这个绑定因为 compile-time-too 模式不会发生 (换句话说, 引入一个变量绑定意味着 eval-when 不是一个顶级表达式). 比如,
+        * 在一个 eval-when 周围放置一个变量的绑定确实会捕获这个绑定, 因为 compile-time-too 模式不会发生 (换句话说, 引入一个变量绑定意味着 eval-when 不是一个顶层表达式形式[top level form]). 比如,
 
-            ```LISP
-            (let ((x 3))
-            (eval-when (:execute :load-toplevel :compile-toplevel) (print x)))
-            ```
+    ```LISP
+    (let ((x 3))
+    (eval-when (:execute :load-toplevel :compile-toplevel) (print x)))
+    ```
 
-            在执行的时候(换句话说, load)打印 3, 并且在编译时不会打印任何东西. 这很重要, 因此 defun 和 defmacro 的扩展可以用 eval-when 来完成并且可以正确地捕获词汇环境.
+            在执行的时候(换句话说, 加载时)打印 3, 而在编译时不会打印任何东西. 这很重要, 因此 defun 和 defmacro 的展开可以根据 eval-when 来完成并且可以正确地捕获词法环境[lexical environment].
 
-            ```LISP
-            (defun bar (x) (defun foo () (+ x 3)))
-            ```
+    ```LISP
+    (defun bar (x) (defun foo () (+ x 3)))
+    ```
 
             可能被展开成
 
-            ```LISP            
-            (defun bar (x) 
-            (progn (eval-when (:compile-toplevel) 
-                        (compiler::notice-function-definition 'foo '(x)))
-                    (eval-when (:execute :load-toplevel)
-                        (setf (symbol-function 'foo) #'(lambda () (+ x 3))))))
-            ```
+    ```LISP            
+    (defun bar (x) 
+      (progn (eval-when (:compile-toplevel) 
+                (compiler::notice-function-definition 'foo '(x)))
+              (eval-when (:execute :load-toplevel)
+                (setf (symbol-function 'foo) #'(lambda () (+ x 3))))))
+    ```
 
-            它会被上面的规则当成和下面的这个相同
+            当这个 bar 的定义不是一个顶层表达式形式[top level form]时, 它会被上面的规则当成和下面的这个相同
 
-            ```LISP
-            (defun bar (x) 
-            (setf (symbol-function 'foo) #'(lambda () (+ x 3))))
-            ```
-
-            当这个 bar 的定义不是一个顶层表达式时. 
+    ```LISP
+    (defun bar (x) 
+    (setf (symbol-function 'foo) #'(lambda () (+ x 3))))
+    ```
 
 ### <span id = "SpecialOperatorLOADTIMEVALUE">特殊操作符 LOAD-TIME-VALUE</span>
 
@@ -2177,25 +2173,25 @@ OR=>  (1 2 4 3)
 
 * 参数和值(Arguments and Values):
 
-        form---一个表达式形式; 按照以下描述的被求值.
-        read-only-p---一个boolean类型; 没有求值的.
-        object---从这个求值表达式返回的主要的值.
+        form---一个表达式形式[form]; 按照以下描述的被求值.
+        read-only-p---一个 boolean; 不求值.
+        object---从求值表达式形式 form 返回的主值[primary value].
 
 * 描述(Description):
 
-        load-time-value 为表达式直到表达式在运行时环境中才求值提供一个延时求值的机制; 见章节 3.2 (Compilation).
+        load-time-value 为表达式形式 form 直到这个表达式在运行时环境中才求值提供一个延时求值的机制; 见章节 3.2 (编译).
 
-        Read-only-p 指定这个结果是否可以被当作常量对象. 如果是 t, 结果就是一个 read-only 的量 that can, 如果适用于实现, 它可以被拷贝到只读空间 并且/或 和来自其他程序的相似的常量对象惊醒合并. 如果是 nil (默认的), 结果必须既不被复制, 也不能被合并; 它必须被认为是可能修改的数据.
+        read-only-p 指定这个结果是否可以被认为是常量对象[constant object]. 如果是 t, 结果就是一个只读的量, 如果适用于具体实现[implementation], 它可以被拷贝到只读空间 并且/或 和来自其他程序[program]的相似的[similar]常量对象[constant object]进行合并. 如果是 nil (默认的), 结果一定既不被复制, 也不能被合并; 它一定被认为是潜在可修改的数据.
 
-        如果一个 load-time-value 表达式被 compile-file 处理, 这个编译器在这个表达式上执行它正常的语义处理 (就像宏展开并转为机器码), 但是为这个表达式的执行安排在了加载时在一个 null 的词法环境[lexical environment]中, 这个求值的结果被当作是一个运行时的字面化对象. 确保表达式的求值只有在文件加载时才会发生, 但是对文件中顶级表达式的求值的求值顺序是由依赖实现的.
+        如果一个 load-time-value 表达式被 compile-file 处理, 这个编译器在这个表达式形式 form 上执行它正常的语义处理 (就像宏展开和转为机器码), 但是安排这个表达式形式 form 的执行发生在加载时的一个空词法环境[null lexical environment]中, 这个求值的结果在运行时被当作是一个字面化[literal]对象[object]. 确保这个表达式形式 form 的求值只有在文件[file]加载时才会发生, 但是对该文件中顶层表达式形式[top level form]的求值的求值顺序是由依赖实现的[implementation-dependent].
 
-        如果一个 load-time-value 表达式出现在被 compile 编译的函数中, 这个表达式在编译时的一个 null 词法环境[lexical environment]中被求值. 这个编译时求值的结果被当作是编译后代码中的字面化对象.
+        如果一个 load-time-value 表达式出现在被 compile 编译的函数中, 这个表达式形式 form 在编译时的一个空词法环境[null lexical environment]中被求值. 这个编译时求值的结果被当作是编译后代码中的字面化[literal]对象[object].
 
-        如果一个 load-time-value 表达式被 eval 处理, 表达式在一个 null 词法环境中被求值, 并且返回一个值. 由 eval 处理的隐式编译(或部分编译)表达式的实现可能只在编译完成时才计算一次.
+        如果一个 load-time-value 表达式被 eval 处理, 表达式形式 form 在一个空词法环境[null lexical environment]中被求值, 并且返回一个值. 隐式编译(或部分编译)由 由 eval 处理表达式的具体实现可能只求值表达式形式 form 一次, 在这个编译被执行的时候.
 
-        如果相同的列表 (load-time-value form) 被求值或编译超过一次, 这个表达式被求值一次或者超过一次是依赖于具体实现的. 当一个表达式被求值或编译了共享子结构时, 当相同的表达式形式被 eval 或 compile 多次处理时, 就会发生这种情况. 由于一个 load-time-value 表达式可以不止一个地方被引用并且可以被 eval 超过一次求值, 每一次执行返回新的对象还是返回和其他执行一样的对像是依赖于具体实现的. 当对结果对象进行破坏性修改时, 用户必须谨慎使用.
+        如果相同的[same]列表[list] (load-time-value form) 被求值或编译超过一次, 这个表达式形式 form 被只求值一次或者超过一次是依赖于具体实现的[implementation-dependent]. 当一个表达式被求值或编译共享子结构时, 当相同的[same]表达式形式[form]被 eval 或 compile 多次处理时, 都可能发生这种情况. 由于一个 load-time-value 表达式可以在不止一个地方被引用并且可以被 eval 求值超过一次, 因此每一次执行返回新的对象还是返回和其他执行一样的对象[object]是依赖于具体实现的[implementation-dependent]. 当对产生的对象[object]进行破坏性修改时, 用户必须谨慎使用.
 
-        如果两个列表 (load-time-value form) 在 equal 下是相同的但是在求值后和编译后是不同的, 它们的值总是来自于对表达式形式的不同的求值. 它们的值可能不会被合并除非 read-only-p 是 t.
+        如果两个在 equal 下是相同的[same]但是不相等[identical]列表 (load-time-value form) 被求值或编译, 它们的值总是来自于对表达式形式 form 的不同的求值. 它们的那些值[value]可能不会被合并除非 read-only-p 是 t.
 
 * 示例(Examples):
 
@@ -2244,13 +2240,13 @@ OR=>  (1 2 4 3)
 
 * 也见(See Also):
 
-        compile-file, compile, eval, Section 3.2.2.2 (Minimal Compilation), Section 3.2 (Compilation)
+        compile-file, compile, eval, 章节 3.2.2.2 (最小化编译), 章节 3.2 (编译)
 
 * 注意(Notes):
 
-        load-time-value 必须出现在一个"for evaluation"位置, 以及被引用的结构外面. 果在一个引用结构中调用 load-time-value 的情况下，backquote 读取器宏可能会被调用; 见章节 2.4.6 (Backquote).
+        load-time-value 必须出现在一个"用于[evaluation]"位置中的引用结构的外面. 在出现需要在被引用结构中使用 load-time-value 的情况下, 反引号[backquote]读取器宏[reader macro]可能会被调用; 见章节 2.4.6 (反引号).
 
-        为 read-only-p 指定为 nil 不是一个强制对象为可修改的方法, 如果它已经被当作只读的. 这只是一种说法, 对于一个可修改的对象, 这个操作不是为了使对象只读. 
+        如果一个对象已经是只读的, 为 read-only-p 指定为 nil 不是强制一个对象成为可修改的方法. 这只是一种方式来说明, 对于一个可修改的对象, 这个操作不是为了使这个对象变得只读. 
 
 ### <span id = "SpecialOperatorQUOTE">特殊操作符 QUOTE</span>
 
@@ -2260,13 +2256,13 @@ OR=>  (1 2 4 3)
 
 * 参数和值(Arguments and Values):
 
-        object---一个对象; 没有求值.
+        object---一个对象[object]; 不求值.
 
 * 描述(Description):
 
-        这个 quote 特殊操作符只是返回 object.
+        这个 quote 特殊操作符[special operator]只是返回对象 object.
 
-        如果字面化对象(包括 quoted 的转引对象)被破坏性修改那么结果是未定义的.
+        如果那些字面化[literal]对象[object] (包括被引用对象[quoted object])被破坏性修改那么结果是未定义的.
 
 * 示例(Examples):
 
@@ -2296,13 +2292,13 @@ OR=>  (1 2 4 3)
 
 * 也见(See Also):
 
-        Section 3.1 (Evaluation), Section 2.4.3 (Single-Quote), Section 3.2.1 (Compiler Terminology)
+        章节 3.1 (求值), 章节 2.4.3 (单引号), 章节 3.2.1 (编译器术语)
 
 * 注意(Notes):
 
-        这个 'object 文本表示法和 (quote object) 是等价的; 见章节 3.2.1 (Compiler Terminology).
+        这个 'object 文本表示法和 (quote object) 是等价的; 见章节 3.2.1 (编译器术语).
 
-        一些称之为自求值对象的对象不需要被 quote 引用. 然而, 符号和列表用来表示程序的一部分, 因此不能作为一个程序中的常量数据而不用 quote. 由于引用抑制了这些对象的求值, 它们变成了数据而不是程序. 
+        一些称之为自求值对象[self-evaluating object]的对象[object]不需要被 quote 引用. 然而, 符号[symbol]和列表[list]用来表示程序的一部分, 因此如果没有 quote, 程序中的常量数据就无法使用. 由于 quote 抑制了这些对象[object]的求值[evaluation], 它们变成了数据而不是程序. 
 
 ### <span id = "AccessorCOMPILERMACROFUNCTION">访问器 COMPILER-MACRO-FUNCTION</span>
 
@@ -2314,15 +2310,15 @@ OR=>  (1 2 4 3)
 
 * 参数和值(Arguments and Values):
 
-        name---一个函数名字.
-        environment---一个环境对象.
-        function, new-function---一个编译器宏函数, 或者 nil.
+        name---一个函数名字[function name].
+        environment---一个环境[environment]对象[object].
+        function, new-function---一个编译器宏函数[compiler macro function], 或者 nil.
 
 * 描述(Description):
 
-        在环境(environment)中访问 name 命名的编译器宏函数, 如果有的话.
+        在环境 environment 中访问[access]名为 name 的编译器宏函数[compiler macro function], 如果有的话.
 
-        一个 nil 值表示 name 命名的编译器宏函数的缺失.
+        一个 nil 值表示名为 name 的编译器宏函数[compiler macro function]的缺失.
 
 * 示例(Examples): None.
 
@@ -2330,11 +2326,11 @@ OR=>  (1 2 4 3)
 
 * 异常情况(Exceptional Situations):
 
-        在 compiler-macro-function 的 setf 使用中如果 environment 不是 nil 那么结果是不可预料的.
+        在一个 compiler-macro-function 的 setf 使用中, 如果环境 environment 是非 nil[non-nil]那么结果是未定义的.
 
 * 也见(See Also):
 
-        define-compiler-macro, Section 3.2.2.1 (Compiler Macros)
+        define-compiler-macro, 章节 3.2.2.1 (编译器宏)
 
 * 注意(Notes): None. 
 
@@ -2347,34 +2343,34 @@ OR=>  (1 2 4 3)
 
 * 参数和值(Arguments and Values):
 
-        name---一个函数名字.
+        name---一个函数名字[function name].
         lambda-list---一个宏 lambda 列表[macro lambda list].
-        declaration---一个声明表达式; 没有求值.
-        documentation---一个字符串; 没有求值.
-        form---一个表达式形式.
+        declaration---一个 declare 表达式[expression]; 不求值.
+        documentation---一个字符串[string]; 不求值.
+        form---一个表达式形式[form].
 
 * 描述(Description):
 
-    * 这是一个正常的机制去定义编译器宏函数. 它的方式和 defmacro 一样; 仅有的区别是:
+        这是一个定义编译器宏函数[compiler macro function]的正常机制. 它的方式和 defmacro 一样; 仅有的区别是:
 
-        * 这个 name 可以使一个命名了任何函数或宏的函数名字.
+            * 这个 name 可以是一个命名了任何函数[function]或宏[macro]的函数名字[function name].
 
-        * 展开函数被安装为一个编译器宏函数, 而不是一个宏函数.
+            * 展开器函数作为 name 的编译器宏函数[compiler macro function]被安装, 而不是作为一个宏函数[macro function].
 
-        * 这个 &whole 参数绑定到传递给编译器宏函数的 form 参数. 其余被指定的 lambda-list 参数就好像一个表达式, 该表达式包含 car 中的函数名和 cdr 中的实际参数, 但是如果实际表达式形式的 car 部分是一个符号 funcall, 那么参数的解构实际上通过使用它的 cddr 来执行.
+            * 这个 &whole 参数绑定为传递给这个编译器宏函数[compiler macro function]的 form 参数. 剩余的 lambda-list 参数被指定就好像一个表达式形式包含了在 car 中的函数名和在 cdr 中的那些实际参数, 但是如果实际表达式形式的 car 部分是一个符号 funcall, 那么参数的解构实际上通过使用它的 cddr 来执行.<!--TODO 待校对-->
 
-        * Documentation 被关联到 name(就像 compiler-macro) 和编译器宏函数作为一个文档字符串.
+            * 这个 documentation 作为一个文档字符串被关联到名字 name (作为 compiler-macro 种类) 和这个编译器宏函数[compiler macro function].
 
-        * 不像一个普通的宏, 编译器宏可以拒绝通过返回与原始状态相同(那个可以通过使用 &whole 获取到的)的表达式来提供展开式.
+            * 不像一个普通的宏[macro], 编译器宏[compiler macro]可以仅仅通过返回与原始那个(可以通过使用 &whole 获取到的) 相同的[same]表达式形式来拒绝提供展开式.
 
 * 示例(Examples):
 
     ```LISP
     (defun square (x) (expt x 2)) =>  SQUARE
     (define-compiler-macro square (&whole form arg)
-    (if (atom arg)
-        `(expt ,arg 2)
-        (case (car arg)
+      (if (atom arg)
+          `(expt ,arg 2)
+          (case (car arg)
             (square (if (= (length arg) 2)
                         `(expt ,(nth 1 arg) 4)
                         form))
@@ -2394,66 +2390,66 @@ OR=>  (1 2 4 3)
     =>  (EXPT X 2)
 
     (defun distance-positional (x1 y1 x2 y2)
-    (sqrt (+ (expt (- x2 x1) 2) (expt (- y2 y1) 2))))
+      (sqrt (+ (expt (- x2 x1) 2) (expt (- y2 y1) 2))))
     =>  DISTANCE-POSITIONAL
     (defun distance (&key (x1 0) (y1 0) (x2 x1) (y2 y1))
-    (distance-positional x1 y1 x2 y2))
+      (distance-positional x1 y1 x2 y2))
     =>  DISTANCE
     (define-compiler-macro distance (&whole form
-                                    &rest key-value-pairs
-                                    &key (x1 0  x1-p)
-                                        (y1 0  y1-p)
-                                        (x2 x1 x2-p)
-                                        (y2 y1 y2-p)
-                                    &allow-other-keys
-                                    &environment env)
-    (flet ((key (n) (nth (* n 2) key-value-pairs))
-            (arg (n) (nth (1+ (* n 2)) key-value-pairs))
-            (simplep (x)
-            (let ((expanded-x (macroexpand x env)))
-                (or (constantp expanded-x env)
-                    (symbolp expanded-x)))))
+                                      &rest key-value-pairs
+                                      &key (x1 0  x1-p)
+                                          (y1 0  y1-p)
+                                          (x2 x1 x2-p)
+                                          (y2 y1 y2-p)
+                                      &allow-other-keys
+                                      &environment env)
+      (flet ((key (n) (nth (* n 2) key-value-pairs))
+              (arg (n) (nth (1+ (* n 2)) key-value-pairs))
+              (simplep (x)
+                (let ((expanded-x (macroexpand x env)))
+                  (or (constantp expanded-x env)
+                      (symbolp expanded-x)))))
         (let ((n (/ (length key-value-pairs) 2)))
-        (multiple-value-bind (x1s y1s x2s y2s others)
-            (loop for (key) on key-value-pairs by #'cddr
+          (multiple-value-bind (x1s y1s x2s y2s others)
+              (loop for (key) on key-value-pairs by #'cddr
                     count (eq key ':x1) into x1s
                     count (eq key ':y1) into y1s
                     count (eq key ':x2) into x2s
                     count (eq key ':y1) into y2s
                     count (not (member key '(:x1 :x2 :y1 :y2)))
-                    into others
+                      into others
                     finally (return (values x1s y1s x2s y2s others)))
             (cond ((and (= n 4)
                         (eq (key 0) :x1)
                         (eq (key 1) :y1)
                         (eq (key 2) :x2)
                         (eq (key 3) :y2))
-                `(distance-positional ,x1 ,y1 ,x2 ,y2))
-                ((and (if x1-p (and (= x1s 1) (simplep x1)) t)
+                    `(distance-positional ,x1 ,y1 ,x2 ,y2))
+                  ((and (if x1-p (and (= x1s 1) (simplep x1)) t)
                         (if y1-p (and (= y1s 1) (simplep y1)) t)
                         (if x2-p (and (= x2s 1) (simplep x2)) t)
                         (if y2-p (and (= y2s 1) (simplep y2)) t)
                         (zerop others))
-                `(distance-positional ,x1 ,y1 ,x2 ,y2))
-                ((and (< x1s 2) (< y1s 2) (< x2s 2) (< y2s 2)
+                    `(distance-positional ,x1 ,y1 ,x2 ,y2))
+                  ((and (< x1s 2) (< y1s 2) (< x2s 2) (< y2s 2)
                         (zerop others))
-                (let ((temps (loop repeat n collect (gensym))))
-                    `(let ,(loop for i below n
-                                collect (list (nth i temps) (arg i)))
+                    (let ((temps (loop repeat n collect (gensym))))
+                      `(let ,(loop for i below n
+                                  collect (list (nth i temps) (arg i)))
                         (distance
-                        ,@(loop for i below n
-                                append (list (key i) (nth i temps)))))))
-                (t form))))))
+                          ,@(loop for i below n
+                                  append (list (key i) (nth i temps)))))))
+                  (t form))))))
     =>  DISTANCE
     (dolist (form
-            '((distance :x1 (setq x 7) :x2 (decf x) :y1 (decf x) :y2 (decf x))
+              '((distance :x1 (setq x 7) :x2 (decf x) :y1 (decf x) :y2 (decf x))
                 (distance :x1 (setq x 7) :y1 (decf x) :x2 (decf x) :y2 (decf x))
                 (distance :x1 (setq x 7) :y1 (incf x))
                 (distance :x1 (setq x 7) :y1 (incf x) :x1 (incf x))
                 (distance :x1 a1 :y1 b1 :x2 a2 :y2 b2)
                 (distance :x1 a1 :x2 a2 :y1 b1 :y2 b2)
                 (distance :x1 a1 :y1 b1 :z1 c1 :x2 a2 :y2 b2 :z2 c2)))
-    (print (funcall (compiler-macro-function 'distance) form nil)))
+      (print (funcall (compiler-macro-function 'distance) form nil)))
     >>  (LET ((#:G6558 (SETQ X 7))
     >>        (#:G6559 (DECF X))
     >>        (#:G6560 (DECF X))
@@ -2476,11 +2472,11 @@ OR=>  (1 2 4 3)
 
 * 也见(See Also):
 
-        compiler-macro-function, defmacro, documentation, Section 3.4.11 (Syntactic Interaction of Documentation Strings and Declarations)
+        compiler-macro-function, defmacro, documentation, 章节 3.4.11 (文档字符串和声明的语法交互)
 
 * 注意(Notes):
 
-        为一个 COMMON-LISP 包中的函数写一个编译器宏定义结果是无法预料的; 很有可能在某些实现中, 这样的尝试会覆盖相同或同等重要的定义. 一般来说, 建议程序员只编写自己维护的函数的编译器宏定义--为其他地方维护的函数编写一个编译器宏定义通常被认为违背了模块化和数据抽象的传统规则. 
+        为一个 COMMON-LISP 包中的函数写一个编译器宏[compiler macro]的定义的结果是未定义的; 很有可能在某些实现[implementation]中, 这样的尝试会覆盖相同或同等重要的定义. 一般来说, 建议程序员只编写自己维护的函数[function]的编译器宏[compiler macro]的定义--为其他地方维护的函数编写一个编译器宏[compiler macro]的定义通常被认为违背了模块化和数据抽象的传统规则. 
 
 ### <span id = "MacroDEFMACRO">宏 DEFMACRO</span>
 
@@ -2491,115 +2487,115 @@ OR=>  (1 2 4 3)
 
 * 参数和值(Arguments and Values):
 
-        name---一个符号. 
-        lambda-list---一个宏 lambda 列表.
-        declaration---一个声明表达式; 不求值.
-        documentation---字符串; 不求值.
-        form---一个表达式形式.
+        name---一个符号[symbol]. 
+        lambda-list---一个宏 lambda 列表[macro lambda list].
+        declaration---一个 declare 表达式[expression]; 不求值.
+        documentation---一个字符串[string]; 不求值.
+        form---一个表达式形式[form].
 
 * 描述(Description):
 
-        通过把一个宏函数关联到全局环境中的这个 name 来把 name 定义为一个宏. 这个宏函数被定义在 defmacro 表达式形式出现的相同的词法环境[lexical environment]中.
+        通过关联一个宏函数[macro function]到全局环境中的这个名字 name 来把 name 定义为一个宏[macro]. 这个宏函数[macro function]被定义在 defmacro 表达式形式[form]出现的相同的词法环境[lexical environment]中.
 
-        在 lambda-list 列表里的参数变量被绑定到这个宏调用的解构的部分里.
+        在 lambda-list 里的参数变量被绑定为这个宏调用的解构的部分里.
 
-        这个展开函数接受两个参数, 一个表达式形式和一个环境. 这个展开函数返回一个表达式形式. 这个展开函数的主体是由表达式形式指定的. 表达式按顺序被执行. 最后一个表达式执行的值作为这个宏的展开返回. 这个展开函数的主体表达式 (但是不是 lambda-list) 被隐式地附在一个名字为 name 的块上.
+        这个展开函数接受两个参数, 一个表达式形式[form]和一个环境[environment]. 这个展开函数返回一个表达式形式[form]. 这个展开函数的主体是由这些表达式形式 form 指定的. 这些表达式形式 form 按顺序被执行. 最后一个表达式形式 form 执行的值作为这个宏[macro]的展开返回. 这个展开函数的主体表达式形式 form (但不是那个 lambda-list) 被隐式地闭合在一个名字为 name 的块[block]中.
 
-        这个 lambda-list 符合 3.4.4 章节(Macro Lambda Lists)所描述的需求.
+        这个 lambda-list 符合 3.4.4 章节(宏 lambda 列表)所描述的要求.
 
-        Documentation 作为文档字符串被关联到 name(像 function 一样) 和这个宏函数.
+        这个 documentation 作为文档字符串[documentation string]被关联到 name(作为 function 种类) 和这个宏函数[macro function]上.
 
-        defmacro 可以被用于重定义一个宏或者用一个宏定义替换一个函数定义.
+        defmacro 可以被用于重定义一个宏[macro]或者用一个宏[macro]定义替换一个函数[functioni]定义.
 
-        返回的表达式的递归展开必须终止, 其中包括其他表达式的子表达式的展开.
+        返回的表达式形式[form]的递归展开必须终止, 其中包括作为返回的其他表达式形式[form]的子表达式形式[subform]的宏的展开.
 
-        如果完全宏展开表达式的结果包含任何圆形列表结构, 除了字面化对象之外, 结果是不可预料的.
+        如果完全宏展开一个表达式形式[form]的结果包含除了在字面化[literal]对象[object]里的以外的任何环状[circular]列表[list]结构[structure], 结果是未定义的.
 
-        如果一个 defmacro 表达式形式作为顶层表达式出现, 编译器一定会在编译时把宏定义存储起来, 这样在这个文件中出现的这个宏就可以被正确地展开. 如果这个宏在这个文件被编译时引用到, 用户必须确保这个宏的主体可以在编译时被求值.
+        如果一个 defmacro 表达式形式[form]作为顶层表达式形式[top level form]出现, 编译器[compiler]必须在编译时把宏[macro]定义存储起来, 这样一来在这个文件中稍后出现的这个宏就可以被正确地展开. 如果这个宏在这个要被被编译的文件[file]中被引用到, 用户必须确保这个宏[macro]的主体可以在编译时被求值.
 
 * 示例(Examples):
 
     ```LISP
     (defmacro mac1 (a b) "Mac1 multiplies and adds" 
-            `(+ ,a (* ,b 3))) =>  MAC1 
+                `(+ ,a (* ,b 3))) =>  MAC1 
     (mac1 4 5) =>  19 
     (documentation 'mac1 'function) =>  "Mac1 multiplies and adds" 
     (defmacro mac2 (&optional (a 2 b) (c 3 d) &rest x) `'(,a ,b ,c ,d ,x)) =>  MAC2 
     (mac2 6) =>  (6 T 3 NIL NIL) 
     (mac2 6 3 8) =>  (6 T 3 T (8)) 
     (defmacro mac3 (&whole r a &optional (b 3) &rest x &key c (d a))
-    `'(,r ,a ,b ,c ,d ,x)) =>  MAC3 
+        `'(,r ,a ,b ,c ,d ,x)) =>  MAC3 
     (mac3 1 6 :d 8 :c 9 :d 10) =>  ((MAC3 1 6 :D 8 :C 9 :D 10) 1 6 9 8 (:D 8 :C 9 :D 10)) 
     ```
 
-    * 只有在普通的lambda列表语法允许参数名而不是列表的情况下, 才允许使用嵌入的解构lambda列表来防止歧义. 比如, 下面的是非法的:
+        只有在普通 lambda 列表[ordinary lambda list]语法允许一个参数名而不是列表[list]的情况下才允许使用内嵌的解构 lambda 列表[destructuring lambda list]的规则被用来防止歧义. 比如, 下面的是非法的:
 
-        ```LISP
-        (defmacro loser (x &optional (a b &rest c) &rest z)
-        ...)
-        ```
+    ```LISP
+    (defmacro loser (x &optional (a b &rest c) &rest z)
+      ...)
+    ```
 
-    * 因为普通 lambda 列表语法不允许一个列表跟着 &optional ; 列表 (a b &rest c) 会被解释为描述一个名字为 a 的可选参数, 它的默认值是表达式 b, 带有一个 supplied-p 参数命名为 &rest (不合法), 还有一个无关的符号 c (也是不合法的). 一种几乎正确的方式来表达是
+        因为普通 lambda 列表[ordinary lambda list]语法不允许一个列表[list]跟在 &optional 后面; 这个列表[list] (a b &rest c) 会被解释为描述一个名字为 a 的可选参数, 它的默认值是表达式形式 b, 带有一个命名为 &rest 的 supplied-p 参数(不合法), 还有一个列表中的无关符号 c (也是不合法的). 一种几乎正确的方式来表达是
 
-        ```LISP
-        (defmacro loser (x &optional ((a b &rest c)) &rest z)
-        ...)
-        ```
+    ```LISP
+    (defmacro loser (x &optional ((a b &rest c)) &rest z)
+      ...)
+    ```
 
-    * 额外的括号消除了歧义. 然而, 这个定义现在是不正确的因为一个像 (loser (car pool)) 这样的宏调用不会提供任何参数表达式给lambda列表(a b &rest c), 因此，与 lambda 列表相匹配的默认值是 nil 因为没有指定明确的默认值. 这个结果的结果是不可预料的, 因为空的列表, nil, 没有表达式来满足参数 a 和 b. 完全正确的定义应该是
+        额外的括号集消除了歧义. 然而, 这个定义现在是不正确的因为一个像 (loser (car pool)) 这样的宏调用不会提供任何参数表达式形式给 lambda 列表 (a b &rest c), 因此, 与 lambda 列表[lambda list]相匹配的默认值是 nil 因为没有指定显式的默认值. 这个结果是未定义的, 因为空列表 nil 没有表达式形式[form]来满足参数 a 和 b. 完全正确的定义应该是
 
-        ```LISP
-        (defmacro loser (x &optional ((a b &rest c) '(nil nil)) &rest z)
-        ...)
-        ```
+    ```LISP
+    (defmacro loser (x &optional ((a b &rest c) '(nil nil)) &rest z)
+      ...)
+    ```
 
         或者
 
-        ```LISP
-        (defmacro loser (x &optional ((&optional a b &rest c)) &rest z)
-        ...)
-        ```
+    ```LISP
+    (defmacro loser (x &optional ((&optional a b &rest c)) &rest z)
+      ...)
+    ```
 
-    * 这些略有不同: 第一个要求如果宏调用显式指定了 a, 那么它也必须显式地指定 b, 而第二个则没有这个要求. 比如,
+        这些略有不同: 第一个要求如果宏调用显式指定了 a, 那么它也必须显式地指定 b, 而第二个则没有这个要求. 比如,
 
-        ```LISP
-        (loser (car pool) ((+ x 1)))
-        ```
+    ```LISP
+    (loser (car pool) ((+ x 1)))
+    ```
 
-    * 对于第二个定义是个合法的调用但是对于第一个则不是.
+        这对于第二个定义是个合法的调用但是对于第一个则不是.
 
-        ```LISP
-        (defmacro dm1a (&whole x) `',x)
-        (macroexpand '(dm1a))  =>  (QUOTE (DM1A))
-        (macroexpand '(dm1a a)) is an error.
+    ```LISP
+    (defmacro dm1a (&whole x) `',x)
+    (macroexpand '(dm1a))  =>  (QUOTE (DM1A))
+    (macroexpand '(dm1a a)) is an error.
+    
+    (defmacro dm1b (&whole x a &optional b) `'(,x ,a ,b))
+    (macroexpand '(dm1b))  is an error.
+    (macroexpand '(dm1b q))  =>  (QUOTE ((DM1B Q) Q NIL))
+    (macroexpand '(dm1b q r)) =>  (QUOTE ((DM1B Q R) Q R))
+    (macroexpand '(dm1b q r s)) is an error.
 
-        (defmacro dm1b (&whole x a &optional b) `'(,x ,a ,b))
-        (macroexpand '(dm1b))  is an error.
-        (macroexpand '(dm1b q))  =>  (QUOTE ((DM1B Q) Q NIL))
-        (macroexpand '(dm1b q r)) =>  (QUOTE ((DM1B Q R) Q R))
-        (macroexpand '(dm1b q r s)) is an error.
+    (defmacro dm2a (&whole form a b) `'(form ,form a ,a b ,b))
+    (macroexpand '(dm2a x y)) =>  (QUOTE (FORM (DM2A X Y) A X B Y))
+    (dm2a x y) =>  (FORM (DM2A X Y) A X B Y)
 
-        (defmacro dm2a (&whole form a b) `'(form ,form a ,a b ,b))
-        (macroexpand '(dm2a x y)) =>  (QUOTE (FORM (DM2A X Y) A X B Y))
-        (dm2a x y) =>  (FORM (DM2A X Y) A X B Y)
-
-        (defmacro dm2b (&whole form a (&whole b (c . d) &optional (e 5)) 
-                        &body f &environment env)
-        ``(,',form ,,a ,',b ,',(macroexpand c env) ,',d ,',e ,',f))
-        ;Note that because backquote is involved, implementations may differ
-        ;slightly in the nature (though not the functionality) of the expansion.
-        (macroexpand '(dm2b x1 (((incf x2) x3 x4)) x5 x6))
-        =>  (LIST* '(DM2B X1 (((INCF X2) X3 X4))
-                        X5 X6)
+    (defmacro dm2b (&whole form a (&whole b (c . d) &optional (e 5)) 
+                    &body f &environment env)
+      ``(,',form ,,a ,',b ,',(macroexpand c env) ,',d ,',e ,',f))
+    ;Note that because backquote is involved, implementations may differ
+    ;slightly in the nature (though not the functionality) of the expansion.
+    (macroexpand '(dm2b x1 (((incf x2) x3 x4)) x5 x6))
+    =>  (LIST* '(DM2B X1 (((INCF X2) X3 X4))
+                      X5 X6)
                 X1
                 '((((INCF X2) X3 X4)) (SETQ X2 (+ X2 1)) (X3 X4) 5 (X5 X6))),
-            T
-        (let ((x1 5))
-        (macrolet ((segundo (x) `(cadr ,x)))
-            (dm2b x1 (((segundo x2) x3 x4)) x5 x6)))
-        =>  ((DM2B X1 (((SEGUNDO X2) X3 X4)) X5 X6)
-            5 (((SEGUNDO X2) X3 X4)) (CADR X2) (X3 X4) 5 (X5 X6))
-        ```
+        T
+    (let ((x1 5))
+      (macrolet ((segundo (x) `(cadr ,x)))
+        (dm2b x1 (((segundo x2) x3 x4)) x5 x6)))
+    =>  ((DM2B X1 (((SEGUNDO X2) X3 X4)) X5 X6)
+          5 (((SEGUNDO X2) X3 X4)) (CADR X2) (X3 X4) 5 (X5 X6))
+    ```
 
 * 受此影响(Affected By): None.
 
@@ -2607,7 +2603,7 @@ OR=>  (1 2 4 3)
 
 * 也见(See Also):
 
-        define-compiler-macro, destructuring-bind, documentation, macroexpand, *macroexpand-hook*, macrolet, macro-function, Section 3.1 (Evaluation), Section 3.2 (Compilation), Section 3.4.11 (Syntactic Interaction of Documentation Strings and Declarations)
+        define-compiler-macro, destructuring-bind, documentation, macroexpand, *macroexpand-hook*, macrolet, macro-function, 章节 3.1 (求值), 章节 3.2 (编译), 章节 3.4.11 (文档字符串和声明的语法交互)
 
 * 注意(Notes): None. 
 
@@ -2621,18 +2617,18 @@ OR=>  (1 2 4 3)
 
 * 参数和值(Arguments and Values):
 
-        symbol---一个符号.
-        environment---一个环境对象.
-        function---一个宏参数或者 nil.
-        new-function---一个宏函数.
+        symbol---一个符号[symbol].
+        environment---一个环境[environment]对象[object].
+        function---一个宏函数[macro function]或者 nil.
+        new-function---一个宏函数[macro function].
 
 * 描述(Description):
 
-        确定 symbol 在指定的环境中是否有一个函数定义作为一个宏.
+        确定符号 symbol 在指定的环境 environment 中是否有一个函数定义作为一个宏.
 
-        如果是这样, 则返回宏展开函数, 即两个参数的函数. 如果 symbol 在这个词法环境[lexical environment]中没有函数定义, 或者它的定义不是一个宏, macro-function 返回 nil.
+        如果是这样, 则返回宏展开函数, 是一个两参数的函数. 如果符号 symbol 在这个词法环境 environment 中没有函数定义, 或者它的定义不是一个宏[macro], macro-function 返回 nil.
 
-        对于 symbol, macro-function 和 special-operator-p 都返回 true 是有可能的. 宏定义必须可用于那些只理解标准的 Common Lisp 特殊表达式的程序.
+        对于符号 symbol, macro-function 和 special-operator-p 都返回 true 是有可能的. 宏定义必须可被那些只理解那些标准的 Common Lisp 特殊表达式形式[special form]的程序所使用.
 
 * 示例(Examples):
 
@@ -2641,13 +2637,13 @@ OR=>  (1 2 4 3)
     (not (macro-function 'macfun)) =>  false 
 
     (macrolet ((foo (&environment env)
-                (if (macro-function 'bar env)
-                    ''yes
-                    ''no)))
-    (list (foo)
-            (macrolet ((bar () :beep))
+                  (if (macro-function 'bar env)
+                      ''yes
+                      ''no)))
+        (list (foo)
+              (macrolet ((bar () :beep))
                 (foo))))
-
+    
     =>  (NO YES)
     ```
 
@@ -2657,21 +2653,21 @@ OR=>  (1 2 4 3)
 
 * 异常情况(Exceptional Situations):
 
-        在一个 macro-function 的 setf 的使用中如果 environment 不是 nil 那么结果是不可预料的.
+        在一个 macro-function 的 setf 的使用中如果环境 environment 是非 nil 的[non-nil], 那么结果是未定义的.
 
 * 也见(See Also):
 
-        defmacro, Section 3.1 (Evaluation)
+        defmacro, Section 3.1 (求值)
 
 * 注意(Notes):
 
-    * setf 可以和 macro-function 一起使用来设置一个宏作为 symbol 的全局函数定义:
+        setf 可以和 macro-function 一起使用来设置一个宏[macro]为一个符号的全局函数定义:
 
-        ```LISP
-        (setf (macro-function symbol) fn)
-        ```
+    ```LISP
+    (setf (macro-function symbol) fn)
+    ```
 
-        设置的值必须是一个函数, 该函数接受两个参数, 整个宏调用和一个环境, 并计算该调用的展开. 执行这个操作会导致符号只有这个宏定义作为全局函数定义; 任何之前的定义, 不管是宏还是函数, 都会丢失. 
+        设置的值必须是一个函数, 该函数接受两个参数, 整个宏调用和一个环境[environment], 并计算该调用的展开. 执行这个操作会导致符号 symbol 只有这个宏定义作为全局函数定义; 任何之前的定义, 不管是宏[macro]还是函数[function], 都会丢失. 
 
 ### <span id = "FunctionMACROEXPANDMACROEXPAND1">函数 MACROEXPAND, MACROEXPAND-1</span>
 
@@ -2683,24 +2679,24 @@ OR=>  (1 2 4 3)
 
 * 参数和值(Arguments and Values):
 
-        form---一个表达式形式.
-        env---一个环境对象. 默认是 nil.
-        expansion---一个表达式形式.
-        expanded-p---一个普通的 boolean.
+        form---一个表达式形式[form].
+        env---一个环境[environment]对象[object]. 默认是 nil.
+        expansion---一个表达式形式[form].
+        expanded-p---一个广义 boolean[generalized boolean].
 
 * 描述(Description):
 
-        macroexpand 和 macroexpand-1 展开宏.
+        macroexpand 和 macroexpand-1 把宏[macro]展开.
 
-        如果 form 是一个宏表达式形式, 那么 macroexpand-1 只展开宏表达式调用一次.
+        如果表达式形式 form 是一个宏表达式形式[macro form], 那么 macroexpand-1 只展开宏表达式形式[macro form]调用一次.
 
-        macroexpand 重复地展开 form 直到它不再是一个宏表达式形式. 事实上, macroexpand 重复调用 macroexpand-1 直到第二个值返回的是 nil.
+        macroexpand 重复地展开表达式形式 form 直到它不再是一个宏表达式形式[macro form]. 事实上, macroexpand 重复调用 macroexpand-1 直到返回的第二个值[secondary value]是 nil.
 
-        如果 form 是一个宏表达式, 那么展开就是一个宏展开并且 expanded-p 是 true. 否则, 这个展开就是给定的表达式形式并且 expanded-p 是 false.
+        如果表达式形式 form 是一个宏表达式形式[macro form], 那么展开式 expansion 就是一个宏展开式[macro expansion]并且 expanded-p 是 true. 否则, 这个展开式 expansion 就是给定的表达式形式 form 并且 expanded-p 是 false.
 
-        宏展开是按照以下方式进行的. 一旦 macroexpand-1 确定表达式是一个宏表达式形式, 它就会获得一个用于宏或符号宏的适当展开函数. 这个 *macroexpand-hook* 的值强制为一个函数并且作为一个三个参数的函数调用: 展开函数, 这个 form, 还有这个 env. 从这个调用返回的值被认为是这个表达式的展开.
+        宏展开是按照以下方式进行的. 一旦 macroexpand-1 确定表达式形式 from 是一个宏表达式形式[macro form], 它就会获得一个用于这个宏[macro]或符号宏[symbol macro]的合适的展开函数[function]. 这个 *macroexpand-hook* 的值强制转为一个函数[function]并且作为一个三个参数的函数[function]被调用: 展开函数[function], 这个 form, 还有这个 env. 从这个调用返回的值[value]被认为是这个表达式形式 form 的展开.
 
-        除了全局环境中的宏定义之外, 在 env 中建立的任何本地宏定义都被认为是由 macrolet 或 symbol-macrolet 所建立的. 如果只提供了 form 作为一个参数, 那么环境实际上就是 null, 只有通过 defmacro 建立的全局宏定义才会被考虑. 宏定义被局部函数定义所遮蔽.
+        除了全局环境中的宏[macro]定义之外, 在 env 中由 macrolet 或 symbol-macrolet 所建立的任何局部宏定义都被考虑到. 如果只提供了表达式形式 form 作为一个参数, 那么环境实际上就是 null, 那么只有通过 defmacro 建立的全局宏定义才会被考虑进去. 宏[macro]定义被局部函数[function]定义所遮蔽.
 
 * 示例(Examples):
 
@@ -2709,12 +2705,12 @@ OR=>  (1 2 4 3)
     (defmacro beta (x y) `(gamma ,x ,y)) =>  BETA
     (defmacro delta (x y) `(gamma ,x ,y)) =>  EPSILON
     (defmacro expand (form &environment env)
-    (multiple-value-bind (expansion expanded-p)
-        (macroexpand form env)
+      (multiple-value-bind (expansion expanded-p)
+          (macroexpand form env)
         `(values ',expansion ',expanded-p))) =>  EXPAND
     (defmacro expand-1 (form &environment env)
-    (multiple-value-bind (expansion expanded-p)
-        (macroexpand-1 form env)
+      (multiple-value-bind (expansion expanded-p)
+          (macroexpand-1 form env)
         `(values ',expansion ',expanded-p))) =>  EXPAND-1
 
     ;; Simple examples involving just the global environment
@@ -2729,42 +2725,42 @@ OR=>  (1 2 4 3)
 
     ;; Examples involving lexical environments
     (macrolet ((alpha (x y) `(delta ,x ,y)))
-    (macroexpand-1 '(alpha a b))) =>  (BETA A B), true
+      (macroexpand-1 '(alpha a b))) =>  (BETA A B), true
     (macrolet ((alpha (x y) `(delta ,x ,y)))
-    (expand-1 (alpha a b))) =>  (DELTA A B), true
+      (expand-1 (alpha a b))) =>  (DELTA A B), true
     (macrolet ((alpha (x y) `(delta ,x ,y)))
-    (macroexpand '(alpha a b))) =>  (GAMMA A B), true
+      (macroexpand '(alpha a b))) =>  (GAMMA A B), true
     (macrolet ((alpha (x y) `(delta ,x ,y)))
-    (expand (alpha a b))) =>  (GAMMA A B), true
+      (expand (alpha a b))) =>  (GAMMA A B), true
     (macrolet ((beta (x y) `(epsilon ,x ,y)))
-    (expand (alpha a b))) =>  (EPSILON A B), true
+      (expand (alpha a b))) =>  (EPSILON A B), true
     (let ((x (list 1 2 3)))
-    (symbol-macrolet ((a (first x)))
+      (symbol-macrolet ((a (first x)))
         (expand a))) =>  (FIRST X), true
     (let ((x (list 1 2 3)))
-    (symbol-macrolet ((a (first x)))
+      (symbol-macrolet ((a (first x)))
         (macroexpand 'a))) =>  A, false
     (symbol-macrolet ((b (alpha x y)))
-    (expand-1 b)) =>  (ALPHA X Y), true
+      (expand-1 b)) =>  (ALPHA X Y), true
     (symbol-macrolet ((b (alpha x y)))
-    (expand b)) =>  (GAMMA X Y), true
+      (expand b)) =>  (GAMMA X Y), true
     (symbol-macrolet ((b (alpha x y))
-                    (a b))
-    (expand-1 a)) =>  B, true
+                      (a b))
+      (expand-1 a)) =>  B, true
     (symbol-macrolet ((b (alpha x y))
-                    (a b))
-    (expand a)) =>  (GAMMA X Y), true
+                      (a b))
+      (expand a)) =>  (GAMMA X Y), true
 
     ;; Examples of shadowing behavior
     (flet ((beta (x y) (+ x y)))
-    (expand (alpha a b))) =>  (BETA A B), true
+      (expand (alpha a b))) =>  (BETA A B), true
     (macrolet ((alpha (x y) `(delta ,x ,y)))
-    (flet ((alpha (x y) (+ x y)))
+      (flet ((alpha (x y) (+ x y)))
         (expand (alpha a b)))) =>  (ALPHA A B), false
     (let ((x (list 1 2 3)))
-    (symbol-macrolet ((a (first x)))
+      (symbol-macrolet ((a (first x)))
         (let ((a x))
-        (expand a)))) =>  A, false
+          (expand a)))) =>  A, false
     ```
 
 * 受此影响(Affected By):
@@ -2775,11 +2771,11 @@ OR=>  (1 2 4 3)
 
 * 也见(See Also):
 
-        *macroexpand-hook*, defmacro, setf of macro-function, macrolet, symbol-macrolet, Section 3.1 (Evaluation)
+        *macroexpand-hook*, defmacro, setf of macro-function, macrolet, symbol-macrolet, 章节 3.1 (求值)
 
 * 注意(Notes):
 
-        无论是 macroexpand 还是 macroexpand-1 都没有明确的尝试去展开宏表达式, 这些要么是表达式形式的子形式，要么是展开式的子形式. 然而, 由于宏函数的语义或实现, 这样的展开可能隐式发生. 
+        无论是 macroexpand 还是 macroexpand-1 都没有做任何显式的尝试去展开那些是 form 的子表达式形式[subform]或 expansion 的子表达式形式[subform]的宏表达式[macro form]. 然而, 由于这个宏函数[macro function]的语义或实现, 这样的展开可能隐式发生. 
 
 ### <span id = "MacroDEFINESYMBOLMACRO">宏 DEFINE-SYMBOL-MACRO</span>
 
@@ -2790,22 +2786,22 @@ OR=>  (1 2 4 3)
 
 * 参数和值(Arguments and Values):
 
-        symbol---一个符号.
-        expansion---一个表达式形式.
+        symbol---一个符号[symbol].
+        expansion---一个表达式形式[form].
 
 * 描述(Description):
 
-        为全局影响指示符号的宏展开提供了一种机制.
+        为全局地影响所表示的符号 symbol 的宏展开[macro expansion]提供了一种机制.
 
-        为 symbol 命名的符号宏全局地确定一个展开函数. 对于符号宏来说, 展开函数的唯一确保属性是当它被应用到表达式形式和环境时它会返回正确的展开式. (具体来说，这个展开式是在概念上存储在展开函数, 环境, 还是两者中, 这是依赖于实现的.)
+        为由符号 symbol 命名的符号宏[symbol macro]全局地建立一个展开函数. 对于符号宏[symbol macro]来说, 展开函数[function]的唯一确保属性是当它被应用到表达式形式[form]和环境[environment]时它会返回正确的展开式. (具体来说, 这个展开在概念上是存储在展开函数, 环境[environment], 还是两者都存储了, 这是依赖于实现的[implementation-dependent].)
 
-        每个对 symbol 的全局引用(换句话说, 不被由同一个符号所命名的变量或符号宏的绑定所遮蔽)都是通过常规的宏展开过程来展开的; 见章节 3.1.2.1.1 (Symbols as Forms). 符号宏的展开受限于符号宏引用相同的词汇环境中进行的进一步的宏展开, 与普通宏类似.
+        每个对符号 symbol 的全局引用(换句话说, 没有被同一个符号所命名的变量[variable]或符号宏[symbol macro]的绑定[binding]所遮蔽[shadow[2]])都是通过常规的宏展开过程来展开的; 见章节 3.1.2.1.1 (符号表达式形式). 符号宏[symbol macro]的展开在与符号宏[symbol macro]引用所在相同的词法环境[lexical environment]中受到进一步的宏展开[macro expansion], 与普通宏[macro]类似.
 
-        如果在这个定义的范围内为 symbol 做一个 special 声明, 后果是未知的 (换句话说, 当它没有被绑定到一个由相同符号命名的变量或符号宏的绑定所遮蔽时).
+        如果在这个定义的作用域内为符号 symbol 做一个 special 声明, 后果是未定义的 (换句话说, 当它没有被一个由相同符号[symbol]命名的变量[variable]或符号宏[symbol macro]的绑定[binding]所遮蔽[shadow[2]]时).
 
-        任何在这个定义的作用域中使用 setq 来设置 symbol 的值都被当作 setf. symbol 的 psetq 被当作是 psetf, 并且 multiple-value-setq 被当作是多个值的 setf.
+        任何在这个定义的作用域中使用 setq 来设置符号 symbol 的值都被当作 setf. 符号 symbol 的 psetq 被当作是 psetf, 并且 multiple-value-setq 被当作是 values 的 setf.
 
-        一个符号宏的绑定可以被 let 或 symbol-macrolet 所遮蔽.
+        一个符号宏[symbol macro]的绑定[binding]可以被 let 或 symbol-macrolet 所遮蔽[shadow[2]].
 
 * 示例(Examples):
 
@@ -2830,7 +2826,7 @@ OR=>  (1 2 4 3)
 
 * 异常情况(Exceptional Situations):
 
-        如果 symbol 已经被定义为一个全局的变量, 会发出一个 program-error 类型的错误.
+        如果符号 symbol 已经被定义为一个全局变量[global variable], 那么就会发出一个 program-error 类型[type]的错误.
 
 * 也见(See Also):
 
@@ -2847,25 +2843,25 @@ OR=>  (1 2 4 3)
 
 * 参数和值(Arguments and Values):
 
-        symbol---一个符号.
-        expansion---一个表达式形式.
-        declaration---一个声明表达式; 不求值.
-        forms---一个隐式的 progn.
-        results---forms 返回的值.
+        symbol---一个符号[symbol].
+        expansion---一个表达式形式[form].
+        declaration---一个 declare 表达式[expressioni]; 不求值.
+        forms---一个隐式 progn[implicit progn].
+        results---那些表达式形式 forms 返回的那些值[value].
 
 * 描述(Description):
 
-        symbol-macrolet 为影响符号的宏展开环境提供一种机制.
+        symbol-macrolet 为影响符号[symbol]的宏展开[macro expansion]环境提供一种机制.
 
-        symbol-macrolet 为每一个 symbol 命名的符号宏词法上确定展开函数. 对于符号宏来说, 展开函数的唯一保证属性是当它被应用到表达式和环境时它会返回正确的展开式. (具体来说, 它在概念上是存储在展开函数, 环境, 还是两者中, 这是依赖于实现的.)
+        symbol-macrolet 为由那些符号中的每一个符号  symbol 命名的符号宏[symbol macro]词法上建立展开函数. 对于一个符号宏[symbol macro]来说, 展开函数[function]的唯一保证属性是当它被应用到表达式形式[form]和环境[environment]时它会返回正确的展开式. (具体来说, 它在概念上是存储在展开函数, 环境[environment], 还是两者都存储了, 这是依赖于具体实现的[implementation-dependent].)
 
-        在 symbol-macrolet 词法作用域内, 变量作为 symbol 的每个引用都被常规的宏展开过程所展开; 见章节 3.1.2.1.1 (Symbols as Forms). 符号宏的展开受限于于符号宏引用相同的词汇环境中进行的进一步的宏展开, 与普通宏类似.
+        在 symbol-macrolet 词法作用域[scope]内, 作为一个变量的对 symbol 的每个引用都被常规的宏展开过程所展开; 见章节 3.1.2.1.1 (符号表达式形式). 一个符号宏的展开式在这个符号宏调用相同的词法环境中受到进一步的宏展开, 与普通宏[macro]类似.
 
-        对于 let 完全相同的声明是允许的, 除了一个例外: 如果一个 special 声明命名了 symbol-macrolet 已经定义的一个符号名字, symbol-macrolet 会发出一个错误.
+        允许和 let 相同的那些声明 declarations, 除了一个例外: 如果一个 special 声明命名了要被 symbol-macrolet 定义的这些符号中的一个, 那么 symbol-macrolet 会发出一个错误.
 
-        当 symbol-macrolet 形式中的表达式被展开, 任何使用 setq 来设置已指定变量中一个值被当作是 setf 一样. 一个符号定义的符号的 psetq 被当作它是一个 psetf, 并且 multiple-value-setq 被当作是多个值的 setf.
+        当 symbol-macrolet 表达式形式中的那些表达式形式 forms 被展开, 任何使用 setq 来设置这些指定变量的其中一个的值被当作是 setf 一样. 一个被定义为一个符号宏的符号的 psetq 被当作它是一个 psetf, 并且 multiple-value-setq 被当作是 values 的 setf.
 
-        这个 symbol-macrolet 的使用可以被 let 遮蔽. 换句话说, symbol-macrolet 只是替代了 forms 周围的 symbol 的词法绑定作用域中的 symbol.
+        这个 symbol-macrolet 的使用可以被 let 遮蔽. 换句话说, symbol-macrolet 只是替代了包在那些表达式形式 forms 周围的符号 symbol 的词法绑定的作用域[scope]中的 symbol 的出现.
 
 * 示例(Examples):
 
@@ -2875,12 +2871,12 @@ OR=>  (1 2 4 3)
     ;;; not
     ;;;   (list 'foo (let (('foo 'bar)) 'foo))
     (symbol-macrolet ((x 'foo))
-    (list x (let ((x 'bar)) x))) 
+      (list x (let ((x 'bar)) x))) 
     =>  (foo bar)
     NOT=>  (foo foo) 
-
+    
     (symbol-macrolet ((x '(foo x)))
-    (list x))
+      (list x))
     =>  ((FOO X))
     ```
 
@@ -2888,9 +2884,9 @@ OR=>  (1 2 4 3)
 
 * 异常情况(Exceptional Situations):
 
-        如果试图绑定一个被定义为全局变量的符号, 会发出一个 program-error 类型的错误.
+        如果试图绑定一个已经被定义为全局变量[global variable]的符号[symbol], 会发出一个 program-error 类型[type]的错误.
 
-        如果声明中包含一个对 symbol-macrolet 绑定符号的 special 声明, 那么会发出一个 program-error 类型的错误.
+        如果声明 declaration 中包含一个对 symbol-macrolet 绑定那些符号[symbol]中的一个的 special 声明, 那么会发出一个 program-error 类型[type]的错误.
 
 * 也见(See Also):
 
@@ -2898,23 +2894,23 @@ OR=>  (1 2 4 3)
 
 * 注意(Notes):
 
-        这个特殊的表达式形式 symbol-macrolet 是用于实现 with-slots 的基础机制.
+        这个特殊表达式形式 symbol-macrolet 是用于实现 with-slots 的基础机制.
 
-        如果一个 symbol-macrolet 形式是一个顶层表达式形式, 这个表达式形式也被当作顶层表达式处理. 见章节 3.2.3 (File Compilation). 
+        如果一个 symbol-macrolet 表达式形式[form]是一个顶层表达式形式[top level form], 那么这些表达式形式 forms 也被当作顶层表达式形式[top level form]处理. 见章节 3.2.3 (文件编译). 
 
 ### <span id = "VariableMACROEXPANDHOOK">变量 \*MACROEXPAND-HOOK\*</span>
 
-值类型(Value Type):
+* 值类型(Value Type):
 
-        一个三个参数的函数的标志符: 一个宏函数, 一个宏表达式形式, 和一个环境对象.
+        一个三参数[argument]的函数[function]的标识符[designator]: 一个宏函数[macro function], 一个宏表达式形式[macro form], 和一个环境[environment]对象[object].
 
-初始值(Initial Value):
+* 初始值(Initial Value):
 
-        一个等价于函数 funcall 的函数的标志符, 但是可能有额外的依赖于实现的副作用.
+        一个等价于函数[function] funcall 的函数的标识符[designator], 但是可能有额外的依赖于具体实现的[implementation-dependent]副作用.
 
 * 描述(Description):
 
-        被用作 macroexpand-1 的展开接口钩子来控制宏展开过程. 当一个宏表达式要被展开时, 这个函数会被调用, 并传递三个参数: 这个宏函数, 宏的表达式形式, 这个要被展开的宏形式所在的环境对象. 这个环境对象具有动态范围; 如果环境对象在宏展开函数的动态范围之外被引用, 则其后果是未定义的.
+        被 macroexpand-1 用作展开接口钩子来控制宏展开[macro expansion]过程. 当一个宏表达式形式[macro form]要被展开时, 这个函数[function]会被调用, 并传递三个参数: 这个宏函数[macro function], 宏表达式形式[macro form], 这个要被展开的宏表达式形式[macro form]所在的环境[environment]. 这个环境[environment]对象[object]具有动态范围[dynamic extent]; 如果环境[environment]对象[object]在宏展开函数的动态范围[dynamic extent]之外被引用, 则其后果是未定义的.
 
 * 示例(Examples):
 
@@ -2933,15 +2929,15 @@ OR=>  (1 2 4 3)
 
 * 也见(See Also):
 
-        macroexpand, macroexpand-1, funcall, Section 3.1 (Evaluation)
+        macroexpand, macroexpand-1, funcall, 章节 3.1 (求值)
 
 * 注意(Notes):
 
-        选择的初始值的净效果是仅调用宏函数, 将宏形式和环境作为它的两个参数.
+        选择初始值的净效果是仅调用宏函数[macro function], 将宏表达式形式[macro form]和环境[environment]作为它的两个参数.
 
-        用户或用户程序可以指定这个变量来定制或跟踪宏展开机制. 注意, 但是, 这个变量是一个全局资源, 可能由多个程序共享; 因此, 如果两个程序在这个变量的设置上依赖于它们的正确性, 那么这些程序可能无法在相同的Lisp镜像中运行. 由于这个原因, 通常最好将其用途限制在调试情况下.
+        用户或用户程序可以给这个变量[variable]赋值[assign]来定制或跟踪宏展开[macro expansion]机制. 注意, 但是, 这个变量[variable]是一个全局资源, 可能由多个程序[program]共享; 因此, 如果两个程序依赖于它们在这个变量的设置上的正确性, 那么这些程序[program]可能无法在相同的 Lisp 镜像[Lisp image]中运行. 由于这个原因, 通常最好将其用途限制在调试情况下.
 
-        把函数设置到 *macroexpand-hook* 的用户应该考虑把这个钩子的之前的值保存起来, 并且从他们自己的函数里调用这个值.
+        把自己的函数设置到 *macroexpand-hook* 的用户应该考虑把这个钩子的之前的值保存起来, 并且从他们自己的函数里调用这个值.
 
 ### <span id = "FunctionPROCLAIM">函数 PROCLAIM</span>
 
@@ -2951,31 +2947,31 @@ OR=>  (1 2 4 3)
 
 * 参数和值(Arguments and Values):
 
-        declaration-specifier---一个声明说明符.
+        declaration-specifier---一个声明指定符[declaration specifier].
 
 * 描述(Description):
 
-        在全局环境中建立 declaration-specifier 指定的声明.
+        在全局环境[global environment]中建立[establish] declaration-specifier 指定的声明[declaration].
 
-        这样一个声明, 有时也称之为全局声明或公告(proclamation), 除非局部被遮蔽, 否则永远是有效的.
+        这样一个声明, 有时也称之为全局声明[global declaration]或公告[proclamation], 除非被局部遮蔽[shadow], 否则总是有效的.
 
-        在 declaration-specifier 中，变量和函数的名称分别引用动态变量和全局函数定义.
+        在 declaration-specifier 中, 变量[variable]和函数[function]的名称[name]分别引用动态变量[dynamic variable]和全局函数[function]定义.
 
-        下一个图显示了可用于 proclaim 的声明标识符列表.
+        下一个图显示了可用于 proclaim 的声明标识符[declaration identifier]列表.
 
             declaration  inline     optimize  type  
             ftype        notinline  special         
 
             Figure 3-22. 全局声明标识符
 
-        一个具体实现也可以自由地支持其他(依赖于实现的)声明标识符.
+        一个具体实现也可以自由地支持其他(具体实现定义的[implementation-defined])声明标识符[declaration identifier].
 
 * 示例(Examples):
 
     ```LISP
     (defun declare-variable-types-globally (type vars)
-    (proclaim `(type ,type ,@vars))
-    type)
+      (proclaim `(type ,type ,@vars))
+      type)
 
     ;; Once this form is executed, the dynamic variable *TOLERANCE*
     ;; must always contain a float.
@@ -2989,26 +2985,26 @@ OR=>  (1 2 4 3)
 
 * 也见(See Also):
 
-        declaim, declare, Section 3.2 (Compilation)
+        declaim, declare, 章节 3.2 (编译)
 
 * 注意(Notes):
 
-    虽然 proclaim 的执行有着可能影响编译的效果, 编译器不会尝试识别和特别地处理 proclaim 形式. 像下面这样的公告(proclamation), 即便是一个顶层表达式, 直到它被执行完也不会有任何效果:
+    虽然 proclaim 表达式形式[form]的执行有着可能影响编译的效果, 但是编译器不会尝试识别和特别地处理 proclaim 表达式形式[form]. 像下面这样的公告[proclamation], 即便是一个顶层表达式形式[top level form], 直到它被执行之前不会有任何效果:
 
     ```LISP
     (proclaim '(special *x*))
     ```
 
-    如果编译时的副作用是需要的, eval-when 可能会有用. 比如:
+    如果需要编译时的副作用, eval-when 可能会有用. 比如:
 
     ```LISP
     (eval-when (:execute :compile-toplevel :load-toplevel)
-    (proclaim '(special *x*)))
+      (proclaim '(special *x*)))
     ```
 
-    然而, 在大多数这样的情况下, 使用 declaim 来实现这一目的是比较容易的.
+    然而, 在大多数这样的情况下, 使用 declaim 来实现这一目的更好.
 
-    因为 proclaim 表达式是普通的函数形式，所以宏表达式可以展开到它们. 
+    因为 proclaim 表达式形式[form]是普通的函数形式[function form], 所以宏表达式形式[macro form]可以展开到它们. 
 
 ### <span id = "MacroDECLAIM">宏 DECLAIM</span>
 
@@ -3018,13 +3014,13 @@ OR=>  (1 2 4 3)
 
 * 参数和值(Arguments and Values):
 
-        declaration-specifier---一个声明说明符; 不求值的.
+        declaration-specifier---一个声明指定符[declaration specifier]; 不求值.
 
 * 描述(Description):
 
-        确定一个被 declaration-specifiers 指定的声明.
+        建立一个由 declaration-specifiers 指定的声明[declaration].
 
-        如果在文件编译器处理的文件中使用该宏作为顶层表达式, 公告(proclamations)也在编译时进行. 与其他定义宏一样, 在编译完文件后, 编译时的副作用是否存在仍然是未知的.
+        如果这个宏的使用以顶层表达式形式[top level form]出现在文件编译器[file compiler]处理的文件[file]中, 这些公告[proclamations]也在编译时进行. 与其他定义宏一样, 在编译完文件后, 编译时的副作用是否存在仍然是未知的.
 
 * 示例(Examples):
 
@@ -3048,13 +3044,13 @@ OR=>  (1 2 4 3)
 
 * 参数(Arguments):
 
-        declaration-specifier---一个声明说明符; 不求值的.
+        declaration-specifier---一个声明指定符[declaration specifier]; 不求值.
 
 * 描述(Description):
 
-        一个 declare 表达式, 有时也称之为一个声明(declaration), 只能出现在合适的表达式形式的主体部分; 那也就是说, 它可能只在其他声明表达式之前出现, 或者如果上下文允许前面还有文档字符串.
+        一个 declare 表达式[expression], 有时也称之为一个声明[declaration], 只能出现在某些表达式形式[form]的主体部分的开头; 那也就是说, 它的前面只可能是其他 declare 表达式[expression], 或者如果上下文允许前面还可能有文档字符串[documentation string].
 
-        一个 declare 表达式可以出现在一个lambda表达式中或者下面这段列出的任何表达式中.
+        一个 declare 表达式可以出现在一个 lambda 表达式[lambda expression]中或者下面这段列出的任何表达式形式[form]中.
 
             defgeneric                 do-external-symbols   prog                      
             define-compiler-macro      do-symbols            prog*                     
@@ -3070,13 +3066,13 @@ OR=>  (1 2 4 3)
             do*                        multiple-value-bind   with-slots                
             do-all-symbols             pprint-logical-block                            
 
-        Figure 3-23. 声明可以出现的标准表达式
+        Figure 3-23. 声明可以出现的标准表达式形式
 
-        一个 declare 表达式只能出现在这些表达式形式的语法所指定的位置. 尝试去求值一个 declare 表达式的后果是未定义的. 在这种表达式出现的情况下, 为它们的存在而进行显式检查, 并且它们从来没有真正被求值过; 正是因为这个原因它们被称之为 "declare expressions" 而不是 "declare forms".
+        一个 declare 表达式[expression]只能出现在这些表达式形式[form]的语法所指定的位置. 尝试去求值一个 declare 表达式[expression]的后果是未定义的. 在这些表达式[expression]出现的情况下, 会为它们的存在进行显式检查, 并且它们从来没有真正被求值过; 正是因为这个原因它们被称之为 "declare 表达式[expression]" 而不是 "declare 表达式形式[form]".
 
-        Macro 表达式形式不能被展开成声明; declare 表达式必须作为它们所引用的表达式的实际的子表达式形式出现.
+        macro 表达式形式[macro form]不能被展开成声明; declare 表达式[expression]必须作为它们所引用的表达式形式[form]的实际的子表达式[subexpression]出现.
 
-        下一段展示了可以被用于 declare 的声明标识符的列表.
+        下一段展示了可以被用于 declare 的声明标识符[declaration identifier]的列表.
 
             dynamic-extent  ignore     optimize  
             ftype           inline     special   
@@ -3084,30 +3080,30 @@ OR=>  (1 2 4 3)
 
             Figure 3-24. 局部声明标识符
 
-        一个具体实现也可以自由地支持其他声明标识符(依赖于实现的).
+        一个具体实现也可以自由地支持其他(具体实现定义的[implementation-defined])声明标识符[declaration identifier].
 
 * 示例(Examples):
 
     ```LISP
     (defun nonsense (k x z)
-    (foo z x)                     ;First call to foo
-    (let ((j (foo k x))           ;Second call to foo
+      (foo z x)                     ;First call to foo
+      (let ((j (foo k x))           ;Second call to foo
             (x (* k k)))
         (declare (inline foo) (special x z))
         (foo x j z)))               ;Third call to foo
     ```
 
-        在这个例子里, 这个 inline 声明只应用于第三个 foo 调用, 不是第一个和第二个.这个 x 的 special 声明导致 let 为 x 创建了一个动态绑定, 并且导致 let 主体中对 x 的引用是一个动态引用. 在对 foo 的第二个调用中的 x 的引用是一个对 nonsense 第二个参数的局部引用. 在第一个 foo 调用中对 x 的引用也是一个局部引用, 不是一个 special 的. 这个 z 的 special 声明导致第三个 foo 调用中的 z 引用是一个动态引用; 它不引用 nonsense 中名为 z 的参数, 因为这个参数绑定没有被声明为 special. (这个 z 的 special 声明不是出现在 defun 的主体部分, 而是在一个内部的表达式形式中, 因此不影响参数的绑定.)
+        在这个例子里, 这个 inline 声明只应用于第三个 foo 调用, 不是第一个和第二个.这个 x 的 special 声明导致 let 为 x 创建了一个动态绑定[binding], 并且导致 let 主体中对 x 的引用是一个动态引用. 在对 foo 的第二个调用中的 x 的引用是一个对 nonsense 第二个参数的局部引用. 在第一个 foo 调用中对 x 的引用也是一个局部引用, 不是一个 special 的. 这个 z 的 special 声明导致第三个 foo 调用中的 z 引用是一个动态引用; 它不引用 nonsense 中名为 z 的参数, 因为这个参数绑定[binding]没有被声明为 special. (这个 z 的 special 声明不是出现在 defun 的主体部分, 而是在一个内部的表达式形式[form]中, 因此不影响形参[parameter]的绑定[binding].)
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-        试着把 declare 表达式当作一个表达式形式来求值后果是不可预料的.
+        试着把 declare 表达式[expression]当作一个表达式形式[form]来求值后果是不可预料的.
 
 * 也见(See Also):
 
-        proclaim, Section 4.2.3 (Type Specifiers), declaration, dynamic-extent, ftype, ignorable, ignore, inline, notinline, optimize, type
+        proclaim, 章节 4.2.3 (类型指定符), declaration, dynamic-extent, ftype, ignorable, ignore, inline, notinline, optimize, type
 
 * 注意(Notes): None. 
 
@@ -3121,184 +3117,184 @@ OR=>  (1 2 4 3)
 
 * 参数(Arguments):
 
-        var---一个变量名字.
-        fn---一个函数名字.
+        var---一个变量[variable]名字[name].
+        fn---一个函数[function]名字[name].
 
 * 合法上下文(Valid Context):
 
-        declaration
+        声明[declaration]
 
 * 绑定类型的影响(Binding Types Affected):
 
-        variable, function
+        变量[variable], 函数[function]
 
 * 描述(Description):
 
-        这个 ignore 和 ignorable 声明指向多个 var 的变量绑定还有多个 fns 的函数绑定的值引用.
+        这个 ignore 和 ignorable 声明指向多个 var 的变量[variable]绑定[binding]还有多个 fns 的函数[function]绑定[binding]的值[for-value]引用[reference].
 
-        一个 ignore 声明说明指定绑定的值引用不会发生在声明作用域里. 在这样一个声明作用域里, 编译器针对任何 var 或 fn 的值引用, 或者一个 var 的 special 声明去发出一个警告是合适的.
+        一个 ignore 声明[declaration]指出对那些表示的绑定[binding]的值[for-value]引用[reference]不会发生在这个声明[declaration]的作用域里. 在这样一个声明[declaration]的作用域[scope]里, 编译器针对任何 var 或 fn 的值[for-value]引用[reference], 或者一个任意 var 的 special 声明[declaration]的出现去发出一个警告是可取的.
 
-        一个 ignorable 声明表示指定绑定的值引用可能或可能不会出现在声明的作用域里. 在这样的作用域里, 编译器针对任何 var 或 fn 的值引用, 或者一个 var 的 special 声明去发出一个警告是不合适的.
+        一个 ignorable 声明[declaration]指出对那些表示的绑定[binding]的值[for-value]引用[reference]可能或可能不会出现在这个声明[declaration]的作用域里. 在这样一个声明[declaration]的作用域[scope]里, 编译器针对任何 var 或 fn 的值[for-value]引用[reference], 或者一个任意 var 的 special 声明[declaration]的出现或缺失去发出一个警告是可取的.
 
-        当不在一个 ignore 或 ignorable 声明的作用域时, 编译器针对没有任何 var 或 fn 的值引用, 也没有一个 var 的 special 声明的情况发出一个警告是合适的.
+        当不在一个 ignore 或 ignorable 声明[declaration]的作用域[scope]时, 对于任何既没有值[for-value]引用[reference]也没有 special 声明[declaration]的 var, 或者没有值[for-value]引用[reference]的 fn, 编译器去发出一个警告是可取的.
 
-        任何关于一个 "used" 或者 "unused" 绑定必须是 style-warning 类型的, 并且不影响程序的语义.
+        任何关于一个 "used" 或者 "unused" 绑定[binding]的警告必须是 style-warning 类型[type]的, 并且不影响程序的语义.
 
-        由 with-open-file, with-open-stream, with-input-from-string, 和 with-output-to-string 确定的流变量, 还有所有循环变量, 根据定义总是是 "used". 使用 (declare (ignore v)), 对于这样一个变量 v 有未指明的结果.
+        由 with-open-file, with-open-stream, with-input-from-string, 和 with-output-to-string 建立的流变量[stream variable], 还有所有循环变量[iteration variable], 根据定义总是是 "used". 对于这样一个变量[variable] v 使用 (declare (ignore v)), 有着未指明的结果.
 
 * 也见(See Also):
 
         declare 
 
 ### <span id = "DeclarationDYNAMICEXTENT">声明 DYNAMIC-EXTENT</span>
-
+<!--TODO 待重审-->
 * 语法(Syntax):
 
         (dynamic-extent [[var* | (function fn)*]])
 
 * 参数(Arguments):
 
-        var---一个变量名字.
-        fn---一个函数名字.
+        var---一个变量[variable]名字[name].
+        fn---一个函数[variable]名字[name].
 
 * 合法上下文(Valid Context):
 
-        declaration
+        声明[declaration]
 
 * 绑定类型的影响(Binding Types Affected):
 
-        variable, function
+        变量[variable], 函数[function]
 
 * 描述(Description):
 
-        在一些包含的表达式中, F, 这个声明为每一个 vari 断言 (不需要被 F 绑定), 并且为 vari 呈现的每一个值断言, 还有当 vij 为 vari 的值的任何时候为 vij 的另外不可访问部分(otherwise inaccessible part)的 对象 xijk 断言, 这只是在 F 的执行终止后, xijk 要么是不可访问的(如果 F 为 vari 确定一个绑定), 要么是 vari 的当前值的一个另外不可访问部分(otherwise inaccessible part) (如果 F 没有为 vari 确定一个绑定). 每个 fni 都有相同的关系, 除了这些在函数命名空间中的绑定. 
+        在一些包含的表达式形式中, F, 这个声明为每一个 vari 断言 (不需要被 F 绑定), 并且为 vari 呈现的每一个值[value] vij 断言, 还有当 vij 成为 vari 的值的任何时候为 vij 的其他不可访问部分[otherwise inaccessible part]的对象[object] xijk 断言, 这只是在 F 的执行终止后, xijk 要么是不可访问的(如果 F 为 vari 建立一个绑定[binding]), 要么是 vari 的当前值的一个其他不可访问部分[otherwise inaccessible part] (如果 F 没有为 vari 建立一个绑定[binding]). 每个 fni 都有相同的关系, 除了这些在函数[function]命名空间[namespace]中的绑定. 
 
-        编译器被允许以任何适合于实现的方式使用该信息, 这与 Common Lisp 的语义不冲突.
+        允许编译器以任何适合于具体实现[implementation]并且不与 Common Lisp 的语义冲突的方式使用该信息.
 
-        dynamic-extent 声明可以是自由声明或绑定声明.
+        dynamic-extent 声明可以是自由声明[free declaration]或绑定声明[bound declaration].
 
-        在 dynamic-extent 声明中命名的这个 vars 和 fns 一定不能引用符号宏或宏绑定.
+        在 dynamic-extent 声明中命名的这些 vars 和 fns 一定不能引用符号宏[symbol macro]或宏[macro]绑定.
 
 * 示例(Examples):
 
-    * 由于初始值的栈上分配需要在对象的创建时知道对象可以是栈上分配的, 对于没有词法上显而易见的初始值的变量, 对变量进行 dynamic-extent 声明通常是不太有用的. 比如, 这可能是很有用的:
+        由于初始值的栈上分配需要在对象[object]的创建时知道对象[object]可以是栈上分配的[stack-allocated], 对于没有词法上显而易见的初始值的变量[variable], 对变量进行 dynamic-extent 声明[declaration]通常是不太有用的. 比如, 这可能是很有用的:
 
-        ```LISP
-        (defun f ()
-        (let ((x (list 1 2 3)))
-            (declare (dynamic-extent x))
-                ...))
-        ```
+    ```LISP
+    (defun f ()
+      (let ((x (list 1 2 3)))
+        (declare (dynamic-extent x))
+            ...))
+    ```
 
-    * 这将允许那些希望这样做的编译器来栈上分配由本地变量 x 所持有的列表. 这是允许的, 但在实践中可能没有那么有用, 写成:
+        这将允许那些希望这样做的编译器来栈上分配[stack allocate]由局部变量 x 所持有的列表. 写成下面这样是允许的, 但在实践中可能没有那么有用:
 
-        ```LISP
-        (defun g (x) (declare (dynamic-extent x)) ...)
-        (defun f () (g (list 1 2 3)))
-        ```
+    ```LISP
+    (defun g (x) (declare (dynamic-extent x)) ...)
+    (defun f () (g (list 1 2 3)))
+    ```
 
-    * 大部分编译器不会在 f 中去栈上分配给 g 的参数因为对于编译器来说, 从 f 中假设关于 g 的事实是违背模块化的. 只有当 g 的定义做了不兼容的修改而一个实现可以重编译 f 时可以合理地在 f 中栈上分配这个列表参数给 g.
+        大部分编译器不会在 f 中去栈上分配[stack allocate]给 g 的实参[argument], 因为对于编译器来说, 从 f 中假设关于 g 的事实是违背模块化的. 只有当 g 的定义不兼容地改变时, 愿意重编译 f 的一个具体实现可以合理地栈上分配[stack allocate]这个在 f 中给 g 的列表[list]参数.
 
-    * 这里有另一个例子:
+        这里有另一个例子:
 
-        ```LISP
-        (declaim (inline g))
-        (defun g (x) (declare (dynamic-extent x)) ...)
-        (defun f () (g (list 1 2 3)))
-
-        (defun f ()
-        (flet ((g (x) (declare (dynamic-extent x)) ...))
-            (g (list 1 2 3))))
-        ```
+    ```LISP
+    (declaim (inline g))
+    (defun g (x) (declare (dynamic-extent x)) ...)
+    (defun f () (g (list 1 2 3)))
+    
+    (defun f ()
+      (flet ((g (x) (declare (dynamic-extent x)) ...))
+        (g (list 1 2 3))))
+    ```
 
         在上面的例子里, 一些编译器可能会确定优化是可以的, 而另一些可能不会.
 
-    * 这个的一个变体是 "栈上分配剩余列表"(stack allocated rest list) 可以通过下面来实现 (支持优化的实现中):
+        这个的一个变体是 "栈上分配剩余列表(stack allocated rest list)", 可以通过下面来实现 (在支持这个优化的实现中):
 
-        ```LISP
-        (defun f (&rest x)
-        (declare (dynamic-extent x))
-        ...)
-        ```
+    ```LISP
+    (defun f (&rest x)
+      (declare (dynamic-extent x))
+      ...)
+    ```
 
-        注意, 虽然 x 的初始值不是显式的, 但是 f 函数负责将列表 x 从传递的参数中组合起来, 因此可以通过编译器对 f 函数进行优化, 以构建一个栈上分配的列表, 而不是在支持这样的实现中使用堆分配的列表.
+        注意, 虽然 x 的初始值不明确, 但是 f 函数负责将列表 x 从传递的参数中装配起来, 因此在支持这些的实现中可以通过编译器对 f 函数进行优化, 以构建一个栈上分配[stack-allocated]的列表, 而不是使用堆上分配的列表.
 
-    * 在下面的示例中,
+        在下面的示例中,
 
-        ```LISP
-        (let ((x (list 'a1 'b1 'c1))
-            (y (cons 'a2 (cons 'b2 (cons 'c2 nil)))))
-        (declare (dynamic-extent x y))
-        ...)
-        ```
+    ```LISP
+    (let ((x (list 'a1 'b1 'c1))
+          (y (cons 'a2 (cons 'b2 (cons 'c2 nil)))))
+      (declare (dynamic-extent x y))
+      ...)
+    ```
 
-        这个 x 的另外不可访问部分是三个 cons, 而 y 的另外不可访问部分是另外三个 cons. 所有 a1, b1, c1, a2, b2, c2, 或者 nil 这些符号中没有是 x 或 y 的另外不可访问部分, 因为每一个都被捕捉因此在它被捕捉的包(或者多个包)中是可访问的. 然而, 如果使用了一个新分配的未捕捉的符号, 那么它将是包含它的列表的另外不可访问部分.
+        这个 x 的其他不可访问部分[otherwise inaccessible part]是三个 cons, 而 y 的其他不可访问部分[otherwise inaccessible part]是另外三个 cons. 符号 a1, b1, c1, a2, b2, c2, 或者 nil 中没有是 x 或 y 的其他不可访问部分[otherwise inaccessible part], 因为每一个都被捕捉[interned]因此可以通过它被捕捉到的包[package] (或者多个包[package])是可访问的[accessible]. 然而, 如果使用了一个新分配的未捕捉[uninterned]的符号[symbol], 那么它将是包含它的列表[list]的其他不可访问部分[otherwise inaccessible part].
 
-        ```LISP
-        ;; In this example, the implementation is permitted to stack allocate
-        ;; the list that is bound to X.
-        (let ((x (list 1 2 3)))
-        (declare (dynamic-extent x))
-        (print x)
-        :done)
-        >>  (1 2 3)
-        =>  :DONE
-
-        ;; In this example, the list to be bound to L can be stack-allocated.
-        (defun zap (x y z)
-        (do ((l (list x y z) (cdr l)))
-            ((null l))
-            (declare (dynamic-extent l))
-            (prin1 (car l)))) =>  ZAP
-        (zap 1 2 3)
-        >>  123
-        =>  NIL
-
-        ;; Some implementations might open-code LIST-ALL-PACKAGES in a way
-        ;; that permits using stack allocation of the list to be bound to L.
-        (do ((l (list-all-packages) (cdr l)))
-            ((null l))
+    ```LISP
+    ;; In this example, the implementation is permitted to stack allocate
+    ;; the list that is bound to X.
+    (let ((x (list 1 2 3)))
+      (declare (dynamic-extent x))
+      (print x)
+      :done)
+    >>  (1 2 3)
+    =>  :DONE
+    
+    ;; In this example, the list to be bound to L can be stack-allocated.
+    (defun zap (x y z)
+      (do ((l (list x y z) (cdr l)))
+          ((null l))
         (declare (dynamic-extent l))
-        (let ((name (package-name (car l))))
-            (when (string-search "COMMON-LISP" name) (print name))))
-        >>  "COMMON-LISP"
-        >>  "COMMON-LISP-USER"
-        =>  NIL
+        (prin1 (car l)))) =>  ZAP
+    (zap 1 2 3)
+    >>  123
+    =>  NIL
 
-        ;; Some implementations might have the ability to stack allocate 
-        ;; rest lists.  A declaration such as the following should be a cue
-        ;; to such implementations that stack-allocation of the rest list
-        ;; would be desirable.
-        (defun add (&rest x)
-        (declare (dynamic-extent x))
-        (apply #'+ x)) =>  ADD
-        (add 1 2 3) =>  6
+    ;; Some implementations might open-code LIST-ALL-PACKAGES in a way
+    ;; that permits using stack allocation of the list to be bound to L.
+    (do ((l (list-all-packages) (cdr l)))
+        ((null l))
+      (declare (dynamic-extent l))
+      (let ((name (package-name (car l))))
+        (when (string-search "COMMON-LISP" name) (print name))))
+    >>  "COMMON-LISP"
+    >>  "COMMON-LISP-USER"
+    =>  NIL
 
-        (defun zap (n m)
-        ;; Computes (RANDOM (+ M 1)) at relative speed of roughly O(N).
-        ;; It may be slow, but with a good compiler at least it
-        ;; doesn't waste much heap storage.  :-}
-        (let ((a (make-array n)))
-            (declare (dynamic-extent a))
-            (dotimes (i n) 
-            (declare (dynamic-extent i))
-            (setf (aref a i) (random (+ i 1))))
-            (aref a m))) =>  ZAP
-        (< (zap 5 3) 3) =>  true
-        ```
+    ;; Some implementations might have the ability to stack allocate 
+    ;; rest lists.  A declaration such as the following should be a cue
+    ;; to such implementations that stack-allocation of the rest list
+    ;; would be desirable.
+    (defun add (&rest x)
+      (declare (dynamic-extent x))
+      (apply #'+ x)) =>  ADD
+    (add 1 2 3) =>  6
 
-    * 下面的是错误的, 因为 x 的值在它的范围外被使用:
+    (defun zap (n m)
+      ;; Computes (RANDOM (+ M 1)) at relative speed of roughly O(N).
+      ;; It may be slow, but with a good compiler at least it
+      ;; doesn't waste much heap storage.  :-}
+      (let ((a (make-array n)))
+        (declare (dynamic-extent a))
+        (dotimes (i n) 
+          (declare (dynamic-extent i))
+          (setf (aref a i) (random (+ i 1))))
+        (aref a m))) =>  ZAP
+    (< (zap 5 3) 3) =>  true
+    ```
 
-        ```LISP
-        (length (list (let ((x (list 1 2 3)))  ; Invalid
-                        (declare (dynamic-extent x))
-                        x)))
+        下面的是错误的, 因为 x 的值在它的范围[extent]外被使用:
 
-        (progn (let ((x (list 1 2 3)))  ; Invalid
-                (declare (dynamic-extent x))
-                x)
-                nil)
-        ```
+    ```LISP
+    (length (list (let ((x (list 1 2 3)))  ; Invalid
+                    (declare (dynamic-extent x))
+                    x)))
+
+    (progn (let ((x (list 1 2 3)))  ; Invalid
+              (declare (dynamic-extent x))
+              x)
+            nil)
+    ```
 
 * 也见(See Also):
 
@@ -3306,7 +3302,7 @@ OR=>  (1 2 4 3)
 
 * 注意(Notes):
 
-        最常见的优化是对由 vars 命名的对象的初始值进行栈上分配.
+        最常见的优化是对由 vars 命名的那些对象[object]的初始值进行栈上分配[stack allocate].
 
         一个实现允许完全可以忽略这个声明. 
 
@@ -3404,7 +3400,7 @@ OR=>  (1 2 4 3)
             (setf foo (the (signed-byte 5) (aref an-array 0)))))
         ```
 
-    * 给定一个实现,其中 fixnums 是29位，但是 fixnum 数组被升级到有符号的32位数组, 下面可以用所有的 fixnum 算法来编译:
+    * 给定一个实现,其中 fixnums 是29位, 但是 fixnum 数组被升级到有符号的32位数组, 下面可以用所有的 fixnum 算法来编译:
 
         ```LISP
         (defun bump-counters (counters)
@@ -3443,7 +3439,7 @@ OR=>  (1 2 4 3)
         (the fixnum (+ x y z)))
         ```
 
-    * 为说明原因, 细想 (f most-positive-fixnum 1 -1). 尽管参数和结果都是 fixnums，但中间值不是 fixnum. 如果在提供它的实现中选择依赖于实现的 fixnum-only 算法是很重要的, 那么考虑编写这样的代码:
+    * 为说明原因, 细想 (f most-positive-fixnum 1 -1). 尽管参数和结果都是 fixnums, 但中间值不是 fixnum. 如果在提供它的实现中选择依赖于实现的 fixnum-only 算法是很重要的, 那么考虑编写这样的代码:
 
         ```LISP
         (defun f (x y)
@@ -3883,7 +3879,7 @@ OR=>  (1 2 4 3)
 
 * 异常情况(Exceptional Situations):
 
-        如果表达式产生的值不是由 value-type 指定的类型，那么后果是没有定义的.
+        如果表达式产生的值不是由 value-type 指定的类型, 那么后果是没有定义的.
 
 * 也见(See Also):
 
@@ -3899,7 +3895,7 @@ OR=>  (1 2 4 3)
         (gethash the-key the-string-table))
     ```
 
-        setf 可以和 the 类型声明一起使用. 在这种情况下，这个声明被转换为指定新值的表达式形式. 然后分析产生的 setf 表达式. 
+        setf 可以和 the 类型声明一起使用. 在这种情况下, 这个声明被转换为指定新值的表达式形式. 然后分析产生的 setf 表达式. 
 
 ### <span id = "FunctionSPECIALOPERATORP">函数 SPECIAL-OPERATOR-P</span>
 
@@ -3952,7 +3948,7 @@ OR=>  (1 2 4 3)
 
 * 描述(Description):
 
-        如果 form 可以被实现确定为在指定的环境(environment)中的一个常量形式，则返回true; 否则, 它返回 false 表示表达式不是一个常量形式或者它不能确定是否表达式形式是一个常量形式.
+        如果 form 可以被实现确定为在指定的环境(environment)中的一个常量形式, 则返回true; 否则, 它返回 false 表示表达式不是一个常量形式或者它不能确定是否表达式形式是一个常量形式.
 
         下面这些种类的表达式形式被当作常量形式:
 
@@ -3965,7 +3961,7 @@ OR=>  (1 2 4 3)
         * 一个实现允许, 但不是必须去检测额外的常量表达式形式. 如果确实如此, 那么使用环境(environment)中信息也是允许的, 但不是必需的. 对于常量形式 constantp 可能或可能不会返回 true 的例子是: (sqrt pi), (+ 3 2), (length '(a b c)), 还有 (let ((x 7)) (zerop x)).
 
 
-        如果一个实现选择使用环境(environment)信息, 可以使用诸如展开宏或执行函数内联之类的操作，但不是必须; 然而, 展开编译器宏是不允许的.
+        如果一个实现选择使用环境(environment)信息, 可以使用诸如展开宏或执行函数内联之类的操作, 但不是必须; 然而, 展开编译器宏是不允许的.
 
 * 示例(Examples):
 
