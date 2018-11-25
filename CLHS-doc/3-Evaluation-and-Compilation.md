@@ -3316,98 +3316,98 @@ OR=>  (1 2 4 3)
 
 * 参数(Arguments):
 
-        typespec---一个类型说明.
-        var---一个变量名字.
+        typespec---一个类型指定符[type specifier].
+        var---一个变量[variable]名字[name].
 
 * 合法上下文(Valid Context):
 
-        declaration 或者 proclamation
+        声明[declaration]或者公告[proclamation]
 
 * 绑定类型的影响(Binding Types Affected):
 
-        variable
+        变量[variable]
 
 * 描述(Description):
 
-        只影响变量绑定, 并指定 vars 只接受指定的 typespec 的值. 具体来说, 由 setq 分配给变量的值, 以及 vars 的初始值必须是指定的 typespec. 类型声明从来不应用于函数绑定 (见 ftype).
+        只影响变量绑定[binding], 并指出那些变量 vars 只具有指定的类型指定符 typespec 的值. 具体来说, 通过 setq 给变量赋的值, 以及那些变量 vars 的初始值必须是指定的类型指定符 typespec. type 声明从来不应用于函数绑定[binding] (见 ftype).
 
-        一个被 symbol-macrolet 定义的类型声明等价于在该符号的展开周围封装这样一个表达式, 尽管这个符号的宏展开实际上并没有受到影响.
+        一个由 symbol-macrolet 定义的符号[symbol]的类型声明等价于在该符号的展开式周围包一个 the 表达式, 尽管这个符号[symbol]的宏展开[macro expansion]实际上并没有受到影响.
 
-        类型声明的意义等价于修改声明作用域里的每一个变量 (var) 的引用为 (the typespec var), 修改声明作用域里的每一个赋值给变量 (new-value) 的表达式为 (the typespec new-value), 并且在进入声明作用域的时候执行 (the typespec var).
+        一个类型声明的意义等价于修改声明作用域里的每一个变量 (var) 的引用为 (the typespec var), 修改声明作用域里的每一个赋值给变量 (new-value) 的表达式为 (the typespec new-value), 以及在进入声明作用域的时候执行 (the typespec var).
 
-        在所有声明中一个类型声明是合法的. 对类型声明的解释如下:
+        一个类型[type]声明在所有声明中都是合法的. 对类型声明的解释如下:
 
-        1. 在对声明范围内的声明变量的任何引用执行期间, 如果声明的变量的值不是声明的类型, 后果是未定义的.
-        2. 在声明的范围内执行声明变量的任何 setq 时, 如果声明的变量的新的赋值不属于声明的类型, 那么后果将是未定义的.
-        3. 当进入声明的范围时, 如果声明的变量的值不是已声明的类型, 那么后果将是未定义的.
+        1. 在这个声明的作用域内对这个声明变量的任何引用执行期间, 如果声明的变量的值不是声明的类型[type], 后果是未定义的.
+        2. 在这个声明的作用域内对这个声明变量的任何 setq 的执行期间, 如果被赋给声明变量的新值不属于声明的类型[type], 那么后果将是未定义的.
+        3. 当进入声明的作用域时, 如果声明的变量的值不是声明的类型[type], 那么后果将是未定义的.
 
-        一个类型声明只影响它的作用域内的变量引用.
+        一个类型[type]声明只影响它的作用域内的变量引用.
 
-        如果嵌套类型声明引用相同的变量, 那么该变量的值必须是声明类型的交集的成员.
+        如果嵌套类型[type]声明引用相同的变量, 那么该变量的值必须是那些声明类型[type]的交集的成员.
 
-        如果对于一个动态变量这里有一个局部类型声明, 并且对于相同的变量这里也有一个全局的类型公告, 那么在局部声明的作用域中的那个变量的值必须是两种类型声明的交集.
+        如果对于一个动态变量这里有一个局部 type 声明, 并且对于相同的变量这里也有一个全局的类型[type]公告, 那么在这个局部声明的作用域中的那个变量的值必须是两种声明类型[type]的交集.
 
-        类型声明可以是自由声明或绑定声明.
+        type 声明可以是自由声明[free declaration]或绑定声明[bound declaration].
 
-        符号既不能是类型的名称, 也不能是声明的名称. 在定义一个符号为 class, structure, condition, 或 type 名字时, 如果这个符号已经被声明为一个声明的名字, 或反过来, 都会发出一个错误.
+        一个符号[symbol]既不能是类型[type]的名称, 也不能是声明的名称. 一个符号[symbol]已经被声明为一个声明的名字时, 定义这个符号[symbol]为类[class], 结构体[structure], 状况[condition], 或类型[type]的名字[name]时, 如果这个符号已经被声明为一个声明的名字, 或反过来, 都会发出一个错误.
 
-        在一个数组类型声明的词法作用域中, 所有对数组元素的引用都被假定为满足表达的数组元素类型 (与升级的数组元素类型相反). 编译器可以在数组类型声明的范围内处理代码, 就好像数组元素的每个访问都被合适的这个表达式形式包围一样.
+        在一个 array 类型声明的词法作用域[lexical scope]中, 所有对数组[array]元素[element]的引用都被假定为满足表达数组元素类型[expressed array element type] (与提升数组元素类型[upgraded array element type]相反). 编译器可以认为在 array 类型声明的范围内的代码就好像数组[array]元素[element]的每个访问[access]都被合适的 the 表达式形式包围一样.
 
 * 示例(Examples):
 
     ```LISP
     (defun f (x y)
-    (declare (type fixnum x y))
-    (let ((z (+ x y)))
+      (declare (type fixnum x y))
+      (let ((z (+ x y)))
         (declare (type fixnum z))
         z)) =>  F
     (f 1 2) =>  3
     ;; The previous definition of F is equivalent to
     (defun f (x y)
-    ;; This declaration is a shorthand form of the TYPE declaration
-    (declare (fixnum x y))
-    ;; To declare the type of a return value, it's not necessary to
-    ;; create a named variable.  A THE special form can be used instead.
-    (the fixnum (+ x y))) =>  F
+      ;; This declaration is a shorthand form of the TYPE declaration
+      (declare (fixnum x y))
+      ;; To declare the type of a return value, it's not necessary to
+      ;; create a named variable.  A THE special form can be used instead.
+      (the fixnum (+ x y))) =>  F
     (f 1 2) =>  3
 
     (defvar *one-array* (make-array 10 :element-type '(signed-byte 5)))
     (defvar *another-array* (make-array 10 :element-type '(signed-byte 8)))
-
+      
     (defun frob (an-array)
-    (declare (type (array (signed-byte 5) 1) an-array))
-    (setf (aref an-array 1) 31)
-    (setf (aref an-array 2) 127)
-    (setf (aref an-array 3) (* 2 (aref an-array 3)))
-    (let ((foo 0))
+      (declare (type (array (signed-byte 5) 1) an-array))
+      (setf (aref an-array 1) 31)
+      (setf (aref an-array 2) 127)
+      (setf (aref an-array 3) (* 2 (aref an-array 3)))
+      (let ((foo 0))
         (declare (type (signed-byte 5) foo))
         (setf foo (aref an-array 0))))
-
+      
     (frob *one-array*)
     (frob *another-array*)
     ```
 
-    * 上面的 frob 定义等价于:
+        上面的 frob 定义等价于:
 
-        ```LISP
-        (defun frob (an-array)
-        (setf (the (signed-byte 5) (aref an-array 1)) 31)
-        (setf (the (signed-byte 5) (aref an-array 2)) 127)
-        (setf (the (signed-byte 5) (aref an-array 3))
-                (* 2 (the (signed-byte 5) (aref an-array 3))))
-        (let ((foo 0))
-            (declare (type (signed-byte 5) foo))
-            (setf foo (the (signed-byte 5) (aref an-array 0)))))
-        ```
+    ```LISP
+    (defun frob (an-array)
+      (setf (the (signed-byte 5) (aref an-array 1)) 31)
+      (setf (the (signed-byte 5) (aref an-array 2)) 127)
+      (setf (the (signed-byte 5) (aref an-array 3))
+            (* 2 (the (signed-byte 5) (aref an-array 3))))
+      (let ((foo 0))
+        (declare (type (signed-byte 5) foo))
+        (setf foo (the (signed-byte 5) (aref an-array 0)))))
+    ```
 
-    * 给定一个实现,其中 fixnums 是29位, 但是 fixnum 数组被升级到有符号的32位数组, 下面可以用所有的 fixnum 算法来编译:
+        给定一个实现,其中 fixnums 是29位, 但是 fixnum 数组[array]被升级到有符号的32位数组[array], 下面可以用所有的 fixnum 运算来编译:
 
-        ```LISP
-        (defun bump-counters (counters)
-        (declare (type (array fixnum *) bump-counters))
-        (dotimes (i (length counters))
-            (incf (aref counters i))))
-        ```
+    ```LISP
+    (defun bump-counters (counters)
+      (declare (type (array fixnum *) bump-counters))
+      (dotimes (i (length counters))
+        (incf (aref counters i))))
+    ```
 
 * 也见(See Also):
 
@@ -3415,37 +3415,37 @@ OR=>  (1 2 4 3)
 
 * 注意(Notes):
 
-    * (typespec var\*) 是 (type typespec var\*) 的一个缩写.
+        (typespec var*) 是 (type typespec var*) 的一个缩写.
 
-    * 对于一个函数的参数的类型声明并不一定意味着结果的类型. 下面的函数不允许使用依赖于实现的 fixnum-only 算法来编译:
+        对于一个函数的参数的 type 声明并不一定意味着结果的类型. 下面的函数不允许使用依赖于具体实现的[implementation-dependent] 仅限 fixnum 的算法来编译:
 
-        ```LISP
-        (defun f (x y) (declare (fixnum x y)) (+ x y))
-        ```
+    ```LISP
+    (defun f (x y) (declare (fixnum x y)) (+ x y))
+    ```
 
-    * 为说明原因, 细想 (f most-positive-fixnum 1). Common Lisp 定义这个 F 必须返回一个 bignum, 而不是发出一个错误或产生一个数学上不正确的结果. 如果你有特殊的知识, 那么 "fixnum overflow" 情况就不会出现, 您可以在 fixnum 范围内声明结果值, 使一些编译器可以使用更有效的算法:
+        为说明原因, 细想 (f most-positive-fixnum 1). Common Lisp 定义这个 F 必须返回一个 bignum, 而不是发出一个错误或产生一个数学上不正确的结果. 如果你有特殊的知识, "fixnum overflow" 情况就不会出现, 您可以在 fixnum 范围内声明结果值, 使一些编译器可以使用更有效的算法:
 
-        ```LISP
-        (defun f (x y)
-        (declare (fixnum x y))
-        (the fixnum (+ x y)))
-        ```
+    ```LISP
+    (defun f (x y)
+      (declare (fixnum x y))
+      (the fixnum (+ x y)))
+    ```
 
-    * 但是, 请注意, 在三个参数的情况下, 由于隐式中间值增长的可能性太大, 下面的内容不会导致使用依赖于实现的 fixnum-only 算法:
+        但是, 请注意, 在三个参数的情况下, 由于隐式中间值增长太大的可能性, 下面的内容不会导致使用依赖于具体实现的[implementation-dependent]仅限 fixnum 的算法:
 
-        ```LISP
-        (defun f (x y)
-        (declare (fixnum x y z))
-        (the fixnum (+ x y z)))
-        ```
+    ```LISP
+    (defun f (x y)
+      (declare (fixnum x y z))
+      (the fixnum (+ x y z)))
+    ```
 
-    * 为说明原因, 细想 (f most-positive-fixnum 1 -1). 尽管参数和结果都是 fixnums, 但中间值不是 fixnum. 如果在提供它的实现中选择依赖于实现的 fixnum-only 算法是很重要的, 那么考虑编写这样的代码:
+        为说明原因, 细想 (f most-positive-fixnum 1 -1). 尽管参数和结果都是 fixnums, 但一个中间值不是 fixnum. 如果在提供它的实现中选择依赖于具体实现的[implementation-dependent]仅限 fixnum 的算法是很重要的, 那么考虑编写这样的代码:
 
-        ```LISP
-        (defun f (x y)
-        (declare (fixnum x y z))
-        (the fixnum (+ (the fixnum (+ x y)) z)))
-        ```
+    ```LISP
+    (defun f (x y)
+      (declare (fixnum x y z))
+      (the fixnum (+ (the fixnum (+ x y)) z)))
+    ```
 
 ### <span id = "DeclarationINLINENOTINLINE">声明 INLINE, NOTINLINE</span>
 
@@ -3457,41 +3457,41 @@ OR=>  (1 2 4 3)
 
 * 参数(Arguments):
 
-        function-name---一个函数名字.
+        function-name---一个函数名字[function name].
 
 * 合法上下文(Valid Context):
 
-        declaration 或 proclamation
+        声明[declaration]或公告[proclamation]
 
 * 绑定类型的影响(Binding Types Affected):
 
-        function
+        函数[function]
 
 * 描述(Description):
 
-        inline 指定对于编译器需要去为 function-name 命名的函数产生内联调用; 这就是说, 指定的函数名的代码应该集成到调用例程中, 内联出现并替换程序调用. 一个编译器可以自由地忽略这个声明. inline 声明从不应用于变量.
+        inline 指出期望编译器去为 function-name 命名的函数产生内联调用; 这就是说, 指定的函数名  function-name  的代码应该集成到调用例程中, 内联出现并替换程序调用. 一个编译器可以自由地忽略这个声明. inline 声明从不应用于变量绑定[binding].
 
-        如果其中一个函数有一个词法上明显的局部定义 (像是被 flet 或 labels), 那么这个声明应用于这个局部定义而不是那个全局函数定义.
+        如果其中一个提及的函数有着词法上明显的局部定义 (例如通过 flet 或 labels), 那么这个声明应用于这个局部定义而不是那个全局函数定义.
 
-        虽然没有符合规范的实现需要执行用户定义函数的内联展开, 那些实现试图识别以下范例:
+        虽然没有符合规范的实现[conforming implementation]需要执行用户定义函数的内联展开, 那些具体实现[implementation]尝试去识别以下范例:
 
-        去定义一个函数 f 默认不是内联但是对于 (declare (inline f)) 会使 f 是局部内联的, 合适的定义是:
+        为了定义一个函数[function] f 默认不是 inline 但是对于 (declare (inline f)) 会使 f 是局部内联的, 合适的定义顺序是:<!--TODO 待校对-->
 
     ```LISP
-        (declaim (inline f))
-        (defun f ...)
-        (declaim (notinline f))
+    (declaim (inline f))
+    (defun f ...)
+    (declaim (notinline f))
     ```
 
-        在 defun 表达式前面的这个 inline 的公告确保编译器有机会保存内联展开所必需的信息, 并且跟在 defun 后面的这个 notinline 公告防止 f 在任何地方被内联展开.
+        在 defun 表达式形式[form]前面的这个 inline 公告确保编译器[compiler]有机会保存内联展开所必需的信息, 并且跟在 defun 表达式形式[form]后面的这个 notinline 公告防止 f 在任何地方被内联展开.
 
-        notinline 指明这个被 function-name 命名的函数不需要被内联编译. 一个编译器可以自由地忽略这个声明; 这个指定的函数的调用必须被实现为非内联调用.
+        notinline 指出这个由 function-name 命名的函数不需要被内联编译. 一个编译器可以自由地忽略这个声明; 对这个指定的函数的调用必须被实现为非内联子程序调用.
 
-        如果其中一个函数有一个词法上明显的局部定义 (像是被 flet 或 labels), 那么这个声明应用于局部定义而不是全局的函数定义.
+        如果其中一个提及的函数有着词法上明显的局部定义 (例如通过 flet 或 labels), 那么这个声明应用于这个局部定义而不是那个全局函数定义.
 
-        在对 function-name 进行编译器宏定义的情况下, notinline 声明阻止了编译器宏的使用. 可以使用 inline 声明来鼓励使用编译器宏定义. inline 和 notinline 声明在 function-name 在词法可见的定义是一个宏定义时是没有效果的.
+        在 function-name 的编译器宏[compiler macro]定义存在的情况下, 一个 notinline 声明阻止了编译器宏[compiler macro]的使用. 可以使用 inline 声明来鼓励使用编译器宏[compiler macro]定义. inline 和 notinline 声明在 function-name 在词法可见的定义是一个宏[macro]定义时是没有效果的.
 
-        inline 和 notinline 声明可以是自由声明或绑定声明. 出现在一个 flet 或 labels 表达式形式的主体前的 inline 和 notinline 函数声明是绑定声明. 这样的声明在其他上下文中是自由声明.
+        inline 和 notinline 声明可以是自由声明[free declaration]或绑定声明[bound declaration]. 出现在一个 flet 或 labels 表达式形式[form]的主体前的 inline 和 notinline 函数声明是绑定声明[bound declaration]. 在其他上下文中的这些声明是自由声明[free declaration].
 
 * 示例(Examples):
 
@@ -3505,15 +3505,15 @@ OR=>  (1 2 4 3)
     (defun top-level-1 () (dispatch (read-command)))
     ;; Here is an example where inlining would be prohibited.
     (defun top-level-2 ()
-    (declare (notinline dispatch))
-    (dispatch (read-command)))
+      (declare (notinline dispatch))
+      (dispatch (read-command)))
     ;; Here is an example where inlining would be prohibited.
     (declaim (notinline dispatch))
     (defun top-level-3 () (dispatch (read-command)))
     ;; Here is an example where inlining would be encouraged.
     (defun top-level-4 () 
-    (declare (inline dispatch))
-    (dispatch (read-command)))
+      (declare (inline dispatch))
+      (dispatch (read-command)))
     ```
 
 * 也见(See Also):
@@ -3528,31 +3528,31 @@ OR=>  (1 2 4 3)
 
 * 参数(Arguments):
 
-        function-name---一个函数名字.
-        type---一个类型说明符.
+        function-name---一个函数名字[function name].
+        type---一个类型指定符[type specifier].
 
 * 合法上下文(Valid Context):
 
-        declaration 或 proclamation
+        声明[declaration]或公告[proclamation]
 
 * 绑定类型的影响(Binding Types Affected):
 
-        function
+        函数[function]
 
 * 描述(Description):
 
-        指定被 function-names 命名的函数是 type 函数类型. 比如:
+        指出由那些函数名 function-names 命名的函数是 type 函数类型. 比如:
 
     ```LISP
     (declare (ftype (function (integer list) t) ith)
             (ftype (function (number) float) sine cosine))
     ```
 
-        如果其中一个函数有一个词法上明显的局部定义 (像是被 flet 或 labels), 那么这个声明应用于局部定义并且不是全局函数定义. ftype 声明从不应用于变量绑定 (见 type).
+        如果其中一个提及的函数有着词法上明显的局部定义 (例如通过 flet 或 labels), 那么这个声明应用于这个局部定义而不是那个全局函数定义. ftype 声明从不应用于变量绑定[binding] (见 type).
 
-        这个 function-names 的词法上明显的绑定不能是宏定义. (这是因为 ftype 声明每个函数名的函数定义是一个特定的函数子类型, 而宏不表示函数.)
+        这个 function-names 的词法上明显的绑定不能是宏[macro]定义. (这是因为 ftype 声明每个函数名[function name]的函数定义是一个 function 的特定子类型, 而宏[macro]不表示函数[function].)
 
-        ftype 声明可以是自由声明或绑定声明. 出现在一个 flet 或 labels 表达式形式的主体前的 ftype 函数声明是绑定声明. 这样的声明在其他上下文中是自由声明.
+        ftype 声明可以是自由声明[free declaration]或绑定声明[bound declaration]. 出现在一个 flet 或 labels 表达式形式[form]的主体前的 ftype 函数声明是绑定声明[bound declaration]. 在其他上下文中的这些声明是自由声明[free declaration].
 
 * 也见(See Also):
 
@@ -3566,17 +3566,17 @@ OR=>  (1 2 4 3)
 
 * 参数(Arguments):
 
-        name---一个符号.
+        name---一个符号[symbol].
 
 * 绑定类型的影响(Binding Types Affected): None.
 
 * 合法上下文(Valid Context):
 
-        仅限proclamation
+        仅限公告[proclamation]
 
 * 描述(Description):
 
-        建议编译器, 每个名称都是有效的, 但可能是非标准的声明名. 这样做的目的是告诉一个编译器不要发出针对用于另一个编译器或其他程序处理器的声明的警告.
+        建议编译器, 每个名字 name 都是有效的, 但可能是非标准的声明名. 这样做的目的是告诉一个编译器不要发出用于另一个编译器或其他程序处理器的声明的警告.
 
 * 示例(Examples):
 
@@ -3585,8 +3585,8 @@ OR=>  (1 2 4 3)
     (declaim (target-language ada))
     (declaim (target-machine IBM-650))
     (defun strangep (x)
-    (declare (author "Harry Tweeker"))
-    (member x '(strange weird odd peculiar)))
+      (declare (author "Harry Tweeker"))
+      (member x '(strange weird odd peculiar)))
     ```
 
 * 也见(See Also):
@@ -3601,18 +3601,18 @@ OR=>  (1 2 4 3)
 
 * 参数(Arguments):
 
-        quality---一个优化质量.
-        value--- 0, 1, 2, 或 3 这些整数的其中之一.
+        quality---一个优化质量[optimize quality].
+        value--- 0, 1, 2, 或 3 这些整数[integer]的其中之一.
 
 * 合法上下文(Valid Context):
 
-        declaration 或 proclamation
+        声明[declaration]或公告[proclamation]
 
 * 绑定类型的影响(Binding Types Affected): None.
 
 * 描述(Description):
 
-        建议编译器应该根据指定的相应值给予每个质量的关注. 每一种质量都必须是一种名为优化质量的符号; 标准优化质量的名称和含义在下一段中展示.
+        建议编译器应该根据指定的相应值 value 注意每个质量 quality. 每一种质量都必须是一种名为优化质量[optimize quality]的符号[symbol]; 标准优化质量[optimize quality]的名称和含义在下一段中展示.
 
             Name               Meaning                            
             compilation-speed  speed of the compilation process   
@@ -3623,24 +3623,24 @@ OR=>  (1 2 4 3)
 
             Figure 3-25. 优化质量
 
-        这里可能有其他的, 具体实现定义的优化质量.
+        这里可能有其他的, 具体实现定义的[implementation-defined]优化质量[optimize quality].
 
-        一个 0 值意味着对应的质量是完全不重要的, 而这个 3 表示极其重要的; 1 和 2 是中间的值, 这里 1 是中立的值. (quality 3) 可以缩写成 quality.
+        一个 0 的值 value 意味着对应的质量 quality 是完全不重要的, 而这个 3 表示极其重要的; 1 和 2 是中间的值, 这里 1 是中立的值. (quality 3) 可以缩写成 quality.
 
-        注意有着优化 (safety 3), 或者只是 safety 的代码, 成为安全代码 (safe code).
+        注意有着优化 (safety 3), 或者只是 safety 的代码[code], 称为安全代码[safe code].
 
-        如果 quality 以超过一种不同的值出现那么后果是不可预料的.
+        如果质量 quality 以超过一种不同的[different]值出现, 那么后果是不可预料的.
 
 * 示例(Examples):
 
     ```LISP
     (defun often-used-subroutine (x y)
-    (declare (optimize (safety 2)))
-    (error-check x y)
-    (hairy-setup x)
-    (do ((i 0 (+ i 1))
-        (z x (cdr z)))
-        ((null z))
+      (declare (optimize (safety 2)))
+      (error-check x y)
+      (hairy-setup x)
+      (do ((i 0 (+ i 1))
+            (z x (cdr z)))
+          ((null z))
         ;; This inner loop really needs to burn.
         (declare (optimize speed))
         (declare (fixnum i))
@@ -3649,11 +3649,11 @@ OR=>  (1 2 4 3)
 
 * 也见(See Also):
 
-        declare, declaim, proclaim, Section 3.3.4 (Declaration Scope)
+        declare, declaim, proclaim, 章节 3.3.4 (声明的作用域)
 
 * 注意(Notes):
 
-        一个优化声明从不适用于一个变量或一个函数绑定. 一个优化声明只能是自由声明. 关于更多信息, 见章节 3.3.4 (Declaration Scope). 
+        一个 optimize 声明从不适用于一个变量[variable]或一个函数[function]绑定[binding]. 一个 optimize 声明只能是自由声明[free declaration]. 关于更多信息, 见章节 3.3.4 (声明的作用域). 
 
 ### <span id = "DeclarationSPECIAL">声明 SPECIAL</span>
 
@@ -3663,36 +3663,36 @@ OR=>  (1 2 4 3)
 
 * 参数(Arguments):
 
-        var---一个符号.
+        var---一个符号[symbol].
 
 * 合法上下文(Valid Context):
 
-        declaration 或 proclamation
+        声明[declaration]或公告[proclamation]
 
 * 绑定类型的影响(Binding Types Affected):
 
-        variable
+        变量[variable]
 
 * 描述(Description):
 
-        指定所有 var 命名的变量是动态的. 这个声明符影响变量绑定和引用. 所有受影响的变量绑定都成为动态绑定, 并且受影响的变量引用指向当前的动态绑定. 比如:
+        指定所有 var 命名的都是动态的. 这个指定符影响变量绑定[binding]和引用. 所有受影响的变量绑定[binding]都成为动态绑定[binding], 并且影响指向当前的动态绑定的变量引用. 比如:
 
     ```LISP
-        (defun hack (thing *mod*)    ;The binding of the parameter
-        (declare (special *mod*))  ; *mod* is visible to hack1,
-        (hack1 (car thing)))       ; but not that of thing.
-        (defun hack1 (arg)
-        (declare (special *mod*))  ;Declare references to *mod*
-                                    ;within hack1 to be special.
-        (if (atom arg) *mod*
-            (cons (hack1 (car arg)) (hack1 (cdr arg)))))
+    (defun hack (thing *mod*)    ;The binding of the parameter
+      (declare (special *mod*))  ; *mod* is visible to hack1,
+      (hack1 (car thing)))       ; but not that of thing.
+    (defun hack1 (arg)
+      (declare (special *mod*))  ;Declare references to *mod*
+                                  ;within hack1 to be special.
+      (if (atom arg) *mod*
+          (cons (hack1 (car arg)) (hack1 (cdr arg)))))
     ```
 
-        一个 special 声明不影响一个 var 的内部绑定; 内部绑定隐式地遮蔽一个 special 声明, 并且必须显式地重新声明为 special 声明. special 声明从不应用于函数绑定.
+        一个 special 声明不影响一个变量 var 的内部绑定; 内部绑定[binding]隐式地遮蔽一个 special 声明, 并且必须显式地重新声明为 special. special 声明从不应用于函数绑定[binding].
 
-        special 声明可以是绑定声明, 影响绑定和引用, 或自由声明, 指影响引用, 取决于声明是否关联到一个变量绑定.
+        special 声明可以是同时影响绑定和引用的绑定声明[bound declaration], 或只影响引用的自由声明[free declaration], 取决于声明是否被关联到一个变量绑定.
 
-        当使用一个公告, 一个 special 声明符应用于所有的绑定以及所有提到的变量的引用. 比如, 在
+        当使用一个公告[proclamation]时, 一个 special 声明指定符[declaration specifier]应用于所有的绑定[binding]以及所有提到的变量的引用. 比如, 在
 
         (declaim (special x))
 
@@ -3706,24 +3706,24 @@ OR=>  (1 2 4 3)
 
     ```LISP
     (defun declare-eg (y)                 ;this y is special
-    (declare (special y))
-    (let ((y t))                         ;this y is lexical
-        (list y
-                (locally (declare (special y)) y)))) ;this y refers to the
-                                                    ;special binding of y
+      (declare (special y))
+      (let ((y t))                         ;this y is lexical
+            (list y
+                  (locally (declare (special y)) y)))) ;this y refers to the
+                                                      ;special binding of y
     =>  DECLARE-EG 
     (declare-eg nil) =>  (T NIL) 
 
     (setf (symbol-value 'x) 6)
     (defun foo (x)                         ;a lexical binding of x
-    (print x)
-    (let ((x (1+ x)))                    ;a special binding of x
+      (print x)
+      (let ((x (1+ x)))                    ;a special binding of x
         (declare (special x))              ;and a lexical reference
         (bar))
-    (1+ x))
+      (1+ x))
     (defun bar () 
-    (print (locally (declare (special x))
-            x)))
+      (print (locally (declare (special x))
+              x)))
     (foo 10) 
     >>  10
     >>  11
@@ -3731,15 +3731,15 @@ OR=>  (1 2 4 3)
 
     (setf (symbol-value 'x) 6)
     (defun bar (x y)            ;[1] 1st occurrence of x
-    (let ((old-x x)           ;[2] 2nd occurrence of x -- same as 1st occurrence
+      (let ((old-x x)           ;[2] 2nd occurrence of x -- same as 1st occurrence
             (x y))              ;[3] 3rd occurrence of x
         (declare (special x))
         (list old-x x)))
     (bar 'first 'second) =>  (FIRST SECOND)
 
     (defun few (x &optional (y *foo*))
-    (declare (special *foo*))
-    ...)
+      (declare (special *foo*))
+      ...)
     ```
 
         这个例子第一行对 *foo* 的引用不是 special 即便在第二行有一个 special 声明.
@@ -3755,13 +3755,13 @@ OR=>  (1 2 4 3)
 
     (declaim (special x))          ;x is always special.
     (defun example (x y)                                 
-    (declare (special y))
-    (let ((y 3) (x (* x 2)))
+      (declare (special y))
+      (let ((y 3) (x (* x 2)))
         (print (+ y (locally (declare (special y)) y)))
         (let ((y 4)) (declare (special y)) (foo x)))) =>  EXAMPLE
     ```
 
-        在上面的扭曲代码中, y 的最外层和最内层的绑定是动态的, 但是中间绑定是词法. 给 + 的两个参数是不一样的, 一个是一个值, 3, 是词法变量 y 的, 并且另一个是动态变量 y 的值 (巧合的是, 一个绑定在词法上围绕在它外层). 然而, 由于这个公告 x 总是是 special, 所有 x 的绑定和 x 的引用都是动态的.
+        在上面的扭曲代码中, y 的最外层和最内层的绑定[binding]是动态的, 但是中间绑定是词法的. 给 + 的两个参数是不一样的, 一个是一个值, 3, 是词法变量 y 的, 而另一个是动态变量 y 的值 (巧合的是, 一个绑定在词法上围绕在它外层). 然而, 由于这个公告 x 总是是 special, 所有 x 的绑定和 x 的引用都是动态的.<!--TODO 待校对-->
 
 * 也见(See Also):
 
@@ -3775,22 +3775,22 @@ OR=>  (1 2 4 3)
 
 * 参数和值(Arguments and Values):
 
-        Declaration---一个声明表达式; 不求值.
-        forms---一个隐式的 progn.
-        results---这个表达式形式的值.
+        Declaration---一个 declare 表达式[expression]; 不求值.
+        forms---一个隐式的 progn[implicit progn].
+        results---这些表达式形式[form]的值[value].
 
 * 描述(Description):
 
-        在一个词法环境[lexical environment]中, 在给定的声明具有效果的情况下, 对表达式中的主体进行求值.
+        在这些给定声明 declarations 有效的一个词法环境[lexical environment]中, 依次对这些表达式形式  form 中的主体进行求值.
 
 * 示例(Examples):
 
     ```LISP
     (defun sample-function (y)  ;this y is regarded as special
-    (declare (special y))                                
-    (let ((y t))              ;this y is regarded as lexical
+      (declare (special y))                                
+      (let ((y t))              ;this y is regarded as lexical
         (list y
-            (locally (declare (special y))
+              (locally (declare (special y))
                 ;; this next y is regarded as special
                 y))))
     =>  SAMPLE-FUNCTION
@@ -3800,13 +3800,13 @@ OR=>  (1 2 4 3)
     ;;; The following declarations are not notably useful in specific.
     ;;; They just offer a sample of valid declaration syntax using LOCALLY.
     (locally (declare (inline floor) (notinline car cdr))
-            (declare (optimize space))
-    (floor (car x) (cdr y))) =>  0, 1
+              (declare (optimize space))
+        (floor (car x) (cdr y))) =>  0, 1
 
     ;;; This example shows a definition of a function that has a particular set
     ;;; of OPTIMIZE settings made locally to that definition.
     (locally (declare (optimize (safety 3) (space 3) (speed 0)))
-    (defun frob (w x y &optional (z (foo x y)))
+      (defun frob (w x y &optional (z (foo x y)))
         (mumble x y z w)))
     =>  FROB
 
@@ -3814,7 +3814,7 @@ OR=>  (1 2 4 3)
     ;;; remain in effect for subsequent definitions in the same compilation unit.
     (declaim (optimize (safety 3) (space 3) (speed 0)))
     (defun frob (w x y &optional (z (foo x y)))
-    (mumble x y z w))
+      (mumble x y z w))
     =>  FROB
     ```
 
@@ -3830,9 +3830,9 @@ OR=>  (1 2 4 3)
 
 * 注意(Notes):
 
-        locally 可以和 special 声明一起使用来影响引用, 而不是对变量的绑定.
+        locally 可以和 special 声明一起使用来影响变量[variable]的引用, 而不是绑定[binding].
 
-        如果一个 locally 表达式是一个顶层表达式, 这个 body 表达式形式也被当作顶层表达式处理. 见章节 3.2.3 (File Compilation). 
+        如果一个 locally 表达式形式[form]是一个顶层表达式形式[top level form], 这个主体表达式形式[form]也被当作顶层表达式形式[top level form]处理. 见章节 3.2.3 (文件编译). 
 
 ### <span id = "SpecialOperatorTHE">特殊操作符 THE</span>
 
@@ -3842,17 +3842,17 @@ OR=>  (1 2 4 3)
 
 * 参数和值(Arguments and Values):
 
-        value-type---一个类型说明符; 不求值.
-        form---一个表达式形式; 求值的.
-        results---从表达式形式的求值得出的值. 这些值必须符合 value-type 所提供的类型; 见下文.
+        value-type---一个类型指定符[type specifier]; 不求值.
+        form---一个表达式形式[form]; 求值.
+        results---从表达式形式 form 的求值[evaluation]得出的值[value]. 这些值[value]必须符合 value-type 所提供的类型[type]; 见下文.
 
 * 描述(Description):
 
-        the 指定 form 返回的值是 value-type 表示的类型. 如果没有声明类型的结果, 后果是没有定义的.
+        the 指出了表达式形式 form 返回的值[values[1a]]是 value-type 表示的类型[type]. 如果任意结果 result 不是声明的类型, 后果是未定义的.
 
-        如果声明类型的值确实是这些类型的值, 那么 form 可以产生不同于 value-type 指定的数量的值, 这是允许的. 出于检查它们的类型的目的, 缺少的值被当作 nil.
+        假设 type 声明的那些值[value]确实是那些类型[type], 允许表达式形式 form 产生[yield]不同于 value-type 指定的数量的值. 出于检查它们的类型[type]的目的, 缺少的值被当作 nil.
 
-        不考虑 value-type 声明的值的数量, 这个特殊表达式返回到值的数量和 form 返回的值的数量一样.
+        不考虑 value-type 声明的值[value]的数量, 这个 the 特殊表达式形式[special form]返回到值[value]的数量和表达式形式 form 返回的值[value]的数量一样.
 
 * 示例(Examples):
 
@@ -3865,21 +3865,21 @@ OR=>  (1 2 4 3)
     (the (values integer float) (truncate 3.2 2))   =>  1, 1.2
     (the (values integer float symbol) (truncate 3.2 2)) =>  1, 1.2
     (the (values integer float symbol t null list) 
-        (truncate 3.2 2)) =>  1, 1.2
+          (truncate 3.2 2)) =>  1, 1.2
     (let ((i 100))
-    (declare (fixnum i))
-    (the fixnum (1+ i))) =>  101
+        (declare (fixnum i))
+        (the fixnum (1+ i))) =>  101
     (let* ((x (list 'a 'b 'c))
-        (y 5))
-    (setf (the fixnum (car x)) y)
-    x) =>  (5 B C)
+            (y 5))
+        (setf (the fixnum (car x)) y)
+        x) =>  (5 B C)
     ```
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-        如果表达式产生的值不是由 value-type 指定的类型, 那么后果是没有定义的.
+        如果表达式形式 form 产生[yield]的值[value]不是由 value-type 指定的类型[type], 那么后果是没有定义的.
 
 * 也见(See Also):
 
@@ -3887,7 +3887,7 @@ OR=>  (1 2 4 3)
 
 * 注意(Notes):
 
-        值类型说明符可以用来表示多个值的类型:
+        values 类型指定符可以用来表示多值[multiple values]的类型:
 
     ```LISP
     (the (values integer integer) (floor x y))
@@ -3895,7 +3895,7 @@ OR=>  (1 2 4 3)
         (gethash the-key the-string-table))
     ```
 
-        setf 可以和 the 类型声明一起使用. 在这种情况下, 这个声明被转换为指定新值的表达式形式. 然后分析产生的 setf 表达式. 
+        setf 可以和 the 类型声明一起使用. 在这种情况下, 这个声明被转换为指定新值的表达式形式. 然后分析产生的 setf 表达式形式[form]. 
 
 ### <span id = "FunctionSPECIALOPERATORP">函数 SPECIAL-OPERATOR-P</span>
 
@@ -3905,12 +3905,12 @@ OR=>  (1 2 4 3)
 
 * 参数和值(Arguments and Values):
 
-        symbol---一个符号.
-        generalized-boolean---一个普通的 boolean.
+        symbol---一个符号[symbol].
+        generalized-boolean---一个广义 boolean[generalized boolean].
 
 * 描述(Description):
 
-        如果 symbol 是一个特殊操作符就返回 true; 否则, 返回 false.
+        如果符号 symbol 是一个特殊操作符[special operator]就返回 true; 否则, 返回 false.
 
 * 示例(Examples):
 
@@ -3926,13 +3926,13 @@ OR=>  (1 2 4 3)
 
 * 异常情况(Exceptional Situations):
 
-        如果它的参数不是一个符号应该发出一个 type-error 错误.
+        如果它的参数不是一个符号[symbol]应该发出一个 type-error 错误.
 
 * 也见(See Also): None.
 
 * 注意(Notes):
 
-        从历史观点上说, 这个函数被称为 special-form-p. 这个名字最终被声明为用词不当并且修改, 因为它是对特殊操作符返回 true, 而不是特殊表达式. 
+        从历史观点上说, 这个函数被称为 special-form-p. 这个名字最终被声明为用词不当并且修改, 因为它是对特殊操作符[special operator]返回 true, 而不是特殊表达式形式[special form]. 
 
 ### <span id = "FunctionCONSTANTP">函数 CONSTANTP</span>
 
@@ -3942,26 +3942,25 @@ OR=>  (1 2 4 3)
 
 * 参数和值(Arguments and Values):
 
-        form---一个表达式形式.
-        environment---一个环境对象. 默认是 nil.
-        generalized-boolean---一个普通的 boolean.
+        form---一个表达式形式[form].
+        environment---一个环境[environment]对象[object]. 默认是 nil.
+        generalized-boolean---一个广义 boolean [generalized boolean].
 
 * 描述(Description):
 
-        如果 form 可以被实现确定为在指定的环境(environment)中的一个常量形式, 则返回true; 否则, 它返回 false 表示表达式不是一个常量形式或者它不能确定是否表达式形式是一个常量形式.
+        如果表达式形式 form 可以被这个具体实现[implementation]确定为在指定的环境 environment 中的一个常量形式[constant form], 则返回 true; 否则, 它返回 false 表示这个表达式形式[form]不是一个常量形式[constant form]或者它不能确定表达式形式[form]是否为一个常量形式[constant form].
 
-        下面这些种类的表达式形式被当作常量形式:
+        下面这些种类的表达式形式[form]被当作常量形式[constant form]:
 
-        * 自求值对象 (像数字, 字符, 以及各种类型的数组) 总是被当作常量形式并且一定被 constantp 识别.
+        * 自求值对象[self-evaluating object] (像数字[number], 字符[character], 以及各种类型的数组[array]) 总是被当作常量形式[constant form]并且一定被 constantp 识别.
 
-        * 常变量, 像关键字还有 Common Lisp 定义作为常量的符号 (像 nil, t, 还有 pi), 还有在指定的环境中, 使用 defconstant 的用户声明为常量的符号总是被认为是常量形式, 因此必须被 constantp 所识别.
+        * 常变量[constant variable], 例如关键字, 被 Common Lisp 定义作为常量的符号 (像 nil, t, 还有 pi), 还有在指定的环境 environment 中, 被用户使用 defconstant 声明为常量的符号总是被认为是常量形式[constant form], 并且一定被 constantp 所识别.
 
-        * quote 表达式总是被当作常量并且一定被 constantp 所识别.
+        * quote 表达式形式[form]总是被当作常量并且一定被 constantp 所识别.
 
-        * 一个实现允许, 但不是必须去检测额外的常量表达式形式. 如果确实如此, 那么使用环境(environment)中信息也是允许的, 但不是必需的. 对于常量形式 constantp 可能或可能不会返回 true 的例子是: (sqrt pi), (+ 3 2), (length '(a b c)), 还有 (let ((x 7)) (zerop x)).
+        * 一个实现[implementation]允许, 但不是必须去检测额外的常量形式[constant form]. 如果确实如此, 那么使用环境 environment 中信息也是允许的, 但不是必需的. 对于 constantp 可能或可能不会返回 true 的常量形式[constant form]的例子是: (sqrt pi), (+ 3 2), (length '(a b c)), 还有 (let ((x 7)) (zerop x)).
 
-
-        如果一个实现选择使用环境(environment)信息, 可以使用诸如展开宏或执行函数内联之类的操作, 但不是必须; 然而, 展开编译器宏是不允许的.
+        如果一个实现[implementation]选择使用环境 environment 信息, 可以使用诸如展开宏[macro]或执行函数内联之类的操作, 但不是必须; 然而, 展开编译器宏[compiler macro]是不允许的.
 
 * 示例(Examples):
 
@@ -3988,7 +3987,7 @@ OR=>  (1 2 4 3)
 
 * 受此影响(Affected By):
 
-        全局环境的状态 (比如, 这些被声明为常数变量的名字的符号).
+        全局环境的状态 (比如, 那些已经被声明为常变量[constant variable]的名字[name]的符号[symbol]).
 
 * 异常情况(Exceptional Situations): None.
 
