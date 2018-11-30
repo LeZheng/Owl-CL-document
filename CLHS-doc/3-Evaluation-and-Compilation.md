@@ -33,7 +33,7 @@
 
 一个环境[environment]由一个绑定[binding]集合和求值过程中使用的其他信息 (比如, 用来关联名字和意义的信息) 组成.
 
-一个环境[environment]中的绑定[binding]被用命名空间[namespace]来划分. 单独的名字在每一个环境[environment]中可以同时有超过一个关联的绑定[binding], 每一个命名空间[namespace]只能有一个关联的绑定[binding].
+一个环境[environment]中的绑定[binding]用命名空间[namespace]来划分. 单独的名字在每一个环境[environment]中可以同时有超过一个关联的绑定[binding], 每一个命名空间[namespace]只能有一个关联的绑定[binding].
 
 > * 3.1.1.1 [全局的环境](#TheGlobalEnvironment)
 > * 3.1.1.2 [动态环境](#DynamicEnvironments)
@@ -65,7 +65,7 @@
 
 #### 3.1.1.3 <span id = "LexicalEnvironments">词法环境</span>
 
-在一个程序[program]中, 某个位置的求值[evaluation]的词法环境[lexical environment]是环境[environment]中包含了特定信息的部分, 这些信息有着在包含这个位置的那些表达式形式[form]中的词法作用域[lexical environment]. 一个词法环境[lexical environment]包含以下内容:
+在一个程序[program]中, 某个位置的求值[evaluation]的词法环境[lexical environment]是环境[environment]中包含了特定信息的部分, 这些信息有着包含这个位置的那些表达式形式[form]中的词法作用域[lexical scope]. 一个词法环境[lexical environment]包含以下内容:
 
     词法变量[lexical variable]和符号宏[symbol macro]的绑定[binding].
     函数[function]和宏[macro]的绑定. (这里隐含了关于局部禁用的编译器宏[compiler macro]的信息.)
@@ -182,7 +182,7 @@ Figure 3-1. 可应用于变量的一些已定义的名字
 
 ##### 3.1.2.1.2 <span id = "ConsesForms">cons 表达式形式</span>
 
-被用作一个表达式形式[form]的一个 cons, 被称为为复合表达式形式[compound form].
+用作一个表达式形式[form]的一个 cons, 被称为为复合表达式形式[compound form].
 
 如果这个复合表达式形式[compound form]的 car 是一个符号[symbol], 这个符号[symbol]是一个操作符[operator]的名字[name], 那么这个表达式形式[form]是一个特殊表达式形式[special form], 一个宏表达式[macro form], 或者是一个函数表达式[function form], 取决于这个操作符[operator]在当前词法环境[lexical environment]的函数[function]绑定[binding]. 如果这个操作符[operator]既不是一个特殊操作符[special operator]也不是一个宏名字[macro name], 那么它被假定为一个函数名字[function name] (即便在这里没有这样的一个函数[function]定义).
 
@@ -387,9 +387,9 @@ funs)
 
 ```LISP
 (defun test (x z)
-(let ((z (* x 2)))
+  (let ((z (* x 2)))
     (print z))
-z)
+  z)
 ```
 
 由 let 创建的这个变量 z 的绑定[binding]遮蔽了函数 test 的形参[parameter]绑定. 在 print 表达式形式[form]中对变量 z 的引用会引用 let 绑定的. 在函数 test 的最后对 z 的引用会引用到名为 z 的形参[parameter]上.
@@ -495,7 +495,7 @@ Figure 3-5. 一些可应用于接收多值的操作符
 
 术语隐式编译[implicit compilation]指的是在求值[evaluation]期间执行的编译[compilation].
 
-术语字面化[literal]对象[object]指的是一个引用的对象[object]或者一个自求值对象[self-evaluating object]或者这样一个对象的底层结构对象<!--TODO 待校对-->. 一个常变量[constant variable]自身不是一个字面化[literal]对象[object].
+术语字面化[literal]对象[object]指的是一个引用的对象[object]或者一个自求值对象[self-evaluating object]或者一个这样的对象的底层结构对象[object]. 一个常变量[constant variable]自身不是一个字面化[literal]对象[object].
 
 术语合并[coalesce]按如下定义. 假定 A 和 B 是源代码[source code]中的两个字面化[literal]常量[constant], 并且 A' 和 B' 是编译后代码[compiled code]中对应的对象[object]. 如果 A' 和 B' 是 eql 但是 A 和 B 不是 eql, 那么就说 A 和 B 被编译器所合并.
 
@@ -517,7 +517,7 @@ Figure 3-5. 一些可应用于接收多值的操作符
 
 编译环境[compilation environment]从求值环境[evaluation environment]继承而来, 并且编译环境[compilation environment]和求值环境[evaluation environment]可能是相同的[identical]. 这个求值环境[evaluation environment]从启动环境[startup environment]中继承而来, 并且这个启动环境[startup environment]和求值环境[evaluation environment]可能是一样的[identical].
 
-术语编译时[compile time]指的是编译器处理源代码[source code]的那段时间. 在编译期[compile time], 只有编译环境[compilation environment]和求值环境[evaluation environment]可用.
+术语编译期[compile time]指的是编译器处理源代码[source code]的那段时间. 在编译期[compile time], 只有编译环境[compilation environment]和求值环境[evaluation environment]可用.
 
 术语编译期定义[compile-time definition]指的是编译环境[compilation environment]中的定义. 比如, 编译一个文件时, 一个函数如果声明为 inline, 那么它的定义可能被保留在编译环境[compilation environment]中. 这个定义可能在求值环境[evaluation environment]中不可用.
 
@@ -537,7 +537,7 @@ Figure 3-5. 一些可应用于接收多值的操作符
 
 #### 3.2.2.1 <span id = "CompilerMacros">编译器宏</span>
 
-编译器宏[compiler macro]可以定义给一个同时也命名一个函数[function]或宏[macro]的名称[name]. 这也就是说, 一个函数名[function name]可能同时命名函数[function]和编译器宏[compiler macro].
+编译器宏[compiler macro]可以定义给一个名字[name], 这个名字[name]同时命名一个函数[function]或宏[macro]. 这也就是说, 一个函数名[function name]可能同时命名函数[function]和编译器宏[compiler macro].
 
 如果 compiler-macro-function 对于出现在词法环境[lexical environment]中的一个函数名[function name]返回 true, 这个函数名[function name]命名一个编译器宏[compiler macro]. 为这个函数名[function name]创建一个词法绑定[lexical binding]不止创建一个局部函数[function]或宏[macro]定义, 并且也遮蔽[shadows[2]]了这个编译器宏[compiler macro].
 
@@ -549,13 +549,13 @@ Figure 3-6. 应用于编译器宏的定义的名字
 
 ##### 3.2.2.1.1 编译器宏的目的
 
-这个编译器宏[compiler macro]机制的目的是允许选择性的源代码转换为编译器的优化建议. 当一种复合表达式形式[compound form]被处理(如由编译器), 如果这个操作符[operator]命名了一个编译器宏[compiler macro], 那么这个编译器宏函数[compiler macro function]可能在这个表达式形式[form]上被调用, 而产生的展开进行递归处理优先于在原始表达式形式[form]上根据它作为函数表达式形式[function form]或宏表达式形式[macro form]的解释执行常规处理.
+这个编译器宏[compiler macro]机制的目的是允许选择性的源代码转换为编译器的优化建议. 当一种复合表达式形式[compound form]被处理(例如被编译器), 如果这个操作符[operator]命名了一个编译器宏[compiler macro], 那么这个编译器宏函数[compiler macro function]可能在这个表达式形式[form]上被调用, 而产生的展开进行递归处理优先于在原始表达式形式[form]上根据它作为函数表达式形式[function form]或宏表达式形式[macro form]的解释执行常规处理.
 
 一个编译器宏函数[compiler macro function], 就像一个宏函数[macro function], 是一个两个实参[argument]的函数[function]: 整个调用的表达式形式[form]和那个环境[environment]. 不像一个普通的宏函数[macro function], 一个编译器宏函数[compiler macro function]可以通过只返回与原始表达式形式[form]相同的值来拒绝提供展开式. 如果编译器宏函数[compiler macro function]破坏性地修改的它的表达式形式[form]参数的任何部分, 那么后果是未定义的.
 
 传递给编译器宏函数[compiler macro function]的表达式形式[form]可以是一个 car 部分为一个函数名的列表[list]或者一个 car 部分是 funcall 并且 cadr 部分是一个列表 (function name) 的列表; 注意, 这会影响编译器宏函数[compiler macro function]对表达式形式参数的解构. define-compiler-macro 会为两种可能的格式的参数正确解构做准备.
 
-当 compile-file 选择展开一个编译器宏[compiler macro]表达式形式[form]的顶层表达式形式[top level form]时, 那么展开式出于 eval-when 处理的目的也被当作顶层表达式形式[top level form]来处理; 见章节 3.2.3.1 (顶层表达式形式的处理). 
+当 compile-file 选择展开一个是编译器宏[compiler macro]表达式形式[form]的顶层表达式形式[top level form]时, 那么展开式出于 eval-when 处理的目的也被当作顶层表达式形式[top level form]来处理; 见章节 3.2.3.1 (顶层表达式形式的处理). 
 
 ##### 3.2.2.1.2 编译器宏的命名
 
@@ -583,7 +583,7 @@ Figure 3-6. 应用于编译器宏的定义的名字
 
 ###### 3.2.2.1.3.1 关于编译器宏实现的注意事项
 
-如上所述, 虽然从技术上对于 eval 在与编译器[compiler]相同的情况下处理编译器宏[compiler macro]是允许的, 但是这在解释型具体实现[interpreted implementation]中并不一定是个好主意.
+如上所述, 虽然从技术上允许 eval 在和编译器[compiler]相同的情况下去处理编译器宏[compiler macro], 但是这在解释型具体实现[interpreted implementation]中并不一定是个好主意.
 
 编译器宏[compiler macro]的存在是为了用编译时速度换取运行时速度的目的. 编写编译器宏[compiler macro]的程序员倾向于假设编译器宏[compiler macro]比正常函数[function]和宏[macro]花费更多的时间进而来生成用于运行时的最佳的代码. 由于 eval 在解释型具体实现[interpreted implementation]中可能多次执行相同表达式形式的语义分析, 因此具体实现[implementation]在每次这样的求值[evaluation]中选择调用编译器宏[compiler macro]可能会很低效.
 
@@ -603,9 +603,9 @@ Figure 3-6. 应用于编译器宏的定义的名字
 
 所有符合规范的程序[conforming program]必须遵守以下约束, 这些被设计用于减少编译和解释的程序的可观测差异:
 
-  * 任何被引用的宏[macro]的定义必须出现在编译环境[compilation environment]中. 任何以一个不是命名编译环境[compilation environment]中定义的特殊操作符[special operator]或宏[macro]的符号[symbol]开始的列表[list]表达式形式[form]会被编译器当作一个函数调用.
+  * 任何被引用的宏[macro]的定义必须出现在编译环境[compilation environment]中. 任何以一个不是命名该编译环境[compilation environment]中定义的特殊操作符[special operator]或宏[macro]的符号[symbol]开始的列表[list]表达式形式[form]会被编译器当作一个函数调用.
 
-  * 必须在编译环境[compilation environment]中对动态变量[dynamic variable]进行 special 全局声明. 在编译环境[compilation environment]中没有 special 声明或全局声明的任何绑定[binding]都被编译器视为词法绑定[lexical binding].
+  * 动态变量[dynamic variable]的 special 公告必须在编译环境[compilation environment]中做出. 在编译环境[compilation environment]中没有 special 声明或公告的任何绑定[binding]都被编译器视为词法绑定[lexical binding].
 
   * 在编译环境[compilation environment]中定义和声明为 inline 的函数的定义在运行时必须是相同的.
 
@@ -625,7 +625,7 @@ Figure 3-6. 应用于编译器宏的定义的名字
 
   * 除了上面显式列出的情况外, 在求值环境[evaluation environment]中定义的一个函数[function]允许在运行时具有不同的定义或不同的签名, 并且运行时定义生效.
 
-不应该使用额外的任何关于运行时环境[environment]与启动、求值和编译环境[environment]之间一致性的假设来编写符合规范的程序[conforming programs].
+不应该使用额外的关于运行时环境[environment]与启动、求值和编译环境[environment]之间一致性的任何假设来编写符合规范的程序[conforming programs].
 
 除非另行注明, 当一个编译期定义和运行时不同, 会在运行时出现以下情况的一种:
 
@@ -637,7 +637,7 @@ Figure 3-6. 应用于编译器宏的定义的名字
 
 ### 3.2.3 <span id = "FileCompilation">文件编译</span>
 
-函数[function] compile-file 对一个文件中的表达式形式[form]根据章节 3.2.2 (Compilation Semantics) 中的规则执行编译, 并且产生一个可以通过 load 被载入的输出文件.
+函数[function] compile-file 对一个文件中的表达式形式[form]根据章节 3.2.2 (编译语义) 中的规则执行编译, 并且产生一个可以通过 load 被载入的输出文件.
 
 通常情况下, 在 compile-file 编译的文件中出现的顶层表达式形式[top level form]只在加载编译后文件时才进行求值, 而不是在编译文件时进行求值. 但是, 通常情况下, 文件中的某些表达式需要在编译时进行求值, 以便能够正确地读取和编译文件的其余部分.
 
@@ -651,7 +651,7 @@ Figure 3-6. 应用于编译器宏的定义的名字
 
 在文件编译器中对顶层表达式形式[top level form]的处理定义如下:
 
-* 如果这个表达式形式[form]是一个编译器宏表达式形式[compiler macro form] (没有被一个 notinline 声明[declaration]所禁用), 具体实现[implementation]可能或可能不选择计算该表达式形式[form]的编译器宏展开式[ compiler macro expansion], 并且执行那个展开式, 可能也可能不会选择在相同的处理模式(compile-time-too 或 not-compile-time)下将结果作为顶层表达式形式[top level form]进行处理. 如果它拒绝获取或使用展开式, 它必须处理原始的表达式[form].
+* 如果这个表达式形式[form]是一个编译器宏表达式形式[compiler macro form] (没有被一个 notinline 声明[declaration]所禁用), 具体实现[implementation]可能也可能不选择计算该表达式形式[form]的编译器宏展开式[compiler macro expansion], 并且执行那个展开式, 可能也可能不会选择在相同的处理模式(compile-time-too 或 not-compile-time)下将结果作为顶层表达式形式[top level form]进行处理. 如果它拒绝获取或使用展开式, 它必须处理原始的表达式[form].
 
 * 如果这个表达式形式是一个宏表达式形式[macro form], 它的宏展开会在相同的处理模式下(compile-time-too 或 not-compile-time)按照顶层表达式形式[top level form]被计算并处理.
 
@@ -690,13 +690,13 @@ Figure 3-6. 应用于编译器宏的定义的名字
 
     注意, 顶层表达式形式[top level form]是按照在文件中显示的顺序处理的, 并且编译器读取的每个顶层表达式形式[top level form]都在读取下一个之前进行处理. 然而, 只要 Common Lisp 的语义被保留, 不是顶层表达式形式[top level form]的子表达式[subform]的处理(包括宏展开的)顺序还有进一步编译的顺序是未指定的.
 
-eval-when 表达式形式[form]导致的编译期求值仅限顶层. 对于非顶层表达式形式[non-top-level form] :compile-toplevel 和 :load-toplevel 情况声明都会被忽略. 对于非顶层表达式形式[non-top-level form], 一个指定了 :execute 情况的 eval-when 被当作一个包括 eval-when 表达式形式[form]的主体部分的隐式 progn[implicit progn ]; 否则, 在主体中的表达式形式[form]就被忽略.
+eval-when 表达式形式[form]导致的编译期求值仅限顶层. 对于非顶层表达式形式[non-top-level form] :compile-toplevel 和 :load-toplevel 情况声明都会被忽略. 对于非顶层表达式形式[non-top-level form], 一个指定了 :execute 情况的 eval-when 被当作一个包括 eval-when 表达式形式[form]的主体部分的隐式 progn[implicit progn]; 否则, 在主体中的表达式形式[form]就被忽略.
 
 ##### 3.2.3.1.1 定义宏的处理
 
 出现在一个要被 compile-file 处理的文件中的那些定义宏[macro] (就像 defmacro 或者 defvar), 通常会有编译期副作用, 影响同一个文件[file]中后续表达式形式[form]的编译. 解释这些副作用是如何发生的一个很方便的模型是, 定义宏被展开为一个或多个 eval-when 表达式形式[form], 然后导致编译期副作用发生的这些调用会出现在一个 (eval-when (:compile-toplevel) ...) 表达式形式[form]的主体部分.
 
-编译期的副作用可能会导致对定义的信息的存储方式不同于以"正常"方式处理定义宏 (要么是解释, 要么是加载已编译的文件).
+编译期的副作用可能会导致对定义的信息的存储方式不同于以"正常"方式处理定义宏时的方式 (要么是解释, 要么是加载已编译的文件).
 
 具体来说, 在编译期由定义宏[macro]所存储的信息可能或可能无法用于解释器 (不管是编译时或是编译后), 或者是后续对编译器[compiler]的调用中. 比如, 下面这段代码是不可移植的因为它假定在对于解释器可用的地方编译器[compiler]也存储了 foo 宏定义:
 
@@ -745,10 +745,10 @@ Figure 3-8. 影响编译期环境的定义宏
 
 #### 3.2.4.1 <span id = "ExternalizableObjects">可外部化的对象</span>
 
-事实上文件编译器[file compiler]在编译后的文件[compiled file]中外部表示字面化[literal]对象[object]并且在文件[file]被加载时重构这些对象[object]的适合的等价对象, 这也意味着就需要去约束被文件编译器[file compiler]处理的代码[code]中的可以被用作字面化[literal]对象[object]的那些对象[object]的特性.
+事实上文件编译器[file compiler]在编译后的文件[compiled file]中外部地表示字面化[literal]对象[object]并且在文件[file]被加载时重构这些对象[object]的适合的等价对象, 这也意味着就需要去约束被文件编译器[file compiler]处理的代码[code]中的可以被用作字面化[literal]对象[object]的那些对象[object]的特性.
 
 一个可以被用作要被文件编译器[file compiler]处理的代码[code]中的字面化[literal]对象[object]的对象[object]被称为可外部化对象[externalizable object].
-
+<!--TODO 二位 ??-->
 如果两个对象[object]满足一个二位的概念上等价断言(下面定义的), 我们就定义它们是相似的[similar], 这个断言不依赖于 Lisp 镜像[Lisp image], 所以两个在不同 Lisp 镜像[Lisp image]中的对象[object]可以在这个断言下理解为等价的. 更进一步, 通过检查这个概念性断言的定义, 程序员可以预测一个对象[object]的哪些方面确实被文件[file]编译[compilation]保留了.
 
 文件编译器[file compiler]必须与加载器[loader]合作, 以确保可外部化的对象[externalizable object]作为一个字面化[literal]对象[object]处理的每个情况中, 加载器[loader]会构造一个类似的[similar]对象[object].
@@ -906,17 +906,17 @@ compile 和 compile-file 都返回 3 个值, 前两个表示被编译的源代�
 
 通常, 一个具体实现[implementation]可以自由地忽视除了 declaration, notinline, safety 还有 special 以外的声明指定符[declaration specifier].
 
-一个 declaration 声明[declaration]必须抑制关于不识别这个种类的声明[declaration]的警告. 如果一个实现[implementation]没有产生关于不识别声明的警告, 它可能安全地忽视了这个声明[declaration].
+一个 declaration 声明[declaration]必须抑制关于不识别这个种类的声明[declaration]的警告. 如果一个实现[implementation]不产生关于不识别声明的警告, 它可以安全地忽视了这个声明[declaration].
 
 一个 notinline 声明[declaration]必须被任何支持内联函数或者编译器宏[compiler macro]的具体实现[implementation]所识别进而废弃那些机制. 一个不使用内联函数或者编译器宏[compiler macro]的具体实现[implementation]可能会安全地忽略这个声明[declaration].
 
-一个 safety 声明[declaration]必须总是被识别, 它会提高当前的安全等级. 一个始终对代码进行处理的实现, 就像 safety 高一样, 可能安全地忽略这个声明.
+一个 safety 声明[declaration]必须总是被识别, 它会提高当前的安全等级. 一个始终进行像 safety 是高的一样处理代码的实现, 可以安全地忽略这个声明.
 
 一个 special 声明[declaration]必须被所有实现[implementation]所处理. 
 
 ### 3.3.2 <span id = "DeclarationSpecifiers">声明指定符</span>
 
-一个声明指定符[declaration specifier]是一个表达式[expression], 它可以出现在顶层的 declare 表达式或者一个 declaim 表达式形式或者作为给 proclaim 的参数. 它是一个的列表[list], 其中 car 部分为声明标识符[declaration identifier], cdr 部分为根据这个声明标识符[declaration identifier]所指定的规则解释的数据.
+一个声明指定符[declaration specifier]是一个表达式[expression], 它可以出现在 declare 表达式或者一个 declaim 表达式形式的顶层, 或者作为给 proclaim 的参数. 它是一个的列表[list], 其中 car 部分为声明标识符[declaration identifier], cdr 部分为根据特定于这个声明标识符[declaration identifier]的规则解释的数据.
 
 ### 3.3.3 <span id = "DeclarationIdentifiers">声明标识符</span>
 
@@ -943,15 +943,15 @@ Figure 3-9. Common Lisp 声明标识符
 
 不是绑定声明[bound declaration]的声明[declaration]称为自由声明[free declarations].
 
-在表达式形式[form] F1 中的一个自由声明[free declarations], 它适用于由某个表达式形式[from] F2 所建立的一个名字[name] N 的绑定[binding], 其中 F1 是 F2 的一个子表达式形式[subform], 那么它只影响 N 在 F1 中的引用; 它不适用于其他在 F1 以外的对 N 的引用, 也不影响 F2 中 N 的绑定[binding]被建立[establish]的方式.
+在表达式形式[form] F1 中的一个自由声明[free declarations], 它应用于由某个表达式形式[from] F2 所建立的一个名字[name] N 的绑定[binding], 其中 F1 是 F2 的一个子表达式形式[subform], 那么它只影响 N 在 F1 中的引用; 它不应用于其他在 F1 以外的对 N 的引用, 也不影响 F2 中 N 的绑定[binding]被建立[establish]的方式.
 
-不适用于绑定[binding]的声明[declaration]只能以自由声明[free declarations]的形式出现.
+不应用于绑定[binding]的声明[declaration]只能以自由声明[free declarations]的形式出现.
 
-一个绑定声明[bound declaration]的作用域[scope]和它应用的绑定[binding]的词法作用域[lexical scope]相同; 对于特殊变量[special variable], 这意味拥有这个绑定[binding]会拥有的作用域[scope]使得它成为一个词法绑定[lexical binding].
+一个绑定声明[bound declaration]的作用域[scope]和它应用的绑定[binding]的词法作用域[lexical scope]相同; 对于特殊变量[special variable], 这意味拥有这个绑定[binding]会拥有的作用域[scope]使得它成为一个词法绑定[lexical binding].<!--TODO 不理解-->
 
 除非明确声明, 一个自由声明[free declaration]的作用域[scope]只包括它出现在头部的表达式形式[form]的主体子表达式形式[subform], 不包括其他的子表达式形式[subform]. 自由声明[free declaration]的作用域[scope]不包括包含这些声明[declaration]的表达式形式[form]所建立的绑定[binding]的初始化表达式形式[initialization form].
 
-一些循环表达式形式[iteration form]包含 step, end-test, 或者 result 子表达式, 这些子表达式形式[subform]也被包含在循环表达式形式[iteration form]中出现的那些声明[declaration]的作用域[scope]内. 具体地说, 涉及的循环表达式形式[iteration form]和子表达式形式[subform]是:
+一些循环表达式形式[iteration form]包含步进(step), 终止条件(end-test), 或者结果(result)子表达式形式[subform], 这些子表达式形式[subform]也被包含在循环表达式形式[iteration form]中出现的那些声明[declaration]的作用域[scope]内. 具体地说, 涉及的循环表达式形式[iteration form]和子表达式形式[subform]是:
 
     do, do*: step-forms, end-test-form, and result-forms.
     dolist, dotimes: result-form
@@ -1112,15 +1112,15 @@ Figure 3-13. 被普通 lambda 列表使用的 lambda 关键字列表
 
 #### 3.4.1.2 <span id = "SpecifiersOptionalParameters">可选参数的指定符</span>
 
-如果出现 &optional, 可选参数指定符就是那些跟在 &optional 后面直到下一个 lambda 列表关键字[lambda list keyword]或者直到列表结束的那些指定符. 如果指定了可选参数, 然后每一个都按如下处理. 如果存在未处理的参数, 则参数变量 var 将绑定到下一个的剩余参数, 就像必要参数一样. 如果没有参数剩下, 不管怎样, 那么 init-form 被求值, 并且那个参数变量被绑定给产生的值(如果没有 init-form 出现在参数指定符中就绑定为 nil). 如果另一个变量名 supplied-p-parameter 出现在这个指定符中, 如果有一个参数可用它会被绑定为 true, 如果没有参数剩余它会被绑定为 false (因此 init-form 需要被求值). supplied-p-parameter 不是绑定一个参数而是一个值, 它表示是否为相应的 var 提供了一个对应的参数. 
+如果出现 &optional, 可选参数指定符就是那些跟在 &optional 后面直到下一个 lambda 列表关键字[lambda list keyword]或者直到列表结束的那些指定符. 如果指定了可选参数, 那么每一个都按如下处理. 如果存在未处理的参数, 则参数变量 var 将绑定到下一个的剩余参数, 就像必要参数一样. 如果没有参数剩下, 不管怎样, 那么 init-form 被求值, 并且那个参数变量被绑定给产生的值(如果没有 init-form 出现在参数指定符中就绑定为 nil). 如果另一个变量名 supplied-p-parameter 出现在这个指定符中, 如果有一个参数可用它会被绑定为 true, 如果没有参数剩余它会被绑定为 false (因此 init-form 需要被求值). supplied-p-parameter 不是绑定一个参数而是一个值, 它表示是否为相应的 var 提供了一个对应的参数. 
 
 #### 3.4.1.3 <span id = "SpecifierRestParameter">剩余参数的指定符</span>
 
-&rest, 如果出现, 后面必须跟着单独的剩余参数[rest parameter]指定符, 而那个指定符后面必须跟着另一个 lambda 列表关键字[lambda list keyword]或者 lambda 列表[lambda list]的末尾. 在所有可选参数被处理后, 这里可能由也可能没有一个剩余参数[rest parameter]. 如果这里有一个剩余参数[rest parameter], 它给绑定给一个所有还没有被处理(as-yet-unprocessed)参数的列表[list]. 如果没有未处理参数剩下, 这个剩余参数[rest parameter]绑定给空列表[empty list]. 如果这里没有剩余参数[rest parameter]和关键字参数[keyword parameter], 那么如果有任何未处理参数剩余就会发出一个错误; 见章节 3.5 (函数调用中的错误检测). 剩余参数[rest parameter]的值是允许, 但不是必需, 去和给 apply 的最后一个参数共享结构. 
+&rest, 如果出现, 后面必须跟着单独的剩余参数[rest parameter]指定符, 而那个指定符后面必须跟着另一个 lambda 列表关键字[lambda list keyword]或者 lambda 列表[lambda list]的末尾. 在所有可选参数被处理后, 这里可能由也可能没有一个剩余参数[rest parameter]. 如果这里有一个剩余参数[rest parameter], 它给绑定给一个所有还没有被处理(as-yet-unprocessed)参数的列表[list]. 如果没有未处理参数剩下, 这个剩余参数[rest parameter]绑定给空列表[empty list]. 如果这里没有剩余参数[rest parameter]和关键字参数[keyword parameter], 那么如果有任何未处理参数剩余就会发出一个错误; 见章节 3.5 (函数调用中的错误检测). 允许剩余参数[rest parameter]的值去和给 apply 的最后一个参数共享结构, 但不是必需. 
 
 #### 3.4.1.4 <span id = "SpecifiersKeywordParameters">关键字参数的指定符</span>
 
-如果出现 &key , 所有直到下一个 lambda 列表关键字[lambda list keyword]或者列表[list]末尾的指定符都是关键字参数指定符. 当关键字参数被处理, 同样被处理的参数会被做到一个列表[list]中作为剩余参数[rest parameter]. 允许同时指定 &rest 和 &key. 在这个情况下剩下的参数被同时用于这两种目的; 这就是说, 所有剩下的参数被做到剩余参数[rest parameter]的列表[list]中, 也被当作 &key 参数被处理. 如果指定了 &key, 必须有偶数个参数; 见章节 3.5.1.6 (奇数数量的关键字参数). 这些参数被当作对, 每一对中的第一个参数被解释为一个名字而第二个作为对应的值. 每个对中的第一个对象[object]必须是一个符号[symbol]; 见章节 3.5.1.5 (非法的关键字参数). 这个关键字参数指定符后面可能可选地跟着 lambda 列表关键字[lambda list keyword] &allow-other-keys.
+如果出现 &key , 所有直到下一个 lambda 列表关键字[lambda list keyword]或者列表[list]末尾的指定符都是关键字参数指定符. 当关键字参数被处理, 同样被处理的参数会被做到一个列表[list]中作为剩余参数[rest parameter]. 允许同时指定 &rest 和 &key. 在这个情况下剩下的参数被同时用于这两种目的; 这就是说, 所有剩下的参数被做到剩余参数[rest parameter]的列表[list]中, 也被当作 &key 参数被处理. 如果指定了 &key, 必须有偶数个参数; 见章节 3.5.1.6 (奇数数量的关键字参数). 这些参数被当作对(pair), 每一对中的第一个参数被解释为一个名字而第二个作为对应的值. 每个对中的第一个对象[object]必须是一个符号[symbol]; 见章节 3.5.1.5 (非法的关键字参数). 这个关键字参数指定符后面可能可选地跟着 lambda 列表关键字[lambda list keyword] &allow-other-keys.
 
 在每一个关键字参数指定符中参数变量必须是一个名字 var. 如果这个 var 单独出现或者在一个 (var init-form) 组合中, 当匹配实参[argument]到形参[parameter]时, 使用的关键字名字是一个 KEYWORD 包中名字[name]和 var 相同[same] (在 string= 下)的符号[symbol]. 如果使用了这个 ((keyword-name var) init-form) 表示法, 那么用于匹配实参[argument]到形参[parameter]的关键字名字是 keyword-name, 它可能是任何包[package]中的符号[symbol] (当然, 如果它不是 KEYWORD 包中的符号[symbol], 它没有必要自求值, 所以当调用这个函数时必须额外关心来确保正常的求值一直产生这个关键字名字). 因此
 
@@ -1142,8 +1142,8 @@ Figure 3-13. 被普通 lambda 列表使用的 lambda 关键字列表
 
 注意如果 &key 出现了, 一个 :allow-other-keys 的关键字参数总是是允许的---不管关联的值是 true 或者 false. 然而, 如果这个值是 false, 其他不匹配的关键字是不接受的 (除非使用了 &allow-other-keys).
 
-此外, 如果接收的参数列表指定了一个会被 :allow-other-keys 标记的普通参数, 那么 :allow-other-keys 同时有它的 special-cased 意义(标识是否允许附加的关键字)和它的正常意义(数据流入到提及的函数中).
-<!--TODO special-cased ??-->
+此外, 如果接收的参数列表指定了一个会被 :allow-other-keys 标记的普通参数, 那么 :allow-other-keys 同时有它的特殊情况意义(标识是否允许附加的关键字)和它的正常意义(数据流入到提及的函数中).
+
 ##### 3.4.1.4.1 抑制关键字参数检测
 
 如果一个函数[function]的 lambda 列表[lambda list]中指定了 &allow-other-keys, 对这个函数[function]的调用中关键字[keyword[2]]实参[argument]检测会被抑制.
@@ -1187,20 +1187,22 @@ Figure 3-13. 被普通 lambda 列表使用的 lambda 关键字列表
 这里是可选参数[optional parameter]和剩余参数[rest parameter]的例子:
 
 ```LISP
-((lambda (a b) (+ a (* b 3))) 4 5) =>  19
-((lambda (a &optional (b 2)) (+ a (* b 3))) 4 5) =>  19
-((lambda (a &optional (b 2)) (+ a (* b 3))) 4) =>  10
-((lambda (&optional (a 2 b) (c 3 d) &rest x) (list a b c d x)))
-=>  (2 NIL 3 NIL NIL)
-((lambda (&optional (a 2 b) (c 3 d) &rest x) (list a b c d x)) 6)
-=>  (6 T 3 NIL NIL)
-((lambda (&optional (a 2 b) (c 3 d) &rest x) (list a b c d x)) 6 3)
-=>  (6 T 3 T NIL)
-((lambda (&optional (a 2 b) (c 3 d) &rest x) (list a b c d x)) 6 3 8)
-=>  (6 T 3 T (8))
-((lambda (&optional (a 2 b) (c 3 d) &rest x) (list a b c d x))
-6 3 8 9 10 11)
-=>  (6 t 3 t (8 9 10 11))
+;;; The caller can supply :ALLOW-OTHER-KEYS T to suppress checking.
+ ((lambda (&key x) x) :x 1 :y 2 :allow-other-keys t) =>  1
+;;; The callee can use &ALLOW-OTHER-KEYS to suppress checking.
+ ((lambda (&key x &allow-other-keys) x) :x 1 :y 2) =>  1
+;;; :ALLOW-OTHER-KEYS NIL is always permitted.
+ ((lambda (&key) t) :allow-other-keys nil) =>  T
+;;; As with other keyword arguments, only the left-most pair
+;;; named :ALLOW-OTHER-KEYS has any effect.
+ ((lambda (&key x) x) 
+  :x 1 :y 2 :allow-other-keys t :allow-other-keys nil)
+=>  1
+;;; Only the left-most pair named :ALLOW-OTHER-KEYS has any effect,
+;;; so in safe code this signals a PROGRAM-ERROR (and might enter the
+;;; debugger).  In unsafe code, the consequences are undefined.
+ ((lambda (&key x) x)                   ;This call is not valid
+  :x 1 :y 2 :allow-other-keys nil :allow-other-keys t)
 ```
 
 这里是关键字参数[keyword parameter]的例子:
@@ -1254,7 +1256,7 @@ Figure 3-13. 被普通 lambda 列表使用的 lambda 关键字列表
 这个函数[function]需要一个字符串[string]和一个维度信息并且返回一个指定维度的数组[array], 它的每一个元素都是指定的字符串[string]. 然而, :start 和 :end 命名的参数可能被用于指定给定字符串[string]中应该使用的子字符串. 另外, 在这个 lambda 列表[lambda list]中出现的 &allow-other-keys 表示调用者可能提供额外的已命名参数; 这个剩余参数[rest parameter]提供对它们的访问. 这些额外已命名的参数被传递给 make-array. 这个 make-array 函数[function]正常不允许使用已命名参数 :start 和 :end, 并且如果这样的已命名参数提供给 make-array 应该会发出一个错误. 然而, 对 make-array 的调用中已命名参数 :allow-other-keys 以及一个 true 值的出现导致任何额外的已命名参数, 包括 :start 和 :end, 是可接受的并且被忽略掉. 
 
 ### 3.4.2 <span id = "GenericFunctionLambdaLists">广义函数 lambda 列表</span>
-<!--TODO 有效方法[effective method] ??-->
+
 一个广义函数 lambda 列表[generic function lambda list]被用于描述被一个广义函数[generic function]接受的实参列表的整体形状. 个别方法[method]签名[signature]可能为有效方法[effective method]的 lambda 列表[lambda list]提供额外的关键字参数[keyword parameter].
 
 一个广义函数 lambda 列表[generic function lambda list]被 defgeneric 所使用.
@@ -1279,7 +1281,7 @@ Figure 3-14. 广义函数 lambda 列表使用的 lambda 列表关键字
 
     0个或多个必要参数[required parameter]必须被指定.
 
-可选和个关键字参数
+可选参数和关键字参数
 
     可选参数[optional parameter]和关键字参数[keyword parameter]可能没有默认的初始值表达式也没有使用 supplied-p 参数.
 
@@ -1353,29 +1355,29 @@ Figure 3-18. 宏 lambda 列表[macro lambda list]使用的lambda列表参数
 
 可选参数[optional parameter] (通过 &optional 引入) 和关键字参数[keyword parameter] (通过 &key 引入) 可以在一个宏 lambda 列表[macro lambda list]中被提供, 就像在普通 lambda 列表[ordinary lambda list]中一样. 两个中的每一个都可能包含默认初始化表达式形式和 supplied-p 参数[supplied-p parameter].
 
-&body 在函数中和 &rest 一样, 但是它可以被用于通知特定的输出格式化和编辑函数这个表达式形式[form]的剩余部分被当作一个主体(body), 并且应该相应地缩进. 在任何特定的级别 &body 或者 &rest 只有一个可以被使用; 见章节 3.4.4.1 (lambda 列表的解构). &body 可以出现在一个宏 lambda 列表[macro lambda list]的任何级别; 关于详细情况, 见章节 3.4.4.1 (lambda 列表的解构).
+&body 在函数中和 &rest 一样, 但是它可以被用于通知特定的输出格式化和编辑函数: 这个表达式形式[form]的剩余部分被当作一个主体(body), 并且应该相应地缩进. 在任何特定的级别 &body 或者 &rest 只有一个可以被使用; 见章节 3.4.4.1 (lambda 列表的解构). &body 可以出现在一个宏 lambda 列表[macro lambda list]的任何级别; 关于详细情况, 见章节 3.4.4.1 (lambda 列表的解构).
 
 &whole 后面跟着一个绑定为整个宏调用表达式形式的单独变量; 这是这个宏函数[macro function]作为第一个参数收到的值. 如果出现 &whole 和一个跟在后面的变量, 它们必须出现在 lambda 列表的最前面, 在任何其他参数或者 lambda 列表关键字[lambda list keyword]之前. &whole 可以出现在一个宏 lambda 列表[macro lambda list]的任何级别. 在内部级别, 这个 &whole 变量绑定为参数的对应部分, 正如 &rest, 但是不像 &rest, 其他参数也是允许的. 这个 &whole 的使用不影响指定参数的匹配.
 
-&environment 后面跟着一个绑定为表示这个宏调用被解释时所处的当前词法环境[lexical environment]的环境[environment]的单独变量. 这个环境[environment]应该和 macro-function, get-setf-expansion, compiler-macro-function, 还有 macroexpand (比如) 在计算宏展开式一起使用, 来确保这个编译环境[compilation environment]中建立的任何词法绑定[lexical binding]或定义被考虑进去. &environment 只能出现在宏 lambda 列表[macro lambda list]的顶层, 并且只能出现一次, 但是可以出现在这个列表的任何位置; 这个 &environment 和 &whole 形参[parameter]在这个 lambda 列表[lambda list]的任何其他变量[variable]之前被绑定[bound], 不管 &environment 出现在这个 lambda 列表[lambda list]的什么地方. 绑定为环境参数[environment parameter]的对象[object]具有动态范围[dynamic extent].
+&environment 后面跟着一个绑定为一个环境[environment]的单独变量, 这个环境表示这个宏调用被解释时所处的当前词法环境[lexical environment]. 这个环境[environment]应该和 macro-function, get-setf-expansion, compiler-macro-function, 还有 macroexpand (比如) 在计算宏展开式一起使用, 来确保这个编译环境[compilation environment]中建立的任何词法绑定[lexical binding]或定义被考虑进去. &environment 只能出现在宏 lambda 列表[macro lambda list]的顶层, 并且只能出现一次, 但是可以出现在这个列表的任何位置; 这个 &environment 和 &whole 形参[parameter]在这个 lambda 列表[lambda list]的任何其他变量[variable]之前被绑定[bound], 不管 &environment 出现在这个 lambda 列表[lambda list]的什么地方. 绑定为环境参数[environment parameter]的对象[object]具有动态范围[dynamic extent].
 
-解构允许一个宏 lambda 列表[macro lambda list]去表达宏调用语法的结构. 如果没有出现 lambda 列表关键字[lambda list keyword], 那么这个宏 lambda 列表[macro lambda list]是在叶子中包含参数名称的树[tree]. 匹配模式和宏表达式形式[macro form]必须具有兼容的树结构[tree structure]; 这就是说, 它们的树结构[tree structure]必须是等价的, 或者它只能在匹配模式的某些叶节点与宏表达式形式[macro form]的非原子[non-atomic]对象[object]匹配时有所不同. 关于这种求值情况[situation]下的错误检测的信息, 见章节 3.5.1.7 (解构不匹配).
+解构允许一个宏 lambda 列表[macro lambda list]去表达宏调用语法的结构. 如果没有出现 lambda 列表关键字[lambda list keyword], 那么这个宏 lambda 列表[macro lambda list]是在叶子中包含参数名称的树[tree]. 匹配模式和宏表达式形式[macro form]必须具有兼容的树结构[tree structure]; 这就是说, 它们的树结构[tree structure]必须是等价的, 或者它只能在匹配模式的某些叶节点与宏表达式形式[macro form]的非原子[non-atomic]对象[object]匹配时有所不同.<!--TODO 不理解--> 关于这种求值情况[situation]下的错误检测的信息, 见章节 3.5.1.7 (解构不匹配).
 
-一个解构 lambda 列表[lambda list] (不管在顶层还是嵌入的)可以是点对的(dotted), 以一个参数名结束. 这种情况的处理方式与列表末尾出现 &rest 前面的参数名称完全相同.
+一个解构 lambda 列表[lambda list] (不管在顶层还是嵌入的)可以是点对的(dotted), 以一个参数名结束. 这种情况被视为结束列表的参数名称出现在 &rest 前面.
 
 只有在和 (... &rest var) 或 (... . var) 匹配时, 允许一个宏表达式形式[macro form] (或者是一个宏表达式形式[macro form]的子表达式[subexpression])是一个点对列表. 宏[macro]需要去识别和处理这种情况.
 
 #### 3.4.4.1 lambda 列表的解构
 
-在一个宏 lambda 列表[macro lambda list]中参数名字可以出现的任何地方, 还有普通 lambda 列表[ordinary lambda list]语法中(在章节 3.4.1 (普通 lambda 列表) 描述的)不允许一个列表[list]的地方, 一个解构 lambda 列表[destructuring lambda list]可以出现来替换这个参数名字. 在这样做时, 会与形参匹配的实参被当作一个(可能是点对的)列表[list], 作为一个参数列表, 用作满足内嵌的 lambda 列表[lambda list]中的参数的实参列表. 这就被认为是解构(destructuring).
+在一个宏 lambda 列表[macro lambda list]中参数名字可以出现的任何地方, 以及普通 lambda 列表[ordinary lambda list]语法中(在章节 3.4.1 (普通 lambda 列表) 描述的)不允许一个列表[list]的地方, 一个解构 lambda 列表[destructuring lambda list]可以出现来替换这个参数名字. 在这样做时, 会与形参匹配的实参被当作一个(可能是点对的)列表[list], 作为一个参数列表, 用作满足内嵌的 lambda 列表[lambda list]中的参数的实参列表. 这就被认为是解构(destructuring).
 
-解构是将一个复合对象[object]分解为它的组件部分的过程, 使用一种缩写的声明式语法, 而不是用原始的组件访问函数手写出来. 每一个组件部分绑定给一个变量.
+解构是将一个复合对象[object]分解为它的组件部分的过程, 使用一种简短的声明式语法, 而不是用原始的组件访问函数书写出来. 每一个组件部分绑定给一个变量.
 
 一个解构操作需要一个将要解构的对象[object], 一个指定要提取哪些组件的匹配模式, 以及那些值为那些组件的变量的名称.
 
 ##### 3.4.4.1.1 lambda 列表的数据导向解构
 
-在数据导向的解构中, 匹配模式是一个要被分解的类型[type]的简单对象[object]. 无论在哪里提取组件, 在匹配模式中对应地方都会出现一个符号[symbol]; 这个符号[symbol]是变量的名称, 它的值是那个组件.
+在数据导向的解构中, 匹配模式是一个要被分解的类型[type]的简单对象[object]. 无论在哪里提取组件, 在匹配模式中对应地方都会出现一个符号[symbol]; 这个符号[symbol]是变量的名称, 这个变量的值就是那个组件.
 
 ###### 3.4.4.1.1.1 lambda 列表的数据导向解构示例
 
@@ -1407,7 +1409,7 @@ Figure 3-18. 宏 lambda 列表[macro lambda list]使用的lambda列表参数
 (first second third)
 ```
 
-如果没有 lambda 列表关键字[lambda list keyword]出现在匹配模式中, 那么 lambda 列表导向的解构和数据导向的结构是相同的. 在这个包含 lambda 列表关键字[lambda list keyword]的匹配模式中的任何列表(不管是一个子列表或是整个匹配模式本身)就会被特别地解释. 这个列表中第一个 lambda 列表关键字[lambda list keyword]左边的那些元素被当作解构匹配模式处理, 像平常一样, 但是列表中剩下的元素被当作函数的 lambda 列表[lambda list]一样处理, 除了在通常需要一个变量的情况下, 允许使用任意的解构匹配模式. 注意, 在不确定的情况下, lambda 列表[lambda list]语法优于解构语法. 因此, 在 &optional 之后, 一个元素列表是一个解构匹配模式和一个默认值表达式形式的列表.
+如果没有 lambda 列表关键字[lambda list keyword]出现在匹配模式中, 那么 lambda 列表导向的解构和数据导向的结构是相同的. 在这个包含 lambda 列表关键字[lambda list keyword]的匹配模式中的任何列表(不管是一个子列表或是整个匹配模式本身)就会被特别地解释. 这个列表中第一个 lambda 列表关键字[lambda list keyword]左边的那些元素被当作解构匹配模式处理, 像平常一样, 但是列表中剩下的元素被当作函数的 lambda 列表[lambda list]一样处理, 除了在通常需要一个变量的情况下, 允许使用任意的解构匹配模式. 注意, 在不确定的情况下, lambda 列表[lambda list]语法优于解构语法. 因此, 在 &optional 之后, 是一个列表, 它的元素是一个解构匹配模式和一个默认值表达式形式的列表.
 
 每个 lambda 列表关键字[lambda list keyword]在 lambda 列表导向的解构匹配模式中的具体行为如下:
 
@@ -1437,7 +1439,7 @@ Figure 3-18. 宏 lambda 列表[macro lambda list]使用的lambda列表参数
 
     或者一个关键字和一个解构匹配模式的列表, 一个可选初始化表达式形式, 和一个可选 supplied-p 变量的列表.
 
-    被解构的列表的其余部分被认为是交替的关键字和值, 并且被适当地分开了.
+    被解构的列表的其余部分被认为是交替的关键字和值, 并且被适当地分开.
 
 &allow-other-keys
 
@@ -1473,7 +1475,7 @@ Figure 3-18. 宏 lambda 列表[macro lambda list]使用的lambda列表参数
 
 一个 boa lambda 列表[boa lambda list]是一个语法上像普通 lambda 列表[ordinary lambda list]的 lambda 列表[lambda list], 但是这个是 "根据参数顺序" 风格处理.
 
-一个 boa lambda 列表[boa lambda list]只被 defstruct 表达式形式[form]使用, 当显式指定构造器函数[function]的 lambda 列表[lambda list]的时候 (有时称之为 "boa 构造器(boa constructor)").
+一个 boa lambda 列表[boa lambda list]只被 defstruct 表达式形式[form]使用, 在显式指定构造器函数[function]的 lambda 列表[lambda list]的时候 (有时称之为 "boa 构造器(boa constructor)").
 
 在 boa lambda 列表[boa lambda list]中的这些 &optional, &rest, &aux, &key, 还有 &allow-other-keys lambda 列表关键字[lambda list keyword]是被识别的. 这些 lambda 列表关键字[lambda list keyword]的使用方式有别于在普通 lambda 列表[ordinary lambda list]中.
 
@@ -1637,7 +1639,7 @@ define-method-combination 参数 lambda 列表[define-method-combination argumen
 
 一个不安全调用[unsafe call]就是一个不是安全调用[safe call]的调用[call].
 
-非正式的意图是, 如果已经采取了所有合理的步骤来确保调用[call]是安全的[safe], 即使在涉及到系统代码[system code]的情况下, 程序员也可以依赖于一个调用[call]是安全的[safe].<!--TODO 非正式意图 ？？ 需重新校对--> 比如, 如果一个程序员[programmer]从安全[safe]代码[code]中调用 mapcar 并且提供了一个被编译为安全的[safe]函数[function], 那么这个具体实现[implementation]也需要去确保这个 mapcar 是一个安全调用[safe call].
+非正式的意图是, 如果已经采取了所有合理的步骤来确保调用[call]是安全的[safe], 即使在涉及到系统代码[system code]的情况下, 程序员[programmer]也可以依赖于一个调用[call]是安全的[safe]. 比如, 如果一个程序员[programmer]从安全[safe]代码[code]中调用 mapcar 并且提供了一个被编译为安全的[safe]函数[function], 那么这个具体实现[implementation]也需要去确保这个 mapcar 是一个安全调用[safe call].
 
 ##### 3.5.1.1.1 安全调用的错误检测时间
 
@@ -1824,40 +1826,40 @@ OR=>  (1 2 4 3)
 
 ### <span id = "SymbolLAMBDA">符号 LAMBDA</span>
 
-* * 语法(Syntax):
+* 语法(Syntax):
 
         lambda lambda-list [[declaration* | documentation]] form*
 
-* * 参数(Arguments):
+* 参数(Arguments):
 
         lambda-list---一个普通 lambda 列表[ordinary lambda list].
         declaration---一个 declare 表达式[expression]; 不求值.
         documentation---一个字符串[string]; 没有被求值的.
         form---一个表达式形式[form].
 
-* * 描述(Description):
+* 描述(Description):
 
         lambda 表达式[lambda expression]是一种列表[list], 可以被用于替代特定上下文中的一个函数名[function name], 通过直接描述其行为而不是间接地引用一个已建立函数[function]的名称来表示一个函数[function].
 
         documentation 作为文档字符串[documentation string]被附加到所表示的函数 function (如果有实际创建的话).
 
-* * 也见(See Also):
+* 也见(See Also):
 
         function, documentation, 章节 3.1.3 (lambda 表达式), 章节 3.1.2.1.2.4 (lambda 表达式形式), 章节 3.4.11 (文档字符串和声明的语法交互)
 
-* * 注意(Notes):
+* 注意(Notes):
 
-    * 这个 lambda 表达式形式[lambda form]
+        这个 lambda 表达式形式[lambda form]
 
-        ```LISP
-        ((lambda lambda-list . body) . arguments)
-        ```
+    ```LISP
+    ((lambda lambda-list . body) . arguments)
+    ```
 
-    * 语义上等价于函数表达式[function form]
+        语义上等价于函数表达式[function form]
 
-        ```LISP
-        (funcall #'(lambda lambda-list . body) . arguments)
-        ```
+    ```LISP
+    (funcall #'(lambda lambda-list . body) . arguments)
+    ```
 
 ### <span id = "MacroLAMBDA">宏 LAMBDA</span>
 
@@ -2010,7 +2012,7 @@ OR=>  (1 2 4 3)
 
         为了获得一个符号[symbol]的当前动态值, 使用 symbol-value 等价于(而且通常更可取的)使用 eval.
 
-        注意, eval 表达式形式[form]需要对其实参[argument]进行两个级别的求值[evaluation]. 第一, 表达式形式 form 通过常规的参数求值机制来求值求值[evaluation], 就像任何调用[call]一样. 从这个普通的实参[argument]求值[evaluation]得出的对象[object]成为表达式形式 form 形参[parameter]的值[value], 然后作为 eval 表达式形式[form]的一部分进行求值[evaluate]. 比如:
+        注意, eval 表达式形式[form]需要对其实参[argument]进行两个级别的求值[evaluation]. 第一, 表达式形式 form 通过常规的参数求值机制来求值[evaluation], 就像任何调用[call]一样. 从这个普通的实参[argument]求值[evaluation]得出的对象[object]成为表达式形式 form 形参[parameter]的值[value], 然后作为 eval 表达式形式[form]的一部分进行求值[evaluate]. 比如:
 
     ```LISP
     (eval (list 'cdr (car '((quote (a . b)) c)))) =>  b
@@ -2114,8 +2116,8 @@ OR=>  (1 2 4 3)
 
         * 一个单独的 eval-when 表达式执行主体代码不超过一次.
 
-        * 应该编写用于顶层表达式形式[top level form]中的宏, 以便在宏展开中的表达式形式的副作用. 这个宏展开器(macro-expander)自身不应该产生副作用.<!--TODO 待校验-->
-
+        * 应该编写用于顶层表达式形式[top level form]中的宏[macro], 以便在宏展开中的表达式形式的副作用. 这个宏展开器(macro-expander)自身不应该执行这些副作用.
+<!--TODO 待校验-->
             比如:
 
             错误的:
@@ -2351,13 +2353,13 @@ OR=>  (1 2 4 3)
 
 * 描述(Description):
 
-        这是一个定义编译器宏函数[compiler macro function]的正常机制. 它的方式和 defmacro 一样; 仅有的区别是:
+        这是一个定义编译器宏函数[compiler macro function]的普通机制. 它的定义方式和 defmacro 一样; 仅有的区别是:
 
             * 这个 name 可以是一个命名了任何函数[function]或宏[macro]的函数名字[function name].
 
             * 展开器函数作为 name 的编译器宏函数[compiler macro function]被安装, 而不是作为一个宏函数[macro function].
 
-            * 这个 &whole 参数绑定为传递给这个编译器宏函数[compiler macro function]的 form 参数. 剩余的 lambda-list 参数被指定就好像一个表达式形式包含了在 car 中的函数名和在 cdr 中的那些实际参数, 但是如果实际表达式形式的 car 部分是一个符号 funcall, 那么参数的解构实际上通过使用它的 cddr 来执行.<!--TODO 待校对-->
+            * 这个 &whole 参数绑定为传递给这个编译器宏函数[compiler macro function]的 form 参数. 剩余的 lambda-list 参数被指定为好像一个表达式形式包含了在 car 中的函数名和在 cdr 中的那些实际参数, 但是如果实际表达式形式的 car 部分是一个符号 funcall, 那么参数的解构实际上通过使用它的 cddr 来执行.
 
             * 这个 documentation 作为一个文档字符串被关联到名字 name (作为 compiler-macro 种类) 和这个编译器宏函数[compiler macro function].
 
@@ -2509,7 +2511,7 @@ OR=>  (1 2 4 3)
 
         返回的表达式形式[form]的递归展开必须终止, 其中包括作为返回的其他表达式形式[form]的子表达式形式[subform]的宏的展开.
 
-        如果完全宏展开一个表达式形式[form]的结果包含除了在字面化[literal]对象[object]里的以外的任何环状[circular]列表[list]结构[structure], 结果是未定义的.
+        如果完全宏展开一个表达式形式[form]的结果包含除了在字面化[literal]对象[object]里以外的任何环状[circular]列表[list]结构[structure], 结果是未定义的.
 
         如果一个 defmacro 表达式形式[form]作为顶层表达式形式[top level form]出现, 编译器[compiler]必须在编译时把宏[macro]定义存储起来, 这样一来在这个文件中稍后出现的这个宏就可以被正确地展开. 如果这个宏在这个要被被编译的文件[file]中被引用到, 用户必须确保这个宏[macro]的主体可以在编译时被求值.
 
@@ -2528,7 +2530,7 @@ OR=>  (1 2 4 3)
     (mac3 1 6 :d 8 :c 9 :d 10) =>  ((MAC3 1 6 :D 8 :C 9 :D 10) 1 6 9 8 (:D 8 :C 9 :D 10)) 
     ```
 
-        只有在普通 lambda 列表[ordinary lambda list]语法允许一个参数名而不是列表[list]的情况下才允许使用内嵌的解构 lambda 列表[destructuring lambda list]的规则被用来防止歧义. 比如, 下面的是非法的:
+        只有在普通 lambda 列表[ordinary lambda list]语法允许一个参数名而不是列表[list]的情况下才允许使用内嵌的解构 lambda 列表[destructuring lambda list]的这个规则被用来防止歧义. 比如, 下面的是非法的:
 
     ```LISP
     (defmacro loser (x &optional (a b &rest c) &rest z)
@@ -2542,7 +2544,7 @@ OR=>  (1 2 4 3)
       ...)
     ```
 
-        额外的括号集消除了歧义. 然而, 这个定义现在是不正确的因为一个像 (loser (car pool)) 这样的宏调用不会提供任何参数表达式形式给 lambda 列表 (a b &rest c), 因此, 与 lambda 列表[lambda list]相匹配的默认值是 nil 因为没有指定显式的默认值. 这个结果是未定义的, 因为空列表 nil 没有表达式形式[form]来满足参数 a 和 b. 完全正确的定义应该是
+        额外的括号集消除了歧义. 然而, 这个定义现在是不正确的因为一个像 (loser (car pool)) 这样的宏调用不会提供任何参数表达式形式给 lambda 列表 (a b &rest c), 因此, 与 lambda 列表[lambda list]相匹配的默认值是 nil, 因为没有指定显式的默认值. 这个结果是未定义的, 因为空列表 nil 没有表达式形式[form]来满足参数 a 和 b. 完全正确的定义应该是
 
     ```LISP
     (defmacro loser (x &optional ((a b &rest c) '(nil nil)) &rest z)
@@ -2628,7 +2630,7 @@ OR=>  (1 2 4 3)
 
         如果是这样, 则返回宏展开函数, 是一个两参数的函数. 如果符号 symbol 在这个词法环境 environment 中没有函数定义, 或者它的定义不是一个宏[macro], macro-function 返回 nil.
 
-        对于符号 symbol, macro-function 和 special-operator-p 都返回 true 是有可能的. 宏定义必须可被那些只理解那些标准的 Common Lisp 特殊表达式形式[special form]的程序所使用.
+        对于符号 symbol, macro-function 和 special-operator-p 都返回 true 是有可能的. 宏定义必须可被那些只理解那些标准 Common Lisp 特殊表达式形式[special form]的程序所使用.
 
 * 示例(Examples):
 
@@ -2657,7 +2659,7 @@ OR=>  (1 2 4 3)
 
 * 也见(See Also):
 
-        defmacro, Section 3.1 (求值)
+        defmacro, 章节 3.1 (求值)
 
 * 注意(Notes):
 
@@ -2791,7 +2793,7 @@ OR=>  (1 2 4 3)
 
 * 描述(Description):
 
-        为全局地影响所表示的符号 symbol 的宏展开[macro expansion]提供了一种机制.
+        为全局地影响所表示符号 symbol 的宏展开[macro expansion]提供了一种机制.
 
         为由符号 symbol 命名的符号宏[symbol macro]全局地建立一个展开函数. 对于符号宏[symbol macro]来说, 展开函数[function]的唯一确保属性是当它被应用到表达式形式[form]和环境[environment]时它会返回正确的展开式. (具体来说, 这个展开在概念上是存储在展开函数, 环境[environment], 还是两者都存储了, 这是依赖于实现的[implementation-dependent].)
 
@@ -2853,7 +2855,7 @@ OR=>  (1 2 4 3)
 
         symbol-macrolet 为影响符号[symbol]的宏展开[macro expansion]环境提供一种机制.
 
-        symbol-macrolet 为由那些符号中的每一个符号  symbol 命名的符号宏[symbol macro]词法上建立展开函数. 对于一个符号宏[symbol macro]来说, 展开函数[function]的唯一保证属性是当它被应用到表达式形式[form]和环境[environment]时它会返回正确的展开式. (具体来说, 它在概念上是存储在展开函数, 环境[environment], 还是两者都存储了, 这是依赖于具体实现的[implementation-dependent].)
+        symbol-macrolet 为由那些符号中的每一个符号 symbol 命名的符号宏[symbol macro]词法上建立展开函数. 对于一个符号宏[symbol macro]来说, 展开函数[function]的唯一保证属性是当它被应用到表达式形式[form]和环境[environment]时它会返回正确的展开式. (具体来说, 它在概念上是存储在展开函数, 环境[environment], 还是两者都存储了, 这是依赖于具体实现的[implementation-dependent].)
 
         在 symbol-macrolet 词法作用域[scope]内, 作为一个变量的对 symbol 的每个引用都被常规的宏展开过程所展开; 见章节 3.1.2.1.1 (符号表达式形式). 一个符号宏的展开式在这个符号宏调用相同的词法环境中受到进一步的宏展开, 与普通宏[macro]类似.
 
@@ -3475,7 +3477,7 @@ OR=>  (1 2 4 3)
 
         虽然没有符合规范的实现[conforming implementation]需要执行用户定义函数的内联展开, 那些具体实现[implementation]尝试去识别以下范例:
 
-        为了定义一个函数[function] f 默认不是 inline 但是对于 (declare (inline f)) 会使 f 是局部内联的, 合适的定义顺序是:<!--TODO 待校对-->
+        为了定义一个默认不是 inline 的函数[function] f, 但是 (declare (inline f)) 会使 f 成为局部内联的, 合适的定义顺序是:
 
     ```LISP
     (declaim (inline f))
@@ -3761,7 +3763,7 @@ OR=>  (1 2 4 3)
         (let ((y 4)) (declare (special y)) (foo x)))) =>  EXAMPLE
     ```
 
-        在上面的扭曲代码中, y 的最外层和最内层的绑定[binding]是动态的, 但是中间绑定是词法的. 给 + 的两个参数是不一样的, 一个是一个值, 3, 是词法变量 y 的, 而另一个是动态变量 y 的值 (巧合的是, 一个绑定在词法上围绕在它外层). 然而, 由于这个公告 x 总是是 special, 所有 x 的绑定和 x 的引用都是动态的.<!--TODO 待校对-->
+        在上面的扭曲代码中, 最外层和最内层的 y 的绑定[binding]是动态的, 但是中间绑定是词法的. 给 + 的两个参数是不一样的, 一个是一个值, 3, 是词法变量 y 的, 而另一个是名为 y 的动态变量的值 (巧合的是, 它的一个绑定在词法上围绕在它外层). 然而, 由于这个 x 总是是 special 的公告, 所有 x 的绑定和 x 的引用都是动态的.
 
 * 也见(See Also):
 
