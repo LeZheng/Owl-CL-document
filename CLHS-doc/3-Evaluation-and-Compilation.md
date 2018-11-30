@@ -3142,7 +3142,7 @@ OR=>  (1 2 4 3)
 
         任何关于一个 "used" 或者 "unused" 绑定[binding]的警告必须是 style-warning 类型[type]的, 并且不影响程序的语义.
 
-        由 with-open-file, with-open-stream, with-input-from-string, 和 with-output-to-string 建立的流变量[stream variable], 还有所有循环变量[iteration variable], 根据定义总是是 "used". 对于这样一个变量[variable] v 使用 (declare (ignore v)), 有着未指明的结果.
+        由 with-open-file, with-open-stream, with-input-from-string, 和 with-output-to-string 建立的流变量[stream variable], 还有所有循环变量[iteration variable], 根据定义总是是 "used" 的. 对于这样一个变量[variable] v 使用 (declare (ignore v)), 有着未指明的结果.
 
 * 也见(See Also):
 
