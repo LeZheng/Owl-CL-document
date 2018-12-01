@@ -1361,7 +1361,7 @@ Figure 3-18. 宏 lambda 列表[macro lambda list]使用的lambda列表参数
 
 &environment 后面跟着一个绑定为一个环境[environment]的单独变量, 这个环境表示这个宏调用被解释时所处的当前词法环境[lexical environment]. 这个环境[environment]应该和 macro-function, get-setf-expansion, compiler-macro-function, 还有 macroexpand (比如) 在计算宏展开式一起使用, 来确保这个编译环境[compilation environment]中建立的任何词法绑定[lexical binding]或定义被考虑进去. &environment 只能出现在宏 lambda 列表[macro lambda list]的顶层, 并且只能出现一次, 但是可以出现在这个列表的任何位置; 这个 &environment 和 &whole 形参[parameter]在这个 lambda 列表[lambda list]的任何其他变量[variable]之前被绑定[bound], 不管 &environment 出现在这个 lambda 列表[lambda list]的什么地方. 绑定为环境参数[environment parameter]的对象[object]具有动态范围[dynamic extent].
 
-解构允许一个宏 lambda 列表[macro lambda list]去表达宏调用语法的结构. 如果没有出现 lambda 列表关键字[lambda list keyword], 那么这个宏 lambda 列表[macro lambda list]是在叶子中包含参数名称的树[tree]. 匹配模式和宏表达式形式[macro form]必须具有兼容的树结构[tree structure]; 这就是说, 它们的树结构[tree structure]必须是等价的, 或者它只能在匹配模式的某些叶节点与宏表达式形式[macro form]的非原子[non-atomic]对象[object]匹配时有所不同.<!--TODO 不理解--> 关于这种求值情况[situation]下的错误检测的信息, 见章节 3.5.1.7 (解构不匹配).
+解构允许一个宏 lambda 列表[macro lambda list]去表达宏调用语法的结构. 如果没有出现 lambda 列表关键字[lambda list keyword], 那么这个宏 lambda 列表[macro lambda list]是在叶子中包含参数名称的树[tree]. 匹配模式和宏表达式形式[macro form]必须具有兼容的树结构[tree structure]; 这就是说, 它们的树结构[tree structure]必须是等价的, 或者它只能在匹配模式的某些叶节点与宏表达式形式[macro form]的非原子[non-atomic]对象[object]匹配时有所不同. 关于这种求值情况[situation]下的错误检测的信息, 见章节 3.5.1.7 (解构不匹配).
 
 一个解构 lambda 列表[lambda list] (不管在顶层还是嵌入的)可以是点对的(dotted), 以一个参数名结束. 这种情况被视为结束列表的参数名称出现在 &rest 前面.
 
@@ -2116,8 +2116,8 @@ OR=>  (1 2 4 3)
 
         * 一个单独的 eval-when 表达式执行主体代码不超过一次.
 
-        * 应该编写用于顶层表达式形式[top level form]中的宏[macro], 以便在宏展开中的表达式形式的副作用. 这个宏展开器(macro-expander)自身不应该执行这些副作用.
-<!--TODO 待校验-->
+        * 应该编写用于顶层表达式形式[top level form]中的宏[macro], 以便处理在宏展开中的那些表达式形式[form]的副作用. 这个宏展开器(macro-expander)自身不应该执行这些副作用.
+
             比如:
 
             错误的:
@@ -3149,7 +3149,7 @@ OR=>  (1 2 4 3)
         declare 
 
 ### <span id = "DeclarationDYNAMICEXTENT">声明 DYNAMIC-EXTENT</span>
-<!--TODO 待重审-->
+
 * 语法(Syntax):
 
         (dynamic-extent [[var* | (function fn)*]])
@@ -3169,7 +3169,7 @@ OR=>  (1 2 4 3)
 
 * 描述(Description):
 
-        在一些包含的表达式形式中, F, 这个声明为每一个 vari 断言 (不需要被 F 绑定), 并且为 vari 呈现的每一个值[value] vij 断言, 还有当 vij 成为 vari 的值的任何时候为 vij 的其他不可访问部分[otherwise inaccessible part]的对象[object] xijk 断言, 这只是在 F 的执行终止后, xijk 要么是不可访问的(如果 F 为 vari 建立一个绑定[binding]), 要么是 vari 的当前值的一个其他不可访问部分[otherwise inaccessible part] (如果 F 没有为 vari 建立一个绑定[binding]). 每个 fni 都有相同的关系, 除了这些在函数[function]命名空间[namespace]中的绑定. 
+        在某个包含的表达式形式 F 中, 这个声明为每一个 vari 断言 (不需要被 F 绑定), 并且为 vari 呈现的每一个值[value] vij 断言, 还有当 vij 成为 vari 的值的任何时候为 vij 的其他不可访问部分[otherwise inaccessible part]的对象[object] xijk 断言, 在 F 的执行终止后, xijk 要么是不可访问的(如果 F 为 vari 建立一个绑定[binding]), 要么是 vari 的当前值的一个其他不可访问部分[otherwise inaccessible part] (如果 F 没有为 vari 建立一个绑定[binding]). 每个 fni 都有相同的关系, 除了这些在函数[function]命名空间[namespace]中的绑定. 
 
         允许编译器以任何适合于具体实现[implementation]并且不与 Common Lisp 的语义冲突的方式使用该信息.
 
@@ -3230,7 +3230,7 @@ OR=>  (1 2 4 3)
       ...)
     ```
 
-        这个 x 的其他不可访问部分[otherwise inaccessible part]是三个 cons, 而 y 的其他不可访问部分[otherwise inaccessible part]是另外三个 cons. 符号 a1, b1, c1, a2, b2, c2, 或者 nil 中没有是 x 或 y 的其他不可访问部分[otherwise inaccessible part], 因为每一个都被捕捉[interned]因此可以通过它被捕捉到的包[package] (或者多个包[package])是可访问的[accessible]. 然而, 如果使用了一个新分配的未捕捉[uninterned]的符号[symbol], 那么它将是包含它的列表[list]的其他不可访问部分[otherwise inaccessible part].
+        这个 x 的其他不可访问部分[otherwise inaccessible part]是三个 cons, 而 y 的其他不可访问部分[otherwise inaccessible part]是另外三个 cons. 符号 a1, b1, c1, a2, b2, c2, 或者 nil 中没有是 x 或 y 的其他不可访问部分[otherwise inaccessible part], 因为每一个都被捕捉[interned]因此可以通过它被捕捉[interned]到的包[package] (或者多个包[package])是可访问的[accessible]. 然而, 如果使用了一个新分配的未捕捉[uninterned]的符号[symbol], 那么它将是包含它的列表[list]的其他不可访问部分[otherwise inaccessible part].
 
     ```LISP
     ;; In this example, the implementation is permitted to stack allocate
@@ -3475,7 +3475,7 @@ OR=>  (1 2 4 3)
 
         如果其中一个提及的函数有着词法上明显的局部定义 (例如通过 flet 或 labels), 那么这个声明应用于这个局部定义而不是那个全局函数定义.
 
-        虽然没有符合规范的实现[conforming implementation]需要执行用户定义函数的内联展开, 那些具体实现[implementation]尝试去识别以下范例:
+        虽然没有符合规范的实现[conforming implementation]被要求去执行用户定义函数的内联展开, 但那些具体实现[implementation]尝试去识别以下范例:
 
         为了定义一个默认不是 inline 的函数[function] f, 但是 (declare (inline f)) 会使 f 成为局部内联的, 合适的定义顺序是:
 
@@ -3491,7 +3491,7 @@ OR=>  (1 2 4 3)
 
         如果其中一个提及的函数有着词法上明显的局部定义 (例如通过 flet 或 labels), 那么这个声明应用于这个局部定义而不是那个全局函数定义.
 
-        在 function-name 的编译器宏[compiler macro]定义存在的情况下, 一个 notinline 声明阻止了编译器宏[compiler macro]的使用. 可以使用 inline 声明来鼓励使用编译器宏[compiler macro]定义. inline 和 notinline 声明在 function-name 在词法可见的定义是一个宏[macro]定义时是没有效果的.
+        在 function-name 的编译器宏[compiler macro]定义存在的情况下, 一个 notinline 声明阻止了编译器宏[compiler macro]的使用. 可以使用 inline 声明来鼓励使用编译器宏[compiler macro]定义. inline 和 notinline 声明在 function-name 的词法可见定义是一个宏[macro]定义时是没有效果的.
 
         inline 和 notinline 声明可以是自由声明[free declaration]或绑定声明[bound declaration]. 出现在一个 flet 或 labels 表达式形式[form]的主体前的 inline 和 notinline 函数声明是绑定声明[bound declaration]. 在其他上下文中的这些声明是自由声明[free declaration].
 
@@ -3552,7 +3552,7 @@ OR=>  (1 2 4 3)
 
         如果其中一个提及的函数有着词法上明显的局部定义 (例如通过 flet 或 labels), 那么这个声明应用于这个局部定义而不是那个全局函数定义. ftype 声明从不应用于变量绑定[binding] (见 type).
 
-        这个 function-names 的词法上明显的绑定不能是宏[macro]定义. (这是因为 ftype 声明每个函数名[function name]的函数定义是一个 function 的特定子类型, 而宏[macro]不表示函数[function].)
+        这个 function-names 的词法上明显绑定不能是宏[macro]定义. (这是因为 ftype 声明每个函数名[function name]的函数定义是一个 function 的特定子类型, 而宏[macro]不表示函数[function].)
 
         ftype 声明可以是自由声明[free declaration]或绑定声明[bound declaration]. 出现在一个 flet 或 labels 表达式形式[form]的主体前的 ftype 函数声明是绑定声明[bound declaration]. 在其他上下文中的这些声明是自由声明[free declaration].
 
@@ -3614,14 +3614,14 @@ OR=>  (1 2 4 3)
 
 * 描述(Description):
 
-        建议编译器应该根据指定的相应值 value 注意每个质量 quality. 每一种质量都必须是一种名为优化质量[optimize quality]的符号[symbol]; 标准优化质量[optimize quality]的名称和含义在下一段中展示.
+        建议编译器应该根据指定的相应值 value 注意每个质量 quality. 每一个质量 quality 都必须是一种名为优化质量[optimize quality]的符号[symbol]; 标准优化质量[optimize quality]的名称和含义在下一段中展示.
 
-            Name               Meaning                            
-            compilation-speed  speed of the compilation process   
-            debug              ease of debugging                  
-            safety             run-time error checking            
-            space              both code size and run-time space  
-            speed              speed of the object code           
+            名称                意义
+            compilation-speed  编译处理的速度
+            debug              易于调试
+            safety             运行时(run-time)错误检查
+            space              代码大小和运行时(run-time)空间
+            speed              对象代码的速度           
 
             Figure 3-25. 优化质量
 
@@ -3631,7 +3631,7 @@ OR=>  (1 2 4 3)
 
         注意有着优化 (safety 3), 或者只是 safety 的代码[code], 称为安全代码[safe code].
 
-        如果质量 quality 以超过一种不同的[different]值出现, 那么后果是不可预料的.
+        如果质量 quality 以出现不止一种并且不同的[different]值, 那么后果是不可预料的.
 
 * 示例(Examples):
 
@@ -3783,7 +3783,7 @@ OR=>  (1 2 4 3)
 
 * 描述(Description):
 
-        在这些给定声明 declarations 有效的一个词法环境[lexical environment]中, 依次对这些表达式形式  form 中的主体进行求值.
+        在这些给定声明 declarations 有效的一个词法环境[lexical environment]中, 依次对这些表达式形式  form 主体进行求值.
 
 * 示例(Examples):
 
