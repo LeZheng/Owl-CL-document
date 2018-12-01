@@ -1,5 +1,5 @@
 # 3. 编译和求值
-<!--TODO 范围[extent] ??-->
+
 > * 3.1 [求值](#Evaluation)
 > * 3.2 [编译](#Compilation)
 > * 3.3 [声明](#Declarations)
