@@ -7,21 +7,21 @@
 
 ## 4.1 <span id="Introduction">引言</span>
 
-一个类型(type)是对象的一个(可能是无数)集合. 一个对象可以属于超过一个类型. 类型从不显式地被 Common Lisp 表示为对象. 相反, 它们是通过使用类型指定符(type specifier)间接引用的, 类型指定符是表示类型的对象.
+一个类型[type]是一个对象[object] (可能是无数)集合. 一个对象[object]可以属于超过一个类型[type]. 类型[type]从不显式地被 Common Lisp 表示为对象[object]. 相反, 它们是通过使用类型指定符[type specifier]间接引用的, 类型指定符是表示类型[type]的对象[object].
 
-新的类型可以使用 deftype, defstruct, defclass, 和 define-condition 来定义.
+新的类型[type]可以使用 deftype, defstruct, defclass, 以及 define-condition 来定义.
 
-函数 typep 作为一个集合从属关系测试, 被用于确定一个给定的对象(object) 是否为给定的类型(type). 函数 subtypep 作为一个子集测试, 被用于确定一个给定的类型是否为另一个给定类型的子类型(subtype). 函数 type-of 返回一个给定对象所属的具体类型, 即便这个对象也属于一个或多个其他类型. (比如, 每一个对象都是类型 t, 但是 type-of 总是返回一个比 t 更具体的类型的类型指定符.)
+函数[function] typep 作为一个集合成员资格测试, 被用于确定一个给定的对象[object]是否为给定的类型[type]. 函数 subtypep 作为一个子集测试, 被用于确定一个给定的类型[type]是否为另一个给定类型[type]的子类型[subtype]. 函数 type-of 返回一个给定对象[object]所属的具体类型[type], 即便这个对象[object]也属于一个或多个其他类型[type]. (比如, 每一个对象[object]都是类型[type] t, 但是 type-of 总是返回一个比 t 更具体的类型[type]的类型指定符[type specifier].)
 
-对象, 而不是变量, 拥有类型. 通常, 任何变量可以有任何对象作为它的值. 可以声明一个变量只能获取通过显式类型声明指定的类型的值. 类型被安排在一个有方向的非循环图中, 除了存在相等的情况.
+对象[object], 而不是变量[variable], 拥有类型[type]. 通常, 任何变量[variable]可以有任何对象[object]作为它的值[value]. 可以通过显式类型声明[type declaration]来声明一个变量[variable]只能获取指定的类型[type]的值. 类型[type]被安排在一个有向的非循环图中, 除了存在相等的情况<!--TODO 不理解-->.
 
-可以通过 declare, proclaim, declaim, 或 the 来对类型做出声明. 关于声明的更多信息, 见章节 3.3 (Declarations).
+可以通过 declare, proclaim, declaim, 或 the 来做出和类型[type]相关的声明[declaration]. 关于声明[declaration]的更多信息, 见章节 3.3 (声明).
 
-对象系统的基本对象是类(class). 一个类确定其他称之为它的实例的对象集的结构和行为. 每一个对象都是一个类的直接实例. 一个对象的类确定可以在这个对象上进行的操作的集合. 关于更多信息, 见章节 4.3 (Classes).
+对象系统的基本对象[object]之一是类[class]. 一个类[class]确定其他被称之为它的实例[instance]的对象[object]集的结构和行为. 每一个对象[object]都是一个类[class]的直接实例[direct instance]. 一个对象[object]的类[class]确定可以在这个对象[object]上进行的操作集合. 关于更多信息, 见章节 4.3 (类).
 
-可以写出具有特定于函数参数对象的类的行为的函数. 关于更多信息, 见章节 7.6 (Generic Functions and Methods).
+可以写出具有特化[specialized]于函数实参[argument]对象[object]的类的行为的函数[function]. 关于更多信息, 见章节 7.6 (广义函数和方法).
 
-一个对象的类的类称为它的元类(metaclass). 关于元类的更多信息, 见章节 7.4 (Meta-Objects). 
+一个对象[object]的类[class]的类[class]称为它的元类[metaclass]. 关于元类[metaclass]的更多信息, 见章节 7.4 (元对象). 
 
 ## 4.2 <span id="Types">类型</span>
 
@@ -31,37 +31,37 @@
 
 ### 4.2.1 <span id="DataTypeDefinition">数据类型定义</span>
 
-类型使用的信息所在章节在  Figure 4-1 中指定. Figure 4-7 列出了和对象系统相关的类. Figure 9-1 列出了已定义的状况类型.
+关于类型使用的信息所在章节在  Figure 4-1 中指定. Figure 4-7 列出了和对象系统特别相关的类[class]. Figure 9-1 列出了已定义的状况[condition]类型[type].
 
-章节                                        | 数据类型                          
--------------------------------------------|------------------------              
-Section 4.3 (Classes)                      | Object System types                
-Section 7.5 (Slots)                        | Object System types                
-Section 7 (Objects)                        | Object System types                
-Section 7.6 (Generic Functions and Methods)| Object System types                
-Section 9.1 (Condition System Concepts)    | Condition System types             
-Section 4 (Types and Classes)              | Miscellaneous types                
-Section 2 (Syntax)                         | All types---read and print syntax  
-Section 22.1 (The Lisp Printer)            | All types---print syntax           
-Section 3.2 (Compilation)                  | All types---compilation issues     
+  章节                     | 数据类型                          
+  -------------------------|------------------------              
+  章节 4.3 (类)             | 对象系统类型
+  章节 7.5 (槽)             | 对象系统类型
+  章节 7 (对象)             | 对象系统类型
+  章节 7.6 (广义函数和方法)   | 对象系统类型
+  章节 9.1 (状况系统概念)     | 状况系统类型
+  章节 4 (类型和类)          | 各种类型
+  章节 2 (语法)              | 所有类型---读取和打印语法
+  章节 22.1 (Lisp 打印器)    | 所有类型---打印语法
+  章节 3.2 (编译)            | 所有类型---编译问题
 
-Figure 4-1. 数据类型信息的 Cross-References 
+Figure 4-1. 数据类型信息的交叉引用
 
 ### 4.2.2 <span id="TypeRelationships">类型关系</span>
 
-* 类型 cons, symbol, array, number, character, hash-table, function, readtable, package, pathname, stream, random-state, condition, restart, 还有任何由 defstruct, define-condition, 或 defclass 创建的单个类型是互斥的, 除了在 defclass 或者  define-condition 或者 destruct 的 :include 选项指定超类来明确建立类型关系的以外.
+* 类型[type] cons, symbol, array, number, character, hash-table, function, readtable, package, pathname, stream, random-state, condition, restart, 还有任何由 defstruct, define-condition, 或 defclass 创建的单个类型是成对[pairwise]互斥[disjoint]的, 除了在 defclass 或 define-condition 中或者 destruct 的 :include 选项指定超类[superclasse]来显式建立的类型关系以外.
 
-* 任何由 defstruct 创建的两个类型是互斥的, 除非由于 defstruct 的 :include 选项, 一个是另一个的超类.
+* 任何由 defstruct 创建的两个类型[type]是互斥[disjoint]的, 除非由于 defstruct 的 :include 选项, 一个是另一个的超类型[supertype].
 
-* 任何两个由 defclass 或 define-condition 创建的有区别的类是互斥的, 除非它们有一个共同的子类或者一个类是另一个的超类.
+* 任何两个由 defclass 或 define-condition 创建的不同[distinct]的类[class]是互斥[disjoint]的, 除非它们有一个共同的子类[subclass]或者一个类是另一个的子类[subclass].
 
-* 可以扩展一个实现来添加指定类型之间的其他子类型关系, 只要它们不违反这里指定的类型关系和类互斥性的需求. 一个实现可能为任何指定的类型定义额外的子类或超类, 只要不违反互斥性的要求并且每一个额外的类是类型 t 的子类也是类型 nil 的超类.
+* 可以扩展一个实现来添加指定类型[type]之间的其他子类型[subtype]关系, 只要它们不违反这里指定的类型关系和类互斥性的需求. 一个实现可能为任何指定的类型[type]定义额外的子类型[subtype]或超类型[supertype], 只要不违反互斥性的要求并且每一个额外的类型[type]是类型[type] t 的子类型[subtype]也是类型[type] nil 的超类型[supertype].
 
-    任凭具体实现自行处理, 无论是 standard-object 还是 structure-object, 都可能出现在一个系统类的优先级列表中, 而该系统类既没有指定 standard-object, 也没有指定 structure-object. 如果确实如此, 它必须在类 t 之前并且后面跟着所有标准化的类.
-<!-- TODO 上面一段？？-->
+    任凭具体实现自行处理, 无论是 standard-object 还是 structure-object, 都可能出现在一个没有指定 standard-object 或 structure-object 的系统类[system class]的优先级列表中. 如果确实如此, 它必须在类[class] t 之前并且跟在所有标准化[standardized]类[class]后面.
+
 ### 4.2.3 <span id="TypeSpecifiers">类型指定符</span>
 
-类型指定符(Type specifier)可以是符号, 类或列表. Figure 4-2 列出了标准原子类型指定符的列表, 并且 Figure 4-3 列出了标准化复合类型指定符的名字. 关于语法信息, 见对应类型指定符的字典条目. 可以通过 defclass, define-condition, defstruct, 或 deftype 来定义新的类型指定符.
+类型指定符[type specifier]可以是符号[symbol], 类[class]或列表[list]. Figure 4-2 列出了标准[standardized]原子类型指定符[atomic type specifier]的那些符号[symbol], 并且 Figure 4-3 列出了标准[standardized]复合类型指定符[compound type specifier]的那些名字[name]. 关于语法信息, 见对应类型指定符[type specifier]的字典条目. 可以通过 defclass, define-condition, defstruct, 或 deftype 来定义新的类型指定符[type specifier].
 
     arithmetic-error                  function            simple-condition        
     array                             generic-function    simple-error            
@@ -99,7 +99,7 @@ Figure 4-1. 数据类型信息的 Cross-References
 
 Figure 4-2. 标准化原子类型指定符
 
-如果一个类型指定符是一个列表, 这个列表的 car 部分是一个符号, 并且这个列表的剩余部分辅助类型信息. 这样一个类型指定符称为复合类型指定符(compound type specifier). 除明确声明外, 辅助项可以是未指明的. 这个未指明的辅助项写作 * 来表示. 比如, 为了完全地指定一个向量序列(vector), 元素的类型和这个序列的长度都必须被指定.
+如果一个类型指定符[type specifier]是一个列表[list], 这个列表[list]的 car 部分是一个符号[symbol], 并且这个列表[list]的剩余部分附属类型[type]信息. 这样一个类型指定符称为复合类型指定符[compound type specifier]. 除显式声明外, 附属项可以是未指明的. 这个未指明的辅助项通过编写 * 来表示. 比如, 为了完全地指定一个向量[vector], 元素的类型[type]和这个向量[vector]的长度都必须存在.
 
 ```LISP
 (vector double-float 100)
@@ -117,9 +117,9 @@ Figure 4-2. 标准化原子类型指定符
 (vector * 100)
 ```
 
-假设这两种类型指定符是相同的除了第一个有一个 * 而第二个有一个更明确的指定. 那么第二个表示的是第一个表示的子类型.
+假设这两种类型指定符[type specifier]是相同的除了第一个有一个 * 而第二个有一个更明确的指定. 那么第二个表示的是第一个表示的类型[type]的子类型[subtype].
 
-如果一个列表的末尾有一个或超过一个未指定项, 这些项可以被丢弃. 如果丢弃所有出现的 * 导致一个单元素的列表, 那么圆括号也可以被丢弃 (这个列表可以被它的 car 的符号所替代). 比如, (vector double-float *) 可以被简写为 (vector double-float), 并且 (vector * *) 可以被简写为 (vector) 然后是 vector.
+如果一个列表[list]的末尾有一个或超过一个未指定项, 这些项可以被丢弃. 如果丢弃所有出现的 * 导致一个单元素[singleton]列表[list], 那么圆括号也可以被丢弃 (这个列表可以被它的 car 的符号[symbol]所替代). 比如, (vector double-float *) 可以被简写为 (vector double-float), 而 (vector * *) 可以被简写为 (vector) 然后是 vector.
 
     and           long-float    simple-base-string  
     array         member        simple-bit-vector   
@@ -133,24 +133,24 @@ Figure 4-2. 标准化原子类型指定符
     function      signed-byte                       
     integer       simple-array                      
 
-Figure 4-3. 标准化的复合类型指定符的名字
+Figure 4-3. 标准复合类型指定符的名字
 
-下面这段展示了可以被用于复合类型指定符名字但是不能被用于原子类型指定符名字的已定义名字.
+下面这段展示了可以被用于复合类型指定符[compound type specifier]名字但是不能被用于原子类型指定符[atomic type specifier]的那些已定义的名字[defined name].
 
     and     mod  satisfies  
     eql     not  values     
     member  or              
 
-Figure 4-4. 标准化的仅限复合类型指定符的名字
+Figure 4-4. 标准仅限复合类型指定符的名字
 
-新的类型指定符可以以两种方式存在.
+新的类型指定符可以通过两种方式出现.
 
-* 通过使用 defstruct 不带 :type 指定来定义一个结构或者使用 defclass 来定义一个类或者define-condition 自动导致结构或类的名字成为一个新的类型指定符的符号.
-* 可以使用 deftype 来定义派生类型指定符, 它表示的像其他类型指定符的缩写一样.
+* 通过使用 defstruct 不带 :type 指定符来定义一个结构体或者使用 defclass 来定义一个类[class]或者define-condition 自动导致结构体或类的名字成为一个新的类型指定符[type specifier]符号[symbol].
+* 可以使用 deftype 来定义派生类型指定符[derived type specifier], 它表现地像其他类型指定符[type specifier]的'缩写(abbreviation)'一样.
 
-一个类对象可以被用于一个类型指定符. 当使用这种方式的时候, 它表示这个类的所有成员的集合.
+一个类[class]对象[object]可以被用作一个类型指定符[type specifier]. 当使用这种方式的时候, 它表示这个类[class]的所有成员的集合.
 
-下面这段展示了一些类型和声明相关的定义的名字.
+下面这段展示了一些类型[type]和声明[declarations]相关的已定义的名字[defined name].
 
     coerce            defstruct  subtypep  
     declaim           deftype    the       
@@ -158,9 +158,9 @@ Figure 4-4. 标准化的仅限复合类型指定符的名字
     defclass          locally    type-of   
     define-condition  proclaim   typep     
 
-Figure 4-5. 类型和声明相关的定义的名字.
+Figure 4-5. 类型和声明相关的已定义的名字.
 
-下面这段展示了所有定义的类型指定符的名字, 不管是原子类型指定符或者复合类型指定符; 这个列表是 Figure 4-2 和 Figure 4-3 列表的结合.
+下面这段展示了所有是类型指定符[type specifier]名字[name]的已定义名字[defined name], 不管是原子类型指定符[atomic type specifier]或者复合类型指定符[compound type specifier]; 这个列表是 Figure 4-2 和 Figure 4-3 列表的结合.
 
     and                               function            simple-array            
     arithmetic-error                  generic-function    simple-base-string      
@@ -198,7 +198,7 @@ Figure 4-5. 类型和声明相关的定义的名字.
     floating-point-overflow           short-float         vector                  
     floating-point-underflow          signed-byte         warning                    
 
-Figure 4-6. 标准化类型指定符的名字
+Figure 4-6. 标准类型指定符的名字
 
 ## 4.3 <span id="Classes">类</span>
 
@@ -549,15 +549,15 @@ Figure 4-8. 对应预定义类型指定符的类
 
 * 超类型(Supertypes):
 
-        所有类型
+        所有类型[type]
 
 * 描述(Description):
 
-        类型 nil 不含任何对象所以也被称为空类型. 类型 nil 是所有类型的子类. 没有 nil 类型的对象.
+        类型[type] nil 不含任何对象[object]所以也被称为空类型[empty type]. 类型[type] nil 是所有类型[type]的子类型[subtype]. 没有 nil 类型[type]的对象[object].
 
 * 注意(Notes):
 
-        包含对象 nil 的类型是 null, 不是类型 nil. 
+        包含对象[object] nil 的类型[type]是 null, 不是类型[type] nil. 
 
 ### <span id="TypeBOOLEAN">类型 BOOLEAN</span>
 
@@ -567,15 +567,15 @@ Figure 4-8. 对应预定义类型指定符的类
 
 * 描述(Description):
 
-        类型 boolean 包含符号 t 和 nil, 它们分别表示 true 和 false.
+        类型[type] boolean 包含符号[symbol] t 和 nil, 它们分别表示 true 和 false.
 
 * 也见(See Also):
 
-        t (constant variable), nil (constant variable), if, not, complement
+        t (常变量), nil (常变量), if, not, complement
 
 * 注意(Notes):
 
-        条件操作, 比如 if, 允许使用广义的 boolean, 不只是 boolean; 任何非 nil 的值, 不只是 t, 对于广义的 boolean 则视作 true. 然而, 作为惯例, 即便对于广义的 boolean 当没有更好的选择来表示它自身时符号 t 被当作正规的值来使用. 
+        条件操作, 比如 if, 允许广义 boolean [generalized boolean]的使用, 不只是 boolean; 任何非 nil [non-nil]的值, 不只是 t, 对于广义的 boolean [generalized boolean]都视作 true. 然而, 作为惯例, 即便对于广义的 boolean [generalized boolean]当没有更好的选择来表示它自身时, 符号[symbol] t 被当作规范化的值来使用. 
 
 ### <span id="SystemClassFUNCTION">系统类 FUNCTION</span>
 
@@ -585,11 +585,11 @@ Figure 4-8. 对应预定义类型指定符的类
 
 * 描述(Description):
 
-        当适当数量的参数被提供时一个 function 是一个表示要被执行的代码的对象. 一个 function 由 function 特殊表达式, 函数 coerce, 或函数 compile 产生. 一个 function 可以通过把它作为第一个参数给 funcall, apply, 或 multiple-value-call 来直接调用 by using it as the first argument to funcall, apply, or multiple-value-call.
+        当适当数量的参数被提供时, 一个函数[function]是一个表示要被执行的代码的对象. 一个函数[function]由 function 特殊表达式形式[special form], 函数[form] coerce, 或函数[form] compile 产生. 一个函数[function]可以通过把它作为第一个参数给 funcall, apply, 或 multiple-value-call 来直接调用.
 
 * 复合类型指定符种类(Compound Type Specifier Kind):
 
-        Specializing.
+        Specializing.<TODO 待翻译>
 
 * 复合类型指定符语法(Compound Type Specifier Syntax):
 
@@ -602,46 +602,46 @@ Figure 4-8. 对应预定义类型指定符的类
 
 * 复合类型指定符的参数(Compound Type Specifier Arguments):
 
-        typespec---一个类型指定符.
-        value-typespec---一个类型指定符.
+        typespec---一个类型指定符[type specifier].
+        value-typespec---一个类型指定符[type specifier].
 
 * 复合类型指定符的描述(Compound Type Specifier Description):
 
-    * 这个 function 类型指定符的列表形式只能被用于声明不能用于辨别(discrimination). 这个类型的每一个元素都是一个函数, 它接受 argj-types 指定类型的参数并返回 value-type 指定类型的返回值. 这里的 &optional, &rest, &key, 和 &allow-other-keys 标记可以出现在参数类型的列表中. 这里 &rest 提供的类型指定符是每一个实际参数的类型, 不是对应变量的类型.
+        这个 function 类型指定符的列表形式只能被用于声明不能用于辨别(discrimination). 这个类型[type]的每一个元素都是一个函数[function], 它接受由 argj-types 指定类型的参数并返回 value-type 指定类型的成员的返回值. 这里的 &optional, &rest, &key, 和 &allow-other-keys 标记可以出现在参数类型的列表中. 使用 &rest 提供的类型指定符[type specifier]是每一个实际参数的类型[type], 不是对应变量的类型[type].
 
-    * 这个 &key 参数应该像 (keyword type) 这样的表达式的列表来提供. 这个 keyword 必须是一个合法的关键字名字符号, 必须在调用的实际参数中提供. 这个通常是 KEYWORD 包中的符号但是可以是任何符号. 当 &key 在一个 function 类型指定符的 lambda 列表中被提供, 这个给定的关键字参数必须是详尽的除非 &allow-other-keys 也被提供. &allow-other-keys 是一个指示符表示其他的关键字参数实际中可以被提供, 如果提供了, 就可以被使用. 比如, 函数 make-list 类型可以按以下的方式来声明:
+        这个 &key 参数应该以 (keyword type) 这样形式的列表来提供. 这个关键字 keyword 必须是一个合法的关键字名字符号, 必须在调用的实际参数中提供. 这个通常是 KEYWORD 包中的符号[symbol]但是可以是任何符号[symbol]. 当 &key 在一个 function 类型指定符[type specifier]的 lambda 列表[lambda list]中被提供时, 这个给定的关键字参数[keyword parameter]必须是详尽的, 除非 &allow-other-keys 也出现了. &allow-other-keys 是一个指示符, 表示其他的关键字参数实际中也可以被提供, 如果提供了, 就可以被使用. 比如, 函数 make-list 类型可以按以下的方式来声明:
 
-        ```LISP
-        (function ((integer 0) &key (:initial-element t)) list)
-        ```
+    ```LISP
+    (function ((integer 0) &key (:initial-element t)) list)
+    ```
 
-    * 这个 value-type 可以是一个 values 类型指定符用来表示多值的类型.
+        这个 value-type 可以是一个 values 类型指定符[type specifier]用来表示多值[multiple values]的类型.
 
-    * 细想以下表达式的一个声明:
+        细想以下形式的一个声明:
 
-        ```LISP
-        (ftype (function (arg0-type arg1-type ...) val-type) f))
-        ```
+    ```LISP
+    (ftype (function (arg0-type arg1-type ...) val-type) f))
+    ```
 
-    * 任何在这个声明的作用域中的 (f arg0 arg1 ...) 表达式等价于以下:
+        任何在这个声明的作用域中的 (f arg0 arg1 ...) 表达式形式[form]等价于以下:
 
-        ```LISP
-        (the val-type (f (the arg0-type arg0) (the arg1-type arg1) ...))
-        ```
+    ```LISP
+    (the val-type (f (the arg0-type arg0) (the arg1-type arg1) ...))
+    ```
 
-    * 这也就是说, 如果任意参数不是指定的类型或者结果不是指定的类型, 那么结果是不可预料的. 具体来说, 如果任意参数不是正确的类型, 结果就不保证是指定的类型.
+        这也就是说, 如果任意参数不是指定的类型[type]或者结果不是指定的类型[type], 那么结果是未定义的. 具体来说, 如果任意参数不是正确的类型[type], 结果就不保证是指定的类型[type].
 
-    * 因此, 一个函数的 ftype 声明描述了这个函数的调用, 不是这个函数实际的定义.
+        因此, 一个函数[function]的 ftype 声明描述了这个函数[function]的调用[call], 不是这个函数[function]实际的定义.
 
-    * 细想一个以下表达式的声明:
+        细想一个以下形式的声明:
 
-        ```LISP
-        (type (function (arg0-type arg1-type ...) val-type) fn-valued-variable)
-        ```
+    ```LISP
+    (type (function (arg0-type arg1-type ...) val-type) fn-valued-variable)
+    ```
 
-    * 这个声明有着这样的解释, 在这个声明的作用域里, 如果 fn-valued-variable 的值被调用, 参数不是指定的类型, 那么结果是不可预料的; 一个合法调用的结果值会是 val-type 类型.
+        这个声明有着这样的解释, 在这个声明的作用域里, 如果 fn-valued-variable 的值被调用, 参数不是指定的类型[type], 那么结果是未定义的; 一个合法调用产生的值会是 val-type 类型.
 
-    * 与变量类型声明一样, 嵌套声明意味着类型的交集, 如下:
+        与变量类型声明一样, 嵌套声明意味着类型[type]的交集, 如下:
 
         * 细想以下两种 ftype 的声明:
 
@@ -655,7 +655,7 @@ Figure 4-8. 对应预定义类型指定符的类
             (ftype (function (arg0-type2 arg1-type2 ...) val-type2) f))
             ```
 
-            如果这些声明都生效, 那么在这些声明的共享作用域内, 对 f 的调用可以被认为好像 f 是按下面这种方式声明的:
+            如果这些声明都生效, 那么在这些声明的共享作用域内, 对 f 的调用可以被认为它是按下面这种方式声明的:
 
             ```LISP
             (ftype (function ((and arg0-type1 arg0-type2) (and arg1-type1 arg1-type2 ...) ...)
@@ -663,9 +663,9 @@ Figure 4-8. 对应预定义类型指定符的类
                 f))
             ```
 
-            它被允许忽略一个或全部的 ftype 声明.
+            它被允许忽略一个或全部有效的 ftype 声明.
 
-        * 如果一个变量的两个 (or more) 类型声明生效, 并且它们都是函数声明, 这些声明也会类似地组合. 
+        * 如果一个变量的两个(或更多)类型声明生效, 并且它们都是 function 声明, 这些声明也会类似地组合. 
 
 ### <span id="TypeCOMPILEDFUNCTION">类型 COMPILED-FUNCTION</span>
 
