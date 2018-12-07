@@ -202,7 +202,7 @@ Figure 4-6. 标准类型指定符的名字
 
 ## 4.3 <span id="Classes">类</span>
 
-尽管对象系统足够通用来描述所有的标准化类 (包括, 例如, number, hash-table, 和 symbol), 下面这段包含了与理解对象系统相关的类的列表.
+尽管对象系统来描述所有的标准化[standardized]类[class] (包括, 例如, number, hash-table, 和 symbol) 足够通用, 但下面这段包含了与理解对象系统相关的类[class]的列表.
 
     built-in-class    method-combination         standard-object   
     class             standard-class             structure-class   
@@ -215,81 +215,81 @@ Figure 4-7. 对象系统类
 > * 4.3.2 [定义类](#DefiningClasses)
 > * 4.3.3 [创建类的实例](#CreatingInstancesClasses)
 > * 4.3.4 [继承](#Inheritance)
-> * 4.3.5 [确定类的优先级列表](#DeterminingClassPrecedenceList)
+> * 4.3.5 [确定类优先级列表](#DeterminingClassPrecedenceList)
 > * 4.3.6 [重定义类](#RedefiningClasses)
 > * 4.3.7 [整合类和类型](#IntegratingTypesClasses)
 
 ### 4.3.1 <span id="IntroductionToClasses">类的介绍</span>
 
-一个类(class) 是一个对象, 它确定其他称之为实例的对象集合的结构和行为.
+一个类[class]是一个决定其他被称之为它的实例[instance]的那些对象[object]集合的结构和行为的对象[object].
 
-一个类可以从其他类中继承结构和行为. 一个类出于继承其他类的目的而在定义中引用其他类就称这个类是这些其他类的子类. 为了继承而指定的类称为继承类的超类.
+一个类[class]可以从其他类[class]中继承结构和行为. 一个出于继承其他类[class]的目的而在定义中引用它们的类[class]就称这个类是那些类[class]的子类[subclass]. 为了继承而指定的类[class]称为继承类[class]的超类[superclass].
 
-一个类可以有一个名字(name). 函数 class-name 接受一个类对象并且返回它的名字. 一个匿名类的名字是 nil. 一个符号可以命名一个类. 函数 find-class 接受一个符号并且返回这个符号命名的类. 如果名字是一个符号并且如果这个类的名字命名这个类那么这个类有一个特有的名字. 这就是说, 如果 S= (class-name C) 并且 C= (find-class S) 那么一个类 C 有一个特有的名字. 注意, (find-class S1) = (find-class S2) 并且 S1/=S2 是可能的. 如果 C= (find-class S), 我们就说 C 是名为 S 的类.
+一个类[class]可以有一个名字[name]. 函数[function] class-name 接受一个类[class]对象[object]并且返回它的名字[name]. 一个匿名类[class]的名字[name]是 nil. 一个符号[symbol]可以命名[name]一个类[class]. 函数[function] find-class 接受一个符号[symbol]并且返回这个符号[symbol]命名的类[class]. 如果一个名字[name]是一个符号[symbol]并且如果一个类[class]的这个名字[name]命名这个类[class], 那么这个类有一个专有名字[proper name]. 这就是说, 如果 S= (class-name C) 并且 C= (find-class S) 那么一个类[class] C 有一个专有名字[proper name]. 注意, (find-class S1) = (find-class S2) 并且 S1/=S2 是可能的. 如果 C= (find-class S), 我们就说 C 是名为 S 的类[class].
 
-如果一个类 C2 在它的定义中明确指定 C1 作为超类那么类 C1 就是类 C2 的一个直接超类. 在这个情况下 C2 是 C1 的一个直接子类. 如果 1 <= i < n 并且存在一系列的类 C2,...,Cn-1 而 Ci+1 是 Ci 的直接超类那么类 Cn 是类 C1 的一个超类. 一个类不能被当作是它自身的超类或子类. 这也就是说, 如果 C1 是 C2 的一个超类, 那么 C1 /=C2. 由某个给定的类 C 及其所有超类组成的类集合被称为"C及其超类".
+如果一个类[class] C2 在它的定义中显式指定 C1 作为超类[superclass]那么类[class] C1 就是类[class] C2 的一个直接超类[direct superclass]. 在这个情况下 C2 是 C1 的一个直接子类[direct subclass]. 如果 1 <= i < n 并且存在一系列的类[class] C2,...,Cn-1 而 Ci+1 是 Ci 的直接超类[direct superclass]那么类[class] Cn 是类[class] C1 的一个超类[superclass]. 一个类[class]不能被当作是它自身的超类[superclass]或子类[subclass]. 这也就是说, 如果 C1 是 C2 的一个超类[superclass], 那么 C1 /=C2. 由某个给定的类[class] C 及其所有超类[superclass]组成的类集合被称为 "C 及其超类".
 
-每一个类有一个类优先级列表(class precedence list), 它是给定类及其超类的集合的总排序. 这个总排序被表示为一个从最具体到最不具体的列表. 这个类优先级列表被用于多种用途. 一般来说, 更具体的类可以遮蔽从不具体的类中继承而来的特性. 方法(method)选择和组合过程使用类优先列表来从最具体到最不具体的顺序排列方法.
+每一个类[class]有一个类优先级列表[class precedence list], 它是给定类[class]及其超类[superclass]的集合的总序列. 这个总序列被表示为一个从最具体到最不具体的列表. 这个类优先级列表[class precedence list]被用于多种用途. 一般来说, 更具体的类[class]可以遮蔽[shadow[1]]从不具体的类中继承而来的特性. 方法[method]选择和组合过程使用类优先级列表[class precedence list]以从最具体到最不具体的顺序类对方法排序.
 
-当一个类被定义时, 定义表达式形式中提及到的直接超类的顺序是很重要的. 每一个类有一个局部优先级顺序, 这是一个由该类和跟在后面的直接超类组成的列表, 按照定义表达式形式中所提到的顺序.
+当一个类[class]被定义时, 定义表达式形式中提及到的直接超类[direct superclass]的顺序是很重要的. 每一个类[class]有一个局部优先级序列[local precedence order], 这是一个由该类[class]和跟在后面的直接超类[direct superclass]组成的列表[list], 按照定义表达式形式[form]中所提到的顺序.
 
-类优先级列表总是与列表中的每个类的局部优先级顺序一致. 每个局部优先级顺序中的类都以相同的顺序出现在类优先级列表中. 如果局部优先级顺序和其他每一个是不一致的, 就不能构建类优先级列表, 并且发出一个错误. 类优先级列表和它的运算在章节 4.3.5 (Determining the Class Precedence List).
+类优先级列表[class precedence list]总是与列表中的每个类[class]的局部优先级序列[local precedence order]一致. 每个局部优先级序列[local precedence order]中的类都以相同的顺序出现在类优先级列表中. 如果局部优先级序列[local precedence order]和其他每个是不一致的, 就不能构建类优先级列表[class precedence list], 并且发出一个错误. 类优先级列表和它的运算在章节 4.3.5 (确定类优先级列表) 中讨论.
 
-类被组织成一个有向的无环图. 这里有两个显著的类, 名字为 t 和 standard-object. 类 t 没有超类. 它是除了它自身以外所有类的超类. 类 standard-object 是类 standard-class 的一个实例并且是每一个除了它自身以外类 standard-class 实例的超类.
+类[class]被组织成一个有向的无环图. 这里有两个显著的类[class], 名为 t 和 standard-object. 名为 t 的类[class]没有超类[superclass]. 它是除了它自身以外所有类[class]的超类[superclass]. 类[class] standard-object 是类[class] standard-class 的一个实例[instance]并且是每一个除了它自身以外类 standard-class 实例[instance]的超类[superclass].
 
-这里由一个从对象系统类空间到类型空间的映射. 很多在这个文档中指定的标准类型都有一个对应的有这类型名字相同的类. 一些类型没有对应的类. 类型和类系统的集成在章节 4.3.7 (Integrating Types and Classes) 中讨论.
+这里由一个从对象系统类[class]空间到类型[type]空间的映射. 很多在这个文档中指定的标准类型[type]都有一个对应的有着和这个类型[type]相同名字[name]的类[class]. 一些类型[type]没有对应的类[class]. 类型[type]和类[class]系统的集成在章节 4.3.7 (整合类和类型) 中讨论.
 
-类由自身也是类的实例的对象来表示. 对象类的类被称为该对象的元类(metaclass). 当不可能出现错误解释时, 元类这个术语被用来引用一个类, 该类具有自身类的实例. 元类确定作为它实例的类的继承形式, 和那些类实例的表示形式. 这个对象系统提供一个默认的元类, standard-class, 适用于大部分程序.
+类[class]由自身也是类[class]的实例[instance]的对象[object]来表示. 一个对象[object]的类[class]的类[class]被称为该对象[object]的元类[metaclass]. 当不可能出现错误解释时, 元类[metaclass]这个术语被用来引用一个有着自身也是类[class]的实例[instance]的类[class]. 元类[metaclass]确定作为它的实例[instance]的类[class]的继承形式, 以及那些类[class]的实例[instance]的表示形式. 这个对象系统提供一个默认的元类[metaclass], standard-class, 适用于大部分程序.
 
-除另有指定外, 在这个标准中提及的所有类都是类 standard-class 的实例, 所有广义函数都是类 standard-generic-function 的实例, 并且所有方法都是类 standard-method 的实例. 
+除另有指定外, 在这个标准中提及的所有类[class]都是类[class] standard-class 的实例[instance], 所有广义函数[generic function]都是类[class] standard-generic-function 的实例[instance], 并且所有方法[method]都是类[class] standard-method 的实例[instance]. 
 
 #### 4.3.1.1 标准的元类
 
-对象系统提供了许多预定义的元类. 这些包括类 standard-class, built-in-class, 还有 structure-class:
+对象系统提供了许多预定义的元类[metaclass]. 这些包括类[class] standard-class, built-in-class, 还有 structure-class:
 
-* 类 standard-class 是 defclass 定义的类的默认类.
+* 类[class] standard-class 是 defclass 定义的类[class]的默认类[class].
 
-* 类 built-in-class 是实例具有限制能力的特殊实现的类的类. 任何相当于标准类型的类可能是 built-in-class 的一个实例. 预定义的类型指定符需要有对应的类在 Figure 4-8 中被列出. 这些类中的每一个是否被实现为一个内置的类是依赖于具体实现的.
+* 类[class] built-in-class 是这样的类[class]: 它的实例[instance]是具有限制能力的特殊实现的类[class]. 任何对应于标准类型[type]的类[class]可能是 built-in-class 的一个实例[instance]. 预定义的类型[type]指定符需要有着 Figure 4-8 中列出的对应类[class]. 这些类[class]中的每一个是否被实现为一个内置类[built-in class]是依赖于具体实现的[implementation-dependent].
 
-* 所有通过 defstruct 定义的类都是类 structure-class 的实例. 
+* 所有通过 defstruct 定义的类[class]都是类[class] structure-class 的实例[instance]. 
 
 ### 4.3.2 <span id="DefiningClasses">定义类</span>
 
-宏 defclass 被用于定义一个新命名的类.
+宏 defclass 被用于定义一个新命名的类[class].
 
-一个类的定义包括:
+一个类[class]的定义包括:
 
-* 这个新类的名字. 对于新定义的类这个名字是一个特有的名字.
+* 这个新类[class]的名字[name]. 对于新定义的类[class], 这个名字[name]是一个专有名字[proper name].
 
-* 这个新定义的类的直接超类列表.
+* 这个新定义的类[class]的直接超类列表[superclasses].
 
-* 一个槽指定符的集合. 每一个槽指定符包括槽的名字和 0 或更多的槽选项. 一个槽选项只适用于单个槽. 如果一个类定义包含两个相同名字的槽指定符, 会发出一个错误.
+* 一个槽指定符[slot specifier]的集合. 每一个槽指定符[slot specifier]包括槽[slot]的名字[name]和 0 个或多个的槽[slot]选项. 一个槽[slot]选项只适用于单个槽[slot]. 如果一个类[class]定义包含两个相同名字[name]的槽指定符[slot specifier], 会发出一个错误.
 
-* 一个类选项的集合. 每个类选项都属于整个类.
+* 一个类[class]选项的集合. 每个类[class]选项都属于整个类[class].
 
-defclass 表达式形式的槽选项和类选项机制被用于:
+    defclass 表达式形式的槽[slot]选项和类[class]选项机制被用于:
 
-* 为给定的槽提供默认的初始值表达式形式.
+    * 为给定的槽[slot]提供默认的初始值表达式形式[form].
 
-* 请求自动生成广义函数的方法，用于读取或写入槽.
+    * 请求自动生成广义函数[generic function]的方法[method]，用于读取或写入槽[slot].
 
-* 控制一个给定的槽是否共享于类的所有实例或者这个类的每个实例是否有它自己的槽.
+    * 控制一个给定的槽[slot]是否共享于这个类[class]的所有实例[instance]或者这个类[class]的每个实例[instance]是否有它自己的槽[slot].
 
-* 提供初始化参数和初始化参数默认值, 用于实例的创建.
+    * 提供初始化参数和初始化参数默认值, 用于实例[instance]的创建.
 
-* 指定元类而不是默认的. 这个 :metaclass 选项保留给未来使用; 一个实现可以扩展去使用 :metaclass 选项.
+    * 指定元类[metaclass]而不是默认的. 这个 :metaclass 选项保留给未来使用; 一个实现可以扩展去使用 :metaclass 选项.
 
-* 指定存储在槽中的期望的类型.
+    * 指定存储在槽[slot]中的期望的类型[type].
 
-* 指定槽的文档字符串. 
+    * 指定槽[slot]的文档字符串[documentation string]. 
 
 ### 4.3.3 <span id="CreatingInstancesClasses">创建类的实例</span>
 
-广义函数 make-instance 创建并返回一个类的一个新的实例. 这个对象系统提供多种机制用于指明一个对象如何被初始化. 比如, 在新创建的对象中通过给 make-instance 提供参数或提供默认的初始化值来指定槽的初始化值是可能的. 进一步的初始化活动可以通过为广义函数编写的方法执行, 这些函数是初始化协议的一部分. 完全的初始化协议在章节 7.1 (Object Creation and Initialization) 中描述. 
+广义函数 make-instance 创建并返回一个类[class]的一个新的实例[instance]. 这个对象系统提供多种机制用于指明一个新的实例[instance]如何被初始化. 比如, 可以在新创建的实例[instance]中通过给 make-instance 提供参数或提供默认的初始化值来指定槽[slot]的初始值. 进一步的初始化活动可以通过为初始化协议中的广义函数[generic function]编写方法[method]来执行. 完全的初始化协议在章节 7.1 (对象创建和初始化) 中描述. 
 
 ### 4.3.4 <span id="Inheritance">继承</span>
 
-一个类可以从它的超类中继承方法, 槽, 还有一些 defclass 选项. 其他部分描述了方法的继承, 槽和槽选项的继承以及类选项的继承.
+一个类[class]可以从它的超类[superclass]中继承方法[method], 槽[slot], 还有一些 defclass 选项. 其他部分描述了方法[method]的继承, 槽[slot]和槽[slot]选项的继承以及类[class]选项的继承.
 
 #### 4.3.4.1 继承的示例
 
@@ -304,51 +304,51 @@ defclass 表达式形式的槽选项和类选项机制被用于:
     (S3 :accessor C2-S3)))
 ```
 
-类 C1 的实例有一个局部槽命名为 S1, 它的默认初始值是 5.4 并且它的值应该始终为一个数字. 类 C1 也有一个共享的槽名为 S2.
+类 C1 的实例[instance]有一个名为 S1 的局部槽[local slot], 它的默认初始值是 5.4 并且它的值[number]应该始终为一个数字[number]. 类 C1 也有一个名为 S2 的共享槽[shared slot].
 
-在 C2 的实例中有一个局部槽名为 S1. S1 的默认初始值为 5. S1 的值应该总是为类型 (and integer number). 在 C2 的实例中也有名为 S2 和 S3 的局部槽. 类 C2 有一个 C2-S3 方法来读取槽 S3 的值; 也有一个 (setf C2-S3) 方法来写入 S3 的值. 
+在 C2 的实例[instance]中有一个名为 S1 的局部槽[local slot]. S1 的默认初始值为 5. S1 的值应该总是为类型 (and integer number). 在 C2 的实例[instance]中也有名为 S2 和 S3 的局部槽[local slot]. 类 C2 有一个 C2-S3 方法[method]来读取槽 S3 的值; 也有一个 (setf C2-S3) 方法[method]来写入 S3 的值. 
 
 #### 4.3.4.2 类选项的继承
 
-这个 :default-initargs 类选项被继承. 一个类的默认初始化参数集合是这个类和它的超类的 :default-initargs 类选项中提供的初始化参数的并集. 当给一个给定的初始化参数提供了不止一个默认初始化值表达式时, 使用的默认初始值表达式形式是由类优先级列表中最具体的类提供的.
+这个 :default-initargs 类选项被继承. 一个类[class]的默认初始化参数集合是这个类[class]和它的超类[superclass]的 :default-initargs 类选项中提供的初始化参数的并集. 当给一个给定的初始化参数提供了不止一个默认初始值表达式形式[form]时, 使用的默认初始值表达式形式[form]是由类优先级列表[class precedence list]中最具体的类[class]提供的.
 
-如果一个给定的 :default-initargs 类选项不止一次指定相同名字的初始化参数, 会发出一个类型 program-error 的错误. 
+如果一个给定的 :default-initargs 类选项不止一次指定相同名字[name]的初始化参数, 会发出一个 program-error 类型[type]的错误. 
 
-### 4.3.5 <span id="DeterminingClassPrecedenceList">确定类的优先级列表</span>
+### 4.3.5 <span id="DeterminingClassPrecedenceList">确定类优先级列表</span>
 
-一个类的 defclass 表达式形式提供这个类和它的直接超类的完整的列表. 这个列表称之为局部优先级列表(local precedence order). 它是一个这个类和它的直接超类的有序列表. 这个类 C 的类优先级列表是一个由每一个 C 和它的超类的局部优先级列表构成的完整的列表.
+一个类的 defclass 表达式形式提供这个类[class]和它的直接超类[superclass]的总序列. 这个序列称之为局部优先级序列[local precedence order]. 它是一个这个类[class]和它的直接超类[superclass]的有序列表. 类 C 的类优先级列表[class precedence list]是一个 C 和它的超类的总序列, 由 C 和它的超类[superclass]的每一个局部优先级序列[local precedence order]构成.
 
-一个类在它的直接超类前面, 并且一个直接超类先于那些在 defclass 表达式中的超类列表中在它右边的其他直接超类. 对于每一个类 C, 定义
+一个类[class]在它的直接超类[superclass]前面, 并且一个直接超类[superclass]先于那些在 defclass 表达式形式中的超类[superclass]列表中在它右边的其他直接超类[superclass]. 对于每一个类 C, 定义
 
-RC={(C,C1),(C1,C2),...,(Cn-1,Cn)}
+    RC={(C,C1),(C1,C2),...,(Cn-1,Cn)}
 
-其中 C1,...,Cn 是 C 的直接超类,在 defclass 表达式形式提及的列表中. 这些有序对生成类 C 和它的直接超类的总列表.
+其中 C1,...,Cn 是 C 的直接超类[superclass], 以 defclass 表达式形式提及的顺序. 这些有序对生成类 C 和它的直接超类[superclass]的总序列.
 
-让 SC 是 C 和它的超类的集合. 让 R 为
+让 SC 是 C 和它的超类[superclass]的集合. 让 R 为
 
-R=Uc<ELEMENT-OF>SCRc
+    R=Uc<ELEMENT-OF>SCRc
 
-这个集合 R 可能或可能不会生成一个部分列表, 取决于 Rc, c<ELEMENT-OF>SC, 是否是一致的; 假定它们是一致的, R 产生一个部分列表. 当这个 Rc 不是一致的时, 就说 R 是非一致的.
+这个集合 R 可能会也可能不会生成一个部分列表, 取决于 Rc, c<ELEMENT-OF>SC, 是否是一致的; 假定它们是一致的, R 产生一个部分列表. 当这个 Rc 不是一致的时, 就说 R 是非一致的.<!--TODO 不理解-->
 
-为了计算 C 的优先级列表, 从拓扑上对 SC 的元素排序与 R 产生的部分列表有关. 当这个拓扑排序必须从两个或更多类的集合中选择一个类时, 其中没有一个类的前面有关于R的其他类, 选择的类是确定的, 如下面所述.
+为了计算 C 的类优先级列表[class precedence list], 根据 R 产生的部分序列对 SC 的元素进行拓扑排序. 当这个拓扑排序必须从两个或更多类[class]的集合中选择一个类[class]时, 其中没有一个类的前面有关于 R 的其他类[class], 选择的类是确定的, 如下面所述.
 
 如果 R 不是一致的, 会发出一个错误.
 
 #### 4.3.5.1 拓扑排序
+<!--TODO 不理解-->
+拓扑排序是根据 R 中的元素通过在 SC 中找到一个 C 类来进行的, 这样就不会有其他元素先于这个元素. 这个类 C 被放在结果的最前面. 从 SC 中移除 C, 并且从 R 中移除所有表达式形式 (C,D) 对, D<ELEMENT-OF>SC. 重复这个过程, 在结果的末尾添加前面没有任何类的类. 当找不到前面没有类的元素时停止.<!--TODO 待校对-->
 
-拓扑排序是根据 R 中的元素通过在 SC 中找到一个 C 类来进行的, 这样就不会有其他元素先于这个元素. 这个类 C 被放在结果的最前面. 从 SC 中移除 C, 并且从 R 中移除所有表达式 (C,D) 对, D<ELEMENT-OF>SC. 重复这个过程, 在结果的末尾添加前面没有任何类的类. 当找不到前面没有类的元素时停止.
+如果 SC 不是空并且这个过程已经停止, 那么集合 R 是不一致的. 如果在有限类[class]集合中的每个类[class]都前置另一个类, 那么 R 就包含一个循环. 这就是说, 这里有一个 Ci 先于 Ci+1 的链 C1,...,Cn , 1 <= i < n, 而 Cn 先于 C1.
 
-如果 SC 不是空并且这个过程已经停止, 那么集合 R 是不一致的. 如果在有限集合中的每个类都前置另一个类，那么 R 就包含一个循环. 这就是说, 这里有一个 Ci 先于 Ci+1 的链 C1,...,Cn , 1 <= i < n, 并且 Cn 先于 C1.
+有时候这里有多个来自 SC 并且前面没有类的类[class]. 在这个情况下选择迄今为止在类优先级列表[class precedence list]中最右边的那个有直接子类[subclass]的那个. (如果这里没有这样一个候选的类[class], R 不产生一个部分序列---这个 Rc, c<ELEMENT-OF>SC, 是不一致的.)
 
-有时候这里有多个来自 SC 并且前面没有类的类. 在这个情况下选择迄今为止在类优先级列表中最右边的那个有直接子类的那个. (如果这里没有这样一个候选的类, R 不产生一个部分列表---这个 Rc, c<ELEMENT-OF>SC, 是不一致的.)
+用更精确的术语, 让 {N1,...,Nm}, m>=2, 成为来自于 SC 的前面没有类的类[class]. 让 (C1...Cn), n>=1, 成为目前为止已构建的类优先级列表[class precedence list]. C1 是最具体的类[class], 而 Cn 最不具体的. 让 1 <= j <= n 成为最大一个数这样一来这里存在 i 其中 1 <= i <= m 并且 Ni 是 Cj 的一个直接超类[superclass]; Ni 被放到下一个.
 
-用更精确的术语, 让 {N1,...,Nm}, m>=2, 成为来自于 SC 的前面没有类的类. 让 (C1...Cn), n>=1, 成为目前为止已构建的类优先级列表. C1 是最具体的类, 并且 Cn 最不具体的. 让 1 <= j <= n 成为最大一个数这样这里存在 i 其中 1 <= i <= m 并且 Ni 是 Cj 的一个直接子类; Ni 被放到下一个.
-
-这个规则从一组前面没有类的类中选择的效果是, 一个简单的超类链中的类在类优先级列表中是相邻的, 并且每个相对独立的子图中的类在类优先列表中是相邻的. 例如, 让 T1 和 T2 成为子图, 其唯一公共的元素是类 J. 假设没有 J 的超类出现在 T1 或 T2 中, 并且这个 J 存在于 T1 和 T2 的每个类的超类链中. 让 C1 是 T1 底部; 并且让 C2 是 T2 的底部. 假设这个顺序下 C 的直接超类是 C1 和 C2, 那么 C 的类优先级列表以 C 开始后面更这 T1 的所有类除了 J. 后面是 T2 的所有类. 类 J 和它的超类出现在最后. 
+这个从一组没有前导类的类[class]集合中选择的规则的效果是, 一个简单的超类[superclass]链中的类[class]在类优先级列表[class precedence list]中是相邻的, 并且每个相对独立的子图中的类[class]在类优先级列表[class precedence list]中是相邻的. 例如, 让 T1 和 T2 成为子图, 其唯一公共的元素是类 J. 假设没有 J 的超类出现在 T1 或 T2 中, 并且这个 J 存在于 T1 和 T2 的每个类的超类链中. 让 C1 是 T1 底部; 并且让 C2 是 T2 的底部. 假设这个顺序下 C 是一个直接超类是按照那个顺序 C1 和 C2 的类[class], 那么 C 的类优先级列表[class precedence list]以 C 开始后面跟着 T1 的所有类[class]除了 J. 后面是 T2 的所有类[class]. 类[class] J 和它的超类[superclass]出现在最后. 
 
 #### 4.3.5.2 确定类优先级列表的示例
 
-这个实例确定一个类 pie 的类优先级列表. 定义下面这些类:
+这个实例确定一个类 pie 的类优先级列表[class precedence list]. 定义下面这些类[class]:
 
 ```LISP
 (defclass pie (apple cinnamon) ())
@@ -367,19 +367,19 @@ R=Uc<ELEMENT-OF>SCRc
 集合 Spie = {pie, apple, cinnamon, fruit, spice, food, standard-object, t}. 集合 R = {(pie, apple), (apple, cinnamon), (apple, fruit), (cinnamon, spice),
 (fruit, food), (spice, food), (food, standard-object), (standard-object, t)}.
 
-类 pie 的前面什么都没有, 所以它是第一个; 目前为止结果是 (pie). 从 S 中移除 pie 并且从 R 中移除提及到 pie 的对得到 S = {apple, cinnamon, fruit, spice, food, standard-object, t} 还有 R = {(apple, cinnamon), (apple, fruit), (cinnamon, spice),
+类 pie 的前面什么都没有, 所以它是第一个; 目前为止结果是 (pie). 从 S 中移除 pie 并且从 R 中移除提及到 pie 的对(pair)来得到 S = {apple, cinnamon, fruit, spice, food, standard-object, t} 还有 R = {(apple, cinnamon), (apple, fruit), (cinnamon, spice),
 (fruit, food), (spice, food), (food, standard-object), (standard-object, t)}.
 
-类 apple 前面没有任何东西, 所以它是下一个; 结果是 (pie apple). 移除 apple 和相关的对得到 S = {cinnamon, fruit, spice, food, standard-object, t} 并且 R = {(cinnamon, spice), (fruit, food), (spice, food), (food, standard-object),
+类 apple 前面没有任何东西, 所以它是下一个; 结果是 (pie apple). 移除 apple 和相关的对得到 S = {cinnamon, fruit, spice, food, standard-object, t} 以及 R = {(cinnamon, spice), (fruit, food), (spice, food), (food, standard-object),
 (standard-object, t)}.
 
-类 cinnamon 和 fruit 前面什么都没有, 所以目前为止拥有在类优先级列表中最右边的直接子类的那一个是下一个. 类 apple 是 fruit 的直接子类, 而类 pie 是一个 cinnamon 的直接子类. 因为类优先级列表中 apple 出现 pie 的右边, fruit 是下一个, 目前的结果是 (pie apple fruit). S = {cinnamon, spice, food, standard-object, t}; R = {(cinnamon, spice), (spice, food),(food, standard-object), (standard-object, t)}.
+类 cinnamon 和 fruit 前面什么都没有, 所以目前为止有着类优先级列表[class precedence list]中最右边的直接子类[subclass]的那一个是下一个. 类 apple 是 fruit 的直接子类[subclass], 而类 pie 是一个 cinnamon 的直接子类[subclass]. 因为类优先级列表[class precedence list]中 apple 出现 pie 的右边, fruit 是下一个, 目前的结果是 (pie apple fruit). S = {cinnamon, spice, food, standard-object, t}; R = {(cinnamon, spice), (spice, food),(food, standard-object), (standard-object, t)}.
 
 类 cinnamon 是下一个, 目前结果为 (pie apple fruit cinnamon). 这时 S = {spice, food, standard-object, t}; R = {(spice, food), (food, standard-object), (standard-object, t)}.
 
-类 spice, food, standard-object, 还有 t 按这个顺序添加, 然后类优先级列表为 (pie apple fruit cinnamon spice food standard-object t).
+类 spice, food, standard-object, 还有 t 按这个顺序添加, 然后类优先级列表[class precedence list]为 (pie apple fruit cinnamon spice food standard-object t).
 
-编写一组不能被排序的类定义是可能的. 比如:
+编写一组不能被排序的类[class]定义是可能的. 比如:
 
 ```LISP
 (defclass new-class (fruit apple) ())
@@ -387,7 +387,7 @@ R=Uc<ELEMENT-OF>SCRc
 (defclass apple (fruit) ())
 ```
 
-类 fruit 必须先于 apple 因为必须保留超类的局部顺序. 类 apple 必须先于 fruit 因为一个类必须先于它的超类. 当这个情况发生时, 会发出一个错误, 当系统尝试去计算 new-class 的类优先级列表时会发生在这里.
+类 fruit 必须先于 apple 因为必须保留超类[superclass]的局部顺序. 类 apple 必须先于 fruit 因为一个类必须先于它自己的超类[superclass]. 当这个情况发生时, 会发出一个错误, 就像在这里系统尝试去计算 new-class 的类优先级列表[class precedence list]时发生的那样.
 
 以下可能是一组相互冲突的定义:
 
@@ -401,11 +401,11 @@ R=Uc<ELEMENT-OF>SCRc
 (defclass cinnamon () ())
 ```
 
-这个 pie 的类优先级列表是 (pie apple cinnamon standard-object t).
+这个 pie 的类优先级列表[class precedence list]是 (pie apple cinnamon standard-object t).
 
-这个 pastry 的类优先级列表是 (pastry cinnamon apple standard-object t).
+这个 pastry 的类优先级列表[class precedence list]是 (pastry cinnamon apple standard-object t).
 
-在 pie 的超类的顺序中 apple 先于 cinnamon 不是问题, 但是在 pastry 中则有问题. 然而, 去构建一个同时有 pie 和 pastry 作为超类的新的类是不可能的. 
+在 pie 的超类[superclass]的顺序中 apple 先于 cinnamon 不是问题, 但是在 pastry 中则有问题. 然而, 去构建一个同时有 pie 和 pastry 作为超类[superclass]的新的类[class]是不可能的. 
 
 ### 4.3.6 <span id="RedefiningClasses">重定义类</span>
 
@@ -455,11 +455,11 @@ R=Uc<ELEMENT-OF>SCRc
 
 对象系统映射类的空间到类型的空间. 每个有着特有的的名字的类都有一个对应相同名字的类型.
 
-每个类的特有的名字是一个合法的类型指定符. 另外, 每个类对象是一个合法的类型指定符. 所以表达式 (typep object class) 在 object 的类是 class 本身或者 class 的子类情况下返回 true. 如果 class1 是 class2 的一个子类或者它们是相同的类, 表达式 (subtypep class1 class2) 的求值返回多值 true 和 true; 否则它返回多值 false 和 true. 如果 I 是某个名为 S 的类 C 的实例并且 C 是 standard-class 的实例, 那么如果 S 是 C 的特有的的名字表达式 (type-of I) 的求值返回 S; 否则, 它返回 C.
+每个类的专有名字[proper name]是一个合法的类型指定符. 另外, 每个类对象是一个合法的类型指定符. 所以表达式 (typep object class) 在 object 的类是 class 本身或者 class 的子类情况下返回 true. 如果 class1 是 class2 的一个子类或者它们是相同的类, 表达式 (subtypep class1 class2) 的求值返回多值 true 和 true; 否则它返回多值 false 和 true. 如果 I 是某个名为 S 的类 C 的实例并且 C 是 standard-class 的实例, 那么如果 S 是 C 的特有的的名字表达式 (type-of I) 的求值返回 S; 否则, 它返回 C.
 
 由于类的名字和类对象是类型指定符, 它们可能被用于特殊表达式形式 the 还有类型声明.
 
-很多但不是全部预定义的类型指定符都有和类型有着相同特有的名字的类. 这些类型指定符列在 Figure 4-8. 比如, 类型 array 有一个对应的类名为 array. 没有类型指定符是一个列表, 比如 (vector double-float 100), 有着一个对应的类. 操作符 deftype 不会创建任何类.
+很多但不是全部预定义的类型指定符都有和类型有着相同专有名字[proper name]的类. 这些类型指定符列在 Figure 4-8. 比如, 类型 array 有一个对应的类名为 array. 没有类型指定符是一个列表, 比如 (vector double-float 100), 有着一个对应的类. 操作符 deftype 不会创建任何类.
 
 对应于预定义类型说明符的每个类可以通过以下三种方式实现, 由每个具体实现决定. 它可以是一个 standard class, 一个 structure class, 或者一个 system class.
 
@@ -675,9 +675,9 @@ Figure 4-8. 对应预定义类型指定符的类
 
 * 描述(Description):
 
-        如果一个函数不包含在运行时必须展开的宏的引用, 并且它也不包含加载时值的未解析的引用, 那么任何函数都可以被认为是一个编译后的函数(compiled function). 见章节 3.2.2 (Compilation Semantics).
+        如果一个函数不包含必须在运行时展开的宏[macro]的引用, 并且它也不包含加载期值[load time values]的未解决的引用, 那么任何这样的函数都可以被具体实现[implementation]认为是一个编译后的函数[compiled function]. 见章节 3.2.2 (编译语义).
 
-        一个函数的定义词法上出现在一个文件中, 这个文件已经被 compile-file 编译并且被 load 加载后这个函数的类型就是 compiled-function. compile 函数产生的函数也是 compiled-function 类型的. 其他函数也可能是 compiled-function 类型. 
+        一个词法上出现在一个被 compile-file 编译并且被 load 加载的文件[file]中的函数[function]定义是 compiled-function 类型[type]. compile 函数产生的函数[function]也是 compiled-function 类型[type]. 其他函数[function]也可能是 compiled-function 类型[type]. 
 
 ### <span id="SystemClassGENERICFUNCTION">系统类 GENERIC-FUNCTION</span>
 
@@ -687,9 +687,9 @@ Figure 4-8. 对应预定义类型指定符的类
 
 * 描述(Description):
 
-        一个广义函数是一个行为取决于提供给它的参数的标识或类. 一个广义函数对象包含一个方法的集合, 一个 lambda 列表, 一个方法组合类型, 还有其他信息. 方法定义了广义函数的类特定的行为和操作; 一个方法也被称为特化一个广义函数. 当被调用时, 一个广义函数基于它的参数的类和标识去执行它的方法的一个子集.
+        一个广义函数[generic function]是一个行为取决于提供给它的实参[argument]标识或类[class]的函数[function]. 一个广义函数对象包含一个方法[method]的集合, 一个 lambda 列表[lambda list], 一个方法组合[method combination]类型[type], 还有其他信息. 方法[method]定义了广义函数[generic function]的特定于类的行为和操作; 一个方法[method]也说是特化[specialize]一个广义函数[generic function]. 当被调用时, 一个广义函数[generic function]基于那些类[class]和实参[argument]标识去执行它的那些方法[method]的一个子集.
 
-        一个广义函数可以和普通函数相同的方式被使用; specifically, 一个广义函数可以被用作 funcall 和 apply 的参数, 并且可以被赋予一个全局或局部的名字. 
+        一个广义函数[generic function]可以和普通函数[function]相同的方式被使用; 特别地, 一个广义函数[generic function]可以被用作 funcall 和 apply 的参数, 并且可以被赋予一个全局或局部的名字. 
 
 ### <span id="SystemClassSTANDARDGENERICFUNCTION">系统类 STANDARD-GENERIC-FUNCTION</span>
 
@@ -699,7 +699,7 @@ Figure 4-8. 对应预定义类型指定符的类
 
 * 描述(Description):
 
-        类 standard-generic-function 是 defmethod, ensure-generic-function, defgeneric, 和 defclass 表达式建立的默认广义函数的类. 
+        类[class] standard-generic-function 是 defmethod, ensure-generic-function, defgeneric, 和 defclass 表达式形式[form]建立的广义函数[generic function]的默认类[class]. 
 
 ### <span id="SystemClassCLASS">系统类 CLASS</span>
 
@@ -709,7 +709,7 @@ Figure 4-8. 对应预定义类型指定符的类
 
 * 描述(Description):
 
-        类型 class 表示确定它们实例的结构的行为的对象. 与 class 类型的对象相关联的信息是描述其在类的非循环图形中的位置、它的槽还有它的选项的信息. 
+        类型[type] class 表示确定它们的实例[instance]的结构的行为的对象[object]. 与 class 类型[type]的对象[object]相关联的信息是描述其在类[class]的非循环有向图中的位置, 它的槽[slot]还有它的选项的信息. 
 
 ### <span id="SystemClassBUILTINCLASS">系统类 BUILT-IN-CLASS</span>
 
@@ -719,7 +719,7 @@ Figure 4-8. 对应预定义类型指定符的类
 
 * 描述(Description):
 
-        一个内置类是一个其实例具有限制功能和特殊表示的类. 尝试用 defclass 去定义一个内置类的子类会发出一个 error 类型的错误. 调用 make-instance 去创建一个内置类的实例会发出一个 error 类型的错误. 在一个内置类的实例上调用会发出一个 error 类型的错误. 重定义一个内置类或使用 change-class 去改变一个实例的类为内置类或改变一个内置类为其他类会发出一个 error 的错误. 然而, 内置类可以被用作方法的参数指定符. 
+        一个内置类[built-in class]是一个实例[instance]具有限制功能和特殊表示的类[class]. 尝试用 defclass 去定义一个内置类[built-in class]的子类[subclass]会发出一个 error 类型[type]的错误. 调用 make-instance 去创建一个内置类[built-in class]的实例[instance]会发出一个 error 类型[type]的错误. 在一个内置类[built-in class]的实例[instance]上调用 slot-value 会发出一个 error 类型[type]的错误. 重定义一个内置类[built-in class]或使用 change-class 去改变一个实例[instance]的类[class]为内置类[built-in class]或改变一个内置类[built-in class]为其他类会发出一个 error 类型[type]的错误. 然而, 内置类[built-in class]可以被用作方法[method]的参数指定符[parameter specializer]. 
 
 ### <span id="SystemClassSTRUCTURECLASS">系统类 STRUCTURE-CLASS</span>
 
@@ -729,17 +729,17 @@ Figure 4-8. 对应预定义类型指定符的类
 
 * 描述(Description):
 
-        所有通过 defstruct 定义的类的都是类 structure-class 的实例. 
+        所有通过 defstruct 定义的类[class]的都是类[class] structure-class 的实例[instance]. 
 
 ### <span id="SystemClassSTANDARDCLASS">系统类 STANDARD-CLASS</span>
 
 * 类优先级列表(Class Precedence List):
 
-    standard-class, class, standard-object, t
+        standard-class, class, standard-object, t
 
 * 描述(Description):
 
-    类 standard-class 是 defclass 定义出来的默认类. 
+        类[class] standard-class 是 defclass 定义出来的类[class]的默认类[class]. 
 
 ### <span id="SystemClassMETHOD">系统类 METHOD</span>
 
@@ -749,15 +749,15 @@ Figure 4-8. 对应预定义类型指定符的类
 
 * 描述(Description):
 
-        一个方法是表示一个广义函数的行为的模组化部分的对象.
+        一个方法[method]是表示一个广义函数[generic function]的行为的模块化部分的对象[object].
 
-        一个方法包含了实现这个方法行为的代码, 一个指定什么时候这个给定方法可以被应用的参数指定符序列, 还有一个被用于方法组合机制来辨别方法的限定符序列. 每一个方法的每一个必要参数都有一个关联的参数指定符, 并且只有在参数满足方法的参数指定符时, 该方法才会被调用.
+        一个方法[method]包含了实现这个方法[method]行为的代码[code], 一个指定什么时候这个给定方法[method]可以被应用的参数指定符[parameter specializer]序列, 还有一个被用于方法组合机制来辨别方法的限定符[qualifier]序列. 每一个方法[method]的每一个必要参数都有一个关联的参数指定符[parameter specializer], 并且只有在参数满足方法的这些参数指定符[parameter specializer]时, 该方法才会被调用.
 
-        方法组合机制控制方法的选择, 它们执行的顺序, 还有广义函数返回的值. 对象系统提供一个默认方法组合类型并且提供一个机制来声明新的方法组合类型.
+        方法组合机制控制方法[method]的选择, 它们执行的顺序, 还有这个广义函数返回的值. 对象系统提供一个默认方法组合类型并且提供一个机制来声明新的方法组合类型.
 
 * 也见(See Also):
 
-        章节 7.6 (Generic Functions and Methods) 
+        章节 7.6 (广义函数和方法) 
 
 ### <span id="SystemClassSTANDARDMETHOD">系统类 STANDARD-METHOD</span>
 
@@ -767,7 +767,7 @@ Figure 4-8. 对应预定义类型指定符的类
 
 * 描述(Description):
 
-        这个类 standard-method 是 defmethod 和 defgeneric 表达式定义的方法的默认类. 
+        这个类[class] standard-method 是 defmethod 和 defgeneric 表达式形式[form]定义的方法[method]的默认类[class]. 
 
 ### <span id="ClassSTRUCTUREOBJECT">类 STRUCTURE-OBJECT</span>
 
@@ -777,11 +777,11 @@ Figure 4-8. 对应预定义类型指定符的类
 
 * 描述(Description):
 
-        类 structure-object 是 structure-class 的一个实例并且是 structure-class 实例的每一个类的超类除了它自身, 并且是 defstruct 定义的每一个类的超类.
+        类[class] structure-object 是 structure-class 的一个实例[instance], 并且是作为 structure-class 的实例[instance]的除了它自身以外的每一个类[class]的超类[superclass], 并且是 defstruct 定义的每一个类[class]的超类[superclass].
 
 * 也见(See Also):
 
-        defstruct, Section 2.4.8.13 (Sharpsign S), Section 22.1.3.12 (Printing Structures) 
+        defstruct, 章节 2.4.8.13 (井号S(#S)), 章节 22.1.3.12 (打印结构体) 
 
 ### <span id="ClassSTANDARDOBJECT">类 STANDARD-OBJECT</span>
 
@@ -791,7 +791,7 @@ Figure 4-8. 对应预定义类型指定符的类
 
 * 描述(Description):
 
-        类 standard-object 是 standard-class 的一个实例并且是 standard-class 的实例的每个类的超类除了它自身. 
+        类[class] standard-object 是 standard-class 的一个实例[instance]并且是作为 standard-class 的实例[instance]的除了它自身以外的每个类[class]的超类[superclass]. 
 
 ### <span id="SystemClassMETHODCOMBINATION">系统类 METHOD-COMBINATION</span>
 
@@ -801,7 +801,7 @@ Figure 4-8. 对应预定义类型指定符的类
 
 * 描述(Description):
 
-        每一个方法组合对象是类 method-combination 的间接实例. 一个方法组合对象表示这个方法组合被一个广义函数所使用的信息. 一个方法组合对象包含了方法组合的类型还有这个类型要使用的参数信息. 
+        每一个方法组合[method combination]对象[object]是类[class] method-combination 的间接实例[indirect instance]. 一个方法组合[method combination]对象[object]表示这个方法组合[method combination]被一个广义函数[generic function]所使用的信息. 一个[method combination]对象[object]包含了方法组合[method combination]的类型还有这个类型[type]要使用的参数相关的信息. 
 
 ### <span id="SystemClassT">系统类 T</span>
 
@@ -811,13 +811,13 @@ Figure 4-8. 对应预定义类型指定符的类
 
 * 描述(Description):
 
-        所有对象的集合. 类型 t 每个类型的超类型, 包括它自身. 每个对象都是类型 t. 
+        所有对象[object]的集合. 类型[type] t 每个类型[type]的超类型[supertype], 包括它自身. 每个对象[object]都是类型[type] t. 
 
 ### <span id="TypeSpecifierSATISFIES">类型指定符 SATISFIES</span>
 
 * 复合类型指定符种类(Compound Type Specifier Kind):
 
-        Predicating.
+        谓语(Predicating).
 
 * 复合类型指定符语法(Compound Type Specifier Syntax):
 
@@ -829,17 +829,17 @@ Figure 4-8. 对应预定义类型指定符的类
 
 * 复合类型指定符的描述(Compound Type Specifier Description):
 
-        这个表示满足断言 predicate-name 的所有对象的集合, 这个断言必须是单个参数断言的全局函数定义的符号. predicate-name 需要一个名字;不允许 lambda 表达式. 比如, 类型指定符 (and integer (satisfies evenp)) 表示偶数整型的集合. 表达式 (typep x '(satisfies p)) 等价于 (if (p x) t nil).
+        这个表示满足断言[predicate] predicate-name 的所有对象[object]的集合, 这个断言必须是全局函数[function]定义为单参数断言的符号[symbol]. predicate-name 需要一个名字; 不允许 lambda 表达式[lambda expression]. 比如, 类型指定符[type specifier] (and integer (satisfies evenp)) 表示偶数整型的集合. 表达式 (typep x '(satisfies p)) 等价于 (if (p x) t nil).
 
-        这个参数是必要的. 符号 * 可以是参数, 但是它表示它自身 (the symbol *), 不表示一个未指定的类型.
+        这个参数是必要的. 符号[symbol] * 可以是参数, 但是它表示它自身 (这个符号[symbol] *), 不表示一个未指定的类型.
 
-        符号 satisfies 作为类型指定符是不合法的. 
+        符号 satisfies 作为类型指定符[type specifier]是不合法的. 
 
 ### <span id="TypeSpecifierMEMBER">类型指定符 MEMBER</span>
 
 * 复合类型指定符种类(Compound Type Specifier Kind):
 
-        Combining.
+        结合(Combining).
 
 * 复合类型指定符语法(Compound Type Specifier Syntax):
 
@@ -847,23 +847,23 @@ Figure 4-8. 对应预定义类型指定符的类
 
 * 复合类型指定符的参数(Compound Type Specifier Arguments):
 
-        object---一个对象.
+        object---一个对象[symbol].
 
 * 复合类型指定符的描述(Compound Type Specifier Description):
 
-        这表示这个集合包含 objects 命名的对象. 一个对象只有在它 eql 指定对象中的其中一个时才是这个类型.
+        这表示这个集合包含 objects 命名的对象. 一个对象[object]只有在它 eql 指定的那些对象 objects 中的其中一个时才是这个类型[type].
 
-        类型指定符 (member) 和 nil 是等价的. * 可以在 objects 之中, 但是如果这样的话它表示它自身 (符号 *) 并且不表示一个未指定的值. 符号 member 作为类型指定符是非法的; 并且, 特别指出, 它既不是 (member) 的缩写也不是 (member *) 的缩写.
+        类型指定符[type specifier] (member) 和 nil 是等价的. * 可以在那些对象 objects 之中, 但是如果这样的话它表示它自身 (这个符号[symbol] *) 而不是表示一个未指定的值. 符号 member 作为类型指定符[type specifier]是非法的; 并且, 特别指出, 它既不是 (member) 的缩写也不是 (member *) 的缩写.
 
 * 也见(See Also):
 
-        类型 eql 
+        类型[type] eql 
 
 ### <span id="TypeSpecifierNOT">类型指定符 NOT</span>
 
 * 复合类型指定符种类(Compound Type Specifier Kind):
 
-        Combining.
+        结合(Combining).
 
 * 复合类型指定符语法(Compound Type Specifier Syntax):
 
@@ -871,21 +871,21 @@ Figure 4-8. 对应预定义类型指定符的类
 
 * 复合类型指定符的参数(Compound Type Specifier Arguments):
 
-        typespec---一个类型指定符.
+        typespec---一个类型指定符[type specifier].
 
 * 复合类型指定符的描述(Compound Type Specifier Description):
 
-        这表示所有对象的集合都不是类型 typespec.
+        这表示所有不是类型[type] typespec 的对象的集合.
 
         这个参数是必要的, 并且不能是 *.
 
-        符号 not 作为类型指定符是非法的. 
+        符号 not 作为类型指定符[type specifier]是非法的. 
 
 ### <span id="TypeSpecifierAND">类型指定符 AND</span>
 
 * 复合类型指定符种类(Compound Type Specifier Kind):
 
-        Combining.
+        结合(Combining).
 
 * 复合类型指定符语法(Compound Type Specifier Syntax):
 
@@ -893,21 +893,21 @@ Figure 4-8. 对应预定义类型指定符的类
 
 * 复合类型指定符的参数(Compound Type Specifier Arguments):
 
-        typespec---一个类型指定符.
+        typespec---一个类型指定符[type specifier].
 
 * 复合类型指定符的描述(Compound Type Specifier Description):
 
-        这表示所有对象的集合都是 typespecs 的交集所确定的类型.
+        这表示所有 typespecs 的交集所确定的类型[type]的对象[object]集合.
 
         * 不允许作为参数.
 
-        类型指定符 (and) 和 t 是等价的. 符号 and 作为一个类型指定符是不合法的, 并且, 特别指出, 它不是 (and) 的一个缩写. 
+        类型指定符[type specifier] (and) 和 t 是等价的. 符号 and 作为一个类型指定符[type specifier]是不合法的, 并且, 特别指出, 它不是 (and) 的一个缩写. 
 
 ### <span id="TypeSpecifierOR">类型指定符 OR</span>
 
 * 复合类型指定符种类(Compound Type Specifier Kind):
 
-        Combining.
+        结合(Combining).
 
 * 复合类型指定符语法(Compound Type Specifier Syntax):
 
@@ -915,21 +915,21 @@ Figure 4-8. 对应预定义类型指定符的类
 
 * 复合类型指定符的参数(Compound Type Specifier Arguments):
 
-        typespec---一个类型指定符.
+        typespec---一个类型指定符[type specifier].
 
 * 复合类型指定符的描述(Compound Type Specifier Description):
 
-        这表示所有对象集合都是 typespecs 的并集确定的类型. 比如, 类型 list 定义等价于 (or null cons). Also, 通过 position 返回的值是类型 (or null (integer 0 *)) 的一个对象; 换句化说, 可以是 nil 或者一个非负整数.
+        这表示所有 typespecs 的并集所确定的类型[type]的对象[object]集合. 比如, 类型[type] list 定义等价于 (or null cons). 同样, 通过 position 返回的值是类型[type] (or null (integer 0 *)) 的一个对象[object]; 换句化说, 可以是 nil 或者一个非负整数[integer].
 
         * 不允许作为一个参数.
 
-        类型指定符 (or) 和 nil 是等价的. 符号 or 作为类型指定符是非法的; 并且, 特别指出, 这个不是 (or) 的缩写. 
+        类型指定符[type specifier] (or) 和 nil 是等价的. 符号 or 作为类型指定符[type specifier]是非法的; 并且, 特别指出, 这个不是 (or) 的缩写. 
 
 ### <span id="TypeSpecifierVALUES">类型指定符 VALUES</span>
 
 * 复合类型指定符种类(Compound Type Specifier Kind):
 
-        Specializing.
+        特化(Specializing).
 
 * 复合类型指定符语法(Compound Type Specifier Syntax):
 
@@ -939,21 +939,21 @@ Figure 4-8. 对应预定义类型指定符的类
 
 * 复合类型指定符的参数(Compound Type Specifier Arguments):
 
-        typespec---一个类型指定符.
+        typespec---一个类型指定符[type specifier].
 
 * 复合类型指定符的描述(Compound Type Specifier Description):
 
-        这个类型指定符只能被用作一个 function 类型指定符或一个 the 特殊表达式的 value-type 部分. 当涉及到多值时它被用于指定每个值单独的类型. 这个 &optional 和 &rest 标记可以出现在 value-type 列表中; 它们指定和值一起传递给 multiple-value-call 的一个函数的参数列表会正确地接收到那些值.
+        这个类型指定符[type specifier]只能被用作一个 function 类型指定符[type specifier]或一个 the 特殊表达式形式[special form]的 value-type 部分. 当涉及到多值[multiple values]时它被用于指定单独的类型[type]. 这个 &optional 和 &rest 标记可以出现在 value-type 列表中; 它们指定和值一起传递给 multiple-value-call 的一个函数[function]的参数列表会正确地接收到那些值.
 
         符号 * 不能在 value-types 之中.
 
-        符号 values 作为类型指定符是不合法的; 并且, 特别指出, 它不是 (values) 的缩写. 
+        符号 values 作为类型指定符[type specifier]是不合法的; 并且, 特别指出, 它不是 (values) 的缩写. 
 
 ### <span id="TypeSpecifierEQL">类型指定符 EQL</span>
 
 * 复合类型指定符种类(Compound Type Specifier Kind):
 
-        Combining.
+        结合(Combining).
 
 * 复合类型指定符语法(Compound Type Specifier Syntax):
 
@@ -965,9 +965,9 @@ Figure 4-8. 对应预定义类型指定符的类
 
 * 复合类型指定符的描述(Compound Type Specifier Description):
 
-        表示对于 (eql object x) 为 true 的所有 x 的类型.
+        表示对于 (eql object x) 为 true 的所有 x 的类型[type].
 
-        参数 object 是必要的. 这个 object 可以是 *, 但是如果是这样它表示它自身(符号 *) 并且不表示一个未指定的值. 符号 eql 作为一个原子类型指示符是不合法的. 
+        参数 object 是必要的. 这个 object 可以是 *, 但是如果是这样它表示它自身(这个符号[symbol] *) 并且不表示一个未指定的值. 符号[symbol] eql 作为一个原子类型指定符[atomic type specifier]是不合法的. 
 
 ### <span id="FunctionCOERCE">函数 COERCE</span>
 
@@ -1278,7 +1278,7 @@ Figure 4-8. 对应预定义类型指定符的类
         (subtypep (type-of object) (class-of object)) =>  true, true
         ```
 
-    4. 对于元类 structure-class 或 standard-class 的对象, 还有 conditions, type-of 返回那个 class-of  返回的类的特有的名字, 如果有的话, 否则返回类本省. 具体来说, 对于 defstruct 不带 :type 选项定义的结构体的构造器函数创建的对象, type-of 返回结构体的名字; 对于 make-condition 创建的对象, 这个 typespec 状况类型的名字.
+    4. 对于元类 structure-class 或 standard-class 的对象, 还有 conditions, type-of 返回那个 class-of  返回的类的专有名字[proper name], 如果有的话, 否则返回类本省. 具体来说, 对于 defstruct 不带 :type 选项定义的结构体的构造器函数创建的对象, type-of 返回结构体的名字; 对于 make-condition 创建的对象, 这个 typespec 状况类型的名字.
 
     5. 对于类型 short-float, single-float, double-float, 或 long-float 中的每一个, 如果 object 是其中一个的元素, 这个 typespec 是那个类型的可识别子类型.
 
