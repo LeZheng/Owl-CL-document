@@ -453,31 +453,31 @@ Figure 4-7. 对象系统类
 
 ### 4.3.7 <span id="IntegratingTypesClasses">整合类和类型</span>
 
-对象系统映射类的空间到类型的空间. 每个有着特有的的名字的类都有一个对应相同名字的类型.
+对象系统映射类[class]的空间到类型[type]的空间. 每个有着特有的的名字的类[class]都有一个对应相同名字[name]的类型[type].
 
-每个类的专有名字[proper name]是一个合法的类型指定符. 另外, 每个类对象是一个合法的类型指定符. 所以表达式 (typep object class) 在 object 的类是 class 本身或者 class 的子类情况下返回 true. 如果 class1 是 class2 的一个子类或者它们是相同的类, 表达式 (subtypep class1 class2) 的求值返回多值 true 和 true; 否则它返回多值 false 和 true. 如果 I 是某个名为 S 的类 C 的实例并且 C 是 standard-class 的实例, 那么如果 S 是 C 的特有的的名字表达式 (type-of I) 的求值返回 S; 否则, 它返回 C.
+每个类的专有名字[proper name]是一个有效的类型指定符[type specifier]. 另外, 每个类[class]对象[object]是一个有效的类型指定符[type specifier]. 所以表达式 (typep object class) 在 object 的类[class]是 class 本身或者 class 的子类[subclass]情况下返回 true. 如果 class1 是 class2 的一个子类[subclass]或者它们是相同的类[class], 那么表达式 (subtypep class1 class2) 的求值返回多值 true 和 true; 否则它返回多值 false 和 true. 如果 I 是某个名为 S 的类[class] C 的实例[instance]并且 C 是 standard-class 的实例[instance], 那么如果 S 是 C 的专有名字[proper name], 那么表达式 (type-of I) 的求值返回 S; 否则, 它返回 C.
 
-由于类的名字和类对象是类型指定符, 它们可能被用于特殊表达式形式 the 还有类型声明.
+由于类[class]的名字和类[class]对象[object]都是类型指定符[type specifier], 它们可能被用于特殊表达式形式 the 以及类型声明中.
 
-很多但不是全部预定义的类型指定符都有和类型有着相同专有名字[proper name]的类. 这些类型指定符列在 Figure 4-8. 比如, 类型 array 有一个对应的类名为 array. 没有类型指定符是一个列表, 比如 (vector double-float 100), 有着一个对应的类. 操作符 deftype 不会创建任何类.
+很多但不是全部预定义的类型指定符[type specifier]都有和类型[type]有着相同专有名字[proper name]的类[class]. 这些类型指定符[type specifier]列在 Figure 4-8. 比如, 类型[type] array 有一个对应的名为 array 的类. 例如 (vector double-float 100) 这样的列表作为类型指定符[type specifier]没有一个对应的类[class]. 操作符[operator] deftype 不会创建任何类[class].
 
-对应于预定义类型说明符的每个类可以通过以下三种方式实现, 由每个具体实现决定. 它可以是一个 standard class, 一个 structure class, 或者一个 system class.
+对应于预定义类型指定符[type specifier]的每个类[class]可以通过以下三种方式实现, 由每个具体实现决定. 它可以是一个标准类[standard class], 一个结构体类[structure class], 或者一个系统类[system class].
 
-一个内置的类是一个泛化实例具有限制功能和特殊表示的类. 尝试使用 defclass 去定义 built-in-class 的子类会发出一个错误. 对一个内置类的泛化实例调用 slot-value 会发出一个错误. 重定义一个内置的类或使用 change-class 去改变一个内置类对象的类或把一个对象的类改为内置类都会发出一个错误. 然而, 内置的类可以被用作方法的参数指定符.
+一个内置类[built-in class]是一个广义实例[generalized instance]具有限制功能和特殊表示的类. 尝试使用 defclass 去定义 built-in-class 的子类[subclasse]会发出一个错误. 调用 make-instance 去创建一个内置类[built-in class]的广义实例[generalized instance]会发出一个错误. 对一个内置类[built-in class]的广义实例[generalized instance]调用 slot-value 会发出一个错误. 重定义一个内置类[built-in class]或使用 change-class 去改变一个内置类内置类[built-in class]对象[object]的类[class]或把一个对象[object]的类[class]改为内置类[built-in class]都会发出一个错误. 然而, 内置类[built-in class]可以被用作方法[method]的参数指定符[parameter specializer].
 
-可以通过检测元类来确定一个类是否为内置类. 一个标准类是类 standard-class 的实例, 一个内置类是 built-in-class 的实例, 并且一个结构类是 structure-class 的实例.
+可以通过检查元类[metaclass]来确定一个类[class]是否为内置类[built-in class]. 一个标准类[standard class]是类[class] standard-class 的一个实例[instance], 一个内置类[built-in class]是类[class] built-in-class 的实例[instance], 并且一个结构体类[structure class]是类[class] structure-class 的实例[instance].
 
-每一个用 defstruct 创建的没有使用 :type 选项的结构类型都由一个对应的类. 这个类是一个类 structure-class 的泛化实例. 这个 defstruct 的 :include 选项会创建一个对应被包含的结构类型的类的直接子类.
+每一个用 defstruct 创建的没有使用 :type 选项的结构体[structure]类型[type]都有一个对应的类[class]. 这个类[class]是一个类[class] structure-class 的广义实例[generalized instance]. 这个 defstruct 的 :include 选项会创建一个对应被包含的结构体[structure]类型[type]的类[class]的直接子类[subclass].
 
-槽是否被牵涉到在这个规范定义的类的实例上的这个规范定义的函数操作中是依赖于具体实现的, 除非这个槽被这个规范明确定义.
+槽[slot]是否被牵涉到在这个规范定义的类[class]的实例[instance]上的这个规范定义的函数[function]操作中是依赖于具体实现的[implementation-dependent], 除非这个槽[slot]被这个规范明确定义.
 
-如果在一个特定的具体实现中的这个规范定义的类拥有的槽没有在这个规范中定义, 这些槽的名称不能是该规范中定义的包的外部符号, 也不能在 CL-USER 包中访问.
+如果在一个特定的具体实现[inplementation]中的这个规范定义的一个类[class]拥有的槽[slot]没有在这个规范中定义, 这些槽[slot]的名称不能是该规范中定义的包[package]的外部符号[external symbol], 也不能是 CL-USER 包中可访问的[accessible].
 
-指定许多标准类型指定符有相应的类, 目的是使用户能够编写对这些类型进行区别对待的方法. 方法选择要求为每个类确定一个类优先级列表.
+指定许多标准类型指定符[type specifier]有相应的类[class]的目的是使用户能够编写对这些类型进行区别对待的方法[method]. 方法[method]选择要求可以为每个类确定一个类优先级列表[class precedence list].
 
-类型指定符之间的层次关系通过与这些类型对应的类之间的关系来反映.
+类型指定符[type specifier]之间的层次关系通过与这些类型[type]对应的类[class]之间的关系来反映.
 
-Figure 4-8 列出了预定义类型指定符对应的类的集合.
+Figure 4-8 列出了预定义类型指定符[type specifier]对应的类[class]的集合.
 
     arithmetic-error                  generic-function    simple-error          
     array                             hash-table          simple-type-error       
@@ -507,9 +507,9 @@ Figure 4-8 列出了预定义类型指定符对应的类的集合.
 
 Figure 4-8. 对应预定义类型指定符的类
 
-在这些类的条目中指定的类优先级列表信息是对象系统所需要的.
+在这些类的条目中指定的类优先级列表[class precedence list]信息就是对象系统所需要的那些.
 
-可以扩展单独的具体实现来定义其他类型指定符来拥有相应的类. 单个具体实现可以扩展去添加其他子类关系, 并将其他元素添加到类优先级列表中, 只要它们不违反该标准所指定的类型关系和互斥性需求. 一个已定义的没有指定直接超类的标准类保证和这个表中的所有类都是互斥的, 除了名为 t 的类. 
+可以扩展单独的具体实现来定义其他类型指定符来拥有相应的类[class]. 单个具体实现可以扩展去添加其他子类[subclass]关系, 并将其他元素[element]添加到类优先级列表[class precedence list]中, 只要它们不违反该标准所指定的类型关系和互斥性需求. 一个已定义的没有指定直接超类[superclass]的标准类[class]保证和这个表中的所有类都是互斥的, 除了名为 t 的类. 
 
 ## 4.4 <span id="TheTypesClassesDictionary">类型和类的字典</span>
 
