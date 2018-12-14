@@ -977,45 +977,45 @@ Figure 4-8. 对应预定义类型指定符的类
 
 * 参数和值(Arguments and Values):
 
-        object---一个对象.
-        result-type---一个类型指定符.
-        result---一个类型 result-type 的对象, 除了在章节 12.1.5.3 (Rule of Canonical Representation for Complex Rationals) 所描述的情况外.
+        object---一个对象[object].
+        result-type---一个类型指定符[type specifier].
+        result---一个类型[type] result-type 的对象[object], 除了在章节 12.1.5.3 (复有理数的正规表示规则) 所描述的情况外.
 
 * 描述(Description):
 
-        强制 object 为类型 result-type.
+        强制转换[coerce]对象 object 为类型[type] result-type.
 
-        如果 object 已经是类型 result-type, 返回 object 自身, 一般不管是否会有可能强制一些其他类型的对象为 result-type.
+        如果对象 object 已经是类型[type] result-type, 返回对象 object 自身, 一般不管是否会有可能强制一些其他类型的对象为 result-type.<!--TODO 待校对-->
 
-        否则, 这个 object 根据以下规则强制为类型 result-type:
+        否则, 这个 object 根据以下规则强制转换为类型[type] result-type:
 
     * sequence
 
-            如果这个 result-type 是 list 的一个可识别的子类型, 并且这个 object 是一个 sequence, 那么这个 result 是一个和 object 有者相同元素的 list.
+            如果这个 result-type 是 list 的一个可识别子类型[recognizable subtype], 并且这个对象[object]是一个序列[sequence], 那么这个 result 是一个和对象 object 有者相同[same]元素[element]的列表[list].
 
-            如果 result-type 是 vector 的一个可识别子类型, 并且这个对象是一个 sequence, 那么这个 result 一个和 object 有着相同元素的 vector. 如果 result-type 是一个特化的类型, 那么 result 会有一个实际数组元素类型, 它是对特化类型的元素类型进行升级的结果. 如果没有指定元素类型, 那么这个元素类型默认是 t. 如果具体实现不能确定元素类型, 会发出一个错误.
+            如果 result-type 是 vector 的一个可识别子类型[recognizable subtype], 并且这个对象[object]是一个序列[sequence], 那么这个 result 是一个和对象 object 有者相同[same]元素[element]的向量[vector]. 如果 result-type 是一个特化的类型[type], 那么 result 会有一个实际数组元素类型[actual array element type], 它是对特化[specialized]类型[type]的元素类型部分进行提升的结果. 如果没有指定元素类型, 那么这个元素类型默认是 t. 如果具体实现[implementation]不能确定元素类型, 会发出一个错误.
 
     * character
 
-            如果这个 result-type 是 character 并且这个 object 是一个字符标识符, 那么这个 result 是它表示的 character.
+            如果这个 result-type 是 character 并且这个对象[object]是一个字符标识符[character designator], 那么这个 result 是它表示的字符[character].
 
     * complex
 
-            如果这个 result-type 是 complex 并且这个 object 是一个 real, 那么这个 result 是通过构造一个实部是 object 并且虚部是将一个整数0强制转为 object 类型的结果(使用 coerce)的complex 获取到的. (然而, 如果实部是一个有理数, 那么结果一个被表示为一个有理数而不是一个复数; 见章节 12.1.5.3 (Rule of Canonical Representation for Complex Rationals). 所以, 比如, (coerce 3 'complex) 允许的, 但是会返回 3, 它不是一个 complex.)
+            如果这个 result-type 是 complex 而这个对象[object]是一个实数[real], 那么这个 result 是通过构造一个实部是这个对象[object]并且虚部是将一个整数[integer] 0 强制转为这个对象[object]的类型[type]的结果(使用 coerce)的复数[complex]来获取到的. (然而, 如果这个实部是一个有理数[rational], 那么结果必须被表示为一个有理数[rational]而不是一个复数[complex]; 见章节 12.1.5.3 (复有理数的正规表示规则). 所以, 比如, (coerce 3 'complex) 允许的, 但是会返回 3, 它不是一个复数[complex].)
 
     * float
 
-            如果 result-type 是 float, short-float, single-float, double-float, long-float 中的任何一个, 并且这个 object 是一个 real, 那么 result 是一个 result-type 类型的浮点数, 无论这个浮点表示法允许的是多大的具象精度, 它都和 object 的符号和大小是相等的. (如果这个 result-type 是 float 并且 object 还不是一个 float, 那么这个 result 是一个 single-float.)
+            如果 result-type 是 float, short-float, single-float, double-float, long-float 中的任何一个, 并且这个对象[object]是一个实数[real], 那么 result 是一个 result-type 类型[type]的浮点数[float], 无论那个浮点数[float]表示法允许的是多大的表征精度, 它都和这个对象[object]的符号和大小是相等的. (如果这个 result-type 是 float 并且对象 object 还不是一个浮点数[float], 那么这个 result 是一个单浮点数[single-float].)
 
     * function
 
-            如果 result-type 是 function, 并且 object 是任何 fbound 的函数名字但是既不是全局定义的宏名字也不是特殊操作符, 那么这个 result 是 object 的函数值.
+            如果 result-type 是 function, 并且对象 object 是任何被 fbound 的函数名字[function name]但是既不是全局定义的宏名字[macro name]也不是特殊操作符[special operator], 那么这个 result 是对象 object 的函数值[functional value].
 
-            如果 result-type 是 function, 并且 object 是一个 lambda 表达式, 那么这个 result 是 object 在 null 词法环境的一个闭包.
+            如果 result-type 是 function, 而对象 object 是一个 lambda 表达式[lambda expression], 那么这个 result 是 object 在空词法环境[null lexical environment]的一个闭包[closure].
 
     * t
 
-            任何 object 可以被强制转为 t 类型的对象. 这个情况下, 这个 object 被简单地返回.
+            任何对象 object 可以被强制转为 t 类型[type]的对象[object]. 这个情况下, 这个 object 被简单地返回.
 
 * 示例(Examples):
 
@@ -1031,29 +1031,29 @@ Figure 4-8. 对应预定义类型指定符的类
     (coerce (cons 1 2) t) =>  (1 . 2)
     ```
 
-    * All the following forms should signal an error:
+        所有以下表达式形式[form]都会发出一个错误:
 
-        ```LISP
-        (coerce '(a b c) '(vector * 4))
-        (coerce #(a b c) '(vector * 4))
-        (coerce '(a b c) '(vector * 2))
-        (coerce #(a b c) '(vector * 2))
-        (coerce "foo" '(string 2))
-        (coerce #(#\a #\b #\c) '(string 2))
-        (coerce '(0 1) '(simple-bit-vector 3))
-        ```
+    ```LISP
+    (coerce '(a b c) '(vector * 4))
+    (coerce #(a b c) '(vector * 4))
+    (coerce '(a b c) '(vector * 2))
+    (coerce #(a b c) '(vector * 2))
+    (coerce "foo" '(string 2))
+    (coerce #(#\a #\b #\c) '(string 2))
+    (coerce '(0 1) '(simple-bit-vector 3))
+    ```
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-        如果一个强制转换是不可以的, 会发出一个 type-error 类型的错误.
+        如果一个强制转换是不可以的, 会发出一个 type-error 类型[type]的错误.
 
-        (coerce x 'nil) 总是发出一个 type-error 类型的错误.
+        (coerce x 'nil) 总是发出一个 type-error 类型[type]的错误.
 
-        如果 result-type 是一个 function 但是 object 是一个没有 fbound 的符号或者这个符号命名一个宏或特殊操作符, 那么就会发出一个 error 类型的错误.
+        如果 result-type 是一个 function 但是对象 object 是一个没有被 fbound 的符号[symbol]或者这个符号[symbol]命名一个宏[macro]或特殊操作符[special operator], 那么就会发出一个 error 类型[type]的错误.
 
-        如果 result-type 指定的元素数量和 object 是不同长度的, 那么 type-error 类型的错误应该被发出.
+        如果 result-type 指定了元素数量而对象 object 是不同长度的, 那么应该发出 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
@@ -1061,7 +1061,7 @@ Figure 4-8. 对应预定义类型指定符的类
 
 * 注意(Notes):
 
-        由于舍入问题, 没有提供从浮点数到有理数和从比率到整数的强制转换.
+        由于舍入问题, 没有提供从浮点数[float]到有理数[rational]和从比率[ratio]到整数[integer]的强制转换.
 
     ```LISP
     (coerce x 't) ==  (identity x) ==  x
@@ -1075,44 +1075,44 @@ Figure 4-8. 对应预定义类型指定符的类
 
 * 参数和值(Arguments and Values):
 
-        name---一个符号.
-        lambda-list---一个 deftype lambda 列表.
-        declaration---一个 declare 表达式; 不求值.
-        documentation---一个字符串; 不求值.
-        form---一个表达式形式.
+        name---一个符号[symbol].
+        lambda-list---一个 deftype lambda 列表[deftype lambda list].
+        declaration---一个 declare 表达式[expression]; 不求值.
+        documentation---一个字符串[string]; 不求值.
+        form---一个表达式形式[form].
 
 * 描述(Description):
 
-        deftype 定义一个名为 name 的派生类型指定符.
+        deftype 定义一个名为 name 的派生类型指定符[derived type specifier].
 
-        新的类型指定符的意义在于一个函数, 它将类型指定符展开为另一个类型指定符, 如果另一个类型指定符自身包含对另一个派生类型指定符的引用, 它本身就会被展开.
+        新的类型指定符[type specifier]的意义在于一个函数, 它将这个类型指定符[type specifier]展开为另一个类型指定符[type specifier], 如果另一个类型指定符自身包含对另一个派生类型指定符[derived type specifier]的引用, 它本身就会被展开.
 
-        新定义的类型指定符可以作为  (name arg1 arg2 ...) 表达式的一个列表来引用. 参数的数量必须和 lambda-list 一样. 如果新的类型指定符不接受参数, 或者它的所有参数是可选的, 这个类型指定符可以被用作原子类型指定符.
+        新定义的类型指定符[type specifier]可以用  (name arg1 arg2 ...) 形式的一个列表来引用. 参数的数量必须和 lambda-list 一样. 如果新的类型指定符[type specifier]不接受参数, 或者它的所有参数是可选的, 这个类型指定符[type specifier]可以被用作原子类型指定符[atomic type specifier].
 
-        给这个类型指定符的参数表达式, arg1 ... argn, 是不求值的. 相反, 这些字面化对象变成了相应的参数被绑定的对象.
+        给这个类型指定符[type specifier]的实参[argument]表达式[expression], arg1 ... argn, 是不求值的. 相反, 这些字面化[literal]对象[object]变成了相应的形参[parameter]被绑定[bound]的对象[object].
 
-        这个 deftype 表达式主体部分(不是 lambda-list) 隐含在一个名为 name 的块中, 并且作为一个隐式 progn 被求值, 返回一个新的类型指定符.
+        这个 deftype 表达式形式[form]主体部分(不是 lambda-list) 隐含在一个名为 name 的块[block]中, 并且作为一个隐式 progn [implicit progn]被求值, 返回一个新的类型指定符[type specifier].
 
-        这个主体部分的词法环境是 deftype 表达式形式被求值是的当前那个, 由 lambda-list 中的变量来扩展.
+        这个主体部分的词法环境[lexical environment]是 deftype 表达式形式被求值时的当前那个, 由 lambda-list 中的那些变量[variable]来扩展.
 
-        当展开必须终止时返回类型指定符的递归展开, 包括在展开中嵌套的类型指定符的展开.
+        作为展开式返回的类型说明符[type specifier]的递归展开必须终止, 包括在展开式中嵌套的那些类型指定符[type specifier]的展开式.
 
-        如果完全展开类型指定符的结果包含任何环状结构, 那么其结果是未定义的, 除非是在 member 和 eql 类型指定的对象中.
+        如果完全展开一个类型指定符[type specifier]的结果包含任何环状结构, 那么其结果是未定义的, 除非是在被 member 和 eql 类型指定符[type specifier]引用的对象[object]中.
 
-        这个 documentation 作为 type 种类的文档字符串关联到 name.
+        这个 documentation 作为 type 种类的文档字符串[documentation string]关联到 name.
 
-        如果一个 deftype 表达式作为顶层表达式出现, 编译器必须确保 name 在后续类型声明中被识别. 如果这个 name 在后续类型声明中被引用, 那么程序员必须确保这个 deftype 表达式的主体部分可以在编译时被求值. 如果一个类型指定符的展开没有在编译时被完全定义 (或许是因为它展开为一个未知类型指定符或者一个命名函数的 satisfies 没有在这个编译时环境中定义), 一个具体实现可能忽略任何声明中这个类型的引用 并且/或者 发出一个警告.
+        如果一个 deftype 表达式形式[form]作为顶层表达式形式[top level form]出现, 编译器[compiler]必须确保 name 在后续类型[type]声明中被识别. 如果这个 name 在后续类型[type]声明中被引用, 那么程序员[programmer]必须确保这个 deftype 表达式形式的主体部分可以在编译时被求值. 如果一个类型指定符[type specifier]的展开式没有在编译时被完全定义 (或许是因为它展开为一个未知类型指定符[type specifier]或者一个已命名函数[function]的满足因素[satisfies]没有在这个编译时环境中定义), 那么一个具体实现[implementation]可能忽略任何声明中这个类型[type]的引用 并且/或者 发出一个警告.
 
 * 示例(Examples):
 
-        ```LISP
-        (defun equidimensional (a)
-          (or (< (array-rank a) 2)
-              (apply #'= (array-dimensions a)))) =>  EQUIDIMENSIONAL
-        (deftype square-matrix (&optional type size)
-          `(and (array ,type (,size ,size))
-                (satisfies equidimensional))) =>  SQUARE-MATRIX
-        ```
+    ```LISP
+    (defun equidimensional (a)
+      (or (< (array-rank a) 2)
+          (apply #'= (array-dimensions a)))) =>  EQUIDIMENSIONAL
+    (deftype square-matrix (&optional type size)
+      `(and (array ,type (,size ,size))
+            (satisfies equidimensional))) =>  SQUARE-MATRIX
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -1122,46 +1122,46 @@ Figure 4-8. 对应预定义类型指定符的类
 
 * 也见(See Also):
 
-        declare, defmacro, documentation, Section 4.2.3 (Type Specifiers), Section 3.4.11 (Syntactic Interaction of Documentation Strings and Declarations)
+        declare, defmacro, documentation, 章节 4.2.3 (类型指定符), 章节 3.4.11 (文档字符串和声明的语法交互)
 
 * 注意(Notes): None. 
 
 ### <span id="FunctionSUBTYPEP">函数 SUBTYPEP</span>
-
+<!--TODO 待理解-->
 * 语法(Syntax):
 
         subtypep type-1 type-2 &optional environment => subtype-p, valid-p
 
 * 参数和值(Arguments and Values):
 
-        type-1---一个类型指定符.
-        type-2---一个类型指定符.
-        environment---一个环境对象. 默认是 nil, 表示 null 的词法环境和当前的全局环境.
-        subtype-p---一个广义的 boolean.
-        valid-p---一个广义的 boolean.
+        type-1---一个类型指定符[type specifier].
+        type-2---一个类型指定符[type specifier].
+        environment---一个环境[environment]对象[object]. 默认是 nil, 表示空词法环境[null lexical environment]和当前的全局环境[global environment].
+        subtype-p---一个广义的 boolean [generalized boolean].
+        valid-p---一个广义的 boolean [generalized boolean].
 
 * 描述(Description):
 
-        如果 type-1 是 type-2 的一个可识别的子类型, 第一个值就是 true. 否则, 第一个值就是 false, 表示 type-1 不是 type-2 的子类, 或者 type-1 是 type-2 的子类但是不是一个可识别的子类型.
+        如果 type-1 是 type-2 的一个可识别子类型[recognizable subtype], 第一个值[value]就是 true. 否则, 第一个值[value]就是 false, 表示 type-1 不是 type-2 的子类型[subtype], 或者 type-1 是 type-2 的子类型[subtype]但是不是一个可识别子类型[recognizable subtype].
 
-        返回的第二个值表示第一个值的确定性. 如果这个值是 true, 那么第一个值就是子类型关系的精确表示. (当第一个值是 true 时第二个值总是为 true.)
+        返回的第二个值[value]表示第一个值[value]的'确定性(certainty)'. 如果这个值是 true, 那么第一个值就是子类型[subtype]关系的精确表示. (当第一个值[value]是 true 时第二个值[value]总是为 true.)
 
-        下面这段总结了返回值的可能的组合.
+        下面这段总结了返回值[value]的可能的组合.
 
-                Value 1  Value 2  Meaning                                               
-                true     true     type-1 确定是 type-2 的子类.             
-                false    true     type-1 确定不是 type-2 的子类.         
-                false    false    subtypep 不能确定关系,所以 type-1 可能或可能不是 type-2 的子类.  
+            值 1     值 2     意义                                               
+            true     true     type-1 确定是 type-2 的子类型[subtype].             
+            false    true     type-1 确定不是 type-2 的子类型[subtype].         
+            false    false    subtypep 不能确定关系, 所以 type-1 可能或可能不是 type-2 的子类型[subtype].  
 
-                Figure 4-9. subtypep 结果的可能性
+            Figure 4-9. subtypep 结果的可能性
 
-        subtypep 只有当至少一个参数涉及到后面其中一个类型指定符时才允许返回 false 和 false 的多值: and, eql, function 的列表表达式, member, not, or, satisfies, or values. (一个类型指定符'包含'这样一个符号, 在类型被展开后, 它在一个位置中包含那个符号, 它可以将它的含义作为一种类型指定符来使用it contains that symbol in a position that would call for its meaning as a type specifier to be used.) 一个可能的推论是, 如果 type-1 和 type-2 都不涉及这些类型指定符, 那么 subtypep 不得不去准确确定关系. 具体来说, 如果参数是 equal 的并且不涉及任何这些类型指定符时返回 true 和 true 的多值.
+        subtypep 只有当至少一个参数涉及到后面其中一个类型指定符[type specifier]时才允许返回 false 和 false 的多值[values]: and, eql, function 的列表表达式, member, not, or, satisfies, or values. ('涉及' 这样一个符号[symbol]的一个类型指定符[type specifier]: 在被类型[type]展开后, 它将该符号[symbol]包含在一个位置, 该位置将调用它作为一个要被使用的类型指定符[type specifier]的意义.) 一个可能的推论是, 如果 type-1 和 type-2 都不涉及这些类型指定符[type specifier], 那么 subtypep 不得不去准确确定关系. 具体来说, 如果那些参数是 equal 的并且不涉及任何这些类型指定符[type specifier]时 subtypep 返回 true 和 true 的多值[values].
 
-        当 type-1 和 type-2 只涉及 Figure 4-2 中的名字, 或者 defstruct, define-condition, 或 defclass 定义的类型的名字, 或者只展开到那些名字的衍生类型时, subtypep 第二个返回值一定不是 nil. 当列在 Figure 4-2 的类型指定符还有 defclass 和 defstruct 名称在一些情况下被实现为衍生类型时, subtypep 把它们当作原语(primitive).
+        当 type-1 和 type-2 只涉及 Figure 4-2 中的名字, 或者由 defstruct, define-condition, 或 defclass 定义的类型[type]的名字, 或者只展开到那些名字的衍生类型[derived type]时, subtypep 第二个返回值一定不是 nil. 当列在 Figure 4-2 的类型指定符[type specifier]还有 defclass 和 defstruct 名称在一些情况下被实现为衍生类型[derived type]时, subtypep 把它们当作原语(primitive).
 
-        subtypep 所反映的类型之间的关系是特定于具体实现的. 比如, 如果一个实现只支持浮点数的单个类型, 在那个实现中 (subtypep 'float 'long-float) 返回 true 和 true 多值(因为两个类型是一样的).
+        subtypep 所反映的类型[type]之间的关系是特定于具体实现的那些. 比如, 如果一个实现只支持浮点数的单个类型, 在那个实现中 (subtypep 'float 'long-float) 返回 true 和 true 的多值[values] (因为两个类型[type]是一样的).
 
-        对于所有除了 * 以外的 T1 和 T2, 当且仅当 (array T1) 和 (array T2) 指向相同特化表示的数组时, 它们是总是指向相同集合的两种不同的类型指定符, 换句话说, 如果 (upgraded-array-element-type 'T1) 和 (upgraded-array-element-type 'T2) 返回两个指向相同对象集合的不同类型指定符. 这是 `(array type-specifier) 和 `(array ,(upgraded-array-element-type 'type-specifier)) 指向相同特化数组表示的另一种说法. 对于所有除了 * 以外的 T1 和 T2, 当且仅当 (array T1) 和 (array T2) 指向不同有区别特化表示的数组时, 它们的交集是个空集合.
+        对于所有除了 * 以外的 T1 和 T2, 当且仅当 (array T1) 和 (array T2) 指向相同特化表示的数组[array]时, 它们是总指向相同集合的两种不同的类型指定符[type specifier], 换句话说, 就是当且仅当 (upgraded-array-element-type 'T1) 和 (upgraded-array-element-type 'T2) 返回两个指向相同对象集合的不同类型指定符. 这是 `(array type-specifier) 和 `(array ,(upgraded-array-element-type 'type-specifier)) 指向相同特化数组[array]表示的另一种说法. 对于所有除了 * 以外的 T1 和 T2, 当且仅当 (array T1) 和 (array T2) 指向不同的有区别特化表示的数组时, 它们的交集是个空集合.
 
         因此,
 
@@ -1169,7 +1169,7 @@ Figure 4-8. 对应预定义类型指定符的类
     (subtypep '(array T1) '(array T2)) =>  true
     ```
 
-        当且仅当 (upgraded-array-element-type 'T1) 和 (upgraded-array-element-type 'T2) 返回两个指向相同对象的集合的不同类型指定符的时候.
+        当且仅当 (upgraded-array-element-type 'T1) 和 (upgraded-array-element-type 'T2) 返回两个指向相同对象[object]集合的不同类型指定符[type specifier]的时候.
 
         对于所有除了 * 以外的类型指定符 T1 和 T2,
 
@@ -1179,12 +1179,12 @@ Figure 4-8. 对应预定义类型指定符的类
 
         如果:
 
-        1. T1 是 T2 的子类型, 或者
-        2. (upgraded-complex-part-type 'T1) 和 (upgraded-complex-part-type 'T2) 返回指向相同对象集合的不同类型指定符; 这个情况下, (complex T1) 和 (complex T2) 都指向相同的特化表示.
+        1. T1 是 T2 的子类型[subtype], 或者
+        2. (upgraded-complex-part-type 'T1) 和 (upgraded-complex-part-type 'T2) 返回指向相同对象集合的不同类型指定符[type specifier]; 这个情况下, (complex T1) 和 (complex T2) 都指向相同的特化表示.
 
-        否则值就是 false 和 true.
+        否则多值[values]就是 false 和 true.
 
-        表达式
+        表达式形式
 
     ```LISP
     (subtypep '(complex single-float) '(complex float))
@@ -1196,7 +1196,7 @@ Figure 4-8. 对应预定义类型指定符的类
     (subtypep '(array single-float) '(array float))
     ```
 
-        只有在没有为单浮点和其他浮点数作区分的特化数组表示的具体实现中返回 true.
+        只有在没有为单浮点[single float]和其他浮点数[float]作区分的特化数组[array]表示的具体实现中返回 true.
 
 * 示例(Examples):
 
@@ -1214,7 +1214,7 @@ Figure 4-8. 对应预定义类型指定符的类
     (subtypep 'nil '(member)) =>  true, true ;or false, false
     ```
 
-        让 <aet-x> 和 <aet-y> 是两个有区别的类型指定符, 在一个给定实现中不总是指向相同对象的集合, 但是 make-array 对于它们, 会返回一个相同数组类型的对象.
+        让 <aet-x> 和 <aet-y> 是两个有区别的类型指定符[type specifier], 在一个给定实现中不总是指向相同对象[object]集合, 但是 make-array 对于它们, 会返回一个相同数组[array]类型[type]的对象[object].
 
         因此, 在每种情况下,
 
@@ -1228,7 +1228,7 @@ Figure 4-8. 对应预定义类型指定符的类
     =>  true, true
     ```
 
-        如果 (array <aet-x>) 和 (array <aet-y>) 是同一组对象的不同名称, 这些名字应该指向相同的一组对象. 这意味着下面的测试也是正确的:
+        如果 (array <aet-x>) 和 (array <aet-y>) 是相同对象[object]集合的不同名称, 这些名字应该指向相同的对象[object]集合. 这意味着下面的测试也是正确的:
 
     ```LISP
     (subtypep '(array <aet-x>) '(array <aet-y>)) =>  true, true
@@ -1243,11 +1243,11 @@ Figure 4-8. 对应预定义类型指定符的类
 
 * 也见(See Also):
 
-        Section 4.2 (Types)
+        章节 4.2 (类型)
 
 * 注意(Notes):
 
-        对于 array 和 complex 类型, subtypep 规范中细微的差异是有必要的, 因为这里没有 complex 的创建函数允许产生的各个部分类型独立于这些部分的实际类型. 因此，在 complex 类型的情况下, 虽然一个数字可以是多个类型, 但引用的是它的实际类型. 比如, 17 是类型 (mod 18) 也是类型 (mod 256) 并且也是 integer 类型; 还有 2.3f5 是类型 single-float 也是类型 float. 
+        对于 array 和 complex 类型, subtypep 规范中细微的差异是有必要的, 因为这里没有复数[complex]的创建函数允许产生的各个部分类型独立于这些部分的实际类型. 因此，在 complex 类型[type]的情况下, 虽然一个数字[number]可以是不止一个类型[type]的成员, 但引用的是它的实际类型. 比如, 17 是类型[type] (mod 18) 也是类型[type] (mod 256) 并且也是 integer 类型[type]; 还有 2.3f5 是类型[type] single-float 也是类型[type] float. 
 
 ### <span id="FunctionTYPEOF">函数 TYPE-OF</span>
 
@@ -1257,35 +1257,35 @@ Figure 4-8. 对应预定义类型指定符的类
 
 * 参数和值(Arguments and Values):
 
-        object---一个对象.
-        typespec---一个类型指定符.
+        object---一个对象[object].
+        typespec---一个类型指定符[type specifier].
 
 * 描述(Description):
 
-    返回一个类型指定符, typespec, 用于将 object 作为元素的类型. 这个 typespec 满足以下条件:
+    返回一个类型[type]的类型指定符[type specifier], typespec, 这个类型有着对象 object 作为它的一个元素[element]. 这个 typespec 满足以下条件:
 
-    1. 对于任何内置类型的元素的对象:
+    1. 对于任何是内置类型[built-in type]的元素[element]的对象 object:
 
-        a. 返回的类型是一个内置类型的可识别的子类型.
+        a. 返回的类型[type]是一个内置类型[built-in type]的可识别子类型[recognizable subtype].
 
-        b. 返回的类型没有涉及 and, eql, member, not, or, satisfies, 或 values.
+        b. 返回的类型[type]没有涉及 and, eql, member, not, or, satisfies, 或 values.
 
-    2. 对于所有对象, (typep object (type-of object)) 返回 true. 其中隐含的是类型指定符不适用于typep, 比如 function 类型指定符的列表表达式是从来不会被 type-of 返回的.
+    2. 对于所有对象 object, (typep object (type-of object)) 返回 true. 其中隐含的是类型指定符[type specifier]和 typep 一起使用是无效的, 比如 function 类型指定符[type specifier]的列表[list]表达式形式是从来不会被 type-of 返回的.
 
-    3. type-of 返回的类型总是为 class-of 返回的类的可识别子类型. 这也就是说,
+    3. type-of 返回的类型[type]总是为 class-of 返回的类[class]的可识别子类型[recognizable subtype]. 这也就是说,
 
         ```LISP
         (subtypep (type-of object) (class-of object)) =>  true, true
         ```
 
-    4. 对于元类 structure-class 或 standard-class 的对象, 还有 conditions, type-of 返回那个 class-of  返回的类的专有名字[proper name], 如果有的话, 否则返回类本省. 具体来说, 对于 defstruct 不带 :type 选项定义的结构体的构造器函数创建的对象, type-of 返回结构体的名字; 对于 make-condition 创建的对象, 这个 typespec 状况类型的名字.
+    4. 对于元类 structure-class 或 standard-class 的对象 object, 还有状况[condition], type-of 返回那个由 class-of 返回的类[class]的专有名字[proper name], 如果有的话, 否则返回这个类本身. 具体来说, 对于一个由不带 :type 选项的 defstruct 定义的结构体的构造器函数创建的对象 object, type-of 返回结构体的名字; 对于由 make-condition 创建的对象 object, 这个 typespec 就是状况[condition]类型[type]的名字[name].
 
-    5. 对于类型 short-float, single-float, double-float, 或 long-float 中的每一个, 如果 object 是其中一个的元素, 这个 typespec 是那个类型的可识别子类型.
+    5. 对于类型[type] short-float, single-float, double-float, 或 long-float 中的每一个, 如果 object 是其中一个的元素[element], 这个 typespec 是那个类型[type]的可识别子类型[recognizable subtype].
 
 * 示例(Examples):
 
     ```LISP
-    (type-of 'a) =>  SYMBOL      
+    (type-of 'a) =>  SYMBOL          
     (type-of '(1 . 2))
     =>  CONS
     OR=>  (CONS FIXNUM FIXNUM)
@@ -1318,7 +1318,7 @@ Figure 4-8. 对应预定义类型指定符的类
 
 * 也见(See Also):
 
-        array-element-type, class-of, defstruct, typecase, typep, Section 4.2 (Types)
+        array-element-type, class-of, defstruct, typecase, typep, 章节 4.2 (类型)
 
 * 注意(Notes):
 
@@ -1332,27 +1332,27 @@ Figure 4-8. 对应预定义类型指定符的类
 
 * 参数和值(Arguments and Values):
 
-        object---一个对象.
-        type-specifier---任何除了 values 以外的类型指定符, 或者一个第一个元素为 function 或 values 的类型指定符列表.
-        environment---一个环境对象. 默认是 nil, 表示 null 的词法环境和当前的全局环境.
-        generalized-boolean---一个广义的 boolean.
+        object---一个对象[object].
+        type-specifier---任何除了 values 以外的类型指定符[type specifier], 或者是一个第一个元素为 function 或 values 的类型指定符[type specifier]列表.
+        environment---一个环境[environment]对象[object]. 默认是 nil, 表示空词法环境[null lexical environment]和当前的全局环境[global environment].
+        generalized-boolean---一个广义的 boolean [generalized boolean].
 
 * 描述(Description):
 
-        如果 object 是类型指定符指定的类型就返回 true;否则, 返回 false.
+        如果 object 是类型指定符 type-specifier 所指定的类型[type]就返回 true;否则, 返回 false.
 
-        表达式 (satisfies fn) 作为 type-specifier 的话, 就通过应用函数 fn 给 object 来处理.
+        表达式形式 (satisfies fn) 作为类型指定符 type-specifier 的话, 就通过应用函数 fn 给 object 来处理.
 
-        (typep object '(array type-specifier)), 其中 type-specifier 不是 *, 当且仅当 object 是一个提供的 type-specifier 作为 make-array 的 :element-type 参数所构建出来的数组时返回 true. (array *) 指向所有数组不管其元素类型, 而 (array type-specifier) 只指向那些可以通过把 type-specifier 作为 make-array 的 :element-type 参数所构建出来的数组. 一个类似的解释可以应用于 (simple-array type-specifier) 和 (vector type-specifier). 见章节 15.1.2.1 (Array Upgrading).
+        (typep object '(array type-specifier)), 其中 type-specifier 不是 *, 当且仅当 object 是一个可以通过提供 type-specifier 作为 make-array 的 :element-type 参数所构建出来的数组[array]时返回 true. (array *) 指向所有数组[array]不管其元素类型, 而 (array type-specifier) 只指向那些可以通过把 type-specifier 作为 make-array 的 :element-type 参数所构建出来的数组[array]. 一个类似的解释可以应用于 (simple-array type-specifier) 和 (vector type-specifier). 见章节 15.1.2.1 (数组提升).
 
-        (typep object '(complex type-specifier)) 对于所有可以通过给 type-specifier 类型的数字到函数 complex 来获取到的复数返回 true, 附加其他相同特化表示的复数. 任何这样的复数的实部和虚部必须满足:
+        (typep object '(complex type-specifier)) 对于所有可以通过给定 type-specifier 类型的数字到函数[function] complex 来产生的复数返回 true, 附加其他相同特化表示的复数[complex]. 任何这样的复数[complex]的实部和虚部必须满足:
 
     ```LISP
     (typep realpart 'type-specifier)
     (typep imagpart 'type-specifier)
     ```
 
-        见函数 upgraded-complex-part-type.
+        见函数[function] upgraded-complex-part-type.
 
 * 示例(Examples):
 
@@ -1368,7 +1368,7 @@ Figure 4-8. 对应预定义类型指定符的类
     (typep #c(0 0) '(complex (eql 0))) =>  false
     ```
 
-        让 Ax 和 Ay 为表示不同类型的类型指定符, 但是对于它们
+        让 Ax 和 Ay 为表示不同类型[type]的类型指定符[type specifier], 但是对于它们
 
     ```LISP
     (upgraded-array-element-type 'Ax)
@@ -1380,7 +1380,7 @@ Figure 4-8. 对应预定义类型指定符的类
     (upgraded-array-element-type 'Ay)
     ```
 
-        表示相同的类型. 注意
+        表示相同的类型[type]. 注意
 
     ```LISP
     (typep (make-array 0 :element-type 'Ax) '(array Ax)) =>  true
@@ -1393,17 +1393,17 @@ Figure 4-8. 对应预定义类型指定符的类
 
 * 异常情况(Exceptional Situations):
 
-        如果 type-specifier 是 values, 或者第一个元素是 function 或 values 的类型指定符列表, 那么就会发出一个 error 类型的错误.
+        如果 type-specifier 是 values, 或者第一个元素是 function 或 values 的类型指定符[type specifier]列表, 那么就会发出一个 error 类型[type]的错误.
 
-        如果 type-specifier 不是一个类型指定符, 那么结果是未定义的.
+        如果 type-specifier 不是一个类型指定符[type specifier], 那么结果是未定义的.
 
 * 也见(See Also):
 
-        type-of, upgraded-array-element-type, upgraded-complex-part-type, Section 4.2.3 (Type Specifiers)
+        type-of, upgraded-array-element-type, upgraded-complex-part-type, 章节 4.2.3 (类型指定符)
 
 * 注意(Notes):
 
-        鼓励实现者去识别和优化 (typep x (the class y)) 的情况, 因为它不需要在运行时展开 deftype 信息. 
+        鼓励具体实现[implementation]去识别和优化 (typep x (the class y)) 的情况, 因为它不需要在运行时展开 deftype 信息. 
 
 ### <span id="ConditionTypeTYPEERROR">状况类型 TYPE-ERROR</span>
 
@@ -1413,7 +1413,7 @@ Figure 4-8. 对应预定义类型指定符的类
 
 * 描述(Description):
 
-        类型 type-error 表示一个对象不是期望类型的情况. 这个违反基准(offending datum)和期望类型(expected type)被 make-condition 的名为 :datum 和 :expected-type 的参数所初始化, 并且被函数 type-error-datum 和 type-error-expected-type 所访问.
+        类型[type] type-error 表示一个对象[object]不是期望类型的情况. 这个违反基准(offending datum)和期望类型(expected type)被 make-condition 的名为 :datum 和 :expected-type 的参数所初始化, 并且通过函数 type-error-datum 和 type-error-expected-type 来访问.
 
 * 也见(See Also):
 
@@ -1429,15 +1429,15 @@ Figure 4-8. 对应预定义类型指定符的类
 
 * 参数和值(Arguments and Values):
 
-        condition---一个 type-error 类型的状况.
-        datum---一个对象.
-        expected-type---一个类型指定符.
+        condition---一个 type-error 类型[type]的状况[condition].
+        datum---一个对象[object].
+        expected-type---一个类型指定符[type specifier].
 
 * 描述(Description):
 
-        type-error-datum 返回 condition 表示的状况的违反基准.
+        type-error-datum 返回由 condition 表示的情况[situation]的违反基准.
 
-        type-error-expected-type 返回 condition 表示的违反基准的期望类型.
+        type-error-expected-type 返回由 condition 表示的违反基准的期望类型.
 
 * 示例(Examples):
 
@@ -1467,7 +1467,7 @@ Figure 4-8. 对应预定义类型指定符的类
 
 * 也见(See Also):
 
-        type-error, Section 9 (Conditions)
+        type-error, 章节 9 (状况)
 
 * 注意(Notes): None. 
 
@@ -1479,7 +1479,7 @@ Figure 4-8. 对应预定义类型指定符的类
 
 * 描述(Description):
 
-        类型 simple-type-error 的状况类似类型 type-error 的状况, 除了它们提供了另一种机制来指定如何报告状况; 见类型 simple-condition.
+        类型[type] simple-type-error 的状况[condition]类似类型[type] type-error 的状况[condition], 除了它们提供了另一种机制来指定如何报告状况[condition]; 见类型 simple-condition.
 
 * 也见(See Also):
 

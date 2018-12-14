@@ -82,11 +82,11 @@
 
     Figure 15-1. 普通目的的数组相关的已定义名字
 
-> * 15.1.2.1 [Array Upgrading](#ArrayUpgrading)
+> * 15.1.2.1 [数组提升](#ArrayUpgrading)
 > * 15.1.2.2 [Required Kinds of Specialized Arrays](#RKOSA)
 
 
-#### 15.1.2.1 <span id="ArrayUpgrading">Array Upgrading</span>
+#### 15.1.2.1 <span id="ArrayUpgrading">数组提升</span>
 
 类型 T1 的提升数组元素类型 T2 是 T1 的超类型, 并且在 T1 可以被用作对象创建或类型区分的时候可以用来替换 T1.
 
@@ -196,7 +196,7 @@
 
         这个表示元素类型, 维数, 和大小匹配给定 element-type, rank, 和 dimensions 的数组的集合. 具体的说:
 
-        如果 element-type 是符号 *, 数组不被排除在它们的元素类型的基础上. 否则, 只包括那些实际数组元素类型是 element-type 的提升结果的数组; 见章节 15.1.2.1 (Array Upgrading).
+        如果 element-type 是符号 *, 数组不被排除在它们的元素类型的基础上. 否则, 只包括那些实际数组元素类型是 element-type 的提升结果的数组; 见章节 15.1.2.1 (数组提升).
 
         如果这个 dimension-spec 是一个 rank, 这个集合只包括那些有着那个 rank 的数组. 如果这个 dimension-spec 一个 dimensions 的列表, 这个集合只包括那些有着由 dimensions 的长度给定的 rank 并且有着那个指明的 dimensions 的数组; 在这个情况中, * 匹配对应大小的任何值. 如果这个 dimension-spec 是符号 *, 这个集合不会被约束在维数或大小的基础上.
 
@@ -278,7 +278,7 @@
 
         这个表示那个元素类型和大小都匹配指定值的特化序列的集合. 具体来说:
 
-        如果 element-type 是符号 *, vectors are not excluded on the basis of their element type.<!--待翻译--> 否则, 只有那些实际数组元素类型是 element-type 提升的结果的向量会被包括进去; 见章节 15.1.2.1 (Array Upgrading).
+        如果 element-type 是符号 *, vectors are not excluded on the basis of their element type.<!--待翻译--> 否则, 只有那些实际数组元素类型是 element-type 提升的结果的向量会被包括进去; 见章节 15.1.2.1 (数组提升).
 
         如果指定了一个 size, 那么这个集合只包括那些仅有的大小是 size 的向量. 如果符号 * 被指定而不是一个 size, 这个集合不会被约束在这个大小的基础上.
 
@@ -409,7 +409,7 @@
 
         dimensions 表示这个新数组的维度.
 
-        element-type 表示要被存储到新数组 new-array 中的元素的类型. 这个 new-array 实际上可以存储从 element-type 提升得到的类型的任何对象; 见章节 15.1.2.1 (Array Upgrading).
+        element-type 表示要被存储到新数组 new-array 中的元素的类型. 这个 new-array 实际上可以存储从 element-type 提升得到的类型的任何对象; 见章节 15.1.2.1 (数组提升).
 
         如果提供了 initial-element, 它被用于初始化 new-array 的每一个元素. 如果提供了 initial-element, 它必须是 element-type 给定的类型. 如果 :initial-contents 选项被提供了或者 displaced-to 是非 nil, 那么 initial-element 不能被提供. 如果没有提供 initial-element, 那么后面去读取 new-array 的未初始化元素的后果是未定义的, 除非提供了 initial-contents 或者 displaced-to 不是 nil.
 
