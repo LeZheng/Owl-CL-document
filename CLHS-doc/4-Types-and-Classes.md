@@ -13,7 +13,7 @@
 
 函数[function] typep 作为一个集合成员资格测试, 被用于确定一个给定的对象[object]是否为给定的类型[type]. 函数 subtypep 作为一个子集测试, 被用于确定一个给定的类型[type]是否为另一个给定类型[type]的子类型[subtype]. 函数 type-of 返回一个给定对象[object]所属的具体类型[type], 即便这个对象[object]也属于一个或多个其他类型[type]. (比如, 每一个对象[object]都是类型[type] t, 但是 type-of 总是返回一个比 t 更具体的类型[type]的类型指定符[type specifier].)
 
-对象[object], 而不是变量[variable], 拥有类型[type]. 通常, 任何变量[variable]可以有任何对象[object]作为它的值[value]. 可以通过显式类型声明[type declaration]来声明一个变量[variable]只能获取指定的类型[type]的值. 类型[type]被安排在一个有向的非循环图中, 除了存在相等的情况<!--TODO 不理解-->.
+对象[object], 而不是变量[variable], 拥有类型[type]. 通常, 任何变量[variable]可以有着任何对象[object]作为它的值[value]. 可以通过显式类型声明[type declaration]来声明一个变量[variable]只能获取指定的类型[type]的值. 类型[type]被安排在一个有向的非循环图中, 除了等价的存在<!--TODO 不理解-->.
 
 可以通过 declare, proclaim, declaim, 或 the 来做出和类型[type]相关的声明[declaration]. 关于声明[declaration]的更多信息, 见章节 3.3 (声明).
 
@@ -31,7 +31,7 @@
 
 ### 4.2.1 <span id="DataTypeDefinition">数据类型定义</span>
 
-关于类型使用的信息所在章节在  Figure 4-1 中指定. Figure 4-7 列出了和对象系统特别相关的类[class]. Figure 9-1 列出了已定义的状况[condition]类型[type].
+关于类型使用的信息所在章节在 Figure 4-1 中指定. Figure 4-7 列出了和对象系统特别相关的类[class]. Figure 9-1 列出了已定义的状况[condition]类型[type].
 
   章节                     | 数据类型                          
   -------------------------|------------------------              
@@ -145,7 +145,7 @@ Figure 4-4. 标准仅限复合类型指定符的名字
 
 新的类型指定符可以通过两种方式出现.
 
-* 通过使用 defstruct 不带 :type 指定符来定义一个结构体或者使用 defclass 来定义一个类[class]或者define-condition 自动导致结构体或类的名字成为一个新的类型指定符[type specifier]符号[symbol].
+* 通过使用 defstruct 不带 :type 指定符来定义一个结构体或者使用 defclass 或 define-condition 来定义一个类[class]自动导致结构体或类的名字成为一个新的类型指定符[type specifier]符号[symbol].
 * 可以使用 deftype 来定义派生类型指定符[derived type specifier], 它表现地像其他类型指定符[type specifier]的'缩写(abbreviation)'一样.
 
 一个类[class]对象[object]可以被用作一个类型指定符[type specifier]. 当使用这种方式的时候, 它表示这个类[class]的所有成员的集合.
@@ -328,21 +328,21 @@ Figure 4-7. 对象系统类
 
     R=Uc<ELEMENT-OF>SCRc
 
-这个集合 R 可能会也可能不会生成一个部分列表, 取决于 Rc, c<ELEMENT-OF>SC, 是否是一致的; 假定它们是一致的, R 产生一个部分列表. 当这个 Rc 不是一致的时, 就说 R 是非一致的.<!--TODO 不理解-->
+这个集合 R 可能会也可能不会生成一个部分列表, 取决于 Rc, c<ELEMENT-OF>SC, 是否是一致的; 假定它们是一致的, R 产生一个部分列表. 当这个 Rc 不是一致的时, 就说 R 是非一致的.
 
 为了计算 C 的类优先级列表[class precedence list], 根据 R 产生的部分序列对 SC 的元素进行拓扑排序. 当这个拓扑排序必须从两个或更多类[class]的集合中选择一个类[class]时, 其中没有一个类的前面有关于 R 的其他类[class], 选择的类是确定的, 如下面所述.
 
 如果 R 不是一致的, 会发出一个错误.
 
-#### 4.3.5.1 拓扑排序
-<!--TODO 不理解-->
-拓扑排序是根据 R 中的元素通过在 SC 中找到一个 C 类来进行的, 这样就不会有其他元素先于这个元素. 这个类 C 被放在结果的最前面. 从 SC 中移除 C, 并且从 R 中移除所有表达式形式 (C,D) 对, D<ELEMENT-OF>SC. 重复这个过程, 在结果的末尾添加前面没有任何类的类. 当找不到前面没有类的元素时停止.<!--TODO 待校对-->
+#### 4.3.5.1 拓扑排序 (未校对)
+<!--TODO 需要查一下来理解-->
+拓扑排序是根据 R 中的元素通过在 SC 中找到一个 C 类来进行的, 这样就不会有其他元素先于这个元素. 这个类 C 被放在结果的最前面. 从 SC 中移除 C, 并且从 R 中移除所有表达式形式 (C,D) 对, D<ELEMENT-OF>SC. 重复这个过程, 在结果的末尾添加前面没有任何类的类. 当找不到前面没有类的元素时停止.
 
 如果 SC 不是空并且这个过程已经停止, 那么集合 R 是不一致的. 如果在有限类[class]集合中的每个类[class]都前置另一个类, 那么 R 就包含一个循环. 这就是说, 这里有一个 Ci 先于 Ci+1 的链 C1,...,Cn , 1 <= i < n, 而 Cn 先于 C1.
 
-有时候这里有多个来自 SC 并且前面没有类的类[class]. 在这个情况下选择迄今为止在类优先级列表[class precedence list]中最右边的那个有直接子类[subclass]的那个. (如果这里没有这样一个候选的类[class], R 不产生一个部分序列---这个 Rc, c<ELEMENT-OF>SC, 是不一致的.)
+有时候这里有多个来自 SC 并且前面没有类的类[class]. 在这个情况下选择有着直接子类[subclass]位于计算到目前为止的类优先级列表[class precedence list]的最右边的那个. (如果这里没有这样一个候选的类[class], R 不产生一个部分序列---这个 Rc, c<ELEMENT-OF>SC, 是不一致的.)
 
-用更精确的术语, 让 {N1,...,Nm}, m>=2, 成为来自于 SC 的前面没有类的类[class]. 让 (C1...Cn), n>=1, 成为目前为止已构建的类优先级列表[class precedence list]. C1 是最具体的类[class], 而 Cn 最不具体的. 让 1 <= j <= n 成为最大一个数这样一来这里存在 i 其中 1 <= i <= m 并且 Ni 是 Cj 的一个直接超类[superclass]; Ni 被放到下一个.
+用更精确的术语, 让 {N1,...,Nm}, m>=2, 为来自于 SC 的前面没有类的类[class]. 让 (C1...Cn), n>=1, 为目前为止已构建的类优先级列表[class precedence list]. C1 是最具体的类[class], 而 Cn 最不具体的. 让 1 <= j <= n 成为最大一个数这样一来这里存在 i 其中 1 <= i <= m 并且 Ni 是 Cj 的一个直接超类[superclass]; Ni 被放到下一个.
 
 这个从一组没有前导类的类[class]集合中选择的规则的效果是, 一个简单的超类[superclass]链中的类[class]在类优先级列表[class precedence list]中是相邻的, 并且每个相对独立的子图中的类[class]在类优先级列表[class precedence list]中是相邻的. 例如, 让 T1 和 T2 成为子图, 其唯一公共的元素是类 J. 假设没有 J 的超类出现在 T1 或 T2 中, 并且这个 J 存在于 T1 和 T2 的每个类的超类链中. 让 C1 是 T1 底部; 并且让 C2 是 T2 的底部. 假设这个顺序下 C 是一个直接超类是按照那个顺序 C1 和 C2 的类[class], 那么 C 的类优先级列表[class precedence list]以 C 开始后面跟着 T1 的所有类[class]除了 J. 后面是 T2 的所有类[class]. 类[class] J 和它的超类[superclass]出现在最后. 
 
@@ -409,7 +409,7 @@ Figure 4-7. 对象系统类
 
 ### 4.3.6 <span id="RedefiningClasses">重定义类</span>
 
-作为一个 standard-class 的直接实例[direct instance]的类[class]可以被重定义, 但只有当重定义的新类[class]也是 standard-class 类的直接实例[direct instance]的情况下. 重定义一个类[class]修改已存在的类[class]对象[object]来反映这个新的类[class]的定义; 它不会为这个类[class]创建一个新的类[class]对象[object]. 任何由旧的 defclass 表达式形式指定的 :reader, :writer, 或 :accessor 选项所创建的方法[method]对象[object]会从对应广义函数[generic function]中被移除. 由这个新的 defclass 表达式形式指定的那些方法[method]会被添加进去.
+作为一个 standard-class 的直接实例[direct instance]的类[class]可以被重定义, 但只有当重定义的新类[class]也是 standard-class 类的直接实例[direct instance]的情况下. 重定义一个类[class]会修改已存在的类[class]对象[object]来反映这个新的类[class]的定义; 它不会为这个类[class]创建一个新的类[class]对象[object]. 任何由旧的 defclass 表达式形式指定的 :reader, :writer, 或 :accessor 选项所创建的方法[method]对象[object]会从对应广义函数[generic function]中被移除. 由这个新的 defclass 表达式形式指定的那些方法[method]会被添加进去.
 
 当这个类 C 被重定义时, 修改会传递到它的实例[instance]以及它的任何子类[subclass]的实例[instance]. 更新这样一个实例[instance]发生的时间依赖于具体实现[implementation-dependent], 但是不会晚于下一次这个实例[instance]的槽[slot]被读取或写入. 更新一个实例[instance]不会改变由函数[function] eq 定义的它的等价性. 更新的过程可能改变这个特别实例[instance]的槽[slot], 但是不会创建一个新实例[instance]. 更新一个实例是否消耗存储是依赖于具体实现的[implementation-dependent].
 
@@ -443,7 +443,7 @@ Figure 4-7. 对象系统类
 
 广义函数 update-instance-for-redefined-class 也接受任意数量的初始化参数. 当它被系统调用来更新一个类[class]已经被重定义的实例[instance]时, 不会提供初始化参数.
 
-这里有一个系统提供的关于 update-instance-for-redefined-class 主方法[method], 它的实例参数的参数指定符[parameter specializer]是一个  standard-object 类[class]. 首先这个方法[method]检测初始化参数的有效性, 如果一个提供的参数没有被合法声明就会发出一个错误. (关于更多信息, 见章节 7.1.2 (声明初始化参数的有效性).) 然后它调用广义函数 shared-initialize 并传入以下参数: 这个实例[instance], 新添加槽[slot]的名称[name]列表, 还有它收到的初始化参数. 
+这里有一个系统提供的关于 update-instance-for-redefined-class 主方法[method], 它的实例参数的参数指定符[parameter specializer]是一个 standard-object 类[class]. 首先这个方法[method]检测初始化参数的有效性, 如果一个提供的参数没有被合法声明就会发出一个错误. (关于更多信息, 见章节 7.1.2 (声明初始化参数的有效性).) 然后它调用广义函数 shared-initialize 并传入以下参数: 这个实例[instance], 新添加槽[slot]的名称[name]列表, 还有它收到的初始化参数. 
 
 #### 4.3.6.3 <span id="CustomizingClassRedefinition">定制类的重定义</span>
 
@@ -469,9 +469,9 @@ Figure 4-7. 对象系统类
 
 每一个用 defstruct 创建的没有使用 :type 选项的结构体[structure]类型[type]都有一个对应的类[class]. 这个类[class]是一个类[class] structure-class 的广义实例[generalized instance]. 这个 defstruct 的 :include 选项会创建一个对应被包含的结构体[structure]类型[type]的类[class]的直接子类[subclass].
 
-槽[slot]是否被牵涉到在这个规范定义的类[class]的实例[instance]上的这个规范定义的函数[function]操作中是依赖于具体实现的[implementation-dependent], 除非这个槽[slot]被这个规范明确定义.
+槽[slot]是否被牵涉到在这个规范定义的类[class]的实例[instance]上的这个规范定义的函数[function]的操作中是依赖于具体实现的[implementation-dependent], 除非这个槽[slot]被这个规范显式定义.
 
-如果在一个特定的具体实现[inplementation]中的这个规范定义的一个类[class]拥有的槽[slot]没有在这个规范中定义, 这些槽[slot]的名称不能是该规范中定义的包[package]的外部符号[external symbol], 也不能是 CL-USER 包中可访问的[accessible].
+如果在一个特定的具体实现[inplementation]中的这个规范定义的一个类[class]有着没有在这个规范中定义的槽[slot], 这些槽[slot]的名称不能是该规范中定义的包[package]的外部符号[external symbol], 也不能是 CL-USER 包中可访问的[accessible].
 
 指定许多标准类型指定符[type specifier]有相应的类[class]的目的是使用户能够编写对这些类型进行区别对待的方法[method]. 方法[method]选择要求可以为每个类确定一个类优先级列表[class precedence list].
 
@@ -589,7 +589,7 @@ Figure 4-8. 对应预定义类型指定符的类
 
 * 复合类型指定符种类(Compound Type Specifier Kind):
 
-        Specializing.<TODO 待翻译>
+        特化.
 
 * 复合类型指定符语法(Compound Type Specifier Syntax):
 
@@ -646,13 +646,13 @@ Figure 4-8. 对应预定义类型指定符的类
         * 细想以下两种 ftype 的声明:
 
             ```LISP
-            (ftype (function (arg0-type1 arg1-type1 ...) val-type1) f))
+            (ftype (function (arg0-type1 arg1-type1 ...) val-type1) f)
             ```
 
             还有
 
             ```LISP
-            (ftype (function (arg0-type2 arg1-type2 ...) val-type2) f))
+            (ftype (function (arg0-type2 arg1-type2 ...) val-type2) f)
             ```
 
             如果这些声明都生效, 那么在这些声明的共享作用域内, 对 f 的调用可以被认为它是按下面这种方式声明的:
@@ -663,7 +663,7 @@ Figure 4-8. 对应预定义类型指定符的类
                 f))
             ```
 
-            它被允许忽略一个或全部有效的 ftype 声明.
+            允许忽略一个或全部有效的 ftype 声明.
 
         * 如果一个变量的两个(或更多)类型声明生效, 并且它们都是 function 声明, 这些声明也会类似地组合. 
 
@@ -811,7 +811,7 @@ Figure 4-8. 对应预定义类型指定符的类
 
 * 描述(Description):
 
-        所有对象[object]的集合. 类型[type] t 每个类型[type]的超类型[supertype], 包括它自身. 每个对象[object]都是类型[type] t. 
+        所有对象[object]的集合. 类型[type] t 是每个类型[type]的超类型[supertype], 包括它自身. 每个对象[object]都是类型[type] t. 
 
 ### <span id="TypeSpecifierSATISFIES">类型指定符 SATISFIES</span>
 
@@ -985,7 +985,7 @@ Figure 4-8. 对应预定义类型指定符的类
 
         强制转换[coerce]对象 object 为类型[type] result-type.
 
-        如果对象 object 已经是类型[type] result-type, 返回对象 object 自身, 一般不管是否会有可能强制一些其他类型的对象为 result-type.<!--TODO 待校对-->
+        如果对象 object 已经是类型[type] result-type, 返回对象 object 自身, 一般不管是否会有可能强制一些其他类型的对象为 result-type.
 
         否则, 这个 object 根据以下规则强制转换为类型[type] result-type:
 
@@ -1087,11 +1087,11 @@ Figure 4-8. 对应预定义类型指定符的类
 
         新的类型指定符[type specifier]的意义在于一个函数, 它将这个类型指定符[type specifier]展开为另一个类型指定符[type specifier], 如果另一个类型指定符自身包含对另一个派生类型指定符[derived type specifier]的引用, 它本身就会被展开.
 
-        新定义的类型指定符[type specifier]可以用  (name arg1 arg2 ...) 形式的一个列表来引用. 参数的数量必须和 lambda-list 一样. 如果新的类型指定符[type specifier]不接受参数, 或者它的所有参数是可选的, 这个类型指定符[type specifier]可以被用作原子类型指定符[atomic type specifier].
+        新定义的类型指定符[type specifier]可以用 (name arg1 arg2 ...) 形式的一个列表来引用. 参数的数量必须和 lambda-list 一样. 如果新的类型指定符[type specifier]不接受参数, 或者它的所有参数是可选的, 这个类型指定符[type specifier]可以被用作原子类型指定符[atomic type specifier].
 
         给这个类型指定符[type specifier]的实参[argument]表达式[expression], arg1 ... argn, 是不求值的. 相反, 这些字面化[literal]对象[object]变成了相应的形参[parameter]被绑定[bound]的对象[object].
 
-        这个 deftype 表达式形式[form]主体部分(不是 lambda-list) 隐含在一个名为 name 的块[block]中, 并且作为一个隐式 progn [implicit progn]被求值, 返回一个新的类型指定符[type specifier].
+        这个 deftype 表达式形式[form]主体部分(不是 lambda-list)隐含在一个名为 name 的块[block]中, 并且作为一个隐式 progn [implicit progn]被求值, 返回一个新的类型指定符[type specifier].
 
         这个主体部分的词法环境[lexical environment]是 deftype 表达式形式被求值时的当前那个, 由 lambda-list 中的那些变量[variable]来扩展.
 
@@ -1127,7 +1127,7 @@ Figure 4-8. 对应预定义类型指定符的类
 * 注意(Notes): None. 
 
 ### <span id="FunctionSUBTYPEP">函数 SUBTYPEP</span>
-<!--TODO 待理解-->
+
 * 语法(Syntax):
 
         subtypep type-1 type-2 &optional environment => subtype-p, valid-p
@@ -1155,7 +1155,7 @@ Figure 4-8. 对应预定义类型指定符的类
 
             Figure 4-9. subtypep 结果的可能性
 
-        subtypep 只有当至少一个参数涉及到后面其中一个类型指定符[type specifier]时才允许返回 false 和 false 的多值[values]: and, eql, function 的列表表达式, member, not, or, satisfies, or values. ('涉及' 这样一个符号[symbol]的一个类型指定符[type specifier]: 在被类型[type]展开后, 它将该符号[symbol]包含在一个位置, 该位置将调用它作为一个要被使用的类型指定符[type specifier]的意义.) 一个可能的推论是, 如果 type-1 和 type-2 都不涉及这些类型指定符[type specifier], 那么 subtypep 不得不去准确确定关系. 具体来说, 如果那些参数是 equal 的并且不涉及任何这些类型指定符[type specifier]时 subtypep 返回 true 和 true 的多值[values].
+        subtypep 只有当至少一个参数涉及到后面其中一个类型指定符[type specifier]时才允许返回 false 和 false 的多值[values]: and, eql, function 的列表表达式, member, not, or, satisfies, or values. (在被类型[type]展开后, 如果一个类型指定符[type specifier]将一个符号[symbol]包含在某个位置, 该位置将调用它作为一个要被使用的类型指定符[type specifier]的意义, 那么这个类型指定符[type specifier]就'涉及'这样一个符号[symbol].) 一个可能的推论是, 如果 type-1 和 type-2 都不涉及这些类型指定符[type specifier], 那么 subtypep 不得不去准确确定关系. 具体来说, 如果那些参数是 equal 的并且不涉及任何这些类型指定符[type specifier]时 subtypep 返回 true 和 true 的多值[values].
 
         当 type-1 和 type-2 只涉及 Figure 4-2 中的名字, 或者由 defstruct, define-condition, 或 defclass 定义的类型[type]的名字, 或者只展开到那些名字的衍生类型[derived type]时, subtypep 第二个返回值一定不是 nil. 当列在 Figure 4-2 的类型指定符[type specifier]还有 defclass 和 defstruct 名称在一些情况下被实现为衍生类型[derived type]时, subtypep 把它们当作原语(primitive).
 
