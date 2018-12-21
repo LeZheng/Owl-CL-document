@@ -6,17 +6,17 @@
 
 ## 5.1 <span id="GeneralizedReference">广义引用</span>
 
-> * 5.1.1 [Places 和广义引用的概述](#OverviewPlacesGeneralizedReference)
-> * 5.1.2 [Places 的种类](#KindsOfPlaces)
+> * 5.1.1 [位置和广义引用的概述](#OverviewPlacesGeneralizedReference)
+> * 5.1.2 [位置的种类](#KindsOfPlaces)
 > * 5.1.3 [基于 SETF 的其他宏的处理](#TreatmentMacrosSETF)
 
-### 5.1.1 <span id="OverviewPlacesGeneralizedReference">Places 和广义引用的概述</span>
+### 5.1.1 <span id="OverviewPlacesGeneralizedReference">位置和广义引用的概述</span>
 
-一个广义引用(generalized reference)是一个表达式形式的使用, 有时也称作一个 place , 就好像它是一个可以被读写的变量. 一个 place 的值就是这个 place 表达式求值后的对象. 一个 place 的值可以通过使用 setf 来改变. 绑定一个 place 的概念没有在 Common Lisp 中定义, 但是一个实现允许通过定义它的概念来扩展这个语言.
+一个广义引用[generalized reference]是一个表达式形式[form]的使用, 这个表达式形式[form]有时也称作一个 位置[place], 就好像它是一个可以被读写的变量[variable]. 一个位置[place]的值[value]就是这个位置[place]表达式形式[form]求值后的对象[object]. 一个位置[place]的值[value]可以通过使用 setf 来改变. 绑定一个位置[place]的概念没有在 Common Lisp 中定义, 但是一个具体实现[implementation]允许通过定义它的概念来扩展这个语言.
 
-下面这段包含了 setf 使用的示例. 注意, 求值第二列的表达式形式返回的值没有必要和求值第三列中的表达式形式获取到的值一样. 总之, setf 表达式形式准确的宏展开是不保证的, 甚至是依赖于具体实现的; 可以保证的是, 展开后是一个针对特定实现的更新表达式形式, 对子表达式的从左到右求值是保留的, 而求值 setf 的最终结果是存储的值或多值.
+下面这段包含了 setf 使用的示例. 注意, 求值第二列的表达式形式[form]返回的值没有必要和求值第三列中的表达式形式[form]获取到的值一样. 总之, setf 表达式形式[form]准确的宏展开[macro expansion]是不保证的, 甚至是依赖于具体实现的[implementation-dependent]; 可以保证的是, 这个展开式是一个针对特定实现[implementation]的更新表达式形式, 对子表达式形式[subform]的从左到右求值是保留的, 而求值 setf 的最终结果是存储的值或多值.
 
-|Access function |  Update Function |  Update using setf              |
+|访问函数(Access function) |  更新函数(Update Function) |  使用 setf 更新   |
 | -              | -                | -                               |
 |x               |  (setq x datum)  |  (setf x datum)                 |
 |(car x)         |  (rplaca x datum)|  (setf (car x) datum)           |
@@ -24,7 +24,7 @@
 
 Figure 5-1. setf 的实例
 
-下面这段展示了关于 places 和 generalized reference 的操作符.
+下面这段展示了和位置[place]以及广义引用[generalized reference]相关的操作符[operator].
 
     assert                defsetf             push
     ccase                 get-setf-expansion  remf
@@ -33,48 +33,48 @@ Figure 5-1. setf 的实例
     define-modify-macro   pop                 shiftf
     define-setf-expander  psetf
 
-Figure 5-2. places 和 generalized reference 相关的操作符.
+Figure 5-2. 位置[place]以及广义引用[generalized reference]相关的操作符.
 
-上面的操作符中一些操作 places, 一些操作 setf 的展开. 一个 setf 展开可以来自于任何 place. 可以通过使用 defsetf 和 define-setf-expander 来定义新的 setf 展开.
+上面的一些操作符[operator]操作位置[place], 而一些操作 setf 展开器[setf expander]. 一个 setf 展开器[setf expander]可以来自于任何位置[place]. 可以通过使用 defsetf 和 define-setf-expander 来定义新的 setf 展开器[setf expander].
 
-> * 5.1.1.1 [对 Place 的字表达式求值](#EvaluationSubformsPlaces)
-> * 5.1.1.2 [Setf 展开](#SetfExpansions)
+> * 5.1.1.1 [位置的子表达式形式求值](#EvaluationSubformsPlaces)
+> * 5.1.1.2 [Setf 展开式](#SetfExpansions)
 
-#### 5.1.1.1 <span id="EvaluationSubformsPlaces">对 Place 的字表达式求值</span>
+#### 5.1.1.1 <span id="EvaluationSubformsPlaces">位置的子表达式形式求值</span>
 
-以下规则应用于 place 的字表达式的求值:
+以下规则应用于位置[place]的子表达式形式[subform]的求值[evaluation]:
 
-1. 一个 place 中的字表达式的求值顺序由 get-setf-expansion 返回的第二个值指定的顺序所决定. 对于所有这个标准定义的 place (比如, getf, ldb, ...), 求值的顺序是从左到右的. 当一个 place 从一个宏展开中得到, 这个规则将在宏展开后应用, 以找到合适的 place.
+1. 一个位置[place]中的子表达式形式[subform]的求值顺序由 get-setf-expansion 返回的第二个值指定的顺序所决定. 对于这个标准定义的所有位置[place] (比如, getf, ldb, ...), 求值的顺序是从左到右的. 当一个位置[place]从一个宏展开式中得到, 这个规则将在宏展开后应用, 以找到合适的位置[place].
 
-    Places defined 通过使用 defmacro 或 define-setf-expander 定义的 place 使用这些定义所定义的求值顺序. 比如, 思考下面这个:
+    通过使用 defmacro 或 define-setf-expander 定义的位置[place]使用这些定义所定义的求值顺序. 比如, 思考下面这个:
 
     ```LISP
     (defmacro wrong-order (x y) `(getf ,y ,x))
     ```
 
-    下面这个表达式形式先求值 place2 然后再是 place1 因为这个是它们在宏展开中的求值顺序:
+    下面这个表达式形式[form]先求值 place2 然后再是 place1 因为这个是它们在宏展开式中的求值顺序:
 
     ```LISP
     (push value (wrong-order place1 place2))
     ```
 
-2. 对于操纵 places (push, pushnew, remf, incf, decf, shiftf, rotatef, psetf, setf, pop, 还有那些 define-modify-macro 定义的宏) 的宏, 宏调用的子表达式按从左到右的顺序求值一次, 其中这些 place 的子表达式按照 (1) 中指定的顺序求值.
+2. 对于操纵位置[place]的宏[macro] (push, pushnew, remf, incf, decf, shiftf, rotatef, psetf, setf, pop, 还有那些 define-modify-macro 定义的宏), 宏调用的子表达式形式[subform]按从左到右的顺序求值一次, 其中这些位置[place]的子表达式形式[subform]按照 (1) 中指定的顺序求值.
 
-    push, pushnew, remf, incf, decf, shiftf, rotatef, psetf, pop 在修改任意 place 之前求值所有子表达式. setf (当 setf 有超过两个参数的情况下) 在序列的每一对中执行它的操作. 比如, 在下面这个表达式中
+    push, pushnew, remf, incf, decf, shiftf, rotatef, psetf, pop 在修改任意位置[place]之前求值所有子表达式形式[subform]. setf (当 setf 有超过两个参数的情况下) 在序列中的每一对上执行它的操作. 比如, 在下面这个表达式中
 
     ```LISP
     (setf place1 value1 place2 value2 ...)
     ```
 
-    子表达式 place1 和 value1 被求值, place1 指定的位置被修改去包含 value1 返回的值, 然后 setf 表达式的剩余部分按照类似的方式处理.
+    子表达式形式[subform] place1 和 value1 被求值, place1 指定的位置被修改去包含 value1 返回的值, 然后 setf 表达式形式的剩余部分按照类似的方式处理.
 
-3. 对于 check-type, ctypecase, 和 ccase, place 的子表达式像 (1) 中那样被求值一次, 但是如果 check-type 中类型检测失败了或者 ctypecase 和 ccase 中没有 case 被处理可能会再次求值.
+3. 对于 check-type, ctypecase, 和 ccase, 位置[place]的子表达式形式[subform]像 (1) 中那样被求值一次, 但是如果 check-type 中类型检测失败了或者 ctypecase 和 ccase 中没有情况(case)被处理可能会再次求值.
 
-4. 对于 assert, 这个 generalized references 求值顺序没有被指定.
+4. 对于 assert, 广义引用[generalized reference]的求值顺序没有被指定.
 
-规则 2, 3 和 4 覆盖所有操作 place 的标准化宏.
+规则 2, 3 和 4 覆盖所有操作位置[place]的标准化[standardized]宏[macro].
 
-##### 5.1.1.1.1 对 Places 的子表达式求值的示例
+##### 5.1.1.1.1 对位置的子表达式形式求值的示例
 
 ```LISP
 (let ((ref2 (list '())))
@@ -92,39 +92,39 @@ Figure 5-2. places 和 generalized reference 相关的操作符.
 
 push 先求值 (setq x (list 'a)) => (a), 然后求值 (setq x (list 'b)) => (b), 再修改最后的值的 car 部分为 ((a) . b).
 
-#### 5.1.1.2 <span id="SetfExpansions">Setf 展开</span>
+#### 5.1.1.2 <span id="SetfExpansions">Setf 展开式</span>
 
-有时避免多次求值一个 place 的子表达式或以错误的顺序求值是可能的. 对于一个给定的表达式形式, 一个 setf 展开可以被表达为一个五个对象的有序集合:
+有时避免多次求值一个位置[place]的子表达式形式[subform]或以错误的顺序求值是可能的. 对于一个给定的表达式形式, 一个 setf 展开式[setf expansion]可以被表达为五个对象[object]的一个有序集合:
 
 临时对象的列表
 
-    一个命名临时变量的符号列表, 这些符号被顺序绑定到由值表达式形式返回的值, 就像是被 let*.
+    一个命名临时变量的符号列表, 这些符号被依次绑定到由值表达式形式返回的那些值, 就像是通过 let* 一样.
 
 值表达式形式列表
 
-    当求值时, 会产生相应的临时变量应该被绑定的值的表达式列表 (典型地, place 的子表达式).
+    一个表达式形式列表(典型地, 这个位置[place]的子表达式形式[subform]), 当求值时, 会产生相应的临时变量应该被绑定的值.
 
 存储变量的列表
 
-    一个用来命名临时存储变量的符号列表, 用来保存将被分配给 place 的新值.
+    一个用来命名临时存储变量的符号列表, 用来保存将被分配给这个位置[place]的新值.
 
 存储表达式形式
 
-    一种可以同时引用临时变量和存储变量的表达式形式, 它会改变 place 的值, 并保证返回存储变量的值作为它的值, 这是 setf 返回的正确值.
+    一个可以同时引用临时变量和存储变量的表达式形式, 它会改变这个位置[place]的值[value], 并保证返回存储变量的值作为它的值, 这是 setf 返回的正确值.
 
 访问表达式形式
 
-    一个可以引用临时变量并且返回这个 place 的值的表达式形式.
+    一个可以引用临时变量并且返回这个位置[place]的值[value]的表达式形式[form].
 
-访问表达式返回的值受到存储表达式的执行的影响, 但是这些表达式中的任何一种都可能被多次求值.
+访问表达式形式返回的值受到存储表达式形式执行的影响, 但是这些表达式形式中的任何一种都可能被多次求值.
 
-可以通过 psetf, shiftf 和 rotatef 并行执行多个 setf. 由于这个, setf 展开式必须每次产生新的临时和存储变量. 关于如果去做这个的例子, 见 gensym.
+可以通过 psetf, shiftf 和 rotatef 并行执行多个 setf. 由于这个, setf 展开器[setf expander]必须每次产生新的临时和存储变量名字. 关于如果去做这个的示例, 见 gensym.
 
-对于每一个标准化的访问器函数 F, 除非它被显式地记载, 否则使用一个 F 表达式形式作为一个 setf place 的能力被实现为通过一个 setf 展开式还是一个 setf 函数, 这是依赖于具体实现的. 同样, 名字 (setf F) 是否被 fbound 是依赖于具体实现的.
+对于每一个标准化[standardized]的访问器函数 F, 除非它被显式地记载, 否则使用一个 F 表达式形式[form]作为一个 setf 位置[place]的能力被实现为使用一个 setf 展开式[setf expander]还是一个 setf 函数[setf function], 是依赖于具体实现的[implementation-dependent]. 同样, 由此可以得出, 名字 (setf F) 是否被 fbound 是依赖于具体实现的[implementation-dependent].
 
 ##### 5.1.1.2.1 Setf 展开式的示例
 
-下面是 setf 展开式成分内容的示例.
+下面是 setf 展开式[setf expansion]组成成分内容的示例.
 
 对于一个变量 x:
 
@@ -136,7 +136,7 @@ push 先求值 (setq x (list 'a)) => (a), 然后求值 (setq x (list 'b)) => (b)
 x               ;accessing form
 ```
 
-Figure 5-3. 一个变量的简单 Setf 展开式
+Figure 5-3. 一个变量的简单 setf 展开式
 
 对于 (car exp):
 
@@ -163,7 +163,7 @@ Figure 5-4. CAR 表达式形式的简单 setf 展开式
 
 Figure 5-5. SUBSEQ 表达式形式的简单 setf 展开式
 
-在一些情况下, 如果一个 place 的一个子表达式自身也是一个 place, 为了计算外面的 place 展开式的一些值, 展开子表达式是必要的. 对于 (ldb bs (car exp)):
+在一些情况下, 如果一个位置[place]的一个子表达式形式[subform]自身也是一个位置[place], 为了计算外面的位置[place]展开式的一些值, 展开子表达式形式[subform]是有必要的. 对于 (ldb bs (car exp)):
 
 ```LISP
 (g0001 g0002)            ;list of temporary variables
@@ -176,29 +176,29 @@ Figure 5-5. SUBSEQ 表达式形式的简单 setf 展开式
 
 Figure 5-6. LDB 表达式形式的简单 setf 展开式
 
-### 5.1.2 <span id="KindsOfPlaces">Places 的种类</span>
+### 5.1.2 <span id="KindsOfPlaces">位置的种类</span>
 
-Common Lisp 定义了多个 place 的种类; 这个章节会列举它们. 这个集合可以被具体实现和程序员的代码所扩展.
+Common Lisp 定义了多个位置[place]的种类; 这个章节会列举它们. 这个集合可以被具体实现[implementation]和程序员的代码[programmer code]所扩展.
 
-> * 5.1.2.1 [变量名作为 Places](#VariableNamesPlaces)
-> * 5.1.2.2 [函数调用表达式作为 Places](#FunctionCallFormsPlaces)
-> * 5.1.2.3 [VALUES 表达式形式作为 Places](#VALUESFormsPlaces)
-> * 5.1.2.4 [THE 表达式形式作为 Places](#THEFormsPlaces)
-> * 5.1.2.5 [APPLY 表达式形式作为 Places](#APPLYFormsPlaces)
-> * 5.1.2.6 [Setf展开和Places](#SetfExpansionsPlaces)
-> * 5.1.2.7 [Macro 表达式形式作为 Places](#MacroFormsPlaces)
-> * 5.1.2.8 [符号宏作为 Places](#SymbolMacrosPlaces)
-> * 5.1.2.9 [其他复合表达式形式作为 Places](#OtherCompoundFormsPlaces)
+> * 5.1.2.1 [变量名作为位置](#VariableNamesPlaces)
+> * 5.1.2.2 [函数调用表达式形式作为位置](#FunctionCallFormsPlaces)
+> * 5.1.2.3 [VALUES 表达式形式作为位置](#VALUESFormsPlaces)
+> * 5.1.2.4 [THE 表达式形式作为位置](#THEFormsPlaces)
+> * 5.1.2.5 [APPLY 表达式形式作为位置](#APPLYFormsPlaces)
+> * 5.1.2.6 [Setf 展开式和位置](#SetfExpansionsPlaces)
+> * 5.1.2.7 [宏表达式形式作为位置](#MacroFormsPlaces)
+> * 5.1.2.8 [符号宏作为位置](#SymbolMacrosPlaces)
+> * 5.1.2.9 [其他复合表达式形式作为位置](#OtherCompoundFormsPlaces)
 
-#### 5.1.2.1 <span id="VariableNamesPlaces">变量名作为 Places</span>
+#### 5.1.2.1 <span id="VariableNamesPlaces">变量名作为位置</span>
 
-一个词法变量或动态变量的名字可以被用作一个 place.
+一个词法变量[lexical variable]或动态变量[dynamic variable]的名字可以被用作一个位置[place].
 
-#### 5.1.2.2 <span id="FunctionCallFormsPlaces">函数调用表达式作为 Places</span>
+#### 5.1.2.2 <span id="FunctionCallFormsPlaces">函数调用表达式形式作为位置</span>
+<!--TODO 待理解-->
+如果一个函数表达式形式[function form]属于下列类别之一, 它被用作一个位置[place]:
 
-如果一个函数表达式属于下列类别之一, 它被用作 place:
-
-* 第一个元素是下面这段中任何一个函数名的函数调用表达式形式.
+  * 第一个元素是下面这段中任何一个函数名的函数调用表达式形式.
 
         aref    cdadr                    get
         bit     cdar                     gethash
@@ -225,13 +225,13 @@ Common Lisp 定义了多个 place 的种类; 这个章节会列举它们. 这个
 
         Figure 5-7. 可以和 setf 一起使用的函数---1
 
-    subseq 的情况, 替换的值必须是一个序列, 其元素可能被 subseq 的序列参数所包含, 但它不一定是与指定子序列的类型相同的序列. 如果替换的值的长度和要被替换的子序列长度不一样, 那么更短的那个长度决定要被存储的元素的数量, 如 replace.
+    在 subseq 的情况中, 替换的值必须是一个序列[sequence], 其元素可能被 subseq 的序列参数所包含, 但它不一定是与指定子序列的序列[sequence]相同类型[type]的序列[sequence]. 如果替换的值的长度和要被替换的子序列长度不一样, 那么更短的那个长度决定要被存储的元素的数量, 如 replace.
 
-* 第一个元素是 defstruct 构造的选择器函数的名字的一个函数调用表达式形式. 这个函数名字必须引用全局函数定义, 而不是一个局部定义的函数.
+* 第一个元素是 defstruct 构造的选择器函数的名字的一个函数调用表达式形式. 这个函数名字必须引用全局函数定义, 而不是一个局部定义的函数[function].
 
-* 第一个元素是下面这段中任何一个函数名的函数调用表达式形式, 只要给那个函数的提供的参数依次为一个 place 表达式; 在本例中, 新 place 存储回了调用提供的"update"函数的结果中.
+* 第一个元素是下面这段中任何一个函数名的函数调用表达式形式, 前提是给那个函数的提供的参数为一个位置[place]表达式形式; 在本例中, 新位置[place]存储回了调用提供的"更新(update)"函数的结果中.
 
-    |函数名      |    是 place 的参数       |     使用的 update 函数 |
+    |函数名      |    是位置(place)的参数  | 使用的更新(update)函数 |
     | --        | --                      | --                   |
     |ldb        |   second                |     dpb              |
     |mask-field |   second                |     deposit-field    |
@@ -239,29 +239,29 @@ Common Lisp 定义了多个 place 的种类; 这个章节会列举它们. 这个
 
     Figure 5-8. 可以和 setf 一起使用的函数---2 
     
-    在这些表达式的 setf 展开期间, 需要调用 get-setf-expansion, 以了解内部的, 嵌套的广义变量必须如何处理.
+    在这些表达式形式[form]的 setf 展开期间, 需要调用 get-setf-expansion 来以了解内部的, 嵌套的广义变量必须如何处理.
 
-    来自 get-setf-expansion 的信息用于以下内容.
+    来自 get-setf-expansion 的信息按如下使用.
 
     * ldb
 
-        在像这样的表达式中:
+        在像这样的表达式形式中:
 
         ```LISP
         (setf (ldb byte-spec place-form) value-form)
         ```
         
-        place-form 引用的 place 必须总是可读写的; 注意这个更新是对 place-form 指定的广义变量, 不是任何 integer 类型的对象.
+        被 place-form 引用的位置必须总是既可读[read]又可写[write]的; 注意这个更新是对 place-form 指定的广义变量, 不是任何 integer 类型[type]的对象.
 
         因此, setf 应该生成代码来执行以下操作:
 
         1. 求值 byte-spec (并且把它绑定到一个临时变量).
         2. 为 place-form 绑定临时变量.
         3. 求值 value-form (并绑定它的值或多值到存储变量中).
-        4. 执行从 place-form 中读取.
-        5. 用第4步中获取的整数的给定位来写 place-form, 替换为步骤3中的值.
+        4. 执行从 place-form 中读取[read].
+        5. 使用来自步骤 3 的值替换步骤 4 中获取到的整数[integer]的给定位来写[write]入 place-form.
 
-        如果步骤3中的 value-form 求值修改了 place-form 的内容, 就像设置 integer 的不同的位, 那么 byte-spec 表示的改变的位是修改后的 integer, 因为步骤4在 value-form 求值后被执行. 不过, 绑定临时变量所需的求值在步骤1和步骤2中完成, 因此可以看到预期的从左到右的求值顺序. 比如:
+        如果步骤 3 中的 value-form 求值修改了 place-form 的内容, 就像设置整数[integer]的不同的位, 那么由 byte-spec 表示的位改变为修改后的整数[integer], 因为步骤 4 在 value-form 求值后被执行. 不过, 绑定[binding]临时变量所需的求值在步骤 1 和步骤 2 中完成, 因此可以看到预期的从左到右的求值顺序. 比如:
 
         ```LISP
         (setq integer #x69) =>  #x69
@@ -276,27 +276,27 @@ Common Lisp 定义了多个 place 的种类; 这个章节会列举它们. 这个
 
     * mask-field
 
-        这个情况和 ldb 在所有重要情况下都是一样的.
+        这个情况和 ldb 在所有重要方面都是一样的.
 
     * getf
 
-        在像这样的表达式中:
+        在像这样的表达式形式中:
 
         ```LISP
         (setf (getf place-form ind-form) value-form)
         ```
         
-        place-form 引用的 place 必须总是可读写的; 注意这个更新是对 place-form 指定的广义变量, 而不一定是讨论中的特定属性列表.
+        place-form 引用的位置必须总是可读[read]可写[write]的; 注意这个更新是对 place-form 指定的广义变量, 而不一定是讨论中的特定属性列表.
 
         因此, setf 应该生成代码来执行以下操作:
 
-        1. 为 place-form 绑定临时变量.
+        1. 绑定 place-form 的临时变量.
         2. 求值 ind-form (并且把它绑定到临时变量).
         3. 求值 value-form (并且绑定它的值或多值到存储变量中).
-        4. 执行从 place-form 中读取.
-        5. 用通过组合步骤2, 3 和 4 中的值获取的可能是新的属性列表写到 place-form 中. (注意这个措辞 "可能的新属性列表(possibly-new property list)" 可能意味着之前的属性列表以某种方式破坏性的再次使用, 或者可能意味着它的部分或完全的复制. 因为不管是复制还是破坏性地再使用都可以发生, 对于可能的新属性列表的结果值的处理必须进行处理, 就好像它是一个不同的副本, 需要将其存储回广义变量中.)
+        4. 执行从 place-form 中读取[read].
+        5. 用通过组合步骤2, 3 和 4 中的值获取的可能是新的属性列表写[write]到 place-form 中. (注意这个措辞 "可能的新属性列表(possibly-new property list)" 可能意味着之前的属性列表以某种方式破坏性的再次使用, 或者可能意味着它的部分或完全的复制. 因为不管是复制还是破坏性地再使用都可以发生, 因此必须继续处理可能的新属性列表的结果值, 就好像它是需要存储回广义变量中的不同副本一样.)
 
-        如果步骤3中的 value-form 求值修改了 place-form 中的内容, 就像在列表设置一个不同的已命名属性, 那么 ind-form 表示的属性的修改是那个修改后的列表, 因为步骤 4 在 value-form 求值后执行. 不过, 绑定临时变量所需的求值在步骤1和步骤2中完成, 因此可以看到预期的从左到右的求值顺序.
+        如果步骤 3 中的 value-form 求值修改了 place-form 中的内容, 例如在列表中设置一个不同的已命名属性, 那么 ind-form 表示的属性的修改是对那个修改后的列表的, 因为步骤 4 在 value-form 求值后执行. 不过, 绑定临时变量所需的求值在步骤 1 和步骤 2 中完成, 因此可以看到预期的从左到右的求值顺序.
 
         比如:
 
@@ -313,9 +313,9 @@ Common Lisp 定义了多个 place 的种类; 这个章节会列举它们. 这个
         ;;; after the value computation.
         ```
 
-#### 5.1.2.3 <span id="VALUESFormsPlaces">VALUES 表达式形式作为 Places</span>
+#### 5.1.2.3 <span id="VALUESFormsPlaces">VALUES 表达式形式作为位置</span>
 
-一个 values 表达式形式可以被用作一个 place, 只要它的每一个子表达式也是一个 place 表达式形式.
+一个 values 表达式形式[form]可以被用作一个位置[place], 前提是它的每一个子表达式形式[subform]也是一个位置[place]表达式形式[form].
 
 一个像这样的表达式形式
 
@@ -325,61 +325,61 @@ Common Lisp 定义了多个 place 的种类; 这个章节会列举它们. 这个
 
 执行了以下动作:
 
-1. 每一个嵌套 place 的子表达式都按照从左到右的顺序求值.
-2. 这个 values-form 被求值, 并且每一个 place 的 第一个存储变量被绑定给它的返回值就像是通过 multiple-value-bind 的一样.
-3. 如果这个 setf 展开式对于任何 place 引用超过一个存储变量, 那么额外的存储变量会绑定为 nil.
-4. 每个 place 的存储表达式形式都按照从左到右的顺序计算.
+1. 每一个嵌套位置 place 的子表达式形式[subform]都按照从左到右的顺序求值.
+2. 这个 values-form 被求值, 并且来自每一个位置 place 的第一个存储变量被绑定给它的返回值, 就像是通过 multiple-value-bind 一样.
+3. 如果任何位置 place 的 setf 展开式[setf expansion]涉及超过一个存储变量, 那么额外的存储变量会绑定为 nil.
+4. 每个位置 place 的存储表达式形式都按照从左到右的顺序计算.
 
-values 的 setf 展开中的存储形式作为多个值返回第2步中存储变量的值. 这也就是说, 返回的值的数量和 place 表达式数量一样. 这个可能比 values-form 产生的值更多或更少.
+values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[multiple values[2]]的形式返回步骤 2 中存储变量的值. 这也就是说, 返回的值的数量和位置[place]表达式形式数量一样. 这个可能比 values-form 所产生的值更多或更少.
 
-#### 5.1.2.4 <span id="THEFormsPlaces">THE 表达式形式作为 Places</span>
+#### 5.1.2.4 <span id="THEFormsPlaces">THE 表达式形式作为位置</span>
 
-一个 the 表达式形式可以被用作一个 place, 在这个情况下这个声明被转到那个新值表达式形式中, 然后对结果的 setf 进行分析. 比如,
+一个 the 表达式形式[form]可以被用作一个位置[place], 在这个情况下这个声明被转到那个新值表达式形式 newvalue 中, 然后对产生的 setf 进行分析. 比如,
 
 ```LISP
 (setf (the integer (cadr x)) (+ y 3))
 ```
 
-被处理就好像它是这样的
+就像下面这样被处理
 
 ```LISP
 (setf (cadr x) (the integer (+ y 3)))
 ```
 
-#### 5.1.2.5 <span id="APPLYFormsPlaces">APPLY 表达式形式作为 Places</span>
+#### 5.1.2.5 <span id="APPLYFormsPlaces">APPLY 表达式形式作为位置</span>
 
-以下 apply 的 setf 情况必须被支持:
+以下涉及 apply 的 setf 情况必须被支持:
 
 * (setf (apply #'aref array subscript* more-subscripts) new-element)
 * (setf (apply #'bit array subscript* more-subscripts) new-element)
 * (setf (apply #'sbit array subscript* more-subscripts) new-element)
 
-在所有这三种情况中, 由 subscripts 和 more-subscripts 连接所指定的 array 的数组元素 (换句话说, 同样的元素, 如果不是 setf 表达式的一部分, 它将通过调用 apply 来读取) 被改变为 new-element 给定的值. 对于这些用法, 函数名 (aref, bit, or sbit) 必须引用全局函数定义, 而不是局部函数定义.
+在所有这三种情况中, 由 subscripts 和 more-subscripts 连接所指定的数组 array 的元素[element] (换句话说, 同样的元素, 如果不是 setf 表达式形式[form]的一部分, 它将通过调用 apply 来读取[read]) 被改变为 new-element 给定的值[value]. 对于这些用法, 函数名 (aref, bit, 或 sbit) 必须引用全局函数定义, 而不是局部定义函数[function].
 
-没有其他标准化的函数需要被支持, 但是一个具体实现可以定义这样的支持. 一个具体实现可能也可以为具体实现所定义的操作符定义支持.
+没有其他标准化[standardized]函数[function]需要被支持, 但是一个具体实现[implementation]可以定义这样的支持. 一个具体实现[implementation]也可以为具体实现[implementation-defined]所定义的操作符定义支持.
 
-如果一个用户定义的函数被用于这个上下文, 那么以下等价是成立的, 除了要注意保留对参数子表达式的正确的从左到右的求值:
+如果一个用户定义的函数[function]被用于这个上下文, 那么以下等价是成立的, 除了要注意保留对参数子表达式形式[subform]的正确的从左到右的求值:
 
 ```LISP
 (setf (apply #'name arg*) val)
 ==  (apply #'(setf name) val arg*)
 ```
 
-#### 5.1.2.6 <span id="SetfExpansionsPlaces">Setf展开和Places</span>
+#### 5.1.2.6 <span id="SetfExpansionsPlaces">Setf 展开式和位置</span>
 
-任何有着 setf 展开器定义的操作符的复合表达式形式可以被用作一个 place. 这个操作符必须引用一个全局函数定义, 而不是一个局部定义的函数或宏.
+任何有着已定义的 setf 展开器[setf expander]的操作符[operator]的复合表达式形式[compound form]可以被用作一个位置[place]. 这个操作符[operator]必须引用一个全局函数定义, 而不是一个局部定义的函数[function]或宏[macro].
 
-#### 5.1.2.7 <span id="MacroFormsPlaces">Macro 表达式形式作为 Places</span>
+#### 5.1.2.7 <span id="MacroFormsPlaces">宏表达式形式作为位置</span>
 
-一个宏表达式形式可以被用作 place, 在这个情况下 Common Lisp 展开那个宏表达式形式就像是通过  macroexpand-1 然后用这个宏展开式替换原始的 place. 这样的宏展开只在耗尽所有其他可能性之后才尝试, 而不是展开到调用一个名为 (setf reader) 的函数.
+一个宏表达式形式[macro form]可以被用作一个位置[place], 在这个情况下 Common Lisp 展开那个宏表达式形式[macro form]就像是通过 macroexpand-1 然后用这个宏展开式[macro expansion]替换原始的位置[place]. 这样的宏展开式[macro expansion]只在耗尽所有其他可能性之后才尝试, 而不是在展开到对一个名为 (setf reader) 的函数调用之后.
 
-#### 5.1.2.8 <span id="SymbolMacrosPlaces">符号宏作为 Places</span>
+#### 5.1.2.8 <span id="SymbolMacrosPlaces">符号宏作为位置</span>
 
-对一个已经确定是符号宏引用的符号可以被用作一个 place. 在这个情况下, setf 展开这个引用并且分析结果表达式.
+对一个已经建立[establish]为符号宏[symbol macro]的符号[symbol]的引用可以被用作一个位置[place]. 在这个情况下, setf 展开这个引用并且分析产生的表达式形式[form].
 
-#### 5.1.2.9 <span id="OtherCompoundFormsPlaces">其他复合表达式形式作为 Places</span>
+#### 5.1.2.9 <span id="OtherCompoundFormsPlaces">其他复合表达式形式作为位置</span>
 
-对于其他任何复合表达式形式, 其中操作符为符号 f, 这个 setf 表达式形式展开为一个对名为 (setf f) 的函数调用. 这个新构建的函数的第一个参数是 newvalue 并且剩下的参数是 place 的剩余元素. 不管 f 或者 (setf f) 是局部函数还是全局函数或者都不是, 这个展开都会发生. 比如,
+对于其他任何复合表达式形式[compound form], 假定其中操作符[operator]为符号[symbol] f, 这个 setf 表达式形式[form]展开为一个对名为 (setf f) 的函数[function]调用. 这个新构建的函数表达式形式[function form]的第一个实参[argument]是 newvalue 并且剩下的实参[argument]是位置 place 的剩余元素[element]. 不管 f 或者 (setf f) 被局部还是全局地定义为函数, 或者都不是, 这个展开都会发生. 比如,
 
 ```LISP
 (setf (f arg1 arg2 ...) new-value)
@@ -395,26 +395,26 @@ values 的 setf 展开中的存储形式作为多个值返回第2步中存储变
   (funcall (function (setf f)) #:temp-0 #:temp-1 #:temp-2...))
 ```
 
-一个名为 (setf f) 的函数必须返回它的第一个参数作为它唯一的值, 以便保留 setf 的语义.
+一个名为 (setf f) 的函数[function]必须返回它的第一个参数作为它唯一的值, 以便保留 setf 的语义.
 
 ### 5.1.3 <span id="TreatmentMacrosSETF">基于 SETF 的其他宏的处理</span>
 
-对于下一段中的每个 "读-修改-写(read-modify-write)" 操作符, 还有对于任何程序员使用 define-modify-macro 定义的额外的宏, 一个异常是由对参数的左至右求值的正常规则所造成的. 对参数表达式形式的求值以从左到右的顺序发生, 而对于 place 参数来说, 从那个 place 的"旧值"的实际读取发生在所有的参数表达式形式求值之后, 并且在一个"新值"被计算并重新写入到该 place 之前.
+对于下一段中的每个 "读-修改-写(read-modify-write)" 操作符[operator], 还有对于任何程序员[programmer]使用 define-modify-macro 定义的额外的宏[macro], 对参数从左到右求值的常规规则导致一个例外. 对参数[argument]表达式形式[form]的求值以从左到右的顺序发生, 除了位置 place 参数[argument]例外, 那个 place 的"旧值"的实际读取[read]发生在所有的参数[argument]表达式形式[form]求值[evaluation]之后, 并且在一个"新值"被计算并重新写入到该 place 之前.
 
-具体地说, 每个操作符都可以被看作是包含以下通用语法的表达式形式:
+具体地说, 这些操作符[operator]中的每一个都可以被看作是带有以下通用语法的表达式形式[form]:
 
 ```LISP
 (operator preceding-form* place following-form*)
 ```
 
-对每个这样的表达式形式的求值都是这样的:
+对每个这样的表达式形式[form]的求值都是这样处理的:
 
-1. 按从左到右的顺序求值每一个 preceding-forms.
-2. 求值 place 的子表达式, 按照这个 place 的 setf 展开式的第二个值指定的顺序.
-3. 按从左到右的顺序求值每一个 following-forms.
-4. 从 place 中读取旧的值.
+1. 按从左到右的顺序求值[evaluate]每一个 preceding-forms.
+2. 求值[evaluate]这个位置 place 的子表达式形式[subform], 按照这个位置 place 的 setf 展开式[setf expansion]的第二个值指定的顺序.
+3. 按从左到右的顺序求值[evaluate]每一个 following-forms.
+4. 从位置 place 中读取[read]旧的值.
 5. 计算新的值.
-6. 存储新的值到 place.
+6. 存储新的值到这个位置 place.
 
         decf  pop   pushnew
         incf  push  remf
@@ -423,16 +423,16 @@ values 的 setf 展开中的存储形式作为多个值返回第2步中存储变
 
 ## 5.2 <span id="TCEP">退出点的控制转移</span>
 
-当控制转移由 go, return-from, 或 throw 发起时, 为了完成控制权的转移, 发生以下事件. 注意, 对于 go, 退出点是 go 执行时要被执行的 tagbody 里的表达式形式; 对于 return-from, 退出点是对应的 block 表达式形式; 对于 throw, 退出点是对应的 catch 表达式形式.
+当控制转移由 go, return-from, 或 throw 发起时, 为了完成控制权的转移, 发生以下事件. 注意, 对于 go, 退出点[exit point]是 go 执行时要被执行的 tagbody 里的表达式形式[form]; 对于 return-from, 退出点[exit point]是对应的 block 表达式形式[form]; 对于 throw, 退出点[exit point]是对应的 catch 表达式形式[form].
 
-1. 中间的退出点被"抛弃"了 (换句话说, 它们的范围结束了, 试图通过它们来转移控制已经不再有效了).
-2. 对任何中间 unwind-protect 子句的清理子句进行了求值.
-3. 其中 special 变量, 捕捉标签, 状况处理者, 还有重启器的动态绑定被消除.
-4. 被调用的退出点的范围结束, 控制被传递给目标.
+1. 中间的退出点[exit point]被"抛弃"了 (换句话说, 它们的范围[extent]结束了, 试图通过它们来转移控制已经不再有效了).
+2. 对任何中间 unwind-protect 子句的清理子句进行求值.
+3. 中间的 special 变量, 捕捉标签[catch tag], 状况处理者[condition handler], 还有重启器[restart]的动态绑定[binding]被消除.
+4. 被调用的退出点[exit point]的范围[extent]结束, 控制被传递给目标.
 
-退出的范围被"抛弃", 因为一旦控制转移, 它就会被传递到结束 The extent of an exit being "abandoned" because it is being passed over ends as soon as the transfer of control is initiated. 这也就是说, 事件 1 发生在控制转移的开始. 如果尝试去转移控制到一个动态范围已经结束的退出点, 那么结果是未定义的.
+由于被跳过而"抛弃"的退出的范围在发生控制转移时就结束了. 这也就是说, 事件 1 发生在控制转移的开始. 如果尝试去转移控制到一个动态范围[dynamic extent]已经结束的退出点[exit point], 那么结果是未定义的.
 
-事件 2 和 3 实际上是交替进行的, 顺序与它们建立的逆序相对应. 这样做的效果是一个 unwind-protect 的清理子句看到进入 unwind-protect 时变量和捕捉标签(catch tags)的相同童待绑定.
+事件 2 和 3 实际上是交替进行的, 顺序与它们建立的逆序相对应. 这样做的效果是一个 unwind-protect 的清理子句看到进入 unwind-protect 时变量和捕捉标签[catch tag]的相同动态绑定[binding].
 
 事件 4 发生在控制转移结束的时候.
 
@@ -518,17 +518,17 @@ values 的 setf 展开中的存储形式作为多个值返回第2步中存储变
 
 * 参数和值(Arguments and Values):
 
-        function---一个函数指定符.
-        args---一个可扩展的参数列表指示符.
-        results---function 的返回值.
+        function---一个函数标识符[function designator].
+        args---一个可扩展参数列表标识符[spreadable argument list designator].
+        results---函数 function 返回的值[value].
 
 * 描述(Description):
 
-        将 args 应用给 function.
+        应用[apply]函数 function 到这些参数 args.
 
-        当这个 function 通过 &rest 接受到它的参数时, 对于一个实现, 允许 (但不是必须) 去绑定剩余参数到一个和 apply 的最后一个参数共享结构的对象. 因为一个函数既不能检测它是否通过 apply 调用, 也不能检测到 apply 的最后一个参数是否是一个常量, 符合规范的程序必须既不能依赖于rest列表的列表结构, 也不能修改这个列表结构.
+        当这个函数 function 通过 &rest 接受到它的参数时, 允许(但不是必须)一个实现[implementation]去绑定[bind]剩余参数[rest parameter]到一个和 apply 的最后一个参数共享结构的对象[object]. 因为一个函数既不能检测它是否通过 apply 被调用, (如果是这样的话)也不能检测到给 apply 的最后一个参数是否是一个常量[constant], 因此符合规范的程序[conforming program]既不能依赖于剩余列表[rest list]的列表[list]结构是新创建的, 也不能修改这个列表[list]结构.
 
-        在某些情况下, setf可以用于 apply; 见章节 5.1.2.5 (APPLY Forms as Places).
+        在某些情况下, setf 可以和 apply 一起使用; 见章节 5.1.2.5 (APPLY 表达式形式作为位置).
 
 * 示例(Examples):
 
@@ -562,7 +562,7 @@ values 的 setf 展开中的存储形式作为多个值返回第2步中存储变
 
 * 也见(See Also):
 
-        funcall, fdefinition, function, Section 3.1 (Evaluation), Section 5.1.2.5 (APPLY Forms as Places)
+        funcall, fdefinition, function, 章节 3.1 (求值), 章节 5.1.2.5 (APPLY 表达式形式作为位置)
 
 * 注意(Notes): None.
 
