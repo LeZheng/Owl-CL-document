@@ -576,32 +576,34 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 参数和值(Arguments and Values):
 
-        function-name---一个函数名.
-        lambda-list---一个普通 lambda 列表.
-        declaration---一个 declare 表达式; 不求值.
-        documentation---一个字符串; 不求值.
-        forms---一个隐式的 progn.
-        block-name---这个 function-name 的函数块名字.
+        function-name---一个函数名[function name].
+        lambda-list---一个普通 lambda 列表[ordinary lambda list].
+        declaration---一个 declare 表达式[expression]; 不求值.
+        documentation---一个字符串[string]; 不求值.
+        forms---一个隐式的 progn [implicit progn].
+        block-name---这个 function-name 的函数块名字[function block name].
 
 * 描述(Description):
 
-        在全局环境中定义一个名为 function-name 的函数. 由 defun 定义的函数的 body 部分由 表达式形式组成; 当函数被调用时它们会作为一个隐式的 progn 被执行. defun 可以被用于定义一个新的函数, 去安装一个错误定义的修正版本, 去重定义一个已经定义的函数, 或者把一个宏重定义为函数.
+        在全局环境[global environment]中定义一个名为 function-name 的新函数[function]. 由 defun 定义的函数[function]的主体部分由这些表达式形式 forms 组成; 当函数[function]被调用时它们会作为一个隐式的 progn [implicit progn]被执行. defun 可以被用于定义一个新的函数[function], 去设置一个错误定义的修正版本, 去重定义一个已经定义的函数[function], 或者把一个宏[macro]重定义为函数[function].
 
-        defun 隐式地把一个名为 block-name 的 block 放在定义的函数的 body 表达式周围 (但是不是 lambda-list 中的表达式形式).
+        defun 隐式地把一个名为 block-name 的块[block]放置在这个函数[function]定义的主体表达式形式 forms 周围 (而不是 lambda-list 中的那些表达式形式[form]).
 
-        documentation 作为一个文档字符串附加到 name(作为函数) 和函数对象.
+        documentation 作为一个文档字符串附加到 name (作为 function 种类) 和函数[function]对象[object]上.
 
-        求值 defun 导致 function-name 成为 defun 被执行的词法环境中的 lambda 表达式
+        求值 defun 导致 function-name 成为 defun 被执行的词法环境[lexical environment]中的 lambda 表达式[lambda expression]
 
-        (lambda lambda-list
-          [[declaration* | documentation]]
-          (block block-name form*))
+    ```LISP
+    (lambda lambda-list
+      [[declaration* | documentation]]
+      (block block-name form*))
+    ```
 
-        所表示函数的全局名字的函数.
+        所指定的函数[function]的全局名字.
 
-        (参数中没有在宏展开时被求值的.)
+        (参数中没有在宏展开时被求值.)
 
-        defun 不需要去产生任何编译时副作用. 具体来说, defun 不会使函数定义在编译时可用. 一个实现可能选择去存储关于这个函数的信息用于编译时错误检测的目的 (比如检测一个调用的参数数量), 或者去使函数被内联展开.
+        defun 不需要去产生任何编译时副作用. 具体来说, defun 不会使这个函数[function]定义在编译时可用. 一个实现[implementation]可能选择去存储关于这个函数的信息用于编译时错误检测的目的 (比如检测一个调用的参数数量), 或者去使函数[function]被内联展开.
 
 * 示例(Examples):
 
@@ -642,14 +644,13 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 也见(See Also):
 
-        flet, labels, block, return-from, declare, documentation, Section 3.1 (Evaluation), Section 3.4.1 (Ordinary Lambda Lists), Section 3.4.11 (Syntactic Interaction of Documentation Strings and Declarations)
+        flet, labels, block, return-from, declare, documentation, 章节 3.1 (求值), 章节 3.4.1 (普通 Lambda 列表), 章节 3.4.11 (文档字符串和声明的语法交互)
 
 * 注意(Notes):
 
-        return-from 可以用于从 defun 定义的函数中提前返回.
+        return-from 可以用于从 defun 定义的函数[function]中提前返回.
 
-        当关于这个函数的额外信息(通常是调试信息)被记录时, 可能发生额外的副作用.
-
+        当关于这个函数定义的额外信息(通常是调试信息)被记录时, 可能发生额外的副作用.
 
 ### <span id="AFDEFINITION">访问器 FDEFINITION</span>
 
@@ -661,13 +662,13 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 参数和值(Arguments and Values):
 
-        function-name---一个函数名. 在不是 setf 情况下, 这个名字在全局环境中必须被 fbound.
-        definition---function-name 命名的当前全局函数定义.
-        new-definition---一个函数.
+        function-name---一个函数名[function]. 在非 setf 的情况下, 这个名字[name]在全局环境[global environment]中必须是被 fbound 的.
+        definition---由 function-name 命名的当前全局函数定义.
+        new-definition---一个函数[function].
 
 * 描述(Description):
 
-        fdefinition 访问 function-name 命名的当前全局函数定义. 这个定义可能是一个函数或表示一个特殊表达式或宏的对象. 当 fboundp 返回 true 但是这个 function-name 表示一个宏或者特殊表达式时, fdefinition 返回的值是没有定义好的, 但是 fdefinition 不发出一个错误.
+        fdefinition 访问[access]由 function-name 命名的当前全局函数定义. 这个定义可能是一个函数[function]或表示一个特殊表达式形式[special form]或宏[macro]的对象[object]. 当 fboundp 返回 true 但是这个函数名 function-name 表示一个宏[macro]或者特殊表达式形式[special form]时, fdefinition 返回的值不是明确定义的, 但是 fdefinition 不发出一个错误.
 
 * 示例(Examples): None.
 
@@ -677,9 +678,9 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 异常情况(Exceptional Situations):
 
-        如果 function-name 不是一个函数名字, 那么应该发出一个 type-error 类型的错误.
+        如果 function-name 不是一个函数名字[function name], 那么应该发出一个 type-error 类型[type]的错误.
 
-        在不是 setf 的情况下如果 function-name 没有被 fbound, 那么就会发出 undefined-function 类型的错误.
+        在非 setf 的情况下如果 function-name 没有被 fbound, 那么就会发出 undefined-function 类型[type]的错误.
 
 * 也见(See Also):
 
@@ -687,9 +688,9 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 注意(Notes):
 
-        fdefinition 不能访问由 flet 或 labels 产生的词法函数名的值; 它只能访问全局函数的值.
+        fdefinition 不能访问[access]由 flet 或 labels 产生的词法函数名的值; 它只能访问[access]全局函数的值.
 
-        当一个函数名对应的函数定义不表示一个特殊表达式时, setf 可以和 fdefinition 一起使用去替换全局函数定义. fdefinition 的 setf 需要一个函数作为新的值. 把 function-name 的 fdefinition 设置为一个符号, 一个列表, 或者在一个宏或特殊表达式上调用 fdefinition 返回的值是错误的.
+        当这个函数名 function-name 的函数定义不表示一个特殊表达式形式[special form]时, setf 可以和 fdefinition 一起使用去替换全局函数定义. fdefinition 的 setf 需要一个函数[function]作为新的值. 把 function-name 的 fdefinition 设置为一个符号[symbol], 一个列表[list], 或者是一个在一个宏[macro]或特殊表达式形式[special form]上调用 fdefinition 返回的值都是错误的.
 
 
 ### <span id="FFBOUNDP">函数 FBOUNDP</span>
@@ -704,8 +705,8 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 参数和值(Arguments and Values):
 
-        name---一个函数名字.
-        generalized-boolean---一个广义的 boolean.
+        name---一个函数名[function].
+        generalized-boolean---一个广义的 boolean [generalized boolean].
 
 * 描述(Description):
 
@@ -740,7 +741,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 异常情况(Exceptional Situations):
 
-        如果 name 不是一个函数名字, 应该会发出一个 type-error 类型的错误.
+        如果 name 不是一个函数名[function name], 应该会发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
@@ -748,15 +749,15 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 注意(Notes):
 
-        允许在任何被 fbound 的符号上调用 symbol-function.
+        允许在任何被 fbound 的符号[symbol]上调用 symbol-function.
 
-        fboundp 有时候被用于 "保护" 对函数 cell 的访问, 就像:
+        fboundp 有时候被用于 "保护" 一个对函数存储格[function cell]的访问, 就像:
 
     ```LISP
     (if (fboundp x) (symbol-function x))
     ```
 
-        定义一个 setf 展开器 F 不会导致 setf 函数 (setf F) 被定义.
+        定义一个 setf 展开器[setf expander] F 不会导致 setf 函数[setf function] (setf F) 被定义.
 
 
 ### <span id="FFMAKUNBOUND">函数 FMAKUNBOUND</span>
@@ -771,11 +772,11 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 参数和值(Arguments and Values):
 
-        name---一个函数名字.
+        name---一个函数名字[function name].
 
 * 描述(Description):
 
-        在全局环境中删除函数或宏定义, 如果有的话.
+        在全局环境[global environment]中移除这个名字 name 的函数[function]或宏[macro]定义, 如果有的话.
 
 * 示例(Examples):
 
@@ -794,9 +795,9 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 异常情况(Exceptional Situations):
 
-        如果 name 不是一个函数名字, 应该发出一个 type-error 类型的错误.
+        如果 name 不是一个函数名[function], 应该发出一个 type-error 类型[type]的错误.
 
-        如果 name 是一个特殊操作符那么结果是未定义的.
+        如果 name 是一个特殊操作符[special operator]那么后果是未定义的.
 
 * 也见(See Also):
 
@@ -819,32 +820,32 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 参数和值(Arguments and Values):
 
-        function-name---一个函数名字.
-        name---一个符号.
-        lambda-list---一个 lambda 列表; 对于 flet 和 labels, 它是一个普通 lambda 列表; 对于 macrolet, 它是一个宏 lambda 列表.
-        local-declaration---一个 declare 表达式; 不求值.
-        declaration---一个 declare 表达式; 不求值.
-        local-documentation---一个字符串; 不求值.
-        local-forms, forms---一个隐式的 progn.
-        results---forms 的值.
+        function-name---一个函数名[function name].
+        name---一个符号[symbol].
+        lambda-list---一个 lambda 列表[lambda list]; 对于 flet 和 labels, 它是一个普通 lambda 列表[ordinary lambda list]; 对于 macrolet, 它是一个宏 lambda 列表[macro lambda list].
+        local-declaration---一个 declare 表达式[expression]; 不求值.
+        declaration---一个 declare 表达式[expression]; 不求值.
+        local-documentation---一个字符串[string]; 不求值.
+        local-forms, forms---一个隐式的 progn [implicit progn].
+        results---表达式形式 forms 的值[value].
 
 * 描述(Description):
 
-        flet, labels, 和 macrolet 定义局部函数和宏, 并且使用局部定义执行 forms. Forms 以出现的顺序被执行.
+        flet, labels, 和 macrolet 定义局部函数[function]和宏[macro], 并且使用这些局部定义执行表达式形式 forms. 这些表达式形式 forms 以出现的顺序被执行.
 
-        每一个被 flet 和 labels 创建的函数和每一个被 macrolet 创建的宏的主体表达式 (但是不是 lambda 列表) 被封闭在一个隐式的 block 中, 它的名字为 function-name 或 name 的函数块名字.
+        每一个由 flet 和 labels 创建的函数[function]和每一个由 macrolet 创建的宏[macro]的主体表达式形式 (而不是 lambda 列表[lambda list]) 被封闭在一个隐式块[implicit block]中, 它的名字为 function-name 或 name 的函数块名字[function block name].
 
-        在局部函数/宏定义和 flet 或 labels 之间的声明的作用域不包括局部定义的函数的主体, 除了对于 labels , 任何引用局部定义函数的 inline, notinline, 或 ftype 声明可以应用于局部定义函数的主体. 这就是说, 它们的作用于和它们影响的函数名一样. 这个声明的作用于不包括 macrolet 定义的这个宏展开函数的主体.
+        在局部函数/宏定义的列表和 flet 或 labels 中的主体表达式形式 forms 的声明 declarations 的作用域不包括局部定义的函数[function]的主体, 除了对于 labels, 任何引用局部定义函数的 inline, notinline, 或 ftype 声明可以应用于局部函数的主体. 这就是说, 它们的作用域[scope]和它们影响的函数名一样. 这些声明 declarations 的作用域不包括由 macrolet 定义的这个宏展开函数的主体.
 
     * flet
 
-            flet 定义局部命名函数并且用这些定义绑定执行一连串的表达式形式. 可以定义任意数量的局部函数.
+            flet 局部定义已命名函数[function]并且用这些定义绑定[binding]执行一连串的表达式形式 forms. 可以定义任意数量的局部函数[function].
 
-            名称绑定的作用域仅包含主体(body)部分. 在 flet 的主体中, 与 flet 定义的 function-names 对应的是局部定义的函数, 而不是同名的全局函数定义. 此外, 在 flet 的作用域内, 由 flet 定义的函数名的全局 setf 展开器定义不适用. 注意这个适用于 (defsetf f ...), 不是 (defmethod (setf f) ...).
+            这个名称绑定[binding]的作用域[scope]仅包含主体部分. 在 flet 的主体中, 与 flet 定义的那些匹配的 function-names 引用的是局部定义的函数[function], 而不是同名的全局函数定义. 此外, 在 flet 的作用域内, 由 flet 定义的函数名 function-name 的全局 setf 展开器[setf expander]定义不适用. 注意这个适用于 (defsetf f ...), 不是 (defmethod (setf f) ...).
 
-            flet 定义的函数的名字是在词法环境中的; 它们仅在 flet 的主体中保持他们的局部定义. 这个函数定义绑定仅在 flet 的主体 (body) 中可见, 在定义自身中不可见. 在这个函数定义中, 匹配那些要被定义的局部函数名字引用的是那些在 flet 外面定义的局部函数或宏. flet 可以在局部遮蔽一个全局的名字, 并且这个新的定义可以引用全局定义.
+            flet 定义的函数[function]的名字是在这个词法环境[lexical environment]中的; 它们仅在 flet 的主体中保持他们的局部定义. 这个函数定义绑定仅在 flet 的主体中可见, 在定义自身中不可见. 在这个函数定义中, 匹配那些要被定义的局部函数名字引用的是那些在 flet 外面定义的函数[function]或宏[macro]. flet 可以局部遮蔽[shadow]一个全局函数的名字, 并且这个新的定义可以引用全局定义.
 
-            任何局部文档都作为一个文档字符串被附加到相应的局部函数中(如果实际创建的话).
+            任何局部文档 local-documentation 都作为一个文档字符串[documentation string]被附加到相应的局部函数 function 中(如果实际创建的话).
 
     * labels
 
@@ -852,13 +853,13 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
     * macrolet
 
-            macrolet 建立一个局部宏定义, 使用和 defmacro 相同的格式.
+            macrolet 建立一个局部宏[macro]定义, 使用和 defmacro 相同的格式.
 
-            在 macrolet 的主体中, macrolet 定义的名字对应的全局 setf 展开器定义是不适用的; 相反, setf 展开宏表达式并递归地处理生成的表达式.
+            在 macrolet 的主体中, 由 macrolet 定义的名字 names 对应的全局 setf 展开器[setf expander]定义是不适用的; 相反, setf 展开宏表达式形式[macro form]并递归地处理生成的表达式形式[form].
 
-            macrolet 定义的宏展开函数是定义在 macrolet 表达式出现的词法作用域中的. 声明和  macrolet 和 symbol-macrolet 定义影响一个 macrolet 中的局部宏定义, 但是, 如果局部宏定义引用在该词法环境中可见的任何局部变量或函数绑定, 那么后果是没有定义的.
+            由 macrolet 定义的宏展开函数是定义在 macrolet 表达式形式出现的词法环境[lexical environment]中的. 声明和 macrolet 和 symbol-macrolet 定义影响一个 macrolet 中的局部宏定义, 但是, 如果局部宏定义引用在该词法环境[lexical environment]中可见的任何局部变量[variable]或函数[function]绑定[binding], 那么后果是没有定义的.
 
-            任何局部文档都作为一个文档字符串被附加到相应的局部宏函数中.
+            任何局部文档 local-documentation 都作为一个文档字符串[documentation string]被附加到相应的局部宏函数中.
 
 * 示例(Examples):
 
@@ -880,7 +881,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
         (if flag (* (+ x 1) (+ x 1)) (+ x 1))))
     ```
 
-    在宏展开之后. x 和 flag 的出现合理地引用了函数 foo 的参数, 因为这些参数在这个产生展开式的宏调用的位置是可见的.
+        在宏展开之后. x 和 flag 的出现合理地引用了函数 foo 的参数, 因为这些参数在这个产生展开式的宏调用的位置是可见的.
 
     ```LISP
     (flet ((flet1 (n) (+ n n)))
@@ -948,13 +949,13 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 也见(See Also):
 
-        declare, defmacro, defun, documentation, let, Section 3.1 (Evaluation), Section 3.4.11 (Syntactic Interaction of Documentation Strings and Declarations)
+        declare, defmacro, defun, documentation, let, 章节 3.1 (求值), 章节 3.4.11 (文档字符串和声明的语法交互)
 
 * 注意(Notes):
 
-        用 flet 去定义递归的函数是可以的. labels 可以被用于定义相互递归函数.
+        用 flet 去定义递归的函数[function]是可以的. labels 可以被用于定义相互递归函数[function].
 
-        如果一个 macrolet 表达式形式是一个顶层表达式, 主体 forms 也被当作顶层表达式处理. 见章节 3.2.3 (File Compilation).
+        如果一个 macrolet 表达式形式[form]是一个顶层表达式形式[top level form], 主体表达式形式 forms 也被当作顶层表达式形式[top level form]处理. 见章节 3.2.3 (文件编译).
 
 
 ### <span id="FFUNCALL">函数 FUNCALL</span>
@@ -965,13 +966,13 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 参数和值(Arguments and Values):
 
-        function---一个函数指定符.
-        args---给这个 function 的参数.
-        results---这个 function 返回的值.
+        function---一个函数指定符[function designator].
+        args---给这个函数 function 的实参[argument].
+        results---这个函数 function 返回的值[value].
 
 * 描述(Description):
 
-        funcall 对 args 应用 function. 如果 function 是一个符号, 它会被强制转为一个函数就好像在全局环境中找它的函数函数性值.
+        funcall 对 args 应用函数 function. 如果 function 是一个符号[symbol], 它会被强制转为一个函数[function], 就好像是通过在全局环境[global environment]中找它的函数性值[functional value]一样.
 
 * 示例(Examples):
 
@@ -992,11 +993,11 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 异常情况(Exceptional Situations):
 
-        如果 function 是一个没有作为函数的全局定义或者全局定义是宏或特殊操作符的符号, 应该会发出一个 undefined-function 类型的错误.
+        如果 function 是一个没有作为函数[function]的全局定义或者有着作为宏[macro]或特殊操作符[special operator]的全局定义的符号[symbol], 那么应该会发出一个 undefined-function 类型[type]的错误.
 
 * 也见(See Also):
 
-        apply, function, Section 3.1 (Evaluation)
+        apply, function, 章节 3.1 (求值)
 
 * 注意(Notes):
 
@@ -1006,7 +1007,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
     ==  (apply function (list arg1 arg2 ...))
     ```
 
-        funcall 和一个普通函数调用的区别在于, 在前一种情况下, 函数是通过对一种表达式形式的普通求值得到的, 在后者的情况下, 它是由正常发生的函数位置的特殊解释得到的.
+        funcall 和一个普通函数调用的区别在于, 在前一种情况下, 函数是通过对一种表达式形式[form]的普通求值[evaluation]得到的, 在后者的情况下, 它是由正常发生的函数位置的特殊解释得到的.
 
 
 ### <span id="SOFUNCTION">特殊操作符 FUNCTION</span>
@@ -1017,18 +1018,18 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 参数和值(Arguments and Values):
 
-        name---一个函数名字或者一个 lambda 表达式.
-        function---一个函数对象.
+        name---一个函数名[function name]或者一个 lambda 表达式[lambda expression].
+        function---一个函数[function]对象[object].
 
 * 描述(Description):
 
-        function 的值是当前词汇环境中 name 的函数值.
+        这个 function 的值[value]是当前词法环境[lexical environment]中 name 的函数性值[functional value].
 
-        如果 name 是一个函数名, 这个名称的函数定义是由最内部的词法闭包的 flet, labels, 或macrolet 表达式形式建立的, 如果有的话. 否则会返回这个函数名的全局函数定义会被返回.
+        如果 name 是一个函数名[function name], 这个名称的函数定义是由最内部词法上闭合的 flet, labels, 或 macrolet 表达式形式[form]建立的那个, 如果有的话. 否则会返回这个函数名[function name]的全局函数定义会被返回.
 
-        如果 name 是一个 lambda 表达式, 那么返回一个词法闭包. 如果在同一组绑定上的闭包可能产生不止一次的情况, 那么各种结果的闭包可能也可能不是 eq 的.
+        如果 name 是一个 lambda 表达式[lambda expression], 那么返回一个词法闭包[lexical closure]. 如果在可能不止依次产生同一组绑定[binding]上的闭包[closure]的情况中, 那么产生的各种闭包可能也可能不是 eq 的.
 
-        在一个 function 表达式形式出现的词法环境中在一个不表示函数的函数名上用 function 是错误的. 具体来说, 在一个表示宏或者特殊表达式的符号上使用 function 是错误的. 一个具体实现可能出于性能原因不去发出这个错误, 但是具体实现禁止去定义这个发送错误的失败为一个有用的行为. 
+        在一个 function 表达式形式出现的词法环境中, 在一个不表示函数[function]的函数名[function name]上用 function 是错误的. 具体来说, 在一个表示宏[macro]或者特殊表达式形式[special form]的符号[symbol]上使用 function 是错误的. 一个具体实现可能出于性能原因不去发出这个错误, 但是具体实现禁止去把这个发送错误的失败定义为一个有用的行为. 
 
 * 示例(Examples):
 
@@ -1043,7 +1044,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
     (funcall add3 5) =>  8
     ```
 
-        这个可以正常工作是因为 function 创建了一个 lambda 表达式的闭包, 这个闭包引用了变量 x 的值 3, 即便控制流已经中函数 adder 中返回了.
+        这个可以正常工作是因为 function 创建了一个 lambda 表达式[lambda expression]的闭包[closure], 这个闭包引用了变量 x 的值[value] 3, 即便控制流已经中函数 adder 中返回了.
 
 * 副作用(Side Effects): None.
 
@@ -1053,7 +1054,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 也见(See Also):
 
-        defun, fdefinition, flet, labels, symbol-function, Section 3.1.2.1.1 (Symbols as Forms), Section 2.4.8.2 (Sharpsign Single-Quote), Section 22.1.3.13 (Printing Other Objects)
+        defun, fdefinition, flet, labels, symbol-function, 章节 3.1.2.1.1 (符号表达式形式), 章节 2.4.8.2 (井号单引号(#')), 章节 22.1.3.13 (打印其他对象)
 
 * 注意(Notes):
 
@@ -1069,20 +1070,20 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 参数和值(Arguments and Values):
 
-        function---一个函数.
-        lambda-expression---一个 lambda 表达式或 nil.
-        closure-p---一个广义的 boolean.
-        name---一个对象.
+        function---一个函数[function].
+        lambda-expression---一个 lambda 表达式[lambda expression]或 nil.
+        closure-p---一个广义的 boolean [generalized boolean].
+        name---一个对象[object].
 
 * 描述(Description):
 
-        返回关于函数的信息:
+        按如下返回关于函数 function 的信息:
 
-        这个主要的值, lambda-expression, 是函数的定义 lambda 表达式, 如果这个信息不可用就是 nil. 这个 lambda 表达式可能已经在某些方面进行了预处理，但它仍然应该是 compile 或function 的一个合适的参数. 任何具体实现可能会合理地返回 nil 作为 任何 function 的 lambda-expression.
+        这个主值[primary value], lambda-expression, 是函数 function 的定义 lambda 表达式[lambda expression], 如果这个信息不可用那么就是 nil. 这个 lambda 表达式[lambda expression]可能已经在某些方面进行了预处理, 但它仍然应该是 compile 或 function 的一个合适的参数. 任何具体实现[implementation]可以合理地返回 nil 作为任何函数 function 的 lambda-expression.
 
-        第二个值, closure-p, 如果函数的定义是 null 词法作用域中的闭包那么就是 nil, 如果是非 null 词法作用域那么就不是 nil. 任何具体实现可能合理地返回 true 作为任何 function 的 closure-p.
+        第二个值[secondary value], closure-p, 如果函数 function 的定义是空词法环境[null lexical environment]中封闭的那么就是 nil, 如果是非空词法环境[non-null lexical environment]封闭的那么就不是 nil [non-nil]. 任何具体实现[implementation]可以合理地返回 true 作为任何 function 的 closure-p.
 
-        第三个值, name, 是 function 的 "名字(name)". 该名称仅用于调试, 并不一定是在 defun 或 function 中用作名称, 例如. 按照惯例, nil 被用于表示这个 function 没有名字. 任何具体实现可能合理地返回 nil 作为任何 function 的名字.
+        第三个值[tertiary value], name, 是函数 function 的 "名字(name)". 该名称仅用于调试, 例如, 没有必要是在 defun 或 function 中可以有效用作名称的一个名称. 按照惯例, nil 被用于表示这个函数 function 没有名字. 任何具体实现[implementation]可以合理地返回 nil 作为任何 function 的 name.
 
 * 示例(Examples):
 
@@ -1139,7 +1140,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 注意(Notes):
 
-        虽然具体实现可以在所有情况下返回 "nil, true, nil", 但是还是鼓励在参数是对 compile 或 eval 的调用所创建的情况下返回一个 lambda 表达式作为主要的值 (与通过加载已编译的文件而创建的相反).
+        虽然具体实现[implementation]可以在所有情况下返回 "nil, true, nil", 但是还是鼓励这些实现在参数是对 compile 或 eval 的调用所创建的情况下返回一个 lambda 表达式[lambda expression]作为主值[primary value] (与通过加载已编译文件[compiled file]所创建的相反).
 
 
 ### <span id="FFUNCTIONP">函数 FUNCTIONP</span>
@@ -1150,12 +1151,12 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 参数和值(Arguments and Values):
 
-        object---一个对象.
-        generalized-boolean---一个广义的 boolean.
+        object---一个对象[object].
+        generalized-boolean---一个广义的 boolean [generalized boolean].
 
 * 描述(Description):
 
-        如果 object 是 function 类型返回 true; 否则, 返回 false.
+        如果对象 object 是 function 类型[type]就返回 true; 否则, 返回 false.
 
 * 示例(Examples):
 
@@ -1192,12 +1193,12 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 参数和值(Arguments and Values):
 
-        object---一个对象.
-        generalized-boolean---一个广义的 boolean.
+        object---一个对象[object].
+        generalized-boolean---一个广义的 boolean [generalized boolean].
 
 * 描述(Description):
 
-        如果对象是 compiled-function 类型的对象就返回 true; 否则, 返回 false.
+        如果对象 object 是 compiled-function 类型[type]就返回 true; 否则, 返回 false.
 
 * 示例(Examples):
 
@@ -1237,11 +1238,11 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 常量值(Constant Value):
 
-        一个不小于 50 的整数, 至少和 lambda-parameters-limit 的值一样大, 它的精确大小是与具体实现相关的.
+        一个不小于 50 的整数, 至少和 lambda-parameters-limit 的值[value]一样大, 它的精确大小是依赖于具体实现的[implementation-dependent].
 
 * 描述(Description):
 
-        传递给函数的参数数量的上限.
+        传递给函数[function]的实参[arugment]数量的上限.
 
 * 示例(Examples): None.
 
@@ -1256,17 +1257,17 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 常量值(Constant Value):
 
-        一个列表, 其中的元素是依赖于具体实现的, 但是其中至少需要包含 符号 &allow-other-keys, &aux, &body, &environment, &key, &optional, &rest, 和 &whole.
+        一个列表[list], 其中的元素[element]是依赖于具体实现的[implementation-dependent], 但是其中至少需要包含符号[symbol] &allow-other-keys, &aux, &body, &environment, &key, &optional, &rest, 和 &whole.
 
 * 描述(Description):
 
-        在具体实现中使用的所有 lambda 列表关键字的列表, 包括仅由宏定义表达式使用的其他关键词.
+        在这个具体实现[implementation]中使用的所有 lambda 列表关键字[lambda list keywords]的列表[list], 包括仅被宏[macro]定义表达式形式[form]所使用的其他关键词.
 
 * 示例(Examples): None.
 
 * 也见(See Also):
 
-        defun, flet, defmacro, macrolet, Section 3.1.2 (The Evaluation Model)
+        defun, flet, defmacro, macrolet, 章节 3.1.2 (求值模型)
 
 * 注意(Notes): None.
 
@@ -1274,11 +1275,11 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 常量值(Constant Value):
 
-        依赖于具体实现, 但是不小于 50.
+        依赖于具体实现[implementation-dependent], 但是不小于 50.
 
 * 描述(Description):
 
-        可以出现在单个 lambda 列表中的参数名字数量的上限.
+        一个正整数[integer], 表示可以出现在一个单独的 lambda 列表[lambda list]中的形参[parameter]名字[name]数量的上限.
 
 * 示例(Examples): None.
 
@@ -1288,7 +1289,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 注意(Notes):
 
-        鼓励实现者去使 lambda-parameters-limit 这个参数的值尽可能的大.
+        鼓励实现者去使 lambda-parameters-limit 的值[value]尽可能的大.
 
 ### <span id="MDEFCONSTANT">宏 DEFCONSTANT</span>
 
@@ -1298,33 +1299,32 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 参数和值(Arguments and Values):
 
-        name---一个符号; 不求值.
-        initial-value---一个表达式形式; 求值.
-        documentation---一个字符串; 不求值.
+        name---一个符号[symbol]; 不求值.
+        initial-value---一个表达式形式[form]; 求值.
+        documentation---一个字符串[string]; 不求值.
 
 * 描述(Description):
 
-        defconstant 导致 name 命名的全局变量赋予 initial-value 求值结果的值.
+        defconstant 导致由 name 命名的全局变量被赋予求值 initial-value 的结果值.
 
-        一个 defconstant 定义的常量可以被 defconstant 重定义. 然而, 如果尝试去使用其他操作符去给这个符号赋值或者使用后面的 defconstant 将其赋给不同的值, 那么结果是未定义的.
+        一个由 defconstant 定义的常量可以被 defconstant 重定义. 然而, 如果尝试去使用其他操作符去给这个符号[symbol]赋一个值[value]或者使用后面的 defconstant 将其赋给不同[different]的值[value], 那么后果是未定义的.
 
-        如果提供了 documentation, 它会作为一个 variable 种类的文档字符串关联到 name 上.
+        如果提供了 documentation, 它会作为一个 variable 种类的文档字符串[documentation string]关联到 name 上.
 
-        defconstant 通常以顶层表达式出现, 但它作为非顶层表达式出现也是有意义的. 然而, 下面描述的编译时副作用只发生在 defconstant 以顶层表达式出现的情况.
+        defconstant 通常以顶层表达式形式[top level form]出现, 但它作为非顶层表达式形式[non-top-level form]出现也是有意义的. 然而, 下面描述的编译时副作用只发生在 defconstant 以顶层表达式形式[top level form]出现的情况中.
 
-        如果在 defconstant 被执行时存在任何 name 命名变量的绑定或者其中的值和 initial-value 不是 eql 的, 那么结果是不可预料的.
+        如果在 defconstant 被执行时存在任何由 name 命名的变量的绑定[binding]或者其中的值和 initial-value 不是 eql 的, 那么结果是未定义的.
 
-        当常量符号作为词法或动态变量重绑定时, 其结果是不确定的. 换句话说, 一个指向 defconstant 声明的符号的引用总是指向它的全局的值.
+        当常量符号被重绑定为词法或动态变量时, 其结果是未定义的. 换句话说, 指向 defconstant 声明的符号[symbol]的一个引用总是指向它的全局的值.
 
         执行 defconstant 的副作用必须与以下代码执行的副作用相等:
-
 
     ```LISP
     (setf (symbol-value 'name) initial-value)
     (setf (documentation 'name 'variable) 'documentation)
     ```
 
-        如果 defconstant 作为顶层表达式形式出现, 编译器必须识别出 name 是一个常量变量. 一个具体实现可能选择在编译时或加载时或都去求值 value-form. 因此, 用户必须确保 initial-value 可以在编译时被求值 (不管是否在文件中出现了引用 name) 并且总是求值为同一个值.
+        如果一个 defconstant 表达式形式[form]作为顶层表达式形式[top level form]出现, 编译器[compiler]必须识别出 name 是一个常变量[constant variable]. 一个具体实现可能选择在编译时或加载时或两种情况下都去求值值表达式形式(value-form). 因此, 用户必须确保 initial-value 可以在编译时被求值 (不管对这个名字 name 的引用是否出现在文件中) 并且总是求值为同一个值.
 
 * 示例(Examples):
 
@@ -1341,7 +1341,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 也见(See Also):
 
-        declaim, defparameter, defvar, documentation, proclaim, Section 3.1.2.1.1.3 (Constant Variables), Section 3.2 (Compilation)
+        declaim, defparameter, defvar, documentation, proclaim, 章节 3.1.2.1.1.3 (常变量), 章节 3.2 (编译)
 
 * 注意(Notes): None.
 
@@ -1355,21 +1355,21 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 参数和值(Arguments and Values):
 
-        name---一个符号; 不求值.
-        initial-value---一个表达式形式; 对于 defparameter, 它总是被求值, 但是对于 defvar 只有在 name 还没有被绑定的情况下求值.
+        name---一个符号[symbol]; 不求值.
+        initial-value---一个表达式形式[form]; 对于 defparameter, 它总是被求值, 但是对于 defvar 只有在 name 还没有被绑定的情况下求值.
         documentation---一个字符串; 不求值.
 
 * 描述(Description):
 
-        defparameter 和 defvar 确立 name 为一个动态变量.
+        defparameter 和 defvar 把名字 name 建立[establish]为一个动态变量[dynamic variable].
 
-        defparameter 无条件地赋 initial-value 给 name 命名的动态变量. defvar, 相比之下, 只有在 name 还没有被绑定时赋 initial-value (如果提供的话) 给 name 命名的动态变量.
+        defparameter 无条件地把 initial-value 赋值[assign]给 name 命名的动态变量[dynamic variable]. defvar, 相比之下, 只有在 name 还没有被绑定[bound]时把 initial-value (如果提供的话) 赋值[assign]给 name 命名的动态变量[dynamic variable].
 
-        如果没有提供 initial-value, defvar 离开名为 name 的动态变量的值单元; 如果 name 以前绑定过的话, 它的旧值就会一直存在, 如果它之前没有绑定, 那么它仍然是未绑定的.
+        如果没有提供 initial-value, defvar 让名为 name 的动态变量[dynamic variable]的值存储格[value cell]保持不变; 如果 name 以前绑定[bound]过的话, 它的旧值[value]就会一直存在, 如果它之前未绑定[unbound], 那么它仍然是未绑定[unbound].
 
-        如果提供了 documentation, 它会作为变量类型的文档字符串关联给 name.
+        如果提供了 documentation, 它会作为 variable 类型的文档字符串[documentation string]关联给 name.
 
-        defparameter 和 defvar 通常作为顶层表达式形式出现, 但是当它们作为非顶层表达式出现时也是有意义的. 然而, 下面描述的编译时副作用仅发生在它们作为顶层表达式的时候.
+        defparameter 和 defvar 通常作为顶层表达式形式[top level form]出现, 但是当它们作为非顶层表达式形式[non-top-level form]出现时也是有意义的. 然而, 下面描述的编译时副作用仅发生在它们作为顶层表达式形式[top level form]的时候.
 
 * 示例(Examples):
 
@@ -1389,30 +1389,30 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
     *v* =>  2
 
     (defun foo ()
-    (let ((*p* 'p) (*v* 'v))
-    (bar))) =>  FOO
+      (let ((*p* 'p) (*v* 'v))
+        (bar))) =>  FOO
     (defun bar () (list *p* *v*)) =>  BAR
     (foo) =>  (P V)
     ```
 
-        defparameter 和 defvar 之间的主要操作区别是, defparameter 做出了一个无条件的赋值, 而 defvar 则是一个有条件的赋值. 在实践中, 这就意味着在加载或重新加载定义想要获得变量的新值时 defparameter 是很有用的, 而当文件被加载或重新加载时想要保持旧值时 defvar 是比较有用的. 比如, 可以创建一个文件, 其中包含:
+        defparameter 和 defvar 之间的主要操作上区别是, defparameter 对 name 做出了一个无条件的赋值, 而 defvar 则是一个有条件的赋值. 在实践中, 这就意味着在加载或重新加载定义会想要获得变量的新值时 defparameter 是很有用的, 而当文件被加载或重新加载时想要保持旧值时 defvar 是比较有用的. 比如, 可以创建一个文件, 其中包含:
 
     ```LISP
     (defvar *the-interesting-numbers* '())
     (defmacro define-interesting-number (name n)
-    `(progn (defvar ,name ,n)
-            (pushnew ,name *the-interesting-numbers*)
-            ',name))
+      `(progn (defvar ,name ,n)
+              (pushnew ,name *the-interesting-numbers*)
+              ',name))
     (define-interesting-number *my-height* 168) ;cm
     (define-interesting-number *my-weight* 13)  ;stones
     ```
 
-        这里的初始值, (), 对于变量 *the-interesting-numbers* 只是一个种子, 一旦从中生长出什么时我们不会想去重置它. 像这样, 我们使用 defvar 来避免文件第二次加载时 *the-interesting-numbers* 信息被重置. 确实, 这里的两个对 define-interesting-number 调用会被重新处理, 但是如果在另一个文件中由其他调用, 它们不会被重新处理并且信息会丢失. 另一方面, 思考下面代码:
+        这里的变量 *the-interesting-numbers* 的初始值, (), 只是一个种子, 一旦从中扩展出什么时我们不会想去重置它为某个其他东西. 像这样, 我们使用 defvar 来避免文件第二次加载时 *the-interesting-numbers* 信息被重置. 确实, 这里的两个对 define-interesting-number 调用会被重新处理, 但是如果在另一个文件中由其他调用, 它们不会被重新处理并且信息会丢失. 另一方面, 思考下面代码:
 
     ```LISP
     (defparameter *default-beep-count* 3)
     (defun beep (&optional (n *default-beep-count*))
-    (dotimes (i n) (si:%beep 1000. 100000.) (sleep 0.1)))
+      (dotimes (i n) (si:%beep 1000. 100000.) (sleep 0.1)))
     ```
     
         这里我们可以简单地想象编辑代码去改变 *default-beep-count* 的初始值, 然后重新载入文件去取出新的值. 为了使值更新更简单, 我们使用 defparameter.
@@ -1423,47 +1423,47 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 副作用(Side Effects):
 
-        如果一个 defvar 或 defparameter 表达式形式作为顶层表达式出现, 编译器必须识别这个已经被全局声明为 special 的 name. 然而, 它既不能求值初始表达式, 也不能在编译时分配名为 name 的动态变量.
+        如果一个 defvar 或 defparameter 表达式形式[form]作为顶层表达式形式[top level form]出现, 编译器[compiler]必须识别这个已经被公告为 special 的 name. 然而, 在编译时它既不能求值[evaluate] initial-value 表达式形式[form], 也不能对名为 name 的动态变量[dynamic variable]赋值[assign].
 
-        这里可能由额外的编译期或运行期副作用 (依赖于具体实现), 只要这些副作用不影响符合规范的程序的正常操作.
+        这里可能由额外的编译期或运行期副作用 (依赖于具体实现的[implementation-defined]), 只要这些副作用不影响符合规范的程序[conforming program]的正常操作.
 
 * 受此影响(Affected By):
 
-        defvar 受 name 是否已经被绑定的影响.
+        defvar 受 name 是否已经被绑定[bound]的影响.
 
 * 异常情况(Exceptional Situations): None.
 
 * 也见(See Also):
 
-        declaim, defconstant, documentation, Section 3.2 (Compilation)
+        declaim, defconstant, documentation, 章节 3.2 (编译)
 
 * 注意(Notes):
 
-        通常, 在名称的开头和结尾用星号来命名动态变量. 比如, *foo* 对于一个动态变量是一个好名字, 但是对于一个词法变量则不是好名字; foo 对于词法变量是一个好名字, 但是对于动态变量不是一个好名字. 这种命名约定适用于 Common Lisp 中所有已定义的名称; 然而, 符合规范的程序和符合规范的具体实现都不是必须去遵守这个约定.
+        通常, 在名称的开头和结尾用星号[asterisk]来命名动态变量[dynamic variable]. 比如, *foo* 对于一个动态变量[dynamic variable]是一个好名字, 但是对于一个词法变量[lexical variable]则不是好名字; foo 对于词法变量[lexical variable]是一个好名字, 但是对于动态变量[[dynamic variable]]不是一个好名字. Common Lisp 中所有已定义的名字[defined name]都遵守这种命名约定; 然而, 符合规范的程序[conforming program]和符合规范的实现[conforming implementation]都不是必须去遵守这个约定.
 
-        允许额外的副作用的目的是让具体实现伴随着定义做正常的"记录". 比如, 一个 defvar or defparameter 的宏展开可能包含安排记录这个定义发生的源文件名的代码.
+        允许额外的副作用的目的是去允许具体实现[implementation]伴随着定义做正常的"记录(bookkeeping)". 比如, 一个 defvar 或 defparameter 表达式形式[form]的宏展开式[macro expansion]可能包含安排记录这个定义发生的源文件名字的代码.
 
-        defparameter 和 defvar 可能定义如下:
+        defparameter 和 defvar 可能按如下定义:
 
-   ```LISP
-    (defmacro defparameter (name initial-value
+    ```LISP
+    (defmacro defparameter (name initial-value 
                             &optional (documentation nil documentation-p))
       `(progn (declaim (special ,name))
               (setf (symbol-value ',name) ,initial-value)
               ,(when documentation-p
-                 `(setf (documentation ',name 'variable) ',documentation))
+                  `(setf (documentation ',name 'variable) ',documentation))
               ',name))
     (defmacro defvar (name &optional
-                           (initial-value nil initial-value-p)
-                           (documentation nil documentation-p))
+                            (initial-value nil initial-value-p)
+                            (documentation nil documentation-p))
       `(progn (declaim (special ,name))
               ,(when initial-value-p
-                 `(unless (boundp ',name)
+                  `(unless (boundp ',name)
                     (setf (symbol-value ',name) ,initial-value)))
               ,(when documentation-p
-                 `(setf (documentation ',name 'variable) ',documentation))
+                  `(setf (documentation ',name 'variable) ',documentation))
               ',name))
-   ```
+    ```
 
 ### <span id="MDESTRUCTURING-BIND">宏 DESTRUCTURING-BIND</span>
 
@@ -1474,17 +1474,17 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 参数和值(Arguments and Values):
 
-        lambda-list---一个解构 lambda 列表.
-        expression---一个表达式形式.
-        declaration---一个 declare 表达式; 不求值.
-        forms---一个隐式的 progn.
-        results---forms 返回的结果.
+        lambda-list---一个解构 lambda 列表[destructuring lambda list].
+        expression---一个表达式形式[from].
+        declaration---一个 declare 表达式[expression]; 不求值.
+        forms---一个隐式的 progn [implicit progn].
+        results---这些表达式形式[forms]返回的值[value].
 
 * 描述(Description):
 
-        destructuring-bind 绑定 lambda-list 中指定的变量到 expression 求值结果的树结构的对应值中; 然后 destructuring-bind 求值forms.
+        destructuring-bind 绑定 lambda-list 中指定的变量为 expression 求值结果的树结构的对应值中; 然后 destructuring-bind 求值表达式形式 forms.
 
-        支持解构的 lambda-list 在章节 3.4.5 (Destructuring Lambda Lists) 中有描述.
+        这个 lambda-list 按照章节 3.4.5 (解构 lambda 列表) 中描述的那样支持解构.
 
 * 示例(Examples):
 
@@ -1498,7 +1498,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 异常情况(Exceptional Situations):
 
-        如果求值 expression 的结果不匹配这个解构模式, 应该会发出一个 error 类型的错误.
+        如果求值 expression 的结果不匹配这个解构模式, 应该会发出一个 error 类型[type]的错误.
 
 * 也见(See Also):
 
@@ -1516,17 +1516,17 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 参数和值(Arguments and Values):
 
-        var---一个符号.
-        init-form---一个表达式形式.
-        declaration---一个 declare 表达式; 不求值.
-        form---一个表达式形式.
-        results---forms 返回的结果.
+        var---一个符号[symbol].
+        init-form---一个表达式形式[form].
+        declaration---一个 declare 表达式[expression]; 不求值.
+        form---一个表达式形式[form].
+        results---这些表达式形式[form]返回的值[value].
 
 * 描述(Description):
 
-        let 和 let* 创建新的变量绑定并且使用这些绑定执行一系列的表达式形式. let 并行地执行这些绑定而 let* 顺序地执行.
+        let 和 let* 创建新的变量绑定[binding]并且使用这些绑定[binding]执行一系列的表达式形式 forms. let 并行地执行这些绑定[binding]而 let* 顺序地执行.
 
-        表达式形式
+        下面这个表达式形式
 
     ```LISP
     (let ((var1 init-form-1)
@@ -1543,11 +1543,11 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
       formn)
     ```
 
-        首先求值表达式 init-form-1, init-form-2, 等等, 按照这个顺序, 保存结果值. 然后所有变量 varj 绑定为对应的值; 每一个绑定都是词法的除非有一个 special 声明. 表达式 formk 依次被求值; 除了最后一个, 所有的值都被丢弃 (这也就是说, 一个 let 的主体是一个隐式的 progn).
+        首先求值表达式 init-form-1, init-form-2, 以此类推, 按照这个顺序, 保存结果值. 然后所有变量 varj 绑定为对应的值; 每一个绑定[binding]都是词法的除非相反有一个 special 声明. 然后表达式 formk 依次被求值; 除了最后一个, 所有的值都被丢弃 (这也就是说, 一个 let 的主体是一个隐式的 progn [implicit progn]).
 
-        let* 类似于 let, 但是变量的绑定被顺序执行而非并行执行. 一个 var 的 init-form 表达式可以引用前面 let* 绑定的 vars.
+        let* 类似于 let, 但是变量的绑定[binging]被顺序执行而非并行执行. 一个 var 的 init-form 的表达式可以引用前面 let* 绑定的 vars.
 
-        表达式形式
+        下面这个表达式形式
 
     ```LISP
     (let* ((var1 init-form-1)
@@ -1564,11 +1564,11 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
       formn)
     ```
 
-        首先求值 init-form-1, 然后绑定变量 var1 为那个值; 然后求值 init-form-2 并绑定 var2, 等等. 然后表达式 formj 按顺序求值; 除了最后一个, 所有的值都被丢弃 (这也就是说, 一个 let* 的主体是一个隐式的 progn).
+        首先求值 init-form-1, 然后绑定变量 var1 为那个值; 然后求值 init-form-2 并绑定 var2, 以此类推. 然后表达式 formj 按顺序求值; 除了最后一个, 所有的值都被丢弃 (这也就是说, 一个 let* 的主体是一个隐式的 progn).
 
-        对于 let 和 let*, 如果这里没有一个 init-form 关联 var, var 被初始化为 nil.
+        对于 let 和 let*, 如果这里没有和一个 var 关联的一个 init-form, var 被初始化为 nil.
 
-        特殊表达式 let 有一个属性, 名称绑定的范围不包括任何初始话值表达式. 对于 let*, 一个变量的作用域包括了剩下的后面变量绑定的初始化值表达式.
+        特殊表达式形式 let 有一个属性, 就是名称绑定的作用域[scope]不包括任何初始值表达式形式. 对于 let*, 一个变量的作用域[scope]包括了剩下的后续变量绑定的剩余初始化值表达式.
 
 * 示例(Examples):
 
@@ -1593,7 +1593,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
       ...)
     ```
 
-        是错误的; 虽然 x 事实上在它被使用前设置, 并且设置为一个声明类型整型的值, 然而, x 一开始在值为 nil 时违反了类型声明.
+        是错误的; 虽然 x 事实上在它被使用前设置, 并且被设置为一个声明类型整型[integer]的值, 然而, x 一开始在值为 nil 时违反了类型声明.
 
 * 受此影响(Affected By): None.
 
@@ -1614,16 +1614,16 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 参数和值(Arguments and Values):
 
-        symbols---一个符号列表; 求值.
-        values---一个对象列表; 求值.
-        forms---一个隐式的 progn.
-        results---forms 返回的值.
+        symbols---一个符号[symbol]列表[list]; 求值.
+        values---一个对象[object]列表[list]; 求值.
+        forms---一个隐式的 progn [implicit progn].
+        results---这些表达式形式[form]返回的值.
 
 * 描述(Description):
 
-        progv 创建新的动态变量绑定并且使用这些绑定执行每个 form. 每个 form 按顺序求值.
+        progv 创建新的动态变量绑定[binding]并且使用这些绑定[binding]执行每个表达式形式 form. 每个表达式形式 form 按顺序求值.
 
-        progv 允许去绑定一个或多个动态变量, 这些变量的名字可能在运行时确定定. 每一种 form 都是根据动态变量来进行求值的, 这些变量的名称都与相应的值绑定在一起. 如果提供的值太少, 剩余的符号就会被绑定, 然后提出 have no value. 如果提供了太多的值, 多余的值会被忽略. 这些动态变量的绑定在 progv 退出时被取消了.
+        progv 允许去绑定[binding]一个或多个动态变量, 这些变量的名字可能在运行时确定. 每一个表达式形式 form 依次被求值, 其中名字在这些符号 symbols 中的这些动态变量被绑定为对应的值. 如果提供的值 values 太少, 剩余的符号[symbol]就会被绑定, 并且没有值. 如果提供了太多的值 values, 多余的值会被忽略. 这些动态变量的绑定在 progv 退出时被取消了.
 
 * 示例(Examples):
 
@@ -1637,7 +1637,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
     ```LISP
     (let ((*x* 3))
-       (progv '(*x*) '(4)
+        (progv '(*x*) '(4)
           (list *x* (symbol-value '*x*)))) =>  (3 4)
     ```
 
@@ -1647,11 +1647,11 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 也见(See Also):
 
-        let, Section 3.1 (Evaluation)
+        let, 章节 3.1 (求值)
 
 * 注意(Notes):
 
-        除了别的之外, 为 Lisp 中的嵌入式语言写解释器时 progv 是很有用的; 它为绑定动态变量的机制提供了一个途径.
+        除了别的之外, 为 Lisp 中的嵌入式语言写解释器时 progv 是很有用的; 它为绑定[binding]动态变量[dynamic variable]的机制提供了一个途径.
 
 
 ### <span id="SOSETQ">特殊表达式 SETQ</span>
@@ -1668,17 +1668,17 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 参数和值(Arguments and Values):
 
-        var---一个符号, 表示一个变量, 而不是一个常量.
-        form---一个表达式形式.
-        result---最后一个表达式形式返回的主要的值, 如果没有提供 pair 就返回 nil.
+        var---一个符号[symbol], 命名一个变量[variable], 而不是一个常量[constant variable].
+        form---一个表达式形式[form].
+        result---最后一个表达式形式 form 返回的主值[primary value], 如果没有提供 pair 就返回 nil.
 
 * 描述(Description):
 
-        赋值给变量.
+        赋值给那些变量[variable].
 
-        (setq var1 form1 var2 form2 ...) 是 Lisp 的简单变量赋值语句. 首先 form1 被求值并且结果被存储在变量 var1 中, 然后 form2 被求值并且结果存在 var2 中, 等等. setq 可能被用于词法变量或动态变量的赋值.
+        (setq var1 form1 var2 form2 ...) 是 Lisp 简单的变量赋值语句. 首先 form1 被求值并且结果被存储在变量 var1 中, 然后 form2 被求值并且结果存在 var2 中, 等等. setq 可以被用于词法变量或动态变量的赋值.
 
-        如果任何 var 引用了 symbol-macrolet 产生的一个绑定, 那么这个 var 被认为就好像是被 setf (不是 setq).
+        如果任何 var 引用了 symbol-macrolet 产生的一个绑定[binding], 那么这个 var 就好像是被 setf (不是 setq) 处理一样.
 
 * 示例(Examples):
 
@@ -1705,7 +1705,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 副作用(Side Effects):
 
-        每一个 form 的主要的值都被赋给对应的 var.
+        每一个表达式形式 form 的主值[primary value]都被赋给对应的 var.
 
 * 受此影响(Affected By): None.
 
@@ -1732,16 +1732,16 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 参数和值(Arguments and Values):
 
-        var---一个符号, 表示一个变量, 而不是一个常量.
-        form---一个表达式形式.
+        var---一个符号[symbol], 命名一个变量[variable], 而不是一个常量[constant variable].
+        form---一个表达式形式[form].
 
 * 描述(Description):
 
-        赋值给变量.
+        赋值给那些变量[variable].
 
-        这个就像是 setq, 除了赋值是并行发生的之外. 这也就是说, 首先所有的表达式形式都被求值, 只有这样, 变量才会被设置成对应结果值. 通过这种方式, 对一个变量的赋值不会影响另一个变量的值计算, 这与 setq 的顺序赋值不同.
+        这个就像是 setq, 除了赋值是并行发生的之外. 这也就是说, 首先所有的表达式形式都被求值, 只有这样之后变量才会被设置成对应结果值. 通过这种方式, 对一个变量的赋值不会影响另一个变量的值计算, 这个会发生在 setq 的顺序赋值中.
 
-        如果任何 var 引用了 symbol-macrolet 创建的绑定, 那么这个 var 被认为就好像是被 psetf (不是 psetq).
+        如果任何 var 引用了 symbol-macrolet 创建的绑定[binding], 那么这个 var 就好像是被 psetf (不是 psetq) 处理一样.
 
 * 示例(Examples):
 
@@ -1778,7 +1778,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 副作用(Side Effects):
 
-        forms 的值会赋给 vars.
+        这些表达式形式 forms 的值会赋给那些变量 vars.
 
 * 受此影响(Affected By): None.
 
@@ -1799,19 +1799,19 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 参数和值(Arguments and Values):
 
-        name---一个符号.
-        form---一个表达式形式.
-        results---如果正常返回就是 forms 的值, 否则, 如果显式地返回, 就返回传递的值.
+        name---一个符号[symbol].
+        form---一个表达式形式[form].
+        results---如果发生正常返回[normal return]那么就是那些表达式形式[form]的那些值[value], 否则, 如果发生显式返回[explicit return], 就返回传递的那些值[value].
 
 * 描述(Description):
 
-        block 建立一个名为 name 的语句块然后就好像一个隐式 progn 来求值多个 form.
+        block 建立[establish]一个名为 name 的语句块[block]然后就好像一个隐式 progn 来求值多个 form.
 
-        特殊操作符 block 和 return-from 一起使用来提供一个结构化的, 词法的, 非局部的退出机制. 在 forms 中词法包含的任何点, return-from 可以和给定的 name 一起使用来从 blook 表达式形式中返回控制和值, 除了当内部有一个相同名字的块被建立时, 在这种情况下较外部的块会被更内部的块所遮蔽.
+        特殊操作符[special operator] block 和 return-from 一起使用来提供一个结构化的, 词法的, 非局部的退出机制. 词法上包含在这些表达式形式中的任何点, return-from 可以和给定的 name 一起使用来从 blook 表达式形式[form]中返回控制和值, 除了当内部有一个相同名字的块[block]被建立时, 在这种情况下较外部的块[block]会被更内部的那个所遮蔽.
 
-        名为 name 的块有词法作用于和动态范围.
+        名为 name 的这个块有着词法作用域[lexical scope]和动态范围[dynamic extent].
 
-        一旦建立, 一个块可能只退出一次, 不管是正常退出还是显式退出.
+        一旦建立, 一个块[block]可能只退出一次, 不管是正常退出[normal return]还是显式退出[explicit return].
 
 * 示例(Examples):
 
@@ -1837,7 +1837,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 也见(See Also):
 
-        return, return-from, Section 3.1 (Evaluation)
+        return, return-from, 章节 3.1 (求值)
 
 * 注意(Notes):
 
@@ -1849,27 +1849,27 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 参数和值(Arguments and Values):
 
-        tag---一个捕捉标签; 求值的.
-        forms---一个隐式的 progn.
-        results---如果 forms 正常退出, 就是 forms 返回的值; 如果发生一个对 tag 的抛出, 值就会被抛出来.
+        tag---一个捕捉标签[catch tag]; 求值的.
+        forms---一个隐式的 progn [implicit progn].
+        results---如果这些表达式形式 forms 正常退出, 那么就是这些表达式形式 forms 返回的那些值[value]; 如果发生一个对 tag 的抛出, 那么就是那些被抛出来的值[value].
 
 * 描述(Description):
 
-        catch 被用作 throw 的非局部控制转移的终点. Tags 用于查找 throw 控制转移的 catch. (catch 'foo form) 捕捉一个 (throw 'foo form) 而不是 (throw 'bar form).
+        catch 被用作 throw 的非局部控制转移的终点. 这些 tags 被用于查找 throw 控制转移到的 catch. (catch 'foo form) 捕捉一个 (throw 'foo form) 而不是 (throw 'bar form).
 
         catch 执行顺序如下:
 
-        1. Tag 被求值. 它是 catch 的名称.
+        1. tag 被求值. 它是 catch 的名称.
 
-        2. 然后 forms 作为隐式 progn 来求值, 除非一个 throw 发生, 否则返回最后一个表达式形式的结果.
+        2. 然后这些表达式形式 forms 作为隐式 progn [implicit progn]来求值, 除非发生一个 throw, 否则返回最后一个表达式形式 form 的结果.
 
-        3. 如果在执行 forms 的其中一个时发生一个 throw, 控制被转移到一个 catch 表达式形式, 这个 catch 表达式形式的 tag 和 throw 的 tag 参数是 eq 的并且它是这个 tag 最近建立的 catch. 不再对表达式形式进行进一步的求值.
+        3. 如果在执行这些表达式形式 forms 的其中一个时发生一个 throw, 控制被转移到一个 catch 表达式形式[form], 这个 catch 表达式形式的 tag 和 throw 的 tag 参数是 eq 的并且它是这个 tag 最近建立的 catch. 不再对这些表达式形式 forms 进行进一步的求值.
 
         4. catch 建立的这个 tag 在结果返回前就会被消除.
 
-        如果在执行 forms 的其中一个的时候, 一个 throw 被执行而它的 tag 和 catch 的 tag 是 eq 的, 那么 throw 指定的值作为动态最新建立的这个 tag 的 catch 表达式的结果返回.
+        如果在这些表达式形式 forms 的其中一个执行期间, 一个 throw 被执行而它的 tag 和 catch 的 tag 是 eq 的, 那么 throw 指定的值作为动态最新建立的这个 tag 的 catch 表达式的结果返回.
 
-        即便 throw 不在 catch 的词法作用域里, catch 和 throw 机制还是会起作用. throw 必须发生在对应 tag 的 catch 的主体求值的动态范围内.
+        即便 throw 不在 catch 的词法作用域里, catch 和 throw 机制还是会起作用. throw 必须发生在对应 tag 的 catch 的主体求值[evaluation]的动态范围[dynamic extent]内.
 
 * 示例(Examples):
 
@@ -1890,17 +1890,17 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 异常情况(Exceptional Situations):
 
-        如果在没有合适的 catch tag 时 throw 被执行, 会发出一个 control-error 类型的错误.
+        如果在没有合适的 catch tag 时 throw 被执行, 会发出一个 control-error 类型[type]的错误.
 
 * 也见(See Also):
 
-throw, Section 3.1 (Evaluation)
+        throw, 章节 3.1 (求值)
 
 * 注意(Notes):
 
-        符号被用作 tags 是惯例, 但是任何对象也是允许的. 然而, 数字不应该被使用因为比较是使用 eq 来做的.
+        符号[symbol]被用作 tags 是惯例, 但是任何对象[object]也是允许的. 然而, 数字不应该被使用, 因为这个比较是使用 eq 来完成的.
 
-        catch 和 block 的区别在于 catch 标签有着动态作用域而 block 名字有词法作用域.
+        catch 和 block 的区别在于 catch 标签有着动态作用域[scope]而 block 名字有词法作用域[lexical scope].
 
 ### <span id="SOGO">特殊操作符 GO</span>
 
@@ -1910,13 +1910,13 @@ throw, Section 3.1 (Evaluation)
 
 * 参数和值(Arguments and Values):
 
-        tag---一个 go 标签.
+        tag---一个 go 标签[go tag].
 
 * 描述(Description):
 
-        go 将控制转移到一个闭合的由和 tag eql 的标签所标记的 tagbody 表达式的主体上. 如果在这个主体内没有这样一个 tag, tagbody 的词法包含的主体 (如果有的话) 也会被检查. 如果有好几个标签和 tag 是 eql 的, 控制会被转移到包含这个 go 的最内部匹配 tag 的 tagbody 表达式上. 如果在这个 go 的点上没有词法可见的匹配的 tag 那么结果是未定义的.
+        go 将控制转移到一个由和 tag 是 eql 的标签所标记的闭合 tagbody 表达式形式的主体上的一个点. 如果在这个主体内没有这样一个 tag, 那么词法上包含 tagbody 表达式形式[form]的那些主体 (如果有的话) 也会被检查. 如果有好几个标签和 tag 是 eql 的, 控制会被转移到包含这个 go 的最内部的包含这个匹配 tag 的 tagbody 表达式形式上. 如果在这个 go 的点上没有词法上可见的匹配的 tag 那么结果是未定义的.
 
-        由 go 发起的控制转移是按照章节 5.2 (Transfer of Control to an Exit Point)所描述的进行的.
+        由 go 发起的控制转移是按照章节 5.2 (退出点的控制转移) 所描述的进行的.
 
 * 示例(Examples):
 
@@ -1937,7 +1937,7 @@ throw, Section 3.1 (Evaluation)
       (funcall a))
     ```
 
-        下面这个是错误的因为在 go 表达式被执行前这个 tagbody 被跳过了.
+        下面这个是错误的因为在 go 表达式形式[form]被执行前这个 tagbody 被跳过了.
 
     ```LISP
     (funcall (block nil
@@ -1963,16 +1963,16 @@ throw, Section 3.1 (Evaluation)
 
 * 参数和值(Arguments and Values):
 
-        name---一个 block 标签; 不求值.
-        result---一个表达式形式; 求值. 默认是 nil.
+        name---一个块标签[block tag]; 不求值.
+        result---一个表达式形式[form]; 求值. 默认是 nil.
 
 * 描述(Description):
 
-        从一个词法上闭合的 block 中返回控制和多值.
+        从一个词法上闭合的块[block]中返回控制和多值[multiple values[2]].
 
-        一个名为 name 的 block 表达式形式必须词法上包含 return-from 的发生; 结果求值所产生的任何值都将立即从最内层的词法闭合 block 中返回.
+        一个名为 name 的 block 表达式形式[form]必须词法上包含 return-from 的出现; 结果 result 的求值[evaluation]所产生的任何值[value]都将立即从最内层的词法上闭合的块[block]中返回.
 
-        由 return-from 发起的控制转移是按照章节 5.2 (Transfer of Control to an Exit Point) 所所描述的进行的.
+        由 return-from 发起的控制转移是按照章节 5.2 (退出点的控制转移) 所所描述的进行的.
 
 * 示例(Examples):
 
@@ -2023,7 +2023,7 @@ throw, Section 3.1 (Evaluation)
     =>  NIL
     ```
 
-        下面这个结果也是未定义的因为在 return-from 被尝试之前这个 block 表达式就正常退出了.
+        下面这个结果也是未定义的因为在 return-from 表达式形式[form]被尝试之前这个 block 表达式形式[form]就正常退出了.
 
     ```LISP
     (funcall (block nil #'(lambda () (return-from nil)))) 
@@ -2037,7 +2037,7 @@ throw, Section 3.1 (Evaluation)
 
 * 也见(See Also):
 
-        block, return, Section 3.1 (Evaluation)
+        block, return, 章节 3.1 (求值)
 
 * 注意(Notes): None.
 
@@ -2050,11 +2050,11 @@ throw, Section 3.1 (Evaluation)
 
 * 参数和值(Arguments and Values):
 
-        result---一个表达式形式; 求值. 默认是 nil.
+        result---一个表达式形式[form]; 求值. 默认是 nil.
 
 * 描述(Description):
 
-        从一个名为 nil 的 block 中返回, 就像是通过 return-from 的一样.
+        从一个名为 nil 的块[block]中返回, 就像是通过 return-from 的一样.
 
 * 示例(Examples):
 
@@ -2073,7 +2073,7 @@ throw, Section 3.1 (Evaluation)
 
 * 也见(See Also):
 
-        block, return-from, Section 3.1 (Evaluation)
+        block, return-from, 章节 3.1 (求值)
 
 * 注意(Notes):
 
@@ -2082,7 +2082,7 @@ throw, Section 3.1 (Evaluation)
     (return form) ==  (return-from nil form)
     ```
 
-        这个被类似于 do 的宏建立的隐式的块经常名为 nil, 因此 return 可以被用于从这样的块中返回.
+        被类似于 do 这样的宏建立的这些隐式块[implicit block]经常名为 nil, 因此 return 可以被用于从这样的表达式形式[form]中返回.
 
 
 ### <span id="SOTAGBODY">特殊操作符 TAGBODY</span>
@@ -2093,44 +2093,44 @@ throw, Section 3.1 (Evaluation)
 
 * 参数和值(Arguments and Values):
 
-        tag---一个 go 标签; 不求值.
-        statement---一个复合表达式形式; 按照以下描述求值.
+        tag---一个 go 标签[go tag]; 不求值.
+        statement---一个复合表达式形式[compound form]; 按照以下描述求值.
 
 * 描述(Description):
 
-        在词法环境中执行零个或多个语句, 以提供对 tag 所指示的标签的控制转移.
+        在一个提供了对这些 tag 所指示的标签的控制转移的词法环境[lexical environment]中执行零个或多个语句 statement.
 
-        一个 tagbody 中的语句按照从左到右的顺序被求值, 并且它们的值会被丢弃. 如果在任何时候都没有剩余的语句, tagbody 返回 nil. 然而, 如果 (go tag) 被求值, 控制会跳转到这个 tag 所表示的标签主体部分. (Tags 用 eql 来比较.)
+        在一个 tagbody 中的语句 statements 按照从左到右的顺序被求值, 并且它们的值[value]会被丢弃. 如果在任何没有剩余语句 statement 的时候, 那么 tagbody 返回 nil. 然而, 如果 (go tag) 被求值, 控制会跳转到这个 tag 所表示的标签主体部分. (这些标签用 eql 来比较.)
 
-        一个通过 tagbody 建立的 tag 有着词法作用域和动态范围. 一旦 tagbody 退出, 去 go 到一个它的主体中的 tag 不再合法. 用 go 去跳转到一个不是包含这个 go 的最内部的 tagbody 是允许的; tagbody 建立的 tags 只会遮蔽其他名字一样的 tags.
+        一个通过 tagbody 所建立的 tag 有着词法作用域[lexical scope]和动态范围[dynamic extent]. 一旦 tagbody 退出, 通过 go 到一个它的主体中的 tag 就不再合法. 允许 go 去跳转到一个不是最内部的包含这个 go 的 tagbody; 由 tagbody 所建立的这些 tag 只会遮蔽其他名字一样的 tag.
 
-        在该元素的任何宏展开之前, 确定主体的哪些元素是标签, 哪些是语句. 如果一个语句是一个宏表达式并且它的宏展开是一个 atom, 那么这个 atom 被当作是一个语句而不是一个标签.
+        在任何这个主体的元素的宏展开[macro expansion]之前, 确定主体的哪些元素是标签 tag, 哪些是语句 statement. 如果一个语句 statement 是一个宏表达式形式[macro form]并且它的宏展开式[macro expansion]是一个原子[atom], 那么这个原子[atom]被当作是一个语句而不是一个标签.
 
 * 示例(Examples):
 
     ```LISP
     (let (val)
-       (tagbody
-         (setq val 1)
-         (go point-a)
-         (incf val 16)
+        (tagbody
+          (setq val 1)
+          (go point-a)
+          (incf val 16)
         point-c
-         (incf val 04)
-         (go point-b)
-         (incf val 32)
+          (incf val 04)
+          (go point-b)
+          (incf val 32)
         point-a
-         (incf val 02)
-         (go point-c)
-         (incf val 64)
+          (incf val 02)
+          (go point-c)
+          (incf val 64)
         point-b
-         (incf val 08))
-       val)
+          (incf val 08))
+        val)
     =>  15
     (defun f1 (flag)
       (let ((n 1))
-        (tagbody
+        (tagbody 
           (setq n (f2 flag #'(lambda () (go out))))
-         out
+          out
           (prin1 n))))
     =>  F1
     (defun f2 (flag escape)
@@ -2154,7 +2154,7 @@ throw, Section 3.1 (Evaluation)
 
 * 注意(Notes):
 
-        下一段的宏中有着隐式的 tagbody.
+        下一段的这些宏[macro]中有着隐式的 tagbody [implicit tagbody].
 
         do              do-external-symbols  dotimes
         do*             do-symbols           prog
@@ -4246,7 +4246,7 @@ throw, Section 3.1 (Evaluation)
 
         Documentation 作为 setf 种类的文档字符串关联到 access-fn.
 
-        如果一个 defsetf 表达式形式作为顶层表达式出现, 编译器必须使这个 setf 展开可用, 因此它可以被用于展开这个文件中后面的 setf 调用. 如果在同一文件中后面使用 access-fn，那么用户必须确保在编译时能够对表达式形式进行求值. 编译器必须使这些 setf 展开在编译期对 get-setf-expansion 调用时可用, 其中它的 environment 参数是一个作为一个宏的环境参数接收到的值.
+        如果一个 defsetf 表达式形式作为顶层表达式出现, 编译器必须使这个 setf 展开可用, 因此它可以被用于展开这个文件中后面的 setf 调用. 如果在同一文件中后面使用 access-fn, 那么用户必须确保在编译时能够对表达式形式进行求值. 编译器必须使这些 setf 展开在编译期对 get-setf-expansion 调用时可用, 其中它的 environment 参数是一个作为一个宏的环境参数接收到的值.
 
 * 示例(Examples):
 
