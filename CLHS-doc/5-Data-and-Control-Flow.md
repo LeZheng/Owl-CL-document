@@ -2171,16 +2171,16 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 参数和值(Arguments and Values):
 
-        tag---一个捕捉标签; 求值.
-        result-form---一个表达式形式; 按以下方式求值.
+        tag---一个捕捉标签[catch tag]; 求值.
+        result-form---一个表达式形式[form]; 按以下方式求值.
 
 * 描述(Description):
 
-        throw 导致一个局部控制转移, 转移到一个标签和 tag eq 的 catch 中.
+        throw 导致一个局部控制转移, 转移到一个标签和 tag 是 eq 的 catch 中.
 
-        Tag 首先被求值来产生一个称之为 throw 标签的对象; 然后 result-form 被求值, 并且它的结果被保存下来. 如果这个 result-form 产生多个值, 那么所有的值会被保存. 最新的未完成的其中 tag 和 throw 的 tag 是 eq 的 catch 会退出; 保存的结果会作为 catch 的值或多值被返回.
+        标签 tag 首先被求值来产生一个称之为抛出标签[throw tag]的对象[object]; 然后结果表达式形式 result-form 被求值, 并且它的结果被保存下来. 如果这个结果表达式形式 result-form 产生多个值, 那么所有的值会被保存. 其中的 tag 和这个抛出标签是 eq 的最新的未完成的 catch 会退出; 保存的结果会被作为这个 catch 的值或多值返回.
 
-        throw 发起的控制转移会像章节 5.2 (Transfer of Control to an Exit Point) 中描述的那样被执行.
+        throw 发起的控制转移会像章节 5.2 (退出点的控制转移) 中描述的那样被执行.
 
 * 示例(Examples):
 
@@ -2195,7 +2195,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
         (throw nil 2))) =>  2
     ```
 
-        下面这个的结果是未定义的因为 b 的 catch 被第一个 throw 跳过了, 因此, 可移植程序必须假定其动态范围是终止的. 捕获标签的绑定还没有被消除, 因此它是第二个 throw 的目标.
+        下面这个的结果是未定义的因为 b 的 catch 被第一个 throw 跳过了, 因此, 可移植程序必须假定其动态范围[dynamic extent]是终止的. 捕获标签[catch tag]的绑定[binding]还没有被消除, 因此它是第二个 throw 的目标.
 
     ```LISP
     (catch 'a
@@ -2221,15 +2221,15 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 异常情况(Exceptional Situations):
 
-        如果这里没有未完成的捕捉标签匹配抛出标签, 没有执行栈的解除(unwinding), 那么会发出一个 control-error 类型的错误. 当这个错误被发出时, 动态环境是在 throw 点处的动态环境.
+        如果这里没有匹配抛出标签的未完成的捕捉标签[catch tag], 那么不会执行栈的解除(unwinding), 并且会发出一个 control-error 类型[type]的错误. 当这个错误被发出时, 动态环境[dynamic environment]是在 throw 点处生效的那个.
 
 * 也见(See Also):
 
-        block, catch, return-from, unwind-protect, Section 3.1 (Evaluation)
+        block, catch, return-from, unwind-protect, 章节 3.1 (求值)
 
 * 注意(Notes):
 
-        通常当退出点必须有动态作用域时 catch 和 throw 被使用 (比如, 这个 throw 不是被 catch 词法围绕的), 而 block 和 return 被用于词法作用域能满足的情况.
+        通常当退出点[exit point]必须有动态作用域[dynamic scope]时使用 catch 和 throw (比如, 这个 throw 词法上没有被 catch 封闭), 而当词法作用域[lexical scope]足够时使用 block 和 return.
 
 
 ### <span id="SOUNWIND-PROTECT">特殊操作符 UNWIND-PROTECT</span>
@@ -2240,19 +2240,19 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 参数和值(Arguments and Values):
 
-        protected-form---一个表达式形式.
-        cleanup-form---一个表达式形式.
-        results---这个 protected-form 的值.
+        protected-form---一个表达式形式[form].
+        cleanup-form---一个表达式形式[form].
+        results---这个 protected-form 的值[value].
 
 * 描述(Description):
 
         unwind-protect 求值 protected-form 并且保证这个 cleanup-form 在 unwind-protect 退出前被执行, 不管它正常终止或被某种控制转移所跳过. unwind-protect 的目的是确保求值 protected-form 之后会发生某些副作用.
 
-        如果在执行 cleanup-form 的时候发生一个非局部(non-local)退出, 不会采取特殊动作. 这个 unwind-protect 的 cleanup-forms 不受 unwind-protect 保护.
+        如果在执行 cleanup-form 的时候发生一个非局部退出[non-local exit], 不会采取特殊动作. 这个 unwind-protect 的 cleanup-forms 不受 unwind-protect 保护.
 
         unwind-protect 防止所有企图退出 protected-form 的尝试, 包括 go, handler-case, ignore-errors, restart-case, return-from, throw, 还有 with-simple-restart.
 
-        在退出时取消 handler 和 restart 绑定, 与取消动态变量和 catch 标签绑定是并行的, 和它们建立的顺序是相反的. 这样做的效果是 cleanup-form 看到相同的 handler 和 restart 绑定, 以及动态变量绑定和 catch 标签, 和进入 unwind-protect 时见到的一样.
+        在退出时取消处理者[handler]和重启动[restart]绑定[binding], 与取消动态变量[dynamic variable]和 catch 标签绑定是并行的, 和它们建立的顺序是相反的. 这样做的效果是 cleanup-form 看到相同的处理者[handler]和重启动[restart]绑定[binding], 以及动态变量[dynamic variable]绑定和 catch 标签, 和进入 unwind-protect 时见到的一样.
 
 * 示例(Examples):
 
@@ -2266,7 +2266,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
       ...)
     ```
 
-        当 go 被执行时, 对 print 的调用首先被执行, 然后控制转移到标签 out.
+        当 go 被执行时, 对 print 的调用首先被执行, 然后完成控制转移到标签 out.
 
     ```LISP
     (defun dummy-function (x)
@@ -2291,7 +2291,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
       (decf *access-count*))
     ```
     
-        如果在 incf 完成之前发生了一个退出, 这个 decf 表达式形式无论如何都会被执行, 导致 *access-count* 的一个不正确的值. 正确的代码如下:
+        如果在 incf 完成之前发生了一个退出, 这个 decf 表达式形式[form]无论如何都会被执行, 导致 *access-count* 的一个不正确的值. 正确的代码如下:
 
     ```LISP
     (let ((old-count *access-count*))
@@ -2374,7 +2374,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 也见(See Also):
 
-        catch, go, handler-case, restart-case, return, return-from, throw, Section 3.1 (Evaluation)
+        catch, go, handler-case, restart-case, return, return-from, throw, 章节 3.1 (求值)
 
 * 注意(Notes): None.
 
@@ -2387,7 +2387,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 描述(Description):
 
-        nil 表示 boolean (还有广义的 boolean) false 还有空列表.
+        nil 表示布尔值[boolean] (还有广义的 boolean [generalized boolean]) false 还有空列表[empty list].
 
 * 示例(Examples):
 
@@ -2410,9 +2410,9 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 参数和值(Arguments and Values):
 
-        x---一个广义的 boolean (换句话说, 任何对象).
+        x---一个广义的 boolean [generalized boolean] (换句话说, 任何对象[object]).
 
-        boolean---一个 boolean.
+        boolean---一个布尔值[boolean].
 
 * 描述(Description):
 
@@ -2441,7 +2441,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 注意(Notes):
 
-        not 的目的是用来反转 boolean 的"真值(truth value)" (或者是广义的 boolean) 然而 null 用于测试空列表. 操作上, not 和 null 的计算结果是一样的; 使用哪个是一个风格问题.
+        not 的目的是用来反转布尔值[boolean] (或者是广义的 boolean [generalized boolean]) 的"真实值(truth value)"  而 null 用于测试空列表[empty list]. 操作上, not 和 null 的计算结果是一样的; 使用哪个是一个风格问题.
 
 
 ### <span id="CT">常量 T</span>
@@ -2452,9 +2452,9 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 描述(Description):
 
-        这个 boolean 表示 true, 并且这个标准的广义 boolean 表示 true. 虽然任何不是 nil 的对象都被当成 true, t 在没有特殊原因的情况下被广泛使用.
+        表示 true 的布尔值[boolean], 并且是表示 true 的标准的广义 boolean [generalized boolean]. 虽然除了 nil 以外的任何对象[object]都被当成 true, t 通常用于没有特殊理由偏爱其中一个对象而不喜欢另一个对象的情况.<!--TODO 最后半句 ？-->
 
-        符号 t 有时也被用作其他目的. 比如, 作为一个类的名字, 作为一个标志符 (比如, 一个 stream 标志符) 或者由于某些语法原因作为一个特殊符号 (比如, 在 case 和 typecase 中去表示 otherwise-clause).
+        符号[symbol] t 有时也被用作其他目的. 比如, 作为一个类[class]的名字[name], 作为一个标识符[designator] (比如, 一个流标识符[stream designator]) 或者由于某些语法原因作为一个特殊符号 (比如, 在 case 和 typecase 中去表示 otherwise-clause 子句).
 
 * 示例(Examples):
 
