@@ -2484,13 +2484,13 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 参数和值(Arguments and Values):
 
-        x---一个对象.
-        y---一个对象.
-        generalized-boolean---一个广义的 boolean.
+        x---一个对象[object].
+        y---一个对象[object].
+        generalized-boolean---一个广义的 boolean [generalized boolean].
 
 * 描述(Description):
 
-        如果它的参数是一样的, 完全相同的对象就返回 true; 否则, 返回 false.
+        如果它的那两个实参[argument]是一样的, 完全相同的对象[object]就返回 true; 否则, 返回 false.
 
 * 示例(Examples):
     ```LISP
@@ -2537,15 +2537,15 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 也见(See Also):
 
-        eql, equal, equalp, =, Section 3.2 (Compilation)
+        eql, equal, equalp, =, 章节 3.2 (编译)
 
 * 注意(Notes):
 
-        在打印时出现相同的对象不一定是相互之间 EQ 的. 由于 intern 函数的使用, 在打印时相同的符号通常相互之间是 EQ 的. 然而, 值相同的数字不需要是 EQ 的, 并且两个相似的列表通常也不是一样的.
+        在打印时显示相同的对象[object]不一定是相互之间 eq 的. 由于 intern 函数的使用, 在打印时相同的符号[symbol]通常相互之间是 eq 的. 然而, 值相同的数字[number]不需要是 eq 的, 并且两个相似的列表[list]通常也不是一样的[identical].
 
-        一个具体实现允许在任何时间去 "拷贝" 字符和数字. 其结果是, 如果参数是字符或数字, 即使它们是"相同的", Common Lisp 无法保证 eq 是 true 的.
+        一个具体实现允许在任何时间去 "拷贝" 字符[character]和数字[number]. 其结果是, 如果参数是字符[character]或数字[number], 即使它们是"相同的", Common Lisp 无法保证 eq 是 true 的.
 
-        大部分 Common Lisp 操作符使用 eql 而不是 eq 来比较对象, 或者它们会默认用 EQL, 只在特定要求下使用 EQ. 然而, 下面的操作符被定义为使用 EQ 而不是 EQL , 它不能被使用它们的代码所覆盖:
+        大部分 Common Lisp 操作符[operator]使用 eql 而不是 eq 来比较对象, 或者它们会默认用 eql, 只在特定要求下使用 eq. 然而, 下面的操作符[operator]被定义为使用 eq 而不是 eql , 它不能被使用它们的代码所覆盖:
 
         catch           getf     throw
         get             remf
@@ -2562,21 +2562,21 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 参数和值(Arguments and Values):
 
-        x---一个对象.
-        y---一个对象.
-        generalized-boolean---一个广义的 boolean.
+        x---一个对象[object].
+        y---一个对象[object].
+        generalized-boolean---一个广义的 boolean [generalized boolean].
 
 * 描述(Description):
 
         两个对象, x 和 y, 在下面情况下 eql 的值是 true:
 
         1. 如果 x 和 y 是 eq 的.
-        2. 如果 x 和 y 都是相同类型的数字并且值相同.
-        3. 如果它们都是表示相同字符的字符.
+        2. 如果 x 和 y 都是相同类型[type]的数字[number]并且值相同.
+        3. 如果它们都是表示相同字符的字符[character].
 
         否则 eql 的值就是 false.
 
-        如果一个具体实现支持正负零是不同的值, 那么 (eql 0.0 -0.0) 返回 false. 否则, 当语法 -0.0 被读取时会被解释为值 0.0, 所以 (eql 0.0 -0.0) 返回 true.
+        如果一个具体实现支持正负零是不同[distinct]的值, 那么 (eql 0.0 -0.0) 返回 false. 否则, 当语法 -0.0 被读取时会被解释为值 0.0, 所以 (eql 0.0 -0.0) 返回 true.
 
 * 示例(Examples):
 
@@ -2603,7 +2603,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
     (eql "FOO" "foo") =>  false
     ```
     
-        通常 (eql 1.0s0 1.0d0) 是 false, 在 1.0s0 和 1.0d0 是不同的数据类型的设定下. 然而, 不提供4种不同的 floating-point 格式的具体实现允许将这四种格式"折叠"成更小的数字格式.
+        通常 (eql 1.0s0 1.0d0) 是 false, 在 1.0s0 和 1.0d0 是不同的数据类型的设定下. 然而, 不提供 4 种不同浮点格式的具体实现允许将这四种格式"折叠"成更小的数字格式; 在这样一个实现中 (eql 1.0s0 1.0d0) 可能是 true.
 
 * 副作用(Side Effects): None.
 
@@ -2617,11 +2617,11 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 注意(Notes):
 
-        eql 和 eq 是一样的, 除了当参数是字符或相同类型的数字时它们的值会被比较. 因此 eql 讲述两个对象是否在概念上相等, 而 eq 讲述两个对象是否在实现上相等. 这也就是 eql, 而不是eq, 作为参数的运算符的默认比较谓词的原因.
+        eql 和 eq 是一样的, 除了当参数是字符[character]或相同类型的数字[number]时它们的值会被比较. 因此 eql 讲述两个对象[object]是否在概念上相等, 而 eq 讲述两个对象[object]是否在实现上相等. 这也就是 eql, 而不是 eq, 是序列[sequence]作为参数的运算符[operator]的默认比较谓词的原因.
 
-        eql 对于两个表示相同值的浮点数可能不是 true. = 被用于比较算数值.
+        eql 对于两个表示相同值的浮点数[float]可能不是 true. = 被用于比较算数值.
 
-        两个复数如果它们的实部和虚部都是 eql 的就认为它们是 eql 的. 比如, (eql #C(4 5) #C(4 5)) 是 true 而 (eql #C(4 5) #C(4.0 5.0)) 是 false. 注意 (eql #C(5.0 0.0) 5.0) 是 false, 而 (eql #C(5 0) 5) 是 true. 在 (eql #C(5.0 0.0) 5.0) 情况下两个参数是不同类型, 因此不能满足 eql. 在 (eql #C(5 0) 5) 情况下, #C(5 0) 不是一个复数, 但是被自动简化为 integer 5.
+        两个复数[complex]如果它们的实部和虚部都是 eql 的就认为它们是 eql 的. 比如, (eql #C(4 5) #C(4 5)) 是 true 而 (eql #C(4 5) #C(4.0 5.0)) 是 false. 注意 (eql #C(5.0 0.0) 5.0) 是 false, 而 (eql #C(5 0) 5) 是 true. 在 (eql #C(5.0 0.0) 5.0) 情况下两个参数是不同类型, 因此不能满足 eql. 在 (eql #C(5 0) 5) 情况下, #C(5 0) 不是一个复数[complex], 但是被自动归约为整数[integer] 5.
 
 
 ### <span id="FEQUAL">函数 EQUAL</span>
