@@ -2632,52 +2632,52 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 参数和值(Arguments and Values):
 
-        x---一个对象.
-        y---一个对象.
-        generalized-boolean---一个广义的 boolean.
+        x---一个对象[object].
+        y---一个对象[object].
+        generalized-boolean---一个广义的 boolean [generalized boolean].
 
 * 描述(Description):
 
-    如果 x 和 y 是结构上类似(同构)的对象, 则返回true. 对象按照以下类别被 equal 处理.
+        如果 x 和 y 是结构上类似(同构)的对象[object], 则返回 true. 这些对象[object]按照以下类别被 equal 处理.
 
-    * Symbols, Numbers, 和 Characters
+    * 符号[symbol], 数字[number], 和字符[character]
 
-            两个对象如果它们是相互 eq 的符号, 或者是相互 eql 的数字, 或者相互 eql 的字符, 那么 equal 就是 true.
+            两个对象[object]如果它们是相互 eq 的符号[symbol], 或者是相互 eql 的数字[number], 或者相互 eql 的字符[character], 那么它们的 equal 就是 true.
 
-    * Conses
+    * 构造[cons]
 
             对于 cons, equal 按照递归定义, 如果两个 car 是 equal 的并且两个 cdr 也是 equal 的那么就是 equal 的.
 
-    * Arrays
+    * 数组[array]
 
-            两个数组只有当它们是 eq 的情况下才会 equal, 除了一个例外: string 和 bit vector 被一个一个元素比较 (使用 eql). 如果 x 或 y 有一个填充指针, 这个填充指针限制检查被 equal 检查元素的数量. string 中的大写字母和小写字母被 equal 认为是不同的.
+            两个数组[array]只有当它们是 eq 的情况下才会 equal, 除了一个例外: 字符串[string]和位向量[bit vector]按照元素对元素一一比较 (使用 eql). 如果 x 或 y 有一个填充指针[fill pointer], 这个填充指针[fill pointer]限制被 equal 检查元素的数量. 字符串[string]中的大写字母和小写字母被 equal 认为是不同的.
 
-    * Pathnames
+    * 路径名[pathname]
 
-            两个 pathname 当且仅当所有对应的部分 (host, device, 等等) 相等的时候才是 equal 的. 大写和小写字母在组件的字符串中是否被认为是等价的是依赖于具体实现的. equal 的多个 pathname 应该在功能上是等同的.
+            两个路径名[pathname]当且仅当所有对应的成分 (host, device, 等等) 相等的时候才是 equal 的. 大写和小写字母在组件的字符串[string]中是否被认为是等价的是依赖于具体实现的[implementation-dependent]. 多个 equal 的路径名[pathname]应该在功能上是等同的.
 
-    * Other (Structures, hash-tables, instances, ...)
+    * 其他 (结构体, 哈希表, 实例, ...)
 
-            只有当两个其他对象是 eq 的情况下才会 equal.
+            只有当两个其他对象[object]是 eq 的情况下才会 equal.
 
-    equal does not descend any objects other than the ones explicitly specified above. 下面这段总结了前面的列表中的信息. 另外, 这段中指明了 equal 行为的优先级, 上面的条目优先于下面的条目.
+        equal 不会下降(descend)任何对象[object], 除了上面显式指定的那些. 下面这段总结了前面的列表中的信息. 另外, 这段中指明了 equal 行为的优先级, 上面的条目优先于下面的条目.
 
     |类型       |    行为    |
     |--        | --         |
-    |number    |    uses eql|
-    |character |    uses eql|
-    |cons      |    descends|
-    |bit vector|    descends|
-    |string    |    descends|
-    |pathname  |    ``functionally equivalent''|
-    |structure |    uses eq|
-    |Other array|   uses eq|
-    |hash table |   uses eq|
-    |Other object|  uses eq|
+    |数字[number]    |    使用 eql|
+    |字符[character] |    使用 eql|
+    |构造[cons]      |    下降(descend)|
+    |位向量[bit vector]|    下降(descend)|
+    |字符串[string]    |    下降(descend)|
+    |路径名[pathname]  |    "功能上等价(functionally equivalent)"|
+    |结构体[structure] |    使用 eq|
+    |其他数组[array]|   使用 eq|
+    |哈希表[hash table] |   使用 eq|
+    |其他对象[object]|  使用 eq|
 
-    Figure 5-12. equal行为的概要和优先级
+    Figure 5-12. equal 行为的概要和优先级
 
-        任何两个 eql 的对象也是 equal 的.
+        任何两个 eql 的对象[object]也是 equal 的.
 
         如果 x 和 y 是环状的 equal 可能不会终止.
 
@@ -2714,9 +2714,9 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 注意(Notes):
 
-        对象相等并不是一个概念, 它有唯一确定的正确算法. 等价谓词的适当性只能在某些特定程序的需求上下文中进行判断. 虽然这些函数接受任何类型的参数并且它们的名字听起来很通用, 但是 equal 和 equalp 不适用于每一个应用.
+        对象[object]相等性不是一个只有唯一确定的正确算法的概念. 等价谓词的适当性只能在某些特定程序的需求上下文中进行判断. 虽然这些函数接受任何类型的参数并且它们的名字听起来很通用, 但是 equal 和 equalp 不适用于每一个应用.
 
-        一个粗略的经验法则是两个对象当且仅当它们的打印表示是相同的那么就是 equal 的.
+        一个粗略的经验法则是两个对象当且仅当它们的打印表示是相同的时候是 equal 的.
 
 
 ### <span id="FEQUALP">函数 EQUALP</span>
@@ -2727,52 +2727,52 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 参数和值(Arguments and Values):
 
-        x---一个对象.
-        y---一个对象.
-        generalized-boolean---一个广义的 boolean.
+        x---一个对象[object].
+        y---一个对象[object].
+        generalized-boolean---一个广义的 boolean [generalized boolean].
 
 * 描述(Description):
 
-    如果 x 和 y 是 equal 的就返回 true, 或者如果它们有着相同类型的组件并且那些组建也是 equalp 的就返回 true; 特别指出, equalp 在以下情况返回 true:
+    如果 x 和 y 是 equal 的就返回 true, 或者如果它们有着相同类型[type]的组件并且那些组件也是 equalp 的就返回 true; 具体来说, equalp 在以下情况返回 true:
 
-    * Characters
+    * 字符[character]
 
-            如果两个字符是 char-equal 的.
+            如果两个字符[character]是 char-equal 的.
 
-    * Numbers
+    * 数字[number]
 
-            如果两个数字在 = 下是一样的.
+            如果两个数字[number]在 = 下是相同的[same].
 
-    * Conses
+    * 构造[cons]
 
             如果这两个 cons 中的 car 是 equalp 的并且 cdr 也是 equalp 的.
 
-    * Arrays
+    * 数组[array]
 
-            如果两个数组有着相同的维度, 维度是匹配的, 并且对应可用的元素是 equalp 的. 数组指定的类型不需要匹配; 比如, 一个 string 和 一个包含相同字符的普通的数组是 equalp 的. 由于 equalp 执行字符串挨个元素的比较并且忽略字符的大小写, 当使用 equalp 比较字符串时大小写区分是被忽略的.
+            如果两个数组[array]有着相同的维度, 维度是匹配的, 并且对应有效[active]元素[element]是 equalp 的. 数组[array]特化[specialized]的类型[type]不需要匹配; 比如, 一个字符串[string]和一个包含相同字符[character]的普通的数组[array]是 equalp 的. 由于 equalp 执行字符串[string]元素对元素的比较并且忽略字符[character]的大小写[case], 当使用 equalp 比较字符串[string]时大小写[case]差别是被忽略的.
 
-    * Structures
+    * 结构体[structure]
 
-            如果两个结构 S1 和 S2 有着相同的类并且 S1 中每一个槽的值和 S2 中对应槽的值是 equalp 的.
+            如果两个结构体[structure] S1 和 S2 有着相同的类[class]并且 S1 中每一个槽[slot]的值和 S2 中对应槽[slot]的值在 equalp 下是相同的[same].
 
-    * Hash Tables
+    * 哈希表[hash table]
 
             equalp 首先通过判断元素的数量和这个 :test 函数来递减(descend) hash-tables; 如果这些是一样的, 它用 :test 函数来比较这个哈希表的 key 然后匹配的 key 对应的 value 也递归地使用 equalp.
 
-    equalp 除了上述明确指定外不会去递减(descend)任何对象. 下一段中总结了上面列表中给定的信息. 另外, 这段中指明了 equalp 行为的优先级, 上面的条目优先于下面的条目.
+    equalp 不会下降(descend)任何对象[object], 除了上面显式指定的那些. 下一段中总结了上面列表中给定的信息. 另外, 这段中指明了 equalp 行为的优先级, 上面的条目优先于下面的条目.
 
     |类型       |    行为 |
     | -- | -- |
-    |number     |   uses =|
-    |character  |   uses char-equal|
-    |cons       |   descends|
-    |bit vector |   descends|
-    |string     |   descends|
-    |pathname   |   same as equal|
-    |structure  |   descends, as described above|
-    |Other array|   descends|
-    |hash table |   descends, as described above|
-    |Other object|  uses eq|
+    |数字[number]     |   使用 =|
+    |字符[character]  |   使用 char-equal|
+    |构造[cons]       |   descends|
+    |位向量[bit vector] |   descends|
+    |字符串[string]     |   descends|
+    |路径名[pathname]   |   same as equal|
+    |结构体[structure]  |   descends, as described above|
+    |其他数组[array]|   descends|
+    |哈希表[hash table] |   descends, as described above|
+    |其他对象[object]|  使用 eq|
 
     Figure 5-13. equalp行为的优先级和总结
 
@@ -2818,7 +2818,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 注意(Notes):
 
-        对象相等并不是一个概念, 它有唯一确定的正确算法. 等价谓词的适当性只能在某些特定程序的需求上下文中进行判断. 虽然这些函数接受任何类型的参数并且它们的名字听起来很通用, 但是 equal 和 equalp 不适用于每一个应用.
+        对象[object]相等性不是一个只有唯一确定的正确算法的概念. 等价谓词的适当性只能在某些特定程序的需求上下文中进行判断. 虽然这些函数接受任何类型的参数并且它们的名字听起来很通用, 但是 equal 和 equalp 不适用于每一个应用.
 
 
 ### <span id="FIDENTITY">函数 IDENTITY</span>
@@ -2829,11 +2829,11 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 参数和值(Arguments and Values):
 
-        object---一个对象.
+        object---一个对象[object].
 
 * 描述(Description):
 
-        返回它的参数对象.
+        返回它的参数对象 object.
 
 * 示例(Examples):
 
@@ -2854,7 +2854,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
         identity 被用于需要一个函数作为参数的函数.
 
-        (eql x (identity x)) 对于所有 x 的可能的值返回 true, 但是 (eq x (identity x)) 当 x 是一个数字或者字符时可能返回 false.
+        (eql x (identity x)) 对于所有 x 的可能的值返回 true, 但是 (eq x (identity x)) 当 x 是一个数字[number]或者字符[character]时可能返回 false.
 
         identity 可以通过以下定义
 
@@ -2869,12 +2869,12 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 参数和值(Arguments and Values):
 
-        function---一个函数.
-        complement-function---一个函数.
+        function---一个函数[function].
+        complement-function---一个函数[function].
 
 * 描述(Description):
 
-        返回一个和 function 接受相同参数并且和 function 有着相同副作用的函数, 但是只返回单个值: 一个广义的 boolean , 表示 function 返回的主要的值的相反值. 这也就是说, 当这个 function 会返回 true 作为主要的值时 complement-function 返回 false, 而当这个 function 返回 false 作为主要的值时, complement-function 返回 true.
+        返回一个和函数 function 接受相同实参[argument]并且和 function 有着相同副作用但是只返回单个值的函数[function], 返回的单个值为一个广义的 boolean [generalized boolean], 表示 function 返回的主值[primary value]的相反值. 这也就是说, 当这个 function 会返回 true 作为主值[primary value]时 complement-function 返回 false, 而当这个 function 返回 false 作为主值[primary value]时, complement-function 返回 true.
 
 * 示例(Examples):
 
@@ -2899,7 +2899,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
         (complement x) ==  #'(lambda (&rest arguments) (not (apply x arguments)))
 
-        在 Common Lisp 中, 有着像名字 ``xxx-if-not'' 的函数和有着类似 ``xxx-if'' 名字的函数有关
+        在 Common Lisp 中, 带有像 "xxx-if-not" 名字的函数和有着类似 "xxx-if" 名字的函数之间的关系如下
 
         (xxx-if-not f . arguments) ==  (xxx-if (complement f) . arguments)
 
@@ -2908,7 +2908,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
         (find-if-not #'zerop '(0 0 3)) ==
         (find-if (complement #'zerop) '(0 0 3)) =>  3
 
-        注意由于 "xxx-if-not" 函数和 :test-not 参数已经被废弃, 首选和 complement 一起使用 "xxx-if" 函数或  :test 参数.
+        注意由于这些 "xxx-if-not" 函数[function]和 :test-not 参数已经被废弃, 首选是和 complement 一起使用 "xxx-if" 函数[function]或  :test 参数.
 
 
 ### <span id="FCONSTANTLY">函数 CONSTANTLY</span>
@@ -2919,12 +2919,12 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 参数和值(Arguments and Values):
 
-        value---一个对象.
-        function---一个函数.
+        value---一个对象[object].
+        function---一个函数[function].
 
 * 描述(Description):
 
-        constantly 返回一个接受任何数量的参数的函数, 没有副作用, 并且总是返回 value.
+        constantly 返回一个接受任何数量参数的函数[function], 没有副作用, 并且总是返回 value.
 
 * 示例(Examples):
 
@@ -2935,6 +2935,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
     =>  WITH-VARS
     (macroexpand '(with-vars (a b) (setq a 3 b (* a a)) (list a b)))
     =>  ((LAMBDA (A B) (SETQ A 3 B (* A A)) (LIST A B)) NIL NIL), true
+    ```
 
 * 受此影响(Affected By): None.
 
@@ -2965,24 +2966,24 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 参数和值(Arguments and Values):
 
-        predicate---一个参数数量多达 sequences 数量的函数指定符.
-        sequence---一个序列.
-        result---一个对象.
-        generalized-boolean---一个广义的 boolean.
+        predicate---一个实参[argument]数量多达这些序列 sequences 数量的函数[function]标识符[designator].
+        sequence---一个序列[sequence].
+        result---一个对象[object].
+        generalized-boolean---一个广义的 boolean [generalized boolean].
 
 * 描述(Description):
 
-        every, some, notevery, 还有 notany 测试 sequences 的元素是否满足给定的 predicate. 给 predicate 的第一个参数是第一个序列的元素; 每一个后续的参数都是后续序列的元素.
+        every, some, notevery, 还有 notany 测试这些序列 sequences 的元素[element]对于这个给定的断言 predicate 的满足情况. 给 predicate 的第一个参数是第一个序列 sequence 的元素[element]; 每一个后续的参数都是后续序列 sequence 的元素[element].
 
-        Predicate 首先应用到每一个序列的索引为 0 的元素, 然后可能是索引为 1 的, 诸如此类, 直到遇到一个终止准则或者到达最短序列的末尾.
+        这个断言 predicate 首先应用到这些序列 sequences 的每一个索引为 0 的元素, 然后可能是索引为 1 的, 以此类推, 直到遇到一个终止准则或者到达最短序列的末尾.
 
-        当任何 predicate 返回 false 的时候 every 返回 false. 如果到达一个 sequence 的末尾, every 返回 true. 因此, every 当且仅当所有 predicate 返回 true 的时候返回 true.
+        当任何一个 predicate 的调用返回 false 的时候 every 返回 false. 如果到达一个 sequence 的末尾, every 返回 true. 因此, every 当且仅当所有 predicate 返回 true 的时候返回 true.
 
-        some 返回 predicate 调用返回的第一个非 nil 的值. 如果到达一个 sequence 的末尾还没有任何 predicate 的调用返回 true, some 返回 false. 因此, some 当且仅当一些 predicate 调用返回 true 的时候返回 true.
+        some 返回由一个 predicate 调用返回的第一个非 nil [non-nil]的值. 如果到达一个 sequence 的末尾还没有任何 predicate 的调用返回 true, some 返回 false. 因此, some 当且仅当某个 predicate 调用返回 true 的时候返回 true.
 
-        当任何 predicate 调用返回 true 时 notany 返回 false. 如果到达一个 sequence 的末尾, notany 返回 true. 因此, notany 当且仅当不是任何的 predicate 调用都返回 true 的时候返回 true.
+        当任何一个 predicate 调用返回 true 时 notany 返回 false. 如果到达一个 sequence 的末尾, notany 返回 true. 因此, notany 当且仅当任何 predicate 调用都不返回 true 的时候返回 true.
 
-        当任何 predicate 调用返回 false 时 notevery 返回 true. 如果到达一个 sequence 的末尾, notevery 返回 false. 因此, notevery 当且仅当不是每一个 predicate 都返回 true 时返回 true.
+        当任何一个 predicate 调用返回 false 时 notevery 返回 true. 如果到达一个 sequence 的末尾, notevery 返回 false. 因此, notevery 当且仅当不是每一个 predicate 都返回 true 时返回 true.
 
 * 示例(Examples):
 
@@ -2997,13 +2998,13 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 异常情况(Exceptional Situations):
 
-        如果它的第一个参数既不是符号也不是一个函数或者如果任何后续的参数都不是一个适当的序列, 那么应该发出一个 type-error 类型的错误.
+        如果它的第一个参数既不是符号[symbol]也不是一个函数[function]或者如果任何后续的参数都不是一个正常序列[proper sequence], 那么应该发出一个 type-error 类型的错误.
 
         其他异常情况也是有可能的, 取决于 predicate 的性质.
 
 * 也见(See Also):
 
-        and, or, Section 3.6 (Traversal Rules and Side Effects)
+        and, or, 章节 3.6 (遍历规则和副作用)
 
 * 注意(Notes):
 
@@ -3019,16 +3020,16 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 参数和值(Arguments and Values):
 
-        form---一个表达式形式.
-        results---最后一个表达式形式求值的结果值, 或者符号 nil 或 t.
+        form---一个表达式形式[form].
+        results---最后一个表达式形式 form 求值产生的值[value], 或者符号 nil 或 t.
 
 * 描述(Description):
 
-        宏 and 对每一个表达式形式从左到右的顺序求值. 当任何表达式形式求值为 nil 时, 在不求值剩余表达式形式的情况下返回 nil. 如果除了最后一个以外的所有表达式形式都被求值为 true, 那么就返回最后一个表达式形式求值产生的结果.
+        宏 and 对每一个表达式形式 form 从左到右的顺序求值一次. 当任何表达式形式 form 求值为 nil 时, and 在不求值剩余表达式形式 forms 的情况下返回 nil. 如果除了最后一个以外的所有表达式形式 forms 都被求值为 true, 那么 and 就返回最后一个表达式形式 form 求值产生的结果.
 
-        如果没有提供 form, (and) 就返回 t.
+        如果没有提供这些表达式形式 forms, (and) 就返回 t.
 
-        and 传递回最后一个子表达式的多值, 但是不会传其他的子表达式.
+        and 传递回来自最后一个子表达式形式[subform]的多值, 但是不会传递来自除了最后一个以外的其他的子表达式形式[subform]的多值.
 
 * 示例(Examples):
 
@@ -3039,7 +3040,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
         (princ "Foo!"))
     ```
     
-        假如 n 事实上是 a-simple-vector 的一个合法的索引, 如果 a-simple-vector 中的 n 元素是符号 foo, 上面表达式就打印 Foo!. 由于 and 保证从左到右测试它的子表达式, 如果 n 超出范围那么 elt 不会被调用.
+        假如 n 事实上是 a-simple-vector 的一个合法的索引, 如果 a-simple-vector 中的元素 n 是符号 foo, 上面表达式就打印 Foo!. 由于 and 保证从左到右测试它的各个部分, 如果 n 超出范围那么 elt 不会被调用.
 
     ```LISP
     (setq temp1 1 temp2 1 temp3 1) =>  1
@@ -3074,19 +3075,19 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 参数和值(Arguments and Values):
 
-        test-form---一个表达式形式.
-        forms---一个隐式的 progn.
-        results---第一个产生 true 的 test-form 的 clause 的结果, 如果在这样的 clause 中没有 form 就是 test-form 的主要的值, 如果没有 test-form 产生 true 就返回 nil.
+        test-form---一个表达式形式[form].
+        forms---一个隐式的 progn [implicit progn].
+        results---第一个产生[yield] true 的 test-form 的子句 clause 的值[value], 如果在这样的子句 clause 中没有表达式形式 form 那么就是 test-form 的主值[primary value], 如果没有 test-form 产生[yield] true 就返回 nil.
 
 * 描述(Description):
 
-        cond 允许 form 的执行依赖于 test-form.
+        cond 允许这些表达式形式 forms 的执行依赖于 test-form.
 
-        Test-form 按它们出现在参数列表中的顺序一次求值一个直到有一个 test-form 求值为 true.
+        test-form 按它们出现在参数列表中的顺序一次求值一个, 直到有一个 test-form 求值为 true.
 
-        如果在这样一个 clause 中没有 form, 那么 test-form 的主要的值被 cond 表达式返回. 否则, 和这个 test-form 关联的 from 按顺序求值, 从左到右, 像一个隐式的 progn, 并且最后一个 form 返回的值被 cond 表达式形式返回.
+        如果在这样一个子句 clause 中没有表达式形式[form], 那么 test-form 的主值[primary value]被 cond 表达式形式[form]返回. 否则, 和这个 test-form 关联的那些表达式形式 forms 按顺序求值, 从左到右, 像一个隐式的 progn [implicit progn], 并且最后一个表达式形式 form 返回的值[value]被 cond 表达式形式[form]返回.
 
-        一旦一个 test-form 已经产生 true, 不会有其他的 test-forms 被求值. 如果没有 test-form 产生 true, 返回 nil.
+        一旦一个 test-form 已经产生 true, 不会有其他的 test-forms 被求值. 如果没有 test-form 产生[yield] true, 那么就返回 nil.
 
 * 示例(Examples):
 
@@ -3127,14 +3128,14 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 参数和值(Arguments and Values):
 
-        Test-form---一个表达式形式.
-        Then-form---一个表达式形式.
-        Else-form---一个表达式形式. 默认是 nil.
-        results---如果这个 test-form 产生 true, 就是 then-form 返回的值; 否则, 就是 else-form 返回的值.
+        Test-form---一个表达式形式[form].
+        Then-form---一个表达式形式[form].
+        Else-form---一个表达式形式[form]. 默认是 nil.
+        results---如果这个 test-form 产生[yield] true, 那么就是 then-form 返回的值[value]; 否则, 就是 else-form 返回的值[value].
 
 * 描述(Description):
 
-        if 允许一个 form 求值取决于 test-form.
+        if 允许一个表达式形式[form]的执行取决于一个单独的 test-form.
 
         首先 test-form 被求值. 如果结果是 true, 那么 then-form 被选择; 否则 else-form 被选择. 不管哪个 form 被选择, 都会在接下来被求值.
 
@@ -3177,15 +3178,15 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 参数和值(Arguments and Values):
 
-        form---一个表达式形式.
+        form---一个表达式形式[form].
 
-        results---求值最后一个表达式的多值或主要的值 (见下方) 或者是 nil.
+        results---最后一个被执行的表达式形式 form 的求值所产生的值[value]或主值[primary value] (见下方) 或者是 nil.
 
 * 描述(Description):
 
-        or 求值每个表达式, 一次一个, 从左到右. 当一个表达式求值为 true 则所有表达式的求值结束 (换句话说, 某个不是 nil 的).
+        or 求值每个表达式形式 form, 一次一个, 从左到右. 当一个表达式形式 form 求值为 true (换句话说, 某个不是 nil 的结果) 则所有表达式形式 forms 的求值结束.
 
-        如果除了最后一个 form 以外的任何 form 的求值返回 true, or 在不求值剩下 form 的情况下返回这个值 (但是没有其他值). 如果除了最后一个 form 以外每个 from 都返回 false 作为主要的值, or 返回最后一个 form 的所有值. 如果没有提供 form, or 返回 nil.
+        如果除了最后一个以外的任何表达式形式 form 的求值[evaluation]都返回 true 的主值[primary value], 那么 or 在不求值剩下那些表达式形式 forms 的情况下立即返回这个值[value] (但是没有其他额外的值[value]). 如果除了最后一个以外每个表达式形式 form 都返回 false 作为主值[primary value], or 返回最后一个表达式形式 form 的所有值[value]. 如果没有提供表达式形式 forms, or 返回 nil.
 
 * 示例(Examples):
 
@@ -3226,17 +3227,17 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 参数和值(Arguments and Values):
 
-        test-form---一个表达式形式.
-        forms---一个隐式的 progn.
-        results---如果 when 表达式中的 test-form 产生 true 那么就是 when 表达式形式中 form 的值, 如果 unless 表达式中的 test-form 产生 false 那么就是 unless 表达式中 form 的值; 否则就是 nil.
+        test-form---一个表达式形式[form].
+        forms---一个隐式的 progn [implicit progn].
+        results---如果 when 表达式形式[form]中的 test-form 产生[yield] true 那么就是一个 when 表达式形式[form]中的那些表达式形式 forms 的值[value], 如果 unless 表达式形式[form]中的 test-form 产生[yield] false 那么就是 unless 表达式形式[form]中的那些表达式形式 forms 的值[value]; 否则就是 nil.
 
 * 描述(Description):
 
-        when 和 unless 允许求值的 forms 取决于单个的 test-form.
+        when 和 unless 允许这些表达式形式 forms 的求值取决于单独的 test-form.
 
-        在一个 when 表达式中, 如果这个 test-form 产生 true, 这个 forms 按从左到右的顺序求值并从 when 表达式中返回 forms 返回的值. 否则, 如果 test-form 产生 false, 这个 forms 不会被求值, 然后这个 when 表达式返回 nil.
+        在一个 when 表达式形式[form]中, 如果这个 test-form 产生[yield] true, 这些表达式形式 forms 按从左到右的顺序求值并从 when 表达式形式[form]中返回这些表达式形式 forms 所返回的值[value]. 否则, 如果 test-form 产生 false, 这些表达式形式 forms 不会被求值, 然后这个 when 表达式形式[form]返回 nil.
 
-        在一个 unless 表达式中, 如果这个 test-form 产生 false, 这个 forms 按从左到右的顺序求值并从 unless 表达式中返回 forms 返回的值. 否则, 如果这个 test-form 产生 false, 这个 forms 不会被求值, 并且这个 unless 表达式返回 nil.
+        在一个 unless 表达式形式[form]中, 如果这个 test-form 产生[yield] false, 这些表达式形式 forms 按从左到右的顺序求值并从 unless 表达式形式[form]中返回 forms 所返回的值[value]. 否则, 如果这个 test-form 产生[yield] false, 这些表达式形式 forms 不会被求值, 并且这个 unless 表达式形式[form]返回 nil.
 
 * 示例(Examples):
 
@@ -3302,42 +3303,42 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 参数和值(Arguments and Values):
 
-        keyform---一个表达式形式; 求值后产生一个 test-key.
-        keyplace---一个表达式形式; 求值后产生一个 test-key. 如果没有 key 匹配那么可能被用作一个 place.
-        test-key---通过求值 keyform 或 keyplace 产生的一个对象.
-        keys---一个对象列表的标识符. 在 case 的情况下, 符号 t 和 otherwise 可能不被用作 keys 标识符. 为了将这些符号自身作为 key 来引用, 标识符 (t) 和 (otherwise), 必须分别被使用.
-        forms---一个隐式的 progn.
-        results---匹配的 clause 的 form 返回的值.
+        keyform---一个表达式形式[form]; 求值后产生一个 test-key.
+        keyplace---一个表达式形式[form]; 求值后产生一个 test-key. 如果没有 key 匹配那么可能被用作一个位置[place].
+        test-key---通过求值 keyform 或 keyplace 所产生的一个对象.
+        keys---一个对象[object]列表[list]的标识符[designator]. 在 case 的情况下, 符号[symbol] t 和 otherwise 可能不被用作 keys 标识符[designator]. 为了将这些符号[symbol]自身作为 keys 来引用, 必须分别使用标识符[designator] (t) 和 (otherwise), .
+        forms---一个隐式的 progn [implicit progn].
+        results---匹配的子句 clause 中的表达式形式 form 所返回的值[value].
 
 * 描述(Description):
 
-        这些宏允许一个 clause 中的 form 被条件执行, 这个通过在它的标识上匹配 test-key 来选择.
+        这些宏[macro]允许一个子句 clause 中的那些表达式形式 forms 主体被条件执行, 这个子句通过在它的标识上匹配 test-key 来选择.
 
         这个 keyform 或者 keyplace 被求值用于产生 test-key.
 
-        每一个 normal-clause 依次被考虑. 如果 test-key 和这个 clause 中的任何 key 是相同的, 这个 clause 中的多个 form 会作为一个隐式的 progn 来求值, 然后它返回的值会被 case, ccase, 或 ecase 表达式形式作为结果返回.
+        每一个 normal-clause 依次被考虑. 如果 test-key 和任何子句 clause 中的键[key]是相同的[same], 那么这个子句 clause 中的那些表达式形式 forms 作为一个隐式的 progn [implicit progn]来求值, 然后它返回的值[value]会被 case, ccase, 或 ecase 表达式形式[form]作为结果返回.
 
-        这些宏只在没有匹配到 normal-clause 时, 会有不同的行为; 具体来说:
+        这些宏[macro]只在没有匹配到 normal-clause 时, 会有不同的行为; 具体来说:
 
     * case
 
-            如果没有匹配到 normal-clause, 并且这里有一个 otherwise-clause, 那么这个 otherwise-clause 自动匹配; 这个 clause 中的 form 会作为一个隐式的 progn 被求值, 并且它返回的值作为 case 的结果被返回.
+            如果没有匹配到 normal-clause, 并且这里有一个 otherwise-clause, 那么这个 otherwise-clause 自动匹配; 那个子句 clause 中的那些表达式形式 forms 会作为一个隐式的 progn [implicit progn]被求值, 并且它返回的值[value]作为 case 的结果被返回.
 
-            如果没有 otherwise-clause, case 返回 nil.
+            如果这里没有 otherwise-clause, case 返回 nil.
 
     * ccase
 
-            如果没有 normal-clause 匹配, 一个 type-error 类型的可校正的错误会被发出. 这个基准是 test-key 并且期望的类型是类型等价于 (member key1 key2 ...). 这个 store-value 重启动可以被用于校正这个错误.
+            如果没有 normal-clause 匹配, 一个 type-error 类型[type]的可校正[correctable]的错误[error]会被发出. 这个违背的基准是 test-key 和期望的类型是类型等价[type equivalent]于 (member key1 key2 ...). 这个 store-value 重启动[restart]可以被用于校正这个错误.
 
-            如果这个 store-value 重启动被调用, 它的参数会是新的 test-key, 并且被存储在 keyplace 就像是通过 (setf keyplace test-key). 然后 ccase 重新开始, 再思考每一个 clause.
+            如果这个 store-value 重启动[restart]被调用, 它的实参[argument]会成为新的 test-key, 并且被存储在 keyplace 就像是通过 (setf keyplace test-key) 一样. 然后 ccase 重新开始, 再考虑每一个子句 clause.
 
-            如果没有情况支持, 这个 keyplace 的子表达式可能被再次求值.
+            如果没有情况支持, 这个 keyplace 的那些子表达式形式可能被再次求值.
 
     * ecase
 
-            如果没有 normal-clause 匹配, 一个 type-error 类型的不可校正的错误会被发出. 基准是 test-key 和期望的类型是类型等价于 (member key1 key2 ...).
+            如果没有 normal-clause 匹配, 一个 type-error 类型[type]的不可校正[non-correctable]的错误[error]会被发出. 违背的基准是 test-key 和期望的类型是类型等价[type equivalent]于 (member key1 key2 ...).
 
-            注意, 与 ccase 相比, 对 ecase 的调用可能依赖于没有 normal-clause 匹配的情况下 ecase 不返回的事实.
+            注意, 与 ccase 相比, 对 ecase 的调用可能依赖于如果没有 normal-clause 匹配的情况下那么 ecase 不返回的事实.
 
 * 示例(Examples):
 
@@ -3375,19 +3376,19 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 副作用(Side Effects):
 
-        可能进入调试器(debugger). 如果调用了 store-value 重启动, 这个 keyplace 的值可能被改变.
+        可能进入调试器(debugger). 如果调用了 store-value 重启动[restart], 这个 keyplace 的值[value]可能被改变.
 
 * 受此影响(Affected By):
 
-        ccase 和 ecase, 因为它们可能发出一个错误, 所以被存在的处理者(handler) 和 *debug-io* 潜在地影响.
+        ccase 和 ecase, 因为它们可能发出一个错误, 所以受存在的那些处理者 handlers 和 *debug-io* 的潜在影响.
 
 * 异常情况(Exceptional Situations):
 
-        如果没有匹配到 normal-clause 那么 ccase 和 ecase 发出一个 type-error 类型的错误.
+        如果没有匹配到 normal-clause 那么 ccase 和 ecase 发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
-        cond, typecase, setf, Section 5.1 (Generalized Reference)
+        cond, typecase, setf, 章节 5.1 (广义引用)
 
 * 注意(Notes):
 
@@ -3397,7 +3398,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
         (let ((#1=#:g0001 test-key))
           (cond {((member #1# '(key*)) form*)}*))
 
-        ecase 和 ccase 所使用的特定错误信息在不同的具体实现之间可以是不同的. 在控制错误消息的特定措辞很重要的情况下, 最好使用 case 与 otherwise-clause 来显式地用适当的消息发出错误消息.
+        ecase 和 ccase 所使用的具体错误信息在不同的具体实现之间可以是不同的. 在错误消息的特定措辞的控制是很重要的情况下, 最好使用 case 与 otherwise-clause 来显式地用适当的消息发出错误消息.
 
 
 ### <span id="MTYPECASECTYPECASEETYPECASE">宏 TYPECASE, CTYPECASE, ETYPECASE</span>
@@ -3413,46 +3414,46 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 参数和值(Arguments and Values):
 
-        keyform---一个表达式形式; 求值后产生一个 test-key.
-        keyplace---一个表达式形式; 求值后产生一个 test-key. 如果没有类型匹配的时候可能被用作一个 place.
+        keyform---一个表达式形式[form]; 求值后产生一个 test-key.
+        keyplace---一个表达式形式[form]; 求值后产生一个 test-key. 如果没有类型匹配的时候也可能被用作一个位置[place].
         test-key---求值 keyform 或 keyplace 产生的对象.
-        type---一个类型指定符.
-        forms---一个隐式的 progn.
-        results---匹配的 clause 中的 form 返回的值.
+        type---一个类型指定符[type specifier].
+        forms---一个隐式的 progn [implicit progn].
+        results---匹配的子句 clause 中的那些表达式形式 forms 所返回的值[value].
 
 * 描述(Description):
 
-        这些宏允许有条件地执行一个 clause 中的 form 的主体, 这个被选中的 clause 是通过在 test-key 上匹配它的类型来选择的.
+        这些宏[macro]允许有条件地执行一个子句 clause 中的主体表达式形式 forms, 这个子句 clause 是通过在 test-key 上匹配它的类型[type]来选择的.
 
         这里的 keyform 或 keyplace 求值后产生 test-key.
 
-        每一个 normal-clauses 都会被依次考虑. 如果 test-key 是 clauses 给定的类型, 这个 clause 中的 form 作为一个隐式的 progn 被执行, 并且它返回的值作为 typecase, ctypecase, or etypecase 表达式的值被返回.
+        每一个 normal-clauses 都会被依次考虑. 如果 test-key 是这些子句 clauses 的类型所给定的类型[type], 那么这个子句 clause 中的这些表达式形式 forms 作为一个隐式的 progn [implicit progn]被执行, 并且它返回的值作为 typecase, ctypecase, 或 etypecase 表达式形式[form]的值被返回.
 
-        这些宏的行为只有在没有匹配的 normal-clause 情况下有所区别; 具体来说:
+        这些宏[macro]的行为只有在没有匹配的 normal-clause 情况下有所区别; 具体来说:
 
     * typecase
 
-            如果没有 normal-clause 匹配, 并且这里有一个 otherwise-clause, 那么这个 otherwise-clause 自动匹配; 这个 clause 中的 form 作为一个隐式的 progn 被执行, 并且它返回的值作为 typecase 表达式的值被返回.
+            如果没有 normal-clause 匹配, 并且这里有一个 otherwise-clause, 那么这个 otherwise-clause 自动匹配; 这个子句 clause 中的那些表达式形式 forms 作为一个隐式的 progn [implicit progn]被执行, 并且它返回的值[value]作为 typecase 的值被返回.
 
             如果这里没有 otherwise-clause, typecase 返回 nil.
 
     * ctypecase
 
-            如果没有 normal-clause 匹配, 一个 type-error 类型的可校正的错误会被发出. 基准是 test-key 和期望的类型是和 (or type1 type2 ...) 类型等价的. 这个 store-value 重启动可以被用于校正这个错误.
+            如果没有 normal-clause 匹配, 一个 type-error 类型[type]的可校正[correctable]的错误[error]会被发出. 违背的基准是 test-key 和期望的类型是和 (or type1 type2 ...) 类型等价[type equivalent]. 这个 store-value 重启动[restart]可以被用于校正这个错误.
 
-            如果调用了 store-value 重启动, 它的参数会是新的, 然后被存储在 keyplace 就好像是通过 (setf keyplace test-key). 然后 ctypecase 重新启动, 再次考虑每一个 clause.
+            如果调用了 store-value 重启动[restart], 它的实参[argument]会成为新的 test-key, 然后被存储在 keyplace 就好像是通过 (setf keyplace test-key) 一样. 然后 ctypecase 重新启动, 再次考虑每一个 clause.
 
-            如果这个 store-value 重启动被交互式地调用了, 用户被提示去使用新的 test-key.
+            如果这个 store-value 重启动[restart]被交互式地调用了, 那么提示用户去使用一个新的 test-key.
 
-            如果没有情况支持, 这个 keyplace 的子表达式可能被再次求值.
+            如果没有情况支持, 这个 keyplace 的子表达式形式可能被再次求值.
 
     * etypecase
 
-            如果没有匹配的 normal-clause, 一个不可校正的 type-error 类型的错误会被发出. 基准是 test-key 和期望的类型是和 (or type1 type2 ...) 类型等价的.
+            如果没有匹配的 normal-clause, 一个不可校正[non-correctable]的 type-error 类型[type]的错误[error]会被发出. 违背的基准是 test-key 以及期望的类型和 (or type1 type2 ...) 类型等价[type equivalent].
 
-            注意, 相比于 ctypecase, 对 etypecase 的调用可能依赖于如果没有匹配的 normal-clause 时 etypecase 不返回的事实.
+            注意, 相比于 ctypecase, 对 etypecase 的调用可能依赖于如果没有匹配的 normal-clause 那么 etypecase 不返回的事实.
 
-    在所有这三种情况下, 允许超过一个 clause 去指定匹配类型, 特别是在一个已经是另一个的子类型的时候; 最早可应用的 clause 会被选择.
+    在所有这三种情况下, 允许超过一个子句 clause 去指定匹配类型[type], 特别是在一个已经是另一个的子类型[subtype]的时候; 最早可应用的 clause 会被选择.
 
 * 示例(Examples):
 
@@ -3497,17 +3498,17 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 受此影响(Affected By):
 
-        ctypecase 和 etypecase, 因为它们可能发出一个错误, 所以被存在的处理者(handler) 和 *debug-io* 潜在地影响.
+        ctypecase 和 etypecase, 因为它们可能发出一个错误, 所以被存在的那些处理者 handlers 和 *debug-io* 潜在地影响.
 
 * 异常情况(Exceptional Situations):
 
-        如果没有normal-clause 匹配那么 ctypecase 和 etypecase 发出一个 type-error 类型的错误.
+        如果没有 normal-clause 匹配那么 ctypecase 和 etypecase 发出一个 type-error 类型[type]的错误.
 
-        如果一个 clause 被更早的 clause 所遮蔽导致不会被选择到, 编译器可能会选择去发出一个 style-warning 类型的警告.
+        如果一个 clause 被更早子句所遮蔽导致不会被选择到, 编译器[compiler]可能会选择去发出一个 style-warning 类型[type]的警告.
 
 * 也见(See Also):
 
-        case, cond, setf, Section 5.1 (Generalized Reference)
+        case, cond, setf, 章节 5.1 (广义引用)
 
 * 注意(Notes):
 
@@ -3517,7 +3518,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
         (let ((#1=#:g0001 test-key))
           (cond {((typep #1# 'type) form*)}*))
 
-        etypecase 和 ctypecase 所使用的特定错误信息在不同的具体实现之间可以是不同的. 在控制错误消息的特定措辞很重要的情况下, 最好使用 typecase 与 otherwise-clause 来显式地用适当的消息发出错误消息.
+        etypecase 和 ctypecase 所使用的具体错误信息在不同的具体实现之间可以是不同的. 在错误消息的具体措辞的控制很重要的情况下, 最好使用 typecase 与 otherwise-clause 来显式地用适当的消息发出错误消息.
 
 
 ### <span id="MMULTIPLE-VALUE-BIND">宏 MULTIPLE-VALUE-BIND</span>
@@ -3529,21 +3530,21 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 参数和值(Arguments and Values):
 
-        var---一个命名一个变量的符号; 不求值.
-        values-form---一个表达式形式; 求值.
-        declaration---一个 declare 表达式; 不求值.
-        forms---一个隐式的 progn.
-        results---这个 forms 返回的值.
+        var---一个命名一个变量的符号[symbol]; 不求值.
+        values-form---一个表达式形式[form]; 求值.
+        declaration---一个 declare 表达式[expression]; 不求值.
+        forms---一个隐式的 progn [implicit progn].
+        results---这些表达式形式 forms 返回的值[value].
 
 * 描述(Description):
 
-        为 vars 创建新的变量绑定并且使用这些绑定执行一系列 forms.
+        为 vars 创建新的变量绑定[binding]并且使用这些绑定[binding]执行一系列表达式形式 forms.
 
-        这个变量绑定是词法的, 除非指定了 special 声明.
+        创建的这个变量绑定[binding]是词法的, 除非指定了 special 声明.
 
-        Values-form 被求值, 并且 vars 每一个都会绑定给那个表达式形式返回的单独的值. 如果这里的 vars 数量超过返回的值的数量, 额外的 nil 值被赋予剩余的 vars. 如果值的数量超过 vars, 多出来的值会被丢弃. vars 在 forms 执行时被绑定到这些值, 这些 forms 组成了隐式的 progn. 如果一个 var 被指定了类型声明, 但是绑定到这个 var 的值不符合这个类型声明, 那么结果是不确定的.
+        值表达式形式 values-form 被求值, 并且这些变量 vars 中的每一个都分别被绑定为那个表达式形式 form 返回的值. 如果这里的 vars 数量超过返回的值的数量, 额外的 nil 值被赋予剩余的 vars. 如果值的数量超过 vars, 多出来的值会被丢弃. vars 在这些表达式形式 forms 执行时被绑定为这些值, 这些表达式形式 forms 组成了隐式的 progn [implicit progn]. 如果一个 var 被指定了类型声明 declaration, 而绑定到这个 var 的值不符合这个类型声明 declaration, 那么结果是不确定的.
 
-        这个名称绑定和声明的作用域不包括 values-form.
+        这些名称绑定和声明 declarations 的作用域[scope]不包括 values-form.
 
 * 示例(Examples):
     
@@ -3578,16 +3579,16 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 参数和值(Arguments and Values):
 
-        function-form---一个表达式形式; 求值后产生 function.
-        function---通过求值 function-form 得到的一个函数标志符.
-        form---一个表达式形式.
-        results---function 返回的值.
+        function-form---一个表达式形式[form]; 求值后产生函数 function.
+        function---通过求值 function-form 得到的一个函数标识符[function designator].
+        form---一个表达式形式[form].
+        results---函数 function 返回的值[value].
 
 * 描述(Description):
 
-        应用 function 一个对象列表上, 这些对象从多值的组中收集而来.
+        应用函数 function 到从多值[multiple values[2]]组中收集而来的这些对象[object]的一个列表[list]上.
 
-        multiple-value-call 首先求值 function-form 来获取 function, 然后求值每一个 form. 每个 form 的所有的值都被一起收集 (不只是每个 form 的一个值) 然后作为参数传递给 function.
+        multiple-value-call 首先求值 function-form 来获取函数 function, 然后求值每一个表达式形式 form. 每个 form 的所有的值都被一起收集 (不只是每个表达式形式 form 的一个值) 然后作为参数传递给 function.
 
 * 示例(Examples):
 
@@ -3619,12 +3620,12 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 参数和值(Arguments and Values):
 
-        form---一个表达式形式; 求值为以下所述.
-        list---form 返回的一个值的列表.
+        form---一个表达式形式[form]; 按如下所述求值.
+        list---form 返回的那些值[value]的一个列表[list].
 
 * 描述(Description):
 
-        multiple-value-list 求值 form 并且创建一个它返回的多值的列表.
+        multiple-value-list 求值表达式形式 form 并且创建它返回的那些多值[multiple values[2]]的一个列表[list].
 
 * 示例(Examples):
     
@@ -3657,13 +3658,13 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 参数和值(Arguments and Values):
 
-        first-form---一个表达式形式; 求值如下所述.
-        form---一个表达式形式; 求值如下所述.
-        first-form-results---求值 first-form 得到的值.
+        first-form---一个表达式形式[form]; 如下所述求值.
+        form---一个表达式形式[form]; 如下所述求值.
+        first-form-results---这个 first-form 的求值[evaluation]得到的值[value].
 
 * 描述(Description):
 
-        multiple-value-prog1 求值 first-form 然后把这个表达式形式产生的所有值保存起来. 然后它从左到右求值每个表达式形式, 丢弃它们的值.
+        multiple-value-prog1 求值 first-form 然后把这个表达式形式[form]产生的所有值保存起来. 然后它从左到右求值每个表达式形式 form, 丢弃它们的值.
 
 * 示例(Examples):
 
