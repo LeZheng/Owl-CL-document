@@ -3697,17 +3697,17 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 参数和值(Arguments and Values):
 
-        vars---a list of symbols that are either variable names or names of symbol macros.
-        form---一个表达式形式.
-        result---这个 form 返回的值.
+        vars---一个符号[symbol]列表[list], 这些符号是变量[variable]名字[name]或符号宏[symbol macro]的名字[name].
+        form---一个表达式形式[form].
+        result---这个表达式形式 form 返回的主值[primary value].
 
 * 描述(Description):
 
-        multiple-value-setq 赋值给 vars.
+        multiple-value-setq 赋值给这些变量 vars.
 
-        这个 form 被求值, 然后每个 var 被赋予 那个 form 返回的对应的值. 如果这里 vars 的数量超过返回值的数量, nil 会被赋予多余的 vars. 如果返回值的数量多于 vars 的, 多余的值会被丢弃.
+        这个表达式形式 form 被求值, 然后每个变量 var 被赋予这个表达式形式 form 返回的对应的值[value]. 如果这里的这些变量 vars 的数量超过返回值[value]的数量, nil 会被赋值给多余的变量 vars. 如果返回值[value]的数量多于变量 vars, 多余的值[value]会被丢弃.
 
-        如果任何 var 是一个符号宏的名字, 然后它就会被赋值就像是通过 setf 的一样. 具体的说,
+        如果任何变量 var 是一个符号宏[symbol macro]的名字[name], 那么它就会像是通过 setf 的一样被赋值. 具体的说, 为了使求值顺序和副作用的规则与 setf 使用的规则一致
 
         (multiple-value-setq (symbol1 ... symboln) value-producing-form)
 
@@ -3715,7 +3715,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
         (values (setf (values symbol1 ... symboln) value-producing-form))
 
-        为了使求值顺序和副作用的规则与 setf 使用的规则一致. 见章节 5.1.2.3 (VALUES Forms as Places).
+        见章节 5.1.2.3 (VALUES 表达式形式作为位置).
 
 * 示例(Examples):
 
@@ -3754,15 +3754,15 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 参数和值(Arguments and Values):
 
-        object---一个对象
-        place---一个 place.
-        new-value---一个对象.
+        object---一个对象[object]
+        place---一个位置[place].
+        new-value---一个对象[object].
 
 * 描述(Description):
 
-        values 以多值的形式返回对象.
+        values 以多值[multiple values[2]]的形式返回这些对象 objects.
 
-        values 的 setf 被用于存储多值 new-values 到 places. 见章节 5.1.2.3 (VALUES Forms as Places).
+        values 的 setf 被用于存储这些多值[multiple values[2]] new-values 到这些位置 places. 见章节 5.1.2.3 (VALUES 表达式形式作为位置).
 
 * 示例(Examples):
 
@@ -3779,7 +3779,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
     =>  #(5.0 0.927295)
     ```
 
-        有时我们需要明确指出函数只返回一个值. 比如, 函数
+        有时我们需要显式指出函数只返回一个值. 比如, 函数
     
     ```LISP
     (defun foo (x y)
@@ -3793,7 +3793,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
       (values (floor (+ x y) y))) =>  FOO
     ```
 
-        这个正常工作是因为 values 返回每个参数的一个值; 至于任何函数调用, 如果任何参数产生一个值, 除了第一个其他都被丢弃.
+        这个正常工作是因为 values 只返回参数 args 中的每一个的一个值; 对于任何函数调用, 如果任何参数产生不止一个值, 除了第一个以外其他都被丢弃.
 
 * 受此影响(Affected By): None.
 
@@ -3801,11 +3801,11 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 也见(See Also):
 
-        values-list, multiple-value-bind, multiple-values-limit, Section 3.1 (Evaluation)
+        values-list, multiple-value-bind, multiple-values-limit, 章节 3.1 (求值)
 
 * 注意(Notes):
 
-        由于 values 是一个 函数, 不是一个宏或者特殊表达式形式, 它值接收它的参数表达式形式的主要的值作为参数.
+        由于 values 是一个函数[function], 不是一个宏[macro]或者特殊表达式形式[special form], 它只接收它的实参[argument]表达式形式[form]的主值[primary value]作为它的实参[argument].
 
 
 ### <span id="FVALUES-LIST">函数 VALUES-LIST</span>
@@ -3816,12 +3816,12 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 参数和值(Arguments and Values):
 
-        list---一个列表.
-        elements---列表的元素.
+        list---一个列表[list].
+        elements---这个列表 list 的元素[element].
 
 * 描述(Description):
 
-        以多值的形式返回 list 的元素.
+        以多值[multiple values[2]]的形式返回这个列表 list 的元素[element].
 
 * 示例(Examples):
 
@@ -3836,7 +3836,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 异常情况(Exceptional Situations):
 
-        如果参数不是一个适当的列表, 应该会发出一个错误.
+        如果参数不是一个正规列表[proper list], 应该会发出一个 type-error 的错误.
 
 * 也见(See Also):
 
@@ -3846,18 +3846,18 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
         (values-list list) ==  (apply #'values list)
 
-        (equal x (multiple-value-list (values-list x))) 对于所有的列表 x 返回 true.
+        (equal x (multiple-value-list (values-list x))) 对于所有的列表[list] x 返回 true.
 
 
 ### <span id="CMULTIPLE-VALUES-LIMIT">常量 MULTIPLE-VALUES-LIMIT</span>
 
 * 常量值(Constant Value):
 
-        一个不小于 20 的整数, 准确的大小依赖于具体实现.
+        一个不小于 20 的整数[integer], 准确的大小是依赖于具体实现的[implementation-dependent].
 
 * 描述(Description):
 
-        函数返回, multiple-value-bind 绑定, multiple-value-setq 赋值还有作为传递给 nth-value 的第一个参数的多值数量的上限. (如果这些单独的限制不同, 则使用最小值.)
+        可以被一个函数[function]返回, 被 multiple-value-bind 或 multiple-value-setq 绑定或赋值还有作为传递给 nth-value 的第一个参数的值[value]数量的上限. (如果这些单独的限制不同, 则使用最小值.)
 
 * 示例(Examples): None.
 
@@ -3878,13 +3878,13 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 参数和值(Arguments and Values):
 
-        n---一个非负整数; 求值的.
-        form---一个表达式形式; 求值如下所述.
-        object---一个对象.
+        n---一个非负整数[integer]; 求值的.
+        form---一个表达式形式[form]; 按如下所述求值.
+        object---一个对象[object].
 
 * 描述(Description):
 
-        求值 n 和 form, 作为唯一的值返回 form 产生的值中第 n 个值, 如果 n 大于等于 form 返回的值的数量那么就是 nil. (返回的第一个值编号为 0.)
+        求值 n 和表达式形式 form, 作为唯一的值返回表达式形式 form 产生的第 n 个值, 如果 n 大于等于表达式形式 form 返回的值[value]的数量那么就是 nil. (返回的第一个值编号为 0.)
 
 * 示例(Examples):
     
@@ -3912,7 +3912,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 注意(Notes):
 
-        操作上, 下面的关系是 true 的, 虽然 nth-value 在某些实现中可能由于某些因素而更高效, 比如, 一些 cons 可被避免.
+        操作上, 下面的关系是 true 的, 尽管 nth-value 在某些实现中可能由于某些因素而更高效, 比如, 可以避免一些 cons.
 
         (nth-value n form) ==  (nth n (multiple-value-list form))
 
@@ -3930,15 +3930,15 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 * 参数和值(Arguments and Values):
 
         var---变量名字.
-        init-form---一个表达式形式.
-        declaration---一个 declare 表达式形式; 不求值.
-        tag---一个 go 标签; 不求值.
-        statement---一个复合表达式形式; 求值如下所述.
-        results---如果正常返回就是 nil, 否则, 如果一个显式的返回发生, 就是指定的值.
+        init-form---一个表达式形式[form].
+        declaration---一个 declare 表达式[expression]; 不求值.
+        tag---一个 go 标签[go tag]; 不求值.
+        statement---一个复合表达式形式[compound form]; 按如下所述求值.
+        results---如果发生正常返回[normal return]就是 nil, 否则, 如果发生一个显式返回[explicit return], 就是转移的那些值[value].
 
 * 描述(Description):
 
-        三个不同的操作由 prog 和 prog* 执行: 它们绑定局部变量, 它们允许使用 return 语句, 并且它们允许使用 go 语句. 一个典型的 prog 看上去像这样:
+        由 prog 和 prog* 执行三个不同的操作: 它们绑定局部变量, 它们允许 return 语句的使用, 并且它们允许 go 语句的使用. 一个典型的 prog 看上去像这样:
 
         (prog (var1 var2 (var3 init-form-3) var4 (var5 init-form-5))
               declaration*
@@ -3952,13 +3952,13 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
               ...
               )
 
-        对于 prog, init-forms 首先被求值, 按照它们给定的顺序. 这些 vars 并行地绑定给对应的 值. 如果没有为一个给定的 var 提供 init-form, 那个 var 绑定为 nil.
+        对于 prog, 这些 init-forms 首先被求值, 按照它们提供的顺序. 这些变量 vars 并行地绑定为对应的值. 如果没有为一个给定的变量 var 提供 init-form, 那个这个变量 var 绑定为 nil.
 
-        这个 prog 的主体部分被执行就好像它是在一个 tagbody 表达式形式里一样; 这个 go 语句 可以被用于转移控制到一个 tag. 这些 tag 标注 statement.
+        这个 prog 的主体部分好像它是一个 tagbody 表达式形式[form]一样被执行; 这个 go 语句可以被用于转移控制到一个 tag. 这些 tags 标注这些语句 statements.
 
-        prog 在整个 prog 表达式周围隐式建立一个名为 nil 的 block, 这样 return 可以被用于任何执行想要退出 prog 表达式的时候.
+        prog 在整个 prog 表达式形式[form]周围隐式建立一个名为 nil 的 block, 这样 return 可以在任何想要退出 prog 表达式形式[form]的时候被使用.
 
-        prog* 和 prog 之间的不同在于 prog* 顺序执行 vars 的绑定和初始化, 因此每一个的 init-form 都可以使用前一个的值.
+        prog* 和 prog 之间的不同在于 prog* 顺序执行这些变量 vars 的绑定[binding]和初始化, 因此每一个的 init-form 都可以使用前一个的值.
 
 * 示例(Examples):
     
@@ -3994,7 +3994,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
            (go rejoin))) =>  KING-OF-CONFUSION
     ```
     
-        这可以更详细地完成, 如下所示:
+        按照下面这样这可以更详细地完成:
 
     ```LISP
     (defun prince-of-clarity (w)
@@ -4016,7 +4016,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 也见(See Also):
 
-        block, let, tagbody, go, return, Section 3.1 (Evaluation)
+        block, let, tagbody, go, return, 章节 3.1 (求值)
 
 * 注意(Notes):
 
@@ -4035,17 +4035,17 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 参数和值(Arguments and Values):
 
-        first-form---一个表达式形式; 求值如下所述.
-        second-form---一个表达式形式; 求值如下所述.
-        forms---一个隐式的 progn; 求值如下所述.
-        result-1---求值 first-form 返回的主要的值.
-        result-2---求值 second-form 返回的主要的值.
+        first-form---一个表达式形式[form]; 按如下所述求值.
+        second-form---一个表达式形式[form]; 按如下所述求值.
+        forms---一个隐式的 progn [implicit progn]; 按如下所述求值.
+        result-1---这个 first-form 的求值[evaluation]所产生的主值[primary value].
+        result-2---这个 second-form 的求值[evaluation]所产生的主值[primary value].
 
 * 描述(Description):
 
-        prog1 求值 first-form 以及其他 forms, first-form 产生的主要的值作为唯一的返回值.
+        prog1 求值[evaluate] first-form 然后再是其他表达式形式 forms, first-form 产生的主值[primary value]作为唯一的返回值[value].
 
-        prog2 求值 first-form, 然后 second-form, 以及其他 forms, second-form 产生的主要的值作为唯一的返回值.
+        prog2 求值[evaluate] first-form, 然后 second-form, 然后再是这些表达式形式 forms, 第二个表达式形式 second-form 产生的主值[primary value]作为唯一的返回值[value].
 
 * 示例(Examples):
 
@@ -4088,7 +4088,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 注意(Notes):
 
-        prog1 和 prog2 通常被用于一个或多个带有副作用的表达式形式并且返回一个在一些或所有副作用发生之前计算的值.
+        prog1 和 prog2 通常被用于求值[evaluate]一个或多个带有副作用的表达式形式[form]并且返回一个在一些或所有副作用发生之前计算的值[value].
 
         (prog1 form*) ==  (values (multiple-value-prog1 form*))
         (prog2 form1 form*) ==  (let () form1 (prog1 form*))
@@ -4102,16 +4102,16 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 参数和值(Arguments and Values):
 
-        forms---一个隐式的 progn.
-        results---这个 forms 的值.
+        forms---一个隐式的 progn [implicit progn].
+        results---这些表达式形式[form]的值[value].
 
 * 描述(Description):
 
-        progn 求值 forms, 按它们被给定的顺序.
+        progn 求值这些表达式形式 forms, 按它们被提供的顺序.
 
-        除了最后一个以外的所有 form 的值都会被丢弃.
+        除了最后一个以外的所有表达式形式 form 的值都会被丢弃.
 
-        如果 progn 作为顶层表达式出现, 那么出现在这个 progn 中的所有 form 都会被当作顶层表达式处理.
+        如果 progn 作为顶层表达式形式[top level form]出现, 那么出现在这个 progn 中的所有表达式形式[form]都会被当作顶层表达式形式[top level form]处理.
 
 * 示例(Examples):
     
@@ -4132,11 +4132,11 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 也见(See Also):
 
-        prog1, prog2, Section 3.1 (Evaluation)
+        prog1, prog2, 章节 3.1 (求值)
 
 * 注意(Notes):
 
-        很多 Common Lisp 中的 place 涉及使用隐式 progn 的语法. 这也就是说, 其语法的一部分允许被写入的许多表达式形式按顺序进行求值, 丢弃除了最后一个以外的表达式形式的值并且返回最后一个表达式形式的结果. 这些 place 包括, 但不限于以下几点: 一个 lambda 表达式的主体部分; 多种控制和条件表达式形式的主体部分 (比如, case, catch, progn, 和 when).
+        很多 Common Lisp 中的位置涉及使用隐式 progn [implicit progn]的语法. 这也就是说, 其语法的一部分允许编写的多个表达式形式[form]按顺序进行求值, 丢弃除了最后一个以外的表达式形式[form]的值并且返回最后一个表达式形式[form]的结果. 这些位置包括, 但不限于以下这些: 一个 lambda 表达式[lambda expression]的主体部分; 多种控制和条件表达式形式[form]的主体部分 (比如, case, catch, progn, 和 when).
 
 
 ### <span id="MDEFINE-MODIFY-MACRO">宏 DEFINE-MODIFY-MACRO</span>
@@ -4147,20 +4147,20 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 参数和值(Arguments and Values):
 
-        name---一个符号.
-        lambda-list---一个 define-modify-macro lambda 列表
-        function---一个符号.
-        documentation---一个字符串; 不求值.
+        name---一个符号[symbol].
+        lambda-list---一个 define-modify-macro lambda 列表[define-modify-macro lambda list].
+        function---一个符号[symbol].
+        documentation---一个字符串[string]; 不求值.
 
 * 描述(Description):
 
-        define-modify-macro 定义一个名为 name 的宏去读取和写入一个 place.
+        define-modify-macro 定义一个名为 name 的宏[macro]去读取[read]和写入[write]一个位置[place].
 
-        给新的宏的参数是一个 place, 后面跟着 lambda-list 中提供的参数. define-modify-macro 定义的宏正确地传递环境参数给 get-setf-expansion.
+        给这个新的宏[macro]的这些参数是一个位置[place], 后面跟着 lambda-list 中提供的那些参数. 使用 define-modify-macro 定义的宏[macro]正确地传递环境参数[environment parameter]给 get-setf-expansion.
 
-        当这个宏被调用, function 被应用到这个 place 的旧的内容和 lambda-list 的参数上来获取新的值, 然后这个 place 被更新为包含这个结果.
+        当这个宏[macro]被调用, 函数 function 被应用到这个位置[place]的旧的内容和 lambda-list 的参数上来获取新的值, 然后这个位置[place]被更新为包含这个结果.
 
-        除了避免多重求值的问题 (见下方), 一个 define-modify-macro 的展开等价于下面这个:
+        除了避免多重求值的问题 (见下方), 一个 define-modify-macro 的展开式等价于下面这个:
 
     ```LISP
     (defmacro name (reference . lambda-list)
@@ -4169,13 +4169,13 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
               (function ,reference ,arg1 ,arg2 ...)))
     ```
 
-        其中 arg1, arg2, ..., 是出现在 lambda-list 中的参数; 为剩余参数制定适当的规定.
+        其中 arg1, arg2, ..., 是出现在 lambda-list 中的形参; 为剩余参数[rest parameter]制定适当的规定.
 
-        通过 define-modify-macro 定义的宏调用的子表达式形式如章节 5.1.1.1 (Evaluation of Subforms to Places) 中描述的求值.
+        通过 define-modify-macro 定义的这个宏调用的子表达式形式[subform]按照章节 5.1.1.1 (位置的子表达式形式求值) 中描述的求值.
 
-        Documentation 作为一个文档字符串关联给 name (作为 function) 和这个宏函数.
+        documentation 作为一个文档字符串[documentation string]关联给 name (作为 function) 和这个宏函数[macro function].
 
-        如果一个 define-modify-macro 表达式形式作为顶层表达式出现, 编译器必须在编译时存储宏定义, 所以出现在这个文件中后面的宏可以被正确地展开.
+        如果一个 define-modify-macro 表达式形式[form]作为顶层表达式形式[top level form]出现, 编译器[compiler]必须在编译时存储这个宏[macro]定义, 以便出现在这个文件中后面的宏可以被正确地展开.
 
 * 示例(Examples):
 
@@ -4200,13 +4200,12 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 也见(See Also):
 
-        defsetf, define-setf-expander, documentation, Section 3.4.11 (Syntactic Interaction of Documentation Strings and Declarations)
+        defsetf, define-setf-expander, documentation, 章节 3.4.11 (文档字符串和声明的语法交互)
 
 * 注意(Notes): None.
 
-
 ### <span id="MDEFSETF">宏 DEFSETF</span>
-<!-- TODO 待校验 -->
+
 * 语法(Syntax):
 
         "短表达式形式(short form)":
@@ -4221,33 +4220,33 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 参数和值(Arguments and Values):
 
-        access-fn---一个命名一个函数或一个宏的符号.
-        update-fn---一个命名一个函数或一个宏的符号.
-        lambda-list---一个 defsetf lambda 列表.
-        store-variable---一个符号 (一个变量名).
-        declaration---一个 declare 表达式; 不求值.
-        documentation---一个字符串; 不求值.
-        form---一个表达式形式.
+        access-fn---命名一个函数[function]或一个宏[macro]的一个符号[symbol].
+        update-fn---命名一个函数[function]或一个宏[macro]的一个符号[symbol].
+        lambda-list---一个 defsetf lambda 列表[defsetf lambda list].
+        store-variable---一个符号[symbol] (一个变量[variable]名字[name]).
+        declaration---一个 declare 表达式[expression]; 不求值.
+        documentation---一个字符串[string]; 不求值.
+        form---一个表达式形式[form].
 
 * 描述(Description):
 
-        对于相对简单的情况 defsetf 定义了如何去 setf 一个 place (access-fn ...). (参阅 define-setf-expander 以获得更多对这个机制的使用.) 必须是由 access-fn 命名的函数或宏计算了其所有参数的情况.
+        对于相对简单的情况 defsetf 定义了如何去 setf 这个表达式形式 (access-fn ...) 的一个位置[place]. (参阅 define-setf-expander 以获得更多对这个机制的使用方式.) 必须是由 access-fn 命名的函数[function]或宏[macro]计算了其所有参数.
 
-        defsetf 可能接受两个表达式形式的其中之一, 称之为 "短表达式形式(short form)" 和  "长表达式形式(long form)", 它们是由第二个参数的类型区分的.
+        defsetf 可能接受两个表达式形式的其中之一, 它们称之为 "短表达式形式(short form)" 和  "长表达式形式(long form)", 它们是由第二个实参[argument]的类型[type]来区分的.
 
-        当使用短表达式形式时, update-fn 必须命名一个函数 (或者宏), 它比 access-fn 多接收一个参数. 当 setf 被给予一个 access-fn 的调用的 place, 它展开为一个 update-fn 的调用并且给定所有给 access-fn 的参数, 还有作为它的最后一个参数, 那个新的值(它必须是 update-fn 返回的值).
+        当使用短表达式形式时, update-fn 必须命名一个函数[function] (或者宏[macro]), 它比 access-fn 多接收一个参数. 当 setf 被给予一个 access-fn 调用的位置[place], 它展开为一个 update-fn 的调用并且给定所有给 access-fn 的参数, 还有作为它的最后一个参数, 那个新的值(这个值必须被 update-fn 作为它的值返回).
 
-        这个长表达式形式的 defsetf 类似于 defmacro. 其中 lambda-list 描述了 access-fn 的参数. 这个 store-variables 描述了存储到这个 place 的值或多值. 这个 body 必须计算一个 access-fn 上调用的 setf 的展开. 这个展开函数定义在 defsetf 表达式出现的同一个词法作用域内.
+        这个长表达式形式的 defsetf 类似于 defmacro. 其中 lambda-list 描述了 access-fn 的参数. 这些 store-variables 描述了存储到这个位置[place]的值或多值. 这个主体 body 必须计算一个 access-fn 上调用的 setf 的展开式. 这个展开函数定义在 defsetf 表达式形式[form]出现的相同词法环境[lexical environment]内.
 
-        在 forms 的求值期间, 在 lambda-list 和 store-variables 中的变量绑定给临时变量的名字, 就像是通过 gensym 或 gentemp 生成, 这会通过这些子表达式形式的值的 setf 展开式来绑定. 这个绑定允许在不考虑求值顺序问题的情况下写入表达式形式. 在可能的情况下, defsetf会安排临时变量, 以优化最终结果.
+        在这些表达式形式 forms 的求值期间, 在 lambda-list 和 store-variables 中的那些变量绑定为临时变量的名字, 就像是通过 gensym 或 gentemp 生成的一样, 这会通过对这些子表达式形式[subform]的值的 setf 的展开式来绑定. 这个绑定允许在不考虑求值顺序问题的情况下编写这些表达式形式 forms. 在可能的情况下, defsetf 会安排临时变量, 以优化最终结果.
 
-        这个 defsetf 中的主体代码隐式地闭合在一个名为 access-fn 的 block 内.
+        这个 defsetf 中的主体代码隐式地闭合在一个名为 access-fn 的块[block]内.
 
-        defsetf 确保这个 place 的子表达式形式只被求值一次.
+        defsetf 确保这个位置[place]的子表达式形式[subform]只被求值一次.
 
-        Documentation 作为 setf 种类的文档字符串关联到 access-fn.
+        documentation 作为 setf 种类的文档字符串[documentation string]关联到 access-fn.
 
-        如果一个 defsetf 表达式形式作为顶层表达式出现, 编译器必须使这个 setf 展开可用, 因此它可以被用于展开这个文件中后面的 setf 调用. 如果在同一文件中后面使用 access-fn, 那么用户必须确保在编译时能够对表达式形式进行求值. 编译器必须使这些 setf 展开在编译期对 get-setf-expansion 调用时可用, 其中它的 environment 参数是一个作为一个宏的环境参数接收到的值.
+        如果一个 defsetf 表达式形式[form]作为顶层表达式形式[top level form]出现, 编译器[compiler]必须使这个 setf 展开器[setf expander]可用, 以便它可以被用于展开这个文件[file]中后面的 setf 调用. 如果在同一文件[file]中后面的一个位置[place]中使用 access-fn, 那么如果有的话, 用户必须确保这些表达式形式 forms 能够在编译时进行求值. 编译器[compiler]必须使这些 setf 展开器[setf expander]对 get-setf-expansion 的编译期调用是可用的, 当它的 environment 参数是一个作为一个宏[macro]的环境参数[environment parameter]接收到的值时.
 
 * 示例(Examples):
 
@@ -4257,9 +4256,10 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
     (defsetf symbol-value set)
     ```
     
-        的影响是构建到 Common Lisp 系统中. 这个导致表达式形式 (setf (symbol-value foo) fu) 展开为 (set foo fu).
+        的效果被构建到 Common Lisp 系统中. 这个导致表达式形式 (setf (symbol-value foo) fu) 展开为 (set foo fu).
 
         注意
+
     ```LISP
     (defsetf car rplaca)
     ```
@@ -4284,7 +4284,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
     c =>  (1 2 3 (4 MIDDLEGUY-SYMBOL 6) 7 8 9)
     ```
 
-        一个使用 defsetf 的长表达式的例子是:
+        一个 defsetf 的长表达式的使用的示例是:
 
     ```LISP
     (defsetf subseq (sequence start &optional end) (new-sequence)
@@ -4323,14 +4323,13 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 也见(See Also):
 
-        documentation, setf, define-setf-expander, get-setf-expansion, Section 5.1 (Generalized Reference), Section 3.4.11 (Syntactic Interaction of Documentation Strings and Declarations)
+        documentation, setf, define-setf-expander, get-setf-expansion, Section 5.1 (Generalized Reference), Section 3.4.11 (文档字符串和声明的语法交互)
 
 * 注意(Notes):
 
-        forms 必须包含返回正确值的规定 (这个 store-variable 的值或多值). 这个被 forms 处理而不是 defsetf 因为在很多情况下这个值不需要额外成本就可以被返回, 通过调用一个同时存储到 place 并返回正确值的函数.
+        这些表达式形式 forms 必须包含返回正确值的规定 (这个 store-variable 的值或多值). 这个由这些表达式形式 forms 处理而不是 defsetf 因为在很多情况下这个值不需要额外成本就可以被返回, 通过调用一个同时存储到那个位置[place]并返回正确值的函数.
 
-        一个在 access-fn 调用的 setf 也求值所有 access-fn 的参数; 它不能特别地对待任何一个. 这就意味着 defsetf 不能被用于描述如何存储到一个字节的 generalized reference, 就像 (ldb field reference). define-setf-expander 用于处理不符合 defsetf 施加的限制的情况, 并为用户提供额外的控制.
-
+        一个在 access-fn 上调用的 setf 也求值所有 access-fn 的参数; 它不能特别地对待任何一个. 这就意味着 defsetf 不能被用于描述如何存储到一个广义引用[generalized reference]为一个字节, 例如 (ldb field reference). define-setf-expander 用于处理不符合 defsetf 所施加的限制的情况, 并为用户提供额外的控制.
 
 ### <span id="MDEFINE-SETF-EXPANDER">宏 DEFINE-SETF-EXPANDER</span>
 
@@ -4414,7 +4413,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 也见(See Also):
 
-        setf, defsetf, documentation, get-setf-expansion, Section 3.4.11 (Syntactic Interaction of Documentation Strings and Declarations)
+        setf, defsetf, documentation, get-setf-expansion, Section 3.4.11 (文档字符串和声明的语法交互)
 
 * 注意(Notes):
 
@@ -4561,7 +4560,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
         在表达式形式 (shiftf place1 place2 ... placen newvalue) 中, 从 place1 到 placen 的值被读取和保存, 并且 newvalue 被求值, 总共 n+1 个值. 值 2 到 n+1 被分别存储到 place1 到 placen. 就好像所有的 place 都形成了一个移位寄存器; newvalue 从右边移过来, 所有的值都转移到左边的位置, 然后返回的值从 place1 中移出.
 
-        关于 place 求值的更多信息, 见章节 5.1.1.1 (Evaluation of Subforms to Places).
+        关于 place 求值的更多信息, 见章节 5.1.1.1 (位置的子表达式形式求值).
 
 * 示例(Examples):
 
@@ -4634,7 +4633,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
         在表达式形式 (rotatef place1 place2 ... placen) 中, 从 place1 到 placen 的值被读取和写入. 值 2 到 n 和值 1 接下来被存储到 place1 到 placen. 就好像所有的 place 都形成了一个末端的移位寄存器, 它将一个 place 旋转到左边, 而 place1 的值被移动到placen.
 
-        关于 place 求值的更多信息, 见章节 5.1.1.1 (Evaluation of Subforms to Places).
+        关于 place 求值的更多信息, 见章节 5.1.1.1 (位置的子表达式形式求值).
 
 * 示例(Examples):
 
