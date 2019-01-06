@@ -1,5 +1,5 @@
 # 5. 数据和控制流
-<!-- TODO place  Generalized Reference ?? -->
+
 > * 5.1 [广义引用](#GeneralizedReference)
 > * 5.2 [退出点的控制转移](#TCEP)
 > * 5.3 [数据和控制流字典](#DCFDictionary)
@@ -4340,27 +4340,27 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 参数和值(Arguments and Values):
 
-        access-fn---一个命名一个宏或函数的符号.
-        lambda-list -- 宏 lambda 列表.
-        declaration---一个 declare 表达式; 不求值.
-        documentation---一个字符串; 不求值.
-        forms---一个隐式的 progn.
+        access-fn---命名[name]一个宏[macro]或函数[function]的一个符号[symbol].
+        lambda-list -- 宏 lambda 列表[macro lambda list].
+        declaration---一个 declare 表达式[expression]; 不求值.
+        documentation---一个字符串[string]; 不求值.
+        forms---一个隐式的 progn [implicit progn].
 
 * 描述(Description):
 
-        define-setf-expander 指定了 setf 更新一个被 access-fn 引用的 place 的方法.
+        define-setf-expander 指定了 setf 更新一个被 access-fn 引用的位置[place]的方法.
 
-        当 setf 被赋予一个以 access-fn 指定的位置和这个位置的新值时, 它被展开为一个执行适当更新的表达式形式.
+        当 setf 被给定一个根据 access-fn 指定的位置[place]和这个位置的一个新值时, 它被展开为一个执行适当更新的表达式形式.
 
-        这个 lambda-list 支持解构. 见章节 3.4.4 (Macro Lambda Lists).
+        这个 lambda-list 支持解构. 见章节 3.4.4 (宏 lambda 列表).
 
-        Documentation 作为一个 setf 类型的文档字符串关联给 access-fn.
+        documentation 作为一个 setf 类型的文档字符串[documentation string]关联给 access-fn.
 
-        Forms 组成了 setf 展开定义的主体, 并且必须计算 setf 展开, 以便调用setf, 它通过给定的 access-fn 来引用该 place. 这个 setf 展开函数被定义在 define-setf-expander 出现的同一个词法环境里. 当 forms 要被执行时, lambda-list 中的变量被绑定给 place 表达式形式部分. 一个 define-setf-expander 表达式形式的主体表达式形式 (不是 lambda-list) 隐式地闭合在一个名为 access-fn 的 block 中.
+        这些表达式形式 forms 组成了 setf 展开器[setf expander]定义的主体, 并且必须计算一个借助于给定 access-fn 来引用这个位置[place]的 setf 上的调用的 setf 展开式[setf expansion]. 这个 setf 展开器[setf expander]函数被定义在 define-setf-expander 表达式形式[form]出现的同一个词法环境[lexical environment]里. 当这些表达式形式 forms 要被执行时, lambda-list 中的变量被绑定为位置[place]表达式形式[form]的各个部分. 一个 define-setf-expander 表达式形式[form]的主体表达式形式 forms (不包括 lambda-list) 被隐式地闭合在一个名为 access-fn 的块[block]中.
 
-        表达式形式的求值必须产生章节 5.1.1.2 (Setf Expansions) 中描述的5个值.
+        这些表达式形式 forms 的求值必须产生章节 5.1.1.2 (Setf 展开式) 中描述的 5 个值.
 
-        如果一个 define-setf-expander 表达式形式作为顶层表达式出现, 编译器必须使这个 setf 展开可用, 这样它就可以被用于展开这个文件中后面的 setf 调用. 如果这个 access-fn 被用于同一个文件后面的一个 place, 程序员必须确保这个 forms 可以在编译期被求值. 编译器必须使这些 setf 展开在编译期对 get-setf-expansion 调用时可用, 其中它的 environment 参数是一个作为一个宏的环境参数接收到的值.
+        如果一个 define-setf-expander 表达式形式[form]作为顶层表达式形式[top level form]出现, 编译器[compiler]必须使这个 setf 展开器[setf expander]可用, 这样它就可以被用于展开这个文件[file]中后面对 setf 的调用. 如果这个 access-fn 被用于同一个文件[file]后面的一个位置[place], 程序员[programmer]必须确保这些表达式形式 forms 可以在编译期被求值. 编译器[compiler]必须使这些 setf 展开器[setf expander]对 get-setf-expansion 的编译期调用是可用的, 当它的 environment 参数是一个作为一个宏[macro]的环境参数[environment parameter]接收到的值时.
 
 * 示例(Examples):
 
@@ -4413,11 +4413,11 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 也见(See Also):
 
-        setf, defsetf, documentation, get-setf-expansion, Section 3.4.11 (文档字符串和声明的语法交互)
+        setf, defsetf, documentation, get-setf-expansion, 章节 3.4.11 (文档字符串和声明的语法交互)
 
 * 注意(Notes):
 
-        define-setf-expander 与长表达式形式的 defsetf 不同, 因为在执行主体的过程中, lambda-list 中的变量被绑定到 place 表达式形式的一部分, 而不是绑定到这些部分的值的临时变量. 另外, define-setf-expander 没有 defsetf 限制access-fn 必须是一个函数或类函数宏; 一个任意 defmacro 解构模式允许出现在 lambda-list 中.
+        define-setf-expander 与长表达式形式的 defsetf 不同在于, 在执行主体的过程中, lambda-list 中的那些变量[variable]被绑定为位置[place]表达式形式[form]的各个部分, 而不是绑定到这些部分的值的临时变量. 另外, define-setf-expander 没有 defsetf 的 access-fn 必须是一个函数[function]或类函数宏[macro]的限制; 一个任意 defmacro 解构模式允许出现在 lambda-list 中.
 
 
 ### <span id="FGET-SETF-EXPANSION">函数 GET-SETF-EXPANSION</span>
@@ -4429,15 +4429,15 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 参数和值(Arguments and Values):
 
-        place---一个 place.
-        environment---一个环境对象.
-        vars, vals, store-vars, writer-form, reader-form---一个 setf 展开.
+        place---一个位置[place].
+        environment---一个环境对象[environment object].
+        vars, vals, store-vars, writer-form, reader-form---一个 setf 展开式[setf expansion].
 
 * 描述(Description):
 
-        确定在 environment 中的 place 的 setf 展开的5个值; 见章节 5.1.1.2 (Setf Expansions).
+        确定在环境 environment 中组成这个 place 的 setf 展开式[setf expansion]的5个值; 见章节 5.1.1.2 (Setf 展开式).
 
-        如果 environment 没有提供或者是 nil, 环境就是 null 词法环境.
+        如果 environment 没有被提供或者是 nil, 那么环境就是那个空词法环境[null lexical environment].
 
 * 示例(Examples):
 
@@ -4473,7 +4473,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 注意(Notes):
 
-        任何复合表达式形式都是一个合法的 place, 因为对于任何操作符为 f 没有 setf 展开的复合表达式形式都被展开为一个 (setf f) 的调用.
+        任何复合表达式形式[compound form]都是一个合法的位置[place], 因为对于任何操作符[operator] f 没有 setf 展开器[setf expander]的复合表达式形式[compound form]都被展开为一个对 (setf f) 的调用.
 
 
 ### <span id="MSETFPSETF">宏 SETF, PSETF</span>
@@ -4486,33 +4486,33 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 参数和值(Arguments and Values):
 
-        place---一个 place.
-        newvalue---一个表达式形式.
-        results---最后一个 place 的存储表达式形式返回的多值, 如果没有对的话就是 nil.
+        place---一个位置[place].
+        newvalue---一个表达式形式[form].
+        results---最后一个位置 place 的存储表达式形式返回的多值[multiple values[2]], 如果没有这些对 pairs 的话就是 nil.
 
 * 描述(Description):
 
-        setf 改变 place 的值为 newvalue.
+        setf 改变 place 的值[value]为 newvalue.
 
-        (setf place newvalue) 展开为一个更新表达式形式, 它存储 newvalue 求值的结果到 place 引用的位置. 有些 place 表达式形式涉及使用可选参数的存取器(accessor). 这些可选参数是否被 setf 允许, 或者它们的用途是什么, 取决于 setf 展开函数, 不在 setf 的控制之下. 对于任何函数的文档都接受 &optional, &rest, 或 ..... key 参数并且与 setf 一起使用的声明必须指定这些参数是如何处理的.
+        (setf place newvalue) 展开为一个更新表达式形式, 它存储 newvalue 求值的结果到这个位置 place 引用的位置. 有些 place 表达式形式涉及接受可选参数的访问器(accessor)的使用. 这些可选参数是否被 setf 允许, 或者它们的用途是什么, 取决于 setf 展开器函数, 不在 setf 的控制之下. 对于任何接受 &optional, &rest, 或 ..... key 参数并且与 setf 一起使用的声明的函数[function]的文档都必须指明这些参数是如何处理的.
 
-        如果提供了超过一个对, 这些对会按照顺序处理; 这也就是说,
+        如果提供了不止一个对(pair) pair, 这些对(pair)会按照顺序处理; 这也就是说,
 
         (setf place-1 newvalue-1
               place-2 newvalue-2
               ...
               place-N newvalue-N)
 
-        恰好等价于
+        正号等价于
 
         (progn (setf place-1 newvalue-1)
                 (setf place-2 newvalue-2)
                 ...
                 (setf place-N newvalue-N))
 
-        对于 psetf, 如果提供了不止一个对, 那么赋新的值到 place 的操作被并行执行. 更准确地说, 要求值的所有子表达式形式(不管是 place 还是 newvalue 表达式形式)都是从左到右进行求值的; 在所有求值被执行后, 所有的赋值都以不可预计的顺序执行.
+        对于 psetf, 如果提供了不止一个对(pair) pair, 那么赋新的值到这些位置的操作被并行执行. 更准确地说, 要求值的所有子表达式形式[subform] (不管是 place 还是 newvalue 表达式形式[form]中) 都是从左到右进行求值的; 在所有求值被执行后, 所有的赋值都以不可预计的顺序执行.
 
-        关于详细的对待 setf 和 psetf 的展开式的信息, 见章节 5.1.2 (Kinds of Places).
+        关于对待 setf 和 psetf 的展开式的详细信息, 见章节 5.1.2 (位置的种类).
 
 * 示例(Examples):
 
@@ -4535,7 +4535,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 也见(See Also):
 
-        define-setf-expander, defsetf, macroexpand-1, rotatef, shiftf, Section 5.1 (Generalized Reference)
+        define-setf-expander, defsetf, macroexpand-1, rotatef, shiftf, 章节 5.1 (广义引用)
 
 * 注意(Notes): None.
 
@@ -4548,19 +4548,19 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 参数和值(Arguments and Values):
 
-        place---一个 place.
-        newvalue---一个表达式形式; 求值.
-        old-value-1---一个对象 (第一个 place 的旧值).
+        place---一个位置[place].
+        newvalue---一个表达式形式[form]; 求值.
+        old-value-1---一个对象[object] (第一个 place 的旧值[value]).
 
 * 描述(Description):
 
-        shiftf 通过存储 newvalue 到最后一个 place 来修改每一个 place 的值, 并将第二个的值从最后一个 place 到其余 place.
+        shiftf 通过存储 newvalue 到最后一个 place 并将第二个到最后一个 place 的值移动到到其余 place 中来修改每一个 place 的值, .
 
         如果 newvalue 产生了超过这里的存储变量数量的值, 多余的值会被忽略. 如果 newvalue 产生的值少于存储变量的数量, 缺少的值会被设置为 nil.
 
-        在表达式形式 (shiftf place1 place2 ... placen newvalue) 中, 从 place1 到 placen 的值被读取和保存, 并且 newvalue 被求值, 总共 n+1 个值. 值 2 到 n+1 被分别存储到 place1 到 placen. 就好像所有的 place 都形成了一个移位寄存器; newvalue 从右边移过来, 所有的值都转移到左边的位置, 然后返回的值从 place1 中移出.
+        在表达式形式 (shiftf place1 place2 ... placen newvalue) 中, 从 place1 到 placen 的值被读取[read]和保存, 然后 newvalue 被求值, 总共 n+1 个值. 从 2 到 n+1 的值被分别存储到 place1 到 placen. 就好像所有这些 place 都形成了一个移位寄存器; newvalue 从右边移过来, 所有的值都转移到左边一个位置, 然后返回的值从 place1 中移出.
 
-        关于 place 求值的更多信息, 见章节 5.1.1.1 (位置的子表达式形式求值).
+        关于这些位置 places 的子表达式形式[subform]的求值[evaluation]的更多信息, 见章节 5.1.1.1 (位置的子表达式形式求值).
 
 * 示例(Examples):
 
@@ -4589,7 +4589,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 也见(See Also):
 
-        setf, rotatef, Section 5.1 (Generalized Reference)
+        setf, rotatef, 章节 5.1 (广义引用)
 
 * 注意(Notes):
 
@@ -4606,7 +4606,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
           (setf placen var0)
           var1)
 
-        除了后者会对每个 place 的任何子表达式进行两次求值, 而 shiftf 计算一次. 比如,
+        除了后者会对每个 place 的任何子表达式形式[subform]进行两次求值, 而 shiftf 计算一次. 比如,
 
         (setq n 0) =>  0
         (setq x (list 'a 'b 'c 'd)) =>  (A B C D)
@@ -4623,17 +4623,17 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 参数和值(Arguments and Values):
 
-        place---一个 place.
+        place---一个位置[place].
 
 * 描述(Description):
 
         rotatef 通过将值从一个 place 旋转到另一个 place 来修改每个 place 的值.
 
-        如果 newvalue 产生了超过这里的存储变量数量的值, 多余的值会被忽略. 如果 newvalue 产生的值少于存储变量的数量, 缺少的值会被设置为 nil.
+        如果一个 place 产生了超过这里的存储变量数量的值, 多余的值会被忽略. 如果一个 place 产生的值少于存储变量的数量, 缺少的值会被设置为 nil.
 
-        在表达式形式 (rotatef place1 place2 ... placen) 中, 从 place1 到 placen 的值被读取和写入. 值 2 到 n 和值 1 接下来被存储到 place1 到 placen. 就好像所有的 place 都形成了一个末端的移位寄存器, 它将一个 place 旋转到左边, 而 place1 的值被移动到placen.
+        在表达式形式 (rotatef place1 place2 ... placen) 中, 从 place1 到 placen 的值被读取[read]和写入[write]. 第 2 到 n 个值和值 1 接下来被存储到 place1 到 placen. 就好像所有这些位置都形成了一个末端的移位寄存器, 它将一个位置旋转到左边, 而 place1 的值被移动到 placen.
 
-        关于 place 求值的更多信息, 见章节 5.1.1.1 (位置的子表达式形式求值).
+        关于这些位置 places 的子表达式形式[subform]的求值[evaluation]的更多信息, 见章节 5.1.1.1 (位置的子表达式形式求值).
 
 * 示例(Examples):
 
@@ -4652,18 +4652,18 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 也见(See Also):
 
-        define-setf-expander, defsetf, setf, shiftf, *macroexpand-hook*, Section 5.1 (Generalized Reference)
+        define-setf-expander, defsetf, setf, shiftf, *macroexpand-hook*, 章节 5.1 (广义引用)
 
 * 注意(Notes):
 
-        这个 (rotatef place1 place2 ... placen) 的影响粗略等价于
+        这个 (rotatef place1 place2 ... placen) 的效果粗略等价于
 
         (psetf place1 place2
                 place2 place3
                 ...
                 placen place1)
 
-        除了后者会对每个 place 的任何子表达式进行两次求值, 而 rotatef 求值.
+        除了后者会对每个 place 的任何子表达式形式[subform]进行两次求值, 而 rotatef 求值一次.
 
 ### <span id="CTCONTROL-ERROR">状况类型 CONTROL-ERROR</span>
 
@@ -4673,7 +4673,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 描述(Description):
 
-        类型 control-error 由错误条件组成, 这些错误条件是由程序中无效的动态转移引起的. throw 一个不活跃的 tag 或 go 或者 return-from 一个不再是动态可用的 tag 导致的错误是 control-error 错误.
+        类型[type] control-error 由程序中非法的动态控制转移所引起的错误状况组成. throw 一个不活跃的 tag 或者 go 或 return-from 一个不再是动态可用的 tag 导致的错误就是 control-error 类型[type]的.
 
 
 ### <span id="CTPROGRAM-ERROR">状况类型 PROGRAM-ERROR</span>
@@ -4684,7 +4684,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 描述(Description):
 
-        类型 program-error 由不正确的程序语法相关的错误条件组成. 显然不是词法地命名一个 go 标签或 block 标签导致的错误是类型 program-error.
+        类型[type] program-error 由不正确的程序语法相关的错误状况组成. 命名一个不是词法上可见的 go 标签[go tag]或 block 标签[block tag]所导致的错误就是类型[type] program-error 的.
 
 
 ### <span id="CTUNDEFINED-FUNCTION">状况类型 UNDEFINED-FUNCTION</span>
@@ -4695,9 +4695,9 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 描述(Description):
 
-        类型 undefined-function 由表示尝试读取未定义函数的定义的错误条件组成.
+        类型[type] undefined-function 由表示尝试去读取[read]一个未定义函数[undefined function]的定义的错误[error]状况[condition]组成.
 
-        这个 cell (见 cell-error) 的名字是一个 funbound 的函数名.
+        这个存储格(cell) (见 cell-error) 的名字是一个 funbound 的函数名[function name].
 
 * 也见(See Also):
 
