@@ -6,7 +6,7 @@
 ## 6.1 <span id="TheLOOPFacility">LOOP 机制</span>
 
 > * 6.1.1 [Loop 机制概述](#OverviewLoopFacility)
-> * 6.1.2 [变量初始化和步进](#VarInitAndStepClauses)
+> * 6.1.2 [变量初始化和步进子句](#VarInitAndStepClauses)
 > * 6.1.3 [值累积子句](#ValueAccumulationClauses)
 > * 6.1.4 [终止测试子句](#TerminationTestClauses)
 > * 6.1.5 [无条件执行子句](#UnconditionalExecutionClauses)
@@ -17,7 +17,7 @@
 
 ### 6.1.1 <span id="OverviewLoopFacility">Loop 机制概述</span>
 
-    这个 loop 宏执行循环.
+这个 loop 宏[macro]执行循环.
 
 > * 6.1.1.1 [简单 vs 扩展 Loop](#SimpleExtendedLoop)
 > * 6.1.1.2 [Loop 关键字](#LoopKeywords)
@@ -30,32 +30,32 @@
 
 #### 6.1.1.1 <span id="SimpleExtendedLoop">简单 vs 扩展 Loop</span>
 
-loop 表达式形式可以被分为两类: 简单 loop 表达式和扩展 loop 表达式.
+loop 表达式形式[form]可以被分为两类: 简单 loop 表达式形式[form]和扩展 loop 表达式形式[form].
 
 ##### 6.1.1.1.1 简单 Loop
 
-一个简单 loop 表达式形式是指主体(body)只包含复合表达式形式的 loop 表达式. 每个表达式形式都按从左到右的次序依次求值. 当最后一个表达式形式被求值后, 第一个表达式被再一次求值, 以此类推, 在一个不终止的循环中. 一个简单 loop 表达式形式建立一个名为 nil 的隐式的 block. 这个简单 loop 的执行可以通过对这个隐式的 block 做显式的控制转移 (使用 return 或 return-from) 或者对这个 block 外部的退出点做控制转移来终止 (比如, 使用 throw, go, 或 return-from). 
+一个简单 loop 表达式形式[form]是有着只包含复合表达式形式[compound form]的主体(body)的 loop 表达式形式. 每个表达式形式[form]都按从左到右的次序依次求值. 当最后一个表达式形式 form 被求值后, 第一个表达式形式 form 被再一次求值, 以此类推, 在一个不终止的循环中. 一个简单 loop 表达式形式[form]建立一个名为 nil 的隐式块[implicit block]. 这个简单 loop 的执行可以通过显式控制转移到这个隐式块[implicit block] (使用 return 或 return-from) 或者到这个块[block]外部的某个退出点[exit point] (比如, 使用 throw, go, 或 return-from)来终止. 
 
 ##### 6.1.1.1.2 扩展 Loop
 
-一个扩展 loop 表达式形式是指主体(body)中包含原子表达式的一个 loop 表达式形式. 当这个 loop 宏处理这样一个表达式形式时, 它调用一个通常称为"Loop 工具"的工具.
+一个扩展 loop 表达式形式[form]是指有着包含原子[atomic]表达式[expression]的主体(body)的一个 loop 表达式形式[form]. 当这个 loop 宏[macro]处理这样一个表达式形式[form]时, 它调用一个通常称为 "Loop 工具" 的工具.
 
-这个 Loop 工具提供了对循环模式中常用的机制的标准化访问, 循环模式是由 loop 关键字引入的.
+这个 Loop 工具通过循环模式提供对迭代中常用机制的标准化访问, 循环模式是由 loop 关键字[loop keyword]引入的.
 
-扩展 loop 表达式形式的主体(body)被分为 loop 子句, 每一个都由循环 loop 关键字和表达式形式组成. 
+扩展 loop 表达式形式[form]的主体(body)被分为 loop 子句, 每一个子句都由 loop 关键字[loop keyword]和表达式形式[form]组成. 
 
 #### 6.1.1.2 <span id="LoopKeywords">Loop 关键字</span>
 
-Loop 关键字不是真的关键字; 它们是特殊的符号, 通过名字而不是对象标识来识别, 并只有在 loop 工具中有意义. 一个 loop 关键字是一个通过它的名字识别的(不是它的标识)符号, 不管它在哪个包中访问.
+Loop 关键字[loop keyword]不是真的关键字[keyword[1]]; 它们是特殊的符号[symbol], 通过名字[name]而不是对象[object]标识来识别, 并只有在 loop 工具中有意义. 一个 loop 关键字[loop keyword]是一个通过它的名字[name] (而不是它的标识) 来识别的符号[symbol], 不管它在哪个包[package]中是可访问的[accessible].
 
-通常, loop 关键字不是 COMMON-LISP 包中的外部符号, 除非在 Common Lisp 中需要使用与 loop 关键字相同名称的符号来实现其他目的. 比如, 在 COMMON-LISP 包中有一个符号名为 "UNLESS" 但是没有名为 "UNTIL" 的符号.
+通常, loop 关键字[loop keyword]不是 COMMON-LISP 包中的外部符号[external symbol], 除非在一种巧合的情况下 Common Lisp 需要使用与 loop 关键字[loop keyword]相同名称的符号[symbol]来实现其他目的. 比如, 在 COMMON-LISP 包中有一个符号名字[name]为 "UNLESS" 但是没有名字[name]为 "UNTIL" 的符号[symbol].
 
-如果在一个 loop 表达式中没有提供 loop 关键字, 这个 Loop 工具就会重复地执行主体(body); 见章节 6.1.1.1.1 (Simple Loop). 
+如果在一个 loop 表达式形式[form]中没有提供 loop 关键字[loop keyword], 那么这个 Loop 工具就会重复地执行主体(body); 见章节 6.1.1.1.1 (简单 Loop). 
 
 
 #### 6.1.1.3 <span id="ParsingLoopClauses">解析 Loop 子句</span>
 
-扩展 loop 表达式形式的语法部分称之为子句(clauses); 解析的规则由子句的关键字决定. 下面这个例子展示了有着6个子句的 loop 表达式形式:
+扩展 loop 表达式形式[form]的语法部分称之为子句(clause); 解析的规则由子句的关键字决定. 下面这个例子展示了有着 6 个子句的 loop 表达式形式[form]:
 
 ```LISP
 (loop for i from 1 to (compute-top-value)       ; first clause
@@ -67,37 +67,36 @@ Loop 关键字不是真的关键字; 它们是特殊的符号, 通过名字而�
       finally (format t "About to exit!"))      ; sixth clause
 ```
 
-每个 loop 关键字都引入了一个复合 loop 子句或一个简单的 loop 子句, 它可以由一个 loop 关键字组成, 然后是一个单个的表单. 一个子句中表达式形式的数量由开始这个子句的 loop 关键字和这个子句中的辅助关键字决定. 关键字 do, doing, initially, 和 finally 是仅有的可以接受任何数量的表达式形式并以一个隐式的 progn 组织起来的 loop 关键字.
+每个 loop 关键字[loop keyword]都引入了一个复合 loop 子句或一个简单的 loop 子句, 它可以由一个 loop 关键字[loop keyword]后面跟着一个单独的表达式形式[form]所组成. 一个子句中表达式形式[form]的数量由开始这个子句的 loop 关键字[loop keyword]和这个子句中的辅助关键字决定. 关键字 do, doing, initially, 和 finally 是仅有的可以接受任何数量的表达式形式[form]并以一个隐式的 progn [implicit progn]组织起来的 loop 关键字.
 
-Loop 子句可以包含辅助关键字, 这个关键字有时候称之为介词. 比如, 代码中的第一个子句包含了介词 from 和 to, 它们标记出了开始和结束的值.
+Loop 子句可以包含辅助关键字, 这个关键字有时候称之为介词. 比如, 上面这段代码中的第一个子句包含了介词 from 和 to, 它们标记出了步进开始和结束的值.
 
-关于 loop 语法的详细信息, 见宏 loop. 
+关于 loop 语法的详细信息, 见宏[macro] loop. 
 
 
 #### 6.1.1.4 <span id="ExpandingLoopForms">展开 Loop 表达式形式</span>
 
-一个 loop 宏表达式展开为一个包含一个或多个绑定表达式(这个建立 loop 变量的绑定)和一个 block 和一个 tagbody(这个表示循环控制结构) 的表达式形式. 在 loop 中建立的变量绑定就像是通过 let 或者 lambda 一样.
+一个 loop 宏表达式形式[macro form]展开为一个包含一个或多个绑定表达式(这个建立[establish]循环变量的绑定[binding])和一个 block 和一个 tagbody(这个表示循环控制结构) 的表达式形式[form]. 在 loop 中建立的变量就像是通过 let 或者 lambda 绑定的一样.
 
-实现可以将初始值的设置和绑定交错在一起. 然而, 初始值的赋值总是按照用户指定的顺序被计算. 因此, 变量有时会被绑定到正确类型的无意义值, 然后在开始时使用 setq 将其设置为真正的初始值. 这个交错的一个含义是, 它是依赖于具体实现的, 无论在哪个词法环境中, 初始值表达式形式(被称为 form1, form2, form3, step-fun, vector, hash-table, 和 package)在任何 for-as-subclause, 除了 for-as-equals-then 之外, 该词法环境都只包含在该表达式形式之前的循环变量, 或者包含更多或全部的循环变量; 在一个 for-as-equals-then 表达式形式的 form1 和 form2 包括所有循环变量的词法环境.
+具体实现可以将初始值的设置和绑定[binding]交错在一起. 然而, 初始值的赋值总是按照用户指定的顺序被计算. 因此, 变量有时会被绑定到正确类型[type]的无意义值, 然后在开始时使用 setq 将其设置为真正的初始值. 这个交错的一个含义是, 在除了 for-as-equals-then 之外的任何 for-as-subclause 中的初始值表达式形式[form] (不同地称为 form1, form2, form3, step-fun, vector, hash-table, 和 package) 被求值所在的词法环境[lexical environment]是只包含在该表达式形式之前的循环变量, 还是包含更多或全部的循环变量, 是依赖于具体实现的[implementation-dependent]; 在一个 for-as-equals-then 表达式形式的 form1 和 form2 包括了所有循环变量的词法环境[lexical environment].
 
-在这个表达式形式展开后, 它由 tagbody 中的三个基本部分组成: 循环序言(the loop prologue), 循环体(the loop body), 还有循环结尾(the loop epilogue).
+在这个表达式形式[form]展开后, 它由 tagbody 中的三个基本部分组成: 循环序言(the loop prologue), 循环体(the loop body), 还有循环结尾(the loop epilogue).
 
 循环序言(the loop prologue)
 
-    循环序言包含在迭代开始之前执行的表达式形式符, 例如变量子句中给定的任何自动变量初始化, 以及它们出现在源代码中的任何初始化子句.
+    循环序言包含在循环开始之前执行的表达式形式[form], 例如 variable 子句中指定的任何自动变量初始化, 以及任何 initially 子句出现在源代码中的位置.<!--TODO 待校对-->
 
 循环体(the loop body)
 
-    循环体包含了在迭代期间执行的表达式形式, 包括应用特定的计算, 终止测试, 还有变量步进.
+    循环体包含了在循环期间执行的表达式形式[form], 包括应用特定的计算, 终止测试, 还有变量步进[step[1]].
 
 循环结尾(the loop epilogue)
 
-    循环结尾包含循环终止后执行的表达式形式, 比如 finally 子句, 如果存在, 还有任何来自于 accumulation 子句的隐式的返回值或者一个 termination-test 子句.
+    循环结尾包含循环终止后执行的表达式形式[form], 比如 finally 子句, 如果存在的话, 还有任何来自于 accumulation 子句或者一个 termination-test 子句的隐式的返回值.
 
-一些来自于源表达式形式的子句只对循环序言贡献代码; 这个子句必须在 loop 表达式主体中的其他子句之前. 其他子句只对循环结尾贡献代码. 所有其他的子句都以和原始的循环源形式中给出的相同的顺序对最终的转换表达式形式做出贡献.
+一些来自于源表达式形式[form]的子句只对循环序言贡献代码; 这个子句必须在 loop 表达式主体中的其他子句之前. 其他子句只对循环结尾贡献代码. 所有其他的子句都以和原始的 loop 源表达式形式[form]中给出的相同的顺序为最终的转换表达式形式[form]贡献代码.
 
-除非提供了名字, 否则 loop 表达式形式的展开产生一个隐式的名为 nil 的 block. 因此, return-from (有时为 return) 可以被用于从 loop 中返回值或退出 loop. 
-
+除非提供了 named, 否则 loop 宏的展开式产生一个名为 nil 的隐式块[implicit block]. 因此, return-from (有时为 return) 可以被用于从 loop 中返回值或退出 loop. 
 
 #### 6.1.1.5 <span id="SummaryLoopClauses">Loop 子句综述</span>
 
@@ -110,112 +109,107 @@ Loop 子句属于以下类别之一:
 > * 6.1.1.5.5 [条件执行子句综述](#SummaryCondExecClauses)
 > * 6.1.1.5.6 [其他子句综述](#SummaryMiscellaneousClauses)
 
-
 ##### 6.1.1.5.1 <span id="SummaryVarInitStepClauses">变量初始化和步进子句综述</span>
 
-这个 for 和 as 构造提供一个循环控制子句, 它建立一个要被初始话的变量. for 和 as 子句可以和 loop 关键字 and 组合使用来并行初始化和步进. 否则, 这个初始化和步进就是顺序执行的.
+这个 for 和 as 构造提供一个循环控制子句, 它建立一个要被初始化的变量. for 和 as 子句可以和 loop 关键字 and 组合使用来获得并行[parallel]初始化和步进[step[1]]. 否则, 这个初始化和步进[step[1]]就是顺序的[sequential].
 
-这个 with 构造类似于单个的 let 子句. with 子句可以和 loop 关键字 and 组合使用来并行地初始化 .
+这个 with 构造类似于单独的 let 子句. with 子句可以使用 loop 关键字[loop keyword] and 来组合使用进而获得并行[parallel]初始化 .
 
-关于更多信息, 见章节 6.1.2 (Variable Initialization and Stepping Clauses). 
-
+关于更多信息, 见章节 6.1.2 (变量初始化和步进子句). 
 
 ##### 6.1.1.5.2 <span id="SummaryValueAccumulationClauses">值累积子句综述</span>
 
-这个 collect (或 collecting) 构造在它的子句中接受一个表达式形式并且添加这个表达式形式的值到一个值列表的末尾. 默认情况下, 当这个 loop 结束时这个值列表被返回.
+这个 collect (或 collecting) 构造接受一个在它的子句中的表达式形式[form]并且添加这个表达式形式[form]的值到一个值列表[list]的末尾. 默认情况下, 当这个 loop 结束时这个值列表[list]被返回.
 
-这个 append (或 appending) 构造在它的子句中接受一个表达式形式并追加这个表达式形式的值到一个值列表的末尾. 默认情况下, 当这个 loop 结束时这个值列表被返回.
+这个 append (或 appending) 构造接受一个在它的子句中的表达式形式[form]并追加这个表达式形式[form]的值到一个值列表[list]的末尾. 默认情况下, 当这个 loop 结束时这个值列表[list]被返回.
 
-这个 nconc (或 nconcing) 构造类似于 append 构造, 但是它的列表值是被串联起来的就像是通过函数 nconc. 默认情况下, 当这个 loop 结束时这个值列表被返回.
+这个 nconc (或 nconcing) 构造类似于 append 构造, 但是它的列表[list]值是被串联起来的就像是通过函数 nconc 一样. 默认情况下, 当这个 loop 结束时这个值列表[list]被返回.
 
-这个 sum (或 summing) 构造在它的子句中接受一个求值为数字的表达式形式, 它累积所有这些数字的和 . 默认情况下, 当这个 loop 结束时这个累积的总和被返回.
+这个 sum (或 summing) 构造接受一个在它的子句中求值为数字[number]的表达式形式[form], 它累积所有这些数字[number]的和 . 默认情况下, 当这个 loop 结束时这个累积的总和被返回.
 
-这个 count (或 counting) 构造在它的子句中接受一个表达式形式并且计算这个表达式形式被求值为 true 的次数. 默认情况下, 当这个 loop 结束时这个计数被返回.
+这个 count (或 counting) 构造接受一个在它的子句中的表达式形式[from]并且计算这个表达式形式[form]被求值为 true 的次数. 默认情况下, 当这个 loop 结束时这个计数被返回.
 
-这个 minimize (或 minimizing) 构造在它的子句中接受一个表达式形式并且通过求值这个表达式形式来决定获取到的最小值. 默认情况下, 当这个 loop 结束时这个最小值被返回.
+这个 minimize (或 minimizing) 构造接受一个在它的子句中的表达式形式[form]并且通过求值这个表达式形式[form]来决定获取最小值. 默认情况下, 当这个 loop 结束时这个最小值被返回.
 
-这个 maximize (或 maximizing) 构造在它的子句中接受一个表达式形式并且通过求值这个表达式形式来决定获取到的最大值. 默认情况下, 当这个 loop 结束时这个最大值被返回.
+这个 maximize (或 maximizing) 构造接受一个在它的子句中的表达式形式[form]并且通过求值这个表达式形式[form]来决定获取最大值. 默认情况下, 当这个 loop 结束时这个最大值被返回.
 
-关于更多信息, 见章节 6.1.3 (Value Accumulation Clauses). 
-
+关于更多信息, 见章节 6.1.3 (值累积子句). 
 
 ##### 6.1.1.5.3 <span id="SummaryTerminationTestClauses">终止测试子句综述</span>
 
-这个 for 和 as 构造提供一个由这个迭代控制子句决定的终止测试.
+这个 for 和 as 构造提供一个由这个循环控制子句决定的终止测试.
 
 这个 repeat 构造导致在指定次数的循环后终止. (它使用一个内部变量来跟踪迭代次数.)
 
-这个 while 构造接受一个表达式形式, 一个检验, 如果这个检验表达式形式求值为 false 就终止这个循环. 一个 while 子句等价于表达式 (if (not test) (loop-finish)).
+这个 while 构造接受一个表达式形式[form], 一个测试 test, 如果这个测试 test 求值为 false 就终止这个循环. 一个 while 子句等价于表达式 (if (not test) (loop-finish)).
 
-这个 until 构造是 while 的倒转; 如果这个检验表达式形式求值为任何非 nil 的值就终止这个循环. 一个 until 子句等价于表达式 (if test (loop-finish)).
+这个 until 构造是 while 的倒转; 如果这个测试 test 求值为任何非 nil [non-nil]的值就终止这个循环. 一个 until 子句等价于表达式 (if test (loop-finish)).
 
-这个 always 构造接受一个表达式形式, 当这个表达式曾经求值为 false 的时候就终止这个 loop; 在这个情况下, 这个 loop 表达式形式返回 nil. 否则, 它提供一个 t 作为默认的返回值.
+这个 always 构造接受一个表达式形式[form], 当这个表达式形式[form]曾经求值为 false 就终止这个 loop; 在这个情况下, 这个 loop 表达式形式[form]返回 nil. 否则, 它提供一个 t 作为默认的返回值.
 
-这个 never 构造接受一个表达式形式, 如果这个表达式形式曾经求值为 true 的时候就终止这个 loop; 在这个情况下, 这个 loop 表达式形式返回 nil. 否则, 它提供一个 t 作为默认的返回值.
+这个 never 构造接受一个表达式形式[form], 如果这个表达式形式[form]曾经求值为 true 就终止这个 loop; 在这个情况下, 这个 loop 表达式形式[form]返回 nil. 否则, 它提供一个 t 作为默认的返回值.
 
-这个 thereis 构造接受一个表达式形式, 如果这个表达式形式曾经求值为一个非 nil 的对象就终止这个 loop; 在这个情况下, 这个 loop 表达式形式返回那个对象. 否则, 它提供一个 nil 作为默认的返回值.
+这个 thereis 构造接受一个表达式形式[form], 如果这个表达式形式[form]曾经求值为一个非 nil [non-nil]的对象[object]就终止这个 loop; 在这个情况下, 这个 loop 表达式形式[form]返回那个对象[object]. 否则, 它提供一个 nil 作为默认的返回值.
 
-如果指定了多个终止测试子句, 那个任何一个满足的情况下这个 loop 表达式形式就终止.
+如果指定了多个终止测试子句, 那个任何一个满足的情况下这个 loop 表达式形式[form]就终止.
 
-关于更多信息, 见章节 6.1.4 (Termination Test Clauses). 
-
+关于更多信息, 见章节 6.1.4 (终止测试子句). 
 
 ##### 6.1.1.5.4 <span id="SummaryUncondExecClauses">无条件执行子句综述</span>
 
-这个 do (或 doing) 构造求值它的子句中的所有表达式形式.
+这个 do (或 doing) 构造求值它的子句中的所有表达式形式[form].
 
-这个 return 构造接受一个表达式形式. 这个表达式形式返回的任何值都及时地作为 loop 表达式形式的值返回. 它等价于子句 do (return-from block-name value), 其中 block-name 是在 named 子句中指定的名字, 如果没有 named 子句那么就是 nil.
+这个 return 构造接受一个表达式形式[form]. 这个表达式形式[form]返回的任何值[value]都立即被 loop 表达式形式返回. 它等价于子句 do (return-from block-name value), 其中 block-name 是在 named 子句中指定的名字, 如果没有 named 子句那么就是 nil.
 
-关于更多信息, 见章节 6.1.5 (Unconditional Execution Clauses). 
-
+关于更多信息, 见章节 6.1.5 (无条件执行子句). 
 
 ##### 6.1.1.5.5 <span id="SummaryCondExecClauses">条件执行子句综述</span>
 
-这个 if 和 when 构造接受一个表达式形式作为检验还有一个在这个检验表达式产生 true 的时候执行的子句. 这个子句可以是一个值累积子句, 无条件执行子句, 或者另一个条件执行子句; 它也可以是通过 loop 关键字 and 连接的任何子句组合.
+这个 if 和 when 构造接受一个表达式形式[form]作为测试以及一个在这个测试表达式产生[yield] true 的时候执行的子句. 这个子句可以是一个值累积子句, 无条件执行子句, 或者另一个条件执行子句; 它也可以是通过 loop 关键字 and 连接的任何这样的子句的组合.
 
 这个 loop unless 构造类似于 loop when 构造, 除了它互补那个检验结果.
 
-这个 loop else 构造提供一个可选的 if, when, 和 unless 子句要素, 当一个 if 或 when 检验产生 false 或者当一个 unless 检验产生 true 的时候被执行. 这个要素是 if 下面描述的子句之一.
+这个 loop else 构造提供一个可选的 if, when, 和 unless 子句成分, 当一个 if 或 when 测试产生[yield] false 或者当一个 unless 测试产生[yield] true 的时候被执行. 这个成分是 if 下面描述的子句之一.
 
-这个 loop end 构造提供一个可选的要素用于标记一个条件子句的结束.
+这个 loop end 构造提供一个可选的成分用于标记一个条件子句的结束.
 
-关于更多信息, 见章节 6.1.6 (Conditional Execution Clauses). 
+关于更多信息, 见章节 6.1.6 (条件执行子句). 
 
 ##### 6.1.1.5.6 <span id="SummaryMiscellaneousClauses">其他子句综述</span>
 
-这个 loop named 构造为这个 loop 块提供一个名字.
+这个 loop named 构造为这个 loop 的块[block]提供一个名字.
 
-这个 loop initially 构造导致它的表达式形式在循环序言中被求值, 也就是在除了 with, for, or as 构造提供的初始设置之外的所有 loop 代码之前被求值.
+这个 loop initially 构造导致它的那些表达式形式[form]在循环序言中被求值, 也就是在除了由 with, for, or as 构造提供的初始设置之外的所有 loop 代码之前被求值.
 
-这个 loop finally 构造导致它的表达式形式在循环结尾中被求值, 也就是在正常循环终止后.
+这个 loop finally 构造导致它的表达式形式[form]在循环结尾中被求值, 也就是在正常循环终止后.
 
-关于更多信息, 见章节 6.1.7 (Miscellaneous Clauses). 
+关于更多信息, 见章节 6.1.7 (其他子句). 
 
 
 #### 6.1.1.6 <span id="OrderExecution">执行顺序</span>
 
-除了下面列出的异常情况, 子句在循环体中以它们出现在源码中的顺序执行. 重复执行知道一个子句终止了这个 loop 或者直到遇到一个 return, go, 或 throw 表达式形式转移控制到 loop 外的一个点. 下面的操作是执行的线性顺序的例外:
+除了下面列出的异常情况, 子句在循环体中以它们出现在源码中的顺序执行. 重复执行直到一个子句终止了这个 loop 或者直到遇到一个 return, go, 或 throw 表达式形式转移控制到 loop 外的一个点. 下面这些操作是执行的线性顺序的例外:
 
 * 所有变量首先被初始化, 不管建立的子句出现在源码中的什么位置. 初始化顺序遵循这些子句的顺序.
 
-* 对于任何 initially 子句的代码以它们出现在源码中的顺序被集中到一个 progn 中. 这个集中后的代码只在任何隐式变量初始化之后在循环序言中执行一次.
+* 任何 initially 子句的代码以它们出现在源码中的顺序被集中到一个 progn 中. 这个集中后的代码只在任何隐式变量初始化之后在循环序言中执行一次.
 
-* 对于任何 finally 子句的代码以它们出现在源码中的顺序被集中到一个 progn 中. 这个集中后的代码只在任何隐式的来自累积子句的值被返回之前循环结尾被执行一次. 但是, 在源码中的任何地方显式的返回会在没有执行结尾代码的情况下退出这个 loop.
+* 任何 finally 子句的代码以它们出现在源码中的顺序被集中到一个 progn 中. 这个集中后的代码只在任何隐式的来自累积子句的值被返回之前在循环结尾被执行一次. 但是, 在源码中的任何地方显式的返回会在没有执行结尾代码的情况下退出这个 loop.
 
-* 一个 with 子句引入一个变量绑定和一个可选的初始值. 这个初始值会按照 with 子句出现的顺序被计算.
+* 一个 with 子句引入一个变量绑定[binding]和一个可选的初始值. 这个初始值会按照 with 子句出现的顺序被计算.
 
 * 循环控制子句隐式执行下面这些动作:
 
     -- 初始化变量;
 
-    -- 步进变量, 通常在每个循环体执行之间;
+    -- 步进[step]变量, 通常在每个循环体执行之间;
 
     -- 执行终止检验, 通常只是在循环体执行之前. 
 
 
 #### 6.1.1.7 <span id="Destructuring">解构</span>
 
-这个 d-type-spec 参数被用于解构. 如果这个 d-type-spec 参数仅仅由类型 fixnum, float, t, 或 nil 构成, 那么这个 of-type 关键字是可选的. 在这些情况下, of-type 构造是可选的, 以提供向后兼容性; 因此, 下面两个表达式是一样的:
+这个 d-type-spec 参数被用于解构. 如果这个 d-type-spec 参数仅仅由类型[type] fixnum, float, t, 或 nil 构成, 那么这个 of-type 关键字是可选的. 在这些情况下, of-type 构造是可选的, 以提供向后兼容性; 因此, 下面两个表达式是一样的:
 
 ```LISP
 ;;; This expression uses the old syntax for type specifiers.
@@ -229,15 +223,15 @@ Loop 子句属于以下类别之一:
        in l do ...)
 ```
 
-用于解构匹配模式的类型说明符是一种类型说明符的树, 其形状与变量名的树的形状相同, 具有以下例外:
+用于解构匹配模式的类型指定符[type specifier]是一种类型指定符[type specifier]的树[tree], 其形状与变量[variable]名[name]的树[tree]的形状相同, 但是具有以下例外:
 
-* 当对齐这个树的时候, 在变量树中匹配 cons 的类型指定数中的 atom 为该 cons 中的子树中的每一个变量声明相同的类型.
+* 当对齐这些树[tree]的时候, 和变量树中的一个 cons 匹配的类型指定符[type specifier]的树[tree]中的一个原子[atom]声明了以 cons 为根的子树中的每一个变量为相同的类型[type].
 
-* 在变量名树中匹配 atom 的类型指定树中的 cons 是一种复合类型的说明符.
+* 和变量[variable]名称[name]的树[tree]中的一个原子[atom]的匹配的类型指定符[type specifier]的树中的一个 cons 是一个复合类型指定符[compound type specifer].
 
-结构允许将一组变量绑定为相应的一组值, 而值通常可以绑定到单个变量. 在 loop 展开期间, 在变量列表中的每个变量和值列表中的值匹配. 如果变量列表中的变量数超过值列表中的值的数量, 剩余的变量会被赋予 nil 值. 如果值的数量超过列出的变量数, 多余的值会被丢弃.
+在一个值可以正常地绑定到一个单独变量的任何地方, 解构允许将一组变量绑定[binding]为相应的一组值. 在 loop 展开期间, 在变量列表中的每个变量和值列表中的值匹配. 如果变量列表中的变量数超过值列表中的值的数量, 剩余的变量会被赋予 nil 值. 如果值的数量超过列出的变量数, 多余的值会被丢弃.
 
-为了将一个列表中的值赋给变量 a, b, 还有 c, 这个 for 子句可以被用于绑定变量 numlist 到这个提供的表达式形式的 car 部分, 而另一个 for 子句可以被用于顺序绑定变量 a, b, 和 c.
+为了将一个列表中的值赋给变量 a, b, 还有 c, 这个 for 子句可以被用于绑定变量 numlist 到这个提供的表达式形式 form 的 car 部分, 而另一个 for 子句可以被用于顺序地[sequentially]绑定变量 a, b, 和 c.
 
 ```LISP
 ;; Collect values by using FOR constructs.
@@ -249,7 +243,7 @@ Loop 子句属于以下类别之一:
 =>  ((4.0 2 1) (8.3 6 5) (10.4 9 8))
 ```
 
-通过允许变量在每个 loop 迭代中被绑定, 解构使这个过程变得更容易. 类型可以通过使用一个 type-spec 参数的列表来声明. 如果所有的类型都是相同的, 可以使用一个简写解构语法, 就像第二个例子说明的.
+解构通过允许变量在每个循环迭代中被绑定来使这个过程变得更容易. 类型[type]可以通过使用一个 type-spec 参数的列表来声明. 如果所有的类型[type]都是相同的, 可以使用一个简写解构语法, 就像第二个例子说明的.
 
 ```LISP
 ;; Destructuring simplifies the process.
@@ -266,7 +260,7 @@ Loop 子句属于以下类别之一:
 =>  ((4.0 2.0 1.0) (8.3 6.0 5.0) (10.4 9.0 8.0))
 ```
 
-如果解构被用来声明或初始化多个变量组到类型, 可以使用 loop 关键字 and 来进一步简化这个过程.
+如果解构被用来声明或初始化多个变量组到类型, 可以使用 loop 关键字[loop keyword] and 来进一步简化这个过程.
 
 ```LISP
 ;; Initialize and declare variables in parallel by using the AND construct.
@@ -277,7 +271,7 @@ Loop 子句属于以下类别之一:
 =>  (1.0 2.0 3 4 NIL NIL)
 ```
 
-如果在一个解构列表中使用 nil, 不会为它的 place 提供一个变量.
+如果在一个解构列表中使用 nil, 不会为它的位置提供一个变量.
 
 ```LISP
 (loop for (a nil b) = '(1 2 3)
@@ -285,7 +279,7 @@ Loop 子句属于以下类别之一:
 =>  (1 3)
 ```
 
-注意这个点对列表可以指定解构.
+注意这个点对列表[dotted list]可以指定解构.
 
 ```LISP
 (loop for (x . y) = '(1 . 2)
@@ -297,14 +291,13 @@ Loop 子句属于以下类别之一:
 =>  ((1.2 2.4 3 4) (3.4 4.6 5 6))
 ```
 
-如果同一个变量在单个 loop 表达式的任何可变绑定子句中被绑定两次, 会发出一个 program-error 类型的错误(在宏展开的时候). 这些变量包括局部变量, 迭代控制变量和通过解构找到的变量. 
-
+如果同一个变量在一个单独的 loop 表达式的任何变量绑定子句中被绑定两次, 会发出一个 program-error 类型[type]的错误(在宏展开的时候). 这些变量包括局部变量, 循环控制变量和通过解构找到的变量. 
 
 #### 6.1.1.8 <span id="RestrictionsSideEffects">副作用的限制</span>
 
-见章节 3.6 (Traversal Rules and Side Effects). 
+见章节 3.6 (遍历规则和副作用). 
 
-### 6.1.2 <span id="VarInitAndStepClauses">变量初始化和步进</span>
+### 6.1.2 <span id="VarInitAndStepClauses">变量初始化和步进子句</span>
 
 > * 6.1.2.1 [迭代控制](#IterationControl)
 > * 6.1.2.2 [局部变量初始化](#LocalVarInit)
