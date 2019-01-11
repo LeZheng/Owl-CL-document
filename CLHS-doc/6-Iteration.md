@@ -654,27 +654,27 @@ with 构造初始化的变量是一个 loop 的局部变量. 这个变量只被�
 
 构造 collect, collecting, append, appending, nconc, nconcing, count, counting, maximize, maximizing, minimize, minimizing, sum, 和 summing, 允许在一个 loop 中累积值.
 
-构造 collect, collecting, append, appending, nconc, 还有 nconcing, 指定累积值到列表中并返回它们的子句. 构造 count, counting, maximize, maximizing, minimize, minimizing, sum, 和 summing 指定累积并返回数值的值的子句.
+构造 collect, collecting, append, appending, nconc, 还有 nconcing, 用于指定将这些值累积到列表[list]中并返回它们的子句. 构造 count, counting, maximize, maximizing, minimize, minimizing, sum, 和 summing 指定累积并返回数字值的子句.
 
-在每一次迭代期间, 构造 collect 和 collecting 收集提供表达式形式的值到一个列表中. 迭代停止时, 返回这个列表. 参数 var 被设置为收集的值的列表; 如果 var 提供了, 这个 loop 不会自动返回最后的列表. 如果 var 没有被提供, 等价于为 var 提供一个内部的名字并且在一个 finally 子句中返回它的值. 这个 var 参数被绑定就像是通过 with 构造一样. 没有为声明 var 的类型提供机制; 它必须是类型 list.
+在每一次循环期间, 构造 collect 和 collecting 收集提供的表达式形式 form 的值到一个列表[list]中. 循环停止时, 返回这个列表[list]. 参数 var 被设置为收集值的列表[list]; 如果提供了 var, 这个 loop 不会自动返回最终的列表[list]. 如果 var 没有被提供, 等价于为 var 提供一个内部的名字并且在一个 finally 子句中返回它的值. 这个 var 参数就像是通过 with 构造一样被绑定. 没有为声明 var 的类型[type]提供机制; 它必须是类型[type] list.
 
-除了提供的表达式形式的值一定被列出之外, 构造 append, appending, nconc, 和 nconcing 类似于 collect.
+除了提供的表达式形式 form 的那些值一定是列表[list]之外, 构造 append, appending, nconc, 和 nconcing 类似于 collect.
 
-* append 关键字导致它的列表值被连接到一个单个列表中, 就好像它们是给函数 append 的参数一样.
+* append 关键字导致它的列表[list]值被连接到一个单独的列表[list]中, 就好像它们是给函数[function] append 的参数一样.
 
-* nconc 关键字导致它的列表值被连接到一个单个列表中, 就好像它们是给函数 nconc 的参数一样.
+* nconc 关键字导致它的列表[list]值被连接到一个单独的列表[list]中, 就好像它们是给函数[function] nconc 的参数一样.
 
-参数 var 被设置为连接后值的列表; 如果提供了 var, loop 不会自动返回最终的列表. var 参数被绑定就像是通过 with 构造一样. 不能为 var 提供一个类型; 它必须是 list 类型. 构造 nconc 破坏性地修改它的参数列表.
+参数 var 被设置为连接的值的列表[list]; 如果提供了 var, loop 不会自动返回最终的列表[list]. var 参数就像是通过 with 构造一样被绑定. 不能为 var 提供一个类型; 它必须是 list 类型. 构造 nconc 破坏性地修改它的参数列表.
 
-count 构造计算提供的表达式返回 true 的次数. 参数 var 累计发生的次数; 如果提供了 var, loop 不会自动返回最终的计数. var 参数被绑定就像是通过 with 构造到一个 0 的适当的类型. 计算后面的值 (包括任何必要的强制转换) 就像是通过函数 1+. 如果使用了 into var, 可以用 type-spec 参数为 var 提供一个类型; 如果提供了一个不是数字的类型, 那么结果是不可预料的. 如果这里没有 into 变量, 可选的 type-spec 参数应用给保留这个计数的内部变量. 默认类型是依赖于具体实现的; 但是它一定是 fixnum 的子类型.
+count 构造计算提供的表达式形式 form 返回 true 的次数. 参数 var 累计发生的次数; 如果提供了 var, loop 不会自动返回最终的计数. var 参数就像是通过 with 构造一样被绑定到一个 0 的适当的类型. 后面的值 (包括任何必要的强制转换) 就像是通过函数[function] 1+ 一样被计算. 如果使用了 into var, 可以用 type-spec 参数为 var 提供一个类型[type]; 如果提供了一个不是数字的类型[type], 那么结果是不可预料的. 如果这里没有 into 变量, 可选的 type-spec 参数应用给保留这个计数的内部变量. 默认类型[type]是依赖于具体实现的[implementation-dependent]; 但是它一定是 fixnum 的子类型[subtype].
 
-maximize 和 minimize 构造比较第一次迭代提供的表达式的值和依次迭代获取到的值. 确定遇到的最大 (对于 maximize) 或最小 (对于 minimize) 值 (对于 maximize 就像是通过函数 max, 对于 minimize 就像是通过函数 min) 并且返回. 如果这个 maximize 或 minimize 子句从来没有执行, 累计的值是未指定的. 参数 var 累计这个最大或最小值; 如果提供了 var, loop 不会自动返回这个最大值或最小值. 绑定 var 参数就像是通过 with 构造一样. 如果使用了 into var, 可以使用 type-spec 参数为 var 指定一个类型; 如果指定了非数字的类型, 那么结果是未定义的. 如果这也里没有 into 变量, 可选的 type-spec 参数应用给保留这个最大或最小值的内部变量. 默认类型是依赖于具体实现的; 但是它一定是 real 的子类型.
+maximize 和 minimize 构造比较第一次循环提供的表达式形式 form 的值和后续循环获取到的值. 确定遇到的最大 (对于 maximize) 或最小 (对于 minimize) 值 (对于 maximize 就像是通过函数[function] max, 对于 minimize 就像是通过函数[function] min) 并且返回. 如果这个 maximize 或 minimize 子句从来没有执行, 累计的值是未指定的. 参数 var 累计这个最大或最小值; 如果提供了 var, loop 不会自动返回这个最大值或最小值. 参数 var 就像是通过 with 构造一样被绑定. 如果使用了 into var, 可以使用 type-spec 参数为 var 指定一个类型[ty[e]]; 如果指定了非数字的类型[type], 那么结果是未定义的. 如果这也里没有 into 变量, 可选的 type-spec 参数应用给保留这个最大或最小值的内部变量. 默认类型[type]是依赖于具体实现的[implementation-dependent]; 但是它一定是 real 的子类型[subtype].
 
-sum 构造在每次迭代中形成了所提供 form 的连续主值的累积总和. 参数 var 被用于累计这个总和; 如果提供了 var, loop 不会自动返回最终的总和. 绑定 var 参数就像是通过 with 构造到一个 0 的适当类型. 计算后续的值 (包括任何必要的强制转换) 就像是通过函数 +. 如果使用了 into var, 可以使用 type-spec 参数为 var 指定一个类型; 如果指定了非数字的类型, 那么结果是未定义的. 如果这也里没有 into 变量, 可选的 type-spec 参数应用给保留这个总和的内部变量. 默认类型是依赖于具体实现的; 但是它一定是 number 的子类型.
+sum 构造在每次循环中形成了所提供 form 的连续主值[primary values]的累积总和. 参数 var 被用于累计这个总和; 如果提供了 var, loop 不会自动返回最终的总和. 参数 var 就像是通过 with 构造一样被绑定到一个 0 的适当类型. 后面的值 (包括任何必要的强制转换) 就像是通过函数[function] + 一样被计算. 如果使用了 into var, 可以使用 type-spec 参数为 var 指定一个类型[type]; 如果指定了非数字的类型[type], 那么结果是未定义的. 如果这也里没有 into 变量, 可选的 type-spec 参数应用给保留这个总和的内部变量. 默认类型[type]是依赖于具体实现的[implementation-dependent]; 但是它一定是 number 的子类型[subtype].
 
 如果使用了 into, 这个构造不会提供默认的返回值; 然而, 在任何 finally 子句中这个变量都是可用的.
 
-如果在一个 loop 中的累积子句它们的目标是相同的(loop 的结果或者一个 into var), 那么适当种类的累积子句可以被结合, 因为它们被认为累积概念上兼容的数量. 尤其是, 在一个 loop 表达式形式中, 下列集合子句的任何元素都可以与同一目标的其他元素混合在一起:
+如果在一个 loop 中的累积子句它们的目标是相同的(loop 的结果或者一个 into var), 那么适当种类的累积子句可以被合并, 因为它们被认为累积概念上兼容的量. 尤其是, 在一个 loop 表达式形式[form]中, 下列集合子句的任何元素都可以与同一目标的其他元素混合在一起:
 
 * collect, append, nconc
 
@@ -692,7 +692,7 @@ sum 构造在每次迭代中形成了所提供 form 的连续主值的累积总�
 =>  (FRED BOB KEN SUE ALICE JOE KRIS SUNSHINE JUNE)
 ```
 
-在一个 loop 中当且仅当每个子句累积它们的值到不同变量时, 任何两个不累积相同类型对象的子句可以共存.
+在一个 loop 中当且仅当每个子句累积它们的值到不同变量[variable]时, 任何两个不累积相同类型[type]对象[object]的子句可以共存.
 
 > * 6.1.3.1 [COLLECT 子句的示例](#ExamplesCOLLECTClause)
 > * 6.1.3.2 [APPEND 和 NCONC 子句的示例](#ExamplesAPPENDNCONCClauses)
