@@ -299,24 +299,24 @@ Loop 子句属于以下类别之一:
 
 ### 6.1.2 <span id="VarInitAndStepClauses">变量初始化和步进子句</span>
 
-> * 6.1.2.1 [迭代控制](#IterationControl)
+> * 6.1.2.1 [循环控制](#IterationControl)
 > * 6.1.2.2 [局部变量初始化](#LocalVarInit)
 
-#### 6.1.2.1 <span id="IterationControl">迭代控制</span>
+#### 6.1.2.1 <span id="IterationControl">循环控制</span>
 
-迭代控制子句允许有 loop 迭代的方向. 这个 loop 关键字 for 和 as 指定迭代控制子句. 迭代控制子句的区别在于终止检验的说明和 loop 变量的初始化和步进. 迭代控制子句自身不会导致这个 loop 工具返回值, 但是它们可以和 value-accumulation 子句协同使用来返回值.
+循环控制子句允许有 loop 循环的方向. loop 关键字[loop keyword] for 和 as 指定循环控制子句. 循环控制子句的区别在于终止检验的说明以及 loop 变量的初始化和步进[step[1]]. 循环子句自身不会导致这个 loop 工具返回一些值, 但是它们可以和值累积子句协同使用来返回那些值.
 
-所有变量都在循环序言中被初始化. 一个变量绑定有着词法作用域除非它被声明为 special; 因此, 默认情况下, 这个变量只能被文本形式出现在 loop 中的表达式形式访问. 在任何 loop 主体内其他表达式形式进行求值之前, 在 loop 主体中进行步进任务.
+所有变量都在循环序言中被初始化. 一个变量[variable]绑定[binding]有着词法作用域[lexical scope]除非它被公告为 special; 因此, 默认情况下, 这个变量只能被文本形式出现在 loop 中的那些表达式形式[form]访问. 在其他表达式形式[form]在主体中被求值之前, 在 loop 主体中进行步进任务.
 
-迭代控制子句中的变量参数可以是一个解构列表. 一个解构列表是一个非 nil 原子是变量名的树. 见章节 6.1.1.7 (Destructuring).
+循环控制子句中的变量参数可以是一个解构列表. 一个解构列表是一个非 nil [non-nil]原子是变量[variable]名称[name]的树[tree]. 见章节 6.1.1.7 (解构).
 
-迭代控制子句 for, as, 和 repeat 必须在其他 loop 子句之前, 除了 initially, with, 和 named, 因为它们建立变量绑定. 当迭代控制子句被用于一个 loop 中时, 这个 loop 主体中的对应终止检验在任何其他 loop 主体代码被执行前求值.
+循环控制子句 for, as, 和 repeat 必须在除了 initially, with, 和 named 以外的其他 loop 子句之前, 因为它们建立变量绑定[binding]. 当循环控制子句被用于一个 loop 中时, 这个 loop 主体中的对应终止测试在任何其他 loop 主体代码被执行前求值.
 
-如果多个迭代子句被用于控制迭代, 变量初始化和步进默认是顺序发生的. 当没有必要进行顺序绑定和步进时, 这个 and 构造可以被用于连接两个或更多迭代子句. and 加入的子句的迭代行为类似于宏 do 相对于 do* 的行为.
+如果多个循环子句被用于控制循环, 变量初始化和步进[step[1]]默认是顺序[sequentially]发生的. 当没有必要进行顺序[sequential]绑定[binding]和步进[step[1]]时, 这个 and 构造可以被用于连接两个或更多循环子句. 被 and 加入的子句的循环行为类似于宏 do 相对于 do* 的行为.
 
-这个 for 和 as 子句通过使用一个或多个初始化为某个值并且可以被修改或每次循环后步进的局部变量来迭代. 对于这些子句, 当一个局部变量达到某个被提供的值时或者当某个其他 loop 子句终止迭代时迭代会停止. 在每次迭代中, 变量可以通过一个递增或递减或求值一个表达式形式来赋新值进而步进. 在迭代期间可以利用解构来给变量赋值.
+这个 for 和 as 子句通过使用一个或多个局部循环变量来循环, 这些变量被初始化为某个值并且可以在每次循环后被修改或步进[step[1]]. 对于这些子句, 当一个局部变量达到某个被提供的值时或者当某个其他 loop 子句终止循环时, 循环会停止. 在每次循环中, 变量可以通过一个递增或递减来步进[step[1]]或通过一个表达式形式[form]的求值来赋予新值. 在循环期间可以利用解构来给变量赋值.
 
-这个 for 和 as 关键字是是同义词; 它们可以被交换使用. 对于这些构造, 有七种语法格式. 在每一个语法格式中, var 的类型可以通过这个可选的 type-spec 参数来提供. 如果 var 是一个解构列表 list, 通过 type-spec 参数提供的类型必须适当地匹配列表中的元素. 按照惯例, for 引入新的迭代而 as 引入的迭代取决于前面迭代说明.
+这个 for 和 as 关键字是是同义词; 它们可以被交换使用. 对于这些构造, 有七种语法格式. 在每一个语法格式中, var 的类型[type]可以通过这个可选的 type-spec 参数来提供. 如果 var 是一个解构列表 list, 通过 type-spec 参数提供的类型[type]必须适当地匹配列表中的元素. 按照惯例, for 引入新的循环而 as 引入的循环依赖于前面循环说明.
 
 > * 6.1.2.1.1 [for-as-arithmetic 分子句](#FAARSubclause)
 > * 6.1.2.1.2 [for-as-in-list 分子句](#FAILSubclause)
@@ -329,7 +329,7 @@ Loop 子句属于以下类别之一:
 
 ##### 6.1.2.1.1 <span id="FAARSubclause">for-as-arithmetic 分子句</span>
 
-在 for-as-arithmetic 分子句中, 这个 for 或者 as 构造从 form1 提供的值以 form3 表示的递增或递减迭代到 form2 提供的值. 每个表达式只被求值一次并且必须被求值为一个数字. 变量 var 在第一次迭代中被绑定为 form1 的值并且在随后的每次迭代中步进 form3 的值, 如果 form3 没有提供的话就是步进 1. 下面的 loop 关键字被当作是这个语法中合法的介词. 必须使用至少一个介词; 在单个分子句中每一行最多使用一个.
+在 for-as-arithmetic 分子句中, 这个 for 或者 as 构造从 form1 提供的值以 form3 表示的递增或递减循环到 form2 提供的值. 每个表达式只被求值一次并且必须被求值为一个数字[number]. 变量 var 在第一次循环中被绑定为 form1 的值并且在随后的每次循环中步进[step[1]] form3 的值, 如果 form3 没有提供的话就是步进 1. 下面的 loop 关键字[loop keyword]被当作是这个语法中合法的介词. 必须使用至少一个介词; 在一个单独的分子句中下面的每一行最多使用一个.
 
     from | downfrom | upfrom
 
@@ -337,7 +337,7 @@ Loop 子句属于以下类别之一:
 
     by
 
-每个子句中的介词短语可能以任何顺序出现. 比如, 不管是 "from x by y" 或是 "by y from x" 都是允许的. 然而, 因为保留从左到右的求值顺序, 在副作用上的效果可能会是不同的. 细想:
+每个分子句中的介词短语可能以任何顺序出现. 比如, 不管是 "from x by y" 或是 "by y from x" 都是允许的. 然而, 因为保留从左到右的求值顺序, 在副作用上的效果可能会是不同的. 细想:
 
 ```LISP
 (let ((x 1)) (loop for i from x by (incf x) to 10 collect i))
@@ -350,29 +350,29 @@ Loop 子句属于以下类别之一:
 
 * from
 
-        loop 关键字 from 指定步进开始的值, 由 form1 提供. 步进默认是递增的. 如果需要递减的步进, 介词 downto 或 above 必须和 form2 一起使用. 对于递增步进, 默认的 from 值是 0.
+        loop 关键字[loop keyword] from 指定步进[step[1]]开始的值, 由 form1 提供. 步进[step[1]]默认是递增的. 如果需要递减的步进[step[1]], 介词 downto 或 above 必须和 form2 一起使用. 对于递增步进[step[1]], 默认的 from 值是 0.
 
 * downfrom, upfrom
 
-        loop 关键字 downfrom 表示变量 var 通过 from3 提供的递减方式递减; 这个 loop 关键字 upfrom 表示 var 通过 form3 提供的递增方式递增.
+        loop 关键字[loop keyword] downfrom 表示变量 var 通过 from3 提供的衰减量递减; loop 关键字[loop keyword] upfrom 表示 var 通过 form3 提供的增量递增.
 
 * to
 
-        loop 关键字 to 标记 form2 提供的步进的结束值. 步进默认是递增的. 如果需要递减的步进, 介词 downfrom 必须和 form1 一起使用, 或者和 form2 一起使用介词 downto 或 above.
+        loop 关键字[loop keyword] to 标记由 form2 提供的步进[step[1]]的结束值. 步进[step[1]]默认是递增的. 如果需要递减的步进[step[1]], 介词 downfrom 必须和 form1 一起使用, 或者和 form2 一起使用介词 downto 或 above.
 
 * downto, upto
 
-        loop 关键字 downto 指定递减步进; 这个 loop 关键字 upto 指定递增步进. 在这两种情况下, 每一步改变的数额由 form3 指定, 当变量 var 超过 form2 的值时这个 loop 循环终止. 因为这里没有为递减步进的 form1 提供默认值, 所以当 downto 被提供时也必须提供 form1 的值(使用 from 或 downfrom).
+        loop 关键字[loop keyword] downto 指定递减步进[step]; loop 关键字[loop keyword] upto 指定递增步进[step]. 在这两种情况下, 每一步改变的数额由 form3 指定, 当变量 var 超过 form2 的值时这个 loop 终止. 因为这里没有为递减步进[step[1]]提供 form1 的默认值, 所以当 downto 被提供时也必须提供 form1 的值(使用 from 或 downfrom).
 
 * below, above
 
-        loop 关键字 below 和 above 分别与 upto 和 downto 类似. 这些关键字仅仅在变量 var 的值达到 form2 提供的值前停止迭代; 这个 form2 的结束值不会被包含进去. 因为这里没有为递减步进的 form1 提供默认值, 当 above 被提供时也必须提供 form1 的值(使用 from 或 downfrom).
+        loop 关键字[loop keyword] below 和 above 分别与 upto 和 downto 类似. 这些关键字仅仅在变量 var 的值达到 form2 提供的值前停止循环; 这个 form2 的结束值不会被包含进去. 因为这里没有为递减步进[step[1]]提供 form1 的默认值, 当 above 被提供时也必须提供 form1 的值(使用 from 或 downfrom).
 
 * by
 
-        loop 关键字 by 标记 form3 提供的递增或递减值. 这个 form3 的值可以是任何正数. 默认值是 1.
+        loop 关键字[loop keyword] by 标记 form3 提供的递增或递减值. 这个 form3 的值可以是任何正数[number]. 默认值是 1.
 
-在一个迭代控制子句中, 当提供的限制到达时这个 for 或 as 构造导致终止. 这也就是说, 迭代一直持续到值 var 被逐步执行到 form2 提供的排外或包含的限制. 如果 form3 递增或递减变量到 form2 的值而没有到达那个值那么这个范围就是排外的; loop 关键字 below 和 above 提供排外的限制. 一个包含的限制允许 var 达到 form2 的值; to, downto, 和 upto 提供包含的限制.
+在一个循环控制子句中, 当到达提供的限制时, 这个 for 或 as 构造导致终止. 这也就是说, 循环一直持续到值 var 被逐步执行到 form2 提供的排他性或包容性的限制. 如果 form3 递增或递减变量到 form2 的值而没有到达那个值那么这个范围就是排他的; loop 关键字 below 和 above 提供排他的限制. 一个包容的限制允许 var 达到 form2 的值; to, downto, 和 upto 提供包容的限制.
 
 ###### 6.1.2.1.1.1 for-as-arithmetic 分子句的示例
 
@@ -405,7 +405,7 @@ Loop 子句属于以下类别之一:
 
 ##### 6.1.2.1.2 <span id="FAILSubclause">for-as-in-list 分子句</span>
 
-在这个 for-as-in-list 分子句中, 这个 for 或 as 构造遍历一个列表的内容. 它检查列表的末尾, 就像使用 endp 一样. 在每次迭代前变量 var 被绑定为 form1 中列表的连续元素. 在每次迭代结束后, 函数 step-fun 被应用到这个列表; step-fun 的默认值是 cdr. loop 关键字 in 和 by 在这个语法中是合法的介词. 当到达这个列表的末尾时, 这个 for 或 as 构造就终止.
+在这个 for-as-in-list 分子句中, 这个 for 或 as 构造遍历一个列表[list]的内容. 它检查这个列表[list]的末尾, 就像使用 endp 一样. 在每次循环前变量 var 被绑定为 form1 中列表[list]的连续元素. 在每次循环结束后, 函数 step-fun 被应用到这个列表[list]; step-fun 的默认值是 cdr. loop 关键字[loop keyword] in 和 by 在这个语法中是合法的介词. 当到达这个列表[list]的末尾时, 这个 for 或 as 构造就终止.
 
 ###### 6.1.2.1.2.1 for-as-in-list 分子句的示例
 
@@ -433,7 +433,7 @@ Loop 子句属于以下类别之一:
 
 ##### 6.1.2.1.3 <span id="FAOLSubclause">for-as-on-list 分子句</span>
 
-在这个 for-as-on-list 分子句中, for 或 as 构造遍历一个列表. 它检查列表的末尾, 就像使用 atom 一样. 变量 var 被绑定为 form1 中的列表的连续尾部. 在每次迭代后, 函数 step-fun 被应用到这个列表; 这个 step-fun 的默认值是 cdr. loop 关键字 on 和 by 在这个语法中被当作合法的介词. 当到达这个列表的末尾时, 这个 for 或 as 构造就终止.
+在这个 for-as-on-list 分子句中, for 或 as 构造遍历一个列表[list]. 它检查这个列表[list]的末尾, 就像使用 atom 一样. 变量 var 被绑定为 form1 中的列表[list]的后续尾部. 在每次循环后, 函数 step-fun 被应用到这个列表[list]; 这个 step-fun 的默认值是 cdr. loop 关键字[loop keyword] on 和 by 在这个语法中被当作合法的介词. 当到达这个列表[list]的末尾时, 这个 for 或 as 构造就终止.
 
 ###### 6.1.2.1.3.1 for-as-on-list 分子句的示例
 
@@ -454,7 +454,7 @@ Loop 子句属于以下类别之一:
 
 ##### 6.1.2.1.4 <span id="FAETSubclause">for-as-equals-then 分子句</span>
 
-在这个 for-as-equals-then 分子句中, 这个 for 或者 as 构造通过设置第一次迭代时 form1 的求值结果到变量 var 来初始化它, 然后在第二次及后续的迭代中将它设置为 form2 的求值结果. 如果省略了 form2, 这个构造在第二次及后续的迭代中就使用 form1. loop 关键字 = 和 then 在这个语法中被当作合法介词. 这个构造不会提供任何的终止检验.
+在这个 for-as-equals-then 分子句中, 这个 for 或者 as 构造通过设置第一次循环时 form1 的求值结果到变量 var 来初始化它, 然后在第二次及后续的循环中将它设置为 form2 的求值结果. 如果省略了 form2, 这个构造在第二次及后续的循环中就使用 form1. loop 关键字[loop keyword] = 和 then 在这个语法中被当作合法介词. 这个构造不会提供任何的终止检验.
 
 ###### 6.1.2.1.4.1 for-as-equals-then 分子句的示例
 
@@ -468,7 +468,7 @@ Loop 子句属于以下类别之一:
 
 ##### 6.1.2.1.5 <span id="FAACSubclause">for-as-across 分子句</span>
 
-在这个 for-as-across 分子句中, 这个 for 或 as 构造绑定变量 var 到这个数组 vector 的每一个元素的值. loop 关键字 across 标记这个数组 vector; across 在这个语法中被用作一个介词. 当提供的数组中没有更多数据可以被引用时迭代停止. 某些具体实现可能识别一个 vector 表达式形式中的 the 特殊表达式形式来产生更高效的代码.
+在这个 for-as-across 分子句中, 这个 for 或 as 构造绑定变量 var 到这个数组 vector 的每一个元素的值. loop 关键字[loop keyword] across 标记这个数组 vector; across 在这个语法中被用作一个介词. 当提供的数组[array]中没有更多数据可以被引用时循环停止. 某些具体实现可能识别一个 vector 表达式形式中的 the 特殊表达式形式来产生更高效的代码.
 
 ###### 6.1.2.1.5.1 for-as-across 分子句的示例
 
@@ -479,7 +479,7 @@ Loop 子句属于以下类别之一:
 
 ##### 6.1.2.1.6 <span id="FAHSubclause">for-as-hash 分子句</span>
 
-在这个 for-as-hash 分子句中, 这个 for 或 as 构造遍历一个 hash-table 的元素, 键, 还有值. 在这个语法中, 一个复合介词用于指定对哈希表的访问. 变量 var 呈现为提供的 hash-table 中的每一个哈希键或者哈希值. 在这个语法中以下 loop 关键字被当作合法介词:
+在这个 for-as-hash 分子句中, 这个 for 或 as 构造遍历一个哈希表[hash-table]的元素, 键, 还有值. 在这个语法中, 一个复合介词用于指定对哈希表的访问. 变量 var 呈现为提供的哈希表 hash-table 中的每一个哈希键或者哈希值. 在这个语法中以下 loop 关键字[loop keyword]被当作合法介词:
 
 * being
 
@@ -487,19 +487,19 @@ Loop 子句属于以下类别之一:
 
 * each, the
 
-        当 hash-key 或 hash-value 被使用时, loop 关键字 each 跟在 loop 关键字 being 后面. loop 关键字 the 和 hash-keys 还有 hash-values 一起使用仅便于阅读. 这个协议不是必须的.
+        当 hash-key 或 hash-value 被使用时, loop 关键字[loop keyword] each 跟在 loop 关键字[loop keyword] being 后面. loop 关键字[loop keyword] the 和 hash-keys 还有 hash-values 一起使用仅为了便于阅读. 这个协议不是必须的.
 
 * hash-key, hash-keys
 
-        这些 loop 关键字访问哈希表的每个值条目. 如果 using 构造中提供名字 hash-value 和这些 Loop 模式中的一个, 这个迭代可以选择性的访问这些键表示的值. 这些键访问的顺序是没有定义的; 哈希表中空的槽会被忽略.
+        这些 loop 关键字[loop keyword]访问这个哈希表[hash table]的每个键条目. 如果 using 构造中提供名字 hash-value 和这些 Loop 模式中的一个, 那么这个循环可以选择性的访问这些键表示的值. 这些键访问的顺序是没有定义的; 哈希表[hash table]中空的槽会被忽略.
 
 * hash-value, hash-values
 
-        这些 loop 关键字访问哈希表的每个值条目. 如果 using 构造中提供名字 hash-key 和这些 Loop 模式中的一个, 这个迭代可以选择性的访问这些值对应的键. 这些键访问的顺序是没有定义的; 哈希表中空的槽会被忽略.
+        这些 loop 关键字[loop keyword]访问这个哈希表[hash table]的每个值条目. 如果 using 构造中提供名字 hash-key 和这些 Loop 模式中的一个, 这个循环可以选择性的访问这些值对应的键. 这些键访问的顺序是没有定义的; 哈希表[hash table]中空的槽会被忽略.
 
 * using
 
-        loop 关键字 using 引入用于访问的可选的键或键表示的值. 如果迭代到了哈希值, 那么它允许访问哈希键, 如果迭代到了哈希键, 则可以访问哈希值.
+        这个 loop 关键字[loop keyword] using 引入用于访问的可选的键或键表示的值. 如果循环到了哈希值, 那么它允许访问哈希键, 如果循环到了哈希键, 则可以访问哈希值.
 
 * in, of
 
@@ -511,12 +511,12 @@ Loop 子句属于以下类别之一:
 
 是一个复合介词.
 
-当提供的 hash-table 中没有更多的哈希键或哈希值要被引用时, 迭代停止. 
+当提供的 hash-table 中没有更多的哈希键或哈希值要被引用时, 循环停止. 
 
 
 ##### 6.1.2.1.7 <span id="FAPSubclause">for-as-package 分子句</span>
-<!-- TODO schema ??-->
-在这个 for-as-package 分子句中 for 或 as 构造遍历一个包中的符号. 在这个语法中, 使用一个复合的介词来指定对一个包的访问. 变量 var 接收这个提供的包中每一个符号的值. 在这个语法中下面的 loop 关键字被当作合法的介词:
+
+在这个 for-as-package 分子句中 for 或 as 构造遍历一个包[package]中的符号[symbol]. 在这个语法中, 使用一个复合的介词来指定对一个包[package]的访问. 变量 var 接收这个提供的包[package]中每一个符号[symbol]的值. 在这个语法中下面的 loop 关键字[loop keyword]被当作合法的介词:
 
 * being
 
@@ -524,19 +524,19 @@ Loop 子句属于以下类别之一:
 
 * each, the
 
-        当使用 symbol, present-symbol, 或 external-symbol 时 loop 关键字 each 跟在 loop 关键字 being 后面. loop 关键字 the 和 symbols, present-symbols, 还有 external-symbols 一起使用仅方便于阅读. 这个参数不是必须的.
+        当使用 symbol, present-symbol, 或 external-symbol 时 loop 关键字[loop keyword] each 跟在 loop 关键字[loop keyword] being 后面. loop 关键字[loop keyword] the 和 symbols, present-symbols, 还有 external-symbols 一起使用仅方便于阅读. 这个参数不是必须的.
 
 * present-symbol, present-symbols
 
-        这些 Loop 模式遍历出现在一个包中的符号. 要被迭代的包以提供给 find-package 的包参数相同的方式被提供. 如果没有提供用于迭代的包, 就使用当前包. 如果提供一个不存在的包, 会发出一个 package-error 类型的错误.
+        这些 Loop 模式遍历出现[present]在一个包[package]中的符号[symbol]. 要被循环的包 package 以提供给 find-package 的包[package]参数相同的方式被提供. 如果没有提供用于循环的包 package, 就使用当前包[current package]. 如果提供一个不存在的包 package, 会发出一个 package-error 类型[type]的错误.
 
 * symbol, symbols
 
-        这些 Loop 模式遍历一个给定包中可访问的符号. 要被迭代的包以提供给 find-package 的包参数相同的方式被提供. 如果没有提供用于迭代的包, 就使用当前包. 如果提供一个不存在的包, 会发出一个 package-error 类型的错误.
+        这些 Loop 模式遍历这个给定包 package 中可访问的[accessible]符号[symbol]. 要被循环的包 package 以提供给 find-package 的包[package]参数相同的方式被提供. 如果没有提供用于循环的包 package, 就使用当前包[current package]. 如果提供一个不存在的包 package, 会发出一个 package-error 类型[type]的错误.
 
 * external-symbol, external-symbols
 
-        这些 Loop 模式迭代一个包中的外部符号. 要被迭代的包以提供给 find-package 的包参数相同的方式被提供. 如果没有提供用于迭代的包, 就使用当前包. 如果提供一个不存在的包, 会发出一个 package-error 类型的错误.
+        这些 Loop 模式遍历一个包 package 中的外部符号[external symbol]. 要被循环的包以提供给 find-package 的包参数相同的方式被提供. 如果没有提供用于循环的包, 就使用当前包. 如果提供一个不存在的包, 会发出一个 package-error 类型[type]的错误.
 
 * in, of
 
@@ -548,7 +548,7 @@ Loop 子句属于以下类别之一:
 
 是一个复合介词.
 
-当提供的包中没有更多符号要被引用时迭代停止.
+当提供的包 package 中没有更多符号[symbol]要被引用时循环停止.
 
 ###### 6.1.2.1.7.1 for-as-package 分子句
 
@@ -568,11 +568,11 @@ Loop 子句属于以下类别之一:
 
 #### 6.1.2.2 <span id="LocalVarInit">局部变量初始化</span>
 
-当执行一个 loop 表达式形式时, 局部变量会被绑定并且初始化到某个值. 这些局部变量直到 loop 迭代结束都会存在, 在迭代结束时它们会消失. 隐式的变量也通过迭代控制子句和累积子句的 into 介词来建立.
+当执行一个 loop 表达式形式[form]时, 局部变量会被绑定并且初始化到某个值. 这些局部变量直到 loop 循环结束都会存在, 在那个时候它们会消失. 隐式的变量也通过循环控制子句和累积子句的 into 介词来建立.
 
-with 构造初始化的变量也是一个 loop 的局部变量. 这个变量只被初始化一次. 如果为这个变量 var 提供了可选的 type-spec 参数, 而这里没有相关的表达式来求值, var 被初始化为对于它的类型的一个合适的默认值. 比如, 对于类型 t, number, 和 float, 默认值分别就是 nil, 0, 和 0.0. 如果为 var 提供了一个 type-spec 参数而相关表达式返回的值不是那个提供的类型, 那么结果是未定义的. 默认情况下, with 构造顺序初始化变量; 这也就是说, 一个变量在下一个表达式被求值之间被赋值. 然而, 通过使用 loop 关键字 and 连接几个 with 子句, 初始化可以强制并行发生; 这也就是说, 提供的所有表达式形式都被求值, 并且结果被同时绑定给对应变量.
+with 构造初始化的变量是一个 loop 的局部变量. 这个变量只被初始化一次. 如果为这个变量 var 提供了可选的 type-spec 参数, 而这里没有相关的表达式来求值, var 被初始化为它类型[type]的一个合适的默认值. 比如, 对于类型 t, number, 和 float, 默认值分别就是 nil, 0, 和 0.0. 如果为 var 提供了一个 type-spec 参数而相关表达式返回的值不是那个提供的类型[type], 那么结果是未定义的. 默认情况下, with 构造顺序[sequentially]初始化变量; 这也就是说, 一个变量在下一个表达式被求值之间被赋值. 然而, 通过使用 loop 关键字[loop keyword] and 连接几个 with 子句, 初始化可以强制并行[parallel]发生; 这也就是说, 提供的所有表达式形式都被求值, 并且结果被同时绑定给对应变量.
 
-当某些变量的初始化依赖于前面绑定变量的值时, 就使用顺序绑定. 比如, 假设变量 a, b, 和 c 被依次绑定:
+当需要某些变量的初始化依赖于前面绑定变量的值时, 就使用顺序[sequential]绑定[binding]. 比如, 假设变量 a, b, 和 c 被依次绑定:
 
 ```LISP
 (loop with a = 1 
@@ -595,7 +595,7 @@ with 构造初始化的变量也是一个 loop 的局部变量. 这个变量只�
                   end-loop))))
 ```
 
-如果初始化其他变量不需要前面绑定变量的值, 一个 and 子句可以被用于指定这些绑定并行地发生:
+如果初始化其他变量不需要之前绑定的变量的值, 一个 and 子句可以被用于指定这些绑定并行[parallel]地发生:
 
 ```LISP
 (loop with a = 1 
