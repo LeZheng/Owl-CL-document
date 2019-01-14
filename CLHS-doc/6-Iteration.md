@@ -785,35 +785,35 @@ sum 构造在每次循环中形成了所提供 form 的连续主值[primary valu
 
 ### 6.1.4 <span id="TerminationTestClauses">终止测试子句</span>
 
-repeat 构造导致迭代在指定的次数后终止. 这个 loop 主体执行了 n 次, 其中 n 表达式 form 的值. 这个 form 参数只在循环序言中求值一次. 如果这个表达式求值为 0 或者是一个负数, 这个 loop 主体不会被求值.
+repeat 构造导致循环在指定的次数后终止. 这个 loop 主体执行了 n 次, 其中 n 是表达式 form 的值. 这个 form 参数只在循环序言中求值一次. 如果这个表达式求值为 0 或者是一个负数[number], 这个 loop 主体不会被求值.
 
-构造 always, never, thereis, while, until, 和宏 loop-finish 允许一个 loop 中迭代的条件终止.
+构造 always, never, thereis, while, until, 和宏 loop-finish 允许一个 loop 中循环的条件终止.
 
-构造 always, never, 和 thereis 提供特定的值, 在一个 loop 终止时把它返回. 在一个 loop 中和不是 into 子句的值累积子句一起使用 always, never, 或 thereis, 会发出一个 program-error 类型的错误 (在宏展开期间). 由于 always, never, 和 thereis 使用 return-from 特殊操作符来终止迭代, 当由于这些构造中的任何一个导致退出时, 提供的任何 finally 子句不会被求值.
+构造 always, never, 和 thereis 提供那些当一个 loop 终止时要被返回的值. 在一个带有不是 into 子句的值累积子句的 loop 中使用 always, never, 或 thereis, 会发出一个 program-error 类型[type]的错误 (在宏展开期间). 由于 always, never, 和 thereis 使用 return-from 特殊操作符[special operator]来终止循环, 当由于这些构造中的任何一个导致退出时, 提供的任何 finally 子句不会被求值. 在所有方面这些构造都表现地像 while 和 until 构造.
 
-always 构造接收一个表达式形式并且如果这个表达式曾求值为 nil 就终止这个 loop; 在这个情况下, 它返回 nil. 否则, 它提供一个默认返回值 t. 如果提供的表达式形式的从来不返回 nil, 某个其他构造可以终止这个迭代.
+always 构造接收一个表达式形式[form]并且如果这个表达式形式[form]曾求值为 nil 就终止这个 loop; 在这个情况下, 它返回 nil. 否则, 它提供一个默认返回值 t. 如果提供的表达式形式[form]的从来不返回 nil, 某个其他构造可以终止这个循环.
 
-never 构造在提供的表达式形式的值第一次不是 nil 的时候终止迭代; 这个 loop 返回 nil. 如果这个提供的表达式形式一直返回 nil, 某个其他构造可以终止这个迭代. 除非某个其他子句提供一个返回值, 否则默认返回值就是 t.
+never 构造在提供的表达式形式 form 的值第一次不是 nil [non-bil]的时候终止循环; 这个 loop 返回 nil. 如果这个提供的表达式形式 form 总是为 nil, 某个其他构造可以终止这个循环. 除非某个其他子句提供一个返回值, 否则默认返回值就是 t.
 
-thereis 构造在提供的表达式形式的值第一次不是 nil 时终止迭代; 这个 loop 返回提供的表达式形式的值. 如果这个提供的表达式形式的值总是为 nil, 某个其他构造可以终止这个迭代. 除非某个其他子句提供一个返回值, 否则默认返回值就是 t.
+thereis 构造在提供的表达式形式 form 的值第一次不是 nil [non-bil]的时候终止循环; 这个 loop 返回提供的表达式形式 form 的值. 如果这个提供的表达式形式 form 的值总是为 nil, 某个其他构造可以终止这个循环. 除非某个其他子句提供一个返回值, 否则默认返回值就是 nil.
 
 在 thereis 和 until 构造中有两个区别:
 
-* until 构造不会基于提供的表达式形式的值返回一个值或者 nil.
+* until 构造不会基于提供的表达式形式 form 的值返回一个值或者 nil.
 
-* until 构造执行任何 finally 子句. 由于 thereis 使用 return-from 特殊操作符来终止迭代, 当 thereis 导致退出时, 任何提供的 finally 子句不会被求值.
+* until 构造执行任何 finally 子句. 由于 thereis 使用 return-from 特殊操作符[special operator]来终止循环, 当 thereis 导致退出时, 任何提供的 finally 子句不会被求值.
 
-while 构造允许迭代直到提供的表达式形式求值为 false 之前继续下去. 提供的表达式形式在 while 子句的位置重复求值.
+while 构造允许循环直到提供的表达式形式 form 求值为 false 之前继续下去. 提供的表达式形式 form 在 while 子句的位置重复求值.
 
-until 构造等价于 while (not form).... 如果提供表达式的值不是 nil, 迭代终止.
+until 构造等价于 while (not form).... 如果提供表达式形式 form 的值不是 nil [non-nil], 循环终止.
 
 终止测试控制构造可以被用于 loop 主体的任何位置. 终止测试以它们出现的顺序被使用. 如果一个 until 或 while 子句导致终止, 任何在源代码中先于它的子句都被求值. 如果 until 和 while 构造导致了终止, 控制会传递到 loop 结尾, 其中任何 finally 子句会被执行.
 
 在 never 和 until 构造中有两个差别:
 
-* until 构造不会返回基于提供表达式形式的值的 t 或 nil.
+* until 构造不会返回基于提供表达式形式 form 的值的 t 或 nil.
 
-* until 构造不会忽视任何 finally 子句. 由于 never 使用 return-from 特殊操作符来终止迭代, 任何提供的 finally 子句在 never 导致退出时不会被求值.
+* until 构造不会忽视任何 finally 子句. 由于 never 使用 return-from 特殊操作符[special operator]来终止循环, 任何提供的 finally 子句在 never 导致退出时不会被求值.
 
 在大部分情况下没有必要去使用 loop-finish 因为其他 loop 控制子句会终止这个 loop. 宏 loop-finish 被用于提供一个从 loop 中的嵌套条件句中正常的退出. 由于 loop-finish 转移控制到 loop 结尾, 在一个 finally 表达式中使用 loop-finish 会导致无穷的循环.
 
@@ -915,9 +915,9 @@ until 构造等价于 while (not form).... 如果提供表达式的值不是 nil
 
 ### 6.1.5 <span id="UnconditionalExecutionClauses">无条件执行子句</span>
 
-do 和 doing 构造无论出现在 loop 的展开形式的什么地方都求值提供的 forms. 这个 form 参数可以是任何复合表达式形式. 每个 form 在每次迭代都被求值. 因为每个 loop 子句必须以一个 loop 关键字开始, 关键字 do 是在没有控制动作只需要执行的情况下使用的.
+do 和 doing 构造无论出现在 loop 的展开形式的什么位置都会求值提供的那些 forms. 这个 form 参数可以是任何复合表达式形式[compound form]. 每个表达式形式 form 在每次循环都被求值. 因为每个 loop 子句必须以一个 loop 关键字[loop keyword]开始, 关键字 do 是在没有控制动作只需要执行的情况下使用的.
 
-return 构造接收一个表达式形式. 这个表达式形式返回的任何值都会被这个 loop 表达式形式及时返回. 它等价于子句 do (return-from block-name value), 其中 block-name 是 named 子句中指定的名字, 如果这里没有 named 子句那么就是 nil.
+return 构造接收一个表达式形式[form]. 这个表达式形式[form]返回的任何值[value]都会被这个 loop 表达式形式立即返回. 它等价于子句 do (return-from block-name value), 其中 block-name 是 named 子句中指定的名字, 如果这里没有 named 子句那么就是 nil.
 
 #### 6.1.5.1 无条件执行的示例
 
@@ -938,19 +938,19 @@ return 构造接收一个表达式形式. 这个表达式形式返回的任何�
 
 ### 6.1.6 <span id="ConditionalExecutionClauses">条件执行子句</span>
 
-if, when, 和 unless 构造在一个 loop 中建立条件控制. 如果通过了检验测试, 后面的 loop 子句会被执行. 如果没有通过检验测试, 后面的子句会被跳过, 并且程序控制会转移到 loop 关键字 else 后面的子句. 如果没有通过检验测试并且没有提供 else 子句, 控制会转移到整个条件子句后面的子句或构造.
+if, when, 和 unless 构造在一个 loop 中建立条件控制. 如果通过了检验测试, 后面的 loop 子句会被执行. 如果没有通过检验测试, 后面的子句会被跳过, 并且程序控制会转移到 loop 关键字[loop keyword] else 后面的子句. 如果没有通过检验测试并且没有提供 else 子句, 控制会转移到整个条件子句后面的子句或构造.
 
-如果条件子句是嵌套的, 每个 else 和前面最近的没有关联 else 或 end 的条件子句组成一对.
+如果条件子句是嵌套的, 每个 else 和前面最接近的没有关联 else 或 end 的条件子句组成一对.
 
-在 if 和 when 子句中, 它们是同义的, 如果 form 的值是 true 那么检验测试通过.
+在 if 和 when 子句中, 它们是同义的, 如果表达式形式 form 的值是 true 那么检验测试通过.
 
-在 unless 子句中, 如果 form 的值是 false 那么检验测试通过.
+在 unless 子句中, 如果表达式形式 form 的值是 false 那么检验测试通过.
 
-检验表达式后面的子句可以通过使用 loop 关键字 and 产生一个由复合子句组成的条件块来分组.
+测试表达式后面的那些子句可以通过使用 loop 关键字[loop keyword] and 产生一个由复合子句组成的条件块来分组.
 
-loop 关键字 it 可以用于引用一个子句中检验表达式的结果. 使用这个 loop 关键字 it 代替一个 return 子句或一个条件执行子句中的累积子句中的表达式形式. 如果多个子句用 and 连接, 这个 it 构造必须在这个块的第一个子句中.
+loop 关键字[loop keyword] it 可以用于引用一个子句中测试表达式的结果. 使用这个 loop 关键字[loop keyword] it 代替一个条件执行子句中的一个 return 子句或一个累积子句中的表达式形式. 如果多个子句用 and 连接, 这个 it 构造必须在这个块的第一个子句中.
 
-可选的 loop 关键字 end 标记这个子句的结束. 如果没有提供这个关键字, 下一个 loop 关键字标记着结束. 这个构造 end 可以被用于区分复合子句的作用域.
+可选的 loop 关键字[loop keyword] end 标记这个子句的结束. 如果没有提供这个关键字, 下一个 loop 关键字[loop keyword]标记着结束. 这个构造 end 可以被用于区分复合子句的作用域.
 
 #### 6.1.6.1 WHEN 子句的示例
 
@@ -1004,9 +1004,9 @@ Error: non-numeric value: A
 
 #### 6.1.7.1 <span id="ControlTransferClauses">控制转移子句</span>
 
-named 构造为包含整个 loop 的隐式 block 确定一个名字, 这样 return-from 特殊操作符可以被用于从 loop 返回值或者退出 loop. 一个 loop 表达式形式只能被赋予一个名字. 如果使用了, 这个 named 构造必须是这个 loop 表达式中的第一个子句.
+named 构造为包在整个 loop 周围的隐式块[implicit block]建立一个名字, 这样 return-from 特殊操作符[special operator]可以被用于从 loop 返回值或者退出 loop. 一个 loop 表达式形式[form]只能被赋予一个名字. 如果使用了, 这个 named 构造必须是这个 loop 表达式中的第一个子句.
 
-return 构造接收一个 form 表达式形式. 这个 form 返回的任何值都被这个 loop 表达式形式立即返回. 这个构造类似于 return-from 特殊操作符和 return 宏. return 构造不会执行这个 loop 表达式西形式给定的任何 finally 子句.
+return 构造接收一个表达式形式[form]. 这个表达式形式[form]返回的任何值[value]都被这个 loop 表达式形式立即返回. 这个构造类似于 return-from 特殊操作符[special operator]和 return 宏[macro]. return 构造不会执行这个 loop 表达式形式[form]给定的任何 finally 子句.
 
 ##### 6.1.7.1.1 NAMED 子句的示例
 
@@ -1026,9 +1026,9 @@ initially 和 finally 构造在这个 loop 主体之前和之后求值表达式�
 
 initially 构造导致提供的复合表达式形式 compound-forms 在循环序言中被求值, 它在除了构造 with, for, 或 as 提供的初始化设置以外的所有 loop 代码之前. 任何 initially 子句的代码都是按照子句出现在这个 loop 中的顺序执行的.
 
-finally 构造导致提供的复合表达式形式 compound-forms 在正常迭代终止的循环结尾中被求值. 任何 finally 子句的代码都是按照子句出现在这个 loop 中的顺序执行的. 收集起来的代码只在任何累积子句返回隐式的值之前在循环结尾执行一次. 但是一个从 loop 主体中隐式的控制转移 (比如, 通过 return, go, 或 throw) 会在没有执行结尾代码的情况下退出 loop.
+finally 构造导致提供的复合表达式形式 compound-forms 在正常循环终止的循环结尾中被求值. 任何 finally 子句的代码都是按照子句出现在这个 loop 中的顺序执行的. 收集起来的代码只在任何累积子句返回隐式的值之前在循环结尾执行一次. 但是一个从 loop 主体中显式的控制转移 (比如, 通过 return, go, 或 throw) 会在没有执行结尾代码的情况下退出 loop.
 
-像 return, always, never, 和 thereis 这样的子句可以绕开 finally 子句. return (或者 return-from, 如果提供了 named 选项的话) 可以被用于在 finally 之后从一个 loop 返回值. 这样一个 finally 子句中显式的返回优先于从通过诸如关键字 collect, nconc, append, sum, count, maximize, 和 minimize 提供的子句中返回累积值; 如果使用了 return 或 return-from, 这些子句累积的值不会被 loop 返回. 
+像 return, always, never, 和 thereis 这样的子句可以绕开 finally 子句. return (或者 return-from, 如果提供了 named 选项的话) 可以被用于在 finally 之后从一个 loop 返回值. 这样一个 finally 子句中显式返回[explicit return]优先于从通过诸如关键字 collect, nconc, append, sum, count, maximize, 和 minimize 提供的子句中返回累积值; 如果使用了 return 或 return-from, 这些子句累积的值不会被 loop 返回. 
 
 ### 6.1.8 <span id="ExamplesMLF">其他 Loop 特性的示例</span>
 
@@ -1135,19 +1135,19 @@ finally 构造导致提供的复合表达式形式 compound-forms 在正常迭�
 
 ### 6.1.9 <span id="NotesAboutLoop">Loop 的注意事项</span>
 
-可以为 loop 变量提供类型. 没有必要为任何变量提供一个类型, 但是提供类型可以确保这个变量有正确类型的初始值, 并且这样也可以启用编译器优化 (取决于具体实现).
+可以为 loop 变量提供类型[type]. 没有必要为任何变量提供一个类型[type], 但是提供类型可以确保这个变量有正确类型的初始值, 并且这样也可以启用编译器优化 (取决于具体实现[implementation]).
 
 子句 repeat n ... 粗略等价于下面这个子句
 
     (loop for internal-variable downfrom (- n 1) to 0 ...)
 
-但是在某些实现中, repeat 构造可能更高效.
+但是在某些实现[implementation]中, repeat 构造可能更高效.
 
 在 loop 子句的可执行部分中和整个 loop 表达式形式周围, 可以使用 let 来绑定变量.
 
-在与 loop 有关时使用名为 IT (在任何包中) 的变量时要谨慎, 因为它是一个 loop 关键字, 可以在某些上下文中替换表达式形式.
+在与 loop 有关时使用名为 IT (在任何包[package]中) 的变量时要谨慎, 因为它是一个 loop 关键字[loop keyword], 可以在某些上下文中替换表达式形式[form].
 
-这里没有让用户给 loop 添加扩展的标准化机制. 
+这里没有让用户给 loop 添加扩展的标准化[standardized]机制. 
 
 ## 6.2 <span id="TheIterationDictionary">迭代字典</span>
 
