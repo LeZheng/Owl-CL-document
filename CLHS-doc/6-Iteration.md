@@ -1170,35 +1170,35 @@ finally 构造导致提供的复合表达式形式 compound-forms 在正常循�
 
 * 参数和值(Arguments and Values):
 
-        var---一个符号.
-        init-form---一个表达式形式.
-        step-form---一个表达式形式.
-        end-test-form---一个表达式形式.
-        result-forms---一个隐式的 progn.
-        declaration---一个 declare 表达式; 不求值.
-        tag---一个 go 标签; 不求值.
-        statement---一个复合表达式形式; 按以下所述求值.
-        results---如果执行了一个 return 或 return-from 表达式形式, 值从这个表达式形式传出来; 否则, 值通过 result-forms 返回.
+        var---一个符号[symbol].
+        init-form---一个表达式形式[form].
+        step-form---一个表达式形式[form].
+        end-test-form---一个表达式形式[form].
+        result-forms---一个隐式的 progn [implicit progn].
+        declaration---一个 declare 表达式[expression]; 不求值.
+        tag---一个 go 标签[go tag]; 不求值.
+        statement---一个复合表达式形式[compound form]; 按以下所述求值.
+        results---如果执行了一个 return 或 return-from 表达式形式, 就是从这个表达式形式[form]传出来的那些值[value]; 否则, 就是通过 result-forms 返回的那些值[value].
 
 * 描述(Description):
 
-        当测试条件保持时满足时, do 在一组语句上迭代. do 接受任意数量大迭代变量 vars, 它们在迭代中并行绑定和步进. 可以通过使用一个 init-form 来为每个迭代变量提供一个初始值. Step-forms 可以被用于指定这个循环中后续的迭代如果更新变量 vars. Step-forms 可能被用于可以被用于产生后续的值或累积结果. 如果 end-test-form 条件在一个主体的执行前满足, 这个迭代终止. Tags 标记语句.
+        当测试条件保持时满足时, do 在一组语句 statements 上迭代. do 接受任意数量大循环变量 vars, 它们在这个循环中并行绑定和步进. 可以通过使用一个 init-form 来为每个循环变量提供一个初始值. step-forms 可以被用于指定这个循环中后续的循环如何更新变量 vars. step-forms 可能被用于可以被用于产生后续的值或累积结果. 如果 end-test-form 条件在一个主体的执行前满足, 这个循环终止. 这些 tags 标记这些语句 statements.
 
-        do* 和 do 一样除了变量 vars 的绑定和步进是顺序执行而不是并行执行.
+        do* 和 do 一样除了这些变量 vars 的绑定[binding]和步进是顺序执行而不是并行执行.
 
-        在第一次迭代前, 所有 init-forms 被求值, 如果提供了 init-form, 每一个 var 被绑定到它的对应 init-form 的值. 这是一个绑定, 不是一个赋值; 当这个循环终止时, 这些变量的旧值会被恢复. 对于 do, 所有的 init-forms 在任何一个 var 绑定前被求值. init-forms 可以引用 do 开始执行之前的可见的这些 vars 的绑定. 对于 do*, 第一个 init-form 被求值, 然后第一个 var 被绑定到那个值, 然后第二个 init-form 被求值, 接着第二个 var 被绑定, 以此类推; 通常, 如果 j < k, 那么第 k 个 init-form 可以引用第 j 个 var 的绑定, 否则引用的是第 j 个 var 的旧绑定.
+        在第一次循环前, 所有初始化表达式形式 init-forms 被求值, 如果提供了 init-form, 对应的每一个变量 var 被绑定到它的对应 init-form 的值. 这是一个绑定[binding], 不是一个赋值; 当这个循环终止时, 这些变量的旧值会被恢复. 对于 do, 所有的这些 init-forms 在任何一个变量 var 绑定前被求值. 这些 init-forms 可以引用 do 开始执行之前的可见的这些 vars 的绑定. 对于 do*, 第一个 init-form 被求值, 然后第一个 var 被绑定到那个值, 然后第二个 init-form 被求值, 接着第二个 var 被绑定, 以此类推; 通常, 如果 j < k, 那么第 k 个 init-form 可以引用第 j 个 var 的绑定, 否则引用的是第 j 个 var 的旧绑定.
 
-        在每个迭代开始前, 处理这些变量后, 这个 end-test-form 被求值. 如果结果是 false, 执行 do (或 do*) 表达式形式的主体. 如果结果是 true, 这个 result-forms 按照一个隐式的 progn 的顺序被求值, 然后 do 或 do* 返回.
+        在每个循环开始前, 在处理这些变量后, 这个 end-test-form 被求值. 如果结果是 false, 执行 do (或 do*) 表达式形式的主体. 如果结果是 true, 这个 result-forms 按照一个隐式的 progn 的顺序被求值, 然后 do 或 do* 返回.
 
-        在除了第一次以外的每个迭代开始时, vars 按照如下更新. 所有的 step-forms, 如果提供了就从左到右求值, 并且结果值被赋给对应变量 vars. 任何没有关联的变量 var 不会被赋值. 对于 do, 所有 step-forms 在任何 var 更新前被求值; 给 vars 的赋值并行执行, 就像是通过 psetq. 因为所有的 step-forms 在任何变量被修改前求值, 所以一个 step-form 求值时可以访问所有这些 vars 的旧值, 即便其他的 step-forms 在它之前. 对于 do*, 第一个 step-form 被求值, 然后这个值赋给第一个 var, 然后第二个 step-form 被求值, 接着值赋给第二个 var, 以此类推; 这个给变量的赋值是顺序执行, 就像是通过 setq. 不管是对于 do 还是 do*, 在变量 vars 被更新后, end-test-form 按照如上所述被求值, 然后这个迭代继续.
+        在除了第一次以外的每个循环开始时, vars 按照如下更新. 所有的步进表达式形式 step-forms, 如果提供了就从左到右求值, 并且结果值被赋给对应变量 vars. 任何没有关联 step-form 的变量 var 不会被赋值. 对于 do, 所有 step-forms 在任何 var 更新前被求值; 给 vars 的赋值并行执行, 就像是通过 psetq 一样. 因为所有的 step-forms 在任何变量被修改前求值, 所以一个 step-form 求值时可以访问所有这些 vars 的旧值, 即便其他的 step-forms 在它之前. 对于 do*, 第一个 step-form 被求值, 然后这个值赋给第一个 var, 然后第二个 step-form 被求值, 接着值赋给第二个 var, 以此类推; 这个给变量的赋值是顺序执行, 就像是通过 setq 一样. 不管是对于 do 还是 do*, 在变量 vars 被更新后, end-test-form 按照如上所述被求值, 然后这个循环继续.
 
-        剩余的 do (或 do*) 表达式形式部分构成一个隐式的 tagbody. Tags 可能出现在一个 do 循环的主体中, 供出现在主体中的 go 语句使用 (但是这样的 go 语句可能不会出现在变量说明符,  end-test-form, 或 result-forms 中). 当到达 do 主体的结尾时, 开始下一个迭代周期 (以 step-forms 的求值开始).
+        剩余的 do (或 do*) 表达式形式部分构成一个隐式的 tagbody [implicit tagbody]. 这些 tags 可能出现在一个 do 循环的主体中, 供出现在主体中的 go 语句使用 (但是这样的 go 语句可能不会出现在变量标识符, end-test-form, 或 result-forms 中). 当到达 do 主体的结尾时, 开始下一个循环周期 (以 step-forms 的求值开始).
 
-        一个隐式的名为 nil 的 block 包在整个 do (或 do*) 表达式形式周围. 一个 return 语句可以被用于在任何点立即去退出这个循环.
+        一个名为 nil 的隐式块[implicit block]包在整个 do (或 do*) 表达式形式周围. 一个 return 语句可以在任何点被使用来立即退出这个循环.
 
-        Init-form 是和 var 关联的初始值. 如果 init-form 省略了, 那么这个 var 的值就是 nil. 如果为 var 提供了一个声明, init-form 必须与这个声明一致.
+        初始化表达式形式 init-form 是和 var 关联的初始值. 如果 init-form 省略了, 那么这个 var 的初始值就是 nil. 如果为 var 提供了一个声明 declaration, init-form 必须与这个声明 declaration 一致.
 
-        声明可以出现在 do (或 do*) 主体的开始位置. 它们适用于 do (or do*) 主体中的代码, 这个 do (or do*) vars 的绑定, step-forms, end-test-form, 还有 result-forms.
+        声明可以出现在 do (或 do*) 主体的开始位置. 它们适用于 do (or do*) 主体中的代码, 这个 do (or do*) vars 的绑定[binding], step-forms, end-test-form, 还有 result-forms.
 
 * 示例(Examples):
 
@@ -1242,7 +1242,7 @@ finally 构造导致提供的复合表达式形式 compound-forms 在正常循�
       body)
     ```
 
-        是一个给索引变量并行赋值的示例. 在第一个迭代时, oldx 的值是 x 在 do 输入之前的值. 在后续的迭代中, oldx 包含了 x 在上一次迭代中的值.
+        是一个对索引变量并行赋值的示例. 在第一个循环时, oldx 的值是 x 在进入 do 之前的值. 在后续的循环中, oldx 包含了 x 在上一次循环中的值.
 
     ```LISP
     (do ((x foo (cdr x))
@@ -1261,7 +1261,7 @@ finally 构造导致提供的复合表达式形式 compound-forms 在正常循�
                 ((endp x) y)))
     ```
 
-        作为一个嵌套迭代的示例, 细想一个 cons 列表的数据结构. 每个 cons 的 car 是一个符号列表, 而每个 cons 的 cdr 是等长度的包含对应值的列表. 这样一个数据结构类似于关联列表, 但是被划分为 "frames"; 整体结构类似于 rib-cage. 这样一个数据结构的一个查找函数可能是:
+        作为一个嵌套迭代的示例, 细想一个 cons 列表[list]的数据结构. 每个 cons 的 car 是一个符号[symbol]列表[list], 而每个 cons 的 cdr 是等长度的包含对应值的列表[list]. 这样一个数据结构类似于关联列表, 但是被划分为 "帧(frame)"; 整体结构类似于胸腔(rib-cage). 这样一个数据结构的一个查找函数可能是:
 
     ```LISP
     (defun ribcage-lookup (sym ribcage)           
@@ -1280,13 +1280,13 @@ finally 构造导致提供的复合表达式形式 compound-forms 在正常循�
 
 * 也见(See Also):
 
-        其他迭代函数 (dolist, dotimes, 和 loop) 和更原始的功能 (tagbody, go, block, return, let, 和 setq)
+        其他循环函数 (dolist, dotimes, 和 loop) 和更原始的功能 (tagbody, go, block, return, let, 和 setq)
 
 * 注意(Notes):
 
-        如果 end-test-form 是 nil, 这个测试条件从来不会成功. 这为 "do forever" 提供了一个惯用语法: 这个 do 或 do* 的主体被重复执行. 这个无限循环可以通过使用 return, return-from, go 到一个外部层级, 或 throw 来终止.
+        如果 end-test-form 是 nil, 这个测试条件从来不会成功. 这为 "永远执行" 提供了一个惯用语法: 这个 do 或 do* 的主体被重复执行. 这个无限循环可以通过使用 return, return-from, go 到一个外部层级, 或 throw 来终止.
 
-        一个 do 表达式形式可能被解释为如下更原始的表达式形式 block, return, let, loop, tagbody, 和 psetq:
+        一个 do 表达式形式[form]可能被解释为如下更原始的表达式形式[form] block, return, let, loop, tagbody, 和 psetq:
 
     ```LISP
     (block nil        
@@ -1314,27 +1314,27 @@ finally 构造导致提供的复合表达式形式 compound-forms 在正常循�
 
 * 参数和值(Arguments and Values):
 
-        var---一个符号.
-        count-form---一个表达式形式.
-        result-form---一个表达式形式.
-        declaration---一个 declare 表达式; 不求值.
-        tag---一个 go 标签; 不求值.
-        statement---一个复合表达式形式; 按如下所述求值.
-        results---如果执行了一个 return 或 return-from 表达式形式, 值从这个表达式形式传出来; 否则, 值通过 result-form 返回, 如果没有 result-form 就是 nil.
+        var---一个符号[symbol].
+        count-form---一个表达式形式[form].
+        result-form---一个表达式形式[form].
+        declaration---一个 declare 表达式[expression]; 不求值.
+        tag---一个 go 标签[go tag]; 不求值.
+        statement---一个复合表达式形式[compound form]; 按如下所述求值.
+        results---如果执行了一个 return 或 return-from 表达式形式, 那么就是从这个表达式形式[form]传出来的那些值[value]; 否则, 就是通过 result-form 返回的那些值[value], 如果没有 result-form 就是 nil.
 
 * 描述(Description):
 
-        dotimes 遍历一系列整数.
+        dotimes 遍历一系列整数[integer].
 
-        dotimes 求值 count-form, 它应该产生一个 integer. 如果 count-form 是 zero 或者负的, 这个主体不会被执行. dotimes 对于每一个从 0 到 count-form 的值但是不包括那个值的整数执行一次主体, 以这些 tag 和 statement 出现的顺序执行, 其中 var 绑定到每一个 integer. 然后 result-form 被求值. 在 result-form 被处理时, var 被绑定为主体执行的次数. Tags 标记 statements.
+        dotimes 求值 count-form, 它应该产生一个整数[integer]. 如果 count-form 是 zero 或者负的, 这个主体不会被执行. dotimes 对于每一个从 0 到 count-form 的值但是不包括那个值的整数[integer]执行一次主体, 以这些 tag 和 statement 出现的顺序执行, 其中 var 绑定到每一个 integer. 然后 result-form 被求值. 在 result-form 被处理时, var 被绑定为主体执行的次数. 这些 tags 标记 statements.
 
-        隐式的名为 nil 的 block 包在 dotimes 周围. return 可以被用于在没有执行进一步迭代的情况下立即终止循环, 返回 0 个或多个值.
+        名为 nil 的隐式块[implicit block]包在 dotimes 周围. return 可以被用于在没有执行进一步循环的情况下立即终止循环, 返回 0 个或多个值.
 
-        这个循环的主体是一个隐式的 tagbody; 它可能包含被当作 go 语句目标的 tags. 声明可能出现在 loop 的主体之前.
+        这个循环的主体是一个隐式 tagbody [implicit tagbody]; 它可能包含被当作 go 语句目标的标签. 声明可能出现在这个循环的主体之前.
 
-        var 绑定的作用域不包括 count-form, 但是包括 result-form.
+        var 绑定的作用域[scope]不包括 count-form, 但是包括 result-form.
 
-        dotimes 是否在每次迭代为 var 建立一个新的绑定或者是否在开始的时候为 var 建立一次绑定而后续的迭代对它赋值, 这时依赖于具体实现的.
+        dotimes 是在每次循环为 var 建立[establish]一个新的绑定[binding], 还是在开始的时候为 var 建立一次绑定[binding]而后续的循环对它赋值, 这是依赖于具体实现的[implementation-dependent].
 
 * 示例(Examples):
 
@@ -1399,27 +1399,27 @@ finally 构造导致提供的复合表达式形式 compound-forms 在正常循�
 
 * 参数和值(Arguments and Values):
 
-        var---一个符号.
-        list-form---一个表达式形式.
-        result-form---一个表达式形式.
-        declaration---一个 declare 表达式; 不求值.
-        tag---一个 go 标签; 不求值.
-        statement---一个复合表达式形式; 按如下所述求值.
-        results---如果执行了一个 return 或 return-from 表达式形式, 值从这个表达式形式传出来; 否则, 值通过 result-form 返回, 如果没有 result-form 就是 nil.
+        var---一个符号[symbol].
+        list-form---一个表达式形式[form].
+        result-form---一个表达式形式[form].
+        declaration---一个 declare 表达式[expression]; 不求值.
+        tag---一个 go 标签[go tag]; 不求值.
+        statement---一个复合表达式形式[compound form]; 按如下所述求值.
+        results---如果执行了一个 return 或 return-from 表达式形式, 就是从这个表达式形式[form]传出来的值[value]; 否则, 就是通过 result-form 返回的值[value], 如果没有 result-form 就是 nil.
 
 * 描述(Description):
 
-        dolist 遍历一个列表的元素. dolist 的主体类似于一个 tagbody. 它由一系列的 tag 和 statement 组成.
+        dolist 遍历一个列表[list]的元素. dolist 的主体类似于一个 tagbody. 它由一系列的标签 tag 和语句 statement 组成.
 
-        dolist 求值 list-form, 它应该产生一个列表. 对于列表中的每个元素执行一次主体, 以那些 tag 和 statement 出现的顺序求值, 其中 var 绑定为这个元素. 然后 result-form 被求值. 那些 tag 标记 statement.
+        dolist 求值 list-form, 它应该产生一个列表[list]. 对于列表[list]中的每个元素执行一次主体, 以那些 tag 和 statement 出现的顺序求值, 其中 var 绑定为这个元素. 然后 result-form 被求值. 那些 tag 标记那些 statement.
 
         在 result-form 被处理时, var 绑定为 nil.
 
-        一个名为 nil 的隐式的 block 包在 dolist 周围. return 可以被用于在没有执行进一步迭代的情况下立即终止循环, 返回 0 个或多个值.
+        一个名为 nil 的隐式块[implicit block]包在 dolist 周围. return 可以被用于在没有执行进一步循环的情况下立即终止循环, 返回 0 个或多个值[value].
 
-        这个 var 绑定的作用于不包括 list-form, 但是包括 result-form.
+        这个 var 的绑定的作用域[scope]不包括 list-form, 但是包括 result-form.
 
-        dolist 是否在每次迭代为 var 建立一个新的绑定或者是否在开始的时候为 var 建立一次绑定而后续的迭代对它赋值, 这时依赖于具体实现的.
+        dolist 是在每次循环为 var 建立[establish]一个新的绑定[binding]还是在开始的时候为 var 建立[establish]一次绑定而后续的循环对它赋值, 这是依赖于具体实现的[implementation-dependent].
 
 * 示例(Examples):
 
@@ -1444,11 +1444,11 @@ finally 构造导致提供的复合表达式形式 compound-forms 在正常循�
 
 * 也见(See Also):
 
-        do, dotimes, tagbody, Section 3.6 (Traversal Rules and Side Effects)
+        do, dotimes, tagbody, 章节 3.6 (遍历规则和副作用)
 
 * 注意(Notes):
 
-        在 dolist 的主体中 go 可能被用于转移控制到一个 tag 标记的语句上. 
+        在 dolist 的主体中 go 可能被用于转移控制到一个由 tag 标记的语句上. 
 
 ### <span id="MacroLOOP">宏 LOOP</span>
 
@@ -1546,20 +1546,20 @@ finally 构造导致提供的复合表达式形式 compound-forms 在正常循�
 
 * 参数和值(Arguments and Values):
 
-        compound-form---一个复合表达式形式.
-        name---一个符号.
-        simple-var---一个符号 (一个变量名).
-        form, form1, form2, form3---一个表达式形式.
-        step-fun---一个求值为单参数函数的表达式形式.
-        vector---一个求值为一个向量的表达式形式.
-        hash-table---一个求值为一个哈希表的表达式形式.
-        package---一个求值为一个包指定符的表达式形式.
-        type-specifier---一个类型指定符. 这个可能是原子类型指定符也可能是复合类型指定符, 它引入了一些额外的复杂性, 以便在解构过程中进行适当的解析 ; 关于更多信息, 见章节 6.1.1.7 (Destructuring).
-        result---一个对象.
+        compound-form---一个复合表达式形式[compound form].
+        name---一个符号[symbol].
+        simple-var---一个符号[symbol] (一个变量[variable]名).
+        form, form1, form2, form3---一个表达式形式[form].
+        step-fun---一个求值为单参数[argument]函数[function]的表达式形式[form].
+        vector---一个求值为一个向量[vector]的表达式形式[form].
+        hash-table---一个求值为一个哈希表[hash table]的表达式形式[form].
+        package---一个求值为一个包标识符[package designator]的表达式形式[form].
+        type-specifier---一个类型指定符[type specifier]. 这个可能是原子类型指定符[atomic type specifier]也可能是复合类型指定符[compound type specifier], 在解构时它为正确解析引入了一些额外的复杂性; 关于更多信息, 见章节 6.1.1.7 (解构).
+        result---一个对象[object].
 
 * 描述(Description):
 
-        关于详细信息, 见章节 6.1 (The LOOP Facility).
+        关于详细信息, 见章节 6.1 (LOOP 机制).
 
 * 示例(Examples):
 
@@ -1607,11 +1607,11 @@ finally 构造导致提供的复合表达式形式 compound-forms 在正常循�
 
 * 也见(See Also):
 
-        do, dolist, dotimes, return, go, throw, Section 6.1.1.7 (Destructuring)
+        do, dolist, dotimes, return, go, throw, 章节 6.1.1.7 (解构)
 
 * 注意(Notes):
 
-        除了 loop-finish 不能被用在一个简单 loop 表达式形式中, 一个简单 loop 表达式形式和一个扩展 loop 表达式形式在以下方面相关:
+        除了 loop-finish 不能被用在一个简单 loop 表达式形式[form]中, 一个简单 loop 表达式形式[form]和一个扩展 loop 表达式形式[form]的关系如下:
 
         (loop compound-form*) ==  (loop do compound-form*)
 
@@ -1624,7 +1624,7 @@ finally 构造导致提供的复合表达式形式 compound-forms 在正常循�
 
 * 描述(Description):
 
-        这个 loop-finish 宏可以被词法地使用于一个扩展 loop 表达式形式中来"正常"地终止这个表达式形式. 这也就是说, 它转移控制到词法上最内部的扩展 loop 表达式形式的循环结尾. 这允许执行任何 finally 子句 (为了得到效果) 和返回任何累积结果.
+        可以在词法上位于一个扩展 loop 表达式形式[form]中的地方使用这个 loop-finish 宏[macro]来"正常"地终止这个表达式形式[form]. 这也就是说, 它转移控制到词法上最内部的扩展 loop 表达式形式[form]的循环结尾. 这允许执行任何 finally 子句 (为了得到效果) 以及返回任何累积结果.
 
 * 示例(Examples):
 
@@ -1678,11 +1678,11 @@ finally 构造导致提供的复合表达式形式 compound-forms 在正常循�
 
 * 异常情况(Exceptional Situations):
 
-        loop-finish 在全局环境中是否被 fbound 依赖于具体实现; 然而, loop-finish 的遮蔽和重定义的限制条件跟 COMMON-LISP 包中在全局环境中被 fbound 的符号一样. 在 loop 的外部去尝试使用 loop-finish 的结果是未定义的.
+        loop-finish 在全局环境[global environment]中是否被 fbound 是依赖于具体实现的[implementation-dependent]; 然而, loop-finish 的遮蔽[shadow]和重定义的限制条件跟 COMMON-LISP 包中在全局环境[global environment]中被 fbound 的符号[symbol]一样. 在 loop 的外部去尝试使用 loop-finish 的结果是未定义的.
 
 * 也见(See Also):
 
-        loop, Section 6.1 (The LOOP Facility)
+        loop, 章节 6.1 (LOOP 机制)
 
 * 注意(Notes):
 
