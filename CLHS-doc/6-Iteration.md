@@ -785,35 +785,35 @@ sum 构造在每次循环中形成了所提供 form 的连续主值[primary valu
 
 ### 6.1.4 <span id="TerminationTestClauses">终止测试子句</span>
 
-repeat 构造导致迭代在指定的次数后终止. 这个 loop 主体执行了 n 次, 其中 n 表达式 form 的值. 这个 form 参数只在循环序言中求值一次. 如果这个表达式求值为 0 或者是一个负数, 这个 loop 主体不会被求值.
+repeat 构造导致循环在指定的次数后终止. 这个 loop 主体执行了 n 次, 其中 n 是表达式 form 的值. 这个 form 参数只在循环序言中求值一次. 如果这个表达式求值为 0 或者是一个负数[number], 这个 loop 主体不会被求值.
 
-构造 always, never, thereis, while, until, 和宏 loop-finish 允许一个 loop 中迭代的条件终止.
+构造 always, never, thereis, while, until, 和宏 loop-finish 允许一个 loop 中循环的条件终止.
 
-构造 always, never, 和 thereis 提供特定的值, 在一个 loop 终止时把它返回. 在一个 loop 中和不是 into 子句的值累积子句一起使用 always, never, 或 thereis, 会发出一个 program-error 类型的错误 (在宏展开期间). 由于 always, never, 和 thereis 使用 return-from 特殊操作符来终止迭代, 当由于这些构造中的任何一个导致退出时, 提供的任何 finally 子句不会被求值.
+构造 always, never, 和 thereis 提供那些当一个 loop 终止时要被返回的值. 在一个带有不是 into 子句的值累积子句的 loop 中使用 always, never, 或 thereis, 会发出一个 program-error 类型[type]的错误 (在宏展开期间). 由于 always, never, 和 thereis 使用 return-from 特殊操作符[special operator]来终止循环, 当由于这些构造中的任何一个导致退出时, 提供的任何 finally 子句不会被求值. 在所有方面这些构造都表现地像 while 和 until 构造.
 
-always 构造接收一个表达式形式并且如果这个表达式曾求值为 nil 就终止这个 loop; 在这个情况下, 它返回 nil. 否则, 它提供一个默认返回值 t. 如果提供的表达式形式的从来不返回 nil, 某个其他构造可以终止这个迭代.
+always 构造接收一个表达式形式[form]并且如果这个表达式形式[form]曾求值为 nil 就终止这个 loop; 在这个情况下, 它返回 nil. 否则, 它提供一个默认返回值 t. 如果提供的表达式形式[form]的从来不返回 nil, 某个其他构造可以终止这个循环.
 
-never 构造在提供的表达式形式的值第一次不是 nil 的时候终止迭代; 这个 loop 返回 nil. 如果这个提供的表达式形式一直返回 nil, 某个其他构造可以终止这个迭代. 除非某个其他子句提供一个返回值, 否则默认返回值就是 t.
+never 构造在提供的表达式形式 form 的值第一次不是 nil [non-bil]的时候终止循环; 这个 loop 返回 nil. 如果这个提供的表达式形式 form 总是为 nil, 某个其他构造可以终止这个循环. 除非某个其他子句提供一个返回值, 否则默认返回值就是 t.
 
-thereis 构造在提供的表达式形式的值第一次不是 nil 时终止迭代; 这个 loop 返回提供的表达式形式的值. 如果这个提供的表达式形式的值总是为 nil, 某个其他构造可以终止这个迭代. 除非某个其他子句提供一个返回值, 否则默认返回值就是 t.
+thereis 构造在提供的表达式形式 form 的值第一次不是 nil [non-bil]的时候终止循环; 这个 loop 返回提供的表达式形式 form 的值. 如果这个提供的表达式形式 form 的值总是为 nil, 某个其他构造可以终止这个循环. 除非某个其他子句提供一个返回值, 否则默认返回值就是 nil.
 
 在 thereis 和 until 构造中有两个区别:
 
-* until 构造不会基于提供的表达式形式的值返回一个值或者 nil.
+* until 构造不会基于提供的表达式形式 form 的值返回一个值或者 nil.
 
-* until 构造执行任何 finally 子句. 由于 thereis 使用 return-from 特殊操作符来终止迭代, 当 thereis 导致退出时, 任何提供的 finally 子句不会被求值.
+* until 构造执行任何 finally 子句. 由于 thereis 使用 return-from 特殊操作符[special operator]来终止循环, 当 thereis 导致退出时, 任何提供的 finally 子句不会被求值.
 
-while 构造允许迭代直到提供的表达式形式求值为 false 之前继续下去. 提供的表达式形式在 while 子句的位置重复求值.
+while 构造允许循环直到提供的表达式形式 form 求值为 false 之前继续下去. 提供的表达式形式 form 在 while 子句的位置重复求值.
 
-until 构造等价于 while (not form).... 如果提供表达式的值不是 nil, 迭代终止.
+until 构造等价于 while (not form).... 如果提供表达式形式 form 的值不是 nil [non-nil], 循环终止.
 
 终止测试控制构造可以被用于 loop 主体的任何位置. 终止测试以它们出现的顺序被使用. 如果一个 until 或 while 子句导致终止, 任何在源代码中先于它的子句都被求值. 如果 until 和 while 构造导致了终止, 控制会传递到 loop 结尾, 其中任何 finally 子句会被执行.
 
 在 never 和 until 构造中有两个差别:
 
-* until 构造不会返回基于提供表达式形式的值的 t 或 nil.
+* until 构造不会返回基于提供表达式形式 form 的值的 t 或 nil.
 
-* until 构造不会忽视任何 finally 子句. 由于 never 使用 return-from 特殊操作符来终止迭代, 任何提供的 finally 子句在 never 导致退出时不会被求值.
+* until 构造不会忽视任何 finally 子句. 由于 never 使用 return-from 特殊操作符[special operator]来终止循环, 任何提供的 finally 子句在 never 导致退出时不会被求值.
 
 在大部分情况下没有必要去使用 loop-finish 因为其他 loop 控制子句会终止这个 loop. 宏 loop-finish 被用于提供一个从 loop 中的嵌套条件句中正常的退出. 由于 loop-finish 转移控制到 loop 结尾, 在一个 finally 表达式中使用 loop-finish 会导致无穷的循环.
 
@@ -915,9 +915,9 @@ until 构造等价于 while (not form).... 如果提供表达式的值不是 nil
 
 ### 6.1.5 <span id="UnconditionalExecutionClauses">无条件执行子句</span>
 
-do 和 doing 构造无论出现在 loop 的展开形式的什么地方都求值提供的 forms. 这个 form 参数可以是任何复合表达式形式. 每个 form 在每次迭代都被求值. 因为每个 loop 子句必须以一个 loop 关键字开始, 关键字 do 是在没有控制动作只需要执行的情况下使用的.
+do 和 doing 构造无论出现在 loop 的展开形式的什么位置都会求值提供的那些 forms. 这个 form 参数可以是任何复合表达式形式[compound form]. 每个表达式形式 form 在每次循环都被求值. 因为每个 loop 子句必须以一个 loop 关键字[loop keyword]开始, 关键字 do 是在没有控制动作只需要执行的情况下使用的.
 
-return 构造接收一个表达式形式. 这个表达式形式返回的任何值都会被这个 loop 表达式形式及时返回. 它等价于子句 do (return-from block-name value), 其中 block-name 是 named 子句中指定的名字, 如果这里没有 named 子句那么就是 nil.
+return 构造接收一个表达式形式[form]. 这个表达式形式[form]返回的任何值[value]都会被这个 loop 表达式形式立即返回. 它等价于子句 do (return-from block-name value), 其中 block-name 是 named 子句中指定的名字, 如果这里没有 named 子句那么就是 nil.
 
 #### 6.1.5.1 无条件执行的示例
 
@@ -938,19 +938,19 @@ return 构造接收一个表达式形式. 这个表达式形式返回的任何�
 
 ### 6.1.6 <span id="ConditionalExecutionClauses">条件执行子句</span>
 
-if, when, 和 unless 构造在一个 loop 中建立条件控制. 如果通过了检验测试, 后面的 loop 子句会被执行. 如果没有通过检验测试, 后面的子句会被跳过, 并且程序控制会转移到 loop 关键字 else 后面的子句. 如果没有通过检验测试并且没有提供 else 子句, 控制会转移到整个条件子句后面的子句或构造.
+if, when, 和 unless 构造在一个 loop 中建立条件控制. 如果通过了检验测试, 后面的 loop 子句会被执行. 如果没有通过检验测试, 后面的子句会被跳过, 并且程序控制会转移到 loop 关键字[loop keyword] else 后面的子句. 如果没有通过检验测试并且没有提供 else 子句, 控制会转移到整个条件子句后面的子句或构造.
 
-如果条件子句是嵌套的, 每个 else 和前面最近的没有关联 else 或 end 的条件子句组成一对.
+如果条件子句是嵌套的, 每个 else 和前面最接近的没有关联 else 或 end 的条件子句组成一对.
 
-在 if 和 when 子句中, 它们是同义的, 如果 form 的值是 true 那么检验测试通过.
+在 if 和 when 子句中, 它们是同义的, 如果表达式形式 form 的值是 true 那么检验测试通过.
 
-在 unless 子句中, 如果 form 的值是 false 那么检验测试通过.
+在 unless 子句中, 如果表达式形式 form 的值是 false 那么检验测试通过.
 
-检验表达式后面的子句可以通过使用 loop 关键字 and 产生一个由复合子句组成的条件块来分组.
+测试表达式后面的那些子句可以通过使用 loop 关键字[loop keyword] and 产生一个由复合子句组成的条件块来分组.
 
-loop 关键字 it 可以用于引用一个子句中检验表达式的结果. 使用这个 loop 关键字 it 代替一个 return 子句或一个条件执行子句中的累积子句中的表达式形式. 如果多个子句用 and 连接, 这个 it 构造必须在这个块的第一个子句中.
+loop 关键字[loop keyword] it 可以用于引用一个子句中测试表达式的结果. 使用这个 loop 关键字[loop keyword] it 代替一个条件执行子句中的一个 return 子句或一个累积子句中的表达式形式. 如果多个子句用 and 连接, 这个 it 构造必须在这个块的第一个子句中.
 
-可选的 loop 关键字 end 标记这个子句的结束. 如果没有提供这个关键字, 下一个 loop 关键字标记着结束. 这个构造 end 可以被用于区分复合子句的作用域.
+可选的 loop 关键字[loop keyword] end 标记这个子句的结束. 如果没有提供这个关键字, 下一个 loop 关键字[loop keyword]标记着结束. 这个构造 end 可以被用于区分复合子句的作用域.
 
 #### 6.1.6.1 WHEN 子句的示例
 
@@ -1004,9 +1004,9 @@ Error: non-numeric value: A
 
 #### 6.1.7.1 <span id="ControlTransferClauses">控制转移子句</span>
 
-named 构造为包含整个 loop 的隐式 block 确定一个名字, 这样 return-from 特殊操作符可以被用于从 loop 返回值或者退出 loop. 一个 loop 表达式形式只能被赋予一个名字. 如果使用了, 这个 named 构造必须是这个 loop 表达式中的第一个子句.
+named 构造为包在整个 loop 周围的隐式块[implicit block]建立一个名字, 这样 return-from 特殊操作符[special operator]可以被用于从 loop 返回值或者退出 loop. 一个 loop 表达式形式[form]只能被赋予一个名字. 如果使用了, 这个 named 构造必须是这个 loop 表达式中的第一个子句.
 
-return 构造接收一个 form 表达式形式. 这个 form 返回的任何值都被这个 loop 表达式形式立即返回. 这个构造类似于 return-from 特殊操作符和 return 宏. return 构造不会执行这个 loop 表达式西形式给定的任何 finally 子句.
+return 构造接收一个表达式形式[form]. 这个表达式形式[form]返回的任何值[value]都被这个 loop 表达式形式立即返回. 这个构造类似于 return-from 特殊操作符[special operator]和 return 宏[macro]. return 构造不会执行这个 loop 表达式形式[form]给定的任何 finally 子句.
 
 ##### 6.1.7.1.1 NAMED 子句的示例
 
@@ -1026,9 +1026,9 @@ initially 和 finally 构造在这个 loop 主体之前和之后求值表达式�
 
 initially 构造导致提供的复合表达式形式 compound-forms 在循环序言中被求值, 它在除了构造 with, for, 或 as 提供的初始化设置以外的所有 loop 代码之前. 任何 initially 子句的代码都是按照子句出现在这个 loop 中的顺序执行的.
 
-finally 构造导致提供的复合表达式形式 compound-forms 在正常迭代终止的循环结尾中被求值. 任何 finally 子句的代码都是按照子句出现在这个 loop 中的顺序执行的. 收集起来的代码只在任何累积子句返回隐式的值之前在循环结尾执行一次. 但是一个从 loop 主体中隐式的控制转移 (比如, 通过 return, go, 或 throw) 会在没有执行结尾代码的情况下退出 loop.
+finally 构造导致提供的复合表达式形式 compound-forms 在正常循环终止的循环结尾中被求值. 任何 finally 子句的代码都是按照子句出现在这个 loop 中的顺序执行的. 收集起来的代码只在任何累积子句返回隐式的值之前在循环结尾执行一次. 但是一个从 loop 主体中显式的控制转移 (比如, 通过 return, go, 或 throw) 会在没有执行结尾代码的情况下退出 loop.
 
-像 return, always, never, 和 thereis 这样的子句可以绕开 finally 子句. return (或者 return-from, 如果提供了 named 选项的话) 可以被用于在 finally 之后从一个 loop 返回值. 这样一个 finally 子句中显式的返回优先于从通过诸如关键字 collect, nconc, append, sum, count, maximize, 和 minimize 提供的子句中返回累积值; 如果使用了 return 或 return-from, 这些子句累积的值不会被 loop 返回. 
+像 return, always, never, 和 thereis 这样的子句可以绕开 finally 子句. return (或者 return-from, 如果提供了 named 选项的话) 可以被用于在 finally 之后从一个 loop 返回值. 这样一个 finally 子句中显式返回[explicit return]优先于从通过诸如关键字 collect, nconc, append, sum, count, maximize, 和 minimize 提供的子句中返回累积值; 如果使用了 return 或 return-from, 这些子句累积的值不会被 loop 返回. 
 
 ### 6.1.8 <span id="ExamplesMLF">其他 Loop 特性的示例</span>
 
@@ -1135,19 +1135,19 @@ finally 构造导致提供的复合表达式形式 compound-forms 在正常迭�
 
 ### 6.1.9 <span id="NotesAboutLoop">Loop 的注意事项</span>
 
-可以为 loop 变量提供类型. 没有必要为任何变量提供一个类型, 但是提供类型可以确保这个变量有正确类型的初始值, 并且这样也可以启用编译器优化 (取决于具体实现).
+可以为 loop 变量提供类型[type]. 没有必要为任何变量提供一个类型[type], 但是提供类型可以确保这个变量有正确类型的初始值, 并且这样也可以启用编译器优化 (取决于具体实现[implementation]).
 
 子句 repeat n ... 粗略等价于下面这个子句
 
     (loop for internal-variable downfrom (- n 1) to 0 ...)
 
-但是在某些实现中, repeat 构造可能更高效.
+但是在某些实现[implementation]中, repeat 构造可能更高效.
 
 在 loop 子句的可执行部分中和整个 loop 表达式形式周围, 可以使用 let 来绑定变量.
 
-在与 loop 有关时使用名为 IT (在任何包中) 的变量时要谨慎, 因为它是一个 loop 关键字, 可以在某些上下文中替换表达式形式.
+在与 loop 有关时使用名为 IT (在任何包[package]中) 的变量时要谨慎, 因为它是一个 loop 关键字[loop keyword], 可以在某些上下文中替换表达式形式[form].
 
-这里没有让用户给 loop 添加扩展的标准化机制. 
+这里没有让用户给 loop 添加扩展的标准化[standardized]机制. 
 
 ## 6.2 <span id="TheIterationDictionary">迭代字典</span>
 
@@ -1170,35 +1170,35 @@ finally 构造导致提供的复合表达式形式 compound-forms 在正常迭�
 
 * 参数和值(Arguments and Values):
 
-        var---一个符号.
-        init-form---一个表达式形式.
-        step-form---一个表达式形式.
-        end-test-form---一个表达式形式.
-        result-forms---一个隐式的 progn.
-        declaration---一个 declare 表达式; 不求值.
-        tag---一个 go 标签; 不求值.
-        statement---一个复合表达式形式; 按以下所述求值.
-        results---如果执行了一个 return 或 return-from 表达式形式, 值从这个表达式形式传出来; 否则, 值通过 result-forms 返回.
+        var---一个符号[symbol].
+        init-form---一个表达式形式[form].
+        step-form---一个表达式形式[form].
+        end-test-form---一个表达式形式[form].
+        result-forms---一个隐式的 progn [implicit progn].
+        declaration---一个 declare 表达式[expression]; 不求值.
+        tag---一个 go 标签[go tag]; 不求值.
+        statement---一个复合表达式形式[compound form]; 按以下所述求值.
+        results---如果执行了一个 return 或 return-from 表达式形式, 就是从这个表达式形式[form]传出来的那些值[value]; 否则, 就是通过 result-forms 返回的那些值[value].
 
 * 描述(Description):
 
-        当测试条件保持时满足时, do 在一组语句上迭代. do 接受任意数量大迭代变量 vars, 它们在迭代中并行绑定和步进. 可以通过使用一个 init-form 来为每个迭代变量提供一个初始值. Step-forms 可以被用于指定这个循环中后续的迭代如果更新变量 vars. Step-forms 可能被用于可以被用于产生后续的值或累积结果. 如果 end-test-form 条件在一个主体的执行前满足, 这个迭代终止. Tags 标记语句.
+        当测试条件保持时满足时, do 在一组语句 statements 上迭代. do 接受任意数量大循环变量 vars, 它们在这个循环中并行绑定和步进. 可以通过使用一个 init-form 来为每个循环变量提供一个初始值. step-forms 可以被用于指定这个循环中后续的循环如何更新变量 vars. step-forms 可能被用于可以被用于产生后续的值或累积结果. 如果 end-test-form 条件在一个主体的执行前满足, 这个循环终止. 这些 tags 标记这些语句 statements.
 
-        do* 和 do 一样除了变量 vars 的绑定和步进是顺序执行而不是并行执行.
+        do* 和 do 一样除了这些变量 vars 的绑定[binding]和步进是顺序执行而不是并行执行.
 
-        在第一次迭代前, 所有 init-forms 被求值, 如果提供了 init-form, 每一个 var 被绑定到它的对应 init-form 的值. 这是一个绑定, 不是一个赋值; 当这个循环终止时, 这些变量的旧值会被恢复. 对于 do, 所有的 init-forms 在任何一个 var 绑定前被求值. init-forms 可以引用 do 开始执行之前的可见的这些 vars 的绑定. 对于 do*, 第一个 init-form 被求值, 然后第一个 var 被绑定到那个值, 然后第二个 init-form 被求值, 接着第二个 var 被绑定, 以此类推; 通常, 如果 j < k, 那么第 k 个 init-form 可以引用第 j 个 var 的绑定, 否则引用的是第 j 个 var 的旧绑定.
+        在第一次循环前, 所有初始化表达式形式 init-forms 被求值, 如果提供了 init-form, 对应的每一个变量 var 被绑定到它的对应 init-form 的值. 这是一个绑定[binding], 不是一个赋值; 当这个循环终止时, 这些变量的旧值会被恢复. 对于 do, 所有的这些 init-forms 在任何一个变量 var 绑定前被求值. 这些 init-forms 可以引用 do 开始执行之前的可见的这些 vars 的绑定. 对于 do*, 第一个 init-form 被求值, 然后第一个 var 被绑定到那个值, 然后第二个 init-form 被求值, 接着第二个 var 被绑定, 以此类推; 通常, 如果 j < k, 那么第 k 个 init-form 可以引用第 j 个 var 的绑定, 否则引用的是第 j 个 var 的旧绑定.
 
-        在每个迭代开始前, 处理这些变量后, 这个 end-test-form 被求值. 如果结果是 false, 执行 do (或 do*) 表达式形式的主体. 如果结果是 true, 这个 result-forms 按照一个隐式的 progn 的顺序被求值, 然后 do 或 do* 返回.
+        在每个循环开始前, 在处理这些变量后, 这个 end-test-form 被求值. 如果结果是 false, 执行 do (或 do*) 表达式形式的主体. 如果结果是 true, 这个 result-forms 按照一个隐式的 progn 的顺序被求值, 然后 do 或 do* 返回.
 
-        在除了第一次以外的每个迭代开始时, vars 按照如下更新. 所有的 step-forms, 如果提供了就从左到右求值, 并且结果值被赋给对应变量 vars. 任何没有关联的变量 var 不会被赋值. 对于 do, 所有 step-forms 在任何 var 更新前被求值; 给 vars 的赋值并行执行, 就像是通过 psetq. 因为所有的 step-forms 在任何变量被修改前求值, 所以一个 step-form 求值时可以访问所有这些 vars 的旧值, 即便其他的 step-forms 在它之前. 对于 do*, 第一个 step-form 被求值, 然后这个值赋给第一个 var, 然后第二个 step-form 被求值, 接着值赋给第二个 var, 以此类推; 这个给变量的赋值是顺序执行, 就像是通过 setq. 不管是对于 do 还是 do*, 在变量 vars 被更新后, end-test-form 按照如上所述被求值, 然后这个迭代继续.
+        在除了第一次以外的每个循环开始时, vars 按照如下更新. 所有的步进表达式形式 step-forms, 如果提供了就从左到右求值, 并且结果值被赋给对应变量 vars. 任何没有关联 step-form 的变量 var 不会被赋值. 对于 do, 所有 step-forms 在任何 var 更新前被求值; 给 vars 的赋值并行执行, 就像是通过 psetq 一样. 因为所有的 step-forms 在任何变量被修改前求值, 所以一个 step-form 求值时可以访问所有这些 vars 的旧值, 即便其他的 step-forms 在它之前. 对于 do*, 第一个 step-form 被求值, 然后这个值赋给第一个 var, 然后第二个 step-form 被求值, 接着值赋给第二个 var, 以此类推; 这个给变量的赋值是顺序执行, 就像是通过 setq 一样. 不管是对于 do 还是 do*, 在变量 vars 被更新后, end-test-form 按照如上所述被求值, 然后这个循环继续.
 
-        剩余的 do (或 do*) 表达式形式部分构成一个隐式的 tagbody. Tags 可能出现在一个 do 循环的主体中, 供出现在主体中的 go 语句使用 (但是这样的 go 语句可能不会出现在变量说明符,  end-test-form, 或 result-forms 中). 当到达 do 主体的结尾时, 开始下一个迭代周期 (以 step-forms 的求值开始).
+        剩余的 do (或 do*) 表达式形式部分构成一个隐式的 tagbody [implicit tagbody]. 这些 tags 可能出现在一个 do 循环的主体中, 供出现在主体中的 go 语句使用 (但是这样的 go 语句可能不会出现在变量标识符, end-test-form, 或 result-forms 中). 当到达 do 主体的结尾时, 开始下一个循环周期 (以 step-forms 的求值开始).
 
-        一个隐式的名为 nil 的 block 包在整个 do (或 do*) 表达式形式周围. 一个 return 语句可以被用于在任何点立即去退出这个循环.
+        一个名为 nil 的隐式块[implicit block]包在整个 do (或 do*) 表达式形式周围. 一个 return 语句可以在任何点被使用来立即退出这个循环.
 
-        Init-form 是和 var 关联的初始值. 如果 init-form 省略了, 那么这个 var 的值就是 nil. 如果为 var 提供了一个声明, init-form 必须与这个声明一致.
+        初始化表达式形式 init-form 是和 var 关联的初始值. 如果 init-form 省略了, 那么这个 var 的初始值就是 nil. 如果为 var 提供了一个声明 declaration, init-form 必须与这个声明 declaration 一致.
 
-        声明可以出现在 do (或 do*) 主体的开始位置. 它们适用于 do (or do*) 主体中的代码, 这个 do (or do*) vars 的绑定, step-forms, end-test-form, 还有 result-forms.
+        声明可以出现在 do (或 do*) 主体的开始位置. 它们适用于 do (or do*) 主体中的代码, 这个 do (or do*) vars 的绑定[binding], step-forms, end-test-form, 还有 result-forms.
 
 * 示例(Examples):
 
@@ -1242,7 +1242,7 @@ finally 构造导致提供的复合表达式形式 compound-forms 在正常迭�
       body)
     ```
 
-        是一个给索引变量并行赋值的示例. 在第一个迭代时, oldx 的值是 x 在 do 输入之前的值. 在后续的迭代中, oldx 包含了 x 在上一次迭代中的值.
+        是一个对索引变量并行赋值的示例. 在第一个循环时, oldx 的值是 x 在进入 do 之前的值. 在后续的循环中, oldx 包含了 x 在上一次循环中的值.
 
     ```LISP
     (do ((x foo (cdr x))
@@ -1261,7 +1261,7 @@ finally 构造导致提供的复合表达式形式 compound-forms 在正常迭�
                 ((endp x) y)))
     ```
 
-        作为一个嵌套迭代的示例, 细想一个 cons 列表的数据结构. 每个 cons 的 car 是一个符号列表, 而每个 cons 的 cdr 是等长度的包含对应值的列表. 这样一个数据结构类似于关联列表, 但是被划分为 "frames"; 整体结构类似于 rib-cage. 这样一个数据结构的一个查找函数可能是:
+        作为一个嵌套迭代的示例, 细想一个 cons 列表[list]的数据结构. 每个 cons 的 car 是一个符号[symbol]列表[list], 而每个 cons 的 cdr 是等长度的包含对应值的列表[list]. 这样一个数据结构类似于关联列表, 但是被划分为 "帧(frame)"; 整体结构类似于胸腔(rib-cage). 这样一个数据结构的一个查找函数可能是:
 
     ```LISP
     (defun ribcage-lookup (sym ribcage)           
@@ -1280,13 +1280,13 @@ finally 构造导致提供的复合表达式形式 compound-forms 在正常迭�
 
 * 也见(See Also):
 
-        其他迭代函数 (dolist, dotimes, 和 loop) 和更原始的功能 (tagbody, go, block, return, let, 和 setq)
+        其他循环函数 (dolist, dotimes, 和 loop) 和更原始的功能 (tagbody, go, block, return, let, 和 setq)
 
 * 注意(Notes):
 
-        如果 end-test-form 是 nil, 这个测试条件从来不会成功. 这为 "do forever" 提供了一个惯用语法: 这个 do 或 do* 的主体被重复执行. 这个无限循环可以通过使用 return, return-from, go 到一个外部层级, 或 throw 来终止.
+        如果 end-test-form 是 nil, 这个测试条件从来不会成功. 这为 "永远执行" 提供了一个惯用语法: 这个 do 或 do* 的主体被重复执行. 这个无限循环可以通过使用 return, return-from, go 到一个外部层级, 或 throw 来终止.
 
-        一个 do 表达式形式可能被解释为如下更原始的表达式形式 block, return, let, loop, tagbody, 和 psetq:
+        一个 do 表达式形式[form]可能被解释为如下更原始的表达式形式[form] block, return, let, loop, tagbody, 和 psetq:
 
     ```LISP
     (block nil        
@@ -1314,27 +1314,27 @@ finally 构造导致提供的复合表达式形式 compound-forms 在正常迭�
 
 * 参数和值(Arguments and Values):
 
-        var---一个符号.
-        count-form---一个表达式形式.
-        result-form---一个表达式形式.
-        declaration---一个 declare 表达式; 不求值.
-        tag---一个 go 标签; 不求值.
-        statement---一个复合表达式形式; 按如下所述求值.
-        results---如果执行了一个 return 或 return-from 表达式形式, 值从这个表达式形式传出来; 否则, 值通过 result-form 返回, 如果没有 result-form 就是 nil.
+        var---一个符号[symbol].
+        count-form---一个表达式形式[form].
+        result-form---一个表达式形式[form].
+        declaration---一个 declare 表达式[expression]; 不求值.
+        tag---一个 go 标签[go tag]; 不求值.
+        statement---一个复合表达式形式[compound form]; 按如下所述求值.
+        results---如果执行了一个 return 或 return-from 表达式形式, 那么就是从这个表达式形式[form]传出来的那些值[value]; 否则, 就是通过 result-form 返回的那些值[value], 如果没有 result-form 就是 nil.
 
 * 描述(Description):
 
-        dotimes 遍历一系列整数.
+        dotimes 遍历一系列整数[integer].
 
-        dotimes 求值 count-form, 它应该产生一个 integer. 如果 count-form 是 zero 或者负的, 这个主体不会被执行. dotimes 对于每一个从 0 到 count-form 的值但是不包括那个值的整数执行一次主体, 以这些 tag 和 statement 出现的顺序执行, 其中 var 绑定到每一个 integer. 然后 result-form 被求值. 在 result-form 被处理时, var 被绑定为主体执行的次数. Tags 标记 statements.
+        dotimes 求值 count-form, 它应该产生一个整数[integer]. 如果 count-form 是 zero 或者负的, 这个主体不会被执行. dotimes 对于每一个从 0 到 count-form 的值但是不包括那个值的整数[integer]执行一次主体, 以这些 tag 和 statement 出现的顺序执行, 其中 var 绑定到每一个 integer. 然后 result-form 被求值. 在 result-form 被处理时, var 被绑定为主体执行的次数. 这些 tags 标记 statements.
 
-        隐式的名为 nil 的 block 包在 dotimes 周围. return 可以被用于在没有执行进一步迭代的情况下立即终止循环, 返回 0 个或多个值.
+        名为 nil 的隐式块[implicit block]包在 dotimes 周围. return 可以被用于在没有执行进一步循环的情况下立即终止循环, 返回 0 个或多个值.
 
-        这个循环的主体是一个隐式的 tagbody; 它可能包含被当作 go 语句目标的 tags. 声明可能出现在 loop 的主体之前.
+        这个循环的主体是一个隐式 tagbody [implicit tagbody]; 它可能包含被当作 go 语句目标的标签. 声明可能出现在这个循环的主体之前.
 
-        var 绑定的作用域不包括 count-form, 但是包括 result-form.
+        var 绑定的作用域[scope]不包括 count-form, 但是包括 result-form.
 
-        dotimes 是否在每次迭代为 var 建立一个新的绑定或者是否在开始的时候为 var 建立一次绑定而后续的迭代对它赋值, 这时依赖于具体实现的.
+        dotimes 是在每次循环为 var 建立[establish]一个新的绑定[binding], 还是在开始的时候为 var 建立一次绑定[binding]而后续的循环对它赋值, 这是依赖于具体实现的[implementation-dependent].
 
 * 示例(Examples):
 
@@ -1399,27 +1399,27 @@ finally 构造导致提供的复合表达式形式 compound-forms 在正常迭�
 
 * 参数和值(Arguments and Values):
 
-        var---一个符号.
-        list-form---一个表达式形式.
-        result-form---一个表达式形式.
-        declaration---一个 declare 表达式; 不求值.
-        tag---一个 go 标签; 不求值.
-        statement---一个复合表达式形式; 按如下所述求值.
-        results---如果执行了一个 return 或 return-from 表达式形式, 值从这个表达式形式传出来; 否则, 值通过 result-form 返回, 如果没有 result-form 就是 nil.
+        var---一个符号[symbol].
+        list-form---一个表达式形式[form].
+        result-form---一个表达式形式[form].
+        declaration---一个 declare 表达式[expression]; 不求值.
+        tag---一个 go 标签[go tag]; 不求值.
+        statement---一个复合表达式形式[compound form]; 按如下所述求值.
+        results---如果执行了一个 return 或 return-from 表达式形式, 就是从这个表达式形式[form]传出来的值[value]; 否则, 就是通过 result-form 返回的值[value], 如果没有 result-form 就是 nil.
 
 * 描述(Description):
 
-        dolist 遍历一个列表的元素. dolist 的主体类似于一个 tagbody. 它由一系列的 tag 和 statement 组成.
+        dolist 遍历一个列表[list]的元素. dolist 的主体类似于一个 tagbody. 它由一系列的标签 tag 和语句 statement 组成.
 
-        dolist 求值 list-form, 它应该产生一个列表. 对于列表中的每个元素执行一次主体, 以那些 tag 和 statement 出现的顺序求值, 其中 var 绑定为这个元素. 然后 result-form 被求值. 那些 tag 标记 statement.
+        dolist 求值 list-form, 它应该产生一个列表[list]. 对于列表[list]中的每个元素执行一次主体, 以那些 tag 和 statement 出现的顺序求值, 其中 var 绑定为这个元素. 然后 result-form 被求值. 那些 tag 标记那些 statement.
 
         在 result-form 被处理时, var 绑定为 nil.
 
-        一个名为 nil 的隐式的 block 包在 dolist 周围. return 可以被用于在没有执行进一步迭代的情况下立即终止循环, 返回 0 个或多个值.
+        一个名为 nil 的隐式块[implicit block]包在 dolist 周围. return 可以被用于在没有执行进一步循环的情况下立即终止循环, 返回 0 个或多个值[value].
 
-        这个 var 绑定的作用于不包括 list-form, 但是包括 result-form.
+        这个 var 的绑定的作用域[scope]不包括 list-form, 但是包括 result-form.
 
-        dolist 是否在每次迭代为 var 建立一个新的绑定或者是否在开始的时候为 var 建立一次绑定而后续的迭代对它赋值, 这时依赖于具体实现的.
+        dolist 是在每次循环为 var 建立[establish]一个新的绑定[binding]还是在开始的时候为 var 建立[establish]一次绑定而后续的循环对它赋值, 这是依赖于具体实现的[implementation-dependent].
 
 * 示例(Examples):
 
@@ -1444,11 +1444,11 @@ finally 构造导致提供的复合表达式形式 compound-forms 在正常迭�
 
 * 也见(See Also):
 
-        do, dotimes, tagbody, Section 3.6 (Traversal Rules and Side Effects)
+        do, dotimes, tagbody, 章节 3.6 (遍历规则和副作用)
 
 * 注意(Notes):
 
-        在 dolist 的主体中 go 可能被用于转移控制到一个 tag 标记的语句上. 
+        在 dolist 的主体中 go 可能被用于转移控制到一个由 tag 标记的语句上. 
 
 ### <span id="MacroLOOP">宏 LOOP</span>
 
@@ -1546,20 +1546,20 @@ finally 构造导致提供的复合表达式形式 compound-forms 在正常迭�
 
 * 参数和值(Arguments and Values):
 
-        compound-form---一个复合表达式形式.
-        name---一个符号.
-        simple-var---一个符号 (一个变量名).
-        form, form1, form2, form3---一个表达式形式.
-        step-fun---一个求值为单参数函数的表达式形式.
-        vector---一个求值为一个向量的表达式形式.
-        hash-table---一个求值为一个哈希表的表达式形式.
-        package---一个求值为一个包指定符的表达式形式.
-        type-specifier---一个类型指定符. 这个可能是原子类型指定符也可能是复合类型指定符, 它引入了一些额外的复杂性, 以便在解构过程中进行适当的解析 ; 关于更多信息, 见章节 6.1.1.7 (Destructuring).
-        result---一个对象.
+        compound-form---一个复合表达式形式[compound form].
+        name---一个符号[symbol].
+        simple-var---一个符号[symbol] (一个变量[variable]名).
+        form, form1, form2, form3---一个表达式形式[form].
+        step-fun---一个求值为单参数[argument]函数[function]的表达式形式[form].
+        vector---一个求值为一个向量[vector]的表达式形式[form].
+        hash-table---一个求值为一个哈希表[hash table]的表达式形式[form].
+        package---一个求值为一个包标识符[package designator]的表达式形式[form].
+        type-specifier---一个类型指定符[type specifier]. 这个可能是原子类型指定符[atomic type specifier]也可能是复合类型指定符[compound type specifier], 在解构时它为正确解析引入了一些额外的复杂性; 关于更多信息, 见章节 6.1.1.7 (解构).
+        result---一个对象[object].
 
 * 描述(Description):
 
-        关于详细信息, 见章节 6.1 (The LOOP Facility).
+        关于详细信息, 见章节 6.1 (LOOP 机制).
 
 * 示例(Examples):
 
@@ -1607,11 +1607,11 @@ finally 构造导致提供的复合表达式形式 compound-forms 在正常迭�
 
 * 也见(See Also):
 
-        do, dolist, dotimes, return, go, throw, Section 6.1.1.7 (Destructuring)
+        do, dolist, dotimes, return, go, throw, 章节 6.1.1.7 (解构)
 
 * 注意(Notes):
 
-        除了 loop-finish 不能被用在一个简单 loop 表达式形式中, 一个简单 loop 表达式形式和一个扩展 loop 表达式形式在以下方面相关:
+        除了 loop-finish 不能被用在一个简单 loop 表达式形式[form]中, 一个简单 loop 表达式形式[form]和一个扩展 loop 表达式形式[form]的关系如下:
 
         (loop compound-form*) ==  (loop do compound-form*)
 
@@ -1624,7 +1624,7 @@ finally 构造导致提供的复合表达式形式 compound-forms 在正常迭�
 
 * 描述(Description):
 
-        这个 loop-finish 宏可以被词法地使用于一个扩展 loop 表达式形式中来"正常"地终止这个表达式形式. 这也就是说, 它转移控制到词法上最内部的扩展 loop 表达式形式的循环结尾. 这允许执行任何 finally 子句 (为了得到效果) 和返回任何累积结果.
+        可以在词法上位于一个扩展 loop 表达式形式[form]中的地方使用这个 loop-finish 宏[macro]来"正常"地终止这个表达式形式[form]. 这也就是说, 它转移控制到词法上最内部的扩展 loop 表达式形式[form]的循环结尾. 这允许执行任何 finally 子句 (为了得到效果) 以及返回任何累积结果.
 
 * 示例(Examples):
 
@@ -1678,11 +1678,11 @@ finally 构造导致提供的复合表达式形式 compound-forms 在正常迭�
 
 * 异常情况(Exceptional Situations):
 
-        loop-finish 在全局环境中是否被 fbound 依赖于具体实现; 然而, loop-finish 的遮蔽和重定义的限制条件跟 COMMON-LISP 包中在全局环境中被 fbound 的符号一样. 在 loop 的外部去尝试使用 loop-finish 的结果是未定义的.
+        loop-finish 在全局环境[global environment]中是否被 fbound 是依赖于具体实现的[implementation-dependent]; 然而, loop-finish 的遮蔽[shadow]和重定义的限制条件跟 COMMON-LISP 包中在全局环境[global environment]中被 fbound 的符号[symbol]一样. 在 loop 的外部去尝试使用 loop-finish 的结果是未定义的.
 
 * 也见(See Also):
 
-        loop, Section 6.1 (The LOOP Facility)
+        loop, 章节 6.1 (LOOP 机制)
 
 * 注意(Notes):
 
