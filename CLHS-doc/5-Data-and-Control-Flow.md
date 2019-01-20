@@ -12,7 +12,7 @@
 
 ### 5.1.1 <span id="OverviewPlacesGeneralizedReference">位置和广义引用的概述</span>
 
-一个广义引用[generalized reference]是一个表达式形式[form]的使用, 这个表达式形式[form]有时也称作一个 位置[place], 就好像它是一个可以被读写的变量[variable]. 一个位置[place]的值[value]就是这个位置[place]表达式形式[form]求值后的对象[object]. 一个位置[place]的值[value]可以通过使用 setf 来改变. 绑定一个位置[place]的概念没有在 Common Lisp 中定义, 但是一个具体实现[implementation]允许通过定义它的概念来扩展这个语言.
+一个广义引用[generalized reference]是一个表达式形式[form]的使用, 这个表达式形式[form]有时也称作一个位置[place], 就好像它是一个可以被读写的变量[variable]. 一个位置[place]的值[value]就是这个位置[place]表达式形式[form]求值后的对象[object]. 一个位置[place]的值[value]可以通过使用 setf 来改变. 绑定一个位置[place]的概念没有在 Common Lisp 中定义, 但是一个具体实现[implementation]允许通过定义它的概念来扩展这个语言.
 
 下面这段包含了 setf 使用的示例. 注意, 求值第二列的表达式形式[form]返回的值没有必要和求值第三列中的表达式形式[form]获取到的值一样. 总之, setf 表达式形式[form]准确的宏展开[macro expansion]是不保证的, 甚至是依赖于具体实现的[implementation-dependent]; 可以保证的是, 这个展开式是一个针对特定实现[implementation]的更新表达式形式, 对子表达式形式[subform]的从左到右求值是保留的, 而求值 setf 的最终结果是存储的值或多值.
 
@@ -22,7 +22,7 @@
 |(car x)         |  (rplaca x datum)|  (setf (car x) datum)           |
 |(symbol-value x)|  (set x datum)   |  (setf (symbol-value x) datum)  |
 
-Figure 5-1. setf 的实例
+Figure 5-1. setf 的示例
 
 下面这段展示了和位置[place]以及广义引用[generalized reference]相关的操作符[operator].
 
@@ -66,7 +66,7 @@ Figure 5-2. 位置[place]以及广义引用[generalized reference]相关的操�
     (setf place1 value1 place2 value2 ...)
     ```
 
-    子表达式形式[subform] place1 和 value1 被求值, place1 指定的位置被修改去包含 value1 返回的值, 然后 setf 表达式形式的剩余部分按照类似的方式处理.
+    子表达式形式[subform] place1 和 value1 被求值, 修改 place1 指定的位置来包含 value1 返回的值, 然后 setf 表达式形式的剩余部分按照类似的方式处理.
 
 3. 对于 check-type, ctypecase, 和 ccase, 位置[place]的子表达式形式[subform]像 (1) 中那样被求值一次, 但是如果 check-type 中类型检测失败了或者 ctypecase 和 ccase 中没有情况(case)被处理可能会再次求值.
 
@@ -81,7 +81,7 @@ Figure 5-2. 位置[place]以及广义引用[generalized reference]相关的操�
   (push (progn (princ "1") 'ref-1)
         (car (progn (princ "2") ref2))))
 >>  12
-=>  (REF1)
+=>  (REF-1)
 
 (let (x)
   (push (setq x (list 'a))
@@ -118,9 +118,9 @@ push 先求值 (setq x (list 'a)) => (a), 然后求值 (setq x (list 'b)) => (b)
 
 访问表达式形式返回的值受到存储表达式形式执行的影响, 但是这些表达式形式中的任何一种都可能被多次求值.
 
-可以通过 psetf, shiftf 和 rotatef 并行执行多个 setf. 由于这个, setf 展开器[setf expander]必须每次产生新的临时和存储变量名字. 关于如果去做这个的示例, 见 gensym.
+可以通过 psetf, shiftf 和 rotatef 并行执行多个 setf. 由于这个, setf 展开器[setf expander]必须每次产生新的临时和存储变量名字. 关于如何去做这个的示例, 见 gensym.
 
-对于每一个标准化[standardized]的访问器函数 F, 除非它被显式地记载, 否则使用一个 F 表达式形式[form]作为一个 setf 位置[place]的能力被实现为使用一个 setf 展开式[setf expander]还是一个 setf 函数[setf function], 是依赖于具体实现的[implementation-dependent]. 同样, 由此可以得出, 名字 (setf F) 是否被 fbound 是依赖于具体实现的[implementation-dependent].
+对于每一个标准化[standardized]的访问器函数 F, 除非它被显式地记载, 否则使用一个 F 表达式形式[form]作为一个 setf 位置[place]的能力被实现为使用一个 setf 展开器[setf expander]还是一个 setf 函数[setf function], 是依赖于具体实现的[implementation-dependent]. 同样, 由此可以得出, 名字 (setf F) 是否被 fbound 是依赖于具体实现的[implementation-dependent].
 
 ##### 5.1.1.2.1 Setf 展开式的示例
 
@@ -235,7 +235,7 @@ Common Lisp 定义了多个位置[place]的种类; 这个章节会列举它们. 
     | --        | --                      | --                   |
     |ldb        |   second                |     dpb              |
     |mask-field |   second                |     deposit-field    |
-    |getf       |   first                 |     implementation-dependent |
+    |getf       |   first                 |     依赖于具体实现 |
 
     Figure 5-8. 可以和 setf 一起使用的函数---2 
     
@@ -1305,7 +1305,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 描述(Description):
 
-        defconstant 导致由 name 命名的全局变量被赋予求值 initial-value 的结果值.
+        defconstant 导致由 name 命名的全局变量被赋予 initial-value 求值后的结果值.
 
         一个由 defconstant 定义的常量可以被 defconstant 重定义. 然而, 如果尝试去使用其他操作符去给这个符号[symbol]赋一个值[value]或者使用后面的 defconstant 将其赋给不同[different]的值[value], 那么后果是未定义的.
 
@@ -2252,7 +2252,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
         unwind-protect 防止所有企图退出 protected-form 的尝试, 包括 go, handler-case, ignore-errors, restart-case, return-from, throw, 还有 with-simple-restart.
 
-        在退出时取消处理者[handler]和重启动[restart]绑定[binding], 与取消动态变量[dynamic variable]和 catch 标签绑定是并行的, 和它们建立的顺序是相反的. 这样做的效果是 cleanup-form 看到相同的处理者[handler]和重启动[restart]绑定[binding], 以及动态变量[dynamic variable]绑定和 catch 标签, 和进入 unwind-protect 时见到的一样.
+        在退出时取消处理者[handler]和重启动[restart]绑定[binding], 与取消动态变量[dynamic variable]和 catch 标签绑定是并行的, 和它们建立的顺序是相反的. 这样做的效果是 cleanup-form 可以看到和进入 unwind-protect 时见到的一样的处理者[handler]和重启动[restart]绑定[binding], 以及动态变量[dynamic variable]绑定和 catch 标签.
 
 * 示例(Examples):
 
@@ -2493,6 +2493,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
         如果它的那两个实参[argument]是一样的, 完全相同的对象[object]就返回 true; 否则, 返回 false.
 
 * 示例(Examples):
+
     ```LISP
     (eq 'a 'b) =>  false
     (eq 'a 'a) =>  true
@@ -3703,7 +3704,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 描述(Description):
 
-        multiple-value-setq 赋值给这些变量 vars.
+        multiple-value-setq 给这些变量 vars 赋值.
 
         这个表达式形式 form 被求值, 然后每个变量 var 被赋予这个表达式形式 form 返回的对应的值[value]. 如果这里的这些变量 vars 的数量超过返回值[value]的数量, nil 会被赋值给多余的变量 vars. 如果返回值[value]的数量多于变量 vars, 多余的值[value]会被丢弃.
 
@@ -3884,7 +3885,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 描述(Description):
 
-        求值 n 和表达式形式 form, 作为唯一的值返回表达式形式 form 产生的第 n 个值, 如果 n 大于等于表达式形式 form 返回的值[value]的数量那么就是 nil. (返回的第一个值编号为 0.)
+        求值 n 和表达式形式 form, 表达式形式 form 产生的第 n 个值作为唯一的值返回, 如果 n 大于等于表达式形式 form 返回的值[value]的数量那么就是 nil. (返回的第一个值编号为 0.)
 
 * 示例(Examples):
     
@@ -4124,7 +4125,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
          (progn (setq a nil) 'here)
          (progn (setq a t) 'there)) =>  HERE
     a =>  NIL
-    ```
+    ```name
     
 * 受此影响(Affected By): None.
 
@@ -4135,7 +4136,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
         prog1, prog2, 章节 3.1 (求值)
 
 * 注意(Notes):
-
+name
         很多 Common Lisp 中的位置涉及使用隐式 progn [implicit progn]的语法. 这也就是说, 其语法的一部分允许编写的多个表达式形式[form]按顺序进行求值, 丢弃除了最后一个以外的表达式形式[form]的值并且返回最后一个表达式形式[form]的结果. 这些位置包括, 但不限于以下这些: 一个 lambda 表达式[lambda expression]的主体部分; 多种控制和条件表达式形式[form]的主体部分 (比如, case, catch, progn, 和 when).
 
 
@@ -4435,7 +4436,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 描述(Description):
 
-        确定在环境 environment 中组成这个 place 的 setf 展开式[setf expansion]的5个值; 见章节 5.1.1.2 (Setf 展开式).
+        确定在环境 environment 中组成这个 place 的 setf 展开式[setf expansion]的 5 个值; 见章节 5.1.1.2 (Setf 展开式).
 
         如果 environment 没有被提供或者是 nil, 那么环境就是那个空词法环境[null lexical environment].
 
