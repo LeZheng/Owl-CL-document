@@ -781,7 +781,7 @@ sum 构造在每次循环中形成了所提供 form 的连续主值[primary valu
       sum (* 2.0 v))
 =>  22.4
 ```
-<!--TODO 学习到此-->
+
 ### 6.1.4 <span id="TerminationTestClauses">终止测试子句</span>
 
 repeat 构造导致循环在指定的次数后终止. 这个 loop 主体执行了 n 次, 其中 n 是表达式 form 的值. 这个 form 参数只在循环序言中求值一次. 如果这个表达式求值为 0 或者是一个负数[number], 这个 loop 主体不会被求值.
@@ -1000,7 +1000,6 @@ Error: non-numeric value: A
 > * 6.1.7.1 [控制转移子句](#ControlTransferClauses)
 > * 6.1.7.2 [初始化和最后执行](#InitialFinalExecution)
 
-
 #### 6.1.7.1 <span id="ControlTransferClauses">控制转移子句</span>
 
 named 构造为包在整个 loop 周围的隐式块[implicit block]建立一个名字, 这样 return-from 特殊操作符[special operator]可以被用于从 loop 返回值或者退出 loop. 一个 loop 表达式形式[form]只能被赋予一个名字. 如果使用了, 这个 named 构造必须是这个 loop 表达式中的第一个子句.
@@ -1181,7 +1180,7 @@ finally 构造导致提供的复合表达式形式 compound-forms 在正常循�
 
 * 描述(Description):
 
-        当测试条件保持时满足时, do 在一组语句 statements 上迭代. do 接受任意数量大循环变量 vars, 它们在这个循环中并行绑定和步进. 可以通过使用一个 init-form 来为每个循环变量提供一个初始值. step-forms 可以被用于指定这个循环中后续的循环如何更新变量 vars. step-forms 可能被用于可以被用于产生后续的值或累积结果. 如果 end-test-form 条件在一个主体的执行前满足, 这个循环终止. 这些 tags 标记这些语句 statements.
+        当测试条件保持时满足时, do 在一组语句 statements 上迭代. do 接受任意数量的循环变量 vars, 它们在这个循环中并行绑定和步进. 可以通过使用一个 init-form 来为每个循环变量提供一个初始值. step-forms 可以被用于指定这个循环中后续的循环如何更新变量 vars. step-forms 可能被用于可以被用于产生后续的值或累积结果. 如果 end-test-form 条件在一个主体的执行前满足, 这个循环终止. 这些 tags 标记这些语句 statements.
 
         do* 和 do 一样除了这些变量 vars 的绑定[binding]和步进是顺序执行而不是并行执行.
 
