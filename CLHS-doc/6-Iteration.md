@@ -1,7 +1,7 @@
 # 6. 循环
 
 > * 6.1 [LOOP 机制](#TheLOOPFacility)
-> * 6.2 [迭代字典](#TheIterationDictionary)
+> * 6.2 [循环字典](#TheIterationDictionary)
 
 ## 6.1 <span id="TheLOOPFacility">LOOP 机制</span>
 
@@ -139,7 +139,7 @@ Loop 子句属于以下类别之一:
 
 这个 for 和 as 构造提供一个由这个循环控制子句决定的终止测试.
 
-这个 repeat 构造导致在指定次数的循环后终止. (它使用一个内部变量来跟踪迭代次数.)
+这个 repeat 构造导致在指定次数的循环后终止. (它使用一个内部变量来跟踪循环次数.)
 
 这个 while 构造接受一个表达式形式[form], 一个测试 test, 如果这个测试 test 求值为 false 就终止这个循环. 一个 while 子句等价于表达式 (if (not test) (loop-finish)).
 
@@ -1147,7 +1147,7 @@ finally 构造导致提供的复合表达式形式 compound-forms 在正常循�
 
 这里没有让用户给 loop 添加扩展的标准化[standardized]机制. 
 
-## 6.2 <span id="TheIterationDictionary">迭代字典</span>
+## 6.2 <span id="TheIterationDictionary">循环字典</span>
 
 > * [宏 DO, DO*](#MacroDODO)
 > * [宏 DOTIMES](#MacroDOTIMES)
@@ -1259,7 +1259,7 @@ finally 构造导致提供的复合表达式形式 compound-forms 在正常循�
                 ((endp x) y)))
     ```
 
-        作为一个嵌套迭代的示例, 细想一个 cons 列表[list]的数据结构. 每个 cons 的 car 是一个符号[symbol]列表[list], 而每个 cons 的 cdr 是等长度的包含对应值的列表[list]. 这样一个数据结构类似于关联列表, 但是被划分为 "帧(frame)"; 整体结构类似于胸腔(rib-cage). 这样一个数据结构的一个查找函数可能是:
+        作为一个嵌套循环的示例, 细想一个 cons 列表[list]的数据结构. 每个 cons 的 car 是一个符号[symbol]列表[list], 而每个 cons 的 cdr 是等长度的包含对应值的列表[list]. 这样一个数据结构类似于关联列表, 但是被划分为 "帧(frame)"; 整体结构类似于胸腔(rib-cage). 这样一个数据结构的一个查找函数可能是:
 
     ```LISP
     (defun ribcage-lookup (sym ribcage)           
