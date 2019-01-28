@@ -10,19 +10,19 @@
 
 ## 7.1 <span id="ObjectCreationInit">对象创建和初始化</span>
 
-广义函数 make-instance 创建并且返回一个类的实例. 第一个参数是一个类或者一个类的名字, 而剩余参数组成初始化参数列表.
+广义函数[generic function] make-instance 创建并且返回一个类[class]的实例[instance]. 第一个参数是一个类[class]或者一个类[class]的名字[name], 而剩余参数组成初始化参数列表[initialization argument list].
 
-一个新的实例的初始化由多个独立不同的步骤组成, 包括以下这些: 将显式提供的初始化参数与未提供的初始化参数的默认值相结合, 检查初始化参数的有效性, 为实例分配存储, 用值来填充槽(slot), 并且执行用户提供执行额外初始化的方法. make-instance 的每个步骤都是通过一个广义函数实现的, 以提供一种定制该步骤的机制. 另外, make-instance 自身也是一个广义函数并且因此也可以被定制.
+一个新的实例[instance]的初始化由多个独立不同的步骤组成, 包括以下这些: 将显式提供的初始化参数与未提供的初始化参数的默认值相结合, 检查初始化参数的有效性, 为实例[instance]分配存储, 用值来填充这些槽[slot], 并且执行用户提供的执行额外初始化的方法[method]. make-instance 的每个步骤都是通过一个广义函数[generic function]实现的, 以提供一种定制该步骤的机制. 另外, make-instance 自身也是一个广义函数[generic function]并且因此也可以被定制.
 
-这个对象系统为每个步骤指定了系统提供的主方法并且因此为整个初始化过程指定了一个定义明确的标准行为. 这个标准行为提供了四个简单的机制用于控制初始化:
+这个对象系统为每个步骤指定了系统提供的主方法[method]并且因此为整个初始化过程指定了一个定义明确的标准行为. 这个标准行为提供了四个简单的机制用于控制初始化:
 
-* 声明一个符号作为一个槽的初始化参数. 一个初始化参数是通过对 defclass 使用 :initarg 槽选项来声明的. 这个提供了一个机制用于一个 make-instance 调用中来给一个槽提供值.
+* 声明一个符号[symbol]作为一个槽[slot]的初始化参数. 一个初始化参数是通过对 defclass 使用 :initarg 槽选项来声明的. 这个提供了一个机制, 可以在一个 make-instance 调用中来给一个槽[slot]提供值.
 
-* 为一个初始化参数提供一个默认值表达式形式. 初始化参数的默认值表达式形式通过对 defclass 使用 :default-initargs 类选项来定义的. 如果没有明确给 make-instance 提供一个初始化参数作为参数, 那么默认值表达式形式就会在定义它的 defclass 表达式形式所在的词法环境中被求值, 并且产生的值被用作这个初始化参数的值.
+* 为一个初始化参数提供一个默认值表达式形式. 初始化参数的默认值表达式形式通过对 defclass 使用 :default-initargs 类选项来定义的. 如果没有显式给 make-instance 提供一个初始化参数作为参数, 那么默认值表达式形式就会在定义它的 defclass 表达式形式所在的词法环境中被求值, 并且产生的值被用作这个初始化参数的值.
 
-* 为一个槽提供一个默认的初始值表达式形式. 一个槽的默认初始值表达式形式通过对 defclass 提供 :initform 槽选项来定义的. 如果没有给 make-instance 提供和那个槽关联的初始化参数或者通过 :default-initargs 提供默认值, 那么这个默认初始值表达式形式就会在定义它的 defclass 表达式形式所在的词法环境中被求值, 并且产生的这个值被存储到这个槽中. 当创建一个实例时, 更新一个实例来符合重定义的类时, 或者更新一个实例来符合不同类的定义时, 一个局部槽的这个 :initform 表达式形式可能被使用. 当定义或者重定义这个类时, 一个共享槽的这个 :initform 表达式形式会被使用.
+* 为一个槽[slot]提供一个默认的初始值表达式形式. 一个槽[slot]的默认初始值表达式形式通过对 defclass 使用 :initform 槽选项来定义的. 如果没有给 make-instance 提供和那个槽[slot]关联的初始化参数或者通过 :default-initargs 提供默认值, 那么这个默认初始值表达式形式就会在定义它的 defclass 表达式形式所在的词法环境中被求值, 并且产生的这个值被存储到这个槽[slot]中. 当创建一个实例[instance]时, 更新一个实例[instance]来符合重定义的类[class]时, 或者更新一个实例[instance]来符合不同类[class]的定义时, 一个局部槽[local slot]的这个 :initform 表达式形式可能被使用. 当定义或者重定义这个类[class]时, 一个共享槽[shared slot]的这个 :initform 表达式形式会被使用.
 
-* 为 initialize-instance 和 shared-initialize 定义方法. 上面描述的槽填充行为是由一个系统提供的 initialize-instance 主方法来实现的, 它调用 shared-initialize. 广义函数 shared-initialize 实现了由这四种情况所共享的初始化部分: 创建一个实例的时候, 重新初始化一个实例的时候, 更新一个实例来符合重定义的类时, 还有更新一个实例来符合一个不同的类的定义时. shared-initialize 的系统提供的主方法直接实现上述槽填充行为, 而 initialize-instance 简单地调用 shared-initialize.
+* 为 initialize-instance 和 shared-initialize 定义方法[method]. 上面描述的槽填充行为是由一个系统提供的 initialize-instance 主方法[method]来实现的, 它调用 shared-initialize. 广义函数[generic function] shared-initialize 实现了由这四种情况所共享的初始化部分: 创建一个实例[instance]的时候, 重新初始化一个实例[instance]的时候, 更新一个实例[instance]来符合重定义的类[class]时, 还有更新一个实例[instance]来符合一个不同的类[class]的定义时. 系统提供的 shared-initialize 主方法[method]直接实现上述槽填充行为, 而 initialize-instance 简单地调用 shared-initialize.
 
 > * 7.1.1 [初始化参数](#InitArguments)
 > * 7.1.2 [声明初始化参数的有效性](#DeclaringValidityInitArg)
@@ -34,71 +34,71 @@
 
 ### 7.1.1 <span id="InitArguments">初始化参数</span>
 
-一个初始化参数控制对象的创建和初始化. 使用关键字符号来命名初始化参数往往是很方便的, 但是初始化参数的名字可以是任何符号, 包括 nil. 一个初始化参数可以以两种方式被使用: 用一个值去填充一个槽或者为一个初始化方法提供一个参数. 一个单个的初始化参数可以被同时用作这两个目的.
+一个初始化参数控制对象[object]的创建和初始化. 使用关键字符号[symbol]来命名初始化参数往往是很方便的, 但是初始化参数的名字[name]可以是任何符号[symbol], 包括 nil. 一个初始化参数可以以两种方式被使用: 用一个值去填充一个槽[slot]或者为一个初始化方法[method]提供一个参数. 一个单独的初始化参数可以被同时用作这两个目的.
 
-一个初始化参数列表是一个初始化参数名字和值的属性列表. 它的结构与属性列表相同, 也与处理过 &key 参数的参数列表部分相同. 在这些列表中, 如果一个初始化参数名称在初始化参数列表中出现不止一次, 那么最左边出现的就会提供值, 而其余的会被忽略. 给 make-instance 的参数 (在第一个参数后面的) 组成初始化参数列表.
+一个初始化参数列表[initialization argument list]是一个初始化参数名字和值的属性列表[property list]. 它的结构与属性列表[property list]相同, 也与 &key 参数处理的参数列表部分相同. 在这些列表中, 如果一个初始化参数名称在初始化参数列表中出现不止一次, 那么最左边出现的就会提供值, 而其余的会被忽略. 给 make-instance 的那些参数 (在第一个参数后面的) 组成初始化参数列表[initialization argument list].
 
-一个初始化参数可以和一个槽关联. 如果这个初始化参数在初始化列表中有一个值, 这个值会被存储到新创建对象的那个槽中, 覆盖任何和这个槽关联的 :initform 表达式形式. 一个单个的初始化参数可以初始化不止一个槽. 初始化一个共享槽的初始化参数存储它的值到那个共享槽中, 替换掉任何先前的值.
+一个初始化参数可以和一个槽[slot]关联. 如果这个初始化参数在初始化参数列表[initialization argument list]中有一个值, 这个值会被存储到新创建对象[object]的那个槽[slot]中, 覆盖任何和这个槽[slot]关联的 :initform 表达式形式. 一个单独的初始化参数可以初始化不止一个槽[slot]. 初始化一个共享槽[shared slot]的初始化参数存储它的值到那个共享槽[shared slot]中, 替换掉任何先前的值.
 
-一个初始化参数可以和一个方法关联. 当一个对象被创建并且提供一个特定的初始化参数时, 这个初始化参数的名字和值作为一个关键字参数对来调用广义函数 initialize-instance, shared-initialize, 和 allocate-instance. 如果在关键字参数列表中没有给这个关键字参数提供一个值, 这个方法的 lambda 列表会提供一个默认值.
+一个初始化参数可以和一个方法[method]关联. 当一个对象[object]被创建并且提供一个特定的初始化参数时, 这个初始化参数的名字和值作为一个关键字参数对来调用广义函数[generic function] initialize-instance, shared-initialize, 和 allocate-instance. 如果在初始化参数列表[initialization argument list]中没有给这个初始化参数提供一个值, 这个方法[method]的 lambda 列表[lambda list]会提供一个默认值.
 
-初始化参数被用于四种情况: 创建一个实例时, 重新初始化一个实例时, 更新一个实例去符合一个重定义的类, 还有更新一个实例去符合一个不同的类的定义.
+初始化参数被用于四种情况: 创建一个实例[instance]时, 重新初始化一个实例[instance]时, 更新一个实例[instance]去符合一个重定义的类[class], 还有更新一个实例[instance]去符合一个不同的类[class]的定义.
 
-由于初始化参数被用于控制某个特定类的实例的创建和初始化, 我们就说一个初始化参数是那个类的初始化参数. 
+由于初始化参数被用于控制某个特定类[class]的实例[instance]的创建和初始化, 我们就说一个初始化参数是那个类的"一个初始化参数". 
 
 ### 7.1.2 <span id="DeclaringValidityInitArg">声明初始化参数的有效性</span>
 
-在使用初始化参数的四种情况的任何一种时, 都会检测初始化参数的有效性. 一个初始化参数可能在一种情况是有效的但是在另一种却是无效的. 比如, 系统提供的针对类 standard-class 的 make-instance 的主方法检测它的初始化参数的有效性, 如果提供的一个初始化参数在那个情况下没有被有效声明, 那么就会发出一个错误.
+在使用初始化参数的四种情况的任何一种时, 都会检测初始化参数的有效性. 一个初始化参数可能在一种情况是有效的但是在另一种却是无效的. 比如, 系统提供的针对类[class] standard-class 的 make-instance 的主方法[method]检测它的初始化参数的有效性, 如果提供的一个初始化参数在那个情况下没有被有效声明, 那么就会发出一个错误.
 
-关于声明初始化参数有效这里有两个方法.
+关于声明初始化参数有效性这里有两个方法.
 
-* 填充槽的初始化参数通过给 defclass 的 :initarg 槽选项来有效声明. 这个 :initarg 槽选项从超类中继承下来. 因此为一个类填充槽的有效初始化参数是这个类和它的超类声明为有效的填充槽的初始化参数的并集. 填充槽的初始化参数在所有四种情况中都是有效的.
+* 填充槽[slot]的初始化参数通过给 defclass 的 :initarg 槽选项来声明为有效的. 这个 :initarg 槽选项从超类[superclass]中继承下来. 因此填充一个类[class]的槽[slot]的有效初始化参数集合是这个类[class]和它的超类[superclass]声明为有效的填充槽[slot]的初始化参数的并集. 填充槽[slot]的初始化参数在所有四种情况中都是有效的.
 
-* 给方法提供参数的初始化参数通过定义这些方法被声明为有效的. 在这个方法的 lambda 列表中指定的每个关键字参数的关键字名字成为这个方法可应用的所有类的初始化参数. 一个可应用方法的 lambda 列表中 &allow-other-keys 的出现会禁用初始化参数的有效性检测. 因此方法继承控制了给方法提供参数的有效初始化参数的集合. 用于声明初始化参数有效的方法定义的广义函数如下所示:
+* 给方法[method]提供参数的初始化参数通过定义这些方法[method]来声明为有效的. 在这个方法[method]的 lambda 列表[lambda list]中指定的每个关键字参数的关键字名字成为这个方法[method]可应用的所有类[class]的初始化参数. 一个可应用方法的 lambda 列表[lambda list]中 &allow-other-keys 的出现会禁用初始化参数的有效性检测. 因此方法[method]继承控制了给方法[method]提供参数的有效初始化参数的集合. 用于声明初始化参数有效的方法[method]定义的广义函数[generic function]如下所示:
 
-    -- 创建一个类的实例: allocate-instance, initialize-instance, 和 shared-initialize. 通过这些方法声明为有效的初始化参数在创建一个类的一个实例时是有效的.
+    -- 创建一个类[class]的实例[instance]: allocate-instance, initialize-instance, 和 shared-initialize. 通过这些方法[method]声明为有效的初始化参数在创建一个类[class]的一个实例[instance]时是有效的.
 
-    -- 重新初始化一个实例: reinitialize-instance 和 shared-initialize. 通过这些方法声明为有效的初始化参数在重新初始化一个实例时是有效的.
+    -- 重新初始化一个实例[instance]: reinitialize-instance 和 shared-initialize. 通过这些方法[method]声明为有效的初始化参数在重新初始化一个实例[instance]时是有效的.
 
-    -- 更新一个实例来符合重定义的类: update-instance-for-redefined-class 和 shared-initialize. 通过这些方法声明为有效的初始化参数在更新一个实例来符合重定义的类时是有效的.
+    -- 更新一个实例[instance]来符合重定义的类[class]: update-instance-for-redefined-class 和 shared-initialize. 通过这些方法[method]声明为有效的初始化参数在更新一个实例[instance]来符合重定义的类[class]时是有效的.
 
-    -- 更新一个实例来复合一个不同类的定义: update-instance-for-different-class 和 shared-initialize. 通过这些方法声明为有效的初始化参数在更新一个实例来复合一个不同类的定义时是有效的.
+    -- 更新一个实例[instance]来复合一个不同类[class]的定义: update-instance-for-different-class 和 shared-initialize. 通过这些方法[method]声明为有效的初始化参数在更新一个实例[instance]来复合一个不同类[class]的定义时是有效的.
 
-一个类的有效初始化参数集是填充槽和给方法提供参数的初始化参数以及预定义的初始化参数 :allow-other-keys 的集合. :allow-other-keys 的默认值是 nil. 如果初始化参数 :allow-other-keys 的值是 true 那么初始化参数的有效性检测就会被禁用. 
+一个类[class]的有效初始化参数集是那些填充槽[slot]或给方法[method]提供参数的初始化参数以及预定义的初始化参数 :allow-other-keys 的集合. :allow-other-keys 的默认值是 nil. 如果初始化参数 :allow-other-keys 的值是 true 那么初始化参数的有效性检测就会被禁用. 
 
 ### 7.1.3 <span id="DefaultInitArg">初始化参数的默认值</span>
 
-可以使用类选项 :default-initargs 来给一个初始化参数提供一个默认值表达式形式. 如果一个初始化参数被某个特定的类声明为有效的, 它的默认值表达式形式可能被一个不同的类指定. 在这个情况下 :default-initargs 被用于给一个继承的初始化参数提供一个默认值.
+可以使用类[class]选项 :default-initargs 来给一个初始化参数提供一个默认值表达式形式[form]. 如果一个初始化参数被某个特定的类[class]声明为有效的, 它的默认值表达式形式可能被一个不同的类[class]指定. 在这个情况下 :default-initargs 被用于给一个继承的初始化参数提供一个默认值.
 
-这个 :default-initargs 选项仅被用于给初始化参数提供默认值; 它不会声明一个符号作为有效初始化参数的名字. 此外, 这个 :default-initargs 选项仅在创建一个实例时被用于给初始化提供默认值.
+这个 :default-initargs 选项仅被用于给初始化参数提供默认值; 它不会声明一个符号[symbol]作为有效初始化参数的名字. 此外, 这个 :default-initargs 选项仅在创建一个实例[instance]时被用于给初始化提供默认值.
 
-给这个 :default-initargs 类选项的参数是一个初始化参数名字和表达式形式交替的列表. 每个表达式形式是对应初始化参数的默认值表达式形式. 一个初始化参数的默认值表达式形式当且仅当这个初始化参数没有出现在 make-instance 的参数中并且没有被一个更具体的类省略的时被使用和求值.默认值表达式形式在提供它的 defclass 表达式形式的词法环境中被求值; 产生的值被用作这个初始化参数的值.
+给这个 :default-initargs 类选项的参数是一个初始化参数名字和表达式形式[form]交替的列表. 每个表达式形式[form]是对应初始化参数的默认值表达式形式. 一个初始化参数的默认值表达式形式[form]当且仅当这个初始化参数没有出现在 make-instance 的参数中并且没有被一个更具体的类[class]省略的时候被使用和求值.默认值表达式形式[form]在提供它的 defclass 表达式形式的词法环境中被求值; 产生的值被用作这个初始化参数的值.
 
-提供给 make-instance 的初始化参数和默认的初始化参数组合来产生一个默认的初始化参数列表. 默认的初始化参数列表是一个交替初始化参数名称和值的列表, 其中未提供的初始化参数是默认值, 其中显式提供的初始化参数出现在列表中默认的初始化参数的前面. 默认的初始化参数根据提供默认值的这些类的类优先级列表中的顺序来排序.
+提供给 make-instance 的初始化参数和默认初始化参数组合来产生一个默认初始化参数列表[defaulted initialization argument list]. 一个默认初始化参数列表[defaulted initialization argument list]是一个交替初始化参数名称和值的列表, 其中未提供的初始化参数是默认值, 在这个列表中显式提供的初始化参数出现在默认的初始化参数的前面. 默认初始化参数根据提供默认值的这些类[class]的类优先级列表[class precedence list]中的顺序来排序.
 
-就槽的初始化而言, :default-initargs 和 :initform 的目的存在一个区别. 这个 :default-initargs 类选项在不知道这个初始化参数是初始化一个槽还是传递给一个方法的情况下为用户提供一个机制去给这个初始化参数提供一个默认值表达式形式. 如果那个初始化参数没有在一个 make-instance 的调用中显式提供, 就使用这个默认值表达式形式, 就像在这个调用中提供了一样. 与此相反, 这个 :initform 槽选项为用户提供一个机制去给一个槽提供一个默认初始化表达式形式. 一个 :initform 表达式形式当且仅当没有给 make-instance 传递一个和这个槽关联的初始化参数或者在 :default-initargs 没有提供默认值的时候被用于初始化一个槽.
+就槽[slot]的初始化而言, :default-initargs 和 :initform 选项的目的存在一个区别. 在不知道这个初始化参数是初始化一个槽[slot]还是传递给一个方法[method]的情况下, 这个 :default-initargs 类选项为用户提供一个机制去给这个初始化参数提供一个默认值表达式形式[form]. 如果那个初始化参数没有在一个 make-instance 的调用中显式提供, 那么就使用这个默认值表达式形式, 就像在这个调用中提供了一样. 与此相反, 这个 :initform 槽选项为用户提供一个机制去给一个槽[slot]提供一个默认初始值表达式形式. 一个 :initform 表达式形式当且仅当没有给 make-instance 传递一个和这个槽[slot]关联的初始化参数或者被 :default-initargs 省略的时候被用于初始化一个槽[slot].
 
-初始化参数的默认值表达式形式的求值顺序和 :initform 表达式形式的求值顺序是没有定义的. 如果求值的顺序很重要, 应该使用 initialize-instance 或 shared-initialize 方法. 
+初始化参数的默认值表达式形式的求值顺序和 :initform 表达式形式的求值顺序是没有定义的. 如果求值的顺序很重要, 应该使用 initialize-instance 或 shared-initialize 方法[method]. 
 
 ### 7.1.4 <span id="RulesInitArg">初始化参数的规则<\span>
 
-这个 :initarg 槽选项对于一个给定的槽可能不止一次被指定.
+这个 :initarg 槽选项对于一个给定的槽[slot]可能不止一次被指定.
 
-下面的规则指出了初始化参数被多次定义的时候:
+下面的规则指出了初始化参数被多次定义的时机:
 
-* 如果相同的初始化参数名出现在超过一个 :initarg 槽选项中时, 一个给定的初始化参数可以被用于初始化不止一个槽.
+* 如果相同的初始化参数名出现在超过一个 :initarg 槽选项中时, 一个给定的初始化参数可以被用于初始化不止一个槽[slot].
 
-* 一个给定的初始化参数名可以出现在超过一个初始化方法的 lambda 列表中.
+* 一个给定的初始化参数名可以出现在不止一个初始化方法[method]的 lambda 列表[lambda list]中.
 
-* 一个给定的初始化参数名可以同时出现在一个 :initarg 槽选项和一个初始化方法的 lambda 列表中.
+* 一个给定的初始化参数名可以同时出现在一个 :initarg 槽选项和一个初始化方法[method]的 lambda 列表[lambda list]中.
 
-如果在 make-instance 的参数中给定初始化同一个槽的两个或更多初始化参数, 在这个初始化参数列表中的这些初始化参数中的最左边的那个来提供值, 即便这些初始化参数有着不同的名字.
+如果在 make-instance 的参数中给定初始化同一个槽[slot]的两个或更多初始化参数, 在这个初始化参数列表[initialization argument list]中的这些初始化参数中的最左边的那个来提供值, 即便这些初始化参数有着不同的名字.
 
-如果初始化同一个槽的两个或更多不同的初始化参数有默认值并且都没有显式给 make-instance 提供那些参数, 那么最具体的那些类的 :default-initargs 类选项来提供值. 如果一个单个的 :default-initargs 类选项指定了两个或更多初始化相同槽的初始化参数并且都没有显式出现在 make-instance 的参数中, 在 :default-initargs 类选项中最左边那个来提供值, 并且忽略剩余默认值表达式形式的值.
+如果初始化同一个槽的两个或更多不同的初始化参数有默认值并且在给 make-instance 的那些参数中都没有显式提供, 那么出现在最具体的那些类[class]的 :default-initargs 类选项中的初始化参数来提供值. 如果一个单独的 :default-initargs 类选项指定了两个或更多初始化相同槽[slot]的初始化参数并且在给 make-instance 的那些参数中都没有显式提供, 在 :default-initargs 类选项中最左边那个来提供值, 并且忽略剩余默认值表达式形式[form]的值.
 
-在 make-instance 的参数中显式给定的初始化参数出现在默认初始化参数的左边. 假设类 C1 和 C2 为不同的槽提供默认初始化参数值, 并且 C1 比 C2 更具体; 那么在默认初始化参数列表中 C1 提供的默认初始化参数值在 C2 提供的值的左边. 如果一个单个的 :default-initargs 类选项为两个不同的槽提供了初始化参数的值, 被指定的值距离 :default-initargs 的左边更远的那个初始化参数在默认初始化参数列表中也距离左边更远.
+在 make-instance 的参数中显式给定的初始化参数出现在默认初始化参数的左边. 假设类 C1 和 C2 为不同的槽[slot]提供默认初始化参数值, 并且 C1 比 C2 更具体; 那么在默认初始化参数列表[defaulted initialization argument list]中 C1 提供的默认初始化参数值在 C2 提供的值的左边. 如果一个单独的 :default-initargs 类选项为两个不同的槽[slot]提供了初始化参数的值, 被指定的值距离 :default-initargs 的左边更远的那个初始化参数在默认初始化参数列表[defaulted initialization argument list]中也距离左边更远.
 
-如果一个槽同时有一个 :initform 表达式形式和一个 :initarg 槽选项, 并且这个初始化参数使用 :default-initargs 提供默认值或者给 make-instance 提供了这个参数, 那么这个捕获的 :initform 表达式形式不会被使用也不会被求值.
+如果一个槽[slot]同时有一个 :initform 表达式形式和一个 :initarg 槽选项, 并且这个初始化参数使用 :default-initargs 提供默认值或者给 make-instance 提供了这个参数, 那么这个捕获的 :initform 表达式形式既不会被使用也不会被求值.
 
 下面都是上述规则的一个示例:
 
@@ -118,45 +118,43 @@
 
 ### 7.1.5 <span id="SharedInitialize">Shared-Initialize</span>
 
-在一个实例被创建时, 一个实例被重新初始化时, 一个实例被更新去符合一个重定义的类时, 还有一个实例被更新去符合一个不同的类时, 广义函数 shared-initialize 被用于使用初始化参数和 :initform 表达式形式来填充一个实例的槽. 它使用标准方法组合. 它接受以下参数: 要被初始化的实例, 这个实例中可以访问的槽的名字集合的一份详述, 还有任意数量的初始化参数. 在前两个后面的参数一定组成一个初始化参数列表.
+在一个实例[instance]被创建时, 一个实例[instance]被重新初始化时, 一个实例[instance]被更新去符合一个重定义的类[class]时, 以及一个实例[instance]被更新去符合一个不同的类[class]时, 广义函数[generic function] shared-initialize 被用于使用初始化参数和 :initform 表达式形式来填充一个实例[instance]的槽[slot]. 它使用标准方法[method]组合. 它接受以下参数: 要被初始化的实例[instance], 这个实例[instance]中可以访问的[accessible]槽[slot]的名字[name]集合的一份说明, 还有任意数量的初始化参数. 在前两个后面的参数一定组成一个初始化参数列表[initialization argument list].
 
 给 shared-initialize 的第二个参数可能是以下其中之一:
 
-* 它可以是指定那些槽名字的集合的槽名字的列表 (可能是空的).
+* 它可以是一个槽[slot]名字的列表[list] (可能是空的), 指定了那些槽名字的集合.
 
-* 它可以是符号 t, 它指定了所有槽的集合.
+* 它可以是符号 t, 指定了所有槽[slot]的集合.
 
-这里有个系统提供的 shared-initialize 的主方法, 其中第一个参数特化是类 standard-object. 这个方法在每个槽上表现如下, 不管是共享的或是局部的:
+这里有个系统提供的 shared-initialize 的主方法[method], 其中第一个参数特化符[parameter specializer]是类[class] standard-object. 不管槽是共享的还是局部的, 这个方法[method]在每个槽[slot]上表现如下:
 
-* 如果这个初始化参数列表中的一个初始化参数为那个槽指定了一个值, 那个值就会被存储到那个槽中, 即便在这个方法执行前一个值已经被存储到那个槽里. 受影响的槽独立于 shared-initialize 第二个参数表示的槽.
+* 如果这个初始化参数列表[initialization argument list]中的一个初始化参数为那个槽[slot]指定了一个值, 那么这个值就会被存储到那个槽[slot]中, 即便在这个方法[method]执行前一个值已经被存储到那个槽[slot]里. 受影响的槽[slot]独立于由 shared-initialize 的第二个参数表示的槽[slot].
 
-* 任何在这个点是未绑定的第二个参数表示的槽都会根据它们的 :initform 表达式形式来初始化. 对于任何有着一个 :initform 表达式形式的槽, 那个表达式形式会在它的 defclass 定义的词法环境中被求值, 并且结果被存储到那个槽中. 比如, 如果一个 before 方法存储一个值到槽中, 这个 :initform 表达式形式不会被用来给这个槽提供一个值. 如果第二个参数指定了一个不对应这个实例中任何可访问的槽的名字, 结果是未定义的.
+* 任何由第二个参数表示的在这个点仍是未绑定的槽[slot]都会根据它们的 :initform 表达式形式来初始化. 对于任何有着一个 :initform 表达式形式的槽[slot], 那个表达式形式[form]会在它的定义 defclass 表达式形式所在的词法环境中被求值, 并且结果被存储到那个槽[slot]中. 比如, 如果一个 before 方法[before method]存储一个值到槽[slot]中, 这个 :initform 表达式形式不会被用来给这个槽[slot]提供一个值. 如果第二个参数指定了一个不对应这个实例[instance]中任何可访问的[accessiable]槽[slot]的名字, 结果是未指定的.
 
-* 在章节 7.1.4 (Rules for Initialization Arguments) 中提及的规则也是遵守的.
+* 在章节 7.1.4 (初始化参数的规则) 中提及的规则也是遵守的.
 
-广义函数 shared-initialize 会被系统提供的 reinitialize-instance, update-instance-for-different-class, update-instance-for-redefined-class, 和 initialize-instance 的主方法调用. 因此, 可以为 shared-initialize 写一个方法来指定发生在所有这些上下问中的动作. 
-
+广义函数 shared-initialize 会被系统提供的 reinitialize-instance, update-instance-for-different-class, update-instance-for-redefined-class, 和 initialize-instance 的主方法[method]调用. 因此, 可以为 shared-initialize 写一个方法[method]来指定发生在所有这些上下文中的动作. 
 
 ### 7.1.6 <span id="InitializeInstance">Initialize-Instance</span>
 
-广义函数 initialize-instance 被 make-instance 调用来初始化一个新创建的实例. 它使用标准方法组合. 可以定义 initialize-instance 的方法, 以便执行任何无法通过为槽提供初始值来实现的初始化.
+广义函数[generic function] initialize-instance 被 make-instance 调用来初始化一个新创建的实例[instance]. 它使用标准方法组合[standard method combination]. 可以定义 initialize-instance 的方法[method], 以便执行任何无法通过为槽[slot]提供初始值来实现的初始化.
 
 在初始化期间, initialize-instance 在以下动作执行后被调用:
 
-* 默认初始化参数列表已经通过结合提供的初始化参数列表和这个类的默认初始化参数被计算.
+* 默认初始化参数列表[defaulted initialization argument list]已经通过结合提供的初始化参数列表[initialization argument list]和这个类[class]的默认初始化参数被计算出来.
 
-* 默认初始化参数列表的有效性已经被检测. 如果初始化参数中的任何一个没有被有效声明, 就会发出一个错误.
+* 默认初始化参数列表[defaulted initialization argument list]的有效性已经被检测. 如果初始化参数中的任何一个还没有被有效声明, 那么就会发出一个错误.
 
-* 一个槽还没有被绑定的实例被创建出来.
+* 一个槽[slot]还没有被绑定的实例[instance]被创建出来.
 
-广义函数 initialize-instance 被调用并带有一个新的实例和默认初始化参数. 这里有一个系统提供的 initialize-instance 的主方法, 其中参数特化是类 standard-object. 这个方法调用广义函数 shared-initialize 根据初始化参数和槽的 :initform 表达式形式来填充槽; 广义函数 shared-initialize 被调用时带有以下参数: 这个实例, t, 还有默认初始化参数.
+使用一个新的实例和默认初始化参数来调用广义函数 initialize-instance. 这里有一个系统提供的 initialize-instance 的主方法[method], 其中参数特化符[parameter specializer]是类[class] standard-object. 这个方法[method]调用广义函数 shared-initialize 根据槽[slot]的初始化参数和 :initform 表达式形式来填充槽[slot]; 使用以下参数来调用广义函数 shared-initialize : 这个实例[instance], t, 还有默认初始化参数.
 
-注意, initialize-instance 在它的 shared-initialize 调用中提供默认初始化参数列表, 因此，由系统提供的 shared-initialize 主要方法执行的第一步考虑了在调用 make-instance 和默认初始化参数列表中提供的初始化参数.
+注意, initialize-instance 在它对 shared-initialize 调用中提供默认初始化参数列表[defaulted initialization argument list], 因此，由系统提供的 shared-initialize 主方法[method]执行的第一步考虑了在调用 make-instance 中提供的初始化参数和默认初始化参数列表[defaulted initialization argument list].
 
-initialize-instance 方法可以被定义用来指定一个实例被初始化时采取的动作. 只有在 initialize-instance 的方法被定义之后, 它们会在系统提供的用于初始化的主方法之后被运行, 并且因此不会和 initialize-instance 的默认行为冲突.
+initialize-instance 的方法[method]可以被定义来指定一个实例[instance]被初始化时采取的动作. 如果只有 initialize-instance 的 after 方法[after method]被定义, 它们会在系统提供的用于初始化的主方法[method]之后被运行, 并且因此不会和 initialize-instance 的默认行为冲突.
 
-对象系统提供了两个在 initialize-instance 方法的主体中有用的函数. 函数 slot-boundp 返回一个表示一个指定的槽是否有一个值的广义 boolean 值; 这提供了一种机制, 用于在 initialize-instance 的方法之后编写初始化槽的方法, 只有在尚未初始化的情况下才会初始化槽. 函数 slot-makunbound 使这个槽没有值. 
-
+对象系统提供了两个在 initialize-instance 方法的主体中有用的函数[function]. 函数[function] slot-boundp 返回一个广义 boolean 值, 表示一个指定的槽[slot]是否有一个值的; 这提供了一种机制, 用于编写 initialize-instance 的 after 方法[after method], 用于当且仅当槽尚未初始化的情况下去初始化槽. 函数[function] slot-makunbound 使这个槽[slot]没有值. 
 
 ### 7.1.7 <span id="DefMIII">Make-Instance 和 Initialize-Instance 的定义</span>
 
@@ -173,7 +171,7 @@ initialize-instance 方法可以被定义用来指定一个实例被初始化时
   (apply #'make-instance (find-class class-name) initargs))
 ```
 
-在 make-instance 的定义中, 省略的代码增加了 initargs 的默认初始化参数, 并检查产生的初始化参数，以确定是否提供了一个初始化参数, 既不填充槽, 也不向可应用的方法提供参数.
+在 make-instance 的定义中省略的代码用默认初始化参数扩充了 initargs , 并检查产生的初始化参数，以确定是否提供了一个初始化参数, 既不填充槽[slot], 也不向可应用的方法[method]提供参数.
 
 广义函数 initialize-instance 的行为表现就像它是如下定义的那样, 除了某些优化是允许的:
 
@@ -184,9 +182,9 @@ initialize-instance 方法可以被定义用来指定一个实例被初始化时
 
 这些程序可以被定制.
 
-程序员接口级别的定制包括使用给 defclass 的 :initform, :initarg, 和 :default-initargs 选项, 还有为 make-instance, allocate-instance, 和 initialize-instance 定义方法. 也可以为 shared-initialize 定义方法, 它会被广义函数 reinitialize-instance, update-instance-for-redefined-class, update-instance-for-different-class, 和 initialize-instance 调用. 元对象级别支持额外的定制.
+程序员接口级别的定制包括使用给 defclass 的 :initform, :initarg, 和 :default-initargs 选项, 还有为 make-instance, allocate-instance, 和 initialize-instance 定义方法[method]. 也可以为 shared-initialize 定义方法[method], 它会被广义函数 reinitialize-instance, update-instance-for-redefined-class, update-instance-for-different-class, 和 initialize-instance 调用. 元对象级别支持额外的定制.
 
-具体实现允许去对 initialize-instance 和 shared-initialize 做某些优化. 在章节 7 中 shared-initialize 的描述提及了可能的定制. 
+具体实现允许去对 initialize-instance 和 shared-initialize 做某些优化. 在章节 7 中 shared-initialize 的描述提及了可能的优化. 
 
 ## 7.2 <span id="ChangeClassInstance">修改一个实例的类</span>
 
