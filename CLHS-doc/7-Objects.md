@@ -188,35 +188,35 @@ initialize-instance 的方法[method]可以被定义来指定一个实例[instan
 
 ## 7.2 <span id="ChangeClassInstance">修改一个实例的类</span>
 
-函数 change-class 可以被用来修改一个类的实例, 从它的当前类 Cfrom 到一个不同的类 Cto; 它修改这个实例的结构来符合这个类 Cto 的定义.
+函数[function] change-class 可以被用来修改一个实例[instance]的类[class], 从它的当前类 Cfrom 到一个不同的类 Cto; 它修改这个实例[instance]的结构来符合这个类 Cto 的定义.
 
-注意, 修改一个实例的类可能导致槽被添加或删除. 修改一个实例的类不会修改由 eq 函数定义的它的同一性(identity).
+注意, 修改一个实例[instance]的类[class]可能导致槽[slot]被添加或删除. 修改一个实例[instance]的类[class]不会修改由 eq 函数定义的它的同一性(identity).
 
-当 change-class 在一个实例上被调用, 会发生一个分为两步的更新过程. 第一步通过添加新的局部槽还有废弃这个新版本的实例中没有指定的局部槽来修改这个实例的结构. 第二部初始化新添加的局部槽并执行其他任何用户定义的动作. 这两步在以下两个章节中有进一步的描述.
+当 change-class 在一个实例[instance]上被调用, 会发生一个分为两步的更新过程. 第一步通过添加新的局部槽[local slot]还有废弃这个新版本的实例[instance]中没有指定的局部槽[local slot]来修改这个实例的结构. 第二步初始化新添加的局部槽[local slot]并执行其他任何用户定义的动作. 这两步在以下两个章节中有进一步的描述.
 
 ### 7.2.1 修改实例的结构
 
-为了使这个实例去符合类 Cto, 类 Cto 指定而类 Cfrom 没有指定的局部槽会被添加, 并且类 Cfrom 指定而类 Cto 没有指定的局部槽会被丢弃.
+为了使这个实例[instance]去符合类 Cto, 类 Cto 指定而类 Cfrom 没有指定的局部槽[local slot]会被添加, 并且类 Cfrom 指定而类 Cto 没有指定的局部槽[local slot]会被丢弃.
 
-类 Cto 和类 Cfrom 都指定的局部槽会被保留. 如果这样一个局部槽没有被绑定, 它就保持未绑定状态.
+类 Cto 和类 Cfrom 都指定的局部槽[local slot]会被保留. 如果这样一个局部槽[local slot]没有被绑定, 它就保持未绑定状态.
 
-在类 Cfrom 中指定为共享的但是在类 Cto 中指定为局部的槽的值会被保留.
+在类 Cfrom 中指定为共享的但是在类 Cto 中指定为局部的槽[slot]的值会被保留.
 
-更新中的第一步不会影响任何共享槽的值. 
+这个更新中的第一步不会影响任何共享槽[shared slot]的值. 
 
 ### 7.2.2 初始化新添加的局部槽
 
-更新操作的第二步初始化新添加的槽并且执行任何其他用户定义的动作. 这个步骤由广义函数 update-instance-for-different-class 来实现. 广义函数 update-instance-for-different-class 在更新的第一步完成后被 change-class 调用.
+更新操作的第二步初始化新添加的槽[slot]并且执行任何其他用户定义的动作. 这个步骤由广义函数 update-instance-for-different-class 来实现. 广义函数 update-instance-for-different-class 在更新的第一步完成后被 change-class 所调用.
 
-广义函数 update-instance-for-different-class 在 change-class 计算的参数上被调用. 传递的第一个参数是这个要被更新的实例的一个拷贝并且是类 Cfrom 的一个实例; 这个拷贝在广义函数 change-class 中有着动态范围. 第二个参数是 change-class 到目前为止更新的实例并且那是类 Cto 的一个实例. 剩余的参数是一个初始化参数列表.
+广义函数 update-instance-for-different-class 在 change-class 计算的参数上被调用. 传递的第一个参数是这个要被更新的实例[instance]的一个拷贝并且是类 Cfrom 的一个实例[instance]; 这个拷贝在广义函数 change-class 中有着动态范围[dynamic extent]. 第二个参数是 change-class 到目前为止更新的实例[instance]并且那是类 Cto 的一个实例[instance]. 剩余的参数是一个初始化参数列表[initialization argument list].
 
-这里有一个系统提供的 update-instance-for-different-class 的主方法, 它有两个特化参数, 其中的每一个都是类 standard-object. 首先这个方法检测初始化参数的有效性, 如果提供的一个初始化参数没有被有效声明就会发出一个错误. (关于更多信息, 见章节 7.1.2 (Declaring the Validity of Initialization Arguments).) 然后它调用广义函数 shared-initialize 并传递以下参数: 这个新的实例, 新添加槽的名字的一个列表, 还有它收到的那些初始化参数. 
+这里有一个系统提供的 update-instance-for-different-class 的主方法[method], 它有两个参数特化符, 其中的每一个都是类[class] standard-object. 首先这个方法[method]检测初始化参数的有效性, 如果提供的一个初始化参数没有被有效声明就会发出一个错误. (关于更多信息, 见章节 7.1.2 (声明初始化参数的有效性).) 然后它调用广义函数 shared-initialize 并传递以下参数: 这个新的实例[instance], 新添加槽的名字[name]的一个列表, 还有它收到的那些初始化参数. 
 
 ### 7.2.3 定制一个实例的类的变更
 
-update-instance-for-different-class 方法可以被定义用来指定一个实例被更新时发生的动作. 只有在 update-instance-for-different-class 方法被定义之后, 它们会在系统提供的初始化主方法之后被运行并且不会干涉 update-instance-for-different-class 的默认行为.
+update-instance-for-different-class 方法[method]可以被定义用来指定一个实例[instance]被更新时发生的动作. 如果只有 update-instance-for-different-class 的 after 方法[after method]被定义, 它们会在系统提供的初始化主方法[method]之后被运行并且不会干涉 update-instance-for-different-class 的默认行为.
 
-shared-initialize 的方法可能被定义用来定制类的重定义行为. 关于更多信息, 见章节 7.1.5 (Shared-Initialize). 
+shared-initialize 的方法[method]可能被定义用来定制类[class]的重定义行为. 关于更多信息, 见章节 7.1.5 (Shared-Initialize). 
 
 ## 7.3 <span id="ReinitInstance">重新初始化一个实例</span>
 
