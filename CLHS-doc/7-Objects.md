@@ -220,19 +220,19 @@ shared-initialize 的方法[method]可能被定义用来定制类[class]的重�
 
 ## 7.3 <span id="ReinitInstance">重新初始化一个实例</span>
 
-广义函数 reinitialize-instance 可以被用于根据初始化参数来修改槽的值.
+广义函数 reinitialize-instance 可以被用于根据初始化参数来修改槽[slot]的值.
 
-重新初始化的过程修改一些槽的值并执行任何用户定义的动作. 它不会修改一个实例的结构来添加或删除槽, 并且它也不会使用任何 :initform 表达式形式来初始化槽.
+重新初始化的过程修改一些槽[slot]的值并执行任何用户定义的动作. 它不会修改一个实例[instance]的结构来添加或删除槽[slot], 并且它也不会使用任何 :initform 表达式形式来初始化槽[slot].
 
-广义函数 reinitialize-instance 可以被直接调用. 它接受一个必要参数, 这个实例. 它也接受任意数量的初始化参数来被 reinitialize-instance 或 shared-initialize 的方法使用. 在必要的实例后面的参数必须组成一个初始化参数列表.
+广义函数 reinitialize-instance 可以被直接调用. 它接受一个必要参数, 就是这个实例[instance]. 它也接受任意数量的初始化参数来被 reinitialize-instance 或 shared-initialize 的方法[method]使用. 在必要的实例[instance]后面的参数必须组成一个初始化参数列表[initialization argument list].
 
-这里有一个系统提供的 reinitialize-instance 主方法, 其中参数特化是类 standard-object. 首先这个方法检查初始化参数的有效性, 而过一个提供的参数没有被有效声明就会发出一个错误. (关于更多信息, 见章节 7.1.2 (Declaring the Validity of Initialization Arguments).) 然后它调用广义函数 shared-initialize 并传递如下参数: 这个实例, nil, 还有它收到的初始化参数.
+这里有一个系统提供的 reinitialize-instance 主方法[method], 其中参数特化符[parameter specializer]是类[class] standard-object. 首先这个方法[method]检查初始化参数的有效性, 而过一个提供的参数没有被有效声明就会发出一个错误. (关于更多信息, 见章节 7.1.2 (声明初始化参数的有效性).) 然后它调用广义函数 shared-initialize 并传递如下参数: 这个实例[instance], nil, 还有它收到的初始化参数.
 
 ### 7.3.1 定制重新初始化行为
 
-reinitialize-instance 方法可以被定义, 用来指定一个实例被更新时采取的动作. 如果只有 reinitialize-instance 的 after 方法被定义, 它们会在系统提供的初始化主方法之后被运行并且因此不会影响 reinitialize-instance 的默认行为.
+reinitialize-instance 的方法[method]可以被定义, 用来指定一个实例[instance]被更新时采取的动作. 如果只有 reinitialize-instance 的 after 方法[after method]被定义, 它们会在系统提供的初始化主方法[method]之后被运行并且因此不会影响 reinitialize-instance 的默认行为.
 
-shared-initialize 方法可以被定义用来定制类的重定义行为. 关于更多信息, 见章节 7.1.5 (Shared-Initialize). 
+shared-initialize 的方法[method]可以被定义用来定制类[class]的重定义行为. 关于更多信息, 见章节 7.1.5 (Shared-Initialize). 
 
 
 ## 7.4 <span id="MetaObjects">元对象</span>
