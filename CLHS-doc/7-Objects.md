@@ -237,20 +237,19 @@ shared-initialize 的方法[method]可以被定义用来定制类[class]的重�
 
 ## 7.4 <span id="MetaObjects">元对象</span>
 
-对象系统的具体实现操纵类, 方法和广义函数. 对象系统包含了由类方法定义的广义函数的集合; 这些广义函数的行为定义了这个对象系统的行为. 这些方法被定义的对应的类的实例称之为元对象.
+对象系统的具体实现操纵类[class], 方法[method]和广义函数[generic function]. 对象系统包含了由类[class]上的方法[method]定义的广义函数[generic function]的集合; 这些广义函数[generic function]的行为定义了这个对象系统的行为. 定义这些方法[method]的类[class]的实例[instance]称之为元对象.
 
 ### 7.4.1 标准元对象
 
-对象系统提供了一个元对象的集合, 称之为标准元对象. 这些包括类 standard-object 和类 standard-method, standard-generic-function, method-combination 的实例.
+对象系统提供了一个元对象的集合, 称之为标准元对象. 这些包括类[class] standard-object 和类 standard-method, standard-generic-function, method-combination 的实例[instance].
 
-* 类 standard-method 是 defmethod 和 defgeneric 表达式形式定义出来的方法的默认类.
+* 类[class] standard-method 是 defmethod 和 defgeneric 表达式形式[form]定义出来的方法[method]的默认类[class].
 
-* 类 standard-generic-function 是 defmethod, defgeneric, 和 defclass 定义的广义函数的默认类.
+* 类[class] standard-generic-function 是 defmethod, defgeneric, 和 defclass 定义的广义函数[generic function]的默认类[class].
 
-* 名为 standard-object 的类是类 standard-class 的一个实例并且它是每个 standard-class 的一个实例类的一个超类, 除了它自身和 structure-class.
+* 名为 standard-object 的类[class]是类[class] standard-class 的一个实例[instance]并且它是每个 standard-class 的实例[instance]的类[class]的一个超类[superclass], 除了它自身和 structure-class.
 
-* 每个方法组合对象都是类 method-combination 的子类的一个实例. 
-
+* 每个方法[method]组合对象都是类[class] method-combination 的一个子类[subclass]的实例[instance]. 
 
 ## 7.5 <span id="Slots">槽</span>
 
