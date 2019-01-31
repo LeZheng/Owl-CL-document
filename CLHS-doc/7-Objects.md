@@ -257,70 +257,67 @@ shared-initialize 的方法[method]可以被定义用来定制类[class]的重�
 > * 7.5.2 [访问槽](#AccessingSlots)
 > * 7.5.3 [槽和槽选项的继承](#InheritanceSlotsSlotOptions)
 
-
 ### 7.5.1 <span id="IntroductionSlots">槽的介绍</span>
 
-一个元类 standard-class 的对象由 0 个或更多已命名的槽. 一个对象的槽由这个对象的类决定. 每个槽都可以持有一个值. 一个槽的名字是一个语法上可用作一个变量名的符号.
+一个元类[metaclass] standard-class 的对象[object]有 0 个或更多已命名的槽[clost]. 一个对象[object]的槽[slot]由这个对象[object]的类[class]决定. 每个槽[slot]都可以持有一个值. 一个槽[slot]的名字[name]是一个语法上可用作一个变量名的符号[symbol].
 
-当一个槽没有一个值时, 这个槽就被称为未绑定的(unbound). 当一个未绑定的槽被读取时, 广义函数 slot-unbound 会被调用. 系统提供的类 t 上的 slot-unbound 主方法会发出一个错误. 如果 slot-unbound 返回了, 它的主要的值那时会被用作那个槽的值.
+当一个槽[slot]没有一个值时, 这个槽[slot]就被称为未绑定的[unbound]. 当一个未绑定的槽[slot]被读取时, 广义函数[generic function] slot-unbound 会被调用. 系统提供的类[class] t 上的 slot-unbound 主方法[method]会发出一个错误. 如果 slot-unbound 返回了, 它的主值[primary value]那时会被用作那个槽[slot]的值[value].
 
-一个槽的默认初始值表达式形式被 :initform 槽选项所定义. 当这个 :initform 表达式形式被用于提供一个值的时候, 它会在求值 defclass 表达式形式的词法环境中被求值. 这个 :initform 连同求值 defclass 表达式形式的词法环境一起被称为一个被捕获的初始化表达式形式(captured initialization form). 关于更多详情, 见章节 7.1 (Object Creation and Initialization).
+一个槽[slot]的默认初始值表达式形式被 :initform 槽选项所定义. 当这个 :initform 表达式形式被用于提供一个值的时候, 它会在求值 defclass 表达式形式的词法环境中被求值. 这个 :initform 连同求值 defclass 表达式形式所在的词法环境一起被称为一个被捕获的初始化表达式形式[captured initialization form]. 关于更多详情, 见章节 7.1 (对象创建和初始化).
 
-一个局部槽被定义为一个槽, 它仅对于一个实例是可访问的, 那个实例就是分配槽的那个. 一个共享槽被定义为一个槽, 它对于给定类和它的子类而言超过一个实例都是可见的.
+一个局部槽[local slot]被定义为仅对于分配槽[slot]的那个实例[instance]是可访问的[accessible]一个槽[slot]. 一个共享槽[shared slot]被定义为一个对于给定类[class]及其子类[subclass]的超过一个实例[instance]都是可见的槽[slot].
 
-当一个类的 defclass 表达式形式包含了一个给定名字的槽指定符, 就说这个类以这个名字定义一个槽. 定义一个局部槽不会马上创建一个槽; 它导致这个类的实例被创建时一个槽会被创建. 定义一个共享槽会马上创建一个槽.
+当一个类[class]的 defclass 表达式形式包含了某个给定名字[name]的槽指定符[slot specifier], 就说这个类[class]用这个名字定义一个槽[slot]. 定义一个局部槽[local slot]不会马上创建一个槽[slot]; 它导致每次这个类[class]的实例[instance]被创建时一个槽[slot]会被创建. 定义一个共享槽[shared slot]会马上创建一个槽[slot].
 
-给 defclass 的这个 :allocation 槽选项控制被定义的槽的类型. 如果这个 :allocation 槽选项的值是 :instance, 一个局部槽会被创建. 如果 :allocation 的值是 :class, 就会创建一个共享槽.
+给 defclass 的这个 :allocation 槽选项控制被定义的槽[slot]的类型. 如果这个 :allocation 槽选项的值是 :instance, 会创建一个局部槽[local slot]. 如果 :allocation 的值是 :class, 就会创建一个共享槽[shared slot].
 
-如果一个槽是由一个实例的类定义的, 或者是从该类的超类中继承的, 就说这个槽在这个类的实例中是可以访问的. 在一个实例中一个给定的名字的可访问的槽最多一个. 一个类定义的共享槽在这个类的所有实例中都是可以访问的. 关于槽的继承的详细解释在章节 7.5.3 (Inheritance of Slots and Slot Options) 中给出. 
+如果一个槽[slot]是由一个实例[instance]的类[class]定义的, 或者是从该类[class]的超类[superclass]中继承的, 那么就说这个槽[slot]在这个类[class]的实例[instance]中是可访问的[accessible]. 在一个实例[instance]中一个给定的名字[name]最多一个槽[slot]是可访问的[accessible]. 一个类[class]定义的共享槽[shared slot]在这个类[class]的所有实例[instance]中都是可访问的[accessible]. 关于槽的继承的详细解释在章节 7.5.3 (槽和槽选项的继承) 中给出. 
 
 ### 7.5.2 <span id="AccessingSlots">访问槽</span>
 
-槽可以通过两种方式被访问: 通过使用基本函数 slot-value 和通过使用 defclass 表达式形式产生的广义函数.
+槽[slot]可以通过两种方式被访问: 通过使用基本函数 slot-value 和通过使用 defclass 表达式形式产生的广义函数[generic function].
 
-函数 slot-value 可以通过这个 defclass 表达式形式中指定的槽名字来使用, 用于访问给定类的一个实例中一个可访问的特定的槽.
+函数[function] slot-value 可以通过这个 defclass 表达式形式中任何指定的槽名字来使用, 用于访问[access]给定类[class]的一个实例[instance]中一个可访问的[accessible]特定的槽[slot].
 
-宏 defclass 为读取或写入槽提供语法. 如果请求了一个 reader 方法, 用于读取这个槽的值的一个方法会被自动生成, 但是用于存储一个值到这个槽的方法不会被生成. 如果请求了一个 writer 方法, 用于存储一个值到这个槽的一个方法会被自动生成, 但是读取它的值的方法不会被生成. 如果请求了一个 accessor 方法, 一个用于读取这个槽的值的方法和一个用于存储一个值到这个槽的方法会被自动生成. Reader 和 writer 方法通过使用 slot-value 来实现.
+宏 defclass 为生成读取或写入槽[slot]的方法[method]提供语法. 如果请求了一个 reader 方法[method], 会自动生成一个用于读取这个槽[slot]的值的方法[method], 但是不会生成用于存储一个值到这个槽[slot]的方法[method]. 如果请求了一个 writer 方法[method], 会自动生成一个用于存储一个值到这个槽[slot]的方法, 但是不会生成读取它的值的方法[method]. 如果请求了一个 accessor 方法[method], 会自动生成一个用于读取这个槽[slot]的值的方法[method]和一个用于存储一个值到这个槽[slot]的方法[method]. reader 和 writer 方法通过使用 slot-value 来实现.
 
-当一个槽指定了 reader 或者 writer 方法, 所生成方法所属的广义函数的名字是直接指定的. 如果为这个 writer 方法指定的名字是这个符号 name, 那么用于写入这个槽的广义函数的名字就是 name, 这个广义函数接受两个参数: 新的值和这个实例, 以这样的顺序. 如果为 accessor 方法指定的名字是符号 name, 用于读取这个槽的广义函数的名字就是符号 name, 而用于写入这个槽的广义函数的名字就是列表 (setf name).
+当为一个槽[slot]指定了 reader 或者 writer 方法[method]时, 所生成的方法[method]所属的广义函数[generic function]的名字是直接指定的. 如果为这个 writer 方法[method]指定的名字[name]是这个符号[symbol] name, 那么用于写入这个槽[slot]的广义函数[generic function]的名字[name]就是 name, 这个广义函数[generic function]接受两个参数: 新的值和这个实例[instance], 以这样的顺序. 如果为 accessor 方法[method]指定的名字[name]是符号 name, 用于读取这个槽[slot]的广义函数[generic function]的名字[name]就是符号 name, 而用于写入这个槽[slot]的广义函数[generic function]的名字[name]就是列表 (setf name).
 
-通过提供 :reader, :writer, 或 :accessor 槽选项创建或修改的一个广义函数可以被当作一个普通的广义函数.
+通过提供 :reader, :writer, 或 :accessor 槽[slot]选项创建或修改的一个广义函数[generic function]可以被当作一个普通的广义函数[generic function].
 
-注意, slot-value 可以被用于读取或写入一个槽的值, 不管那个槽的 reader 或 writer 方法是否存在. 当使用 slot-value 时, 没有 reader 或 writer 方法会被调用.
+注意, slot-value 可以被用于读取或写入一个槽[slot]的值, 不管那个槽[slot]的 reader 或 writer 方法[method]是否存在. 当使用 slot-value 时, 没有 reader 或 writer 方法[method]会被调用.
 
-宏 with-slots 可以被用于建立一个词法环境, 在这个环境中指定的槽就像它们是变量一样是词法上可用的. 宏 with-slots 调用函数 slot-value 来访问特定的槽.
+宏 with-slots 可以被用于建立一个词法环境[lexical environment], 在这个环境中指定的槽[slot]就像是变量一样是词法上可用的. 宏 with-slots 调用函数[function] slot-value 来访问[access]特定的槽[slot].
 
-宏 with-accessors 可以被用于建立一个词法环境, 在这个环境中指定的槽通过它们的访问器是词法上可用的, 就像它们是变量一样. 宏 with-accessors 调用合适的访问器来访问指定的槽. 
-
+宏 with-accessors 可以被用于建立一个词法环境[lexical environment], 指定的槽[slot]在这个环境中通过它们的访问器是词法上可用的, 就像是变量一样. 宏 with-accessors 调用合适的访问器来访问[access]指定的槽[slot]. 
 
 ### 7.5.3 <span id="InheritanceSlotsSlotOptions">槽和槽选项的继承</span>
 
-一个类 C 的一个实例中所有可访问槽的名字集合是 C 和它的所有超类定义的槽的名字的并集. 一个实例的结构是这个实例中局部槽的名字集合.
+一个类[class] C 的实例[instance]中所有可访问[accessible]槽[slot]的名字[name]集合是 C 和它的超类[superclass]定义的槽[slot]的名字[name]的并集. 一个实例[instance]的结构是这个实例[instance]中局部槽[local slot]的名字[name]集合.
 
-在最简单的情况下, 在 C 及其超类中只有一个类定义了一个带有给定槽名的槽. 如果 C 的一个超类定义了一个槽, 就说这个槽是继承的. 槽的特征是由定义类的槽指定符决定的. 细想一个槽 S 的定义类. 如果这个 :allocation 槽选项的值是 :instance, 那么 S 是一个局部槽并且 C 的每一个实例都有它自己的名为 S 的槽存储它自己的值. 如果这个 :allocation 槽选项的值是 :class, 那么 S 是一个共享槽, 定义 S 的类存储这个值, 并且所有 C 的实例可以访问那个单个的槽. 如果这个 :allocation 槽选项被省略, 就使用 :instance.
+在最简单的情况下, 在 C 及其超类[superclass]中只有一个类[class]定义了一个带有给定槽[slot]名字的槽[slot]. 如果一个槽[slot]由 C 的一个超类[superclass]定义, 就说这个槽[slot]是继承的. 槽[slot]的特征是由定义类[class]的槽指定符[slot specifier]决定的. 细想一个槽 S 的定义类[class]. 如果这个 :allocation 槽选项的值是 :instance, 那么 S 是一个局部槽[local slot]并且 C 的每一个实例[instance]都有它自己的名为 S 的槽[slot]存储它自己的值. 如果这个 :allocation 槽选项的值是 :class, 那么 S 是一个共享槽[shared slot], 定义 S 的类[class]存储这个值, 并且所有 C 的实例[instance]可以访问[access]那个单独的槽[slot]. 如果这个 :allocation 槽选项被省略, 就使用 :instance.
 
-通常情况下, 在 C 及其超类中有多个类可以定义带有给定名称的槽. 这样的情况下, 在 C 的一个实例中给定名字的槽只有一个可以访问, 而这个槽的特性是这几个槽指定符的一个结合, 按如下计算:
+通常情况下, 在 C 及其超类[superclass]中不止一个类[class]可以定义带有给定名称[name]的槽[slot]. 这样的情况下, 在 C 的一个实例[instance]中对应给定的名字只有一个槽[slot]是可访问的[accessible], 而这个槽[slot]的特性是这几个槽[slot]指定符的一个结合, 按如下计算:
 
-* 对于一个给定的槽名字的所有槽指定符按照从最具体到最不具体的顺序排列, 根据 C 的类优先级列表中定义它们的类的顺序. 下面的所有关于槽指定符的特性的引用都是指这种排序.
+* 对于一个给定的槽[slot]名字的所有槽指定符[slot specifier]按照从最具体到最不具体的顺序排列, 根据定义它们的那些类[class]在 C 的类优先级列表[class precedence list]中的顺序. 下面的所有关于槽指定符[slot specifier]的特性的引用都是指这种排序.<!--TODO 最后一句，不是很理解-->
 
-* 一个槽的分配由最具体的槽指定符来控制. 如果最具体的槽指定符不包括一个 :allocation 槽选项, 就是用 :instance. 较不具体的槽指定符不会影响这个分配.
+* 一个槽[slot]的分配由最具体的槽指定符[slot specifier]来控制. 如果最具体的槽指定符[slot specifier]不包括一个 :allocation 槽选项, 就是用 :instance. 较不具体的槽指定符[slot specifier]不会影响这个分配.
 
-* 一个槽的默认初始值表达式形式是包含一个 :initform 槽选项的最具体的槽指定符中该选项的值. 如果没有包含 :initform 槽选项的槽指定符, 这个槽就没有默认的初始值表达式形式.
+* 一个槽[slot]的默认初始值表达式形式是包含一个 :initform 槽选项的最具体的槽指定符[slot specifier]中该选项的值. 如果没有包含 :initform 槽选项的槽指定符[slot specifier], 这个槽[slot]就没有默认的初始值表达式形式.
 
-* 一个槽的内容总是为 (and T1 ... Tn) 类型, 其中 T1 ...Tn 是包含在所有槽指定符中 :type 槽选项的值. 如果没有包含 :type 槽选项的槽指定符, 这个槽的内容总是为类型 t. 尝试去存储一个不满足一个槽的类的值到这个槽中的结果是未定义的.
+* 一个槽[slot]的内容总是为 (and T1 ... Tn) 类型, 其中 T1 ...Tn 是包含在所有槽指定符[slot specifier]中 :type 槽选项的值. 如果没有包含 :type 槽选项的槽指定符[slot specifier], 这个槽[slot]的内容总是为类型[type] t. 尝试去存储一个不满足一个槽[class]的类型[type]的值到这个槽[slot]中, 后果是未定义的.
 
-* 初始化一个给定槽的初始化参数的集合是声明在所有这些槽指定符的 :initarg 槽选项中的初始化参数的并集.
+* 初始化一个给定槽[slot]的初始化参数的集合是声明在所有这些槽指定符[slot specifier]的 :initarg 槽选项中的初始化参数的并集.
 
-* 一个槽的文档字符串是包含 :documentation 槽选项的最具体的槽指定符的该选项的值. 如果没有包含一个 :documentation 槽选项的槽指定符, 那么该槽没有文档字符串.
+* 一个槽[slot]的文档字符串[documentation string]是包含 :documentation 槽[slot]选项的最具体的槽指定符[slot specifier]的该选项的值. 如果没有包含 :documentation 槽选项的槽指定符[slot specifier], 那么该槽没有文档字符串[documentation string].
 
-这个分配规则的一个后果是一个共享槽可以被遮蔽. 比如, 如果一个类 C1 定义了一个名为 S 的槽, 其中 :allocation 槽选项的值是 :class, 这个槽在 C1 的实例中和所有它的子类中都是可以访问的. 然而, 如果 C2 是 C1 的一个子类并且也定义了名为 S 的槽, C1 的槽不会被 C2 的实例和子类所共享. 当一个类 C1 定义了一个共享槽时, 任何 C1 的子类 C2 会共享这单个的槽除非这个 C2 的 defclass 表达式形式指定了一个相同名字的槽, 或者这里有一个定义了相同名字的槽的 C2 的超类并且这个超类在 C2 的类优先级列表中先于 C1.
+这个分配规则的一个后果是一个共享槽[shared slot]可以被遮蔽[shadow]. 比如, 如果一个类 C1 定义了一个名为 S 的槽[slot], 其中 :allocation 槽选项的值是 :class, 这个槽[slot]在 C1 的实例[instance]中和所有它的子类[subclass]中都是可访问的[accessible]. 然而, 如果 C2 是 C1 的一个子类[subclass]并且也定义了名为 S 的槽[slot], C1 的槽[slot]不会被 C2 的实例[instance]和子类[sublcass]所共享. 当一个类 C1 定义了一个共享槽[shared slot]时, 任何 C1 的子类 C2 会共享这个单独的槽[slot]除非这个 C2 的 defclass 表达式形式指定了一个相同名字[name]的槽[slot], 或者这里有一个定义了相同名字的槽的 C2 的超类[superclass]并且在 C2 的类优先级列表[class precedence list]中这个超类[superclass]先于 C1.
 
-这个类型规则的一个后果是一个槽的值满足贡献给这个槽的所有槽指定符的类型约束. 由于尝试存储一个不满足这个槽的类型约束的值到该槽中的结果是未定义的, 一个槽中的值可能不满足它的类型约束.
+这个类型规则的一个后果是一个槽[slot]的值满足贡献给这个槽的所有槽指定符[slot specifier]的类型约束.<!-- TODO contributes to ??--> 由于尝试存一个不满足这个槽[slot]的类型约束的值到该槽[slot]中的后果是未定义的, 一个槽[slot]中的值可能不满足它的类型约束.
 
-这个 :reader, :writer, 和 :accessor 槽选项创建方法而不是定义一个槽的属性. 在章节 7.6.7 (Inheritance of Methods) 所描述的观念中 reader 和 writer 方法是继承的.
+这个 :reader, :writer, 和 :accessor 槽选项创建方法[method]而不是定义一个槽[slot]的属性. 在章节 7.6.7 (方法的继承) 所描述的观念中 reader 和 writer 方法是继承的.
 
-访问槽的方法只使用槽的名字和槽的值的类型. 假设一个超类提供了一个方法, 该方法希望访问给定名称的共享槽, 并且一个子类定义了一个相同名字的局部槽. 如果超类提供的这个方法在子类的实例上被调用, 这个方法会访问这个局部槽. 
-
+访问[access]槽[slot]的方法[method]只使用这个槽[slot]的名字和槽[slot]的值类型[type]. 假设一个超类[superclass]提供了一个方法[method], 该方法希望访问[access]给定名称[name]的共享槽[shared slot], 并且一个子类[subclass]定义了一个相同名字[name]的局部槽[local slot]. 如果超类[superclass]提供的这个方法[method]在子类[subclass]的实例[instance]上被调用, 那么这个方法[method]会访问[access]这个局部槽[local slot]. 
 
 ## 7.6 <span id="GenericFunctionsMethods">广义函数和方法</span>
 
