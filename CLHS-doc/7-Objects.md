@@ -190,7 +190,7 @@ initialize-instance 的方法[method]可以被定义来指定一个实例[instan
 
 函数[function] change-class 可以被用来修改一个实例[instance]的类[class], 从它的当前类 Cfrom 到一个不同的类 Cto; 它修改这个实例[instance]的结构来符合这个类 Cto 的定义.
 
-注意, 修改一个实例[instance]的类[class]可能导致槽[slot]被添加或删除. 修改一个实例[instance]的类[class]不会修改由 eq 函数定义的它的同一性(identity).
+注意, 修改一个实例[instance]的类[class]可能导致槽[slot]被添加或删除. 修改一个实例[instance]的类[class]不会修改由 eq 函数定义的它的恒等性(identity).
 
 当 change-class 在一个实例[instance]上被调用, 会发生一个分为两步的更新过程. 第一步通过添加新的局部槽[local slot]还有废弃这个新版本的实例[instance]中没有指定的局部槽[local slot]来修改这个实例的结构. 第二步初始化新添加的局部槽[local slot]并执行其他任何用户定义的动作. 这两步在以下两个章节中有进一步的描述.
 
@@ -332,37 +332,39 @@ shared-initialize 的方法[method]可以被定义用来定制类[class]的重�
 
 ### 7.6.1 <span id="IntroductionGF">广义函数的介绍</span>
 
-一个广义函数是一个行为取决于提供给它的参数的类或同一性(identity)的函数. 一个广义函数对象和一个方法集合, 一个 lambda 列表, 一个方法组合, 还有其他信息相关联.
+一个广义函数[generic function]是一个行为取决于提供给它的实参[argument]的类[class]或恒等性(identity)的函数. 一个广义函数[generic function]对象[object]和一个方法[method]集合, 一个 lambda 列表[lambda list], 一个方法组合[method combination[2]], 还有其他信息相关联.
 
-像一个普通函数一样, 一个广义函数接受参数, 执行一系列动作, 并且可能返回有用的值. 一个普通函数由有一个在函数被调用时总是被执行的代码中的单个主体. 一个广义函数有着一个代码主体的集合, 其中一个子集会被选择来执行. 选择的代码主体和它们的组合方式由给这个广义函数的一个或多个参数的类或同一性决定, 以及它们的方法组合.
+像一个普通函数[ordinary function]一样, 一个广义函数[generic function]接受实参[argument], 执行一系列动作, 并且可能返回有用的值[value]. 一个普通函数[ordinary function]有着一个在函数被调用时总是被执行的单独的代码[code]主体. 一个广义函数[generic function]有着一个代码[code]主体的集合, 其中一个子集会被选择来执行. 选择的代码[code]主体和它们的组合方式由提供给这个广义函数[generic function]的一个或多个实参[argument]的类[class]或恒等性以及这个广义函数的方法组合决定, .
 
-普通函数和广义函数用相同的语法来调用.
+普通函数[ordinary function]和广义函数[generic function]用相同的语法来调用.
 
-广义函数是可以作为参数传递给 funcall 和 apply 并且用作第一个参数的真实函数.
+广义函数[generic function]是可以作为传递给 funcall 和 apply 的实参[argument]并且用作第一个实参[argument]的真实函数[function].
 
-函数名与广义函数的绑定可以通过以下几种方式建立. 它可以通过 ensure-generic-function, defmethod (隐式的, 应归于 ensure-generic-function) 或 defgeneric (也是隐式的, 应归于 ensure-generic-function) 在全局环境中建立. 没有为在词法环境中建立一个函数名与广义函数的绑定提供标准化机制.
+函数名[function name]与广义函数[generic function]的绑定[binding]可以通过以下几种方式建立. 它可以通过 ensure-generic-function, defmethod (隐式的, 由于 ensure-generic-function) 或 defgeneric (也是隐式的, 由于 ensure-generic-function) 在全局环境[global environment]中建立. 没有为在词法环境[lexical environment]中建立一个函数名[function name]与广义函数[generic function]的绑定[binding]提供标准化[standardized]机制.
 
-当一个 defgeneric 表达式形式被求值, 采取这三个动作中的其中一个 (应归于 ensure-generic-function):
+当一个 defgeneric 表达式形式被求值, 采取这三个动作中的其中一个 (由于 ensure-generic-function):
 
-* 如果一个给定名字的广义函数已经存在, 这个存在的广义函数对象会被修改. 当前 defgeneric 表达式形式指定的方法会被添加, 并且这个通过前面的 defgeneric 表达式形式定义的已存在的广义函数中的方法会被移除. 通过当前 defgeneric 表达式形式添加的方法可能替换由 defmethod, defclass, define-condition, 或 defstruct 定义的方法. 广义函数中没有其他方法受到影响或替换.
+* 如果一个给定名字的广义函数已经存在, 这个存在的广义函数对象会被修改. 当前 defgeneric 表达式形式指定的方法会被添加, 并且在这个已存在的广义函数中由之前的 defgeneric 表达式形式定义的方法会被移除. 通过当前 defgeneric 表达式形式添加的方法可能替换由 defmethod, defclass, define-condition, 或 defstruct 定义的方法. 在这个广义函数中没有其他方法受到影响或替换.
 
-* 如果这个给定的名字命名一个普通函数, 一个宏, 或者一个特殊操作符, 就会发出一个错误.
+* 如果这个给定的名字命名一个普通函数[ordinary function], 一个宏[macro], 或者一个特殊操作符[special operator], 就会发出一个错误.
 
 * 否则就会使用这个 defgeneric 表达式形式中的方法定义指定的方法来创建一个广义函数.
 
-某些操作符允许规范一个广义函数的选项, 就像它使用的方法组合的类型或它的参数优先级顺序. 这些操作符会被称为 "指定广义函数选项的操作符". 这个类别中唯一的标准化操作符是 defgeneric.
+一些操作符[operator]允许指定一个广义函数[generic function]的选项, 例如它使用的方法组合[method combination]的类型[type]或它的参数优先级顺序[argument precedence order]. 这些操作符[operator]会被称为 "指定广义函数选项的操作符". 这个类别中唯一的标准化[standardized]操作符[operator]是 defgeneric.
 
-某些操作符为一个广义函数定义方法. 这些操作符会被称作方法定义操作符; 它们关联的表达式形式被称作方法定义表达式形式. 标准化的方法定义操作符列在下面这段中.
+一些操作符[operator]为一个广义函数[generic function]定义方法[method]. 这些操作符[operator]会被称作方法定义操作符[method-defining operator]; 它们关联的表达式形式[form]被称作方法定义表达式形式[method-defining form]. 下面这段列出了标准化的[standardized]方法定义操作符[method-defining operator].
 
     defgeneric        defmethod  defclass  
     define-condition  defstruct            
 
-    Figure 7-1. 标准化的方法定义操作符, 注意这些方法定义操作符中只有 defgeneric 可以指定广义函数选项. defgeneric 还有任何具体实现定义的可以指定广义函数选项的操作符都被称为 "指定广义函数选项的操作符".
+    Figure 7-1. 标准化的方法定义操作符
+    
+注意这些标准化[standardized]方法定义操作符[method-defining operator]中只有 defgeneric 可以指定广义函数[generic function]选项. defgeneric 还有任何具体实现定义的可以指定广义函数选项的操作符都被称为 "指定广义函数选项的操作符".
 
 
 ### 7.6.2 <span id="IntroductionMethods">方法的介绍</span>
 
-方法定义了一个广义函数的特定于类或者特定于同一性的行为以及操作.
+方法定义了一个广义函数的特定于类或者特定于恒等性的行为以及操作.
 
 一个方法对象和实现这个方法的代码, 一个指定这个给定方法何时是可应用的参数特化序列, 一个 lambda 列表, 还有一个被方法组合机制用来区分方法的限定符序列相关联.
 
