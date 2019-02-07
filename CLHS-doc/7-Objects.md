@@ -364,93 +364,93 @@ shared-initialize 的方法[method]可以被定义用来定制类[class]的重�
 
 ### 7.6.2 <span id="IntroductionMethods">方法的介绍</span>
 
-方法定义了一个广义函数的特定于类或者特定于恒等性的行为以及操作.
+方法[method]定义了一个广义函数[generic function]的特定于类或者特定于恒等性的行为以及操作.
 
-一个方法对象和实现这个方法的代码, 一个指定这个给定方法何时是可应用的参数特化序列, 一个 lambda 列表, 还有一个被方法组合机制用来区分方法的限定符序列相关联.
+一个方法[method]对象[object]和实现这个方法的代码[code], 指定这个给定方法[method]何时是可应用的一系列参数特化符[parameter specializer], 一个 lambda 列表[lambda list], 还有被方法组合机制用来区分这些方法[method]的限定符[qualifier]相关联.
 
 一个方法对象不是一个函数并且不能像函数一样被调用. 在这个对象系统中的各种机制接收一个方法对象并调用它的方法函数, 就像这个广义函数被调用时那样. 这个发生时就说这个方法被调用.
 
-方法定义表达式形式包含了当广义函数的参数导致它定义的方法被调用时要运行的代码. 当一个方法定义表达式形式被求值, 一个方法对象会被创建并且采取这四种动作中的一个:
+一个方法定义表达式形式包含了当这个广义函数的参数导致它定义的方法被调用时要运行的代码[code]. 当一个方法定义表达式形式被求值, 一个方法对象会被创建并且采取这四种动作中的一个:
 
-* 如果一个给定名字的广义函数已经存在并且如果一个在参数特化符和限定符上都符合新的那个的方法对象已经存在, 那个新的对象会替换旧的那个. 关于一个方法在参数特化符和限定符上与另一个方法达成一致的定义, 见章节 7.6.3 (Agreement on Parameter Specializers and Qualifiers).
+* 如果一个给定名字的广义函数[generic function]已经存在并且如果一个在参数特化符[parameter specializer]和限定符[qualifier]上都符合新的那个的方法[method]对象[object]已经存在, 那么那个新的方法[method]对象[object]会替换旧的那个. 关于一个方法在参数特化符[parameter specializer]和限定符[qualifier]上与另一个方法达成一致的定义, 见章节 7.6.3 (关于参数特化符和限定符的一致性).
 
-* 如果一个给定名字的广义函数已经存在并且这里没有在参数特化符和限定符上都符合新的那个的方法对象, 那个存在的广义函数对象会被修改来包含那个新的方法对象.
+* 如果一个给定名字的广义函数[generic function]已经存在并且这里没有在参数特化符[parameter specializer]和限定符[qualifier]上都符合新的那个的方法[method]对象[object], 那么那个存在的广义函数[generic function]对象会被修改来包含那个新的方法[method]对象[object].
 
-* 如果给定的名字命名一个普通函数, 一个宏, 或者一个特殊操作符, 就会发出一个错误.
+* 如果给定的名字[name]命名一个普通函数[ordinary function], 一个宏[macro], 或者一个特殊操作符[special operator], 就会发出一个错误.
 
-* 否则就会用那个方法定义表达式形式指定的方法创建一个广义函数.
+* 否则就会用那个方法定义表达式形式[method-defining form]指定的方法[method]创建一个广义函数[generic function].
 
-如果一个新的方法的 lambda 列表和广义函数是不相等的, 就会发出一个错误. 如果一个不能指定广义函数选项的方法定义操作符创建了一个新的广义函数, 这个广义函数的 lambda 列表是来自于这个方法定义表达式中的方法的 lambda 列表, 在这种方式下它们是一致的. 关于一致性的讨论, 见章节 7.6.4 (Congruent Lambda-lists for all Methods of a Generic Function).
+如果一个新的方法[method]的 lambda 列表[lambda list]和广义函数[[generic function]]的 lambda 列表[lambda list]是不相等的, 就会发出一个错误. 如果一个不能指定广义函数[generic function]选项的方法定义操作符[method-defining operator]创建了一个新的广义函数[generic function], 那么这个广义函数[generic function]的 lambda 列表[lambda list]是来自于这个方法定义表达式[method-defining form]中的方法[method]的 lambda 列表[lambda list], 在这种方式下它们是一致的. 关于一致性的讨论, 见章节 7.6.4 (广义函数的所有方法的一致 Lambda-list).
 
-每个方法都有一个专门的 lambda 列表, 它决定了何时这个方法可以被应用. 一个专门的 lambda 列表就像一个普通 lambda 列表除了一个参数特化符可以出现来代替一个必要参数. 一个参数特化符是一个列表 (variable-name parameter-specializer-name), 其中 parameter-specializer-name 以下的一种:
+每个方法都有一个特化 lambda 列表[specialized lambda list], 它决定了何时这个方法可以被应用. 一个特化 lambda 列表[specialized lambda list]就像一个普通 lambda 列表[ordinary lambda list]一样, 除了可以出现一个特化参数来代替一个必要参数的名字. 一个参数特化符是一个列表 (variable-name parameter-specializer-name), 其中 parameter-specializer-name 以下的一种:
 
-一个符号
+一个符号[symbol]
 
-    表示一个以该符号命名的类的参数特化符.
+    表示一个以该符号[symbol]命名的类[class]的参数特化符[parameter specializer].
 
-一个类
+一个类[class]
 
-    表示一个参数特化符就是类本身.
+    表示一个参数特化符[parameter specializer]就是类[class]本身.
 
 (eql form)
 
-    表示一个参数特化符需满足类型指定 (eql object), 其中 object 是求值 form 的结果. 这个 form 表达式形式在方法定义表达式形式被求值的词法环境中被求值. 注意, 这个 form 只被求值一次, 在方法被定义的时候, 而不是每次广义函数被调用的时候.
+    表示一个满足类型指定 (eql object) 的参数特化符[parameter specializer], 其中 object 是求值表达式形式 form 的结果. 这个 form 表达式形式在方法定义表达式形式被求值的词法环境中被求值. 注意, 这个 form 只被求值一次, 在方法被定义的时候, 而不是每次广义函数被调用的时候.
 
-参数特化符名字在用户级别接口的宏 (defmethod) 中使用, 而在函数接口中使用参数特化符.
+参数特化符名字[parameter specializer name]被用于用户级别接口的宏 (defmethod), 而参数特化符[parameter specializer]被用于函数接口中.
 
-只有必要参数可以被特化, 并且这里对于每一个必要参数都必须是参数特化符. 为了表达的简单性, 如果一个方法定义表达式形式的特化 lambda 列表中的某个必要参数仅仅是一个变量名, 它的参数特化符默认是类 t.
+只有必要参数可以被特化, 并且这里对于每一个必要参数都必须有一个参数特化符[parameter specializer]. 为了表达的简单性, 如果一个方法定义表达式形式的特化 lambda 列表[specialized lambda list]中的某个必要参数仅仅是一个变量名, 它的参数特化符[parameter specializer]默认是类[class] t.
 
-给定一个广义函数和一个参数集合, 一个可应用的方法是一个参数特化符被它们对应的参数所满足的广义函数的方法. 下面的定义指定了什么是可应用的方法, 以及满足参数特化符的参数的含义.
+给定一个广义函数和一个参数集合, 一个可应用的方法是参数特化符满足广义函数的对应的参数的一个方法. 下面的定义指定了什么是可应用的方法, 以及满足参数特化符[parameter specializer]的参数的含义.
 
-让 <A1, ..., An> 依次是给一个广义函数的必要参数. 让 <P1, ..., Pn> 依次是对应方法 M 的必要参数的参数特化符. 当每一个 Ai 都是类型指定符 Pi 指定的类型时, 方法 M 是可应用的. 由于每个有效参数特化符也是一个有效的类型指定符, 在方法选择去决定一个参数是否满足一个参数特化符时, 可以使用函数 typep.
+让 <A1, ..., An> 依次是给一个广义函数的必要参数. 让 <P1, ..., Pn> 依次是对应方法 M 的必要参数的参数特化符[parameter specializer]. 当每一个 Ai 都是类型指定符[type specifier] Pi 指定的类型[type]时, 方法 M 是可应用的. 由于每个有效参数特化符[parameter specializer]也是一个有效的类型指定符[type specifier], 在方法选择去决定一个参数是否满足一个参数特化符[parameter specializer]时, 可以使用函数[function] typep.
 
-一个所有参数特化符都是类 t 的方法被称为默认方法; 它总是可应用的但是可能被一个更具体的方法所遮蔽.
+一个所有参数特化符[parameter specializer]都是类[class] t 的方法被称为默认方法[default method]; 它总是可应用的但是可能被一个更具体的方法所遮蔽.
 
-方法可以有限定符, 它给方法组合过程提供一种区分方法的方式. 一个带有一个或多个限定符的方法被称为受限方法(qualified method). 一个没有限定符的方法被称为一个非受限方法. 一个限定符是任何非列表元素. 标准方法组合类型定义的限定符是符号.
+方法可以有限定符[qualifier], 它给方法组合过程提供一种区分方法的方式. 一个带有一个或多个限定符[qualifier]的方法被称为限定方法[qualified method]. 一个没有限定符[qualifier]的方法被称为一个非限定方法[unqualified method]. 一个限定符[qualifier]是任何非列表[non-list]元素. 由标准化[standardized]方法组合类型定义的限定符[qualifier]是符号[symbol].
 
-在这个规范中, 术语 "主方法(primary method)" 和 "辅助方法(auxiliary method)" 在方法组合类型中根据它们的用途被用于区分方法. 在标准方法组合中, 主方法是非受限方法而辅助方法是有以下之一的单个限定符的方法: :around, :before, 或 :after. 有这些限定符的方法分别被称为 around 方法, before 方法, 还有 after 方法. 当使用 define-method-combination 简单的表达式形式定义一个方法组合类型时, 主要方法是用方法组合的类型命名的方法, 而辅助方法有着限定符 :around. 因此术语 "主方法(primary method)" 和 "辅助方法(auxiliary method)" 只有在给定方法组合类型中有相关定义. 
+在这个规范中, 术语 "主方法[primary method]" 和 "辅助方法[auxiliary method]" 在方法组合类型中根据它们的用途被用于区分方法[method]. 在标准方法组合中, 主方法[primary method]是非限定方法[unqualified method]而辅助方法[auxiliary method]是有以下之一的单独限定符[qualifier]的方法: :around, :before, 或 :after. 带有有这些限定符[qualifier]的方法[method]分别被称为 around 方法[around method], before 方法[before method], 还有 after 方法[after method]. 当使用 define-method-combination 短表达式形式定义一个方法组合类型时, 主方法[primary method]是用方法组合的类型的名字来限定的方法, 而辅助方法有着限定符[qualifier] :around. 因此术语 "主方法[primary method]" 和 "辅助方法[auxiliary method]" 只有在给定方法组合类型中有相关定义. 
 
 ### 7.6.3 <span id="AgreeParamSpecQualifiers">关于参数特化符和限定符的一致性</span>
 
-如果遵循以下条件, 则两个方法在参数特化符和限定符之间达成一致:
+如果遵循以下条件, 则两个方法[method]在参数特化符[parameter specializer]和限定符[qualifier]上达成一致:
 
-1. 两个方法有相同数量的必要参数. 假设这两个方法的参数特化符为 P1,1...P1,n 和 P2,1...P2,n.
+1. 两个方法有相同数量的必要参数. 假设这两个方法的参数特化符[parameter specializer]为 P1,1...P1,n 和 P2,1...P2,n.
 
-2. 对于每一个 1<=i<=n, P1,i 和 P2,i 一致. 如果 P1,i 和 P2,i 是相同的类或者如果 P1,i=(eql object1), P2,i=(eql object2), 并且 (eql object1 object2), 那么参数特化符 P1,i 和 P2,i 是一致的. 否则 P1,i 和 P2,i 是不一致的.
+2. 对于每一个 1<=i<=n, P1,i 和 P2,i 一致. 如果 P1,i 和 P2,i 是相同的类或者如果 P1,i=(eql object1), P2,i=(eql object2), 并且 (eql object1 object2), 那么参数特化符[parameter specializer] P1,i 和 P2,i 是一致的. 否则 P1,i 和 P2,i 是不一致的.
 
-3. 两个限定符列表在 equal 下是相等的. 
+3. 两个限定符[qualifier]列表[list]在 equal 下是相同的[same]. 
 
 
 ### 7.6.4 <span id="LambdaMethodsGF">广义函数的所有方法的一致 Lambda-list</span>
 
-这些规则定义了一个 lambda 列表的集合的一致性, 包括对于一个给定广义函数的每个方法的那个 lambda 列表还有这个广义函数自身指定的那个 lambda 列表, 如果存在的话.
+这些规则定义了一个 lambda 列表[lambda list]的集合的一致性, 包括对于一个给定广义函数的每个方法[method]的 lambda 列表[lambda list]还有这个广义函数自身指定的 lambda 列表[lambda list], 如果存在的话.
 
-1. 每个 lambda 列表必须有相同数量的必要参数.
+1. 每个 lambda 列表[lambda list]必须有相同数量的必要参数.
 
-2. 每个 lambda 列表必须有着相同数量的可选参数. 每个方法可以为可选参数提供它自己的默认值.
+2. 每个 lambda 列表[lambda list]必须有着相同数量的可选参数. 每个方法可以为可选参数提供它自己的默认值.
 
-3. 如果任何 lambda 列表提及 &rest 或 &key, 那么每个 lambda 列表必须提及它们或它们的其中之一.
+3. 如果任何 lambda 列表[lambda list]提及 &rest 或 &key, 那么每个 lambda 列表[lambda list]必须提及它们或它们的其中之一.
 
-4. 如果广义函数的 lambda 列表提及 &key, 每个方法必须接受 &key 后面提及的所有关键字的名字, 不管是通过显式地指定它们, 还是通过指定 &allow-other-keys, 或者通过指定 &rest 而不是 &key. 每个方法可以接收它自己的额外的关键字参数. 关键字名字的有效性检测在广义函数中进行, 不是在每个方法中. 一个方法被调用就像提供了名字为 :allow-other-keys 而值为 true 的关键字参数对一样, 尽管没有这样的参数对会被传递.
+4. 如果广义函数[generic function]的 lambda 列表[lambda list]提及 &key, 每个方法必须接受 &key 后面提及的所有关键字的名字, 不管是通过显式地指定它们, 还是通过指定 &allow-other-keys, 或者通过指定 &rest 而不是 &key. 每个方法可以接收它自己的额外的关键字参数. 关键字名字的有效性检测在这个广义函数中进行, 而不是在每个方法中. 一个方法就像是提供了名字为 :allow-other-keys 而值为 true 的关键字参数对一样被调用, 尽管没有这样的参数对会被传递.
 
-5. &allow-other-keys 的使用在 lambda 列表中不需要是一致的. 如果 &allow-other-keys 在这个广义函数的任何一个可应用方法的 lambda 列表中被提及, 那么在对这个广义函数的调用中任何关键字参数都可能被提及.
+5. &allow-other-keys 的使用在 lambda 列表[lambda list]之间不需要是一致的. 如果 &allow-other-keys 在这个广义函数[generic function]或任何一个可应用方法[method]的 lambda 列表[lambda list]中被提及, 那么在对这个广义函数[generic function]的调用中任何关键字参数都可能被提及.
 
-6. &aux 的使用在方法中不需要是一致的.
+6. &aux 的使用在方法之间不需要是一致的.
 
-    如果一个不能指定广义函数选项的方法定义操作符创建了一个广义函数, 并且这个方法的 lambda 列表提及关键字参数, 这个广义函数的 lambda 列表会提及 &key (但是没有关键字参数). 
+    如果一个不能指定广义函数[generic function]选项的方法定义操作符[method-defining operator]创建了一个广义函数[generic function], 并且这个方法的 lambda 列表[lambda list]提及关键字参数, 那么这个广义函数的 lambda 列表[lambda list]会提及 &key (但是没有关键字参数). 
 
 
 ### 7.6.5 <span id="KeywordArgGFAndMethods">广义函数和方法中的关键字参数</span>
 
-当一个广义函数或者它的任何一个方法在一个 lambda 列表中提及 &key, 广义函数接受的特定关键字参数根据所应用的方法而变化. 对于一个特定的调用, 被这个广义函数所接收的关键字参数的集合是所有可应用方法的关键字参数的并集, 如果这个广义函数定义中的 &key 后提及关键字参数, 那么还包括这些关键字参数. 一个有着 &rest 没有 &key 的方法不会影响可接受参数的集合. 如果任何可应用的方法或广义函数定义的 lambda 列表中包含 &allow-other-keys, 所有关键字都可以被这个广义函数所接受.
+当一个广义函数或者它的任何一个方法在一个 lambda 列表[lambda list]中提及 &key, 广义函数接受的关键字参数的具体集合根据所应用的方法而变化. 对于一个特定的调用, 被这个广义函数所接收的关键字参数的集合是所有可应用方法的关键字参数以及这个广义函数定义中 &key 后面提及的关键字参数的并集, 如果这个广义函数定义中的 &key 后提及关键字参数, 那么还包括这些关键字参数. 一个有着 &rest 但没有 &key 的方法不会影响可接受参数的集合. 如果任何可应用[lambda list]方法或广义函数定义的 lambda 列表中包含 &allow-other-keys, 所有关键字都可以被这个广义函数所接受.
 
-这个 lambda 列表一致性规则要求每一个方法接受所有在广义函数的 &key 参数后提及的所有关键字参数, 通过显式地接收它们, 通过指定 &allow-other-keys, 通过指定 &rest 但不是 &key. 除了广义函数定义中提到的关键字参数之外, 每一个方法可以接受它自身的额外的关键字参数.
+这个 lambda 列表[lambda list]一致性规则要求每一个方法接受所有在广义函数定义中 &key 参数后提及的所有关键字参数, 通过显式地接收它们, 通过指定 &allow-other-keys, 通过指定 &rest 但不是 &key. 除了广义函数定义中提到的关键字参数之外, 每一个方法可以接受它自身的额外的关键字参数.
 
-如果传递给一个广义函数一个没有可应用方法接收的关键字参数, 应该会发出一个错误; 见章节 3.5 (Error Checking in Function Calls).
+如果传递给一个广义函数[generic function]一个没有可应用方法接收的关键字参数, 应该会发出一个错误; 见章节 3.5 (函数调用中的错误检测).
 
 #### 7.6.5.1 广义函数和方法的关键字参数示例
 
-比如, 假设这里为 width 按照如下定义两个方法:
+比如, 假设这里为 width 定义两个方法, 如下:
 
 ```LISP
 (defmethod width ((c character-class) &key font) ...)
@@ -458,7 +458,7 @@ shared-initialize 的方法[method]可以被定义用来定制类[class]的重�
 (defmethod width ((p picture-class) &key pixel-size) ...)
 ```
 
-假设这里没有 width 的其他方法并且没有 width 广义函数. 以下表达式形式的求值应该会发出一个错误 由于这个关键字参数 :pixel-size 不能被这个可应用的方法所接受.
+假设这里没有 width 的其他方法并且没有 width 广义函数. 以下表达式形式的求值应该会发出一个错误, 由于这个关键字参数 :pixel-size 不能被这个可应用的方法所接受.
 
 ```LISP
 (width (make-instance `character-class :char #\Q) 
@@ -481,106 +481,102 @@ shared-initialize 的方法[method]可以被定义用来定制类[class]的重�
 
 ### 7.6.6 <span id="MethodSelComb">方法选择和组合</span>
 
-当用特定的参数调用一个广义函数时, 它必须决定要执行的代码. 这个代码被称为这些参数的生效方法. 生效方法是一个广义函数中可应用方法的组合, 它调用这些方法的一部分或全部.
+当用特定的参数调用一个广义函数[generic function]时, 它必须决定要执行的代码. 这个代码被称为这些实参[argument]的有效方法[effective method]. 有效方法[effective method]是一个广义函数[generic function]中可应用方法[applicable method]的组合, 它调用[call]这些方法[method]的一部分或全部.
 
-如果一个广义函数被调用而没有可应用的方法, 广义函数 no-applicable-method 会被调用, 这个调用的结果被用作对原始广义函数调用的结果. 调用 no-applicable-method 优先于检测可接受的关键字参数; 见章节 7.6.5 (Keyword Arguments in Generic Functions and Methods).
+如果一个广义函数[generic function]被调用而没有可应用的方法[applicable method], 那么广义函数[generic function] no-applicable-method 会被调用, 这个调用的结果被用作对原始广义函数[generic function]调用的结果. 调用 no-applicable-method 优先于检测可接受的关键字参数; 见章节 7.6.5 (广义函数和方法中的关键字参数).
 
-当这个生效方法已经被决定时, 会用传递给这个广义函数相同的参数去调用它. 不管它返回什么值都会作为这个广义函数的值被返回.
+当这个有效方法[effective method]已经被决定时, 会用传递给这个广义函数[generic function]相同的实参[argument]去调用它. 不管它返回什么值[value]都会作为这个广义函数[generic function]的值[value]被返回.
 
-> * 7.6.6.1 [确定生效方法](#DetermEffectMethod)
+> * 7.6.6.1 [确定有效方法](#DetermEffectMethod)
 > * 7.6.6.2 [标准方法组合](#StandMethodComb)
 > * 7.6.6.3 [声明方法组合](#DeclaraMethodComb)
 > * 7.6.6.4 [内建的方法组合类型](#BuiltInMethodCombTypes)
 
+#### 7.6.6.1 <span id="DetermEffectMethod">确定有效方法</span>
 
-#### 7.6.6.1 <span id="DetermEffectMethod">确定生效方法</span>
-
-生效方法通过以下三个步骤来决定:
+有效方法通过以下三个步骤来决定:
 
 1. 选择可应用的方法.
 
 2. 通过优先级顺序对可应用方法排序, 把最具体的方法放在第一位.
 
-3. 对排序后的可应用方法列表应用方法组合, 产生生效方法.
+3. 对排序后的可应用方法列表应用方法组合, 产生有效方法.
 
 ##### 7.6.6.1.1 选择可应用的方法
 
-这个步骤在章节 7.6.2 (Introduction to Methods) 中描述. 
+这个步骤在章节 7.6.2 (方法的介绍) 中描述. 
 
 ##### 7.6.6.1.2 通过优先级顺序对可应用方法排序
 
-为了比较两个方法的优先级, 它们的参数指定符会被按顺序检查. 默认的检查顺序是从左到右, 但是可以通过对 defgeneric 或任何指定广义函数选项的操作符指定 :argument-precedence-order 选项来指定一个替代的顺序.
+为了比较两个方法的优先级, 它们的参数特化符[parameter specializer]会被按顺序检查. 默认的检查顺序是从左到右, 但是可以通过对 defgeneric 或任何指定广义函数选项的其他操作符指定 :argument-precedence-order 选项来指定一个替代的顺序.
 
-每一个方法的对应参数指定符都会被比较. 当一对参数指定符一致时, 比较下一对的一致性. 如果所有对应的参数指定符都一致, 那么两个方法必须有不同的限定符; 在这个情况下, 任何一个方法都可以优先于另一个. 关于一致性的更多信息, 见章节 7.6.3 (Agreement on Parameter Specializers and Qualifiers).
+每一个方法的对应参数特化符[parameter specializer]都会被比较. 当一对参数特化符[parameter specializer]一致时, 比较下一对的一致性. 如果所有对应的参数指定符都一致, 那么两个方法必须有不同的限定符[qualifier]; 在这个情况下, 任何一个方法都可以优先于另一个. 关于一致性的更多信息, 见章节 7.6.3 (关于参数特化符和限定符的一致性).
 
-如果某些对应参数不一致, 第一对不一致的参数决定了这个优先级. 如果两个参数指定符都是类, 两个方法中更具体的是方法参数指定符在这个对应参数的类优先级列表中出现的更早的那个方法. 由于可应用方法被选择的这个方法, 参数指定符保证存在于参数的类的类优先列表中.
+如果某些参数特化符[parameter specializer]不一致, 第一对不一致的参数特化符[parameter specializer]决定了这个优先级. 如果两个参数特化符[parameter specializer]都是类, 那么两个方法中更具体的是参数特化符[parameter specializer]在这个对应参数的类优先级列表[class precedence list]中出现的更早的那个方法. 由于可应用方法被选择的这个方式, 参数特化符[parameter specializer]保证存在于那个参数的类的类优先列表中.
 
-如果一对对应参数指定符中只有一个是 (eql object), 带有这个参数指定符的方法优先于另一个方法. 如果两个参数指定符都是 eql 表达式, 这个参数指定符一定是一致的 (否则对于这个参数这两个方法不会都是可应用的).
+如果一对对应参数特化符[parameter specializer]中只有一个是 (eql object), 那么带有这个参数特化符[parameter specializer]的方法[method]优先于另一个方法[method]. 如果两个参数特化符[parameter specializer]都是 eql 表达式[expression], 那么这些特化符一定是一致的<!--TODO 不理解--> (否则对于这个参数这两个方法[method]不会都是可应用的).
 
-产生的可应用方法列表中最具体的方法在第一个, 最不具体的在最后一个. 
+产生的可应用方法[applicable method]列表中最具体的方法[method]在第一个, 最不具体的在最后一个. 
 
-##### 7.6.6.1.3 对排序后的可应用方法使用方法组合
+##### 7.6.6.1.3 对排序后的可应用方法应用方法组合
 
-在这个简单的例子中---如果使用了标准方法组合并且所有可应用的方法都是主方法---这个生效方法就是最具体的方法. 这个方法可以通过函数 call-next-method 调用下一个最具体的方法. 这个 call-next-method 会调用的方法被称为下一个方法. 断言 next-method-p 检测是否存在下一个方法. 如果 call-next-method 被调用并且没有下一个最具体的方法, 广义函数 no-next-method 会被调用.
+在这个简单的例子中---如果使用了标准方法组合并且所有可应用的方法都是主方法---这个有效方法就是最具体的方法. 这个方法可以通过函数[function] call-next-method 调用下一个最具体的方法. 这个 call-next-method 会调用的方法被称为下一个方法[next method]. 断言 next-method-p 检测是否存在下一个方法. 如果 call-next-method 被调用并且没有下一个最具体的方法, 那么广义函数 no-next-method 会被调用.
 
-通常, 生效方法是可应用方法的某个组合. 它由一个表达式形式来描述，这个表达式形式包含对某些或全部可应用方法的调用, 返回值或多值来作为广义函数返回的值或多值, 并可选地使一些方法可以通过 call-next-method 访问.
+通常, 有效方法是那些可应用方法的某个组合. 它由一个表达式形式[form]来描述, 这个表达式形式包含对某些或全部可应用方法的调用, 返回值或多值来作为广义函数返回的值或多值, 并可选地使一些方法可以通过 call-next-method 访问.
 
-在这个生效方法中的每一个方法的角色由它的限定符和方法的特性所决定. 一个限定符用于标记一个方法, 而限定符的含义由这个过程的这一步使用这些标记的方式决定. 如果一个可应用方法由一个不识别的限定符, 这个步骤会发出一个错误并且不会在生效方法中包含那个方法.
+在这个有效方法中的每一个方法的角色由它的限定符[qualifier]和方法的特性所决定. 一个限定符[qualifier]用于标记一个方法, 而限定符[qualifier]的含义由这个过程的这一步使用这些标记的方式决定. 如果一个可应用方法由一个不识别的限定符[qualifier], 这个步骤会发出一个错误并且不会在有效方法中包含那个方法.
 
-当标准方法组合和限定符方法一起使用时, 产生的生效方法就像章节 7.6.6.2 (Standard Method Combination) 中所描述的那样.
+当标准方法组合和受限定方法一起使用时, 有效方法就像章节 7.6.6.2 (标准方法组合) 中所描述的那样来产生.
 
-另一个方法组合的类型可以通过使用 defgenric 或者任何其他指定广义函数选项的操作符的 :method-combination 选项来指定. 在这个情况下, 这个过程的这个步骤可以被定制.
+另一个方法组合类型可以通过使用 defgenric 或者任何其他指定广义函数选项的操作符的 :method-combination 选项来指定. 在这个情况下, 这个过程的这个步骤可以被定制.
 
-新的方法组合类型可以通过使用 define-method-combination 宏来定义. 
-
+新的方法组合类型可以通过使用 define-method-combination 宏[macro]来定义. 
 
 #### 7.6.6.2 <span id="StandMethodComb">标准方法组合</span>
 
-标准方法组合由类 standard-generic-function 支持. 如果没有指定其他类型的方法组合或者指定了内置的方法组合类型 standard, 那么这个标准方法组合就会被使用.
+标准方法组合由类[class] standard-generic-function 支持. 如果没有指定其他类型的方法组合或者指定了内置的方法组合类型 standard, 那么这个标准方法组合就会被使用.
 
-主方法(primary method)定义了这个生效方法的主要动作, 而辅助方法(auxiliary method)以三种方式之一修改那个动作. 一个主方法没有方法限定符.
+主方法定义了这个有效方法的主要动作, 而辅助方法(auxiliary method)以三种方式之一修改那个动作. 一个主方法没有方法限定符[qualifier].
 
-一个辅助方法是一个限定符为 :before, :after, 或 :around 的方法. 标准方法组合不允许每个方法有超过一个限定符; 如果一个方法定义中指定了每个方法有超过一个限定符, 就会发出一个错误.
+一个辅助方法是限定符[qualifier]为 :before, :after, 或 :around 的一个方法. 标准方法组合不允许每个方法有超过一个限定符[qualifier]; 如果一个方法定义中指定了每个方法有超过一个限定符[qualifier], 就会发出一个错误.
 
-* 一个 before 方法有着作为它仅有限定符的关键字 :before. 一个 before 方法指定在任何主方法之前执行的代码.
+* 一个 before 方法[before method]有着关键字 :before 作为它仅有限定符[qualifier]. 一个 before 方法[before method]指定在任何主方法[primary method]之前执行的代码[code].
 
-* 一个 after 方法有着作为它仅有限定符的关键字 :after. 一个 after 方法指定在主方法后面运行的代码.
+* 一个 after 方法[after method]有着关键字 :after 作为它仅有限定符[qualifier]. 一个 after 方法[after method]指定在主方法[primary method]后面运行的代码[code].
 
-* 一个 around 方法有着作为它仅有限定符的关键字 :around. 一个 around 方法指定了要被运行的替代其他可应用方法的代码, 但是它可能包含显式的调用某些被遮蔽的方法的代码 (通过 call-next-method).
+* 一个 around 方法[around method]有着关键字 :around 作为它仅有限定符[qualifier]. 一个 around 方法指定了要被运行的代码[code]来替换替代其他可应用方法[applicable method], 但是它可能包含显式的调用某些被遮蔽的方法[method]的代码[code] (通过 call-next-method).
 
 标准方法组合的语义如下:
 
-* 如果这里有任何 around 方法, 最具体的 around 方法会被调用. 它提供这个广义函数的值或多值.
+* 如果这里有任何 around 方法[around method], 最具体的 around 方法[around method]会被调用. 它提供这个广义函数的值或多值.
 
-* 在一个 around 方法的主体内, call-next-method 可以被用于调用下一个方法. 当下一个方法返回时, 这个 around 方法可以执行更多的代码, 可能基于返回的值和多值. 如果调用了 call-next-method 并且这里没有可应用的方法被调用, 那么广义函数 no-next-method 会被调用. 函数 next-method-p 可能被用于确定是否存在下一个方法.
+* 在一个 around 方法[around method]的主体内, call-next-method 可以被用于调用下一个方法[next method]. 当下一个方法返回时, 这个 around 方法[around method]可以执行更多的代码, 可能基于返回的值和多值. 如果调用了 call-next-method 并且这里没有可应用的方法[applicable method]被调用, 那么广义函数[generic function] no-next-method 会被调用. 函数[function] next-method-p 可能被用于确定是否存在下一个方法[next method].
 
-* 如果一个 around 方法调用了 call-next-method, 下一个最具体的 around 方法会被调用, 如果存在的话. 如果这里没有 around 方法或者如果 call-next-method 被最不具体的 around 方法所调用, 其他方法会按如下所述被调用:
+* 如果一个 around 方法[around method]调用了 call-next-method, 下一个最具体的 around 方法[around method]会被调用, 如果存在一个可应用的话. 如果这里没有 around 方法[around method]或者如果 call-next-method 被最不具体的 around 方法[around method]所调用, 其他方法会按如下所述被调用:
 
-    -- 所有的 before 方法会被调用, 以最具体优先的顺序. 它们的返回值会被忽略. 如果在一个 before 方法中使用 call-next-method 那么就会发出一个错误.
+    -- 所有的 before 方法[before method]会被调用, 以最具体优先的顺序. 它们的返回值会被忽略. 如果在一个 before 方法[before method]中使用 call-next-method 那么就会发出一个错误.
 
-    -- 最具体的主方法会被调用. 在一个主方法的主体内, call-next-method 可以被用于调用下一个最具体的主方法. 当那个方法返回时, 前一个主要方法可以执行更多代码, 可能基于返回的值或多值. 如果使用了 call-next-method 并且这里没有更多可应用的主方法, 广义函数 no-next-method 会被调用. 函数 next-method-p 可能被用于确定是否存在下一个方法. 如果 call-next-method 没有被使用, 只有最具体的主方法会被调用.
+    -- 最具体的主方法会被调用. 在一个主方法的主体内, call-next-method 可以被用于调用下一个最具体的主方法. 当那个方法返回时, 前一个主要方法可能基于返回的值或多值来执行更多代码. 如果使用了 call-next-method 并且这里没有更多可应用的主方法, 那么广义函数 no-next-method 会被调用. 函数[function] next-method-p 可能被用于确定是否存在下一个方法[next method]. 如果 call-next-method 没有被使用, 只有最具体的主方法[primary method]会被调用.
 
-    -- 所有的 after 方法按最不具体的优先顺序被调用. 它们的值会被忽略. 如果在一个 after 方法中使用 call-next-method, 那么会发出一个错误.
+    -- 所有的 after 方法[after method]按最不具体优先的顺序被调用. 它们的值会被忽略. 如果在一个 after 方法[after method]中使用 call-next-method, 那么会发出一个错误.
 
-* 如果没有 around 方法被调用, 最具体的主方法提供这个广义函数返回的值或多值. 在最不具体的 around 方法中调用 call-next-method 返回的值或多值是最具体的主方法返回的那些.
+* 如果没有 around 方法[around method]被调用, 最具体的主方法提供这个广义函数返回的值或多值. 在最不具体的 around 方法[around method]中调用 call-next-method 返回的值或多值是最具体的主方法返回的那些.
 
 在标准方法组合中, 如果这里有一个可应用的方法但是没有可应用的主方法, 会发出一个错误.
 
-这个 before 方法按最具体优先的顺序被运行而 after 方法则按最不具体优先的顺序被运行. 这个区别的设计原理可以用一个例子来说明. 假设类 C1 通过添加 before 和 after 方法修改了它的超类 C2 的行为. 不管这个类 C2 的行为是通过 C2 的方法直接定义或是从它的超类中继承而来, 都不会影响在类 C1 的实例上调用方法的相关顺序. 类 C1 的 before 方法在类 C2 的所有方法之前运行. 类 C1 的 after 方法在类 C2 的所有方法之后运行.
+这个 before 方法[before]按最具体优先的顺序被运行而 after 方法[after method]则按最不具体优先的顺序被运行. 这个区别的设计原理可以用一个例子来说明. 假设类 C1 通过添加 before 方法[before method]和 after 方法[after method]修改了它的超类 C2 的行为. 不管这个类 C2 的行为是通过 C2 的方法直接定义或是从它的超类中继承而来, 都不会影响在类 C1 的实例上调用方法的相关顺序. 类 C1 的 before 方法[before method]在类 C2 的所有方法之前运行. 类 C1 的 after 方法[after method]在类 C2 的所有方法之后运行.
 
-相比之下, 所有 around 方法在任何其他方法运行前运行. 因此一个较不具体的 around 方法在一个较具体的主方法之前运行.
+相比之下, 所有 around 方法[around method]在任何其他方法运行前运行. 因此一个较不具体的 around 方法[around method]在一个较具体的主方法之前运行.
 
 如果只使用了主方法而没有使用 call-next-method, 那么只有最具体的方法会被调用; 这也就是说, 较为具体的方法遮蔽更一般的方法. 
 
-
 #### 7.6.6.3 <span id="DeclaraMethodComb">声明方法组合</span>
 
-宏 define-method-combination 定义方法组合的新的表达式形式. 它为定制生效方法的产生提供了一个机制. 对于产生一个生效方法的默认过程在章节 7.6.6.1 (Determining the Effective Method) 中已描述. 这里有两个 define-method-combination 表达式形式. 短表达式形式是一个简单的工具而长表达式形式则更加强大和详细. 长表达式形式类似于 defmacro, 在它的主体中是一个计算一个 Lisp 表达式形式的表达式; 它为在方法组合中实现任意控制结构和方法限定符的任意处理提供一个机制. 
-
+宏 define-method-combination 定义方法组合的新形式. 它为定制有效方法的产生提供了一个机制. 对于产生一个有效方法的默认过程在章节 7.6.6.1 (确定有效方法) 中已描述. 这里有两个 define-method-combination 表达式形式. 短表达式形式是一个简单的工具而长表达式形式则更加强大和详细. 长表达式形式类似于 defmacro, 在它的主体中是一个计算一个 Lisp 表达式形式的表达式; 它为在方法组合中实现任意控制结构和方法限定符[qualifier]的任意处理提供一个机制. 
 
 #### 7.6.6.4 <span id="BuiltInMethodCombTypes">内建的方法组合类型</span>
 
-这个对象系统提供了一个内建的方法组合类型集合. 为了指定一个广义函数去使用这些方法组合类型之一, 那个方法组合类型的名字会传递给 defgeneric 的 :method-combination 选项或传递给任何指定广义函数选项的其他操作符的 :method-combination 选项.
+这个对象系统提供了一个内建的方法组合类型集合. 为了指定一个广义函数去使用这些方法组合类型之一, 那个方法组合类型的名字会作为传递给 defgeneric 的 :method-combination 选项或传递给任何指定广义函数选项的其他操作符的 :method-combination 选项的参数来给定.
 
 内建的方法组合类型的名字列在下面这一段.
 
@@ -589,25 +585,25 @@ shared-initialize 的方法[method]可以被定义用来定制类[class]的重�
 
     Figure 7-2. 内建的方法组合类型
 
-standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (Standard Method Combination). 其他内置的方法组合类型称为简单内建的方法组合类型.
+standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方法组合). 其他内置的方法组合类型称为简单内建的方法组合类型.
 
-简单内建方法组合类型表现得就像它们是通过 define-method-combination 的短表达式形式定义出来的. 它们识别方法的两种角色:
+简单内建方法组合类型表现得就像它们是通过 define-method-combination 的短表达式形式定义出来的. 它们识别方法[method]的两种角色: <!--TODO role ??-->
 
-* 一个 around 方法有着作为它唯一限定符的关键字符号 :around. 这个 :around 方法的意义和标准方法组合中一样. around 方法中支持使用函数 call-next-method 和 next-method-p.
+* 一个 around 方法[around method]有着关键字符号 :around 作为它唯一限定符[qualifier]. 这个 :around 方法[method]的意义和标准方法组合中一样. around 方法[around method]中支持使用函数 call-next-method 和 next-method-p.
 
-* 一个主方法有着作为它唯一限定符的方法组合类型的名字. 比如, 内建的方法组合类型 and 识别单一限定符为 and 的方法; 这些是主方法. 在主方法中不支持使用函数 call-next-method 和 next-method-p.
+* 一个主方法有着方法组合类型的名字作为它唯一限定符[qualifier]. 比如, 内建的方法组合类型 and 识别单一限定符[qualifier]为 and 的方法; 这些是主方法. 在主方法[primary method]中不支持使用函数 call-next-method 和 next-method-p.
 
 简单内建方法组合类型的语义如下:
 
-* 如果这里有任何一个 around 方法, 最具体的 around 方法会被调用. 它提供了这个广义函数的值或多值.
+* 如果这里有任何 around 方法[around method], 最具体的 around 方法[around method]会被调用. 它提供了这个广义函数[generic function]的值或多值.
 
-* 在一个 around 方法的主体内, 函数 call-next-method 可以被用于调用下一个方法. 如果 call-next-method 被调用而这里没有可应用的方法被调用, 那么就会调用广义函数 no-next-method. 函数 next-method-p 可能被用于确定是否存在下一个方法. 当When the next method returns, the around method can execute more code, perhaps based on the returned value or values.
+* 在一个 around 方法[around method]的主体内, 函数 call-next-method 可以被用于调用下一个方法[next method]. 如果 call-next-method 被调用而这里没有可应用的方法被调用, 那么就会调用广义函数[generic function] no-next-method. 函数[function] next-method-p 可能被用于确定是否存在下一个方法[next method]. 当下一个方法[next method]返回时, 这个 around 方法[around method]可以执行更多代码, 或许基于那些返回的值或多值.
 
-* 如果一个 around 方法调用了 call-next-method, 下一个最具体的 around 方法被调用, 如果存在一个可应用的话. 如果这里没有 around 方法或者 call-next-method 被最不具体的 around 方法调用,从内建方法组合类型的名称和可应用的主方法列表中衍生出的 Lisp 表达式形式被求值来产生广义函数的值. 假设这个方法组合类型的名字是 operator 并且对广义函数的调用是
+* 如果一个 around 方法[around method]调用了 call-next-method, 下一个最具体的 around 方法[around method]被调用, 如果存在一个可应用的话. 如果这里没有 around 方法[around method]或者 call-next-method 被最不具体的 around 方法[around method]调用, 从内建方法组合类型的名称和可应用的主方法列表中衍生出的 Lisp 表达式形式被求值来产生这个广义函数的值. 假设这个方法组合类型的名字是 operator 并且对广义函数的调用是
 
     (generic-function a1...an)
 
-让 M1,...,Mk 是按次序可应用的主方法; 那么衍生的 Lisp 表达式形式是
+让 M1,...,Mk 依次是可应用的主方法; 那么衍生的 Lisp 表达式形式是
 
     (operator <M1 a1...an>...<Mk a1...an>)
 
@@ -615,16 +611,15 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (Standard M
 
 主方法的默认顺序是 :most-specific-first. 然而, 这个顺序可以通过提供 :most-specific-last 作为 :method-combination 选项的第二个参数来倒转.
 
-简单内建方法组合类型要求一个方法一个限定符. 如果这里存在没有限定符或者这个方法组合类型不支持的限定符的可应用的方法就会发出一个错误. 如果这里有可应用的 around 方法并且没有可应用的主方法, 那么也会发出一个错误. 
-
+简单内建方法组合类型要求一个方法一个限定符[qualifier]. 如果这里存在没有限定符[qualifier]或者这个方法组合类型不支持的限定符[qualifier]的可应用方法, 那么就会发出一个错误. 如果这里有可应用的 around 方法[around method]并且没有可应用的主方法, 那么也会发出一个错误. 
 
 ### 7.6.7 <span id="InheritanceMethods">方法的继承</span>
 
-一个子类继承方法的意义在于任何适用于类的所有实例的方法也适用于该类的任何子类的所有实例.
+一个子类继承方法的意义在于任何适用于一个类的所有实例的方法也适用于该类的任何子类的所有实例.
 
-不管那个方法定义操作符创建了这个方法, 方法的继承还是表现一样.
+不管那个方法定义操作符[method-defining operator]创建了这个方法, 方法的继承还是表现一样.
 
-方法的继承在章节 7.6.6 (Method Selection and Combination) 中详细描述. 
+方法的继承在章节 7.6.6 (方法选择和组合) 中详细描述. 
 
 ## 7.7 <span id="TheObjectsDictionary">对象字典</span>
 
@@ -2412,9 +2407,9 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (Standard M
 
 * 描述(Description):
 
-        宏 call-method 被用于方法组合. 它隐藏了依赖于具体实现的方法如何被调用的细节. 宏 call-method 有词法作用域并且只能在生效方法表达式形式中被使用.
+        宏 call-method 被用于方法组合. 它隐藏了依赖于具体实现的方法如何被调用的细节. 宏 call-method 有词法作用域并且只能在有效方法表达式形式中被使用.
 
-        call-method 在全局环境中是否为 fbound 是依赖于具体实现的; 然而, 在 call-method 的重定义和遮蔽上的限制和那些 COMMON-LISP 包中在全局环境里是 fbound 的符号一样. 尝试在一个生效方法表达式形式外部使用 call-method 的后果是.
+        call-method 在全局环境中是否为 fbound 是依赖于具体实现的; 然而, 在 call-method 的重定义和遮蔽上的限制和那些 COMMON-LISP 包中在全局环境里是 fbound 的符号一样. 尝试在一个有效方法表达式形式外部使用 call-method 的后果是.
 
         宏 call-method 调用指定的方法, 把参数还有 call-next-method 和 next-method-p 的定义提供给它. 如果这个 call-method 的调用在词法上 make-method 的内部, 参数是提供给那个方法的那些. 否则参数是提供给那个广义函数的那些. 这个 call-next-method 和 next-method-p 的定义依赖指定的 next-method-list.
 
@@ -2548,7 +2543,7 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (Standard M
         declaration---一个 declare 表达式形式; 不求值.
         description---一个格式化控制(format control).
         documentation---一个字符串; 不求值.
-        forms---一个计算并返回指定这些方法如何组合的表达式形式的隐式的 progn, 这也就是说, 这个生效方法(effective method).
+        forms---一个计算并返回指定这些方法如何组合的表达式形式的隐式的 progn, 这也就是说, 这个有效方法(effective method).
         generic-function-symbol---一个符号.
         identity-with-one-argument---一个广义 boolean.
         lambda-list---普通 lambda 列表.
@@ -2573,7 +2568,7 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (Standard M
 
                 这个 :documentation 选项被用于记录这个 method-combination 类型; 参见下面的长表达式形式的描述.
 
-                这个 :identity-with-one-argument 选项在它的值为 true 时(默认是 false)启动一个优化. 如果这里只有一个可应用方法并且它是一个主方法, 那个方法当作生效方法并且 operator 不会被调用. 这个优化避免去创建一个新的生效方法并且避免了一个方法调用的开销. 这个选项被设计来和例如 progn, and, +, 和 max 这样的操作符一起使用.
+                这个 :identity-with-one-argument 选项在它的值为 true 时(默认是 false)启动一个优化. 如果这里只有一个可应用方法并且它是一个主方法, 那个方法当作有效方法并且 operator 不会被调用. 这个优化避免去创建一个新的有效方法并且避免了一个方法调用的开销. 这个选项被设计来和例如 progn, and, +, 和 max 这样的操作符一起使用.
 
                 这个 :operator 选项指定这个操作符的名字. 这个操作符 operator 参数是一个可以为一个函数, 宏, 或特殊表达式形式的名字的符号.
 
@@ -2615,11 +2610,11 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (Standard M
 
             这个方法组说明符的使用提供了一个方便的语法来选择方法, 来把它们划分给可能的角色, 并且去执行必要的错误检查. 在主体表达式形式中通过使用正常的 列表处理操作和函数 method-qualifiers 和 invalid-method-error 来执行方法的进一步过滤是可能的. 允许在方法组说明符中命名的变量上使用 setq, 也允许去绑定额外的变量. 绕开这个方法组说明符机制并在主体表达式形式中执行任何操作都是可能的. 这个通过写一个单个方法组来完成, 其中 * 作为它仅有的 qualifier-pattern; 这个变量接下来以最具体优先的顺序绑定给所有这些可应用方法的列表.
 
-            主体表达式形式计算并返回指定这些方法如何组合的表达式形式, 换言之, 生效方法. 这个生效方法在空词法环境中被求值, 以 call-method 的局部宏定义和 COMMON-LISP-USER package 包中不可访问的符号命名的绑定为参数. 给定一个在由这些方法组说明符产生的其中一个列表中的方法对象和一个后续方法的列表, call-method 会调用那个方法, 这样 call-next-method 有可用的后续方法.
+            主体表达式形式计算并返回指定这些方法如何组合的表达式形式, 换言之, 有效方法. 这个有效方法在空词法环境中被求值, 以 call-method 的局部宏定义和 COMMON-LISP-USER package 包中不可访问的符号命名的绑定为参数. 给定一个在由这些方法组说明符产生的其中一个列表中的方法对象和一个后续方法的列表, call-method 会调用那个方法, 这样 call-next-method 有可用的后续方法.
 
-            当一个生效方法除了调用一个单一的方法之外没有其他效果, 一些具体实现采用一个优化, 使用这个单个的方法直接作为这个生效方法, 因此避免了创建一个新的生效方法的需要. 当生效方法表达式形式完全由一个 call-method 宏的调用组成, 它的第一个子表达式形式是一个方法对象而第二个子表达式形式是 nil 或未提供的, 那么这个优化就会被启用. 如果需要这种优化, 那么每个 define-method-combination 主体有责任去去除多余的 progn, and, multiple-value-prog1, 诸如此类的调用.
+            当一个有效方法除了调用一个单一的方法之外没有其他效果, 一些具体实现采用一个优化, 使用这个单个的方法直接作为这个有效方法, 因此避免了创建一个新的有效方法的需要. 当有效方法表达式形式完全由一个 call-method 宏的调用组成, 它的第一个子表达式形式是一个方法对象而第二个子表达式形式是 nil 或未提供的, 那么这个优化就会被启用. 如果需要这种优化, 那么每个 define-method-combination 主体有责任去去除多余的 progn, and, multiple-value-prog1, 诸如此类的调用.
 
-            列表 (:arguments . lambda-list) 可以在任何声明或文档字符串之前出现. 当这个方法组合类型执行一些特定的行为来作为组合的方法的一部分并且这个行为需要访问给这个广义函数的参数时, 这个表达式形式是很有用的. 每个通过 lambda-list 定义的参数变量被绑定到一个表达式形式, 这个表达式形式可以被插入到这个生效方法中. 当这个表达式形式在这个生效方法的执行期间被求值时, 它的值是给这个广义函数的对应参数; 在一个 setf 表达式形式中使用这样一个表达式形式作为一个 place 的后果是未定义的. 参数的匹配通过划分这个 :arguments lambda-list 还有广义函数的 lambda-list 为三个部分来计算: 必要参数, 可选参数, 还有关键字和剩余参数. 为特定调用提供的广义函数的参数也被划分为三个部分; 必要参数部分包括这个广义函数所拥有的必要参数, 可选参数部分包含了这个广义函数拥有的可选参数, 以及关键字/剩余参数部分包含了剩余的参数. :arguments lambda-list 的必要和可选部分的每个参数都在这些参数的对应部分中访问同一个位置的参数. 如果 :arguments lambda-list 的部分更短, 额外的参数就会被忽略. 如果这个 :arguments lambda-list 的部分更长, 超出的必要参数绑定给求值为 nil 的表达式形式而超出的可选参数绑定给它们的初始化表达式形式. :arguments lambda-list 中的关键字参数和剩余参数访问这些章节的关键字/剩余部分. 如果这个 :arguments lambda-list 包含了 &key, 它表现为就好像它也包含了 &allow-other-keys.
+            列表 (:arguments . lambda-list) 可以在任何声明或文档字符串之前出现. 当这个方法组合类型执行一些特定的行为来作为组合的方法的一部分并且这个行为需要访问给这个广义函数的参数时, 这个表达式形式是很有用的. 每个通过 lambda-list 定义的参数变量被绑定到一个表达式形式, 这个表达式形式可以被插入到这个有效方法中. 当这个表达式形式在这个有效方法的执行期间被求值时, 它的值是给这个广义函数的对应参数; 在一个 setf 表达式形式中使用这样一个表达式形式作为一个 place 的后果是未定义的. 参数的匹配通过划分这个 :arguments lambda-list 还有广义函数的 lambda-list 为三个部分来计算: 必要参数, 可选参数, 还有关键字和剩余参数. 为特定调用提供的广义函数的参数也被划分为三个部分; 必要参数部分包括这个广义函数所拥有的必要参数, 可选参数部分包含了这个广义函数拥有的可选参数, 以及关键字/剩余参数部分包含了剩余的参数. :arguments lambda-list 的必要和可选部分的每个参数都在这些参数的对应部分中访问同一个位置的参数. 如果 :arguments lambda-list 的部分更短, 额外的参数就会被忽略. 如果这个 :arguments lambda-list 的部分更长, 超出的必要参数绑定给求值为 nil 的表达式形式而超出的可选参数绑定给它们的初始化表达式形式. :arguments lambda-list 中的关键字参数和剩余参数访问这些章节的关键字/剩余部分. 如果这个 :arguments lambda-list 包含了 &key, 它表现为就好像它也包含了 &allow-other-keys.
 
             另外, &whole var 可以被放置在 :arguments lambda-list 的第一个. 这个导致 var 被绑定给一个表达式形式, 这个表达式形式求值为一个提供给这个广义函数的所有参数的列表. 这个和 &rest 不同因为它访问所有这些参数, 不只是关键字/剩余参数.
 
@@ -2631,9 +2626,9 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (Standard M
 
             Documentation 作为一个文档字符串关联到 name (作为 method-combination 种类) 以及这个方法组合对象.
 
-            注意, 两个有着相同特化符的方法, 但是限定符不同, 不会被章节 7.6.6 (Method Selection and Combination) 中描述方法选择和组合处理的步骤 2 中描述的算法所排序. 通常这两个方法在这个生效方法中扮演着不同的角色, 不管在那个步骤 2 的结果中如何被排序, 这个生效方法是相同的. 如果这两个方法扮演着相同的角色并且它们的顺序很重要, 就会发出一个错误. 这是在 define-method-combination 中匹配的限定符模式的一部分.
+            注意, 两个有着相同特化符的方法, 但是限定符不同, 不会被章节 7.6.6 (Method Selection and Combination) 中描述方法选择和组合处理的步骤 2 中描述的算法所排序. 通常这两个方法在这个有效方法中扮演着不同的角色, 不管在那个步骤 2 的结果中如何被排序, 这个有效方法是相同的. 如果这两个方法扮演着相同的角色并且它们的顺序很重要, 就会发出一个错误. 这是在 define-method-combination 中匹配的限定符模式的一部分.
 
-        如果一个 define-method-combination 表达式形式作为顶层表达式形式出现, 编译器必须是这个方法组合的名字在后续的 defgeneric 表达式形式中被识别为一个生效方法组合名字. 然而, 方法组合执行的时间不早于 define-method-combination 表达式形式被执行时, 并且可能在使用这个方法组合的广义函数执行的时候执行.
+        如果一个 define-method-combination 表达式形式作为顶层表达式形式出现, 编译器必须是这个方法组合的名字在后续的 defgeneric 表达式形式中被识别为一个有效方法组合名字. 然而, 方法组合执行的时间不早于 define-method-combination 表达式形式被执行时, 并且可能在使用这个方法组合的广义函数执行的时候执行.
 
 * 示例(Examples):
 
