@@ -678,15 +678,15 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 参数和值(Arguments and Values):
 
-        method---一个方法.
-        keys---一个列表.
-        allow-other-keys-p---一个广义 boolean.
+        method---一个方法[method].
+        keys---一个列表[list].
+        allow-other-keys-p---一个广义 boolean [generalized boolean].
 
 * 描述(Description):
 
-        返回一个方法的关键字参数说明符.
+        返回一个方法 method 的关键字参数指定符.
 
-        返回两个值: 一个显式命名的关键字的列表和一个表示 &allow-other-keys 在这个方法定义中是否被指定的广义的 boolean.
+        返回两个值: 一个显式命名的关键字列表[list]和一个表示 &allow-other-keys 在这个方法 method 定义中是否被指定的广义的 boolean [generalized boolean].
 
 * 示例(Examples):
 
@@ -733,25 +733,25 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 参数和值(Arguments and Values):
 
-        function-name---一个函数的名字.
-        关键字参数对应 defgeneric 的选项参数, 除了 :method-class 和 :generic-function-class 参数可以是类对象和名字.
+        function-name---一个函数名字[function].
+        这些关键字参数对应 defgeneric 的选项 option 参数, 除了 :method-class 和 :generic-function-class 参数可以是类[class]对象[object]和名字.
         Method-combination -- 方法组合对象.
-        Environment -- 与宏扩展函数的 &environment 参数相同, 用于区分编译时和运行时环境.
-        generic-function---一个广义函数对象.
+        Environment -- 与宏展开函数的 &environment 参数相同, 用于区分编译时和运行时环境.
+        generic-function---一个广义函数[generic function]对象[object].
 
 * 描述(Description):
 
-        函数 ensure-generic-function 被用于定义一个全局命名的没有方法的广义函数或者作为整体去指定或修改属于一个全局命名广义函数的选项和声明.
+        函数[function] ensure-generic-function 被用于定义一个全局命名的没有方法[method]的广义函数[generic function]或者作为整体去指定或修改属于一个全局命名广义函数[generic function]的选项和声明.
 
-        如果 function-name 没有在全局环境中被 fbound, 一个新的广义函数会被创建. 如果 (fdefinition function-name) 是一个普通函数, 一个宏, 或者一个特殊操作符, 就会发出一个错误.
+        如果 function-name 没有在全局环境[global environment]中被 fbound, 一个新的广义函数[generic function]会被创建. 如果 (fdefinition function-name) 是一个普通函数[ordinary function], 一个宏[macro], 或者一个特殊操作符[special operator], 就会发出一个错误.
 
-        如果 function-name 是一个列表, 它必须是表达式形式 (setf symbol). 如果 function-name 指定一个对于任何后面的参数有一个不同的值的广义函数, 广义函数被修改为有这个新值: :argument-precedence-order, :declare, :documentation, :method-combination.
+        如果 function-name 是一个列表[list], 它必须是表达式形式 (setf symbol). 如果 function-name 指定一个对于任何后面的参数都有一个不同的值的广义函数[generic function], 那么这个广义函数[generic function]被修改为有这个新值: :argument-precedence-order, :declare, :documentation, :method-combination.<!--TODO 不理解-->
 
-        如果 function-name 指定一个对于 :lambda-list 参数有一个不同的值的广义函数, 并且这个新的值和所有已存在的方法的 lambda 列表是相等的或者这里没有对应方法, 那么这个值就会被修改; 否则就会发出一个错误.
+        如果 function-name 指定一个对于 :lambda-list 参数有一个不同的值的广义函数[generic function], 并且这个新的值和所有已存在的方法[method]的 lambda 列表[lambda list]是相等的或者这里没有对应方法[method], 那么这个值就会被修改; 否则就会发出一个错误.
 
-        如果 function-name 指定一个对于 :generic-function-class 参数有一个不同的值的广义函数并且如果这个新的广义函数类和旧的兼容, 那么 change-class 会被调用来修改这个广义函数的类; 否则就会发出一个错误.
+        如果 function-name 指定一个对于 :generic-function-class 参数有一个不同的值的广义函数[generic function]并且如果这个新的广义函数类和旧的兼容, 那么 change-class 会被调用来修改这个广义函数[generic function]的类[class]; 否则就会发出一个错误.
 
-        如果 function-name 制定一个对于 :method-class 参数有一个不同的值的广义函数, 那么这个值会被修改, 但是任何存在的方法不会改变.
+        如果 function-name 指定一个对于 :method-class 参数有一个不同的值的广义函数[generic function], 那么这个值会被修改, 但是任何存在的方法[method]不会改变.
 
 * 示例(Examples): None.
 
@@ -761,11 +761,11 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 异常情况(Exceptional Situations):
 
-        如果 (fdefinition function-name) 是一个普通函数, 一个宏, 或者一个特殊操作符, 会发出一个 error 类型的错误.
+        如果 (fdefinition function-name) 是一个普通函数[ordinary function], 一个宏[macro], 或者一个特殊操作符[special operator], 会发出一个 error 类型[type]的错误.
 
-        如果 function-name 指定了一个对于 :lambda-list 参数有一个不同的值的广义函数, 并且这个新的值和任何一个已存在方法的 lambda 列表不相同, 会发出一个 error 类型的错误.
+        如果 function-name 指定了一个对于 :lambda-list 参数有一个不同的值的广义函数[generic function], 并且这个新的值和任何一个已存在方法[method]的 lambda 列表[lambda list]不相同, 会发出一个 error 类型[type]的错误.
 
-        如果 function-name 指定了一个对于 :generic-function-class 参数有一个不同的值的广义函数并且如果这个新的广义函数和旧的不兼容, 会发出一个 error 类型的错误.
+        如果 function-name 指定了一个对于 :generic-function-class 参数有一个不同的值的广义函数[generic function]并且如果这个新的广义函数类和旧的不兼容, 会发出一个 error 类型[type]的错误.
 
 * 也见(See Also):
 
@@ -787,17 +787,17 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 参数和值(Arguments and Values):
 
-        class---一个类.
-        initargs---一个 keyword/value 对(初始化参数的名字和值) 的列表 .
-        new-instance---一个类是 class 的对象.
+        class---一个类[class].
+        initargs---一个关键字/值对[keyword/value pair] (初始化参数的名字[name]和值[value]) 的列表[list].
+        new-instance---一个类[class]是 class 的对象[object].
 
 * 描述(Description):
 
-        广义函数 allocate-instance 创建并返回一个 class 的新的实例, 但是没有把它初始化. 当这个 class 是一个标准类时, 这就意味着这些槽是未绑定的; 当这个 class 是一个结构类时, 这就意味着这些槽的值是没有被指定的.
+        广义函数 allocate-instance 创建并返回一个类 class 的新的实例, 但是没有把它初始化. 当这个类 class 是一个标准类[standard class]时, 这就意味着这些槽[slot]是未绑定的[unbound]; 当这个类 class 是一个结构体类[structure class]时, 这就意味着这些槽[slot]的值[value]是没有被指定的.
 
-        allocate-instance 的调用者被期望已经检查了初始化参数.
+        期望 allocate-instance 的调用者已经检查了初始化参数.
 
-        广义函数 allocate-instance 被 make-instance 所调用, 像章节 7.1 (Object Creation and Initialization) 中描述的那样.
+        广义函数[generic function] allocate-instance 被 make-instance 所调用, 像章节 7.1 (对象创建和初始化) 中描述的那样.
 
 * 受此影响(Affected By): None.
 
@@ -805,11 +805,11 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 也见(See Also):
 
-        defclass, make-instance, class-of, Section 7.1 (Object Creation and Initialization)
+        defclass, make-instance, class-of, 章节 7.1 (对象创建和初始化)
 
 * 注意(Notes):
 
-        给 allocate-instance 添加方法的后果是没有指定的. 这个功能可能被元对象协议添加进来. 
+        给 allocate-instance 添加方法[method]的后果是没有指定的. 这个功能可能被元对象协议[Metaobject Protocol]添加进来. 
 
 
 ### <span id="SGF-REINITIALIZE-INSTANCE">标准广义函数 REINITIALIZE-INSTANCE</span>
@@ -824,34 +824,34 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 参数和值(Arguments and Values):
 
-        instance---一个对象.
-        initargs---一个初始化参数列表.
+        instance---一个对象[object].
+        initargs---一个初始化参数列表[initialization argument list].
 
 * 描述(Description):
 
-        广义函数 reinitialize-instance 可以被用于根据 initargs 来修改一个实例的局部槽的值. 这个广义函数可以被用户调用.
+        广义函数[generic function] reinitialize-instance 可以被用于根据初始化参数 initargs 来修改一个实例 instance 的局部槽[local slot]的值. 这个广义函数[generic function]可以被用户调用.
 
-        系统提供的 reinitialize-instance 主方法检查 initargs 的有效性, 如果提供的 initargs 没有被有效声明, 就会发出一个错误. 这个方法接下来用以下参数来调用广义函数 shared-initialize: 这个实例, nil (这个意味着根据槽的初始化表达式形式没有槽应该被初始化), 还有它收到的 initargs.
+        系统提供的 reinitialize-instance 主方法[method]检查初始化参数 initargs 的有效性, 如果提供的 initargs 没有被有效声明, 就会发出一个错误. 这个方法[method]接下来用以下参数来调用广义函数 shared-initialize: 这个实例 instance, nil (这个意味着根据槽的初始化表达式形式没有槽[slot]应该被初始化), 还有它收到的 initargs.
 
 * 示例(Examples): None.
 
 * 副作用(Side Effects):
 
-        广义函数 reinitialize-instance 修改局部槽的值.
+        广义函数[generic function] reinitialize-instance 修改局部槽[local slot]的值.
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-        如果提供的一个 initarg 没有被有效声明, 系统提供的 reinitialize-instance 主方法会发出一个错误.
+        如果提供的一个 initarg 没有被有效声明, 系统提供的 reinitialize-instance 主方法[method]会发出一个错误.
 
 * 也见(See Also):
 
-        initialize-instance, shared-initialize, update-instance-for-redefined-class, update-instance-for-different-class, slot-boundp, slot-makunbound, Section 7.3 (Reinitializing an Instance), Section 7.1.4 (Rules for Initialization Arguments), Section 7.1.2 (Declaring the Validity of Initialization Arguments)
+        initialize-instance, shared-initialize, update-instance-for-redefined-class, update-instance-for-different-class, slot-boundp, slot-makunbound, 章节 7.3 (重新初始化一个实例), 章节 7.1.4 (初始化参数的规则), 章节 7.1.2 (声明初始化参数的有效性)
 
 * 注意(Notes):
 
-        Initargs 通过使用给 defclass 的 :initarg 选项, 或者通过定义 reinitialize-instance 或 shared-initialize 方法来声明为有效的. 任何定义在 reinitialize-instance 或 shared-initialize 方法的 lambda 列表中的每个关键字参数指定符的关键字名字对于那个方法可应用的所有类都被声明为有效的初始化参数.
+        这些初始化参数 initargs 通过使用给 defclass 的 :initarg 选项, 或者通过定义 reinitialize-instance 或 shared-initialize 方法[method]来声明为有效的. 任何定义在 reinitialize-instance 或 shared-initialize 方法[method]的 lambda 列表[lambda list]中的每个关键字参数指定符的关键字名字对于那个方法[method]可应用的所有类[class]都被声明为有效的初始化参数.
 
 
 ### <span id="SGF-SHARED-INITIALIZE">标准广义函数 SHARED-INITIALIZE</span>
@@ -866,25 +866,25 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 参数和值(Arguments and Values):
 
-        instance---一个对象.
-        slot-names---一个列表或者 t.
-        initargs---一个 keyword/value 对的列表 (其中是初始化参数的名字和值).
+        instance---一个对象[object].
+        slot-names---一个列表[list]或者 t.
+        initargs---一个关键字/值对[keyword/value pair]的列表[list] (其中是初始化参数的名字[name]和值[value]).
 
 * 描述(Description):
 
-        广义函数 shared-initialize 被用于使用 initargs 和 :initform 来填充一个实例 instance 的槽. 当一个实例被创建时, 当一个实例被重新初始化时, 当一个实例被更新去符合一个重定义的类时,  还有当一个实例被更新来符合一个新的类时, 它会被调用. 广义函数 shared-initialize 被系统提供的 initialize-instance, reinitialize-instance, update-instance-for-redefined-class, 和 update-instance-for-different-class 的主函数调用.
+        广义函数 shared-initialize 被用于使用初始化参数 initargs 和 :initform 来填充一个实例 instance 的槽[slot]. 当一个实例被创建时, 当一个实例被重新初始化时, 当一个实例被更新去符合一个重定义的类[class]时,  还有当一个实例被更新来符合一个不同的类[class]时, 它会被调用. 广义函数 shared-initialize 被系统提供的 initialize-instance, reinitialize-instance, update-instance-for-redefined-class, 和 update-instance-for-different-class 的主方法[method]调用.
 
-        广义函数 shared-initialize 接受以下参数: 要被初始化的实例 instance, 这个实例中可访问的槽名字集合 slot-names 的一个说明, 还有任意数量的初始化参数 initargs. 在前两个后面的参数必须组成一个初始化参数列表. 系统提供的 shared-initialize 主方法根据 initargs 和提供的 :initform 表达式形式用值初始化这些槽. Slot-names 表示要被初始化的槽, 如果没有 为这些槽提供 initargs 根据它们的 :initform 表达式形式.
+        广义函数 shared-initialize 接受以下参数: 要被初始化的实例 instance, 这个实例 instance 中可访问的[accessible]槽名字 slot-names 集合的一个说明, 还有任意数量的初始化参数 initargs. 在前两个后面的那些参数必须组成一个初始化参数列表[initialization argument list]. 系统提供的 shared-initialize 主方法[method]根据 initargs 和提供的 :initform 表达式形式用值初始化这些槽[slot]. 这些槽名字 slot-names 表示要被初始化的槽[slot], 如果没有为这些槽[slot]提供 initargs , 这些槽就根据它们的 :initform 表达式形式来初始化.
 
-        系统提供的主方法表现如下, 不管这个槽是局部的还是共享的:
+        系统提供的主方法[method]表现如下, 不管这个槽[slot]是局部的还是共享的:
 
-            如果在初始化参数列表中的一个 initarg 为这个槽指定了一个值, 这个值会存储到这个槽中, 即便在这个方法被运行之前已经存储一个值到这个槽中.
+            * 如果在初始化参数列表[initialization argument list]中的一个 initarg 为这个槽[slot]指定了一个值, 这个值会存储到这个槽[slot]中, 即便在这个方法[method]被运行之前已经存储一个值到这个槽[slot]中.
 
-            任何 slot-names 指定的槽在根据它们的 :initform 表达式形式来初始化时都是未绑定的. 对于任何这样由一个 :initform 表达式形式的槽, 这个表达式形式都会在它的定义 defclass 表达式形式的词法环境中被求值并且结果被存储到这个槽中. 比如, 如果一个 before 方法存储一个值到这个槽中, 那么这个 :initform 表达式形式不会为这个槽提供一个值.
+             * 任何由 slot-names 指定的槽[slot]在根据它们的 :initform 表达式形式来初始化时仍然是未绑定的. 对于任何有着一个 :initform 表达式形式的槽[slot], 这个表达式形式[form]都会在它的定义 defclass 表达式形式[form]的词法环境中被求值并且结果被存储到这个槽[slot]中. 比如, 如果一个 before 方法[before method]存储一个值到这个槽[slot]中, 那么这个 :initform 表达式形式不会为这个槽[slot]提供一个值.
 
-            在章节 7.1.4 (Rules for Initialization Arguments) 中提及的规则也是遵守的.
+            * 在章节 7.1.4 (初始化参数的规则) 中提及的规则也是遵守的.
 
-        这个 slots-names 参数指定了要被初始化的槽, 如果没有提供初始化参数时就根据它们的 :initform 表达式形式. 它可以是一个槽名字的列表, 其中指定了这些槽名字的集合; 或者它可以是符号 t, 它表示所有槽的集合.
+        这些 slots-names 参数指定了要被初始化的槽[slot], 如果没有提供初始化参数时就根据它们的 :initform 表达式形式来初始化. 它可以是一个槽名字[name]的列表[list], 其中指定了这些槽名字[name]的集合; 或者它可以是符号[symbol] t, 表示所有槽[slot]的集合.
 
 * 示例(Examples): None.
 
@@ -894,21 +894,21 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 也见(See Also):
 
-        initialize-instance, reinitialize-instance, update-instance-for-redefined-class, update-instance-for-different-class, slot-boundp, slot-makunbound, Section 7.1 (Object Creation and Initialization), Section 7.1.4 (Rules for Initialization Arguments), Section 7.1.2 (Declaring the Validity of Initialization Arguments)
+        initialize-instance, reinitialize-instance, update-instance-for-redefined-class, update-instance-for-different-class, slot-boundp, slot-makunbound, Section 7.1 (对象创建和初始化), Section 7.1.4 (初始化参数的规则), Section 7.1.2 (声明初始化参数的有效性)
 
 * 注意(Notes):
 
-        可以通过对 defclass 使用 :initarg 选项或者定义 shared-initialize 的方法来有效声明 initargs. 任何定义在 shared-initialize 上的方法的 lambda 列表中的关键字参数指定符的关键字名字对于所有这个方法可应用的类而言都是有效的 initarg.
+        可以通过对 defclass 使用 :initarg 选项或者定义 shared-initialize 的方法[method]来有效声明初始化参数 initargs. 任何定义在 shared-initialize 上的方法[method]的 lambda 列表[lambda list]中的关键字参数指定符的关键字名字对于所有这个方法[method]可应用的类[class]而言都是有效的 initarg.
 
-        具体实现允许去优化 :initform 表达式形式: 通过对这些表达式形式进行求值, 并在运行任何 initialize-instance 方法之前将它们存储到槽中, 而不是在 initialize-instance 主方法中处理它们, 从而使它们无法产生或依赖于副作用. (这种优化可以通过使用 allocate-instance 方法复制原型实例来实现.)
+        具体实现允许去优化既不产生副作用也不依赖副作用的 :initform 表达式形式: 通过对这些表达式形式[form]进行求值, 并在运行任何 initialize-instance 方法之前将它们存储到槽中, 而不是在 initialize-instance 主方法中处理它们. (这种优化可以通过使用 allocate-instance 方法复制原型实例来实现.)
 
-        当仅有的接受完整的参数列表的方法是 standard-object 上的方法时, 具体实现允许去通过没有实际创建完整初始化参数列表来优化和槽关联的默认初始化值表达式. 在这个情况下默认初始值表达式形式可以被当作 :initform 表达式形式对待. 除了性能改进之外, 这种优化没有明显的效果. 
+        当仅有的接受完整的列表[list]的方法[method]是 standard-object 上的方法[method]时, 具体实现允许去通过没有实际创建完整初始化参数列表来优化和槽关联的默认初始化参数 initargs 的默认初始化值表达式. 在这个情况下默认初始值表达式形式可以被当作 :initform 表达式形式对待. 除了性能改进之外, 这种优化没有可见的效果. 
 
 ### <span id="SGF-U-I-F-D-C">标准广义函数 UPDATE-INSTANCE-FOR-DIFFERENT-CLASS</span>
 
 * 语法(Syntax):
 
-        update-instance-for-different-class previous current &rest initargs &key &allow-other-keys => implementation-dependent
+        update-instance-for-different-class previous current &rest initargs &key &allow-other-keys => 依赖于具体实现[implementation-dependent]
 
 * 方法签名(Method Signatures):
 
@@ -916,39 +916,39 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 参数和值(Arguments and Values):
 
-        previous---一个原始实例的拷贝.
-        current---原始实例 (修改后的).
-        initargs---一个初始化参数列表.
+        previous---一个原始实例[instance]的拷贝.
+        current---原始实例[instance] (修改后的).
+        initargs---一个初始化参数列表[initialization argument list].
 
 * 描述(Description):
 
-        广义函数 update-instance-for-different-class 不旨在被程序员调用. 程序员可能为它写方法. 函数 update-instance-for-different-class 只有通过函数 change-class 被调用.
+        广义函数 update-instance-for-different-class 不旨在被程序员调用. 程序员可能为它编写写方法[method]. 函数[function] update-instance-for-different-class 只有通过函数[function] change-class 被调用.
 
-        系统提供的 update-instance-for-different-class 主方法会检查 initargs 的有效性, 如果提供的一个 initarg 没有被有效声明就会发出一个错误. 接下来这个方法会根据 initargs 的值来初始化槽, 并且根据新添加的槽的 :initform 表达式形式来初始化这些新添加的槽. 它通过使用以下参数调用广义函数 shared-initialize 来完成这个: 这个实例 (当前的), 一个新添加槽的名字的列表, 还有它接受到的 initargs. 新添加的槽是那些之前类中不存在相同名字的槽的局部槽.
+        系统提供的 update-instance-for-different-class 主方法[method]会检查初始化参数 initargs 的有效性, 如果提供的一个 initarg 没有被有效声明就会发出一个错误. 接下来这个方法[method]会根据 initargs 的值来初始化槽[slot], 并且根据新添加的槽[slot]的 :initform 表达式形式来初始化它们. 它通过使用以下参数调用广义函数 shared-initialize 来完成这个: 这个实例 (current), 一个新添加槽[slot]的名字[name]的列表, 还有它接受到的初始化参数 initargs. 新添加的槽[slot]是那些在之前的 previous 的类中不存在相同名字的槽[slot]的局部槽[local slot].
 
-        update-instance-for-different-class 方法可以被定义用来指定当一个类被更新时要采取的动作. 如果只有 update-instance-for-different-class 的 after 方法被定义, 它们会在系统提供的初始化主方法之后被运行, 因此不会影响 update-instance-for-different-class 的默认行为.
+        update-instance-for-different-class 方法[method]可以被定义来指定当一个实例[instance]被更新时要采取的动作. 如果只有 update-instance-for-different-class 的 after 方法[after method]被定义, 它们会在系统提供的初始化主方法[method]之后被运行, 因此不会影响 update-instance-for-different-class 的默认行为.
 
-        update-instance-for-different-class 的方法可以被定义用不同于 change-class 的方式来初始化槽. 这个 change-class 的默认行为在章节 7.2 (Changing the Class of an Instance) 中描述.
+        update-instance-for-different-class 的方法[method]可以被定义用不同于 change-class 的方式来初始化槽[slot]. 这个 change-class 的默认行为在章节 7.2 (修改一个实例的类) 中描述.
 
-        给 update-instance-for-different-class 的参数通过 change-class 计算. 当 change-class 在一个实例上被调用, 会创建那个实例的一个拷贝; change-class 接下来会破坏性地修改原始的实例. 给 update-instance-for-different-class 的第一个参数, previous, 就是那个拷贝; 它临时持有旧的槽的值. 这个参数有着 change-class 内的动态范围; 如果一旦 update-instance-for-different-class 返回后它被引用, 结果是未定义的. 给 update-instance-for-different-class 的第二个参数, current, 是修改后的原始实例. 这个 previous 的使用意图是用 slot-value 或 with-slots 或通过调用一个 reader 广义函数来提取旧槽的, 或者用来运行可应用于原始类的实例的其他方法.
+        给 update-instance-for-different-class 的参数通过 change-class 计算. 当 change-class 在一个实例[instance]上被调用, 会创建那个实例[instance]的一个拷贝; change-class 接下来会破坏性地修改原始的实例[instance]. 给 update-instance-for-different-class 的第一个参数, previous, 就是那个拷贝; 它临时持有旧的槽[slot]的值. 这个参数有着 change-class 内的动态范围; 如果一旦 update-instance-for-different-class 返回后它被引用, 结果是未定义的. 给 update-instance-for-different-class 的第二个参数, current, 是修改后的原始实例[instance]. 这个 previous 的使用意图是通过使用 slot-value 或 with-slots 或通过调用一个 reader 广义函数来提取旧槽[slot]值, 或者用来运行可应用于原始类[class]的实例[instance]的其他方法[method].
 
 * 示例(Examples):
 
-        见函数 change-class 的示例.
+        见函数[function] change-class 的示例.
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-        如果一个提供的初始化参数没有被有效声明, 那么系统提供的 update-instance-for-different-class 主方法就会发出一个错误.
+        如果一个提供的初始化参数没有被有效声明, 那么系统提供的 update-instance-for-different-class 主方法[method]就会发出一个错误.
 
 * 也见(See Also):
 
-        change-class, shared-initialize, Section 7.2 (Changing the Class of an Instance), Section 7.1.4 (Rules for Initialization Arguments), Section 7.1.2 (Declaring the Validity of Initialization Arguments)
+        change-class, shared-initialize, 章节 7.2 (修改一个实例的类), 章节 7.1.4 (初始化参数的规则), 章节 7.1.2 (声明初始化参数的有效性)
 
 * 注意(Notes):
 
-        Initargs 通过使用给 defclass 的 :initarg 选项或者通过定义 update-instance-for-different-class 或 shared-initialize 的方法来合法声明. 定义在 update-instance-for-different-class 或 shared-initialize 上的方法的 lambda 列表中的每个关键字参数指定符的关键字名字被声明为一个对于所有那个方法可应用的类的有效 initarg 名字.
+        这些初始化参数 initargs 通过使用给 defclass 的 :initarg 选项或者通过定义 update-instance-for-different-class 或 shared-initialize 的方法[method]来合法声明. 定义在 update-instance-for-different-class 或 shared-initialize 上的方法[method]的 lambda 列表[lambda list]中的每个关键字参数指定符的关键字名字被声明为一个对于所有那个方法[method]可应用的类[class]的有效 initarg 名字.
 
         这个 update-instance-for-different-class 返回的值会被 change-class 忽略. 
 
@@ -966,20 +966,20 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 参数和值(Arguments and Values):
 
-        instance---一个对象.
-        added-slots---一个列表.
-        discarded-slots---一个列表.
-        property-list---一个列表.
-        initargs---一个初始化参数列表.
-        result---一个对象.
+        instance---一个对象[object].
+        added-slots---一个列表[list].
+        discarded-slots---一个列表[list].
+        property-list---一个列表[list].
+        initargs---一个初始化参数列表[initialization argument list].
+        result---一个对象[object].
 
 * 描述(Description):
 
-        广义函数 update-instance-for-redefined-class 不打算给程序员调用. 程序员可以为它写方法. 广义函数 update-instance-for-redefined-class 通过 make-instances-obsolete 的机制被调用.
+        广义函数[generic function] update-instance-for-redefined-class 不打算给程序员调用. 程序员可以为它编写方法[method]. 广义函数[generic function] update-instance-for-redefined-class 通过 make-instances-obsolete 的机制被调用.
 
-        系统提供的 update-instance-for-redefined-class 主方法检查 initargs 的有效性, 如果一个 initarg 没有被有效声明就会发出一个错误. 接下来这个方法根据 initargs 的值来初始化槽, 并且根据新添加的槽的 :initform 表达式形式来初始化新的 added-slots. 它通过使用以下参数来调用广义函数 shared-initialize 来实现这个: 这个实例(instance), 给这个实例的新的 added-slots 的名称列表, 还有它收到的 initargs. 新添加的槽是那些在旧版本的类中不存在相同名字的局部槽.
+        系统提供的 update-instance-for-redefined-class 主方法[method]检查这些初始化参数 initargs 的有效性, 如果提供的一个初始化参数 initarg 没有被有效声明就会发出一个错误. 接下来这个方法[method]根据 initargs 的值来初始化槽[slot], 并且根据这些新添加槽 added-slots 的 :initform 表达式形式来初始化它们. 它通过使用以下参数调用广义函数 shared-initialize 来实现这个: 这个实例 instance, 给这个实例 instance 的新添加槽 added-slots 的名称列表, 还有它收到的初始化参数 initargs. 新添加槽 added-slots 是那些在旧版本类[class]中不存在相同名字的槽[slot]的局部槽[local slot].
 
-        当 make-instances-obsolete 被调用或者当一个类被重定义并且一个实例被更新时, 会创建一个捕获在这个原始实例中所有 discarded-slots 的名字和值的属性列表. 这个实例的结构会被转化以便符合当前类的定义. 给 update-instance-for-redefined-class 的参数是这个转化后的实例, 一个给这个实例的 added-slots 列表, 一个来自这个实例的 discarded-slots 列表, 以及这个包含有值但是被丢弃的槽的名字和值的属性列表. 这个被丢弃的槽的列表中包括那些在旧的类中是局部的在新的类中是共享的那些槽.
+        当 make-instances-obsolete 被调用或者当一个类[class]被重定义并且一个实例[instance]被更新时, 会创建一个捕获在这个原始实例 instance 中所有 discarded-slots 的名字和值的属性列表 property-list. 这个实例 instance 的结构会被转化以便符合当前类的定义. 给 update-instance-for-redefined-class 的参数是这个转化后的实例 instance, 一个给这个实例 instance 的新添加 added-slots 列表, 一个来自这个实例 instance 的丢弃的槽 discarded-slots 列表, 以及这个包含有值但是被丢弃的那些槽[slot]的名字和值的属性列表 property-list. 包含在这个被丢弃的槽[slot]的列表中的上那些在旧的类[class]中是局部的在新的类[class]中是共享的那些槽[slot].
 
         这个 update-instance-for-redefined-class 返回的值会被忽略.
 
@@ -1039,15 +1039,15 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 异常情况(Exceptional Situations):
 
-        如果提供的一个 initarg 没有被有效声明系统提供的 update-instance-for-redefined-class 主方法会发出一个错误.
+        如果提供的一个初始化参数 initarg 没有被有效声明, 那么这个系统提供的 update-instance-for-redefined-class 主方法[method]会发出一个错误.
 
 * 也见(See Also):
 
-        make-instances-obsolete, shared-initialize, Section 4.3.6 (Redefining Classes), Section 7.1.4 (Rules for Initialization Arguments), Section 7.1.2 (Declaring the Validity of Initialization Arguments)
+        make-instances-obsolete, shared-initialize, 章节 4.3.6 (重定义类), 章节 7.1.4 (初始化参数的规则), 章节 7.1.2 (声明初始化参数的有效性)
 
 * 注意(Notes):
 
-        Initargs 可以通过给 defclass 使用 :initarg, 或者通过为 update-instance-for-redefined-class 或 shared-initialize 定义方法来有效声明. 定义在 update-instance-for-redefined-class or shared-initialize 上的任何方法的 lambda 列表中的每个关键字参数指定符的关键字名字, 对于那个方法可应用的所有类都是有效的关键字. 
+        这些初始化参数 initargs 可以通过给 defclass 使用 :initarg, 或者通过为 update-instance-for-redefined-class 或 shared-initialize 定义方法[method]来有效声明. 定义在 update-instance-for-redefined-class 或 shared-initialize 上的任何方法[method]的 lambda 列表[lambda list]中的每个关键字参数指定符的关键字名字, 对于那个方法[method]可应用的所有类[class]都是有效的关键字. 
 
 
 ### <span id="SGF-CHANGE-CLASS">标准广义函数 CHANGE-CLASS</span>
@@ -1064,19 +1064,19 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 参数和值(Arguments and Values):
 
-        instance---一个对象.
-        new-class---一个类指定符.
-        initargs---一个初始化参数列表.
+        instance---一个对象[object].
+        new-class---一个类指定符[class designator].
+        initargs---一个初始化参数列表[initialization argument list].
 
 * 描述(Description):
 
-        广义函数 change-class 修改一个实例的类为 new-class. 它破坏性地修改并返回这个实例.
+        广义函数[generic function] change-class 修改一个实例 instance 的类为 new-class. 它破坏性地修改并返回这个实例 instance.
 
-        如果在旧的类中存在任何和 new-class 中的局部槽名字相同的槽, 那个槽的值会被保留. 这个意味着如果这个槽有一个值, 在 change-class 被调用之后 slot-value 返回的值和在 change-class 之前是 eql 的. 类似地, 如果这个槽没有被绑定, 它就保持未绑定状态. 其他槽按照章节 7.2 (Changing the Class of an Instance) 中所描述的被初始化.
+        如果在旧的类[class]中存在任何和 new-class 中的局部槽[slot]名字相同的槽[slot], 那个槽[slot]的值会被保留. 这个意味着如果这个槽[slot]有一个值, 在 change-class 被调用之后 slot-value 返回的值和在 change-class 被调用之前 slot-value 返回的值是 eql 的. 类似地, 如果这个槽[slot]没有被绑定, 它就保持未绑定状态. 其他槽[slot]按照章节 7.2 (修改一个实例的类) 中所描述的被初始化.
 
-        在完成所有其他动作之后, change-class 调用 update-instance-for-different-class. 广义函数 update-instance-for-different-class 可以被用于给转化后的实例中的槽赋值. 见章节 7.2.2 (Initializing Newly Added Local Slots).
+        在完成所有其他动作之后, change-class 调用 update-instance-for-different-class. 广义函数 update-instance-for-different-class 可以被用于赋值给转化后的实例中的槽. 见章节 7.2.2 (初始化新添加的局部槽).
 
-        如果上述方法中的第二个被选择, 那个方法在 instance, (find-class new-class), 以及 initargs 上调用 change-class.
+        如果上述方法[method]中的第二个被选择, 那么这个方法[method]在实例 instance, (find-class new-class), 以及这些初始化参数 initargs 上调用 change-class.
 
 * 示例(Examples):
 
@@ -1124,12 +1124,11 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 也见(See Also):
 
-        update-instance-for-different-class, Section 7.2 (Changing the Class of an Instance)
+        update-instance-for-different-class, 章节 7.2 (修改一个实例的类)
 
 * 注意(Notes):
 
-        函数 change-class 有几个语义难点. 首先, 它执行一个破坏性的操作, 并且可以在一个选择一个方法的实例上调用该方法. 当由于方法被组合而导致多个方法被调用时, 当前执行的方法或要被执行的方法可能不再是可应用的. 其次, 一些具体实现可能使用编译器对槽访问的优化, 当一个实例的类被修改时可能违背编译器所做的假设. 这个意味着如果一个广义函数的任何方法访问了任何槽, 那么程序员一定不能在那个方法中使用 change-class, 否则结果是未定义的. 
-
+        广义函数 change-class 有几个语义难点. 首先, 它执行一个破坏性的操作, 并且可以在被用于选择这个方法[method]的一个的实例[instance]上的方法[method]中被调用. 当由于方法[method]被组合而导致多个方法[method]被调用时, 当前执行的方法[method]或要被执行的方法可能不再是可应用的. 其次, 一些具体实现可能使用编译器对槽访问[access]的优化, 当一个实例[instance]的类[class]被修改时可能违背编译器所做的假设. 这个意味着如果一个广义函数[generic function]的任何方法[method]访问[access]了任何槽[slot], 那么程序员一定不能在那个方法中使用 change-class, 否则结果是未定义的. 
 
 ### <span id="F-SLOT-BOUNDP">函数 SLOT-BOUNDP</span>
 
@@ -1592,7 +1591,7 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
         初始化参数在 make-instance 中被检测.
 
-        广义函数 make-instance 按章节 7.1 (Object Creation and Initialization) 中所描述的那样被使用.
+        广义函数 make-instance 按章节 7.1 (对象创建和初始化) 中所描述的那样被使用.
 
 * 受此影响(Affected By): None.
 
@@ -1602,7 +1601,7 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 也见(See Also):
 
-        defclass, class-of, allocate-instance, initialize-instance, Section 7.1 (Object Creation and Initialization)
+        defclass, class-of, allocate-instance, initialize-instance, Section 7.1 (对象创建和初始化)
 
 * 注意(Notes): None. 
 
@@ -2077,7 +2076,7 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
                 如果 allocation-type 是 :class, 这个给定名字的共享槽会被分配在这个 defclass 表达式形式创建的类对象中. 这个槽的值被这个类的所有实例所共享. 如果一个类 C1 定义了这样一个共享槽, 任何 C1 的子类 C2 会共享同一个槽除非这个 C2 的 defclass 表达式形式指定了一个相同名字的槽或者这里有一个在 C2 的优先级列表中优先于 C1 并且定义了相同名字的槽的 C2 的超类.
 
-            这个 :initform 槽选项被用于提供在这个槽的初始化中使用的默认初始值表达式形式. 这个表达式形式在每次被用来初始化这个槽时都会被求值. 这个表达式形式被求值所在词法环境是defclass 表达式形式被求值所在的词法环境. 注意这个词法环境既引用了变量也引用了函数. 对于局部槽, 动态环境是 make-instance 被调用所在的动态环境; 对于共享槽, 动态环境是 defclass 表达式形式被求值所在的动态环境. 见章节 7.1 (Object Creation and Initialization).
+            这个 :initform 槽选项被用于提供在这个槽的初始化中使用的默认初始值表达式形式. 这个表达式形式在每次被用来初始化这个槽时都会被求值. 这个表达式形式被求值所在词法环境是defclass 表达式形式被求值所在的词法环境. 注意这个词法环境既引用了变量也引用了函数. 对于局部槽, 动态环境是 make-instance 被调用所在的动态环境; 对于共享槽, 动态环境是 defclass 表达式形式被求值所在的动态环境. 见章节 7.1 (对象创建和初始化).
 
             没有具体实现被允许去扩展 defclass 的语法来允许 (slot-name form) 作为一个 (slot-name :initform form) 的简写.
 
@@ -2089,7 +2088,7 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
         每个类选项是一个把这个类当作整体的选项. 以下类选项是可用的:
 
-            这个 :default-initargs 类选项后面跟着一个依次为初始化参数名和默认初始化值表达式形式的列表. 如果这些初始化参数中的任何一个没有出现在提供给 make-instance 的初始化列表中, 对应的默认初始值表达式形式就会被求值, 并且这个初始化参数名字和这个表达式形式的值会在这个实例被创建前被添加到这个初始化参数列表的末尾; 见章节 7.1 (Object Creation and Initialization). 默认初始值表达式形式在每次被使用时都会求值. 这个表达式形式被求值时所在词法环境是 defclass 表达式形式被求值时所在词法环境. 而动态环境是 make-instance 被调用时所处的动态环境. 如果一个初始化参数名字在一个 :default-initargs 槽选项中出现不止一次, 就会发出一个错误.
+            这个 :default-initargs 类选项后面跟着一个依次为初始化参数名和默认初始化值表达式形式的列表. 如果这些初始化参数中的任何一个没有出现在提供给 make-instance 的初始化列表中, 对应的默认初始值表达式形式就会被求值, 并且这个初始化参数名字和这个表达式形式的值会在这个实例被创建前被添加到这个初始化参数列表的末尾; 见章节 7.1 (对象创建和初始化). 默认初始值表达式形式在每次被使用时都会求值. 这个表达式形式被求值时所在词法环境是 defclass 表达式形式被求值时所在词法环境. 而动态环境是 make-instance 被调用时所处的动态环境. 如果一个初始化参数名字在一个 :default-initargs 槽选项中出现不止一次, 就会发出一个错误.
 
             这个 :documentation 类选项导致一个文档字符串被绑定到这个类对象, 以及 type 种类的 class-name 上. :documentation 最多只能被提供一次.
 
@@ -2131,7 +2130,7 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 也见(See Also):
 
-        documentation, initialize-instance, make-instance, slot-value, Section 4.3 (Classes), Section 4.3.4 (Inheritance), Section 4.3.6 (Redefining Classes), Section 4.3.5 (Determining the Class Precedence List), Section 7.1 (Object Creation and Initialization)
+        documentation, initialize-instance, make-instance, slot-value, Section 4.3 (Classes), Section 4.3.4 (Inheritance), Section 4.3.6 (Redefining Classes), Section 4.3.5 (Determining the Class Precedence List), Section 7.1 (对象创建和初始化)
 
 * 注意(Notes): None. 
 
@@ -2914,7 +2913,7 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 也见(See Also):
 
-        shared-initialize, make-instance, slot-boundp, slot-makunbound, Section 7.1 (Object Creation and Initialization), Section 7.1.4 (Rules for Initialization Arguments), Section 7.1.2 (Declaring the Validity of Initialization Arguments)
+        shared-initialize, make-instance, slot-boundp, slot-makunbound, Section 7.1 (对象创建和初始化), Section 7.1.4 (初始化参数的规则), Section 7.1.2 (声明初始化参数的有效性)
 
 * 注意(Notes): None. 
 
