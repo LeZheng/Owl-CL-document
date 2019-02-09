@@ -1138,13 +1138,13 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 参数和值(Arguments and Values):
 
-        instance---一个对象.
-        slot-name---命名 instance 的一个槽的名字.
-        generalized-boolean---一个广义 boolean.
+        instance---一个对象[object].
+        slot-name---命名实例 instance 的一个槽[slot]的符号[symbol].
+        generalized-boolean---一个广义 boolean [generalized boolean].
 
 * 描述(Description):
 
-        如果在 instance 中名为 slot-name 的槽已经是绑定的, 那么就返回 true; 否则, 返回 false.
+        如果在实例 instance 中名为 slot-name 的槽[slot]已经是绑定的, 那么就返回 true; 否则, 返回 false.
 
 * 示例(Examples): None.
 
@@ -1152,16 +1152,16 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 异常情况(Exceptional Situations):
 
-        如果在这个 instance 中没有名为 slot-name 的槽, 那么 slot-missing 会按如下被调用:
+        如果在这个实例 instance 中没有名为 slot-name 的槽[slot], 那么 slot-missing 会按如下被调用:
 
         (slot-missing (class-of instance)
                       instance
                       slot-name
                       'slot-boundp)
 
-        (如果 slot-missing 被调用并且返回了一个值, 它的主要的值的一个 boolean 等价物( boolean equivalent)会被 slot-boundp 返回.)
+        (如果 slot-missing 被调用并且返回了一个值, 它的主值[primary value]的一个 boolean 等价物[boolean equivalent]会被 slot-boundp 返回.)
 
-        这个特殊的行为依赖于实例(instance)的元类. 如果 instance 元类为 standard-class, 那么从来不会发出一个错误. 如果 instance 元类为 built-in-class, 那么总是会发出一个错误. 如果 instance 有着其他元类那么结果是未定义的--在这个情况可能会也可能不会发出一个错误. 特别注意, 对于状况(condition)和结构体(structure)的行为是没有指定的.
+        这个具体行为依赖于实例 instance 的元类[metaclass]. 如果实例 instance 元类[metaclass]为 standard-class, 那么从来不会发出一个错误. 如果实例 instance 元类[metaclass]为 built-in-class, 那么总是会发出一个错误. 如果实例 instance 有着其他元类那么结果是未定义的--在这个情况可能会也可能不会发出一个错误. 特别注意, 对于状况[condition]和结构体[structure]的行为是没有指定的.
 
 * 也见(See Also):
 
@@ -1169,9 +1169,9 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 注意(Notes):
 
-        函数 slot-boundp 允许为 initialize-instance 编写 after 方法仅用来来初始化那些还没有被绑定的槽.
+        函数[function] slot-boundp 考虑到为 initialize-instance 编写 after 方法[after method]仅用来初始化那些还没有被绑定的槽[slot].
 
-        虽然没有具体实现被要求, 但是强烈鼓励实现者去使用元对象协议中描述的函数 slot-boundp-using-class 来实现函数 slot-boundp. 
+        虽然没有具体实现[implementation]被要求, 但是强烈鼓励实现者去使用元对象协议[Metaobject Protocol]中描述的函数[function] slot-boundp-using-class 来实现函数[function] slot-boundp. 
 
 
 ### <span id="F-SLOT-EXISTS-P">函数 SLOT-EXISTS-P</span>
@@ -1182,13 +1182,13 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 参数和值(Arguments and Values):
 
-        object---一个对象.
-        slot-name---一个符号.
-        generalized-boolean---一个广义的 boolean.
+        object---一个对象[object].
+        slot-name---一个符号[symbol].
+        generalized-boolean---一个广义的 boolean [generalized boolean].
 
 * 描述(Description):
 
-        如果这个对象由一个名为 slot-name 的槽就返回 true.
+        如果这个对象 object 有着一个名为 slot-name 的槽[slot]就返回 true.
 
 * 示例(Examples): None.
 
@@ -1204,7 +1204,7 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 注意(Notes):
 
-        虽然没有具体实现被要求, 但是还是强烈鼓励实现者去使用元对象协议中描述的函数 slot-exists-p-using-class 来实现函数 slot-exists-p. 
+        虽然没有具体实现[implementation]被要求, 但是还是强烈鼓励实现者去使用元对象协议[Metaobject Protocol]中描述的函数[function] slot-exists-p-using-class 来实现函数[function] slot-exists-p. 
 
 ### <span id="F-SLOT-MAKUNBOUND">函数 SLOT-MAKUNBOUND</span>
 
@@ -1215,11 +1215,11 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 * 参数和值(Arguments and Values):
 
         instance -- 实例.
-        Slot-name---一个符号.
+        Slot-name---一个符号[symbol].
 
 * 描述(Description):
 
-        函数 slot-makunbound 将一个实例中名为 slot-name 的槽复原到未绑定状态.
+        函数[function] slot-makunbound 将一个实例 instance 中名为 slot-name 的槽[slot]复原到未绑定状态.
 
 * 示例(Examples): None.
 
@@ -1227,16 +1227,16 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 异常情况(Exceptional Situations):
 
-        如果在这个实例中不存在名为 slot-name 的槽, slot-missing 会按如下被调用:
+        如果在这个实例 instanace 中不存在名为 slot-name 的槽[slot], slot-missing 会按如下被调用:
 
         (slot-missing (class-of instance)
                       instance
                       slot-name
                       'slot-makunbound)
 
-        (在这个情况下任何 slot-missing 返回的值都被会 slot-makunbound 忽略.)
+        (在这个情况下任何由 slot-missing 返回的值都被会 slot-makunbound 忽略.)
 
-        这个具体行为依赖于实例的元类. 如果实例的元类为 standard-class 那么从不发出一个错误. 如果实例的元类为 built-in-class 那么总是发出一个错误. 如果实例有着任何其他元类那么结果是未定义的--在这个情况下一个错误可能或可能不会发出. 特别要注意的是, 状况(condition)和结构体(structure)的行为没有指定.
+        这个具体行为依赖于实例 instance 的元类[metaclass]. 如果实例 instance 的元类[metaclass]为 standard-class 那么从不发出一个错误. 如果实例 instance 的元类[metaclass]为 built-in-class 那么总是发出一个错误. 如果实例 instance 有着任何其他元类[metaclass]那么结果是未定义的--在这个情况下一个错误可能或可能不会发出. 特别要注意的是, 对于状况[condition]和结构体[structure]的行为是没有指定的.
 
 * 也见(See Also):
 
@@ -1244,7 +1244,7 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 注意(Notes):
 
-        虽然没有实现被要求, 还是强烈鼓励实现者用元对象协议中描述的函数 slot-makunbound-using-class 来实现函数 slot-makunbound. 
+        虽然没有具体实现[implementation]被要求, 还是强烈鼓励实现者用元对象协议[Metaobject Protocol]中描述的函数[function] slot-makunbound-using-class 来实现函数[function] slot-makunbound. 
 
 
 ### <span id="SGF-SLOT-MISSING">标准广义函数 SLOT-MISSING</span>
@@ -1259,30 +1259,30 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 参数和值(Arguments and Values):
 
-        class---object 的类.
-        object---一个对象.
-        slot-name---一个符号 (the name of a would-be slot).
-        operation---符号 setf, slot-boundp, slot-makunbound, 或 slot-value 的其中之一.
-        new-value---一个对象.
-        result---一个对象.
+        class---对象 object 的类[class].
+        object---一个对象[object].
+        slot-name---一个符号[symbol] (一个要被绑定的槽[slot]的名字[name]).
+        operation---符号[symbol] setf, slot-boundp, slot-makunbound, 或 slot-value 的其中之一.
+        new-value---一个对象[object].
+        result---一个对象[object].
 
 * 描述(Description):
 
-        当尝试去访问一个元对象是 standard-class 的对象的槽并且在那个类中没有名为 slot-name 的槽时, 函数 slot-missing 会被调用. 这个默认方法会发出一个错误.
+        当尝试去访问[access]一个元类[metaclass]是 standard-class 的对象 object 的槽[slot]并且在那个类[class]中没有名为 slot-name 的槽[slot]时, 广义函数 slot-missing 会被调用. 这个默认方法[method]会发出一个错误.
 
-        广义函数 slot-missing 不打算给程序员调用. 程序员可以为它写方法.
+        广义函数 slot-missing 不打算给程序员调用. 程序员可以为它写方法[method].
 
-        广义函数 slot-missing 可能在 slot-value, (setf slot-value), slot-boundp, 还有 slot-makunbound 求值期间被调用. 对于这些操作符中的每一个, 对应 operation 参数的符号分别是 slot-value, setf, slot-boundp, 还有 slot-makunbound.
+        广义函数 slot-missing 可能在 slot-value, (setf slot-value), slot-boundp, 还有 slot-makunbound 求值期间被调用. 对于这些操作符中的每一个, 对应 operation 参数的符号[symbol]分别是 slot-value, setf, slot-boundp, 还有 slot-makunbound.
 
-        当这个操作符尝试去设置这个槽的值时, 使用给 slot-missing 可选的 new-value 参数.
+        当这个操作符尝试去设置这个槽[slot]的值时, 就使用给 slot-missing 可选的 new-value 参数.
 
         如果 slot-missing 返回, 它的值会按照如下方式对待:
 
-            如果这个 operation 是 setf 或 slot-makunbound, 任何值都会被调用者忽略.
+            如果这个 operation 是 setf 或 slot-makunbound, 任何值[value]都会被调用者忽略.
 
-            如果这个 operation 是 slot-value, 只有主要的值会被调用者使用, 而其他所有值都会被忽略.
+            如果这个 operation 是 slot-value, 只有主值[primary value]会被调用者使用, 而其他所有值都会被忽略.
 
-            如果这个 operation 是 slot-boundp, 任何这个方法主要值的 boolean 等价物可能被使用, 而其他所有值都会被忽略.
+            如果这个 operation 是 slot-boundp, 任何这个方法主值[primary value]的 boolean 等价物[boolean equivalent]可能被使用, 而其他所有值都会被忽略.
 
 * 示例(Examples): None.
 
@@ -1290,7 +1290,7 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 异常情况(Exceptional Situations):
 
-        这个 slot-missing 默认方法发出一个 error 类型的错误.
+        这个 slot-missing 默认方法[method]发出一个 error 类型[type]的错误.
 
 * 也见(See Also):
 
@@ -1298,7 +1298,7 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 注意(Notes):
 
-        这个参数的集合 (包括这个实例的类) 有助于为 slot-missing 定义元类方法. 
+        这个参数的集合 (包括这个实例的类[class]) 有助于为 slot-missing 定义元类方法. 
 
 
 ### <span id="SGF-SLOT-UNBOUND">标准广义函数 SLOT-UNBOUND</span>
@@ -1313,18 +1313,18 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 参数和值(Arguments and Values):
 
-        class---这个 instance 的类.
-        instance---尝试去读取未绑定的槽所在的实例.
-        slot-name---未绑定槽的名字.
-        result---一个对象.
+        class---这个实例 instance 的类[class].
+        instance---尝试去读取[read]未绑定[unbound]槽[slot]所在的实例 instance.
+        slot-name---未绑定[unbound]槽[slot]的名字[name].
+        result---一个对象[object].
 
 * 描述(Description):
 
-        当元类为 standard-class 的一个实例的一个未绑定的槽被读取时, 广义函数 slot-unbound 会被调用. 这个默认方法会发出一个 unbound-slot 类型的错误. 这个 unbound-slot 状况的名称槽被初始化为这个违规变量的名字, 而这个 unbound-slot 状况的实例槽被初始化为这个违规实例.
+        当元类为 standard-class 的一个实例 instance 的一个未绑定的槽[slot]被读取时, 广义函数 slot-unbound 会被调用. 这个默认方法[meethod]会发出一个 unbound-slot 类型[type]的错误. 这个 unbound-slot 状况[condition]的名称槽被初始化为这个违规变量的名字, 而这个 unbound-slot 状况[condition]的实例槽被初始化为这个违规实例.
 
-        广义函数 slot-unbound 不旨在被程序员调用. 程序员可以为它写方法. 函数 slot-unbound 只会被 slot-value 间接调用.
+        广义函数 slot-unbound 不旨在被程序员调用. 程序员可以为它写方法[method]. 函数[function] slot-unbound 只会被 slot-value 间接调用.
 
-        如果 slot-unbound 返回, 只有主要值会被调用者使用, 其他所有值都会被忽略.
+        如果 slot-unbound 返回, 只有主值[primary value]会被调用者使用, 其他所有值都会被忽略.
 
 * 示例(Examples): None.
 
@@ -1332,7 +1332,7 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 异常情况(Exceptional Situations):
 
-        这个 slot-unbound 上的默认方法发出一个 unbound-slot 类型的错误.
+        这个 slot-unbound 上的默认方法[method]发出一个 unbound-slot 类型[type]的错误.
 
 * 也见(See Also):
 
@@ -1340,8 +1340,7 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 注意(Notes):
 
-        如果为一个槽指定 :initform 表达式形式或这没有设置槽的值, 或者在那个槽上调用了 slot-makunbound, 那么可能出现一个未绑定的槽. 
-
+        如果没有为一个槽[slot]指定 :initform 表达式形式并且还没有设置槽[slot]的值, 或者在那个槽[slot]上调用了 slot-makunbound, 那么可能出现一个未绑定的槽[slot]. 
 
 ### <span id="F-SLOT-VALUE">函数 SLOT-VALUE</span>
 
@@ -1351,15 +1350,15 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 参数和值(Arguments and Values):
 
-        object---一个对象.
-        name---一个符号.
-        value---一个对象.
+        object---一个对象[object].
+        name---一个符号[symbol].
+        value---一个对象[object].
 
 * 描述(Description):
 
-        函数 slot-value 返回这个 object 中名为 slot-name 的槽的值. 如果这里没有名为 slot-name 的槽, 就会调用 slot-missing. 如果这个槽是未绑定的, slot-unbound 就会被调用.
+        函数[function] slot-value 返回这个对象 object 中名为 slot-name 的槽[slot]的值[value]. 如果这里没有名为 slot-name 的槽[slot], 就会调用 slot-missing. 如果这个槽[slot]是未绑定的, slot-unbound 就会被调用.
 
-        宏 setf 可以和 slot-value 一起使用来改变一个槽的值.
+        宏 setf 可以和 slot-value 一起使用来改变一个槽[slot]的值.
 
 * 示例(Examples):
 
@@ -1386,16 +1385,16 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 异常情况(Exceptional Situations):
 
-        如果尝试去读取一个槽但是没有名为 slot-name 存在于这个对象中, slot-missing 会像下面这样被调用:
+        如果尝试去读取一个槽[slot]但是没有名为 slot-name 的槽[slot]存在于这个对象 object 中, slot-missing 会像下面这样被调用:
 
         (slot-missing (class-of instance)
                       instance
                       slot-name
                       'slot-value)
 
-        (如果 slot-missing 被调用, 它的主要返回值被 slot-value 返回.)
+        (如果 slot-missing 被调用, 它的主值[primary value]被 slot-value 返回.)
 
-        如果尝试去写入一个槽但是没有名为 slot-name 存在于这个对象中, slot-missing 会像下面这样被嗲用:
+        如果尝试去写入一个槽[slot]但是没有名为 slot-name 的槽[slot]存在于这个对象 object 中, slot-missing 会像下面这样被调用:
 
         (slot-missing (class-of instance)
                       instance
@@ -1403,9 +1402,9 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
                       'setf
                       new-value)
 
-        (如果这个情况下 slot-missing 返回了, 任何值都会被忽略.)
+        (如果这个情况下 slot-missing 返回了, 任何值[value]都会被忽略.)
 
-        这个特殊行为依赖于 object 的元类. 如果实例的元类为 standard-class 那么从不发出一个错误. 如果实例的元类为 built-in-class 那么总是发出一个错误. 如果实例有着任何其他元类那么结果是未定义的--在这个情况下一个错误可能或可能不会发出. 特别要注意的是, 状况(condition)和结构体(structure)的行为没有指定.
+        这个具体行为依赖于对象 object 的元类[metaclass]. 如果对象 object 的元类[metaclass]为 standard-class 那么从不发出一个错误. 如果对象 object 的元类[metaclass]为 built-in-class 那么总是发出一个错误. 如果对象 object 有着任何其他元类[metaclass]那么结果是未定义的--在这个情况下一个错误可能或可能不会发出. 特别要注意的是, 状况[condition]和结构体[structure]的行为没有被指定.
 
 * 也见(See Also):
 
@@ -1413,7 +1412,7 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 注意(Notes):
 
-        虽然没有具体实现被要求做这个, 但是强烈鼓励实现者通过使用元对象协议中描述的函数 slot-value-using-class 来实现函数 slot-value.
+        虽然没有具体实现[implementation]被要求做这个, 但是强烈鼓励实现者通过使用元对象协议[Metaobject Protocol]中描述的函数[function] slot-value-using-class 来实现函数[function] slot-value.
 
         具体实现可能通过编译 slot-value 为内联的(inline)来优化它. 
 
