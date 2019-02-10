@@ -894,7 +894,7 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 也见(See Also):
 
-        initialize-instance, reinitialize-instance, update-instance-for-redefined-class, update-instance-for-different-class, slot-boundp, slot-makunbound, Section 7.1 (对象创建和初始化), Section 7.1.4 (初始化参数的规则), Section 7.1.2 (声明初始化参数的有效性)
+        initialize-instance, reinitialize-instance, update-instance-for-redefined-class, update-instance-for-different-class, slot-boundp, slot-makunbound, 章节 7.1 (对象创建和初始化), 章节 7.1.4 (初始化参数的规则), 章节 7.1.2 (声明初始化参数的有效性)
 
 * 注意(Notes):
 
@@ -1429,12 +1429,12 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 参数和值(Arguments and Values):
 
-        method---一个方法.
-        qualifiers---一个合适的列表.
+        method---一个方法[method].
+        qualifiers---一个正规列表[proper list].
 
 * 描述(Description):
 
-        返回这个方法的限定符列表.
+        返回这个方法 method 的限定符[qualifier]列表[list].
 
 * 示例(Examples):
 
@@ -1467,15 +1467,15 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 参数和值(Arguments and Values):
 
-        generic-function---一个没有找到可应用方法的广义函数.
-        function-arguments---给这个 generic-function 的参数.
-        result---一个对象.
+        generic-function---一个没有找到可应用方法[applicable method]的广义函数[generic function].
+        function-arguments---给这个广义函数 generic-function 的实参[argument].
+        result---一个对象[object].
 
 * 描述(Description):
 
-        当一个广义函数被调用而这个广义函数上没有方法可应用, 那么这个广义函数 no-applicable-method 就会被调用. 默认方法会发出一个错误.
+        当一个广义函数[generic function]被调用而这个广义函数[generic function]上没有方法[method]可应用时, 那么这个广义函数 no-applicable-method 就会被调用. 默认方法[default method]会发出一个错误.
 
-        广义函数 no-applicable-method 不旨在被程序员调用. 程序员可能为它写方法.
+        广义函数 no-applicable-method 不旨在被程序员调用. 程序员可以为它写方法[method].
 
 * 示例(Examples): None.
 
@@ -1483,7 +1483,7 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 异常情况(Exceptional Situations):
 
-        这个默认方法会发出一个 error 类型的错误.
+        这个默认方法[default method]会发出一个 error 类型[type]的错误.
 
 * 也见(See Also):
 
@@ -1502,19 +1502,19 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 参数和值(Arguments and Values):
 
-        generic-function -- method 所属的广义函数.
+        generic-function -- 方法 method 所属的广义函数[generic function].
 
-        method -- 包含了对 call-next-method 的调用但是没有下一个方法的方法.
+        method -- 包含了对 call-next-method 的调用但是没有下一个方法[method]的方法[method].
 
         args -- 给 call-next-method 的参数.
 
-        result---一个对象.
+        result---一个对象[object].
 
 * 描述(Description):
 
-        当这里没有下一个方法时, 广义函数 no-next-method 被 call-next-method 调用.
+        当这里没有下一个方法[next method]时, 广义函数[generic function] no-next-method 被 call-next-method 调用.
 
-        广义函数 no-next-method 不打算被程序员所调用. 程序员可以为它写方法.
+        广义函数[generic function] no-next-method 不打算被程序员所调用. 程序员可以为它写方法[method].
 
 * 示例(Examples): None.
 
@@ -1522,7 +1522,7 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 异常情况(Exceptional Situations):
 
-        系统提供的 no-next-method 上的方法会发出一个 error 类型的错误.
+        系统提供的 no-next-method 上的方法[method]会发出一个 error 类型[type]的错误.
 
 * 也见(See Also):
 
@@ -1543,14 +1543,14 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 参数和值(Arguments and Values):
 
-        generic-function---一个广义函数.
-        method---一个方法.
+        generic-function---一个广义函数[generic function].
+        method---一个方法[method].
 
 * 描述(Description):
 
-        广义函数 remove-method 通过修改这个 generic-function (如果必要的话)来从 generic-function 中移除一个方法.
+        广义函数[generic function] remove-method 通过修改这个广义函数 generic-function (如果必要的话)来从广义函数 generic-function 中移除一个方法[method].
 
-        如果这个方法不是这个 generic-function 上的方法, 那么一定不会发出一个错误.
+        如果这个方法[method]不是这个广义函数 generic-function 上的方法[method], 那么一定不会发出一个错误.
 
 * 示例(Examples): None.
 
@@ -1578,29 +1578,29 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 参数和值(Arguments and Values):
 
-        class---一个类, 或者命名一个类的符号.
-        initargs---一个初始化参数列表.
-        instance---一个类 class 的新的实例.
+        class---一个类[class], 或者命名一个类[class]的符号[symbol].
+        initargs---一个初始化参数列表[initialization argument list].
+        instance---一个类[class] class 的新生[fresh]实例[instance].
 
 * 描述(Description):
 
-        广义函数 make-instance 创建并返回这个给定 class 的新的实例.
+        广义函数[generic function] make-instance 创建并返回这个给定类 class 的新的实例[instance].
 
-        如果选择了上述方法中的第二个, 那个方法在 (find-class class) 和 initargs 上调用 make-instance.
+        如果选择了上述方法[method]中的第二个, 那个方法[method]在参数 (find-class class) 和 initargs 上调用 make-instance.
 
         初始化参数在 make-instance 中被检测.
 
-        广义函数 make-instance 按章节 7.1 (对象创建和初始化) 中所描述的那样被使用.
+        广义函数[generic function] make-instance 按章节 7.1 (对象创建和初始化) 中所描述的那样被使用.
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-        如果任何一个初始化参数没有被有效声明, 会发出一个 error 类型的错误.
+        如果任何一个初始化参数没有被有效声明, 会发出一个 error 类型[type]的错误.
 
 * 也见(See Also):
 
-        defclass, class-of, allocate-instance, initialize-instance, Section 7.1 (对象创建和初始化)
+        defclass, class-of, allocate-instance, initialize-instance, 章节 7.1 (对象创建和初始化)
 
 * 注意(Notes): None. 
 
@@ -1618,15 +1618,15 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 参数和值(Arguments and Values):
 
-        class---一个类指定符.
+        class---一个类标识符[class designator].
 
 * 描述(Description):
 
-        函数 make-instances-obsolete 具有启动更新 class 的实例的过程的效果. 在更新期间, 广义函数 update-instance-for-redefined-class 会被调用.
+        函数[function] make-instances-obsolete 具有启动更新类[class]的实例的过程的效果. 在更新期间, 广义函数 update-instance-for-redefined-class 会被调用.
 
-        当 defclass 被用来重定义一个已存在的标准类并且在一个实例中可访问的局部槽的集合被改变或者存储中的槽的顺序被改变, 广义函数 make-instances-obsolete 会被系统自动调用. 它也可以被用户显式调用.
+        当 defclass 被用来重定义一个已存在的标准类并且在一个实例中可访问的[accessible]局部槽[slot]的集合被改变或者存储中的槽[slot]的顺序被改变, 广义函数 make-instances-obsolete 会被系统自动调用. 它也可以被用户显式调用.
 
-        如果选择了上述的第二个方法, 那个方法在 (find-class class) 上调用 make-instances-obsolete.
+        如果选择了上述的第二个方法[method], 那个方法在 (find-class class) 上调用 make-instances-obsolete.
 
 * 示例(Examples):
 
@@ -1636,7 +1636,7 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 也见(See Also):
 
-        update-instance-for-redefined-class, Section 4.3.6 (Redefining Classes)
+        update-instance-for-redefined-class, 章节 4.3.6 (重定义类)
 
 * 注意(Notes): None. 
 
@@ -1656,36 +1656,36 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 参数和值(Arguments and Values):
 
-        object---一个对象.
-        environment---一个环境对象.
-        creation-form---一个表达式形式.
-        initialization-form---一个表达式形式.
+        object---一个对象[object].
+        environment---一个环境对象[environment object].
+        creation-form---一个表达式形式[form].
+        initialization-form---一个表达式形式[form].
 
 * 描述(Description):
 
-        广义函数 make-load-form 创建并返回一个或两个表达式形式, 一个 creation-form 和一个 initialization-form, 这个启用 load 去构造一个 object 等价的对象. Environment 是一个和这个表达式形式被处理时所在词法环境对应的环境对象.
+        广义函数[generic function] make-load-form 创建并返回一个或两个表达式形式[form], 一个创建表达式形式 creation-form 和一个初始化表达式形式 initialization-form, 这个启用 load 去构造一个 object 等价的对象[object]. 这个 environment 是一个和这个表达式形式[form]被处理时所在词法环境[lexical environment]对应的环境对象[environment object].
 
-        文件编译器调用 make-load-form 来处理字面化对象确定的类; 见章节 3.2.4.4 (Additional Constraints on Externalizable Objects).
+        文件编译器[file compiler]调用 make-load-form 来处理字面化[literal]对象[object]确定的类[class]; 见章节 3.2.4.4 (外部化对象的附加约束).
 
-        符合规范的程序可能直接调用 make-load-form, 提供的 object 是 standard-object, structure-object, 或 condition 的一个普通实例.
+        符合规范的程序[conforming program]可能直接调用 make-load-form, 假定对象 object 是 standard-object, structure-object, 或 condition 的一个广义实例[generalized instance].
 
-        这个创建表达式形式(creation-form)是一个在 load 时求值并且应该返回一个和 object 等价的对象的表达式形式. 这个等价的确切意义取决于对象的类型以及为 make-load-form 定义方法的程序员; 见章节 3.2.4 (Literal Objects in Compiled Files).
+        这个创建表达式形式是一个在 load 时求值并且应该返回一个和对象 object 等价的对象[object]的表达式形式[form]. 这个等价性的确切意义取决于对象[object]的类型[type]以及为 make-load-form 定义方法[method]的程序员; 见章节 3.2.4 (编译后文件中的字面化对象).
 
-        这个初始化表达式形式(initialization-form)是一个在 load 时求值并且应该执行这个对象的进一步初始化的表达式形式. 这个初始化表达式形式返回的值会被忽略. 如果 make-load-form 只返回一个值, 初始化表达式形式就是 nil, 它是没有效果的. 如果 object 作为一个常量出现在初始化表达式形式中, 在 load 时它会被创建表达式形式构造的等价对象所替代; 这就是进一步的初始化如何获得对对象的访问.
+        这个初始化表达式形式是一个在 load 时求值并且应该执行这个对象[object]的进一步初始化的表达式形式[form]. 这个初始化表达式形式返回的值会被忽略. 如果 make-load-form 只返回一个值, 那么初始化表达式形式就是 nil, 它是没有效果的. 如果对象 object 作为一个常量出现在初始化表达式形式中, 在 load 时它会被创建表达式形式构造的等价对象[object]所替代; 这就是进一步的初始化如何获得对这个对象[object]的访问.
 
-        不管是 creation-form 还是 initialization-form 都可能包含对任何可外部化对象的引用. 然而, 在创建表达式形式中, 这里一定不能有任何循环依赖. 一个循环依赖的示例就是, 当这个对象 X 的创建表达式形式包含了对对象 Y 的一个引用, 并且对象 Y 的创建表达式形式包含了对对象 X 的引用. 初始化表达式形式不受任何对循环依赖的限制, 这就是初始化表达式形式存在的原因; 见下面环状数据结构.
+        不管是创建表达式形式 creation-form 还是初始化表达式形式 initialization-form 都可能包含对任何可外部化对象[externalizable object]的引用. 然而, 在创建表达式形式中, 这里一定不能有任何循环依赖. 一个循环依赖的示例就是, 当这个对象 X 的创建表达式形式包含了对对象 Y 的一个引用, 并且对象 Y 的创建表达式形式包含了对对象 X 的引用. 初始化表达式形式不受任何对循环依赖的限制, 这就是初始化表达式形式存在的原因; 见下面环状数据结构的示例.
 
-        一个对象的创建表达式形式总是在这个对象的初始化表达式形式之前被求值. 当创建表达式形式或是初始化表达式形式引用了其他在这个编译的文件中之前没有被引用的对象时, 编译器保证在求值这些引用表达式形式之前所有这些引用的对象都已经被创建. 当引用的对象是文件编译器使用 make-load-form 处理的类型时, 这个就涉及到求值为它返回的创建表达式形式. (这就是禁止在创建表达式形式中循环引用的原因).
+        一个对象[object]的创建表达式形式总是在这个对象[object]的初始化表达式形式之前被求值. 当创建表达式形式或是初始化表达式形式引用了其他在这个编译的文件[file]中之前没有被引用的对象[object]时, 编译器[compiler]保证在求值这些引用表达式形式[form]之前所有这些引用的对象[object]都已经被创建. 当引用的对象[object]是文件编译器[file compiler]使用 make-load-form 处理的类型[type]时, 这个就涉及到求值为它返回的创建表达式形式. (这就是禁止在创建表达式形式中循环引用的原因).
 
-        每个初始化表达式形式在它关联的创建表达式形式之后尽快被求值, 由数据流决定. 如果一个对象的初始化表达式形式没有引用出现在该文件中且之前没有被引用并且被文件编译器使用 make-load-form 处理的任何其他对象, 初始化表达式形式会在创建表达式形式之后被立即求值. 如果一个创建或初始化表达式形式 F 确实包含了对这样一个对象的引用, 这些其他对象的创建表达式形式在 F 之前被求值, 并且这些其他对象的初始化表达式形式也会在 F 之前被求值, 不管它们是否依赖 F 创建和初始化的对象. 在这些规则不能唯一确定一个在两个创建/初始化表达式形式之间的顺序的地方, 求值的顺序是未指定的.
+        每个初始化表达式形式在它关联的创建表达式形式之后尽快被求值, 由数据流决定. 如果一个对象[object]的初始化表达式形式没有引用该文件中之前没有被引用并且被文件编译器[file compiler]使用 make-load-form 处理的任何其他对象[object], 那么初始化表达式形式会在创建表达式形式之后被立即求值. 如果一个创建或初始化表达式形式 F 确实包含了对这样的对象[object]的引用, 那么这些其他对象[object]的创建表达式形式在 F 之前被求值, 并且这些其他对象[object]的初始化表达式形式也会在 F 之前被求值, 无论何时它们都不依赖 F 创建和初始化的对象[object]. 在这些规则没有唯一确定在两个创建/初始化表达式形式之间的求值[evaluation]顺序的地方, 求值[evaluation]的顺序是未指定的.
 
-        在这些创建和初始化表达式形式要被求值时, 对象可能处于一个未初始化状态, 类似一个对象在被 allocate-instance 创建和被 initialize-instance 完全处理之间的状态. 程序员为 make-load-form 写方法必须关注操纵的对象不依赖没有被初始化的槽.
+        在这些创建和初始化表达式形式要被求值时, 这些对象[object]可能处于一个未初始化状态, 类似一个对象[object]在被 allocate-instance 创建和被 initialize-instance 完全处理之间的状态. 程序员为 make-load-form 写方法[method]必须关注操纵的对象[object]不依赖没有被初始化的槽[slot].
 
-        load 是否在表达式形式上调用 eval 或者执行某个其他有等价效果的操作是取决于具体实现的. 比如, 这些表达式形式可能被转成不同但是等价的表达式形式然后被求值, 它们可能被编译并且产生的函数被 load 调用, 或者它们可能被一个特殊目的的有别于 eval 的函数所解释. 所需要的只是效果和求值这些表达式形式等价.
+        load 是否在表达式形式[form]上调用 eval 或者执行某个其他有等价效果的操作是依赖于具体实现的[implementation-dependent]. 比如, 这些表达式形式[form]可能被转成不同但是等价的表达式形式[form]然后被求值, 它们可能被编译并且产生的函数被 load 调用, 或者它们可能被一个特殊目的的有别于 eval 的函数所解释. 所需要的只是效果等价于求值这些表达式形式[form].
 
-        如果一个类在 environment 中有特定的名字, 那么这个在 class 上特化的方法返回一个使用该类的名字的创建表达式形式, 如果没有一个特定的名字就会发出一个 error 类型的错误. 这个创建表达式形式的求值使用这个名字去找到这个名字对应的类, 就像是通过调用 find-class 一样. 如果这个名字的一个类还没有被定义, 那么一个类可能以一种依赖于具体实现的方法被推断. 如果一个类不能被求值这个创建表达式形式作为结果返回, 那么就会发出一个 error 类型的错误.
+        如果一个类[class]在环境 environment 中有专有名字[proper name], 那么这个在 class 上特化[specialized]的方法[method]返回一个使用该类[class]的名字[name]的创建表达式形式[form], 如果没有一个专有名字[proper name]就会发出一个 error 类型[type]的错误. 这个创建表达式形式[form]的求值[evaluation]使用这个名字[name]去找到这个名字[name]对应的类[class], 就像是通过调用 find-class 一样. 如果这个名字[name]的一个类[class]还没有被定义, 那么一个类[class]可能以一种具体实现定义的[implementation-defined]方法被计算出来. 如果一个类[class]不能被求值这个创建表达式形式[form]作为结果返回, 那么就会发出一个 error 类型[type]的错误.
 
-        不管是符合规范的实现还是符合规范的程序都可能进一步特化 make-load-form.
+        不管是符合规范的实现[conforming implementation]还是符合规范的程序[conforming program]都可能进一步特化[specialize] make-load-form.
 
 * 示例(Examples):
 
@@ -1714,9 +1714,9 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
     (make-load-form obj1) =>  (MAKE-INSTANCE 'OBJ :X '3.0 :Y '4.0)
     ```
 
-        在上述示例中, 一个 obj 等价的实例通过使用它的两个槽的值被重新构建. 第三个槽的值由那两个值得到.
+        在上述示例中, 一个 obj 等价的实例[instance]通过使用它的两个槽[slot]的值被重新构建. 第三个槽[slot]的值由那两个值得到.
 
-        在那个示例中写 make-load-form 方法的另一种方式是使用 make-load-form-saving-slots. 它产生的代码可能和上面展示的 make-load-form 方法产生稍微不同的结果, 但是运行效果是一样的. 比如:
+        在那个示例中编写 make-load-form 方法[method]的另一种方式是使用 make-load-form-saving-slots. 它产生的代码可能和上面展示的 make-load-form 方法产生稍微不同的结果, 但是运行效果是一样的. 比如:
 
     ```LISP
     ;; Redefine method defined above.
@@ -1734,7 +1734,7 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
           (INITIALIZE-INSTANCE '#<OBJ 26274136>))
     ```
 
-        在下面这个示例中, my-frob 的实例以某种方式被 "捕捉(interned)". 通过使用名称槽作为键来搜索已存在的对象来重新构建一个等价实例. 在这个情况下如果没有找到已存在的对象, 程序员选择创建一个新对象; 或者在这种情况下可能会发出一个错误.
+        在下面这个示例中, my-frob 的实例[instance]以某种方式被 "捕捉(interned)". 通过使用这个命名槽作为键来搜索已存在的对象[object[来重新构建一个等价实例[instance]. 在这个情况下如果没有找到已存在的对象[object], 程序员选择创建一个新对象[object]; 或者在这种情况下可能会发出一个错误.
 
     ```LISP
     (defclass my-frob ()
@@ -1744,7 +1744,7 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
       `(find-my-frob ',(my-name self) :if-does-not-exist :create))
     ```
 
-        在下面这个示例中, 被转储的数据结构是环状的, 因为每个 parent 有着它的 children 的一个列表并且每个 child 有一个指回它的 parent 的引用. 如果在一个这样结构的对象上调用 make-load-form, 创建表达式形式创建一个等价对象并且填充在 children 槽中, 它强制进行它的 children, grandchildren, 等等的等价对象的创建. 在这个时候没有 parent 的槽被填充. 这个初始化表达式形式填充这个 parent 的槽, 如果等价对象没有被创建, 它强制创建这个 parent 的等价对象. 因此整个树在加载时被重新创建. 在编译时, make-load-form 对于这个树中的每个对象被调用一次. 所有创建表达式形式都被求值, 以依赖于具体实现的顺序, 然后所有初始化表达式形式被求值, 也按照依赖于实现的顺序.
+        在下面这个示例中, 被转储的数据结构是环状的, 因为每个 parent 有着它的 children 的一个列表并且每个 child 有一个指回它的 parent 的引用. 如果在一个这样结构的对象[object]上调用 make-load-form, 创建表达式形式创建一个等价对象[object]并且填充 children 槽, 它强制进行它的 children, grandchildren, 等等的等价对象[object]的创建. 在这个时候没有 parent 的槽[slot]被填充. 这个初始化表达式形式填充这个 parent 的槽[slot], 如果 parent 的等价对象[object]没有被创建, 它强制创建它. 因此整个树在加载时被重新创建. 在编译时, make-load-form 对于这个树中的每个对象[object]被调用一次. 所有创建表达式形式都被求值, 以依赖于具体实现[implementation-dependent]的顺序, 然后所有初始化表达式形式被求值, 也按照依赖于实现[implementation-dependent]的顺序. <!--TODO parent 和 children 待替换-->
 
     ```LISP
     (defclass tree-with-parent () ((parent :accessor tree-parent)
@@ -1758,7 +1758,7 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
         `(setf (tree-parent ',x) ',(slot-value x 'parent))))
     ```
 
-        在下面示例中, 被转储的数据结构没有特殊属性并且一个等价结构可以简单地通过重新构建槽的内容来重新构建.
+        在下面示例中, 被转储的数据结构没有特殊属性并且一个等价结构可以简单地通过重新构建槽[slot]的内容来重新构建.
 
     ```LISP
     (defstruct my-struct a b c)
@@ -1770,19 +1770,19 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 异常情况(Exceptional Situations):
 
-        在 standard-object, structure-object, and condition 上指定的所有这方法都会发出一个 error 类型的错误.
+        在 standard-object, structure-object, and condition 上特化[specialized]的所有这些方法[method]都会发出一个 error 类型[type]的错误.
 
-        在一个系统类的普通实例上调用 make-load-form 是发出一个错误还是返回创建和初始化表达式形式, 取决于具体实现.
+        在一个系统类[system class]的广义实例[generalized instance]上调用 make-load-form 是发出一个错误还是返回创建和初始化表达式形式[form], 依赖于具体实现[implementation-dependent].
 
 * 也见(See Also):
 
-        compile-file, make-load-form-saving-slots, Section 3.2.4.4 (Additional Constraints on Externalizable Objects) Section 3.1 (Evaluation), Section 3.2 (Compilation)
+        compile-file, make-load-form-saving-slots, 章节 3.2.4.4 (外部化对象的附加约束) 章节 3.1 (求值), 章节 3.2 (编译)
 
 * 注意(Notes):
 
-        在特殊情况下文件编译器调用 make-load-form 在章节 3.2.4.4 (Additional Constraints on Externalizable Objects) 中详述.
+        文件编译器[file compiler]在章节 3.2.4.4 (外部化对象的附加约束) 中详述的特殊情况下调用 make-load-form .
 
-        某些具体实现可能为定义被指定为系统类的类的子类提供工具. (一些候选项包括 generic-function, method, 还有 stream). 这样的具体实现应该记录文件编译器在作为字面化对象遇到时如何处理这样的类的实例, 并且应该记录任何和 make-load-form 相关的方法. 
+        某些具体实现[implementation]可能为定义被指定为系统类[system class]的类[class]的新子类[subclass]提供工具. (一些候选项包括 generic-function, method, 还有 stream). 这样的具体实现[implementation]应该记录在遇到字面化[literal]对象[object]时文件编译器[file compiler]如何处理这样的类[class]的实例[instance], 并且应该记录任何和 make-load-form 相关的方法[method]. 
 
 
 ### <span id="F-MAKE-LOAD-FORM-SAVING-SLOTS">函数 MAKE-LOAD-FORM-SAVING-SLOTS</span>
@@ -1794,21 +1794,21 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 参数和值(Arguments and Values):
 
-        object---一个对象.
-        slot-names---一个列表.
-        environment---一个环境对象.
-        creation-form---一个表达式形式.
-        initialization-form---一个表达式形式.
+        object---一个对象[object].
+        slot-names---一个列表[list].
+        environment---一个环境对象[environment object].
+        creation-form---一个表达式形式[form].
+        initialization-form---一个表达式形式[form].
 
 * 描述(Description):
 
-        返回在求值时不执行初始化表达式形式来构造和 object 等价的对象的表达式形式. 这个新的对象中和 object 对应初始化槽的那些槽使用来自 object 的值来初始化. 在 object 中没有初始化的槽在新的对象中不会被初始化. make-load-form-saving-slots 对任何 standard-object 或 structure-object 的实例都起作用.
+        返回在求值时不执行初始化表达式形式来构造和对象 object 等价对象[object]的表达式形式[form]. 这个新的对象[object]中和对象 object 初始化槽[slot]对应的那些槽[slot]使用来自对象 object 的值来初始化. 在对象 object 中没有初始化的槽[slot]在新的对象[object]中不会被初始化. make-load-form-saving-slots 对任何 standard-object 或 structure-object 的实例[instance]都起作用.
 
-        Slot-names 是要保留的槽的名称列表. 如果没有提供 slot-names, 它的值就是所有局部槽.
+        这些槽名字 slot-names 是要保留的槽[slot]的名称列表[list]. 如果没有提供 slot-names, 它的值就是所有局部槽[local slot].
 
-        make-load-form-saving-slots 返回两个值, 因此它可以处理环状结构. 在一个应用中结果是否有用取决于这个对象 object 的类型和槽的内容是否完全捕捉了这个对象状态的应用意义.
+        make-load-form-saving-slots 返回两个值, 因此它可以处理环状结构. 在一个应用中结果是否有用取决于这个对象 object 的类型[type]和槽的内容是否完全捕捉了这个对象状态的应用意义.
 
-        Environment 是这些表达式形式被处理时所处的环境.
+        这个 environment 是这些表达式形式被处理时所处的环境.
 
 * 示例(Examples): None.
 
@@ -1826,7 +1826,7 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
         make-load-form-saving-slots 在用户编写的 make-load-form 方法中是很有用的.
 
-        当这个 object 是 standard-object 的一个实例时, make-load-form-saving-slots 返回一个调用 allocate-instance 的创建表达式形式和一个包含对 slot-value 的 setf 和 slot-makunbound 的调用的初始化表达式形式, 尽管事实上可能使用其他类似效果的函数. 
+        当这个对象[object]是 standard-object 的一个实例[instance]时, make-load-form-saving-slots 返回一个调用[call] allocate-instance 的创建表达式形式和一个包含对 slot-value 的 setf 和 slot-makunbound 的调用[call]的初始化表达式形式, 尽管事实上可能使用其他类似效果的函数[function]. 
 
 
 ### <span id="M-WITH-ACCESSORS">宏 WITH-ACCESSORS</span>
@@ -1840,16 +1840,16 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 参数和值(Arguments and Values):
 
-        variable-name---一个变量名字; 不求值.
-        accessor-name---一个函数名; 不求值.
-        instance-form---一个表达式形式; 求值.
-        declaration---一个 declare 表达式; 不求值.
-        forms---一个隐式的 progn.
-        results---这个 forms 返回的值.
+        variable-name---一个变量[variable]名字[name]; 不求值.
+        accessor-name---一个函数名[function name]; 不求值.
+        instance-form---一个表达式形式[form]; 求值.
+        declaration---一个 declare 表达式[expression]; 不求值.
+        forms---一个隐式的 progn [implicit progn].
+        results---这些表达式形式 forms 返回的值[value].
 
 * 描述(Description):
 
-        创建一个词法环境, 在这里 slot-entry 指定的那些槽通过它们的访问器是词法上可用的, 就像它们是变量一样. 宏 with-accessors 调用合适的访问器来访问 slot-entry 指定的那些槽. 不管 setf 还是 setq 都可以被用来设置槽的值.
+        创建一个词法环境, 在这里由 slot-entry 指定的那些槽通过它们的访问器是词法上可用的, 就像它们是变量一样. 宏 with-accessors 调用合适的访问器来访问 slot-entry 指定的那些槽[slot]. 不管 setf 还是 setq 都可以被用来设置槽[slot]的值.
 
 * 示例(Examples):
 
@@ -1890,7 +1890,7 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 异常情况(Exceptional Situations):
 
-        如果任何 accessor-name 不是这个实例的一个访问器的名字, 那么结果是未定义的.
+        如果任何 accessor-name 不是这个实例 instance 的一个访问器的名字, 那么结果是未定义的.
 
 * 也见(See Also):
 
@@ -1923,19 +1923,19 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 参数和值(Arguments and Values):
 
-        slot-name---一个槽的名字; 不求值.
-        variable-name---一个变量名; 不求值.
-        instance-form---一个表达式形式; 求值来产生这个实例.
-        instance---一个对象.
-        declaration---一个 declare 表达式; 不求值.
-        forms---一个隐式的 progn.
-        results---这个 forms 返回的值.
+        slot-name---一个槽[slot]的名字[name]; 不求值.
+        variable-name---一个变量[variable]名字[name]; 不求值.
+        instance-form---一个表达式形式[form]; 求值来产生这个实例 instance.
+        instance---一个对象[object].
+        declaration---一个 declare 表达式[expression]; 不求值.
+        forms---一个隐式的 progn [implicit progn].
+        results---这些表达式形式 forms 返回的值[value].
 
 * 描述(Description):
 
-        宏 with-slots 为引用这个 instance 实例中名为给定 slot-names 的槽建立一个词法环境就好像它们是变量一样. 在这样一个上下文中这个槽的值可以通过使用它们的槽名来指定, 就好像它们是一个词法上绑定的变量. 不管是 setf 还是 setq 都可以被用于设置这个槽的值.
+        宏 with-slots 为引用这个 instance 实例中由给定 slot-names 命名的槽[slot]建立[establish]一个词法环境[lexical environment]就好像它们是变量[variable]一样. 在这样一个上下文中这个槽[slot]的值可以通过使用它的槽名来指定, 就好像它们是一个词法上绑定的变量一样. 不管是 setf 还是 setq 都可以被用于设置这个槽[slot]的值.
 
-        宏 with-slots 把这个槽名作为变量的出现转化为一个对 slot-value 的调用.
+        宏 with-slots 把这个槽名的外观作为变量[variable]转化为一个对 slot-value 的调用.
 
 * 示例(Examples):
 
@@ -1978,7 +1978,7 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 异常情况(Exceptional Situations):
 
-        如果任何的 slot-name 都不是这个 instance 实例中槽的名字, 那么结果是未定义的.
+        如果任何的槽名 slot-name 都不是这个实例 instance 中的一个槽[slot]的名字, 那么结果是未定义的.
 
 * 也见(See Also):
 
@@ -1986,7 +1986,7 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 注意(Notes):
 
-        一个 with-slots 表达式 of the form:
+        一个这个形式的 with-slots 表达式:
 
         (with-slots (slot-entry1 ... slot-entryn) instance-form form1 ... formk)
 
@@ -1995,17 +1995,17 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
         (let ((in instance-form))
           (symbol-macrolet (Q1 ... Qn) form1 ... formk))
 
-        其中 Qi 是
+        其中如果 slot-entryi 是一个符号[symbol]的话 Qi 就是
 
         (slot-entryi () (slot-value in 'slot-entryi))
 
-        如果 slot-entryi 是一个符号的话就是
-
-        (variable-namei () (slot-value in 'slot-namei))
-
-        如果 slot-entryi 是一个表达式形式, 那么就是
+        如果 slot-entryi 是下面这个形式
 
         (variable-namei 'slot-namei))
+
+         那么 Qi 就是
+
+        (variable-namei () (slot-value in 'slot-namei))
 
 
 ### <span id="M-DEFCLASS">宏 DEFCLASS</span>
@@ -2055,7 +2055,7 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
         定义一个新的类同时也导致一个相同名字的类型被定义. 如果给定 object 对象的类是 class-name 命名的类或是 class-name 命名的类的子类, 那么断言 (typep object class-name) 返回 true. 一个类对象可以被用作一个类型指定符. 因此如果这个 object 对象的类是 class 自身或者 class 的子类, 那么 (typep object class) 返回 true.
 
-        这个 class-name 参数指定这个新的类的特定的名字. 如果相同特定名字的一个类已经存在并且那个类是 standard-class 的一个实例, 并且如果这个新的类定义的 defclass 表达式形式指定一个类 standard-class 的类, 那么这个存在的类会被重定义, 并且它的实例 (还有它的子类) 在它们被下一次访问时会被更新到新的定义. 关于详细信息, 见章节  4.3.6 (Redefining Classes).
+        这个 class-name 参数指定这个新的类的特定的名字. 如果相同特定名字的一个类已经存在并且那个类是 standard-class 的一个实例, 并且如果这个新的类定义的 defclass 表达式形式指定一个类 standard-class 的类, 那么这个存在的类会被重定义, 并且它的实例 (还有它的子类) 在它们被下一次访问时会被更新到新的定义. 关于详细信息, 见章节  4.3.6 (重定义类).
 
         每个 superclass-name 参数指定这个新的类的一个直接超类. 如果这个超类列表是空的, 那么这个超类默认值取决于这个元类, 而对于 standard-object 默认值就是 standard-class.
 
@@ -2129,7 +2129,7 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 也见(See Also):
 
-        documentation, initialize-instance, make-instance, slot-value, Section 4.3 (Classes), Section 4.3.4 (Inheritance), Section 4.3.6 (Redefining Classes), Section 4.3.5 (Determining the Class Precedence List), Section 7.1 (对象创建和初始化)
+        documentation, initialize-instance, make-instance, slot-value, Section 4.3 (Classes), Section 4.3.4 (Inheritance), Section 4.3.6 (重定义类), Section 4.3.5 (Determining the Class Precedence List), Section 7.1 (对象创建和初始化)
 
 * 注意(Notes): None. 
 
