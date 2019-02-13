@@ -2032,86 +2032,86 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 参数和值(Arguments and Values):
 
-        Class-name---一个非 nil 符号.
-        Superclass-name--一个非 nil 符号.
-        Slot-name--一个符号. 这个 slot-name 参数是一个你符号, 它用作一个变量名是句法上有效的.
-        Reader-function-name---一个非 nil 符号. 可以为一个给定的槽提供超过一个 :reader.
-        Writer-function-name---一个广义函数名字. 可以为一个给定的槽提供超过一个 :writer.
-        Reader-function-name---一个非 nil 符号. 可以为一个给定的槽提供超过一个 :accessor.
-        Allocation-type---(member :instance :class). 可以为一个给定的槽提供最多一个 :allocation.
-        Initarg-name---一个符号. 可以为一个给定的槽提供超过一个 :initarg.
-        Form---一个表达式形式. 可以为一个给定的槽提供最多一个 :init-form.
-        Type-specifier---一个类型指定符. 可以为一个给定的槽提供最多一个 :type.
-        Class-option--- 指的是整个类或类的所有槽.
-        Initarg-list---一个依次为初始化参数名字和默认初始化值表达式形式的列表. 可以提供最多一个 :default-initargs.
-        Class-name---一个非 nil 符号. 可以提供最多一个 :metaclass can be supplied once at most.
-        new-class---新的类对象.
+        Class-name---一个非 nil [non-nil]符号[symbol].
+        Superclass-name--一个非 nil [non-nil]符号[symbol].
+        Slot-name--一个符号[symbol]. 这个 slot-name 参数是一个符号[symbol], 它用作一个变量名是语法上有效的.
+        Reader-function-name---一个非 nil [non-nil]符号[symbol]. 可以为一个给定的槽[slot]提供超过一个 :reader.
+        Writer-function-name---一个广义函数[generic function]名字. 可以为一个给定的槽[slot]提供超过一个 :writer.
+        Reader-function-name---一个非 nil [non-nil]符号[symbol]. 可以为一个给定的槽[slot]提供超过一个 :accessor.
+        Allocation-type---(member :instance :class). 可以为一个给定的槽[slot]提供最多一个 :allocation.
+        Initarg-name---一个符号[symbol]. 可以为一个给定的槽[slot]提供超过一个 :initarg.
+        Form---一个表达式形式[form]. 可以为一个给定的槽[slot]提供最多一个 :init-form.
+        Type-specifier---一个类型指定符[type specifier]. 可以为一个给定的槽[slot]提供最多一个 :type.
+        Class-option--- 引用整个类或类的所有槽[slot].
+        Initarg-list---一个交替的初始化参数名字[name]和默认初始化值表达式形式[form]的列表[list]. 最多只能提供一个 :default-initargs.
+        Class-name---一个非 nil [non-nil]符号[symbol]. 最多只能提供一个 :metaclass.
+        new-class---新的类[class]对象[object].
 
 * 描述(Description):
 
-        宏 defclass 定义一个新的已命名的类. 它把新的类对象作为它的结果返回.
+        宏 defclass 定义一个新的已命名的类[class]. 它把新的类[class]对象[object]作为它的结果返回.
 
-        defclass 的语法为给槽指定初始化参数, 为槽指定默认初始化值, 还有为给读取和写入槽的值自动生成指定广义函数的方法提供选项. 默认没有 reader 或 writer 函数被定义; 它们的生成必须是显式地请求. 然而, 槽可以总是通过使用 slot-value 来访问.
+        defclass 的语法为给槽[slot]指定初始化参数, 为槽[slot]指定默认初始化值, 还有为给读取和写入槽[slot]的值自动生成指定的广义函数[generic function]的方法[method]提供选项. 默认没有定义 reader 或 writer 函数; 它们的生成必须是显式地请求. 然而, 槽[slot]可以总是通过使用 slot-value 来访问.
 
-        定义一个新的类同时也导致一个相同名字的类型被定义. 如果给定 object 对象的类是 class-name 命名的类或是 class-name 命名的类的子类, 那么断言 (typep object class-name) 返回 true. 一个类对象可以被用作一个类型指定符. 因此如果这个 object 对象的类是 class 自身或者 class 的子类, 那么 (typep object class) 返回 true.
+        定义一个新的类[class]同时也导致一个相同名字的类型[type]被定义. 如果给定对象 object 的类[class]是由 class-name 命名的类[class]或是 class-name 命名的类的子类, 那么断言 (typep object class-name) 返回 true. 一个类[class]对象[object]可以被用作一个类型指定符[type specifier]. 因此如果这个对象 object 的类[class]是 class 自身或者 class 的子类, 那么 (typep object class) 返回 true.
 
-        这个 class-name 参数指定这个新的类的特定的名字. 如果相同特定名字的一个类已经存在并且那个类是 standard-class 的一个实例, 并且如果这个新的类定义的 defclass 表达式形式指定一个类 standard-class 的类, 那么这个存在的类会被重定义, 并且它的实例 (还有它的子类) 在它们被下一次访问时会被更新到新的定义. 关于详细信息, 见章节  4.3.6 (重定义类).
+        这个 class-name 参数指定这个新的类[class]的专有名字[proper name]. 如果相同的专有名字[proper name]的一个类[class]已经存在并且那个类[class]是 standard-class 的一个实例[instance], 并且如果这个新类[class]的定义 defclass 表达式形式指定一个类[class] standard-class 的类[class], 那么这个已存在的类[class]会被重定义, 并且它(还有它的子类[subclass])的实例在它们被下一次访问时会被更新到新的定义. 关于详细信息, 见章节  4.3.6 (重定义类).
 
-        每个 superclass-name 参数指定这个新的类的一个直接超类. 如果这个超类列表是空的, 那么这个超类默认值取决于这个元类, 而对于 standard-object 默认值就是 standard-class.
+        每个 superclass-name 参数指定这个新类[class]的一个直接超类[superclass]. 如果这个超类[superclass]列表是空的, 那么这个超类[superclass]默认值取决于这个元类[metaclass], 而对于 standard-object 默认值就是 standard-class.
 
-        这个新的类会从它的每个直接超类, 直接超类的直接超类, 等等继承槽和方法. 关于槽和方法如何被继承的讨论, 见章节 4.3.4 (Inheritance).
+        这个新类[class]会从它的每个直接超类[superclass], 直接超类的直接超类[superclass]等等继承槽[slot]和方法[method]. 关于槽[slot]和方法[method]如何被继承的讨论, 见章节 4.3.4 (继承).
 
         以下槽选项是可用的:
 
-            这个 :reader 槽选项指定在名为 reader-function-name 广义函数上定义一个未限定的方法来读取这个给定槽的值.
+            这个 :reader 槽选项指定在名为 reader-function-name 广义函数[generic function]上定义一个非限定方法[unqualified method]来读取这个给定槽[slot]的值.
 
-            这个 :writer 槽选项指定在名为 writer-function-name 广义函数上定义一个未限定的方法来写入这个槽的值.
+            这个 :writer 槽选项指定在名为 writer-function-name 广义函数[generic function]上定义一个非限定方法[unqualified method]来写入这个槽[slot]的值.
 
-            这个 :accessor 槽选项指定在名为 reader-function-name 的广义函数上定义一个未限定的方法来读取这个给定槽的值并且在名为 (setf reader-function-name) 的广义函数上定义一个未限定符方法来和 setf 一起使用来修改这个槽的值.
+            这个 :accessor 槽选项指定在名为 reader-function-name 的广义函数[generic function]上定义一个非限定方法[unqualified method]来读取这个给定槽[slot]的值, 并且在名为 (setf reader-function-name) 的广义函数[generic function]上定义一个非限定方法[unqualified method]来和 setf 一起使用来修改这个槽[slot]的值.
 
-            这个 :allocation 槽选项用于指定这个给定的槽要被存储的位置. 一个槽的存储可以位于每个实例或者这个类对象自身. 这个 allocation-type 参数的值可以是关键字 :instance 或者关键字 :class. 如果 :allocation 槽选项没有被指定, 结果和指定 :allocation :instance 一样.
+            这个 :allocation 槽选项用于指定这个给定的槽[slot]要被分配的存储的位置. 一个槽[slot]的存储可以位于每个实例或者这个类[class]对象[object]自身. 这个 allocation-type 参数的值可以是关键字 :instance 或者关键字 :class. 如果 :allocation 槽选项没有被指定, 结果和指定 :allocation :instance 一样.
 
-                如果 allocation-type 是 :instance, 一个名为 slot-name 的局部槽会被分配在这个类的每个实例.
+                如果 allocation-type 是 :instance, 一个名为 slot-name 的局部槽[local slot]会被分配在这个类[class]的每个实例.
 
-                如果 allocation-type 是 :class, 这个给定名字的共享槽会被分配在这个 defclass 表达式形式创建的类对象中. 这个槽的值被这个类的所有实例所共享. 如果一个类 C1 定义了这样一个共享槽, 任何 C1 的子类 C2 会共享同一个槽除非这个 C2 的 defclass 表达式形式指定了一个相同名字的槽或者这里有一个在 C2 的优先级列表中优先于 C1 并且定义了相同名字的槽的 C2 的超类.
+                如果 allocation-type 是 :class, 这个给定名字的共享槽[slot]会被分配在由这个 defclass 表达式形式创建的类[class]对象[object]中. 这个槽[slot]的值被这个类[class]的所有实例[instance]所共享. 如果一个类 C1 定义了这样一个共享槽[shared slot], 任何 C1 的子类 C2 会共享这个单独的槽除非这个 C2 的 defclass 表达式形式指定了一个相同名字[name]的槽[slot]或者这里有一个在 C2 的优先级列表中优先于 C1 并且定义了相同名字[name]的槽[slot]的 C2 的超类.
 
-            这个 :initform 槽选项被用于提供在这个槽的初始化中使用的默认初始值表达式形式. 这个表达式形式在每次被用来初始化这个槽时都会被求值. 这个表达式形式被求值所在词法环境是defclass 表达式形式被求值所在的词法环境. 注意这个词法环境既引用了变量也引用了函数. 对于局部槽, 动态环境是 make-instance 被调用所在的动态环境; 对于共享槽, 动态环境是 defclass 表达式形式被求值所在的动态环境. 见章节 7.1 (对象创建和初始化).
+            这个 :initform 槽选项被用于提供在这个槽[slot]的初始化中使用的默认初始值表达式形式. 这个表达式形式[form]在每次被用来初始化这个槽[slot]时都会被求值. 这个表达式形式[form]被求值所在词法环境是 defclass 表达式形式被求值所在的词法环境. 注意这个词法环境既引用了变量也引用了函数. 对于局部槽[local slot], 动态环境是 make-instance 被调用所在的动态环境; 对于共享槽[slot], 动态环境是 defclass 表达式形式被求值所在的动态环境. 见章节 7.1 (对象创建和初始化).
 
-            没有具体实现被允许去扩展 defclass 的语法来允许 (slot-name form) 作为一个 (slot-name :initform form) 的简写.
+            具体实现不允许去扩展 defclass 的语法来允许 (slot-name form) 作为一个 (slot-name :initform form) 的简写.
 
-            这个 :initarg 槽选项声明一个名为 initarg-name 的初始化参数并且指定这个初始化参数初始化给定的槽. 在对 initialize-instance 的调用中如果这个初始化参数有一个值, 那么就会被存储到给定的槽中, 并且, 如果存在这个槽的 :initform 槽选项, 就不会求值. 如果没有为一个给定的槽指定有值的初始化参数, 而指定了 :initform 槽选项的话, 就根据这个槽选项来初始化这个槽.
+            这个 :initarg 槽选项声明一个名为 initarg-name 的初始化参数并且指定这个初始化参数初始化给定的槽[slot]. 在对 initialize-instance 的调用中如果这个初始化参数有一个值, 那么就会被存储到给定的槽[slot]中, 并且, 如果存在这个槽的 :initform 槽选项, 就不会求值. 如果没有为一个给定的槽[slot]指定有值的初始化参数, 如果指定了 :initform 槽选项的话, 就根据这个槽选项来初始化这个槽[slot].
 
-            这个 :type 槽选项指定这个槽的内容总是为指定的数据类型. 它有效地声明应用到这个类的一个对象的 reader 广义函数的结果类型. 尝试去存储一个不符合一个槽的类型的值到这个槽中的后果是未定义的. 这个 :type 槽选项在章节 7.5.3 (Inheritance of Slots and Slot Options) 中被进一步讨论.
+            这个 :type 槽选项指定这个槽[slot]的内容总是为指定的数据类型. 它有效地声明应用到这个类[class]的一个对象[object]的 reader 广义函数的结果类型. 尝试去存储一个不符合一个槽[slot]的类型的值到这个槽[slot]中的后果是未定义的. 这个 :type 槽选项在章节 7.5.3 (槽和槽选项的继承) 中被进一步讨论.
 
-            这个 :documentation 槽选项为这个槽提供一个文档字符串. :documentation 提供给一个槽最多一次.
+            这个 :documentation 槽选项为这个槽[slot]提供一个文档字符串[documentation string]. :documentation 提供给一个槽[slot]最多一次.
 
-        每个类选项是一个把这个类当作整体的选项. 以下类选项是可用的:
+        每个类选项是一个把这个类[class]当作整体的选项. 以下类选项是可用的:
 
-            这个 :default-initargs 类选项后面跟着一个依次为初始化参数名和默认初始化值表达式形式的列表. 如果这些初始化参数中的任何一个没有出现在提供给 make-instance 的初始化列表中, 对应的默认初始值表达式形式就会被求值, 并且这个初始化参数名字和这个表达式形式的值会在这个实例被创建前被添加到这个初始化参数列表的末尾; 见章节 7.1 (对象创建和初始化). 默认初始值表达式形式在每次被使用时都会求值. 这个表达式形式被求值时所在词法环境是 defclass 表达式形式被求值时所在词法环境. 而动态环境是 make-instance 被调用时所处的动态环境. 如果一个初始化参数名字在一个 :default-initargs 槽选项中出现不止一次, 就会发出一个错误.
+            这个 :default-initargs 类选项后面跟着一个交替的初始化参数名字[name]和默认初始化值表达式形式的列表. 如果这些初始化参数中的任何一个没有出现在提供给 make-instance 的初始化列表中, 对应的默认初始值表达式形式就会被求值, 并且这个初始化参数名字[name]和这个表达式形式的值会在这个实例被创建前被添加到这个初始化参数列表的末尾; 见章节 7.1 (对象创建和初始化). 默认初始值表达式形式在每次被使用时都会求值. 这个表达式形式被求值时所在词法环境是 defclass 表达式形式被求值时所在词法环境. 而动态环境是 make-instance 被调用时所处的动态环境. 如果一个初始化参数名字[name]在一个 :default-initargs 槽选项中出现不止一次, 就会发出一个错误.
 
-            这个 :documentation 类选项导致一个文档字符串被绑定到这个类对象, 以及 type 种类的 class-name 上. :documentation 最多只能被提供一次.
+            这个 :documentation 类选项导致一个文档字符串[documentation string]被绑定到这个类[class]对象[object], 以及以 type 种类绑定到 class-name 上. :documentation 最多只能被提供一次.
 
-            这个 :metaclass 类选项用于指定这个要被定义的类的实例有着和系统提供的默认值(类 standard-class)不同的元类.
+            这个 :metaclass 类选项用于指定这个要被定义的类[class]的实例有着不同的元类, 而不是系统提供的默认值(类[class] standard-class).
 
-        注意以下这些标准类的 defclass 的规则:
+        注意以下这些标准类[standard class]的 defclass 的规则:
 
-            一个类的超类不需要在这个类的 defclass 表达式形式被求值前被定义.
+            一个类[class]的超类[superclass]不需要在这个类[class]的 defclass 表达式形式被求值前被定义.
 
-            一个类的所有超类必须在这个类的一个实例被创建前被定义.
+            一个类[class]的所有超类[superclass]必须在这个类[class]的一个实例[instance]被创建前被定义.
 
-            一个类必须在它被用作 defmethod 表达式形式中的参数指定符之前被定义.
+            一个类[class]必须在它被用作 defmethod 表达式形式中的参数特化符之前被定义.
 
         对象系统可以扩展, 以覆盖不遵守这些规则的情况.
 
-        某些槽选项被一个类从它的超类中继承下来, 而某些可以通过提供一个局部槽描述来遮蔽或修改. 除了 :default-initargs 以外没有其他类选项被继承. 关于槽和槽选项如何被继承的详情, 见章节 7.5.3 (Inheritance of Slots and Slot Options).
+        某些槽选项被一个类[class]从它的超类[superclass]中继承下来, 并且某些可以通过提供一个局部槽描述来遮蔽或修改. 除了 :default-initargs 以外没有其他类选项被继承. 关于槽[slot]和槽选项如何被继承的详情, 见章节 7.5.3 (槽和槽选项的继承).
 
         给 defclass 的选项可以被扩展. 如果一个具体实现发现一个类选项或一个槽选项没有被本地实现, 那么这个具体实现就需要去发出一个错误.
 
-        为一个槽指定超过一个的 reader, writer, accessor, 或初始化参数是有效的. 没有其他槽选项可以在单个槽描述中出现超过一次, 否则就发出一个错误.
+        为一个槽[slot]指定超过一个的 reader, writer, accessor, 或初始化参数是有效的. 没有其他槽选项可以在单个槽描述中出现超过一次, 否则就发出一个错误.
 
-        如果没有为一个槽指定 reader, writer, 或 accessor, 这个槽只能通过函数 slot-value 来访问.
+        如果没有为一个槽[slot]指定 reader, writer, 和 accessor, 那么这个槽[slot]只能通过函数[function] slot-value 来访问.
 
-        如果一个 defclass 表达式形式作为一个顶层表达式形式出现, 编译器必须使这个类名在后面的声明中(就像 deftype)被识别为一个有效的类型名字, 在 defmethod 的参数特化符中被识别为一个有效的类名并且可以用作后面的 defclass 的 :metaclass 选项. 当 find-class 的 environment 参数是作为一个宏的环境参数接收到的值时, 编译器必须使可用的类定义能够被 它返回.
+        如果一个 defclass 表达式形式[form]作为一个顶层表达式形式[top level form]出现, 编译器[compiler]必须使这个类[class]的名字[name]在后面的声明中(就像 deftype)被识别为一个有效的类型[type]名字[name], 被识别为一个 defmethod 的参数特化符[parameter specializer]的有效的类[class]的名字[name]并且可以用作后面的 defclass 的 :metaclass 选项. 当 find-class 的 environment 实参[argument]是作为一个宏[macro]的环境参数[environment parameter]接收到的值时, 编译器[compiler]必须使可用的类[class]定义能够被它返回.
 
 * 示例(Examples): None.
 
@@ -2119,17 +2119,17 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 异常情况(Exceptional Situations):
 
-        如果这里有任何槽名字重复, 就会发出一个 program-error 类型的错误.
+        如果这里有任何槽名字重复, 就会发出一个 program-error 类型[type]的错误.
 
-        如果一个初始化参数名字不止一次出现在 :default-initargs 类选项中, 就会发出一个 program-error 类型的错误.
+        如果一个初始化参数名字[name]不止一次出现在 :default-initargs 类选项中, 就会发出一个 program-error 类型[type]的错误.
 
-        如果在单个槽描述中下面的任何一个槽选项出现超过一次, 就会发出一个 program-error 类型的错误: :allocation, :initform, :type, :documentation.
+        如果在单个槽描述中下面的任何一个槽选项出现超过一次, 就会发出一个 program-error 类型[type]的错误: :allocation, :initform, :type, :documentation.
 
-        如果具体实现发现一个类选项或一个槽选项没有被本地实现, 所有这样的实现都需要去发出一个 program-error 类型的错误.
+        如果具体实现发现一个类选项或一个槽选项没有被本地实现, 所有这样的实现都需要去发出一个 program-error 类型[type]的错误.
 
 * 也见(See Also):
 
-        documentation, initialize-instance, make-instance, slot-value, Section 4.3 (Classes), Section 4.3.4 (Inheritance), Section 4.3.6 (重定义类), Section 4.3.5 (Determining the Class Precedence List), Section 7.1 (对象创建和初始化)
+        documentation, initialize-instance, make-instance, slot-value, 章节 4.3 (类), 章节 4.3.4 (继承), 章节 4.3.6 (重定义类), 章节 4.3.5 (确定类优先级列表), 章节 7.1 (对象创建和初始化)
 
 * 注意(Notes): None. 
 
@@ -2152,59 +2152,59 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 参数和值(Arguments and Values):
 
-        function-name---一个函数对象.
-        generic-function-class---命名一个类的非 nil 符号.
-        gf-declaration---一个 optimize 声明指定符; 不允许其他声明指定符.
-        gf-documentation---一个字符串; 不求值.
-        gf-lambda-list---一个广义函数 lambda 列表.
-        method-class---命名一个类的非 nil 符号.
+        function-name---一个函数名字[function name].
+        generic-function-class---命名一个类[class]的非 nil [non-nil]符号[symbol].
+        gf-declaration---一个 optimize 声明指定符[declaration specifier]; 不允许其他声明指定符[declaration specifier].
+        gf-documentation---一个字符串[string]; 不求值.
+        gf-lambda-list---一个广义函数 lambda 列表[generic function lambda list].
+        method-class---命名一个类[class]的非 nil [non-nil]符号[symbol].
         method-combination-argument---一个对象.
-        method-combination-name---命名一个方法组合类型的符号.
-        method-qualifiers, specialized-lambda-list, declarations, documentation, forms---as per defmethod.
-        new-generic---这个广义函数对象.
-        parameter-name---在 lambda-list 中命名一个必要参数的符号. (如果 :argument-precedence-order 选项被指定, 在 lambda-list 中的每个必要参数必须必须被作为 parameter-name 准确使用一次.)
+        method-combination-name---命名一个方法组合[method combination]类型[type]的符号[symbol].
+        method-qualifiers, specialized-lambda-list, declarations, documentation, forms---根据 defmethod.
+        new-generic---这个广义函数[generic function]对象[object].
+        parameter-name---在 lambda-list 中命名一个必要参数[required parameter]的符号[symbol]. (如果 :argument-precedence-order 选项被指定, 在 lambda-list 中的每个必要参数[required parameter]必须必须被作为 parameter-name 准确使用一次.)
 
 * 描述(Description):
 
-        宏 defgeneric 被用于定义一个广义函数或指定或用来指定属于整个广义函数的选项和声明.
+        宏 defgeneric 被用于定义一个广义函数[generic function]或用来指定属于整个广义函数[generic function]的选项和声明.
 
-        如果 function-name 是一个列表那么它必须是表达式形式 (setf symbol). 如果 (fboundp function-name) 是 false, 一个新的广义函数就会被创建. 如果 (fdefinition function-name) 是一个广义函数, 那个广义函数就会被修改. 如果 function-name 命名了一个普通函数, 一个宏, 或者一个特殊操作符, 就会发出一个错误.
+        如果 function-name 是一个列表[list]那么它必须是 (setf symbol) 形式. 如果 (fboundp function-name) 是 false, 一个新的广义函数[generic function]就会被创建. 如果 (fdefinition function-name) 是一个广义函数[generic function], 那么这个广义函数[generic function]就会被修改. 如果 function-name 命名了一个普通函数[ordinary function], 一个宏[macro], 或者一个特殊操作符[special operator], 就会发出一个错误.
 
-        这个 defgeneric 宏的效果就好像执行了下面三步: 首先, 通过前面的 defgeneric 表达式形式定义的方法会被移除; 其次, ensure-generic-function 会被调用; 最终, 通过当前 defgeneric 表达式形式指定的方法会被添加到这个广义函数中.
+        这个 defgeneric 宏的效果就好像执行了下面三步: 首先, 通过前面的 defgeneric 表达式形式[form]定义的方法[method]会被移除; 其次, ensure-generic-function 会被调用; 最终, 通过当前 defgeneric 表达式形式[form]指定的方法[method]会被添加到这个广义函数[generic function]中.
 
-        每个 method-description 在这个广义函数上定义一个方法. 每个方法的 lambda 列表必须和 gf-lambda-list 选项指定的 lambda 列表一致. 如果没有指定方法描述并且相同名字的广义函数不存在, 一个没有方法的广义函数会被创建.
+        每个 method-description 在这个广义函数[generic function]上定义一个方法[method]. 每个方法[method]的 lambda 列表[lambda list]必须和 gf-lambda-list 选项指定的 lambda 列表[lambda list]一致. 如果没有指定方法[method]描述并且相同名字的广义函数[generic function]不存在, 一个没有方法[method]的广义函数[generic function]会被创建.
 
-        defgeneric 的 gf-lambda-list 参数指定了这个广义函数上的方法的 lambda 列表的外形. 在这个产生的广义函数上的方法必须有着和这个外形一致的 lambda 列表. 如果一个 defgeneric 表达式形式被求值并且这个广义函数的一些方法有着和这个广义函数中被给定的不一致的 lambda 列表, 就会发出一个错误. 关于方法一致性的详情, 见章节 7.6.4 (Congruent Lambda-lists for all Methods of a Generic Function).
+        defgeneric 的 gf-lambda-list 参数指定了这个广义函数[generic function]上的方法[method]的 lambda 列表[lambda list]的外形. 在产生的这个广义函数[generic function]上的所有方法[method]必须有着和这个外形一致的 lambda 列表[lambda list]. 如果一个 defgeneric 表达式形式被求值并且这个广义函数[generic function]的一些方法[method]有着和这个 defgeneric 表达式形式中被给定的不一致的 lambda 列表[lambda list], 就会发出一个错误. 关于方法一致性的详情, 见章节 7.6.4 (广义函数的所有方法的一致 Lambda-list).
 
-        广义函数把所有给它的参数值传递给方法, 并且只有那些; 不支持默认值. 注意, 方法定义中的可选参数和关键字参数, however, 可以有默认初始值表达式形式并且可以使用 supplied-p 参数.
+        广义函数[generic function]把所有给它的参数值传递给方法[method], 并且只有那些参数; 不支持默认值. 注意, 方法定义中的可选参数和关键字参数可以有默认初始值表达式形式并且可以使用 supplied-p 参数.
 
-        以下选项是支持的. 除非另有说明, 一个给定选项只能出现一次.
+        支持以下选项. 除非另有说明, 一个给定选项只能出现一次.
 
-            这个 :argument-precedence-order 选项在选定一个特定的方法时被用于指定这些必要参数在一个对这个广义函数的调用中被检查特异度的顺序. 每个必要参数, 依照在 gf-lambda-list 参数中指定的, 必须被作为一个 parameter-name 准确包含一次这样才能提供完整且无歧义的优先级顺序. 如果这个条件没有满足, 就会出现一个错误.
+            这个 :argument-precedence-order 选项在选择一个特定的方法[method]时被用于指定这些必要参数在一个对这个广义函数[generic function]的调用中被检查特异度的顺序. 每个在 gf-lambda-list 参数中指定的必要参数, 必须作为一个 parameter-name 被包含一次, 这样才能提供完整且无歧义的优先级顺序. 如果这个条件没有满足, 就会出现一个错误.
 
-            这个 declare 选项被用于指定属于这个广义函数的声明.
+            这个 declare 选项被用于指定属于这个广义函数[generic function]的声明.
 
-            一个 optimize 声明指定符是允许的. 它指定了方法选择是否要对速度或空间进行优化, 但是它在方法上无效. 为了控制一个方法如何被优化, 一个 optimize 声明必须直接放置在 defmethod 表达式形式或方法描述中. 优化特性 speed 和 space 是这个标准要求的仅有的特性, 但是一个具体实现可以扩展这个对象系统来识别其他特性. 一个只有一种方法选择技术并且忽略 optimize 声明指定符的简单实现是有效的.
+            一个 optimize 声明指定符[declaration specifier]是允许的. 它指定了方法选择是否要对速度或空间进行优化, 但是它在方法[method]上无效. 为了控制一个方法[method]如何被优化, 一个 optimize 声明必须直接放置在 defmethod 表达式形式[form]或方法[method]描述中. 优化特性 speed 和 space 是这个标准要求的仅有的特性, 但是一个具体实现可以扩展这个对象系统来识别其他特性. 一个只有一种方法选择技术并且忽略 optimize 声明指定符[declaration specifier]的简单实现是有效的.
 
-            special, ftype, function, inline, notinline, 以及 declaration 声明是不允许的. 个别具体实现可以去扩展这个 declare 选项来支持额外的声明. 如果一个具体实现注意到一个不支持的声明指定符并且在一个 declaration 全局声明中没有被声明为一个非标准声明标识符的名字, 它应该发出一个警告.
+            special, ftype, function, inline, notinline, 以及 declaration 声明是不允许的. 个别具体实现可以去扩展这个 declare 选项来支持额外的声明. 如果一个具体实现注意到一个不支持的声明指定符[declaration specifier]并且没有在一个 declaration 公告[proclamation]中被声明为一个非标准声明标识符[declaration identifier]的名字, 它应该提出一个警告.
 
-            这个 declare 选项可能被指定超过一次. 效果和这些声明指定符列表被一起追加到同一个列表中并指定单个的 declare 选项是一样的.
+            这个 declare 选项可以被多次指定. 效果和这些声明指定符[declaration specifier]列表被一起追加到同一个列表中并指定单个的 declare 选项是一样的.
 
-            这个 :documentation 参数是一个绑定给这个广义函数对象的文档字符串, 并且也绑定给 function 种类的 function-name.
+            这个 :documentation 参数是一个绑定给这个广义函数[generic function]对象[object]的文档字符串[documentation string], 并且以 function 种类绑定给 function-name.
 
-            这个 :generic-function-class 选项可以被用来指定这个广义函数去拥有一个和系统提供的默认值(类 standard-generic-function)不一样的类. 这个 class-name 参数是一个可以是广义函数的类的类名. 如果 function-name 指定了一个有着不同的 :generic-function-class 参数值的已存在的广义函数并且这个新的广义函数类和旧的兼容, 那么 change-class 会被调用来修改这个广义函数的类; 否则就发出一个错误.
+            这个 :generic-function-class 选项可以被用来指定这个广义函数[generic function]去拥有一个不一样的类, 而不是系统提供的默认值(类[class] standard-generic-function). 这个 class-name 参数是一个类[class]的名字, 这个类[class]可以是广义函数[generic function]的类[class]. 如果 function-name 指定了一个已存在的广义函数[generic function], 这个广义函数有着不同的 :generic-function-class 参数值并且这个新的广义函数类[class]和旧的兼容, 那么 change-class 会被调用来修改这个广义函数[generic function]的类[class]; 否则就发出一个错误.
 
-            这个 :method-class 选项被用于指定这个广义函数上的所有方法都有着和提供提供的默认值(类 standard-method)不同的类. 这个 class-name 参数是能够称为一个方法的类的类名.
+            这个 :method-class 选项被用于指定这个广义函数[generic function]上的所有方法[method]都有着和提供提供的默认值(类[class] standard-method)不同的类[class]. 这个 class-name 参数是一个能够成为一个方法[method]类[method]的类[name]的名字.
 
-            这个 :method-combination 选项后面跟着一个命名一个方法组合类型的符号. 跟随该符号的参数(如果有的话)依赖于方法组合的类型. 注意, 标准方法组合类型不支持任何参数. 然而, 通过 define-method-combination 的短表达式形式定义的所有方法组合的类型都接受一个名为 order 的可选参数, 默认为 :most-specific-first, 在这里一个 :most-specific-last 的值在不影响辅助方法的顺序下倒转主方法的顺序.
+            这个 :method-combination 选项后面跟着一个命名一个方法组合类型的符号. 跟在该符号后面的参数(如果有的话)取决于方法组合的类型. 注意, 标准方法组合类型不支持任何参数. 然而, 通过 define-method-combination 的短表达式形式定义的所有方法组合的类型都接受一个名为 order 的可选参数, 默认为 :most-specific-first, 在这里一个 :most-specific-last 的值在不影响辅助方法[method]顺序的情况下倒转主方法[method]的顺序.
 
-        这个 method-description 参数定义了和这个广义函数关联的方法. 在一个方法描述中的 method-qualifier 和 specialized-lambda-list 参数和 defmethod 中的是一样的.
+        这个 method-description 参数定义了和这个广义函数[generic function]关联的方法[method]. 在一个方法描述中的 method-qualifier 和 specialized-lambda-list 参数和 defmethod 中的是一样的.
 
-        这个 form 参数指定这个方法的主体(body). 这个方法的主体闭合在一个隐式的 block 中. 如果 function-name 是一个符号, 这个 block 就具有和这个广义函数相同的名字. 如果 function-name 是这样的一个表达式形式 (setf symbol), 这个 block 的名字就是 symbol.
+        这个 form 参数指定这个方法的主体(body). 这个方法[method]的主体闭合在一个隐式语句块[implicit block]中. 如果 function-name 是一个符号[symbol], 这个语句块就具有和这个广义函数[generic function]相同的名字. 如果 function-name 是一个 (setf symbol) 形式的一个列表, 这个语句块的名字就是 symbol.
 
         具体实现可以去扩展 defgeneric 来包含其他选项. 如果一个具体实现发现一个选项没有被本地实现, 它就需要去发出一个错误.
 
-        defgeneric 不需要去执行任何编译时的副作用. 特别是, 这些方法不会为了在编译时调用而被设置. 一个具体实现可以选择为了编译时错误检查的目的去存储关于这个广义函数的信息 (比如在调用上检查参数数量, 或者记录这个函数名的定义已经出现过).
+        defgeneric 不需要去执行任何编译时的副作用. 尤其是, 这些方法[method]不会为了在编译时调用而被设置. 一个具体实现[implementation]可以选择为了编译时错误检查的目的去存储关于这个广义函数[generic function]的信息 (比如在调用上检查参数数量, 或者记录这个函数名的定义已经出现过).
 
 * 示例(Examples):
 
@@ -2212,23 +2212,23 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 异常情况(Exceptional Situations):
 
-        如果 function-name 命名一个普通函数, 一个宏, 或者一个特殊操作符, 就会发出一个 program-error 类型的错误.
+        如果 function-name 命名一个普通函数[ordinary function], 一个宏[macro], 或者一个特殊操作符[special operator], 就会发出一个 program-error 类型[type]的错误.
 
-        每个必要参数, 如 gf-lambda-list 参数中所指定的, 必须被准确包含一次作为一个 parameter-name, 否则就会发出一个 program-error 类型的错误.
+        每个必要参数, 如 gf-lambda-list 参数中所指定的, 必须作为一个 parameter-name 被准确包含一次, 否则就会发出一个 program-error 类型[type]的错误.
 
-        通过一个 method-description 指定的每个方法的 lambda 列表必须和 gf-lambda-list 选项指定的 lambda 列表一致, 否则就会发出一个 error 类型的错误.
+        通过一个 method-description 指定的每个方法[method]的 lambda 列表[lambda list]必须和 gf-lambda-list 选项指定的 lambda 列表[lambda list]一致, 否则就会发出一个 error 类型[type]的错误.
 
-        如果一个 defgeneric 表达式形式被求值并且这个广义函数的某些方法拥有和这个 defgeneric 表达式形式中给定的不一致的 lambda 列表, 就会发出一个 error 类型的错误.
+        如果一个 defgeneric 表达式形式被求值并且这个广义函数[generic function]的某些方法[method]拥有和这个 defgeneric 表达式形式中给定的不一致的 lambda 列表[lambda list], 就会发出一个 error 类型[type]的错误.
 
-        一个给定的选项可能只能出现一次, 否则就会发出一个 program-error 类型的错误.
+        一个给定的选项 option 只能出现一次, 否则就会发出一个 program-error 类型[type]的错误.
 
-        如果 function-name 指定一个已存在的且有着不相同值的 :generic-function-class 参数的广义函数而这个新的广义函数类和旧的兼容, change-class 会被调用来改变这个广义函数的类; 否则就会发出一个 error 类型的错误.
+        如果 function-name 指定一个已存在且有着不同 :generic-function-class 参数的值的广义函数[generic function]而这个新的广义函数类[class]和旧的兼容, change-class 会被调用来改变这个广义函数[generic function]的类[class]; 否则就会发出一个 error 类型[type]的错误.
 
-        具体实现可以去扩展 defgeneric 来包含其他选项. 如果一个具体实现发现一个选项没有被本地实现, 它就需要去发出一个 program-error 类型的错误.
+        具体实现可以去扩展 defgeneric 来包含其他选项. 如果一个具体实现发现一个选项没有被本地实现, 它就需要去发出一个 program-error 类型[type]的错误.
 
 * 也见(See Also):
 
-        defmethod, documentation, ensure-generic-function, generic-function, Section 7.6.4 (Congruent Lambda-lists for all Methods of a Generic Function)
+        defmethod, documentation, ensure-generic-function, generic-function, 章节 7.6.4 (广义函数的所有方法的一致 Lambda-list)
 
 * 注意(Notes): None. 
 
@@ -2254,62 +2254,62 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 参数和值(Arguments and Values):
 
-        declaration---一个 declare 表达式; 不求值.
-        documentation---一个字符串; 不求值.
-        var---一个变量名.
-        eql-specializer-form---一个表达式形式.
-        Form---一个表达式形式.
-        Initform---一个表达式形式.
-        Supplied-p-parameter---variable name.
-        new-method---the new method object.
+        declaration---一个 declare 表达式[expression]; 不求值.
+        documentation---一个字符串[string]; 不求值.
+        var---一个变量[variable]名[name].
+        eql-specializer-form---一个表达式形式[form].
+        Form---一个表达式形式[form].
+        Initform---一个表达式形式[form].
+        Supplied-p-parameter---变量名.
+        new-method---新的方法[method]对象[object].
 
 * 描述(Description):
 
-        宏 defmethod 在一个广义函数上定义方法.
+        宏 defmethod 在一个广义函数[generic function]上定义方法[method].
 
-        如果 (fboundp function-name) 是 nil, 就会创建一个广义函数, 其中采用默认的参数优先级顺序 (每个参数都比在它的参数列表中它右边的参数更具体), 广义函数的类 (类 standard-generic-function), 方法的类 (类 standard-method), 方法组合类型 (标准方法组合类型). 这个广义函数的 lambda 列表和这个被定义的方法一致; 如果这个 defmethod 表达式形式提及关键字参数, 广义函数的 lambda 列表也会提及 ..... key (但是没有关键字参数). 如果 function-name 命名一个普通函数, 一个宏, 或者一个特殊操作符, 就会发出一个错误.
+        如果 (fboundp function-name) 是 nil, 就会创建一个广义函数[generic function], 其中采用参数优先级顺序 (每个参数都比这个参数列表中它右边的参数更具体), 默认的广义函数的类 (类[slass] standard-generic-function), 方法的类 (类[class] standard-method), 方法组合类型 (标准方法组合类型) 的默认值. 这个广义函数[generic function]的 lambda 列表[lambda list]和这个被定义的方法[method]一致; 如果这个 defmethod 表达式形式提及关键字参数, 那么广义函数[generic function]的 lambda 列表[lambda list]也会提及 ..... key (但是没有关键字参数). 如果 function-name 命名一个普通函数[ordinary function], 一个宏[macro], 或者一个特殊操作符[special operator], 就会发出一个错误.
 
-        如果 function-name 当前命名一个广义函数, 这个方法的 lambda 列表必须和这个广义函数的一致. 如果这个状况没有被处理, 就会发出一个错误. 对于在这个上下文中的一致性定义, 见章节 7.6.4 (Congruent Lambda-lists for all Methods of a Generic Function).
+        如果 function-name 当前命名一个广义函数[generic function], 这个方法的 lambda 列表[lambda lsit]必须和这个广义函数[generic function]的一致. 如果这个状况没有被处理, 就会发出一个错误. 对于在这个上下文中的一致性定义, 见章节 7.6.4 (广义函数的所有方法的一致 Lambda-list).
 
-        每个 method-qualifier 参数是一个被方法组合用于识别这个给定方法的对象. 方法组合类型可能会进一步限制方法限定符的作用. 标准方法组合类型允许非受限方法和单个限定符是关键字 :before, :after, 或 :around 之一的方法.
+        每个 method-qualifier 参数是一个被方法组合用于识别这个给定方法的对象[object]. 方法组合类型可能会进一步限制可以是哪些方法限定符[qualifier]. 标准方法组合类型允许非限定方法[unqualified method]和单个限定符[qualifier]是关键字 :before, :after, 或 :around 之一的方法[method].
 
-        这个 specialized-lambda-list 参数和一个普通 lambda 列表类似, 除了必要参数的名字被特化参数替代. 一个特化参数是表达式形式 (var parameter-specializer-name) 的列表. 只有必要参数可以被特化. 如果 parameter-specializer-name 是一个符号, 它就命名一个类; 如果它是一个列表, 它就是表达式形式 (eql eql-specializer-form). 这个参数特化符名字 (eql eql-specializer-form) 表示对应的参数必须和一个对象 eql, 这个对象是对于这个方法可应用的 eql-specializer-form 的值. 这个 eql-specializer-form 在这个 defmethod 宏展开被求值的时候被求值. 如果一个给定的必要参数没有指定参数特化符的名字, 那么这个参数特化符默认是类 t. 关于进一步讨论, 见章节 7.6.2 (Introduction to Methods).
+        这个 specialized-lambda-list 参数和一个普通 lambda 列表[lambda list]类似, 除了必要参数的名字被特化参数替代. 一个特化参数是表达式形式 (var parameter-specializer-name) 的列表. 只有必要参数可以被特化. 如果 parameter-specializer-name 是一个符号[symbol], 它就命名一个类[class]; 如果它是一个列表[list], 它就是表达式形式 (eql eql-specializer-form). 这个参数特化符名字 (eql eql-specializer-form) 表示对应的参数必须和要被应用的这个方法[method]的 eql-specializer-form 的值对象[object]是 eql 的. 这个 eql-specializer-form 在这个 defmethod 宏展开被求值的时候被求值. 如果一个给定的必要参数没有指定参数特化符名字[parameter specializer name], 那么这个参数特化符[parameter specializer]默认是类[class] t. 关于进一步讨论, 见章节 7.6.2 (方法的介绍).
 
-        这个 form 参数指定这个方法的主体. 这个方法的主体被闭合在一个隐式的 block 中. 如果 function-name 是一个符号, 这个 block 具有和这个广义函数相同的名字. 如果 function-name 是表达式形式 (setf symbol), 那么这个 block 的名字是 symbol.
+        这个 form 参数指定这个方法的主体. 这个方法[method]的主体被闭合在一个隐式语句块[implicit block]中. 如果 function-name 是一个符号[symbol], 这个语句块具有和这个广义函数[generic function]相同的名字[name]. 如果 function-name 是一个 (setf symbol) 形式的列表[list], 那么这个语句块的名字[name]是 symbol.
 
-        这个被创建的方法的类是这个方法定义所在的广义函数的方法类选项给定的.
+        这个被创建的方法[method]对象[object]的类[class]是这个方法[method]定义所在的广义函数[generic function]的方法类选项给定的.
 
-        如果这个广义函数已经有一个和要被定义的方法在参数特化符和限定符上一样的方法, defmethod 用现在要被定义的方法来替换已存在的那个. 关于这个上下文的一致性定义. 见章节 7.6.3 (Agreement on Parameter Specializers and Qualifiers).
+        如果这个广义函数[generic function]已经有一个和要被定义的方法[method]在参数特化符[parameter specializer]和限定符[qualifier]上一样的方法[method], defmethod 用现在要被定义的那个来替换已存在的方法[method]. 关于这个上下文的一致性定义. 见章节 7.6.3 (关于参数特化符和限定符的一致性).
 
-        这些参数特化符源自于章节 7.6.2 (Introduction to Methods) 中描述的参数特化符的名字.
+        这些参数特化符[parameter specializer]源自于章节 7.6.2 (方法的介绍) 中描述的参数特化符名字[parameter specializer name].
 
-        The expansion of the defmethod macro ``refers to'' each specialized parameter (见 declare 描述中的 ignore 的描述). 这个包括拥有显式参数特化符名字 t 的参数. 这个就意味着, 如果这个方法的主体没有引用一个特化的参数, 编译器不会发出警告, 而在这个方法的主体没有引用一个未特化参数时可能发出警告. 出于这个原因, 在这个上下文中一个在 t 上特化的参数并不完全等同于一个未特化的参数.
+        这个 defmethod 宏的展开式 "引用" 每一个特化参数 (见 declare 描述中的 ignore 的描述). 这个包括拥有显式参数特化符名字[parameter specializer name] t 的参数. 这个就意味着, 如果这个方法[method]的主体没有引用一个特化的参数, 那么编译器不会发出警告, 而在这个方法[method]的主体没有引用一个未特化参数时可能发出警告. 出于这个原因, 在这个上下文中一个在 t 上特化的参数并太等同于一个未特化的参数.
 
-        在这个方法体头部的应用于这个方法的 lambda 变量的声明被当作是绑定声明, 它的作用域和对应绑定相同.
+        在这个方法体头部的应用于这个方法的 lambda 变量[lambda variable]的声明被当作是绑定声明[bound declaration], 它的作用域[scope]和对应绑定[binding]相同.
 
-        在这个方法主体的头部应用于 call-next-method or next-method-p 的函数绑定的声明可应用于这个方法的主体表达式形式中对这个方法的引用. 任何更外部的名为 call-next-method 和 next-method-p 的函数的绑定, 以及和这样的绑定相关联的声明在这个方法主体表达式形式中都会被遮蔽.
+        在这个方法主体的头部应用于 call-next-method 或 next-method-p 的函数绑定的声明可应用于这个方法的主体表达式形式 forms 中对这个方法的引用. 任何更外部的函数名[function name]为 call-next-method 和 next-method-p 的绑定[binding], 以及和这样的绑定[binding]相关联的声明在这个方法主体表达式形式 forms 中都会被遮蔽[shadow].
 
-        在这个方法主体的头部的自由声明的作用域是整个方法主体, 它包括任何隐式的局部方法定义但是不包括这些 lambda 变量的初始化表达式形式.
+        在这个方法主体的头部的自由声明[free declaration]的作用域[scope]是整个方法主体, 它包括任何隐式的局部方法定义但是不包括这些 lambda 变量[lambda list]的初始化表达式形式[initialization form].
 
-        defmethod 不需要执行任何编译时副作用. 特别是, 这个方法不会为了在编译期间调用而被设置. 一个具体实现可以选择为了编译时的错误检查去存储关于这个广义函数的信息 (比如在调用上检查参数数量, 或者记录这个函数名的定义已经出现过).
+        defmethod 不需要执行任何编译时副作用. 尤其是, 这个方法[method]不会为了在编译期间调用而被设置. 一个具体实现[implementation]可以选择为了编译时的错误检查去存储关于这个广义函数[generic function]的信息 (比如在调用上检查参数数量, 或者记录这个函数名的定义已经出现过).
 
-        Documentation 作为文档字符串关联给这个方法对象.
+        documentation 作为文档字符串[documentation string]关联给这个方法[method]对象[object].
 
 * 示例(Examples): None.
 
 * 受此影响(Affected By):
 
-        引用的广义函数的定义.
+        引用的广义函数[generic function]的定义.
 
 * 异常情况(Exceptional Situations):
 
-        如果 function-name 命名一个普通函数, 一个宏, 或者一个特殊操作符, 那么就会发出一个 error 类型的错误.
+        如果 function-name 命名一个普通函数[ordinary function], 一个宏[macro], 或者一个特殊操作符[special operator], 那么就会发出一个 error 类型[type]的错误.
 
-        如果 function-name 当前命名一个广义函数, 这个方法的 lambda 列表必须和这个广义函数的一致, 否则就会发出一个 error 类型的错误.
+        如果 function-name 当前命名一个广义函数[generic function], 那么这个方法[method]的 lambda 列表[lambda list]必须和这个广义函数[generic function]的一致, 否则就会发出一个 error 类型[type]的错误.
 
 * 也见(See Also):
 
-        defgeneric, documentation, Section 7.6.2 (Introduction to Methods), Section 7.6.4 (Congruent Lambda-lists for all Methods of a Generic Function), Section 7.6.3 (Agreement on Parameter Specializers and Qualifiers), Section 3.4.11 (Syntactic Interaction of Documentation Strings and Declarations)
+        defgeneric, documentation, 章节 7.6.2 (方法的介绍), 章节 7.6.4 (广义函数的所有方法的一致 Lambda-list), 章节 7.6.3 (关于参数特化符和限定符的一致性), 章节 3.4.11 (文档字符串和声明的语法交互)
 
 * 注意(Notes): None. 
 
@@ -2779,7 +2779,7 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 也见(See Also):
 
-        call-method, call-next-method, documentation, method-qualifiers, method-combination-error, invalid-method-error, defgeneric, Section 7.6.6 (Method Selection and Combination), Section 7.6.6.4 (Built-in Method Combination Types), Section 3.4.11 (Syntactic Interaction of Documentation Strings and Declarations)
+        call-method, call-next-method, documentation, method-qualifiers, method-combination-error, invalid-method-error, defgeneric, Section 7.6.6 (Method Selection and Combination), Section 7.6.6.4 (Built-in Method Combination Types), Section 3.4.11 (文档字符串和声明的语法交互)
 
 * 注意(Notes):
 
@@ -2807,7 +2807,7 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 描述(Description):
 
-        广义函数 find-method 接受一个广义函数并且返回限定符和参数特化符与 find-method 参数中的 method-qualifiers 和 specializers 一致的方法对象. Method-qualifiers 包含了这个方法的方法限定符. 方法限定符的顺序是重要的. 对于在这个上下文中一致性的定义, 见章节 7.6.3 (Agreement on Parameter Specializers and Qualifiers).
+        广义函数 find-method 接受一个广义函数并且返回限定符和参数特化符与 find-method 参数中的 method-qualifiers 和 specializers 一致的方法对象. Method-qualifiers 包含了这个方法的方法限定符. 方法限定符的顺序是重要的. 对于在这个上下文中一致性的定义, 见章节 7.6.3 (关于参数特化符和限定符的一致性).
 
         这个 specializers 参数包含了这个方法的参数特化符. 它必须和这个广义函数的必要参数的数量对应, 否则就会发出一个错误. 这个意味着为了获取一个给定 generic-function 上的默认方法, 需要给定一个元素为类 t 的列表.
 
@@ -2838,7 +2838,7 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 也见(See Also):
 
-        Section 7.6.3 (Agreement on Parameter Specializers and Qualifiers)
+        Section 7.6.3 (关于参数特化符和限定符的一致性)
 
 * 注意(Notes): None. 
 
@@ -2876,7 +2876,7 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 也见(See Also):
 
-        defmethod, defgeneric, find-method, remove-method, Section 7.6.3 (Agreement on Parameter Specializers and Qualifiers)
+        defmethod, defgeneric, find-method, remove-method, Section 7.6.3 (关于参数特化符和限定符的一致性)
 
 * 注意(Notes): None. 
 
