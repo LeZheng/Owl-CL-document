@@ -2324,23 +2324,23 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 参数和值(Arguments and Values):
 
-        symbol---一个符号.
+        symbol---一个符号[symbol].
 
-        errorp---一个广义 boolean. 默认是 true.
+        errorp---一个广义 boolean [generalized boolean]. 默认是 true.
 
-        environment -- 和给宏展开函数的 &environment 参数一样并且被用于区分编译时和运行时环境. 这个 &environment 有着动态范围; 如果这个 &environment 参数在这个宏展开函数的动态范围之外被引用, 那么结果是未定义的.
+        environment -- 和给宏展开函数的 &environment 参数一样并且被用于区分编译时和运行时环境. 这个 &environment 有着动态范围[dynamic extent]; 如果这个 &environment 参数在这个宏展开函数的动态范围[dynamic extent]之外被引用, 那么结果是未定义的.
 
-        class---一个类对象, 或 nil.
+        class---一个类[class]对象[object], 或 nil.
 
 * 描述(Description):
 
-        返回在这个 environment 中 symbol 命名的类对象. 如果这里没有这样一个类, 如果 errorp 是 false 就返回 nil; 否则, 如果 errorp 是 true, 就会发出一个错误.
+        返回在这个环境 environment 中由符号 symbol 命名的类[class]对象[object]. 如果这里没有这样一个类[class], 如果 errorp 是 false 就返回 nil; 否则, 如果 errorp 是 true, 就会发出一个错误.
 
-        这个和特定符号关联的类可以通过用 find-class 来使用 setf 去改变; 或者, 如果给 setf 的新的类是 nil, 这个类关联就会被移除 (但是这个类对象自身不会被影响). 如果用户尝试去改变或移除一个在这个标准中被定义为类型指定符的符号所关联的类, 结果是未定义的. 见章节 4.3.7 (Integrating Types and Classes).
+        这个和特定符号[symbol]关联的类[class]可以通过用 find-class 和 setf 去改变; 或者, 如果给 setf 的新的类[class]是 nil, 这个类[class]关联就会被移除 (但是这个类[class]对象[object]自身不会被影响). 如果用户尝试去改变或移除一个在这个标准中被定义为类型指定符[type specifier]的符号[symbol]所关联的类[class], 结果是未定义的. 见章节 4.3.7 (整合类和类型).
 
-        当使用 find-class 的 setf 时, 任何 errorp 参数会为了效果被求值, 但是它返回的任何值都会被忽略; 这个 errorp 参数首先被允许, 这样就可以使用这个 environment 参数.
+        当使用 find-class 的 setf 时, 任何 errorp 参数会为了效果被求值, 但是它返回的任何值[value]都会被忽略; 这个 errorp 形参[parameter]首先被允许, 这样就可以使用这个 environment 形参[parameter].
 
-        这个 environment 可能被用于区分编译时环境和运行时环境.
+        这个环境 environment 可能被用于区分编译时环境和运行时环境.
 
 * 示例(Examples): None.
 
@@ -2348,11 +2348,11 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 异常情况(Exceptional Situations):
 
-        如果这里没有这样一个类并且 errorp 是 true, find-class 会发出一个 error 类型的错误.
+        如果这里没有这样一个类[class]并且 errorp 是 true, find-class 会发出一个 error 类型[type]的错误.
 
 * 也见(See Also):
 
-        defmacro, Section 4.3.7 (Integrating Types and Classes)
+        defmacro, 章节 4.3.7 (整合类和类型)
 
 * 注意(Notes): None. 
 
@@ -2365,15 +2365,15 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 参数和值(Arguments and Values):
 
-        generalized-boolean---一个广义的 boolean.
+        generalized-boolean---一个广义 boolean [generalized boolean].
 
 * 描述(Description):
 
-        这样局部定义的函数 next-method-p 可以在一个方法定义表达式形式所定义的主体表达式形式中(而不是 lambda 列表)被用来确定是否存在下一个方法.
+        这个局部定义的函数 next-method-p 可以在一个方法定义表达式形式[method-defining form]所定义的主体表达式形式[form]中(而不是 lambda 列表[lambda list])被用来确定是否存在下一个方法[method].
 
-        函数 next-method-p 有着词法作用域和不确定的范围.
+        函数[function] next-method-p 有着词法作用域[lexical scope]和无限范围[indefinite extent].
 
-        这个 next-method-p 在全局环境中是否是 fbound 的是依赖于具体实现的; 然而, 这个 next-method-p 的重定义和遮蔽的限制和 COMMON-LISP 包中在全局环境中被 fbound 的符号一样. 尝试在一个方法定义表达式形式外部使用 next-method-p 的后果是未定义的.
+        这个 next-method-p 在全局环境[global environment]中是否是 fbound 的依赖于具体实现[implementation-dependent]; 然而, 这个 next-method-p 的重定义和遮蔽上的限制和 COMMON-LISP 包中在全局环境[global environment]中被 fbound 的符号[symbol]一样. 尝试在一个方法定义表达式形式[method-defining form]外部使用 next-method-p 的后果是未定义的.
 
 * 示例(Examples): None.
 
@@ -2398,28 +2398,28 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 参数和值(Arguments and Values):
 
-        method---一个方法对象, 或者一个列表 (见下方); 不求值.
-        method-object---一个方法对象.
-        next-method-list---一个方法对象的列表; 不求值.
-        results---这个方法调用返回的值.
+        method---一个方法[method]对象[object], 或者一个列表[list] (见下方); 不求值.
+        method-object---一个方法[method]对象[object].
+        next-method-list---一个方法对象的列表[list]; 不求值.
+        results---这个方法[method]调用返回的值[value].
 
 * 描述(Description):
 
-        宏 call-method 被用于方法组合. 它隐藏了依赖于具体实现的方法如何被调用的细节. 宏 call-method 有词法作用域并且只能在有效方法表达式形式中被使用.
+        宏 call-method 被用于方法组合. 它隐藏了依赖于具体实现[implementation-dependent]的方法[method]如何被调用的细节. 宏 call-method 有词法作用域[lexical scope]并且只能在有效方法[effective method]表达式形式[form]中被使用.
 
-        call-method 在全局环境中是否为 fbound 是依赖于具体实现的; 然而, 在 call-method 的重定义和遮蔽上的限制和那些 COMMON-LISP 包中在全局环境里是 fbound 的符号一样. 尝试在一个有效方法表达式形式外部使用 call-method 的后果是.
+        call-method 在全局环境[global environment]中是否为 fbound 依赖于具体实现[implementation-dependent]; 然而, 在 call-method 的重定义和遮蔽上的限制和那些 COMMON-LISP 包中在全局环境[global environment]里是 fbound 的符号[symbol]一样. 尝试在一个有效方法[effective method]表达式形式[form]外部使用 call-method 的后果是未定义的.
 
-        宏 call-method 调用指定的方法, 把参数还有 call-next-method 和 next-method-p 的定义提供给它. 如果这个 call-method 的调用在词法上 make-method 的内部, 参数是提供给那个方法的那些. 否则参数是提供给那个广义函数的那些. 这个 call-next-method 和 next-method-p 的定义依赖指定的 next-method-list.
+        宏 call-method 调用指定的方法[method], 把参数还有 call-next-method 和 next-method-p 的定义提供给它. 如果这个 call-method 的调用词法上在 make-method 的内部, 参数是提供给那个方法[method]的那些. 否则参数是提供给那个广义函数的那些. 这个 call-next-method 和 next-method-p 的定义依赖指定的 next-method-list.
 
-        如果 method 是一个列表, 这个列表的第一个元素必须是 make-method 并且第二个元素必须是一个表达式形式. 这样一个列表指定了一个方法函数的主体为给定表达式形式的方法对象.
+        如果 method 是一个列表[list], 那么这个列表[list]的第一个元素必须是 make-method 并且第二个元素必须是一个表达式形式[form]. 这样一个列表[list]指定了一个方法[method]函数的主体为给定表达式形式[form]的方法[method]对象[object].
 
-        Next-method-list 可以包含多个方法对象或列表, 这个列表的第一个元素必须是 make-method 并且第二个元素必须是一个表达式形式.
+        这个 next-method-list 可以包含多个方法[method]对象[object]或列表[list], 这个列表的第一个元素必须是 make-method 并且第二个元素必须是一个表达式形式[form].
 
-        那些是可以使用 make-method 的仅有的两处. 和 make-method 一起使用的那个 form 在空词法环境中被求值, 可以通过一个 call-method 的局部宏定义和不能从 COMMON-LISP-USER 包中访问的符号命名的绑定来扩展.
+        那些是仅有的可以使用 make-method 的两处位置. 和 make-method 一起使用的那个表达式形式[form]在空词法环境[null lexical environment]中被求值, 这个空词法环境被一个 call-method 的局部宏定义和不能从 COMMON-LISP-USER 包中可访问的[accessible]符号命名的绑定所扩展.
 
-        对 method 可用的 call-next-method 会调用 next-method-list 中的第一个方法. 在那个方法中可用的 call-next-method 函数依次会调用 next-method-list 中的第二个方法, 以此类推, 直到后续方法的列表耗尽.
+        对方法 method 可用的 call-next-method 会调用 next-method-list 中的第一个方法[method]. 在那个方法[method]中可用的 call-next-method 函数依次会调用 next-method-list 中的第二个方法[method], 以此类推, 直到下一个方法[method]的列表耗尽.
 
-        如果没有提供 next-method-list, 对 method 可用的 call-next-method 函数发出一个 control-error 类型的错误并且对 method 可用的这个 next-method-p 函数返回 nil.
+        如果没有提供 next-method-list, 对 method 可用的 call-next-method 函数发出一个 control-error 类型[type]的错误并且对 method 可用的这个 next-method-p 函数返回 nil.
 
 * 示例(Examples):
 
@@ -2442,28 +2442,28 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 参数和值(Arguments and Values):
 
-        arg---一个对象.
-        results---它调用的方法的返回值.
+        arg---一个对象[object].
+        results---由它调用的方法[method]所返回的值[value].
 
 * 描述(Description):
 
-        函数 call-next-method 可以在一个通过方法定义表达式形式定义的方法的主体表达式形式中(但不包括 lambda 列表)被用来调用下一个方法.
+        函数[function] call-next-method 可以在一个通过方法定义表达式形式[method-defining form]定义的方法[method]的主体表达式形式[form]中(但不包括 lambda 列表[lambda list])被用来调用下一个方法[next method].
 
-        如果没有下一个方法, 那么广义函数 no-next-method 会被调用.
+        如果没有下一个方法[method], 那么广义函数 no-next-method 会被调用.
 
-        使用的方法组合的类型决定哪些方法可以调用 call-next-method. 标准方法组合类型允许 call-next-method 在主方法和 around 方法中被使用. 对于使用通过 define-method-combination 的短表达式形式定义的方法组合类型的方法, call-next-method 只能被用于 around 方法.
+        使用的方法组合的类型决定哪些方法[method]可以调用 call-next-method. 标准方法组合[method combination]类型允许 call-next-method 在主方法[method]和 around 方法[around method]中被使用. 对于使用通过 define-method-combination 的短表达式形式定义的方法组合类型的方法, call-next-method 只能被用于 around 方法[around method].
 
-        当 call-next-method 以无参数的情况被调用, 它传递当前方法的原始参数给下一个方法. 不管是参数违约, 还是使用 setq, 或者使用与方法参数相同的名称重新绑定变量, 这些变量都不会影响 call-next-method 传递给它所调用的方法的值.
+        当 call-next-method 以无参数的情况被调用, 它传递当前方法[method]的原始参数给下一个方法[method]. 不管是参数缺省, 还是使用 setq, 或者重新绑定与方法[method]参数相同名字[name]变量, 都不会影响 call-next-method 传递给它所调用的方法[method]的值.
 
-        当用参数调用 call-next-method 时, 下一个方法会用这些参数来调用.
+        当用参数调用 call-next-method 时, 会用这些参数来调用下一个方法[next method].
 
-        如果用参数调用了 call-next-method 但是省略了可选参数, 那么下一个被调用的方法省略那些参数.
+        如果用参数调用了 call-next-method 但是省略了可选参数, 那么省略那些参数来调用下一个方法[next method].
 
-        函数 call-next-method 返回任何下一个方法返回的值.
+        函数[function] call-next-method 返回任何下一个方法[next method]返回的值[value].
 
-        函数 call-next-method 有着词法作用域和不确定的范围并且只能在一个通过方法定义表达式形式定义的方法的主体中被使用.
+        函数[function] call-next-method 有着词法作用域[lexical scope]和无限范围[indefinite extent]并且只能在一个通过方法定义表达式形式[method-defining form]定义的方法[method]的主体中被使用.
 
-        call-next-method 在全局环境中是否为 fbound 是依赖于具体实现的; 然而, 在 call-next-method 的重定义和遮蔽上的约束和 COMMON-LISP 包里在全局环境中被 fbound 的方法一样. 尝试在一个方法定义表达式形式的外部去使用 call-next-method 的后果是不确定的.
+        这个 call-next-method 在全局环境[global environment]中是否为 fbound 依赖于具体实现[implementation-dependent]; 然而, 在 call-next-method 的重定义和遮蔽上的约束和 COMMON-LISP 包里在全局环境[global environment]中被 fbound 的方法[method]一样. 尝试在一个方法定义表达式形式[method-defining form]的外部去使用 call-next-method 的后果是不确定的.
 
 * 示例(Examples): None.
 
@@ -2473,11 +2473,11 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 异常情况(Exceptional Situations):
 
-        当给 call-next-method 提供参数时, 下面的规则必须被满足, 否则就会发出一个 error 类型的错误: 对于 call-next-method 的一个被改变的参数集的可应用方法有序集必须和这个广义函数的原始参数的可应用方法有序集相同. 错误检查的优化是可以的，但是它们不能改变 call-next-method 的语义.
+        当给 call-next-method 提供参数时, 下面的规则必须被满足, 否则就会发出一个 error 类型[type]的错误: 对于 call-next-method 的一个被改变的参数集的可应用方法[applicable method]有序集必须和这个广义函数[generic function]的原始参数的可应用方法[applicable method]有序集相同. 错误检查的优化是可以的，但是它们不能改变 call-next-method 的语义.
 
 * 也见(See Also):
 
-        define-method-combination, defmethod, next-method-p, no-next-method, call-method, Section 7.6.6 (Method Selection and Combination), Section 7.6.6.2 (Standard Method Combination), Section 7.6.6.4 (Built-in Method Combination Types)
+        define-method-combination, defmethod, next-method-p, no-next-method, call-method, 章节 7.6.6 (方法选择和组合), 章节 7.6.6.2 (标准方法组合), 章节 7.6.6.4 (内建的方法组合类型)
 
 * 注意(Notes): None. 
 
@@ -2494,13 +2494,13 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 参数和值(Arguments and Values):
 
-        generic-function---一个广义函数.
-        function-arguments---这个 generic-function 的参数列表.
-        methods---一个方法对象列表.
+        generic-function---一个广义函数[generic function].
+        function-arguments---这个广义函数 generic-function 的参数列表[list].
+        methods---一个方法[method]对象[object]列表[list].
 
 * 描述(Description):
 
-        给定一个 generic-function 和一个 function-arguments 集合, 函数 compute-applicable-methods 返回可应用于这些根据优先级顺序排序后的参数的方法集合. 见章节 7.6.6 (Method Selection and Combination).
+        给定一个 generic-function 和一个 function-arguments 集合, 函数 compute-applicable-methods 返回可应用于这些根据优先级顺序排序后的参数的方法[method]集合. 见章节 7.6.6 (方法选择和组合).
 
 * 受此影响(Affected By):
 
@@ -2510,7 +2510,7 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 也见(See Also):
 
-        Section 7.6.6 (Method Selection and Combination)
+        章节 7.6.6 (方法选择和组合)
 
 * 注意(Notes): None. 
 
@@ -2578,7 +2578,7 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
             这个短表达式形式自动包括错误检查和 around 方法的支持.
 
-            对于一个内建方法组合类型的讨论, 见章节 7.6.6.4 (Built-in Method Combination Types).
+            对于一个内建方法组合类型的讨论, 见章节 7.6.6.4 (内建的方法组合类型).
 
         长表达式形式
 
@@ -2624,7 +2624,7 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
             Documentation 作为一个文档字符串关联到 name (作为 method-combination 种类) 以及这个方法组合对象.
 
-            注意, 两个有着相同特化符的方法, 但是限定符不同, 不会被章节 7.6.6 (Method Selection and Combination) 中描述方法选择和组合处理的步骤 2 中描述的算法所排序. 通常这两个方法在这个有效方法中扮演着不同的角色, 不管在那个步骤 2 的结果中如何被排序, 这个有效方法是相同的. 如果这两个方法扮演着相同的角色并且它们的顺序很重要, 就会发出一个错误. 这是在 define-method-combination 中匹配的限定符模式的一部分.
+            注意, 两个有着相同特化符的方法, 但是限定符不同, 不会被章节 7.6.6 (方法选择和组合) 中描述方法选择和组合处理的步骤 2 中描述的算法所排序. 通常这两个方法在这个有效方法中扮演着不同的角色, 不管在那个步骤 2 的结果中如何被排序, 这个有效方法是相同的. 如果这两个方法扮演着相同的角色并且它们的顺序很重要, 就会发出一个错误. 这是在 define-method-combination 中匹配的限定符模式的一部分.
 
         如果一个 define-method-combination 表达式形式作为顶层表达式形式出现, 编译器必须是这个方法组合的名字在后续的 defgeneric 表达式形式中被识别为一个有效方法组合名字. 然而, 方法组合执行的时间不早于 define-method-combination 表达式形式被执行时, 并且可能在使用这个方法组合的广义函数执行的时候执行.
 
@@ -2779,7 +2779,7 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 也见(See Also):
 
-        call-method, call-next-method, documentation, method-qualifiers, method-combination-error, invalid-method-error, defgeneric, Section 7.6.6 (Method Selection and Combination), Section 7.6.6.4 (Built-in Method Combination Types), Section 3.4.11 (文档字符串和声明的语法交互)
+        call-method, call-next-method, documentation, method-qualifiers, method-combination-error, invalid-method-error, defgeneric, Section 7.6.6 (方法选择和组合), Section 7.6.6.4 (内建的方法组合类型), Section 3.4.11 (文档字符串和声明的语法交互)
 
 * 注意(Notes):
 
@@ -2799,19 +2799,19 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 参数和值(Arguments and Values):
 
-        generic-function---一个广义函数.
-        method-qualifiers---一个列表.
-        specializers---一个里诶包.
-        errorp---一个广义 boolean. 默认值是 true.
-        method---一个方法对象, 或 nil.
+        generic-function---一个广义函数[generic function].
+        method-qualifiers---一个列表[list].
+        specializers---一个列表[list].
+        errorp---一个广义 boolean [generalized boolean]. 默认值是 true.
+        method---一个方法[method]对象[object], 或 nil.
 
 * 描述(Description):
 
-        广义函数 find-method 接受一个广义函数并且返回限定符和参数特化符与 find-method 参数中的 method-qualifiers 和 specializers 一致的方法对象. Method-qualifiers 包含了这个方法的方法限定符. 方法限定符的顺序是重要的. 对于在这个上下文中一致性的定义, 见章节 7.6.3 (关于参数特化符和限定符的一致性).
+        广义函数[generic function] find-method 接受一个广义函数[generic function]并且返回限定符[qualifier]和参数特化符[parameter specializer]与 find-method 参数中的 method-qualifiers 和 specializers 一致的方法[method]对象[object]. method-qualifiers 包含了这个方法[method]的方法限定符[qualifier]. 这些方法限定符[qualifier]的顺序是有意义的. 对于在这个上下文中一致性的定义, 见章节 7.6.3 (关于参数特化符和限定符的一致性).
 
-        这个 specializers 参数包含了这个方法的参数特化符. 它必须和这个广义函数的必要参数的数量对应, 否则就会发出一个错误. 这个意味着为了获取一个给定 generic-function 上的默认方法, 需要给定一个元素为类 t 的列表.
+        这些特化符 specializers 参数包含了这个方法[method]的参数特化符. 它必须和这个广义函数[generic function]的必要参数的数量对应, 否则就会发出一个错误. 这个意味着为了获取一个给定广义函数 generic-function 上的默认方法[method], 需要给定一个元素为类[class] t 的列表[list].
 
-        如果这里没有这样一个方法并且 errorp 是 true, find-method 会发出一个错误. 如果这里没有这样一个方法而 errorp 是 false, find-method 返回 nil.
+        如果这里没有这样一个方法[method]并且 errorp 是 true, find-method 会发出一个错误. 如果这里没有这样一个方法[method]而 errorp 是 false, find-method 返回 nil.
 
 * 示例(Examples):
 
@@ -2832,13 +2832,13 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 异常情况(Exceptional Situations):
 
-        如果 specializers 参数不对应 generic-function 必要参数的数量, 就会发出一个 error 类型的错误.
+        如果这些特化符 specializers 参数不对应广义函数 generic-function 必要参数的数量, 就会发出一个 error 类型[type]的错误.
 
-        如果这里没有这样一个方法并且 errorp 是 true, find-method 发出一个 error 类型的错误.
+        如果这里没有这样一个方法[method]并且 errorp 是 true, find-method 发出一个 error 类型[type]的错误.
 
 * 也见(See Also):
 
-        Section 7.6.3 (关于参数特化符和限定符的一致性)
+        章节 7.6.3 (关于参数特化符和限定符的一致性)
 
 * 注意(Notes): None. 
 
@@ -2855,14 +2855,14 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 参数和值(Arguments and Values):
 
-        generic-function---一个广义函数对象.
-        method---一个方法对象.
+        generic-function---一个广义函数[generic function]对象[object].
+        method---一个方法[method]对象[object].
 
 * 描述(Description):
 
-        广义函数 add-method 添加一个方法到广义函数.
+        广义函数 add-method 添加一个方法[method]到广义函数[generic function].
 
-        如果 method 和广义函数中一个已存在的方法在参数特化符和限定符上一致, 那个存在的方法就会被替换.
+        如果方法 method 和广义函数 generic-function 中一个已存在的方法[method]在参数特化符[parameter specializer]和限定符[qualifier]上一致, 那个存在的方法[method]就会被替换.
 
 * 示例(Examples): None.
 
@@ -2870,13 +2870,13 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 异常情况(Exceptional Situations):
 
-        method 的方法函数的 lambda 列表必须和广义函数的 lambda 列表一致, 否则就会发出一个 error 类型的错误.
+        方法 method 的方法函数的 lambda 列表[lambda list]必须和广义函数[generic-function]的 lambda 列表[lambda list]一致, 否则就会发出一个 error 类型[type]的错误.
 
-        如果 method 是另一个广义函数的方法对象, 就会发出一个 error 类型的错误.
+        如果 method 是另一个广义函数[generic function]的方法[method]对象[object], 就会发出一个 error 类型[type]的错误.
 
 * 也见(See Also):
 
-        defmethod, defgeneric, find-method, remove-method, Section 7.6.3 (关于参数特化符和限定符的一致性)
+        defmethod, defgeneric, find-method, remove-method, 章节 7.6.3 (关于参数特化符和限定符的一致性)
 
 * 注意(Notes): None. 
 
@@ -2893,16 +2893,16 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 参数和值(Arguments and Values):
 
-        instance---一个对象.
+        instance---一个对象[object].
         initargs---一个默认初始化参数列表.
 
 * 描述(Description):
 
-        被 make-instance 调用来初始化新创建的实例. 这个广义函数用这个新的实例和默认初始化参数列表来调用.
+        由 make-instance 调用来初始化新创建的实例[instance]. 这个广义函数用这个新的实例 instance 和默认初始化参数列表[defaulted initialization argument list]来调用.
 
-        系统提供的 initialize-instance 主方法根据 initargs 和槽的 :initform 表达式形式的值来初始化实例 instance 的槽. 它通过使用以下参数调用广义函数 shared-initialize 来完成这个: 这个实例 instance, t (这个表示所有没有提供初始化参数的槽应该根据它们的 :initform 表达式形式来初始化), 还有 initargs.
+        系统提供的 initialize-instance 主方法[method]根据初始化参数 initargs 和槽[slot]的 :initform 表达式形式的值来初始化实例 instance 的槽[slot]. 它通过使用以下参数调用广义函数 shared-initialize 来完成这个: 这个实例 instance, t (这个表示所有没有提供初始化参数的槽[slot]应该根据它们的 :initform 表达式形式来初始化), 还有初始化参数 initargs.
 
-        程序员可以为 initialize-instance 定义方法来指定在一个实例被初始化时采取的动作. 如果只定义了 alter 方法, 它们会在系统提供的用于初始化的主方法之后被运行, 因此不会影响到 initialize-instance 的默认行为.
+        程序员可以为 initialize-instance 定义方法[method]来指定在一个实例被初始化时采取的动作. 如果只定义了 after 方法[after method], 它们会在系统提供的用于初始化的主方法[method]之后被运行, 因此不会影响到 initialize-instance 的默认行为.
 
 * 示例(Examples): None.
 
@@ -2912,7 +2912,7 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 也见(See Also):
 
-        shared-initialize, make-instance, slot-boundp, slot-makunbound, Section 7.1 (对象创建和初始化), Section 7.1.4 (初始化参数的规则), Section 7.1.2 (声明初始化参数的有效性)
+        shared-initialize, make-instance, slot-boundp, slot-makunbound, 章节 7.1 (对象创建和初始化), 章节 7.1.4 (初始化参数的规则), 章节 7.1.2 (声明初始化参数的有效性)
 
 * 注意(Notes): None. 
 
@@ -2929,13 +2929,13 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 参数和值(Arguments and Values):
 
-        class---一个类对象.
+        class---一个类[class]对象[object].
 
-        name---一个符号.
+        name---一个符号[symbol].
 
 * 描述(Description):
 
-        返回给定类的名字.
+        返回给定类 class 的名字.
 
 * 示例(Examples): None.
 
@@ -2945,13 +2945,13 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 也见(See Also):
 
-        find-class, Section 4.3 (Classes)
+        find-class, 章节 4.3 (类)
 
 * 注意(Notes):
 
-        如果 S 是一个符号,其中 S =(class-name C) 并且 C =(find-class S), 那么 S 是 C 的一个特有的名字. 关于进一步讨论, 见章节 4.3 (Classes).
+        如果 S 是一个符号[symbol], 其中 S =(class-name C) 并且 C =(find-class S), 那么 S 是 C 的一个专有名字. 关于进一步讨论, 见章节 4.3 (类).
 
-        一个匿名类的名字是 nil. 
+        一个匿名类[class]的名字是 nil. 
 
 
 ### <span id="SGF-SETF-CLASS-NAME">标准广义函数 (SETF CLASS-NAME)</span>
@@ -2966,12 +2966,12 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 参数和值(Arguments and Values):
 
-        new-value---一个符号.
-        class---一个类.
+        new-value---一个符号[symbol].
+        class---一个类[class].
 
 * 描述(Description):
 
-        广义函数 (setf class-name) 设置一个类对象的名字.
+        广义函数 (setf class-name) 设置一个类 class 对象的名字.
 
 * 示例(Examples): None.
 
@@ -2981,7 +2981,7 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 也见(See Also):
 
-        find-class, proper name, Section 4.3 (Classes)
+        find-class, proper name, 章节 4.3 (类)
 
 * 注意(Notes): None. 
 
@@ -2994,12 +2994,12 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 参数和值(Arguments and Values):
 
-        object---一个对象.
-        class---一个类对象.
+        object---一个对象[object].
+        class---一个类[class]对象[object].
 
 * 描述(Description):
 
-        返回这个直接实例为 object 的类.
+        返回一个类[class], 这个对象 object 的直接实例[direct instance]为这个类.
 
 * 示例(Examples):
 
@@ -3036,13 +3036,13 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 描述(Description):
 
-        这个有着未绑定槽的对象通过给 make-condition 的 :instanceinitialization 参数被初始化, 并且通过函数 unbound-slot-instance 被访问.
+        这个有着未绑定槽的对象[object]通过给 make-condition 的 :instance 初始化参数来初始化, 并且通过函数[function] unbound-slot-instance 被访问.
 
-        这个格(cell)(见 cell-error)的名字是这个槽的名字t.
+        这个存储格(cell)(见 cell-error)的名字是这个槽的名字t.
 
 * 也见(See Also):
 
-        cell-error-name, unbound-slot-object, Section 9.1 (Condition System Concepts) 
+        cell-error-name, unbound-slot-object, 章节 9.1 (状况系统的概念) 
 
 
 ### <span id="F-UNBOUND-SLOT-INSTANCE">函数 UNBOUND-SLOT-INSTANCE</span>
@@ -3053,12 +3053,12 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 参数和值(Arguments and Values):
 
-        condition---一个类型 unbound-slot 的状况.
-        instance---一个对象.
+        condition---一个类型[type] unbound-slot 的状况[condition].
+        instance---一个对象[object].
 
 * 描述(Description):
 
-        返回这个 condition 所表示的情况下有着未绑定槽的实例.
+        返回这个 condition 所表示的情况[situation]下有着未绑定槽的实例.
 
 * 示例(Examples): None.
 
@@ -3068,7 +3068,7 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 也见(See Also):
 
-        cell-error-name, unbound-slot, Section 9.1 (Condition System Concepts)
+        cell-error-name, unbound-slot, 章节 9.1 (状况系统的概念)
 
 * 注意(Notes): None. 
 
