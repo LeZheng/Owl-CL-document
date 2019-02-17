@@ -299,7 +299,7 @@ shared-initialize 的方法[method]可以被定义用来定制类[class]的重�
 
 通常情况下, 在 C 及其超类[superclass]中不止一个类[class]可以定义带有给定名称[name]的槽[slot]. 这样的情况下, 在 C 的一个实例[instance]中对应给定的名字只有一个槽[slot]是可访问的[accessible], 而这个槽[slot]的特性是这几个槽[slot]指定符的一个结合, 按如下计算:
 
-* 对于一个给定的槽[slot]名字的所有槽指定符[slot specifier]按照从最具体到最不具体的顺序排列, 根据定义它们的那些类[class]在 C 的类优先级列表[class precedence list]中的顺序. 下面的所有关于槽指定符[slot specifier]的特性的引用都是指这种排序.<!--TODO 最后一句，不是很理解-->
+* 对于一个给定的槽[slot]名字的所有槽指定符[slot specifier]按照从最具体到最不具体的顺序排列, 根据定义它们的那些类[class]在 C 的类优先级列表[class precedence list]中的顺序. 下面所有关于槽指定符[slot specifier]的特性的引用都是指这种排序.
 
 * 一个槽[slot]的分配由最具体的槽指定符[slot specifier]来控制. 如果最具体的槽指定符[slot specifier]不包括一个 :allocation 槽选项, 就是用 :instance. 较不具体的槽指定符[slot specifier]不会影响这个分配.
 
@@ -313,7 +313,7 @@ shared-initialize 的方法[method]可以被定义用来定制类[class]的重�
 
 这个分配规则的一个后果是一个共享槽[shared slot]可以被遮蔽[shadow]. 比如, 如果一个类 C1 定义了一个名为 S 的槽[slot], 其中 :allocation 槽选项的值是 :class, 这个槽[slot]在 C1 的实例[instance]中和所有它的子类[subclass]中都是可访问的[accessible]. 然而, 如果 C2 是 C1 的一个子类[subclass]并且也定义了名为 S 的槽[slot], C1 的槽[slot]不会被 C2 的实例[instance]和子类[sublcass]所共享. 当一个类 C1 定义了一个共享槽[shared slot]时, 任何 C1 的子类 C2 会共享这个单独的槽[slot]除非这个 C2 的 defclass 表达式形式指定了一个相同名字[name]的槽[slot], 或者这里有一个定义了相同名字的槽的 C2 的超类[superclass]并且在 C2 的类优先级列表[class precedence list]中这个超类[superclass]先于 C1.
 
-这个类型规则的一个后果是一个槽[slot]的值满足贡献给这个槽的所有槽指定符[slot specifier]的类型约束.<!-- TODO contributes to ??--> 由于尝试存一个不满足这个槽[slot]的类型约束的值到该槽[slot]中的后果是未定义的, 一个槽[slot]中的值可能不满足它的类型约束.
+这个类型规则的一个后果是一个槽[slot]的值满足提供给这个槽的所有槽指定符[slot specifier]的类型约束. 由于尝试存一个不满足这个槽[slot]的类型约束的值到该槽[slot]中的后果是未定义的, 一个槽[slot]中的值可能不满足它的类型约束.
 
 这个 :reader, :writer, 和 :accessor 槽选项创建方法[method]而不是定义一个槽[slot]的属性. 在章节 7.6.7 (方法的继承) 所描述的观念中 reader 和 writer 方法是继承的.
 
@@ -587,7 +587,7 @@ shared-initialize 的方法[method]可以被定义用来定制类[class]的重�
 
 standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方法组合). 其他内置的方法组合类型称为简单内建的方法组合类型.
 
-简单内建方法组合类型表现得就像它们是通过 define-method-combination 的短表达式形式定义出来的. 它们识别方法[method]的两种角色: <!--TODO role ??-->
+简单内建方法组合类型表现得就像它们是通过 define-method-combination 的短表达式形式定义出来的. 它们识别方法[method]的两种角色:
 
 * 一个 around 方法[around method]有着关键字符号 :around 作为它唯一限定符[qualifier]. 这个 :around 方法[method]的意义和标准方法组合中一样. around 方法[around method]中支持使用函数 call-next-method 和 next-method-p.
 
@@ -745,7 +745,7 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
         如果 function-name 没有在全局环境[global environment]中被 fbound, 一个新的广义函数[generic function]会被创建. 如果 (fdefinition function-name) 是一个普通函数[ordinary function], 一个宏[macro], 或者一个特殊操作符[special operator], 就会发出一个错误.
 
-        如果 function-name 是一个列表[list], 它必须是表达式形式 (setf symbol). 如果 function-name 指定一个对于任何后面的参数都有一个不同的值的广义函数[generic function], 那么这个广义函数[generic function]被修改为有这个新值: :argument-precedence-order, :declare, :documentation, :method-combination.<!--TODO 不理解-->
+        如果 function-name 是一个列表[list], 它必须是 (setf symbol) 形式. 如果 function-name 指定一个对于任何下面参数都有一个不同的值的广义函数[generic function], 那么这个广义函数[generic function]被修改为有这个新值: :argument-precedence-order, :declare, :documentation, :method-combination.
 
         如果 function-name 指定一个对于 :lambda-list 参数有一个不同的值的广义函数[generic function], 并且这个新的值和所有已存在的方法[method]的 lambda 列表[lambda list]是相等的或者这里没有对应方法[method], 那么这个值就会被修改; 否则就会发出一个错误.
 
@@ -1744,7 +1744,7 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
       `(find-my-frob ',(my-name self) :if-does-not-exist :create))
     ```
 
-        在下面这个示例中, 被转储的数据结构是环状的, 因为每个 parent 有着它的 children 的一个列表并且每个 child 有一个指回它的 parent 的引用. 如果在一个这样结构的对象[object]上调用 make-load-form, 创建表达式形式创建一个等价对象[object]并且填充 children 槽, 它强制进行它的 children, grandchildren, 等等的等价对象[object]的创建. 在这个时候没有 parent 的槽[slot]被填充. 这个初始化表达式形式填充这个 parent 的槽[slot], 如果 parent 的等价对象[object]没有被创建, 它强制创建它. 因此整个树在加载时被重新创建. 在编译时, make-load-form 对于这个树中的每个对象[object]被调用一次. 所有创建表达式形式都被求值, 以依赖于具体实现[implementation-dependent]的顺序, 然后所有初始化表达式形式被求值, 也按照依赖于实现[implementation-dependent]的顺序. <!--TODO parent 和 children 待替换-->
+        在下面这个示例中, 被转储的数据结构是环状的, 因为每个 parent 有着它的 children 的一个列表并且每个 child 有一个指回它的 parent 的引用. 如果在一个这样结构的对象[object]上调用 make-load-form, 创建表达式形式创建一个等价对象[object]并且填充 children 槽, 它强制进行它的 children, grandchildren, 等等的等价对象[object]的创建. 在这个时候没有 parent 的槽[slot]被填充. 这个初始化表达式形式填充这个 parent 的槽[slot], 如果 parent 的等价对象[object]没有被创建, 它强制创建它. 因此整个树在加载时被重新创建. 在编译时, make-load-form 对于这个树中的每个对象[object]被调用一次. 所有创建表达式形式都被求值, 以依赖于具体实现[implementation-dependent]的顺序, 然后所有初始化表达式形式被求值, 也按照依赖于实现[implementation-dependent]的顺序.
 
     ```LISP
     (defclass tree-with-parent () ((parent :accessor tree-parent)
@@ -2516,7 +2516,7 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 
 ### <span id="M-DEFINE-METHOD-COMBINATION">宏 DEFINE-METHOD-COMBINATION</span>
-<!--TODO role ??  qualifier patterns?? -->
+<!--TODO 待校对 -->
 * 语法(Syntax):
 
         define-method-combination name [[short-form-option]]
@@ -2537,100 +2537,100 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 参数和值(Arguments and Values):
 
-        args-lambda-list---一个 define-method-combination 参数 lambda 列表.
-        declaration---一个 declare 表达式形式; 不求值.
-        description---一个格式化控制(format control).
-        documentation---一个字符串; 不求值.
-        forms---一个计算并返回指定这些方法如何组合的表达式形式的隐式的 progn, 这也就是说, 这个有效方法(effective method).
-        generic-function-symbol---一个符号.
-        identity-with-one-argument---一个广义 boolean.
-        lambda-list---普通 lambda 列表.
-        name---一个符号. 通常使用非关键字, 非 nil 的符号.
-        operator---一个操作符. Name 和 operator 经常是同一个符号. 这是默认的, 但不是必须的.
+        args-lambda-list---一个 define-method-combination 参数 lambda 列表[define-method-combination arguments lambda list].
+        declaration---一个 declare 表达式形式[expression]; 不求值.
+        description---一个格式化控制[format control].
+        documentation---一个字符串[string]; 不求值.
+        forms---一个必须计算并返回指定这些方法[method]如何组合的表达式形式[form]的隐式的 progn [implicit progn], 这也就是说, 那个有效方法[effective method].
+        generic-function-symbol---一个符号[symbol].
+        identity-with-one-argument---一个广义 boolean [generalized boolean].
+        lambda-list---普通 lambda 列表[ordinary lambda list].
+        name---一个符号[symbol]. 通常使用非关键字[keyword], 非 nil [non-nil]的符号[symbol].
+        operator---一个操作符[operator]. 这个名字 name 和操作符 operator 经常是相同[same]符号[symbol]. 这是默认的, 但不是必须的.
         order---:most-specific-first 或 :most-specific-last; 求值的.
-        predicate---一个命名一个单参数并返回一个广义 boolean 的函数的符号.
-        qualifier-pattern---一个列表, 或者符号 *.
-        required-p---一个广义 boolean.
+        predicate---命名一个单参数并返回一个广义 boolean [generalized boolean]的函数[function]的一个符号[symbol].
+        qualifier-pattern---一个列表[list], 或者符号[symbol] *.
+        required-p---一个广义 boolean [generalized boolean].
 
 * 描述(Description):
 
         宏 define-method-combination 被用于定义新的方法组合类型.
 
-        这里有两个 define-method-combination 的表达式形式. 短表达式形式是一个简单的工具, 用于最常见的情况. 长表达式形式更强大但也更繁琐. 它类似于 defmacro , 其中的主体是一个表达式, 通常使用反引号, 那个计算一个表达式形式. 因此可以实现任意控制结构. 长表达式形式也允许任意方法限定符的处理.
+        这里有两个 define-method-combination 形式. 短表达式形式是一个简单的工具, 用于最常见的情况. 长表达式形式更强大但也更繁琐. 它类似于 defmacro , 其中的主体是一个表达式, 通常使用反引号, 那个表达式计算一个表达式形式[form]. 因此可以实现任意控制结构. 长表达式形式也允许任意方法限定符[qualifier]的处理.
 
         短表达式形式
 
-            这个 define-method-combination 的短表达式形式的语法当它的第二个子表达式形式是非 nil 的符号或不存在时被识别. 当使用这个短表达式形式时, name 被定义为一个产生一个 Lisp 表达式形式(operator method-call method-call ...)的方法组合的类型 . 这个 operator 是一个符号, 它可以是一个函数, 宏, 或者特殊操作符的名字. 这个 operator 可以通过一个关键字选项来提供; 它默认为 name.
+            当 define-method-combination 的第二个子表达式形式[subform]是非 nil [non-nil]的符号或不存在时, 确认为它的短表达式形式语法. 当使用这个短表达式形式时, 名字 name 被定义为一个产生一个 Lisp 表达式形式 (operator method-call method-call ...) 的方法组合类型 . 这个 operator 是一个符号[symbol], 它可以是一个函数[function], 宏[macro], 或者特殊操作符[special operator]的名字. 这个 operator 可以通过一个关键字选项来提供; 它默认为 name.
 
             以下是短表达式形式的关键字选项:
 
                 这个 :documentation 选项被用于记录这个 method-combination 类型; 参见下面的长表达式形式的描述.
 
-                这个 :identity-with-one-argument 选项在它的值为 true 时(默认是 false)启动一个优化. 如果这里只有一个可应用方法并且它是一个主方法, 那个方法当作有效方法并且 operator 不会被调用. 这个优化避免去创建一个新的有效方法并且避免了一个方法调用的开销. 这个选项被设计来和例如 progn, and, +, 和 max 这样的操作符一起使用.
+                这个 :identity-with-one-argument 选项在它的值为 true 时(默认是 false)时启用一个优化. 如果这里只有一个可应用方法并且它是一个主方法, 那个方法当作有效方法并且操作符 operator 不会被调用. 这个优化避免去创建一个新的有效方法并且避免了一个方法[function]调用的开销. 这个选项被设计来和 progn, and, +, 和 max 这样的操作符一起使用.
 
-                这个 :operator 选项指定这个操作符的名字. 这个操作符 operator 参数是一个可以为一个函数, 宏, 或特殊表达式形式的名字的符号.
+                这个 :operator 选项指定这个操作符的名字[name]. 这个操作符 operator 参数是一个符号[symbol], 这个符号可以为一个函数[function], 宏[macro], 或特殊表达式形式[special form]的名字[name].
 
-            这些方法组合的类型必须一个方法一个限定符. 如果这里这里存在没有限定符或有着这个方法组合类型不支持的限定符, 就会发出一个错误.
+            这些方法组合的类型必须一个方法一个限定符[qualifier]. 如果这里这里存在没有限定符[qualifier]或有着这个方法组合类型不支持的限定符[qualifier], 就会发出一个错误.
 
-            以这种方法定义的一个方法组合过程识别方法的两个角色. 一个方法, 当它的一个限定符是命名这个方法组合类型的符号时, 这个方法被定义为一个主方法. 至少一个主方法必须是可应用的, 否则就会发出一个错误. 一个限定符为 :around 的方法是一个辅助方法, 它的行为和标准方法组合类型中的 around 方法一样. 函数 call-next-method 只能被用于 around 方法中; 它不能被用于 define-method-combination 宏的短表达式形式定义的主方法中.
+            以这种方法定义的一个方法组合过程识别方法的两个角色. 一个方法, 当它的一个限定符[qualifier]是命名这个方法组合类型的符号时, 这个方法被定义为一个主方法. 至少一个主方法必须是可应用的, 否则就会发出一个错误. 一个限定符[qualifier]为 :around 的方法是一个辅助方法, 它表现地和标准方法组合类型中的 around 方法[around method]一样. 函数[function] call-next-method 只能被用于 around 方法[around method]中; 它不能被用于 define-method-combination 宏的短表达式形式定义的主方法中.
 
-            以这种方法定义的一个方法组合过程接受一个名为 order 的可选参数, 它默认为 :most-specific-first. 一个 :most-specific-last 值在不影响辅助方法顺序的情况下倒转这个主方法的顺序.
+            以这种方式定义的一个方法组合过程接受一个名为 order 的可选参数, 它默认为 :most-specific-first. 一个 :most-specific-last 值在不影响辅助方法顺序的情况下倒转这个主方法的顺序.
 
-            这个短表达式形式自动包括错误检查和 around 方法的支持.
+            这个短表达式形式自动包括错误检查和 around 方法[around method]的支持.
 
             对于一个内建方法组合类型的讨论, 见章节 7.6.6.4 (内建的方法组合类型).
 
         长表达式形式
 
-            define-method-combination 的长表达式形式语法在它的第二个子表达式形式为一个列表时被识别.
+            当 define-method-combination 的第二个子表达式形式[subform]为一个列表时, 确认为它的长表达式形式语法.
 
-            这个 lambda-list 接受给 defgeneric 的 :method-combination 选项中的方法组合类型的名字后面的任何参数.
+            这个 lambda-list 接受给 defgeneric 的 :method-combination 选项中的方法组合类型的名字[name]后面的任何参数.
 
-            一个方法组说明符的列表如下. 每个说明符选择可应用方法的子集来扮演特定的角色, 或者通过匹配某些模式的限定符, 或者通过断言来测试他们的限定符. 这些方法组说明符定义了所有可以和这个方法组合类型一起使用的方法限定符.
+            后面是一个方法组指定符的列表. 每个指定符选择可应用方法的子集来扮演特定的角色, 通过匹配某些模式的限定符[qualifier], 或者使用一个断言 predicate 来测试它们的限定符[qualifier]. 这些方法组指定符定义了所有可以和这个方法组合类型一起使用的方法限定符[qualifier].
 
-            每个 method-group-specifier 的 car 是一个命名一个变量的符号. 在 define-method-combination 的主体中的表达式形式的执行期间, 这个变量被绑定给这个方法组中的一个方法列表. 这个列表中的方法以 :order 选项指定的顺序出现.
+            每个 method-group-specifier 的 car 是一个命名一个变量[variable]的符号[symbol]. 在 define-method-combination 的主体中的表达式形式[form]的执行期间, 这个变量[variable]被绑定为这个方法组中的一个方法[method]列表. 这个列表中的方法[method]以 :order 选项指定的顺序出现.
 
-            如果 qualifier-pattern 是一个符号那么它必须是 *. 如果一个方法的限定符列表和 一个 qualifier-pattern 是 equal 的(除了这个符号 * 在一个 qualifier-pattern 中匹配任何东西), 那么这个方法匹配这个 qualifier-pattern. 因此一个 qualifier-pattern 可以是以下之一: 空列表, 它匹配未受限方法; 符号 *, 它匹配所有方法; 一个真实的列表, 它匹配和这个列表长度相同数量限定符的方法, 而其中每个限定符匹配这个列表的元素; 或者一个以 * 结尾的点对列表(这个 * 匹配任何数量的额外限定符).
+            如果限定符模式 qualifier-pattern 是一个符号[symbol]那么它必须是 *. 如果一个方法的限定符[qualifier]列表和一个限定符模式 qualifier-pattern 是 equal 的(在一个 qualifier-pattern 中除了这个符号 * 是匹配任何东西), 那么这个方法匹配这个限定符模式 qualifier-pattern. 因此一个 qualifier-pattern 可以是以下之一: 空列表[empty list], 它匹配非限定方法[unqualified method]; 符号[symbol] *, 它匹配所有方法; 一个真实的列表, 它匹配带有和这个列表长度相同数量限定符[qualifier]的方法, 并且其中每个限定符[qualifier]匹配这个列表的元素; 或者一个以 * 结尾的点对列表(这个 * 匹配任何数量的额外限定符[qualifier]).
 
-            每个可应用方法都是根据 qualifier-patterns 来检测并且以从左到右的顺序判断. 在一个 qualifier-pattern 匹配后或一个断言返回 true, 这个方法就成为对应方法组的一个成员并且不会做进一步检测. 因此如果一个方法可以是超过一个方法组的一个成员, 它只加入到第一个这样的组中. 如果一个方法组有超过一个 qualifier-pattern, 一个方法只需要返回这些 qualifier-patterns 中的一个就可以称为这个组的成员.
+            每个可应用方法都是根据限定符模式 qualifier-patterns 和断言 predicate 以从左到右的顺序来检测. 在一个 qualifier-pattern 匹配后或一个断言 predicate 返回 true, 这个方法就成为对应方法组的一个成员并且不会做进一步检测. 因此如果一个方法可以是超过一个方法组的一个成员, 它只加入到第一个这样的组中. 如果一个方法组有超过一个限定符模式 qualifier-pattern, 一个方法只需要返回这些 qualifier-patterns 中的一个就可以称为这个组的成员.
 
-            一个 predicate 函数的名字可以出现在一个方法组的说明符中, 而不是  qualifier-patterns. 这个断言 predicate 被每一个没有被赋给一个更早的方法组的方法所调用; 它用一个参数来调用, 那个方法的限定符列表. 如果那个方法是这个方法组的一个成员, 那么这个 predicate 应该返回 true. 一个断言 predicate 可以和一个 qualifier-pattern 区分开来因为它是一个符号而不是 nil 或 *.
+            一个断言 predicate 函数的名字[name]可以出现在一个方法组指定符中, 替换限定符模式  qualifier-patterns. 这个断言 predicate 被每一个没有被赋给一个更早的方法组的方法所调用; 它用一个参数来调用, 那个方法的限定符[qualifier]列表[list]. 如果那个方法是这个方法组的一个成员, 那么这个 predicate 应该返回 true. 一个断言 predicate 可以和一个限定符模式 qualifier-pattern 区分开来因为它是一个符号[symbol]而不是 nil 或 *.
 
-            如果这里有一个不属于任何方法组的可应用方法, 那么函数 invalid-method-error 会被调用.
+            如果这里有一个不属于任何方法组的可应用方法, 那么函数[function] invalid-method-error 会被调用.
 
-            方法组说明符可以有关键字选项更在这个限定符模式或断言后. 关键字选项有别于额外限定符模式因为它们既不是列表也不是符号 *. 这些关键字选项如下:
+            方法组指定符可以有关键字选项跟在这些限定符[qualifier]模式或断言后. 关键字选项有别于额外限定符[qualifier]模式因为它们既不是列表也不是符号 *. 这些关键字选项如下:
 
-                这个 :description 选项被用于提供这个方法组中方法作用的描述. 编程环境工具使用 (apply #'format stream format-control (method-qualifiers method)) 来打印这个描述, 预计会很简介. 这个关键字选项允许一个方法限定符的描述被定义在定义这个方法限定符的意义的相同模块中. 大部分情况下, format-control 不会包含任何 format 指令, 但是普遍上它们是可用的. 如果没有提供 :description, 会生成一个基于这个变量名和限定符模式还有这个方法组是否包含非受限方法的描述.
+                这个 :description 选项被用于提供这个方法组中方法角色的描述. 编程环境工具使用 (apply #'format stream format-control (method-qualifiers method)) 来打印这个描述, 预计会很简介. 这个关键字选项允许一个方法限定符[qualifier]的描述被定义在定义这个方法限定符[qualifier]的意义的相同模块中. 大部分情况下, 格式化控制 format-control 不会包含任何 format 指令, 但是普遍上它们是可用的. 如果没有提供 :description, 会生成一个基于这个变量名和限定符[qualifier]模式还有这个方法组是否包含非限定方法[unqualified method]的默认描述.
 
-                这个 :order 选项指定了这些方法的顺序. 这个 order 参数是一个求值为 :most-specific-first 或 :most-specific-last 的表达式形式. 如果它求值为任何其他值, 就会发出一个错误. 如果没有提供 :order, 它默认为 :most-specific-first.
+                这个 :order 选项指定了这些方法的顺序. 这个 order 参数是一个求值为 :most-specific-first 或 :most-specific-last 的表达式形式[form]. 如果它求值为任何其他值, 就会发出一个错误. 如果没有提供 :order, 它默认为 :most-specific-first.
 
-                这个 :required 选项指定这个方法组中是否至少需要一个方法. 如果它的值为 true 而这个方法组是空的 (也就是说, 没有可应用的方法匹配这个限定符模式或满足这个断言), 就会发出一个错误. 如果没有提供 :required, 它默认为 nil.
+                这个 :required 选项指定这个方法组中是否至少需要一个方法. 如果它的值为 true 而这个方法组是空的 (也就是说, 没有匹配这个限定符[qualifier]模式或满足这个断言的可应用方法), 就会发出一个错误. 如果没有提供 :required, 它默认为 nil.
 
-            这个方法组说明符的使用提供了一个方便的语法来选择方法, 来把它们划分给可能的角色, 并且去执行必要的错误检查. 在主体表达式形式中通过使用正常的 列表处理操作和函数 method-qualifiers 和 invalid-method-error 来执行方法的进一步过滤是可能的. 允许在方法组说明符中命名的变量上使用 setq, 也允许去绑定额外的变量. 绕开这个方法组说明符机制并在主体表达式形式中执行任何操作都是可能的. 这个通过写一个单个方法组来完成, 其中 * 作为它仅有的 qualifier-pattern; 这个变量接下来以最具体优先的顺序绑定给所有这些可应用方法的列表.
+            这个方法组指定符的使用提供了一个方便的语法来选择方法, 来把它们划分给可能的角色, 并且去执行必要的错误检查. 在主体表达式形式[form]中通过使用正常的列表处理操作和函数[function] method-qualifiers 和 invalid-method-error 来执行方法的进一步过滤是可能的. 允许在方法组指定符中命名的变量上使用 setq, 也允许去绑定额外的变量. 绕开这个方法组指定符机制并在主体表达式形式[form]中执行任何操作都是可能的. 这个通过写一个单个方法组来完成, 其中 * 作为它仅有的限定符模式 qualifier-pattern; 这个变量接下来以最具体优先的顺序绑定为所有这些可应用方法[applicable method]的列表[list].
 
-            主体表达式形式计算并返回指定这些方法如何组合的表达式形式, 换言之, 有效方法. 这个有效方法在空词法环境中被求值, 以 call-method 的局部宏定义和 COMMON-LISP-USER package 包中不可访问的符号命名的绑定为参数. 给定一个在由这些方法组说明符产生的其中一个列表中的方法对象和一个后续方法的列表, call-method 会调用那个方法, 这样 call-next-method 有可用的后续方法.
+            主体表达式形式 forms 计算并返回指定这些方法如何组合的表达式形式[form], 换言之, 有效方法. 这个有效方法在一个空词法环境[null lexical environment]中被求值, 这个环境用 call-method 的局部宏定义和不是 COMMON-LISP-USER 包中可访问[accessible]的符号命名的绑定所扩充. 给定一个在由这些方法组指定符产生的其中一个列表[list]中的方法对象和一个下一个方法(next method)的列表[list], call-method 会调用那个方法, 这样 call-next-method 有可用的下一个方法(next method).
 
-            当一个有效方法除了调用一个单一的方法之外没有其他效果, 一些具体实现采用一个优化, 使用这个单个的方法直接作为这个有效方法, 因此避免了创建一个新的有效方法的需要. 当有效方法表达式形式完全由一个 call-method 宏的调用组成, 它的第一个子表达式形式是一个方法对象而第二个子表达式形式是 nil 或未提供的, 那么这个优化就会被启用. 如果需要这种优化, 那么每个 define-method-combination 主体有责任去去除多余的 progn, and, multiple-value-prog1, 诸如此类的调用.
+            当一个有效方法除了调用一个单独的方法之外没有其他效果, 一些具体实现采用一个优化, 使用这个单个的方法直接作为这个有效方法, 因此避免了创建一个新的有效方法的需要. 当有效方法表达式形式完全由一个 call-method 宏的调用组成, 并且它的第一个子表达式形式[subform]是一个方法对象而第二个子表达式形式是 nil 或未提供的, 那么这个优化就会被启用. 如果需要这种优化, 那么每个 define-method-combination 主体有责任去去除多余的 progn, and, multiple-value-prog1, 诸如此类的调用.
 
-            列表 (:arguments . lambda-list) 可以在任何声明或文档字符串之前出现. 当这个方法组合类型执行一些特定的行为来作为组合的方法的一部分并且这个行为需要访问给这个广义函数的参数时, 这个表达式形式是很有用的. 每个通过 lambda-list 定义的参数变量被绑定到一个表达式形式, 这个表达式形式可以被插入到这个有效方法中. 当这个表达式形式在这个有效方法的执行期间被求值时, 它的值是给这个广义函数的对应参数; 在一个 setf 表达式形式中使用这样一个表达式形式作为一个 place 的后果是未定义的. 参数的匹配通过划分这个 :arguments lambda-list 还有广义函数的 lambda-list 为三个部分来计算: 必要参数, 可选参数, 还有关键字和剩余参数. 为特定调用提供的广义函数的参数也被划分为三个部分; 必要参数部分包括这个广义函数所拥有的必要参数, 可选参数部分包含了这个广义函数拥有的可选参数, 以及关键字/剩余参数部分包含了剩余的参数. :arguments lambda-list 的必要和可选部分的每个参数都在这些参数的对应部分中访问同一个位置的参数. 如果 :arguments lambda-list 的部分更短, 额外的参数就会被忽略. 如果这个 :arguments lambda-list 的部分更长, 超出的必要参数绑定给求值为 nil 的表达式形式而超出的可选参数绑定给它们的初始化表达式形式. :arguments lambda-list 中的关键字参数和剩余参数访问这些章节的关键字/剩余部分. 如果这个 :arguments lambda-list 包含了 &key, 它表现为就好像它也包含了 &allow-other-keys.
+            列表 (:arguments . lambda-list) 可以出现在任何声明或文档字符串[documentation string]之前. 当这个方法组合类型执行一些特定的行为来作为组合方法的一部分并且这个行为需要访问给这个广义函数[generic function]的参数时, 这个表达式形式是很有用的. 每个由 lambda-list 定义的参数变量被绑定到一个表达式形式[form], 这个表达式形式可以被插入到这个有效方法中. 当这个表达式形式[form]在这个有效方法的执行期间被求值时, 它的值就是给这个广义函数[generic function]的对应参数; 在一个 setf 表达式形式[form]中使用这样一个表达式形式[form]作为一个位置 place 的后果是未定义的. 参数的匹配通过划分这个 :arguments 的 lambda-list 还有广义函数[generic function]的 lambda-list 为三个部分来计算: 必要参数[required parameter], 可选参数[optional parameter], 还有关键字[keyword]和剩余参数[rest parameter]. 为特定调用[call]提供给广义函数[generic function]的实参[argument]也被划分为三个部分; 必要实参[argument]部分包括这个广义函数[generic function]所拥有的必要参数[required parameter]相同数量的实参, 可选实参[argument]部分包含了这个广义函数[generic function]拥有的可选参数[optional parameter]数量相同的实参[argument], 以及关键字/剩余实参[argument]部分包含了剩余的参数. :arguments lambda-list 的必要和可选部分的每个形参[parameter]访问这些实参[argument]的对应部分中相同位置的参数. 如果 :arguments 的 lambda-list 的部分更短, 那么额外的实参[argument]就会被忽略. 如果这个 :arguments 的 lambda-list 的部分更长, 超出的必要参数[required parameter]绑定给求值为 nil 的表达式形式而超出的可选参数[optional parameter]被绑定[bound]给它们的初始化表达式形式. :arguments lambda-list 中的关键字参数[keyword parameter]和剩余参数[rest parameter]访问这些实参[argument]的关键字/剩余部分. 如果这个 :arguments 的 lambda-list 包含了 &key, 它表现为就好像它也包含了 &allow-other-keys.
 
-            另外, &whole var 可以被放置在 :arguments lambda-list 的第一个. 这个导致 var 被绑定给一个表达式形式, 这个表达式形式求值为一个提供给这个广义函数的所有参数的列表. 这个和 &rest 不同因为它访问所有这些参数, 不只是关键字/剩余参数.
+            另外, &whole var 可以被放置在 :arguments lambda-list 的第一个. 这个导致 var 被绑定[bound]给一个表达式形式[form], 这个表达式形式求值[evaluate]为一个提供给这个广义函数[generic function]的所有实参[argument]的列表[list]. 这个和 &rest 不同因为它访问所有这些参数, 不只是关键字/剩余参数[argument].
 
-            被这个主体检测到的错误的状况应该使用 method-combination-error 或 invalid-method-error 来报告; 这些函数添加任何必要的上下文信息给这个错误信息并且会发出一个合适的错误.
+            被这个主体检测到的错误状况应该使用 method-combination-error 或 invalid-method-error 来报告; 这些函数[function]添加任何必要的上下文信息给这个错误信息并且会发出一个合适的错误.
 
-            这个主体表达式形式在这个 lambda 列表和方法组说明符创建的绑定中求值. 位于主体头部的声明直接位于 lambda 列表创建的绑定内部以及方法组变量绑定的外部. 因此方法组变量不能以这种方式声明. 但是 locally 可以在这个主体周围使用.
+            这个主体表达式形式 forms 在这个 lambda 列表[lambda list]和方法组指定符创建的绑定[binding]中求值. 位于主体头部的声明直接位于 lambda 列表[lambda list]创建的绑定[binding]内部以及方法组变量绑定[binding]的外部. 因此方法组变量不能以这种方式声明. 但是 locally 可以在这个主体周围使用.
 
-            在主体表达式形式中, generic-function-symbol 被绑定到这个广义函数对象.
+            在主体表达式形式 forms 中, generic-function-symbol 被绑定到这个广义函数[generic function]对象[object].
 
-            Documentation 作为一个文档字符串关联到 name (作为 method-combination 种类) 以及这个方法组合对象.
+            Documentation 作为一个文档字符串[documentation string]关联到 name (作为 method-combination 种类) 以及这个方法组合[method combination]对象[object].
 
-            注意, 两个有着相同特化符的方法, 但是限定符不同, 不会被章节 7.6.6 (方法选择和组合) 中描述方法选择和组合处理的步骤 2 中描述的算法所排序. 通常这两个方法在这个有效方法中扮演着不同的角色, 不管在那个步骤 2 的结果中如何被排序, 这个有效方法是相同的. 如果这两个方法扮演着相同的角色并且它们的顺序很重要, 就会发出一个错误. 这是在 define-method-combination 中匹配的限定符模式的一部分.
+            注意, 两个有着相同特化符但是限定符[qualifier]不同的方法, 不会被章节 7.6.6 (方法选择和组合) 中描述方法选择和组合处理的步骤 2 中描述的算法所排序. 通常这两个方法在这个有效方法中扮演着不同的角色因为它们有不同的限定符[qualifier], 不管在那个步骤 2 的结果中如何被排序, 这个有效方法是相同的. 如果这两个方法扮演着相同的角色并且它们的顺序很重要, 就会发出一个错误. 这是在 define-method-combination 中匹配的限定符[qualifier]模式的一部分.
 
-        如果一个 define-method-combination 表达式形式作为顶层表达式形式出现, 编译器必须是这个方法组合的名字在后续的 defgeneric 表达式形式中被识别为一个有效方法组合名字. 然而, 方法组合执行的时间不早于 define-method-combination 表达式形式被执行时, 并且可能在使用这个方法组合的广义函数执行的时候执行.
+        如果一个 define-method-combination 表达式形式[form]作为顶层表达式形式[top level form]出现, 编译器[compiler]必须使这个方法组合[method combination]名字[name]在后续的 defgeneric 表达式形式中被识别为一个有效方法组合[method combination]名字[name]. 然而, 方法组合[method combination]执行的时间不早于 define-method-combination 表达式形式[form]被执行的时间, 并且可能在使用这个方法组合[method combination]的广义函数[generic function]执行的时候执行.
 
 * 示例(Examples):
 
-        define-method-combination 的长表达式形式的大多数例子也说明了作为声明方法组合工具的一部分提供的相关函数的使用.
+        define-method-combination 的长表达式形式的大多数例子也说明了作为声明式方法组合工具的一部分提供的相关函数[function]的使用.
 
     ```LISP
     ;;; Examples of the short form of define-method-combination
@@ -2765,25 +2765,25 @@ standard 内建的方法组合类型的语义描述在章节 7.6.6.2 (标准方�
 
 * 副作用(Side Effects):
 
-        编译器不需要去执行任何编译时的副作用.
+        编译器[compiler]不需要去执行任何编译时的副作用.
 
 * 异常情况(Exceptional Situations):
 
-        用短表达式形式定义的方法组合类型需要每个方法一个限定符. 如果这里有一些可应用的方法没有限定符或者有着这个方法组合类型不支持的限定符, 就会发出一个 error 类型的错误. 至少一个主方法必须是可应用的否则就会发出一个 error 类型的错误.
+        用短表达式形式定义的方法组合类型需要每个方法一个限定符[qualifier]. 如果这里有一些可应用的方法没有限定符[qualifier]或者有着这个方法组合类型不支持的限定符[qualifier], 就会发出一个 error 类型[type]的错误. 至少一个主方法必须是可应用的否则就会发出一个 error 类型[type]的错误.
 
-        如果一个可应用的方法不属于任何方法组, 系统会发出一个 error 类型的错误, 表示这个方法对于使用的这个方法组合的种类是非法的.
+        如果一个可应用的方法不属于任何方法组, 系统会发出一个 error 类型[type]的错误, 表示这个方法对于使用的这个方法组合的种类是非法的.
 
-        如果这个 :required 选项的值是 true 并且这个方法组是空的 (这也就是说, 没有可应用的方法匹配这个限定符模式或满足这个断言), 那么就会发出一个 error 类型的错误.
+        如果这个 :required 选项的值是 true 并且这个方法组是空的 (这也就是说, 没有可应用方法匹配这个限定符[qualifier]模式或满足这个断言), 那么就会发出一个 error 类型[type]的错误.
 
-        如果 :order 选项求值为一个值而不是 :most-specific-first 或 :most-specific-last, 就会发出一个 error 类型的错误.
+        如果 :order 选项求值为一个不是 :most-specific-first 或 :most-specific-last 的值, 就会发出一个 error 类型[type]的错误.
 
 * 也见(See Also):
 
-        call-method, call-next-method, documentation, method-qualifiers, method-combination-error, invalid-method-error, defgeneric, Section 7.6.6 (方法选择和组合), Section 7.6.6.4 (内建的方法组合类型), Section 3.4.11 (文档字符串和声明的语法交互)
+        call-method, call-next-method, documentation, method-qualifiers, method-combination-error, invalid-method-error, defgeneric, 章节 7.6.6 (方法选择和组合), 章节 7.6.6.4 (内建的方法组合类型), 章节 3.4.11 (文档字符串和声明的语法交互)
 
 * 注意(Notes):
 
-        这个 defgeneric 的 :method-combination 选项被用于指定一个广义函数应该使用一个特殊的方法组合类型. 给 :method-combination 的第一个参数是一个方法组合的名字而剩下的参数是这个类型的选项. 
+        这个 defgeneric 的 :method-combination 选项被用于指定一个广义函数[generic function]应该使用一个特殊的方法组合类型. 给 :method-combination 的第一个参数是一个方法组合的名字[name]而剩下的参数是这个类型的选项. 
 
 
 ### <span id="">标准广义函数 FIND-METHOD</span>
