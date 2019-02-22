@@ -74,7 +74,7 @@
 
 * 描述(Description):
 
-        defstruct 定义一个结构化的类型[type], 名为 structure-type, 并带有由槽选项 slot-options 指定的已命名的槽.
+        defstruct 定义一个结构化的类型[type], 名为 structure-type, 并带有由槽选项 slot-options 指定的已命名槽.
 
         defstruct 为槽定义读取器[reader]并且为 setf 能在这样的读取器[reader]函数上正常工作做准备. 而且, 除非被重写, 它都会定义一个名为 name-p 的断言, 定义一个名为 make-constructor-name 的构造函数, 并且定义一个名为 copy-constructor-name 的复制函数. 所有这些自动创建的函数的名字可能被自动声明为 inline (由具体实现[implementation]决定).
 
@@ -89,9 +89,9 @@
         slot-keyword-2 form-2
         ...)
 
-        给这个构造函数的参数都是关键字参数. 每个槽关键字参数必须是一个名字对应一个结构体槽名字的关键字. 所有这些关键字 keywords 和表达式形式 forms 被求值. 如果一个槽没有以这种方式被初始化, 它会在构造函数被调用时通过求值槽描述中的 slot-initform 来初始化. 如果没有提供 slot-initform 而在显式赋值前去试读取这个槽的值, 结果是未定义的.
+        给这个构造函数的参数都是关键字参数. 每个槽关键字参数必须是一个名字对应一个结构体槽名字的关键字. 所有这些关键字 keywords 和表达式形式 forms 被求值. 如果一个槽没有以这种方式被初始化, 它会在构造函数被调用时通过求值槽描述中的槽初始化表达式形式 slot-initform 来初始化. 如果没有提供槽初始化表达式形式 slot-initform 而在显式赋值前去尝试读取这个槽的值, 结果是未定义的.
 
-        为一个 defstruct 组件提供的每个 slot-initform, 当被构造函数用于其他未提供的组件时, 在每个对这个构造函数的调用上被再次求值. 这个 slot-initform 不被求值除非在一个特定结构体实例的创建中需要它. 如果从不需要它, 这里可以没有类型不匹配的错误, 即便指定了这个槽的类型[type]; 在这个情况下没有警告应该被发出. 比如, 在下面顺序中, 只有最后一个调用是一个错误.
+        为一个 defstruct 组件提供的每个槽初始化表达式形式 slot-initform, 当被构造函数用于其他未提供的组件时, 在每个对这个构造函数的调用上被再次求值. 这个 slot-initform 不被求值除非在一个特定结构体实例的创建中需要它. 如果从不需要它, 即便指定了这个槽的类型[type], 这里也可以没有类型不匹配的错误; 在这个情况下应该没有发出警告. 比如, 在下面顺序中, 只有最后一个调用是一个错误.
 
     ```LISP
     (defstruct person (name 007 :type string)) 
@@ -105,7 +105,7 @@
 
         比如, 如果表达式形式 (gensym) 被用作一个初始化表达式形式, 不管是在构造函数调用中或是作为 defstruct 的默认初始化表达式形式, 每个对这个构造函数的调用都会调用 gensym 来产生一个新的符号[symbol].
 
-        在 defstruct 中的每个槽描述 slot-description 都可以指定 0 个或多个槽选项 slot-options. 一个 slot-option 由一个关键字和值(它不是一个要被求值的表达式形式, 而是值本身)的对组成. 比如:
+        在 defstruct 中的每个槽描述 slot-description 都可以指定 0 个或多个槽选项 slot-options. 一个槽选项 slot-option 由一个关键字和值(它不是一个要被求值的表达式形式, 而是值本身)的对组成. 比如:
 
     ```LISP
     (defstruct ship
@@ -122,13 +122,13 @@
 
             :type type
 
-                这个指定了这个槽的内容总是为 type 类型. 这完全类似于一个变量或函数的声明; 它有效地声明这个读取器[reader]函数的结果类型. 在初始化一个槽或者对它赋值时类型[type]是否被检测是依赖于具体实现[implementation-dependent]. 这个 type 不求值; 它必须是一个有效的类型指定符[type specifier].
+                这个指定了这个槽的内容总是为 type 类型. 这完全类似于一个变量或函数的声明; 它有效地声明这个读取器[reader]函数的结果类型. 在初始化一个槽或者对它赋值时类型[type]是否被检测依赖于具体实现[implementation-dependent]. 这个 type 不求值; 它必须是一个有效的类型指定符[type specifier].
 
             :read-only x
 
                 当 x 是 true 时, 这个指定了这个槽不能被修改; 它总是会包含构造时提供的值. setf 不会接受这个槽的读取器[reader]函数. 如果 x 是 false, 这个 slot-option 就没有效果. x 不会被求值.
 
-                当这个选项是 false 或没提供, 写入[write]这个槽的能力是通过一个 setf 函数[setf function]还是一个 setf 展开器[setf expander]实现的依赖于具体实现[implementation-dependent].
+                当这个选项是 false 或没提供时, 写入[write]这个槽的能力是通过一个 setf 函数[setf function]还是一个 setf 展开器[setf expander]实现的依赖于具体实现[implementation-dependent].
 
         下面的关键字选项可用于 defstruct. 一个 defstruct 选项可以是一个关键字或一个关键字和它的参数的列表[list]; 单独指定关键字相当于指定一个包含关键字和无参数的列表. 这个 defstruct 选项的语法有别于槽选项使用的语法. 这些选项的任何部分都不会被求值.
 
@@ -212,11 +212,11 @@
 
                 表示 person 上的所有操作也可以工作在 astronaut 上.
 
-                使用 :include 的结构体可以为包括的槽指定有别于被包含的结构体指定的默认值或槽选项, 通过像这样给定 :include 选项:
+                使用 :include 的结构体可以为包括的槽指定和被包含的结构体指定的不一样的默认值或槽选项, 通过像这样给定 :include 选项:
 
                 (:include included-structure-name slot-description*)
 
-                每个 slot-description 必须有一个和被包含的结构体这栋的某个槽相同的槽名字. 如果一个 slot-description 没有槽初始化表达式形式 slot-initform, 那么在这个新的结构体中那个槽就没有初始值. 否则它的初始值表达式形式就会被 slot-description 中的槽初始化表达式形式 slot-initform 替代. 一个普通的可写槽可以变为只读的. 如果一个槽在被包含的结构体中是只读的, 那么它在包含的结构体中也必须如此. 如果为一个槽提供了类型[type], 它必须是这个被包含的结构体中指定的类型[type]的子类型[subtype].
+                每个槽描述 slot-description 必须有一个和被包含的结构体中的某个槽相同的槽名字. 如果一个槽描述 slot-description 没有槽初始化表达式形式 slot-initform, 那么在这个新的结构体中那个槽就没有初始值. 否则它的初始值表达式形式就会被 slot-description 中的槽初始化表达式形式 slot-initform 替代. 一个普通的可写槽可以变为只读的. 如果一个槽在被包含的结构体中是只读的, 那么它在包含的结构体中也必须如此. 如果为一个槽提供了类型[type], 它必须是这个被包含的结构体中指定的类型[type]的子类型[subtype].
 
                 比如, 如果一个 astronaut 中默认 age 是 45, 那么就是
 
@@ -242,7 +242,7 @@
                                       :identity 1)
                   =>  (NIL NIL BINOP * X 5 NIL NIL NIL T T 1)
 
-                前两个 nil 元素源于 binop 定义中为 2 的 :initial-offset. 接下来的四个元素包含了结构体名字和 binop 的三个槽. 接下来的三个 nil 元素源自 annotated-binop 定义中 3 的 :initial-offset. 最后三个列表元素包含了  annotated-binop 的额外的槽.
+                前两个 nil 元素源于 binop 定义中为 2 的 :initial-offset. 接下来的四个元素包含了结构体名字和 binop 的三个槽. 接下来的三个 nil 元素源自 annotated-binop 定义中 3 的 :initial-offset. 最后三个列表元素包含了 annotated-binop 的额外的槽.
 
             :initial-offset
 
@@ -287,14 +287,14 @@
                   operand-1
                   operand-2) =>  BINOP
 
-                这个定义了一个构造函数 make-binop 和三个选择器函数, 也就是 binop-operator, binop-operand-1, and binop-operand-2. (然而它不会定义一个断言 binop-p, 出于下面解释的原因.)
+                这个定义了一个构造函数 make-binop 和三个选择器函数, 也就是 binop-operator, binop-operand-1, 和 binop-operand-2. (然而它不会定义一个断言 binop-p, 出于下面解释的原因.)
 
                 这个 make-binop 的效果仅仅是构造一个长度 3 的列表:
 
                 (make-binop :operator '+ :operand-1 'x :operand-2 5) =>  (+ X 5)  
                 (make-binop :operand-2 4 :operator '*) =>  (* NIL 4)
 
-                它就像是函数 list, 除了它接受关键字参数并且执行适合于 binop 概念数据类型的槽默认值初始化.<!--TODO 待校对--> 同样地, 选择器函数 binop-operator, binop-operand-1, and binop-operand-2 本质上分别等价于 car, cadr, 和 caddr. 它们可能不是完全等价, 比如由于一个具体实现完全可以添加错误检测代码来确保给每个选择器函数的实参是长度为 3 的列表.
+                它就像是函数 list, 除了它接受关键字参数并且执行适合于 binop 概念数据类型的槽默认值初始化. 同样地, 选择器函数 binop-operator, binop-operand-1, and binop-operand-2 本质上分别等价于 car, cadr, 和 caddr. 它们可能不是完全等价, 比如由于一个具体实现完全可以添加错误检测代码来确保给每个选择器函数的实参是长度为 3 的列表.
 
                 binop 是一个概念数据类型, 由于它不是 Common Lisp 类型系统的一部分. typep 不识别 binop 为一个类型指定符[type specifier], 并且当给定一个 binop 结构体时 type-of 返回 list. 这里没有方法去区分一个 make-binop 构造的数据类型和其他具有正确结构的列表[list].
 
@@ -371,7 +371,7 @@
 
                 (vector element-type)
 
-                    这个结构体被表示为一个 (可能是特化的) 向量[vector], 把组件存储为向量元素. 每个组件必须是可以存储到指定类型[type]的向量[vector]中的类型[type]. 如果这个结构体是 :named 那么第一个组件是 vector 的元素 1, 否则就是元素 0. 当且仅当这个类型[symbol]符号是提供的 element-type 的一个子类型[subtype]时, 这个结构体可以是 :named.<!--TODO 最后一句有歧义，看原文-->
+                    这个结构体被表示为一个 (可能是特化的) 向量[vector], 把组件存储为向量元素. 每个组件必须是可以存储到指定类型[type]的向量[vector]中的类型[type]. 如果这个结构体是 :named 那么第一个组件是 vector 的元素 1, 否则就是元素 0. 当且仅当这个类型 symbol 是提供的 element-type 的一个子类型[subtype]时, 这个结构体可以是 :named.
 
                 list
 
