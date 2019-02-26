@@ -5,43 +5,43 @@
 
 ## 9.1 <span id="ConditionSystemConcepts">状况系统的概念</span>
 
-描述 Common Lisp 构造不仅仅是它们打算被使用情况下的行为 (见每个操作符声明的 "描述(Description)" 部分), 还有其他所有情况 (见每个操作符说明的 "异常情况(Exceptional Situations)").
+描述 Common Lisp 构造的不仅仅是它们旨在被使用情况下的行为 (见每个操作符[operator]声明的 "描述(Description)" 部分), 还有其他所有情况 (见每个操作符[operator]说明的 "异常情况(Exceptional Situations)").
 
-一个情况(situation)是一个表达式在一个特定上下文中的求值. 一个状况(condition)是表示一个被检测到的特定情况的一个对象. 状况是类 condition 的一个普通实例. 在 Common Lisp 定义了一个状况类的层次结构. 一个状况有槽, 可以包含这个状况表示的情况的相关数据.
+一个情况(situation)是一个表达式在一个特定上下文中的求值. 一个状况[condition]是表示一个已经被检测到的特定情况的一个对象[object]. 状况[condition]是类[class] condition 的一个广义实例[generalized instance]. 在 Common Lisp 定义了一个状况[condition]类的层次结构. 一个状况[condition]有槽[slot], 可以包含这个状况[condition]表示的情况的相关数据.
 
-一个错误(error)是一个没有某个表达式形式的干预(不管是由用户交互还是在程序控制下), 程序就无法正常执行下去的情况. 不是所有错误都被检测到. 当一个错误未被检测到, 它的效果可以是取决于具体实现爱呢(implementation-dependent), 具体实现定义(implementation-defined), 未指定(unspecified), 或者未定义(undefined)的. 见章节 1.4 (Definitions). 所有检测到的错误可以被状况表示, 但不是所有状况都表示错误.
+一个错误(error)是在一个没有某个形式的干预下(不管是由用户交互还是在程序控制下), 正常程序执行不能正确地继续下去的情况. 不是所有错误都被检测到. 当一个错误未被检测到, 它的效果可以是依赖于具体实现的[implementation-dependent], 具体实现定义的[implementation-defined], 未指定(unspecified), 或者未定义(undefined)的. 见章节 1.4 (定义). 所有检测到的错误可以由状况[condition]表示, 但不是所有状况[condition]都表示错误.
 
-发送(Signaling) 是一个过程, 通过这个过程一个状况可以通过提升可以被处理的状况来修改一个程序中的控制流. 函数 error, cerror, signal, 还有 warn 被用于发出状况信号.
+发送(Signaling) 是一个过程, 通过这个过程一个状况[condition]可以修改一个程序中的控制流, 通过提升这个接下来可以被处理的状况[condition]. 函数 error, cerror, signal, 还有 warn 被用于发出状况[condition].
 
-这个发送的过程涉及从一组活跃的处理者(handler)中选择和调用一个处理者. 一个处理者(handler)是一个单参数(这个状况)的被调用来处理一个状况的函数. 每个处理者都和一个状况类型关联, 并且一个处理者只有在这个处理者关联的状况类型上被调用.
+这个发送的过程涉及从一组活跃[active]处理者[handler]中选择和调用一个处理者[handler]. 一个处理者[handler]是一个单参数(也就是这个状况[condition])的函数[function], 它被调用来处理一个状况[condition]. 每个处理者[handler]都和一个状况[condition]类型[type]关联, 并且一个处理者[handler]只有在这个处理者[condition]关联类型[type]的状况[condition]上被调用.
 
-活跃的处理者被动态地确定 (见 handler-bind 或 handler-case). 处理者在和这个发送者(signaler)等价的动态环境中被调用, 除了这个活跃的处理者集合只包含在这个要被调用的处理者被建立时活跃的那些. 发出一个状况在这个状况上没有副作用, 并且这里没有动态的状态被包含在一个状况中.
+活跃[active]处理者[handler]被动态地建立 (见 handler-bind 或 handler-case). 处理者[handler]在和这个发送者(signaler)所处的等价动态环境[dynamic environment]中被调用, 除了这个活跃的处理者集合只包含在这个要被调用的处理者被建立时活跃的那些.<!--TODO 待校对整理--> 发出一个状况[condition]在这个状况[condition]上没有副作用, 并且这里没有动态的状态被包含在一个状况[condition]中.
 
-如果一个处理者被调用, 它可以通过以下三种方式来处理这个问题:
+如果一个处理者[handler]被调用, 它可以通过以下三种方式来处理这个情况[situation]:
 
-Decline
+拒绝(Decline)
 
-    它可以拒绝去处理这个状况. 它通过简单的返回而不是转移控制来完成这个. 当这个发生的时候, 这个处理者返回的任何值都会被忽略并且下一个最近被建立的处理者会被调用. 如果这里没有这样的处理者并且发送函数是 error 或 cerror, 这个调试器会进入到这个发送者的动态环境中. 如果这里没有这样的处理者并且发送函数是 signal 或 warn, 那么这个发送函数简单地返回 nil.
+    它可以拒绝去处理[handle]这个状况[condition]. 这个方式通过简单地返回而不是转移控制来完成. 当这个发生的时候, 由这个处理者返回的任何值都会被忽略并且下一个最近被建立的处理者会被调用. 如果这里没有这样的处理者并且发送函数是 error 或 cerror, 那么在这个发送者的动态环境[dynamic environment]中进入调试器. 如果这里没有这样的处理者并且发送函数是 signal 或 warn, 那么这个发送函数简单地返回 nil.
 
-Handle
+处理(Handle)
 
-    它可以通过执行一个控制的非局部转移来处理这个状况. 这个可以通过简单地使用 go, return, throw 来完成, 或者通过使用例如 abort 或 invoke-restart 函数更抽象地完成.
+    它可以通过执行一个控制的非局部转移来处理[handle]这个状况[condition]. 这个可以通过简单地使用 go, return, throw 来完成, 或者通过使用例如 abort 或 invoke-restart 函数更抽象地完成.
 
-Defer
+推迟(Defer)
 
-    它可以推迟一个关于是否处理(handle)或拒绝(decline)的决定, 通过任何一种动作, 但是最常见的是通过发送另一个状况, 重发相同的状况, 或者强制进入调试器.
+    它可以推迟一个关于是否处理[handle]或拒绝[decline]的决定, 通过任何一种动作, 但是最常见的是通过发送另一个状况, 重发相同的状况, 或者强制进入调试器.
 
 > * 9.1.1 [状况类型](#ConditionTypes)
 > * 9.1.2 [创建状况](#CreatingConditions)
 > * 9.1.3 [打印状况](#PrintingConditions)
 > * 9.1.4 [发送和处理状况](#SignalingHandlingConditions)
 > * 9.1.5 [断言](#Assertions)
-> * 9.1.6 [Notes about the Condition System's Background](#NotesConditionSystemBackground)
+> * 9.1.6 [关于状况系统的背景的注意事项](#NotesConditionSystemBackground)
 
 
 ### 9.1.1 <span id="ConditionTypes">状况类型</span>
 
-下一段中列出了标准状况类型. 额外的状况类型可以通过使用 define-condition 来定义.
+下一段中列出了标准[standardized]状况[condition]类型[type]. 额外的状况[condition]类型[type]可以通过使用 define-condition 来定义.
 
     arithmetic-error                  floating-point-overflow   simple-type-error   
     cell-error                        floating-point-underflow  simple-warning      
@@ -56,25 +56,23 @@ Defer
 
     Figure 9-1. 标准状况类型
 
-所有状况类型都是类型 condition 的子类型. 这也就是说,
+所有状况[condition]类型[type]都是类型[type] condition 的子类型[subtype]. 这也就是说, 当且仅当 c 是一个状况[condition]时以下形式成立
 
 ```LISP
 (typep c 'condition) =>  true
 ```
 
-当且仅当 c 是一个状况.
+具体实现[implementation]必须定义所有指定的子类型[subtype]关系. 除非特别注解, 本文档中所示的所有子类型[subtype]关系都不是相互排斥的. 一个状况[condition]继承自它的超类型[supertype]的结构.
 
-具体实现必须定义所有指定的子类型关系. 除非特别注解, 本文档中所示的所有子类型关系都不是相互排斥的. 一个状况继承自它的超类型的结构.
+类[class] condition 的元类没有被指定. 状况[condition]类型[type]的名字[name]可能被用于指定 define-condition 中的超类型[supertype]关系, 但是如果去尝试使用一个状况[condition]类型[type]作为一个 defclass 表达式形式[form]中的一个超类[superclass], 那么结果是未定义的.
 
-类 condition 的元类是未指定的. 状况类型的名字可能被用于指定 define-condition 中的超类型关系, 但是如果去尝试使用一个状况类型作为一个 defclass 表达式形式中的一个超类, 那么结果是未定义的.
-
-下面这段中展示了定义状况类型和创建状况的操作符.
+下面这段中展示了定义状况[condition]类型[type]和创建状况[condition]的操作符[operator].
 
     define-condition  make-condition    
 
     Figure 9-2. 定义和创建状况的操作符.
 
-下面这段展示了读取状况中槽的值的操作符.
+下面这段展示了读取状况[condition]槽[slot]的值[value]的操作符[operator].
 
     arithmetic-error-operands   simple-condition-format-arguments  
     arithmetic-error-operation  simple-condition-format-control    
@@ -87,44 +85,43 @@ Defer
 
 #### 9.1.1.1 严重状况
 
-一个严重状况(serious condition)是一个严重到如果没有处理就需要交互式干涉的状况. 严重状况典型地通过 error 或 cerror 发出; 非严重状况通常用 signal 或 warn 发出. 
-
+一个严重状况[serious condition]是一个严重到如果没有处理就需要交互式干预的状况[condition]. 严重状况[serious condition]典型地通过 error 或 cerror 发出; 非严重状况[condition]通常用 signal 或 warn 发出. 
 
 ### 9.1.2 <span id="CreatingConditions">创建状况</span>
 
-函数 make-condition 可以被用于显式构造一个状况对象. 像 error, cerror, signal, 还有 warn 这样的函数在状况上操作并且可能创建状况对象. 像 ccase, ctypecase, ecase, etypecase, check-type, 还有 assert 这样的宏也可能隐式地创建 (以及发送) 状况.
+函数 make-condition 可以被用于显式构造一个状况[condition]对象[object]. 像 error, cerror, signal, 还有 warn 这样的函数在状况[condition]上操作并且可能隐式创建状况[condition]对象[object]. 像 ccase, ctypecase, ecase, etypecase, check-type, 还有 assert 这样的宏也可能隐式地创建 (以及发送[signal]) 状况[condition].
 
-#### 9.1.2.1 状况指定符
+#### 9.1.2.1 状况标识符
 
-状况系统中的许多函数都采用被标识为状况指定符的参数. 按照惯例, 那些参数被记作
+状况系统中的许多函数都采用被标识为状况标识符[condition designator]的参数. 按照惯例, 那些参数被记作
 
     datum &rest arguments
 
-合起来, 这个 datum 和 arguments 是 "一个 default-type 类型状况的指示符". 表示的状况如何被计算取决于这个 datum 的类型:
+合起来, 这个 datum 和 arguments 是 "一个默认类型 default-type 状况[condition]的标识符[designator]". 表示的状况[condition]如何被计算取决于这个 datum 的类型:
 
-* 如果这个 datum 是一个命名状况类型的符号 ...
+* 如果这个 datum 是一个命名状况[condition]类型[type]的符号[symbol] ...
 
-    表示的状况是下面这个的结果
+    表示的状况[condition]是下面这个的结果
 
      (apply #'make-condition datum arguments)
 
-* 如果这个 datum 是一个格式化控制 ...
+* 如果这个 datum 是一个格式化控制[format control] ...
 
-    表示的状况是下面这个的结果
+    表示的状况[condition]是下面这个的结果
 
      (make-condition defaulted-type 
                      :format-control datum
                      :format-arguments arguments)
 
-    其中 defaulted-type 是 default-type 的一个子类型.
+    其中 defaulted-type 是 default-type 的一个子类型[subtype].
 
-* 如果这个 datum 是一个状况 ...
+* 如果这个 datum 是一个状况[condition] ...
 
-    这个表示的状况就是这个 datum 自身. 在这个情况下, 除非这个讨论中的操作符描述中另有说明, 否则参数 arguments 必须为 null; 这也就是说, 如果提供了任何其他参数那么结果是未定义的.
+    这个表示的状况[condition]就是这个 datum 自身. 在这个情况下, 除非这个讨论中的操作符[operator]描述中另有说明, 否则实参[argument必须为 null; 这也就是说, 如果提供了任何其他实参 arguments 那么结果是未定义的.
 
-注意, 这个 default-type 只有在 datum 字符串被提供的情况下才被使用. 在其他情况中, 产生的状况不必是类型 default-type.
+注意, 这个 default-type 只有在 datum 字符串[string]被提供的情况下才被使用. 在其他情况中, 产生的状况不必是类型[type] default-type.
 
-这里有一些说明, 关于不同的状况指定符如何表示等价的状况对象:
+这里有一些说明, 关于不同的状况标识符[condition designator]如何表示等价的状况[condition]对象[object]:
 
 ```LISP
 (let ((c (make-condition 'arithmetic-error :operator '/ :operands '(7 0))))
@@ -137,21 +134,21 @@ Defer
 
 ### 9.1.3 <span id="PrintingConditions">打印状况</span>
 
-如果使用了给 define-condition 的 :report 参数, 一个打印函数会被定义, 无论何时当 \*print-escape\* 的值为 false 而且被定义的状况要被打印时, 它会被调用. 这个函数被称为状况汇报者(reporter); 它输出的文本被称为一个报告信息(report message).
+如果使用了给 define-condition 的 :report 参数, 就会定义一个打印函数, 无论何时当 \*print-escape\* 的值为 false 而且定义的状况[condition]要被打印时, 它会被调用. 这个函数被称为状况汇报器[condition reporter]; 它输出的文本被称为一个报告消息[report message].
 
-当一个状况被打印并且 \*print-escape\* 是 false, 这个状况的状况汇报者会被调用. 状况通过像 invoke-debugger, break, 和 warn 这样的函数被自动打印.
+当一个状况[condition]被打印并且 \*print-escape\* 是 false, 这个状况[condition]的状况汇报器[condition reporter]会被调用. 使用像 invoke-debugger, break, 和 warn 这样的函数来自动打印状况[condition].
 
-当 *print-escape* 是 true, 这个对象应该根据这个具体实现的风格以一种简短的方式打印 (比如, print-unreadable-object). 一个状况没有必要可以通过读取它的打印表示来重新构造.
+当 \*print-escape\* 是 true 时, 这个对象[object]应该根据这个具体实现的风格以一种简短的方式打印 (比如, print-unreadable-object). 没有要求一个状况[condition]可以通过读取它的打印表示来重新构造.
 
-没有为直接访问或调用状况汇报者提供函数.
+没有为直接访问或调用状况汇报器[condition reporter]提供函数[function].
 
 #### 9.1.3.1 状况汇报中的推荐风格
 
-为了在向用户呈现汇报消息时确保正确的美观的结果, 推荐一些风格的惯例.
+为了在向用户呈现报告消息[report message]时确保正确美观的结果, 推荐一些风格的惯例.
 
-对于通过状况汇报者输出的消息内容, 有一些风格上的建议, 但是在那些程序上没有正式的需求. 如果一个程序违反了某些信息的建议, 这条信息的显示可能没有遵循指导方针的那样美观, 但是这个程序仍然被认为是复合规范的程序.
+对于通过状况汇报器[condition reporter]输出的消息内容, 有一些风格上的建议, 但是在那些程序[program]上没有正式的需求. 如果一个程序[program]违反了某些消息的建议, 这条消息的显示可能没有遵循指导方针的那样美观, 但是这个程序[program]仍然被认为是符合规范的程序[conforming program].
 
-在一个调用一个状况汇报者的程序或具体实现上的这个要求更为强烈. 一个符合规范的程序必须被允许假定如果遵循这些样式准则, 将保持适当的美观. 在适当的情况下，关于此类程序的任何具体要求都在下面明确提到.
+在一个调用一个状况汇报器[condition reporter]的程序[program]或具体实现[implementation]上的这个要求更为强烈. 一个符合规范的程序[conforming program]必须被允许假设如果遵循这些样式准则, 将保持适当的美观. 在适当的情况下, 关于此类程序的任何具体要求都在下面明确提到.
 
 > * 9.1.3.1.1 [在状况汇报中的大写和标点符号](#CPCR)
 > * 9.1.3.1.2 [在状况汇报中领导和尾随的新行](#LTNCR)
@@ -161,7 +158,7 @@ Defer
 
 ##### 9.1.3.1.1 <span id="CPCR">在状况汇报中的大写和标点符号</span>
 
-一个汇报信息建议为一个完整的句子, 以适当的大小写并且加标点. 在英语中, 比如, 这个意味着第一个字符应该为大写, 并且这里应该有一个尾部的句号.
+一个报告消息[report message]建议为一个完整的句子, 以适当的大小写并且加标点. 在英语中, 比如, 这个意味着第一个字符应该为大写, 并且这里应该有一个尾部的句号.
 
 ```LISP
 (error "This is a message")  ; Not recommended
@@ -172,9 +169,9 @@ Defer
 
 ##### 9.1.3.1.2 <span id="LTNCR">在状况汇报中领导和尾随的新行</span>
 
-一个汇报消息不建议以任何引导文本开始, 像 "Error:" 或 "Warning:" 这样或仅为 freshline 或 newline. 如果对于这个上下文合适, 这样的文本通过调用这个状况汇报者的程序来添加.
+一个报告消息[report message]不建议以任何引导文本开始, 像 "Error:" 或 "Warning:" 这样或仅为 freshline 或 newline. 如果对于这个上下文合适, 这样的文本由调用这个状况汇报器[condition reporter]的程序来添加.
 
-一个汇报信息不建议跟着一个尾部的 freshline 或 newline. 如果对于这个上下文合适, 这样的文本通过调用这个状况汇报者的程序来添加.
+一个报告消息[report message]不建议跟着一个尾部的 freshline 或 newline. 如果对于这个上下文合适, 这样的文本由调用这个状况汇报器[condition reporter]的程序来添加.
 
 ```LISP
 (error "This is a message.~%")   ; Not recommended
@@ -186,9 +183,9 @@ Defer
 
 ##### 9.1.3.1.3 <span id="ENCR">在状况汇报中内嵌的新行</span>
 
-如果汇报消息尤其的长, 那么它包含一个或多个内嵌的新行是允许的和适当的.
+如果报告消息[report message]尤其的长, 那么它包含一个或多个内嵌的换行[newline]是允许且适当的.
 
-如果调用程序在消息的第一行中插入了一些额外的前缀(像 "Error:" 或 ";; Error:") , 它也必须确保一个合适的前缀会被添加到这个输出的后续每一行中, 这样这个被状况汇报者输出的信息的左边界会始终是正确对齐的.
+如果调用程序在消息的第一行中插入了一些额外的前缀(像 "Error:" 或 ";; Error:") , 它也必须确保一个合适的前缀会被添加到这个输出的后续每一行中, 这样一来被状况汇报器[condition reporter]输出的信息的左边界始终会是正确对齐的.
 
 ```LISP
 (defun test ()
@@ -212,31 +209,29 @@ It has two lines.
 
 ##### 9.1.3.1.4 <span id="NTCR">关于在状况汇报中的 tab 的注意事项</span>
 
-因为汇报消息的缩进可能会以任意数量转移到右边或左边, 应该对这个不完全标准的字符 <Tab> 采取特别关注(在那些具体实现中支持这样的一个字符). 除非这个具体实现在这个上下文中特别定义了它的行为, 应该避免它的使用. 
-
+因为报告消息[report message]的缩进可能会以任意数量转移到右边或左边, 应该对这个不完全标准的字符 <Tab> 特别关注(在支持这样的一个字符[character]的那些具体实现[implementation]中). 除非这个具体实现[implementation]在这个上下文中特别定义了它的行为, 否则应该避免它的使用. 
 
 ##### 9.1.3.1.5 <span id="MCFCR">在状况汇报中提及包含函数</span>
 
-这个包含函数的名字通常不应该在汇报信息中被提及. 假定调试器将使这些信息在必要和适当的情况下可访问. 
-
+这个包含函数的名字通常不应该在报告消息[report message]中被提及. 假定调试器将使这些信息在必要和适当的情况下可访问. 
 
 ### 9.1.4 <span id="SignalingHandlingConditions">发送和处理状况</span>
 
-状况系统的操作取决于活跃可应用的处理者的顺序, 从最新近的到最不新近的.
+状况系统的操作依赖于活跃的可应用处理者[applicable handler]的顺序, 从最近的到最久的.
 
-每个处理者和一个类型指定符相关联, 这个指定符必须指定一个类型 condition 的子类型. 如果一个状况是关联的一个类型指定符指定的类型, 那么就说这个处理者对于这个状况是可应用的.
+每个处理者[handler]和一个类型指定符[type specifier]相关联, 这个指定符必须指定一个类型[type] condition 的子类型[subtype]. 如果一个状况[condition]是由关联的那个类型指定符[type specifier]指定的类型[type], 那么就说这个处理者[handler]对于这个状况[condition]是可应用的[application].
 
-活跃的处理者通过使用 handler-bind (或者一个基于 handler-bind 的简写, 比如 handler-case 或 ignore-errors) 来建立.
+活跃[active]处理者[handler]通过使用 handler-bind (或者一个基于 handler-bind 的简写, 比如 handler-case 或 ignore-errors) 来建立.
 
-活跃的处理者可以在其他活跃处理者的动态作用域中被建立. 在程序执行期间的任何点, 这里都有一组活跃处理者. 当发出一个状况时, 针对这个状况的最新近的活跃可应用的处理者会从这个组中被选择出来. 给定一个状态, 活跃可应用处理者的最新近顺序通过下面两条规则来定义:
+活跃[active]处理者[handler]可以被建立在其他活跃[active]处理者[handler]的动态作用域中. 在程序执行期间的任何点, 这里都有一组活跃[active]处理者[handler]. 当发出一个状况[condition]时, 针对这个状况[condition]的最新近[most recent]的活跃可应用处理者[applicable handler]会从这个组中被选择出来. 给定一个状况[condition], 活跃可应用处理者[applicable handler]的最新近顺序通过下面两条规则来定义:
 
-1. 如果在活跃处理者集合 H1 中的处理者被建立时活跃处理者集合 H2 中的处理者是活跃的, 那么 H1 中的每个处理者比 H2 中的更新近.
+1. 如果在活跃处理者集合 H1 中的那些处理者被建立时处理者集合 H2 中的那些处理者是活跃的, 那么 H1 中的每个处理者比 H2 中的更新近.
 
-2. 使 h1 和 h2 是相同表达式形式建立的两个可应用的活跃处理者. 如果在这个建立它们的表达式形式中 h1 被定义在 h2 的左边, 那么 h1 比 h2 更新近.
+2. 使 h1 和 h2 是相同表达式形式[form]建立的两个可应用的活跃处理者. 如果在这个建立它们的表达式形式[form]中 h1 被定义在 h2 的左边, 那么 h1 比 h2 更新近.
 
-一旦一个处理者绑定表达式形式(例如 handler-bind 或 handler-case)中的一个处理者被选择, 那个表达式形式形式中的所有处理者变成对于这个发送过程的剩余部分非活跃的. 当这个选择的处理者运行时, 那个表达式形式建立的其他处理者没有是活跃的. 这也就是说, 如果这个处理者拒绝处理, 那个表达式形式建立的其他处理者不会被考虑为可能的调用.
+一旦一个处理者绑定表达式形式[form] (例如 handler-bind 或 handler-case) 中的一个处理者被选择, 那个表达式形式[form]中的所有处理者变成对于这个发送过程的剩余部分是非活跃的. 当这个选择的处理者[handler]运行时, 那个表达式形式[form]建立的其他处理者[handler]没有是活跃的. 这也就是说, 如果这个处理者[handler]拒绝处理, 那个表达式形式[form]建立的其他处理者不会被考虑为可能的调用.
 
-下面这一段中展示了和处理状况相关的操作符.
+下面这一段中展示了和处理状况[condition]相关的操作符[operator].
 
     handler-bind  handler-case  ignore-errors  
 
@@ -247,15 +242,15 @@ It has two lines.
 
 #### 9.1.4.1 <span id="Signaling">发送</span>
 
-当发送一个状况时, 最新近的活跃可应用的处理者会被调用. 有时候一个处理者会通过没有控制转移的简单返回来拒绝. 在这样的情况下, 下一个最新近的活跃可应用的处理者会被调用.
+当发送一个状况[condition]时, 最新近的可应用的活跃[active]处理者[handler]会被调用. 有时候一个处理者会通过没有控制转移的简单返回来拒绝. 在这样的情况下, 下一个最新近的活跃可应用的处理者会被调用.
 
-如果对于一个被发送的状况这里没有可应用的处理者, 或者如果所有可应用的处理者都拒绝了, 那么这个状况就是未处理的.
+如果对于一个被发送的状况[condition]这里没有可应用的处理者, 或者如果所有可应用的处理者都拒绝了, 那么这个状况[condition]就是未处理的.
 
-如果对于函数 cerror 和 error 要被发送的状况没有被处理, 不管它们的类型, 那么函数 cerror 和 error 调用这个交互式的状况处理者 (就是这个调试器) 而不是返回. 相比之下, 对于 signal 如果要被发送的状况没有被处理, 不管它们的类型,  那么 signal 就返回 nil.
+如果发送的状况[condition]没有被处理, 不管它们的类型[type], 那么函数 cerror 和 error 调用这个交互式的状况[condition]处理者 (就是这个调试器) 而不是返回. 相比之下, 如果发送的状况[condition]没有被处理, 不管它们的类型[type], signal 就返回 nil.
 
-变量 \*break-on-signals\* 可以被用于在这个发送过程开始前进入调试器.
+变量[variable] \*break-on-signals\* 可以被用于在这个发送过程开始前进入调试器.
 
-下面这段展示了和状况的发送相关的定义的名字The next figure shows defined names relating to the signaling of conditions.
+下面这段展示了和状况[condition]的发送相关的已定义的名字[defined name].
 
     *break-on-signals*  error   warn  
     cerror              signal        
@@ -264,55 +259,52 @@ It has two lines.
 
 ##### 9.1.4.1.1 重发一个状况
 
-在一个特定的状况对象的发送过程的动态范围期间, 当且仅当两种情况下表示的情形是喜爱嗯童的时允许再次发送相同的状况对象.
+在一个特定的状况[condition]对象[object]的发送过程的动态范围[dynamic extent]期间, 当且仅当两种情况下表示的情况[situation]相同时允许再次发送同一个状况[condition]对象[object].
 
-比如, 一个处理者可能合理地发送这个作为它的参数的状况对象来允许更外部的处理者第一时机去处理这个状况. (这样一个处理者有时被称作 "默认处理者(default handler)".) 这个行为是允许的因为第二个发送过程处理的情况确实是相同的情况.
+比如, 一个处理者[handler]可能合理地发送[signal]这个作为它的实参[argument]的状况[condition]对象[object]来允许更外部的处理者[handler]第一时机去处理[handler]这个状况. (这样一个处理者[handler]有时被称作 "默认处理者(default handler)".) 这个行为是允许的因为第二个发送过程处理的情况[situation]确实是相同的情况[situation].
 
-另一方面, 在一个通过用一个对 signal 的调用来打断用户进程进而实现异步键盘事件的具体实现中, 对于两个不同的异步键盘事件在不同情况相同时间下发送相同的状况是不允许的. 
-
+另一方面, 在一个通过用一个对 signal 的调用来打断用户进程进而实现异步键盘事件的具体实现[implementation]中, 不允许两个不同的异步键盘事件在同一时间对不同情况发送[signal]相同[identical]状况[condition]. 
 
 #### 9.1.4.2 <span id="Restarts">重启动</span>
 
-交互式状况处理者只通过非局部控制转移到特别定义的重启动来退出, 这个重启动可以通过系统或用户代码来设置. 转移控制到一个重启动被称为 "调用" 这个重启动. 类似于处理者, 活跃的重启动也动态地确立, 并且只有活跃的重启动可以被调用. 一个活跃的重启动可以被用户从调试器中或者被程序使用 invoke-restart 来调用.
+交互式状况处理者只通过控制的非局部转移到专门定义的重启动[restart]来退出, 这个重启动可以通过系统或用户代码来设置. 转移控制到一个重启动被称为 "调用" 这个重启动. 类似于处理者, 活跃的重启动[restart]也被动态地确立, 并且只有活跃的重启动[restart]可以被调用. 一个活跃的重启动[restart]可以被用户从调试器中或者被程序使用 invoke-restart 来调用.
 
-当一个重启动被调用时, 这个重启动包含一个要被调用的函数, 一个被用于查找或调用这个重启动的可选名字, 以及一个用于调试器去使用户手动调用一个重启动的可选交互式信息集合.
+一个重启动[restart]包含一个在这个重启动[restart]被调用时要被调用的函数[function], 一个被用于查找或调用这个重启动[restart]的可选名字, 以及一个用于调试器来使户手动调用一个重启动[restart]的可选交互式信息集合.
 
-一个重启动的名字被 invoke-restart 使用. 只能在调试器中调用的重启动不需要名字.
+一个重启动[restart]的名字被 invoke-restart 使用. 只能在调试器中调用的重启动[restart]不需要名字.
 
-重启动可以通过使用 restart-bind, restart-case, 和 with-simple-restart 来建立. 一个重启动函数自身可以调用任何其他的在这个函数所属的重启动建立时是活跃的重启动.
+重启动[restart]可以通过使用 restart-bind, restart-case, 和 with-simple-restart 来建立. 一个重启动[restart]函数自身可以调用任何其他的在这个函数所属的重启动[restart]建立时是活跃的重启动[restart].
 
-通过一个 restart-bind 表达式形式, 一个 restart-case 表达式形式, 或者一个 with-simple-restart 表达式形式建立的重启动有着动态范围, 这个范围延伸到这个表达式形式执行期间.
+通过一个 restart-bind 表达式形式[form], 一个 restart-case 表达式形式[form], 或者一个 with-simple-restart 表达式形式[form]建立的重启动[restart]有着动态范围[dynamic extent], 这个范围延伸到这个表达式形式[form]执行期间.
 
-相同名字的重启动可以根据下面两条规则来从最不新近的到最新近的排序:
+相同名字的重启动[restart]可以根据下面两条规则来从最久的到最近的排序:
 
-1. 如果活跃的重启动集合 R1 中的活跃重启动被建立时集合 R2 中的重启动是活跃的, 那么 R1 中的每个重启都比 R2 中的每个重启更新近.
+1. 如果活跃的重启动集合 R1 中的那些重启动[restart]被建立时集合 R2 中的重启动[restart]是活跃的, 那么 R1 中的每个重启动[restart]都比 R2 中的每个重启动[restart]更近.
 
-2. 使 r1 和 r2 为相同表达式形式建立的两个相同名字的活跃重启动. 如果在建立它们的表达式形式中 r1 被定义在 r2 的左边那么 r1 比 r2 更新近.
+2. 使 r1 和 r2 为相同表达式形式[form]建立的两个相同名字的活跃重启动[restart]. 如果在建立它们的表达式形式[form]中 r1 被定义在 r2 的左边, 那么 r1 比 r2 更新近.
 
-如果一个重启动被调用但是没有转移控制, 那么这个重启动函数产生的值会被调用这个重启动的函数返回, 不管是 invoke-restart 还是 invoke-restart-interactively.
+如果一个重启动[restart]被调用但是没有转移控制, 那么这个重启动[restart]函数产生的值会被调用这个重启动的函数返回, 不管是 invoke-restart 还是 invoke-restart-interactively.
 
 > * 9.1.4.2.1 [重启动的交互式使用](#InteractiveUseRestarts)
 > * 9.1.4.2.2 [重启动的接口](#InterfacesRestarts)
 > * 9.1.4.2.3 [重启动测试](#RestartTests)
 > * 9.1.4.2.4 [关联重启动和状况](#AssociatingRestartCondition)
 
-
 ##### 9.1.4.2.1 <span id="InteractiveUseRestarts">重启动的交互式使用</span>
 
-关于交互式处理, 一个重启动需要两个信息: 一个汇报函数和一个交互式函数.
+关于交互式处理, 一个重启动[restart]需要两个信息: 一个汇报函数和一个交互式函数.
 
-这个汇报函数被一个例如调试器的程序使用来呈现这个重启动会采取的动作的描述. 这个汇报函数通过给 restart-bind 的 :report-function 关键字或者给 restart-case 的 :report 关键字来指定和建立.
+这个汇报函数被一个例如调试器的程序使用来呈现这个重启动[restart]会采取的动作的描述. 这个汇报函数是通过给 restart-bind 的 :report-function 关键字或者给 restart-case 的 :report 关键字来指定和建立.
 
-这个可以使用给 restart-bind 的 :interactive-function 关键字或给 restart-case 的 :interactive 关键字来指定的交互式函数在重启动被交互式调用时, 例如从调试器中, 会被用来产生一个合适的参数列表.
+这个交互式函数可以使用给 restart-bind 的 :interactive-function 关键字或给 restart-case 的 :interactive 关键字来指定, 它在重启动[restart]被交互式调用时, 例如从调试器中, 会被用来产生一个合适的参数列表.
 
-invoke-restart 调用和给 invoke-restart 的第一个参数相同名字的最近建立的重启动. 如果一个重启被调试器交互式调用并且没有转移控制而是返回值, 那么在这些值上的这个调试器的准确动作是由具体实现定义的. 
-
+invoke-restart 调用和给 invoke-restart 的第一个参数相同名字的最近建立的重启动[restart]. 如果一个重启被调试器交互式调用并且没有转移控制而是返回值, 那么这个调试器在这些值上的准确动作是由具体实现定义的[implementation-defined]. 
 
 ##### 9.1.4.2.2 <span id="InterfacesRestarts">重启动的接口</span>
 
-一些重启动有着函数的接口, 例如 abort, continue, muffle-warning, store-value, 还有 use-value. 它们是内部使用 find-restart 和 invoke-restart 的普通函数, 有着和它们操纵的重启动相同的名字, 并且简单地出于标记方便而被提供.
+一些重启动[restart]有着函数接口, 例如 abort, continue, muffle-warning, store-value, 还有 use-value. 它们是内部使用 find-restart 和 invoke-restart 的普通函数, 有着和它们操纵的重启动[restart]相同的名字, 并且简单地出于标记方便而被提供.
 
-下面这段中展示了和重启动相关的定义的名字.
+下面这段中展示了和重启动[restart]相关的已定义的名字[defined name].
 
     abort             invoke-restart-interactively  store-value          
     compute-restarts  muffle-warning                use-value            
@@ -322,24 +314,21 @@ invoke-restart 调用和给 invoke-restart 的第一个参数相同名字的最�
 
     Figure 9-6. 重启动相关的定义的名字. 
 
-
 ##### 9.1.4.2.3 <span id="RestartTests">重启动测试</span>
 
-每个重启动都有一个关联的测试, 它是一个单参数(一个状况或者 nil)的函数, 如果这个重启动在当前情况下应该是可见的就返回 true. 这个测试通过给 restart-bind 的 :test-function 选项或者给 restart-case 的 :test 选项创建. 
-
+每个重启动[restart]都有一个关联的测试, 它是一个单参数(一个状况[condition]或者 nil)的函数, 如果这个重启动[restart]在当前情况[situation]下应该是可见的就返回 true. 这个测试通过给 restart-bind 的 :test-function 选项或者给 restart-case 的 :test 选项创建. 
 
 ##### 9.1.4.2.4 <span id="AssociatingRestartCondition">关联重启动和状况</span>
 
-一个重启动可以通过 with-condition-restarts 来和一个状况显式关联, 或者通过 restart-case 来隐式关联. 因此一个关联有着动态范围.
+一个重启动[restart]可以通过 with-condition-restarts 来和一个状况[condition]显式关联, 或者通过 restart-case 来隐式关联. 因此一个关联有着动态范围[dynamic extent].
 
-一个单个重启动可以同时和多个状况关联. 一个单个状况同时也可以和多个重启动关联.
+一个单个重启动[restart]可以同时和多个状况[condition]关联. 一个单独状况[condition]同时也可以和多个重启动[restart]关联.
 
-和一个特定状况关联的活跃重启动可以通过调用例如 find-restart 函数并提供这个状况作为 condition 参数来检测. 没有任何关联状况的活跃重启动也可以通过以没有 condition 参数或者为这个参数提供 nil 值来调用这样一个函数而被检测到.
-
+和一个特定状况[condition]关联的活跃重启动可以通过调用例如 find-restart 函数[function]并提供这个状况[condition]作为 condition 实参[argument]来检测. 没有任何关联状况的活跃重启动也可以通过以无 condition 实参[argument]或者为这个实参[argument]提供 nil 值来调用这样一个函数来检测.
 
 ### 9.1.5 <span id="Assertions">断言</span>
 
-基于键匹配, 表达式形式求值, 以及类型的条件状况发送由断言操作符处理. 下一段中展示了和断言相关的操作符.
+基于键匹配, 表达式形式求值, 以及类型[type]的状况[condition]的条件发送由断言操作符[operator]处理. 下一段中展示了和断言相关的操作符[operator].
 
     assert  check-type  ecase      
     ccase   ctypecase   etypecase  
@@ -347,7 +336,7 @@ invoke-restart 调用和给 invoke-restart 的第一个参数相同名字的最�
     Figure 9-7. 断言相关的操作符. 
 
 
-### 9.1.6 <span id="NotesConditionSystemBackground">Notes about the Condition System's Background</span>
+### 9.1.6 <span id="NotesConditionSystemBackground">关于状况系统的背景的注意事项</span>
 
 有关本节中详细描述的抽象概念的背景引用, 见 Exceptional Situations in Lisp. 尽管这篇论文的详情对这份文档没有约束力, 但可能有助于为理解这种资料建立概念基础. 
 
@@ -422,7 +411,7 @@ invoke-restart 调用和给 invoke-restart 的第一个参数相同名字的最�
 
         * make-condition, 而不是 make-instance, 必须被用于显式创建状况对象.
 
-        * define-condition 的这个 :report 选项, 而不是 defmethod 对于 print-object, 必须被用于定义一个状况汇报者.
+        * define-condition 的这个 :report 选项, 而不是 defmethod 对于 print-object, 必须被用于定义一个状况汇报器.
 
         * slot-value, slot-boundp, slot-makunbound, 和 with-slots 一定不能在状况对象上使用. 反而, 应该使用合适的访问器函数 (通过 define-condition 定义). 
 
@@ -1955,7 +1944,7 @@ serious-condition, condition, t
                         (machine-error-machine-name condition)))))
     ```
 
-        这个定义了一个更具体的状况, 在 machine-not-available-error 的基础上, 它为 machine-name 提供了一个槽初始化表达式形式但是它没有提供任何新的槽或者报告信息. 它只是给 machine-name 槽一个默认初始化:
+        这个定义了一个更具体的状况, 在 machine-not-available-error 的基础上, 它为 machine-name 提供了一个槽初始化表达式形式但是它没有提供任何新的槽或者报告消息. 它只是给 machine-name 槽一个默认初始化:
 
     ```LISP
     (define-condition my-favorite-machine-not-available-error
@@ -2436,9 +2425,9 @@ define-condition, Section 9.1 (Condition System Concepts)
 
             (lambda (stream) (write-string value stream))
 
-            如果一个已命名的重启动被请求来报告但是没有提供报告信息, 这个重启动的名字被用来产生默认的报告文本.
+            如果一个已命名的重启动被请求来报告但是没有提供报告消息, 这个重启动的名字被用来产生默认的报告文本.
 
-            当 *print-escape* 是 nil 时, 打印器就使用一个重启动的报告信息. 例如, 一个调试器可能宣布输入一个"continue"命令的动作通过下面这个:
+            当 *print-escape* 是 nil 时, 打印器就使用一个重启动的报告消息. 例如, 一个调试器可能宣布输入一个"continue"命令的动作通过下面这个:
 
             (format t "~&~S -- ~A~%" ':continue some-restart)
 
@@ -2562,7 +2551,7 @@ define-condition, Section 9.1 (Condition System Concepts)
                       (apply #'(lambda arglist2 . body2) #2#)))))
     ```
 
-        未命名的重启动通常只有在交互式的情况下有用, 并且一个没有描述的交互式选项没有什么价值. 如果使用了一个未命名的重启动并且在编译时没有提供报告信息的话, 鼓励具体实现去发出警告. 在运行时, 在进入调试器时可能会注意到这个错误. 由于发出一个错误可能会导致递归进入调试器中 (导致另一个递归错误, 等等) , 因此建议调试器在出现这些问题时打印出一些指示, 但实际上并不发出这些错误.
+        未命名的重启动通常只有在交互式的情况下有用, 并且一个没有描述的交互式选项没有什么价值. 如果使用了一个未命名的重启动并且在编译时没有提供报告消息的话, 鼓励具体实现去发出警告. 在运行时, 在进入调试器时可能会注意到这个错误. 由于发出一个错误可能会导致递归进入调试器中 (导致另一个递归错误, 等等) , 因此建议调试器在出现这些问题时打印出一些指示, 但实际上并不发出这些错误.
 
     ```LISP
     (restart-case (signal fred)
@@ -2808,7 +2797,7 @@ define-condition, Section 9.1 (Condition System Concepts)
 
 * 描述(Description):
 
-        这个重启动通过 warn 建立, 这样 warning 状况的处理者就有一种途径去通知 warn 一个 warning 已经被处理并且不需要采取进一步的行动.
+        这个重启动[restart]由 warn 建立, 这样一来 warning 状况[condition]的处理者[handler]就有一种途径去通知 warn 一个警告已经被处理并且不需要采取进一步的行动.
 
 * 示例(Examples):
 
@@ -2845,7 +2834,7 @@ define-condition, Section 9.1 (Condition System Concepts)
 
 * 也见(See Also):
 
-        Section 9.1.4.2 (Restarts), Section 9.1.4.2.2 (重启动的接口), invoke-restart, muffle-warning (function), warn 
+        章节 9.1.4.2 (重启动), 章节 9.1.4.2.2 (重启动的接口), invoke-restart, muffle-warning (函数[function]), warn 
 
 
 ### <span id="R-STORE-VALUE">重启动 STORE-VALUE</span>
@@ -2856,7 +2845,7 @@ define-condition, Section 9.1 (Condition System Concepts)
 
 * 描述(Description):
 
-        这个 store-value 重启动通常被处理者用于尝试从例如 cell-error 或 type-error 这样的错误类型中恢复过来, 它可以希望去提供一个替换的数据来持久地存储.
+        这个 store-value 重启动[restart]通常被处理者[handler]用于尝试从例如 cell-error 或 type-error 这样类型[type]的错误中恢复过来, 它可以希望去提供一个替换的数据来持久地存储.
 
 * 示例(Examples):
 
@@ -2876,7 +2865,7 @@ define-condition, Section 9.1 (Condition System Concepts)
 
 * 也见(See Also):
 
-        Section 9.1.4.2 (Restarts), Section 9.1.4.2.2 (重启动的接口), invoke-restart, store-value (function), ccase, check-type, ctypecase, use-value (function and restart) 
+        章节 9.1.4.2 (重启动), 章节 9.1.4.2.2 (重启动的接口), invoke-restart, store-value (函数[function]), ccase, check-type, ctypecase, use-value (函数[function]和[restart]) 
 
 
 ### <span id="R-USE-VALUE">重启动 USE-VALUE</span>
@@ -2887,11 +2876,11 @@ define-condition, Section 9.1 (Condition System Concepts)
 
 * 描述(Description):
 
-        这个 use-value 重启动通常被处理者用来尝试从例如 cell-error 这样的错误类型中恢复过来, 其中这个处理者可能希望去提供一个替代的数据用于单次使用.
+        这个 use-value 重启动[restart]通常被处理者[handler]用来尝试从例如 cell-error 这样类型[type]的错误中恢复过来, 在这里这个处理者可能希望去提供一个替代的数据用于单次使用.
 
 * 也见(See Also):
 
-        Section 9.1.4.2 (Restarts), Section 9.1.4.2.2 (重启动的接口), invoke-restart, use-value (function), store-value (function and restart) 
+        章节 9.1.4.2 (重启动), 章节 9.1.4.2.2 (重启动的接口), invoke-restart, use-value (函数[function]), store-value (函数[function]和重启动[restart]) 
 
 
 ### <span id="F-ABORT-CONTINUE-MW-SV-UV">函数 ABORT, CONTINUE, MUFFLE-WARNING, STORE-VALUE, USE-VALUE</span>
@@ -2910,16 +2899,16 @@ define-condition, Section 9.1 (Condition System Concepts)
 
 * 参数和值(Arguments and Values):
 
-        value---一个对象.
-        condition---一个状况对象, 或者 nil.
+        value---一个对象[object].
+        condition---一个状况[condition]对象[object], 或者 nil.
 
 * 描述(Description):
 
-        转移控制到最新建立的可应用的有着和这个函数相同名字的重启动. 这也就是说, 函数 abort 搜索一个可应用的 abort 重启动, 函数 continue 搜索一个可应用的 continue 重启动, 诸如此类.
+        转移控制到最新建立的有着和这个函数相同名字的可应用重启动[applicable restart]. 这也就是说, 函数[function] abort 搜索一个可应用的[applicable] abort 重启动[restart], 函数[function] continue 搜索一个可应用的[applicable] continue 重启动[restart], 以此类推.
 
-        如果不存在这样的重启动, 函数 continue, store-value, 和 use-value 返回 nil, 并且函数 abort 和 muffle-warning 发出一个 control-error 类型的错误.
+        如果不存在这样的重启动[restart], 函数 continue, store-value, 和 use-value 返回 nil, 并且函数 abort 和 muffle-warning 发出一个 control-error 类型[type]的错误.
 
-        当状况 condition 不是 nil, 只有那些和那个状况显式关联的或者没有和任何状况关联的重启动会被考虑; 这也就是说, 没有包含的重启动是那些和一个不包含给定状况 condition 的非空状况集合关联的重启动, 所有的重启动都会被考虑.
+        当状况 condition 不是 nil [non-nil], 只有那些和那个状况 condition 显式关联的或者没有和任何状况[condition]关联的重启动[restart]会被考虑; 这也就是说, 没有包含的重启动[restart]是那些和一个不包含给定状况 condition 的非空状况[condition]集合关联的重启动[restart]. 如果状况 condition 是 nil, 那么所有的重启动[restart]都会被考虑.
 
 * 示例(Examples):
 
@@ -3035,19 +3024,19 @@ define-condition, Section 9.1 (Condition System Concepts)
 
 * 副作用(Side Effects):
 
-        如果一个合适的重启动可用, 那么可能发生开一个控制转移, 否则 (在函数 abort 或者 muffle-warning 的情况下) 执行可能被停止.
+        如果一个合适的重启动[restart]是可用的, 那么可能发生一个控制转移, 否则 (在函数[functioni] abort 或者函数[function] muffle-warning 的情况下) 执行可能被停止.
 
 * 受此影响(Affected By):
 
-        这些函数中的每一个头可以被一个相同名字的重启动的出现所影响.
+        这些函数中的每一个可以被一个相同名字的重启动[restart]的出现所影响.
 
 * 异常情况(Exceptional Situations):
 
-        如果对于函数 abort 一个合适的 abort 重启动是不可用的, 或者对于函数 muffle-warning 一个合适的 muffle-warning 重启动是不可用的, 那么就会发出一个类型 control-error 的错误.
+        如果对于函数[function] abort 一个合适的 abort 重启动[restart]是不可用的, 或者对于函数[function] muffle-warning 一个合适的 muffle-warning 重启动[restart]是不可用的, 那么就会发出一个类型[type] control-error 的错误.
 
 * 也见(See Also):
 
-        invoke-restart, Section 9.1.4.2 (Restarts), Section 9.1.4.2.2 (重启动的接口), assert, ccase, cerror, check-type, ctypecase, use-value, warn
+        invoke-restart, 章节 9.1.4.2 (重启动), 章节 9.1.4.2.2 (重启动的接口), assert, ccase, cerror, check-type, ctypecase, use-value, warn
 
 * 注意(Notes):
 
@@ -3059,6 +3048,4 @@ define-condition, Section 9.1 (Condition System Concepts)
     (store-value x) ==  (let ((r (find-restart 'store-value))) (if r (invoke-restart r x)))
     ```
 
-        这个规范中没有定义需要去提供一个 use-value 重启动的函数. 
-
-
+        这个规范中没有定义需要去提供一个 use-value 重启动[restart]的函数. 
