@@ -399,21 +399,21 @@ invoke-restart 调用和给 invoke-restart 的第一个参数相同名字的最�
 
 * 描述(Description):
 
-        所有状况类型, 不管是错误或是非错误, 必须继承自这个类型.
+        所有状况[condition]类型, 不管是错误或是非错误, 必须继承自这个类型[type].
 
-        不允许在指定的类型 condition 的子类型中附加子类型关系, 除非在这个文本中明确提及; 但是具体实现允许去引入一些额外类型并且这些类型中的一个可以是类型 condition 任何数量的的子类型的一个子类型.
+        在指定的类型[type] condition 的子类型[subtype]中不允许额外的子类型[subtype]关系, 除非在这个文本中明确提及; 然而具体实现允许去引入一些额外类型[type]并且这些类型[type]中的一个可以是类型[type] condition 任何数量子类型[subtype]的一个子类型[subtype].
 
-        一个用户定义的状况类型是否有着可以被 with-slots 访问的槽是取决于具体实现的. 此外, 即便在一个具体实现中用户定义的状况类型有着槽, 但是这个文档中定义的任何状况类型是否有着槽是依赖于具体实现的, 如果它们确实有那么它们的名字也是依赖于具体实现的; 只有这个规范中记录的读取器函数可以被可移植代码所依赖.
+        一个用户定义的状况[condition]类型[type]是否有着可以被 with-slots 访问的槽[slot]是依赖于具体实现的[implementation-dependent]. 此外, 即便在一个具体实现[implementation]中用户定义的状况[condition]类型[type]有着槽[slot], 但是这个文档中定义的任何状况[condition]类型[type]是否有着槽是依赖于具体实现的[implementation-dependent], 如果它们确实有, 那么它们的名字[name]也是依赖于具体实现的[implementation-dependent]; 只有这个规范中记录的读取器函数可以被可移植代码所依赖.
 
-        符合规范的代码必须遵守下面这个和状况相关的约束:
+        符合规范的代码[conforming code]必须遵守下面这个和状况[condition]相关的约束:
 
-        * define-condition, 而不是 defclass, 必须被用于定义新的状况类型.
+        * define-condition, 而不是 defclass, 必须被用于定义新的状况[condition]类型[type].
 
-        * make-condition, 而不是 make-instance, 必须被用于显式创建状况对象.
+        * make-condition, 而不是 make-instance, 必须被用于显式创建状况[condition]对象[object].
 
         * define-condition 的这个 :report 选项, 而不是 defmethod 对于 print-object, 必须被用于定义一个状况汇报器.
 
-        * slot-value, slot-boundp, slot-makunbound, 和 with-slots 一定不能在状况对象上使用. 反而, 应该使用合适的访问器函数 (通过 define-condition 定义). 
+        * slot-value, slot-boundp, slot-makunbound, 和 with-slots 一定不能在状况[condition]对象[object]上使用. 反而, 应该使用合适的访问器函数 (通过 define-condition 定义). 
 
 
 ### <span id="CT-WARNING">状况类型 WARNING</span>
@@ -424,7 +424,7 @@ invoke-restart 调用和给 invoke-restart 的第一个参数相同名字的最�
 
 * 描述(Description):
 
-        类型 warning 包含所有警告的类型.
+        类型[type] warning 包含所有警告的类型.
 
 * 也见(See Also):
 
@@ -439,7 +439,7 @@ invoke-restart 调用和给 invoke-restart 的第一个参数相同名字的最�
 
 * 描述(Description):
 
-        类型 style-warning 包括那些表示代码是符合规范的但是仍然被认为是错误的或者不符合标准的情况的状况.
+        类型[type] style-warning 包括那些表示代码[code]是符合规范的代码[conforming code]但是仍然被认为是错误的或者不符合标准的情况[situation]的状况[condition].
 
 * 也见(See Also):
 
@@ -447,12 +447,11 @@ invoke-restart 调用和给 invoke-restart 的第一个参数相同名字的最�
 
 * 注意(Notes):
 
-        如果一个具体实现遇到使用废弃特性的代码或者不美观的或无效的代码, 它可能发出这样一个状况.
+        如果一个具体实现[implementation]遇到使用废弃特性的代码[code]或者不美观的或无效的代码[code], 它可能发出这样一个状况[condition].
 
-        一个 '没有被使用的变量(unused variable)' 警告必须是类型 style-warning.
+        一个 '没有被使用的变量(unused variable)' 警告必须是 style-warning 类型[type].
 
-        一般而言, 代码是错误的还是不合格的问题是由处理代码的工具做出的一个主观决定. 这样的意图是, 无论何时这样的一个工具想在主观理由上抱怨代码, 它应该使用这个状况类型, 以便用户去重定向或者抑制多余的警告而不用担心他们被重定向或抑制其他更严重的警告. 
-
+        一般而言, 代码是错误的还是不合规范的问题是由处理代码[code]的工具做出的一个主观决定. 这样的意图是, 无论何时这样的一个工具想在主观理由上抱怨代码, 它应该使用这个状况[condition]类型[type], 以便那些希望去重定向或者抑制多余警告的用户可以做这些而不用担心他们被重定向或抑制其他更严重的警告. 
 
 ### <span id="CT-SERIOUS-CONDITION">状况类型 SERIOUS-CONDITION</span>
 
@@ -462,11 +461,11 @@ serious-condition, condition, t
 
 * 描述(Description):
 
-        所有严重到如果没被处理就需要交互式干预的状况应该继承自类型 serious-condition. 提供这种状况类型主要是为了使它可以被包含作为其他状况类型的超类; 它不打算被直接发送.
+        所有严重到如果没被处理就需要交互式干预的状况[condition]应该继承自类型[type] serious-condition. 提供这种状况类型主要是为了使它可以被包含作为其他状况[condition]类型[type]的超类[superclass]; 它不打算被直接发送.
 
 * 注意(Notes):
 
-        发送一个严重状况自身不会强制进入调试器. 然而, 除非在程序员可以确保不会因为处理不了严重状况而造成伤害的不寻常情况下, 否则这样一个状况通常使用 error 来发送而不是 signal 来确保这个程序在没有处理这个状况的情况下不会继续下去. (但反之, 使用 signal 而不是 error 去发送不是严重状况的状况是传统做法, 因为正常情况下, 处理非严重情况的失败并不是进入调试器的原因.) 
+        发送一个严重状况[serious condition]自身不会强制进入调试器. 然而, 除非在程序员可以确保处理[handle]不了严重状况[serious condition]不会造成伤害的不寻常情况下, 否则这样一个状况[condition]通常使用 error 来发送而不是 signal, 进而确保这个程序在没有处理这个状况[condition]的情况下不会继续下去. (但反之, 使用 signal 而不是 error 去发送不是严重状况[serious condition]的状况是传统做法, 因为正常情况下, 处理不了非严重情况并不是进入调试器的原因.) 
 
 
 ### <span id="CT-ERROR">状况类型 ERROR</span>
@@ -477,7 +476,7 @@ serious-condition, condition, t
 
 * 描述(Description):
 
-        这个类型包括所有表示错误的类型. 
+        这个类型[type] error 由所有表示错误[error]的状况[condition]组成. 
 
 
 ### <span id="CT-CELL-ERROR">状况类型 CELL-ERROR</span>
@@ -488,7 +487,7 @@ serious-condition, condition, t
 
 * 描述(Description):
 
-        类型 cell-error 由发生在位置访问期间的错误状况组成. 违规的 cell 的名字由 make-condition 的 :name 初始化参数来初始化, 通过函数 cell-error-name 来访问.
+        类型[type] cell-error 由发生在位置访问[eccess]期间的错误状况组成. 违规的存储格(cell)的名字由 make-condition 的 :name 初始化参数来初始化, 通过函数[function] cell-error-name 来访问.
 
 * 也见(See Also):
 
@@ -503,14 +502,14 @@ serious-condition, condition, t
 
 * 参数和值(Arguments and Values):
 
-        condition---一个类型 cell-error 的状况.
-        name---一个对象.
+        condition---一个 cell-error 类型[type]的状况[condition].
+        name---一个对象[object].
 
 * 描述(Description):
 
-        返回那个状况 condition 所表示的情况中违规的 cell 的名字.
+        返回那个状况 condition 所表示的情况[situation]中违规的存储格(cell)的名字[name].
 
-        结果的性质取决于状况 condition 指定的类型. 比如, 如果这个状况 condition 是类型 unbound-variable, 那么这个结果是那个要被访问的未绑定变量的名字, 如果这个状况 condition 是类型 undefined-function, 那么这个就是那个要被访问的未绑定函数的名字, 而当这个状况 condition 是类型 unbound-slot, 这个就是要被访问的槽的名字.
+        结果的性质取决于状况 condition 具体类型. 比如, 如果这个状况 condition 是 unbound-variable 类型[type], 那么这个结果是那个要被访问的未绑定变量[unbound variable]的名字[name], 如果这个状况 condition 是 undefined-function 类型[type], 那么这个就是那个要被访问的未绑定函数[undefined function ]的名字[name], 而当这个状况 condition 是 unbound-slot 类型[type], 这个就是要被访问的槽[slot]的名字[name].
 
 * 示例(Examples): None.
 
@@ -520,7 +519,7 @@ serious-condition, condition, t
 
 * 也见(See Also):
 
-        cell-error, unbound-slot, unbound-variable, undefined-function, Section 9.1 (Condition System Concepts)
+        cell-error, unbound-slot, unbound-variable, undefined-function, 章节 9.1 (状况系统的概念)
 
 * 注意(Notes): None. 
 
@@ -533,7 +532,7 @@ serious-condition, condition, t
 
 * 描述(Description):
 
-        类型 parse-error 由解析相关的错误状况组成.
+        类型[type] parse-error 由解析相关的错误状况组成.
 
 * 也见(See Also):
 
@@ -548,11 +547,11 @@ serious-condition, condition, t
 
 * 描述(Description):
 
-        类型 storage-condition 由内存管理问题相关的严重状况组成, 这些状况可能是由于依赖于具体实现的限制而不是符合规范的程序中的语义错误, 并且如果没有被处理通常需要进入到调试器中. 根据具体实现的细节, 这些可能包括堆栈溢出, 内存区域溢出和存储耗尽等问题.
+        类型 storage-condition 由内存管理问题相关的严重状况组成, 这些状况可能是由于依赖于具体实现[implementation-dependent]的限制而不是符合规范的程序[conforming program]中的语义错误, 并且如果没有被处理通常需要进入到调试器中. 根据具体实现[implementation]的细节, 这些可能包括堆栈溢出, 内存区域溢出和存储耗尽等问题.
 
 * 注意(Notes):
 
-        尽管由于一些 Common Lisp 操作符被定义用来创建对象, 可能会发出 storage-condition, 但是那些不是被定义用来创建对象的操作符是否会创建它们并且是否也可能发出 storage-condition 是为指定的. 同样的, 求值器自身也可能创建对象并且因此可能发出 storage-condition. (自然的假设可能是, 这样的对象创建自然是低效的, 但即使这样做也是依赖于具体实现的.) 通常, 存储分配如何完成的整个问题都是和具体实现相关的, 因此任何操作符在任何时间都可能发出 storage-condition. 由于这样一个状况是具体实现或镜像的限制的象征而不是一个程序中的错误, 因此类型 storage-condition 的对象不是类型 error. 
+        尽管由于一些 Common Lisp 操作符被定义用来创建对象[object], 可能会发出存储状况[storage-condition], 但是那些不是被定义用来创建对象[object]的操作符是否会创建它们并且是否也可能发出存储状况[storage-condition]是未指定的. 同样的, 求值器自身也可能创建对象[object]并且因此可能发出 storage-condition. (自然的假设可能是, 这样的对象[object]创建自然是低效的, 但即使这样做也是依赖于具体实现的[implementation-dependent].) 通常, 存储分配如何完成的整个问题都是依赖于具体实现的[implementation-dependent], 因此任何操作符在任何时间都可能发出 storage-condition. 由于这样一个状况[condition]是具体实现[implementation]或镜像的限制的象征而不是一个程序[program]中的错误, 因此类型[type] storage-condition 的对象[object]不是类型[type] error. 
 
 
 ### <span id="M-ASSERT">宏 ASSERT</span>
@@ -565,17 +564,17 @@ serious-condition, condition, t
 
 * 参数和值(Arguments and Values):
 
-        test-form---一个表达式形式; 总是求值的.
-        place---一个 place; 如果一个错误被发出就求值.
-        datum-form---一个求值为一个 datum 的表达式形式. 每次一个错误要被发出就求值, 如果没有错误发出就一次都不求值.
-        argument-form---求值为一个参数 argument 的一个表达式形式. 每次一个错误要被发出就求值, 如果没有错误发出就一次都不求值.
-        datum, arguments---一个默认类型 error 的状况的标识符. (这些标识符是求值 datum-form 和每个 argument-form 的结果.)
+        test-form---一个表达式形式[form]; 总是求值的.
+        place---一个位置[place]; 如果发出一个错误就求值.
+        datum-form---一个求值为一个数据 datum 的表达式形式[form]. 每次要发出一个错误就求值, 如果没有错误发出就一次都不求值.
+        argument-form---求值为一个参数 argument 的一个表达式形式[form]. 每次要发出一个错误就求值, 如果没有错误发出就一次都不求值.
+        datum, arguments---一个默认类型 error 的状况[condition]的标识符[designator]. (这些标识符[designator]是求值数据表达式形式 datum-form 和每个参数表达式形式 argument-form 的结果.)
 
 * 描述(Description):
 
-        assert 确保这个 test-form 求值为 true. 如果 test-form 求值为 false, assert 发出一个可校正的错误 (用 datum 和 arguments 来表示). 从这个错误中使用 continue 重启动来继续使得用户在 assert 再一次求值 test-form 之前修改 places 的值是可能的. 如果这个 test-form 的值不是 nil, assert 返回 nil.
+        assert 确保这个 test-form 求值为 true. 如果 test-form 求值为 false, assert 发出一个可校正的[correctable]错误[error] (用 datum 和 arguments 来表示). 从这个错误中使用 continue 重启动[restart]来继续下去使得用户在 assert 再一次求值 test-form 之前修改位置 places 的值成为可能. 如果这个 test-form 的值不是 nil [non-nil], assert 返回 nil.
 
-        这些 place 是 test-form 所依赖的普通引用, 它们的值可以通过用户校正这个错误来改变. 每个 place 的子表达式形式只有在一个错误被发出时被求值, 并且在这个错误被再次发出时可能被再次求值 (在没有实际修正这个问题的情况下继续之后). 这些 place 的求值顺序没有被指定; 见章节 5.1.1.1 (Evaluation of Subforms to Places). 如果一个被提供的 place 表达式形式产生了超出看这些存储变量的值, 额外的值会被忽略. 如果提供的这个表达式形式产生的值少于这些存储变量, 那么缺少的值被设置为 nil.
+        这些位置 places 是 test-form 所依赖的对数据的广义引用[generalized reference], 在试图校正这个错误时, 用户可以改变它们的值. 每个位置 place 的子表达式形式[subform]只有在一个错误被发出时被求值, 并且在这个错误被再次发出时可能被再次求值 (在没有实际修正这个问题的情况下继续之后). 这些位置 places 的求值顺序没有被指定; 见章节 5.1.1.1 (位置的子表达式形式求值). 如果一个被提供的位置 place 表达式形式[form]产生值的数量超出了这些存储变量的数量, 额外的值会被忽略. 如果提供的这个表达式形式[form]产生的值的数量少于这些存储变量, 那么缺少的值被设置为 nil.
 
 * 示例(Examples):
 
@@ -630,11 +629,11 @@ serious-condition, condition, t
 
 * 也见(See Also):
 
-        check-type, error, Section 5.1 (Generalized Reference)
+        check-type, error, 章节 5.1 (广义引用)
 
 * 注意(Notes):
 
-        调试器不需要在错误信息中包含这个 test-form , 并且这些 place 也不应该被包含在这个信息中, 但是它们对于用户的目测应该是可用的. 如果用户给了  "continue" 命令, 这些引用的任何值都能被修改. 这个详情取决于具体实现的用户接口风格. 
+        调试器不需要在错误信息中包含这个 test-form , 并且这些位置 places 也不应该被包含在这个信息中, 但是它们应该供用户查看. 如果用户给了  "continue" 命令, 那么任何这些引用的值都能被修改. 这个细节取决于具体实现的用户接口风格. 
 
 
 ### <span id="F-ERROR">函数 ERROR</span>
@@ -645,13 +644,13 @@ serious-condition, condition, t
 
 * 参数和值(Arguments and Values):
 
-        datum, arguments---一个默认类型 simple-error 的状况标识符.
+        datum, arguments---一个默认类型 simple-error 的状况[condition]的标识符[designator].
 
 * 描述(Description):
 
-        error 实际上在表示的状况上调用 signal.
+        error 实际上在表示的状况[condition]上调用 signal.
 
-        如果这个状况没有被处理, (invoke-debugger condition) 就会被执行. 作为调用 invoke-debugger 的后果, error 不能直接返回; 从 error 中仅有的退出方式可以通过在一个处理者中非本地转移控制或使用交互式调试命令来实现.
+        如果这个状况[condition]没有被处理, (invoke-debugger condition) 就会被执行. 作为调用 invoke-debugger 的后果, error 不能直接返回; 从 error 中仅有的退出方式可以通过在一个处理者中非局部转移控制或使用交互式调试命令来实现.
 
 * 示例(Examples):
 
@@ -696,7 +695,7 @@ serious-condition, condition, t
 
 * 副作用(Side Effects):
 
-        指定状况的那些处理者, 如果存在, 会被调用并且可能有副作用. 程序执行可能停止, 并且可能进入到调试器中.
+        那个指定的状况的那些处理者[handler], 如果存在, 会被调用并且可能有副作用. 程序执行可能停止, 并且可能进入到调试器中.
 
 * 受此影响(Affected By):
 
@@ -706,23 +705,23 @@ serious-condition, condition, t
 
 * 异常情况(Exceptional Situations): 
 
-        如果 datum 和 arguments 不是一个状况类型的标识符, 就发出一个类型 type-error 的错误.
+        如果 datum 和 arguments 不是一个状况[condition]的标识符[designator], 就发出一个类型[type] type-error 的错误.
 
 * 也见(See Also):
 
-        cerror, signal, format, ignore-errors, *break-on-signals*, handler-bind, Section 9.1 (Condition System Concepts)
+        cerror, signal, format, ignore-errors, *break-on-signals*, handler-bind, 章节 9.1 (状况系统的概念)
 
 * 注意(Notes):
 
-        某些具体实现可能为从单独的堆栈帧中交互式返回提供调试器命令. 然而, 程序员应该有信心去编写像下面这样的代码:
+        某些具体实现可能为从单独的堆栈结构中交互式返回提供调试器命令. 然而, 程序员应该有信心去编写像下面这样的代码:
 
         (defun wargames:no-win-scenario ()
           (if (error "pushing the button would be stupid."))
           (push-the-button))
 
-        在这种情况下, error 不可能返回，按钮不会被按下.<!-- TODO 这个程序有问题-->
+        在这种情况下, error 不可能返回, 按钮不会被按下.
 
-        虽然这个程序的意义是明确的, 并且它可能被正式的定理证明是"安全的", 但是这样的证明并不能保证程序的执行是安全的. 众所周知, 编译器有bug, 计算机有信号故障, 而人类则以不可能预测的方式进行手动干预 . 这些种类的错误, 虽然超出了状况系统对于正式建模的范围, 但它会超出编写代码时应该认真考虑的范围, 而这些代码可能会有本例所暗示的那种广泛的影响. 
+        虽然这个程序的意义是明确的, 并且它可能被正式的定理证明是"安全的", 但是这样的证明并不能保证程序的执行是安全的. 众所周知, 编译器有bug, 计算机有信号故障, 而人类则以不可能预测的方式进行手动干预. 这些种类的错误, 虽然超出了状况系统对于正式建模的范围, 但它不会超出编写代码时应该认真考虑的范围, 而这些代码可能会有本例所暗示的那种广泛的影响. 
 
 
 ### <span id="F-CERROR">函数 CERROR</span>
@@ -733,14 +732,14 @@ serious-condition, condition, t
 
 * 参数和值(Arguments and Values):
 
-        Continue-format-control---一个格式化控制字符串.
-        datum, arguments---一个默认类型 simple-error 的状况的标识符.
+        Continue-format-control---一个格式化控制字符串[format control].
+        datum, arguments---一个默认类型 simple-error 的状况[condition]的标识符[designator].
 
 * 描述(Description):
 
-        cerror 实际上在名为 datum 的状况上调用 error. 就像任何隐式调用 error 的函数一样, 如果这个状况没有被处理, (invoke-debugger condition) 会被执行. 尽管正在发送中, 并且它到达了调试器中, 但是使用 continue 重启动来继续代码的执行(换句话说, 从 cerror 中返回)是可能的.
+        cerror 实际上在名为 datum 的状况[condition]上调用 error. 就像任何隐式调用 error 的函数一样, 如果这个状况[condition]没有被处理, (invoke-debugger condition) 会被执行. 正在发送中, 以及在调试器中, 如果到达的话, 使用 continue 重启动[restart]来继续代码的执行(换句话说, 从 cerror 中返回)是可能的.
 
-        如果 datum 是一个状况, 可以提供 arguments, 但是要和 continue-format-control 一起使用.
+        如果 datum 是一个状况[condition], 可以提供 arguments, 但是要和格式化控制 continue-format-control 一起使用.
 
 * 示例(Examples):
 
@@ -867,7 +866,7 @@ serious-condition, condition, t
 
 * 注意(Notes):
 
-        如果 datum 是一个状况类型而不是一个字符串, 格式化指令 ~* 在 continue-format-control 中用来忽略初始化参数列表中的关键字可能是特别有用的. 比如:
+        如果 datum 是一个状况[condition]类型[type]而不是一个字符串[string], format 指令 ~* 在 continue-format-control 中用来忽略初始化参数列表[initialization argument list]中的关键字[keyword]可能特别有用. 比如:
 
         (cerror "enter a new value to replace ~*~s" 
                 'not-a-number
@@ -883,20 +882,19 @@ serious-condition, condition, t
 
 * 参数和值(Arguments and Values):
 
-        place---一个 place.
-        typespec---一个类型指定符.
-        string---一个字符串; 求值的.
+        place---一个位置[place].
+        typespec---一个类型指定符[type specifier].
+        string---一个字符串[string]; 求值的.
 
 * 描述(Description):
 
-        如果这个 place 的内容不是类型 typespec, 那么 check-type 发出一个类型 type-error 的可校正错误.
+        如果这个位置 place 的内容不是类型 typespec, 那么 check-type 发出一个类型[type] type-error 的可校正[correctable]错误[error].
 
-        当且仅当 store-value 重启动被调用, 不管是显式地从一个处理者或者隐式地作为作为调试器提供的其中一个选项, check-type 可以返回. 如果这个 store-value 重启动被调用, check-type 存储这个给重启动调用的参数(或者是通过调试器交互式提示的那个)作为新值到 place 并重新开始, 检测这个新值的类型并且如果它仍然不是要求的类型就会发出另一个错误.
+        当且仅当 store-value 重启动[restart]被调用, 不管是显式地从一个处理者还是隐式地作为调试器提供的其中一个选项, check-type 可以返回. 如果这个 store-value 重启动[restart]被调用, check-type 存储给这个重启动[restart]调用的参数(或者是通过调试器交互式提示的那个)作为新值到位置 place 并重新开始, 检测这个新值的类型并且如果它仍然不是要求的类型[type]就会发出另一个错误.
 
-<!--TODO 待校验-->
-        第一次 place 被求值时, 它通过正常的求值规则来求值. 如果类型检测失败并且使用了这个 store-value 重启动那么它接下来被被求值为一个 place; 见章节 5.1.1.1 (Evaluation of Subforms to Places).
+        第一次位置 place 被求值时, 它通过正常的求值规则来求值. 如果类型检测失败并且使用了这个 store-value 重启动[restart]那么它接下来被求值为一个位置[place]; 见章节 5.1.1.1 (位置的子表达式形式求值).
 
-        字符串 string 应该是这个类型的一个英语描述, 以一个不确定的冠词开始 ("a" 或者 "an"). 如果没有提供字符串 string, 它就会自动通过 typespec 来计算. 这个自动生成的信息提及 place, 它的内容和要求的类型. 如果一个具体实现可能把这个 place 识别为一个特殊表达式形式, 例如给名为 check-type 的函数的其中一个参数, 一个具体实现可能选择去生成一个措词有点不同的错误信息. 字符串 string 是允许的, 因为 check-type 的一些应用可能需要一个比从typespec 自动生成的更具体的关于需要什么的描述.
+        字符串[string]应该是这个类型的一个英语描述, 以一个不定冠词开始 ("a" 或者 "an"). 如果没有提供字符串[string], 它就会自动通过 typespec 来计算. 这个自动生成的信息提及了位置 place, 它的内容和要求的类型. 如果一个具体实现把这个位置 place 识别为一个特定形式, 例如给名为 check-type 的函数的其中一个参数, 这个具体实现可能选择去生成一个措词有点不同的错误信息. 字符串 string 是允许的, 因为 check-type 的一些应用可能需要一个比从 typespec 自动生成的更具体的关于需要什么的描述.
 
 * 示例(Examples):
 
@@ -969,7 +967,7 @@ serious-condition, condition, t
 
 * 也见(See Also):
 
-        章节 9.1 (Condition System Concepts)
+        章节 9.1 (状况系统的概念)
 
 * 注意(Notes):
 
@@ -987,7 +985,7 @@ serious-condition, condition, t
 
 * 描述(Description):
 
-        当提供了一个格式化控制作为 error 或 cerror 的第一个参数时, 类型 simple-error 由通过 error 或 cerror 发出的状况组成. 
+        当提供了一个格式化控制字符串[format control]作为 error 或 cerror 的第一个参数时, 类型 simple-error 由通过 error 或 cerror 发出的状况组成. 
 
 
 ### <span id="F-INVALID-METHOD-ERROR">函数 INVALID-METHOD-ERROR</span>
@@ -998,17 +996,17 @@ serious-condition, condition, t
 
 * 参数和值(Arguments and Values):
 
-        method---一个方法.
-        format-control---一个格式化控制.
-        args---format-control 的格式化参数.
+        method---一个方法[method].
+        format-control---一个格式化控制字符串[format control].
+        args---格式化控制字符串 format-control 的格式化参数[format argument].
 
 * 描述(Description):
 
-        当这里有一个方法组合类型的限定符不合法的可应用方法时, 函数 invalid-method-error 被用于发出一个 error 类型的错误. 错误信息通过使用适用于 format 的 format-control 以及给它的任何参数组成. 由于一个具体实现可能需要给错误信息添加额外的上下文信息, invalid-method-error 应该只在一个方法组合函数的动态作用域中被调用.
+        当这里有一个可应用方法[method]的方法组合类型的限定符[qualifier]不合法时, 使用函数[function] invalid-method-error 来发出一个 error 类型[type]的错误. 错误信息通过使用适用于 format 的格式化控制字符串 format-control 以及给它的任何参数 arg 组成. 由于一个具体实现可能需要给错误信息添加额外的上下文信息, invalid-method-error 应该只在一个方法组合函数的动态范围中被调用.
 
-        当一个方法不满足一个 define-method-combination 表达式形式中的每个限定符模式和断言, 那么函数 invalid-method-error 被自动调用. 如果一个强加额外限制的方法组合函数进入到一个它不能接受的方法中, 那么这个方法组合函数应该显式调用 invalid-method-error.
+        当一个方法[method]不满足一个 define-method-combination 表达式形式[form]中的每个限定符[qualifier]模式和断言, 那么函数[function] invalid-method-error 被自动调用. 如果一个强加额外限制的方法组合函数遇到一个它不能接受的方法[method], 那么这个方法组合函数应该显式调用 invalid-method-error.
 
-        invalid-method-error 是否返回到它的调用者还是通过 throw 退出是取决于具体实现的.
+        invalid-method-error 是返回到它的调用者还是通过 throw 退出是依赖于具体实现的[implementation-dependent].
 
 * 示例(Examples): None.
 
@@ -1037,16 +1035,16 @@ serious-condition, condition, t
 
 * 参数和值(Arguments and Values):
 
-        format-control---一个格式化控制.
-        args---format-control 的格式化参数.
+        format-control---一个格式化控制字符串[format control].
+        args---格式化控制字符串 format-control 的格式化参数[format argument].
 
 * 描述(Description):
 
-        函数 method-combination-error 被用于在方法组合中发出一个错误.
+        函数[function] method-combination-error 被用于在方法组合中发出一个错误.
 
-        这个错误信息通过使用一个适用于 format 的 format-control 和给它的参数来构造. 由于一个具体实现可能需要给这个错误信息添加额外的上下文信息, method-combination-error 应该只在一个方法组合函数的动态范围中被调用.
+        错误信息通过使用适用于 format 的格式化控制字符串 format-control 以及给它的任何参数 arg 组成. 由于一个具体实现可能需要给错误信息添加额外的上下文信息, method-combination-error 应该只在一个方法组合函数的动态范围中被调用.
 
-        method-combination-error 是否返回到它的调用者还是通过 throw 退出是取决于具体实现的.
+        method-combination-error 是返回到它的调用者还是通过 throw 退出是依赖于具体实现的[implementation-dependent].
 
 * 示例(Examples): None.
 
@@ -1075,11 +1073,11 @@ serious-condition, condition, t
 
 * 参数和值(Arguments and Values):
 
-        datum, arguments---一个默认类型 simple-condition 的状况的标识符.
+        datum, arguments---一个默认类型 simple-condition 的状况[condition]的标识符[designator].
 
 * 描述(Description):
 
-        发出这个给定的 datum 和 arguments 表示的状况. 如果这个状况没有被处理, signal 就返回 nil.
+        发出[signal]这个给定的 datum 和 arguments 表示的状况[condition]. 如果这个状况[condition]没有被处理, signal 就返回 nil.
 
 * 示例(Examples):
 
@@ -1129,11 +1127,11 @@ serious-condition, condition, t
 
 * 也见(See Also):
 
-        *break-on-signals*, error, simple-condition, Section 9.1.4 (发送和处理状况)
+        *break-on-signals*, error, simple-condition, 章节 9.1.4 (发送和处理状况)
 
 * 注意(Notes):
 
-        如果 (typep datum *break-on-signals*) 产生 true, 在这个发送过程开始前进入调试器. 这个 continue 重启动可以被用于继续这个发送过程. 对于所有应该, 可能, 或者必须发送状况的其他函数和宏, 这个也是对的. 
+        如果 (typep datum *break-on-signals*) 产生[yield] true, 那么在这个发送过程开始前进入调试器. 这个 continue 重启动[restart]可以被用于继续这个发送过程. 对于所有应该, 可能, 或者必须发送[signal]状况[condition]的其他函数[function]和宏[macro], 这个也是对的. 
 
 
 ### <span id="CT-SIMPLE-CONDITION">状况类型 SIMPLE-CONDITION</span>
@@ -1144,7 +1142,7 @@ serious-condition, condition, t
 
 * 描述(Description):
 
-        每当一个 format-control 被提供为 signal 函数的第一个参数, 类型 simple-condition 表示通过这个 signal 发出的状况. 这个格式化控制和格式化参数使用给 make-condition 的名为 :format-control 和 :format-arguments 的初始化参数来初始化, 并且可以通过函数 simple-condition-format-control 和 simple-condition-format-arguments 来访问. 如果格式化参数没有提供给 make-condition, 那么 nil 就被用作默认值.
+        每当一个格式化控制字符串 format-control 作为第一个参数提供给 signal 函数时, 类型[type] simple-condition 表示由这个 signal 发出的状况[condition]. 这个格式化控制[format control]和格式化参数[format argument]使用提供给 make-condition 的名为 :format-control 和 :format-arguments 的初始化参数来初始化, 并且可以通过函数[function] simple-condition-format-control 和 simple-condition-format-arguments 来访问. 如果格式化参数没有提供给 make-condition, 那么 nil 就被用作默认值.
 
 * 也见(See Also):
 
@@ -1161,15 +1159,15 @@ serious-condition, condition, t
 
 * 参数和值(Arguments and Values):
 
-        condition---一个 simple-condition 类型的状况.
-        format-control---一个格式化控制.
-        format-arguments---一个列表.
+        condition---一个 simple-condition 类型[type]的状况.
+        format-control---一个格式化控制字符串[format control].
+        format-arguments---一个列表[list].
 
 * 描述(Description):
 
-        simple-condition-format-control 返回处理这个状况 condition 的格式化参数所需要的格式化控制.
+        simple-condition-format-control 返回处理这个状况 condition 的格式化参数[format argument]所需要的格式化控制字符串[format control].
 
-        simple-condition-format-arguments 返回一个处理这个状况 condition 的格式化控制所需要的格式化参数的列表.
+        simple-condition-format-arguments 返回一个处理这个状况 condition 的格式化控制字符串[format control]所需要的格式化参数[format argument]的列表[list].
 
 * 示例(Examples):
 
@@ -1191,7 +1189,7 @@ serious-condition, condition, t
 
 * 也见(See Also):
 
-        simple-condition, Section 9.1 (Condition System Concepts)
+        simple-condition, 章节 9.1 (状况系统的概念)
 
 * 注意(Notes): None. 
 
@@ -1204,21 +1202,21 @@ serious-condition, condition, t
 
 * 参数和值(Arguments and Values):
 
-        datum, arguments---一个默认类型 simple-warning 的状况的标识符.
+        datum, arguments---一个默认类型 simple-warning 的状况[condition]的标识符[designator].
 
 * 描述(Description):
 
-        发送一个类型 warning 的状况. 如果这个状况没有被处理, 报告这个状况到错误输出.
+        发送[signal]一个类型[type] warning 的状况[condition]. 如果这个状况[condition]没有被处理, 报告这个状况[condition]到错误输出[error output].
 
         警告的精确机制如下:
 
         这个 warning 状况被发出
 
-            当这个 warning 状况要被发送时, 这个 muffle-warning 重启动会为了被一个处理者使用而被建立. 如果被调用了, 这个重启动绕开 warn 的进一步动作, 这个反过来导致了 warn 立即返回 nil.
+            当这个 warning 状况[condition]要被发送时, 这个 muffle-warning 重启动[restart]会为了被一个处理者[handler]使用而被建立. 如果被调用了, 这个重启动[restart]绕开 warn 的进一步动作, 这个反过来导致了 warn 立即返回 nil.
 
         如果没有找到这个 warning 状况的处理者
 
-            如果没有找到这个 warning 状况的处理者, 或者这些处理者拒绝了, 那么这个状况会通过 warn 以一种依赖于具体实现的格式被报告到错误输出.
+            如果没有找到这个 warning 状况的处理者, 或者这些处理者都拒绝了, 那么这个状况[condition]会通过 warn 以一种依赖于具体实现[implementation-dependent]的格式被报告到错误输出[error output].
 
         返回了 nil
 
@@ -1266,9 +1264,9 @@ serious-condition, condition, t
 
 * 异常情况(Exceptional Situations):
 
-        如果 datum 是一个状况并且这个状况不是类型 warning, 或者参数 arguments 不是 nil, 会发出一个类型 type-error 的错误.
+        如果 datum 是一个状况[condition]并且这个状况[condition]不是类型[type] warning, 或者参数 arguments 不是 nil [non-nil], 会发出一个类型[type] type-error 的错误.
 
-        如果 datum 是一个状况类型, (apply #'make-condition datum arguments) 的结果必须是类型 warning, 否则发出一个类型 type-error 的错误.
+        如果 datum 是一个状况类型, (apply #'make-condition datum arguments) 的结果必须是类型[type] warning, 否则发出一个类型[type] type-error 的错误.
 
 * 也见(See Also):
 
@@ -1285,7 +1283,7 @@ serious-condition, condition, t
 
 * 描述(Description):
 
-        每当一个格式化控制被提供为这个 warn 的第一个参数, 类型 simple-warning 表示 warn 发送的状况. 
+        每当一个格式化控制字符串[format control]作为第一个参数提供给 warn 时, 类型[type] simple-warning 表示 warn 发送的状况[condition]. 
 
 
 ### <span id="F-INVOKE-DEBUGGER">函数 INVOKE-DEBUGGER</span>
@@ -1296,15 +1294,15 @@ serious-condition, condition, t
 
 * 参数和值(Arguments and Values):
 
-        condition---一个状况对象.
+        condition---一个状况[condition]对象[object].
 
 * 描述(Description):
 
-        invoke-debugger 尝试去和状况 condition 一起进入这个调试器.
+        invoke-debugger 尝试带状况 condition 进入这个调试器.
 
-        如果 *debugger-hook* 不是 nil, 它应该是一个在进入标准调试器之前要被调用的函数(或者一个函数的名字). 随着 *debugger-hook* 绑定为 nil 这个函数被调用, 并且这个函数必须接受两个参数: 这个状况 condition 和这个 *debugger-hook* 被绑定给 nil 的值. 如果这个函数正常范围, 就进入标准调试器.
+        如果 *debugger-hook* 不是 nil, 它应该是一个在进入标准调试器之前要被调用的函数[function] (或者一个函数[name]的名字). 随着 *debugger-hook* 绑定为 nil 这个函数[function]被调用, 并且这个函数[function]必须接受两个参数: 这个状况 condition 和这个 *debugger-hook* 被绑定为 nil 之前的值. 如果这个函数[function]正常返回, 就进入标准调试器.
 
-        标准调试器从不直接返回. 只有通过一个例如使用 restart 函数的非局部转移才可能返回.
+        标准调试器从不直接返回. 只有通过一个例如使用重启动函数的非局部转移才可能返回.
 
 * 示例(Examples):
 
@@ -1343,14 +1341,14 @@ serious-condition, condition, t
 
 * 参数和值(Arguments and Values):
 
-        format-control---一个格式化控制. 默认值是依赖于具体实现的.
-        format-arguments---这个 format-control 的格式化参数.
+        format-control---一个格式化控制字符串[format control]. 默认值是依赖于具体实现的[implementation-dependent].
+        format-arguments---这个格式化控制字符串 format-control 的格式化参数[format argument].
 
 * 描述(Description):
 
-        break 格式化 format-control 和 format-arguments, 然后在没有任何被程控的错误处理工具拦截可能的情况下直接进入调试器中.
+        break 格式化[format] format-control 和 format-arguments, 然后在没有任何被程控的错误处理工具拦截可能的情况下直接进入调试器中.
 
-        如果在这个调试器中, 这个 continue 重启动被使用, break 在没有采取任何不寻常的恢复动作的情况下立即返回 nil.
+        如果在这个调试器中使用了这个 continue 重启动[restart], break 在没有采取任何不寻常的恢复动作的情况下立即返回 nil.
 
         break 在尝试进入调试器之前把 *debugger-hook* 绑定为 nil.
 
@@ -1383,9 +1381,9 @@ serious-condition, condition, t
 
 * 注意(Notes):
 
-        break 被用作在一个程序中临时插入调试"断点(breakpoints)"的方式, 而不是作为发送错误的方式. 由于这个原因, break 不接受这个 cerror 接受的 continue-format-control 参数. 这个以及通过状况处理的拦截可能性的缺失是 break 和 cerror 之间仅有的程序可见的区别.
+        break 被用作在一个程序中临时插入调试"断点(breakpoints)"的方式, 而不是作为发送错误的方式. 由于这个原因, break 不接受这个 cerror 接受的 continue-format-control 实参[argument]. 这个以及通过状况处理的拦截可能性的缺失是 break 和 cerror 之间仅有的程序可见的区别.
 
-        break 和 cerror 的用户接口方面允许更广泛的变化, 为了适应这个具体实现的接口需求. 比如, 对于一个 Lisp read-eval-print 循环允许通过 break 而不是常规的调试器来进入.
+        break 和 cerror 的用户接口方面允许更广泛的变化, 来适应这个具体实现[implementation]的接口需求. 比如, 对于一个 Lisp read-eval-print 循环[Lisp read-eval-print loop]允许通过 break 而不是常规的调试器来进入.
 
         break 可以通过下面这样定义:
 
@@ -1404,7 +1402,7 @@ serious-condition, condition, t
 
 * 值类型(Value Type):
 
-        一个两参数函数 (a condition and the value of *debugger-hook* at the time the debugger was entered) 的标识符, 或者 nil.
+        一个两实参[argument]函数[function] (一个状况[condition]和进入调试器之前 *debugger-hook* 的值[value]) 的标识符[designator], 或者 nil.
 
 * 初始值(Initial Value):
 
@@ -1412,7 +1410,7 @@ serious-condition, condition, t
 
 * 描述(Description):
 
-        当这个 *debugger-hook* 的值不是 nil, 它在正常进入调试器前被调用, 不管是由于调用 invoke-debugger 或是从一个带有一个未被处理的状况的 error 或 cerror 调用中进入调试器. 这个函数可能处理这个状况 (转移控制) 或者正常返回 (允许标准这个标准调试器来运行). 为了最小化调试期间的递归错误, *debugger-hook* 在调用这个函数前通过 invoke-debugger 被绑定为 nil.
+        当这个 *debugger-hook* 的值[value]非 nil [non-nil], 它在正常进入调试器前被调用, 不管是由于调用 invoke-debugger 或是从一个带有未处理状况的 error 或 cerror 调用中进入调试器. 这个函数[function]可能处理这个状况[condition] (转移控制) 或者正常返回 (允许标准这个标准调试器来运行). 为了最小化调试期间的递归错误, *debugger-hook* 在调用这个函数[function]前被 invoke-debugger 被绑定为 nil.
 
 * 示例(Examples):
 
@@ -1459,14 +1457,14 @@ serious-condition, condition, t
 
 * 注意(Notes):
 
-        在求值用户交互式输入的代码时, 有时候, 让钩子函数绑定 *debugger-hook* 到它的第二个参数的函数是很有用的, 这样就可以使用相同的交互式工具来处理递归错误了. 
+        在求值用户交互式输入的代码时, 有时候, 让钩子函数绑定 *debugger-hook* 到它的第二个参数的函数[function]是很有用的, 这样就可以使用相同的交互式工具来处理递归错误了. 
 
 
 ### <span id="V-BREAK-ON-SIGNALS">变量 *BREAK-ON-SIGNALS*</span>
 <!--TODO 待校验-->
 * 值类型(Value Type):
 
-        一个类型特化符.
+        一个类型指定符[type specifier].
 
 * 初始值(Initial Value):
 
@@ -1474,9 +1472,9 @@ serious-condition, condition, t
 
 * 描述(Description):
 
-        当 (typep condition *break-on-signals*) 返回 true 时, 调用 signal, 以及调用其他像 error 这样隐式调用 signal 的操作符, 在发送这个状况前进入到调试器中.
+        当 (typep condition *break-on-signals*) 返回 true 时, 对 signal, 以及其他像 error 这样隐式调用 signal 的操作符[operator]的调用, 在发送这个状况[condition]前进入到调试器中.
 
-        当一个 break 由于 *break-on-signals* 发生时, 这个 continue 重启动可以被用于继续这个正常的发送过程.
+        当由于 *break-on-signals* 发生一个中断时, 这个 continue 重启动[condition]可以被用于继续这个正常的发送过程.
 
 * 示例(Examples):
 
@@ -1516,13 +1514,13 @@ serious-condition, condition, t
 
 * 也见(See Also):
 
-        break, signal, warn, error, typep, Section 9.1 (Condition System Concepts)
+        break, signal, warn, error, typep, 章节 9.1 (状况系统的概念)
 
 * 注意(Notes):
 
-        *break-on-signals* 主要用于调试已经发送的代码. 当设置了 *break-on-signals* 时, 鼓励用户去选择满足的最约束的说明. 设置 *break-on-signals* 实际上违反了状况发送的模块化处理. 事实上, 设置 *break-on-signals* 的完整影响在某些方面可能是不可预测的, 因为用户可能没有意识到在代码中使用的对 signal 调用的种类和数量.
+        *break-on-signals* 主要用于调试执行发送的代码. 当设置了 *break-on-signals* 时, 鼓励用户去选择满足的最限制的说明. 设置 *break-on-signals* 实际上违反了状况[condition]发送的模块化处理. 事实上, 设置 *break-on-signals* 的完整影响在某些方面可能是不可预测的, 因为用户可能没有意识到在附带调用的代码中使用的对 signal 调用的种类和数量.
 
-        *break-on-signals* 允许早期进入调试器, 但是这样的一个进入不会阻止例如 error 和 cerror 这样的操作下额外进入调试器. 
+        *break-on-signals* 允许早期进入调试器, 但是这样的一个进入不会阻止例如 error 和 cerror 操作下额外进入调试器. 
 
 
 ### <span id="M-HANDLER-BIND">宏 HANDLER-BIND</span>
@@ -1535,25 +1533,25 @@ serious-condition, condition, t
 
 * 参数和值(Arguments and Values):
 
-        type---一个类型特化符.
-        handler---一个表达式形式; 求值后产生一个 handler-function.
-        handler-function---一个单参数函数的标识符.
-        forms---一个隐式的 progn.
-        results---表达式形式 forms 返回的值.
+        type---一个类型指定符[type specifier].
+        handler---一个表达式形式[form]; 求值来产生一个处理者函数 handler-function.
+        handler-function---一个单实参[argument]函数[function]的标识符[designator].
+        forms---一个隐式的 progn [implicit progn].
+        results---由这些表达式形式[forms]返回的那些值[value].
 
 * 描述(Description):
 
-        在一个动态环境中执行表达式形式, 其中这个表示的处理者绑定是生效的.
+        在一个表示的处理者 handler 绑定[binding]生效的动态环境[dynamic environment]中执行那些表达式形式 forms.
 
-        每个处理者应该被求值为一个处理者函数 handler-function, 它被用于在执行这些表达式形式 forms 期间处理给定类型的状况. 这个函数应该接收单个参数, 就是要被发送的这个状况.
+        每个处理者 handler 应该被求值为一个处理者函数 handler-function, 它被用于在执行这些表达式形式 forms 期间处理给定类型 type 的状况[condition]. 这个函数[function]应该接收一个单独的参数, 就是要被发送的这个状况[condition].
 
-        如果提供了超过一个处理者, 这些处理者绑定从上到下依次搜索来寻找匹配 (通过使用 typecase 来做视觉类比). 如果找到一个合适的类型, 关联的处理者在一个动态环境中运行, 其中这些处理者绑定都不是可见的 (来避免递归错误). 如果这个处理者拒绝了, 这个搜索就继续到另一个处理者.
+        如果提供了超过一个处理者 handler 绑定[binding], 从上到下依次搜索这些处理者 handler 绑定[binding]来寻找匹配项 (通过使用 typecase 来做视觉类比). 如果找到一个合适的类型[type], 关联的处理者在一个这些处理者绑定都是可见的动态环境[dynamic environment]中运行 (来避免递归错误). 如果这个处理者[handler]拒绝[decline]了, 就继续搜索另一个处理者[handler].
 
-        如果没有找到合适的处理者, 其他处理者从动态闭合 contours 中寻找. 如果在外边没有找到处理者, 那么 signal 返回或者 error 进入到调试器中.
+        如果没有找到合适的处理者[handler], 那么在动态闭合边界中寻找其他处理者[handler]. 如果在外边没有找到处理者[handler], 那么 signal 返回或者 error 进入到调试器中.
 
 * 示例(Examples):
 
-        在以下代码中, 如果一个未绑定的变量 error 在这个主体中被发送 (并且没有被一个介入的处理者处理), 第一个函数会被调用.
+        在以下代码中, 如果在这个主体中被发送一个未绑定的变量错误 (并且没有被一个介入的处理者所处理), 第一个函数会被调用.
 
     ```LISP
     (handler-bind ((unbound-variable #'(lambda ...))
@@ -1561,7 +1559,7 @@ serious-condition, condition, t
       ...)
     ```
 
-        如果任何其他种类的 error 被发送, 第二个函数会被调用. 不论发生何种情况, 在执行相关函数的代码期间这些处理者都不是活跃的.
+        如果任何其他种类的错误被发送, 第二个函数会被调用. 不论发生何种情况, 在执行相关函数的代码期间这些处理者都不是活跃的.
 
     ```LISP
     (defun trap-error-handler (condition)
@@ -1580,7 +1578,7 @@ serious-condition, condition, t
     =>  (1 NIL 3)
     ```
 
-        注意, 这个 "Foo." 不会被打印, 因为这个 signal 发送的状况是一个 simple-condition 类型的简单状况, 它不是类型 error, 所以它不会触发 trap-errors 设置的 error 的处理者.
+        注意, 这个 "Foo." 不会被打印, 因为这个 signal 发送的状况是一个简单转开[simple-condition], 它不是类型[type] error, 所以它不会触发由 trap-errors 设置的 error 的处理者.
 
 * 副作用(Side Effects): None.
 
