@@ -373,7 +373,7 @@ invoke-restart 调用和给 invoke-restart 的第一个参数相同名字的最�
 > * [宏 IGNORE-ERRORS](#M-IGNORE-ERRORS)
 > * [宏 DEFINE-CONDITION](#M-DEFINE-CONDITION)
 > * [函数 MAKE-CONDITION](#F-MAKE-CONDITION)
-> * [System Class RESTART](#SC-RESTART)
+> * [系统类 RESTART](#SC-RESTART)
 > * [函数 COMPUTE-RESTARTS](#F-COMPUTE-RESTARTS)
 > * [函数 FIND-RESTART](#F-FIND-RESTART)
 > * [函数 INVOKE-RESTART](#F-INVOKE-RESTART)
@@ -1607,19 +1607,19 @@ serious-condition, condition, t
 
 * 参数和值(Arguments and Values):
 
-        expression---一个表达式形式.
-        typespec---一个类型特化符.
-        var---一个变量名字.
-        lambda-list---一个普通 lambda 列表.
-        declaration---一个 declare 表达式; 不求值的.
-        form---一个表达式形式.
-        results---在正常的情况下, 返回的值是那些表达式 expression 求值的结果; 在这个当控制被转移到一个子句 clause 中的异常情况中, 在那个 clause 中的最后一个表达式形式 form 的值会被返回.
+        expression---一个表达式形式[form].
+        typespec---一个类型指定符[type specifier].
+        var---一个变量[variable]名字[name].
+        lambda-list---一个普通 lambda 列表[ordinary lambda list].
+        declaration---一个 declare 表达式[expression]; 不求值的.
+        form---一个表达式形式[form].
+        results---在正常的情况下, 返回的值是表达式 expression 求值的那些结果; 在这个当控制被转移到一个子句 clause 中的异常情况中, 那个 clause 中的最后一个表达式形式 form 的值会被返回.
 
 * 描述(Description):
 
-        handler-case 在一个各种处理者都活跃的动态环境中执行表达式 expression. 每个 error-clause 指定如果去处理一个匹配那个类型特化符 typespec 的状况. 如果控制正常返回, 那么一个 no-error-clause 允许一个特定动作的规范.<!--TODO 待校验-->
+        handler-case 在一个各种处理者都活跃的动态环境[dynamic environment]中执行表达式 expression. 每个错误子句 error-clause 指定了如何去处理匹配表示的类型指定符 typespec 的一个状况[condition]. 如果控制正常返回, 那么一个 no-error-clause 允许一个特定动作的规范.<!--TODO specification 规格？？-->
 
-        如果在表达式 expression 求值期间一个有着合适的 error-clause 的状况被发送 (换句话说, (typep condition 'typespec) 返回 true) 并且如果这里没有这个类型状况的介入处理者, 那么控制被装一到这个相关 error-clause 的主体当中. 在这个情况下, 这个动态的状态被解开 (这样这些在表达式 expression 周围建立的处理者不再是活跃的), 并且 var 被绑定为这个要被发送的状况. 如果提供了不止一个情况(case), 这些情况是平行的. 这也就是说, 在下面这个表达式形式中
+        如果在表达式 expression 求值期间一个有着合适的错误子句 error-clause 的状况[condition]被发送 (换句话说, (typep condition 'typespec) 返回 true) 并且如果这里没有这个类型[type]状况[condition]的中介处理者, 那么控制被转移到这个相关 error-clause 的主体当中. 在这个情况下, 这个动态的状态被解开 (这样在表达式 expression 周围建立的这些处理者不再是活跃的), 并且 var 被绑定为这个已经被发送的状况[condition]. 如果提供了不止一个情况(case), 这些情况可以并行访问. 这也就是说, 在下面这个表达式形式中
 
           (handler-case form
             (typespec1 (var1) form1)
@@ -1627,7 +1627,7 @@ serious-condition, condition, t
 
         如果第一个子句 (包括 form1) 已经被选择了, 第二个的处理者不再是可见的 (反之亦然).
 
-        这些子句依次从上倒下被搜索. 如果这里有一个类型在 typespecs 之间重叠, 选择这些子句中更早的那个.
+        这些子句依次从上倒下被搜索. 如果在这些 typespecs 之间有类型[type]重叠, 那么就选择这些子句 clause 中更早的那个.
 
         如果不需要 var, 它可以被省略. 这也就是说, 一个像这样的子句:
 
@@ -1635,7 +1635,7 @@ serious-condition, condition, t
 
         可以被写为 (typespec () form).
 
-        如果在一个选择的子句 clause 中没有表达式形式, 那么这个情况, 那么因此 handler-case, 返回 nil. 如果表达式 expression 的执行正常返回并且不存在 no-error-clause, 表达式 expression 返回的值会被 handler-case 返回. 如果表达式 expression 的执行正常返回并且存在一个 no-error-clause, 返回的值被用作给从 no-error-clause 通过构造 (lambda lambda-list form*) 所描述函数的参数, 并且这个函数调用的值会被 handler-case 返回. 在这个调用时, 在表达式 expression 周围建立的处理者不再是活跃的.<!--TODO 待校验-->
+        如果选择的子句 clause 中没有表达式形式 form, 那么这个情况, 以及 handler-case, 返回 nil. 如果表达式 expression 的执行正常返回并且不存在 no-error-clause, 表达式 expression 返回的值会被 handler-case 返回. 如果表达式 expression 的执行正常返回并且存在一个 no-error-clause, 返回的值作为参数给一个函数, 这个函数通过从 no-error-clause 构造 (lambda lambda-list form*) 来描述, 并且这个函数调用的值[value]会被 handler-case 返回. 在这个调用时, 在表达式 expression 周围建立的处理者不再是活跃的.
 
 * 示例(Examples):
 
@@ -1667,7 +1667,7 @@ serious-condition, condition, t
 
 * 也见(See Also):
 
-        handler-bind, ignore-errors, Section 9.1 (Condition System Concepts)
+        handler-bind, ignore-errors, 章节 9.1 (状况系统的概念)
 
 * 注意(Notes):
 
@@ -1720,16 +1720,16 @@ serious-condition, condition, t
 
 * 参数和值(Arguments and Values):
 
-        forms---一个隐式的 progn.
-        results---在正常情况下, 这些表达式形式 forms 的值被返回; 在异常情况中, 返回两个值: nil 和这个状况.
+        forms---一个隐式的 progn [implicit progn].
+        results---在正常情况下, 这些表达式形式[form]的值[value]被返回; 在异常情况中, 返回两个值: nil 和这个状况[condition].
 
 * 描述(Description):
 
-        ignore-errors 被用于阻止 error 类型的错误去导致进入调试器.
+        ignore-errors 被用于防止 error 类型[type]的状况[condition]导致进入调试器.
 
-        具体的说, ignore-errors 在一个 error 类型的状况的处理者被建立的动态环境中执行这些表达式形式 forms; 如果被调用了, 它通过从 ignore-errors 表达式形式中返回两个值, nil 和这个被发送的状况, 来处理这样的状况.
+        具体的说, ignore-errors 在一个 error 类型[type]的状况[condition]的处理者[handler]被建立的动态环境[dynamic environment]中执行[execute]这些表达式形式[form]; 如果被调用了, 它通过从 ignore-errors 表达式形式[form]中返回两个值[value], nil 和这个被发送的状况[condition], 来处理这样的状况[condition].
 
-        如果发生了一个从这些表达式形式 forms 正常返回, 那么返回的任何值都被 ignore-errors 返回.
+        如果发生了一个从这些表达式形式[form]的正常返回[normal return], 那么返回的任何值[value]都被 ignore-errors 返回.
 
 * 示例(Examples):
 
@@ -1754,7 +1754,7 @@ serious-condition, condition, t
 
 * 也见(See Also):
 
-        handler-case, Section 9.1 (Condition System Concepts)
+        handler-case, 章节 9.1 (状况系统的概念)
 
 * 注意(Notes):
 
@@ -1765,7 +1765,7 @@ serious-condition, condition, t
         (handler-case (progn . forms)
           (error (condition) (values nil condition)))
 
-        由于第二个返回值是在异常情况中的一个状况, 通常(但不是必须)在正常情况下第二个返回值被安排为缺失的或者 nil, 这样这两个情况就可以被区分开来. 
+        由于第二个返回值是在异常情况中的一个状况[condition], 通常(但不是必须)在正常情况下第二个返回值被安排为缺失的或者 nil, 这样这两个情况就可以被区分开来. 
 
 
 ### <span id="M-DEFINE-CONDITION">宏 DEFINE-CONDITION</span>
@@ -1797,45 +1797,45 @@ serious-condition, condition, t
 
 * 参数和值(Arguments and Values):
 
-        name---一个符号.
-        parent-type---一个命名一个状况类型的符号. 如果没有提供 parent-types, 这个 parent-types 默认是 (condition).
-        default-initargs---一个键值对列表.
-        Slot-spec -- 一个槽的名字或者一个由槽名字 slot-name 后面跟着零个或多个槽选项 slot-options 构成的列表.
-        Slot-name -- 一个槽名字 (一个符号), 一个槽名字的列表, 或者槽名/槽表达式形式对的列表.
+        name---一个符号[symbol].
+        parent-type---命名一个状况[condition]类型[type]的符号[symbol]. 如果没有提供 parent-types, 这个 parent-types 默认是 (condition).
+        default-initargs---一个键值对[keyword/value pair]的列表.
+        slot-spec -- 一个槽[slot]的名字[name]或者一个由槽名字 slot-name 后面跟着零个或多个槽选项 slot-options 构成的列表[list].
+        slot-name -- 一个槽名字 (一个符号[symbol]), 一个槽名字的列表[list], 或者槽名/槽表达式形式对(slot name/slot form pair)的列表[list].
 
-        Option -- 任意下面这些选项:
+        option -- 任意下面这些选项:
 
         :reader
 
-            :reader 对于一个给定的槽可以被提供超过一次但是不能是 nil.
+            :reader 对于一个给定的槽[slot]可以被提供超过一次并且不能是 nil.
 
         :writer
 
-            :writer 对于一个给定的槽可以被提供超过一次并且必须命名一个广义函数.
+            :writer 对于一个给定的槽[slot]可以被提供超过一次并且必须命名一个广义函数[generic function].
 
         :accessor
 
-            :accessor 对于一个给定的槽可以被提供超过一次但是不能是 nil.
+            :accessor 对于一个给定的槽[slot]可以被提供超过一次但是不能是 nil.
 
         :allocation
 
-            :allocation 对于一个给定的槽可以被提供最多一次. 如果 :allocation 没有被提供那么默认值就是 :instance.
+            :allocation 对于一个给定的槽[slot]可以被提供最多一次. 如果 :allocation 没有被提供那么默认值就是 :instance.
 
         :initarg
 
-            :initarg 对于一个给定的槽可以被提供超过一次.
+            :initarg 对于一个给定的槽[slot]可以被提供超过一次.
 
         :initform
 
-            :initform 对于一个给定的槽可以被提供最多一次.
+            :initform 对于一个给定的槽[slot]可以被提供最多一次.
 
         :type
 
-            :type 对于一个给定的槽可以被提供最多一次.
+            :type 对于一个给定的槽[slot]可以被提供最多一次.
 
         :documentation
 
-            :documentation 对于一个给定的槽可以被提供最多一次.
+            :documentation 对于一个给定的槽[slot]可以被提供最多一次.
 
         :report
 
@@ -1843,68 +1843,68 @@ serious-condition, condition, t
 
 * 描述(Description):
 
-        define-condition 定义一个名为 name 的新的状况类型, 它是那个类型的一个子类型或者是名为 parent-type 的子类型. 每个 parent-type 参数为这个新的状况指定一个直接的超类. 这个新的状况从它的每个超类中继承槽和方法, 诸如此类.
+        define-condition 定义一个名为 name 的新的状况类型, 它是由 parent-type 命名的那个类型[type]或那些类型[type]的一个子类型[subtype]. 每个 parent-type 参数为这个新的状况[condition]指定一个直接的超类型[supertype]. 这个新的状况[condition]从它的每个超类型[supertype]中继承槽[slot]和方法[method], 以此类推.
 
-        如果提供了一个 槽的名字/槽表达式形式 对, 这个槽表达式形式是一个在没有显式提供值时被 make-condition 求值来提供一个默认值的表达式形式. 如果没有提供槽表达式形式, 这个槽的内容以一种依赖于具体实现的方式来初始化.
+        如果提供了一个槽名/槽表达式形式对(slot name/slot form pair), 这个槽表达式形式是一个在没有显式提供值时被 make-condition 求值来提供一个默认值的表达式形式[form]. 如果没有提供槽表达式形式, 这个槽slot 的内容以一种依赖于具体实现[implementation-dependent]的方式来初始化.
 
-        如果要被定义的类型和某个它继承的其他类型有着相同名字的槽, 只会在这个状况中分配一个槽, 但是这个提供的槽表达式形式重写任何从一个 parent-type 中继承而来的槽表达式形式. 如果没有提供槽表达式形式, 继承的槽表达式形式(如果存在的话)始终是可见的.
+        如果要被定义的类型[type]和某个它继承的其他类型[type]有着相同名字的槽, 那么只有一个槽会被分配在这个状况[condition]中, 但是这个提供的槽表达式形式重写从 parent-type 中继承而来的任何槽表达式形式. 如果没有提供槽表达式形式, 继承的槽表达式形式(如果存在的话)始终是可见的.
 
-        访问器根据和 defclass 使用的相同的规则被创建.
+        访问器根据 defclass 所使用的相同规则来创建.
 
         槽选项 slot-options 的一个描述如下:
 
         :reader
 
-            这个 :reader 槽选项指定了一个要被定义在由给 :reader 的参数命名的这个广义函数上的非限定方法来入去这个给定槽的名字.
+            这个 :reader 槽选项指定了一个非限定方法[unqualified method]来读取这个给定槽[slot]的名字, 这个非限定方法要被定义在给 :reader 的参数命名的这个广义函数[generic function]上的.
 
         :initform
 
-            这个 :initform 槽选项被用来提供一个在这个槽的初始化中使用的默认初始值表达式形式. 这个表达式形式在每次被用来初始化这个槽的时候被求值. 这个表达式形式求值所在的词法环境是这个 define-condition 表达式形式被求值所在的词法环境. 注意, 这个词法环境同时引用了变量和函数. 对于局部槽, 动态环境是那个 make-condition 被调用时所在的动态环境; 对于共享槽, 动态环境是那个 define-condition 表达式形式被求值时所在的动态环境.
+            这个 :initform 槽选项被用来提供一个在这个槽[slot]的初始化中使用的默认初始值表达式形式. 这个表达式形式[form]在每次被用来初始化这个槽[slot]的时候被求值. 这个表达式形式求值所在的词法环境[lexical environment]是这个 define-condition 表达式形式被求值所在的词法环境[lexical environment]. 注意, 这个词法环境[lexical environment]同时引用了变量和函数[function]. 对于局部槽[local slot], 动态环境[dynamic environment]是那个 make-condition 被调用时所在的动态环境[dynamic environment]; 对于共享槽[shared slot], 动态环境[dynamic environment]是那个 define-condition 表达式形式被求值时所在的动态环境[dynamic environment].
 
             没有具体实现被允许去扩展 define-condition 的语法来允许 (slot-name form) 作为 (slot-name :initform form) 的一个简写.
 
         :initarg
 
-            这个 :initarg 槽选项声明了一个由它的符号参数命名的初始化参数并且指定了这个初始化参数初始化给定的槽. 如果这个初始化参数在对 initialize-instance 的调用中有一个值, 那么这个值就被存储在给定槽中, 并且这个槽的 :initform 槽选项如果存在的话, 就不会被求值. 如果为一个给定槽指定的初始化参数都没有值, 这个槽就根据这个 :initform 槽选项来初始化, 如果指定的话.
+            这个 :initarg 槽选项声明了一个由它的符号[symbol]参数命名的初始化参数并且指定这个初始化参数初始化给定的槽[slot]. 如果这个初始化参数在对 initialize-instance 的调用中有一个值, 那么这个值就被存储在给定槽[slot]中, 并且这个槽的 :initform 槽选项如果存在的话, 就不会被求值. 如果为一个给定槽[slot]指定的初始化参数都没有值, 这个槽[slot]就根据这个 :initform 槽选项来初始化, 如果指定的话.
 
         :type
 
-            这个 :type 槽选项指定了这个槽的内容总是为给定的类型. 它有效的声明了应用到这个状况类型的对象上的读取器广义函数的结果类型. 尝试去存储一个不满足这个槽的类型的值到这个槽中的后果是未定义的.
+            这个 :type 槽选项指定了这个槽[slot]的内容总是为给定的类型[type]. 它有效的声明了应用到这个状况[condition]类型的对象[object]上的读取器广义函数的结果类型. 尝试去存储一个不满足这个槽[slot]的类型的值到这个槽[slot]中的后果是未定义的.
 
         :default-initargs
 
-            这个选项被和 defclass 中一样的方式来对待.
+            这个选项的处理和 defclass 中一样.
 
         :documentation
 
-            这个 :documentation 槽选项为这个槽提供了一个文档字符串.
+            这个 :documentation 槽选项为这个槽[slot]提供了一个文档字符串[documentation string].
 
         :report
 
-            状况报告是通过成问题的那个状况类型的 print-object 方法来调节的, 此时 *print-escape* 总是为 nil. 在一个状况类型 C 中指定 (:report report-name) 等价于:
+            状况[condition]报告是通过那个成问题的状况[condition]类型的 print-object 方法来调节的, 此时 *print-escape* 总是为 nil. 在一个状况类型 C 的定义中指定 (:report report-name) 等价于:
 
             (defmethod print-object ((x c) stream)
               (if *print-escape* (call-next-method) (report-name x stream)))
 
-            如果通过给 :report (report-name) 的参数提供的值是一个符号或者一个 lambda 表达式, 它对于 function 必须是可接受的. (function report-name) 在当前词法环境中被求值. 它应该返回一个两个参数的函数, 两个参数是一个状况和一个流, 这个函数把这个状况的一个描述打印到这个流中. 每当这个状况被打印并且 *print-escape* 是 nil, 这个函数就会被调用.
+            如果通过 :report (report-name) 参数提供的值是一个符号[symbol]或者一个 lambda 表达式[lambda expression], 它对于 function 必须是可接受的. (function report-name) 在当前词法环境[lexical environment]中被求值. 它应该返回一个两个参数的函数[function], 两个参数是一个状况[condition]和一个流[stream], 这个函数把这个状况[condition]的一个描述打印到这个流[stream]中. 每当这个状况[condition]被打印并且 *print-escape* 是 nil, 这个函数[function]就会被调用.
 
-            如果 report-name 是一个字符串, 它是下面这个的一个简写
+            如果 report-name 是一个字符串[stream], 它是下面这个的一个简写
 
             (lambda (condition stream)
               (declare (ignore condition))
               (write-string report-name stream))
 
-            这个选项在这个新的状况类型已经被创建后被处理, 所以在这个 :report 函数中使用槽访问器是允许的. 如果没有提供这个选项, 关于如何去报告这个类型的状况的信息从 parent-type 继承而来.
+            这个选项在这个新的状况[condition]类型创建后被处理, 所以在这个 :report 函数中使用这个槽 slot 的访问器是允许的. 如果没有提供这个选项, 关于如何去报告这个类型的状况[condition]的信息从 parent-type 继承而来.
 
-        如果尝试去读取一个没有被显式初始化并且没有给定一个默认值的槽, 那么结果是未定义的.
+        如果尝试去读取[read]一个没有被显式初始化并且没有给定一个默认值的槽, 那么结果是未指定的.
 
-        如果尝试去使用 setf 对这个槽赋值, 那么结果也是未定义的.
+        如果尝试去使用 setf 对这些槽 slots 赋值, 那么结果也是未指定的.
 
-        如果一个 define-condition 表达式形式作为一个顶层表达式形式出现, 编译器必须使 name 成为一个可识别的有效类型名字, 并且它必须可以被要被编译的这个文件后面的其他状况类型的 define-condition 表达式形式作为 parent-type 来引用这个状况类型.
+        如果一个 define-condition 表达式形式[form]作为一个顶层表达式形式[top level form]出现, 编译器[compiler]必须使名字 name 成为一个可识别的有效类型[type]的名字, 并且被编译的这个文件[file]后面的其他状况[condition]类型[type]的 define-condition 表达式形式[form]可以作为 parent-type 来引用这个状况[condition]类型[type].
 
 * 示例(Examples):
 
-        下面表达式形式定义了类型 peg/hole-mismatch 的状况, 它继承自名为 blocks-world-error 的状况:
+        下面表达式形式定义了类型 peg/hole-mismatch 的状况[condition], 它继承自名为 blocks-world-error 的状况:
 
     ```LISP
     (define-condition peg/hole-mismatch 
@@ -1919,9 +1919,9 @@ serious-condition, condition, t
                         (peg/hole-mismatch-hole-shape condition)))))
     ```
 
-        这个新类型有着槽 peg-shape 和 hole-shape, 因此 make-condition 接受 :peg-shape 和 :hole-shape 关键字. 读取器 peg/hole-mismatch-peg-shape 和 peg/hole-mismatch-hole-shape 应用于这个类型的对象, 就像在那个 :report 信息中阐述的那样.
+        这个新类型有着槽 peg-shape 和 hole-shape, 因此 make-condition 接受 :peg-shape 和 :hole-shape 关键字. 读取器[reader] peg/hole-mismatch-peg-shape 和 peg/hole-mismatch-hole-shape 应用于这个类型的对象, 就像那个 :report 信息中阐述的那样.
 
-        下面这个表达式形式定义了名为 machine-error 的状况类型, 它继承自 error:
+        下面这个表达式形式定义了名为 machine-error 的状况[condition]类型, 它继承自 error:
 
     ```LISP
     (define-condition machine-error 
@@ -1933,7 +1933,7 @@ serious-condition, condition, t
                         (machine-error-machine-name condition)))))
     ```
 
-        这个定义的基础上, 一个新的错误状况可以被定义, 它是 machine-error 的一个子类型, 在机器不可用时被使用:
+        这个定义的基础上, 一个新的错误状况可以被定义, 它是 machine-error 的一个子类型], 在机器不可用时被使用:
 
     ```LISP
     (define-condition machine-not-available-error (machine-error) ()
@@ -1985,7 +1985,7 @@ serious-condition, condition, t
 
 * 也见(See Also):
 
-        make-condition, defclass, Section 9.1 (Condition System Concepts)
+        make-condition, defclass, 章节 9.1 (状况系统的概念)
 
 * 注意(Notes): None. 
 
@@ -1998,13 +1998,13 @@ serious-condition, condition, t
 
 * 参数和值(Arguments and Values):
 
-        type---一个类型特化符 (对于一个 condition  的子类型).
-        slot-initializations---一个初始化参数列表.
-        condition---一个状况.
+        type---一个类型指定符[type specifier] (condition 的一个子类型[subtype]).
+        slot-initializations---一个初始化参数列表[initialization argument list].
+        condition---一个状况[condition].
 
 * 描述(Description):
 
-        使用槽初始值的 slot-initializations 来构造并返回一个类型 type 类型的状况. 新创建的状况会被返回.
+        使用槽初始值的 slot-initializations 来构造并返回一个 type 类型的状况[condition]. 新创建的状况[condition]会被返回.
 
 * 示例(Examples):
 
@@ -2031,18 +2031,18 @@ serious-condition, condition, t
 
 * 受此影响(Affected By):
 
-The set of defined condition types.
+        已定义的状况[condition]类型[type]的集合.
 
 * 异常情况(Exceptional Situations): None.
 
 * 也见(See Also):
 
-define-condition, Section 9.1 (Condition System Concepts)
+        define-condition, 章节 9.1 (状况系统的概念)
 
 * 注意(Notes): None. 
 
 
-### <span id="SC-RESTART">System Class RESTART</span>
+### <span id="SC-RESTART">系统类 RESTART</span>
 
 * 类优先级列表(Class Precedence List):
 
@@ -2050,9 +2050,9 @@ define-condition, Section 9.1 (Condition System Concepts)
 
 * 描述(Description):
 
-        一个类型 restart 的对象表示一个可以被调用来执行一些恢复动作的表达式形式的函数, 通常是到运行的程序中的一个更外部的点的控制转移.
+        一个类型[type] restart 的对象[object]表示一个可以被调用来执行一些恢复动作的表达式形式的函数[function], 通常是到运行的程序中的一个更外部的点的控制转移.
 
-        一个具体实现可以自由地以任何最方便的方式实现重启动; 一个重启动只有和建立它的绑定表达式作用域相关的动态范围. 
+        一个具体实现[implementation]可以自由地以任何最方便的方式实现重启动[restart]; 一个重启动[restart]只有和建立[establish]它的绑定表达式形式[form]的作用域相关的动态范围[dynamic extent]. 
 
 
 ### <span id="F-COMPUTE-RESTARTS">函数 COMPUTE-RESTARTS</span>
@@ -2063,20 +2063,20 @@ define-condition, Section 9.1 (Condition System Concepts)
 
 * 参数和值(Arguments and Values):
 
-        condition---一个状况对象, 或者 nil.
-        restarts---一个重启动列表.
+        condition---一个状况[condition]对象[object], 或者 nil.
+        restarts---一个重启动[restart]列表[list].
 
 * 描述(Description):
 
-        compute-restarts 使用这个程序的动态状态来计算一个当前是活跃的重启动列表.
+        compute-restarts 使用这个程序的动态状态来计算一个当前是活跃的重启动[restart]列表[list].
 
-        产生的列表是有序的, 因此最内部(较新建立的)的重启动较接近这个列表的头部.
+        产生的列表[list]是有序的, 因此最内部(较新建立的)的重启动较接近这个列表[list]的头部.
 
-        当状况 condition 不是 nil, 只有那些显式和那个状况 condition 关联的或者没有和任何状况关联的重启动会被考虑; 这也就是说, 排除在外的重启动是那些和一个包含给定状况 condition 的非空状况集合相关联的重启动. 如果状况 condition 是 nil, 所有重启动会被考虑.
+        当状况 condition 非 nil [non-nil], 只有和那个状况 condition 显式关联的或者没有和任何状况[condition]关联的那些重启动[restart]会被考虑; 这也就是说, 排除在外的重启动[restart]是和一个不包含给定状况 condtion 的非空状况集合相关联的那些. 如果状况 condition 是 nil, 所有重启动[restart]会被考虑.
 
-        compute-restarts 返回所有可应用的重启动, 包括匿名的那些, 当给定一个符号参数时, 即便它们中的一部分有着和其他的相同的名字并且因此不会被 find-restart 找到.
+        compute-restarts 返回所有可应用重启动[applicable restart], 包括匿名的那些, 即便当给定一个符号[symbol]参数时, 它们中的一部分有着和其他重启动相同的名字并且因此不会被 find-restart 找到.
 
-        在相同的动态环境中时, 具体实现被允许, 但没有被要求从对 compute-restarts 的重复调用中去返回不同的列表. 如果 compute-restarts 返回的列表每次被修改那么结果是未定义的.
+        在相同的动态环境中时, 具体实现被允许, 但没有被要求对 compute-restarts 的重复调用去返回不同的[distinct]列表[list]. 如果 compute-restarts 返回的列表[list]被修改那么结果是未定义的.
 
 * 示例(Examples):
 
@@ -2140,17 +2140,17 @@ define-condition, Section 9.1 (Condition System Concepts)
 
 * 参数和值(Arguments and Values):
 
-        identifier---一个非 nil 符号, 或者是一个重启动.
-        condition---一个状况对象, 或者 nil.
-        restart---一个重启动或者 nil.
+        identifier---一个非 nil [non-nil]符号[symbol], 或者是一个重启动[restart].
+        condition---一个状况[condition]对象[object], 或者 nil.
+        restart---一个重启动[restart]或者 nil.
 
 * 描述(Description):
 
-        find-restart 在当前动态环境中搜索一个特定的重启动.
+        find-restart 在当前动态环境[dynamic environment]中搜索一个特定的重启动[restart].
 
-        当状况 condition 不是 nil 时, 只有那些和那个状况 condition 显式关联或者没有和任何状况关联的重启动会被考虑; 这也就是说, 排除在外的重启动是那些和一个包含给定状况 condition 的非空状况集合相关联的重启动. 如果这个状况 condition 是 nil, 所有重启动都会被考虑.
+        当状况 condition 非 nil [non-nil]时, 只有和那个状况 condition 显式关联或者没有和任何状况[condition]关联的那些重启动[restart]会被考虑; 这也就是说, 排除在外的重启动[restart]是和一个不包含给定状况 condition 的非空状况集合相关联的那些. 如果这个状况 condition 是 nil, 所有重启动[restart]都会被考虑.
 
-        如果 identifier 是一个符号, 那么最内部 (most recently established) applicable 带有那个名字的重启动会被返回. 如果没有找到这样的重启动就返回 nil.
+        如果 identifier 是一个符号[symbol], 那么最内部 (最近建立的) 带有那个名字[name]的可应用重启动[applicable restart]会被返回. 如果没有找到这样的重启动就返回 nil.
 
         如果 identifier 是一个当前活跃的重启动, 那么它就被返回. 否则, 返回 nil.
 
@@ -2197,13 +2197,13 @@ define-condition, Section 9.1 (Condition System Concepts)
 
 * 参数和值(Arguments and Values):
 
-        restart---一个重启动标识符.
-        argument---一个对象.
-        results---和重启动 restart 关联的函数返回的值, 如果那个函数返回的话.
+        restart---一个重启动标识符[restart designator].
+        argument---一个对象[object].
+        results---和重启动 restart 关联的函数[function]返回的值[value], 如果那个函数[function]返回的话.
 
 * 描述(Description):
 
-        调用和重启动 restart 关联的函数, 传递参数 arguments 给它. 重启动 restart 在当前动态环境中必须是有效的.
+        调用和重启动 restart 关联的函数[function], 传递参数 arguments 给它. 重启动 restart 在当前动态环境[dynamic environment]中必须是有效的.
 
 * 示例(Examples):
 
@@ -2221,7 +2221,7 @@ define-condition, Section 9.1 (Condition System Concepts)
 
 * 副作用(Side Effects):
 
-        一个非局部控制转移可能被这个重启动 restart 完成.
+        一个非局部控制转移可能被这个重启动完成.
 
 * 受此影响(Affected By):
 
@@ -2229,7 +2229,7 @@ define-condition, Section 9.1 (Condition System Concepts)
 
 * 异常情况(Exceptional Situations):
 
-        如果重启动 restart 是无效的, 一个类型 control-error 的错误会被发出.
+        如果重启动 restart 是无效的, 就会发出一个类型[type] control-error 的错误.
 
 * 也见(See Also):
 
@@ -2237,9 +2237,9 @@ define-condition, Section 9.1 (Condition System Concepts)
 
 * 注意(Notes):
 
-        invoke-restart 的最常见的使用是在一个处理者中. 它可能被显式使用, 或者隐式地通过 invoke-restart-interactively 或一个重启动函数来使用.
+        invoke-restart 的最常见的使用是在一个处理者[handler]中. 它可能被显式使用, 或者隐式地通过 invoke-restart-interactively 或一个重启动函数[restart function]来使用.
 
-        重启动函数调用 invoke-restart, 但反之则不行. 这也就是说, invoke-restart 提供基本功能, 并且重启动函数是非必须的"语法糖".
+        重启动函数[restart function]调用 invoke-restart, 但反之则不行. 这也就是说, invoke-restart 提供基本功能, 而重启动函数[restart function]是非必须的"语法糖".
 
 
 ### <span id="F-INVOKE-RESTART-INTERACTIVELY">函数 INVOKE-RESTART-INTERACTIVELY</span>
@@ -2250,16 +2250,16 @@ define-condition, Section 9.1 (Condition System Concepts)
 
 * 参数和值(Arguments and Values):
 
-        restart---一个重启动标识符.
-        results---和重启动 restart 关联的函数返回的值, 如果这个函数返回的话.
+        restart---一个重启动标识符[restart designator].
+        results---和重启动 restart 关联的函数[function]返回的值[value], 如果这个函数[function]返回的话.
 
 * 描述(Description):
 
-        invoke-restart-interactively 调用和重启动 restart 关联的函数, 提示任何必要的参数. 如果重启动 restart 是一个名字, 它必须在当前动态环境中是有效的.
+        invoke-restart-interactively 调用和重启动 restart 关联的函数[function], 提示任何必要参数. 如果重启动 restart 是一个名字, 它必须在当前动态环境[dynamic environment]中是有效的.
 
-        invoke-restart-interactively 通过执行作为提供给 restart-case 的 :interactive 关键字或者给 restart-bind 的 :interactive-function 关键字中的代码来提示参数.
+        invoke-restart-interactively 通过执行提供给 restart-case 的 :interactive 关键字或者给 restart-bind 的 :interactive-function 关键字中的代码来提示参数.
 
-        如果没有在对应 restart-bind 或 restart-case 中提供对应选项, 如果这个重启动 restart 接收必要参数那么结果是未定义的. 如果参数是可选的, 一个 nil 的参数列表会被使用.
+        如果没有在对应 restart-bind 或 restart-case 中提供对应选项, 如果这个重启动 restart 接收必要参数那么结果是未定义的. 如果参数是可选的, 一个 nil 参数列表会被使用.
 
         一旦这些参数已经被确定了, invoke-restart-interactively 执行以下代码:
 
@@ -2282,17 +2282,17 @@ define-condition, Section 9.1 (Condition System Concepts)
 
 * 副作用(Side Effects):
 
-        如果参数提示是必要的, 可能发生某个打印输出 (在查询 I/O 上).
+        如果参数提示是必要的, 可能发生某个打印输出 (在查询 I/O [query I/O]上).
 
-        一个非局部控制转移可能被这个重启动完成.
+        这个重启动可能完成一个非局部控制转移.
 
 * 受此影响(Affected By):
 
-        *query-io*, 活跃的重启动
+        *query-io*, 活跃的重启动[restart]
 
 * 异常情况(Exceptional Situations):
 
-        如果重启动 restart 是无效的, 一个类型 control-error 的错误会被发出.
+        如果重启动 restart 是无效的, 就会发出一个类型[type] control-error 的错误.
 
 * 也见(See Also):
 
@@ -2304,7 +2304,7 @@ define-condition, Section 9.1 (Condition System Concepts)
 
 
 ### <span id="M-RESTART-BIND">宏 RESTART-BIND</span>
-
+<!--TODO 待理解校对-->
 * 语法(Syntax):
 
         restart-bind ({(name function {key-val-pair}*)}) form*
@@ -2316,43 +2316,43 @@ define-condition, Section 9.1 (Condition System Concepts)
 
 * 参数和值(Arguments and Values):
 
-        name---一个符号; 不求值的.
-        function---一个表达式形式; 求值的.
-        forms---一个隐式 progn.
-        interactive-function---一个表达式形式; evaluated.
-        report-function---一个表达式形式; evaluated.
-        test-function---一个表达式形式; evaluated.
-        results---这些表达式形式 forms 返回的值.
+        name---一个符号[symbol]; 不求值的.
+        function---一个表达式形式[form]; 求值的.
+        forms---一个隐式 progn [implicit progn].
+        interactive-function---一个表达式形式[form]; 求值的.
+        report-function---一个表达式形式[form]; 求值的.
+        test-function---一个表达式形式[form]; 求值的.
+        results---这些表达式形式[form]返回的值[value].
 
 * 描述(Description):
 
-        restart-bind 在动态环境中执行表达式形式 forms 的主体, 在这个环境中给定名字 names 的重启动是生效的.
+        restart-bind 在给定名字 names 的重启动[restart]是生效的动态环境[dynamic environment]中执行表达式形式 forms 的主体.
 
-        如果一个名字 name 是 nil, 它表示一个匿名的重启动; 如果一个名字 name 是一个非 nil 符号, 它表示一个已命名的重启动.
+        如果一个名字 name 是 nil, 它表示一个匿名的重启动; 如果一个名字 name 是一个非 nil [non-nil]符号[symbol], 它表示一个已命名的重启动.
 
-        这个函数 function, 交互式函数 interactive-function, 以及报告函数 report-function 在当前的词法和动态环境中在主体被求值前被无条件求值. 这些表达式形式的每一个都必须求值为一个函数.
+        这个函数 function, 交互式函数 interactive-function, 以及报告函数 report-function 在当前的词法和动态环境中在主体被求值前被无条件求值. 这些表达式形式[form]的每一个都必须求值为一个函数[function].
 
-        如果 invoke-restart 在这个重启动上被完成了, 那么由求值函数 function 产生的函数会被用传递给 invoke-restart 的参数作为参数来调用, 在那个 invoke-restart 的动态环境中.
+        如果 invoke-restart 在这个重启动上被执行了, 那么在那个 invoke-restart 的动态环境[dynamic environment]中, 使用传递给 invoke-restart 的实参[argument]作为参数来调用求值 function 所产生的函数[function].
 
-        如果这个重启动从调试器中被交互式地调用(使用 invoke-restart-interactively), 这些参数被调用求值 interactive-function 所产生的函数所缺省. 那个函数可以在查询 I/O 上选择性地提示, 然后在调用这个重启动时应该返回一个要被 invoke-restart-interactively 使用的参数列表.
+        如果这个重启动从调试器中被交互式地调用(使用 invoke-restart-interactively), 这些参数通过调用求值 interactive-function 所产生的函数[function]来缺省. 在调用这个重启动时, 那个函数[function]可以在查询 I/O [query I/O]上选择性地提示, 并且应该返回一个要被 invoke-restart-interactively 使用的参数列表[list].
 
-        如果一个重启动被交互式调用但是没有交互式函数 interactive-function 被使用, 那么一个 nil 的参数列表会被使用. 在这个情况下, 函数必须和一个空参数列表兼容.
+        如果一个重启动被交互式调用但是没有使用交互式函数 interactive-function, 那么一个 nil 的参数列表会被使用. 在这个情况下, 函数必须和一个空参数列表兼容.
 
-        如果这个重启动交互式地出现 (比如, 通过这个调试器), 展示是通过调用由求值 report-function 产生的函数来完成的. 这个函数必须是一个单参数的函数, 这个参数为一个流. 它被期望打印重启动采取的操作的描述到那个流中. 当 *print-escape* 是 nil 时, 这个函数每当这个重启动被打印的时候被调用.
+        如果这个重启动交互式地出现 (比如, 通过这个调试器), 通过调用求值 report-function 产生的函数来完成这个重启动. 这个函数[function]必须是一个单参数的函数[function], 这个参数为一个流[stream]. 它被期望打印这个重启动采取的操作的描述到那个流[stream]中. 当 *print-escape* 是 nil 时, 每次这个重启动被打印这个函数[function]会被调用.
 
-        在交互式调用的情况下, 结果依赖于下面这样的 :interactive-function 的值.
+        在交互式调用的情况下, 结果依赖于如下所述的 :interactive-function 的值.
 
         :interactive-function
 
-            值 value 在当前词法环境中被求值并且应该返回一个没有参数的函数, 它构造一个在调用这个重启动时要被 invoke-restart-interactively 使用的参数列表. 如果有必要这个函数可能使用查询 I/O 来交互式地提示.
+            值 value 在当前词法环境中被求值并且应该返回一个没有参数的函数[function], 它构造一个在调用这个重启动时要被 invoke-restart-interactively 使用的参数列表[list]. 如果有必要这个函数[function]可能使用查询 I/O [query I/O]来交互式地提示.
 
         :report-function
 
-            值 value 在当前词法环境中被求值并且应该返回一个单参数的函数, 这个参数是一个流, 这个函数打印这个重启动采取的动作的总结到这个流中. 这个函数每当这个重启动被报告的时候就会被调用 (当 *print-escape* 是 nil 时会被打印). 如果没有提供 :report-function 选项, 这个重启动被报告的方式是依赖于具体实现的.
+            值 value 在当前词法环境中被求值并且应该返回一个单参数的函数[function], 这个参数是一个流[stream], 这个函数打印这个重启动所采取动作的总结到这个流[stream]中. 每当这个重启动被报告(当 *print-escape* 是 nil 时是被打印)时这个函数[function]就会被调用. 如果没有提供 :report-function 选项, 这个重启动[restart]被报告的方式是依赖于具体实现的[implementation-dependent].
 
         :test-function
 
-            值 value 在当前词法环境中被求值并且返回一个单参数的函数, 这个参数是一个状况, 如果这个重启动被认为是可见的, 那么这个函数返回 true.
+            值 value 在当前词法环境中被求值并且返回一个单参数的函数[function], 这个参数是一个状况[condition], 如果这个重启动被认为是可见的, 那么这个函数返回 true.
 
 * 副作用(Side Effects): None.
 
@@ -2383,49 +2383,49 @@ define-condition, Section 9.1 (Condition System Concepts)
 
 * 参数和值(Arguments and Values):
 
-        restartable-form---一个表达式形式.
-        case-name---一个符号或 nil.
-        lambda-list---一个普通的 lambda 列表.
-        interactive-expression---一个符号或一个 lambda 表达式.
-        report-expression---一个字符串, 一个符号, 或一个 lambda 表达式.
-        test-expression---一个符号或 lambda 表达式.
-        declaration---一个 declare 表达式; 不求值的.
-        form---一个表达式形式.
-        results---这个 restartable-form 求值所产生的值, 或者在一个选定的子句 clause 中最后一个表达式形式返回的值, 或者是 nil.
+        restartable-form---一个表达式形式[form].
+        case-name---一个符号[symbol]或 nil.
+        lambda-list---一个普通的 lambda 列表[ordinary lambda list].
+        interactive-expression---一个符号[symbol]或一个 lambda 表达式[lambda expression].
+        report-expression---一个字符串[string], 一个符号[symbol], 或一个 lambda 表达式[lambda expression].
+        test-expression---一个符号[symbol]或 lambda 表达式[lambda expression].
+        declaration---一个 declare 表达式[expression]; 不求值的.
+        form---一个表达式形式[form].
+        results---这个 restartable-form 的求值[evaluation]所产生的值, 或者在一个选定的子句 clause 中最后一个表达式形式 form 返回的值[value], 或者是 nil.
 
 * 描述(Description):
 
-        restart-case 在一个动态环境中求值 restartable-form, 这个环境中这些子句有着特殊的意义, 可以作为控制转移的点. 如果 restartable-form 完成执行并且返回任何值, 那么所有返回值都会被 restart-case 返回并且这个过程结束. 当 restartable-form 被执行时, 任何代码可以转移控制到这些子句的其中一个 (见 invoke-restart). 如果发生了一个转移, 那个子句的主体中的表达式形式会被求值并且最后一个这样的表达式形式返回的值会被 restart-case 返回. 在这个情况下, 在执行该子句之前, 动态状态被适当地解除(这样一来这些在 restartable-form 周围建立的重启动不再是活跃的).
+        restart-case 在一个动态环境[dynamic environment]中求值 restartable-form, 这个环境中这些子句有着特殊的意义, 可以作为控制转移的点. 如果 restartable-form 结束执行并且返回任何值, 那么所有返回值都会被 restart-case 返回并且这个过程结束. 当 restartable-form 被执行时, 任何代码可以转移控制到这些子句的其中一个 (见 invoke-restart). 如果发生了一个转移, 那个子句的主体中的表达式形式会被求值并且最后一个这样的表达式形式返回的值会被 restart-case 返回. 在这个情况下, 在执行该子句之前, 动态状态被适当地解除(这样一来这些在 restartable-form 周围建立的重启动不再是活跃的).
 
         如果在选择的子句中没有表达式形式 forms, restart-case 就返回 nil.
 
-        如果 case-name 是一个, 它就命名这个重启动.
+        如果 case-name 是一个符号[symbol], 它就命名这个重启动.
 
         可能有超过一个子句使用相同的 case-name. 在这个情况下, 带有那个名字的第一个子句会被 find-restart 发现. 其他的子句使用 compute-restarts 也是可访问的.
 
-        每个 arglist 是一个在它对应表达式形式执行期间要被绑定的普通 lambda 列表. 这些参数被 restart-case 子句用来从一个对 invoke-restart 的调用中接收任何必要的数据.
+        每个 arglist 都是在它对应的那些表达式形式 forms 执行期间要被绑定的一个普通 lambda 列表[ordinary lambda list]. 这些参数被 restart-case 子句用来从一个对 invoke-restart 的调用中接收任何必要的数据.
 
-        默认情况下, invoke-restart-interactively 不传递参数并且所有参数必须是可选的, 为了适应交互式的重启动. 然而, 如果这个 :interactive 关键字已经被用来告知 invoke-restart-interactively 关于如果计算一个适当的参数列表, 那么这些参数不需要是可选的.
+        默认情况下, invoke-restart-interactively 不传递参数并且所有参数必须是可选的, 为了适应交互式的重启动. 然而, 如果这个 :interactive 关键字已经被用来告知 invoke-restart-interactively 关于如何计算一个适当的参数列表, 那么这些参数不需要是可选的.
 
         关键字 keyword 有着以下这些选项.
 
         :interactive
 
-            通过 :interactive 提供的值 value 必须是一个给 function 的合适的参数. (function value) 在当前词法环境中被求值. 它应该返回一个没有参数的函数, 这个函数被调用时返回要被 invoke-restart-interactively 使用的参数. invoke-restart-interactively 在任何重启动尝试之前在这个可用的动态环境中被调用, 并且为用户交互使用查询 I/O.
+            通过 :interactive 提供的值 value 必须是一个给 function 的合适的参数. (function value) 在当前词法环境中被求值. 它应该返回一个没有参数的函数, 这个函数被调用时返回要被 invoke-restart-interactively 使用的参数. 在任何重启动尝试之前在可用的动态环境中被调用 invoke-restart-interactively, 并且为用户交互使用查询 I/O [query I/O].
 
             如果一个重启动被交互式调用但是没有提供 :interactive 选项, 那么在这个调用中使用的参数列表是空列表.
 
         :report
 
-            如果通过这个 :report 提供的值 value 是一个 lambda 表达式或者一个符号, 它对于 function 必须是可接受的. (function value) 在当前词法环境中被求值. 它应该返回一个单参数的函数, 这个参数是一个流, 这个函数应该在这个流上打印这个重启动的一个描述. 当 *print-escape* 是 nil 时, 无论何时这个重启动被打印, 这个函数都会被调用.
+            如果通过这个 :report 提供的值 value 是一个 lambda 表达式[lambda expression]或者一个符号[symbol], 它对于 function 必须是可接受的. (function value) 在当前词法环境中被求值. 它应该返回一个单参数的函数[function], 这个参数是一个流[stream], 这个函数应该在这个流[stream]上打印这个重启动的一个描述. 当 *print-escape* 是 nil 时, 无论何时这个重启动被打印, 这个函数[function]都会被调用.
 
-            如果值 value 是一个字符串, 它就是下面这个的一个缩写
+            如果值 value 是一个字符串[string], 它就是下面这个的一个缩写
 
             (lambda (stream) (write-string value stream))
 
-            如果一个已命名的重启动被请求来报告但是没有提供报告消息, 这个重启动的名字被用来产生默认的报告文本.
+            如果请求一个已命名的重启动来报告但是没有提供报告消息, 这个重启动的名字被用来产生默认的报告文本.
 
-            当 *print-escape* 是 nil 时, 打印器就使用一个重启动的报告消息. 例如, 一个调试器可能宣布输入一个"continue"命令的动作通过下面这个:
+            当 *print-escape* 是 nil 时, 打印器就使用一个重启动的报告消息. 例如, 一个调试器可能通过下面这个来宣布输入一个"continue"命令的动作:
 
             (format t "~&~S -- ~A~%" ':continue some-restart)
 
@@ -2433,15 +2433,15 @@ define-condition, Section 9.1 (Condition System Concepts)
 
             :CONTINUE -- Return to command level
 
-            如果一个未命名的重启动被指定但是没有提供 :report 选项, 那么结果是未指定的.
+            如果指定一个未命名的重启动但是没有提供 :report 选项, 那么结果是未指定的.
 
         :test
 
-            通过 :test 提供的值 value 必须是一个给 function 的合适的值. (function value) 在当前词法环境中被求值. 它应该返回一个单参数的函数, 这个参数是这个状况, 如果这个重启动要被认为是可见的, 这个函数就返回 true.
+            通过 :test 提供的值 value 必须是一个给 function 的合适的参数. (function value) 在当前词法环境中被求值. 它应该返回一个单实参[argument]的函数[function], 这个参数是这个状况[condition], 如果这个重启动要被认为是可见的, 这个函数就返回 true.
 
             这个选项的默认值等价于 (lambda (c) (declare (ignore c)) t).
 
-        如果这个 restartable-form 是一个是一个列表, 其中 car 部分是 signal, error, cerror, or warn 其中一个符号 (或者是一个宏展开为这样一个列表的宏表达式形式), 那么 with-condition-restarts 会被隐式地用来关联这个表示的重启动和这个要被发送的状况.
+        如果这个 restartable-form 是一个 car 部分是 signal, error, cerror, or warn 其中一个符号[symbol]的列表[list] (或者是一个宏展开为这样一个列表[list]的宏表达式形式[macro form]), 那么 with-condition-restarts 会被用来隐式地关联这个表示的重启动[restart]和这个要被发送的状况[condition].
 
 * 示例(Examples):
 
@@ -2549,7 +2549,7 @@ define-condition, Section 9.1 (Condition System Concepts)
                       (apply #'(lambda arglist2 . body2) #2#)))))
     ```
 
-        未命名的重启动通常只有在交互式的情况下有用, 并且一个没有描述的交互式选项没有什么价值. 如果使用了一个未命名的重启动并且在编译时没有提供报告消息的话, 鼓励具体实现去发出警告. 在运行时, 在进入调试器时可能会注意到这个错误. 由于发出一个错误可能会导致递归进入调试器中 (导致另一个递归错误, 等等) , 因此建议调试器在出现这些问题时打印出一些指示, 但实际上并不发出这些错误.
+        未命名的重启动通常只有在交互式的情况下有用, 并且一个没有描述的交互式选项没有什么价值. 如果使用了一个未命名的重启动并且在编译时没有提供报告消息的话, 鼓励具体实现去发出警告. 在运行时, 在进入调试器时可能会注意到这个错误. 由于发出一个错误可能会导致递归进入调试器中 (导致另一个递归错误, 等等), 因此建议调试器在出现这些问题时打印出一些指示, 而不是实际上发出这些错误.
 
     ```LISP
     (restart-case (signal fred)
@@ -2573,8 +2573,8 @@ define-condition, Section 9.1 (Condition System Concepts)
 
 * 参数和值(Arguments and Values):
 
-        restart---一个重启动.
-        name---一个符号.
+        restart---一个重启动[restart].
+        name---一个符号[symbol].
 
 * 描述(Description):
 
@@ -2617,18 +2617,18 @@ define-condition, Section 9.1 (Condition System Concepts)
 
 * 参数和值(Arguments and Values):
 
-        condition-form---一个表达式形式; 求值来产生一个状况 condition.
-        condition---从 condition-form 的求值中产生的一个状况对象.
-        restart-form---一个表达式形式; 求值来产生一个重启动列表 restart-list.
-        restart-list---从重启动表达式形式 restart-form 的求值中产生的一个重启动对象的列表.
-        forms---一个隐式 progn; 求值的.
-        results---表达式形式 forms 返回的值.
+        condition-form---一个表达式形式[form]; 求值来产生一个状况 condition.
+        condition---从 condition-form 的求值[evaluation]中产生的一个状况[condition]对象[object].
+        restart-form---一个表达式形式[form]; 求值来产生一个重启动列表 restart-list.
+        restart-list---从重启动表达式形式 restart-form 的求值[evaluation]中产生的一个重启动[restart]对象[object]的列表[list].
+        forms---一个隐式 progn [implicit progn]; 求值的.
+        results---由这些表达式形式[form]返回的值[value].
 
 * 描述(Description):
 
-        首先, 这个 condition-form 和 restarts-form 以正常从左到右的顺序求值; 这些求值产生的主要的值分别调用这个 condition 和 restart-list.
+        首先, 这个 condition-form 和 restarts-form 以正常从左到右的顺序求值; 这些求值[evaluation]产生的那些主值[primary value]分别称为 condition 和 restart-list.
 
-        然后, 表达式形式 forms 在一个动态环境中被求值, 在这个环境中每个在 restart-list 中的重启动都和这个状况 condition 关联. 见章节 9.1.4.2.4 (关联重启动和状况).
+        然后, 这些表达式形式 forms 在一个动态环境[dynamic environment]中被求值, 在这个环境中每个在 restart-list 中的重启动[restart]都和这个状况 condition 关联. 见章节 9.1.4.2.4 (关联重启动和状况).
 
 * 示例(Examples): None.
 
@@ -2644,7 +2644,7 @@ define-condition, Section 9.1 (Condition System Concepts)
 
 * 注意(Notes):
 
-        通常这个宏不会在代码中被显式调用, 因为 restart-case 以一种语法上更简洁的方式处理大多数常见的情况. 
+        通常这个宏[macro]不会在代码中被显式调用, 因为 restart-case 以一种语法上更简洁的方式处理大多数常见的情况. 
 
 
 ### <span id="M-WITH-SIMPLE-RESTART">宏 WITH-SIMPLE-RESTART</span>
@@ -2656,21 +2656,21 @@ define-condition, Section 9.1 (Condition System Concepts)
 
 * 参数和值(Arguments and Values):
 
-        name---一个符号.
-        format-control---一个格式化控制.
-        format-argument---一个对象 (换句话说, 一个格式化参数).
-        forms---一个隐式 progn.
-        results---在正常情况中, 就是表达式形式 forms 返回的值; 在名为 name 的重启动被调用的异常情况中, 就是两个值---nil 和 t.
+        name---一个符号[symbol].
+        format-control---一个格式化控制字符串[format control].
+        format-argument---一个对象[object] (换句话说, 一个格式化参数[format argument]).
+        forms---一个隐式 progn [implicit progn].
+        results---在正常情况中, 就是那些表达式形式 forms 返回的值[value]; 在名为 name 的重启动[restart]被调用的异常情况中, 就是两个值---nil 和 t.
 
 * 描述(Description):
 
         with-simple-restart 建立一个重启动.
 
-        如果这个 name 表示的重启动没有在执行表达式形式 forms 期间被调用, 最后一个表达式形式返回的所有值都会被返回. 如果 name 表示的重启动被调用了, 那么控制会转移到 with-simple-restart, 它返回两个值, nil 和 t.
+        如果由名称 name 表示的重启动没有在执行表达式形式 forms 期间被调用, 这些表达式形式 forms 的最后一个返回的所有值都会被返回. 如果由名称 name 表示的重启动被调用了, 那么控制会转移到 with-simple-restart, 它返回两个值, nil 和 t.
 
         如果 name 是 nil, 就会建立一个匿名的重启动.
 
-        这个 format-control 和 format-arguments 被用于报告这个重启动.
+        这个 format-control 和 format-arguments 被用于报告这个重启动[restart].
 
 * 示例(Examples):
 
@@ -2726,7 +2726,7 @@ define-condition, Section 9.1 (Condition System Concepts)
 
 * 注意(Notes):
 
-        with-simple-restart 是 restart-case 最常见使用中的一个简写.
+        with-simple-restart 是 restart-case 最常见使用的一个简写.
 
         with-simple-restart 可以被定义为:
 
@@ -2752,11 +2752,11 @@ define-condition, Section 9.1 (Condition System Concepts)
 
 * 描述(Description):
 
-        这个 abort 重启动的意图是允许返回到最里边的"命令层级(command level)". 鼓励实现者去确保在用户代码周围总是有一个名为 abort 的重启动, 这样用户代码可以在任何时间调用 abort 并且期待发生一些合理的事情; 合理的东西可能会有所不同. 典型地, 在一个交互式的监听器中, abort 的调用返回到 Lisp read-eval-print 循环阶段的 Lisp 读取器, 尽管在某个批处理或多进程情况中, 可能会有这样的情况: 让它杀死运行的过程更合适.
+        这个 abort 重启动的意图是允许返回到最里边的"命令层级(command level)". 鼓励实现者去确保在用户代码周围总是有一个名为 abort 的重启动, 这样用户代码可以在任何时间调用 abort 并且期待发生一些合理的事情; 究竟什么是合理的可能会有所不同. 典型地, 在一个交互式的监听器中, abort 的调用返回到 Lisp read-eval-print 循环的 Lisp 读取器[Lisp reader]阶段, 尽管在某个批处理或多进程情况中, 可能会有这样的情况: 让它杀死运行的过程更合适.
 
 * 也见(See Also):
 
-        Section 9.1.4.2 (Restarts), Section 9.1.4.2.2 (重启动的接口), invoke-restart, abort (function) 
+        章节 9.1.4.2 (重启动), 章节 9.1.4.2.2 (重启动的接口), invoke-restart, abort (function) 
 
 
 ### <span id="R-CONTINUE">重启动 CONTINUE</span>
@@ -2766,8 +2766,8 @@ define-condition, Section 9.1 (Condition System Concepts)
         None.
 
 * 描述(Description):
-<!--TODO 待校验-->
-        这个 continue 重启动通常是有一个单个的"明显"的方式来继续的协议的一部分, 比如在 break 和 cerror 中. 一些用户定义的协议也可能希望将其合并为类似的原因. 一般而言, 然而, 更可靠的方法是设计一个特殊用途的重启动, 它的名称更适合于特定的应用程序.
+
+        这个 continue 重启动通常是协议的一部分, 这个协议有一个单独的"明显"的方式来继续, 比如在 break 和 cerror 中. 一些用户定义的协议也可能出于类似的原因希望将其合并. 一般而言, 然而, 更可靠的方法是设计一个名称更适合于特定应用程序的特殊用途的重启动.
 
 * 示例(Examples):
 
@@ -2784,7 +2784,7 @@ define-condition, Section 9.1 (Condition System Concepts)
 
 * 也见(See Also):
 
-        Section 9.1.4.2 (Restarts), Section 9.1.4.2.2 (重启动的接口), invoke-restart, continue (function), assert, cerror 
+        章节 9.1.4.2 (重启动), 章节 9.1.4.2.2 (重启动的接口), invoke-restart, continue (function), assert, cerror 
 
 
 ### <span id="R-MUFFLE-WARNING">重启动 MUFFLE-WARNING</span>
