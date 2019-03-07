@@ -5,13 +5,13 @@
 
 ## 10.1 <span id="SymbolConcepts">符号概念</span>
 
-下面这段列出了一些可应用于符号属性列表的已定义的名字.
+下面这段列出了一些可应用于符号[symbol]的属性列表[property list]的已定义名字[defined name].
 
     get  remprop  symbol-plist  
 
     Figure 10-1. 属性列表已定义的名字
 
-下一段列出了一些可应用于创建和查询符号的已定义名字.
+下一段列出了一些可应用于创建和查询符号[symbol]的已定义名字[defined name].
 
     copy-symbol  keywordp     symbol-package  
     gensym       make-symbol  symbol-value    
@@ -52,51 +52,51 @@
 
 * 描述(Description):
 
-        符号被用于它们的对象标识来命名 Common Lisp 中不同的实体, 包括 (但不限于) 像变量和函数这样的语言实体.
+        符号[symbol]被用于它们的对象[object]标识来命名 Common Lisp 中不同的实体, 包括 (但不限于) 像变量[variable]和函数[function]这样的语言实体.
 
-        符号可以被一起收集到包中. 如果一个符号在一个包中是可访问的就是那个符号被捕捉到那个包中; 相同符号可以被捕捉到不止一个包中. 如果一个符号没有被捕捉到任何包中, 就说它是未捕捉的.
+        符号[symbol]可以被一起收集到包[package]中. 如果一个符号[symbol]在一个包[package]中是可访问的[accessible]就说那个符号[symbol]被捕捉[interned]到那个包[package]中; 相同符号[symbol]可以被捕捉[interned]到不止一个包[package]中. 如果一个符号[symbol]没有被捕捉[interned]到任何包[package]中, 就说它是未捕捉的[uninterned].
 
-        一个被捕捉的符号在它是可访问的任何包中通过它的名称是唯一可识别的.
+        一个被捕捉的[interned]符号[symbol]在它可访问的[accessible]任何包[package]中通过它的名称[name]是唯一可识别的.
 
-        符号有着以下属性. 出于历史原因, 它们有时作为 cell 被引用, 虽然符号和它们的属性的实际内部表示是依赖于具体实现的.
+        符号[symbol]有着以下属性. 出于历史原因, 它们有时作为存储格[cell]被引用, 虽然符号[symbol]和它们的属性的实际内部表示是依赖于具体实现的[implementation-dependent].
 
-        Name
+        名字(Name)
 
-            一个符号的名字是用于标识这个符号的一个字符串. 每个符号有一个名字, 如果那个名字被修改那么结果是未定义的. 这个名字被用作这个符号的外部的, 打印的表示部分; 见章节 2.1 (Character Syntax). 函数 symbol-name 返回一个给定符号的名字. 一个符号的名字中可能有任何字符.
+            一个符号[symbol]的名字[name]是用于标识这个符号[symbol]的一个字符串[string]. 每个符号[symbol]有一个名字[name], 如果那个名字[name]被修改那么结果是未定义的. 这个名字[name]被用作这个符号[symbol]的外部打印表示的一部分; 见章节 2.1 (字符语法). 函数[function] symbol-name 返回一个给定符号[symbol]的名字[name]. 一个符号[symbol]的名字[name]中可能有任何字符[character].
 
-        Package
+        包(Package)
 
-            在这个 cell 的这个对象被称为这个符号的 home 包. 如果这个 home 包是 nil, 那么这个符号有时就说是没有 home 包.
+            在这个存储格[cell]的这个对象[object]被称为这个符号[symbol]的 home 包[home package]. 如果这个 home 包[home package]是 nil, 那么有时就说这个符号[symbol]没有 home 包[home package].
 
-            当一个符号被首次创建, 它没有 home 包. 当它被第一次捕捉时, 最初被捕捉所在包称为它的 home 包. 一个符号的 home 包可以通过函数 symbol-package 来访问.
+            当一个符号[symbol]被首次创建, 它没有 home 包[home package]. 当它第一次被捕捉[interned]时, 最初被捕捉[interned]时所在的包[package]成为它的 home 包[home package]. 一个符号[symbol]的 home 包[home package]可以通过函数[function] symbol-package 来访问.
 
-            如果一个符号从它的 home 包中被解除捕捉, 它的 home 包会被设置为 nil. 这个符号可能或可能不是一个未被捕捉的符号取决于这里是否存在另一个包捕捉了这个符号. 一个没有 home 包的符号显然因此被称为是未被捕捉的.
+            如果一个符号[symbol]从它的 home 包[home package]中被解除捕捉[uninterned], 它的 home 包[home package]会被设置为 nil. 这个符号[symbol]是否为一个未被捕捉[uninterned]的符号[symbol]取决于这个符号[symbol]是否被捕捉[interned]到另一个包[package]中. 一个没有 home 包[home package]的符号[symbol]因此被称为是显然未捕捉的[apparently uninterned].
 
-            如果尝试去修改在 COMMON-LISP 包或者 KEYWORD 包中的一个符号的 home 包那么结果是未定义的.
+            如果尝试去修改在 COMMON-LISP 包或者 KEYWORD 包中的一个外部符号[symbol]的 home 包[home package], 那么结果是未定义的.
 
-        Property list
+        属性列表(Property list)
 
-            一个符号的属性列表为关联已命名属性和那个符号提供了一个机制. 关于添加和移除的操作对于这个属性列表是破坏性的. Common Lisp 为直接操作属性列表对象 (比如, see getf, remf, 和 symbol-plist) 以及通过对这个符号的引用来隐式操作一个符号的属性列表 (比如, 见 get 和 remprop) 都提供了操作符. 和一个新的符号关联的属性列表被初始化为 null.
+            一个符号[symbol]的属性列表[property list]为关联已命名属性和那个符号[symbol]提供了一个机制. 关于添加和移除的操作对于这个属性列表[property list]是破坏性的[destructive]. Common Lisp 提供了操作符[operator]来直接操作属性列表[property list]对象[object] (比如, see getf, remf, 和 symbol-plist) 以及通过引用一个符号[symbol]来隐式操作这个符号[symbol]的属性列表[property list] (比如, 见 get 和 remprop). 和一个新[fresh]符号[symbol]关联的属性列表[property list]被初始化为空[null].
 
-        Value
+        值(Value)
 
-            如果一个符号有一个值属性, 它就被称为是绑定的, 并且这个事实可以通过函数 boundp 来被检测. 被包含在一个绑定的符号的值 cell 中的对象是那个符号命名的全局变量的值, 并且可以通过函数 symbol-value 来访问. 一个符号可以通过函数 makunbound 变得是未绑定的.
+            如果一个符号有一个值属性, 它就被称为是绑定的[bound], 并且这个事实可以通过函数[function] boundp 来检测. 被包含在一个绑定的[bound]符号[symbol]的值存储格[value cell]中的对象[object]是那个符号[symbol]命名的全局变量[global variable]的值[value], 并且可以通过函数[function] symbol-value 来访问. 一个符号[symbol]可以通过函数[function] makunbound 变为为绑定的[unbound].
 
-            如果尝试去修改一个命名一个常变量的符号的值或者使这样一个符号变为未绑定的, 那么后果是未定义的.
+            如果尝试去修改一个命名常变量[constant variable]的符号[symbol]的值[value]或者使这样一个符号[symbol]变为未绑定的[unbound], 那么后果是未定义的.
 
-        Function
+        函数(Function)
 
-            如果一个符号有一个函数属性, 它就被称为是 fbound 的, 并且这个事实可以通过函数 fboundp 来检测. 如果这个符号是一个全局环境中的函数的名字, 这个函数 cell 就包含了那个函数, 并且可以通过函数 symbol-function 来访问. 如果这个符号是全局环境中的一个宏 (见 macro-function) 或者一个特殊操作符 (见 special-operator-p) 的名字, 那么这个符号就是 fbound 的, 并且可以通过函数 symbol-function 来访问, 但是那个函数 cell 所包含的对象的类型和目的是依赖于具体实现. 一个符号可以通过函数 fmakunbound 来变为 funbound 的.
+            如果一个符号有一个函数属性, 它就被称为是 fbound 的, 并且这个事实可以通过函数[function] fboundp 来检测. 如果这个符号[symbol]是一个全局环境[global environment]中的函数[function]的名字[name], 这个函数存储格[function cell]就包含了那个函数[function], 并且可以通过函数[function] symbol-function 来访问. 如果这个符号[symbol]是全局环境[global environment]中的一个宏[macro] (见 macro-function) 或者一个特殊操作符[special operator] (见 special-operator-p) 的名字[name], 那么这个符号[symbol]就是 fbound 的, 并且可以通过函数[function] symbol-function 来访问, 但是那个函数存储格[function cell]所包含的对象的类型[type]和目的依赖于具体实现[implementation-dependent]. 一个符号[symbol]可以通过函数[function] fmakunbound 来变为 funbound 的.
 
-            如果尝试去修改命名一个特殊表达式形式的符号的函数值, 那么后果是未定义的.
+            如果尝试去修改命名一个特殊表达式形式[special form]的符号[symbol]的函数值[functional value], 那么后果是未定义的.
 
-        在一个符号的值 cell 和函数 cell 上的操作有时被描述为对符号自身的影响, 但是用户应该注意在那些 cell 的内容和全局变量或全局函数定义之间分别存在一个紧密的关系.
+        在一个符号[symbol]的值存储格[value cell]和函数存储格[function cell]上的操作有时被描述为对符号[symbol]自身的影响, 但是用户应该注意在那些存储格[cell]的内容分别和全局变量[global variable]或全局函数[function]定义之间存在一个紧密的关系.
 
-        符号被用作词法变量和词法函数定义的标识, 但是在那个角色中<!--TODO but in that role ??-->, 只有它们的对象标识是有意义的. Common Lisp 没有在一个符号上提供在一个词法变量或一个词法函数定义上有任何效果的操作符.
+        符号[symbol]被用作词法变量[lexical variable]和词法函数[function]定义的标识, 但是在那个角色中, 只有它们的对象标识才是重要的. Common Lisp 没有在一个符号[symbol]上提供在一个词法变量[lexical variable]或一个词法函数[function]定义上有任何效果的操作符.
 
 * 也见(See Also):
 
-        Section 2.3.4 (Symbols as Tokens), Section 2.3.1.1 (Potential Numbers as Tokens), Section 22.1.3.3 (Printing Symbols)
+        章节 2.3.4 (符号标记), 章节 2.3.1.1 (潜在数字作为标记), 章节 22.1.3.3 (打印符号)
 
 
 ### <span id="T-KEYWORD">类型 KEYWORD</span>
@@ -107,13 +107,13 @@
 
 * 描述(Description):
 
-        类型 keyword 包括所有被捕捉在 KEYWORD 包的符号.
+        类型[type] keyword 包括所有被捕捉[interned]在 KEYWORD 包中的符号[symbol].
 
-        捕捉一个符号到 KEYWORD 包中有三个必然的影响:
+        捕捉一个符号[symbol]到 KEYWORD 包中有三个必然的影响:
 
-        1. 它导致这个符号被绑定到它自身.
-        2. 它导致这个符号变为这个 KEYWORD 包的外部符号.
-        3. 它导致这个符号变为一个常变量.
+        1. 它导致这个符号[symbol]被绑定到它自身.
+        2. 它导致这个符号[symbol]变为这个 KEYWORD 包的外部符号[external symbol].
+        3. 它导致这个符号[symbol]变为一个常变量[constant variable].
 
 * 也见(See Also):
 
@@ -128,12 +128,12 @@
 
 * 参数和值(Arguments and Values):
 
-        object---一个对象.
-        generalized-boolean---一个广义的 boolean.
+        object---一个对象[object].
+        generalized-boolean---一个广义的 boolean [generalized boolean].
 
 * 描述(Description):
 
-        如果对象 object 是 symbol 类型的就返回 true; 否则, 返回 false.
+        如果对象 object 是 symbol 类型[type]的就返回 true; 否则, 返回 false.
 
 * 示例(Examples):
 
@@ -169,12 +169,12 @@
 
  * 参数和值(Arguments and Values):
 
-        object---一个对象.
-        generalized-boolean---一个广义 boolean.
+        object---一个对象[symbol].
+        generalized-boolean---一个广义 boolean [generalized boolean].
 
  * 描述(Description):
 
-        如果对象 object 是一个关键字就返回 true; 否则, 返回 false.
+        如果对象 object 是一个关键字[keyword[1]]就返回 true; 否则, 返回 false.
 
  * 示例(Examples):
 
@@ -212,14 +212,14 @@
 
 * 参数和值(Arguments and Values):
 
-        name---一个字符串.
-        new-symbol---一个新的, 未被捕捉的符号.
+        name---一个字符串[string].
+        new-symbol---一个新的[fresh], 未捕捉的[uninterned]符号[symbol].
 
 * 描述(Description):
 
-        make-symbol 创建并返回一个新的, 未捕捉的名为给定名字 name 的符号. 这个新的符号 new-symbol 既没有被绑定也没有被 fbound 并且有一个 null 属性列表.
+        make-symbol 创建并返回一个新的[fresh], 未捕捉的[uninterned]符号[symbol], 它的名字[name]为给定的名字 name. 这个新符号 new-symbol 既没有被绑定[bound]也没有被 fbound 并且有一个空[null]属性列表[property list].
 
-        成为这个新符号 new-symbol 的名字的字符串是那个给定的名字 name 还是它的拷贝是依赖于具体实现的. 一旦一个字符串已经被给定作为给 make-symbol 的 name 参数, 如果后面去修改这个字符串那么后果是未定义的.
+        成为这个新符号 new-symbol 的名字[name]的字符串[string]是那个给定的名字 name 还是它的拷贝依赖于具体实现[implementation-dependent]. 一旦一个字符串[string]已经被给定作为给 make-symbol 的 name 实参[argument], 如果后面去修改这个字符串[string]那么后果是未定义的.
 
 * 示例(Examples):
 
@@ -238,7 +238,7 @@
 
 * 异常情况(Exceptional Situations): 
 
-        如果名字 name 不是一个字符串那么应该发出一个 type-error 类型的错误.
+        如果名字 name 不是一个字符串[string]那么应该发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
@@ -246,7 +246,7 @@
 
 * 注意(Notes):
 
-        make-symbol 不会尝试去转换这个名字的大小写为大写的. 对于符号发生的仅有的大小写转换是通过 Lisp 读取器完成的. 对于符号创建的编程接口保留大小写, 并且对于捕捉符号的编程接口是大小写敏感的.
+        make-symbol 不会尝试去转换这个名字[name]的大小写为大写的. 对于符号[symbol]发生的仅有的大小写转换是通过 Lisp 读取器[Lisp reader]完成的. 对于符号[symbol]创建的编程接口保留大小写, 并且对于捕捉符号的编程接口是大小写敏感的.
 
 
 ### <span id="F-COPY-SYMBOL">函数 COPY-SYMBOL</span>
@@ -257,15 +257,15 @@
 
 * 参数和值(Arguments and Values):
 
-        symbol---一个符号.
-        copy-properties---一个广义的 boolean. 默认是 false.
-        new-symbol---一个新的, 未捕捉的符号.
+        symbol---一个符号[symbol].
+        copy-properties---一个广义的 boolean [generalized boolean]. 默认是 false.
+        new-symbol---一个新的[fresh], 未捕捉的[uninterned]符号[symbol].
 
 * 描述(Description):
 
-        copy-symbol 返回一个新的, 未被捕捉的符号, 它的名字和给定符号的名字是 string= 的或者可能是一样的.
+        copy-symbol 返回一个新的[fresh], 未被捕捉的[uninterned]符号[symbol], 它的名字[name]和给定符号 symbol 的名字[name]是 string= 的或者可能是一样的[same].
 
-        如果 copy-properties 是 false, 这个新符号 new-symbol 即没有被绑定也没有被 fbound 并且有一个 null 属性列表. 如果 copy-properties 是 true, 那么这个新符号 new-symbol 的初始值是那个符号 symbol 的值, 这个新符号的初始函数定义是那个符号 symbol 的函数值, 并且那个新符号 new-symbol 的属性列表是符号 symbol 的属性列表的一个拷贝.
+        如果 copy-properties 是 false, 这个新符号 new-symbol 即没有被绑定[bound]也没有被 fbound 并且有一个空[null]属性列表[property list]. 如果 copy-properties 是 true, 那么这个新符号 new-symbol 的初始值[value]是那个符号 symbol 的值[value], 这个新符号的初始函数[function]定义是那个符号 symbol 的函数值[functional value], 并且那个新符号 new-symbol 的属性列表[property list]是符号 symbol 的属性列表[property list]的一个拷贝[copy[2]].
 
 * 示例(Examples):
 
@@ -300,7 +300,7 @@
 
 * 异常情况(Exceptional Situations): 
 
-        如果 symbol 不是一个符号, 那么应该发出一个 type-error 类型的错误.
+        如果 symbol 不是一个符号[symbol], 那么应该发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
@@ -308,7 +308,7 @@
 
 * 注意(Notes):
 
-        鼓励实现者不要去拷贝那个没有必要是那个符号的名字的字符串. 除非这里有一个好的理由去做这个, 对于这个新符号 new-symbol 的名字的正常的具体实现策略是和给定符号 symbol 的名字是相同的.
+        鼓励实现者不要去不必要地复制那个是那个符号[symbol]名字[name]的字符串[string]. 除非这里有一个好的理由去做这个, 对于这个新符号 new-symbol 的名字[name]的正常的实现策略是和给定符号 symbol 的名字[name]是相同的[identical].
 
 
 ### <span id="F-GENSYM">函数 GENSYM</span>
@@ -319,20 +319,20 @@
 
 * 参数和值(Arguments and Values):
 
-        x---一个字符串或者一个非负整数. Complicated defaulting behavior; 见下文.
-        new-symbol---一个新的, 未捕捉的符号.
+        x---一个字符串[string]或者一个非负整数[integer]. 复杂的默认行为; 见下文.
+        new-symbol---一个新的[fresh], 未捕捉的[uninterned]符号[symbol].
 
 * 描述(Description):
 
-        创建并返回一个新的, 未捕捉的符号, 就像是通过调用 make-symbol 的一样. (gensym 和 make-symbol 仅有的区别是如何决定这个新符号 new-symbol 的名字.)
+        创建并返回一个新的[fresh], 未捕捉的[uninterned]符号[symbol], 就像是通过调用 make-symbol 的一样. (gensym 和 make-symbol 仅有的区别在于如何决定这个新符号 new-symbol 的名字[name].)
 
-        这个新符号 new-symbol 的名字由一个默认为 "G" 的前缀和一个默认为 *gensym-counter* 的值的数字表示拼接而成.
+        这个新符号 new-symbol 的名字[name]由一个默认为 "G" 的前缀和一个默认为 *gensym-counter* 值[value]的十进制表示的后缀拼接而成.
 
-        如果提供了 x, 并且是一个字符串, 那么这个字符串仅在这个对 gensym 的调用中替换 "G" 作为前缀.
+        如果提供了 x, 并且是一个字符串[string], 那么这个字符串[string]仅在这个对 gensym 的调用中替换 "G" 作为前缀.
 
-        如果提供了 x, 并且是一个整数, 那么这个整数仅在这个对 gensym 的调用中替换 *gensym-counter* 的值被用作后缀.
+        如果提供了 x, 并且是一个整数[ingeter], 那么这个整数[ingeter]仅在这个对 gensym 的调用中替换 *gensym-counter* 的值[value]被用作后缀.
 
-        当且仅当没有提供显式前缀时, *gensym-counter* 在它被使用后递增.
+        当且仅当没有提供显式后缀时, *gensym-counter* 在它被使用后递增.
 
 * 示例(Examples):
 
@@ -357,7 +357,7 @@
 
 * 异常情况(Exceptional Situations): 
 
-        如果 x 不是一个字符串也不是一个非负整数, 那么应该发出一个 type-error 类型的错误.
+        如果 x 不是一个字符串[string]也不是一个非负整数[integer], 那么应该发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
@@ -372,17 +372,17 @@
 
 * 值类型(Value Type):
 
-        一个非负整数.
+        一个非负整数[integer].
 
 * 初始值(Initial Value):
 
-        依赖于具体实现.
+        依赖于具体实现[implementation-dependent].
 
 * 描述(Description):
 
-        用来构造由函数 gensym 生成的下一个符号的名字的一个数字.
+        用来构造由函数[function] gensym 生成的下一个符号[symbol]名字[name]的一个数字.
 
-        *gensym-counter* 可以在任何时间被赋值或绑定, 但是它的值必须总是为一个非负整数.
+        *gensym-counter* 可以在任何时间被赋值或绑定[bound], 但是它的值必须总是为一个非负整数[integer].
 
 * 示例(Examples): None.
 
@@ -396,7 +396,7 @@
 
 * 注意(Notes):
 
-        传递一个数字参数给 gensym 的能力已经被废弃了; 显示绑定 *gensym-counter* 目前语法上是首选的.
+        传递一个数字参数给 gensym 的能力已经被废弃了; 显式绑定[binding] *gensym-counter* 目前是语法上首选的.
 
 
 ### <span id="F-GENTEMP">函数 GENTEMP</span>
@@ -407,15 +407,15 @@
 
 * 参数和值(Arguments and Values):
 
-        prefix---一个字符串. 默认为 "T".
-        package---一个包标识符. 默认是当前包.
-        new-symbol---一个新的, 被捕捉的符号.
+        prefix---一个字符串[string]. 默认为 "T".
+        package---一个包标识符[package designator]. 默认是当前包[current package].
+        new-symbol---一个新的[fresh], 被捕捉的[interned]符号[symbol].
 
 * 描述(Description):
 
-        gentemp 创建并返回一个新的符号, 被捕捉在指定的包中. 这个符号保证是一个之前在包 package 中无法访问的. 它既没有被绑定也没有被 fbound, 并且有一个 null 属性列表.
+        gentemp 创建并返回一个新的[fresh]符号[symbol], 被捕捉[interned]在指定的包 package 中. 这个符号[symbol]保证不是一个之前在包 package 中可访问的[accessible]符号. 它既没有被绑定[bound]也没有被 fbound, 并且有一个空[null]属性列表[property list].
 
-        这个新符号 new-symbol 的名字是一个前缀和后缀拼接而成, 这个后缀由一个只有 gentemp 使用的内部计数器获取. (如果这个名字的一个符号在包 package 中已经是可以访问的, 这个计数器每次有必要产生一个之前在这个包 package 中不是一个可访问符号的名字就会被递增.)
+        这个新符号 new-symbol 的名字[name]是一个前缀 prefix 和后缀拼接而成, 这个后缀取自一个只有 gentemp 使用的内部计数器. (如果这个名字的一个符号[symbol]在包 package 中已经是可访问的[accessible], 这个计数器递增必要的次数来产生一个之前在这个包 package 中不是一个可访问[accessible]符号[symbol]的名字.)
 
 * 示例(Examples):
 
@@ -432,8 +432,8 @@
 
 * 副作用(Side Effects):
 
-        它的内部计数器被递增不止一次.
-        在包 package 中捕捉这个新符号 new-symbol.
+        它的内部计数器被递增一次或多次.
+        在包 package 中捕捉[intern]这个新符号 new-symbol.
 
 * 受此影响(Affected By):
 
@@ -441,7 +441,7 @@
 
 * 异常情况(Exceptional Situations): 
 
-        如果前缀不是一个字符串那么应该发出一个 type-error 类型的错误. 如果包 package 不是一个包标识符那么应该发出一个 type-error 类型的错误.
+        如果前缀 prefix 不是一个字符串[string]那么应该发出一个 type-error 类型[type]的错误. 如果 package 不是一个包标识符[package designator]那么应该发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
@@ -451,11 +451,11 @@
 
         函数 gentemp 被废弃了.
 
-        如果包 package 是 KEYWORD 包, 那么结果是包 package 的一个外部符号. 否则, 结果就是一个包 package 的一个内部符号.
+        如果包 package 是 KEYWORD 包, 那么结果是包 package 的一个外部符号[external symbol ]. 否则, 结果就是一个包 package 的一个内部符号[internal symbol].
 
-        这个 gentemp 内部计数器不依赖于被 gensym 使用的计数器 *gensym-counter*. 这里没有用于访问这个 gentemp 内部计数器的措施.
+        这个 gentemp 内部计数器独立于 gensym 使用的计数器 *gensym-counter*. 这里没有用于访问这个 gentemp 内部计数器的措施.
 
-        只是因为 gentemp 创建一个之前不存在的符号并不意味着这样一个符号在未来可能是不可见的 (比如, 在一个数据文件中---可能由另一个会话中的相同程序创建). 因此, 这个符号并不是真正独特的就像 gensym 一样. 特别地, 自动代码生成的程序应该注意不要将全局属性附加到这些生成的符号上 (比如, special 声明) 并且把它们写道一个文件中, 因为这样的全局属性可能在不同的会话中, 最终会应用到其他符号上, 这些符号是在另一天自动生成用于其他目的.
+        只是因为 gentemp 创建一个之前不存在的符号[symbol]并不意味着这样一个符号[symbol]在未来可能不会出现 (比如, 在一个数据文件中---可能由另一个会话中的相同程序创建). 因此, 这个符号并不像 gensym 一样是唯一的. 特别地, 自动代码生成的程序应该注意不要将全局属性附加到这些生成的符号[symbol]上 (比如, special 声明[declaration]) 并且把它们写到一个文件中, 因为这样的全局属性可能在不同的会话中, 最终会应用到其他符号[symbol]上, 这些符号[symbol]是在另一天自动生成用于其他目的.
 
 
 ### <span id="A-SYMBOL-FUNCTION">访问器 SYMBOL-FUNCTION</span>
@@ -468,15 +468,15 @@
 
 * 参数和值(Arguments and Values):
 
-        symbol---一个符号.
+        symbol---一个符号[symbol].
 
-        contents--- 如果这个符号 symbol 是一个全局定义的宏或者特殊操作符, 那么就返回一个依赖于具体实现的性质和标识的对象. 如果这个符号 symbol 没有被全局定义为一个宏或一个特殊操作符, 并且这让个符号 symbol 被 fbound 了, 返回一个函数对象.
+        contents--- 如果这个符号 symbol 是一个全局定义的宏[macro]或者特殊操作符[special operator], 那么就返回一个依赖于具体实现[implementation-dependent]的性质和标识的对象[object]. 如果这个符号 symbol 没有被全局定义为一个宏[macro]或一个特殊操作符[special operator], 并且这个符号 symbol 被 fbound 了, 返回一个函数[function]对象[object].
 
         new-contents---一个函数.
 
 * 描述(Description):
 
-        访问这个符号的函数 cell.
+        访问[access]这个符号[symbol]的函数存储格[function cell].
 
 * 示例(Examples):
 
@@ -523,9 +523,9 @@
 
 * 异常情况(Exceptional Situations): 
 
-        如果 symbol 不是一个符号那么应该发出一个 type-error 类型的错误.
+        如果 symbol 不是一个符号[symbol]那么应该发出一个 type-error 类型[type]的错误.
 
-        如果 symbol 没有被 fbound 并且尝试去读取它的定义那么应该发出一个 undefined-function 类型的错误. (在尝试去写入它的定义时不会发出这样的错误.)
+        如果 symbol 没有被 fbound 并且尝试去读取[read]它的定义那么应该发出一个 undefined-function 类型的错误. (在尝试去写入[write]它的定义时不会发出这样的错误.)
 
 * 也见(See Also):
 
@@ -533,13 +533,13 @@
 
 * 注意(Notes):
 
-        symbol-function 不能访问由 flet 或 labels 产生的词法函数名的值; 它只能访问全局函数值.
+        symbol-function 不能访问[access]由 flet 或 labels 产生的词法函数名的值; 它只能访问[access]全局函数值.
 
-        当这个符号的函数定义不表示一个特殊操作符时, setf 可以和 symbol-function 一起使用来替换一个全局函数定义.
+        当这个符号[symbol]的函数定义不表示一个特殊操作符[special operator]时, setf 可以和 symbol-function 一起使用来替换一个全局函数定义.
 
         (symbol-function symbol) ==  (fdefinition symbol)
 
-        然而, fdefinition 接受的参数不仅仅是符号.
+        然而, fdefinition 接受的参数不仅仅是符号[symbol].
 
 
 ### <span id="F-SYMBOL-NAME">函数 SYMBOL-NAME</span>
@@ -550,12 +550,12 @@
 
 * 参数和值(Arguments and Values):
 
-        symbol---一个符号.
-        name---一个字符串.
+        symbol---一个符号[symbol].
+        name---一个字符串[string].
 
 * 描述(Description):
 
-        symbol-name 返回符号 symbol 的名字. 如果名字 name 被修改那么后果是未定义的.
+        symbol-name 返回符号 symbol 的名字[name]. 如果名字 name 被修改那么后果是未定义的.
 
 * 示例(Examples):
 
@@ -571,7 +571,7 @@
 
 * 异常情况(Exceptional Situations): 
 
-        如果 symbol 不是一个符号那么应该发出一个 type-error 类型的错误.
+        如果 symbol 不是一个符号[symbol]那么应该发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also): None.
 
@@ -586,12 +586,12 @@
 
 * 参数和值(Arguments and Values):
 
-        symbol---一个符号.
-        contents---一个包对象或者 nil.
+        symbol---一个符号[symbol].
+        contents---一个包[package]对象[object]或者 nil.
 
 * 描述(Description):
 
-        返回这个符号 symbol 的 home 包.
+        返回这个符号 symbol 的 home 包[home package].
 
 * 示例(Examples):
 
@@ -629,7 +629,7 @@
 
 * 异常情况(Exceptional Situations): 
 
-        如果 symbol 不是一个符号那么应该发出一个 type-error 类型的错误.
+        如果 symbol 不是一个符号[symbol]那么应该发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
@@ -648,12 +648,12 @@
 
 * 参数和值(Arguments and Values):
 
-        symbol---一个符号.
-        plist, new-plist---一个属性列表.
+        symbol---一个符号[symbol].
+        plist, new-plist---一个属性列表[property list].
 
 * 描述(Description):
 
-        访问符号 symbol 的属性列表.
+        访问[access]符号 symbol 的属性列表[property list].
 
 * 示例(Examples):
 
@@ -674,7 +674,7 @@
 
 * 异常情况(Exceptional Situations): 
 
-        如果 symbol 不是一个符号那么应该发出一个 type-error 类型的错误.
+        如果 symbol 不是一个符号[symbol]那么应该发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
@@ -682,7 +682,7 @@
 
 * 注意(Notes):
 
-        应该避免使用 setf, 因为一个符号的属性列表是一个全局资源, 它可以包含在相同的 Lisp 镜像中由不相关的程序建立和依赖的信息.
+        应该避免使用 setf, 因为一个符号[symbol]的属性列表[property list]是一个全局资源, 它可以包含相同 Lisp 镜像[Lisp image]中由不相关的程序建立和依赖的信息.
 
 
 ### <span id="A-SYMBOL-VALUE">访问器 SYMBOL-VALUE</span>
@@ -695,12 +695,12 @@
 
 * 参数和值(Arguments and Values):
 
-        symbol---必须有一个值的符号.
-        value, new-value---一个对象.
+        symbol---必须有一个值[value]的符号[symbol].
+        value, new-value---一个对象[object].
 
 * 描述(Description):
 
-        访问这个符号 symbol 的值 cell.
+        访问[access]这个符号[symbol]的值存储格[value cell].
 
 * 示例(Examples):
 
@@ -744,9 +744,9 @@
 
 * 异常情况(Exceptional Situations): 
 
-        如果 symbol 不是一个符号那么应该发出一个 type-error 类型的错误.
+        如果 symbol 不是一个符号[symbol]那么应该发出一个 type-error 类型[type]的错误.
 
-        如果符号 symbol 被解绑并且尝试去读取它的值那么应该发出 unbound-variable 类型的错误. (在尝试去写入它的值时不会发出这样的错误.)
+        如果符号 symbol 被解绑[unbound]并且尝试去读取[read]它的值[value], 那么应该发出 unbound-variable 类型的错误. (在尝试去写入[write]它的值[value]时不会发出这样的错误.)
 
 * 也见(See Also):
 
@@ -754,7 +754,7 @@
 
 * 注意(Notes):
 
-        symbol-value 可以被用于获取一个常变量的值. symbol-value 不能访问一个词法变量的值.
+        symbol-value 可以被用于获取一个常变量[constant variable]的值. symbol-value 不能访问一个词法变量[lexical variable]的值[value].
 
 
 ### <span id="A-GET">访问器 GET</span>
@@ -767,17 +767,17 @@
 
 * 参数和值(Arguments and Values):
 
-        symbol---一个符号.
-        indicator---一个对象.
-        default---一个对象. 默认为 nil.
-        value---如果表示的属性存在, 这个对象就是它的值; 否则, 就是指定的默认值 default.
-        new-value---一个对象.
+        symbol---一个符号[symbol].
+        indicator---一个对象[object].
+        default---一个对象[object]. 默认为 nil.
+        value---如果表示的属性存在, 就是它的值[value]对象[object]; 否则, 就是指定的默认值 default.
+        new-value---一个对象[object].
 
 * 描述(Description):
 
-        get 在符号 symbol 的属性列表中找到一个属性指示符和指示符 indicator 一样的属性, 并且返回它对应的属性值. 如果这里有多个属性带有那个属性指示符, get 使用第一个这样的属性. 如果没有带有那个属性指示符的属性, 返回默认值 default.
+        get 在符号 symbol 的属性列表[property list[2]]中找到一个属性指示符[property indicator]和指示符 indicator 一样[identical]的属性, 并且返回它对应的属性值[property value]. 如果这里有多个属性[property[1]]带有那个属性指示符[property indicator], get 使用第一个这样的属性[property]. 如果没有带有那个属性指示符[property indicator]的属性[property], 返回默认值 default.
 
-        get 的 setf 可能被用于关联一个新对象和一个已存在那个符号 symbol 的属性列表中的指示符, 如果不存在就创建一个新的关联. 如果这里有多个属性带有那个属性指示符, get 的 setf 关联那个新值 new-value 到第一个这样的属性. 当一个 get 表达式形式被用作一个 setf 的 place 时, 任何提供的默认值 default 都根据正常从左到右的求值规则被求值, 但是它的值会被忽略.
+        get 的 setf 可以被用于关联一个新对象[object]和一个存在于那个符号 symbol 的属性列表[property list]中的指示符, 如果不存在就创建一个新的关联. 如果这里有多个属性[property[1]]带有那个属性指示符[property indicator], get 的 setf 关联那个新值 new-value 到第一个这样的属性[property[1]]. 当一个 get 表达式形式[form]被用作一个 setf 的位置 place 时, 任何提供的默认值 default 都根据正常从左到右的求值规则被求值, 但是它的值会被忽略.
 
 * 示例(Examples):
 
@@ -818,7 +818,7 @@
 
 * 异常情况(Exceptional Situations): 
 
-        如果 symbol 不是一个符号那么应该发出一个 type-error 类型的错误.
+        如果 symbol 不是一个符号[type]那么应该发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
@@ -828,9 +828,9 @@
 
         (get x y) ==  (getf (symbol-plist x) y)
 
-        在可移植的代码中不推荐数字和字符被用作指示符因为 get 使用 eq 来测试而不是使用 eql, 因此使用这样的指示符的影响是依赖于具体实现的.
+        在可移植的代码中不推荐数字[number]和字符[character]被用作指示符 indicator, 因为 get 使用 eq 来测试而不是使用 eql, 因此使用这样的指示符的影响是依赖于具体实现的[implementation-dependent].
 
-        使用 get 没法去区分一个缺省的属性和值为默认值的属性. 但是, 见 get-properties.
+        使用 get 没法去区分一个缺省的属性和值为默认值 default 的属性. 但是, 见 get-properties.
 
 
 ### <span id="F-REMPROP">函数 REMPROP</span>
@@ -841,15 +841,15 @@
 
 * 参数和值(Arguments and Values):
 
-        symbol---一个符号.
-        indicator---一个对象.
-        generalized-boolean---一个广义 boolean.
+        symbol---一个符号[symbol].
+        indicator---一个对象[object].
+        generalized-boolean---一个广义 boolean [generalized boolean].
 
 * 描述(Description):
 
-        remprop 从符号 symbol 的属性列表中移除一个带有和指示符 indicator 一样属性指示符的属性. 如果这里有多个带有相同键的属性, remprop 只移除第一个这样的属性. 如果没有找到这样的属性那么 remprop 返回 false, 如果找到一个属性就返回 true.
+        remprop 从符号 symbol 的属性列表[property list[2]]中移除一个带有和指示符 indicator 一样[identical]属性指示符[property indicator]的属性[property[1]]. 如果这里有多个带有相同[identical]键的属性[property[1]], remprop 只移除第一个这样的属性[property[1]]. 如果没有找到这样的属性[property]那么 remprop 返回 false, 如果找到一个属性就返回 true.
 
-        这个属性指示符和对应属性值通过破坏性地拼接这个属性列表以一种未定义的顺序被移除. 可允许的副作用相当于那些 remf 允许的, 如此这般:
+        这个属性指示符[property indicator]和对应属性值[property value]通过破坏性地拼接这个属性列表以一种未定义的顺序被移除. 可允许的副作用相当于 remf 允许的那些, 如此这般:
 
         (remprop x y) ==  (remf (symbol-plist x) y)
 
@@ -882,13 +882,13 @@
 
 * 副作用(Side Effects):
 
-        符号 symbol 的属性列表被修改.
+        符号 symbol 的属性列表[property list]被修改.
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations): 
 
-        如果 symbol 不是一个符号那么应该发出一个 type-error 类型的错误.
+        如果 symbol 不是一个符号[symbol]那么应该发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
@@ -896,7 +896,7 @@
 
 * 注意(Notes):
 
-        在可移植的代码中不推荐数字和字符被用作指示符因为 remprop 使用 eq 来测试而不是 eql, 因此使用这样的指示符的影响是依赖于具体实现的. 当然, 如果你想要移除这样的属性, 你没有太多选择---考虑这个问题的时间是当你使用 get 的 setf 来建立这个属性的时候.
+        在可移植的代码中不推荐数字[number]和字符[character]被用作指示符 indicator 因为 remprop 使用 eq 来测试而不是 eql, 因此使用这样的指示符的影响是依赖于具体实现的[implementation-dependent]. 当然, 如果你想要移除这样的属性[property], 你没有太多选择---考虑这个问题的时间就是当你使用 get 的 setf 来建立这个属性[property]的时候.
 
 
 ### <span id="F-BOUNDP">函数 BOUNDP</span>
@@ -907,12 +907,12 @@
 
 * 参数和值(Arguments and Values):
 
-        symbol---一个符号.
-        generalized-boolean---一个广义 boolean.
+        symbol---一个符号[symbol].
+        generalized-boolean---一个广义 boolean [generalized boolean].
 
 * 描述(Description):
 
-        如果符号 symbol 被绑定就返回 true; 否则, 返回 false.
+        如果符号 symbol 被绑定[bound]就返回 true; 否则, 返回 false.
 
 * 示例(Examples):
 
@@ -929,7 +929,7 @@
 
 * 异常情况(Exceptional Situations): 
 
-        如果 symbol 不是一个符号那么应该发出一个 type-error 类型的错误.
+        如果 symbol 不是一个符号[symbol]那么应该发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
@@ -937,7 +937,7 @@
 
 * 注意(Notes):
 
-        函数 bound 只决定一个符号在全局环境中是否有一个值; 任何词法绑定都被忽略.
+        函数[function] bound 只决定一个符号[symbol]在全局环境[global environment]中是否有一个值; 任何词法绑定[lexical binding]都被忽略.
 
 
 ### <span id="F-MAKUNBOUND">函数 MAKUNBOUND</span>
@@ -948,11 +948,11 @@
 
 * 参数和值(Arguments and Values):
 
-        symbol---一个符号
+        symbol---一个符号[symbol]
 
 * 描述(Description):
 
-        使这个符号 symbol 变为未绑定的, 不管之前它是否被绑定.
+        使这个符号 symbol 变为未绑定的[unbound], 不管之前它是否被绑定[bound].
 
 * 示例(Examples):
 
@@ -966,13 +966,13 @@
 
 * 副作用(Side Effects):
 
-        符号 symbol 的值 cell 会被求值.
+        符号 symbol 的值存储格[value cell]会被求值.
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations): 
 
-        如果 symbol 不是一个符号那么应该发出一个 type-error 类型的错误.
+        如果 symbol 不是一个符号[symbol]那么应该发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
@@ -989,12 +989,12 @@
 
 * 参数和值(Arguments and Values):
 
-        symbol---一个符号.
-        value---一个对象.
+        symbol---一个符号[symbol].
+        value---一个对象[object].
 
 * 描述(Description):
 
-        set 改变符号 symbol 的值 cell 的内容为给定的值 value.
+        set 改变符号[symbol]的值存储格[value cell]的内容为给定的值[value].
 
         (set symbol value) ==  (setf (symbol-value symbol) value)
 
@@ -1037,7 +1037,7 @@
 
 * 副作用(Side Effects):
 
-        符号 symbol 的值被改变.
+        符号 symbol 的值[value]被改变.
 
 * 受此影响(Affected By): None.
 
@@ -1051,7 +1051,7 @@
 
         函数 set 已经被废弃.
 
-        set 不能修改一个词法变量的值.
+        set 不能修改一个词法变量[lexical variable]的值.
 
 
 ### <span id="CT-UNBOUND-VARIABLE">状况类型 UNBOUND-VARIABLE</span>
@@ -1062,9 +1062,9 @@
 
 * 描述(Description):
 
-        类型 unbound-variable 由表示尝试去读取一个未绑定变量的值的错误状况组成.
+        类型[type] unbound-variable 由表示尝试去读取[read]一个未绑定变量[unbound variable]的值[value]的错误[error]状况[condition]组成.
 
-        这个 cell (见 cell-error) 的值是这个未绑定变量的名字.
+        这个存储格 (见 cell-error) 的名字是这个未绑定[unbound]变量[variable]的名字[name].
 
 * 也见(See Also):
 
