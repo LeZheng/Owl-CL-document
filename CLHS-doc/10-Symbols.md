@@ -52,11 +52,11 @@
 
 * 描述(Description):
 
-        符号[symbol]被用于它们的对象[object]标识来命名 Common Lisp 中不同的实体, 包括 (但不限于) 像变量[variable]和函数[function]这样的语言实体.
+        符号[symbol]用于它们的对象[object]标识来命名 Common Lisp 中不同的实体, 包括 (但不限于) 像变量[variable]和函数[function]这样的语言实体.
 
         符号[symbol]可以被一起收集到包[package]中. 如果一个符号[symbol]在一个包[package]中是可访问的[accessible]就说那个符号[symbol]被捕捉[interned]到那个包[package]中; 相同符号[symbol]可以被捕捉[interned]到不止一个包[package]中. 如果一个符号[symbol]没有被捕捉[interned]到任何包[package]中, 就说它是未捕捉的[uninterned].
 
-        一个被捕捉的[interned]符号[symbol]在它可访问的[accessible]任何包[package]中通过它的名称[name]是唯一可识别的.
+        一个被捕捉的[interned]符号[symbol]在它可访问的[accessible]任何包[package]中根据它的名称[name]是唯一可识别的.
 
         符号[symbol]有着以下属性. 出于历史原因, 它们有时作为存储格[cell]被引用, 虽然符号[symbol]和它们的属性的实际内部表示是依赖于具体实现的[implementation-dependent].
 
@@ -76,11 +76,11 @@
 
         属性列表(Property list)
 
-            一个符号[symbol]的属性列表[property list]为关联已命名属性和那个符号[symbol]提供了一个机制. 关于添加和移除的操作对于这个属性列表[property list]是破坏性的[destructive]. Common Lisp 提供了操作符[operator]来直接操作属性列表[property list]对象[object] (比如, see getf, remf, 和 symbol-plist) 以及通过引用一个符号[symbol]来隐式操作这个符号[symbol]的属性列表[property list] (比如, 见 get 和 remprop). 和一个新[fresh]符号[symbol]关联的属性列表[property list]被初始化为空[null].
+            一个符号[symbol]的属性列表[property list]为关联已命名属性和那个符号[symbol]提供了一个机制. 关于添加和移除的操作对于这个属性列表[property list]是破坏性的[destructive]. Common Lisp 提供了操作符[operator]来直接操作属性列表[property list]对象[object] (比如, 见 getf, remf, 和 symbol-plist) 以及通过引用一个符号[symbol]来隐式操作这个符号[symbol]的属性列表[property list] (比如, 见 get 和 remprop). 和一个新[fresh]符号[symbol]关联的属性列表[property list]被初始化为空[null].
 
         值(Value)
 
-            如果一个符号有一个值属性, 它就被称为是绑定的[bound], 并且这个事实可以通过函数[function] boundp 来检测. 被包含在一个绑定的[bound]符号[symbol]的值存储格[value cell]中的对象[object]是那个符号[symbol]命名的全局变量[global variable]的值[value], 并且可以通过函数[function] symbol-value 来访问. 一个符号[symbol]可以通过函数[function] makunbound 变为为绑定的[unbound].
+            如果一个符号有一个值属性, 它就被称为是绑定的[bound], 并且这个事实可以通过函数[function] boundp 来检测. 被包含在一个绑定的[bound]符号[symbol]的值存储格[value cell]中的对象[object]是那个符号[symbol]命名的全局变量[global variable]的值[value], 并且可以通过函数[function] symbol-value 来访问. 一个符号[symbol]可以通过函数[function] makunbound 变为未绑定的[unbound].
 
             如果尝试去修改一个命名常变量[constant variable]的符号[symbol]的值[value]或者使这样一个符号[symbol]变为未绑定的[unbound], 那么后果是未定义的.
 
@@ -308,7 +308,7 @@
 
 * 注意(Notes):
 
-        鼓励实现者不要去不必要地复制那个是那个符号[symbol]名字[name]的字符串[string]. 除非这里有一个好的理由去做这个, 对于这个新符号 new-symbol 的名字[name]的正常的实现策略是和给定符号 symbol 的名字[name]是相同的[identical].
+        鼓励实现者不要去不必要地复制那个是符号[symbol]名字[name]的字符串[string]. 除非这里有一个好的理由去做这个, 对于这个新符号 new-symbol 的名字[name]的正常的实现策略是和给定符号 symbol 的名字[name]是相同的[identical].
 
 
 ### <span id="F-GENSYM">函数 GENSYM</span>
@@ -451,7 +451,7 @@
 
         函数 gentemp 被废弃了.
 
-        如果包 package 是 KEYWORD 包, 那么结果是包 package 的一个外部符号[external symbol ]. 否则, 结果就是一个包 package 的一个内部符号[internal symbol].
+        如果包 package 是 KEYWORD 包, 那么结果是包 package 的一个外部符号[external symbol]. 否则, 结果就是一个包 package 的一个内部符号[internal symbol].
 
         这个 gentemp 内部计数器独立于 gensym 使用的计数器 *gensym-counter*. 这里没有用于访问这个 gentemp 内部计数器的措施.
 
@@ -470,7 +470,7 @@
 
         symbol---一个符号[symbol].
 
-        contents--- 如果这个符号 symbol 是一个全局定义的宏[macro]或者特殊操作符[special operator], 那么就返回一个依赖于具体实现[implementation-dependent]的性质和标识的对象[object]. 如果这个符号 symbol 没有被全局定义为一个宏[macro]或一个特殊操作符[special operator], 并且这个符号 symbol 被 fbound 了, 返回一个函数[function]对象[object].
+        contents--- 如果这个符号 symbol 是一个全局定义的宏[macro]或者特殊操作符[special operator], 那么就返回一个性质和标识依赖于具体实现[implementation-dependent]的对象[object]. 如果这个符号 symbol 没有被全局定义为一个宏[macro]或一个特殊操作符[special operator], 并且这个符号 symbol 被 fbound 了, 返回一个函数[function]对象[object].
 
         new-contents---一个函数.
 
