@@ -76,7 +76,7 @@
 
 提供给 make-instance 的初始化参数和默认初始化参数组合来产生一个默认初始化参数列表[defaulted initialization argument list]. 一个默认初始化参数列表[defaulted initialization argument list]是一个交替初始化参数名称和值的列表, 其中未提供的初始化参数是默认值, 在这个列表中显式提供的初始化参数出现在默认的初始化参数的前面. 默认初始化参数根据提供默认值的这些类[class]的类优先级列表[class precedence list]中的顺序来排序.
 
-就槽[slot]的初始化而言, :default-initargs 和 :initform 选项的目的存在一个区别. 在不知道这个初始化参数是初始化一个槽[slot]还是传递给一个方法[method]的情况下, 这个 :default-initargs 类选项为用户提供一个机制去给这个初始化参数提供一个默认值表达式形式[form]. 如果那个初始化参数没有在一个 make-instance 的调用中显式提供, 那么就使用这个默认值表达式形式, 就像在这个调用中提供了一样. 与此相反, 这个 :initform 槽选项为用户提供一个机制去给一个槽[slot]提供一个默认初始值表达式形式. 一个 :initform 表达式形式当且仅当没有给 make-instance 传递一个和这个槽[slot]关联的初始化参数或者被 :default-initargs 省略的时候被用于初始化一个槽[slot].<!--TODO 最后一句需要对照原文再检查下-->
+就槽[slot]的初始化而言, :default-initargs 和 :initform 选项的目的存在一个区别. 在不知道这个初始化参数是初始化一个槽[slot]还是传递给一个方法[method]的情况下, 这个 :default-initargs 类选项为用户提供一个机制去给这个初始化参数提供一个默认值表达式形式[form]. 如果那个初始化参数没有在一个 make-instance 的调用中显式提供, 那么就使用这个默认值表达式形式, 就像在这个调用中提供了一样. 与此相反, 这个 :initform 槽选项为用户提供一个机制去给一个槽[slot]提供一个默认初始值表达式形式. 当且仅当没有给 make-instance 传递一个和槽[slot]关联的初始化参数或者被 :default-initargs 省略的时候, 一个 :initform 表达式形式被用于初始化这个槽[slot].
 
 初始化参数的默认值表达式形式的求值顺序和 :initform 表达式形式的求值顺序是没有定义的. 如果求值的顺序很重要, 应该使用 initialize-instance 或 shared-initialize 方法[method]. 
 
@@ -150,7 +150,7 @@
 
 使用一个新的实例和默认初始化参数来调用广义函数 initialize-instance. 这里有一个系统提供的 initialize-instance 的主方法[method], 其中参数特化符[parameter specializer]是类[class] standard-object. 这个方法[method]调用广义函数 shared-initialize 根据槽[slot]的初始化参数和 :initform 表达式形式来填充槽[slot]; 使用以下参数来调用广义函数 shared-initialize : 这个实例[instance], t, 还有默认初始化参数.
 
-注意, initialize-instance 在它对 shared-initialize 调用中提供默认初始化参数列表[defaulted initialization argument list], 因此, 由系统提供的 shared-initialize 主方法[method]执行的第一步考虑了在调用 make-instance 中提供的初始化参数和默认初始化参数列表[defaulted initialization argument list].<!--TODO 考虑？？-->
+注意, initialize-instance 在它对 shared-initialize 调用中提供默认初始化参数列表[defaulted initialization argument list], 因此, 由系统提供的 shared-initialize 主方法[method]执行的第一步考虑了在对 make-instance 的调用中提供的初始化参数和默认初始化参数列表[defaulted initialization argument list].
 
 initialize-instance 的方法[method]可以被定义来指定一个实例[instance]被初始化时采取的动作. 如果只有 initialize-instance 的 after 方法[after method]被定义, 它们会在系统提供的用于初始化的主方法[method]之后被运行, 并且因此不会和 initialize-instance 的默认行为冲突.
 
@@ -434,7 +434,7 @@ shared-initialize 的方法[method]可以被定义用来定制类[class]的重�
 
 6. &aux 的使用在方法之间不需要是一致的.
 
-    如果一个不能指定广义函数[generic fu格式ction]选项的方法定义操作符[method-defining operator]创建了一个广义函数[generic function], 并且这个方法的 lambda 列格式表[lambda list]提及关键字参数, 那么这个广义函数的 lambda 列表[lambda list]会提及 &key (但是没有关键字参数). <!--TODO 格式格式？？-->
+    如果一个不能指定广义函数[generic function]选项的方法定义操作符[method-defining operator]创建了一个广义函数[generic function], 并且这个方法的 lambda 列表[lambda list]提及关键字参数, 那么这个广义函数的 lambda 列表[lambda list]会提及 &key (但是没有关键字参数).
 
 
 ### 7.6.5 <span id="KeywordArgGFAndMethods">广义函数和方法中的关键字参数</span>
@@ -511,7 +511,7 @@ shared-initialize 的方法[method]可以被定义用来定制类[class]的重�
 
 如果某些参数特化符[parameter specializer]不一致, 第一对不一致的参数特化符[parameter specializer]决定了这个优先级. 如果两个参数特化符[parameter specializer]都是类, 那么两个方法中更具体的是参数特化符[parameter specializer]在这个对应参数的类优先级列表[class precedence list]中出现的更早的那个方法. 由于可应用方法被选择的这个方式, 参数特化符[parameter specializer]保证存在于那个参数的类的类优先列表中.
 
-如果一对对应参数特化符[parameter specializer]中只有一个是 (eql object), 那么带有这个参数特化符[parameter specializer]的方法[method]优先于另一个方法[method]. 如果两个参数特化符[parameter specializer]都是 eql 表达式[expression], 那么这些特化符一定是一致的<!--TODO 不理解--> (否则对于这个参数这两个方法[method]不会都是可应用的).
+如果一对对应参数特化符[parameter specializer]中只有一个是 (eql object), 那么带有这个参数特化符[parameter specializer]的方法[method]优先于另一个方法[method]. 如果两个参数特化符[parameter specializer]都是 eql 表达式[expression], 那么这些特化符一定是一致的 (否则对于这个参数这两个方法[method]不会都是可应用的).
 
 产生的可应用方法[applicable method]列表中最具体的方法[method]在第一个, 最不具体的在最后一个. 
 
@@ -1166,7 +1166,7 @@ shared-initialize 的方法[method]可以被定义用来定制类[class]的重�
 
 * 注意(Notes):
 
-        函数[function] slot-boundp 考虑到为 initialize-instance 编写 after 方法[after method]仅用来初始化那些还没有被绑定的槽[slot].<!--TODO 待校验-->
+        函数[function] slot-boundp 考虑到为 initialize-instance 编写仅用来初始化那些未绑定槽[slot]的 after 方法[after method].
 
         虽然没有具体实现[implementation]被要求, 但是强烈鼓励实现者去使用元对象协议[Metaobject Protocol]中描述的函数[function] slot-boundp-using-class 来实现函数[function] slot-boundp. 
 
@@ -1337,7 +1337,7 @@ shared-initialize 的方法[method]可以被定义用来定制类[class]的重�
 
 * 注意(Notes):
 
-        如果没有为一个槽[slot]指定 :initform 表达式形式并且还没有设置槽[slot]的值, 或者在那个槽[slot]上调用了 slot-makunbound, 那么可能出现一个未绑定的槽[slot]. <!--TODO 最后一句不通-->
+        如果没有为一个槽[slot]指定 :initform 表达式形式并且还没有设置槽[slot]的值, 或者在那个槽[slot]上调用了 slot-makunbound, 那么可能出现一个未绑定的槽[slot].
 
 ### <span id="F-SLOT-VALUE">函数 SLOT-VALUE</span>
 
@@ -2181,7 +2181,7 @@ shared-initialize 的方法[method]可以被定义用来定制类[class]的重�
 
             这个 declare 选项被用于指定属于这个广义函数[generic function]的声明.
 
-            一个 optimize 声明指定符[declaration specifier]是允许的. 它指定了方法选择是否要对速度或空间进行优化, 但是它在方法[method]上无效. 为了控制一个方法[method]如何被优化, 一个 optimize 声明必须直接放置在 defmethod 表达式形式[form]或方法[method]描述中.<!--TODO 内容意义待确认--> 优化特性 speed 和 space 是这个标准要求的仅有的特性, 但是一个具体实现可以扩展这个对象系统来识别其他特性. 一个只有一种方法选择技术并且忽略 optimize 声明指定符[declaration specifier]的简单实现是有效的.
+            一个 optimize 声明指定符[declaration specifier]是允许的. 它指定了方法选择是否要对速度或空间进行优化, 但是它在方法[method]上无效. 为了控制一个方法[method]如何被优化, 一个 optimize 声明必须直接放置在 defmethod 表达式形式[form]或方法[method]描述中. 优化特性 speed 和 space 是这个标准要求的仅有的特性, 但是一个具体实现可以扩展这个对象系统来识别其他特性. 一个只有一种方法选择技术并且忽略 optimize 声明指定符[declaration specifier]的简单实现是有效的.
 
             special, ftype, function, inline, notinline, 以及 declaration 声明是不允许的. 个别具体实现可以去扩展这个 declare 选项来支持额外的声明. 如果一个具体实现注意到一个不支持的声明指定符[declaration specifier]并且没有在一个 declaration 公告[proclamation]中被声明为一个非标准声明标识符[declaration identifier]的名字, 它应该提出一个警告.
 
@@ -2513,7 +2513,7 @@ shared-initialize 的方法[method]可以被定义用来定制类[class]的重�
 
 
 ### <span id="M-DEFINE-METHOD-COMBINATION">宏 DEFINE-METHOD-COMBINATION</span>
-<!--TODO 待校对 -->
+
 * 语法(Syntax):
 
         define-method-combination name [[short-form-option]]
@@ -2567,9 +2567,9 @@ shared-initialize 的方法[method]可以被定义用来定制类[class]的重�
 
                 这个 :operator 选项指定这个操作符的名字[name]. 这个操作符 operator 参数是一个符号[symbol], 这个符号可以为一个函数[function], 宏[macro], 或特殊表达式形式[special form]的名字[name].
 
-            这些方法组合的类型必须一个方法一个限定符[qualifier]. 如果这里这里存在没有限定符[qualifier]或有着这个方法组合类型不支持的限定符[qualifier], 就会发出一个错误.
+            这些方法组合的类型必须一个方法一个限定符[qualifier]. 如果这里这里存在无限定符[qualifier]或有着这个方法组合类型不支持的限定符[qualifier], 就会发出一个错误.
 
-            以这种方法定义的一个方法组合过程识别方法的两个角色. 一个方法, 当它的一个限定符[qualifier]是命名这个方法组合类型的符号时, 这个方法被定义为一个主方法. 至少一个主方法必须是可应用的, 否则就会发出一个错误. 一个限定符[qualifier]为 :around 的方法是一个辅助方法, 它表现地和标准方法组合类型中的 around 方法[around method]一样. 函数[function] call-next-method 只能被用于 around 方法[around method]中; 它不能被用于 define-method-combination 宏的短表达式形式定义的主方法中.
+            以这种方法定义的一个方法组合过程识别两种角色的方法. 一个方法, 当它的一个限定符[qualifier]是命名这个方法组合类型的符号时, 这个方法被定义为一个主方法. 至少一个主方法必须是可应用的, 否则就会发出一个错误. 一个限定符[qualifier]为 :around 的方法是一个辅助方法, 它表现地和标准方法组合类型中的 around 方法[around method]一样. 函数[function] call-next-method 只能被用于 around 方法[around method]中; 它不能被用于 define-method-combination 宏的短表达式形式定义的主方法中.
 
             以这种方式定义的一个方法组合过程接受一个名为 order 的可选参数, 它默认为 :most-specific-first. 一个 :most-specific-last 值在不影响辅助方法顺序的情况下倒转这个主方法的顺序.
 
@@ -3033,9 +3033,9 @@ shared-initialize 的方法[method]可以被定义用来定制类[class]的重�
 
 * 描述(Description):
 <!--TODO 待核对-->
-        这个有着未绑定槽的对象[object]通过给 make-condition 的 :instance 初始化参数来初始化, 并且通过函数[function] unbound-slot-instance 被访问.
+        这个有着未绑定槽的对象[object]由 make-condition 的 :instance 初始化参数来初始化, 并且通过函数[function] unbound-slot-instance 来访问.
 
-        这个存储格(cell)(见 cell-error)的名字是这个槽的名字t.
+        这个存储格(cell)(见 cell-error)的名字是这个槽的名字.
 
 * 也见(See Also):
 
