@@ -15,7 +15,7 @@
 
 这个发送的过程涉及从一组活跃[active]处理者[handler]中选择和调用一个处理者[handler]. 一个处理者[handler]是一个单参数(也就是这个状况[condition])的函数[function], 它被调用来处理一个状况[condition]. 每个处理者[handler]都和一个状况[condition]类型[type]关联, 并且一个处理者[handler]只有在这个处理者[condition]关联类型[type]的状况[condition]上被调用.
 
-活跃[active]处理者[handler]被动态地建立 (见 handler-bind 或 handler-case). 处理者[handler]在和这个发送者(signaler)所处的等价动态环境[dynamic environment]中被调用, 除了这个活跃的处理者集合只包含在这个要被调用的处理者被建立时活跃的那些.<!--TODO 待校对整理--> 发出一个状况[condition]在这个状况[condition]上没有副作用, 并且这里没有动态的状态被包含在一个状况[condition]中.
+活跃[active]处理者[handler]被动态地建立 (见 handler-bind 或 handler-case). 处理者[handler]在和这个发送者(signaler)所处的等价动态环境[dynamic environment]中被调用, 除了这个活跃的处理者集合只包含在这个要被调用的处理者被建立时活跃的那些. 发出一个状况[condition]在这个状况[condition]上没有副作用, 并且这里没有动态的状态被包含在一个状况[condition]中.
 
 如果一个处理者[handler]被调用, 它可以通过以下三种方式来处理这个情况[situation]:
 
@@ -1461,7 +1461,7 @@ serious-condition, condition, t
 
 
 ### <span id="V-BREAK-ON-SIGNALS">变量 *BREAK-ON-SIGNALS*</span>
-<!--TODO 待校验-->
+
 * 值类型(Value Type):
 
         一个类型指定符[type specifier].
@@ -2304,7 +2304,7 @@ serious-condition, condition, t
 
 
 ### <span id="M-RESTART-BIND">宏 RESTART-BIND</span>
-<!--TODO 待理解校对-->
+
 * 语法(Syntax):
 
         restart-bind ({(name function {key-val-pair}*)}) form*
@@ -2332,7 +2332,7 @@ serious-condition, condition, t
 
         这个函数 function, 交互式函数 interactive-function, 以及报告函数 report-function 在当前的词法和动态环境中在主体被求值前被无条件求值. 这些表达式形式[form]的每一个都必须求值为一个函数[function].
 
-        如果 invoke-restart 在这个重启动上被执行了, 那么在那个 invoke-restart 的动态环境[dynamic environment]中, 使用传递给 invoke-restart 的实参[argument]作为参数来调用求值 function 所产生的函数[function].
+        如果 invoke-restart 在这个重启动上被执行, 那么在那个 invoke-restart 的动态环境[dynamic environment]中, 使用传递给 invoke-restart 的实参[argument]作为参数来调用求值 function 所产生的函数[function].
 
         如果这个重启动从调试器中被交互式地调用(使用 invoke-restart-interactively), 这些参数通过调用求值 interactive-function 所产生的函数[function]来缺省. 在调用这个重启动时, 那个函数[function]可以在查询 I/O [query I/O]上选择性地提示, 并且应该返回一个要被 invoke-restart-interactively 使用的参数列表[list].
 
@@ -2348,7 +2348,7 @@ serious-condition, condition, t
 
         :report-function
 
-            值 value 在当前词法环境中被求值并且应该返回一个单参数的函数[function], 这个参数是一个流[stream], 这个函数打印这个重启动所采取动作的总结到这个流[stream]中. 每当这个重启动被报告(当 *print-escape* 是 nil 时是被打印)时这个函数[function]就会被调用. 如果没有提供 :report-function 选项, 这个重启动[restart]被报告的方式是依赖于具体实现的[implementation-dependent].
+            值 value 在当前词法环境中被求值并且应该返回一个单参数的函数[function], 这个参数是一个流[stream], 这个函数打印这个重启动所采取动作的综述到这个流[stream]中. 每当这个重启动被报告(当 *print-escape* 是 nil 时是被打印)时这个函数[function]就会被调用. 如果没有提供 :report-function 选项, 这个重启动[restart]被报告的方式是依赖于具体实现的[implementation-dependent].
 
         :test-function
 
@@ -2385,7 +2385,7 @@ serious-condition, condition, t
 
         restartable-form---一个表达式形式[form].
         case-name---一个符号[symbol]或 nil.
-        lambda-list---一个普通的 lambda 列表[ordinary lambda list].
+        lambda-list---一个普通 lambda 列表[ordinary lambda list].
         interactive-expression---一个符号[symbol]或一个 lambda 表达式[lambda expression].
         report-expression---一个字符串[string], 一个符号[symbol], 或一个 lambda 表达式[lambda expression].
         test-expression---一个符号[symbol]或 lambda 表达式[lambda expression].
@@ -2401,7 +2401,7 @@ serious-condition, condition, t
 
         如果 case-name 是一个符号[symbol], 它就命名这个重启动.
 
-        可能有超过一个子句使用相同的 case-name. 在这个情况下, 带有那个名字的第一个子句会被 find-restart 发现. 其他的子句使用 compute-restarts 也是可访问的.
+        可能有超过一个子句使用相同的 case-name. 在这个情况下, 带有那个名字的第一个子句会被 find-restart 找到. 其他的子句使用 compute-restarts 也是可访问的.
 
         每个 arglist 都是在它对应的那些表达式形式 forms 执行期间要被绑定的一个普通 lambda 列表[ordinary lambda list]. 这些参数被 restart-case 子句用来从一个对 invoke-restart 的调用中接收任何必要的数据.
 
