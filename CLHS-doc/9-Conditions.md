@@ -7,11 +7,11 @@
 
 描述 Common Lisp 构造的不仅仅是它们旨在被使用情况下的行为 (见每个操作符[operator]声明的 "描述(Description)" 部分), 还有其他所有情况 (见每个操作符[operator]说明的 "异常情况(Exceptional Situations)").
 
-一个情况(situation)是一个表达式在一个特定上下文中的求值. 一个状况[condition]是表示一个已经被检测到的特定情况的一个对象[object]. 状况[condition]是类[class] condition 的一个广义实例[generalized instance]. 在 Common Lisp 定义了一个状况[condition]类的层次结构. 一个状况[condition]有槽[slot], 可以包含这个状况[condition]表示的情况的相关数据.
+一个情况(situation)是一个表达式在一个特定上下文中的求值. 一个状况[condition]是表示一个已经被检测到的特定情况的一个对象[object]. 状况[condition]是类[class] condition 的一个广义实例[generalized instance]. 在 Common Lisp 定义了一个状况[condition]类的层次结构. 一个状况[condition]有槽[slot], 可以包含这个状况[condition]所表示的情况的相关数据.
 
-一个错误(error)是在一个没有某个形式的干预下(不管是由用户交互还是在程序控制下), 正常程序执行不能正确地继续下去的情况. 不是所有错误都被检测到. 当一个错误未被检测到, 它的效果可以是依赖于具体实现的[implementation-dependent], 具体实现定义的[implementation-defined], 未指定(unspecified), 或者未定义(undefined)的. 见章节 1.4 (定义). 所有检测到的错误可以由状况[condition]表示, 但不是所有状况[condition]都表示错误.
+一个错误(error)是在一个没有某个形式的干预下(不管是由用户交互还是在程序控制下), 正常程序不能继续正确执行下去的情况. 不是所有错误都被检测到. 当一个错误未被检测到, 它的效果可以是依赖于具体实现的[implementation-dependent], 具体实现定义的[implementation-defined], 未指定(unspecified), 或者未定义(undefined)的. 见章节 1.4 (定义). 所有检测到的错误可以由状况[condition]表示, 但不是所有状况[condition]都表示错误.
 
-发送(Signaling) 是一个过程, 通过这个过程一个状况[condition]可以修改一个程序中的控制流, 通过提升这个接下来可以被处理的状况[condition]. 函数 error, cerror, signal, 还有 warn 被用于发出状况[condition].
+发送(Signaling) 是一个过程, 一个状况[condition]可以通过这个过程来修改一个程序中的控制流, 通过提升这个接下来可以被处理的状况[condition]. 函数 error, cerror, signal, 还有 warn 被用于发出状况[condition].
 
 这个发送的过程涉及从一组活跃[active]处理者[handler]中选择和调用一个处理者[handler]. 一个处理者[handler]是一个单参数(也就是这个状况[condition])的函数[function], 它被调用来处理一个状况[condition]. 每个处理者[handler]都和一个状况[condition]类型[type]关联, 并且一个处理者[handler]只有在这个处理者[condition]关联类型[type]的状况[condition]上被调用.
 
@@ -62,7 +62,7 @@
 (typep c 'condition) =>  true
 ```
 
-具体实现[implementation]必须定义所有指定的子类型[subtype]关系. 除非特别注解, 本文档中所示的所有子类型[subtype]关系都不是相互排斥的. 一个状况[condition]继承自它的超类型[supertype]的结构.
+具体实现[implementation]必须定义所有指定的子类型[subtype]关系. 除非特别注解, 本文档中所示的所有子类型[subtype]关系都不是相互排斥的. 一个状况[condition]继承它的超类型[supertype]的结构.
 
 类[class] condition 的元类没有被指定. 状况[condition]类型[type]的名字[name]可能被用于指定 define-condition 中的超类型[supertype]关系, 但是如果去尝试使用一个状况[condition]类型[type]作为一个 defclass 表达式形式[form]中的一个超类[superclass], 那么结果是未定义的.
 
@@ -117,7 +117,7 @@
 
 * 如果这个 datum 是一个状况[condition] ...
 
-    这个表示的状况[condition]就是这个 datum 自身. 在这个情况下, 除非这个讨论中的操作符[operator]描述中另有说明, 否则实参[argument必须为 null; 这也就是说, 如果提供了任何其他实参 arguments 那么结果是未定义的.
+    这个表示的状况[condition]就是这个 datum 自身. 在这个情况下, 除非这个讨论中的操作符[operator]描述中另有说明, 否则实参[argument]必须为 null; 这也就是说, 如果提供了任何其他实参 arguments 那么结果是未定义的.
 
 注意, 这个 default-type 只有在 datum 字符串[string]被提供的情况下才被使用. 在其他情况中, 产生的状况不必是类型[type] default-type.
 
@@ -146,9 +146,9 @@
 
 为了在向用户呈现报告消息[report message]时确保正确美观的结果, 推荐一些风格的惯例.
 
-对于通过状况汇报器[condition reporter]输出的消息内容, 有一些风格上的建议, 但是在那些程序[program]上没有正式的需求. 如果一个程序[program]违反了某些消息的建议, 这条消息的显示可能没有遵循指导方针的那样美观, 但是这个程序[program]仍然被认为是符合规范的程序[conforming program].
+关于由状况汇报器[condition reporter]输出的消息内容, 有一些风格上的建议, 但是在那些程序[program]上没有正式的需求. 如果一个程序[program]违反了某些消息的建议, 这条消息的显示可能没有遵循指导方针的那样美观, 但是这个程序[program]仍然被认为是符合规范的程序[conforming program].
 
-在一个调用一个状况汇报器[condition reporter]的程序[program]或具体实现[implementation]上的这个要求更为强烈. 一个符合规范的程序[conforming program]必须被允许假设如果遵循这些样式准则, 将保持适当的美观. 在适当的情况下, 关于此类程序的任何具体要求都在下面明确提到.
+这个要求在一个调用状况汇报器[condition reporter]的程序[program]或具体实现[implementation]上更为强烈. 必须允许一个符合规范的程序[conforming program]假设如果遵循这些样式准则, 将保持适当的美观. 在适当的情况下, 关于此类程序的任何具体要求都在下面明确提到.
 
 > * 9.1.3.1.1 [在状况汇报中的大写和标点符号](#CPCR)
 > * 9.1.3.1.2 [在状况汇报中领导和尾随的新行](#LTNCR)
@@ -213,11 +213,11 @@ It has two lines.
 
 ##### 9.1.3.1.5 <span id="MCFCR">在状况汇报中提及包含函数</span>
 
-这个包含函数的名字通常不应该在报告消息[report message]中被提及. 假定调试器将使这些信息在必要和适当的情况下可访问. 
+这个包含函数的名字通常不应该在报告消息[report message]中被提及. 假定调试器将在必要和适当的情况下使这些信息可访问. 
 
 ### 9.1.4 <span id="SignalingHandlingConditions">发送和处理状况</span>
 
-状况系统的操作依赖于活跃的可应用处理者[applicable handler]的顺序, 从最近的到最久的.
+状况系统的操作依赖于活跃的可应用处理者[applicable handler]的顺序, 从最近的到最久远的.
 
 每个处理者[handler]和一个类型指定符[type specifier]相关联, 这个指定符必须指定一个类型[type] condition 的子类型[subtype]. 如果一个状况[condition]是由关联的那个类型指定符[type specifier]指定的类型[type], 那么就说这个处理者[handler]对于这个状况[condition]是可应用的[application].
 
@@ -263,11 +263,11 @@ It has two lines.
 
 比如, 一个处理者[handler]可能合理地发送[signal]这个作为它的实参[argument]的状况[condition]对象[object]来允许更外部的处理者[handler]第一时机去处理[handler]这个状况. (这样一个处理者[handler]有时被称作 "默认处理者(default handler)".) 这个行为是允许的因为第二个发送过程处理的情况[situation]确实是相同的情况[situation].
 
-另一方面, 在一个通过用一个对 signal 的调用来打断用户进程进而实现异步键盘事件的具体实现[implementation]中, 不允许两个不同的异步键盘事件在同一时间对不同情况发送[signal]相同[identical]状况[condition]. 
+另一方面, 在一个使用 signal 调用来打断用户进程进而实现异步键盘事件的具体实现[implementation]中, 不允许两个不同的异步键盘事件在同一时间对不同情况发送[signal]相同[identical]状况[condition]. 
 
 #### 9.1.4.2 <span id="Restarts">重启动</span>
 
-交互式状况处理者只通过控制的非局部转移到专门定义的重启动[restart]来退出, 这个重启动可以通过系统或用户代码来设置. 转移控制到一个重启动被称为 "调用" 这个重启动. 类似于处理者, 活跃的重启动[restart]也被动态地确立, 并且只有活跃的重启动[restart]可以被调用. 一个活跃的重启动[restart]可以被用户从调试器中或者被程序使用 invoke-restart 来调用.
+交互式状况处理者只通过非局部控制转移到专门定义的重启动[restart]来退出, 这个重启动可以通过系统或用户代码来设置. 转移控制到一个重启动被称为 "调用" 这个重启动. 类似于处理者, 活跃的重启动[restart]也被动态地确立, 并且只有活跃的重启动[restart]可以被调用. 一个活跃的重启动[restart]可以被用户从调试器中或者被程序使用 invoke-restart 来调用.
 
 一个重启动[restart]包含一个在这个重启动[restart]被调用时要被调用的函数[function], 一个被用于查找或调用这个重启动[restart]的可选名字, 以及一个用于调试器来使户手动调用一个重启动[restart]的可选交互式信息集合.
 
@@ -277,7 +277,7 @@ It has two lines.
 
 通过一个 restart-bind 表达式形式[form], 一个 restart-case 表达式形式[form], 或者一个 with-simple-restart 表达式形式[form]建立的重启动[restart]有着动态范围[dynamic extent], 这个范围延伸到这个表达式形式[form]执行期间.
 
-相同名字的重启动[restart]可以根据下面两条规则来从最久的到最近的排序:
+相同名字的重启动[restart]可以根据下面两条规则来从最久到最近排序:
 
 1. 如果活跃的重启动集合 R1 中的那些重启动[restart]被建立时集合 R2 中的重启动[restart]是活跃的, 那么 R1 中的每个重启动[restart]都比 R2 中的每个重启动[restart]更近.
 
@@ -296,9 +296,9 @@ It has two lines.
 
 这个汇报函数被一个例如调试器的程序使用来呈现这个重启动[restart]会采取的动作的描述. 这个汇报函数是通过给 restart-bind 的 :report-function 关键字或者给 restart-case 的 :report 关键字来指定和建立.
 
-这个交互式函数可以使用给 restart-bind 的 :interactive-function 关键字或给 restart-case 的 :interactive 关键字来指定, 它在重启动[restart]被交互式调用时, 例如从调试器中, 会被用来产生一个合适的参数列表.
+这个交互式函数可以通过给 restart-bind 的 :interactive-function 关键字或给 restart-case 的 :interactive 关键字来指定, 它在重启动[restart]被交互式调用时, 例如从调试器中, 会被用来产生一个合适的参数列表.
 
-invoke-restart 调用和给 invoke-restart 的第一个参数相同名字的最近建立的重启动[restart]. 如果一个重启被调试器交互式调用并且没有转移控制而是返回值, 那么这个调试器在这些值上的准确动作是由具体实现定义的[implementation-defined]. 
+invoke-restart 调用和给 invoke-restart 的第一个参数相同名字的最近建立的重启动[restart]. 如果一个重启动被调试器交互式调用并且没有转移控制而是返回值, 那么这个调试器在这些值上的准确动作是由具体实现定义的[implementation-defined]. 
 
 ##### 9.1.4.2.2 <span id="InterfacesRestarts">重启动的接口</span>
 
@@ -411,7 +411,7 @@ invoke-restart 调用和给 invoke-restart 的第一个参数相同名字的最�
 
         * make-condition, 而不是 make-instance, 必须被用于显式创建状况[condition]对象[object].
 
-        * define-condition 的这个 :report 选项, 而不是 defmethod 对于 print-object, 必须被用于定义一个状况汇报器.
+        * 必须使用 define-condition 的这个 :report 选项, 而不是 print-object 的 defmethod, 来定义一个状况汇报器.
 
         * slot-value, slot-boundp, slot-makunbound, 和 with-slots 一定不能在状况[condition]对象[object]上使用. 反而, 应该使用合适的访问器函数 (通过 define-condition 定义). 
 
@@ -465,7 +465,7 @@ serious-condition, condition, t
 
 * 注意(Notes):
 
-        发送一个严重状况[serious condition]自身不会强制进入调试器. 然而, 除非在程序员可以确保处理[handle]不了严重状况[serious condition]不会造成伤害的不寻常情况下, 否则这样一个状况[condition]通常使用 error 来发送而不是 signal, 进而确保这个程序在没有处理这个状况[condition]的情况下不会继续下去. (但反之, 使用 signal 而不是 error 去发送不是严重状况[serious condition]的状况是传统做法, 因为正常情况下, 处理不了非严重情况并不是进入调试器的原因.) 
+        发送一个严重状况[serious condition]自身不会强制进入调试器. 然而, 除非在程序员可以确保处理[handle]不了严重状况[serious condition]不会造成伤害的不寻常情况下, 否则这样一个状况[condition]通常使用 error 来发送而不是 signal, 进而确保这个程序在没有处理这个状况[condition]的情况下不会继续下去. (但反之, 使用 signal 而不是 error 去发送非严重状况[serious condition]的状况是传统做法, 因为正常情况下, 处理不了非严重情况并不是进入调试器的原因.) 
 
 
 ### <span id="CT-ERROR">状况类型 ERROR</span>
@@ -551,7 +551,7 @@ serious-condition, condition, t
 
 * 注意(Notes):
 
-        尽管由于一些 Common Lisp 操作符被定义用来创建对象[object], 可能会发出存储状况[storage-condition], 但是那些不是被定义用来创建对象[object]的操作符是否会创建它们并且是否也可能发出存储状况[storage-condition]是未指定的. 同样的, 求值器自身也可能创建对象[object]并且因此可能发出 storage-condition. (自然的假设可能是, 这样的对象[object]创建自然是低效的, 但即使这样做也是依赖于具体实现的[implementation-dependent].) 通常, 存储分配如何完成的整个问题都是依赖于具体实现的[implementation-dependent], 因此任何操作符在任何时间都可能发出 storage-condition. 由于这样一个状况[condition]是具体实现[implementation]或镜像的限制的象征而不是一个程序[program]中的错误, 因此类型[type] storage-condition 的对象[object]不是类型[type] error. 
+        尽管由于一些 Common Lisp 操作符被定义用来创建对象[object], 可能会发出存储状况[storage-condition], 但是那些不是被定义用来创建对象[object]的操作符是否会创建它们并且是否也可能发出存储状况[storage-condition]是未指定的. 同样的, 求值器自身也可能创建对象[object]并且因此可能发出 storage-condition. (自然的假设可能是, 这样的对象[object]创建自然是低效的, 但即使这样做也是依赖于具体实现的[implementation-dependent].) 通常, 存储分配如何完成的整个问题都是依赖于具体实现的[implementation-dependent], 因此任何操作符在任何时间都可能发出 storage-condition. 由于这样一个状况[condition]是具体实现[implementation]或镜像限制的象征而不是一个程序[program]中的错误, 因此类型[type] storage-condition 的对象[object]不是类型[type] error. 
 
 
 ### <span id="M-ASSERT">宏 ASSERT</span>
@@ -1346,7 +1346,7 @@ serious-condition, condition, t
 
 * 描述(Description):
 
-        break 格式化[format] format-control 和 format-arguments, 然后在没有任何被程控的错误处理工具拦截可能的情况下直接进入调试器中.
+        break 格式化[format] format-control 和 format-arguments, 然后在不可能被任何程控的错误处理工具拦截的情况下直接进入调试器中.
 
         如果在这个调试器中使用了这个 continue 重启动[restart], break 在没有采取任何不寻常的恢复动作的情况下立即返回 nil.
 
@@ -1381,7 +1381,7 @@ serious-condition, condition, t
 
 * 注意(Notes):
 
-        break 被用作在一个程序中临时插入调试"断点(breakpoints)"的方式, 而不是作为发送错误的方式. 由于这个原因, break 不接受这个 cerror 接受的 continue-format-control 实参[argument]. 这个以及通过状况处理的拦截可能性的缺失是 break 和 cerror 之间仅有的程序可见的区别.
+        在一个程序中 break 被用作临时插入调试"断点(breakpoints)"的方式, 而不是作为发送错误的方式. 由于这个原因, break 不接受这个 cerror 接受的 continue-format-control 实参[argument]. 这个以及通过状况处理拦截可能性的缺失是 break 和 cerror 之间仅有的程序可见的区别.
 
         break 和 cerror 的用户接口方面允许更广泛的变化, 来适应这个具体实现[implementation]的接口需求. 比如, 对于一个 Lisp read-eval-print 循环[Lisp read-eval-print loop]允许通过 break 而不是常规的调试器来进入.
 
@@ -1410,7 +1410,7 @@ serious-condition, condition, t
 
 * 描述(Description):
 
-        当这个 *debugger-hook* 的值[value]非 nil [non-nil], 它在正常进入调试器前被调用, 不管是由于调用 invoke-debugger 或是从一个带有未处理状况的 error 或 cerror 调用中进入调试器. 这个函数[function]可能处理这个状况[condition] (转移控制) 或者正常返回 (允许标准这个标准调试器来运行). 为了最小化调试期间的递归错误, *debugger-hook* 在调用这个函数[function]前被 invoke-debugger 被绑定为 nil.
+        当这个 *debugger-hook* 的值[value]非 nil [non-nil], 它在正常进入调试器前被调用, 不管是由于调用 invoke-debugger 或是从一个带有未处理状况的 error 或 cerror 调用中进入调试器. 这个函数[function]可能处理这个状况[condition] (转移控制) 或者正常返回 (允许这个标准调试器来运行). 为了最小化调试期间的递归错误, *debugger-hook* 在调用这个函数[function]前被 invoke-debugger 被绑定为 nil.
 
 * 示例(Examples):
 
@@ -1474,7 +1474,7 @@ serious-condition, condition, t
 
         当 (typep condition *break-on-signals*) 返回 true 时, 对 signal, 以及其他像 error 这样隐式调用 signal 的操作符[operator]的调用, 在发送这个状况[condition]前进入到调试器中.
 
-        当由于 *break-on-signals* 发生一个中断时, 这个 continue 重启动[condition]可以被用于继续这个正常的发送过程.
+        当 *break-on-signals* 导致一个发送中断时, 这个 continue 重启动[condition]可以被用于继续这个正常的发送过程.
 
 * 示例(Examples):
 
@@ -1518,7 +1518,7 @@ serious-condition, condition, t
 
 * 注意(Notes):
 
-        *break-on-signals* 主要用于调试执行发送的代码. 当设置了 *break-on-signals* 时, 鼓励用户去选择满足的最限制的说明. 设置 *break-on-signals* 实际上违反了状况[condition]发送的模块化处理. 事实上, 设置 *break-on-signals* 的完整影响在某些方面可能是不可预测的, 因为用户可能没有意识到在附带调用的代码中使用的对 signal 调用的种类和数量.
+        *break-on-signals* 主要用于调试那些执行发送的代码. 当设置了 *break-on-signals* 时, 鼓励用户去选择满足的最限制的规格. 设置 *break-on-signals* 实际上违反了状况[condition]发送的模块化处理. 事实上, 设置 *break-on-signals* 的完整影响在某些方面可能是不可预测的, 因为用户可能没有意识到在附带调用的代码中对 signal 调用的种类和数量.
 
         *break-on-signals* 允许早期进入调试器, 但是这样的一个进入不会阻止例如 error 和 cerror 操作下额外进入调试器. 
 
@@ -1541,17 +1541,17 @@ serious-condition, condition, t
 
 * 描述(Description):
 
-        在一个表示的处理者 handler 绑定[binding]生效的动态环境[dynamic environment]中执行那些表达式形式 forms.
+        在指示的处理者 handler 绑定[binding]生效的一个动态环境[dynamic environment]中执行那些表达式形式 forms.
 
         每个处理者 handler 应该被求值为一个处理者函数 handler-function, 它被用于在执行这些表达式形式 forms 期间处理给定类型 type 的状况[condition]. 这个函数[function]应该接收一个单独的参数, 就是要被发送的这个状况[condition].
 
-        如果提供了超过一个处理者 handler 绑定[binding], 从上到下依次搜索这些处理者 handler 绑定[binding]来寻找匹配项 (通过使用 typecase 来做视觉类比). 如果找到一个合适的类型[type], 关联的处理者在一个这些处理者绑定都是可见的动态环境[dynamic environment]中运行 (来避免递归错误). 如果这个处理者[handler]拒绝[decline]了, 就继续搜索另一个处理者[handler].
+        如果提供了超过一个处理者 handler 绑定[binding], 从上到下依次搜索这些处理者 handler 绑定[binding]来寻找匹配项 (通过使用 typecase 来做视觉类比). 如果找到一个合适的类型[type], 关联的处理者在一个这些处理者绑定都不可见的动态环境[dynamic environment]中运行 (来避免递归错误). 如果这个处理者[handler]拒绝[decline]了, 就继续搜索另一个处理者[handler].
 
         如果没有找到合适的处理者[handler], 那么在动态闭合边界中寻找其他处理者[handler]. 如果在外边没有找到处理者[handler], 那么 signal 返回或者 error 进入到调试器中.
 
 * 示例(Examples):
 
-        在以下代码中, 如果在这个主体中被发送一个未绑定的变量错误 (并且没有被一个介入的处理者所处理), 第一个函数会被调用.
+        在以下代码中, 如果在这个主体中被发送一个"未绑定的变量"的错误 (并且没有被一个介入的处理者所处理), 第一个函数会被调用.
 
     ```LISP
     (handler-bind ((unbound-variable #'(lambda ...))
@@ -1578,7 +1578,7 @@ serious-condition, condition, t
     =>  (1 NIL 3)
     ```
 
-        注意, 这个 "Foo." 不会被打印, 因为这个 signal 发送的状况是一个简单转开[simple-condition], 它不是类型[type] error, 所以它不会触发由 trap-errors 设置的 error 的处理者.
+        注意, 这个 "Foo." 不会被打印, 因为这个 signal 发送的状况是一个简单状况[simple-condition], 它不是类型[type] error, 所以它不会触发由 trap-errors 设置的 error 的处理者.
 
 * 副作用(Side Effects): None.
 
@@ -1617,9 +1617,9 @@ serious-condition, condition, t
 
 * 描述(Description):
 
-        handler-case 在一个各种处理者都活跃的动态环境[dynamic environment]中执行表达式 expression. 每个错误子句 error-clause 指定了如何去处理匹配表示的类型指定符 typespec 的一个状况[condition]. 如果控制正常返回, 那么一个 no-error-clause 允许一个特定动作的规范.<!--TODO specification 规格？？-->
+        handler-case 在一个各种处理者都活跃的动态环境[dynamic environment]中执行表达式 expression. 每个错误子句 error-clause 指定了如何去处理匹配表示的类型指定符 typespec 的一个状况[condition]. 如果控制正常返回, 那么一个 no-error-clause 允许指定特定的操作.
 
-        如果在表达式 expression 求值期间一个有着合适的错误子句 error-clause 的状况[condition]被发送 (换句话说, (typep condition 'typespec) 返回 true) 并且如果这里没有这个类型[type]状况[condition]的中介处理者, 那么控制被转移到这个相关 error-clause 的主体当中. 在这个情况下, 这个动态的状态被解开 (这样在表达式 expression 周围建立的这些处理者不再是活跃的), 并且 var 被绑定为这个已经被发送的状况[condition]. 如果提供了不止一个情况(case), 这些情况可以并行访问. 这也就是说, 在下面这个表达式形式中
+        如果在表达式 expression 求值期间发出一个有着合适的错误子句 error-clause 的状况[condition] (换句话说, (typep condition 'typespec) 返回 true) 并且如果这里没有这个类型[type]的状况[condition]的中介处理者, 那么控制被转移到这个相关 error-clause 的主体当中. 在这个情况下, 这个动态的状态被解开 (这样在表达式 expression 周围建立的这些处理者不再是活跃的), 并且 var 被绑定为这个已经被发送的状况[condition]. 如果提供了不止一个情况(case), 这些情况可以平行访问. 这也就是说, 在下面这个表达式形式中
 
           (handler-case form
             (typespec1 (var1) form1)
