@@ -10,9 +10,9 @@
 
 ### 11.1.1 <span id="IntroductionPackages">包的介绍</span>
 
-一个包建立一个从名字到符号的映射. 在给定的任何时间, 都有一个包是当前的. 当前包是那个 \*package\* 的值的那个包. 当使用 Lisp 读取器时, 可能去引用不是当前包的包中的符号, 通过使用那个符号的打印表示中的包前缀.
+一个包[package]建立一个从名字到符号[symbol]的映射. 在给定的任何时间, 都有一个包[package]是当前的. 当前包[current package]是 \*package\* 的值[value]的那个包. 当使用 Lisp 读取器[Lisp reader]时, 可以去引用非当前包[package]中的符号[symbol], 通过在那个符号[symbol]的打印表示中使用包前缀[package prefixe].
 
-下面这段列出了一些可应用于包的已定义的名字. 在一个操作符接收一个符号或一个符号列表作为参数的地方, 一个 nil 参数被当作是一个空的符号列表. 任何包参数可能是一个字符串, 一个符号, 或者一个包. 如果提供了一个符号, 它的名字会被用作这个包的名字.
+下面这段列出了一些可应用于包[package]的已定义的名字[defined name]. 在一个操作符[operator]接收一个符号[symbol]或一个符号[symbol]列表[list]作为参数的地方, 一个 nil 参数被当作是一个空的符号[symbol]列表[list]. 任何包 package 参数可能是一个字符串[string], 一个符号[symbol], 或者一个包[package]. 如果提供了一个符号[symbol], 它的名字会被用作这个包[package]的名字.
 
     *modules*            import                     provide           
     *package*            in-package                 rename-package    
@@ -32,82 +32,82 @@
 
 #### 11.1.1.1 <span id="PackageNamesNicknames">包名和别名</span>
 
-每个包都有一个名字 (agiel字符串) 并且或许有一些别名 (也是字符串). 在这个包被创建它们被赋值并且可以在后面更改.
+每个包[package]都有一个名字[name] (一个字符串[string]) 并且或许有一些别名[nickname] (也是字符串[string]). 在这个包被创建时它们被赋值并且可以在后面更改.
 
-这里有一个包的单独的命名空间. 函数 find-package 转换一个包的名字或别名为关联的包. 函数 package-name 返回一个包的名字. 函数 package-nicknames 返回一个包的所有别名的列表. rename-package 移除一个包的当前名字和别名并且用调用者指定的新的那个替换它们. 
+这里有一个包[package]的单独的命名空间. 函数[function] find-package 把一个包的名字[name]或别名[nickname]转换为关联的包[package]. 函数[function] package-name 返回一个包[package]的名字[name]. 函数[function] package-nicknames 返回一个包[package]的所有别名[nickname]的列表[list]. rename-package 移除一个包[package]的当前名字[name]和别名[nickname]并且用调用者指定的新的那些替换它们. 
 
 #### 11.1.1.2 <span id="SymbolsInPackage">一个包中的符号</span>
 <!--TODO present 出现??-->
 > * 11.1.1.2.1 [内部和外部符号](#InternalExternalSymbols)
 > * 11.1.1.2.2 [包的继承](#PackageInheritance)
-> * 11.1.1.2.3 [一个包中符号的访问](#AccessSymbolsPackage)
+> * 11.1.1.2.3 [一个包中符号的可访问性](#AccessSymbolsPackage)
 > * 11.1.1.2.4 [查找一个包中的一个符号](#LocatingSymbolPackage)
 > * 11.1.1.2.5 [包中的名字冲突的避免](#PreventionNameConflictsPackages)
 
 ##### 11.1.1.2.1 <span id="InternalExternalSymbols">内部和外部符号</span>
 
-在一个包中的映射被分为两类, 外部的和内部的. 这些不同的映射针对的符号被称为这个包的外部符号和内部符号. 在一个包中, 一个名字引用一个符号或者没有引用; 如果它确实引用一个符号, 那么它可能是那个包中的外部符号或内部符号, 但是不可能都是. 外部符号是这个包对于其他包的公共接口部分. 如果符号被从一个给定包中导出, 那么它们就是这个包的外部符号.
+在一个包[package]中的映射被分为两类, 外部的和内部的. 这些不同的映射所针对的符号[symbol]被称为这个包[package]的外部符号[external symbol]和内部符号[internal symbol]. 在一个包[package]中, 一个名字引用一个符号[symbol]或者没有引用; 如果它确实引用一个符号[symbol], 那么它可能是那个包中的外部符号或内部符号, 但是不可能都是. 外部符号[external symbol]是这个包对于其他包[package]的公共接口部分. 如果符号[symbol]从一个给定包[package]中被导出[export], 那么它们就是这个包[package]的外部符号[external symbol].
 
-一个符号不管出现在那个包中它都有着相同的名字, 但是它可能是某些包的一个外部符号, 其他包的内部符号. 
+一个符号[symbol]不管出现[present]在哪个包[package]中它都有着相同的名字, 但是它可能是某些包[package]的一个外部符号[external symbol], 其他包的内部符号[internal symbol]. 
 
 ##### 11.1.1.2.2 <span id="PackageInheritance">包的继承</span>
 
-包可以被成层构建. 从某个角度, 一个包是一个从字符串到内部符号和外部符号的映射的单个集合. 然而, 这些映射中的一部分可能在这个包自身中被建立, 而其他映射可能是从其他包中通过 use-package 继承而来. 如果一个映射是在那个包自身中的并且不是从某个其他地方继承来的, 就说一个符号出现在一个包中.
+包[package]可以分层构建. 从某个角度, 一个包[package]是一个从字符串[string]到内部符号[internal symbol]和外部符号[external symbol]的映射的单独集合. 然而, 这些映射中的一部分可能在这个包[package]自身中被建立, 而其他映射可能通过 use-package 从其他包[package]中继承而来. 如果一个映射是在那个包[package]自身中的并且不是从某个其他地方继承来的, 就说一个符号[symbol]出现[present]在一个包[package]中.
 
-这里没有方法去继承另一个包的内部符号; 在使用 Lisp 读取器时, 为了引用一个内部符号, 一个包含了那个符号的包必须是当前包, 必须使用一个包前缀, 或者这个符号必须被导入到当前包中. 
+这里没有方法去继承另一个包[package]的内部符号[internal symbol]; 在使用 Lisp 读取器[Lisp reader]时, 为了引用一个内部符号[internal symbol], 包含这个符号[symbol]的包[package]一定是当前包[current package], 或者一定使用一个包前缀[package prefix], 或者这个符号[symbol]一定被导入到当前包[current package]中. 
 
-##### 11.1.1.2.3 <span id="AccessSymbolsPackage">一个包中符号的访问</span>
+##### 11.1.1.2.3 <span id="AccessSymbolsPackage">一个包中符号的可访问性</span>
 
-如果一个包在一个符号被创建时是这个符号的 home 包, 或者它被导入到这个包中, 或者通过 use-package 继承, 那么这个符号在这个包中就是可访问的.
+如果一个包[package]在一个符号[symbol]被创建时是它的 home 包[home package], 或者它被导入到这个包[package]中, 或者通过 use-package 继承, 那么这个符号[symbol]在这个包[package]中就是可访问的[accessible].
 
-如果一个符号在一个包中是可访问的, 当那个包是当前包使用 Lisp 读取器时, 它可以在不带包前缀的情况下被引用, 不是它是出现在那个包中或是继承的.
+如果一个符号[symbol]在一个包[package]中是可访问的[accessible], 当那个包[package]是当前包[current package]时用 Lisp 读取器, 它可以在不带包前缀[package prefix]的情况下被引用, 不管它是出现[persent]在那个包中还是继承的.
 
-来自一个包中的符号可以用两种方式使得它在另一个包中可以被访问.
+来自一个包[package]中的符号[symbol]可以用两种方式使得它在另一个包[package]中可访问[accessible].
 
--- 任何单个符号可以通过使用 import 被添加到一个包中. 在那个对 import 的调用后那个符号就出现在那个导入的包中. 在这个符号来源的包中(如果有的话), 这个符号的状态是不会被改变, 并且这个符号的 home 包没有被改变. 一旦被导入, 一个符号就出现在那个导入的包中并且只能通过调用 unintern 来移除.
+-- 任何单独符号[symbol]可以通过使用 import 被添加到一个包[package]中. 在这个对 import 的调用后那个符号[symbol]就出现[present]在那个导入的包[package]中. 在这个符号[symbol]来源的包[package]中(如果有的话)的该符号[symbol]的状态是不会被改变, 并且这个符号[symbol]的 home 包[home package]没有被改变. 一旦被导入, 一个符号[symbol]就出现[present]在那个导入的包[package]中并且只能通过调用 unintern 来移除.
 
-    如果一个符号可以访问是通过继承而不是因为出现在一个包中的另一个同名符号, 那么这个符号在那个包中会被那个符号所遮蔽. 见 shadowing-import.
+    如果一个符号可以访问是通过继承而不是因为出现在一个包中的另一个同名符号, 那么这个符号在那个包中会被那个符号所遮蔽. 见 shadowing-import.<!--TODO 待翻译-->
 
--- 使一个包中的符号在另一个包中是可访问的第二种机制是通过 use-package 提供的. 那个被使用的包中的所有外部符号都被那个使用的包所继承. 函数 unuse-package 撤销一个前面的 use-package 的影响. 
+-- 使一个包[package]中的符号[symbol]在另一个包中是可访问[accessible]的第二种机制是由 use-package 提供的. 那个被使用的包[package]中的所有外部符号[external package]都被那个使用的包[package]所继承. 函数[function] unuse-package 撤销一个之前的 use-package 的影响. 
 
 ##### 11.1.1.2.4 <span id="LocatingSymbolPackage">查找一个包中的一个符号</span>
 
-当一个给定的包中的一个符号要被查找时会发生以下这些事:
+当要在一个给定的包中查找一个符号时会发生以下情况:
 
--- 对这个包的外部符号和内部符号进行搜索来查找这个符号.
--- 所使用的包的外部符号会以某个未指定的顺序进行搜索. 顺序无关紧要; 见下面列出的用于处理名字冲突的规则. 
+-- 对这个包[package]的外部符号[external package]和内部符号[internal symbol]进行搜索来查找这个符号[symbol].
+-- 所使用的包[package]的外部符号[external package]会以某个未指定的顺序进行搜索. 顺序无关紧要; 见下面列出的用于处理名字冲突的规则. 
 
 ##### 11.1.1.2.5 <span id="PreventionNameConflictsPackages">包中的名字冲突的避免</span>
 
-在一个包中, 任何独有的名字最多只能引用一个符号. 当这里有超过一个候选符号时就说发生了名字冲突. 任何一个名字冲突将要发生时, 就会发出一个可校正的错误.
+在一个包[package]中, 任何独有的名字最多只能引用一个符号[symbol]. 当这里有超过一个候选符号[symbol]时就说发生了名字冲突. 任何一个名字冲突将要发生时, 就会发出一个可校正的[correctable]错误[error].
 
 以下规则应用于名字冲突:
 
--- 当名字冲突称为可能时它们会被检测到, 这也就是说, 在这个包结构被修改时. 在每次名字查找时名字冲突不会被检测.
+-- 当名字冲突成为可能时它们会被检测到, 就是说, 在这个包结构被修改时. 在每次名字查找时名字冲突不会被检测.
 
--- 如果对于一个包相同的符号可以通过超过一种途径访问, 那么这里没有名字冲突. 一个符号不能和自身冲突. 名字冲突只发生在有着相同名字(在 string= 下)的不同符号之间.
+-- 如果对于一个包[package]相同[same]符号[symbol]可以通过超过一种途径访问, 那么这里没有名字冲突. 一个符号[symbol]不能和自身冲突. 名字冲突只发生在有着相同名字(在 string= 下)的不同[distinct]符号[symbol]之间.
 
--- 每个包都有一个遮蔽符号的列表. 一个遮蔽符号优先于其他在那个包中可访问的任何相同名字的符号. 一个涉及到遮蔽符号的名字冲突总是在没有发出一个错误的情况下, 以选择遮蔽符号的形式得到解决 (除了一个涉及 import 的例外情况). 见 shadow 和 shadowing-import.
+-- 每个包[package]都有一个遮蔽符号[symbol]的列表. 一个遮蔽符号[symbol]优先于其他在那个包[package]中可访问的[accessible]任何相同名字的符号[symbol]. 一个涉及到遮蔽符号的名字冲突总是在没有发出一个错误的情况下, 以选择遮蔽符号的形式得到解决 (除了一个涉及 import 的例外情况). 见 shadow 和 shadowing-import.
 
 -- 函数 use-package, import, 和 export 检测名字冲突.
 
 -- shadow 和 shadowing-import 从不发出一个名字冲突的错误.
 
--- unuse-package 和 unexport 不需要去做任何名字冲突的检测. unintern 只有在一个被解除捕捉的符号是一个遮蔽符号时执行名字冲突检测.
+-- unuse-package 和 unexport 不需要去做任何名字冲突的检测. unintern 只有在一个被解除捕捉[uninterned]的符号[symbol]是一个遮蔽符号[shadowing symbol]时执行名字冲突检测.
 
 -- 给 unintern 传递一个遮蔽符号可以发现一个之前通过遮蔽解决的名字冲突.
 
--- 包函数在对包结构做任何改动之前 Package functions signal name-conflict errors of type package-error before making any change to the package structure. 当需要进行多次更改时, 允许具体实现分别处理每一个更改. 比如, 当 export 给定一个符号的列表时, 从列表中第二个符号导致的名字冲突终止可能仍然会导出这个列表的第一个符号. 然而, 一个由导出单个符号导致的名字冲突错误会在在任何包中那个符号的访问被改变之前被发出.
+-- 包函数在对包结构做任何改动之前发出一个 package-error 类型[type]的名称冲突错误. 当需要进行多次更改时, 允许具体实现分别处理每一个更改. 比如, 当 export 给定一个符号[symbol]的列表[list]时, 从列表[list]中第二个符号[symbol]导致的名字冲突终止可能仍然会导出这个列表[list]的第一个符号[symbol]. 然而, 一个由单个符号的 export 导致的名字冲突错误会在在任何包[package]中那个符号[symbol]的可访问性[accessibility]被改变之前被发出.
 
--- 从一个名字冲突错误中继续必须为用户提供一个机会去选择任何一个候选符号. 包结构应该被修改, 以反映名字冲突的解决方案, 通过 shadowing-import, unintern, 或 unexport.
+-- 从一个名字冲突错误中继续必须为用户提供一个机会去选择任何一个候选符号. 包[package]结构应该通过 shadowing-import, unintern, 或 unexport 被修改, 以反映名字冲突的解决方案.
 
--- use-package 中在出现在使用包中的符号和被使用包中的外部符号之前的名字冲突, 通过使第一个符号变为遮蔽符号而选择第一个符号或者通过在使用包中解绑第一个符号而选择第二个符号来解决.
+-- 出现[present]在使用的包[package]中的符号[symbol]和被使用包中的外部符号[external symbol]之间的 use-package 中的名字冲突, 通过使第一个符号[symbol]变为遮蔽符号[symbol]进而选择第一个符号或者通过从使用的包[package]中解绑第一个符号[symbol]进而选择第二个符号[symbol]来解决.
 
--- 在 export 或 unintern 中由于一个包从两个其他包中继承相同名字(在 string= 下)的不同符号而导致的一个名字冲突, 可以通过把任意一个符号导出到使用包中并且使它称为一个遮蔽符号来解决, 就像使用 use-package 一样. 
+-- 在 export 或 unintern 中由于一个包[package]从两个其他包[package]中继承相同[same]名字[name] (在 string= 下)的不同[dictinct]符号[symbol]而导致的一个名字冲突, 可以通过把任意一个符号[symbol]导入到使用的包[package]中并且使它成为一个遮蔽符号[shadowing symbol]来解决, 就像使用 use-package 一样. 
 
 ### 11.1.2 <span id="StandardizedPackages">标准包</span>
 
-这个章节描述了在每个符合规范的实现中都是可用的包. 这些标准包的名字和别名的汇总在下面这段中给定.
+这个章节描述了在每个符合规范的实现[conforming implementation]中都是可用的包[package]. 下面这段中提供了这些标准[standardized]包[package]的名字[name]和别名[nickname]的汇总在.
 
     名称              别名  
     COMMON-LISP       CL         
@@ -123,41 +123,41 @@
 
 #### 11.1.2.1 <span id="COMMON-LISP-Package">COMMON-LISP 包</span>
 
-这个 COMMON-LISP 包包含了这个规范定义的 Common Lisp 系统的基本. 它的外部符号包含了出现在 Common Lisp 系统中的所有已定义的名字 (除了 KEYWORD 包中已定义的名字外), 例如 car, cdr, \*package\*, 等等. 这个 COMMON-LISP 有着别名 CL.
+这个 COMMON-LISP 包包含了这个规范定义的 Common Lisp 系统的基本. 它的外部符号[external symbol]包含了出现在 Common Lisp 系统中的所有已定义的名字[defined name] (除了 KEYWORD 包中已定义的名字[defined name]外), 例如 car, cdr, \*package\*, 等等. 这个 COMMON-LISP 有着别名[nickname] CL.
 
-这个 COMMON-LISP 包有着在章节 1.9 (Symbols in the COMMON-LISP Package) 中枚举的那些外部符号, 并且没有其他的. 这些外部符号出现在 COMMON-LISP 包中但是它们的 home 包不需要是 COMMON-LISP 包.
+这个 COMMON-LISP 包有着章节 1.9 (COMMON-LISP 包中的符号) 中枚举的那些外部符号[external symbol], 没有其他的. 这些外部符号[external symbol]出现[present]在 COMMON-LISP 包中但是它们的 home 包[home package]不需要是 COMMON-LISP 包.
 
-比如, 符号 HELP 不能是 COMMON-LISP 包的一个外部符号因为它没有在章节 1.9 (Symbols in the COMMON-LISP Package) 中被提及. 与此相反, 符号 variable 必须是 COMMON-LISP 包的一个外部符号即便它没有定义, 因为它在那个章节中被列出来了 (为了支持它被用作给函数 documentation 的第二个有效参数).
+比如, 符号 HELP 不能是 COMMON-LISP 包的一个外部符号[external symbol]因为它没有在章节 1.9 (COMMON-LISP 包中的符号) 中被提及. 与此相反, 符号[symbol] variable 必须是 COMMON-LISP 包的一个外部符号[external symbol]即便它没有定义, 因为它在那个章节中被列出来了 (为了支持它作为给函数[function] documentation 的第二个有效实参[argument]的使用).
 
-这个 COMMON-LISP 包有着额外的内部符号.
+这个 COMMON-LISP 包有着额外的内部符号[internal symbol].
 
 
 ##### 11.1.2.1.1 符合规范的具体实现的 COMMON-LISP 包的约束
 
-在一个符合规范的具体实现中, 这个 COMMON-LISP 包的一个外部符号可以有一个函数, 宏, 或者特殊操作符定义, 一个全局变量定义 (或者其他状态就像由于一个 special 全局声明作为一个动态变量), 或者只有在这个标准中显式允许时可以是一个类型定义. 比如, fboundp 对于 COMMON-LISP 包的任何不是一个标准函数, 宏或特殊操作符的名字的外部符号产生 false, 而 boundp 对于 COMMON-LISP 包中的任何不是标准全局变量名字的外部符号返回 false. 此外, 符合规范的程序可以使用 COMMON-LISP 包的外部符号作为局部词法变量的名字, 并相信这些名字没有被具体实现声明为 special, 除非这些符号是标准全局变量的名字.
+在一个符合规范的具体实现[conforming implementation]中, 这个 COMMON-LISP 包的一个外部符号[external symbol]可以有一个函数[function], 宏[macro], 或者特殊操作符[special operator]定义, 一个全局变量[global variable]定义 (或者由于一个 special 公告[proclamation]作为一个动态变量[dynamic variable]的其他状态), 或者只有在这个标准中显式允许时可以是一个类型[type]定义. 比如, fboundp 对于 COMMON-LISP 包的任何不是一个标准[standardized]函数[function], 宏[macro]或特殊操作符[special operator]的名字[name]的外部符号[external symbol]产生[yield] false, 而 boundp 对于 COMMON-LISP 包中的任何不是标准[standardized]全局变量[global variable]名字的外部符号[external symbol]返回 false. 此外, 符合规范的程序[conforming program]可以使用 COMMON-LISP 包的外部符号[external symbol]作为局部词法变量[lexical variable]的名字[name], 并相信这些名字[name]没有被具体实现全局声明为 special, 除非这些符号[symbol]是标准[standardized]全局变量[global variable]的名字[name].
 
-一个符合规范的具体实现一定不能在 COMMON-LISP 包的外部符号上使用一个属性指示符放置任何属性, 一个符合规范的具体实现一定不能使用任何标准包的外部符号或 COMMON-LISP-USER 包中的可访问的符号作为属性标识符在 COMMON-LISP 包的外部符号上放置属性. <!--TODO 还需校验-->
+一个符合规范的具体实现[conforming implementation]一定不能在 COMMON-LISP 包的外部符号[external symbol]上使用一个属性指示符[property indicator]放置任何属性[property], 这个属性指示符要么是任何标准[standardized]包[package]的外部符号[external symbol], 要么是 COMMON-LISP-USER 包中的可访问[accessible]的符号[symbol].
 
 
 ##### 11.1.2.1.2 符合规范的程序的 COMMON-LISP 包的约束
 
-除了显式允许的地方, 如果在一个 COMMON-LISP 包的外部符号上执行以下任何动作, 后果都是未定义的:
+除了显式允许的地方, 如果在一个 COMMON-LISP 包的外部符号[external symbol]上执行以下任何动作, 后果都是未定义的:
 
-1. 绑定或修改它的值 (词法地或动态地). (下面记录一些异常情况.)
+1. 绑定[binding]或修改它的值 (词法地或动态地). (下面记录一些异常情况.)
 
-2. 定义, 解除定义, 或者绑定它为一个函数. (下面记录一些异常情况.)
+2. 定义, 解除定义, 或者绑定[binding]它为一个函数[function]. (下面记录一些异常情况.)
 
-3. 定义, 解除定义, 或绑定它为一个宏或编译器宏. (下面记录一些异常情况.)
+3. 定义, 解除定义, 或绑定[binding]它为一个宏[macro]或编译器宏[compiler macro]. (下面记录一些异常情况.)
 
-4. 定义它为一个类型特化符 (通过 defstruct, defclass, deftype, define-condition).
+4. 定义它为一个类型指定符[type specifier] (通过 defstruct, defclass, deftype, define-condition).
 
 5. 定义它为一个结构体 (通过 defstruct).
 
-6. 使用 declaration 全局声明定义它为一个声明.
+6. 使用 declaration 全局声明[proclamation]定义它为一个声明[declaration].
 
-7. 定义它为一个符号宏.
+7. 定义它为一个符号宏[symbol macro].
 
-8. 修改它的 home 包.
+8. 修改它的 home 包[home package].
 
 9. 追踪它 (通过 trace).
 
@@ -167,64 +167,64 @@
 
 12. 从 COMMON-LISP 包中移除它.
 
-13. 为它定义一个 setf 展开 (提供 defsetf 或 define-setf-method).
+13. 为它定义一个 setf 展开器[setf expander] (提供 defsetf 或 define-setf-method).
 
-14. 定义, 解除定义, 或绑定它的 setf 函数名.
+14. 定义, 解除定义, 或绑定它的 setf 函数名[setf function name].
 
-15. 定义它为一个方法组合类型 (通过 define-method-combination).
+15. 定义它为一个方法组合类型[method combination] (通过 define-method-combination).
 
 16. 使用它作为给 find-class 的 setf 的 class-name 参数.
 
-17. 绑定它为一个捕捉标记.
+17. 绑定它为一个捕捉标记[catch tag].
 
-18. 绑定它为一个重启动名字.
+18. 绑定它为一个重启动[restart]名字[name].
 
-19. 当左右参数都是标准化类的直接实例时, 为一个可应用的标准广义函数定义一个方法.
+19. 为标准[standardized]广义函数[generic function]定义一个当所有实参[argument]都是标准化[standardized]类[class]的直接实例[direct instance]时可应用[applicable]的方法[method].
 
 
 ###### 11.1.2.1.2.1 符合规范的程序的 COMMON-LISP 包的约束的一些异常
 
-如果 COMMON-LISP 包的一个外部符号没有被全局定义为一个标准动态变量或常变量, 那么允许词法上绑定它并且声明那个绑定的类型, 并且允许去局部地建立它为一个符号宏 (比如, 使用 symbol-macrolet).
+如果 COMMON-LISP 包的一个外部符号[external symbol]没有被全局定义为一个标准[standardized]动态变量[dynamic variable]或常变量[constant variable], 那么允许词法上绑定[bind]它并且声明那个绑定[binding]的 type, 并且允许去局部地把它建立[establish]为一个符号宏[symbol macro] (比如, 使用 symbol-macrolet).
 
-除非显式指定, 否则如果一个 COMMON-LISP 包的外部符号被全局定义为一个标准化动态变量, 允许去绑定或分配那个提供的动态变量, 前提是保持这个动态变量的 "值类型(Value Type)" 约束, 并且那个变量的新值和该变量声明的目的一致.
+除非显式指定, 否则如果一个 COMMON-LISP 包的外部符号[external symbol]被全局定义为一个标准[standardized]动态变量[dynamic variable], 允许去对那个动态变量[dynamic variable]绑定[bind]或分配[assign], 前提是保持这个动态变量的 "值类型(Value Type)" 约束, 并且那个变量[variable]的新值[value]和该变量[variable]声明的目的一致.
 
-如果一个 COMMON-LISP 包的外部符号没有被定义为一个标准化函数, 宏, 或特殊操作符, 允许词法上绑定它为一个函数 (比如, 使用 flet), 去声明那个绑定的 ftype, 并且 (在提供了执行这个的能力的具体实现中) 去追踪那个绑定.
+如果一个 COMMON-LISP 包的外部符号[external symbol]没有被定义为一个标准[standardized]函数[function], 宏[macro], 或特殊操作符[special operator], 允许词法上把它绑定[bind]为一个函数[function] (比如, 使用 flet), 去声明那个绑定[binding]的 ftype, 并且去追踪(trace)那个绑定[binding] (在提供了执行这个的能力的具体实现中) .
 
-如果一个 COMMON-LISP 包的外部符号没有被定义为一个标准化函数, 宏, 或特殊操作符, 允许去词法上绑定它为一个宏 (比如, 使用 macrolet).
+如果一个 COMMON-LISP 包的外部符号[external symbol]没有被定义为一个标准[standardized]函数[function], 宏[macro], 或特殊操作符[special operator], 允许去词法上把它绑定[bind]为一个宏[macro] (比如, 使用 macrolet).
 
-如果一个 COMMON-LISP 包的外部符号没有被定义为一个标准化函数, 宏, 或特殊操作符, 允许去词法绑定它的 setf 函数名为一个函数, 并且去声明那个绑定的 ftype. 
+如果一个 COMMON-LISP 包的外部符号[external symbol]没有被定义为一个标准[standardized]函数[function], 宏[macro], 或特殊操作符[special operator], 允许去词法上把它的 setf 函数名[setf function name]绑定[bind]为一个函数[function], 并且去声明那个绑定[binding]的 ftype. 
 
 
 #### 11.1.2.2 <span id="COMMON-LISP-USER-Package">COMMON-LISP-USER 包</span>
 
-在 Common Lisp 系统启动时, 这个 COMMON-LISP-USER 包是当前包. 这个包使用了 COMMON-LISP 包. 这个 COMMON-LISP-USER 包有着别名 CL-USER. 这个 COMMON-LISP-USER 包可以有捕捉在它内部的额外符号; 它可以使用其他具体实现定义的包. 
+在 Common Lisp 系统启动时, 这个 COMMON-LISP-USER 包是当前包[current package]. 这个包[package]使用[use]了 COMMON-LISP 包. 这个 COMMON-LISP-USER 包有着别名[nickname] CL-USER. 这个 COMMON-LISP-USER 包可以有捕捉在它内部的额外符号; 它可以使用[use]其他具体实现定义[implementation-defined]的包[package]. 
 
 
 #### 11.1.2.3 <span id="KEYWORD-Package">KEYWORD 包</span>
 
-这个 KEYWORD 包包含的称之为关键字的符号, 通常被用作程序以及它们关联的数据表达式中的特殊标记.
+这个 KEYWORD 包包含了称之为关键字[keyword[1]]的符号[symbol], 通常被用作程序[program]以及它们关联的数据表达式[expression[1]]中的特殊标记.
 
-以一个包标记开始的符号 token被 Lisp 读取器解析为 KEYWORD 包中的符号; 见章节 2.3.4 (Symbols as Tokens). 这使得在不同包间的程序之间进行通信时使用关键字变得方便. 比如, 在调用中传递关键字参数的机制使用关键字来命名相应的参数; 见章节 3.4.1 (Ordinary Lambda Lists).
+以一个包标记[package marker]开始的符号[symbol]标记[token]被 Lisp 读取器[Lisp reader]解析为 KEYWORD 包中的符号[symbol]; 见章节 2.3.4 (符号标记). 这使得在不同包[package]中的程序之间进行通信时使用关键字[keyword]变得方便. 比如, 在调用[call]中传递关键字参数[keyword parameter]的机制使用关键字[keywords[1]]来命名相应的实参[argument]; 见章节 3.4.1 (普通 lambda 列表).
 
-在 KEYWORD 包中的符号按照定义是 keyword 类型的.
+在 KEYWORD 包中的符号[symbol]按照定义是 keyword 类型[type]的.
 
 
 ##### 11.1.2.3.1 在 KEYWORD 包中捕捉一个符号
 
-KEYWORD 包的处理方式与其他包不同, 因为在其中插入一个符号时, 会采取特殊的操作. 特别地, 当一个符号被捕捉到 KEYWORD 包中时, 它自动成为一个外部符号并且自动成为一个以它自身作为值的常变量. 
+KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol]被捕捉[interned]到其中时, 会采取特殊的操作. 特别地, 当一个符号[symbol]被捕捉[interned]到 KEYWORD 包中时, 它自动成为一个外部符号[external symbol]并且自动成为一个以它自身作为值[value]的常变量[constant variable]. 
 
 ##### 11.1.2.3.2 KEYWORD 包的注意点
 
 一般情况下, 最好将关键字的使用限制在存在要被选择的有限可枚举的名称集合的情况下. 比如, 如果一个亮度切换有两个状态, 它们可能被称作 :on 和 :off.
 
-在这个名称集合不是有限可枚举的情况下 (也就是说, 可能发生名字冲突的情况下) 最好去使用某个不是 KEYWORD 的包中的符号, 这样冲突自然会被避免. 比如, 一个程序去使用一个关键字作为属性指示符通常是不明智的, 因为如果这里有另一个程序做了相同的事, 每一个都会把另一个的数据重写掉. 
+在这个名称集合不是有限可枚举的情况下 (也就是说, 可能发生名字冲突的情况下) 最好去使用某个不是 KEYWORD 的包中的符号[symbol], 这样冲突自然会被避免. 比如, 一个程序[program]使用一个关键字[keyword[1]]作为属性指示符[property indicator]通常是不明智的, 因为如果这里有另一个程序[program]做了相同的事, 每一个都会把另一个的数据重写掉. 
 
 
 #### 11.1.2.4 <span id="Implementation-Defined-Packages">依赖于具体实现的包</span>
 
-其他的, 具体实现定义的包可能出现在最初的 Common Lisp 环境中.
+其他的, 具体实现定义[implementation-defined]的包[package]可能出现在最初的 Common Lisp 环境中.
 
-一个符合规范的具体实现的文档建议但不是必须去包含一个最初出现在那个具体实现但没有在这个规范中指定的所有包名的列表. (也见函数 list-all-packages.) 
+一个符合规范的具体实现[conforming implementation]的文档建议但不是必须去包含一个最初出现在那个具体实现[implementation]但没有在这个规范中指定的所有包名的列表. (也见函数[function] list-all-packages.) 
 
 
 ## 11.2 <span id="ThePackagesDictionary">包字典</span>
@@ -273,7 +273,7 @@ KEYWORD 包的处理方式与其他包不同, 因为在其中插入一个符号�
 
 * 也见(See Also):
 
-        章节 11.1 (Package Concepts), 章节 22.1.3.13 (Printing Other Objects), 章节 2.3.4 (Symbols as Tokens) 
+        章节 11.1 (Package Concepts), 章节 22.1.3.13 (Printing Other Objects), 章节 2.3.4 (符号标记) 
 
 
 ### <span id="F-EXPORT">函数 EXPORT</span>
@@ -1521,7 +1521,7 @@ KEYWORD 包的处理方式与其他包不同, 因为在其中插入一个符号�
 
 * 也见(See Also):
 
-        find-symbol, read, symbol, unintern, Section 2.3.4 (Symbols as Tokens)
+        find-symbol, read, symbol, unintern, Section 2.3.4 (符号标记)
 
 * 注意(Notes):
 
