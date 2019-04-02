@@ -37,7 +37,7 @@
 这里有一个包[package]的单独的命名空间. 函数[function] find-package 把一个包的名字[name]或别名[nickname]转换为关联的包[package]. 函数[function] package-name 返回一个包[package]的名字[name]. 函数[function] package-nicknames 返回一个包[package]的所有别名[nickname]的列表[list]. rename-package 移除一个包[package]的当前名字[name]和别名[nickname]并且用调用者指定的新的那些替换它们. 
 
 #### 11.1.1.2 <span id="SymbolsInPackage">一个包中的符号</span>
-<!--TODO present 出现??-->
+
 > * 11.1.1.2.1 [内部和外部符号](#InternalExternalSymbols)
 > * 11.1.1.2.2 [包的继承](#PackageInheritance)
 > * 11.1.1.2.3 [一个包中符号的可访问性](#AccessSymbolsPackage)
@@ -60,13 +60,13 @@
 
 如果一个包[package]在一个符号[symbol]被创建时是它的 home 包[home package], 或者它被导入到这个包[package]中, 或者通过 use-package 继承, 那么这个符号[symbol]在这个包[package]中就是可访问的[accessible].
 
-如果一个符号[symbol]在一个包[package]中是可访问的[accessible], 当那个包[package]是当前包[current package]时用 Lisp 读取器, 它可以在不带包前缀[package prefix]的情况下被引用, 不管它是出现[persent]在那个包中还是继承的.
+如果一个符号[symbol]在一个包[package]中是可访问的[accessible], 当那个包[package]是当前包[current package]时用 Lisp 读取器, 它可以在不带包前缀[package prefix]的情况下被引用, 不管它是出现[present]在那个包中还是继承的.
 
 来自一个包[package]中的符号[symbol]可以用两种方式使得它在另一个包[package]中可访问[accessible].
 
 -- 任何单独符号[symbol]可以通过使用 import 被添加到一个包[package]中. 在这个对 import 的调用后那个符号[symbol]就出现[present]在那个导入的包[package]中. 在这个符号[symbol]来源的包[package]中(如果有的话)的该符号[symbol]的状态是不会被改变, 并且这个符号[symbol]的 home 包[home package]没有被改变. 一旦被导入, 一个符号[symbol]就出现[present]在那个导入的包[package]中并且只能通过调用 unintern 来移除.
 
-    如果一个符号可以访问是通过继承而不是因为出现在一个包中的另一个同名符号, 那么这个符号在那个包中会被那个符号所遮蔽. 见 shadowing-import.<!--TODO 待翻译-->
+    如果一个符号通过继承是可访问的[accessible]而不是因为出现在一个包中的另一个同名符号, 那么这个符号在那个包中会被那个符号所遮蔽. 见 shadowing-import.<!--TODO 待翻译-->
 
 -- 使一个包[package]中的符号[symbol]在另一个包中是可访问[accessible]的第二种机制是由 use-package 提供的. 那个被使用的包[package]中的所有外部符号[external package]都被那个使用的包[package]所继承. 函数[function] unuse-package 撤销一个之前的 use-package 的影响. 
 
@@ -269,11 +269,11 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
 * 描述(Description):
 
-        一个包是一个映射符号名到符号的命名空间; 见章节 11.1 (Package Concepts).
+        一个包[package]是一个映射符号[symbol]名称[name]到符号[symbol]的命名空间[namespace]; 见章节 11.1 (包概念).
 
 * 也见(See Also):
 
-        章节 11.1 (Package Concepts), 章节 22.1.3.13 (Printing Other Objects), 章节 2.3.4 (符号标记) 
+        章节 11.1 (包概念), 章节 22.1.3.13 (打印其他对象), 章节 2.3.4 (符号标记) 
 
 
 ### <span id="F-EXPORT">函数 EXPORT</span>
@@ -284,18 +284,18 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
 * 参数和值(Arguments and Values):
 
-        symbols---一个符号列表的标识符.
-        package---一个包标识符. 默认是当前包.
+        symbols---一个符号[symbol]列表[list]的标识符[designator].
+        package---一个包标识符[package designator]. 默认是当前包[current package].
 
 * 描述(Description):
 
-        export 使一个或多个在这个包 package 中可访问的符号 (whether directly or by inheritance) 变为包 package 的外部符号.
+        export 使一个或多个在这个包 package 中可访问[accessible]的符号 symbol (不管是直接访问还是通过继承的) 变为包 package 的外部符号[external symbol].
 
-        如果这些符号 symbols 中的任何一个已经是包 package 中可访问的外部符号, export 在那个符号上没有效果. 如果那个符号 symbol 是作为一个内部符号出现在包 package 中, 它就被简单地改为外部状态. 如果它是通过 use-package 作为一个可访问的内部符号, 它首先被导入到包 package 中, 然后再导出. (不管接下来包 package 是否继续使用那个符号最初继承而来的包, 这个符号 symbol 接下来都会出现在包 package 中.)
+        如果这些符号 symbols 中的任何一个已经是包 package 中可访问[accessible]的外部符号[external symbol], export 在那个符号[symbol]上没有效果. 如果那个符号 symbol 是作为一个内部符号出现在包 package 中, 它就被简单地改为外部状态. 如果它通过 use-package 作为一个内部符号[internal symbol]是可访问的[accessible], 它首先被导入到包 package 中, 然后再被导出[exported]. (不管接下来包 package 是否继续使用那个最初继承符号[symbol]的包[package], 这个符号 symbol 接下来都会出现[package]在包 package 中.)
 
-        export 使得每个符号 symbol 对于所有使用包 package 的包都是可访问的. 所有这些包都会检测命名冲突: (export s p) 为每一个在 (package-used-by-list p) 中的包执行 (find-symbol (symbol-name s) q). 注意, 一个包的最初定义期间通常的 export 情况下, package-used-by-list 的结果是 nil 并且名字冲突检测需要的时间忽略不计. 当执行了多次更改时, 比如当给 export 一个符号列表时, 允许具体实现去单独处理每一个更改, 这样一来跳过除了这个列表中的第一个符号以外的任何一个导致的名字冲突都不会解除导出这个列表中的第一个符号. 然而, 跳过一个有这些符号 symbols 中的其中一个导致的名字冲突错误不会让那个符号对于某些包是可访问的但对于其他是不可访问的; 对于被处理的符号 symbols 中的每一个, export 表现的就好像它是一个原子操作.
+        export 使得每个符号 symbol 对于使用了包 package 的所有包[package]都是可访问的[accessible]. 所有这些包[package]都会检测命名冲突: (export s p) 为每一个在 (package-used-by-list p) 中的包执行 (find-symbol (symbol-name s) q). 注意, 在通常情况下, 一个包的最初定义期间使用 export, package-used-by-list 的结果是 nil 并且名字冲突检测需要的时间忽略不计. 当执行了多次更改时, 比如当提供给 export 这些符号 symbols 的一个列表时, 允许具体实现去单独处理每一个更改, 这样一来除了这个列表中的第一个符号以外, 其他任何符号导致的名字冲突的中止都不会取消这个列表中的第一个符号的导出. 然而, 一个由这些符号 symbols 中的其中一个导致的名字冲突错误的中止不会让那个符号[symbol]对于某些包[package]是可访问的[accessible]但对于其他是不可访问的[inaccessible]; 对于每一个被处理的符号 symbols, export 表现的就好像它是一个原子操作.
 
-        在 export 中, 要被导出的符号 symbols 的其中一个和已经出现在一个会继承那个新导出的符号的包中的符号之间的名字冲突, 可以通过解除捕捉另一个来选择导出的符号, 或者通过使那个已存在的符号变为一个遮蔽符号来选择那个已存在的符号.
+        在 export 中, 要被导出的符号 symbols 的其中一个和已经出现[present]在会继承那个新导出符号[symbol]的包[package]中的符号[symbol]之间的名字冲突, 可以通过解除捕捉另一个来选择导出的符号[symbol], 或者通过使那个已存在的符号[symbol]变为一个遮蔽符号来选择那个已存在的符号.
 
 * 示例(Examples):
 
@@ -314,15 +314,15 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
 * 受此影响(Affected By):
 
-        可访问的符号.
+        可访问[accessible]的符号[symbol].
 
 * 异常情况(Exceptional Situations): 
 
-        如果符号 symbols 中的任何一个包 package 中不可访问, 会发出一个 package-error 类型的错误, 通过允许用户去交互式地指定是否应该导入该符号, 这是可校正的.
+        如果这些符号 symbols 中的任何一个在包 package 中是不可访问[accessible], 会发出一个 package-error 类型[type]的错误, 通过允许用户[user]去交互式地指定是否应该导入该符号[symbol], 这是可校正的[correctable].
 
 * 也见(See Also):
 
-        import, unexport, 章节 11.1 (Package Concepts)
+        import, unexport, 章节 11.1 (包概念)
 
 * 注意(Notes): None. 
 
@@ -335,28 +335,28 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
 * 参数和值(Arguments and Values):
 
-        string---一个符号.
-        package---一个包标识符. 默认是包标识符.
-        symbol---在包 package 中可访问的一个符号, 或者 nil.
+        string---一个字符串[string].
+        package---一个包标识符[package designator]. 默认是当前包[current package].
+        symbol---在包 package 中可访问的一个符号[symbol], 或者 nil.
         status---:inherited, :external, :internal 其中之一, 或 nil.
 
 * 描述(Description):
 
-        find-symbol 查找一个包中的名为字符串 string 的符号. 如果在包 package 中找到名为字符串 string 的一个符号, 不管是直接地或是通过继承, 找到的符号会作为第一个值被返回; 第二个值如下:
+        find-symbol 在一个包[packge]中查找名称[name]为字符串 string 的符号[symbol]. 如果在包 package 中找到名为字符串 string 的一个符号[symbol], 不管是直接地或是通过继承, 找到的符号会作为第一个值被返回; 第二个值如下:
 
         :internal
 
-            如果这个符号是作为一个内部符号出现在包 package.
+            如果这个符号[symbol]是作为一个内部符号[internal symbol]出现[present]在包 package 中的话.
 
         :external
 
-            如果这个符号是作为一个外部符号出现在包 package.
+            如果这个符号[symbol]是作为一个外部符号[external symbol]出现[present]在包 package 中的话.
 
         :inherited
 
-            如果这个符号是被包 package 通过 use-package 继承而来, 但是不是出现在包 package.
+            如果这个符号[symbol]是被包 package 通过 use-package 继承而来, 但是不是出现[present]在包 package 中的话.
 
-        如果在包 package 中没有这样的符号, 两个值都是 nil.
+        如果在包 package 中没有这样的可访问[accessible]的符号[symbol], 两个值都是 nil.
 
 * 示例(Examples):
 
@@ -396,7 +396,7 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
 * 注意(Notes):
 
-        find-symbol 操作上等价于 intern, 除了它从不创建一个新的符号. 
+        find-symbol 操作上等价于 intern, 除了它从不创建一个新的符号[symbol]. 
 
 
 ### <span id="F-FIND-PACKAGE">函数 FIND-PACKAGE</span>
@@ -407,14 +407,14 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
 * 参数和值(Arguments and Values):
 
-        name---一个字符串标识符或者一个包对象.
-        package---一个包对象或者 nil.
+        name---一个字符串标识符[string designator]或者一个包[package]对象[object].
+        package---一个包[package]对象[object]或者 nil.
 
 * 描述(Description):
 
-        如果名字 name 是一个字符串标识符, find-package 查找并返回这个名字或别名为 name 的包. 这个查找是大小写敏感的. 如果这里没有这样的包, find-package 返回 nil.
+        如果名字 name 是一个字符串标识符[string designator], find-package 查找并返回这个名字或别名为 name 的包[package]. 这个查找是大小写敏感的. 如果这里没有这样的包[package], find-package 返回 nil.
 
-        如果 name 是一个包对象, 那么就返回那个包对象.
+        如果 name 是一个包[package]对象[object], 那么就返回那个包[package]对象[object].
 
 * 示例(Examples):
 
@@ -428,7 +428,7 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
 * 受此影响(Affected By):
 
-        这个具体实现创建的包的集合.
+        这个具体实现[implementation]创建的包[package]的集合.
 
         defpackage, delete-package, make-package, rename-package
 
@@ -449,12 +449,12 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
 * 参数和值(Arguments and Values):
 
-        string---一个字符串标识符.
-        symbols---一个符号列表.
+        string---一个字符串标识符[string designator].
+        symbols---一个符号[symbol]列表[list].
 
 * 描述(Description):
 
-        find-all-symbols 在每一个已注册的包中搜索有着名字和字符串 string 相同(在 string= 下)的符号. 一个所有这样的符号列表会被返回. 这个列表是否排序或如何排序是依赖于具体实现的.
+        find-all-symbols 在每一个已注册包[registered package]中搜索有着和字符串 string 相同名字[name] (在 string= 下)的符号[symbol]. 返回一个所有这样符号[symbol]的列表[list]. 这个列表[list]是否排序或如何排序是依赖于具体实现的[implementation-dependent].
 
 * 示例(Examples):
 
@@ -492,18 +492,18 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
 * 参数和值(Arguments and Values):
 
-        symbols---一个符号列表的标识符.
-        package---一个包标识符. 默认是当前包.
+        symbols---一个符号[symbol]列表[list]的标识符[designator].
+        package---一个包标识符[package designator]. 默认是当前包[current package].
 
 * 描述(Description):
 
-        import 添加 symbol 或 symbols 包 package 的内部, 和包 package 中出现的或者可访问的已存在符号检查名字冲突. 一旦这些符号 symbols 已经被导入, 在使用 Lisp 读取器时, 它们可能在导入的包中被直接引用而不使用包前缀.
+        import 添加 symbol 或 symbols 到包 package 的内部, 和出现[present]在包 package 中的或者可访问[accessible]的已存在符号[symbol]检查名字冲突. 一旦这些符号 symbols 已经被导入, 在使用 Lisp 读取器[Lisp reader]时, 它们可以在导入的包中被直接引用而不使用包前缀[package prefix].
 
-        在 import 中, 这个要被导入的符号 symbol 和从某个其他包中继承而来的符号之间的名字冲突, 可以通过是这个要被导入的符号为遮蔽符号来选择这个要被导入的符号, 或者不执行这个 import 来选择已经可访问的那个符号来解决. 在 import 中, 一个和一个已经出现在包 package 的符号之间的名字冲突可以通过解除捕捉那个符号或者不执行这个 import 来解决.
+        在 import 中, 这个要被导入的符号 symbol 和从某个其他包[package]中继承而来的符号之间的名字冲突, 可以通过使这个要被导入的符号 symbol 为遮蔽符号来选择这个要被导入的符号  symbol , 或者不执行这个 import 来选择已经可访问[accessible]的那个符号[symbol]来解决. 在 import 中, 和已经出现[present]在包 package 的符号[symbol]之间的名字冲突可以通过解除捕捉那个符号[symbol]或者不执行这个 import 来解决.
 
-        这个导入的符号不会被自动从这个当前包中导出, 但是如果它已经出现在包这栋并且是外部的, 那么它是外部的这个事实不会被改变. 如果要被导入的任何符号没有 home 包 (也就是说, (symbol-package symbol) => nil), import 会设置这个符号 symbol 的 home 包为 包 package.
+        这个导入的符号[symbol]不会被自动从这个当前包[current package]中导出, 但是如果它已经出现[present]在包中并且是外部的, 那么它是外部的这个事实不会被改变. 如果要被导入的任何符号[symbol]没有 home 包 (也就是说, (symbol-package symbol) => nil), import 会设置这个符号 symbol 的 home 包[home package]为包 package.
 
-        如果这个符号 symbol 已经出现在这个导入的包中, import 就没有效果.
+        如果这个符号 symbol 已经出现[present]在这个导入的包中, import 就没有效果.
 
 * 示例(Examples):
 
@@ -513,7 +513,7 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
     (find-symbol "CDR" 'temp) =>  NIL, NIL 
     ```
 
-        表达式形式 (import 'editor:buffer) 接受 EDITOR 包中名为 buffer 的外部符号 (当这个表达式形式被 Lisp 读取器读取时这个符号会被查找) 并且添加它到当前包中作为一个内部符号. 然后这个符号 buffer 就会出现在当前包中.
+        表达式形式 (import 'editor:buffer) 取出 EDITOR 包中名为 buffer 的外部符号 (当这个表达式形式被 Lisp 读取器读取时这个符号会被查找) 并且作为一个内部符号[internal symbol]添加到当前包[current package]中. 然后这个符号 buffer 就会出现[present]在当前包[current package]中.
 
 * 副作用(Side Effects):
 
@@ -525,7 +525,7 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
 * 异常情况(Exceptional Situations): 
 
-        如果这些要被导入的符号 symbols 中的任何一个有着和包 package 中某个已经可以访问的不同(在 eql 下)符号相同的名字(在 string= 下), 那么 import 机会发出一个 package-error 类型的可校正错误, 即便这个冲突是和一个包 package 中的一个遮蔽符号.
+        如果这些要被导入的符号 symbols 中的任何一个和包 package 中某个已经可以访问[accessible]的不同(在 eql 下)符号[symbol]有着相同[same]的名字[name] (在 string= 下), 那么 import 发出一个 package-error 类型[type]的可校正[correctable]错误, 即便这个冲突是和包 package 中的一个遮蔽符号[shadowing symbol].
 
 * 也见(See Also):
 
@@ -542,11 +542,11 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
 * 参数和值(Arguments and Values):
 
-        packages---一个包对象列表.
+        packages---一个包[package]对象[object]列表[list].
 
 * 描述(Description):
 
-        list-all-packages 返回一个所有已注册包的新列表.
+        list-all-packages 返回所有已注册包[registered package]的新[fresh]列表[list].
 
 * 示例(Examples):
 
@@ -577,10 +577,10 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
 * 参数和值(Arguments and Values):
 
-        package---一个包标识符.
-        new-name---一个包标识符.
-        new-nicknames---一个字符串标识符列表. 默认是空列表.
-        package-object---重命名的包对象.
+        package---一个包标识符[package designator].
+        new-name---一个包标识符[package designator].
+        new-nicknames---一个字符串标识符[string designator]列表[list]. 默认是空列表[empty list].
+        package-object---重命名的包 package 对象[object].
 
 * 描述(Description):
 
@@ -622,13 +622,13 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 * 参数和值(Arguments and Values):
 
         symbol-names---一个 string 标识符列表的标识符.
-        package---一个包标识符. 默认是当前包.
+        package---一个包标识符[package designator]. 默认是当前包[current package].
 
 * 描述(Description):
 
-        shadow 确保带有 symbol-names 给定的名字的符号出现在包 package 中.
+        shadow 确保带有这些符号名 symbol-names 给定的名字的那些符号[symbol]出现在包 package 中.
 
-        特别地, 包 package 被搜索带有符号名 symbol-names 中所提供名字的符号. 对于每一个这样的名字, 如果一个对应的符号没有出现在包 package 中 (直接地, 或者通过继承), 那么会用这个名字创建一个对应符号, 并且插入到包 package 中作为一个内部符号. 这个对应的符号, 不管是之前存在的或是新创建的, 如果没有出现在那个包 package 中就会被添加到包 package 的遮蔽符号列表中.
+        特别地, 搜索包 package 中带有那些符号名 symbol-names 中所提供名字[name]的那些符号[symbol]. 对于每一个这样的名字[name], 如果一个对应的符号[symbol]没有出现[present]在包 package 中 (直接地, 或者通过继承), 那么会用这个名字[name]创建一个对应符号[symbol], 并且作为一个内部符号[internal symbol]插入到包 package 中. 这个对应的符号[symbol], 不管是之前存在的或是新创建的, 如果没有出现在那个包 package 中就会被添加到包 package 的遮蔽符号列表[shadowing symbols list]中.
 
 * 示例(Examples):
 
@@ -654,7 +654,7 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
 * 副作用(Side Effects):
 
-        shadow 改变这个包系统的状态, 以一种这个包一致性规则不适用于这个改变的方式.
+        shadow 以这样一种方式更改包系统的状态, 即包一致性规则在更改期间不保持不变.
 
 * 受此影响(Affected By):
 
@@ -664,11 +664,11 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
 * 也见(See Also):
 
-        package-shadowing-symbols, 章节 11.1 (Package Concepts)
+        package-shadowing-symbols, 章节 11.1 (包概念)
 
 * 注意(Notes):
 
-        如果一个带有 symbol-names 中的一个名字的符号已经存在于包 package 中, 但是是通过继承而来的, 这个继承的符号会被一个新创建的内部符号所遮蔽. 
+        如果带有 symbol-names 中的一个名字的符号[symbol]已经存在于包 package 中, 但是是通过继承而来的, 这个继承的符号会被一个新创建的内部符号[internal symbol]所遮蔽[shadow[3]]. 
 
 
 ### <span id="F-SHADOWING-IMPORT">函数 SHADOWING-IMPORT</span>
@@ -679,16 +679,16 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
 * 参数和值(Arguments and Values):
 
-        symbols---一个符号列表的标识符.
-        package ---一个包标识符. 默认是当前包.
+        symbols---一个符号[symbol]列表[list]的标识符[designator].
+        package ---一个包标识符[package designator]. 默认是当前包[current package].
 
 * 描述(Description):
 
-        shadowing-import 就像是 import, 但是它不会发出一个错误, 即便一个符号的导入会遮蔽某个在包 package 中已经可访问的某个符号.
+        shadowing-import 就像是 import, 但是即便一个符号[symbol]的导入会遮蔽某个在包 package 中已经可访问[accessible]的某个符号[symbol], 它也不会发出一个错误.
 
-        shadowing-import 将这些符号 symbols 中的每一个插入到包 package 中作为一个内部符号, 不管另一个相同符号的名字是否被这个动作遮蔽. 如果一个相同名字的不同符号已经出现在包 package 中, 那个符号首先被从包 package 解除捕捉. 这个新的符号会被添加到包 package 的遮蔽符号列表中.
+        shadowing-import 将这些符号 symbols 中的每一个作为内部符号插入到包 package 中, 不管另一个相同名字的符号[symbol]是否被这个动作遮蔽. 如果一个相同名字的不同符号[symbol]已经出现[present]在包 package 中, 那么该符号[symbol]首先被从包 package 中解除捕捉[uninterned]. 这个新的符号[symbol]会被添加到包 package 的遮蔽符号列表中.
 
-        shadowing-import 对它要检测的范围执行名字冲突检测, 不管一个相同名字的不同的已存在符号是否可以访问; 如果这样, 它被这个新符号所遮蔽, 这意味着如果它出现在包 package 中它必须被解除捕捉.
+        shadowing-import 对这个范围执行名称冲突检测, 它检测一个相同名字的不同的已存在符号[symbol]是否可访问[accessible]; 如果这样, 它被这个新符号[symbol]所遮蔽, 这意味着如果它出现[present]在包 package 中它必须被解除捕捉.
 
 * 示例(Examples):
 
@@ -703,7 +703,7 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
 * 副作用(Side Effects):
 
-        shadowing-import 以一种一致性规则不适用这个改变的方式修改这个包系统的状态.
+        shadowing-import 以这样一种方式更改包系统的状态, 即一致性规则在更改期间不保持不变.
 
         包 package 的遮蔽符号列表会被修改.
 
@@ -728,16 +728,16 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
 * 参数和值(Arguments and Values):
 
-        package---一个包标识符.
-        generalized-boolean---一个广义 boolean.
+        package---一个包标识符[package designator].
+        generalized-boolean---一个广义 boolean [generalized boolean].
 
 * 描述(Description):
 
-        delete-package 从所有包系统数据结构中删除包 package. 如果这个操作成功, delete-package 返回 true, 否则就是 nil. 这个 delete-package 的效果是包 package 的名字和别名不再被识别包名. 这个包对象仍然是个包 (换句话说, packagep 对于它是 true 的) 但是 package-name 返回 nil. 删除这个 COMMON-LISP 包或 KEYWORD 包的后果是未定义的. 一旦包 package 被删除, 在这个包上调用任何其他包操作的后果是未指定的. 特别地, 如果在 *package* 绑定给那个删除的包或者用这个删除的包作为参数的情况下调用 find-symbol, intern 和其他在一个包中查找符号名的函数的后果是未指定的.
+        delete-package 从所有包系统数据结构中删除包 package. 如果这个操作成功, delete-package 返回 true, 否则就是 nil. 这个 delete-package 的效果是包 package 的名字和别名不再被识别为包名. 这个包对象[object]仍然是个包[package] (换句话说, packagep 对于它是 true 的) 但是 package-name 返回 nil. 删除这个 COMMON-LISP 包或 KEYWORD 包的后果是未定义的. 一旦包 package 被删除, 在这个包上调用任何其他包操作的后果是未指定的. 尤其, 如果在 *package* 被绑定为那个删除的包 package 或者用那个删除的包 package 作为参数的情况下调用 find-symbol, intern 和其他在一个包[package]中查找符号名的函数的后果是未指定的.
 
-        如果包 package 是一个已经被删除的包对象, delete-package 立即返回 nil.
+        如果包 package 是一个已经被删除的包[package]对象[object], delete-package 立即返回 nil.
 
-        在这个操作完成后, 之前 home 包为包 package 的符号的 home 包是依赖于具体实现的. 除了这个, 在包 package 中可访问的符号不会以其他任何方式被修改; home 包不是包 package 的符号保持不变.
+        在这个操作完成后, 之前 home 包[home package]为包 package 的符号[symbol]的 home 包[home package]是依赖于具体实现的[implementation-dependent]. 除了这个, 在包 package 中可访问[accessible]的符号[symbol]不会以其他任何方式被修改; home 包[home package]不是包 package 的符号[symbol]保持不变.
 
 * 示例(Examples):
 
@@ -820,9 +820,9 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
 * 异常情况(Exceptional Situations): 
 
-        如果这个包标识符是一个当期没有命名一个包的名字, 就会发出一个 package-error 类型的可校正错误. 如果尝试了这个校正, 就不会尝试去做删除动作; 反而, delete-package 立即返回 nil.
+        如果这个 package 标识符[designator]是一个当前没有命名一个包[package]的名字, 就会发出一个 package-error 类型[type]的可校正错误. 如果尝试了校正, 就不会尝试去做删除动作; 反而, delete-package 立即返回 nil.
 
-        如果包 package 被其他包所使用, 就会发出一个 package-error 类型的可校正错误. 如果尝试了一个校正, unuse-package 会被调用来移除任何依赖, 导致包 package 的外部符号对于那些使用了包 package 的包不再是可访问的. delete-package 接下来删除包 package 就好像已经没有包使用它了一样.
+        如果包 package 被其他包[package]所使用, 就会发出一个 package-error 类型[type]的可校正[correctable]错误. 如果尝试了校正, unuse-package 会被调用来移除任何依赖, 导致包 package 的外部符号[external symbol]对于那些使用了包 package 的包[package]不再是可访问的[accessible]. delete-package 接下来删除包 package, 就好像已经没有包[package]在使用它一样.
 
 * 也见(See Also):
 
@@ -839,18 +839,18 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
 * 参数和值(Arguments and Values):
 
-        package-name---一个字符串标识符.
-        nicknames---一个字符串标识符列表. 默认是空列表.
-        use---一个包标识符列表. 默认是具体实现定义的.
-        package---一个包.
+        package-name---一个字符串标识符[string designator].
+        nicknames---一个字符串标识符[string designator]列表[list]. 默认是空列表[empty list].
+        use---一个包标识符[package designator]列表[list]. 默认是具体实现定义的[implementation-defined].
+        package---一个包[package].
 
 * 描述(Description):
 
-        创建一个名为 package-name 的新包.
+        创建一个名为 package-name 的新包[package].
 
-        别名 nicknames 是可以被用于引用这个新的包的额外的名字.
+        别名 nicknames 是可以被用于引用这个新的包[package]的额外的名字[name].
 
-        use 指定了 0 个或多个包, 它们的外部符号会被这个新包所继承. 见函数 use-package.
+        这个 use 指定了 0 个或多个包[package], 它们的外部符号[external package]会被这个新包[package]所继承. 见函数[function] use-package.
 
 * 示例(Examples):
 
@@ -865,13 +865,13 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
 * 受此影响(Affected By):
 
-        在这个系统中其他包的存在.
+        在这个系统中其他包[package]的存在.
 
 * 异常情况(Exceptional Situations): 
 
-        如果 use 指定的包不存在, 那么后果是未指定的.
+        如果 use 指定的包[package]不存在, 那么后果是未指定的.
 
-        如果包名 package-name 或这些别名 nicknames 中的任何一个已经是一个已存在的包的包名或别名那么就会发出一个.
+        如果包名 package-name 或这些别名 nicknames 中的任何一个已经是一个已存在的包的包名[name]或别名[nickname]那么就会发出一个可校正[correctable]错误.
 
 * 也见(See Also):
 
@@ -879,7 +879,7 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
 * 注意(Notes):
 
-        在要被使用的包包含了会冲突的符号的情况下, 有必要先用 :use '() 来创建这个包, 然后使用 shadow 或 shadowing-import 来定位这些冲突, 在这之后一旦这些冲突已经被定位就使用 use-package.
+        在要被使用的包[package]包含了会冲突的符号的情况下, 有必要先用 :use '() 来创建这个包, 然后使用 shadow 或 shadowing-import 来定位这些冲突, 在这之后一旦这些冲突已经被定位就使用 use-package.
 
         当要被创建的包是一个程序的静态定义的一部分而不是动态地被程序创建, 在文体上更适合使用 defpackage 而不是 make-package. 
 
@@ -893,66 +893,66 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
 * 参数和值(Arguments and Values):
 
-        name---一个符号.
-        package-list-form---一个表达式形式; 求值一次来产生 package-list.
-        package-list---一个包标识符列表的标识符.
-        symbol-type---符号 :internal, :external, 或 :inherited 的其中之一.
-        declaration---一个 declare 表达式; 不求值.
-        forms---一个隐式 progn.
-        results---这些表达式形式 forms 的值.
+        name---一个符号[symbol].
+        package-list-form---一个表达式形式[form]; 求值一次来产生 package-list.
+        package-list---一个包标识符[package designator]列表的标识符[designator].
+        symbol-type---符号[symbol] :internal, :external, 或 :inherited 的其中之一.
+        declaration---一个 declare 表达式[expression]; 不求值.
+        forms---一个隐式 progn [implicit progn].
+        results---这些表达式形式 forms 的值[value].
 
 * 描述(Description):
 
-        在这个主体表达式形式 forms 的词法作用域中, 这个名字 name 是通过 macrolet 定义的, 这么一来后续的 (name) 调用会一个接一个依次返回来自 package-list 中包的符号.
+        在这个主体表达式形式 forms 的词法作用域中, 这个名字 name 是通过 macrolet 定义的, 这么一来后续的 (name) 调用会返回一个接一个来自 package-list 中包[package]的符号[symbol].
 
-        从多个包中继承的符号是否会被返回超过一次是未指定的. 返回符号的顺序没有必要反映 package-list 中包的顺序. 当 package-list 有着不止一个元素时, 重复符号会被返回一次还是不止一次是未指定的.
+        从多个包[package]中继承的符号[symbol]是否会被返回不止一次是未指定的. 返回符号[symbol]的顺序没有必要反映 package-list 中包[package]的顺序. 当 package-list 有着不止一个元素时, 重复符号[symbol]会被返回一次还是不止一次是未指定的.
 
-        如下的符号类型 Symbol-types 控制一个包中可以访问的哪些符号会被返回:
+        如下的这些符号类型 symbol-types 控制一个包[package]中可访问[accessible]的哪些符号[symbol]会被返回:
 
         :internal
 
-            出现在包中但是没有被导出的符号.
+            出现[present]在包[package]中但是没有被导出[exported]的符号[symbol].
 
         :external
 
-            出现在包中并且被导出的符号.
+            出现[present]在包[package]中并且被导出[exported]的符号[symbol].
 
         :inherited
 
-            被使用的包导出并且没有被遮蔽的符号.
+            被使用的包[package]导出[exported]并且没有被遮蔽的符号[symbol].
 
-        当为符号类型 symbol-types 提供了超过一个参数时, 如果一个符号的可访问性符合提供的其中一个 symbol-type, 它就会被返回. 具体实现可能通过识别额外的符号可访问性类型来扩展这个语法.
+        当为符号类型 symbol-types 提供了超过一个参数时, 如果一个符号[symbol]的可访问性[accessibility]符合提供的其中一个 symbol-type, 它就会被返回. 具体实现可能通过识别额外的符号可访问性类型来扩展这个语法.
 
         一个 (name) 调用返回如下四个值:
 
-        1. 一个表示一个符号是否被返回的标志 (true 表示一个符号被返回).
-        2. 一个在指定的包中是可访问的符号.
-        3. 那个符号的可访问性类型; 换句话说, 这些符号 :internal, :external, 或 :inherited 的其中一个.
-        4. 获取这个符号的包. 这个包是 package-list 中出现或命名的其中一个包.
+        1. 表示一个符号[symbol]是否被返回的一个标志 (true 表示一个符号[symbol]被返回).
+        2. 一个在指定的包[package]中是可访问[accessible]的符号[symbol].
+        3. 那个符号[symbol]的可访问性类型; 换句话说, 就是符号 :internal, :external, 或 :inherited 的其中一个.
+        4. 这个符号[symbol]所取自的包[package]. 这个包[package]是 package-list 中出现或命名的那些包[package]的其中一个.
 
-        通过依次调用 (name) 所有符号已经被返回后, 然后只有一个值会被返回, 也就是 nil.
+        在所有符号[symbol]通过依次调用 (name) 已经被返回后, 然后只有一个值会被返回, 也就是 nil.
 
-        第二, 第三, 和第四个值的意义是, 返回的符号在返回的包中是可访问的, 其方式是由第二个返回值所指示的, 如下所示:
+        第二, 第三, 和第四个值[value]的意义是, 返回的符号[symbol]在返回的包[package]中是可访问的[accessible], 其方式是由第二个返回值所指示的, 如下所示:
 
         :internal
 
-            意味着出现但未导出.
+            意味着出现[present]但未导出[exported].
 
         :external
 
-            意味着出现并导出.
+            意味着出现[present]并导出[exported].
 
         :inherited
 
-            意味着没有出现 (因此没有被遮蔽) 但是从某个使用的包中继承.
+            意味着没有出现[present] (因此没有被遮蔽) 但是从某个使用的包[package]中继承.
 
-        如果一个迭代的任何隐式的内部状态在这个 with-package-iterator 表达式形式的动态范围之外被返回, 比如通过在调用表达式形式中返回某个闭包, 那么会发生什么是不确定的.
+        如果一个迭代的任何隐式的内部状态在这个 with-package-iterator 表达式形式的动态范围之外被返回, 比如通过在调用表达式形式[form]中返回某个闭包[closure], 那么会发生什么是不确定的.
 
-        任何数量的 with-package-iterator 调用可以被嵌套, 并且最内部的那个的主体可以调用所有这些局部建立的宏, 假设所有这些符号有着不同的名字.
+        任何数量的 with-package-iterator 调用可以被嵌套, 并且最内部的那个的主体可以调用所有这些局部建立的宏[macro], 假设所有这些宏[macro]有着不同的名字.
 
 * 示例(Examples):
 
-        下面函数应该在任何包上都返回 t, 如果这个 with-package-iterator 的使用和对应 do-symbols 的使用不一致就会发出一个错误.
+        下面函数应该在任何包[package]上都返回 t, 如果这个 with-package-iterator 的使用和对应 do-symbols 的使用不一致就会发出一个错误.
 
     ```LISP
     (defun test-package-iterator (package)
@@ -982,7 +982,7 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
         t))
     ```
 
-        下面函数打印出每个出现的符号 (可能不止一次):
+        下面函数打印出每个出现[present]的符号[symbol] (可能不止一次):
 
     ```LISP
     (defun print-all-symbols () 
@@ -1001,13 +1001,13 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
 * 异常情况(Exceptional Situations): 
 
-        如果没有提供符号类型 symbol-types 或者提供了一个不被具体实现所识别的符号类型 symbol-type, 那么 with-package-iterator 会发出一个 program-error 类型的错误.
+        如果没有提供符号类型 symbol-types 或者提供了一个不被具体实现所识别的符号类型 symbol-type, 那么 with-package-iterator 会发出一个 program-error 类型[type]的错误.
 
-        如果通过 with-package-iterator 建立的名为 name 的局部函数在它返回 false 作为它的主要值之后被调用, 那么后果是未定义的.
+        如果通过 with-package-iterator 建立的名为 name 的局部函数在它返回 false 作为它的主值[primary value]之后被调用, 那么后果是未定义的.
 
 * 也见(See Also):
 
-        章节 3.6 (Traversal Rules and Side Effects)
+        章节 3.6 (遍历规则和副作用)
 
 * 注意(Notes): None. 
 
@@ -1020,14 +1020,14 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
 * 参数和值(Arguments and Values):
 
-        symbols---一个符号列表的标识符.
-        package---一个包标识符. 默认是当前包.
+        symbols---一个符号[symbol]列表[list]的标识符[designator].
+        package---一个包标识符[package designator]. 默认是当前包[current package].
 
 * 描述(Description):
 
-        unexport 回复包 package 中的外部符号为内部状态; 它撤销了 export 的效果.
+        unexport 复原包 package 中的外部符号 symbols 为内部状态; 它撤销了 export 的效果.
 
-        unexport 只工作在出现在包 package 中的符号上, 把它们转换回内部状态. 如果给 unexport 一个已经作为内部符号出现在包 package 的一个符号, 它什么都不做.
+        unexport 只工作在出现[present]在包 package 中的符号[symbol]上, 把它们转换回内部状态. 如果给 unexport 一个已经作为内部符号[internal symbol]出现[present]在包 package 的一个符号[symbol], 它什么都不做.
 
 * 示例(Examples):
 
@@ -1051,13 +1051,13 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
 * 异常情况(Exceptional Situations): 
 
-        如果给 unexport 一个在包 package 中不可访问的符号, 就会发出一个 package-error 类型的错误.
+        如果给 unexport 一个在包 package 中不是可访问[accessible]的符号[symbol], 就会发出一个 package-error 类型[type]的错误.
 
         如果包 package 是 KEYWORD 包或者 COMMON-LISP 包, 那么后果是未定义的.
 
 * 也见(See Also):
 
-        export, 章节 11.1 (Package Concepts)
+        export, 章节 11.1 (包概念)
 
 * 注意(Notes): None. 
 
@@ -1070,17 +1070,17 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
 * 参数和值(Arguments and Values):
 
-        symbol---一个符号.
-        package---一个包标识符. 默认是当前包.
-        generalized-boolean---一个广义 boolean.
+        symbol---一个符号[symbol].
+        package---一个包标识符[package designator]. 默认是当前包[current package].
+        generalized-boolean---一个广义 boolean [generalized boolean].
 
 * 描述(Description):
 
-        unintern 从包 package 中移除符号 symbol. 如果符号 symbol 出现在包 package 中, 它被从包 package 中被移除并且如果出现在包 package 的遮蔽符号列表中那么也从其中移除. 如果包 package 是这个符号 symbol 的 home 包, 符号 symbol 会被变成没有 home 包. 符号 Symbol 可能在包 package 中通过继承仍然是可以访问的.
+        unintern 从包 package 中移除符号 symbol. 如果符号 symbol 出现[present]在包 package 中, 它被从包 package 中被移除并且如果出现在包 package 的遮蔽符号列表[shadowing symbols list]中那么也从其中移除. 如果包 package 是这个符号 symbol 的 home 包[home package], 符号 symbol 会被变成没有 home 包[home package]. 符号 symbol 可能在包 package 中通过继承仍然是可访问的[accessible].
 
-        unintern 的使用可以导致一个没有记录 home 包的符号, 但是事实上在某些包中是可以访问的. Common Lisp 没有检查这个异常情况, 并且这些符号总是在 #: 之前打印出来.
+        unintern 的使用可以导致一个没有记录的 home 包[home package]的符号[symbol], 但是事实上在某个包[package]中是可访问的[accessible]. Common Lisp 没有检查这个异常情况, 并且这些符号[symbol]打印的前面总是有 #:.
 
-        如果 unintern 移除了符号那么它就返回 true, 否则就是 nil.
+        如果 unintern 移除了符号 symbol 那么它就返回 true, 否则就是 nil.
 
 * 示例(Examples):
 
@@ -1094,7 +1094,7 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
 * 副作用(Side Effects):
 
-        unintern 以一种这个一致性规则不适用的方式改变这个包系统的状态.
+        unintern 以这样一种方式更改包系统的状态, 即一致性规则在更改期间不保持不变.
 
 * 受此影响(Affected By):
 
@@ -1102,11 +1102,11 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
 * 异常情况(Exceptional Situations): 
 
-        给 unintern 一个遮蔽符号可以揭露一个之前通过遮蔽解决的名字冲突. 如果包 A 包 B 和 C, A 包含了一个遮蔽符号 x, 并且 B 和 C 每个都包含名为 x 的外部符号, 如果这两个符号是不同的, 那么从 A 中移除这个遮蔽的符号会揭露一个在 b:x 和 c:x 之间的名字冲突. 在这个情况中 unintern 会发出一个错误.
+        给 unintern 一个遮蔽符号可以揭露一个之前通过遮蔽解决的名字冲突. 如果包 A 包 B 和 C, A 包含了一个遮蔽符号 x, 并且 B 和 C 每个都包含名为 x 的外部符号, 如果这两个符号[symbol]是不同的, 那么从 A 中移除这个遮蔽的符号会揭露一个在 b:x 和 c:x 之间的名字冲突. 在这个情况中 unintern 会发出一个错误.
 
 * 也见(See Also):
 
-        章节 11.1 (Package Concepts)
+        章节 11.1 (包概念)
 
 * 注意(Notes): None. 
 
@@ -1119,26 +1119,26 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
 * 参数和值(Arguments and Values):
 
-        name---一个字符串标识符; 不求值.
-        package---名为 name 的包.
+        name---一个字符串标识符[string designator]; 不求值.
+        package---名为 name 的包[package].
 
 * 描述(Description):
 
-        导致这个名为 name 的包称为当前包---这也就是说, 这个 *package* 的值. 如果不存在这样的包, 那么就会发出一个 package-error 类型的错误.
+        导致这个名为 name 的包[package]成为当前包[current package]---这也就是说, 成为这个 *package* 的值[value]. 如果不存在这样的包[package], 那么就会发出一个 package-error 类型[type]的错误.
 
-        如果这个 in-package 调用作为顶层表达式形式出现, 那么 in-package 做的所有事也都在编译时执行.
+        如果这个 in-package 调用作为顶层表达式形式[top level form]出现, 那么 in-package 做的所有事也都在编译时执行.
 
 * 示例(Examples): None.
 
 * 副作用(Side Effects):
 
-        变量 *package* 会被赋值. 如果这个 in-package 表达式形式是一个顶层表达式形式, 这个赋值也会在编译时发生.
+        变量[variable] *package* 会被赋值. 如果这个 in-package 表达式形式[form]是一个顶层表达式形式[top level form], 这个赋值也会在编译时发生.
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations): 
 
-        如果这个指定的包不存在, 就会发出一个 package-error 类型的错误.
+        如果这个指定的包[package]不存在, 就会发出一个 package-error 类型[type]的错误.
 
 * 也见(See Also):
 
@@ -1155,14 +1155,14 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
 * 参数和值(Arguments and Values):
 
-        packages-to-unuse---一个包标识符列表的标识符.
-        package---一个包标识符. 默认是当前包.
+        packages-to-unuse---一个包标识符[package designator]列表[list]的标识符[designator].
+        package---一个包标识符[package designator]. 默认是当前包[current package].
 
 * 描述(Description):
 
-        unuse-package 导致包 package 不再从包 packages-to-unuse 中继承所有外部符号; unuse-package 撤销 use-package 的效果. 包 packages-to-unuse 被从包 package 的使用列表中移除.
+        unuse-package 导致包 package 不再从包 packages-to-unuse 中继承所有外部符号[external symbol]; unuse-package 撤销 use-package 的效果. 包 packages-to-unuse 从包 package 的使用列表[use list]中被移除.
 
-        任何已经被导入到包 package 中的符号仍然会出现在包 package 中.
+        任何已经被导入到包 package 中的符号[symbol]仍然会出现[present]在包 package 中.
 
 * 示例(Examples):
 
@@ -1179,7 +1179,7 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
 * 副作用(Side Effects):
 
-        包 package 的使用列表会被修改.
+        包 package 的使用列表[use list]会被修改.
 
 * 受此影响(Affected By):
 
@@ -1202,16 +1202,16 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
 * 参数和值(Arguments and Values):
 
-        packages-to-use---一个包标识符列表的标识符. 这个 KEYWORD 包不能被提供.
-        package---一个包标识符. 默认是当前包. 这个包不能是 KEYWORD 包.
+        packages-to-use---一个包标识符[package designator]列表[list]的标识符[designator]. 不能提供这个 KEYWORD 包.
+        package---一个包标识符[package designator]. 默认是当前包[current package]. 这个包不能是 KEYWORD 包.
 
 * 描述(Description):
 
-        use-package 导致包 package 去继承包列表 packages-to-use 的所有外部符号. 这些继承的符号成为包 package 中可访问的内部符号.
+        use-package 导致包 package 去继承包列表 packages-to-use 的所有外部符号[external symbol]. 这些继承的符号[symbol]成为包 package 中可访问[accessible]的内部符号[internal symbol].
 
-        如果 packages-to-use 还没有出现在包 package 的使用列表中, 那么它会被添加到包 package 的使用列表中. 在 packages-to-use 中的所有外部符号都成为包 package 中可访问的内部符号. use-package 不会导致任何新的符号出现在包 package 中但是会使它们变为可以通过继承访问的.
+        如果 packages-to-use 还没有出现在包 package 的使用列表[use list]中, 那么它会被添加到包 package 的使用列表[use list]中. 在 packages-to-use 中的所有外部符号[external symbol]都成为包 package 中可访问[accessible]的内部符号[internal symbol]. use-package 不会导致任何新的符号[symbol]出现[present]在包 package 中但是通过继承会使它们变为可访问的[accessible].
 
-        use-package 检测那些新导入符号和包 package 中已经可以访问的符号之间的名字冲突. 在 use-package 中的两个被包 package 从 packages-to-use 继承而来的外部符号之间的一个名字冲突可以通过导入它们中的其中一个符号到包 package 中并使它成为一个遮蔽符号来解决.
+        use-package 检测那些新导入符号和包 package 中已经可访问[accessible]的符号之间的名字冲突. 在 use-package 中的两个被包 package 从 packages-to-use 继承而来的外部符号之间的一个名字冲突可以通过导入它们中的其中一个符号到包 package 中并使它成为一个遮蔽符号进而选择该符号[symbol]来解决.
 
 * 示例(Examples):
 
@@ -1226,7 +1226,7 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
 * 副作用(Side Effects):
 
-        包 package 的使用列表会被修改.
+        包 package 的使用列表[use list]会被修改.
 
 * 受此影响(Affected By): None.
 
@@ -1234,11 +1234,11 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
 * 也见(See Also):
 
-        unuse-package, package-use-list, 章节 11.1 (Package Concepts)
+        unuse-package, package-use-list, 章节 11.1 (包概念)
 
 * 注意(Notes):
 
-        即便一个包 P2 已经使用了包 P1, 包 P1 去使用包 P2 也是允许的. 包的使用不会被传递, 所以这个明显的循环不会导致问题. 
+        即便一个包[package] P2 已经使用[use]了包[package] P1, 仍然允许 P1 去使用[use] P2. 包[package]的使用不会被传递, 所以这个明显的循环不会导致问题. 
 
 
 ### <span id="M-DEFPACKAGE">宏 DEFPACKAGE</span>
@@ -1259,55 +1259,55 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
 * 参数和值(Arguments and Values):
 
-        defined-package-name---一个字符串标识符.
-        package-name---一个包标识符.
-        nickname---一个字符串标识符.
-        symbol-name---一个字符串标识符.
-        package---名为 package-name 的包.
+        defined-package-name---一个字符串标识符[string designator].
+        package-name---一个包标识符[package designator].
+        nickname---一个字符串标识符[string designator].
+        symbol-name---一个字符串标识符[string designator].
+        package---名为 package-name 的包[package].
 
 * 描述(Description):
 
-        defpackage 按照指定创建一个包并且返回这个包.
+        defpackage 按照指定创建一个包[package]并且返回这个包[package].
 
-        如果 defined-package-name 已经引用了一个已存在的包, 这个名字的名字到包的映射不会被改变. 如果新的定义与该包的当前状态不一致, 后果是未定义的; 一个具体实现可能选择去修改这个已存在的包来反映这个新的定义. 如果 defined-package-name 是一个符号, 就使用它的名字.
+        如果 defined-package-name 已经引用了一个已存在的包[package], 该名字的名字到包的映射不会被改变. 如果新的定义与该包[package]的当前状态不一致, 后果是未定义的; 一个具体实现可能选择去修改这个已存在的包[package]来反映这个新的定义. 如果 defined-package-name 是一个符号[symbol], 就使用它的名字[name].
 
         标准的选项在下面描述.
 
         :nicknames
 
-            给 :nicknames 的参数设置这个包的别名为提供的这个名字.
+            给 :nicknames 的参数设置这个包[package]的别名为提供的这个名字.
 
         :documentation
 
-            给 :documentation 的参数指定一个文档字符串; 它会作为一个文档字符串附加到这个包. 最多一个 :documentation 选项出现在单个的 defpackage 表达式形式中.
+            给 :documentation 的参数指定一个文档字符串[documentation string]; 它会作为一个文档字符串[documentation string]附加给这个包[package]. 在单独的 defpackage 表达式形式[form]中最多出现一个 :documentation 选项.
 
         :use
 
-            给 :use 的参数设置名为 package-name 的包会继承的那些包. 如果没有提供 :use, 默认是和给 make-package 的 :use 参数一样的依赖于具体实现的值.
+            给 :use 的参数设置名为 package-name 的包[package]会继承的那些包[package]. 如果没有提供 :use, 默认是和给 make-package 的 :use 实参[argument]一样的依赖于具体实现[implementation-dependent]的值.
 
         :shadow
 
-            给 :shadow 的参数, symbol-names, 命名要被定义的包中要被创建的符号. 事实上这些符号会被添加到遮蔽符号的列表中就像是通过 shadow.
+            给 :shadow 的参数, symbol-names, 命名要被定义的包[package]中要被创建的符号[symbol]. 事实上这些符号[symbol]会被添加到遮蔽符号[symbol]的列表中, 就像是通过 shadow 一样.
 
         :shadowing-import-from
 
-            由参数 symbol-names 命名的符号会在指定的 package-name 中被查找 (涉及到一个查找就像是通过 find-symbol). 结果符号会被导入到要被定义的包中, 然后放置到遮蔽符号列表中就像是通过 shadowing-import. 符号不会创建在除了要被定义的包以外的包中.
+            由参数 symbol-names 命名的符号[symbol]会在指定的 package-name 中被查找 (涉及到一个查找, 就像是通过 find-symbol 一样). 产生的符号[symbol]会被导入到要被定义的包[package]中, 然后放置到遮蔽符号列表中, 就像是通过 shadowing-import. 符号[symbol]不会创建在除了要被定义的包以外的任何包[package]中.
 
         :import-from
 
-            由参数 symbol-names 命名的符号会在名为 package-name 的包中被查找并且导入到要被定义的包中. 符号不会创建在除了要被定义的包以外的包中.
+            由参数 symbol-names 命名的符号[symbol]会在名为 package-name 的包[package]中被查找并且导入到要被定义的包[package]中. 符号[symbol]不会创建在除了要被定义的包以外的任何包[package]中.
 
         :export
 
-            由参数 symbol-names 命名的那些符号会在要被定义的包中被找到或创建并导出. 这个 :export 选项和 :use 选项相互作用, 因为继承的符号可以被使用而不是新创建一个. 这个 :export 选项和 :import-from 还有 :shadowing-import-from 选项相互作用, 因为导入的符号可以被使用而不是新创建一个. 如果给 :export 选项的一个参数是通过 use-package 一个 (继承的) 内部符号, 那么这个名为 symbol-name 的符号首先被导入到这个要被定义的包中, 然后从那个包中导出.
+            由参数 symbol-names 命名的那些符号[symbol]会在要被定义的包[package]中被找到或创建并导出[exported]. 这个 :export 选项和 :use 选项相互作用, 因为继承的符号[symbol]可以被使用而不是新创建一个. 这个 :export 选项和 :import-from 还有 :shadowing-import-from 选项相互作用, 因为导入的符号可以被使用而不是新创建一个. 如果给 :export 选项的一个参数是通过 use-package 作为一个 (继承的) 内部符号[internal symbol]是可访问的[accessible], 那么这个名为 symbol-name 的符号[symbol]首先被导入到这个要被定义的包[package]中, 然后从那个包[package]中导出[exported].
 
         :intern
 
-            由参数 symbol-names 命名的符号会在那个要被定义的包中被找到或创建. 这个 :intern 选项和 :use 选项相互作用, 因为继承的符号可以被使用而不是新创建一个.
+            由参数 symbol-names 命名的符号[symbol]会在那个要被定义的包[package]中被找到或创建. 这个 :intern 选项和 :use 选项相互作用, 因为可以使用继承的符号[symbol]而不是新创建一个.
 
         :size
 
-            给 :size 选项的参数声明了期望出现在那个包中的符号的近似数量. 这只是一个效率暗示, 可能被一个具体实现所忽略.
+            给 :size 选项的参数声明了期望出现在那个包[package]中的符号[symbol]的近似数量. 这只是一个效率暗示, 可能被一个具体实现所忽略.
 
         这些选项出现在一个 defpackage 表达式形式中的顺序是不相关的. 它们被执行的顺序如下所述:
 
@@ -1316,9 +1316,9 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
         3. :import-from 和 :intern.
         4. :export.
 
-        首先确立遮蔽, 因为在 :use 选项被处理时它们可能是阻止虚假名字冲突的必要条件. 这个 :use 选项接下来被执行, 这样一来 :intern 和 :export 选项可以正常引用继承的符号. 这个 :export 选项最后执行, 这样一来它可以引用任何其他选项创建的符号; 特别地, 遮蔽符号和导入符号可以变为外部的.
+        首先确立遮蔽, 因为在 :use 选项被处理时它们可能是阻止虚假名字冲突的必要条件. 这个 :use 选项接下来被执行, 这样一来 :intern 和 :export 选项可以正常引用继承的符号[symbol]. 这个 :export 选项最后执行, 这样一来它可以引用任何其他选项创建的符号[symbol]; 特别地, 遮蔽符号[shadowing symbol]和导入符号[symbol]可以变为外部的.
 
-        如果一个 defpackage 表达式形式作为一个顶层表达式形式出现, 这个宏在加载时正常执行的所有动作在编译时也必须执行.
+        如果一个 defpackage 表达式形式[form]作为一个顶层表达式形式[top level form]出现, 这个宏[macro]在加载时正常执行的所有动作在编译时也必须执行.
 
 * 示例(Examples):
 
@@ -1343,31 +1343,31 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
 * 受此影响(Affected By):
 
-        已存在的包.
+        已存在的包[package].
 
 * 异常情况(Exceptional Situations): 
 
-        如果提供的其中一个 :nicknames 已经引用了一个已存在的包, 就会发出一个 package-error 类型的错误.
+        如果提供的其中一个 :nicknames 已经引用了一个已存在的包[package], 就会发出一个 package-error 类型[type]的错误.
 
-        如果 :size or :documentation 出现不止一次, 就会发出一个 package-error 类型的错误.
+        如果 :size 或 :documentation 出现不止一次, 就会发出一个 package-error 类型[type]的错误.
 
-        由于具体实现可能允许去扩展选项, 如果一个出现的选项事实上不被主机的具体实现所支持, 就会发出一个 program-error 类型的错误.
+        由于具体实现[implementation]可能允许去扩展选项 options, 如果一个出现的选项事实上不被主机的具体实现[implementation]所支持, 就会发出一个 program-error 类型[type]的错误.
 
-        给选项 :shadow, :intern, :import-from, 和 :shadowing-import-from 的 symbol-name 参数集合必须是互斥的. 在这个上下文中的互斥被定义为 symbol-names 中没有任何两个是 string= 的. 如果违反, 就会发出一个 program-error 类型的错误.
+        给选项 :shadow, :intern, :import-from, 和 :shadowing-import-from 的 symbol-name 参数集合必须是互斥的; 另外, 提供给 :export 和 :intern 的 symbol-name 参数也必须互斥. 在这个上下文中的互斥被定义为 symbol-names 中没有任何两个是 string= 的. 如果违反, 就会发出一个 program-error 类型[type]的错误.
 
-        对于 :shadowing-import-from 和 :import-from 选项, 如果在由 package-name 命名的包中对于参数 symbol-names 的其中一个没有可访问的符号, 就会发出一个 program-error 类型的可校正错误.
+        对于 :shadowing-import-from 和 :import-from 选项, 如果在由 package-name 命名的包[package]中对于参数 symbol-names 的其中一个没有可访问[accessible]的符号[symbol], 就会发出一个 program-error 类型[type]的可校正[correctable]错误[error].
 
-        名字冲突错误会被对 make-package, use-package, import, 和 export 的潜在调用所处理. 见章节 11.1 (Package Concepts).
+        名字冲突错误会被 make-package, use-package, import, 和 export 的潜在调用所处理. 见章节 11.1 (包概念).
 
 * 也见(See Also):
 
-        documentation, 章节 11.1 (Package Concepts), 章节 3.2 (Compilation)
+        documentation, 章节 11.1 (包概念), 章节 3.2 (编译)
 
 * 注意(Notes):
 
-        如果一个对 defpackage 的后续调用中(对于某个其他包)的 :import-from 或者 :shadowing-import-from 选项期望去找到这些可以访问的但没必要是外部的符号, 那么 :intern 选项是很有用的.
+        如果后续对 defpackage 的一个调用中(对于某个其他包[package])的 :import-from 或者 :shadowing-import-from 选项期望去找到这些可访问[accessible]的但没必要是外部的符号[symbol], 那么 :intern 选项是很有用的.
 
-        建议整个包定义放在一个单独的地方, 并且一个程序中所有的包定义放在一个单独文件中. 这个文件在加载或编译任何其他依赖这些包的东西之前被加载. 这样一个文件可以在 COMMON-LISP-USER 包中被读取, 避免任何初始化状态的问题.
+        建议整个包[package]定义放在一个单独的地方, 并且一个程序中所有的包[package]定义放在一个单独文件中. 这个文件在加载或编译任何其他依赖这些包[package]的东西之前被加载. 这样一个文件可以在 COMMON-LISP-USER 包中被读取, 避免任何初始化状态的问题.
 
         defpackage 不能用于创建两个 "相互递归" 的包, 比如:
 
@@ -1379,11 +1379,11 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
           (:import-from my-package "MY-FUN") ;requires my-package to exist first
           (:export "MY-FUN"))
 
-        然而, 没有措施可以在一个 defpackage 的比较标准的使用后阻止用于去使用一些包影响的函数, 例如 use-package, import, 和 export 去建立这样的联系.
+        然而, 没有措施可以在一个比较标准的 defpackage 的使用后阻止用户去使用一些包影响的函数去建立这样的联系, 例如 use-package, import, 和 export.
 
-        这个 defpackage 的宏展开可以有效地规范化这些名字为字符串, 这样一来即便一个源代码文件中的这个 defpackage 表达式形式有着随机的符号, 编译后的文件也只会包含字符串.
+        这个 defpackage 的宏展开可以有效地把这些名字规范化为字符串[string], 这样一来即便一个源代码文件中的这个 defpackage 表达式形式有着随机的符号[symbol], 编译后的文件也只会包含字符串[string].
 
-        依赖于具体实现的额外选项经常接收一个由关键字自身表示的关键字表达式形式作为列表 (keyword T) 的缩写; 这个语法在不支持它的具体实现中应该被报告为一个不识别选项. 
+        依赖于具体实现[implementation-dependent]的额外选项经常接收一个由关键字[keyword]自身表示的关键字表达式形式作为列表 (keyword T) 的缩写; 这个语法在不支持它的具体实现中应该被报告为一个不识别选项. 
 
 
 ### <span id="M-DS-DES-DAS">宏 DO-SYMBOLS, DO-EXTERNAL-SYMBOLS, DO-ALL-SYMBOLS</span>
@@ -1401,33 +1401,33 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
 * 参数和值(Arguments and Values):
 
-        var---一个变量名; 不求值.
-        package---一个包标识符; 求值. 在 do-symbols 和 do-external-symbols 中默认为当前包.
-        result-form---一个表达式形式; 按如下所述求值. 默认为 nil.
-        declaration---一个 declare 表达式; 不求值.
-        tag---一个 go 标签; 不求值.
-        statement---一个复合表达式形式; 按如下所述求值.
-        results---如果发生了正常的返回, 就是 result-form 返回的值, 否则如果发生一个显式的 return, 就是传递的值.
+        var---一个变量[variable]名[name]; 不求值.
+        package---一个包标识符[package designator]; 求值. 在 do-symbols 和 do-external-symbols 中默认为当前包[current package].
+        result-form---一个表达式形式[form]; 按如下所述求值. 默认为 nil.
+        declaration---一个 declare 表达式[expression]; 不求值.
+        tag---一个 go 标签[go tag]; 不求值.
+        statement---一个复合表达式形式[compound form]; 按如下所述求值.
+        results---如果发生了正常返回[normal return], 就是 result-form 返回的值[value], 否则如果发生一个显式返回[explicit return], 就是传递的那些值[value].
 
 * 描述(Description):
 
-        do-symbols, do-external-symbols, 和 do-all-symbols 遍历包中的符号. 对于每一个选择的包集合中的符号, 这个 var 都会被绑定为那个符号, 然后在主体中的语句 statements 会被执行. 当所有符号都已经被处理时, result-form 被求值并且并且作为这个宏的值被返回.
+        do-symbols, do-external-symbols, 和 do-all-symbols 遍历包[package]中的符号[symbol]. 对于每一个选择的包[package]集合中的符号[symbol], 这个 var 都会被绑定为那个符号[symbol], 然后在主体中的那些语句 statements 会被执行. 当所有符号[symbol]都已经被处理时, result-form 被求值并且并且作为这个宏的值被返回.
 
-        do-symbols 遍历包 package 中可访问的符号. 对于从多个包中继承的符号语句 statements 可能被执行不止一次.
+        do-symbols 遍历包 package 中可访问[accessible]的符号[symbol]. 对于从多个包[package]中继承的符号[symbol], 语句 statements 可能被执行不止一次.
 
-        do-all-symbols 在每个注册的包上遍历. do-all-symbols 无论如何不会处理每个符号, 应为一个在任何注册的包中都不可访问的符号不会被处理. do-all-symbols 可能导致一个出现在多个包中的符号被处理不止一次.
+        do-all-symbols 在每个已注册的包[registered package]上遍历. do-all-symbols 无论如何不会处理每个符号[symbol], 因为一个在任何已注册的包[registered package]中都不是可访问[accessible]的符号[symbol]不会被处理. do-all-symbols 可能导致一个出现[present]在多个包[package]中的符号[symbol]被处理不止一次.
 
         do-external-symbols 遍历包 package 中的外部符号.
 
         当 result-form 被求值时, var 被绑定并且值为 nil.
 
-        一个名为 nil 的隐式 block 在整个 do-symbols, do-external-symbols, 或 do-all-symbols 表达式形式周围. return 或 return-from 可能被用于提前终止这个迭代.
+        一个名为 nil 的隐式语句块[implicit block]在整个 do-symbols, do-external-symbols, 或 do-all-symbols 表达式形式[form]周围. return 或 return-from 可能被用于提前终止这个迭代.
 
-        如果主体的执行影响了被包含在正在被迭代的包的集合中的符号, 除了使用 unintern 去移除 var 当前的值的符号之外, 后果是未定义的.
+        如果主体的执行影响了被包含在正在被迭代的包[package]的集合中的符号[symbol], 除了使用 unintern 去移除 var 当前的值的符号[symbol]之外, 后果是未定义的.
 
-        对于这些宏中的每一个, 名称绑定的作用域不包括任何初始值表达式形式, 但是包括了那个可选的结果表达式形式.
+        对于这些宏中的每一个, 名称绑定的作用域[scope]不包括任何初始值表达式形式, 但是包括了那个可选的结果表达式形式.
 
-        在主体中的任何 tag 都被和 tagbody 中一样对待.
+        在主体中的任何 tag 都和 tagbody 中一样被对待.
 
 * 示例(Examples):
 
@@ -1461,7 +1461,7 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
 * 也见(See Also):
 
-        intern, export, 章节 3.6 (Traversal Rules and Side Effects)
+        intern, export, 章节 3.6 (遍历规则和副作用)
 
 * 注意(Notes): None. 
 
@@ -1474,34 +1474,34 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
 * 参数和值(Arguments and Values):
 
-        string---一个字符串.
-        package---一个包指示符. 默认为当前包.
-        symbol---一个符号.
+        string---一个字符串[string].
+        package---一个包指示符[package designator]. 默认为当前包[current package].
+        symbol---一个符号[symbol].
         status---:inherited, :external, :internal, 或者 nil 的其中之一.
 
 * 描述(Description):
 
-        intern 输入一个名为字符串 string 的符号到包 package 中. 如果一个名字和字符串 string 相同的符号在包 package 中已经可访问了, 就把它返回. 如果在包 package 中没有这样的符号, 那么带有这个给定名字的新的符号会被创建并输入到包 package 中作为一个内部符号, 如果包 package 是 KEYWROD 包就作为一个外部符号; 包 package 就成为创建的这个符号的 home 包.
+        intern 把一个名为字符串 string 的符号[symbol]输入到包 package 中. 如果一个名字和字符串 string 相同的符号[symbol]在包 package 中已经是可访问[accessible]的了, 就把它返回. 如果在包 package 中没有这样的符号[symbol]可访问[accessible], 那么带有这个给定名字的新的符号[symbol]会被创建并输入到包 package 中作为一个内部符号[internal symbol], 如果包 package 是 KEYWROD 包就作为一个外部符号[external symbol]; 包 package 就成为创建的这个符号[symbol]的 home 包[home package].
 
-        由 intern 返回的第一个值, symbol, 是这个被找到或者被创建的符号. 第二个值, status, 分别是:
+        由 intern 返回的第一个值, symbol, 是这个被找到或者被创建的符号[symbol]. 第二个值[secondary value], status, 意义如下:
 
         :internal
 
-            这个符号被找到并且出现在包 package 中作为一个内部符号.
+            这个符号[symbol]被找到并且出现[present]在包 package 中作为一个内部符号[internal symbol].
 
         :external
 
-            这个符号被找到并且出现在包 package 中作为一个外部符号.
+            这个符号[symbol]被找到并且出现[present]在包 package 中作为一个外部符号[external symbol].
 
         :inherited
 
-            这个符号被找到并且是通过 use-package 继承而来 (这也意味着这个符号是内部的).
+            这个符号[package]被找到并且是通过 use-package 继承而来 (这也意味着这个符号[symbol]是内部的).
 
         nil
 
-            没有找到之前存在的符号, 所以创建一个.
+            没有找到之前存在的符号[symbol], 所以创建一个.
 
-            成为这个新符号名字的字符串是给定的字符串 string 还是它的一个拷贝是依赖于具体实现的. 在一个新符号被创建的情况下, 一旦一个字符串已经被给定作为给 intern 的 string 参数, 如果后面尝试去修改这个字符串那么后果是未定义的.
+            成为这个新符号[symbol]名字[name]的字符串[string]是给定的字符串 string 还是它的一个拷贝是依赖于具体实现的[implementation-dependent]. 在一个新符号[symbol]被创建的情况下, 一旦一个字符串[string]已经被给定作为给 intern 的 string 实参[argument], 如果后面尝试去修改这个字符串[string], 那么后果是未定义的.
 
 * 示例(Examples):
 
@@ -1521,11 +1521,11 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
 * 也见(See Also):
 
-        find-symbol, read, symbol, unintern, Section 2.3.4 (符号标记)
+        find-symbol, read, symbol, unintern, 章节 2.3.4 (符号标记)
 
 * 注意(Notes):
 
-        如果这里已经有一个给定名字的可访问符号, intern 不需要去做任何名字冲突检测, 因为它不会创建一个新符号. 
+        如果这里已经有一个带有给定名字的可访问[accessible]符号[symbol], intern 不需要去做任何名字冲突检测, 因为它不会创建一个新符号[symbol]. 
 
 
 ### <span id="F-PACKAGE-NAME">函数 PACKAGE-NAME</span>
@@ -1536,12 +1536,12 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
 * 参数和值(Arguments and Values):
 
-        package---一个包标识符.
-        name---一个字符串或 nil.
+        package---一个包标识符[package designator].
+        name---一个字符串[string]或 nil.
 
 * 描述(Description):
 
-        package-name 返回命名这个包 package 的字符串, 如果这个包标识符是一个没有名字包对象(见函数 delete-package)就是 nil.
+        package-name 返回命名这个包 package 的字符串[string], 如果这个包 package 标识符[designator]是一个没有名字包[package]对象[object] (见函数[function] delete-package)就是 nil.
 
 * 示例(Examples):
 
@@ -1562,7 +1562,7 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
 * 异常情况(Exceptional Situations): 
 
-        如果 package 不是一个包, 那么应该发出一个 type-error 类型的错误.
+        如果 package 不是一个包标识符[package designator], 那么应该发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also): None.
 
@@ -1577,18 +1577,20 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
 * 参数和值(Arguments and Values):
 
-        package---一个包标识符.
-        nicknames---一个字符串列表.
+        package---一个包标识符[package designator].
+        nicknames---一个字符串[string]列表[list].
 
 * 描述(Description):
 
-        返回包 package 的别名字符串列表, 不包括包 package 的名字.
+        返回包 package 的别名字符串[string]列表[list], 不包括包 package 的名字.
 
 * 示例(Examples):
 
- (package-nicknames (make-package 'temporary
-                                   :nicknames '("TEMP" "temp")))
-=>  ("temp" "TEMP") 
+    ```LISP
+    (package-nicknames (make-package 'temporary
+                                      :nicknames '("TEMP" "temp")))
+    =>  ("temp" "TEMP") 
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -1596,7 +1598,7 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
 * 异常情况(Exceptional Situations): 
 
-        如果 package 不是一个包, 那么应该发出一个 type-error 类型的错误.
+        如果 package 不是一个包标识符[package designator], 那么应该发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also): None.
 
@@ -1611,12 +1613,12 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
 * 参数和值(Arguments and Values):
 
-        package---一个包标识符.
-        symbols---一个符号列表.
+        package---一个包标识符[package designator].
+        symbols---一个符号[symbol]列表[list].
 
 * 描述(Description):
 
-        返回一个在包 package 中已经通过 shadow 或 shadowing-import (或等价的 defpackage 选项)被声明为遮蔽的符号的列表. 这个列表中的所有符号都出现在这个包中.
+        返回一个在包 package 中已经通过 shadow 或 shadowing-import (或等价的 defpackage 选项)被声明为遮蔽符号[shadowing symbol]的符号[symbol]列表[list]. 这个列表[list]中的所有符号[symbol]都出现[present]在这个包 package 中.
 
 * 示例(Examples):
 
@@ -1635,7 +1637,7 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
 * 异常情况(Exceptional Situations): 
 
-        如果 package 不是一个包, 那么应该发出一个 type-error 类型的错误.
+        如果 package 不是一个包标识符[package designator], 那么应该发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
@@ -1643,7 +1645,7 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
 * 注意(Notes):
 
-        这个符号列表是否是新的依赖于具体实现. 
+        这些符号 symbols 的列表是否是新[fresh]的依赖于具体实现[implementation-dependent]. 
 
 
 ### <span id="F-PACKAGE-USE-LIST">函数 PACKAGE-USE-LIST</span>
@@ -1654,12 +1656,12 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
 * 参数和值(Arguments and Values):
 
-        package---一个包标识符.
-        use-list---一个包对象列表.
+        package---一个包标识符[package designator].
+        use-list---一个包[package]对象[object]的列表[list].
 
 * 描述(Description):
 
-        返回被包 package 使用的其他包的列表.
+        返回被包 package 使用的其他包[package]的列表[list].
 
 * 示例(Examples):
 
@@ -1675,7 +1677,7 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
 * 异常情况(Exceptional Situations): 
 
-        如果 package 不是一个包, 那么应该发出一个 type-error 类型的错误.
+        如果 package 不是一个包标识符[package designator], 那么应该发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
@@ -1692,12 +1694,12 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
 * 参数和值(Arguments and Values):
 
-        package---一个包标识符.
-        used-by-list---一个包对象列表.
+        package---一个包标识符[package designator].
+        used-by-list---一个包[package]对象[object]的列表[list].
 
 * 描述(Description):
 
-        package-used-by-list 返回其他使用包 package 的包的列表.
+        package-used-by-list 返回其他使用包 package 的包[package]的列表[list].
 
 * 示例(Examples):
 
@@ -1713,7 +1715,7 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
 * 异常情况(Exceptional Situations): 
 
-        如果 package 不是一个包, 那么应该发出一个 type-error 类型的错误.
+        如果 package 不是一个包标识符[package designator], 那么应该发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
@@ -1730,12 +1732,12 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
 * 参数和值(Arguments and Values):
 
-        object---一个对象.
-        generalized-boolean---一个广义的 boolean.
+        object---一个对象[object].
+        generalized-boolean---一个广义的 boolean [generalized boolean].
 
 * 描述(Description):
 
-        如果对象 object 是 package 类型的就返回 true; 否则, 返回 false.
+        如果对象 object 是 package 类型[type]的就返回 true; 否则, 返回 false.
 
 * 示例(Examples):
 
@@ -1763,7 +1765,7 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
 * 值类型(Value Type):
 
-        一个包对象.
+        一个包[package]对象[object].
 
 * 初始值(Initial Value):
 
@@ -1771,7 +1773,7 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
 * 描述(Description):
 
-        不管哪个包对象当前是 *package* 的值, 都会被引用作为当前包.
+        不管哪个包[package]对象[object]当前是 *package* 的值[value], 都会被引用作为当前包[current package].
 
 * 示例(Examples):
 
@@ -1814,11 +1816,11 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
 * 描述(Description):
 
-        这个 package-error 类型由在包上操作相关的错误状况组成. 这个违规的包 (或者包名) 是通过给 make-condition 的 :package 初始化参数来初始化的, 并且可以通过函数 package-error-package 来访问.
+        这个 package-error 类型[type]由在包[package]上的操作相关的错误[error]状况[condition]组成. 这个违规的包[package] (或者包[package]名[name]) 是通过给 make-condition 的 :package 初始化参数来初始化的, 并且可以通过函数[function] package-error-package 来访问.
 
 * 也见(See Also):
 
-        package-error-package, Section 9 (Conditions) 
+        package-error-package, 章节 9 (状况) 
 
 
 ### <span id="F-PACKAGE-ERROR-PACKAGE">函数 PACKAGE-ERROR-PACKAGE</span>
@@ -1829,12 +1831,12 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
 * 参数和值(Arguments and Values):
 
-        condition---一个 package-error 类型的状况.
-        package---一个包标识符.
+        condition---一个 package-error 类型[type]的状况[condition].
+        package---一个包标识符[package designator].
 
 * 描述(Description):
 
-        返回这个状况 condition 表示的情况中出问题的包的标识符.
+        返回这个状况 condition 表示的情况[situation]中出问题的包[package]的标识符[designator].
 
 * 示例(Examples):
 
