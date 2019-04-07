@@ -99,15 +99,15 @@
 
 -- 包函数在对包结构做任何改动之前发出一个 package-error 类型[type]的名称冲突错误. 当需要进行多次更改时, 允许具体实现分别处理每一个更改. 比如, 当 export 给定一个符号[symbol]的列表[list]时, 从列表[list]中第二个符号[symbol]导致的名字冲突终止可能仍然会导出这个列表[list]的第一个符号[symbol]. 然而, 一个由单个符号的 export 导致的名字冲突错误会在在任何包[package]中那个符号[symbol]的可访问性[accessibility]被改变之前被发出.
 
--- 从一个名字冲突错误中继续必须为用户提供一个机会去选择任何一个候选符号. 包[package]结构应该通过 shadowing-import, unintern, 或 unexport 被修改, 以反映名字冲突的解决方案.
+-- 从一个名字冲突错误中的继续必须为用户提供一个机会去选择任意一个候选符号来解决名字冲突. 包[package]结构应该通过 shadowing-import, unintern, 或 unexport 被修改, 以反映名字冲突的解决方案.
 
--- 出现[present]在使用的包[package]中的符号[symbol]和被使用包中的外部符号[external symbol]之间的 use-package 中的名字冲突, 通过使第一个符号[symbol]变为遮蔽符号[symbol]进而选择第一个符号或者通过从使用的包[package]中解绑第一个符号[symbol]进而选择第二个符号[symbol]来解决.
+-- 这个 use-package 中, 出现[present]在使用的包[package]中的符号[symbol]和被使用包中的外部符号[external symbol]之间的名字冲突, 通过使第一个符号[symbol]变为遮蔽符号[symbol]进而选择第一个符号或者通过从使用的包[package]中解绑第一个符号[symbol]进而选择第二个符号[symbol]来解决.
 
 -- 在 export 或 unintern 中由于一个包[package]从两个其他包[package]中继承相同[same]名字[name] (在 string= 下)的不同[dictinct]符号[symbol]而导致的一个名字冲突, 可以通过把任意一个符号[symbol]导入到使用的包[package]中并且使它成为一个遮蔽符号[shadowing symbol]来解决, 就像使用 use-package 一样. 
 
 ### 11.1.2 <span id="StandardizedPackages">标准包</span>
 
-这个章节描述了在每个符合规范的实现[conforming implementation]中都是可用的包[package]. 下面这段中提供了这些标准[standardized]包[package]的名字[name]和别名[nickname]的汇总在.
+这个章节描述了在每个符合规范的实现[conforming implementation]中都是可用的包[package]. 下面这段中提供了这些标准[standardized]包[package]的名字[name]和别名[nickname]的汇总.
 
     名称              别名  
     COMMON-LISP       CL         
@@ -123,7 +123,7 @@
 
 #### 11.1.2.1 <span id="COMMON-LISP-Package">COMMON-LISP 包</span>
 
-这个 COMMON-LISP 包包含了这个规范定义的 Common Lisp 系统的基本. 它的外部符号[external symbol]包含了出现在 Common Lisp 系统中的所有已定义的名字[defined name] (除了 KEYWORD 包中已定义的名字[defined name]外), 例如 car, cdr, \*package\*, 等等. 这个 COMMON-LISP 有着别名[nickname] CL.
+这个 COMMON-LISP 包包含了这个规范定义的 Common Lisp 系统的基础. 它的外部符号[external symbol]包含了出现在 Common Lisp 系统中的所有已定义的名字[defined name] (除了 KEYWORD 包中已定义的名字[defined name]外), 例如 car, cdr, \*package\*, 等等. 这个 COMMON-LISP 有着别名[nickname] CL.
 
 这个 COMMON-LISP 包有着章节 1.9 (COMMON-LISP 包中的符号) 中枚举的那些外部符号[external symbol], 没有其他的. 这些外部符号[external symbol]出现[present]在 COMMON-LISP 包中但是它们的 home 包[home package]不需要是 COMMON-LISP 包.
 
@@ -136,8 +136,8 @@
 
 在一个符合规范的具体实现[conforming implementation]中, 这个 COMMON-LISP 包的一个外部符号[external symbol]可以有一个函数[function], 宏[macro], 或者特殊操作符[special operator]定义, 一个全局变量[global variable]定义 (或者由于一个 special 公告[proclamation]作为一个动态变量[dynamic variable]的其他状态), 或者只有在这个标准中显式允许时可以是一个类型[type]定义. 比如, fboundp 对于 COMMON-LISP 包的任何不是一个标准[standardized]函数[function], 宏[macro]或特殊操作符[special operator]的名字[name]的外部符号[external symbol]产生[yield] false, 而 boundp 对于 COMMON-LISP 包中的任何不是标准[standardized]全局变量[global variable]名字的外部符号[external symbol]返回 false. 此外, 符合规范的程序[conforming program]可以使用 COMMON-LISP 包的外部符号[external symbol]作为局部词法变量[lexical variable]的名字[name], 并相信这些名字[name]没有被具体实现全局声明为 special, 除非这些符号[symbol]是标准[standardized]全局变量[global variable]的名字[name].
 
-一个符合规范的具体实现[conforming implementation]一定不能在 COMMON-LISP 包的外部符号[external symbol]上使用一个属性指示符[property indicator]放置任何属性[property], 这个属性指示符要么是任何标准[standardized]包[package]的外部符号[external symbol], 要么是 COMMON-LISP-USER 包中的可访问[accessible]的符号[symbol].
-
+一个符合规范的具体实现[conforming implementation]一定不能在 COMMON-LISP 包的外部符号[external symbol]上使用一个属性指示符[property indicator]放置任何属性[property], 其中这个属性指示符要么是任何标准[standardized]包[package]的外部符号[external symbol], 要么是 COMMON-LISP-USER 包中的可访问[accessible]的符号[symbol].
+<!--TODO 待理解-->
 
 ##### 11.1.2.1.2 符合规范的程序的 COMMON-LISP 包的约束
 
@@ -186,7 +186,7 @@
 
 如果 COMMON-LISP 包的一个外部符号[external symbol]没有被全局定义为一个标准[standardized]动态变量[dynamic variable]或常变量[constant variable], 那么允许词法上绑定[bind]它并且声明那个绑定[binding]的 type, 并且允许去局部地把它建立[establish]为一个符号宏[symbol macro] (比如, 使用 symbol-macrolet).
 
-除非显式指定, 否则如果一个 COMMON-LISP 包的外部符号[external symbol]被全局定义为一个标准[standardized]动态变量[dynamic variable], 允许去对那个动态变量[dynamic variable]绑定[bind]或分配[assign], 前提是保持这个动态变量的 "值类型(Value Type)" 约束, 并且那个变量[variable]的新值[value]和该变量[variable]声明的目的一致.
+除非显式指定, 否则如果一个 COMMON-LISP 包的外部符号[external symbol]被全局定义为一个标准[standardized]动态变量[dynamic variable], 允许去绑定[bind]或赋值[assign]那个动态变量[dynamic variable], 前提是保持这个动态变量的 "值类型(Value Type)" 约束, 并且那个变量[variable]的新值[value]和该变量[variable]声明的目的一致.
 
 如果一个 COMMON-LISP 包的外部符号[external symbol]没有被定义为一个标准[standardized]函数[function], 宏[macro], 或特殊操作符[special operator], 允许词法上把它绑定[bind]为一个函数[function] (比如, 使用 flet), 去声明那个绑定[binding]的 ftype, 并且去追踪(trace)那个绑定[binding] (在提供了执行这个的能力的具体实现中) .
 
