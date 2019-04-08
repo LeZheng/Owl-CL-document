@@ -10,7 +10,7 @@
 > * 12.1.3 [有理数计算](#RationalComputations)
 > * 12.1.4 [浮点计算](#FloatingPointComputations)
 > * 12.1.5 [复数计算](#ComplexComputations)
-> * 12.1.6 [Interval Designators](#IntervalDesignators)
+> * 12.1.6 [区间标识符](#IntervalDesignators)
 > * 12.1.7 [随机状态运算](#RandomStateOperations)
 
 ### 12.1.1 <span id="NumericOperations">数值运算</span>
@@ -138,7 +138,7 @@ Figure 12-4. 数值类型处理和强制转换相关的已定义的名字.
 
 ### 12.1.2 <span id="IDNumericConstants">依赖于具体实现的数字常量</span>
 
-下面这段展示了和数字的依赖于具体实现的详情相关的已定义名字.
+下面这段展示了和数字[number]的依赖于具体实现[implementation-dependent]的详情相关的已定义名字[defined name].
 
     double-float-epsilon           most-negative-fixnum           
     double-float-negative-epsilon  most-negative-long-float       
@@ -159,7 +159,7 @@ Figure 12-4. 数值类型处理和强制转换相关的已定义的名字.
 
 ### 12.1.3 <span id="RationalComputations">有理数计算</span>
 
-这个章节中的规则适用于有理数计算.
+这个章节中的规则适用于有理数[rational]计算.
 
 > * 12.1.3.1 [无界的有理数精度规则](#RuleUnboundedRationalPrecision)
 > * 12.1.3.2 [有理数的规范表示规则](#RuleCanonicalReprRationals)
@@ -168,25 +168,25 @@ Figure 12-4. 数值类型处理和强制转换相关的已定义的名字.
 
 #### 12.1.3.1 <span id="RuleUnboundedRationalPrecision">无界的有理数精度规则</span>
 
-从一般意义上来说有理数计算不可能上溢 (尽管这里可能没有足够的存储来表示一个结果), 因为整数和比数原则上是任意大小的. 
+从一般意义上来说有理数计算不可能上溢 (尽管这里可能没有足够的存储来表示一个结果), 因为整数[integer]和比数[ratio]原则上是任意大小的. 
 
 #### 12.1.3.2 <span id="RuleCanonicalReprRationals">有理数的规范表示规则</span>
 
-如果任何计算产生一个结果是两个整数的数学比, 并且分母可以整除分子, 那么这个结果会被转换为等价的整数.
+如果任何计算产生一个结果是两个整数的数学比, 并且分母可以整除分子, 那么这个结果会被转换为等价的整数[integer].
 
-如果分母不能整除分子, 那么一个有理数的标准表示是分子和分母的比例, 其中分子和分母最大的公约数是 1 , 并且分母是大于 1 的正数.
+如果分母不能整除分子, 那么一个有理数[rational]的标准表示是分子和分母的比率[ratio], 其中分子和分母最大的公约数是 1 , 并且分母是大于 1 的正数.
 
-当作为一个输入时 (在默认语法中), 符号 -0 总是表示 0. 一个符合规范的具体实现不应该有与它对整数 0 的表示不同的"负零"的表示. 但是, 这样的区别对于浮点数也是有可能的; 见类型 float. 
+当作为一个输入时 (在默认语法中), 符号 -0 总是表示整数[integer] 0. 一个符合规范的具体实现[conforming implementation]一定不能有着与整数 0 的表示不同的"负零"的表示. 但是, 这样的区别对于浮点数[float]也是有可能的; 见类型[type] float. 
 
 #### 12.1.3.3 <span id="RuleFloatSubstitutability">浮点的置换性规则</span>
 
-当一个不合理的数学函数的参数都是有理数的而真正的数学结果也是(数学上)有理数, 除非另有说明, 否则一个实现可以自由地返回一个准确的有理数结果或者一个浮点近似值. 如果参数都是有理数但是结果不能被表示为一个有理数数字, 那么总是会返回一个单精度浮点数表示.
+当一个无理数学函数[function]的参数都是有理数[rational]而真正的数学结果也是(数学上)有理数时, 除非另有说明, 否则一个实现可以自由地返回一个准确的有理数[rational]结果或者一个 single-float 近似值. 如果参数都是有理数[rational]但是结果不能被表示为一个有理数[rational]数字, 那么总是会返回一个 single-float 近似值.
 
-当一个不合理的数学函数的参数都是类型 (or rational (complex rational)) 并且真正的数学结果是(数学上)一个带有有理数实部和虚部的复数, 除非另有说明, 否则一个具体实现可以自由地返回一个类型 (or rational (complex rational)) 的精准结果或者一个单精度浮点数 (只有当真实的数学结果的虚部为零时才允许) 或者 (complex single-float). 如果参数都是类型 (or rational (complex rational)) 但是结果不能被表示为一个有理数或者复数, 那么返回值会是 single-float 类型(只有当真实的数学结果的虚部为零时才允许) 或者 (complex single-float).
+当一个无理数学函数[function]的参数都是类型 (or rational (complex rational)) 并且真正的数学结果是(数学上)一个带有有理数实部和虚部的复数, 除非另有说明, 否则一个具体实现可以自由地返回一个类型 (or rational (complex rational)) 的精准结果或者一个 single-float (只有当真实的数学结果的虚部为零时才允许) 或者 (complex single-float). 如果参数都是类型 (or rational (complex rational)) 但是结果不能被表示为一个有理数[rational]或者复有理数[complex rational], 那么返回值会是 single-float 类型(只有当真实的数学结果的虚部为零时才允许) 或者 (complex single-float).
 
-浮点数置换性不能应用于有理数函数 +, -, *, 和 / 也不能应用于相关操作符 1+, 1-, incf, decf, 和 conjugate. 对于有理数函数, 如果所有参数都是有理数, 那么结果就是有理数; 如果所有参数都是类型 (or rational (complex rational)), 那么结果也就是类型 (or rational (complex rational)).
+浮点数置换性不能应用于有理数函数[function] +, -, *, 和 / 也不能应用于相关操作符[operator] 1+, 1-, incf, decf, 和 conjugate. 对于有理数函数[function], 如果所有参数都是有理数[rational], 那么结果就是有理数[rational]; 如果所有参数都是类型 (or rational (complex rational)), 那么结果也就是类型 (or rational (complex rational)).
 
-    Function  Sample Results                                   
+    函数      简单结果                                   
     abs       (abs #c(3 4)) =>  5 or 5.0                       
     acos      (acos 1) =>  0 or 0.0                            
     acosh     (acosh 1) =>  0 or 0.0                           
@@ -225,9 +225,9 @@ Figure 12-4. 数值类型处理和强制转换相关的已定义的名字.
 
 #### 12.1.4.1 <span id="RuleFloatRationalContagion">浮点和有理数传递性的规则</span>
 
-当有理数和浮点数通过一个数值函数进行组合时, 这个有理数首先被转换为一个相同格式的浮点数. 对于像 + 这样的接受超过两个参数的函数, 允许部分操作使用有理数进行操作, 其余部分则使用浮点运算来完成.
+当有理数[rational]和浮点数[float]通过一个数值函数进行组合时, 这个有理数[rational]首先被转换为一个相同格式的浮点数[float]. 对于像 + 这样的接受超过两个参数的函数[function], 允许部分操作使用有理数[rational]进行操作, 其余部分则使用浮点运算来完成.
 
-当有理数和浮点数被一个数值函数进行比较时, 函数 rational 会被调用来将这个浮点数转换为一个有理数然后执行一个准确的比较. 在复数的情况下, 实部和虚部会被单独处理.
+当有理数[rational]和浮点数[float]被一个数值函数进行比较时, 函数[function] rational 会被调用来将这个浮点数[float]转换为一个有理数[rational]然后执行一个准确的比较. 在复数[complex]的情况下, 实部和虚部会被单独处理.
 
 ##### 12.1.4.1.1 浮点和有理数传递性的规则的示例
 
@@ -251,22 +251,22 @@ Figure 12-4. 数值类型处理和强制转换相关的已定义的名字.
 ```
 
 #### 12.1.4.2 <span id="RuleFloatApproximation">浮点近似的规则</span>
-
-浮点数的计算只是近似的, 尽管它们被描述为结果在数学上是准确的. 两个数学上相同的表达式可能在计算上是不同的因为浮点近似过程中固有的错误. 一个浮点数的精度不一定与这个数字的精度相关. 比如, 3.142857142857142857 相比 3.14159 是一个 <PI> 的更精确的近似, 但是后者更准确. 精度指的是在表示中保留的位元数. 当一个操作符组合一个短浮点数和一个长浮点数时, 结果会是一个长浮点数. Common Lisp 函数假定给它们的参数的精度不会超过它们的精度. 因此当两个 small float 被组合时, 结果是一个 small float. Common Lisp 函数不会从一个较大的值转换到较小的一个. 
+<!--TODO small float ??-->
+浮点数[float]的计算只是近似的, 尽管它们被描述为结果在数学上是准确的. 两个数学上相同的表达式可能在计算上是不同的因为浮点近似过程中存在固有的错误. 一个浮点数[float]的精度不一定与这个数字的精度相关. 比如, 3.142857142857142857 相比 3.14159 是 <PI> 的一个更精确的近似值, 但是后者更准确. 精度指的是在表示中保留的位元数. 当一个操作符组合一个短浮点数[short float]和一个长浮点数[long float]时, 结果会是一个长浮点数[long float]. Common Lisp 函数假定给它们的参数的准确度不会超过它们的精度. 因此当两个 small float 被组合时, 结果是一个 small float. Common Lisp 函数不会从一个较大的值转换到较小的一个. 
 
 
 #### 12.1.4.3 <span id="RuleFloatUnderflowOverflow">浮点的上溢和下溢规则</span>
 
-如果一个浮点数运算分别导致指数上溢或下溢, 就会发出一个 floating-point-overflow 或 floating-point-underflow 类型的错误. 
+如果一个浮点数运算导致指数上溢或下溢, 就分别会发出一个 floating-point-overflow 或 floating-point-underflow 类型[type]的错误. 
 
 
 #### 12.1.4.4 <span id="RuleFloatPrecisionContagion">浮点精度传递规则</span>
 
-一个数值函数的结果是给这个函数的所有浮点数参数中最大格式的一个浮点数 . 
+一个数值函数的结果是给这个函数[function]的所有浮点数参数中最大格式的一个浮点数[float]. 
 
 ### 12.1.5 <span id="ComplexComputations">复数计算</span>
 
-以下规则应用于复数计算:
+以下规则应用于复数[complex]计算:
 
 > * 12.1.5.1 [复数的置换性规则](#RuleComplexSubstitutability)
 > * 12.1.5.2 [复数传递规则](#RuleComplexContagion)
@@ -276,17 +276,17 @@ Figure 12-4. 数值类型处理和强制转换相关的已定义的名字.
 
 #### 12.1.5.1 <span id="RuleComplexSubstitutability">复数的置换性规则</span>
 
-除了在无理函数和超越函数的执行期间, 除非它的参数中的一个或多个是一个复数, 否则数值函数不会产生一个复数. 
+除了在无理和超越函数[function]的执行期间, 除非它的实参[argument]中的一个或多个是复数[complex], 否则数值函数[function]不会产生[yield]一个复数[complex]. 
 
 
 #### 12.1.5.2 <span id="RuleComplexContagion">复数传递规则</span>
 
-当一个实数和一个复数都是计算的一部分时, 这个实数首先通过提供一个虚部的0来转换为复数. 
+当一个实数[real]和一个复数[complex]都是计算的一部分时, 这个实数[real]首先通过提供一个 0 的虚部来转换为复数[complex]. 
 
 
 #### 12.1.5.3 <span id="RuleCanonicalReprComplexRationals">复数的正规表示规则</span>
 
-如果任何计算的结果都是一个实部是有理数, 虚部是零的复数, 结果被转换成这个实部的有理数. 这个规则不能应用于两个部分都是浮点数的复数. 比如, #C(5 0) 和 5 在 Common Lisp(它们在 eql 下总是相同的) 中不是不同的对象; #C(5.0 0.0) 和 5.0 在 Common Lisp 中总是为不同的对象 (它们在 eql 下总是不相同的, 尽管它们在 equalp 和 = 下是相同的).
+如果任何计算的结果都是一个实部是 rational 类型[type], 虚部是零的复数[complex], 那么结果被转换成这个实部的有理数[rational]. 这个规则不能应用于两个部分都是浮点数[float]的复数[complex]. 比如, #C(5 0) 和 5 在 Common Lisp (它们在 eql 下总是相同的[same]) 中不是不同[different]的对象[object]; #C(5.0 0.0) 和 5.0 在 Common Lisp 中总是为不同[different]的对象[object] (它们在 eql 下总是不相同的, 尽管它们在 equalp 和 = 下是相同的[same]).
 
 
 ##### 12.1.5.3.1 复数的正规表示规则的示例
@@ -304,7 +304,7 @@ Figure 12-4. 数值类型处理和强制转换相关的已定义的名字.
 
 ##### 12.1.5.4 <span id="PrincipalValuesBranchCuts">主值和分支切割</span>
 
-很多无理函数和超越函数在复数领域会被多次定义; 比如, 对于对数函数, 一般来说有无穷多的复数值. 在每个这样的例子中, 必须为这个函数选择一个主要的值来返回. 通常情况下, 这样的值不能被选择, 从而使范围连续; 在被称为分支切割的区域中, 必须定义分支, 这又定义了范围内的不连续点. Common Lisp 为这些复数函数定义了分支切割, 主值, 还有边界状况, 这些函数遵循 "复数 APL 中的主值和分支切割". 适用于每个函数的分支切割规则和那个函数的描述相对应.
+很多无理函数和超越函数在复数领域会被多次定义; 比如, 对于对数函数, 一般来说有无穷多的复数值. 在每个这样的例子中, 必须为这个函数选择一个首要[principal]的值[value]来返回. 通常情况下, 这样的值不能被选择, 从而使范围连续; 在被称为分支切割的区域中, 必须定义分支, 这又定义了范围内的不连续点. Common Lisp 为这些复数函数定义了分支切割, 首要[principal]的值[value], 还有边界状况, 这些函数遵循 "复数 APL 中的主值和分支切割". 适用于每个函数的分支切割规则和那个函数的描述相对应.
 
 下面这段列出了在复数域的适用部分中所遵守的恒等式, 即使是在分支切割上:
 
@@ -320,33 +320,33 @@ Figure 12-4. 数值类型处理和强制转换相关的已定义的名字.
 
     Figure 12-10. 分支切割的象限编号
 
-### 12.1.6 <span id="IntervalDesignators">Interval Designators</span>
+### 12.1.6 <span id="IntervalDesignators">区间标识符</span>
 
-一个数值类型指定符的复合类型指定符形式允许用户在实数线上去指定一个描述这个类型的子类型的区间, 该类型将由相应的原子类型指定符描述. 使用一个称为类型 T 的区间标识符的对象的有序对来指定的某个类型 T 的一个子类型.
+  一个数值类型指定符[type specifier]的复合类型指定符[compound type specifier]形式允许用户在实数线上去指定一个描述这个类型[type]的子类型[subtype]的区间, 该类型将由相应的原子类型指定符[atomic type specifier]描述. 某个类型[type] T 的子类型[subtype]是使用称为类型[type] T 的区间标识符[interval designator]的有序对象[object]对指定的.
 
-T 类型的两个间隔指示器的第一个可以是以下任意一种:
+T 类型[type]的两个区间标识符[interval designator]的第一个可以是以下任意一种:
 
-一个类型 T 的数字 N
+一个类型[type] T 的数字 N
 
-    这个表示包含 N 的下边界. 这也就是说, T 的子类型的元素会大于等于 N.
+    这个表示包含 N 的下边界. 这也就是说, T 的子类型[subtype]的元素[element]会大于等于 N.
 
-一个元素为类型 T 的数字 M 的单元素列表
+一个元素[element]为类型[type] T 的数字 M 的单元素[singleton]列表[list]
 
-    这个表示不包含 M 的下边界. 这也就是说, T 的子类型的元素会大于 M.
+    这个表示不包含 M 的下边界. 这也就是说, T 的子类型[subtype]的元素[element]会大于 M.
 
 符号 *
 
     这表示在区间上没有下限.
 
-T 类型的两个间隔指示器的第二个可以是以下任意一种:
+T 类型[type]的两个区间标识符[interval designator]的第二个可以是以下任意一种:
 
-一个类型 T 的数字 N
+一个类型[type] T 的数字 N
 
-    这个表示不包含 N 的上边界. 这也就是说, T 的子类型的元素会小于等于 N.
+    这个表示不包含 N 的上边界. 这也就是说, T 的子类型[subtype]的元素[element]会小于等于 N.
 
-一个元素为类型 T 的数字 M 的单元素列表
+一个元素[element]为类型[type] T 的数字 M 的单元素[singleton]列表[list]
 
-    这个表示不包含 M 的上边界. 这也就是说, T 的子类型的元素会小于 M.
+    这个表示不包含 M 的上边界. 这也就是说, T 的子类型[subtype]的元素[element]会小于 M.
 
 符号 *
 
@@ -355,7 +355,7 @@ T 类型的两个间隔指示器的第二个可以是以下任意一种:
 
 ### 12.1.7 <span id="RandomStateOperations">随机状态运算</span>
 
-下面这段列出了可应用于随机状态的已定义的名字.
+下面这段列出了可应用于随机状态[random state]的已定义的名字[defined name].
 
     *random-state*     random            
     make-random-state  random-state-p    
