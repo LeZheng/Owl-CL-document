@@ -66,7 +66,7 @@
 
 -- 任何单独符号[symbol]可以通过使用 import 被添加到一个包[package]中. 在这个对 import 的调用后那个符号[symbol]就出现[present]在那个导入的包[package]中. 在这个符号[symbol]来源的包[package]中(如果有的话)的该符号[symbol]的状态是不会被改变, 并且这个符号[symbol]的 home 包[home package]没有被改变. 一旦被导入, 一个符号[symbol]就出现[present]在那个导入的包[package]中并且只能通过调用 unintern 来移除.
 
-    如果一个符号通过继承是可访问的[accessible]而不是因为出现在一个包中的另一个同名符号, 那么这个符号在那个包中会被那个符号所遮蔽. 见 shadowing-import.<!--TODO 待翻译-->
+    一个符号[symbol]被某个包中的另一个符号[symbol]所遮蔽[shadow[3]], 如果第二个符号没有出现第一个符号[symbol]通过继承是可访问[accessible]的话. 见 shadowing-import.
 
 -- 使一个包[package]中的符号[symbol]在另一个包中是可访问[accessible]的第二种机制是由 use-package 提供的. 那个被使用的包[package]中的所有外部符号[external package]都被那个使用的包[package]所继承. 函数[function] unuse-package 撤销一个之前的 use-package 的影响. 
 
@@ -136,8 +136,7 @@
 
 在一个符合规范的具体实现[conforming implementation]中, 这个 COMMON-LISP 包的一个外部符号[external symbol]可以有一个函数[function], 宏[macro], 或者特殊操作符[special operator]定义, 一个全局变量[global variable]定义 (或者由于一个 special 公告[proclamation]作为一个动态变量[dynamic variable]的其他状态), 或者只有在这个标准中显式允许时可以是一个类型[type]定义. 比如, fboundp 对于 COMMON-LISP 包的任何不是一个标准[standardized]函数[function], 宏[macro]或特殊操作符[special operator]的名字[name]的外部符号[external symbol]产生[yield] false, 而 boundp 对于 COMMON-LISP 包中的任何不是标准[standardized]全局变量[global variable]名字的外部符号[external symbol]返回 false. 此外, 符合规范的程序[conforming program]可以使用 COMMON-LISP 包的外部符号[external symbol]作为局部词法变量[lexical variable]的名字[name], 并相信这些名字[name]没有被具体实现全局声明为 special, 除非这些符号[symbol]是标准[standardized]全局变量[global variable]的名字[name].
 
-一个符合规范的具体实现[conforming implementation]一定不能在 COMMON-LISP 包的外部符号[external symbol]上使用一个属性指示符[property indicator]放置任何属性[property], 其中这个属性指示符要么是任何标准[standardized]包[package]的外部符号[external symbol], 要么是 COMMON-LISP-USER 包中的可访问[accessible]的符号[symbol].
-<!--TODO 待理解-->
+一个符合规范的具体实现[conforming implementation]一定不能用任何标准[standardized]包[package]的外部符号[external symbol]或者 COMMON-LISP-USER 包中可访问[accessible]符号[symbol]作为属性指示符[property indicator]在 COMMON-LISP 包的外部符号[external symbol]上放置任何属性[property].
 
 ##### 11.1.2.1.2 符合规范的程序的 COMMON-LISP 包的约束
 
@@ -293,7 +292,7 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
         如果这些符号 symbols 中的任何一个已经是包 package 中可访问[accessible]的外部符号[external symbol], export 在那个符号[symbol]上没有效果. 如果那个符号 symbol 是作为一个内部符号出现在包 package 中, 它就被简单地改为外部状态. 如果它通过 use-package 作为一个内部符号[internal symbol]是可访问的[accessible], 它首先被导入到包 package 中, 然后再被导出[exported]. (不管接下来包 package 是否继续使用那个最初继承符号[symbol]的包[package], 这个符号 symbol 接下来都会出现[package]在包 package 中.)
 
-        export 使得每个符号 symbol 对于使用了包 package 的所有包[package]都是可访问的[accessible]. 所有这些包[package]都会检测命名冲突: (export s p) 为每一个在 (package-used-by-list p) 中的包执行 (find-symbol (symbol-name s) q). 注意, 在通常情况下, 一个包的最初定义期间使用 export, package-used-by-list 的结果是 nil 并且名字冲突检测需要的时间忽略不计. 当执行了多次更改时, 比如当提供给 export 这些符号 symbols 的一个列表时, 允许具体实现去单独处理每一个更改, 这样一来除了这个列表中的第一个符号以外, 其他任何符号导致的名字冲突的中止都不会取消这个列表中的第一个符号的导出. 然而, 一个由这些符号 symbols 中的其中一个导致的名字冲突错误的中止不会让那个符号[symbol]对于某些包[package]是可访问的[accessible]但对于其他是不可访问的[inaccessible]; 对于每一个被处理的符号 symbols, export 表现的就好像它是一个原子操作.
+        export 使得这里的每个符号 symbol 对于使用了包 package 的所有包[package]都是可访问的[accessible]. 所有这些包[package]都会检测命名冲突: (export s p) 为每一个在 (package-used-by-list p) 中的包执行 (find-symbol (symbol-name s) q). 注意, 在通常情况下, 一个包的最初定义期间使用 export, package-used-by-list 的结果是 nil 并且名字冲突检测需要的时间忽略不计. 当执行了多次更改时, 比如当提供给 export 这些符号 symbols 的一个列表时, 允许具体实现去单独处理每一个更改, 这样一来除了这个列表中的第一个符号以外, 其他任何符号导致的名字冲突的中止都不会取消这个列表中的第一个符号的导出. 然而, 一个由这些符号 symbols 中的其中一个导致的名字冲突错误的中止不会让那个符号[symbol]对于某些包[package]是可访问的[accessible]但对于其他是不可访问的[inaccessible]; 对于每一个被处理的符号 symbols, export 的表现就好像它是一个原子操作一样.
 
         在 export 中, 要被导出的符号 symbols 的其中一个和已经出现[present]在会继承那个新导出符号[symbol]的包[package]中的符号[symbol]之间的名字冲突, 可以通过解除捕捉另一个来选择导出的符号[symbol], 或者通过使那个已存在的符号[symbol]变为一个遮蔽符号来选择那个已存在的符号.
 
@@ -499,7 +498,7 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
         import 添加 symbol 或 symbols 到包 package 的内部, 和出现[present]在包 package 中的或者可访问[accessible]的已存在符号[symbol]检查名字冲突. 一旦这些符号 symbols 已经被导入, 在使用 Lisp 读取器[Lisp reader]时, 它们可以在导入的包中被直接引用而不使用包前缀[package prefix].
 
-        在 import 中, 这个要被导入的符号 symbol 和从某个其他包[package]中继承而来的符号之间的名字冲突, 可以通过使这个要被导入的符号 symbol 为遮蔽符号来选择这个要被导入的符号  symbol , 或者不执行这个 import 来选择已经可访问[accessible]的那个符号[symbol]来解决. 在 import 中, 和已经出现[present]在包 package 的符号[symbol]之间的名字冲突可以通过解除捕捉那个符号[symbol]或者不执行这个 import 来解决.
+        在 import 中, 这个要被导入的符号 symbol 和从某个其他包[package]中继承而来的符号之间的名字冲突, 可以通过使这个要被导入的符号 symbol 为遮蔽符号来选择这个要被导入的符号 symbol , 或者不执行这个 import 来选择已经可访问[accessible]的那个符号[symbol]来解决. 在 import 中, 和已经出现[present]在包 package 的符号[symbol]之间的名字冲突可以通过解除捕捉那个符号[symbol]或者不执行这个 import 来解决.
 
         这个导入的符号[symbol]不会被自动从这个当前包[current package]中导出, 但是如果它已经出现[present]在包中并且是外部的, 那么它是外部的这个事实不会被改变. 如果要被导入的任何符号[symbol]没有 home 包 (也就是说, (symbol-package symbol) => nil), import 会设置这个符号 symbol 的 home 包[home package]为包 package.
 
@@ -586,7 +585,7 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
         替换包 package 的名字和别名. 包 package 的旧名字和所有旧别名会被消除并且被替换为 new-name 和 new-nicknames.
 
-        如果 new-name 或 any new-nickname 和任何已存在包名冲突, 那么后果是未定义的.
+        如果 new-name 或任何 new-nickname 和任何已存在包名冲突, 那么后果是未定义的.
 
 * 示例(Examples):
 
@@ -1415,7 +1414,7 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
         do-symbols 遍历包 package 中可访问[accessible]的符号[symbol]. 对于从多个包[package]中继承的符号[symbol], 语句 statements 可能被执行不止一次.
 
-        do-all-symbols 在每个已注册的包[registered package]上遍历. do-all-symbols 无论如何不会处理每个符号[symbol], 因为一个在任何已注册的包[registered package]中都不是可访问[accessible]的符号[symbol]不会被处理. do-all-symbols 可能导致一个出现[present]在多个包[package]中的符号[symbol]被处理不止一次.
+        do-all-symbols 在每个已注册的包[registered package]上遍历. do-all-symbols 不会处理每个符号[symbol], 因为一个在任何已注册的包[registered package]中都不是可访问[accessible]的符号[symbol]不会被处理. do-all-symbols 可能导致一个出现[present]在多个包[package]中的符号[symbol]被处理不止一次.
 
         do-external-symbols 遍历包 package 中的外部符号.
 
@@ -1501,7 +1500,7 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
             没有找到之前存在的符号[symbol], 所以创建一个.
 
-            成为这个新符号[symbol]名字[name]的字符串[string]是给定的字符串 string 还是它的一个拷贝是依赖于具体实现的[implementation-dependent]. 在一个新符号[symbol]被创建的情况下, 一旦一个字符串[string]已经被给定作为给 intern 的 string 实参[argument], 如果后面尝试去修改这个字符串[string], 那么后果是未定义的.
+        成为这个新符号[symbol]名字[name]的字符串[string]是给定的字符串 string 还是它的一个拷贝是依赖于具体实现的[implementation-dependent]. 在一个新符号[symbol]被创建的情况下, 一旦一个字符串[string]已经被给定作为给 intern 的 string 实参[argument], 如果后面尝试去修改这个字符串[string], 那么后果是未定义的.
 
 * 示例(Examples):
 
@@ -1760,7 +1759,6 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
         (packagep object) ==  (typep object 'package)
 
 
-
 ### <span id="V-PACKAGE">变量 *PACKAGE*</span>
 
 * 值类型(Value Type):
@@ -1858,5 +1856,3 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
         package-error
 
 * 注意(Notes): None. 
-
-
