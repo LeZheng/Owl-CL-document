@@ -458,13 +458,13 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 描述(Description):
 
-        类型 number 包含了表示数学数字的对象. 类型 real 和 complex 是 number 互斥的子类型.
+        类型[type] number 包含了表示数学数字的对象[object]. 类型[type] real 和 complex 是 number 互斥[disjoint]的子类型[subtype].
 
-        函数 = 测试数值等价. 函数 eql, 当它的参数都是数字时, 测试它们是否有着相同的类型和数值. 两个数字在 eql 或 = 下是相同的但在 eq 下不一定相同.
+        函数[function] = 测试数值等价. 函数[function] eql, 当它的参数都是数字[number]时, 测试它们是否有着相同的类型[type]和数值. 两个数字[number]在 eql 或 = 下是相同的[same]但在 eq 下不一定相同[same].
 
 * 注意(Notes):
 
-        Common Lisp 在一些命名问题上和数学不同. 在数学中, 实数的集合习惯上被描述为是复数的一个子集, 但是在 Common Lisp 中, 类型 real 和类型 complex 是互斥的. 包含了所有数学复数的 Common Lisp 类型称为 number. 造成这些差异的原因包括历史先例, 和其他流行计算机语言兼容, 以及多种时间和空间效率问题.
+        Common Lisp 在一些命名问题上和数学不同. 在数学中, 实数的集合习惯上被描述为是复数的一个子集, 但是在 Common Lisp 中, 类型[type] real 和类型[type] complex 是互斥的. 包含了所有数学复数的 Common Lisp 类型称为 number. 造成这些差异的原因包括历史先例, 和其他流行计算机语言兼容, 以及多种时间和空间效率问题.
 
 
 ### <span id="SC-COMPLEX">系统类 COMPLEX</span>
@@ -475,7 +475,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 描述(Description):
 
-        类型 complex 包括所有数学上的复数除了被包含在类型 rational 中的那些. 复数被表示为一个实部和一个虚部的笛卡尔形式, 其中的每个部分都是一个实数. 实部和虚部都是有理数或都是相同的浮点数类型. 虚部可以是一个浮点数 0, 但不能是一个有理数 zero, 因为这样的一个数字被 Common Lisp 表示为一个有理数而不是一个复数.
+        类型[type] complex 包括所有数学上的复数除了被包含在类型[type] rational 中的那些. 复数[complex]被表示为一个实部和一个虚部的笛卡尔形式, 其中的每个部分都是一个实数[real]. 实部和虚部都是有理数[rational]或都是相同的浮点数[float]类型[type]. 虚部可以是一个浮点数[float] 0, 但不能是一个有理数[rational] zero, 因为这样的一个数字被 Common Lisp 表示为一个有理数[rational]而不是一个复数[complex].
 
 * 复合类型指定符类别(Compound Type Specifier Kind):
 
@@ -487,23 +487,23 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 复合类型指定符参数(Compound Type Specifier Arguments):
 
-        typespec---一个表示类型 real 的一个子类的类型指定符.
+        typespec---一个表示类型[type] real 的一个子类型[subtype]的类型指定符[type specifier].
 
 * 复合类型指定符描述(Compound Type Specifier Description):
 
-        这个类型的每个元素都是实部和虚部为类型 (upgraded-complex-part-type typespec) 的一个复数. 这个类型包括那些可以通过给 complex 传递类型 typespec 的数字来产生的复数.
+        这个类型[type]的每个元素都是实部和虚部为类型 (upgraded-complex-part-type typespec) 的一个复数[complex]. 这个类型[type]包括那些可以通过给 complex 传递类型[type] typespec 的数字来产生的复数[complex].
 
-        (complex type-specifier) 指的是所有可以通过给函数 complex 传递类型 type-specifier 数字来产生的复数, 加上所有其他的相同的专业表示.
+        (complex type-specifier) 指的是所有可以通过给函数[function] complex 传递类型 type-specifier 的数字[number]来产生的复数[complex], 加上所有其他的相同的专门的表示.
 
 * 也见(See Also):
 
-        章节 12.1.5.3 (Rule of Canonical Representation for Complex Rationals), 章节 2.3.2 (Constructing Numbers from Tokens), 章节 22.1.3.1.4 (Printing Complexes)
+        章节 12.1.5.3 (复数的正规表示规则), 章节 2.3.2 (从标记构建数字), 章节 22.1.3.1.4 (打印复数)
 
 * 注意(Notes):
 
-        一个实部为 r 和虚部为 i 的复数的输入语法是 #C(r i). 关于更多详情, 见章节 2.4 (Standard Macro Characters).
+        一个实部为 r 和虚部为 i 的复数[complex]的输入语法是 #C(r i). 关于更多详情, 见章节 2.4 (标准宏字符).
 
-        对于每个 float, n, 这里会有一个表示相同数学数值的复数, 可以通过 (COERCE n 'COMPLEX) 来获取. 
+        对于每个浮点数[float] n, 这里会有一个表示相同数学数值的复数[complex], 可以通过 (COERCE n 'COMPLEX) 来获取. 
 
 
 ### <span id="SC-REAL">系统类 REAL</span>
@@ -514,9 +514,9 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 描述(Description):
 
-        类型 real 包括表示数学上实数的所有数字, 尽管这里有着在 Common Lisp 中没有准确表示的数学上的实数. 只有实数可以使用 <, >, <=, 和 >= 函数来排序.
+        类型[type] real 包括表示数学上实数的所有数字[number], 尽管这里有着在 Common Lisp 中没有准确表示的数学上的实数. 只有实数可以使用 <, >, <=, 和 >= 函数来排序.
 
-        类型 rational 和 float 是类型 real 互斥的子类型.
+        类型[type] rational 和 float 是类型[type] real 互斥[disjoint]的子类型[subtype].
 
 * 复合类型指定符类别(Compound Type Specifier Kind):
 
@@ -528,7 +528,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 复合类型指定符参数(Compound Type Specifier Arguments):
 
-        lower-limit, upper-limit---类型 real 的区间指示符. 对于 lower-limit 和 upper-limit 中的每个默认都是符号 *.
+        lower-limit, upper-limit---类型 real 的区间指示符[interval designator]. 对于 lower-limit 和 upper-limit 中的每个默认值都是符号[symbol] *.
 
 * 复合类型指定符描述(Compound Type Specifier Description):
 
@@ -543,9 +543,9 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 描述(Description):
 
-        一个浮点数是一个 s*f*b^e-p 形式的数学上有理数 (但不是一个 Common Lisp 有理数), 其中 s 是 +1 或 -1, 就是那个符号; b 是一个大于 1 的整数, 这个表示的基数或底数; p 是一个正整数, 这个浮点数的精度 (以b为基数的数字); f 是一个在 b^p-1 和 b^p-1 (包含的) 之间的正整数, 表示有效位数; 还有 e 是一个整数, 表示指数. p 的值和 e 的返回取决于这个具体实现和在这个具体实现中浮点数的类型. 另外, 这里有一个浮点数 0; 依赖于具体实现, 这里也可以有一个 "负零". 如果这里没有负零, 那么 0.0 和 -0.0 都被简单解释为浮点数零. (= 0.0 -0.0) 总是为. 如果这里存在负零, (eql -0.0 0.0) 是 false, 否则就是 true.
+        一个浮点数[float]是一个 s*f*b^e-p 形式的数学上有理数 (但不是一个 Common Lisp 有理数[rational]), 其中 s 是 +1 或 -1, 就是那个正负号; b 是一个大于 1 的整数[integer], 这个表示的基数或底数; p 是一个正整数[integer], 这个浮点数[float]的精度 (以 b 为基数的数字); f 是一个在 b^p-1 和 b^p-1 (包含的) 之间的正整数[integer], 表示有效位数; 还有 e 是一个整数[integer], 表示指数. p 的值和 e 的范围取决于这个具体实现以及在这个具体实现中浮点数[float]的类型. 另外, 这里有一个浮点数 0; 依赖于具体实现, 这里也可以有一个 "负零". 如果这里没有负零, 那么 0.0 和 -0.0 都被简单解释为浮点数零. (= 0.0 -0.0) 总是为 true. 如果这里存在负零, (eql -0.0 0.0) 是 false, 否则就是 true.
 
-        类型 short-float, single-float, double-float, 和 long-float 是类型 float 的子类型. 它们中的任意两个都必须是互斥的类型或者相同类型; 如果是相同类型, 那么在上面顺序中在它们之间的其他类型也必须是相同的类型. 比如, 如果类型 single-float 和类型 long-float 是相同类型, 那么类型 double-float 也必须是相同的类型.
+        类型[type] short-float, single-float, double-float, 和 long-float 是类型[type] float 的子类型[subtype]. 它们中的任意两个都必须是互斥[disjoint]的类型[type]或者相同[same]类型[type]; 如果是相同[same]类型[type], 那么在上面顺序中在它们之间的其他类型[type]也必须是相同[same]类型[type]. 比如, 如果类型[type] single-float 和类型[type] long-float 是相同[same]类型, 那么类型[type] double-float 也必须是相同[same]类型[type].
 
 * 复合类型指定符类别(Compound Type Specifier Kind):
 
@@ -557,19 +557,19 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 复合类型指定符参数(Compound Type Specifier Arguments):
 
-        lower-limit, upper-limit---类型 float 的区间指示符. 对于 lower-limit 和 upper-limit 中的每个默认都是符号 *.
+        lower-limit, upper-limit---类型[type] float 的区间指示符[interval designator]. 对于 lower-limit 和 upper-limit 中的每个默认值都是符号[symbol] *.
 
 * 复合类型指定符描述(Compound Type Specifier Description):
 
-        这个表示下限 lower-limit 和上限 upper-limit 所描述区间上的浮点数.
+        这个表示下限 lower-limit 和上限 upper-limit 所描述区间上的浮点数[float].
 
 * 也见(See Also):
 
-        Figure 2-9, 章节 2.3.2 (Constructing Numbers from Tokens), 章节 22.1.3.1.3 (Printing Floats)
+        Figure 2-9, 章节 2.3.2 (从标记构建数字), 章节 22.1.3.1.3 (打印浮点数)
 
 * 注意(Notes):
 
-        注意所有数学上的整数不仅能被表示为 Common Lisp 实数, 也可以是浮点复数(complex float). 比如, 数学上的数字 1 可能的表示包括整数 1, 浮点数 1.0, 或者复数 #C(1.0 0.0). 
+        注意所有数学上的整数不仅能被表示为 Common Lisp 实数, 也可以是浮点复数[complex float]. 比如, 数学上的数字 1 可能的表示包括整数[integer] 1, 浮点数[float] 1.0, 或者复数[complex] #C(1.0 0.0). 
 
 
 ### <span id="T-SF-SF-DF-LF">类型 SHORT-FLOAT, SINGLE-FLOAT, DOUBLE-FLOAT, LONG-FLOAT</span>
@@ -586,9 +586,9 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 描述(Description):
 
-        对于这四个已定义的 float 的子类型, 类型 short-float 和类型 long-float 的中间是类型 single-float 和类型 double-float. 这些类别的精度定义是依赖于具体实现的. 精度 (以 "位" 来测量, 用 p log 2b 来计算) 和指数大小 (也是以 "位" 来测量, 用 log 2(n+1) 计算, 其中 n 是最大指数值) 建议至少和下一段中的值一样的. 每个已定义的类型 float 的子类型可能或可能没有一个负零.
+        对于这四个已定义的 float 类型[type]的子类型[subtype], 类型[type] short-float 和类型[type] long-float 的中间是类型[type] single-float 和类型[type] double-float. 这些类别的精度定义是具体实现定义的[implementation-defined]. 精度 (以 "位" 来测量, 用 p log 2b 来计算) 和指数大小 (也是以 "位" 来测量, 用 log 2(n+1) 计算, 其中 n 是最大指数值) 建议至少和下一段中的值一样的. 每个已定义的 float 类型[type]的子类型[subtype]可能有也可能没有一个负零.
 
-        格式  最小精度  最小指数大小  
+        格式    最小精度           最小指数大小  
                                       
         Short   13 bits            5 bits                 
         Single  24 bits            8 bits                 
@@ -597,19 +597,19 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
         Figure 12-12. 建议的最小浮点精度和指数大小
 
-        浮点数的内部表示可能少于 4 个. 如果存在更少的不同表示, 则适用以下规则:
+        浮点数[float]的内部表示可能少于 4 个. 如果存在更少的不同表示, 则适用以下规则:
 
-            如果这里只有一个, 那就是类型 single-float. 在这个表示中, 一个对象同时为类型 single-float, double-float, short-float, 和 long-float.
+            如果这里只有一个, 那就是类型[type] single-float. 在这个表示中, 一个对象[object]同时为类型[type] single-float, double-float, short-float, 和 long-float.
 
-            两种内部表示可以通过以下两种方式进行:
+            两种内部表示可以被安排为以下两种方式:
 
-                提供两种类型: single-float 和 short-float. 一个对象同时为 single-float, double-float, 和 long-float.
-                提供两种类型: single-float 和 double-float. 一个对象同时为 single-float 和 short-float, 或 double-float 和 long-float.
+                提供两种类型[type]: single-float 和 short-float. 一个对象[object]同时为 single-float, double-float, 和 long-float.
+                提供两种类型[type]: single-float 和 double-float. 一个对象[object]同时为 single-float 和 short-float, 或 double-float 和 long-float.
 
-            三种内部表示可以通过以下两种方式进行:
+            三种内部表示可以被安排以下两种方式:
 
-                提供三种类型: short-float, single-float, 和 double-float. 一个对象同时为 double-float 和 long-float.
-                提供三种类型: single-float, double-float, 和 long-float. 一个对象同时为 single-float 和 short-float. 
+                提供三种类型[type]: short-float, single-float, 和 double-float. 一个对象[object]同时为 double-float 和 long-float.
+                提供三种类型[type]: single-float, double-float, 和 long-float. 一个对象[object]同时为 single-float 和 short-float. 
 
 * 复合类型指定符类别(Compound Type Specifier Kind):
 
@@ -627,17 +627,17 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 复合类型指定符参数(Compound Type Specifier Arguments):
 
-        short-lower-limit, short-upper-limit---类型 short-float 的区间指示符. 对于 lower-limit 和 upper-limit 中的每个默认都是符号 *.
+        short-lower-limit, short-upper-limit---类型[type] short-float 的区间指示符[interval designator]. 对于 lower-limit 和 upper-limit 中的每个默认值都是符号[symbol] *.
 
-        single-lower-limit, single-upper-limit---类型 single-float 的区间指示符. 对于 lower-limit 和 upper-limit 中的每个默认都是符号 *.
+        single-lower-limit, single-upper-limit---类型[type] single-float 的区间指示符[interval designator]. 对于 lower-limit 和 upper-limit 中的每个默认值都是符号[symbol] *.
 
-        double-lower-limit, double-upper-limit---类型 double-float 的区间指示符. 对于 lower-limit 和 upper-limit 中的每个默认都是符号 *.
+        double-lower-limit, double-upper-limit---类型[type] double-float 的区间指示符[interval designator]. 对于 lower-limit 和 upper-limit 中的每个默认值都是符号[symbol] *.
 
-        long-lower-limit, long-upper-limit---类型 long-float 的区间指示符. 对于 lower-limit 和 upper-limit 中的每个默认都是符号 *.
+        long-lower-limit, long-upper-limit---类型[type] long-float 的区间指示符[interval designator]. 对于 lower-limit 和 upper-limit 中的每个默认值都是符号[symbol] *.
 
 * 复合类型指定符描述(Compound Type Specifier Description):
 
-        每一个都表示在区间指示符指定的区间内的指定类型的浮点数集合. 
+        每一个都表示在区间指示符[interval designator]指定的区间内的指定类型[type]的浮点数[float]集合. 
 
 
 ### <span id="SC-RATIONAL">系统类 RATIONAL</span>
@@ -648,9 +648,9 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 描述(Description):
 
-        如果一个有理数的的值是整形的, 那么它的正规表示是一个整数, 否则就是一个比数.
+        如果一个有理数[rational]的值是整形的, 那么它的正规表示是一个整数[integer], 否则就是一个比数[ratio].
 
-        类型 integer 和 ratio 是类型 rational 的互斥的子类型.
+        类型[type] integer 和 ratio 是类型[type] rational 的互斥[disjoint]的子类型[subtype].
 
 * 复合类型指定符类别(Compound Type Specifier Kind):
 
@@ -662,11 +662,11 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 复合类型指定符参数(Compound Type Specifier Arguments):
 
-        lower-limit, upper-limit---类型 rational 的区间指示符. 对于 lower-limit 和 upper-limit 中的每个默认都是符号 *.
+        lower-limit, upper-limit---类型[type] rational 的区间指示符[interval designator]. 对于 lower-limit 和 upper-limit 中的每个默认值都是符号[symbol] *.
 
 * 复合类型指定符描述(Compound Type Specifier Description):
 
-        这个表示由下限 lower-limit 和上限 upper-limit 描述的有理数. 
+        这个表示由下限 lower-limit 和上限 upper-limit 描述的有理数[rational]. 
 
 ### <span id="SC-RATIO">系统类 RATIO</span>
 
@@ -676,11 +676,11 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 描述(Description):
 
-        一个比数是一个表示数学上两个非零整数的比数的数字, 这两个整数分别为分子和分母, 它的最大公约数为 1, 其中分母为正的并且大于 1.
+        一个比数[ratio]是一个表示数学上两个非零整数的比数的数字[number], 这两个整数分别为分子和分母, 它的最大公约数为 1, 其中分母为正的并且大于 1.
 
 * 也见(See Also):
 
-        Figure 2-9, 章节 2.3.2 (Constructing Numbers from Tokens), 章节 22.1.3.1.2 (Printing Ratios) 
+        Figure 2-9, 章节 2.3.2 (从标记构建数字), 章节 22.1.3.1.2 (打印比数) 
 
 
 ### <span id="SC-INTEGER">系统类 INTEGER</span>
@@ -691,9 +691,9 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 描述(Description):
 
-        一个整数是一个数学上的整数. 一个整数的大小是没有限制的.
+        一个整数[integer]是一个数学上的整数. 一个整数[integer]的大小是没有限制的.
 
-        类型 fixnum 和 bignum 组成类型 integer 的一个详尽的分区.
+        类型[type] fixnum 和 bignum 组成类型[type] integer 的一个详尽的分区[exhaustive partition].
 
 * 复合类型指定符类别(Compound Type Specifier Kind):
 
@@ -705,21 +705,21 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 复合类型指定符参数(Compound Type Specifier Arguments):
 
-        lower-limit, upper-limit---类型 integer 的区间指示符. 对于 lower-limit 和 upper-limit 中的每个默认都是符号 *.
+        lower-limit, upper-limit---类型[type] integer 的区间指示符[interval designator]. 对于 lower-limit 和 upper-limit 中的每个默认值都是符号[symbol] *.
 
 * 复合类型指定符描述(Compound Type Specifier Description):
 
-        这个表示由下限 lower-limit 和上限 upper-limit 描述的整数.
+        这个表示由下限 lower-limit 和上限 upper-limit 描述的整数[integer].
 
 * 也见(See Also):
 
-        Figure 2-9, 章节 2.3.2 (Constructing Numbers from Tokens), 章节 22.1.3.1.1 (Printing Integers)
+        Figure 2-9, 章节 2.3.2 (从标记构建数字), 章节 22.1.3.1.1 (打印整数)
 
 * 注意(Notes):
 
-        类型 (integer lower upper), 其中 lower 和 upper 分别是 most-negative-fixnum 和 most-positive-fixnum, 也被称为 fixnum.
+        类型[type] (integer lower upper), 其中 lower 和 upper 分别是 most-negative-fixnum 和 most-positive-fixnum, 也被称为 fixnum.
 
-        类型 (integer 0 1) 也被称为 bit. 类型 (integer 0 *) 也被称为 unsigned-byte. 
+        类型[type] (integer 0 1) 也被称为 bit. 类型[type] (integer 0 *) 也被称为 unsigned-byte. 
 
 
 ### <span id="T-SIGNED-BYTE">类型 SIGNED-BYTE</span>
@@ -730,7 +730,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 描述(Description):
 
-        这个原子类型指定符 signed-byte 表示和类型指定符 integer 表示的相同的类型; 但是, 这两个类型指定符的列表表达式形式有着不同的语义.
+        这个原子类型指定符[type specifier] signed-byte 表示和类型指定符[type specifier] integer 表示的相同的类型; 但是, 这两个类型指定符[type specifier]的列表形式有着不同的语义.
 
 * 复合类型指定符类别(Compound Type Specifier Kind):
 
@@ -742,11 +742,11 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 复合类型指定符参数(Compound Type Specifier Arguments):
 
-        s---一个正整数.
+        s---一个正整数[integer].
 
 * 复合类型指定符描述(Compound Type Specifier Description):
 
-        这个表示可以以二进制补码的形式用 s 比特的字节表示的整数的集合. 这个等价于 (integer -2^s-1 2^s-1-1). 类型 signed-byte 或类型 (signed-byte *) 和类型 integer 是相同的. 
+        这个表示可以以二进制补码的形式用 s 比特的字节[byte]所表示的整数[integer]的集合. 这个等价于 (integer -2^s-1 2^s-1-1). 类型 signed-byte 或类型 (signed-byte *) 和类型[type] integer 是相同的. 
 
 
 ### <span id="T-UNSIGNED-BYTE">类型 UNSIGNED-BYTE</span>
@@ -757,7 +757,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 描述(Description):
 
-        这个原子类型指定符 unsigned-byte 表示类型指定符 (integer 0 *) 所表示的相同类型.
+        这个原子类型指定符[type specifier] unsigned-byte 表示类型指定符[type specifier] (integer 0 *) 所表示的相同类型.
 
 * 复合类型指定符类别(Compound Type Specifier Kind):
 
@@ -769,15 +769,15 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 复合类型指定符参数(Compound Type Specifier Arguments):
 
-        s---一个正整数.
+        s---一个正整数[integer].
 
 * 复合类型指定符描述(Compound Type Specifier Description):
 
-        这个表示可以以一个大小为 s 比特的字节表示的非负整数的集合. 这个等价于 m=2^s 时的 (mod m), 或者等价于 n=2^s-1 时的 (integer 0 n). 类型 unsigned-byte 或类型 (unsigned-byte *) 和类型 (integer 0 *) 相同, 都表示非负的整数集合.
+        这个表示可以以一个大小为 s 比特的字节[byte]表示的非负整数[integer]的集合. 这个等价于 m=2^s 时的 (mod m), 或者等价于 n=2^s-1 时的 (integer 0 n). 类型[type] unsigned-byte 或类型[type] (unsigned-byte *) 和类型 (integer 0 *) 相同, 都表示非负的整数[integer]集合.
 
 * 注意(Notes):
 
-        类型 (unsigned-byte 1) 也被称为 bit. 
+        类型[type] (unsigned-byte 1) 也被称为 bit. 
 
 
 ### <span id="TS-MOD">类型指定符 MOD</span>
@@ -792,15 +792,15 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 复合类型指定符参数(Compound Type Specifier Arguments):
 
-        n---一个正整数.
+        n---一个正整数[integer].
 
 * 复合类型指定符描述(Compound Type Specifier Description):
 
-        这个表示小于 n 的非负整数集合. 这等价于 (integer 0 (n)) 或 (integer 0 m), 其中 m=n-1.
+        这个表示小于 n 的非负整数[integer]集合. 这等价于 (integer 0 (n)) 或 (integer 0 m), 其中 m=n-1.
 
         这个参数是必须的, 并且不能为 *.
 
-        符号 mod 作为一个类型指定符是无效的. 
+        符号 mod 作为一个类型指定符[type specifier]是无效的. 
 
 
 ### <span id="T-BIT">类型 BIT</span>
@@ -811,7 +811,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 描述(Description):
 
-        类型 bit 等价于类型 (integer 0 1) 和 (unsigned-byte 1). 
+        类型[type] bit 等价于类型[type] (integer 0 1) 和 (unsigned-byte 1). 
 
 
 ### <span id="T-FIXNUM">类型 FIXNUM</span>
@@ -822,7 +822,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 描述(Description):
 
-        一个 fixnum 是一个值在 most-negative-fixnum 和 most-positive-fixnum (包含的) 之间的整数. 那些整数是 fixnum 是具体实现定义的. 类型 fixnum 需要是 (signed-byte 16) 的一个子类型. 
+        一个 fixnum 是一个值在 most-negative-fixnum 和 most-positive-fixnum (包含的) 之间的整数[integer]. 具体哪些整数[integer]是 fixnum 是由具体实现定义的[implementation-defined]. 类型[type] fixnum 需要是 (signed-byte 16) 的一个超类型. 
 
 
 ### <span id="T-BIGNUM">类型 BIGNUM</span>
