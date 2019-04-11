@@ -833,7 +833,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 描述(Description):
 
-        类型 bignum 准确地被定义为 (and integer (not fixnum)). 
+        类型[type] bignum 准确地被定义为 (and integer (not fixnum)). 
 
 
 ### <span id="F-Compare">函数 =, /=, <, >, <=, >=</span>
@@ -854,9 +854,9 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 参数和值(Arguments and Values):
 
-        number---对于 <, >, <=, >=: 一个实数; 对于 =, /=: 一个数字.
+        number---对于 <, >, <=, >=: 一个实数[real]; 对于 =, /=: 一个数字[number].
 
-        generalized-boolean---一个广义 boolean.
+        generalized-boolean---一个广义 boolean [generalized boolean].
 
 * 描述(Description):
 
@@ -864,27 +864,27 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
         =
 
-            如果所有数字的值都是相同的那么 = 的结果为 true; 否则就是 false. 如果两个复数的实部和虚部根据 = 都是相等的, 那么它们就被 = 认为是相等的.
+            如果所有数字 numbers 的值都是相同的那么 = 的结果为 true; 否则就是 false. 如果两个复数[complex]的实部和虚部根据 = 都是相等的, 那么它们就被 = 认为是相等的.
 
         /=
 
-            如果没有两个数字在值上是相等的那么 /= 的值就是 true; 否则就是 false.
+            如果没有两个数字 numbers 在值上是相等的那么 /= 的值就是 true; 否则就是 false.
 
         <
 
-            如果数字是单调递增的那么 < 的值就是 true; 否则就是 false.
+            如果这些数字 numbers 是单调递增的那么 < 的值就是 true; 否则就是 false.
 
         >
 
-            如果数字是单调递减的那么 > 的值就是 true; 否则就是 false.
+            如果这些数字 numbers 是单调递减的那么 > 的值就是 true; 否则就是 false.
 
         <=
 
-            如果数字是单调非递减的那么 <= 的值就是 true; 否则就是 false.
+            如果这些数字 numbers 是单调非递减的那么 <= 的值就是 true; 否则就是 false.
 
         >=
 
-            如果数字是单调非递增的那么 >= 的值就是 true; 否则就是 false.
+            如果这些数字 numbers 是单调非递增的那么 >= 的值就是 true; 否则就是 false.
 
         =, /=, <, >, <=, 和 >= 执行必要的类型转换.
 
@@ -923,13 +923,13 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 异常情况(Exceptional Situations):
 
-        如果某个参数不是一个实数, 那么就会发出一个 type-error 类型的错误. 如果不能满足它的 contract 可能发出 arithmetic-error 类型的错误.
+        如果某个实参[argument]不是一个实数[real], 那么就会发出一个 type-error 类型[type]的错误. 如果不能满足它的合约(contract)可能发出 arithmetic-error 类型[type]的错误.
 
 * 也见(See Also): None.
 
 * 注意(Notes):
 
-        = 有别于 eql, = 在 (= 0.0 -0.0) 总是为 true, 因为 = 比较它的操作数的数学值, 然而 eql 比较表征值, 可以这么说. 
+        = 有别于 eql, = 在 (= 0.0 -0.0) 总是为 true, 因为 = 比较它的操作数的数学值, 然而可以这么说, eql 比较表征值. 
 
 
 ### <span id="F-MAX-MIN">函数 MAX, MIN</span>
@@ -942,14 +942,14 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 参数和值(Arguments and Values):
 
-        real---一个实数.
-        max-real, min-real---一个实数.
+        real---一个实数[real].
+        max-real, min-real---一个实数[real].
 
 * 描述(Description):
 
-        max 返回最大的实数 (接近于正无穷). min 返回最小的实数 (接近于负无穷).
+        max 返回最大的实数 real (接近于正无穷). min 返回最小的实数 real (接近于负无穷).
 
-        对于 max, 具体实现可以选择去返回最大的参数或者应用浮点数传递性规则, 将所有参数都列入传递性目的的考虑中. 而且, 如果不止一个参数是 = 的, 那么它们中的任何一个可能被选择作为返回值. 比如, 如果这些实数是有理数和浮点数的混合, 那么最大值是个有理数, 然后具体实现可以自由地产生有理数或它的近似浮点数; 如果这个最大的参数是一个比任何浮点参数的最大格式都小的格式的浮点数, 然后具体实现可以自由地以给定的格式返回那个或者扩展到更大的格式. 相似的备注适用于 min (用 "最小参数" 替换 "最大参数").
+        对于 max, 具体实现可以选择去原样返回最大的参数, 也可以应用浮点数传递性[contagion]规则, 将所有参数都列入传递性[contagion]目的的考虑中. 另外, 如果不止一个参数是 = 的, 那么它们中的任何一个都可能被选择作为返回值. 比如, 如果这些实数 reals 是有理数[rational]和浮点数[float]的混合, 并且最大值是个有理数[rational], 那么具体实现可以自由地产生有理数[rational]或它的近似浮点数[float]; 如果这个最大的参数是一个比任何其他浮点数[float]参数的最大格式都小的格式的浮点数[float], 那么具体实现可以自由地以给定的格式返回那个参数或者将其扩展到更大的格式. 相似的备注适用于 min (用 "最小参数" 替换 "最大参数").
 
 * 示例(Examples):
 
@@ -993,7 +993,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 异常情况(Exceptional Situations):
 
-        如果任何数字不是一个实数, 那么应该会发出一个 type-error 类型的错误.
+        如果任何数字不是一个实数[real], 那么应该会发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also): None.
 
@@ -1010,8 +1010,8 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 参数和值(Arguments and Values):
 
-        real---一个实数.
-        generalized-boolean---一个广义 boolean.
+        real---一个实数[real].
+        generalized-boolean---一个广义 boolean [generalized boolean].
 
 * 描述(Description):
 
@@ -1019,7 +1019,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
         如果实数 real 大于 0 那么 plusp 返回 true; 否则, 返回 false.
 
-        不管一个具体实现是否提供了正负浮点数零的不同表示, (minusp -0.0) 总是返回 false.
+        不管一个具体实现[implementation]是否提供了正负浮点数[float]零的不同表示, (minusp -0.0) 总是返回 false.
 
 * 示例(Examples):
 
@@ -1035,7 +1035,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 异常情况(Exceptional Situations):
 
-        如果 real 不是一个实数, 那么应该发出一个 type-error 类型的错误.
+        如果 real 不是一个实数[real], 那么应该发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also): None.
 
@@ -1054,14 +1054,14 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 参数和值(Arguments and Values):
 
-        number---一个数字.
-        generalized-boolean---一个广义 boolean.
+        number---一个数字[number].
+        generalized-boolean---一个广义 boolean [generalized boolean].
 
 * 描述(Description):
 
-        如果数字 number 是 0(整数, 浮点数, 或复数) 就返回 true; 否则, 返回 false.
+        如果数字 number 是零 (整数[integer], 浮点数,[float] 或复数[complex]) 就返回 true; 否则, 返回 false.
 
-        不管一个具体实现是否提供了正负浮点数零的不同表示, (zerop -0.0) 总是返回 true.
+        不管一个具体实现[implementation]是否提供了正负浮点数[float]零的不同表示, (zerop -0.0) 总是返回 true.
 
 * 示例(Examples):
 
@@ -1079,7 +1079,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 异常情况(Exceptional Situations):
 
-        如果 number 不是一个数字, 那么应该发出一个 type-error 类型的错误.
+        如果 number 不是一个数字[number], 那么应该发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also): None.
 
@@ -1110,40 +1110,40 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 参数和值(Arguments and Values):
 
-        number---一个实数.
-        divisor---一个非零实数. 默认为整数 1.
-        quotient---对于 floor, ceiling, truncate, 和 round: 一个整数; 对于 ffloor, fceiling, ftruncate, 和 fround: 一个浮点数.
-        remainder---一个实数.
+        number---一个实数[real].
+        divisor---一个非零实数[real]. 默认为整数[integer] 1.
+        quotient---对于 floor, ceiling, truncate, 和 round: 一个整数[integer]; 对于 ffloor, fceiling, ftruncate, 和 fround: 一个浮点数[float].
+        remainder---一个实数[real].
 
 * 描述(Description):
 
-        这些函数通过 divisor 来除数字 number, 返回商 quotient 和余数 remainder, 比如
+        这些函数用 divisor 来除数字 number, 返回商 quotient 和余数 remainder, 比如
 
         quotient*divisor+remainder=number
 
-        商 quotient 总是表示一个数学上的整数. 当一个以上的数学整数是可能的时 (换句话说, 当余数不是 zero), 舍入或截断的类型取决于操作符:
+        商 quotient 总是表示一个数学上的整数. 当一个以上的数学整数是可能的时候 (换句话说, 当余数不是零), 舍入或截断的类型取决于操作符[operator]:
 
         floor, ffloor
 
-            floor 和 ffloor 产生一个被朝向负无穷截断的商 quotient; 这也就是说, 这个商 quotient 表示不大于那个数学上商的最大数学整数.
+            floor 和 ffloor 产生一个朝向负无穷截断的商 quotient; 这也就是说, 这个商 quotient 表示不大于那个数学上商的最大数学整数.
 
         ceiling, fceiling
 
-            ceiling 和 fceiling 产生一个被朝向正无穷截断的商 quotient; 这也就是说, 商 quotient 表示不小于那个数学上结果的最小数学整数.
+            ceiling 和 fceiling 产生一个朝向正无穷截断的商 quotient; 这也就是说, 商 quotient 表示不小于那个数学上结果的最小数学整数.
 
         truncate, ftruncate
 
-            truncate 和 ftruncate 产生一个被朝向 0 截断的商 quotient; 这也就是说, 这个商 quotient 表示和那个数学上的商相同符号的数学上的整数, 并且有着不大于那个数学上的商的最大整形大小.
+            truncate 和 ftruncate 产生一个朝向 0 截断的商 quotient; 这也就是说, 这个商 quotient 表示和那个数学上的商相同符号的数学上的整数, 并且有着不大于那个数学上的商的最大整形大小.
 
         round, fround
 
-            round 和 fround 产生一个被四舍五入到最近的数学整数的商 quotient; 如果这个数学上的商刚好在两个整数中间, (也积极是说, 它有着 integer+1/2 的形式), 那么这个商 quotient 会被四舍五入到偶数 (可以被2整除).
+            round 和 fround 产生一个四舍五入到最近的数学整数的商 quotient; 如果这个数学上的商刚好在两个整数中间, (也积极是说, 它有着 integer+1/2 的形式), 那么这个商 quotient 会被四舍五入到偶数 (可以被2整除).
 
-        所有这些函数在数字 number 上执行类型转换操作.
+        所有这些函数在这些数字 numbers 上执行类型转换操作.
 
-        如果 x 和 y 都是整数那么余数 remainder 是一个整数, 如果 x 和 y 都是有理数那么就是一个有理数, 如果 x 或 y 是一个浮点数那么就是一个浮点数.
+        如果 x 和 y 都是整数[integer]那么余数 remainder 也是一个整数[integer], 如果 x 和 y 都是有理数[rational]那么余数 remainder 也是一个有理数[rational], 如果 x 或 y 是一个浮点数[float]那么余数 remainder 也是一个浮点数[float].
 
-        ffloor, fceiling, ftruncate, 和 fround 以以下方式处理不同类型的参数: 如果 number 是一个浮点数, 并且 divisor 不是一个长格式的浮点数, 那么第一个结果是一个和 number 相同类型的浮点数. 否则, 第一个结果是由传递性规则决定的类型; 见章节 12.1.1.2 (数值运算的传递性).
+        ffloor, fceiling, ftruncate, 和 fround 以以下方式处理不同类型[type]的参数: 如果 number 是一个浮点数[float], 并且 divisor 不是一个长格式的浮点数[float], 那么第一个结果是一个和 number 相同类型[type]的浮点数[float]. 否则, 第一个结果是由传递性[contagion]规则决定的类型[type]; 见章节 12.1.1.2 (数值运算的传递性).
 
 * 示例(Examples):
 
@@ -1207,8 +1207,8 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 参数和值(Arguments and Values):
 
-        radians---一个用弧度表示的数字.
-        number---一个数字.
+        radians---一个用弧度表示的数字[number].
+        number---一个数字[number].
 
 * 描述(Description):
 
@@ -1228,11 +1228,11 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 异常情况(Exceptional Situations):
 
-        如果 radians 不是一个数字, 那么应该发出一个 type-error 类型的错误. 可能发出 arithmetic-error 类型的错误.
+        如果 radians 不是一个数字[number], 那么应该发出一个 type-error 类型[type]的错误. 可能发出 arithmetic-error 类型[type]的错误.
 
 * 也见(See Also):
 
-        asin, acos, atan, 章节 12.1.3.3 (Rule of Float Substitutability)
+        asin, acos, atan, 章节 12.1.3.3 (浮点的置换性规则)
 
 * 注意(Notes): None. 
 
@@ -1248,10 +1248,10 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 参数和值(Arguments and Values):
 
-        number---一个数字.
-        number1---如果没有提供 number2 就是一个数字, 如果 number2 提供了就是一个实数.
-        number2---一个实数.
-        radians---一个数字 (弧度).
+        number---一个数字[number].
+        number1---如果没有提供 number2 就是一个数字[number], 如果提供了 number2 就是一个实数[real].
+        number2---一个实数[real].
+        radians---一个数字[number] (弧度).
 
 * 描述(Description):
 
@@ -1268,9 +1268,9 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
         这些公式在数学上是正确的, 假设计算完全准确. 它们不一定是实值计算中最简单的.
 
-        如果 number1 和 number2 都提供给了 atan, 那么结果实 number1/number2 的反正切. 当没有提供负零时, atan 的值总是在 -<PI> (不包含) 到 <PI> (包含) 之间. 当支持负零时, 两个参数的反正切的范围包括 -<PI>.
+        如果 number1 和 number2 都提供给了 atan, 那么结果是 number1/number2 的反正切. 当没有提供负零时, atan 的值总是在 -<PI> (不包含) 到 <PI> (包含) 之间. 当支持负零时, 两个参数的反正切的范围包括 -<PI>.
 
-        对于一个实数 number1, 结果也是一个实数并且位于 -<PI>/2 和 <PI>/2 之间(都不包含). 如果没有提供 number2, 那么 number1 可以是一个复数. 如果都提供了, 假设 number 不是零那么 number2 可以是零.
+        对于一个实数[real] number1, 结果也是一个实数[real]并且位于 -<PI>/2 和 <PI>/2 之间(都不包含). 如果没有提供 number2, 那么 number1 可以是一个复数[complex]. 如果都提供了, 假设 number1 不是零那么 number2 可以是零.
 
         下面反正弦的定义决定了范围和分支切割:
 
@@ -1321,39 +1321,39 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 示例(Examples):
 
-```LISP
- (asin 0) =>  0.0 
- (acos #c(0 1))  =>  #C(1.5707963267948966 -0.8813735870195432)
- (/ (atan 1 (sqrt 3)) 6)  =>  0.087266 
- (atan #c(0 2)) =>  #C(-1.5707964 0.54930615)
-```
+    ```LISP
+    (asin 0) =>  0.0 
+    (acos #c(0 1))  =>  #C(1.5707963267948966 -0.8813735870195432)
+    (/ (atan 1 (sqrt 3)) 6)  =>  0.087266 
+    (atan #c(0 2)) =>  #C(-1.5707964 0.54930615)
+    ```
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-        如果数字 number 不是一个数字, 那么 acos 和 asin 应该发出一个 type-error 类型的错误. 如果提供了一个参数并且这个参数不是一个数字, 或者如果提供了两个参数而这两个参数都不是实数, 那么 atan 应该发出一个 type-error 类型的错误.
+        如果数字 number 不是一个数字[number], 那么 acos 和 asin 应该发出一个 type-error 类型[type]的错误. 如果提供了一个参数并且这个参数不是一个数字[number], 或者如果提供了两个参数而这两个参数都不是实数[real], 那么 atan 应该发出一个 type-error 类型[type]的错误.
 
         acos, asin, 和 atan 可能发出 arithmetic-error.
 
 * 也见(See Also):
 
-        log, sqrt, 章节 12.1.3.3 (Rule of Float Substitutability)
+        log, sqrt, 章节 12.1.3.3 (浮点的置换性规则)
 
 * 注意(Notes):
 
-        即便数字 number 不是一个复数, asin 或 acos 的结果也可以是一个复数; 这个发生在数字 number 的绝对值大于 1 时. 
+        即便数字 number 不是一个复数[complex], asin 或 acos 的结果也可以是一个复数[complex]; 这个发生在数字 number 的绝对值大于 1 时. 
 
 
 ### <span id="CV-PI">常量 PI</span>
 
 * 值(Value):
 
-        一个依赖于具体实现的长浮点数.
+        一个依赖于具体实现[implementation-dependent]的长浮点数[long float].
 
 * 描述(Description):
 
-        对数学常数 <PI> 的最好的长浮点近似.
+        对数学常数 <PI> 的最好的长浮点数[long float]近似.
 
 * 示例(Examples):
 
@@ -1375,7 +1375,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 注意(Notes):
 
-        一个对 <PI> 的某个其他精度的近似值可以通过编写 (float pi x) 来获取, 其中 x 是一个期望精度的浮点数, 或者编写 (coerce pi type), 其中 type 是期望的类型, 比如 short-float. 
+        一个对 <PI> 的某个其他精度的近似值可以通过编写 (float pi x) 来获取, 其中 x 是一个期望精度的浮点数[float], 或者编写 (coerce pi type), 其中 type 是期望的类型, 比如 short-float. 
 
 
 ### <span id="F-S-C-T-A-A-A">函数 SINH, COSH, TANH, ASINH, ACOSH, ATANH</span>
@@ -1396,14 +1396,14 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 参数和值(Arguments and Values):
 
-        number---一个数字.
-        result---一个数字.
+        number---一个数字[number].
+        result---一个数字[number].
 
 * 描述(Description):
 
         这些函数计算双曲正弦, 余弦, 正切, 反正弦, 反余弦, 和反正切函数, 这些函数在数学上定义为在下一个图中给出一个参数 x 的形式.
 
-            Function                Definition                              
+            函数                    定义                              
             Hyperbolic sine         (e^x-e^-x)/2                            
             Hyperbolic cosine       (e^x+e^-x)/2                            
             Hyperbolic tangent      (e^x-e^-x)/(e^x+e^-x)                   
@@ -1448,17 +1448,17 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 异常情况(Exceptional Situations):
 
-        如果 number 不是一个数字, 那么应该发出一个 type-error 类型的错误. 也可能发出 arithmetic-error 类型的错误.
+        如果 number 不是一个数字[number], 那么应该发出一个 type-error 类型[type]的错误. 也可能发出 arithmetic-error 类型[type]的错误.
 
 * 也见(See Also):
 
-        log, sqrt, 章节 12.1.3.3 (Rule of Float Substitutability)
+        log, sqrt, 章节 12.1.3.3 (浮点的置换性规则)
 
 * 注意(Notes):
 
-        即便 number 不是一个复数, acosh 的结果也可以是一个复数; 这个发生在 number 小于 1 时. 同样, 即便 number 不是一个复数, atanh 的结果也可以是一个复数; 这个发生在 number 的绝对值大于 1 时.
+        即便 number 不是一个复数[complex], acosh 的结果也可以是一个复数[complex]; 这个发生在 number 小于 1 时. 同样, 即便 number 不是一个复数[complex], atanh 的结果也可以是一个复数[complex]; 这个发生在 number 的绝对值大于 1 时.
 
-        假设完全准确的计算, 分支切割公式在数学上是正确的. 实现者应该在数值分析中参考一个好的文本. 上面给出的公式并不一定是实数值计算最简单的公式; 它们被选择以合适的方式为复杂的案例定义分支切割. 
+        假设计算完全准确, 分支切割公式在数学上是正确的. 实现者应该在数值分析中参考一个好的文本. 上面给出的公式并不一定是实数值计算最简单的公式; 它们被选择以合适的方式为复杂的案例定义分支切割. 
 
 
 ### <span id="F-Multiply">函数 *</span>
@@ -1469,8 +1469,8 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 参数和值(Arguments and Values):
 
-        number---一个数字.
-        product---一个数字.
+        number---一个数字[number].
+        product---一个数字[number].
 
 * 描述(Description):
 
@@ -1488,11 +1488,11 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 异常情况(Exceptional Situations):
 
-        如果某个参数不是一个数字, 可能发出一个 type-error 类型的错误. 可能发出 arithmetic-error 类型的错误.
+        如果某个实参[argument]不是一个数字[number], 可能发出一个 type-error 类型[type]的错误. 可能发出 arithmetic-error 类型[type]的错误.
 
 * 也见(See Also):
 
-        章节 12.1.1 (Numeric Operations), 章节 12.1.3 (Rational Computations), 章节 12.1.4 (Floating-point Computations), 章节 12.1.5 (Complex Computations)
+        章节 12.1.1 (数值运算), 章节 12.1.3 (有理数计算), 章节 12.1.4 (浮点计算), 章节 12.1.5 (复数计算)
 
 * 注意(Notes): None. 
 
@@ -1505,8 +1505,8 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 参数和值(Arguments and Values):
 
-        number---一个数字.
-        sum---一个数字.
+        number---一个数字[number].
+        sum---一个数字[number].
 
 * 描述(Description):
 
@@ -1514,22 +1514,22 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 示例(Examples):
 
-```LISP
- (+) =>  0
- (+ 1) =>  1
- (+ 31/100 69/100) =>  1
- (+ 1/5 0.8) =>  1.0
-```
+    ```LISP
+    (+) =>  0
+    (+ 1) =>  1
+    (+ 31/100 69/100) =>  1
+    (+ 1/5 0.8) =>  1.0
+    ```
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-        如果某个参数不是一个数字, 可能发出一个 type-error 类型的错误. 可能发出 arithmetic-error 类型的错误.
+        如果某个实参[argument]不是一个数字[number], 可能发出一个 type-error 类型[type]的错误. 可能发出 arithmetic-error 类型[type]的错误.
 
 * 也见(See Also):
 
-        章节 12.1.1 (Numeric Operations), 章节 12.1.3 (Rational Computations), 章节 12.1.4 (Floating-point Computations), 章节 12.1.5 (Complex Computations)
+        章节 12.1.1 (数值运算), 章节 12.1.3 (有理数计算), 章节 12.1.4 (浮点计算), 章节 12.1.5 (复数计算)
 
 * 注意(Notes): None. 
 
@@ -1544,18 +1544,18 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 参数和值(Arguments and Values):
 
-        number, minuend, subtrahend---一个数字.
-        negation, difference---一个数字.
+        number, minuend, subtrahend---一个数字[number].
+        negation, difference---一个数字[number].
 
 * 描述(Description):
 
-        函数 - 执行数学减法和取反.
+        函数[function] - 执行数学减法和取反.
 
-        如果只提供了一个 number, 对这个数字的相反数被返回.
+        如果只提供了一个 number, 对这个数字 number 的相反数被返回.
 
-        如果给定了不止一个参数, 它从被减数 minuend 减去所有的减数 subtrahends 并返回这个结果.
+        如果给定了不止一个实参[argument], 它从被减数 minuend 减去所有的减数 subtrahends 并返回这个结果.
 
-        函数 - 执行必要的类型转换.
+        函数[function] - 执行必要的类型转换.
 
 * 示例(Examples):
 
@@ -1572,11 +1572,11 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 异常情况(Exceptional Situations):
 
-        如果某个参数不是一个数字, 可能发出一个 type-error 类型的错误. 可能发出 arithmetic-error 类型的错误.
+        如果某个实参[argument]不是一个数字[number], 可能发出一个 type-error 类型[type]的错误. 可能发出 arithmetic-error 类型[type]的错误.
 
 * 也见(See Also):
 
-        章节 12.1.1 (Numeric Operations), 章节 12.1.3 (Rational Computations), 章节 12.1.4 (Floating-point Computations), 章节 12.1.5 (Complex Computations)
+        章节 12.1.1 (数值运算), 章节 12.1.3 (有理数计算), 章节 12.1.4 (浮点计算), 章节 12.1.5 (复数计算)
 
 * 注意(Notes): None. 
 
@@ -1591,22 +1591,22 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 参数和值(Arguments and Values):
 
-        number, denominator---一个非零数字.
-        numerator, quotient, reciprocal---一个数字.
+        number, denominator---一个非零数字[number].
+        numerator, quotient, reciprocal---一个数字[number].
 
 * 描述(Description):
 
-        函数 / 执行除法或取倒数.
+        函数[function] / 执行除法或取倒数.
 
-        如果没有提供分母, 那么函数 / 数字 number 的倒数.
+        如果没有提供分母 denominator, 那么函数[function] / 返回数字 number 的倒数.
 
-        如果至少提供了一个分母, 函数 / 用所有分母 denominators 去除这个分子并返回产生的商.
+        如果至少提供了一个分母 denominator, 函数[function] / 用所有分母 denominators 去除这个分子 numerator 并返回产生的商 quotient.
 
-        如果每个参数都是一个整数或一个比数, 如果结果不是一个整数, 那么就是一个比数.
+        如果每个实参[argument]都是一个整数[integer]或一个比数[ratio], 如果结果不是一个整数[integer], 那么就是一个比数[ratio].
 
-        函数 / 执行必要的类型转换.
+        函数[function] / 执行必要的类型转换.
 
-        如果任何参数是一个浮点数那么浮点数传递性规则就适用; 见章节 12.1.4 (Floating-point Computations).
+        如果任何实参 argument 是一个浮点数[float]那么就应用浮点数传递性规则; 见章节 12.1.4 (浮点计算).
 
 * 示例(Examples):
 
@@ -1626,9 +1626,9 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 异常情况(Exceptional Situations):
 
-        如果除了第一个以外的任何参数是 0 那么后果是不确定的. 如果这里只有一个参数, 如果它是 0 那么后果是不确定的.
+        如果除了第一个以外的任何实参[argument]是 0 那么后果是不确定的. 如果这里只有一个实参[argument], 如果它是 0 那么后果是不确定的.
 
-        如果某个参数不是一个数字, 可能发出一个 type-error 类型的错误. 如果尝试去用 0 除可能发出一个 division-by-zero. 可能发出 arithmetic-error.
+        如果某个实参[argument]不是一个数字[number], 可能发出一个 type-error 类型[type]的错误. 如果尝试去用 0 除可能发出一个 division-by-zero. 可能发出 arithmetic-error.
 
 * 也见(See Also):
 
@@ -1646,12 +1646,12 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 参数和值(Arguments and Values):
 
-        number---一个数字.
-        successor, predecessor---一个数字.
+        number---一个数字[number].
+        successor, predecessor---一个数字[number].
 
 * 描述(Description):
 
-        1+ 返回比它的参数 number 多一个的数字. 1- 返回比它的参数 number 少一个的数字.
+        1+ 返回比它的参数 number 多一的数字[number]. 1- 返回比它的参数 number 少一的数字[number].
 
 * 示例(Examples):
 
@@ -1666,7 +1666,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 异常情况(Exceptional Situations):
 
-        如果它的参数不是一个数字, 那么可能发出 type-error 类型的错误. 可能发出 arithmetic-error.
+        如果它的实参[argument]不是一个数字[number], 那么可能发出 type-error 类型[type]的错误. 可能发出 arithmetic-error.
 
 * 也见(See Also):
 
@@ -1677,7 +1677,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
         (1+ number) ==  (+ number 1)
         (1- number) ==  (- number 1)
 
-        鼓励实现者去使前面的两个表达式是相同的. 
+        我们鼓励实现者使前面两个表达式的性能相同. 
 
 
 ### <span id="F-ABS">函数 ABS</span>
@@ -1688,16 +1688,16 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 参数和值(Arguments and Values):
 
-        number---一个数字.
-        absolute-value---一个非负实数.
+        number---一个数字[number].
+        absolute-value---一个非负实数[real].
 
 * 描述(Description):
 
         abs 返回数字 number 的绝对值.
  
-        如果 number 是一个实数, 结果是和 number 相同类型的.
+        如果 number 是一个实数[real], 结果是和 number 相同类型[type]的.
 
-        如果 number 是一个复数, 结果是和 number 相同大小的一个正实数. 即便这个数字 number 的部件是有理数, 结果可以是一个浮点数, 而一个准确的有理数结果也是可能的. 因此 (abs #c(3 4)) 的结果可能是 5 或 5.0, 取决于具体实现.
+        如果 number 是一个复数[complex], 结果是和 number 相同大小的一个正实数[real]. 即便这个数字 number 的部件是有理数[rational], 结果可以是一个浮点数[float], 而一个准确的有理数结果也是可能的. 因此 (abs #c(3 4)) 的结果可能是 5 或 5.0, 取决于具体实现.
 
 * 示例(Examples):
 
@@ -1717,15 +1717,15 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 也见(See Also):
 
-        章节 12.1.3.3 (Rule of Float Substitutability)
+        章节 12.1.3.3 (浮点的置换性规则)
 
 * 注意(Notes):
 
-        如果数字 number 是一个复数, 结果等价于以下:
+        如果数字 number 是一个复数[complex], 结果等价于以下:
 
         (sqrt (+ (expt (realpart number) 2) (expt (imagpart number) 2)))
 
-        一个具体实现不应该直接将这个公式用于所有的复数, 但是应该处理非常大或非常小的组件以避免中间的上溢或下溢. 
+        一个具体实现不应该直接将这个公式用于所有的复数[complex], 但是应该处理非常大或非常小的组件以避免中间的上溢或下溢. 
 
 ### <span id="F-EVENP-ODDP">函数 EVENP, ODDP</span>
 
@@ -1737,9 +1737,9 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 参数和值(Arguments and Values):
 
-        integer---一个整数.
+        integer---一个整数[integer].
 
-        generalized-boolean---一个广义 boolean.
+        generalized-boolean---一个广义 boolean [generalized boolean].
 
 * 描述(Description):
 
@@ -1761,7 +1761,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 异常情况(Exceptional Situations):
 
-        如果 integer 不是一个整数, 那么应该发出一个 type-error 类型的错误.
+        如果 integer 不是一个整数[integer], 那么应该发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also): None.
 
@@ -1770,7 +1770,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
         (evenp integer) ==  (not (oddp integer))
         (oddp integer)  ==  (not (evenp integer))
 
-
+<!--TODO 校对到此-->
 ### <span id="F-EXP-EXPT">函数 EXP, EXPT</span>
 
 * 语法(Syntax):
@@ -1823,7 +1823,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 也见(See Also):
 
-        log, 章节 12.1.3.3 (Rule of Float Substitutability)
+        log, 章节 12.1.3.3 (浮点的置换性规则)
 
 * 注意(Notes):
 
@@ -2059,7 +2059,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 也见(See Also):
 
-        exp, expt, 章节 12.1.3.3 (Rule of Float Substitutability)
+        exp, expt, 章节 12.1.3.3 (浮点的置换性规则)
 
 * 注意(Notes): None. 
 
@@ -2163,7 +2163,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 也见(See Also):
 
-        章节 12.1.3.3 (Rule of Float Substitutability)
+        章节 12.1.3.3 (浮点的置换性规则)
 
 * 注意(Notes):
 
@@ -2232,7 +2232,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 也见(See Also):
 
-        exp, log, 章节 12.1.3.3 (Rule of Float Substitutability)
+        exp, log, 章节 12.1.3.3 (浮点的置换性规则)
 
 * 注意(Notes):
 
@@ -2515,7 +2515,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 也见(See Also):
 
-        章节 12.1.3.3 (Rule of Float Substitutability)
+        章节 12.1.3.3 (浮点的置换性规则)
 
 * 注意(Notes): None. 
 
@@ -2685,7 +2685,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 也见(See Also):
 
-        章节 12.1.3.3 (Rule of Float Substitutability)
+        章节 12.1.3.3 (浮点的置换性规则)
 
 * 注意(Notes): None. 
 
@@ -2722,7 +2722,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 异常情况(Exceptional Situations):
 
-        如果 number 不是一个数字, 那么应该发出一个 type-error 类型的错误.
+        如果 number 不是一个数字[number], 那么应该发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
