@@ -1770,7 +1770,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
         (evenp integer) ==  (not (oddp integer))
         (oddp integer)  ==  (not (evenp integer))
 
-<!--TODO 校对到此-->
+
 ### <span id="F-EXP-EXPT">函数 EXP, EXPT</span>
 
 * 语法(Syntax):
@@ -1781,41 +1781,41 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 参数和值(Arguments and Values):
 
-        number---一个数字.
-        base-number---一个数字.
-        power-number---一个数字.
-        result---一个数字.
+        number---一个数字[number].
+        base-number---一个数字[number].
+        power-number---一个数字[number].
+        result---一个数字[number].
 
 * 描述(Description):
 
         exp 和 expt 执行求幂.
 
-        exp 返回将 e 提升到幂 number, e 是自然对数的底数. exp 没有分支切割.
+        exp 将 e 提升到幂 number 并返回, e 是自然对数的底数. exp 没有分支切割.
 
-        expt 返回将 base-number 提升到幂 power-number. 如果这个 base-number 是一个有理数而 power-number 是一个整数, 计算是准确的, 结果将是 rational 类型的; 否则可能产生一个浮点近似值. 对于一个复有理数到整数幂的 expt, 计算一定是准确的并且结果是 (or rational (complex rational)) 类型的.
+        expt 将 base-number 提升到幂 power-number 并返回. 如果这个 base-number 是一个有理数[rational]而 power-number 是一个整数[integer], 计算是准确的, 结果将是 rational 类型[type]的; 否则可能产生一个浮点近似值. 对于一个复有理数[complex rational]到整数[integer]幂的 expt, 计算一定是准确的并且结果是 (or rational (complex rational)) 类型的.
 
-        即便每个参数都不是复数, 如果 base-number 是负的并且 power-number 不是一个整数, expt 的结果可以是一个复数. 结果总是为主复数值. 比如, (expt -8 1/3) 不允许返回 -2, 尽管 -2 是 -8 的立方根之一. 主立方根是一个近似等于 #C(1.0 1.73205), 而不是 -2 的复数.
+        即便每个参数都不是复数[complex], 如果 base-number 是负的并且 power-number 不是一个整数[integer], expt 的结果仍可以是一个复数[complex]. 结果总是为首要[principal]复数[complex]值[value]. 比如, (expt -8 1/3) 不允许返回 -2, 尽管 -2 是 -8 的立方根之一. 首要[principal]立方根是一个近似等于 #C(1.0 1.73205), 而不是 -2 的复数[complex].
 
-        expt 被定义为 b^x = e^x log b. 这就精确地定义了主值. expt 的范围是整个复数域. 视为 x 的函数, 其中 b 固定, 这里没有分支切割. 视为 b 的函数, 其中 x 固定, 这里通常没有沿着负实轴的分支切割, 和第二象限相连. 这个区域排除了原点. 按照定义, 0^0=1. 如果 b=0 和 x 的实部是严格正的, 那么 b^x=0. 对于所有其他 x 的值, 0^x 是一个错误.
+        expt 被定义为 b^x = e^x log b. 这就精确地定义了首要[principal]值[value]. expt 的范围是整个复数域. 视为 x 的函数, 其中 b 固定, 这里没有分支切割. 视为 b 的函数, 其中 x 固定, 这里通常没有沿着负实轴和第二象限相连的分支切割. 这个区域排除了原点. 按照定义, 0^0=1. 如果 b=0 和 x 的实部是严格正的, 那么 b^x=0. 对于所有其他 x 的值, 0^x 是一个错误.
 
-        当 power-number 是一个整数 0, 那么结果总是为 base-number 的类型的值 1, 即便 base-number 是 0 (of any type). That is:
+        当 power-number 是一个整数[integer] 0, 那么结果总是为 base-number 的类型[type]的值 1, 即便 base-number 是 0 (任何类型[type]的). 就是说:
 
         (expt x 0) ==  (coerce 1 (type-of x))
 
-        如果 power-number 是一个其他任何类型的 0, 那么结果也是值 1, 是在章节 12.1.1.2 (数值运算的传递性) 的传递性规则应用后的参数类型, 带有一个异常: 如果 base-number 是 0 当 power-number 是 zero 并且不是 integer 类型时, 后果是未定义的.
+        如果 power-number 是一个其他任何类型[type]的 0, 那么结果也是值 1, 以章节 12.1.1.2 (数值运算的传递性) 的传递性规则应用后的参数类型[type], 有一个例外: 如果 base-number 是 0 当 power-number 是 zero 并且不是 integer 类型[type]时, 后果是未定义的.
 
 * 示例(Examples):
 
-```LISP
- (exp 0) =>  1.0
- (exp 1) =>  2.718282
- (exp (log 5)) =>  5.0 
- (expt 2 8) =>  256
- (expt 4 .5) =>  2.0
- (expt #c(0 1) 2) =>  -1
- (expt #c(2 2) 3) =>  #C(-16 16)
- (expt #c(2 2) 4) =>  -64 
-```
+    ```LISP
+    (exp 0) =>  1.0
+    (exp 1) =>  2.718282
+    (exp (log 5)) =>  5.0 
+    (expt 2 8) =>  256
+    (expt 4 .5) =>  2.0
+    (expt #c(0 1) 2) =>  -1
+    (expt #c(2 2) 3) =>  #C(-16 16)
+    (expt #c(2 2) 4) =>  -64 
+    ```
 
 * 受此影响(Affected By): None.
 
@@ -1827,7 +1827,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 注意(Notes):
 
-        expt 的具体实现允许去为一个 rational 类型的 power-number 和一个 float 类型的 power-number 的情况使用不同的算法.
+        expt 的具体实现允许去为一个 rational 类型[type]的 power-number 和一个 float 类型[type]的 power-number 的情况使用不同的算法.
 
         请注意以下逻辑, (sqrt (expt x 3)) 不等价于 (expt x 3/2).
 
@@ -1846,8 +1846,8 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 参数和值(Arguments and Values):
 
-        integer---一个整数.
-        greatest-common-denominator---一个非负整数.
+        integer---一个整数[integer].
+        greatest-common-denominator---一个非负整数[integer].
 
 * 描述(Description):
 
@@ -1872,7 +1872,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 异常情况(Exceptional Situations):
 
-        如果任何一个 integer 不是一个整数, 那么应该发出一个 type-error 类型的错误.
+        如果任何一个 integer 不是一个整数[integer], 那么应该发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
@@ -1895,20 +1895,20 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 参数和值(Arguments and Values):
 
-        place---一个 place.
-        delta-form---一个表达式形式; 用来求值产生一个差值 delta. 默认是 1.
-        delta---一个数字.
-        new-value---一个数字.
+        place---一个位置[place].
+        delta-form---一个表达式形式[form]; 用来求值产生一个差值 delta. 默认是 1.
+        delta---一个数字[number].
+        new-value---一个数字[number].
 
 * 描述(Description):
 
-        incf 和 decf 分别被用于递增或递减 place 的值.
+        incf 和 decf 分别被用于递增或递减位置 place 的值[value].
 
         这个差值 delta 会被添加到 place 中的数 (在 incf 的情况中) 或者从 place 中的数中减去 (在 decf 的情况中) 然后结果存储到 place 中.
 
         自动执行任何必要的类型转换.
 
-        关于 places 的子表达式形式的求值信息, 见章节 5.1.1.1 (Evaluation of Subforms to Places).
+        关于 places 的子表达式形式[subform]的求值[evaluation]信息, 见章节 5.1.1.1 (位置的子表达式形式求值).
 
 * 示例(Examples):
 
@@ -1947,16 +1947,16 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 参数和值(Arguments and Values):
 
-        integer---一个整数.
-        least-common-multiple---一个非负整数.
+        integer---一个整数[integer].
+        least-common-multiple---一个非负整数[integer].
 
 * 描述(Description):
 
-        lcm 返回整数 integers 的最小公倍数.
+        lcm 返回这些整数 integers 的最小公倍数.
 
-        如果没有提供整数 integer, 返回整数 1.
+        如果没有提供整数 integer, 返回整数[integer] 1.
 
-        如果只提供一个整数 integer, 返回那个整数的绝对值.
+        如果只提供一个整数 integer, 返回那个整数 integer 的绝对值.
 
         对于两个不是 0 的参数,
 
@@ -1987,7 +1987,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 异常情况(Exceptional Situations):
 
-        如果任何一个参数不是一个整数, 那么应该发出一个 type-error 类型的错误.
+        如果任何一个参数不是整数[integer], 那么应该发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
@@ -2004,36 +2004,36 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 参数和值(Arguments and Values):
 
-        number---一个非零数字.
-        base---一个数字.
-        logarithm---一个数字.
+        number---一个非零数字[number].
+        base---一个数字[number].
+        logarithm---一个数字[number].
 
 * 描述(Description):
 
-        log 返回数字 number 在基数 base 下的对数. 如果没有提供基数 base, 那么它的值就是 e, 那个自然对数的基数.
+        log 返回数字 number 在基数 base 下的对数. 如果没有提供基数 base, 那么它的值就是 e, 也就是那个自然对数的基数.
 
-        当给定一个实负数 number 时, log 可能返回一个复数.
+        当给定一个负实数[real] number 时, log 可能返回一个复数[complex].
 
         (log -1.0) ==  (complex 0.0 (float pi 0.0))
 
         如果基数 base 是 zero, log 返回 zero.
 
-        (log 8 2) 的结果可能是 3 或 3.0, 取决于. 即便一个整数结果是可能的, 一个具体实现仍可以使用浮点计算.
+        (log 8 2) 的结果可能是 3 或 3.0, 取决于具体实现. 即便一个整数结果是可能的, 一个具体实现仍可以使用浮点计算.
 
-        这个单参数的对数函数 (自然对数) 的分支切割位于沿着负实轴, 与第二象限相连. 这个区域不包括原点.
+        这个单参数的对数函数 (自然对数) 的分支切割位于沿着负实轴, 与第二象限相连的区域. 这个区域不包括原点.
 
-        复对数的数学定义如下, 不管具体实现是否支持 -0:
+        复对数的数学定义如下, 不管具体实现是否支持负零:
 
         (log x) ==  (complex (log (abs x)) (phase x))
 
-        因此这个单参数对数函数的范围是那个包含负零不支持时虚部在 -<PI> (不包含) 和 <PI> (包含) 之间的复数带以及支持负零时在 -<PI> (包含) 和 <PI> (包含) 之间的复数带.
+        因此这个单参数对数函数的范围是那个在不支持负零时包含虚部在 -<PI> (不包含) 和 <PI> (包含) 之间的复数带以及支持负零时包含虚部在 -<PI> (包含) 和 <PI> (包含) 之间的复数带.
 
         两个参数的对数函数被定义为
 
         (log base number)
         ==  (/ (log number) (log base))
 
-        这就精确地定义了主值. 这个两个参数的对数函数的范围是整个复数域.
+        这就精确地定义了首要[principal]值[value]. 这个两个参数的对数函数的范围是整个复数域.
 
 * 示例(Examples):
 
@@ -2073,19 +2073,19 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 参数和值(Arguments and Values):
 
-        number---一个实数.
-        divisor---一个实数.
-        modulus, remainder---一个实数.
+        number---一个实数[real].
+        divisor---一个实数[real].
+        modulus, remainder---一个实数[real].
 
 * 描述(Description):
 
-        mod 和 rem 分别是模量和剩余函数的概括.
+        mod 和 rem 分别是模量和剩余函数的泛化.
 
         mod 在数字 number 和除数 divisor 上执行操作 floor 并且返回这个 floor 操作的余数.
 
         rem 在数字 number 和除数 divisor 上执行操作 truncate 并且返回这个 truncate 操作的余数.
 
-        当数字 number 和除数 divisor 都是整数时, mod 和 rem 模量和剩余函数.
+        当数字 number 和除数 divisor 都是整数[integer]时, mod 和 rem 是模量和剩余函数.
 
 * 示例(Examples):
 
@@ -2128,18 +2128,18 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 参数和值(Arguments and Values):
 
-        number---一个数字.
-        signed-prototype---一个数字.
+        number---一个数字[number].
+        signed-prototype---一个数字[number].
 
 * 描述(Description):
 
-        signum 确定一个表示数字 number 是否为复数, 0, 或正数的一个数字值.
+        signum 确定一个表示数字 number 是否为负数, 0, 或正数的一个数字值.
 
-        对于一个有理数, signum 根据数字 number 是否为复数, 0, 或正数返回 -1, 0, 或 1 的其中一个. 对于一个浮点数, 结果是一个相同格式的浮点数, 它的值为负一, 零, 或一. 对于一个复数 z, (signum z) 是同一阶的单位大小的复数, 但单位大小, 除非 z 是复数 0, 在这种情况下, 结果是z.
+        对于一个有理数[rational], signum 根据数字 number 是否为负数, 0, 或正数返回 -1, 0, 或 1 的其中一个. 对于一个浮点数[float], 结果是一个相同格式的浮点数[float], 它的值为负一, 零, 或一. 对于一个复数[complex] z, (signum z) 是同阶的单位大小的复数, 但单位大小, 除非 z 是复数 0, 在这种情况下, 结果是 z.
 
-        对于有理数参数, signum 是一个有理数函数, 但是它对于一个复数参数可能是无理数的.
+        对于有理数[rational]实参[argument], signum 是一个有理数函数, 但是它对于一个复数参数可能是无理数的.
 
-        如果数字 number 是一个浮点数, 结果是一个浮点数. 如果数字 number 是一个有理数, 结果就是一个有理数. 如果数字 number 是一个复浮点数, 结果就是一个复浮点数. 如果数字 number 是一个复有理数, 结果就是一个复数, 但是它的结果是一个复有理数还是一个负浮点数是依赖于具体实现的.
+        如果数字 number 是一个浮点数[float], 结果是一个浮点数[float]. 如果数字 number 是一个有理数[rational], 结果就是一个有理数[rational]. 如果数字 number 是一个复浮点数[complex float], 结果就是一个复浮点数[complex float]. 如果数字 number 是一个复有理数[complex rational], 结果就是一个复数[complex], 但是它的结果是一个复有理数[complex rational]还是一个负浮点数[complex float]是依赖于具体实现的[implementation-dependent].
 
 * 示例(Examples):
 
@@ -2181,18 +2181,18 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 参数和值(Arguments and Values):
 
-        number, root---一个数字.
-        natural, natural-root---一个负整数.
+        number, root---一个数字[number].
+        natural, natural-root---一个负整数[integer].
 
 * 描述(Description):
 
         sqrt 和 isqrt 计算平方根.
 
-        sqrt 返回数字 number 的主要平方根. 如果数字 number 不是一个复数但是是负的, 那么结果就是一个复数.
+        sqrt 返回数字 number 的首要[principal]平方根. 如果数字 number 不是一个复数[complex]但是是负的, 那么结果就是一个复数[complex].
 
-        isqrt 返回小于等于自然数 natural 准确平方根的最大整数.
+        isqrt 返回小于等于自然数 natural 准确平方根的最大整数[integer].
 
-        如果数字 number 是一个正有理数, 那么平方根 root 是一个有理数还是一个浮点数是依赖于具体实现的. 如果数字 number 是一个负有理数, 那么平方根 root 是一个复有理数还是一个复浮点数.
+        如果数字 number 是一个正有理数[rational], 那么平方根 root 是一个有理数[rational]还是一个浮点数[rational]是依赖于具体实现的[implementation-dependent]. 如果数字 number 是一个负有理数[rational], 那么平方根 root 是一个复有理数[complex rational]还是一个复浮点数[complex float].
 
         复数平方根的数学定义 (不管是否支持 -0)) 如下:
 
@@ -2224,9 +2224,9 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 异常情况(Exceptional Situations):
 
-        如果参数不是一个数字, 函数 sqrt 应该发出一个 type-error 类型的错误.
+        如果参数不是一个数字[number], 函数[function] sqrt 应该发出一个 type-error 类型[type]的错误.
 
-        如果参数不是一个非负整数, 函数 isqrt 应该发出一个 type-error 类型的错误.
+        如果参数不是一个非负整数[integer], 函数[function] isqrt 应该发出一个 type-error 类型[type]的错误.
 
         函数 sqrt 和 isqrt 可能发出 arithmetic-error.
 
@@ -2249,13 +2249,13 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 描述(Description):
 
-        一个随机状态对象包含了被 pseudo-random 数字生成器使用的状态信息. 一个随机状态对象的性质是依赖于具体实现的. 它可以被打印出来并且被相同的具体实现读回去, 但是在另一个实现中可能不能正确地作为一个随机状态运行.
+        一个随机状态[random state]对象[object]包含了被伪随机数字生成器使用的状态信息. 一个随机状态[random state]对象[object]的性质是依赖于具体实现的[mplementation-dependent]. 它可以被打印出来并且被相同的具体实现[implementation]读回去, 但是在另一个实现[implementation]中可能不能正确地作为一个随机状态随机状态[random state]运行.
 
-        具体实现需要去为 random-state 类型的对象提供一个读取语法, 但是那个语法的特定的特性是依赖于具体实现的.
+        具体实现[implementation]需要去为 random-state 类型[type]的对象[object]提供一个读取语法, 但是那个语法的具体的特性是依赖于具体实现的[implementation-dependent].
 
 * 也见(See Also):
 
-        *random-state*, random, 章节 22.1.3.10 (Printing Random States) 
+        *random-state*, random, 章节 22.1.3.10 (打印随机状态) 
 
 
 ### <span id="F-MAKE-RANDOM-STATE">函数 MAKE-RANDOM-STATE</span>
@@ -2266,14 +2266,14 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 参数和值(Arguments and Values):
 
-        state---一个随机状态, 或 nil, 或 t. 默认是 nil.
-        new-state---一个随机.
+        state---一个随机状态[random state], 或 nil, 或 t. 默认是 nil.
+        new-state---一个随机状态[random state]对象[object].
 
 * 描述(Description):
 
-        创建一个适合用作 *random-state* 的值的 random-state 类型的新对象.
+        创建一个适合用作 *random-state* 的值[value]的 random-state 类型[type]的新[fresh]对象[object].
 
-        如果状态 state 是一个随机状态对象, 那么这个 new-state 是那个对象的一个拷贝. 如果状态 state 是 nil, 新的状态是当前随机状态的一个拷贝. 如果状态 state 是 t, 那么状态 new-state 是一个通过某种方式被随机初始化的新的随机状态对象.
+        如果状态 state 是一个随机状态[random state]对象[object], 那么这个 new-state 是那个对象[object]的一个拷贝[copy[5]]. 如果状态 state 是 nil, 新的状态 new-state 是当前随机状态[current random state]的一个拷贝[copy[5]]. 如果状态 state 是 t, 那么新状态 new-state 是一个通过某种方式被随机初始化的新的[fresh]随机状态[random state]对象[object].
 
 * 示例(Examples):
 
@@ -2303,7 +2303,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 异常情况(Exceptional Situations):
 
-        如果 state 不是一个随机状态, 或 nil, 或 t, 那么应该发出一个 type-error 类型的错误.
+        如果 state 不是一个随机状态[random state], 或 nil, 或 t, 那么应该发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
@@ -2311,7 +2311,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 注意(Notes):
 
-        make-random-state 一个重要的使用是允许在单个程序中同样的一系列 pseudo-random 数字被生成多次. 
+        make-random-state 一个重要的使用是允许在单个程序中同样的一系列伪随机数字[number]被生成多次. 
 
 ### <span id="F-RANDOM">函数 RANDOM</span>
 
@@ -2321,17 +2321,17 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 参数和值(Arguments and Values):
 
-        limit---一个正整数, 或者一个正浮点数.
-        random-state---一个随机状态. 默认是当前的随机状态.
-        random-number---一个小于 limit 并且和 limit 相同类型的非负数字.
+        limit---一个正整数[integer], 或者一个正浮点数[float].
+        random-state---一个随机状态[random state]. 默认是当前随机状态[current random state].
+        random-number---一个小于 limit 并且和 limit 相同类型[type]的非负数字[number].
 
 * 描述(Description):
 
-        返回一个小于 limit 并且和 limit 相同类型的非负 pseudo-random 数字.
+        返回一个小于 limit 并且和 limit 相同类型[type]的非负伪随机数字[number].
 
-        由这个函数修改的随机状态 random-state，编码由这个随机数生成器维护的内部状态.
+        被这个函数修改的随机状态 random-state 编码由这个随机数生成器维护的内部状态.
 
-        使用了一个近似均匀的选择分布. 如果 limit 是一个整数, 每一个可能的结果发生的可能性 (近似) 是 1/limit.
+        使用了一个近似均匀的选择分布. 如果 limit 是一个整数[integer], 每一个可能的结果发生的可能性 (近似) 是 1/limit.
 
 * 示例(Examples):
 
@@ -2350,7 +2350,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 异常情况(Exceptional Situations):
 
-        如果 limit 不是一个正整数或一个正浮点数, 那么应该发出一个 type-error 类型的错误.
+        如果 limit 不是一个正整数[integer]或一个正实数[real], 那么应该发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
@@ -2369,12 +2369,12 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 参数和值(Arguments and Values):
 
-        object---一个对象.
-        generalized-boolean---一个广义 boolean.
+        object---一个对象[object].
+        generalized-boolean---一个广义 boolean [generalized boolean].
 
 * 描述(Description):
 
-        如果对象 object 是 random-state 类型就返回 true; 否则, 返回 false.
+        如果对象 object 是 random-state 类型[type]就返回 true; 否则, 返回 false.
 
 * 示例(Examples):
 
@@ -2403,15 +2403,15 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 值类型(Value Type):
 
-        一个随机状态.
+        一个随机状态[random state].
 
 * 初始值(Initial Value):
 
-        依赖于具体实现.
+        依赖于具体实现[implementation-dependent].
 
 * 描述(Description):
 
-        当前的随机状态, 比如, 当一个随机对象没有提供给 random 函数时, 它会被使用.
+        当前随机状态[current random state], 比如, 当一个随机状态[random state]没有提供给 random 函数[function]时, 它会被使用.
 
 * 示例(Examples):
 
@@ -2434,7 +2434,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 受此影响(Affected By):
 
-        具体实现.
+        具体实现[implemnetation].
 
         random.
 
@@ -2444,7 +2444,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 注意(Notes):
 
-        将 *random-state* 绑定到一个不同的随机状态对象时, 正确地保存和还原旧的随机状态对象. 
+        将 *random-state* 绑定[binding]到一个不同的随机状态[random state]对象[object]时, 正确地保存和还原旧的随机状态[random state]对象[object]. 
 
 
 ### <span id="F-NUMBERP">函数 NUMBERP</span>
@@ -2455,12 +2455,12 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 参数和值(Arguments and Values):
 
-        object---一个对象.
-        generalized-boolean---一个广义 boolean.
+        object---一个对象[object].
+        generalized-boolean---一个广义 boolean [generalized boolean].
 
 * 描述(Description):
 
-        如果对象 object 是 number 类型就返回 true; 否则, 返回 false.
+        如果对象 object 是 number 类型[type]就返回 true; 否则, 返回 false.
 
 * 示例(Examples):
 
@@ -2494,12 +2494,12 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 参数和值(Arguments and Values):
 
-        radians---一个实数.
-        number---一个复数.
+        radians---一个实数[real].
+        number---一个复数[complex].
 
 * 描述(Description):
 
-        cis 返回 e^i* radians 的值, 它是一个实部等价于弧度 radians 的余弦并且虚部等价于弧度 radians 的正弦的复数.
+        cis 返回 e^i* radians 的值, 它是一个实部等价于弧度 radians 的余弦并且虚部等价于弧度 radians 的正弦的复数[complex].
 
 * 示例(Examples):
 
@@ -2519,6 +2519,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 注意(Notes): None. 
 
+<!--TODO 校对到此-->
 ### <span id="F-COMPLEX">函数 COMPLEX</span>
 
 * 语法(Syntax):
