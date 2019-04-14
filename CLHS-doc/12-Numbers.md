@@ -3256,26 +3256,28 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
     =>  (0 1 2 3 4 5 6 7 -8 -7 -6 -5 -4 -3 -2 -1)
     ```LISP
 
-<!--TODO 校对到此-->
+
 ### <span id="CV-B">常量 BOOLE-1, BOOLE-2, BOOLE-AND, BOOLE-ANDC1, BOOLE-ANDC2, BOOLE-C1, BOOLE-C2, BOOLE-CLR, BOOLE-EQV, BOOLE-IOR, BOOLE-NAND, BOOLE-NOR, BOOLE-ORC1, BOOLE-ORC2, BOOLE-SET, BOOLE-XOR</span>
 
 * 常量值(Constant Value):
 
-The identity and nature of the values of each of these variables is implementation-dependent, except that it must be distinct from each of the values of the others, and it must be a valid first argument to the function boole.
+        这些变量[variable]中的每一个的值[value]的标识和性质都是依赖于具体实现的[implementation-dependent], 除了它必须和其他任何一个的值[value]都不同[distinct], 并且它必须是一个给函数[function] boole 的有效的第一个实参[argument].
 
 * 描述(Description):
 
-Each of these constants has a value which is one of the sixteen possible bit-wise logical operation specifiers.
+        这些常量[constant]中的每一个的值[value]都是十六个可能的位逻辑操作指定符[bit-wise logical operation specifier]中的一个.
 
 * 示例(Examples):
 
- (boole boole-ior 1 16) =>  17
- (boole boole-and -2 5) =>  4
- (boole boole-eqv 17 15) =>  -31
+    ```LISP
+    (boole boole-ior 1 16) =>  17
+    (boole boole-and -2 5) =>  4
+    (boole boole-eqv 17 15) =>  -31
+    ```
 
 * 也见(See Also):
 
-boole
+        boole
 
 * 注意(Notes): None. 
 
@@ -3308,32 +3310,32 @@ boole
 
 * 参数和值(Arguments and Values):
 
-        integers---多个整数.
-        integer---一个整数.
-        integer-1---一个整数.
-        integer-2---一个整数.
-        result-integer---一个整数.
+        integers---多个整数[integer].
+        integer---一个整数[integer].
+        integer-1---一个整数[integer].
+        integer-2---一个整数[integer].
+        result-integer---一个整数[integer].
 
 * 描述(Description):
 
-        函数 logandc1, logandc2, logand, logeqv, logior, lognand, lognor, lognot, logorc1, logorc2, 和 logxor 在它们的参数上执行位逻辑操作, 这些参数会被看作二进制数.
+        函数[function] logandc1, logandc2, logand, logeqv, logior, lognand, lognor, lognot, logorc1, logorc2, 和 logxor 在它们的实参[argument]上执行位逻辑操作, 这些参数会被看作二进制数.
 
-        下面这段列出了这些函数中的每一个的意义. 在 'identity' 出现的位置, 表示当没有提供参数时函数产生的值.
+        下面这段列出了这些函数[function]中的每一个的意义. 在 'identity' 出现的位置, 表示当没有提供实参[argument]时这个函数[function]产生的值[value].
 
-            Function  Identity  Operation performed                         
-            logandc1  ---       and complement of integer-1 with integer-2  
-            logandc2  ---       and integer-1 with complement of integer-2  
-            logand    -1        and                                         
-            logeqv    -1        equivalence (exclusive nor)                 
-            logior    0         inclusive or                                
-            lognand   ---       complement of integer-1 and integer-2       
-            lognor    ---       complement of integer-1 or integer-2        
-            lognot    ---       complement                                  
-            logorc1   ---       or complement of integer-1 with integer-2   
-            logorc2   ---       or integer-1 with complement of integer-2   
-            logxor    0         exclusive or                                
+        Function  Identity  Operation performed                         
+        logandc1  ---       and complement of integer-1 with integer-2  
+        logandc2  ---       and integer-1 with complement of integer-2  
+        logand    -1        and                                         
+        logeqv    -1        equivalence (exclusive nor)                 
+        logior    0         inclusive or                                
+        lognand   ---       complement of integer-1 and integer-2       
+        lognor    ---       complement of integer-1 or integer-2        
+        lognot    ---       complement                                  
+        logorc1   ---       or complement of integer-1 with integer-2   
+        logorc2   ---       or integer-1 with complement of integer-2   
+        logxor    0         exclusive or                                
 
-            Figure 12-18. 整数上的位逻辑操作
+        Figure 12-18. 整数上的位逻辑操作
 
         负的整数会被看作它们是以两个补数的二进制表示的.
 
@@ -3380,7 +3382,7 @@ boole
 
 * 异常情况(Exceptional Situations):
 
-        如果任何参数不是一个整数, 那么应该发出一个 type-error 错误.
+        如果任何参数不是一个整数[argument], 那么应该发出一个 type-error 错误.
 
 * 也见(See Also):
 
@@ -3409,15 +3411,15 @@ boole
 
 * 参数和值(Arguments and Values):
 
-        index---一个非负整数.
-        integer---一个整数.
-        generalized-boolean---一个广义 boolean.
+        index---一个非负整数[integer].
+        integer---一个整数[integer].
+        generalized-boolean---一个广义 boolean [generalized boolean].
 
 * 描述(Description):
 
         logbitp 被用于测试整数 integer 中的特定位的值, 它会被当作一个二进制数处理. 如果整数 integer 的索引为 index (这也就是说, 它的权重是 2^index)的位是 1 比特, logbitp 的值就是 true; 否则就是 false.
 
-        负的整数会被看作它们是以两个补数的二进制表示的.
+        那些负的整数 integers 会被看作是以两个补数的二进制表示的.
 
 * 示例(Examples):
 
@@ -3436,7 +3438,7 @@ boole
 
 * 异常情况(Exceptional Situations):
 
-        如果 index 不是一个非负整数, 那么应该发出一个 type-error 类型的错误. 如果整数 integer 不是一个整数, 那么应该发出一个 type-error 类型的错误.
+        如果 index 不是一个非负整数[integer], 那么应该发出一个 type-error 类型[type]的错误. 如果整数 integer 不是一个整数[integer], 那么应该发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also): None.
 
@@ -3453,12 +3455,12 @@ boole
 
 * 参数和值(Arguments and Values):
 
-        integer---一个整数.
-        number-of-on-bits---一个非负整数.
+        integer---一个整数[integer].
+        number-of-on-bits---一个非负整数[integer].
 
 * 描述(Description):
 
-        计算并返回整数 integer 的两个补数的二进制表示中出于 'on' 或 'set' 的位的数量. 如果整数 integer 是负的, 计算的是 0 的位; 否则, 计算的就是 1 的位.
+        计算并返回整数 integer 的二进制补码表示中处于 'on' 或 'set' 的位的数量. 如果整数 integer 是负的, 0 位会被计数; 否则, 1 位会被计数.
 
 * 示例(Examples):
 
@@ -3481,13 +3483,13 @@ boole
 
 * 异常情况(Exceptional Situations):
 
-        如果它的参数不是一个整数, 那么应该发出一个 type-error 类型的错误.
+        如果它的参数不是一个整数[integer], 那么应该发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also): None.
 
 * 注意(Notes):
 
-        即使这个具体实现内部不是把整数表示为两个补数的二进制数, logcount 还是表现地就像它所做的那样.
+        即使这个具体实现[implementation]内部不是把整数[integer]表示为二进制补码形式, logcount 还是表现地就像它所做的那样.
 
         以下恒等式总是符合的:
 
@@ -3504,15 +3506,15 @@ boole
 
 * 参数和值(Arguments and Values):
 
-        integer-1---一个整数.
-        integer-2---一个整数.
-        generalized-boolean---一个广义 boolean.
+        integer-1---一个整数[integer].
+        integer-2---一个整数[integer].
+        generalized-boolean---一个广义 boolean [generalized boolean].
 
 * 描述(Description):
 
         如果 interger-1 中的 1 表示的位在 integer-2 中是 1 就返回 true; 否则就是 false. integer-1 和 integer-2 被当作二进制的.
 
-        负的 integer-1 和 integer-2 被当作就好像它们是以两个补数的二进制表示的.
+        负的 integer-1 和 integer-2 被当作就好像它们是以二进制补码表示的.
 
 * 示例(Examples):
 
@@ -3529,7 +3531,7 @@ boole
 
 * 异常情况(Exceptional Situations):
 
-        如果 integer-1 不是一个整数就会发出一个 type-error 类型的错误. 如果 integer-2 不是一个整数就会发出一个 type-error 类型的错误.
+        如果 integer-1 不是一个整数[integer]就会发出一个 type-error 类型[type]的错误. 如果 integer-2 不是一个整数[integer]就会发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also): None.
 
@@ -3550,12 +3552,12 @@ boole
 
 * 参数和值(Arguments and Values):
 
-        size, position---一个非负整数.
-        bytespec---一个字节指定符.
+        size, position---一个非负整数[integer].
+        bytespec---一个字节指定符[byte specifier].
 
 * 描述(Description):
 
-        byte 返回一个字节指定符, 它表示宽度为 size 的, 而它的位有着权重 2^position + size - 1 到 2^position, 并且它的表示是依赖于具体实现的.
+        byte 返回一个字节指定符[byte specifier], 它表示宽度为 size 的字节[byte], 而它的位有着权重 2^position + size - 1 到 2^position, 并且它的表示是依赖于具体实现的[implementation-dependent].
 
         byte-size 返回 bytespec 指定的位数.
 
@@ -3582,7 +3584,7 @@ boole
         (byte-size (byte j k)) ==  j
         (byte-position (byte j k)) ==  k
 
-        一个 0 大小的字节是允许的; 它指的是一个宽度为 0 的字节. 比如,
+        一个 0 大小的字节[byte]是允许的; 它指的是一个宽度为 0 的字节[byte]. 比如,
 
         (ldb (byte 0 3) #o7777) =>  0
         (dpb #o7777 (byte 0 3) 0) =>  0
@@ -3596,14 +3598,14 @@ boole
 
 * 参数和值(Arguments and Values):
 
-        newbyte---一个整数.
-        bytespec---一个字节指定符.
-        integer---一个整数.
-        result-integer---一个整数.
+        newbyte---一个整数[integer].
+        bytespec---一个字节指定符[byte specifier].
+        integer---一个整数[integer].
+        result-integer---一个整数[integer].
 
 * 描述(Description):
 
-        替换整数 integer 中的一个位域; 具体的说, 返回一个整数, 其中 bytespec 所指定的字节中包含了 newbyte 的位, 而其他地方则包含整数 integer 的位.
+        替换整数 integer 中的一个位的域; 具体的说, 返回一个整数[integer], 其中 bytespec 所指定的字节[byte]中包含了 newbyte 的位, 而其他地方则包含整数 integer 的位.
 
 * 示例(Examples):
 
@@ -3644,16 +3646,16 @@ boole
 
 * 参数和值(Arguments and Values):
 
-        newbyte---一个整数.
-        bytespec---一个字节指定符.
-        integer---一个整数.
-        result-integer---一个整数.
+        newbyte---一个整数[integer].
+        bytespec---一个字节指定符[byte specifier].
+        integer---一个整数[integer].
+        result-integer---一个整数[integer].
 
 * 描述(Description):
 
-        dpb (deposit byte) 被用于替换整数 integer 中一个位域. dpb 返回一个和整数 integer 除了 bytespec 指定的位以外都相同的整数.
+        dpb (deposit byte) 被用于替换整数 integer 中一个位的域. dpb 返回一个和整数 integer 除了 bytespec 指定的位以外都相同的整数[integer].
 
-        让 s 为 bytespec 指定的大小; 然后这个 newbyte 的低 s 位出现在 bytespec 指定的字节的结果中. Newbyte 被解释为是右对齐的, 就好像是 ldb 的结果.
+        让 s 为 bytespec 指定的大小; 然后这个 newbyte 的低 s 位出现在 bytespec 指定的字节的结果中. 这个 newbyte 被解释为是右对齐的, 就好像是 ldb 的结果.
 
 * 示例(Examples):
 
@@ -3684,7 +3686,7 @@ boole
 
         (dpb x (byte 0 y) z) =>  z
 
-        历史上, "dpb" 的名称来自于DEC的PDP-10汇编语言指令, 意思是 "存储字节(deposit byte)". 
+        历史上, "dpb" 的名称来自于 DEC 的 PDP-10 汇编语言指令, 意思是 "存储字节(deposit byte)". 
 
 
 ### <span id="A-LDB">访问器 LDB</span>
@@ -3701,17 +3703,17 @@ boole
 
 * 参数和值(Arguments and Values):
 
-        bytespec---一个字节指定符.
-        integer---一个整数.
-        byte, new-byte---一个非负整数.
+        bytespec---一个字节指定符[byte specifier].
+        integer---一个整数[integer].
+        byte, new-byte---一个非负整数[integer].
 
 * 描述(Description):
 
-        ldb 提取并返回整数 integer 中 bytespec 所指定的字节.
+        ldb 提取并返回整数 integer 中 bytespec 所指定的字节[byte].
 
-        ldb 返回一个整数, 在这个整数中 2^(s-1) 到 2^0 的位和整数中 2^(p+s-1) 到 2^p 的一样, 其他位都是 0; s 是 (byte-size bytespec) 并且 p 是 (byte-position bytespec).
+        ldb 返回一个整数[integer], 在这个整数中 2^(s-1) 到 2^0 的位和整数中 2^(p+s-1) 到 2^p 的一样, 其他位都是 0; s 是 (byte-size bytespec) 并且 p 是 (byte-position bytespec).
 
-        setf 可以和 ldb 一起使用来修改存储在一个给定 place 中的这个整数中的字节. 当一个 ldb 表达式形式被提供给 setf 时, 求值顺序是从左到右的. 效果就是去执行一个 dpb 操作然后把结果存储回那个 place 中.
+        setf 可以和 ldb 一起使用来修改存储在给定 place 中的这个整数 integer 中的一个字节. 当一个 ldb 表达式形式被提供给 setf 时, 求值顺序是从左到右的. 效果就是去执行一个 dpb 操作然后把结果存储回那个 place 中.
 
 * 示例(Examples):
 
@@ -3737,13 +3739,11 @@ boole
         (logbitp j (ldb (byte s p) n))
             ==  (and (< j s) (logbitp (+ j p) n))
 
-        通常,
+        通常, 对于所有 x 和 y 的有效值
 
         (ldb (byte 0 x) y) =>  0
 
-        对于所有 x 和 y 的有效值.
-
-        在历史上, "ldb"的名称来自于DEC的PDP-10汇编语言指令, 意思是"载入字节(load byte)". 
+        在历史上, "ldb" 的名称来自于 DEC 的 PDP-10 汇编语言指令, 意思是"载入字节(load byte)". 
 
 
 ### <span id="F-LDB-TEST">函数 LDB-TEST</span>
@@ -3754,13 +3754,13 @@ boole
 
 * 参数和值(Arguments and Values):
 
-        bytespec---一个字节指定符.
-        integer---一个整数.
-        generalized-boolean---一个广义 boolean.
+        bytespec---一个字节指定符[byte specifier].
+        integer---一个整数[integer].
+        generalized-boolean---一个广义 boolean [generalized boolean].
 
 * 描述(Description):
 
-        如果整数 integer 中 bytespec 指定的字节的任意位不是 0 就返回 true; 否则返回 false.
+        如果整数 integer 中 bytespec 所指定的字节的任意位不是 0 就返回 true; 否则返回 false.
 
 * 示例(Examples):
 
@@ -3797,15 +3797,15 @@ boole
 
 * 参数和值(Arguments and Values):
 
-        bytespec---一个字节指定符.
-        integer---一个整数.
-        masked-integer, new-masked-integer---一个非负整数.
+        bytespec---一个字节指定符[byte specifier].
+        integer---一个整数[integer].
+        masked-integer, new-masked-integer---一个非负整数[integer].
 
 * 描述(Description):
 
-        mask-field 在整数 integer 上执行 "掩码(mask)" 操作. 它返回一个和整数 integer 在 bytespec 指定的字节上有着相同比特而其他都是 0 比特的整数.
+        mask-field 在整数 integer 上执行 "掩码(mask)" 操作. 它返回一个和整数 integer 在 bytespec 所指定的字节[byte]上有着相同比特而其他都是 0 比特的整数[integer].
 
-        setf 可以和 mask-field 一起使用来修改存储在一个给定 place 的整数中的一个字节. 这个的效果是去执行一个 deposit-field 操作然后存储结果到那个 place 中.
+        setf 可以和 mask-field 一起使用来修改存储在一个给定位置 place 的整数[integer]中的一个字节. 这个的效果是去执行一个 deposit-field 操作然后存储结果到那个 place 中.
 
 * 示例(Examples):
 
@@ -3841,7 +3841,7 @@ boole
 
 * 常量值(Constant Value):
 
-        依赖于具体实现.
+        依赖于具体实现[implementation-dependent].
 
 * 描述(Description):
 
@@ -3876,25 +3876,25 @@ boole
 
 * 参数和值(Arguments and Values):
 
-        digits1---一个非负整数.
-        digits2---一个非负整数.
-        exponent---一个整数.
-        float---一个浮点数.
-        float-1---一个浮点数.
-        float-2---一个浮点数.
-        float-radix---一个整数.
-        integer---一个非负整数.
-        integer-sign---整数 -1, 或者整数 1.
-        scaled-float---一个浮点数.
-        sign---一个和浮点数 float 相同类型但是数学上等价于 1.0 或 -1.0 一个浮点数.
-        signed-float---一个浮点数.
-        significand---一个浮点数.
+        digits1---一个非负整数[integer].
+        digits2---一个非负整数[integer].
+        exponent---一个整数[integer].
+        float---一个浮点数[float].
+        float-1---一个浮点数[float].
+        float-2---一个浮点数[float].
+        float-radix---一个整数[integer].
+        integer---一个非负整数[integer].
+        integer-sign---整数[integer] -1, 或者整数[integer] 1.
+        scaled-float---一个浮点数[float].
+        sign---一个和浮点数 float 相同类型[type]但是数学上等价于 1.0 或 -1.0 一个浮点数[float].
+        signed-float---一个浮点数[float].
+        significand---一个浮点数[float].
 
 * 描述(Description):
 
-        decode-float 计算描绘浮点数 float 的三个值. 第一个值和浮点数 float 相同类型并且表示有效位数 significand. 第二个值表示一个指数, 对于这个指数那个基数 (在 b 的描述中被提到) 必须被提升来获取一个值, 当这个值和第一个值相乘时, 产生浮点数 float 的完整值. 如果浮点数 float 是 0, 任何整数值可能被返回, 假设保持 scale-float 展示的恒等式. 第三个值是和浮点数 float 相同类型并且如果浮点数 float 大于等于 0 就是 1.0 否则就是 -1.0.
+        decode-float 计算出描绘浮点数 float 的三个值. 第一个值和浮点数 float 相同类型[type]并且表示有效位数. 第二个值表示一个指数, 那个基数 (在 b 的描述中被提到) 必须被提升到那个指数来获取那个值, 当这个值和第一个值相乘时, 产生浮点数 float 的绝对值. 如果浮点数 float 是 0, 任何整数[integer]值可能被返回, 假设保持 scale-float 展示不变. 第三个值是和浮点数 float 相同类型[type]并且如果浮点数 float 大于等于 0 就是 1.0, 否则就是 -1.0.
 
-        decode-float 用 b 的一个整数幂来除浮点数进而使它的值在 1/b (包含) 和 1 (不包含) 之间, 并且返回这个商作为对一个值. 然而, 如果浮点数 float 是 zero, 结果和这个浮点数 float 的绝对值相等 (这也就是说, 如果这里有个负零, 它的有效位数被认为是正零).
+        decode-float 用 b 的一个整数幂来除浮点数 float 进而使它的值在 1/b (包含) 和 1 (不包含) 之间, 并且返回这个商作为一个值. 然而, 如果浮点数 float 是 zero, 结果和这个浮点数 float 的绝对值相等 (这也就是说, 如果这里有个负零, 它的有效位数被认为是正零).
 
         scale-float 返回 (* float (expt (float b float) integer)), 其中 b 是这个浮点表示的基数. 浮点数 float 没有必要在 1/b 和 1 之间.
 
@@ -3904,11 +3904,11 @@ boole
 
         float-digits 返回在浮点数 float 中使用的基数 b 的数量 (包括任何隐式的数量, 例如一个 "隐藏位(hidden bit)").
 
-        float-precision 返回在浮点数 float 中出现的重要的基数 b 的数量; 如果浮点数 float 是一个浮点数零, 那么结果就是一个整数零.
+        float-precision 返回在浮点数 float 中出现的有效基数 b 的数量; 如果浮点数 float 是一个浮点数[float]零, 那么结果就是一个整数[integer]零.
 
-        对于标准化浮点数, 这个 float-digits 和 float-precision 的结果是一样的, 但是精度比非标准化或零的表示数字要小.
+        对于标准化[normalized]浮点数[float], 这个 float-digits 和 float-precision 的结果是一样的, 但是精度小于非标准化[denormalized]或零值的表示位数.
 
-        integer-decode-float 计算描绘浮点数 float 的三个值 - 这个有效数字被缩放为一个整数, 和 decode-float 返回的最后两个值一样. 如果浮点数 float 是零, integer-decode-float 返回 0 作为第一个值. 第二个值与第一个值具有和 decode-float 中的相同的关系:
+        integer-decode-float 计算出描绘浮点数 float 的三个值 - 这个有效位数被缩放为一个整数[integer], 最后两个值和 decode-float 返回的一样. 如果浮点数 float 是零, integer-decode-float 返回 0 作为第一个值. 第二个值与第一个值的关系和 decode-float 相同:
 
         (multiple-value-bind (signif expon sign)
                               (integer-decode-float f)
@@ -3943,21 +3943,21 @@ boole
 
 * 受此影响(Affected By):
 
-        具体实现对于浮点数的表示法.
+        具体实现关于浮点数[float]的表示法.
 
 * 异常情况(Exceptional Situations):
 
-        如果函数 decode-float, float-radix, float-digits, float-precision, and integer-decode-float 仅有的参数不是一个浮点数, 那么它们应该发出一个错误.
+        如果函数[function] decode-float, float-radix, float-digits, float-precision, and integer-decode-float 仅有的参数不是一个浮点数[float], 那么它们应该发出一个错误.
 
-        如果函数 scale-float 的第一个参数不是一个浮点数或者它的第二个参数不是一个整数, 那么它应该发出一个错误.
+        如果函数[function] scale-float 的第一个参数不是一个浮点数[float]或者它的第二个参数不是一个整数[integer], 那么它应该发出一个错误.
 
-        如果函数 float-sign 的第一个参数不是一个浮点数或者提供的第二个参数不是一个浮点数, 那么它应该发出一个错误.
+        如果函数[function] float-sign 的第一个参数不是一个浮点数[float]或者提供的第二个参数不是一个浮点数[float], 那么它应该发出一个错误.
 
 * 也见(See Also): None.
 
 * 注意(Notes):
 
-        decode-float 或 integer-decode-float的第一个结果的乘积, 它被提升到第二个结果的幂, 第三个结果与浮点数 float 的值完全相等.<!--TODO 待校验-->
+        decode-float 或 integer-decode-float的第一个结果与第二个结果的幂的基数的乘积, 与第三个结果的乘积恰好等于浮点数 float 的值.
 
         (multiple-value-bind (signif expon sign)
                               (decode-float f)
@@ -3980,17 +3980,17 @@ boole
 
 * 参数和值(Arguments and Values):
 
-        number---一个实数.
-        prototype---一个浮点数.
-        float---一个浮点数.
+        number---一个实数[real].
+        prototype---一个浮点数[float].
+        float---一个浮点数[float].
 
 * 描述(Description):
 
-        float 把一个实数转换为浮点数.
+        float 把一个实数[real]转换为浮点数[float].
 
-        如果提供了一个 prototype, 会返回一个和 number 数学上相等的但是有着和 prototype 相同格式的浮点数.
+        如果提供了一个原型 prototype, 会返回一个和数字 number 数学上相等的但是有着和原型 prototype 相同格式的浮点数[float].
 
-        如果没有提供 prototype, 那么如果这个数字 number 已经是一个浮点数, 就把它返回; 否则, 就返回一个和 number 数学上相等的但是是一个单精度浮点的浮点数.
+        如果没有提供原型 prototype, 那么如果这个数字 number 已经是一个浮点数[float], 就把它返回; 否则, 就返回一个和数字 number 数学上相等的但是是一个单精度浮点[single float]的浮点数[float].
 
 * 示例(Examples):
 
@@ -4027,12 +4027,12 @@ boole
 
 * 参数和值(Arguments and Values):
 
-        object---一个对象.
-        generalized-boolean---一个广义 boolean.
+        object---一个对象[object].
+        generalized-boolean---一个广义 boolean [generalized boolean].
 
 * 描述(Description):
 
-        如果对象 object 是 float 类型的就返回 true; 否则, 返回 false.
+        如果对象 object 是 float 类型[type]的就返回 true; 否则, 返回 false.
 
 * 示例(Examples):
 
@@ -4060,31 +4060,31 @@ boole
 
 * 常量值(Constant Value):
 
-        依赖于具体实现.
+        依赖于具体实现[implementation-dependent].
 
 * 描述(Description):
 
-        这些常量为程序去检测具体实现为多种浮点格式定义的限制提供了一种方式.
+        这些常变量[constant variable]为程序去检测多种浮点格式的具体实现定义的[implementation-defined]限制提供了一种方式.
 
-        这些变量中, 每个名字中有着 "-normalized" 的必须有着一个标准化浮点数的值, 而每个名字中没有 "-normalized" 的可能有着一个标准化的或者非标准化的浮点数的值, 视情况而定.
+        这些变量[variable]中, 每个名字[name]中有着 "-normalized" 的必须有着一个标准化[normalized]浮点数[float]的值[value], 而每个名字中没有 "-normalized" 的可能有着一个标准化[normalized]浮点数[float]或者非标准化[denormalized]浮点数[float]的值[value], 视情况而定.
 
-        这些变量中, 每个名字中有着 "short-float" 的必须有着一个短浮点数的值, 每个名字中有着 "single-float" 必须有着一个单精度浮点数的值, 每个名字中有着 "double-float" 的必须有着一个双精度浮点数的值, 而每个名字中有着 "long-float" 的必须有着一个长浮点数的值.
+        这些变量[variable]中, 每个名字[name]中有着 "short-float" 的必须有着一个短浮点数[short float]的值[value], 每个名字[name]中有着 "single-float" 必须有着一个单精度浮点数[single float]的值[value], 每个名字[name]中有着 "double-float" 的必须有着一个双精度浮点数[double float]的值[value], 而每个名字[name]中有着 "long-float" 的必须有着一个长浮点数[long float]的值[value].
 
-            most-positive-short-float, most-positive-single-float, most-positive-double-float, most-positive-long-float
+            * most-positive-short-float, most-positive-single-float, most-positive-double-float, most-positive-long-float
 
-            对于这些常量的名字所暗示的浮点格式, 这些常量中的每一个都有着作为它的值最大 (最接近, 但不等于正无穷) 正浮点数.
+            这些常变量[constant variable]中的每一个都是名字所暗示的浮点格式中最大数值的正浮点数[float] (最接近, 但不等于正无穷).
 
-            least-positive-short-float, least-positive-normalized-short-float, least-positive-single-float, least-positive-normalized-single-float, least-positive-double-float, least-positive-normalized-double-float, least-positive-long-float, least-positive-normalized-long-float
+            * least-positive-short-float, least-positive-normalized-short-float, least-positive-single-float, least-positive-normalized-single-float, least-positive-double-float, least-positive-normalized-double-float, least-positive-long-float, least-positive-normalized-long-float
 
-            对于这些常量的名字所暗示的浮点格式, 这些常量中的每一个都有着作为它的值的最小 (非零) 正浮点数.
+            这些常变量[constant variable]中的每一个都是名字所暗示的浮点格式中最小数值的正浮点数[float] (非零).
 
-            least-negative-short-float, least-negative-normalized-short-float, least-negative-single-float, least-negative-normalized-single-float, least-negative-double-float, least-negative-normalized-double-float, least-negative-long-float, least-negative-normalized-long-float
+            * least-negative-short-float, least-negative-normalized-short-float, least-negative-single-float, least-negative-normalized-single-float, least-negative-double-float, least-negative-normalized-double-float, least-negative-long-float, least-negative-normalized-long-float
 
-            对于这些常量的名字所暗示的浮点格式, 这些常量中的每一个都有着作为它的值的最小 (非零) 负浮点数. (如果一个实现支持 -0 作为一个和 +0 不同的对象, 这个值一定不能是 -0.)
+            这些常变量[constant variable]中的每一个都是名字所暗示的浮点格式中最小数值的负(非零)浮点数[float]. (如果一个实现支持 -0 作为一个和 +0 不同[different]的对象[object], 这个值一定不能是 -0.)
 
-            most-negative-short-float, most-negative-single-float, most-negative-double-float, most-negative-long-float
+            * most-negative-short-float, most-negative-single-float, most-negative-double-float, most-negative-long-float
 
-            对于这些常量的名字所暗示的浮点格式, 这些常量中的每一个都有着作为它的值的最大 (值接近于, 但不等于负无穷) 负浮点数.
+            这些常变量[constant variable]中的每一个都是名字所暗示的浮点格式中最大数值的负(非零)浮点数[float] (值接近于, 但不等于负无穷).
 
 * 示例(Examples): None.
 
@@ -4097,15 +4097,15 @@ boole
 
 * 常量值(Constant Value):
 
-        依赖于具体实现.
+        依赖于具体实现[implementation-dependent].
 
 * 描述(Description):
 
-        这些常量 short-float-epsilon, single-float-epsilon, double-float-epsilon, 和 long-float-epsilon 中的每一个的值都是给定格式下的最小正的浮点极小值 <EPSILON>, 这样一来下面表达式在求值时是 true 的:
+        这些常量 short-float-epsilon, single-float-epsilon, double-float-epsilon, 和 long-float-epsilon 中的每一个的值都是给定格式下的最小正浮点数[float] <EPSILON>, 这样一来下面表达式在求值时是 true 的:
 
         (not (= (float 1 <EPSILON>) (+ (float 1 <EPSILON>) <EPSILON>)))
 
-        这些常量 short-float-negative-epsilon, single-float-negative-epsilon, double-float-negative-epsilon, 和 long-float-negative-epsilon 中的每一个的值都是给定格式下的最小正的浮点极小值, 这样一来下面表达式在求值时是 true 的:
+        这些常量 short-float-negative-epsilon, single-float-negative-epsilon, double-float-negative-epsilon, 和 long-float-negative-epsilon 中的每一个的值都是给定格式下的最小正浮点数[float] <EPSILON>, 这样一来下面表达式在求值时是 true 的:
 
         (not (= (float 1 <EPSILON>) (- (float 1 <EPSILON>) <EPSILON>)))
 
@@ -4124,7 +4124,7 @@ boole
 
 * 描述(Description):
 
-        类型 arithmetic-error 由运算操作期间发生的错误状况组成. 这个操作符和操作数通过给 make-condition 的名为 :operation 和 :operands 的初始化参数来初始化, 并且可以通过函数 arithmetic-error-operation 和 arithmetic-error-operands 访问.
+        类型[type] arithmetic-error 由运算操作期间发生的错误状况组成. 这个操作符和操作数通过使用给 make-condition 的名为 :operation 和 :operands 的初始化参数来初始化, 并且可以通过函数 arithmetic-error-operation 和 arithmetic-error-operands 访问.
 
 * 也见(See Also):
 
@@ -4141,15 +4141,15 @@ boole
 
 * 参数和值(Arguments and Values):
 
-        condition---一个 arithmetic-error 类型的状况.
-        operands---一个列表.
-        operation---一个函数标识符.
+        condition---一个 arithmetic-error 类型[type]的状况[condition].
+        operands---一个列表[list].
+        operation---一个函数标识符[function designator].
 
 * 描述(Description):
 
-        arithmetic-error-operands 返回一个操作数的列表, 这些操作数被用于对发出这个状况的操作符的违规调用中.
+        arithmetic-error-operands 返回一个操作数的列表[list], 这些操作数被用于发出这个状况 condition 的操作符的违规调用中.
 
-        arithmetic-error-operation 返回一个在发出这个状况的违规调用中违规的操作符列表.
+        arithmetic-error-operation 返回一个在发出这个状况 condition 的违规调用中违规的操作符列表[list].
 
 * 示例(Examples): None.
 
@@ -4161,7 +4161,7 @@ boole
 
 * 也见(See Also):
 
-        arithmetic-error, 章节 9 (Conditions)
+        arithmetic-error, 章节 9 (状况)
 
 * 注意(Notes):
 
@@ -4174,7 +4174,7 @@ boole
 
 * 描述(Description):
 
-        类型 division-by-zero 由因为被 0 除所导致的错误状况所组成. 
+        类型[type] division-by-zero 由因为被 0 除所导致的错误状况所组成. 
 
 <!--TODO 浮点陷阱 ??-->
 ### <span id="CT-FLOATING-POINT-INVALID-OPERATION">状况类型 FLOATING-POINT-INVALID-OPERATION</span>
@@ -4185,9 +4185,9 @@ boole
 
 * 描述(Description):
 
-        类型 floating-point-invalid-operation 由因为某些浮点陷阱造成的错误状况组成.
+        类型[type] floating-point-invalid-operation 由因为某些浮点陷阱造成的错误状况组成.
 
-        浮点陷阱是否发生, 并且它们是否或如何被启用或禁用是依赖于具体实现的. 因此, 符合规范的代码可能为这个状况建立处理者, 但是一定不能依赖于它的发送.  
+        浮点陷阱是否发生, 并且它们是否或如何被启用或禁用是依赖于具体实现的[implementation-dependent]. 因此, 符合规范的代码可能为这个状况建立处理者, 但是一定不能依赖于它的发送.  
 
 ### <span id="CT-FLOATING-POINT-INEXACT">状况类型 FLOATING-POINT-INEXACT</span>
 
@@ -4197,9 +4197,9 @@ boole
 
 * 描述(Description):
 
-        类型 floating-point-inexact 由因为某些浮点陷阱造成的错误状况组成.
+        类型[type] floating-point-inexact 由因为某些浮点陷阱造成的错误状况组成.
 
-        浮点陷阱是否发生, 并且它们是否或如何被启用或禁用是依赖于具体实现的. 因此, 符合规范的代码可能为这个状况建立处理者, 但是一定不能依赖于它的发送. 
+        浮点陷阱是否发生, 并且它们是否或如何被启用或禁用是依赖于具体实现的[implementation-dependent]. 因此, 符合规范的代码可能为这个状况建立处理者, 但是一定不能依赖于它的发送. 
 
 ### <span id="CT-FLOATING-POINT-OVERFLOW">状况类型 FLOATING-POINT-OVERFLOW</span>
 
@@ -4209,7 +4209,7 @@ boole
 
 * 描述(Description):
 
-        类型 floating-point-overflow 由因为浮点上溢造成的错误状况组成. 
+        类型[type] floating-point-overflow 由因为浮点上溢造成的错误状况组成. 
 
 
 ### <span id="CT-FLOATING-POINT-UNDERFLOW">状况类型 FLOATING-POINT-UNDERFLOW</span>
@@ -4220,6 +4220,5 @@ boole
 
 * 描述(Description):
 
-        类型 floating-point-underflow 由因为浮点下溢造成的错误状况组成. 
-
-
+        类型[type] floating-point-underflow 由因为浮点下溢造成的错误状况组成. 
+        
