@@ -2519,7 +2519,6 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 注意(Notes): None. 
 
-<!--TODO 校对到此-->
 ### <span id="F-COMPLEX">函数 COMPLEX</span>
 
 * 语法(Syntax):
@@ -2528,19 +2527,19 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 参数和值(Arguments and Values):
 
-        realpart---一个实数.
-        imagpart---一个实数.
-        complex---一个有理数或一个复数.
+        realpart---一个实数[real].
+        imagpart---一个实数[real].
+        complex---一个有理数[rational]或一个复数[complex].
 
 * 描述(Description):
 
-        complex 返回一个实部为 realpart 并且虚部为 imagpart 的数字.
+        complex 返回一个实部为 realpart 并且虚部为 imagpart 的数字[number].
 
-        如果 realpart 是一个有理数并且虚部是一个有理数 0, 那么 complex 结果是 realpart, 一个有理数. 否则, 结果就是一个复数.
+        如果 realpart 是一个有理数[rational]并且虚部是一个有理数[rational] 0, 那么 complex 结果是一个有理数[rational] realpart. 否则, 结果就是一个复数[complex].
 
-        如果 realpart 或 imagpart 是一个浮点数, 这个非浮点数在这个复数被创建之前被转化为一个浮点数. 如果 imagpart 没有被提供, 这个虚部就是和实部相同类型的零; 换句话说, (coerce 0 (type-of realpart)) 实际被使用.
+        如果 realpart 或 imagpart 任意一个是浮点数[float], 那么非浮点数在这个复数[complex]被创建之前被转化为一个浮点数[float]. 如果 imagpart 没有被提供, 这个虚部就是和实部相同类型[type]的零; 换句话说, 实际使用 (coerce 0 (type-of realpart)).
 
-        类型提升意味着在类型层次结构中向上移动. 在这个复数的情况下, 这个类型指定符 type-specifier 必须是 (upgraded-complex-part-type type-specifier) 的子类型. 如果类型指定符 type-specifier1 是类型指定符 type-specifier2 的子类型, 那么 (upgraded-complex-element-type 'type-specifier1) 必须也是 (upgraded-complex-element-type 'type-specifier2) 的一个子类型. 两个互斥的类型可以被提升到同一个类型.
+        类型提升意味着在类型层次结构中向上移动. 在复数[complex]的情况下, 这个类型指定符 type-specifier 必须是 (upgraded-complex-part-type type-specifier) 的子类型. 如果类型指定符 type-specifier1 是类型指定符 type-specifier2 的子类型, 那么 (upgraded-complex-element-type 'type-specifier1) 必须也是 (upgraded-complex-element-type 'type-specifier2) 的一个子类型. 两个互斥的类型可以被提升到同一个类型.
 
 * 示例(Examples):
 
@@ -2560,7 +2559,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 也见(See Also):
 
-        realpart, imagpart, 章节 2.4.8.11 (Sharpsign C)
+        realpart, imagpart, 章节 2.4.8.11 (井号C(#C))
 
 * 注意(Notes): None. 
 
@@ -2573,12 +2572,12 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 参数和值(Arguments and Values):
 
-        object---一个对象.
-        generalized-boolean---一个广义 boolean.
+        object---一个对象[object].
+        generalized-boolean---一个广义 boolean [generalized boolean].
 
 * 描述(Description):
 
-        如果对象 object 是 complex 类型就返回 true; 否则, 返回 false.
+        如果对象 object 是类型[type] complex 就返回 true; 否则, 返回 false.
 
 * 示例(Examples):
 
@@ -2595,7 +2594,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 也见(See Also):
 
-        complex (function 和 type), typep
+        complex (函数[function]和类型[type]), typep
 
 * 注意(Notes):
 
@@ -2610,12 +2609,12 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 参数和值(Arguments and Values):
 
-        number---一个数字.
-        conjugate---一个数字.
+        number---一个数字[number].
+        conjugate---一个数字[number].
 
 * 描述(Description):
 
-        返回数字 number 的复变位数(conjugate). 一个实数的复变位数(conjugate) 是它自身.
+        返回数字 number 的复变位数(conjugate). 一个实数[real]的复变位数(conjugate) 是它自身.
 
 * 示例(Examples):
 
@@ -2638,7 +2637,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 注意(Notes):
 
-        对于一个复数 z,
+        对于一个复数[complex] z,
 
         (conjugate z) ==  (complex (realpart z) (- (imagpart z)))
 
@@ -2652,16 +2651,16 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 参数和值(Arguments and Values):
 
-        number---一个数字.
-        phase---一个数字.
+        number---一个数字[number].
+        phase---一个数字[number].
 
 * 描述(Description):
 
         phase 返回表示弧度的数字 number 的相位 (它的极坐标表示的角度部分), 如果不支持负零, 那么范围就在 -<PI> (不包含) 到 <PI> (包含) 之间, 如果支持负零, 那么返回就在 -<PI> (包含) 到 <PI> (包含) 之间. 正实数的相位是零; 对于复实数就是 <PI>. 零的相位被定义为零.
 
-        如果数字 number 是一个复浮点数, 结果就是和 number 各部分相同类型的浮点数. 如果数字 number 是一个浮点数, 结果就是一个相同类型的浮点数. 如果数字 number 是一个有理数或一个复有理数, 结果就是一个单浮点数.
+        如果数字 number 是一个复浮点数[complex float], 结果就是和 number 各部分相同类型[type]的浮点数[float]. 如果数字 number 是一个浮点数[float], 结果就是一个相同类型[type]的浮点数[float]. 如果数字 number 是一个有理数[rational]或一个复有理数[complex rational], 结果就是一个单浮点数[single float].
 
-        phase 的分支切割位于沿着复实轴, 与第二象限相连. 范围由 -<PI> (不包含) 和 <PI> (不包含) 之间的实轴组成.
+        phase 的分支切割位于沿着复实轴, 与第二象限相连的部分. 范围由 -<PI> (不包含) 和 <PI> (不包含) 之间的实轴组成.
 
         这个 phase 的数学定义如下:
 
@@ -2682,7 +2681,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 异常情况(Exceptional Situations):
 
-        如果它的参数不是一个数字就应该发出一个 type-error 类型的错误. 可能发出 arithmetic-error.
+        如果它的参数不是一个数字[number]就应该发出一个 type-error 类型的错误. 可能发出 arithmetic-error.
 
 * 也见(See Also):
 
@@ -2701,12 +2700,12 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 参数和值(Arguments and Values):
 
-        number---一个数字.
-        real---一个实数.
+        number---一个数字[number].
+        real---一个实数[real].
 
 * 描述(Description):
 
-        realpart 和 imagpart 分别返回数字 number 的实部和虚部. 如果数字 number 是一个实数, 那么 realpart 返回数字 number 而 imagpart 返回 (* 0 number), 它的作用是, 一个有理数的虚部是 0 而浮点数是相同格式的浮点数 0.
+        realpart 和 imagpart 分别返回数字 number 的实部和虚部. 如果数字 number 是一个实数[real], 那么 realpart 返回数字 number 而 imagpart 返回 (* 0 number), 它的作用是, 一个有理数[rational]的虚部是 0 而浮点数[float]是相同格式的浮点数零.
 
 * 示例(Examples):
 
@@ -2740,17 +2739,17 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 参数和值(Arguments and Values):
 
-        typespec---一个类型指定符.
-        environment---一个环境对象. 默认是 nil, 表示空的词法环境和当前全局环境.
-        upgraded-typespec---一个类型指定符.
+        typespec---一个类型指定符[type specifier].
+        environment---一个环境[environment]对象[object]. 默认是 nil, 表示空词法环境[null lexical environment]和当前全局环境[global environment].
+        upgraded-typespec---一个类型指定符[type specifier].
 
 * 描述(Description):
 
-        upgraded-complex-part-type 返回可以持有类型 typespec 的部分的最具体的复数表示的部分的类型.
+        upgraded-complex-part-type 返回可以持有类型[type] typespec 的部分的最具体的复数[complex]表示的部分类型.
 
-        这个 typespec 是 upgraded-typespec 的一个子类型 (也可能是相同类型)).
+        这个 typespec 是 upgraded-typespec 的一个子类型[subtype] (也可能是类型等价的[type equivalent]).
 
-        upgraded-complex-part-type 的目的是去揭露一个具体实现如何执行它的提升.
+        upgraded-complex-part-type 的目的是去揭露一个具体实现如何执行它的提升[upgrade].
 
 * 示例(Examples): None.
 
@@ -2762,7 +2761,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 也见(See Also):
 
-        complex (function 和 type)
+        complex (函数[function]和类型[type])
 
 * 注意(Notes):
 
@@ -2774,12 +2773,12 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 参数和值(Arguments and Values):
 
-        object---一个对象.
-        generalized-boolean---一个广义 boolean.
+        object---一个对象[real].
+        generalized-boolean---一个广义 boolean [generalized boolean].
 
 * 描述(Description):
 
-        如果对象 object 不是 real 类型就返回 true; 否则, 返回 false.
+        如果对象 object 不是 real 类型[type]就返回 true; 否则, 返回 false.
 
 * 示例(Examples):
 
@@ -2813,9 +2812,9 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 参数和值(Arguments and Values):
 
-        rational---一个有理数.
-        numerator---一个整数.
-        denominator---一个正整数.
+        rational---一个有理数[rational].
+        numerator---一个整数[integer].
+        denominator---一个正整数[integer].
 
 * 描述(Description):
 
@@ -2823,7 +2822,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
         numerator 和 denominator 返回有理数 rational 的规范形式的分子和分母.
 
-        如果有理数 rational 是一个整数, numerator 返回有理数并且 denominator 返回 1.
+        如果有理数 rational 是一个整数[integer], numerator 返回有理数并且 denominator 返回 1.
 
 * 示例(Examples):
 
@@ -2862,20 +2861,20 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 参数和值(Arguments and Values):
 
-        number---一个实数.
-        rational---一个有理数.
+        number---一个实数[real].
+        rational---一个有理数[rational].
 
 * 描述(Description):
 
-        rational 和 rationalize 转换实数为有理数.
+        rational 和 rationalize 转换这些实数 reals 为有理数[rational].
 
-        如果数字 number 已经是一个有理数, 它就会被返回.
+        如果数字 number 已经是一个有理数[rational], 它就会被返回.
 
-        如果数字 number 是一个浮点数, rational 返回一个值在数学上等价于这个浮点数的有理数. rationalize 返回一个那个浮点数近似于那个潜在浮点表示精度的有理数.
+        如果数字 number 是一个浮点数[float], rational 返回一个在数学上等价于这个浮点数[float]的有理数[rational]. rationalize 返回一个有理数[rational], 它将该浮点数[float]近似为底层浮点表示的精度.
 
-        rational 假定这个浮点数是完全准确的.
+        rational 假定这个浮点数[float]是完全准确的.
 
-        rationalize 假定那个浮点数仅对于那个浮点表示的精度是精确的.
+        rationalize 假定那个浮点数[float]仅对于那个浮点表示的精度是精确的.
 
 * 示例(Examples):
 
@@ -2890,11 +2889,11 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 受此影响(Affected By):
 
-        具体实现.
+        具体实现[implementation].
 
 * 异常情况(Exceptional Situations):
 
-        如果数字 number 不是一个实数, 那么应该发出一个 type-error 类型的错误. 可能发出 arithmetic-error.
+        如果数字 number 不是一个实数[real], 那么应该发出一个 type-error 类型[type]的错误. 可能发出 arithmetic-error.
 
 * 也见(See Also): None.
 
@@ -2908,7 +2907,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
         (float (rationalize x) x) ==  x
 
-        这也就是说, 通过任意一个方法来有理化一个浮点数, 然后把它转换会一个相同格式的浮点数会产生原始的数字 number. 
+        这也就是说, 通过任意一个方法来有理化一个浮点数[float], 然后把它转换会一个相同格式的浮点数[float]会产生原始的数字 number. 
 
 ### <span id="F-RATIONALP">函数 RATIONALP</span>
 
@@ -2918,12 +2917,12 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 参数和值(Arguments and Values):
 
-        object---一个对象.
-        generalized-boolean---一个广义 boolean.
+        object---一个对象[object].
+        generalized-boolean---一个广义 boolean [generalized boolean].
 
 * 描述(Description):
 
-        如果对象 object 是 rational 类型就返回 true; 否则, 返回 false.
+        如果对象 object 是 rational 类型[type]就返回 true; 否则, 返回 false.
 
 * 示例(Examples):
 
@@ -2956,19 +2955,19 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 参数和值(Arguments and Values):
 
-        integer---一个整数.
-        count---一个整数.
-        shifted-integer---一个整数.
+        integer---一个整数[integer].
+        count---一个整数[integer].
+        shifted-integer---一个整数[integer].
 
 * 描述(Description):
 
-        ash 在整数 integer 上执行算术位移操作, 这个整数被当作二进制数对待.
+        ash 在整数 integer 的二进制表示上执行算术位移操作, 这个整数被当作二进制数对待.
 
         如果 count 是正的 ash 就将整数 integer 左位移 count 位, 如果 count 是负的就右位移 count 位. 返回和整数 integer 相同符号的位移后的值.
 
         数学上说, ash 执行计算 floor(integer*2^count). 逻辑上, ash 移动整数 integer 中的所有位到左边, 在右边用零位填充, 或者移动它们到右边, 丢弃那些位.
 
-        ash 被定义为表现得就好像整数 integer 是以两个补码的形式表示的, 不管这些整数内部怎么表示.
+        ash 被定义为行为上表现得就好像整数 integer 是以两个补码的形式表示的, 不管这些整数[integer]内部怎么表示.
 
 * 示例(Examples):
 
@@ -2983,7 +2982,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 异常情况(Exceptional Situations):
 
-        如果 integer 不是一个整数那么应该发出一个 type-error 类型的错误. 如果 count 不是一个整数那么应该发出一个 type-error 类型的错误. 可能发出 arithmetic-error.
+        如果 integer 不是一个整数[integer]那么应该发出一个 type-error 类型[type]的错误. 如果 count 不是一个整数[integer]那么应该发出一个 type-error 类型[type]的错误. 可能发出 arithmetic-error.
 
 * 也见(See Also): None.
 
@@ -3001,12 +3000,12 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 参数和值(Arguments and Values):
 
-        integer---一个整数.
-        number-of-bits---一个负整数.
+        integer---一个整数[integer].
+        number-of-bits---一个负整数[integer].
 
 * 描述(Description):
 
-        返回以二进制补码的形式去表示整数 integer 所需的位数.
+        返回以二进制补码形式去表示整数 integer 所需的位数.
 
 * 示例(Examples):
 
@@ -3032,7 +3031,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 异常情况(Exceptional Situations):
 
-        如果 integer 不是一个整数那么应该发出一个 type-error 类型的错误.
+        如果 integer 不是一个整数[integer]那么应该发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also): None.
 
@@ -3040,11 +3039,13 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
         这个函数可以这样被定义:
 
-        (defun integer-length (integer)
-          (ceiling (log (if (minusp integer)
-                            (- integer)
-                            (1+ integer))
-                        2)))
+    ```LISP
+    (defun integer-length (integer)
+      (ceiling (log (if (minusp integer)
+                        (- integer)
+                        (1+ integer))
+                    2)))
+    ```
 
         如果整数 integer 非负, 那么它的值就可以用无符号的二进制形式表示在一个宽度不小于 (integer-length integer) 的字段中. 不管整数 integer 的符号, 它的值可以用带符号的二进制补码形式表示在一个位宽度不小于 (+ (integer-length integer) 1) 的字段中. 
 
@@ -3057,12 +3058,12 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 参数和值(Arguments and Values):
 
-        object---一个对象.
-        generalized-boolean---一个广义 boolean.
+        object---一个对象[object].
+        generalized-boolean---一个广义 boolean [generalized boolean].
 
 * 描述(Description):
 
-        如果对象是 integer 类型就返回 true; 否则, 返回 false.
+        如果对象是 integer 类型[type]就返回 true; 否则, 返回 false.
 
 * 示例(Examples):
 
@@ -3093,26 +3094,26 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 参数和值(Arguments and Values):
 
-        string---一个字符串.
-        start, end---字符串 string 的边界下标. 默认的 start 和 end 分别为 0 和 nil.
-        radix---a radix. 默认是 10.
-        junk-allowed---一个广义 boolean. 默认是 false.
-        integer---一个整数或者 false.
-        pos---字符串 string 的边界下标.
+        string---一个字符串[string].
+        start, end---字符串 string 的边界下标标识符[bounding index designator]. 默认的 start 和 end 分别为 0 和 nil.
+        radix---一个基数[radix]. 默认是 10.
+        junk-allowed---一个广义 boolean [generalized boolean]. 默认是 false.
+        integer---一个整数[integer]或者 false.
+        pos---字符串 string 的边界下标[bounding index].
 
 * 描述(Description):
 
-        parse-integer 从由 start 和 end 限定的字符串 string 的子字符串中 以指定基数来解析一个整数.
+        parse-integer 从由 start 和 end 限定的字符串 string 的子字符串中以指定基数 radix 来解析一个整数[integer].
 
-        parse-integer 预期一个可选的符号 (+ or -) 后面跟着一个被解释为指定基数的非空数字序列. 可选的前后空格会被忽略.
+        parse-integer 预期一个可选的符号 (+ 或 -) 后面跟着一个被解释为指定基数 radix 的非空数字序列. 可选的前后空格[whitespace[1]]会被忽略.
 
-        parse-integer 不识别语法的进制指定符前缀 #O, #B, #X, 和 #nR, 也不识别一个小数点.
+        parse-integer 不识别语法的进制指定符前缀 #O, #B, #X, 和 #nR, 也不识别一个尾随的小数点.
 
-        如果 junk-allowed 是 false, 如果子字符串不是完全由一个带符号整数表示, 可能周围存在空白字符, 那么会发出一个 parse-error 类型的错误.
+        如果 junk-allowed 是 false, 如果子字符串不是完全由一个带符号整数[integer]表示, 可能周围存在空白[whitespace[1]]字符[character], 那么会发出一个 parse-error 类型[type]的错误.
 
-        返回的第一个值是被解析得到的整数, 或者如果没有语法上正确的整数被看到但是 junk-allowed 是 true 那么就是 nil.
+        返回的第一个值[value]是被解析得到的整数[integer], 如果没有发现语法上正确的整数[integer]但是 junk-allowed 是 true 那么就是 nil.
 
-        第二个值是这个字符串 string 中终止这个解析的定界符的下标, 或者如果这个解析在子字符串的最后终止那么就是字符串的上边界 (如果 junk-allowed 为 false 则情况总是如此).
+        第二个值[value]是这个字符串[string]中终止这个解析的定界符的下标, 或者如果这个解析在子字符串的最后终止, 那么就是字符串的上边界[bounding index] (如果 junk-allowed 为 false 则情况总是如此).
 
 * 示例(Examples):
 
@@ -3128,7 +3129,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 异常情况(Exceptional Situations):
 
-        如果 junk-allowed 是 false, 如果子字符串不是完全由一个整数表示, 可能周围存在空白字符, 那么就会发出一个错误.
+        如果 junk-allowed 是 false, 如果子字符串不是完全由一个整数[integer]表示, 可能周围存在空白[whitespace[1]]字符, 那么就会发出一个错误.
 
 * 也见(See Also): None.
 
@@ -3143,16 +3144,16 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 参数和值(Arguments and Values):
 
-        Op---一个位逻辑操作指定符.
-        integer-1---一个整数.
-        integer-2---一个整数.
-        result-integer---一个整数.
+        op---一个位逻辑操作指定符[bit-wise logical operation specifier].
+        integer-1---一个整数[integer].
+        integer-2---一个整数[integer].
+        result-integer---一个整数[integer].
 
 * 描述(Description):
 
         boole 在整数 integer-1 和 integer-2 上执行一个位逻辑操作符, 它们被当作是以两个补码表示的二进制数.
 
-        要执行的操作符和返回值由 op 决定.
+        要执行的操作符和返回值由操作符 op 决定.
 
         boole 返回下面这段中的操作符 op 指定的值.
 
@@ -3220,7 +3221,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 异常情况(Exceptional Situations):
 
-        如果它的第一个参数不是一个位逻辑操作指定符或者任何后面的参数不是一个整数, 那么应该发出一个 type-error 类型的错误.
+        如果它的第一个参数不是一个位逻辑操作指定符[bit-wise logical operation specifier]或者任何后面的参数不是一个整数[integer], 那么应该发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
@@ -3232,28 +3233,30 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
         (boole boole-and x y) ==  (logand x y)
 
-        更偏向于使用数字指标而不是位逻辑操作符的程序员可以通过下面这样的手法来得到同样效果:
+        更偏向于使用数字指标而不是位逻辑操作指定符[bit-wise logical operation specifier]的程序员[programmer]可以通过下面这样的手法来得到同样效果:
 
-        ;; The order of the values in this `table' are such that
-        ;; (logand (boole (elt boole-n-vector n) #b0101 #b0011) #b1111) => n
-        (defconstant boole-n-vector
-            (vector boole-clr   boole-and  boole-andc1 boole-2
-                    boole-andc2 boole-1    boole-xor   boole-ior
-                    boole-nor   boole-eqv  boole-c1    boole-orc1
-                    boole-c2    boole-orc2 boole-nand  boole-set))
-        =>  BOOLE-N-VECTOR
-        (proclaim '(inline boole-n))
-        =>  implementation-dependent
-        (defun boole-n (n integer &rest more-integers)
-          (apply #'boole (elt boole-n-vector n) integer more-integers))
-        =>  BOOLE-N
-        (boole-n #b0111 5 3) =>  7
-        (boole-n #b0001 5 3) =>  1
-        (boole-n #b1101 5 3) =>  -3
-        (loop for n from #b0000 to #b1111 collect (boole-n n 5 3))
-        =>  (0 1 2 3 4 5 6 7 -8 -7 -6 -5 -4 -3 -2 -1)
+    ```LISP
+    ;; The order of the values in this `table' are such that
+    ;; (logand (boole (elt boole-n-vector n) #b0101 #b0011) #b1111) => n
+    (defconstant boole-n-vector
+        (vector boole-clr   boole-and  boole-andc1 boole-2
+                boole-andc2 boole-1    boole-xor   boole-ior
+                boole-nor   boole-eqv  boole-c1    boole-orc1
+                boole-c2    boole-orc2 boole-nand  boole-set))
+    =>  BOOLE-N-VECTOR
+    (proclaim '(inline boole-n))
+    =>  implementation-dependent
+    (defun boole-n (n integer &rest more-integers)
+      (apply #'boole (elt boole-n-vector n) integer more-integers))
+    =>  BOOLE-N
+    (boole-n #b0111 5 3) =>  7
+    (boole-n #b0001 5 3) =>  1
+    (boole-n #b1101 5 3) =>  -3
+    (loop for n from #b0000 to #b1111 collect (boole-n n 5 3))
+    =>  (0 1 2 3 4 5 6 7 -8 -7 -6 -5 -4 -3 -2 -1)
+    ```LISP
 
-
+<!--TODO 校对到此-->
 ### <span id="CV-B">常量 BOOLE-1, BOOLE-2, BOOLE-AND, BOOLE-ANDC1, BOOLE-ANDC2, BOOLE-C1, BOOLE-C2, BOOLE-CLR, BOOLE-EQV, BOOLE-IOR, BOOLE-NAND, BOOLE-NOR, BOOLE-ORC1, BOOLE-ORC2, BOOLE-SET, BOOLE-XOR</span>
 
 * 常量值(Constant Value):
