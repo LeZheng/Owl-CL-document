@@ -9,7 +9,7 @@
 > * 13.1.2 [Introduction to Scripts and Repertoires](#IntroductionScriptsRepertoires)
 > * 13.1.3 [字符属性](#CharacterAttributes)
 > * 13.1.4 [字符类别](#CharacterCategories)
-> * 13.1.5 [字符的等价](#IdentityCharacters)
+> * 13.1.5 [字符的等价性](#IdentityCharacters)
 > * 13.1.6 [字符的顺序](#OrderingCharacters)
 > * 13.1.7 [字符的名字](#CharacterNames)
 > * 13.1.8 [在输入和输出中的 Newline 的处理](#TreatmentNewlineInputOutput)
@@ -18,13 +18,13 @@
 
 ### 13.1.1 <span id="IntroductionToCharacters">字符介绍</span>
 
-一个字符是一个在一个文本的总量中 (比如, 一个字符串或一个文本流) 表示单一记号 (比如, 一个字符, 一个特殊符号, 或者一个 "控制字符(control character)") 的对象.
+一个字符[character]是在一个文本的总量中 (比如, 一个字符串[string]或一个文本流[stream]) 表示单位标记 (比如, 一个字符, 一个特殊符号, 或者一个 "控制字符(control character)") 的对象[object].
 
-Common Lisp 允许一个具体实现去为国际语言字符和专门领域中(比如, 数学上)使用的字符提供支持.
+Common Lisp 允许一个具体实现去为国际语言字符[character]和专门领域中(比如, 数学上)使用的字符[character]提供支持.
 
-下面这段包含了可应用于字符的已定义的名字.
+下面这段包含了可应用于字符[character]的已定义名字[defined name].
 
-下面这段列出了一些和字符属性和字符断言相关的已定义的名字.
+下面这段列出了一些和字符[character]属性[attribute]和字符[character]断言[predicate]相关的已定义名字[defined name].
 
     alpha-char-p     char-not-equal     char>            
     alphanumericp    char-not-greaterp  char>=           
@@ -36,7 +36,7 @@ Common Lisp 允许一个具体实现去为国际语言字符和专门领域中(�
 
     Figure 13-1. 字符相关的已定义的名字 -- 1
 
-下面这段列出了一些字符构造和转换的已定义的名字.
+下面这段列出了一些字符[character]构造和转换的已定义名字[defined name].
 
     char-code      char-name    code-char   
     char-downcase  char-upcase  digit-char  
@@ -49,40 +49,40 @@ Common Lisp 允许一个具体实现去为国际语言字符和专门领域中(�
 <!-- TODO 待翻译 Scripts and Repertoires ？？-->
 #### 13.1.2.1 字符 Scripts
 
-一个 script 是组成这个 character 类型的详尽分区可能的几个集合中的一个.
+一个 script 是组成这个 character 类型详尽分区[exhaustive partition]的可能的几个集合中的一个.
 
-这样的集合的数量以及它们之间的边界是具体实现定义的. Common Lisp 不需要这些集合称为类型, 但是一个具体实现允许开去定义这样的类型作为一个扩展. 因为一个 script 的字符不能是另一个 script 的成员, 所以它在谈及字符 repertoires 时是很有用的.
+这样的集合的数量以及它们之间的边界是具体实现定义的[implementation-defined]. Common Lisp 不需要这些集合成为类型[type], 但是一个具体实现[implementation]允许开去定义这样的类型[type]作为一个扩展. 因为一个 script 的字符[character]不能是另一个 script 的成员, 所以它在谈及字符字符集[repertoire]时是很有用的.
 
-虽然术语 "script" 为了和 ISO 术语定义上兼容而被选择, 但是没有符合规范的具体实现需要去使用 ISO 或者任何其他标准化组织标准化的特定 scripts.
+虽然术语 "script" 为了和 ISO 术语定义上兼容而被选择, 但是符合规范的具体实现[conforming implementation]不需要去使用 ISO 或者任何其他标准化组织标准化的特定 scripts.
 
-script 或 scripts 是否被任何给定的已命名的实现使用, 如何使用, 是依赖于具体实现的. 
+任何给定的实现[implementation]使用的 script 或 scripts 是否被命名, 如何命名, 是依赖于具体实现的[implementation-dependent]. 
 
 
-#### 13.1.2.2 字符 Repertoires
+#### 13.1.2.2 字符集
 
-一个 repertoire 是一个 character 类型的子类型的类型指定符. 这个术语通常在描述一个独立于编码的字符集合时被使用. repertoires 中的字符只能通过名字, 字符的可见表示, 或者通过字符描述来确认.
+一个字符集[repertoire]是一个 character 类型[type]的子类型[subtype]的类型指定符[type specifier]. 这个术语通常在描述一个独立于编码的字符[character]集合时被使用. 字符集[repertoire]中的字符只能通过名字, 字符的可见表示[glyph], 或者通过字符描述来识别.
 
-一个 repertoire 可以包含来自多个 scripts 的字符, 并且一个字符可以出现在不止一个 repertoire 中.
+一个字符集[repertoire]可以包含来自多个 scripts 的字符[character], 并且一个字符[character]可以出现在不止一个字符集[repertoire]中.
 
-关于 repertoires 的一些例子, 见字符编码标准 ISO 8859/1, ISO 8859/2, 和 ISO 6937/2. 注意, 虽然术语 "repertoire" 为了和 ISO 术语定义上兼容而被选择, 但是没有符合规范的具体实现需要去使用 ISO 或者任何其他标准化组织标准化的 repertoires. 
+关于字符集[repertoire]的一些例子, 见字符编码标准 ISO 8859/1, ISO 8859/2, 和 ISO 6937/2. 注意, 虽然术语 "字符集(repertoire)" 为了和 ISO 术语定义上兼容而被选择, 但是符合规范的具体实现[conforming implementation]不需要去使用 ISO 或者任何其他标准化组织标准化的字符集[repertoire]. 
 
 
 ### 13.1.3 <span id="CharacterAttributes">字符属性</span>
 
-字符只有一个标准化的属性: 一个码值. 一个字符的码值是一个非负整数. 这个码值是由一个字符 script 和一个字符标签以一种依赖于具体实现的方式组成. 见函数 char-code 和 code-char.
+字符[character]只有一个标准化[standardized]的属性[attribute]: 一个码值[code]. 一个字符[character]的码值[code]是一个非负整数[integer]. 这个码值[code]是由一个字符 script 和一个字符标签以一种依赖于具体实现[implementation-dependent]的方式组成. 见函数[function] char-code 和 code-char.
 
-另外, 具体实现定义的字符的属性是允许的, 这样一来, 比如, 两个带有相同码值的字符可以以一个具体实现定义的方式来区分.
+另外, 具体实现定义[implementation-defined]的字符[character]的属性[attribute]是允许的, 这样一来, 比如, 两个带有相同码值[code]的字符[character]可以以一个具体实现定义[implementation-defined]的方式来区分.
 
-对于任何具体实现定义的属性这里有一个突出的值称之为这个属性的 null 值. 一个每个具体实现定义的属性都有这个属性的 null 值的字符被称为一个简单字符. 如果这个具体实现没有具体实现定义的属性, 那么所有字符都是简单字符. 
+对于任何具体实现定义[implementation-defined]的属性[attribute]这里有一个突出的值称之为这个属性[attribute]的空[null]值. 一个每个具体实现定义[implementation-defined]的属性[attribute]都是这个属性[attribute]的空[null]值的字符[character]被称为一个简单字符[simple character]. 如果这个具体实现[implementation]没有具体实现定义[implementation-defined]的属性[attribute], 那么所有字符[character]都是简单字符[simple character]. 
 
 
 ### 13.1.4 <span id="CharacterCategories">字符类别</span>
 
-有几个(重叠的)类别的字符没有正式关联的类型但这对名称很有用. 它们包括图形字符(graphic characters), 字母字符(alphabetic characters), 大小写字符 (大写和小写字符), 数字字符(numeric characters), 字母数字字符(alphanumeric characters), 还有数字 (以一个给定的基数).
+有几个(重叠的)类别的字符[character]没有正式关联的类型[type]但是它们的名称仍然很有用. 它们包括图形[graphic]字符[character], 字母[alphabetic[1]]字符[character], 大小写[case]字符[character] (大写[uppercase]和小写[lowercase]字符[character]), 数字[numeric]字符[character], 字母数字[alphanumeric]字符[character], 还有数字[digit] (以一个给定的基数[radix]).
 
-对于一个字符的每个具体实现定义的属性, 那个具体实现的文档必须指明只能在那个属性上区分的字符是否允许和上述类别之一的成员之间存在差异.
+对于一个字符[character]的每个具体实现定义[implementation-defined]的属性[attribute], 那个具体实现[implementation]的文档必须指明只能在那个属性[attribute]上区分的字符[character]在是否属于上述类别之一的情况下不同.
 
-注意, 这些定义的术语独立于任何当前读取表中启用的特殊语法.
+注意, 这些定义的术语独立于任何当前读取表[current readtable]中启用的特殊语法.
 
 > * 13.1.4.1 [图形字符](#GraphicCharacters)
 > * 13.1.4.2 [字母字符](#AlphabeticCharacters)
@@ -93,31 +93,31 @@ script 或 scripts 是否被任何给定的已命名的实现使用, 如何使�
 
 #### 13.1.4.1 <span id="GraphicCharacters">图形字符</span>
 
-每个被分类为图像或可显示的字符都和一个该字符的可见表示的字形相关联.
+每个被分类为图形[graphic]或可显示的字符[character]都和一个显现字形, 该字符的可见表示相关联.
 
-一个图形字符是一个有着作为一个单个字形的标准文本表示的字符, 就像 A 或 * 或 =. 实际上有着空白字形的空格(space)被定义为是一个图形字符.
+一个图形[graphic]字符[character]是一种具有单独显现字形[glyph]的标准文本表示形式的字符, 就像 A 或 * 或 =. 实际上有着空白显现字形[glyph]的空格[space]被定义为是一个图形[graphic]字符.
 
-在标准字符中, 换行(newline)是非图形的而所有其他的是图形的; 见章节 2.1.3 (Standard Characters).
+在标准字符[standard character]中, 换行[newline]是非图形的[non-graphic]而所有其他的是图形的[graphic]; 见章节 2.1.3 (标准字符).
 
-不是图形的字符被称为非图形字符. 非图形字符有时也被通俗地称为 "格式化字符(formatting characters)" 或 "控制字符(control characters)".
+不是图形[graphic]的字符[character]被称为非图形[non-graphic]字符. 非图形[non-graphic]字符[character]有时也被通俗地称为 "格式化字符(formatting characters)" 或 "控制字符(control characters)".
 
-如果 #\Backspace, #\Tab, #\Rubout, #\Linefeed, #\Return, 和 #\Page 被具体实现支持, 那么就是非图形的. 
+如果 #\Backspace, #\Tab, #\Rubout, #\Linefeed, #\Return, 和 #\Page 被具体实现[implementation]支持, 那么它们都是非图形的[non-graphic]. 
 
 
 #### 13.1.4.2 <span id="AlphabeticCharacters">字母字符</span>
 
-字母字符是图形字符的一个子集. 标准字符中, 只有这些是字母字符:
+字母[alphabetic[1]]字符[character]是图形[graphic]字符[character]的一个子集. 标准字符[standard character]中, 只有这些是字母[alphabetic[1]]字符[character]:
 
     A B C D E F G H I J K L M N O P Q R S T U V W X Y Z
 
     a b c d e f g h i j k l m n o p q r s t u v w x y z
 
-任何具体实现定义的有着大小写的字符都是字母的. 对于每个具体实现定义的没有大小写的图形字符, 它是否为字母的是具体实现定义的. 
+任何具体实现定义的[implementation-defined]有着大小写[case]的字符[character]都是字母的[alphabetic[1]]. 对于每个具体实现定义的[implementation-defined]没有大小写[case]的图形[graphic]字符[character], 它是否为字母的[alphabetic[1]]是具体实现定义的[implementation-defined]. 
 
 
 #### 13.1.4.3 <span id="AlphabeticCharacters">大小写字符</span>
 
-带有大小写的字符是字母字符的一个子集. 一个带有大小写的字符有着可以是大写或小写的属性. 每个带有大小写的字符都和另一个带有相反大小写的字符一对一对应.
+带有大小写[case]的字符[character]是字母[alphabetic[1]]字符[character]的一个子集. 一个带有大小写[case]的字符[character]有着可以是大写[uppercase]或小写[lowercase]的属性. 每个带有大小写[case]的字符[character]都和另一个带有相反大小写[case]的字符[character]一对一对应.
 
 > * 13.1.4.3.1 [大写字符](#UppercaseCharacters)
 > * 13.1.4.3.2 [小写字符](#LowercaseCharacters)
@@ -127,71 +127,69 @@ script 或 scripts 是否被任何给定的已命名的实现使用, 如何使�
 
 ##### 13.1.4.3.1 <span id="UppercaseCharacters">大写字符</span>
 
-一个大写字符是一个有着对应不同的小写字符(可以使用 char-downcase 来获取)的字符.
+一个大写字符[character]是一个有着对应不同[different]的小写[lowercase]字符[character] (可以使用 char-downcase 来获取) 的字符.
 
-标准字符中, 只有这些是大写字符:
+标准字符[standard character]中, 只有这些是大写[uppercase]字符[character]:
 
     A B C D E F G H I J K L M N O P Q R S T U V W X Y Z 
 
 
 ##### 13.1.4.3.2 <span id="LowercaseCharacters">小写字符</span>
 
-一个小写字符是一个有着对应不同的大写字符(可以使用 char-upcase 来获取)的字符.
+一个小写字符[character]是一个有着对应不同的大写[uppercase]字符[character] (可以使用 char-upcase 来获取)的字符.
 
-标准字符中, 只有这些是小写写字符:
+标准字符[standard character]中, 只有这些是小写[lowercase]字符[character]:
 
     a b c d e f g h i j k l m n o p q r s t u v w x y z 
 
 ##### 13.1.4.3.3 <span id="CorrespondingCharactersOtherCase">另一个大小写的对应字符</span>
 
-上面提及的标准大写字符 A 到 Z 分别对应上面提及的标准小写字符 a 到 z. 比如, 大写字符 E 对应小写字符 e, 反之亦然. 
+上面提及的大写[uppercase]标准字符[standard character] A 到 Z 分别对应上面提及的小写[lowercase]标准字符[standard character] a 到 z. 比如, 大写[uppercase]字符[character] E 对应小写[lowercase]字符[character] e, 反之亦然. 
 
 ##### 13.1.4.3.4 <span id="CaseImplDefCharacters">具体实现定义的字符的大小写</span>
 
-一个具体实现可能定义其他具体实现定义的图形字符有着大小写. 这样的定义必须总是成对的---一个大写字符和一个小写字符一对一对应. 
+一个具体实现[implementation]可能定义其他具体实现定义[implementation-defined]的图形[graphic]字符[character]有着大小写[case]. 这样的定义必须总是成对的---一个大写[uppercase]字符[character]和一个小写[lowercase]字符[character]一对一对应. 
 
 #### 13.1.4.4 <span id="NumericCharacters">数字字符</span>
 
-数字字符是图形字符的一个子集. 在标准字符中, 只有这些是数字字符:
+数字[numeric]字符[character]是图形[graphic]字符[character]的一个子集. 在标准字符[standard character]中, 只有这些是数字[number]字符[character]:
 
     0 1 2 3 4 5 6 7 8 9
 
-对于每个具体实现定义的没有大小写的图形字符, 具体实现必须定义它是否为一个数字字符. 
+对于每个具体实现定义[implementation-defined]的没有大小写[case]的图形[graphic]字符[character], 具体实现[implementation]必须定义它是否为一个数字[numeric]字符[character]. 
 
 
 #### 13.1.4.5 <span id="AlphanumericCharacters">字母数字字符</span>
 
-数字字母字符的集合是字母字符集合和数字字符集合的并集. 
+数字字母[alphanumeric]字符[character]集合是字母[alphabetic[1]]字符[character]集合和数字[numeric]字符[character]集合的并集. 
 
 #### 13.1.4.6 <span id="DigitsRadix">一个给定基数的数字</span>
 
-什么限制一个数位取决于基数 (一个在 2 到 36 之间的整数, 包含 36). 这些可能的数位是:
+什么是数字[digit]取决于基数[radix] (一个在 2 到 36 之间的整数[integer], 包含 36). 这些可能的数字[digit]是:
 
 0 1 2 3 4 5 6 7 8 9 A B C D E F G H I J K L M N O P Q R S T U V W X Y Z
 
-它们的权重分别是 0, 1, 2, ... 35. 在任何给定的基数 n, 只有前面 n 个可能的数位会被当作数位. 比如, 在基数 2 的数位是 0 和 1, 在基数 10 的数位是 0 到 9, 而在基数 16 的数位是 0 到 F.
+它们的权重分别是 0, 1, 2, ... 35. 在任何给定的基数 n, 只有前面 n 个可能的数字[digit]会被当作数字[digit]. 比如, 在基数 2 的数字是 0 和 1, 在基数 10 的数字是 0 到 9, 而在基数 16 的数字是 0 到 F.
 
-在数位中大小写是无效的; 比如, 在基数 16 中, 不管是 F 还是 f 都是权重为 15 的数位. 
+在数字[digit]中大小写[case]是无效的; 比如, 在基数 16 中, 不管是 F 还是 f 都是权重为 15 的数字[digit]. 
 
+### 13.1.5 <span id="IdentityCharacters">字符的等价性</span>
 
-### 13.1.5 <span id="IdentityCharacters">字符的等价</span>
-
-字符的等价表示两个字符是 eql, char=, 或 char-equal 但没有必要是 eq. 
-
+字符的等价性表示两个字符[character]是 eql, char=, 或 char-equal 但没有必要是 eq. 
 
 ### 13.1.6 <span id="OrderingCharacters">字符的顺序</span>
 
-字符的总顺序保证有着以下特性:
+字符[character]的总顺序保证有着以下特性:
 
-* 如果两个字符有着相同的具体实现定义的属性, 那么它们根据 char< 的顺序和根据它们的码值上的 < 断言的数值顺序是一致的.
+* 如果两个字符[character]有着相同的具体实现定义[implementation-defined]的属性[attribute], 那么它们根据 char< 的顺序和根据它们的码值属性[attribute]上的 < 断言的数值顺序是一致的.
 
-* 如果两个字符在任何一个属性上有区别, 那么它们就不是 char=.
+* 如果两个字符[character]在任何一个属性[attribute]上有区别, 那么它们就不是 char=.
 
-* 这个总的顺序没有必要和给这些字符应用 char-int 所产生的整数的总顺序一致.
+* 这个总的顺序没有必要和给这些字符[character]应用 char-int 所产生的整数[integer]的总顺序一致.
 
-* 虽然一个给定大小写的标准字母字符必须遵循一个局部顺序, 它们不需要是连续的; 允许大写字母和小写字母是交错的. 因此 (char<= #\a x #\z) 不是一个确定 x 是否为一个小写字符的有效方法.
+* 虽然一个给定大小写[case]的那些字母[alphabetic[1]]标准字符[standard character]必须遵循一个局部顺序, 它们不需要是连续的; 允许大写[uppercase]和小写[lowercase]字母[character]是交错的. 因此 (char<= #\a x #\z) 不是一个确定 x 是否为一个小写[lowercase]字符[character]的有效方法.
 
-在标准字符中, 那些数字字母字符遵循下面的局部顺序:
+在标准字符[standard character]中, 那些数字字母[alphanumeric]字符遵循下面的局部顺序:
 
     A<B<C<D<E<F<G<H<I<J<K<L<M<N<O<P<Q<R<S<T<U<V<W<X<Y<Z
     a<b<c<d<e<f<g<h<i<j<k<l<m<n<o<p<q<r<s<t<u<v<w<x<y<z
@@ -199,11 +197,11 @@ script 或 scripts 是否被任何给定的已命名的实现使用, 如何使�
     9<A 或 Z<0
     9<a 或 z<0                                                      
 
-这个意味着, 对于标准字符, 在每个大小写中(大写和小写)字母顺序保持不变, 并且数字字符作为一个组不会和字母字符交错. 但是, 大写字符和小写字符的顺序或交错可能性是具体实现定义的. 
+这个意味着, 对于标准字符[standard character], 在每个大小写[case]中(大写[uppercase]和小写[lowercase])字母[alphabetic[1]]顺序保持不变, 并且数字[numeric]字符[character]作为一个组不会和字母[alphabetic]字符[character]交错. 但是, 大写[uppercase]字符[character]和小写[lowercase]字符[character]的顺序或交错可能性是具体实现定义的[implementation-defined]. 
 
 ### 13.1.7 <span id="CharacterNames">字符的名字</span>
 
-下面这些字符的名字必须出现在所有符合规范的具体实现中:
+下面这些字符[character]名字[name]必须出现在所有符合规范的具体实现[conforming implementation]中:
 
 Newline
 
@@ -213,7 +211,7 @@ Space
 
     空格或空白字符.
 
-下面的名字是不完全标准的; 如果一个具体实现支持它们, 它们应该用于这些描述的字符, 而不是其他字符.
+下面的名字是不完全标准的[semi-standard]; 如果一个具体实现[implementation]支持它们, 它们应该用于这些描述的字符[character], 而不是其他字符.
 
 Rubout
 
@@ -239,7 +237,7 @@ Linefeed
 
     换行符字符.
 
-在一些具体实现中, 这些字符名字中的一个或多个可能表示一个标准字符; 比如, #\Linefeed 和 #\Newline 在某些具体实现中可能是相同字符. 
+在一些具体实现[implementation]中, 这些字符[character]名字[name]中的一个或多个可能表示一个标准字符[standard character]; 比如, #\Linefeed 和 #\Newline 在某些具体实现[implementation]中可能是相同[same]字符[character]. 
 
 
 ### 13.1.8 <span id="TreatmentNewlineInputOutput">在输入和输出中的 Newline 的处理</span>
@@ -249,17 +247,23 @@ Linefeed
 
 ### 13.1.9 <span id="CharacterEncodings">字符编码</span>
 
-一个字符有时仅仅由它的码值表示, 而有时候通过另一个由码值和所有具体实现定义的属性组成的整数来表示 (以一种即便在相同具体实现中的 Lisp 镜像之间也可能改变的具体实现定义的方式). 这个被函数 char-int 返回的整数, 称为这个字符的 "编码(encoding)". 这里没有对应的函数从一个字符的编码回退到这个字符, 因为它的主要用途包括像哈希这样的东西, 在这里不需要进行逆运算. 
+一个字符[character]有时仅仅由它的码值[code]表示, 而有时候通过另一个由码值[code]和所有具体实现定义[implementation-defined]的属性[attribute]组成的整数[integer]来表示 (以一种具体实现定义[implementation-defined]的即便在相同具体实现[implementation]中的 Lisp 镜像[Lisp image]之间也可能不同的方式). 这个被函数 char-int 返回的整数[integer], 称为这个字符的 "编码(encoding)". 这里没有对应的函数从一个字符的编码回退到这个字符[character], 因为它的主要用途包括像哈希这样的东西, 在这里不需要进行逆运算. 
 
+<!--TODO Scripts ??-->
 ### 13.1.10 <span id="DocImplDefinedScripts">Documentation of Implementation-Defined Scripts</span>
 
-一个具体实现必须记录它支持的字符 scripts. 对于每个支持的字符 script, 这个文档必须描述以下这些:
+一个具体实现[implementation]必须记录它支持的字符[character] scripts. 对于每个支持的字符[character] script, 这个文档必须描述以下这些:
 
-* 字符标签, 图形, 和描述. 字符标签必须使用拉丁大写字母 A--Z, 连字符 (-), 和数字 0--9 来唯一命名.
-* 读取器规范化. 任何 read 用来把不同的字符当作等价的机制必须被记录.
-* 对 char-upcase, char-downcase, 还有大小写敏感的格式化指令的影响. 特别地, 对于每个带有大小写的字符, 它是大写还是小写, 以及哪个字符是它在相反大小写的等价物.
-* 大小写敏感的函数 char-equal, char-not-equal, char-lessp, char-greaterp, char-not-greaterp, 和 char-not-lessp 的行为.
-* 任意字符断言的行为; 尤其, alpha-char-p, lower-case-p, upper-case-p, both-case-p, graphic-char-p, 和 alphanumericp 的效果.
+* 字符标签, 显现字形, 和描述. 字符标签必须使用拉丁大写字母 A--Z, 连字符 (-), 和数字 0--9 来唯一命名.
+
+* 读取器规范化. 任何 read 用来把不同[different]字符当作等价的机制必须被记录.
+
+* 对 char-upcase, char-downcase, 还有大小写敏感的格式化指令[format directive]的影响. 特别地, 对于每个带有大小写[case]的字符[character], 它是大写[uppercase]还是小写[lowercase], 以及哪个字符[character]是它在相反大小写的等价物.
+
+* 大小写敏感的函数[function] char-equal, char-not-equal, char-lessp, char-greaterp, char-not-greaterp, 和 char-not-lessp 的行为.
+
+* 任意字符[character]断言[predicate]的行为; 尤其, alpha-char-p, lower-case-p, upper-case-p, both-case-p, graphic-char-p, 和 alphanumericp 的效果.
+
 * 与文件 I/O 的交互, 特别地, 记录支持的编码字符集 (比如, ISO8859/1-1987) 和支持的外部编码方案. 
 
 
