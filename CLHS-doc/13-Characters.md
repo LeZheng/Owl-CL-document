@@ -6,7 +6,7 @@
 ## 13.1 <span id="CharacterConcepts">字符概念</span>
 
 > * 13.1.1 [字符介绍](#IntroductionToCharacters)
-> * 13.1.2 [Introduction to Scripts and Repertoires](#IntroductionScriptsRepertoires)
+> * 13.1.2 [文字和字符集的介绍](#IntroductionScriptsRepertoires)
 > * 13.1.3 [字符属性](#CharacterAttributes)
 > * 13.1.4 [字符类别](#CharacterCategories)
 > * 13.1.5 [字符的等价性](#IdentityCharacters)
@@ -14,7 +14,7 @@
 > * 13.1.7 [字符的名字](#CharacterNames)
 > * 13.1.8 [在输入和输出中的 Newline 的处理](#TreatmentNewlineInputOutput)
 > * 13.1.9 [字符编码](#CharacterEncodings)
-> * 13.1.10 [Documentation of Implementation-Defined Scripts](#DocImplDefinedScripts)
+> * 13.1.10 [具体实现定义的文字的文档](#DocImplDefinedScripts)
 
 ### 13.1.1 <span id="IntroductionToCharacters">字符介绍</span>
 
@@ -45,17 +45,17 @@ Common Lisp 允许一个具体实现去为国际语言字符[character]和专门
     Figure 13-2. 字符相关的已定义的名字 -- 2 
 
 
-### 13.1.2 <span id="IntroductionScriptsRepertoires">Introduction to Scripts and Repertoires</span>
-<!-- TODO 待翻译 Scripts and Repertoires ？？-->
-#### 13.1.2.1 字符 Scripts
+### 13.1.2 <span id="IntroductionScriptsRepertoires">文字和字符集的介绍</span>
 
-一个 script 是组成这个 character 类型详尽分区[exhaustive partition]的可能的几个集合中的一个.
+#### 13.1.2.1 字符文字
 
-这样的集合的数量以及它们之间的边界是具体实现定义的[implementation-defined]. Common Lisp 不需要这些集合成为类型[type], 但是一个具体实现[implementation]允许开去定义这样的类型[type]作为一个扩展. 因为一个 script 的字符[character]不能是另一个 script 的成员, 所以它在谈及字符字符集[repertoire]时是很有用的.
+一类文字[script]是组成这个 character 类型详尽分区[exhaustive partition]的可能的几个集合中的一个.
 
-虽然术语 "script" 为了和 ISO 术语定义上兼容而被选择, 但是符合规范的具体实现[conforming implementation]不需要去使用 ISO 或者任何其他标准化组织标准化的特定 scripts.
+这样的集合的数量以及它们之间的边界是具体实现定义的[implementation-defined]. Common Lisp 不需要这些集合成为类型[type], 但是一个具体实现[implementation]允许开去定义这样的类型[type]作为一个扩展. 因为一类文字[script]的字符[character]不能是另一类文字[script]的成员, 所以它在谈及字符字符集[repertoire]时是很有用的.
 
-任何给定的实现[implementation]使用的 script 或 scripts 是否被命名, 如何命名, 是依赖于具体实现的[implementation-dependent]. 
+虽然术语 "文字(script)" 为了和 ISO 术语定义上兼容而被选择, 但是符合规范的具体实现[conforming implementation]不需要去使用 ISO 或者任何其他标准化组织标准化的特定文字[script].
+
+任何给定的实现[implementation]使用的文字[script]是否被命名, 如何命名, 是依赖于具体实现的[implementation-dependent]. 
 
 
 #### 13.1.2.2 字符集
@@ -73,14 +73,14 @@ Common Lisp 允许一个具体实现去为国际语言字符[character]和专门
 
 另外, 具体实现定义[implementation-defined]的字符[character]的属性[attribute]是允许的, 这样一来, 比如, 两个带有相同码值[code]的字符[character]可以以一个具体实现定义[implementation-defined]的方式来区分.
 
-对于任何具体实现定义[implementation-defined]的属性[attribute]这里有一个突出的值称之为这个属性[attribute]的空[null]值. 一个每个具体实现定义[implementation-defined]的属性[attribute]都是这个属性[attribute]的空[null]值的字符[character]被称为一个简单字符[simple character]. 如果这个具体实现[implementation]没有具体实现定义[implementation-defined]的属性[attribute], 那么所有字符[character]都是简单字符[simple character]. 
+对于任何具体实现定义[implementation-defined]的属性[attribute]这里有一个特异的值称之为这个属性[attribute]的空[null]值. 一个每个具体实现定义[implementation-defined]的属性[attribute]都是这个属性[attribute]的空[null]值的字符[character]被称为一个简单字符[simple character]. 如果这个具体实现[implementation]没有具体实现定义[implementation-defined]的属性[attribute], 那么所有字符[character]都是简单字符[simple character]. 
 
 
 ### 13.1.4 <span id="CharacterCategories">字符类别</span>
 
 有几个(重叠的)类别的字符[character]没有正式关联的类型[type]但是它们的名称仍然很有用. 它们包括图形[graphic]字符[character], 字母[alphabetic[1]]字符[character], 大小写[case]字符[character] (大写[uppercase]和小写[lowercase]字符[character]), 数字[numeric]字符[character], 字母数字[alphanumeric]字符[character], 还有数字[digit] (以一个给定的基数[radix]).
 
-对于一个字符[character]的每个具体实现定义[implementation-defined]的属性[attribute], 那个具体实现[implementation]的文档必须指明只能在那个属性[attribute]上区分的字符[character]在是否属于上述类别之一的情况下不同.
+对于一个字符[character]的每个具体实现定义[implementation-defined]的属性[attribute], 那个具体实现[implementation]的文档必须指明只能在那个属性[attribute]上区分的字符[character]是否被允许去区分是否属于上述类别之一.
 
 注意, 这些定义的术语独立于任何当前读取表[current readtable]中启用的特殊语法.
 
@@ -93,7 +93,7 @@ Common Lisp 允许一个具体实现去为国际语言字符[character]和专门
 
 #### 13.1.4.1 <span id="GraphicCharacters">图形字符</span>
 
-每个被分类为图形[graphic]或可显示的字符[character]都和一个显现字形, 该字符的可见表示相关联.
+每个被分类为图形[graphic]或可显示的字符[character]都和一个显现字形(该字符的可见表示)相关联.
 
 一个图形[graphic]字符[character]是一种具有单独显现字形[glyph]的标准文本表示形式的字符, 就像 A 或 * 或 =. 实际上有着空白显现字形[glyph]的空格[space]被定义为是一个图形[graphic]字符.
 
@@ -249,10 +249,10 @@ Linefeed
 
 一个字符[character]有时仅仅由它的码值[code]表示, 而有时候通过另一个由码值[code]和所有具体实现定义[implementation-defined]的属性[attribute]组成的整数[integer]来表示 (以一种具体实现定义[implementation-defined]的即便在相同具体实现[implementation]中的 Lisp 镜像[Lisp image]之间也可能不同的方式). 这个被函数 char-int 返回的整数[integer], 称为这个字符的 "编码(encoding)". 这里没有对应的函数从一个字符的编码回退到这个字符[character], 因为它的主要用途包括像哈希这样的东西, 在这里不需要进行逆运算. 
 
-<!--TODO Scripts ??-->
-### 13.1.10 <span id="DocImplDefinedScripts">Documentation of Implementation-Defined Scripts</span>
 
-一个具体实现[implementation]必须记录它支持的字符[character] scripts. 对于每个支持的字符[character] script, 这个文档必须描述以下这些:
+### 13.1.10 <span id="DocImplDefinedScripts">具体实现定义的文字的文档</span>
+
+一个具体实现[implementation]必须记录它支持的字符[character]文字[script]. 对于每个支持的字符[character]文字[script], 这个文档必须描述以下这些:
 
 * 字符标签, 显现字形, 和描述. 字符标签必须使用拉丁大写字母 A--Z, 连字符 (-), 和数字 0--9 来唯一命名.
 
@@ -299,13 +299,13 @@ Linefeed
 
 * 描述(Description):
 
-      一个 character 是一个表示一个在文本总量中表示一个单一标记的对象; 见章节 13.1 (Character Concepts).
+      一个字符[character]是表示在文本总量中表示一个单一标记的一个对象[object]; 见章节 13.1 (字符概念).
 
-      类型 base-char 和 extended-char 组成一个类型 character 的详尽分区.
+      类型[type] base-char 和 extended-char 组成类型[type] character 的一个详尽分区[exhaustive partition].
 
 * 也见(See Also):
 
-        章节 13.1 (Character Concepts), 章节 2.4.8.1 (Sharpsign Backslash), 章节 22.1.3.2 (Printing Characters) 
+        章节 13.1 (字符概念), 章节 2.4.8.1 (井号C(#C)), 章节 22.1.3.2 (打印字符) 
 
 
 ### <span id="T-BASE-CHAR">类型 BASE-CHAR</span>
@@ -316,18 +316,18 @@ Linefeed
 
 * 描述(Description):
 
-        类型 base-char 被定义为 standard-char 的提升<!--TODO 提升 ？？-->数组元素类型. 一个具体实现可以支持额外的 character 类型的子类型 (除了在这个标准中列出的那些), 它们可能或可能不是 base-char 类型的子类型. 另外, 一个具体实现可以定义 base-char 为 charactor 的相同类型.
+        类型[type] base-char 被定义为 standard-char 的提升数组元素类型[upgraded array element type]. 一个具体实现[implementation]可以支持额外的 character 类型[type]的子类型[subtype] (除了在这个标准中列出的那些), 它们可能或可能不是 base-char 类型[type]的超类型[supertype]. 另外, 一个具体实现[implementation]可以定义 base-char 为 charactor 的相同[same]类型[type].
 
-        基本字符在以下方面有区别:
+        基本字符[base character]在以下方面有区别:
 
-        1. 类型 standard-char 是一个 base-char 的一个 subrepertoire.
-        2. 不是标准字符的基本字符的选择是具体实现定义的.
-        3. 只有 base-char 的类型的对象可以是一个 base-string 类型的元素.
-        4. 在这个 base-char 的 repertoire 中没有指定字符的数量上边界; 那个 repertoire 的大小是具体实现定义的. 下边界是 96, 就是标准字符的数量.
+        1. 类型[type] standard-char 是类型[type] base-char 的一个子字符集[subrepertoire].
+        2. 不是标准字符[standard character]的基本字符[base character]的判定是具体实现定义的.
+        3. 只有 base-char 类型[type]的对象[object]可以是一个 base-string 类型[type]的元素[element].
+        4. 在这个 base-char 字符集[repertoire]中没有指定字符数量的上边界; 那个字符集[repertoire]的大小是具体实现定义的[implementation-defined]. 下边界是 96, 就是标准字符[standard character]的数量.
 
-        一个字符是否为一个基本字符依赖于一个具体实现表示字符串的方式, 而不是任何其他具体实现和主机操作系统的特性. 比如, 一个实现可能把所有字符串编码为有着16位编码的字符, 而另一种可能有着两种字符串: 那些有着8位编码的字符和有着16位编码的字符. 在第一个实现中, 类型 base-char 等价于 character 类型: 这里只有一种字符串. 在第二个实现中, 基本字符是那些可以被存储在一个有着8位编码字符的字符串的字符. 在这样一个实现中, 类型 base-char 是一个 charactor 类型的适当子类型.
+        一个字符是否为一个基本字符[base character]依赖于一个具体实现[implementation]表示字符串[string]的方式, 而不是任何其他具体实现[implementation]和主机操作系统的特性. 比如, 一个实现可能把所有字符串[string]编码为有着16位编码的字符, 而另一种可能有着两种字符串[string]: 那些有着8位编码的字符和有着16位编码的字符. 在第一个实现[implementation]中, 类型[type] base-char 等价于 character 类型[type]: 这里只有一种字符串[string]. 在第二个实现[implementation]中, 基本字符[base character]是那些可以被存储在一个有着8位编码字符[character]的字符串[string]的字符[character]. 在这样一个实现[implementation]中, 类型[type] base-char 是一个 charactor 类型[type]的适当子类型[proper subtype].
 
-        类型 standard-char 是 type base-char 的子类型. 
+        类型[type] standard-char 是类型[type] base-char 的子类型[subtype]. 
 
 
 ### <span id="T-STANDARD-CHAR">类型 STANDARD-CHAR</span>
@@ -338,13 +338,13 @@ Linefeed
 
 * 描述(Description):
 
-        在所有符合规范的实现中, 需要有一个96个字符的固定集合. 标准字符被定义在章节 2.1.3 (Standard Characters).
+        在所有符合规范的实现[conforming implementation]中, 需要有一个 96 个字符[character]的固定集合. 标准字符被定义在章节 2.1.3 (标准字符).
 
         任何不是简单字符的字符不是标准字符.
 
 * 也见(See Also):
 
-        章节 2.1.3 (Standard Characters) 
+        章节 2.1.3 (标准字符) 
 
 ### </span id="T-EXTENDED-CHAR">类型 EXTENDED-CHAR</span>
 
@@ -354,11 +354,11 @@ Linefeed
 
 * 描述(Description):
 
-        类型 extended-char 等价于类型 (and character (not base-char)).
+        类型[type] extended-char 等价于类型[type] (and character (not base-char)).
 
 * 注意(Notes):
 
-        类型 extended-char 在所有字符都是 base-char 类型的实现中可能没有元素. 
+        类型[type] extended-char 在所有字符[character]都是 base-char 类型[type]的实现[implementation]中可能没有元素[element[4]]. 
 
 ### <span id="F-CCCCCCCCCCCC">函数 CHAR=, CHAR/=, CHAR<, CHAR>, CHAR<=, CHAR>=, CHAR-EQUAL, CHAR-NOT-EQUAL, CHAR-LESSP, CHAR-GREATERP, CHAR-NOT-GREATERP, CHAR-NOT-LESSP</span>
 
@@ -390,26 +390,26 @@ Linefeed
 
 * 参数和值(Arguments and Values):
 
-        character---一个字符.
-        generalized-boolean---一个广义 boolean.
+        character---一个字符[character].
+        generalized-boolean---一个广义 boolean [generalized boolean].
 
 * 描述(Description):
 
-        这些断言用来比较字符串.
+        这些断言用来比较字符[character].
 
-        如果所有字符 characters 都是相同的那么 char= 返回 true; 否则, 它返回 false. 如果两个字符在任何一个具体实现定义的属性上不相同, 那么它们就不是 char= 的.
+        如果所有字符 characters 都是相同的[same]那么 char= 返回 true; 否则, 它返回 false. 如果两个字符在任何一个具体实现定义[implementation-defined]的属性[attribute]上不相同, 那么它们就不是 char= 的.
 
         如果所有字符 characters 都是不同的那么 char/= 返回 true; 否则, 它返回 false.
 
-        如果所有字符 characters 都是单调递增那么 char< 返回 true; 否则, 它返回 false. 如果两个字符有着相同的具体实现定义的属性, 那么它们根据 char< 得到的顺序和在它们的码值上根据断言 < 得到的顺序一致.
+        如果所有字符 characters 都是单调递增那么 char< 返回 true; 否则, 它返回 false. 如果两个字符[character]有着相同的具体实现定义[implementation-defined]的属性[attribute], 那么它们根据 char< 得到的顺序和在它们的码值[code]上根据断言 < 得到的顺序一致.
 
-        如果所有字符 characters 都是单调递减那么 char> 返回 true; 否则, 它返回 false. 如果两个字符有着相同的具体实现定义的属性, 那么它们根据 char> 得到的顺序和在它们的码值上根据断言 > 得到的顺序一致.
+        如果所有字符 characters 都是单调递减那么 char> 返回 true; 否则, 它返回 false. 如果两个字符[character]有着相同的具体实现定义[implementation-defined]的属性[attribute], 那么它们根据 char> 得到的顺序和在它们的码值[code]上根据断言 > 得到的顺序一致.
 
-        如果所有字符 characters 都是非单调递减的那么 char<= 返回 true; 否则, 它返回 false. 如果两个字符有着相同的具体实现定义的属性, 那么它们根据 char<= 得到的顺序和在它们的码值上根据断言 <= 得到的顺序一致.
+        如果所有字符 characters 都是非单调递减的那么 char<= 返回 true; 否则, 它返回 false. 如果两个字符[character]有着相同的具体实现定义[implementation-defined]的属性[attribute], 那么它们根据 char<= 得到的顺序和在它们的码值[code]上根据断言 <= 得到的顺序一致.
 
-        如果所有字符 characters 都是非单调递增的那么 char>= 返回 true; 否则, 它返回 false. 如果两个字符有着相同的具体实现定义的属性, 那么它们根据 char>= 得到的顺序和在它们的码值上根据断言 >= 得到的顺序一致.
+        如果所有字符 characters 都是非单调递增的那么 char>= 返回 true; 否则, 它返回 false. 如果两个字符有着相同的具体实现定义[implementation-defined]的属性[attribute], 那么它们根据 char>= 得到的顺序和在它们的码值[code]上根据断言 >= 得到的顺序一致.
 
-        char-equal, char-not-equal, char-lessp, char-greaterp, char-not-greaterp, 和 char-not-lessp 分别类似于 char=, char/=, char<, char>, char<=, char>=, 除了它们忽略大小写差异并且可能对非简单字符有着具体实现定义的行为. 比如, 一个具体实现可能定义 char-equal, 及其他, 忽略某些具体实现定义的属性. 在这些函数上的每个实现定义的属性的效果如果有的话必须被指定为该属性定义的一部分.
+        char-equal, char-not-equal, char-lessp, char-greaterp, char-not-greaterp, 和 char-not-lessp 分别类似于 char=, char/=, char<, char>, char<=, char>=, 除了它们忽略大小写[case]差异并且可能对非简单[non-simple]字符[character]有着具体实现定义的[implementation-defined]行为. 比如, 一个具体实现[implementation]可能定义 char-equal, 等等, 忽略某些具体实现定义[implementation-defined]的属性[attribute]. 每个具体实现定义[implementation-defined]的属性[attribute]对这些函数的影响(如果有的话)必须被指定为该属性定义的一部分.
 
 * 示例(Examples):
 
@@ -462,19 +462,19 @@ Linefeed
 
 * 异常情况(Exceptional Situations):
 
-        如果一个参数都没有提供那么应该发出一个 program-error 类型的错误.
+        如果一个字符 character 都没有提供那么应该发出一个 program-error 类型[type]的错误.
 
 * 也见(See Also):
 
-        章节 2.1 (Character Syntax), 章节 13.1.10 (Documentation of Implementation-Defined Scripts)
+        章节 2.1 (字符语法), 章节 13.1.10 (具体实现定义的文字的文档)
 
 * 注意(Notes):
 
-        如果字符在它们的码值属性或其他具体实现定义的属性上有区别, 它们被 char= 当作是不同的.
+        如果字符在它们的码值[code]属性[attribute]或其他具体实现定义[implementation-defined]的属性[attribute]上有区别, 它们被 char= 当作是不同的.
 
-        没有必要仅仅因为 (char= c1 c2) 为 true, (eq c1 c2) 就要为 true. 尽管 eq 可以区分两个 char= 区分不了的字符时, 它不是作为字符来区分它们, 而是某种意义上基于较低层次的具体实现的特性. 如果 (eq c1 c2) 是 true, 那么 (char= c1 c2) 也是 true. eql 和 equal 比较字符的方式和 char= 相同.
+        没有必要仅仅因为 (char= c1 c2) 为 true, (eq c1 c2) 就要为 true. 尽管 eq 可以区分两个 char= 区分不了的字符[character]时, 它不是作为字符[character]来区分它们, 而是某种意义上基于较低层次的具体实现的特性. 如果 (eq c1 c2) 是 true, 那么 (char= c1 c2) 也是 true. eql 和 equal 比较字符[character]的方式和 char= 相同.
 
-        char-equal, char-not-equal, char-lessp, char-greaterp, char-not-greaterp, 和 char-not-lessp 所使用的大小写的惯例意味着标准字符的顺序 A=a, B=b, 诸如此类, 直到 Z=z, 而且 9<A 或 Z<0. 
+        char-equal, char-not-equal, char-lessp, char-greaterp, char-not-greaterp, 和 char-not-lessp 所使用的大小写[case]的惯例意味着标准字符[standard character]的顺序是 A=a, B=b, 诸如此类, 直到 Z=z, 而且 9<A 或 Z<0. 
 
 
 ### <span id="F-CHARACTER">函数 CHARACTER</span>
@@ -485,12 +485,12 @@ Linefeed
 
 * 参数和值(Arguments and Values):
 
-        character---一个字符标识符.
-        denoted-character---一个字符.
+        character---一个字符标识符[character designator].
+        denoted-character---一个字符[character].
 
 * 描述(Description):
 
-        返回字符标识符 character 表示的字符.
+        返回标识符[designator] character 表示的字符[character].
 
 * 示例(Examples):
 
@@ -507,8 +507,8 @@ Linefeed
 
 * 异常情况(Exceptional Situations):
 
-        如果对象 object 不是一个字符标识符, 那么应该发出一个 type-error 类型的错误.
-
+        如果对象 character 不是一个字符标识符[character designator], 那么应该发出一个 type-error 类型[type]的错误.
+<!--这里的 character 原文是 object-->
 * 也见(See Also):
 
         coerce
@@ -526,12 +526,12 @@ Linefeed
 
 * 参数和值(Arguments and Values):
 
-        object---一个对象.
-        generalized-boolean---一个广义 boolean.
+        object---一个对象[object].
+        generalized-boolean---一个广义 boolean [generalized boolean].
 
 * 描述(Description):
 
-        如果对象 object 是 character 类型就返回 true; 否则, 返回 false.
+        如果对象 object 是 character 类型[type]就返回 true; 否则, 返回 false.
 
 * 示例(Examples):
 
@@ -552,7 +552,7 @@ Linefeed
 
 * 也见(See Also):
 
-        character (type and function), typep
+        character (类型[type]和函数[function]), typep
 
 * 注意(Notes):
 
@@ -567,12 +567,12 @@ Linefeed
 
 * 参数和值(Arguments and Values):
 
-        character---一个字符.
-        generalized-boolean---一个广义 boolean.
+        character---一个字符[character].
+        generalized-boolean---一个广义 boolean [generalized boolean].
 
 * 描述(Description):
 
-        如果字符 character 是一个字母字符就返回 true; 否则, 返回 false.
+        如果字符 character 是一个字母[alphabetic[1]]字符[character]就返回 true; 否则, 返回 false.
 
 * 示例(Examples):
 
@@ -587,15 +587,15 @@ Linefeed
 
 * 受此影响(Affected By):
 
-        无. (特别地, 这个断言的结果独立于任何在当前读取表中被启用的特殊语法.)
+        无. (特别地, 这个断言的结果独立于任何在当前读取表[current readtable]中被启用的特殊语法.)
 
 * 异常情况(Exceptional Situations):
 
-        如果 character 不是一个字符就应该发出一个 type-error 类型的错误.
+        如果 character 不是一个字符[character]就应该发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
-        alphanumericp, 章节 13.1.10 (Documentation of Implementation-Defined Scripts)
+        alphanumericp, 章节 13.1.10 (具体实现定义的文字的文档)
 
 * 注意(Notes): None. 
 
@@ -607,12 +607,12 @@ Linefeed
 
 * 参数和值(Arguments and Values):
 
-        character---一个字符.
-        generalized-boolean---一个广义 boolean.
+        character---一个字符[character].
+        generalized-boolean---一个广义 boolean [generalized boolean].
 
 * 描述(Description):
 
-        如果 character 是一个字母字符或一个数字字符就返回 true; 否则, 返回 false.
+        如果 character 是一个字母[alphabetic[1]]字符[character]或一个数字[numeric]字符[character]就返回 true; 否则, 返回 false.
 
 * 示例(Examples):
 
@@ -625,11 +625,11 @@ Linefeed
 
 * 受此影响(Affected By):
 
-        无. (特别地, 这个断言的结果独立于任何在当前读取表中被启用的特殊语法.)
+        无. (特别地, 这个断言的结果独立于任何在当前读取表[current readtable]中被启用的特殊语法.)
 
 * 异常情况(Exceptional Situations):
 
-        如果 character 不是一个字符就应该发出一个 type-error 类型的错误.
+        如果 character 不是一个字符[character]就应该发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
@@ -651,13 +651,13 @@ Linefeed
 
 * 参数和值(Arguments and Values):
 
-        weight---一个非负整数.
-        radix---一个基数. 默认是 10.
-        char---一个字符或或 false.
+        weight---一个非负整数[integer].
+        radix---一个基数[radix]. 默认是 10.
+        char---一个字符[character]或 false.
 
 * 描述(Description):
 
-        如果权重 weight 小于基数 radix, 那么 digit-char 返回一个字符, 这个字符被当作指定基数下的数字时有着那个权重 weight. 如果产生的字符是一个字母字符, 它会是一个大写的字符.
+        如果权重 weight 小于基数 radix, 那么 digit-char 返回一个字符[character], 当这个字符被当作指定基数下的数字时有着那个权重 weight. 如果产生的字符[character]是一个字母[alphabetic[1]]字符[character], 它会是一个大写[uppercase]字符[character].
 
         如果权重 weight 大于等于基数 radix, digit-char 返回 false.
 
@@ -680,7 +680,7 @@ Linefeed
 
 * 也见(See Also):
 
-        digit-char-p, graphic-char-p, 章节 2.1 (Character Syntax)
+        digit-char-p, graphic-char-p, 章节 2.1 (字符语法)
 
 * 注意(Notes):
 
@@ -692,13 +692,13 @@ Linefeed
 
 * 参数和值(Arguments and Values):
 
-        char---一个字符.
-        radix---一个基数 radix. 默认为 10.
-        weight---一个小于基数 radix 的非负整数, 或者 false.
+        char---一个字符[character].
+        radix---一个基数[radix]. 默认为 10.
+        weight---一个小于基数 radix 的非负整数[integer], 或者 false.
 
 * 描述(Description):
 
-        测试字符 char 是否为给定基数下的一个数字 (换句话说, 它带有小于基数 radix 的权重). 如果它是那个基数下的一个数字, 它的权重会作为整数返回; 否则返回 nil.
+        测试字符 char 是否为给定基数下的一个数字 (换句话说, 它带有小于基数 radix 的权重). 如果它是那个基数下的一个数字, 它的权重会作为整数[integer]返回; 否则返回 nil.
 
 * 示例(Examples):
 
@@ -722,7 +722,7 @@ Linefeed
 
 * 受此影响(Affected By):
 
-        无. (特别地, 这个断言的结果独立于任何在当前读取表中被启用的特殊语法.)
+        无. (特别地, 这个断言的结果独立于任何在当前读取表[current readtable]中被启用的特殊语法.)
 
 * 异常情况(Exceptional Situations): None.
 
@@ -732,7 +732,8 @@ Linefeed
 
 * 注意(Notes):
 
-        数字是一个图形字符. 
+        数字是一个图形[graphic]字符[character].
+ 
 
 ### <span id="F-GRAPHIC-CHAR-P">函数 GRAPHIC-CHAR-P</span>
 
@@ -743,11 +744,11 @@ Linefeed
 * 参数和值(Arguments and Values):
 
         char---一个字符.
-        generalized-boolean---一个广义 boolean.
+        generalized-boolean---一个广义 boolean [generalized boolean].
 
 * 描述(Description):
 
-        如果字符 character 是一个图形字符就返回 true; 否则, 返回 false.
+        如果字符 character 是一个图形[graphic]字符[character]就返回 true; 否则, 返回 false.
 
 * 示例(Examples):
 
@@ -762,11 +763,11 @@ Linefeed
 
 * 异常情况(Exceptional Situations):
 
-        如果 character 不是一个字符就应该发出一个 type-error 类型的错误.
+        如果 character 不是一个字符[character]就应该发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
-        read, 章节 2.1 (Character Syntax), 章节 13.1.10 (Documentation of Implementation-Defined Scripts)
+        read, 章节 2.1 (字符语法), 章节 13.1.10 (具体实现定义的文字的文档)
 
 * 注意(Notes): None. 
 
@@ -778,12 +779,12 @@ Linefeed
 
 * 参数和值(Arguments and Values):
 
-        character---一个字符.
-        generalized-boolean---一个广义 boolean.
+        character---一个字符[character].
+        generalized-boolean---一个广义 boolean [generalized boolean].
 
 * 描述(Description):
 
-        如果字符 character 是 standard-char 类型就返回 true; 否则, 返回 false.
+        如果字符 character 是 standard-char 类型[type]就返回 true; 否则, 返回 false.
 
 * 示例(Examples):
 
@@ -799,7 +800,7 @@ Linefeed
 
 * 异常情况(Exceptional Situations):
 
-        如果 character 不是一个字符就应该发出一个 type-error 类型的错误.
+        如果 character 不是一个字符[character]就应该发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also): None.
 
@@ -819,11 +820,11 @@ Linefeed
 
 * 描述(Description):
 
-        如果字符 character 是一个小写字符, char-upcase 返回对应大写字符. 否则, char-upcase 只是返回给定字符.
+        如果字符 character 是一个小写[lowercase]字符[character], char-upcase 返回对应大写[uppercase]字符[character]. 否则, char-upcase 只是返回给定字符 character.
 
-        如果 character 是一个大写字符, char-downcase 返回对应小写字符. 否则, char-downcase 只是返回给定字符.
+        如果 character 是一个大写[uppercase]字符[character], char-downcase 返回对应小写[lowercase]字符[character]. 否则, char-downcase 只是返回给定字符 character.
 
-        结果只在码值属性上和字符 character 有区别; 所有具体实现定义的属性都会被保留.
+        结果只在码值[code]属性[attribute]上和字符 character 有区别; 所有具体实现定义[implementation-defined]的属性[attribute]都会被保留.
 
 * 示例(Examples):
 
@@ -854,17 +855,17 @@ Linefeed
 
 * 异常情况(Exceptional Situations):
 
-        如果 character 不是一个字符就应该发出一个 type-error 类型的错误.
+        如果 character 不是一个字符[character]就应该发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
-        upper-case-p, alpha-char-p, 章节 13.1.4.3 (大小写字符), 章节 13.1.10 (Documentation of Implementation-Defined Scripts)
+        upper-case-p, alpha-char-p, 章节 13.1.4.3 (大小写字符), 章节 13.1.10 (具体实现定义的文字的文档)
 
 * 注意(Notes):
 
-        如果这个 corresponding-char 和 character 不同, 那么字符 character 和 corresponding-char 都有大小写.
+        如果这个 corresponding-char 和 character 不同[different], 那么字符 character 和 corresponding-char 都有大小写[case].
 
-        由于 char-equal 忽略它比较的字符的大小写, 因此这个 corresponding-character 在 char-equal 下总是和字符 character 相同. 
+        由于 char-equal 忽略它比较的字符[character]的大小写[case], 因此这个 corresponding-character 在 char-equal 下总是和字符 character 相同[same]. 
 
 
 ### <span id="F-CASE-P">函数 UPPER-CASE-P, LOWER-CASE-P, BOTH-CASE-P</span>
@@ -879,18 +880,18 @@ Linefeed
 
 * 参数和值(Arguments and Values):
 
-        character---一个符号.
-        generalized-boolean---一个广义 boolean.
+        character---一个符号[symbol].
+        generalized-boolean---一个广义 boolean [generalized boolean].
 
 * 描述(Description):
 
         这些函数测试给定字符的大小写.
 
-        如果字符 character 是一个大写字符那么 upper-case-p 返回 true; 否则, 返回 false.
+        如果字符 character 是一个大写[uppercase]字符[character]那么 upper-case-p 返回 true; 否则, 返回 false.
 
-        如果字符 character 是一个小写字符那么 lower-case-p 返回 true; 否则, 返回 false.
+        如果字符 character 是一个小写[lowercase]字符[character]那么 lower-case-p 返回 true; 否则, 返回 false.
 
-        如果字符 character 是一个带有大小写的字符那么 both-case-p 返回 true; 否则, 返回 false.
+        如果字符 character 是一个带有大小写[case]的字符[character]那么 both-case-p 返回 true; 否则, 返回 false.
 
 * 示例(Examples):
 
@@ -912,11 +913,11 @@ Linefeed
 
 * 异常情况(Exceptional Situations):
 
-        如果 character 不是一个字符就应该发出一个 type-error 类型的错误.
+        如果 character 不是一个字符[character]就应该发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
-        char-upcase, char-downcase, 章节 13.1.4.3 (大小写字符), 章节 13.1.10 (Documentation of Implementation-Defined Scripts)
+        char-upcase, char-downcase, 章节 13.1.4.3 (大小写字符), 章节 13.1.10 (具体实现定义的文字的文档)
 
 * 注意(Notes): None. 
 
@@ -928,27 +929,27 @@ Linefeed
 
 * 参数和值(Arguments and Values):
 
-        character---一个字符.
-        code---一个字符的码值.
+        character---一个字符[character].
+        code---一个字符码值[character code].
 
 * 描述(Description):
 
-        char-code 返回字符 character 的码值属性.
+        char-code 返回字符 character 的码值[code]属性[attribute].
 
 * 示例(Examples):
 
-```LISP
-;; An implementation using ASCII character encoding 
-;; might return these values:
-(char-code #\$) =>  36
-(char-code #\a) =>  97
-```
+    ```LISP
+    ;; An implementation using ASCII character encoding 
+    ;; might return these values:
+    (char-code #\$) =>  36
+    (char-code #\a) =>  97
+    ```
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-        如果 character 不是一个字符就应该发出一个 type-error 类型的错误.
+        如果 character 不是一个字符[character]就应该发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
@@ -964,14 +965,16 @@ Linefeed
 
 * 参数和值(Arguments and Values):
 
-        character---一个字符.
-        integer---一个非负整数.
+        character---一个字符[character].
+        integer---一个非负整数[integer].
 
 * 描述(Description):
 
-        返回一个编码这个字符对象的非负整数 integer. 这个整数 integer 计算的惯例是依赖于具体实现的. 与 sxhash 相比, 结果不保证独立于特定的 Lisp 镜像.
+        返回一个编码这个字符 character 对象的非负整数[integer]. 这个整数[integer]计算的方式是依赖于具体实现的[implementation-dependent]. 与 sxhash 相比, 结果不保证独立于特定的 Lisp 镜像[Lisp image].
 
-        如果字符 character 没有具体实现定义的属性, 那么对于字符 c1 和 c2, 结果和 char-int 还有 char-code 是相同的.
+        如果字符 character 没有具体实现定义[implementation-defined]的属性[attribute], char-int 和 char-code 的结果是相同的.
+
+        对于字符 c1 和 c2
 
         (char= c1 c2) ==  (= (char-int c1) (char-int c2))
 
@@ -1001,12 +1004,12 @@ Linefeed
 
 * 参数和值(Arguments and Values):
 
-        code---一个字符码值.
-        char-p---一个字符或 nil.
+        code---一个字符码值[character code].
+        char-p---一个字符[character]或 nil.
 
 * 描述(Description):
 
-        返回一个带有给定码值 code 的码值属性的字符. 如果不存在这样的字符以及不能创建一个, 那么就返回 nil.
+        返回一个带有给定码值 code 的码值[code]属性[attribute]的字符[character]. 如果不存在这样的字符[character]并且不能创建一个, 那么就返回 nil.
 
 * 示例(Examples):
 
@@ -1017,7 +1020,7 @@ Linefeed
 
 * 受此影响(Affected By):
 
-        具体实现的字符编码.
+        具体实现[implementation]的字符编码.
 
 * 异常情况(Exceptional Situations): None.
 
@@ -1032,11 +1035,11 @@ Linefeed
 
 * 常量值(Constant Value):
 
-        一个非负整数, 它的准确大小是依赖于具体实现的, 但是不小于 96 (标准字符的数量).
+        一个非负整数[integer], 它的准确大小是依赖于具体实现的[implementation-dependent], 但是不小于 96 (标准字符[standard character]的数量).
 
 * 描述(Description):
 
-        函数 char-code 返回的值的上边界.
+        函数[function] char-code 返回的值[value]的上边界.
 
 * 也见(See Also):
 
@@ -1044,7 +1047,7 @@ Linefeed
 
 * 注意(Notes):
 
-        char-code-limit 的值可能大于这个具体实现所支持的字符数. 
+        char-code-limit 的值[value]可能大于这个具体实现[implementation]所支持的字符[character]数量. 
 
 
 ### <span id="F-CHAR-NAME">函数 CHAR-NAME</span>
@@ -1055,16 +1058,16 @@ Linefeed
 
 * 参数和值(Arguments and Values):
 
-        character---一个字符.
-        name---一个字符串或 nil.
+        character---一个字符[character].
+        name---一个字符串[string]或 nil.
 
 * 描述(Description):
 
-        返回字符 character 名称字符串, 如果字符 character 没有名称就是 nil.
+        返回字符 character 名称[name]字符串[string], 如果字符 character 没有名称[name]就是 nil.
 
-        所有非图形字符需要有名字, 除非它们有着一些具体实现定义的不是 null 的属性. 其他字符是否有名称是依赖于具体实现的.
+        所有非图形[non-graphic]字符需要有名字[name], 除非它们有着一些具体实现定义的[implementation-defined]不为空[null]的属性[attribute]. 其他字符[character]是否有名称[name]是依赖于具体实现的[implementation-dependent].
 
-        标准字符 <Newline> 和 <Space> 有着各自的名称 "Newline" 和 "Space". 不完全标准字符 <Tab>, <Page>, <Rubout>, <Linefeed>, <Return>, 和 <Backspace> (如果这个具体实现支持它们的话) 有着各自的名称 "Tab", "Page", "Rubout", "Linefeed", "Return", 和 "Backspace" (在这个指示的情况下, 即便名字是通过 "#\" 和函数 name-char 查找的也不是大小写敏感的).
+        标准字符[standard character] <Newline> 和 <Space> 有着各自的名称 "Newline" 和 "Space". 不完全标准[semi-standard]字符[character] <Tab>, <Page>, <Rubout>, <Linefeed>, <Return>, 和 <Backspace> (如果这个具体实现[implementation]支持它们的话) 有着各自的名称 "Tab", "Page", "Rubout", "Linefeed", "Return", 和 "Backspace" (在这个指示的情况下, 即便名字是通过 "#\" 和函数[function] name-char 查找的也不是大小写敏感的).
 
 * 示例(Examples):
 
@@ -1094,15 +1097,15 @@ Linefeed
 
 * 异常情况(Exceptional Situations):
 
-        如果 character 不是一个字符就应该发出一个 type-error 类型的错误.
+        如果 character 不是一个字符[character]就应该发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
-        name-char, 章节 22.1.3.2 (Printing Characters)
+        name-char, 章节 22.1.3.2 (打印字符)
 
 * 注意(Notes):
 
-        非图形字符的名字被 Lisp 打印器写做 "#\" 后面跟着这个名字; 见章节 22.1.3.2 (Printing Characters). 
+        非图形[non-graphic]字符[character]的名字[name]被 Lisp 打印器[Lisp printer]写做 "#\" 后面跟着这个名字[name]; 见章节 22.1.3.2 (打印字符). 
 
 ### <span id="F-NAME-CHAR">函数 NAME-CHAR</span>
 
@@ -1112,12 +1115,12 @@ Linefeed
 
 * 参数和值(Arguments and Values):
 
-        name---一个字符串标识符.
-        char-p---一个字符或 nil.
+        name---一个字符串标识符[string designator].
+        char-p---一个字符[character]或 nil.
 
 * 描述(Description):
 
-        返回名为 name 的字符对象 (由 string-equal 决定---换句话说, 查找是大小写敏感的). 如果这样一个字符不存在, 返回 nil.
+        返回名称[name]为 name 的字符[character]对象[object] (由 string-equal 决定---换句话说, 查找是大小写敏感的). 如果这样一个字符[character]不存在, 返回 nil.
 
 * 示例(Examples):
 
@@ -1133,7 +1136,7 @@ Linefeed
 
 * 异常情况(Exceptional Situations):
 
-        如果 name 不是一个字符串标识符, 那么应该发出一个 type-error 类型的错误.
+        如果 name 不是一个字符串标识符[string designator], 那么应该发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
