@@ -6,22 +6,21 @@
 
 ## 14.1 <span id="ConsConcepts">构造的概念</span>
 
-一个构造(cons)是一个有着称为 car 和 cdr 两部分的复合数据对象.
+一个构造[cons]是一个有着称为 car 和 cdr 两部分的复合数据对象[object].
 
     car  cons    rplacd  
     cdr  rplaca          
 
     Figure 14-1. 和构造相关的已定义的名字.
 
-根据上下文, 一组连接的构造可以以各种不同的视角来看. 提供了各种各样的操作来支持这些不同的视角.
+根据上下文, 一组连接的构造[cons]可以以各种不同的视角来看. 提供了各种各样的操作来支持这些不同的视角.
 
 > * 14.1.1 [构造作为树](#ConsesTrees)
 > * 14.1.2 [构造作为列表](#ConsesLists)
 
-
 ### 14.1.1 <span id="ConsesTrees">构造作为树</span>
 
-一个树是一个由构造(cons)和原子(atom)组成的二元递归数据结构: 这些构造(cons)自身也是树 (有时称之为 "子树(subtrees)" 或 "分枝(branches)"), 而这些原子是终止节点 (有时也称为叶). 典型地, 这些叶表示数据而分枝确定这些数据的关系.
+一个树[tree]是一个由构造[cons]和原子[atom]组成的二元递归数据结构: 这些构造[cons]自身也是树[true] (有时称之为 "子树(subtree)" 或 "分枝(branch)"), 而这些原子[atom]是终止节点 (有时也称为叶[leave]). 典型地, 这些叶[leave]表示数据而分枝确定这些数据的关系.
 
     caaaar  caddar  cdar       nsubst         
     caaadr  cadddr  cddaar     nsubst-if      
@@ -36,21 +35,21 @@
 
     Figure 14-2. 和树相关的一些已定义的名字.
 
-#### 14.1.1.1 对必须是树的参数的普通限制
+#### 14.1.1.1 对必须是树的参数的常规限制
 
-除非有明确的声明, 对于任何接受一个需要为树的参数的标准化函数, 如果该树是环状的, 其后果是未定义的. 
+除非有明确的声明, 对于任何接受一个必须为树[tree]的形参[parameter]的标准化[standardized]函数[function], 如果该树[tree]是环状的, 其后果是未定义的. 
 
 ### 14.1.2 <span id="ConsesLists">构造作为列表</span>
 
-一个列表是一个构造(cons)的链, 其中每一个构造(cons)的 car 是这个列表的元素, 而每个构造(cons)的 cdr 是这个链中的下一个链接或一个终止原子.
+一个列表[list]是一个构造[cons]的链, 其中每一个构造[cons]的 car 是这个列表[list]的元素[element], 而每个构造[cons]的 cdr 是这个链中的下一个链接或一个终止原子[atom].
 
-一个 proper 列表是一个以空列表终止的列表. 这个空列表是一个 proper 列表, 但不是一个构造(cons).
+一个正规列表[proper list]列表是一个以空列表[empty list]终止的列表[list]. 这个空列表[empty list]是一个正规列表[proper list], 但不是一个构造[cons].
 
-一个非 proper 列表是一个不是 proper 列表的列表; 这也就是说, 它是一个环状列表或一个点列表.
+一个非正规列表[improper list]是一个不是正规列表[proper list]的列表[list]; 这也就是说, 它是一个环状列表[circular list]或一个点列表[dotted list].
 
-一个点列表是一个有着一个不是空列表的终止原子的列表. 一个非 nil 的原子自身不会被当作任何种类的列表---甚至不是一个点列表.
+一个点列表[dotted list]是一个有着一个不是空列表[empty list]的终止原子[atom]的列表[list]. 一个非 nil [non-nil]的原子[atom]自身不会被当作任何种类的列表[list]---甚至不是一个点列表[dotted list].
 
-一个环状列表是一个构造(cons)的链, 由于这个链中的某个构造(cons)是后面一个构造(cons)的 cdr 所以它没有终止.
+一个环状列表[circular list]是一个构造[cons]的链, 由于这个链中的某个构造[cons]是后面一个构造[cons]的 cdr 所以它没有终止.
 
     append      last           nbutlast  rest       
     butlast     ldiff          nconc     revappend  
@@ -71,7 +70,7 @@
 
 #### 14.1.2.1 <span id="ListsAssociationLists">列表作为关联列表</span>
 
-一个关联列表是一个表示一个键和值关联的构造(cons)的列表, 其中每一个构造(cons)的 car 是那个键而 cdr 是和那个键关联的值.
+一个关联列表[association list]是一个表示一个键[key]和值[value]关联的构造[cons]的列表[list], 其中每一个构造[cons]的 car 是那个键[key]而 cdr 是和那个键[key]关联的值[value].
 
     acons  assoc-if      pairlis  rassoc-if      
     assoc  assoc-if-not  rassoc   rassoc-if-not  
@@ -81,7 +80,7 @@
 
 #### 14.1.2.2 <span id="ListsSets">列表作为集合</span>
 
-列表有时可以通过把它们的元素当作无序的并且假定这里没有重复元素来视作集合.
+列表[list]有时可以通过把它们的元素当作无序的并且假定这里没有重复元素来视作集合.
 
     adjoin         nset-difference    set-difference    union  
     intersection   nset-exclusive-or  set-exclusive-or         
@@ -92,9 +91,9 @@
 
 #### 14.1.2.3 <span id="GeneralRestrictParametersLists">对必须是列表的参数的普通限制</span>
 
-除非有明确的声明, 对于任何接受一个需要为列表的参数的标准化函数, 如果接收到的值是一个点列表, 都应该准备发出一个 type-error 类型的错误.
+除非有明确的声明, 对于任何接受一个需要为列表[list]的形参[parameter]的标准化[standard]函数[function], 如果接收到的值[value]是一个点列表[dotted list], 都应该准备发出一个 type-error 类型[type]的错误.
 
-除非有明确的声明, 对于任何接受一个需要为列表的参数的标准化函数, 如果列表是环状的那么后果是未定义的. 
+除非有明确的声明, 对于任何接受一个需要为列表[list]的参数[parameter]的标准化[standard]函数[function], 如果列表[list]是环状[circular]的那么后果是未定义的. 
 
 
 ## 14.2 <span id="TheConsesDictionary">构造的字典</span>
@@ -158,19 +157,19 @@
 
 * 描述(Description):
 
-        一个列表是一个 cons 的链, 其中每一个 cons 的 car 是这个列表的一个元素, 而每个 cons 的 cdr 是这个链的下一个链接或一个终止原子 atom.
+        一个列表[list]是一个构造[cons]的链, 其中每一个构造[cons]的 car 是这个列表[list]的一个元素[element], 而每个构造[cons]的 cdr 是这个链的下一个链接或一个终止原子[atom].
 
-        一个 proper 列表是一个由空列表 () 来终止的 cons 链, 这个空列表自身也是一个 proper 列表. 一个点列表是一个有着不是空列表终止 atom 的列表. 一个环状列表是一个由于链中的某个 cons 是后面的 cons 的 cdr 而没有终止的 cons 链.
+        一个正规列表[proper list]是一个由空列表[empty] () 来终止的构造[cons]链, 这个空列表[empty list]自身也是一个正规列表[proper list]. 一个点列表[dotted list]是一个终止原子[atom]不是空列表[empty list]的列表[list]. 一个环状列表[circular list]是一个由于链中的某个构造[cons]是后面的构造[cons]的 cdr 而没有终止的 cons 链.
 
-        点列表和环状列表也是列表, 但通常在这个规范中的那个非限制术语 "list" 意味着 proper 列表. 然而, 类型 list 明确地包含了点列表和环状列表.
+        点列表[dotted list]和环状列表[circular list]也是列表[list], 但通常在这个规范中的那个非限制术语 "list" 意味着正规列表[proper list]. 然而, 类型[type] list 明确地包含了点列表[dotted list]和环状列表[circular list].
 
-        对于一个列表中的每个元素这里都有一个 cons. 空列表没有元素并且不是一个 cons.
+        对于一个列表[list]中的每个元素[element]这里都有一个构造[cons]. 空列表[empty list]没有元素[element]并且不是一个构造[cons].
 
-        类型 cons 和 null 构成 list 类型的详尽的分区.
+        类型[type] cons 和 null 构成 list 类型[type]的详尽分区[exhaustive partition].
 
 * 也见(See Also):
 
-        章节 2.4.1 (Left-Parenthesis), 章节 22.1.3.5 (Printing Lists and Conses) 
+        章节 2.4.1 (左圆括号), 章节 22.1.3.5 (打印列表和构造(cons)) 
 
 
 ### <span id="SC-NULL">系统类 NULL</span>
@@ -218,7 +217,7 @@
 
 * 也见(See Also):
 
-        章节 2.4.1 (Left-Parenthesis), 章节 22.1.3.5 (Printing Lists and Conses) 
+        章节 2.4.1 (Left-Parenthesis), 章节 22.1.3.5 (打印列表和构造(cons)) 
 
 
 ### <span id="T-ATOM">类型 ATOM</span>

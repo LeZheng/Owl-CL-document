@@ -78,7 +78,7 @@ Lisp 打印器决定如何打印一个对象, 如下所示:
 > * 22.1.3.2 [打印字符](#PrintingCharacters)
 > * 22.1.3.3 [打印符号](#PrintingSymbols)
 > * 22.1.3.4 [打印字符串](#PrintingStrings)
-> * 22.1.3.5 [打印列表和 cons](#PrintingListsConses)
+> * 22.1.3.5 [打印列表和构造(cons)](#PrintingListsConses)
 > * 22.1.3.6 [打印位向量](#PrintingBitVectors)
 > * 22.1.3.7 [打印其他向量](#PrintingOtherVectors)
 > * 22.1.3.8 [打印其他数组](#PrintingOtherArrays)
@@ -296,7 +296,7 @@ foo::bar
 
 关于 Lisp 读取器如何解析字符串的信息, 见章节 2.4.5 (Double-Quote). 
 
-#### 22.1.3.5 <span id="PrintingListsConses">打印列表和 cons</span>
+#### 22.1.3.5 <span id="PrintingListsConses">打印列表和构造(cons)</span>
 
 只要有可能, 列表记号优先于点记号 Wherever possible, list notation is preferred over dot notation. 因此以下运算法则被用于打印一个 cons x:
 
@@ -1820,7 +1820,7 @@ NIL
 
         函数 pprint-fill, pprint-linear, 和 pprint-tabular 指定美观打印一个列表到一个流的特定方式. 当且仅当 colon-p 为 true 时, 每个函数在输出周围打印括号. 每个函数忽略它的 at-sign-p 参数. (这两个参数都包含在内, 即使只需要一个参数, 以便这些功能可以通过 ~/.../ 和 set-pprint-dispatch 函数, 以及直接使用.) 每个函数正确地处理缩写和循环的检测和共享, 并且当它不是一个列表时使用 write 来打印对象 object.<!--TOOD 待校对-->
 
-        如果对象 object 是一个列表并且 *print-pretty* 的值是 false, 这些符号中的每一个都用最少的空格 whitespace 来打印对象, 就像章节 22.1.3.5 (打印列表和 cons) 中描述的. 否则 (如果对象 object 是一个列表并且 *print-pretty* 的值是 true):
+        如果对象 object 是一个列表并且 *print-pretty* 的值是 false, 这些符号中的每一个都用最少的空格 whitespace 来打印对象, 就像章节 22.1.3.5 (打印列表和构造(cons)) 中描述的. 否则 (如果对象 object 是一个列表并且 *print-pretty* 的值是 true):
 
             函数 pprint-linear 把一个列表的所有元素打印在一行中, 或者每个元素在一个分隔的行上.
 
