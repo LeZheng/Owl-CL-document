@@ -180,11 +180,11 @@
 
 * 描述(Description):
 
-        null 仅有的对象是 nil, 它表示空列表并且也可以被标记为 ().
+        null 类型[type]仅有的对象[object]是 nil, 它表示空列表[empty list]并且也可以被标记为 ().
 
 * 也见(See Also):
 
-        章节 2.3.4 (Symbols as Tokens), 章节 2.4.1 (Left-Parenthesis), 章节 22.1.3.3 (Printing Symbols) 
+        章节 2.3.4 (符号标记), 章节 2.4.1 (左圆括号), 章节 22.1.3.3 (打印符号) 
 
 
 ### <span id="SC-CONS">系统类 CONS</span>
@@ -195,7 +195,7 @@
 
 * 描述(Description):
 
-        一个 cons 是一个有着两个部分的复合对象, 这两个部分称为 car 和 cdr. 这些组成了一个点对. 每个部分可以是任何对象.
+        一个 cons 是一个有着两个部分的复合对象[object], 这两个部分称为 car 和 cdr. 这些组成了一个点对[dotted pair]. 每个部分可以是任何对象[object].
 
 * 复合类型指定符类别(Compound Type Specifier Kind):
 
@@ -207,17 +207,17 @@
 
 * 复合类型指定符参数(Compound Type Specifier Arguments):
 
-        car-typespec---一个类型指定符, 或者符号 *. 默认是符号 *.
+        car-typespec---一个类型指定符[type specifier], 或者符号[symbol] *. 默认是符号[symbol] *.
 
-        cdr-typespec---一个类型指定符, 或者符号 *. 默认是符号 *.
+        cdr-typespec---一个类型指定符[type specifier], 或者符号[symbol] *. 默认是符号[symbol] *.
 
 * 复合类型指定符描述(Compound Type Specifier Description):
 
-        这个表示这个 car 受 car-typespec 约束而 cdr 受 cdr-typespec 约束的 cons 集合. (如果 car-typespec 或 cdr-typespec 是 *, 它就好像被表示为类型 t.)
+        这个表示这个 car 受类型[type] car-typespec 约束而 cdr 受类型[type] cdr-typespec 约束的 cons 集合. (如果 car-typespec 或 cdr-typespec 是 *, 它就好像被表示为类型[type] t.)
 
 * 也见(See Also):
 
-        章节 2.4.1 (Left-Parenthesis), 章节 22.1.3.5 (打印列表和构造(cons)) 
+        章节 2.4.1 (左圆括号), 章节 22.1.3.5 (打印列表和构造(cons)) 
 
 
 ### <span id="T-ATOM">类型 ATOM</span>
@@ -239,13 +239,13 @@
 
 * 参数和值(Arguments and Values):
 
-        object-1---一个对象.
-        object-2---一个对象.
+        object-1---一个对象[object].
+        object-2---一个对象[object].
         cons---一个 cons.
 
 * 描述(Description):
 
-        创建一个新的 cons, 它的 car 是对象 object-1 而它的 cdr 是对象 object-2.
+        创建一个新[fresh]的 cons, 它的 car 是对象 object-1 而它的 cdr 是对象 object-2.
 
 * 示例(Examples):
 
@@ -272,7 +272,7 @@
 
 * 注意(Notes):
 
-        如果 object-2 是一个列表, cons 可以被认为产生一个和 object-2 相似但是前面加上对象 object-1 的新的列表. 
+        如果 object-2 是一个列表[list], cons 可以被认为产生一个和 object-2 相似但是前面加上对象 object-1 的新的列表[list]. 
 
 
 ### <span id="F-CONSP">函数 CONSP</span>
@@ -283,12 +283,12 @@
 
 * 参数和值(Arguments and Values):
 
-        object---一个对象.
-        generalized-boolean---一个广义 boolean.
+        object---一个对象[object].
+        generalized-boolean---一个广义 boolean [generalized boolean].
 
 * 描述(Description):
 
-        如果对象 object 是 cons 类型就返回 true; 否则, 返回 false.
+        如果对象 object 是 cons 类型[type]就返回 true; 否则, 返回 false.
 
 * 示例(Examples):
 
@@ -297,9 +297,11 @@
     (consp (cons 1 2)) =>  true
     ```
 
-        空列表不是一个 cons, 因此
+        空列表[empty list]不是一个 cons, 因此
 
-        (consp '()) ==  (consp 'nil) =>  false
+    ```LISP
+    (consp '()) ==  (consp 'nil) =>  false
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -324,12 +326,12 @@
 
 * 参数和值(Arguments and Values):
 
-        object---一个对象.
-        generalized-boolean---一个广义 boolean.
+        object---一个对象[object].
+        generalized-boolean---一个广义 boolean [generalized boolean].
 
 * 描述(Description):
 
-        如果对象是 atom 类型就返回 true; 否则, 返回 false.
+        如果对象是 atom 类型[type]就返回 true; 否则, 返回 false.
 
 * 示例(Examples):
 
@@ -370,7 +372,7 @@
 * 参数和值(Arguments and Values):
 
         cons---一个 cons.
-        object---一个对象.
+        object---一个对象[object].
 
 * 描述(Description):
 
@@ -397,7 +399,7 @@
 
 * 异常情况(Exceptional Situations): None.
 
-        如果 cons 不是一个构造(cons) 那么应该发出一个 type-error 类型的错误.
+        如果 cons 不是一个构造(cons) 那么应该发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also): None.
 
@@ -539,9 +541,9 @@
 
 * 参数和值(Arguments and Values):
 
-        x---一个列表.
-        object---一个对象.
-        new-object---一个对象.
+        x---一个列表[list].
+        object---一个对象[object].
+        new-object---一个对象[object].
 
 * 描述(Description):
 
@@ -549,9 +551,9 @@
 
         如果 x 是一个 cons, cdr 返回这个 cons 的 cdr. 如果 x 是 nil, cdr 返回 nil.
 
-        提供了执行多达四个 car 和 cdr 操作组合的函数. 它们的名字有一个 C, 后面跟着 2, 3, 或 4 个 A 或 D, 最后是一个 R. 在每个函数名字中的 A 和 D 的序列被选择用来确定这个函数执行的 car 和 cdr 操作的序列. 这个 A 和 D 出现的顺序是对应操作被执行的顺序的倒序. 下一段准确地定义了这些关系.
+        提供了执行多达四个 car 和 cdr 操作组合的函数. 它们的名字[name]有一个 C, 后面跟着 2, 3, 或 4 个 A 或 D, 最后是一个 R. 在每个函数[function]名字[name]中的 A 和 D 的序列被选择用来确定这个函数执行的 car 和 cdr 操作的序列. 这个 A 和 D 出现的顺序是对应操作被执行的顺序的倒序. 下一段准确地定义了这些关系.
 
-            This place ...  Is equivalent to this place ...  
+            这个位置 ...     相当于这个位置 ...  
             (caar x)        (car (car x))                    
             (cadr x)        (car (cdr x))                    
             (cdar x)        (cdr (car x))                    
@@ -583,9 +585,9 @@
 
             Figure 14-6. CAR 和 CDR 变体
 
-        setf 也可以和这些函数中的任意一个一起使用来改变一个已存在的 x 的成分, 但是 setf 不会创建新的成分. 所以, 比如, 一个 cons 的 car 可以用 car 的 setf 来赋值, 但是 nil 的car 不能使用 car 的 setf 来赋值. 相似地, 一个 car 为一个 cons 的 cons, 它的 car 的 car 可以使用 caar 的 setf 来赋值, 但是 nil 和一个 car 为 nil 的 cons 不能使用 caar 的 setf 来赋值.
+        setf 也可以和这些函数中的任意一个一起使用来改变一个已存在的 x 的成分, 但是 setf 不会创建新的成分. 所以, 比如, 一个 cons 的 car 可以用 car 的 setf 来赋值, 但是 nil 的 car 不能使用 car 的 setf 来赋值. 相似地, 一个 car 为一个 cons 的 cons, 它的 car 的 car 可以使用 caar 的 setf 来赋值, 但是 nil 和一个 car 为 nil 的 cons 不能使用 caar 的 setf 来赋值.
 
-        参数 x 允许为一个点列表或者一个环状列表.
+        参数 x 允许为一个点列表[dotted list]或者一个环状列表[circular list].
 
 * 示例(Examples):
 
@@ -602,7 +604,7 @@
 
 * 异常情况(Exceptional Situations):
 
-        如果函数 car 和 cdr 收到一个参数不是一个列表, 那么它应该发出一个 type-error 类型的错误. 其他函数 (caar, cadr, ... cddddr) 应该为错误检查的目的而表现地就好像是通过对 car 和 cdr 的适当调用来定义的.
+        如果函数 car 和 cdr 收到参数不是一个列表[list], 那么它应该发出一个 type-error 类型的错误. 其他函数 (caar, cadr, ... cddddr) 应该处于错误检查的目的而表现地就好像是通过 car 和 cdr 的适当调用来定义的.
 
 * 也见(See Also):
 
@@ -626,14 +628,14 @@
 
 * 参数和值(Arguments and Values):
 
-        tree---一个树.
-        new-tree---一个树.
+        tree---一个树[tree].
+        new-tree---一个树[tree].
 
 * 描述(Description):
 
-        创建一个 cons 树的一个拷贝.
+        创建一个 cons 树[tree]的一个拷贝[copy].
 
-        如果 tree 不是一个 cons, 它会被返回; 否则, 结果就是在树 tree 的 car 和 cdr 上调用 copy-tree 的结果的 cons. 换句话说, 在根据 tree 表示的树中的所有 cons 会被递归复制, 只有在没有 cons 遇到时停止.
+        如果 tree 不是一个 cons, 它会被返回; 否则, 结果就是在树 tree 的 car 和 cdr 上调用 copy-tree 的结果的 cons. 换句话说, 由 tree 表示的树中的所有 cons 会被递归复制, 只有在没有 cons 时停止.
 
         copy-tree 不保持环状和子结构的共享.
 
@@ -673,6 +675,7 @@
 
 * 注意(Notes): None. 
 
+<!--TODO 校对到此-->
 ### <span id="F-SUBLIS-NSUBLIS">函数 SUBLIS, NSUBLIS</span>
 
 * 语法(Syntax):
