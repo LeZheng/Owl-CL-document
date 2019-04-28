@@ -6,22 +6,21 @@
 
 ## 14.1 <span id="ConsConcepts">构造的概念</span>
 
-一个构造(cons)是一个有着称为 car 和 cdr 两部分的复合数据对象.
+一个构造[cons]是一个有着称为 car 和 cdr 两部分的复合数据对象[object].
 
     car  cons    rplacd  
     cdr  rplaca          
 
     Figure 14-1. 和构造相关的已定义的名字.
 
-根据上下文, 一组连接的构造可以以各种不同的视角来看. 提供了各种各样的操作来支持这些不同的视角.
+根据上下文, 一组连接的构造[cons]可以以各种不同的视角来看. 提供了各种各样的操作来支持这些不同的视角.
 
 > * 14.1.1 [构造作为树](#ConsesTrees)
 > * 14.1.2 [构造作为列表](#ConsesLists)
 
-
 ### 14.1.1 <span id="ConsesTrees">构造作为树</span>
 
-一个树是一个由构造(cons)和原子(atom)组成的二元递归数据结构: 这些构造(cons)自身也是树 (有时称之为 "子树(subtrees)" 或 "分枝(branches)"), 而这些原子是终止节点 (有时也称为叶). 典型地, 这些叶表示数据而分枝确定这些数据的关系.
+一个树[tree]是一个由构造[cons]和原子[atom]组成的二元递归数据结构: 这些构造[cons]自身也是树[true] (有时称之为 "子树(subtree)" 或 "分枝(branch)"), 而这些原子[atom]是终止节点 (有时也称为叶[leave]). 典型地, 这些叶[leave]表示数据而分枝确定这些数据的关系.
 
     caaaar  caddar  cdar       nsubst         
     caaadr  cadddr  cddaar     nsubst-if      
@@ -36,21 +35,21 @@
 
     Figure 14-2. 和树相关的一些已定义的名字.
 
-#### 14.1.1.1 对必须是树的参数的普通限制
+#### 14.1.1.1 对必须是树的参数的常规限制
 
-除非有明确的声明, 对于任何接受一个需要为树的参数的标准化函数, 如果该树是环状的, 其后果是未定义的. 
+除非有明确的声明, 对于任何接受一个必须为树[tree]的形参[parameter]的标准化[standardized]函数[function], 如果该树[tree]是环状的, 其后果是未定义的. 
 
 ### 14.1.2 <span id="ConsesLists">构造作为列表</span>
 
-一个列表是一个构造(cons)的链, 其中每一个构造(cons)的 car 是这个列表的元素, 而每个构造(cons)的 cdr 是这个链中的下一个链接或一个终止原子.
+一个列表[list]是一个构造[cons]的链, 其中每一个构造[cons]的 car 是这个列表[list]的元素[element], 而每个构造[cons]的 cdr 是这个链中的下一个链接或一个终止原子[atom].
 
-一个 proper 列表是一个以空列表终止的列表. 这个空列表是一个 proper 列表, 但不是一个构造(cons).
+一个正规列表[proper list]列表是一个以空列表[empty list]终止的列表[list]. 这个空列表[empty list]是一个正规列表[proper list], 但不是一个构造[cons].
 
-一个非 proper 列表是一个不是 proper 列表的列表; 这也就是说, 它是一个环状列表或一个点列表.
+一个非正规列表[improper list]是一个不是正规列表[proper list]的列表[list]; 这也就是说, 它是一个环状列表[circular list]或一个点列表[dotted list].
 
-一个点列表是一个有着一个不是空列表的终止原子的列表. 一个非 nil 的原子自身不会被当作任何种类的列表---甚至不是一个点列表.
+一个点列表[dotted list]是一个有着一个不是空列表[empty list]的终止原子[atom]的列表[list]. 一个非 nil [non-nil]的原子[atom]自身不会被当作任何种类的列表[list]---甚至不是一个点列表[dotted list].
 
-一个环状列表是一个构造(cons)的链, 由于这个链中的某个构造(cons)是后面一个构造(cons)的 cdr 所以它没有终止.
+一个环状列表[circular list]是一个构造[cons]的链, 由于这个链中的某个构造[cons]是后面一个构造[cons]的 cdr 所以它没有终止.
 
     append      last           nbutlast  rest       
     butlast     ldiff          nconc     revappend  
@@ -71,7 +70,7 @@
 
 #### 14.1.2.1 <span id="ListsAssociationLists">列表作为关联列表</span>
 
-一个关联列表是一个表示一个键和值关联的构造(cons)的列表, 其中每一个构造(cons)的 car 是那个键而 cdr 是和那个键关联的值.
+一个关联列表[association list]是一个表示一个键[key]和值[value]关联的构造[cons]的列表[list], 其中每一个构造[cons]的 car 是那个键[key]而 cdr 是和那个键[key]关联的值[value].
 
     acons  assoc-if      pairlis  rassoc-if      
     assoc  assoc-if-not  rassoc   rassoc-if-not  
@@ -81,7 +80,7 @@
 
 #### 14.1.2.2 <span id="ListsSets">列表作为集合</span>
 
-列表有时可以通过把它们的元素当作无序的并且假定这里没有重复元素来视作集合.
+列表[list]有时可以通过把它们的元素当作无序的并且假定这里没有重复元素来视作集合.
 
     adjoin         nset-difference    set-difference    union  
     intersection   nset-exclusive-or  set-exclusive-or         
@@ -92,9 +91,9 @@
 
 #### 14.1.2.3 <span id="GeneralRestrictParametersLists">对必须是列表的参数的普通限制</span>
 
-除非有明确的声明, 对于任何接受一个需要为列表的参数的标准化函数, 如果接收到的值是一个点列表, 都应该准备发出一个 type-error 类型的错误.
+除非有明确的声明, 对于任何接受一个需要为列表[list]的形参[parameter]的标准化[standard]函数[function], 如果接收到的值[value]是一个点列表[dotted list], 都应该准备发出一个 type-error 类型[type]的错误.
 
-除非有明确的声明, 对于任何接受一个需要为列表的参数的标准化函数, 如果列表是环状的那么后果是未定义的. 
+除非有明确的声明, 对于任何接受一个需要为列表[list]的参数[parameter]的标准化[standard]函数[function], 如果列表[list]是环状[circular]的那么后果是未定义的. 
 
 
 ## 14.2 <span id="TheConsesDictionary">构造的字典</span>
@@ -158,19 +157,19 @@
 
 * 描述(Description):
 
-        一个列表是一个 cons 的链, 其中每一个 cons 的 car 是这个列表的一个元素, 而每个 cons 的 cdr 是这个链的下一个链接或一个终止原子 atom.
+        一个列表[list]是一个构造[cons]的链, 其中每一个构造[cons]的 car 是这个列表[list]的一个元素[element], 而每个构造[cons]的 cdr 是这个链的下一个链接或一个终止原子[atom].
 
-        一个 proper 列表是一个由空列表 () 来终止的 cons 链, 这个空列表自身也是一个 proper 列表. 一个点列表是一个有着不是空列表终止 atom 的列表. 一个环状列表是一个由于链中的某个 cons 是后面的 cons 的 cdr 而没有终止的 cons 链.
+        一个正规列表[proper list]是一个由空列表[empty] () 来终止的构造[cons]链, 这个空列表[empty list]自身也是一个正规列表[proper list]. 一个点列表[dotted list]是一个终止原子[atom]不是空列表[empty list]的列表[list]. 一个环状列表[circular list]是一个由于链中的某个构造[cons]是后面的构造[cons]的 cdr 而没有终止的 cons 链.
 
-        点列表和环状列表也是列表, 但通常在这个规范中的那个非限制术语 "list" 意味着 proper 列表. 然而, 类型 list 明确地包含了点列表和环状列表.
+        点列表[dotted list]和环状列表[circular list]也是列表[list], 但通常在这个规范中的那个非限制术语 "list" 意味着正规列表[proper list]. 然而, 类型[type] list 明确地包含了点列表[dotted list]和环状列表[circular list].
 
-        对于一个列表中的每个元素这里都有一个 cons. 空列表没有元素并且不是一个 cons.
+        对于一个列表[list]中的每个元素[element]这里都有一个构造[cons]. 空列表[empty list]没有元素[element]并且不是一个构造[cons].
 
-        类型 cons 和 null 构成 list 类型的详尽的分区.
+        类型[type] cons 和 null 构成 list 类型[type]的详尽分区[exhaustive partition].
 
 * 也见(See Also):
 
-        章节 2.4.1 (Left-Parenthesis), 章节 22.1.3.5 (Printing Lists and Conses) 
+        章节 2.4.1 (左圆括号), 章节 22.1.3.5 (打印列表和构造(cons)) 
 
 
 ### <span id="SC-NULL">系统类 NULL</span>
@@ -181,11 +180,11 @@
 
 * 描述(Description):
 
-        null 仅有的对象是 nil, 它表示空列表并且也可以被标记为 ().
+        null 类型[type]仅有的对象[object]是 nil, 它表示空列表[empty list]并且也可以被标记为 ().
 
 * 也见(See Also):
 
-        章节 2.3.4 (Symbols as Tokens), 章节 2.4.1 (Left-Parenthesis), 章节 22.1.3.3 (Printing Symbols) 
+        章节 2.3.4 (符号标记), 章节 2.4.1 (左圆括号), 章节 22.1.3.3 (打印符号) 
 
 
 ### <span id="SC-CONS">系统类 CONS</span>
@@ -196,7 +195,7 @@
 
 * 描述(Description):
 
-        一个 cons 是一个有着两个部分的复合对象, 这两个部分称为 car 和 cdr. 这些组成了一个点对. 每个部分可以是任何对象.
+        一个 cons 是一个有着两个部分的复合对象[object], 这两个部分称为 car 和 cdr. 这些组成了一个点对[dotted pair]. 每个部分可以是任何对象[object].
 
 * 复合类型指定符类别(Compound Type Specifier Kind):
 
@@ -208,17 +207,17 @@
 
 * 复合类型指定符参数(Compound Type Specifier Arguments):
 
-        car-typespec---一个类型指定符, 或者符号 *. 默认是符号 *.
+        car-typespec---一个类型指定符[type specifier], 或者符号[symbol] *. 默认是符号[symbol] *.
 
-        cdr-typespec---一个类型指定符, 或者符号 *. 默认是符号 *.
+        cdr-typespec---一个类型指定符[type specifier], 或者符号[symbol] *. 默认是符号[symbol] *.
 
 * 复合类型指定符描述(Compound Type Specifier Description):
 
-        这个表示这个 car 受 car-typespec 约束而 cdr 受 cdr-typespec 约束的 cons 集合. (如果 car-typespec 或 cdr-typespec 是 *, 它就好像被表示为类型 t.)
+        这个表示这个 car 受类型[type] car-typespec 约束而 cdr 受类型[type] cdr-typespec 约束的 cons 集合. (如果 car-typespec 或 cdr-typespec 是 *, 它就好像被表示为类型[type] t.)
 
 * 也见(See Also):
 
-        章节 2.4.1 (Left-Parenthesis), 章节 22.1.3.5 (Printing Lists and Conses) 
+        章节 2.4.1 (左圆括号), 章节 22.1.3.5 (打印列表和构造(cons)) 
 
 
 ### <span id="T-ATOM">类型 ATOM</span>
@@ -240,13 +239,13 @@
 
 * 参数和值(Arguments and Values):
 
-        object-1---一个对象.
-        object-2---一个对象.
+        object-1---一个对象[object].
+        object-2---一个对象[object].
         cons---一个 cons.
 
 * 描述(Description):
 
-        创建一个新的 cons, 它的 car 是对象 object-1 而它的 cdr 是对象 object-2.
+        创建一个新[fresh]的 cons, 它的 car 是对象 object-1 而它的 cdr 是对象 object-2.
 
 * 示例(Examples):
 
@@ -273,7 +272,7 @@
 
 * 注意(Notes):
 
-        如果 object-2 是一个列表, cons 可以被认为产生一个和 object-2 相似但是前面加上对象 object-1 的新的列表. 
+        如果 object-2 是一个列表[list], cons 可以被认为产生一个和 object-2 相似但是前面加上对象 object-1 的新的列表[list]. 
 
 
 ### <span id="F-CONSP">函数 CONSP</span>
@@ -284,12 +283,12 @@
 
 * 参数和值(Arguments and Values):
 
-        object---一个对象.
-        generalized-boolean---一个广义 boolean.
+        object---一个对象[object].
+        generalized-boolean---一个广义 boolean [generalized boolean].
 
 * 描述(Description):
 
-        如果对象 object 是 cons 类型就返回 true; 否则, 返回 false.
+        如果对象 object 是 cons 类型[type]就返回 true; 否则, 返回 false.
 
 * 示例(Examples):
 
@@ -298,9 +297,11 @@
     (consp (cons 1 2)) =>  true
     ```
 
-        空列表不是一个 cons, 因此
+        空列表[empty list]不是一个 cons, 因此
 
-        (consp '()) ==  (consp 'nil) =>  false
+    ```LISP
+    (consp '()) ==  (consp 'nil) =>  false
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -325,12 +326,12 @@
 
 * 参数和值(Arguments and Values):
 
-        object---一个对象.
-        generalized-boolean---一个广义 boolean.
+        object---一个对象[object].
+        generalized-boolean---一个广义 boolean [generalized boolean].
 
 * 描述(Description):
 
-        如果对象是 atom 类型就返回 true; 否则, 返回 false.
+        如果对象是 atom 类型[type]就返回 true; 否则, 返回 false.
 
 * 示例(Examples):
 
@@ -371,7 +372,7 @@
 * 参数和值(Arguments and Values):
 
         cons---一个 cons.
-        object---一个对象.
+        object---一个对象[object].
 
 * 描述(Description):
 
@@ -398,7 +399,7 @@
 
 * 异常情况(Exceptional Situations): None.
 
-        如果 cons 不是一个构造(cons) 那么应该发出一个 type-error 类型的错误.
+        如果 cons 不是一个构造(cons) 那么应该发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also): None.
 
@@ -540,9 +541,9 @@
 
 * 参数和值(Arguments and Values):
 
-        x---一个列表.
-        object---一个对象.
-        new-object---一个对象.
+        x---一个列表[list].
+        object---一个对象[object].
+        new-object---一个对象[object].
 
 * 描述(Description):
 
@@ -550,9 +551,9 @@
 
         如果 x 是一个 cons, cdr 返回这个 cons 的 cdr. 如果 x 是 nil, cdr 返回 nil.
 
-        提供了执行多达四个 car 和 cdr 操作组合的函数. 它们的名字有一个 C, 后面跟着 2, 3, 或 4 个 A 或 D, 最后是一个 R. 在每个函数名字中的 A 和 D 的序列被选择用来确定这个函数执行的 car 和 cdr 操作的序列. 这个 A 和 D 出现的顺序是对应操作被执行的顺序的倒序. 下一段准确地定义了这些关系.
+        提供了执行多达四个 car 和 cdr 操作组合的函数. 它们的名字[name]有一个 C, 后面跟着 2, 3, 或 4 个 A 或 D, 最后是一个 R. 在每个函数[function]名字[name]中的 A 和 D 的序列被选择用来确定这个函数执行的 car 和 cdr 操作的序列. 这个 A 和 D 出现的顺序是对应操作被执行的顺序的倒序. 下一段准确地定义了这些关系.
 
-            This place ...  Is equivalent to this place ...  
+            这个位置 ...     相当于这个位置 ...  
             (caar x)        (car (car x))                    
             (cadr x)        (car (cdr x))                    
             (cdar x)        (cdr (car x))                    
@@ -584,9 +585,9 @@
 
             Figure 14-6. CAR 和 CDR 变体
 
-        setf 也可以和这些函数中的任意一个一起使用来改变一个已存在的 x 的成分, 但是 setf 不会创建新的成分. 所以, 比如, 一个 cons 的 car 可以用 car 的 setf 来赋值, 但是 nil 的car 不能使用 car 的 setf 来赋值. 相似地, 一个 car 为一个 cons 的 cons, 它的 car 的 car 可以使用 caar 的 setf 来赋值, 但是 nil 和一个 car 为 nil 的 cons 不能使用 caar 的 setf 来赋值.
+        setf 也可以和这些函数中的任意一个一起使用来改变一个已存在的 x 的成分, 但是 setf 不会创建新的成分. 所以, 比如, 一个 cons 的 car 可以用 car 的 setf 来赋值, 但是 nil 的 car 不能使用 car 的 setf 来赋值. 相似地, 一个 car 为一个 cons 的 cons, 它的 car 的 car 可以使用 caar 的 setf 来赋值, 但是 nil 和一个 car 为 nil 的 cons 不能使用 caar 的 setf 来赋值.
 
-        参数 x 允许为一个点列表或者一个环状列表.
+        参数 x 允许为一个点列表[dotted list]或者一个环状列表[circular list].
 
 * 示例(Examples):
 
@@ -603,7 +604,7 @@
 
 * 异常情况(Exceptional Situations):
 
-        如果函数 car 和 cdr 收到一个参数不是一个列表, 那么它应该发出一个 type-error 类型的错误. 其他函数 (caar, cadr, ... cddddr) 应该为错误检查的目的而表现地就好像是通过对 car 和 cdr 的适当调用来定义的.
+        如果函数 car 和 cdr 收到参数不是一个列表[list], 那么它应该发出一个 type-error 类型的错误. 其他函数 (caar, cadr, ... cddddr) 应该处于错误检查的目的而表现地就好像是通过 car 和 cdr 的适当调用来定义的.
 
 * 也见(See Also):
 
@@ -627,14 +628,14 @@
 
 * 参数和值(Arguments and Values):
 
-        tree---一个树.
-        new-tree---一个树.
+        tree---一个树[tree].
+        new-tree---一个树[tree].
 
 * 描述(Description):
 
-        创建一个 cons 树的一个拷贝.
+        创建一个 cons 树[tree]的一个拷贝[copy].
 
-        如果 tree 不是一个 cons, 它会被返回; 否则, 结果就是在树 tree 的 car 和 cdr 上调用 copy-tree 的结果的 cons. 换句话说, 在根据 tree 表示的树中的所有 cons 会被递归复制, 只有在没有 cons 遇到时停止.
+        如果 tree 不是一个 cons, 它会被返回; 否则, 结果就是在树 tree 的 car 和 cdr 上调用 copy-tree 的结果的 cons. 换句话说, 由 tree 表示的树中的所有 cons 会被递归复制, 只有在没有 cons 时停止.
 
         copy-tree 不保持环状和子结构的共享.
 
@@ -674,6 +675,7 @@
 
 * 注意(Notes): None. 
 
+<!--TODO 校对到此-->
 ### <span id="F-SUBLIS-NSUBLIS">函数 SUBLIS, NSUBLIS</span>
 
 * 语法(Syntax):
