@@ -51,17 +51,17 @@ Common Lisp 提供了大量和数字[number]相关的操作. 这个章节通过�
 
 下面这段展示了和数值类型处理和强制转换相关的已定义的名字[defined name].
 
-ceiling          float-radix           rational     
-complex          float-sign            rationalize  
-decode-float     floor                 realpart     
-denominator      fround                rem          
-fceiling         ftruncate             round        
-ffloor           imagpart              scale-float  
-float            integer-decode-float  truncate     
-float-digits     mod                                
-float-precision  numerator                          
+    ceiling          float-radix           rational     
+    complex          float-sign            rationalize  
+    decode-float     floor                 realpart     
+    denominator      fround                rem          
+    fceiling         ftruncate             round        
+    ffloor           imagpart              scale-float  
+    float            integer-decode-float  truncate     
+    float-digits     mod                                
+    float-precision  numerator                          
 
-Figure 12-4. 数值类型处理和强制转换相关的已定义的名字.
+    Figure 12-4. 数值类型处理和强制转换相关的已定义的名字.
 
 > * 12.1.1.1 [数值运算中的结合律和交换律](#AssociativityCommutativityNO)
 > * 12.1.1.2 [数值运算的传递性](#ContagionNumericOperations)
@@ -92,17 +92,14 @@ Figure 12-4. 数值类型处理和强制转换相关的已定义的名字.
 
  (+ (+ 1/3 2/3) (+ 1.0d0 1.0e-15) 1.0)
 
-
 #### 12.1.1.2 <span id="ContagionNumericOperations">数值运算的传递性</span>
 
 关于在数值运算中实参[argument]的隐式强制转换的传递性规则的信息, 见章节 12.1.4.4 (浮点精度传递规则), 章节 12.1.4.1 (浮点和有理数传递性的规则), 还有章节 12.1.5.2 (复数传递规则). 
-
 
 #### 12.1.1.3 <span id="ViewingIntegersBitsBytes">视整数为位和字节</span>
 
 > * 12.1.1.3.1 [整数上的逻辑操作](#LogicalOperationsIntegers)
 > * 12.1.1.3.2 [整数上的字节操作](#ByteOperationsIntegers)
-
 
 ##### 12.1.1.3.1 <span id="LogicalOperationsIntegers">整数上的逻辑操作</span>
 
@@ -165,7 +162,6 @@ Figure 12-4. 数值类型处理和强制转换相关的已定义的名字.
 > * 12.1.3.2 [有理数的规范表示规则](#RuleCanonicalReprRationals)
 > * 12.1.3.3 [浮点的置换性规则](#RuleFloatSubstitutability)
 
-
 #### 12.1.3.1 <span id="RuleUnboundedRationalPrecision">无界的有理数精度规则</span>
 
 从一般意义上来说有理数计算不可能上溢 (尽管这里可能没有足够的存储来表示一个结果), 因为整数[integer]和比数[ratio]原则上是任意大小的. 
@@ -184,7 +180,7 @@ Figure 12-4. 数值类型处理和强制转换相关的已定义的名字.
 
 当一个无理数学函数[function]的参数都是类型 (or rational (complex rational)) 并且真正的数学结果是(数学上)一个带有有理数实部和虚部的复数, 除非另有说明, 否则一个具体实现可以自由地返回一个类型 (or rational (complex rational)) 的精准结果或者一个 single-float (只有当真实的数学结果的虚部为零时才允许) 或者 (complex single-float). 如果参数都是类型 (or rational (complex rational)) 但是结果不能被表示为一个有理数[rational]或者复有理数[complex rational], 那么返回值会是 single-float 类型(只有当真实的数学结果的虚部为零时才允许) 或者 (complex single-float).
 
-浮点数置换性不能应用于有理数函数[function] +, -, *, 和 / 也不能应用于相关操作符[operator] 1+, 1-, incf, decf, 和 conjugate. 对于有理数函数[function], 如果所有参数都是有理数[rational], 那么结果就是有理数[rational]; 如果所有参数都是类型 (or rational (complex rational)), 那么结果也就是类型 (or rational (complex rational)).
+浮点数置换性不能应用于有理数学函数[function] +, -, *, 和 / 也不能应用于相关操作符[operator] 1+, 1-, incf, decf, 和 conjugate. 对于有理数学函数[function], 如果所有参数都是有理数[rational], 那么结果就是有理数[rational]; 如果所有参数都是类型 (or rational (complex rational)), 那么结果也就是类型 (or rational (complex rational)).
 
     函数      简单结果                                   
     abs       (abs #c(3 4)) =>  5 or 5.0                       
@@ -273,16 +269,13 @@ Figure 12-4. 数值类型处理和强制转换相关的已定义的名字.
 > * 12.1.5.3 [复数的正规表示规则](#RuleCanonicalReprComplexRationals)
 > * 12.1.5.4 [主值和分支切割](#PrincipalValuesBranchCuts)
 
-
 #### 12.1.5.1 <span id="RuleComplexSubstitutability">复数的置换性规则</span>
 
 除了在无理和超越函数[function]的执行期间, 除非它的实参[argument]中的一个或多个是复数[complex], 否则数值函数[function]不会产生[yield]一个复数[complex]. 
 
-
 #### 12.1.5.2 <span id="RuleComplexContagion">复数传递规则</span>
 
 当一个实数[real]和一个复数[complex]都是计算的一部分时, 这个实数[real]首先通过提供一个 0 的虚部来转换为复数[complex]. 
-
 
 #### 12.1.5.3 <span id="RuleCanonicalReprComplexRationals">复数的正规表示规则</span>
 
@@ -322,7 +315,7 @@ Figure 12-4. 数值类型处理和强制转换相关的已定义的名字.
 
 ### 12.1.6 <span id="IntervalDesignators">区间标识符</span>
 
-  一个数值类型指定符[type specifier]的复合类型指定符[compound type specifier]形式允许用户在实数线上去指定一个描述这个类型[type]的子类型[subtype]的区间, 该类型将由相应的原子类型指定符[atomic type specifier]描述. 某个类型[type] T 的子类型[subtype]是使用称为类型[type] T 的区间标识符[interval designator]的有序对象[object]对指定的.
+一个数值类型指定符[type specifier]的复合类型指定符[compound type specifier]形式允许用户在实数线上去指定一个描述这个类型[type]的子类型[subtype]的区间, 该类型将由相应的原子类型指定符[atomic type specifier]描述. 某个类型[type] T 的子类型[subtype]是使用称为类型[type] T 的区间标识符[interval designator]的有序对象[object]对指定的.
 
 T 类型[type]的两个区间标识符[interval designator]的第一个可以是以下任意一种:
 
@@ -1065,13 +1058,13 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 示例(Examples):
 
-```LISP
- (zerop 0) =>  true
- (zerop 1) =>  false
- (zerop -0.0) =>  true
- (zerop 0/100) =>  true
- (zerop #c(0 0.0)) =>  true
-```
+    ```LISP
+    (zerop 0) =>  true
+    (zerop 1) =>  false
+    (zerop -0.0) =>  true
+    (zerop 0/100) =>  true
+    (zerop #c(0 0.0)) =>  true
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -2135,9 +2128,9 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
         signum 确定一个表示数字 number 是否为负数, 0, 或正数的一个数字值.
 
-        对于一个有理数[rational], signum 根据数字 number 是否为负数, 0, 或正数返回 -1, 0, 或 1 的其中一个. 对于一个浮点数[float], 结果是一个相同格式的浮点数[float], 它的值为负一, 零, 或一. 对于一个复数[complex] z, (signum z) 是同阶的单位大小的复数, 但单位大小, 除非 z 是复数 0, 在这种情况下, 结果是 z.
+        对于一个有理数[rational], signum 根据数字 number 是否为负数, 0, 或正数来返回 -1, 0, 或 1 的其中一个. 对于一个浮点数[float], 结果是一个相同格式的浮点数[float], 它的值为负一, 零, 或一. 对于一个复数[complex] z, (signum z) 是同阶的单位大小的复数, 但单位大小, 除非 z 是复数 0, 在这种情况下, 结果是 z.
 
-        对于有理数[rational]实参[argument], signum 是一个有理数函数, 但是它对于一个复数参数可能是无理数的.
+        对于有理数[rational]实参[argument], signum 是一个有理数学函数, 但是它对于一个复数参数可能是无理数的.
 
         如果数字 number 是一个浮点数[float], 结果是一个浮点数[float]. 如果数字 number 是一个有理数[rational], 结果就是一个有理数[rational]. 如果数字 number 是一个复浮点数[complex float], 结果就是一个复浮点数[complex float]. 如果数字 number 是一个复有理数[complex rational], 结果就是一个复数[complex], 但是它的结果是一个复有理数[complex rational]还是一个负浮点数[complex float]是依赖于具体实现的[implementation-dependent].
 
@@ -2182,7 +2175,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 * 参数和值(Arguments and Values):
 
         number, root---一个数字[number].
-        natural, natural-root---一个负整数[integer].
+        natural, natural-root---一个非负整数[integer].
 
 * 描述(Description):
 
@@ -2277,25 +2270,25 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 示例(Examples):
 
-```LISP
- (let* ((rs1 (make-random-state nil))
-        (rs2 (make-random-state t))
-        (rs3 (make-random-state rs2))
-        (rs4 nil))
-   (list (loop for i from 1 to 10 
-               collect (random 100)
-               when (= i 5)
-                do (setq rs4 (make-random-state)))
-         (loop for i from 1 to 10 collect (random 100 rs1))
-         (loop for i from 1 to 10 collect (random 100 rs2))
-         (loop for i from 1 to 10 collect (random 100 rs3))
-         (loop for i from 1 to 10 collect (random 100 rs4))))
-=>  ((29 25 72 57 55 68 24 35 54 65)
-    (29 25 72 57 55 68 24 35 54 65)
-    (93 85 53 99 58 62 2 23 23 59)
-    (93 85 53 99 58 62 2 23 23 59)
-    (68 24 35 54 65 54 55 50 59 49))
-```
+    ```LISP
+    (let* ((rs1 (make-random-state nil))
+            (rs2 (make-random-state t))
+            (rs3 (make-random-state rs2))
+            (rs4 nil))
+      (list (loop for i from 1 to 10 
+                  collect (random 100)
+                  when (= i 5)
+                    do (setq rs4 (make-random-state)))
+            (loop for i from 1 to 10 collect (random 100 rs1))
+            (loop for i from 1 to 10 collect (random 100 rs2))
+            (loop for i from 1 to 10 collect (random 100 rs3))
+            (loop for i from 1 to 10 collect (random 100 rs4))))
+    =>  ((29 25 72 57 55 68 24 35 54 65)
+        (29 25 72 57 55 68 24 35 54 65)
+        (93 85 53 99 58 62 2 23 23 59)
+        (93 85 53 99 58 62 2 23 23 59)
+        (68 24 35 54 65 54 55 50 59 49))
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -2485,7 +2478,6 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
         (numberp object) ==  (typep object 'number)
 
 
-
 ### <span id="F-CIS">函数 CIS</span>
 
 * 语法(Syntax):
@@ -2640,7 +2632,6 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
         对于一个复数[complex] z,
 
         (conjugate z) ==  (complex (realpart z) (- (imagpart z)))
-
 
 
 ### <span id="F-PHASE">函数 PHASE</span>
@@ -2850,7 +2841,6 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
         (gcd (numerator x) (denominator x)) =>  1
 
 
-
 ### <span id="F-RATIONAL-RATIONALIZE">函数 RATIONAL, RATIONALIZE</span>
 
 * 语法(Syntax):
@@ -3001,7 +2991,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 * 参数和值(Arguments and Values):
 
         integer---一个整数[integer].
-        number-of-bits---一个负整数[integer].
+        number-of-bits---一个非负整数[integer].
 
 * 描述(Description):
 
@@ -3086,6 +3076,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
         (integerp object) ==  (typep object 'integer)
 
+<!--TODO 校对到此-->
 ### <span id="F-PARSE-INTEGER">函数 PARSE-INTEGER</span>
 
 * 语法(Syntax):
@@ -3176,7 +3167,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
             boole-xor    exclusive or                                
 
             Figure 12-17. 位逻辑操作符
-
+<!--TODO 待翻译-->
 * 示例(Examples):
 
     ```LISP
@@ -3336,7 +3327,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
         logxor    0         exclusive or                                
 
         Figure 12-18. 整数上的位逻辑操作
-
+<!--TODO 待翻译-->
         负的整数会被看作它们是以两个补数的二进制表示的.
 
 * 示例(Examples):
@@ -4176,7 +4167,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
         类型[type] division-by-zero 由因为被 0 除所导致的错误状况所组成. 
 
-<!--TODO 浮点陷阱 ??-->
+
 ### <span id="CT-FLOATING-POINT-INVALID-OPERATION">状况类型 FLOATING-POINT-INVALID-OPERATION</span>
 
 * 类优先级列表(Class Precedence List):
@@ -4185,9 +4176,9 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 描述(Description):
 
-        类型[type] floating-point-invalid-operation 由因为某些浮点陷阱造成的错误状况组成.
+        类型[type] floating-point-invalid-operation 由因为某些浮点数陷阱造成的错误状况组成.
 
-        浮点陷阱是否发生, 并且它们是否或如何被启用或禁用是依赖于具体实现的[implementation-dependent]. 因此, 符合规范的代码可能为这个状况建立处理者, 但是一定不能依赖于它的发送.  
+        浮点数陷阱是否发生, 并且它们是否或如何被启用或禁用是依赖于具体实现的[implementation-dependent]. 因此, 符合规范的代码可能为这个状况建立处理者, 但是一定不能依赖于它的发送.  
 
 ### <span id="CT-FLOATING-POINT-INEXACT">状况类型 FLOATING-POINT-INEXACT</span>
 
@@ -4197,9 +4188,9 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 描述(Description):
 
-        类型[type] floating-point-inexact 由因为某些浮点陷阱造成的错误状况组成.
+        类型[type] floating-point-inexact 由因为某些浮点数陷阱造成的错误状况组成.
 
-        浮点陷阱是否发生, 并且它们是否或如何被启用或禁用是依赖于具体实现的[implementation-dependent]. 因此, 符合规范的代码可能为这个状况建立处理者, 但是一定不能依赖于它的发送. 
+        浮点数陷阱是否发生, 并且它们是否或如何被启用或禁用是依赖于具体实现的[implementation-dependent]. 因此, 符合规范的代码可能为这个状况建立处理者, 但是一定不能依赖于它的发送. 
 
 ### <span id="CT-FLOATING-POINT-OVERFLOW">状况类型 FLOATING-POINT-OVERFLOW</span>
 
