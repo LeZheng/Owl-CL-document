@@ -675,7 +675,7 @@
 
 * 注意(Notes): None. 
 
-<!--TODO 校对到此-->
+
 ### <span id="F-SUBLIS-NSUBLIS">函数 SUBLIS, NSUBLIS</span>
 
 * 语法(Syntax):
@@ -686,20 +686,20 @@
 
 * 参数和值(Arguments and Values):
 
-        alist---一个关联列表.
-        tree---一个树.
-        test---一个返回一个广义 boolean 的两参数函数的标识符.
-        test-not---一个返回一个广义 boolean 的两参数函数的标识符.
-        key---一个单参数函数的标识符, 或者 nil.
-        new-tree---一个树.
+        alist---一个关联列表[association list].
+        tree---一个树[tree].
+        test---返回一个广义 boolean [generalized boolean]的两实参[argument]函数[function]的标识符[designator].
+        test-not---返回一个广义 boolean [generalized boolean]的两实参[argument]函数[function]的标识符[designator].
+        key---一个单实参[argument]函数[function]的标识符[designator], 或者 nil.
+        new-tree---一个树[tree].
 
 * 描述(Description):
 
-        sublis 对树 tree (一个 cons 结构) 中的对象进行替换. nsublis 和 sublis 相似但是它会破坏性修改树 tree 中相关的结构.
+        sublis 对树 tree (一个 cons 结构) 中的对象[object]进行替换. nsublis 和 sublis 相似但是它会破坏性修改树 tree 中相关的结构.
 
-        sublis 查找树 tree 中的所有子树和叶; 如果一个子树或叶作为关联列表 alist 中的一个键出现 (这也就是说, 这个键和这个子树或叶满足这个测试条件 test), 那么它就会被和那个键关联的对象所替换. 这个操作是非破坏性的. 实际上, sublis 可以同时执行多个 subst 操作.
+        sublis 查找树 tree 中的所有子树和叶; 如果一个子树或叶作为关联列表 alist 中的一个键出现 (这也就是说, 这个键和这个子树或叶满足这个测试条件[satisfy the test]), 那么它就会被和那个键关联的对象[object]所替换. 这个操作是非破坏性的. 实际上, sublis 可以同时执行多个 subst 操作.
 
-        如果 sublis 成功了, 一个树 tree 的新的拷贝会被返回, 其中每个出现的这样的子树或叶都会被它关联的对象所替代. 如果没有做出改变, 返回原始的树. 原始的树保持不修改, 但是产生的树可能和它共享 cell.
+        如果 sublis 成功了, 一个树 tree 的新的拷贝会被返回, 其中每个出现的这样的子树或叶都会被它关联的对象[object]所替代. 如果没有做出改变, 返回原始的树. 原始的树保持不修改, 但是产生的树可能和它共享存储格(cell).
 
         nsublis 允许去修改树 tree, 否则就返回和 sublis 一样的值.
 
@@ -746,20 +746,22 @@
 
 * 也见(See Also):
 
-        subst, 章节 3.2.1 (Compiler Terminology), 章节 3.6 (Traversal Rules and Side Effects)
+        subst, 章节 3.2.1 (编译器术语), 章节 3.6 (遍历规则和副作用)
 
 * 注意(Notes):
 
         这个 :test-not 参数被废弃了.
 
-        由于那些副作用变体 (e.g., nsublis) 潜在地改变了它要经过的路径, 它们对共享或环状结构的影响可能会以令人惊讶的方式不同于它们的无副作用替代方案. 为了看到这个, 细想下面这个带副作用的行为, 它可能被某些具体实现展示:
+        由于那些副作用变体 (例如, nsublis) 潜在地改变了它要经过的路径, 它们对共享或环状结构的影响可能会以令人惊讶的方式不同于它们的无副作用替代方案. 为了看到这个, 细想下面这个带副作用的行为, 它可能被某些具体实现展示:
 
-        (defun test-it (fn)
-          (let* ((shared-piece (list 'a 'b))
-                  (data (list shared-piece shared-piece)))
-            (funcall fn '((a . b) (b . a)) data)))
-        (test-it #'sublis) =>  ((B A) (B A))
-        (test-it #'nsublis) =>  ((A B) (A B))
+    ```LISP
+    (defun test-it (fn)
+      (let* ((shared-piece (list 'a 'b))
+              (data (list shared-piece shared-piece)))
+        (funcall fn '((a . b) (b . a)) data)))
+    (test-it #'sublis) =>  ((B A) (B A))
+    (test-it #'nsublis) =>  ((A B) (A B))
+    ```
 
 
 ### <span id="F-SUBST-ALL">函数 SUBST, SUBST-IF, SUBST-IF-NOT, NSUBST, NSUBST-IF, NSUBST-IF-NOT</span>
@@ -780,28 +782,28 @@
 
 * 参数和值(Arguments and Values):
 
-        new---一个对象.
-        old---一个对象.
-        predicate---命名一个函数的符号或者一个返回广义 boolean 值的单参数函数.
-        tree---一个树.
-        test---一个返回一个广义 boolean 的两参数函数的标识符.
-        test-not---一个返回一个广义 boolean 的两参数函数的标识符.
-        key---一个单参数函数的标识符, 或者 nil.
+        new---一个对象[object].
+        old---一个对象[object].
+        predicate---命名一个函数[function]的符号[symbol]或者一个返回广义 boolean [generalized boolean]值的单参数函数[function].
+        tree---一个树[tree].
+        test---返回一个广义 boolean [generalized boolean]的两实参[argument]函数[function]的标识符[designator].
+        test-not---返回一个广义 boolean [generalized boolean]的两实参[argument]函数[function]的标识符[designator].
+        key---一个单参数函数[function]的标识符[designator], 或者 nil.
         new-tree---一个树.
 
 * 描述(Description):
 
-        subst, subst-if, 和 subst-if-not 在树 tree 上执行替换操作. 每个函数都搜索树 tree, 以查找满足测试条件 test 的某个元素或子表达式的某个旧项的出现.
+        subst, subst-if, 和 subst-if-not 在树 tree 上执行替换操作. 每个函数都搜索树 tree, 以查找满足测试条件[satisfy the test]的某个元素或子表达式的某个旧项 old 的出现.
 
-        nsubst, nsubst-if, 和 nsubst-if-not 分别类似于 subst, subst-if, 和 subst-if-not, 除了原始的树会被修改.
+        nsubst, nsubst-if, 和 nsubst-if-not 分别类似于 subst, subst-if, 和 subst-if-not, 除了原始的树 tree 会被修改.
 
-        subst 做一份树 tree 的拷贝, 用新的 new 替换树 tree 中每一个旧值 old 和满足测试条件 test 的子树和叶 (不管那个子树和叶是它的父节点的 car 还是 cdr).
+        subst 做一份树 tree 的拷贝, 用新的 new 替换树 tree 中每一个旧值为 old 和满足测试条件[satisfy the test]的子树和叶 (不管那个子树和叶是它的父节点的 car 还是 cdr).
 
-        nsubst 是 subst 的一个破坏性版本. 树 tree 的列表结构会被破坏性地替换, 用新值 new 替换树 tree 中的旧值 old 和满足测试条件 test 的叶.
+        nsubst 是 subst 的一个破坏性版本. 树 tree 的列表结构会被破坏性地替换, 用新值 new 替换树 tree 中的旧值为 old 和满足测试条件 test 的叶.
 
-        对于 subst, subst-if, 和 subst-if-not, 如果这些函数成功了, 这个树 tree 的一个新的拷贝会被返回, 其中每一个这样的元素的出现都被替换成那个新的元素或子表达式. 如果没有发生变化, 返回原始的树. 原始的树保持不变, 但是产生的树可能和它共享存储.
+        对于 subst, subst-if, 和 subst-if-not, 如果这些函数成功了, 这个树 tree 的一个新的拷贝会被返回, 其中每一个这样的元素的出现都被替换成那个新的元素 new 或子表达式. 如果没有发生变化, 返回原始的树 tree. 原始的树 tree 保持不变, 但是产生的树可能和它共享存储.
 
-        对于 nsubst, nsubst-if, 和 nsubst-if-not 原始的树会被修改并作为这个函数的结果返回, 但是结果可能和树 tree 是 eq 的.
+        对于 nsubst, nsubst-if, 和 nsubst-if-not 原始的树 tree 会被修改并作为这个函数的结果返回, 但是结果可能和树 tree 不是 eq 的.
 
 * 示例(Examples):
 
@@ -832,7 +834,7 @@
 
 * 副作用(Side Effects):
 
-        nsubst, nsubst-if, 和 nsubst-if-not 可能修改树 tree 的树结构.
+        nsubst, nsubst-if, 和 nsubst-if-not 可能修改树 tree 的树结构[tree structure].
 
 * 受此影响(Affected By): None.
 
@@ -840,7 +842,7 @@
 
 * 也见(See Also):
 
-        substitute, nsubstitute, 章节 3.2.1 (Compiler Terminology), 章节 3.6 (Traversal Rules and Side Effects)
+        substitute, nsubstitute, 章节 3.2.1 (编译器术语), 章节 3.6 (遍历规则和副作用)
 
 * 注意(Notes):
 
@@ -850,17 +852,19 @@
 
         subst 的一个可能的定义:
 
-        (defun subst (old new tree &rest x &key test test-not key)
-          (cond ((satisfies-the-test old tree :test test
-                                      :test-not test-not :key key)
-                  new)
-                ((atom tree) tree)
-                (t (let ((a (apply #'subst old new (car tree) x))
-                          (d (apply #'subst old new (cdr tree) x)))
-                      (if (and (eql a (car tree))
-                              (eql d (cdr tree)))
-                          tree
-                          (cons a d))))))
+    ```LISP
+    (defun subst (old new tree &rest x &key test test-not key)
+      (cond ((satisfies-the-test old tree :test test
+                                  :test-not test-not :key key)
+              new)
+            ((atom tree) tree)
+            (t (let ((a (apply #'subst old new (car tree) x))
+                      (d (apply #'subst old new (cdr tree) x)))
+                  (if (and (eql a (car tree))
+                          (eql d (cdr tree)))
+                      tree
+                      (cons a d))))))
+    ```
 
 
 ### <span id="F-TREE-EQUAL">函数 TREE-EQUAL</span>
@@ -871,17 +875,17 @@
 
 * 参数和值(Arguments and Values):
 
-        tree-1---一个树.
-        tree-2---一个树.
-        test---一个返回一个广义 boolean 的两参数函数的标识符.
-        test-not---一个返回一个广义 boolean 的两参数函数的标识符.
-        generalized-boolean---一个广义 boolean.
+        tree-1---一个树[tree].
+        tree-2---一个树[tree].
+        test---一个返回一个广义 boolean [generalized boolean]的两实参[argument]函数[function]的标识符[designator].
+        test-not---一个返回一个广义 boolean [generalized boolean]的两实参[argument]函数[function]的标识符[designator].
+        generalized-boolean---一个广义 boolean [generalized boolean].
 
 * 描述(Description):
 
-        tree-equal 测试两个树是否是相同的形状并且有着相同的叶. 如果 tree-1 和 tree-2 都是原子并且满足测试条件 test, 或者它们都是 cons 并且 tree-1 的 car 和 tree-2 的 car 是 tree-equal 的而 tree-1 的 cdr 和 tree-2 的 cdr 也是 tree-equal 的, 那么 tree-equal 返回 true. 否则, tree-equal 返回 false.
+        tree-equal 测试两个树是否是相同的形状并且有着相同的叶. 如果 tree-1 和 tree-2 都是原子[atom]并且满足测试条件[satisfy the test], 或者它们都是 cons 并且 tree-1 的 car 和 tree-2 的 car 是 tree-equal 的而 tree-1 的 cdr 和 tree-2 的 cdr 也是 tree-equal 的, 那么 tree-equal 返回 true. 否则, tree-equal 返回 false.
 
-        tree-equal 递归地比较 cons 而不是其他有成分的对象.
+        tree-equal 递归地比较 cons 而不是其他有成分的对象[object].
 
         给 :test 或 :test-not 函数的第一个参数是 tree-1 或者 tree-1 的一个 car 或 cdr; 第二个参数是 tree-2 或 tree-2 的一个 car 或 cdr.
 
@@ -908,7 +912,7 @@
 
 * 也见(See Also):
 
-        equal, 章节 3.6 (Traversal Rules and Side Effects)
+        equal, 章节 3.6 (遍历规则和副作用)
 
 * 注意(Notes):
 
@@ -922,14 +926,14 @@
 
 * 参数和值(Arguments and Values):
 
-        list---一个 proper 列表或者一个点列表.
-        copy---一个列表.
+        list---一个正规列表[proper list]或者一个点列表[dotted list].
+        copy---一个列表[list].
 
 * 描述(Description):
 
-        返回列表 list 的一个拷贝. 如果列表 list 是一个点列表, 那么产生的列表也是一个点列表.
+        返回列表 list 的一个拷贝[copy]. 如果列表 list 是一个点列表[dotted list], 那么产生的列表[list]也是一个点列表[dotted list].
 
-        只有列表 list 的列表结构被拷贝; 产生的列表中的元素和给定列表 list 中的对应元素相同.
+        只有列表 list 的列表结构[list struct]被拷贝; 产生的列表中的元素[element]和给定列表 list 中的对应元素[element]相同.
 
 * 示例(Examples):
 
@@ -955,7 +959,7 @@
 
 * 异常情况(Exceptional Situations):
 
-        如果列表 list 是一个环状列表那么后果是未定义的.
+        如果列表 list 是一个环状列表[circular list]那么后果是未定义的.
 
 * 也见(See Also):
 
@@ -976,19 +980,19 @@
 
 * 参数和值(Arguments and Values):
 
-        object---一个对象.
-        list---一个列表.
-        result---一个对象.
+        object---一个对象[object].
+        list---一个列表[list].
+        result---一个对象[object].
 
 * 描述(Description):
 
-        list 返回一个包含提供的那些对象 objects 的列表.
+        list 返回一个包含提供的那些对象 objects 的列表[list].
 
-        list* 类似于 list, 除了给 list 的最后一个参数为构造的最后一个 cons 的 car, 而给 list* 的最后一个参数是构造的最后一个 cons 的cdr. 因此, 任何给定的对 list* 的调用总是产生比相同数量参数的 list 调用少一个 cons.
+        list* 类似于 list, 除了给 list 的最后一个实参[argument]为构造的最后一个 cons 的 car, 而给 list* 的最后一个实参[argument]是构造的最后一个 cons 的 cdr. 因此, 任何给定的对 list* 的调用总是产生比相同数量参数的 list 调用少一个 cons.
 
-        如果给 list* 的最后一个参数是一个列表, 那么效果就是构造一个新的相似的列表, 但是有着额外元素被添加到前面, 这些元素和 list* 的前面参数对应.
+        如果给 list* 的最后一个实参[argument]是一个列表[list], 那么效果就是构造一个新的相似的列表[list], 但是有着额外元素被添加到前面, 这些元素和 list* 的前面实参[argument]对应.
 
-        如果 list* 只接收到一个对象 object, 那么返回那个对象 object, 不管它是否为一个列表.
+        如果 list* 只接收到一个对象 object, 那么返回那个对象 object, 不管它是否为一个列表[list].
 
 * 示例(Examples):
 
@@ -1031,12 +1035,12 @@
 
 * 参数和值(Arguments and Values):
 
-        list---一个 proper 列表或一个环状列表.
-        length---一个非负整数, 或者 nil.
+        list---一个正规列表[proper list]或一个环状列表[circular list].
+        length---一个非负整数[integer], 或者 nil.
 
 * 描述(Description):
 
-        如果列表 list 是一个 proper 列表就返回这个列表 list 的长度. 如果列表 list 是一个环状列表就返回 nil.
+        如果列表 list 是一个正规列表[proper list]就返回这个列表 list 的长度[length]. 如果列表 list 是一个环状列表[circular list]就返回 nil.
 
 * 示例(Examples):
 
@@ -1059,7 +1063,7 @@
 
 * 异常情况(Exceptional Situations):
 
-        如果 list 不是一个 proper 列表或者一个环状列表, 那么应该发出一个 type-error 类型的错误.
+        如果 list 不是一个正规列表[proper list]或者一个环状列表[circular list], 那么应该发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
@@ -1069,22 +1073,23 @@
 
         list-length 可以通过以下方式来实现:
 
-        (defun list-length (x)  
-          (do ((n 0 (+ n 2))           ;Counter.
-                (fast x (cddr fast))    ;Fast pointer: leaps by 2.
-                (slow x (cdr slow)))    ;Slow pointer: leaps by 1.
-              (nil)
-            ;; If fast pointer hits the end, return the count.
-            (when (endp fast) (return n))
-            (when (endp (cdr fast)) (return (+ n 1)))
-            ;; If fast pointer eventually equals slow pointer,
-            ;;  then we must be stuck in a circular list.
-            ;; (A deeper property is the converse: if we are
-            ;;  stuck in a circular list, then eventually the
-            ;;  fast pointer will equal the slow pointer.
-            ;;  That fact justifies this implementation.)
-            (when (and (eq fast slow) (> n 0)) (return nil))))
- 
+    ```LISP
+    (defun list-length (x)  
+      (do ((n 0 (+ n 2))           ;Counter.
+            (fast x (cddr fast))    ;Fast pointer: leaps by 2.
+            (slow x (cdr slow)))    ;Slow pointer: leaps by 1.
+          (nil)
+        ;; If fast pointer hits the end, return the count.
+        (when (endp fast) (return n))
+        (when (endp (cdr fast)) (return (+ n 1)))
+        ;; If fast pointer eventually equals slow pointer,
+        ;;  then we must be stuck in a circular list.
+        ;; (A deeper property is the converse: if we are
+        ;;  stuck in a circular list, then eventually the
+        ;;  fast pointer will equal the slow pointer.
+        ;;  That fact justifies this implementation.)
+        (when (and (eq fast slow) (> n 0)) (return nil))))
+    ```
 
 ### <span id="F-LISTP">函数 LISTP</span>
 
@@ -1094,12 +1099,12 @@
 
 * 参数和值(Arguments and Values):
 
-        object---一个对象.
-        generalized-boolean---一个广义 boolean.
+        object---一个对象[object].
+        generalized-boolean---一个广义 boolean [generalized boolean].
 
 * 描述(Description):
 
-        如果对象 object 是 list 类型就返回 true; 否则, 返回 false.
+        如果对象 object 是 list 类型[type]就返回 true; 否则, 返回 false.
 
 * 示例(Examples):
 
@@ -1122,7 +1127,7 @@
 
 * 注意(Notes):
 
-        如果对象 object 是一个 cons, listp 不会检查对象 object 是否为一个 proper 列表; 对于任何种类的列表它都返回 true.
+        如果对象 object 是一个 cons, listp 不会检查对象 object 是否为一个正规列表[proper list]; 对于任何种类的列表[list]它都返回 true.
 
         (listp object) ==  (typep object 'list) ==  (typep object '(or cons null))
 
@@ -1135,13 +1140,13 @@
 
 * 参数和值(Arguments and Values):
 
-        size---一个非负整数.
-        initial-element---一个对象. 默认是 nil.
-        list---一个列表.
+        size---一个非负整数[integer].
+        initial-element---一个对象[object]. 默认是 nil.
+        list---一个列表[list].
 
 * 描述(Description):
 
-        返回长度为给定大小 size 的列表, 其中每一个元素都是初始化元素 initial-element.
+        返回长度为给定大小 size 的列表[list], 其中每一个元素[element]都是初始化元素 initial-element.
 
 * 示例(Examples):
 
@@ -1159,7 +1164,7 @@
 
 * 异常情况(Exceptional Situations):
 
-        如果 size 不是一个非负整数, 那么应该发出一个 type-error 类型的错误.
+        如果 size 不是一个非负整数[integer], 那么应该发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
@@ -1175,15 +1180,15 @@
 
 * 参数和值(Arguments and Values):
 
-        item---一个对象.
-        place---一个 place, 它的值可能是任何对象.
-        new-place-value---一个列表 (这个 place 的新值).
+        item---一个对象[object].
+        place---一个位置[place], 它的值[value]可能是任何对象[object].
+        new-place-value---一个列表[list] (这个 place 的新值[value]).
 
 * 描述(Description):
 
-        push 在存储在 place 的列表前面加上 item, 把产生的列表存储到, 然后返回那个列表.
+        push 在存储在 place 的列表[list]前面加上 item, 把产生的列表[list]存储到 place, 然后返回那个列表[list].
 
-        关于 place 的子表达式形式求值的信息, 见章节 5.1.1.1 (Evaluation of Subforms to Places).
+        关于 place 的子表达式形式[subform]求值[evaluation]的信息, 见章节 5.1.1.1 (位置的子表达式形式求值).
 
 * 示例(Examples):
 
@@ -1208,7 +1213,7 @@
 
 * 也见(See Also):
 
-        pop, pushnew, 章节 5.1 (Generalized Reference)
+        pop, pushnew, 章节 5.1 (广义引用)
 
 * 注意(Notes):
 
@@ -1216,7 +1221,7 @@
 
         (setf place (cons item place))
 
-        除了这个 place 的子表达式形式只被求值一次, 并且这个 item 在 place 之前被求值. 
+        除了这个 place 的子表达式形式[subform]只被求值一次, 并且这个 item 在 place 之前被求值. 
 
 ### <span id="M-POP">宏 POP</span>
 
@@ -1226,14 +1231,14 @@
 
 * 参数和值(Arguments and Values):
 
-        place---一个 place, 它的值是一个列表 (可能, 但不是必须, 是一个点列表或环状列表).<!--TODO 原文好像有问题-->
-        element---一个对象 (这个 place 的内容的 car).
+        place---一个位置[place], 它的值[value]是一个列表[list] (可能, 但不是必须, 是一个点列表[dotted list]或环状列表[circular]).
+        element---一个对象[object] (这个 place 的内容的 car).
 
 * 描述(Description):
 
-        pop 读取 place 的值, 记住获取到的列表的 car, 把这个列表的 cdr 写回到那个 place 中, 并且最后产生这个原始获取的列表的 car 部分.
+        pop 读取[read] place 的值[value], 记住获取到的列表的 car, 把这个列表[list]的 cdr 写[write]回到那个 place 中, 并且最后产生[yield]这个原始获取的列表[list]的 car 部分.
 
-        关于 place 的子表达式形式求值的信息, 见章节 5.1.1.1 (Evaluation of Subforms to Places).
+        关于 place 的子表达式形式[subform]求值[evaluation]的信息, 见章节 5.1.1.1 (位置的子表达式形式求值).
 
 * 示例(Examples):
 
@@ -1256,7 +1261,7 @@
 
 * 也见(See Also):
 
-        push, pushnew, 章节 5.1 (Generalized Reference)
+        push, pushnew, 章节 5.1 (广义引用)
 
 * 注意(Notes):
 
@@ -1264,7 +1269,7 @@
 
         (prog1 (car place) (setf place (cdr place)))
 
-        除了后面的可能会求值 place 中的任意子表达式形式三次, 而 pop 只求值它们一次. 
+        除了后面的可能会求值 place 中的任意子表达式形式[subform]三次, 而 pop 只求值它们一次. 
 
 
 ### <span id="A-FSTFFSSENT">访问器 FIRST, SECOND, THIRD, FOURTH, FIFTH, SIXTH, SEVENTH, EIGHTH, NINTH, TENTH</span>
@@ -1313,12 +1318,12 @@
 
 * 参数和值(Arguments and Values):
 
-        list---一个列表, 它可能是一个点列表或者一个环状列表.
-        object, new-object---一个对象.
+        list---一个列表[list], 它可能是一个点列表[dotted list]或者一个环状列表[circular list].
+        object, new-object---一个对象[object].
 
 * 描述(Description):
 
-        函数 first, second, third, fourth, fifth, sixth, seventh, eighth, ninth, 和 tenth 分别访问列表 list 的第一, 第二, 第三, 第四, 第五, 第六, 第七, 第八, 第九, 和第十的元素. 具体地说,
+        函数 first, second, third, fourth, fifth, sixth, seventh, eighth, ninth, 和 tenth 分别访问列表 list 的第一, 第二, 第三, 第四, 第五, 第六, 第七, 第八, 第九, 和第十的元素[element]. 具体地说,
 
         (first list)    ==   (car list)
         (second list)   ==   (car (cdr list))
@@ -1331,7 +1336,7 @@
         (ninth list)    ==   (car (cddddr (cddddr list)))
         (tenth list)    ==   (car (cdr (cddddr (cddddr list))))
 
-        setf 也可以和这些函数中的任何一个一起使用来改变一个已存在的成分. 应用相同的等式. 比如:
+        setf 也可以和这些函数中的任何一个一起使用来改变一个已存在的成分. 应用相同的等价性. 比如:
 
         (setf (fifth list) new-object) ==  (setf (car (cddddr list)) new-object)
 
@@ -1378,10 +1383,10 @@
 
 * 参数和值(Arguments and Values):
 
-        n---一个非负整数.
-        list---一个列表, 它可能是一个点列表或一个环状列表.
-        object---一个对象.
-        new-object---一个对象.
+        n---一个非负整数[integer].
+        list---一个列表[list], 它可能是一个点列表[dotted list]或一个环状列表[circular list].
+        object---一个对象[object].
+        new-object---一个对象[object].
 
 * 描述(Description):
 
@@ -1424,12 +1429,12 @@
 
 * 参数和值(Arguments and Values):
 
-        list---一个列表, 它可能是一个点列表或一个环状列表.
-        generalized-boolean---一个广义 boolean.
+        list---一个列表[list], 它可能是一个点列表[dotted list]或一个环状列表[circular list].
+        generalized-boolean---一个广义 boolean [generalized boolean].
 
 * 描述(Description):
 
-        如果列表 list 是一个空列表就返回 true. 如果列表 list 是一个 cons 就返回 false.
+        如果列表 list 是一个空列表[empty list]就返回 true. 如果列表 list 是一个 cons 就返回 false.
 
 * 示例(Examples):
 
@@ -1451,7 +1456,7 @@
 
 * 注意(Notes):
 
-        endp 的目的是测试 proper 列表的结束. 由于 endp 不会进入到一个 cons 中, 所以明确定义了传递给它点列表的情况. 然而, 如果通过在一个点列表上反复调用 cdr 来产生更短的"列表"并且使用 endp 来测试这些"列表", 当这个非 nil 的原子最终称为给 endp 的参数时, 最后会产生一个有着不确定后果的情况. 由于这是使用 endp 的常用方法, 所以它是保守的编程风格, 并且与 endp 的意图一致, 即把 endp 当作一个在 proper 列表上的函数, 而不是强制执行一个参数类型的适当列表, 除非参数是原子的. 由于这是 endp 被使用的常见方式, 把 endp 当作一个在 proper 列表上调用的并且除了参数为原子类型以外不会强制参数为 proper 列表类型的函数是一个保守的编程风格并且和 endp 的意图一致.
+        endp 的目的是测试正规列表的结束. 由于 endp 不会进入到一个 cons 中, 所以明确定义了传递给它点列表[dotted list]的情况. 然而, 如果通过在一个点列表[dotted list]上反复调用 cdr 来产生更短的"列表"并且使用 endp 来测试这些"列表", 当这个非 nil [non-nil]的原子[atom] (它事实上不是一个列表[list]) 最终称为给 endp 的参数时, 最后会产生一个有着不确定后果的情况. 由于这是使用 endp 的常用方式, 所以它是保守的编程风格, 并且与 endp 的意图一致, 即把 endp 当作一个在正规列表[proper list]上的函数, 而不是强制执行一个参数类型的正规列表[proper list], 除非参数是原子的[atomic]. 
 
 
 ### <span id="F-NULL">函数 NULL</span>
@@ -1462,12 +1467,12 @@
 
 * 参数和值(Arguments and Values):
 
-        object---一个对象.
+        object---一个对象[object].
         boolean---一个 boolean.
 
 * 描述(Description):
 
-        如果对象是一个空列表就返回 t; 否则, 返回 nil.
+        如果对象 object 是一个空列表[empty list]就返回 t; 否则, 返回 nil.
 
 * 示例(Examples):
 
@@ -1490,7 +1495,7 @@
 
 * 注意(Notes):
 
-        null 意图在于测试空列表而 not 意图在于反转一个 boolean (或广义的 boolean). 操作上, null 和 not 计算出相同的结果; 使用哪一个是风格的问题.
+        null 意图在于测试空列表[empty list]而 not 意图在于反转一个 boolean (或广义的 boolean [generalized boolean]). 操作上, null 和 not 计算出相同的结果; 使用哪一个是风格的问题.
 
         (null object) ==  (typep object 'null) ==  (eq object '())
 
@@ -1503,12 +1508,12 @@
 
 * 参数和值(Arguments and Values):
 
-        list---除了最后一个的没一个都必须是一个列表 (它可能是一个点列表但一定不是一个环状列表); 最后的 list 可以是任何对象.
-        concatenated-list---一个列表.
+        list---除了最后一个的每个都必须是一个列表[list] (它可能是一个点列表[dotted list]但一定不是一个环状列表[circular list]); 最后的 list 可以是任何对象[object].
+        concatenated-list---一个列表[list].
 
 * 描述(Description):
 
-        返回这些列表 lists 的一个串接列表. 如果没有提供列表 lists, (nconc) 返回 nil. nconc 使用以下递归关系来定义:
+        返回这些列表 lists 的一个串接列表[list]. 如果没有提供列表 lists, (nconc) 返回 nil. nconc 使用以下递归关系来定义:
 
         (nconc) =>  ()
         (nconc nil . lists) ==  (nconc . lists)
@@ -1526,7 +1531,7 @@
     x =>  (A B C D E F)
     ```
 
-        注意, 在这个例子中, 现在那个 x 的值是不同的, 因为它的最后一个 cons 已经被 rplacd 为 y 的值. 如果 (nconc x y) 被再一次求值, 它会产生一个环状列表, 它的打印表示会是 (A B C D E F D E F D E F ...), 一直重复; 如果这个 *print-circle* 开关不是 nil, 它会被打印为 (A B C . #1=(D E F . #1#)).
+        注意, 在这个例子中, 现在那个 x 的值是不同的, 因为它的最后一个 cons 已经被 rplacd 为 y 的值. 如果 (nconc x y) 被再一次求值, 它会产生一个环状列表[circular list], 它的打印表示会是 (A B C D E F D E F D E F ...), 一直重复; 如果这个 *print-circle* 开关不是 nil, 它会被打印为 (A B C . #1=(D E F . #1#)).
 
     ```LISP
     (setq foo (list 'a 'b 'c 'd 'e)
@@ -1569,12 +1574,12 @@
 
 * 参数和值(Arguments and Values):
 
-        list---除了最后一个以外的每一个都必须是一个 proper 列表, 最后一个可能是任何对象.
-        result---一个对象. 这个会是一个列表, 除非最后一个 list 不是一个列表并且所有前面的 lists 都是 null.
+        list---除了最后一个以外的每一个都必须是一个正规列表[proper list], 最后一个可能是任何对象[object].
+        result---一个对象[object]. 这个会是一个列表[list], 除非最后一个 list 不是一个列表[list]并且所有前面的 lists 都是 null.
 
 * 描述(Description):
 
-        append 返回一个由那些列表 lists 拼接而成的一个新列表. 那些列表 lists 保持不变; 这些列表 lists 中除了最后一个以外的每一个的列表结构都会被拷贝. 最后一个参数不会被拷贝; 它称为前面那些列表 lists 拼接后的最后一个点对的cdr, 如果前面没有非空列表就直接返回.
+        append 返回一个由那些列表 lists 的拷贝拼接而成的一个新列表. 那些列表 lists 保持不变; 这些列表 lists 中除了最后一个以外的每一个的列表结构[list struct]都会被拷贝. 最后一个参数不会被拷贝; 它成为前面那些列表 lists 拼接后的最后一个点对[dotted pair]的 cdr, 如果前面没有非空[non-empty]列表就直接返回.
 
 * 示例(Examples):
 
@@ -1608,17 +1613,17 @@
 
 * 参数和值(Arguments and Values):
 
-        list---一个 proper 列表.
-        tail---一个对象.
-        result-list---一个对象.
+        list---一个正规列表[proper list].
+        tail---一个对象[object].
+        result-list---一个对象[object].
 
 * 描述(Description):
 
-        revappend 构造一个列表 list 的拷贝, 但是其中的元素是以相反的顺序. 它接下来追加 (就像是通过 nconc) 那个 tail 给那个反转后的列表并返回那个结果.
+        revappend 构造一个列表 list 的拷贝[copy[2]], 但是其中的元素[element]是以相反的顺序. 它接下来追加 (就像是通过 nconc) 那个 tail 到那个反转后的列表并返回那个结果.
 
-        nreconc 反转在列表 list 中的顺序 (就像是通过 nreverse). 它接下来追加 (就像是通过 nconc) 那个 tail 给那个反转后的列表并返回那个结果.
+        nreconc 反转在列表 list 中元素[element]的顺序 (就像是通过 nreverse). 它接下来追加 (就像是通过 nconc) 那个 tail 给那个反转后的列表并返回那个结果.
 
-        产生的列表和 tail 共享列表结构.
+        产生的列表[list]和 tail 共享列表结构[list structure].
 
 * 示例(Examples):
 
@@ -1652,7 +1657,7 @@
 
 * 副作用(Side Effects):
 
-        revappend 不会修改它的参数中的任何一个. nreconc 允许去修改列表 list 但是不能修改 tail.
+        revappend 不会修改它的任何一个实参[argument]. nreconc 允许去修改列表 list 但是不能修改 tail.
 
         虽然它可能被不同地实现, nreconc 被限制为有着和下面这个等价的副作用行为:
 
@@ -1668,7 +1673,7 @@
 
 * 注意(Notes):
 
-        下面这些功能性等价是对的, 虽然好的实现通常使用一个更快的算法来取得相同的效果:
+        下面这些功能等价性是对的, 虽然好的实现[implementation]通常使用一个更快的算法来取得相同的效果:
 
         (revappend list tail) ==  (nconc (reverse list) tail)
         (nreconc list tail) ==  (nconc (nreverse list) tail)
@@ -1684,15 +1689,15 @@
 
 * 参数和值(Arguments and Values):
 
-        list---一个列表, 它可能是一个点列表单一定不是一个环状列表.
-        n---一个非负整数.
-        result-list---一个列表.
+        list---一个列表[list], 它可能是一个点列表[dotted list]但一定不是一个环状列表[circular list].
+        n---一个非负整数[integer].
+        result-list---一个列表[list].
 
 * 描述(Description):
 
         butlast 返回列表 list 的一个拷贝, 其中最后 n 个 cons 会被省略. 如果 n 没有被提供, 它的值就是 1. 如果在列表 list 中的 cons 少于 n 个, 返回 nil, 并且在 nbutlast 的情况中, 列表 list 不会被修改.
 
-        nbutlast 类似于 butlast, 但是 nbutlast 可以修改列表 list. 它改变从这个列表 list 结尾开始的 n+1 个 cons 的 cdr 为 nil.
+        nbutlast 类似于 butlast, 但是 nbutlast 可以修改列表 list. 它把这个列表 list 从结尾开始的 n+1 个 cons 的 cdr 改变为 nil.
 
 * 示例(Examples):
 
@@ -1721,7 +1726,7 @@
 
 * 异常情况(Exceptional Situations):
 
-        如果 list 不是一个 proper 列表或一个点列表那么应该发出一个 type-error 类型的错误. 如果 n 不是一个非负整数那么应该发出一个 type-error 类型的错误.
+        如果 list 不是一个正规列表[proper list]或一个点列表[dotted list]那么应该发出一个 type-error 类型[type]的错误. 如果 n 不是一个非负整数[integer]那么应该发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also): None.
 
@@ -1738,15 +1743,15 @@
 
 * 参数和值(Arguments and Values):
 
-        list---一个列表, 它可能是一个点列表单一定不是一个环状列表.
-        n---一个非负整数. 默认是 1.
-        tail---一个对象.
+        list---一个列表[list], 它可能是一个点列表[dotted list]但一定不是一个环状列表[circular list].
+        n---一个非负整数[integer]. 默认是 1.
+        tail---一个对象[object].
 
 * 描述(Description):
 
         last 返回列表 list 的最后 n 个 cons (不是最后 n 个元素). 如果列表 list 是 (), last 返回 ().
 
-        如果 n 是 0, 那么终止这个列表 list 的原子会被返回. 如果 n 大于或等于列表 list 中的 cons cell 的数量, 那么结果就是那个列表 list.
+        如果 n 是 0, 那么终止这个列表 list 的原子会被返回. 如果 n 大于或等于列表 list 中的 cons 存储格的数量, 那么结果就是那个列表 list.
 
 * 示例(Examples):
 
@@ -1778,7 +1783,7 @@
 
 * 异常情况(Exceptional Situations):
 
-        如果列表 list 是一个环状列表那么后果是未定义的. 如果 n 不是一个非负整数那么应该发出一个 type-error 类型的错误.
+        如果列表 list 是一个环状列表[circular list]那么后果是未定义的. 如果 n 不是一个非负整数[integer]那么应该发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
@@ -1807,16 +1812,16 @@
 
 * 参数和值(Arguments and Values):
 
-        list---一个列表, 它可能是一个点列表.
-        object---一个对象.
-        result-list---一个列表.
-        generalized-boolean---一个广义 boolean.
+        list---一个列表[list], 它可能是一个点列表[dotted list].
+        object---一个对象[object].
+        result-list---一个列表[list].
+        generalized-boolean---一个广义 boolean [generalized boolean].
 
 * 描述(Description):
 
-        如果对象 object 和 list 的末端相同, tailp 返回 true; 否则, 它返回 false.
+        如果对象 object 和 list 的末端[tail]相同[same], tailp 返回 true; 否则, 它返回 false.
 
-        如果对象 object 和 list 的末端相同, ldiff 返回一个包含列表 list 中在 object 之前的列表元素的新的列表; 否则, 它返回列表 list 的一个拷贝.
+        如果对象 object 和 list 的末端[tail]相同[same], ldiff 返回一个包含列表 list 的列表结构[list structure]中在 object 之前的列表[list]元素[element]的新的[fresh]列表[list]; 否则, 它返回列表 list 的一个拷贝[copy[2]].
 
 * 示例(Examples):
 
@@ -1855,13 +1860,13 @@
 
 * 副作用(Side Effects):
 
-        不管是 ldiff 函数 tailp 都不会修改它的参数中的任何一个.
+        不管是 ldiff 函数 tailp 都不会修改它的任何一个实参[argument].
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-        如果 list 不是一个 proper 列表或者一个点列表那么应该发出一个 type-error 类型的错误.
+        如果 list 不是一个正规列表[proper list]或者一个点列表[dotted list]那么应该发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
@@ -1869,25 +1874,29 @@
 
 * 注意(Notes):
 
-        如果列表 list 是一个环状列表, 当且仅当给定对象 object 是 list 的一个末端时 tailp 会确实地产生一个值. 否则, 后果是未指定的: 一个给定的检测环状的实现一定返回 false, 但是由于一个实现没有义务去检测这样一种情况, 所以 tailp 可能会在不返回的情况下无限循环.
+        如果列表 list 是一个环状列表[circular list], 当且仅当给定对象 object 是 list 的一个末端[tail]时 tailp 会确实地产生[yield]一个值[value]. 否则, 后果是未指定的: 一个检测环状的给定实现[implementation]必须返回 false, 但是由于一个实现[implementation]没有义务去检测这样一种情况[situation], 所以 tailp 可能会在不返回的情况下无限循环.
 
         tailp 可以通过如下来定义:
 
-        (defun tailp (object list)
-          (do ((list list (cdr list)))
-              ((atom list) (eql list object))
-              (if (eql object list)
-                  (return t))))
+    ```LISP
+    (defun tailp (object list)
+      (do ((list list (cdr list)))
+          ((atom list) (eql list object))
+          (if (eql object list)
+              (return t))))
+    ```
 
         并且 ldiff 可以通过如下来定义:
 
-        (defun ldiff (list object)
-          (do ((list list (cdr list))
-              (r '() (cons (car list) r)))
-              ((atom list)
-              (if (eql list object) (nreverse r) (nreconc r list)))
-            (when (eql object list)
-              (return (nreverse r)))))
+    ```LISP
+    (defun ldiff (list object)
+      (do ((list list (cdr list))
+          (r '() (cons (car list) r)))
+          ((atom list)
+          (if (eql list object) (nreverse r) (nreconc r list)))
+        (when (eql object list)
+          (return (nreverse r)))))
+    ```
 
 
 ### <span id="F-NTHCDR">函数 NTHCDR</span>
@@ -1898,13 +1907,13 @@
 
 * 参数和值(Arguments and Values):
 
-        n---一个非负整数.
-        list---一个列表, 它可能是一个点列表或一个环状列表.
-        tail---一个对象.
+        n---一个非负整数[integer].
+        list---一个列表[list], 它可能是一个点列表[dotted list]或一个环状列表[circular list].
+        tail---一个对象[object].
 
 * 描述(Description):
 
-        返回通过成功调用 n 次 cdr 得到的列表 list 的末端.
+        返回通过成功调用 n 次 cdr 得到的列表 list 的末端[tail].
 
 * 示例(Examples):
 
@@ -1927,15 +1936,16 @@
 
 * 异常情况(Exceptional Situations):
 
-        如果 n 不是一个非负整数那么应该发出一个 type-error 类型的错误.
+        如果 n 不是一个非负整数[integer]那么应该发出一个 type-error 类型[type]的错误.
 
-        对于大于 1 的整数 n, 通过 (nthcdr n list) 完成的错误检测和 (nthcdr (- n 1) (cdr list)) 相同; 见函数 cdr.
+        对于大于 1 的整数 n, 通过 (nthcdr n list) 完成的错误检测和 (nthcdr (- n 1) (cdr list)) 相同; 见函数[function] cdr.
 
 * 也见(See Also):
 
         cdr, nth, rest
 
 * 注意(Notes): None. 
+
 
 ### <span id="A-REST">访问器 REST</span>
 
@@ -1947,12 +1957,12 @@
 
 * 参数和值(Arguments and Values):
 
-        list---一个列表, 它可能是一个点列表或一个环状列表.
-        tail---一个对象.
+        list---一个列表[list], 它可能是一个点列表[dotted list]或一个环状列表[circular list].
+        tail---一个对象[object].
 
 * 描述(Description):
 
-        rest 执行和 cdr 相同的操作, 但是首先进行记忆补充. 具体来说,
+        rest 执行和 cdr 相同的操作, 但是记忆上与 first 互补. 具体来说,
 
         (rest list) ==  (cdr list)
         (setf (rest list) new-tail) ==  (setf (cdr list) new-tail)
@@ -1980,7 +1990,8 @@
 
 * 注意(Notes):
 
-        当这个参数被主观上视作一个列表而不是一个 cons 时, rest 通常在风格上优于 cdr. 
+        当这个参数被主观上视作一个列表[list]而不是一个 cons 时, rest 通常在风格上优于 cdr. 
+
 
 ### <span id="F-MEMBER-ALL">函数 MEMBER, MEMBER-IF, MEMBER-IF-NOT</span>
 
@@ -1994,19 +2005,19 @@
 
 * 参数和值(Arguments and Values):
 
-        item---一个对象.
-        list---一个 proper 列表.
-        predicate---一个返回一个广义 boolean 的单参数函数的标识符.
-        test---一个返回一个广义 boolean 的两参数函数的标识符.
-        test-not---一个返回一个广义 boolean 的两参数函数的标识符.
-        key---一个单参数函数的标识符, 或者 nil.
-        tail---一个列表.
+        item---一个对象[object].
+        list---一个正规列表[proper list].
+        predicate---返回一个广义 boolean [generalized boolean]的单实参[argument]函数[function]的标识符[designator].
+        test---返回一个广义 boolean [generalized boolean]的两实参[argument]函数[function]的标识符[designator].
+        test-not---返回一个广义 boolean [generalized boolean]的两实参[argument]函数[function]的标识符[designator].
+        key---一个单实参[argument]函数[function]的标识符[designator], 或者 nil.
+        tail---一个列表[list].
 
 * 描述(Description):
 
-        member, member-if, 和 member-if-not 每一个都在列表 list 中搜索 item 或者一个满足测试条件 test 的顶层元素. 给这个断言函数的参数是列表 list 的一个元素.
+        member, member-if, 和 member-if-not 每一个都在列表 list 中搜索 item 或者一个满足测试条件[satisfy the test]的顶层元素. 给这个断言函数 predicate 的参数是列表 list 的一个元素.
 
-        如果某个元素满足这个测试条件 test, 这个列表 list 从这个元素开始到末端的尾部会被返回; 否则返回 nil.
+        如果某个元素满足测试条件[satisfy the test], 这个列表 list 从这个元素开始到末端的尾部会被返回; 否则返回 nil.
 
         只在 list 的顶层搜索.
 
@@ -2030,23 +2041,23 @@
 
 * 异常情况(Exceptional Situations):
 
-        如果 list 不是一个 proper 列表那么应该准备发出一个 type-error 类型的错误.
+        如果 list 不是一个正规列表[proper list]那么应该准备发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
-        find, position, 章节 3.6 (Traversal Rules and Side Effects)
+        find, position, 章节 3.6 (遍历规则和副作用)
 
 * 注意(Notes):
 
         这个 :test-not 参数被废弃了.
 
-        函数 member-if-not 被废弃了.
+        函数[function] member-if-not 被废弃了.
 
         在下面这个中
 
         (member 'a '(g (a y) c a d e a f)) =>  (A D E A F)
 
-        member 返回的值和列表 list 中以 a 开始的部分相同. 因此在 member 的结果上调用 rplaca 可以被用来修改列表 list 中被找到的部分 (假定已经检测了这个 member 没有返回 nil). 
+        member 返回的值和列表[list]中以 a 开始的部分相同[identical]. 因此在 member 的结果上调用 rplaca 可以被用来修改列表[list]中 a 被找到的部分 (假定已经检测了这个 member 没有返回 nil). 
 
 
 ### <span id="F-MAP-ALL">函数 MAPC, MAPCAR, MAPCAN, MAPL, MAPLIST, MAPCON</span>
@@ -2067,32 +2078,32 @@
 
 * 参数和值(Arguments and Values):
 
-        function---一个接受和列表 lists 数量相同参数的函数的标识符.
-        list---一个 proper 列表.
-        list-1---第一个列表 list (它一定是一个 proper 列表).
-        result-list---一个列表.
-        concatenated-results---一个列表.
+        function---接受和列表 lists 数量相同的实参[argument]的函数[function]标识符[designator].
+        list---一个正规列表[proper list].
+        list-1---第一个列表 list (它一定是一个正规列表[proper list]).
+        result-list---一个列表[list].
+        concatenated-results---一个列表[list].
 
 * 描述(Description):
 
-        映射操作应用函数 function 到参数的连续集合上, 其中一个参数是从每一个序列获取而来. 除了 mapc 和 mapl, 结果都包含了函数 function 返回的结果. 在 mapc 和 mapl 的情况下, 产生的序列是列表 list.
+        映射操作应用函数 function 到参数的连续集合上, 其中一个参数是从每一个序列[sequence]获取而来. 除了 mapc 和 mapl, 结果都包含了函数 function 返回的结果. 在 mapc 和 mapl 的情况下, 产生的序列[sequence]是列表 list.
 
-        函数 function 首先在所有索引为 0 的元素上调用, 然后在所有索引为 1 的元素上调用, 以此类推. result-type 指定了产生序列的类型. 如果函数 function 是一个符号, 它被强制转为一个函数就像是通过 symbol-function.
+        函数 function 首先在所有索引为 0 的元素上调用, 然后在所有索引为 1 的元素上调用, 以此类推. result-type 指定了产生序列[sequence]的类型[type]. 如果函数 function 是一个符号[symbol], 它被强制转为[coerce]一个函数[function], 就像是通过 symbol-function 一样.
 
-        mapcar 在列表 lists 的连续元素上操作. 函数 function 被应用于每个列表 list 的第一个元素上, 然后到每个列表 list 的第二个元素上, 以此类推. 这个迭代操作在最短的列表耗尽时终止, 而在其他列表中的过量元素会被忽略. 由 mapcar 返回的值是对函数 function 连续调用的结果组成的列表.
+        mapcar 在那些列表 lists 的连续元素[element]上操作. 函数 function 被应用于每个列表 list 的第一个元素[element]上, 然后到每个列表 list 的第二个元素[element]上, 以此类推. 这个迭代操作在最短的列表耗尽时终止, 而在其他列表中的过量元素会被忽略. 由 mapcar 返回的值是对函数 function 连续调用的结果组成的列表.
 
         mapc 类似于 mapcar 除了应用函数 function 的结果不会被累积. 这个 list 参数会被返回.
 
-        maplist 类似于 mapcar 除了函数 function 被应用于列表 lists 的连续子列表中. 函数  function 首先被应用到这些 lists 自身, 然后被应用到每个列表的 cdr, 然后是每个列表的 cdr 的 cdr, 以此类推.
+        maplist 类似于 mapcar 除了函数 function 被应用于列表 lists 的连续子列表中. 函数 function 首先被应用到这些 lists 自身, 然后被应用到每个列表 list 的 cdr, 然后是每个列表的 cdr 的 cdr, 以此类推.
 
         mapl 类似于 maplist 除了应用函数 function 的结果不会被累积; list-1 会被返回.
 
-        mapcan 和 mapcon 分别类似于 mapcar 和 maplist, 除了应用函数 function 的结果会通过使用 nconc 而不是 list 被组合到一个列表中. 这也就是说,
+        mapcan 和 mapcon 分别类似于 mapcar 和 maplist, 除了应用函数 function 的结果会通过使用 nconc 而不是 list 被组合到一个列表[list]中. 这也就是说,
 
         (mapcon f x1 ... xn)
           ==  (apply #'nconc (maplist f x1 ... xn))
 
-        而 mapcan 和 mapcar 之间的关系类似.
+        并且 mapcan 和 mapcar 之间的关系类似.
 
 * 示例(Examples):
 
@@ -2139,11 +2150,11 @@
 
 * 异常情况(Exceptional Situations):
 
-        如果任何 list 不是一个 proper 列表那么应该准备发出一个 type-error 类型的错误.
+        如果任何 list 不是一个正规列表[proper list]那么应该准备发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
-        dolist, map, 章节 3.6 (Traversal Rules and Side Effects)
+        dolist, map, 章节 3.6 (遍历规则和副作用)
 
 * 注意(Notes): None. 
 
@@ -2156,14 +2167,14 @@
 
 * 参数和值(Arguments and Values):
 
-        key---一个对象.
-        datum---一个对象.
-        alist---一个关联列表.
-        new-alist---一个关联列表.
+        key---一个对象[object].
+        datum---一个对象[object].
+        alist---一个关联列表[association list].
+        new-alist---一个关联列表[association list].
 
 * 描述(Description):
 
-        创建一个新的 cons, 其中的 cdr 是 alist 而 car 是另一个新的 cons, 这个新的 cons 的car 是键 key 而 cdr 是对象 datum.
+        创建一个新的[fresh] cons, 其中的 cdr 是 alist 而 car 是另一个新的[fresh] cons, 这个新的 cons 的 car 是键 key 而 cdr 是对象 datum.
 
 * 示例(Examples):
 
@@ -2191,8 +2202,7 @@
 
         (acons key datum alist) ==  (cons (cons key datum) alist)
 
-
-
+<!--校对到此-->
 ### <span id="F-ASSOC-ALL">函数 ASSOC, ASSOC-IF, ASSOC-IF-NOT</span>
 
 * 语法(Syntax):
@@ -2205,17 +2215,17 @@
 
 * 参数和值(Arguments and Values):
 
-        item---一个对象.
-        alist---一个关联列表.
-        predicate---一个返回一个广义 boolean 的函数的标识符.
-        test---一个返回一个广义 boolean 的两参数函数的标识符.
-        test-not---一个返回一个广义 boolean 的两参数函数的标识符.
-        key---一个单参数函数的标识符, 或者 nil.
-        entry---是 alist 的一个元素的 cons, 或者是 nil.
+        item---一个对象[object].
+        alist---一个关联列表[association list].
+        predicate---返回一个广义 boolean [generalized boolean]的单实参[argument]函数[function]的标识符[designator].
+        test---返回一个广义 boolean [generalized boolean]的两实参[argument]函数[function]的标识符[designator].
+        test-not---一个返回一个广义 boolean [generalized boolean]的两实参[argument]函数[function]的标识符[designator].
+        key---一个单参数函数[function]的标识符[designator], 或者 nil.
+        entry---一个 cons, 是 alist 的一个元素[element], 或者是 nil.
 
 * 描述(Description):
 
-        assoc, assoc-if, 和 assoc-if-not 返回在 alist 中的第一个 car 满足测试条件 test 的 cons, 如果没有找到这样的 cons 就是 nil.
+        assoc, assoc-if, 和 assoc-if-not 返回在 alist 中的第一个 car 满足测试条件[satisfy the test]的 cons, 如果没有找到这样的 cons 就是 nil.
 
         对于 assoc, assoc-if, 和 assoc-if-not, 如果在 alist 中出现一个 nil 代替一个对, 那么它会被忽略.
 
@@ -2249,17 +2259,17 @@
 
 * 异常情况(Exceptional Situations):
 
-        如果 alist 不是一个关联列表那么应该准备发出一个 type-error 类型的错误..
+        如果 alist 不是一个关联列表[association list]那么应该准备发出一个 type-error 类型[type]的错误..
 
 * 也见(See Also):
 
-        rassoc, find, member, position, 章节 3.6 (Traversal Rules and Side Effects)
+        rassoc, find, member, position, 章节 3.6 (遍历规则和副作用)
 
 * 注意(Notes):
 
         这个 :test-not 参数已经被废弃.
 
-        函数 assoc-if-not 已经被废弃.
+        函数[function] assoc-if-not 已经被废弃.
 
         有可能为了 "更新" alist 去 rplacd 这个 assoc 的结果, 假定它不是 nil.
 
@@ -2282,14 +2292,14 @@
 
 * 参数和值(Arguments and Values):
 
-        alist---一个关联列表.
-        new-alist---一个关联列表.
+        alist---一个关联列表[association list].
+        new-alist---一个关联列表[association list].
 
 * 描述(Description):
 
-        copy-alist 返回 alist 的一个拷贝.
+        copy-alist 返回 alist 的一个拷贝[copy].
 
-        这个 alist 的列表结构会被拷贝, 而 alist 中的 cons 元素也会被拷贝 (仅仅只是作为 cons). 任何其他被 alist 引用的对象, 不管是直接还是间接的, 都会被继续共享.
+        这个 alist 的列表结构[list structure]会被拷贝, 而 alist 中的 cons 元素[element]也会被拷贝 (仅仅只是作为 cons). 任何其他被 alist 引用的对象[object], 不管是直接还是间接的, 都会被继续共享.
 
 * 示例(Examples):
 
@@ -2328,16 +2338,16 @@
 
 * 参数和值(Arguments and Values):
 
-        keys---一个 proper 列表.
-        data---一个 proper 列表.
-        alist---一个关联列表. 默认是空列表.
-        new-alist---一个关联列表.
+        keys---一个正规列表[proper list].
+        data---一个正规列表[proper list].
+        alist---一个关联列表[association list]. 默认是空列表[empty list].
+        new-alist---一个关联列表[association list].
 
 * 描述(Description):
 
-        返回一个关联 keys 的元素到对应 data 中的元素的关联列表. 如果 keys 和 data 不是相同长度那么后果是不确定的.
+        返回一个关联 keys 的元素到对应 data 中的元素的关联列表[association list]. 如果 keys 和 data 不是相同长度[length]那么后果是未定义的.
 
-        如果提供了 alist, pairlis 返回一个修改后的 alist, 这些新的对被添加到它的前面. 这些新的对可能以向前或向后的顺序出现在产生的关联列表中. 下面这个的结果
+        如果提供了 alist, pairlis 返回一个修改后的 alist, 这些新的对被添加到它的前面. 这些新的对可能以向前或向后的顺序出现在产生的关联列表[association list]中. 下面这个的结果
 
         (pairlis '(one two) '(1 2) '((three . 3) (four . 19)))
 
@@ -2367,7 +2377,7 @@
 
 * 异常情况(Exceptional Situations):
 
-        如果键 keys 和 data 不是 proper 列表那么应该发出一个 type-error 类型的错误s.
+        如果键 keys 和 data 不是正规列表[proper list]那么应该发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
@@ -2388,17 +2398,17 @@
 
 * 参数和值(Arguments and Values):
 
-        item---一个对象.
-        alist---一个关联列表.
-        predicate---一个返回广义 boolean 的单参数函数的标识符.
-        test---一个返回一个广义 boolean 的两参数函数的标识符.
-        test-not---一个返回一个广义 boolean 的两参数函数的标识符.
-        key---一个单参数函数的标识符, 或者 nil.
-        entry---是 alist 中的一个 cons 元素, 或者是 nil.
+        item---一个对象[object].
+        alist---一个关联列表[association list].
+        predicate---返回一个广义 boolean [generalized boolean]的单实参[argument]函数[function]的标识符[designator].
+        test---返回一个广义 boolean [generalized boolean]的两实参[argument]函数[function]的标识符[designator].
+        test-not---返回一个广义 boolean [generalized boolean]的两实参[argument]函数[function]的标识符[designator].
+        key---一个单实参[argument]函数[function]的标识符[designator], 或者 nil.
+        entry---是 alist 中的一个 cons 元素[element], 或者是 nil.
 
 * 描述(Description):
 
-        rassoc, rassoc-if, 和 rassoc-if-not 返回 cdr 满足测试条件的第一个 cons. 如果没有找到这样的 cons, 就返回 nil.
+        rassoc, rassoc-if, 和 rassoc-if-not 返回 cdr 满足测试条件[satisfy the test]的第一个 cons. 如果没有找到这样的 cons, 就返回 nil.
 
         如果 nil 出现在 alist 中替代了一个对, 它会被忽略.
 
@@ -2424,13 +2434,13 @@
 
 * 也见(See Also):
 
-        assoc, 章节 3.6 (Traversal Rules and Side Effects)
+        assoc, 章节 3.6 (遍历规则和副作用)
 
 * 注意(Notes):
 
         参数 :test-not 已经被废弃.
 
-        函数 rassoc-if-not 已经被废弃.
+        函数[function] rassoc-if-not 已经被废弃.
 
         有可能为了 "更新" alist 去 rplacd 这个 rassoc 的结果, 假定它不是 nil.
 
@@ -2442,7 +2452,7 @@
 
         (find item list :test fn :key #'cdr)
 
-        在意义上是等价的, 除了当这个 item 是 nil 并且 nil 出现在 alist 中替换一个对时. 见函数 assoc. 
+        在意义上是等价的, 除了当这个 item 是 nil 并且 nil 出现在 alist 中替换一个对时. 见函数[function] assoc. 
 
 
 ### <span id="F-GET-PROPERTIES">函数 GET-PROPERTIES</span>
@@ -2453,17 +2463,17 @@
 
 * 参数和值(Arguments and Values):
 
-        plist---一个属性列表.
-        indicator-list---一个 proper 列表 (标识符的).
-        indicator---一个是 indicator-list 中的元素的对象.
-        value---一个对象.
-        tail---一个列表.
+        plist---一个属性列表[property list].
+        indicator-list---一个 (指示符[indicator]的) 正规列表[proper list].
+        indicator---一个对象[object], 它是 indicator-list 中的元素[element].
+        value---一个对象[object].
+        tail---一个列表[list].
 
 * 描述(Description):
 
-        get-properties 被用来同时查找多个属性列表条目.
+        get-properties 被用来同时查找多个属性列表[property list]条目中的任何一个.
 
-        它在 plist 中搜索第一个属性标识符和 indicator-list 中的其中一个对象一样的条目. 如果找到这样一个条目, 返回的 indicator 和 value 是这个属性标识符和它关联的属性值, 而返回的 tail 是以找到的条目开始的 plist 的尾部 (换句话说, 它的 car 就是那个 indicator). 如果没有找到这样的条目, 那么这个 indicator, value, 和 tail 都是 nil.
+        它在 plist 中搜索第一个指示符[indicator]和 indicator-list 中的其中一个对象相同[identical]的条目. 如果找到这样一个条目, 返回的 indicator 和 value 是这个指示符[property indicator]和它关联的属性值[property value], 而返回的 tail 是以找到的条目开始的 plist 的尾部[tail] (换句话说, 它的 car 就是那个 indicator). 如果没有找到这样的条目, 那么这个 indicator, value, 和 tail 都是 nil.
 
 * 示例(Examples):
 
@@ -2500,20 +2510,20 @@
 
 * 参数和值(Arguments and Values):
 
-        plist---一个属性列表.
-        place---一个 place, 它的值是一个属性列表.
-        indicator---一个对象.
-        default---一个对象. 默认是 nil.
-        value---一个对象.
-        new-value---一个对象.
+        plist---一个属性列表[property list].
+        place---一个位置[place], 它的值[value]是一个属性列表[property list].
+        indicator---一个对象[object].
+        default---一个对象[object]. 默认是 nil.
+        value---一个对象[object].
+        new-value---一个对象[object].
 
 * 描述(Description):
 
-        getf 在 plist 上查找一个属性标识符等于 indicator 的属性, 并且返回对应的属性值. 如果这里有多个带有那个属性标识符的属性, getf 使用第一个这样的属性. 如果这里没有带有那个属性标识符的属性, 返回 default.
+        getf 在 plist 上查找一个属性指示符[property indicator]等于 indicator 的属性[property], 并且返回对应的属性值[property value]. 如果这里有多个带有那个属性指示符[property indicator]的属性[property[1]], getf 使用第一个这样的属性[property]. 如果这里没有带有那个属性指示符[property indicator]的属性[property], 返回 default.
 
-        getf 的 setf 可能被用于关联一个新的对象到由 place 持有的属性列表中的一个已存在的标识符, 或者如果不存在就创建一个新的关联. 如果这里有多个带有那个属性标识符的属性, getf 的 setf 会关联这个新值 new-value 到第一个这样的属性. 当一个 getf 表达式形式被用作一个 setf 的 place, 被提供的任何 default 根据正常的从左到右的求值规则被求值, 但是它的值会被忽略.
+        getf 的 setf 可能被用于关联一个新的对象[object]到由位置 place 持有的属性列表[proper list]中的一个已存在的指示符, 或者如果不存在就创建一个新的关联. 如果这里有多个带有那个属性指示符[property indicator]的属性[property[1]], getf 的 setf 会关联这个新值 new-value 到第一个这样的属性[property]. 当一个 getf 表达式形式[form]被用作一个 setf 的 place 时, 被提供的任何 default 根据正常的从左到右的求值规则被求值, 但是它的值[value]会被忽略.
 
-        getf 的 setf 允许去写入 place 自身的值, 或者修改 place 所持有的列表结构的任意部分, car 或 cdr.
+        getf 的 setf 允许去写入[write] place 自身的值[value], 或者修改 place 所持有的列表结构[list structure]的任意部分, car 或 cdr.
 
 * 示例(Examples):
 
@@ -2549,18 +2559,17 @@
 
 * 也见(See Also):
 
-        get, get-properties, setf, 章节 5.1.2.2 (Function Call Forms as Places)
+        get, get-properties, setf, 章节 5.1.2.2 (函数调用表达式形式作为位置)
 
 * 注意(Notes):
 
-        这里没有方式 (使用 getf) 去区分一个省略的属性和一个值为 default 的属性; 但是见 get-properties.
+        这里无法 (使用 getf) 去区分一个省略的属性和一个值为 default 的属性; 但是见 get-properties.
 
-        注意, 在一个 setf 的情况中给 getf 提供一个默认参数有时候不是非常有趣的, 但这仍然是 很重要的, 因为某些宏, 例如 push 和 incf, 需要一个数据可以被读取和写入的 place. 在这样一个上下文中, 如果一个默认参数被提供用于读取的情况, 对于读取的情况它必须也是语法上有效的. 比如,
+        注意, 在一个 setf 的情况中给 getf 提供一个默认值 default 有时候不是非常有趣的, 但这仍然是很重要的, 因为某些宏, 例如 push 和 incf, 需要一个数据可以被读取[read]和写入[write]的 place 参数. 在这样一个上下文中, 如果一个 default 参数被提供用于读取[read]的情况, 对于写入[write]的情况它必须也是语法上有效的. 比如,
 
         (let ((plist '()))
           (incf (getf plist 'count 0))
           plist) =>  (COUNT 1)
-
 
 
 ### <span id="M-REMF">宏 REMF</span>
@@ -2571,17 +2580,17 @@
 
 * 参数和值(Arguments and Values):
 
-        place---一个 place.
-        indicator---一个对象.
-        generalized-boolean---一个广义 boolean.
+        place---一个位置[place].
+        indicator---一个对象[object].
+        generalized-boolean---一个广义 boolean [generalized boolean].
 
 * 描述(Description):
 
-        remf 从存储在 place 中的属性列表中移除一个属性标识符和 indicator 相等的属性. 如果这里有多个带有相同键的属性, remf 只移除第一个这样的属性. 如果没有找到这样的属性 remf 就返回 false, 如果找到一个属性就返回 true.
+        remf 从存储在 place 中的属性列表[property list]中移除一个属性指示符[property indicator]和 indicator 相同[identical]的属性[property[1]]. 如果这里有多个带有相同[identical]键的属性[property[1]], remf 只移除第一个这样的属性[property]. 如果没有找到这样的属性[property] remf 就返回 false, 如果找到一个属性就返回 true.
 
-        这个属性标识符和对应属性值会以未定义的顺序破坏性地拼接这个属性列表而被移除. remf 允许去 setf place 或者去 setf place 所持有的列表结构的任何部分, car 或 cdr.
+        这个属性指示符[property indicator]和对应属性值[property value]会通过破坏性地拼接这个属性列表以未定义的顺序被移除. remf 允许去 setf place 或者去 setf place 所持有的列表结构[list structure]的任何部分, car 或 cdr.
 
-        关于 place 的子表达式形式的求值的信息, 见章节 5.1.1.1 (Evaluation of Subforms to Places).
+        关于 place 的子表达式形式[subform]的求值[evaluation]的信息, 见章节 5.1.1.1 (位置的子表达式形式求值).
 
 * 示例(Examples):
 
@@ -2617,26 +2626,26 @@
 
 * 参数和值(Arguments and Values):
 
-        list-1---一个 proper 列表.
-        list-2---一个 proper 列表.
-        test---一个返回一个广义 boolean 的两参数函数的标识符.
-        test-not---一个返回一个广义 boolean 的两参数函数的标识符.
-        key---一个单参数函数的标识符, 或者 nil.
-        result-list---一个列表.
+        list-1---一个正规列表[proper list].
+        list-2---一个正规列表[proper list].
+        test---返回一个广义 boolean [generalized boolean]的两实参[argument]函数[function]的标识符[designator].
+        test-not---返回一个广义 boolean [generalized boolean]的两实参[argument]函数[function]的标识符[designator].
+        key---一个单参数函数[function]的标识符[designator], 或者 nil.
+        result-list---一个列表[list].
 
 * 描述(Description):
 
-        intersection 和 nintersection 返回一个包含了同时出现在 list-1 和 list-2 中的每个元素的列表.
+        intersection 和 nintersection 返回一个包含了同时出现在 list-1 和 list-2 中的每个元素的列表[list].
 
-        nintersection 是 intersection 的破坏性的版本. 它执行相同的操作, 但是可能破坏 list-1 使用它的 cell 来构造这个结果. list-2 不会被破坏.
+        nintersection 是 intersection 的破坏性的版本. 它执行相同的操作, 但是可能破坏 list-1 使用它的存储格来构造这个结果. list-2 不会被破坏.
 
-        这个 intersection 操作符描述如下. 对于所有可能由 list-1 的一个元素和 list-2 的一个元素构成的有序对 :test 或 :test-not 被用于确定它们是否满足这个测试条件. 给 :test 或 :test-not 函数的第一个参数是 list-1 的一个元素; 第二个参数是 list-2 的一个元素. 如果没有提供 :test 或 :test-not, 就使用 eql. 如果在同一个函数调用中提供了 :test 和 :test-not 那么就是一个错误.
+        这个 intersection 操作符描述如下. 对于所有可能由 list-1 的一个元素[element]和 list-2 的一个元素[element]构成的有序对, :test 或 :test-not 被用于确定它们是否满足测试条件[satisfy the test]. 给 :test 或 :test-not 函数的第一个参数是 list-1 的一个元素; 第二个参数是 list-2 的一个元素. 如果没有提供 :test 或 :test-not, 就使用 eql. 如果在同一个函数调用中提供了 :test 和 :test-not 那么就是一个错误.
 
-        如果提供了 :key (并且不是 nil), 它被用于从这个列表元素中提取这个要被测试的部分. 给这个 :key 函数的参数是 list-1 或 list-2 的一个元素; 这个 :key 函数通常返回提供的元素的部分. 如果没有提供 :key 或者是 nil, 那么就使用这个 list-1 和 list-2 的元素.
+        如果提供了 :key (并且不是 nil), 它被用于从这个列表 list 元素中提取这个要被测试的部分. 给这个 :key 函数的参数是 list-1 或 list-2 的一个元素; 这个 :key 函数通常返回提供的元素的部分. 如果没有提供 :key 或者是 nil, 那么就使用这个 list-1 和 list-2 的元素.
 
-        对于满足这个测试条件 test 的每一个对, 这个对的两个元素中的一个会被放到结果中. 一个列表中的元素如果和另一个列表中的元素都不满足测试条件就不会出现在结果中. 如果这些列表中的一个包含了重复的元素, 那么在结果中也可能会重复.
+        对于满足测试条件[satisfy the test]的每一个对, 这个对的两个元素中只有一个会被放到结果中. 一个列表[list]中的元素如果和另一个列表[list]中的元素都不满足测试条件[satisfy the test]就不会出现在结果中.<!--TODO 待校验--> 如果其中一个列表[list]包含了重复的元素, 那么在结果中也可能会重复.
 
-        不保证元素出现在结果中的顺序会以任何特定方式反映参数的顺序. 如果合适的话结果列表可能和 list-1 或 list-2 共享 cell, 或者和 list-1 或 list-2 是 eq 的.
+        不保证元素出现在结果中的顺序会以任何特定方式反映参数的顺序. 如果合适的话结果列表可能和 list-1 或 list-2 共享存储格, 或者和 list-1 或 list-2 是 eq 的.
 
 * 示例(Examples):
 
@@ -2661,23 +2670,23 @@
 
 * 副作用(Side Effects):
 
-        nintersection 可以修改 list-1, 但是不包括 list-2.
+        nintersection 可以修改 list-1, 但不能修改 list-2.
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-        如果 list-1 和 list-2 不是 proper 列表, 那么应该准备发出agiel type-error 类型的错误.
+        如果 list-1 和 list-2 不是正规列表[proper list], 那么应该准备发出 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
-        union, 章节 3.2.1 (Compiler Terminology), 章节 3.6 (Traversal Rules and Side Effects)
+        union, 章节 3.2.1 (编译器术语), 章节 3.6 (遍历规则和副作用)
 
 * 注意(Notes):
 
         这个 :test-not 参数已经被废弃
 
-        因为这个 nintersection 副作用不是必须的, 它不应该被用于仅为了副作用(for-effect-only)的可移植代码的.
+        因为这个 nintersection 副作用不是必须的, 它不应该被用于仅为了副作用(for-effect-only)的可移植代码中.
 
 
 ### <span id="F-ADJOIN">函数 ADJOIN</span>
@@ -2688,18 +2697,18 @@
 
 * 参数和值(Arguments and Values):
 
-        item---一个对象.
-        list---一个 proper 列表.
-        test---一个返回一个广义 boolean 的两参数函数的标识符.
-        test-not---一个返回一个广义 boolean 的两参数函数的标识符.
-        key---一个单参数函数的标识符, 或者 nil.
-        new-list---一个列表.
+        item---一个对象[object].
+        list---一个正规列表[proper list].
+        test---返回一个广义 boolean [generalized boolean]的两实参[argument]函数[function]的标识符[designator].
+        test-not---返回一个广义 boolean [generalized boolean]的两实参[argument]函数[functioni]的标识符[designator].
+        key---一个单实参[argument]函数[function]的标识符[designator], 或者 nil.
+        new-list---一个列表[list].
 
 * 描述(Description):
 
-        测试 item 是否和列表 list 中的一个已存在的元素相同. 如果 item 不是一个已存在的元素, adjoin 把它添加到 list (就好像是通过 cons) 并且返回产生的列表; 否则, 没有东西会被添加并且原始的列表 list 会被返回.
+        测试 item 是否和列表 list 中的一个已存在的元素相同. 如果 item 不是一个已存在的元素, adjoin 把它添加到 list (就好像是通过 cons 一样) 并且返回产生的列表[list]; 否则, 没有东西会被添加并且原始的列表 list 会被返回.
 
-        这个 test, test-not, 和 key 影响那个 item 是否和 list 中的一个元素相同的决定. 关于详情, 见章节 17.2.1 (Satisfying a Two-Argument Test).
+        这个 test, test-not, 和 key 影响如何决定那个 item 是否和 list 中的一个元素[element]相同. 关于详情, 见章节 17.2.1 (满足一个两个参数的测试).
 
 * 示例(Examples):
 
@@ -2718,11 +2727,11 @@
 
 * 异常情况(Exceptional Situations):
 
-        如果 list 不是一个 proper 列表那么应该准备发出一个 type-error 类型的错误.
+        如果 list 不是一个正规列表[proper list]那么应该准备发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
-        pushnew, 章节 3.6 (Traversal Rules and Side Effects)
+        pushnew, 章节 3.6 (遍历规则和副作用)
 
 * 注意(Notes):
 
@@ -2742,28 +2751,28 @@
 
 * 参数和值(Arguments and Values):
 
-        item---一个对象.
-        place---一个 place, 它的值是一个 proper 列表.
-        test---一个返回一个广义 boolean 的两参数函数的标识符.
-        test-not---一个返回一个广义 boolean 的两参数函数的标识符.
-        key---一个单参数函数的标识符, 或者 nil.
-        new-place-value---一个列表 (这个 place 的新的值).
+        item---一个对象[object].
+        place---一个位置[place], 它的值是一个正规列表[proper list].
+        test---返回一个广义 boolean [generalized boolean]的两实参[argument]函数[function]的标识符[designator].
+        test-not---返回一个广义 boolean [generalized boolean]的两实参[argument]函数[function]的标识符[designator].
+        key---一个单参数函数[function]的标识符[designator], 或者 nil.
+        new-place-value---一个列表[list] (这个值[place]的新的值).
 
 * 描述(Description):
 
-        pushnew 测试 item 是否和存储在 place 中的列表中的一个已存在的元素相同. 如果 item 不是的话, 它就会被向前添加到 list 中, 并且这个新的列表被存储到 place 中.
+        pushnew 测试 item 是否和存储在位置 place 的列表[list]中的一个已存在元素相同. 如果 item 没有和任何一个元素相同的话, 它就会被追加到 list 前面, 并且这个新的列表[list]被存储到位置 place 中.
 
-        pushnew 返回一个存储在 place 中的新的列表.
+        pushnew 返回一个存储在 place 中的新列表[list].
 
-        item 是否已经为 place 中的列表中的成员是使用 :test 或 :test-not 比较决定的. 给 :test 或 :test-not 函数的第一个参数是 item; 第二个参数是 place 中的列表的元素通过 :key 函数返回的 (如果提供的话).
+        item 是否已经为 place 中的列表[list]的成员是通过使用 :test 或 :test-not 比较决定的. 给 :test 或 :test-not 函数的第一个参数是 item; 第二个参数是 place 中的列表[list]的元素通过 :key 函数返回的 (如果提供的话).
 
-        如果提供了 :key, 它被用于提取 item 和列表元素中要被测试的部分, 就像 adjoin 一样.
+        如果提供了 :key, 它被用于提取 item 和列表[list]元素中要被测试的部分, 就像 adjoin 一样.
 
-        给 :key 函数的参数是存储在 place 中的列表的元素. 这个 :key 函数通常返回列表的元素的一部分. 如果没有提供 :key 或者是 nil, 就是那个列表元素.
+        给 :key 函数的参数是存储在 place 中的列表[list]的元素. 这个 :key 函数通常返回列表[list]的元素的一部分. 如果没有提供 :key 或者是 nil, 就是那个列表[list]元素.
 
-        关于 place 的子表达式形式求值的信息, 见章节 5.1.1.1 (Evaluation of Subforms to Places).
+        关于位置 place 的子表达式形式[subform]求值[evaluation]的信息, 见章节 5.1.1.1 (位置的子表达式形式求值).
 
-        在这个 item 已经是 place 所持有的列表的成员的情况下, pushnew 事实上是否会为它的 place 执行存储表达式形式是依赖于具体实现的.
+        在这个 item 已经是 place 所持有的列表[list]的成员的情况下, pushnew 事实上是否会为它的 place 执行存储表达式形式是依赖于具体实现的[implementation-dependent].
 
 * 示例(Examples):
 
@@ -2790,7 +2799,7 @@
 
 * 也见(See Also):
 
-        push, adjoin, 章节 5.1 (Generalized Reference)
+        push, adjoin, 章节 5.1 (广义引用)
 
 * 注意(Notes):
 
@@ -2802,7 +2811,7 @@
 
         (setf place (adjoin item place :test p))
 
-        除了那个 place 的子表达式形式只会被求值一次, 并且 item 在 place 之前被求值. 
+        除了那个 place 的子表达式形式[subform]只会被求值一次, 并且 item 在 place 之前被求值. 
 
 ### <span id="F-SET-DIFFERENCE-ALL">函数 SET-DIFFERENCE, NSET-DIFFERENCE</span>
 
@@ -2873,7 +2882,7 @@
 
 * 也见(See Also):
 
-        章节 3.2.1 (Compiler Terminology), 章节 3.6 (Traversal Rules and Side Effects)
+        章节 3.2.1 (编译器术语), 章节 3.6 (遍历规则和副作用)
 
 * 注意(Notes):
 
@@ -2941,7 +2950,7 @@
 
 * 也见(See Also):
 
-        章节 3.2.1 (Compiler Terminology), 章节 3.6 (Traversal Rules and Side Effects)
+        章节 3.2.1 (编译器术语), 章节 3.6 (遍历规则和副作用)
 
 * 注意(Notes):
 
@@ -2995,7 +3004,7 @@
 
 * 也见(See Also):
 
-        章节 3.6 (Traversal Rules and Side Effects)
+        章节 3.6 (遍历规则和副作用)
 
 * 注意(Notes):
 
@@ -3064,7 +3073,7 @@
 
 * 也见(See Also):
 
-        intersection, 章节 3.2.1 (Compiler Terminology), 章节 3.6 (Traversal Rules and Side Effects)
+        intersection, 章节 3.2.1 (编译器术语), 章节 3.6 (遍历规则和副作用)
 
 * 注意(Notes):
 
