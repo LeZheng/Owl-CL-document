@@ -247,7 +247,7 @@ Common Lisp 提供了大量和数字[number]相关的操作. 这个章节通过�
 ```
 
 #### 12.1.4.2 <span id="RuleFloatApproximation">浮点近似的规则</span>
-<!--TODO small float ??-->
+
 浮点数[float]的计算只是近似的, 尽管它们被描述为结果在数学上是准确的. 两个数学上相同的表达式可能在计算上是不同的因为浮点近似过程中存在固有的错误. 一个浮点数[float]的精度不一定与这个数字的精度相关. 比如, 3.142857142857142857 相比 3.14159 是 <PI> 的一个更精确的近似值, 但是后者更准确. 精度指的是在表示中保留的位元数. 当一个操作符组合一个短浮点数[short float]和一个长浮点数[long float]时, 结果会是一个长浮点数[long float]. Common Lisp 函数假定给它们的参数的准确度不会超过它们的精度. 因此当两个 small float 被组合时, 结果是一个 small float. Common Lisp 函数不会从一个较大的值转换到较小的一个. 
 
 
@@ -3076,7 +3076,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
         (integerp object) ==  (typep object 'integer)
 
-<!--TODO 校对到此-->
+
 ### <span id="F-PARSE-INTEGER">函数 PARSE-INTEGER</span>
 
 * 语法(Syntax):

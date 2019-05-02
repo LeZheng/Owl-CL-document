@@ -1,4 +1,4 @@
-# 13 字符
+# 13. 字符
 
 > * 13.1 [字符概念](#CharacterConcepts)
 > * 13.2 [字符字典](#TheCharactersDictionary)

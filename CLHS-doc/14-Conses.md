@@ -1,4 +1,4 @@
-# 14 构造(Conses)
+# 14. 构造(Conses)
 
 > * 14.1 [构造的概念](#ConsConcepts)
 > * 14.2 [构造的字典](#TheConsesDictionary)
@@ -2813,6 +2813,7 @@
 
         除了那个 place 的子表达式形式[subform]只会被求值一次, 并且 item 在 place 之前被求值. 
 
+
 ### <span id="F-SET-DIFFERENCE-ALL">函数 SET-DIFFERENCE, NSET-DIFFERENCE</span>
 
 * 语法(Syntax):
@@ -2823,26 +2824,26 @@
 
 * 参数和值(Arguments and Values):
 
-        list-1---一个 proper 列表.
-        list-2---一个 proper 列表.
-        test---一个返回一个广义 boolean 的两参数函数的标识符.
-        test-not---一个返回一个广义 boolean 的两参数函数的标识符.
-        key---一个单参数函数的标识符, 或者 nil.
-        result-list---一个列表.
+        list-1---一个正规列表[proper list].
+        list-2---一个正规列表[proper list].
+        test---返回一个广义 boolean [generalized boolean]的两实参[argument]函数[function]的标识符[designator].
+        test-not---返回一个广义 boolean [generalized boolean]的两实参[argument]函数[function]的标识符[designator].
+        key---一个单参数函数[function]的标识符[designator], 或者 nil.
+        result-list---一个列表[list].
 
 * 描述(Description):
 
-        set-difference 返回一个 list-1 中的但是没有出现在 list-2 中的元素的列表.
+        set-difference 返回一个在 list-1 中的但是没有出现在 list-2 中的元素的列表[list].
 
         nset-difference 是 set-difference 的破坏性版本. 它可能破坏 list-1.
 
-        对于由 list-1 的一个元素和 list-2 的一个元素组成的所有可能的有序对, 这个 :test 或 :test-not 函数被用于确定它们是否满足这个测试条件 test. 给 :test 或 :test-not 函数的第一个参数是由 :key 函数(如果提供的话)返回的 list-1 的元素的一部分; 给 :test 或 :test-not 函数的第二个参数是由 :key 函数(如果提供的话)返回的 list-2 的元素的一部分.
+        对于由 list-1 的一个元素和 list-2 的一个元素组成的所有可能的有序对, 这个 :test 或 :test-not 函数被用于确定它们是否满足测试条件[satisfy the test]. 给 :test 或 :test-not 函数的第一个参数是由 :key 函数(如果提供的话)返回的 list-1 的元素的一部分; 给 :test 或 :test-not 函数的第二个参数是由 :key 函数(如果提供的话)返回的 list-2 的元素的一部分.
 
         如果提供了 :key, 它的参数就是一个 list-1 或 list-2 的元素. 这个 :key 函数通常返回提供的元素的一部分. 如果没有提供 :key, 就使用 list-1 或 list-2 的元素.
 
         当且仅当一个 list-1 中的元素不匹配任何 list-2 中的元素时它会出现在结果中.
 
-        这里不保证出现在结果中的顺序会以任何特定方式反映参数的顺序. 如果合适的话结果列表可能和 list-1 或 list-2 共享 cell, 或者和 list-1 或 list-2 是 eq 的.
+        这里不保证出现在结果中的顺序会以任何特定方式反映参数的顺序. 如果合适的话, 结果列表[list]可能和 list-1 或 list-2 共享存储格, 或者和 list-1 或 list-2 是 eq 的.
 
 * 示例(Examples):
 
@@ -2878,7 +2879,7 @@
 
 * 异常情况(Exceptional Situations):
 
-        如果 list-1 和 list-2 不是 proper 列表那么应该准备发出一个 type-error 类型的错误.
+        如果 list-1 和 list-2 不是正规列表[proper list]那么应该准备发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
@@ -2887,6 +2888,7 @@
 * 注意(Notes):
 
         这个 :test-not 参数已经被废弃 
+
 
 ### <span id="F-SET-EXCLUSIVE-OR-ALL">函数 SET-EXCLUSIVE-OR, NSET-EXCLUSIVE-OR</span>
 
@@ -2898,20 +2900,20 @@
 
 * 参数和值(Arguments and Values):
 
-        list-1---一个 proper 列表.
-        list-2---一个 proper 列表.
-        test---一个返回一个广义 boolean 的两参数函数的标识符.
-        test-not---一个返回一个广义 boolean 的两参数函数的标识符.
-        key---一个单参数函数的标识符, 或者 nil.
-        result-list---一个列表.
+        list-1---一个正规列表[proper list].
+        list-2---一个正规列表[proper list].
+        test---返回一个广义 boolean [generalized boolean]的两实参[argument]函数[function]的标识符[designator].
+        test-not---返回一个广义 boolean [generalized boolean]的两实参[argument]函数[function]的标识符[designator].
+        key---一个单参数函数[function]的标识符[designator], 或者 nil.
+        result-list---一个列表[list].
 
 * 描述(Description):
 
-        set-exclusive-or 返回一个只出现在 list-1 和 list-2 其中一个的元素的列表.
+        set-exclusive-or 返回一个只出现在 list-1 和 list-2 其中之一的元素的列表.
 
         nset-exclusive-or 是 set-exclusive-or 的破坏性版本.
 
-        对于由 list-1 的一个元素和 list-2 的一个元素组成的所有可能的有序对, 这个 :test 或 :test-not 函数被用于确定它们是否满足这个测试条件 test.
+        对于由 list-1 的一个元素和 list-2 的一个元素组成的所有可能的有序对, 这个 :test 或 :test-not 函数被用于确定它们是否满足测试条件[satisfy the test].
 
         如果提供了 :key, 它被用于从 list-1 or list-2 元素中提取要被测试的部分. 给 :test 或 :test-not 函数的第一个参数是由 :key 函数(如果提供的话)返回的 list-1 的元素的一部分; 给 :test 或 :test-not 函数的第二个参数是由 :key 函数(如果提供的话)返回的 list-2 的元素的一部分. 如果没有提供 :key 或者是 nil, 就使用 list-1 或 list-2 元素.
 
@@ -2940,13 +2942,13 @@
 
 * 副作用(Side Effects):
 
-        nset-exclusive-or 允许去修改 list-1 或 list-2 的列表结构的任意部分, car 或 cdr.
+        nset-exclusive-or 允许去修改 list-1 或 list-2 的列表结构[list structure]的任意部分, car 或 cdr.
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-        如果 list-1 和 list-2 不是 proper 列表那么应该准备发出一个 type-error 类型的错误.
+        如果 list-1 和 list-2 不是正规列表[proper list]那么应该准备发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
@@ -2956,7 +2958,7 @@
 
         这个 :test-not 参数已经被废弃
 
-        因为这个 nset-exclusive-or 副作用不是必须的, 所以它不应该被用于可移植代码的仅为了副作用(for-effect-only)的位置. 
+        因为这个 nset-exclusive-or 副作用不是必须的, 所以它不应该被用于可移植代码中仅为了副作用(for-effect-only)的位置. 
 
 
 ### <span id="F-SUBSETP">函数 SUBSETP</span>
@@ -2967,12 +2969,12 @@
 
 * 参数和值(Arguments and Values):
 
-        list-1---一个 proper 列表.
-        list-2---一个 proper 列表.
-        test---一个返回一个广义 boolean 的两参数函数的标识符.
-        test-not---一个返回一个广义 boolean 的两参数函数的标识符.
-        key---一个单参数函数的标识符, 或者 nil.
-        generalized-boolean---一个广义 boolean.
+        list-1---一个正规列表[proper list].
+        list-2---一个正规列表[proper list].
+        test---返回一个广义 boolean [generalized boolean]的两实参[argument]函数[function]的标识符[designator].
+        test-not---返回一个广义 boolean [generalized boolean]的两实参[argument]函数[function]的标识符[designator].
+        key---一个单参数函数[function]的标识符[designator], 或者 nil.
+        generalized-boolean---一个广义 boolean [generalized boolean].
 
 * 描述(Description):
 
@@ -3000,7 +3002,7 @@
 
 * 异常情况(Exceptional Situations):
 
-        如果 list-1 和 list-2 不是 proper 列表那么应该准备发出一个 type-error 类型的错误.
+        如果 list-1 和 list-2 不是正规列表[proper list]那么应该准备发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
@@ -3021,12 +3023,12 @@
 
 * 参数和值(Arguments and Values):
 
-        list-1---一个 proper 列表.
-        list-2---一个 proper 列表.
-        test---一个返回一个广义 boolean 的两参数函数的标识符.
-        test-not---一个返回一个广义 boolean 的两参数函数的标识符.
-        key---一个单参数函数的标识符, 或者 nil.
-        result-list---一个列表.
+        list-1---一个正规列表[proper list].
+        list-2---一个正规列表[proper list].
+        test---返回一个广义 boolean [generalized boolean]的两实参[argument]函数[function]的标识符[designator].
+        test-not---返回一个广义 boolean [generalized boolean]的两实参[argument]函数[function]的标识符[designator].
+        key---一个单参数函数[function]的标识符[designator], 或者 nil.
+        result-list---一个列表[list].
 
 * 描述(Description):
 
@@ -3034,9 +3036,9 @@
 
         对于由 list-1 的一个元素和 list-2 的一个元素组成的所有可能的有序对, 这个 :test 或 :test-not 函数被用于确定它们是否满足这个测试条件 test. 给 :test 或 :test-not 函数的第一个参数是由 :key 函数(如果提供的话)返回的 list-1 的元素的一部分; 给 :test 或 :test-not 函数的第二个参数是由 :key 函数(如果提供的话)返回的 list-2 的元素的一部分.
 
-        给 :key 函数的参数是 list-1 或 list-2 的一个元素; 返回值是那个提供的列表元素的一部分. 如果没有提供 :key 或者是 nil, 那么这个 list-1 或 list-2 元素自身会被提供给 :test 或 :test-not 函数.
+        给 :key 函数的参数是 list-1 或 list-2 的一个元素; 返回值是提供的那个元素的一部分. 如果没有提供 :key 或者是 nil, 那么这个 list-1 或 list-2 元素自身会被提供给 :test 或 :test-not 函数.
 
-        对于每一个匹配对, 这个对的两个元素中的一个会出现在结果中. 任何来自于 list-1 或 list-2 并且在另一个中没有匹配元素的元素会出现在结果中.
+        对于每一个匹配序对, 这个序对的两个元素中的一个会出现在结果中. 任何来自于 list-1 或 list-2 并且在另一个中没有匹配元素的元素会出现在结果中.
 
         如果在 list-1 和 list-2 之间有重复的, 这些重复实例中只有一个会出现在结果中. 如果 list-1 或 list-2 其中有着重复的条目, 那么这些重复的条目可能会也可能不会出现在结果中.
 
@@ -3063,13 +3065,13 @@
 
 * 副作用(Side Effects):
 
-        nunion 允许去修改 list-1 或 list-2 的列表结构的任意部分, car 或 cdr.
+        nunion 允许去修改 list-1 或 list-2 的列表结构[list]的任意部分, car 或 cdr.
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-        如果 list-1 和 list-2 不是 proper 列表那么应该准备发出一个 type-error 类型的错误.
+        如果 list-1 和 list-2 不是正规列表[proper list]那么应该准备发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
@@ -3079,6 +3081,4 @@
 
         这个 :test-not 参数已经被废弃
 
-        因为 nunion 副作用不是必须的, 所以它不应该被用于可移植代码的仅为了副作用(for-effect-only)位置. 
-
-
+        因为 nunion 副作用不是必须的, 所以它不应该被用于可移植代码中仅为了副作用(for-effect-only)位置. 
