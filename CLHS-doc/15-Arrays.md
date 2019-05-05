@@ -1,4 +1,4 @@
-# 15 数组
+# 15. 数组
 
 > * 15.1 [数组的概念](#ArrayConcepts)
 > * 15.2 [数组的字典](#TheArraysDictionary)
@@ -10,66 +10,65 @@
 
 ### 15.1.1 <span id="ArrayElements">数组元素</span>
 
-一个数组包含了一个称为为元素的对象的集合, 它们可以通过一个直角坐标系统而被单独的引用.
+一个数组[array]包含了一个称为为元素[element]的对象[object]的集合, 它们可以通过一个直角坐标系统而被单独的引用.
 
 > * 15.1.1.1 [数组索引](#ArrayIndices)
 > * 15.1.1.2 [数组维度](#ArrayDimensions)
-> * 15.1.1.3 [数组维数](#ArrayRank)
+> * 15.1.1.3 [数组秩](#ArrayRank)
 
 #### 15.1.1.1 <span id="ArrayIndices">数组索引</span>
 
-一个数组元素可以通过一个(可能是空的)索引的序列被引用. 这个序列的长度必须等于这个数组的范围. 每一个索引必须是一个小于对应数组尺寸的非负的 fixnum. 数组索引是从 0 开始的. 
-
+一个数组[array]元素[element]可以通过一个(可能是空的)索引序列来引用. 这个序列的长度必须等于这个数组[array]的秩[rank]. 每一个索引必须是一个小于对应数组[array]维数[dimension]的非负的 fixnum. 数组[array]索引是从 0 开始的. 
 
 #### 15.1.1.2 <span id="ArrayDimensions">数组维度</span>
 
-一个数组的坐标轴叫做维度.
+数组[array]的一个坐标轴称为一个维数[dimension].
 
-每一个维度都是一个非负 fixnum; 如果一个数组的任意维度都是 0, 那么这个数组就没有元素. 允许一个维度是 0, 在这个情况下这个数组没有元素, 并且去访问一个元素的任何尝试都是一个错误. 然而, 这个数组的其他属性, 比如这些维度自身, 可能被使用.
+每一个维数[dimension]都是一个非负 fixnum; 如果一个数组[array]的任意维度都是 0, 那么这个数组[array]就没有元素. 允许一个维数[dimension]是 0, 在这个情况下这个数组[array]没有元素, 并且去访问[access]一个元素[element]的任何尝试都是一个错误. 然而, 这个数组[array]的其他属性, 比如这些维数[dimension]自身, 可能被使用.
 
 ##### 15.1.1.2.1 独立数组维度的实现限制
 
-一个实现科恩嗯在数组的维度上强加一个限制, 但是在这个限制上这里有一个最小的需求. 见变量 array-dimension-limit. 
+一个实现[implementation]可能在数组[array]的维数[dimension]上强加一个限制, 但是在这个限制上这里有一个最小要求. 见变量[variable] array-dimension-limit. 
 
 
-#### 15.1.1.3 <span id="ArrayRank">数组维数</span>
+#### 15.1.1.3 <span id="ArrayRank">数组秩</span>
 
-一个数组可以有任意数量的维度 (包括 zero). 这个维度的数量称为维数(rank).
+一个数组[array]可以有任意数量的维数[dimension] (包括零). 这个维度的数量称为秩[rank].
 
-如果一个数组的维数是 0 那么这个数组就被说成是没有维度的, 并且这个维度的结果是 1 (见 array-total-size); 一个零维数组因此只有一个单个元素.
+如果一个数组[array]的秩[rank]是 0 那么就说这个数组是没有维数[dimension]的, 并且这些维度的乘积是 1 (见 array-total-size); 一个零维数组[array]因此只有一个单个元素.
 
 > * 15.1.1.3.1 [向量](#Vectors)
 > * 15.1.1.3.2 [多维数组](#MultiArrays)
 
 ##### 15.1.1.3.1 <span id="Vectors">向量</span>
 
-一个维数为 1 的数组 (换句话说, 一个一维数组) 被称为一个向量(vector).
+一个秩[rank]为 1 的数组[array] (换句话说, 一个一维数组[array]) 被称为一个向量[vector].
 
 ###### 15.1.1.3.1.1 填充指针
 
-一个填充指针是一个不大于向量中元素总数的非负整数. 不是所有的向量都有填充指针. 见函数 make-array 和 adjust-array.
+一个填充指针[fill pointer]是一个不大于向量[vector]中元素[element]总数的非负整数[integer]. 不是所有的向量[vector]都有填充指针[fill pointer]. 见函数[function] make-array 和 adjust-array.
 
-如果一个向量的一个元素有着大于等于 0 但是小于这个填充指针(如果有的话)的索引, 就说它是有效的. 对于一个没有填充指针的数组, 所有元素都被认为是有效的.
+如果一个向量[vector]的一个元素[element]有着大于等于 0 但是小于这个填充指针[fill pointer] (如果有的话)的索引, 那么就说它是有效的[active]. 对于一个没有填充指针[fill pointer]的数组[array], 所有元素[element]都被认为是有效的[active].
 
-只有向量可以有填充指针; 多维数组没有. 不能创建一个被转移到有着填充指针的向量的多维数组.
+只有向量[vector]可以有填充指针[fill pointer]; 多维数组[array]没有. 可以创建一个被转移到有着填充指针[fill pointer]的向量[vector]的多维数组[array].
 
 ##### 15.1.1.3.2 <span id="MultiArrays">多维数组</span>
 
 ###### 15.1.1.3.2.1 多维数组的存储布局
 
-多维数组以行优先的顺序存储它们的成分; 这也就是说, 一个多维数组内部被存储为一个一维数组, 其中多维度索引集有序地排列, 最后一个所有变化最快. 
+多维数组[array]以行优先的顺序存储它们的成分; 这也就是说, 一个多维数组[array]内部被存储为一个一维数组[array], 其中多维度索引集有序地排列, 最后一个所有变化最快. 
 
-###### 15.1.1.3.2.2 数组维数的实现限制
+###### 15.1.1.3.2.2 数组秩的实现限制
 
-一个实现可能在一个数组的维数上强加一个限制, 但是在这个限制上这里有一个最小的需求. 见变量 array-rank-limit. 
+一个实现[implementation]可能在一个数组[array]秩[rank]上强加一个限制, 但是在这个限制上这里有一个最小的要求. 见变量[variable] array-rank-limit. 
 
 ### 15.1.2 <span id="SpecializedArrays">特化的数组</span>
 
-一个数组可以是一个普通数组, 意味着每个元素可以是任意对象, 或者它可能是一个特化的数组, 意味着每个元素都有一个约束的类型.
+一个数组[array]可以是一个普通[general]数组[array], 意味着每个元素[element]可以是任意对象[object], 或者它可能是一个特化[specialized]数组[array], 意味着每个元素[element]都有一个约束的类型[type].
 
-"一个数组被特化为 <<\type>>" 的说法有时被用于强调一个数组的元素类型. 即便当这个 <<\type>> 是 t 这个说法也是认可的, 尽管一个被特化为类型 t 的数组是一个普通数组, 而不是一个特化数组.
+"一个数组[array]被特化[specialized]为类型[type] <<\type>>" 的说法有时被用于强调一个数组[array]的元素类型[element type]. 即便当这个类型[type] <<\type>> 是 t 这个说法也是认可的, 尽管一个被特化[specialized]为类型[type] t 的数组[array]是一个普通[general]数组[array], 而不是一个特化[specialized]数组[array].
 
-下面这段列出了一些可应用于数组创建, 访问, 和信息操作的已定义的名字.
+下面这段列出了一些可应用于数组[array]创建, 访问[access], 和信息操作的已定义的名字[defined name].
 
     adjust-array           array-has-fill-pointer-p  make-array                   
     adjustable-array-p     array-in-bounds-p         svref                        
@@ -83,24 +82,24 @@
     Figure 15-1. 普通目的的数组相关的已定义名字
 
 > * 15.1.2.1 [数组提升](#ArrayUpgrading)
-> * 15.1.2.2 [Required Kinds of Specialized Arrays](#RKOSA)
+> * 15.1.2.2 [特化数组的必要种类](#RKOSA)
 
 
 #### 15.1.2.1 <span id="ArrayUpgrading">数组提升</span>
 
-类型 T1 的提升数组元素类型 T2 是 T1 的超类型, 并且在 T1 可以被用作对象创建或类型区分的时候可以用来替换 T1.
+类型[type] T1 的提升数组元素类型[upgraded array element type] T2 是 T1 的超类型[supertype], 并且在 T1 可以被用作对象创建或类型区分的数组元素类型[array element type]时可以用来替换 T1.
 
-在一个数组创建期间, 需要的元素类型被称为表达数组元素类型. 这个表达数组元素类型的提升数组元素类型成为这个要被创建的数组的实际数组元素类型.
+在一个数组[array]创建期间, 需要的元素类型[element]被称为表达数组元素类型[expressed array element type]. 这个表达数组元素类型[expressed array element type]的提升数组元素类型[upgraded array element type]成为这个要被创建的数组[array]的实际数组元素类型[actual array element type].
 
-类型提升意味着在类型层次结构中向上移动. 一个类型总是为它的提升数组元素类型的子类型. 同样, 如果一个类型 Tx 是另一个类型 Ty 的子类型, 那么 Tx 的提升数组元素类型必须是 Ty 的提升数组元素类型的子类型. 两个互斥的类型可以被提升为相同类型.
+类型[type]提升意味着在类型层次结构中向上移动. 一个类型[type]总是为它的提升数组元素类型[upgraded array element type]的子类型[subtype]. 同样, 如果一个类型[type] Tx 是另一个类型[type] Ty 的子类型[subtype], 那么 Tx 的提升数组元素类型[upgraded array element type]必须是 Ty 的提升数组元素类型[upgraded array element type]的子类型[subtype]. 两个互斥[disjoint]的类型[type]可以被提升为相同类型[type].
 
-一个类型 T1 的提升数组元素类型 T2 是一个只有 T1 自身的函数; 这也就是说, 它独立于将要使用 T2 的数组的任何其他属性, 例如维数, 可调性, 填充指针, 或位移. 函数 upgraded-array-element-type 可以被符合规范的程序用来预测这个实现会怎样提升一个给定类型. 
+一个类型[type] T1 的提升数组元素类型[upgraded array element type] T2 是一个只有 T1 自身的函数; 这也就是说, 它独立于将要使用 T2 的数组[array]的任何其他属性, 例如秩[rank], 可调整性[adjustability], 填充指针[fill pointer], 或位移. 函数[function] upgraded-array-element-type 可以被符合规范的程序[conforming program]用来预测这个实现[implementation]会怎样提升[upgrade]一个给定类型[type]. 
 
-#### 15.1.2.2 <span id="RKOSA">Required Kinds of Specialized Arrays</span>
+#### 15.1.2.2 <span id="RKOSA">特化数组的必要种类</span>
 
-元素被约束为 character 类型或 character 的子类型的向量被称为字符串. 字符串是 string 类型. 下一段中列出了和字符串相关的已存在的名字.
+元素[element]被约束为 character 类型[type]或 character 的子类型[subtype]的向量[vector]被称为字符串[string]. 字符串[string]是 string 类型[type]. 下一段中列出了和字符串[string]相关的已定义的名字[defined name].
 
-字符串是特化数组, 逻辑上可能包含在这一章中. 然而, 出于可读性的目的, 关于字符串的大部分信息不会出现在这个章节中; 见章节 16 (Strings).
+字符串[string]是特化[specialized]数组[array], 逻辑上可以被包含在这一章中. 然而, 出于可读性的目的, 关于字符串[string]的大部分信息不会出现在这个章节中; 见章节 16 (字符串).
 
     char                string-equal         string-upcase  
     make-string         string-greaterp      string/=       
@@ -114,7 +113,7 @@
 
     Figure 15-2. 操作字符串的操作符
 
-元素被约束为 bit 类型的向量称为位向量. 位向量是 bit-vector 类型的. 下一段中列出了在位数组上操作的一些已定义的名字.
+元素[element]被约束为 bit 类型[type]的向量[vector]称为位向量[bit vector]. 位向量[bit vector]是 bit-vector 类型[type]的. 下一段中列出了在位数组[bit array]上操作的一些已定义的名字[defined name].
 
     bit        bit-ior   bit-orc2  
     bit-and    bit-nand  bit-xor   
@@ -284,7 +283,7 @@
 
 * 也见(See Also):
 
-        章节 15.1.2.2 (Required Kinds of Specialized Arrays), 章节 2.4.8.3 (Sharpsign Left-Parenthesis), 章节 22.1.3.7 (Printing Other Vectors), 章节 2.4.8.12 (Sharpsign A)
+        章节 15.1.2.2 (特化数组的必要种类), 章节 2.4.8.3 (Sharpsign Left-Parenthesis), 章节 22.1.3.7 (Printing Other Vectors), 章节 2.4.8.12 (Sharpsign A)
 
 * 注意(Notes):
 
@@ -356,7 +355,7 @@
 
 * 也见(See Also):
 
-        章节 2.4.8.4 (Sharpsign Asterisk), 章节 22.1.3.6 (Printing Bit Vectors), 章节 15.1.2.2 (Required Kinds of Specialized Arrays) 
+        章节 2.4.8.4 (Sharpsign Asterisk), 章节 22.1.3.6 (Printing Bit Vectors), 章节 15.1.2.2 (特化数组的必要种类) 
 
 ### <span id="T-SIMPLE-BIT-VECTOR">类型 SIMPLE-BIT-VECTOR</span>
 
