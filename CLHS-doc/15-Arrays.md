@@ -171,9 +171,9 @@
 
 * 描述(Description):
 
-        一个数组包含了根据一个笛卡儿坐标系统排列的对象. 一个数组提供了一个从 fixnum 的集合 {i0,i1,...,ir-1} 到对应数组元素的映射, 其中 0 <=ij < dj, r 是这个数组的维数, 并且 dj 是这个数组的维度 j 的大小.
+        一个数组[array]包含了根据一个笛卡儿坐标系统排列的对象[object]. 一个数组[array]提供了一个从 fixnum 的集合 {i0,i1,...,ir-1} 到对应数组[array]元素[element]的映射, 其中 0 <=ij < dj, r 是这个数组的秩, 并且 dj 是这个数组的维数[dimension] j 的大小.
 
-        当一个数组被创建时, 请求这个它的创建的程序可能声明所有元素为一个特定类型, 称为表达数组元素类型. 具体实现允许去提升这个类型来产生实际数组元素类型, 它是这个数组被实际指定的元素类型. 见函数 upgraded-array-element-type.
+        当一个数组[array]被创建时, 请求它的创建的程序可能声明所有元素[element]为一个特定类型[type], 称为表达数组元素类型[expressed array element type]. 具体实现允许去提升[upgrade]这个类型来产生实际数组元素类型[actual array element type], 它是这个数组[array]被实际特化[specialized]的元素类型[element type]. 见函数[function] upgraded-array-element-type.
 
 * 复合类型指定符类别(Compound Type Specifier Kind):
 
@@ -187,25 +187,26 @@
 
 * 复合类型指定符参数(Compound Type Specifier Arguments):
 
-        dimension---一个有效数组大小.
-        element-type---一个类型指定符.
+        dimension---一个有效数组维数[valid array dimension].
+        element-type---一个类型指定符[type specifier].
         rank---一个非负 fixnum.
 
 * 复合类型指定符描述(Compound Type Specifier Description):
 
-        这个表示元素类型, 维数, 和大小匹配给定 element-type, rank, 和 dimensions 的数组的集合. 具体的说:
+        这个表示元素类型[element type], 秩[rank], 和维数[dimension]匹配给定 element-type, rank, 和 dimensions 的数组[array]的集合. 具体的说:
 
-        如果 element-type 是符号 *, 数组不被排除在它们的元素类型的基础上. 否则, 只包括那些实际数组元素类型是 element-type 的提升结果的数组; 见章节 15.1.2.1 (数组提升).
+        如果 element-type 是符号[symbol] *, 数组[array]不会根据其元素类型[element type]被排除. 否则, 只包括那些实际数组元素类型[actual array element type]是 element-type 的提升结果的数组; 见章节 15.1.2.1 (数组提升).
 
-        如果这个 dimension-spec 是一个 rank, 这个集合只包括那些有着那个 rank 的数组. 如果这个 dimension-spec 一个 dimensions 的列表, 这个集合只包括那些有着由 dimensions 的长度给定的 rank 并且有着那个指明的 dimensions 的数组; 在这个情况中, * 匹配对应大小的任何值. 如果这个 dimension-spec 是符号 *, 这个集合不会被约束在维数或大小的基础上.
+        如果这个 dimension-spec 是一个 rank, 这个集合只包括那些有着那个 rank 的数组. 如果这个 dimension-spec 是 dimensions 的一个列表[list], 这个集合只包括那些有着由 dimensions 的长度[length]给定的秩[rank]并且有着指明的 dimensions 的数组; 在这个情况中, * 匹配对应维数[dimension]的任意值. 如果这个 dimension-spec 是符号[symbol] *, 这个集合不会被约束在秩[rank]或维数[dimension]的基础上.
 
 * 也见(See Also):
 
-        *print-array*, aref, make-array, vector, 章节 2.4.8.12 (Sharpsign A), 章节 22.1.3.8 (Printing Other Arrays)
+        *print-array*, aref, make-array, vector, 章节 2.4.8.12 (井号A(#A)), 章节 22.1.3.8 (打印其他数组)
 
 * 注意(Notes):
 
-        注意类型 (array t) 是类型 (array *) 的一个适当的子类型. 这个原因是类型 (array t) 是持有任何对象的数组的集合 (这些元素是类型 t, 它包括所有对象). 另一方面, 类型 (array *) 是所有数组的集合, 包括例如只持有字符的数组. 类型 (array character) 不是类型 (array t) 的一个子类型; 这两个集合是互斥的因为类型 (array character) 不是所有持有字符的数组的集合, 而是一组专门用来保存精确字符并且没有其他对象的数组的集合. 
+        注意类型 (array t) 是类型 (array *) 的一个适当的子类型[subtype]. 这个原因是类型 (array t) 是持有任何对象[object]的数组[array]的集合 (这些元素[element]是类型[type] t, 它包括所有对象[object]). 另一方面, 类型 (array *) 是所有数组[array]的集合, 包括例如只持有字符[character]的数组[array]. 类型 (array character) 不是类型 (array t) 的一个子类型[subtype]; 这两个集合是互斥[disjoint]的因为类型 (array character) 不是所有可以持有字符[character]的数组[array]的集合, 而是一组专门用来保存精确字符[character]并且没有其他对象[object]的数组的集合. 
+
 
 ### <span id="T-SIMPLE-ARRAY">类型 SIMPLE-ARRAY</span>
 
@@ -215,9 +216,9 @@
 
 * 描述(Description):
 
-        一个没有被转移到另一个数组, 没有填充指针, 并且不是明显可调整的数组是类型 simple-array 的一个子类型. 简单数组的概念是允许实现使用特定的表示, 并允许用户声明某些值总是简单的数组.
+        一个没有被转移到另一个数组[array], 没有填充指针[fill pointer], 并且不是明显可调整[expressly adjustable]的数组[array]的类型[type]是类型[type] simple-array 的一个子类型[subtype]. 简单数组[simple array]概念允许实现使用特定的表示, 并允许用户声明某些值总是为简单数组[simple array].
 
-        类型 simple-vector, simple-string, 和 simple-bit-vector 类型 simple-array 的互斥的子类型, 对于它们分别意味着 (simple-array t (*)), 所有 c 为 character 类型的子类型的 (simple-array c (*)) 的并集, 以及 (simple-array bit (*)).
+        类型[type] simple-vector, simple-string, 和 simple-bit-vector 是类型[type] simple-array 的互斥[disjoint]的子类型[subtype], 对于它们分别意味着 (simple-array t (*)), 所有 c 为 character 类型[type]的子类型[subtype]的 (simple-array c (*)) 的并集, 以及 (simple-array bit (*)).
 
 * 复合类型指定符类别(Compound Type Specifier Kind):
 
@@ -231,19 +232,19 @@
 
 * 复合类型指定符参数(Compound Type Specifier Arguments):
 
-        dimension---一个有效数组大小.
-        element-type---一个类型指定符.
+        dimension---一个有效数组维数[valid array dimension].
+        element-type---一个类型指定符[type specifier].
         rank---一个非负 fixnum.
 
 * 复合类型指定符描述(Compound Type Specifier Description):
 
-        这个复合类型指定符被准确地当作 array 类型会被当作的对应复合类型指定符, 除了那个被进一步约束为只包含简单数组的集合.
+        这个复合类型指定符[compound type specifier]的处理方法和 array 类型[type]的复合类型指定符[compound type specifier]的处理方法完全相同, 除了这个集合被进一步约束为只包含简单数组[simple array].
 
 * 注意(Notes):
 
-        没有实际存储的数组, 带有填充指针的向量, 或实际可调整的数组是否为简单数组是依赖于具体实现的.
+        存储转移的数组[displaced array], 带有填充指针[fill pointer]的向量[vector], 或实际可调整[actually adjustable]的数组[array]是否为简单数组[simple array]是依赖于具体实现的[implementation-dependent].
 
-        (simple-array *) 不管元素类型引用了所有简单数组, (simple-array type-specifier) 只引用那些可以通过给定 type-specifier 作为 make-array 的 :element-type 参数得到的简单数组. 
+        (simple-array *) 不管元素类型引用了所有简单数组[simple array], (simple-array type-specifier) 只引用那些可以通过给定 type-specifier 作为 make-array 的 :element-type 参数得到的简单数组[simple array]. 
 
 
 ### <span id="SC-VECTOR">系统类 VECTOR</span>
@@ -254,11 +255,11 @@
 
 * 描述(Description):
 
-        任何一维数组都是一个向量.
+        任何一维数组[array]都是一个向量[vector].
 
-        类型 vector 是类型 array 的一个子类型; 对于所有类型 x, (vector x) 和 (array x (*)) 相同.
+        类型[type] vector 是类型[type] array 的一个子类型[subtype]; 对于所有类型[type] x, (vector x) 和 (array x (*)) 相同.
 
-        类型 (vector t), 类型 string, 还有类型 bit-vector 是类型 vector 的互斥子类型.
+        类型[type] (vector t), 类型[type] string, 还有类型[type] bit-vector 是类型[type] vector 的互斥[disjoint]子类型[subtype].
 
 * 复合类型指定符类别(Compound Type Specifier Kind):
 
@@ -271,29 +272,29 @@
 * 复合类型指定符参数(Compound Type Specifier Arguments):
 
         size---一个非负 fixnum.
-        element-type---一个类型指定符.
+        element-type---一个类型指定符[type specifier].
 
 * 复合类型指定符描述(Compound Type Specifier Description):
 
-        这个表示那个元素类型和大小都匹配指定值的特化序列的集合. 具体来说:
+        这个表示那个元素类型[element type]和维数[dimension]都匹配指定值的特化向量[vector]的集合. 具体来说:
 
-        如果 element-type 是符号 *, vectors are not excluded on the basis of their element type.<!--待翻译--> 否则, 只有那些实际数组元素类型是 element-type 提升的结果的向量会被包括进去; 见章节 15.1.2.1 (数组提升).
+        如果 element-type 是符号[symbol] *, 向量[vector]不会根据它们的元素类型[element type]被排除. 否则, 只有那些实际数组元素类型[actual array element type]是 element-type 提升[upgrade]的结果的那些向量会被包括进去; 见章节 15.1.2.1 (数组提升).
 
-        如果指定了一个 size, 那么这个集合只包括那些仅有的大小是 size 的向量. 如果符号 * 被指定而不是一个 size, 这个集合不会被约束在这个大小的基础上.
+        如果指定了一个 size, 那么这个集合只包括那些仅有的维数[dimension]是 size 的向量. 如果符号[symbol] * 被指定而不是一个 size, 那么这个集合不会被约束在这个维数[dimension]的基础上.
 
 * 也见(See Also):
 
-        章节 15.1.2.2 (特化数组的必要种类), 章节 2.4.8.3 (Sharpsign Left-Parenthesis), 章节 22.1.3.7 (Printing Other Vectors), 章节 2.4.8.12 (Sharpsign A)
+        章节 15.1.2.2 (特化数组的必要种类), 章节 2.4.8.3 (井号左括号(#()), 章节 22.1.3.7 (打印其他向量), 章节 2.4.8.12 (井号A(#A))
 
 * 注意(Notes):
 
-        类型 (vector e s) 等价于类型 (array e (s)).
+        类型[type] (vector e s) 等价于类型[type] (array e (s)).
 
-        类型 (vector bit) 有着名称 bit-vector.
+        类型[type] (vector bit) 有着名称 bit-vector.
 
-        所有类型 (vector C) 的并集, 其中 C 是 character 的任意子类型, 有着名字 string.
+        所有类型[type] (vector C) 的并集(其中 C 是 character 的任意子类型[subtype])有着名字 string.
 
-        (vector *) 引用所有的向量不管元素类型是什么, (vector type-specifier) 只引用那些可以通过给定 type-specifier 作为 make-array 的 :element-type 参数得到的向量. 
+        (vector *) 引用所有的向量[vector], 不管元素类型是什么, (vector type-specifier) 只引用那些可以通过给定 type-specifier 作为 make-array 的 :element-type 参数得到的向量[vector]. 
 
 
 ### <span id="T-SIMPLE-VECTOR">类型 SIMPLE-VECTOR</span>
@@ -304,9 +305,9 @@
 
 * 描述(Description):
 
-        一个不会被转移到另一个数组中, 没有填充指针, 不是明显可调整的并且可能持有任何类型元素的向量的类型是 simple-vector 的子类型.
+        一个没有被转移到另一个数组[array]中, 没有填充指针[fill pointer], 不是明显可调整[expressly adjustable]的并且可能持有任何类型[type]元素的向量[vector]是类型[type] simple-vector 的子类型[subtype].
 
-        类型 simple-vector 类型 vector 的一个子类型, 并且是类型 (vector t) 的子类型.
+        类型[type] simple-vector 类型[type] vector 的一个子类型[subtype], 并且是类型[type] (vector t) 的子类型[subtype].
 
 * 复合类型指定符类别(Compound Type Specifier Kind):
 
@@ -318,7 +319,7 @@
 
 * 复合类型指定符参数(Compound Type Specifier Arguments):
 
-        size---一个非负 fixnum, 或者符号 *. 默认是符号 *.
+        size---一个非负 fixnum, 或者符号[symbol] *. 默认是符号[symbol] *.
 
 * 复合类型指定符描述(Compound Type Specifier Description):
 
@@ -333,9 +334,9 @@
 
 * 描述(Description):
 
-        一个位向量是一个元素类型为 bit 的向量.
+        一个位向量[bit vector]是一个元素类型[element type]为 bit 的向量[vector].
 
-        例子 bit-vector 类型 vector 的一个子类型, 对于 bit-vector 意味着 (vector bit).
+        这个 bit-vector 类型[type]是 vector 类型[type]的一个子类型[subtype], 对于 bit-vector 意味着 (vector bit).
 
 * 复合类型指定符类别(Compound Type Specifier Kind):
 
@@ -347,15 +348,16 @@
 
 * 复合类型指定符参数(Compound Type Specifier Arguments):
 
-        size---一个非负 fixnum, 或者符号 *.
+        size---一个非负 fixnum, 或者符号[symbol] *.
 
 * 复合类型指定符描述(Compound Type Specifier Description):
 
-        这个表示和类型 (array bit (size)) 相同的类型; 这也就是说, 大小为 size 的位向量的集合.
+        这个表示和类型[type] (array bit (size)) 相同的类型[type]; 这也就是说, 大小为 size 的位向量[bit vector]的集合.
 
 * 也见(See Also):
 
-        章节 2.4.8.4 (Sharpsign Asterisk), 章节 22.1.3.6 (Printing Bit Vectors), 章节 15.1.2.2 (特化数组的必要种类) 
+        章节 2.4.8.4 (井号星号(#*)), 章节 22.1.3.6 (打印位向量), 章节 15.1.2.2 (特化数组的必要种类) 
+
 
 ### <span id="T-SIMPLE-BIT-VECTOR">类型 SIMPLE-BIT-VECTOR</span>
 
@@ -365,7 +367,7 @@
 
 * 描述(Description):
 
-        一个不会被转移到另一个数组中, 没有填充指针, 并且不是明显可调整的位向量的类型是类型 simple-bit-vector 的一个子类型.
+        一个不会被转移到另一个数组[array]中, 没有填充指针[fill pointer], 并且不是明显可调整[expressly adjustable]的位向量[bit vector]的类型[type]是类型[type] simple-bit-vector 的一个子类型[subtype].
 
 * 复合类型指定符类别(Compound Type Specifier Kind):
 
@@ -377,11 +379,11 @@
 
 * 复合类型指定符参数(Compound Type Specifier Arguments):
 
-        size---一个非负 fixnum, 或者符号 *. 默认是符号 *.
+        size---一个非负 fixnum, 或者符号[symbol] *. 默认是符号[symbol] *.
 
 * 复合类型指定符描述(Compound Type Specifier Description):
 
-        这个表示和类型 (simple-array bit (size)) 相同的类型; 这也就是说, 大小为 size 的简单位向量的集合. 
+        这个表示和类型[type] (simple-array bit (size)) 相同的类型; 这也就是说, 大小为 size 的简单位向量[simple bit vector]的集合. 
 
 ### <span id="F-MAKE-ARRAY">函数 MAKE-ARRAY</span>
 
@@ -392,27 +394,27 @@
 
 * 参数和值(Arguments and Values):
 
-        dimensions---一个有效数组大小列表的标识符.
-        element-type---一个类型指定符. 默认是 t.
-        initial-element---一个对象.
-        initial-contents---一个对象.
-        adjustable---一个广义 boolean. 默认是 nil.
-        fill-pointer---对于这个要被创建的数组的有效填充指针, 或者是 t 或 nil. 默认是 nil.
-        displaced-to---一个数组或 nil. 默认是 nil. 如果 initial-element 或 initial-contents 被提供了那么这个选项一定不能被提供.
-        displaced-index-offset---对于 displaced-to 的一个有效数组行优先索引. 默认是 0. 这个选项一定不能被提供除非提供了一个非 nil 的 displaced-to.
-        new-array---一个数组.
+        dimensions---一个有效数组维数[valid array dimension]的列表[list]的标识符[designator].
+        element-type---一个类型指定符[type specifier]. 默认是 t.
+        initial-element---一个对象[object].
+        initial-contents---一个对象[object].
+        adjustable---一个广义 boolean [generalized boolean]. 默认是 nil.
+        fill-pointer---这个要被创建的数组[array]的有效填充指针[valid fill pointer], 或者是 t 或 nil. 默认是 nil.
+        displaced-to---一个数组[array]或 nil. 默认是 nil. 如果 initial-element 或 initial-contents 被提供了那么这个选项一定不能被提供.
+        displaced-index-offset--- displaced-to 的一个有效数组行优先索引[valid array row-major index]. 默认是 0. 这个选项一定不能被提供, 除非提供了一个非 nil [non-nil]的 displaced-to.
+        new-array---一个数组[array].
 
 * 描述(Description):
 
-        创建并返回一个由可以容纳 element-type 所给定的类型的元素的最具体类型构成的数组. 如果 dimensions 是 nil 那么一个零维数组会被创建.
+        创建并返回一个由可以容纳 element-type 所给定的类型[type]的元素的最特化[specialized]类型[type]构成的数组[array]. 如果 dimensions 是 nil 那么一个零维数组[array]会被创建.
 
         dimensions 表示这个新数组的维度.
 
-        element-type 表示要被存储到新数组 new-array 中的元素的类型. 这个 new-array 实际上可以存储从 element-type 提升得到的类型的任何对象; 见章节 15.1.2.1 (数组提升).
+        element-type 表示要被存储到新数组 new-array 中的元素的类型[type]. 这个 new-array 实际上可以存储从 element-type 提升[upgrade]得到的类型[type]的任何对象[object]; 见章节 15.1.2.1 (数组提升).
 
-        如果提供了 initial-element, 它被用于初始化 new-array 的每一个元素. 如果提供了 initial-element, 它必须是 element-type 给定的类型. 如果 :initial-contents 选项被提供了或者 displaced-to 是非 nil, 那么 initial-element 不能被提供. 如果没有提供 initial-element, 那么后面去读取 new-array 的未初始化元素的后果是未定义的, 除非提供了 initial-contents 或者 displaced-to 不是 nil.
+        如果提供了 initial-element, 它被用于初始化 new-array 的每一个元素[element]. 如果提供了 initial-element, 它必须是 element-type 给定的类型[type]. 如果 :initial-contents 选项被提供了或者 displaced-to 是非 nil [non-nil], 那么 initial-element 不能被提供. 如果没有提供 initial-element, 那么后面去读取 new-array 的未初始化元素[element]的后果是未定义的, 除非提供了 initial-contents 或者 displaced-to 不是 nil.
 
-        initial-contents 被用于初始化数组的内容. 比如:
+        initial-contents 被用于初始化数组[array]的内容. 比如:
 
         (make-array '(4 2 3) :initial-contents
                     '(((a b c) (1 2 3))
@@ -420,19 +422,19 @@
                       ((g h i) (2 3 1))
                       ((j k l) (0 0 0))))
 
-        initial-contents 由一个嵌套的序列结构组成. 在这个结构中的层级的数量等价于数组的维数. 这个嵌套的结构的每一个叶必须是 element-type 给定的类型. 如果数组是零维的, 那么 initial-contents 指定单个元素. 否则, initial-contents 必须是一个长度和第一个维度相同的序列; 每一个元素必须是一个维度为剩余维度的数组的嵌套结构, 诸如此类. 如果 initial-element 被提供了或者 displaced-to 不是 nil, 那么 initial-contents 不能被提供. 如果没有提供 initial-contents, 那么后面去读取 new-array 的未初始化元素的后果是未定义的, 除非提供了 initial-contents 或者 displaced-to 不是 nil.
+        initial-contents 由一个嵌套的序列[sequence]结构组成. 在这个结构中的层级的数量等价于数组[array]的秩. 这个嵌套的结构的每一个叶节点必须是 element-type 给定的类型[type]. 如果数组[array]是零维的, 那么 initial-contents 指定单个元素[element]. 否则, initial-contents 必须是一个长度和第一个维度相同的序列[sequence]; 每一个元素必须是一个维数为剩余维数的数组[array]的嵌套结构, 以此类推. 如果 initial-element 被提供了或者 displaced-to 非 nil [non-nil], 那么 initial-contents 不能被提供. 如果没有提供 initial-contents, 那么后面去读取 new-array 的未初始化元素的后果是未定义的, 除非提供了 initial-contents 或者 displaced-to 非 nil [non-nil].
 
-        如果 adjustable 不是 nil, 那么这个数组就是明确可调整的 (所以实际上可调的); 否则, 这个数组就不是明确可调整的 (这个数组实际上是否可调整的是依赖于具体实现的).
+        如果 adjustable 非 nil [non-nil], 那么这个数组就是明确可调整的[expressly adjustable] (所以实际上可调整的[actually adjustable]); 否则, 这个数组就不是明确可调整的[expressly adjustable] (这个数组是否为实际上可调整的[actually adjustable]是依赖于具体实现的[implementation-dependent]).
 
-        如果 fill-pointer 不是 nil, 数组必须是一维的; 这也就是说, 这个数组必须是一个向量. 如果 fill-pointer 是 t, 这个向量的长度被用于初始化这个填充指针. 如果 fill-pointer 是一个整数, 它成为这个向量的初始填充指针.
+        如果 fill-pointer 非 nil [non-nil], 数组[array]必须是一维的; 这也就是说, 这个数组[array]必须是一个向量[vector]. 如果 fill-pointer 是 t, 这个向量[vector]的长度被用于初始化这个填充指针[fill pointer]. 如果 fill-pointer 是一个整数[integer], 它成为这个向量[vector]的初始填充指针[fill pointer].
 
-        如果 displaced-to 是 non-nil, make-array 会创建一个存储被转移的数组并且 displaced-to 就是那个被转移的数组的目标. 在这个情况中, 如果 displaced-to 的实际数组元素类型和要被创建的实际数组元素类型不是相等的, 那么后果时未定义的. 如果 displaced-to 是 nil, 这个数组就不是一个存储被转移的数组.
+        如果 displaced-to 非 nil [non-nil], make-array 会创建一个存储被转移的数组[displaced array]并且 displaced-to 就是那个存储被转移的数组[displaced array]的目标[target]. 在这个情况中, 如果 displaced-to 的实际数组元素类型[actual array element type]和要被创建的数组[array]的实际数组元素类型[actual array element type]不是类型等价的[type equivalent], 那么后果时未定义的. 如果 displaced-to 是 nil, 这个数组[array]就不是一个存储被转移的数组[displaced array].
 
-        displaced-index-offset 被设置为这个数组的索引偏移量. 当一个数组 A 在创建数组 B 时被给定用作给 make-array 的 :displaced-to 参数, 那么数组 B 就被说是转移到数组 A. 在一个数组中的元素的总数, 称为这个数组的总大小, 被计算为所有维度的乘积. 这就需要 A 的总大小不小于 B 加上 displaced-index-offset 提供的 n 以后的总大小. 这个转移的效果是数组 B 没有它自己的任何元素, 但是到它自己的访问被映射到对数组 A 的访问. 这个映射对待这两个数组就好像它们是一维的, 以行优先的顺序获取元素, 并且映射一个对数组 B 的元素 k 的访问到数组 A 的第 k+n 个元素.
+        displaced-index-offset 被设置为这个数组[array]的索引偏移量. 当一个数组 A 在创建数组 B 时被给定用作给 make-array 的 :displaced-to 实参[argument], 那么数组 B 就被说是转移到数组 A. 在一个数组[array]中的元素的总数, 称为这个数组[array]的总大小, 被计算为所有维度的乘积. 这就需要 A 的总大小不小于 B 的总大小加上 displaced-index-offset 提供的 n 以后的大小. 这个转移的效果是数组 B 没有它自己的任何元素, 但是把到它自己的访问[access]被映射到对数组 A 的访问[access]. 这个映射处理这两个数组就好像它们是一维的, 以行优先的顺序获取元素, 并且映射一个对数组 B 的元素 k 的访问[access]到对数组 A 的第 k+n 个元素的访问[access].
 
-        如果 make-array 被调用时 adjustable, fill-pointer, 和 displaced-to 都是 nil, 那么结果就是一个简单数组. 如果 make-array 被调用时 adjustable, fill-pointer, 或 displaced-to 不止一个为 true, 产生的数组是否为一个简单数组是依赖于具体实现的.
+        如果 make-array 被调用时 adjustable, fill-pointer, 和 displaced-to 都是 nil, 那么结果就是一个简单数组[simple array]. 如果 make-array 被调用时 adjustable, fill-pointer, 或 displaced-to 不止一个为 true, 产生的数组[array]是否为一个简单数组[simple array]是依赖于具体实现的[implementation-dependent].
 
-        在创建数组 B 时, 当一个数组 A 被给定作为 make-array 的 :displaced-to 参数时, 那么数组 B 就会被说成时转移到了数组 A. 在一个数组中的元素总数, 称为这个元素的总大小, 通过所有维度的乘积计算出来. 如果 A 的总大小小于 B 加上 displaced-index-offset 提供的 n 以后的总大小, 那么后果是未指定的. 这个转移的效果是数组 B 没有它自己的任何元素, 但是到它自己的访问被映射到对数组 A 的访问. 这个映射对待这两个数组就好像它们是一维的, 以行优先的顺序获取元素, 并且映射一个对数组 B 的元素 k 的访问到数组 A 的第 k+n 个元素.
+        在创建数组 B 时, 当一个数组 A 被给定作为 make-array 的 :displaced-to 实参[argument]时, 那么就说数组 B 转移到了数组 A. 在一个数组[array]中的元素总数, 称为这个数组[array]的总大小, 通过所有维度的乘积计算出来. 如果 A 的总大小小于 B 加上 displaced-index-offset 提供的偏移 n 以后的总大小, 那么后果是未指定的. 这个转移的效果是数组 B 没有它自己的任何元素, 但是把到它自己的访问[access]被映射到对数组 A 的访问[access]. 这个映射处理这两个数组就好像它们是一维的, 以行优先的顺序获取元素, 并且映射一个对数组 B 的元素 k 的访问[access]到对数组 A 的第 k+n 个元素的访问[access].
 
 * 示例(Examples):
 
@@ -452,9 +454,11 @@
                   :element-type 'character 
                   :initial-element #\a 
                   :fill-pointer 3) =>  "aaa"
+    ```
 
-    The following is an example of making a displaced array.
+        以下是创建存储被转义的数组[displaced array]的示例.
 
+    ```LISP
     (setq a (make-array '(4 3))) 
     =>  #<ARRAY 4x3 simple 32546632>
     (dotimes (i 4)
@@ -477,7 +481,7 @@
     =>  NIL
     ```
 
-        这个最后一个例子依赖于那个数组事实上以行优先顺序存储的事实.
+        这个最后一个例子依赖于那个数组[array]事实上以行优先顺序存储的事实.
 
     ```LISP
     (setq a1 (make-array 50))
@@ -512,7 +516,7 @@
 
 * 注意(Notes):
 
-        这里没有指定去创建一个 adjustable-array-p 肯定返回 false 的数组的方法. 这里没有指定去创建一个不是简单数组的方法. 
+        这里没有指定去创建一个 adjustable-array-p 肯定返回 false 的数组[array]的方法. 这里没有指定去创建一个不是简单数组[simple array]的数组[array]的方法. 
 
 
 ### <span id="F-ADJUST-ARRAY">函数 ADJUST-ARRAY</span>
@@ -524,11 +528,12 @@
 
 * 参数和值(Arguments and Values):
 
-        array---一个数组.
-        new-dimensions---一个有效的数组大小或者一个有效数组大小的列表.
-        element-type---一个类型指定符.
-        initial-element---一个对象. 如果提供了 initial-contents 或 displaced-to, 那么 initial-element 一定不能被提供.
-        initial-contents---一个对象. 如果数组 array 有着大于零的维数, 那么 initial-contents 由嵌套的序列组成, 它的深度必须等于数组 array 的维数. 否则, 数组 array 是零维的并且 initial-contents 提供单个元素. 如果给定了 initial-element 或 displaced-to 那么 initial-contents 一定不能被提供.
+        array---一个数组[array].
+        new-dimensions---一个有效数组维数[valid array dimension]或者一个有效数组维数[valid array dimension]的列表[list].
+        element-type---一个类型指定符[type specifier].
+        initial-element---一个对象[object]. 如果提供了 initial-contents 或 displaced-to, 那么 initial-element 一定不能被提供.
+        initial-contents---一个对象[object]. 如果数组[array]有着大于零的秩, 那么 initial-contents 由嵌套的序列[sequence]组成, 它的深度必须等于数组 array 的秩. 否则, 数组[array]是零维的并且 initial-contents 提供单个元素. 如果给定了 initial-element 或 displaced-to 那么 initial-contents 一定不能被提供.
+        <!--TODO 校对到此-->
         fill-pointer---一个数组 array 的有效的填充指针会被创建, 或者 t, 或者 nil. 默认是 nil.
         displaced-to---一个数组或 nil. 如果提供了 displaced-to 那么 initial-elements 和 initial-contents 一定不能提供.
         displaced-index-offset---一个 (fixnum 0 n) 类型的对象其中 n 是 (array-total-size displaced-to). 当且仅当提供了 displaced-to 那么displaced-index-offset 可以被提供.
