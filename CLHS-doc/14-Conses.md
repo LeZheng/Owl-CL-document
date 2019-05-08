@@ -159,7 +159,7 @@
 
         一个列表[list]是一个构造[cons]的链, 其中每一个构造[cons]的 car 是这个列表[list]的一个元素[element], 而每个构造[cons]的 cdr 是这个链的下一个链接或一个终止原子[atom].
 
-        一个正规列表[proper list]是一个由空列表[empty] () 来终止的构造[cons]链, 这个空列表[empty list]自身也是一个正规列表[proper list]. 一个点列表[dotted list]是一个终止原子[atom]不是空列表[empty list]的列表[list]. 一个环状列表[circular list]是一个由于链中的某个构造[cons]是后面的构造[cons]的 cdr 而没有终止的 cons 链.
+        一个正规列表[proper list]是一个由空列表[empty list] () 来终止的构造[cons]链, 这个空列表[empty list]自身也是一个正规列表[proper list]. 一个点列表[dotted list]是一个终止原子[atom]不是空列表[empty list]的列表[list]. 一个环状列表[circular list]是一个由于链中的某个构造[cons]是后面的构造[cons]的 cdr 而没有终止的 cons 链.
 
         点列表[dotted list]和环状列表[circular list]也是列表[list], 但通常在这个规范中的那个非限制术语 "list" 意味着正规列表[proper list]. 然而, 类型[type] list 明确地包含了点列表[dotted list]和环状列表[circular list].
 
@@ -814,7 +814,7 @@
     (eq tree1 (subst "five" 5 tree1)) =>  implementation-dependent
     (subst 'tempest 'hurricane
             '(shakespeare wrote (the hurricane)))
-    =>  (SHAKESPEARE WROTE (THE TEMPEST))
+    =>  (SHAKESPEARE WROTE (THE TEMPESTSUBST))
     (subst 'foo 'nil '(shakespeare wrote (twelfth night)))
     =>  (SHAKESPEARE WROTE (TWELFTH NIGHT . FOO) . FOO)
     (subst '(a . cons) '(old . pair)
@@ -1223,6 +1223,7 @@
 
         除了这个 place 的子表达式形式[subform]只被求值一次, 并且这个 item 在 place 之前被求值. 
 
+
 ### <span id="M-POP">宏 POP</span>
 
 * 语法(Syntax):
@@ -1456,7 +1457,7 @@
 
 * 注意(Notes):
 
-        endp 的目的是测试正规列表的结束. 由于 endp 不会进入到一个 cons 中, 所以明确定义了传递给它点列表[dotted list]的情况. 然而, 如果通过在一个点列表[dotted list]上反复调用 cdr 来产生更短的"列表"并且使用 endp 来测试这些"列表", 当这个非 nil [non-nil]的原子[atom] (它事实上不是一个列表[list]) 最终称为给 endp 的参数时, 最后会产生一个有着不确定后果的情况. 由于这是使用 endp 的常用方式, 所以它是保守的编程风格, 并且与 endp 的意图一致, 即把 endp 当作一个在正规列表[proper list]上的函数, 而不是强制执行一个参数类型的正规列表[proper list], 除非参数是原子的[atomic]. 
+        endp 的目的是测试正规列表的结束. 由于 endp 不会进入到一个 cons 中, 所以明确定义了传递给它点列表[dotted list]的情况. 然而, 如果通过在一个点列表[dotted list]上反复调用 cdr 来产生更短的"列表"并且使用 endp 来测试这些"列表", 当这个非 nil [non-nil]的原子[atom] (它事实上不是一个列表[list]) 最终称为给 endp 的参数时, 最后会产生一个有着不确定后果的情况. 由于这是使用 endp 的常用方式, 所以它是保守的编程风格, 并且与 endp 的意图一致, 即把 endp 当作一个在正规列表[proper list]上的函数, 而不是强制一个正规列表[proper list]的参数类型, 除非参数是原子的[atomic]. 
 
 
 ### <span id="F-NULL">函数 NULL</span>
@@ -1602,6 +1603,7 @@
         nconc, concatenate
 
 * 注意(Notes): None. 
+
 
 ### <span id="F-REVAPPEND-NRECONC">函数 REVAPPEND, NRECONC</span>
 
@@ -2202,7 +2204,7 @@
 
         (acons key datum alist) ==  (cons (cons key datum) alist)
 
-<!--校对到此-->
+
 ### <span id="F-ASSOC-ALL">函数 ASSOC, ASSOC-IF, ASSOC-IF-NOT</span>
 
 * 语法(Syntax):
@@ -2567,10 +2569,11 @@
 
         注意, 在一个 setf 的情况中给 getf 提供一个默认值 default 有时候不是非常有趣的, 但这仍然是很重要的, 因为某些宏, 例如 push 和 incf, 需要一个数据可以被读取[read]和写入[write]的 place 参数. 在这样一个上下文中, 如果一个 default 参数被提供用于读取[read]的情况, 对于写入[write]的情况它必须也是语法上有效的. 比如,
 
-        (let ((plist '()))
-          (incf (getf plist 'count 0))
-          plist) =>  (COUNT 1)
-
+    ```LISP
+    (let ((plist '()))
+      (incf (getf plist 'count 0))
+      plist) =>  (COUNT 1)
+    ```
 
 ### <span id="M-REMF">宏 REMF</span>
 
@@ -2643,7 +2646,7 @@
 
         如果提供了 :key (并且不是 nil), 它被用于从这个列表 list 元素中提取这个要被测试的部分. 给这个 :key 函数的参数是 list-1 或 list-2 的一个元素; 这个 :key 函数通常返回提供的元素的部分. 如果没有提供 :key 或者是 nil, 那么就使用这个 list-1 和 list-2 的元素.
 
-        对于满足测试条件[satisfy the test]的每一个对, 这个对的两个元素中只有一个会被放到结果中. 一个列表[list]中的元素如果和另一个列表[list]中的元素都不满足测试条件[satisfy the test]就不会出现在结果中.<!--TODO 待校验--> 如果其中一个列表[list]包含了重复的元素, 那么在结果中也可能会重复.
+        对于满足测试条件[satisfy the test]的每一个对, 这个对的两个元素中只有一个会被放到结果中. 一个列表[list]中的元素如果和另一个列表[list]中的元素都不满足测试条件[satisfy the test]就不会出现在结果中. 如果其中一个列表[list]包含了重复的元素, 那么在结果中也可能会重复.
 
         不保证元素出现在结果中的顺序会以任何特定方式反映参数的顺序. 如果合适的话结果列表可能和 list-1 或 list-2 共享存储格, 或者和 list-1 或 list-2 是 eq 的.
 
