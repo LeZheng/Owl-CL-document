@@ -533,65 +533,64 @@
         element-type---一个类型指定符[type specifier].
         initial-element---一个对象[object]. 如果提供了 initial-contents 或 displaced-to, 那么 initial-element 一定不能被提供.
         initial-contents---一个对象[object]. 如果数组[array]有着大于零的秩, 那么 initial-contents 由嵌套的序列[sequence]组成, 它的深度必须等于数组 array 的秩. 否则, 数组[array]是零维的并且 initial-contents 提供单个元素. 如果给定了 initial-element 或 displaced-to 那么 initial-contents 一定不能被提供.
-        <!--TODO 校对到此-->
-        fill-pointer---一个数组 array 的有效的填充指针会被创建, 或者 t, 或者 nil. 默认是 nil.
-        displaced-to---一个数组或 nil. 如果提供了 displaced-to 那么 initial-elements 和 initial-contents 一定不能提供.
-        displaced-index-offset---一个 (fixnum 0 n) 类型的对象其中 n 是 (array-total-size displaced-to). 当且仅当提供了 displaced-to 那么displaced-index-offset 可以被提供.
-        adjusted-array---一个数组.
+        fill-pointer---一个要被创建的数组 array 的有效填充指针[valid fill pointer], 或者 t, 或者 nil. 默认是 nil.
+        displaced-to---一个数组[array]或 nil. 如果提供了 displaced-to 那么 initial-elements 和 initial-contents 一定不能提供.
+        displaced-index-offset---一个 (fixnum 0 n) 类型[type]的对象[object], 其中 n 是 (array-total-size displaced-to). 当且仅当提供了 displaced-to 那么displaced-index-offset 可以被提供.
+        adjusted-array---一个数组[array].
 
 * 描述(Description):
 
-        adjust-array 改变数组 array 的大小和元素. 结果是一个和数组 array 相同类型和维数的数组, 这个是修改后的数组, 或者一个新创建的数组 array 所转移到的数组, 并且有着给定的新维度 new-dimensions.
+        adjust-array 改变数组 array 的维数或元素. 结果是一个和数组 array 相同类型[type]和秩的数组[array], 它是修改后的数组 array, 或者一个数组 array 所转移到的新创建的数组[array], 并且有着给定的新维数 new-dimensions.
 
-        New-dimensions 指定了数组 array 的每一个维度的大小.
+        new-dimensions 指定了数组 array 的每一个维数[dimension]的大小.
 
-        Element-type 指定了产生的数组的元素类型. 如果提供了 element-type, 如果 element-type 的提升数组元素类型和数组 array 的实际数组元素类型不相同那么后果是未指定的.
+        element-type 指定了产生的数组[array]的元素[element]类型[type]. 在提供了 element-type 的情况下, 如果 element-type 的提升数组元素类型[upgraded array element type]和数组 array 的实际数组元素类型[actual array element type]不相同那么后果是未指定的.
 
-        如果提供了 initial-contents, 它会像 make-array 一样被对待. 在这个情况中数组 array 的原始内容不会出现在产生的数组中.
+        如果提供了 initial-contents, 它的处理会像 make-array 一样. 在这个情况中数组 array 的原始内容不会出现在产生的数组[array]中.
 
-        如果 fill-pointer 是一个整数, 它就成为那个产生的数组的填充指针. 如果 fill-pointer 是符号 t, 它表示被用作那个产生的数组的填充指针的大小. 如果 fill-pointer 是 nil, 它表示填充指针应该保留为它的位置.
+        如果 fill-pointer 是一个整数[integer], 它就成为那个产生的数组[array]的填充指针[fill pointer]. 如果 fill-pointer 是符号 t, 它表示那个产生的数组[array]的大小被用作填充指针[fill pointer]. 如果 fill-pointer 是 nil, 它表示填充指针[fill pointer]应该保持原样.
 
-        如果 displaced-to 是非 nil, 那么一个被转移的数组会被创建. 产生的数组和通过 displaced-to 给定的数组共享内容. 那个产生的数组不能包含比那个转移到的数组更多的元素. 如果没有提供 displaced-to 或者是 nil, 那么产生的数组不是一个被转移的数组. 如果数组 A 被创建转移到数组 B 并且后续数组 B 被给到 adjust-array, 数组 A 会始终转移到数组 B. 虽然数组 array 可能是一个被转移的数组, 但是产生的数组不是一个被转移的数组除非提供了 displaced-to 并且不是 nil. 这个 adjust-array 和被转移的数组的交互就像下面给定的三个数组 A, B, 和 C 一样:
+        如果 displaced-to 是非 nil [non-nil], 那么就会创建一个存储被转移的数组[displaced array]. 产生的数组[array]和通过 displaced-to 给定的数组[array]共享内容. 那个产生的数组[array]不能包含比那个存储被转移的数组[displaced array]更多的元素. 如果没有提供 displaced-to 或者是 nil, 那么产生的数组[array]不是一个存储被转移的数组[displaced array]. 如果一个被创建的数组 A 转移到数组 B 并且后续数组 B 被给到 adjust-array, 数组 A 仍然会转移到数组 B. 虽然数组 array 可能是一个存储被转移的数组[displaced array], 但是产生的数组[array]不是一个存储被转移的数组[displaced array]除非提供了 displaced-to 并且不是 nil. 这个 adjust-array 和存储被转移的数组[displaced array]的交互就像下面给定的三个数组 A, B, 和 C 一样:
 
         A 在调用前后都没有被转移
 
             (adjust-array A ...)
 
-            这个 A 的维度被修改, 并且内容会被适当重新安排. A 的额外元素来自于 initial-element. 这个 initial-contents 的使用导致所有旧的内容被丢弃.
+            这个 A 的维数被修改, 并且内容会被适当重排. A 的额外元素来自于 initial-element. 这个 initial-contents 的使用会导致所有旧的内容被丢弃.
 
         A 在调用之前没有被转移, 但是在调用之后被转移到 C
 
             (adjust-array A ... :displaced-to C)
 
-            A 中的原始内容不会出现在之后的 A 中; A 现在包含了 C 的内容, 而 C 不带有任何的重新排列.
+            A 中的原始内容不会出现在之后的 A 中; A 现在包含了 C 的内容, 而 C 不带有任何的重排.
 
         A 在这个调用之前被转移到 B, 在调用之后被转移到 C
 
             (adjust-array A ... :displaced-to B)
             (adjust-array A ... :displaced-to C)
 
-            B 和 C 可能相同. 如果在这个 adjust-array 调用中 displaced-index-offset 没有被提供, 它默认为 0, 那么之后 B 中的内容可能不会出现在 A 中除非这样的内容也出现在; 在 B 中的旧的偏移为不会被保留.
+            B 和 C 可能相同. 如果在这个 adjust-array 调用中没有提供 displaced-index-offset, 它默认为 0, 那么之后 B 中的内容可能不会出现在 A 中除非这样的内容也出现在 C 中; 在 B 中的旧的偏移为不会被保留.
 
         A 在调用前被转移到 B, 但是在调用后没有被转移.
 
             (adjust-array A ... :displaced-to B)
             (adjust-array A ... :displaced-to nil)
 
-            A 得到一个新的 "数据区域(data region)", 而 B 的内容被拷贝到这个里面并保留已存在的旧元素; A 的另外的元素从 initial-element 中提取, 如果提供的话. 但是, 这个 initial-contents 的使用导致所有旧的内容被丢弃.
+            A 得到一个新的 "数据区域(data region)", 而 B 的内容被拷贝到这个里面并保留已存在的旧元素; A 的另外的元素从 initial-element 中提取, 如果提供的话. 但是, 这个 initial-contents 的使用会导致所有旧的内容被丢弃.
 
-        如果提供了 displaced-index-offset, 它指定了产生的数组从它被转移到的数组开始的偏移. 如果没有提供 displaced-index-offset, 偏移就是 0. 这个产生的数组的大小加上偏移值不能超过那个它被转移到的数组的大小.
+        如果提供了 displaced-index-offset, 它指定了产生的数组[array]从它被转移到的数组[array]开始的偏移. 如果没有提供 displaced-index-offset, 偏移就是 0. 这个产生的数组[array]的大小加上偏移值不能超过那个它被转移到的数组[array]的大小.
 
-        如果只提供了 new-dimensions 和一个 initial-element 参数, 数组 array 的那些元素仍然在结果数组的范围中出现. 产生的数组中没有出现在数组 array 范围中的元素被初始化为 initial-element; 如果没有提供 initial-element, 后续在元素被初始化之前去读取 new-array 的这样的新元素的后果是未定义的.
+        如果只提供了 new-dimensions 和一个 initial-element 参数, 数组 array 的那些元素仍然在产生的数组[array]的范围中出现. 产生的数组[array]中没有出现在数组[array]范围中的元素被初始化为 initial-element; 如果没有提供 initial-element, 后面在元素被初始化之前去读取 new-array 的这样的新元素的后果是未定义的.
 
-        如果提供了 initial-contents 或 displaced-to, 那么数组 array 中的原始内容不会出现在新的数组中.
+        如果提供了 initial-contents 或 displaced-to, 那么数组 array 中的原始内容不会出现在新的数组[array]中.
 
-        如果数组 array 被调整为一个小于它的填充指针的大小并且没有提供 fill-pointer 参数, 这样它的填充指针在这个过程中会被适当调整, 那么后果是未指定的.
+        如果数组 array 被调整为一个小于它的填充指针[fill pointer]的大小并且没有提供 fill-pointer 参数, 这样一来它的填充指针[fill pointer]在这个过程中会被适当调整, 那么后果是未指定的.
 
         如果 A 被转移到 B, 如果 B 以一种不再有足够元素来满足 A 的方式被调整, 那么后果是未指定的.
 
-        如果 adjust-array 被应用到一个实际上可调整的数组, 那么返回的数组和数组 array 相等. 如果由 adjust-array 返回的数组和数组 array 不同, 那么参数 array 不会被改变.
+        如果 adjust-array 被应用到一个实际上可调整[actually adjustable]的数组[array], 那么返回的数组[array]和数组 array 相等[identical]. 如果由 adjust-array 返回的数组[array]和数组 array 不同[distinct], 那么参数 array 不会被改变.
 
-        注意, 如果一个数组 A 被装一到另一个数组 B, 而 B 被转移到另一个数组 C, 并且 B 被 adjust-array 修改, 那么 A 现在引用 B 中的调整的内容. 这个意味着一个实现不能折叠这个链来使 A 直接引用 C 而忘记了这个通过 B 的引用链. 但是, 缓存技术是允许的, 只要它们保留这里指定的语义.
+        注意, 如果一个数组[array] A 被转移到另一个数组[array] B, 而 B 被转移到另一个数组[array] C, 并且 B 被 adjust-array 修改, 那么 A 现在引用 B 中的调整的内容. 这个意味着一个实现不能折叠这个链来使 A 直接引用 C 而忘记了这个通过 B 的引用链. 但是, 缓存技术是允许的, 只要它们保留这里指定的语义.
 
 * 示例(Examples):
 
@@ -636,7 +635,7 @@
 
 * 异常情况(Exceptional Situations):
 
-        如果提供了 fill-pointer 并且不是 nil 但是 array 没有填充指针, 那么一个 error 类型的错误就会被发出.
+        如果提供了填充指针[fill pointer]并且是非 nil [non-nil]但是 array 没有填充指针[fill pointer], 那么就会发出一个 error 类型[type]的错误.
 
 * 也见(See Also):
 
@@ -653,12 +652,12 @@
 
 * 参数和值(Arguments and Values):
 
-        array---一个数组.
-        generalized-boolean---一个广义 boolean.
+        array---一个数组[array].
+        generalized-boolean---一个广义 boolean [generalized boolean].
 
 * 描述(Description):
 
-        当且仅当给定那个数组作为 adjust-array 的第一个参数可以返回一个相同的值时这个函数返回 true.
+        当且仅当给定那个数组 array 作为 adjust-array 的第一个实参[argument]可以返回一个相同[identical]的值[value]时这个函数返回 true.
 
 * 示例(Examples):
 
@@ -675,7 +674,7 @@
 
 * 异常情况(Exceptional Situations):
 
-        如果它的参数不是一个数组应该发出一个 type-error 类型的错误.
+        如果它的参数不是一个数组[array]应该发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
@@ -694,19 +693,19 @@
 
 * 参数和值(Arguments and Values):
 
-        array---一个数组.
-        subscripts---一个数组 array 的有效数组索引的列表.
+        array---一个数组[array].
+        subscripts---数组 array 的有效数组索引的一个列表[list].
         element, new-element---一个对象.
 
 * 描述(Description):
 
-        访问由 subscripts 指定的数组元素. 如果没有提供 subscripts 并且数组 array 是零维数的, aref 访问数组 array 的单个元素.
+        访问[access]由 subscripts 所指定的数组 array 元素[element]. 如果没有提供 subscripts 并且数组 array 是零维数的, aref 访问[access]数组 array 的单个元素.
 
-        aref 忽略填充指针. 允许使用 aref 去访问任何数组元素, 不管是否有效.
+        aref 忽略填充指针[fill pointer]. 允许使用 aref 去访问[access]任何数组 array 元素[element], 不管是否有效[active].
 
 * 示例(Examples):
 
-        如果变量 foo 命名一个 3×5 的数组, 第一个索引可以是 0, 1, 或 2, 并且第二个元素为 0, 1, 2, 3, 或 4. 数组元素可以通过使用函数 aref 来引用; 比如, (aref foo 2 1) 引用这个数组 array 的 (2, 1) 元素.
+        如果变量 foo 命名一个 3×5 的数组, 第一个索引可以是 0, 1, 或 2, 并且第二个元素为 0, 1, 2, 3, 或 4. 数组元素可以通过使用函数[function] aref 来引用; 比如, (aref foo 2 1) 引用这个数组 array 的 (2, 1) 元素.
 
     ```LISP
     (aref (setq alpha (make-array 4)) 3) =>  implementation-dependent
@@ -729,7 +728,7 @@
 
 * 也见(See Also):
 
-        bit, char, elt, row-major-aref, svref, 章节 3.2.1 (Compiler Terminology)
+        bit, char, elt, row-major-aref, svref, 章节 3.2.1 (编译器术语)
 
 * 注意(Notes): None. 
 
@@ -742,13 +741,13 @@
 
 * 参数和值(Arguments and Values):
 
-        array---一个数组.
-        axis-number---一个大于等于 0 并且小于这个数组 array 的维数的整数.
-        dimension---一个非负整数.
+        array---一个数组[array].
+        axis-number---大于等于 0 并且小于这个数组 array 的秩[rank]的一个整数[integer].
+        dimension---一个非负整数[integer].
 
 * 描述(Description):
 
-        array-dimension 返回数组 array 的 axis-number 维度的大小. (忽略任何填充指针.)
+        array-dimension 返回数组 array 的 axis-number 维度[dimension[1]]的大小. (忽略任何填充指针[fill pointer].)
 
 * 示例(Examples):
 
@@ -769,6 +768,8 @@
 
         (array-dimension array n) ==  (nth n (array-dimensions array))
 
+
+
 ### <span id="F-ARRAY-DIMENSIONS">函数 ARRAY-DIMENSIONS</span>
 
 * 语法(Syntax):
@@ -777,12 +778,12 @@
 
 * 参数和值(Arguments and Values):
 
-        array---一个数组.
-        dimensions---一个整数列表.
+        array---一个数组[array].
+        dimensions---一个整数[integer]列表[list].
 
 * 描述(Description):
 
-        返回数组 array 维度的一个列表. (如果数组 array 是一个带有填充指针的向量, 忽略那个填充指针.)
+        返回数组 array 维数[dimension]的一个列表[list]. (如果数组 array 是一个带有填充指针[fill pointer]的向量[vector], 那么就忽略那个填充指针[fill pointer].)
 
 * 示例(Examples):
 
@@ -796,13 +797,14 @@
 
 * 异常情况(Exceptional Situations):
 
-        如果它的参数不是一个列表, 那么应该发出一个 type-error 类型的错误.
+        如果它的参数不是一个数组[array], 那么应该发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
         array-dimension
 
 * 注意(Notes): None. 
+
 
 ### <span id="F-ARRAY-ELEMENT-TYPE">函数 ARRAY-ELEMENT-TYPE</span>
 
@@ -812,12 +814,12 @@
 
 * 参数和值(Arguments and Values):
 
-        array---一个数组.
-        typespec---一个类型指定符.
+        array---一个数组[array].
+        typespec---一个类型指定符[type specifier].
 
 * 描述(Description):
 
-        返回表示这个数组 array 的实际数组元素类型的类型指定符. (由于数组提升, 这个类型指定符在一些情况下表示这个数组 array 的表达数组元素类型的超类型.)
+        返回表示这个数组 array 的实际数组元素类型[actual array element type]的类型指定符[type specifier]. (由于数组[array]提升[upgrade], 这个类型指定符[type specifier]在一些情况下表示这个数组 array 的表达数组元素类型[expressed array element type]的超类型[supertype].)
 
 * 示例(Examples):
 
@@ -831,15 +833,15 @@
 
         (array-element-type (make-array 5 :element-type '(mod 5)))
 
-        可以是 (mod 5), (mod 8), fixnum, t, 或者任何其他 (mod 5) 是一个超类型的类型.
+        可以是 (mod 5), (mod 8), fixnum, t, 或者任何其他是 (mod 5) 的超类型[supertype]的类型.<!--TODO 原文的表述无法直译-->
 
 * 受此影响(Affected By):
 
-        这个实现.
+        具体实现[implementation].
 
 * 异常情况(Exceptional Situations):
 
-        如果它的参数不是一个数组, 那么应该发出一个 type-error 类型的错误.
+        如果它的参数不是一个数组[array], 那么应该发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
@@ -856,12 +858,12 @@
 
 * 参数和值(Arguments and Values):
 
-        array---一个数组.
-        generalized-boolean---一个广义 boolean.
+        array---一个数组[array].
+        generalized-boolean---一个广义 boolean [generalized boolean].
 
 * 描述(Description):
 
-        如果数组 array 有一个填充指针就返回 true; 否则返回 false.
+        如果数组 array 有一个填充指针[fill pointer]就返回 true; 否则返回 false.
 
 * 示例(Examples):
 
@@ -878,7 +880,7 @@
 
 * 异常情况(Exceptional Situations):
 
-        如果它的参数不是一个数组, 应该发出一个 type-error 类型的错误.
+        如果它的参数不是一个数组[array], 应该发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
@@ -886,7 +888,7 @@
 
 * 注意(Notes):
 
-        因为除了一维之外的数组不能有一个填充指针, 当 array-has-fill-pointer-p 的参数为这样一个数组时总是返回 nil. 
+        因为除了秩[rank]为 1 之外的数组[array]不能有一个填充指针[fill pointer], 当 array-has-fill-pointer-p 的参数为这样一个数组时总是返回 nil. 
 
 
 ### <span id="F-ARRAY-DISPLACEMENT">函数 ARRAY-DISPLACEMENT</span>
@@ -897,15 +899,15 @@
 
 * 参数和值(Arguments and Values):
 
-        array---一个数组.
-        displaced-to---一个数组或 nil.
+        array---一个数组[array].
+        displaced-to---一个数组[array]或 nil.
         displaced-index-offset---一个非负 fixnum.
 
 * 描述(Description):
 
-        如果这个数组 array 是一个被转移的数组, 返回这个数组的 :displaced-to 和 :displaced-index-offset 选项的值 (见函数 make-array 和 adjust-array). 如果这个数组 array 不是一个被转移的数组, 返回 nil 或 0.
+        如果这个数组 array 是一个存储被转移的数组[displaced array], 返回这个数组[array]的 :displaced-to 和 :displaced-index-offset 选项的值[value] (见函数[function] make-array 和 adjust-array). 如果这个数组 array 不是一个存储被转移的数组[displaced array], 返回 nil 和 0.
 
-        如果 array-displacement 在一个数组上被调用, 对于这个数组一个非 nil 对象被提供作为给 make-array 或 adjust-array 的 :displaced-to 参数, 它一定返回这个对象作为它的第一个值. array-displacement 是否为任何其他数组返回一个非 nil 主值是依赖于具体实现的.
+        如果 array-displacement 在一个数组 array 上被调用, 对于这个数组一个非 nil [non-nil]对象[object]被提供作为给 make-array 或 adjust-array 的 :displaced-to 实参[argument], 它一定返回这个对象[object]作为它的第一个值. array-displacement 是否为任何其他数组返回一个非 nil [non-nil]主值[primary value]是依赖于具体实现的[implementation-dependent ].
 
 * 示例(Examples):
 
@@ -927,13 +929,14 @@
 
 * 异常情况(Exceptional Situations):
 
-        如果 array 不是一个数组, 那么应该发出一个 type-error 类型的错误.
+        如果 array 不是一个数组[array], 那么应该发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
         make-array
 
 * 注意(Notes): None. 
+
 
 ### <span id="F-ARRAY-IN-BOUNDS-P">函数 ARRAY-IN-BOUNDS-P</span>
 
@@ -943,13 +946,13 @@
 
 * 参数和值(Arguments and Values):
 
-        array---一个数组.
-        subscripts---一个长度等价于数组 array 的维数的整数列表.
-        generalized-boolean---一个广义 boolean.
+        array---一个数组[array].
+        subscripts---一个长度等价于数组 array 的秩[rank]的整数[integer]列表[list].
+        generalized-boolean---一个广义 boolean [generalized boolean].
 
 * 描述(Description):
 
-        如果 subscripts 都在输入 array 的边界内就返回 true; 否则返回 false. (如果 array 是一个带有填充指针的向量, 那么忽略那个填充指针.)
+        如果 subscripts 都在数组 array 的边界内就返回 true; 否则返回 false. (如果 array 是一个带有填充指针[fill pointer]的向量[vector], 那么忽略那个填充指针[fill pointer].)
 
 * 示例(Examples):
 
@@ -975,7 +978,7 @@
         (array-in-bounds-p array subscripts)   
         ==  (and (not (some #'minusp (list subscripts)))
 
-
+<!--TODO 校对到此-->
 ### <span id="F-ARRAY-RANK">函数 ARRAY-RANK</span>
 
 * 语法(Syntax):
@@ -1416,7 +1419,7 @@
 
 * 也见(See Also):
 
-        aref, sbit, schar, vector, 章节 3.2.1 (Compiler Terminology)
+        aref, sbit, schar, vector, 章节 3.2.1 (编译器术语)
 
 * 注意(Notes):
 
@@ -1666,7 +1669,7 @@
 
 * 也见(See Also):
 
-        aref, 章节 3.2.1 (Compiler Terminology)
+        aref, 章节 3.2.1 (编译器术语)
 
 * 注意(Notes):
 
