@@ -833,7 +833,8 @@
 
         (array-element-type (make-array 5 :element-type '(mod 5)))
 
-        可以是 (mod 5), (mod 8), fixnum, t, 或者任何其他是 (mod 5) 的超类型[supertype]的类型.<!--TODO 原文的表述无法直译-->
+        可以是 (mod 5), (mod 8), fixnum, t, 或者任何其他是 (mod 5) 的超类型[supertype]的类型.
+<!--TODO 原文的表述无法直译-->
 
 * 受此影响(Affected By):
 
@@ -978,7 +979,7 @@
         (array-in-bounds-p array subscripts)   
         ==  (and (not (some #'minusp (list subscripts)))
 
-<!--TODO 校对到此-->
+
 ### <span id="F-ARRAY-RANK">函数 ARRAY-RANK</span>
 
 * 语法(Syntax):
@@ -987,12 +988,12 @@
 
 * 参数和值(Arguments and Values):
 
-        array---一个数组.
-        rank---一个非负整数.
+        array---一个数组[array].
+        rank---一个非负整数[integer].
 
 * 描述(Description):
 
-        返回数组 array 的维数.
+        返回数组 array 的维数[dimension]数量.
 
 * 示例(Examples):
 
@@ -1007,7 +1008,7 @@
 
 * 异常情况(Exceptional Situations):
 
-        如果它的参数不是一个 array 那么应该发出一个 type-error 类型的错误.
+        如果它的参数不是一个数组[array]那么应该发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
@@ -1024,17 +1025,17 @@
 
 * 参数和值(Arguments and Values):
 
-        array---一个数组.
-        subscripts---数组 array 的一个有效数组索引列表.
-        index---数组 array 的一个有效数组行优先索引.
+        array---一个数组[array].
+        subscripts---数组 array 的有效数组索引的一个列表[list].
+        index---数组 array 的一个有效数组行优先索引[valid array row-major index].
 
 * 描述(Description):
 
-        根据数组 array 的行优先顺序计算由 subscripts 指定的元素的位置, 并且返回这个元素在计算的位置到数组 array 的开始点的偏移.
+        根据数组 array 的行优先顺序计算由 subscripts 指定的元素的位置, 返回从数组 array 的开始计算的位置的元素的偏移量.
 
         对于一个一维数组, array-row-major-index 的结果等于 subscript.
 
-        array-row-major-index 忽略填充指针.
+        array-row-major-index 忽略填充指针[fill pointer].
 
 * 示例(Examples):
 
@@ -1059,12 +1060,13 @@
 
         一个没有错误检测的可能的 array-row-major-index 定义是
 
-        (defun array-row-major-index (a &rest subscripts)
-          (apply #'+ (maplist #'(lambda (x y)
-                                    (* (car x) (apply #'* (cdr y))))
-                              subscripts
-                              (array-dimensions a))))
-
+    ```LISP
+    (defun array-row-major-index (a &rest subscripts)
+      (apply #'+ (maplist #'(lambda (x y)
+                                (* (car x) (apply #'* (cdr y))))
+                          subscripts
+                          (array-dimensions a))))
+    ```
 
 
 ### <span id="F-ARRAY-TOTAL-SIZE">函数 ARRAY-TOTAL-SIZE</span>
@@ -1075,12 +1077,12 @@
 
 * 参数和值(Arguments and Values):
 
-        array---一个数组.
-        size---一个非负整数.
+        array---一个数组[array].
+        size---一个非负整数[integer].
 
 * 描述(Description):
 
-        返回这个数组 array 的数组总大小.
+        返回这个数组 array 的数组总大小[array total size].
 
 * 示例(Examples):
 
@@ -1097,7 +1099,7 @@
 
 * 异常情况(Exceptional Situations):
 
-        如果它的参数不是一个数组, 那么应该发出一个 type-error 类型的错误.
+        如果它的参数不是一个数组[array], 那么应该发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
@@ -1105,9 +1107,9 @@
 
 * 注意(Notes):
 
-        如果这个数组 array 是一个带有填充指针的向量, 那么在计算这个数组总大小时这个填充指针会被忽略.
+        如果这个数组 array 是一个带有填充指针[fill pointer]的向量[vector], 那么在计算这个数组总大小[array total size]时这个填充指针[fill pointer]会被忽略.
 
-        由于没有参数的结果是一, 所以一个零维数组的数组总大小是一.
+        由于没有参数的乘积是 1, 所以一个零维数组的数组总大小[array total size]是 1.
 
         (array-total-size x)
             ==  (apply #'* (array-dimensions x))
@@ -1122,12 +1124,12 @@
 
 * 参数和值(Arguments and Values):
 
-        object---一个对象.
-        generalized-boolean---一个广义 boolean.
+        object---一个对象[object].
+        generalized-boolean---一个广义 boolean [generalized boolean].
 
 * 描述(Description):
 
-        如果对象 object 是 array 类型就返回 true; 否则, 返回 false.
+        如果对象 object 是 array 类型[type]就返回 true; 否则, 返回 false.
 
 * 示例(Examples):
 
@@ -1163,12 +1165,12 @@
 
 * 参数和值(Arguments and Values):
 
-        vector---一个带有填充指针的向量.
-        fill-pointer, new-fill-pointer---对于向量 vector 的一个有效的填充指针.
+        vector---一个带有填充指针[fill pointer]的向量[vector].
+        fill-pointer, new-fill-pointer---向量 vector 的一个有效填充指针[valid fill pointer].
 
 * 描述(Description):
 
-        访问向量 vector 的填充指针.
+        访问[access]向量 vector 的填充指针[fill pointer].
 
 * 示例(Examples):
 
@@ -1190,7 +1192,7 @@
 
 * 异常情况(Exceptional Situations):
 
-        如果 vector 不是一个带有填充指针的向量那么应该发出一个 type-error 类型的错误.
+        如果 vector 不是一个带有填充指针[fill pointer]的向量[vector]那么应该发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
@@ -1198,7 +1200,8 @@
 
 * 注意(Notes):
 
-        这里没有会移除向量 vector 的填充指针的操作符. 
+        这里没有会移除向量[vector]的填充指针[fill pointer]的操作符[operator]. 
+
 
 ### <span id="A-ROW-MAJOR-AREF">访问器 ROW-MAJOR-AREF</span>
 
@@ -1210,13 +1213,13 @@
 
 * 参数和值(Arguments and Values):
 
-        array---一个数组.
-        index---对于数组 array 的一个有效数组行优先索引.
-        element, new-element---一个对象.
+        array---一个数组[array].
+        index---对于数组 array 的一个有效数组行优先索引[valid array row-major index].
+        element, new-element---一个对象[object].
 
 * 描述(Description):
 
-        将数组看作是一个向量, 它以行优先的顺序查看其元素, 并且返回那么通过给定索引 index 引用的向量的元素.
+        将数组[array]看作是一个向量[vector], 它以行优先的顺序查看其元素[element], 并且返回给定索引 index 引用的向量[vector]的元素[element].
 
         row-major-aref 和 setf 一起使用是有效的.
 
@@ -1252,21 +1255,21 @@
 
 * 参数和值(Arguments and Values):
 
-        typespec---一个类型指定符.
-        environment---一个环境对象. 默认是 nil, 表示空的词法环境和当前全局环境.
-        upgraded-typespec---一个类型指定符.
+        typespec---一个类型指定符[type specifier].
+        environment---一个环境[environment]对象[object]. 默认是 nil, 表示空词法环境[null lexical environment]和当前全局环境[global environment].
+        upgraded-typespec---一个类型指定符[type specifier].
 
 * 描述(Description):
 
-        返回可以持有 typespec 所表示类型的条目的最具体数组表示的元素类型.
+        返回可以持有 typespec 所表示类型[type]的条目的最具体[specialized]数组[array]表示的元素类型[element type].
 
-        这个 typespec 是 upgraded-typespec 的一个子类型 (并且可能类型相等).
+        这个 typespec 是 upgraded-typespec 的一个子类型[subtype] (并且可能类型等价[type equivalent]).
 
-        如果 typespec 是 bit, 那么结果和 bit 是类型等价的. 如果 typespec 是 base-char, 那么结果和 base-char 是类型等价的. 如果 typespec 是 character, 那么结果和 character 是类型等价的.
+        如果 typespec 是 bit, 那么结果和 bit 是类型等价的[type equivalent]. 如果 typespec 是 base-char, 那么结果和 base-char 是类型等价的[type equivalent]. 如果 typespec 是 character, 那么结果和 character 是类型等价的[type equivalent].
 
-        upgraded-array-element-type 的目的是去揭露一个实现如何执行这个提升.
+        upgraded-array-element-type 的目的是去揭露一个实现如何执行这个提升[upgrade].
 
-        这个环境 environment 被用于展开任何 typespec 中提及的衍生类型指定符.
+        这个环境 environment 被用于展开任何 typespec 中提及的衍生类型指定符[derived type specifier].
 
 * 示例(Examples): None.
 
@@ -1282,7 +1285,7 @@
 
 * 注意(Notes):
 
-        除了存储分配的影响和正确处理这个可选的 environment 参数之外, upgraded-array-element-type 可以按如下定义:
+        除了存储分配的影响和正确处理这个可选的 environment 实参[argument]之外, upgraded-array-element-type 可以按如下定义:
 
         (defun upgraded-array-element-type (type &optional environment)
           (array-element-type (make-array 0 :element-type type)))
@@ -1292,11 +1295,11 @@
 
 * 常量值(Constant Value):
 
-        一个正的 fixnum, 它的准确大小是依赖于具体实现的, 但不小于 1024.
+        一个正的 fixnum, 它的准确大小是依赖于具体实现的[implementation-dependent], 但不小于 1024.
 
 * 描述(Description):
 
-        一个数组的每个独立维度的上边界.
+        一个数组[array]的每个独立维数[dimension]的上边界.
 
 * 示例(Examples): None.
 
@@ -1306,15 +1309,16 @@
 
 * 注意(Notes): None. 
 
+
 ### <span id="CV-ARRAY-RANK-LIMIT">常量 ARRAY-RANK-LIMIT</span>
 
 * 常量值(Constant Value):
 
-        一个正的 fixnum, 它的准确大小是依赖于具体实现的, 但是不小于 8.
+        一个正的 fixnum, 它的准确大小是依赖于具体实现的[implementation-dependent], 但是不小于 8.
 
 * 描述(Description):
 
-        一个数组维数的上边界.
+        一个数组[array]秩[rank]的上边界.
 
 * 示例(Examples): None.
 
@@ -1328,13 +1332,13 @@
 
 * 常量值(Constant Value):
 
-        一个正的 fixnum, 准确大小是依赖于具体实现的, 但是不小于 1024.
+        一个正的 fixnum, 准确大小是依赖于具体实现的[implementation-dependent], 但是不小于 1024.
 
 * 描述(Description):
 
-        一个数组的数组总大小的上限.
+        一个数组[array]的数组总大小[array total size]的上限.
 
-        具体实现强加在数组总数大小的实际限制可能根据数组的元素类型变化; 在这种情况中, 这个 array-total-size-limit 的值回事这些可能的限制中最小的.
+        具体实现[implementation]强加在数组总大小[array total size]的实际限制可能根据数组[array]的元素类型[element type]变化; 在这种情况中, 这个 array-total-size-limit 的值会是这些可能的限制中最小的.
 
 * 示例(Examples): None.
 
@@ -1353,12 +1357,12 @@
 
 * 参数和值(Arguments and Values):
 
-        object---一个对象.
-        generalized-boolean---一个广义 boolean.
+        object---一个对象[object].
+        generalized-boolean---一个广义 boolean [generalized boolean].
 
 * 描述(Description):
 
-        如果 object 是 simple-vector 类型就返回 true; 否则, 返回 false.
+        如果 object 是 simple-vector 类型[type]就返回 true; 否则, 返回 false.
 
 * 示例(Examples):
 
@@ -1393,13 +1397,13 @@
 
 * 参数和值(Arguments and Values):
 
-        simple-vector---一个简单向量.
-        index---simple-vector 的有效数组索引.
-        element, new-element---一个对象 (它的类型是 simple-vector 的数组元素类型的子类型).
+        simple-vector---一个简单向量[simple vector].
+        index---simple-vector 的有效数组索引[valid array index].
+        element, new-element---一个对象[object] (它的类型[type]是 simple-vector 的数组元素类型[array element type]的子类型[subtype]).
 
 * 描述(Description):
 
-        访问有 index 指定的 simple-vector 中的元素.
+        访问[access]由 index 指定的 simple-vector 中的元素[element].
 
 * 示例(Examples):
 
@@ -1423,7 +1427,7 @@
 
 * 注意(Notes):
 
-        svref 和 aref 相同除了它需要第一个参数为一个简单向量.
+        svref 和 aref 相同除了它要求第一个参数为一个简单向量[simple vector].
 
         (svref v i) ==  (aref (the simple-vector v) i)
 
@@ -1436,14 +1440,14 @@
 
 * 参数和值(Arguments and Values):
 
-        object---一个对象.
-        vector---一个 (vector t *) 类型的向量.
+        object---一个对象[object].
+        vector---一个 (vector t *) 类型[type]的向量[vector].
 
 * 描述(Description):
 
-        创建一个新的简单普通向量, 它的大小对应于对象 objects 的数量.
+        创建一个新的[fresh]简单普通向量[simple general vector], 它的大小对应于对象 objects 的数量.
 
-        这个向量 vector 被初始化去包含这些对象 objects.
+        这个向量[vector]被初始化去包含这些对象 objects.
 
 * 示例(Examples):
 
@@ -1474,7 +1478,6 @@
                                     (list a1 a2 ... an))
 
 
-
 ### <span id="F-VECTOR-POP">函数 VECTOR-POP</span>
 
 * 语法(Syntax):
@@ -1483,12 +1486,12 @@
 
 * 参数和值(Arguments and Values):
 
-        vector---一个带有填充指针的向量.
-        element---一个对象.
+        vector---一个带有填充指针[fill pointer]的向量[vector].
+        element---一个对象[object].
 
 * 描述(Description):
 
-        向量 vector 的填充指针递减一, 并且检索向量 vector 中由这个新的填充指针所指示的元素.
+        向量 vector 的填充指针[fill pointer]递减一, 并且检索向量 vector 中由这个新的填充指针[fill pointer]所指示的元素[element].
 
 * 示例(Examples):
 
@@ -1505,17 +1508,17 @@
 
 * 副作用(Side Effects):
 
-        填充指针递减一.
+        填充指针[fill pointer]递减一.
 
 * 受此影响(Affected By):
 
-        这个填充指针的值.
+        这个填充指针[fill pointer]的值.
 
 * 异常情况(Exceptional Situations):
 
-        如果向量 vector 没有一个填充指针那么应该发出一个 type-error 类型的错误.
+        如果向量 vector 没有一个填充指针[fill pointer]那么应该发出一个 type-error 类型[type]的错误.
 
-        如果填充指针是零, vector-pop 会发出一个 error 类型的错误.
+        如果填充指针[fill pointer]是零, vector-pop 会发出一个 error 类型[type]的错误.
 
 * 也见(See Also):
 
@@ -1533,17 +1536,17 @@
 
 * 参数和值(Arguments and Values):
 
-        new-element---一个对象.
-        vector---一个带有填充指针的向量.
-        extension---一个正整数. 默认是依赖于具体实现的.
-        new-index-p---对于 vector 的一个有效数组索引, 或者 nil.
-        new-index---对于 vector 的一个有效数组索引.
+        new-element---一个对象[object].
+        vector---一个带有填充指针[fill pointer]的向量[vector].
+        extension---一个正整数[integer]. 默认是依赖于具体实现的[implementation-dependent].
+        new-index-p---对于 vector 的一个有效数组索引[valid array index], 或者 nil.
+        new-index---对于 vector 的一个有效数组索引[valid array index].
 
 * 描述(Description):
 
-        vector-push 和 vector-push-extend 存储新元素 new-element 到向量 vector 中. vector-push 尝试去存储 new-element 到 vector 的由填充指针所表示的元素中, 并且对填充指针加一. 如果 (>= (fill-pointer vector) (array-dimension vector 0)), 不管是 vector 还是它的填充指针都不会被影响. 否则, 这个存储和递增就会发生并且 vector-push 返回这个填充指针之前的值, 它比离开这个向量时的值小 1.
+        vector-push 和 vector-push-extend 存储新元素 new-element 到向量 vector 中. vector-push 尝试去存储 new-element 到 vector 的由填充指针[fill pointer]所表示的元素中, 并且对填充指针[fill pointer]加一. 如果 (>= (fill-pointer vector) (array-dimension vector 0)), 不管是 vector 还是它的填充指针[fill pointer]都不会被影响. 否则, 就会发生存储和递增并且 vector-push 返回这个填充指针[fill pointer]之前的值, 它比离开这个向量时的值小 1.
 
-        vector-push-extend 就像 vector-push 除了当填充指针太大时, vector 使用 adjust-array 来扩展这样它就可以包含更多元素. 如果这个 vector 必须要被扩展那么 extension 就是要被添加给它的最小数量的元素.
+        vector-push-extend 就像 vector-push 除了当填充指针[fill pointer]太大时, vector 使用 adjust-array 来扩展这样它就可以包含更多元素. 如果这个 vector 必须要被扩展, 那么 extension 就是要被添加给它的最小数量的元素.
 
         vector-push 和 vector-push-extend 返回这个 new-element 在 vector 中的索引. 如果 (>= (fill-pointer vector) (array-dimension vector 0)), vector-push 返回 nil.
 
@@ -1571,21 +1574,22 @@
 
 * 受此影响(Affected By):
 
-        这个填充指针的值.
+        这个填充指针[fill pointer]的值.
 
-        向量 vector 如果被创建.
+        向量 vector 如何被创建.
 
 * 异常情况(Exceptional Situations):
 
-        如果 vector-push-extend 尝试去扩展向量 vector 而 vector 事实上是不可调整的, 那么应该发出一个 error 类型的错误.
+        如果 vector-push-extend 尝试去扩展向量 vector 而 vector 事实上是不可调整的[actually adjustable], 那么应该发出一个 error 类型[type]的错误.
 
-        如果向量 vector 没有一个填充指针那么应该发出一个 error 类型的错误.
+        如果向量 vector 没有一个填充指针[fill pointer]那么应该发出一个 error 类型[type]的错误.
 
 * 也见(See Also):
 
         adjustable-array-p, fill-pointer, vector-pop
 
 * 注意(Notes): None. 
+
 
 ### <span id="F-VECTORP">函数 VECTORP</span>
 
@@ -1595,12 +1599,12 @@
 
 * 参数和值(Arguments and Values):
 
-        object---一个对象.
-        generalized-boolean---一个广义 boolean.
+        object---一个对象[object].
+        generalized-boolean---一个广义 boolean [generalized boolean].
 
 * 描述(Description):
 
-        如果对象 object 为 vector 类型就返回 true; 否则, 返回 false.
+        如果对象 object 为 vector 类型[type]就返回 true; 否则, 返回 false.
 
 * 示例(Examples):
 
@@ -1639,15 +1643,15 @@
 
 * 参数和值(Arguments and Values):
 
-        bit-array---对于 bit, 是一个位数组; 对于 sbit, 一个 simple-array.
-        subscripts---bit-array 的一个有效数组索引的列表.
-        bit---一个 bit.
+        bit-array---对于 bit, 是一个位数组[bit array]; 对于 sbit, 一个简单位数组[simple bit array].
+        subscripts---位数组 bit-array 的一个有效数组索引的列表[list].
+        bit---一个比特[bit].
 
 * 描述(Description):
 
-        bit 和 sbit 访问通过 subscripts 指定的 bit-array 元素.
+        bit 和 sbit 访问[access]由 subscripts 指定的 bit-array 元素[element].
         
-        当访问元素时, 这些函数忽略填充指针.
+        当访问[access]元素[element]时, 这些函数[function]忽略填充指针[fill pointer].
 
 * 示例(Examples):
 
@@ -1673,9 +1677,9 @@
 
 * 注意(Notes):
 
-        bit 和 sbit 类似于 aref 除了它们要求数组分别为一个位数组和 simple-array.
+        bit 和 sbit 类似于 aref 除了它们要求数组[array]分别为一个位数组[bit array]和简单位数组[simple bit array].
 
-        bit 和 sbit, 不像 char 和 schar, 允许第一个参数为一个任意维数的数组. 
+        bit 和 sbit, 不像 char 和 schar, 允许第一个参数为一个任意秩[rank]的数组[array]. 
 
 
 ### <span id="F-BIT-ALL">函数 BIT-AND, BIT-ANDC1, BIT-ANDC2, BIT-EQV, BIT-IOR, BIT-NAND, BIT-NOR, BIT-NOT, BIT-ORC1, BIT-ORC2, BIT-XOR</span>
@@ -1706,34 +1710,34 @@
 
 * 参数和值(Arguments and Values):
 
-        bit-array, bit-array1, bit-array2---一个位数组.
-        Opt-arg---一个位数组, 或 t, 或 nil. 默认是 nil.
-        Bit-array, bit-array1, bit-array2, 和 opt-arg (if an array) 必须全都是相同的维数和大小.
-        resulting-bit-array---一个位数组.
+        bit-array, bit-array1, bit-array2---一个位数组[bit array].
+        Opt-arg---一个位数组[bit array], 或 t, 或 nil. 默认是 nil.
+        Bit-array, bit-array1, bit-array2, 和 opt-arg (如果是一个数组[array]) 必须全都是相同的秩[rank]和维数[dimension].
+        resulting-bit-array---一个位数组[bit array].
 
 * 描述(Description):
 
-        这些函数在 bit-array1 和 bit-array2 上执行按位的逻辑操作并且返回一个维数和大小匹配的数组, 如此以至于这个结果中的任何位都是有在这些参数的每一个的对应位上操作所产生的.
+        这些函数在 bit-array1 和 bit-array2 上执行位逻辑操作并且返回一个秩[rank]和维数[dimension]匹配的数组[array], 如此以至于这个结果中的任何位都是有在这些参数的每一个的对应位上操作所产生的.
 
-        在 bit-not 的情况下, 返回一个和 bit-array 维数和大小匹配的数组, 这个数组包含了 bit-array 的一个所有位反转的拷贝.
+        在 bit-not 的情况下, 返回一个和 bit-array 秩[rank]和维数[dimension]匹配的数组[array], 这个数组包含了 bit-array 的一个所有位反转的拷贝.
 
-        如果 opt-arg 是类型 (array bit) 那么这个结果的内容被破坏性地放置到 opt-arg 中. 如果 opt-arg 是符号 t, bit-array 或 bit-array1 会被这个结果替换; 如果 opt-arg 是 nil 或省略了, 那么就创建一个新的数组来包含这个结果.
+        如果 opt-arg 是类型 (array bit) 那么这个结果的内容被破坏性地放置到 opt-arg 中. 如果 opt-arg 是符号 t, bit-array 或 bit-array1 会被这个结果替换; 如果 opt-arg 是 nil 或省略了, 那么就创建一个新的数组[array]来包含这个结果.
 
-        下面这段指出有这些函数中的每一个执行的逻辑操作.
+        下面这段指出有这些函数[function]中的每一个执行的逻辑操作.
                                                                                                        
-|Function                         |                        Operation                                     |
-|---|---|
-|bit-and                          |                        and                                           |
-|bit-eqv                          |                        equivalence (exclusive nor)                   |
-|bit-not                          |                        complement                                    |
-|bit-ior                          |                        inclusive or                                  |
-|bit-xor                          |                        exclusive or                                  |
-|bit-nand                         |                        complement of bit-array1 and bit-array2       |
-|bit-nor                          |                        complement of bit-array1 or bit-array2        |
-|bit-andc1                        |                        and complement of bit-array1 with bit-array2  |
-|bit-andc2                        |                        and bit-array1 with complement of bit-array2  |
-|bit-orc1                         |                        or complement of bit-array1 with bit-array2   |
-|bit-orc2                         |                        or bit-array1 with complement of bit-array2   |
+    |函数                             |                        操作                                     |
+    |---|---|
+    |bit-and                          |                        and                                           |
+    |bit-eqv                          |                        equivalence (exclusive nor)                   |
+    |bit-not                          |                        complement                                    |
+    |bit-ior                          |                        inclusive or                                  |
+    |bit-xor                          |                        exclusive or                                  |
+    |bit-nand                         |                        complement of bit-array1 and bit-array2       |
+    |bit-nor                          |                        complement of bit-array1 or bit-array2        |
+    |bit-andc1                        |                        and complement of bit-array1 with bit-array2  |
+    |bit-andc2                        |                        and bit-array1 with complement of bit-array2  |
+    |bit-orc1                         |                        or complement of bit-array1 with bit-array2   |
+    |bit-orc2                         |                        or bit-array1 with complement of bit-array2   |
                                                                                                           
     Figure 15-4.  Bit-wise Logical Operations on Bit Arrays  
 
@@ -1764,6 +1768,7 @@
 
 * 注意(Notes): None. 
 
+
 ### <span id="F-BIT-VECTOR-P">函数 BIT-VECTOR-P</span>
 
 * 语法(Syntax):
@@ -1772,12 +1777,12 @@
 
 * 参数和值(Arguments and Values):
 
-        object---一个对象.
-        generalized-boolean---一个广义 boolean.
+        object---一个对象[object].
+        generalized-boolean---一个广义 boolean [generalized boolean].
 
 * 描述(Description):
 
-        如果对象 object 是 bit-vector 类型的就返回 true; 否则, 返回 false.
+        如果对象 object 是 bit-vector 类型[type]的就返回 true; 否则, 返回 false.
 
 * 示例(Examples):
 
@@ -1810,12 +1815,12 @@
 
 * 参数和值(Arguments and Values):
 
-        object---一个对象.
-        generalized-boolean---一个广义 boolean.
+        object---一个对象[object].
+        generalized-boolean---一个广义 boolean [generalized boolean].
 
 * 描述(Description):
 
-        如果对象 object 是 simple-bit-vector 类型就返回 true; 否则, 返回 false.
+        如果对象 object 是 simple-bit-vector 类型[type]就返回 true; 否则, 返回 false.
 
 * 示例(Examples):
 
