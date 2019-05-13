@@ -5,17 +5,17 @@
 
 ## 16.1 <span id="StringConcepts">字符串的概念</span>
 
-### 16.1.1 字符串数组的含义
+### 16.1.1 字符串作为数组的含义
 
-因为所有字符串是数组, 所有可应用于数组的规则也可以应用于字符串. 见章节 15.1 (Array Concepts).
+因为所有字符串[string]是数组[array], 所有可应用于数组[array]的规则也可以应用于字符串[string]. 见章节 15.1 (数组的概念).
 
-比如, 字符串可以有填充指针, 并且字符串也服从应用于数组的元素类型提升的规则. 
+比如, 字符串[string]可以有填充指针[fill pointer], 并且字符串[string]也服从应用于数组的元素类型[element type]提升[upgrade]的规则. 
 
 ### 16.1.2 STRING 的子类型
 
-所有在字符串上操作的函数也可以在字符串的子类型上操作.
+所有在字符串[string]上操作的函数也可以在字符串[string]的子类型[subtype]上操作.
 
-然而, 如果一个字符被插入到一个字符串中而这个字符串的元素类型不包括那个字符, 那么后果是未定义的. 
+然而, 如果一个字符[character]被插入到一个字符串[string]中而这个字符串[string]的元素类型[element type]不包括那个字符[character], 那么后果是未定义的. 
 
 ### 16.2 <span id="TheStringsDictionary">字符串的字典</span>
 
@@ -41,7 +41,7 @@
 
 * 描述(Description):
 
-        一个字符串是一个元素为类型 character 或 character 的一个子类型的一个特化向量. 当被用作对象创建时的类型指定符时, string 意味着 (vector character).
+        一个字符串[string]是一个元素[element]为类型[type] character 或 character 的一个子类型[subtype]的一个特化[specialized]向量[vector]. 当被用作对象创建时的类型指定符[type specifier]时, string 意味着 (vector character).
 
 * 复合类型指定符类别(Compound Type Specifier Kind):
 
@@ -53,15 +53,15 @@
 
 * 复合类型指定符参数(Compound Type Specifier Arguments):
 
-        size---一个非负 fixnum, 或者符号 *.
+        size---一个非负 fixnum, 或者符号[symbol] *.
 
 * 复合类型指定符描述(Compound Type Specifier Description):
 
-        对于所有 character 的子类型 c, 这个表示所有 (array c (size)) 类型的并集; 这也就是说, 大小为 size 的字符串的集合.
+        对于所有 character 的子类型[subtype] c, 这个表示所有 (array c (size)) 类型[type]的并集; 这也就是说, 大小为 size 的字符串[string]的集合.
 
 * 也见(See Also):
 
-        章节 16.1 (String Concepts), 章节 2.4.5 (Double-Quote), 章节 22.1.3.4 (Printing Strings) 
+        章节 16.1 (字符串的概念), 章节 2.4.5 (双引号), 章节 22.1.3.4 (打印字符串) 
 
 
 ### <span id="T-BASE-STRING">类型 BASE-STRING</span>
@@ -72,7 +72,7 @@
 
 * 描述(Description):
 
-        类型 base-string 等价于 (vector base-char). 这个基本字符串表示是可以持有一个标准字符的任意序列的最有效字符串表示.
+        类型[type] base-string 等价于 (vector base-char). 这个基本字符串[base string]表示是可以持有一个标准字符[standard character]的任意序列的最有效字符串[string]表示.
 
 * 复合类型指定符类别(Compound Type Specifier Kind):
 
@@ -84,11 +84,11 @@
 
 * 复合类型指定符参数(Compound Type Specifier Arguments):
 
-        size---一个非负 fixnum, 或者符号 *.
+        size---一个非负 fixnum, 或者符号[symbol] *.
 
 * 复合类型指定符描述(Compound Type Specifier Description):
 
-        这个等价于类型 (vector base-char size); 这也就是说, 大小为 size 的基本字符串的集合. 
+        这个等价于类型 (vector base-char size); 换言之, 就是大小为 size 的基本字符串[base string的集合. 
 
 
 ### <span id="T-SIMPLE-STRING">类型 SIMPLE-STRING</span>
@@ -99,7 +99,7 @@
 
 * 描述(Description):
 
-        一个简单字符串是一个特化的元素为 character 类型或 character 的子类型的一维简单数组. 当被用作对象创建时的类型指定符时, simple-string 意味着 (simple-array character (size)).
+        一个简单字符串[simple string]是元素为 character 类型[type]或 character 的子类型[subtype]的一个特化的一维简单数组[simple array]. 当被用作对象创建时的类型指定符[type specifier]时, simple-string 意味着 (simple-array character (size)).
 
 * 复合类型指定符类别(Compound Type Specifier Kind):
 
@@ -111,11 +111,11 @@
 
 * 复合类型指定符参数(Compound Type Specifier Arguments):
 
-        size---一个非负 fixnum, 或者符号 *.
+        size---一个非负 fixnum, 或者符号[symbol] *.
 
 * 复合类型指定符描述(Compound Type Specifier Description):
 
-        对于 character 的子类型 c, 这个表示所有 (simple-array c (size)) 类型的并集; 这也就是说, 大小为 size 的简单字符串的集合.
+        对于 character 的子类型[subtype] c, 这个表示所有 (simple-array c (size)) 类型[type]的并集; 换言之, 大小为 size 的简单字符串[simple string]的集合.
 
 
 ### <span id="T-SIMPLE-BASE-STRING">类型 SIMPLE-BASE-STRING</span>
@@ -126,7 +126,7 @@
 
 * 描述(Description):
 
-        类型 simple-base-string 等价于 (simple-array base-char (*)).
+        类型[type] simple-base-string 等价于 (simple-array base-char (*)).
 
 * 复合类型指定符类别(Compound Type Specifier Kind):
 
@@ -138,11 +138,11 @@
 
 * 复合类型指定符参数(Compound Type Specifier Arguments):
 
-        size---一个非负 fixnum, 或者符号 *.
+        size---一个非负 fixnum, 或者符号[symbol] *.
 
 * 复合类型指定符描述(Compound Type Specifier Description):
 
-        这个等价于类型 (simple-array base-char (size)); 这也就是说, 大小为 size 的简单基本字符串的集合. 
+        这个等价于类型 (simple-array base-char (size)); 换言之, 大小为 size 的简单[simple]基本字符串[base string]的集合. 
 
 ### <span id="F-SIMPLE-STRING-P">函数 SIMPLE-STRING-P</span>
 
@@ -152,12 +152,12 @@
 
 * 参数和值(Arguments and Values):
 
-        object---一个对象.
-        generalized-boolean---一个广义 boolean.
+        object---一个对象[object].
+        generalized-boolean---一个广义 boolean [generalized boolean].
 
 * 描述(Description):
 
-        如果对象 object 是 simple-string 类型就返回 true; 发在, 返回 false.
+        如果对象 object 是 simple-string 类型[type]就返回 true; 否则, 返回 false.
 
 * 示例(Examples):
 
@@ -195,15 +195,15 @@
 
 * 参数和值(Arguments and Values):
 
-        string---对于 char, 一个字符串; 对于 schar, 一个简单字符串.
-        index---对于字符串 string 的一个有效数组索引.
-        character, new-character---一个字符.
+        string---对于 char, 一个字符串[string]; 对于 schar, 一个简单字符串[simple string].
+        index---字符串 string 的一个有效数组索引[valid array index].
+        character, new-character---一个字符[character].
 
 * 描述(Description):
 
-        char 和 schar 访问由索引 index 指定的字符串 string 中的元素.
+        char 和 schar 访问[access]由索引 index 指定的字符串 string 中的元素[element].
 
-        当访问元素时 char 忽略填充指针.
+        当访问[access]元素[element]时, char 忽略填充指针[fill pointer].
 
 * 示例(Examples):
 
@@ -231,7 +231,7 @@
 
 * 也见(See Also):
 
-        aref, elt, 章节 3.2.1 (Compiler Terminology)
+        aref, elt, 章节 3.2.1 (编译器术语)
 
 * 注意(Notes):
 
@@ -246,17 +246,17 @@
 
 * 参数和值(Arguments and Values):
 
-        x---一个字符串, 一个符号, 或者一个字符.
-        string---一个字符串.
+        x---一个字符串[string], 一个符号[symbol], 或者一个字符[character].
+        string---一个字符串[string].
 
 * 描述(Description):
 
-        返回一个由 x 描述的字符串; 具体来说:
+        返回一个由 x 描述的字符串[string]; 具体来说:
 
-            如果 x 是一个字符串, 就返回它.
-            如果 x 是一个符号, 返回它的名字.
-            如果 x 是一个字符, 那么包含这样一个字符的字符串会被返回.
-            string 可能执行额外的, 具体实现定义的转换.
+            如果 x 是一个字符串[string], 就返回它.
+            如果 x 是一个符号[symbol], 返回它的名字[name].
+            如果 x 是一个字符[character], 那么返回包含这样一个字符[character]的字符串[string].
+            string 可能执行额外的, 具体实现定义的[implementation-defined]转换.
 
 * 示例(Examples):
 
@@ -270,17 +270,17 @@
 
 * 异常情况(Exceptional Situations):
 
-        在一个转换既没有被这个规范也没有被具体实现所定义的情况下, 就会发出一个 type-error 的错误.
+        在一个转换既没有被这个规范也没有被具体实现[implementation]所定义的情况下, 就会发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
-        coerce, string (type).
+        coerce, string (类型).
 
 * 注意(Notes):
 
-        coerce 可以被用于去转换一个字符的序列为一个字符串.
+        coerce 可以被用于去转换一个字符[character]的序列[sequence]为一个字符串[string].
 
-        prin1-to-string, princ-to-string, write-to-string, 或 format (带有一个 nil 的第一个参数) 可以被用于获取一个数字或其他任何对象的字符串表示. 
+        prin1-to-string, princ-to-string, write-to-string, 或 format (带有一个 nil 的第一个参数) 可以被用于获取一个数字[number]或其他任何对象[object]的字符串[string]表示. 
 
 
 ### <span id="F-STRING-CASE">函数 STRING-UPCASE, STRING-DOWNCASE, STRING-CAPITALIZE, NSTRING-UPCASE, NSTRING-DOWNCASE, NSTRING-CAPITALIZE</span>
@@ -301,17 +301,17 @@
 
 * 参数和值(Arguments and Values):
 
-        string---一个字符串标识符. 对于 nstring-upcase, nstring-downcase, 和 nstring-capitalize, 这个字符串标识符必须是一个字符串.
-        start, end---字符串 string 的边界索引标识符. 对于 start 和 end 默认分别是 0 和 nil.
-        cased-string---一个字符串.
+        string---一个字符串标识符[string designator]. 对于 nstring-upcase, nstring-downcase, 和 nstring-capitalize, 这个字符串标识符[string designator]必须是一个字符串[string].
+        start, end---字符串 string 的边界索引标识符[bounding index designator]. 对于 start 和 end 默认分别是 0 和 nil.
+        cased-string---一个字符串[string].
 
 * 描述(Description):
 
-        string-upcase, string-downcase, string-capitalize, nstring-upcase, nstring-downcase, nstring-capitalize 如下改变字符串 string 由 start 和 end 限制的子序列的大小写:
+        string-upcase, string-downcase, string-capitalize, nstring-upcase, nstring-downcase, nstring-capitalize 按照如下改变字符串 string 由 start 和 end 限定[bounded]的子序列的大小写:
 
         string-upcase
 
-            string-upcase 返回一个和字符串 string 相似的字符串, 其中所有小写字符被对应大写字符替换. 更确切地说, 结果字符串中的每个字符都由应用 char-upcase 函数到字符串 string 的对应字符上产生的.
+            string-upcase 返回一个和字符串 string 相似的字符串[string], 其中所有小写字符被对应大写字符替换. 更确切地说, 结果字符串[string]中的每个字符都通过应用 char-upcase 函数[function]到字符串 string 的对应字符上产生的.
 
         string-downcase
 
@@ -319,13 +319,13 @@
 
         string-capitalize
 
-            string-capitalize 产生一个字符串 string 的一个拷贝 such that, 对于这个拷贝中的每一个词, 这个 "词" 的第一个字符, 如果有大小写, 就变为大写并且在这个词中的其他任何带有大小写的字符变为小写. 对于 string-capitalize 的目的, 一个"单词"被定义为一个连续的子序列, 由字母数字字符组成, 每一端都用非字母数字字符或字符串的结尾分隔.
+            string-capitalize 产生一个字符串 string 的一个拷贝, 这样一来, 对于这个拷贝中的每一个词, 这个 "词" 的第一个字符[character], 如果有大小写[case], 就变为大写[uppercase]并且在这个词中的其他任何带有大小写[case]的字符[character]变为小写[lowercase]. 对于 string-capitalize 的目的, 一个"单词"被定义为一个连续的子序列, 由字母数字[alphanumeric]字符[character]组成, 每一端都用非字母数字[alphanumeric]字符[character]或字符串[string]的结尾分隔.
 
         nstring-upcase, nstring-downcase, nstring-capitalize
 
             nstring-upcase, nstring-downcase, 和 nstring-capitalize 分别等价于 string-upcase, string-downcase, 和 string-capitalize 除了它们修改字符串 string.
 
-        对于 string-upcase, string-downcase, 和 string-capitalize, 字符串 string 不会被修改. 然而, 如果在字符串 string 中没有字符需要转换, 那么结果可能就是那个字符串或者它的一个拷贝, 由实现判定.
+        对于 string-upcase, string-downcase, 和 string-capitalize, 字符串 string 不会被修改. 然而, 如果在字符串 string 中没有字符需要转换, 那么结果可能就是那个字符串 string 或者它的一个拷贝, 由实现判定.
 
 * 示例(Examples):
 
@@ -353,7 +353,7 @@
 
 * 副作用(Side Effects):
 
-        nstring-upcase, nstring-downcase, 和 nstring-capitalize 适当地修改字符串 string 而不是构建一个新的字符串.
+        nstring-upcase, nstring-downcase, 和 nstring-capitalize 适当地修改字符串 string 而不是构建一个新的字符串[string].
 
 * 受此影响(Affected By): None.
 
@@ -380,17 +380,17 @@
 
 * 参数和值(Arguments and Values):
 
-        character-bag---一个包含字符的序列.
-        string---一个字符串标识符.
-        trimmed-string---一个字符串.
+        character-bag---一个包含字符[character]的序列[sequence].
+        string---一个字符串标识符[string designator].
+        trimmed-string---一个字符串[string].
 
 * 描述(Description):
 
-        string-trim 返回字符串 string 的一个子字符串, 带有在 character-bag 中的所有字符除去开始和结尾. string-left-trim 也相似除了只脱去开头的字符; string-right-trim 只脱去结尾的字符.
+        string-trim 返回字符串 string 的一个子字符串, 带有在 character-bag 中的所有字符, 除去开始和结尾. string-left-trim 也相似, 除了只脱去开头的字符; string-right-trim 只脱去结尾的字符.
 
-        如果没有字符需要从字符串 string 中被削减, 那么返回字符串 string 自身或者它的一个拷贝, 由这个实现来判定.
+        如果没有字符[character]需要从字符串 string 中被削减, 那么返回字符串 string 自身或者它的一个拷贝, 由这个实现来判定.
 
-        所有这些函数都会注意到这个填充指针.
+        所有这些函数[function]都会注意到这个填充指针[fill pointer].
 
 * 示例(Examples):
 
@@ -413,7 +413,7 @@
 
 * 受此影响(Affected By):
 
-        这个具体实现.
+        这个具体实现[implementation].
 
 * 异常情况(Exceptional Situations): None.
 
@@ -452,30 +452,30 @@
 
 * 参数和值(Arguments and Values):
 
-        string1---一个字符串标识符.
-        string2---一个字符串标识符.
-        start1, end1---字符串 string1 的边界索引标识符. 对于 start 和 end 默认分别为 0 和 nil.
-        start2, end2---字符串 string2 的边界索引标识符. 对于 start 和 end 默认分别为 0 和 nil.
-        generalized-boolean---一个广义 boolean.
-        mismatch-index---字符串 string1 的一个边界索引, 或者 nil.
+        string1---一个字符串标识符[string designator].
+        string2---一个字符串标识符[string designator].
+        start1, end1---字符串 string1 的边界索引标识符[bounding index designator]. 对于 start 和 end 默认分别为 0 和 nil.
+        start2, end2---字符串 string2 的边界索引标识符[bounding index designator]. 对于 start 和 end 默认分别为 0 和 nil.
+        generalized-boolean---一个广义 boolean [generalized boolean].
+        mismatch-index---字符串 string1 的一个边界索引[bounding index], 或者 nil.
 
 * 描述(Description):
 
-        这些函数 functions 在字符串 string1 和 string2 上执行字典式的比较. string= 和 string-equal 调用相等函数; 其他的调用不同的函数. 这些函数执行的比较操作被约束为在字符串 string1 由 start1 和 end1 限制的子序列以及字符串 string2 由 start2 和 end2 限制的子序列.
+        这些函数 functions 在字符串 string1 和 string2 上执行字典式的比较. string= 和 string-equal 被称为等价性函数; 其他的称为不等性函数. 这些函数[function]执行的比较操作被限定为在字符串 string1 由 start1 和 end1 限制的子序列以及字符串 string2 由 start2 和 end2 限制的子序列.
 
-        如果一个字符串 a 和一个字符串 b 有着相同数量的字符, 并且对应字符在 char= 或 char-equal 下是相同的, 那么就说这两个字符串是相等的.
+        如果一个字符串 a 和一个字符串 b 有着相同数量的字符, 并且对应字符在 char= 或 char-equal 下是相同的[same], 那么就说这两个字符串是相等的.
 
         如果在一个字符串 a 和一个字符串 b 有区别的第一个位置中, 根据 char< 或 char-lessp, a 的字符小于 b 中的对应字符, 或者如果字符串 a 是字符串 b 的一个前缀(更短的长度并且匹配 a 中的所有字符), 那么字符串 a 小于字符串 b.
 
         如果这些字符串是相等的, 那么这些相等函数就返回一个 true 的广义 boolean, 否则就是 false.
 
-        如果这些字符串不相等, 那么这些不相等的函数返回一个为 true 的 mismatch-index, 否则就是 false. 当这个 mismatch-index 是 true, 它是一个表示在两个子字符串中第一个不同的字符位置的整数, 作为从 string1 的起始点开始的偏移位.
+        如果这些字符串不相等, 那么这些不相等的函数返回一个为 true 的不匹配索引 mismatch-index, 否则就是 false. 当这个不匹配索引 mismatch-index 是 true, 它是一个表示在两个子字符串中第一个不同的字符位置的整数[integer], 按照从 string1 的起始点开始的偏移位.
 
         这个比较有着以下这些结果的其中之一:
 
         string=
 
-            如果提供的子字符串是相同长度并且在对应位置的字符是相同的, 那么 string= 返回 true; 否则它就是 false.
+            如果提供的子字符串是相同长度并且在对应位置的字符是相同的[same], 那么 string= 返回 true; 否则它就是 false.
 
         string/=
 
@@ -538,7 +538,7 @@
 
 * 注意(Notes):
 
-        equal calls string= if applied to two strings. 
+        如果 equal 应用于两个字符串[string], 那么 equal 调用 string=. 
 
 
 ### <span id="F-STRINGP">函数 STRINGP</span>
@@ -549,12 +549,12 @@
 
 * 参数和值(Arguments and Values):
 
-        object---一个对象.
-        generalized-boolean---一个广义 boolean.
+        object---一个对象[object].
+        generalized-boolean---一个广义 boolean [generalized boolean].
 
 * 描述(Description):
 
-        如果对象 object 是 string 类型就返回 true; 发在, 返回 false.
+        如果对象 object 是 string 类型[type]就返回 true; 发在, 返回 false.
 
 * 示例(Examples):
 
@@ -569,7 +569,7 @@
 
 * 也见(See Also):
 
-        typep, string (type)
+        typep, string (类型[type])
 
 * 注意(Notes):
 
@@ -584,16 +584,16 @@
 
 * 参数和值(Arguments and Values):
 
-        size---一个有效数组大小.
-        initial-element---一个字符. 默认是依赖于具体实现的.
-        element-type---一个类型指定符. 默认是 character.
-        string---一个简单字符串.
+        size---一个有效数组维数[valid array dimension].
+        initial-element---一个字符[character]. 默认是依赖于具体实现的[implementation-dependent].
+        element-type---一个类型指定符[type specifier]. 默认是 character.
+        string---一个简单字符串[simple string].
 
 * 描述(Description):
 
-        make-string 返回一个长度为 size 并且元素被初始化为 initial-element 的简单字符串.
+        make-string 返回一个长度为 size 并且元素被初始化为 initial-element 的简单字符串[simple string].
 
-        这个元素类型 element-type 命名这个字符串中元素的类型; 一个字符串由可以容纳给定类型元素的最具体类型构成.
+        这个元素类型 element-type 命名这个字符串[string]中元素[element]的类型[type]; 一个字符串[string]由可以容纳给定类型[type]元素[element]的最具体[specialized]类型[type]构成.
 
 * 示例(Examples):
 
@@ -604,7 +604,7 @@
 
 * 受此影响(Affected By):
 
-        这个具体实现.
+        这个具体实现[implementation].
 
 * 异常情况(Exceptional Situations): None.
 
