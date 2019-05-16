@@ -22,20 +22,20 @@
 
 #### 15.1.1.2 <span id="ArrayDimensions">数组维度</span>
 
-数组[array]的一个坐标轴称为一个维数[dimension].
+数组[array]的一个坐标轴称为一个维度[dimension].
 
-每一个维数[dimension]都是一个非负 fixnum; 如果一个数组[array]的任意维度都是 0, 那么这个数组[array]就没有元素. 允许一个维数[dimension]是 0, 在这个情况下这个数组[array]没有元素, 并且去访问[access]一个元素[element]的任何尝试都是一个错误. 然而, 这个数组[array]的其他属性, 比如这些维数[dimension]自身, 可能被使用.
+每一个维度大小[dimension]都是一个非负 fixnum; 如果一个数组[array]的任意维度大小都是 0, 那么这个数组[array]就没有元素. 允许一个维度大小[dimension]是 0, 在这个情况下这个数组[array]没有元素, 并且任何尝试去访问[access]一个元素[element]都是一个错误. 然而, 这个数组[array]的其他属性, 比如这些维度大小[dimension]自身, 可能被使用.
 
-##### 15.1.1.2.1 独立数组维度的实现限制
+##### 15.1.1.2.1 单独数组维度大小的实现限制
 
-一个实现[implementation]可能在数组[array]的维数[dimension]上强加一个限制, 但是在这个限制上这里有一个最小要求. 见变量[variable] array-dimension-limit. 
+一个实现[implementation]可能在数组[array]的维度大小[dimension]上强加一个限制, 但是在这个限制上这里有一个最小要求. 见变量[variable] array-dimension-limit. 
 
 
 #### 15.1.1.3 <span id="ArrayRank">数组秩</span>
 
-一个数组[array]可以有任意数量的维数[dimension] (包括零). 这个维度的数量称为秩[rank].
+一个数组[array]可以有任意数量的维度[dimension] (包括零). 这个维度的数量称为秩[rank].
 
-如果一个数组[array]的秩[rank]是 0 那么就说这个数组是没有维数[dimension]的, 并且这些维度的乘积是 1 (见 array-total-size); 一个零维数组[array]因此只有一个单个元素.
+如果一个数组[array]的秩[rank]是 0 那么就说这个数组是没有维度[dimension]的, 并且这些维度大小的乘积是 1 (见 array-total-size); 一个零维数组[array]因此只有一个单个元素.
 
 > * 15.1.1.3.1 [向量](#Vectors)
 > * 15.1.1.3.2 [多维数组](#MultiArrays)
@@ -48,15 +48,15 @@
 
 一个填充指针[fill pointer]是一个不大于向量[vector]中元素[element]总数的非负整数[integer]. 不是所有的向量[vector]都有填充指针[fill pointer]. 见函数[function] make-array 和 adjust-array.
 
-如果一个向量[vector]的一个元素[element]有着大于等于 0 但是小于这个填充指针[fill pointer] (如果有的话)的索引, 那么就说它是有效的[active]. 对于一个没有填充指针[fill pointer]的数组[array], 所有元素[element]都被认为是有效的[active].
+如果一个向量[vector]的一个元素[element]有着大于等于 0 但是小于这个填充指针[fill pointer] (如果有的话) 的索引, 那么就说它是有效的[active]. 对于一个没有填充指针[fill pointer]的数组[array], 所有元素[element]都被认为是有效的[active].
 
-只有向量[vector]可以有填充指针[fill pointer]; 多维数组[array]没有. 可以创建一个被转移到有着填充指针[fill pointer]的向量[vector]的多维数组[array].
+只有向量[vector]可以有填充指针[fill pointer]; 多维数组[array]没有. 可以创建一个存储被转移到有着填充指针[fill pointer]的向量[vector]的多维数组[array].
 
 ##### 15.1.1.3.2 <span id="MultiArrays">多维数组</span>
 
 ###### 15.1.1.3.2.1 多维数组的存储布局
 
-多维数组[array]以行优先的顺序存储它们的成分; 这也就是说, 一个多维数组[array]内部被存储为一个一维数组[array], 其中多维度索引集有序地排列, 最后一个所有变化最快. 
+多维数组[array]以行优先的顺序存储它们的成分; 这也就是说, 一个多维数组[array]内部被存储为一个一维数组[array], 其中多维度索引集有序地排列, 最后一个索引变化最快. 
 
 ###### 15.1.1.3.2.2 数组秩的实现限制
 
@@ -171,7 +171,7 @@
 
 * 描述(Description):
 
-        一个数组[array]包含了根据一个笛卡儿坐标系统排列的对象[object]. 一个数组[array]提供了一个从 fixnum 的集合 {i0,i1,...,ir-1} 到对应数组[array]元素[element]的映射, 其中 0 <=ij < dj, r 是这个数组的秩, 并且 dj 是这个数组的维数[dimension] j 的大小.
+        一个数组[array]包含了根据一个笛卡儿坐标系统排列的对象[object]. 一个数组[array]提供了一个从 fixnum 的集合 {i0,i1,...,ir-1} 到对应数组[array]元素[element]的映射, 其中 0 <=ij < dj, r 是这个数组的秩, 并且 dj 是这个数组的维度[dimension] j 的大小.
 
         当一个数组[array]被创建时, 请求它的创建的程序可能声明所有元素[element]为一个特定类型[type], 称为表达数组元素类型[expressed array element type]. 具体实现允许去提升[upgrade]这个类型来产生实际数组元素类型[actual array element type], 它是这个数组[array]被实际特化[specialized]的元素类型[element type]. 见函数[function] upgraded-array-element-type.
 
@@ -216,7 +216,7 @@
 
 * 描述(Description):
 
-        一个没有被转移到另一个数组[array], 没有填充指针[fill pointer], 并且不是明显可调整[expressly adjustable]的数组[array]的类型[type]是类型[type] simple-array 的一个子类型[subtype]. 简单数组[simple array]概念允许实现使用特定的表示, 并允许用户声明某些值总是为简单数组[simple array].
+        一个存储没有被转移到另一个数组[array], 没有填充指针[fill pointer], 并且不是明显可调整[expressly adjustable]的数组[array]的类型[type]是类型[type] simple-array 的一个子类型[subtype]. 简单数组[simple array]概念允许实现使用特定的表示, 并允许用户声明某些值总是为简单数组[simple array].
 
         类型[type] simple-vector, simple-string, 和 simple-bit-vector 是类型[type] simple-array 的互斥[disjoint]的子类型[subtype], 对于它们分别意味着 (simple-array t (*)), 所有 c 为 character 类型[type]的子类型[subtype]的 (simple-array c (*)) 的并集, 以及 (simple-array bit (*)).
 
@@ -232,7 +232,7 @@
 
 * 复合类型指定符参数(Compound Type Specifier Arguments):
 
-        dimension---一个有效数组维数[valid array dimension].
+        dimension---一个有效数组维度大小[valid array dimension].
         element-type---一个类型指定符[type specifier].
         rank---一个非负 fixnum.
 
@@ -242,7 +242,7 @@
 
 * 注意(Notes):
 
-        存储转移的数组[displaced array], 带有填充指针[fill pointer]的向量[vector], 或实际可调整[actually adjustable]的数组[array]是否为简单数组[simple array]是依赖于具体实现的[implementation-dependent].
+        存储被转移的数组[displaced array], 带有填充指针[fill pointer]的向量[vector], 或实际可调整[actually adjustable]的数组[array]是否为简单数组[simple array]是依赖于具体实现的[implementation-dependent].
 
         (simple-array *) 不管元素类型引用了所有简单数组[simple array], (simple-array type-specifier) 只引用那些可以通过给定 type-specifier 作为 make-array 的 :element-type 参数得到的简单数组[simple array]. 
 
@@ -276,11 +276,11 @@
 
 * 复合类型指定符描述(Compound Type Specifier Description):
 
-        这个表示那个元素类型[element type]和维数[dimension]都匹配指定值的特化向量[vector]的集合. 具体来说:
+        这个表示那个元素类型[element type]和维度大小[dimension]都匹配指定值的特化向量[vector]的集合. 具体来说:
 
         如果 element-type 是符号[symbol] *, 向量[vector]不会根据它们的元素类型[element type]被排除. 否则, 只有那些实际数组元素类型[actual array element type]是 element-type 提升[upgrade]的结果的那些向量会被包括进去; 见章节 15.1.2.1 (数组提升).
 
-        如果指定了一个 size, 那么这个集合只包括那些仅有的维数[dimension]是 size 的向量. 如果符号[symbol] * 被指定而不是一个 size, 那么这个集合不会被约束在这个维数[dimension]的基础上.
+        如果指定了一个 size, 那么这个集合只包括那些仅有的维度大小[dimension]是 size 的向量. 如果符号[symbol] * 被指定而不是一个 size, 那么这个集合不会被约束在这个维度大小[dimension]的基础上.
 
 * 也见(See Also):
 
@@ -305,7 +305,7 @@
 
 * 描述(Description):
 
-        一个没有被转移到另一个数组[array]中, 没有填充指针[fill pointer], 不是明显可调整[expressly adjustable]的并且可能持有任何类型[type]元素的向量[vector]是类型[type] simple-vector 的子类型[subtype].
+        一个存储没有被转移到另一个数组[array]中, 没有填充指针[fill pointer], 不是明显可调整[expressly adjustable]的并且可能持有任何类型[type]元素的向量[vector]是类型[type] simple-vector 的子类型[subtype].
 
         类型[type] simple-vector 类型[type] vector 的一个子类型[subtype], 并且是类型[type] (vector t) 的子类型[subtype].
 
@@ -385,6 +385,7 @@
 
         这个表示和类型[type] (simple-array bit (size)) 相同的类型; 这也就是说, 大小为 size 的简单位向量[simple bit vector]的集合. 
 
+
 ### <span id="F-MAKE-ARRAY">函数 MAKE-ARRAY</span>
 
 * 语法(Syntax):
@@ -394,7 +395,7 @@
 
 * 参数和值(Arguments and Values):
 
-        dimensions---一个有效数组维数[valid array dimension]的列表[list]的标识符[designator].
+        dimensions---一个有效数组维度大小[valid array dimension]的列表[list]的标识符[designator].
         element-type---一个类型指定符[type specifier]. 默认是 t.
         initial-element---一个对象[object].
         initial-contents---一个对象[object].
@@ -408,7 +409,7 @@
 
         创建并返回一个由可以容纳 element-type 所给定的类型[type]的元素的最特化[specialized]类型[type]构成的数组[array]. 如果 dimensions 是 nil 那么一个零维数组[array]会被创建.
 
-        dimensions 表示这个新数组的维度.
+        dimensions 表示这个新数组的维度大小.
 
         element-type 表示要被存储到新数组 new-array 中的元素的类型[type]. 这个 new-array 实际上可以存储从 element-type 提升[upgrade]得到的类型[type]的任何对象[object]; 见章节 15.1.2.1 (数组提升).
 
@@ -422,7 +423,7 @@
                       ((g h i) (2 3 1))
                       ((j k l) (0 0 0))))
 
-        initial-contents 由一个嵌套的序列[sequence]结构组成. 在这个结构中的层级的数量等价于数组[array]的秩. 这个嵌套的结构的每一个叶节点必须是 element-type 给定的类型[type]. 如果数组[array]是零维的, 那么 initial-contents 指定单个元素[element]. 否则, initial-contents 必须是一个长度和第一个维度相同的序列[sequence]; 每一个元素必须是一个维数为剩余维数的数组[array]的嵌套结构, 以此类推. 如果 initial-element 被提供了或者 displaced-to 非 nil [non-nil], 那么 initial-contents 不能被提供. 如果没有提供 initial-contents, 那么后面去读取 new-array 的未初始化元素的后果是未定义的, 除非提供了 initial-contents 或者 displaced-to 非 nil [non-nil].
+        initial-contents 由一个嵌套的序列[sequence]结构组成. 在这个结构中的层级的数量等价于数组[array]的秩. 这个嵌套的结构的每一个叶节点必须是 element-type 给定的类型[type]. 如果数组[array]是零维的, 那么 initial-contents 指定单个元素[element]. 否则, initial-contents 必须是一个长度和第一个维度相同的序列[sequence]; 每一个元素必须是一个维度大小为剩余维度大小的数组[array]的嵌套结构, 以此类推. 如果 initial-element 被提供了或者 displaced-to 非 nil [non-nil], 那么 initial-contents 不能被提供. 如果没有提供 initial-contents, 那么后面去读取 new-array 的未初始化元素的后果是未定义的, 除非提供了 initial-contents 或者 displaced-to 非 nil [non-nil].
 
         如果 adjustable 非 nil [non-nil], 那么这个数组就是明确可调整的[expressly adjustable] (所以实际上可调整的[actually adjustable]); 否则, 这个数组就不是明确可调整的[expressly adjustable] (这个数组是否为实际上可调整的[actually adjustable]是依赖于具体实现的[implementation-dependent]).
 
@@ -529,7 +530,7 @@
 * 参数和值(Arguments and Values):
 
         array---一个数组[array].
-        new-dimensions---一个有效数组维数[valid array dimension]或者一个有效数组维数[valid array dimension]的列表[list].
+        new-dimensions---一个有效数组维度大小[valid array dimension]或者一个有效数组维度大小[valid array dimension]的列表[list].
         element-type---一个类型指定符[type specifier].
         initial-element---一个对象[object]. 如果提供了 initial-contents 或 displaced-to, 那么 initial-element 一定不能被提供.
         initial-contents---一个对象[object]. 如果数组[array]有着大于零的秩, 那么 initial-contents 由嵌套的序列[sequence]组成, 它的深度必须等于数组 array 的秩. 否则, 数组[array]是零维的并且 initial-contents 提供单个元素. 如果给定了 initial-element 或 displaced-to 那么 initial-contents 一定不能被提供.
@@ -540,9 +541,9 @@
 
 * 描述(Description):
 
-        adjust-array 改变数组 array 的维数或元素. 结果是一个和数组 array 相同类型[type]和秩的数组[array], 它是修改后的数组 array, 或者一个数组 array 所转移到的新创建的数组[array], 并且有着给定的新维数 new-dimensions.
+        adjust-array 改变数组 array 的维度大小或元素. 结果是一个和数组 array 相同类型[type]和秩的数组[array], 它是修改后的数组 array, 或者一个数组 array 所转移到的新创建的数组[array], 并且有着给定的新维数 new-dimensions.
 
-        new-dimensions 指定了数组 array 的每一个维数[dimension]的大小.
+        new-dimensions 指定了数组 array 的每一个维度大小[dimension].
 
         element-type 指定了产生的数组[array]的元素[element]类型[type]. 在提供了 element-type 的情况下, 如果 element-type 的提升数组元素类型[upgraded array element type]和数组 array 的实际数组元素类型[actual array element type]不相同那么后果是未指定的.
 
@@ -569,7 +570,7 @@
             (adjust-array A ... :displaced-to B)
             (adjust-array A ... :displaced-to C)
 
-            B 和 C 可能相同. 如果在这个 adjust-array 调用中没有提供 displaced-index-offset, 它默认为 0, 那么之后 B 中的内容可能不会出现在 A 中除非这样的内容也出现在 C 中; 在 B 中的旧的偏移为不会被保留.
+            B 和 C 可能相同. 如果在这个 adjust-array 调用中没有提供 displaced-index-offset, 它默认为 0, 那么之后 B 中的内容可能不会出现在 A 中除非这样的内容也出现在 C 中; 在 B 中的旧的偏移位不会被保留.
 
         A 在调用前被转移到 B, 但是在调用后没有被转移.
 
@@ -769,7 +770,6 @@
         (array-dimension array n) ==  (nth n (array-dimensions array))
 
 
-
 ### <span id="F-ARRAY-DIMENSIONS">函数 ARRAY-DIMENSIONS</span>
 
 * 语法(Syntax):
@@ -908,7 +908,7 @@
 
         如果这个数组 array 是一个存储被转移的数组[displaced array], 返回这个数组[array]的 :displaced-to 和 :displaced-index-offset 选项的值[value] (见函数[function] make-array 和 adjust-array). 如果这个数组 array 不是一个存储被转移的数组[displaced array], 返回 nil 和 0.
 
-        如果 array-displacement 在一个数组 array 上被调用, 对于这个数组一个非 nil [non-nil]对象[object]被提供作为给 make-array 或 adjust-array 的 :displaced-to 实参[argument], 它一定返回这个对象[object]作为它的第一个值. array-displacement 是否为任何其他数组返回一个非 nil [non-nil]主值[primary value]是依赖于具体实现的[implementation-dependent ].
+        如果 array-displacement 在一个数组 array 上被调用, 对于这个数组一个非 nil [non-nil]对象[object]被提供作为给 make-array 或 adjust-array 的 :displaced-to 实参[argument], 它一定返回这个对象[object]作为它的第一个值. array-displacement 是否为任何其他数组返回一个非 nil [non-nil]主值[primary value]是依赖于具体实现的[implementation-dependent].
 
 * 示例(Examples):
 
@@ -993,7 +993,7 @@
 
 * 描述(Description):
 
-        返回数组 array 的维数[dimension]数量.
+        返回数组 array 的维度[dimension]数量.
 
 * 示例(Examples):
 
@@ -1299,7 +1299,7 @@
 
 * 描述(Description):
 
-        一个数组[array]的每个独立维数[dimension]的上边界.
+        一个数组[array]的每个独立维度[dimension]的上边界.
 
 * 示例(Examples): None.
 
@@ -1739,7 +1739,7 @@
     |bit-orc1                         |                        or complement of bit-array1 with bit-array2   |
     |bit-orc2                         |                        or bit-array1 with complement of bit-array2   |
                                                                                                           
-    Figure 15-4.  Bit-wise Logical Operations on Bit Arrays  
+    Figure 15-4.  位数组上的位逻辑操作符 
 
 * 示例(Examples):
 
@@ -1842,7 +1842,3 @@
 * 注意(Notes):
 
         (simple-bit-vector-p object) ==  (typep object 'simple-bit-vector)
-
-
-
-
