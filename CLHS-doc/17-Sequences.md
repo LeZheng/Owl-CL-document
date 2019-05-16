@@ -1,4 +1,4 @@
-# 17 序列
+# 17. 序列
 
 > * 17.1 [序列的概念](#SequenceConcepts)
 > * 17.2 [关于测试函数的规则](#RulesTestFunctions)
@@ -7,11 +7,11 @@
 
 ## 17.1 <span id="SequenceConcepts">序列的概念</span>
 
-一个序列是多个元素的一个有序集合, 实现为一个向量或一个列表.
+一个序列[sequence]是多个元素[element]的一个有序集合, 实现为一个向量[vector]或一个列表[list].
 
-序列可以由函数 make-sequence 创建, 其他创建 sequence 的子类型的对象的函数也可以 (比如, list, make-list, mapcar, 和 vector).
+序列[sequence]可以由函数[function] make-sequence 创建, 其他创建 sequence 的子类型[subtype]的对象[object]的函数[function]也可以 (比如, list, make-list, mapcar, 和 vector).
 
-一个序列函数是一个由这个规范定义的或者由具体实现作为一个扩展添加的一个在一个或多个序列上操作的函数. 在一个序列函数必须构造并返回一个新的向量时, 它总是返回一个简单向量. 类似地, 任何构造的字符串都会是简单字符串.
+一个序列函数[sequence function]是一个由这个规范定义的或者由具体实现[implementation]作为一个扩展所添加的一个操作一个或多个序列[sequence]上的函数[function]. 在一个序列函数[sequence function]必须构造并返回一个新的向量[vector]时, 它总是返回一个简单向量[simple vector]. 类似地, 任何构造的字符串[string]都会是简单字符串[simple string].
 
     concatenate        length              remove             
     copy-seq           map                 remove-duplicates  
@@ -33,7 +33,7 @@
 
 ### 17.1.1 在必须为序列的参数上的普遍约束
 
-通常, 被当作序列的列表 (包括关联列表和属性列表) 必须是 proper 列表. 
+通常, 被当作序列[sequence]的列表[list] (包括关联列表[association list]和属性列表[property list]) 必须是正规列表[proper list]. 
 
 
 ## 17.2 <span id="RulesTestFunctions">关于测试函数的规则</span>
@@ -42,8 +42,8 @@
 > * 17.2.2 [满足一个单参数的测试](#SatisfyingOneArgumentTest)
 
 ### 17.2.1 <span id="SatisfyingTwoArgumentTest">满足一个两个参数的测试</span>
-
-当一个对象 O 要被迭代地和一个序列 S 的每一个元素 Ei 通过下面这段列出的操作符 F 考虑时, 有时候, 控制 O 在 S 中由 F 测试的方式是很有用的. 这个控制在一个被 :test 或 :test-not 参数标识的函数的基础上.
+<!--TODO consider 考虑 ？？-->
+当通过下面这段列出的操作符[operator] F 在一个序列[sequence] S 的每一个元素[element] Ei 上迭代地考虑对象[object] O 时, 有时控制操作符 F 测试 O 在 S 中的存在性的方式是有用的. 基于一个被 :test 或 :test-not 实参[argument]标识的函数[function]上来提供这个控制.
 
     adjoin           nset-exclusive-or  search            
     assoc            nsublis            set-difference    
@@ -58,17 +58,17 @@
 
     Figure 17-2. 有两个参数的测试需要满足的操作符
 
-这个对象 O 可能不会直接和 Ei 比较. 如果提供了一个 :key 参数, 它就是要被调用的单参数的函数的标识符, 而每一个 Ei 作为一个参数, 并且产生一个对象 Zi 被用作这个比较. (如果这里没有 :key 参数, Zi 就是 Ei.)
+这个对象 O 可能不会直接和 Ei 比较. 如果提供了一个 :key 实参[argument], 它就是要被调用的单参数[argument]的函数[function]的标识符[designator], 而每一个 Ei 作为一个实参[argument], 并且产生一个对象[object] Zi 被用作这个比较. (如果这里没有 :key 实参[argument], Zi 就是 Ei.)
 
-这个由 :key 参数标识的函数从不在 O 自身上调用. 然而, 如果这个函数在多个序列上操作 (比如, 就像发生在 set-difference), O 会是在另一个序列上调用这个函数的结果.
+这个由 :key 参数[argument]标识的函数[function]从不在 O 自身上调用. 然而, 如果这个函数在多个序列上操作 (比如, 就像发生在 set-difference), O 会是在其他序列的元素[element]上调用这个函数的结果.
 
-如果提供给 F 的一个 :test 参数, 那么它就是一个两参数函数的标识符, 参数为 O 和 Zi. 如果这个 :test 函数返回表示 true 的广义 boolean 那么就说一个 Ei (或者, 有时候, 就说一个 O 和一个 Ei) 满足这个测试条件.
+如果提供给 F 的一个 :test 参数[argument], 那么它就是一个两参数[argument]函数[function]的标识符[designator], 参数为 O 和 Zi. 如果这个 :test 函数[function]返回表示 true 的广义 boolean [generalized boolean], 那么就说一个 Ei (或者, 有时候, 就说一个 O 和一个 Ei) 满足这个测试条件[satisfy the test].
 
-如果提供 F 一个 :test-not 参数, 那么它就是一个两个参数函数的标识符, 参数是 O 和 Zi. 如果这个 :test-not 函数返回一个表示 false 的广义 boolean, 那么就说 Ei (或者, 有时候, 就说一个 O 和一个 Ei) 满足这个测试条件.
+如果提供 F 一个 :test-not 参数[argument], 那么它就是一个两参数[argument]函数[function]的标识符[designator], 参数是 O 和 Zi. 如果这个 :test-not 函数[function]返回一个表示 false 的广义 boolean [generalized boolean], 那么就说 Ei (或者, 有时候, 就说一个 O 和一个 Ei) 满足这个测试条件[satisfy the test].
 
-如果 :test 和 :test-not 参数都没有提供, 那么就好像提供了一个 #'eql 的 :test 参数.
+如果 :test 和 :test-not 参数[argument]都没有提供, 那么处理方式就跟提供了一个 #'eql 的 :test 参数一样.
 
-如果在对 F 的同一个调用中 :test 和 :test-not 参数都提供了, 那么后果是未指定的.
+如果在对 F 的同一个调用[call]中 :test 和 :test-not 参数[argument]都提供了, 那么后果是未指定的.
 
 #### 17.2.1.1 满足一个两个参数的测试的示例
 
@@ -102,7 +102,7 @@
 
 ### 17.2.2 <span id="SatisfyingOneArgumentTest">满足一个单参数的测试</span>
 
-当使用下面这段中的函数的其中一个时, 序列 S 的元素 E 被过滤不是根据两个参数的断言下的对象 O 的存在或缺失的基础上, 如章节 17.2.1 (Satisfying a Two-Argument Test) 中描述的函数, 而是在单参数断言的基础上.
+当使用下面这段中的函数[function]的其中一个时, 序列[sequence] S 的元素 E 不是基于章节 17.2.1 (满足一个两个参数的测试) 中描述的两参数[argument]断言[predicate]下对象 O 的存在或缺失来过滤, 而是基于单参数[argument]断言[predicate]来过滤.
 
     assoc-if       member-if           rassoc-if          
     assoc-if-not   member-if-not       rassoc-if-not      
@@ -114,15 +114,15 @@
     find-if-not    position-if-not     substitute-if-not  
 
     Figure 17-3. 有单参数的测试需要满足的操作符
+<!--TODO consider 考虑 ？？-->
+元素 Ei 可能不会被直接考虑. 如果提供了一个 :key 参数[argument], 那么它就是一个单参数[argument]函数[function]的标识符[designator], 用每一个 Ei 作为一个实参[argument]来调用, 并且产生一个要被用来比较的对象[argument] Zi. (如果没有 :key 参数[argument], Zi 就是 Ei.)
 
-元素 Ei 可能不会被直接考虑. 如果提供了一个 :key 参数, 那么它就是一个单参数函数的标识符, 用每一个 Ei 作为参数来调用, 并且产生一个要被用来比较的对象 Zi. (如果没有 :key 参数, Zi 就是 Ei.)
+在这个规范中定义的并且有着一个以 "-if" 结尾的名字的函数[function]接受一个单参数[argument] Zi 的函数[function]的标识符[designator]作为第一个参数[argument]. 如果这个 :test 函数[function]返回一个表示  true 的广义 boolean [generalized boolean], 那么就说一个 Ei 满足这个测试条件[satisfy the test].
 
-在这个规范中定义的并且有着一个以 "-if" 结尾的名字的函数接受一个单参数 Zi 的函数的标识符作为第一个参数. 如果这个 :test 函数返回一个表示  true 的广义 boolean, 那么就说一个 Ei 满足这个测试.
-
-在这个规范中定义的并且有着一个以 "-if-not" 结尾的名字的函数接受一个单参数 Zi 的函数的标识符作为第一个参数. 如果这个 :test 函数返回一个表示 false 的广义 boolean, 那么就说一个 Ei 满足这个测试条件.
+在这个规范中定义的并且有着一个以 "-if-not" 结尾的名字的函数[function]接受一个单参数[argument] Zi 的函数[function]的标识符[designator]作为第一个参数[argument]. 如果这个 :test 函数[function]返回一个表示 false 的广义 boolean [generalized boolean], 那么就说一个 Ei 满足这个测试条件[satisfy the test].
 
 
-#### 17.2.2.1 Examples of Satisfying a One-Argument Test
+#### 17.2.2.1 满足一个单参数的测试的示例
 
 ```LISP
  (count-if #'zerop '(1 #C(0.0 0.0) 0 0.0d0 0.0s0 3)) =>  4
@@ -171,11 +171,11 @@
 
 * 描述(Description):
 
-        序列是对象的有序集合, 这些对象称为序列的元素.
+        序列[sequence]是对象[object]的有序集合, 这些对象称为序列[sequence]的元素[element].
 
-        类型 vector 类型 list 是类型 sequence 的互斥的子类型, 但没有必要是序列的一个详尽分区.
+        类型[type] vector 和类型[type] list 是类型[type] sequence 的互斥的[disjoint]子类型[subtype], 但没有必要是序列[sequence]的一个详尽分区[exhaustive partition].
 
-        当把一个向量视作一个序列时, 只有这个向量的有效元素被当作这个序列的元素; 这也就是说, 当给定的序列被表示为向量时, 序列操作遵守填充指针. 
+        当把一个向量[vector]视作一个序列[sequence]时, 只有这个向量[vector]的有效[active]元素[element]被当作这个序列[sequence]的元素[element]; 这也就是说, 当给定的序列[sequence]被表示为向量[vector]时, 序列[sequence]操作遵守填充指针[fill pointer]. 
 
 
 ### <span id="F-COPY-SEQ">函数 COPY-SEQ</span>
@@ -186,14 +186,14 @@
 
 * 参数和值(Arguments and Values):
 
-        sequence---一个 proper 序列.
-        copied-sequence---一个 proper 序列.
+        sequence---一个正规序列[proper sequence].
+        copied-sequence---一个正规序列[proper sequence].
 
 * 描述(Description):
 
-        创建一个序列 sequence 的拷贝. 这个新的序列中的元素和给定序列 sequence 中的对应元素是相同的.
+        创建一个序列 sequence 的拷贝. 这个新的序列[sequence]中的元素[element]和给定序列 sequence 中的对应元素[element]是相同的[same].
 
-        如果序列 sequence 是一个向量, 那么结果就是维数为一的新的简单数组, 并且有着和序列 sequence 相同的实际数组元素类型. 如果序列 sequence 是一个列表, 那么结果就是一个新的列表.
+        如果序列 sequence 是一个向量[vector], 那么结果就是秩[rank]为一的新的[fresh]简单数组[simple array], 并且有着和序列 sequence 相同的实际数组元素类型[actual array element type]. 如果序列 sequence 是一个列表[list], 那么结果就是一个新的[fresh]列表[list].
 
 * 示例(Examples):
 
@@ -209,7 +209,7 @@
 
 * 异常情况(Exceptional Situations):
 
-        如果序列 sequence 不是一个 proper 序列, 那么应该准备发出一个 type-error 类型的错误.
+        如果序列 sequence 不是一个正规序列[proper sequence], 那么应该准备发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
@@ -221,7 +221,7 @@
 
         (copy-seq x) ==  (subseq x 0)
 
-        然而, 在这两种情况下, 程序员的意图通常是非常不同的. 
+        然而, 在这两种情况下, 程序员的意图通常是不同的. 
 
 
 ### <span id="A-ELT">访问器 ELT</span>
@@ -234,14 +234,14 @@
 
 * 参数和值(Arguments and Values):
 
-        sequence---一个proper 序列.
-        index---对于序列 sequence 的一个有效序列索引.
-        object---一个对象.
-        new-object---一个对象.
+        sequence---一个正规序列[proper sequence].
+        index---对于序列 sequence 的一个有效序列索引[valid sequence index].
+        object---一个对象[object].
+        new-object---一个对象[object].
 
 * 描述(Description):
 
-        访问由索引 index 指定的序列 sequence 中的元素.
+        访问[access]由索引 index 指定的序列 sequence 中的元素[element].
 
 * 示例(Examples):
 
@@ -258,15 +258,15 @@
 
 * 异常情况(Exceptional Situations):
 
-        如果 sequence 不是一个 proper 序列, 那么应该准备发出一个 type-error 类型的错误. 如果 index 对于序列 sequence 的不是一个有效序列索引, 那么应该发出一个 type-error 类型的错误.
+        如果 sequence 不是一个正规序列[proper sequence], 那么应该准备发出一个 type-error 类型[type]的错误. 如果 index 对于序列 sequence 的不是一个有效序列索引[valid sequence index], 那么应该发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
-        aref, nth, 章节 3.2.1 (Compiler Terminology)
+        aref, nth, 章节 3.2.1 (编译器术语)
 
 * 注意(Notes):
 
-        aref 可能被用于访问超出这个向量填充指针的向量元素. 
+        aref 可能被用于访问[access]超出这个向量[vector]填充指针[fill pointer]的向量[vector]元素[element]. 
 
 ### <span id="F-FILL">函数 FILL</span>
 
@@ -276,13 +276,13 @@
 
 * 参数和值(Arguments and Values):
 
-        sequence---一个 proper 序列.
-        item---一个序列.
-        start, end---序列 sequence 的边界索引标识符. 对于 start 和 end 默认分别是 0 和 nil.
+        sequence---一个正规序列[proper sequence].
+        item---一个序列[sequence].
+        start, end---序列 sequence 的边界索引标识符[bounding index designator]. 对于 start 和 end 默认分别是 0 和 nil.
 
 * 描述(Description):
 
-        用 item 替换由 start and end 限制的序列 sequence 中的元素.
+        用 item 替换由 start 和 end 限定[bounded]的序列 sequence 中的元素[element].
 
 * 示例(Examples):
 
@@ -304,7 +304,7 @@
 
 * 异常情况(Exceptional Situations):
 
-        如果序列 sequence 不是一个 proper 序列, 那么应该准备去发出一个 type-error 类型的错误. 如果 start 不是一个非负整数, 那么应该发出一个 type-error 类型的错误. 如果 end 不是一个非负整数或者 nil, 那么应该发出一个 type-error 类型的错误.
+        如果序列 sequence 不是一个正规序列[proper sequence], 那么应该准备去发出一个 type-error 类型[type]的错误. 如果 start 不是一个非负整数[integer], 那么应该发出一个 type-error 类型[type]的错误. 如果 end 不是一个非负整数[integer]或者 nil, 那么应该发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
@@ -323,18 +323,18 @@
 
 * 参数和值(Arguments and Values):
 
-        result-type---一个序列类型指定符.
-        size---一个非负整数.
-        initial-element---一个对象. 默认值是依赖于具体实现的.
-        sequence---一个 proper 序列.
+        result-type---一个 sequence 类型指定符[type specifier].
+        size---一个非负整数[integer].
+        initial-element---一个对象[object]. 默认值是依赖于具体实现的[implementation-dependent].
+        sequence---一个正规序列[proper sequence].
 
 * 描述(Description):
 
-        返回一个 result-type 类型并且长度为 size 的序列, 其中的每一个元素都被初始化为 initial-element.
+        返回一个 result-type 类型并且长度为 size 的序列[sequence], 其中的每一个元素[element]都被初始化为 initial-element.
 
-        如果 result-type 是 list 的一个子类型, 那么结果会是一个列表 list.
+        如果 result-type 是 list 的一个子类型[subtype], 那么结果会是一个列表[list].
 
-        如果 result-type 是 vector 的一个子类型, 那么如果实现可以确定 result-type 指定的元素类型, 那么产生的数组的元素类型就是那个元素类型的提升的结果; 或者, 如果实现可以确定那个元素类型是未指定的 (或 *), 产生的元素类型就是 t; 否则, 发出一个错误.
+        如果 result-type 是 vector 的一个子类型[subtype], 那么如果实现可以确定 result-type 指定的元素类型, 那么产生的数组的元素类型就是那个元素类型的提升[upgrade]的结果; 或者, 如果实现可以确定那个元素类型是未指定的 (或 *), 产生的元素类型就是 t; 否则, 发出一个错误.
 
 * 示例(Examples):
 
@@ -352,15 +352,15 @@
 
 * 受此影响(Affected By):
 
-        这个具体实现.
+        这个具体实现[implementation].
 
 * 异常情况(Exceptional Situations):
 
-        如果 initial-element 不是一个可以被存储在产生的序列中的对象, 那么后果是未指定的.
+        如果 initial-element 不是一个可以被存储在产生的序列[sequence]中的对象[object], 那么后果是未指定的.
 
-        如果 result-type 既不是一个 list 的可识别子类型, 也不是一个 vector 的可识别子类型, 那么就会发出一个 type-error 类型的错误.
+        如果 result-type 既不是一个 list 的可识别子类型[recognizable subtype], 也不是一个 vector 的可识别子类型[recognizable subtype], 那么就会发出一个 type-error 类型[type]的错误.
 
-        如果 result-type 指定的元素的数量并且 size 和那个数量不同, 那么应该发出一个 type-error 类型的错误.
+        如果 result-type 指定的元素的数量并且 size 和那个数量不同, 那么应该发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
@@ -369,6 +369,7 @@
 * 注意(Notes):
 
         (make-sequence 'string 5) ==  (make-string 5)               
+
 
 ### <span id="A-SUBSEQ">Accessor SUBSEQ</span>
 
@@ -842,7 +843,7 @@
 
 * 也见(See Also):
 
-        merge, 章节 3.2.1 (Compiler Terminology), 章节 3.6 (Traversal Rules and Side Effects), 章节 3.7 (Destructive Operations)
+        merge, 章节 3.2.1 (编译器术语), 章节 3.6 (Traversal Rules and Side Effects), 章节 3.7 (Destructive Operations)
 
 * 注意(Notes):
 
@@ -1208,7 +1209,7 @@
 
 * 也见(See Also):
 
-        subst, nsubst, 章节 3.2.1 (Compiler Terminology), 章节 3.6 (Traversal Rules and Side Effects)
+        subst, nsubst, 章节 3.2.1 (编译器术语), 章节 3.6 (Traversal Rules and Side Effects)
 
 * 注意(Notes):
 
@@ -1340,7 +1341,7 @@
 
 * 也见(See Also):
 
-        sort, stable-sort, 章节 3.2.1 (Compiler Terminology), 章节 3.6 (Traversal Rules and Side Effects)
+        sort, stable-sort, 章节 3.2.1 (编译器术语), 章节 3.6 (Traversal Rules and Side Effects)
 
 * 注意(Notes): None. 
 
@@ -1452,7 +1453,7 @@
 
 * 也见(See Also):
 
-        章节 3.2.1 (Compiler Terminology), 章节 3.6 (Traversal Rules and Side Effects)
+        章节 3.2.1 (编译器术语), 章节 3.6 (Traversal Rules and Side Effects)
 
 * 注意(Notes):
 
@@ -1524,7 +1525,7 @@
 
 * 也见(See Also):
 
-        章节 3.2.1 (Compiler Terminology), 章节 3.6 (Traversal Rules and Side Effects)
+        章节 3.2.1 (编译器术语), 章节 3.6 (Traversal Rules and Side Effects)
 
 * 注意(Notes):
 
