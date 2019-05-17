@@ -371,7 +371,7 @@
         (make-sequence 'string 5) ==  (make-string 5)               
 
 
-### <span id="A-SUBSEQ">Accessor SUBSEQ</span>
+### <span id="A-SUBSEQ">访问器 SUBSEQ</span>
 
 * 语法(Syntax):
 
@@ -381,22 +381,22 @@
 
 * 参数和值(Arguments and Values):
 
-        sequence---一个 proper 序列.
-        start, end---序列 sequence 边界索引标识符. 对于 end 默认是 nil.
-        subsequence---一个 proper 序列.
-        new-subsequence---一个 proper 序列.
+        sequence---一个正规序列[proper sequence].
+        start, end---序列 sequence 边界索引标识符[bounding index designator]. 对于 end 默认是 nil.
+        subsequence---一个正规序列[proper sequence].
+        new-subsequence---一个正规序列[proper sequence].
 
 * 描述(Description):
 
-        subseq 创建一个序列, 它是由 start 和 end 限定的 sequence 的子序列的一个拷贝.
+        subseq 创建一个序列[sequence], 它是由 start 和 end 限定的 sequence 的子序列的一个拷贝.
 
         start 指定了原始序列 sequence 中的一个偏移位并且标记这个子序列的起始位置. end 标记这个子序列的最后一个元素的后面的位置.
 
-        subseq 总是为一个结果分配一个新的序列; 它从不与旧的序列共享存储. 这个产生的子序列总是和 sequence 相同类型.
+        subseq 总是为一个结果分配一个新的序列[sequence]; 它从不与旧的序列[sequence]共享存储. 这个产生的子序列总是和 sequence 相同类型[type].
 
-        如果序列 sequence 是一个向量, 那么结果是一个新的一维的有着和 sequence 相同实际数组元素类型的简单数组. 如果序列 sequence 是一个列表, 那么结果是一个新的列表.
+        如果序列 sequence 是一个向量[vector], 那么结果是一个新的[fresh]秩[rank]为一的有着和 sequence 相同实际数组元素类型[actual array element type]的简单数组[simple array]. 如果序列 sequence 是一个列表[list], 那么结果是一个新的[fresh]列表[list].
 
-        setf 可以和 subseq 一起使用来破坏性地用一个新值的序列中的元素替换一个子序列的元素. 如果这个子序列和那个新的序列不是相同长度, 更短长度的那个确定了要被替换的元素的数量. 在较长序列中末尾的剩余元素在这个操作中不会被修改.
+        setf 可以和 subseq 一起使用来破坏性地用一个新值的序列[sequence]中的元素[element]替换一个子序列的元素[element]. 如果这个子序列和那个新的序列不是相同长度, 更短长度的那个确定了要被替换的元素的数量. 在较长序列中末尾的剩余元素[element]在这个操作中不会被修改.
 
 * 示例(Examples):
 
@@ -416,7 +416,7 @@
 
 * 异常情况(Exceptional Situations):
 
-        如果序列 sequence 不是一个 proper 序列, 那么应该准备去发出一个 type-error 类型的错误. 如果序列 new-subsequence 不是一个 proper 序列, 那么应该准备去发出一个 type-error 类型的错误.
+        如果序列 sequence 不是一个正规序列[proper sequence], 那么应该准备去发出一个 type-error 类型[type]的错误. 如果序列 new-subsequence 不是一个正规序列[proper sequence], 那么应该准备去发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
@@ -433,20 +433,20 @@
 
 * 参数和值(Arguments and Values):
 
-        result-type -- 一个 sequence 类型指定符, 或者 nil.
-        function---一个函数标识符. function 必须接受和 sequences 数量相同的参数.
-        sequence---一个 proper 序列.
-        result---如果 result-type 是一个类型指定符而不是 nil, 那么就是那个类型表示的一个序列; 否则 (如果 result-type 是 nil), 就是 nil.
+        result-type -- 一个 sequence 类型指定符[type specifier], 或者 nil.
+        function---一个函数标识符[function designator]. 函数 function 必须接受和 sequences 数量相同的参数.
+        sequence---一个正规序列[proper sequence].
+        result---如果 result-type 是一个类型指定符[type specifier]而不是 nil, 那么就是那个类型[type]表示的一个序列[sequence]; 否则 (如果 result-type 是 nil), 就是 nil.
 
 * 描述(Description):
 
-        应用函数 function 到参数的连续集合上, 这里的每一个参数从每个序列 sequence 中获取. 这个函数 function 首先在所有索引为 0 的元素上调用, 然后在所有索引为 1 的元素上, 以此类推. 这个 result-type 指定了产生的序列的类型.
+        应用函数 function 到参数的连续集合上, 这里的每一个参数从每个序列[sequence]中获取. 这个函数 function 首先在所有索引为 0 的元素上调用, 然后在所有索引为 1 的元素上, 以此类推. 这个 result-type 指定了产生的序列[sequence]的类型[type].
 
-        如果 result-type 是 nil, 那么 map 返回 nil. 否则, map 返回一个序列, 其中第 j 个元素是应用函数到每个序列的第 j 个元素的结果. 结果序列和这些序列 sequences 中最短的一个一样长. 如果应用函数到那些序列的连续元素的结果不能包含在一个给定的 result-type 类型的序列中, 那么后果是未指定的.
+        如果 result-type 是 nil, 那么 map 返回 nil. 否则, map 返回一个序列[sequence], 其中第 j 个元素是应用函数 function 到每个序列 sequence 的第 j 个元素的结果. 结果序列[sequence]和这些序列 sequences 中最短的一个一样长. 如果应用函数 function 到那些序列 sequences 的连续元素的结果不能包含在一个给定的 result-type 类型[type]的序列[sequence]中, 那么后果是未指定的.
 
-        如果这个 result-type 是 list 的一个子类型, 这个结果就是一个列表.
+        如果这个 result-type 是 list 的一个子类型[subtype], 这个结果就是一个列表[list].
 
-        如果 result-type 是 vector 的一个子类型, 那么如果实现可以确定 result-type 指定的元素类型, 那么产生的数组的元素类型就是那个元素类型的提升的结果; 或者, 如果实现可以确定那个元素类型是未指定的 (或 *), 产生的元素类型就是 t; 否则, 发出一个错误.
+        如果 result-type 是 vector 的一个子类型[subtype], 那么如果实现可以确定 result-type 指定的元素类型, 那么产生的数组的元素类型就是那个元素类型的提升[upgrade]的结果; 或者, 如果实现可以确定那个元素类型是未指定的 (或 *), 产生的元素类型就是 t; 否则, 发出一个错误.
 
 * 示例(Examples):
 
@@ -470,15 +470,15 @@
 
 * 异常情况(Exceptional Situations):
 
-        如果 result-type 不是 list 的一个可识别的子类型, 不是一个 vector 的可识别子类型, 并且不是 nil, 那么就会发出一个 type-error 的错误.
+        如果 result-type 不是 list 的一个可识别的子类型[recognizable subtype], 不是一个 vector 的可识别子类型[recognizable subtype], 并且不是 nil, 那么就会发出一个 type-error 类型[type]的错误.
 
-        如果任何一个 sequence 不是一个 proper 序列, 那么应该准备发出一个 type-error 类型的错误.
+        如果任何一个 sequence 不是一个正规序列[proper sequence], 那么应该准备发出一个 type-error 类型[sequence]的错误.
 
-        如果 result-type 指定了元素的数量而这些序列的最小长度和这个数量不同, 那么就会发出一个 type-error 类型的错误.
+        如果 result-type 指定了元素的数量而这些序列 sequences 的最小长度和这个数量不同, 那么就会发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
-        章节 3.6 (Traversal Rules and Side Effects)
+        章节 3.6 (遍历规则和副作用)
 
 * 注意(Notes): None. 
 
@@ -491,17 +491,17 @@
 
 * 参数和值(Arguments and Values):
 
-        result-sequence---一个 proper 序列.
-        function---一个和序列 sequences 的数量相同参数的函数标识符.
-        sequence---一个 proper 序列.
+        result-sequence---一个正规序列[proper sequence].
+        function---一个和序列 sequences 的数量相同参数[argument]的函数[function]标识符[designator].
+        sequence---一个正规序列[proper sequence].
 
 * 描述(Description):
 
-        破坏性地修改 result-sequence 来包含依次应用函数 function 到参数序列 sequences 的结果.
+        破坏性地修改 result-sequence 来包含依次应用函数 function 到参数序列 sequences 所产生的结果.
 
-        result-sequence 和序列 sequences 的每个元素可以是一个列表或者一个向量. 如果 result-sequence 和 sequences 的每一个元素都不是相同长度, 当最短的序列(这些 sequences 中的任何一个或者 result-sequence)耗尽时迭代终止. 如果 result-sequence 是一个带有填充指针的向量, 在决定要执行多少迭代时, 这个填充指针会被忽略, 然后这个填充指针会被设置到函数 function 被应用的次数数量上. 如果 result-sequence 比这些序列 sequences 中最短的一个长, 在 result-sequence 末尾的额外元素保持不变. 如果 result-sequence 是 nil, map-into 立即返回 nil, 因为 nil 是长度为 0 的序列.
+        result-sequence 和序列 sequences 的每个元素可以是一个列表[list]或者一个向量[vector]. 如果 result-sequence 和 sequences 的每一个元素长度都不相同, 当最短的序列[sequence] (这些 sequences 中的任何一个或者 result-sequence)耗尽时迭代终止. 如果 result-sequence 是一个带有填充指针[fill pointer]的向量[vector], 在决定要执行多少循环时, 这个填充指针[fill pointer]会被忽略, 然后这个填充指针[fill pointer]会被设置为函数 function 被应用的次数数量. 如果 result-sequence 比这些序列 sequences 中最短的一个长, 在 result-sequence 末尾的额外元素保持不变. 如果 result-sequence 是 nil, map-into 立即返回 nil, 因为 nil 是长度为 0 的序列[sequence].
 
-        如果函数 function 有着副作用, 它可以首先在所有索引为 0 的元素上调用, 然后在所有索引为 1 上, 以此类推.
+        如果函数 function 有着副作用, 它首先在所有索引为 0 的元素上调用, 然后在所有索引为 1 上, 以此类推.
 
 * 示例(Examples):
 
@@ -520,13 +520,13 @@
 
 * 异常情况(Exceptional Situations):
 
-        如果 result-sequence 不是一个 proper, 那么应该发出一个 type-error 类型的错误. 如果序列 sequence 不是一个 proper 序列, 那么应该准备去发出一个 type-error 类型的错误.
+        如果 result-sequence 不是一个正规序列[proper sequence], 那么应该发出一个 type-error 类型[type]的错误. 如果序列 sequence 不是一个正规序列[proper sequence], 那么应该准备去发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also): None.
 
 * 注意(Notes):
 
-        map-into 和 map 的区别在于它修改一个已存在的序列而不是创建一个新的. 另外, map-into 只能用两个参数来调用, 而 map 需要至少三个参数.
+        map-into 和 map 的区别在于它修改一个已存在的序列[sequence]而不是创建一个新的. 另外, map-into 只能用两个参数来调用, 而 map 需要至少三个参数.
 
         map-into 可以被定义为:
 
@@ -549,27 +549,27 @@
 
 * 参数和值(Arguments and Values):
 
-        function---一个可以用零个或两个参数来调用的函数的标识符.
-        sequence---一个 proper 序列.
-        key---一个单参数函数的标识符, 或者 nil.
-        from-end---一个广义 boolean. 默认是 false.
-        start, end---序列 sequence 的边界索引标识符. 对于 start 和 end 默认分别为 0 或 nil.
-        initial-value---一个对象.
-        result---一个对象.
+        function---一个可以用零个或两个参数[argument]来调用的函数[function]的标识符[designator].
+        sequence---一个正规序列[proper sequence].
+        key---一个单参数函数[function]的标识符[designator], 或者 nil.
+        from-end---一个广义 boolean [generalized boolean]. 默认是 false.
+        start, end---序列 sequence 的边界索引标识符[bounding index designator]. 对于 start 和 end 默认分别为 0 或 nil.
+        initial-value---一个对象[object].
+        result---一个对象[object].
 
 * 描述(Description):
 
-        reduce 使用一个二元操作符, function, 来组合由 start 和 end 限制的 sequence 的元素.
+        reduce 使用一个二元操作符, function, 来组合由 start 和 end 限定[bounded]的 sequence 的元素[element].
 
-        这个函数 function 必须接受作为序列 sequence 的两个元素的参数, 或者将这些元素组合起来的结果. 这个函数 function 必须也可以接受没有参数的情况.
+        这个函数 function 必须接受序列 sequence 的两个元素[element]作为参数[argument], 或者将这些元素[element]组合起来的结果. 这个函数 function 必须也可以接受没有参数的情况.
 
-        如果提供了 key, 它被用于去提取给 reduce 的值. 这个 key 函数以那个归约的顺序暗示的顺序只应用一次到序列 sequence 的每个元素上, 除了 initial-value 的值意外, 如果提供的话. 这个 key 函数通常返回序列 sequence 的元素的一部分. 如果 key 没有被提供或者是 nil, 那么就使用这个序列的元素自身.
+        如果提供了 key, 它被用于去提取值给 reduce. 这个 key 函数以那个归约的顺序暗示的顺序对序列 sequence 的每个元素应用一次, 除了 initial-value 的值以外, 如果提供的话. 这个 key 函数通常返回序列 sequence 的元素[element]的一部分. 如果 key 没有被提供或者是 nil, 那么就使用这个序列的元素[element]自身.
 
         这个归约时左结合的(left-associative), 除非 from-end 是 true 时, 在这个情况下是右结合的(right-associative).
 
         如果提供了 initial-value, 它会在这个子序列之前 (如果 from-end 是 true 就是在它之后) 被逻辑上替换并且包含在这个归约操作中.
 
-        在正常的情况中, 这个 reduce 的结果是函数 function 被应用到序列 sequence 的连续元素对的组合结果. 如果这个子序列只包含了一个元素并且没有给定 initial-value, 那么返回那个元素而函数 function 不会被调用. 如果这个子序列时空的并且给定了一个 initial-value, 那么返回这个 initial-value 而函数 function 不会被调用. 如果这个子序列是空并且没有给定 initial-value, 那么这个函数 function 会用零个参数被调用, 然后 reduce 返回函数 function 的结果. 这是仅有的函数 function 用两个参数以外被调用的情况.
+        在正常的情况中, 这个 reduce 的结果是应用函数 function 到序列 sequence 的连续元素[element]对的组合结果. 如果这个子序列只包含了一个元素[element]并且没有给定 initial-value, 那么返回那个元素[element]并且函数 function 不会被调用. 如果这个子序列是空的并且给定了一个 initial-value, 那么返回这个 initial-value 并且函数 function 不会被调用. 如果这个子序列是空并且没有给定 initial-value, 那么这个函数 function 会用零个参数来调用, 然后 reduce 返回函数 function 的结果. 这是仅有的用两个以外的参数来调用函数 function 的情况.
 
 * 示例(Examples):
 
@@ -597,11 +597,11 @@
 
 * 异常情况(Exceptional Situations):
 
-        如果序列 sequence 不是一个 proper 序列, 那么应该准备去发出一个 type-error 类型的错误.
+        如果序列 sequence 不是一个正规序列[proper sequence], 那么应该准备去发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
-        章节 3.6 (Traversal Rules and Side Effects)
+        章节 3.6 (遍历规则和副作用)
 
 * 注意(Notes): None. 
 
@@ -618,21 +618,21 @@
 
 * 参数和值(Arguments and Values):
 
-        item---一个对象.
-        sequence---一个 proper 序列.
-        predicate---一个返回一个广义 boolean 的单参数函数的标识符.
-        from-end---一个广义 boolean. 默认是 false.
-        test---一个返回一个广义 boolean 的两参数函数的标识符.
-        test-not---一个返回一个广义 boolean 的两参数函数的标识符.
-        start, end---序列 sequence 的边界索引标识符. 对于 start 和 end 默认分别为 0 和 nil.
-        key---一个单参数函数的标识符, 或 nil.
-        n---一个小于等于序列 sequence 的长度的非负整数.
+        item---一个对象[object].
+        sequence---一个正规序列[proper sequence].
+        predicate---一个返回一个广义 boolean [generalized boolean]的单参数[argument]函数[function]的标识符[designator].
+        from-end---一个广义 boolean [generalized boolean]. 默认是 false.
+        test---一个返回一个广义 boolean [generalized boolean]的两参数[argument]函数[function]的标识符[designator].
+        test-not---一个返回一个广义 boolean [generalized boolean]的两参数[argument]函数[function]的标识符[designator].
+        start, end---序列 sequence 的边界索引标识符[bounding index designator]. 对于 start 和 end 默认分别为 0 和 nil.
+        key---一个单参数函数[function]的标识符[designator], 或 nil.
+        n---一个小于等于序列 sequence 的长度[length]的非负整数[integer].
 
 * 描述(Description):
 
-        count, count-if, 和 count-if-not 计算并返回在序列 sequence 中由 start 和 end 限定并满足这个测试条件 test 的元素的数量.
+        count, count-if, 和 count-if-not 计算并返回在序列 sequence 中由 start 和 end 限定[bounded]并满足测试条件[satisfy the test]的元素[element]的数量.
 
-        这个 from-end 对结果没有直接影响. 然而, 如果 from-end 是 true, 这个序列 sequence 的元素会以逆序提供给 test, test-not, 和 key 作为参数, 它可能改变这些函数的副作用, 如果有的话.
+        这个 from-end 对结果没有直接影响. 然而, 如果 from-end 是 true, 这个序列 sequence 的元素[element]会以逆序提供给 test, test-not, 和 key 作为参数[argument], 它可能改变这些函数的副作用, 如果有的话.
 
 * 示例(Examples):
 
@@ -648,17 +648,17 @@
 
 * 异常情况(Exceptional Situations):
 
-        如果序列 sequence 不是一个 proper 序列, 那么应该准备去发出一个 type-error 类型的错误.
+        如果序列 sequence 不是一个正规序列[proper sequence], 那么应该准备去发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
-        章节 17.2 (Rules about Test Functions), 章节 3.6 (Traversal Rules and Side Effects)
+        章节 17.2 (关于测试函数的规则), 章节 3.6 (遍历规则和副作用)
 
 * 注意(Notes):
 
-        这个 :test-not 参数已经被废弃.
+        这个 :test-not 参数[argument]已经被废弃.
 
-        函数 count-if-not 已经被废弃. 
+        函数[function] count-if-not 已经被废弃. 
 
 
 ### <span id="F-LENGTH">函数 LENGTH</span>
@@ -669,14 +669,14 @@
 
 * 参数和值(Arguments and Values):
 
-        sequence---一个 proper 序列.
-        n---一个非负整数.
+        sequence---一个正规序列[proper sequence].
+        n---一个非负整数[integer].
 
 * 描述(Description):
 
-        返回在序列 sequence 中的元素数量.
+        返回在序列 sequence 中的元素[element]数量.
 
-        如果序列 sequence 是一个带有填充指针的向量, 返回由填充指针指定的有效长度.
+        如果序列 sequence 是一个带有填充指针[fill pointer]的向量[vector], 返回由填充指针[fill pointer]指定的有效长度.
 
 * 示例(Examples):
 
@@ -694,7 +694,7 @@
 
 * 异常情况(Exceptional Situations):
 
-        如果序列 sequence 不是一个 proper 序列, 那么应该准备去发出一个 type-error 类型的错误.
+        如果序列 sequence 不是一个正规序列[proper sequence], 那么应该准备去发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
@@ -713,20 +713,20 @@
 
 * 参数和值(Arguments and Values):
 
-        sequence---一个 proper 序列.
-        reversed-sequence---一个序列.
+        sequence---一个正规序列[proper sequence].
+        reversed-sequence---一个序列[sequence].
 
 * 描述(Description):
 
-        reverse 和 nreverse 返回一个和序列 sequence 相同种类的新的序列, 包含相同的元素, 但是是以逆序的形式.
+        reverse 和 nreverse 返回一个和序列 sequence 相同种类的新的序列[sequence], 包含相同的元素[element], 但是是以逆序的形式.
 
-        reverse 和 nreverse 的区别在于 reverse 总是创建并返回一个新的序列, 反之 nreverse 可能修改并返回给定的序列 sequence. reverse 从不修改那个给定的序列 sequence.
+        reverse 和 nreverse 的区别在于 reverse 总是创建并返回一个新的序列[sequence], 反之 nreverse 可能修改并返回给定的序列 sequence. reverse 从不修改那个给定的序列 sequence.
 
-        对于 reverse, 如果序列 sequence 是一个向量, 那么那个结果是一个新的有着和 sequence 相同的实际数组元素类型的一维简单数组. 如果序列 sequence 是一个列表, 那么那个结果就是一个新的列表.
+        对于 reverse, 如果序列 sequence 是一个向量[vector], 那么那个结果是一个有着和 sequence 相同的实际数组元素类型[actual array element type]的新的[fresh]秩为一的简单数组[simple array]. 如果序列 sequence 是一个列表[list], 那么那个结果就是一个新的[fresh]列表[list].
 
-        对于 nreverse, 如果序列 sequence 是一个向量, 那么那个结果也是一个有着和 sequence 相同实际数组元素的向量. 如果序列 sequence 是一个列表, 结果就是一个列表.
+        对于 nreverse, 如果序列 sequence 是一个向量[vector], 那么那个结果也是一个有着和 sequence 相同实际数组元素[actual array element type]的向量[vector]. 如果序列 sequence 是一个列表[list], 结果就是一个列表[list].
 
-        对于 nreverse, 序列 sequence 可能被破坏并且重新使用来产生那个结果. 结果可能和序列 sequence 一样, 也可能不一样. 具体来说, 当序列 sequence 是一个列表时, nreverse 允许去 setf 序列 sequence 的列表结构部分的 cons 的任何部分, car 或 cdr. 当序列 sequence 是一个向量时, nreverse 允许去重排序列 sequence 的元素来产生结果序列.
+        对于 nreverse, 序列 sequence 可能被破坏并且重新使用来产生那个结果. 结果可能和序列 sequence 一样[identical], 也可能不一样. 具体来说, 当序列 sequence 是一个列表[list]时, nreverse 允许去 setf 序列 sequence 的列表结构[list structure]部分的 cons 的任何部分, car 或 cdr. 当序列 sequence 是一个向量[vecotr]时, nreverse 允许去重排序列 sequence 的元素来产生结果向量[vector].
 
 * 示例(Examples):
 
@@ -744,13 +744,13 @@
 
 * 副作用(Side Effects):
 
-        nreverse 可能创建一个新序列, 或修改参数序列 sequence, 或两者都执行. (reverse 不会修改序列 sequence.)
+        nreverse 可能创建一个新序列[sequence], 或修改参数序列 sequence, 或两者都执行. (reverse 不会修改序列 sequence.)
 
 * 受此影响(Affected By): None.
 
 * 异常情况(Exceptional Situations):
 
-        如果序列 sequence 不是一个 proper 序列, 那么应该准备去发出一个 type-error 类型的错误.
+        如果序列 sequence 不是一个正规序列[proper sequence], 那么应该准备去发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also): None.
 
@@ -767,26 +767,26 @@
 
 * 参数和值(Arguments and Values):
 
-        sequence---一个 proper 序列.
-        predicate---一个返回一个广义 boolean 的两参数函数的标识符.
-        key---一个单参数函数的标识符, 或 nil.
-        sorted-sequence---一个序列.
+        sequence---一个正规序列[proper sequence].
+        predicate---一个返回一个广义 boolean [generalized boolean]的两参数函数[function]的标识符[designator].
+        key---一个单参数函数[function]的标识符[designator], 或 nil.
+        sorted-sequence---一个序列[sequence].
 
 * 描述(Description):
 
         sort 和 stable-sort 根据断言 predicate 函数确定的顺序破坏性地对序列 sequence 排序.
 
-        如果序列 sequence 是一个向量, 那么结果是一个和 sequence 有着相同实际数组元素类型的向量. 如果序列 sequence 是一个列表, 那么结果也是有一个列表.
+        如果序列 sequence 是一个向量[vector], 那么结果是一个和 sequence 有着相同实际数组元素类型[actual array element type]的向量[vector]. 如果序列 sequence 是一个列表[list], 那么结果也是有一个列表[list].
 
-        sort 由给到断言 predicate 的元素中提取的键来确定两个元素之间的关系. 给这个断言 predicate 函数 的第一个参数是通过 key 函数(如果提供的话)提取的序列 sequence 的一个元素的一部分; 第二个参数是通过 key 函数(如果提供的话)提取的序列 sequence 的另一个元素的一部分. 如果第一个参数严格小于第二个参数(在某个适当的意义下), 那么断言 predicate 应该返回 true. 如果第一个参数大于或等于第二个参数(在某个适当的意义下), 那么这个断言 predicate 应该返回 false.
+        sort 通过将从元素中提取到的键提供给断言 predicate 来确定两个元素之间的关系. 给这个断言 predicate 函数 的第一个参数是通过 key 函数(如果提供的话)提取的序列 sequence 的一个元素的一部分; 第二个参数是通过 key 函数(如果提供的话)提取的序列 sequence 的另一个元素的一部分. 如果第一个参数严格小于第二个参数(在某个适当的意义下), 那么断言 predicate 应该返回 true. 如果第一个参数大于或等于第二个参数(在某个适当的意义下), 那么这个断言 predicate 应该返回 false.
 
         给这个 key 函数的参数是这个序列 sequence 元素. 这个 key 函数的返回值称为给断言 predicate 的一个参数. 如果 key 没有被提供或者是 nil, 那么使用这个序列 sequence 的元素自身. 这里不保证这个 key 函数会被调用的次数.
 
-        如果这个 key 和 predicate 总是返回, 那么这个排序操作总是会终止, 产生一个和 sequence 包含相同元素的序列 (这也就是说, 结果是序列 sequence 的一个变换). 这是有保证的即便这个断言 predicate 并不始终表示一个总顺序 (在这个情况中这些元素总是以一种不可预知的方式被搅乱, 但是没有元素会被丢失). 如果这个 key 函数始终返回有意义的键, 并且这个断言 predicate 确实反映了在这些键上的某个总排序准则, 那么在 sorted-sequence 的这些元素会根据那个顺序被正确排序.
+        如果这个 key 和 predicate 总是返回, 那么这个排序操作总是会终止, 产生一个和序列 sequence 包含相同元素[element]的序列[sequence] (这也就是说, 结果是序列 sequence 的一个变换). 这是有保证的, 即便这个断言 predicate 并不始终表示一个总顺序 (在这个情况中这些元素[element]总是以一种不可预知的方式被搅乱, 但是没有元素[element]会被丢失). 如果这个 key 函数始终返回有意义的键, 并且这个断言 predicate 确实反映了在这些键上的某个总排序准则, 那么在 sorted-sequence 的这些元素[element]会根据那个顺序被正确排序.
 
-        这个由 sort 执行的排序操作不保证稳定. 由断言 predicate 认为是相同的元素可能或可能不会以它们的原始顺序. 如果 (funcall predicate x y) 和 (funcall predicate y x) 都是 false, 那么这个断言 predicate 认为两个元素 x 和 y 是相等的. stable-sort 保证稳定性.
+        这个由 sort 执行的排序操作不保证稳定. 由断言 predicate 认为是相同的元素可能或可能不会保持它们的原始顺序. 如果 (funcall predicate x y) 和 (funcall predicate y x) 都是 false, 那么这个断言 predicate 认为两个元素 x 和 y 是相等的. stable-sort 保证稳定性.
 
-        这个排序操作在所有情况下都可以是破坏性的. 在一个向量参数的情况下, 这是通过对元素进行适当的处理来实现的. 在一个列表的情况下, 这个列表会被破坏性地重排, 以和 nreverse 相同的规矩.
+        这个排序操作在所有情况下都可以是破坏性的. 在一个向量[vector]参数的情况下, 这是通过对元素进行适当的处理来实现的. 在一个列表[list]的情况下, 这个列表[list]会按照和 nreverse 相同的方式被破坏性地重排.
 
 * 示例(Examples):
 
@@ -839,15 +839,15 @@
 
 * 异常情况(Exceptional Situations):
 
-        如果序列 sequence 不是一个 proper 序列, 那么应该准备去发出一个 type-error 类型的错误.
+        如果序列 sequence 不是一个正规序列[proper sequence], 那么应该准备去发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
-        merge, 章节 3.2.1 (编译器术语), 章节 3.6 (Traversal Rules and Side Effects), 章节 3.7 (Destructive Operations)
+        merge, 章节 3.2.1 (编译器术语), 章节 3.6 (遍历规则和副作用), 章节 3.7 (破坏性操作)
 
 * 注意(Notes):
 
-        如果序列 sequence 是一个向量, 那么这个结果可能或可能不是一个简单的, 并且可能或可能不会和序列 sequence 相同. 
+        如果序列 sequence 是一个向量[vector], 那么这个结果可能或可能不是一个简单的, 并且可能或可能不会和序列 sequence 相同[identical]. 
 
 
 ### <span id="F-FIND-ALL">函数 FIND, FIND-IF, FIND-IF-NOT</span>
@@ -862,23 +862,23 @@
 
 * 参数和值(Arguments and Values):
 
-        item---一个对象.
-        sequence---一个 proper 序列.
-        predicate---一个返回一个广义 boolean 的单参数函数的标识符.
-        from-end---一个广义 boolean. 默认是 false.
-        test---一个返回一个广义 boolean 的两个参数的函数的标识符.
-        test-not---一个返回一个广义 boolean 的两个参数的函数的标识符.
-        start, end---序列 sequence 的边界索引标识符. 对于 start 和 end 默认分别为 0 和 nil.
-        key---一个单参数函数的标识符, 或者 nil.
-        element---序列 sequence 的一个元素, 或者 nil.
+        item---一个对象[object].
+        sequence---一个正规序列[proper sequence].
+        predicate---返回一个广义 boolean [generalized boolean]的单参数[argument]函数[function]的标识符[designator].
+        from-end---一个广义 boolean [generalized boolean]. 默认是 false.
+        test---返回一个广义 boolean [generalized boolean]的两个参数[argument]的函数[function]的标识符[designator].
+        test-not---返回一个广义 boolean [generalized boolean]的两个参数[argument]的函数[function]的标识符[designator].
+        start, end---序列 sequence 的边界索引标识符[bounding index designator]. 对于 start 和 end 默认分别为 0 和 nil.
+        key---一个单参数函数[function]的标识符[designator], 或者 nil.
+        element---序列 sequence 的一个元素[element], 或者 nil.
 
 * 描述(Description):
 
-        find, find-if, 和 find-if-not 每一个都搜索序列 sequence 中由 start 和 end 限定, 满足断言 predicate 或满足测试条件 test 或 test-not, 视情况而定.
+        find, find-if, 和 find-if-not 每一个都搜索序列 sequence 中由 start 和 end 限定[bounded], 满足断言[satisfy the predicate] predicate 或满足测试条件[satisfy the test] test 或 test-not 的一个元素[element], 视情况而定.
 
-        如果 from-end 是 true, 那么结果是满足这个测试条件 test 的最右边的元素.
+        如果 from-end 是 true, 那么结果是满足测试条件[satisfy the test] test 的最右边的元素.
 
-        如果这个序列 sequence 包含了一个满足这个测试条件 test 的元素, 那么就会返回最左边或最右边的序列元素, 取决于 from-end; 否则返回 nil.
+        如果这个序列 sequence 包含了一个满足这个测试条件[satisfy the test] test 的元素[element], 那么就会返回最左边或最右边的序列元素, 取决于 from-end; 否则返回 nil.
 
 * 示例(Examples):
 
@@ -897,17 +897,17 @@
 
 * 异常情况(Exceptional Situations):
 
-        如果序列 sequence 不是一个 proper 序列, 那么应该准备去发出一个 type-error 类型的错误.
+        如果序列 sequence 不是一个正规序列[proper sequence], 那么应该准备去发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
-        position, 章节 17.2 (Rules about Test Functions), 章节 3.6 (Traversal Rules and Side Effects)
+        position, 章节 17.2 (关于测试函数的规则), 章节 3.6 (遍历规则和副作用)
 
 * 注意(Notes):
 
-        这个 :test-not 参数已经被废弃.
+        这个 :test-not 参数[argument]已经被废弃.
 
-        这个 find-if-not 函数已经被废弃. 
+        这个 find-if-not 函数[function]已经被废弃. 
 
 
 ### <span id="F-POSITION-ALL">函数 POSITION, POSITION-IF, POSITION-IF-NOT</span>
@@ -922,21 +922,21 @@
 
 * 参数和值(Arguments and Values):
 
-        item---一个对象.
-        sequence---一个 proper 序列.
-        predicate---一个返回广义 boolean 的单参数函数的标识符.
-        from-end---一个广义 boolean. 默认是 false.
-        test---一个返回广义 boolean 的两个参数函数的标识符.
-        test-not---一个返回广义 boolean 的两个参数函数的标识符.
-        start, end---序列 sequence 的边界索引标识符. 对于 start 和 end 默认分别是 0 和 nil.
-        key---一个单参数函数的标识符, 或者 nil.
-        position---序列 sequence 的一个边界索引, 或者 nil.
+        item---一个对象[object].
+        sequence---一个正规序列[proper sequence].
+        predicate---一个返回广义 boolean [generalized boolean]的单参数函数[function]的标识符[designator].
+        from-end---一个广义 boolean [generalized boolean]. 默认是 false.
+        test---一个返回广义 boolean [generalized boolean]的两个参数[argument]函数[function]的标识符[designator].
+        test-not---一个返回广义 boolean [generalized boolean]的两个参数[argument]函数[function]的标识符[designator].
+        start, end---序列 sequence 的边界索引标识符[bounding index designator]. 对于 start 和 end 默认分别是 0 和 nil.
+        key---一个单参数函数[function]的标识符[designator], 或者 nil.
+        position---序列 sequence 的一个边界索引[bounding index], 或者 nil.
 
 * 描述(Description):
 
-        position, position-if, 和 position-if-not 每一个都搜索序列 sequence 来查找一个满足测试条件 test 的元素.
+        position, position-if, 和 position-if-not 每一个都搜索序列 sequence 来查找一个满足测试条件[satisfies the test]的元素[element].
 
-        返回的 position 是在序列 sequence 中满足测试条件 test 的最左边 (如果 from-end 是 true) 或者最右边 (如果 from-end 是 false) 的元素. 返回的索引是相对于整个序列 sequence 的左端, 不管那个 start, end, 或是 from-end 的值.
+        返回的 position 是在序列 sequence 中满足测试条件[satisfies the test]的最左边 (如果 from-end 是 true) 或者最右边 (如果 from-end 是 false) 的元素[element]. 返回的索引是相对于整个序列 sequence 的左端, 不管那个 start, end, 或是 from-end 的值.
 
 * 示例(Examples):
 
@@ -953,17 +953,17 @@
 
 * 异常情况(Exceptional Situations):
 
-        如果序列 sequence 不是一个 proper 序列, 那么应该准备去发出一个 type-error 类型的错误.
+        如果序列 sequence 不是一个正规序列[proper sequence], 那么应该准备发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
-        find, 章节 3.6 (Traversal Rules and Side Effects)
+        find, 章节 3.6 (遍历规则和副作用)
 
 * 注意(Notes):
 
-        这个 :test-not 参数已经被废弃.
+        这个 :test-not 参数[argument]已经被废弃.
 
-        函数 position-if-not 已经被废弃. 
+        函数[function] position-if-not 已经被废弃. 
 
 
 ### <span id="F-SEARCH">函数 SEARCH</span>
@@ -975,21 +975,21 @@
 
 * 参数和值(Arguments and Values):
 
-        Sequence-1---一个序列.
-        Sequence-2---一个序列.
-        from-end---一个广义 boolean. 默认是 false.
-        test---一个返回广义 boolean 的两个参数函数的标识符.
-        test-not---一个返回广义 boolean 的两个参数函数的标识符.
-        key---一个单参数函数的标识符, 或 nil.
-        start1, end1---序列 sequence-1 的边界索引标识符. 对于 start1 和 end1 默认分别是 0 和 nil.
-        start2, end2---序列 sequence-2 的边界索引标识符. 对于 start2 和 end2 默认分别是 0 和 nil.
-        position---序列 sequence-2 的边界索引, 或 nil.
+        Sequence-1---一个序列[sequence].
+        Sequence-2---一个序列[sequence].
+        from-end---一个广义 boolean [generalized boolean]. 默认是 false.
+        test---一个返回广义 boolean [generalized boolean]的两个参数[argument]函数[function]的标识符[designator].
+        test-not---一个返回广义 boolean [generalized boolean]的两个参数[argument]函数[function]的标识符[designator].
+        key---一个单参数函数[functin]的标识符[designator], 或 nil.
+        start1, end1---序列 sequence-1 的边界索引标识符[bounding index designator]. 对于 start1 和 end1 默认分别是 0 和 nil.
+        start2, end2---序列 sequence-2 的边界索引标识符[bounding index designator]. 对于 start2 和 end2 默认分别是 0 和 nil.
+        position---序列 sequence-2 的边界索引[bounding index], 或 nil.
 
 * 描述(Description):
 
         搜索序列 sequence-2 来查找一个匹配序列 sequence-1 的子序列.
-
-        具体实现可以选择以任何顺序搜索序列 sequence-2; there is no guarantee on the number of times the test is made. 比如, 当 start-end 是 true, 这个序列 sequence 事实上可能从左到右被搜索而不是从右到左 (但是不管在那种情况下都会返回最右边的匹配子序列). 如果这个搜索成功了, search 返回那个最左边或最右边的匹配子序列的第一个元素在序列 sequence-2 中的偏移位, 取决于 from-end; 否则 search 返回 nil.
+<!-- 这里的第一个 from-end 原文是 start-end -->
+        具体实现可以选择以任何顺序搜索序列 sequence-2; 这里不保证这个测试被执行的数量. 比如, 当 from-end 是 true, 这个序列 sequence 事实上可能从左到右被搜索而不是从右到左 (但是不管在那种情况下都会返回最右边的匹配子序列). 如果这个搜索成功了, search 返回那个最左边或最右边匹配子序列的第一个元素在序列 sequence-2 中的偏移位, 取决于 from-end; 否则 search 返回 nil.
 
         如果 from-end 是 true, 那么那个最右边的匹配子序列的最左边的元素的索引会被返回.
 
@@ -1008,11 +1008,11 @@
 
 * 也见(See Also):
 
-        章节 3.6 (Traversal Rules and Side Effects)
+        章节 3.6 (遍历规则和副作用)
 
 * 注意(Notes):
 
-        这个 :test-not 参数已经被废弃. 
+        这个 :test-not 参数[argument]已经被废弃. 
 
 
 ### <span id="F-MISMATCH">函数 MISMATCH</span>
@@ -1024,15 +1024,15 @@
 
 * 参数和值(Arguments and Values):
 
-        Sequence-1---一个序列.
-        Sequence-2---一个序列.
-        from-end---一个广义 boolean. 默认是 false.
-        test---一个返回广义 boolean 的两个参数函数的标识符.
-        test-not---一个返回广义 boolean 的两个参数函数的标识符.
-        start1, end1---序列 sequence-1 的边界索引标识符. 对于 start1 和 end1 默认分别是 0 和 nil.
-        start2, end2---序列 sequence-2 的边界索引标识符. 对于 start2 和 end2 默认分别是 0 和 nil.
-        key---一个单参数函数的标识符, 或者 nil.
-        position---序列 sequence-1 的边界索引, 或者 nil.
+        Sequence-1---一个序列[sequence].
+        Sequence-2---一个序列[sequence].
+        from-end---一个广义 boolean [generalized boolean]. 默认是 false.
+        test---一个返回广义 boolean [generalized boolean]的两个参数[argument]函数[function]的标识符[designator].
+        test-not---一个返回广义 boolean [generalized boolean]的两个参数[argument]函数[function]的标识符[designator].
+        start1, end1---序列 sequence-1 的边界索引标识符[bounding index designator]. 对于 start1 和 end1 默认分别是 0 和 nil.
+        start2, end2---序列 sequence-2 的边界索引标识符[bounding index designator]. 对于 start2 和 end2 默认分别是 0 和 nil.
+        key---一个单参数函数[function]的标识符[designator], 或者 nil.
+        position---序列 sequence-1 的边界索引[bounding index], 或者 nil.
 
 * 描述(Description):
 
@@ -1040,9 +1040,9 @@
 
         这个 key 参数同时被用于序列 sequence-1 和序列 sequence-2.
 
-        如果序列 sequence-1 和序列 sequence-2 是相同长度并且每个元素都匹配, 那么结果就是 false. 否则, 结果是一个非负整数, 表示那个两个子序列不匹配的位置在序列 sequence-1 中最左边或最右边索引, 取决于 from-end. 如果一个子序列短于另一个或者是另一个的匹配前缀, 那么结果就是和序列 sequence-1 相关的超出最后一个测试的位置的索引.
+        如果序列 sequence-1 和序列 sequence-2 是相同长度并且每个元素都匹配, 那么结果就是 false. 否则, 结果是一个非负整数[integer], 表示那两个子序列不匹配的位置在序列 sequence-1 中最左边或最右边索引, 取决于 from-end. 如果一个子序列短于另一个或者是另一个的匹配前缀, 那么结果就是相对于最后一个测试位置之后序列 sequence-1 的索引. <!--TODO 待校对-->
 
-        如果 from-end 是 true, 那么返回一加上这些序列 sequences 不同的最右边位置的索引. 实际上, 这些子序列在它们的右边对齐; 那么, 最后一个元素会被比较, 然后是倒数第二个元素, 以此类推. 返回的那个索引是和序列 sequence-1 相关的索引.
+        如果 from-end 是 true, 那么返回一加上这些序列 sequences 不同的最右边位置的索引. 实际上, 这些子序列在它们的右边对齐; 于是, 最后一个元素会被比较, 然后是倒数第二个元素, 以此类推. 返回的那个索引是相对于序列 sequence-1 的索引.
 
 * 示例(Examples):
 
@@ -1061,11 +1061,11 @@
 
 * 也见(See Also):
 
-        章节 3.6 (Traversal Rules and Side Effects)
+        章节 3.6 (遍历规则和副作用)
 
 * 注意(Notes):
 
-        这个 :test-not 参数已经被废弃. 
+        这个 :test-not 参数[argument]已经被废弃. 
 
 
 ### <span id="F-REPLACE">函数 REPLACE</span>
@@ -1076,20 +1076,20 @@
 
 * 参数和值(Arguments and Values):
 
-        sequence-1---一个序列.
-        sequence-2---一个序列.
-        start1, end1---序列 sequence-1 的边界索引标识符. 对于 start1 和 end1 默认分别是 0 和 nil.
-        start2, end2---序列 sequence-2 的边界索引标识符. 对于 start2 和 end2 默认分别是 0 和 nil.
+        sequence-1---一个序列[sequence].
+        sequence-2---一个序列[sequence].
+        start1, end1---序列 sequence-1 的边界索引标识符[bounding index designator]. 对于 start1 和 end1 默认分别是 0 和 nil.
+        start2, end2---序列 sequence-2 的边界索引标识符[bounding index designator]. 对于 start2 和 end2 默认分别是 0 和 nil.
 
 * 描述(Description):
 
-        通过用由 start2 和 end2 限定的子序列 subsequence-2 的元素来替换子序列 subsequence-1 中由 start1 和 end1 限定的元素来破坏性地修改序列 sequence-1.
+        通过用由 start2 和 end2 限定[bounded]的子序列 subsequence-2 的元素[element]来替换子序列 subsequence-1 中由 start1 和 end1 限定[bounded]的元素[element]来破坏性地修改序列 sequence-1.
 
-        通过从序列 sequence-2 拷贝连续的元素到序列 sequence-1, 序列 sequence-1 被破坏性地修改. 序列 sequence-2 中由 start2 和 end2 限定的子序列的元素会被拷贝到序列 sequence-1 中由 start1 和 end1 限定的子序列中. 如果这些序列不是相同长度, 那么较短的长度决定了要拷贝多少个元素; 在较长的子序列末尾处的额外元素不会被涉及到这个操作. 被拷贝的数量可以表达为:
+        通过从序列 sequence-2 拷贝连续的元素[element]到序列 sequence-1, 序列 sequence-1 被破坏性地修改. 序列 sequence-2 中由 start2 和 end2 限定[bounded]的子序列的元素[element]会被拷贝到序列 sequence-1 中由 start1 和 end1 限定的子序列中. 如果这些序列不是相同长度, 那么较短的长度决定了要拷贝多少个元素[element]; 在较长的子序列末尾处的额外元素[element]不会被涉及到这个操作. 被拷贝的数量可以表达为:
 
         (min (- end1 start1) (- end2 start2))
 
-        如果序列 sequence-1 和序列 sequence-2 是相同的对象并且被修改的区域与被复制的区域重叠, 那么就好像整个源区域被拷贝到另一个位置然后再拷贝回目标区域. 然而, 如果 sequence-1 和 sequence-2 是不同的, 但是被修改的区域与被复制的区域重叠 (或许是由于共享列表结构或者转移数组), 那么在这个替换操作后, 要被修改的序列 sequence-1 的子序列会有不可预测的内容. 如果序列 sequence-2 的元素不是一个可以被存储到序列 sequence-1 中的类型, 那么就是一个错误.
+        如果序列 sequence-1 和序列 sequence-2 是相同的[same]对象[object]并且被修改的区域与被复制的区域重叠, 那么就好像整个源区域被拷贝到另一个位置然后再拷贝回目标区域. 然而, 如果 sequence-1 和 sequence-2 是不同的, 但是被修改的区域与被复制的区域重叠 (或许是由于共享列表结构或者存储被转移数组[array]), 那么在这个 replace 操作后, 要被修改的序列 sequence-1 的子序列会有不可预测的内容. 如果序列 sequence-2 的元素不是一个可以被存储到序列 sequence-1 中的类型[type], 那么就是一个错误.
 
 * 示例(Examples):
 
@@ -1140,37 +1140,37 @@
 
 * 参数和值(Arguments and Values):
 
-        newitem---一个对象.
-        olditem---一个对象.
-        sequence---一个 proper 序列.
-        predicate---一个返回广义 boolean 的单参数函数的标识符.
-        from-end---一个广义 boolean. 默认是 false.
-        test---一个返回广义 boolean 的两个参数函数的标识符.
-        test-not---一个返回广义 boolean 的两个参数函数的标识符.
-        start, end---序列 sequence 的边界索引标识符. 对于 start 和 end 默认分别为 0 和 nil.
-        count---一个整数或 nil. 默认是 nil.
-        key---一个单参数函数的标识符, 或者 nil.
-        result-sequence---一个序列.
+        newitem---一个对象[object].
+        olditem---一个对象[object].
+        sequence---一个正规序列[proper sequence].
+        predicate---返回广义 boolean [generalized boolean]的单参数[argumet]函数[function]的标识符[designator].
+        from-end---一个广义 boolean [generalized boolean]. 默认是 false.
+        test---返回广义 boolean [generalized boolean]的两个参数[argument]函数[function]的标识符[designator].
+        test-not---返回广义 boolean [generalized boolean]的两个参数[argument]函数[function]的标识符[designator].
+        start, end---序列 sequence 的边界索引标识符[bounding index designator]. 对于 start 和 end 默认分别为 0 和 nil.
+        count---一个整数[integer]或 nil. 默认是 nil.
+        key---一个单参数函数[function]的标识符[designator], 或者 nil.
+        result-sequence---一个序列[sequence].
 
 * 描述(Description):
 
-        substitute, substitute-if, 和 substitute-if-not 返回序列 sequence 的一个拷贝, 其中每个满足测试条件 test 的元素都被替换为 newitem.
+        substitute, substitute-if, 和 substitute-if-not 返回序列 sequence 的一个拷贝, 其中每个满足测试条件[satisfy the test]的元素[element]都被替换为 newitem.
 
         nsubstitute, nsubstitute-if, 和 nsubstitute-if-not 分别类似于 substitute, substitute-if, 和 substitute-if-not, 除了它们可能修改序列 sequence.
 
-        如果序列 sequence 是一个向量, 那么结果是一个和 sequence 有着相同实际数组元素类型的向量. 如果序列 sequence 是一个列表, 那么结果也是有一个列表.
+        如果序列 sequence 是一个向量[vector], 那么结果是一个和 sequence 有着相同实际数组元素类型[actual array element type]的向量[vector]. 如果序列 sequence 是一个列表[list], 那么结果也是有一个列表[list].
 
-        如果提供了 count, 限制要被修改的元素的数量; 如果超过 count 个元素满足测试条件 test, 那么那些元素中只有最左边或最右边的和 count 指定的一样多的元素会被替换, 取决于 from-end. 如果提供了 count 并且是负的, 那么这个行为就好像提供了零一样. 如果 count 是 nil, 所有匹配的项都会被影响.
+        如果提供了 count, 限制要被修改的元素的数量; 如果满足测试条件[satisfy the test]的元素[element]超过 count 个, 那么那些元素中只有最左边或最右边的和 count 指定的一样多的元素[element]会被替换, 取决于 from-end. 如果提供了 count 并且是负的, 那么这个行为就好像提供了零一样. 如果 count 是 nil, 所有匹配的项都会被影响.
 
-        只有在那个 count 被提供时 (and non-nil), 提供一个 true 的 from-end 是有关系的; 在这个情况中, 只有最右边 count 个满足测试条件 test 的元素会被移除 (而不是最左边).
+        只有在那个 count 被提供时 (并且非 nil [non-nil]), 提供一个 true 的 from-end 是有关系的; 在这个情况中, 只有最右边 count 个满足测试条件[satisfy the test]的元素[element]会被移除 (而不是最左边).
 
-        predicate, test, 和 test-not 对于每个序列元素可以被调用不止一次, 而它们的副作用可能以任意顺序发生.
+        predicate, test, 和 test-not 对于每个序列[sequence]元素[element]可以被调用不止一次, 而它们的副作用可能以任意顺序发生.
 
-        所有这些函数的结果是一个和 sequence 有着相同类型的序列, 它们有着相同的元素除了那些由 start 和 end 限定并且满足这个测试条件 test 的被替换为 newitem.
+        所有这些函数的结果是一个和 sequence 有着相同类型[type]的序列[sequence], 它们有着相同的元素除了那些由 start 和 end 限定[bounded]并且满足测试条件[satisfy the test]的被替换为 newitem.
 
-        substitute, substitute-if, 和 substitute-if-not 返回一个可能和序列 sequence 共享结构或者如果没有元素需要被改变那么就是和输入序列 sequence 相同的序列.
+        substitute, substitute-if, 和 substitute-if-not 返回一个可能和序列 sequence 共享结构或者如果没有元素需要被改变那么就是和输入序列 sequence 相同[identical]的序列.
 
-        nsubstitute 和 nsubstitute-if 需要去 setf 任何需要被替换为 newitem 的序列 sequence 的任何 car (如果序列 sequence 是一个列表) 或 aref (如果 sequence 是一个向量). 如果序列 sequence 是一个列表, 这些顶层列表的 cdr 都不会被修改.
+        nsubstitute 和 nsubstitute-if 需要去 setf 任何序列 sequence 中需要被替换为 newitem 的 car (如果序列 sequence 是一个列表[list]) 或 aref (如果 sequence 是一个向量[vector]). 如果序列 sequence 是一个列表[list], 这些顶层列表[list]的 cdr 都不会被修改.
 
 * 示例(Examples):
 
@@ -1205,30 +1205,32 @@
 
 * 异常情况(Exceptional Situations):
 
-        如果序列 sequence 不是一个 proper 序列, 那么应该准备去发出一个 type-error 类型的错误.
+        如果序列 sequence 不是一个正规序列[proper sequence], 那么应该准备去发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
-        subst, nsubst, 章节 3.2.1 (编译器术语), 章节 3.6 (Traversal Rules and Side Effects)
+        subst, nsubst, 章节 3.2.1 (编译器术语), 章节 3.6 (遍历规则和副作用)
 
 * 注意(Notes):
 
-        如果序列 sequence 是一个向量, 那么结果可能或可能不是简单的, 并且可能或可能不会和序列 sequence 相同.
+        如果序列 sequence 是一个向量[vector], 那么结果可能或可能不是简单的, 并且可能或可能不会和序列 sequence 相同[identical].
 
-        这个 :test-not 参数已经被废弃.
+        这个 :test-not 参数[argument]已经被废弃.
 
         函数 substitute-if-not 和 nsubstitute-if-not 已经被废弃.
 
-        nsubstitute 和 nsubstitute-if 可以被用于代码中只为了副作用的位置.
+        nsubstitute 和 nsubstitute-if 可以被用于只为了副作用(for-effect-only)的代码中.
 
-        因为副作用变体(比如, nsubstitute)可能会改变被遍历的路径, 它们出现在共享或循环结构的副作用在和它们的无副作用替代比较时可能以令人惊讶的方式表现地不同. 为了观察到这个, 细想以下副作用行为, 它可能被某些实现展现出来:
+        因为副作用变体(比如, nsubstitute)可能会改变被遍历的路径, 它们出现在共享或循环结构的副作用在和它们的无副作用替代比较时可能表现出令人惊讶的不同. 为了观察到这个, 细想以下副作用行为, 它可能被某些实现展现出来:
 
-        (defun test-it (fn)
-          (let ((x (cons 'b nil)))
-            (rplacd x x)
-            (funcall fn 'a 'b x :count 1)))
-        (test-it #'substitute) =>  (A . #1=(B . #1#))
-        (test-it #'nsubstitute) =>  (A . #1#)
+    ```LISP
+    (defun test-it (fn)
+      (let ((x (cons 'b nil)))
+        (rplacd x x)
+        (funcall fn 'a 'b x :count 1)))
+    (test-it #'substitute) =>  (A . #1=(B . #1#))
+    (test-it #'nsubstitute) =>  (A . #1#)
+    ```
 
 
 ### <span id="F-CONCATENATE">函数 CONCATENATE</span>
@@ -1239,19 +1241,19 @@
 
 * 参数和值(Arguments and Values):
 
-        result-type---一个 sequence 类型指定符.
-        sequences---一个序列.
-        result-sequence---一个 result-type 类型的 proper 序列.
+        result-type---一个 sequence 类型指定符[type specifier].
+        sequences---一个序列[sequence].
+        result-sequence---一个 result-type 类型[type]的正规序列[proper sequence].
 
 * 描述(Description):
 
-        concatenate 返回一个包含了所有这些序列 sequences 的单独元素的序列, 以它们被提供的顺序. 这个序列是 result-type 类型的, 这个类型必须是类型 sequence 的一个子类型.
+        concatenate 返回一个包含了所有这些序列 sequences 的单独元素的序列[sequence], 以它们被提供的顺序. 这个序列[sequence]是 result-type 类型[type]的, 这个类型[type]必须是类型 sequence 的一个子类型[subtype].
 
         所有这些序列 sequences 都会被拷贝; 这个结果不会和这些序列 sequences 的任何一个共享结构. 因此, 如果只提供了一个序列 sequence 并且它是 result-type 类型的, concatenate 需要去拷贝这个序列 sequence 而不是简单地返回它.
 
-        如果这些元素 sequences 的任何一个元素不能是这些结果序列的一个元素, 那么就是一个错误. 如果这个 result-type 是 list 的一个子类型, 结果会是一个列表.
+        如果这些元素 sequences 的任何一个元素不能是这些结果序列[sequence]的一个元素, 那么就是一个错误. 如果这个 result-type 是 list 的一个子类型[subtype], 结果会是一个列表[list].
 
-        如果 result-type 是 vector 的一个子类型, 那么如果实现可以确定 result-type 指定的元素类型, 那么产生的数组的元素类型就是那个元素类型的提升的结果; 或者, 如果实现可以确定那个元素类型是未指定的 (或 *), 产生的元素类型就是 t; 否则, 发出一个错误.
+        如果 result-type 是 vector 的一个子类型[subtype], 那么如果实现可以确定 result-type 指定的元素类型, 那么产生的数组的元素类型就是那个元素类型提升[upgrade]的结果; 或者, 如果实现可以确定那个元素类型是未指定的 (或 *), 产生的元素类型就是 t; 否则, 发出一个错误.
 
 * 示例(Examples):
 
@@ -1268,9 +1270,9 @@
 
 * 异常情况(Exceptional Situations):
 
-        如果 result-type 既不是 list 的一个可识别子类型, 也不是 vector 的一个可识别子类型, 那么就会发出一个错误.
+        如果 result-type 既不是 list 的一个可识别子类型[recognizable subtype], 也不是 vector 的一个可识别子类型[recognizable subtype], 那么就会发出一个错误.
 
-        如果 result-type 指定的元素的数量和这些序列 sequences 的总数在数量上不同, 那么就会发出一个 type-error 类型的错误.
+        如果 result-type 指定的元素的数量和这些序列 sequences 的总数在数量上不同, 那么就会发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
@@ -1287,32 +1289,32 @@
 
 * 参数和值(Arguments and Values):
 
-        result-type---一个 sequence 类型指定符.
-        sequence-1---一个序列.
-        sequence-2---一个序列.
-        predicate---一个返回广义 boolean 的两个参数函数的标识符.
-        key---一个单参数函数的标识符, 或者 nil.
-        result-sequence---一个 result-type 类型的 proper 序列.
+        result-type---一个 sequence 类型指定符[type specifier].
+        sequence-1---一个序列[sequence].
+        sequence-2---一个序列[sequence].
+        predicate---返回广义 boolean [generalized boolean]的两个参数函数[function]的标识符[designator].
+        key---一个单参数函数[function]的标识符[designator], 或者 nil.
+        result-sequence---一个 result-type 类型[type]的正规序列[proper sequence].
 
 * 描述(Description):
 
-        根据断言 predicate 决定的顺序破坏性地合并 sequence-1 和 sequence-2. merge 通过给定从这些序列元素中的键到这个断言 predicate 来决定两个元素之间的关系.
+        根据断言 predicate 决定的顺序破坏性地合并 sequence-1 和 sequence-2. merge 通过把从这些序列元素中提取到的键给定到断言 predicate 来决定两个元素之间的关系.
 
-        给这个 predicate 函数的第一个参数是由 key 返回的序列 sequence-1 的一个元素 (如果提供的话); 第二个元素是由 key 返回的序列 sequence-2 的元素 (如果提供的话). 当且仅当这个断言 predicate 的第一个参数严格小于第二个参数时(在一些适当的意义上), 它应该返回 true. 如果第一个参数大于或等于第二个参数 (在一些适当的意义上), 那么断言 predicate 应该返回 false. 如果 (funcall predicate x y) 和 (funcall predicate y x) 都产生 false, 那么 merge 把这两个元素 x 和 y 认为是相等的.
+        给这个 predicate 函数的第一个参数是由 key 返回的序列 sequence-1 的一个元素 (如果提供的话); 第二个元素是由 key 返回的序列 sequence-2 的元素 (如果提供的话). 当且仅当这个断言 predicate 的第一个参数严格小于第二个参数时(在一些适当的意义上), 它应该返回 true. 如果第一个参数大于或等于第二个参数 (在一些适当的意义上), 那么断言 predicate 应该返回 false. 如果 (funcall predicate x y) 和 (funcall predicate y x) 都产生[yield] false, 那么 merge 把这两个元素 x 和 y 认为是相等的.
 
-        给 key 的参数是这个序列 sequence 元素. 通常地, 这个 key 的返回值成为给断言 predicate 的参数. 如果没有提供 key 或者是 nil, 那么就使用这个序列元素自身. 这个 key 对于每个序列元素可能被执行不止一次, 那么它的副作用可能以任意顺序发生.
+        给 key 的参数是这个序列 sequence 元素. 通常地, 这个 key 的返回值成为给断言 predicate 的参数. 如果没有提供 key 或者是 nil, 那么就使用这个序列元素自身. 这个 key 对于每个序列[sequence]元素[element]可能被执行不止一次, 那么它的副作用可能以任意顺序发生.
 
-        如果 key 和 predicate 返回了, 那么这个合并操作就会终止. 合并两个序列 x 和 y 的结果是一个类型 result-type 的新序列 z, 这样一来 z 的长度是 x 和 y 的总和, 并且 z 包含了 x 和 y 的所有元素. 如果 x1 和 x2 是 x 的两个元素, 并且在 x 中 x1 在 x2 前面, 那么在 z 中 x1 也在 x2 前面, 而对于 y 的元素也类型. 总之, z 是 x 和 y 的交错.
+        如果 key 和 predicate 返回了, 那么这个合并操作就会终止. 合并两个序列[sequence] x 和 y 的结果是一个类型 result-type 的新序列[sequence] z, 这样一来 z 的长度是 x 和 y 的总和, 并且 z 包含了 x 和 y 的所有元素. 如果 x1 和 x2 是 x 的两个元素, 并且在 x 中 x1 在 x2 前面, 那么在 z 中 x1 也在 x2 前面, 而对于 y 的元素也类型. 总之, z 是 x 和 y 的交错.
 
         如果 x 和 y 根据断言 predicate 被正确地排序, 那么 z 也会被正确排序. 如果 x 或 y 没有被这样排序, 那么 z 不会被排序, 但它仍然是 x 和 y 的交错.
 
-        这个合并操作保证稳定的; 如果根据这个断言 predicate, 两个或更多元素被认为是相等的, 那么在结果中来自于序列 sequence-1 的元素会在来自于序列 sequence-2 的元素之前.
+        这个合并操作保证稳定的; 如果根据这个断言 predicate, 两个或更多元素被断言 predicate 认为是相等的, 那么在结果中来自于序列 sequence-1 的元素会在序列 sequence-2 的元素之前.
 
         sequence-1 和/或 sequence-2 可能会被破坏.
 
-        如果这个 result-type 是 list 的一个子类型, 结果可能是一个列表.
+        如果这个 result-type 是 list 的一个子类型[subtype], 结果可能是一个列表[list].
 
-        如果 result-type 是 vector 的一个子类型, 那么如果实现可以确定 result-type 指定的元素类型, 那么产生的数组的元素类型就是那个元素类型的提升的结果; 或者, 如果实现可以确定那个元素类型是未指定的 (或 *), 产生的元素类型就是 t; 否则, 发出一个错误.
+        如果 result-type 是 vector 的一个子类型[subtype], 那么如果实现可以确定 result-type 指定的元素类型, 那么产生的数组的元素类型就是那个元素类型提升[upgrade]的结果; 或者, 如果实现可以确定那个元素类型是未指定的 (或 *), 产生的元素类型就是 t; 否则, 发出一个错误.
 
 * 示例(Examples):
 
@@ -1335,13 +1337,13 @@
 
 * 异常情况(Exceptional Situations):
 
-        如果 result-type 既不是 list 的一个可识别子类型, 也不是 vector 的一个可识别子类型, 那么就会发出一个错误.
+        如果 result-type 既不是 list 的一个可识别子类型[recognizable subtype], 也不是 vector 的一个可识别子类型[recognizable subtype], 那么就会发出一个错误.
 
-        如果 result-type 指定的元素的数量和这些序列 sequence-1 和 sequence-2 的长度在数量上不同, 那么就会发出一个 type-error 类型的错误.
+        如果 result-type 指定的元素的数量和这些序列 sequence-1 和 sequence-2 的长度在数量上不同, 那么就会发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
-        sort, stable-sort, 章节 3.2.1 (编译器术语), 章节 3.6 (Traversal Rules and Side Effects)
+        sort, stable-sort, 章节 3.2.1 (编译器术语), 章节 3.6 (遍历规则和副作用)
 
 * 注意(Notes): None. 
 
@@ -1364,36 +1366,36 @@
 
 * 参数和值(Arguments and Values):
 
-        item---一个对象.
-        sequence---一个 proper 序列.
-        test---一个返回广义 boolean 的单参数函数的标识符.
-        from-end---一个广义 boolean. 默认是 false.
-        test---一个返回广义 boolean 的两个参数函数的标识符.
-        test-not---一个返回广义 boolean 的两个参数函数的标识符.
-        start, end---序列 sequence 的边界索引标识符. 对于 start 和 end 默认分别为 0 和 nil.
-        count---一个整数 nil. 默认是 nil.
-        key---一个单参数函数的标识符, 或者 nil.
-        result-sequence---一个序列.
+        item---一个对象[object].
+        sequence---一个正规序列[proper sequence].
+        test---返回广义 boolean [generalized boolean]的单参数[argument]函数[function]的标识符[designator].
+        from-end---一个广义 boolean [generalized boolean]. 默认是 false.
+        test---一个返回广义 boolean [generalized boolean]的两参数[argument]函数[function]的标识符[designator].
+        test-not---返回广义 boolean [generalized boolean]的两参数[function]函数[function]的标识符[designator].
+        start, end---序列 sequence 的边界索引标识符[bounding index designator]. 对于 start 和 end 默认分别为 0 和 nil.
+        count---一个整数[integer]或 nil. 默认是 nil.
+        key---一个单参数[argument]函数[function]的标识符[designator], 或者 nil.
+        result-sequence---一个序列[sequence].
 
 * 描述(Description):
 
-        remove, remove-if, 和 remove-if-not 返回一个序列, 这个序列中满足测试条件 test 的元素已经被移出.
+        remove, remove-if, 和 remove-if-not 返回一个序列, 这个序列中满足测试条件[satisfy the test]的元素[element]已经被移出.
 
         delete, delete-if, 和 delete-if-not 分别类似于 remove, remove-if, 和 remove-if-not, 但是它们修改序列 sequence.
 
-        如果序列 sequence 是一个 vector, 那么结果是一个和 sequence 有着相同实际数组元素类型的向量. 如果序列 sequence 是一个列表, 那么结果也是有一个列表.
+        如果序列 sequence 是一个向量[vector], 那么结果是一个和 sequence 有着相同实际数组元素类型[actual array element type]的向量[vector]. 如果序列 sequence 是一个列表[list], 那么结果也是有一个列表[list].
 
-        提供一个为 true 的 from-end 只有在这个 count 被提供时起作用; 在这个情况下只有最右边满足测试条件 test 的 count 的元素会被删除.
+        提供一个为 true 的 from-end 只有在这个 count 被提供时起作用; 在这个情况下只有最右边满足测试条件[satisfy the test]的 count 个元素会被删除.
 
-        count, 如果提供的话, 限制要被移除或删除的元素的数量; 如果超过 count 个元素满足这个测试条件 test, 那么这些元素只有最右边或最左边由 count 指定的数量会被删除, 取决于 from-end. 如果 count 被提供并且是负的, 那么这个行为就跟提供了零一样. 如果 count 是 nil, 那么所有匹配的项都会被影响.
+        count, 如果提供的话, 限制要被移除或删除的元素的数量; 如果超过 count 个元素满足测试条件[satisfy the test], 那么这些元素只有最右边或最左边由 count 指定的数量会被删除, 取决于 from-end. 如果 count 被提供并且是负的, 那么这个行为就跟提供了零一样. 如果 count 是 nil, 那么所有匹配的项都会被影响.
 
         对于所有这些函数, 元素在结果中被移除的顺序和它们在序列 sequence 中的一样.
 
-        remove, remove-if, remove-if-not 返回一个和序列 sequence 相同类型的序列, 并且有着相同的元素除了那些在 start 和 end 限定的子序列中哦个满足这个测试条件 test 的会被移除. 这是一个非破坏性的操作. 如果没有元素需要被移除, 那么结果就是一个拷贝. 这个 remove 的结果可能和序列 sequence 共享结构; 如果没有元素需要被移除, 这个结果可能和输入的序列 sequence 是相同的.
+        remove, remove-if, remove-if-not 返回一个和序列 sequence 相同类型[type]的序列[sequence], 并且有着相同的元素[element], 除了那些在 start 和 end 限定[bounded]的子序列中满足测试条件[satisfy the test]的会被移除. 这是一个非破坏性的操作. 如果任何元素需要被移除, 那么结果就是一个拷贝. 这个 remove 的结果可能和序列 sequence 共享结构; 如果没有元素需要被移除, 这个结果可能和输入的序列 sequence 是相同的.
 
-        delete, delete-if, 和 delete-if-not 返回一个和序列 sequence 相同类型的序列, 并且有着相同的元素除了那些在 start 和 end 限定的子序列中哦个满足这个测试条件 test 的会被删除. 序列 sequence 可能被破坏并且被用于构造这个结果; 然而, 这个结果可能也可能不会和序列 sequence 相同.
+        delete, delete-if, 和 delete-if-not 返回一个和序列 sequence 相同类型[type]的序列[sequence], 并且有着相同的元素[element], 除了那些在 start 和 end 限定[bounded]的子序列中满足测试条件[satisfy the test]的会被删除. 序列 sequence 可能被破坏并且被用于构造这个结果; 然而, 这个结果可能和序列 sequence 相同[identical], 也可能不同.
 
-        delete, 当序列 sequence 是一个列表时, 允许去 setf 这个序列 sequence 中的顶层列表结构的任何部分, car 或 cdr. 当序列 sequence 是一个向量时, delete 允许去改变这个向量的规模去滑动它的元素到新的位置, 在没有交换它们的情况下产生这个结果向量.
+        delete, 当序列 sequence 是一个列表[list]时, 允许去 setf 这个序列 sequence 中的顶层列表结构的任何部分, car 或 cdr. 当序列 sequence 是一个向量[vector]时, delete 允许去改变这个向量的维数大小来滑动它的元素到新的位置, 在没有交换它们的情况下产生这个结果向量[vector].
 
         delete-if 被约束为表现得像下面这样:
 
@@ -1449,19 +1451,20 @@
 
 * 异常情况(Exceptional Situations):
 
-        如果序列 sequence 不是一个 proper 序列, 那么应该准备去发出一个 type-error 类型的错误.
+        如果序列 sequence 不是一个正规序列[proper sequence], 那么应该准备去发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
-        章节 3.2.1 (编译器术语), 章节 3.6 (Traversal Rules and Side Effects)
+        章节 3.2.1 (编译器术语), 章节 3.6 (遍历规则和副作用)
 
 * 注意(Notes):
 
-        如果序列 sequence 是一个向量, 那么结果可能也可能不是简单的, 并且可能也可能不会和序列 sequence 相同.
+        如果序列 sequence 是一个向量[vector], 那么结果可能也可能不是简单的, 并且可能也可能不会和序列 sequence 相同[identical].
 
-        这个 :test-not 参数已经被废弃.
+        这个 :test-not 参数[argument]已经被废弃.
 
         函数 delete-if-not 和 remove-if-not 已经被废弃. 
+
 
 ### <span id="F-DUPLICATES-ALL">函数 REMOVE-DUPLICATES, DELETE-DUPLICATES</span>
 
@@ -1475,29 +1478,29 @@
 
 * 参数和值(Arguments and Values):
 
-        sequence---一个 proper 序列.
-        from-end---一个广义 boolean. 默认是 false.
-        test---一个返回广义 boolean 的两个参数函数的标识符.
-        test-not---一个返回广义 boolean 的两个参数函数的标识符.
-        start, end---序列 sequence 的边界索引标识符. 对于 start 和 end 默认分别是 0 和 nil.
-        key---一个单参数函数的标识符, 或者 nil.
-        result-sequence---一个序列.
+        sequence---一个正规序列[proper sequence].
+        from-end---一个广义 boolean [generalized boolean]. 默认是 false.
+        test---返回广义 boolean [generalized boolean]的两参数[argument]函数[function]的标识符[designator].
+        test-not---返回广义 boolean [generalized boolean]的两参数[argument]函数[function]的标识符[designator].
+        start, end---序列 sequence 的边界索引标识符[bounding index designator]. 对于 start 和 end 默认分别是 0 和 nil.
+        key---一个单参数函数[function]的标识符[designator], 或者 nil.
+        result-sequence---一个序列[sequence].
 
 * 描述(Description):
 
-        remove-duplicates 返回序列 sequence 的一个被修改的拷贝, 其中任何匹配出现在序列 sequence 中的另一个元素的元素已经被移除.
+        remove-duplicates 返回序列 sequence 的一个被修改的拷贝, 其中任何匹配出现在序列 sequence 中另一个元素的元素已经被移除.
 
-        如果 sequence 是一个向量, 那么结果是一个和 sequence 有着相同实际数组元素类型的向量. 如果序列 sequence 是一个列表, 那么结果也是有一个列表.
+        如果序列 sequence 是一个向量[vector], 那么结果是一个和 sequence 有着相同实际数组元素类型[actual array element type]的向量[vector]. 如果序列 sequence 是一个列表[list], 那么结果也是有一个列表[list].
 
         delete-duplicates 类似于 remove-duplicates, 但是 delete-duplicates 可能修改序列 sequence.
 
-        序列 sequence 的元素是成对的比较, 如果任意两个匹配, 那么更早出现在序列 sequence 中的那个会被丢弃, 除非 from-end 是 true, 在这个情况下在序列 sequence 中较晚的那个会被丢弃.
+        序列 sequence 的元素是成对的[pairwise]比较, 如果任意两个匹配, 那么更早出现在序列 sequence 中的那个会被丢弃, 除非 from-end 是 true, 在这个情况下在序列 sequence 中较晚的那个会被丢弃.
 
-        remove-duplicates 和 delete-duplicates 返回一个和序列 sequence 相同类型的序列, 其中足够的元素被移除以致于没有两个剩余元素是匹配的. 在这个结果中剩余元素的顺序和它们出现在序列 sequence 中的顺序是一样的.
+        remove-duplicates 和 delete-duplicates 返回一个和序列 sequence 相同类型[type]的序列[sequence], 其中足够的元素被移除以致于没有两个剩余元素是匹配的. 在这个结果中剩余元素的顺序和它们出现在序列 sequence 中的顺序是一样的.
 
-        remove-duplicates 返回一个可能和序列 sequence 共享的序列, 如果没有元素需要被移除, 那么可能返回一个和序列 sequence 相同的序列.
+        remove-duplicates 返回一个可能和序列 sequence 共享的序列[sequence], 如果没有元素需要被移除, 那么可能返回一个和序列 sequence 相同[identical]的序列[sequence].
 
-        delete-duplicates, 当序列 sequence 是一个列表, 允许去 setf 这个序列 sequence 中的顶层列表结构的任何部分, car 或 cdr. 当序列 sequence 是一个向量时, delete 允许去改变这个向量的规模去滑动它的元素到新的位置, 在没有交换它们的情况下产生这个结果向量.
+        delete-duplicates, 当序列 sequence 是一个列表[list], 允许去 setf 这个序列 sequence 中的顶层列表结构的任何部分, car 或 cdr. 当序列 sequence 是一个向量[vector]时, delete 允许去改变这个向量[vector]的维数大小去滑动它的元素到新的位置, 在没有交换它们的情况下产生这个结果向量[vector].
 
 * 示例(Examples):
 
@@ -1521,19 +1524,16 @@
 
 * 异常情况(Exceptional Situations):
 
-        如果序列 sequence 不是一个 proper 序列, 那么应该发出一个 type-error 类型的错误.
+        如果序列 sequence 不是一个正规序列[proper sequence], 那么应该发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
-        章节 3.2.1 (编译器术语), 章节 3.6 (Traversal Rules and Side Effects)
+        章节 3.2.1 (编译器术语), 章节 3.6 (遍历规则和副作用)
 
 * 注意(Notes):
 
-        如果序列 sequence 是一个序列, 那么结果可能也可能不是简单的, 并且可能也可能不会和序列 sequence 相同.
+        如果序列 sequence 是一个序列[vector], 那么结果可能也可能不是简单的, 并且可能和序列 sequence 相同[identical], 也可能不同.
 
-        这个 :test-not 参数已经被废弃.
+        这个 :test-not 参数[argument]已经被废弃.
 
         这些函数对于转换序列 sequence 为适合表示集合的规范形式是非常有用. 
-
-
-
