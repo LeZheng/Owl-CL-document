@@ -1,4 +1,4 @@
-# 18 哈希表
+# 18. 哈希表
 
 > * 18.1 [哈希表的概念](#HashTableConcepts)
 > * 18.2 [哈希表的字典](#TheHashTablesDictionary)

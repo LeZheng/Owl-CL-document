@@ -1,4 +1,4 @@
-# 16 字符串
+# 16. 字符串
 
 > * 16.1 [字符串的概念](#StringConcepts)
 > * 16.2 [字符串的字典](#TheStringsDictionary)
@@ -143,6 +143,7 @@
 * 复合类型指定符描述(Compound Type Specifier Description):
 
         这个等价于类型 (simple-array base-char (size)); 换言之, 大小为 size 的简单[simple]基本字符串[base string]的集合. 
+
 
 ### <span id="F-SIMPLE-STRING-P">函数 SIMPLE-STRING-P</span>
 
