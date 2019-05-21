@@ -42,8 +42,8 @@
 > * 17.2.2 [满足一个单参数的测试](#SatisfyingOneArgumentTest)
 
 ### 17.2.1 <span id="SatisfyingTwoArgumentTest">满足一个两个参数的测试</span>
-<!--TODO consider 考虑 ？？-->
-当通过下面这段列出的操作符[operator] F 在一个序列[sequence] S 的每一个元素[element] Ei 上迭代地考虑对象[object] O 时, 有时控制操作符 F 测试 O 在 S 中的存在性的方式是有用的. 基于一个被 :test 或 :test-not 实参[argument]标识的函数[function]上来提供这个控制.
+
+当通过下面这段列出的操作符[operator] F 在一个序列[sequence] S 的每一个元素[element] Ei 上迭代地考虑对象[object] O 时, 有时去控制操作符 F 测试 O 在 S 中的存在性的方式是有用的. 基于 :test 或 :test-not 实参[argument]所标识的一个函数[function]来提供这个控制.
 
     adjoin           nset-exclusive-or  search            
     assoc            nsublis            set-difference    
@@ -114,7 +114,7 @@
     find-if-not    position-if-not     substitute-if-not  
 
     Figure 17-3. 有单参数的测试需要满足的操作符
-<!--TODO consider 考虑 ？？-->
+
 元素 Ei 可能不会被直接考虑. 如果提供了一个 :key 参数[argument], 那么它就是一个单参数[argument]函数[function]的标识符[designator], 用每一个 Ei 作为一个实参[argument]来调用, 并且产生一个要被用来比较的对象[argument] Zi. (如果没有 :key 参数[argument], Zi 就是 Ei.)
 
 在这个规范中定义的并且有着一个以 "-if" 结尾的名字的函数[function]接受一个单参数[argument] Zi 的函数[function]的标识符[designator]作为第一个参数[argument]. 如果这个 :test 函数[function]返回一个表示  true 的广义 boolean [generalized boolean], 那么就说一个 Ei 满足这个测试条件[satisfy the test].
@@ -267,6 +267,7 @@
 * 注意(Notes):
 
         aref 可能被用于访问[access]超出这个向量[vector]填充指针[fill pointer]的向量[vector]元素[element]. 
+
 
 ### <span id="F-FILL">函数 FILL</span>
 
@@ -778,7 +779,7 @@
 
         如果序列 sequence 是一个向量[vector], 那么结果是一个和 sequence 有着相同实际数组元素类型[actual array element type]的向量[vector]. 如果序列 sequence 是一个列表[list], 那么结果也是有一个列表[list].
 
-        sort 通过将从元素中提取到的键提供给断言 predicate 来确定两个元素之间的关系. 给这个断言 predicate 函数 的第一个参数是通过 key 函数(如果提供的话)提取的序列 sequence 的一个元素的一部分; 第二个参数是通过 key 函数(如果提供的话)提取的序列 sequence 的另一个元素的一部分. 如果第一个参数严格小于第二个参数(在某个适当的意义下), 那么断言 predicate 应该返回 true. 如果第一个参数大于或等于第二个参数(在某个适当的意义下), 那么这个断言 predicate 应该返回 false.
+        sort 通过将从元素中提取到的键提供给断言 predicate 来确定两个元素之间的关系. 给这个断言 predicate 函数的第一个参数是通过 key 函数(如果提供的话)提取的序列 sequence 的一个元素的一部分; 第二个参数是通过 key 函数(如果提供的话)提取的序列 sequence 的另一个元素的一部分. 如果第一个参数严格小于第二个参数(在某个适当的意义下), 那么断言 predicate 应该返回 true. 如果第一个参数大于或等于第二个参数(在某个适当的意义下), 那么这个断言 predicate 应该返回 false.
 
         给这个 key 函数的参数是这个序列 sequence 元素. 这个 key 函数的返回值称为给断言 predicate 的一个参数. 如果 key 没有被提供或者是 nil, 那么使用这个序列 sequence 的元素自身. 这里不保证这个 key 函数会被调用的次数.
 
@@ -1040,7 +1041,7 @@
 
         这个 key 参数同时被用于序列 sequence-1 和序列 sequence-2.
 
-        如果序列 sequence-1 和序列 sequence-2 是相同长度并且每个元素都匹配, 那么结果就是 false. 否则, 结果是一个非负整数[integer], 表示那两个子序列不匹配的位置在序列 sequence-1 中最左边或最右边索引, 取决于 from-end. 如果一个子序列短于另一个或者是另一个的匹配前缀, 那么结果就是相对于最后一个测试位置之后序列 sequence-1 的索引. <!--TODO 待校对-->
+        如果序列 sequence-1 和序列 sequence-2 是相同长度并且每个元素都匹配, 那么结果就是 false. 否则, 结果是一个非负整数[integer], 表示那两个子序列不匹配的位置在序列 sequence-1 中最左边或最右边索引, 取决于 from-end. 如果一个子序列短于另一个或者是另一个的匹配前缀, 那么结果就是相对于序列 sequence-1 的最后一个测试位置之后的索引.
 
         如果 from-end 是 true, 那么返回一加上这些序列 sequences 不同的最右边位置的索引. 实际上, 这些子序列在它们的右边对齐; 于是, 最后一个元素会被比较, 然后是倒数第二个元素, 以此类推. 返回的那个索引是相对于序列 sequence-1 的索引.
 
@@ -1162,13 +1163,13 @@
 
         如果提供了 count, 限制要被修改的元素的数量; 如果满足测试条件[satisfy the test]的元素[element]超过 count 个, 那么那些元素中只有最左边或最右边的和 count 指定的一样多的元素[element]会被替换, 取决于 from-end. 如果提供了 count 并且是负的, 那么这个行为就好像提供了零一样. 如果 count 是 nil, 所有匹配的项都会被影响.
 
-        只有在那个 count 被提供时 (并且非 nil [non-nil]), 提供一个 true 的 from-end 是有关系的; 在这个情况中, 只有最右边 count 个满足测试条件[satisfy the test]的元素[element]会被移除 (而不是最左边).
+        只有提供了 count 时 (并且非 nil [non-nil]), 提供一个为 true 的 from-end 是有关系的; 在这个情况中, 只有最右边 count 个满足测试条件[satisfy the test]的元素[element]会被移除 (而不是最左边).
 
-        predicate, test, 和 test-not 对于每个序列[sequence]元素[element]可以被调用不止一次, 而它们的副作用可能以任意顺序发生.
+        predicate, test, 和 test-not 对于每个序列[sequence]元素[element]可能被调用不止一次, 并且它们的副作用可能以任意顺序发生.
 
         所有这些函数的结果是一个和 sequence 有着相同类型[type]的序列[sequence], 它们有着相同的元素除了那些由 start 和 end 限定[bounded]并且满足测试条件[satisfy the test]的被替换为 newitem.
 
-        substitute, substitute-if, 和 substitute-if-not 返回一个可能和序列 sequence 共享结构或者如果没有元素需要被改变那么就是和输入序列 sequence 相同[identical]的序列.
+        substitute, substitute-if, 和 substitute-if-not 返回的一个序列[sequence]可能和序列 sequence 共享结构, 或者如果没有元素需要被改变那么就是和输入序列 sequence 相同的[identical].
 
         nsubstitute 和 nsubstitute-if 需要去 setf 任何序列 sequence 中需要被替换为 newitem 的 car (如果序列 sequence 是一个列表[list]) 或 aref (如果 sequence 是一个向量[vector]). 如果序列 sequence 是一个列表[list], 这些顶层列表[list]的 cdr 都不会被修改.
 
@@ -1221,7 +1222,7 @@
 
         nsubstitute 和 nsubstitute-if 可以被用于只为了副作用(for-effect-only)的代码中.
 
-        因为副作用变体(比如, nsubstitute)可能会改变被遍历的路径, 它们出现在共享或循环结构的副作用在和它们的无副作用替代比较时可能表现出令人惊讶的不同. 为了观察到这个, 细想以下副作用行为, 它可能被某些实现展现出来:
+        因为副作用变体(比如, nsubstitute)可能会改变被遍历的路径, 它们在共享或循环结构中出现的副作用在和它们的无副作用替代比较时可能表现出令人惊讶的不同. 为了观察到这个, 细想以下副作用行为, 它可能被某些实现展现出来:
 
     ```LISP
     (defun test-it (fn)
@@ -1247,7 +1248,7 @@
 
 * 描述(Description):
 
-        concatenate 返回一个包含了所有这些序列 sequences 的单独元素的序列[sequence], 以它们被提供的顺序. 这个序列[sequence]是 result-type 类型[type]的, 这个类型[type]必须是类型 sequence 的一个子类型[subtype].
+        concatenate 返回一个包含了所有这些序列 sequences 的单独元素的序列[sequence], 按照它们被提供的顺序. 这个序列[sequence]是 result-type 类型[type]的, 这个类型[type]必须是类型 sequence 的一个子类型[subtype].
 
         所有这些序列 sequences 都会被拷贝; 这个结果不会和这些序列 sequences 的任何一个共享结构. 因此, 如果只提供了一个序列 sequence 并且它是 result-type 类型的, concatenate 需要去拷贝这个序列 sequence 而不是简单地返回它.
 
@@ -1300,9 +1301,9 @@
 
         根据断言 predicate 决定的顺序破坏性地合并 sequence-1 和 sequence-2. merge 通过把从这些序列元素中提取到的键给定到断言 predicate 来决定两个元素之间的关系.
 
-        给这个 predicate 函数的第一个参数是由 key 返回的序列 sequence-1 的一个元素 (如果提供的话); 第二个元素是由 key 返回的序列 sequence-2 的元素 (如果提供的话). 当且仅当这个断言 predicate 的第一个参数严格小于第二个参数时(在一些适当的意义上), 它应该返回 true. 如果第一个参数大于或等于第二个参数 (在一些适当的意义上), 那么断言 predicate 应该返回 false. 如果 (funcall predicate x y) 和 (funcall predicate y x) 都产生[yield] false, 那么 merge 把这两个元素 x 和 y 认为是相等的.
+        给这个 predicate 函数的第一个参数是由 key 返回的序列 sequence-1 的一个元素 (如果提供的话); 第二个参数是由 key 返回的序列 sequence-2 的元素 (如果提供的话). 当且仅当这个断言 predicate 的第一个参数严格小于第二个参数时(在一些适当的意义上), 它应该返回 true. 如果第一个参数大于或等于第二个参数 (在一些适当的意义上), 那么断言 predicate 应该返回 false. 如果 (funcall predicate x y) 和 (funcall predicate y x) 都产生[yield] false, 那么 merge 把这两个元素 x 和 y 认为是相等的.
 
-        给 key 的参数是这个序列 sequence 元素. 通常地, 这个 key 的返回值成为给断言 predicate 的参数. 如果没有提供 key 或者是 nil, 那么就使用这个序列元素自身. 这个 key 对于每个序列[sequence]元素[element]可能被执行不止一次, 那么它的副作用可能以任意顺序发生.
+        给 key 的参数是序列 sequence 的元素. 通常地, 这个 key 的返回值成为给断言 predicate 的参数. 如果没有提供 key 或者是 nil, 那么就使用这个序列元素自身. 这个 key 对于每个序列[sequence]元素[element]可能被执行不止一次, 那么它的副作用可能以任意顺序发生.
 
         如果 key 和 predicate 返回了, 那么这个合并操作就会终止. 合并两个序列[sequence] x 和 y 的结果是一个类型 result-type 的新序列[sequence] z, 这样一来 z 的长度是 x 和 y 的总和, 并且 z 包含了 x 和 y 的所有元素. 如果 x1 和 x2 是 x 的两个元素, 并且在 x 中 x1 在 x2 前面, 那么在 z 中 x1 也在 x2 前面, 而对于 y 的元素也类型. 总之, z 是 x 和 y 的交错.
 
