@@ -159,9 +159,9 @@
 
         rehash-size 指定了当 hash-table 变得足够多以致于需要再散列时需要增长的最小数量; 见下面的 rehash-theshold. 如果 rehash-size 是一个整数[integer], 这个表的预期增长率是加法的并且这个整数[integer]就是要增加的条目数; 如果它是一个浮点数[float], 这个表的预期增长率是乘法的并且这个浮点数[float]就是新的大小和旧的大小的比值. 和 size 一样, 这个增长的实际大小可能会被舍入.
 
-        rehash-threshold 指定了在 hash-table 必须增长前它可以的达到的完整大小. 它指定了最大期望的 hash-table 占用级别.
+        rehash-threshold 指定了在 hash-table 必须增长前它可以的达到的完整大小. 它指定了最大期望的 hash-table 占用级别(occupancy level).
 
-        这个 rehash-size 和 rehash-threshold 的值[value]不会强迫具体实现[implementation]来使用任何特定的方法来计算哈希表 hash-table 何时要被扩展以及扩展的大小. 这样的决定是依赖于具体实现的[implementation-dependent], 这些值[value]只是程序员[programmer]对实现[implementation]的提示, 并且允许具体实现[implementation]去忽略它们.
+        这个 rehash-size 和 rehash-threshold 的值[value]不会强迫具体实现[implementation]使用任何特定的方法来计算哈希表 hash-table 何时要被扩展以及扩展的大小. 这样的决定是依赖于具体实现的[implementation-dependent], 这些值[value]只是程序员[programmer]对实现[implementation]的提示, 并且允许具体实现[implementation]去忽略它们.
 
 * 示例(Examples):
 
@@ -315,6 +315,7 @@
 
         如果这个哈希表被创建时带有一个表示再散列大小的整数[integer], 表示再散列时这个 hash-table 的增长率是加法的; 否则, 结果是一个浮点数[float], 表示再散列时这个 hash-table 的增长率是乘法的. 然而, 这个值只是给具体实现[implementation]的建议; 再散列时这个 hash-table 增长的实际数量是依赖于具体实现的[implementation-dependent]. 
 
+
 ### <span id="F-HASH-TABLE-REHASH-THRESHOLD">函数 HASH-TABLE-REHASH-THRESHOLD</span>
 
 * 语法(Syntax):
@@ -352,6 +353,7 @@
 
 * 注意(Notes): None. 
 
+
 ### <span id="F-HASH-TABLE-SIZE">函数 HASH-TABLE-SIZE</span>
 
 * 语法(Syntax):
@@ -382,6 +384,7 @@
         hash-table-count, make-hash-table
 
 * 注意(Notes): None.
+
 
 ### <span id="F-HASH-TABLE-TEST">函数 HASH-TABLE-TEST</span>
 
