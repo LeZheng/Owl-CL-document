@@ -1,16 +1,16 @@
 # 19 文件名
 
 > * 19.1 [文件名概述](#OverviewFilenames)
-> * 19.2 [Pathnames](#Pathnames)
+> * 19.2 [路径名](#Pathnames)
 > * 19.3 [逻辑路径名](#LogicalPathnames)
-> * 19.4 [The Filenames Dictionary](#TheFilenamesDictionary)
+> * 19.4 [文件名字典](#TheFilenamesDictionary)
 
 
 ## 19.1 <span id="OverviewFilenames">文件名概述</span>
 
-这里有很多种文件系统, 在它们的表面语法细节, 以及它们的潜在的能力和结构上都有很大的不同. 由 Common Lisp 提供的用于引用和操作文件的工具被选择与许多类型的文件系统兼容, 同时最小化了不同文件系统之间的程序可见差异.
+这里有很多种文件系统[file system], 在它们的表面语法细节, 以及它们的潜在的能力和结构上都有很大的不同. 由 Common Lisp 提供的用于引用和操作文件[file]的工具被选择与许多类型的文件系统[file system]兼容, 同时最小化了不同文件系统[file system]之间的程序可见差异.
 
-因为文件系统在命名文件的约定上有区别, 这里有两种不同的方式来表示文件名: 作为名称字符串(namestring)和作为路径名(pathname).
+因为文件系统[file system]在命名文件[file]的约定上有区别, 这里有两种不同的方式来表示文件名[filename]: 作为名称字符串[namestring]和作为路径名[pathname].
 
 > * 19.1.1 [名称字符串作为文件名](#NamestringsFilenames)
 > * 19.1.2 [路径名作为文件名](#PathnamesFilenames)
@@ -19,32 +19,32 @@
 
 ### 19.1.1 <span id="NamestringsFilenames">名称字符串作为文件名</span>
 
-一个名称字符串(namestring)是一个表示一个文件名的字符串.
+一个名称字符串[namestring]是表示文件名[filename]的一个字符串[string].
 
-通常, 名称字符串的语法涉及到使用具体实现定义的约定, 通常是指所命名文件所在的文件系统的惯例. 仅有的例外是一个逻辑路径名的名称字符串的语法, 它被定义在这个规范中; 见章节 19.3.1 (逻辑路径名名称字符串的语法).
+通常, 名称字符串[namestring]的语法涉及到具体实现定义[implementation-defined]的规约的使用, 通常是指命名文件[file]所在的文件系统[file system]的惯例. 仅有的例外是一个逻辑路径名[logical pathname]的名称字符串[namestring]的语法, 它被定义在这个规范中; 见章节 19.3.1 (逻辑路径名名称字符串的语法).
 
-一个符合规范的程序永远不能无条件地使用一个字面化的名称字符串, 而不是一个逻辑路径名的名称字符串因为 Common Lisp 没有定义任何保证可移植的名称字符串的语法, 除了逻辑路径名的名称字符串. 然而, 一个符合规范的程序, 如果足够小心, 可以成功地操纵用户提供的包含或引用不可移植的名称字符串的数据.
+一个符合规范的程序[conforming program]永远不能无条件地使用一个字面化[literal]的名称字符串[namestring], 而不是一个逻辑路径名[logical pathname]的名称字符串[namestring]因为 Common Lisp 没有定义任何保证可移植的名称字符串[namestring]的语法, 除了逻辑路径名[logical pathname]的名称字符串. 然而, 一个符合规范的程序[conforming program], 如果足够小心, 可以成功地操纵用户提供的包含或引用不可移植的名称字符串[namestring]的数据.
 
-一个名称字符串可以通过函数 pathname 或 parse-namestring 强制转为路径名. 
+一个名称字符串[namestring]可以通过函数[function] pathname 或 parse-namestring 强制转为路径名[pathname]. 
 
 
 ### 19.1.2 <span id="PathnamesFilenames">路径名作为文件名</span>
 
-路径名是结构化的对象, 可以用一种独立于具体实现的方式表示底层文件系统本地使用的文件名.
+路径名[pathname]是结构化的对象[object], 可以用一种独立于具体实现的[implementation-independent]方式表示底层文件系统[file system]本地使用的文件名[filename].
 
-另外, 路径名还可以表示某些部分组成的文件名, 其中底层文件系统可能没有特定的名称字符串表示.
+另外, 路径名[pathname]还可以表示某些部分组成的文件名[filename], 对于这些路径名底层文件系统[file system]可能没有特定的名称字符串[namestring]表示.
 
-一个路径名不需要对应任何实际上已存在的文件, 并且多个路径名可以引用相同文件. 比如, 这个带有一个 :newest 的版本可能和一个带有相同成分除了某个数字作为版本的路径名引用相同的文件. 确实, 随着时间推移一个带有版本 :newest 的路径名可能引用不同的文件, 因为这样一个路径名的意义取决于文件系统的状态.
+一个路径名[pathname]不需要对应任何实际上已存在的文件, 并且多个路径名[pathname]可以引用相同文件. 比如, 这个带有一个 :newest 版本的路径名[pathname]可能和一个带有相同成分除了某个数字作为版本的路径名[pathname]引用相同的文件. 事实上, 随着时间推移一个带有版本 :newest 的路径名[pathname]可能引用不同的文件, 因为这样一个路径名[pathname]的意义取决于文件系统的状态.
 
-某些文件系统自然地为它们的文件名使用一个结构模型, 而其他的则没有. 在 Common Lisp 路径名模型中, 所有文件名都被视作有着一个特定结构, 即便那个结构没有反映在底层文件系统中. 由路径名暗示的结构和底层文件系统所使用的结构(如果有的话)之间的映射性质是具体实现定义的.
+某些文件系统[file system]自然地为它们的文件名[filename]使用一个结构模型, 而其他的则没有. 在 Common Lisp 路径名[pathname]模型中, 所有文件名[filename]都被视作有着一个特定结构, 即便那个结构没有反映在底层文件系统[file system]中. 由路径名[pathname]暗示的结构和底层文件系统[file system]所使用的结构(如果有的话)之间的映射性质是由具体实现定义的[implementation-defined].
 
-每一个路径名都有六个成分: 一个主机(host), 一个设备(device), 一个目录(directory), 一个名字(name), 一个类型(type), 和一个版本(version). 通过用路径名来命名文件, 即使在文件系统中看起来很不一样, Common Lisp 程序可以以相同的方式工作. 关于这些成分的详细描述, 见章节 19.2.1 (Pathname Components).
+每一个路径名[pathname]都有六个成员: 一个主机(host), 一个设备(device), 一个目录(directory), 一个名字(name), 一个类型(type), 和一个版本(version). 通过用路径名[pathname]来命名文件[file], 即使在文件系统[file system]中看起来很不一样, Common Lisp 程序可以以相同的方式工作. 关于这些成分的详细描述, 见章节 19.2.1 (路径名成员).
 
-这些路径名成分到每个文件系统的特有概念的映射是具体实现定义的. 存在可想到的路径名, 在特定的实现中, 没有映射到语法有效的文件名. 一个具体实现可能使用多种策略去尝试找到一个映射; 例如, 一个实现可能会悄悄地截断超过底层文件系统施加的长度限制的文件名, 或者忽略文件系统不提供支持的某些路径名成员. 如果没有找到这样一个映射, 就会发出一个 file-error 类型的错误.
+这些路径名[pathname]成员到每个文件系统[file system]的特有概念的映射是由具体实现定义的[implementation-defined]. 在特定的实现[implementation]中存在可想到的路径名[pathname]没有映射到语法有效的文件名[filename]. 一个具体实现[implementation]可能使用多种策略去尝试找到一个映射; 例如, 一个实现[implementation]可能会悄悄地截断超过底层文件系统施加的长度限制的文件名[filename], 或者忽略文件系统[file system]不提供支持的某些路径名[pathname]成员. 如果没有找到这样一个映射, 就会发出一个 file-error 类型[type]的错误.
 
-这个映射和关联的错误发出的时间是依赖于具体实现的. 具体来说, 它可能出现在这个路径名被构造时, 吧一个路径名强制转为名称字符串时, 或者尝试去打开或访问这个路径名表示的文件时.
+这个映射和关联的错误发出的时间是依赖于具体实现的[implementation-dependent]. 具体来说, 它可能出现在这个路径名[pathname]被构造时, 把一个路径名[pathname]强制转为名称字符串[namestring]时, 或者尝试去打开[open]或访问这个路径名[pathname]表示的文件[file]时.
 
-下面这段列出了一些已定义的可应用于路径名的名字.
+下面这段列出了一些可应用于路径名[pathname]的已定义的名字[defined name].
 
     *default-pathname-defaults*  namestring          pathname-name          
     directory-namestring         open                pathname-type          
@@ -59,11 +59,11 @@
 
 ### 19.1.3 <span id="ParseNamestrIntoPathnames">解析名称字符串为路径名</span>
 
-解析是一个被用于转换一个名称字符串为一个路径名的操作. 除了在解析逻辑路径名名称字符串时, 这个操作是依赖于具体实现的, 因为这个名称字符串的格式是依赖于具体实现的.
+解析是一个被用于转换一个名称字符串[namestring]为一个路径名[pathname]的操作. 除了在解析逻辑路径名[logical pathname]名称字符串[namestring]时, 这个操作是依赖于具体实现的[implementation-dependent], 因为这个名称字符串[namestring]的格式是依赖于具体实现的[implementation-dependent].
 
-一个符合规范的实现可以在它的路径名表示中自由地包含其他文件系统特性并且提供一个可以访问名称字符串中这样的参数的解析器. 符合规范的程序一定不能依赖这样的特性, 因为这些特性不是可移植的. 
+一个符合规范的实现[conforming implementation]可以在它的路径名[pathname]表示中自由地包含其他文件系统[file system]特性并且提供一个可以处理名称字符串[namestring]中这样的说明的解析器. 符合规范的程序[conforming program]一定不能依赖这样的特性, 因为这些特性不是可移植的. 
 
-## 19.2 <span id="Pathnames">Pathnames</span>
+## 19.2 <span id="Pathnames">路径名</span>
 
 > * 19.2.1 [路径名成员](#PathnameComponents)
 > * 19.2.2 [解释路径名成员值](#InterpretPathnameCompValues)
@@ -71,34 +71,33 @@
 
 ### 19.2.1 <span id="PathnameComponents">路径名成员</span>
 
-一个路径名有六个成员: 一个主机(host), 一个设备(device), 一个目录(directory), 一个名字(name), 一个类型(type), 和一个版本(version).
+一个路径名[pathname]有六个成员: 一个主机(host), 一个设备(device), 一个目录(directory), 一个名字(name), 一个类型(type), 和一个版本(version).
 
 #### 19.2.1.1 路径名主机成员
 
-文件所在的文件系统的名称，或者逻辑主机的名称.
+文件所在的文件系统的名称，或者逻辑主机[logical host]的名称.
 
 #### 19.2.1.2 路径名设备成员
 
-在许多主机文件系统中对应于"设备"或"文件结构"概念: 包含这些文件的逻辑或物理设备的名字. 
+在许多主机文件系统中对应于"设备"或"文件结构"概念: 就是包含这些文件的逻辑或物理设备的名字. 
 
 #### 19.2.1.3 路径名目录成员
 
-在许多主机文件系统中对应于"目录"概念: 一组相关文件的名字. 
+在许多主机文件系统中对应于"目录"概念: 就是一组相关文件的名字. 
 
 #### 19.2.1.4 路径名名字成员
 
-一组可以被认为是概念上相关的文件的"名称"部分. 
+一组文件的"名称"部分, 可以认为是概念上相关的. 
 
 #### 19.2.1.5 路径名类型成员
 
-在许多主机文件系统中对应于"文件类型"或"扩展"概念. 这说明了这是什么类型的文件. 这个成员总是为一个字符串, nil, :wild, 或 :unspecific. 
-
+在许多主机文件系统中对应于"文件类型"或"扩展"概念. 这说明了这是什么类型的文件. 这个成员总是为一个字符串[string], nil, :wild, 或 :unspecific. 
 
 #### 19.2.1.6 路径名版本成员
 
 对应于许多主机文件系统中的"版本号"概念.
 
-这个版本是一个整数或者是下面列表中的一个符号: nil, :wild, :unspecific, 或 :newest (指在读取文件时, 文件系统中已经存在的最大版本号, 或者在编写新文件时比文件系统中已有的版本号更大的版本号). 具体实现可以定义其他特别的版本符号. 
+这个版本是一个整数[integer]或者是下面列表中的一个符号[symbol]: nil, :wild, :unspecific, 或 :newest (指在读取文件时, 文件系统中已经存在的最大版本号, 或者在编写新文件时比文件系统中已有的版本号更大的版本号). 具体实现可以定义其他特别的版本符号[symbol]. 
 
 
 ### 19.2.2 <span id="InterpretPathnameCompValues">解释路径名成员值</span>
@@ -113,7 +112,7 @@
 
 ##### 19.2.2.1.1 路径名成员中的特殊字符
 
-路径名成员值中的字符串永远不会包含特殊字符, 这些字符表示路径名字段之间的间隔, 比如 Unix 文件名中的斜杠. 分离字符是否允许作为一个路径名成员中字符串的一部分是具体实现定义的; 然而, 如果实现确实允许这个, 它必须在构造一个名称字符串时, 安排正确地"引用"文件系统的字符. 例如,
+路径名[pathname]成员值中的字符串[string]从不包含表示路径名[pathname]字段之间的分隔符的特殊字符[character], 比如 Unix 文件名[filename]中的斜杠[slash]. 分隔符字符[character]是否允许作为一个路径名[pathname]成员中字符串[string]的一部分是具体实现定义的[implementation-defined]; 然而, 如果具体实现[implementation]确实允许这个, 它必须在构造一个名称字符串[namestring]时, 安排正确地"引用"文件系统[file system]的字符. 例如,
 
 ```LISP
  ;; In a TOPS-20 implementation, which uses ^V to quote 
@@ -124,7 +123,7 @@ NOT=>  #P"OZ:PS:<TEST>"
 
 ##### 19.2.2.1.2 路径名成员中的大小写
 
-名称字符串总是使用本地文件系统的大小写约定, 但是操纵路径名成员的 Common Lisp 函数允许调用者通过给 :case 参数提供一个值去选择两种表示成员值大小写的约定中的任意一种. 下一段列出了和允许 :case 参数的路径名相关函数:
+名称字符串[namestring]总是使用本地文件系统的大小写[case]约定, 但是操纵路径名[pathname]成员的 Common Lisp 函数[function]允许调用者通过给 :case 参数提供一个值去选择两种表示成员值大小写[case]约定中的任意一种. 下一段列出了和允许 :case 参数的路径名[pathname]相关函数:
 
     make-pathname    pathname-directory  pathname-name  
     pathname-device  pathname-host       pathname-type  
@@ -133,112 +132,113 @@ NOT=>  #P"OZ:PS:<TEST>"
 
 ###### 19.2.2.1.2.1 路径名成员中的本地大小写
 
-对于 Figure 19-2 中的函数, :case 参数的一个 :local 值 (对于这些函数的默认值) 表示这些函数应该接受并产生成员值中的字符串, 就好像它们已经根据主机文件系统的大小写约定来表示了一样.
+对于 Figure 19-2 中的函数, :case 参数的一个 :local 值 (对于这些函数的默认值) 表示这些函数应该接受并产生成员值中的字符串[string], 就好像它们已经根据主机文件系统[file system]的大小写[case]约定表示过了一样.
 
-如果这个文件系统两种大小写都支持, 在这个协议下给定或接收的字符串作为路径名成员值将被完全使用. 如果这个文件系统只支持一种大小写, 这个字符串会被转成那个大小写. 
+如果这个文件系统[file system]两种大小写[case]都支持, 在这个协议下给定或接收的字符串[string]作为路径名[pathname]成员值将被完全使用. 如果这个文件系统只支持一种大小写[case], 那么这个字符串[string]会被转成那个大小写[case]. 
 
 
 ###### 19.2.2.1.2.2 路径名成员中的通用大小写
 
-对于 Figure 19-2 中的函数, :case 参数的一个 :common 值表示这些函数应该根据以下约定接受和产生成员值中的字符串:
+对于 Figure 19-2 中的函数, :case 参数的一个 :common 值表示这些函数[function]应该根据以下约定接受和产生成员值中的字符串[string]:
 
-* 所有都是大写意味着使用一个文件系统习惯的大小写.
-* 所有都是小写字母表示使用与习惯情况相反的方法.
-* 混合大小写就表示自身.
+* 所有都是大写[uppercase]意味着使用一个文件系统习惯的大小写[case].
+* 所有都是小写[lowercase]字母表示使用与习惯情况相反的大小写[case].
+* 混合大小写[case]就表示自身.
 
-注意, 这些约定可以以这样一种方式被选择, 从 :local 转换到 :common 并转换回 :local 信息保持不变. 
+注意, 选择这些约定的方式是: 从 :local 转换到 :common 并转换回 :local 信息保持不变. 
 
 
 #### 19.2.2.2 <span id="SpecPathnameComponentValues">特殊路径名成员值</span>
 
 ##### 19.2.2.2.1 NIL 作为一个成员值
 
-作为一个成员值, nil 表示这个成员是"没有被填充"; 见章节 19.2.3 (合并路径名).
+作为一个路径名[pathname]成员值, nil 表示这个成员是"没有被填充"; 见章节 19.2.3 (合并路径名).
 
-任何路径名成员值可以是 nil.
+任何路径名[pathname]成员值可以是 nil.
 
-在构造一个路径名时, 在主机成员的 nil 可能意味着一个默认主机而不是在某些实现中的一个实际的 nil. 
+在构造一个路径名[pathname]时, 在主机成员的 nil 可能意味着一个默认主机而不是在某些实现[implementation]中的一个实际的 nil. 
+
 
 ##### 19.2.2.2.2 :WILD 作为一个成员值
 
-如果 :wild 是一个路径名成员的值, 那个成员被认为是一个通配符, 它可以匹配任何东西.
+如果 :wild 是一个路径名[pathname]成员的值, 那个成员被认为是一个通配符, 它可以匹配任何东西.
 
-一个符合标准的程序必须准备好遇到一个值: :wild 作为任何路径名成员的值, 或者作为目录成员的值的列表的元素.
+一个符合标准的程序[conforming program]必须准备好遇到一个值: :wild 作为任何路径名[pathname]成员的值, 或者作为目录成员的值列表[list]的元素[element].
 
-在构造一个路径名时, 一个符合规范的程序可能使用 :wild 作为目录, 名字, 类型, 或版本成员的其中一个或所有的值, 但是一定不能使用 :wild 作为主机, 或设备成员的值.
+在构造一个路径名[pathname]时, 一个符合规范的程序[conforming program]可能使用 :wild 作为目录, 名字, 类型, 或版本成员的其中一个或所有的值, 但是一定不能使用 :wild 作为主机, 或设备成员的值.
 
-在构造一个路径名时如果 :wild 被用作这个目录成员的值, 效果等价于指定 (:absolute :wild-inferiors), 或者等价于一个不支持 :wild-inferiors 的文件系统的 (:absolute :wild). 
+在构造一个路径名[pathname]时如果 :wild 被用作这个目录成员的值, 效果等价于指定 (:absolute :wild-inferiors), 或者等价于一个不支持 :wild-inferiors 的文件系统[file system]的 (:absolute :wild). 
 
 ##### 19.2.2.2.3 :UNSPECIFIC 作为成员值
 
-如果 :unspecific 是一个路径名的成员值, 这个成员就被认为是"缺失的"或者在这个要被这个路径名表示的文件名中"没有意义的".
+如果 :unspecific 是一个路径名[pathname]的成员值, 这个成员就被认为是"缺失的"或者在这个这个路径名[pathname]表示的文件名[filename]中"没有意义的".
 
-在这个实现可以访问的任何给定文件系统的任何成员上一个 :unspecific 值是否被允许是具体实现定义的. 一个符合规范的程序一定不能无条件使用一个 :unspecific 作为一个路径名成员的值, 因为这样一个值不保证在所有实现都是允许的. 然而, 一个符合规范的程序, 如果足够小心, 可以成功地操纵用户提供的包含或引用不可移植的路径名成员的数据. 当然, 一个符合规范的程序应该为一个路径名的任何成员都可能是 :unspecific 的可能性做好准备.
+在这个实现[implementation]可以访问的任何给定文件系统[file system]的任何成员上, 一个 :unspecific 值是否被允许是具体实现定义的[implementation-defined]. 一个符合规范的程序[conforming program]一定不能无条件使用一个 :unspecific 作为一个路径名[pathname]成员的值, 因为这样一个值不保证在所有实现都是允许的. 然而, 一个符合规范的程序[conforming program], 如果足够小心, 可以成功地操纵用户提供的包含或引用不可移植的路径名[pathname]成员的数据. 当然, 一个符合规范的程序[conforming program]应该为一个路径名[pathname]的任何成员都可能是 :unspecific 的可能性做好准备.
 
-当读取任何路径名成员的值时, 符合规范的程序应该对值为 :unspecific 有所准备.
+当读取[read[1]]任何路径名[pathname]成员的值时, 符合规范的程序[conforming program]应该对值为 :unspecific 有所准备.
 
-当写入任何路径名成员的值时, 如果 :unspecific 在文件系统中被赋予给一个路径名, 那么其后果是没有定义的, 因为它没有意义.
+当写入[write[1]]任何路径名[pathname成员的值时, 如果 :unspecific 在文件系统[file system]中被赋予给一个路径名[pathname], 那么其后果是没有定义的, 因为它没有意义.
 
 ###### 19.2.2.2.3.1 成员值 NIL 和 :UNSPECIFIC 之间的联系
 
-如果一个路径名被转换为一个名称字符串, 返回 nil 和 :unspecific 导致要被处理的那个域就像是空的一样. 这也就是说, nil 和 :unspecific 都导致这个成员不会出现在名称字符串中.
+如果一个路径名[pathname]被转换为一个名称字符串[namestring], 返回符号[symbol] nil 和 :unspecific 导致要被处理的那个域就像是空的一样. 这也就是说, nil 和 :unspecific 都导致这个成员不会出现在名称字符串[namestring]中.
 
-然而, 在合并一个路径名和一个默认值集合时, 只有一个成员的 nil 值会被那个成员的默认值替换, 而一个 :unspecific 值会被留下来就好像这个域已经被"填充"了; 见函数 merge-pathnames 和章节 19.2.3 (合并路径名). 
+然而, 在合并一个路径名[pathname]和一个默认值集合时, 只有一个成员的 nil 值会被那个成员的默认值替换, 而一个 :unspecific 值会被留下来就好像这个域已经被"填充"了; 见函数[function] merge-pathnames 和章节 19.2.3 (合并路径名). 
 
 
 #### 19.2.2.3 <span id="RestrictionWildcardPathnames">通配符路径名上的限制</span>
 
-通配符路径名可以和 directory 一起使用, 但是不能和 open 一起使用, 并且从 wild-pathname-p 返回 true. 在检查通配符路径名的通配符成员时, 符合规范的程序必须准备好在任何成员或目录成员的任何元素中遇到下列附加值:
+通配符路径名[pathname]可以和 directory 一起使用, 但是不能和 open 一起使用, 并且从 wild-pathname-p 返回 true. 在检查通配符路径名[pathname]的通配符成员时, 符合规范的程序[conforming program]必须准备好在任何成员或目录成员的列表[list]的任何元素中遇到下列附加值:
 
-* 符号 :wild, 它匹配任何东西.
+* 符号[symbol] :wild, 它匹配任何东西.
 
-* 一个包含依赖于具体实现的特殊通配符的字符串.
+* 一个包含依赖于具体实现[implementation-dependent]的特殊通配字符[character]的字符串[string].
 
-* 任何对象, 表示一个依赖于具体实现的通配符模式. 
+* 任何对象[object], 表示依赖于具体实现[implementation-dependent]的一个通配符模式. 
 
 
 #### 19.2.2.4 <span id="RestrictionExamPathnameComponents">检查路径名成员的限制</span>
 
-一个符合条件的程序必须准备作为路径名成员的值来读取的可能的对象的空间, 要比一个符合条件的程序被允许写入这样一个成员的可能对象的空间大得多.
+一个符合条件的程序[conforming program]必须为以下情况做准备: 作为路径名[pathname]成员的值来读取[read[1]]的可能的对象[object]的空间, 要比一个符合条件的程序[conforming program]允许被写入[write[1]]到这样一个成员的可能的对象[object]的空间大得多.
 
-尽管在这个章节的子章节, 在章节 19.2.2.2 (特殊路径名成员值), 还有章节 19.2.2.3 (通配符路径名上的限制) 中讨论的值可以被应用于读取成员值时可见的值, 而对于构造路径名, 则应用了更多的限制性规则; 见章节 19.2.2.5 (构造路径名的限制).
+尽管在这个章节的子章节, 在章节 19.2.2.2 (特殊路径名成员值), 还有章节 19.2.2.3 (通配符路径名上的限制) 中讨论的值可以被应用于读取成员值时可见的值, 而对于构造路径名, 应用了更多的限制性规则; 见章节 19.2.2.5 (构造路径名的限制).
 
-在检查路径名成员时, 符合程序的程序应该知道以下限制.
+在检查路径名[pathname]成员时, 符合规范的程序[conforming program]应该知道以下限制.
 
 ##### 19.2.2.4.1 检查路径名主机成员的限制
 
-什么对象被用于表示这个主机是依赖于具体实现的. 
+什么对象[object]被用于表示这个主机是依赖于具体实现的[implementation-dependent]. 
 
 ##### 19.2.2.4.2 检查路径名设备成员的限制
 
-这个设备可能是一个字符串, :wild, :unspecific, 或 nil.
+这个设备可能是一个字符串[string], :wild, :unspecific, 或 nil.
 
-注意, 这个 :wild 可能产生于读取这个路径名成员的尝试中, 尽管可移植程序被限制在写入这样的成员值时; 见章节 19.2.2.3 (通配符路径名上的限制) 以及章节 19.2.2.5 (构造路径名的限制). 
+注意, 这个 :wild 可能产生于读取[read[1]]这个路径名[pathname]成员的尝试中, 即便可移植程序被限制写入[write[1]]这样的成员值时; 见章节 19.2.2.3 (通配符路径名上的限制) 以及章节 19.2.2.5 (构造路径名的限制). 
 
 
 ##### 19.2.2.4.3 检查路径名目录成员的限制
 
-这个目录可能是一个字符串, :wild, :unspecific, 或 nil.
+目录可能是一个字符串[string], :wild, :unspecific, 或 nil.
 
-这个目录可以是一个字符串和符号的列表. 这个列表的 car 是符号 :absolute 或 :relative 其中之一, 表示:
+目录可以是一个字符串[string]和符号[symbol]的列表[list]. 这个列表的 car 是符号 :absolute 或 :relative 其中之一, 表示:
 
 :absolute
 
-    一个 car 为符号 :absolute 的列表表示一个以根目录开始的目录路径. 列表 (:absolute) 表示根目录. 列表 (:absolute "foo" "bar" "baz") 表示 Unix 中的 "/foo/bar/baz" 目录 (除了可能的大小写下).
+    一个 car 为符号 :absolute 的列表[list]表示一个以根目录开始的目录路径. 列表 (:absolute) 表示根目录. 列表 (:absolute "foo" "bar" "baz") 表示 Unix 中的 "/foo/bar/baz" 目录 (可能的大小写[case]除外).
 
 :relative
 
-    一个 car 为符号 :relative 的列表表示一个以默认目录开始的目录路径. 列表 (:relative) 有着和 nil 相同的意义, 因此没有使用. 列表 (:relative "foo" "bar") 表示默认目录中名为 "foo" 的目录中的 "bar" 目录.
+    一个 car 为符号 :relative 的列表[list]表示一个以默认目录开始的目录路径. 列表 (:relative) 有着和 nil 相同的意义, 因此没有被使用. 列表 (:relative "foo" "bar") 表示默认目录中名为 "foo" 的目录中的 "bar" 目录.
 
-这个列表的每一个剩余元素都是一个字符串或符号.
+这个列表[list]的每一个剩余元素都是一个字符串[string]或符号[symbol].
 
-每一个字符串命名目录结构中的单个层级. 这些字符串应该只包含目录名字自身---没有标点符号.
+每一个字符串[string]命名目录结构中的单个层级. 这些字符串[string]应该只包含目录名字自身---没有标点符号.
 
-在这个列表的任何位置, 都可以使用符号来表示特殊的文件符号来替换一个字符串. 下面一段列出的符号有着标准意义. 如果有必要去表示不能用标准字符串和符号表示的文件系统的特性, 允许具体实现去添加和 string 互斥任意类型的额外对象.
+在这个列表[list]的任何位置, 都可以使用符号[symbol]来表示特殊的文件符号, 而不是一个字符串[string]. 下面一段列出的符号[symbol]有着标准意义. 如果有必要去表示不能用标准字符串[string]和符号[system]表示的文件系统的特性, 允许具体实现去添加和 string 互斥的任意类型[type]的额外对象[object].
 
-给一个文件系统提供任何非字符串, 包含下面列出的任意符号, 如果它们对于这个文件系统是没有意义的, 那么就会发出一个 file-error 类型的错误. 比如, Unix 在大部分实现不支持 :wild-inferiors.
+给一个文件系统提供任何非字符串[string], 包含下面列出的任意符号[symbol], 如果它们对于这个文件系统是没有意义的, 那么就会发出一个 file-error 类型[type]的错误. 比如, Unix 在大部分实现不支持 :wild-inferiors.
 
-    符号           意义                                             
+    符号              意义                                             
     :wild            目录结构中一级的通配符匹配
     :wild-inferiors  目录结构中任意数量的通配符匹配    
     :up              在目录结构中向上一级 (语义)         
@@ -250,80 +250,81 @@ NOT=>  #P"OZ:PS:<TEST>"
 
 无效组合
 
-    使用 :absolute 或 :wild-inferiors 后立即跟着 :up 或 :back 会发出一个 file-error 类型的错误.
+    使用 :absolute 或 :wild-inferiors 后立即跟着 :up 或 :back 会发出一个 file-error 类型[type]的错误.
 
 语法 vs 语义
 
-    "语法" 意味着那个 :back 动作只依赖于这个路径名, 不依赖这个文件系统的内容.
+    "语法" 意味着那个 :back 动作只依赖于这个路径名[pathname], 不依赖这个文件系统的内容.
 
-    "语义" 意味着那个 :up 的动作依赖于文件系统的内容; 为了解决一个包含了 :up 到一个目录成员只包含 :absolute 和字符串的路径名的路径名需要探索这个文件系统的问题.
+    "语义" 意味着那个 :up 的动作依赖于文件系统的内容; 为了解决一个路径名[pathname]包含了 :up 到一个目录成员只包含 :absolute 和字符串[string]的路径名[pathname]需要探索这个文件系统的问题.
 
     :up 和 :back 的区别仅在于文件系统支持多个多个目录名, 或许是通过符号链接. 例如, 假设这里有一个目录 (:absolute "X" "Y" "Z") 链接到 (:absolute "A" "B" "C") 并且这里也存在目录 (:absolute "A" "B" "Q") 和 (:absolute "X" "Y" "Q"). 那么 (:absolute "X" "Y" "Z" :up "Q") 表示 (:absolute "A" "B" "Q") 而 (:absolute "X" "Y" "Z" :back "Q") 表示 (:absolute "X" "Y" "Q")
 
+
 ###### 19.2.2.4.3.1 非分层文件系统中的目录成员
 
-在非分层文件系统中, 一个路径名的目录成员的仅有的有效列表值是 (:absolute string) 和 (:absolute :wild). :relative 目录和关键字 :wild-inferiors, :up, 和 :back 在非分层文件系统中是不使用的. 
+在非分层文件系统[file system]中, 一个路径名[pathname]的目录成员的仅有的有效列表[list]值是 (:absolute string) 和 (:absolute :wild). :relative 目录和关键字 :wild-inferiors, :up, 和 :back 在非分层文件系统[file system]中是不使用的. 
 
 
 ##### 19.2.2.4.4 检查路径名名称成员的限制
 
-这个名称可以是一个字符串, :wild, :unspecific, 或 nil. 
+名称可以是一个字符串[string], :wild, :unspecific, 或 nil. 
 
 
 ##### 19.2.2.4.5 检查路径名类型成员的限制
 
-这个类型可以是一个字符串, :wild, :unspecific, 或 nil. 
+类型可以是一个字符串[string], :wild, :unspecific, 或 nil. 
 
 
 ##### 19.2.2.4.6 检查路径名版本成员的限制
 
-这个版本可以是任何符号或整数.
+这个版本可以是任何符号[symbol]或整数[integer].
 
-在读取, 覆盖, 追加, 代替, 或列出现有文件的目录时, 符号 :newest 引用已经存在于文件系统中最大的版本数字. 在创建一个新的文件时, 符号 :newest 引用大于任何已存在版本数字的最小的版本数字.
+在读取, 覆盖, 追加, 代替, 或列出现有文件[file]的目录时, 符号 :newest 引用已经存在于文件系统[file system]中最大的版本数字. 在创建一个新的文件时, 符号 :newest 引用大于任何已存在版本数字的最小的版本数字.
 
 符号 nil, :unspecific, 和 :wild 有着特殊意义和限制; 见章节 19.2.2.2 (特殊路径名成员值) 和章节 19.2.2.5 (构造路径名的限制).
 
-其他符号和整数有着具体实现定义的意义.
+其他符号[system]和整数[integer]有着具体实现定义[implementation-defined]的意义.
 
 
 ##### 19.2.2.4.7 关于路径名版本成员的注意事项
 
 建议, 但不是必须, 具体实现执行以下操作:
 
-* 使用从 1 开始的正整数作为版本数字.
+* 使用从 1 开始的正整数[integer]作为版本数字.
 
 * 识别符号 :oldest 来表示最小的已存在版本数字.
 
-* 为其他特殊版本使用关键字. 
+* 为其他特殊版本使用关键字[keyword]. 
 
 
 #### 19.2.2.5 <span id="RestrictConstructPathnames">构造路径名的限制</span>
 
-从成员来构造一个路径名时, 符合规范的程序必须遵守这些规则:
+从成员来构造一个路径名[pathname]时, 符合规范的程序必须遵守这些规则:
 
 * 任何成员可以是 nil. 在一些实现中, 主机中的 nil 可能意味着一个默认主机而不是一个实际的 nil.
 
-* 主机, 设备, 目录, 名字, 以及类型可以是字符串. 在这些字符串中的字符的类型和数量上有着依赖于具体实现的限制.
+* 主机, 设备, 目录, 名字, 以及类型可以是字符串[string]. 在这些字符串[string]中的字符[character]的类型和数量上有着依赖于具体实现[implementation-dependent]的限制.
 
-* 目录可以是一个字符串和符号的列表. 在这个列表的长度和内容上有着依赖于具体实现的限制.
+* 目录可以是一个字符串[string]和符号[system]的列表[list]. 在这个列表[list]的长度和内容上有着依赖于具体实现[implementation-dependent]的限制.
 
 * 版本可以是 :newest.
 
-* 任何成员都可以从另一个路径名的相应成员中获取. 当两个路径名是对于不同的文件系统时 (在支持多文件系统的实现中), 会出现一个适当的转换. 如果没有任何有意义的转换, 就会出现错误. 这个 "适当" 和 "有意义" 的定义是依赖于具体实现的.
+* 任何成员都可以从另一个路径名[pathname]的相应成员中获取. 当两个路径名[pathname]是对于不同的文件系统时 (在支持多文件系统的实现中), 会出现一个适当的转换. 如果没有任何有意义的转换, 就会出现错误. 这个 "适当" 和 "有意义" 的定义是依赖于具体实现的.
 
-* 对于某些成员, 一个实现可能支持其他的值, 但是一个可移植程序不能使用这些值. 一个符合规范的程序可以使用依赖于具体实现的值但是这会使它变得不可移植; 例如, 它可能只有在 Unix 文件系统中正常工作. 
+* 对于某些成员, 一个实现可能支持其他的值, 但是一个可移植程序不能使用这些值. 一个符合规范的程序可以使用依赖于具体实现[implementation-dependent]的值但是这会使它变得不可移植; 例如, 它可能只有在 Unix 文件系统中正常工作. 
 
 ### 19.2.3 <span id="MergingPathnames">合并路径名</span>
 
-合并使用一个带有未填充成员的路径名, 并从默认值中为这些成员提供值.
+合并接受一个带有未填充成员的路径名[pathname], 并从默认值中为这些成员提供值.
 
-如果一个成员的值是 nil, 那么那个成员会被认为是未填充的. 如果一个成员的值是任何非 nil 对象, 包括 :unspecific, 那么那个成员会被认为是已填充的.
+如果一个成员的值是 nil, 那么那个成员会被认为是未填充的. 如果一个成员的值是任何非 nil [non-nil]对象[object], 包括 :unspecific, 那么那个成员会被认为是已填充的.
 
-除了显式指定的以外, 对于操作或查询文件系统中的文件的函数, 在访问这个文件系统前, 给这样一个函数的路径名参数会和 \*default-pathname-defaults* 合并(就像是通过 merge-pathnames).
+除了显式指定的以外, 对于操作或查询文件系统[file system]中的文件[file]的函数, 在访问这个文件系统[file system]前, 给这样一个函数的路径名参数会和 \*default-pathname-defaults* 合并(就像是通过 merge-pathnames 一样).
 
 #### 19.2.3.1 合并路径名的示例
 
-虽然下面这些示例可能只有在允许 :unspecific 出现在指定位置并且允许四字母类型成员的实现中执行, 但是它们可以用来说明路径名合并的基本概念.
+虽然下面这些示例可能只有在允许 :unspecific 出现在指定位置并且允许四字母类型成员的实现[implementation]中执行, 但是它们可以用来说明路径名[pathname]合并的基本概念.
 
     ```LISP
     (pathname-type 
@@ -442,7 +443,7 @@ NOT=>  #P"OZ:PS:<TEST>"
 
 空字符串, "", 不是一个逻辑路径名任意成员的有效值. 
 
-## 19.4 <span id="TheFilenamesDictionary">The Filenames Dictionary</span>
+## 19.4 <span id="TheFilenamesDictionary">文件名字典</span>
 
 > * [系统类 PATHNAME](#SC-PATHNAME)
 > * [系统类 LOGICAL-PATHNAME](#SC-LOGICAL-PATHNAME)
@@ -584,7 +585,7 @@ NOT=>  #P"OZ:PS:<TEST>"
 
         在这些通过显式提供 host, device, directory, name, type, 和 version 的成员被填充之后, merge-pathnames 使用的合并规则被用于填充 defaults 提供的默认值中的任何未提供的成员.
 
-        无论何时构造路径名, 如果合适, 成员都可以被规范化. 对于可以为每个成员提供的参数的解释, 见章节 19.2.1 (Pathname Components).
+        无论何时构造路径名, 如果合适, 成员都可以被规范化. 对于可以为每个成员提供的参数的解释, 见章节 19.2.1 (路径名成员).
 
         如果提供了 case, 它会像章节 19.2.2.1.2 (路径名成员中的大小写) 描述的那样被对待.
 
