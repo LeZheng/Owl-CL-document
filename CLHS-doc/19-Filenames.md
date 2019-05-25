@@ -352,7 +352,7 @@ NOT=>  #P"OZ:PS:<TEST>"
 
 ### 19.3.1 <span id="SyntaxLogicalPathnameNamestr">逻辑路径名名称字符串的语法</span>
 
-逻辑路径名名称字符串的语法如下. (注意, 与本文档中的许多符号描述不同, 这是对字符序列的语法描述, 而不是对象的结构描述.)
+逻辑路径名[logical pathname]名称字符串[namestring]的语法如下. (注意, 与本文档中的许多符号描述不同, 这是对字符序列的语法描述, 而不是对象的结构描述.)
 
     logical-pathname::= [host host-marker]  
                         [relative-directory-marker] {directory directory-marker}*  
@@ -368,59 +368,59 @@ NOT=>  #P"OZ:PS:<TEST>"
 
     version::= pos-int | newest-word | wildcard-version 
 
-    host-marker---一个冒号.
+    host-marker---一个冒号[colon].
 
-    relative-directory-marker---一个分号.
+    relative-directory-marker---一个分号[semicolon].
 
-    directory-marker---一个分号.
+    directory-marker---一个分号[semicolon].
 
-    type-marker---一个点.
+    type-marker---一个点[dot].
 
-    version-marker---一个点.
+    version-marker---一个点[dot].
 
-    wild-inferiors-word---两个字符的序列 "**" (两个星号).
+    wild-inferiors-word---两个字符的序列 "**" (两个星号[asterisk]).
 
     newest-word---六个字符的序列 "newest" 或者六个字符的序列 "NEWEST".
 
-    wildcard-version---一个星号.
+    wildcard-version---一个星号[asterisk].
 
-    wildcard-word---一个或多个星号, 大写字母, 数字, 以及连字符, 包含至少一个星号, 其中没有相邻的两个星号.
+    wildcard-word---一个或多个星号[asterisk], 大写字母, 数字, 以及连字符, 包含至少一个星号[asterisk], 其中没有相邻的两个星号[asterisk].
 
     word---一个或多个大写字母, 数字, 以及连字符.
 
-    pos-int---一个正整数.
+    pos-int---一个正整数[integer].
 
 #### 19.3.1.1 关于解析逻辑路径名名称字符串的额外信息
 
 ##### 19.3.1.1.1 逻辑路径名名称字符串的主机部分
 
-这个主机必须已经被定义为一个逻辑路径名主机; 这个可以通过 logical-pathname-translations 的 setf 来完成.
+这个主机(host)必须已经被定义为一个逻辑路径名[logical pathname]主机; 这个可以通过 logical-pathname-translations 的 setf 来完成.
 
-逻辑路径名主机名 "SYS" 为具体实现保留了. 这个 SYS: 逻辑路径名的存在性和意义是具体实现定义的.
+逻辑路径名[logical pathname]主机名 "SYS" 为具体实现保留了. 这个 SYS: 逻辑路径名[logical pathname]的存在性和意义是具体实现定义的[implementation-defined].
 
 ##### 19.3.1.1.2 逻辑路径名名称字符串的设备部分
 
-这里没有逻辑路径名设备的语法, 因为一个逻辑路径名的设备成员总是为 :unspecific; 见章节 19.3.2.1 (一个逻辑路径名的未指定成员). 
+这里没有逻辑路径名[logical pathname]设备的语法, 因为一个逻辑路径名[logical pathname]的设备成员总是为 :unspecific; 见章节 19.3.2.1 (一个逻辑路径名的未指定成员). 
 
 ##### 19.3.1.1.3 逻辑路径名名称字符串的目录部分
 
-如果在这些 directory 之前有一个 relative-directory-marker, 这个目录成员会被解析为是相对的; 否则, 这个目录成员会被解析为绝对的.
+如果在这些 directory 之前有一个 relative-directory-marker, 这个目录成员会被解析为是相对的[relative]; 否则, 这个目录成员会被解析为绝对的[absolute].
 
 如果指定了一个 wild-inferiors-marker, 它被解析为 :wild-inferiors. 
 
 ##### 19.3.1.1.4 逻辑路径名名称字符串的类型部分
 
-一个源码文件的逻辑路径名的类型是 "LISP". 这应该被转换成任何在物理路径名中合适的类型. 
+一个源码文件[source file]的逻辑路径名[logical pathname]的类型(type)是 "LISP". 这应该被转换成任何在物理路径名中合适的类型. 
 
 ##### 19.3.1.1.5 逻辑路径名名称字符串的版本部分
 
-一些文件系统没有版本. 对于这样一个文件系统, 逻辑路径名的转换会被忽略. 这意味着程序不能依赖于能够存储一个由逻辑路径名命名的文件的多个版本.
+一些文件系统[file system]没有版本[version]. 对于这样一个文件系统[file system], 逻辑路径名[logical pathname]的转换会忽略版本[version]. 这意味着程序不能依赖于能够存储一个由逻辑路径名[logical pathname]命名的文件的多个版本.
 
 如果指定了一个 wildcard-version, 它被解析为 :wild. 
 
 ##### 19.3.1.1.6 逻辑路径名名称字符串的通配符
 
-在一个 wildcard-word 中的每一个星号匹配一个零或多个字符的序列. 这个 wildcard-word "*" 解析为 :wild; 其他 wildcard-word 解析为字符串. 
+在一个 wildcard-word 中的每一个星号[asterisk]匹配零或多个字符的序列. 这个 wildcard-word "*" 解析为 :wild; 其他 wildcard-word 解析为字符串[string]. 
 
 
 ##### 19.3.1.1.7 逻辑路径名名称字符串的小写字母
@@ -429,19 +429,19 @@ NOT=>  #P"OZ:PS:<TEST>"
 
 ##### 19.3.1.1.8 逻辑路径名名称字符串的其他语法
 
-在一个逻辑路径名名称字符串中使用字符而不是在这里指定的那些的后果是不确定的.
+在一个逻辑路径名[logical pathname]名称字符串[namestring]中使用除了这里指定的以外的字符的后果是不确定的.
 
-使用任何没有在这里指定的值作为一个逻辑路径名的成员的后果是不确定的. 
+使用任何没有在这里指定的值作为一个逻辑路径名[logical pathname]的成员的后果是不确定的. 
 
 ### 19.3.2 <span id="LogicalPathnameComponents">逻辑路径名成员</span>
 
 #### 19.3.2.1 一个逻辑路径名的未指定成员
 
-一个逻辑路径名的设备成员总是为 :unspecific; 没有逻辑路径名的其他成员可以是 :unspecific. 
+一个逻辑路径名[logical pathname]的设备成员总是为 :unspecific; 没有逻辑路径名[logical pathname]的其他成员可以是 :unspecific. 
 
 #### 19.3.2.2 空字符串作为逻辑路径名的成员
 
-空字符串, "", 不是一个逻辑路径名任意成员的有效值. 
+空字符串, "", 不是一个逻辑路径名[logical pathname]任意成员的有效值. 
 
 ## 19.4 <span id="TheFilenamesDictionary">文件名字典</span>
 
