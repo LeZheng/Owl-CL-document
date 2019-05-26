@@ -471,9 +471,9 @@ NOT=>  #P"OZ:PS:<TEST>"
 
 * 描述(Description):
 
-        一个路径名是一个表示一个文件名的结构化对象.
+        一个路径名[pathname]是一个表示一个文件名[filename]的结构化对象[object].
 
-        这里有两种路径名---物理路径名和逻辑路径名. 
+        这里有两种路径名[pathname]---物理路径名[physical pathname]和逻辑路径名[logical pathname]. 
 
 
 ### <span id="SC-LOGICAL-PATHNAME">系统类 LOGICAL-PATHNAME</span>
@@ -484,11 +484,11 @@ NOT=>  #P"OZ:PS:<TEST>"
 
 * 描述(Description):
 
-        一个使用独立于具体实现的名称字符串语法的并且有着独立于具体实现的成员值的路径名. 逻辑路径名不会直接引用文件名.
+        一个使用独立于具体实现[implementation-independent]的名称字符串[namestring]语法并且有着独立于具体实现[implementation-independent]的成员值的路径名[pathname]. 逻辑路径名[logical pathname]不会直接引用文件名[filename].
 
 * 也见(See Also):
 
-        章节 20.1 (File System Concepts), 章节 2.4.8.14 (Sharpsign P), 章节 22.1.3.11 (Printing Pathnames) 
+        章节 20.1 (文件系统概念), 章节 2.4.8.14 (井号P(#P)), 章节 22.1.3.11 (打印路径名) 
 
 
 ### <span id="F-PATHNAME">函数 PATHNAME</span>
@@ -499,16 +499,16 @@ NOT=>  #P"OZ:PS:<TEST>"
 
 * 参数和值(Arguments and Values):
 
-        pathspec---一个路径名标识符.
-        pathname---一个路径名.
+        pathspec---一个路径名标识符[pathname designator].
+        pathname---一个路径名[pathname].
 
 * 描述(Description):
 
-        返回 pathspec 表示的路径名.
+        返回路径名标识符 pathspec 表示的路径名[pathname].
 
-        如果这个 pathspec 标识符是一个流, 那么这个流可以是打开的或关闭的; 不管在哪种请看, 这个 pathname 返回被用于打开这个文件的对应文件名. 在一个文件流被关闭后, pathname 还是返回和它被打开时相同的路径名.
+        如果这个 pathspec 标识符[designator]是一个流[stream], 那么这个流[stream]可以是打开的或关闭的; 不管在哪种情况, 返回的路径名 pathname 对应被用于打开这个文件[file]的对应文件名[filename]. 在一个文件流[file stream]被关闭后, pathname 还是返回和它被打开时相同的路径名[pathname].
 
-        如果这个 pathspec 标识符是一个通过打开一个逻辑路径名所创建的文件流, 就返回一个逻辑路径名.
+        如果这个 pathspec 标识符[designator]是通过打开一个逻辑路径名[logical pathname]所创建的一个文件流[file stream], 那么就返回一个逻辑路径名[logical pathname].
 
 * 示例(Examples):
 
@@ -555,7 +555,7 @@ NOT=>  #P"OZ:PS:<TEST>"
 
 * 也见(See Also):
 
-        pathname, logical-pathname, 章节 20.1 (File System Concepts), 章节 19.1.2 (路径名作为文件名)
+        pathname, logical-pathname, 章节 20.1 (文件系统概念), 章节 19.1.2 (路径名作为文件名)
 
 * 注意(Notes): None. 
 
@@ -569,29 +569,29 @@ NOT=>  #P"OZ:PS:<TEST>"
 
 * 参数和值(Arguments and Values):
 
-        host---一个有效的物理路径名主机. 复杂的缺省行为; 见下方.
-        device---一个有效的路径名设备. 复杂的缺省行为; 见下方.
-        directory---一个有效的路径名目录. 复杂的缺省行为; 见下方.
-        name---一个有效的路径名名称. 复杂的缺省行为; 见下方.
-        type---一个有效的路径名类型. 复杂的缺省行为; 见下方.
-        version---一个有效的路径名版本. 复杂的缺省行为; 见下方.
-        defaults---一个路径名标识符. 默认是一个主机成员和 *default-pathname-defaults* 的主机成员相同, 而其他成员都是 nil 的路径名.
+        host---一个有效物理路径名主机[valid physical pathname host]. 复杂的缺省行为; 见下方.
+        device---一个有效路径名设备[valid pathname device]. 复杂的缺省行为; 见下方.
+        directory---一个有效路径名目录[valid pathname directory]. 复杂的缺省行为; 见下方.
+        name---一个有效路径名名称[valid pathname name]. 复杂的缺省行为; 见下方.
+        type---一个有效路径名类型[valid pathname type]. 复杂的缺省行为; 见下方.
+        version---一个有效路径名版本[valid pathname version]. 复杂的缺省行为; 见下方.
+        defaults---一个路径名标识符[pathname designator]. 默认是一个主机成员和 *default-pathname-defaults* 的主机成员相同, 而其他成员都是 nil 的路径名[pathname].
         case---:common 或 :local 其中之一. 默认是 :local.
-        pathname---一个路径名.
+        pathname---一个路径名[pathname].
 
 * 描述(Description):
 
-        从提供的关键字参数中构造并返回一个路径名.
+        从提供的关键字参数中构造并返回一个路径名[pathname].
 
-        在这些通过显式提供 host, device, directory, name, type, 和 version 的成员被填充之后, merge-pathnames 使用的合并规则被用于填充 defaults 提供的默认值中的任何未提供的成员.
+        在由 host, device, directory, name, type, 和 version 显式提供的成员被填充之后, merge-pathnames 使用的合并规则被用于填充 defaults 提供的默认值中的任何未提供的成员.
 
-        无论何时构造路径名, 如果合适, 成员都可以被规范化. 对于可以为每个成员提供的参数的解释, 见章节 19.2.1 (路径名成员).
+        只要构造了路径名[pathname], 就可以在适当的情况下规范化成员. 关于可以提供给每个成员的参数的解释, 见章节 19.2.1 (路径名成员).
 
-        如果提供了 case, 它会像章节 19.2.2.1.2 (路径名成员中的大小写) 描述的那样被对待.
+        如果提供了 case, 它会像章节 19.2.2.1.2 (路径名成员中的大小写) 描述的那样被处理.
 
-        这个产生的路径名 pathname 当且仅当它的主机成员是一个逻辑主机或者一个命名一个已定义的逻辑主机的字符串时是一个逻辑路径名.
+        当且仅当产生的这个路径名 pathname 的主机成员是一个逻辑主机[logical host]或者是一个命名已定义的逻辑主机[logical host]的字符串[string]时, 这个路径名 pathname 是一个逻辑路径名[logical pathname].
 
-        如果这个 directory 是一个字符串, 它应该是一个顶层目录的名字, 并且不应该包含任何标点符号字符; 这就是说, 指定一个字符串, str, 等价于指定列表 (:absolute str). 指定符号 :wild 等价于指定列表 (:absolute :wild-inferiors), 或者在一个不支持 :wild-inferiors 的文件系统中是 (:absolute :wild).
+        如果这个 directory 是一个字符串[string], 它应该是一个顶层目录的名字, 并且不应该包含任何标点符号字符; 这就是说, 指定一个字符串[string], str, 等价于指定列表 (:absolute str). 指定符号 :wild 等价于指定列表 (:absolute :wild-inferiors), 或者在一个不支持 :wild-inferiors 的文件系统中就是 (:absolute :wild).
 
 * 示例(Examples):
 
@@ -636,17 +636,17 @@ NOT=>  #P"OZ:PS:<TEST>"
 
 * 受此影响(Affected By):
 
-        文件系统.
+        文件系统[file system].
 
 * 异常情况(Exceptional Situations): None.
 
 * 也见(See Also):
 
-        merge-pathnames, pathname, logical-pathname, 章节 20.1 (File System Concepts), 章节 19.1.2 (路径名作为文件名)
+        merge-pathnames, pathname, logical-pathname, 章节 20.1 (文件系统概念), 章节 19.1.2 (路径名作为文件名)
 
 * 注意(Notes):
 
-        可移植程序不应该为任何成员提供 :unspecific. 见章节 19.2.2.2.3 (:UNSPECIFIC as a Component Value). 
+        可移植程序不应该为任何成员提供 :unspecific. 见章节 19.2.2.2.3 (:UNSPECIFIC 作为成员值). 
 
 
 ### <span id="F-PATHNAMEP">函数 PATHNAMEP</span>
@@ -657,12 +657,12 @@ NOT=>  #P"OZ:PS:<TEST>"
 
 * 参数和值(Arguments and Values):
 
-        object---一个对象.
-        generalized-boolean---一个广义 boolean.
+        object---一个对象[object].
+        generalized-boolean---一个广义 boolean [generalized boolean].
 
 * 描述(Description):
 
-        如果对象 object 是 pathname 类型就返回 true; 否则, 返回 false.
+        如果对象 object 是 pathname 类型[type]就返回 true; 否则, 返回 false.
 
 * 示例(Examples):
 
@@ -709,22 +709,22 @@ NOT=>  #P"OZ:PS:<TEST>"
 
 * 参数和值(Arguments and Values):
 
-        pathname---一个路径名标识符.
+        pathname---一个路径名标识符[pathname designator].
         case---:local 或 :common 其中之一. 默认是 :local.
-        host---一个有效的路径名主机.
-        device---一个有效的路径名设备.
-        directory---一个有效的路径名目录.
-        name---一个有效的路径名名称.
-        type---一个有效的路径名类型.
-        version---一个有效的路径名版本.
+        host---一个有效路径名主机[valid pathname host].
+        device---一个有效路径名设备[valid pathname device].
+        directory---一个有效路径名目录[valid pathname directory].
+        name---一个有效路径名名称[valid pathname name].
+        type---一个有效路径名类型[valid pathname type].
+        version---一个有效路径名版本[valid pathname version].
 
 * 描述(Description):
 
         这些函数返回路径名 pathname 的成员.
 
-        如果这个 pathname 标识符是一个路径名, 它表示被用于打开这个文件的名字. 这可能是, 但不一定是文件的实际名称.
+        如果这个 pathname 标识符[designator]是一个路径名[pathname], 它表示被用于打开这个文件的名字. 这可能是, 但不一定是文件的实际名称.
 
-        如果提供了 case, 它会像章节 19.2.2.1.2 (路径名成员中的大小写) 中描述的那样被对待.
+        如果提供了 case, 它会像章节 19.2.2.1.2 (路径名成员中的大小写) 中描述的那样被处理.
 
 * 示例(Examples):
 
@@ -793,15 +793,15 @@ NOT=>  #P"OZ:PS:<TEST>"
 
 * 受此影响(Affected By):
 
-        这个具体实现和主机文件系统.
+        这个具体实现[implementation]和主机文件系统[file system].
 
 * 异常情况(Exceptional Situations):
 
-        如果它的第一个参数不是一个路径名, 那么应该发出一个 type-error 类型的错误.
+        如果它的第一个参数不是一个路径名[pathname], 那么应该发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
-        pathname, logical-pathname, 章节 20.1 (File System Concepts), 章节 19.1.2 (路径名作为文件名)
+        pathname, logical-pathname, 章节 20.1 (文件系统概念), 章节 19.1.2 (路径名作为文件名)
 
 * 注意(Notes): None. 
 
@@ -814,14 +814,14 @@ NOT=>  #P"OZ:PS:<TEST>"
 
 * 参数和值(Arguments and Values):
 
-        host---一个字符串.
-        just-loaded---一个广义 boolean.
+        host---一个字符串[string].
+        just-loaded---一个广义 boolean [generalized boolean].
 
 * 描述(Description):
 
-        搜索并加载一个名为 host 的逻辑主机的定义, 如果它没有被定义的话. 这个搜索的具体性质是具体实现定义的.
+        搜索并加载一个名为 host 的逻辑主机[logical host]的定义, 如果它没有被定义的话. 这个搜索的具体性质是具体实现定义的[implementation-defined].
 
-        如果这个主机 host 已经被定义, 不会去尝试查找或加载定义的尝试, 并且返回 false. 如果这个主机 host 还没有被定义, 但是成功找到并加载了一个定义, 就返回 true. 否则, 发出一个错误.
+        如果已经定义了这个主机 host , 则不会尝试查找或加载定义, 并且返回 false. 如果这个主机 host 还没有被定义, 但是成功找到并加载了一个定义, 就返回 true. 否则, 发出一个错误.
 
 * 示例(Examples):
 
@@ -842,7 +842,7 @@ NOT=>  #P"OZ:PS:<TEST>"
 
 * 异常情况(Exceptional Situations):
 
-        如果没有找到定义, 就会发出一个 error 类型的错误.
+        如果没有找到定义, 就会发出一个 error 类型[type]的错误.
 
 * 也见(See Also):
 
@@ -850,7 +850,8 @@ NOT=>  #P"OZ:PS:<TEST>"
 
 * 注意(Notes):
 
-        逻辑路径名定义不止会被实现者创建, 也会被程序员创建. 因此, 重要的是要记录搜索策略. 比如, 一个具体实现可能定义了一个主机的定义要在某个特定已命名目录中称为"host.translations"的文件中找到.
+        逻辑路径名[logical pathname]定义不止会被实现者创建, 也会被程序员[programmer]创建. 因此, 重要的是要记录搜索策略. 比如, 一个具体实现[implementation]可能定义了一个主机的定义要在某个特定已命名目录中称为"host.translations"的文件中找到.
+
 
 ### <span id="A-LOGICAL-PATHNAME-TRANSLATIONS">访问器 LOGICAL-PATHNAME-TRANSLATIONS</span>
 
@@ -862,18 +863,18 @@ NOT=>  #P"OZ:PS:<TEST>"
 
 * 参数和值(Arguments and Values):
 
-        host--一个逻辑主机标识符.
-        translations, new-translations---一个列表.
+        host--一个逻辑主机标识符[logical host designator].
+        translations, new-translations---一个列表[list].
 
 * 描述(Description):
 
-        返回这个主机的转化列表. 每一个转化都是一个两元素的列表: from-wildcard 和 to-wildcard. 任何额外的元素都是具体实现定义的. from-wildcard 是一个主机为 host 的逻辑路径名. to-wildcard 是一个路径名.
+        返回这个主机的转化列表[list]. 每一个转化都是一个两元素的列表[list]: from-wildcard 和 to-wildcard. 任何额外的元素都是具体实现定义的[implementation-defined]. from-wildcard 是一个主机为 host 的逻辑路径名[logical pathname]. to-wildcard 是一个路径名[pathname].
 
-        (setf (logical-pathname-translations host) translations) 设置一个逻辑路径名主机的转换列表. 如果 host 是一个之前没有被用作一个逻辑路径名主机的字符串, 那么就会定义一个新的逻辑路径名主机; 否则一个已存在的主机转换会被替换. 逻辑路径名主机名字可以使用 string-equal 比较.
+        (setf (logical-pathname-translations host) translations) 设置一个逻辑路径名[logical pathname]主机的转换列表[list]. 如果 host 是一个之前没有被用作一个逻辑路径名[logical pathname]主机的字符串[string], 那么就会定义一个新的逻辑路径名[logical pathname]主机; 否则一个已存在的主机转换会被替换. 逻辑路径名[logical pathname]主机名字使用 string-equal 比较.
 
-        在设置这个转换列表时, 每个 from-wildcard 都可以是一个逻辑路径名, 它的主机为 host 或者一个可通过 (parse-namestring string host) 解析的逻辑路径名名称字符串, 其中 host 表示由 parse-namestring 定义的合适对象. 每个 to-wildcard 可以是可通过 (pathname to-wildcard) 强制转为一个路径名的任何东西. 如果 to-wildcard 强制转为一个逻辑路径名, translate-logical-pathname 会在它使用它时执行重复的转化步骤.
+        在设置这个转换列表时, 每个 from-wildcard 都可以是一个逻辑路径名[logical pathname], 它的主机为 host 或者一个可通过 (parse-namestring string host) 解析的逻辑路径名[logical pathname]名称字符串, 其中 host 表示由 parse-namestring 定义的合适对象[object]. 每个 to-wildcard 可以是可通过 (pathname to-wildcard) 强制转为一个路径名[pathname]的任何东西. 如果 to-wildcard 强制转为一个逻辑路径名[logical pathname], translate-logical-pathname 会在使用它时执行重复的转化步骤.
 
-        host 是一个逻辑路径名的主机成员或是一个已经通过 logical-pathname-translations 的 setf 被定义为一个逻辑路径名主机名字的字符串.
+        host 是一个逻辑路径名[logical pathname]的主机成员或是一个已经通过 logical-pathname-translations 的 setf 被定义为一个逻辑路径名[logical pathname]主机名字的字符串.
 
 * 示例(Examples):
 
@@ -992,7 +993,7 @@ NOT=>  #P"OZ:PS:<TEST>"
 
 * 异常情况(Exceptional Situations):
 
-        如果 host 没有被正确提供, 就会发出一个 type-error 类型的错误.
+        如果 host 没有被正确提供, 就会发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
@@ -1000,7 +1001,7 @@ NOT=>  #P"OZ:PS:<TEST>"
 
 * 注意(Notes):
 
-        具体实现可以定义在逻辑路径名主机上操作的额外函数, 比如去指定额外的转化规则或选项. 
+        具体实现可以定义在逻辑路径名[logical pathname]主机上操作的额外函数[function], 比如去指定额外的转化规则或选项. 
 
 
 ### <span id="F-LOGICAL-PATHNAME">函数 LOGICAL-PATHNAME</span>
@@ -1011,14 +1012,14 @@ NOT=>  #P"OZ:PS:<TEST>"
 
 * 参数和值(Arguments and Values):
 
-        pathspec---一个逻辑路径名, 一个逻辑路径名名称字符串, 或者一个流.
-        logical-pathname---一个逻辑路径名.
+        pathspec---一个逻辑路径名[logical pathname], 一个逻辑路径名[logical pathname]名称字符串[namestring], 或者一个流[stream].
+        logical-pathname---一个逻辑路径名[logical pathname].
 
 * 描述(Description):
 
-        logical-pathname 把 pathspec 转换为一个逻辑路径名并返回这个新的逻辑路径名. 如果 pathspec 是一个逻辑路径名名称字符串, 它应该包含一个主机成员并且它跟随的冒号. 如果 pathspec 是一个流, 它应该是一个可以让 pathname 返回一个逻辑路径名的流.
+        logical-pathname 把 pathspec 转换为一个逻辑路径名[logical pathname]并返回这个新的逻辑路径名[logical pathname]. 如果 pathspec 是一个逻辑路径名[logical pathname]名称字符串[namestring], 它应该包含一个主机成员以及它跟随的冒号[colon]. 如果 pathspec 是一个流[stream], 它应该是一个可以让 pathname 返回一个逻辑路径名[logical pathname]的流[stream].
 
-        如果 pathspec 是一个流, 这个流可以是打开的或者关闭的. 在一个文件被关闭后 logical-pathname 返回一个和这个文件打开时它返回的相同的逻辑路径名. 如果 pathspec 是一个使用 make-two-way-stream, make-echo-stream, make-broadcast-stream, make-concatenated-stream, make-string-input-stream, 或 make-string-output-stream 所创建的流, 那么就是一个错误.
+        如果 pathspec 是一个流[stream], 这个流[stream]可以是打开的或者关闭的. 在一个文件被关闭后 logical-pathname 返回一个和这个文件打开时它返回的相同的逻辑路径名[logical pathname]. 如果 pathspec 是一个使用 make-two-way-stream, make-echo-stream, make-broadcast-stream, make-concatenated-stream, make-string-input-stream, 或 make-string-output-stream 所创建的流[stream], 那么就是一个错误.
 
 * 示例(Examples): None.
 
@@ -1026,7 +1027,7 @@ NOT=>  #P"OZ:PS:<TEST>"
 
 * 异常情况(Exceptional Situations):
 
-        如果 pathspec 没有被正确提供, 那么应该发出一个 type-error 类型的错误.
+        如果 pathspec 没有被正确提供, 那么应该发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
@@ -1039,15 +1040,15 @@ NOT=>  #P"OZ:PS:<TEST>"
 
 * 值类型(Value Type):
 
-        一个路径名对象.
+        一个路径名[pathname]对象[object].
 
 * 初始值(Initial Value):
 
-        一个依赖于具体实现的路径名, 通常是在 Common Lisp 启动时当前的工作目录中.
+        一个依赖于具体实现[implementation-dependent]的路径名[pathname], 通常是在 Common Lisp 启动时当前的工作目录中.
 
 * 描述(Description):
 
-        一个被用作默认值的路径名, 当一个函数需要一个默认的路径名并且没有没有提供时.
+        一个路径名[pathname], 当一个函数[function]需要一个默认的路径名[pathname]但是没有提供时被用作默认值.
 
 * 示例(Examples):
 
@@ -1066,7 +1067,7 @@ NOT=>  #P"OZ:PS:<TEST>"
 
 * 受此影响(Affected By):
 
-        具体实现.
+        具体实现[implementation].
 
 * 也见(See Also): None.
 
@@ -1089,13 +1090,13 @@ NOT=>  #P"OZ:PS:<TEST>"
 
 * 参数和值(Arguments and Values):
 
-        pathname---一个路径名标识符.
-        defaults---一个路径名标识符. 默认是 *default-pathname-defaults* 的值.
-        namestring---一个字符串或 nil.
+        pathname---一个路径名标识符[pathname designator].
+        defaults---一个路径名标识符[pathname designator]. 默认是 *default-pathname-defaults* 的值.
+        namestring---一个字符串[string]或 nil.
 
 * 描述(Description):
 
-        这些函数转换路径名 pathname 为一个名称字符串. 由路径名 pathname 表示的名称以一种依赖于具体实现的规范形式作为名称字符串返回.
+        这些函数转换路径名 pathname 为一个名称字符串. 由路径名 pathname 表示的名称以一种依赖于具体实现[implementation-dependent]的规范形式作为名称字符串[namestring]返回.
 
         namestring 路径名 pathname 的完整形式.
 
@@ -1105,14 +1106,14 @@ NOT=>  #P"OZ:PS:<TEST>"
 
         host-namestring 返回主机名部分.
 
-        enough-namestring 返回一个缩写的名称字符串, 它仅足以识别与 defaults 相关的 pathname 命名的文件. 在所有情况下, 它要求这样
+        enough-namestring 返回一个缩写的名称字符串, 当相对于默认值 defaults 考虑时, 它仅足以识别由 pathname 命名的文件. 在所有情况下, 它要求
 
             (merge-pathnames (enough-namestring pathname defaults) defaults)
             ==  (merge-pathnames (parse-namestring pathname nil defaults) defaults)
 
-        并且这个 enough-namestring 的结果是满足这个标准的最短的合理字符串.
+        并且这个 enough-namestring 的结果是满足这个标准的最短的合理字符串[string].
 
-        不可能通过将三个较短的名称字符串以某种顺序连接在一起来构造一个有效的名称字符串.
+        不可能通过将三个较短的名称字符串[namestring]以某种顺序连接在一起来构造一个有效的名称字符串[namestring].
 
 * 示例(Examples):
 
@@ -1163,7 +1164,7 @@ NOT=>  #P"OZ:PS:<TEST>"
 
 * 也见(See Also):
 
-        truename, merge-pathnames, pathname, logical-pathname, 章节 20.1 (File System Concepts), 章节 19.1.2 (路径名作为文件名)
+        truename, merge-pathnames, pathname, logical-pathname, 章节 20.1 (文件系统概念), 章节 19.1.2 (路径名作为文件名)
 
 * 注意(Notes): None. 
 
@@ -1177,47 +1178,47 @@ NOT=>  #P"OZ:PS:<TEST>"
 
 * 参数和值(Arguments and Values):
 
-        thing---一个字符串, 一个路径名, 或者一个和文件相关的流.
-        host---一个有效路径名主机, 一个逻辑主机, 或者 nil.
-        default-pathname---一个路径名标识符. 默认是 *default-pathname-defaults* 的值.
-        start, end---thing 的边界索引标识符. 对于 start 和 end 默认是 0 和 nil.
-        junk-allowed---一个广义 boolean. 默认是 false.
-        pathname---路径名, 或 nil.
-        position---对于 thing 的一个边界索引标识符.
+        thing---一个字符串[string], 一个路径名[pathname], 或者一个和文件相关的流[stream associated with a file].
+        host---一个有效路径名主机[valid pathname host], 一个逻辑主机[logical host], 或者 nil.
+        default-pathname---一个路径名标识符[pathname designator]. 默认是 *default-pathname-defaults* 的值.
+        start, end---thing 的边界索引标识符[bounding index designator]. 对于 start 和 end 默认是 0 和 nil.
+        junk-allowed---一个广义 boolean [generalized boolean]. 默认是 false.
+        pathname---一个路径名[pathname], 或 nil.
+        position---thing 的一个边界索引标识符[bounding index designator].
 
 * 描述(Description):
 
-        转换 thing 为一个路径名.
+        转换 thing 为一个路径名[pathname].
 
         主机 host 提供一个相对于解析发生的主机名.
 
-        如果 thing 是一个和一个文件关联的流, 处理的过程就好像是用来打开那个文件的路径名已经被提供了.
+        如果 thing 是一个和一个文件关联的流[stream associated with a file], 处理的过程就好像用来打开那个文件[file]的路径名[pathname]已经被提供了一样.
 
-        如果 thing 是一个路径名, 主机 host 和 thing 的主机成员会被比较. 如果它们匹配, 立即返回两个值: thing 和 start; 否则 (如果它们不匹配), 发出一个错误.
+        如果 thing 是一个路径名[pathname], 主机 host 和 thing 的主机成员会被比较. 如果它们匹配, 立即返回两个值: thing 和 start; 否则 (如果它们不匹配), 发出一个错误.
 
-        否则 (如果 thing 是一个字符串), parse-namestring 在这个 thing 里 start 和 end 限定的子字符串中解析一个文件的名字.
+        否则 (如果 thing 是一个字符串[string]), parse-namestring 在这个 thing 中由 start 和 end 限定的子字符串中解析一个文件[file]的名字.
 
-        如果 thing 是一个字符串那么这个 thing 里 start 和 end 限定的子字符串按照如下被解析为一个路径名:
+        如果 thing 是一个字符串[string]那么这个 thing 中由 start 和 end 限定[bounded]的子字符串按照如下被解析为一个路径名[pathname]:
 
-        * 如果 host 是一个逻辑主机那么 thing 解析为主机 host 上的一个逻辑路径名名称字符串.
+        * 如果 host 是一个逻辑主机[logical host]那么 thing 解析为主机 host 上的一个逻辑路径名[logical pathname]名称字符串[namestring].
 
-        * 如果 host 是 nil 并且 thing 是一个包含一个显式主机的语法有效的逻辑路径名名称字符串, 那么它被解析为一个逻辑路径名名称字符串.
+        * 如果 host 是 nil 并且 thing 是一个包含一个显式主机的语法有效的逻辑路径名[logical pathname]名称字符串[namestring], 那么它被解析为一个逻辑路径名[logical pathname]名称字符串[namestring].
 
-        * 如果 host 是 nil, default-pathname 是一个逻辑路径名, 并且 thing 是一个没有一个显式主机的语法有效的逻辑路径名名称字符串, 那么它被解析为一个在 default-pathname 主机成员的主机上的逻辑路径名名称字符串.
+        * 如果 host 是 nil, default-pathname 是一个逻辑路径名[logical pathname], 并且 thing 是一个没有一个显式主机的语法有效的逻辑路径名[logical pathname]名称字符串[namestring], 那么它被解析为一个在 default-pathname 主机成员的主机上的逻辑路径名[logical pathname]名称字符串[namestring].
 
-        * 否则, 这个 thing 的解析是具体实现定义的.
+        * 否则, 这个 thing 的解析是具体实现定义的[implementation-defined].
 
-        在第一个情况中, 这个逻辑路径名名称字符串的主机部分和它跟随的冒号是可选的.
+        在第一个情况中, 这个逻辑路径名[logical pathname]名称字符串的主机部分和它跟随的冒号[colon]是可选的.
 
         如果这个名称字符串的主机部分和 host 都出现了但是不匹配, 就会发出一个错误.
 
-        如果 junk-allowed 是 true, 那么主要的值就是解析的路径名, 如果没有找到语法正确的路径名, 那么就是 nil. 如果 junk-allowed 是 false, 那么整个字符串子字符串会被扫描, 而主要的值就是解析的路径名.
+        如果 junk-allowed 是 true, 那么主值[primary value]就是解析的路径名[pathname], 如果没有找到语法正确的路径名[pathname], 那么就是 nil. 如果 junk-allowed 是 false, 那么整个字符串子字符串会被扫描, 而主值[primary value]就是解析的路径名[pathname].
 
-        在每个情况中, 第二个值是 thing 中终止这个解析的索引, 或者如果这个解析在这个子字符串末尾终止, 就是超出这个子字符串的索引 (如果 junk-allowed 是 false, 情况总是如此).
+        在每个情况中, 第二个值[secondary value]是 thing 中终止这个解析的索引, 或者如果这个解析在这个子字符串末尾终止, 就是超出这个子字符串的索引 (如果 junk-allowed 是 false, 情况总是如此).
 
-        解析一个空字符串总是成功的, 产生一个所有成员等于 nil (除了主机)的路径名.
+        解析一个空[null]字符串[string]总是成功的, 产生一个所有成员等于 nil (除了主机)的路径名[pathname].
 
-        如果 thing 包含一个显式主机名而没有显式的设备名, 那么 parse-namestring 是否会为那个 host 提供标准默认设备作为产生路径名的设备成员是具体实现定义的.
+        如果 thing 包含一个显式主机名而没有显式的设备名, 那么 parse-namestring 是否会为那个 host 提供标准默认设备作为产生的路径名[pathname]的设备成员是具体实现定义的[implementation-defined].
 
 * 示例(Examples):
 
@@ -1243,15 +1244,15 @@ NOT=>  #P"OZ:PS:<TEST>"
 
 * 异常情况(Exceptional Situations):
 
-        如果 junk-allowed 是 false, 如果 thing 不完全由一个路径名的表示组成, 如果与具体实现的文化协定是合适的, 可能任何一边包围着空格, 那么就会发出一个 error 类型的错误.
+        如果 junk-allowed 是 false, 如果 thing 不完全由一个路径名[pathname]的表示组成, 可能任何一边包围着空格[whitespace[1]]字符(如果这符合实现的文化约定), 那么就会发出一个 error 类型[type]的错误.
 
-        如果提供了 host 并且不是 nil, 那么 thing 会包含一个一个清单主机名, 如果这些主机不匹配就会发出一个 error 类型的错误.
+        如果提供了 host 并且不是 nil, 那么 thing 会包含一个明显的主机名, 如果这些主机不匹配就会发出一个 error 类型[type]的错误.
 
-        如果 thing 是一个逻辑路径名名称字符串并且如果这个名称字符串的主机部分和 host 都出现但是不匹配, 就会发出一个 error 类型的错误.
+        如果 thing 是一个逻辑路径名[logical pathname]名称字符串并且如果这个名称字符串的主机部分和 host 都出现但是不匹配, 就会发出一个 error 类型[type]的错误.
 
 * 也见(See Also):
 
-        pathname, logical-pathname, 章节 20.1 (File System Concepts), 章节 19.2.2.2.3 (:UNSPECIFIC as a Component Value), 章节 19.1.2 (路径名作为文件名)
+        pathname, logical-pathname, 章节 20.1 (文件系统概念), 章节 19.2.2.2.3 (:UNSPECIFIC 作为成员值), 章节 19.1.2 (路径名作为文件名)
 
 * 注意(Notes): None. 
 
@@ -1264,17 +1265,17 @@ NOT=>  #P"OZ:PS:<TEST>"
 
 * 参数和值(Arguments and Values):
 
-        pathname---一个路径名标识符.
+        pathname---一个路径名标识符[pathname designator].
         field-key---:host, :device :directory, :name, :type, :version 其中之一, 或者 nil.
-        generalized-boolean---一个广义 boolean.
+        generalized-boolean---一个广义 boolean [generalized boolean].
 
 * 描述(Description):
 
         wild-pathname-p 检验 pathname 中通配符成员的存在性.
 
-        如果 pathname 是一个路径名 (就像是由 pathname 返回的), 那么它就表示被用来打开这个文件的名字. 这可能, 但不是必须, 是这个文件的实际名字.
+        如果 pathname 是一个路径名[pathname] (就像是由 pathname 返回的), 那么它就表示被用来打开这个文件的名字. 这可能, 但不是必须, 是这个文件的实际名字.
 
-        如果没有提供 field-key 或者是 nil, 如果 pathname 有着任何的通配符成员, 那么 wild-pathname-p 返回 true, 如果没有就是 nil. 如果 field-key 是 non-nil, 如果表示的 pathname 的成员是一个通配符, 那么 wild-pathname-p 返回 true, 如果那个成员不是一个通配符就返回 nil.
+        如果没有提供 field-key 或者是 nil, 如果 pathname 有着任何通配符成员, 那么 wild-pathname-p 返回 true, 如果 pathname 没有通配符成员那么就是 nil. 如果 field-key 是非 nil [non-nil], 如果表示的 pathname 的成员是一个通配符, 那么 wild-pathname-p 返回 true, 如果那个成员不是一个通配符就返回 nil.
 
 * 示例(Examples):
 
@@ -1295,11 +1296,11 @@ NOT=>  #P"OZ:PS:<TEST>"
 
 * 异常情况(Exceptional Situations):
 
-        如果 pathname 不是一个路径名, 一个字符串, 或者一个和文件关联的流, 那么就会发出一个 type-error 类型的错误.
+        如果 pathname 不是一个路径名[pathname], 一个字符串[string], 或者一个和文件关联的流[stream associated with a file], 那么就会发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
-        pathname, logical-pathname, 章节 20.1 (File System Concepts), 章节 19.1.2 (路径名作为文件名)
+        pathname, logical-pathname, 章节 20.1 (文件系统概念), 章节 19.1.2 (路径名作为文件名)
 
 * 注意(Notes):
 
@@ -1314,15 +1315,15 @@ NOT=>  #P"OZ:PS:<TEST>"
 
 * 参数和值(Arguments and Values):
 
-        pathname---一个路径名标识符.
-        wildcard---一个通配路径名的标识符.
-        generalized-boolean---一个广义 boolean.
+        pathname---一个路径名标识符[pathname designator].
+        wildcard---一个通配[wild]路径名[pathname]的标识符[designator].
+        generalized-boolean---一个广义 boolean [generalized boolean].
 
 * 描述(Description):
 
-        如果路径名 pathname 匹配通配符 wildcard 那么 pathname-match-p 就返回 true, 否则返回 nil. 这个匹配规则是具体实现定义的, 但是应该和 directory 一致. wildcard 的缺失成员默认为 :wild.
+        如果路径名 pathname 匹配通配符 wildcard 那么 pathname-match-p 就返回 true, 否则返回 nil. 这个匹配规则是具体实现定义的[implementation-defined], 但是应该和 directory 一致. wildcard 的缺失成员默认为 :wild.
 
-        对于路径名 pathname 是一个通配路径名也是有效的; 在路径名 pathname 中的一个通配符域只能匹配 wildcard 的一个通配符域(换句话说, pathname-match-p 是可交换的). 对于 wildcard 是一个非通配路径名也是有效的.
+        对于路径名 pathname 是一个通配路径名[pathname]也是有效的; 在路径名 pathname 中的一个通配符域只能匹配 wildcard 的一个通配符域(换句话说, pathname-match-p 是可交换的). 对于 wildcard 是一个非通配路径名[pathname]也是有效的.
 
 * 示例(Examples): None.
 
@@ -1330,11 +1331,11 @@ NOT=>  #P"OZ:PS:<TEST>"
 
 * 异常情况(Exceptional Situations):
 
-        如果 pathname 或 wildcard 不是一个路径名, 字符串, 或者一个和文件关联的流, 就会发出一个 type-error 类型的错误.
+        如果 pathname 或 wildcard 不是一个路径名[pathname], 字符串[string], 或者一个和文件关联的流[stream associated with a file], 就会发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
-        directory, pathname, logical-pathname, 章节 20.1 (File System Concepts), 章节 19.1.2 (路径名作为文件名)
+        directory, pathname, logical-pathname, 章节 20.1 (文件系统概念), 章节 19.1.2 (路径名作为文件名)
 
 * 注意(Notes): None. 
 
@@ -1347,20 +1348,20 @@ NOT=>  #P"OZ:PS:<TEST>"
 
 * 参数和值(Arguments and Values):
 
-        pathname---一个路径名标识符, 或者一个逻辑路径名名称字符串.
-        physical-pathname---一个物理路径名.
+        pathname---一个路径名标识符[pathname designator], 或者一个逻辑路径名[logical pathname]名称字符串[namestring].
+        physical-pathname---一个物理路径名[physical pathname].
 
 * 描述(Description):
 
-        把路径名 pathname 转换为一个物理路径名, 并返回它.
+        把路径名 pathname 转换为一个物理路径名[physical pathname], 并返回它.
 
-        如果 pathname 是一个流, 这个流可以是打开的或关闭的. 在文件关闭之后 translate-logical-pathname 还是返回和这个文件打开时返回的相同的物理路径名. 如果路径名 pathname 是一个用 make-two-way-stream, make-echo-stream, make-broadcast-stream, make-concatenated-stream, make-string-input-stream, make-string-output-stream 创建的流, 那就是一个错误.
+        如果 pathname 是一个流[stream], 那么这个流[stream]可以是打开的或关闭的. 在文件关闭之后 translate-logical-pathname 还是返回和这个文件打开时返回的相同的物理路径名. 如果路径名 pathname 是一个用 make-two-way-stream, make-echo-stream, make-broadcast-stream, make-concatenated-stream, make-string-input-stream, make-string-output-stream 创建的流[stream], 那就是一个错误.
 
-        如果 pathname 是一个逻辑路径名名称字符串, 这个逻辑路径名名称字符串的主机部分和它跟随的冒号就是必须的.
+        如果 pathname 是一个逻辑路径名[logical pathname]名称字符串, 这个逻辑路径名[logical pathname]名称字符串的主机部分和它跟随的冒号[colon]就是必须的.
 
-        pathname 受限被强制转为一个路径名. 如果这个强制转换后的路径名是一个物理路径名, 它会被返回. 如果这个强制转换后的路径名是一个逻辑路径名, 这个逻辑路径名主机第一个匹配的转换 (根据 pathname-match-p) 会被应用, 就像是通过调用 translate-pathname 的一样. 如果这个结果是一个逻辑路径名, 会重复这个过程. 当这个结果最终为一个物理路径名时, 它会被返回. 如果没有匹配的转换, 就会发出一个错误.
+        pathname 首先被强制转为一个路径名[pathname]. 如果这个强制转换后的路径名 pathname 是一个物理路径名, 它会被返回. 如果这个强制转换后的路径名 pathname 是一个逻辑路径名[logical pathname], 这个逻辑路径名[logical pathname]主机第一个匹配的转换 (根据 pathname-match-p) 会被应用, 就像是通过调用 translate-pathname 的一样. 如果这个结果是一个逻辑路径名[logical pathname], 会重复这个过程. 当这个结果最终为一个物理路径名时, 它会被返回. 如果没有匹配的转换, 就会发出一个错误.
 
-        translate-logical-pathname 可能执行额外的转换, 通常是将文件类型转换为本地命名约定, 以适应长度有限的物理文件系统, 或者处理特殊的字符需求, 例如将连字符转换为下划线或大写字母到小写. 任何这样的额外转换都是具体实现定义的. 某些实现没有额外的转换.
+        translate-logical-pathname 可能执行额外的转换, 通常是将文件类型转换为本地命名约定, 以适应长度有限的物理文件系统, 或者处理特殊的字符需求, 例如将连字符转换为下划线或大写字母到小写. 任何这样的额外转换都是具体实现定义的[implementation-defined]. 某些实现没有额外的转换.
 
         这里没有为 translate-logical-pathname 指定关键字参数, 但是具体实现允许通过添加关键字参数来扩展它.
 
@@ -1372,15 +1373,16 @@ NOT=>  #P"OZ:PS:<TEST>"
 
 * 异常情况(Exceptional Situations):
 
-        如果 pathname 没有被正确提供, 就会发出一个 type-error 类型的错误.
+        如果 pathname 没有被正确提供, 就会发出一个 type-error 类型[type]的错误.
 
-        如果没有匹配的转换, 就会发出一个 file-error 类型的错误.
+        如果没有匹配的转换, 就会发出一个 file-error 类型[type]的错误.
 
 * 也见(See Also):
 
-        logical-pathname, logical-pathname-translations, logical-pathname, 章节 20.1 (File System Concepts), 章节 19.1.2 (路径名作为文件名)
+        logical-pathname, logical-pathname-translations, logical-pathname, 章节 20.1 (文件系统概念), 章节 19.1.2 (路径名作为文件名)
 
 * 注意(Notes): None. 
+
 
 ### <span id="F-TRANSLATE-PATHNAME">函数 TRANSLATE-PATHNAME</span>
 
@@ -1391,26 +1393,26 @@ NOT=>  #P"OZ:PS:<TEST>"
 
 * 参数和值(Arguments and Values):
 
-        source---一个路径名标识符.
-        from-wildcard---一个路径名标识符.
-        to-wildcard---一个路径名标识符.
-        translated-pathname---一个路径名.
+        source---一个路径名标识符[pathname designator].
+        from-wildcard---一个路径名标识符[pathname designator].
+        to-wildcard---一个路径名标识符[pathname designator].
+        translated-pathname---一个路径名[pathname].
 
 * 描述(Description):
 
-        translate-pathname 把源 source (that matches from-wildcard) 转换为一个匹配 to-wildcard 的对应路径名, 并且返回这个对应路径名.
+        translate-pathname 把源 source (它匹配 from-wildcard) 转换为一个匹配 to-wildcard 的对应路径名, 并且返回这个对应路径名[pathname].
 
-        这个产生的路径名是 to-wildcard, 其中每一个通配符或缺失的域由 source 中的一个部分替换. 一个 "通配符域(wildcard field)" 是一个带有一个 :wild 值的路径名成员, 一个列表值的目录成员的 :wild 元素, 或者是一个成员的具体实现定义的一个部分, 例如一些实现支持的复杂通配符字符串 "foo*bar" 中的 "*". 一个添加例如正则表达式这样的其他通配符特性的具体实现必须定义 translate-pathname 如何扩展到这些特性的. 一个 "缺失的域(missing field)" 是一个带有 nil 值的路径名成员.
+        这个产生的路径名[pathname]是 to-wildcard, 其中每一个通配符或缺失的域由 source 中的部分替换. 一个 "通配符域(wildcard field)" 是一个带有一个 :wild 值的路径名成员[pathname], 一个列表[list]值的目录成员的 :wild 元素, 或者是一个成员的具体实现定义[implementation-defined]的部分, 例如一些实现支持的复杂通配符字符串 "foo*bar" 中的 "*". 一个添加例如正则表达式这样的其他通配符特性的具体实现必须定义 translate-pathname 如何扩展到这些特性的. 一个 "缺失的域(missing field)" 是一个带有 nil 值的路径名[pathname]成员.
 
-        这个 source 被拷贝到产生的路径名的部分是具体实现定义的. 通常它是由所涉及的文件系统的用户接口协议决定的. 通常，它是与 from-wildcard 的通配符字段相匹配的源的一部分, 它的位置与 to-wildcard 的通配符或缺失字段相同. 如果在 from-wildcard 的那个位置没有通配符域, 通常那么它是源 source 的整个对应路径名成员, 或者在一个列表值的目录成员中, 就是整个对应的列表元素.
+        这个 source 被拷贝到产生的路径名[pathname]的部分是具体实现定义的[implementation-defined]. 通常它是由所涉及的文件系统的用户接口协议决定的. 通常, 它是与 from-wildcard 的通配符域相匹配的源的一部分, 它的位置与 to-wildcard 的通配符或缺失域相同. 如果在 from-wildcard 的那个位置没有通配符域, 那么通常它是源 source 的整个对应路径名[pathname]成员, 或者在一个列表[list]值的目录成员中, 就是对应的整个列表[list]元素.
 
-        在拷贝源 source 的一个部分到产生的路径名期间, 可能发生额外的具体实现定义的大小写或文件命名惯例的转换, 尤其是当 from-wildcard 和 to-wildcard 是不同主机的时候.
+        在拷贝源 source 的一个部分到产生的路径名[pathname]期间, 可能发生额外的具体实现定义[implementation-defined]的大小写[case]或文件命名惯例的转换, 尤其是当 from-wildcard 和 to-wildcard 是不同主机的时候.
 
-        对于 source 是一个通配符路径名是有效的; 通常这个会产生一个通配符结果. 对于 from-wildcard 和/或 to-wildcard 为非通配符路径名也是有效的.
+        source 是一个通配符路径名[pathname]是有效的; 通常这个会产生一个通配符结果. from-wildcard 和/或 to-wildcard 为非通配符路径名[pathname]也是有效的.
 
         这里没有为 translate-pathname 指定关键字参数, 但是允许具体实现通过添加关键字参数来扩展它.
 
-        translate-pathname 将源 source 的习惯案例映射到输出路径名的习惯用例中 maps customary case in source into customary case in the output pathname.<!--TODO 待校对-->
+        translate-pathname 将源 source 的习惯用例映射到输出路径名[pathname]的习惯用例中.<!--TODO customary case 习惯用例 ？？-->
 
 * 示例(Examples):
 
@@ -1461,19 +1463,19 @@ NOT=>  #P"OZ:PS:<TEST>"
 
 * 异常情况(Exceptional Situations):
 
-        如果 source, from-wildcard, 或 to-wildcard 中的任意一个不是一个路径名, 一个字符串, 或者一个和文件关联的流, 那么就会发出一个 type-error 类型的错误.
+        如果 source, from-wildcard, 或 to-wildcard 中的任意一个不是一个路径名[pathname], 一个字符串[string], 或者一个和文件关联的流[stream associated with a file], 那么就会发出一个 type-error 类型[type]的错误.
 
-        (pathname-match-p source from-wildcard) 必须是 true, 否则就会发出一个 error 类型的错误.
+        (pathname-match-p source from-wildcard) 必须是 true, 否则就会发出一个 error 类型[type]的错误.
 
 * 也见(See Also):
 
-        namestring, pathname-host, pathname, logical-pathname, 章节 20.1 (File System Concepts), 章节 19.1.2 (路径名作为文件名)
+        namestring, pathname-host, pathname, logical-pathname, 章节 20.1 (文件系统概念), 章节 19.1.2 (路径名作为文件名)
 
 * 注意(Notes):
 
         translate-pathname 的确切行为不能由 Common Lisp 语言来决定, 必须允许更改, 取决于涉及的文件系统的用户接口协议.
 
-        下面是一个实现指南. 一个文件系统通过检查三个路径名中的每一个片段来执行这个操作, 其中一个片段是一个路径名成员或者一个结构化成员的列表元素, 比如一个层次目录. from-wildcard 和 to-wildcard 中的分层目录元素通过它们是否为通配符来匹配, 而不是通过目录层次结构中的深度. 如果在 to-wildcard 中的这个片段出现并且不是通配的, 它会被拷贝到这个结果中. 如果在 to-wildcard 中的这个片段是 :wild 或 nil, 在 source 中的这个片段会被拷贝到这个结果中. 否则, 在 to-wildcard 中的这个片段可以是一个像 "foo*bar" 这样的复杂通配符并且在 from-wildcard 中的这个片段应该是通配的; 在 source 中, 与 from-wildcard 中片段的通配符部分匹配的部分将取代 to-wildcard 中的通配符部分, 产生的值被用到结果中. 
+        下面是一个实现指南. 一个文件系统通过依次检查三个路径名[pathname]中的每一个片段来执行这个操作, 其中一个片段是一个路径名[pathname]成员或者一个结构化成员的列表[list]元素, 比如一个层次目录. from-wildcard 和 to-wildcard 中的分层目录元素通过它们是否为通配符来匹配, 而不是通过目录层次结构中的深度. 如果在 to-wildcard 中的这个片段出现并且不是通配的, 它会被拷贝到这个结果中. 如果在 to-wildcard 中的这个片段是 :wild 或 nil, 在 source 中的这个片段会被拷贝到这个结果中. 否则, 在 to-wildcard 中的这个片段可以是一个像 "foo*bar" 这样的复杂通配符并且在 from-wildcard 中的这个片段应该是通配的; 在 source 中, 与 from-wildcard 中片段的通配符部分匹配的部分将取代 to-wildcard 中的通配符部分, 产生的值被用到结果中. 
 
 
 ### <span id="F-MERGE-PATHNAMES">函数 MERGE-PATHNAMES</span>
@@ -1485,38 +1487,38 @@ NOT=>  #P"OZ:PS:<TEST>"
 
 * 参数和值(Arguments and Values):
 
-        pathname---一个路径名标识符.
-        default-pathname---一个路径名标识符. 默认是 *default-pathname-defaults* 的值.
-        default-version---一个有效路径名版本. 默认是 :newest.
-        merged-pathname---一个路径名.
+        pathname---一个路径名标识符[pathname designator].
+        default-pathname---一个路径名标识符[pathname designator]. 默认是 *default-pathname-defaults* 的值[value].
+        default-version---一个有效路径名版本[pathname designator]. 默认是 :newest.
+        merged-pathname---一个路径名[pathname].
 
 * 描述(Description):
 
-        从路径名 pathname 来构造一个路径名, 用 default-pathname 和 default-version 的对应值来填充任何未指定的成员.
+        从路径名 pathname 来构造一个路径名[pathname], 用 default-pathname 和 default-version 的对应值来填充任何未指定的成员.
 
-        路径名成员的默认情况是通过填充从另一个路径名中提取的成员来完成的. 这对于像有输入文件和输出文件的程序这样的情况特别有用. 输出路径名的未指定的成员将来自输入路径名, 除了类型不应该默认为输入路径名的类型, 而是来自于程序输出的适当的默认类型; 比如, 见函数 compile-file-pathname.
+        路径名成员的默认情况是通过填充从另一个路径名[pathname]中提取的成员来完成的. 这对于像有输入文件和输出文件的程序特别有用. 输出路径名的未指定的成员将来自输入路径名, 除了类型不应该默认为输入路径名的类型, 而是来自于程序输出的适当的默认类型; 比如, 见函数[function] compile-file-pathname.
 
         如果没有提供版本, 就使用默认版本 default-version. 如果 default-version 是 nil, 那么版本成员会保持不变.
 
-        如果路径名 pathname 显式指定一个主机而不是一个设备, 并且如果 default-pathname 主机成员匹配路径名 pathname 的主机成员, 那么这个设备会取自这个 default-pathname; 否则这个设备回事那个主机的默认文件设备. 如果 pathname 没有指定一个主机, 设备, 目录, 名称, 或类型, 那么每一个这样的元素会拷贝自 default-pathname. 如果 pathname 没有指定一个名称, 那么这个版本, 如果没有提供的话, 会拷贝自 default-pathname, 就像其他成员一样. 如果 pathname 确实指定了一个名称, 那么这个版本不会被 default-pathname 所影响. 如果这个过程导致版本丢失, 就使用默认版本 default-version. 如果主机的文件名语法提供了一种输入没有名称或类型的版本的方法, 用户可以让名称和类型默认，但是提供与 default-pathname 中的那个版本不同的版本.
+        如果路径名 pathname 显式指定一个主机而不是一个设备, 并且如果 default-pathname 主机成员匹配路径名 pathname 的主机成员, 那么这个设备会取自这个 default-pathname; 否则这个设备会是那个主机的默认文件设备. 如果 pathname 没有指定一个主机, 设备, 目录, 名称, 或类型, 那么每一个这样的元素会拷贝自 default-pathname. 如果 pathname 没有指定一个名称, 那么这个版本(如果没有提供的话)会拷贝自 default-pathname, 就像其他成员一样. 如果 pathname 确实指定了一个名称, 那么这个版本不会被 default-pathname 所影响. 如果这个过程导致版本丢失, 就使用默认版本 default-version. 如果主机的文件名语法提供了一种方法来输入不带名称或类型的版本, 用户可以让名称和类型默认，但是提供一个与 default-pathname 中的版本不同的版本.
 
-        如果 pathname 是一个流, pathname 实际上变为 (pathname pathname). merge-pathnames 可以在一个打开的或关闭的流上被使用.
+        如果 pathname 是一个流[stream], pathname 实际上变为 (pathname pathname). merge-pathnames 可以在一个打开的或关闭的流[stream]上被使用.
 
-        如果 pathname 是一个 pathname 它就表示被用于打开那个文件的名字. 这个可能, 但不是必须, 是那个文件的实际名字.
+        如果 pathname 是一个路径名[pathname]它就表示被用于打开那个文件的名字. 这个可能但不是必须是那个文件的实际名字.
 
-        当 default-pathname 是一个逻辑路径名, 或者当这个名称字符串以一个冒号跟着已定义的逻辑主机名开始时, merge-pathnames 识别一个逻辑路径名名称字符串. 在这两种情况的第一种时, 这个逻辑路径名名称字符串的主机部分和它跟随的冒号都是可选的.
+        当 default-pathname 是一个逻辑路径名[logical pathname], 或者当这个名称字符串[namestring]以一个已定义的逻辑主机[logical host]名后面跟着一个冒号[colon]开始时, merge-pathnames 识别一个逻辑路径名[logical pathname]名称字符串[namestring]. 在这两种情况的第一种时, 这个逻辑路径名[logical pathname]名称字符串[namestring]的主机部分和它跟随的冒号[colon]都是可选的.
 
-        当且仅当 merge-pathnames 的第一个参数是一个逻辑路径名, 或它的第一个参数是一个带有显式主机的逻辑路径名名称字符串, 或者它的第一个参数没有指定一个主机并且 default-pathname 是一个逻辑路径名时, merge-pathnames 返回一个逻辑路径名.
+        当且仅当 merge-pathnames 的第一个参数是一个逻辑路径名[logical pathname], 或它的第一个参数是一个带有显式主机的逻辑路径名[logical pathname]名称字符串[namestring], 或者它的第一个参数没有指定一个主机并且 default-pathname 是一个逻辑路径名[logical pathname]时, merge-pathnames 返回一个逻辑路径名[logical pathname].
 
-        路径名合并对一个相对目录特别处理. 如果 (pathname-directory pathname) 是一个 car 为 :relative 的列表, 并且 (pathname-directory default-pathname) 是一个列表, 那么合并的目录就是
+        路径名[pathname]合并对一个相对目录特别处理. 如果 (pathname-directory pathname) 是一个 car 为 :relative 的列表[list], 并且 (pathname-directory default-pathname) 是一个列表[list], 那么合并的目录就是
 
         (append (pathname-directory default-pathname)
                 (cdr  ;remove :relative from the front
                   (pathname-directory pathname)))
 
-        的值, 除非产生的列表包含一个跟在 :back 后面的字符串或 :wild, 它们两个都会被移除. 这个冗余的 :back 关键字的删除尽可能多地重复. 如果 (pathname-directory default-pathname) 不是一个列表或者 (pathname-directory pathname) 不是一个 car 为 :relative 的列表, 那么合并的目录就是 (or (pathname-directory pathname) (pathname-directory default-pathname))
+        的值, 除非产生的列表[list]包含一个跟在 :back 后面的字符串[string]或 :wild, 这样的话它们两个都会被移除. 这个删除冗余的 :back 关键字[keyword]的操作会重复尽可能多次. 如果 (pathname-directory default-pathname) 不是一个列表[list]或者 (pathname-directory pathname) 不是一个 car 为 :relative 的列表[list], 那么合并的目录就是 (or (pathname-directory pathname) (pathname-directory default-pathname))
 
-        merge-pathnames 将路径名 pathname 的习惯案例映射到输出路径名的习惯用例中 maps customary case in pathname into customary case in the output pathname.<!--TODO 待校对-->
+        merge-pathnames 将路径名 pathname 的习惯用例映射到输出路径名的习惯用例中.<!--TODO customary case 习惯用例 ？？-->
 
 * 示例(Examples):
 
@@ -1532,9 +1534,8 @@ NOT=>  #P"OZ:PS:<TEST>"
 
 * 也见(See Also):
 
-        *default-pathname-defaults*, pathname, logical-pathname, 章节 20.1 (File System Concepts), 章节 19.1.2 (路径名作为文件名)
+        *default-pathname-defaults*, pathname, logical-pathname, 章节 20.1 (文件系统概念), 章节 19.1.2 (路径名作为文件名)
 
 * 注意(Notes):
 
         最终的结果是, 如果只提供一个名称, 那么主机, 设备, 目录和类型将来自 default-pathname, 但是版本将来自 default-version. 如果什么都没提供或者只提供了目录, 那么名字, 类型, 和版本都一起来自于 default-pathname. 
-
