@@ -1,4 +1,4 @@
-# 21 流
+# 21. 流
 
 > * 21.1 [流的概念](#StreamConcepts)
 > * 21.2 [流的字典](#TheStreamsDictionary)
@@ -12,9 +12,9 @@
 
 ### 21.1.1 <span id="IntroductionStreams">流的介绍</span>
 
-流是一个对象, 它可以与输入或输出函数一起使用, 以确定该操作的字符或字节的适当源或接收器. 一个字符流是一个字符的源或接收器. 一个二进制流是一个字节的源或接收器.
+流[stream]是一个对象[object], 它可以与输入或输出函数一起使用, 以确定该操作的字符[character]或字节[byte]合适的源或接收器. 一个字符[character]流[stream]是一个字符的源或接收器. 一个二进制[binary]流[stream]是一个字节[byte]的源或接收器.
 
-一些操作符可以在任何种类的流上执行; 下一段中提供了一个标准操作符的列表, 这些操作可能对任何类型的流都有用
+一些操作可以在任何种类的流[stream]上执行; 下一段中提供了一个标准化[standardized]操作的列表, 这些操作对任何类型的流[stream]都有用
 
     close                 stream-element-type  
     input-stream-p        streamp              
@@ -23,7 +23,7 @@
 
     Figure 21-1. 一些一般用途的流操作
 
-其他操作只对特定的流类型有意义. 比如, read-char 只定义给字符流而 read-byte 只定义给二进制流.
+其他操作只对特定的流[stream]类型[type]有意义. 比如, read-char 只定义给字符[character]流[stream]而 read-byte 只定义给二进制[binary]流[stream].
 
 > * 21.1.1.1 [抽象的流分类](#AbstractClassStreams1)
 > * 21.1.1.2 [抽象的流分类](#AbstractClassStreams2)
@@ -33,9 +33,9 @@
 
 ##### 21.1.1.1.1 输入, 输出, 和双向流
 
-一个流, 不管是字符流或二进制流, 都可以是一个输入流 (数据源), 一个输出流 (数据的接收器), 两者都是, 或者 (比如, 当 ":direction :probe" 给定给 open 时) 都不是.
+一个流[stream], 不管是字符[character]流[stream]或二进制[binary]流[stream], 都可以是一个输入[input]流[stream] (数据源), 一个输出[output]流[stream] (数据的接收器), 两者都是, 或者 (比如, 当 ":direction :probe" 给定给 open 时) 都不是.
 
-下一段中展示了和输入流相关的操作符.
+下一段中展示了和输入[input]流[stream]相关的操作符[operator].
 
     clear-input  read-byte            read-from-string            
     listen       read-char            read-line                   
@@ -44,7 +44,7 @@
 
     Figure 21-2. 和输入流相关的操作符.
 
-下一段中展示了和输出流相关的操作符.
+下一段中展示了和输出[output]流[stream]相关的操作符[operator].
 
     clear-output   prin1            write            
     finish-output  prin1-to-string  write-byte       
@@ -55,9 +55,9 @@
 
     Figure 21-3. 和输出流相关的操作符.
 
-一个同时为输入流和输出流的流被称为双向流. 见函数 input-stream-p 和 output-stream-p.
+一个同时为输入[input]流[stream]和输出[output]流[stream]的流[stream]被称为双向[bidirectional]流[stream]. 见函数[function] input-stream-p 和 output-stream-p.
 
-任何在 Figure 21-2 或 Figure 21-3 列出的操作符可以和双向流一起使用. 另外, 下一段列出了与双向流相关的操作符列表.
+任何在 Figure 21-2 或 Figure 21-3 列出的操作符[operator]可以和双向[bidirectional]流[stream]一起使用. 另外, 下一段列出了与双向[bidirectional]流[stream]相关的操作符[operator]列表.
 
     y-or-n-p  yes-or-no-p    
 
@@ -66,43 +66,43 @@
 
 ##### 21.1.1.1.2 打开和关闭的流
 
-流可以使打开的或关闭的.
+流[stream]可以是打开的[open]或关闭的[closed].
 
-除非被显式指定, 否则创建和返回流的操作返回的是打开的流.
+除非被显式指定, 否则创建和返回流[stream]的操作返回的是打开的[open]流[stream].
 
-关闭流的操作标志着它作为数据来源或接收器的结束, 允许实现收回其内部数据结构, 并释放在打开时可能被流锁定的任何外部资源.
+关闭流[stream]的操作标志着它作为数据来源或接收器的结束, 允许实现[implementation]收回其内部数据结构, 并释放在打开时可能被这个流[stream]锁定的任何外部资源.
 
-除非被显式指定, 否则当一个关闭的流被用于调用流时后果是未定义的.
+除非被显式指定, 否则当一个关闭的[closed]流[stream]被用于调用流[stream]时后果是未定义的.
 
-对于一个关闭的流, 把流强制转换为路径名是允许的; 在一些情况下, 例如在一个真实名字计算中, 对于一个打开的流和同一流被关闭后的结果是不同的. 
+对于一个关闭的[closed]流[stream], 把流[stream]强制转换为路径名[pathname]是允许的; 在一些情况下, 例如在一个真实名字[truename]计算中, 对于一个打开的[open]流[stream]和同一个流[stream]被关闭[close]后的结果是不同的. 
 
 ##### 21.1.1.1.3 交互式流
 
-交互式流是可以在上面执行交互式查询的一种流.
+交互式流[interactive stream]是可以在上面执行交互式查询的一种流.
 
-一个交互式流的准确定义是具体实现定义的, 并且可能依赖于底层操作系统. 实现可能选择用作识别交互流的特征的东西的一些示例包括:
+一个交互式流[interactive stream]的准确定义是具体实现定义的[implementation-defined], 并且可能依赖于底层操作系统. 一些实现[implementation]可能选择用作识别交互式流[interactive stream]特征的东西的例子包括:
 
-* 这个流与一个人 (或等价物) 联系在一起, 程序可以提示信息并期望根据提示接收不同的输入.
+* 这个流[stream]与一个人 (或等价物) 联系在一起, 程序可以提示信息并期望根据提示接收不同的输入.
 
 * 该程序期望提示输入和支持 "正常的输入编辑".
 
 * read-char 可能等待用户在返回之前去输入一些东西而不是立即返回一个字符或 end-of-file.
 
-将一些流划分为交互式流的一般意图是允许它们与包含批处理 (或后台或命令文件) 输入的流区分开来. 批处理流的输出通常被丢弃或保存以供以后查看, 因此对此类流的交互式查询可能没有预期的效果.
+将一些流[stream]划分为交互式流[interactive stream]的一般意图是为了让它们与包含批处理 (或后台或命令文件) 输入的流区分开来. 到批处理流的输出通常被丢弃或保存以供以后查看, 因此对此类流的交互式查询可能没有预期的效果.
 
-终端 I/O 可能是也可能不是一个交互式流. 
+终端 I/O [terminal I/O]可能是也可能不是一个交互式流[interactive stream]. 
 
 #### 21.1.1.2 <span id="AbstractClassStreams2">抽象的流分类</span>
 
 ##### 21.1.1.2.1 文件流
 
-一些流, 称为文件流, 提供了对文件的访问. 一个 file-stream 类的对象被用来表示一个文件流.
+一些流[stream], 称为文件流[file stream], 提供了对文件[file]的访问. 一个 file-stream 类[class]的对象[object]被用来表示一个文件流[file stream].
 
-打开一个文件的基础操作是 open, 它通常返回一个文件流 (详情见它的目录条目). 关闭一个流的基础操作是 close. 宏 with-open-file 是用来表达在给定代码主体的持续时间内打开文件的常用习惯，并确保在退出该主体时关闭那个产生的流.
+打开一个文件[file]的基础操作是 open, 它通常返回一个文件流[file stream] (详情见它的目录条目). 关闭一个流[stream]的基础操作是 close. 宏 with-open-file 是用来表达在给定代码[code]主体的持续时间内打开一个文件[file]并确保在退出该主体时关闭那个产生的流[stream]的常用习惯.
 
 #### 21.1.1.3 <span id="OtherSubclassesStream">流的其他子类</span>
 
-类 stream 有许多由这个规范定义的子类. 下面这段展示了关于这些子类的一些信息.
+类[class] stream 有许多由这个规范定义的子类[subclass]. 下面这段展示了关于这些子类的一些信息.
 
     类                  相关操作符             
     broadcast-stream     make-broadcast-stream         
@@ -127,9 +127,9 @@
 
 ### 21.1.2 <span id="StreamVariables">流变量</span>
 
-值必须是流的变量有时称为流变量.
+值[value]必须是流[steam]的变量[variable]有时称为流变量[stream variable].
 
-特定的流变量被这个规范定义为在没有指定特定流的情况下, 作为输入或输出的适当来源. 下一个段中会出现一个完整的标准流变量列表. 如果任何时候这些变量的任意一个的值不是一个打开的流, 后果是未定义的.
+特定的流变量[stream variable]被这个规范定义为在没有指定特定流[stream]的各种情况[situation]下, 作为适当的输入或输出源. 下一段中是标准化[standardized]流变量[stream variable]的完整列表. 如果任何时候这些变量[variable]的任意一个的值[value]不是一个打开的[open]流[stream], 后果是未定义的.
 
     词汇术语          变量名      
     debug I/O        *debug-io*         
@@ -140,16 +140,16 @@
     terminal I/O     *terminal-io*      
     trace output     *trace-output*     
 
-    Figure 21-6. 标准流变量
+    Figure 21-6. 标准化流变量
 
-注意, 按照惯例, 标准流变量如果一定式输入流, 那么就以 "-input*" 结尾, 如果一定是输出流那么就以 "-output*" 结尾, 如果一定是双向流就以 "-io*" 结尾.
+注意, 按照惯例, 标准化[standardized]流变量[stream variable]如果一定是输入[input]流[stream], 那么就以 "-input*" 结尾, 如果一定是输出[output]流[stream]那么就以 "-output*" 结尾, 如果一定是双向[bidirectional]流[stream]就以 "-io*" 结尾.
 
-用户程序可以赋值或绑定任何标准流变量除了 \*terminal-io\*. 
+用户程序可以赋值[assign]或绑定[bind]任何标准化[standardized]流变量[stream variable], 除了 \*terminal-io\*. 
 
 
 ### 21.1.3 <span id="StreamArgStandFun">给标准函数的流参数</span>
 
-下面这段中的操作符接受打开或关闭的流作为流参数.
+下面这段中的操作符[operator]接受打开[open]或关闭[closed]的流[stream]作为流[stream]参数[argument].
 
     broadcast-stream-streams     file-author       pathnamep                     
     close                        file-namestring   probe-file                    
@@ -167,7 +167,7 @@
 
     Figure 21-7. 接受打开或关闭的流的操作符
 
-下面这段中的操作符只接受打开的流作为流参数.
+下面这段中的操作符[operator]只接受打开[open]的流[stream]作为流[stream]参数[argument].
 
     clear-input               output-stream-p          read-char-no-hang           
     clear-output              peek-char                read-delimited-list         
@@ -192,9 +192,9 @@
 
 ### 21.1.4 <span id="RestrictCompositeStreams">复合流上的限制</span>
 
-如果一个复合流的任意成员在这个流被关闭之前关闭, 那么后果是未定义的.
+如果一个复合流[composite stream]的任意成员在这个复合流[composite stream]被关闭[close]之前关闭[close], 那么后果是未定义的.
 
-如果 synonym-stream 流符号从它被创建到它被关闭这段时间都没有被绑定到一个打开的流, 那么后果是未定义的. 
+如果 synonym-stream 流符号[synonym stream symbol]从它被创建到它被关闭[close]这段时间都没有被绑定[bound]到一个打开的[open]流[stream], 那么后果是未定义的. 
 
 ## 21.2 <span id="TheStreamsDictionary">流的字典</span>
 
@@ -265,13 +265,14 @@
 
 * 描述(Description):
 
-        一个流式一个可以和一个输入或输出函数一起使用, 以确定该操作的字符或字节的适当源或接收器.
+        一个流[stream]是一个可以和一个输入或输出函数一起使用来确定该操作的字符[character]或字节[byte]的适当源或接收器的对象.
 
         关于更多完整信息, 见章节 21.1 (流的概念).
 
 * 也见(See Also):
 
-        章节 21.1 (流的概念), 章节 22.1.3.13 (Printing Other Objects), 章节 22 (Printer), 章节 23 (Reader) 
+        章节 21.1 (流的概念), 章节 22.1.3.13 (打印其他对象), 章节 22 (打印器), 章节 23 (读取器) 
+
 
 ### <span id="SC-BROADCAST-STREAM">系统类 BROADCAST-STREAM</span>
 
@@ -281,11 +282,11 @@
 
 * 描述(Description):
 
-        一个广播流式一个输出流, 它和一个包含零个或多个输出流的集合关联, 这样一来发送到这个广播流的任何输出会作为输出传递到每一个关联的输出流上. (如果一个广播流没有成员流, 那么所有到广播流的输出会被废弃.)
+        一个广播流[broadcast stream]是一个输出[output]流[stream], 它和一个包含零个或多个输出[output]流[list]的集合关联, 这样一来发送到这个广播流[broadcast stream]的任何输出会作为输出传递到每一个关联的输出[output]流[stream]上. (如果一个广播流[broadcast stream]没有成员流, 那么所有到广播流[broadcast stream]的输出会被丢弃.)
 
-        可以在一个广播流上执行的操作的集合是可应用到它关联的那些输出流的操作的交集.
+        可以在一个广播流[broadcast stream]上执行的操作的集合是可应用到它关联的那些输出[output]流[list]的操作的交集.
 
-        一些输出操作 (比如, fresh-line) 返回基于这个操作时那个流的状态的值. 由于这些值可能有别于这些成员流的每一个, 有必要具体描述它们的返回值:
+        一些输出操作 (比如, fresh-line) 返回基于这个操作时流的状态的值[value]. 由于每个成员流的这些值[value]可能不同, 有必要具体描述它们的返回值:
 
         * stream-element-type 从最后一个成员流中返回这个值, 如果这里没有成员流就返回 t.
 
@@ -293,15 +294,15 @@
 
         * 函数 file-length, file-position, file-string-length, 和 stream-external-format 从最后一个成员流来返回值; 如果这里没有成员流, file-length 和 file-position 返回 0, file-string-length 返回 1, 而 stream-external-format 返回 :default.
 
-        * 函数 streamp 和 output-stream-p 对于广播流总是返回 true.
+        * 函数 streamp 和 output-stream-p 对于广播流[broadcast stream]总是返回 true.
 
-        * 函数 open-stream-p 检验这个广播流是否打开, 而不是它的成员流是否打开.
+        * 函数 open-stream-p 检验这个广播流[broadcast stream]是否打开[open[2]], 而不是它的成员流是否打开[open].
 
-        * 函数 input-stream-p 和 interactive-stream-p 返回一个具体实现定义的, 广义 boolean 值.
+        * 函数 input-stream-p 和 interactive-stream-p 返回一个具体实现定义的[implementation-defined]广义 boolean [generalized boolean]值.
 
-        * 对于输入操作 clear-input, listen, peek-char, read-byte, read-char-no-hang, read-char, read-line, 和 unread-char, 如果所指示的操作被执行, 其后果是未定义的. 然而, 一个实现允许去定义这样一个行为作为一个依赖于具体实现的扩展.
+        * 对于输入操作 clear-input, listen, peek-char, read-byte, read-char-no-hang, read-char, read-line, 和 unread-char, 如果所指示的操作被执行, 其后果是未定义的. 然而, 一个实现[implementation]允许去定义这样一个行为作为依赖于具体实现[implementation-dependent]的扩展.
 
-        对于任何上面或这个文档的其他地方没有显式指定返回值的输出操作, 定义了这样一个操作返回的值式在它的最后一个成员流上执行这个操作产生的值; 在前面所有的流上执行这个操作产生的值会被丢弃. 如果这里没有成员流, 这个值是依赖于具体实现的. 
+        对于任何上面或这个文档的其他地方没有显式指定返回值的输出操作, 定义了这样一个操作返回的值[value]是在它的最后一个成员流上执行这个操作产生的值[value]; 在前面所有的流[stream]上执行这个操作产生的值会被丢弃. 如果这里没有成员流, 那么这个值是依赖于具体实现的[implementation-dependent]. 
 
 * 也见(See Also):
 
@@ -316,9 +317,9 @@
 
 * 描述(Description):
 
-        一个串联流是一个输入流, 它式一个包含零个或多个输入流的复合流, 这样, 可以从串联流中读取的数据序列与可以从每个组成流中读取的数据序列的连接相同.
+        一个拼接流[concatenated stream]是一个输入[input]流[stream], 它是一个包含零个或多个输入[input]流[stream]的复合流[composite stream], 这样一来可以从拼接流[concatenated stream]中读取的数据序列与可以从每个组成流[stream]中读取的数据序列的拼接相同.
 
-        来自串联流的输入从第一个相关的输入流中获取, 直到它到达文件的末尾; 然后这个流会被废弃, 并且后续的输入取自于下一个输入流, 以此类推. 在相关输入流上的文件结束总是由串联流来管理---串联流的客户端只有在尝试从串联流中获取数据，但是它没有剩余的输入流来获取这些数据时才会看到文件的结束.
+        来自拼接流[concatenated stream]的输入从第一个相关的输入[input]流[stream]中获取, 直到它到达文件的末尾[end of file[1]]; 然后这个流[stream]会被丢弃, 然后后续的输入取自于下一个输入[input]流[stream], 以此类推. 在相关输入[input]流[stream]上的文件结束[end of file]总是由拼接流[concatenated stream]无形地管理---拼接流[concatenated stream]的客户端看到文件结束[end of file]的唯一时间是尝试从拼接流[concatenated stream]获取数据, 但是它没有剩余的输入[input]流[stream]来获取这些数据.
 
 * 也见(See Also):
 
@@ -333,9 +334,9 @@
 
 * 描述(Description):
 
-        一个回音流是一个双向流, 它从一个关联的输入流中得到它的输入并且发送它的输出到一个关联的输出流.
+        一个回显流[echo stream]是一个双向[bidirectional]流[stream], 它从一个关联的输入[input]流[stream]中得到它的输入并且发送它的输出到一个关联的输出[output]流[stream].
 
-        所有从输入流中获取的输入都与输出流相呼应. 输入是否在遇到后或者在从输入流中读取之后立即响应, 是依赖于具体实现的.
+        所有从输入[input]流[stream]中获取的输入都与输出[output]流[stream]相呼应. 无论输入是在遇到之后立即回显, 还是在从输入[input]流[stream]中读取之后回显, 是依赖于具体实现的[implementation-dependent].
 
 * 也见(See Also):
 
@@ -350,7 +351,7 @@
 
 * 描述(Description):
 
-        一个 file-stream 类型的对象是一个直接源和接收器都是一个文件的流. 这样一个流通过 open 和 with-open-file 显式创建, 以及通过像 load 这样的处理文件的函数隐式打开.
+        一个 file-stream 类型[type]的对象[object]是一个直接源和接收器都是一个文件[file]的流[stream]. 这样一个流通过 open 和 with-open-file 显式创建, 以及通过像 load 这样的处理文件[file]的函数[function]隐式打开.
 
 * 也见(See Also):
 
@@ -365,9 +366,9 @@
 
 * 描述(Description):
 
-        一个字符串流式一个读取输入自一个关联字符串或写入输出到一个关联字符串的流.
+        一个字符串流[string stream]是一个从关联字符串[string]读取输入或将输出写入到一个关联字符串[string]的流[stream].
 
-        一个字符串流的流元素类型总是为 character 类型的子类型.
+        一个字符串流[string stream]的流元素类型[stream element type]总是为 character 类型[type]的子类型[subtype].
 
 * 也见(See Also):
 
@@ -382,9 +383,9 @@
 
 * 描述(Description):
 
-        一个是另一个流的别名的流, 它是一个动态变量的值, 这个变量的名字是这个同义流的同义流符号.
+        同义流[synonym stream]是一个为另一个流[stream]的别名的流[stream], 它是一个动态变量[dynamic variable]的值[value], 这个变量的名字[name]是这个同义流[synonym stream]的同义流符号[synonym stream symbol].
 
-        任何在一个同义流上的操作会在一个流上被执行, 这个流是由那个同义流符号命名的动态变量的值. 如果那个变量的值将要改变, 或者如果那个变量的值将要被绑定, 那么这个流会操作在那个变量的新值上.
+        任何在一个同义流[synonym stream]上的操作会在一个流[stream]上被执行, 这个流是由那个同义流符号[synonym stream symbol]命名的动态变量[dynamic variable]的值[value]. 如果那个变量[variable]的值[value]要改变, 或者如果那个变量[variable]的值[value]要被绑定[bound], 那么这个流[stream]会操作在那个变量[variable]的新值[value]上.
 
 * 也见(See Also):
 
@@ -399,7 +400,7 @@
 
 * 描述(Description):
 
-        一个从一个关联输入流中接收它的输入并且发送它的输出到一个关联的输出流的双向复合流.
+        一个从一个关联输入[input]流[stream]中接收它的输入并且发送它的输出到一个关联的输出[output]流[stream]的双向[bidirectional]复合流[composite stream].
 
 * 也见(See Also):
 
@@ -416,14 +417,14 @@
 
 * 参数和值(Arguments and Values):
 
-        stream---一个流.
-        generalized-boolean---一个广义 boolean.
+        stream---一个流[stream].
+        generalized-boolean---一个广义 boolean [generalized boolean].
 
 * 描述(Description):
 
-        如果流 stream 是一个输入流, input-stream-p 返回 true; 否则, 返回 false.
+        如果流 stream 是一个输入[input]流[stream], input-stream-p 返回 true; 否则, 返回 false.
 
-        如果流 stream 是一个输出流, output-stream-p 返回 true; 否则, 返回 false.
+        如果流 stream 是一个输出[output]流[stream], output-stream-p 返回 true; 否则, 返回 false.
 
 * 示例(Examples):
 
@@ -443,7 +444,7 @@
 
 * 异常情况(Exceptional Situations):
 
-        如果 stream 不是一个流, 那么应该发出一个 type-error 类型的错误.
+        如果 stream 不是一个流[stream], 那么应该发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also): None.
 
@@ -458,12 +459,12 @@
 
 * 参数和值(Arguments and Values):
 
-        stream---一个流.
-        generalized-boolean---一个广义 boolean.
+        stream---一个流[stream].
+        generalized-boolean---一个广义 boolean [generalized boolean].
 
 * 描述(Description):
 
-        如果流 stream 是一个交互式流, 就返回 true; 否则, 返回 false.
+        如果流 stream 是一个交互式流[interactive stream], 就返回 true; 否则, 返回 false.
 
 * 示例(Examples):
 
@@ -482,7 +483,7 @@
 
 * 异常情况(Exceptional Situations):
 
-        如果 stream 不是一个流, 那么应该发出一个 type-error 类型的错误.
+        如果 stream 不是一个流[stream], 那么应该发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
@@ -499,14 +500,14 @@
 
 * 参数和值(Arguments and Values):
 
-        stream---一个流.
-        generalized-boolean---一个广义 boolean.
+        stream---一个流[stream].
+        generalized-boolean---一个广义 boolean [generalized boolean].
 
 * 描述(Description):
 
-        如果流 stream 是一个打开的流就返回 true; 否则, 返回 false.
+        如果流 stream 是一个打开[open]的流[stream]就返回 true; 否则, 返回 false.
 
-        直到流被 close 显式关闭, 或者直到退出 with-output-to-string, with-open-file, with-input-from-string, 或 with-open-stream 表达式形式而被隐式关闭之前, 流都是打开的.
+        直到流[stream]被 close 显式关闭, 或者直到退出 with-output-to-string, with-open-file, with-input-from-string, 或 with-open-stream 表达式形式[form]而被隐式关闭之前, 流[stream]都是打开的.
 
 * 示例(Examples):
 
@@ -522,7 +523,7 @@
 
 * 异常情况(Exceptional Situations):
 
-        如果 stream 不是一个流, 那么应该发出一个 type-error 类型的错误.
+        如果 stream 不是一个流[stream], 那么应该发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also): None.
 
@@ -537,14 +538,14 @@
 
 * 参数和值(Arguments and Values):
 
-        stream---一个流.
-        typespec---一个类型指定符.
+        stream---一个流[stream].
+        typespec---一个类型指定符[type specifier].
 
 * 描述(Description):
 
-        stream-element-type 返回可以从流 stream 中读到或写入到流 stream 中的对象的一个类型指定符.
+        stream-element-type 返回一个类型指定符[type specifier], 表示可以从流 stream 中读到或写入到流 stream 中的对象[object]的类型[type].
 
-        由 open 创建的流有着被约束为 integer 或一个 character 类型的子类型的元素类型.
+        由 open 创建的流[stream]有着被约束为 integer 或一个 character 类型[type]的子类型[subtype]的元素类型[element type].
 
 * 示例(Examples):
 
@@ -572,11 +573,12 @@
 
 * 异常情况(Exceptional Situations):
 
-        如果 stream 不是一个流, 那么应该发出一个 type-error 类型的错误.
+        如果 stream 不是一个流[stream], 那么应该发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also): None.
 
 * 注意(Notes): None.
+
 
 ### <span id="F-STREAMP">函数 STREAMP</span>
 
@@ -586,14 +588,14 @@
 
 * 参数和值(Arguments and Values):
 
-        object---一个对象.
-        generalized-boolean---一个广义 boolean.
+        object---一个对象[object].
+        generalized-boolean---一个广义 boolean [generalized boolean].
 
 * 描述(Description):
 
-        如果对象 object 是 stream 类型就返回 true; 否则, 返回 false.
+        如果对象 object 是 stream 类型[type]就返回 true; 否则, 返回 false.
 
-        如果对象 object 是一个流, streamp 不会被这个流是打开的还是关闭的所影响.
+        如果对象 object 是一个流[stream], streamp 不会被这个流[stream]是打开的[open]还是关闭的所影响.
 
 * 示例(Examples):
 
@@ -614,6 +616,7 @@
 
         (streamp object) ==  (typep object 'stream)
 
+
 ### <span id="F-READ-BYTE">函数 READ-BYTE</span>
 
 * 语法(Syntax):
@@ -622,16 +625,16 @@
 
 * 参数和值(Arguments and Values):
 
-        stream---一个二进制输入流.
-        eof-error-p---一个广义 boolean. 默认是 true.
-        eof-value---一个对象. 默认是 nil.
-        byte---一个整数, 或者是 eof-value.
+        stream---一个二进制[binary]输入[input]流[stream].
+        eof-error-p---一个广义 boolean [generalized boolean]. 默认是 true.
+        eof-value---一个对象[object]. 默认是 nil.
+        byte---一个整数[integer], 或者是 eof-value.
 
 * 描述(Description):
 
         read-byte 从流 stream 中读取并返回一个字节.
 
-        如果到达了文件的末尾并且 eof-error-p 是 false, 那么返回这个 eof-value.
+        如果到达了文件的末尾[end of file[2]]并且 eof-error-p 是 false, 那么返回这个 eof-value.
 
 * 示例(Examples):
 
@@ -654,11 +657,11 @@
 
 * 异常情况(Exceptional Situations):
 
-        如果 stream 不是一个流, 那么应该发出一个 type-error 类型的错误.
+        如果 stream 不是一个流[stream], 那么应该发出一个 type-error 类型[type]的错误.
 
-        如果 stream 不是一个二进制输入流, 那么应该发出一个 error 类型的错误.
+        如果 stream 不是一个二进制[binary]输入[input]流[stream], 那么应该发出一个 error 类型[type]的错误.
 
-        如果在流 stream 中没有剩余字节并且 eof-error-p 是 true, 就会发出一个 end-of-file 类型的错误.
+        如果在流 stream 中没有剩余字节[byte]并且 eof-error-p 是 true, 就会发出一个 end-of-file 类型[type]的错误.
 
 * 也见(See Also):
 
@@ -675,8 +678,8 @@
 
 * 参数和值(Arguments and Values):
 
-        byte---一个流的流元素类型的整数.
-        stream---一个二进制输出流.
+        byte---一个流[stream]的流元素类型[stream element type]的整数[integer].
+        stream---一个二进制[binary]输出[output]流[stream].
 
 * 描述(Description):
 
@@ -697,13 +700,13 @@
 
 * 受此影响(Affected By):
 
-        流 stream 的元素类型.
+        流 stream 的元素类型[element type].
 
 * 异常情况(Exceptional Situations):
 
-        如果 stream 不是一个流, 那么应该发出一个 type-error 类型的错误. 如果 stream 不是一个二进制输出流, 那么应该发出一个 error 类型的错误.
+        如果 stream 不是一个流[stream], 那么应该发出一个 type-error 类型[type]的错误. 如果 stream 不是一个二进制[binary]输出[output]流[stream], 那么应该发出一个 error 类型[type]的错误.
 
-        如果 byte 不是流 stream 的一个流元素类型的整数, 可能会发出一个 type-error 类型的错误.
+        如果 byte 不是流 stream 的一个流元素类型[stream element type]的整数[integer], 可能会发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
@@ -713,31 +716,31 @@
 
 
 ### <span id="F-PEEK-CHAR">函数 PEEK-CHAR</span>
-
+<!--TODO 待校对-->
 * 语法(Syntax):
 
         peek-char &optional peek-type input-stream eof-error-p eof-value recursive-p => char
 
 * 参数和值(Arguments and Values):
 
-        peek-type---一个字符或 t 或 nil.
-        input-stream---输入流标识符. 默认是标准输入.
-        eof-error-p---一个广义 boolean. 默认是 true.
-        eof-value---一个对象. 默认是 nil.
-        recursive-p---一个广义 boolean. 默认是 false.
-        char---一个字符或 eof-value.
+        peek-type---一个字符[character]或 t 或 nil.
+        input-stream---输入[input]流标识符[stream designator]. 默认是标准输入[standard input].
+        eof-error-p---一个广义 boolean [generalized boolean]. 默认是 true.
+        eof-value---一个对象[object]. 默认是 nil.
+        recursive-p---一个广义 boolean [generalized boolean]. 默认是 false.
+        char---一个字符[character]或 eof-value.
 
 * 描述(Description):
-<!--TODO 待校验-->
+
         peek-char 在没有实际读取的情况下获取流 input-stream 中的下一个字符, 这样就可以在以后的时间里读取这个字符. 它还可以用于跳过并丢弃输入流 input-stream 中的中间字符, 直到找到一个特定的字符为止.
 
-        如果 peek-type 没有被提供或者是 nil, peek-char 返回要从 input-stream 中读取的下一个字符, 实际上没有把它从 input-stream 中移除. 下一次从 input-stream 完成输入时, 这个字符仍然在那里. 如果 peek-type 是 t, 那么 peek-char 跳过空白字符, 但是不跳过注释, 然后在下一个字符执行窥视操作. 最后一个被检验的字符, 开始一个对象的那个, 不会从 input-stream 中被移除. 如果 peek-type 是一个字符, 那么 peek-char 跳过输入字符直到找到一个和那个字符 char= 的字符; 那个字符留在 input-stream 中.
+        如果没有提供 peek-type 或者是 nil, peek-char 返回要从 input-stream 中读取的下一个字符, 实际上没有把它从 input-stream 中移除. 下一次从 input-stream 完成输入时, 这个字符仍然在那里. 如果 peek-type 是 t, 那么 peek-char 跳过空白[whitespace[2]]字符[character], 但是不跳过注释, 然后在下一个字符执行窥视操作. 最后一个被检验的字符, 开始一个对象[object]的那个, 不会从 input-stream 中被移除. 如果 peek-type 是一个字符[character], 那么 peek-char 跳过输入字符直到找到一个和那个字符 char= 的字符[character]; 那个字符留在 input-stream 中.
 
-        如果到达了文件的末尾并且 eof-error-p 是 false, 就返回 eof-value.
+        如果到达了文件的末尾[end of file[2]]并且 eof-error-p 是 false, 就返回 eof-value.
 
-        如果 recursive-p 是 true, 这个调用预期会被嵌入到一个更高层次的对 read 或一个 Lisp 读取器使用的类似函数的调用中.
+        如果 recursive-p 是 true, 这个调用预期会被嵌入到一个更高层次的对 read 或一个 Lisp 读取器[Lisp reader]使用的相似函数[function]的调用中.
 
-        当 input-stream 是一个回音流时, 只是被窥视的字符不会被回响. 在这个 peek-type 不是 nil 的情况中, 通过 peek-char 传递的这些字符会被当作通过 read-char 一样处理, 因此, 除非它们被 unread-char 标记出来否则就会得到回响.
+        当 input-stream 是一个回显流[echo stream]时, 只是被窥视的字符不会被回显. 在这个 peek-type 不是 nil 的情况中, 通过 peek-char 传递的这些字符会被当作通过 read-char 一样处理, 因此, 除非它们被 unread-char 标记出来否则就会被回显.
 
 * 示例(Examples):
 
@@ -757,11 +760,11 @@
 
 * 异常情况(Exceptional Situations):
 
-        如果 eof-error-p 是 true 并且到达文件的末尾, 就会发出一个 end-of-file 类型的错误.
+        如果 eof-error-p 是 true 并且到达文件的末尾[end of file[2]], 就会发出一个 end-of-file 类型[type]的错误.
 
-        如果 peek-type 是一个字符, 到达文件的末尾, 并且 eof-error-p 是 true, 就会发出一个 end-of-file 类型的错误.
+        如果 peek-type 是一个字符[character], 到达文件的末尾[end of file[2]], 并且 eof-error-p 是 true, 就会发出一个 end-of-file 类型[type]的错误.
 
-        如果 recursive-p 是 true 到达文件的末尾, 就会发出一个 end-of-file 类型的错误.
+        如果 recursive-p 是 true 到达文件的末尾[end of file[2]], 就会发出一个 end-of-file 类型[type]的错误.
 
 * 也见(See Also): None.
 
@@ -776,21 +779,21 @@
 
 * 参数和值(Arguments and Values):
 
-        input-stream---一个输入流标识符. 默认是标准输入.
-        eof-error-p---一个广义 boolean. 默认是 true.
-        eof-value---一个对象. 默认是 nil.
-        recursive-p---一个广义 boolean. 默认是 false.
-        char---一个字符或 eof-value.
+        input-stream---一个输入[input]流标识符[stream designator]. 默认是标准输入.
+        eof-error-p---一个广义 boolean [generalized boolean]. 默认是 true.
+        eof-value---一个对象[object]. 默认是 nil.
+        recursive-p---一个广义 boolean [generalized boolean]. 默认是 false.
+        char---一个字符[character]或 eof-value.
 
 * 描述(Description):
 
-        read-char 从 input-stream 返回下一个字符.
+        read-char 从 input-stream 返回下一个字符[character].
 
-        当 input-stream 是一个回音流时, 在第一次看到这个字符时这个字符在 input-stream 上被响应. 不被read-char 所响应的字符是 unread-char 放在那里的, 因此被认为已经在之前的一次对 read-char 的调用中得到了响应.
+        当 input-stream 是一个回显流[echo string]时, 在第一次看到这个字符时这个字符在 input-stream 上被回显. 不被 read-char 所回显的字符是 unread-char 放在那里的那些, 因此被认为已经在之前的一次对 read-char 的调用中得到了回显.
 
-        如果 recursive-p 是 true, 这个调用预期会被嵌入到一个更高层次的对 read 或一个 Lisp 读取器使用的类似函数的调用中.
+        如果 recursive-p 是 true, 这个调用预期会被嵌入到一个更高层次的对 read 或一个 Lisp 读取器[Lisp reader]使用的相似函数[function]的调用中.
 
-        如果到达文件的末尾并且 eof-error-p 是 false, 就返回 eof-value.
+        如果到达文件的末尾[end of file[2]]并且 eof-error-p 是 false, 就返回 eof-value.
 
 * 示例(Examples):
 
@@ -809,7 +812,7 @@
 
 * 异常情况(Exceptional Situations):
 
-        如果在一个字符可以被读取之前到达文件的末尾, 并且 eof-error-p 是 true, 就会发出一个 end-of-file 类型的错误.
+        如果在一个字符可以被读取之前到达文件的末尾[end of file[2]], 并且 eof-error-p 是 true, 就会发出一个 end-of-file 类型[type]的错误.
 
 * 也见(See Also):
 
@@ -828,19 +831,19 @@
 
 * 参数和值(Arguments and Values):
 
-        input-stream -- 一个输入流标识符. 默认是标准输入.
-        eof-error-p---一个广义 boolean. 默认是 true.
-        eof-value---一个对象. 默认是 nil.
-        recursive-p---一个广义 boolean. 默认是 false.
-        char---一个字符或 nil 或 eof-value.
+        input-stream -- 一个输入[input]流标识符[stream designator]. 默认是标准输入[standard input].
+        eof-error-p---一个广义 boolean [generalized boolean]. 默认是 true.
+        eof-value---一个对象[object]. 默认是 nil.
+        recursive-p---一个广义 boolean [generalized boolean]. 默认是 false.
+        char---一个字符[character]或 nil 或 eof-value.
 
 * 描述(Description):
 
         如果一个字符可用, read-char-no-hang 就从 input-stream 返回一个字符. 如果没有字符可用, read-char-no-hang 就返回 nil.
 
-        如果 recursive-p 是 true, 这个调用预期会被嵌入到一个更高层次的对 read 或一个 Lisp 读取器使用的类似函数的调用中.
+        如果 recursive-p 是 true, 这个调用预期会被嵌入到一个更高层次的对 read 或一个 Lisp 读取器[Lisp reader]使用的相似函数[function]的调用中.
 
-        如果到达文件末尾并且 eof-error-p 是 false, 就返回 eof-value.
+        如果到达文件末尾[end of file[2]]并且 eof-error-p 是 false, 就返回 eof-value.
 
 * 示例(Examples):
 
@@ -872,7 +875,7 @@
 
 * 异常情况(Exceptional Situations):
 
-        当 eof-error-p 是 true 时, 如果到达文件末尾, 就会发出一个 end-of-file 类型的错误.
+        当 eof-error-p 是 true 时, 如果到达文件末尾[end of file[2]], 就会发出一个 end-of-file 类型[type]的错误.
 
 * 也见(See Also):
 
@@ -958,7 +961,7 @@
 
         unread-char 把 character 放置回 input-stream 的前面, 这样一来它会再一次成为 input-stream 中的下一个字符.
 
-        当 input-stream 是一个回音流时, 不要尝试去撤销字符 character 已经在 input-stream 上完成的任何响应. 然而, 通过 unread-char 放置在 input-stream 的字符以这样方式被标记来抑制后来通过 read-char 的再响应.
+        当 input-stream 是一个回显流时, 不要尝试去撤销字符 character 已经在 input-stream 上完成的任何响应. 然而, 通过 unread-char 放置在 input-stream 的字符以这样方式被标记来抑制后来通过 read-char 的再响应.
 
         在中间没有在一个流上调用 read-char (或者某个其他隐式读取字符的输入操作) 的情况下, 在同一个流上连续两次调用 unread-char 是一个错误.
 
@@ -2239,7 +2242,7 @@
 
 * 参数和值(Arguments and Values):
 
-        echo-stream---一个回音流.
+        echo-stream---一个回显流.
         input-stream---一个输入流.
         output-stream---一个输出流.
 
@@ -2272,11 +2275,11 @@
 
         input-stream---一个输入流.
         output-stream---一个输出流.
-        echo-stream---一个回音流.
+        echo-stream---一个回显流.
 
 * 描述(Description):
 
-        创建并返回一个从 input-stream 获取输入并发送输出到 output-stream 的回音流.
+        创建并返回一个从 input-stream 获取输入并发送输出到 output-stream 的回显流.
 
 * 示例(Examples):
 
