@@ -896,14 +896,14 @@
 
 * 参数和值(Arguments and Values):
 
-        output-stream -- 一个输出流标识符. 默认是标准输出.
-        generalized-boolean---一个广义 boolean.
+        output-stream -- 一个输出[output]流标识符[stream designator]. 默认是标准输出[standard output].
+        generalized-boolean---一个广义 boolean [generalized boolean].
 
 * 描述(Description):
 
-        terpri 输出一个新行到 output-stream 中.
+        terpri 输出一个新行[newline]到 output-stream 中.
 
-        fresh-line 类似于 terpri 但是当且仅当这个 output-stream 没有在一行的开头时输出一个新行. 如果出于某个原因不能确定这个, 那么无论怎样都会输出一个新行. 如果 fresh-line 输出一个新行就返回 true; 否则它返回 false.
+        fresh-line 类似于 terpri 但是当且仅当这个 output-stream 没有在一行的开头时输出一个新行[newline]. 如果出于某个原因不能确定这个, 那么无论怎样都会输出一个新行[newline]. 如果 fresh-line 输出一个新行[newline]就返回 true; 否则它返回 false.
 
 * 示例(Examples):
 
@@ -954,18 +954,18 @@
 
 * 参数和值(Arguments and Values):
 
-        character---一个字符; 必须是从 input-stream 读到的最后一个字符.
-        input-stream---一个输入流标识符. 默认是标准输入.
+        character---一个字符[characater]; 必须是从 input-stream 读到的最后一个字符[character].
+        input-stream---一个输入[input]流标识符[stream designator]. 默认是标准输入[standard input].
 
 * 描述(Description):
 
         unread-char 把 character 放置回 input-stream 的前面, 这样一来它会再一次成为 input-stream 中的下一个字符.
 
-        当 input-stream 是一个回显流时, 不要尝试去撤销字符 character 已经在 input-stream 上完成的任何响应. 然而, 通过 unread-char 放置在 input-stream 的字符以这样方式被标记来抑制后来通过 read-char 的再响应.
+        当 input-stream 是一个回显流[echo stream]时, 不要尝试去撤销字符 character 已经在 input-stream 上完成的任何回显. 然而, 通过 unread-char 放置在 input-stream 的字符以这样方式被标记来抑制后面通过 read-char 的再回显.
 
-        在中间没有在一个流上调用 read-char (或者某个其他隐式读取字符的输入操作) 的情况下, 在同一个流上连续两次调用 unread-char 是一个错误.
+        在同一个流[stream]上连续两次调用 unread-char 时, 如果中间没有在这个流[stream]上调用 read-char (或者某个其他隐式读取字符的输入操作), 那么就会发生一个错误.
 
-        调用 peek-char 或 read-char 提交所有前面的字符. 在 peek-char 返回的任何字符之前调用 unread-char (包括由 peek-char 传递的那些具有非 nil peek-type 类型的字符) 的后果是不明确的. 特别是, 在 peek-char 之后调用 unread-char 的后果是未指定的.
+        调用 peek-char 或 read-char 会提交所有前面的字符. 在 peek-char 返回的任何字符之前调用 unread-char (包括由 peek-char 传递的那些非 nil [non-nil] peek-type 类型的字符) 的后果是不确定的. 特别是, 在 peek-char 之后调用 unread-char 的后果是未指定的.
 
 * 示例(Examples):
 
@@ -992,7 +992,7 @@
 
 * 注意(Notes):
 
-        unread-char 旨在成为一种有效的机制, 允许 Lisp 读取器和其他解析器在输入流 input-stream 中执行一个字符的展望. 
+        unread-char 旨在成为一种有效的机制, 允许 Lisp 读取器[Lisp reader]和其他解析器在输入流 input-stream 中执行一个字符的展望. 
 
 
 ### <span id="F-WRITE-CHAR">函数 WRITE-CHAR</span>
@@ -1003,8 +1003,8 @@
 
 * 参数和值(Arguments and Values):
 
-        character---一个字符.
-        output-stream -- 一个输出流标识符. 默认是标准输出.
+        character---一个字符[character].
+        output-stream -- 一个输出[output]流标识符[stream designator]. 默认是标准输出[standard output].
 
 * 描述(Description):
 
@@ -1049,22 +1049,22 @@
 
 * 参数和值(Arguments and Values):
 
-        input-stream---一个输入流标识符. 默认是标准输入.
-        eof-error-p---一个广义 boolean. 默认是 true.
-        eof-value---一个对象. 默认是 nil.
-        recursive-p---一个广义 boolean. 默认是 false.
-        line---一个字符串或 eof-value.
-        missing-newline-p---一个广义 boolean.
+        input-stream---一个输入[input]流标识符[stream designator]. 默认是标准输入[standard input].
+        eof-error-p---一个广义 boolean [generalized boolean]. 默认是 true.
+        eof-value---一个对象[object]. 默认是 nil.
+        recursive-p---一个广义 boolean [generalized boolean]. 默认是 false.
+        line---一个字符串[string]或 eof-value.
+        missing-newline-p---一个广义 boolean [generalized boolean].
 
 * 描述(Description):
 
-        从 input-stream 读取一个文本行, 由一个新行标识或文件末尾来结尾.
+        从 input-stream 读取一个文本行, 由一个新行[newline]标识或文件末尾[end of file]来结尾.
 
-        If recursive-p is true, 这个调用预期会被嵌入到一个更高层次的对 read 或一个 Lisp 读取器使用的类似函数的调用中.
+        如果 recursive-p 是 true, 那么预期这个调用会被嵌入到一个更高层次的对 read 或一个 Lisp 读取器[Lisp Reader]使用的类似函数[function]的调用中.
 
-        这个主要的值, line, 是读取到的那行, 表示为一个字符串 (如果有这个字符串的话, 不带末尾的新行标识). 如果 eof-error-p 是 false 并且在读到任何字符之前到达 input-stream 的文件末尾, 返回 eof-value 作为这个 line.
+        这个主值[primary value], line, 是读取到的那行, 表示为一个字符串[string] (如果有这个字符串[string]的话, 不带末尾的新行[newline]标识). 如果 eof-error-p 是 false 并且在读到任何字符[character]之前到达 input-stream 的文件末尾[end of file], 返回 eof-value 作为这个 line.
 
-        第二个值, missing-newline-p, 是一个广义 boolean, 如果 line 是由新行标识来终止的就是 false, 如果 line 由 input-stream 文件结尾来终止(或者如果这个 line 就是 eof-value)就是 true .
+        第二个值[secondary value], missing-newline-p, 是一个广义 boolean [generalized boolean], 如果 line 是由新行[newline]标识来终止的就是 false, 如果 line 由 input-stream 文件结尾[end of file]来终止(或者如果这个 line 就是 eof-value)就是 true .
 
 * 示例(Examples):
 
@@ -1089,7 +1089,7 @@
 
 * 异常情况(Exceptional Situations):
 
-        如果在这行中任何字符被读取到之前就到达文件的末尾, 如果 eof-error-p 是 true 就会发出一个错误.
+        如果在这行中任何字符被读取到之前就到达文件的末尾[end of file[2]], 如果 eof-error-p 是 true 就会发出一个错误.
 
 * 也见(See Also):
 
@@ -1110,13 +1110,13 @@
 
 * 参数和值(Arguments and Values):
 
-        string---一个字符串.
-        output-stream -- 一个输出流标识符. 默认是标准输出.
-        start, end---字符串 string 的边界索引标识符. 对于 start 和 end 默认分别为 0 和 nil.
+        string---一个字符串[string].
+        output-stream -- 一个输出[output]流标识符[stream designator]. 默认是标准输出[standard output].
+        start, end---字符串 string 的边界索引标识符[bounding index designator]. 对于 start 和 end 默认分别为 0 和 nil.
 
 * 描述(Description):
 
-        write-string 把字符串 string 由 start 和 end 限定的子字符串的字符写到 output-stream 中. write-line 做相同的事, 但是会在之后输出一个新行标识.
+        write-string 把字符串 string 由 start 和 end 限定[bounded]的子字符串的字符[character]写到 output-stream 中. write-line 做相同的事, 但是会在之后输出一个换行标识.
 
 * 示例(Examples):
 
@@ -1149,7 +1149,7 @@
 
 * 注意(Notes):
 
-        write-line 和 write-string 返回 string, 不是由 start 和 end 限定的子字符串.
+        write-line 和 write-string 返回 string, 不是由 start 和 end 限定[bounded]的子字符串.
 
         (write-string string)
         ==  (dotimes (i (length string)
@@ -1157,6 +1157,7 @@
 
         (write-line string)
         ==  (prog1 (write-string string) (terpri))
+
 
 ### <span id="F-READ-SEQUENCE">函数 READ-SEQUENCE</span>
 
@@ -1166,18 +1167,18 @@
 
 * 参数和值(Arguments and Values):
 
-        sequence---一个序列.
-        stream---一个输入流.
-        start, end---序列 sequence 的边界索引标识符. 对于 start 和 end 默认分别为 0 和 nil.
-        position---一个大于等于零, 并且小于等于序列 sequence 长度的整数.
+        sequence---一个序列[sequence].
+        stream---一个输入[input]流[stream].
+        start, end---序列 sequence 的边界索引标识符[bounding index designator]. 对于 start 和 end 默认分别为 0 和 nil.
+        position---一个大于等于零, 并且小于等于序列 sequence 长度[length]的整数[integer].
 
 * 描述(Description):
 
-        通过用读取自流 stream 的元素来替换序列 sequence 中由 start 和 end 限定的元素来破坏性地修改序列 sequence.
+        通过用读取自流 stream 的元素[element]来替换序列 sequence 中由 start 和 end 限定[bounded]的元素[element]来破坏性地修改序列 sequence.
 
-        通过从流 stream 中拷贝连续元素到序列 sequence 来破坏性地修改它. 如果在拷贝这个子序列的所有元素之前到达这个流 stream 的文件末尾, 那么在序列 sequence 的末尾旁边的元素不会被更新.
+        通过从流 stream 中拷贝连续元素[element]到序列 sequence 来破坏性地修改它. 如果在拷贝这个子序列的所有元素[element]之前到达这个流 stream 的文件末尾[end of file], 那么在序列 sequence 的末尾旁边的元素[element]不会被更新.
 
-        position 是序列 sequence 中第一个没有被更新的元素的索引, 由于到达文件的末尾的话它可能小于 end.
+        position 是序列 sequence 中第一个没有被更新的元素[element]的索引, 由于到达文件的末尾[end of file]的话它可能小于 end.
 
 * 示例(Examples):
 
@@ -1195,17 +1196,17 @@
 
 * 异常情况(Exceptional Situations):
 
-        如果序列 sequence 不是一个 proper 序列, 就应该准备发出一个 type-error 类型的错误. 如果 start 不是一个非负整数, 就会发出一个 type-error 类型的错误. 如果 end 不是一个非负整数或 nil, 就会发出一个 type-error 类型的错误.
+        如果序列 sequence 不是一个正规序列[proper sequence], 就应该准备发出一个 type-error 类型[type]的错误. 如果 start 不是一个非负整数[integer], 就会发出一个 type-error 类型[type]的错误. 如果 end 不是一个非负整数[integer]或 nil, 就会发出一个 type-error 类型[type]的错误.
 
-        如果读取自流 stream 的一个元素不是 sequence 的一个元素类型的成员, 就会发出一个 type-error 类型的错误.
+        如果读取自流 stream 的一个元素[element]不是 sequence 的一个元素类型[element type]的成员, 就会发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
-        章节 3.2.1 (Compiler Terminology), write-sequence, read-line
+        章节 3.2.1 (编译器术语), write-sequence, read-line
 
 * 注意(Notes):
 
-        read-sequence 和遍历指定的子序列并每次从流 stream 中读取一个元素并将其存储到序列 sequence 中的效果是相同的, 但是可能比等价循环更有效率. 一个有效的实现更有可能存在于 sequence 是一个具有与 stream 相同的元素类型的向量的情况下. 
+        read-sequence 和遍历指定的子序列并每次从流 stream 中读取一个元素[element]并将其存储到序列 sequence 中的效果是相同的, 但是可能比等价循环更有效率. 对于序列 sequence 是一个具有与 stream 相同的元素类型[element type]的向量[vector]的情况下, 更可能存在高效的实现. 
 
 
 ### <span id="F-WRITE-SEQUENCE">函数 WRITE-SEQUENCE</span>
@@ -1216,13 +1217,13 @@
 
 * 参数和值(Arguments and Values):
 
-        sequence---一个序列.
-        stream---一个输出流.
-        start, end---序列 sequence 的边界索引标识符. 对于 start 和 end 默认分别为 0 和 nil.
+        sequence---一个序列[sequence].
+        stream---一个输出[output]流[stream].
+        start, end---序列 sequence 的边界索引标识符[bounding index designator]. 对于 start 和 end 默认分别为 0 和 nil.
 
 * 描述(Description):
 
-        write-sequence 把序列 sequence 中由 start 和 end 限定的子序列写入到流 stream 中.
+        write-sequence 把序列 sequence 中由 start 和 end 限定[bounded]的子序列的元素[element]写入到流 stream 中.
 
 * 示例(Examples):
 
@@ -1240,17 +1241,17 @@
 
 * 异常情况(Exceptional Situations):
 
-        如果序列 sequence 不是一个 proper 序列, 就应该准备发出一个 type-error 类型的错误. 如果 start 不是一个非负整数, 就会发出一个 type-error 类型的错误. 如果 end 不是一个非负整数或 nil, 就会发出一个 type-error 类型的错误.
+        如果序列 sequence 不是一个正规序列[proper sequence], 就应该准备发出一个 type-error 类型[type]的错误. 如果 start 不是一个非负整数[integer], 就会发出一个 type-error 类型[type]的错误. 如果 end 不是一个非负整数[integer]或 nil, 就会发出一个 type-error 类型[type]的错误.
 
-        如果限定的序列 sequence 的一个元素不是流 stream 的流元素类型的一个成员, 可能会发出一个 type-error 类型的错误.
+        如果限定[bounded sequence]的序列[sequence]的一个元素[element]不是流 stream 的流元素类型[stream element type]的一个成员, 可能会发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
-        章节 3.2.1 (Compiler Terminology), read-sequence, write-string, write-line
+        章节 3.2.1 (编译器), read-sequence, write-string, write-line
 
 * 注意(Notes):
 
-        write-sequence 和遍历指定的子序列并每次写入一个元素到流 stream 中的效果是相同的, 但是可能比等价循环更有效率. 一个有效的实现更有可能存在于 sequence 是一个具有与 stream 相同的元素类型的向量的情况下.
+        write-sequence 和遍历指定的子序列并每次写入一个元素[element]到流 stream 中的效果是相同的, 但是可能比等价循环更有效率. 对于序列 sequence 是一个具有与 stream 相同的元素类型[element type]的向量[vector]的情况下, 更可能存在高效的实现.
 
 
 ### <span id="F-FILE-LENGTH">函数 FILE-LENGTH</span>
@@ -1261,14 +1262,14 @@
 
 * 参数和值(Arguments and Values):
 
-        stream---和一个文件关联的流.
-        length---一个非负整数或 nil.
+        stream---和一个文件关联的流[stream associated with a file].
+        length---一个非负整数[integer]或 nil.
 
 * 描述(Description):
 
         file-length 返回流 stream 的长度, 如果长度不能确定就返回 nil.
 
-        对于一个二进制文件, 长度是以流 stream 的元素类型的单位来测量的.
+        对于一个二进制文件, 长度是以流 stream 的元素类型[element type]的单位来测量的.
 
 * 示例(Examples):
 
@@ -1289,13 +1290,14 @@
 
 * 异常情况(Exceptional Situations):
 
-        如果流 stream 不是一个和文件关联的流就会发出一个 type-error 类型的错误.
+        如果流 stream 不是一个和文件关联的流[stream associated with a file]就会发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
         open
 
 * 注意(Notes): None. 
+
 
 ### <span id="F-FILE-POSITION">函数 FILE-POSITION</span>
 
@@ -1307,22 +1309,22 @@
 
 * 参数和值(Arguments and Values):
 
-        stream---一个流.
-        position-spec---一个文件位置标识符.
-        position---一个文件位置或 nil.
-        success-p---一个广义 boolean.
+        stream---一个流[stream].
+        position-spec---一个文件位置标识符[file position designator].
+        position---一个文件位置[file position]或 nil.
+        success-p---一个广义 boolean [generalized boolean].
 
 * 描述(Description):
 
         返回或改变一个流 stream 中的当前位置.
 
-        当没有提供 position-spec 时, file-position 在流 stream 中的当前文件位置, 如果不能确定就返回 nil.
+        当没有提供 position-spec 时, file-position 在流 stream 中的当前文件位置[file position], 如果不能确定就返回 nil.
 
-        当提供了 position-spec 时, 在流 stream 中的文件位置会被设置为那个文件位置 (如果可能的话). 如果这个重定位执行成功, file-position 返回 true, 如果没有就返回 false.
+        当提供了 position-spec 时, 在流 stream 中的文件位置[file position]会被设置为该文件位置[file position] (如果可能的话). 如果这个重定位执行成功, file-position 返回 true, 如果没有就返回 false.
 
-        由但参数的 file-position 返回的整数用作同一个文件的 position-spec 应该是可接受的.
+        由单参数的 file-position 返回的整数[integer]用作同一个文件的 position-spec 应该是可接受的.
 
-        对于一个字符文件, 执行一个单独的 read-char 或 write-char 操作可能造成这个文件位置递增超过 1, 因为字符集转换 because of character-set translations (比如在 Common Lisp f#\Newline 字符和一外部的 ASCII 回车/换行序列之间的转换) 以及具体实现的其他方面. 对于一个二进制文件, 每个 read-byte 或 write-byte 操作递增文件位置 1.
+        对于一个字符文件, 执行一个单独的 read-char 或 write-char 操作可能造成这个文件位置递增超过 1, 因为字符集转换 (比如在 Common Lisp f#\Newline 字符和一外部的 ASCII 回车/换行序列之间的转换) 以及具体实现的其他方面. 对于一个二进制文件, 每个 read-byte 或 write-byte 操作递增文件位置 1.
 
 * 示例(Examples):
 
@@ -1362,7 +1364,7 @@
 
 * 副作用(Side Effects):
 
-        当提供了这个 position-spec 参数时, 在这个 stream 中的文件位置可能被移动.
+        当提供了这个 position-spec 参数时, 在这个 stream 中的文件位置[file position]可能被移动.
 
 * 受此影响(Affected By):
 
@@ -1378,7 +1380,7 @@
 
 * 注意(Notes):
 
-        具有被表示为一个有界大小的记录序列的字符文件的具体实现可能选择去对这个文件位置进行编码, 比如, <<record-number>>*<<max-record-size>>+<<character-within-record>>. 这是一个有效的编码因为它随着每个字符被读取或写入单调递增, 尽管每次步进没有必要是 1. 作为给 file-position 的 position-spec, 如果在解码成记录的数字和字符号时, 结果表明所提供的记录对于指定的字符数来说太短了, 一个整数可能被认为是 "不合适的".
+        将字符文件表示为一个有限大小的记录序列的具体实现可以选择将这个文件位置编码为, 比如, <<record-number>>*<<max-record-size>>+<<character-within-record>>. 这是一个有效的编码, 因为它随着每个字符被读取或写入单调递增, 尽管每次步进没有必要是 1. 作为给 file-position 的 position-spec, 如果在解码成记录的数字和字符号时, 结果表明所提供的记录对于指定的字符数来说太短了, 一个整数[integer]可能被认为是 "不合适的".
 
 
 ### <span id="F-FILE-STRING-LENGTH">函数 FILE-STRING-LENGTH</span>
@@ -1389,15 +1391,15 @@
 
 * 参数和值(Arguments and Values):
 
-        stream---一个输出字符文件流.
-        object---一个字符串或一个字符.
-        length---一个非负整数, 或 nil.
+        stream---一个输出[output]字符[character]文件流[file stream].
+        object---一个字符串[string]或一个字符[character].
+        length---一个非负整数[integer], 或 nil.
 
 * 描述(Description):
 
         file-string-length 返回 (file-position stream) 的当前值和它在写入对象 object 之后的值的区别, 如果不能确定就是 nil.
 
-        返回值对应这个调用时流 stream 的当前状态, 当这个流 stream 的状态改变时再一次调用的值可能是不同的.
+        返回值对应这个调用时流 stream 的当前状态, 当这个流[stream]的状态改变时再一次调用的值可能是不同的.
 
 * 示例(Examples): None.
 
@@ -1419,39 +1421,39 @@
 
 * 参数和值(Arguments and Values):
 
-        filespec---一个路径名标识符.
+        filespec---一个路径名标识符[pathname designator].
         direction---:input, :output, :io, 或 :probe 其中之一. 默认是 :input.
-        element-type---一个 character 的可识别子类型的类型指定负; 或者一个 integer 的有限可识别子类型; 或者符号 signed-byte, unsigned-byte, 或 :default 的其中一个. 默认是 character.
+        element-type---一个 character 的可识别子类型[recognizable subtype]的类型指定符[type specifier]; 或者一个 integer 的有限[finite]可识别子类型[recognizable subtype]; 或者符号[symbol] signed-byte, unsigned-byte, 或 :default 的其中一个. 默认是 character.
         if-exists---:error, :new-version, :rename, :rename-and-delete, :overwrite, :append, :supersede, 或 nil 其中之一. 如果 filespec 的版本成员是 :newest, 默认就是 :new-version, 否则就是 :error.
         if-does-not-exist---:error, :create, 或 nil 其中之一. 如果 direction 是 :input 或者 if-exists 是 :overwrite 或 :append, 默认就是 :error; 如果 direction 是 :output 或 :io, 并且 if-exists 既不是 :overwrite 也不是 :append, 那么就是 :create; 当 direction 是 :probe 时就是 nil.
-        external-format---一个额外的文件格式化标识符. 默认是 :default.
-        stream---一个文件流或 nil.
+        external-format---一个外部文件格式标识符[external file format designator]. 默认是 :default.
+        stream---一个文件流[file stream]或 nil.
 
 * 描述(Description):
 
-        open 创建, 打开, 并返回一个连接到 filespec 指定文件的文件流. filespec 是这个要被打开的文件的名字. 如果这个 filespec 标识符是一个流, 那个流首先没有被关闭否则就会被影响.
+        open 创建, 打开, 并返回一个连接到由 filespec 指定文件的文件流[file stream]. filespec 是这个要被打开的文件的名字. 如果这个 filespec 标识符[designator]是一个流[stream], 那个流[stream]首先没有被关闭否则就会被影响.
 
-        给 open 的关键字参数指定了返回的那个文件流的特质, 以及如何处理错误.
+        给 open 的关键字参数指定了返回的那个文件流[file stream]的特质, 以及如何处理错误.
 
-        如果 direction 是 :input 或 :probe, 或者如果 if-exists 不是 :new-version 而这个 filespec 的版本成员是 :newest, 那么这个打开的文件就是已经存在于那个文件系统中的文件, 该文件的版本比文件系统中的任何其他文件都要大, 其其他路径名成员与 filespec 相同.
+        如果 direction 是 :input 或 :probe, 或者如果 if-exists 不是 :new-version 而这个 filespec 的版本成员是 :newest, 那么这个打开的文件就是已经存在于那个文件系统中的文件, 该文件的版本比文件系统中其他路径名成员与 filespec 相同的任何其他文件都要大.
 
         一个具体实现需要去识别所有这些 open 关键字选项并且在这个主机操作系统的上下文中去做一些合理的事. 比如, 如果一个文件系统不支持不同的文件版本, 并且不区分删除(deletion)和除去(expunging)的概念, :new-version 可能被当作和 :rename 或 :supersede 一样, 而 :rename-and-delete 可能被当作和 :supersede 一样.
 
         :direction
 
-            这些是 direction 的可能的值, 以及它们如何影响创建的流的性质:
+            这些是 direction 的可能的值, 以及它们如何影响创建的流[stream]的性质:
 
             :input
 
-                导致创建一个输入文件流.
+                导致创建一个输入[input]文件流[file stream].
 
             :output
 
-                导致创建一个输出文件流.
+                导致创建一个输出[output]文件流[file stream].
 
             :io
 
-                导致创建一个双向文件流.
+                导致创建一个双向[bidirectional]文件流[file stream].
 
             :probe
 
@@ -1459,15 +1461,15 @@
 
         :element-type
 
-            这个 element-type 指定文件流的事务单元. 如果它是 :default, 这个单元由文件系统决定, 可能基于这个文件.
+            这个 element-type 指定文件流[file stream]的事务单元. 如果它是 :default, 这个单元由文件系统[file system]决定, 可能基于这个文件[file].
 
         :if-exists
 
-            if-exists 指定了如果 direction 是 :output 或 :io 而名为 filespec 的文件已经存在的话要采取的动作. 如果 direction 是 :input, 没有提供, 或 :probe, if-exists 会被忽略. 这些是 open 被 if-exists 修改的结果:
+            if-exists 指定了如果 direction 是 :output 或 :io 而名为 filespec 的文件已经存在的话要采取的动作. 如果 direction 是 :input, 没有提供, 或 :probe, 那么 if-exists 会被忽略. 这些是 open 被 if-exists 修改的结果:
 
             :error
 
-                发出一个 file-error 类型的错误.
+                发出一个 file-error 类型[type]的错误.
 
             :new-version
 
@@ -1483,11 +1485,11 @@
 
             :overwrite
 
-                在这个流上的输出操作会破坏性地修改这个已存在的文件. 如果 direction 是 :io 那么这个文件会以同时允许读写的双向模式被打开. 这个文件指针的初始定位于这个文件的开始; 然而, 当文件打开时, 文件不会被截断为零.
+                在这个流[stream]上的输出操作会破坏性地修改这个已存在的文件. 如果 direction 是 :io 那么这个文件会以同时允许读写的双向模式被打开. 这个文件指针的初始定位于这个文件的开始; 然而, 当文件打开时, 文件不会被截断为零.
 
             :append
 
-                在这个流上的输出操作会破坏性地修改这个已存在的文件. 这个文件指针的初始定位于这个文件的末尾.
+                在这个流[stream]上的输出操作会破坏性地修改这个已存在的文件. 这个文件指针的初始定位于这个文件的末尾.
 
                 如果 direction 是 :io, 那么这个文件会以同时允许读写的双向模式被打开.
 
@@ -1497,7 +1499,7 @@
 
             nil
 
-                没有文件或流会被创建; 反而, 返回 nil 来表示这个失败.
+                没有文件或流[stream]会被创建; 反而, 返回 nil 来表示这个失败.
 
         :if-does-not-exist
 
@@ -1505,27 +1507,27 @@
 
             :error
 
-                发出一个 file-error 类型的错误.
+                发出一个 file-error 类型[type]的错误.
 
             :create
 
-                创建一个空文件. 处理过程继续, 好像文件已经存在, 但是没有执行 if-exists 所指示的处理.
+                创建一个空文件. 处理继续进行, 就像文件已经存在一样, 但是没有执行 if-exists 所指示的处理.
 
             nil
 
-                没有文件或流会被创建; 反而, 返回 nil 来表示这个失败.
+                没有文件或流[stream]会被创建; 反而, 返回 nil 来表示这个失败.
 
         :external-format
 
-            这个选项为文件选择一个外部文件格式: 这个选项的仅有标准化值是 :default, 尽管具体实现允许去定义额外的文件格式并且 stream-external-format 返回的依赖于具体实现的值也可以被符合规范的程序所使用.
+            这个选项为文件[file]选择一个外部文件格式[external file format]: 这个选项的仅有标准化[standardized]值是 :default, 尽管具体实现[implementation]允许去定义额外的外部文件格式[external file format]并且 stream-external-format 返回的依赖于具体实现[implementation-dependent]的值也可以被符合规范的程序[conforming program]所使用.
 
-            这个 external-format 对于所有元素类型为 character 的一个子类的任何种类的文件流都是有意义的. 对于对这个选项无意义的流会忽略这个选项; 然而, 具体实现可能定义其他有意义的元素类型. 如果写入一个不能被给定外部文件格式所表示的字符, 后果是未指定的.
+            这个 external-format 对于所有元素类型[element type]为字符[character]的一个子类[subtype]的任何种类的文件流[file stream]都是有意义的. 对于对这个选项无意义的流[stream]会忽略这个选项; 然而, 具体实现[implementation]可能定义其他有意义的元素类型[element type]. 如果写入一个不能被给定外部文件格式[external file format]所表示的字符[character], 后果是未指定的.
 
-        当一个文件被打开时, 文件流被构造成文件系统到 Lisp 环境的代表; 文件流上的操作反映在文件系统中的文件操作上.
+        当一个文件被打开时, 文件流[file stream]被构造成文件系统到 Lisp 环境的代表; 文件流[file stream]上的操作反映在文件系统中的文件操作上.
 
         一个文件可以被 open 删除, 重命名, 或破坏性修改.
 
-        关于打开相对路径名的信息, 见章节 19.2.3 (Merging Pathnames).
+        关于打开相对路径名的信息, 见章节 19.2.3 (合并路径名).
 
 * 示例(Examples):
 
@@ -1543,37 +1545,37 @@
 
 * 受此影响(Affected By):
 
-        主机计算机文件系统的性质和状态.
+        主机计算机文件系统[file system]的性质和状态.
 
 * 异常情况(Exceptional Situations):
 
-        如果 if-exists 是 :error, (受限于上面列出的 if-exists 含义的限制), 就会发出一个 file-error 类型的错误.
+        如果 if-exists 是 :error, (受限于上面列出的 if-exists 含义的限制), 就会发出一个 file-error 类型[type]的错误.
 
-        如果 if-does-not-exist 是 :error (受限于上面列出的 if-does-not-exist 含义的限制), 就会发出一个 file-error 类型的错误.
+        如果 if-does-not-exist 是 :error (受限于上面列出的 if-does-not-exist 含义的限制), 就会发出一个 file-error 类型[type]的错误.
 
-        如果一个实现不可能以接近这里指定的方式处理某些选项, 就会发出一个 error 类型的错误.
+        如果一个实现不可能以接近这里指定的方式处理某些选项, 就会发出一个 error 类型[type]的错误.
 
-        如果 (wild-pathname-p filespec) 返回 true 就会发出一个 file-error 类型的错误.
+        如果 (wild-pathname-p filespec) 返回 true 就会发出一个 file-error 类型[type]的错误.
 
-        如果 external-format 不被具体实现所接受, 就会发出一个 error 类型的错误.
+        如果 external-format 不被具体实现[implementation]所接受, 就会发出一个 error 类型[type]的错误.
 
-        目前存在的各种文件系统具有广泛的不同功能, 并且文件系统的某些方面超出了该规范定义的范围. 一个给定的实现可能无法以完全相同的方式支持所有这些选项. 一个实现需要去识别所有这些选项关键字, 并尝试在主机文件系统的上下文中执行一些"合理"的操作. 在必要的情况下, 为了适应文件系统, 一个实现稍微偏离了这里指定的语义, 而不被取消作为一个符合规范的实现的资格. 如果实现以类似于此处指定的方式处理某些选项是完全不可能的, 那么它可能只是发出一个错误.
+        目前存在的各种文件系统[file system]具有广泛的不同功能, 并且文件系统[file system]的某些方面超出了这个规范定义的范围. 一个给定的实现[implementation]可能无法以完全相同的方式支持所有这些选项. 一个实现[implementation]需要去识别所有这些选项关键字, 并尝试在主机文件系统[file system]的上下文中执行一些"合理"的操作. 在必要的情况下, 为了适应文件系统[file system], 即便一个实现[implementation]稍微偏离了这里指定的语义, 也不被取消作为一个符合规范的实现[conforming implementation]的资格. 如果实现[implementation]以类似于此处指定的方式处理某些选项是完全不可能的, 那么它可能只是发出一个错误.
 
-        关于 :element-type 选项, 如果一个请求的类型不被文件系统所支持, 在升级中进行的类型替换是允许的 a substitution of types such as that which goes on in upgrading is permissible. 作为一个最小的需求, 应该是这样的情况: 在给定的元素类型中打开一个输出流, 然后在相同的元素类型中打开同一个文件的输入流应该是兼容的.
+        关于 :element-type 选项, 如果一个请求的类型[type]不被文件系统[file system]所支持, 在提升[upgrade]中进行的类型替换是允许的. 作为一个最小的需求, 应该是这样的情况: 在给定的元素类型[element type]下打开一个输出[output]流[stream], 然后在相同的元素类型[element type]中打开同一个文件[file]的输入[input]流[stream]应该是兼容的.
 
 * 也见(See Also):
 
-        with-open-file, close, pathname, logical-pathname, 章节 19.2.3 (Merging Pathnames), 章节 19.1.2 (Pathnames as Filenames)
+        with-open-file, close, pathname, logical-pathname, 章节 19.2.3 (合并路径名), 章节 19.1.2 (路径名作为文件名)
 
 * 注意(Notes):
 
         当一个反常的退出发生时, open 不会自动关闭这个文件.
 
-        当 element-type 是 character 的一个子类型时, read-char 和/或 write-char 可以在产生的文件流上被使用.
+        当 element-type 是 character 的一个子类型[subtype]时, read-char 和/或 write-char 可以在产生的文件流[file stream]上被使用.
 
-        当 element-type 是 integer 的一个子类型时, read-byte 和/或 write-byte 可以在产生的文件流上被使用.
+        当 element-type 是 integer 的一个子类型[subtype]时, read-byte 和/或 write-byte 可以在产生的文件流[file stream]上被使用.
 
-        当 element-type 是 :default 时, 类型可以通过使用 stream-element-type 来确定. 
+        当 element-type 是 :default 时, 类型[type]可以通过使用 stream-element-type 来确定. 
 
 
 ### <span id="F-STREAM-EXTERNAL-FORMAT">函数 STREAM-EXTERNAL-FORMAT</span>
@@ -1584,12 +1586,12 @@
 
 * 参数和值(Arguments and Values):
 
-        stream---一个文件流.
-        format---一个外部文件格式.
+        stream---一个文件流[file stream].
+        format---一个外部文件格式[external file format].
 
 * 描述(Description):
 
-        返回流 stream 的一个外部文件格式标识符.
+        返回流 stream 的一个外部文件格式标识符[external file format designator].
 
 * 示例(Examples):
 
@@ -1611,11 +1613,11 @@
 
 * 也见(See Also):
 
-        给函数 open 和宏 with-open-file 的 :external-format 参数.
+        给函数[function] open 和宏[macro] with-open-file 的 :external-format 参数[argument].
 
 * 注意(Notes):
 
-        这个返回的格式没有必要对于其他实现是有意义的. 
+        这个返回的格式没有必要对于其他实现[implementation]是有意义的. 
 
 
 ### <span id="M-WITH-OPEN-FILE">宏 WITH-OPEN-FILE</span>
@@ -1628,25 +1630,25 @@
 * 参数和值(Arguments and Values):
 
         stream -- 一个变量.
-        filespec---一个路径名标识符.
-        options -- 表达式形式; 求值的.
-        declaration---一个 declare 表达式; 不求值.
-        forms---一个隐式 progn.
-        results---由表达式形式 forms 返回的值.
+        filespec---一个路径名标识符[pathname designator].
+        options -- 一个表达式形式[form]; 求值的.
+        declaration---一个 declare 表达式[expression]; 不求值.
+        forms---一个隐式 progn [implicit progn].
+        results---由表达式形式 forms 返回的值[value].
 
 * 描述(Description):
 
-        with-open-file 使用 open 来创建一个到名为 filespec 的文件的文件流. filespec 是要被打开的文件的名字. options 是用作给 open 的关键字参数的那些.
+        with-open-file 使用 open 来创建一个到名为 filespec 的文件[file]的文件流[file stream]. filespec 是要被打开的文件的名字. options 是用作给 open 的关键字参数.
 
-        这个 stream 变量绑定的流对象有着动态范围; 它的范围在表达式形式退出时结束.
+        这个 stream 变量[variable]绑定[bound]的流[stream]对象[object]有着动态范围[dynamic extent]; 它的范围[extent]在表达式形式[form]退出时结束.
 
-        with-open-file 像一个隐式的 progn 求值表达式形式 forms, 其中流 stream 被绑定到 open 返回的值上.
+        with-open-file 作为一个隐式的 progn [implicit progn]求值表达式形式 forms, 其中流 stream 被绑定到 open 返回的值上.
 
         当控制离开主体时, 不管是正常的还是反常的 (比如通过使用 throw), 这个文件会被自动关闭. 如果一个新的输出文件要被写入, 而控制不正常地离开了, 这个文件会被终止并且文件系统被保留, 尽可能地保留, 就好像文件从来没有打开过一样.
 
-        对于流 stream 使用 :if-exists nil 或 :if-does-not-exist nil 来绑定为 nil 是可能的. :if-does-not-exist nil 的使用者应该检查是否为一个有效的流.
+        对于流 stream 使用 :if-exists nil 或 :if-does-not-exist nil 来绑定为 nil 是可能的. :if-does-not-exist nil 的使用者应该检查是否为一个有效的流[stream].
 
-        如果尝试去对流变量赋值, 后果是未定义的. 如果检测到这样的尝试, 编译器可能选择去发出一个警告.
+        如果尝试去对流变量[variable]赋值[assign], 后果是未定义的. 如果检测到这样的尝试, 编译器可能选择去发出一个警告.
 
 * 示例(Examples):
 
@@ -1680,7 +1682,7 @@
 
 * 副作用(Side Effects):
 
-        创建一个名为 filename 的文件的流 (进入时), 并且关闭这个流 (退出时). 在某些实现中, 在这个文件被打开时它可能被锁定. 如果这个流是一个输出流, 可能会创建一个文件.
+        创建一个名为 filename 的文件[file]的流[stream] (进入时), 并且关闭这个流[stream] (退出时). 在某些实现[implementation]中, 在这个文件[file]被打开时它可能被锁定. 如果这个流[stream]是一个输出[output]流[stream], 可能会创建一个文件[file].
 
 * 受此影响(Affected By):
 
@@ -1688,11 +1690,11 @@
 
 * 异常情况(Exceptional Situations):
 
-        见函数 open.
+        见函数[function] open.
 
 * 也见(See Also):
 
-        open, close, pathname, logical-pathname, 章节 19.1.2 (Pathnames as Filenames)
+        open, close, pathname, logical-pathname, 章节 19.1.2 (路径名作为文件名)
 
 * 注意(Notes): None. 
 
@@ -1705,23 +1707,23 @@
 
 * 参数和值(Arguments and Values):
 
-        stream---一个流 (不管是打开的还是关闭的).
-        abort---一个广义 boolean. 默认是 false.
-        result---如果这个流 stream 在它被接受作为参数时是打开的就是 t, 否则就是依赖于具体实现的.
+        stream---一个流[stream] (不管是打开的[open]还是关闭的[closed]).
+        abort---一个广义 boolean [generalized boolean]. 默认是 false.
+        result---如果这个流 stream 在它被接受作为参数时是打开的[open]就是 t, 否则就是依赖于具体实现的[implementation-dependent].
 
 * 描述(Description):
 
-        close 关闭流 stream. 关闭一个流意味着它可能不再被用于输入或输出操作了. 关闭一个文件流的行为会结束这个流 stream 和它关联的文件之间的关联; 与文件系统的事务会结束, 而输入/输出可能不再在这个流 stream 上执行.
+        close 关闭流 stream. 关闭一个流[stream]意味着它可能不再被用于输入或输出操作了. 关闭一个文件流[file stream]的行为会结束这个流[stream]和它关联的文件[file]之间的关联; 与文件系统[file system]的事务会结束, 而输入/输出可能不再在这个流[stream]上执行.
 
-        如果 abort 是 true, 会尝试去清理已经创建的流的任何副作用. 如果流 stream 执行输出到一个在这个流 stream 被创建时被创建的文件, 这个文件会被删除并且任何之前存在的文件不会被取代.
+        如果 abort 是 true, 会尝试去清理已经创建的流的任何副作用. 如果流 stream 对创建流[stream]时创建的文件执行输出, 这个文件会被删除并且任何之前存在的文件不会被取代.
 
-        允许去关闭一个已经关闭的流, 但是在这个情况中结果是依赖于具体实现的.
+        允许去关闭一个已经关闭的流[stream], 但是在这个情况中结果是依赖于具体实现的[implementation-dependent].
 
         在流 stream 被关闭后, 仍然可能在它上面执行一下查询操作: streamp, pathname, truename, merge-pathnames, pathname-host, pathname-device, pathname-directory,pathname-name, pathname-type, pathname-version, namestring, file-namestring, directory-namestring, host-namestring, enough-namestring, open, probe-file, 和 directory.
 
-        在一个构造的流上的 close 的效果只是去关闭这个参数 stream. 对复合流的组成部分没有影响.
+        在一个构造的流[constructed stream]上的 close 的效果只是去关闭这个参数 stream. 对复合流[composite stream]的组成部分[constituent]没有影响.
 
-        对于一个用 make-string-output-stream 创建的流, 在 close 后的 get-output-stream-string 结果是未指定的.
+        对于一个用 make-string-output-stream 创建的流[stream], 在 close 后的 get-output-stream-string 结果是未指定的.
 
 * 示例(Examples):
 
@@ -1733,7 +1735,7 @@
 
 * 副作用(Side Effects):
 
-        流 stream 会被关闭 (如果必要的话). 如果 abort 是 true 并且这个流 stream 是一个输出文件流, 它关联的文件可能被删除.
+        流 stream 会被关闭[close] (如果必要的话). 如果 abort 是 true 并且这个流 stream 是一个输出[output]文件流[file stream], 它关联的文件[file]可能被删除.
 
 * 受此影响(Affected By): None.
 
@@ -1755,19 +1757,19 @@
 
 * 参数和值(Arguments and Values):
 
-        var---一个变量名字.
-        stream---一个表达式形式; 求值来产生一个流.
-        declaration---一个 declare 表达式; 不求值.
-        forms---一个隐式 progn.
-        results---由这些表达式形式 forms 返回的结果.
+        var---一个变量[variable]名字[name].
+        stream---一个表达式形式[form]; 求值来产生一个流[stream].
+        declaration---一个 declare 表达式[expression]; 不求值.
+        forms---一个隐式 progn [implicit progn].
+        results---由这些表达式形式 forms 返回的那些值[value].
 
 * 描述(Description):
 
         with-open-stream 在流 stream 上执行一系列操作, 并返回一个值, 然后关闭这个流 stream.
 
-        var 被绑定为这个流 stream 的值, 然后这些表达式形式 forms 就像一个隐式的 progn 一样被求值. 流 stream 在从 with-open-stream 退出时会被自动关闭, 不管这个退出是正常的还是不正常的. 流 stream 有着动态范围; 它的范围在这个表达式形式退出时结束.
+        var 被绑定为这个流 stream 的值, 然后这些表达式形式 forms 就像一个隐式的 progn [implicit progn]一样被求值. 流 stream 在从 with-open-stream 退出时会被自动关闭, 不管这个退出是正常的还是不正常的. 流 stream 有着动态范围[dynamic extent]; 它的范围[extent]在这个表达式形式[form]退出时结束.
 
-        如果在这些表达式形式 forms 中尝试去对变量 var 赋值后果是未定义的.
+        如果在这些表达式形式 forms 中尝试去对变量[variable] var 赋值[assign]后果是未定义的.
 
 * 示例(Examples):
 
@@ -1790,6 +1792,7 @@
 
 * 注意(Notes): None. 
 
+
 ### <span id="F-LISTEN">函数 LISTEN</span>
 
 * 语法(Syntax):
@@ -1798,12 +1801,12 @@
 
 * 参数和值(Arguments and Values):
 
-        input-stream---一个输入流标识符. 默认是标准输入.
-        generalized-boolean---一个广义 boolean.
+        input-stream---一个输入[input]流标识符[stream designator]. 默认是标准输入[standard input].
+        generalized-boolean---一个广义 boolean [generalized boolean].
 
 * 描述(Description):
 
-        如果从输入流 input-stream 立即有一个字符可用就返回 true; 赋值, 返回 false. 在一个非交互式输入流上, listen 返回 true 除了到文件末尾时. 如果到达文件的末尾, listen 返回 false. 当输入流 input-stream 从一个交互式设备如键盘中获得字符时, 就会使用 listen.
+        如果从输入流 input-stream 立即有一个字符可用就返回 true; 否则, 返回 false. 在一个非交互式输入流上, listen 返回 true, 除了到文件末尾[end of file[1]]时例外. 如果到达文件的末尾[end of file], listen 返回 false. 当输入流 input-stream 从一个交互式设备如键盘中获得字符时, 就可以使用 listen.
 
 * 示例(Examples):
 
@@ -1838,11 +1841,11 @@
 
 * 参数和值(Arguments and Values):
 
-        input-stream---一个输入流标识符. 默认是标准输入.
+        input-stream---一个输入[input]流标识符[stream designator]. 默认是标准输入[standard input].
 
 * 描述(Description):
 
-        从输入流 input-stream 中清理任何可用的输入.
+        从输入流 input-stream 中清除任何可用的输入.
 
         如果 clear-input 对输入流 input-stream 没有意义, 那么 clear-input 什么都不做.
 
@@ -1893,13 +1896,14 @@
 
 * 异常情况(Exceptional Situations):
 
-        如果 input-stream 不是一个流标识符, 就应该发出一个 type-error 类型的错误.
+        如果 input-stream 不是一个流标识符[stream designator], 就应该发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
         clear-output
 
 * 注意(Notes): None. 
+
 
 ### <span id="F-FINISH-AND-FORCE-AND-CLEAR-OUTPUT">函数 FINISH-OUTPUT, FORCE-OUTPUT, CLEAR-OUTPUT</span>
 
@@ -1913,7 +1917,7 @@
 
 * 参数和值(Arguments and Values):
 
-        output-stream---一个输入流标识符. 默认是标准输出.
+        output-stream---一个输出[output]流标识符[stream designator]. 默认是标准输出[standard output].
 
 * 描述(Description):
 
@@ -1921,11 +1925,11 @@
 
         finish-output 尝试去确保任何发送到 output-stream 的缓冲输出已经到达目的地, 然后返回.
 
-        force-output 启动了任何一个内部缓冲区的清空, 但不等待完成或确认返回.
+        force-output 开始内部缓冲区的清空, 但不等待完成或确认返回.
 
-        clear-output 试图中止任何正在进行中的未完成的输出操作, 以便尽可能少的输出以继续到达目的地.
+        clear-output 试图中止任何正在进行中的未完成的输出操作, 以便允许尽可能少的输出继续到目的地.
 
-        如果这些操作的任何一个对于 output-stream 没有意义, 那么它什么都不做. 这些函数的准确行为是依赖于具体实现的.
+        如果这些操作的任何一个对于 output-stream 没有意义, 那么它什么都不做. 这些函数[function]的准确行为是依赖于具体实现的[implementation-dependent].
 
 * 示例(Examples):
 
@@ -1948,7 +1952,7 @@
 
 * 异常情况(Exceptional Situations):
 
-        如果 output-stream 不是一个流标识符, 就应该发出一个 type-error 类型的错误.
+        如果 output-stream 不是一个流标识符[stream designator], 就应该发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
@@ -1967,9 +1971,9 @@
 
 * 参数和值(Arguments and Values):
 
-        control---一个格式控制.
-        arguments---control 的格式参数.
-        generalized-boolean---一个广义 boolean.
+        control---一个格式化控制[format control].
+        arguments---control 的格式化参数[format argument].
+        generalized-boolean---一个广义 boolean [generalized boolean].
 
 * 描述(Description):
 
@@ -1977,11 +1981,11 @@
 
         y-or-n-p 被用于询问用户一个答案为 "yes" 或 "no" 的问题. 它的目的是要求用户用一个字符来回答一个 yes-or-no 的问题. yes-or-no-p 也被用于询问用户一个答案为 "yes" 或 "no" 的问题. 它的目的是要求用户采取更多的操作, 而不仅仅是一次击键, 比如输入完整的单词 "yes" 或 "no", 然后是换行符.
 
-        y-or-n-p 输出一个信息 (如果提供的话), 以某种依赖于具体实现的方式读取一个回答 (目的是为了简短和简单, 比如读取一个字符, 比如 Y 或 N). yes-or-no-p 输出一个信息 (如果提供的话), 吸引用户的注意力 (比如, 通过终端的响铃), 并且以某种依赖于具体实现的方式读取一个回答 (目的是多字符, 比如 YES 或 NO).
+        y-or-n-p 输出一个信息 (如果提供的话), 以某种依赖于具体实现[implementation-dependent]的方式读取一个回答 (目的是为了简短和简单, 比如读取一个字符, 比如 Y 或 N). yes-or-no-p 输出一个信息 (如果提供的话), 吸引用户的注意力 (比如, 通过终端的响铃), 并且以某种依赖于具体实现[implementation-dependent]的方式读取一个回答 (目的是多字符, 比如 YES 或 NO).
 
         如果提供了 format-control 并且不是 nil, 那么会执行一个 fresh-line 操作; 然后打印一个信息, 就好像 format-control 和 arguments 给到 format 一样. 在任何情况下, 如果合适的话, yes-or-no-p 和 y-or-n-p 会提供一个提示, 比如 "(Y or N)" 或 "(Yes or No)".
 
-        所有输入和输出执行都使用查询 I/O.
+        所有输入和输出执行都使用查询 I/O [query I/O].
 
 * 示例(Examples):
 
@@ -2000,7 +2004,7 @@
 
 * 副作用(Side Effects):
 
-        会发生查询 I/O 的输入或输出.
+        会发生查询 I/O [query I/O]的输入或输出.
 
 * 受此影响(Affected By):
 
@@ -2025,12 +2029,12 @@
 
 * 参数和值(Arguments and Values):
 
-        symbol---命名动态变量的一个符号.
-        synonym-stream---一个 synonym-stream.
+        symbol---命名动态变量[dynamic variable]的一个符号[symbol].
+        synonym-stream---一个同义流[synonym stream].
 
 * 描述(Description):
 
-        返回一个 synonym-stream 符号是 symbol 的 synonym-stream.
+        返回一个同义流符号[synonym stream symbol]是 symbol 的同义流[synonym stream].
 
 * 示例(Examples):
 
@@ -2054,13 +2058,14 @@
 
 * 异常情况(Exceptional Situations):
 
-        如果它的符号不是一个符号就应该发出 type-error.
+        如果它的符号不是一个符号[symbol]就应该发出 type-error.
 
 * 也见(See Also):
 
         章节 21.1 (流的概念)
 
 * 注意(Notes): None. 
+
 
 ### <span id="F-SYNONYM-STREAM-SYMBOL">函数 SYNONYM-STREAM-SYMBOL</span>
 
@@ -2070,12 +2075,12 @@
 
 * 参数和值(Arguments and Values):
 
-        synonym-stream---一个 synonym-stream.
-        symbol---一个符号.
+        synonym-stream---一个同义流[synonym stream].
+        symbol---一个符号[symbol].
 
 * 描述(Description):
 
-        返回这个 synonym-stream 正在使用的 symbol-value 的符号.
+        返回这个同义流 synonym-stream 正在使用的 symbol-value 的符号[symbol].
 
 * 示例(Examples): None.
 
@@ -2091,6 +2096,7 @@
 
 * 注意(Notes): None. 
 
+
 ### <span id="F-BROADCAST-STREAM-STREAMS">函数 BROADCAST-STREAM-STREAMS</span>
 
 * 语法(Syntax):
@@ -2099,12 +2105,12 @@
 
 * 参数和值(Arguments and Values):
 
-        broadcast-stream---一个广播流.
-        streams---一个流猎豹.
+        broadcast-stream---一个广播流[broadcast stream].
+        streams---一个流[stream]列表[list].
 
 * 描述(Description):
 
-        返回一个由这个广播流 broadcast-stream 正在广播的所有流组成的输出流列表.
+        返回由这个广播流 broadcast-stream 正在广播的所有流[stream]组成的一个输出流[stream]列表[list].
 
 * 示例(Examples): None.
 
@@ -2125,12 +2131,12 @@
 
 * 参数和值(Arguments and Values):
 
-        stream---一个输出流.
-        broadcast-stream---一个广播流.
+        stream---一个输出[output]流[stream].
+        broadcast-stream---一个广播流[broadcast stream].
 
 * 描述(Description):
 
-        返回一个广播流.
+        返回一个广播流[broadcast stream].
 
 * 示例(Examples):
 
@@ -2149,14 +2155,13 @@
 
 * 异常情况(Exceptional Situations):
 
-        如果任何一个 stream 不是一个输出流就会发出一个 type-error 类型的错误.
+        如果任何一个 stream 不是一个输出[output]流[stream]就会发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also):
 
         broadcast-stream-streams
 
 * 注意(Notes): None. 
-
 
 
 ### <span id="F-MAKE-TWO-WAY-STREAM">函数 MAKE-TWO-WAY-STREAM</span>
@@ -2167,13 +2172,13 @@
 
 * 参数和值(Arguments and Values):
 
-        input-stream---一个流.
-        output-stream---一个流.
-        two-way-stream---一个 two-way-stream 双向流.
+        input-stream---一个流[stream].
+        output-stream---一个流[stream].
+        two-way-stream---一个双向流[two-way stream].
 
 * 描述(Description):
 
-        返回一个从 input-stream 得到输入并发送输出到 output-stream 的双向流.
+        返回一个从 input-stream 得到输入并发送输出到 output-stream 的双向流[two-way stream].
 
 * 示例(Examples):
 
@@ -2192,7 +2197,7 @@
 
 * 异常情况(Exceptional Situations):
 
-    如果 input-stream 不是一个输入流就应该发出一个 type-error 类型的错误. 如果 output-stream 不是一个输出流就应该发出一个 type-error 类型的错误.
+    如果 input-stream 不是一个输入[input]流[stream]就应该发出一个 type-error 类型[type]的错误. 如果 output-stream 不是一个输出[output]流[stream]就应该发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also): None.
 
@@ -2209,15 +2214,15 @@
 
 * 参数和值(Arguments and Values):
 
-        two-way-stream---一个 two-way-stream 双向流.
-        input-stream---一个输入流.
-        output-stream---一个输出流.
+        two-way-stream---一个 two-way-stream 双向流[two-way stream].
+        input-stream---一个输入[input]流[stream].
+        output-stream---一个输出[output]流[stream].
 
 * 描述(Description):
 
-        two-way-stream-input-stream 返回 two-way-stream 接收输入的那个流.
+        two-way-stream-input-stream 返回 two-way-stream 接收输入的那个流[stream].
 
-        two-way-stream-output-stream 返回 two-way-stream 发送输出的那个流.
+        two-way-stream-output-stream 返回 two-way-stream 发送输出的那个流[stream].
 
 * 示例(Examples): None.
 
@@ -2242,15 +2247,15 @@
 
 * 参数和值(Arguments and Values):
 
-        echo-stream---一个回显流.
-        input-stream---一个输入流.
-        output-stream---一个输出流.
+        echo-stream---一个回显流[echo stream].
+        input-stream---一个输入[input]流[stream].
+        output-stream---一个输出[output]流[stream].
 
 * 描述(Description):
 
-        echo-stream-input-stream 返回 echo-stream 接收输入的那个输入流.
+        echo-stream-input-stream 返回 echo-stream 接收输入的那个输入[input]流[stream].
 
-        echo-stream-output-stream 分拣 echo-stream 发送输出的那个输出流.
+        echo-stream-output-stream 分拣 echo-stream 发送输出的那个输出[output]流[stream].
 
 * 示例(Examples): None.
 
@@ -2273,27 +2278,27 @@
 
 * 参数和值(Arguments and Values):
 
-        input-stream---一个输入流.
-        output-stream---一个输出流.
-        echo-stream---一个回显流.
+        input-stream---一个输入[input]流[stream].
+        output-stream---一个输出[output]流[stream].
+        echo-stream---一个回显流[echo stream].
 
 * 描述(Description):
 
-        创建并返回一个从 input-stream 获取输入并发送输出到 output-stream 的回显流.
+        创建并返回一个从 input-stream 获取输入并发送输出到 output-stream 的回显流[echo stream].
 
 * 示例(Examples):
 
-```LISP
- (let ((out (make-string-output-stream)))
-    (with-open-stream 
-        (s (make-echo-stream
-            (make-string-input-stream "this-is-read-and-echoed")
-            out))
-      (read s)
-      (format s " * this-is-direct-output")
-      (get-output-stream-string out)))
-=>  "this-is-read-and-echoed * this-is-direct-output"
-```
+    ```LISP
+    (let ((out (make-string-output-stream)))
+        (with-open-stream 
+            (s (make-echo-stream
+                (make-string-input-stream "this-is-read-and-echoed")
+                out))
+          (read s)
+          (format s " * this-is-direct-output")
+          (get-output-stream-string out)))
+    =>  "this-is-read-and-echoed * this-is-direct-output"
+    ```
 
 * 副作用(Side Effects): None.
 
@@ -2316,14 +2321,14 @@
 
 * 参数和值(Arguments and Values):
 
-        concatenated-stream -- 一个连接流.
-        streams---一个输入流列表.
+        concatenated-stream -- 一个连接流[concatenated stream].
+        streams---一个输入[input]流[stream]列表[list].
 
 * 描述(Description):
 
-        返回组成连接流 concatenated-stream 仍然需要读取的有序流集 streams 的输入流列表, 从当前读取的流开始. 如果没有更多的流被读取, 这个列表可能是空的.
+        返回组成连接流 concatenated-stream 仍然需要读取的有序流[stream]的集合 streams 的输入[input]流[stream]列表[list], 从当前读取的流开始. 如果没有更多的流[stream]被读取, 这个列表可能是空的.
 
-        如果这些流 streams 的列表结构被修改, 那么后果是未定义的.
+        如果这些流 streams 的列表结构[list structure]被修改, 那么后果是未定义的.
 
 * 示例(Examples): None.
 
@@ -2346,12 +2351,12 @@
 
 * 参数和值(Arguments and Values):
 
-        input-stream---一个输入流.
-        concatenated-stream---一个连接流.
+        input-stream---一个输入[input]流[stream].
+        concatenated-stream---一个连接流[concatenated stream].
 
 * 描述(Description):
 
-        返回一个连接流, 它具有最初与之关联的那些输入流 input-streams.
+        返回一个连接流[concatenated stream], 它具有最初与之关联的那些输入流 input-streams.
 
 * 示例(Examples):
 
@@ -2367,7 +2372,7 @@
 
 * 异常情况(Exceptional Situations):
 
-        如果任何一个参数不是一个输入流就应该发出 type-error.
+        如果任何一个参数不是一个输入[input]流[stream]就应该发出 type-error.
 
 * 也见(See Also):
 
@@ -2384,12 +2389,12 @@
 
 * 参数和值(Arguments and Values):
 
-        string-output-stream---一个流.
-        string---一个字符串.
+        string-output-stream---一个流[stream].
+        string---一个字符串[string].
 
 * 描述(Description):
 
-        返回一个字符串, 其中按顺序包含所有已输出到 string-output-stream 的字符. 这个操作清楚 string-output-stream 上的任何字符, 所有这个字符串 string 只包含那些从最后一次对 get-output-stream-string 的调用开始或者从 string-output-stream 创建开始已经被输出的那些字符, 取最近发生的那种情况.
+        返回一个字符串[string], 其中按顺序包含已输出到 string-output-stream 的所有字符[character]. 这个操作清除 string-output-stream 上的任何字符[character], 所以这个字符串 string 只包含从上一次对 get-output-stream-string 的调用开始或者从 string-output-stream 创建以来输出的那些字符, 取最近发生的那种情况.
 
 * 示例(Examples):
 
@@ -2409,9 +2414,9 @@
 
 * 异常情况(Exceptional Situations):
 
-        如果 stream-output-string 被关闭, 那么后果是未定义的.
+        如果 stream-output-string 是关闭的[closed], 那么后果是未定义的.
 
-        如果 string-output-stream 是一个不是由 make-string-output-stream 产生的流, 那么后果是未定义的. 如果 string-output-stream 是由 with-output-to-string 或 format 隐式创建的, 那么后果是未定义的.
+        如果 string-output-stream 是一个不是由 make-string-output-stream 产生的流[stream], 那么后果是未定义的. 如果 string-output-stream 是由 with-output-to-string 或 format 隐式创建的, 那么后果是未定义的.
 
 * 也见(See Also):
 
@@ -2428,13 +2433,13 @@
 
 * 参数和值(Arguments and Values):
 
-        string---一个字符串.
-        start, end---string 的边界索引标识符. 对于 start 和 end 默认分别为 0 和 nil.
-        string-stream---一个输入字符串流.
+        string---一个字符串[string].
+        start, end---string 的边界索引标识符[bounding index designator]. 对于 start 和 end 默认分别为 0 和 nil.
+        string-stream---一个输入[input]字符串流[string stream].
 
 * 描述(Description):
 
-        返回一个输入字符串流. 这个流会依次提供 string 中由 start 和 end 限定的子字符串的字符. 在最后一个字符被提供之后, 这个字符串流会到达文件的末尾.
+        返回一个输入[input]字符串流[string stream]. 这个流[stream]会依次提供 string 中由 start 和 end 限定[bounded]的子字符串的字符[character]. 在最后一个字符[character]被提供之后, 这个字符串流会到达文件的末尾[end of file].
 
 * 示例(Examples):
 
@@ -2469,14 +2474,14 @@
 
 * 参数和值(Arguments and Values):
 
-        element-type---一个类型指定负. 默认是 character.
-        string-stream---一个输出字符串流.
+        element-type---一个类型指定符[type specifier]. 默认是 character.
+        string-stream---一个输出[output]字符串流[string stream].
 
 * 描述(Description):
 
-        返回一个接收字符的输出字符串流, 并提供一个包含实际输出字符的字符串 (通过 get-output-stream-string).
+        返回一个接收字符[character]的输出[output]字符串流[string stream], 并提供一个包含实际输出字符[character]的字符串[string] (通过 get-output-stream-string).
 
-        这个元素类型 element-type 命名这个字符串元素的类型; 一个字符串由可以容纳 element-type 元素的最具体的类型构成.
+        这个元素类型 element-type 命名这个字符串[string]元素[element]的类型[type]; 一个字符串[string]由可以容纳 element-type 元素类型的最具体的类型[type]构成.
 
 * 示例(Examples):
 
@@ -2508,27 +2513,27 @@
 
 * 参数和值(Arguments and Values):
 
-        var---一个变量名.
-        string---一个表达式形式; 求值来产生一个字符串.
-        index---一个 place.
-        start, end---string 的边界索引标识符. 对于 start 和 end 默认分别为 0 和 nil.
-        declaration---一个 declare 表达式; 不求值.
-        forms---一个隐式 progn.
-        result---由这些表达式形式 forms 返回的值.
+        var---一个变量[variable]名[name].
+        string---一个表达式形式[form]; 求值来产生一个字符串[string].
+        index---一个位置[place].
+        start, end---string 的边界索引标识符[bounding index designator]. 对于 start 和 end 默认分别为 0 和 nil.
+        declaration---一个 declare 表达式[expression]; 不求值.
+        forms---一个隐式 progn [implicit progn].
+        result---由这些表达式形式 forms 返回的那些[value].
 
 * 描述(Description):
 
-        创建一个输入字符串流, 提供一个时机来执行在这个流上的操作 (返回 zero 更多的值), 任何关闭这个字符串流.
+        创建一个输入[input]字符串流[string stream], 提供一个机会来执行在这个流[stream]上的操作 (返回零个或更多的值[value]), 然后关闭这个字符串流[string stream].
 
-        string 首先被求值, 并且 var 被绑定为一个字符输入字符串流, 它从由 start 和 end 限定的字符串的子序列中提供字符. 主体部分作为一个隐式 progn 求值.
+        string 首先被求值, 并且 var 被绑定为一个字符输入[input]字符串流[string stream], 它从由 start 和 end 限定[bounded]的字符串[string]的子序列中提供字符[character]. 主体部分作为一个隐式 progn [implicit progn]求值.
 
-        在从 with-input-from-string 退出时这个输入字符串流会自动关闭, 不管这个退出是正常的还是反常的. 变量 var 绑定的输入字符串流有着动态范围; 它的范围在这个表达式形式退出时结束.
+        在从 with-input-from-string 退出时这个输入[input]字符串流[string stream]会自动关闭, 不管这个退出是正常的还是反常的. 变量 var 绑定的输入[input]字符串流[string stream]有着动态范围[dynamic extent]; 它的范围[extent]在这个表达式形式[form]退出时结束.
 
-        这个 index 是这个要被推进的字符串 string 中的一个指针. 如果 with-input-from-string 正常退出, 那么 index 的值就是字符串 string 中表示第一个没有读取的字符的索引, 如果所有字符都使用了那么它就是 (length string). 由 index 指定的 place 不会随着读取进度而更新, 但是只有在这个操作的结尾更新.
+        这个 index 是这个要被推进的字符串 string 中的一个指针. 如果 with-input-from-string 正常退出, 那么 index 的值[value]就是字符串 string 中表示第一个没有读取的字符的索引, 如果所有字符都使用了那么它就是 (length string). 由 index 指定的位置不会随着读取进度而更新, 但是只有在这个操作的结尾更新.
 
-        start 和 index 可能都指向同一个变量, 它是要被推进的字符串 string 中的一个指针, 可能会被一些包含循环的指针重复.
+        start 和 index 可能都指向同一个变量, 它是要被推进的字符串 string 中的一个指针, 可能由一些包含循环重复地指定.
 
-        如果尝试去对变量 var 赋值, 那么后果是未定义的.
+        如果尝试去对变量[variable] var 赋值[assign], 那么后果是未定义的.
 
 * 示例(Examples):
 
@@ -2546,7 +2551,7 @@
 
 * 副作用(Side Effects):
 
-        由 index 命名的 place 如果存在的话, 值会被修改.
+        由 index 命名的位置[place]如果存在的话, 值[value]会被修改.
 
 * 受此影响(Affected By): None.
 
@@ -2554,7 +2559,7 @@
 
 * 也见(See Also):
 
-        make-string-input-stream, 章节 3.6 (Traversal Rules and Side Effects)
+        make-string-input-stream, 章节 3.6 (遍历规则和副作用)
 
 * 注意(Notes): None. 
 
@@ -2568,29 +2573,29 @@
 
 * 参数和值(Arguments and Values):
 
-        var---一个变量名字.
-        string-form---一个表达式形式或 nil; 如果不是 nil, 求值产生字符串 string.
-        string---一个有着填充指针的字符串.
-        element-type---一个类型指定负; 求值的. 默认是 character.
-        declaration---一个 declare 表达式; 不求值.
-        forms---一个隐式 progn.
-        results---如果没有提供一个 string-form 或者是 nil, 就是一个字符串; 否则, 就是这些表达式形式 forms 返回的值.
+        var---一个变量[variable]名字[name].
+        string-form---一个表达式形式[form]或 nil; 如果是非 nil [non-nil], 求值产生字符串 string.
+        string---一个有着填充指针[fill pointer]的字符串[string].
+        element-type---一个类型指定符[type specifier]; 求值的. 默认是 character.
+        declaration---一个 declare 表达式[expression]; 不求值.
+        forms---一个隐式 progn [implicit progn].
+        results---如果没有提供一个 string-form 或者是 nil, 就是一个字符串[string]; 否则, 就是这些表达式形式 forms 返回的值[value].
 
 * 描述(Description):
 
-        with-output-to-string 创建一个字符输出流, 执行可能发送结果到这个流的一系列操作, 然后关闭这个流.
+        with-output-to-string 创建一个字符输出[output]流[stream], 执行可能发送结果到这个流[stream]的一系列操作, 然后关闭这个流[stream].
 
-        这个元素类型 element-type 命名这个流的元素类型; 一个流由可以容纳给定类型的元素的最具体的类型构成.
+        这个元素类型 element-type 命名这个流[stream]的元素的类型[type]; 一个流[stream]由可以容纳给定类型[type]的元素的最具体的类型[type]构成.
 
-        这个主体作为一个隐式的 progn 被执行, 其中 var 被绑定为一个输出字符串流. 所有到那个字符串流的输出都会保存到一个字符串中.
+        这个主体作为一个隐式的 progn [implicit progn]被执行, 其中 var 被绑定为一个输出[output]字符串流[string stream]. 所有到那个字符串流[string stream]的输出都会保存到一个字符串[string]中.
 
         如果提供了 string, 那么 element-type 会被忽略, 并且这个输出会被递增地追加给这个字符串 string, 就像是通过 vector-push-extend 一样.
 
-        这个输出流在从 with-output-from-string 退出时会自动关闭, 不管这个退出是正常的还是异常的. 这个绑定给变量 var 的输出字符串流有着动态范围; 它的范围在退出这个表达式形式时终止.
+        这个输出[output]流[stream]在从 with-output-from-string 退出时会自动关闭, 不管这个退出是正常的还是异常的. 这个绑定[bound]给变量[variable] var 的输出[output]字符串流[string stream]有着动态范围[dynamic extent]; 它的范围[extent]在退出这个表达式形式[form]时终止.
 
-        如果没有提供 string, 那么 with-output-from-string 产生一个接收字符的流并返回一个指定的 element-type 的字符串. 如果提供了 string, with-output-to-string 返回求值最后一个表达式形式的结果.
+        如果没有提供 string, 那么 with-output-from-string 产生一个接收字符的流并返回一个指定的 element-type 元素类型的字符串[string]的流[stream]. 如果提供了 string, with-output-to-string 返回求值最后一个表达式形式 form 的结果.
 
-        如果尝试去对变量 var 赋值, 那么后果是未定义的.
+        如果尝试去对变量[variable] var 赋值[assign], 那么后果是未定义的.
 
 * 示例(Examples):
 
@@ -2611,11 +2616,11 @@
 
 * 异常情况(Exceptional Situations):
 
-        如果在这个调用的动态范围内直接执行 string 上的破坏性修改, 那么后果是未定义的.
+        如果在这个调用的动态范围[dynamic extent]内直接执行 string 上的破坏性修改, 那么后果是未定义的.
 
 * 也见(See Also):
 
-        make-string-output-stream, vector-push-extend, 章节 3.6 (Traversal Rules and Side Effects)
+        make-string-output-stream, vector-push-extend, 章节 3.6 (遍历规则和副作用)
 
 * 注意(Notes): None. 
 
@@ -2624,31 +2629,31 @@
 
 * 值类型(Value Type):
 
-        对于 *standard-input*: 一个输入流
+        *standard-input*: 一个输入[input]流[stream]
 
-        对于 *error-output*, *standard-output*, 和 *trace-output*: 一个输出流.
+        *error-output*, *standard-output*, 和 *trace-output*: 一个输出[output]流[stream].
 
-        对于 *debug-io*, *query-io*: 一个双向流.
+        *debug-io*, *query-io*: 一个双向[bidirectional]流[stream].
 
 * 初始值(Initial Value):
 
-        依赖于具体实现的, 但是它必须是一个打开的流, 不是一个到 I/O 定制变量的广义的同义流但是可能是一个到某个 I/O 定制变量的值的广义的同义流. 这个初始值可能也是一个广义的同义流, 是符号 *terminal-io* 或者是作为它的值的流.
+        依赖于具体实现[implementation-dependent], 但是它必须是一个打开的[open]流[stream], 不是一个到 I/O 定制变量[I/O customization variable]的广义同义流[generalized synonym stream]但是可能是一个到某个 I/O 定制变量[I/O customization variable]的值的广义同义流[generalized synonym stream]. 这个初始值可能也是一个广义同义流[generalized synonym stream], 是符号[symbol] *terminal-io* 或者是作为它的值[value]的流[stream].
 
 * 描述(Description):
 
-        这些变量全体被称为标准 I/O 定制变量. 它们可以被绑定和赋值, 来更改各种标准化操作符和工具所使用的输入和/或输出的默认目的地.
+        这些变量[variable]全体被称为标准化[standardized] I/O 定制变量[I/O customization variable]. 它们可以被绑定[bound]和赋值[assign], 来更改各种标准化[standardized]操作符[operator]和工具所使用的输入和/或输出的默认目的地.
 
-        *debug-io* 的值, 称为调试 I/O, 是一个被用于交互式调试目的的流.
+        *debug-io* 的值[value], 称为调试 I/O [debug I/O], 是一个被用于交互式调试目的的流[stream].
 
-        *error-output* 的值, 称为错误输出, 是一个警告和非交互式错误信息应该被发送到的流.
+        *error-output* 的值[value], 称为错误输出[error output], 是一个警告和非交互式错误信息应该被发送到的流[stream].
 
-        *query-io* 的值, 称为查询 I/O, 是一个在询问用户问题时使用的双向流. 这个问题应该输出到这个流中, 并且答复也从这个流读取.
+        *query-io* 的值[value], 称为查询 I/O [query I/O], 是一个在询问用户问题时使用的双向[bidirectional]流[stream]. 这个问题应该输出到这个流[stream]中, 并且答复也从这个流读取.
 
-        *standard-input* 的值, 称为标准输入, 是许多操作符没有明确提供特定的输入流时用作默认的输入源使用的一个流.
+        *standard-input* 的值[value], 称为标准输入[standard input], 是许多操作符[operator]没有明确提供特定的输入[input]流[stream]时用作默认的输入源使用的一个流[stream].
 
-        *standard-output* 的值, 称为标准输出, 是许多操作符没有明确提供特定的输出流时用作默认的目的地使用的一个流.
+        *standard-output* 的值[value], 称为标准输出[standard output], 是许多操作符[operator]没有明确提供特定的输出[output]流[stream]时用作默认的目的地使用的一个流[stream].
 
-        *trace-output* 的值, 称为跟踪输出, 是一个流, 跟踪函数(见 trace)和 time 宏打印它们的输出到这个流上.
+        *trace-output* 的值[value], 称为跟踪输出[trace output], 是一个流[stream], 跟踪函数(见 trace)和 time 宏[macro]打印它们的输出到这个流上.
 
 * 示例(Examples):
 
@@ -2688,38 +2693,38 @@
 
 * 也见(See Also):
 
-        *terminal-io*, synonym-stream, time, trace, 章节 9 (Conditions), 章节 23 (Reader), 章节 22 (Printer)
+        *terminal-io*, synonym-stream, time, trace, 章节 9 (状况), 章节 23 (读取器), 章节 22 (打印器)
 
 * 注意(Notes):
 
-        这些 I/O 定制变量的初始值上约束的意图是去确保绑定或赋值这样一个变量到另一个 I/O 定制变量的值总是安全的, 不过度限制具体实现的灵活性.
+        这些 I/O 定制变量[I/O customization variable]的初始值[value]上约束的意图是去确保绑定[bind]或赋值[assign]这样一个变量[variable]到另一个 I/O 定制变量[I/O customization variable]的值[value]总是安全的, 不过度限制具体实现[implementation]的灵活性.
 
-        使 *debug-io* 和 *query-io* 的初始值为同一个流以及使 *error-output* 和 *standard-output* 的初始值为同一个流对于一个实现来说是很常见的.
+        使 *debug-io* 和 *query-io* 的初始值[value]为同一个[same]流[stream]以及使 *error-output* 和 *standard-output* 的初始值[value]为同一个[same]流[stream]对于一个实现[implementation]来说是很常见的.
 
-        函数 y-or-n-p 和 yes-or-no-p 使用查询 I/O 作为它们的输入和输出.
+        函数 y-or-n-p 和 yes-or-no-p 使用查询 I/O [query I/O]作为它们的输入和输出.
 
-        在正常的 Lisp read-eval-print 循环中, 输入是从标准输入读取的. 很多输入函数, 包括 read 和 read-char, 接收一个默认为标准输入的流参数.
+        在正常的 Lisp read-eval-print 循环[Lisp read-eval-print loop]中, 输入是从标准输入[standard input]读取的. 很多输入函数, 包括 read 和 read-char, 接收一个默认为标准输入[standard input]的流[stream]参数.
 
-        在正常的 Lisp read-eval-print 循环中, 输出被发送到标准输出. 好的输出函数, 包括 print 和 write-char, 接受默认为标准输出的参数.
+        在正常的 Lisp read-eval-print 循环[Lisp read-eval-print loop]中, 输出被发送到标准输出[standard output]. 很多输出函数, 包括 print 和 write-char, 接受默认为标准输出[standard output]的流[stream]参数.
 
-        例如, 一个程序想要将输出转移到文件中, 应该通过绑定 *standard-output* 来实现; 发送到 *error-output* 的错误消息仍然可以通过 *terminal-io* 到达用户(如果 *error-output* 被绑定到 *terminal-io* 的话), 这通常是需要的. 
+        例如, 一个程序想要将输出转移到文件中, 应该通过绑定[binding] *standard-output* 来实现; 发送到 *error-output* 的错误消息仍然可以通过 *terminal-io* 到达用户(如果 *error-output* 被绑定到 *terminal-io* 的话), 这通常是需要的. 
 
 
 ### <span id="V-TERMINAL-IO">变量 *TERMINAL-IO*</span>
 
 * 值类型(Value Type):
 
-        一个双向流.
+        一个双向[bidirectional]流[stream].
 
 * 初始值(Initial Value):
 
-        依赖于具体实现的, 但是它必须是一个打开的流, 不是一个到 I/O 定制变量的广义的同义流但是可能是一个到某个 I/O 定制变量的值的广义的同义流.
+        依赖于具体实现[implementation-dependent], 但是它必须是一个打开的[open]流[stream], 不是一个到 I/O 定制变量[I/O customization variable]的广义同义流[generalized synonym stream]但是可能是一个到某个 I/O 定制变量[I/O customization variable]的值[value]的广义同义流[generalized synonym stream].
 
 * 描述(Description):
 
-        被称为终端 I/O 的 *terminal-io* 的值通常是一个连接到用户终端的双向流. 典型地, 写入到这个流会导致输出出现在一个显示的屏幕, 比如, 从这个流读取会从键盘接收一个输入. 它的目的是, 当与这个流一起使用时, 诸如 read 和 read-char 之类的标准输入函数, 会引起输入到流的输出端的响应. 实现这一点的方法是依赖于具体实现的.
+        被称为终端 I/O [terminal I/O]的 *terminal-io* 的值[value]通常是一个连接到用户终端的双向[bidirectional]流[stream]. 通常, 写入到这个流[stream]会导致输出出现在一个显示的屏幕, 比如, 从这个流[stream]读取会从键盘接收一个输入. 它的目的是, 当与这个流[stream]一起使用时, 诸如 read 和 read-char 之类的标准输入函数, 会引起输入到流的输出端的回显. 实现这一点的方法是依赖于具体实现的[implementation-dependent].
 
-        改变 *terminal-io* 的值的效果, 不管是通过绑定还是赋值, 是具体实现定义的.
+        改变 *terminal-io* 的值[value]的效果, 不管是通过绑定[binding]还是赋值[assign], 都是具体实现定义的[implementation-defined].
 
 * 示例(Examples):
 
@@ -2751,7 +2756,7 @@
 
 * 描述(Description):
 
-        类型 stream-error 由从一个流接收输入或发送输出到一个流相关的错误状况构成. 这个 "违规的流" 通过 给 make-condition 的 :streaminitialization 参数来初始化, 并且通过函数 stream-error-stream 来访问.
+        类型[type] stream-error 由从一个流[stream]接收输入或发送输出到一个流[stream]相关的错误状况构成. 这个 "违规的流" 通过 make-condition 的 :streaminitialization 参数来初始化, 并且通过函数[function] stream-error-stream 来访问.
 
 * 也见(See Also):
 
@@ -2766,12 +2771,12 @@
 
 * 参数和值(Arguments and Values):
 
-        condition---一个 stream-error 类型的状况.
-        stream---一个流.
+        condition---一个 stream-error 类型[type]的状况[condition].
+        stream---一个流[stream].
 
 * 描述(Description):
 
-        返回一个 stream-error 类型的状况的违规的流.
+        返回一个 stream-error 类型[type]的状况[condition]的违规的流[stream].
 
 * 示例(Examples):
 
@@ -2791,7 +2796,7 @@
 
 * 也见(See Also):
 
-        stream-error, 章节 9 (Conditions)
+        stream-error, 章节 9 (状况)
 
 * 注意(Notes): None. 
 
@@ -2804,10 +2809,8 @@
 
 * 描述(Description):
 
-        类型 end-of-file 包含与在没有更多数据的流中完成的读取操作相关的错误状况.
+        类型[type] end-of-file 由在没有更多数据的流[stream]中执行读取操作相关的错误状况组成.
 
 * 也见(See Also):
 
         stream-error-stream 
-
-
