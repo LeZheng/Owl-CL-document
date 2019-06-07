@@ -1,4 +1,4 @@
-# 19 文件名
+# 19. 文件名
 
 > * 19.1 [文件名概述](#OverviewFilenames)
 > * 19.2 [路径名](#Pathnames)
@@ -8,7 +8,7 @@
 
 ## 19.1 <span id="OverviewFilenames">文件名概述</span>
 
-这里有很多种文件系统[file system], 在它们的表面语法细节, 以及它们的潜在的能力和结构上都有很大的不同. 由 Common Lisp 提供的用于引用和操作文件[file]的工具被选择与许多类型的文件系统[file system]兼容, 同时最小化了不同文件系统[file system]之间的程序可见差异.
+这里有很多种文件系统[file system], 它们的表面语法细节, 以及它们潜在的能力和结构上都有很大的不同. 由 Common Lisp 提供的用于引用和操作文件[file]的工具选择与多类型的文件系统[file system]兼容, 同时最小化了不同文件系统[file system]之间的程序可见差异.
 
 因为文件系统[file system]在命名文件[file]的约定上有区别, 这里有两种不同的方式来表示文件名[filename]: 作为名称字符串[namestring]和作为路径名[pathname].
 
@@ -34,7 +34,7 @@
 
 另外, 路径名[pathname]还可以表示某些部分组成的文件名[filename], 对于这些路径名底层文件系统[file system]可能没有特定的名称字符串[namestring]表示.
 
-一个路径名[pathname]不需要对应任何实际上已存在的文件, 并且多个路径名[pathname]可以引用相同文件. 比如, 这个带有一个 :newest 版本的路径名[pathname]可能和一个带有相同成分除了某个数字作为版本的路径名[pathname]引用相同的文件. 事实上, 随着时间推移一个带有版本 :newest 的路径名[pathname]可能引用不同的文件, 因为这样一个路径名[pathname]的意义取决于文件系统的状态.
+一个路径名[pathname]不需要对应任何实际上已存在的文件, 并且多个路径名[pathname]可以引用相同文件. 比如, 这个带有一个 :newest 版本的路径名[pathname]可能和一个带有除了某个数字作为版本以外相同成分的路径名[pathname]引用相同的文件. 事实上, 随着时间推移一个带有版本 :newest 的路径名[pathname]可能引用不同的文件, 因为这样一个路径名[pathname]的意义取决于文件系统的状态.
 
 某些文件系统[file system]自然地为它们的文件名[filename]使用一个结构模型, 而其他的则没有. 在 Common Lisp 路径名[pathname]模型中, 所有文件名[filename]都被视作有着一个特定结构, 即便那个结构没有反映在底层文件系统[file system]中. 由路径名[pathname]暗示的结构和底层文件系统[file system]所使用的结构(如果有的话)之间的映射性质是由具体实现定义的[implementation-defined].
 
@@ -112,7 +112,7 @@
 
 ##### 19.2.2.1.1 路径名成员中的特殊字符
 
-路径名[pathname]成员值中的字符串[string]从不包含表示路径名[pathname]字段之间的分隔符的特殊字符[character], 比如 Unix 文件名[filename]中的斜杠[slash]. 分隔符字符[character]是否允许作为一个路径名[pathname]成员中字符串[string]的一部分是具体实现定义的[implementation-defined]; 然而, 如果具体实现[implementation]确实允许这个, 它必须在构造一个名称字符串[namestring]时, 安排正确地"引用"文件系统[file system]的字符. 例如,
+路径名[pathname]成员值中的字符串[string]从不包含表示路径名[pathname]字段之间分隔符的特殊字符[character], 比如 Unix 文件名[filename]中的斜杠[slash]. 分隔符字符[character]是否允许作为一个路径名[pathname]成员中字符串[string]的一部分是具体实现定义的[implementation-defined]; 然而, 如果具体实现[implementation]确实允许这个, 它必须在构造一个名称字符串[namestring]时, 安排正确地"引用"文件系统[file system]的字符. 例如,
 
 ```LISP
  ;; In a TOPS-20 implementation, which uses ^V to quote 
@@ -132,9 +132,9 @@ NOT=>  #P"OZ:PS:<TEST>"
 
 ###### 19.2.2.1.2.1 路径名成员中的本地大小写
 
-对于 Figure 19-2 中的函数, :case 参数的一个 :local 值 (对于这些函数的默认值) 表示这些函数应该接受并产生成员值中的字符串[string], 就好像它们已经根据主机文件系统[file system]的大小写[case]约定表示过了一样.
+对于 Figure 19-2 中的函数, :case 参数的一个 :local 值 (对于这些函数的默认值) 表示这些函数应该接受并产生成员值中的字符串[string], 就好像它们已经根据主机文件系统[file system]的大小写[case]约定表示了一样.
 
-如果这个文件系统[file system]两种大小写[case]都支持, 在这个协议下给定或接收的字符串[string]作为路径名[pathname]成员值将被完全使用. 如果这个文件系统只支持一种大小写[case], 那么这个字符串[string]会被转成那个大小写[case]. 
+如果这个文件系统[file system]两种大小写[case]都支持, 在这个协议下作为路径名[pathname]成员值给定或接收的字符串[string]将与写入的字符串一样使用. 如果这个文件系统只支持一种大小写[case], 那么这个字符串[string]会被转成那个大小写[case]. 
 
 
 ###### 19.2.2.1.2.2 路径名成员中的通用大小写
@@ -145,7 +145,7 @@ NOT=>  #P"OZ:PS:<TEST>"
 * 所有都是小写[lowercase]字母表示使用与习惯情况相反的大小写[case].
 * 混合大小写[case]就表示自身.
 
-注意, 选择这些约定的方式是: 从 :local 转换到 :common 并转换回 :local 信息保持不变. 
+注意, 这些约定以这样一种方式被选择: 从 :local 转换到 :common 并转换回 :local 信息保持不变. 
 
 
 #### 19.2.2.2 <span id="SpecPathnameComponentValues">特殊路径名成员值</span>
@@ -163,7 +163,7 @@ NOT=>  #P"OZ:PS:<TEST>"
 
 如果 :wild 是一个路径名[pathname]成员的值, 那个成员被认为是一个通配符, 它可以匹配任何东西.
 
-一个符合标准的程序[conforming program]必须准备好遇到一个值: :wild 作为任何路径名[pathname]成员的值, 或者作为目录成员的值列表[list]的元素[element].
+一个符合规范的程序[conforming program]必须准备好遇到一个值: :wild 作为任何路径名[pathname]成员的值, 或者作为目录成员的值列表[list]的元素[element].
 
 在构造一个路径名[pathname]时, 一个符合规范的程序[conforming program]可能使用 :wild 作为目录, 名字, 类型, 或版本成员的其中一个或所有的值, 但是一定不能使用 :wild 作为主机, 或设备成员的值.
 
@@ -199,7 +199,7 @@ NOT=>  #P"OZ:PS:<TEST>"
 
 #### 19.2.2.4 <span id="RestrictionExamPathnameComponents">检查路径名成员的限制</span>
 
-一个符合条件的程序[conforming program]必须为以下情况做准备: 作为路径名[pathname]成员的值来读取[read[1]]的可能的对象[object]的空间, 要比一个符合条件的程序[conforming program]允许被写入[write[1]]到这样一个成员的可能的对象[object]的空间大得多.
+一个符合条件的程序[conforming program]必须为以下情况做准备: 作为路径名[pathname]成员的值来读取[read[1]]的可能的对象[object]的空间, 要比一个符合规范的程序[conforming program]允许被写入[write[1]]到这样一个成员的可能的对象[object]的空间大得多.
 
 尽管在这个章节的子章节, 在章节 19.2.2.2 (特殊路径名成员值), 还有章节 19.2.2.3 (通配符路径名上的限制) 中讨论的值可以被应用于读取成员值时可见的值, 而对于构造路径名, 应用了更多的限制性规则; 见章节 19.2.2.5 (构造路径名的限制).
 
@@ -213,7 +213,7 @@ NOT=>  #P"OZ:PS:<TEST>"
 
 这个设备可能是一个字符串[string], :wild, :unspecific, 或 nil.
 
-注意, 这个 :wild 可能产生于读取[read[1]]这个路径名[pathname]成员的尝试中, 即便可移植程序被限制写入[write[1]]这样的成员值时; 见章节 19.2.2.3 (通配符路径名上的限制) 以及章节 19.2.2.5 (构造路径名的限制). 
+注意, 这个 :wild 可能产生于读取[read[1]]这个路径名[pathname]成员的尝试中, 即便限制可移植程序写入[write[1]]这样的成员值; 见章节 19.2.2.3 (通配符路径名上的限制) 以及章节 19.2.2.5 (构造路径名的限制). 
 
 
 ##### 19.2.2.4.3 检查路径名目录成员的限制
@@ -258,7 +258,7 @@ NOT=>  #P"OZ:PS:<TEST>"
 
     "语义" 意味着那个 :up 的动作依赖于文件系统的内容; 为了解决一个路径名[pathname]包含了 :up 到一个目录成员只包含 :absolute 和字符串[string]的路径名[pathname]需要探索这个文件系统的问题.
 
-    :up 和 :back 的区别仅在于文件系统支持多个多个目录名, 或许是通过符号链接. 例如, 假设这里有一个目录 (:absolute "X" "Y" "Z") 链接到 (:absolute "A" "B" "C") 并且这里也存在目录 (:absolute "A" "B" "Q") 和 (:absolute "X" "Y" "Q"). 那么 (:absolute "X" "Y" "Z" :up "Q") 表示 (:absolute "A" "B" "Q") 而 (:absolute "X" "Y" "Z" :back "Q") 表示 (:absolute "X" "Y" "Q")
+    :up 和 :back 的区别仅在于文件系统支持多个目录名, 或许是通过符号链接. 例如, 假设这里有一个目录 (:absolute "X" "Y" "Z") 链接到 (:absolute "A" "B" "C") 并且这里也存在目录 (:absolute "A" "B" "Q") 和 (:absolute "X" "Y" "Q"). 那么 (:absolute "X" "Y" "Z" :up "Q") 表示 (:absolute "A" "B" "Q") 而 (:absolute "X" "Y" "Z" :back "Q") 表示 (:absolute "X" "Y" "Q")
 
 
 ###### 19.2.2.4.3.1 非分层文件系统中的目录成员
@@ -316,11 +316,11 @@ NOT=>  #P"OZ:PS:<TEST>"
 
 ### 19.2.3 <span id="MergingPathnames">合并路径名</span>
 
-合并接受一个带有未填充成员的路径名[pathname], 并从默认值中为这些成员提供值.
+合并操作接受一个带有未填充成员的路径名[pathname], 并从默认值中为这些成员提供值.
 
 如果一个成员的值是 nil, 那么那个成员会被认为是未填充的. 如果一个成员的值是任何非 nil [non-nil]对象[object], 包括 :unspecific, 那么那个成员会被认为是已填充的.
 
-除了显式指定的以外, 对于操作或查询文件系统[file system]中的文件[file]的函数, 在访问这个文件系统[file system]前, 给这样一个函数的路径名参数会和 \*default-pathname-defaults* 合并(就像是通过 merge-pathnames 一样).
+除了显式指定的以外, 对于操作或查询文件系统[file system]中的文件[file]的函数, 在访问这个文件系统[file system]前, 提供给这个函数的路径名参数会和 \*default-pathname-defaults* 合并(就像是通过 merge-pathnames 一样).
 
 #### 19.2.3.1 合并路径名的示例
 
@@ -1098,7 +1098,7 @@ NOT=>  #P"OZ:PS:<TEST>"
 
         这些函数转换路径名 pathname 为一个名称字符串. 由路径名 pathname 表示的名称以一种依赖于具体实现[implementation-dependent]的规范形式作为名称字符串[namestring]返回.
 
-        namestring 路径名 pathname 的完整形式.
+        namestring 返回路径名 pathname 的完整形式.
 
         file-namestring 只返回路径名 pathname 的名称, 类型, 和版本成员.
 
@@ -1218,7 +1218,7 @@ NOT=>  #P"OZ:PS:<TEST>"
 
         解析一个空[null]字符串[string]总是成功的, 产生一个所有成员等于 nil (除了主机)的路径名[pathname].
 
-        如果 thing 包含一个显式主机名而没有显式的设备名, 那么 parse-namestring 是否会为那个 host 提供标准默认设备作为产生的路径名[pathname]的设备成员是具体实现定义的[implementation-defined].
+        如果 thing 包含一个显式主机名而没有显式的设备名, 那么 parse-namestring 是否会为那个 host 提供标准默认设备作为产生的路径名[pathname]的设备成员是由具体实现定义的[implementation-defined].
 
 * 示例(Examples):
 
