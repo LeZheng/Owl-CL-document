@@ -1,4 +1,4 @@
-# 20 文件
+# 20. 文件
 
 > * 20.1 [文件系统概念](#FileSystemConcepts)
 > * 20.2 [文件的字典](#TheFilesDictionary)
@@ -24,7 +24,7 @@
 
 ### 20.1.1 <span id="CoercionStreamsPathnames">从流到路径名的强制转换</span>
 
-与文件相关联的流[stream associated with a file]要么是文件流[file stream], 要么是 synonym-stream, 其目标是与文件相关联的流[stream associated with a file]. 这样的流可以被用作路径名标识符[pathname designator].
+与文件相关联的流[stream associated with a file]要么是文件流[file stream], 要么是同义流[synonym stream], 其目标是与文件相关联的流[stream associated with a file]. 这样的流可以被用作路径名标识符[pathname designator].
 
 通常, 当与文件相关联的流[stream associated with a file]用作路径名标识符[pathname designator]时, 它表示用来打开文件[file]的路径名[pathname]; 这可能是, 但不必须是文件[file]的实际名称.
 
@@ -54,7 +54,7 @@
 
 即使在可能有多个名称的地方, 大多数文件系统[file system]都有一个在这种情况下生成规范文件名[filename]的惯例. 这样一个规范的文件名[filename] (或者表示这样一个文件名[filename]的路径名[pathname])被称为真实名字[truename].
 
-一个文件的真实名字[truename]可能有别于这个文件[file]的其他文件名[filename], 因为文件系统中符号链接、版本号、逻辑设备转换, Common Lisp 中的逻辑路径名[logical pathname]转换, 或文件系统[file system]的其他因素.
+一个文件的真实名字[truename]可能有别于这个文件[file]的其他文件名[filename], 因为文件系统中存在符号链接、版本号、逻辑设备转换, Common Lisp 中的逻辑路径名[logical pathname]转换, 或文件系统[file system]的其他因素.
 
 对于每个文件[file]来说, 文件[file]的真实名字[truename]通常是唯一的, 但不是必须是唯一的. 比如, 一个带有硬链接的 Unix 文件[file]可以有多个真实名字[truename].
 
@@ -175,7 +175,7 @@
 
         如果那些包含目录不存在并且如果 verbose 是 true, 那么这个实现[implementation]允许 (但不是必须) 去执行输出到标准输出[standard output]中来说明哪些目录被创建. 如果那些包含目录存在, 或者如果 verbose 是 false, 这个函数不执行输出.
 
-        主值[primary value ]是那个给定的 pathspec, 这样一来这个操作符可以直接和其他文件操作表达式组合起来. 如果创建了任何目录, 那么第二个值[secondary value] created 就是 true.
+        主值[primary value]是那个给定的 pathspec, 这样一来这个操作符可以直接和其他文件操作表达式组合起来. 如果创建了任何目录, 那么第二个值[secondary value] created 就是 true.
 
 * 示例(Examples): None.
 
@@ -209,7 +209,7 @@
 
 * 描述(Description):
 
-        truename 尝试去寻找由 filespec 表示的文件[file]并且返回它的真实名字[truename]. 如果这个 filespec 标识符[designator]是一个打开的流[stream], 就使用它关联的文件[file]. 如果 filespec 是一个流[stream], 不管这个流[stream]是打开还是关闭的, truename 都可以被使用. 允许 truename 在这个流[stream]被关闭后返回比这个流[stream]打开时更具体的信息. 如果 filespec 是一个路径名[pathname], 那么它表示被用来打开文件的名字. 这可能是但不必须是该文件的实际名称.
+        truename 尝试去寻找由 filespec 表示的文件[file]并且返回它的真实名字[truename]. 如果这个 filespec 标识符[designator]是一个打开的流[stream], 就使用它关联的文件[file]. 如果 filespec 是一个流[stream], 不管这个流[stream]是打开还是关闭的, truename 都可以被使用. 允许 truename 在这个流[stream]被关闭后返回比这个流[stream]打开时更具体的信息. 如果 filespec 是一个路径名[pathname], 那么它表示被用来打开文件的名字. 这可能但不必须是该文件的实际名称.
 
 * 示例(Examples):
 
