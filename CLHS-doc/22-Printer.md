@@ -3,8 +3,8 @@
 
 > * 22.1 [Lisp 打印器](#TheLispPrinter)
 > * 22.2 [Lisp 美观打印器](#TheLispPrettyPrinter)
-> * 22.3 [Formatted Output](#FormattedOutput)
-> * 22.4 [The Printer Dictionary](#ThePrinterDictionary)
+> * 22.3 [格式化输出](#FormattedOutput)
+> * 22.4 [打印器的字典](#ThePrinterDictionary)
 
 
 ## 22.1 <span id="TheLispPrinter">Lisp 打印器</span>
@@ -16,13 +16,13 @@
 
 ### 22.1.1 <span id="OverviewTheLispPrinter">Lisp 打印器概览</span>
 
-Common Lisp 以打印文本的形式提供了大多数对象的表示形式, 称为打印表示. 像 print 这样的函数接受一个对象并且把它的打印表示的字符发送给一个流. 做这些的例程集合被称为(Common Lisp)打印器.
+Common Lisp 以打印文本的形式提供了大多数对象[object]的表示形式, 称为打印表示. 像 print 这样的函数接受一个对象[object]并且把它的打印表示的那些字符发送给一个流[stream]. 做这些的例程集合被称为 (Common Lisp) 打印器.
 
-读取一个打印表示通常产生一个和原始打印对象 equal 的对象.
+读取一个打印表示通常产生一个和原始打印对象[object] equal 的对象[object].
 
 #### 22.1.1.1 多种可能的文本表示
 
-大部分对象有着超过一个可能的文本表示. 比如, 带有 27 大小的正整数在文本上可以被表示为这些方式的任意一种:
+大部分对象[object]有着超过一个可能的文本表示. 比如, 一个大小为 27 的正整数[integer]在文本上可以被表示为这些方式的任意一种:
 
     27    27.    #o33    #x1B    #b11011    #.(* 3 3 3)    81/3
 
@@ -33,11 +33,11 @@ Common Lisp 以打印文本的形式提供了大多数对象的表示形式, 称
       B
     )
 
-通常情况下, 从 Lisp 读取器的视角看, 在一个文本表示允许空白字符的地方, 任意数量的空格和换行可以出现在标准语法中.
+通常情况下, 从 Lisp 读取器[Lisp reader]的视角看, 在一个文本表示允许空白字符[whitespace]的地方, 任意数量的空格[space]和换行[newline]可以出现在标准语法[standard syntax]中.
 
 当一个比如 print 这样的函数产生一个打印表示时, 它必须从几个可能的文本表示中选择. 在大部分情况下, 它选择一个程序可读的表示, 但在某些情况下, 它可能使用更紧凑的符号, 而不是程序可读的.
 
-提供了许多被称之为打印器控制变量的选项变量来允许控制对象的打印表示的各个方面. 下一段中展示了标准打印器控制变量; 这里也可能存在具体实现定义的打印器控制变量.
+提供了许多被称之为打印器控制变量[printer control variable]的选项变量来允许控制对象[object]的打印表示的各个方面. 下一段中展示了标准[standardized]打印器控制变量[printer control variable]; 这里也可能存在具体实现定义[implementation-defined]的打印器控制变量[printer control variable].
 
     *print-array*   *print-gensym*       *print-pprint-dispatch*  
     *print-base*    *print-length*       *print-pretty*           
@@ -47,7 +47,7 @@ Common Lisp 以打印文本的形式提供了大多数对象的表示形式, 称
 
     Figure 22-1. 标准打印器控制变量
 
-除了打印器控制变量之外, 下面的附加已定义名称与 Lisp 打印器的行为相关或影响:
+除了打印器控制变量[printer control variable]之外, 下面附加的已定义名称[defined name]与 Lisp 打印器[Lisp printer]的行为相关或影响着 Lisp 打印器[Lisp printer]的行为:
 
     *package*                    *read-eval*  readtable-case  
     *read-default-float-format*  *readtable*                  
@@ -56,23 +56,23 @@ Common Lisp 以打印文本的形式提供了大多数对象的表示形式, 称
 
 ##### 22.1.1.1.1 打印器转义
 
-变量 \*print-escape* 控制 Lisp 打印器是否尝试去产生诸如转义字符和包前缀这类的标记.
+变量[variable] \*print-escape* 控制 Lisp 打印器[Lisp printer]是否尝试去产生诸如转义字符和包前缀这类的标记.
 
-当程序可读的输出特别重要时, 变量 \*print-readably* 可以被用于重写由其他打印器控制变量控制的各个方面.
+当程序可读的输出特别重要时, 变量[variable] \*print-readably* 可以被用于重写由其他打印器控制变量[printer control variable]控制的各个方面.
 
-使 \*print-readably* 的值为 true 的诸多影响中的一个是 Lisp 打印器表现地就好像 \*print-escape* 也是 true 一样. 为了表示方便, 我们说如果 \*print-readably* 或 \*print-escape* 任意一个值是 true, 那么打印器转义就是 "启用的"; 并且我们说如果 \*print-readably* 和 \*print-escape* 的值都是 false, 那么打印器转义就是 "禁用的". 
+使 \*print-readably* 的值[value]为 true 的诸多影响中的一个是 Lisp 打印器[Lisp printer]表现地就好像 \*print-escape* 也是 true 一样. 为了表示方便, 我们说如果 \*print-readably* 或 \*print-escape* 任意一个值是 true, 那么打印器转义[printer escaping]就是 "启用的"; 并且我们说如果 \*print-readably* 和 \*print-escape* 的值都是 false, 那么打印器转义[printer escaping]就是 "禁用的". 
 
 ### 22.1.2 <span id="PrinterDispatching">打印器分派</span>
 
-Lisp 打印器决定如何打印一个对象, 如下所示:
+Lisp 打印器[Lisp printer]决定如何打印一个对象[object], 如下所示:
 
-如果 \*print-pretty* 的值是 true, 打印由当前的 pprint 分派表(current pprint dispatch table)控制; 见章节 22.2.1.4 (美观打印分派表).
+如果 \*print-pretty* 的值[value]是 true, 打印由当前美观打印分派表[current pprint dispatch table]控制; 见章节 22.2.1.4 (美观打印分派表).
 
-否则 (如果 \*print-pretty* 的值是 false), 使用对象的 print-object 方法; 见章节 22.1.3 (默认 Print-Object 方法). 
+否则 (如果 \*print-pretty* 的值[value]是 false), 使用对象的 print-object 方法; 见章节 22.1.3 (默认 Print-Object 方法). 
 
 ### 22.1.3 <span id="DefaultPrintObjectMethods">默认 Print-Object 方法</span>
 
-这一章节描述了 对于标准类型的 print-object 方法的默认行为.
+这一章节描述了 对于标准[standardized]类型[type]的 print-object 方法的默认行为.
 
 > * 22.1.3.1 [打印数字](#PrintingNumbers)
 > * 22.1.3.2 [打印字符](#PrintingCharacters)
@@ -88,7 +88,6 @@ Lisp 打印器决定如何打印一个对象, 如下所示:
 > * 22.1.3.12 [打印结构体](#PrintingStructures)
 > * 22.1.3.13 [打印其他对象](#PrintingOtherObjects)
 
-
 #### 22.1.3.1 <span id="PrintingNumbers">打印数字</span>
 
 > * 22.1.3.1.1 [打印整数](#PrintingIntegers)
@@ -99,70 +98,70 @@ Lisp 打印器决定如何打印一个对象, 如下所示:
 
 ##### 22.1.3.1.1 <span id="PrintingIntegers">打印整数</span>
 
-整数是用当前的输出基在位置符号中指定的基数来打印的, 首先是最重要的数字 Integers are printed in the radix specified by the current output base in positional notation, most significant digit first.<!--TODO 待校验--> 如果合适的话, 可以打印出一个基数说明符; 见 \*print-radix*. 如果一个整数是负的, 会打印一个负号还有那个整数的绝对值. 整数零会被表示为单个数字 0 并且不会有符号. 一个小数点可能被打印出来, 取决于 \*print-radix* 的值.
+整数[integer]是用当前输出基数[current output base]在位置符号中指定的基数来打印的, 最有效数字优先. 如果合适的话, 可以打印出一个基数说明符; 见 \*print-radix*. 如果一个整数[integer]是负的, 会打印一个负号和那个整数[integer]的绝对值. 整数[integer]零会被表示为单个数字 0 并且不会有符号. 一个小数点可能被打印出来, 取决于 \*print-radix* 的值[value].
 
-关于一个整数的语法相关信息, 见章节 2.3.2.1.1 (Syntax of an Integer). 
+关于一个整数[integer]的语法相关信息, 见章节 2.3.2.1.1 (一个整数的语法). 
 
 
 ##### 22.1.3.1.2 <span id="PrintingRatios">打印比率</span>
 
-比率按如下打印: 打印分子的绝对值, as for an integer<!--TODO 待翻译-->; 然后是一个 /; 再是分母. 分子和分母都以当前输出基指定的基数打印; 它们就像是通过 numerator 和 denominator 获取到的, 所以比率以简化形式打印(最低项). 如果合适的话, 可以打印出一个基数说明符; 见 \*print-radix*. 如果这个比率是负的, 在分子前会打印一个负号.
+比率[ratio]按如下打印: 作为一个整数[integer]打印分子的绝对值; 然后是一个 /; 再是分母. 分子和分母都以当前输出基数[current output base]指定的基数打印; 它们就像是通过 numerator 和 denominator 获取到的, 所以比率[ration]以简化形式打印(最低项). 如果合适的话, 可以打印出一个基数说明符; 见 \*print-radix*. 如果这个比率是负的, 在分子前会打印一个负号.
 
-关于一个比率的语法相关信息, 见章节 2.3.2.1.2 (Syntax of a Ratio). 
+关于一个比率[ratio]的语法相关信息, 见章节 2.3.2.1.2 (一个比率的语法). 
 
 
 ##### 22.1.3.1.3 <span id="PrintingFloats">打印浮点数</span>
 
-如果这个浮点数的大小是零或在 10^-3 (包含的) 和 10^7 (不包含的) 之间, 它会被打印为这个数字的整数部分, 然后一个小数点, 然后是这个数字的小数部分; 小数点的每一边都至少有一个数字. 如果这个数字的符号 (由 float-sign 确定) 是负的, 那么会在这个数字之前打印一个负号. 如果这个数字的格式不匹配由 \*read-default-float-format* 指定的, 那么打印出该格式的指数标记和数字 0. 例如, 自然对数作为一个短的浮点数可以被打印成 2.71828S0.
+如果这个浮点数的大小是零或在 10^-3 (包含的) 和 10^7 (不包含的) 之间, 它会被打印为这个数字的整数部分, 然后一个小数点, 再是这个数字的小数部分; 小数点的每一边都至少有一个数字. 如果这个数字的符号 (由 float-sign 确定) 是负的, 那么会在这个数字之前打印一个负号. 如果这个数字的格式不匹配由 \*read-default-float-format* 指定的格式, 那么也会打印出该格式的指数标记[exponent marker]和数字 0. 例如, 自然对数作为一个短浮点数[short float]可以被打印成 2.71828S0.
 
-对于范围 10^-3 到 10^7 之外的非零大小, 一个浮点数以计算机科学计数法打印的. 这个数字的表示被缩放到 1 (包含的) 和 10 (不包含的) 之间然后打印, 其中小数点前一位数, 小数点后至少有一个位. 接下来是打印这个格式的指数标记, 但是如果数字的格式与 \*read-default-float-format* 指定的格式相匹配, 那么就使用 E. 最后, 一个 10 的幂被打印成一个十进制整数, 这个小数和这个幂相乘的结果等于原始数字. 例如, 阿伏伽德罗数作为一个短浮点数会被打印为 6.02S23.
+对于范围 10^-3 到 10^7 之外的非零大小, 一个浮点数[float]以计算机科学计数法打印的. 这个数字的表示被缩放到 1 (包含的) 和 10 (不包含的) 之间然后打印, 其中小数点前一位数, 小数点后至少有一个位. 接下来是打印这个格式的指数标记[exponent marker], 但是如果数字的格式与 \*read-default-float-format* 指定的格式相匹配, 那么就使用指数标记[exponent marker] E. 最后, 一个 10 的幂被打印成一个十进制整数, 这个小数和这个幂相乘的结果等于原始数字. 例如, 阿伏伽德罗数作为一个短浮点数[short float]会被打印为 6.02S23.
 
-关于一个浮点数的语法相关信息, 见章节 2.3.2.2 (Syntax of a Float). 
+关于一个浮点数[float]的语法相关信息, 见章节 2.3.2.2 (浮点数的语法). 
 
 ##### 22.1.3.1.4 <span id="PrintingComplexes">打印复数</span>
 
-一个复数被打印为一个 #C, 一个开圆括号, 它的实部的打印表示, 一个空格, 它的虚部的打印表示, 以及最后的闭圆括号.
+一个复数[complex]被打印为一个 #C, 一个开圆括号, 它的实部的打印表示, 一个空格, 它的虚部的打印表示, 以及最后的闭圆括号.
 
-关于一个复数的相关语法, 见章节 2.3.2.3 (Syntax of a Complex) and Section 2.4.8.11 (Sharpsign C). 
+关于一个复数[complex]语法的相关信息, 见章节 2.3.2.3 (复数的语法) 以及章节 2.4.8.11 (井号C(#C)). 
 
 
 ##### 22.1.3.1.5 <span id="NotePrintingNumbers">关于打印数字的注意事项</span>
 
-一个数字的打印表示一定不能包含转义字符; 见章节 2.3.1.1.1 (Escape Characters and Potential Numbers). 
+一个数字的打印表示一定不能包含转义[escape]字符[character]; 见章节 2.3.1.1.1 (转义字符和潜在数字). 
 
 
 #### 22.1.3.2 <span id="PrintingCharacters">打印字符</span>
 
-当打印器转义被禁用时, 一个字符被打印为它的自身; 它被直接发送给输出流. 当打印器转义被启用时, 那么使用 #\ 语法.
+当打印器转义[printer escaping]被禁用时, 一个字符[character]被打印为它的自身; 它被直接发送给输出流[stream]. 当打印器转义[printer escaping]被启用时, 那么使用 #\ 语法.
 
-当打印器打印输出一个字符的名字时, 它使用和 #\ 读取器宏相同的表; 因此输出的任何字符作为输入都是可接受的 (在那个实现中). 如果一个非图形化字符有着一个标准化名字, 这个名字比非标准的名字更喜欢用 #\ 符号打印. 对于图形化标准字符, 这个字符自身被用于 #\ 标记打印---即便这个字符也有一个名字.
+当打印器输出一个字符[character]的名字时, 它使用和 #\ 读取器宏[reader macro]相同的表; 因此输出的任何字符[character]作为输入都是可接受的 (在那个实现[implementation]中). 如果一个非图形化[non-graphic]字符[character]有着一个标准化[standardized]名字[name[5]], 这个名字[name]比非标准的名字更喜欢用 #\ 符号打印. 对于图形化[graphics]标准字符[standard character], 这个字符[character]自身被用于 #\ 标记打印---即便这个字符[character]也有一个名字[name[5]].
 
-关于 #\ 读取器宏的详细信息, 见章节 2.4.8.1 (Sharpsign Backslash). 
+关于 #\ 读取器宏[reader macro]的详细信息, 见章节 2.4.8.1 (井号反斜线(#\\)). 
 
 #### 22.1.3.3 <span id="PrintingSymbols">打印符号</span>
 
-当打印器转义被禁用时, 只有那个符号名字的字符会被输出 (但是打印名字中的字符的大小写由 \*print-case* 控制; 见章节 22.1.3.3.2 (Lisp 打印器上读取表大小写的影响)).
+当打印器转义[printer escaping]被禁用时, 只有那个符号[symbol]名字[name]的字符会被输出 (但是打印名字[name]中的字符的大小写由 \*print-case* 控制; 见章节 22.1.3.3.2 (Lisp 打印器上读取表大小写的影响)).
 
-章节 22.1.3.3 的其余部分仅在启用打印器转义时才适用.
+章节 22.1.3.3 的其余部分仅在启用打印器转义[printer escaping]时才适用.
 
-当打印一个符号时, 打印器插入足够的单转义 和/或 多转义字符 (反斜线 和/或 竖线) 这样一来如果用相同的 \*readtable* 以及绑定到当前输出基数的 \*read-base* 来调用 read, 它会返回相同的符号 (如果它没有被显式解除捕捉的话) 或者一个带有相同打印名的未捕捉符号 (否则的话).
+当打印一个符号[symbol]时, 打印器插入足够的单转义[single escape] 和/或 多转义[multiple escape]字符 (反斜线[backslash] 和/或 竖线[vertical-bar]) 这样一来如果用相同的 \*readtable* 以及绑定为当前输出基数[current output base]的 \*read-base* 来调用 read, 它会返回相同的符号[symbol] (如果它没有被显式解除捕捉[apparently uninterned]的话) 或者一个带有相同打印名的未捕捉[uninterned symbol]符号[symbol] (否则的话).
 
-比如, 当打印符号 face 时如果 \*print-base* 的值是 16, 它可能会被打印为 \FACE 或 \Face 或 |FACE|, 因为如果 \*read-base* 的值是 16 那么记号 face 会被读取为一个十六进制数字 (数字值 64206).
+比如, 当打印符号 face 时如果 \*print-base* 的值[value]是 16, 它可能会被打印为 \FACE 或 \Face 或 |FACE|, 因为如果 \*read-base* 的值[value]是 16 那么记号 face 会被读取为一个十六进制数字 (数字值 64206).
 
-对于当前读取表中具有非标准语法类型字符的附加限制, 见变量 \*print-readably*
+对于当前读取表[current readtable]中具有非标准语法类型[syntax type]字符的附加限制, 见变量[variable] \*print-readably*
 
-关于 Lisp 读取器如何解析符号的信息, 见章节 2.3.4 (Symbols as Tokens) 和章节 2.4.8.5 (Sharpsign Colon).
+关于 Lisp 读取器[Lisp reader]如何解析符号[symbol]的信息, 见章节 2.3.4 (符号标记) 和章节 2.4.8.5 (井号冒号(#:)).
 
-当 \*print-pretty* 是 true 并且打印器转义是启用时, nil 可能被打印为 () .
+当 \*print-pretty* 是 true 并且打印器转义[printer escaping]是启用时, nil 可能被打印为 () .
 
 > * 22.1.3.3.1 [符号的包前缀](#PackagePrefixesSymbols)
 > * 22.1.3.3.2 [Lisp 打印器上读取表大小写的影响](#EffectReadtableCase)
 
 ##### 22.1.3.3.1 <span id="PackagePrefixesSymbols">符号的包前缀</span>
 
-如果必要的话, 包前缀会被打印. 包前缀的规则如下. 当这个符号被打印时, 如果它在 KEYWORD 包, 那么它和一个前置的冒号一起被打印; 否则, 如果它在当前包中可访问, 它被打印为不带包前缀的; 否则, 它会被打印为带有一个包前缀的.
+如果必要的话, 包前缀[package prefix]会被打印. 包前缀[package prefix]的规则如下. 当这个符号[symbol]被打印时, 如果它在 KEYWORD 包, 那么它和一个前置的冒号[colon]一起被打印; 否则, 如果它在当前包[current package]中可访问[accessible], 它被打印为不带包前缀[package prefix]的; 否则, 它会被打印为带有一个包前缀[package prefix]的.
 
-如果 \*print-gensym* 是 true 并且打印器转义是启用的, 那么一个被显式解除绑定的符号会以 "#:" 前置的方式被打印; 如果 \*print-gensym* 是 false 或打印器转义被禁用, 那么符号会以不带前缀的方式打印, 就好像它是在当前包中的.
+如果 \*print-gensym* 是 true 并且打印器转义[printer escaping]是启用的, 那么一个被显式解除绑定[apparently uninterned]的符号[symbol]会以 "#:" 前置的方式被打印; 如果 \*print-gensym* 是 false 或打印器转义[printer escaping]被禁用, 那么符号[symbol]会以不带前缀的方式打印, 就好像它是在当前包[current package]中的.
 
 由于 #: 语法不会捕捉后面的符号, 如果 \*print-circle* 是 true 并且相同的未捕捉的符号在一个要被打印的表达式中出现多次, 有必要去使用循环列表的语法. 比如, 如果 \*print-circle*  是 false, 下面这个的结果
 
@@ -174,11 +173,11 @@ Lisp 打印器决定如何打印一个对象, 如下所示:
 
 foo:bar
 
-    当符号 bar 在它的 home 包 foo 中是外部的并且在当前包中不可访问的时, 打印 foo:bar.
+    当符号[symbol] bar 在它的 home 包[home package] foo 中是外部的并且在当前包[current package]中不是可访问[accessible]的时候, 打印 foo:bar.
 
 foo::bar
 
-    当 bar 在它的 home 包 foo 中是内部的并且在当前包中不可访问时, 打印 foo::bar.
+    当 bar 在它的 home 包[home package] foo 中是内部的并且在当前包[current package]中不是可访问[accessible]时, 打印 foo::bar.
 
 :bar
 
@@ -186,46 +185,47 @@ foo::bar
 
 #:bar
 
-    当 bar 被显式解除绑定, 即使在病态的情况下, bar 没有 home 包, 但在当前的包中却可以访问的, 都会打印 #:bar. 
+    当 bar 被显式解除绑定[apparently uninterned]时都会打印为 #:bar, 即使在 bar 没有 home 包[home package]但在当前包[current package]中却是可访问[accessible]的病态情况下. 
 
 
 ##### 22.1.3.3.2 <span id="EffectReadtableCase">Lisp 打印器上读取表大小写的影响</span>
 
-当打印器转义被禁用, 或正在考虑的字符还没有被单转义或多转义语法引用时, 当前读取表的读取表大小写以以下方式影响 Lisp 打印器写入符号的方式:
+当打印器转义[printer escaping]被禁用, 或正在考虑的字符还没有被单转义[single escape]或多转义[multiple escape]语法引用时, 当前读取表[current readtable]的读取表大小写[readtable case]以以下方式影响 Lisp 打印器[Lisp printer]写入符号[symbol]的方式:
 
 :upcase
 
-    当读取表大小写是 :upcase 时, 大写字符由 *print-case* 指定的大小写来打印, 而小写字符按照它们自身的大小写打印.
+    当读取表大小写[readtable case]是 :upcase 时, 大写[uppercase]字符[character]由 *print-case* 指定的大小写来打印, 而小写[lowercase]字符[character]按照它们自身的大小写打印.
 
 :downcase
 
-    当读取表大小写是 :downcase 时, 大写字符按照它们自身的大小写打印, 而小写字符由 *print-case* 指定的大小写来打印.
+    当读取表大小写[readtable case]是 :downcase 时, 大写[uppercase]字符[character]按照它们自身的大小写打印, 而小写[lowercase]字符[character]由 *print-case* 指定的大小写来打印.
 
 :preserve
 
-    当读取表大小写是 :preserve 时, 所有字母字符都按照它们自身的大小写打印.
+    当读取表大小写[readtable case]是 :preserve 时, 所有字母[alphabetic]字符[character]都按照它们自身的大小写打印.
 
 :invert
 
-    当读取表大小写是 :invert 时, 单一大小写符号名中的所有字符的大小写会被转换. 混合大小写符号名会保留原样打印.
+    当读取表大小写[readtable case]是 :invert 时, 单一大小写符号名中的所有字母[alphabetic]字符[character]的大小写会被转换. 混合大小写符号名会保留原样打印.
 
-如果启用了打印器转义, 那么转义符号名中的字母字符的规则受 readtable-case 影响. 字母字符按如下转义:
+如果启用了打印器转义[printer escaping], 那么符号名中的转义字母[alphabetic]字符[character]的规则受 readtable-case 影响. 字母[alphabetic]字符[character]按如下转义:
 
 :upcase
 
-    当读取表大小写是 :upcase 时, 所有小写字符必须被转义.
+    当读取表大小写[readtable case]是 :upcase 时, 所有小写[lowercase]字符[character]必须被转义.
 
 :downcase
 
-    当读取表大小写是 :downcase 时, 所有大写字符必须被转义.
+    当读取表大小写[readtable case]是 :downcase 时, 所有大写[uppercase]字符[character]必须被转义.
 
 :preserve
 
-    当读取表大小写是 :preserve 时, 没有字母字符需要被转义.
+    当读取表大小写[readtable case]是 :preserve 时, 没有字母[alphabetic]字符[character]需要被转义.
 
 :invert
 
-    当读取表大小写是 :invert 时, 没有字母字符需要被转义.
+    当读取表大小写[readtable case]是 :invert 时, 没有字母[alphabetic]字符[character]需要被转义.
+
 
 ###### 22.1.3.3.2.1 Examples of Lisp 打印器上读取表大小写的影响
 
@@ -292,25 +292,25 @@ foo::bar
 
 #### 22.1.3.4 <span id="PrintingStrings">打印字符串</span>
 
-字符串中的字符会被依次输出. 如果启用了打印器转义, 一个双引号会在之前或之后被输出, 并且所有的双引号和单转义前面会有一个反斜线. 字符串的打印不受 \*print-array* 的影响. 只有字符串中的有效元素会被打印.
+字符串[string]中的字符会被依次输出. 如果启用了打印器转义[printer escaping], 一个双引号[double-quote]会在之前或之后被输出, 并且所有的双引号[double-quote]和单转义[single escape]前面会有一个反斜线[backslash]. 字符串[string]的打印不受 \*print-array* 的影响. 只有字符串[string]中的有效[active]元素[element]会被打印.
 
-关于 Lisp 读取器如何解析字符串的信息, 见章节 2.4.5 (Double-Quote). 
+关于 Lisp 读取器[Lisp reader]如何解析字符串[string]的信息, 见章节 2.4.5 (双引号). 
 
 #### 22.1.3.5 <span id="PrintingListsConses">打印列表和构造(cons)</span>
 
-只要有可能, 列表记号优先于点记号 Wherever possible, list notation is preferred over dot notation. 因此以下运算法则被用于打印一个 cons x:
+只要有可能, 列表记号优先于点记号. 因此以下运算法则被用于打印一个 cons x:
 
-1. 打印一个左圆括号.
+1. 打印一个左圆括号[left-parenthesis].
 
 2. 打印 x 的 car.
 
-3. 如果 x 的 cdr 自身是一个 cons, 它会成为当前的 cons (换句话说, x 变为那个 cons), 打印一个空格, 然后再次进入步骤 2.
+3. 如果 x 的 cdr 自身是一个 cons, 它会成为当前的 cons (换句话说, x 变为那个 cons), 打印一个空格[space], 然后再次进入步骤 2.
 
-4. 如果 x 的 cdr 不为空, 打印一个空格, 一个点, 一个空格, 以及 x 的 cdr.
+4. 如果 x 的 cdr 不为空[null], 打印一个空格[space], 一个点[dot], 一个空格[space], 以及 x 的 cdr.
 
-5. 打印一个右圆括号.
+5. 打印一个右圆括号[right-parenthesis].
 
-事实上, 只有当 \*print-pretty* 是 false 时, 使用以上运算法则. 当 \*print-pretty* 是 true 时(或者当使用 pprint 时), 额外的空格可能替换一个单空格的使用, 并且一种更复杂的, 具有类似的目标, 但具有更多的表示灵活性的算法会被使用; 见章节 22.1.2 (打印器分派).
+事实上, 只有当 \*print-pretty* 是 false 时, 使用以上运算法则. 当 \*print-pretty* 是 true 时(或者当使用 pprint 时), 额外的空格[whitespace[1]]可能替换一个单空格[space]的使用, 并且使用一种更复杂的、具有类似的目标但具有更多的表示灵活性的算法; 见章节 22.1.2 (打印器分派).
 
 虽然以下两个表达式是等价的, 并且读取器接收任意一个并打印相同的 cons, 但是打印器总是用第二种形式来打印这样一个 cons.
 
@@ -338,44 +338,45 @@ cons 的打印受 \*print-level*, \*print-length*, 和 \*print-circle* 的影响
     (a \... b)  ;A list of three elements a, ..., and b
     (a |...| b) ;A list of three elements a, ..., and b
 
-关于 Lisp 读取器如何解析列表和 cons 的信息, 见章节 2.4.1 (Left-Parenthesis). 
+关于 Lisp 读取器[Lisp reader]如何解析列表[list]和 cons 的信息, 见章节 2.4.1 (左圆括号). 
 
 #### 22.1.3.6 <span id="PrintingBitVectors">打印位向量</span>
 
-一个位向量被打印为 #* 后面依次跟着位向量的各个位. 如果 \*print-array* 是 false, 那么位向量以一种简洁但是不可读取的格式 (使用 #<) 来打印. 只有位向量中的有效元素会被打印.
+一个位向量[bit vector]被打印为 #* 后面依次跟着位向量[bit vector]的各个位. 如果 \*print-array* 是 false, 那么这个位向量[bit vector]以一种简洁但是不可读取的格式 (使用 #<) 来打印. 只有位向量[bit vector]中的有效[active]元素[element]会被打印.
 
-关于 Lisp 读取器如何解析位向量的信息, 见章节 2.4.8.4 (Sharpsign Asterisk). 
+关于 Lisp 读取器[Lisp reader]如何解析位向量[bit vector]的信息, 见章节 2.4.8.4 (井号星号(#*)). 
 
 
 #### 22.1.3.7 <span id="PrintingOtherVectors">打印其他向量</span>
 
-如果 \*print-array* 是 true 并且 \*print-readably* 是 false, 除了字符串和位向量以外的向量会用普通向量语法来打印; 这意味着关于特殊向量表示的信息不会出现. 零长度向量的打印表示是 #(). 非零长度的向量用 #( 开始打印. 在那个后面, 向量的第一个元素会被打印. 如果这里有任何其他元素, 它们会依次被打印, 如果 \*print-pretty* 是 false 那么每一个另外的元素前面会有一个空格 space, 如果 \*print-pretty* 是 true 那么就是空格 whitespace. 最后一个元素后的右圆括号终止这个向量的打印表示. 向量的打印受 \*print-level* 和 \*print-length* 的影响. 如果这个向量有着填充指针, 那么只有那些在填充指针下的元素会被打印.
+如果 \*print-array* 是 true 并且 \*print-readably* 是 false, 除了字符串[string]和位向量[bit vector]以外的向量[vector]会用普通向量语法来打印; 这意味着关于特殊向量表示的信息不会出现. 零长度向量[vector]的打印表示是 #(). 非零长度的向量[vector]用 #( 开始打印. 在那个后面, 向量[vector]的第一个元素会被打印. 如果这里有任何其他元素, 它们会依次被打印, 如果 \*print-pretty* 是 false 那么每一个额外的元素前面会有一个空格[space], 如果 \*print-pretty* 是 true 那么就是空格[whitespace[1]]. 最后一个元素后的右圆括号[right-parenthesis]终止这个向量[vector]的打印表示. 向量[vector]的打印受 \*print-level* 和 \*print-length* 的影响. 如果这个向量[vector]有着填充指针[fill pointer], 那么只有那些在填充指针[fill pointer]下的元素会被打印.
 
-如果 \*print-array* 和 \*print-readably* 都是 false, 向量不会按如上所述被打印, 而是以一种简洁但不可读的格式 (using #<) 来打印.
+如果 \*print-array* 和 \*print-readably* 都是 false, 向量[vector]不会按如上所述被打印, 而是以一种简洁但不可读的格式 (使用 #<) 来打印.
 
-如果 \*print-readably* 是 true, 那么向量以一种具体实现定义的方式来打印; 见变量 \*print-readably*.
+如果 \*print-readably* 是 true, 那么向量[vector]以一种具体实现定义[implementation-defined]的方式来打印; 见变量[variable] \*print-readably*.
 
-关于 Lisp 读取器如何解析"其他变量"的信息, 见章节 2.4.8.3 (Sharpsign Left-Parenthesis). 
+关于 Lisp 读取器[Lisp reader]如何解析"其他变量[vector]"的信息, 见章节 2.4.8.3 (井号左括号(#()). 
 
 #### 22.1.3.8 <span id="PrintingOtherArrays">打印其他数组</span>
 
-如果 \*print-array* 是 true 并且 \*print-readably* 是 false, 除了向量以外的任何数组都用 #nA 格式打印. 让 n 为这个数组的维数. 接着打印 #, 再是十进制整数 n, 然后是 A, 然后 n 个开括号. 接下来这些元素按照行优先的顺序被扫描, 在每一个元素上使用 write, 并且元素之间用空格 whitespace 分隔. 数组的维度从左到右被计为 0 到 n-1, and are enumerated with the rightmost index changing fastest<!--TODO 待翻译-->. 每次维度 j 的索引递增, 就会采取以下动作:
+如果 \*print-array* 是 true 并且 \*print-readably* 是 false, 除了向量[vector]以外的任何数组[array]都用 #nA 格式打印. 这里 n 为这个数组[array]的秩[rank]. 接着打印 #, 再是十进制整数 n, 然后是 A, 然后 n 个开括号. 接下来这些元素[element]按照行优先的顺序被扫描, 在每一个元素[element]上使用 write, 并且元素[element]之间用空格[whitespace[1]]分隔. 数组的维度从左到右被计为 0 到 n-1, 并以最右的索引变化最快的方式枚举. 每次维度 j 的索引递增, 就会采取以下动作:
 
 * 如果 j < n-1, 那么打印一个闭圆括号.
 
-* 如果递增维度 j 的索引导致它和维度 j 相等, 那个索引被重置为零并且维度 j-1 的索引会递增 (因此递归执行这三个步骤), 除非 j=0, 在这个情况下终止整个运算法则. 如果递增维度 j 的索引没有导致它等于维度 j, 那么打印一个空格 space.<!--TODO 待校验-->
+* 如果递增维度 j 的索引导致它和维度 j 相等, 那个索引被重置为零并且维度 j-1 的索引会递增 (因此递归执行这三个步骤), 除非 j=0, 在这个情况下终止整个运算法则. 如果递增维度 j 的索引没有导致它等于维度 j, 那么打印一个空格.
 
 * 如果 j < n-1, 打印一个开圆括号.
 
-这个导致要被打印的内容以一种适合于给 make-array 的 :initial-contents 参数的格式来打印. 这个过程有效打印的列表会被 \*print-level* and \*print-length* 截断.
+这个导致要被打印的内容以一种适合于给 make-array 的 :initial-contents 参数的格式来打印. 这个过程有效打印的列表可能会被 \*print-level* 和 \*print-length* 截断.
 
-如果这个数组是特定类型的, 包含位或者字符, 那么由上述运算法则生成的最内部的列表可以用位向量或字符串的语法来打印, 假定这些最内部的列表不会受限于 \*print-length* 的截断.
+如果这个数组[array]是特定类型[type]的, 包含位或者字符, 那么由上述运算法则生成的最内部的列表可以用位向量或字符串的语法来打印, 假定这些最内部的列表不会被 \*print-length* 截断.
 
-如果 \*print-array* 和 \*print-readably* 都是 false, 那么数组以一种简洁但不可读的方式 (使用 #<) 打印.
+如果 \*print-array* 和 \*print-readably* 都是 false, 那么数组[array]以一种简洁但不可读的方式 (使用 #<) 打印.
 
-如果 \*print-readably* 是 true, 这个数组以一种具体实现定义的方式打印; 见变量 \*print-readably*. 具体来说, 这对于 0 维数组来说是很重要的.
+如果 \*print-readably* 是 true, 这个数组[array]以一种具体实现定义[implementation-defined]的方式打印; 见变量[variable] \*print-readably*. 具体来说, 这对于 0 维数组来说是很重要的.
 
-关于 Lisp 读取器如何解析这些"其他数组"的信息, 见章节 2.4.8.12 (Sharpsign A).
+关于 Lisp 读取器[Lisp reader]如何解析这些"其他数组[array]"的信息, 见章节 2.4.8.12 (井号A(#A)).
+
 
 #### 22.1.3.9 <span id="ExamplesPrintingArrays">打印数组的示例</span>
 
@@ -395,44 +396,46 @@ cons 的打印受 \*print-level*, \*print-length*, 和 \*print-circle* 的影响
 
 #### 22.1.3.10 <span id="PrintingRandomStates">打印随机状态</span>
 
-没有为打印 random-state 类型的对象指定具体的语法. 然而, 每个具体实现必须以这样一种方式来安排打印随机对象, 在相同实现中, read 可以从这个打印表示来构造这个随机状态的一个拷贝, 就好像这个拷贝是通过 make-random-state 创建的一样.
+没有为打印 random-state 类型[type]的对象[object]指定具体的语法. 然而, 每个具体实现[implementation]必须以这样一种方式来安排打印随机状态[random state]对象[object], 在相同实现中, read 可以从这个打印表示来构造这个随机状态[random state]的一个拷贝, 就好像这个拷贝是通过 make-random-state 创建的一样.
 
-如果这个随机状态类型被实际上是被 defstruct 来有效实现的, 那么平常的那个结构体语法可以被用于打印随机状态对象; 一个可能看上去像下面这样
+如果这个随机状态[random state]类型实际上是通过defstruct 来有效实现的, 那么常见的结构体语法可以被用于打印随机状态[random state]对象; 一种打印可能看上去像下面这样
 
     #S(RANDOM-STATE :DATA #(14 49 98436589 786345 8734658324 ... ))
 
-其中的成员是依赖于具体实现的. 
+其中的成员是依赖于具体实现的[implementation-dependent]. 
+
 
 #### 22.1.3.11 <span id="PrintingPathnames">打印路径名</span>
 
-当启用打印器转义时, 语法 #P"..." 是路径名如何被 write 和这里描述的函数打印的语法. 这个 "..." 这个路径名的名称字符串表示.
+当启用打印器转义[printer escaping]时, 语法 #P"..." 是路径名[pathname]如何被 write 和这里描述的函数打印的语法. 这个 "..." 这个路径名的名称字符串表示.
 
-当禁用打印器转义时, write 通过写入 (namestring P) 来写入一个路径名 P.
+当禁用打印器转义[printer escaping]时, write 通过写入 (namestring P) 来写入一个路径名[pathname] P.
 
-关于 Lisp 读取器如何解析路径名的信息, 见章节 2.4.8.14 (Sharpsign P). 
+关于 Lisp 读取器[Lisp reader]如何解析路径名[pathname]的信息, 见章节 2.4.8.14 (井号P(#P)). 
 
 
 #### 22.1.3.12 <span id="PrintingStructures">打印结构体</span>
 
-默认情况下, 一个类型 S 的结构体使用 #S 语法打印. 这个行为可以通过给定义 S 的 defstruct 表达式形式指定一个 :print-function 或 :print-object 选项, 或者通过写一个为 S 类型的对象特化的 print-object 方法来定制.
+默认情况下, 一个类型 S 的结构体[structure]使用 #S 语法打印. 这个行为可以通过给定义 S 的 defstruct 表达式形式[form]指定一个 :print-function 或 :print-object 选项, 或者通过写一个为 S 类型的对象[object]特化[specialized]的 print-object 方法来定制.
 
 不同的结构体可能以不同的方式打印; 结构体的默认表示法是:
 
     #S(structure-name {slot-key slot-value}*)
 
-其中 #S 表示结构体语法, structure-name 是一个结构体名字, 每一个 slot-key 是这个结构体中一个槽的初始化参数名, 而每一个对应的 slot-value 那个槽中的对象的一个表示.
+其中 #S 表示结构体语法, structure-name 是一个结构体名字[structure name], 每一个 slot-key 是这个结构体[structure]中一个槽[slot]的初始化参数的名字[name], 而每一个对应的 slot-value 是那个槽[slot]中的对象[object]的一个表示.
 
-关于 Lisp 如何解析结构体的信息, 见章节 2.4.8.13 (Sharpsign S). 
+关于 Lisp 读取器[Lisp reader]如何解析结构体[structure]的信息, 见章节 2.4.8.13 (井号S(#S)). 
+
 
 #### 22.1.3.13 <span id="PrintingOtherObjects">打印其他对象</span>
 
-其他对象以一种依赖于具体实现的方式被打印. 一个具体实现以可读的方式打印那些对象不是必须的.
+其他对象[object]以一种依赖于具体实现[implementation-dependent]的方式被打印. 一个具体实现[implementation]以可读[readably]的方式打印那些对象[object]不是必须的.
 
-比如, 哈系表, 读取表, 包, 流, 和函数可能不会以可读的方式打印.
+比如, 哈系表[hash table], 读取表[readtable], 包[package], 流[stream], 和函数[function]可能不会以可读[readably]的方式打印.
 
-在这个情况中使用的普遍表示是 #<...>. 由于 #< 不是通过 Lisp 读取器可读的, 它遵循的文本准确格式是不重要的, 但是一个要去使用的普遍格式是由 print-unreadable-object 宏提供的.
+在这个情况中使用的普遍表示是 #<...>. 由于 #< 不是通过 Lisp 读取器[Lisp reader]可读的, 它遵循的文本准确格式是不重要的, 但是要使用的一个普遍格式是由 print-unreadable-object 宏[macro]提供的.
 
-关于 Lisp 读取器如何对待这种表示的信息, 见章节 2.4.8.20 (Sharpsign Less-Than-Sign). 关于如果表示不能被可读地打印的对象的信息, 见章节 2.4.8.6 (Sharpsign Dot).
+关于 Lisp 读取器[Lisp reader]如何对待这种表示的信息, 见章节 2.4.8.20 (井号小于号(#<)). 关于如果表示不能被可读[readably]地打印的对象[object]的信息, 见章节 2.4.8.6 (井号点(#.)).
 
 ### 22.1.4 <span id="ExamplesPrinterBehavior">打印器行为的示例</span>
 
@@ -497,33 +500,33 @@ cons 的打印受 \*print-level*, \*print-length*, 和 \*print-circle* 的影响
 
 ### 22.2.1 <span id="PrettyPrinterConcepts">美观打印器的概念</span>
 
-美观打印器提供的工具允许程序重新定义代码显示的方式, 并且允许美观打印的全部能力应用于复杂的数据结构组合.
+美观打印器[pretty printer]提供的工具允许程序[program]重新定义代码[code]显示的方式, 并且允许美观打印的全部能力应用于复杂的数据结构组合.
 
-任何给定的输出样式实际上是否是"美观"的, 本质上是一个主观的问题. 然而, 由于美观打印器的效果可以通过符合标准的程序进行定制, 所以为单个程序提供了必要的灵活性以达到任意程度的审美控制.
+任何给定的输出样式实际上是否是"美观"的, 本质上是一个主观的问题. 然而, 由于美观打印器[pretty printer]的效果可以由符合标准的程序[conforming program]进行定制, 所以为单个程序[program]提供了必要的灵活性以达到任意程度的审美控制.
 
-通过直接访问美观打印器内的机制来对布局做出动态决策, 这些宏以及函数 pprint-logical-block, pprint-newline, 和 pprint-indent 使得为产生输出的任意函数指定美观打印布局规则是可能的. 它们也使得环状和共享的检测以及要被函数支持的基于长度和嵌套深度的缩写变得简单.
+通过直接访问美观打印器内的机制来对布局做出动态决策, 这些 pprint-logical-block, pprint-newline, 和 pprint-indent 宏和函数可以为任何产生输出的函数指定美观打印布局规则. 它们也使得环状和共享的检测以及要被函数支持的基于长度和嵌套深度的缩写变得简单.
 
-美观打印器完全是根据 \*print-pprint-dispatch* 的值来驱动的. 函数 set-pprint-dispatch 使得符合规范的程序去关联美观打印函数和一个类型是可能的.
+美观打印器[pretty printer]完全是根据 \*print-pprint-dispatch* 的值[value]来驱动的. 函数[function] set-pprint-dispatch 使得符合规范的程序[conforming program]去关联美观打印函数和一个类型[type]是可能的.
 
 > * 22.2.1.1 [输出排列的动态控制](#DynamicControlArrangeOutput)
-> * 22.2.1.2 [格式指令接口](#FormatDirectiveInterface)
-> * 22.2.1.3 [编译格式字符串](#CompilingFormatStrings)
+> * 22.2.1.2 [格式化指令接口](#FormatDirectiveInterface)
+> * 22.2.1.3 [编译格式化字符串](#CompilingFormatStrings)
 > * 22.2.1.4 [美观打印分派表](#PrettyPrintDispatchTables)
 > * 22.2.1.5 [美观打印器边距](#PrettyPrinterMargins)
 
 #### 22.2.1.1 <span id="DynamicControlArrangeOutput">输出排列的动态控制</span>
-<!--TODO 待校验-->
-当一个输出太大而无法容纳到可用空间时, 美观打印器的操作可以被精确地控制. 三个概念是这些操作工作的基础---逻辑块(logical blocks), 条件换行(conditional newlines), 以及节段(sections). 在继续之前, 定义这些术语是很重要的.
+<!--TODO 所有输出到, 但不包括 ??-->
+当一个输出[pretty printer]太大而无法容纳到可用空间中时, 可以精确地控制美观打印器的操作. 三个概念是这些操作工作的基础---逻辑块[logical blocks], 条件换行[conditional newlines], 以及节段[sections]. 在继续之前, 定义这些术语是很重要的.
 
 下一段中的第一行展示了输出的示意图片段. 输出的每个字符都用 "-" 表示. 条件换行的位置由数字表示. 这个逻辑块的开始和结束分别由 "<" 和 ">" 表示.
 
-输出作为一个整体是一个逻辑块和最外层节段. 这节段由 Figure 1 的第二行中的 0 表示. 嵌套在这个输出中的逻辑块通过宏 pprint-logical-block 来指定. 条件换行的位置由 pprint-newline 调用来指定. 每个条件换行定义了两个节段 (一个在它之前, 一个在它之后) 并且和一个第三个关联 (直接包含它的那个节段).
+输出作为一个整体是一个逻辑块和最外层节段. 这节段由 Figure 1 的第二行中的 0 表示. 嵌套在这个输出中的逻辑块通过宏 pprint-logical-block 来指定. 条件换行的位置由 pprint-newline 调用来指定. 每个条件换行定义了两个节段 (一个在它之前, 一个在它之后) 并且和第三个关联 (直接包含它的那个节段).
 
 一个条件换行后面的节段由这些组成: 所有输出到, 但不包括, (a) 在同一个逻辑块中直接包含的下一个条件换行; 或者如果 (a) 是不可应用的, (b) 嵌套在逻辑块的更低级别的下一个换行; 或者如果 (b) 是不可应用的, (c) 输出的末尾.
 
-一个条件换行前面的节段由这些组成: 所有的输出都返回到, 但不包括, (a) 在同一个逻辑块中直接包含的前面的条件换行; 或者如果 (a) 不可应用, (b) 直接包含逻辑块的开头. Figure 1 中的最后四行表示四个条件换行前后的节段.
+一个条件换行前面的节段由这些组成: 所有的输出都返回到, 但不包括, (a) 被直接包含在相同逻辑块中的前面的条件换行; 或者如果 (a) 不可应用, (b) 直接包含逻辑块的开头. Figure 1 中的最后四行表示四个条件换行前后的节段.
 
-直接包含一个条件换行的节段是包含这个条件换行节段中最短的那个. 在下一段中, 第一个条件换行被直接包含在 0 标记的节段中, 第二个和第三个条件换行被直接包含在第四个条件换行之前的节段中, 并且第五个条件换行被直接包含在第一个条件换行之后的节段中.
+直接包含一个条件换行的节段是包含这个条件换行节段中最短的那个. 在下一段中, 第一个条件换行被直接包含在 0 标记的节段中, 第二个和第三个条件换行被直接包含在第四个条件换行之前的节段中, 并且第四个条件换行被直接包含在第一个条件换行之后的节段中.
 
     <-1---<--<--2---3->--4-->->
     000000000000000000000000000
@@ -537,7 +540,7 @@ cons 的打印受 \*print-level*, \*print-length*, 和 \*print-circle* 的影响
 只要有可能, 美观打印器在一行中显示一个节段的完整内容. 然而, 如果该节段太长, 无法容纳在可用空间, 则在该节段内的条件换行位置插入换行符. 
 
 
-#### 22.2.1.2 <span id="FormatDirectiveInterface">格式指令接口</span>
+#### 22.2.1.2 <span id="FormatDirectiveInterface">格式化指令接口</span>
 
 动态确定输出排列的操作的主要接口是通过美观打印器的函数和宏提供的. 下一段展示了和美观打印相关的已定义的名字.
 
@@ -551,7 +554,7 @@ cons 的打印受 \*print-level*, \*print-length*, 和 \*print-circle* 的影响
 
     Figure 22-4. 和美观打印相关的已定义的名字.
 
-下一个段标识了一组格式指令, 它们以更简洁的形式作为相同的美观打印操作的替代接口.
+下一个段标识了一组格式化指令[format directive], 它们以更简洁的形式作为相同的美观打印操作的替代接口.
 
     ~I   ~W      ~<...~:>  
     ~:T  ~/.../  ~_        
@@ -559,22 +562,22 @@ cons 的打印受 \*print-level*, \*print-length*, 和 \*print-circle* 的影响
     Figure 22-5. 和美观打印相关的格式化指令
 
 
-#### 22.2.1.3 <span id="CompilingFormatStrings">编译格式字符串</span>
+#### 22.2.1.3 <span id="CompilingFormatStrings">编译格式化字符串</span>
 
-格式化字符串本质上是一个用于执行打印的特殊目的语言的程序, 并且可以通过函数 format 来解释. formatter 宏提供了使用编译后的函数来完成相同的打印的效率, 但是不会丢失格式化字符串的文本紧凑性.
+格式化字符串[format string]本质上是一个用于执行打印的特殊目的语言的程序, 并且可以通过函数[function] format 来解释. formatter 宏[macro]提供了使用编译后的函数[compiled function]来完成相同的打印的效率, 但是不会丢失格式化字符串[format string]的文本紧凑性.
 
-一个格式化控制是一个格式化字符串或一个由 formatter 宏返回的函数. 
+一个格式化控制[format control]是一个格式化字符串[format string]或一个由 formatter 宏[macro]返回的函数[function]. 
 
 
 #### 22.2.1.4 <span id="PrettyPrintDispatchTables">美观打印分派表</span>
 
-一个美观打印分派表(pprint dispatch table) 是一个从键到值对的映射. 每一个键是一个类型指定符. 和一个键关联的值是一个 "函数" (具体的说, 一个函数标识符或 nil) 和一个 "优先级数值" (具体的说, 一个 real). 基本的插入和检索是基于由 equal 测试的键等价的键之上来完成的.
+一个美观打印分派表[pprint dispatch table]是一个从键到值对的映射. 每一个键是一个类型指定符[type specifier]. 和一个键关联的值是一个 "函数" (具体的说, 一个函数标识符[function designator]或 nil) 和一个 "优先级数值" (具体的说, 一个 real). 基本的插入和检索是基于键来进行的, 键的等价性由 equal 测试.
 
-当 \*print-pretty* 是 true 时, 当前的美观打印分派表 (在 \*print-pprint-dispatch* 中) 控制对象如何被打印. 这个表中的信息优先于指定如何打印对象的所有其他机制. 特别是, 它有着超过用户定义的 print-object 方法的优先级, 因为这个当前美观打印分派表是被优先考虑的.
+当 \*print-pretty* 是 true 时, 当前美观打印分派表[current pprint dispatch table] (在 \*print-pprint-dispatch* 中) 控制对象[object]如何被打印. 这个表中的信息优先于指定如何打印对象[object]的所有其他机制. 特别是, 它的优先级超过用户定义的 print-object 方法[method], 因为优先考虑这个当前美观打印分派表[current pprint dispatch table].
 
-通过在当前美观打印分派表中查找和那个对象匹配的类型指定符相关联的最高优先级的函数来选择这个函数; 如果这里有不止一个这样的函数, 哪一个被使用是依赖于具体实现的.
+通过在当前美观打印分派表[current pprint dispatch table]中查找和那个对象[object]匹配的类型指定符[type specifier]相关联的最高优先级的函数来选择这个函数; 如果这里有不止一个这样的函数, 哪一个被使用是依赖于具体实现的[implementation-dependent].
 
-然而, 如果在这个表中没有关于如何美观打印一个特定种类对象的信息, 就会调用一个使用 print-object 来打印这个对象的函数. 当这个函数被调用时, \*print-pretty* 的值始终为 true, 并且对于 print-object 的个别方法可能仍然会选择以 \*print-pretty* 的值为条件的特殊格式输出. 
+然而, 如果在这个表中没有关于如何美观打印[pretty print]一个特定种类对象[object]的信息, 就会调用一个使用 print-object 来打印这个对象[object]的函数[function]. 当这个函数被调用时, \*print-pretty* 的值始终为 true, 并且对于 print-object 的各个方法仍然可以选择根据 \*print-pretty* 的值[value]产生特殊格式的输出. 
 
 
 #### 22.2.1.5 <span id="PrettyPrinterMargins">美观打印器边距</span>
@@ -584,184 +587,184 @@ cons 的打印受 \*print-level*, \*print-length*, 和 \*print-circle* 的影响
 
 ### 22.2.2 <span id="ExamplesPrettyPrinter">使用美观打印器的示例</span>
 
-作为逻辑块, 条件换行, 和缩进相互作用的一个例子, 细想以下函数 simple-pprint-defun. 这个函数用标准的方式打印 car 为 defun 的列表, 假定这些列表的长度都是 4.
+作为逻辑块, 条件换行, 和缩进相互作用的一个例子, 细想下面这个函数 simple-pprint-defun. 这个函数用标准的方式打印 car 为 defun 的列表, 假定这些列表的长度都是 4.
 
-    ```LISP
-    (defun simple-pprint-defun (*standard-output* list)
-      (pprint-logical-block (*standard-output* list :prefix "(" :suffix ")")
-        (write (first list))
-        (write-char #\Space)
-        (pprint-newline :miser)
-        (pprint-indent :current 0)
-        (write (second list))
-        (write-char #\Space)
-        (pprint-newline :fill)
-        (write (third list))
-        (pprint-indent :block 1)
-        (write-char #\Space)
-        (pprint-newline :linear)
-        (write (fourth list))))
-    ```
+```LISP
+(defun simple-pprint-defun (*standard-output* list)
+  (pprint-logical-block (*standard-output* list :prefix "(" :suffix ")")
+    (write (first list))
+    (write-char #\Space)
+    (pprint-newline :miser)
+    (pprint-indent :current 0)
+    (write (second list))
+    (write-char #\Space)
+    (pprint-newline :fill)
+    (write (third list))
+    (pprint-indent :block 1)
+    (write-char #\Space)
+    (pprint-newline :linear)
+    (write (fourth list))))
+```
 
-假设一个按照如下求值:
+假设它按照如下求值:
 
-    ```LISP
-    (simple-pprint-defun *standard-output* '(defun prod (x y) (* x y)))
-    ```
+```LISP
+(simple-pprint-defun *standard-output* '(defun prod (x y) (* x y)))
+```
 
-如果可用的行宽大于等于 26, 那么所有输出会出现在一行中. 如果可用的行宽减少到 25, 在表达式 (* x y) 之前，在线性风格的条件换行中插入一条换行符, 产生这个输出展示. 这个 (pprint-indent :block 1) 导致 (* x y) 被打印在这个逻辑块中 1 个相对缩进.
+如果可用的行宽大于等于 26, 那么所有输出会出现在一行中. 如果可用的行宽减少到 25, 在表达式[expression] (* x y) 之前的线性条件换行符处插入一个换行符, 生成如下所示的输出. 这个 (pprint-indent :block 1) 导致 (* x y) 以逻辑块中相对缩进 1 的位置打印.
 
-    ```LISP
-    (DEFUN PROD (X Y) 
-      (* X Y))
-    ```
+```LISP
+(DEFUN PROD (X Y) 
+  (* X Y))
+```
 
-如果可用的行宽是 15, 在参数列表之前, 在填充样式的条件换行中插入一个换行符. 这个在 (pprint-indent :current 0) 上的调用导致参数列表排列在函数名字下.
+如果可用的行宽是 15, 在参数列表前的填充样式条件换行符处也插入换行符. 这个 (pprint-indent :current 0) 的调用导致参数列表排列在函数名字下.
 
-    ```LISP
-    (DEFUN PROD
-          (X Y)
-      (* X Y))
-    ```
-
-如果 \*print-miser-width* 大于等于 14, 上面输出示例会是如下这样, 因为在最小执行常式(miser)模式下所有缩进的改变会被忽略并且换行被插入到最小执行常式的条件换行中.
-
-    ```LISP
-    (DEFUN
-      PROD
+```LISP
+(DEFUN PROD
       (X Y)
-      (* X Y))
-    ```
+  (* X Y))
+```
 
-作为每行前缀的一个例子, 细想行宽为 20 并且 \*print-miser-width* 是 nil 的情况下求值以下产生的输出.
+如果 \*print-miser-width* 大于等于 14, 上面输出示例会是如下这样, 因为在最小执行常式(miser)模式下所有缩进的改变会被忽略并且换行符被插入到最小执行常式的条件换行中.
 
-    ```LISP
-    (pprint-logical-block (*standard-output* nil :per-line-prefix ";;; ")
-      (simple-pprint-defun *standard-output* '(defun prod (x y) (* x y))))
-    
-    ;;; (DEFUN PROD
-    ;;;        (X Y)
-    ;;;   (* X Y))
-    ```
+```LISP
+(DEFUN
+  PROD
+  (X Y)
+  (* X Y))
+```
 
-作为一个更加复杂 (并且真实) 示例, 细想下面的函数 pprint-let. 这个指定如何去用传统风格打印一个 let 表达式形式. 它比上面的例子更复杂, 因为它不得不去处理嵌套的结构. 同样的, 不像上面的例子, 它包含去可读地打印任何以符号 let 开始的可能的列表的完整代码. 最外部的 pprint-logical-block 表达式形式处理作为整体的输入列表的打印并且指定应该在输出中打印的圆括号. 第二个 pprint-logical-block 表达式形式处理绑定对的列表. 在列表中的每一对自身通过最内部的 pprint-logical-block 打印. (使用 loop 表达式形式, 而不是将这个对分解为两个对象, 这样一来不管这个对对应的列表有着一个元素, 两个元素, 或(难看的)不止两个元素都会产生可读的输出). 会在每一个对除了最后一个之外的后面放置一个空格和一个填充风格的条件换行. 在最顶层 pprint-logical-block 表达式形式末尾的循环打印在这个 let 表达式形式的主体中被空格和线性风格的条件换行分隔的表达式形式.
+作为每行前缀的一个例子, 细想行宽为 20 并且 \*print-miser-width* 是 nil 的情况下求值下面这些产生的输出.
 
-    ```LISP
-    (defun pprint-let (*standard-output* list)
-      (pprint-logical-block (nil list :prefix "(" :suffix ")")
-        (write (pprint-pop))
-        (pprint-exit-if-list-exhausted)
-        (write-char #\Space)
-        (pprint-logical-block (nil (pprint-pop) :prefix "(" :suffix ")")
-          (pprint-exit-if-list-exhausted)
-          (loop (pprint-logical-block (nil (pprint-pop) :prefix "(" :suffix ")")
-                  (pprint-exit-if-list-exhausted)
-                  (loop (write (pprint-pop))
-                        (pprint-exit-if-list-exhausted)
-                        (write-char #\Space)
-                        (pprint-newline :linear)))
-                (pprint-exit-if-list-exhausted)
-                (write-char #\Space)
-                (pprint-newline :fill)))
-        (pprint-indent :block 1)
-        (loop (pprint-exit-if-list-exhausted)
-              (write-char #\Space)
-              (pprint-newline :linear)
-              (write (pprint-pop)))))
-    ```
+```LISP
+(pprint-logical-block (*standard-output* nil :per-line-prefix ";;; ")
+  (simple-pprint-defun *standard-output* '(defun prod (x y) (* x y))))
+
+;;; (DEFUN PROD
+;;;        (X Y)
+;;;   (* X Y))
+```
+
+作为一个更加复杂 (并且真实) 示例, 细想下面的函数 pprint-let. 这个指定如何去用传统风格打印一个 let 表达式形式[form]. 它比上面的例子更复杂, 因为它不得不去处理嵌套的结构. 同样的, 不像上面的例子, 它包含去可读地打印任何以符号[symbol] let 开始的可能的列表的完整代码. 最外部的 pprint-logical-block 表达式形式[form]处理输入列表作为整体的打印并且指定应该在输出中打印的圆括号. 第二个 pprint-logical-block 表达式形式[form]处理绑定对的列表. 在列表中的每一对自身通过最内部的 pprint-logical-block 打印. (使用 loop 表达式形式[form], 而不是将这个对分解为两个对象[object], 这样一来不管这个对对应的列表有着一个元素, 两个元素, 或(难看的)不止两个元素都会产生可读的输出). 会在除了最后一个之外的每一个对后面放置一个空格和一个填充风格的条件换行. 在最顶层 pprint-logical-block 表达式形式[form]末尾的循环打印在这个 let 表达式形式[form]的主体中被空格和线性风格条件换行分隔的表达式形式.
+
+```LISP
+(defun pprint-let (*standard-output* list)
+  (pprint-logical-block (nil list :prefix "(" :suffix ")")
+    (write (pprint-pop))
+    (pprint-exit-if-list-exhausted)
+    (write-char #\Space)
+    (pprint-logical-block (nil (pprint-pop) :prefix "(" :suffix ")")
+      (pprint-exit-if-list-exhausted)
+      (loop (pprint-logical-block (nil (pprint-pop) :prefix "(" :suffix ")")
+              (pprint-exit-if-list-exhausted)
+              (loop (write (pprint-pop))
+                    (pprint-exit-if-list-exhausted)
+                    (write-char #\Space)
+                    (pprint-newline :linear)))
+            (pprint-exit-if-list-exhausted)
+            (write-char #\Space)
+            (pprint-newline :fill)))
+    (pprint-indent :block 1)
+    (loop (pprint-exit-if-list-exhausted)
+          (write-char #\Space)
+          (pprint-newline :linear)
+          (write (pprint-pop)))))
+```
 
 细想在 \*print-level* 是 4, 并且 \*print-circle* 是 true 的情况下求值下名这个.
 
-    ```LISP
-    (pprint-let *standard-output*
-                '#1=(let (x (*print-length* (f (g 3))) 
-                          (z . 2) (k (car y)))
-                      (setq x (sqrt z)) #1#))
-    ```
+```LISP
+(pprint-let *standard-output*
+            '#1=(let (x (*print-length* (f (g 3))) 
+                      (z . 2) (k (car y)))
+                  (setq x (sqrt z)) #1#))
+```
 
-如果行宽大于等于 77, 这个产生的输出出现在一行中. 然而, 如果行宽是 76, 换行符会被插入在分隔这些表达式形式的线性风格的条件换行中并且产生下面这样的输出. 注意, 退化的结合对 x 是可读的即使它不是一个列表; 一个深度缩写标记会被打印来替换 (g 3); 这个绑定对 (z . 2) 会被可读地打印即便它不是一个 proper 列表; 并打印缩写的环状标记.
+如果行宽大于等于 77, 所产生的输出出现在一行中. 然而, 如果行宽是 76, 换行符会被插入在分隔这些表达式形式的线性风格条件换行中并且产生下面这样的输出. 注意, 退化绑定对 x 即使不是一个列表也可以打印出来; 一个深度缩写标记会被打印来替换 (g 3); 绑定对 (z . 2) 即便它不是一个 proper 列表也可以打印出来; 并打印缩写的环状标记.
 
-    ```LISP
-    #1=(LET (X (*PRINT-LENGTH* (F #)) (Z . 2) (K (CAR Y))) 
-          (SETQ X (SQRT Z))
-          #1#)
-    ```
-
-如果行宽被减少到 35, 一个换行符会被插入到这些分隔绑定对的填充风格的条件换行中的一个.
-
-    ```LISP
-    #1=(LET (X (*PRINT-PRETTY* (F #))
-              (Z . 2) (K (CAR Y)))
-          (SETQ X (SQRT Z))
-          #1#)
-    ```
-
-假设这个行宽进一步减少到 22 并且 \*print-length* 被设置为 3. 在这个情况中, 换行符被插入到第一个和第二个绑定对后面. 另外, 第二个绑定对自身被断开为两行. 填充风格的条件换行的描述中的子句 (b) (见函数 pprint-newline) 避免了绑定对 (z . 2) 被打印在第三行末尾. 注意, 长度缩写从视图上隐藏了环并且因此环标记的打印消失了.
-
-    ```LISP
-    (LET (X
-          (*PRINT-LENGTH*
-            (F #))
-          (Z . 2) ...)
+```LISP
+#1=(LET (X (*PRINT-LENGTH* (F #)) (Z . 2) (K (CAR Y))) 
       (SETQ X (SQRT Z))
-      ...)
-    ```
+      #1#)
+```
 
-下面这个函数打印了一个使用 "#(...)" 标识的向量.
+如果行宽被减少到 35, 一个换行符会被插入到这些分隔绑定对的填充风格条件换行中的一个.
 
-    ```LISP
-    (defun pprint-vector (*standard-output* v)
-      (pprint-logical-block (nil nil :prefix "#(" :suffix ")")
-        (let ((end (length v)) (i 0))
-          (when (plusp end)
-            (loop (pprint-pop)
-                  (write (aref v i))
-                  (if (= (incf i) end) (return nil))
-                  (write-char #\Space)
-                  (pprint-newline :fill))))))
-    ```
+```LISP
+#1=(LET (X (*PRINT-PRETTY* (F #))
+          (Z . 2) (K (CAR Y)))
+      (SETQ X (SQRT Z))
+      #1#)
+```
 
-在行宽为 15 时求值下面这个的输出展示.
+假设这个行宽进一步减少到 22 并且 \*print-length* 被设置为 3. 在这个情况中, 换行符被插入到第一个和第二个绑定对后面. 另外, 第二个绑定对自身被断开为两行. 填充风格条件换行的描述中的子句 (b) (见函数[function] pprint-newline) 避免了绑定对 (z . 2) 被打印在第三行末尾. 注意, 长度缩写从视图上隐藏了环并且因此环标记的打印消失了.
 
-    ```LISP
-    (pprint-vector *standard-output* '#(12 34 567 8 9012 34 567 89 0 1 23))
-    
-    #(12 34 567 8 
-      9012 34 567 
-      89 0 1 23)
-    ```
+```LISP
+(LET (X
+      (*PRINT-LENGTH*
+        (F #))
+      (Z . 2) ...)
+  (SETQ X (SQRT Z))
+  ...)
+```
 
-作为用格式化字符串指定美观打印的便利的示例, 细想上面被用作示例的函数 simple-pprint-defun 和 pprint-let 可以按如下简洁地定义. (函数 pprint-vector 不能使用 format 来定义, 因为遍历的数据结构不是一个列表.)
+下面这个函数使用 "#(...)" 标识打印了一个向量.
 
-    ```LISP
-    (defun simple-pprint-defun (*standard-output* list)
-      (format T "~:<~W ~@_~:I~W ~:_~W~1I ~_~W~:>" list))
+```LISP
+(defun pprint-vector (*standard-output* v)
+  (pprint-logical-block (nil nil :prefix "#(" :suffix ")")
+    (let ((end (length v)) (i 0))
+      (when (plusp end)
+        (loop (pprint-pop)
+              (write (aref v i))
+              (if (= (incf i) end) (return nil))
+              (write-char #\Space)
+              (pprint-newline :fill))))))
+```
 
-    (defun pprint-let (*standard-output* list)
-      (format T "~:<~W~^~:<~@{~:<~@{~W~^~_~}~:>~^~:_~}~:>~1I~@{~^~_~W~}~:>" list)) 
-    ```
+在行宽为 15 时求值下面这个的输出如下.
 
-在下面的示例中, 第一个表达式形式把 \*print-pprint-dispatch* 复原为它的等价初始值. 后面两个表达式形式 接下来的两种表达式形式为美观打印比率设置了一种特殊的方式. 注意, 更具体的类型指定符会和更高的优先级关联.
+```LISP
+(pprint-vector *standard-output* '#(12 34 567 8 9012 34 567 89 0 1 23))
 
-    ```LISP
-    (setq *print-pprint-dispatch* (copy-pprint-dispatch nil))
+#(12 34 567 8 
+  9012 34 567 
+  89 0 1 23)
+```
 
-    (set-pprint-dispatch 'ratio
-      #'(lambda (s obj)
-          (format s "#.(/ ~W ~W)" 
-                    (numerator obj) (denominator obj))))
+作为用格式化字符串[format string]指定美观打印的示例, 细想上面被用作示例的函数 simple-pprint-defun 和 pprint-let 可以按如下简洁地定义. (函数 pprint-vector 不能使用 format 来定义, 因为遍历的数据结构不是一个列表.)
 
-    (set-pprint-dispatch '(and ratio (satisfies minusp))
-      #'(lambda (s obj)
-          (format s "#.(- (/ ~W ~W))" 
-                  (- (numerator obj)) (denominator obj)))
-      5)
+```LISP
+(defun simple-pprint-defun (*standard-output* list)
+  (format T "~:<~W ~@_~:I~W ~:_~W~1I ~_~W~:>" list))
 
-    (pprint '(1/3 -2/3))
-    (#.(/ 1 3) #.(- (/ 2 3)))
-    ```
+(defun pprint-let (*standard-output* list)
+  (format T "~:<~W~^~:<~@{~:<~@{~W~^~_~}~:>~^~:_~}~:>~1I~@{~^~_~W~}~:>" list)) 
+```
 
-下面两个表达式形式阐述了关于代码类型的美观打印函数的定义. 第一个表达式形式阐述了如何为使用单引号引用的对象指定传统方法. 注意, 确保以 quote 开头的数据列表将被可读地打印出来. 第二个表达式形式指定了以符号 my-let 开始的列表应该和初始 pprint 分派表生效时以 let 开始的列表打印方式相同.
+在下面的示例中, 第一个表达式形式[form]把 \*print-pprint-dispatch* 复原为它的等价初始值. 后面两个表达式形式为美观打印比率设置了一种特殊的方式. 注意, 更具体的类型指定符[type specifier]会和更高的优先级关联.
+
+```LISP
+(setq *print-pprint-dispatch* (copy-pprint-dispatch nil))
+
+(set-pprint-dispatch 'ratio
+  #'(lambda (s obj)
+      (format s "#.(/ ~W ~W)" 
+                (numerator obj) (denominator obj))))
+
+(set-pprint-dispatch '(and ratio (satisfies minusp))
+  #'(lambda (s obj)
+      (format s "#.(- (/ ~W ~W))" 
+              (- (numerator obj)) (denominator obj)))
+  5)
+
+(pprint '(1/3 -2/3))
+(#.(/ 1 3) #.(- (/ 2 3)))
+```
+
+下面两个表达式形式[form]阐述了关于代码[code]类型的美观打印函数的定义. 第一个表达式形式[form]阐述了如何为使用单引号[single-quote]引用的对象指定传统方法. 注意, 确保以 quote 开头的数据列表也可以被打印出来. 第二个表达式形式指定了当初始美观打印分派表[pprint dispatch table]生效时以符号 my-let 开始的列表应该和 let 开始的列表打印方式相同.
 
 ```LISP
  (set-pprint-dispatch '(cons (member quote)) () 
@@ -774,7 +777,7 @@ cons 的打印受 \*print-level*, \*print-length*, 和 \*print-circle* 的影响
                       (pprint-dispatch '(let) nil))
 ```
 
-下一个示例为打印没有和函数调用对应的列表指定一个默认方法. 注意, 函数 pprint-linear, pprint-fill, 和 pprint-tabular 都用可选的 colon-p 和 at-sign-p 参数定义, 这样一来它们可以被用作 pprint 分派函数, 和 ~/.../ 函数一样.
+下一个示例指定一个默认方法, 用于打印与函数调用不对应的列表. 注意, 函数 pprint-linear, pprint-fill, 和 pprint-tabular 都用可选的 colon-p 和 at-sign-p 参数定义, 这样一来它们可以被用作美观打印分派函数(pprint dispatch function), 和 ~/.../ 函数一样.
 
     ```LISP
     (set-pprint-dispatch '(cons (not (and symbol (satisfies fboundp))))
@@ -798,7 +801,7 @@ cons 的打印受 \*print-level*, \*print-length*, 和 \*print-circle* 的影响
                   s (family-mom f) (family-kids f))))
     ```
 
-结构体 family 的美观打印函数指定了如何去调整输出的布局以至于它可以很好地适应各种行的宽度. 另外, 它服从打印器控制变量 \*print-level*, \*print-length*, \*print-lines*, \*print-circle* 和 \*print-escape*, 并且可以容忍数据结构中几种不同的多样性. 下面的输出展示了在右边距为 25, \*print-pretty* 是 true, \*print-escape* 是 false, 以及一个多样的 kids 列表时什么会被打印出来.
+结构体 family 的美观打印函数指定了如何去调整输出的布局以至于它可以很好地适应各种行的宽度. 另外, 它遵循打印器控制变量 \*print-level*, \*print-length*, \*print-lines*, \*print-circle* 和 \*print-escape*, 并且可以容忍数据结构中几种不同的多样性. 下面的输出展示了在右边距为 25, \*print-pretty* 是 true, \*print-escape* 是 false 时, 一个多样的 kids 列表会被打印出什么.
 
     ```LISP
     (write (list 'principal-family
@@ -810,14 +813,14 @@ cons 的打印受 \*print-level*, \*print-length*, 和 \*print-circle* 的影响
           Mark Bob . Dan>)
     ```
 
-注意, 一个结构体的美观打印函数和结构体的 print-object 方法是不同的. print-object 方法永久地和一个结构体关联, 美观打印函数是被存储在 pprint 分派表中并且可以迅速地改变来反映不同的打印需求. 如果在当前的 pprint 分派表中没有一个结构体的美观打印函数, 就会使用它的 print-object 方法. 
+注意, 一个结构体的美观打印函数和结构体的 print-object 方法[method]是不同的. print-object 方法[method]永久地和一个结构体关联, 美观打印函数是被存储在美观打印分派表[pprint dispatch table]中并且可以迅速地改变来反映不同的打印需求. 如果在当前的美观打印分派表[pprint dispatch table]中没有一个结构体的美观打印函数, 就会使用它的 print-object 方法[method]. 
 
 ### 22.2.3 <span id="NotesPrettyPrinterBackground">美观打印器背景的注意事项</span>
 
 有关本节中详细描述的抽象概念的背景引用, 见 XP: A Common Lisp Pretty Printing System. 这篇论文的细节对这份文件没有约束力, 但可能有助于建立理解这种资料的概念基础. 
 
 
-## 22.3 <span id="">Formatted Output</span>
+## 22.3 <span id="">格式化输出</span>
 
 format 用来产生格式化的字符串, 产生美观的信息, 等等是很有用的. format 可以生成和返回一个字符串或输出到目标 destination.
 
@@ -1614,7 +1617,7 @@ NIL
 
 这个 ~^ 应该只出现在一个 ~< 子句的开始, 因为它终止这个它出现的完整子句 (所有后面的子句也一样). 
 
-## 22.4 <span id="ThePrinterDictionary">The Printer Dictionary</span>
+## 22.4 <span id="ThePrinterDictionary">打印器的字典</span>
 
 > * [函数 COPY-PPRINT-DISPATCH](#F-COPY-PPRINT-DISPATCH)
 > * [宏 FORMATTER](#M-FORMATTER)
@@ -3124,7 +3127,7 @@ NIL
 
         format 用于产生良好格式化的文本, 产生美观的信息是很有用的, 依次类推. format 可以生成并返回一个字符串或者输出到 destination 中.
 
-        关于 control-string 任何被解释的详细信息, 见章节 22.3 (Formatted Output).
+        关于 control-string 任何被解释的详细信息, 见章节 22.3 (格式化输出).
 
 * 示例(Examples): None.
 
