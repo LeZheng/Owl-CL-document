@@ -72,7 +72,7 @@
 
 关闭流[stream]的操作标志着它作为数据来源或接收器的结束, 允许实现[implementation]收回其内部数据结构, 并释放在打开时可能被这个流[stream]锁定的任何外部资源.
 
-除非被显式指定, 否则当一个关闭的[closed]流[stream]被用于调用流[stream]时后果是未定义的.
+除非被显式指定, 否则当一个关闭的[closed]流[stream]被用于需要一个流[stream]的地方时后果是未定义的.
 
 对于一个关闭的[closed]流[stream], 把流[stream]强制转换为路径名[pathname]是允许的; 在一些情况下, 例如在一个真实名字[truename]计算中, 对于一个打开的[open]流[stream]和同一个流[stream]被关闭[close]后的结果是不同的. 
 
@@ -80,11 +80,11 @@
 
 交互式流[interactive stream]是可以在上面执行交互式查询的一种流.
 
-一个交互式流[interactive stream]的准确定义是具体实现定义的[implementation-defined], 并且可能依赖于底层操作系统. 一些实现[implementation]可能选择用作识别交互式流[interactive stream]特征的东西的例子包括:
+一个交互式流[interactive stream]的准确定义是具体实现定义的[implementation-defined], 并且可能依赖于底层操作系统. 一些实现[implementation]可能选择用来识别交互式流[interactive stream]特征的例子包括:
 
 * 这个流[stream]与一个人 (或等价物) 联系在一起, 程序可以提示信息并期望根据提示接收不同的输入.
 
-* 该程序期望提示输入和支持 "正常的输入编辑".
+* 该程序期望提示输入并支持 "正常的输入编辑".
 
 * read-char 可能等待用户在返回之前去输入一些东西而不是立即返回一个字符或 end-of-file.
 
@@ -125,6 +125,7 @@
 
     Figure 21-5. 和特定的流相关的已定义的名字
 
+
 ### 21.1.2 <span id="StreamVariables">流变量</span>
 
 值[value]必须是流[steam]的变量[variable]有时称为流变量[stream variable].
@@ -132,13 +133,13 @@
 特定的流变量[stream variable]被这个规范定义为在没有指定特定流[stream]的各种情况[situation]下, 作为适当的输入或输出源. 下一段中是标准化[standardized]流变量[stream variable]的完整列表. 如果任何时候这些变量[variable]的任意一个的值[value]不是一个打开的[open]流[stream], 后果是未定义的.
 
     词汇术语          变量名      
-    debug I/O        *debug-io*         
-    error output     *error-output*     
-    query I/O        *query-io*         
-    standard input   *standard-input*   
-    standard output  *standard-output*  
-    terminal I/O     *terminal-io*      
-    trace output     *trace-output*     
+    调试 I/O          *debug-io*         
+    错误输出          *error-output*     
+    查询 I/O          *query-io*         
+    标准输入          *standard-input*   
+    标准输出          *standard-output*  
+    终端 I/O          *terminal-io*      
+    跟踪输出          *trace-output*     
 
     Figure 21-6. 标准化流变量
 
@@ -716,7 +717,7 @@
 
 
 ### <span id="F-PEEK-CHAR">函数 PEEK-CHAR</span>
-<!--TODO 待校对-->
+
 * 语法(Syntax):
 
         peek-char &optional peek-type input-stream eof-error-p eof-value recursive-p => char
@@ -1318,9 +1319,9 @@
 
         返回或改变一个流 stream 中的当前位置.
 
-        当没有提供 position-spec 时, file-position 在流 stream 中的当前文件位置[file position], 如果不能确定就返回 nil.
+        当没有提供 position-spec 时, file-position 返回流 stream 中的当前文件位置[file position], 如果不能确定就返回 nil.
 
-        当提供了 position-spec 时, 在流 stream 中的文件位置[file position]会被设置为该文件位置[file position] (如果可能的话). 如果这个重定位执行成功, file-position 返回 true, 如果没有就返回 false.
+        当提供了 position-spec 时, 流 stream 中的文件位置[file position]会被设置为该文件位置[file position] (如果可能的话). 如果这个重定位执行成功, file-position 返回 true, 如果没有就返回 false.
 
         由单参数的 file-position 返回的整数[integer]用作同一个文件的 position-spec 应该是可接受的.
 
@@ -1380,7 +1381,7 @@
 
 * 注意(Notes):
 
-        将字符文件表示为一个有限大小的记录序列的具体实现可以选择将这个文件位置编码为, 比如, <<record-number>>*<<max-record-size>>+<<character-within-record>>. 这是一个有效的编码, 因为它随着每个字符被读取或写入单调递增, 尽管每次步进没有必要是 1. 作为给 file-position 的 position-spec, 如果在解码成记录的数字和字符号时, 结果表明所提供的记录对于指定的字符数来说太短了, 一个整数[integer]可能被认为是 "不合适的".
+        将字符文件表示为一个有限大小的记录序列的具体实现可以选择将这个文件位置编码为, 比如, <<record-number>>*<<max-record-size>>+<<character-within-record>>. 这是一个有效的编码, 因为它随着每个字符被读取或写入单调递增, 尽管每次步进没有必要是 1. 作为给 file-position 的 position-spec, 如果在解码成记录数和字符数时, 结果表明所提供的记录对于指定的字符数来说太短了, 则可能认为一个整数[integer]是 "不合适的". <!--TODO 最后一句？？-->
 
 
 ### <span id="F-FILE-STRING-LENGTH">函数 FILE-STRING-LENGTH</span>
@@ -1431,7 +1432,7 @@
 
 * 描述(Description):
 
-        open 创建, 打开, 并返回一个连接到由 filespec 指定文件的文件流[file stream]. filespec 是这个要被打开的文件的名字. 如果这个 filespec 标识符[designator]是一个流[stream], 那个流[stream]首先没有被关闭否则就会被影响.
+        open 创建, 打开, 并返回一个连接到由 filespec 指定文件的文件流[file stream]. filespec 是这个要被打开的文件的名字. 如果这个 filespec 标识符[designator]是一个流[stream], 则该流[stream]不会首先关闭或以其他方式受到影响.
 
         给 open 的关键字参数指定了返回的那个文件流[file stream]的特质, 以及如何处理错误.
 
@@ -1465,7 +1466,7 @@
 
         :if-exists
 
-            if-exists 指定了如果 direction 是 :output 或 :io 而名为 filespec 的文件已经存在的话要采取的动作. 如果 direction 是 :input, 没有提供, 或 :probe, 那么 if-exists 会被忽略. 这些是 open 被 if-exists 修改的结果:
+            if-exists 指定了如果 direction 是 :output 或 :io 而名为 filespec 的文件已经存在的话要采取的动作. 如果 direction 是 :input, 没有提供, 或 :probe, 那么 if-exists 会被忽略. 这些是经过 if-exists 修改的 open 的结果:
 
             :error
 
@@ -2058,7 +2059,7 @@
 
 * 异常情况(Exceptional Situations):
 
-        如果它的符号不是一个符号[symbol]就应该发出 type-error.
+        如果它的参数不是一个符号[symbol]就应该发出 type-error.
 
 * 也见(See Also):
 
@@ -2080,7 +2081,7 @@
 
 * 描述(Description):
 
-        返回这个同义流 synonym-stream 正在使用的 symbol-value 的符号[symbol].
+        返回 symbol-value 正在被这个同义流 synonym-stream 所使用的符号[symbol].
 
 * 示例(Examples): None.
 
@@ -2197,7 +2198,7 @@
 
 * 异常情况(Exceptional Situations):
 
-    如果 input-stream 不是一个输入[input]流[stream]就应该发出一个 type-error 类型[type]的错误. 如果 output-stream 不是一个输出[output]流[stream]就应该发出一个 type-error 类型[type]的错误.
+        如果 input-stream 不是一个输入[input]流[stream]就应该发出一个 type-error 类型[type]的错误. 如果 output-stream 不是一个输出[output]流[stream]就应该发出一个 type-error 类型[type]的错误.
 
 * 也见(See Also): None.
 
