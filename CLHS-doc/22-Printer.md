@@ -227,7 +227,7 @@ foo::bar
     当读取表大小写[readtable case]是 :invert 时, 没有字母[alphabetic]字符[character]需要被转义.
 
 
-###### 22.1.3.3.2.1 Examples of Lisp 打印器上读取表大小写的影响
+###### 22.1.3.3.2.1 Lisp 打印器上读取表大小写影响的示例
 
     ```LISP
     (defun test-readtable-case-printing ()
