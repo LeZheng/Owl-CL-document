@@ -167,7 +167,7 @@
 
         类型[type] cons 和 null 构成 list 类型[type]的详尽分区[exhaustive partition].
 
-* 也见(See Also):
+* 参见(See Also):
 
         章节 2.4.1 (左圆括号), 章节 22.1.3.5 (打印列表和构造(cons)) 
 
@@ -182,7 +182,7 @@
 
         null 类型[type]仅有的对象[object]是 nil, 它表示空列表[empty list]并且也可以被标记为 ().
 
-* 也见(See Also):
+* 参见(See Also):
 
         章节 2.3.4 (符号标记), 章节 2.4.1 (左圆括号), 章节 22.1.3.3 (打印符号) 
 
@@ -215,7 +215,7 @@
 
         这个表示这个 car 受类型[type] car-typespec 约束而 cdr 受类型[type] cdr-typespec 约束的 cons 集合. (如果 car-typespec 或 cdr-typespec 是 *, 它就好像被表示为类型[type] t.)
 
-* 也见(See Also):
+* 参见(See Also):
 
         章节 2.4.1 (左圆括号), 章节 22.1.3.5 (打印列表和构造(cons)) 
 
@@ -266,7 +266,7 @@
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         list
 
@@ -309,7 +309,7 @@
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         listp
 
@@ -347,7 +347,7 @@
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also): None.
+* 参见(See Also): None.
 
 * 注意(Notes):
 
@@ -401,7 +401,7 @@
 
         如果 cons 不是一个构造(cons) 那么应该发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also): None.
+* 参见(See Also): None.
 
 * 注意(Notes): None. 
 
@@ -606,7 +606,7 @@
 
         如果函数 car 和 cdr 收到参数不是一个列表[list], 那么它应该发出一个 type-error 类型的错误. 其他函数 (caar, cadr, ... cddddr) 应该处于错误检查的目的而表现地就好像是通过 car 和 cdr 的适当调用来定义的.
 
-* 也见(See Also):
+* 参见(See Also):
 
         rplaca, first, rest
 
@@ -669,7 +669,7 @@
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         tree-equal
 
@@ -744,7 +744,7 @@
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         subst, 章节 3.2.1 (编译器术语), 章节 3.6 (遍历规则和副作用)
 
@@ -840,7 +840,7 @@
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         substitute, nsubstitute, 章节 3.2.1 (编译器术语), 章节 3.6 (遍历规则和副作用)
 
@@ -910,7 +910,7 @@
 
         如果 tree-1 和 tree-2 都是环状的那么后果是不确定的.
 
-* 也见(See Also):
+* 参见(See Also):
 
         equal, 章节 3.6 (遍历规则和副作用)
 
@@ -961,7 +961,7 @@
 
         如果列表 list 是一个环状列表[circular list]那么后果是未定义的.
 
-* 也见(See Also):
+* 参见(See Also):
 
         copy-alist, copy-seq, copy-tree
 
@@ -1018,7 +1018,7 @@
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         cons
 
@@ -1065,7 +1065,7 @@
 
         如果 list 不是一个正规列表[proper list]或者一个环状列表[circular list], 那么应该发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         length
 
@@ -1121,7 +1121,7 @@
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         consp
 
@@ -1166,7 +1166,7 @@
 
         如果 size 不是一个非负整数[integer], 那么应该发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         cons, list
 
@@ -1211,7 +1211,7 @@
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         pop, pushnew, 章节 5.1 (广义引用)
 
@@ -1260,7 +1260,7 @@
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         push, pushnew, 章节 5.1 (广义引用)
 
@@ -1361,7 +1361,7 @@
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         car, nth
 
@@ -1416,7 +1416,7 @@
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         elt, first, nthcdr
 
@@ -1453,7 +1453,7 @@
 
         如果 list 不是一个列表就应该发出一个 type-error 类型的错误.
 
-* 也见(See Also): None.
+* 参见(See Also): None.
 
 * 注意(Notes):
 
@@ -1490,7 +1490,7 @@
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         not
 
@@ -1560,7 +1560,7 @@
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         append, concatenate
 
@@ -1598,7 +1598,7 @@
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         nconc, concatenate
 
@@ -1669,7 +1669,7 @@
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         reverse, nreverse, nconc
 
@@ -1730,7 +1730,7 @@
 
         如果 list 不是一个正规列表[proper list]或一个点列表[dotted list]那么应该发出一个 type-error 类型[type]的错误. 如果 n 不是一个非负整数[integer]那么应该发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also): None.
+* 参见(See Also): None.
 
 * 注意(Notes):
 
@@ -1787,7 +1787,7 @@
 
         如果列表 list 是一个环状列表[circular list]那么后果是未定义的. 如果 n 不是一个非负整数[integer]那么应该发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         butlast, nth
 
@@ -1870,7 +1870,7 @@
 
         如果 list 不是一个正规列表[proper list]或者一个点列表[dotted list]那么应该发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         set-difference
 
@@ -1942,7 +1942,7 @@
 
         对于大于 1 的整数 n, 通过 (nthcdr n list) 完成的错误检测和 (nthcdr (- n 1) (cdr list)) 相同; 见函数[function] cdr.
 
-* 也见(See Also):
+* 参见(See Also):
 
         cdr, nth, rest
 
@@ -1986,7 +1986,7 @@
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         cdr, nthcdr
 
@@ -2045,7 +2045,7 @@
 
         如果 list 不是一个正规列表[proper list]那么应该准备发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         find, position, 章节 3.6 (遍历规则和副作用)
 
@@ -2154,7 +2154,7 @@
 
         如果任何 list 不是一个正规列表[proper list]那么应该准备发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         dolist, map, 章节 3.6 (遍历规则和副作用)
 
@@ -2196,7 +2196,7 @@
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         assoc, pairlis
 
@@ -2263,7 +2263,7 @@
 
         如果 alist 不是一个关联列表[association list]那么应该准备发出一个 type-error 类型[type]的错误..
 
-* 也见(See Also):
+* 参见(See Also):
 
         rassoc, find, member, position, 章节 3.6 (遍历规则和副作用)
 
@@ -2326,7 +2326,7 @@
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         copy-list
 
@@ -2381,7 +2381,7 @@
 
         如果键 keys 和 data 不是正规列表[proper list]那么应该发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         acons
 
@@ -2434,7 +2434,7 @@
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         assoc, 章节 3.6 (遍历规则和副作用)
 
@@ -2495,7 +2495,7 @@
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         get, getf
 
@@ -2559,7 +2559,7 @@
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         get, get-properties, setf, 章节 5.1.2.2 (函数调用表达式形式作为位置)
 
@@ -2612,7 +2612,7 @@
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         remprop, getf
 
@@ -2681,7 +2681,7 @@
 
         如果 list-1 和 list-2 不是正规列表[proper list], 那么应该准备发出 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         union, 章节 3.2.1 (编译器术语), 章节 3.6 (遍历规则和副作用)
 
@@ -2732,7 +2732,7 @@
 
         如果 list 不是一个正规列表[proper list]那么应该准备发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         pushnew, 章节 3.6 (遍历规则和副作用)
 
@@ -2800,7 +2800,7 @@
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         push, adjoin, 章节 5.1 (广义引用)
 
@@ -2884,7 +2884,7 @@
 
         如果 list-1 和 list-2 不是正规列表[proper list]那么应该准备发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         章节 3.2.1 (编译器术语), 章节 3.6 (遍历规则和副作用)
 
@@ -2953,7 +2953,7 @@
 
         如果 list-1 和 list-2 不是正规列表[proper list]那么应该准备发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         章节 3.2.1 (编译器术语), 章节 3.6 (遍历规则和副作用)
 
@@ -3007,7 +3007,7 @@
 
         如果 list-1 和 list-2 不是正规列表[proper list]那么应该准备发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         章节 3.6 (遍历规则和副作用)
 
@@ -3076,7 +3076,7 @@
 
         如果 list-1 和 list-2 不是正规列表[proper list]那么应该准备发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         intersection, 章节 3.2.1 (编译器术语), 章节 3.6 (遍历规则和副作用)
 

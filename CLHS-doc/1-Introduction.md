@@ -615,7 +615,7 @@ OR=>  (2 4 5 6)
 > * 1.4.4.14 ["名称(Name)" 字典条目部分](#NameSDE)
 > * 1.4.4.15 ["注意(Notes)" 字典条目部分](#NotesSDE)
 > * 1.4.4.16 ["发音(Pronunciation)" 字典条目部分](#PronunciationSDE)
-> * 1.4.4.17 ["也见(See Also)" 字典条目部分](#SeeAlsoSDE)
+> * 1.4.4.17 ["参见(See Also)" 字典条目部分](#SeeAlsoSDE)
 > * 1.4.4.18 ["副作用(Side Effects)" 字典条目部分](#SideEffectsSDE)
 > * 1.4.4.19 ["超类型(Supertypes)" 字典条目部分](#SupertypesSDE)
 > * 1.4.4.20 ["语法(Syntax)" 字典条目部分](#SyntaxSDE)
@@ -814,7 +814,7 @@ F (x class) (y t) &optional z &key k
 
 这个为已定义的名字[defined name]提供了一个推荐的发音方式, 这样人们没有在和最初的设计者们一起交流的情况下也能弄明白这个没有出现在正常英语中的单词如何发音. 这个信息是劝告性的, 不被认为是这个标准的一部分. 为了简洁性, 它只提供给带有特定于 Common Lisp 而不会出现在未删减的《Webster's Third New International Dictionary the English Language》中的名字的条目.
 
-#### 1.4.4.17 <span id = "SeeAlsoSDE">"也见(See Also)" 字典条目部分</span>
+#### 1.4.4.17 <span id = "SeeAlsoSDE">"参见(See Also)" 字典条目部分</span>
 
 对这个标准其他部分的引用的列表, 这些引用提供有关这个操作符[operator]信息. 这个列表不是这个标准的一部分.
 

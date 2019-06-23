@@ -59,7 +59,7 @@
 
         对于所有 character 的子类型[subtype] c, 这个表示所有 (array c (size)) 类型[type]的并集; 这也就是说, 大小为 size 的字符串[string]的集合.
 
-* 也见(See Also):
+* 参见(See Also):
 
         章节 16.1 (字符串的概念), 章节 2.4.5 (双引号), 章节 22.1.3.4 (打印字符串) 
 
@@ -175,7 +175,7 @@
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also): None.
+* 参见(See Also): None.
 
 * 注意(Notes):
 
@@ -230,7 +230,7 @@
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         aref, elt, 章节 3.2.1 (编译器术语)
 
@@ -273,7 +273,7 @@
 
         在一个转换既没有被这个规范也没有被具体实现[implementation]所定义的情况下, 就会发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         coerce, string (类型).
 
@@ -360,7 +360,7 @@
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         char-upcase, char-downcase
 
@@ -418,7 +418,7 @@
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also): None.
+* 参见(See Also): None.
 
 * 注意(Notes): None. 
 
@@ -533,7 +533,7 @@
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         char=
 
@@ -568,7 +568,7 @@
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         typep, string (类型[type])
 
@@ -609,7 +609,7 @@
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also): None.
+* 参见(See Also): None.
 
 * 注意(Notes): None. 
 

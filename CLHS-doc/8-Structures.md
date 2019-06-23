@@ -564,7 +564,7 @@
 
         如果这个 included-structure-name 没有命名一个结构体[structure]类型[type], 那么结果是未定义的.
 
-* 也见(See Also):
+* 参见(See Also):
 
         documentation, print-object, setf, subtypep, type-of, typep, 章节 3.2 (编译)
 
@@ -602,7 +602,7 @@
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         defstruct 的这个 :copier 选项
 

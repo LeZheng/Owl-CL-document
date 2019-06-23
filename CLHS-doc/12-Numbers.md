@@ -488,7 +488,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
         (complex type-specifier) 指的是所有可以通过给函数[function] complex 传递类型 type-specifier 的数字[number]来产生的复数[complex], 加上所有其他的相同的专门的表示.
 
-* 也见(See Also):
+* 参见(See Also):
 
         章节 12.1.5.3 (复数的正规表示规则), 章节 2.3.2 (从标记构建数字), 章节 22.1.3.1.4 (打印复数)
 
@@ -556,7 +556,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
         这个表示下限 lower-limit 和上限 upper-limit 所描述区间上的浮点数[float].
 
-* 也见(See Also):
+* 参见(See Also):
 
         Figure 2-9, 章节 2.3.2 (从标记构建数字), 章节 22.1.3.1.3 (打印浮点数)
 
@@ -671,7 +671,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
         一个比数[ratio]是一个表示数学上两个非零整数的比数的数字[number], 这两个整数分别为分子和分母, 它的最大公约数为 1, 其中分母为正的并且大于 1.
 
-* 也见(See Also):
+* 参见(See Also):
 
         Figure 2-9, 章节 2.3.2 (从标记构建数字), 章节 22.1.3.1.2 (打印比数) 
 
@@ -704,7 +704,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
         这个表示由下限 lower-limit 和上限 upper-limit 描述的整数[integer].
 
-* 也见(See Also):
+* 参见(See Also):
 
         Figure 2-9, 章节 2.3.2 (从标记构建数字), 章节 22.1.3.1.1 (打印整数)
 
@@ -918,7 +918,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
         如果某个实参[argument]不是一个实数[real], 那么就会发出一个 type-error 类型[type]的错误. 如果不能满足它的合约(contract)可能发出 arithmetic-error 类型[type]的错误.
 
-* 也见(See Also): None.
+* 参见(See Also): None.
 
 * 注意(Notes):
 
@@ -988,7 +988,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
         如果任何数字不是一个实数[real], 那么应该会发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also): None.
+* 参见(See Also): None.
 
 * 注意(Notes): None. 
 
@@ -1030,7 +1030,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
         如果 real 不是一个实数[real], 那么应该发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also): None.
+* 参见(See Also): None.
 
 * 注意(Notes): None. 
 
@@ -1074,7 +1074,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
         如果 number 不是一个数字[number], 那么应该发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also): None.
+* 参见(See Also): None.
 
 * 注意(Notes):
 
@@ -1174,7 +1174,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also): None.
+* 参见(See Also): None.
 
 * 注意(Notes):
 
@@ -1223,7 +1223,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
         如果 radians 不是一个数字[number], 那么应该发出一个 type-error 类型[type]的错误. 可能发出 arithmetic-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         asin, acos, atan, 章节 12.1.3.3 (浮点的置换性规则)
 
@@ -1329,7 +1329,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
         acos, asin, 和 atan 可能发出 arithmetic-error.
 
-* 也见(See Also):
+* 参见(See Also):
 
         log, sqrt, 章节 12.1.3.3 (浮点的置换性规则)
 
@@ -1364,7 +1364,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
         (sin (* x (/ (float pi x) 180)))))
     ```
 
-* 也见(See Also): None.
+* 参见(See Also): None.
 
 * 注意(Notes):
 
@@ -1443,7 +1443,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
         如果 number 不是一个数字[number], 那么应该发出一个 type-error 类型[type]的错误. 也可能发出 arithmetic-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         log, sqrt, 章节 12.1.3.3 (浮点的置换性规则)
 
@@ -1483,7 +1483,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
         如果某个实参[argument]不是一个数字[number], 可能发出一个 type-error 类型[type]的错误. 可能发出 arithmetic-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         章节 12.1.1 (数值运算), 章节 12.1.3 (有理数计算), 章节 12.1.4 (浮点计算), 章节 12.1.5 (复数计算)
 
@@ -1520,7 +1520,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
         如果某个实参[argument]不是一个数字[number], 可能发出一个 type-error 类型[type]的错误. 可能发出 arithmetic-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         章节 12.1.1 (数值运算), 章节 12.1.3 (有理数计算), 章节 12.1.4 (浮点计算), 章节 12.1.5 (复数计算)
 
@@ -1567,7 +1567,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
         如果某个实参[argument]不是一个数字[number], 可能发出一个 type-error 类型[type]的错误. 可能发出 arithmetic-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         章节 12.1.1 (数值运算), 章节 12.1.3 (有理数计算), 章节 12.1.4 (浮点计算), 章节 12.1.5 (复数计算)
 
@@ -1623,7 +1623,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
         如果某个实参[argument]不是一个数字[number], 可能发出一个 type-error 类型[type]的错误. 如果尝试去用 0 除可能发出一个 division-by-zero. 可能发出 arithmetic-error.
 
-* 也见(See Also):
+* 参见(See Also):
 
         floor, ceiling, truncate, round
 
@@ -1661,7 +1661,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
         如果它的实参[argument]不是一个数字[number], 那么可能发出 type-error 类型[type]的错误. 可能发出 arithmetic-error.
 
-* 也见(See Also):
+* 参见(See Also):
 
         incf, decf
 
@@ -1708,7 +1708,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         章节 12.1.3.3 (浮点的置换性规则)
 
@@ -1756,7 +1756,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
         如果 integer 不是一个整数[integer], 那么应该发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also): None.
+* 参见(See Also): None.
 
 * 注意(Notes):
 
@@ -1814,7 +1814,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         log, 章节 12.1.3.3 (浮点的置换性规则)
 
@@ -1867,7 +1867,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
         如果任何一个 integer 不是一个整数[integer], 那么应该发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         lcm
 
@@ -1926,7 +1926,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         +, -, 1+, 1-, setf
 
@@ -1982,7 +1982,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
         如果任何一个参数不是整数[integer], 那么应该发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         gcd
 
@@ -2050,7 +2050,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         exp, expt, 章节 12.1.3.3 (浮点的置换性规则)
 
@@ -2105,7 +2105,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         floor, truncate
 
@@ -2154,7 +2154,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         章节 12.1.3.3 (浮点的置换性规则)
 
@@ -2223,7 +2223,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
         函数 sqrt 和 isqrt 可能发出 arithmetic-error.
 
-* 也见(See Also):
+* 参见(See Also):
 
         exp, log, 章节 12.1.3.3 (浮点的置换性规则)
 
@@ -2246,7 +2246,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
         具体实现[implementation]需要去为 random-state 类型[type]的对象[object]提供一个读取语法, 但是那个语法的具体的特性是依赖于具体实现的[implementation-dependent].
 
-* 也见(See Also):
+* 参见(See Also):
 
         *random-state*, random, 章节 22.1.3.10 (打印随机状态) 
 
@@ -2298,7 +2298,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
         如果 state 不是一个随机状态[random state], 或 nil, 或 t, 那么应该发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         random, *random-state*
 
@@ -2345,7 +2345,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
         如果 limit 不是一个正整数[integer]或一个正实数[real], 那么应该发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         make-random-state, *random-state*
 
@@ -2383,7 +2383,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         make-random-state, *random-state*
 
@@ -2431,7 +2431,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
         random.
 
-* 也见(See Also):
+* 参见(See Also):
 
         make-random-state, random, random-state
 
@@ -2471,7 +2471,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also): None.
+* 参见(See Also): None.
 
 * 注意(Notes):
 
@@ -2505,7 +2505,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         章节 12.1.3.3 (浮点的置换性规则)
 
@@ -2549,7 +2549,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         realpart, imagpart, 章节 2.4.8.11 (井号C(#C))
 
@@ -2584,7 +2584,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         complex (函数[function]和类型[type]), typep
 
@@ -2625,7 +2625,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also): None.
+* 参见(See Also): None.
 
 * 注意(Notes):
 
@@ -2674,7 +2674,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
         如果它的参数不是一个数字[number]就应该发出一个 type-error 类型的错误. 可能发出 arithmetic-error.
 
-* 也见(See Also):
+* 参见(See Also):
 
         章节 12.1.3.3 (浮点的置换性规则)
 
@@ -2715,7 +2715,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
         如果 number 不是一个数字[number], 那么应该发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         complex
 
@@ -2750,7 +2750,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         complex (函数[function]和类型[type])
 
@@ -2786,7 +2786,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also): None.
+* 参见(See Also): None.
 
 * 注意(Notes):
 
@@ -2832,7 +2832,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         /
 
@@ -2885,7 +2885,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
         如果数字 number 不是一个实数[real], 那么应该发出一个 type-error 类型[type]的错误. 可能发出 arithmetic-error.
 
-* 也见(See Also): None.
+* 参见(See Also): None.
 
 * 注意(Notes):
 
@@ -2928,7 +2928,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         rational
 
@@ -2974,7 +2974,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
         如果 integer 不是一个整数[integer]那么应该发出一个 type-error 类型[type]的错误. 如果 count 不是一个整数[integer]那么应该发出一个 type-error 类型[type]的错误. 可能发出 arithmetic-error.
 
-* 也见(See Also): None.
+* 参见(See Also): None.
 
 * 注意(Notes):
 
@@ -3023,7 +3023,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
         如果 integer 不是一个整数[integer]那么应该发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also): None.
+* 参见(See Also): None.
 
 * 注意(Notes):
 
@@ -3070,7 +3070,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also): None.
+* 参见(See Also): None.
 
 * 注意(Notes):
 
@@ -3122,7 +3122,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
         如果 junk-allowed 是 false, 如果子字符串不是完全由一个整数[integer]表示, 可能周围存在空白[whitespace[1]]字符, 那么就会发出一个错误.
 
-* 也见(See Also): None.
+* 参见(See Also): None.
 
 * 注意(Notes): None. 
 
@@ -3214,7 +3214,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
         如果它的第一个参数不是一个位逻辑操作指定符[bit-wise logical operation specifier]或者任何后面的参数不是一个整数[integer], 那么应该发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         logand
 
@@ -3266,7 +3266,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
     (boole boole-eqv 17 15) =>  -31
     ```
 
-* 也见(See Also):
+* 参见(See Also):
 
         boole
 
@@ -3375,7 +3375,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
         如果任何参数不是一个整数[argument], 那么应该发出一个 type-error 错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         boole
 
@@ -3431,7 +3431,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
         如果 index 不是一个非负整数[integer], 那么应该发出一个 type-error 类型[type]的错误. 如果整数 integer 不是一个整数[integer], 那么应该发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also): None.
+* 参见(See Also): None.
 
 * 注意(Notes):
 
@@ -3476,7 +3476,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
         如果它的参数不是一个整数[integer], 那么应该发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also): None.
+* 参见(See Also): None.
 
 * 注意(Notes):
 
@@ -3524,7 +3524,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
         如果 integer-1 不是一个整数[integer]就会发出一个 type-error 类型[type]的错误. 如果 integer-2 不是一个整数[integer]就会发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also): None.
+* 参见(See Also): None.
 
 * 注意(Notes):
 
@@ -3566,7 +3566,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         ldb, dpb
 
@@ -3612,7 +3612,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         byte, dpb
 
@@ -3662,7 +3662,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         byte, deposit-field, ldb
 
@@ -3721,7 +3721,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         byte, byte-position, byte-size, dpb
 
@@ -3767,7 +3767,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         byte, ldb, zerop
 
@@ -3815,7 +3815,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         byte, ldb
 
@@ -3842,7 +3842,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 示例(Examples): None.
 
-* 也见(See Also): None.
+* 参见(See Also): None.
 
 * 注意(Notes): None. 
 
@@ -3944,7 +3944,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
         如果函数[function] float-sign 的第一个参数不是一个浮点数[float]或者提供的第二个参数不是一个浮点数[float], 那么它应该发出一个错误.
 
-* 也见(See Also): None.
+* 参见(See Also): None.
 
 * 注意(Notes):
 
@@ -4001,7 +4001,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         coerce
 
@@ -4040,7 +4040,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also): None.
+* 参见(See Also): None.
 
 * 注意(Notes):
 
@@ -4079,7 +4079,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 示例(Examples): None.
 
-* 也见(See Also): None.
+* 参见(See Also): None.
 
 * 注意(Notes):
 
@@ -4102,7 +4102,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 示例(Examples): None.
 
-* 也见(See Also): None.
+* 参见(See Also): None.
 
 * 注意(Notes): None. 
 
@@ -4117,7 +4117,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
         类型[type] arithmetic-error 由运算操作期间发生的错误状况组成. 这个操作符和操作数通过使用给 make-condition 的名为 :operation 和 :operands 的初始化参数来初始化, 并且可以通过函数 arithmetic-error-operation 和 arithmetic-error-operands 访问.
 
-* 也见(See Also):
+* 参见(See Also):
 
         arithmetic-error-operation, arithmetic-error-operands 
 
@@ -4150,7 +4150,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         arithmetic-error, 章节 9 (状况)
 

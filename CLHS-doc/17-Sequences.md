@@ -211,7 +211,7 @@
 
         如果序列 sequence 不是一个正规序列[proper sequence], 那么应该准备发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         copy-list
 
@@ -260,7 +260,7 @@
 
         如果 sequence 不是一个正规序列[proper sequence], 那么应该准备发出一个 type-error 类型[type]的错误. 如果 index 对于序列 sequence 的不是一个有效序列索引[valid sequence index], 那么应该发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         aref, nth, 章节 3.2.1 (编译器术语)
 
@@ -307,7 +307,7 @@
 
         如果序列 sequence 不是一个正规序列[proper sequence], 那么应该准备去发出一个 type-error 类型[type]的错误. 如果 start 不是一个非负整数[integer], 那么应该发出一个 type-error 类型[type]的错误. 如果 end 不是一个非负整数[integer]或者 nil, 那么应该发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         replace, nsubstitute
 
@@ -363,7 +363,7 @@
 
         如果 result-type 指定的元素的数量并且 size 和那个数量不同, 那么应该发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         make-array, make-list
 
@@ -419,7 +419,7 @@
 
         如果序列 sequence 不是一个正规序列[proper sequence], 那么应该准备去发出一个 type-error 类型[type]的错误. 如果序列 new-subsequence 不是一个正规序列[proper sequence], 那么应该准备去发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         replace
 
@@ -477,7 +477,7 @@
 
         如果 result-type 指定了元素的数量而这些序列 sequences 的最小长度和这个数量不同, 那么就会发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         章节 3.6 (遍历规则和副作用)
 
@@ -523,7 +523,7 @@
 
         如果 result-sequence 不是一个正规序列[proper sequence], 那么应该发出一个 type-error 类型[type]的错误. 如果序列 sequence 不是一个正规序列[proper sequence], 那么应该准备去发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also): None.
+* 参见(See Also): None.
 
 * 注意(Notes):
 
@@ -600,7 +600,7 @@
 
         如果序列 sequence 不是一个正规序列[proper sequence], 那么应该准备去发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         章节 3.6 (遍历规则和副作用)
 
@@ -651,7 +651,7 @@
 
         如果序列 sequence 不是一个正规序列[proper sequence], 那么应该准备去发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         章节 17.2 (关于测试函数的规则), 章节 3.6 (遍历规则和副作用)
 
@@ -697,7 +697,7 @@
 
         如果序列 sequence 不是一个正规序列[proper sequence], 那么应该准备去发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         list-length, sequence
 
@@ -753,7 +753,7 @@
 
         如果序列 sequence 不是一个正规序列[proper sequence], 那么应该准备去发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also): None.
+* 参见(See Also): None.
 
 * 注意(Notes): None. 
 
@@ -842,7 +842,7 @@
 
         如果序列 sequence 不是一个正规序列[proper sequence], 那么应该准备去发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         merge, 章节 3.2.1 (编译器术语), 章节 3.6 (遍历规则和副作用), 章节 3.7 (破坏性操作)
 
@@ -900,7 +900,7 @@
 
         如果序列 sequence 不是一个正规序列[proper sequence], 那么应该准备去发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         position, 章节 17.2 (关于测试函数的规则), 章节 3.6 (遍历规则和副作用)
 
@@ -956,7 +956,7 @@
 
         如果序列 sequence 不是一个正规序列[proper sequence], 那么应该准备发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         find, 章节 3.6 (遍历规则和副作用)
 
@@ -1007,7 +1007,7 @@
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         章节 3.6 (遍历规则和副作用)
 
@@ -1060,7 +1060,7 @@
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         章节 3.6 (遍历规则和副作用)
 
@@ -1110,7 +1110,7 @@
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         fill
 
@@ -1208,7 +1208,7 @@
 
         如果序列 sequence 不是一个正规序列[proper sequence], 那么应该准备去发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         subst, nsubst, 章节 3.2.1 (编译器术语), 章节 3.6 (遍历规则和副作用)
 
@@ -1275,7 +1275,7 @@
 
         如果 result-type 指定的元素的数量和这些序列 sequences 的总数在数量上不同, 那么就会发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         append
 
@@ -1342,7 +1342,7 @@
 
         如果 result-type 指定的元素的数量和这些序列 sequence-1 和 sequence-2 的长度在数量上不同, 那么就会发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         sort, stable-sort, 章节 3.2.1 (编译器术语), 章节 3.6 (遍历规则和副作用)
 
@@ -1454,7 +1454,7 @@
 
         如果序列 sequence 不是一个正规序列[proper sequence], 那么应该准备去发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         章节 3.2.1 (编译器术语), 章节 3.6 (遍历规则和副作用)
 
@@ -1527,7 +1527,7 @@
 
         如果序列 sequence 不是一个正规序列[proper sequence], 那么应该发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         章节 3.2.1 (编译器术语), 章节 3.6 (遍历规则和副作用)
 

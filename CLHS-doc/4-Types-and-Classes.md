@@ -569,7 +569,7 @@ Figure 4-8. 对应预定义类型指定符的类
 
         类型[type] boolean 包含符号[symbol] t 和 nil, 它们分别表示 true 和 false.
 
-* 也见(See Also):
+* 参见(See Also):
 
         t (常变量), nil (常变量), if, not, complement
 
@@ -755,7 +755,7 @@ Figure 4-8. 对应预定义类型指定符的类
 
         方法组合机制控制方法[method]的选择, 它们执行的顺序, 还有这个广义函数返回的值. 对象系统提供一个默认方法组合类型并且提供一个机制来声明新的方法组合类型.
 
-* 也见(See Also):
+* 参见(See Also):
 
         章节 7.6 (广义函数和方法) 
 
@@ -779,7 +779,7 @@ Figure 4-8. 对应预定义类型指定符的类
 
         类[class] structure-object 是 structure-class 的一个实例[instance], 并且是作为 structure-class 的实例[instance]的除了它自身以外的每一个类[class]的超类[superclass], 并且是 defstruct 定义的每一个类[class]的超类[superclass].
 
-* 也见(See Also):
+* 参见(See Also):
 
         defstruct, 章节 2.4.8.13 (井号S(#S)), 章节 22.1.3.12 (打印结构体) 
 
@@ -855,7 +855,7 @@ Figure 4-8. 对应预定义类型指定符的类
 
         类型指定符[type specifier] (member) 和 nil 是等价的. * 可以在那些对象 objects 之中, 但是如果这样的话它表示它自身 (这个符号[symbol] *) 而不是表示一个未指定的值. 符号 member 作为类型指定符[type specifier]是非法的; 并且, 特别指出, 它既不是 (member) 的缩写也不是 (member *) 的缩写.
 
-* 也见(See Also):
+* 参见(See Also):
 
         类型[type] eql 
 
@@ -1055,7 +1055,7 @@ Figure 4-8. 对应预定义类型指定符的类
 
         如果 result-type 指定了元素数量而对象 object 是不同长度的, 那么应该发出 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         rational, floor, char-code, char-int
 
@@ -1120,7 +1120,7 @@ Figure 4-8. 对应预定义类型指定符的类
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         declare, defmacro, documentation, 章节 4.2.3 (类型指定符), 章节 3.4.11 (文档字符串和声明的语法交互)
 
@@ -1241,7 +1241,7 @@ Figure 4-8. 对应预定义类型指定符的类
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         章节 4.2 (类型)
 
@@ -1316,7 +1316,7 @@ Figure 4-8. 对应预定义类型指定符的类
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         array-element-type, class-of, defstruct, typecase, typep, 章节 4.2 (类型)
 
@@ -1397,7 +1397,7 @@ Figure 4-8. 对应预定义类型指定符的类
 
         如果 type-specifier 不是一个类型指定符[type specifier], 那么结果是未定义的.
 
-* 也见(See Also):
+* 参见(See Also):
 
         type-of, upgraded-array-element-type, upgraded-complex-part-type, 章节 4.2.3 (类型指定符)
 
@@ -1415,7 +1415,7 @@ Figure 4-8. 对应预定义类型指定符的类
 
         类型[type] type-error 表示一个对象[object]不是期望类型的情况. 这个违反基准(offending datum)和期望类型(expected type)被 make-condition 的名为 :datum 和 :expected-type 的参数所初始化, 并且通过函数 type-error-datum 和 type-error-expected-type 来访问.
 
-* 也见(See Also):
+* 参见(See Also):
 
         type-error-datum, type-error-expected-type 
 
@@ -1465,7 +1465,7 @@ Figure 4-8. 对应预定义类型指定符的类
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         type-error, 章节 9 (状况)
 
@@ -1481,7 +1481,7 @@ Figure 4-8. 对应预定义类型指定符的类
 
         类型[type] simple-type-error 的状况[condition]类似类型[type] type-error 的状况[condition], 除了它们提供了另一种机制来指定如何报告状况[condition]; 见类型 simple-condition.
 
-* 也见(See Also):
+* 参见(See Also):
 
         simple-condition, simple-condition-format-control, simple-condition-format-arguments, type-error-datum, type-error-expected-type 
 

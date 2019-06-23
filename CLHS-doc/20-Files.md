@@ -108,7 +108,7 @@
 
         如果尝试去获取一个目录列表不成功, 就会发出一个 file-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         pathname, logical-pathname, ensure-directories-exist, 章节 20.1 (文件系统概念), 章节 20.1.2 (在打开或关闭的流上的文件操作), 章节 19.1.2 (路径名作为文件名)
 
@@ -150,7 +150,7 @@
 
         如果文件系统[file system]不能执行请求的操作, 那么应该发出一个 file-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         truename, open, ensure-directories-exist, pathname, logical-pathname, 章节 20.1 (文件系统概念), 章节 20.1.2 (在打开或关闭的流上的文件操作), 章节 19.1.2 (路径名作为文件名)
 
@@ -189,7 +189,7 @@
 
         如果这个目录创建不成功, 那么就会发出一个 file-error 类型[type]的错误; 如果发生了这个, 可能是这样的情况: 在文件系统中被请求的创建实际上没有发生、发生一部分或者全部发生.
 
-* 也见(See Also):
+* 参见(See Also):
 
         probe-file, open, 章节 19.1.2 (路径名作为文件名)
 
@@ -248,7 +248,7 @@
 
         如果路径名是通配的[wild], 那么就会发出一个 file-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         pathname, logical-pathname, 章节 20.1 (文件系统概念), 章节 19.1.2 (路径名作为文件名)
 
@@ -292,7 +292,7 @@
 
         如果文件系统[file system]不能执行请求的操作, 那么应该发出一个 file-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         pathname, logical-pathname, 章节 20.1 (文件系统概念), 章节 19.1.2 (路径名作为文件名)
 
@@ -339,7 +339,7 @@
 
         如果文件系统[file system]不能执行请求的操作, 那么应该发出一个 file-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         章节 25.1.4.2 (通用时间(Universal Time)), 章节 19.1.2 (路径名作为文件名)
 
@@ -395,7 +395,7 @@
 
         如果 filespec 是通配的[wild], 那么可能会发出一个 file-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         truename, pathname, logical-pathname, 章节 20.1 (文件系统概念), 章节 19.1.2 (路径名作为文件名)
 
@@ -446,7 +446,7 @@
 
         如果 filespec 是通配的[wild], 那么可能会发出一个 file-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         pathname, logical-pathname, 章节 20.1 (文件系统概念), 章节 19.1.2 (路径名作为文件名)
 
@@ -463,7 +463,7 @@
 
         这个 file-error 类型[type]由以下错误状况组成: 发生在尝试去打开或关闭一个文件期间的错误状况, 或者在某些与一个文件系统的底层交互中的错误状况. 这个 "违规路径名(offending pathname)" 通过给 make-condition 的 :pathnameinitialization 参数来初始化, 并且可以通过函数[function] file-error-pathname 来访问.
 
-* 也见(See Also):
+* 参见(See Also):
 
         file-error-pathname, open, probe-file, directory, ensure-directories-exist 
 
@@ -491,7 +491,7 @@
 
 * 异常情况(Exceptional Situations):
 
-* 也见(See Also):
+* 参见(See Also):
 
         file-error, 章节 9 (状况)
 

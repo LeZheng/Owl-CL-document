@@ -126,7 +126,7 @@
 
         哈希表[hash table]提供了一个方式来映射任何对象[object] (一个键[key])到一个关联的对象[object] (一个值[value]).
 
-* 也见(See Also):
+* 参见(See Also):
 
         章节 18.1 (哈希表的概念), 章节 22.1.3.13 (打印其他对象)
 
@@ -180,7 +180,7 @@
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         gethash, hash-table
 
@@ -217,7 +217,7 @@
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also): None.
+* 参见(See Also): None.
 
 * 注意(Notes):
 
@@ -258,7 +258,7 @@
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         hash-table-size
 
@@ -307,7 +307,7 @@
 
         如果 hash-table 不是一个哈希表[hash table]那么应该发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         make-hash-table, hash-table-rehash-threshold
 
@@ -347,7 +347,7 @@
 
         如果 hash-table 不是一个哈希表[hash table]那么应该发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         make-hash-table, hash-table-rehash-size
 
@@ -379,7 +379,7 @@
 
         如果 hash-table 不是一个哈希表[hash table]那么应该发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         hash-table-count, make-hash-table
 
@@ -411,7 +411,7 @@
 
         如果 hash-table 不是一个哈希表[hash table]那么应该发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         make-hash-table
 
@@ -472,7 +472,7 @@
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         remhash
 
@@ -516,7 +516,7 @@
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also): None.
+* 参见(See Also): None.
 
 * 注意(Notes): None. 
 
@@ -572,7 +572,7 @@
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         loop, with-hash-table-iterator, 章节 3.6 (遍历规则和副作用)
 
@@ -653,7 +653,7 @@
 
         如果这个由 with-hash-table-iterator 建立的名为 name 的局部函数在它已经返回 false 作为它的主值[primary value]之后被调用, 后果是未定义的.
 
-* 也见(See Also):
+* 参见(See Also):
 
         章节 3.6 (遍历规则和副作用)
 
@@ -694,7 +694,7 @@
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also): None.
+* 参见(See Also): None.
 
 * 注意(Notes): None. 
 
@@ -744,7 +744,7 @@
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also): None.
+* 参见(See Also): None.
 
 * 注意(Notes):
 

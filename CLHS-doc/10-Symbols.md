@@ -94,7 +94,7 @@
 
         符号[symbol]被用作词法变量[lexical variable]和词法函数[function]定义的标识, 但是在那个角色中, 只有它们的对象标识才是重要的. Common Lisp 没有在一个符号[symbol]上提供在一个词法变量[lexical variable]或一个词法函数[function]定义上有任何效果的操作符.
 
-* 也见(See Also):
+* 参见(See Also):
 
         章节 2.3.4 (符号标记), 章节 2.3.1.1 (潜在数字作为标记), 章节 22.1.3.3 (打印符号)
 
@@ -115,7 +115,7 @@
         2. 它导致这个符号[symbol]变为这个 KEYWORD 包的外部符号[external symbol].
         3. 它导致这个符号[symbol]变为一个常变量[constant variable].
 
-* 也见(See Also):
+* 参见(See Also):
 
         keywordp
 
@@ -152,7 +152,7 @@
 
 * 异常情况(Exceptional Situations):  None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         keywordp, symbol, typep
 
@@ -197,7 +197,7 @@
 
  * 异常情况(Exceptional Situations):  None.
 
- * 也见(See Also):
+ * 参见(See Also):
 
         constantp, keyword, symbolp, symbol-package
 
@@ -240,7 +240,7 @@
 
         如果名字 name 不是一个字符串[string]那么应该发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         copy-symbol
 
@@ -302,7 +302,7 @@
 
         如果 symbol 不是一个符号[symbol], 那么应该发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         make-symbol
 
@@ -359,7 +359,7 @@
 
         如果 x 不是一个字符串[string]也不是一个非负整数[integer], 那么应该发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         gentemp, *gensym-counter*
 
@@ -390,7 +390,7 @@
 
         gensym.
 
-* 也见(See Also):
+* 参见(See Also):
 
         gensym
 
@@ -443,7 +443,7 @@
 
         如果前缀 prefix 不是一个字符串[string]那么应该发出一个 type-error 类型[type]的错误. 如果 package 不是一个包标识符[package designator]那么应该发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         gensym
 
@@ -527,7 +527,7 @@
 
         如果 symbol 没有被 fbound 并且尝试去读取[read]它的定义那么应该发出一个 undefined-function 类型的错误. (在尝试去写入[write]它的定义时不会发出这样的错误.)
 
-* 也见(See Also):
+* 参见(See Also):
 
         fboundp, fmakunbound, macro-function, special-operator-p
 
@@ -573,7 +573,7 @@
 
         如果 symbol 不是一个符号[symbol]那么应该发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also): None.
+* 参见(See Also): None.
 
 * 注意(Notes): None.
 
@@ -631,7 +631,7 @@
 
         如果 symbol 不是一个符号[symbol]那么应该发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         intern
 
@@ -676,7 +676,7 @@
 
         如果 symbol 不是一个符号[symbol]那么应该发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         get, remprop
 
@@ -748,7 +748,7 @@
 
         如果符号 symbol 被解绑[unbound]并且尝试去读取[read]它的值[value], 那么应该发出 unbound-variable 类型的错误. (在尝试去写入[write]它的值[value]时不会发出这样的错误.)
 
-* 也见(See Also):
+* 参见(See Also):
 
         boundp, makunbound, set, setq
 
@@ -820,7 +820,7 @@
 
         如果 symbol 不是一个符号[type]那么应该发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         getf, symbol-plist, remprop
 
@@ -890,7 +890,7 @@
 
         如果 symbol 不是一个符号[symbol]那么应该发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         remf, symbol-plist
 
@@ -931,7 +931,7 @@
 
         如果 symbol 不是一个符号[symbol]那么应该发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         set, setq, symbol-value, makunbound
 
@@ -974,7 +974,7 @@
 
         如果 symbol 不是一个符号[symbol]那么应该发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         boundp, fmakunbound
 
@@ -1043,7 +1043,7 @@
 
 * 异常情况(Exceptional Situations):  None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         setq, progv, symbol-value
 
@@ -1066,6 +1066,6 @@
 
         这个存储格 (见 cell-error) 的名字是这个未绑定[unbound]变量[variable]的名字[name].
 
-* 也见(See Also):
+* 参见(See Also):
 
         cell-error-name

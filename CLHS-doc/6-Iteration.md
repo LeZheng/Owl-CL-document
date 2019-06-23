@@ -1276,7 +1276,7 @@ finally 构造导致提供的复合表达式形式 compound-forms 在正常循�
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         其他循环函数 (dolist, dotimes, 和 loop) 和更原始的功能 (tagbody, go, block, return, let, 和 setq)
 
@@ -1380,7 +1380,7 @@ finally 构造导致提供的复合表达式形式 compound-forms 在正常循�
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         do, dolist, tagbody
 
@@ -1440,7 +1440,7 @@ finally 构造导致提供的复合表达式形式 compound-forms 在正常循�
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         do, dotimes, tagbody, 章节 3.6 (遍历规则和副作用)
 
@@ -1603,7 +1603,7 @@ finally 构造导致提供的复合表达式形式 compound-forms 在正常循�
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         do, dolist, dotimes, return, go, throw, 章节 6.1.1.7 (解构)
 
@@ -1678,7 +1678,7 @@ finally 构造导致提供的复合表达式形式 compound-forms 在正常循�
 
         loop-finish 在全局环境[global environment]中是否被 fbound 是依赖于具体实现的[implementation-dependent]; 然而, loop-finish 的遮蔽[shadow]和重定义的限制条件跟 COMMON-LISP 包中在全局环境[global environment]中被 fbound 的符号[symbol]一样. 在 loop 的外部去尝试使用 loop-finish 的结果是未定义的.
 
-* 也见(See Also):
+* 参见(See Also):
 
         loop, 章节 6.1 (LOOP 机制)
 

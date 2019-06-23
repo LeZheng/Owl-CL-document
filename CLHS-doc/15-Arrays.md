@@ -199,7 +199,7 @@
 
         如果这个 dimension-spec 是一个 rank, 这个集合只包括那些有着那个 rank 的数组. 如果这个 dimension-spec 是 dimensions 的一个列表[list], 这个集合只包括那些有着由 dimensions 的长度[length]给定的秩[rank]并且有着指明的 dimensions 的数组; 在这个情况中, * 匹配对应维数[dimension]的任意值. 如果这个 dimension-spec 是符号[symbol] *, 这个集合不会被约束在秩[rank]或维数[dimension]的基础上.
 
-* 也见(See Also):
+* 参见(See Also):
 
         *print-array*, aref, make-array, vector, 章节 2.4.8.12 (井号A(#A)), 章节 22.1.3.8 (打印其他数组)
 
@@ -282,7 +282,7 @@
 
         如果指定了一个 size, 那么这个集合只包括那些仅有的维度大小[dimension]是 size 的向量. 如果符号[symbol] * 被指定而不是一个 size, 那么这个集合不会被约束在这个维度大小[dimension]的基础上.
 
-* 也见(See Also):
+* 参见(See Also):
 
         章节 15.1.2.2 (特化数组的必要种类), 章节 2.4.8.3 (井号左括号(#()), 章节 22.1.3.7 (打印其他向量), 章节 2.4.8.12 (井号A(#A))
 
@@ -354,7 +354,7 @@
 
         这个表示和类型[type] (array bit (size)) 相同的类型[type]; 这也就是说, 大小为 size 的位向量[bit vector]的集合.
 
-* 也见(See Also):
+* 参见(See Also):
 
         章节 2.4.8.4 (井号星号(#*)), 章节 22.1.3.6 (打印位向量), 章节 15.1.2.2 (特化数组的必要种类) 
 
@@ -511,7 +511,7 @@
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         adjustable-array-p, aref, arrayp, array-element-type, array-rank-limit, array-dimension-limit, fill-pointer, upgraded-array-element-type
 
@@ -638,7 +638,7 @@
 
         如果提供了填充指针[fill pointer]并且是非 nil [non-nil]但是 array 没有填充指针[fill pointer], 那么就会发出一个 error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         adjustable-array-p, make-array, array-dimension-limit, array-total-size-limit, array
 
@@ -677,7 +677,7 @@
 
         如果它的参数不是一个数组[array]应该发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         adjust-array, make-array
 
@@ -727,7 +727,7 @@
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         bit, char, elt, row-major-aref, svref, 章节 3.2.1 (编译器术语)
 
@@ -761,7 +761,7 @@
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         array-dimensions, length
 
@@ -799,7 +799,7 @@
 
         如果它的参数不是一个数组[array], 那么应该发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         array-dimension
 
@@ -844,7 +844,7 @@
 
         如果它的参数不是一个数组[array], 那么应该发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         array, make-array, subtypep, upgraded-array-element-type
 
@@ -883,7 +883,7 @@
 
         如果它的参数不是一个数组[array], 应该发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         make-array, fill-pointer
 
@@ -932,7 +932,7 @@
 
         如果 array 不是一个数组[array], 那么应该发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         make-array
 
@@ -970,7 +970,7 @@
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         array-dimensions
 
@@ -1010,7 +1010,7 @@
 
         如果它的参数不是一个数组[array]那么应该发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         array-rank-limit, make-array
 
@@ -1054,7 +1054,7 @@
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also): None.
+* 参见(See Also): None.
 
 * 注意(Notes):
 
@@ -1101,7 +1101,7 @@
 
         如果它的参数不是一个数组[array], 那么应该发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         make-array, array-dimensions
 
@@ -1146,7 +1146,7 @@
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         typep
 
@@ -1194,7 +1194,7 @@
 
         如果 vector 不是一个带有填充指针[fill pointer]的向量[vector]那么应该发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         make-array, length
 
@@ -1231,7 +1231,7 @@
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         aref, array-row-major-index
 
@@ -1279,7 +1279,7 @@
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         array-element-type, make-array
 
@@ -1303,7 +1303,7 @@
 
 * 示例(Examples): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         make-array
 
@@ -1322,7 +1322,7 @@
 
 * 示例(Examples): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         make-array
 
@@ -1342,7 +1342,7 @@
 
 * 示例(Examples): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         make-array, array-element-type
 
@@ -1378,7 +1378,7 @@
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         simple-vector
 
@@ -1421,7 +1421,7 @@
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         aref, sbit, schar, vector, 章节 3.2.1 (编译器术语)
 
@@ -1464,7 +1464,7 @@
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         make-array
 
@@ -1520,7 +1520,7 @@
 
         如果填充指针[fill pointer]是零, vector-pop 会发出一个 error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         vector-push, vector-push-extend, fill-pointer
 
@@ -1584,7 +1584,7 @@
 
         如果向量 vector 没有一个填充指针[fill pointer]那么应该发出一个 error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         adjustable-array-p, fill-pointer, vector-pop
 
@@ -1622,7 +1622,7 @@
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also): None.
+* 参见(See Also): None.
 
 * 注意(Notes):
 
@@ -1671,7 +1671,7 @@
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         aref, 章节 3.2.1 (编译器术语)
 
@@ -1762,7 +1762,7 @@
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         lognot, logand
 
@@ -1798,7 +1798,7 @@
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         typep
 
@@ -1835,7 +1835,7 @@
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         simple-vector-p
 

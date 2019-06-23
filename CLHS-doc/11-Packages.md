@@ -270,7 +270,7 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
         一个包[package]是一个映射符号[symbol]名称[name]到符号[symbol]的命名空间[namespace]; 见章节 11.1 (包概念).
 
-* 也见(See Also):
+* 参见(See Also):
 
         章节 11.1 (包概念), 章节 22.1.3.13 (打印其他对象), 章节 2.3.4 (符号标记) 
 
@@ -319,7 +319,7 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
         如果这些符号 symbols 中的任何一个在包 package 中是不可访问[accessible], 会发出一个 package-error 类型[type]的错误, 通过允许用户[user]去交互式地指定是否应该导入该符号[symbol], 这是可校正的[correctable].
 
-* 也见(See Also):
+* 参见(See Also):
 
         import, unexport, 章节 11.1 (包概念)
 
@@ -389,7 +389,7 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
 * 异常情况(Exceptional Situations):  None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         intern, find-all-symbols
 
@@ -433,7 +433,7 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
 * 异常情况(Exceptional Situations):  None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         make-package
 
@@ -476,7 +476,7 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
 * 异常情况(Exceptional Situations):  None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         find-symbol
 
@@ -526,7 +526,7 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
         如果这些要被导入的符号 symbols 中的任何一个和包 package 中某个已经可以访问[accessible]的不同(在 eql 下)符号[symbol]有着相同[same]的名字[name] (在 string= 下), 那么 import 发出一个 package-error 类型[type]的可校正[correctable]错误, 即便这个冲突是和包 package 中的一个遮蔽符号[shadowing symbol].
 
-* 也见(See Also):
+* 参见(See Also):
 
         shadow, export
 
@@ -563,7 +563,7 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
 * 异常情况(Exceptional Situations):  None.
 
-* 也见(See Also): None.
+* 参见(See Also): None.
 
 * 注意(Notes): None. 
 
@@ -605,7 +605,7 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
 * 异常情况(Exceptional Situations):  None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         make-package
 
@@ -661,7 +661,7 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
 * 异常情况(Exceptional Situations):  None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         package-shadowing-symbols, 章节 11.1 (包概念)
 
@@ -712,7 +712,7 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
 * 异常情况(Exceptional Situations):  None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         import, unintern, package-shadowing-symbols
 
@@ -823,7 +823,7 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
         如果包 package 被其他包[package]所使用, 就会发出一个 package-error 类型[type]的可校正[correctable]错误. 如果尝试了校正, unuse-package 会被调用来移除任何依赖, 导致包 package 的外部符号[external symbol]对于那些使用了包 package 的包[package]不再是可访问的[accessible]. delete-package 接下来删除包 package, 就好像已经没有包[package]在使用它一样.
 
-* 也见(See Also):
+* 参见(See Also):
 
         unuse-package
 
@@ -872,7 +872,7 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
         如果包名 package-name 或这些别名 nicknames 中的任何一个已经是一个已存在的包的包名[name]或别名[nickname]那么就会发出一个可校正[correctable]错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         defpackage, use-package
 
@@ -1004,7 +1004,7 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
         如果通过 with-package-iterator 建立的名为 name 的局部函数在它返回 false 作为它的主值[primary value]之后被调用, 那么后果是未定义的.
 
-* 也见(See Also):
+* 参见(See Also):
 
         章节 3.6 (遍历规则和副作用)
 
@@ -1054,7 +1054,7 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
         如果包 package 是 KEYWORD 包或者 COMMON-LISP 包, 那么后果是未定义的.
 
-* 也见(See Also):
+* 参见(See Also):
 
         export, 章节 11.1 (包概念)
 
@@ -1103,7 +1103,7 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
         给 unintern 一个遮蔽符号可以揭露一个之前通过遮蔽解决的名字冲突. 如果包 A 包 B 和 C, A 包含了一个遮蔽符号 x, 并且 B 和 C 每个都包含名为 x 的外部符号, 如果这两个符号[symbol]是不同的, 那么从 A 中移除这个遮蔽的符号会揭露一个在 b:x 和 c:x 之间的名字冲突. 在这个情况中 unintern 会发出一个错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         章节 11.1 (包概念)
 
@@ -1139,7 +1139,7 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
         如果这个指定的包[package]不存在, 就会发出一个 package-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         *package*
 
@@ -1186,7 +1186,7 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
 * 异常情况(Exceptional Situations):  None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         use-package, package-use-list
 
@@ -1231,7 +1231,7 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
 * 异常情况(Exceptional Situations):  None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         unuse-package, package-use-list, 章节 11.1 (包概念)
 
@@ -1358,7 +1358,7 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
         名字冲突错误会被 make-package, use-package, import, 和 export 的潜在调用所处理. 见章节 11.1 (包概念).
 
-* 也见(See Also):
+* 参见(See Also):
 
         documentation, 章节 11.1 (包概念), 章节 3.2 (编译)
 
@@ -1458,7 +1458,7 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
 * 异常情况(Exceptional Situations):  None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         intern, export, 章节 3.6 (遍历规则和副作用)
 
@@ -1518,7 +1518,7 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
 * 异常情况(Exceptional Situations):  None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         find-symbol, read, symbol, unintern, 章节 2.3.4 (符号标记)
 
@@ -1563,7 +1563,7 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
         如果 package 不是一个包标识符[package designator], 那么应该发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also): None.
+* 参见(See Also): None.
 
 * 注意(Notes): None. 
 
@@ -1599,7 +1599,7 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
         如果 package 不是一个包标识符[package designator], 那么应该发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also): None.
+* 参见(See Also): None.
 
 * 注意(Notes): None. 
 
@@ -1638,7 +1638,7 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
         如果 package 不是一个包标识符[package designator], 那么应该发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         shadow, shadowing-import
 
@@ -1678,7 +1678,7 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
         如果 package 不是一个包标识符[package designator], 那么应该发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         use-package, unuse-package
 
@@ -1716,7 +1716,7 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
         如果 package 不是一个包标识符[package designator], 那么应该发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         use-package, unuse-package
 
@@ -1752,7 +1752,7 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
 * 异常情况(Exceptional Situations):  None.
 
-* 也见(See Also): None.
+* 参见(See Also): None.
 
 * 注意(Notes):
 
@@ -1799,7 +1799,7 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
         load, compile-file, in-package
 
-* 也见(See Also):
+* 参见(See Also):
 
         compile-file, in-package, load, package
 
@@ -1816,7 +1816,7 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
         这个 package-error 类型[type]由在包[package]上的操作相关的错误[error]状况[condition]组成. 这个违规的包[package] (或者包[package]名[name]) 是通过给 make-condition 的 :package 初始化参数来初始化的, 并且可以通过函数[function] package-error-package 来访问.
 
-* 也见(See Also):
+* 参见(See Also):
 
         package-error-package, 章节 9 (状况) 
 
@@ -1851,7 +1851,7 @@ KEYWORD 包的处理方式与其他包[package]不同, 因为一个符号[symbol
 
 * 异常情况(Exceptional Situations):  None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         package-error
 

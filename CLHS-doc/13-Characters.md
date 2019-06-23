@@ -303,7 +303,7 @@ Linefeed
 
       类型[type] base-char 和 extended-char 组成类型[type] character 的一个详尽分区[exhaustive partition].
 
-* 也见(See Also):
+* 参见(See Also):
 
         章节 13.1 (字符概念), 章节 2.4.8.1 (井号C(#C)), 章节 22.1.3.2 (打印字符) 
 
@@ -342,7 +342,7 @@ Linefeed
 
         任何不是简单字符的字符不是标准字符.
 
-* 也见(See Also):
+* 参见(See Also):
 
         章节 2.1.3 (标准字符) 
 
@@ -464,7 +464,7 @@ Linefeed
 
         如果一个字符 character 都没有提供那么应该发出一个 program-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         章节 2.1 (字符语法), 章节 13.1.10 (具体实现定义的文字的文档)
 
@@ -509,7 +509,7 @@ Linefeed
 
         如果对象 character 不是一个字符标识符[character designator], 那么应该发出一个 type-error 类型[type]的错误.
 <!--这里的 character 原文是 object-->
-* 也见(See Also):
+* 参见(See Also):
 
         coerce
 
@@ -550,7 +550,7 @@ Linefeed
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         character (类型[type]和函数[function]), typep
 
@@ -593,7 +593,7 @@ Linefeed
 
         如果 character 不是一个字符[character]就应该发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         alphanumericp, 章节 13.1.10 (具体实现定义的文字的文档)
 
@@ -631,7 +631,7 @@ Linefeed
 
         如果 character 不是一个字符[character]就应该发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         alpha-char-p, graphic-char-p, digit-char-p
 
@@ -678,7 +678,7 @@ Linefeed
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         digit-char-p, graphic-char-p, 章节 2.1 (字符语法)
 
@@ -726,7 +726,7 @@ Linefeed
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         alphanumericp
 
@@ -765,7 +765,7 @@ Linefeed
 
         如果 character 不是一个字符[character]就应该发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         read, 章节 2.1 (字符语法), 章节 13.1.10 (具体实现定义的文字的文档)
 
@@ -802,7 +802,7 @@ Linefeed
 
         如果 character 不是一个字符[character]就应该发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also): None.
+* 参见(See Also): None.
 
 * 注意(Notes): None. 
 
@@ -857,7 +857,7 @@ Linefeed
 
         如果 character 不是一个字符[character]就应该发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         upper-case-p, alpha-char-p, 章节 13.1.4.3 (大小写字符), 章节 13.1.10 (具体实现定义的文字的文档)
 
@@ -915,7 +915,7 @@ Linefeed
 
         如果 character 不是一个字符[character]就应该发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         char-upcase, char-downcase, 章节 13.1.4.3 (大小写字符), 章节 13.1.10 (具体实现定义的文字的文档)
 
@@ -951,7 +951,7 @@ Linefeed
 
         如果 character 不是一个字符[character]就应该发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         char-code-limit
 
@@ -990,7 +990,7 @@ Linefeed
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         char-code
 
@@ -1024,7 +1024,7 @@ Linefeed
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         char-code
 
@@ -1041,7 +1041,7 @@ Linefeed
 
         函数[function] char-code 返回的值[value]的上边界.
 
-* 也见(See Also):
+* 参见(See Also):
 
         char-code
 
@@ -1099,7 +1099,7 @@ Linefeed
 
         如果 character 不是一个字符[character]就应该发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         name-char, 章节 22.1.3.2 (打印字符)
 
@@ -1138,7 +1138,7 @@ Linefeed
 
         如果 name 不是一个字符串标识符[string designator], 那么应该发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         char-name
 

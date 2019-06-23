@@ -1843,7 +1843,7 @@ OR=>  (1 2 4 3)
 
         documentation 作为文档字符串[documentation string]被附加到所表示的函数 function (如果有实际创建的话).
 
-* 也见(See Also):
+* 参见(See Also):
 
         function, documentation, 章节 3.1.3 (lambda 表达式), 章节 3.1.2.1.2.4 (lambda 表达式形式), 章节 3.4.11 (文档字符串和声明的语法交互)
 
@@ -1895,7 +1895,7 @@ OR=>  (1 2 4 3)
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         lambda (symbol)
 
@@ -1963,7 +1963,7 @@ OR=>  (1 2 4 3)
 
         关于在编译过程中的错误检测信息, 见章节 3.2.5 (编译器中的异常情况).
 
-* 也见(See Also):
+* 参见(See Also):
 
         compile-file
 
@@ -2004,7 +2004,7 @@ OR=>  (1 2 4 3)
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         macroexpand-1, 章节 3.1.2 (求值模型)
 
@@ -2106,7 +2106,7 @@ OR=>  (1 2 4 3)
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         compile-file, 章节 3.2 (编译)
 
@@ -2240,7 +2240,7 @@ OR=>  (1 2 4 3)
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         compile-file, compile, eval, 章节 3.2.2.2 (最小化编译), 章节 3.2 (编译)
 
@@ -2292,7 +2292,7 @@ OR=>  (1 2 4 3)
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         章节 3.1 (求值), 章节 2.4.3 (单引号), 章节 3.2.1 (编译器术语)
 
@@ -2330,7 +2330,7 @@ OR=>  (1 2 4 3)
 
         在一个 compiler-macro-function 的 setf 使用中, 如果环境 environment 是非 nil[non-nil]那么结果是未定义的.
 
-* 也见(See Also):
+* 参见(See Also):
 
         define-compiler-macro, 章节 3.2.2.1 (编译器宏)
 
@@ -2472,7 +2472,7 @@ OR=>  (1 2 4 3)
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         compiler-macro-function, defmacro, documentation, 章节 3.4.11 (文档字符串和声明的语法交互)
 
@@ -2603,7 +2603,7 @@ OR=>  (1 2 4 3)
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         define-compiler-macro, destructuring-bind, documentation, macroexpand, *macroexpand-hook*, macrolet, macro-function, 章节 3.1 (求值), 章节 3.2 (编译), 章节 3.4.11 (文档字符串和声明的语法交互)
 
@@ -2657,7 +2657,7 @@ OR=>  (1 2 4 3)
 
         在一个 macro-function 的 setf 的使用中如果环境 environment 是非 nil 的[non-nil], 那么结果是未定义的.
 
-* 也见(See Also):
+* 参见(See Also):
 
         defmacro, 章节 3.1 (求值)
 
@@ -2771,7 +2771,7 @@ OR=>  (1 2 4 3)
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         *macroexpand-hook*, defmacro, setf of macro-function, macrolet, symbol-macrolet, 章节 3.1 (求值)
 
@@ -2830,7 +2830,7 @@ OR=>  (1 2 4 3)
 
         如果符号 symbol 已经被定义为一个全局变量[global variable], 那么就会发出一个 program-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         symbol-macrolet, macroexpand
 
@@ -2890,7 +2890,7 @@ OR=>  (1 2 4 3)
 
         如果声明 declaration 中包含一个对 symbol-macrolet 绑定那些符号[symbol]中的一个的 special 声明, 那么会发出一个 program-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         with-slots, macroexpand
 
@@ -2929,7 +2929,7 @@ OR=>  (1 2 4 3)
 
 * 受此影响(Affected By): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         macroexpand, macroexpand-1, funcall, 章节 3.1 (求值)
 
@@ -2985,7 +2985,7 @@ OR=>  (1 2 4 3)
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         declaim, declare, 章节 3.2 (编译)
 
@@ -3032,7 +3032,7 @@ OR=>  (1 2 4 3)
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         declare, proclaim
 
@@ -3103,7 +3103,7 @@ OR=>  (1 2 4 3)
 
         试着把 declare 表达式[expression]当作一个表达式形式[form]来求值后果是不可预料的.
 
-* 也见(See Also):
+* 参见(See Also):
 
         proclaim, 章节 4.2.3 (类型指定符), declaration, dynamic-extent, ftype, ignorable, ignore, inline, notinline, optimize, type
 
@@ -3144,7 +3144,7 @@ OR=>  (1 2 4 3)
 
         由 with-open-file, with-open-stream, with-input-from-string, 和 with-output-to-string 建立的流变量[stream variable], 还有所有循环变量[iteration variable], 根据定义总是是 "used" 的. 对于这样一个变量[variable] v 使用 (declare (ignore v)), 有着未指明的结果.
 
-* 也见(See Also):
+* 参见(See Also):
 
         declare 
 
@@ -3298,7 +3298,7 @@ OR=>  (1 2 4 3)
             nil)
     ```
 
-* 也见(See Also):
+* 参见(See Also):
 
         declare
 
@@ -3411,7 +3411,7 @@ OR=>  (1 2 4 3)
         (incf (aref counters i))))
     ```
 
-* 也见(See Also):
+* 参见(See Also):
 
         declare, declaim, proclaim
 
@@ -3518,7 +3518,7 @@ OR=>  (1 2 4 3)
       (dispatch (read-command)))
     ```
 
-* 也见(See Also):
+* 参见(See Also):
 
         declare, declaim, proclaim 
 
@@ -3556,7 +3556,7 @@ OR=>  (1 2 4 3)
 
         ftype 声明可以是自由声明[free declaration]或绑定声明[bound declaration]. 出现在一个 flet 或 labels 表达式形式[form]的主体前的 ftype 函数声明是绑定声明[bound declaration]. 在其他上下文中的这些声明是自由声明[free declaration].
 
-* 也见(See Also):
+* 参见(See Also):
 
         declare, declaim, proclaim 
 
@@ -3591,7 +3591,7 @@ OR=>  (1 2 4 3)
       (member x '(strange weird odd peculiar)))
     ```
 
-* 也见(See Also):
+* 参见(See Also):
 
         declaim, proclaim 
 
@@ -3649,7 +3649,7 @@ OR=>  (1 2 4 3)
         ))
     ```
 
-* 也见(See Also):
+* 参见(See Also):
 
         declare, declaim, proclaim, 章节 3.3.4 (声明的作用域)
 
@@ -3765,7 +3765,7 @@ OR=>  (1 2 4 3)
 
         在上面的扭曲代码中, 最外层和最内层的 y 的绑定[binding]是动态的, 但是中间绑定是词法的. 给 + 的两个参数是不一样的, 一个是一个值, 3, 是词法变量 y 的, 而另一个是名为 y 的动态变量的值 (巧合的是, 它的一个绑定在词法上围绕在它外层). 然而, 由于这个 x 总是是 special 的公告, 所有 x 的绑定和 x 的引用都是动态的.
 
-* 也见(See Also):
+* 参见(See Also):
 
         defparameter, defvar 
 
@@ -3826,7 +3826,7 @@ OR=>  (1 2 4 3)
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         declare
 
@@ -3883,7 +3883,7 @@ OR=>  (1 2 4 3)
 
         如果表达式形式 form 产生[yield]的值[value]不是由 value-type 指定的类型[type], 那么后果是没有定义的.
 
-* 也见(See Also):
+* 参见(See Also):
 
         values
 
@@ -3930,7 +3930,7 @@ OR=>  (1 2 4 3)
 
         如果它的参数不是一个符号[symbol]应该发出一个 type-error 错误.
 
-* 也见(See Also): None.
+* 参见(See Also): None.
 
 * 注意(Notes):
 
@@ -3993,7 +3993,7 @@ OR=>  (1 2 4 3)
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         defconstant
 

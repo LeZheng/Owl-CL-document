@@ -1,4 +1,4 @@
-# 7. Objects
+# 7. 对象
 
 > * 7.1 [对象创建和初始化](#ObjectCreationInit)
 > * 7.2 [修改一个实例的类](#ChangeClassInstance)
@@ -713,7 +713,7 @@ shared-initialize 的方法[method]可以被定义用来定制类[class]的重�
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         defmethod
 
@@ -764,7 +764,7 @@ shared-initialize 的方法[method]可以被定义用来定制类[class]的重�
 
         如果 function-name 指定了一个对于 :generic-function-class 参数有一个不同的值的广义函数[generic function]并且如果这个新的广义函数类和旧的不兼容, 会发出一个 error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         defgeneric
 
@@ -800,7 +800,7 @@ shared-initialize 的方法[method]可以被定义用来定制类[class]的重�
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         defclass, make-instance, class-of, 章节 7.1 (对象创建和初始化)
 
@@ -842,7 +842,7 @@ shared-initialize 的方法[method]可以被定义用来定制类[class]的重�
 
         如果提供的一个 initarg 没有被有效声明, 系统提供的 reinitialize-instance 主方法[method]会发出一个错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         initialize-instance, shared-initialize, update-instance-for-redefined-class, update-instance-for-different-class, slot-boundp, slot-makunbound, 章节 7.3 (重新初始化一个实例), 章节 7.1.4 (初始化参数的规则), 章节 7.1.2 (声明初始化参数的有效性)
 
@@ -889,7 +889,7 @@ shared-initialize 的方法[method]可以被定义用来定制类[class]的重�
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         initialize-instance, reinitialize-instance, update-instance-for-redefined-class, update-instance-for-different-class, slot-boundp, slot-makunbound, 章节 7.1 (对象创建和初始化), 章节 7.1.4 (初始化参数的规则), 章节 7.1.2 (声明初始化参数的有效性)
 
@@ -939,7 +939,7 @@ shared-initialize 的方法[method]可以被定义用来定制类[class]的重�
 
         如果一个提供的初始化参数没有被有效声明, 那么系统提供的 update-instance-for-different-class 主方法[method]就会发出一个错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         change-class, shared-initialize, 章节 7.2 (修改一个实例的类), 章节 7.1.4 (初始化参数的规则), 章节 7.1.2 (声明初始化参数的有效性)
 
@@ -1038,7 +1038,7 @@ shared-initialize 的方法[method]可以被定义用来定制类[class]的重�
 
         如果提供的一个初始化参数 initarg 没有被有效声明, 那么这个系统提供的 update-instance-for-redefined-class 主方法[method]会发出一个错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         make-instances-obsolete, shared-initialize, 章节 4.3.6 (重定义类), 章节 7.1.4 (初始化参数的规则), 章节 7.1.2 (声明初始化参数的有效性)
 
@@ -1119,7 +1119,7 @@ shared-initialize 的方法[method]可以被定义用来定制类[class]的重�
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         update-instance-for-different-class, 章节 7.2 (修改一个实例的类)
 
@@ -1160,7 +1160,7 @@ shared-initialize 的方法[method]可以被定义用来定制类[class]的重�
 
         这个具体行为依赖于实例 instance 的元类[metaclass]. 如果实例 instance 元类[metaclass]为 standard-class, 那么从来不会发出一个错误. 如果实例 instance 元类[metaclass]为 built-in-class, 那么总是会发出一个错误. 如果实例 instance 有着其他元类那么结果是未定义的--在这个情况可能会也可能不会发出一个错误. 特别注意, 对于状况[condition]和结构体[structure]的行为是没有指定的.
 
-* 也见(See Also):
+* 参见(See Also):
 
         slot-makunbound, slot-missing
 
@@ -1195,7 +1195,7 @@ shared-initialize 的方法[method]可以被定义用来定制类[class]的重�
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         defclass, slot-missing
 
@@ -1235,7 +1235,7 @@ shared-initialize 的方法[method]可以被定义用来定制类[class]的重�
 
         这个具体行为依赖于实例 instance 的元类[metaclass]. 如果实例 instance 的元类[metaclass]为 standard-class 那么从不发出一个错误. 如果实例 instance 的元类[metaclass]为 built-in-class 那么总是发出一个错误. 如果实例 instance 有着任何其他元类[metaclass]那么结果是未定义的--在这个情况下一个错误可能或可能不会发出. 特别要注意的是, 对于状况[condition]和结构体[structure]的行为是没有指定的.
 
-* 也见(See Also):
+* 参见(See Also):
 
         slot-boundp, slot-missing
 
@@ -1289,7 +1289,7 @@ shared-initialize 的方法[method]可以被定义用来定制类[class]的重�
 
         这个 slot-missing 默认方法[method]发出一个 error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         defclass, slot-exists-p, slot-value
 
@@ -1331,7 +1331,7 @@ shared-initialize 的方法[method]可以被定义用来定制类[class]的重�
 
         这个 slot-unbound 上的默认方法[method]发出一个 unbound-slot 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         slot-makunbound
 
@@ -1403,7 +1403,7 @@ shared-initialize 的方法[method]可以被定义用来定制类[class]的重�
 
         这个具体行为依赖于对象 object 的元类[metaclass]. 如果对象 object 的元类[metaclass]为 standard-class 那么从不发出一个错误. 如果对象 object 的元类[metaclass]为 built-in-class 那么总是发出一个错误. 如果对象 object 有着任何其他元类[metaclass]那么结果是未定义的--在这个情况下一个错误可能或可能不会发出. 特别要注意的是, 状况[condition]和结构体[structure]的行为没有被指定.
 
-* 也见(See Also):
+* 参见(See Also):
 
         slot-missing, slot-unbound, with-slots
 
@@ -1445,7 +1445,7 @@ shared-initialize 的方法[method]可以被定义用来定制类[class]的重�
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         define-method-combination
 
@@ -1482,7 +1482,7 @@ shared-initialize 的方法[method]可以被定义用来定制类[class]的重�
 
         这个默认方法[default method]会发出一个 error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
 * 注意(Notes): None. 
 
@@ -1521,7 +1521,7 @@ shared-initialize 的方法[method]可以被定义用来定制类[class]的重�
 
         系统提供的 no-next-method 上的方法[method]会发出一个 error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         call-next-method
 
@@ -1555,7 +1555,7 @@ shared-initialize 的方法[method]可以被定义用来定制类[class]的重�
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         find-method
 
@@ -1595,7 +1595,7 @@ shared-initialize 的方法[method]可以被定义用来定制类[class]的重�
 
         如果任何一个初始化参数没有被有效声明, 会发出一个 error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         defclass, class-of, allocate-instance, initialize-instance, 章节 7.1 (对象创建和初始化)
 
@@ -1631,7 +1631,7 @@ shared-initialize 的方法[method]可以被定义用来定制类[class]的重�
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         update-instance-for-redefined-class, 章节 4.3.6 (重定义类)
 
@@ -1771,7 +1771,7 @@ shared-initialize 的方法[method]可以被定义用来定制类[class]的重�
 
         在一个系统类[system class]的广义实例[generalized instance]上调用 make-load-form 是发出一个错误还是返回创建和初始化表达式形式[form], 依赖于具体实现[implementation-dependent].
 
-* 也见(See Also):
+* 参见(See Also):
 
         compile-file, make-load-form-saving-slots, 章节 3.2.4.4 (外部化对象的附加约束) 章节 3.1 (求值), 章节 3.2 (编译)
 
@@ -1815,7 +1815,7 @@ shared-initialize 的方法[method]可以被定义用来定制类[class]的重�
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         make-load-form, make-instance, setf, slot-value, slot-makunbound
 
@@ -1889,7 +1889,7 @@ shared-initialize 的方法[method]可以被定义用来定制类[class]的重�
 
         如果任何 accessor-name 不是这个实例 instance 的一个访问器的名字, 那么结果是未定义的.
 
-* 也见(See Also):
+* 参见(See Also):
 
         with-slots, symbol-macrolet
 
@@ -1977,7 +1977,7 @@ shared-initialize 的方法[method]可以被定义用来定制类[class]的重�
 
         如果任何的槽名 slot-name 都不是这个实例 instance 中的一个槽[slot]的名字, 那么结果是未定义的.
 
-* 也见(See Also):
+* 参见(See Also):
 
         with-accessors, slot-value, symbol-macrolet
 
@@ -2124,7 +2124,7 @@ shared-initialize 的方法[method]可以被定义用来定制类[class]的重�
 
         如果具体实现发现一个类选项或一个槽选项没有被本地实现, 所有这样的实现都需要去发出一个 program-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         documentation, initialize-instance, make-instance, slot-value, 章节 4.3 (类), 章节 4.3.4 (继承), 章节 4.3.6 (重定义类), 章节 4.3.5 (确定类优先级列表), 章节 7.1 (对象创建和初始化)
 
@@ -2223,7 +2223,7 @@ shared-initialize 的方法[method]可以被定义用来定制类[class]的重�
 
         具体实现可以去扩展 defgeneric 来包含其他选项. 如果一个具体实现发现一个选项没有被本地实现, 它就需要去发出一个 program-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         defmethod, documentation, ensure-generic-function, generic-function, 章节 7.6.4 (广义函数的所有方法的一致 Lambda-list)
 
@@ -2304,7 +2304,7 @@ shared-initialize 的方法[method]可以被定义用来定制类[class]的重�
 
         如果 function-name 当前命名一个广义函数[generic function], 那么这个方法[method]的 lambda 列表[lambda list]必须和这个广义函数[generic function]的一致, 否则就会发出一个 error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         defgeneric, documentation, 章节 7.6.2 (方法的介绍), 章节 7.6.4 (广义函数的所有方法的一致 Lambda-list), 章节 7.6.3 (关于参数特化符和限定符的一致性), 章节 3.4.11 (文档字符串和声明的语法交互)
 
@@ -2347,7 +2347,7 @@ shared-initialize 的方法[method]可以被定义用来定制类[class]的重�
 
         如果这里没有这样一个类[class]并且 errorp 是 true, find-class 会发出一个 error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         defmacro, 章节 4.3.7 (整合类和类型)
 
@@ -2378,7 +2378,7 @@ shared-initialize 的方法[method]可以被定义用来定制类[class]的重�
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         call-next-method, defmethod, call-method
 
@@ -2424,7 +2424,7 @@ shared-initialize 的方法[method]可以被定义用来定制类[class]的重�
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         call-next-method, define-method-combination, next-method-p
 
@@ -2472,7 +2472,7 @@ shared-initialize 的方法[method]可以被定义用来定制类[class]的重�
 
         当给 call-next-method 提供参数时, 下面的规则必须被满足, 否则就会发出一个 error 类型[type]的错误: 对于 call-next-method 的一个被改变的参数集的可应用方法[applicable method]有序集必须和这个广义函数[generic function]的原始参数的可应用方法[applicable method]有序集相同. 错误检查的优化是可以的, 但是它们不能改变 call-next-method 的语义.
 
-* 也见(See Also):
+* 参见(See Also):
 
         define-method-combination, defmethod, next-method-p, no-next-method, call-method, 章节 7.6.6 (方法选择和组合), 章节 7.6.6.2 (标准方法组合), 章节 7.6.6.4 (内建的方法组合类型)
 
@@ -2505,7 +2505,7 @@ shared-initialize 的方法[method]可以被定义用来定制类[class]的重�
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         章节 7.6.6 (方法选择和组合)
 
@@ -2774,7 +2774,7 @@ shared-initialize 的方法[method]可以被定义用来定制类[class]的重�
 
         如果 :order 选项求值为一个不是 :most-specific-first 或 :most-specific-last 的值, 就会发出一个 error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         call-method, call-next-method, documentation, method-qualifiers, method-combination-error, invalid-method-error, defgeneric, 章节 7.6.6 (方法选择和组合), 章节 7.6.6.4 (内建的方法组合类型), 章节 3.4.11 (文档字符串和声明的语法交互)
 
@@ -2833,7 +2833,7 @@ shared-initialize 的方法[method]可以被定义用来定制类[class]的重�
 
         如果这里没有这样一个方法[method]并且 errorp 是 true, find-method 发出一个 error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         章节 7.6.3 (关于参数特化符和限定符的一致性)
 
@@ -2871,7 +2871,7 @@ shared-initialize 的方法[method]可以被定义用来定制类[class]的重�
 
         如果 method 是另一个广义函数[generic function]的方法[method]对象[object], 就会发出一个 error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         defmethod, defgeneric, find-method, remove-method, 章节 7.6.3 (关于参数特化符和限定符的一致性)
 
@@ -2907,7 +2907,7 @@ shared-initialize 的方法[method]可以被定义用来定制类[class]的重�
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         shared-initialize, make-instance, slot-boundp, slot-makunbound, 章节 7.1 (对象创建和初始化), 章节 7.1.4 (初始化参数的规则), 章节 7.1.2 (声明初始化参数的有效性)
 
@@ -2940,7 +2940,7 @@ shared-initialize 的方法[method]可以被定义用来定制类[class]的重�
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         find-class, 章节 4.3 (类)
 
@@ -2976,7 +2976,7 @@ shared-initialize 的方法[method]可以被定义用来定制类[class]的重�
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         find-class, proper name, 章节 4.3 (类)
 
@@ -3018,7 +3018,7 @@ shared-initialize 的方法[method]可以被定义用来定制类[class]的重�
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         make-instance, type-of
 
@@ -3037,7 +3037,7 @@ shared-initialize 的方法[method]可以被定义用来定制类[class]的重�
 
         这个存储格(cell)(见 cell-error)的名字是这个槽的名字.
 
-* 也见(See Also):
+* 参见(See Also):
 
         cell-error-name, unbound-slot-object, 章节 9.1 (状况系统的概念) 
 
@@ -3063,7 +3063,7 @@ shared-initialize 的方法[method]可以被定义用来定制类[class]的重�
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         cell-error-name, unbound-slot, 章节 9.1 (状况系统的概念)
 

@@ -560,7 +560,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         funcall, fdefinition, function, 章节 3.1 (求值), 章节 5.1.2.5 (APPLY 表达式形式作为位置)
 
@@ -642,7 +642,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         flet, labels, block, return-from, declare, documentation, 章节 3.1 (求值), 章节 3.4.1 (普通 Lambda 列表), 章节 3.4.11 (文档字符串和声明的语法交互)
 
@@ -682,7 +682,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
         在非 setf 的情况下如果 function-name 没有被 fbound, 那么就会发出 undefined-function 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         fboundp, fmakunbound, macro-function, special-operator-p, symbol-function
 
@@ -743,7 +743,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
         如果 name 不是一个函数名[function name], 应该会发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         symbol-function, fmakunbound, fdefinition
 
@@ -799,7 +799,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
         如果 name 是一个特殊操作符[special operator]那么后果是未定义的.
 
-* 也见(See Also):
+* 参见(See Also):
 
         fboundp, makunbound
 
@@ -947,7 +947,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         declare, defmacro, defun, documentation, let, 章节 3.1 (求值), 章节 3.4.11 (文档字符串和声明的语法交互)
 
@@ -995,7 +995,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
         如果 function 是一个没有作为函数[function]的全局定义或者有着作为宏[macro]或特殊操作符[special operator]的全局定义的符号[symbol], 那么应该会发出一个 undefined-function 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         apply, function, 章节 3.1 (求值)
 
@@ -1052,7 +1052,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         defun, fdefinition, flet, labels, symbol-function, 章节 3.1.2.1.1 (符号表达式形式), 章节 2.4.8.2 (井号单引号(#')), 章节 22.1.3.13 (打印其他对象)
 
@@ -1136,7 +1136,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also): None.
+* 参见(See Also): None.
 
 * 注意(Notes):
 
@@ -1178,7 +1178,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also): None.
+* 参见(See Also): None.
 
 * 注意(Notes):
 
@@ -1225,7 +1225,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         compile, compile-file, compiled-function
 
@@ -1246,7 +1246,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 示例(Examples): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         lambda-parameters-limit, multiple-values-limit
 
@@ -1265,7 +1265,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 示例(Examples): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         defun, flet, defmacro, macrolet, 章节 3.1.2 (求值模型)
 
@@ -1283,7 +1283,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 示例(Examples): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         call-arguments-limit
 
@@ -1339,7 +1339,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         declaim, defparameter, defvar, documentation, proclaim, 章节 3.1.2.1.1.3 (常变量), 章节 3.2 (编译)
 
@@ -1433,7 +1433,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         declaim, defconstant, documentation, 章节 3.2 (编译)
 
@@ -1500,7 +1500,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
         如果求值 expression 的结果不匹配这个解构模式, 应该会发出一个 error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         macrolet, defmacro
 
@@ -1599,7 +1599,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         progv
 
@@ -1645,7 +1645,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         let, 章节 3.1 (求值)
 
@@ -1711,7 +1711,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         psetq, set, setf
 
@@ -1784,7 +1784,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         psetf, setq
 
@@ -1835,7 +1835,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         return, return-from, 章节 3.1 (求值)
 
@@ -1892,7 +1892,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
         如果在没有合适的 catch tag 时 throw 被执行, 会发出一个 control-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         throw, 章节 3.1 (求值)
 
@@ -1948,7 +1948,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         tagbody
 
@@ -2035,7 +2035,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         block, return, 章节 3.1 (求值)
 
@@ -2071,7 +2071,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 条件(Conditions): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         block, return-from, 章节 3.1 (求值)
 
@@ -2148,7 +2148,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         go
 
@@ -2223,7 +2223,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
         如果这里没有匹配抛出标签的未完成的捕捉标签[catch tag], 那么不会执行栈的解除(unwinding), 并且会发出一个 control-error 类型[type]的错误. 当这个错误被发出时, 动态环境[dynamic environment]是在 throw 点处生效的那个.
 
-* 也见(See Also):
+* 参见(See Also):
 
         block, catch, return-from, unwind-protect, 章节 3.1 (求值)
 
@@ -2372,7 +2372,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         catch, go, handler-case, restart-case, return, return-from, throw, 章节 3.1 (求值)
 
@@ -2395,7 +2395,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
     nil =>  NIL
     ```
 
-* 也见(See Also):
+* 参见(See Also):
 
         t
 
@@ -2435,7 +2435,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         null
 
@@ -2469,7 +2469,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
     =>  HELLO
     ```
     
-* 也见(See Also):
+* 参见(See Also):
 
         nil
 
@@ -2536,7 +2536,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         eql, equal, equalp, =, 章节 3.2 (编译)
 
@@ -2612,7 +2612,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         eq, equal, equalp, =, char=
 
@@ -2709,7 +2709,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         eq, eql, equalp, =, string=, string-equal, char=, char-equal, tree-equal
 
@@ -2813,7 +2813,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         eq, eql, equal, =, string=, string-equal, char=, char-equal
 
@@ -2849,7 +2849,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also): None.
+* 参见(See Also): None.
 
 * 注意(Notes):
 
@@ -2892,7 +2892,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         not
 
@@ -2942,7 +2942,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         identity
 
@@ -3003,7 +3003,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
         其他异常情况也是有可能的, 取决于 predicate 的性质.
 
-* 也见(See Also):
+* 参见(See Also):
 
         and, or, 章节 3.6 (遍历规则和副作用)
 
@@ -3057,7 +3057,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         cond, every, if, or, when
 
@@ -3114,7 +3114,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         if, case.
 
@@ -3161,7 +3161,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         cond, unless, when
 
@@ -3212,7 +3212,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         and, some, unless
 
@@ -3275,7 +3275,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         and, cond, if, or
 
@@ -3387,7 +3387,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
         如果没有匹配到 normal-clause 那么 ccase 和 ecase 发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         cond, typecase, setf, 章节 5.1 (广义引用)
 
@@ -3507,7 +3507,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
         如果一个 clause 被更早子句所遮蔽导致不会被选择到, 编译器[compiler]可能会选择去发出一个 style-warning 类型[type]的警告.
 
-* 也见(See Also):
+* 参见(See Also):
 
         case, cond, setf, 章节 5.1 (广义引用)
 
@@ -3559,7 +3559,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         let, multiple-value-call
 
@@ -3606,7 +3606,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         multiple-value-list, multiple-value-bind
 
@@ -3640,7 +3640,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         values-list, multiple-value-call
 
@@ -3683,7 +3683,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         prog1
 
@@ -3739,7 +3739,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         setq, symbol-macrolet
 
@@ -3800,7 +3800,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         values-list, multiple-value-bind, multiple-values-limit, 章节 3.1 (求值)
 
@@ -3839,7 +3839,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
         如果参数不是一个正规列表[proper list], 应该会发出一个 type-error 的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         multiple-value-bind, multiple-value-list, multiple-values-limit, values
 
@@ -3862,7 +3862,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 示例(Examples): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         lambda-parameters-limit, call-arguments-limit
 
@@ -3907,7 +3907,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         multiple-value-list, nth
 
@@ -4015,7 +4015,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         block, let, tagbody, go, return, 章节 3.1 (求值)
 
@@ -4083,7 +4083,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         multiple-value-prog1, progn
 
@@ -4131,7 +4131,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         prog1, prog2, 章节 3.1 (求值)
 
@@ -4199,7 +4199,7 @@ name
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         defsetf, define-setf-expander, documentation, 章节 3.4.11 (文档字符串和声明的语法交互)
 
@@ -4322,7 +4322,7 @@ name
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         documentation, setf, define-setf-expander, get-setf-expansion, Section 5.1 (Generalized Reference), Section 3.4.11 (文档字符串和声明的语法交互)
 
@@ -4412,7 +4412,7 @@ name
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         setf, defsetf, documentation, get-setf-expansion, 章节 3.4.11 (文档字符串和声明的语法交互)
 
@@ -4468,7 +4468,7 @@ name
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
     defsetf, define-setf-expander, setf
 
@@ -4534,7 +4534,7 @@ name
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         define-setf-expander, defsetf, macroexpand-1, rotatef, shiftf, 章节 5.1 (广义引用)
 
@@ -4588,7 +4588,7 @@ name
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         setf, rotatef, 章节 5.1 (广义引用)
 
@@ -4651,7 +4651,7 @@ name
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         define-setf-expander, defsetf, setf, shiftf, *macroexpand-hook*, 章节 5.1 (广义引用)
 
@@ -4700,6 +4700,6 @@ name
 
         这个存储格(cell) (见 cell-error) 的名字是一个 funbound 的函数名[function name].
 
-* 也见(See Also):
+* 参见(See Also):
 
         cell-error-name

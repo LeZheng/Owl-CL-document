@@ -486,7 +486,7 @@ NOT=>  #P"OZ:PS:<TEST>"
 
         一个使用独立于具体实现[implementation-independent]的名称字符串[namestring]语法并且有着独立于具体实现[implementation-independent]的成员值的路径名[pathname]. 逻辑路径名[logical pathname]不会直接引用文件名[filename].
 
-* 也见(See Also):
+* 参见(See Also):
 
         章节 20.1 (文件系统概念), 章节 2.4.8.14 (井号P(#P)), 章节 22.1.3.11 (打印路径名) 
 
@@ -553,7 +553,7 @@ NOT=>  #P"OZ:PS:<TEST>"
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         pathname, logical-pathname, 章节 20.1 (文件系统概念), 章节 19.1.2 (路径名作为文件名)
 
@@ -640,7 +640,7 @@ NOT=>  #P"OZ:PS:<TEST>"
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         merge-pathnames, pathname, logical-pathname, 章节 20.1 (文件系统概念), 章节 19.1.2 (路径名作为文件名)
 
@@ -684,7 +684,7 @@ NOT=>  #P"OZ:PS:<TEST>"
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also): None.
+* 参见(See Also): None.
 
 * 注意(Notes):
 
@@ -799,7 +799,7 @@ NOT=>  #P"OZ:PS:<TEST>"
 
         如果它的第一个参数不是一个路径名[pathname], 那么应该发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         pathname, logical-pathname, 章节 20.1 (文件系统概念), 章节 19.1.2 (路径名作为文件名)
 
@@ -844,7 +844,7 @@ NOT=>  #P"OZ:PS:<TEST>"
 
         如果没有找到定义, 就会发出一个 error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         logical-pathname
 
@@ -995,7 +995,7 @@ NOT=>  #P"OZ:PS:<TEST>"
 
         如果 host 没有被正确提供, 就会发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         logical-pathname, 章节 19.1.2 (路径名作为文件名)
 
@@ -1029,7 +1029,7 @@ NOT=>  #P"OZ:PS:<TEST>"
 
         如果 pathspec 没有被正确提供, 那么应该发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         logical-pathname, translate-logical-pathname, 章节 19.3 (逻辑路径名)
 
@@ -1069,7 +1069,7 @@ NOT=>  #P"OZ:PS:<TEST>"
 
         具体实现[implementation].
 
-* 也见(See Also): None.
+* 参见(See Also): None.
 
 * 注意(Notes): None. 
 
@@ -1162,7 +1162,7 @@ NOT=>  #P"OZ:PS:<TEST>"
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         truename, merge-pathnames, pathname, logical-pathname, 章节 20.1 (文件系统概念), 章节 19.1.2 (路径名作为文件名)
 
@@ -1250,7 +1250,7 @@ NOT=>  #P"OZ:PS:<TEST>"
 
         如果 thing 是一个逻辑路径名[logical pathname]名称字符串并且如果这个名称字符串的主机部分和 host 都出现但是不匹配, 就会发出一个 error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         pathname, logical-pathname, 章节 20.1 (文件系统概念), 章节 19.2.2.2.3 (:UNSPECIFIC 作为成员值), 章节 19.1.2 (路径名作为文件名)
 
@@ -1298,7 +1298,7 @@ NOT=>  #P"OZ:PS:<TEST>"
 
         如果 pathname 不是一个路径名[pathname], 一个字符串[string], 或者一个和文件关联的流[stream associated with a file], 那么就会发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         pathname, logical-pathname, 章节 20.1 (文件系统概念), 章节 19.1.2 (路径名作为文件名)
 
@@ -1333,7 +1333,7 @@ NOT=>  #P"OZ:PS:<TEST>"
 
         如果 pathname 或 wildcard 不是一个路径名[pathname], 字符串[string], 或者一个和文件关联的流[stream associated with a file], 就会发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         directory, pathname, logical-pathname, 章节 20.1 (文件系统概念), 章节 19.1.2 (路径名作为文件名)
 
@@ -1377,7 +1377,7 @@ NOT=>  #P"OZ:PS:<TEST>"
 
         如果没有匹配的转换, 就会发出一个 file-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         logical-pathname, logical-pathname-translations, logical-pathname, 章节 20.1 (文件系统概念), 章节 19.1.2 (路径名作为文件名)
 
@@ -1467,7 +1467,7 @@ NOT=>  #P"OZ:PS:<TEST>"
 
         (pathname-match-p source from-wildcard) 必须是 true, 否则就会发出一个 error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         namestring, pathname-host, pathname, logical-pathname, 章节 20.1 (文件系统概念), 章节 19.1.2 (路径名作为文件名)
 
@@ -1532,7 +1532,7 @@ NOT=>  #P"OZ:PS:<TEST>"
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         *default-pathname-defaults*, pathname, logical-pathname, 章节 20.1 (文件系统概念), 章节 19.1.2 (路径名作为文件名)
 

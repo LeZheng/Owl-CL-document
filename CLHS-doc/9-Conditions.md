@@ -426,7 +426,7 @@ invoke-restart 调用和给 invoke-restart 的第一个参数相同名字的最�
 
         类型[type] warning 包含所有警告的类型.
 
-* 也见(See Also):
+* 参见(See Also):
 
         style-warning 
 
@@ -441,7 +441,7 @@ invoke-restart 调用和给 invoke-restart 的第一个参数相同名字的最�
 
         类型[type] style-warning 包括那些表示代码[code]是符合规范的代码[conforming code]但是仍然被认为是错误的或者不符合标准的情况[situation]的状况[condition].
 
-* 也见(See Also):
+* 参见(See Also):
 
         muffle-warning
 
@@ -489,7 +489,7 @@ serious-condition, condition, t
 
         类型[type] cell-error 由发生在位置访问[eccess]期间的错误状况组成. 违规的存储格(cell)的名字由 make-condition 的 :name 初始化参数来初始化, 通过函数[function] cell-error-name 来访问.
 
-* 也见(See Also):
+* 参见(See Also):
 
         cell-error-name 
 
@@ -517,7 +517,7 @@ serious-condition, condition, t
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         cell-error, unbound-slot, unbound-variable, undefined-function, 章节 9.1 (状况系统的概念)
 
@@ -534,7 +534,7 @@ serious-condition, condition, t
 
         类型[type] parse-error 由解析相关的错误状况组成.
 
-* 也见(See Also):
+* 参见(See Also):
 
         parse-namestring, reader-error 
 
@@ -627,7 +627,7 @@ serious-condition, condition, t
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         check-type, error, 章节 5.1 (广义引用)
 
@@ -707,7 +707,7 @@ serious-condition, condition, t
 
         如果 datum 和 arguments 不是一个状况[condition]的标识符[designator], 就发出一个类型[type] type-error 的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         cerror, signal, format, ignore-errors, *break-on-signals*, handler-bind, 章节 9.1 (状况系统的概念)
 
@@ -860,7 +860,7 @@ serious-condition, condition, t
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         error, format, handler-bind, *break-on-signals*, simple-type-error
 
@@ -965,7 +965,7 @@ serious-condition, condition, t
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         章节 9.1 (状况系统的概念)
 
@@ -1020,7 +1020,7 @@ serious-condition, condition, t
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         define-method-combination
 
@@ -1058,7 +1058,7 @@ serious-condition, condition, t
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         define-method-combination
 
@@ -1125,7 +1125,7 @@ serious-condition, condition, t
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         *break-on-signals*, error, simple-condition, 章节 9.1.4 (发送和处理状况)
 
@@ -1144,7 +1144,7 @@ serious-condition, condition, t
 
         每当一个格式化控制字符串 format-control 作为第一个参数提供给 signal 函数时, 类型[type] simple-condition 表示由这个 signal 发出的状况[condition]. 这个格式化控制[format control]和格式化参数[format argument]使用提供给 make-condition 的名为 :format-control 和 :format-arguments 的初始化参数来初始化, 并且可以通过函数[function] simple-condition-format-control 和 simple-condition-format-arguments 来访问. 如果格式化参数没有提供给 make-condition, 那么 nil 就被用作默认值.
 
-* 也见(See Also):
+* 参见(See Also):
 
         simple-condition-format-control, simple-condition-format-arguments 
 
@@ -1187,7 +1187,7 @@ serious-condition, condition, t
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         simple-condition, 章节 9.1 (状况系统的概念)
 
@@ -1268,7 +1268,7 @@ serious-condition, condition, t
 
         如果 datum 是一个状况类型, (apply #'make-condition datum arguments) 的结果必须是类型[type] warning, 否则发出一个类型[type] type-error 的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         *break-on-signals*, muffle-warning, signal
 
@@ -1326,7 +1326,7 @@ serious-condition, condition, t
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         error, break
 
@@ -1375,7 +1375,7 @@ serious-condition, condition, t
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         error, invoke-debugger.
 
@@ -1453,7 +1453,7 @@ serious-condition, condition, t
 
         invoke-debugger
 
-* 也见(See Also): None.
+* 参见(See Also): None.
 
 * 注意(Notes):
 
@@ -1512,7 +1512,7 @@ serious-condition, condition, t
 
 * 受此影响(Affected By): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         break, signal, warn, error, typep, 章节 9.1 (状况系统的概念)
 
@@ -1586,7 +1586,7 @@ serious-condition, condition, t
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         handler-case
 
@@ -1665,7 +1665,7 @@ serious-condition, condition, t
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         handler-bind, ignore-errors, 章节 9.1 (状况系统的概念)
 
@@ -1752,7 +1752,7 @@ serious-condition, condition, t
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         handler-case, 章节 9.1 (状况系统的概念)
 
@@ -1983,7 +1983,7 @@ serious-condition, condition, t
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         make-condition, defclass, 章节 9.1 (状况系统的概念)
 
@@ -2035,7 +2035,7 @@ serious-condition, condition, t
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         define-condition, 章节 9.1 (状况系统的概念)
 
@@ -2123,7 +2123,7 @@ serious-condition, condition, t
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         find-restart, invoke-restart, restart-bind
 
@@ -2177,7 +2177,7 @@ serious-condition, condition, t
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         compute-restarts
 
@@ -2231,7 +2231,7 @@ serious-condition, condition, t
 
         如果重启动 restart 是无效的, 就会发出一个类型[type] control-error 的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         find-restart, restart-bind, restart-case, invoke-restart-interactively
 
@@ -2294,7 +2294,7 @@ serious-condition, condition, t
 
         如果重启动 restart 是无效的, 就会发出一个类型[type] control-error 的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         find-restart, invoke-restart, restart-case, restart-bind
 
@@ -2362,7 +2362,7 @@ serious-condition, condition, t
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         restart-case, with-simple-restart
 
@@ -2516,7 +2516,7 @@ serious-condition, condition, t
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         restart-bind, with-simple-restart.
 
@@ -2601,7 +2601,7 @@ serious-condition, condition, t
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         compute-restarts find-restart
 
@@ -2638,7 +2638,7 @@ serious-condition, condition, t
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         restart-case
 
@@ -2720,7 +2720,7 @@ serious-condition, condition, t
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         restart-case
 
@@ -2754,7 +2754,7 @@ serious-condition, condition, t
 
         这个 abort 重启动的意图是允许返回到最里边的"命令层级(command level)". 鼓励实现者去确保在用户代码周围总是有一个名为 abort 的重启动, 这样用户代码可以在任何时间调用 abort 并且期待发生一些合理的事情; 究竟什么是合理的可能会有所不同. 典型地, 在一个交互式的监听器中, abort 的调用返回到 Lisp read-eval-print 循环的 Lisp 读取器[Lisp reader]阶段, 尽管在某个批处理或多进程情况中, 可能会有这样的情况: 让它杀死运行的过程更合适.
 
-* 也见(See Also):
+* 参见(See Also):
 
         章节 9.1.4.2 (重启动), 章节 9.1.4.2.2 (重启动的接口), invoke-restart, abort (function) 
 
@@ -2782,7 +2782,7 @@ serious-condition, condition, t
               (t x)))) =>  3.0
     ```
 
-* 也见(See Also):
+* 参见(See Also):
 
         章节 9.1.4.2 (重启动), 章节 9.1.4.2.2 (重启动的接口), invoke-restart, continue (function), assert, cerror 
 
@@ -2830,7 +2830,7 @@ serious-condition, condition, t
     =>  NIL
     ```
 
-* 也见(See Also):
+* 参见(See Also):
 
         章节 9.1.4.2 (重启动), 章节 9.1.4.2.2 (重启动的接口), invoke-restart, muffle-warning (函数[function]), warn 
 
@@ -2861,7 +2861,7 @@ serious-condition, condition, t
         x)) =>  3.0
     ```
 
-* 也见(See Also):
+* 参见(See Also):
 
         章节 9.1.4.2 (重启动), 章节 9.1.4.2.2 (重启动的接口), invoke-restart, store-value (函数[function]), ccase, check-type, ctypecase, use-value (函数[function]和[restart]) 
 
@@ -2876,7 +2876,7 @@ serious-condition, condition, t
 
         这个 use-value 重启动[restart]通常被处理者[handler]用来尝试从例如 cell-error 这样类型[type]的错误中恢复过来, 在这里这个处理者可能希望去提供一个替代的数据用于单次使用.
 
-* 也见(See Also):
+* 参见(See Also):
 
         章节 9.1.4.2 (重启动), 章节 9.1.4.2.2 (重启动的接口), invoke-restart, use-value (函数[function]), store-value (函数[function]和重启动[restart]) 
 
@@ -3032,7 +3032,7 @@ serious-condition, condition, t
 
         如果对于函数[function] abort 一个合适的 abort 重启动[restart]是不可用的, 或者对于函数[function] muffle-warning 一个合适的 muffle-warning 重启动[restart]是不可用的, 那么就会发出一个类型[type] control-error 的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         invoke-restart, 章节 9.1.4.2 (重启动), 章节 9.1.4.2.2 (重启动的接口), assert, ccase, cerror, check-type, ctypecase, use-value, warn
 
