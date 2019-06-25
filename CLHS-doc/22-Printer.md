@@ -2312,30 +2312,30 @@ NIL
 
 * 参数和值(Arguments and Values):
 
-        object---一个对象.
-        output-stream---一个输出流标识符. 默认是标准输出.
-        array---一个广义 boolean.
-        base---一个基数.
-        case---一个 (member :upcase :downcase :capitalize) 类型的符号.
-        circle---一个广义 boolean.
-        escape---一个广义 boolean.
-        gensym---一个广义 boolean.
-        length---一个非负整数, 或 nil.
-        level---一个非负整数, 或 nil.
-        lines---一个非负整数, 或 nil.
-        miser-width---一个非负整数, 或 nil.
-        pprint-dispatch---一个 pprint 分派表.
-        pretty---一个广义 boolean.
-        radix---一个广义 boolean.
-        readably---一个广义 boolean.
-        right-margin---一个非负整数, 或 nil.
-        stream---一个输出流标识符. 默认是标准输出.
+        object---一个对象[object].
+        output-stream---一个输出[output]流标识符[stream designator]. 默认是标准输出[standard output].
+        array---一个广义 boolean [generalized boolean].
+        base---一个基数[radix].
+        case---一个 (member :upcase :downcase :capitalize) 类型[type]的符号[symbol].
+        circle---一个广义 boolean [generalized boolean].
+        escape---一个广义 boolean [generalized boolean].
+        gensym---一个广义 boolean [generalized boolean].
+        length---一个非负整数[integer], 或 nil.
+        level---一个非负整数[integer], 或 nil.
+        lines---一个非负整数[integer], 或 nil.
+        miser-width---一个非负整数[integer], 或 nil.
+        pprint-dispatch---一个美观打印分派表[pprint dispatch table].
+        pretty---一个广义 boolean [generalized boolean].
+        radix---一个广义 boolean [generalized boolean].
+        readably---一个广义 boolean [generalized boolean].
+        right-margin---一个非负整数[integer], 或 nil.
+        stream---一个输出[output]流标识符[stream designator]. 默认是标准输出[standard output].
 
 * 描述(Description):
 
         write, prin1, princ, print, 和 pprint 把对象 object 的打印表示写入到输出流 output-stream 中.
 
-        write 是到 Lisp 打印器的一般入口点. 对于显式提供的下一段中命名的每个关键字参数, 对应的打印器控制变量在打印进行时会被动态地绑定为它的值; 对于没有显式提供的下一段中的每个关键字参数, 对应打印器控制变量的值和 write 被调用时一样. 一旦确定合适的绑定, 对象 object 会被 Lisp 打印器输出.
+        write 是到 Lisp 打印器[Lisp printer]的一般入口点. 对于显式提供的下一段中命名的每个关键字参数[keyword parameter], 对应的打印器控制变量[printer control variable]在打印进行时会被动态地绑定为它的值[value]; 对于下一段中没有显式提供的每个关键字参数[keyword parameter], 对应打印器控制变量[printer control variable]的值和 write 被调用时一样. 一旦建立合适的绑定[binding], 这个对象[object]会被 Lisp 打印器[Lisp printer]输出.
 
             参数              对应的动态变量  
             array            *print-array*                   
@@ -2356,17 +2356,17 @@ NIL
 
             Figure 22-7. 对于 WRITE 函数的参数对应关系.
 
-        prin1, princ, print, 和 pprint 隐式绑定某些打印参数为特定的值. 这些剩余参数值取自 *print-array*, *print-base*, *print-case*, *print-circle*, *print-escape*, *print-gensym*, *print-length*, *print-level*, *print-lines*, *print-miser-width*, *print-pprint-dispatch*, *print-pretty*, *print-radix*, 和 *print-right-margin*.
+        prin1, princ, print, 和 pprint 隐式绑定[bind]某些打印参数为特定的值. 这些剩余参数值取自 *print-array*, *print-base*, *print-case*, *print-circle*, *print-escape*, *print-gensym*, *print-length*, *print-level*, *print-lines*, *print-miser-width*, *print-pprint-dispatch*, *print-pretty*, *print-radix*, 和 *print-right-margin*.
 
         prin1 产生适合于 read 的输入的输出. 它绑定 *print-escape* 为 true.
 
-        princ 就像是 prin1 除了输出没有转义字符. 它绑定 *print-escape* 为 false 并且绑定 *print-readably* 为 false. 一般规则是, 来自 princ 的输出意图在于让人更好地查看, 而来自 prin1 的输出意图在于对于 read 是可接受的.
+        princ 就像是 prin1 除了输出没有转义[escape]字符[character]. 它绑定 *print-escape* 为 false 并且绑定 *print-readably* 为 false. 普遍规则是, 来自 princ 的输出意图在于让人更好地查看, 而来自 prin1 的输出意图在于对于 read 是可接受的.
 
         print 就像是 prin1 除了对象 object 的打印表示前面有一个换行并且后面有空格.
 
-        pprint 就像是 print 除了省略尾部的空格并且对象 object 使用非 nil 的 *print-pretty* 标志来打印, 进而产生美观的输出.
+        pprint 就像是 print 除了省略尾部的空格并且对象 object 使用非 nil [non-nil]的 *print-pretty* 标志来打印, 进而产生美观的输出.
 
-        output-stream 指定输出要被发送到的流.
+        output-stream 指定输出要被发送到的流[stream].
 
 * 受此影响(Affected By):
 
@@ -2380,7 +2380,7 @@ NIL
 
 * 注意(Notes):
 
-        函数 prin1 和 print 不会绑定 *print-readably*.
+        函数[function] prin1 和 print 不会绑定 *print-readably*.
 
         (prin1 object output-stream)
         ==  (write object :stream output-stream :escape t)
@@ -2411,35 +2411,35 @@ NIL
 
 * 参数和值(Arguments and Values):
 
-        object---一个对象.
-        array---一个广义 boolean.
-        base---一个基数.
-        case---一个类型 (member :upcase :downcase :capitalize) 的符号.
-        circle---一个广义 boolean.
-        escape---一个广义 boolean.
-        gensym---一个广义 boolean.
-        length---一个非负整数, 或 nil.
-        level---一个非负整数, 或 nil.
-        lines---一个非负整数, 或 nil.
-        miser-width---一个非负整数, 或 nil.
-        pprint-dispatch---一个 pprint 分派表.
-        pretty---一个广义 boolean.
-        radix---一个广义 boolean.
-        readably---一个广义 boolean.
-        right-margin---一个非负整数, 或 nil.
-        string---一个字符串.
+        object---一个对象[object].
+        array---一个广义 boolean [generalized boolean].
+        base---一个基数[radix].
+        case---一个类型[type] (member :upcase :downcase :capitalize) 的符号[symbol].
+        circle---一个广义 boolean [generalized boolean].
+        escape---一个广义 boolean [generalized boolean].
+        gensym---一个广义 boolean [generalized boolean].
+        length---一个非负整数[integer], 或 nil.
+        level---一个非负整数[integer], 或 nil.
+        lines---一个非负整数[integer], 或 nil.
+        miser-width---一个非负整数[integer], 或 nil.
+        pprint-dispatch---一个美观打印分派表[pprint dispatch table].
+        pretty---一个广义 boolean [generalized boolean].
+        radix---一个广义 boolean [generalized boolean].
+        readably---一个广义 boolean [generalized boolean].
+        right-margin---一个非负整数[integer], 或 nil.
+        string---一个字符串[string].
 
 * 描述(Description):
 
-        write-to-string, prin1-to-string, 和 princ-to-string 被用于创建一个由对象 object 的打印表示组成的字符串. 对象 object 被有效地打印, 就像分别是通过 write, prin1, 或 princ 一样, 并且输出的字符被构成一个字符串.
+        write-to-string, prin1-to-string, 和 princ-to-string 被用于创建一个由对象 object 的打印表示组成的字符串[string]. 对象 object 被有效地打印, 就像分别是通过 write, prin1, 或 princ 打印一样, 并且输出的字符[character]构成一个字符串[string].
 
-        write-to-string 是一个一般的输出函数. 它有着去指定所有可应用于对象 object 打印的参数的能力.
+        write-to-string 是一个一般的输出函数. 它能够指定所有适用于打印对象 object 的参数.
 
-        prin1-to-string 表现地就像是 write-to-string, 其中 :escape 为 t, 这也就是说, 转义字符会在了合适的地方被写入.
+        prin1-to-string 表现地就像是 :escape 为 t 时的 write-to-string, 这也就是说, 转义[escape]字符[character]会写入到合适的地方.
 
-        princ-to-string 表现地就像是 write-to-string, 其中 :escape 为 nil 并且 :readably 为 nil. 因此没有转义字符会被写入.
+        princ-to-string 表现地就像是 :escape 为 nil 并且 :readably 为 nil 时的 write-to-string. 因此没有转义[escape]字符[character]会被写入.
 
-        当 prin1-to-string 或 princ-to-string 被调用时, 所有会被指定给 write-to-string 的其他关键字是默认值.
+        当 prin1-to-string 或 princ-to-string 被调用时, 所有会被指定给 write-to-string 的其他关键字都是默认值.
 
         给 write-to-string 的关键字参数的意义和默认值与 write 的相同.
 
@@ -2481,25 +2481,25 @@ NIL
 
 * 值类型(Value Type):
 
-        一个广义 boolean.
+        一个广义 boolean [generalized boolean].
 
 * 初始值(Initial Value):
 
-        依赖于具体实现的.
+        依赖于具体实现的[implementation-dependent].
 
 * 描述(Description):
 
-        控制数组被打印的格式. 如果它是 false, 除了字符串以外的数组内容不会被打印. 反而, 数组以一个使用 #< 的简洁形式来打印, 这个形式为用户提供了足够的信息来辨别这个数组, 但是不会包含整个数组内容. 如果它是 true, 非字符串数组使用 #(...), #*, 或 #nA 语法打印.
+        控制数组[array]被打印的格式. 如果它是 false, 除了字符串[string]以外的数组[array]内容不会被打印. 取而代之, 数组[array]以一个使用 #< 的简洁形式来打印, 这个形式为用户提供了足够的信息来辨别这个数组[array], 但是不会包含整个数组[array]内容. 如果它是 true, 非字符串[string]数组[array]使用 #(...), #*, 或 #nA 语法打印.
 
 * 示例(Examples): None.
 
 * 受此影响(Affected By):
 
-        具体实现.
+        具体实现[implementation].
 
 * 也见(See Also):
 
-        章节 2.4.8.3 (Sharpsign Left-Parenthesis), 章节 2.4.8.20 (Sharpsign Less-Than-Sign)
+        章节 2.4.8.3 (井号左括号(#()), 章节 2.4.8.20 (井号小于号(#<))
 
 * 注意(Notes): None. 
 
@@ -2508,19 +2508,19 @@ NIL
 
 * 值类型(Value Type):
 
-        *print-base*---a radix. *print-radix*---一个广义 boolean.
+        *print-base*---a radix. *print-radix*---一个广义 boolean [generalized boolean].
 
 * 初始值(Initial Value):
 
-        这个 *print-base* 的初始值是 10. 这个 *print-radix* 的初始值是 false.
+        这个 *print-base* 的初始值[value]是 10. 这个 *print-radix* 的初始值[value]是 false.
 
 * 描述(Description):
 
-        *print-base* 和 *print-radix* 控制有理数的打印. 这个 *print-base* 的值称为当前输出基数.
+        *print-base* 和 *print-radix* 控制有理数[rational]的打印. 这个 *print-base* 的值[value]称为当前输出基数[current output base].
 
-        这个 *print-base* 的值是打印器打印有理数所用的基数. 对于 10 以上的基数, 字母表中的字母被用于表示 9 以上的数字.
+        这个 *print-base* 的值[value]是打印器打印有理数[rational]所用的基数[radix]. 对于 10 以上的基数, 字母表中的字母被用于表示 9 以上的数字.
 
-        如果 *print-radix* 的值是 true, 那么打印器会打印一个基数指定符来表示它用于打印有理数所用的基数. 这个基数指定符总是用小写字母来打印. 如果 *print-base* 是 2, 8, 或 16, 那么使用的基数指定负分别是 #b, #o, 或 #x. 对于整数, 基数10是用一个尾部的小数点来表示而不是一个前导的基数指定符; 对于比率, 使用 #10r.
+        如果 *print-radix* 的值[value是 true, 那么打印器会打印一个基数指定符来表示它打印有理数[rational]所用的基数[radix]. 这个基数指定符总是用小写字母来打印. 如果 *print-base* 是 2, 8, 或 16, 那么使用的基数指定负分别是 #b, #o, 或 #x. 对于整数[integer], 基数 10 是用一个尾部的小数点来表示而不是一个前导的基数指定符; 对于比率[ratio], 使用 #10r.
 
 * 示例(Examples):
 
@@ -2555,7 +2555,7 @@ NIL
 
 * 受此影响(Affected By):
 
-        可能被 format, 和 write, write-to-string 绑定.
+        可能被 format, 和 write, write-to-string 绑定[bound].
 
 * 也见(See Also):
 
@@ -2568,17 +2568,17 @@ NIL
 
 * 值类型(Value Type):
 
-        符号 :upcase, :downcase, 或 :capitalize 其中之一.
+        符号[symbol] :upcase, :downcase, 或 :capitalize 其中之一.
 
 * 初始值(Initial Value):
 
-        符号 :upcase.
+        符号[symbol] :upcase.
 
 * 描述(Description):
 
-        这个 *print-case* 的值控制当没有使用竖杠语法时符号名字中的任何大写字符要被打印的大小写 (大写, 小写, 或混合的).
+        这个 *print-case* 的值[value]控制当没有使用竖杠语法时符号[symbol]名字中的任何大写字符要被打印的大小写 (大写, 小写, 或混合的).
 
-        当 *print-escape* 的值是 false 时, *print-case* 在所有时间都有效. 当 *print-escape* 的值是 true 时 *print-case* 也有效, 除非在一个转义上下文中 (换句话说, 除非在竖杠之间或一个斜杠之后).
+        当 *print-escape* 的值[value]是 false 时, *print-case* 在所有时间都有效. 当 *print-escape* 的值[value]是 true 时 *print-case* 也有效, 除非在一个转义上下文中 (换句话说, 除非在竖杠[vertical-bar]之间或一个斜杠[slash]之后).
 
 * 示例(Examples):
 
@@ -2612,16 +2612,16 @@ NIL
 
 * 注意(Notes):
 
-        read 通常将出现在符号中的小写字符转换为大写字符, 这样一来内容的打印名字通常只包含大写字符.
+        read 通常将出现在符号[symbol]中的小写字符转换为大写字符, 这样一来内部打印名字通常只包含大写字符.
 
-        如果 *print-escape* 是 true, 一个符号名字中的小写字符总是用小写打印, 并且前面有单转义字符或被多转义字符围绕; 根据 *print-case* 的值, 一个符号名字中的大写字符可能会用大写, 小写或混合的方式来打印, 以便使单词首字母大写. 关于构成一个 "单词(word)" 的惯例和 string-capitalize 一样. 
+        如果 *print-escape* 是 true, 一个符号[symbol]名字[name]中的小写字符总是用小写打印, 并且前面有单转义字符或被多转义字符围绕; 一个符号[symbol]名字[name]中的大写字符可能会用大写, 小写或混合的方式来打印, 以便根据 *print-case* 的值使单词首字母大写. 关于构成一个 "单词(word)" 的规约和 string-capitalize 一样. 
 
 
 ### <span id="V-PRINT-CIRCLE">变量 *PRINT-CIRCLE*</span>
 
 * 值类型(Value Type):
 
-        一个广义 boolean.
+        一个广义 boolean [generalized boolean].
 
 * 初始值(Initial Value):
 
@@ -2629,15 +2629,15 @@ NIL
 
 * 描述(Description):
 
-        控制尝试在一个要被打印的对象中检测环状和共享.
+        控制检测一个要被打印的对象[object]中环状和共享的尝试.
 
         如果是 false, 打印过程仅仅是通过递归的下降来进行, 而不需要检测环状和共享.
 
         如果是 true, 打印器将努力检测出要被打印的结构中的环和共享, 并且使用 #n= 和 #n# 语法来表示环或共享成员.
 
-        如果是 true, 一个用户定义的 print-object 方法可以使用 write, prin1, princ, 或 format 打印对象到提供的流中并且期望使用 #n# 语法检测和打印环和共享. 如果一个用户定义的 print-object 方法打印到一个流而不是提供的那个, 那么环检测从这个流开始.
+        如果是 true, 一个用户定义的 print-object 方法[method]可以使用 write, prin1, princ, 或 format 打印对象[object]到提供的流[stream]中并且期望检测环和共享并使用 #n# 语法打印. 如果一个用户定义的 print-object 方法[method]打印到提供的流[stream]之外的流, 那么对该流[stream]重新进行环状检测.
 
-        注意, 当 Lisp 读取器会自动确保没有它的共享时, 具体实现不应该使用 #n# 标记 (例如, as happens with interned symbols).
+        注意, 当 Lisp 读取器[Lisp reader]会自动确保没有它的共享时, 具体实现不应该使用 #n# 标记 (例如, 就像被捕获[interned]的符号[symbol]一样).
 
 * 示例(Examples):
 
@@ -2666,7 +2666,7 @@ NIL
 
 * 值类型(Value Type):
 
-        一个广义 boolean.
+        一个广义 boolean [generalized boolean].
 
 * 初始值(Initial Value):
 
@@ -2674,11 +2674,11 @@ NIL
 
 * 描述(Description):
 
-        如果是 false, 在打印一个表达式时, 转义字符和包前缀不会被输出.
+        如果是 false, 在打印一个表达式时, 转义字符和包前缀[package prefix]不会被输出.
 
-        如果是 true, 尝试以一种它可以被再次读取以产生一个 equal 表达式的方式打印一个表达式. (这只是一个指导纲要; 不是必须的. 见 *print-readably*.)
+        如果是 true, 尝试以一种它可以被再次读取以产生一个 equal 的表达式[expression]的方式来打印一个表达式[expression]. (这只是一个指导纲要; 不是必须的. 见 *print-readably*.)
 
-        关于 *print-escape* 的值如何影响特定类型的打印的更具体信息, 见章节 22.1.3 (默认 Print-Object 方法).
+        关于 *print-escape* 的值[value]如何影响特定类型[type]的打印的更具体信息, 见章节 22.1.3 (默认 Print-Object 方法).
 
 * 示例(Examples):
 
@@ -2708,7 +2708,7 @@ NIL
 
 * 值类型(Value Type):
 
-        一个广义 boolean.
+        一个广义 boolean [generalized boolean].
 
 * 初始值(Initial Value):
 
@@ -2716,7 +2716,7 @@ NIL
 
 * 描述(Description):
 
-        控制在明显未捕捉的符号前面是否打印前缀 "#:". 当且仅当这个 *print-gensym* 的值是 true 时, 在这样一个符号之前打印这个前缀.
+        控制在明显未捕捉的[apparently uninterned]符号[symbol]前面是否打印前缀 "#:". 当且仅当这个 *print-gensym* 的值[value]是 true 时, 在这样一个符号[symbol]之前打印这个前缀.
 
 * 示例(Examples):
 
@@ -2740,7 +2740,7 @@ NIL
 
 * 值类型(Value Type):
 
-        一个非负整数, 或 nil.
+        一个非负整数[integer], 或 nil.
 
 * 初始值(Initial Value):
 
@@ -2748,11 +2748,11 @@ NIL
 
 * 描述(Description):
 
-        *print-level* 控制一个嵌套对象打印多少层级深度. 如果它是 false, 那么不会执行控制. 否则, 它就是一个表示要被打印的最大层级的整数. 一个要被打印的对象处于 0 层级; 它的成员 (就像是在一个列表或向量中) 处于 1 层级; 以此类推. 如果一个要被递归打印的对象有着大于等于 *print-level* 的值的层级, 那么这个对象被打印为 "#".
+        *print-level* 控制一个嵌套对象[object]打印多少层级深度. 如果它是 false, 那么不会执行控制. 否则, 它就是一个表示要被打印的最大层级的整数[integer]. 一个要被打印的对象[object]处于 0 层级; 它的成员 (就像是在一个列表[list]或向量[vector]中) 处于 1 层级; 以此类推. 如果一个要被递归打印的对象[object]有着大于等于 *print-level* 值[value]的层级, 那么这个对象[object]被打印为 "#".
 
-        *print-length* 控制在一个给定的层级下多少个元素会被打印. 如果它是 false, 那么就没有打印成员数量上的限制. 否则, 它就是一个表示要被打印的对象的最大元素数的整数. 如果超过了, 这个打印器会打印 "..." 来替换其他元素. 在点对列表的情况下, 如果这个列表包含了和 *print-length* 的值一样多的元素, 终止的基元会被打印而不是打印 "..."
+        *print-length* 控制在一个给定的层级下打印多少个元素. 如果它是 false, 那么就没有打印成员数量上的限制. 否则, 它就是一个表示要被打印的对象[object]的最大元素[element]数的整数[integer]. 如果超过了, 这个打印器会打印 "..." 来替换其他元素[element]. 在点对列表[dotted list]的情况下, 如果这个列表[list]包含了和 *print-length* 的值[value]一样多的元素[element], 终止的基元[atom]会被打印而不是打印 "..."
 
-        *print-level* 和 *print-length* 影响任何用类列表语法打印的对象的打印. 它们不会影响符号, 字符串, 和位向量的打印.
+        *print-level* 和 *print-length* 影响用类列表语法打印的任何对象[object]的打印. 它们不会影响符号[symbol], 字符串[string], 和位向量[bit vector]的打印.
 
 * 示例(Examples):
 
@@ -2818,7 +2818,7 @@ NIL
 
 * 值类型(Value Type):
 
-        一个非负整数, 或 nil.
+        一个非负整数[integer], 或 nil.
 
 * 初始值(Initial Value):
 
@@ -2826,7 +2826,7 @@ NIL
 
 * 描述(Description):
 
-        当这个 *print-lines* 的值是除了 nil 以外的值时, 当某个东西要被美观打印时, 它是产生的输出行数的限制. 如果尝试去超出那么多行, ".." 会被打印在最后一行末尾, 后面跟着所有挂起待打印的后缀 (关闭分隔符) that are pending to be printed.
+        当这个 *print-lines* 的值[value]是除了 nil 以外的值时, 当某个东西要被美观打印时, 它是产生的输出行数的限制. 如果尝试去超出那么多行, ".." 会被打印在最后一行末尾, 后面跟着所有待打印的后缀 (结束分隔符).
 
 * 示例(Examples):
 
@@ -2845,22 +2845,22 @@ NIL
 
         这个 ".." 标记是有意和用于级别缩写的 "..." 标记不同的, 这样一来这两个不同的情况可以被可见地区分.
 
-        这个符号用于增加 Lisp 读取器如果尝试读取缩略输出时发出错误的可能性. 但是注意这个截断如果发生在一个字符串中, 比如在 "This string has been trunc.." 中, 以后不会检测到问题情况, 也不会出现此类错误. 
+        这个标记用于增加 Lisp 读取器[Lisp reader]在稍后尝试读取缩略输出时发出错误的可能性. 但是注意这个截断如果发生在一个字符串[string]中, 比如在 "This string has been trunc.." 中, 以后不会检测到问题情况, 也不会出现此类错误. 
 
 
 ### <span id="V-PRINT-MISER-WIDTH">变量 *PRINT-MISER-WIDTH*</span>
 
 * 值类型(Value Type):
 
-        一个非负整数, 或 nil.
+        一个非负整数[integer], 或 nil.
 
 * 初始值(Initial Value):
 
-        依赖于具体实现的
+        依赖于具体实现的[implementation-dependent]
 
 * 描述(Description):
 
-        如果它不是 nil, 那么当打印子结构的宽度小于或等于这个许多em 单位时, 这个美观打印器切换到紧凑输出风格(称为 miser 风格).
+        如果它不是 nil, 那么当打印子结构的可用宽度小于或等于这么多个 em 单位时, 这个美观打印器[pretty printer]切换到输出的紧凑风格(称为最小执行常式(miser)风格).
 
 * 示例(Examples): None.
 
@@ -2869,20 +2869,19 @@ NIL
 * 注意(Notes): None.
 
 
-
 ### <span id="V-PRINT-PPRINT-DISPATCH">变量 *PRINT-PPRINT-DISPATCH*</span>
 
 * 值类型(Value Type):
 
-        一个 pprint 分派表.
+        一个美观打印分派表[pprint dispatch table].
 
 * 初始值(Initial Value):
 
-        依赖于具体实现的, 但是这些初始条目都使用了一个特殊的优先级, 它们有着小于所有可以用 set-pprint-dispatch 指定的优先级的属性, 这样一来任何条目的初始内容可以被重写.
+        依赖于具体实现的[implementation-dependent], 但是这些初始条目都使用了一个特殊的优先级, 其属性是它们比所有使用 set-pprint-dispatch 指定的优先级都小, 这样一来任何条目的初始内容可以被重写.
 
 * 描述(Description):
 
-        这个 pprint 分派表控制当前美观打印器.
+        这个美观打印分派表[pprint dispatch table]控制当前美观打印器[pretty printer].
 
 * 示例(Examples): None.
 
@@ -2892,28 +2891,28 @@ NIL
 
 * 注意(Notes):
 
-        其目的是, 该变量的初始值应该导致"传统"的代码美观打印. 一般而言, 然而, 你可以在 *print-pprint-dispatch* 放置一个值来使美观打印输出看起来像是非美观打印输出. 设置 *print-pretty* 为 true 只会导致当前 pprint 分派表中的这些函数有着超过普通 print-object 方法的优先级; 没有神奇的方法来强制执行这些函数实际上产生了美观的输出. 关于详细信息, 见章节 22.2.1.4 (美观打印分派表). 
+        其目的是, 该变量[variable]的初始值[value]应该导致代码[code]的"传统"美观打印. 然而, 通常你可以在 *print-pprint-dispatch* 放置一个值来使美观打印输出看起来像是非美观打印输出. 设置 *print-pretty* 为 true 只会导致当前美观打印分派表[current pprint dispatch table]中的这些函数有着超过普通 print-object 方法的优先级; 没有神奇的方法来强制这些函数实际上产生了美观的输出. 关于详细信息, 见章节 22.2.1.4 (美观打印分派表). 
 
 
 ### <span id="V-PRINT-PRETTY">变量 *PRINT-PRETTY*</span>
 
 * 值类型(Value Type):
 
-        一个广义 boolean.
+        一个广义 boolean [generalized boolean].
 
 * 初始值(Initial Value):
 
-        依赖于具体实现的.
+        依赖于具体实现的[implementation-dependent].
 
 * 描述(Description):
 
-        控制 Lisp 打印器是否调用美观打印器.
+        控制 Lisp 打印器[Lisp printer]是否调用美观打印器[pretty printer].
 
-        如果它是 false, 美观打印器不会被使用并且当打印一个表达式时最小数量的空格会被输出.
+        如果它是 false, 美观打印器[pretty printer]不会被使用并且当打印一个表达式时会输出最小数量的空格[whitespace[1]].
 
-        如果它是 true, 美观打印器会被使用, 并且 Lisp 打印器会尽可能的在可以使表达式变得更加可读的地方去插入额外的空格 whitespace.
+        如果它是 true, 美观打印器[pretty printer]会被使用, 并且 Lisp 打印器[Lisp printer]会尽可能的在可以使表达式[expression]变得更加可读的地方去插入额外的空格[whitespace[1]].
 
-        即便当 *print-escape* 的值是 false 时, *print-pretty* 也是有效的.
+        即便当 *print-escape* 的值[value]是 false 时, *print-pretty* 也是有效的.
 
 * 示例(Examples):
 
@@ -2963,7 +2962,7 @@ NIL
 
 * 值类型(Value Type):
 
-        一个广义 boolean.
+        一个广义 boolean [generalized boolean].
 
 * 初始值(Initial Value):
 
@@ -2971,15 +2970,15 @@ NIL
 
 * 描述(Description):
 
-        如果 *print-readably* 是 true, 打印对象的一些特殊规则生效. 具体来说, 打印任何对象 O1 会产生一个打印表示, 当标准读取表生效时并且被 Lisp 读取器见到时, 会产生一个和 O1 相似的对象 O2. 产生的打印表示可能和 *print-readably* 是 false 时产生的打印表示一样, 也可能不一样. 如果打印一个可读对象是不可能的, 就会发出一个 print-not-readable 类型的错误而不是使用一个对于相同实现不可读的语法 (比如, "#<" 语法). 如果其他一些打印器控制变量的值是这样的, 那么这些需求就会被违背, 那么这个其他变量的值就会被忽略 If the value of some other printer control variable is such that these requirements would be violated, the value of that other variable is ignored.
+        如果 *print-readably* 是 true, 打印对象[object]的一些特殊规则生效. 具体来说, 打印任何对象[object] O1 会产生一个打印表示, 当 Lisp 读取器[Lisp reader]在标准读取表[standard readtable]生效见到这个打印表示时, 会产生一个和 O1 相似[similar]的对象[object] O2. 产生的打印表示可能和 *print-readably* 是 false 时产生的打印表示一样, 也可能不一样. 如果不能打印一个可读[readably]对象[object], 就会发出一个 print-not-readable 类型[type]的错误而不是使用一个对于相同实现[implementation]不可读的语法 (比如, "#<" 语法). 如果某个其他打印器控制变量[printer control variable]的值[value]是这样的, 那么这些需求就会被违背, 那么这个其他变量[variable]的值[value]就会被忽略.
 
-        具体的说, 如果 *print-readably* 是 true, 打印就进行, 就好像 *print-escape*, *print-array*, 和 *print-gensym* 也是 true, 以及就好像 *print-length*, *print-level*, 和 *print-lines* 是 false.
+        具体的说, 如果 *print-readably* 是 true, 打印过程就像 *print-escape*, *print-array*, 和 *print-gensym* 也是 true 并且 *print-length*, *print-level*, 和 *print-lines* 是 false 一样.
 
-        如果 *print-readably* 是 false, 正常的打印规则和其他打印器控制变量的正常解释规则生效.
+        如果 *print-readably* 是 false, 正常的打印规则和其他打印器控制变量[printer control variable]的正常解释规则生效.
 
-        单独的 print-object 方法, 包括用户定义的方法, 有责任去实现这些需要.
+        单独的 print-object 方法[method], 包括用户定义的方法[method], 有责任去实现这些需要.
 
-        如果 *read-eval* 是 false 并且 *print-readably* 是 true, 任何这样会输出对 "#." 读取器宏的引用的方法, 要么输出其他的东西, 要么会发出错误的信号 (就像上面描述的).
+        如果 *read-eval* 是 false 并且 *print-readably* 是 true, 任何会输出对 "#." 读取器宏[reader macro]的引用的方法, 要么输出其他的东西, 要么会发出错误的信号 (就像上面描述的).
 
 * 示例(Examples):
 
@@ -3036,14 +3035,14 @@ NIL
 
 * 注意(Notes):
 
-        "相似性(similarity)" 规则意味着 #A 或 #( 语法不能被用于元素类型除了 t 以外的数组. 一个实现将不得不使用另一种语法或者发出一个 print-not-readable 类型的错误. 
+        "相似性[similarity]" 规则意味着 #A 或 #( 语法不能被用于除了 t 以外的元素类型[element type]的数组[array]. 一个实现将不得不使用另一种语法或者发出一个 print-not-readable 类型[type]的错误. 
 
 
 ### <span id="V-PRINT-RIGHT-MARGIN">变量 *PRINT-RIGHT-MARGIN*</span>
 
 * 值类型(Value Type):
 
-        一个非负整数, 或 nil.
+        一个非负整数[integer], 或 nil.
 
 * 初始值(Initial Value):
 
@@ -3051,9 +3050,9 @@ NIL
 
 * 描述(Description):
 
-        如果它不是 nil, 当美观打印器要做布局决定时, 它指定了要使用的右边距 (em 单位的整形数字).
+        如果它非 nil [non-nil], 当美观打印器[pretty printer]要做布局决定时, 它指定了要使用的右边距 (em 单位的整数[integer]).
 
-        如果它是 nil, 正确的边距被认为是最大行长度, 这样输出就可以显示, 而不需要包绕或截断. 如果这个没有被确定, 使用一个依赖于具体实现的值.
+        如果它是 nil, 右边距被认为是输出可以显示而不需要包绕或截断的最大行长度. 如果这个没有被确定, 使用一个依赖于具体实现的[implementation-dependent]值.
 
 * 示例(Examples): None.
 
@@ -3061,7 +3060,7 @@ NIL
 
 * 注意(Notes):
 
-        这个度量是用em 单位, 为了与具体实现定义的可变宽度字体兼容, 同时不要求语言提供对字体的支持. 
+        这个度量是用 em 单位, 为了与具体实现定义的[implementation-defined]可变宽度字体兼容, 同时不要求语言提供对字体的支持. 
 
 
 ### <span id="CT-PRINT-NOT-READABLE">状况类型 PRINT-NOT-READABLE</span>
@@ -3072,7 +3071,7 @@ NIL
 
 * 描述(Description):
 
-        当 *print-readably* 为 true 时, 类型 print-not-readable 由输出期间发生的错误状况组成, 是尝试去用 Lisp 打印器写入一个不能被 Lisp 读取器读回的打印表示的结果. 这个不能被打印的对象通过给 make-condition 的 :object 初始化参数来初始化, 并且可以通过函数 print-not-readable-object 访问.
+        当 *print-readably* 为 true 时, 类型[type] print-not-readable 由输出期间发生的错误状况组成, 是尝试去用 Lisp 打印器[Lisp printer]写入一个不能被 Lisp 读取器[Lisp reader]读回的打印表示的结果. 这个不能被打印的对象通过给 make-condition 的 :object 初始化参数来初始化, 并且可以通过函数[function] print-not-readable-object 访问.
 
 * 也见(See Also):
 
@@ -3087,12 +3086,12 @@ NIL
 
 * 参数和值(Arguments and Values):
 
-        condition---一个 print-not-readable 类型的状况.
-        object---一个对象.
+        condition---一个 print-not-readable 类型[type]的状况.
+        object---一个对象[object].
 
 * 描述(Description):
 
-        返回在状况 condition 所表示的情况中不能被可读地打印的对象.
+        返回在状况 condition 所表示的情况中不能被可读地打印的对象[object].
 
 * 示例(Examples): None.
 
@@ -3102,7 +3101,7 @@ NIL
 
 * 也见(See Also):
 
-        print-not-readable, 章节 9 (Conditions)
+        print-not-readable, 章节 9 (状况)
 
 * 注意(Notes): None. 
 
@@ -3115,18 +3114,18 @@ NIL
 
 * 参数和值(Arguments and Values):
 
-        destination---nil, t, 一个流, 或者一个带有填充指针的字符串.
-        control-string---一个格式化控制.
-        args---对于 control-string 的格式化参数.
-        result---如果 destination 不是 nil, 那么就是 nil; 否则, 一个字符串.
+        destination---nil, t, 一个流[stream], 或者一个带有填充指针[fill pointer]的字符串[string].
+        control-string---一个格式化控制[format control].
+        args--- control-string 的格式化参数[format argument].
+        result---如果 destination 非 nil [non-nil], 那么就是 nil; 否则, 就是一个字符串[string].
 
 * 描述(Description):
 
-        format 通过输出 control-string 的字符并观察到一个波浪字符引入了一个指令来生成格式化的输出. 波浪符号后面的字符, 可能前面有前缀参数和和修饰符, 指定了想要的格式化种类. 大部分指令使用 args 中的一个或多个元素来创建它们的输出.
+        format 通过输出 control-string 的字符并观察到一个波浪字符[tilde]引入了一个指令来生成格式化的输出. 波浪符号后面的字符, 可能前面有前缀参数和和修饰符, 指定了想要的格式化种类. 大部分指令使用 args 中的一个或多个元素来创建它们的输出.
 
-        如果 destination 是一个字符串, 一个流, 或 t, 那么结果是 nil. 否则, 结果是一个包含 'output' 的字符串.
+        如果 destination 是一个字符串[string], 一个流[stream], 或 t, 那么结果 result 是 nil. 否则, 结果 result 是一个包含 '输出' 的字符串[string].
 
-        format 用于产生良好格式化的文本, 产生美观的信息是很有用的, 依次类推. format 可以生成并返回一个字符串或者输出到 destination 中.
+        format 用于产生良好格式化的文本, 产生美观的信息是很有用的, 等等. format 可以生成并返回一个字符串[string]或者输出到 destination 中.
 
         关于 control-string 任何被解释的详细信息, 见章节 22.3 (格式化输出).
 
@@ -3138,10 +3137,10 @@ NIL
 
 * 异常情况(Exceptional Situations):
 
-        如果 destination 是一个带有填充指针的字符串, 如果在这个调用的动态范围内直接在这个字符串上执行破坏性的修改, 那么后果是未定义的.
+        如果 destination 是一个带有填充指针[fill pointer]的字符串[string], 如果在这个调用的动态范围[dynamic extent]内直接在这个字符串[string]上执行破坏性的修改, 那么后果是未定义的.
 
 * 也见(See Also):
 
-        write, 章节 13.1.10 (Documentation of Implementation-Defined Scripts)
+        write, 章节 13.1.10 (具体实现定义的文字的文档)
 
 * 注意(Notes): None.
