@@ -1,4 +1,4 @@
-# 25 环境
+# 25. 环境
 
 > * 25.1 [外部环境](#TheExternalEnvironment)
 > * 25.2 [环境字典](#TheEnvironmentDictionary)
@@ -12,9 +12,9 @@
 
 ### 25.1.1 <span id="TopLevelLoop">顶层循环</span>
 
-顶层循环是用户用来和 Common Lisp 系统正常交互的 Common Lisp 机制. 这个循环有时引用为 Lisp read-eval-print 循环, 因为它通常由一个读取一个表达式, 求值它然后打印结果这样的无止尽的循环组成.
+顶层循环是用户用来和 Common Lisp 系统正常交互的 Common Lisp 机制. 这个循环有时被称为 Lisp read-eval-print 循环[Lisp read-eval-print loop], 因为它通常由一个读取一个表达式、对它求值然后打印结果这样的无止尽的循环组成.
 
-这个顶层循环没有被完全指定; 因此用户接口是具体实现定义的. 这个顶层循环打印所有来自于求值一个表达式形式的值. 下一段中列出了由 Lisp read-eval-print 循环来保存的变量.
+这个顶层循环没有被完全指定; 因此用户接口是具体实现定义的[implementation-defined]. 这个顶层循环打印所有来自于求值一个表达式形式[form]的值. 下一段中列出了由 Lisp read-eval-print 循环[Lisp read-eval-print loop]来维护的变量.
 
     *    +    /    -  
     **   ++   //
@@ -24,7 +24,7 @@
 
 ### 25.1.2 <span id="DebuggingUtilities">调试工具</span>
 
-下一段展示了和调试相关的已定义的名字.
+下一段展示了和调试相关的已定义的名字[defined name].
 
     *debugger-hook*  documentation    step
     apropos          dribble          time
@@ -36,108 +36,112 @@
 
 ### 25.1.3 <span id="EnvironmentInquiry">环境查询</span>
 
-环境查询的已定义名字提供了关于硬件和软件配置的信息, 一个 Common Lisp 程序基于这些信息执行.
+环境查询的已定义名字[defined name]提供了关于硬件和软件配置的信息, 一个 Common Lisp 程序基于这些信息执行.
 
-下一段展示了和环境查询相关的已定义的名字.
+下一段展示了和环境查询相关的已定义名字[defined name].
 
     *features*                   machine-instance  short-site-name
     lisp-implementation-type     machine-type      software-type
     lisp-implementation-version  machine-version   software-version  
     long-site-name               room
 
-    Figure 25-3. 和环境查询相关的已定义的名字.
+    Figure 25-3. 和环境查询相关的已定义名字.
 
 ### 25.1.4 <span id="Time">时间</span>
 
-时间在 Common Lisp 中用四种不同的方式被表示: 解码时间(decoded time), 通用时间(universal time), 内部时间(internal time)和秒(seconds). 解码时间和通用时间主要被用于表示日历时间, 并且只精确到一秒. 内部时间主要被用于表示计算机时间的度量 (例如运行时间) 并且精确到某个依赖于具体实现的秒的分数, 称之为内部时间单元(internal time unit), 由 internal-time-units-per-second 指定. 一个内部时间可以被用于绝对和相对的时间度量. 一个通用时间和一个解码时间都只能被用于绝对时间度量. 在一个 sleep 函数的情况中, 时间间隔被表示为一个秒的非负实数.
+时间在 Common Lisp 中用四种不同的方式被表示: 解码时间[decoded time], 通用时间[universal time], 内部时间[internal time]和秒. 解码时间[decoded time]和通用时间[universal time]主要被用于表示日历时间, 并且只精确到秒. 内部时间[internal time]主要被用于表示计算机时间的度量 (例如运行时间) 并且精确到某个依赖于具体实现[implementation-dependent]的秒的碎片, 称之为内部时间单元[internal time unit], 由 internal-time-units-per-second 指定. 一个内部时间[internal time]可以被用于绝对[absolute]和相对[relative]的时间[time]度量. 一个通用时间[universal time]和一个解码时间[decoded time]都只能被用于绝对[absolute]时间[time]度量. 在一个 sleep 函数的情况中, 时间间隔被表示为一个秒的非负实数[real].
 
-下一段展示了和时间相关的已定义的名字.
+下一段展示了和时间[time]相关的已定义名字[defined name].
 
     decode-universal-time   get-internal-run-time
     encode-universal-time   get-universal-time
     get-decoded-time        internal-time-units-per-second  
     get-internal-real-time  sleep
 
-    Figure 25-4. 涉及到时间的已定义名字.
+    Figure 25-4. 时间相关的已定义名字.
 
-> * 25.1.4.1 [解码时间(Decoded Time)](#DecodedTime)
-> * 25.1.4.2 [通用时间(Universal Time)](#UniversalTime)
-> * 25.1.4.3 [内部时间(Internal Time)](#InternalTime)
+> * 25.1.4.1 [解码时间](#DecodedTime)
+> * 25.1.4.2 [通用时间](#UniversalTime)
+> * 25.1.4.3 [内部时间](#InternalTime)
 > * 25.1.4.4 [秒](#Seconds)
 
-#### 25.1.4.1 <span id="DecodedTime">解码时间(Decoded Time)</span>
+#### 25.1.4.1 <span id="DecodedTime">解码时间</span>
 
-一个解码时间是一个 9 个值的有序序列, 加在一起表示日历时间中的一个点 (忽略闰秒(leap seconds)):
+一个解码时间[decoded time]是一个 9 个值的有序序列, 加在一起表示日历时间中的一个点 (忽略闰秒[leap seconds]):
 
     Second
 
-        一个 0 和 59 之间的整数, 是包含的.
+        一个 0 和 59 之间的整数[integer], 是包含的.
 
     Minute
 
-        一个 0 和 59 之间的整数, 是包含的.
+        一个 0 和 59 之间的整数[integer], 是包含的.
 
     Hour
 
-        一个 0 和 23 之间的整数, 是包含的.
+        一个 0 和 23 之间的整数[integer], 是包含的.
 
     Date
 
-        一个 1 和 31 之间的整数, 是包含的 (当然这个上限实际上依赖于月份和年).
+        一个 1 和 31 之间的整数[integer], 是包含的 (当然这个上限实际上依赖于月份和年).
 
     Month
 
-        一个 1 和 12 之间的整数, 是包含的; 1 意味着 January, 2 意味着 February, 以此类推; 12 意味着 December.
+        一个 1 和 12 之间的整数[integer], 是包含的; 1 意味着 January, 2 意味着 February, 以此类推; 12 意味着 December.
 
     Year
 
-        一个表示公元年的整数. 然而, 如果这个整数在 0 和 99 之间, 使用 "obvious" 的年; 更确切地说, 假设那一年等于整数模100, 并且在本年度的 50 年内 (向后包含但是向前不包含). 因此, 在 1978 年, 年 28 是 1928 但是年 27 是 2027. (以这种格式返回时间的函数总是返回全年数字.)
+        一个表示公元年的整数[integer]. 然而, 如果这个整数[integer]在 0 和 99 之间, 使用 "显而易见的(obvious)" 的年; 更确切地说, 假设那一年等于整数[integer]模100, 并且在本年度的 50 年内 (向后包含但是向前不包含). 因此, 在 1978 年, 年 28 是 1928 但是年 27 是 2027. (以这种格式返回时间的函数总是返回全年数字.)
 
     Day of week
 
-        一个 0 和 6 之间的整数, 是包含的; 0 意味着周一(Monday), 1 意味着周二(Tuesday), 以此类推; 6 意味着周日(Sunday).
+        一个 0 和 6 之间的整数[integer], 是包含的; 0 意味着周一(Monday), 1 意味着周二(Tuesday), 以此类推; 6 意味着周日(Sunday).
 
     Daylight saving time flag
 
-        一个广义 boolean, 如果为 true, 表示夏令时生效.
+        一个广义 boolean [generalized boolean], 如果为 true, 表示夏令时生效.
 
     Time zone
 
-        一个时区.
+        一个时区[time zone].
 
-下一段展示了和解码时间相关的已定义的名字.
+下一段展示了和解码时间[decoded time]相关的已定义名字[defined name].
 
     decode-universal-time  get-decoded-time  
 
-    Figure 25-5. 在解码时间中涉及时间的已定义名称.
+    Figure 25-5. 解码时间中涉及时间的已定义名字.
 
-#### 25.1.4.2 <span id="UniversalTime">通用时间(Universal Time)</span>
 
-通用时间是一个表示为一个单独的非负整数的绝对时间---这个整数是从 January 1, 1900 GMT (忽略闰秒(leap seconds)) 半夜开始的秒数. 因此时间 1 就是 00:00:01 (也就是说, 12:00:01 a.m.) January 1, 1900 GMT. 类似地, 时间 2398291201 对应于时间 00:00:01 January 1, 1976 GMT. 回想一下, 1900 年不是闰年; 出于 Common Lisp 的用途, 当且仅当一个年的数字可以被 4 整除, 那么这年是一个闰年, 除了可以被 100 整除的年不是闰年, 可以被 400 整除的年是闰年. 因此 2000 年回事一个闰年. 因为通用时间必须是一个非负整数, 在 January 1, 1900 GMT 半夜之前的时间不能被 Common Lisp 处理.
+#### 25.1.4.2 <span id="UniversalTime">通用时间</span>
+
+通用时间[universal time]是一个表示为一个单独的非负整数[integer]的绝对[absolute]时间[time]---这个整数[integer]是从 January 1, 1900 GMT (忽略闰秒[leap seconds]) 半夜开始的秒数. 因此时间 1 就是 00:00:01 (也就是说, 12:00:01 a.m.) January 1, 1900 GMT. 类似地, 时间 2398291201 对应于时间 00:00:01 January 1, 1976 GMT. 回想一下, 1900 年不是闰年; 出于 Common Lisp 的用途, 当且仅当一个年的数字可以被 4 整除, 那么这年是一个闰年, 除了可以被 100 整除的年不是闰年, 可以被 400 整除的年是闰年. 因此 2000 年会是一个闰年. 因为通用时间[universal time]必须是一个非负整数[integer], 在 January 1, 1900 GMT 半夜之前的时间不能被 Common Lisp 处理.
 
     decode-universal-time  get-universal-time  
     encode-universal-time
 
     Figure 25-6. 在通用时间中涉及时间的已定义名称.
 
-#### 25.1.4.3 <span id="InternalTime">内部时间(Internal Time)</span>
 
-内部时间把时间表示为一个单独的整数, 根据一个称之为内部时间单位(internal time unit)的依赖于具体实现的单位. 相对时间用这些单位的数量来衡量. 绝对时间是相对于任意的时间基数的.
+#### 25.1.4.3 <span id="InternalTime">内部时间</span>
 
-下一段展示了和内部时间相关的已定义的名字.
+内部时间[internal time]把时间表示为一个单独的整数[integer], 根据一个称之为内部时间单位[internal time unit]的依赖于具体实现[implementation-dependent]的单位. 相对时间用这些单位的数量来衡量. 绝对时间是相对于任意的时间基数的.
+
+下一段展示了和内部时间[internal time]相关的已定义名字[defined name].
 
     get-internal-real-time  internal-time-units-per-second  
     get-internal-run-time
 
     Figure 25-7. 在内部时间中涉及时间的已定义名称.
 
+
 #### 25.1.4.4 <span id="Seconds">秒</span>
 
-一个函数, sleep, 它的参数是一个秒的非负实数. 非正式地, 把这看作一个相对普遍的时间可能是有用的, 但它在一个重要的方面是不同的: 通用时间总是非负整数, 而 sleep 的参数可以是任何非负实数, 以便考虑到分数秒的可能性.
+一个函数, sleep, 它的参数是一个秒的非负实数[real]. 非正式地, 把这看作一个相对的[relative]通用时间[universal time]可能是有用的, 但它在一个重要的方面是不同的: 通用时间[universal time]总是非负整数[integer], 而 sleep 的参数可以是任何非负实数[real], 以便考虑到分数秒的可能性.
 
     sleep
 
     Figure 25-8. 在秒中涉及时间的已定义名称.
+
 
 ## 25.2 <span id="TheEnvironmentDictionary">环境字典</span>
 
