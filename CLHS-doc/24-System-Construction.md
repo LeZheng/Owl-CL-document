@@ -1,4 +1,4 @@
-# 24 系统构造
+# 24. 系统构造
 
 > * 24.1 [系统构造的概念](#SystemConstructionConcepts)
 > * 24.2 [系统构造的字典](#SystemConstructionDictionary)
@@ -36,11 +36,11 @@
 
 (not feature-conditional)
 
-    如果一个 not 特性表达式[feature expression]的参数 feature-conditional 失败了, 那么这个 not 特性表达式成功; 负责, 它失败.
+    如果一个 not 特性表达式[feature expression]的参数 feature-conditional 失败了, 那么这个 not 特性表达式成功; 否则, 它失败.
 
 (and feature-conditional*)
 
-    如果一个 and 特性表达式[feature expression]的所有参数都成功, 那么这个 and 特性表达式成功; 否则, 它就是失败的.
+    如果一个 and 特性表达式[feature expression]的所有参数都成功, 那么这个 and 特性表达式成功; 否则, 它就失败.
 
 (or feature-conditional*)
 
@@ -163,7 +163,7 @@
 
         如果尝试去打开一个用于输入的源码文件[source file]或者尝试去打开一个用于输出的编译后文件[compiled file]失败了, 那么就会发出一个 file-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         compile, declare, eval-when, pathname, logical-pathname, 章节 20.1 (文件系统概念), 章节 19.1.2 (路径名作为文件名)
 
@@ -202,7 +202,7 @@
 
         如果 input-file 或 output-file 是通配符[wild], 那么就会发出一个 file-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         compile-file, pathname, logical-pathname, 章节 20.1 (文件系统概念), 章节 19.1.2 (路径名作为文件名)
 
@@ -295,7 +295,7 @@
 
         如果 (wild-pathname-p filespec) 返回 true, 那么就可能发出一个 file-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         error, merge-pathnames, *load-verbose*, *default-pathname-defaults*, pathname, logical-pathname, 章节 20.1 (文件系统概念), 章节 19.1.2 (路径名作为文件名)
 
@@ -330,7 +330,7 @@
 
         围绕在它的代码[code]周围的效果.
 
-        任何依赖于具体实现[implementation-dependent]的扩展只能通过使用依赖于具体实现[implementation-dependent]的关键字作为显式程序员请求的结果提供. 具体实现[implementation]禁止去为没有涉及关键字或只有关键字 :override 的这个宏的使用添加额外的意义.
+        任何依赖于具体实现[implementation-dependent]的扩展只能通过使用依赖于具体实现[implementation-dependent]的关键字作为程序员显式请求的结果提供. 具体实现[implementation]禁止去为没有涉及关键字或只有关键字 :override 的这个宏的使用添加额外的意义.
 
 * 示例(Examples):
 
@@ -350,7 +350,7 @@
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         compile, compile-file
 
@@ -409,7 +409,7 @@
 
 * 受此影响(Affected By): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         章节 1.5.2.1.1 (读取时条件的使用), 章节 2.4 (标准宏字符)
 
@@ -423,7 +423,7 @@
 
 
 ### <span id="V-CF-TRUENAME-PATHNAME">变量 *COMPILE-FILE-PATHNAME*, *COMPILE-FILE-TRUENAME*</span>
-<!--TODO break loop ？？-->
+
 * 值类型(Value Type):
 
         这个 *compile-file-pathname* 的值[value]总是为一个路径名[pathname]或 nil. 这个 *compile-file-truename* 的值[value]总是为一个物理路径名[physical pathname]或 nil.
@@ -438,7 +438,7 @@
 
         在其他时间, 这些变量的值[value]都是 nil.
 
-        如果在 compile-file 正在进行时进入一个 break loop, 那么这些变量[variable]是否保留在进入 break loop 之前的值[value]还是被绑定[bound]为 nil, 都依赖于具体实现[implementation-dependent].
+        如果在 compile-file 正在进行时进入一个中断循环[break loop], 那么这些变量[variable]是否保留在进入中断循环[break loop]之前的值[value]还是被绑定[bound]为 nil, 都依赖于具体实现[implementation-dependent].
 
         如果尝试去对这些变量的任意一个赋值[assign]或绑定[bind], 后果是未定义的.
 
@@ -448,7 +448,7 @@
 
         文件系统[file system].
 
-* 也见(See Also):
+* 参见(See Also):
 
         compile-file
 
@@ -471,7 +471,7 @@
 
         在其他时间, 这些变量[variable]的值[value]都是 nil.
 
-        如果在 load 正在进行时进入一个 break loop, 那么这些变量[variable]是否保留在进入 break loop 之前的值[value]还是被绑定[bound]为 nil, 都依赖于具体实现[implementation-dependent].
+        如果在 load 正在进行时进入一个中断循环[break loop], 那么这些变量[variable]是否保留在进入中断循环[break loop]之前的值[value]还是被绑定[bound]为 nil, 都依赖于具体实现[implementation-dependent].
 
         如果尝试去对这些变量的任意一个赋值[assign]或绑定[bind], 后果是未定义的.
 
@@ -481,7 +481,7 @@
 
         文件系统[file system].
 
-* 也见(See Also):
+* 参见(See Also):
 
         load
 
@@ -506,7 +506,7 @@
 
 * 受此影响(Affected By): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         compile-file
 
@@ -531,7 +531,7 @@
 
 * 受此影响(Affected By): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         load
 
@@ -558,7 +558,7 @@
 
         provide
 
-* 也见(See Also):
+* 参见(See Also):
 
         provide, require
 
@@ -629,7 +629,7 @@
 
         如果在 pathname-list 中的任意路径名[pathname]是一个通配符[wild]路径名[pathname]的标识符[designator], 那么就会发出一个 file-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         *modules*, 章节 19.1.2 (路径名作为文件名)
 
