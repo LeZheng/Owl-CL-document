@@ -91,7 +91,7 @@
 
     Year
 
-        一个表示公元年的整数[integer]. 然而, 如果这个整数[integer]在 0 和 99 之间, 使用 "显而易见的(obvious)" 的年; 更确切地说, 假设那一年等于整数[integer]模100, 并且在本年度的 50 年内 (向后包含但是向前不包含). 因此, 在 1978 年, 年 28 是 1928 但是年 27 是 2027. (以这种格式返回时间的函数总是返回全年数字.)
+        一个表示公元年的整数[integer]. 然而, 如果这个整数[integer]在 0 和 99 之间, 使用 "清楚的(obvious)" 的年; 更确切地说, 假设那一年等于整数[integer]模100, 并且在本年度的 50 年内 (向后包含但是向前不包含). 因此, 在 1978 年, 年 28 是 1928 但是年 27 是 2027. (以这种格式返回时间的函数总是返回全年数字.)
 
     Day of week
 
@@ -219,7 +219,7 @@
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         encode-universal-time, get-universal-time, 章节 25.1.4 (时间)
 
@@ -257,7 +257,7 @@
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         decode-universal-time, get-decoded-time
 
@@ -307,7 +307,7 @@
 
         如果当前时间不能确定, 那么就会发出一个 error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         decode-universal-time, encode-universal-time, 章节 25.1.4 (时间)
 
@@ -358,7 +358,7 @@
 
         如果 seconds 不是一个非负实数[real], 就会发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also): None.
+* 参见(See Also): None.
 
 * 注意(Notes): None.
 
@@ -387,7 +387,7 @@
 
         如果 package 非 nil [non-nil], 只有包 pacakge 中可访问的[accessible]符号[symbol]会被搜索; 否则任何包[package]中的所有可访问的[accessible]符号[symbol]都会被搜索.
 
-        由于一个符号[symbol]可能通过多个继承路径可用, apropos 可能打印关于相同[same]符号[symbol]的信息不止一次, 或者 apropos-list 可能返回一个包含重复符号[symbol]的列表[list].
+        由于一个符号[symbol]可能通过多个继承路径可用, apropos 可能打印相同[same]符号[symbol]的信息不止一次, 或者 apropos-list 可能返回一个包含重复符号[symbol]的列表[list].
 
         这个搜索是否是大小写敏感的是具体实现定义的[implementation-defined].
 
@@ -401,7 +401,7 @@
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also): None.
+* 参见(See Also): None.
 
 * 注意(Notes): None.
 
@@ -441,7 +441,7 @@
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         inspect, describe-object
 
@@ -504,7 +504,7 @@
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         describe
 
@@ -512,7 +512,7 @@
 
         和应用于 print-object 相同的实现机制被应用于 describe-object.
 
-        使这个 describe-object 的返回值是未指定的原因是去避免强制用户在所有它们的方法[method]中去包含显示的 (values). describe 负责这个.
+        使这个 describe-object 的返回值是未指定的原因是去避免强制用户在所有方法[method]中去包含显示的 (values). 由 describe 负责这个.
 
 
 ### <span id="M-TRACE-UNTRACE">宏 TRACE, UNTRACE</span>
@@ -571,7 +571,7 @@
 
         跟踪一个已经被跟踪的函数, 或者解除一个当前没有被跟踪的函数的跟踪, 都不应该产生有害的效果, 但是可能发出一个警告.
 
-* 也见(See Also):
+* 参见(See Also):
 
         *trace-output*, step
 
@@ -579,7 +579,7 @@
 
         trace 和 untrace 可能也接受具体实现定义的[implementation-dependent]额外的参数格式. 这个跟踪输出的格式是依赖于具体实现的[implementation-dependent].
 
-        虽然 trace 可以被扩展来允许非标准选项, 不过还是鼓励(但不是必须)具体实现[implementation]去警告关于既没有被这个标准指定也没有被这个实现[implementation]添加为一个扩展的语法或选项的使用, 因为它们可以是印刷错误或依赖一些其他实现[implementation]支持而当前实现[implementation]不支持的特性的症状.
+        虽然 trace 可以被扩展来允许非标准选项, 不过还是鼓励(但不是必须)具体实现[implementation]去警告既没有被这个标准指定也没有被这个实现[implementation]添加为一个扩展的语法或选项的使用, 因为它们可以是印刷错误或依赖一些其他实现[implementation]支持而当前实现[implementation]不支持的特性的症状.
 
 
 ### <span id="M-STEP">宏 STEP</span>
@@ -595,7 +595,7 @@
 
 * 描述(Description):
 
-        step 实现了一个调试模式, 在其中程序员允许去单步[step]调试一个表达式形式[form]的求值[evaluation]. 这个交互的具体性质, 包括哪个 I/O 流会被使用并且这个步进是否有着词法或动态的作用域, 是具体实现定义的[implementation-defined].
+        step 实现了一个调试模式, 在其中程序员允许去单步[step]调试一个表达式形式[form]的求值[evaluation]. 这个交互的具体性质, 包括使用哪个 I/O 流并且这个步进是否有着词法或动态的作用域, 是具体实现定义的[implementation-defined].
 
         step 在当前环境[envirnonment]中求值表达式形式 form. 一个对 step 的调用可以被编译, 但是对于一个实现来说, 只交互遍历被解释的计算部分是可以接受的.
 
@@ -607,7 +607,7 @@
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         trace
 
@@ -643,7 +643,7 @@
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         get-internal-real-time, get-internal-run-time
 
@@ -666,7 +666,7 @@
 
 * 示例(Examples): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         get-internal-run-time, get-internal-real-time
 
@@ -699,7 +699,7 @@
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         internal-time-units-per-second
 
@@ -718,7 +718,7 @@
 
 * 描述(Description):
 
-        以整数[integer]形式返回内部时间单元[internal time unit]中的当前运行时间. 这个量的确切含义是由具体实现定义的[implementation-defined]; 它可能测量实际时间, 运行时间, CPU 周期, 或者某个其他量. 目的是这个函数的两个调用的值之间的差值是两个调用之间的时间总量, 在此期间, 代表执行程序花费了计算工作量. <!--TODO 最后一句？？-->
+        以整数[integer]形式返回内部时间单元[internal time unit]中的当前运行时间. 这个量的确切含义是由具体实现定义的[implementation-defined]; 它可能测量实际时间, 运行时间, CPU 周期, 或者某个其他量. 目的是这个函数的两个调用的值之间的差值是两个调用之间的时间总量, 在此期间, 代表执行程序花费了计算工作量.
 
 * 示例(Examples): None.
 
@@ -730,7 +730,7 @@
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         internal-time-units-per-second
 
@@ -751,7 +751,7 @@
 
 * 描述(Description):
 
-        函数[function] disassemble 是一个调试工具, 它用某种依赖于具体实现[implementation-dependent]的语言组成符号指令或表达式, 这些符号指令或表达式表示用于生成函数[function]的代码, 该函数由参数 fb 命名或命名. 结果以一种依赖于具体实现[implementation-dependent]的格式显示到标准输出[standard output].
+        函数[function] disassemble 是一个调试工具, 它用某种依赖于具体实现[implementation-dependent]的语言组成符号指令或表达式, 这些符号指令或表达式表示用于生成函数[function]的代码, 该函数是 fn 或者由参数 fn 命名. 结果以一种依赖于具体实现[implementation-dependent]的格式显示到标准输出[standard output].
 
         如果 fn 是一个 lambda 表达式[lambda expression]或一个被解释的函数[interpreted function], 它首先会被编译然后结果被解体.
 
@@ -776,7 +776,7 @@
 
         如果 fn 不是一个扩展函数标识符[extended function designator]或一个 lambda 表达式[lambda expression], 那么就应该发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also): None.
+* 参见(See Also): None.
 
 * 注意(Notes): None.
 
@@ -920,7 +920,7 @@
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also): None.
+* 参见(See Also): None.
 
 * 注意(Notes):
 
@@ -955,7 +955,7 @@
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also): None.
+* 参见(See Also): None.
 
 * 注意(Notes): None.
 
@@ -972,13 +972,13 @@
 
 * 描述(Description):
 
-        如果这个实现[implementation]提供一个常驻的编辑器, 那么 ed 调用那个编辑器.
+        如果这个实现[implementation]提供一个常驻的编辑器, 那么 ed 就调用那个编辑器.
 
         如果 x 是 nil, 就进入那个编辑器. 如果之前已经进入那个编辑器, 那么如果可能的话, 恢复它的之前状态.
 
         如果 x 是一个路径名[pathname]或字符串[string], 它会被用作一个要被编辑的文件[file]的路径名标识符[pathname designator].
 
-        如果 x 是一个函数名[function name], 编辑它的定义的文本. 获取那个函数文本的方式是具体实现定义的[implementation-defined].
+        如果 x 是一个函数名[function name], 则编辑它的定义的文本. 获取那个函数文本的方式是具体实现定义的[implementation-defined].
 
 * 示例(Examples): None.
 
@@ -996,7 +996,7 @@
 
         也可能被发出依赖于具体实现[implementation-dependent]的额外状况.
 
-* 也见(See Also):
+* 参见(See Also):
 
         pathname, logical-pathname, compile-file, load, 章节 19.1.2 (路径名作为文件名)
 
@@ -1031,7 +1031,7 @@
 
         依赖于具体实现[implementation-dependent].
 
-* 也见(See Also):
+* 参见(See Also):
 
         describe
 
@@ -1072,7 +1072,7 @@
 
         如果 pathname 是一个通配符[wild]路径名[pathname]的标识符[designator], 那么就可能会发出 file-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         章节 19.1.2 (路径名作为文件名)
 
@@ -1109,7 +1109,7 @@
 
         Lisp read-eval-print 循环[Lisp read-eval-print loop].
 
-* 也见(See Also):
+* 参见(See Also):
 
         + (变量), * (变量), / (变量), 章节 25.1.1 (顶层循环)
 
@@ -1150,7 +1150,7 @@
 
         Lisp read-eval-print 循环[Lisp read-eval-print loop].
 
-* 也见(See Also):
+* 参见(See Also):
 
         - (variable), * (variable), / (variable), 章节 25.1.1 (顶层循环)
 
@@ -1195,7 +1195,7 @@
 
         Lisp read-eval-print 循环[Lisp read-eval-print loop].
 
-* 也见(See Also):
+* 参见(See Also):
 
         - (变量), + (变量), / (变量), 章节 25.1.1 (顶层循环)
 
@@ -1235,7 +1235,7 @@
 
         Lisp read-eval-print 循环[Lisp read-eval-print loop].
 
-* 也见(See Also):
+* 参见(See Also):
 
         - (变量), + (变量), * (变量), 章节 25.1.1 (顶层循环)
 
@@ -1282,7 +1282,7 @@ description---a string or nil.
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also): None.
+* 参见(See Also): None.
 
 * 注意(Notes): None.
 
@@ -1322,7 +1322,7 @@ description---a string or nil.
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also): None.
+* 参见(See Also): None.
 
 * 注意(Notes): None.
 
@@ -1359,7 +1359,7 @@ description---a string or nil.
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         machine-type, machine-version
 
@@ -1396,7 +1396,7 @@ description---a string or nil.
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         machine-version
 
@@ -1431,7 +1431,7 @@ description---a string or nil.
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         machine-type, machine-instance
 
@@ -1471,7 +1471,7 @@ description---a string or nil.
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also): None.
+* 参见(See Also): None.
 
 * 注意(Notes):
 
@@ -1513,6 +1513,6 @@ description---a string or nil.
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also): None.
+* 参见(See Also): None.
 
 * 注意(Notes): None.
