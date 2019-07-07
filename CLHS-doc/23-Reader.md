@@ -81,7 +81,7 @@ Lisp 读取器[Lisp reader]的各个方面可以被动态控制. 见章节 2.1.1
 
 如果提供了 recursive-p 并且不是 nil, 它指明这个函数调用不是一个对 read 的最外部的调用而是一个内嵌的调用, 通常来自于一个读取器宏函数[reader macro function]. 区分这样的递归调用是很重要的, 原因有三.
 
-1. 一个最外部的调用建立上下文, #n= 和 #n# 语法在这个上下文中被审视<!--TODO scope 审视-->. 细想, 例如, 表达式
+1. 一个最外部的调用建立了限定 #n= 和 #n# 语法作用域的上下文. 细想, 例如, 表达式
 
     ```LISP
     (cons '#3=(p q r) '(x y . #3#))
@@ -139,11 +139,11 @@ Lisp 读取器[Lisp reader]的各个方面可以被动态控制. 见章节 2.1.1
 
 * 描述(Description):
 
-        一个读取表[readtable]映射字符[character]到 Lisp 读取器[Lisp reader]的语法类型[syntax type]; 见章节 2 (语法). 一个读取表[readtable]也包含宏字符[macro character]和它们的读取器宏函数[reader macro function]之间的关联, 并且记录解析符号[symbol]时 Lisp 读取器[Lisp reader]使用的大小写转换规则的相关信息.
+        一个读取表[readtable]映射字符[character]到 Lisp 读取器[Lisp reader]的语法类型[syntax type]; 见章节 2 (语法). 一个读取表[readtable]也包含宏字符[macro character]和它们的读取器宏函数[reader macro function]之间的关联, 并且记录 Lisp 读取器[Lisp reader]解析符号[symbol]时使用的大小写转换规则的相关信息.
 
-        每一个简单[simple]字符[character]在这个读取表[readtable]中必须是可以表示的. 非简单[non-simple]字符[character]是否在读取表[readtable]中是否可以有语法描述是具体实现定义的[implementation-defined].
+        在这个读取表[readtable]中的每一个简单[simple]字符[character]必须是可以表示的. 非简单[non-simple]字符[character]在读取表[readtable]中是否可以有语法描述是具体实现定义的[implementation-defined].
 
-* 也见(See Also):
+* 参见(See Also):
 
         章节 2.1.1 (读取表), 章节 22.1.3.13 (打印其他对象) 
 
@@ -158,7 +158,7 @@ Lisp 读取器[Lisp reader]的各个方面可以被动态控制. 见章节 2.1.1
 
         from-readtable---一个读取表标识符[readtable designator]. 默认是当前读取表[current readtable].
         to-readtable---一个读取表[readtable]或 nil. 默认是 nil.
-        readtable---如果它非 nil [non-nil]那么就是 to-readtable, 否则就是一个新的[refresh]读取表[readtable].
+        readtable---如果 to-readtable 非 nil [non-nil]那么就是 to-readtable, 否则就是一个新的[refresh]读取表[readtable].
 
 * 描述(Description):
 
@@ -186,7 +186,7 @@ Lisp 读取器[Lisp reader]的各个方面可以被动态控制. 见章节 2.1.1
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         readtable, *readtable*
 
@@ -241,7 +241,7 @@ Lisp 读取器[Lisp reader]的各个方面可以被动态控制. 见章节 2.1.1
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         *readtable*, set-dispatch-macro-character
 
@@ -269,7 +269,7 @@ Lisp 读取器[Lisp reader]的各个方面可以被动态控制. 见章节 2.1.1
 
         read 从输入流 input-stream 解析一个对象[object]的打印表示并且构建这样一个对象[object].
 
-        read-preserving-whitespace 类似于 read 但是保留任何分隔这个对象[object的打印表示的空格[whitespace[2]]字符[character]. 当给 read-preserving-whitespace 的 recursive-p 参数[argument]是 true 时 read-preserving-whitespace 和 read 一样.
+        read-preserving-whitespace 类似于 read 但是保留任何分隔这个对象[object的打印表示的空格[whitespace[2]]字符[character]. 当给 read-preserving-whitespace 的 recursive-p 参数[argument]是 true 时 read-preserving-whitespace 就像 read 一样.
 
         当 *read-suppress* 是 false 时, 如果分隔字符是空白[whitespace[2]]字符[character], read 会丢弃某些打印表示所需要的分隔字符; 但是如果它是语法上有意义的, 那么 read 会保留这个字符 (使用 unread-char), 因为它可以是下一个表达式的开始.
 
@@ -339,7 +339,7 @@ Lisp 读取器[Lisp reader]的各个方面可以被动态控制. 见章节 2.1.1
 
         如果 eof-error-p 是 true, 在文件的末尾发出一个 end-of-file 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         peek-char, read-char, unread-char, read-from-string, read-delimited-list, parse-integer, 章节 2 (语法), 章节 23.1 (读取起概念)
 
@@ -419,7 +419,7 @@ Lisp 读取器[Lisp reader]的各个方面可以被动态控制. 见章节 2.1.1
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         read, peek-char, read-char, unread-char.
 
@@ -470,7 +470,7 @@ Lisp 读取器[Lisp reader]的各个方面可以被动态控制. 见章节 2.1.1
 
         如果在一个对象[object]可以被读取之前到达这个提供的子字符串的末尾, 如果 eof-error-p 是 true 就会发出一个错误. 如果这个子字符串的末尾出现在一个未完成的对象[object]中间, 那么就会发出一个错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         read, read-preserving-whitespace
 
@@ -506,13 +506,14 @@ Lisp 读取器[Lisp reader]的各个方面可以被动态控制. 见章节 2.1.1
 
         如果 readtable 不是一个读取表[readtable], 那么应该发出一个 type-error 类型[type]的错误. 如果 mode 不是一个大小写敏感模式[case sensitivity mode], 那么应该发出一个 type-error 类型[type]的错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         *readtable*, *print-escape*, 章节 2.2 (Reader Algorithm), 章节 23.1.2 (Lisp 读取器上的读取表大小写的影响), 章节 22.1.3.3.2 (Lisp 打印器上读取表大小写的影响)
 
 * 注意(Notes):
 
         copy-readtable 拷贝这个 readtable 的读取表大小写[readtable case]. 
+
 
 ### <span id="F-READTABLEP">函数 READTABLEP</span>
 
@@ -543,7 +544,7 @@ Lisp 读取器[Lisp reader]的各个方面可以被动态控制. 见章节 2.1.1
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also): None.
+* 参见(See Also): None.
 
 * 注意(Notes):
 
@@ -603,7 +604,7 @@ Lisp 读取器[Lisp reader]的各个方面可以被动态控制. 见章节 2.1.1
     (set-dispatch-macro-character #\# #\$ #'|#$-reader|) =>  T
     ```
 
-* 也见(See Also):
+* 参见(See Also):
 
         章节 2.1.4.4 (宏字符)
 
@@ -619,7 +620,7 @@ Lisp 读取器[Lisp reader]的各个方面可以被动态控制. 见章节 2.1.1
 
         对于任何一个函数, 如果 disp-char 不是一个 readtable 中的分派宏字符[dispatching macro character], 就会发出一个错误.
 
-* 也见(See Also):
+* 参见(See Also):
 
         *readtable*
 
@@ -689,7 +690,7 @@ Lisp 读取器[Lisp reader]的各个方面可以被动态控制. 见章节 2.1.1
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         *readtable*
 
@@ -734,7 +735,7 @@ Lisp 读取器[Lisp reader]的各个方面可以被动态控制. 见章节 2.1.1
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         set-macro-character, make-dispatch-macro-character, 章节 2.1.4 (字符语法类型)
 
@@ -759,7 +760,7 @@ Lisp 读取器[Lisp reader]的各个方面可以被动态控制. 见章节 2.1.1
         在这些表达式形式 forms 主体的动态范围内, 所有读取器/打印器控制变量, 包括任何这个标准没有指定但是具体实现定义的[implementation-defined]那些, 被绑定为产生标准读取/打印行为的值. 这个标准指定的变量的值列在下一段中.
 
         变量                          值                               
-        *package*                    The CL-USER package                 
+        *package*                    CL-USER 包                 
         *print-array*                t                                   
         *print-base*                 10                                  
         *print-case*                 :upcase                             
@@ -770,7 +771,7 @@ Lisp 读取器[Lisp reader]的各个方面可以被动态控制. 见章节 2.1.1
         *print-level*                nil                                 
         *print-lines*                nil                                 
         *print-miser-width*          nil                                 
-        *print-pprint-dispatch*      The standard pprint dispatch table  
+        *print-pprint-dispatch*      标准美观打印分派表[standard pprint dispatch table] 
         *print-pretty*               nil                                 
         *print-radix*                nil                                 
         *print-readably*             t                                   
@@ -779,7 +780,7 @@ Lisp 读取器[Lisp reader]的各个方面可以被动态控制. 见章节 2.1.1
         *read-default-float-format*  single-float                        
         *read-eval*                  t                                   
         *read-suppress*              nil                                 
-        *readtable*                  The standard readtable              
+        *readtable*                  标准读取表[standard readtable]              
 
         Figure 23-1. 标准控制变量的值
 
@@ -801,7 +802,7 @@ Lisp 读取器[Lisp reader]的各个方面可以被动态控制. 见章节 2.1.1
 
 * 异常情况(Exceptional Situations): None.
 
-* 也见(See Also): None.
+* 参见(See Also): None.
 
 * 注意(Notes): None. 
 
@@ -842,7 +843,7 @@ Lisp 读取器[Lisp reader]的各个方面可以被动态控制. 见章节 2.1.1
 
 * 受此影响(Affected By): None.
 
-* 也见(See Also): None.
+* 参见(See Also): None.
 
 * 注意(Notes):
 
@@ -880,7 +881,7 @@ Lisp 读取器[Lisp reader]的各个方面可以被动态控制. 见章节 2.1.1
 
 * 受此影响(Affected By): None.
 
-* 也见(See Also): None.
+* 参见(See Also): None.
 
 * 注意(Notes): None.
 
@@ -903,13 +904,13 @@ Lisp 读取器[Lisp reader]的各个方面可以被动态控制. 见章节 2.1.1
 
 * 受此影响(Affected By): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         *print-readably*
 
 * 注意(Notes):
 
-        如果 *read-eval* 是 false 并且 *print-readably* 是 true, 那么会输出一个对 #. 读取器宏[reader macro]的引用的 print-object 的任何方法[method]会输出一个不同的东西或者发出一个 print-not-readable 类型[type]的错误.
+        如果 *read-eval* 是 false 并且 *print-readably* 是 true, 那么任何会输出一个对 #. 读取器宏[reader macro]的引用的 print-object 方法[method]会输出一个不同的东西或者发出一个 print-not-readable 类型[type]的错误.
 
 
 ### <span id="V-READ-SUPPRESS">变量 *READ-SUPPRESS*</span>
@@ -940,7 +941,7 @@ Lisp 读取器[Lisp reader]的各个方面可以被动态控制. 见章节 2.1.1
 
         #=
 
-            这个 #= 标记整个忽略. 它不会读取一个后面的对象[object]. 它不产生对象[object], 但是会被像空格[whitespace[2]]一样对待.
+            这个 #= 标记被整个忽略. 它不会读取一个后面的对象[object]. 它不产生对象[object], 但是会被当作空格[whitespace[2]]一样对待.
 
         ##
 
@@ -961,7 +962,7 @@ Lisp 读取器[Lisp reader]的各个方面可以被动态控制. 见章节 2.1.1
 
 * 受此影响(Affected By): None.
 
-* 也见(See Also):
+* 参见(See Also):
 
         read, 章节 2 (语法)
 
@@ -1001,7 +1002,7 @@ Lisp 读取器[Lisp reader]的各个方面可以被动态控制. 见章节 2.1.1
 
         compile-file, load
 
-* 也见(See Also):
+* 参见(See Also):
 
         compile-file, load, readtable, 章节 2.1.1.1 (当前的读取表)
 
@@ -1018,7 +1019,7 @@ Lisp 读取器[Lisp reader]的各个方面可以被动态控制. 见章节 2.1.1
 
         类型[type] reader-error 由 Lisp 读取器[Lisp reader]执行的标记化和解析的错误状况组成.
 
-* 也见(See Also):
+* 参见(See Also):
 
         read, stream-error-stream, 章节 23.1 (读取器概念) 
 
