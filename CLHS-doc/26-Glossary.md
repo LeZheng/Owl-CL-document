@@ -145,123 +145,123 @@
 
 **auxiliary method** n. 两组方法[method] (主方法[primary method]集合是另一组)中的一组方法[method]的成员, 它们在方法[method]的广义函数[generic function]上形成方法[method]集合的穷举分区. 如何确定这些集合取决于方法组合[method combination]类型; 见章节 7.6.2 (方法的介绍). 
 
-B
+### B
 
-backquote n. the standard character that is variously called ``grave accent'' or ``backquote'' (`). See Figure 2-5.
+**backquote** n. 标准字符[standard character], 被称为 "抑音符" 或 "反引号" (`). 见 Figure 2-5.
 
-backslash n. the standard character that is variously called ``reverse solidus'' or ``backslash'' (\). See Figure 2-5.
+**backslash** n. 标准字符[standard character], 被称为 "反斜线" 或 "反斜杠" (\\). See Figure 2-5.
 
-base character n. a character of type base-char.
+**base character** n. 一个 base-char 类型[type]的字符[character].
 
-base string n. a string of type base-string.
+**base string** n. 一个 base-string 类型[type]的字符串[string].
 
-before method n. a method having the qualifier :before.
+**before method** n. 一个修饰符[qualifier]为 :before 的方法.
 
-bidirectional adj. (of a stream) being both an input stream and an output stream.
+**bidirectional** adj. (指流[stream]) 同时为一个输入[input]流[stream]和一个输出[output]流[stream].
 
-binary adj. 1. (of a stream) being a stream that has an element type that is a subtype of type integer. The most fundamental operation on a binary input stream is read-byte and on a binary output stream is write-byte. See character. 2. (of a file) having been created by opening a binary stream. (It is implementation-dependent whether this is an detectable aspect of the file, or whether any given character file can be treated as a binary file.)
+binary adj. 1. (指流[stream]) 元素类型[element type]为 integer 类型[type]的子类型[subtype]的一个流[stream]. 在一个二进制[binary]输入[input]流[stream]上最基本的操作是 read-byte 而在一个二进制[binary]输出[output]流[stream]上最基本的操作是 write-byte. 见字符[character]. 2. (指文件[file]) 已经通过打开一个二进制[binary]流[stream]来创建. (这是否为一个文件[file]的可见测方面, 或者任何给定的字符[character]文件[file]是否被当作一个二进制[binary]文件[file]处理是依赖于具体实现的[implementation-dependent].)
 
 **bind** v.t. (一个变量[variable]) 去建立这个变量[variable]的一个绑定[binding].
 
 **binding** n. 一个名字[name]和那个名字[name]所表示的之间的一个关联. "一个词法绑定是一个名字和它的值之间的一个词法关联". 当这个术语绑定[binding]被一个命名空间[namespace]的名字限定时, 例如 "变量(variable)" 或 "函数(function)", 它约束这个绑定[binding]到指定的命名空间[namespace], 就像在: "let 建立变量绑定." 或 "let 建立多个变量的绑定" 中
 
-bit n. an object of type bit; that is, the integer 0 or the integer 1.
+**bit** n. 一个 bit 类型[type]的对象[object]; 也就是说, 是整数[integer] 0 或者整数[integer] 1.
 
-bit array n. a specialized array that is of type (array bit), and whose elements are of type bit.
+**bit array** n. 一个 (array bit) 类型[type]的特化数组[array], 并且它的元素是 bit 类型[type].
 
-bit vector n. a specialized vector that is of type bit-vector, and whose elements are of type bit.
+**bit vector** n. 一个 bit-vector 类型[type]的特化向量[vector], 并且它的元素是 bit 类型[type].
 
-bit-wise logical operation specifier n. an object which names one of the sixteen possible bit-wise logical operations that can be performed by the boole function, and which is the value of exactly one of the constant variables boole-clr, boole-set, boole-1, boole-2, boole-c1, boole-c2, boole-and, boole-ior, boole-xor, boole-eqv, boole-nand, boole-nor, boole-andc1, boole-andc2, boole-orc1, or boole-orc2.
+**bit-wise logical operation specifier** n. 一个命名了可以被 boole 函数执行的十六个可能的位逻辑操作符之一的对象[object], 并且它是常变量[constant variable] boole-clr, boole-set, boole-1, boole-2, boole-c1, boole-c2, boole-and, boole-ior, boole-xor, boole-eqv, boole-nand, boole-nor, boole-andc1, boole-andc2, boole-orc1, 或 boole-orc2 之一的值[value].
 
-block n. a named lexical exit point, established explicitly by block or implicitly by operators such as loop, do and prog, to which control and values may be transfered by using a return-from form with the name of the block.
+**block** n. 一个已命名的词法退出点[exit point], 由 block 显式建立或者由 loop, do 和 prog 之类的操作符隐式建立, 通过使用带有这个语句块[block]的名字的 return-from 表达式形式, 可以将控制和值转移到该退出点.
 
-block tag n. the symbol that, within the lexical scope of a block form, names the block established by that block form. See return or return-from.
+**block tag** n. 在一个 block 表达式形式[form]内命名由这个 block 表达式形式[form]建立的语句块[block]的符号[symbol]. 见 return 或 return-from.
 
-boa lambda list n. a lambda list that is syntactically like an ordinary lambda list, but that is processed in ``by order of argument'' style. See Section 3.4.6 (Boa Lambda Lists).
+**boa lambda list** n. 一个语法上像普通 lambda 列表[ordinary lambda list]但是是"按参数顺序"处理的风格的 lambda 列表[lambda list]. 见章节 3.4.6 (Boa Lambda 列表).
 
-body parameter n. a parameter available in certain lambda lists which from the point of view of conforming programs is like a rest parameter in every way except that it is introduced by &body instead of &rest. (Implementations are permitted to provide extensions which distinguish body parameters and rest parameters---e.g., the forms for operators which were defined using a body parameter might be pretty printed slightly differently than forms for operators which were defined using rest parameters.)
+**body parameter** n. 特定 lambda 列表[lambda list]中的一个可用的形参[parameter], 从符合规范的程序[conforming program]的视角看, 各种方面它就像是剩余参数[rest parameter], 除了它是由 &body 引入而不是 &rest 引入. (允许具体实现[implementation]提供区分主体参数[body parameter]和剩余参数[rest parameter]的扩展---比如, 使用主体参数[body parameter]定义的操作符[operator]的表达式形式[form]打印出来可能和使用剩余参数[rest parameter]定义的操作符[operator]的表达式形式[form]稍有不同.)
 
-boolean n. an object of type boolean; that is, one of the following objects: the symbol t (representing true), or the symbol nil (representing false). See generalized boolean.
+**boolean** n. 一个 boolean 类型[type]的对象[object]; 这也就是说, 下面这些对象[object]之一: 符号 t (表示 true), 或者符号 nil (表示 false). 见广义 boolean [generalized boolean].
 
-boolean equivalent n. (of an object O1) any object O2 that has the same truth value as O1 when both O1 and O2 are viewed as generalized booleans.
+**boolean equivalent** n. (指对象[object] O1) 当 O1 和 O2 都被视为广义 boolean [generalized boolean]时, 与 O1 有相同真实值的任何对象[object] O2.
 
 **bound** adj., v.t. 1. adj. 在一个绑定[binding]中有一个关联的表示. "这些由一个 let 命名的变量在它的主体中是被绑定的(The variables named by a let are bound within its body)". 见未绑定的[unbound]. 2. adj. 有着一个遮蔽[shadows[2]]另一个的局部绑定[binding]. "在 princ 函数中时, 变量 \*print-escape* 是被绑定的(The variable \*print-escape* is bound while in the princ function)". 3. v.t. 绑定[bind]的过去时态.
 
-bound declaration n. a declaration that refers to or is associated with a variable or function and that appears within the special form that establishes the variable or function, but before the body of that special form (specifically, at the head of that form's body). (If a bound declaration refers to a function binding or a lexical variable binding, the scope of the declaration is exactly the scope of that binding. If the declaration refers to a dynamic variable binding, the scope of the declaration is what the scope of the binding would have been if it were lexical rather than dynamic.)
+**bound declaration** n. 一种声明[declaration], 它引用一个变量[variable]或函数[function]或者与它们关联, 并且出现在建立这个变量[variable]或函数[function]的特殊表达式形式[special form]中, 但是在这个特殊表达式形式[special form]的主体之前 (具体来说, 就是在那个表达式形式[form]主体的头部). (如果一个绑定声明[bound declaration]引用一个函数[function]绑定[binding]或者一个词法变量[lexical variable]绑定[binding], 这个声明[declaration]的作用域[scope]就是那个绑定[binding]的作用域[scope]. 如果这个声明[declaration]引用了动态变量[dynamic variable]绑定[binding], 那么这个声明[declaration]的作用域[scope]和这个绑定[binding]是词法而非动态时的作用域[scope]相同.)
 
-bounded adj. (of a sequence S, by an ordered pair of bounding indices istart and iend) restricted to a subrange of the elements of S that includes each element beginning with (and including) the one indexed by istart and continuing up to (but not including) the one indexed by iend.
+**bounded** adj. (指序列[sequence] S, 由一对有序的绑定索引[bounding index] istart 和 iend 表示) 限定为 S 的元素[element]的子范围, 其中包括以 istart 索引的元素[element]开始(并包括), 直到(但不包括) iend 索引的元素[element]为止的每个元素[element].
 
-bounding index n. (of a sequence with length n) either of a conceptual pair of integers, istart and iend, respectively called the ``lower bounding index'' and ``upper bounding index'', such that 0 <=istart <=iend <=n, and which therefore delimit a subrange of the sequence bounded by istart and iend.
+**bounding index** n. (指一个长度[length]为 n 的序列[sequence]) 一个概念上的整数[integer]对 istart 和 iend, 分别称为 "上边界索引" 和 "下边界索引", 使 0 <=istart <=iend <=n, 因此它划分了一个由 istart 和 iend 限定[bounded]的序列[sequence]的子范围.
 
-bounding index designator (for a sequence) one of two objects that, taken together as an ordered pair, behave as a designator for bounding indices of the sequence; that is, they denote bounding indices of the sequence, and are either: an integer (denoting itself) and nil (denoting the length of the sequence), or two integers (each denoting themselves).
+**bounding index designator** (指序列[sequence]) 作为有序对放在一起的两个对象[object]中的一个, 表现为序列[sequence]的边界索引[bounding index]的标识符[designator]; 这也就是说, 它们表示这个序列[sequence]的边界索引[bounding index], 并且可以是一个整数[integer] (表示它自身)和 nil (表示这个序列[sequence]的长度[length]), 或者两个整数[integer] (每一个都表示它自身).
 
-break loop n. A variant of the normal Lisp read-eval-print loop that is recursively entered, usually because the ongoing evaluation of some other form has been suspended for the purpose of debugging. Often, a break loop provides the ability to exit in such a way as to continue the suspended computation. See the function break.
+**break loop** n. 正常 Lisp read-eval-print 循环[Lisp read-eval-print loop]的一个递归进入的变体, 通常因为调试的目的而暂停了正在进行的其他表达式形式[form]的求值[evaluation]. 通常, 一个中断循环[break loop]提供以某种方式退出的能力来继续中断的计算. 见函数[function] break.
 
-broadcast stream n. an output stream of type broadcast-stream.
+**broadcast stream** n. 一个 broadcast-stream 类型[type]的输出[output]流[stream].
 
-built-in class n. a class that is a generalized instance of class built-in-class.
+**built-in class** n. 一个类[class], 它是类[class] built-in-class 的一个广义实例[generalized instance].
 
-built-in type n. one of the types in Figure 4-2.
+**built-in type** n. Figure 4-2 中的类型[type]之一.
 
-byte n. 1. adjacent bits within an integer. (The specific number of bits can vary from point to point in the program; see the function byte.) 2. an integer in a specified range. (The specific range can vary from point to point in the program; see the functions open and write-byte.)
+**byte** n. 1. 一个整数[integer]中的相邻位. (在程序中, 具体的比特数可以随点而变化; 见函数[function] byte.) 2. 在一个特定范围内的整数[integer]. (在程序中, 具体的范围可以随点而变化; 见函数[function] open 和 write-byte.) <!--TODO 待校验-->
 
-byte specifier n. An object of implementation-dependent nature that is returned by the function byte and that specifies the range of bits in an integer to be used as a byte by functions such as ldb. 
+**byte specifier** n. 一个有着依赖于具体实现[implementation-dependent]的性质的对象[object], 它由函数[function] byte 返回并且指定了一个整数[integer]中要被诸如 ldb 这样的函数[function]用作字节[byte]的位的范围. 
 
-C
+### C
 
-cadr ['ka,duhr], n. (of an object) the car of the cdr of that object.
+**cadr** ['ka,duhr], n. (指对象[object]) 那个对象[object]的 cdr 的 car.
 
-call v.t., n. 1. v.t. (a function with arguments) to cause the code represented by that function to be executed in an environment where bindings for the values of its parameters have been established based on the arguments. ``Calling the function + with the arguments 5 and 1 yields a value of 6.'' 2. n. a situation in which a function is called.
+**call** v.t., n. 1. v.t. (带实参[argument]的函数[function]) 使该函数[function]所表示的代码[code]在基于这个实参[argument]为其形参[parameter]的值[value]建立绑定[binding]的环境[environment]中执行. "使用参数 5 和 1 来调用函数 + 会产生一个 6 的值 (calling the function + with the arguments 5 and 1 yields a value of 6)." 2. n. 函数[function]被调用的一种情况[situation].
 
-captured initialization form n. an initialization form along with the lexical environment in which the form that defined the initialization form was evaluated. ``Each newly added shared slot is set to the result of evaluating the captured initialization form for the slot that was specified in the defclass form for the new class.''
+**captured initialization form** n. 一个初始化表达式形式[initialization form]以及定义这个初始化表达式形式[initialization form]的表达式形式[form]被求值时所在的词法环境[lexical environment]. "每个新添加的共享槽都被设置为求值新类的 defclass 表达式形式中指定的槽的捕获初始化表达式形式的结果 (Each newly added shared slot is set to the result of evaluating the captured initialization form for the slot that was specified in the defclass form for the new class)."
 
-car n. 1. a. (of a cons) the component of a cons corresponding to the first argument to cons; the other component is the cdr. ``The function rplaca modifies the car of a cons.'' b. (of a list) the first element of the list, or nil if the list is the empty list. 2. the object that is held in the car[1]. ``The function car returns the car of a cons.''
+**car** n. 1. a. (指 cons) 对应于给 cons 的第一个参数[argument]的 cons 的成员. "函数 rplaca 修改一个 cons 的 car (The function rplaca modifies the car of a cons)." b. (指列表[list]) 这个列表[list]的第一个元素[element], 如果这个列表[list]是空列表[empty list]那么就是 nil. 2. 被保存在 car[1]中的那个对象[object]. "函数 car 返回一个 cons 的 car."
 
 **case** n. (一个字符[character]) 大写或小写的属性. 不是所有字符[character]都有大小写[case]. "The characters #\A and #\a have case, but the character #\$ has no case". 见章节 13.1.4.3 (大小写字符) 以及函数[function] both-case-p.
 
-case sensitivity mode n. one of the symbols :upcase, :downcase, :preserve, or :invert.
+**case sensitivity mode** n. 符号[symbol] :upcase, :downcase, :preserve, 或 :invert 的其中之一.
 
-catch n. an exit point which is established by a catch form within the dynamic scope of its body, which is named by a catch tag, and to which control and values may be thrown.
+**catch** n. 由一个 catch 表达式形式[form]建立在它主体的动态作用域[dynamic scope]中的一个退出点[exit point], 它由一个捕捉标签[catch tag]命名, 并且控制和值[value]可以 throw 给它.
 
-catch tag n. an object which names an active catch. (If more than one catch is active with the same catch tag, it is only possible to throw to the innermost such catch because the outer one is shadowed[2].)
+**catch tag** n. 一个命名一个活跃[active]捕捉[catch]的对象[object]. (如果不止一个带有相同捕捉标签[catch tag]的捕捉[catch]是活跃的[active], 那么只可能 throw 到最内部的那个捕捉[catch], 因为外面那个被遮蔽[shadowed[2]]了.)
 
-cddr ['kduh,duhr] or ['kuh,dduhr], n. (of an object) the cdr of the cdr of that object.
+**cddr** ['kduh,duhr] 或 ['kuh,dduhr], n. (指对象[object]) 那么对象[object]的 cdr 的 cdr.
 
-cdr ['k,duhr], n. 1. a. (of a cons) the component of a cons corresponding to the second argument to cons; the other component is the car. ``The function rplacd modifies the cdr of a cons.'' b. (of a list L1) either the list L2 that contains the elements of L1 that follow after the first, or else nil if L1 is the empty list. 2. the object that is held in the cdr[1]. ``The function cdr returns the cdr of a cons.''
+**cdr** ['k,duhr], n. 1. a. (指 cons) 对应于给 cons 的第二个实参[argument]的 cons 的成员; 另一个成员就是 car. "函数 rplacd 修改一个 cons 的 cdr (The function rplacd modifies the cdr of a cons)." b. (指一个列表[list] L1) 要么是包含  L1 的第一个之后的元素的列表[list] L2, 如果 L1 是空列表[empty list]那么就是 nil. 2. 保存在 cdr[1] 中的那个对象[object]. "函数 cdr 返回一个 cons 中的 cdr (The function cdr returns the cdr of a cons)."
 
-cell n. Trad. (of an object) a conceptual slot of that object. The dynamic variable and global function bindings of a symbol are sometimes referred to as its value cell and function cell, respectively.
+**cell** n. Trad. (指对象[object]) 那个对象[object]的一个概念槽[slot]. 一个符号[symbol]的动态变量[dynamic variable]和全局函数[function]绑定[binding]有时分别被引用为它的值存储格[value cell]和函数存储格[function cell].
 
 **character** n., adj. 1. n. 一个 character 类型[type]的对象[object]; 这也就是说, 一个表示一个文本的聚合总量中的单一标记; 见章节 13.1 (字符概念). 2. adj. a. (一个流[stream]的) 有着一个是 character 类型[type]的子类型[subtype]的元素类型[element type]. 在一个字符[character]输入[input]流[stream]上最基本的操作是 read-char 而在一个字符[character]输出[output]流[stream]上是 write-char. 见二进制[binary]. b. (一个文件[file]的) 已经通过打开一个字符[character]流[stream]来创建了. (这个是否是这个文件[file]的可检查方面, 或者任何给定的二进制[binary]文件[file]是否可以被当作一个字符[character]文件[file]是依赖于具体实现的[implementation-dependent].)
 
-character code n. 1. one of possibly several attributes of a character. 2. a non-negative integer less than the value of char-code-limit that is suitable for use as a character code[1].
+**character code** n. 1. 一个字符[character]的多个可能的属性[attribute]之一. 2. 一个小于 char-code-limit 的值的非负整数[integer], 它适用于字符码[character code[1]].
 
-character designator n. a designator for a character; that is, an object that denotes a character and that is one of: a designator for a string of length one (denoting the character that is its only element), or a character (denoting itself).
+**character designator** n. 一个字符[character]的标识符[designator]; 这也就是说, 一个对象[object], 表示一个字符[character]并且为以下之一: 长度 1 的字符串[string]的一个标识符[designator] (表示它仅有的那个字符[character]元素[element]), 或者一个字符[character] (表示它自身).
 
-circular adj. 1. (of a list) a circular list. 2. (of an arbitrary object) having a component, element, constituent[2], or subexpression (as appropriate to the context) that is the object itself.
+**circular** adj. 1. (指列表[list]) 一个环状列表[circular list]. 2. (指一个任意对象[object]) 有着一个成员, 元素[element], 标记成分[constituent[2]], 或子表达式[subexpression] (视情况而定) 为这个对象[object]自身.
 
-circular list n. a chain of conses that has no termination because some cons in the chain is the cdr of a later cons.
+**circular list** n. 一个没有终止的 cons 链, 因为这个链中的某个 cons 是后面的一个 cons 的 cdr.
 
-class n. 1. an object that uniquely determines the structure and behavior of a set of other objects called its direct instances, that contributes structure and behavior to a set of other objects called its indirect instances, and that acts as a type specifier for a set of objects called its generalized instances. ``The class integer is a subclass of the class number.'' (Note that the phrase ``the class foo'' is often substituted for the more precise phrase ``the class named foo''---in both cases, a class object (not a symbol) is denoted.) 2. (of an object) the uniquely determined class of which the object is a direct instance. See the function class-of. ``The class of the object returned by gensym is symbol.'' (Note that with this usage a phrase such as ``its class is foo'' is often substituted for the more precise phrase ``its class is the class named foo''---in both cases, a class object (not a symbol) is denoted.)
+**class** n. 1. 一个对象[object],  它决定了那些被称为它的直接实例[direct instance]的其他对象[object]集合的结构和行为, 给那些被称为非直接实例[indirect instance]的其他对象[object]集合提供结构和行为, 并且充当一组被称为它的广义实例[generalized instance]的对象[object]的类型指定符[type specifier]. "类 integer 是类 number 的子类 (The class integer is a subclass of the class number)." (注意, 措辞 "类 foo" 经常指代更精确的术语 "名为 foo 的类[class]" --- 在这两种情况中, 表示的都是一个类[class]对象[object] (不是一个符号[symbol]).) 2. (指一个对象[object]) 对象[object]是其直接实例[direct instance]的唯一确定类[class]. 见函数[function] class-of. "由 gensym 返回的对象的类是 symbol (The class of the object returned by gensym is symbol)." (注意, 在这种用法中, "它的类[class]是 foo"之类的短语经常被替换为更精确的短语"它的类[class]是名为 foo 的类[class]"---在这两种情况中, 表示的都是一个类[class]对象[object] (不是一个符号[symbol]).)
 
-class designator n. a designator for a class; that is, an object that denotes a class and that is one of: a symbol (denoting the class named by that symbol; see the function find-class) or a class (denoting itself).
+**class designator** n. 一个类[class]的标识符[designator]; 这也就是说, 一个对象, 它表示一个类[class]并且它是以下之一: 一个符号[symbol] (表示由这个符号[symbol]命名的这个类[class]; 见函数[function] find-class) 或一个类 (表示它自身).
 
-class precedence list n. a unique total ordering on a class and its superclasses that is consistent with the local precedence orders for the class and its superclasses. For detailed information, see Section 4.3.5 (Determining the Class Precedence List).
+**class precedence list** n. 类[class]及其超类[superclass]上的唯一总排序, 与类[class]及其超类[superclass]的局部优先级[local precedence order]顺序一致. 关于详细信息, 见章节 4.3.5 (确定类的优先级列表).
 
-close v.t. (a stream) to terminate usage of the stream as a source or sink of data, permitting the implementation to reclaim its internal data structures, and to free any external resources which might have been locked by the stream when it was opened.
+**close** v.t. (一个流[stream]) 终止流[stream]作为数据的源或接收器的使用, 允许具体实现[implementation]去收回它的内部数据结构, 并且去释放任何在这个流[stream]被打开时锁定的外部资源.
 
-closed adj. (of a stream) having been closed (see <I>}</I>close). Some (but not all) operations that are valid on open streams are not valid on closed streams. See Section 21.1.1.1.2 (Open and Closed Streams).
+**closed** adj. (指一个流[stream]) 已经被关闭 (见 close). 一些 (但不是全部) 在打开的[open]流[stream]上是合法的操作在关闭的[closed]流[stream]上是不合法的. 见章节 21.1.1.1.2 (打开和关闭的流).
 
-closure n. a lexical closure.
+**closure** n. 一个词法闭包[lexical closure].
 
-coalesce v.t. (literal objects that are similar) to consolidate the identity of those objects, such that they become the same object. See Section 3.2.1 (Compiler Terminology).
+**coalesce** v.t. (类似的[similar]字面化[literal]对象[object]) 来巩固这些对象[object]的标识, 使它们成为相同的[same]对象[object]. 见章节 3.2.1 (编译器术语).
 
-code n. 1. Trad. any representation of actions to be performed, whether conceptual or as an actual object, such as forms, lambda expressions, objects of type function, text in a source file, or instruction sequences in a compiled file. This is a generic term; the specific nature of the representation depends on its context. 2. (of a character) a character code.
+**code** n. 1. Trad. 要执行的操作的任何表示形式, 无论是概念上的还是作为实际对象[object], 例如表达式形式[form], lambda 表达式[lambda expression], 函数[function]类型[type]的对象[object], 源码文件[source file]中的文本, 或者一个编译后文件[compiled file]中的指令序列. 这是一个通用术语; 表示的具体性质取决于它的上下文. 2. (指字符[character]) 一个字符码[character code].
 
-coerce v.t. (an object to a type) to produce an object from the given object, without modifying that object, by following some set of coercion rules that must be specifically stated for any context in which this term is used. The resulting object is necessarily of the indicated type, except when that type is a subtype of type complex; in that case, if a complex rational with an imaginary part of zero would result, the result is a rational rather than a complex---see Section 12.1.5.3 (Rule of Canonical Representation for Complex Rationals).
+**coerce** v.t. (一个对象[object]为一个类型[type]) 通过遵循一组强制转换规则从给定对象[object]生成一个对象[object], 而不修改该对象[object], 这些强制转换规则必须针对使用该术语的任何上下文进行特定说明. 得到的对象[object]必须是指定的类型[type], 除非该类型是类型[type] complex 的子类型[subtype]; 在这个情况中, 如果产生一个虚部为零的复有理数[complex rational], 则结果是一个有理数[rational]而不是一个复数[complex]---见章节 12.1.5.3 (复数的正规表示规则).
 
-colon n. the standard character that is called ``colon'' (:). See Figure 2-5.
+**colon** n. 标准字符[standard character], 它被称为 "冒号" (:). 见 Figure 2-5.
 
-comma n. the standard character that is called ``comma'' (,). See Figure 2-5.
+**comma** n. 标准字符[standard character], 它被称为 "逗号" (,). 见 Figure 2-5.
 
 **compilation** n. 编译器[compiler]编译代码[code]的过程.
 
@@ -269,7 +269,7 @@ comma n. the standard character that is called ``comma'' (,). See Figure 2-5.
 
 **compilation unit** n. 发生单个编译单元的时间间隔. 见宏[macro] with-compilation-unit.
 
-compile v.t. 1. (code) to perform semantic preprocessing of the code, usually optimizing one or more qualities of the code, such as run-time speed of execution or run-time storage usage. The minimum semantic requirements of compilation are that it must remove all macro calls and arrange for all load time values to be resolved prior to run time. 2. (a function) to produce a new object of type compiled-function which represents the result of compiling the code represented by the function. See the function compile. 3. (a source file) to produce a compiled file from a source file. See the function compile-file.
+**compile** v.t. 1. (代码[code]) 执行代码[code]的语义预处理, 通常优化代码的一个或多个质量, 如运行时执行速度或运行时存储使用情况. 编译的最小语义要求是它必须移除所有宏调用并且并安排在运行时之前解析所有加载时的值[ load time value]. 2. (一个函数[function]) 来产生一个 compiled-function 类型[type]的新对象[object], 它表示编译这个函数[function]表示的代码[code]的结果. 见函数[function] compile. 3. (一个源码文件[source file]) 来产生一个来自于一个源码文件[source file]的编译后文件[compiled file]. 见函数[function] compile-file.
 
 **compile time** n. 编译器[compiler]处理源代码[source code]的持续时间.
 
@@ -283,91 +283,91 @@ compile v.t. 1. (code) to perform semantic preprocessing of the code, usually op
 
 **compiler** n. 一个工具, 它是 Lisp 的一部分, 将代码[code]转换为一个依赖于具体实现的[implementation-dependent]可以被高效地表示和执行的形式. 函数 compile 和 compile-file 允许程序去调用这个编译器[compiler].
 
-compiler macro n. an auxiliary macro definition for a globally defined function or macro which might or might not be called by any given conforming implementation and which must preserve the semantics of the globally defined function or macro but which might perform some additional optimizations. (Unlike a macro, a compiler macro does not extend the syntax of Common Lisp; rather, it provides an alternate implementation strategy for some existing syntax or functionality.)
+**compiler macro** n. 全局定义的函数[function]或宏[macro]的辅助宏定义, 它可能被任何给定的符合规范的实现[conforming implementation]调用, 也可能不被调用, 它必须保留全局定义的函数[function]或宏[macro]的语义, 但可能执行一些额外的优化. (不像一个宏[macro], 一个编译器宏[compiler macro]不会扩展 Common Lisp 的语法; 相反, 它为一些现有的语法或功能提供了一种替代的实现策略.)
 
-compiler macro expansion n. 1. the process of translating a form into another form by a compiler macro. 2. the form resulting from this process.
+**compiler macro expansion** n. 1. 通过一个编译器宏[compiler macro]将一个表达式形式[form]转换为另一个表达式形式[form]的过程. 2. 这个过程产生的表达式形式[form].
 
-compiler macro form n. a function form or macro form whose operator has a definition as a compiler macro, or a funcall form whose first argument is a function form whose argument is the name of a function that has a definition as a compiler macro.
+**compiler macro form** n. 一个操作符[operator]被定义为编译器宏[compiler macro]的函数表达式形式[function form]或宏表达式形式[macro form], 或者一个 funcall 表达式形式[form], 它的第一个实参[argument]是一个 function 表达式形式[form], 这个表达式形式的实参[function]是一个被定义为编译器宏[compiler macro]的函数[function]的名字[name].
 
-compiler macro function n. a function of two arguments, a form and an environment, that implements compiler macro expansion by producing either a form to be used in place of the original argument form or else nil, indicating that the original form should not be replaced. See Section 3.2.2.1 (Compiler Macros).
+**compiler macro function** n. 一个两个参数的函数[function], 两个参数是一个表达式形式[form]和一个环境[environment], 它通过生成一个表达式形式[form]来实现编译器宏展开[compiler macro expansion], 该表达式形式[form]可以用来替代原始参数表达式形式[form], 也可以是 nil, 表示不应该替换原始表达式形式[form]. 见章节 3.2.2.1 (编译器宏).
 
-complex n. an object of type complex.
+**complex** n. 一个 complex 类型[type]的对象[object].
 
-complex float n. an object of type complex which has a complex part type that is a subtype of float. A complex float is a complex, but it is not a float.
+**complex float** n. 一个 complex 类型[type]的对象[object], 它的复数部分类型[complex part type]是 float 的一个子类型[subtype]. 一个复浮点数[complex float]是一个复数[complex], 但不是一个浮点数[float].
 
-complex part type n. (指复数[complex]) 1. the type which is used to represent both the real part and the imaginary part of the complex. 2. the actual complex part type of the complex. 3. the expressed complex part type of the complex.
+**complex part type** n. (指复数[complex]) 1. 被用于表示复数[complex]的实部和虚部的类型[type]. 2. 复数[complex]的实际复数部分类型[actual complex part type]. 3. 复数[complex]的表达复数部分类型[expressed complex part type].
 
-complex rational n. an object of type complex which has a complex part type that is a subtype of rational. A complex rational is a complex, but it is not a rational. No complex rational has an imaginary part of zero because such a number is always represented by Common Lisp as an object of type rational; see Section 12.1.5.3 (Rule of Canonical Representation for Complex Rationals).
+**complex rational** n. 一个 complex 类型[type]的对象[object], 它的复数部分类型[complex part type]是 rational 的子类型[subtype]. 一个复有理数[complex rational]是一个复数[complex], 但不是一个有理数[rational]. 没有虚部为零的复有理数[complex rational], 因为这样一个数字总是被 Common Lisp 表示为一个 rational 类型[type]的对象[object]; 见章节 12.1.5.3 (复数的正规表示规则).
 
-complex single float n. an object of type complex which has a complex part type that is a subtype of single-float. A complex single float is a complex, but it is not a single float.
+**complex single float** n. 一个 complex 类型[type]的对象[object], 它的复数部分类型[complex part type]是 single-float 的子类型[subtype]. 一个复单精度浮点数[complex single float]是一个复数[complex], 但不是一个单精度浮点数[single float].
 
-composite stream n. a stream that is composed of one or more other streams. ``make-synonym-stream creates a composite stream.''
+**composite stream** n. 一个流[stream], 它由一个或多个流[stream]组成. "make-synonym-stream 创建一个复合流 (make-synonym-stream creates a composite stream)."
 
-compound form n. a non-empty list which is a form: a special form, a lambda form, a macro form, or a function form.
+**compound form** n. 一个非空[non-empty]列表[list], 它是一个表达式形式[form]: 一个特殊表达式形式[special form], 一个 lambda 表达式形式[lambda form], 一个宏表达式形式[macro form], 或者一个函数表达式形式[function form].
 
-compound type specifier n. a type specifier that is a cons; i.e., a type specifier that is not an atomic type specifier. ``(vector single-float) is a compound type specifier.''
+**compound type specifier** n. 一个类型指定符[type specifier], 它是一个 cons; 也就是说, 一个不是原子类型指定符[atomic type specifier]的类型指定符[type specifier]. "(vector single-float) 是一个符合类型指定符 ((vector single-float) is a compound type specifier)."
 
-concatenated stream n. an input stream of type concatenated-stream.
+**concatenated stream** n. 一个 concatenated-stream 类型[type]的输入[input]流[stream].
 
-condition n. 1. an object which represents a situation---usually, but not necessarily, during signaling. 2. an object of type condition.
+**condition** n. 1. 表示一种情况[situation]的对象[object]---通常, 但不一定是在发送期间. 2. 一个 condition 类型[type]的对象[object].
 
-condition designator n. one or more objects that, taken together, denote either an existing condition object or a condition object to be implicitly created. For details, see Section 9.1.2.1 (Condition Designators).
+**condition designator** n. 一个或多个对象[object], 它们组合在一起表示现有的状况[condition]对象[object]或要隐式创建的状况[condition]对象[object]. 关于详细信息, 见章节 9.1.2.1 (状况标识符).
 
-condition handler n. a function that might be invoked by the act of signaling, that receives the condition being signaled as its only argument, and that is permitted to handle the condition or to decline. See Section 9.1.4.1 (Signaling).
+**condition handler** n. 一个函数[function], 它可能被发送的动作所调用, 它接收要被发送的状况[condition]作为它仅有的参数, 并且允许它去处理[handle]这个状况[condition]或拒绝[decline]. 见章节 9.1.4.1 (发送).
 
-condition reporter n. a function that describes how a condition is to be printed when the Lisp printer is invoked while *print-escape* is false. See Section 9.1.3 (Printing Conditions).
+**condition reporter** n. 一个函数[function], 它描述了当 Lisp 打印器[Lisp printer]被调用而 \*print-escape* 是 false 时一个状况[condition]如何被打印. 见章节 9.1.3 (打印状况).
 
-conditional newline n. a point in output where a newline might be inserted at the discretion of the pretty printer. There are four kinds of conditional newlines, called ``linear-style,'' ``fill-style,'' ``miser-style,'' and ``mandatory-style.'' See the function pprint-newline and Section 22.2.1.1 (Dynamic Control of the Arrangement of Output).
+**conditional newline** n. 输出中的一个点, 可以由美观打印器[pretty printer]任意插入新行[newline]. 这里有四种条件换行[conditional newline], 称为 "线性风格(linear-style)", "填充风格(fill-style)", "吝啬风格(miser-style)", 以及 "强制风格(mandatory-style)". 见函数[function] pprint-newline 和章节 22.2.1.1 (输出排列的动态控制).
 
-conformance n. a state achieved by proper and complete adherence to the requirements of this specification. See Section 1.5 (Conformance).
+**conformance** n. 通过适当和完全遵守本规范的要求而达到的状态. 见章节 1.5 (规范性).
 
-conforming code n. code that is all of part of a conforming program.
+**conforming code** n. 符合规范的程序[conforming program]中的所有部分的代码[code].
 
-conforming implementation n. an implementation, used to emphasize complete and correct adherance to all conformance criteria. A conforming implementation is capable of accepting a conforming program as input, preparing that program for execution, and executing the prepared program in accordance with this specification. An implementation which has been extended may still be a conforming implementation provided that no extension interferes with the correct function of any conforming program.
+**conforming implementation** n. 一个具体实现[implementation], 用来强调对所有规范性标准的完全和正确的遵守. 一个符合规范的实现[conforming implementation]能够接受符合规范的程序[conforming program]作为输入, 准备执行该程序[program], 并按照本规范执行所准备的程序[program]. 如果没有扩展干扰任何符合规范的程序[conforming program]的正确功能, 已扩展的具体实现[implementation]仍然可以是符合规范的实现[conforming implementation].
 
-conforming processor n. ANSI a conforming implementation.
+**conforming processor** n. ANSI 一个符合规范的实现[conforming implementation].
 
-conforming program n. a program, used to emphasize the fact that the program depends for its correctness only upon documented aspects of Common Lisp, and can therefore be expected to run correctly in any conforming implementation.
+**conforming program** n. 一个程序[program], 用于强调程序的正确性仅依赖于 Common Lisp 的文档化方面, 因此可以期望在任何符合规范的实现[conforming implementation]中正确运行.
 
-congruent n. conforming to the rules of lambda list congruency, as detailed in Section 7.6.4 (Congruent Lambda-lists for all Methods of a Generic Function).
+**congruent** n. 符合 lambda 列表[lambda list]一致性的规则, 就像章节 7.6.4 (广义函数的所有方法的一致 Lambda-list) 中详述的那样.
 
-cons n.v. 1. n. a compound data object having two components called the car and the cdr. 2. v. to create such an object. 3. v. Idiom. to create any object, or to allocate storage.
+**cons** n.v. 1. n. 一个有着两个成员的复合数据对象[object], 这两个成员称为 car 和 cdr. 2. v. 去创建这样一个对象[object]. 3. v. Idiom. 去创建任何对象[object], 或者去分配存储.
 
-constant n. 1. a constant form. 2. a constant variable. 3. a constant object. 4. a self-evaluating object.
+**constant** n. 1. 一个常量表达式形式[constant form]. 2. 一个常变量[constant variable]. 3. 一个常量对象[constant object]. 4. 一个自求值[self-evaluating object].
 
-constant form n. any form for which evaluation always yields the same value, that neither affects nor is affected by the environment in which it is evaluated (except that it is permitted to refer to the names of constant variables defined in the environment), and that neither affects nor is affected by the state of any object except those objects that are otherwise inaccessible parts of objects created by the form itself. ``A car form in which the argument is a quote form is a constant form.''
+**constant form** n. 求值[evaluation]总是产生[yield]相同值[value]的任何表达式形式[form], 既不影响它被求值时所在的环境, 也不受该环境影响 (除非允许引用环境[environment]中定义的常变量[constant variable]的名称), 并且不影响任何对象[object]的状态, 也不受任何对象[object]的状态的影响, 除非这些对象是由表达式形式[form]本身创建的对象[object]的其他不可访问部分[otherwise inaccessible part]. "参数为一个 quote 表达式形式的一个 car 表达式形式是一个常量表达式形式(A car form in which the argument is a quote form is a constant form)."
 
-constant object n. an object that is constrained (e.g., by its context in a program or by the source from which it was obtained) to be immutable. ``A literal object that has been processed by compile-file is a constant object.''
+**constant object** n. 一个对象[object], 它被约束为不可变的[immutable] (例如, 根据它在程序[program]中的上下文或它的来源). "一个被 compile-file 处理的字面化对象是一个常量对象(A literal object that has been processed by compile-file is a constant object)."
 
-constant variable n. a variable, the value of which can never change; that is, a keyword[1] or a named constant. ``The symbols t, nil, :direction, and most-positive-fixnum are constant variables.''
+**constant variable** n. 一个变量[variable], 它的值[value]从不改变; 也就是说, 一个关键字[keyword[1]] 或者一个已命名常量[named constant]. "符号 t, nil, :direction, 和 most-positive-fixnum 都是常变量(The symbols t, nil, :direction, and most-positive-fixnum are constant variables)."
 
 **constituent** n., adj. 1. a. n. 作为标记[token]的一部分的字符[character]的语法类型[syntax type]. 关于详情, 见章节 2.1.4.1 (标记成分字符). b. adj. (一个字符[character]) 有着标记成分[constituent[1a]] 语法类型[syntax type[2]]. c. n. 一个标记成分[constituent[1b]]字符[character]. 2. n. (一个复合流[composite stream]) 组成该流[stream]的源或汇聚的几个对象[object]之一.
 
 **constituent trait** n. (一个字符[character]) 一个读取表[readtable]中的一个标记成分[constituent[1b]]字符[character]的几个分类中的一个. 见章节 2.1.4.1 (标记成分字符).
 
-constructed stream n. a stream whose source or sink is a Lisp object. Note that since a stream is another Lisp object, composite streams are considered constructed streams. ``A string stream is a constructed stream.''
+**constructed stream** n. 一个源或接收器是一个 Lisp 对象[object]的流[stream]. 注意, 由于一个流[stream]也是一个 Lisp 对象[object], 因此复合流[composite stream]也被认为是构造流[constructed stream]. "一个字符串流是一个构造流 (A string stream is a constructed stream)."
 
-contagion n. a process whereby operations on objects of differing types (e.g., arithmetic on mixed types of numbers) produce a result whose type is controlled by the dominance of one argument's type over the types of the other arguments. See Section 12.1.1.2 (Contagion in Numeric Operations).
+**contagion** n. 一个过程, 其中不同类型[type]的对象[object]上的操作 (例如, 对混合类型[type]的数字[number]进行算术操作) 产生一个类型[type]由一个实参[argument]类型[type]对其他实参[argument]类型[type]的支配性控制的结果. 见章节 12.1.1.2 (数值运算的传递性).
 
-continuable n. (of an error) an error that is correctable by the continue restart.
+**continuable** n. (指一个错误[error]) 一个通过 continue 重启动是可校正的[correctable]的错误[error].
 
-control form n. 1. a form that establishes one or more places to which control can be transferred. 2. a form that transfers control.
+**control form** n. 1. 一个表达式形式[form], 它建立一个或多个控制可以转移到的位置. 2. 一个转移控制的表达式形式[form].
 
-copy n. 1. (of a cons C) a fresh cons with the same car and cdr as C. 2. (of a list L) a fresh list with the same elements as L. (Only the list structure is fresh; the elements are the same.) See the function copy-list. 3. (of an association list A with elements Ai) a fresh list B with elements Bi, each of which is nil if Ai is nil, or else a copy of the cons Ai. See the function copy-alist. 4. (of a tree T) a fresh tree with the same leaves as T. See the function copy-tree. 5. (of a random state R) a fresh random state that, if used as an argument to to the function random would produce the same series of ``random'' values as R would produce. 6. (of a structure S) a fresh structure that has the same type as S, and that has slot values, each of which is the same as the corresponding slot value of S. (Note that since the difference between a cons, a list, and a tree is a matter of ``view'' or ``intention,'' there can be no general-purpose function which, based solely on the type of an object, can determine which of these distinct meanings is intended. The distinction rests solely on the basis of the text description within this document. For example, phrases like ``a copy of the given list'' or ``copy of the list x'' imply the second definition.)
+**copy** n. 1. (指一个 cons C) 一个带有和 C 相同[same]的 car 和 cdr 的新的[fresh] cons. 2. (指一个列表[list] L) 一个带有和 L 相同[same]元素[element]的新[fresh]列表[list]. (只有列表结构[list structure]是新的[fresh]; 其中的元素[element]都相同[same].) 见函数[function] copy-list. 3. (指一个带有多个元素[element] Ai 的关联列表[association list] A) 一个带有多个元素[element] Bi 的新[fresh]列表[list], 如果 Ai 是 nil 那么对应的每一个都是 nil, 否则就是 cons Ai 的一个拷贝[copy]. 见函数[function] copy-alist. 4. (指一个树[tree] T) 一个带有和 T 相同[same]叶节点[leave]的新[fresh]树[tree]. 见函数[function] copy-tree. 5. (指一个随机状态[random state] R) 一个新[fresh]随机状态[random state], 如果被用作函数[function] random 的参数会产生和 R 产生的相同的 "随机" 值序列. 6. (指一个结构体[structure] S) 一个和 S 相同类型[type]的新[fresh]结构体[structure], 并且每一个槽的值都合 S 的对应槽的值相同[same]. (注意, 由于一个 cons, 一个列表[list], 和一个树之间的区别在于 "视图" 或 "意图", 没有一种通用函数[function]仅根据对象[object]的类型[type]就可以确定这些不同含义中的哪些含义. 区别完全取决于本文档内的文本说明. 比如, 像 "给定列表[list]的一个拷贝[copy] (a copy of the given list)" 或 "列表[list] x 的拷贝" 这样的短语意味着第二个定义.)
 
-correctable adj. (of an error) 1. (by a restart other than abort that has been associated with the error) capable of being corrected by invoking that restart. ``The function cerror signals an error that is correctable by the continue restart.'' (Note that correctability is not a property of an error object, but rather a property of the dynamic environment that is in effect when the error is signaled. Specifically, the restart is ``associated with'' the error condition object. See Section 9.1.4.2.4 (Associating a Restart with a Condition).) 2. (when no specific restart is mentioned) correctable[1] by at least one restart. ``import signals a correctable error of type package-error if any of the imported symbols has the same name as some distinct symbol already accessible in the package.''
+**correctable** adj. (指一个错误[error]) 1. (通过一个和该错误[error]关联的重启动[restart]而不是 abort) 能够通过调用该重启动[restart]进行纠正. "函数 cerror 发出一个错误, 它是可以通过 continue 重启动[restart]来校正的 (The function cerror signals an error that is correctable by the continue restart)." (注意, 这个可校正性不是一个错误[error]对象[object]的属性, 而是这个错误[error]发出时生效的动态环境[dynamic environment]的属性. 具体来说, 重启动[restart]与错误[error]状况[condition]对象[object]"关联". 见章节 9.1.4.2.4 (关联重启动和状况).) 2. (当没有特定重启动[restart]被提及时) 至少通过一个重启动[restart]即可纠正[correctable[1]]. "如果导入的任何符号具有与包中已经可访问的某些不同符号相同的名称, 则 import 发出 package-error 类型[type]的可纠正错误 (import signals a correctable error of type package-error if any of the imported symbols has the same name as some distinct symbol already accessible in the package)."
 
-current input base n. (in a dynamic environment) the radix that is the value of *read-base* in that environment, and that is the default radix employed by the Lisp reader and its related functions.
+**current input base** n. (在一个动态环境[dynamic environment]中) 这个基数[radix]是这个环境[environment]中的 \*read-base* 的值[value], 并且它是 Lisp 读取器[Lisp reader]和它的相关函数[function]采用的默认基数[radix].
 
-current logical block n. the context of the innermost lexically enclosing use of pprint-logical-block.
+**current logical block** n. 最内部词法闭合的 pprint-logical-block 的上下文.
 
-current output base n. (in a dynamic environment) the radix that is the value of *print-base* in that environment, and that is the default radix employed by the Lisp printer and its related functions.
+**current output base** n. (在一个动态环境[dynamic environment]中) 这个基数[radix]是这个环境[environment]中的 \*read-base* 的值[value], 并且它是 Lisp 打印器[Lisp printer]和它的相关函数[function]采用的默认基数[radix].
 
-current package n. (in a dynamic environment) the package that is the value of *package* in that environment, and that is the default package employed by the Lisp reader and Lisp printer, and their related functions.
+**current package** n. (在一个动态环境[dynamic environment]中) 这个包[package]是这个环境[environment]中 \*package* 的值[value], 并且它是 Lisp 读取器[Lisp reader]和 Lisp 打印器[Lisp printer]采用的默认包[package].
 
-current pprint dispatch table n. (in a dynamic environment) the pprint dispatch table that is the value of *print-pprint-dispatch* in that environment, and that is the default pprint dispatch table employed by the pretty printer.
+**current pprint dispatch table** n. (在一个动态环境[dynamic environment]中) 这个美观打印分派表[pprint dispatch table]是这个环境[environment]中 \*print-pprint-dispatch* 的值[value], 并且它是美观打印器[pretty printer]采用的默认美观打印分派表[pprint dispatch table].
 
-current random state n. (in a dynamic environment) the random state that is the value of *random-state* in that environment, and that is the default random state employed by random.
+**current random state** n. (在一个动态环境[dynamic environment]中) 这个随机状况[random state]是这个环境[environment]中 \*random-state* 的值[value], 并且它是 random 采用的默认随机状态[random state].
 
 **current readtable** n. (在一个动态环境[dynamic environment]中) 那个环境中作为 \*readtable* 的值的读取表, 并且影响着表达式[expressions[2]]被 Lisp 读取器[Lisp reader]解析为对象[object]的方式. 
 
