@@ -60,7 +60,7 @@ Common Lisp 以打印文本的形式提供了大多数对象[object]的表示形
 
 当程序可读的输出特别重要时, 变量[variable] \*print-readably* 可以被用于重写由其他打印器控制变量[printer control variable]控制的各个方面.
 
-使 \*print-readably* 的值[value]为 true 的诸多影响中的一个是 Lisp 打印器[Lisp printer]表现地就好像 \*print-escape* 也是 true 一样. 为了表示方便, 我们说如果 \*print-readably* 或 \*print-escape* 任意一个值是 true, 那么打印器转义[printer escaping]就是 "启用的"; 并且我们说如果 \*print-readably* 和 \*print-escape* 的值都是 false, 那么打印器转义[printer escaping]就是 "禁用的". 
+使 \*print-readably* 的值[value]为 true 的诸多影响之一是 Lisp 打印器[Lisp printer]表现地就好像 \*print-escape* 也是 true 一样. 为了表示方便, 我们说如果 \*print-readably* 或 \*print-escape* 任意一个值是 true, 那么打印器转义[printer escaping]就是 "启用的"; 并且我们说如果 \*print-readably* 和 \*print-escape* 的值都是 false, 那么打印器转义[printer escaping]就是 "禁用的". 
 
 ### 22.1.2 <span id="PrinterDispatching">打印器分派</span>
 
@@ -98,7 +98,7 @@ Lisp 打印器[Lisp printer]决定如何打印一个对象[object], 如下所示
 
 ##### 22.1.3.1.1 <span id="PrintingIntegers">打印整数</span>
 
-整数[integer]是用当前输出基数[current output base]在位置符号中指定的基数来打印的, 最有效数字优先. 如果合适的话, 可以打印出一个基数说明符; 见 \*print-radix*. 如果一个整数[integer]是负的, 会打印一个负号和那个整数[integer]的绝对值. 整数[integer]零会被表示为单个数字 0 并且不会有符号. 一个小数点可能被打印出来, 取决于 \*print-radix* 的值[value].
+整数[integer]是用当前输出基数[current output base]在位置符号中所指定的基数来打印的, 最有效数字优先. 如果合适的话, 可以打印出一个基数说明符; 见 \*print-radix*. 如果一个整数[integer]是负的, 会打印一个负号和那个整数[integer]的绝对值. 整数[integer]零会被表示为单个数字 0 并且不会有符号. 一个小数点可能被打印出来, 取决于 \*print-radix* 的值[value].
 
 关于一个整数[integer]的语法相关信息, 见章节 2.3.2.1.1 (一个整数的语法). 
 
@@ -112,7 +112,7 @@ Lisp 打印器[Lisp printer]决定如何打印一个对象[object], 如下所示
 
 ##### 22.1.3.1.3 <span id="PrintingFloats">打印浮点数</span>
 
-如果这个浮点数的大小是零或在 10^-3 (包含的) 和 10^7 (不包含的) 之间, 它会被打印为这个数字的整数部分, 然后一个小数点, 再是这个数字的小数部分; 小数点的每一边都至少有一个数字. 如果这个数字的符号 (由 float-sign 确定) 是负的, 那么会在这个数字之前打印一个负号. 如果这个数字的格式不匹配由 \*read-default-float-format* 指定的格式, 那么也会打印出该格式的指数标记[exponent marker]和数字 0. 例如, 自然对数作为一个短浮点数[short float]可以被打印成 2.71828S0.
+如果这个浮点数的大小是零或在 10^-3 (包含的) 和 10^7 (不包含的) 之间, 它会被打印为这个数字的整数部分, 然后一个小数点, 再是这个数字的小数部分; 小数点的每一边都至少有一个数字. 如果这个数字的符号 (由 float-sign 确定) 是负的, 那么会在这个数字之前打印一个负号. 如果这个数字的格式和 \*read-default-float-format* 指定的格式不匹配, 那么也会打印出该格式的指数标记[exponent marker]和数字 0. 例如, 自然对数作为一个短浮点数[short float]可以被打印成 2.71828S0.
 
 对于范围 10^-3 到 10^7 之外的非零大小, 一个浮点数[float]以计算机科学计数法打印的. 这个数字的表示被缩放到 1 (包含的) 和 10 (不包含的) 之间然后打印, 其中小数点前一位数, 小数点后至少有一个位. 接下来是打印这个格式的指数标记[exponent marker], 但是如果数字的格式与 \*read-default-float-format* 指定的格式相匹配, 那么就使用指数标记[exponent marker] E. 最后, 一个 10 的幂被打印成一个十进制整数, 这个小数和这个幂相乘的结果等于原始数字. 例如, 阿伏伽德罗数作为一个短浮点数[short float]会被打印为 6.02S23.
 
@@ -134,9 +134,10 @@ Lisp 打印器[Lisp printer]决定如何打印一个对象[object], 如下所示
 
 当打印器转义[printer escaping]被禁用时, 一个字符[character]被打印为它的自身; 它被直接发送给输出流[stream]. 当打印器转义[printer escaping]被启用时, 那么使用 #\ 语法.
 
-当打印器输出一个字符[character]的名字时, 它使用和 #\ 读取器宏[reader macro]相同的表; 因此输出的任何字符[character]作为输入都是可接受的 (在那个实现[implementation]中). 如果一个非图形化[non-graphic]字符[character]有着一个标准化[standardized]名字[name[5]], 这个名字[name]比非标准的名字更喜欢用 #\ 符号打印. 对于图形化[graphics]标准字符[standard character], 这个字符[character]自身被用于 #\ 标记打印---即便这个字符[character]也有一个名字[name[5]].
+当打印器输出一个字符[character]的名字时, 它使用和 #\ 读取器宏[reader macro]相同的表; 因此输出的任何字符[character]作为输入都是可接受的 (在那个实现[implementation]中). 如果一个非图形化[non-graphic]字符[character]有着一个标准化[standardized]名字[name[5]], 对于使用 #\ 符号打印, 该名称[name]优于非标准名称. 对于图形化[graphics]标准字符[standard character], 这个字符[character]自身被用于 #\ 标记打印---即便这个字符[character]也有一个名字[name[5]].
 
 关于 #\ 读取器宏[reader macro]的详细信息, 见章节 2.4.8.1 (井号反斜线(#\\)). 
+
 
 #### 22.1.3.3 <span id="PrintingSymbols">打印符号</span>
 
@@ -280,7 +281,7 @@ foo::bar
     :PRESERVE      :CAPITALIZE   Zebra        Zebra
     :PRESERVE      :CAPITALIZE   zebra        zebra
     :INVERT        :UPCASE       ZEBRA        zebra
-    :INVERT        :UPCASE       Zebra        Zebra
+    :INVERT        :UPCASE       Zebra        Zebra以以下方式影响
     :INVERT        :UPCASE       zebra        ZEBRA
     :INVERT        :DOWNCASE     ZEBRA        zebra
     :INVERT        :DOWNCASE     Zebra        Zebra
@@ -349,7 +350,7 @@ cons 的打印受 \*print-level*, \*print-length*, 和 \*print-circle* 的影响
 
 #### 22.1.3.7 <span id="PrintingOtherVectors">打印其他向量</span>
 
-如果 \*print-array* 是 true 并且 \*print-readably* 是 false, 除了字符串[string]和位向量[bit vector]以外的向量[vector]会用普通向量语法来打印; 这意味着关于特殊向量表示的信息不会出现. 零长度向量[vector]的打印表示是 #(). 非零长度的向量[vector]用 #( 开始打印. 在那个后面, 向量[vector]的第一个元素会被打印. 如果这里有任何其他元素, 它们会依次被打印, 如果 \*print-pretty* 是 false 那么每一个额外的元素前面会有一个空格[space], 如果 \*print-pretty* 是 true 那么就是空格[whitespace[1]]. 最后一个元素后的右圆括号[right-parenthesis]终止这个向量[vector]的打印表示. 向量[vector]的打印受 \*print-level* 和 \*print-length* 的影响. 如果这个向量[vector]有着填充指针[fill pointer], 那么只有那些在填充指针[fill pointer]下的元素会被打印.
+如果 \*print-array* 是 true 并且 \*print-readably* 是 false, 除了字符串[string]和位向量[bit vector]以外的向量[vector]会用普通向量语法来打印; 这意味着关于特殊向量表示的信息不会出现. 零长度向量[vector]的打印表示是 #(). 非零长度的向量[vector]用 #( 开始打印. 在那个后面, 向量[vector]的第一个元素会被打印. 如果这里有任何其他元素, 它们会依次被打印, 如果 \*print-pretty* 是 false 那么每一个额外的元素前面会有一个空格[space], 如果 \*print-pretty* 是 true 那么就是空白[whitespace[1]]. 最后一个元素后的右圆括号[right-parenthesis]终止这个向量[vector]的打印表示. 向量[vector]的打印受 \*print-level* 和 \*print-length* 的影响. 如果这个向量[vector]有着填充指针[fill pointer], 那么只有那些在填充指针[fill pointer]下的元素会被打印.
 
 如果 \*print-array* 和 \*print-readably* 都是 false, 向量[vector]不会按如上所述被打印, 而是以一种简洁但不可读的格式 (使用 #<) 来打印.
 
@@ -398,7 +399,7 @@ cons 的打印受 \*print-level*, \*print-length*, 和 \*print-circle* 的影响
 
 没有为打印 random-state 类型[type]的对象[object]指定具体的语法. 然而, 每个具体实现[implementation]必须以这样一种方式来安排打印随机状态[random state]对象[object], 在相同实现中, read 可以从这个打印表示来构造这个随机状态[random state]的一个拷贝, 就好像这个拷贝是通过 make-random-state 创建的一样.
 
-如果这个随机状态[random state]类型实际上是通过defstruct 来有效实现的, 那么常见的结构体语法可以被用于打印随机状态[random state]对象; 一种打印可能看上去像下面这样
+如果这个随机状态[random state]类型实际上是通过 defstruct 来有效实现的, 那么常见的结构体语法可以被用于打印随机状态[random state]对象; 一种打印可能看上去像下面这样
 
     #S(RANDOM-STATE :DATA #(14 49 98436589 786345 8734658324 ... ))
 
@@ -429,13 +430,13 @@ cons 的打印受 \*print-level*, \*print-length*, 和 \*print-circle* 的影响
 
 #### 22.1.3.13 <span id="PrintingOtherObjects">打印其他对象</span>
 
-其他对象[object]以一种依赖于具体实现[implementation-dependent]的方式被打印. 一个具体实现[implementation]以可读[readably]的方式打印那些对象[object]不是必须的.
+其他对象[object]以一种依赖于具体实现[implementation-dependent]的方式被打印. 没有强制要求一个具体实现[implementation]以可读[readably]的方式打印那些对象[object].
 
 比如, 哈系表[hash table], 读取表[readtable], 包[package], 流[stream], 和函数[function]可能不会以可读[readably]的方式打印.
 
 在这个情况中使用的普遍表示是 #<...>. 由于 #< 不是通过 Lisp 读取器[Lisp reader]可读的, 它遵循的文本准确格式是不重要的, 但是要使用的一个普遍格式是由 print-unreadable-object 宏[macro]提供的.
 
-关于 Lisp 读取器[Lisp reader]如何对待这种表示的信息, 见章节 2.4.8.20 (井号小于号(#<)). 关于如果表示不能被可读[readably]地打印的对象[object]的信息, 见章节 2.4.8.6 (井号点(#.)).
+关于 Lisp 读取器[Lisp reader]如何对待这种表示的信息, 见章节 2.4.8.20 (井号小于号(#<)). 关于如何表示不能被可读[readably]地打印的对象[object]的信息, 见章节 2.4.8.6 (井号点(#.)).
 
 ### 22.1.4 <span id="ExamplesPrinterBehavior">打印器行为的示例</span>
 
@@ -506,7 +507,7 @@ cons 的打印受 \*print-level*, \*print-length*, 和 \*print-circle* 的影响
 
 通过直接访问美观打印器内的机制来对布局做出动态决策, 这些 pprint-logical-block, pprint-newline, 和 pprint-indent 宏和函数可以为任何产生输出的函数指定美观打印布局规则. 它们也使得环状和共享的检测以及要被函数支持的基于长度和嵌套深度的缩写变得简单.
 
-美观打印器[pretty printer]完全是根据 \*print-pprint-dispatch* 的值[value]来驱动的. 函数[function] set-pprint-dispatch 使得符合规范的程序[conforming program]去关联美观打印函数和一个类型[type]是可能的.
+美观打印器[pretty printer]完全是根据 \*print-pprint-dispatch* 的值[value]来驱动的. 函数[function] set-pprint-dispatch 使得符合规范的程序[conforming program]去关联美观打印函数和一个类型[type]成为可能.
 
 > * 22.2.1.1 [输出排列的动态控制](#DynamicControlArrangeOutput)
 > * 22.2.1.2 [格式化指令接口](#FormatDirectiveInterface)
@@ -522,9 +523,9 @@ cons 的打印受 \*print-level*, \*print-length*, 和 \*print-circle* 的影响
 
 输出作为一个整体是一个逻辑块和最外层节段. 这节段由 Figure 1 的第二行中的 0 表示. 嵌套在这个输出中的逻辑块通过宏 pprint-logical-block 来指定. 条件换行的位置由 pprint-newline 调用来指定. 每个条件换行定义了两个节段 (一个在它之前, 一个在它之后) 并且和第三个关联 (直接包含它的那个节段).
 
-一个条件换行后面的节段由这些组成: 所有输出到, 但不包括, (a) 在同一个逻辑块中直接包含的下一个条件换行; 或者如果 (a) 是不可应用的, (b) 嵌套在逻辑块的更低级别的下一个换行; 或者如果 (b) 是不可应用的, (c) 输出的末尾.
+一个条件换行后面的节段由这些组成: 所有输出直到, 但不包括, (a) 在同一个逻辑块中直接包含的下一个条件换行; 或者如果 (a) 是不可应用的, (b) 嵌套在逻辑块的更低级别的下一个换行; 或者如果 (b) 是不可应用的, (c) 输出的末尾.
 
-一个条件换行前面的节段由这些组成: 所有的输出都返回到, 但不包括, (a) 被直接包含在相同逻辑块中的前面的条件换行; 或者如果 (a) 不可应用, (b) 直接包含逻辑块的开头. Figure 1 中的最后四行表示四个条件换行前后的节段.
+一个条件换行前面的节段由这些组成: 所有的输出向后直到, 但不包括, (a) 被直接包含在相同逻辑块中的前面的条件换行; 或者如果 (a) 不可应用, (b) 直接包含逻辑块的开头. Figure 1 中的最后四行表示四个条件换行前后的节段.
 
 直接包含一个条件换行的节段是包含这个条件换行节段中最短的那个. 在下一段中, 第一个条件换行被直接包含在 0 标记的节段中, 第二个和第三个条件换行被直接包含在第四个条件换行之前的节段中, 并且第四个条件换行被直接包含在第一个条件换行之后的节段中.
 
@@ -532,8 +533,8 @@ cons 的打印受 \*print-level*, \*print-length*, 和 \*print-circle* 的影响
     000000000000000000000000000
     11 111111111111111111111111
               22 222
-                  333 3333
-            44444444444444 44444
+                 333 3333
+           44444444444444 44444
 
     Figure 22-3. 逻辑块, 条件换行, 和节段的示例
 
@@ -647,7 +648,7 @@ cons 的打印受 \*print-level*, \*print-length*, 和 \*print-circle* 的影响
 ;;;   (* X Y))
 ```
 
-作为一个更加复杂 (并且真实) 示例, 细想下面的函数 pprint-let. 这个指定如何去用传统风格打印一个 let 表达式形式[form]. 它比上面的例子更复杂, 因为它不得不去处理嵌套的结构. 同样的, 不像上面的例子, 它包含去可读地打印任何以符号[symbol] let 开始的可能的列表的完整代码. 最外部的 pprint-logical-block 表达式形式[form]处理输入列表作为整体的打印并且指定应该在输出中打印的圆括号. 第二个 pprint-logical-block 表达式形式[form]处理绑定对的列表. 在列表中的每一对自身通过最内部的 pprint-logical-block 打印. (使用 loop 表达式形式[form], 而不是将这个对分解为两个对象[object], 这样一来不管这个对对应的列表有着一个元素, 两个元素, 或(难看的)不止两个元素都会产生可读的输出). 会在除了最后一个之外的每一个对后面放置一个空格和一个填充风格的条件换行. 在最顶层 pprint-logical-block 表达式形式[form]末尾的循环打印在这个 let 表达式形式[form]的主体中被空格和线性风格条件换行分隔的表达式形式.
+作为一个更加复杂 (并且真实) 示例, 细想下面的函数 pprint-let. 这个指定如何去用传统风格打印一个 let 表达式形式[form]. 它比上面的例子更复杂, 因为它不得不去处理嵌套的结构. 同样的, 不像上面的例子, 它包含去可读地打印任何以符号[symbol] let 开始的可能的列表的完整代码. 最外部的 pprint-logical-block 表达式形式[form]处理输入列表作为整体的打印并且指定应该在输出中打印的圆括号. 第二个 pprint-logical-block 表达式形式[form]处理绑定对的列表. 在列表中的每一对自身通过最内部的 pprint-logical-block 打印. (使用 loop 表达式形式[form], 而不是将这个对分解为两个对象[object], 这样一来不管这个对对应的列表有着一个元素, 两个元素, 或(难看的)不止两个元素都会产生可读的输出). 会在除了最后一个之外的每一个对后面放置一个空格和一个填充风格的条件换行. 在最顶层 pprint-logical-block 表达式形式[form]末尾的循环打印在这个 let 表达式形式[form]的主体中被空格和线性风格条件换行分隔的表达式形式. <!--TODO 语句待组织-->
 
 ```LISP
 (defun pprint-let (*standard-output* list)
@@ -673,7 +674,7 @@ cons 的打印受 \*print-level*, \*print-length*, 和 \*print-circle* 的影响
           (write (pprint-pop)))))
 ```
 
-细想在 \*print-level* 是 4, 并且 \*print-circle* 是 true 的情况下求值下名这个.
+细想在 \*print-level* 是 4, 并且 \*print-circle* 是 true 的情况下求值下面这个.
 
 ```LISP
 (pprint-let *standard-output*
@@ -682,7 +683,7 @@ cons 的打印受 \*print-level*, \*print-length*, 和 \*print-circle* 的影响
                   (setq x (sqrt z)) #1#))
 ```
 
-如果行宽大于等于 77, 所产生的输出出现在一行中. 然而, 如果行宽是 76, 换行符会被插入在分隔这些表达式形式的线性风格条件换行中并且产生下面这样的输出. 注意, 退化绑定对 x 即使不是一个列表也可以打印出来; 一个深度缩写标记会被打印来替换 (g 3); 绑定对 (z . 2) 即便它不是一个 proper 列表也可以打印出来; 并打印缩写的环状标记.
+如果行宽大于等于 77, 所产生的输出出现在一行中. 然而, 如果行宽是 76, 换行符会被插入在分隔这些表达式形式的线性风格条件换行中并且产生下面这样的输出. 注意, 退化绑定对 x 即使不是一个列表也可以打印出来; 一个深度缩写标记会被打印来替换 (g 3); 绑定对 (z . 2) 即便不是一个正规列表[proper list]也可以打印出来; 并打印缩写的环状标记.
 
 ```LISP
 #1=(LET (X (*PRINT-LENGTH* (F #)) (Z . 2) (K (CAR Y))) 
@@ -836,7 +837,7 @@ format 对于产生格式化的字符串、产生美观的信息等等都非常�
 
 format 按原样写入简单文本; 每一个内嵌的指令指定了进一步的文本输出, 这些输出将出现在简单文本中对应位置. 大部分指令使用参数 args 中的一个或多个来创建它们的输出.
 
-一个指令由一个波浪符号[tilde], 由逗号分隔的可选前缀参数, 可选冒号[colon]和 at-sign 字符修饰语, 以及表示这个指令种类的单个字符. 这里没有要求 at-sign 字符和冒号[colon]修饰符之间的顺序. 忽略这个指令字符的大小写[case]. 前缀参数被表示为带符号的 (符号是可选的) 十进制数字, 或者一个单引号[single-quote]后面跟着一个字符. 比如, ~5,'0d 可以被用于在五列中以前导零打印一个十进制整数[integer], 或使用 ~5,'*d 来得到一个前导的星号.
+一个指令由一个波浪符号[tilde], 由逗号分隔的可选前缀参数, 可选冒号[colon]和 at-sign 字符修饰语, 以及表示这个指令种类的单个字符组成. 这里没有要求 at-sign 字符和冒号[colon]修饰符之间的顺序. 忽略这个指令字符的大小写[case]. 前缀参数被表示为带符号的 (符号是可选的) 十进制数字, 或者一个单引号[single-quote]后面跟着一个字符. 比如, ~5,'0d 可以被用于在五列中以前导零打印一个十进制整数[integer], 或使用 ~5,'*d 来得到一个前导的星号.
 
 将前缀参数替换为指令, 可以使用 V (或 v). 在这个情况中, format 从 args 中接受一个参数作为给指令的参数. 这个参数应该是一个整数[integer]或字符[character]. 如果这个被 V 参数使用的参数 arg 是 nil, 效果就好像这个参数被省略了一样. # 可以被用于替换一个前缀参数; 它表示剩下要被处理的参数 args 的数量. 当在一个递归的格式化中使用时, 在 ~? 或 ~{ 的上下文中, 这个 # 前缀参数表示在这个递归调用中剩余格式化参数[format argument]的数量.
 
@@ -852,7 +853,7 @@ format 按原样写入简单文本; 每一个内嵌的指令指定了进一步�
 
 format 发送这个输出到目标 destination. 如果 destination 是 nil, format 创建并返回一个包含来自 control-string 的输出的字符串[string]. 如果 destination 非 nil [non-nil], 它必须是一个带有填充指针[fill pointer]的字符串[string], 一个流[stream], 或者符号 t. 如果 destination 是一个带有填充指针[fill pointer]的字符串[string], 输出会被添加到这个字符串[string]的末尾. 如果 destination 是一个流[stream], 输出会被发送到这个流[stream]. 如果 destination 是 t, 输出会被发送到标准输出[standard output].
 
-在对以下指令的描述中, 术语 arg 通常引用要被处理的 args 集合的下一个条目. 每个描述开头的词或短语是指令的助记符. format 指令不会绑定这些打印器控制变量(\*print-...*)的任何一个, 除了在下面描述中指定的. 具体实现可能为每个格式化指令指定新的、具体实现专有的打印器控制变量的绑定, 但是它们既不能绑定 format 指令表述中未指定的任何标准打印器控制变量, 也不能绑定这个描述中指定的任何标准打印器控制变量.
+在对以下指令的描述中, 术语 arg 通常引用要被处理的 args 集合的下一个条目. 每个描述开头的词或短语是该指令的助记符. format 指令不会绑定任何一个打印器控制变量(\*print-...*), 除了在下面描述中指定的. 具体实现可能为每个格式化指令指定新的、具体实现专有的打印器控制变量的绑定, 但是它们既不能绑定 format 指令表述中未指定的任何标准打印器控制变量, 也不能绑定这个描述中指定的任何标准打印器控制变量.
 
 > * 22.3.1 [FORMAT 基本输出](#FORMATBasicOutput)
 > * 22.3.2 [FORMAT 基数控制](#FORMATRadixControl)
@@ -887,7 +888,7 @@ format 发送这个输出到目标 destination. 如果 destination 是 nil, form
     (format nil "~C" #\Space) =>  " "
     ```
 
-~:C 和 ~C 都用于打印[printing]字符[character], 但是其他字符[character]是 "拼写出来的". 其目的是, 打印字符的"美观"格式. 关于不打印[printing]的简单[simple]字符[character], 拼写出来的是字符[character]的名称[name] (见 char-name). 对于没有打印[printing]的非简单[simple]字符[character], 拼写出什么是具体实现定义的[implementation-defined]. 比如,
+~:C 和 ~C 一样, 都用于打印[printing]字符[character], 但是其他字符[character]是 "拼写出来的". 其目的是, 打印字符的"美观"格式. 关于不打印[printing]的简单[simple]字符[character], 拼写出来的是字符[character]的名称[name] (见 char-name). 对于没有打印[printing]的非简单[simple]字符[character], 拼写出什么是具体实现定义的[implementation-defined]. 比如,
 
     ```LISP
     (format nil "~:C" #\A) =>  "A"
@@ -1034,12 +1035,12 @@ format 发送这个输出到目标 destination. 如果 destination 是 nil, form
 
 
 #### 22.3.3.2 <span id="TildeEExponential">波浪符号 E: 指数浮点数</span>
-<!--待校验-->
+
 下一个参数 arg 用指数表示来打印为一个浮点数[float].
 
 完整形式是 ~w,d,e,k,overflowchar,padchar,exponentcharE. 参数 w 是这个要被打印的域宽度; d 是在小数点后面要被打印的数字的数量; 当打印一个指数时 e 是要被使用的数字数量; k 是一个默认为 1 的伸缩因子 (不是零).
 
-恰好输出 w 个字符. 首先, 如果有必要, 打印出字符 padchar (默认为一个空格 space) 的前导副本, 来填充左边的域. 如果这个参数 arg 是负的, 那么会打印一个负号; 如果这个参数 arg 不是负的, 当且仅当提供了 @ 修饰符时会打印一个正号. 然后一个包含单独内嵌小数点的数字序列会被打印. 这个数字序列的形式取决于伸缩因子 k. 如果 k 是 0, 那么在小数点后面打印 d 个数字, 如果总的域宽度允许, 一个单独的数字 0 会出现在小数点前面. 如果 k 是正的, 那么它必须严格小于 d+2; 小数点前打印 k 个有效数字, 而小数点之后打印 d-k+1 个数字. 如果 k 是负的, 那么它必须是严格大于 -d; 如果总的域宽度允许, 一个单独的 0 会出现在小数点前, 而在小数点后先打印 -k 个 0 然后是 d+k 个有效数字. 打印的小数必须正确地四舍五入. 当向上舍入和向下舍入可能产生和参数 arg 的伸缩值等距的打印值时, 那么具体实现可以自由地去选择任意一个. 比如, 使用 ~8,2E 格式来打印 637.5 可能正确地产生 6.37E+2 或 6.38E+2.
+恰好输出 w 个字符. 首先, 如果有必要, 打印出字符 padchar (默认为一个空格 space) 的前导拷贝, 来填充左边的域. 如果这个参数 arg 是负的, 那么会打印一个负号; 如果这个参数 arg 不是负的, 当且仅当提供了 @ 修饰符时会打印一个正号. 然后一个包含单独内嵌小数点的数字序列会被打印. 这个数字序列的形式取决于伸缩因子 k. 如果 k 是 0, 那么在小数点后面打印 d 个数字, 如果总的域宽度允许, 一个单独的数字 0 会出现在小数点前面. 如果 k 是正的, 那么它必须严格小于 d+2; 小数点前打印 k 个有效数字, 而小数点之后打印 d-k+1 个数字. 如果 k 是负的, 那么它必须是严格大于 -d; 如果总的域宽度允许, 一个单独的 0 会出现在小数点前, 而在小数点后先打印 -k 个 0 然后是 d+k 个有效数字. 打印的小数必须正确地四舍五入. 当向上舍入和向下舍入可能产生和参数 arg 的伸缩值等距的打印值时, 那么具体实现可以自由地去选择任意一个. 比如, 使用 ~8,2E 格式来打印 637.5 可能正确地产生 6.37E+2 或 6.38E+2.
 
 在这个数字序列后, 打印这个指数. 首先打印字符参数 exponentchar; 如果这个参数省略了, 那么这个 prin1 使用的指数标记[exponenet marker]会被打印, 由这个浮点数[float]的类型和 \*read-default-float-format* 的当前值决定. 接着, 打印一个正号或负号, 后面跟着 e 位数表示十的幂, 打印的小数必须乘以这个值才能正确地表示参数 arg 的舍入值.
 
@@ -1049,7 +1050,7 @@ format 发送这个输出到目标 destination. 如果 destination 是 nil, form
 
 如果省略了参数 d, 那么在数字的出现数量上没有约束. 以这样的方式为 d 选择一个值: 在根据参数 w 所施加的宽度限制, 这个伸缩因子 k 的约束, 以及没有数字零出现在小数的尾部中的约束可以打印尽可能多的数字, 除了如果要被打印的小数是 0 那么单独的数字零会出现在小数点后面.
 
-如果参数 e 被省略, 则使用表示其值所需的最小位数打印指数.
+如果参数 e 被省略, 则使用表示其值所需的最小位数打印这个指数.
 
 如果 w, d, 和 e 都被省略, 那么这个效果是使用普通的自由格式的指数计数法来打印这个值; prin1 为任意小于 10^-3 或大于 10^7 的非零数字使用一个类似的格式. 仅有的区别是这个 ~E 指令总是在指数前打印一个正号或符号, 而如果这个指数是非负的 prin1 省略这个正号.
 
@@ -1062,15 +1063,15 @@ format 发送这个输出到目标 destination. 如果 destination 是 nil, form
 
 #### 22.3.3.3 <span id="TildeGGeneral">波浪符号 G: 一般浮点数</span>
 
-下一个参数 arg 以固定格式或指数表示法(视情况而定)打印为浮点数.
+下一个参数 arg 以固定格式或指数表示法(视情况而定)打印为浮点数[float].
 
 完整形式是 ~w,d,e,k,overflowchar,padchar,exponentcharG. 用来打印参数 arg 的格式取决于参数 arg 的大小 (绝对值). 让 n 为一个满足 10^n-1 <= |arg| < 10^n 的整数. 让 ee 等于 e+2, 或者如果 e 省略了就是 4. 让 ww 等于 w-ee, 如果 w 省略了就是 nil. 如果 d 省略了, 首先让 q 成为打印 arg 所需的数字的数量, 不丢失任何信息, 没有前导或尾随的零; 然后让 d 等于 (max q (min n 7)). 让 dd 等于 d-n.
 
-如果 0 <= dd <= d, 那么 arg 被打印, 就像是通过格式化指令
+如果 0 <= dd <= d, 那么 arg 就像是通过下面这个格式化指令被打印
 
     ~ww,dd,,overflowchar,padcharF~ee@T
 
-注意, 伸缩因子 k 不会传递给那个 ~F 指令. 对于 dd 的所有其他值, arg 被打印, 就像是通过格式化指令
+注意, 伸缩因子 k 不会传递给那个 ~F 指令. 对于 dd 的所有其他值, arg 就像是通过下面这个格式化指令被打印
 
     ~w,d,e,k,overflowchar,padchar,exponentcharE
 
@@ -1085,7 +1086,7 @@ format 发送这个输出到目标 destination. 如果 destination 是 nil, form
 
 完整形式为 ~d,n,w,padchar$. 参数 d 是小数点后要被打印的数字的数量 (默认值 2); n 是小数点前要打印数字的最小数量 (默认值 1); w 是要被打印的这个域的最小总宽度 (默认值 0).
 
-首先填充和符号会被输出. 如果这个参数 arg 是负的, 那么会输出一个负号; 如果这个参数 arg 不是负的, 当且仅当提供一个 @ 修饰符时打印一个正号. 如果使用了这个 : 修饰符, 这个符号会出现在任何填充之前, 否则就是在填充之后. 如果提供了 w 并且其他要被输出的字符的数量小于 w, 那么 padchar (默认为一个空格 space) 的拷贝会被输出来使域的总宽度等于 w. 然后打印 n 个数字作为参数 arg 的整数部分, 如果必要的话, 带有前导的零; 然后打印一个小数点; 接着是小数的 d 个数字, 适当地舍入.
+首先输出填充和符号. 如果这个参数 arg 是负的, 那么会输出一个负号; 如果这个参数 arg 不是负的, 当且仅当提供一个 @ 修饰符时打印一个正号. 如果使用了这个 : 修饰符, 这个符号会出现在任何填充之前, 否则就是在填充之后. 如果提供了 w 并且其他要被输出的字符的数量小于 w, 那么 padchar (默认为一个空格 space) 的拷贝会被输出来使域的总宽度等于 w. 然后打印 n 个数字作为参数 arg 的整数部分, 如果必要的话, 带有前导的零; 然后打印一个小数点; 接着是小数的 d 个数字, 适当地舍入.
 
 如果参数 arg 的大小太大以致于超过 m 个数字需要被打印, 其中 m 是 w 和 100 的较大者, 那么一个具体实现可以自由地自行决定使用指数表示来打印这个数字, 就像是通过指令 ~w,q,,,,padcharE, 其中 w 和 padchar 是存在的还是省略的得根据它们在这个 ~$ 指令中是存在的还是省略的来决定, 并且其中 q=d+n-1, 而 d 和 n 是提供给 ~$ 指令的值 (可能是默认的).
 
@@ -1140,7 +1141,7 @@ format 发送这个输出到目标 destination. 如果 destination 是 nil, form
 
 这个主体片段可以是任意格式化字符串[format string]. 这个格式化字符串[format string]被应用于把 ~<...~:> 作为一个整体对应的数组元素. 使用 pprint-pop 从这个列表中提取元素, 因此为畸形列表以及环, 共享和长度缩写的检测提供自动支持. 在这个主体片段中, ~^ 表现得就像是 pprint-exit-if-list-exhausted.
 
-~<...~:> 支持一个 pprint-logical-block 不支持的特性. 如果 ~:@> 被用于终止指令 (i.e., ~<...~:@>), 那么一个填充风格的条件换行会被自动插入到这个主体所包含的每一个空白组后 (除了一个 <Newline> 指令后面的空白以外). 这样就很容易实现与填充段落相同的效果.
+~<...~:> 支持一个 pprint-logical-block 不支持的特性. 如果 ~:@> 被用于终止指令 (也就是, ~<...~:@>), 那么一个填充风格的条件换行会被自动插入到这个主体所包含的每一个空白组后 (除了一个 <Newline> 指令后面的空白以外). 这样就很容易实现与填充段落相同的效果.
 
 如果这个 at-sign 修饰符和 ~<...~:> 一起使用, 那么这个完整的剩余参数列表会作为参数传递给这个指令. 所有这些剩余参数都由 ~@<...~:> 消耗, 即便它们没有全部被嵌套在这个指令中的格式化字符串[format string]使用. 除了在它的参数中的区别, ~@<...~:> 和 ~<...~:> 一样, 除了如果 ~@<...~:> 在一个格式化字符串[format string]中到达了顶层, 这个环的检测就不适用. 这个保证这个环的检测只会应用到数据列表, 不会应用到格式化参数[format argument]列表[list].
 
@@ -1209,6 +1210,7 @@ format 发送这个输出到目标 destination. 如果 destination 是 nil, form
 
 ~> 终止一个 ~<. 在其他地方使用它的后果是未定义的. 
 
+
 #### 22.3.7 <span id="FORMATControlFlowOperation">FORMAT 控制流操作</span>
 
 > * 22.3.7.1 [波浪符号 星号: Go-To](#TildeAsteriskGoTo)
@@ -1236,15 +1238,15 @@ format 发送这个输出到目标 destination. 如果 destination 是 nil, form
 
     "~[Siamese~;Manx~;Persian~] Cat"
 
-这个第 arg 个子句会被选择, 其中第一个子句是数字 0. 如果给定了一个前缀参数 (例如 ~n[), 那么该前缀参数会被使用而不是一个参数.<!--TODO 待校对--> 如果这个参数 arg 在范围之外那么没有子句会被选择并且不会发出错误. 在这个选择的方案被处理后, 这个控制字符串在 ~] 后继续下去.
+第 arg 个子句会被选择, 其中第一个子句是数字 0. 如果给定了一个前缀参数 (例如 ~n[), 那么该前缀参数会被使用而不是一个实参. 如果这个参数 arg 在范围之外那么没有子句会被选择并且不会发出错误. 在这个选择的方案被处理后, 这个控制字符串在 ~] 后继续下去.
 
-~[str0~;str1~;...~;strn~:;default~] has a default case. 如果最后的 ~; 用于分隔子句是 ~:;, 那么最后那个子句是一个 else 子句, 没有其他子句被选择时被执行. 比如:
+~[str0~;str1~;...~;strn~:;default~] 有一个默认情况. 如果最后的 ~; 用于分隔子句是 ~:;, 那么最后那个子句是一个 else 子句, 没有其他子句被选择时被执行. 比如:
 
     "~[Siamese~;Manx~;Persian~:;Alley~] Cat"
 
 如果参数 arg 是 false, 那么 ~:[alternative~;consequent~] 选择 alternative 控制字符串, 否则选择 consequent 控制字符串.
 
-~@[consequent~] 检验这个参数. 如果它是 true, 则 ~[ 命令不会使用该参数, 而是保留下一个要处理的参数, 并且子句 consequent 被处理了. 如果参数 arg 是 false, 则使用该参数, 并且该子句不会被处理. 因此这个子句正常应该仅使用一个参数, 并且可能期望它为非 nil [non-nil]. 比如:
+~@[consequent~] 检验这个参数. 如果它是 true, 则 ~[ 命令不会使用该参数, 而是保留作为下一个要处理的参数, 而子句 consequent 被处理了. 如果参数 arg 是 false, 则使用该参数, 并且该子句不会被处理. 因此这个子句正常应该仅使用一个参数, 并且可能期望它为非 nil [non-nil]. 比如:
 
 ```LISP
 (setq *print-level* nil *print-length* 5)
@@ -1302,7 +1304,7 @@ format 发送这个输出到目标 destination. 如果 destination 是 nil, form
 =>  "Pairs: <A,1> <B,2> <C,3>."
 ```
 
-~@{str~} 类似于 ~{str~}, 但是不是使用一个参数列表, 而是使用所有剩余参数作为这个循环的参数列表. 例如:
+~@{str~} 类似于 ~{str~}, 但不是使用一个参数列表, 而是使用所有剩余参数作为这个循环的参数列表. 例如:
 
 ```LISP
 (format nil "Pairs:~@{ <~S,~S>~} ." 'a 1 'b 2 'c 3)
@@ -1353,17 +1355,18 @@ format 发送这个输出到目标 destination. 如果 destination 是 nil, form
 (format nil "~@? ~D" "<~A ~D>" "Foo" 5 14 7) =>  "<Foo 5> 14"
 ```
 
+
 ### 22.3.8 <span id="FORMATMiscellaneousOperation">FORMAT 杂项操作</span>
 
 #### 22.3.8.1 波浪符号 左圆括号: 大小写转换
 
 ~(str~)
 
-包含的控制字符串 str 被处理, 并且产生的受限于大小写转换.
+包含的控制字符串 str 被处理, 并且产生的结果受限于大小写转换.
 
 在没有标志的情况下, 每一个大写[uppercase]字符[character]会被转换为对应小写[lowercase]字符[case].
 
-~:( 将所有单词大写, 就像是通过 string-capitalize 一样.
+~:( 就像是通过 string-capitalize 一样将所有单词大写.
 
 ~@( 只是用大写字母写第一个单词并且强制剩余的为小写.
 
@@ -1406,6 +1409,7 @@ NOT=>  "How is Bob Smith?"
 (format nil "~D tr~:@P/~D win~:P" 1 3) =>  "1 try/3 wins"
 ```
 
+
 ### 22.3.9 <span id="FORMATMiscellaneousPseudoOperation">FORMAT 杂项伪操作</span>
 
 #### 22.3.9.1 波浪符号 分号: 子句分隔符
@@ -1413,11 +1417,11 @@ NOT=>  "How is Bob Smith?"
 这个分隔 ~[ 和 ~< 构造中的子句. 在其他地方是用它的后果是未定义的. 
 
 
-#### 22.3.9.2 波浪符号 抑扬符: 向上转义
+#### 22.3.9.2 波浪符号 抑扬符: 向上逸出
 
 ~^
 
-这是一个转义构造. 如果这里没有更多要被处理的参数剩余, 那么直接包含的 ~{ 或 ~< 构造会被终止. 如果这里没有这样包含的构造, 那么整个格式化操作会被终止. 在 ~< 的情况中, 这个格式化会被执行, 但是在执行这个调整之前没有更多的片段会被处理. ~^ 可能出现在一个 ~{ 构造中的任何地方.
+这是一个逸出构造. 如果这里没有更多要被处理的参数剩余, 那么直接包含的 ~{ 或 ~< 构造会被终止. 如果这里没有这样包含的构造, 那么整个格式化操作会被终止. 在 ~< 的情况中, 这个格式化会被执行, 但是在执行这个调整之前没有更多的片段会被处理. ~^ 可能出现在一个 ~{ 构造中的任何地方.
 
 ```LISP
 (setq donestr "Done.~^ ~D warning~:P.~^ ~D error~:P.")
@@ -1427,9 +1431,9 @@ NOT=>  "How is Bob Smith?"
 (format nil donestr 1 5) =>  "Done. 1 warning. 5 errors."
 ```
 
-如果给定了一个前缀参数, 如果这个参数是零那么就会发生终止. (因此 ~^ 等价域 ~#^.) 如果给定了两个参数, 如果它们是相等的那么发生终止. 如果给定了三个参数, 如果第一个小于等于第二个并且第二个小于等于第三个, 那么就会发生终止. 当然, 如果所有这些前置参数都是常量, 那么这是没有用的; 它们中至少一个应该是 # 或一个 V 参数.
+如果给定了一个前缀参数, 如果这个参数是零则发生终止. (因此 ~^ 等价于 ~#^.) 如果给定了两个参数, 如果它们是相等的则发生终止. 如果给定了三个参数, 如果第一个小于等于第二个并且第二个小于等于第三个, 那么就会发生终止. 当然, 如果所有这些前置参数都是常量, 那么就是没有用的; 它们中至少一个应该是 # 或一个 V 参数.
 
-如果 ~^ 在一个 ~:{ 构造中被使用, 那么它终止当前的循环步骤, 因为在标准情况下它只测试当前步骤的剩余参数; 下一个循环步骤立即开始. ~:^ 被用于终止这个循环过程. ~:^ 可能只有当它会终止的命令是 ~:{ 或 ~:@{ 时才使用. 当且仅当这个为当前循环步骤提供参数的子列表是 ~:{ 中的最后一个子列表时, 或者是 ~:@{ 中的最后一个 format 参数时整个循环过程终止. ~:^ 不等价于 ~#:^; 当且仅当当前循环步骤没有参数剩余时, 后者会终止整个循环步骤. 比如:
+如果 ~^ 在一个 ~:{ 构造中被使用, 那么它终止当前的循环步骤, 因为在标准情况下它只测试当前步骤的剩余参数; 下一个循环步骤立即开始. ~:^ 被用于终止这个循环过程. ~:^ 可能只有当它会终止的命令是 ~:{ 或 ~:@{ 时才使用. 当且仅当这个为当前循环步骤提供参数的子列表是 ~:{ 中的最后一个子列表时, 或者是 ~:@{ 中的最后一个 format 参数时, 整个循环过程终止. ~:^ 不等价于 ~#:^; 当且仅当当前循环步骤没有参数剩余时, 后者会终止整个循环步骤. 比如:
 
 ```LISP
 (format nil "~:{ ~@?~:^ ...~} " '(("a") ("b"))) =>  "a...b"
@@ -1437,7 +1441,7 @@ NOT=>  "How is Bob Smith?"
 
 如果 ~^ 出现在一个 ~? 指令控制下要被处理的控制字符串中, 但是没有在那个字符串的任何 ~{ 或 ~< 构造中, 那么这个要被处理的字符串会被终止, 因此结束这个 ~? 指令的处理. 然后从包含这个 ~? 指令的字符串中的这个指令后面的位置继续处理.
 
-如果 ~^ 出现在一个 ~[ 或 ~( 构造中, 那么所有直到 ~^ 的命令会被正确选择或转换大小写, 这个 ~[ 或 ~( 处理会终止, 继续向外搜索要被终止的 ~{ 或 ~< 构造. 例如:
+如果 ~^ 出现在一个 ~[ 或 ~( 构造中, 那么所有直到 ~^ 的命令会被正确选择或转换大小写, 这个 ~[ 或 ~( 处理终止, 继续向外搜索要被终止的 ~{ 或 ~< 构造. 例如:
 
 ```LISP
 (setq tellstr "~@(~@[~R~]~^ ~A!~)")
@@ -1485,7 +1489,7 @@ NIL
 
 #### 22.3.10.1 FORMAT 操作的嵌套
 
-大小写转换, 条件, 循环, 和对齐构造可以通过把其他格式化构造括在一起来包含它们. 这些构造必须和其他每一个正确地嵌套. 例如, 在条件的每个分支中放置一个大小写转换构造的开始而在条件之外放置大小写转换结构的结束是不合法的:
+大小写转换, 条件, 循环, 以及对齐构造可以通过把其他格式化构造括在一起来包含它们. 这些构造必须和其他每一个正确地嵌套. 例如, 在条件的每个分支中放置一个大小写转换构造的开始而在条件之外放置大小写转换结构的结束是不合法的:
 
 ```LISP
 (format nil "~:[abc~:@(def~;ghi~
@@ -1504,7 +1508,7 @@ NIL
 
 #### 22.3.10.2 缺失的以及额外的 FORMAT 参数
 
-如果对于一个需要一个参数的指令没有剩余参数, 则后果是未定义的. 然而, 允许一个或更多剩下的参数没有被一个指令处理; 这样的参数 args 会被我忽略. 
+如果对于一个需要一个参数的指令没有剩余的参数, 那么后果是未定义的. 然而, 允许一个或多个剩余的参数没有被一个指令处理; 这样的参数 args 会被忽略. 
 
 #### 22.3.10.3 额外的 FORMAT 参数
 
@@ -1611,12 +1615,13 @@ NIL
 
 ### 22.3.12 <span id="NotesFORMAT">FORMAT 的注意事项</span>
 
-格式化输出不仅仅通过 format 来执行, 而且由接受 format 方式的格式化控制[format control]的某些其他函数执行. 例如, 像 cerror 这样的发送错误的函数接收格式化控制[format control].
+格式化输出不仅可以通过 format 来执行, 还可以由接受 format 方式的格式化控制[format control]的某些其他函数执行. 例如, 像 cerror 这样的发送错误的函数接收格式化控制[format control].
 
 注意, 给 format 作为目标的 nil 和 t 的意义和那些作为流标识符[stream designator]的 nil 和 t 不同.
 
 这个 ~^ 应该只出现在一个 ~< 子句的开始, 因为它终止这个它出现的完整子句 (所有后面的子句也一样). 
 
+<!--TODO 查看到此-->
 ## 22.4 <span id="ThePrinterDictionary">打印器的字典</span>
 
 > * [函数 COPY-PPRINT-DISPATCH](#F-COPY-PPRINT-DISPATCH)
