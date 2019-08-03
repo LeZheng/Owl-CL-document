@@ -1,267 +1,267 @@
-# 26 术语
+# 26. 术语
 
 ## 26.1 术语
 
-术语表示
+### 术语表示
 
 这个术语表中的每个条目都有以下部分:
 
 * 要定义的术语, 用粗线表示.
 
 * 可选的发音, 用方括号括起来并且用黑体字表示, 就像后面的例子中那样: ['a,list]. 这个发音的调遵循 Third New International Dictionary the English Language, Unabridged, 除了这个 "uh" 被用于表示非中央元音 (颠倒的 "e") 字符, "ee" 被用于表示一个 hard "e" (一个带有上划线的 "e"), "oh" 被用于表示一个 hard "o" (一个带有上划线的 "o"), 并且 "ay" 被用于表示一个 hard "a" (一个带有上划线的 "a")..
-
+<!--TODO hard ？？-->
 * 词类的部分或多个部分, 用斜体表示. 如果一个术语可以被用作多个词类部分, 那么每一部分的词类都有一个单独的定义.
 
 * 不止一个定义的话, 按如下组织:
 
-    一个可选的数字, 如果这里有多个定义就会出现. Lowercase letters might also be used in cases where subdefinitions of a numbered definition are necessary.
+    如果这里有多个定义, 就会出现一个可选的数字. 小写字母也可以用于需要编号定义的子定义的情况.
 
     一个可选的词类部分, 用斜体表示, 如果这个术语是词类的多个部分之一就会出现.
 
-    an optional discipline, set in italics, present if the term has a standard definition being repeated. 比如, "*Math*".
+    如果术语有重复的标准定义, 就会出现一个用斜体表示的可选的学科. 比如, "*Math*".
 
-    一个可选的上下文, 如果这个定义只有在那个上下文中有意义就会出现. 例如, "(of a symbol)".
+    如果这个定义只有在可选的上下文中有意义就会出现一个可选的上下文. 例如, "一个符号(of a symbol)".
 
-    这个定义.
+    这个术语的定义.
 
     一个可选的示例句子. 比如, "This is an example of an example."
 
     可选的交叉引用.
 
-另外, 一些术语在 Common Lisp 社区有着惯用的用法, 但是不被其他社区所共享, 或者不是学术上正确的. 标记了 "*Idiom*." 的定义表示这样的本地用法; 有时这些定义后面跟着一个注释.
+另外, 一些术语在 Common Lisp 社区有着惯用的用法, 但是不被其他社区所共享, 或者不是学术上正确的. 标记了 "*习语*(*Idiom*)." 的定义表示这样的本地用法; 有时这些定义后面跟着一个注释.
 
 这个字体的单词是这个术语表中有条目的单词. 示例句子中的单词不遵循这个约定.
 
-当出现歧义时, 最长匹配的子字符串具有优先级. 例如, "complex float" 引用单独术语条目 "complex float" 而不是术语 "complex" 和 "float" 的组合意义.
+当出现歧义时, 最长匹配的子字符串具有优先级. 例如, "复浮点数[complex float]" 引用单独术语条目 "复浮点数[complex float]" 而不是术语 "复数[complex]" 和 "浮点数[float]" 的组合意义.
 
-下表记号, 就像在 "something[n]" 中的意味着打算用 "something" 的第 n 个定义. 这种表示法只在上下文可能不足以消除歧义的情况下使用.
+下标符号 , 就像在 "something[n]" 中的意味着打算用 "something" 的第 n 个定义. 这种表示法只在上下文可能不足以消除歧义的情况下使用.
 
 以下是术语表中使用的缩写:
 
     缩写          意义                                     
-    adj.          adjective                                   
-    adv.          adverb                                      
-    ANSI          compatible with one or more ANSI standards  
-    Comp.         computers                                   
-    Idiom.        idiomatic                                   
-    IEEE          compatible with one or more IEEE standards  
-    ISO           compatible with one or more ISO standards   
-    Math.         mathematics                                 
-    Trad.         traditional                                 
-    n.            noun                                        
-    v.            verb                                        
-    v.t.          transitive verb                             
+    adj.          形容词                                   
+    adv.          副词                                      
+    ANSI          兼容一个或多个 ANSI 标准  
+    Comp.         计算机                                   
+    Idiom.        习语                                   
+    IEEE          兼容一个或多个 IEEE 标准  
+    ISO           兼容一个或多个 ISO 标准   
+    Math.         数学                                 
+    Trad.         传统                                 
+    n.            名词                                        
+    v.            动词                                        
+    v.t.          及物动词                             
 
 
 ### 非字母的
 
-**()** ['nil], n. 一个编写符号 nil 的替代表示, 用于强调 nil 作为空列表的使用. 
+**()** ['nil], n. 编写符号 nil 的一个替代表示, 用于强调 nil 作为空列表[empty list]的使用. 
 
 ### A
 
-absolute adj. 1. (of a time) representing a specific point in time. 2. (of a pathname) representing a specific position in a directory hierarchy. See relative.
+**absolute** adj. 1. (指时间[time]) 表示一个特定的时间点. 2. (指路径名[pathname]) 表示目录层次结构中的特定位置. 见相对[relative].
 
-access n., v.t. 1. v.t. (a place, or array) to read[1] or write[1] the value of the place or an element of the array. 2. n. (of a place) an attempt to access[1] the value of the place.
+**access** n., v.t. 1. v.t. (一个位置[place], 或数组[array]) 去读取[read[1]]或写入[write[1]]这个[place]的值[value]或这个数组[array]的元素[element]. 2. n. (指位置[place]) 尝试去访问[access[1]]这个位置[place]的值[valuea].
 
-accessibility n. the state of being accessible.
+**accessibility** n. 可访问[accessible]的状态.
 
-accessible adj. 1. (of an object) capable of being referenced. 2. (of shared slots or local slots in an instance of a class) having been defined by the class of the instance or inherited from a superclass of that class. 3. (of a symbol in a package) capable of being referenced without a package prefix when that package is current, regardless of whether the symbol is present in that package or is inherited.
+**accessible** adj. 1. (指对象[object]) 能够被引用. 2. (指一个类[class]的实例[instance]中共享槽[shared slot]或局部槽[local slot]) 已经被这个实例[instance]的类[class]定义或从这个类[class]的超类[superclass]中继承. 3. (指一个包[package]中的一个符号[symbol]) 能够在那个包[package]是当前包时不使用包前缀[package prefix]引用, 不管那个符号[symbol]出现[present]在那个包[package]中或是继承的.
 
 **accessor** n. 执行一个访问[access]的一个操作符[operator]. 见读取函数[reader]和写入函数[writer].
 
-active adj. 1. (of a handler, a restart, or a catch tag) having been established but not yet disestablished. 2. (of an element of an array) having an index that is greater than or equal to zero, but less than the fill pointer (if any). For an array that has no fill pointer, all elements are considered active.
+**active** adj. 1. (指处理者[handler], 重启动[restart], 或捕获标记[catch tag]) 已经被建立但是还没有狼狈废除. 2. (指一个数组[array]的元素[element]) 有着大于等于零, 但是小于填充指针[fill pointer] (如果有的话) 的索引. 对于一个没有填充指针[fill pointer]的数组[array], 所有元素[element]都被认为是活跃的[active].
 
-actual adjustability n. (of an array) a generalized boolean that is associated with the array, representing whether the array is actually adjustable. See also expressed adjustability and adjustable-array-p.
+**actual adjustability** n. (指数组[array]) 和这个数组[array]关联的一个广义 boolean [generalized boolean], 表示这个数组[array]实际上可调整的[actually adjustable]. 参见明确可调整性[expressed adjustability]和 adjustable-array-p.
 
-actual argument n. Trad. an argument.
+**actual argument** n. Trad. 一个实参[argument].
 
-actual array element type n. (of an array) the type for which the array is actually specialized, which is the upgraded array element type of the expressed array element type of the array. See the function array-element-type.
+**actual array element type** n. (指数组[array]) 这个数组[array]实际特化的类型[type], 它是这个数组[array]的表达数组元素类型[expressed array element type]的提升数组元素类型[upgraded array element type]. 见函数[function] array-element-type.
 
-actual complex part type n. (of a complex) the type in which the real and imaginary parts of the complex are actually represented, which is the upgraded complex part type of the expressed complex part type of the complex.
+**actual complex part type** n. (指复数[complex]) 实际用来表示这个复数[complex]的实部和虚部的类型[type], 它是这个复数[complex]的表达复数部分类型[expressed complex part type]的提升复数部分类型[upgraded complex part type].
 
-actual parameter n. Trad. an argument.
+**actual parameter** n. Trad. 一个实参[argument].
 
-actually adjustable adj. (of an array) such that adjust-array can adjust its characteristics by direct modification. A conforming program may depend on an array being actually adjustable only if either that array is known to have been expressly adjustable or if that array has been explicitly tested by adjustable-array-p.
+**actually adjustable** adj. (指数组[array]) 这样的 adjust-array 可以通过直接修改来直接调整它的性质. 只有在已知该数组[array]是明确可调整的[expressly adjustable], 或者该数组[array]已经被 adjustable-array-p 显式地测试过的情况下, 一个符合规范的程序[conforming program]可以认为这个数组[array]实际上可调整的[actually adjustable].
 
-adjustability n. (of an array) 1. expressed adjustability. 2. actual adjustability.
+**adjustability** n. (指数组[array]) 1. 明确可调整性[expressed adjustability]. 2. 实际可调整性[actual adjustability].
 
-adjustable adj. (of an array) 1. expressly adjustable. 2. actually adjustable.
+**adjustable** adj. (指数组[array]) 1. 明确可调整的[expressly adjustable]. 2. 实际可调整的[actually adjustable].
 
-after method n. a method having the qualifier :after.
+**after method** n. 一个有着 :after 限定符[qualifier]的方法[method].
 
-alist ['ay,list], n. an association list.
+**alist** ['ay,list], n. 一个关联列表[association list].
 
 **alphabetic** n., adj. 1. adj. (一个字符[character]的) 是标准字符[standard character] A 到 Z 或 a 到 z 的一个, 或者是任何具体实现定义的[implementation-defined]有着大小写[case]的字符, 或者是某个其他的由具体实现[implementation]定义为字母的[alphabetic[1]]的图形[graphic]字符[character]. 2. a. n. 一个字符的几种标记成分特质[constituent trait]中的一个. 关于详情, 见章节 2.1.4.1 (标记成分字符) 和章节 2.2 (读取器算法). b. adj. (一个字符[character]的) 是一个在当前读取表中有着标记成分[constituent]语法类型[syntax type]并且有着标记成分特质[constituent trait]字母[alphabetic[2a]]的字符. 见 Figure 2-8.
 
 **alphanumeric** adj. (一个字符[character]的) 是一个字母[alphabetic[1]]字符[character]或一个数值[numeric]字符.
 
-ampersand n. the standard character that is called ``ampersand'' (&). See Figure 2-5.
+**ampersand** n. 被称为 "ampersand" (&) 的标准字符[standard character]. 见 Figure 2-5.
 
-anonymous adj. 1. (of a class or function) having no name 2. (of a restart) having a name of nil.
+**anonymous** adj. 1. (指一个类[class]或函数[function]) 没有名字[name] 2. (指重启动[restart]) 有一个为 nil 的名字[name].
 
-apparently uninterned adj. having a home package of nil. (An apparently uninterned symbol might or might not be an uninterned symbol. Uninterned symbols have a home package of nil, but symbols which have been uninterned from their home package also have a home package of nil, even though they might still be interned in some other package.)
+**apparently uninterned** adj. 有着一个为 nil 的 home 包[home package]. (一个明确解除捕捉[apparently uninterned]的符号[symbol]可能是也可能不是一个未捕捉的[uninterned]符号[symbol]. 未捕捉的[uninterned]符号[symbol]有着一个为 nil 的 home 包[home package], 但是那些已经从 home 包[home package]中被解除捕捉[uninterned]的符号[symbol]也有着一个为 nil 的 home 包[home package], 即便它们可能仍然被捕获[interned]在某个其他包[package]中.)
 
-applicable adj. 1. (of a handler) being an applicable handler. 2. (of a method) being an applicable method. 3. (of a restart) being an applicable restart.
+**applicable** adj. 1. (指处理者[handler]) 是一个可应用处理者[applicable handler]. 2. (指方法[method]) 是一个可应用[applicable method]. 3. (指重启动[restart]) 是一个可应用[applicable restart].
 
-applicable handler n. (for a condition being signaled) an active handler for which the associated type contains the condition.
+**applicable handler** n. (指一个要被发送的状况[condition]) 一个关联类型包含这个状况[condition]的活跃[active]处理者[handler].
 
-applicable method n. (of a generic function called with arguments) a method of the generic function for which the arguments satisfy the parameter specializers of that method. See Section 7.6.6.1.1 (Selecting the Applicable Methods).
+**applicable method** n. (指使用实参[argument]调用的广义函数[generic function]) 该广义函数[generic function]的一个方法[method], 其中这些参数[argument]满足这个方法[method]的参数特化符[parameter specializer]. 见章节 7.6.6.1.1 (选择可应用的方法).
 
-applicable restart n. 1. (for a condition) an active handler for which the associated test returns true when given the condition as an argument. 2. (for no particular condition) an active handler for which the associated test returns true when given nil as an argument.
+**applicable restart** n. 1. (指状态[condition]) 当给定这个状况[condition]作为参数时, 关联的测试条件返回 true 的一个活跃[active]处理者[handler]. 2. (指非特定状况[condition]) 当给定 nil 作为参数时, 关联的测试条件返回 true 的一个活跃[active]处理者[handler].
 
-apply v.t. (a function to a list) to call the function with arguments that are the elements of the list. ``Applying the function + to a list of integers returns the sum of the elements of that list.''
+**apply** v.t. (一个函数[function]到一个[list]) 使用这个列表[list]的元素[element]作为参数来调用这个函数[function]. "应用函数 + 到整数列表会返回这个列表的元素的总和(Applying the function + to a list of integers returns the sum of the elements of that list)".
 
 **argument** n. 1. (一个函数[function]的) 当这个函数[function]被调用时, 作为数据提供给它的对象[object]. 2. (一个格式化控制[format control]的) 一个格式化参数[format argument].
 
-argument evaluation order n. the order in which arguments are evaluated in a function call. ``The argument evaluation order for Common Lisp is left to right.'' See Section 3.1 (Evaluation).
+**argument evaluation order** n. 一个函数调用中实参[argument]的求值顺序. "Common Lisp 的参数求值顺序是从左到右的". 见章节 3.1 (求值).
 
-argument precedence order n. the order in which the arguments to a generic function are considered when sorting the applicable methods into precedence order.
+**argument precedence order** n. 将可应用方法[applicable method]按照优先级顺序排序时, 考虑给广义函数[generic function]的参数[argument]的顺序.
 
-around method n. a method having the qualifier :around.
+**around method** n. 有着 :around 限定符[qualifier]的方法[method].
 
-array n. an object of type array, which serves as a container for other objects arranged in a Cartesian coordinate system.
+**array** n. 一个 array 类型[type]的对象[object], 作为被安排在一个笛卡儿坐标系统(Cartesian coordinate system)的其他对象[object]的容器.
 
-array element type n. (of an array) 1. a type associated with the array, and of which all elements of the array are constrained to be members. 2. the actual array element type of the array. 3. the expressed array element type of the array.
+**array element type** n. (指数组[array]) 1. 一个和数组[array]关联的类型[type], 并且这个数组[array]的所有元素[element]都被约束为它的一个成员. 2. 这个数组的实际数组元素类型[actual array element type]. 3. 这个数组[array]的表达数组元素类型[expressed array element type].
 
-array total size n. the total number of elements in an array, computed by taking the product of the dimensions of the array. (The size of a zero-dimensional array is therefore one.)
+**array total size** n. 一个数组[array]中的元素[element]的总数量, 由这个数组[array]的维数[dimension]的乘积计算得来. (因此一个零维数组[array]的大小为一.)
 
-assign v.t. (a variable) to change the value of the variable in a binding that has already been established. See the special operator setq.
+**assign** v.t. (一个变量[variable]) 去改变一个已经被建立的绑定[binding]的变量[variable]的值[value]. 见特殊操作符[special operator] setq.
 
-association list n. a list of conses representing an association of keys with values, where the car of each cons is the key and the cdr is the value associated with that key.
+**association list** n. 一个表示键[key]和值[value]关联的 cons 的列表[list], 其中每一个 cons 的car 为键[key]而 cdr 为那个键[key]关联的值[value].
 
-asterisk n. the standard character that is variously called ``asterisk'' or ``star'' (*). See Figure 2-5.
+**asterisk** n. 标准字符[standard character], 可被称为 "asterisk" 或 "star" (*). 见 Figure 2-5.
 
-at-sign n. the standard character that is variously called ``commercial at'' or ``at sign'' (@). See Figure 2-5.
+**at-sign** n. 标准字符[standard character], 可被称为 "commercial at" 或 "at sign" (@). 见 Figure 2-5.
 
-atom n. any object that is not a cons. ``A vector is an atom.''
+**atom** n. 任何不是一个 cons 的对象[object]. "一个向量是一个原子(A vector is an atom)".
 
-atomic adj. being an atom. ``The number 3, the symbol foo, and nil are atomic.''
+**atomic** adj. 是一个原子[atom]. "数字 3, 符号 foo, 还有 nil 都是原子的(The number 3, the symbol foo, and nil are atomic)".
 
-atomic type specifier n. a type specifier that is atomic. For every atomic type specifier, x, there is an equivalent compound type specifier with no arguments supplied, (x).
+**atomic type specifier** n. 一个原子的[atomic]类型指定符[type specifier]. 对于每一个原子类型指定符[atomic type specifier], x, 这里有一个没有提供参数的等价符合类型指定符[compound type specifier], (x).
 
-attribute n. (of a character) a program-visible aspect of the character. The only standardized attribute of a character is its code[2], but implementations are permitted to have additional implementation-defined attributes. See Section 13.1.3 (Character Attributes). ``An implementation that support fonts might make font information an attribute of a character, while others might represent font information separately from characters.''
+**attribute** n. (指字符[character]) 这个字符[character]的程序可见的方面. 一个字符[character]的仅有标准化[standardized]属性[attribute]是它的码值[code[2]], 但是允许具体实现[implementation]去持有额外的具体实现定义的[implementation-defined]属性[attribute]. 见章节 13.1.3 (字符属性). "支持字体的实现可能使字体信息成为字符的属性, 而其他实现可能分别表示字体信息和字符".
 
-aux variable n. a variable that occurs in the part of a lambda list that was introduced by &aux. Unlike all other variables introduced by a lambda-list, aux variables are not parameters.
+**aux variable** n. 出现在 lambda 列表[lambda list]中由 &aux 引入的部分的一个变量[variable]. 不想 lambda-list 引入的所有其他变量[variable], 辅助变量[aux variable]不是参数[parameter].
 
-auxiliary method n. a member of one of two sets of methods (the set of primary methods is the other) that form an exhaustive partition of the set of methods on the method's generic function. How these sets are determined is dependent on the method combination type; see Section 7.6.2 (Introduction to Methods). 
+**auxiliary method** n. 两组方法[method] (主方法[primary method]集合是另一组)中的一组方法[method]的成员, 它们在方法[method]的广义函数[generic function]上形成方法[method]集合的穷举分区. 如何确定这些集合取决于方法组合[method combination]类型; 见章节 7.6.2 (方法的介绍). 
 
-B
+### B
 
-backquote n. the standard character that is variously called ``grave accent'' or ``backquote'' (`). See Figure 2-5.
+**backquote** n. 标准字符[standard character], 被称为 "抑音符" 或 "反引号" (`). 见 Figure 2-5.
 
-backslash n. the standard character that is variously called ``reverse solidus'' or ``backslash'' (\). See Figure 2-5.
+**backslash** n. 标准字符[standard character], 被称为 "反斜线" 或 "反斜杠" (\\). See Figure 2-5.
 
-base character n. a character of type base-char.
+**base character** n. 一个 base-char 类型[type]的字符[character].
 
-base string n. a string of type base-string.
+**base string** n. 一个 base-string 类型[type]的字符串[string].
 
-before method n. a method having the qualifier :before.
+**before method** n. 一个修饰符[qualifier]为 :before 的方法.
 
-bidirectional adj. (of a stream) being both an input stream and an output stream.
+**bidirectional** adj. (指流[stream]) 同时为一个输入[input]流[stream]和一个输出[output]流[stream].
 
-binary adj. 1. (of a stream) being a stream that has an element type that is a subtype of type integer. The most fundamental operation on a binary input stream is read-byte and on a binary output stream is write-byte. See character. 2. (of a file) having been created by opening a binary stream. (It is implementation-dependent whether this is an detectable aspect of the file, or whether any given character file can be treated as a binary file.)
+binary adj. 1. (指流[stream]) 元素类型[element type]为 integer 类型[type]的子类型[subtype]的一个流[stream]. 在一个二进制[binary]输入[input]流[stream]上最基本的操作是 read-byte 而在一个二进制[binary]输出[output]流[stream]上最基本的操作是 write-byte. 见字符[character]. 2. (指文件[file]) 已经通过打开一个二进制[binary]流[stream]来创建. (这是否为一个文件[file]的可见测方面, 或者任何给定的字符[character]文件[file]是否被当作一个二进制[binary]文件[file]处理是依赖于具体实现的[implementation-dependent].)
 
 **bind** v.t. (一个变量[variable]) 去建立这个变量[variable]的一个绑定[binding].
 
 **binding** n. 一个名字[name]和那个名字[name]所表示的之间的一个关联. "一个词法绑定是一个名字和它的值之间的一个词法关联". 当这个术语绑定[binding]被一个命名空间[namespace]的名字限定时, 例如 "变量(variable)" 或 "函数(function)", 它约束这个绑定[binding]到指定的命名空间[namespace], 就像在: "let 建立变量绑定." 或 "let 建立多个变量的绑定" 中
 
-bit n. an object of type bit; that is, the integer 0 or the integer 1.
+**bit** n. 一个 bit 类型[type]的对象[object]; 也就是说, 是整数[integer] 0 或者整数[integer] 1.
 
-bit array n. a specialized array that is of type (array bit), and whose elements are of type bit.
+**bit array** n. 一个 (array bit) 类型[type]的特化数组[array], 并且它的元素是 bit 类型[type].
 
-bit vector n. a specialized vector that is of type bit-vector, and whose elements are of type bit.
+**bit vector** n. 一个 bit-vector 类型[type]的特化向量[vector], 并且它的元素是 bit 类型[type].
 
-bit-wise logical operation specifier n. an object which names one of the sixteen possible bit-wise logical operations that can be performed by the boole function, and which is the value of exactly one of the constant variables boole-clr, boole-set, boole-1, boole-2, boole-c1, boole-c2, boole-and, boole-ior, boole-xor, boole-eqv, boole-nand, boole-nor, boole-andc1, boole-andc2, boole-orc1, or boole-orc2.
+**bit-wise logical operation specifier** n. 一个命名了可以被 boole 函数执行的十六个可能的位逻辑操作符之一的对象[object], 并且它是常变量[constant variable] boole-clr, boole-set, boole-1, boole-2, boole-c1, boole-c2, boole-and, boole-ior, boole-xor, boole-eqv, boole-nand, boole-nor, boole-andc1, boole-andc2, boole-orc1, 或 boole-orc2 之一的值[value].
 
-block n. a named lexical exit point, established explicitly by block or implicitly by operators such as loop, do and prog, to which control and values may be transfered by using a return-from form with the name of the block.
+**block** n. 一个已命名的词法退出点[exit point], 由 block 显式建立或者由 loop, do 和 prog 之类的操作符隐式建立, 通过使用带有这个语句块[block]的名字的 return-from 表达式形式, 可以将控制和值转移到该退出点.
 
-block tag n. the symbol that, within the lexical scope of a block form, names the block established by that block form. See return or return-from.
+**block tag** n. 在一个 block 表达式形式[form]内命名由这个 block 表达式形式[form]建立的语句块[block]的符号[symbol]. 见 return 或 return-from.
 
-boa lambda list n. a lambda list that is syntactically like an ordinary lambda list, but that is processed in ``by order of argument'' style. See Section 3.4.6 (Boa Lambda Lists).
+**boa lambda list** n. 一个语法上像普通 lambda 列表[ordinary lambda list]但是是"按参数顺序"处理的风格的 lambda 列表[lambda list]. 见章节 3.4.6 (Boa Lambda 列表).
 
-body parameter n. a parameter available in certain lambda lists which from the point of view of conforming programs is like a rest parameter in every way except that it is introduced by &body instead of &rest. (Implementations are permitted to provide extensions which distinguish body parameters and rest parameters---e.g., the forms for operators which were defined using a body parameter might be pretty printed slightly differently than forms for operators which were defined using rest parameters.)
+**body parameter** n. 特定 lambda 列表[lambda list]中的一个可用的形参[parameter], 从符合规范的程序[conforming program]的视角看, 各种方面它就像是剩余参数[rest parameter], 除了它是由 &body 引入而不是 &rest 引入. (允许具体实现[implementation]提供区分主体参数[body parameter]和剩余参数[rest parameter]的扩展---比如, 使用主体参数[body parameter]定义的操作符[operator]的表达式形式[form]打印出来可能和使用剩余参数[rest parameter]定义的操作符[operator]的表达式形式[form]稍有不同.)
 
-boolean n. an object of type boolean; that is, one of the following objects: the symbol t (representing true), or the symbol nil (representing false). See generalized boolean.
+**boolean** n. 一个 boolean 类型[type]的对象[object]; 这也就是说, 下面这些对象[object]之一: 符号 t (表示 true), 或者符号 nil (表示 false). 见广义 boolean [generalized boolean].
 
-boolean equivalent n. (of an object O1) any object O2 that has the same truth value as O1 when both O1 and O2 are viewed as generalized booleans.
+**boolean equivalent** n. (指对象[object] O1) 当 O1 和 O2 都被视为广义 boolean [generalized boolean]时, 与 O1 有相同真实值的任何对象[object] O2.
 
 **bound** adj., v.t. 1. adj. 在一个绑定[binding]中有一个关联的表示. "这些由一个 let 命名的变量在它的主体中是被绑定的(The variables named by a let are bound within its body)". 见未绑定的[unbound]. 2. adj. 有着一个遮蔽[shadows[2]]另一个的局部绑定[binding]. "在 princ 函数中时, 变量 \*print-escape* 是被绑定的(The variable \*print-escape* is bound while in the princ function)". 3. v.t. 绑定[bind]的过去时态.
 
-bound declaration n. a declaration that refers to or is associated with a variable or function and that appears within the special form that establishes the variable or function, but before the body of that special form (specifically, at the head of that form's body). (If a bound declaration refers to a function binding or a lexical variable binding, the scope of the declaration is exactly the scope of that binding. If the declaration refers to a dynamic variable binding, the scope of the declaration is what the scope of the binding would have been if it were lexical rather than dynamic.)
+**bound declaration** n. 一种声明[declaration], 它引用一个变量[variable]或函数[function]或者与它们关联, 并且出现在建立这个变量[variable]或函数[function]的特殊表达式形式[special form]中, 但是在这个特殊表达式形式[special form]的主体之前 (具体来说, 就是在那个表达式形式[form]主体的头部). (如果一个绑定声明[bound declaration]引用一个函数[function]绑定[binding]或者一个词法变量[lexical variable]绑定[binding], 这个声明[declaration]的作用域[scope]就是那个绑定[binding]的作用域[scope]. 如果这个声明[declaration]引用了动态变量[dynamic variable]绑定[binding], 那么这个声明[declaration]的作用域[scope]和这个绑定[binding]是词法而非动态时的作用域[scope]相同.)
 
-bounded adj. (of a sequence S, by an ordered pair of bounding indices istart and iend) restricted to a subrange of the elements of S that includes each element beginning with (and including) the one indexed by istart and continuing up to (but not including) the one indexed by iend.
+**bounded** adj. (指序列[sequence] S, 由一对有序的绑定索引[bounding index] istart 和 iend 表示) 限定为 S 的元素[element]的子范围, 其中包括以 istart 索引的元素[element]开始(并包括), 直到(但不包括) iend 索引的元素[element]为止的每个元素[element].
 
-bounding index n. (of a sequence with length n) either of a conceptual pair of integers, istart and iend, respectively called the ``lower bounding index'' and ``upper bounding index'', such that 0 <=istart <=iend <=n, and which therefore delimit a subrange of the sequence bounded by istart and iend.
+**bounding index** n. (指一个长度[length]为 n 的序列[sequence]) 一个概念上的整数[integer]对 istart 和 iend, 分别称为 "上边界索引" 和 "下边界索引", 使 0 <=istart <=iend <=n, 因此它划分了一个由 istart 和 iend 限定[bounded]的序列[sequence]的子范围.
 
-bounding index designator (for a sequence) one of two objects that, taken together as an ordered pair, behave as a designator for bounding indices of the sequence; that is, they denote bounding indices of the sequence, and are either: an integer (denoting itself) and nil (denoting the length of the sequence), or two integers (each denoting themselves).
+**bounding index designator** (指序列[sequence]) 作为有序对放在一起的两个对象[object]中的一个, 表现为序列[sequence]的边界索引[bounding index]的标识符[designator]; 这也就是说, 它们表示这个序列[sequence]的边界索引[bounding index], 并且可以是一个整数[integer] (表示它自身)和 nil (表示这个序列[sequence]的长度[length]), 或者两个整数[integer] (每一个都表示它自身).
 
-break loop n. A variant of the normal Lisp read-eval-print loop that is recursively entered, usually because the ongoing evaluation of some other form has been suspended for the purpose of debugging. Often, a break loop provides the ability to exit in such a way as to continue the suspended computation. See the function break.
+**break loop** n. 正常 Lisp read-eval-print 循环[Lisp read-eval-print loop]的一个递归进入的变体, 通常因为调试的目的而暂停了正在进行的其他表达式形式[form]的求值[evaluation]. 通常, 一个中断循环[break loop]提供以某种方式退出的能力来继续中断的计算. 见函数[function] break.
 
-broadcast stream n. an output stream of type broadcast-stream.
+**broadcast stream** n. 一个 broadcast-stream 类型[type]的输出[output]流[stream].
 
-built-in class n. a class that is a generalized instance of class built-in-class.
+**built-in class** n. 一个类[class], 它是类[class] built-in-class 的一个广义实例[generalized instance].
 
-built-in type n. one of the types in Figure 4-2.
+**built-in type** n. Figure 4-2 中的类型[type]之一.
 
-byte n. 1. adjacent bits within an integer. (The specific number of bits can vary from point to point in the program; see the function byte.) 2. an integer in a specified range. (The specific range can vary from point to point in the program; see the functions open and write-byte.)
+**byte** n. 1. 一个整数[integer]中的相邻位. (在程序中, 具体的比特数可以随点而变化; 见函数[function] byte.) 2. 在一个特定范围内的整数[integer]. (在程序中, 具体的范围可以随点而变化; 见函数[function] open 和 write-byte.) <!--TODO 待校验-->
 
-byte specifier n. An object of implementation-dependent nature that is returned by the function byte and that specifies the range of bits in an integer to be used as a byte by functions such as ldb. 
+**byte specifier** n. 一个有着依赖于具体实现[implementation-dependent]的性质的对象[object], 它由函数[function] byte 返回并且指定了一个整数[integer]中要被诸如 ldb 这样的函数[function]用作字节[byte]的位的范围. 
 
-C
+### C
 
-cadr ['ka,duhr], n. (of an object) the car of the cdr of that object.
+**cadr** ['ka,duhr], n. (指对象[object]) 那个对象[object]的 cdr 的 car.
 
-call v.t., n. 1. v.t. (a function with arguments) to cause the code represented by that function to be executed in an environment where bindings for the values of its parameters have been established based on the arguments. ``Calling the function + with the arguments 5 and 1 yields a value of 6.'' 2. n. a situation in which a function is called.
+**call** v.t., n. 1. v.t. (带实参[argument]的函数[function]) 使该函数[function]所表示的代码[code]在基于这个实参[argument]为其形参[parameter]的值[value]建立绑定[binding]的环境[environment]中执行. "使用参数 5 和 1 来调用函数 + 会产生一个 6 的值 (calling the function + with the arguments 5 and 1 yields a value of 6)." 2. n. 函数[function]被调用的一种情况[situation].
 
-captured initialization form n. an initialization form along with the lexical environment in which the form that defined the initialization form was evaluated. ``Each newly added shared slot is set to the result of evaluating the captured initialization form for the slot that was specified in the defclass form for the new class.''
+**captured initialization form** n. 一个初始化表达式形式[initialization form]以及定义这个初始化表达式形式[initialization form]的表达式形式[form]被求值时所在的词法环境[lexical environment]. "每个新添加的共享槽都被设置为求值新类的 defclass 表达式形式中指定的槽的捕获初始化表达式形式的结果 (Each newly added shared slot is set to the result of evaluating the captured initialization form for the slot that was specified in the defclass form for the new class)."
 
-car n. 1. a. (of a cons) the component of a cons corresponding to the first argument to cons; the other component is the cdr. ``The function rplaca modifies the car of a cons.'' b. (of a list) the first element of the list, or nil if the list is the empty list. 2. the object that is held in the car[1]. ``The function car returns the car of a cons.''
+**car** n. 1. a. (指 cons) 对应于给 cons 的第一个参数[argument]的 cons 的成员. "函数 rplaca 修改一个 cons 的 car (The function rplaca modifies the car of a cons)." b. (指列表[list]) 这个列表[list]的第一个元素[element], 如果这个列表[list]是空列表[empty list]那么就是 nil. 2. 被保存在 car[1]中的那个对象[object]. "函数 car 返回一个 cons 的 car."
 
 **case** n. (一个字符[character]) 大写或小写的属性. 不是所有字符[character]都有大小写[case]. "The characters #\A and #\a have case, but the character #\$ has no case". 见章节 13.1.4.3 (大小写字符) 以及函数[function] both-case-p.
 
-case sensitivity mode n. one of the symbols :upcase, :downcase, :preserve, or :invert.
+**case sensitivity mode** n. 符号[symbol] :upcase, :downcase, :preserve, 或 :invert 的其中之一.
 
-catch n. an exit point which is established by a catch form within the dynamic scope of its body, which is named by a catch tag, and to which control and values may be thrown.
+**catch** n. 由一个 catch 表达式形式[form]建立在它主体的动态作用域[dynamic scope]中的一个退出点[exit point], 它由一个捕捉标签[catch tag]命名, 并且控制和值[value]可以 throw 给它.
 
-catch tag n. an object which names an active catch. (If more than one catch is active with the same catch tag, it is only possible to throw to the innermost such catch because the outer one is shadowed[2].)
+**catch tag** n. 一个命名一个活跃[active]捕捉[catch]的对象[object]. (如果不止一个带有相同捕捉标签[catch tag]的捕捉[catch]是活跃的[active], 那么只可能 throw 到最内部的那个捕捉[catch], 因为外面那个被遮蔽[shadowed[2]]了.)
 
-cddr ['kduh,duhr] or ['kuh,dduhr], n. (of an object) the cdr of the cdr of that object.
+**cddr** ['kduh,duhr] 或 ['kuh,dduhr], n. (指对象[object]) 那么对象[object]的 cdr 的 cdr.
 
-cdr ['k,duhr], n. 1. a. (of a cons) the component of a cons corresponding to the second argument to cons; the other component is the car. ``The function rplacd modifies the cdr of a cons.'' b. (of a list L1) either the list L2 that contains the elements of L1 that follow after the first, or else nil if L1 is the empty list. 2. the object that is held in the cdr[1]. ``The function cdr returns the cdr of a cons.''
+**cdr** ['k,duhr], n. 1. a. (指 cons) 对应于给 cons 的第二个实参[argument]的 cons 的成员; 另一个成员就是 car. "函数 rplacd 修改一个 cons 的 cdr (The function rplacd modifies the cdr of a cons)." b. (指一个列表[list] L1) 要么是包含  L1 的第一个之后的元素的列表[list] L2, 如果 L1 是空列表[empty list]那么就是 nil. 2. 保存在 cdr[1] 中的那个对象[object]. "函数 cdr 返回一个 cons 中的 cdr (The function cdr returns the cdr of a cons)."
 
-cell n. Trad. (of an object) a conceptual slot of that object. The dynamic variable and global function bindings of a symbol are sometimes referred to as its value cell and function cell, respectively.
+**cell** n. Trad. (指对象[object]) 那个对象[object]的一个概念槽[slot]. 一个符号[symbol]的动态变量[dynamic variable]和全局函数[function]绑定[binding]有时分别被引用为它的值存储格[value cell]和函数存储格[function cell].
 
 **character** n., adj. 1. n. 一个 character 类型[type]的对象[object]; 这也就是说, 一个表示一个文本的聚合总量中的单一标记; 见章节 13.1 (字符概念). 2. adj. a. (一个流[stream]的) 有着一个是 character 类型[type]的子类型[subtype]的元素类型[element type]. 在一个字符[character]输入[input]流[stream]上最基本的操作是 read-char 而在一个字符[character]输出[output]流[stream]上是 write-char. 见二进制[binary]. b. (一个文件[file]的) 已经通过打开一个字符[character]流[stream]来创建了. (这个是否是这个文件[file]的可检查方面, 或者任何给定的二进制[binary]文件[file]是否可以被当作一个字符[character]文件[file]是依赖于具体实现的[implementation-dependent].)
 
-character code n. 1. one of possibly several attributes of a character. 2. a non-negative integer less than the value of char-code-limit that is suitable for use as a character code[1].
+**character code** n. 1. 一个字符[character]的多个可能的属性[attribute]之一. 2. 一个小于 char-code-limit 的值的非负整数[integer], 它适用于字符码[character code[1]].
 
-character designator n. a designator for a character; that is, an object that denotes a character and that is one of: a designator for a string of length one (denoting the character that is its only element), or a character (denoting itself).
+**character designator** n. 一个字符[character]的标识符[designator]; 这也就是说, 一个对象[object], 表示一个字符[character]并且为以下之一: 长度 1 的字符串[string]的一个标识符[designator] (表示它仅有的那个字符[character]元素[element]), 或者一个字符[character] (表示它自身).
 
-circular adj. 1. (of a list) a circular list. 2. (of an arbitrary object) having a component, element, constituent[2], or subexpression (as appropriate to the context) that is the object itself.
+**circular** adj. 1. (指列表[list]) 一个环状列表[circular list]. 2. (指一个任意对象[object]) 有着一个成员, 元素[element], 标记成分[constituent[2]], 或子表达式[subexpression] (视情况而定) 为这个对象[object]自身.
 
-circular list n. a chain of conses that has no termination because some cons in the chain is the cdr of a later cons.
+**circular list** n. 一个没有终止的 cons 链, 因为这个链中的某个 cons 是后面的一个 cons 的 cdr.
 
-class n. 1. an object that uniquely determines the structure and behavior of a set of other objects called its direct instances, that contributes structure and behavior to a set of other objects called its indirect instances, and that acts as a type specifier for a set of objects called its generalized instances. ``The class integer is a subclass of the class number.'' (Note that the phrase ``the class foo'' is often substituted for the more precise phrase ``the class named foo''---in both cases, a class object (not a symbol) is denoted.) 2. (of an object) the uniquely determined class of which the object is a direct instance. See the function class-of. ``The class of the object returned by gensym is symbol.'' (Note that with this usage a phrase such as ``its class is foo'' is often substituted for the more precise phrase ``its class is the class named foo''---in both cases, a class object (not a symbol) is denoted.)
+**class** n. 1. 一个对象[object],  它决定了那些被称为它的直接实例[direct instance]的其他对象[object]集合的结构和行为, 给那些被称为非直接实例[indirect instance]的其他对象[object]集合提供结构和行为, 并且充当一组被称为它的广义实例[generalized instance]的对象[object]的类型指定符[type specifier]. "类 integer 是类 number 的子类 (The class integer is a subclass of the class number)." (注意, 措辞 "类 foo" 经常指代更精确的术语 "名为 foo 的类[class]" --- 在这两种情况中, 表示的都是一个类[class]对象[object] (不是一个符号[symbol]).) 2. (指一个对象[object]) 对象[object]是其直接实例[direct instance]的唯一确定类[class]. 见函数[function] class-of. "由 gensym 返回的对象的类是 symbol (The class of the object returned by gensym is symbol)." (注意, 在这种用法中, "它的类[class]是 foo"之类的短语经常被替换为更精确的短语"它的类[class]是名为 foo 的类[class]"---在这两种情况中, 表示的都是一个类[class]对象[object] (不是一个符号[symbol]).)
 
-class designator n. a designator for a class; that is, an object that denotes a class and that is one of: a symbol (denoting the class named by that symbol; see the function find-class) or a class (denoting itself).
+**class designator** n. 一个类[class]的标识符[designator]; 这也就是说, 一个对象, 它表示一个类[class]并且它是以下之一: 一个符号[symbol] (表示由这个符号[symbol]命名的这个类[class]; 见函数[function] find-class) 或一个类 (表示它自身).
 
-class precedence list n. a unique total ordering on a class and its superclasses that is consistent with the local precedence orders for the class and its superclasses. For detailed information, see Section 4.3.5 (Determining the Class Precedence List).
+**class precedence list** n. 类[class]及其超类[superclass]上的唯一总排序, 与类[class]及其超类[superclass]的局部优先级[local precedence order]顺序一致. 关于详细信息, 见章节 4.3.5 (确定类的优先级列表).
 
-close v.t. (a stream) to terminate usage of the stream as a source or sink of data, permitting the implementation to reclaim its internal data structures, and to free any external resources which might have been locked by the stream when it was opened.
+**close** v.t. (一个流[stream]) 终止流[stream]作为数据的源或接收器的使用, 允许具体实现[implementation]去收回它的内部数据结构, 并且去释放任何在这个流[stream]被打开时锁定的外部资源.
 
-closed adj. (of a stream) having been closed (see <I>}</I>close). Some (but not all) operations that are valid on open streams are not valid on closed streams. See Section 21.1.1.1.2 (Open and Closed Streams).
+**closed** adj. (指一个流[stream]) 已经被关闭 (见 close). 一些 (但不是全部) 在打开的[open]流[stream]上是合法的操作在关闭的[closed]流[stream]上是不合法的. 见章节 21.1.1.1.2 (打开和关闭的流).
 
-closure n. a lexical closure.
+**closure** n. 一个词法闭包[lexical closure].
 
-coalesce v.t. (literal objects that are similar) to consolidate the identity of those objects, such that they become the same object. See Section 3.2.1 (Compiler Terminology).
+**coalesce** v.t. (类似的[similar]字面化[literal]对象[object]) 来巩固这些对象[object]的标识, 使它们成为相同的[same]对象[object]. 见章节 3.2.1 (编译器术语).
 
-code n. 1. Trad. any representation of actions to be performed, whether conceptual or as an actual object, such as forms, lambda expressions, objects of type function, text in a source file, or instruction sequences in a compiled file. This is a generic term; the specific nature of the representation depends on its context. 2. (of a character) a character code.
+**code** n. 1. Trad. 要执行的操作的任何表示形式, 无论是概念上的还是作为实际对象[object], 例如表达式形式[form], lambda 表达式[lambda expression], 函数[function]类型[type]的对象[object], 源码文件[source file]中的文本, 或者一个编译后文件[compiled file]中的指令序列. 这是一个通用术语; 表示的具体性质取决于它的上下文. 2. (指字符[character]) 一个字符码[character code].
 
-coerce v.t. (an object to a type) to produce an object from the given object, without modifying that object, by following some set of coercion rules that must be specifically stated for any context in which this term is used. The resulting object is necessarily of the indicated type, except when that type is a subtype of type complex; in that case, if a complex rational with an imaginary part of zero would result, the result is a rational rather than a complex---see Section 12.1.5.3 (Rule of Canonical Representation for Complex Rationals).
+**coerce** v.t. (一个对象[object]为一个类型[type]) 通过遵循一组强制转换规则从给定对象[object]生成一个对象[object], 而不修改该对象[object], 这些强制转换规则必须针对使用该术语的任何上下文进行特定说明. 得到的对象[object]必须是指定的类型[type], 除非该类型是类型[type] complex 的子类型[subtype]; 在这个情况中, 如果产生一个虚部为零的复有理数[complex rational], 则结果是一个有理数[rational]而不是一个复数[complex]---见章节 12.1.5.3 (复数的正规表示规则).
 
-colon n. the standard character that is called ``colon'' (:). See Figure 2-5.
+**colon** n. 标准字符[standard character], 它被称为 "冒号" (:). 见 Figure 2-5.
 
-comma n. the standard character that is called ``comma'' (,). See Figure 2-5.
+**comma** n. 标准字符[standard character], 它被称为 "逗号" (,). 见 Figure 2-5.
 
 **compilation** n. 编译器[compiler]编译代码[code]的过程.
 
@@ -269,7 +269,7 @@ comma n. the standard character that is called ``comma'' (,). See Figure 2-5.
 
 **compilation unit** n. 发生单个编译单元的时间间隔. 见宏[macro] with-compilation-unit.
 
-compile v.t. 1. (code) to perform semantic preprocessing of the code, usually optimizing one or more qualities of the code, such as run-time speed of execution or run-time storage usage. The minimum semantic requirements of compilation are that it must remove all macro calls and arrange for all load time values to be resolved prior to run time. 2. (a function) to produce a new object of type compiled-function which represents the result of compiling the code represented by the function. See the function compile. 3. (a source file) to produce a compiled file from a source file. See the function compile-file.
+**compile** v.t. 1. (代码[code]) 执行代码[code]的语义预处理, 通常优化代码的一个或多个质量, 如运行时执行速度或运行时存储使用情况. 编译的最小语义要求是它必须移除所有宏调用并且并安排在运行时之前解析所有加载时的值[ load time value]. 2. (一个函数[function]) 来产生一个 compiled-function 类型[type]的新对象[object], 它表示编译这个函数[function]表示的代码[code]的结果. 见函数[function] compile. 3. (一个源码文件[source file]) 来产生一个来自于一个源码文件[source file]的编译后文件[compiled file]. 见函数[function] compile-file.
 
 **compile time** n. 编译器[compiler]处理源代码[source code]的持续时间.
 
@@ -283,91 +283,91 @@ compile v.t. 1. (code) to perform semantic preprocessing of the code, usually op
 
 **compiler** n. 一个工具, 它是 Lisp 的一部分, 将代码[code]转换为一个依赖于具体实现的[implementation-dependent]可以被高效地表示和执行的形式. 函数 compile 和 compile-file 允许程序去调用这个编译器[compiler].
 
-compiler macro n. an auxiliary macro definition for a globally defined function or macro which might or might not be called by any given conforming implementation and which must preserve the semantics of the globally defined function or macro but which might perform some additional optimizations. (Unlike a macro, a compiler macro does not extend the syntax of Common Lisp; rather, it provides an alternate implementation strategy for some existing syntax or functionality.)
+**compiler macro** n. 全局定义的函数[function]或宏[macro]的辅助宏定义, 它可能被任何给定的符合规范的实现[conforming implementation]调用, 也可能不被调用, 它必须保留全局定义的函数[function]或宏[macro]的语义, 但可能执行一些额外的优化. (不像一个宏[macro], 一个编译器宏[compiler macro]不会扩展 Common Lisp 的语法; 相反, 它为一些现有的语法或功能提供了一种替代的实现策略.)
 
-compiler macro expansion n. 1. the process of translating a form into another form by a compiler macro. 2. the form resulting from this process.
+**compiler macro expansion** n. 1. 通过一个编译器宏[compiler macro]将一个表达式形式[form]转换为另一个表达式形式[form]的过程. 2. 这个过程产生的表达式形式[form].
 
-compiler macro form n. a function form or macro form whose operator has a definition as a compiler macro, or a funcall form whose first argument is a function form whose argument is the name of a function that has a definition as a compiler macro.
+**compiler macro form** n. 一个操作符[operator]被定义为编译器宏[compiler macro]的函数表达式形式[function form]或宏表达式形式[macro form], 或者一个 funcall 表达式形式[form], 它的第一个实参[argument]是一个 function 表达式形式[form], 这个表达式形式的实参[function]是一个被定义为编译器宏[compiler macro]的函数[function]的名字[name].
 
-compiler macro function n. a function of two arguments, a form and an environment, that implements compiler macro expansion by producing either a form to be used in place of the original argument form or else nil, indicating that the original form should not be replaced. See Section 3.2.2.1 (Compiler Macros).
+**compiler macro function** n. 一个两个参数的函数[function], 两个参数是一个表达式形式[form]和一个环境[environment], 它通过生成一个表达式形式[form]来实现编译器宏展开[compiler macro expansion], 该表达式形式[form]可以用来替代原始参数表达式形式[form], 也可以是 nil, 表示不应该替换原始表达式形式[form]. 见章节 3.2.2.1 (编译器宏).
 
-complex n. an object of type complex.
+**complex** n. 一个 complex 类型[type]的对象[object].
 
-complex float n. an object of type complex which has a complex part type that is a subtype of float. A complex float is a complex, but it is not a float.
+**complex float** n. 一个 complex 类型[type]的对象[object], 它的复数部分类型[complex part type]是 float 的一个子类型[subtype]. 一个复浮点数[complex float]是一个复数[complex], 但不是一个浮点数[float].
 
-complex part type n. (of a complex) 1. the type which is used to represent both the real part and the imaginary part of the complex. 2. the actual complex part type of the complex. 3. the expressed complex part type of the complex.
+**complex part type** n. (指复数[complex]) 1. 被用于表示复数[complex]的实部和虚部的类型[type]. 2. 复数[complex]的实际复数部分类型[actual complex part type]. 3. 复数[complex]的表达复数部分类型[expressed complex part type].
 
-complex rational n. an object of type complex which has a complex part type that is a subtype of rational. A complex rational is a complex, but it is not a rational. No complex rational has an imaginary part of zero because such a number is always represented by Common Lisp as an object of type rational; see Section 12.1.5.3 (Rule of Canonical Representation for Complex Rationals).
+**complex rational** n. 一个 complex 类型[type]的对象[object], 它的复数部分类型[complex part type]是 rational 的子类型[subtype]. 一个复有理数[complex rational]是一个复数[complex], 但不是一个有理数[rational]. 没有虚部为零的复有理数[complex rational], 因为这样一个数字总是被 Common Lisp 表示为一个 rational 类型[type]的对象[object]; 见章节 12.1.5.3 (复数的正规表示规则).
 
-complex single float n. an object of type complex which has a complex part type that is a subtype of single-float. A complex single float is a complex, but it is not a single float.
+**complex single float** n. 一个 complex 类型[type]的对象[object], 它的复数部分类型[complex part type]是 single-float 的子类型[subtype]. 一个复单精度浮点数[complex single float]是一个复数[complex], 但不是一个单精度浮点数[single float].
 
-composite stream n. a stream that is composed of one or more other streams. ``make-synonym-stream creates a composite stream.''
+**composite stream** n. 一个流[stream], 它由一个或多个流[stream]组成. "make-synonym-stream 创建一个复合流 (make-synonym-stream creates a composite stream)."
 
-compound form n. a non-empty list which is a form: a special form, a lambda form, a macro form, or a function form.
+**compound form** n. 一个非空[non-empty]列表[list], 它是一个表达式形式[form]: 一个特殊表达式形式[special form], 一个 lambda 表达式形式[lambda form], 一个宏表达式形式[macro form], 或者一个函数表达式形式[function form].
 
-compound type specifier n. a type specifier that is a cons; i.e., a type specifier that is not an atomic type specifier. ``(vector single-float) is a compound type specifier.''
+**compound type specifier** n. 一个类型指定符[type specifier], 它是一个 cons; 也就是说, 一个不是原子类型指定符[atomic type specifier]的类型指定符[type specifier]. "(vector single-float) 是一个符合类型指定符 ((vector single-float) is a compound type specifier)."
 
-concatenated stream n. an input stream of type concatenated-stream.
+**concatenated stream** n. 一个 concatenated-stream 类型[type]的输入[input]流[stream].
 
-condition n. 1. an object which represents a situation---usually, but not necessarily, during signaling. 2. an object of type condition.
+**condition** n. 1. 表示一种情况[situation]的对象[object]---通常, 但不一定是在发送期间. 2. 一个 condition 类型[type]的对象[object].
 
-condition designator n. one or more objects that, taken together, denote either an existing condition object or a condition object to be implicitly created. For details, see Section 9.1.2.1 (Condition Designators).
+**condition designator** n. 一个或多个对象[object], 它们组合在一起表示现有的状况[condition]对象[object]或要隐式创建的状况[condition]对象[object]. 关于详细信息, 见章节 9.1.2.1 (状况标识符).
 
-condition handler n. a function that might be invoked by the act of signaling, that receives the condition being signaled as its only argument, and that is permitted to handle the condition or to decline. See Section 9.1.4.1 (Signaling).
+**condition handler** n. 一个函数[function], 它可能被发送的动作所调用, 它接收要被发送的状况[condition]作为它仅有的参数, 并且允许它去处理[handle]这个状况[condition]或拒绝[decline]. 见章节 9.1.4.1 (发送).
 
-condition reporter n. a function that describes how a condition is to be printed when the Lisp printer is invoked while *print-escape* is false. See Section 9.1.3 (Printing Conditions).
+**condition reporter** n. 一个函数[function], 它描述了当 Lisp 打印器[Lisp printer]被调用而 \*print-escape* 是 false 时一个状况[condition]如何被打印. 见章节 9.1.3 (打印状况).
 
-conditional newline n. a point in output where a newline might be inserted at the discretion of the pretty printer. There are four kinds of conditional newlines, called ``linear-style,'' ``fill-style,'' ``miser-style,'' and ``mandatory-style.'' See the function pprint-newline and Section 22.2.1.1 (Dynamic Control of the Arrangement of Output).
+**conditional newline** n. 输出中的一个点, 可以由美观打印器[pretty printer]任意插入新行[newline]. 这里有四种条件换行[conditional newline], 称为 "线性风格(linear-style)", "填充风格(fill-style)", "吝啬风格(miser-style)", 以及 "强制风格(mandatory-style)". 见函数[function] pprint-newline 和章节 22.2.1.1 (输出排列的动态控制).
 
-conformance n. a state achieved by proper and complete adherence to the requirements of this specification. See Section 1.5 (Conformance).
+**conformance** n. 通过适当和完全遵守本规范的要求而达到的状态. 见章节 1.5 (规范性).
 
-conforming code n. code that is all of part of a conforming program.
+**conforming code** n. 符合规范的程序[conforming program]中的所有部分的代码[code].
 
-conforming implementation n. an implementation, used to emphasize complete and correct adherance to all conformance criteria. A conforming implementation is capable of accepting a conforming program as input, preparing that program for execution, and executing the prepared program in accordance with this specification. An implementation which has been extended may still be a conforming implementation provided that no extension interferes with the correct function of any conforming program.
+**conforming implementation** n. 一个具体实现[implementation], 用来强调对所有规范性标准的完全和正确的遵守. 一个符合规范的实现[conforming implementation]能够接受符合规范的程序[conforming program]作为输入, 准备执行该程序[program], 并按照本规范执行所准备的程序[program]. 如果没有扩展干扰任何符合规范的程序[conforming program]的正确功能, 已扩展的具体实现[implementation]仍然可以是符合规范的实现[conforming implementation].
 
-conforming processor n. ANSI a conforming implementation.
+**conforming processor** n. ANSI 一个符合规范的实现[conforming implementation].
 
-conforming program n. a program, used to emphasize the fact that the program depends for its correctness only upon documented aspects of Common Lisp, and can therefore be expected to run correctly in any conforming implementation.
+**conforming program** n. 一个程序[program], 用于强调程序的正确性仅依赖于 Common Lisp 的文档化方面, 因此可以期望在任何符合规范的实现[conforming implementation]中正确运行.
 
-congruent n. conforming to the rules of lambda list congruency, as detailed in Section 7.6.4 (Congruent Lambda-lists for all Methods of a Generic Function).
+**congruent** n. 符合 lambda 列表[lambda list]一致性的规则, 就像章节 7.6.4 (广义函数的所有方法的一致 Lambda-list) 中详述的那样.
 
-cons n.v. 1. n. a compound data object having two components called the car and the cdr. 2. v. to create such an object. 3. v. Idiom. to create any object, or to allocate storage.
+**cons** n.v. 1. n. 一个有着两个成员的复合数据对象[object], 这两个成员称为 car 和 cdr. 2. v. 去创建这样一个对象[object]. 3. v. Idiom. 去创建任何对象[object], 或者去分配存储.
 
-constant n. 1. a constant form. 2. a constant variable. 3. a constant object. 4. a self-evaluating object.
+**constant** n. 1. 一个常量表达式形式[constant form]. 2. 一个常变量[constant variable]. 3. 一个常量对象[constant object]. 4. 一个自求值[self-evaluating object].
 
-constant form n. any form for which evaluation always yields the same value, that neither affects nor is affected by the environment in which it is evaluated (except that it is permitted to refer to the names of constant variables defined in the environment), and that neither affects nor is affected by the state of any object except those objects that are otherwise inaccessible parts of objects created by the form itself. ``A car form in which the argument is a quote form is a constant form.''
+**constant form** n. 求值[evaluation]总是产生[yield]相同值[value]的任何表达式形式[form], 既不影响它被求值时所在的环境, 也不受该环境影响 (除非允许引用环境[environment]中定义的常变量[constant variable]的名称), 并且不影响任何对象[object]的状态, 也不受任何对象[object]的状态的影响, 除非这些对象是由表达式形式[form]本身创建的对象[object]的其他不可访问部分[otherwise inaccessible part]. "参数为一个 quote 表达式形式的一个 car 表达式形式是一个常量表达式形式(A car form in which the argument is a quote form is a constant form)."
 
-constant object n. an object that is constrained (e.g., by its context in a program or by the source from which it was obtained) to be immutable. ``A literal object that has been processed by compile-file is a constant object.''
+**constant object** n. 一个对象[object], 它被约束为不可变的[immutable] (例如, 根据它在程序[program]中的上下文或它的来源). "一个被 compile-file 处理的字面化对象是一个常量对象(A literal object that has been processed by compile-file is a constant object)."
 
-constant variable n. a variable, the value of which can never change; that is, a keyword[1] or a named constant. ``The symbols t, nil, :direction, and most-positive-fixnum are constant variables.''
+**constant variable** n. 一个变量[variable], 它的值[value]从不改变; 也就是说, 一个关键字[keyword[1]] 或者一个已命名常量[named constant]. "符号 t, nil, :direction, 和 most-positive-fixnum 都是常变量(The symbols t, nil, :direction, and most-positive-fixnum are constant variables)."
 
 **constituent** n., adj. 1. a. n. 作为标记[token]的一部分的字符[character]的语法类型[syntax type]. 关于详情, 见章节 2.1.4.1 (标记成分字符). b. adj. (一个字符[character]) 有着标记成分[constituent[1a]] 语法类型[syntax type[2]]. c. n. 一个标记成分[constituent[1b]]字符[character]. 2. n. (一个复合流[composite stream]) 组成该流[stream]的源或汇聚的几个对象[object]之一.
 
 **constituent trait** n. (一个字符[character]) 一个读取表[readtable]中的一个标记成分[constituent[1b]]字符[character]的几个分类中的一个. 见章节 2.1.4.1 (标记成分字符).
 
-constructed stream n. a stream whose source or sink is a Lisp object. Note that since a stream is another Lisp object, composite streams are considered constructed streams. ``A string stream is a constructed stream.''
+**constructed stream** n. 一个源或接收器是一个 Lisp 对象[object]的流[stream]. 注意, 由于一个流[stream]也是一个 Lisp 对象[object], 因此复合流[composite stream]也被认为是构造流[constructed stream]. "一个字符串流是一个构造流 (A string stream is a constructed stream)."
 
-contagion n. a process whereby operations on objects of differing types (e.g., arithmetic on mixed types of numbers) produce a result whose type is controlled by the dominance of one argument's type over the types of the other arguments. See Section 12.1.1.2 (Contagion in Numeric Operations).
+**contagion** n. 一个过程, 其中不同类型[type]的对象[object]上的操作 (例如, 对混合类型[type]的数字[number]进行算术操作) 产生一个类型[type]由一个实参[argument]类型[type]对其他实参[argument]类型[type]的支配性控制的结果. 见章节 12.1.1.2 (数值运算的传递性).
 
-continuable n. (of an error) an error that is correctable by the continue restart.
+**continuable** n. (指一个错误[error]) 一个通过 continue 重启动是可校正的[correctable]的错误[error].
 
-control form n. 1. a form that establishes one or more places to which control can be transferred. 2. a form that transfers control.
+**control form** n. 1. 一个表达式形式[form], 它建立一个或多个控制可以转移到的位置. 2. 一个转移控制的表达式形式[form].
 
-copy n. 1. (of a cons C) a fresh cons with the same car and cdr as C. 2. (of a list L) a fresh list with the same elements as L. (Only the list structure is fresh; the elements are the same.) See the function copy-list. 3. (of an association list A with elements Ai) a fresh list B with elements Bi, each of which is nil if Ai is nil, or else a copy of the cons Ai. See the function copy-alist. 4. (of a tree T) a fresh tree with the same leaves as T. See the function copy-tree. 5. (of a random state R) a fresh random state that, if used as an argument to to the function random would produce the same series of ``random'' values as R would produce. 6. (of a structure S) a fresh structure that has the same type as S, and that has slot values, each of which is the same as the corresponding slot value of S. (Note that since the difference between a cons, a list, and a tree is a matter of ``view'' or ``intention,'' there can be no general-purpose function which, based solely on the type of an object, can determine which of these distinct meanings is intended. The distinction rests solely on the basis of the text description within this document. For example, phrases like ``a copy of the given list'' or ``copy of the list x'' imply the second definition.)
+**copy** n. 1. (指一个 cons C) 一个带有和 C 相同[same]的 car 和 cdr 的新的[fresh] cons. 2. (指一个列表[list] L) 一个带有和 L 相同[same]元素[element]的新[fresh]列表[list]. (只有列表结构[list structure]是新的[fresh]; 其中的元素[element]都相同[same].) 见函数[function] copy-list. 3. (指一个带有多个元素[element] Ai 的关联列表[association list] A) 一个带有多个元素[element] Bi 的新[fresh]列表[list], 如果 Ai 是 nil 那么对应的每一个都是 nil, 否则就是 cons Ai 的一个拷贝[copy]. 见函数[function] copy-alist. 4. (指一个树[tree] T) 一个带有和 T 相同[same]叶节点[leave]的新[fresh]树[tree]. 见函数[function] copy-tree. 5. (指一个随机状态[random state] R) 一个新[fresh]随机状态[random state], 如果被用作函数[function] random 的参数会产生和 R 产生的相同的 "随机" 值序列. 6. (指一个结构体[structure] S) 一个和 S 相同类型[type]的新[fresh]结构体[structure], 并且每一个槽的值都合 S 的对应槽的值相同[same]. (注意, 由于一个 cons, 一个列表[list], 和一个树之间的区别在于 "视图" 或 "意图", 没有一种通用函数[function]仅根据对象[object]的类型[type]就可以确定这些不同含义中的哪些含义. 区别完全取决于本文档内的文本说明. 比如, 像 "给定列表[list]的一个拷贝[copy] (a copy of the given list)" 或 "列表[list] x 的拷贝" 这样的短语意味着第二个定义.)
 
-correctable adj. (of an error) 1. (by a restart other than abort that has been associated with the error) capable of being corrected by invoking that restart. ``The function cerror signals an error that is correctable by the continue restart.'' (Note that correctability is not a property of an error object, but rather a property of the dynamic environment that is in effect when the error is signaled. Specifically, the restart is ``associated with'' the error condition object. See Section 9.1.4.2.4 (Associating a Restart with a Condition).) 2. (when no specific restart is mentioned) correctable[1] by at least one restart. ``import signals a correctable error of type package-error if any of the imported symbols has the same name as some distinct symbol already accessible in the package.''
+**correctable** adj. (指一个错误[error]) 1. (通过一个和该错误[error]关联的重启动[restart]而不是 abort) 能够通过调用该重启动[restart]进行纠正. "函数 cerror 发出一个错误, 它是可以通过 continue 重启动[restart]来校正的 (The function cerror signals an error that is correctable by the continue restart)." (注意, 这个可校正性不是一个错误[error]对象[object]的属性, 而是这个错误[error]发出时生效的动态环境[dynamic environment]的属性. 具体来说, 重启动[restart]与错误[error]状况[condition]对象[object]"关联". 见章节 9.1.4.2.4 (关联重启动和状况).) 2. (当没有特定重启动[restart]被提及时) 至少通过一个重启动[restart]即可纠正[correctable[1]]. "如果导入的任何符号具有与包中已经可访问的某些不同符号相同的名称, 则 import 发出 package-error 类型[type]的可纠正错误 (import signals a correctable error of type package-error if any of the imported symbols has the same name as some distinct symbol already accessible in the package)."
 
-current input base n. (in a dynamic environment) the radix that is the value of *read-base* in that environment, and that is the default radix employed by the Lisp reader and its related functions.
+**current input base** n. (在一个动态环境[dynamic environment]中) 这个基数[radix]是这个环境[environment]中的 \*read-base* 的值[value], 并且它是 Lisp 读取器[Lisp reader]和它的相关函数[function]采用的默认基数[radix].
 
-current logical block n. the context of the innermost lexically enclosing use of pprint-logical-block.
+**current logical block** n. 最内部词法闭合的 pprint-logical-block 的上下文.
 
-current output base n. (in a dynamic environment) the radix that is the value of *print-base* in that environment, and that is the default radix employed by the Lisp printer and its related functions.
+**current output base** n. (在一个动态环境[dynamic environment]中) 这个基数[radix]是这个环境[environment]中的 \*read-base* 的值[value], 并且它是 Lisp 打印器[Lisp printer]和它的相关函数[function]采用的默认基数[radix].
 
-current package n. (in a dynamic environment) the package that is the value of *package* in that environment, and that is the default package employed by the Lisp reader and Lisp printer, and their related functions.
+**current package** n. (在一个动态环境[dynamic environment]中) 这个包[package]是这个环境[environment]中 \*package* 的值[value], 并且它是 Lisp 读取器[Lisp reader]和 Lisp 打印器[Lisp printer]采用的默认包[package].
 
-current pprint dispatch table n. (in a dynamic environment) the pprint dispatch table that is the value of *print-pprint-dispatch* in that environment, and that is the default pprint dispatch table employed by the pretty printer.
+**current pprint dispatch table** n. (在一个动态环境[dynamic environment]中) 这个美观打印分派表[pprint dispatch table]是这个环境[environment]中 \*print-pprint-dispatch* 的值[value], 并且它是美观打印器[pretty printer]采用的默认美观打印分派表[pprint dispatch table].
 
-current random state n. (in a dynamic environment) the random state that is the value of *random-state* in that environment, and that is the default random state employed by random.
+**current random state** n. (在一个动态环境[dynamic environment]中) 这个随机状况[random state]是这个环境[environment]中 \*random-state* 的值[value], 并且它是 random 采用的默认随机状态[random state].
 
 **current readtable** n. (在一个动态环境[dynamic environment]中) 那个环境中作为 \*readtable* 的值的读取表, 并且影响着表达式[expressions[2]]被 Lisp 读取器[Lisp reader]解析为对象[object]的方式. 
 
@@ -471,9 +471,9 @@ echo stream n. a stream of type echo-stream.
 
 effective method n. the combination of applicable methods that are executed when a generic function is invoked with a particular sequence of arguments.
 
-element n. 1. (of a list) an object that is the car of one of the conses that comprise the list. 2. (of an array) an object that is stored in the array. 3. (of a sequence) an object that is an element of the list or array that is the sequence. 4. (of a type) an object that is a member of the set of objects designated by the type. 5. (of an input stream) a character or number (as appropriate to the element type of the stream) that is among the ordered series of objects that can be read from the stream (using read-char or read-byte, as appropriate to the stream). 6. (of an output stream) a character or number (as appropriate to the element type of the stream) that is among the ordered series of objects that has been or will be written to the stream (using write-char or write-byte, as appropriate to the stream). 7. (of a class) a generalized instance of the class.
+element n. 1. (of a list) an object that is the car of one of the conses that comprise the list. 2. (指数组[array]) an object that is stored in the array. 3. (of a sequence) an object that is an element of the list or array that is the sequence. 4. (of a type) an object that is a member of the set of objects designated by the type. 5. (of an input stream) a character or number (as appropriate to the element type of the stream) that is among the ordered series of objects that can be read from the stream (using read-char or read-byte, as appropriate to the stream). 6. (of an output stream) a character or number (as appropriate to the element type of the stream) that is among the ordered series of objects that has been or will be written to the stream (using write-char or write-byte, as appropriate to the stream). 7. (of a class) a generalized instance of the class.
 
-element type n. 1. (of an array) the array element type of the array. 2. (of a stream) the stream element type of the stream.
+element type n. 1. (指数组[array]) the array element type of the array. 2. (of a stream) the stream element type of the stream.
 
 em n. Trad. a context-dependent unit of measure commonly used in typesetting, equal to the displayed width of of a letter ``M'' in the current font. (The letter ``M'' is traditionally chosen because it is typically represented by the widest glyph in the font, and other characters' widths are typically fractions of an em. In implementations providing non-Roman characters with wider characters than ``M,'' it is permissible for another character to be the implementation-defined reference character for this measure, and for ``M'' to be only a fraction of an em wide.) In a fixed width font, a line with n characters is n ems wide; in a variable width font, n ems is the expected upper bound on the width of such a line.
 
@@ -532,15 +532,15 @@ export v.t. (a symbol in a package) to add the symbol to the list of external sy
 
 exported adj. (of a symbol in a package) being an external symbol of the package.
 
-expressed adjustability n. (of an array) a generalized boolean that is conceptually (but not necessarily actually) associated with the array, representing whether the array is expressly adjustable. See also actual adjustability.
+expressed adjustability n. (指数组[array]) a generalized boolean that is conceptually (but not necessarily actually) associated with the array, representing whether the array is expressly adjustable. See also actual adjustability.
 
-expressed array element type n. (of an array) the type which is the array element type implied by a type declaration for the array, or which is the requested array element type at its time of creation, prior to any selection of an upgraded array element type. (Common Lisp does not provide a way of detecting this type directly at run time, but an implementation is permitted to make assumptions about the array's contents and the operations which may be performed on the array when this type is noted during code analysis, even if those assumptions would not be valid in general for the upgraded array element type of the expressed array element type.)
+expressed array element type n. (指数组[array]) the type which is the array element type implied by a type declaration for the array, or which is the requested array element type at its time of creation, prior to any selection of an upgraded array element type. (Common Lisp does not provide a way of detecting this type directly at run time, but an implementation is permitted to make assumptions about the array's contents and the operations which may be performed on the array when this type is noted during code analysis, even if those assumptions would not be valid in general for the upgraded array element type of the expressed array element type.)
 
-expressed complex part type n. (of a complex) the type which is implied as the complex part type by a type declaration for the complex, or which is the requested complex part type at its time of creation, prior to any selection of an upgraded complex part type. (Common Lisp does not provide a way of detecting this type directly at run time, but an implementation is permitted to make assumptions about the operations which may be performed on the complex when this type is noted during code analysis, even if those assumptions would not be valid in general for the upgraded complex part type of the expressed complex part type.)
+expressed complex part type n. (指复数[complex]) the type which is implied as the complex part type by a type declaration for the complex, or which is the requested complex part type at its time of creation, prior to any selection of an upgraded complex part type. (Common Lisp does not provide a way of detecting this type directly at run time, but an implementation is permitted to make assumptions about the operations which may be performed on the complex when this type is noted during code analysis, even if those assumptions would not be valid in general for the upgraded complex part type of the expressed complex part type.)
 
 **expression** n. 1. 一个对象[object], 经常用于强调这个对象[object]的使用以一种专门的格式来编码或表示信息, 例如程序文本. "在一个 let 表达式形式中的第二个表达式是一个绑定列表(The second expression in a let form is a list of bindings)". 2. 用于表示一个源文件中的一个对象[object]的文本记号. "表达式 'sample 等价于 (quote sample)".
 
-expressly adjustable adj. (of an array) being actually adjustable by virtue of an explicit request for this characteristic having been made at the time of its creation. All arrays that are expressly adjustable are actually adjustable, but not necessarily vice versa.
+expressly adjustable adj. (指数组[array]) being actually adjustable by virtue of an explicit request for this characteristic having been made at the time of its creation. All arrays that are expressly adjustable are actually adjustable, but not necessarily vice versa.
 
 extended character n. a character of type extended-char: a character that is not a base character.
 
@@ -642,7 +642,7 @@ further compilation n. implementation-dependent compilation beyond minimal compi
 
 G
 
-general adj. (of an array) having element type t, and consequently able to have any object as an element.
+general adj. (指数组[array]) having element type t, and consequently able to have any object as an element.
 
 generalized boolean n. an object used as a truth value, where the symbol nil represents false and all other objects represent true. See boolean.
 
@@ -1247,7 +1247,7 @@ similar adj. (of two objects) defined to be equivalent under the similarity rela
 
 similarity n. a two-place conceptual equivalence predicate, which is independent of the Lisp image so that two objects in different Lisp images can be understood to be equivalent under this predicate. See Section 3.2.4 (Literal Objects in Compiled Files).
 
-simple adj. 1. (of an array) being of type simple-array. 2. (of a character) having no implementation-defined attributes, or else having implementation-defined attributes each of which has the null value for that attribute.
+simple adj. 1. (指数组[array]) being of type simple-array. 2. (of a character) having no implementation-defined attributes, or else having implementation-defined attributes each of which has the null value for that attribute.
 
 simple array n. an array of type simple-array.
 
@@ -1293,7 +1293,7 @@ special variable n. Trad. a dynamic variable.
 
 specialize v.t. (a generic function) to define a method for the generic function, or in other words, to refine the behavior of the generic function by giving it a specific meaning for a particular set of classes or arguments.
 
-specialized adj. 1. (of a generic function) having methods which specialize the generic function. 2. (of an array) having an actual array element type that is a proper subtype of the type t; see Section 15.1.1 (Array Elements). ``(make-array 5 :element-type 'bit) makes an array of length five that is specialized for bits.''
+specialized adj. 1. (of a generic function) having methods which specialize the generic function. 2. (指数组[array]) having an actual array element type that is a proper subtype of the type t; see Section 15.1.1 (Array Elements). ``(make-array 5 :element-type 'bit) makes an array of length five that is specialized for bits.''
 
 specialized lambda list n. an extended lambda list used in forms that establish method definitions, such as defmethod. See Section 3.4.3 (Specialized Lambda Lists).
 
@@ -1480,11 +1480,11 @@ V
 
 valid array dimension n. a fixnum suitable for use as an array dimension. Such a fixnum must be greater than or equal to zero, and less than the value of array-dimension-limit. When multiple array dimensions are to be used together to specify a multi-dimensional array, there is also an implied constraint that the product of all of the dimensions be less than the value of array-total-size-limit.
 
-valid array index n. (of an array) a fixnum suitable for use as one of possibly several indices needed to name an element of the array according to a multi-dimensional Cartesian coordinate system. Such a fixnum must be greater than or equal to zero, and must be less than the corresponding dimension[1] of the array. (Unless otherwise explicitly specified, the phrase ``a list of valid array indices'' further implies that the length of the list must be the same as the rank of the array.) ``For a 2 by 3 array, valid array indices for the first dimension are 0 and 1, and valid array indices for the second dimension are 0, 1 and 2.''
+valid array index n. (指数组[array]) a fixnum suitable for use as one of possibly several indices needed to name an element of the array according to a multi-dimensional Cartesian coordinate system. Such a fixnum must be greater than or equal to zero, and must be less than the corresponding dimension[1] of the array. (Unless otherwise explicitly specified, the phrase ``a list of valid array indices'' further implies that the length of the list must be the same as the rank of the array.) ``For a 2 by 3 array, valid array indices for the first dimension are 0 and 1, and valid array indices for the second dimension are 0, 1 and 2.''
 
 valid array row-major index n. (of an array, which might have any number of dimensions[2]) a single fixnum suitable for use in naming any element of the array, by viewing the array's storage as a linear series of elements in row-major order. Such a fixnum must be greater than or equal to zero, and less than the array total size of the array.
 
-valid fill pointer n. (of an array) a fixnum suitable for use as a fill pointer for the array. Such a fixnum must be greater than or equal to zero, and less than or equal to the array total size of the array.
+valid fill pointer n. (指数组[array]) a fixnum suitable for use as a fill pointer for the array. Such a fixnum must be greater than or equal to zero, and less than or equal to the array total size of the array.
 
 valid logical pathname host n. a string that has been defined as the name of a logical host. See the function load-logical-pathname-translations.
 
