@@ -372,95 +372,95 @@ binary adj. 1. (指流[stream]) 元素类型[element type]为 integer 类型[typ
 **current readtable** n. (在一个动态环境[dynamic environment]中) 那个环境中作为 \*readtable* 的值的读取表, 并且影响着表达式[expressions[2]]被 Lisp 读取器[Lisp reader]解析为对象[object]的方式. 
 
 
-D
+### D
 
-data type n. Trad. a type.
+**data type** n. Trad. 一个类型[type].
 
-debug I/O n. the bidirectional stream that is the value of the variable *debug-io*.
+**debug I/O** n. 一个双向[bidirectional]流[stream], 它是变量[variable] \*debug-io* 的值[value].
 
-debugger n. a facility that allows the user to handle a condition interactively. For example, the debugger might permit interactive selection of a restart from among the active restarts, and it might perform additional implementation-defined services for the purposes of debugging.
+**debugger** n. 一个工具, 它允许用户[user]去交互式地处理一个状况[condition]. 例如, 这个调试器[debugger]可以允许从活跃的[active]的重启动[restart]中交互式地选择一个重启动[restart], 并且它可能执行额外的具体实现定义的[implementation-defined]用于调试的服务.
 
 **declaration** n. 一个全局声明[global declaration]或局部声明[local declaration].
 
-declaration identifier n. one of the symbols declaration, dynamic-extent, ftype, function, ignore, inline, notinline, optimize, special, or type; or a symbol which is the name of a type; or a symbol which has been declared to be a declaration identifier by using a declaration declaration.
+**declaration identifier** n. 符号[symbol] declaration, dynamic-extent, ftype, function, ignore, inline, notinline, optimize, special, 或 type 之一; 或者是一个类型[type]名字[name]的符号[symbol]; 或者是一个已经通过 declaration 声明[declaration]被声明为一个声明标识符[declaration identifier]的符号[symbol].
 
-declaration specifier n. an expression that can appear at top level of a declare expression or a declaim form, or as the argument to proclaim, and which has a car which is a declaration identifier, and which has a cdr that is data interpreted according to rules specific to the declaration identifier.
+**declaration specifier** n. 一个表达式[expression], 它可以出现在 declare 表达式或 declaim 表达式形式的顶层, 或作为给 proclaim 的参数, 并且它的 car 为一个声明标识符[declaration identifier], 而它的 cdr 是根据这个声明标识符[declaration identifier]特化的规则来解释的数据.
 
-declare v. to establish a declaration. See declare, declaim, or proclaim.
+**declare** v. 去建立[establish]一个声明[declaration]. 见 declare, declaim, 或 proclaim.
 
-decline v. (of a handler) to return normally without having handled the condition being signaled, permitting the signaling process to continue as if the handler had not been present.
+**decline** v. (指一个处理者[handler]) 在没有处理这个被发出的状况[condition]的情况下正常返回, 允许发送过程继续, 就好像处理者[handler]不存在一样.
 
-decoded time n. absolute time, represented as an ordered series of nine objects which, taken together, form a description of a point in calendar time, accurate to the nearest second (except that leap seconds are ignored). See Section 25.1.4.1 (Decoded Time).
+**decoded time** n. 绝对[absolute]时间[time], 表示为九个对象[object]的一个有序集, 合起来, 组成日期时间中一个点的描述, 精确到最近的秒 (除了闰秒[leap second]会被忽略). 见章节 25.1.4.1 (解码时间).
 
-default method n. a method having no parameter specializers other than the class t. Such a method is always an applicable method but might be shadowed[2] by a more specific method.
+**default method** n. 一个方法[method], 它没有除了类[class] t 以外的参数特化符[parameter specializer]. 这样一个方法[method]总是为一个可应用方法[applicable method], 但是可能被一个更具体的方法[method]所遮蔽[shadow[2]].
 
-defaulted initialization argument list n. a list of alternating initialization argument names and values in which unsupplied initialization arguments are defaulted, used in the protocol for initializing and reinitializing instances of classes.
+**defaulted initialization argument list** n. 初始化参数名称[name]和值[value]的交替列表[list], 其中未提供的初始化参数被缺省了, 用于初始化和重新初始化类[class]的实例[instance].
 
-define-method-combination arguments lambda list n. a lambda list used by the :arguments option to define-method-combination. See Section 3.4.10 (Define-method-combination Arguments Lambda Lists).
+**define-method-combination arguments lambda list** n. 一个被用于 define-method-combination 的 :argument 选项的 lambda 列表[lambda list]. 见章节 3.4.10 (Define-method-combination 参数 Lambda 列表).
 
-define-modify-macro lambda list n. a lambda list used by define-modify-macro. See Section 3.4.9 (Define-modify-macro Lambda Lists).
+**define-modify-macro lambda list** n. 一个被 define-modify-macro 使用的 lambda 列表[lambda list]. 见章节 3.4.9 (Define-modify-macro Lambda 列表).
 
-defined name n. 一个意义已经由 Common Lisp 定义了的符号.
+**defined name** n. 一个意义已经由 Common Lisp 定义了的符号.
 
-defining form n. a form that has the side-effect of establishing a definition. ``defun and defparameter are defining forms.''
+**defining form** n. 一个表达式形式[form], 它有着建立一个定义的副作用. "defun 和 defparameter 是定义表达式形式."
 
-defsetf lambda list n. a lambda list that is like an ordinary lambda list except that it does not permit &aux and that it permits use of &environment. See Section 3.4.7 (Defsetf Lambda Lists).
+**defsetf lambda list** n. 一个 lambda 列表[lambda list], 它就像是一个普通 lambda 列表[ordinary lambda list], 除了它不允许 &aux 而允许 &environment 的使用. 见章节 3.4.7 (Defsetf Lambda 列表).
 
-deftype lambda list n. a lambda list that is like a macro lambda list except that the default value for unsupplied optional parameters and keyword parameters is the symbol * (rather than nil). See Section 3.4.8 (Deftype Lambda Lists).
+**deftype lambda list** n. 一个 lambda 列表[lambda list], 它就像一个宏 lambda 列表[macro lambda list], 除了未提供的可选参数[optional parameter]和关键字参数[keyword parameter]的默认值是符号[symbol] * (而不是 nil). 见章节 3.4.8 (Deftype Lambda 列表).
 
-denormalized adj., ANSI, IEEE (of a float) conforming to the description of ``denormalized'' as described by IEEE Standard for Binary Floating-Point Arithmetic. For example, in an implementation where the minimum possible exponent was -7 but where 0.001 was a valid mantissa, the number 1.0e-10 might be representable as 0.001e-7 internally even if the normalized representation would call for it to be represented instead as 1.0e-10 or 0.1e-9. By their nature, denormalized floats generally have less precision than normalized floats.
+**denormalized** adj., ANSI, IEEE (指一个浮点数[float]) 符合 IEEE Standard for Binary Floating-Point Arithmetic 所描述的 "非规格化". 例如, 在一个最小可能的指数是 -7 但 0.001 是一个有效尾数的具体实现[implementation]中, 数字 1.0e-10 可能被内部表示为 0.001e-7, 即便标准化[normalized]表示需要它被表示为 1.0e-10 或 0.1e-9. 从本质上讲, 非规范化[denormalized]浮点数[float]的精度通常低于规范化[normalized]浮点数[float].
 
-derived type n. a type specifier which is defined in terms of an expansion into another type specifier. deftype defines derived types, and there may be other implementation-defined operators which do so as well.
+**derived type** n. 一种类型指定符[type specifier], 它是根据展开为另一个类型指定符[type specifier]来定义的. deftype 定义衍生类型[derived type], 可能还有其他具体实现定义的[implementation-defined]操作符[operator]也这样做.
 
-derived type specifier n. a type specifier for a derived type.
+**derived type specifier** n. 一个衍生类型[derived type]的类型指定符[type specifier].
 
-designator n. an object that denotes another object. In the dictionary entry for an operator if a parameter is described as a designator for a type, the description of the operator is written in a way that assumes that appropriate coercion to that type has already occurred; that is, that the parameter is already of the denoted type. For more detailed information, see Section 1.4.1.5 (Designators).
+**designator** n. 一个对象[object], 它表示另一个对象[object]. 在一个操作符[operator]的字典条目中, 如果一个形参被描述为一个类型[type]的标识符[designator], 那么所编写的该操作符[operator]的描述假设已经发生了对该类型[type]的适当强制转换; 也就是说, 那个形参[parameter]已经是表示的类型[type]了. 关于详细信息, 见章节 1.4.1.5 (标识符).
 
-destructive adj. (of an operator) capable of modifying some program-visible aspect of one or more objects that are either explicit arguments to the operator or that can be obtained directly or indirectly from the global environment by the operator.
+**destructive** adj. (指一个操作符[operator]) 能够修改一个或多个对象[object]的某些程序可见的方面, 这些对象[object]要么是操作符[operator]的显式参数[argument], 要么可以由操作符[operator]直接或间接地从全局环境[global environment]中获得.
 
-destructuring lambda list n. an extended lambda list used in destructuring-bind and nested within macro lambda lists. See Section 3.4.5 (Destructuring Lambda Lists).
+**destructuring lambda list** n. 一个扩展 lambda 列表[extended lambda list], 它被用于 destructuring-bind 以及内嵌在宏 lambda 列表[macro lambda list]中. 见章节 3.4.5 (解构 lambda 列表).
 
-different adj. not the same ``The strings "FOO" and "foo" are different under equal but not under equalp.''
+**different** adj. 不相同[same] "字符串 'FOO' 和 'foo' 在 equal 下是不同的但是在 equalp 下是相同的 (The strings 'FOO' and 'foo' are different under equal but not under equalp)."
 
-digit n. (in a radix) a character that is among the possible digits (0 to 9, A to Z, and a to z) and that is defined to have an associated numeric weight as a digit in that radix. See Section 13.1.4.6 (Digits in a Radix).
+**digit** n. (在一个基数[radix]下) 在可能的数字(0 到 9、a 到 Z 和 a 到 Z)之间的一种字符[character], 它被定义为具有一个相关的数值权重, 作为基数[radix]中的一个数字. 见章节 13.1.4.6 (一个给定基数的数字).
 
-dimension n. 1. a non-negative integer indicating the number of objects an array can hold along one axis. If the array is a vector with a fill pointer, the fill pointer is ignored. ``The second dimension of that array is 7.'' 2. an axis of an array. ``This array has six dimensions.''
+**dimension** n. 1. 一个表示一个数组[array]可以在一个坐标轴中持有的对象[object]数量的非负整数[integer]. 如果这个数组[array]是一个带有填充指针[fill pointer]的向量[vector], 这个填充指针[fill pointer]会被忽略. "那个数组的第二维度大小是 7 (The second dimension of that array is 7)." 2. 一个数组[array]的一个坐标轴. "这个数组有六个维度 (This array has six dimensions)."
 
-direct instance n. (of a class C) an object whose class is C itself, rather than some subclass of C. ``The function make-instance always returns a direct instance of the class which is (or is named by) its first argument.''
+**direct instance** n. (指一个类[class] C) 一个类[class]是 C 自身的对象[object], 而不是 C 的某个子类[subclass]. "函数 make-instance 总是返回它的第一个参数表示 (或者由它命名) 的类的直接实例 (The function make-instance always returns a direct instance of the class which is (or is named by) its first argument)."
 
-direct subclass n. (of a class C1) a class C2, such that C1 is a direct superclass of C2.
+**direct subclass** n. (指一个类[class] C1) 一个类[class] C2, 使得 C1 是 C2 的一个直接超类[direct superclass].
 
-direct superclass n. (of a class C1) a class C2 which was explicitly designated as a superclass of C1 in the definition of C1.
+**direct superclass** n. (指一个类[class] C1) 一个类[class] C2, 它在 C1 的定义中被显式的标识为 C1 的一个超类[superclass].
 
-disestablish v.t. to withdraw the establishment of an object, a binding, an exit point, a tag, a handler, a restart, or an environment.
+**disestablish** v.t. 去撤销一个对象[object], 一个绑定[binding], 一个退出点[exit point], 一个标签[tag], 一个处理者[handler], 一个重启动[restart], 或者一个环境[environment]的建立.
 
-disjoint n. (of types) having no elements in common.
+**disjoint** n. (指类型[type]) 没有公共的元素[element].
 
-dispatching macro character n. a macro character that has an associated table that specifies the function to be called for each character that is seen following the dispatching macro character. See the function make-dispatch-macro-character.
+**dispatching macro character** n. 一个宏字符[macro character], 它有一个关联的表指定了跟在这个分派宏字符[dispatching macro character]后的每个字符调用的函数[function]. 见函数[function] make-dispatch-macro-character.
 
-displaced array n. an array which has no storage of its own, but which is instead indirected to the storage of another array, called its target, at a specified offset, in such a way that any attempt to access the displaced array implicitly references the target array.
+**displaced array** n. 一个数组[array], 它自身没有存储, 而是以指定的偏移位定向到另一个数组[array]的存储, 称为它的目标[target], 以这种方式, 任何访问存储转移数组[displaced array]的尝试都会隐式引用目标数组[target array].
 
-distinct adj. not identical.
+**distinct** adj. 不相同[identical].
 
-documentation string n. (in a defining form) A literal string which because of the context in which it appears (rather than because of some intrinsically observable aspect of the string) is taken as documentation. In some cases, the documentation string is saved in such a way that it can later be obtained by supplying either an object, or by supplying a name and a ``kind'' to the function documentation. ``The body of code in a defmacro form can be preceded by a documentation string of kind function.''
+**documentation string** n. (在一个定义表达式形式[form]) 一个字面化[literal]字符串[string]由于它出现的上下文 (而不是由于该字符串[string]的某些本质上可观察的方面) 而被视为文档. 在某些情况下, 文档字符串[documentation string]以这样一种方式保存, 以便以后可以通过向函数[function] documentation 提供对象[object]或名称[name]和"种类"来获得它. "在一个 defmacro 表达式形式的代码主体前可以有一个 function 种类的文档字符串 (The body of code in a defmacro form can be preceded by a documentation string of kind function)."
 
-dot n. the standard character that is variously called ``full stop,'' ``period,'' or ``dot'' (.). See Figure 2-5.
+**dot** n. 标准字符[standard character], 可以被称为 "句点(full stop)", "句号(period)", 或 "点(dot)" (.). 见 Figure 2-5.
 
-dotted list n. a list which has a terminating atom that is not nil. (An atom by itself is not a dotted list, however.)
+**dotted list** n. 一个终止原子[atom]不是 nil 的列表[list]. (然而, 一个原子[atom]自身不是一个点列表[dotted list].)
 
-dotted pair n. 1. a cons whose cdr is a non-list. 2. any cons, used to emphasize the use of the cons as a symmetric data pair.
+**dotted pair** n. 1. 一个 cdr 为非列表[non-list]的 cons. 2. 任何 cons, 用于强调一个 cons 作为对称数据对的使用.
 
-double float n. an object of type double-float.
+**double float** n. 一个 double-float 类型[type]的对象[object].
 
-double-quote n. the standard character that is variously called ``quotation mark'' or ``double quote'' ("). See Figure 2-5.
+**double-quote** n. 标准字符[standard character], 可称为 "引号(quotation mark)" 或 "双引号(double quote)" ("). 见 Figure 2-5.
 
-dynamic binding n. a binding in a dynamic environment.
+**dynamic binding** n. 在一个动态环境[dynamic environment]中的绑定[binding].
 
-dynamic environment n. that part of an environment that contains bindings with dynamic extent. A dynamic environment contains, among other things: exit points established by unwind-protect, and bindings of dynamic variables, exit points established by catch, condition handlers, and restarts.
+**dynamic environment** n. 一个环境[environment]的这个部分包含了带有动态范围[dynamic extent]的绑定[binding]. 一个动态环境[dynamic environment]包括: 由 unwind-protect 建立的退出点[exit point], 以及动态变量[dynamic variable]的绑定[binding], 由 catch 建立的退出点[exit point], 状况处理者[condition handler], 以及重启动[restart].
 
-dynamic extent n. an extent whose duration is bounded by points of establishment and disestablishment within the execution of a particular form. See indefinite extent. ``Dynamic variable bindings have dynamic extent.''
+**dynamic extent** n. 一种范围[extent], 其持续时间受某一特定表达式形式[form]执行过程中的建立点和废除点的限制. 见不确定范围[indefinite extent]. "动态变量绑定有着动态范围 (Dynamic variable bindings have dynamic extent)".
 
-dynamic scope n. indefinite scope along with dynamic extent.
+**dynamic scope** n. 带有动态范围[dynamic extent]的不确定作用域[indefinite scope].
 
 **dynamic variable** n. 一个变量[variable], 它的绑定[binding]是在动态环境[dynamic environment]中的. 见 special. 
 
