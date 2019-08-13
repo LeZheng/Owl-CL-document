@@ -465,100 +465,100 @@ binary adj. 1. (指流[stream]) 元素类型[element type]为 integer 类型[typ
 **dynamic variable** n. 一个变量[variable], 它的绑定[binding]是在动态环境[dynamic environment]中的. 见 special. 
 
 
-E
+### E
 
-echo stream n. a stream of type echo-stream.
+**echo stream** n. 一个 echo-stream 类型[type]的流[stream].
 
-effective method n. the combination of applicable methods that are executed when a generic function is invoked with a particular sequence of arguments.
+**effective method** n. 可应用方法[applicable method]的组合, 它在使用一个特定参数[argument]序列调用一个广义函数[generic function]时被执行.
 
-element n. 1. (of a list) an object that is the car of one of the conses that comprise the list. 2. (指数组[array]) an object that is stored in the array. 3. (of a sequence) an object that is an element of the list or array that is the sequence. 4. (of a type) an object that is a member of the set of objects designated by the type. 5. (of an input stream) a character or number (as appropriate to the element type of the stream) that is among the ordered series of objects that can be read from the stream (using read-char or read-byte, as appropriate to the stream). 6. (of an output stream) a character or number (as appropriate to the element type of the stream) that is among the ordered series of objects that has been or will be written to the stream (using write-char or write-byte, as appropriate to the stream). 7. (of a class) a generalized instance of the class.
+**element** n. 1. (指列表[list]) 一个对象[object], 它是组成这个列表[list]的其中一个 cons 的 car. 2. (指数组[array]) 一个存储在数组[array]中的一个对象[object]. 3. (指序列[sequence]) 一个对象[object], 它是这个序列[sequence]所表示的列表[list]或数组[array]的一个元素[element]. 4. (指类型[type]) 一个对象[object], 它是这个类型[type]所表示的对象集中的一个成员[member]. 5. (指一个输入[input]流[stream]) 一个字符[character]或数字[number] (适用于流[stream]的元素类型[element type]) 它是可从流[stream]中读取的有序对象[object]序列中的一个 (使用 read-char 或 read-byte, 适用于该流[stream]). 6. (指一个输出[output]流[stream]) 一个字符[character]或数字[number] (适用于流[stream]的元素类型[element type]) 它是已经被写入到该流[stream]或者会被写入到该流[stream]的有序对象[object]序列中的一个 (使用 write-char 或 write-byte, 适用于该流[stream]). 7. (指类[class]) 该类[class]的一个广义实例[generalized instance].
 
-element type n. 1. (指数组[array]) the array element type of the array. 2. (of a stream) the stream element type of the stream.
+**element type** n. 1. (指数组[array]) 数组[array]的数组元素类型[array element type]. 2. (指一个流[stream]) 流[steam]的流元素类型[stream element type].
 
-em n. Trad. a context-dependent unit of measure commonly used in typesetting, equal to the displayed width of of a letter ``M'' in the current font. (The letter ``M'' is traditionally chosen because it is typically represented by the widest glyph in the font, and other characters' widths are typically fractions of an em. In implementations providing non-Roman characters with wider characters than ``M,'' it is permissible for another character to be the implementation-defined reference character for this measure, and for ``M'' to be only a fraction of an em wide.) In a fixed width font, a line with n characters is n ems wide; in a variable width font, n ems is the expected upper bound on the width of such a line.
+**em** n. Trad. 一种与上下文相关的度量单位, 通常用于排版, 等于当前字体中字母"M"的显示宽度. (传统上选择字母"M"是因为它通常由字体中最宽的字形[glyph]表示, 而其他字符的宽度通常是 em 的一部分. 在提供比"M"字符更宽的非罗马字符的实现中, 允许另一个字符作为该度量的具体实现定义的[implementation-defined]引用字符, 而"M"只是 em 宽度的一小部分.) 在一个固定宽度字体中, 一个带有 n 个字符的行是 n 个 em 的宽度; 在一个可变宽度字体中, n 个 em 是这样一行的宽度的期望上限.
 
 **empty list** n. 不包含元素[element]的列表[list]. 见 ().
 
-empty type n. the type that contains no elements, and that is a subtype of all types (including itself). See nil.
+**empty type** n. 这个类型[type]不包含元素[element], 并且它是所有类型[type]的子类型[subtype] (包括它自身). 见 nil.
 
-end of file n. 1. the point in an input stream beyond which there is no further data. Whether or not there is such a point on an interactive stream is implementation-defined. 2. a situation that occurs upon an attempt to obtain data from an input stream that is at the end of file[1].
+**end of file** n. 1. 一个输入[input]流[stream]中一个一旦越过就没有进一步数据的点. 在一个交互式流[interactive stream]中是否有这样的点是由具体实现定义的[implementation-defined]. 2. 试图从位于文件末尾[end of file[1]]的输入[input]流[stream]中获取数据时发生的一种情况[situation].
 
-environment n. 1. a set of bindings. See Section 3.1.1 (Introduction to Environments). 2. an environment object. ``macroexpand takes an optional environment argument.''
+**environment** n. 1. 一个绑定[binding]集合. 见章节 3.1.1 (环境的介绍). 2. 一个环境对象[environment object]. "macroexpand 接受一个可选的环境参数 (macroexpand takes an optional environment argument)".
 
-environment object n. an object representing a set of lexical bindings, used in the processing of a form to provide meanings for names within that form. ``macroexpand takes an optional environment argument.'' (The object nil when used as an environment object denotes the null lexical environment; the values of environment parameters to macro functions are objects of implementation-dependent nature which represent the environment[1] in which the corresponding macro form is to be expanded.) See Section 3.1.1.4 (Environment Objects).
+**environment object** n. 表示词法绑定[lexical binding]集合的一个对象[object], 用于表达式形式[form]的处理中为该表达式形式[form]中的名称[name]提供意义. "macroexpand 接受一个可选环境参数 (macroexpand takes an optional environment argument)". (对象[object] nil 在用作一个环境对象[environment object]时表示空词法环境[null lexical environment]; 传递给宏函数[macro function]的环境参数[environment parameter]的值[value]是带有依赖于具体实现的[implementation-dependent]性质的对象[object], 它表示对应宏表达式形式[macro form]被展开时的环境[environment[1]].) 见章节 3.1.1.4 (环境对象).
 
-environment parameter n. A parameter in a defining form f for which there is no corresponding argument; instead, this parameter receives as its value an environment object which corresponds to the lexical environment in which the defining form f appeared.
+**environment parameter** n. 定义表达式形式[defining form] f 中的一个形参[parameter], 它没有对应的实参[argument]; 而是, 该形参[parameter]接受一个环境[environment]对象[object]作为其值, 对应定义表达式形式[defining form] f 出现所在的词法环境[lexical environment].
 
-error n. 1. (only in the phrase ``is an error'') a situation in which the semantics of a program are not specified, and in which the consequences are undefined. 2. a condition which represents an error situation. See Section 1.4.2 (Error Terminology). 3. an object of type error.
+**error** n. 1. (尽在措辞 "是一个错误 (is an error)" 中) 未指定程序语义, 且结果未定义的一种情况[situation]. 2. 表示一个错误[error]情况[situation]的一个状况[condition]. 见章节 1.4.2 (错误术语). 3. 一个 error 类型[type]的对象[object].
 
-error output n. the output stream which is the value of the dynamic variable *error-output*.
+**error output** n. 动态变量[dynamic variable] \*error-output* 的值[value]所指代的输出[output]流[stream].
 
-escape n., adj. 1. n. a single escape or a multiple escape. 2. adj. single escape or multiple escape.
+**escape** n., adj. 1. n. 一个单转义字符[single escape]或多转义字符[multiple escape]. 2. adj. 单转义[single escape]或多转义[multiple escape].
 
-establish v.t. to build or bring into being a binding, a declaration, an exit point, a tag, a handler, a restart, or an environment. ``let establishes lexical bindings.''
+**establish** v.t. 去建立或形成一个绑定[binding], 一个声明[declaration], 一个退出点[exit point], 一个标签[tag], 一个处理者[handler], 一个重启动[restart], 或者一个环境[environment]. "let 建立词法绑定 (let establishes lexical bindings)".
 
-evaluate v.t. (a form or an implicit progn) to execute the code represented by the form (or the series of forms making up the implicit progn) by applying the rules of evaluation, returning zero or more values.
+**evaluate** v.t. (一个表达式形式[form]或一个隐式 progn [implicit progn]) 通过应用求值[evaluation]规则来执行这个表达式形式[form] (或者由多个表达式形式[form]组成的隐式 progn [implicit progn]) 所表示的代码[code], 返回零个或多个值.
 
-evaluation n. a model whereby forms are executed, returning zero or more values. Such execution might be implemented directly in one step by an interpreter or in two steps by first compiling the form and then executing the compiled code; this choice is dependent both on context and the nature of the implementation, but in any case is not in general detectable by any program. The evaluation model is designed in such a way that a conforming implementation might legitimately have only a compiler and no interpreter, or vice versa. See Section 3.1.2 (The Evaluation Model).
+**evaluation** n. 执行表达式形式[form]的模型, 返回零个或多个值. 这样的执行过程可能被解释器直接实现为一步或者通过先编译这个表达式形式[form]然后执行编译后的代码[code]来实现为两步; 这个选择依赖于上下文和具体实现[implementation]的性质, 但在任何情况下都不会被任何程序检测到. 求值模型的设计方式是, 符合规范的实现[conforming implementation]可能合法地只有一个编译器而没有解释器, 反之亦然. 见章节 3.1.2 (求值模型).
 
-evaluation environment n. a run-time environment in which macro expanders and code specified by eval-when to be evaluated are evaluated. All evaluations initiated by the compiler take place in the evaluation environment.
+**evaluation environment** n. 一个运行时环境[run-time environment], 宏展开器和 eval-when 指定要被求值的代码在这里被求值. 编译器[compiler]发起的求值都发生在求值环境[evaluation environment]中.
 
-execute v.t. Trad. (code) to perform the imperative actions represented by the code.
+**execute** v.t. Trad. (代码[code]) 去执行由这个代码[code]表示的命令操作.
 
-execution time n. the duration of time that compiled code is being executed.
+**execution time** n. 已编译代码[compiled code]正在被执行的时期.
 
-exhaustive partition n. (of a type) a set of pairwise disjoint types that form an exhaustive union.
+**exhaustive partition** n. (指一个类型[type]) 一组成对[pairwise]不相交[disjoint]的类型[type]，构成一个详尽的并集[exhaustive union].
 
-exhaustive union n. (of a type) a set of subtypes of the type, whose union contains all elements of that type.
+**exhaustive union** n. (指一个类型[type]) 这个类型[type]的子类型[subtype]的集合, 它们的并集包含了这个类型[type]的所有元素[element].
 
-exit point n. a point in a control form from which (e.g., block), through which (e.g., unwind-protect), or to which (e.g., tagbody) control and possibly values can be transferred both actively by using another control form and passively through the normal control and data flow of evaluation. ``catch and block establish bindings for exit points to which throw and return-from, respectively, can transfer control and values; tagbody establishes a binding for an exit point with lexical extent to which go can transfer control; and unwind-protect establishes an exit point through which control might be transferred by operators such as throw, return-from, and go.''
+**exit point** n. 控制表达式形式[control form]中的一个点, 从该点 (例如, block), 通过该点(例如, unwind-protect), 或到该点(例如, tagbody), 可以通过使用另一种控制表达式形式[control form]主动地转移控制和可能的值[value], 也可以通过求值[evaluation]的正常控制和数据流被动地传递值. "catch 和 block 为退出点建立绑定, throw 和 return-from 分别可以转移控制和值到该退出点; tagbody 建立为一个退出点建立一个带有词法范围的绑定, go 可以转移控制到这个绑定; 以及 unwind-protect 建立一个退出点, 控制可能被诸如 throw, return-from, 和 go 这样的操作符转移过它 (catch and block establish bindings for exit points to which throw and return-from, respectively, can transfer control and values; tagbody establishes a binding for an exit point with lexical extent to which go can transfer control; and unwind-protect establishes an exit point through which control might be transferred by operators such as throw, return-from, and go)".
 
-explicit return n. the act of transferring control (and possibly values) to a block by using return-from (or return).
+**explicit return** n. 通过使用 return-from (或 return) 将控制 (以及可能的值[value]) 转移到一个语句块[block]的操作.
 
-explicit use n. (of a variable V in a form F) a reference to V that is directly apparent in the normal semantics of F; i.e., that does not expose any undocumented details of the macro expansion of the form itself. References to V exposed by expanding subforms of F are, however, considered to be explicit uses of V.
+**explicit use** n. (指表达式形式[form] F 中的一个变量[variable] V) 一个对 V 的引用直接出现在 F 的正常语义中; 换句话说, 这不会暴露表达式形式[form]本身的宏展开[macro expansion]的任何未记录的细节. 然而, 由 F 的展开子表达式形式[subform]暴露的对 V 的引用被认为是对 V 的显式使用[explicit use].
 
-exponent marker n. a character that is used in the textual notation for a float to separate the mantissa from the exponent. The characters defined as exponent markers in the standard readtable are shown in the next figure. For more information, see Section 2.1 (Character Syntax). ``The exponent marker `d' in `3.0d7' indicates that this number is to be represented as a double float.''
+**exponent marker** n. 一个字符, 被用于一个浮点数[float]的文本表示, 来分隔尾数和指数. 下一段中展示了标准读取表[standard readtable]中被定义为指数标记符[exponent marker]的那些字符. 关于更多信息, 见章节 2.1 (字符语法). "在 '3.0d7' 中的指数标记符 'd' 表示这个数字被表示为一个双精度浮点数 (The exponent marker 'd' in '3.0d7' indicates that this number is to be represented as a double float)".
 
-Marker  Meaning                                  
-D or d  double-float                             
-E or e  float (see *read-default-float-format*)  
-F or f  single-float                             
-L or l  long-float                               
-S or s  short-float                              
+    标记     意义                                  
+    D 或 d  double-float                             
+    E 或 e  float (见 *read-default-float-format*)  
+    F 或 f  single-float                             
+    L 或 l  long-float                               
+    S 或 s  short-float                              
 
-Figure 26-1. Exponent Markers
+    Figure 26-1. Exponent Markers
 
-export v.t. (a symbol in a package) to add the symbol to the list of external symbols of the package.
+**export** v.t. (一个包[package]中的一个符号[symbol]) 去把这个符号[symbol]添加到这个包[package]的外部符号[external symbol]列表中.
 
-exported adj. (of a symbol in a package) being an external symbol of the package.
+**exported** adj. (指一个包[package]中的一个符号[symbol]) 是这个包[package]的外部符号[external symbol].
 
-expressed adjustability n. (指数组[array]) a generalized boolean that is conceptually (but not necessarily actually) associated with the array, representing whether the array is expressly adjustable. See also actual adjustability.
+**expressed adjustability** n. (指数组[array]) 概念上 (但实际上不一定) 与这个数组[array]相关联的一个广义 boolean [generalized boolean], 表示这个数组[array]是否为明确指定可调整的[expressly adjustable][expressly adjustable]. 参见实际可调整性[actual adjustability].
 
-expressed array element type n. (指数组[array]) the type which is the array element type implied by a type declaration for the array, or which is the requested array element type at its time of creation, prior to any selection of an upgraded array element type. (Common Lisp does not provide a way of detecting this type directly at run time, but an implementation is permitted to make assumptions about the array's contents and the operations which may be performed on the array when this type is noted during code analysis, even if those assumptions would not be valid in general for the upgraded array element type of the expressed array element type.)
+**expressed array element type** n. (指数组[array]) 这个类型[type]是这个数组[array]的类型声明[type declaration]所指示的数组元素类型[array element type], 或是在其创建时所请求的数组元素类型[array element type], 先于提升后的数组元素类型[upgraded array element type]的选择. (Common Lisp 没有提供一种在运行时直接检测这个类型的方式, 但是允许一个具体实现[implementation]在代码分析期间注意到该类型[type]时去对这个数组[array]的内容和可能在这个数组[array]上执行的操作做出假设, 即使这些假设通常不适用于明确指定数组元素类型[expressed array element type]的提升后的数组元素类型[upgraded array element type].)
 
-expressed complex part type n. (指复数[complex]) the type which is implied as the complex part type by a type declaration for the complex, or which is the requested complex part type at its time of creation, prior to any selection of an upgraded complex part type. (Common Lisp does not provide a way of detecting this type directly at run time, but an implementation is permitted to make assumptions about the operations which may be performed on the complex when this type is noted during code analysis, even if those assumptions would not be valid in general for the upgraded complex part type of the expressed complex part type.)
+**expressed complex part type** n. (指复数[complex]) 这个类型[type]是这个复数[complex]的类型声明[type declaration]所指示的复数部分类型[complex part type], 或是在其创建时所请求的复数部分类型[complex part type], 先于提升后的复数部分类型[upgraded complex part type]的选择. (Common Lisp 没有提供一种在运行时直接检测这个类型的方式, 但是允许一个具体实现[implementation]在代码分析期间注意到该类型[type]时去对这个数组[array]的内容和可能在这个数组[array]上执行的操作做出假设, 即使这些假设通常不适用于明确指定复数部分类型[expressed complex part type]的提升后的复数部分类型[upgraded complex part type].)
 
 **expression** n. 1. 一个对象[object], 经常用于强调这个对象[object]的使用以一种专门的格式来编码或表示信息, 例如程序文本. "在一个 let 表达式形式中的第二个表达式是一个绑定列表(The second expression in a let form is a list of bindings)". 2. 用于表示一个源文件中的一个对象[object]的文本记号. "表达式 'sample 等价于 (quote sample)".
 
-expressly adjustable adj. (指数组[array]) being actually adjustable by virtue of an explicit request for this characteristic having been made at the time of its creation. All arrays that are expressly adjustable are actually adjustable, but not necessarily vice versa.
+**expressly adjustable** adj. (指数组[array]) 由于在其创建时对该特性的显式请求而实际可调整的[actually adjustable]. 所有明确指定可调整的[expressly adjustable]数组[array]都是实际可调整的[actually adjustable], 但反过来未必如此.
 
-extended character n. a character of type extended-char: a character that is not a base character.
+**extended character** n. 一个 extended-char 类型[type]的字符[character]: 一个非基本字符[base character]的字符.
 
-extended function designator n. a designator for a function; that is, an object that denotes a function and that is one of: a function name (denoting the function it names in the global environment), or a function (denoting itself). The consequences are undefined if a function name is used as an extended function designator but it does not have a global definition as a function, or if it is a symbol that has a global definition as a macro or a special form. See also function designator.
+**extended function designator** n. 一个函数[function]的标识符[designator]; 也就是说, 一个表示一个函数[function]的对象[object], 它是以下之一: 一个函数名[function name] (表示在全局环境[global environment]中它命名的函数[function]), 或者一个函数[function] (表示它自身). 如果一个函数名[function name]被用作一个扩展函数标识符[extended function designator]但是它没有作为函数[function]的全局定义, 或者它是一个有着作为宏[macro]或特殊表达式形式[special form]作为全局定义的符号[symbol], 那么后果是未定义的.
 
-extended lambda list n. a list resembling an ordinary lambda list in form and purpose, but offering additional syntax or functionality not available in an ordinary lambda list. ``defmacro uses extended lambda lists.''
+**extended lambda list** n. 一个列表, 在形式和目的上类似一个普通 lambda 列表[ordinary lambda list], 但是提供额外的在普通 lambda 列表[ordinary lambda list]中不可用的语法或功能. "defmacro 使用扩展 lambda 列表 (defmacro uses extended lambda lists)".
 
-extension n. a facility in an implementation of Common Lisp that is not specified by this standard.
+**extension** n. 在一个 Common Lisp 的具体实现[implementatioin]的一个没有被这个标准所指定的工具.
 
-extent n. the interval of time during which a reference to an object, a binding, an exit point, a tag, a handler, a restart, or an environment is defined.
+**extent** n. 定义一个对一个对象, 一个绑定[binding], 一个退出点[exit point], 一个标签[tag], 一个处理者[handler], 一个重启动[restart], 或者一个环境[environment]的引用的时间间隔.
 
-external file format n. an object of implementation-dependent nature which determines one of possibly several implementation-dependent ways in which characters are encoded externally in a character file.
+**external file format** n. 一个具有依赖于具体实现[implementation-dependent]的性质的对象[object], 它确定字符[character]在字符[character]文件[file]中外部编码的可能的几种依赖于具体实现的[implementation-dependent]方式中的一个.
 
-external file format designator n. a designator for an external file format; that is, an object that denotes an external file format and that is one of: the symbol :default (denoting an implementation-dependent default external file format that can accomodate at least the base characters), some other object defined by the implementation to be an external file format designator (denoting an implementation-defined external file format), or some other object defined by the implementation to be an external file format (denoting itself).
+**external file format designator** n. 一个外部文件格式[external file format]的标识符[designator]; 也就是说, 一个表示外部文件格式[external file format]的对象[object], 它是以下之一: 符号[symbol] :default (表示一个依赖于具体实现[implementation-dependent]的默认外部文件格式[external file format], 它至少可以容纳基本字符[base character]), 某个被具体实现[implementation]定义为一个外部文件格式标识符[external file format designator]的其他对象[object] (表示一个具体实现定义的[implementation-defined]外部文件格式[external file format]), 或者某个由具体实现定义的外部文件格式[external file format] (表示它自身).
 
-external symbol n. (of a package) a symbol that is part of the `external interface' to the package and that are inherited[3] by any other package that uses the package. When using the Lisp reader, if a package prefix is used, the name of an external symbol is separated from the package name by a single package marker while the name of an internal symbol is separated from the package name by a double package marker; see Section 2.3.4 (Symbols as Tokens).
+**external symbol** n. (指包[package]) 一个符号[symbol], 它是这个包[package]的 '外部接口(external interface)' 的一部分, 并且被任何其他使用[use]这个包[package]的包[package]所继承[inherited[3]]. 在使用 Lisp 读取器[Lisp reader]时, 如果使用了一个包前缀[package prefix], 则外部符号[external symbol]的名称[name]与包[package]名称[name]之间用单个包标记[package marker]分隔, 而内部符号[internal symbol]的名[name]称与包[package]名称[name]之间用双包标记[package marker]分隔; 见章节 2.3.4 (符号标记).
 
-externalizable object n. an object that can be used as a literal object in code to be processed by the file compiler. 
+**externalizable object** n. 一个对象[object], 它在要被文件编译器[file compiler]处理的代码[code]中用作一个字面化[literal]对象[object]. 
 
 
 F
@@ -1526,8 +1526,8 @@ write v.t. 1. (a binding or slot or component) to change the value of the bindin
 writer n. a function that writes[1] a variable or slot. 
 
 
-Y
+### Y
 
-yield v.t. (values) to produce the values as the result of evaluation. ``The form (+ 2 3) yields 5.'' 
+**yield** v.t. (值[value]) 产生值[value]作为求值[evaluation]的结果. "表达式形式 (+ 2 3) 产生 5 (The form (+ 2 3) yields 5)".
 
 
