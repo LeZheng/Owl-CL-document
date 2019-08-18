@@ -561,83 +561,83 @@ binary adj. 1. (指流[stream]) 元素类型[element type]为 integer 类型[typ
 **externalizable object** n. 一个对象[object], 它在要被文件编译器[file compiler]处理的代码[code]中用作一个字面化[literal]对象[object]. 
 
 
-F
+### F
 
-false n. the symbol nil, used to represent the failure of a predicate test.
+**false** n. 符号[symbol] nil, 被用于表示一个断言[predicate]检测的失败.
 
-fbound ['ef,band] adj. (of a function name) bound in the function namespace. (The names of macros and special operators are fbound, but the nature and type of the object which is their value is implementation-dependent. Further, defining a setf expander F does not cause the setf function (setf F) to become defined; as such, if there is a such a definition of a setf expander F, the function (setf F) can be fbound if and only if, by design or coincidence, a function binding for (setf F) has been independently established.) See the functions fboundp and symbol-function.
+**fbound** ['ef,band] adj. (指一个函数名[function name]) 被绑定[bound]在函数[function]命名空间[namespace]. (宏[macro]和特殊操作符[special operator]的名称是 fbound 的, 但是它们的值[value]对象[object]的类型[type]和性质是依赖于具体实现的[implementation-dependent]. 更进一步, 定义一个 setf 展开器[setf expander] F 不会导致 setf 函数[setf function] (setf F) 变为已定义的; 同样的, 如果这里这样一个 setf 展开器[setf expander]的定义, 那么当且仅当一个 (setf F) 的函数绑定被独立建立时, 不管是故意的或是巧合, 函数[function] (setf F) 可以是 fbound 的.) 见函数[function] fboundp 和 symbol-function.
 
-feature n. 1. an aspect or attribute of Common Lisp, of the implementation, or of the environment. 2. a symbol that names a feature[1]. See Section 24.1.2 (Features). ``The :ansi-cl feature is present in all conforming implementations.''
+**feature** n. 1. Common Lisp, 具体实现[implementation], 或环境[environment]的一个方面或属性. 2.命名一个特性[feature[1]]的一个符号[symbol]. 见章节 24.1.2 (特性). ":ansi-cl 特性出现在所有符合规范的实现中 (The :ansi-cl feature is present in all conforming implementations)".
 
-feature expression n. A boolean combination of features used by the #+ and #- reader macros in order to direct conditional reading of expressions by the Lisp reader. See Section 24.1.2.1 (Feature Expressions).
+**feature expression** n. #+ 和 #- 读取器宏[reader macro]使用的特性的一种 boolean 组合, 用于直到 Lisp 读取器[Lisp reader]条件读取表达式[expression]. 见章节 24.1.2.1 (特性表达式).
 
-features list n. the list that is the value of *features*.
+**features list** n. \*features* 的值[value]所表示的列表[list].
 
-file n. a named entry in a file system, having an implementation-defined nature.
+**file** n. 在一个文件系统[file system]中的一个已命名的条目, 有着具体实现定义的[implementation-defined]性质.
 
-file compiler n. any compiler which compiles source code contained in a file, producing a compiled file as output. The compile-file function is the only interface to such a compiler provided by Common Lisp, but there might be other, implementation-defined mechanisms for invoking the file compiler.
+**file compiler** n. 编译[compile]文件[file]中包含的源代码[source code], 生成已编译文件[compiled file]作为输出的任何编译器[compiler]. 这个 compile-file 函数是 Common Lisp 提供的这样一个编译器[compiler]的仅有的接口, 但是这里可能有其他具体实现定义的[implementation-defined]机制来调用这个文件编译器[file compiler].
 
-file position n. (in a stream) a non-negative integer that represents a position in the stream. Not all streams are able to represent the notion of file position; in the description of any operator which manipulates file positions, the behavior for streams that don't have this notion must be explicitly stated. For binary streams, the file position represents the number of preceding bytes in the stream. For character streams, the constraint is more relaxed: file positions must increase monotonically, the amount of the increase between file positions corresponding to any two successive characters in the stream is implementation-dependent.
+**file position** n. (在一个流[stream]中) 表示这个流[stream]中的位置的非负整数[integer]. 并不是所有的流[stream]都能够表示文件位置[file position]的概念; 在任何操纵文件位置[file position]的操作符的描述中, 没有此概念的流[stream]的行为必须显式声明. 对于二进制[binary]流[stream], 文件位置[file position]表示流[stream]中前面的字节[byte]数. 对于字符[character]流[stream], 约束更加宽松: 文件位置[file position]必须单调递增, 与流[stream]中任意两个连续字符对应的文件位置[file position]之间的增量依赖于具体实现[implementation-dependent].
 
-file position designator n. (in a stream) a designator for a file position in that stream; that is, the symbol :start (denoting 0, the first file position in that stream), the symbol :end (denoting the last file position in that stream; i.e., the position following the last element of the stream), or a file position (denoting itself).
+**file position designator** n. (在一个流[stream]中) 在这个流[stream]中一个文件位置[file position]的标识符[designator]; 也就是说, 符号[symbol] :start (表示 0, 在这个流[stream]中的第一个文件位置[file position]), 符号[symbol] :end (在这个流[stream]中的最后一个文件位置[file position]; 也就是说, 这个流[stream]中最后一个元素[element]后面的位置), 或者一个文件位置[file position] (表示它自身).
 
-file stream n. an object of type file-stream.
+**file stream** n. 一个 file-stream 类型[type]的对象[object].
 
-file system n. a facility which permits aggregations of data to be stored in named files on some medium that is external to the Lisp image and that therefore persists from session to session.
+**file system** n. 一种工具, 它允许将数据聚合存储在 Lisp 镜像[Lisp image]外部的某些介质上的命名文件[file]中, 从而在不同的会话[session]之间持久保存.
 
-filename n. a handle, not necessarily ever directly represented as an object, that can be used to refer to a file in a file system. Pathnames and namestrings are two kinds of objects that substitute for filenames in Common Lisp.
+**filename** n. 一个句柄, 不一定直接表示为对象[object], 它可以被用于引用一个文件系统[file system]中的一个文件[file]. 路径名[pathname]和名称字符串[namestring]是 Common Lisp 中两种可以替代文件名[filename]的对象[object].
 
-fill pointer n. (of a vector) an integer associated with a vector that represents the index above which no elements are active. (A fill pointer is a non-negative integer no larger than the total number of elements in the vector. Not all vectors have fill pointers.)
+**fill pointer** n. (指一个向量[vector]) 和一个向量[vector]关联的一个整数[integer], 它表示上面没有有效[active]元素[element]的索引. (一个填充指针[fill pointer]是一个不大于这个向量[vector]中元素[element]数量的非负整数[integer]. 不是所有向量[vector]都有填充指针[fill pointer].)
 
-finite adj. (of a type) having a finite number of elements. ``The type specifier (integer 0 5) denotes a finite type, but the type specifiers integer and (integer 0) do not.''
+**finite** adj. (指一个类型[type]) 有着有限数量的元素[element]. "类型指定符 (integer 0 5) 表示一个有限类型, 但类型指定符 integer 和 (integer 0) 不是 (The type specifier (integer 0 5) denotes a finite type, but the type specifiers integer and (integer 0) do not)".
 
-fixnum n. an integer of type fixnum.
+**fixnum** n. 一个 fixnum 类型[type]的整数[integer].
 
-float n. an object of type float.
+**float** n. 一个 float 类型[type]的对象[object].
 
-for-value adj. (of a reference to a binding) being a reference that reads[1] the value of the binding.
+**for-value** adj. (指对一个绑定[binding]的引用[reference]) 作为读取[read[2]]绑定[binding]值[value]的一个引用[reference].
 
-form n. 1. any object meant to be evaluated. 2. a symbol, a compound form, or a self-evaluating object. 3. (for an operator, as in ``<<operator>> form'') a compound form having that operator as its first element. ``A quote form is a constant form.''
+**form** n. 1. 任何要被求值的对象[object]. 2. 一个符号[symbol], 一个复合表达式形式[compound form], 或者一个子求值对象[self-evaluating object]. 3. (对于一个操作符[operator], 例如在 "<<operator>> 表达式形式" 中) 第一个元素[element]为该操作符[operator]的一个复合表达式形式[compound form]. "一个 quote 表达式形式是一个常量表达式形式 (A quote form is a constant form)".
 
-formal argument n. Trad. a parameter.
+**formal argument** n. Trad. 一个参数[parameter].
 
-formal parameter n. Trad. a parameter.
+**formal parameter** n. Trad. 一个参数[parameter].
 
-format v.t. (a format control and format arguments) to perform output as if by format, using the format string and format arguments.
+**format** v.t. (一个格式化控制[format control]和格式化参数[format argument]) 就像通过 format 一样使用格式化字符串[format string]和格式化参数[format argument]去执行输出.
 
-format argument n. an object which is used as data by functions such as format which interpret format controls.
+**format argument** n. 一个对象[object], 它被例如 format 这样解释格式化控制[format control]的函数[function]用作数据.
 
-format control n. a format string, or a function that obeys the argument conventions for a function returned by the formatter macro. See Section 22.2.1.3 (Compiling Format Strings).
+**format control** n. 一个格式化字符串[format string], 或者一个函数[function], 它遵循由 formatter 宏[macro]返回的函数[function]的参数[argument]规约. 见章节 22.2.1.3 (编译格式化字符串).
 
-format directive n. 1. a sequence of characters in a format string which is introduced by a tilde, and which is specially interpreted by code which processes format strings to mean that some special operation should be performed, possibly involving data supplied by the format arguments that accompanied the format string. See the function format. ``In "~D base 10 = ~8R", the character sequences `~D' and `~8R' are format directives.'' 2. the conceptual category of all format directives[1] which use the same dispatch character. ``Both "~3d" and "~3,'0D" are valid uses of the `~D' format directive.''
+**format directive** n. 1. 在一个格式化字符串[format string]中通过波浪线[tilde]引入的一个字符[character]序列, 它由处理格式化字符串[format string]的代码[code]进行特殊解释, 表示应该执行某些特殊操作, 可能涉及格式化字符串[format string]附带的格式化参数[format argument]提供的数据. 见函数[function] format. "在 '~D base 10 = ~8R' 中, 字符序列 '~D' 和 '~8R' 是格式化指令 (In '~D base 10 = ~8R', the character sequences '~D' and '~8R' are format directives)". 2. 使用相同分派字符的所有格式化指令[format directives[1]]的概念类别. "'~3d' 和 '~3,'0D' 都是 '~D' 格式化指令的有效使用 (Both '~3d' and '~3,'0D' are valid uses of the '~D' format directive)".
 
-format string n. a string which can contain both ordinary text and format directives, and which is used in conjunction with format arguments to describe how text output should be formatted by certain functions, such as format.
+**format string** n. 一个字符串[string], 它可以包含普通文本和格式化指令[format directive], 并且它和格式化参数[format argument]结合来描述文本输出应该如何被特定函数 (例如, format) 格式化.
 
-free declaration n. a declaration that is not a bound declaration. See declare.
+**free declaration** n. 一个声明[declaration], 它不是一个绑定声明[bound declaration]. 见 declare.
 
-fresh adj. 1. (of an object yielded by a function) having been newly-allocated by that function. (The caller of a function that returns a fresh object may freely modify the object without fear that such modification will compromise the future correct behavior of that function.) 2. (of a binding for a name) newly-allocated; not shared with other bindings for that name.
+**fresh** adj. 1. (指一个函数[function]产生的一个对象[object]) 由该函数[function]新分配的. (一个返回一个新[fresh]对象[object]的函数[function]的调用者可以自由地修改那个对象[object], 不需要担心这样的修改会破坏那个函数[function]未来的正确行为.) 2. (指一个名称[name]的绑定[binding]) 新分配的; 不和该名称[name]的其他绑定[binding]共享.
 
-freshline n. a conceptual operation on a stream, implemented by the function fresh-line and by the format directive ~&, which advances the display position to the beginning of the next line (as if a newline had been typed, or the function terpri had been called) unless the stream is already known to be positioned at the beginning of a line. Unlike newline, freshline is not a character.
+**freshline** n. 流[stream]上的一个概念操作, 由函数[function] fresh-line 和格式化指令[format directive] ~& 实现, 它将显示位置提前到下一行的开头 (就好像输入一个换行[newline]或者调用函数[function] terpri 一样), 除非该流[stream]已经知道位于一行的开头. 不像换行符[newline], 新行[freshline]不是一个字符[character].
 
-funbound ['efunband] n. (of a function name) not fbound.
+**funbound** ['efunband] n. (指一个函数名[function name]) 没有被 fbound.
 
-function n. 1. an object representing code, which can be called with zero or more arguments, and which produces zero or more values. 2. an object of type function.
+**function** n. 1. 一个表示代码的对象[object], 它可以使用零个或多个参数[argument]来调用, 并且它产生零个或多个值[value]. 2. 一个 function 类型[type]的对象[object].
 
-function block name n. (of a function name) The symbol that would be used as the name of an implicit block which surrounds the body of a function having that function name. If the function name is a symbol, its function block name is the function name itself. If the function name is a list whose car is setf and whose cadr is a symbol, its function block name is the symbol that is the cadr of the function name. An implementation which supports additional kinds of function names must specify for each how the corresponding function block name is computed.
+**function block name** n. (指一个函数名[function name]) 被用作包围在该函数名[function name]表示的函数[function]主体外的隐式语句块[implicit block]的名字的符号[symbol]. 如果这个函数名[function name]是一个符号[symbol], 它的函数语句块名称[function block name]就是那个函数名[function name]自身. 如果那个函数名[function name]是一个 car 为 setf 且 cadr 为一个符号[symbol]的列表[list], 它的函数语句块名称[function block name]就是那个函数名[function name]的 cadr 的符号[symbol]. 一个支持其他种类的函数名[function name]的具体实现[implementation]必须为每种函数名指定如何计算函数语句块名[function block name].
 
-function cell n. Trad. (of a symbol) The place which holds the definition of the global function binding, if any, named by that symbol, and which is accessed by symbol-function. See cell.
+**function cell** n. Trad. (指一个符号[symbol]) 持有由这个符号[symbol]命名的全局函数[function]绑定[binding] (如果存在的话) 的定义的位置[place], 它可以通过 symbol-function 来访问. 见存储格[cell].
 
-function designator n. a designator for a function; that is, an object that denotes a function and that is one of: a symbol (denoting the function named by that symbol in the global environment), or a function (denoting itself). The consequences are undefined if a symbol is used as a function designator but it does not have a global definition as a function, or it has a global definition as a macro or a special form. See also extended function designator.
+**function designator** n. 一个函数[function]的标识符[designator]; 也就是说, 一个表示函数[function]的对象[object], 并且它是以下之一: 一个符号[symbol] (表示全局环境[global environment]中由这个符号[symbol]命名的函数[function]), 或者一个函数[function] (表示它自身). 如果一个符号[symbol]被用作一个函数标识符[function designator]但是它没有作为一个函数[function]的全局定义, 或者它是一个宏[macro]或特殊表达式形式[special form]的全局定义, 那么后果是未定义的. 参见扩展函数标识符[extended function designator].
 
-function form n. a form that is a list and that has a first element which is the name of a function to be called on arguments which are the result of evaluating subsequent elements of the function form.
+**function form** n. 一个表达式形式[form], 它是一个列表[list]并且它的第一个元素[element]是要被调用的函数[function]的名称[name], 而实参[argument]是求值该函数表达式形式[function form]的后续元素的结果.
 
-function name n. 1. (in an environment) A symbol or a list (setf symbol) that is the name of a function in that environment. 2. A symbol or a list (setf symbol).
+**function name** n. 1. (在一个环境[environment]中) 一个符号[symbol]或一个列表[list] (setf symbol), 它是那个环境[environment]中一个函数[function]的名字[name]. 2. 一个符号[symbol]或一个列表[list] (setf symbol).
 
-functional evaluation n. the process of extracting a functional value from a function name or a lambda expression. The evaluator performs functional evaluation implicitly when it encounters a function name or a lambda expression in the car of a compound form, or explicitly when it encounters a function special form. Neither a use of a symbol as a function designator nor a use of the function symbol-function to extract the functional value of a symbol is considered a functional evaluation.
+**functional evaluation** n. 从一个函数名[function name]或一个 lambda 表达式[lambda expression]中提取一个函数值[functional value]的过程. 求值器在遇到一个复合表达式形式[compound form]的 car 中的一个函数名[function name]或 lambda 表达式[lambda expression]时隐式执行函数求值[functional evaluation], 在遇上一个 function 特殊表达式形式[special form]时被显式求值. 一个符号[symbol]作为函数标识符[function designator]的使用, 以及函数[function] symbol-function 去提取一个符号[symbol]的函数值[functional value]都不被认为是一个函数求值[functional evaluation].
 
-functional value n. 1. (of a function name N in an environment E) The value of the binding named N in the function namespace for environment E; that is, the contents of the function cell named N in environment E. 2. (of an fbound symbol S) the contents of the symbol's function cell; that is, the value of the binding named S in the function namespace of the global environment. (A name that is a macro name in the global environment or is a special operator might or might not be fbound. But if S is such a name and is fbound, the specific nature of its functional value is implementation-dependent; in particular, it might or might not be a function.)
+**functional value** n. 1. (指一个环境[environment] E 中一个函数名[function name] N) 在环境[environment] E 的函数[function]命名空间[namespace]中名为 N 的绑定[binding]的值[value]; 也就是说, 在环境[environment] E 中名为 N 的函数存储格[function cell]的内容. 2. (指一个 fbound 的符号[symbol] S) 这个符号[symbol]的函数存储格[function cell]的内容; 也就是说, 全局环境[global environment]函数[function]命名空间[namespace]中的名为 S 的绑定[binding]的值[value]. (一个在全局环境[global environment]中是一个宏名称[macro name]或者是一个特殊操作符[special operator]的名称[name]可能是也可能不是 fbound 的. 但是如果 S 是这样一个名称[name]并且是 fbound 的, 它的函数值[functional value]的具体性质是依赖于具体实现的[implementation-dependent]; 它可能是一个函数[function], 也可能不是.)
 
-further compilation n. implementation-dependent compilation beyond minimal compilation. Further compilation is permitted to take place at run time. ``Block compilation and generation of machine-specific instructions are examples of further compilation.'' 
+**further compilation** n. 在最小编译[minimal compilation]之外的依赖于具体实现[implementation-dependent]的编译. 进一步编译允许发生在运行时[run time'. "语句块编译和特定于机器的指令的生成是进一步编译的示例 (Block compilation and generation of machine-specific instructions are examples of further compilation)".
 
 
 G
