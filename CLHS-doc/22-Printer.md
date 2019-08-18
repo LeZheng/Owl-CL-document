@@ -1,5 +1,4 @@
 # 22 打印器
-<!--TODO 整章待校验-->
 
 > * 22.1 [Lisp 打印器](#TheLispPrinter)
 > * 22.2 [Lisp 美观打印器](#TheLispPrettyPrinter)
@@ -1621,7 +1620,7 @@ NIL
 
 这个 ~^ 应该只出现在一个 ~< 子句的开始, 因为它终止这个它出现的完整子句 (所有后面的子句也一样). 
 
-<!--TODO 查看到此-->
+
 ## 22.4 <span id="ThePrinterDictionary">打印器的字典</span>
 
 > * [函数 COPY-PPRINT-DISPATCH](#F-COPY-PPRINT-DISPATCH)
@@ -1753,7 +1752,7 @@ NIL
 
         第二个值[secondary value], found-p, 如果在表 table 中找到匹配的类型指定符[type specifier]那么就是 true, 否则就是 false.
 
-        如果 table 是 nil, 检索在最初的美观打印分派表[initial pprint dispatch table]上进行.
+        如果 table 是 nil, 检索在初始美观打印分派表[initial pprint dispatch table]上进行.
 
 * 示例(Examples): None.
 
@@ -1827,7 +1826,7 @@ NIL
 
 * 描述(Description):
 
-        函数 pprint-fill, pprint-linear, 和 pprint-tabular 指定美观打印一个列表[list]到流 stream 的特定方式. 当且仅当 colon-p 为 true 时, 每个函数在输出周围打印括号. 每个函数忽略它的 at-sign-p 参数. (即使只需要一个参数, 这两个参数也都被包含在内, 以便这些功能可以通过 ~/.../ 来使用并作为 set-pprint-dispatch 函数.) <!--TODO 待校对--> 每个函数正确地处理缩写以及循环和共享的检测, 并且当它不是一个列表[non-list]时使用 write 来打印对象 object.
+        函数 pprint-fill, pprint-linear, 和 pprint-tabular 指定美观打印一个列表[list]到流 stream 的特定方式. 当且仅当 colon-p 为 true 时, 每个函数在输出周围打印括号. 每个函数忽略它的 at-sign-p 参数. (这两个参数都包含在内, 即使只需要一个参数, 以便这些功能可以通过 ~/.../ 来使用并作为 set-pprint-dispatch 函数, 也可以直接使用.) 每个函数正确地处理缩写以及循环和共享的检测, 并且当它不是一个列表[non-list]时使用 write 来打印对象 object.
 
         如果对象 object 是一个列表[list]并且 *print-pretty* 的值[value]是 false, 这些函数中的每一个都用最少的空格[whitespace]来打印对象, 就像章节 22.1.3.5 (打印列表和构造(cons)) 中描述的. 否则 (如果对象 object 是一个列表[list]并且 *print-pretty* 的值[value]是 true):
 
@@ -1919,7 +1918,7 @@ NIL
 
 
 ### <span id="M-PPRINT-LOGICAL-BLOCK">宏 PPRINT-LOGICAL-BLOCK</span>
-<!--TODO 待校对-->
+
 * 语法(Syntax):
 
         pprint-logical-block (stream-symbol object &key prefix per-line-prefix suffix) declaration* form*
@@ -1979,7 +1978,7 @@ NIL
 
 * 注意(Notes):
 
-        当 *print-pretty* 的值[value]为 nil 时使用 pprint-logical-block 宏[macro]的一个原因是允许它对点列表[dotted list]执行检查, (和 pprint-pop 配合) 检查 *print-level* or *print-length* 溢出也一样.
+        当 *print-pretty* 的值[value]为 nil 时使用 pprint-logical-block 宏[macro]的一个原因是允许它对点列表[dotted list]执行检查, (和 pprint-pop 配合) 检查 *print-level* 或 *print-length* 溢出也一样.
 
         美观打印器[pretty printer]支持环状和共享的检测, 本质上是执行两次请求的输出. 第一次通过时, 循环和共享被检测而实际输出的字符串被抑制. 在第二次通过时, 适当的 "#n=" 和 "#n#" 标记会被插入并且字符会被输出. 就就是为什么副作用上的约束是必要的. 当遍历一个要被 pprint-logical-block 表达式形式[form]的主体表达式形式 forms 打印的列表时, 使用 pprint-pop 来实现这一限制, 而不是普通的 pop.
 
@@ -2084,7 +2083,7 @@ NIL
 
 * 异常情况(Exceptional Situations):
 
-        如果一个 pprint-pop 的使用出现在没有词法上包含在 pprint-logical-block 表达式形式[form]的地方, 那么就会发出一个错误 (不管是宏展开时或是运行时).
+        如果一个 pprint-pop 的使用没有出现在词法上包含在 pprint-logical-block 表达式形式[form]的地方, 那么就会发出一个错误 (不管是宏展开时或是运行时).
 
         如果 pprint-pop 在这个 pprint-logical-block 的动态范围[dynamic extent]外被执行, 那么后果是未定义的.
 
@@ -2112,9 +2111,9 @@ NIL
 
 * 描述(Description):
 
-        对流 stream 指定制表符就像是通过标准 ~T 格式化指令执行的一样. 如果流 stream 是一个美观打印流[pretty printing stream]并且 *print-pretty* 的值[value]是 true, 那么就会执行制表; 否则, pprint-tab 没有效果.
+        就像是通过标准 ~T 格式化指令执行的一样对流 stream 指定制表. 如果流 stream 是一个美观打印流[pretty printing stream]并且 *print-pretty* 的值[value]是 true, 那么就会执行制表; 否则, pprint-tab 没有效果.
 
-        参数 colnum 和 colinc 对应于给 ~T 的两个参数并且根据 em 单位. 这个 kind 参数指定了制表的样式. 它必须是 :line (就如 ~T 一样制表), :section (就如 ~:T 一样制表, 但是相对于这个动态闭合部分的开始处来水平测量), :line-relative (就如 ~@T 一样制表), 或 :section-relative (就如 ~:@T 一样制表, 但是相对于这个动态闭合部分的开始处来水平测量) 其中之一.
+        参数 colnum 和 colinc 对应于给 ~T 的两个参数并且按照 em 单位. 这个 kind 参数指定了制表的样式. 它必须是 :line (就如 ~T 一样制表), :section (就如 ~:T 一样制表, 但是相对于这个动态闭合部分的开始处来水平测量), :line-relative (就如 ~@T 一样制表), 或 :section-relative (就如 ~:@T 一样制表, 但是相对于这个动态闭合部分的开始处来水平测量) 其中之一.
 
 * 示例(Examples): None.
 
@@ -2162,7 +2161,7 @@ NIL
 
         *print-readably*
 
-            所有 print-object 的方法[method]必须遵循 *print-readably*. 这个包括用户定义的方法和具体实现定义的[implementation-defined]方法. 结构体[structure]和标准对象[standard object]的可读打印由它们的 print-object 方法控制, 不是由它们的 make-load-form 方法. 这些对象[object]的相似性[similarity]是依赖于应用的, 因此定义为无论这些方法做什么; 见章节 3.2.4.2 (字面化对象的相似性).
+            所有 print-object 的方法[method]必须遵循 *print-readably*. 这个包括用户定义的方法和具体实现定义的[implementation-defined]方法. 结构体[structure]和标准对象[standard object]的可读打印由它们的 print-object 方法控制, 不是由它们的 make-load-form 方法. 这些对象[object]的相似性[similarity]是依赖于应用的, 因此它被定义为这些方法所做的任何事情; 见章节 3.2.4.2 (字面化对象的相似性).
 
         *print-escape*
 
@@ -2178,7 +2177,7 @@ NIL
 
         *print-level*
 
-            打印器自动关注 *print-level*, 假设每个方法[method]处理结构体的一个层级而如果这里有更多的结构体层级就递归调用 write (或者一个等价的函数[function]). 打印器对于一个对象[object]是否有着成员的决策是依赖于具体实现的[implementation-dependent] (并且因此当打印深度不小于 *print-level* 时不应该被打印). 在某些实现中它的 print-object 方法[method]不会被调用; 在其他实现中这个方法[method]会被调用, 并且这个对象[object]有着成员的决定是基于它尝试把什么写入到这个流 stream 中.
+            打印器自动关注 *print-level*, 假设每个方法[method]处理结构体的一个层级而如果这里有更多的结构体层级就递归调用 write (或者一个等价的函数[function]). 打印器对于一个对象[object]是否有着成员的决策是依赖于具体实现的[implementation-dependent] (并且因此当打印深度不小于 *print-level* 时不应该被打印). 在某些实现中它的 print-object 方法[method]不会被调用; 在其他实现中这个方法[method]会被调用, 并且这个对象[object]有着成员的决策是基于它尝试把什么写入到这个流 stream 中.
 
         *print-circle*
 
@@ -2365,9 +2364,9 @@ NIL
 
         prin1 产生适合于 read 的输入的输出. 它绑定 *print-escape* 为 true.
 
-        princ 就像是 prin1 除了输出没有转义[escape]字符[character]. 它绑定 *print-escape* 为 false 并且绑定 *print-readably* 为 false. 普遍规则是, 来自 princ 的输出意图在于让人更好地查看, 而来自 prin1 的输出意图在于对于 read 是可接受的.
+        princ 就像是 prin1, 除了输出没有转义[escape]字符[character]. 它绑定 *print-escape* 为 false 并且绑定 *print-readably* 为 false. 普遍规则是, 来自 princ 的输出意图在于让人更好地查看, 而来自 prin1 的输出意图在于对于 read 是可接受的.
 
-        print 就像是 prin1 除了对象 object 的打印表示前面有一个换行并且后面有空格.
+        print 就像是 prin1, 除了对象 object 的打印表示前面有一个换行并且后面有空格.
 
         pprint 就像是 print 除了省略尾部的空格并且对象 object 使用非 nil [non-nil]的 *print-pretty* 标志来打印, 进而产生美观的输出.
 
@@ -2530,12 +2529,12 @@ NIL
 * 示例(Examples):
 
     ```LISP
-    (let ((*print-base* 24.) (*print-radix* t)) 
+    (let ((*print-base* 24.) (*print-radix* t))
       (print 23.))
     >>  #24rN
     =>  23
     (setq *print-base* 10) =>  10
-    (setq *print-radix* nil) =>  NIL                                          
+    (setq *print-radix* nil) =>  NIL
     (dotimes (i 35)
         (let ((*print-base* (+ i 2)))           ;print the decimal number 40 
           (write 40)                            ;in each base from 2 to 36
@@ -2544,11 +2543,11 @@ NIL
     >>  1111 220 130 104 55 50 44 40 37 34
     >>  31 2C 2A 28 26 24 22 20 1J 1I
     >>  1H 1G 1F 1E 1D 1C 1B 1A 19 18
-    >>  17 16 15 14 
+    >>  17 16 15 14
     =>  NIL
-    (dolist (pb '(2 3 8 10 16))               
-        (let ((*print-radix* t)                 ;print the integer 10 and 
-              (*print-base* pb))                ;the ratio 1/10 in bases 2, 
+    (dolist (pb '(2 3 8 10 16))
+        (let ((*print-radix* t)                 ;print the integer 10 and
+              (*print-base* pb))                ;the ratio 1/10 in bases 2,
         (format t "~&~S  ~S~%" 10 1/10)))        ;3, 8, 10, 16
     >>  #b1010  #b1/1010
     >>  #3r101  #3r1/101
@@ -2566,7 +2565,7 @@ NIL
 
         format, write, write-to-string
 
-* 注意(Notes): None. 
+* 注意(Notes): None.
 
 
 ### <span id="V-PRINT-CASE">变量 *PRINT-CASE*</span>
@@ -2728,7 +2727,7 @@ NIL
     ```LISP
     (let ((*print-gensym* nil))
       (print (gensym)))
-    >>  G6040 
+    >>  G6040
     =>  #:G6040
     ```
 
@@ -2738,7 +2737,7 @@ NIL
 
         write, *print-escape*
 
-* 注意(Notes): None. 
+* 注意(Notes): None.
 
 
 ### <span id="V-PRINT-LEVEL-LENGTH">变量 *PRINT-LEVEL*, *PRINT-LENGTH*</span>
@@ -2763,8 +2762,8 @@ NIL
 
     ```LISP
     (setq a '(1 (2 (3 (4 (5 (6))))))) =>  (1 (2 (3 (4 (5 (6))))))
-    (dotimes (i 8) 
-      (let ((*print-level* i)) 
+    (dotimes (i 8)
+      (let ((*print-level* i))
         (format t "~&~D -- ~S~%" i a)))
     >>  0 -- #
     >>  1 -- (1 #)
@@ -2777,9 +2776,9 @@ NIL
     =>  NIL
 
     (setq a '(1 2 3 4 5 6)) =>  (1 2 3 4 5 6)
-    (dotimes (i 7) 
-      (let ((*print-length* i)) 
-        (format t "~&~D -- ~S~%" i a))) 
+    (dotimes (i 7)
+      (let ((*print-length* i))
+        (format t "~&~D -- ~S~%" i a)))
     >>  0 -- (...)
     >>  1 -- (1 ...)
     >>  2 -- (1 2 ...)
@@ -2789,12 +2788,12 @@ NIL
     >>  6 -- (1 2 3 4 5 6)
     =>  NIL
 
-    (dolist (level-length '((0 1) (1 1) (1 2) (1 3) (1 4) 
+    (dolist (level-length '((0 1) (1 1) (1 2) (1 3) (1 4)
                           (2 1) (2 2) (2 3) (3 2) (3 3) (3 4)))
     (let ((*print-level*  (first  level-length))
           (*print-length* (second level-length)))
       (format t "~&~D ~D -- ~S~%"
-              *print-level* *print-length* 
+              *print-level* *print-length*
               '(if (member x y) (+ (car x) 3) '(foo . #(a b c d "Baz"))))))
     >>  0 1 -- #
     >>  1 1 -- (IF ...)
@@ -2816,7 +2815,7 @@ NIL
 
         write
 
-* 注意(Notes): None. 
+* 注意(Notes): None.
 
 
 ### <span id="V-PRINT-LINES">变量 *PRINT-LINES*</span>
@@ -2948,7 +2947,7 @@ NIL
     >>  #'(LAMBDA ()
     >>      (LIST "a" #'C #'D))
     >>  #'(LAMBDA ()
-    >>      (LIST a b 'C #'D)) 
+    >>      (LIST a b 'C #'D))
     >>  #'(LAMBDA ()
     >>      (LIST a b 'C #'D))
     =>  NIL
@@ -3133,7 +3132,7 @@ NIL
         format 用于产生良好格式化的文本, 产生美观的信息是很有用的, 等等. format 可以生成并返回一个字符串[string]或者输出到 destination 中.
 
         关于 control-string 任何被解释的详细信息, 见章节 22.3 (格式化输出).
-
+如果这个没有被确定
 * 示例(Examples): None.
 
 * 受此影响(Affected By):
