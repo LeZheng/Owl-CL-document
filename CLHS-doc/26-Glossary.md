@@ -640,39 +640,39 @@ binary adj. 1. (指流[stream]) 元素类型[element type]为 integer 类型[typ
 **further compilation** n. 在最小编译[minimal compilation]之外的依赖于具体实现[implementation-dependent]的编译. 进一步编译允许发生在运行时[run time'. "语句块编译和特定于机器的指令的生成是进一步编译的示例 (Block compilation and generation of machine-specific instructions are examples of further compilation)".
 
 
-G
+### G
 
-general adj. (指数组[array]) having element type t, and consequently able to have any object as an element.
+**general** adj. (指数组[array]) 有着元素类型[element type] t, 因此能够将任何对象[object]作为元素[element].
 
-generalized boolean n. an object used as a truth value, where the symbol nil represents false and all other objects represent true. See boolean.
+**generalized boolean** n. 被用作一个真值的对象[object], 其中符号[symbol] nil 表示 false 并且所有其他对象[object]表示 true. 见 boolean.
 
-generalized instance n. (of a class) an object the class of which is either that class itself, or some subclass of that class. (Because of the correspondence between types and classes, the term ``generalized instance of X'' implies ``object of type X'' and in cases where X is a class (or class name) the reverse is also true. The former terminology emphasizes the view of X as a class while the latter emphasizes the view of X as a type specifier.)
+**generalized instance** n. (指一个类[class]) 一个对象[object], 它的类[class]是该类[class]自身或者该类[class]的某个子类[subclass]. (因为类型[type]和类[class]之间的对应关系, 术语 "X 的广义实例 (generalized instance of X)" 意味着 "类型[type] X 的对象[object] (object of type X)" 并且在 X 为一个类[class] (或类[class]名称[name]) 的情况下反过来说也是对的. 前者强调 X 作为类[class]的观点, 而后者强调 X 作为类型指定符[type specifier]的观点.)
 
-generalized reference n. a reference to a location storing an object as if to a variable. (Such a reference can be either to read or write the location.) See Section 5.1 (Generalized Reference). See also place.
+**generalized reference** n. 对存储对象[object]的位置的引用, 就像对变量[variable]的引用一样. (这样的引用可以读取[read]或写入[write]这个位置.) 见章节 5.1 (广义引用). 参见位置 [place].
 
-generalized synonym stream n. (with a synonym stream symbol) 1. (to a stream) a synonym stream to the stream, or a composite stream which has as a target a generalized synonym stream to the stream. 2. (to a symbol) a synonym stream to the symbol, or a composite stream which has as a target a generalized synonym stream to the symbol.
+**generalized synonym stream** n. (使用同义流符号[synonym stream symbol]) 1. (对一个流[stream]) 指向该流[stream]的一个同义流[synonym stream], 或者以指向该流[stream]的同义流[synonym stream]为目标的一个复合流[composite stream]. 2. (对一个符号[symbol]) 指向该符号[symbol]的一个同义流[synonym stream], 或者以指向该符号[symbol]的同义流[synonym stream]为目标的一个复合流[composite stream].
 
-generic function n. a function whose behavior depends on the classes or identities of the arguments supplied to it and whose parts include, among other things, a set of methods, a lambda list, and a method combination type.
+**generic function** n. 一个函数[function], 其行为取决于提供给它的参数的类[class]或标识, 其部分包括一组方法[method]、lambda 列表[lambda list]和方法组合[method combination]类型等.
 
-generic function lambda list n. A lambda list that is used to describe data flow into a generic function. See Section 3.4.2 (Generic Function Lambda Lists).
+**generic function lambda list** n. 被用于描述到一个广义函数[generic function]的数据流的 lambda 列表[lambda list]. 见章节 3.4.2 (广义函数 Lambda 列表).
 
-gensym n. Trad. an uninterned symbol. See the function gensym.
+**gensym** n. Trad. 一个未捕获[uninterned]的符号[symbol]. 见函数[function] gensym.
 
-global declaration n. a form that makes certain kinds of information about code globally available; that is, a proclaim form or a declaim form.
+**global declaration** n. 使有关代码的特定种类的信息全局可用的一种表达式形式[form]; 也就是说, 一个 proclaim 表达式形式[form]或 declaim 表达式形式[form].
 
-global environment n. that part of an environment that contains bindings with indefinite scope and indefinite extent.
+**global environment** n. 一个环境[environment]中包含带有非限定作用域[indefinite scope]和非限定范围[indefinite extent]的绑定[binding]的部分.
 
-global variable n. a dynamic variable or a constant variable.
+**global variable** n. 一个动态变量[dynamic variable]或者一个常变量[constant variable].
 
-glyph n. a visual representation. ``Graphic characters have associated glyphs.''
+**glyph** n. 一种可见表示. "图形字符具有相关的字形 (Graphic characters have associated glyphs)".
 
-go v. to transfer control to a go point. See the special operator go.
+**go** v. 把控制转移到一个 go 点[go point]. 见特殊操作符[special operator] go.
 
-go point one of possibly several exit points that are established by tagbody (or other abstractions, such as prog, which are built from tagbody).
+**go point** 由 tagbody (或者其他抽象, 例如 prog, 它由 tagbody 构造而来) 建立的多个可能的退出点[exit point]中的一个.
 
-go tag n. the symbol or integer that, within the lexical scope of a tagbody form, names an exit point established by that tagbody form.
+**go tag** n. 在一个 tagbody 表达式形式[form]的词法作用域[lexical scope]内的这个符号[symbol]或整数[integer]命名了该 tagbody 表达式形式[form]建立的一个退出点[exit point].
 
-graphic adj. (of a character) being a ``printing'' or ``displayable'' character that has a standard visual representation as a single glyph, such as A or * or =. Space is defined to be graphic. Of the standard characters, all but newline are graphic. See non-graphic. 
+**graphic** adj. (指一个字符[character]) 一种 "打印" 或 "可显示" 的字符[character], 具有作为单个字形[glyph]的标准视觉表示, 例如 A 或 * 或 =. 空格[space]被定义为是图形的[graphic]. 标准字符[standard character]中, 除了换行符[newline]以外所有字符都是图形的[graphic]. 见非图形[non-graphic]. 
 
 
 H

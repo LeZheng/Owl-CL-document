@@ -1,4 +1,4 @@
-# 22 打印器
+# 22. 打印器
 
 > * 22.1 [Lisp 打印器](#TheLispPrinter)
 > * 22.2 [Lisp 美观打印器](#TheLispPrettyPrinter)
