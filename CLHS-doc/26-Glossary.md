@@ -675,15 +675,15 @@ binary adj. 1. (指流[stream]) 元素类型[element type]为 integer 类型[typ
 **graphic** adj. (指一个字符[character]) 一种 "打印" 或 "可显示" 的字符[character], 具有作为单个字形[glyph]的标准视觉表示, 例如 A 或 * 或 =. 空格[space]被定义为是图形的[graphic]. 标准字符[standard character]中, 除了换行符[newline]以外所有字符都是图形的[graphic]. 见非图形[non-graphic]. 
 
 
-H
+### H
 
-handle v. (of a condition being signaled) to perform a non-local transfer of control, terminating the ongoing signaling of the condition.
+**handle** v. (指正在被发送的一个状况[condition]) 去执行一个控制的非局部转移, 终止正在进行的状况[condition]发送.
 
-handler n. a condition handler.
+**handler** n. 一个状况处理者[condition handler].
 
-hash table n. an object of type hash-table, which provides a mapping from keys to values.
+**hash table** n. 一个 hash-table 类型[type]的对象[object], 它提供了一个从键[key]到值[value]的映射.
 
-home package n. (of a symbol) the package, if any, which is contents of the package cell of the symbol, and which dictates how the Lisp printer prints the symbol when it is not accessible in the current package. (Symbols which have nil in their package cell are said to have no home package, and also to be apparently uninterned.) 
+**home package** n. (指一个符号[symbol]) 这个包[package], 如果存在, 它就是这个符号[symbol]的包存储格[package cell]的内容, 并且它表示当前包[current package]中这个符号[symbol]不是可访问[accessible]时, Lisp 打印器[Lisp printer]如何打印该符号[symbol]. (包存储格[package cell]中的值为 nil 的符号[symbol]被说成是没有 home 包[home package]的, 并且也是明显未捕获的[apparently uninterned].) 
 
 
 I
