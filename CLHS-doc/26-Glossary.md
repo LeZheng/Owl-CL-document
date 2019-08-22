@@ -780,15 +780,15 @@ binary adj. 1. (指流[stream]) 元素类型[element type]为 integer 类型[typ
 **iteration variable** n. 一个变量[variable] V, 它的绑定[binding]由一个循环表达式形式[iteration form]中 V 的显式使用[explicit use]所创建. 
 
 
-K
+### K
 
-key n. an object used for selection during retrieval. See association list, property list, and hash table. Also, see Section 17.1 (Sequence Concepts).
+**key** n. 在检索过程中用于选择的对象[object]. 见关联列表[association list], 属性列表[property list], 还有散列表[hash table]. 另外, 见章节 17.1 (序列的概念).
 
-keyword n. 1. a symbol the home package of which is the KEYWORD package. 2. any symbol, usually but not necessarily in the KEYWORD package, that is used as an identifying marker in keyword-style argument passing. See lambda. 3. Idiom. a lambda list keyword.
+**keyword** n. 1. 一个 home 包[home package]是 KEYWORD 包的符号[symbol]. 2. 任何在传递的关键字风格参数中被用作一个标识记号的符号[symbol], 通常在 KEYWORD 包中, 但不一定在 KEYWORD 包中. 见 lambda. 3. Idiom. 一个 lambda 列表关键字[lambda list keyword].
 
-keyword parameter n. A parameter for which a corresponding keyword argument is optional. (There is no such thing as a required keyword argument.) If the argument is not supplied, a default value is used. See also supplied-p parameter.
+**keyword parameter** n. 一个形参[parameter], 对应的关键字实参[argument]是可选的. (There is no such thing as a required keyword argument.) 如果没有提供这样一个实参[argument], 那么就使用一个默认值. 参见 supplied-p 参数[supplied-p parameter].
 
-keyword/value pair n. two successive elements (a keyword and a value, respectively) of a property list. 
+**keyword/value pair** n. 一个属性列表[property list]的两个连续元素[element] (分别是一个关键字[keyword]和一个值[value]). 
 
 
 L
