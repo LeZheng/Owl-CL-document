@@ -686,98 +686,98 @@ binary adj. 1. (指流[stream]) 元素类型[element type]为 integer 类型[typ
 **home package** n. (指一个符号[symbol]) 这个包[package], 如果存在, 它就是这个符号[symbol]的包存储格[package cell]的内容, 并且它表示当前包[current package]中这个符号[symbol]不是可访问[accessible]时, Lisp 打印器[Lisp printer]如何打印该符号[symbol]. (包存储格[package cell]中的值为 nil 的符号[symbol]被说成是没有 home 包[home package]的, 并且也是明显未捕获的[apparently uninterned].) 
 
 
-I
+### I
 
-I/O customization variable n. one of the stream variables in the next figure, or some other (implementation-defined) stream variable that is defined by the implementation to be an I/O customization variable.
+**I/O customization variable** n. 下一段中的那些流变量[stream variable]中的一个, 或者被具体实现[implementation]定义为 I/O 定制变量[I/O customization variable]的某个其他 (具体实现定义的[implementation-defined]) 流变量[stream variable].
 
-*debug-io*        *error-io*         query-io*       
-*standard-input*  *standard-output*  *trace-output*  
+    *debug-io*        *error-io*         query-io*       
+    *standard-input*  *standard-output*  *trace-output*  
 
-Figure 26-2. Standardized I/O Customization Variables
+    Figure 26-2. 标准化的 I/O 定制变量
 
-identical adj. the same under eq.
+**identical** adj. 在 eq 下相同[same].
 
-identifier n. 1. a symbol used to identify or to distinguish names. 2. a string used the same way.
+**identifier** n. 1. 一个被用于标识或区分名称[name]的符号[symbol]. 2. 被用于相同途径的字符串[string].
 
-immutable adj. not subject to change, either because no operator is provided which is capable of effecting such change or because some constraint exists which prohibits the use of an operator that might otherwise be capable of effecting such a change. Except as explicitly indicated otherwise, implementations are not required to detect attempts to modify immutable objects or cells; the consequences of attempting to make such modification are undefined. ``Numbers are immutable.''
+**immutable** adj. 不受更改的约束, 这要么是因为没有提供能够执行此类更改的操作符[operator], 要么是因为存在一些约束, 禁止使用本可以执行此类更改的操作符[operator]. 除非显式指出, 否则不要求具体实现[implementation]去检测那些修改不可变[immutable]对象[object]或存储格[cell]的尝试; 尝试去作出这样修改的后果是未定义的. "数字是不可变的 (Numbers are immutable)".
 
 **implementation** n. 一个实现了 Common Lisp 的语义的系统, 机制, 或代码体.
 
-implementation limit n. a restriction imposed by an implementation.
+**implementation limit** n. 由具体实现[implementation]强加的限制.
 
-implementation-defined adj. implementation-dependent, but required by this specification to be defined by each conforming implementation and to be documented by the corresponding implementor.
+**implementation-defined** adj. 依赖于具体实现的[implementation-dependent], 但是本规范要求每个符合规范的实现[conforming implementation]都要定义的, 并且由对应实现者记录.
 
-implementation-dependent adj. describing a behavior or aspect of Common Lisp which has been deliberately left unspecified, that might be defined in some conforming implementations but not in others, and whose details may differ between implementations. A conforming implementation is encouraged (but not required) to document its treatment of each item in this specification which is marked implementation-dependent, although in some cases such documentation might simply identify the item as ``undefined.''
+**implementation-dependent** adj. 描述 Common Lisp 的一个行为或方面, 这个行为或方面被故意保留为未指定的, 可能在一些符合规范的实现[conforming implementation]中定义, 而在其他实现中没有定义, 其细节可能在不同的实现[implementation]中有所不同. 鼓励 (但不要求) 一个符合规范的实现[conforming implementation]去记录其对本规范中标记为依赖于具体实现[implementation-dependent]的每一项的处理, 虽然在这些情况中这样的文档记录可能简单地标识这个项为 "未定义的".
 
-implementation-independent adj. used to identify or emphasize a behavior or aspect of Common Lisp which does not vary between conforming implementations.
+**implementation-independent** adj. 用于标识或强调 Common Lisp 的一个行为或方面, 该行为或方面在符合规范的实现[conforming implementation]之间没有变化.
 
-implicit block n. a block introduced by a macro form rather than by an explicit block form.
+**implicit block** n. 一个由宏表达式形式[macro form]而不是显式 block 表达式形式[form]引入的语句块[block].
 
-implicit compilation n. compilation performed during evaluation.
+**implicit compilation** n. 在求值[evaluation]期间执行的编译[compilation].
 
-implicit progn n. an ordered set of adjacent forms appearing in another form, and defined by their context in that form to be executed as if within a progn.
+**implicit progn** n. 在另一个表达式形式[form]中出现的相邻表达式形式[form]的有序集合, 并由该表达式形式[form]中的上下文定义为就像在一个 progn 中执行一样.
 
-implicit tagbody n. an ordered set of adjacent forms and/or tags appearing in another form, and defined by their context in that form to be executed as if within a tagbody.
+**implicit tagbody** n. 在另一个表达式形式[form]中的相邻表达式形式[form] 和/或 标签[tag]的有序集合, 并由该表达式形式[form]中的上下文定义为就像在一个 tagbody 中执行一样.
 
-import v.t. (a symbol into a package) to make the symbol be present in the package.
+**import** v.t. (一个包[package]中的一个符号[symbol]) 使这个符号[symbol]出现[present]在该包[package]中.
 
-improper list n. a list which is not a proper list: a circular list or a dotted list.
+**improper list** n. 一个列表[list], 它不是一个正规列表[proper list]: 一个循环列表[circular list]或者一个点对列表[dotted list].
 
-inaccessible adj. not accessible.
+**inaccessible** adj. 不是可访问的[accessible].
 
-**indefinite extent** n. 时长是无限的一个范围[extent]. "大部分 Common Lisp 对象有着无限范围(Most Common Lisp objects have indefinite extent)".
+**indefinite extent** n. 时长是无限的一个范围[extent]. "大部分 Common Lisp 对象有着无限范围 (Most Common Lisp objects have indefinite extent)".
 
 **indefinite scope** n. 没有限制的作用域[scope].
 
-indicator n. a property indicator.
+**indicator** n. 一个属性指示器[property indicator].
 
-indirect instance n. (of a class C1) an object of class C2, where C2 is a subclass of C1. ``An integer is an indirect instance of the class number.''
+**indirect instance** n. (指一个类[class] C1) 类[class] C2 的一个对象, 其中 C2 是 C1 的一个子类[subclass]. "一个整数是类 number 的一个简洁实例 (An integer is an indirect instance of the class number)".
 
-inherit v.t. 1. to receive or acquire a quality, trait, or characteristic; to gain access to a feature defined elsewhere. 2. (a class) to acquire the structure and behavior defined by a superclass. 3. (a package) to make symbols exported by another package accessible by using use-package.
+**inherit** v.t. 1. 接受或获得一种品质、特质或特征; 访问在其他地方定义的特性. 2. (一个类[class]) 获取超类[superclass]定义的结构和行为. 3. (一个包[package]) 通过使用 use-package 来使被另一个包[package]导出[export]是可访问的[accessible].
 
-initial pprint dispatch table n. the value of *print-pprint-dispatch* at the time the Lisp image is started.
+**initial pprint dispatch table** n. Lisp 镜像[Lisp image]开始时 \*print-pprint-dispatch* 的值[value].
 
 **initial readtable** n. Lisp 镜像[Lisp image]开始时 \*readtable* 的值[value].
 
-initialization argument list n. a property list of initialization argument names and values used in the protocol for initializing and reinitializing instances of classes. See Section 7.1 (Object Creation and Initialization).
+**initialization argument list** n. 用于初始化和重新初始化类[class]实例[instance]的协议中初始化参数名称[name]和值[value]的属性列表[property list]. 见章节 7.1 (对象创建和初始化).
 
-initialization form n. a form used to supply the initial value for a slot or variable. ``The initialization form for a slot in a defclass form is introduced by the keyword :initform.''
+**initialization form** n. 被用于给一个槽[slot]或变量[variable]提供初始值[value]的表达式形式[form]. "一个 defclass 表达式形式中的一个槽的初始化表达式形式由关键字 :initform 引入 (The initialization form for a slot in a defclass form is introduced by the keyword :initform)".
 
-input adj. (of a stream) supporting input operations (i.e., being a ``data source''). An input stream might also be an output stream, in which case it is sometimes called a bidirectional stream. See the function input-stream-p.
+**input** adj. (指一个流[stream]) 支持输入操作 (换句话说, 是一个 "数据源"). 一个输入[input]流[stream]也可能是一个输出[output]流[stream], 在这种情况下它有时被称为双向[bidirectional]流[stream]. 见函数[function] input-stream-p.
 
-instance n. 1. a direct instance. 2. a generalized instance. 3. an indirect instance.
+**instance** n. 1. 一个直接实例[direct instance]. 2. 一个广义实例[generalized instance]. 3. 一个间接实例[indirect instance].
 
-integer n. an object of type integer, which represents a mathematical integer.
+**integer** n. 一个 integer 类型[type]的对象[object], 表示一个数学上的整数.
 
-interactive stream n. a stream on which it makes sense to perform interactive querying. See Section 21.1.1.1.3 (Interactive Streams).
+**interactive stream** n. 一个流[stream], 可以在其上执行交互式查询. 见章节 21.1.1.1.3 (交互式流).
 
-intern v.t. 1. (a string in a package) to look up the string in the package, returning either a symbol with that name which was already accessible in the package or a newly created internal symbol of the package with that name. 2. Idiom. generally, to observe a protocol whereby objects which are equivalent or have equivalent names under some predicate defined by the protocol are mapped to a single canonical object.
+**intern** v.t. 1. (一个包[package]的字符串[string]) 在这个包[package]中查找这个字符串[string], 返回这个包[package]中已经可访问[accessible]的带有该名称[name]的符号[symbol], 或者返回这个包[package]中新创建的带有这个名称[name]的内部符号[internal symbol]. 2. Idiom. 通常, 观察一种协议, 在该协议定义的某个谓词下具有等价或具有等价名称的对象被映射到单个规范对象.
 
-internal symbol n. (of a package) a symbol which is accessible in the package, but which is not an external symbol of the package.
+**internal symbol** n. (指一个包[package]) 一个符号[symbol], 它在该包[package]中是可访问[accessible]的, 但是不是这个包[package]的一个外部符号[external symbol].
 
-internal time n. time, represented as an integer number of internal time units. Absolute internal time is measured as an offset from an arbitrarily chosen, implementation-dependent base. See Section 25.1.4.3 (Internal Time).
+**internal time** n. 时间[time], 被表示为内部时间单元[internal time unit]的一个整数[integer]数字. 绝对[absolute]内部时间[internal time]是作为从任意选择的、依赖于具体实现[implementation-dependent]的基础上的偏移量来度量的. 见章节 25.1.4.3 (内部时间).
 
-internal time unit n. a unit of time equal to 1/n of a second, for some implementation-defined integer value of n. See the variable internal-time-units-per-second.
+**internal time unit** n. 等价于一秒的 1/n 的时间单元, 其中 n 是某个具体实现定义的[implementation-defined]整数[integer]值. 见变量[variable] internal-time-units-per-second.
 
-interned adj. Trad. 1. (of a symbol) accessible[3] in any package. 2. (of a symbol in a specific package) present in that package.
+**interned** adj. Trad. 1. (指一个符号[symbol]) 在任何包[package]中可访问的[accessible[3]]. 2. (指一个特定包[package]中的一个符号[symbol]) 出现[present]在该包[package]中.
 
-interpreted function n. a function that is not a compiled function. (It is possible for there to be a conforming implementation which has no interpreted functions, but a conforming program must not assume that all functions are compiled functions.)
+**interpreted function** n. 一个函数[function], 它不是一个编译后的函数[compiled function]. (这里可能存在一个符合规范的实现[conforming implementation]没有解释型函数[interpreted function], 但是一个符合规范的程序[conforming program]一定不能假设所有的函数[function]都是编译后的函数[compiled function].)
 
-interpreted implementation n. an implementation that uses an execution strategy for interpreted functions that does not involve a one-time semantic analysis pre-pass, and instead uses ``lazy'' (and sometimes repetitious) semantic analysis of forms as they are encountered during execution.
+**interpreted implementation** n. 一个具体实现[implementation], 它对解释型函数[interpreted function]使用的执行策略不涉及一次性的语义分析预传递, 而是在执行过程中遇到表达式形式[form]时使用的"惰性"(有时是重复的)语义分析.
 
-interval designator n. (of type T) an ordered pair of objects that describe a subtype of T by delimiting an interval on the real number line. See Section 12.1.6 (Interval Designators).
+**interval designator** n. (指类型[type] T) 一种有序的对象[object]对, 通过在实数行上分隔一个区间来描述 T 的子类型[subtype]. 见章节 12.1.6 (区间标识符).
 
-invalid n., adj. 1. n. a possible constituent trait of a character which if present signifies that the character cannot ever appear in a token except under the control of a single escape character. For details, see Section 2.1.4.1 (Constituent Characters). 2. adj. (of a character) being a character that has syntax type constituent in the current readtable and that has the constituent trait invalid[1]. See Figure 2-8.
+**invalid** n., adj. 1. n. 字符[character]的一个可能的标记成分特质[constituent trait], 如果它存在就表示这个字符[character]不能出现在一个标记[token]中, 除了在单转义[single escape]字符[character]的控制下. 关于详情, 见章节 2.1.4.1 (标记成分字符). 2. adj. (指一个字符[character]) 是一个字符[character], 它在当前读取表[current readtable]中有着语法类型[syntax type]的标记成分[constituent], 并且它有着非法[invalid[1]]标记成分特质[constituent trait]. 见 Figure 2-8.
 
-iteration form n. a compound form whose operator is named in the next figure, or a compound form that has an implementation-defined operator and that is defined by the implementation to be an iteration form.
+**iteration form** n. 操作符[operator]在下一段中命名的一个复合表达式形式[compound form], 或者是一个有着具体实现定义的[implementation-defined]操作符[operator]并且被该实现定义为循环表达式形式[iteration form]的复合表达式形式[compound form].
 
-do              do-external-symbols  dotimes  
-do*             do-symbols           loop     
-do-all-symbols  dolist                        
+    do              do-external-symbols  dotimes  
+    do*             do-symbols           loop     
+    do-all-symbols  dolist                        
 
-Figure 26-3. Standardized Iteration Forms
+    Figure 26-3. 标准循环表达式形式
 
-iteration variable n. a variable V, the binding for which was created by an explicit use of V in an iteration form. 
+**iteration variable** n. 一个变量[variable] V, 它的绑定[binding]由一个循环表达式形式[iteration form]中 V 的显式使用[explicit use]所创建. 
 
 
 K
