@@ -791,81 +791,81 @@ binary adj. 1. (指流[stream]) 元素类型[element type]为 integer 类型[typ
 **keyword/value pair** n. 一个属性列表[property list]的两个连续元素[element] (分别是一个关键字[keyword]和一个值[value]). 
 
 
-L
+### L
 
-lambda combination n. Trad. a lambda form.
+**lambda combination** n. Trad. 一个 lambda 表达式形式[lambda form].
 
-lambda expression n. a list which can be used in place of a function name in certain contexts to denote a function by directly describing its behavior rather than indirectly by referring to the name of an established function; its name derives from the fact that its first element is the symbol lambda. See lambda.
+**lambda expression** n. 一个列表[list], 通过直接描述其行为而非间接引用一个已建立函数[function]的名字, 可以在特定上下文中被用于取代一个函数名[function]来表示一个函数[function]; 它的名称源于它的第一个元素是符号[symbol] lambda. 见 lambda.
 
-lambda form n. a form that is a list and that has a first element which is a lambda expression representing a function to be called on arguments which are the result of evaluating subsequent elements of the lambda form.
+**lambda form** n. 一个表达式形式[form], 它是一个列表[list], 并且它的第一个元素[element]是一个要被调用的函数[function]的 lambda 表达式[lambda expression], 这个函数使用求值这个 lambda 表达式形式[lambda form]的后续元素的结果作为实参[argument]来调用.
 
-lambda list n. a list that specifies a set of parameters (sometimes called lambda variables) and a protocol for receiving values for those parameters; that is, an ordinary lambda list, an extended lambda list, or a modified lambda list.
+**lambda list** n. 一个列表[list], 它指定了形参[parameter]集合 (有时被称为 lambda 变量[lambda variables]) 以及一个协议来接收这些形参[parameter]的值[value]; 也就是说, 一个普通 lambda 列表[ordinary lambda list], 一个扩展 lambda 列表[extended lambda list], 或者一个修改后的 lambda 列表 [modified lambda list].
 
-lambda list keyword n. a symbol whose name begins with ampersand and that is specially recognized in a lambda list. Note that no standardized lambda list keyword is in the KEYWORD package.
+**lambda list keyword** n. 一种符号[symbol], 其名称[name]以与号[ampersand]开头，在 lambda 列表[lambda list]中被特别识别. 注意, 在 KEYWORD 包中没有标准[standardized] lambda 列表关键字[lambda list keyword].
 
-lambda variable n. a formal parameter, used to emphasize the variable's relation to the lambda list that established it.
+**lambda variable** n. 一个正规形参[formal parameter], 用于强调该变量[variable]与建立它的 lambda 列表[lambda list]的关系.
 
-leaf n. 1. an atom in a tree[1]. 2. a terminal node of a tree[2].
+**leaf** n. 1. 一个树[tree[1]]中的一个原子. 2. 一个树[tree[2]]的终端节点.
 
-leap seconds n. additional one-second intervals of time that are occasionally inserted into the true calendar by official timekeepers as a correction similar to ``leap years.'' All Common Lisp time representations ignore leap seconds; every day is assumed to be exactly 86400 seconds long.
+**leap seconds** n. 额外的一秒间隔, 偶尔被官方计时员插入到真实日历中, 作为类似"闰年"的修正. 所有 Common Lisp 时间[time]表示都忽略闰秒[leap second]; 假设每天正好是86400秒长.
 
-left-parenthesis n. the standard character ``('', that is variously called ``left parenthesis'' or ``open parenthesis'' See Figure 2-5.
+**left-parenthesis** n. 标准字符[standard character] "(", 也就是所谓的 "左圆括号(left parenthesis)" 或 "开圆括号(open parenthesis)". 见 Figure 2-5.
 
-length n. (of a sequence) the number of elements in the sequence. (Note that if the sequence is a vector with a fill pointer, its length is the same as the fill pointer even though the total allocated size of the vector might be larger.)
+**length** n. (指一个序列[sequence]) 这个序列[sequence]中元素[element]的数量. (注意, 如果这个序列[sequence]是一个带有填充指针[fill pointer]的向量[vector], 那么它的长度[length]和填充指针[fill pointer]相同, 即便这个向量[vector]总分配的大小可能更大.)
 
-lexical binding n. a binding in a lexical environment.
+**lexical binding** n. 一个词法环境[lexical environment]中的绑定[binding].
 
-lexical closure n. a function that, when invoked on arguments, executes the body of a lambda expression in the lexical environment that was captured at the time of the creation of the lexical closure, augmented by bindings of the function's parameters to the corresponding arguments.
+**lexical closure** n. 一个函数[function], 当在实参[argument]上被调用时, 在这个词法闭包[lexical closure]被创建时所捕获的词法环境[lexical environment]中执行一个 lambda 表达式[lambda expression]的主体, 通过这个函数[function]的形参[parameter]到对应实参[argument]的绑定[binding]来扩增.
 
-lexical environment n. that part of the environment that contains bindings whose names have lexical scope. A lexical environment contains, among other things: ordinary bindings of variable names to values, lexically established bindings of function names to functions, macros, symbol macros, blocks, tags, and local declarations (see declare).
+**lexical environment** n. 环境[environment]的这个部分包含了名称具有词法作用域[lexical scope]的绑定[binding]. 一个词法环境[lexical environment]还包括其他内容: 变量[variable]名称[name]到值[value]的普通绑定[binding], 词法上建立的函数名[function name]到函数[function]的绑定[binding], 宏[macro], 符号宏[symbol macro], 语句块[block], 标签[tag], 以及局部声明[local declaration] (见 declare).
 
-lexical scope n. scope that is limited to a spatial or textual region within the establishing form. ``The names of parameters to a function normally are lexically scoped.''
+**lexical scope** n. 限定于建立表达式形式[form]内的空间或文本区域的作用域[scope]. "函数的参数名通常在词法上限定作用域 (The names of parameters to a function normally are lexically scoped)".
 
-lexical variable n. a variable the binding for which is in the lexical environment.
+**lexical variable** n. 一个变量[variable], 它的绑定[binding]是在词法环境[lexical environment]中.
 
-Lisp image n. a running instantiation of a Common Lisp implementation. A Lisp image is characterized by a single address space in which any object can directly refer to any another in conformance with this specification, and by a single, common, global environment. (External operating systems sometimes call this a ``core image,'' ``fork,'' ``incarnation,'' ``job,'' or ``process.'' Note however, that the issue of a ``process'' in such an operating system is technically orthogonal to the issue of a Lisp image being defined here. Depending on the operating system, a single ``process'' might have multiple Lisp images, and multiple ``processes'' might reside in a single Lisp image. Hence, it is the idea of a fully shared address space for direct reference among all objects which is the defining characteristic. Note, too, that two ``processes'' which have a communication area that permits the sharing of some but not all objects are considered to be distinct Lisp images.)
+**Lisp image** n. 一个 Common Lisp 实现[implementation]的运行实例. 一个 Lisp 映像[Lisp image]的特征是一个单独的地址空间, 其中任何对象[object]可以直接引用符合此规范的任何其他对象, 以及一个单一的、公共的全局环境[global environment]. (外部操作系统有时将其称为 "核心映像(core image)", "fork", "实体(incarnation)", "作业(job)", 或者 "进程(process)". 但是请注意, 在这样的操作系统中, "进程"的问题在技术上与这里定义的 Lisp 映像[Lisp image]的问题是正交的. 根据操作系统的不同, 一个"进程"可能有多个 Lisp 映像[Lisp image], 多个"进程"可能驻留在一个 Lisp 映像[Lisp image]中. 因此, 在所有对象[object]之间直接引用一个完全共享的地址空间的概念是定义特征. 还要注意, 如果两个"进程"有一个通信区域, 允许共享一些但不是所有对象[object], 那么这两个"进程"被认为是不同的 Lisp 映像[Lisp image].)
 
 **Lisp printer** n. Trad. 打印一个对象[object]的字符表示到一个流[stream]的程序. (这个程序由函数[function] write 实现.)
 
-Lisp read-eval-print loop n. Trad. an endless loop that reads[2] a form, evaluates it, and prints (i.e., writes[2]) the results. In many implementations, the default mode of interaction with Common Lisp during program development is through such a loop.
+**Lisp read-eval-print loop** n. Trad. 一个无尽循环, 它读取[read[2]]一个表达式形式[form], 求值[evaluate]该表达式形式, 然后打印 (也就是, 写入[writes[2]]) 结果. 在许多实现[implementation]中, 在程序开发期间与 Common Lisp 交互的默认模式就是通过这样一个循环.
 
 **Lisp reader** n. Trad. 从一个流[stream]中解析对象[object]的字符表示并产生对象[object]的程序. (这个程序由函数[function] read 实现.)
 
-list n. 1. a chain of conses in which the car of each cons is an element of the list, and the cdr of each cons is either the next link in the chain or a terminating atom. See also proper list, dotted list, or circular list. 2. the type that is the union of null and cons.
+**list** n. 1. 一个 cons 链, 其中每一个 cons 的 car 是这个列表[list]的元素[element], 而每一个 cons 的 cdr 是这个链中的下一个链接或一个终止的原子[atom]. 参见正规列表[proper list], 点对列表[dotted list], 或循环列表[circular list]. 2. null 和 cons 的并集所表示的类型[type].
 
-list designator n. a designator for a list of objects; that is, an object that denotes a list and that is one of: a non-nil atom (denoting a singleton list whose element is that non-nil atom) or a proper list (denoting itself).
+**list designator** n. 一个对象[object]列表[list]的标识符[designator]; 也就是说, 一个表示一个列表[list]的对象[object]并且它是以下之一: 一个非 nil [non-nil]原子[atom] (表示一个单元素[singleton]列表[list], 它的元素[element]是这个非 nil [non-nil]原子[atom]) 或一个正规列表[proper list] (表示它自身[itself]).
 
-list structure n. (of a list) the set of conses that make up the list. Note that while the car[1b] component of each such cons is part of the list structure, the objects that are elements of the list (i.e., the objects that are the cars[2] of each cons in the list) are not themselves part of its list structure, even if they are conses, except in the (circular[2]) case where the list actually contains one of its tails as an element. (The list structure of a list is sometimes redundantly referred to as its ``top-level list structure'' in order to emphasize that any conses that are elements of the list are not involved.)
+**list structure** n. (指一个列表[list]) 构成这个列表[list]的 cons 集合. 注意, 当每一个这样的 cons 的 car 组件是这个列表结构[list structure]的一部分时, 作为列表[list]元素[element]的对象[object]本身 (也就是说, 这个列表[list]中每一个 cons 的 car 所表示的这些对象[object]) 不是列表结构的一部分, 即便它们是 cons, 除了这个列表[list]实际上包含了它的一个尾部[tail]作为元素[element] (循环[circular[2]]) 的情况下. (一个列表[list]的列表结构[list structure]有时被冗余地称为"顶级列表结构", 以强调不涉及列表[list]元素[element]的任何 cons.)
 
-literal adj. (of an object) referenced directly in a program rather than being computed by the program; that is, appearing as data in a quote form, or, if the object is a self-evaluating object, appearing as unquoted data. ``In the form (cons "one" '("two")), the expressions "one", ("two"), and "two" are literal objects.''
+**literal** adj. (指一个对象[object]) 在一个程序中直接引用而不是被这个程序计算; 这也就是说, 作为一个 quote 表达式形式[form]中的数据出现, 或者, 如果这个对象[object]是一个子求值对象[self-evaluating object], 则作为非 quote 数据出现. "在表达式形式 (cons "one" '("two")) 中, 表达式 "one", ("two"), 和 "two" 是字面化对象 (In the form (cons "one" '("two")), the expressions "one", ("two"), and "two" are literal objects)".
 
-load v.t. (a file) to cause the code contained in the file to be executed. See the function load.
+**load** v.t. (一个文件[file]) 使这个文件[file]中包含的代码[code]被执行. 见函数[function] load.
 
-load time n. the duration of time that the loader is loading compiled code.
+**load time** n. 加载器加载编译后代码[compiled code]的时期.
 
-load time value n. an object referred to in code by a load-time-value form. The value of such a form is some specific object which can only be computed in the run-time environment. In the case of file compilation, the value is computed once as part of the process of loading the compiled file, and not again. See the special operator load-time-value.
+**load time value** n. 由 load-time-value 表达式形式[form]在代码[code]中引用的对象[object]. 这样一个表达式形式[form]的值[value]是某个只能在运行时环境[environment]中被计算的特殊对象[object]. 在文件[file]编译[compilation]的情况中, 该值[value]作为加载已编译文件[compiled file]过程的一部分计算一次, 不会再一次计算. 见特殊操作符[special operator] load-time-value.
 
-loader n. a facility that is part of Lisp and that loads a file. See the function load.
+**loader** n. 一个工具, 它是 Lisp 的一部分, 并且它加载[load]一个文件[file]. 见函数[function] load.
 
-local declaration n. an expression which may appear only in specially designated positions of certain forms, and which provides information about the code contained within the containing form; that is, a declare expression.
+**local declaration** n. 一个表达式[expression], 它只能出现在特定表达式形式[form]的特定位置, 并且它提供有关包含表达式形式[form]中包含的代码的信息; 也就是说, 一个 declare 表达式[expression].
 
-local precedence order n. (of a class) a list consisting of the class followed by its direct superclasses in the order mentioned in the defining form for the class.
+**local precedence order** n. (指一个类[class]) 由类[class]及其直接超类[direct superclass]按照类[class]定义表达式形式[form]中提到的顺序组成的列表[list].
 
-local slot n. (of a class) a slot accessible in only one instance, namely the instance in which the slot is allocated.
+**local slot** n. (指一个类[class]) 只有在一个实例[instance]可访问[accessible]的槽[slot], 即分配这个槽[slot]的实例[instance].
 
-logical block n. a conceptual grouping of related output used by the pretty printer. See the macro pprint-logical-block and Section 22.2.1.1 (Dynamic Control of the Arrangement of Output).
+**logical block** n. 美观打印器[pretty printer]使用的相关输出的概念分组. 见宏[macro] pprint-logical-block 以及章节 22.2.1.1 (输出排列的动态控制).
 
-logical host n. an object of implementation-dependent nature that is used as the representation of a ``host'' in a logical pathname, and that has an associated set of translation rules for converting logical pathnames belonging to that host into physical pathnames. See Section 19.3 (Logical Pathnames).
+**logical host** n. 一个依赖于具体实现[implementation-dependent]的对象[object], 它被用作一个逻辑路径名[logical pathname]中的 "主机(host)" 的表示, 并且它有一个转换规则的关联集合, 用于将属于该主机的逻辑路径名[logical pathname]转换为物理路径名[physical pathname]. 见章节 19.3 (逻辑路径名).
 
-logical host designator n. a designator for a logical host; that is, an object that denotes a logical host and that is one of: a string (denoting the logical host that it names), or a logical host (denoting itself). (Note that because the representation of a logical host is implementation-dependent, it is possible that an implementation might represent a logical host as the string that names it.)
+**logical host designator** n. 一个逻辑主机[logical host]的标识符[designator]; 也就是说, 一个表示一个逻辑主机[logical host]的对象[object]并且它是以下之一: 一个字符串[string] (表示它命名的逻辑主机[logical host]), 或者一个逻辑主机[logical host] (表示它自身). (注意, 由于一个逻辑主机[logical host]的表示是依赖于具体实现的[implementation-dependent], 一个具体实现[implementation]把一个逻辑主机[logical host]表示为一个命名它的字符串[string]是可能的.)
 
-logical pathname n. an object of type logical-pathname.
+**logical pathname** n. 一个 logical-pathname 类型[type]的对象[object].
 
-long float n. an object of type long-float.
+**long float** n. 一个 long-float 类型[type]的对象[object].
 
-loop keyword n. Trad. a symbol that is a specially recognized part of the syntax of an extended loop form. Such symbols are recognized by their name (using string=), not by their identity; as such, they may be in any package. A loop keyword is not a keyword.
+**loop keyword** n. Trad. 一个符号[symbol], 它是一个扩展 loop 表达式形式[form]的语法中特殊可识别的部分. 这样的符号[symbol]通过它们的名称[name]来识别 (使用 string=), 而不是通过它们的标识; 因此, 它们可能在任何包[package]中. 一个 loop 关键字 [loop keyword]不是一个关键字[keyword].
 
-lowercase adj. (of a character) being among standard characters corresponding to the small letters a through z, or being some other implementation-defined character that is defined by the implementation to be lowercase. See Section 13.1.4.3 (Characters With Case). 
+**lowercase** adj. (指一个字符[character]) 位于与小写字母 a 到 z 对应的标准字符[standard character]之中, 或由具体实现[implementation]定义为小写[lowercase]的其他具体实现定义的[implementation-defined]字符[character]. 见章节 13.1.4.3 (大小写字符). 
 
 
 M
@@ -1467,7 +1467,7 @@ upgraded array element type n. (of a type) a type that is a supertype of the typ
 
 upgraded complex part type n. (of a type) a type that is a supertype of the type and that is used instead of the type whenever the type is used as a complex part type for object creation or type discrimination. See the function upgraded-complex-part-type.
 
-uppercase adj. (of a character) being among standard characters corresponding to the capital letters A through Z, or being some other implementation-defined character that is defined by the implementation to be uppercase. See Section 13.1.4.3 (Characters With Case).
+uppercase adj. (of a character) being among standard characters corresponding to the capital letters A through Z, or being some other implementation-defined character that is defined by the implementation to be uppercase. See Section 13.1.4.3 (大小写字符).
 
 use v.t. (a package P1) to inherit the external symbols of P1. (If a package P2 uses P1, the external symbols of P1 become internal symbols of P2 unless they are explicitly exported.) ``The package CL-USER uses the package CL.''
 
