@@ -868,47 +868,47 @@ binary adj. 1. (指流[stream]) 元素类型[element type]为 integer 类型[typ
 **lowercase** adj. (指一个字符[character]) 位于与小写字母 a 到 z 对应的标准字符[standard character]之中, 或由具体实现[implementation]定义为小写[lowercase]的其他具体实现定义的[implementation-defined]字符[character]. 见章节 13.1.4.3 (大小写字符). 
 
 
-M
+### M
 
-macro n. 1. a macro form 2. a macro function. 3. a macro name.
+**macro** n. 1. 一个宏表达式形式[macro form] 2. 一个宏函数[macro function]. 3. 一个宏名称[macro name].
 
-macro character n. a character which, when encountered by the Lisp reader in its main dispatch loop, introduces a reader macro[1]. (Macro characters have nothing to do with macros.)
+**macro character** n. 一个字符[character], 当被 Lisp 读取器[Lisp reader]在它的主要分派循环中遇到时, 引入一个读取器宏[reader macro[1]]. (宏字符[macro character]与宏[macro]无关.)
 
-macro expansion n. 1. the process of translating a macro form into another form. 2. the form resulting from this process.
+**macro expansion** n. 1. 把一个宏表达式形式[macro form]转换为另一个表达式形式[form]打过程. 2. 这个过程产生的表达式形式[form].
 
-macro form n. a form that stands for another form (e.g., for the purposes of abstraction, information hiding, or syntactic convenience); that is, either a compound form whose first element is a macro name, or a form that is a symbol that names a symbol macro.
+**macro form** n. 代表另一个表达式形式[form]的表达式形式[form] (例如, 出于抽象、信息隐藏或语法方便的目的); 也就是说, 要么是第一个元素是宏名称[macro name]的复合表达式形式[compound form], 要么是为符号宏[symbol macro]命名的符号[symbol]表达式形式[form].
 
-macro function n. a function of two arguments, a form and an environment, that implements macro expansion by producing a form to be evaluated in place of the original argument form.
+**macro function** n. 一个两参数的函数[function], 两个参数是一个表达式形式[form]和一个环境[environment], 它通过产生一个要被求值的表达式形式[form]去替换原始的参数表达式形式[form]来实现宏展开[macro expansion].
 
-macro lambda list n. an extended lambda list used in forms that establish macro definitions, such as defmacro and macrolet. See Section 3.4.4 (Macro Lambda Lists).
+**macro lambda list** n. 被用于建立[establish]宏[macro]定义的表达式形式[form] (例如 defmacro 和 macrolet) 中的扩展 lambda 列表[extended lambda list]. 见章节 3.4.4 (宏 Lambda 列表).
 
-macro name n. a name for which macro-function returns true and which when used as the first element of a compound form identifies that form as a macro form.
+**macro name** n. 一个名称[name], 对于它 macro-function 返回 true, 并且当被用作一个复合表达式形式[compound form]的第一个元素时标识这个表达式形式[form]为一个宏表达式形式[macro form].
 
-macroexpand hook n. the function that is the value of *macroexpand-hook*.
+**macroexpand hook** n. \*macroexpand-hook* 的值[value]所指的函数[function].
 
-mapping n. 1. a type of iteration in which a function is successively applied to objects taken from corresponding entries in collections such as sequences or hash tables. 2. Math. a relation between two sets in which each element of the first set (the ``domain'') is assigned one element of the second set (the ``range'').
+**mapping** n. 1. 一种迭代类型, 其中一个函数[function]被依次应用到取自集合 (例如序列[sequence]或散列表[hash table]) 中对应条目的对象[object]上. 2. Math. 两个集合之间的一种关系, 其中第一个集合的每个元素("域")都分配给第二个集合的一个元素("范围").
 
-metaclass n. 1. a class whose instances are classes. 2. (of an object) the class of the class of the object.
+**metaclass** n. 1. 一个类[class], 它的实例[instance]也是类[class]. 2. (指一个对象[object]) 该对象[object]的类[class]的类[class].
 
-Metaobject Protocol n. one of many possible descriptions of how a conforming implementation might implement various aspects of the object system. This description is beyond the scope of this document, and no conforming implementation is required to adhere to it except as noted explicitly in this specification. Nevertheless, its existence helps to establish normative practice, and implementors with no reason to diverge from it are encouraged to consider making their implementation adhere to it where possible. It is described in detail in The Art of the Metaobject Protocol.
+**Metaobject Protocol** n. 关于一个符合规范的实现[conforming implementation]可能如何实现对象系统的多个方面的可能的描述之一. 这个描述超出了文档的范围, 并且没有要求符合规范的实现[conforming implementation]去遵守它, 除了它在这个规范中显式标注的例外. 然而, 它的存在有助于建立规范的做法, 并鼓励没有理由背离它的实现者考虑在可能的情况下使他们的实现[implementation]遵守它. 这个在 The Art of the Metaobject Protocol 中详细描述.
 
-method n. an object that is part of a generic function and which provides information about how that generic function should behave when its arguments are objects of certain classes or with certain identities.
+**method** n. 一个对象[object], 它是一个广义函数[generic function]的一部分, 并且它提供了关于实参[argument]是特定类[class]的对象[object]或特定标识时该广义函数[generic function]应该如何表现的信息.
 
-method combination n. 1. generally, the composition of a set of methods to produce an effective method for a generic function. 2. an object of type method-combination, which represents the details of how the method combination[1] for one or more specific generic functions is to be performed.
+**method combination** n. 1. 通常, 一组方法[method]的组合, 来产生一个广义函数[generic function]的生效方法[effective method]. 2. 一个 method-combination 类型[type]的对象[object], 它表示一个或多个特定广义函数[generic function]的方法组合如果被执行的详细情况.
 
-method-defining form n. a form that defines a method for a generic function, whether explicitly or implicitly. See Section 7.6.1 (Introduction to Generic Functions).
+**method-defining form** n. 一个表达式形式[form], 它定义了一个广义函数[generic function]的一个方法[method], 不管是显式的还是隐式的. 见章节 7.6.1 (广义函数的介绍).
 
-method-defining operator n. an operator corresponding to a method-defining form. See Figure 7-1.
+**method-defining operator** n. 对应于一个方法定义表达式形式[method-defining form]的操作符[operator]. 见 Figure 7-1.
 
-minimal compilation n. actions the compiler must take at compile time. See Section 3.2.2 (Compilation Semantics).
+**minimal compilation** n. 编译器[compiler]必须要在编译期采取的动作. 见章节 3.2.2 (编译语义).
 
-modified lambda list n. a list resembling an ordinary lambda list in form and purpose, but which deviates in syntax or functionality from the definition of an ordinary lambda list. See ordinary lambda list. ``deftype uses a modified lambda list.''
+**modified lambda list** n. 一个列表, 它在形式和目的上类似于普通 lambda 列表[ordinary lambda list], 但在语法或功能上偏离了普通 lambda 列表[ordinary lambda list]的定义. 见普通 lambda 列表[ordinary lambda list]. "deftype 使用一个改进 lambda 列表 (deftype uses a modified lambda list)".
 
-most recent adj. innermost; that is, having been established (and not yet disestablished) more recently than any other of its kind.
+**most recent** adj. 最里面的; 也就是说, 比其他同类的建立得更晚 (而且尚未解除建立).
 
 **multiple escape** n., adj. 1. n. 一个被成对使用的字符[character]的语法类型[syntax type], 来表示括起来的那些字符要被当作字母[alphabetic[2]]字符[character], 保留它们的大小写[case]. 关于详情, 见章节 2.1.4.5 (多转义字符). 2. adj. (一个字符[character]的) 有着多转义[multiple escape]语法类型[syntax type]. 3. n. 一个多转义[multiple escape[2]]字符[character]. (在标准读取表[standard readtable]中, 竖线[vertical-bar]是一个多转义[multiple escape]字符[character].)
 
-multiple values n. 1. more than one value. ``The function truncate returns multiple values.'' 2. a variable number of values, possibly including zero or one. ``The function values returns multiple values.'' 3. a fixed number of values other than one. ``The macro multiple-value-bind is among the few operators in Common Lisp which can detect and manipulate multiple values.'' 
+**multiple values** n. 1. 不止一个值[value]. "函数 truncate 返回多个值 (The function truncate returns multiple values)". 2. 一个可变数量的值[value], 可能包含零个或一个. "函数 values 返回多值 (The function values returns multiple values)". 3. 除 1 以外的固定数量的值[value]. "The macro multiple-value-bind is among the few operators in Common Lisp which can detect and manipulate multiple values".
 
 
 N
