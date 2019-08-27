@@ -908,7 +908,7 @@ binary adj. 1. (指流[stream]) 元素类型[element type]为 integer 类型[typ
 
 **multiple escape** n., adj. 1. n. 一个被成对使用的字符[character]的语法类型[syntax type], 来表示括起来的那些字符要被当作字母[alphabetic[2]]字符[character], 保留它们的大小写[case]. 关于详情, 见章节 2.1.4.5 (多转义字符). 2. adj. (一个字符[character]的) 有着多转义[multiple escape]语法类型[syntax type]. 3. n. 一个多转义[multiple escape[2]]字符[character]. (在标准读取表[standard readtable]中, 竖线[vertical-bar]是一个多转义[multiple escape]字符[character].)
 
-**multiple values** n. 1. 不止一个值[value]. "函数 truncate 返回多个值 (The function truncate returns multiple values)". 2. 一个可变数量的值[value], 可能包含零个或一个. "函数 values 返回多值 (The function values returns multiple values)". 3. 除 1 以外的固定数量的值[value]. "The macro multiple-value-bind is among the few operators in Common Lisp which can detect and manipulate multiple values".
+**multiple values** n. 1. 不止一个值[value]. "函数 truncate 返回多个值 (The function truncate returns multiple values)". 2. 一个可变数量的值[value], 可能包含零个或一个. "函数 values 返回多值 (The function values returns multiple values)". 3. 除 1 以外的固定数量的值[value]. "宏 multiple-value-bind 是 Common Lisp 中为数不多的可以检测和操纵多值的操作符 (The macro multiple-value-bind is among the few operators in Common Lisp which can detect and manipulate multiple values)".
 
 
 N
