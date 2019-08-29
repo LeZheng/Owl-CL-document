@@ -911,61 +911,61 @@ binary adj. 1. (指流[stream]) 元素类型[element type]为 integer 类型[typ
 **multiple values** n. 1. 不止一个值[value]. "函数 truncate 返回多个值 (The function truncate returns multiple values)". 2. 一个可变数量的值[value], 可能包含零个或一个. "函数 values 返回多值 (The function values returns multiple values)". 3. 除 1 以外的固定数量的值[value]. "宏 multiple-value-bind 是 Common Lisp 中为数不多的可以检测和操纵多值的操作符 (The macro multiple-value-bind is among the few operators in Common Lisp which can detect and manipulate multiple values)".
 
 
-N
+### N
 
-name n., v.t. 1. n. an identifier by which an object, a binding, or an exit point is referred to by association using a binding. 2. v.t. to give a name to. 3. n. (of an object having a name component) the object which is that component. ``The string which is a symbol's name is returned by symbol-name.'' 4. n. (of a pathname) a. the name component, returned by pathname-name. b. the entire namestring, returned by namestring. 5. n. (of a character) a string that names the character and that has length greater than one. (All non-graphic characters are required to have names unless they have some implementation-defined attribute which is not null. Whether or not other characters have names is implementation-dependent.)
+**name** n., v.t. 1. n. 一个标识符[identifier],  一个绑定[binding]关联通过它来引用一个对象[object]、一个绑定[binding]或一个退出点[exit point]. 2. v.t. 去给定一个名称[name]. 3. n. (指具有一个名称组件的对象[object]) 就是该组件的对象[object]. "一个符号的名称字符串由 symbol-name 返回 (The string which is a symbol's name is returned by symbol-name)". 4. n. (指一个路径名[pathname]) a. 由 pathname-name 返回的名称组件. b. 由 namestring 返回的完整路径名字符串. 5. n. (指一个字符[character]) 一个命名该字符[character]的字符串[string], 并且它有着超过一的长度[length]. (所有非图形[non-graphic]字符[character]都需要有名称[name], 除非它们具有某个具体实现定义的[implementation-defined]不为空[null]的属性[attribute]. 其他字符[character]是否具有名称[name]是依赖于具体实现的[implementation-dependent].)
 
-named constant n. a variable that is defined by Common Lisp, by the implementation, or by user code (see the macro defconstant) to always yield the same value when evaluated. ``The value of a named constant may not be changed by assignment or by binding.''
+**named constant** n. 一个变量[variable], 它由 Common Lisp、具体实现[implementation]或用户代码 (见宏[macro] defconstant) 定义, 在求值时总是产生[yield]相同的值[value]. "一个已命名常量的值不能通过赋值或绑定更改".
 
-namespace n. 1. bindings whose denotations are restricted to a particular kind. ``The bindings of names to tags is the tag namespace.'' 2. any mapping whose domain is a set of names. ``A package defines a namespace.''
+**namespace** n. 1. 表示受限于一个特定种类的绑定[binding]. "名称到标签的绑定是标签命名空间 (The bindings of names to tags is the tag namespace)". 2.域是一组名称[name]的任何映射[mapping]. "一个包定义一个命名空间 (A package defines a namespace)".
 
-namestring n. a string that represents a filename using either the standardized notation for naming logical pathnames described in Section 19.3.1 (Syntax of Logical Pathname Namestrings), or some implementation-defined notation for naming a physical pathname.
+**namestring** n. 一个字符串[string], 它使用章节 19.3.1 (逻辑路径名名称字符串的语法)所述的命名逻辑路径名[logical pathname]的标准[standardized]表示法或者某个具体实现定义的[implementation-defined]命名一个物理路径名[physical pathname]的表示法来表示了一个文件名[filename].
 
 **newline** n. 标准字符[standard character] <Newline>, 为 Lisp 读取器[Lisp reader]表示为 #\Newline.
 
-next method n. the next method to be invoked with respect to a given method for a particular set of arguments or argument classes. See Section 7.6.6.1.3 (Applying method combination to the sorted list of applicable methods).
+**next method** n. 针对特定参数或参数类[class]的集合的给定方法[method]调用的下一个方法[method]. 见章节 7.6.6.1.3 (对排序后的可应用方法应用方法组合).
 
-nickname n. (of a package) one of possibly several names that can be used to refer to the package but that is not the primary name of the package.
+**nickname** n. (指一个包[package]) 可以被用于引用该包[package]的几个可能的名字[name]中的一个, 但不是这个包[package]的主要名称[name].
 
-nil n. the object that is at once the symbol named "NIL" in the COMMON-LISP package, the empty list, the boolean (or generalized boolean) representing false, and the name of the empty type.
+**nil** n. 这个对象[object], 即 COMMON-LISP 包中名为 "NIL" 的符号[symbol]、空列表[empty list]、表示 false 的 boolean (或广义 boolean [generalized boolean])以及空类型[empty type]的名称[name].
 
-non-atomic adj. being other than an atom; i.e., being a cons.
+**non-atomic** adj. 不是一个原子[atom]; 换句话说, 就是一个 cons.
 
-non-constant variable n. a variable that is not a constant variable.
+**non-constant variable** n. 一个变量[variable], 它不是一个常变量[constant variable].
 
-non-correctable adj. (of an error) not intentionally correctable. (Because of the dynamic nature of restarts, it is neither possible nor generally useful to completely prohibit an error from being correctable. This term is used in order to express an intent that no special effort should be made by code signaling an error to make that error correctable; however, there is no actual requirement on conforming programs or conforming implementations imposed by this term.)
+**non-correctable** adj. (指一个错误[error]) 不能故意校正的[correctable]. (由于重启动[restart]的动态特性, 完全禁止错误[error]的可校正性[correctable]既不可能, 通常也没有用处. 使用这个术语是为了表达一种意图, 即不应该通过发出错误[error]信号的代码[code]来做出特殊的努力来使这个错误[error]成为可校正的[correctable]; 然而, 这个术语对符合标准的程序[conforming program]或符合标准的实现[conforming implementation]并没有实际的要求.)
 
-non-empty adj. having at least one element.
+**non-empty** adj. 至少有一个元素[element].
 
-non-generic function n. a function that is not a generic function.
+**non-generic function** n. 一个函数[function], 它不是一个广义函数[generic function].
 
-non-graphic adj. (of a character) not graphic. See Section 13.1.4.1 (Graphic Characters).
+**non-graphic** adj. (指一个字符[character]) 不是图形的[graphic]. 见章节 13.1.4.1 (图形字符).
 
-non-list n., adj. other than a list; i.e., a non-nil atom.
+**non-list** n., adj. 除了列表[list]以外; 换句话说, 一个非空[non-nil]原子[atom].
 
-non-local exit n. a transfer of control (and sometimes values) to an exit point for reasons other than a normal return. ``The operators go, throw, and return-from cause a non-local exit.''
+**non-local exit** n. 将控制(有时时值[value])转移到一个退出点[exit point], 而不是出于正常返回的原因. "操作符 go、throw 以及 return-from 导致一个非局部退出 (The operators go, throw, and return-from cause a non-local exit)".
 
-non-nil n., adj. not nil. Technically, any object which is not nil can be referred to as true, but that would tend to imply a unique view of the object as a generalized boolean. Referring to such an object as non-nil avoids this implication.
+**non-nil** n., adj. 不是 nil. 学术上, 任何不是 nil 的对象[object]都可以被引用为 true, 但是这将倾向于将对象[object]作为一个广义 boolean [generalized boolean]的独特视图. 引用这样的一个对象[object]为非 nil [non-nil]避免了这种暗示.
 
-non-null lexical environment n. a lexical environment that has additional information not present in the global environment, such as one or more bindings.
+**non-null lexical environment** n. 一个词法环境[lexical environment], 它具有没有出现在全局环境[global environment]中的额外信息, 例如一个或多个绑定[binding].
 
-non-simple adj. not simple.
+**non-simple** adj. 不简单[simple].
 
-non-terminating adj. (一个宏字符[macro character]的) 是这样的, 当它出现在一个扩展标记中时, 它会被当作一个标记成分字符[character]. 见章节 2.2 (读取器算法).
+**non-terminating** adj. (一个宏字符[macro character]的) 是这样的, 当它出现在一个扩展标记中时, 它会被当作一个标记成分字符[character]. 见章节 2.2 (读取器算法).
 
-non-top-level form n. a form that, by virtue of its position as a subform of another form, is not a top level form. See Section 3.2.3.1 (Processing of Top Level Forms).
+**non-top-level form** n. 一个表达式形式[form], 它是另一个表达式形式[form]的子表达式形式[subform], 一个顶层表达式形式[top level form]. 见章节 3.2.3.1 (顶层表达式形式的处理).
 
-normal return n. the natural transfer of control and values which occurs after the complete execution of a form.
+**normal return** n. 控制和值[value]的自然转移, 发生在表达式形式[form]的完整执行之后.
 
-normalized adj., ANSI, IEEE (of a float) conforming to the description of ``normalized'' as described by IEEE Standard for Binary Floating-Point Arithmetic. See denormalized.
+**normalized** adj., ANSI, IEEE (指一个浮点数[float]) 符合 IEEE Standard for Binary Floating-Point Arithmetic 所述的 "标准化 (normalized)" 的描述. 见非标准化[denormalized].
 
-null adj., n. 1. adj. a. (of a list) having no elements: empty. See empty list. b. (of a string) having a length of zero. (It is common, both within this document and in observed spoken behavior, to refer to an empty string by an apparent definite reference, as in ``the null string'' even though no attempt is made to intern[2] null strings. The phrase ``a null string'' is technically more correct, but is generally considered awkward by most Lisp programmers. As such, the phrase ``the null string'' should be treated as an indefinite reference in all cases except for anaphoric references.) c. (of an implementation-defined attribute of a character) An object to which the value of that attribute defaults if no specific value was requested. 2. n. an object of type null (the only such object being nil).
+**null** adj., n. 1. adj. a. (指一个列表[list]) 没有元素[element]: 空的. 见空列表[empty list]. b. (指一个字符串[string]) 具有一个为 0 的长度[length]. (无论是在本文档中, 还是在观察到的口语行为中, 通过明显的明确引用来引用空字符串都是常见的, 就像在 "空字符串" 中一样, 即使没有尝试去捕获[intern[2]]空字符串. 措辞 "一个空字符串 (a null string)" 在技术上更正确, 但是大多数 Lisp 程序员通常认为它很笨拙. 因此, 除了回指引用外, 术语 "空字符串 (the null string)" 在所有情况下都应视为不确定引用.) c. (指一个字符[character]的一个具体实现定义的[implementation-defined]属性[attribute]) 如果没有请求特定值, 则该属性[attribute]的值默认为该对象[object]的值. 2. n. 一个 null 类型[type]的对象[object] (仅有的这样的对象[object]是 nil).
 
-null lexical environment n. the lexical environment which has no bindings.
+**null lexical environment** n. 没有绑定[binding]的词法环境[lexical environment].
 
-number n. an object of type number.
+**number** n. 一个 number 类型[type]的对象[object].
 
-numeric adj. (of a character) being one of the standard characters 0 through 9, or being some other graphic character defined by the implementation to be numeric. 
+**numeric** adj. (指一个字符[character]) 是标准字符[standard character] 0 到 9 中的一个, 或者被具体实现[implementation]定义为数值[numeric]的某个其他的图形[graphic]字符[character]. 
 
 
 O
