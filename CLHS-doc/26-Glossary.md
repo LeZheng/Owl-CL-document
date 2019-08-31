@@ -968,27 +968,27 @@ binary adj. 1. (指流[stream]) 元素类型[element type]为 integer 类型[typ
 **numeric** adj. (指一个字符[character]) 是标准字符[standard character] 0 到 9 中的一个, 或者被具体实现[implementation]定义为数值[numeric]的某个其他的图形[graphic]字符[character]. 
 
 
-O
+### O
 
 **object** n. 1. 任何 Lisp 数据. "函数 cons 创建一个引用其他两个对象的对象(The function cons creates an object which refers to two other objects)". 2. (直接跟在一个类型[type]的名字后面) 一个那个类型[type]的对象[object], 被用于强调那个对象[object]不止是那个类型[type]的一个对象的名字[name], 并且在那个类型[type](例如 function 或 class)的对象[object]普遍通过名字[name]来引用的情况下是那个类型[type]的一个元素[element]. "函数 symbol-function 接收一个函数名并返回一个函数对象(The function symbol-function takes a function name and returns a function object)".
 
-object-traversing adj. operating in succession on components of an object. ``The operators mapcar, maphash, with-package-iterator and count perform object-traversing operations.''
+**object-traversing** adj. 连续地对对象[object]的组件进行操作. "操作符 mapcar、maphash、with-package-iterator 和 count 执行对象穿越操作 (The operators mapcar, maphash, with-package-iterator and count perform object-traversing operations)".
 
-open adj., v.t. (a file) 1. v.t. to create and return a stream to the file. 2. adj. (of a stream) having been opened[1], but not yet closed.
+**open** adj., v.t. (一个文件[file]) 1. v.t. 去创建并返回一个到该文件[file]的流[stream]. 2. adj. (指一个流[stream]) 已经被打开[open[1]], 但还没有被关闭[closed].
 
 **operator** n. 1. 一个函数[function], 宏[macro], 或[special operator]. 2. 命名这样一个函数[function], 宏[macro], 或特殊操作符[special operator]的符号[symbol]. 3. (在一个 function 特殊表达式形式[special form]中) 这个 function 特殊表达式形式[special form] 的 cadr, 它可能是一个操作符[operator[2]] 或者一个 lambda 表达式[lambda expression]. 4. (一个复合表达式形式[compound form]的) 这个复合表达式形式[compound form]的 car, 它可能是一个操作符[operator[2]] 或者一个 lambda 表达式[lambda expression], 并且它从来不是 (setf symbol).
 
-optimize quality n. one of several aspects of a program that might be optimizable by certain compilers. Since optimizing one such quality might conflict with optimizing another, relative priorities for qualities can be established in an optimize declaration. The standardized optimize qualities are compilation-speed (speed of the compilation process), debug (ease of debugging), safety (run-time error checking), space (both code size and run-time space), and speed (of the object code). Implementations may define additional optimize qualities.
+**optimize quality** n. 一个程序中可以被特定编译器优化的多个方面中的一个. 由于优化一个这样的质量可能与优化另一个冲突, 相关质量的优先级可以再一个 optimize 声明[declaration]中建立. 标准[standardized]优化质量[optimize quality]是 compilation-speed (编译过程的速度)、 debug (调试的容易程度)、 safety (运行时错误检测), space (包括代码大小和运行时空间)、 以及 speed (指对象代码). 具体实现[implementation]可以定义额外的优化质量[optimize quality].
 
-optional parameter n. A parameter for which a corresponding positional argument is optional. If the argument is not supplied, a default value is used. See also supplied-p parameter.
+**optional parameter** n. 一个形参[parameter], 其对应位置的实参[argument]是可选的. 如果这个实参[argument]没有被提供, 就使用一个默认值. 参见 supplied-p 参数[supplied-p parameter].
 
-ordinary function n. a function that is not a generic function.
+**ordinary function** n. 一个函数[function], 它不是一个广义函数[generic function].
 
-ordinary lambda list n. the kind of lambda list used by lambda. See modified lambda list and extended lambda list. ``defun uses an ordinary lambda list.''
+**ordinary lambda list** n. 被 lambda 所使用的 lambda 列表[lambda list]的种类. 见改进 lambda 列表[modified lambda list]和扩展 lambda 列表[extended lambda list]. "defun 使用一个普通 lambda 列表 (defun uses an ordinary lambda list)".
 
-otherwise inaccessible part n. (of an object, O1) an object, O2, which would be made inaccessible if O1 were made inaccessible. (Every object is an otherwise inaccessible part of itself.)
+**otherwise inaccessible part** n. (指一个对象[object], O1) 一个对象[object] O2, 如果 O1 不可访问[inaccessible], 则该对象 O2 将不可访问[inaccessible]. (每个对象[object]都是它自身的其他不可访问部分[otherwise inaccessible part].)
 
-output adj. (of a stream) supporting output operations (i.e., being a ``data sink''). An output stream might also be an input stream, in which case it is sometimes called a bidirectional stream. See the function output-stream-p. 
+**output** adj. (指一个流[stream]) 支持输出操作 (换句话说, 就是一个 "数据接收器 (data sink)"). 一个输出[output]流[stream]可能也是一个输入[input]流[stream], 在这个情况下它有时被称为双向[bidirectional]流[stream]. 见函数[function] output-stream-p. 
 
 
 P
