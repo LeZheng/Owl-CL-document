@@ -991,105 +991,105 @@ binary adj. 1. (指流[stream]) 元素类型[element type]为 integer 类型[typ
 **output** adj. (指一个流[stream]) 支持输出操作 (换句话说, 就是一个 "数据接收器 (data sink)"). 一个输出[output]流[stream]可能也是一个输入[input]流[stream], 在这个情况下它有时被称为双向[bidirectional]流[stream]. 见函数[function] output-stream-p. 
 
 
-P
+### P
 
-package n. an object of type package.
+**package** n. 一个 package 类型[type]的对象[object].
 
-package cell n. Trad. (of a symbol) The place in a symbol that holds one of possibly several packages in which the symbol is interned, called the home package, or which holds nil if no such package exists or is known. See the function symbol-package.
+**package cell** n. Trad. (指一个符号[symbol]) 一个符号[symbol]中的一个位置[place], 它持有了该符号[symbol]被捕获[interned]的多个包[package]中的一个, 称为 home 包[home package], 或者如果不存在这样的包[package]或不可知则持有 nil. 见函数[function] symbol-package.
 
-package designator n. a designator for a package; that is, an object that denotes a package and that is one of: a string designator (denoting the package that has the string that it designates as its name or as one of its nicknames), or a package (denoting itself).
+**package designator** n. 一个包[package]的标识符[designator]; 也就是说, 表示一个包[package]的对象[object]并且是以下之一: 一个字符串标识符[string designator] (表示名称[name]或别名[nickname]之一为该字符串[string]的包[package]), 或者一个包[package] (表示它自身).
 
-package marker n. a character which is used in the textual notation for a symbol to separate the package name from the symbol name, and which is colon in the standard readtable. See Section 2.1 (Character Syntax).
+**package marker** n. 一个字符, 它被用于一个符号中去分割包名和符号名, 它是标准读取表[standard readtable]中的冒号[colon]. 见章节 2.1 (字符语法).
 
-package prefix n. a notation preceding the name of a symbol in text that is processed by the Lisp reader, which uses a package name followed by one or more package markers, and which indicates that the symbol is looked up in the indicated package.
+**package prefix** n. 在 Lisp 读取器[Lisp reader]处理的文本中的一个符号[symbol]名字[name]前的标记, 它使用一个包[package]名称[name]后面跟着一个或多个包标记[package marker], 并且它表示这个符号[symbol]在表示的包[package]中查找.
 
-package registry n. A mapping of names to package objects. It is possible for there to be a package object which is not in this mapping; such a package is called an unregistered package. Operators such as find-package consult this mapping in order to find a package from its name. Operators such as do-all-symbols, find-all-symbols, and list-all-packages operate only on packages that exist in the package registry.
+**package registry** n. 一个名称[name]到包[package]对象[object]的映射. 有可能有一个包[package]对象[object]不在这个映射中; 这样一个包[package]被称为未注册的包[unregistered package]. 例如 find-package 这样的操作符[operator]查阅这个映射, 来从它的名称[name]中找到一个包[package]. 例如 do-all-symbols、find-all-symbols 和 list-all-packages 这样的操作符[operator]只在出现在包注册表[package registry]中的包[package]上操作.
 
-pairwise adv. (of an adjective on a set) applying individually to all possible pairings of elements of the set. ``The types A, B, and C are pairwise disjoint if A and B are disjoint, B and C are disjoint, and A and C are disjoint.''
+**pairwise** adv. (指集合上的形容词)单独地应用于集合中所有可能的元素对. "如果 A 和 B 互斥, B 和 C 互斥并且 A 和 C 也互斥, 那么类型 A、B 和 C 时成对互斥的 (The types A, B, and C are pairwise disjoint if A and B are disjoint, B and C are disjoint, and A and C are disjoint)".
 
-parallel adj. Trad. (of binding or assignment) done in the style of psetq, let, or do; that is, first evaluating all of the forms that produce values, and only then assigning or binding the variables (or places). Note that this does not imply traditional computational ``parallelism'' since the forms that produce values are evaluated sequentially. See sequential.
+**parallel** adj. Trad. (指绑定[binding]或赋值[assignment]) 以 psetq、let 或 do 的风格完成; 也就是说, 首先求值所有产生值[value]的表达式形式[form], 然后才赋值或绑定[binding]这些变量[variable] (或者位置[place]). 注意, 这并不意味着传统的计算"并行性", 因为生成值[value]的表达式形式[form]是顺序[sequential]计算的. 见顺序的[sequential].
 
-parameter n. 1. (of a function) a variable in the definition of a function which takes on the value of a corresponding argument (or of a list of corresponding arguments) to that function when it is called, or which in some cases is given a default value because there is no corresponding argument. 2. (of a format directive) an object received as data flow by a format directive due to a prefix notation within the format string at the format directive's point of use. See Section 22.3 (Formatted Output). ``In "~3,'0D", the number 3 and the character #\0 are parameters to the ~D format directive.''
+**parameter** n. 1. (指一个函数[function]) 在一个函数[function]的定义中的一个变量[variable], 当这个函数被调用时取自对应实参[argument]的指[value] (或者对应实参的一个列表[list]), 或者在某些情况下由于没有对应的实参[argument]就给定一个默认值. 2. (指一个格式化指令[format directive]) 由格式化指令[format directive]接收的作为数据流的对象[object], 由于格式化字符串[format string]中的前缀表示法位于格式化指令[format directive]的使用点. 见章节 22.3 (格式化输出). "在 "~3,'0D" 中, 数字 3 和字符 #\0 是给 ~D 格式化指令的参数 (In "~3,'0D", the number 3 and the character #\0 are parameters to the ~D format directive)".
 
-parameter specializer n. 1. (of a method) an expression which constrains the method to be applicable only to argument sequences in which the corresponding argument matches the parameter specializer. 2. a class, or a list (eql object).
+**parameter specializer** n. 1. (指一个方法[method]) 一种表达式[expression], 它限制该方法[method]仅适用于对应实参[argument]匹配参数特化符[parameter specializer]的实参[argument]序列. 2. 一个类[class], 或一个列表[list] (eql object).
 
-parameter specializer name n. 1. (of a method definition) an expression used in code to name a parameter specializer. See Section 7.6.2 (Introduction to Methods). 2. a class, a symbol naming a class, or a list (eql form).
+**parameter specializer name** n. 1. (指一个方法[method]定义) 一个表达式[expression], 它被用于代码中来命名一个参数特化符[parameter specializer]. 见章节 7.6.2 (方法的介绍). 2. 一个类[class], 命名一个类[class]的符号[symbol], 或一个列表[list] (eql form).
 
-pathname n. an object of type pathname, which is a structured representation of the name of a file. A pathname has six components: a ``host,'' a ``device,'' a ``directory,'' a ``name,'' a ``type,'' and a ``version.''
+**pathname** n. 一个 pathname 类型[type]的对象[object], 它是一个文件[file]名字的结构化表示. 一个路径名[pathname]有六个成员: 一个 "主机(host)", 一个"设备(device)", 一个 "目录(directory)", 一个 "名称(name)",一个 "类型(type)" 以及一个版本 "版本(version)".
 
-pathname designator n. a designator for a pathname; that is, an object that denotes a pathname and that is one of: a pathname namestring (denoting the corresponding pathname), a stream associated with a file (denoting the pathname used to open the file; this may be, but is not required to be, the actual name of the file), or a pathname (denoting itself). See Section 21.1.1.1.2 (Open and Closed Streams).
+**pathname designator** n. 一个路径名[pathname]的标识符[designator]; 也就是说, 一个表示路径名[pathname]的对象[object]并且它是以下之一: 一个路径名[pathname]名称字符串[namestring] (表示对应路径名[pathname]), 和一个文件[file]关联的流[stream] (表示被用于打开该文件[file]的路径名[pathname]; 这可能但不一定是该文件[file]的实际名称), 或者一个路径名[pathname] (表示它自身). 见章节 21.1.1.1.2 (打开和关闭流).
 
-physical pathname n. a pathname that is not a logical pathname.
+**physical pathname** n. 一个路径名[pathname], 它不是一个逻辑路径名[pathname].
 
-place n. 1. a form which is suitable for use as a generalized reference. 2. the conceptual location referred to by such a place[1].
+**place** n. 1. 一个表达式形式[form], 它适用于一个广义引用[generalized reference]. 2. 被这样一个位置[place[1]]引用的概念位置.
 
-plist ['pee,list] n. a property list.
+**plist** ['pee,list] n. 一个属性列表[property list].
 
-portable adj. (of code) required to produce equivalent results and observable side effects in all conforming implementations.
+**portable** adj. (指代码[code]) 需要在所有符合规范的实现[conforming implementation]中产生等价的结果和可观测的副作用.
 
-potential copy n. (of an object O1 subject to constriants) an object O2 that if the specified constraints are satisfied by O1 without any modification might or might not be identical to O1, or else that must be a fresh object that resembles a copy of O1 except that it has been modified as necessary to satisfy the constraints.
+**potential copy** n. (指一个受限于约束的对象[object] O1) 一个对象[object] O2, 如果指定的约束由 O1 满足而没有进行修改, 那么它可能与 O1 相同[identical], 也可能与 O1 不同, 或者它必须是一个新的[fresh]对象[object], 类似于 O1 的副本[copy], 除非它已经根据需要进行了修改以满足约束. <!--TODO 待校对-->
 
 **potential number** n. 一个文本标记, 可能在某个符合规范的实现[conforming implementation]中被 Lisp 读取器[Lisp reader]解析为一个数字[number], 但不是必须解析为一个数字[number]. 没有对象[object]是一个潜在数字[potential number]---一个对象[object]要么是一个数字[number]要么不是. 见章节 2.3.1.1 (潜在数字作为标记).
 
-pprint dispatch table n. an object that can be the value of *print-pprint-dispatch* and hence can control how objects are printed when *print-pretty* is true. See Section 22.2.1.4 (Pretty Print Dispatch Tables).
+**pprint dispatch table** n. 一个对象[object], 它可以是 \*print-pprint-dispatch* 的值[value]并且因此可以控制当 \*print-pretty* 为 true 时对象[object]如何被打印. 见章节 22.2.1.4 (美观打印分派表).
 
-predicate n. a function that returns a generalized boolean as its first value.
+**predicate** n. 一个函数[function], 它返回一个广义 boolean [generalized boolean]作为它的第一个值.
 
-present n. 1. (of a feature in a Lisp image) a state of being that is in effect if and only if the symbol naming the feature is an element of the features list. 2. (of a symbol in a package) being accessible in that package directly, rather than being inherited from another package.
+**present** n. 1. (指一个 Lisp 映像[Lisp image]中的一个特性[feature]) 当且仅当命名特性[feature]的符号[symbol]是特性列表[feature list]的一个元素[element]时才有效的存在状态. 2. (指一个包[package]中的一个符号[symbol]) 在那个包[package]中是直接可访问的, 而不是从另一个包[package]中继承而来.
 
-pretty print v.t. (an object) to invoke the pretty printer on the object.
+**pretty print** v.t. (一个对象[object]) 在这个对象[object]上去调用美观打印器[pretty printer].
 
-pretty printer n. the procedure that prints the character representation of an object onto a stream when the value of *print-pretty* is true, and that uses layout techniques (e.g., indentation) that tend to highlight the structure of the object in a way that makes it easier for human readers to parse visually. See the variable *print-pprint-dispatch* and Section 22.2 (The Lisp Pretty Printer).
+**pretty printer** n. 当 \*print-pretty* 的值[value]是 true 时打印一个对象[object]的字符表示到一个流[stream]上的程序, 它使用了布局技术(例如缩进), 这种技术往往突出对象[object]的结构, 使人类读者更容易直观地解析. 见变量[variable] \*print-pprint-dispatch* 和章节 22.2 (Lisp 美观打印器).
 
-pretty printing stream n. a stream that does pretty printing. Such streams are created by the function pprint-logical-block as a link between the output stream and the logical block.
+**pretty printing stream** n. 执行美观打印的一个流[stream]. 这样的流由函数[function] pprint-logical-block 创建, 作为该输出流和逻辑语句块之间的链接.
 
-primary method n. a member of one of two sets of methods (the set of auxiliary methods is the other) that form an exhaustive partition of the set of methods on the method's generic function. How these sets are determined is dependent on the method combination type; see Section 7.6.2 (Introduction to Methods).
+**primary method** n. 两个方法[method]集合中的一个的成员 (另一个是辅助方法[auxiliary method]), 这两个集合组成了该方法[method]的广义函数[generic function]上的方法[method]集合的详尽分区. 这些集合如果决定取决于方法组合[method combination]类型; 见章节 7.6.2 (方法的介绍).
 
-primary value n. (of values resulting from the evaluation of a form) the first value, if any, or else nil if there are no values. ``The primary value returned by truncate is an integer quotient, truncated toward zero.''
+**primary value** n. (指一个表达式形式[form]的求值[evaluation]所产生的那些值[value]) 如果存在就是第一个值[value], 如果这里没有值[value]那么就是 nil. "由 truncate 返回的主值是一个整数商, 朝着零截断 (The primary value returned by truncate is an integer quotient, truncated toward zero)".
 
-principal adj. (of a value returned by a Common Lisp function that implements a mathematically irrational or transcendental function defined in the complex domain) of possibly many (sometimes an infinite number of) correct values for the mathematical function, being the particular value which the corresponding Common Lisp function has been defined to return.
+**principal** adj. (一个由 Common Lisp 函数[function]返回的值, 该函数实现在复域中定义的数学上的无理数或超越函数) 可能有许多 (有时是无穷多个) 数学函数的正确值, 即定义相应的 Common Lisp 函数[function]返回的特定值[value].<!--TODO 待校对-->
 
-print name n. Trad. (usually of a symbol) a name[3].
+**print name** n. Trad. (通常指一个符号[symbol]) 一个名称[name[3]].
 
-printer control variable n. a variable whose specific purpose is to control some action of the Lisp printer; that is, one of the variables in Figure 22-1, or else some implementation-defined variable which is defined by the implementation to be a printer control variable.
+**printer control variable** n. 一个变量[variable], 它的具体目的是去控制 Lisp 打印器[Lisp printer]的一些行为; 也就是说, Figure 22-1 中的变量[variable]之一, 或者某个被具体实现[implementation]定义为一个打印器控制变量[variable]的具体实现定义的[implementation-defined]变量[variable].
 
-printer escaping n. The combined state of the printer control variables *print-escape* and *print-readably*. If the value of either *print-readably* or *print-escape* is true, then printer escaping is ``enabled''; otherwise (if the values of both *print-readably* and *print-escape* are false), then printer escaping is ``disabled''.
+**printer escaping** n. 打印器控制变量[printer control variable] \*print-escape* 和 \*print-readably* 的组合状态. 如果 \*print-readably* 或 \*print-escape* 的值[value]是 true, 那么打印器转义[printer escaping]是 "启用的"; 否则 (如果 \*print-readably* 和 \*print-escape* 的值[value]都是 false), 那么打印器转义[printer escaping]是 "禁用的".
 
-printing adj. (of a character) being a graphic character other than space.
+**printing** adj. (指一个字符[character]) 是一个图形[graphic]字符[character]而不是空格[space].
 
-process v.t. (a form by the compiler) to perform minimal compilation, determining the time of evaluation for a form, and possibly evaluating that form (if required).
+**process** v.t. (一个表达式形式[form]被编译器[compiler]) 去执行最小编译[minimal compilation], 决定一个表达式形式[form]求值的时间, 并且可能求值那个表达式形式[form] (如果必要的话).
 
-processor n., ANSI an implementation.
+**processor** n., ANSI 一个具体实现[implementation].
 
-proclaim v.t. (a proclamation) to establish that proclamation.
+**proclaim** v.t. (一个公告[proclamation]) 去建立[establish]该公告[proclamation].
 
-proclamation n. a global declaration.
+**proclamation** n. 一个全局声明[global declaration].
 
-prog tag n. Trad. a go tag.
+**prog tag** n. Trad. 一个 go 标签[go tag].
 
-program n. Trad. Common Lisp 代码.
+**program** n. Trad. Common Lisp 代码[code].
 
-programmer n. an active entity, typically a human, that writes a program, and that might or might not also be a user of the program.
+**programmer** n. 编写一个程序[program]的一个活跃的实体, 通常是一个人, 他可能是也可能不是该程序[program]的用户[user].
 
-programmer code n. code that is supplied by the programmer; that is, code that is not system code.
+**programmer code** n. 程序员提供的代码[code]; 也就是说, 不是系统代码[system code]的代码[code].
 
-proper list n. A list terminated by the empty list. (The empty list is a proper list.) See improper list.
+**proper list** n. 由空列表[empty list]终止的一个列表[list]. (空列表[empty list]是一个正规列表[proper list].) 见非正规列表[improper list].
 
-proper name n. (of a class) a symbol that names the class whose name is that symbol. See the functions class-name and find-class.
+**proper name** n. (指一个类[class]) 一个符号[symbol], 它命名[name]了名称[name]为该符号[symbol]的类[class]. 见函数[function] class-name 和 find-class.
 
-proper sequence n. a sequence which is not an improper list; that is, a vector or a proper list.
+**proper sequence** n. 一个不是非正规列表[imporper list]的序列[sequence]; 也就是说, 一个向量[vector]或一个正规列表[proper list].
 
-proper subtype n. (of a type) a subtype of the type which is not the same type as the type (i.e., its elements are a ``proper subset'' of the type).
+**proper subtype** n. (指一个类型[type]) 与该类型[type]不同的该类型[type]的子类型[subtype] (换句话说, 它的元素[element]时该类型[type]的一个"正规子集[proper subset]").
 
-property n. (of a property list) 1. a conceptual pairing of a property indicator and its associated property value on a property list. 2. a property value.
+**property** n. (指一个属性列表[property list]) 1. 属性指示符[property indicator]及其在属性列表[property list]上的关联属性值[property value]的概念配对. 2. 一个属性值[property value].
 
-property indicator n. (of a property list) the name part of a property, used as a key when looking up a property value on a property list.
+**property indicator** n. (指一个属性列表[property list]) 一个属性[property]的名称[name]部分, 在一个属性列表[property list]上查找一个属性值[property value]时用作一个键[key].
 
-property list n. 1. a list containing an even number of elements that are alternating names (sometimes called indicators or keys) and values (sometimes called properties). When there is more than one name and value pair with the identical name in a property list, the first such pair determines the property. 2. (of a symbol) the component of the symbol containing a property list.
+**property list** n. 1. 一个包含偶数个元素[element]的列表[list], 它们是交替的[name] (有时称为指示器[indicator]或键[key]) 和值[value] (有时称为属性[property]). 当属性列表[property list]中有多个具有相同[identical]名称[name]的名称[name]和值[value]对时, 第一个这样的对确定属性[property]. 2. (指一个符号[symbol]) 包含一个属性列表[property list]的该符号[symbol]的成员.
 
-property value n. (of a property indicator on a property list) the object associated with the property indicator on the property list.
+**property value** n. (指一个属性列表[property list]上的属性指示器[property indicator]) 在该属性列表[property list]上与该属性指示器[property indicator]关联的对象[object].
 
-purports to conform v. makes a good-faith claim of conformance. This term expresses intention to conform, regardless of whether the goal of that intention is realized in practice. For example, language implementations have been known to have bugs, and while an implementation of this specification with bugs might not be a conforming implementation, it can still purport to conform. This is an important distinction in certain specific cases; e.g., see the variable *features*. 
+**purports to conform** v. 对一致性做出善意的声明, 这个术语表达了一致性的意图, 不管这个意图的目标是否在实践中实现. 例如, 众所周知, 语言实现存在 bug, 尽管带有 bug 的此规范的实现[implementation]可能不是符合规范的实现[conforming implementation], 但它仍然可以声称符合规范. 在某些特定的情况下, 这是一个重要的区别; 例如, 见变量[variable] \*features*. 
 
 
 Q
