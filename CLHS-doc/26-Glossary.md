@@ -1092,15 +1092,15 @@ binary adj. 1. (指流[stream]) 元素类型[element type]为 integer 类型[typ
 **purports to conform** v. 对一致性做出善意的声明, 这个术语表达了一致性的意图, 不管这个意图的目标是否在实践中实现. 例如, 众所周知, 语言实现存在 bug, 尽管带有 bug 的此规范的实现[implementation]可能不是符合规范的实现[conforming implementation], 但它仍然可以声称符合规范. 在某些特定的情况下, 这是一个重要的区别; 例如, 见变量[variable] \*features*. 
 
 
-Q
+### Q
 
-qualified method n. a method that has one or more qualifiers.
+**qualified method** n. 一个方法[method], 它有一个或多个限定符[qualifier].
 
-qualifier n. (of a method for a generic function) one of possibly several objects used to annotate the method in a way that identifies its role in the method combination. The method combination type determines how many qualifiers are permitted for each method, which qualifiers are permitted, and the semantics of those qualifiers.
+**qualifier** n. (指一个广义函数[generic function]的一个方法[method]) 以一种确定其在方法组合[method combination]中的角色的方式对方法[method]进行注释的几个对象[object]之一. 方法组合[method combination]类型[type]决定了每一个方法[method]允许多少修饰符[qualifier], 允许哪些修饰符[qualifier], 以及这些修饰符[qualifier]的语义.
 
-query I/O n. the bidirectional stream that is the value of the variable *query-io*.
+**query I/O** n. 这个双向[bidirectional]流[stream]它时变量[variable] \*query-io* 的值[value].
 
-quoted object n. an object which is the second element of a quote form. 
+**quoted object** n. 一个对象[object], 它是一个 quote 表达式形式[form]的第二个元素. 
 
 
 R
