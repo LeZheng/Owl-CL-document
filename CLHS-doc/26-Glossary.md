@@ -1103,80 +1103,80 @@ binary adj. 1. (指流[stream]) 元素类型[element type]为 integer 类型[typ
 **quoted object** n. 一个对象[object], 它是一个 quote 表达式形式[form]的第二个元素. 
 
 
-R
+### R
 
-radix n. an integer between 2 and 36, inclusive, which can be used to designate a base with respect to which certain kinds of numeric input or output are performed. (There are n valid digit characters for any given radix n, and those digits are the first n digits in the sequence 0, 1, ..., 9, A, B, ..., Z, which have the weights 0, 1, ..., 9, 10, 11, ..., 35, respectively. Case is not significant in parsing numbers of radix greater than 10, so ``9b8a'' and ``9B8A'' denote the same radix 16 number.)
+**radix** n. 一个在 2 和 36 之间的整数[integer] (包括 2 和 36), 它可以用来指定执行哪一种特定类型的数字输入或输出的基数. (对于任何给定的基数[radix] n 这里有 n 个有效数字字符, 这些数字分别是序列 0, 1, ..., 9, A, B, ..., Z 中的前 n 个数字, 分别有着权值 0, 1, ..., 9, 10, 11, ..., 35. 在解析基数大于 10 的数字时大小写是无效的, 因此 "9b8a" 和 "9B8A" 都表示相同的基数[radix] 16.)
 
-random state n. an object of type random-state.
+**random state** n. 一个 random-state 类型[type]的对象[object].
 
-rank n. a non-negative integer indicating the number of dimensions of an array.
+**rank** n. 一个表示数组[array]的维度[dimension]数量的非负整数[integer].
 
-ratio n. an object of type ratio.
+**ratio** n. 一个 ratio 类型[type]的对象[object].
 
 **ratio marker** n. 在一个比率[ratio]的文本标记中被用于分隔分子和分母的字符, 它在标准读取表[standard readtable]中是一个斜杠[slash]. 见章节 2.1 (字符语法).
 
 **rational** n. 一个 rational 类型[type]的对象[object].
 
-read v.t. 1. (a binding or slot or component) to obtain the value of the binding or slot. 2. (an object from a stream) to parse an object from its representation on the stream.
+**read** v.t. 1. (一个绑定[binding]或槽[slot]或成员) 去获取该绑定[binding]或槽[slot]的值[value]. 2. (来自一个流[stream]的对象[object]) 从这个流[stream]上的该对象的表示去解析一个对象[object].
 
-readably adv. (of a manner of printing an object O1) in such a way as to permit the Lisp Reader to later parse the printed output into an object O2 that is similar to O1.
+**readably** adv. (指打印一个对象[object] O1 的方式) 在这种方式下允许 Lisp 读取器[Lisp reader]稍后把这个打印输出解析为一个对象[object] O2, 它与 O1 相似[similar].
 
-reader n. 1. a function that reads[1] a variable or slot. 2. the Lisp reader.
+**reader** n. 1. 一个函数[function], 它读取[read[1]]一个变量[variable]或槽[slot]. 2. Lisp 读取器[Lisp reader].
 
-reader macro n. 1. a textual notation introduced by dispatch on one or two characters that defines special-purpose syntax for use by the Lisp reader, and that is implemented by a reader macro function. See Section 2.2 (Reader Algorithm). 2. the character or characters that introduce a reader macro[1]; that is, a macro character or the conceptual pairing of a dispatching macro character and the character that follows it. (A reader macro is not a kind of macro.)
+**reader macro** n. 1. 一种文本符号, 由一个或两个字符[character]上的分派引入, 它定义了供 Lisp 读取器[Lisp reader]使用的特殊语法, 并由读取器宏函数实现[reader macro function]. 见章节 2.2 (读取器算法). 2. 引入一个读取器宏[reader macro[1]]的字符[character]或多个字符[character]; 也就是说, 一个宏字符[macro character]或一个分派宏字符[dispatching macro character]和跟在它后面的字符[character]的概念对. (一个读取器宏[reader macro]不是一个宏[macro]的种类.)
 
-reader macro function n. a function designator that denotes a function that implements a reader macro[2]. See the functions set-macro-character and set-dispatch-macro-character.
+**reader macro function** n. 一个函数标识符[function designator], 它表示实现了一个读取器宏[reader macro[2]]的函数[function]. 见函数[function] set-macro-character 和 set-dispatch-macro-character.
 
 **readtable** n. 一个 readtable 类型[type]的对象[object].
 
 **readtable case** n. 一个读取表[readtable]的一个属性, 它的值是一个大小写敏感模式[case sensitivity mode], 并且它选择了一个符号[symbol]的名字[name]中的字符[character]会被 Lisp 读取器[Lisp reader]和 Lisp 打印器[Lisp printer]对待的方式. 见章节 23.1.2 (Lisp 读取器上的读取表大小写的影响) 和章节 22.1.3.3.2 (Lisp 打印器上读取表大小写的影响).
 
-readtable designator n. a designator for a readtable; that is, an object that denotes a readtable and that is one of: nil (denoting the standard readtable), or a readtable (denoting itself).
+**readtable designator** n. 一个读取表[readtable]的标识符[designator]; 也就是说, 一个表示一个读取表的对象[object]并且它是以下之一: nil (表示标准读取表[standard readtable]), 或者一个读取表[readtable] (表示它自身).
 
-recognizable subtype n. (of a type) a subtype of the type which can be reliably detected to be such by the implementation. See the function subtypep.
+**recognizable subtype** n. (指一个类型[type]) 可以被具体实现[implementation]可靠检测到的该类型[type]的一个子类型[subtype]. 见函数[function] subtypep.
 
-reference n., v.t. 1. n. an act or occurrence of referring to an object, a binding, an exit point, a tag, or an environment. 2. v.t. to refer to an object, a binding, an exit point, a tag, or an environment, usually by name.
+**reference** n., v.t. 1. n. 引用一个对象[object], 一个绑定[binding], 一个退出点[exit point], 一个标签[tag], 或者一个环境[environment]的行为或出现. 2. v.t. 去引用一个对象[object], 一个绑定[binding], 一个退出点[exit point], 一个标签[tag], 或者一个环境[environment], 通常是通过名称[name].
 
-registered package n. a package object that is installed in the package registry. (Every registered package has a name that is a string, as well as zero or more string nicknames. All packages that are initially specified by Common Lisp or created by make-package or defpackage are registered packages. Registered packages can be turned into unregistered packages by delete-package.)
+**registered package** n. 一个包[package]对象[object], 它被安装到包注册表[package registry]中. (每个已注册包[registered package]有着一个字符串[string]名称[string], 以及零个或多个字符串[string]别名. All packages that are initially specified 由 Common Lisp 最初指定的或由 make-package 或 defpackage 创建的所有包[package]都是已注册包[registered package]. 已注册包[registered package]可以通过 delete-package 变成未注册包[unregistered package].)
 
-relative adj. 1. (of a time) representing an offset from an absolute time in the units appropriate to that time. For example, a relative internal time is the difference between two absolute internal times, and is measured in internal time units. 2. (of a pathname) representing a position in a directory hierarchy by motion from a position other than the root, which might therefore vary. ``The notation #P"../foo.text" denotes a relative pathname if the host file system is Unix.'' See absolute.
+**relative** adj. 1. (指时间[time]) 表示相对于一个绝对[absolute]时间[time]的偏移量, 使用与该时间相适应的单位表示. 例如, 一个相对[relative]内部时间[internal time] 是两个绝对[absolute]内部时间[internal time]只差, 用内部时间单位[internal time unit]来衡量. 2. (指一个路径名[pathname]) 通过从根目录以外的位置移动来表示目录层次结构中的位置, 因此根目录的位置可能不同. "如果主机文件系统是 Unix, 那么标记 #P"../foo.text" 表示一个相对路径名 (The notation #P"../foo.text" denotes a relative pathname if the host file system is Unix)". 见绝对[absolute].
 
 **repertoire** n., ISO 一个 character 的子类型[subtype]. 见章节 13.1.2.2 (字符字元库).
 
-report n. (of a condition) to call the function print-object on the condition in an environment where the value of *print-escape* is false.
+**report** n. (指一个状况[condition]) 在一个 \*print-escape* 的值[value]是 false 的环境[environment]中在该状况[condition]上去调用函数[function] print-object.
 
-report message n. the text that is output by a condition reporter.
+**report message** n. 由状况汇报器[condition reporter]输出的文本.
 
-required parameter n. A parameter for which a corresponding positional argument must be supplied when calling the function.
+**required parameter** n. 调用函数[function]时必须为其提供相应位置实参[argument]的形参[parameter].
 
-rest list n. (of a function having a rest parameter) The list to which the rest parameter is bound on some particular call to the function.
+**rest list** n. (指一个具有剩余参数[rest parameter]的函数[function]) 在对函数[function]的某个特定调用[call]上剩余参数[rest parameter]被绑定[bound]到的那个列表[list].
 
-rest parameter n. A parameter which was introduced by &rest.
+**rest parameter** n. 由 &rest 引入的一个形参[parameter].
 
-restart n. an object of type restart.
+**restart** n. 一个 restart 类型[type]的对象[object].
 
-restart designator n. a designator for a restart; that is, an object that denotes a restart and that is one of: a non-nil symbol (denoting the most recently established active restart whose name is that symbol), or a restart (denoting itself).
+**restart designator** n. 一个重启动[restart]的标识符[designator]; 也就是说, 一个表示重启动[restart]的对象[object], 并且是以下之一: 一个非 nil [non-nil]符号[symbol] (表示名字[name]为该符号[symbol]的最近建立的活跃[active]重启动[restart]), 或者一个重启动[restart] (表示它自身).
 
-restart function n. a function that invokes a restart, as if by invoke-restart. The primary purpose of a restart function is to provide an alternate interface. By convention, a restart function usually has the same name as the restart which it invokes. The next figure shows a list of the standardized restart functions.
+**restart function** n. 一个调用一个重启动[restart]的函数[function], 就像是通过 invoke-restart 一样. 一个重启动函数[restart function]的主要目的是去提供一个替代的接口. 按照惯例, 重启动函数[restart function]通常与它调用的重启动[restart]具有相同的名称[name]. 下一段展示了标准化[standardized]重启动函数[restart function]的列表.
 
 abort     muffle-warning  use-value  
 continue  store-value                
 
-Figure 26-4. Standardized Restart Functions
+Figure 26-4. 标准化重启动函数
 
-return v.t. (of values) 1. (from a block) to transfer control and values from the block; that is, to cause the block to yield the values immediately without doing any further evaluation of the forms in its body. 2. (from a form) to yield the values.
+**return** v.t. (指值[value]) 1. (从一个语句块[block]) 从这个语句块[block]转移控制和值[value]; 也就说说, 去使这个语句块[block]在没有对主体中的表达式形式[form]做任何进一步求值的情况下立即产生[yield]这些值[value]. 2. (从一个表达式形式[form]) 来产生[yield]这些值[value].
 
-return value n. Trad. a value[1]
+**return value** n. Trad. 一个值[value[1]]
 
-right-parenthesis n. the standard character ``)'', that is variously called ``right parenthesis'' or ``close parenthesis'' See Figure 2-5.
+**right-parenthesis** n. 标准字符[standard character] ")", 这被称为 "右圆括号" 或 "闭圆括号". 见 Figure 2-5.
 
-run time n. 1. load time 2. execution time
+**run time** n. 1. 加载时间[load time] 2. 执行时间[execution time]
 
-run-time compiler n. refers to the compile function or to implicit compilation, for which the compilation and run-time environments are maintained in the same Lisp image.
+**run-time compiler** n. 引用 compile 函数或隐式编译[implicit compilation], 编译和运行时环境[environment]在相同的 Lisp 映像[Lisp image]中维护.
 
-run-time definition n. a definition in the run-time environment.
+**run-time definition** n. 在运行时环境[run-time environment]中的一个定义.
 
-run-time environment n. the environment in which a program is executed. 
+**run-time environment** n. 一个程序被执行时所在的环境[environment]. 
 
 
 S
