@@ -507,7 +507,7 @@ binary adj. 1. (指流[stream]) 元素类型[element type]为 integer 类型[typ
 
 **execution time** n. 已编译代码[compiled code]正在被执行的时期.
 
-**exhaustive partition** n. (指一个类型[type]) 一组成对[pairwise]不相交[disjoint]的类型[type]，构成一个详尽的并集[exhaustive union].
+**exhaustive partition** n. (指一个类型[type]) 一组成对[pairwise]不相交[disjoint]的类型[type], 构成一个详尽的并集[exhaustive union].
 
 **exhaustive union** n. (指一个类型[type]) 这个类型[type]的子类型[subtype]的集合, 它们的并集包含了这个类型[type]的所有元素[element].
 
@@ -801,7 +801,7 @@ binary adj. 1. (指流[stream]) 元素类型[element type]为 integer 类型[typ
 
 **lambda list** n. 一个列表[list], 它指定了形参[parameter]集合 (有时被称为 lambda 变量[lambda variables]) 以及一个协议来接收这些形参[parameter]的值[value]; 也就是说, 一个普通 lambda 列表[ordinary lambda list], 一个扩展 lambda 列表[extended lambda list], 或者一个修改后的 lambda 列表 [modified lambda list].
 
-**lambda list keyword** n. 一种符号[symbol], 其名称[name]以与号[ampersand]开头，在 lambda 列表[lambda list]中被特别识别. 注意, 在 KEYWORD 包中没有标准[standardized] lambda 列表关键字[lambda list keyword].
+**lambda list keyword** n. 一种符号[symbol], 其名称[name]以与号[ampersand]开头, 在 lambda 列表[lambda list]中被特别识别. 注意, 在 KEYWORD 包中没有标准[standardized] lambda 列表关键字[lambda list keyword].
 
 **lambda variable** n. 一个正规形参[formal parameter], 用于强调该变量[variable]与建立它的 lambda 列表[lambda list]的关系.
 
@@ -1181,211 +1181,211 @@ Figure 26-4. 标准化重启动函数
 
 S
 
-safe adj. 1. (of code) processed in a lexical environment where the the highest safety level (3) was in effect. See optimize. 2. (of a call) a safe call.
+**safe** adj. 1. (指代码[code]) 在最高安全(safety)等级 (3) 生效的词法环境[lexical environment]中处理的. 见 optimize. 2. (指一个调用[call]) 一个安全调用[safe call].
 
-safe call n. a call in which the call, the function being called, and the point of functional evaluation are all safe[1] code. For more detailed information, see Section 3.5.1.1 (Safe and Unsafe Calls).
+**safe call** n. 一种调用[call], 其中该调用[call], 被调用的函数[function], 以及函数求值[functional evaluation]的点都是安全[safe[1]]代码[code]. 关于更多详细信息, 见章节 3.5.1.1 (安全和非安全調用).
 
-same adj. 1. (of objects under a specified predicate) indistinguishable by that predicate. ``The symbol car, the string "car", and the string "CAR" are the same under string-equal''. 2. (of objects if no predicate is implied by context) indistinguishable by eql. Note that eq might be capable of distinguishing some numbers and characters which eql cannot distinguish, but the nature of such, if any, is implementation-dependent. Since eq is used only rarely in this specification, eql is the default predicate when none is mentioned explicitly. ``The conses returned by two successive calls to cons are never the same.'' 3. (of types) having the same set of elements; that is, each type is a subtype of the others. ``The types specified by (integer 0 1), (unsigned-byte 1), and bit are the same.''
+**same** adj. 1. (指多个对象[object]在指定断言[predicate]) 通过该断言[predicate]是不可区分的. "符号 car, 字符串 "car", 以及字符串 "CAR" 在 string-equal 下时相同的(The symbol car, the string "car", and the string "CAR" are the same under string-equal)". 2. (指多个对象[object], 如果上下文没有暗示断言) 通过 eql 是不可区分的. 注意, eq 可能可以区分 eql 不能区分的一些数字[number]和字符[character], 但是这样的性质如果存在的话是依赖于具体实现的[implementation-dependent]. 由于 eq 在这个规范中很少使用, 当没有显式提及时, eql 就是默认的断言. "两个对 cons 的连续调用返回的 cons 从不相同 (The conses returned by two successive calls to cons are never the same)". 3. (指类型[type]) 具有相同的元素[element]集合; 也就是说, 每个类型[type]是另一个的子类型[subtype]. "由 (integer 0 1), (unsigned-byte 1), 和 bit 指定的类型是相同的 (The types specified by (integer 0 1), (unsigned-byte 1), and bit are the same)".
 
-satisfy the test v. (of an object being considered by a sequence function) 1. (for a one argument test) to be in a state such that the function which is the predicate argument to the sequence function returns true when given a single argument that is the result of calling the sequence function's key argument on the object being considered. See Section 17.2.2 (Satisfying a One-Argument Test). 2. (for a two argument test) to be in a state such that the two-place predicate which is the sequence function's test argument returns true when given a first argument that is the object being considered, and when given a second argument that is the result of calling the sequence function's key argument on an element of the sequence function's sequence argument which is being tested for equality; or to be in a state such that the test-not function returns false given the same arguments. See Section 17.2.1 (Satisfying a Two-Argument Test).
+**satisfy the test** v. (指一个正在被序列函数[sequence function]考虑的对象[object]) 1. (对于一个单实参[argument]测试) 当给定一个实参[argument] (该实参是在被考虑对象[object]上调用序列函数[sequence function]的 key 参数[argument]的结果)时, 作为序列函数[sequence function] predicate 参数[argument]的函数[function]返回 true. 见章节 17.2.2 (满足一个单参数的测试). 2. (对于一个两实参[argument]测试) 处于这样一种状态: 当被考虑的对象[object]作为第一个参数[argument]并且这个序列函数[sequence function]的 sequence 参数[argument]的元素[element]上调用该序列函数[sequence function]的 key 参数[argument]的结果作为第二个参数[argument]时, 该序列函数[sequence function]的 test 参数[argument]的二元的断言[predicate]检测为等价的; 或者处于 test-not 函数[function]在给定相同参数[argument]的情况下返回 false 的状态. 见章节 17.2.1 (满足一个两个参数的测试).
 
-scope n. the structural or textual region of code in which references to an object, a binding, an exit point, a tag, or an environment (usually by name) can occur.
+**scope** n. 可以引用一个对象[object], 一个绑定[binding], 一个退出点[exit point], 一个标签[tag], 或一个环境[environment] (通常是通过名称[name]) 的代码中的结构或文本区域.
 
-script n. ISO one of possibly several sets that form an exhaustive partition of the type character. See Section 13.1.2.1 (Character Scripts).
+**script** n. ISO 组成 character 类型的详尽分区[exhaustive partition]的多个可能的集合中的一个. 见章节 13.1.2.1 (字符文字).
 
-secondary value n. (of values resulting from the evaluation of a form) the second value, if any, or else nil if there are fewer than two values. ``The secondary value returned by truncate is a remainder.''
+**secondary value** n. (指一个表达式形式[form]的求值[evaluation]所产生的多个值[value]) 如果存在就是第二个值[value], 如果这里少于两个值[value]那么就是 nil. "由 truncate 返回的第二个值是个余数 (The secondary value returned by truncate is a remainder)".
 
-section n. a partitioning of output by a conditional newline on a pretty printing stream. See Section 22.2.1.1 (Dynamic Control of the Arrangement of Output).
+**section** n. 在美观打印流[pretty printing stream]上用条件换行[conditional newline]对输出进行的分区. 见章节 22.2.1.1 (输出排列的动态控制).
 
-self-evaluating object n. an object that is neither a symbol nor a cons. If a self-evaluating object is evaluated, it yields itself as its only value. ``Strings are self-evaluating objects.''
+**self-evaluating object** n. 一个对象[object], 它既不是一个符号[symbol]也不是一个 cons. 如果一个自求值对象[self-evaluating object]被求值, 它产生[yield]它自身作为仅有的值[value]. "字符串是自求值对象 (Strings are self-evaluating objects)".
 
-semi-standard adj. (of a language feature) not required to be implemented by any conforming implementation, but nevertheless recommended as the canonical approach in situations where an implementation does plan to support such a feature. The presence of semi-standard aspects in the language is intended to lessen portability problems and reduce the risk of gratuitous divergence among implementations that might stand in the way of future standardization.
+**semi-standard** adj. (指一个语言特性) 没有要求被任何符合规范的实现[conforming implementation]所实现, 但是在一个实现[implementation]确实计划支持此类特性的情况下, 推荐使用规范方法. 该语言中存在半标准[semi-standard]方面的目的是减少可移植性问题, 并降低实现[implementation]之间不必要的差异的风险, 这些差异可能会阻碍未来的标准化.
 
-semicolon n. the standard character that is called ``semicolon'' (;). See Figure 2-5.
+**semicolon** n. 标准字符[standard character], 它被称为 "分号(semicolon)" (;). 见 Figure 2-5.
 
-sequence n. 1. an ordered collection of elements 2. a vector or a list.
+**sequence** n. 1. 元素的一个有序集合 2. 一个向量[vector]或一个列表[list].
 
-sequence function n. one of the functions in Figure 17-1, or an implementation-defined function that operates on one or more sequences. and that is defined by the implementation to be a sequence function.
+**sequence function** n. 在 Figure 17-1 中的那些函数[function]之一, 或者一个具体实现定义的[implementation-defined]操作一个或多个序列[sequence]的函数[function], 它也被具体实现[implementation]定义为序列函数[sequence function].
 
-sequential adj. Trad. (of binding or assignment) done in the style of setq, let*, or do*; that is, interleaving the evaluation of the forms that produce values with the assignments or bindings of the variables (or places). See parallel.
+**sequential** adj. Trad. (指绑定[binding]或赋值) 以 setq、let* 或 do* 的风格完成; 也就是说, 将生成值[value]的表达式形式[form]的计算与变量[variable] (或位置[place])的赋值或绑定[binding]交错起来. 见并行[parallel].
 
-sequentially adv. in a sequential way.
+**sequentially** adv. 以一种顺序的[sequential]方式.
 
-serious condition n. a condition of type serious-condition, which represents a situation that is generally sufficiently severe that entry into the debugger should be expected if the condition is signaled but not handled.
+**serious condition** n. 一个 serious-condition 类型[type]的状况[condition], 它表示一种情况[situation], 这种情况通常非常严重, 如果该状况[condition]被发出但没有被处理, 则应该预期会进入调试器[debugger].
 
-session n. the conceptual aggregation of events in a Lisp image from the time it is started to the time it is terminated.
+**session** n. 在一个 Lisp 映像[List image]中从开始到结束的事件的概念聚合.
 
-set v.t. Trad. (any variable or a symbol that is the name of a dynamic variable) to assign the variable.
+**set** v.t. Trad. (任何变量[variable]或一个符号[symbol], 它是一个动态变量[dynamic variable]的名称[name]) 去对这个变量[variable]赋值[dynamic variable].
 
-setf expander n. a function used by setf to compute the setf expansion of a place.
+**setf expander** n. 被 setf 用来计算一个位置[place]的 setf 展开式[setf expansion]的函数[function].
 
-setf expansion n. a set of five expressions[1] that, taken together, describe how to store into a place and which subforms of the macro call associated with the place are evaluated. See Section 5.1.1.2 (Setf Expansions).
+**setf expansion** n. 一个五表达式[expressions[1]]的集合, 一起描述了如何存储到一个位置[place]以及求值与该位置关联的宏调用的哪些子表达式形式[subform]. 见章节 5.1.1.2 (Setf 展开式).
 
-setf function n. a function whose name is (setf symbol).
+**setf function** n. 一个名字[name]为 (setf symbol) 的函数[function].
 
-setf function name n. (of a symbol S) the list (setf S).
+**setf function name** n. (指一个符号[symbol] S) 列表[list] (setf S).
 
-shadow v.t. 1. to override the meaning of. ``That binding of X shadows an outer one.'' 2. to hide the presence of. ``That macrolet of F shadows the outer flet of F.'' 3. to replace. ``That package shadows the symbol cl:car with its own symbol car.''
+**shadow** v.t. 1. 去重写...的意义. "X 的绑定遮蔽了较外面的那个 (That binding of X shadows an outer one)". 2. 去隐藏...的存在. "这个 F 的 macrolet 遮蔽了较外面的 F 的 flet". 3. 去替换. "这个包用它自己的符号 car 遮蔽了符号 cl:car (That package shadows the symbol cl:car with its own symbol car)".
 
-shadowing symbol n. (in a package) an element of the package's shadowing symbols list.
+**shadowing symbol** n. (在一个包[package]中) 该包[package]的遮蔽符号列表[shadowing symbols list]的一个元素[element].
 
-shadowing symbols list n. (of a package) a list, associated with the package, of symbols that are to be exempted from `symbol conflict errors' detected when packages are used. See the function package-shadowing-symbols.
+**shadowing symbols list** n. (指一个包[package]) 和该包[package]关联的一个符号[symbol]列表[list], 这些符号在包被使用时将免于"符号冲突错误"检测. 见函数[function] package-shadowing-symbols.
 
-shared slot n. (of a class) a slot accessible in more than one instance of a class; specifically, such a slot is accessible in all direct instances of the class and in those indirect instances whose class does not shadow[1] the slot.
+**shared slot** n. (指一个类[class]) 一个槽[slot]在一个类[class]的不止一个实例[instance]中是可访问的[accessible]; 具体来说, 这样一个槽[slot]在该类[class]的所有直接实例[direct instance]中都是可访问的[accessible], 并且在类[class]没有遮蔽[shadow[1]]该槽[slot]的间接实例[indirect instance]中也是可访问的.
 
-sharpsign n. the standard character that is variously called ``number sign,'' ``sharp,'' or ``sharp sign'' (#). See Figure 2-5.
+**sharpsign** n. 标准字符[standard character], 被称为 "数字符号"、 "sharp" 或 "井号" (#). 见 Figure 2-5.
 
-short float n. an object of type short-float.
+**short float** n. 一个 short-float 类型[type]的对象[object].
 
-sign n. one of the standard characters ``+'' or ``-''.
+**sign** n. 标准字符[standard character] "+" 或 "-".
 
-signal v. to announce, using a standard protocol, that a particular situation, represented by a condition, has been detected. See Section 9.1 (Condition System Concepts).
+**signal** v. 使用标准协议宣布已经检测到由状况[condition]表示的特定情况. 见章节 9.1 (状况系统的概念).
 
-signature n. (of a method) a description of the parameters and parameter specializers for the method which determines the method's applicability for a given set of required arguments, and which also describes the argument conventions for its other, non-required arguments.
+**signature** n. (指一个方法[method]) 该方法的形参[parameter]和参数特化符[parameter specializer]的描述, 决定了该方法[method]对于一个给定的必要实参[argument]集合的可应用性, 并且也描述了它的其他非必要实参[argument]的参数[argument]规约.
 
-similar adj. (of two objects) defined to be equivalent under the similarity relationship.
+**similar** adj. (指两个对象[object]) 在相似性[similarity]关系下被定义为等价的.
 
-similarity n. a two-place conceptual equivalence predicate, which is independent of the Lisp image so that two objects in different Lisp images can be understood to be equivalent under this predicate. See Section 3.2.4 (Literal Objects in Compiled Files).
+**similarity** n. 一个二元概念等价性断言, 它独立于 Lisp 映像[Lisp image], 这样一来在不同 Lisp 映像[Lisp image]中的两个对象[object]可以在这个断言下被理解为等价的. 见章节 3.2.4 (编译后文件中的字面化对象).
 
-simple adj. 1. (指数组[array]) being of type simple-array. 2. (of a character) having no implementation-defined attributes, or else having implementation-defined attributes each of which has the null value for that attribute.
+**simple** adj. 1. (指数组[array]) 是 simple-array 类型[type]. 2. (指一个字符[character]) 没有具体实现定义的[implementation-defined]属性[attribute], 或者是有着具体实现定义的[implementation-defined]属性[attribute]但是每一个属性[attribute]都有着空[null]值.
 
-simple array n. an array of type simple-array.
+**simple array** n. 一个 simple-array 类型[type]的数组[array].
 
-simple bit array n. a bit array that is a simple array; that is, an object of type (simple-array bit).
+**simple bit array** n. 一个位数组[bit array], 它是一个简单数组[simple array]; 也就是说, 一个 (simple-array bit) 类型[type]的对象[object].
 
-simple bit vector n. a bit vector of type simple-bit-vector.
+**simple bit vector** n. 一个 simple-bit-vector 类型[type]的位向量[bit vector].
 
-simple condition n. a condition of type simple-condition.
+**simple condition** n. 一个 simple-condition 类型[type]的状况[condition].
 
-simple general vector n. a simple vector.
+**simple general vector** n. 一个简单向量[simple vector].
 
-simple string n. a string of type simple-string.
+**simple string** n. 一个 simple-string 类型[type]的字符串[string].
 
-simple vector n. a vector of type simple-vector, sometimes called a ``simple general vector.'' Not all vectors that are simple are simple vectors---only those that have element type t.
+**simple vector** n. 一个 simple-vector 类型[type]的向量[vector], 有时被称为一个 "简单普通向量[simple general vector]". 不是所有的简单的[simple]向量[vector]都是简单向量[simple array]---只有那些元素类型[element type]为 t 的.
 
 **single escape** n., adj. 1. n. 一个字符[character]的语法类型[syntax type], 表示下一个字符[character]被当作是字母[alphabetic[2]]字符[character], 保留它的大小写[case]. 关于详情, 见章节 2.1.4.6 (单转义字符). 2. adj. (一个字符[character]的) 有着单转义[single escape]语法类型[syntax type]. 3. n. 一个单转义[single escape[2]]字符[character]. (在标准读取表[standard readtable]中, 斜线[slash]是仅有的单转义[single escape].)
 
-single float n. an object of type single-float.
+**single float** n. 一个 single-float 类型[type]的对象[object].
 
-single-quote n. the standard character that is variously called ``apostrophe,'' ``acute accent,'' ``quote,'' or ``single quote'' ('). See Figure 2-5.
+**single-quote** n. 标准字符[standard character], 它也被称为 "撇号(apostrophe)","重音号(acute accent)","引号(quote)",或 "单引号(single quote)" ('). 见 Figure 2-5.
 
-singleton adj. (of a sequence) having only one element. ``(list 'hello) returns a singleton list.''
+**singleton** adj. (指一个序列[sequence]) 只有一个元素[element]. "(list 'hello) 返回一个单元素列表 ((list 'hello) returns a singleton list)".
 
-situation n. the evaluation of a form in a specific environment.
+**situation** n. 一个表达式形式[form]在一个特定环境[environment]中的求值[evaluation].
 
-slash n. the standard character that is variously called ``solidus'' or ``slash'' (/). See Figure 2-5.
+**slash** n. 标准字符[standard character], 它也被称为 "斜线(solidus)" 或 "斜杠(slash)" (/). 见 Figure 2-5.
 
-slot n. a component of an object that can store a value.
+**slot** n. 可以存储一个值[value]的一个对象[object]的组件.
 
-slot specifier n. a representation of a slot that includes the name of the slot and zero or more slot options. A slot option pertains only to a single slot.
+**slot specifier** n. 一个槽[slot]的表示, 它包括槽[slot]的名称[name]以及零个或多个槽[slot]选项. 一个槽[slot]选项只能从属于一个单独的槽[slot].
 
-source code n. code representing objects suitable for evaluation (e.g., objects created by read, by macro expansion, or by compiler macro expansion).
+**source code** n. 表示适合求值[evaluation]的对象[object]的代码[code] (例如, objects created 由 read, 宏展开式[macro expansion], 或者编译期宏展开式[compiler macro expansion]创建的对象[object]).
 
-source file n. a file which contains a textual representation of source code, that can be edited, loaded, or compiled.
+**source file** n. 一个包含源代码[source code]的文本表示的文件[file], 它可以被编辑、加载或编译.
 
-space n. the standard character <Space>, notated for the Lisp reader as #\Space.
+**space** n. 标准字符[standard character] <Space>, 为 Lisp 读取器[Lisp reader]标记为 #\Space.
 
-special form n. a list, other than a macro form, which is a form with special syntax or special evaluation rules or both, possibly manipulating the evaluation environment or control flow or both. The first element of a special form is a special operator.
+**special form** n. 一个列表[list], 而不是一个宏表达式形式[macro form], 它是一个具有特殊语法或特殊求值[evaluation]规则或者两者兼有的表达式形式[form], 它可能操纵求值[evaluation]环境[environment]或控制流或两者都操纵. 一个特殊表达式形式[special form]的第一个元素是一个特殊操作符[special operator].
 
-special operator n. one of a fixed set of symbols, enumerated in Figure 3-2, that may appear in the car of a form in order to identify the form as a special form.
+**special operator** n. 枚举在 Figure 3-2 中的一组固定符号[symbol]中的一个, 它可能出现在一个表达式形式[form]的 car 中来标识这个表达式形式[form]为一个特殊表达式形式[special form].
 
-special variable n. Trad. a dynamic variable.
+**special variable** n. Trad. 一个动态变量[dynamic variable].
 
-specialize v.t. (a generic function) to define a method for the generic function, or in other words, to refine the behavior of the generic function by giving it a specific meaning for a particular set of classes or arguments.
+**specialize** v.t. (一个广义函数[generic function]) 去为这个广义函数[generic function]定义一个方法[method], 或者换句话说, 通过给它一组类[class]或实参[argument]的特定意义来精炼这个广义函数[generic function]的行为.
 
-specialized adj. 1. (of a generic function) having methods which specialize the generic function. 2. (指数组[array]) having an actual array element type that is a proper subtype of the type t; see Section 15.1.1 (Array Elements). ``(make-array 5 :element-type 'bit) makes an array of length five that is specialized for bits.''
+**specialized** adj. 1. (指一个广义函数[generic function]) 有着特化[specialize]这个广义函数[generic function]的方法[method]. 2. (指数组[array]) 实际数组元素类型[actual array element type]是类型[type] t 的合适子类型[proper subtype]; 见章节 15.1.1 (数组元素). "(make-array 5 :element-type 'bit) 创建一个长度 5 的数组, 并且它特化为 bit ((make-array 5 :element-type 'bit) makes an array of length five that is specialized for bits)".
 
-specialized lambda list n. an extended lambda list used in forms that establish method definitions, such as defmethod. See Section 3.4.3 (Specialized Lambda Lists).
+**specialized lambda list** n. 一个扩展 lambda 列表[extended lambda list], 被用于建立[establish]方法[method]定义的表达式形式[form]中, 例如 defmethod. 见章节 3.4.3 (特化的 lambda 列表).
 
-spreadable argument list designator n. a designator for a list of objects; that is, an object that denotes a list and that is a non-null list L1 of length n, whose last element is a list L2 of length m (denoting a list L3 of length m+n-1 whose elements are L1i for i < n-1 followed by L2j for j < m). ``The list (1 2 (3 4 5)) is a spreadable argument list designator for the list (1 2 3 4 5).''
+**spreadable argument list designator** n. 一个对象[object]列表[list]的标识符[designator]; 也就是说, 一个对象[object], 它表示一个列表[list]并且它是一个长度为 n 的非空列表[list] L1, 其中最后一个元素是长度为 m 的列表[list] L2 (表示一个长度为 m+n-1 的列表 L3, 其中元素是 L1i (i < n-1) 后面跟着 L2i (j < m)). "列表 (1 2 (3 4 5)) 是列表 (1 2 3 4 5) 的一个可扩展参数列表标识符 (The list (1 2 (3 4 5)) is a spreadable argument list designator for the list (1 2 3 4 5))".
 
-stack allocate v.t. Trad. to allocate in a non-permanent way, such as on a stack. Stack-allocation is an optimization technique used in some implementations for allocating certain kinds of objects that have dynamic extent. Such objects are allocated on the stack rather than in the heap so that their storage can be freed as part of unwinding the stack rather than taking up space in the heap until the next garbage collection. What types (if any) can have dynamic extent can vary from implementation to implementation. No implementation is ever required to perform stack-allocation.
+**stack allocate** v.t. Trad. 用一种非持久方式, 例如在一个栈上. 栈上分配是一种优化技术在某些实现[implementation]中用于分配具有动态范围[dynamic extent]的某些类型的对象[object]. 这样的对象[object]会被分配在栈上而不是在堆上, 这样一来它们的存储就可以作为栈解除的一部分被释放而不是在下一次垃圾回收之前都占用着堆中的空间. 什么类型 (如果有的话) 可以有动态范围[dynamic extent]在实现[implementation]和实现[implementation]之间有所不同. 没有要求实现[implementation]去执行栈上分配.
 
-stack-allocated adj. Trad. having been stack allocated.
+**stack-allocated** adj. Trad. 已经被栈上分配.
 
-standard character n. a character of type standard-char, which is one of a fixed set of 96 such characters required to be present in all conforming implementations. See Section 2.1.3 (Standard Characters).
+**standard character** n. 一个 standard-char 类型[type]的字符[character], 它是所有符合规范的实现[conforming implementation]中需要的 96 个固定字符[character]中的一个. 见章节 2.1.3 (标准字符).
 
-standard class n. a class that is a generalized instance of class standard-class.
+**standard class** n. 一个类[class], 它是类[class] standard-class 的一个广义实例[generalized instance].
 
-standard generic function a function of type standard-generic-function.
+**standard generic function** 一个 standard-generic-function 类型[type]的函数[function].
 
-standard input n. the input stream which is the value of the dynamic variable *standard-input*.
+**standard input** n. 这个输入[input]流[stream], 它是动态变量[dynamic variable] \*standard-input* 的值[value].
 
-standard method combination n. the method combination named standard.
+**standard method combination** n. 名为 standard 的方法组合[method combination].
 
-standard object n. an object that is a generalized instance of class standard-object.
+**standard object** n. 一个对象[object], 它是类[class] standard-object 的一个广义实例[generalized instance].
 
-standard output n. the output stream which is the value of the dynamic variable *standard-output*.
+**standard output** n. 这个输出[output]流[stream], 它是动态变量[dynamic variable] \*standard-output* 的值[value].
 
-standard pprint dispatch table n. A pprint dispatch table that is different from the initial pprint dispatch table, that implements pretty printing as described in this specification, and that, unlike other pprint dispatch tables, must never be modified by any program. (Although the definite reference ``the standard pprint dispatch table'' is generally used within this document, it is actually implementation-dependent whether a single object fills the role of the standard pprint dispatch table, or whether there might be multiple such objects, any one of which could be used on any given occasion where ``the standard pprint dispatch table'' is called for. As such, this phrase should be seen as an indefinite reference in all cases except for anaphoric references.)
+**standard pprint dispatch table** n. 一个美观打印分派表[pprint dispatch table], 它和初始美观打印分派表[initial pprint dispatch table]不同, 它按照这个规范中所描述的实现了美观打印, 并且它不像其他美观打印分派表[pprint dispatch table], 一定不能被任何程序修改. (虽然在本文档中通常使用了明确的引用 "标准美观打印分派表", 但是到底是一个单独的对象[object]还是多个这样的对象来充当标准美观打印分派表[standard pprint dispatch table]的角色, 实际上是依赖于具体实现的[implementation-dependent], 任何一种都可以被用于需要"标准美观打印分派表"的特定场合. 因此, 除照应前项引用外, 这句话在所有情况下都应视为不确定的引用.)
 
 **standard readtable** n. 一个区别[different]于初始读取表[initial readtable]的读取表[readtable], 它实现了这个规范中定义的表达式[expression]语法, 并且它不像其他读取表[readtable], 一定不能被任何程序所修改. (虽然明确的引用 "标准读取表[standard readtable]" 被普遍用于这个文档中, 事实上, 是否是一个单独的对象[object]充当这个标准读取表[standard readtable]的角色, 还是这里存在多个这样的对象, 它们中的任意一个都可以被用于需要 "标准读取表[standard readtable]" 的场合, 这个是依赖于具体实现的[implementation-dependent]. 因此, 这个短语在所有情况下都应该被看作是不确定的引用, 除了照应前项引用(anaphoric reference).)
 
 **standard syntax** n. 由标准读取表[standard readtable]表示的语法, 并且被用作贯穿这个文档的参考语法. 见章节 2.1 (字符语法).
 
-standardized adj. (一个名字(name), 对象(object), 或定义) 已经被 Common Lisp 定义. "All standardized variables that are required to hold bidirectional streams have \"-io*\" in their name".
+**standardized** adj. (一个名字[name], 对象[object], 或定义) 已经被 Common Lisp 定义. "所有需要持有双向流的标准化变量的名字中都具有 '-io*' (All standardized variables that are required to hold bidirectional streams have \"-io*\" in their name)".
 
-startup environment n. the global environment of the running Lisp image from which the compiler was invoked.
+**startup environment** n. 调用编译器的运行的 Lisp 映像[Lisp image]的全局环境[global environment].
 
-step v.t., n. 1. v.t. (an iteration variable) to assign the variable a new value at the end of an iteration, in preparation for a new iteration. 2. n. the code that identifies how the next value in an iteration is to be computed. 3. v.t. (code) to specially execute the code, pausing at intervals to allow user confirmation or intervention, usually for debugging.
+**step** v.t., n. 1. v.t. (一个循环变量[variable]) 在一个循环的结束去给这个变量[variable]赋予[assign]一个新值[value], 为新的循环做准备. 2. n. 标识一个循环中的下一个值如何被计算的代码[code]. 3. v.t. (代码[code]) 去特殊地执行这个代码[code], 每隔一段时间停下来让用户确认或干预, 通常用于调试.
 
-stream n. 可以被一个输入或输出函数用来标识这个操作的一个字符[character]或字节[byte]源或目标的对象[object].
+**stream** n. 可以被一个输入或输出函数用来标识这个操作的一个字符[character]或字节[byte]源或目标的对象[object].
 
-stream associated with a file n. a file stream, or a synonym stream the target of which is a stream associated with a file. Such a stream cannot be created with make-two-way-stream, make-echo-stream, make-broadcast-stream, make-concatenated-stream, make-string-input-stream, or make-string-output-stream.
+**stream associated with a file** n. 一个文件流[file stream], 或者一个同义流[synonym stream], 它的目标是一个和文件关联的流[stream associated with a file]. 这样一个流[stream]不能用 make-two-way-stream, make-echo-stream, make-broadcast-stream, make-concatenated-stream, make-string-input-stream, 或 make-string-output-stream 创建.
 
-stream designator n. a designator for a stream; that is, an object that denotes a stream and that is one of: t (denoting the value of *terminal-io*), nil (denoting the value of *standard-input* for input stream designators or denoting the value of *standard-output* for output stream designators), or a stream (denoting itself).
+**stream designator** n. 一个流[stream]的标识符[designator]; 也就是说, 一个对象[object], 它是一个流[stream]并且它是以下之一: t (表示 \*terminal-io* 的值[value]), nil (对于输入[input]流标识符[stream designator]表示 \*standard-input* 的值[value]或者对于输出[output]流标识符[stream designator]表示 \*standard-output* 的值[value]), 或者一个流[stream] (表示它自身).
 
-stream element type n. (of a stream) the type of data for which the stream is specialized.
+**stream element type** n. (指一个流[stream]) 这个流[stream]被特化的数据类型[type].
 
-stream variable n. a variable whose value must be a stream.
+**stream variable** n. 一个值[value]必须为一个流[stream]的变量[variable].
 
-stream variable designator n. a designator for a stream variable; that is, a symbol that denotes a stream variable and that is one of: t (denoting *terminal-io*), nil (denoting *standard-input* for input stream variable designators or denoting *standard-output* for output stream variable designators), or some other symbol (denoting itself).
+**stream variable designator** n. 一个流变量[stream variable]的标识符[designator]; 这也就是说, 一个表示流变量[stream variable]的符号[symbol]并且它是以下之一: t (表示 \*terminal-io*), nil (对于输入[input]流变量标识符[stream variable designator]表示 \*standard-input* 或者对于输出[output]流变量标识符[stream variable designator]表示 \*standard-output*), 或者某个其他符号[symbol] (表示它自身).
 
-string n. a specialized vector that is of type string, and whose elements are of type character or a subtype of type character.
+**string** n. 一个 string 类型[type]的特化向量[vector], 并且它的元素是 character 类型[type]或者 character 类型[type]的子类型[subtype].
 
-string designator n. a designator for a string; that is, an object that denotes a string and that is one of: a character (denoting a singleton string that has the character as its only element), a symbol (denoting the string that is its name), or a string (denoting itself). The intent is that this term be consistent with the behavior of string; implementations that extend string must extend the meaning of this term in a compatible way.
+**string designator** n. 一个字符串[string]的标识符[designator]; 这也就是说, 一个表示字符串[string]的对象[object]并且它是其中之一: 一个字符[character] (表示一个单独的字符串[string], 持有该字符[character]作为它仅有的元素[element]), 一个符号[symbol] (表示它的名称字符串[string]), 或者一个字符串[string] (表示它自身). 其目的是使这个术语与 string 的行为保持一致; 扩展 string 的具体实现[implementation]必须以一种兼容的方式扩展这个术语的意义.
 
-string equal adj. the same under string-equal.
+**string equal** adj. 在 string-equal 下是相同的[same].
 
-string stream n. a stream of type string-stream.
+**string stream** n. 一个 string-stream 类型[type]的流[stream].
 
-structure n. an object of type structure-object.
+**structure** n. 一个 structure-object 类型[type]的对象[object].
 
-structure class n. a class that is a generalized instance of class structure-class.
+**structure class** n. 一个类[class], 它是类[class] structure-class 的广义实例[generalized instance].
 
-structure name n. a name defined with defstruct. Usually, such a type is also a structure class, but there may be implementation-dependent situations in which this is not so, if the :type option to defstruct is used.
+**structure name** n. 使用 defstruct 定义的名称[name]. 通常, 这样一个类型[type]也是一个结构体类[structure class], 但是如果使用了给 defstruct 的 :type 选项, 可能会出现依赖于具体实现[implementation-dependent]的情况, 而不是这样.
 
-style warning n. a condition of type style-warning.
+**style warning** n. 一个 style-warning 类型[type]的状况[condition].
 
-subclass n. a class that inherits from another class, called a superclass. (No class is a subclass of itself.)
+**subclass** n. 一个类[class], 它继承[inherit]自另一个类[class], 称为超类[superclass]. (没有类[class]是它自身的子类[subclass].)
 
-subexpression n. (of an expression) an expression that is contained within the expression. (In fact, the state of being a subexpression is not an attribute of the subexpression, but really an attribute of the containing expression since the same object can at once be a subexpression in one context, and not in another.)
+**subexpression** n. (指一个表达式[expression]) 一个表达式[expression], 它被包含在该表达式[expression]中. (事实上, 成为一个子表达式[subexpression]的状态不是该子表达式[subexpression]的一个属性, 但实际上是包含表达式[expression]的属性, 因为相同[same]对象[object]可以同时是一个上下文中的子表达式[subexpression], 而不是另一个上下文中的子表达式.)
 
-subform n. (of a form) an expression that is a subexpression of the form, and which by virtue of its position in that form is also a form. ``(f x) and x, but not exit, are subforms of (return-from exit (f x)).''
+**subform** n. (指一个表达式形式[form]) 一个表达式[expression], 它是这个表达式形式[form]的子表达式[subexpression], 由于它在这个表达式形式[form]中的位置, 它也是一个表达式形式[form]. "(f x) 和 x, 除了 exit, 都是 (return-from exit (f x)) 的子表达式形式[subform] ((f x) and x, but not exit, are subforms of (return-from exit (f x)))".
 
-subrepertoire n. a subset of a repertoire.
+**subrepertoire** n. 一个字元库[repertoire]的子集.
 
-subtype n. a type whose membership is the same as or a proper subset of the membership of another type, called a supertype. (Every type is a subtype of itself.)
+**subtype** n. 一个类型[type], 它的成员关系和另一个称为超类型[supertype]的类型[type]的成员关系相同或者是一个适当子集. (每个类型[type]都是它自身的一个子类型[subtype].)
 
-superclass n. a class from which another class (called a subclass) inherits. (No class is a superclass of itself.) See subclass.
+**superclass** n. 一个类[class], 另一个类[class] (称为一个子类[subclass])继承[inherit]自它. (没有类[class]是它自身的一个超类[superclass].) 见子类[subclass].
 
-supertype n. a type whose membership is the same as or a proper superset of the membership of another type, called a subtype. (Every type is a supertype of itself.) See subtype.
+**supertype** n. 一个类型[type], 它的成员关系与另一个称为子类型[subtype]的类型[type]的成员关系相同或是一个适当超集. (每个类型[type]都是它自身的超类型[supertype].) 见子类型[subtype].
 
-supplied-p parameter n. a parameter which recieves its generalized boolean value implicitly due to the presence or absence of an argument corresponding to another parameter (such as an optional parameter or a rest parameter). See Section 3.4.1 (Ordinary Lambda Lists).
+**supplied-p parameter** n. 一个形参[parameter], 由于与另一个形参[parameter] (例如一个可选参数[optional parameter]或一个剩余参数[rest parameter])对应的实参[argument]的存在与否, 它隐式地接收它的广义 boolean [generalized boolean]值. 见章节 3.4.1 (普通 Lambda 列表).
 
-symbol n. an object of type symbol.
+**symbol** n. 一个 symbol 类型[type]的对象[object].
 
-symbol macro n. a symbol that stands for another form. See the macro symbol-macrolet.
+**symbol macro** n. 一个符号[symbol], 它代表另一个表达式形式[form]. 见宏[macro] symbol-macrolet.
 
-synonym stream n. 1. a stream of type synonym-stream, which is consequently a stream that is an alias for another stream, which is the value of a dynamic variable whose name is the synonym stream symbol of the synonym stream. See the function make-synonym-stream. 2. (to a stream) a synonym stream which has the stream as the value of its synonym stream symbol. 3. (to a symbol) a synonym stream which has the symbol as its synonym stream symbol.
+**synonym stream** n. 1. 一个 synonym-stream 类型[type]的流[stream], 因此它是一个流[stream], 这个流是另一个流[stream]的别名, 它是一个动态变量[dynamic variable]的值[value], 该变量的名称[name]是同义流[synonym stream]的同义流符号[synonym stream symbol]. 见函数[function] make-synonym-stream. 2. (对一个流[stream]) 一个同义流[synonym stream], 它的同义流符号[synonym stream symbol]的值[value]就是该流[stream]. 3. (对一个符号[symbol]) 一个同义流[synonym stream], 它的同义流符号[synonym stream symbol]即为该符号[symbol].
 
-synonym stream symbol n. (of a synonym stream) the symbol which names the dynamic variable which has as its value another stream for which the synonym stream is an alias.
+**synonym stream symbol** n. (指一个同义流[synonym stream]) 这个符号[symbol]命名一个动态变量[dynamic variable], 它的值为另一个流, 这个同义流[synonym stream]是该流的一个别名.
 
 **syntax type** n. (一个字符[character]的) 几个在解析期间被 Lisp 读取器[Lisp reader]用来分派的类型中的一个, 枚举在 Figure 2-6 中. 见章节 2.1.4 (字符语法类型).
 
-system class n. a class that may be of type built-in-class in a conforming implementation and hence cannot be inherited by classes defined by conforming programs.
+**system class** n. 一个类[class], 在一个符合规范的实现[conforming implementation]中它可能是 built-in-class 类型[type] 并且因此不能被符合规范的程序[conforming program]定义的类[class]所继承.
 
-system code n. code supplied by the implementation to implement this specification (e.g., the definition of mapcar) or generated automatically in support of this specification (e.g., during method combination); that is, code that is not programmer code. 
+**system code** n. 由具体实现[implementation]提供来实现这个规范 (例如, mapcar 的定义) 或自动生成支持此规范的代码[code] (例如, 在方法组合期间); 也就是说, 不是编程者代码[programmer code]的代码[code]. 
 
 
 T
