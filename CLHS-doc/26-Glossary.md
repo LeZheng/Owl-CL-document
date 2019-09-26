@@ -1515,15 +1515,15 @@ vector n. a one-dimensional array.
 vertical-bar n. the standard character that is called ``vertical bar'' (|). See Figure 2-5. 
 
 
-W
+### W
 
 **whitespace** n. 1. 一个或多个是图形[graphic]字符[character] #\Space 或是例如 #\Newline 这样只移动打印位置的非图形[non-graphic]字符的字符[character]. 2. a. n. 一个是标记[token]分隔符的字符[character]的语法类型[syntax type]. 关于详情, 见章节 2.1.4.7 (空白字符). b. adj. (一个字符[character]的) 有着空白[whitespace[2a]]语法类型[syntax type[2]]. c. n. 一个空白[whitespace[2b]]字符[character].
 
-wild adj. 1. (of a namestring) using an implementation-defined syntax for naming files, which might ``match'' any of possibly several possible filenames, and which can therefore be used to refer to the aggregate of the files named by those filenames. 2. (of a pathname) a structured representation of a name which might ``match'' any of possibly several pathnames, and which can therefore be used to refer to the aggregate of the files named by those pathnames. The set of wild pathnames includes, but is not restricted to, pathnames which have a component which is :wild, or which have a directory component which contains :wild or :wild-inferors. See the function wild-pathname-p.
+**wild** adj. 1. (指一个名称字符串[namestring]) 使用一个具体实现定义的[implementation-defined]用于命名文件的语法, 它可能 "匹配" 几个可能的文件名[filename]中的任意一个, 因此它可以用来引用由这些文件名[filename]命名的文件[file]的聚合体. 2. (指一个路径名[pathname]) 一个名称的结构化表示, 它可能 "匹配" 几个可能的路径名[pathname]中的任何一个, 因此它可以用来引用由这些路径名[pathname]命名的文件[file]的聚合体. 这个通配符[wild]路径名[pathname]的集合包括单不限于: 具有成员为 :wild 的路径名[pathname], 或者具有包含 :wild or :wild-inferors 的目录成员的路径名[pathname]. 见函数[function] wild-pathname-p.
 
-write v.t. 1. (a binding or slot or component) to change the value of the binding or slot. 2. (an object to a stream) to output a representation of the object to the stream.
+**write** v.t. 1. (一个绑定[binding]或槽[slot]或成员) 去修改这个绑定[binding]或槽[slot]的值[value]. 2. (到一个流[stream]的一个对象[object]) 把这个对象[object]的表示输出到这个流[stream].
 
-writer n. a function that writes[1] a variable or slot. 
+**writer** n. 一个函数[function], 它写入[writes[1]]一个变量[variable]或槽[slot]. 
 
 
 ### Y
