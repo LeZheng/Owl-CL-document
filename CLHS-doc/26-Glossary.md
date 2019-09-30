@@ -1439,41 +1439,41 @@ S
 **type specifier** n. 表示一个类型[type]的表达式[expression]. "符号 random-state, 列表 (integer 3 5), 列表 (and list (not null)), 以及名为 standard-class 的类都是类型指定符 (The symbol random-state, the list (integer 3 5), the list (and list (not null)), and the class named standard-class are type specifiers)". 
 
 
-U
+### U
 
-unbound adj. not having an associated denotation in a binding. See bound.
+**unbound** adj. 在一个绑定[binding]中没有一个关联的表示. 见绑定[bound].
 
-unbound variable n. a name that is syntactically plausible as the name of a variable but which is not bound in the variable namespace.
+**unbound variable** n. 一个名称[name], 它在语法结构上似乎是一个变量[variable]的名字, 但是它在变量[variable]命名空间[namespace]中没有被绑定[bound].
 
-undefined function n. a name that is syntactically plausible as the name of a function but which is not bound in the function namespace.
+**undefined function** n. 一个名称[name], 它在语法结构上似乎是一个函数[function]的名字, 但是它在函数[function]命名空间[namespace]中没有被绑定[bound].
+符号符号符号
+**unintern** v.t. (一个包[package]中的一个符号[symbol]) 去使这个符号[symbol]没有出现[present]在包[package]中. (这个符号[symbol]可能通过继承可继续访问.)
 
-unintern v.t. (a symbol in a package) to make the symbol not be present in that package. (The symbol might continue to be accessible by inheritance.)
+**uninterned** adj. (指一个符号[symbol]) 在任何包[package]中都是不可访问的[accessible]; 换句话说, 不是捕获的[interned[1]].
 
-uninterned adj. (of a symbol) not accessible in any package; i.e., not interned[1].
+**universal time** n. 时间[time], 表示为秒的一个非负整数[integer]数量. 绝对[absolute]通用时间[universal time]使用一个从 1900 年开始的偏移来测量 (忽略闰秒[leap second]). 见章节 25.1.4.2 (通用时间).
 
-universal time n. time, represented as a non-negative integer number of seconds. Absolute universal time is measured as an offset from the beginning of the year 1900 (ignoring leap seconds). See Section 25.1.4.2 (Universal Time).
+**unqualified method** n. 一个没有限定符[qualifier]的方法[method].
 
-unqualified method n. a method with no qualifiers.
+**unregistered package** n. 一个没有出现在包注册表[package registry]中的包[package]对象[object]. 一个未注册的包[unregistered package]没有名字[name]; 换句话说, 它的名称[name]是 nil. 见函数[function] delete-package.
 
-unregistered package n. a package object that is not present in the package registry. An unregistered package has no name; i.e., its name is nil. See the function delete-package.
+**unsafe** adj. (指代码[code]) 不是安全的[safe]. (注意, 除非显式地另外指定, 否则如果只保证在安全[safe]上下文中进行特定类型的错误检查, 那么如果是不安全的[unsafe], 则相同的检查可能会也可能不会在该上下文中发生; 把一个上下文描述为不安全的[unsafe]意味着特定种类的错误检查不能确定启用, 但不能保证绝对禁用错误检查.)
 
-unsafe adj. (of code) not safe. (Note that, unless explicitly specified otherwise, if a particular kind of error checking is guaranteed only in a safe context, the same checking might or might not occur in that context if it were unsafe; describing a context as unsafe means that certain kinds of error checking are not reliably enabled but does not guarantee that error checking is definitely disabled.)
+**unsafe call** n. 一个不是安全调用[safe call]的调用[call]. 关于更多详细的信息, 见章节 3.5.1.1 (安全和非安全调用).
 
-unsafe call n. a call that is not a safe call. For more detailed information, see Section 3.5.1.1 (Safe and Unsafe Calls).
+**upgrade** v.t. (一个声明的类型[type]到一个实际的类型[type]) 1. (在创建一个数组时[array]) 当选择一个适当特化[specialized]数组[array]表示时将实际数组元素类型[actual array element type]替换为表达数组元素类型[expressed array element type]. 见函数[function] upgraded-array-element-type. 2. (当创建一个复数时[complex]) 当选择一个适当特化[specialized]复数[complex]表示时将实际复数部分类型[actual complex part type]替换为一个表达复数部分类型[expressed complex part type]. 见函数[function] upgraded-complex-part-type.
 
-upgrade v.t. (a declared type to an actual type) 1. (when creating an array) to substitute an actual array element type for an expressed array element type when choosing an appropriately specialized array representation. See the function upgraded-array-element-type. 2. (when creating a complex) to substitute an actual complex part type for an expressed complex part type when choosing an appropriately specialized complex representation. See the function upgraded-complex-part-type.
+**upgraded array element type** n. (指一个类型[type]) 一个类型[type], 它是该类型[type]的一个超类型[supertype], 当该类型[type]用作数组元素类型[array element type]的对象创建或类型区分时, 它被用于替换该类型[type]. 见章节 15.1.2.1 (数组提升).
 
-upgraded array element type n. (of a type) a type that is a supertype of the type and that is used instead of the type whenever the type is used as an array element type for object creation or type discrimination. See Section 15.1.2.1 (Array Upgrading).
+**upgraded complex part type** n. (指一个类型[type]) 一个类型[type], 它是该类型[type]的一个超类型[supertype], 当该类型[type]用作复数部分类型[complex part type]的对象创建或类型区分时, 它被用于替换该类型[type]. 见函数[function] upgraded-complex-part-type.
 
-upgraded complex part type n. (of a type) a type that is a supertype of the type and that is used instead of the type whenever the type is used as a complex part type for object creation or type discrimination. See the function upgraded-complex-part-type.
+**uppercase** adj. (指一个字符[character]) 在标准字符[standard character]中对应大写字母 A 到 Z, 或者是某个被具体实现[implementation]定义为大写[uppercase]的具体实现定义的[implementation-defined]字符[character]. 见章节 13.1.4.3 (大小写字符).
 
-uppercase adj. (of a character) being among standard characters corresponding to the capital letters A through Z, or being some other implementation-defined character that is defined by the implementation to be uppercase. See Section 13.1.4.3 (大小写字符).
+**use** v.t. (一个包[package] P1) 去继承[inherit] P1 的外部符号[external symbol]. (如果包[package] P2 使用 P1, 那么 P1 的外部符号[external symbol]成为 P2 的内部符号[internal symbol], 除非它们被显式导出[export].) "包 CL-USER 使用包 CL (The package CL-USER uses the package CL)".
 
-use v.t. (a package P1) to inherit the external symbols of P1. (If a package P2 uses P1, the external symbols of P1 become internal symbols of P2 unless they are explicitly exported.) ``The package CL-USER uses the package CL.''
+**use list** n. (指一个包[package]) 一个和每个包[package]关联的 (可能为空的) 列表[list], 它决定了其他哪些包[package]当前正在被该包[package]所使用.
 
-use list n. (of a package) a (possibly empty) list associated with each package which determines what other packages are currently being used by that package.
-
-user n. an active entity, typically a human, that invokes or interacts with a program at run time, but that is not necessarily a programmer. 
+**user** n. 在运行时调用程序[package]或与程序[package]交互的活动实体(通常是人), 但不一定是程序员[programmer]. 
 
 
 V
