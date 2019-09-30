@@ -1476,43 +1476,43 @@ S
 **user** n. 在运行时调用程序[package]或与程序[package]交互的活动实体(通常是人), 但不一定是程序员[programmer]. 
 
 
-V
+### V
 
-valid array dimension n. a fixnum suitable for use as an array dimension. Such a fixnum must be greater than or equal to zero, and less than the value of array-dimension-limit. When multiple array dimensions are to be used together to specify a multi-dimensional array, there is also an implied constraint that the product of all of the dimensions be less than the value of array-total-size-limit.
+**valid array dimension** n. 适合用于一个数组[array]维度[dimension]的一个 fixnum. 这样一个 fixnum 一定大于等于零, 并且小于 array-dimension-limit 的值[value]. 当多个数组[array]维度[dimension]一起使用来指定一个多维数组[array]时, 还有一个隐含的约束, 即所有维度的乘积都小于 array-total-size-limit 的值[value].
 
-valid array index n. (指数组[array]) a fixnum suitable for use as one of possibly several indices needed to name an element of the array according to a multi-dimensional Cartesian coordinate system. Such a fixnum must be greater than or equal to zero, and must be less than the corresponding dimension[1] of the array. (Unless otherwise explicitly specified, the phrase ``a list of valid array indices'' further implies that the length of the list must be the same as the rank of the array.) ``For a 2 by 3 array, valid array indices for the first dimension are 0 and 1, and valid array indices for the second dimension are 0, 1 and 2.''
+**valid array index** n. (指数组[array]) 一种适合用作根据多维笛卡尔坐标系命名数组[array]元素[element]所需的几个索引之一的 fixnum. 这样一个 fixnum 一定大于等于零, 并且小于该数组[array]的对应维度[dimension[1]]. (除非另有明确规定, 术语 "一个有效数组索引列表" 进一步暗示了这个列表[list]的长度[length]和这个数组[array]的秩[rank]相同.) "对于一个2×3的数组, 第一个维度的有效数组索引是0和1, 第二个维度的有效数组索引是0、1和2 (For a 2 by 3 array, valid array indices for the first dimension are 0 and 1, and valid array indices for the second dimension are 0, 1 and 2)".
 
-valid array row-major index n. (of an array, which might have any number of dimensions[2]) a single fixnum suitable for use in naming any element of the array, by viewing the array's storage as a linear series of elements in row-major order. Such a fixnum must be greater than or equal to zero, and less than the array total size of the array.
+**valid array row-major index** n. (指一个数组[array], 它可能有任意数量的维度[dimensions[2]]) 适用于命名该数组[array]的任何元素[element]的一个单独的 fixnum, 通过将该数组的存储视为以行优先的顺序排列的一系列线性元素. 这样一个 fixnum 一定大于等于零, 并且小于该数组[array]的数组总大小[array total size].
 
-valid fill pointer n. (指数组[array]) a fixnum suitable for use as a fill pointer for the array. Such a fixnum must be greater than or equal to zero, and less than or equal to the array total size of the array.
+**valid fill pointer** n. (指数组[array]) 一个适用于该数组[array]的填充指针[fill pointer]的 fixnum. 这样一个 fixnum 必须大于等于零, 并且小于等于该数组[array]的数组总大小[array total size].
 
-valid logical pathname host n. a string that has been defined as the name of a logical host. See the function load-logical-pathname-translations.
+**valid logical pathname host** n. 一个字符串[string], 它已经被定义为一个逻辑主机[logical host]的名称. 见函数[function] load-logical-pathname-translations.
 
-valid pathname device n. a string, nil, :unspecific, or some other object defined by the implementation to be a valid pathname device.
+**valid pathname device** n. 一个字符串[string], nil, :unspecific, 或某个被具体实现[implementation]定义为有效路径名设备[valid pathname device]的其他对象[object].
 
-valid pathname directory n. a string, a list of strings, nil, :wild, :unspecific, or some other object defined by the implementation to be a valid directory component.
+**valid pathname directory** n. 一个字符串[string], 一个字符串[string]列表[list], nil, :wild, :unspecific, 或某个被具体实现[implementation]定义为有效路径名成员的其他对象[object].
 
-valid pathname host n. a valid physical pathname host or a valid logical pathname host.
+**valid pathname host** n. 一个有效物理路径名主机[valid physical pathname host]或一个有效逻辑路径名主机[valid logical pathname host].
 
-valid pathname name n. a string, nil, :wild, :unspecific, or some other object defined by the implementation to be a valid pathname name.
+**valid pathname name** n. 一个字符串[string], nil, :wild, :unspecific, 或某个被具体实现[implementation]定义为有效路径名名称[valid pathname name]的其他对象[object].
 
-valid pathname type n. a string, nil, :wild, :unspecific.
+**valid pathname type** n. 一个字符串[string], nil, :wild, :unspecific.
 
-valid pathname version n. a non-negative integer, or one of :wild, :newest, :unspecific, or nil. The symbols :oldest, :previous, and :installed are semi-standard special version symbols.
+**valid pathname version** n. 一个非负整数[integer], 或 :wild、 :newest、:unspecific 或 nil 其中之一. 符号 :oldest, :previous, 和 :installed 是不完全标准[semi-standard]特殊版本符号.
 
-valid physical pathname host n. any of a string, a list of strings, or the symbol :unspecific, that is recognized by the implementation as the name of a host.
+**valid physical pathname host** n. 一个字符串[string]、一个字符串[string]列表[list]或符号 :unspecific 中的任意一个, 它被具体实现识别为一个主机的名称.
 
-valid sequence index n. (of a sequence) an integer suitable for use to name an element of the sequence. Such an integer must be greater than or equal to zero, and must be less than the length of the sequence. (If the sequence is an array, the valid sequence index is further constrained to be a fixnum.)
+**valid sequence index** n. (指一个序列[sequence]) 适用于命名该序列[sequence]的一个元素[element]的整数[integer]. 这样一个整数[integer]一定大于等于零, 并且已经小于这个序列[sequence]的长度[length]. (如果这个序列[sequence]是一个数组[array], 那么这个有效序列索引[valid sequence index]被进一步认为是一个 fixnum.)
 
-value n. 1. a. one of possibly several objects that are the result of an evaluation. b. (in a situation where exactly one value is expected from the evaluation of a form) the primary value returned by the form. c. (of forms in an implicit progn) one of possibly several objects that result from the evaluation of the last form, or nil if there are no forms. 2. an object associated with a name in a binding. 3. (of a symbol) the value of the dynamic variable named by that symbol. 4. an object associated with a key in an association list, a property list, or a hash table.
+**value** n. 1. a. 可能是求值[evaluation]结果的几个对象[object]之一. b. (在一个表达式形式[form]的求值[evaluation]只需要一个值[value]的情况下) 由这个表达式形式[form]返回的主值[primary value]. c. (指一个隐式 progn [implicit progn]中的表达式形式[form]) 最后一个表达式形式[form]的求值[evaluation]可能产生的几个对象[object]之一, 或者如果没有表达式形式[form]那么就是 nil. 2. 和一个绑定[binding]中的名字[name]关联的对象[object]. 3. (指一个符号[symbol]) 由这个符号命名的动态变量[dynamic variable]的值[value]. 4. 和一个关联列表[association list]、一个属性列表[property list]或一个哈希表[hash table]中的一个键[key]关联的一个对象[object].
 
-value cell n. Trad. (of a symbol) The place which holds the value, if any, of the dynamic variable named by that symbol, and which is accessed by symbol-value. See cell.
+**value cell** n. Trad. (指一个符号[symbol]) 持有这个符号[symbol]命名的动态变量[dynamic variable]的值[value] (如果有的话)的位置, 并且它可以通过 symbol-value 来访问. 见存储格[cell].
 
-variable n. a binding in the ``variable'' namespace. See Section 3.1.2.1.1 (Symbols as Forms).
+**variable** n. 在 "变量(variable)" 命名空间[namespace]的一个绑定[binding]. 见章节 3.1.2.1.1 (符号表达式形式).
 
-vector n. a one-dimensional array.
+**vector** n. 一个一维数组[array].
 
-vertical-bar n. the standard character that is called ``vertical bar'' (|). See Figure 2-5. 
+**vertical-bar** n. 标准字符[standard character], 它被称为 "竖杠(vertical bar)" (|). 见 Figure 2-5. 
 
 
 ### W
