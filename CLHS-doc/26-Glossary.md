@@ -1388,55 +1388,55 @@ S
 **system code** n. 由具体实现[implementation]提供来实现这个规范 (例如, mapcar 的定义) 或自动生成支持此规范的代码[code] (例如, 在方法组合期间); 也就是说, 不是编程者代码[programmer code]的代码[code]. 
 
 
-T
+### T
 
-t n. 1. a. the boolean representing true. b. the canonical generalized boolean representing true. (Although any object other than nil is considered true as a generalized boolean, t is generally used when there is no special reason to prefer one such object over another.) 2. the name of the type to which all objects belong---the supertype of all types (including itself). 3. the name of the superclass of all classes except itself.
+**t** n. 1. a. 表示 true 的 boolean 值. b. 表示 true 的标准广义 boolean [generalized boolean]. (虽然除了 nil 以外的任何对象[object]都被认为是 true, 作为一个广义 boolean [generalized boolean], t 通常用于没有特殊原因更偏向其中一个对象[object]时.) 2. 所有对象[object]所属类型[type]的名字[name]---所有类型[type]的超类型[supertype] (包括它自身). 3. 除了它自身以外的所有类[class]的超类[superclass]的名字[name].
 
-tag n. 1. a catch tag. 2. a go tag.
+**tag** n. 1. 一个捕获标签[catch tag]. 2. 一个 go 标签[go tag].
 
-tail n. (of a list) an object that is the same as either some cons which makes up that list or the atom (if any) which terminates the list. ``The empty list is a tail of every proper list.''
+**tail** n. (指一个列表[list]) 一个对象[object], 它和构成这个列表[list]的某个 cons 相同[same]或者和终止这个列表[list]的原子[atom]相同[same] (如果存在的话). "空列表是每个正规列表的末尾 (The empty list is a tail of every proper list)".
 
-target n. 1. (of a constructed stream) a constituent of the constructed stream. ``The target of a synonym stream is the value of its synonym stream symbol.'' 2. (of a displaced array) the array to which the displaced array is displaced. (In the case of a chain of constructed streams or displaced arrays, the unqualified term ``target'' always refers to the immediate target of the first item in the chain, not the immediate target of the last item.)
+**target** n. 1. (指一个构造流[constructed stream]) 这个构造流[constructed stream]的一个标记成分[constituent]. "一个同义流的目标是它的同义流符号的值 (The target of a synonym stream is the value of its synonym stream symbol)". 2. (指一个存储被转移的数组[displaced array]) 这个存储被转移的数组[displaced array]被转移到的数组[array]. (对于一个构造流[constructed stream]或存储被转移的数组[displaced array]的链, 非限定术语 "目标[target]" 总是指链中第一项的直接目标[target], 而不是最后一项的直接目标.)
 
-terminal I/O n. the bidirectional stream that is the value of the variable *terminal-io*.
+**terminal I/O** n. 这个双向流[bidirectional stream]是变量[variable] \*terminal-io* 的值[value].
 
 **terminating** n. (一个宏字符[macro character]的) 是这样的, 如果它在解析一个标记时出现, 那么它终止那个标记. 见章节 2.2 (读取器算法).
 
-tertiary value n. (of values resulting from the evaluation of a form) the third value, if any, or else nil if there are fewer than three values.
+**tertiary value** n. (指从一个表达式形式[form]的求值[evaluation]所产生的哪些值[value]) 第三个值[value] (如果存在的话), 或者如果这里少于三个值[value]那么就是 nil.
 
-throw v. to transfer control and values to a catch. See the special operator throw.
+**throw** v. 去转移控制和值[value]到一个捕获点[catch]. 见特殊操作符[special operator] throw.
 
-tilde n. the standard character that is called ``tilde'' (~). See Figure 2-5.
+**tilde** n. 标准字符[standard character], 它被称为 "波浪符(tilde)" (~). 见 Figure 2-5.
 
-time a representation of a point (absolute time) or an interval (relative time) on a time line. See decoded time, internal time, and universal time.
+**time** 一个时间线上的时间点 (绝对[absolute]时间[time]) 或者时间间隔 (相对[relative]时间[time]) 的表示. 见解码时间[decoded time], 内部时间[internal time], 和通用时间[universal time].
 
-time zone n. a rational multiple of 1/3600 between -24 (inclusive) and 24 (inclusive) that represents a time zone as a number of hours offset from Greenwich Mean Time. Time zone values increase with motion to the west, so Massachusetts, U.S.A. is in time zone 5, California, U.S.A. is time zone 8, and Moscow, Russia is time zone -3. (When ``daylight savings time'' is separately represented as an argument or return value, the time zone that accompanies it does not depend on whether daylight savings time is in effect.)
+**time zone** n. 一个 1/3600 的有理[rational]倍数, 在-24(包含)和24(包含)之间, 表示一个时区与格林尼治平均时间偏移的小时数. 时区值随着向西移动而增加, 美国马萨诸塞州位于时区 5, 美国加利福尼亚州位于时区 8, 俄罗斯莫斯科位于时区 3. (当 "夏令时" 单独表示为一个实参[argument]或返回值[return value]时, 它所对应的时区并不取决于夏令时是否有效.)
 
 **token** n. 一个数字[number]或符号[symbol]的文本表示. 见章节 2.3 (Interpretation of Tokens).
 
-top level form n. a form which is processed specially by compile-file for the purposes of enabling compile time evaluation of that form. Top level forms include those forms which are not subforms of any other form, and certain other cases. See Section 3.2.3.1 (Processing of Top Level Forms).
+**top level form** n. 一个表达式形式[form], 出于启用该表达式形式[form]的编译期[compile time]求值[evaluation]的目的, 它被 compile-file 特殊处理. 顶层表达式形式[Top level form]包括那些不是任何其他表达式形式[form]的子表达式形式[subform]的表达式形式[form], 以及某些其他情况. 见章节 3.2.3.1 (顶层表达式形式的处理).
 
-trace output n. the output stream which is the value of the dynamic variable *trace-output*.
+**trace output** n. 这个输出[output]流[stream], 它是动态变量[dynamic variable] \*trace-output* 的值[value].
 
-tree n. 1. a binary recursive data structure made up of conses and atoms: the conses are themselves also trees (sometimes called ``subtrees'' or ``branches''), and the atoms are terminal nodes (sometimes called leaves). Typically, the leaves represent data while the branches establish some relationship among that data. 2. in general, any recursive data structure that has some notion of ``branches'' and leaves.
+**tree** n. 1. 一个由 cons 和原子[atom]组成的二元递归数据结构: 这些 cons 自身也是树[tree] (有时称为 "子树(subtree)" 或 "分支(branch)"), 而原子[atom]是终端节点 (有时也称为叶[leaf]). 通常, 这些叶[leaf]表示数据而这些分支建立数据之间的某个联系. 2. 多数情况下, 任何具有某种"分支"和"叶[leaf]"概念的递归数据结构.
 
-tree structure n. (of a tree[1]) the set of conses that make up the tree. Note that while the car[1b] component of each such cons is part of the tree structure, the objects that are the cars[2] of each cons in the tree are not themselves part of its tree structure unless they are also conses.
+**tree structure** n. (指一个树[tree[1]]) 组成这个树[true]的 cons 的集合. 注意, 当每一个这样的 cons 的 car[1b] 组件是这个树结构[tree structure]的一部分时, 这个树[tree]中每一个 cons 的 car[2] 中的这些对象[object]本身不是树结构[tree structure]的一部分, 除非它们也是 cons.
 
-true n. any object that is not false and that is used to represent the success of a predicate test. See t[1].
+**true** n. 任何不是 false 的对象[object], 被用于表示一个断言[predicate]测试的成功. 见 t[1].
 
-truename n. 1. the canonical filename of a file in the file system. See Section 20.1.3 (Truenames). 2. a pathname representing a truename[1].
+**truename** n. 1. 在文件系统[file system]中的一个文件[file]的正规文件名[filename]. 见章节 20.1.3 (真实名字). 2. 表示一个真实名字[truename[1]]的路径名[pathname].
 
-two-way stream n. a stream of type two-way-stream, which is a bidirectional composite stream that receives its input from an associated input stream and sends its output to an associated output stream.
+**two-way stream** n. 一个 two-way-stream 类型[type]的流[stream], 它是一个双向[bidirectional]复合流[composite stream], 它从一个关联的输入[input]流[stream]接收它的输入并把它的输出发送到一个关联的输出[output]流[stream].
 
-type n. 1. 一个对象(object)的集合, 通常带有共同的结构, 行为, 和目的. (注意, 如果 Sa 是 Sb 的一个子类型, 语句 "X is of type Sa" 自然意味着 "X is of type Sb".) 2. (immediately following the name of a type<!--待翻译-->) 那个类型(type)的一个子类型(subtype). "The type vector is an array type."
+**type** n. 1. 一个对象(object)的集合, 通常带有共同的结构, 行为, 和目的. (注意, 如果 Sa 是 Sb 的一个子类型, 语句 "X 是 Sa 类型" 自然意味着 "X 是 Sb 类型".) 2. (紧跟在类型[type]名称之后) 那个类型[type]的一个子类型[subtype]. "类型 vector 是一个数组类型 (The type vector is an array type)."
 
-type declaration n. a declaration that asserts that every reference to a specified binding within the scope of the declaration results in some object of the specified type.
+**type declaration** n. 一个声明[declaration], 断言声明[declaration]的范围内对指定绑定[binding]的每次引用结果都是指定类型[type]的某个对象[object].
 
-type equivalent adj. (of two types X and Y) having the same elements; that is, X is a subtype of Y and Y is a subtype of X.
+**type equivalent** adj. (指两个类型[type] X 和 Y) 相同的元素[element]; 也就是说, X 是 Y 的子类型[subtype] 并且 Y 是 X 的子类型[subtype].
 
-type expand n. to fully expand a type specifier, removing any references to derived types. (Common Lisp provides no program interface to cause this to occur, but the semantics of Common Lisp are such that every implementation must be able to do this internally, and some situations involving type specifiers are most easily described in terms of a fully expanded type specifier.)
+**type expand** n. 去完全展开为一个类型指定符[type specifier], 移除对衍生类型[derived type]的任何引用. (Common Lisp 没有提供编程接口来使这个发生, 但是 Common Lisp 的语义是这样的, 每个实现[implementation]都必须能够在内部完成这一操作, 而且一些涉及类型指定符[type specifier]的情况最容易用完全展开的类型指定符[type specifier]来描述.)
 
-type specifier n. an expression that denotes a type. ``The symbol random-state, the list (integer 3 5), the list (and list (not null)), and the class named standard-class are type specifiers.'' 
+**type specifier** n. 表示一个类型[type]的表达式[expression]. "符号 random-state, 列表 (integer 3 5), 列表 (and list (not null)), 以及名为 standard-class 的类都是类型指定符 (The symbol random-state, the list (integer 3 5), the list (and list (not null)), and the class named standard-class are type specifiers)". 
 
 
 U
