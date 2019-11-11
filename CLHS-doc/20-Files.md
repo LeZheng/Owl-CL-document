@@ -410,7 +410,7 @@
 
 * 参数和值(Arguments and Values):
 
-        filespec---一个路径名标识符路径名标识符[pathname designator].
+        filespec---一个路径名标识符[pathname designator].
 
 * 描述(Description):
 
