@@ -1388,131 +1388,131 @@ S
 **system code** n. 由具体实现[implementation]提供来实现这个规范 (例如, mapcar 的定义) 或自动生成支持此规范的代码[code] (例如, 在方法组合期间); 也就是说, 不是编程者代码[programmer code]的代码[code]. 
 
 
-T
+### T
 
-t n. 1. a. the boolean representing true. b. the canonical generalized boolean representing true. (Although any object other than nil is considered true as a generalized boolean, t is generally used when there is no special reason to prefer one such object over another.) 2. the name of the type to which all objects belong---the supertype of all types (including itself). 3. the name of the superclass of all classes except itself.
+**t** n. 1. a. 表示 true 的 boolean 值. b. 表示 true 的标准广义 boolean [generalized boolean]. (虽然除了 nil 以外的任何对象[object]都被认为是 true, 作为一个广义 boolean [generalized boolean], t 通常用于没有特殊原因更偏向其中一个对象[object]时.) 2. 所有对象[object]所属类型[type]的名字[name]---所有类型[type]的超类型[supertype] (包括它自身). 3. 除了它自身以外的所有类[class]的超类[superclass]的名字[name].
 
-tag n. 1. a catch tag. 2. a go tag.
+**tag** n. 1. 一个捕获标签[catch tag]. 2. 一个 go 标签[go tag].
 
-tail n. (of a list) an object that is the same as either some cons which makes up that list or the atom (if any) which terminates the list. ``The empty list is a tail of every proper list.''
+**tail** n. (指一个列表[list]) 一个对象[object], 它和构成这个列表[list]的某个 cons 相同[same]或者和终止这个列表[list]的原子[atom]相同[same] (如果存在的话). "空列表是每个正规列表的末尾 (The empty list is a tail of every proper list)".
 
-target n. 1. (of a constructed stream) a constituent of the constructed stream. ``The target of a synonym stream is the value of its synonym stream symbol.'' 2. (of a displaced array) the array to which the displaced array is displaced. (In the case of a chain of constructed streams or displaced arrays, the unqualified term ``target'' always refers to the immediate target of the first item in the chain, not the immediate target of the last item.)
+**target** n. 1. (指一个构造流[constructed stream]) 这个构造流[constructed stream]的一个标记成分[constituent]. "一个同义流的目标是它的同义流符号的值 (The target of a synonym stream is the value of its synonym stream symbol)". 2. (指一个存储被转移的数组[displaced array]) 这个存储被转移的数组[displaced array]被转移到的数组[array]. (对于一个构造流[constructed stream]或存储被转移的数组[displaced array]的链, 非限定术语 "目标[target]" 总是指链中第一项的直接目标[target], 而不是最后一项的直接目标.)
 
-terminal I/O n. the bidirectional stream that is the value of the variable *terminal-io*.
+**terminal I/O** n. 这个双向流[bidirectional stream]是变量[variable] \*terminal-io* 的值[value].
 
 **terminating** n. (一个宏字符[macro character]的) 是这样的, 如果它在解析一个标记时出现, 那么它终止那个标记. 见章节 2.2 (读取器算法).
 
-tertiary value n. (of values resulting from the evaluation of a form) the third value, if any, or else nil if there are fewer than three values.
+**tertiary value** n. (指从一个表达式形式[form]的求值[evaluation]所产生的哪些值[value]) 第三个值[value] (如果存在的话), 或者如果这里少于三个值[value]那么就是 nil.
 
-throw v. to transfer control and values to a catch. See the special operator throw.
+**throw** v. 去转移控制和值[value]到一个捕获点[catch]. 见特殊操作符[special operator] throw.
 
-tilde n. the standard character that is called ``tilde'' (~). See Figure 2-5.
+**tilde** n. 标准字符[standard character], 它被称为 "波浪符(tilde)" (~). 见 Figure 2-5.
 
-time a representation of a point (absolute time) or an interval (relative time) on a time line. See decoded time, internal time, and universal time.
+**time** 一个时间线上的时间点 (绝对[absolute]时间[time]) 或者时间间隔 (相对[relative]时间[time]) 的表示. 见解码时间[decoded time], 内部时间[internal time], 和通用时间[universal time].
 
-time zone n. a rational multiple of 1/3600 between -24 (inclusive) and 24 (inclusive) that represents a time zone as a number of hours offset from Greenwich Mean Time. Time zone values increase with motion to the west, so Massachusetts, U.S.A. is in time zone 5, California, U.S.A. is time zone 8, and Moscow, Russia is time zone -3. (When ``daylight savings time'' is separately represented as an argument or return value, the time zone that accompanies it does not depend on whether daylight savings time is in effect.)
+**time zone** n. 一个 1/3600 的有理[rational]倍数, 在-24(包含)和24(包含)之间, 表示一个时区与格林尼治平均时间偏移的小时数. 时区值随着向西移动而增加, 美国马萨诸塞州位于时区 5, 美国加利福尼亚州位于时区 8, 俄罗斯莫斯科位于时区 3. (当 "夏令时" 单独表示为一个实参[argument]或返回值[return value]时, 它所对应的时区并不取决于夏令时是否有效.)
 
 **token** n. 一个数字[number]或符号[symbol]的文本表示. 见章节 2.3 (Interpretation of Tokens).
 
-top level form n. a form which is processed specially by compile-file for the purposes of enabling compile time evaluation of that form. Top level forms include those forms which are not subforms of any other form, and certain other cases. See Section 3.2.3.1 (Processing of Top Level Forms).
+**top level form** n. 一个表达式形式[form], 出于启用该表达式形式[form]的编译期[compile time]求值[evaluation]的目的, 它被 compile-file 特殊处理. 顶层表达式形式[Top level form]包括那些不是任何其他表达式形式[form]的子表达式形式[subform]的表达式形式[form], 以及某些其他情况. 见章节 3.2.3.1 (顶层表达式形式的处理).
 
-trace output n. the output stream which is the value of the dynamic variable *trace-output*.
+**trace output** n. 这个输出[output]流[stream], 它是动态变量[dynamic variable] \*trace-output* 的值[value].
 
-tree n. 1. a binary recursive data structure made up of conses and atoms: the conses are themselves also trees (sometimes called ``subtrees'' or ``branches''), and the atoms are terminal nodes (sometimes called leaves). Typically, the leaves represent data while the branches establish some relationship among that data. 2. in general, any recursive data structure that has some notion of ``branches'' and leaves.
+**tree** n. 1. 一个由 cons 和原子[atom]组成的二元递归数据结构: 这些 cons 自身也是树[tree] (有时称为 "子树(subtree)" 或 "分支(branch)"), 而原子[atom]是终端节点 (有时也称为叶[leaf]). 通常, 这些叶[leaf]表示数据而这些分支建立数据之间的某个联系. 2. 多数情况下, 任何具有某种"分支"和"叶[leaf]"概念的递归数据结构.
 
-tree structure n. (of a tree[1]) the set of conses that make up the tree. Note that while the car[1b] component of each such cons is part of the tree structure, the objects that are the cars[2] of each cons in the tree are not themselves part of its tree structure unless they are also conses.
+**tree structure** n. (指一个树[tree[1]]) 组成这个树[true]的 cons 的集合. 注意, 当每一个这样的 cons 的 car[1b] 组件是这个树结构[tree structure]的一部分时, 这个树[tree]中每一个 cons 的 car[2] 中的这些对象[object]本身不是树结构[tree structure]的一部分, 除非它们也是 cons.
 
-true n. any object that is not false and that is used to represent the success of a predicate test. See t[1].
+**true** n. 任何不是 false 的对象[object], 被用于表示一个断言[predicate]测试的成功. 见 t[1].
 
-truename n. 1. the canonical filename of a file in the file system. See Section 20.1.3 (Truenames). 2. a pathname representing a truename[1].
+**truename** n. 1. 在文件系统[file system]中的一个文件[file]的正规文件名[filename]. 见章节 20.1.3 (真实名字). 2. 表示一个真实名字[truename[1]]的路径名[pathname].
 
-two-way stream n. a stream of type two-way-stream, which is a bidirectional composite stream that receives its input from an associated input stream and sends its output to an associated output stream.
+**two-way stream** n. 一个 two-way-stream 类型[type]的流[stream], 它是一个双向[bidirectional]复合流[composite stream], 它从一个关联的输入[input]流[stream]接收它的输入并把它的输出发送到一个关联的输出[output]流[stream].
 
-type n. 1. 一个对象(object)的集合, 通常带有共同的结构, 行为, 和目的. (注意, 如果 Sa 是 Sb 的一个子类型, 语句 "X is of type Sa" 自然意味着 "X is of type Sb".) 2. (immediately following the name of a type<!--待翻译-->) 那个类型(type)的一个子类型(subtype). "The type vector is an array type."
+**type** n. 1. 一个对象(object)的集合, 通常带有共同的结构, 行为, 和目的. (注意, 如果 Sa 是 Sb 的一个子类型, 语句 "X 是 Sa 类型" 自然意味着 "X 是 Sb 类型".) 2. (紧跟在类型[type]名称之后) 那个类型[type]的一个子类型[subtype]. "类型 vector 是一个数组类型 (The type vector is an array type)."
 
-type declaration n. a declaration that asserts that every reference to a specified binding within the scope of the declaration results in some object of the specified type.
+**type declaration** n. 一个声明[declaration], 断言声明[declaration]的范围内对指定绑定[binding]的每次引用结果都是指定类型[type]的某个对象[object].
 
-type equivalent adj. (of two types X and Y) having the same elements; that is, X is a subtype of Y and Y is a subtype of X.
+**type equivalent** adj. (指两个类型[type] X 和 Y) 相同的元素[element]; 也就是说, X 是 Y 的子类型[subtype] 并且 Y 是 X 的子类型[subtype].
 
-type expand n. to fully expand a type specifier, removing any references to derived types. (Common Lisp provides no program interface to cause this to occur, but the semantics of Common Lisp are such that every implementation must be able to do this internally, and some situations involving type specifiers are most easily described in terms of a fully expanded type specifier.)
+**type expand** n. 去完全展开为一个类型指定符[type specifier], 移除对衍生类型[derived type]的任何引用. (Common Lisp 没有提供编程接口来使这个发生, 但是 Common Lisp 的语义是这样的, 每个实现[implementation]都必须能够在内部完成这一操作, 而且一些涉及类型指定符[type specifier]的情况最容易用完全展开的类型指定符[type specifier]来描述.)
 
-type specifier n. an expression that denotes a type. ``The symbol random-state, the list (integer 3 5), the list (and list (not null)), and the class named standard-class are type specifiers.'' 
-
-
-U
-
-unbound adj. not having an associated denotation in a binding. See bound.
-
-unbound variable n. a name that is syntactically plausible as the name of a variable but which is not bound in the variable namespace.
-
-undefined function n. a name that is syntactically plausible as the name of a function but which is not bound in the function namespace.
-
-unintern v.t. (a symbol in a package) to make the symbol not be present in that package. (The symbol might continue to be accessible by inheritance.)
-
-uninterned adj. (of a symbol) not accessible in any package; i.e., not interned[1].
-
-universal time n. time, represented as a non-negative integer number of seconds. Absolute universal time is measured as an offset from the beginning of the year 1900 (ignoring leap seconds). See Section 25.1.4.2 (Universal Time).
-
-unqualified method n. a method with no qualifiers.
-
-unregistered package n. a package object that is not present in the package registry. An unregistered package has no name; i.e., its name is nil. See the function delete-package.
-
-unsafe adj. (of code) not safe. (Note that, unless explicitly specified otherwise, if a particular kind of error checking is guaranteed only in a safe context, the same checking might or might not occur in that context if it were unsafe; describing a context as unsafe means that certain kinds of error checking are not reliably enabled but does not guarantee that error checking is definitely disabled.)
-
-unsafe call n. a call that is not a safe call. For more detailed information, see Section 3.5.1.1 (Safe and Unsafe Calls).
-
-upgrade v.t. (a declared type to an actual type) 1. (when creating an array) to substitute an actual array element type for an expressed array element type when choosing an appropriately specialized array representation. See the function upgraded-array-element-type. 2. (when creating a complex) to substitute an actual complex part type for an expressed complex part type when choosing an appropriately specialized complex representation. See the function upgraded-complex-part-type.
-
-upgraded array element type n. (of a type) a type that is a supertype of the type and that is used instead of the type whenever the type is used as an array element type for object creation or type discrimination. See Section 15.1.2.1 (Array Upgrading).
-
-upgraded complex part type n. (of a type) a type that is a supertype of the type and that is used instead of the type whenever the type is used as a complex part type for object creation or type discrimination. See the function upgraded-complex-part-type.
-
-uppercase adj. (of a character) being among standard characters corresponding to the capital letters A through Z, or being some other implementation-defined character that is defined by the implementation to be uppercase. See Section 13.1.4.3 (大小写字符).
-
-use v.t. (a package P1) to inherit the external symbols of P1. (If a package P2 uses P1, the external symbols of P1 become internal symbols of P2 unless they are explicitly exported.) ``The package CL-USER uses the package CL.''
-
-use list n. (of a package) a (possibly empty) list associated with each package which determines what other packages are currently being used by that package.
-
-user n. an active entity, typically a human, that invokes or interacts with a program at run time, but that is not necessarily a programmer. 
+**type specifier** n. 表示一个类型[type]的表达式[expression]. "符号 random-state, 列表 (integer 3 5), 列表 (and list (not null)), 以及名为 standard-class 的类都是类型指定符 (The symbol random-state, the list (integer 3 5), the list (and list (not null)), and the class named standard-class are type specifiers)". 
 
 
-V
+### U
 
-valid array dimension n. a fixnum suitable for use as an array dimension. Such a fixnum must be greater than or equal to zero, and less than the value of array-dimension-limit. When multiple array dimensions are to be used together to specify a multi-dimensional array, there is also an implied constraint that the product of all of the dimensions be less than the value of array-total-size-limit.
+**unbound** adj. 在一个绑定[binding]中没有一个关联的表示. 见绑定[bound].
 
-valid array index n. (指数组[array]) a fixnum suitable for use as one of possibly several indices needed to name an element of the array according to a multi-dimensional Cartesian coordinate system. Such a fixnum must be greater than or equal to zero, and must be less than the corresponding dimension[1] of the array. (Unless otherwise explicitly specified, the phrase ``a list of valid array indices'' further implies that the length of the list must be the same as the rank of the array.) ``For a 2 by 3 array, valid array indices for the first dimension are 0 and 1, and valid array indices for the second dimension are 0, 1 and 2.''
+**unbound variable** n. 一个名称[name], 它在语法结构上似乎是一个变量[variable]的名字, 但是它在变量[variable]命名空间[namespace]中没有被绑定[bound].
 
-valid array row-major index n. (of an array, which might have any number of dimensions[2]) a single fixnum suitable for use in naming any element of the array, by viewing the array's storage as a linear series of elements in row-major order. Such a fixnum must be greater than or equal to zero, and less than the array total size of the array.
+**undefined function** n. 一个名称[name], 它在语法结构上似乎是一个函数[function]的名字, 但是它在函数[function]命名空间[namespace]中没有被绑定[bound].
+符号符号符号
+**unintern** v.t. (一个包[package]中的一个符号[symbol]) 去使这个符号[symbol]没有出现[present]在包[package]中. (这个符号[symbol]可能通过继承可继续访问.)
 
-valid fill pointer n. (指数组[array]) a fixnum suitable for use as a fill pointer for the array. Such a fixnum must be greater than or equal to zero, and less than or equal to the array total size of the array.
+**uninterned** adj. (指一个符号[symbol]) 在任何包[package]中都是不可访问的[accessible]; 换句话说, 不是捕获的[interned[1]].
 
-valid logical pathname host n. a string that has been defined as the name of a logical host. See the function load-logical-pathname-translations.
+**universal time** n. 时间[time], 表示为秒的一个非负整数[integer]数量. 绝对[absolute]通用时间[universal time]使用一个从 1900 年开始的偏移来测量 (忽略闰秒[leap second]). 见章节 25.1.4.2 (通用时间).
 
-valid pathname device n. a string, nil, :unspecific, or some other object defined by the implementation to be a valid pathname device.
+**unqualified method** n. 一个没有限定符[qualifier]的方法[method].
 
-valid pathname directory n. a string, a list of strings, nil, :wild, :unspecific, or some other object defined by the implementation to be a valid directory component.
+**unregistered package** n. 一个没有出现在包注册表[package registry]中的包[package]对象[object]. 一个未注册的包[unregistered package]没有名字[name]; 换句话说, 它的名称[name]是 nil. 见函数[function] delete-package.
 
-valid pathname host n. a valid physical pathname host or a valid logical pathname host.
+**unsafe** adj. (指代码[code]) 不是安全的[safe]. (注意, 除非显式地另外指定, 否则如果只保证在安全[safe]上下文中进行特定类型的错误检查, 那么如果是不安全的[unsafe], 则相同的检查可能会也可能不会在该上下文中发生; 把一个上下文描述为不安全的[unsafe]意味着特定种类的错误检查不能确定启用, 但不能保证绝对禁用错误检查.)
 
-valid pathname name n. a string, nil, :wild, :unspecific, or some other object defined by the implementation to be a valid pathname name.
+**unsafe call** n. 一个不是安全调用[safe call]的调用[call]. 关于更多详细的信息, 见章节 3.5.1.1 (安全和非安全调用).
 
-valid pathname type n. a string, nil, :wild, :unspecific.
+**upgrade** v.t. (一个声明的类型[type]到一个实际的类型[type]) 1. (在创建一个数组时[array]) 当选择一个适当特化[specialized]数组[array]表示时将实际数组元素类型[actual array element type]替换为表达数组元素类型[expressed array element type]. 见函数[function] upgraded-array-element-type. 2. (当创建一个复数时[complex]) 当选择一个适当特化[specialized]复数[complex]表示时将实际复数部分类型[actual complex part type]替换为一个表达复数部分类型[expressed complex part type]. 见函数[function] upgraded-complex-part-type.
 
-valid pathname version n. a non-negative integer, or one of :wild, :newest, :unspecific, or nil. The symbols :oldest, :previous, and :installed are semi-standard special version symbols.
+**upgraded array element type** n. (指一个类型[type]) 一个类型[type], 它是该类型[type]的一个超类型[supertype], 当该类型[type]用作数组元素类型[array element type]的对象创建或类型区分时, 它被用于替换该类型[type]. 见章节 15.1.2.1 (数组提升).
 
-valid physical pathname host n. any of a string, a list of strings, or the symbol :unspecific, that is recognized by the implementation as the name of a host.
+**upgraded complex part type** n. (指一个类型[type]) 一个类型[type], 它是该类型[type]的一个超类型[supertype], 当该类型[type]用作复数部分类型[complex part type]的对象创建或类型区分时, 它被用于替换该类型[type]. 见函数[function] upgraded-complex-part-type.
 
-valid sequence index n. (of a sequence) an integer suitable for use to name an element of the sequence. Such an integer must be greater than or equal to zero, and must be less than the length of the sequence. (If the sequence is an array, the valid sequence index is further constrained to be a fixnum.)
+**uppercase** adj. (指一个字符[character]) 在标准字符[standard character]中对应大写字母 A 到 Z, 或者是某个被具体实现[implementation]定义为大写[uppercase]的具体实现定义的[implementation-defined]字符[character]. 见章节 13.1.4.3 (大小写字符).
 
-value n. 1. a. one of possibly several objects that are the result of an evaluation. b. (in a situation where exactly one value is expected from the evaluation of a form) the primary value returned by the form. c. (of forms in an implicit progn) one of possibly several objects that result from the evaluation of the last form, or nil if there are no forms. 2. an object associated with a name in a binding. 3. (of a symbol) the value of the dynamic variable named by that symbol. 4. an object associated with a key in an association list, a property list, or a hash table.
+**use** v.t. (一个包[package] P1) 去继承[inherit] P1 的外部符号[external symbol]. (如果包[package] P2 使用 P1, 那么 P1 的外部符号[external symbol]成为 P2 的内部符号[internal symbol], 除非它们被显式导出[export].) "包 CL-USER 使用包 CL (The package CL-USER uses the package CL)".
 
-value cell n. Trad. (of a symbol) The place which holds the value, if any, of the dynamic variable named by that symbol, and which is accessed by symbol-value. See cell.
+**use list** n. (指一个包[package]) 一个和每个包[package]关联的 (可能为空的) 列表[list], 它决定了其他哪些包[package]当前正在被该包[package]所使用.
 
-variable n. a binding in the ``variable'' namespace. See Section 3.1.2.1.1 (Symbols as Forms).
+**user** n. 在运行时调用程序[package]或与程序[package]交互的活动实体(通常是人), 但不一定是程序员[programmer]. 
 
-vector n. a one-dimensional array.
 
-vertical-bar n. the standard character that is called ``vertical bar'' (|). See Figure 2-5. 
+### V
+
+**valid array dimension** n. 适合用于一个数组[array]维度[dimension]的一个 fixnum. 这样一个 fixnum 一定大于等于零, 并且小于 array-dimension-limit 的值[value]. 当多个数组[array]维度[dimension]一起使用来指定一个多维数组[array]时, 还有一个隐含的约束, 即所有维度的乘积都小于 array-total-size-limit 的值[value].
+
+**valid array index** n. (指数组[array]) 一种适合用作根据多维笛卡尔坐标系命名数组[array]元素[element]所需的几个索引之一的 fixnum. 这样一个 fixnum 一定大于等于零, 并且小于该数组[array]的对应维度[dimension[1]]. (除非另有明确规定, 术语 "一个有效数组索引列表" 进一步暗示了这个列表[list]的长度[length]和这个数组[array]的秩[rank]相同.) "对于一个2×3的数组, 第一个维度的有效数组索引是0和1, 第二个维度的有效数组索引是0、1和2 (For a 2 by 3 array, valid array indices for the first dimension are 0 and 1, and valid array indices for the second dimension are 0, 1 and 2)".
+
+**valid array row-major index** n. (指一个数组[array], 它可能有任意数量的维度[dimensions[2]]) 适用于命名该数组[array]的任何元素[element]的一个单独的 fixnum, 通过将该数组的存储视为以行优先的顺序排列的一系列线性元素. 这样一个 fixnum 一定大于等于零, 并且小于该数组[array]的数组总大小[array total size].
+
+**valid fill pointer** n. (指数组[array]) 一个适用于该数组[array]的填充指针[fill pointer]的 fixnum. 这样一个 fixnum 必须大于等于零, 并且小于等于该数组[array]的数组总大小[array total size].
+
+**valid logical pathname host** n. 一个字符串[string], 它已经被定义为一个逻辑主机[logical host]的名称. 见函数[function] load-logical-pathname-translations.
+
+**valid pathname device** n. 一个字符串[string], nil, :unspecific, 或某个被具体实现[implementation]定义为有效路径名设备[valid pathname device]的其他对象[object].
+
+**valid pathname directory** n. 一个字符串[string], 一个字符串[string]列表[list], nil, :wild, :unspecific, 或某个被具体实现[implementation]定义为有效路径名成员的其他对象[object].
+
+**valid pathname host** n. 一个有效物理路径名主机[valid physical pathname host]或一个有效逻辑路径名主机[valid logical pathname host].
+
+**valid pathname name** n. 一个字符串[string], nil, :wild, :unspecific, 或某个被具体实现[implementation]定义为有效路径名名称[valid pathname name]的其他对象[object].
+
+**valid pathname type** n. 一个字符串[string], nil, :wild, :unspecific.
+
+**valid pathname version** n. 一个非负整数[integer], 或 :wild、 :newest、:unspecific 或 nil 其中之一. 符号 :oldest, :previous, 和 :installed 是不完全标准[semi-standard]特殊版本符号.
+
+**valid physical pathname host** n. 一个字符串[string]、一个字符串[string]列表[list]或符号 :unspecific 中的任意一个, 它被具体实现识别为一个主机的名称.
+
+**valid sequence index** n. (指一个序列[sequence]) 适用于命名该序列[sequence]的一个元素[element]的整数[integer]. 这样一个整数[integer]一定大于等于零, 并且已经小于这个序列[sequence]的长度[length]. (如果这个序列[sequence]是一个数组[array], 那么这个有效序列索引[valid sequence index]被进一步认为是一个 fixnum.)
+
+**value** n. 1. a. 可能是求值[evaluation]结果的几个对象[object]之一. b. (在一个表达式形式[form]的求值[evaluation]只需要一个值[value]的情况下) 由这个表达式形式[form]返回的主值[primary value]. c. (指一个隐式 progn [implicit progn]中的表达式形式[form]) 最后一个表达式形式[form]的求值[evaluation]可能产生的几个对象[object]之一, 或者如果没有表达式形式[form]那么就是 nil. 2. 和一个绑定[binding]中的名字[name]关联的对象[object]. 3. (指一个符号[symbol]) 由这个符号命名的动态变量[dynamic variable]的值[value]. 4. 和一个关联列表[association list]、一个属性列表[property list]或一个哈希表[hash table]中的一个键[key]关联的一个对象[object].
+
+**value cell** n. Trad. (指一个符号[symbol]) 持有这个符号[symbol]命名的动态变量[dynamic variable]的值[value] (如果有的话)的位置, 并且它可以通过 symbol-value 来访问. 见存储格[cell].
+
+**variable** n. 在 "变量(variable)" 命名空间[namespace]的一个绑定[binding]. 见章节 3.1.2.1.1 (符号表达式形式).
+
+**vector** n. 一个一维数组[array].
+
+**vertical-bar** n. 标准字符[standard character], 它被称为 "竖杠(vertical bar)" (|). 见 Figure 2-5. 
 
 
 ### W
