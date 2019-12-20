@@ -428,7 +428,7 @@ Figure 2-9. 数字标记的语法
 
 为了允许实现者和未来 Common Lisp 标准去扩展数字的语法, 定义了一个比数字语法更通用的潜在数字语法. 如果一个标记[token]满足下面的所有需求它就是一个潜在数字[potential number]:
 
-1. 这个标记[token]完全由数字[digit], 正负号[sign], 比率标记[ratio marker], 小数点(.), 扩展字符(^ 或 _), 还有数字标记构成. 一个数字标记是一个字母. 一个字母是否会被当作数字标记取决于上下文, 但是与其他字母相邻的字母不能被视为数字标记. 指数标记[exponent marker]也是数字标记.<!--TODO letter 文字？字母？-->
+1. 这个标记[token]完全由数字[digit], 正负号[sign], 比率标记[ratio marker], 小数点(.), 扩展字符(^ 或 _), 还有数字标记构成. 一个数字标记是一个字母. 一个字母是否会被当作数字标记取决于上下文, 但是与其他字母相邻的字母不能被视为数字标记. 指数标记[exponent marker]也是数字标记.
 
 2. 这个标记[token]包含了至少一个数字. 根据当前输入基数[current input base], 字母可能被认为是数字, 但只在没有小数点的标记[token]中.
 
@@ -851,7 +851,7 @@ Figure 2-18. 双引号字符的示例
 
 * 对于任何不是一个列表[list]或一个普通向量[vector]的表达式[expression] basic, `basic 等同于 'basic, 也就表示, (quote basic).
 
-* 对于任何不是以 @ 符号[at-sign]或者点[dot]开始的表达式形式 form, `,form 等同于 form. (对于一个逗号[comma]后面的一个表达式形式的所有出现情况, 也有类似的警告.) <!--TODO 待校验-->
+* 对于任何不是以 @ 符号[at-sign]或者点[dot]开始的表达式形式 form, `,form 等同于 form. (类似的警告适用于所有在逗号[comma]之后出现的表达式形式.)
 
 * `,@form 有着未定义的后果.
 
@@ -999,7 +999,7 @@ Figure 2-19. 标准 # 分派宏字符语法
 
 当这个标记[token] x 是单个字符[character]长时, 这个会被解析为字面字符[character] char. 在 #\ 后面大写[uppercase]字母和小写[lowercase]字母是区分开来的; #\A 和 #\a 表示不同的字符[character]对象[object]. 任何在 #\ 后面的单个字符[character]都会正常工作, 甚至那些对于 read 通常是非常特殊的字符, 例如左圆括号[left-parenthesis]和右圆括号[right-parenthesis].
 
-在单字符[character]情况下, x 后面必须跟着一个非成分字符[character]. 在 #\ 被读取之后, 读取器备份<!--TODO back up over ??-->斜线[slash]然后开始读取一个标记[token], 把最初的斜线[slash]作为单转义[single escape]字符[character] (不管它在当前读取表[current readtable]里是否为单转义字符).
+在单字符[character]情况下, x 后面必须跟着一个非成分字符[character]. 在 #\ 被读取之后, 读取器回溯到斜线[slash]然后开始读取一个标记[token], 把最初的斜线[slash]作为单转义[single escape]字符[character] (不管它在当前读取表[current readtable]里是否为单转义字符).
 
 当这个标记[token]不止一个字符[character]长度时, 这个 x 必须有着符号[symbol]的语法, 并且其中没有内嵌的包标记[package marker]. 在这种情况下, 这个井号[sharpsign]反斜线[backslash]标记被解析为名为 (string-upcase x) 的字符[character]; 见章节 13.1.7 (字符的名字).
 
@@ -1249,7 +1249,7 @@ Figure 2-21. 复数示例
 
     ((a b) (p q) foo (p q) (p q) foo (p q) (p q) foo (p q) ...)
 
-一个 #n# 引用可能只出现在一个 #n= 标记后; 超前的引用是不允许的. 这个引用可能不会作为被标记的对象自身出现 (就是说, #n=#n#) 可能不会被写入因为这个 #n= 标记的对象[object]在这个情况下还没有被定义好. <!--TODO 断句有疑问-->
+一个 #n# 引用可能只出现在一个 #n= 标记后; 超前的引用是不允许的. 这个引用可能不会作为被标记的对象自身出现 (就是说, #n=#n#) 可能不会被写入, 因为这个 #n= 标记的对象[object]在这个情况下还没有被定义好.
 
 #### 2.4.8.17 <span id = "SharpsignPlus">井号加号(#+)</span>
 
