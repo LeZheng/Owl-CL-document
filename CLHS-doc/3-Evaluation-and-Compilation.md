@@ -748,8 +748,8 @@ Figure 3-8. 影响编译期环境的定义宏
 事实上文件编译器[file compiler]在编译后的文件[compiled file]中外部地表示字面化[literal]对象[object]并且在文件[file]被加载时重构这些对象[object]的适合的等价对象, 这也意味着就需要去约束被文件编译器[file compiler]处理的代码[code]中的可以被用作字面化[literal]对象[object]的那些对象[object]的特性.
 
 一个可以被用作要被文件编译器[file compiler]处理的代码[code]中的字面化[literal]对象[object]的对象[object]被称为可外部化对象[externalizable object].
-<!--TODO 二位 ??-->
-如果两个对象[object]满足一个二位的概念上等价断言(下面定义的), 我们就定义它们是相似的[similar], 这个断言不依赖于 Lisp 镜像[Lisp image], 所以两个在不同 Lisp 镜像[Lisp image]中的对象[object]可以在这个断言下理解为等价的. 更进一步, 通过检查这个概念性断言的定义, 程序员可以预测一个对象[object]的哪些方面确实被文件[file]编译[compilation]保留了.
+
+如果两个对象[object]满足一个二元概念等价断言(下面定义的), 我们就定义它们是相似的[similar], 这个断言不依赖于 Lisp 镜像[Lisp image], 所以两个在不同 Lisp 镜像[Lisp image]中的对象[object]可以在这个断言下理解为等价的. 更进一步, 通过检查这个概念性断言的定义, 程序员可以预测一个对象[object]的哪些方面确实被文件[file]编译[compilation]保留了.
 
 文件编译器[file compiler]必须与加载器[loader]合作, 以确保可外部化的对象[externalizable object]作为一个字面化[literal]对象[object]处理的每个情况中, 加载器[loader]会构造一个类似的[similar]对象[object].
 

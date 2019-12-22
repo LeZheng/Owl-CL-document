@@ -1381,7 +1381,7 @@
 
 * 注意(Notes):
 
-        将字符文件表示为一个有限大小的记录序列的具体实现可以选择将这个文件位置编码为, 比如, <<record-number>>*<<max-record-size>>+<<character-within-record>>. 这是一个有效的编码, 因为它随着每个字符被读取或写入单调递增, 尽管每次步进没有必要是 1. 作为给 file-position 的 position-spec, 如果在解码成记录数和字符数时, 结果表明所提供的记录对于指定的字符数来说太短了, 则可能认为一个整数[integer]是 "不合适的". <!--TODO 最后一句？？-->
+        将字符文件表示为一个有限大小的记录序列的具体实现可以选择将这个文件位置编码为, 比如, <<record-number>>*<<max-record-size>>+<<character-within-record>>. 这是一个有效的编码, 因为它随着每个字符被读取或写入单调递增, 尽管每次步进没有必要是 1. 作为给 file-position 的 position-spec, 如果在解码成记录数和字符数时, 结果表明所提供的记录对于指定的字符数来说太短了, 则可能认为一个整数[integer]是 "不合适的". 
 
 
 ### <span id="F-FILE-STRING-LENGTH">函数 FILE-STRING-LENGTH</span>

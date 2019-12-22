@@ -3032,8 +3032,8 @@ shared-initialize 的方法[method]可以被定义用来定制类[class]的重�
         unbound-slot, cell-error, error, serious-condition, condition, t
 
 * 描述(Description):
-<!--TODO 待核对-->
-        这个有着未绑定槽的对象[object]由 make-condition 的 :instance 初始化参数来初始化, 并且通过函数[function] unbound-slot-instance 来访问.
+
+        这个持有未绑定槽的对象[object]由 make-condition 的 :instance 初始化参数来初始化, 并且通过函数[function] unbound-slot-instance 来访问.
 
         这个存储格(cell)(见 cell-error)的名字是这个槽的名字.
 

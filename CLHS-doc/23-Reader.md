@@ -269,7 +269,7 @@ Lisp 读取器[Lisp reader]的各个方面可以被动态控制. 见章节 2.1.1
 
         read 从输入流 input-stream 解析一个对象[object]的打印表示并且构建这样一个对象[object].
 
-        read-preserving-whitespace 类似于 read 但是保留任何分隔这个对象[object的打印表示的空格[whitespace[2]]字符[character]. 当给 read-preserving-whitespace 的 recursive-p 参数[argument]是 true 时 read-preserving-whitespace 就像 read 一样.
+        read-preserving-whitespace 类似于 read 但是保留任何分隔这个对象[object]的打印表示的空格[whitespace[2]]字符[character]. 当给 read-preserving-whitespace 的 recursive-p 参数[argument]是 true 时 read-preserving-whitespace 就像 read 一样.
 
         当 *read-suppress* 是 false 时, 如果分隔字符是空白[whitespace[2]]字符[character], read 会丢弃某些打印表示所需要的分隔字符; 但是如果它是语法上有意义的, 那么 read 会保留这个字符 (使用 unread-char), 因为它可以是下一个表达式的开始.
 
@@ -569,7 +569,7 @@ Lisp 读取器[Lisp reader]的各个方面可以被动态控制. 见章节 2.1.1
 
 * 描述(Description):
 
-        set-dispatch-macro-character 导致在读取到 disp-char 后面跟着 sub-char 时调用  new-function. 如果 sub-char 是一个小写字母, 它会被转换为它的大写等价. 如果 sub-char 是一个十进制数字中的一个, 那么就是一个错误.
+        set-dispatch-macro-character 导致在读取到 disp-char 后面跟着 sub-char 时调用 new-function. 如果 sub-char 是一个小写字母, 它会被转换为它的大写等价. 如果 sub-char 是一个十进制数字中的一个, 那么就是一个错误.
 
         set-dispatch-macro-character 安装一个 new-function, 当一个特定分派宏字符[dispatching macro character]对被读取到时 new-function 会被调用. new-function 作为分派函数被安装, 当这个 readtable 正在被使用并且 disp-char 后跟着 sub-char 时调用这个分派函数.
 

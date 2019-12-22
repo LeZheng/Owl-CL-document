@@ -13,7 +13,7 @@
 
 函数[function] typep 作为一个集合成员资格测试, 被用于确定一个给定的对象[object]是否为给定的类型[type]. 函数 subtypep 作为一个子集测试, 被用于确定一个给定的类型[type]是否为另一个给定类型[type]的子类型[subtype]. 函数 type-of 返回一个给定对象[object]所属的具体类型[type], 即便这个对象[object]也属于一个或多个其他类型[type]. (比如, 每一个对象[object]都是类型[type] t, 但是 type-of 总是返回一个比 t 更具体的类型[type]的类型指定符[type specifier].)
 
-对象[object], 而不是变量[variable], 拥有类型[type]. 通常, 任何变量[variable]可以有着任何对象[object]作为它的值[value]. 可以通过显式类型声明[type declaration]来声明一个变量[variable]只能获取指定的类型[type]的值. 类型[type]被安排在一个有向的非循环图中, 除了等价的存在<!--TODO 不理解-->.
+对象[object]拥有类型[type], 而不是变量[variable]. 通常, 任何变量[variable]可以持有任何对象[object]作为它的值[value]. 可以通过显式类型声明[type declaration]来声明一个变量[variable]只能获取指定的类型[type]的值. 类型[type]被安排在一个有向的非循环图中, 除了等价的存在<!--TODO 不理解-->.
 
 可以通过 declare, proclaim, declaim, 或 the 来做出和类型[type]相关的声明[declaration]. 关于声明[declaration]的更多信息, 见章节 3.3 (声明).
 
@@ -335,7 +335,7 @@ Figure 4-7. 对象系统类
 如果 R 不是一致的, 会发出一个错误.
 
 #### 4.3.5.1 拓扑排序 (未校对)
-<!--TODO 需要查一下来理解-->
+<!-- TODO 未校对 -->
 拓扑排序是根据 R 中的元素通过在 SC 中找到一个 C 类来进行的, 这样就不会有其他元素先于这个元素. 这个类 C 被放在结果的最前面. 从 SC 中移除 C, 并且从 R 中移除所有表达式形式 (C,D) 对, D<ELEMENT-OF>SC. 重复这个过程, 在结果的末尾添加前面没有任何类的类. 当找不到前面没有类的元素时停止.
 
 如果 SC 不是空并且这个过程已经停止, 那么集合 R 是不一致的. 如果在有限类[class]集合中的每个类[class]都前置另一个类, 那么 R 就包含一个循环. 这就是说, 这里有一个 Ci 先于 Ci+1 的链 C1,...,Cn , 1 <= i < n, 而 Cn 先于 C1.

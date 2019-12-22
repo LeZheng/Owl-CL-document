@@ -195,7 +195,7 @@ Common Lisp 定义了多个位置[place]的种类; 这个章节会列举它们. 
 一个词法变量[lexical variable]或动态变量[dynamic variable]的名字可以被用作一个位置[place].
 
 #### 5.1.2.2 <span id="FunctionCallFormsPlaces">函数调用表达式形式作为位置</span>
-<!--TODO 待理解-->
+
 如果一个函数表达式形式[function form]属于下列类别之一, 它被用作一个位置[place]:
 
   * 第一个元素是下面这段中任何一个函数名的函数调用表达式形式.
@@ -2452,7 +2452,7 @@ values 的 setf 展开式[setf expansion]中的存储表达式形式以多值[mu
 
 * 描述(Description):
 
-        表示 true 的布尔值[boolean], 并且是表示 true 的标准的广义 boolean [generalized boolean]. 虽然除了 nil 以外的任何对象[object]都被当成 true, t 通常用于没有特殊理由偏爱其中一个对象而不喜欢另一个对象的情况.<!--TODO 最后半句 ？-->
+        表示 true 的布尔值[boolean], 并且是表示 true 的标准的广义 boolean [generalized boolean]. 虽然除了 nil 以外的任何对象[object]都被当成 true, t 通常用于没有特殊理由偏爱其中一个对象而不喜欢另一个对象的情况.
 
         符号[symbol] t 有时也被用作其他目的. 比如, 作为一个类[class]的名字[name], 作为一个标识符[designator] (比如, 一个流标识符[stream designator]) 或者由于某些语法原因作为一个特殊符号 (比如, 在 case 和 typecase 中去表示 otherwise-clause 子句).
 

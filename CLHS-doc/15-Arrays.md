@@ -834,7 +834,7 @@
         (array-element-type (make-array 5 :element-type '(mod 5)))
 
         可以是 (mod 5), (mod 8), fixnum, t, 或者任何其他是 (mod 5) 的超类型[supertype]的类型.
-<!--TODO 原文的表述无法直译-->
+
 
 * 受此影响(Affected By):
 

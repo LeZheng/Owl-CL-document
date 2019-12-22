@@ -3167,7 +3167,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
             boole-xor    exclusive or                                
 
             Figure 12-17. 位逻辑操作符
-<!--TODO 待翻译-->
+
 * 示例(Examples):
 
     ```LISP
@@ -3327,7 +3327,7 @@ T 类型[type]的两个区间标识符[interval designator]的第二个可以是
         logxor    0         exclusive or                                
 
         Figure 12-18. 整数上的位逻辑操作
-<!--TODO 待翻译-->
+
         负的整数会被看作它们是以两个补数的二进制表示的.
 
 * 示例(Examples):
