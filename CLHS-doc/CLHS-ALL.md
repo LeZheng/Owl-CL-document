@@ -38141,7 +38141,7 @@ NOT=>  #P"OZ:PS:<TEST>"
 
 ##### 19.3.1.1.3 逻辑路径名名称字符串的目录部分
 
-如果在这些 directory 之前有一个 relative-directory-marker, 这个目录成员会被解析为是相对的[relative]; 否则, 这个目录成员会被解析为绝对的[absolute](#absolute).
+如果在这些 directory 之前有一个 relative-directory-marker, 这个目录成员会被解析为是相对的[relative]; 否则, 这个目录成员会被解析为绝对的[absolute].
 
 如果指定了一个 wild-inferiors-marker, 它被解析为 :wild-inferiors. 
 
@@ -48998,7 +48998,7 @@ description---a string or nil.
 
 ### A
 
-**<a id="测试">absolute</a>** adj. 1. (指时间[time]) 表示一个特定的时间点. 2. (指路径名[pathname]) 表示目录层次结构中的特定位置. 见相对[relative].
+**absolute** adj. 1. (指时间[time]) 表示一个特定的时间点. 2. (指路径名[pathname]) 表示目录层次结构中的特定位置. 见相对[relative].
 
 **access** n., v.t. 1. v.t. (一个位置[place], 或数组[array]) 去读取[read[1]]或写入[write[1]]这个[place]的值[value]或这个数组[array]的元素[element]. 2. n. (指位置[place]) 尝试去访问[access[1]]这个位置[place]的值[valuea].
 
